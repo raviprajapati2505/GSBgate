@@ -16,7 +16,8 @@
 #
 default: &default
   host: gord.sas.vito.local
-  adapter: postgresql
+  adapter: postgis
+  postgis_extension: true
   encoding: unicode
   # For details on connection pooling, see rails configuration guide
   # http://guides.rubyonrails.org/configuring.html#database-pooling
