@@ -15,7 +15,7 @@
 # gem 'pg'
 #
 default: &default
-  host: 172.24.2.67
+  host: gord.sas.vito.local
   adapter: postgresql
   encoding: unicode
   # For details on connection pooling, see rails configuration guide
