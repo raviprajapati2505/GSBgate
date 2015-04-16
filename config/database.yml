@@ -15,6 +15,7 @@
 # gem 'pg'
 #
 default: &default
+  host: 172.24.2.67
   adapter: postgresql
   encoding: unicode
   # For details on connection pooling, see rails configuration guide
@@ -24,6 +25,8 @@ default: &default
 development:
   <<: *default
   database: test
+  username: test
+  password: test
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
