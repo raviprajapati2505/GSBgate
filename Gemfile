@@ -47,5 +47,9 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'coffee-script-source', '1.8.0'
 
+# Flexible authentication solution
 gem 'devise'
+
+# Simple authorization solution
+gem 'cancan', '~> 1.6.10'
 
