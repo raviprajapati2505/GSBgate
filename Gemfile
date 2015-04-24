@@ -51,5 +51,5 @@ gem 'coffee-script-source', '1.8.0'
 gem 'devise'
 
 # Simple authorization solution
-gem 'cancan', '~> 1.6.10'
+gem 'cancancan', '~> 1.10.1'
 
