@@ -32,7 +32,7 @@ class Ability
     user ||= User.new # guest user (not logged in)
 
     # for the moment the application is locked down completely
-    if user.is_admin
+    if user.admin?
       can :manage, :all
     else
       cannot :manage, :all
