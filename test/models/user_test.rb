@@ -8,5 +8,9 @@ class UserTest < ActiveSupport::TestCase
     user = users(:bart)
     user.admin!
     assert_equal true, user.admin?
+    assert_equal false, user.anonymous?
+    user.registered!
+    assert_equal false, user.certifier?
+    assert_equal true, user.registered?
   end
 end
