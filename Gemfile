@@ -9,6 +9,8 @@ gem 'activerecord-postgis-adapter', '3.0.0.beta2'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
+# Use Twitter Bootstrap
+gem 'bootstrap-sass', '~> 3.3.4.1'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .coffee assets and views
@@ -52,4 +54,3 @@ gem 'devise'
 
 # Simple authorization solution
 gem 'cancancan', '~> 1.10.1'
-
