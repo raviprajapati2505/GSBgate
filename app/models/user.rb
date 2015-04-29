@@ -6,4 +6,6 @@ class User < ActiveRecord::Base
 
   enum role: [ :admin, :certifier, :registered, :anonymous ]
 
+  has_many :project_authorizations
+  has_many :projects, through: :project_authorizations
 end
