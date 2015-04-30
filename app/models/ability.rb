@@ -31,9 +31,20 @@ class Ability
 
     user ||= User.new # guest user (not logged in)
 
-    # for the moment the application is locked down completely
     if user.admin?
       can :manage, :all
+    elsif user.certifier?
+      can :read, Project
+    elsif user.registered?
+      can :read, Project do |project|
+        not ProjectAuthorization.find_by(user_id: user.id, project_id: project.id).nil?
+      end
+      can :update, Project do |project|
+        (not ProjectAuthorization.find_by(user_id: user.id, project_id: project.id).nil?) && ProjectAuthorization.find_by(user_id: user.id, project_id: project.id).write_access?
+      end
+      can :manage, Project do |project|
+        project.user == user || ((not ProjectAuthorization.find_by(user_id: user.id, project_id: project.id).nil?) && ProjectAuthorization.find_by(user_id: user.id, project_id: project.id).project_manager?)
+      end
     else
       cannot :manage, :all
     end

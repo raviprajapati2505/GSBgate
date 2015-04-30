@@ -4,3 +4,8 @@ one:
   id: 1
   name: MyProject
   user_id: 1
+
+two:
+  id: 2
+  name: MySecondProject
+  user_id: 2

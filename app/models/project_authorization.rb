@@ -6,4 +6,13 @@ class ProjectAuthorization < ActiveRecord::Base
   CATEGORIES = [ "All", "Cultural & Economic Value", "Energy", "Indoor Environment", "Management & Operations", "Materials", "Site", "Urban Connectivity", "Water"]
 
   validates :category, inclusion: CATEGORIES
+
+  before_destroy :prevent_destroy_owner
+
+  private
+  def prevent_destroy_owner
+    if project.get_owner == user
+      raise "Can't destroy project owner"
+    end
+  end
 end

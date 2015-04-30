@@ -3,6 +3,27 @@
 one:
   user_id: 1
   project_id: 1
+  category: All
+  write_access: true
+  project_manager: true
+
+two:
+  user_id: 2
+  project_id: 1
   category: Energy
   write_access: true
+  project_manager: true
+
+three:
+  user_id: 2
+  project_id: 2
+  category: All
+  write_access: true
+  project_manager: true
+
+four:
+  user_id: 1
+  project_id: 2
+  category: Energy
+  write_access: false
   project_manager: false

@@ -13,3 +13,11 @@
 bart:
   id: 1
   email: bart.daniels@vito.be
+
+bert:
+  id: 2
+  email: bert@example.org
+
+barry:
+  id: 3
+  email: barry@example.org
