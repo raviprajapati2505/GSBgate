@@ -43,7 +43,7 @@ class Ability
         (not ProjectAuthorization.find_by(user_id: user.id, project_id: project.id).nil?) && ProjectAuthorization.find_by(user_id: user.id, project_id: project.id).write_access?
       end
       can :manage, Project do |project|
-        project.user == user || ((not ProjectAuthorization.find_by(user_id: user.id, project_id: project.id).nil?) && ProjectAuthorization.find_by(user_id: user.id, project_id: project.id).project_manager?)
+        project.owner == user || ((not ProjectAuthorization.find_by(user_id: user.id, project_id: project.id).nil?) && ProjectAuthorization.find_by(user_id: user.id, project_id: project.id).project_manager?)
       end
     else
       cannot :manage, :all

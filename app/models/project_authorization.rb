@@ -11,7 +11,7 @@ class ProjectAuthorization < ActiveRecord::Base
 
   private
   def prevent_destroy_owner
-    if project.get_owner == user
+    if project.owner == user
       raise "Can't destroy project owner"
     end
   end
