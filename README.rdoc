@@ -4,5 +4,7 @@
 2. Copy config/database.example.yml to config/database.yml.
 3. In config/database.yml, on line 27, enter your username.
 4. Perform a 'rake db:reset' (in IntelliJ IDEA: Tools -> Run Rake Task -> db:reset).
+5. Install NodeJS (https://nodejs.org)
+6. npm install -g bower
 
 You are now ready to run this project.

@@ -14,7 +14,6 @@ class ProjectAuthorizationTest < ActiveSupport::TestCase
 
   test "project can be managed by owner" do
     authorization = ProjectAuthorization.find_by(user_id: project_authorizations(:one).user_id, project_id: project_authorizations(:one).project_id)
-    authorization.user.registered!
     ability = Ability.new(authorization.user)
     assert ability.can?(:manage, authorization.project), "owner cannot manage project"
     assert ability.can?(:read, authorization.project), "owner cannot read project"
@@ -22,7 +21,6 @@ class ProjectAuthorizationTest < ActiveSupport::TestCase
 
   test "project can be managed by manager" do
     authorization = ProjectAuthorization.find_by(user_id: project_authorizations(:two).user_id, project_id: project_authorizations(:two).project_id)
-    authorization.user.registered!
     ability = Ability.new(authorization.user)
     assert ability.can?(:manage, authorization.project), "manager cannot manage project"
     assert ability.can?(:read, authorization.project), "manager cannot read project"
@@ -30,7 +28,6 @@ class ProjectAuthorizationTest < ActiveSupport::TestCase
 
   test "project can only be read by readonly team members" do
     authorization = ProjectAuthorization.find_by(user_id: project_authorizations(:four).user_id, project_id: project_authorizations(:four).project_id)
-    authorization.user.registered!
     ability = Ability.new(authorization.user)
     assert ability.can?(:read, authorization.project), "readonly team member cannot read project"
     assert ability.cannot?(:update, authorization.project), "readonly team member can update project"
@@ -49,7 +46,6 @@ class ProjectAuthorizationTest < ActiveSupport::TestCase
 
   test "project can not be accessed by non-team members" do
     user = User.find(users(:barry).id)
-    user.registered!
     project = Project.find(projects(:one).id)
     ability = Ability.new(user)
     assert ability.cannot?(:read, project), "non-team member can read project"

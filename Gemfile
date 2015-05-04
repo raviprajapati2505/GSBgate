@@ -54,3 +54,11 @@ gem 'devise'
 
 # Simple authorization solution
 gem 'cancancan', '~> 1.10.1'
+
+# rails-assets needs Bundler >= 1.8.4
+gem 'bundler', '>= 1.8.4'
+
+# Bower packages : AngularJS example
+# source 'https://rails-assets.org' do
+#  gem 'rails-assets-angular'
+# end
