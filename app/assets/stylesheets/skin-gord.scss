@@ -113,7 +113,7 @@ body.skin-gord {
 }
 
 .skin-gord .img-circle {
-  border-radius: 5px;
+  border-radius: 50%;
 }
 
 .skin-gord .navbar-default .nav > li > a:hover, .skin-gord .navbar-default .nav > li > a:focus {
@@ -126,4 +126,9 @@ body.skin-gord {
 }
 .skin-gord .nav.nav-tabs > li.active {
   background: transparent;
+}
+
+.skin-gord .btn-primary {
+  background-color: $skin-gord-color;
+  border-color: $skin-gord-color;
 }
