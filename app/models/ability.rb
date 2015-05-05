@@ -36,15 +36,11 @@ class Ability
     elsif user.certifier?
       can :read, Project
     elsif user.registered?
-      can :read, Project do |project|
-        not ProjectAuthorization.find_by(user_id: user.id, project_id: project.id).nil?
-      end
-      can :update, Project do |project|
-        (not ProjectAuthorization.find_by(user_id: user.id, project_id: project.id).nil?) && ProjectAuthorization.find_by(user_id: user.id, project_id: project.id).write_access?
-      end
-      can :manage, Project do |project|
-        project.owner == user || ((not ProjectAuthorization.find_by(user_id: user.id, project_id: project.id).nil?) && ProjectAuthorization.find_by(user_id: user.id, project_id: project.id).project_manager?)
-      end
+      can :read, Project, project_authorizations: {user_id: user.id}
+      can :update, Project, project_authorizations: {user_id: user.id, permission: ['read_and_write', ProjectAuthorization.permissions[:read_and_write]]}
+      # Waiting for https://github.com/CanCanCommunity/cancancan/pull/196
+      can :manage, Project, project_authorizations: {user_id: user.id, permission: ['manage', ProjectAuthorization.permissions[:manage]]}
+      can :manage, Project, user_id: user.id
     else
       cannot :manage, :all
     end

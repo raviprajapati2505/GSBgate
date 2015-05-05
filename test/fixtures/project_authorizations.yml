@@ -1,29 +1,13 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  user_id: 1
+  user_id: 3
   project_id: 1
-  category: All
-  write_access: true
-  project_manager: true
+  category: Energy
+  permission: 2
 
 two:
   user_id: 2
-  project_id: 1
-  category: Energy
-  write_access: true
-  project_manager: true
-
-three:
-  user_id: 2
-  project_id: 2
-  category: All
-  write_access: true
-  project_manager: true
-
-four:
-  user_id: 1
   project_id: 2
   category: Energy
-  write_access: false
-  project_manager: false
+  permission: 0
