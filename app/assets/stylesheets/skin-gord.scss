@@ -1,0 +1,129 @@
+// Main colors
+$skin-gord-color: #0e9aef;
+$skin-gord-nav-bg: #3e495f;
+$skin-gord-a-color: #9ea6b9;
+$skin-gord-page-bg: #f4f6fa;
+
+// Custom style
+.skin-gord .minimalize-styl-2 {
+  margin: 14px 5px 5px 30px;
+}
+
+.skin-gord .navbar-top-links li:last-child {
+  margin-right: 30px;
+}
+
+.skin-gord.fixed-nav .minimalize-styl-2 {
+  margin: 14px 5px 5px 15px;
+}
+
+.skin-gord .spin-icon {
+  background: $skin-gord-color !important;
+}
+
+.skin-gord .nav-header {
+  background: $skin-gord-color;
+  background: url("patterns/header-profile-skin-gord.png");
+}
+
+.skin-gord.mini-navbar .nav-second-level {
+  background: $skin-gord-nav-bg;
+}
+
+.skin-gord .breadcrumb {
+  background: transparent;
+}
+
+.skin-gord .page-heading {
+  border: none;
+}
+
+.skin-gord .nav > li.active {
+  background: darken($skin-gord-nav-bg, 2%);
+}
+
+.skin-gord .nav > li > a {
+  color: $skin-gord-a-color;
+}
+
+.skin-gord .nav > li.active > a {
+  color: white;
+}
+
+.skin-gord .navbar-minimalize {
+  background: $skin-gord-color;
+  border-color: $skin-gord-color;
+}
+
+body.skin-gord {
+  background: $skin-gord-nav-bg;
+}
+
+.skin-gord .navbar-static-top {
+  background: white;
+}
+
+.skin-gord .dashboard-header {
+  background: transparent;
+  border-bottom: none !important;
+  border-top: none;
+  padding: 20px 30px 10px 30px;
+}
+
+.fixed-nav.skin-gord .navbar-fixed-top {
+  background: white;
+}
+
+.skin-gord .wrapper-content {
+  padding: 30px 15px;
+}
+
+.skin-gord #page-wrapper {
+  background: $skin-gord-page-bg;
+}
+
+.skin-gord .ibox-title, .skin-gord .ibox-content {
+  border-width: 1px;
+}
+
+.skin-gord .ibox-content:last-child {
+  border-style: solid solid solid solid;
+}
+
+.skin-gord .nav > li.active {
+  border: none;
+}
+
+.skin-gord .nav-header {
+  padding: 35px 25px 25px 25px;
+}
+
+.skin-gord .nav-header a.dropdown-toggle {
+  color: white;
+  margin-top: 10px;
+}
+
+.skin-gord .nav-header a.dropdown-toggle .text-muted {
+  color: white;
+  opacity: 0.8;
+}
+
+.skin-gord .profile-element {
+  text-align: center;
+}
+
+.skin-gord .img-circle {
+  border-radius: 5px;
+}
+
+.skin-gord .navbar-default .nav > li > a:hover, .skin-gord .navbar-default .nav > li > a:focus {
+  background: darken($skin-gord-nav-bg, 2%);
+  color: white;
+}
+
+.skin-gord .nav.nav-tabs > li.active > a {
+  color: #555;
+}
+.skin-gord .nav.nav-tabs > li.active {
+  background: transparent;
+}

@@ -1,30 +1,48 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gord</title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+
+  <!-- Main css styles -->
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
+  <!-- Main javascript files -->
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
-<body>
+<body class="skin-gord">
 
-<% if user_signed_in? %>
-  Logged in as <strong><%= current_user.email %></strong>.
-  <%= link_to 'Edit profile', edit_user_registration_path %> |
-  <%= link_to "Logout", destroy_user_session_path, method: :delete  %>
-<% else %>
-  <%= link_to "Sign up", new_user_registration_path  %> |
-  <%= link_to "Login", new_user_session_path  %>
-<% end %>
+<!-- Wrapper-->
+<div id="wrapper">
 
-<% if notice %>
-  <p class="alert alert-success"><%= notice %></p>
-<% end %>
-<% if alert %>
-  <p class="alert alert-danger"><%= alert %></p>
-<% end %>
+  <!-- Navigation -->
+  <%= render 'layouts/navigation' %>
 
-<%= yield %>
+  <!-- Page wraper -->
+  <div id="page-wrapper" class="gray-bg">
+
+    <!-- Navbar -->
+    <%= render 'layouts/topnavbar' %>
+
+    <% if notice %>
+      <p class="alert alert-success"><%= notice %></p>
+    <% end %>
+    <% if alert %>
+      <p class="alert alert-danger"><%= alert %></p>
+    <% end %>
+
+    <!-- Main view  -->
+    <%= yield %>
+
+    <!-- Footer -->
+    <%= render 'layouts/footer' %>
+
+  </div>
+  <!-- End page wrapper-->
+
+</div>
+<!-- End wrapper-->
 
 </body>
 </html>

@@ -10,8 +10,11 @@
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
  *
- *= require_tree .
  *= require_self
+ *= require style
+ *
+ * NOTE: removed 'require_tree .', as this conflicts with sass/scss @import behaviour
+ *   see: https://github.com/rails/sass-rails
+ * So do not forget to add an @import for any extra scss files you want to include,
+ * as they will not be picked up automatically anymore !!!
  */
-@import "bootstrap-sprockets";
-@import "bootstrap";
