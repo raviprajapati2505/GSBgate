@@ -5,8 +5,13 @@ class ApplicationController < ActionController::Base
 
   before_action :authenticate_user!
 
-  check_authorization
+  check_authorization :unless => :do_not_check_authorization?
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_url, :alert => exception.message
+  end
+
+  private
+  def do_not_check_authorization?
+    respond_to?(:devise_controller?)
   end
 end
