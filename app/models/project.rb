@@ -4,4 +4,5 @@ class Project < ActiveRecord::Base
   has_many :project_authorizations
   has_many :users, through: :project_authorizations
 
+  belongs_to :project_status
 end
