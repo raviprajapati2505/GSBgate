@@ -5,7 +5,13 @@ class ProjectsController < AuthenticatedController
   # GET /projects
   # GET /projects.json
   def index
-    @projects = Project.all
+    if current_user.registered?
+      @projects = Project.joins("LEFT OUTER JOIN project_authorizations ON project_authorizations.project_id = projects.id")
+                      .where("projects.user_id = ? OR project_authorizations.user_id = ?", current_user, current_user)
+                      .distinct
+    else
+      @projects = Project.all
+    end
   end
 
   # GET /projects/1

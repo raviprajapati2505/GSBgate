@@ -8,5 +8,5 @@ class ProjectAuthorization < ActiveRecord::Base
   enum permission: [ :read_only, :read_and_write, :manage ]
 
   validates :category, inclusion: CATEGORIES
-
+  validates :permission, inclusion: ProjectAuthorization.permissions.keys
 end

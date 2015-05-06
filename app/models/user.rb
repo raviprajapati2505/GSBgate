@@ -8,4 +8,6 @@ class User < ActiveRecord::Base
 
   has_many :project_authorizations
   has_many :projects, through: :project_authorizations
+
+  validates :role, inclusion: User.roles.keys
 end

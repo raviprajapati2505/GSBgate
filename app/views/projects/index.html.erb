@@ -31,8 +31,12 @@
                                 <td><%= project.number %></td>
                                 <td>
                                     <%= link_to raw('<i title="Show" class="fa fa-search" style="padding-right: 10px;"></i>'), project %>
+                                    <% if can? :edit, project %>
                                     <%= link_to raw('<i title="Edit" class="fa fa-edit" style="padding-right: 10px;"></i>'), edit_project_path(project) %>
+                                    <% end %>
+                                    <% if can? :destroy, project %>
                                     <%= link_to raw('<i title="Delete" class="fa fa-trash" style="padding-right: 10px;"></i>'), project, method: :delete, data: {confirm: 'Are you sure?'} %>
+                                    <% end %>
                                 </td>
                             </tr>
                         <% end %>
