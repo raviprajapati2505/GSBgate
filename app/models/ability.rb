@@ -37,8 +37,8 @@ class Ability
       can :read, Project
     elsif user.registered?
       can :read, Project, project_authorizations: {user_id: user.id}
-      can :update, Project, project_authorizations: {user_id: user.id, permission: ['read_and_write', ProjectAuthorization.permissions[:read_and_write]]}
       # Waiting for https://github.com/CanCanCommunity/cancancan/pull/196
+      can :update, Project, project_authorizations: {user_id: user.id, permission: ['read_and_write', ProjectAuthorization.permissions[:read_and_write]]}
       can :manage, Project, project_authorizations: {user_id: user.id, permission: ['manage', ProjectAuthorization.permissions[:manage]]}
       can :manage, Project, user_id: user.id
     else

@@ -9,12 +9,4 @@ class ProjectAuthorization < ActiveRecord::Base
 
   validates :category, inclusion: CATEGORIES
 
-  before_destroy :prevent_destroy_owner
-
-  private
-  def prevent_destroy_owner
-    if project.owner == user
-      raise 'Can\'t destroy project owner'
-    end
-  end
 end

@@ -25,6 +25,7 @@ class ProjectsController < AuthenticatedController
   # POST /projects.json
   def create
     @project = Project.new(project_params)
+    @project.owner = current_user
 
     respond_to do |format|
       if @project.save
