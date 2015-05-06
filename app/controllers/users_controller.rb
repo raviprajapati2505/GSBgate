@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:edit, :update]
+  load_and_authorize_resource
 
   def index
     @users = User.where("role != ? OR role is null", User.roles[:admin])
@@ -18,11 +19,11 @@ class UsersController < ApplicationController
   end
 
   private
-  def set_user
-    @user = User.find(params[:id])
-  end
+    def set_user
+      @user = User.find(params[:id])
+    end
 
-  def user_params
-    params.require(:user).permit(:email, :role)
-  end
+    def user_params
+      params.require(:user).permit(:email, :role)
+    end
 end

@@ -3,8 +3,8 @@ class AuthenticatedController < ApplicationController
 
   before_action :authenticate_user!
 
-  #check_authorization if: user_signed_in?
-  #rescue_from CanCan::AccessDenied do |exception|
-  #  redirect_to root_url, :alert => exception.message
-  #end
+  check_authorization unless: :devise_controller?
+  rescue_from CanCan::AccessDenied do |exception|
+    redirect_to :back, alert: exception.message
+  end
 end
