@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   before_action :set_user, only: [:edit, :update]
 
   def index
-    @users = User.where.not(role: User.roles[:admin])
+    @users = User.where("role != ? OR role is null", User.roles[:admin])
   end
 
   def edit
