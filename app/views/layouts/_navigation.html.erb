@@ -42,6 +42,17 @@
           <i class="fa fa-desktop"></i> <span class="nav-label">Projects</span>
         <% end %>
       </li>
+        <% if current_user.admin? %>
+        <!-- ADMIN menu -->
+            <li class="<%= is_active_controller('users') %>">
+                <a href="#"><i class="fa fa-cogs"></i> <span class="nav-label">Admin</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li class="<%= is_active_controller('users') %>">
+                        <%= link_to 'Users', users_path  %>
+                    </li>
+                </ul>
+            </li>
+        <% end %>
     </ul>
   </div>
 </nav>
