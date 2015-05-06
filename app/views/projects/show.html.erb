@@ -12,7 +12,7 @@
 
 <p>
   <strong>Project status:</strong>
-  <%= @project.project_status.name %>
+  <%= @project.project_status.name unless @project.project_status.nil? %>
 </p>
 
 <p>
