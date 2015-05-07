@@ -3,8 +3,8 @@ class AuthenticatedController < ApplicationController
 
   before_action :authenticate_user!
 
-  check_authorization unless: :devise_controller?
+  check_authorization
   rescue_from CanCan::AccessDenied do |exception|
-    redirect_to :back, alert: exception.message
+    redirect_to edit_user_registration_path, alert: exception.message
   end
 end
