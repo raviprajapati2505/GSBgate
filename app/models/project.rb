@@ -5,4 +5,19 @@ class Project < ActiveRecord::Base
   has_many :users, through: :project_authorizations
 
   belongs_to :project_status
+
+  scope :for_user, ->(user) {
+    for_owner(user) || for_authorized_user(user)
+  }
+
+  scope :for_owner, ->(user) {
+    where(owner: user)
+  }
+
+  scope :for_authorized_user, -> (user) {
+    includes(:project_authorizations)
+    .where(project_authorizations: { user: user })
+  }
+
+
 end
