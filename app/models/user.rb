@@ -9,5 +9,13 @@ class User < ActiveRecord::Base
   has_many :project_authorizations
   has_many :projects, through: :project_authorizations
 
+  before_validation :assign_default_role, on: :create
+
   validates :role, inclusion: User.roles.keys
+
+  private
+  def assign_default_role
+    self.role = :anonymous
+  end
+
 end
