@@ -7,7 +7,7 @@ class Project < ActiveRecord::Base
   belongs_to :project_status
 
   scope :for_user, ->(user) {
-    for_owner(user) || for_authorized_user(user)
+    for_owner(user) | for_authorized_user(user)
   }
 
   scope :for_owner, ->(user) {

@@ -3,7 +3,7 @@ class UsersController < AuthenticatedController
   load_and_authorize_resource
 
   def index
-    @users = User.where("role != ? OR role is null", User.roles[:admin])
+    @users = User.with_no_admin_role
   end
 
   def edit
