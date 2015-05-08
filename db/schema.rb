@@ -11,11 +11,34 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150505123141) do
+ActiveRecord::Schema.define(version: 20150508125209) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
+
+  create_table "categories", force: :cascade do |t|
+    t.string   "code",       limit: 2
+    t.string   "name"
+    t.integer  "weight"
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
+  add_index "categories", ["code"], name: "index_categories_on_code", unique: true, using: :btree
+
+  create_table "criterions", force: :cascade do |t|
+    t.string   "code",        limit: 5
+    t.string   "name"
+    t.integer  "score_min",   limit: 2
+    t.integer  "score_max",   limit: 2
+    t.integer  "category_id"
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+  end
+
+  add_index "criterions", ["category_id"], name: "index_criterions_on_category_id", using: :btree
+  add_index "criterions", ["code"], name: "index_criterions_on_code", unique: true, using: :btree
 
   create_table "project_authorizations", force: :cascade do |t|
     t.integer  "user_id"
@@ -69,6 +92,7 @@ ActiveRecord::Schema.define(version: 20150505123141) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  add_foreign_key "criterions", "categories"
   add_foreign_key "project_authorizations", "projects"
   add_foreign_key "project_authorizations", "users"
   add_foreign_key "projects", "users"
