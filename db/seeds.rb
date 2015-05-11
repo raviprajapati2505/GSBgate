@@ -106,3 +106,8 @@ Typology.create!(name: 'Workers\' Accommodation')
 Typology.create!(name: 'Construction')
 Typology.create!(name: 'Operations')
 Typology.create!(name: 'Bespoke Schemes')
+
+Certificate.create!(label: 'Letter of Conformance', certificate_type: :design_type, assessment_stage: :design_stage)
+Certificate.create!(label: 'Final Design Certificate', certificate_type: :design_type, assessment_stage: :construction_stage)
+Certificate.create!(label: 'Construction Certificate', certificate_type: :construction_type, assessment_stage: :construction_stage)
+Certificate.create!(label: 'Operations Certificate', certificate_type: :operations_type, assessment_stage: :operations_stage)
