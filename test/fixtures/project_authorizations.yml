@@ -3,11 +3,11 @@
 one:
   user_id: 3
   project_id: 1
-  category: Energy
+  category_id: 3
   permission: 2
 
 two:
   user_id: 2
   project_id: 2
-  category: Energy
+  category_id: 3
   permission: 0
