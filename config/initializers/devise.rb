@@ -259,5 +259,6 @@ Devise.setup do |config|
 end
 
 Rails.application.config.to_prepare do
+  Devise::SessionsController.layout 'login'
   Devise::RegistrationsController.layout proc { |controller| user_signed_in? ? 'authenticated' : 'application' }
 end

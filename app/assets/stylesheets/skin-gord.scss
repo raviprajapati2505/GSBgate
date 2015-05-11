@@ -57,6 +57,9 @@ $skin-gord-page-bg: #f4f6fa;
 
 body.skin-gord {
   background: $skin-gord-nav-bg;
+  &.gray-bg {
+    background: $skin-gord-page-bg;
+  }
 }
 
 .skin-gord .navbar-static-top {
