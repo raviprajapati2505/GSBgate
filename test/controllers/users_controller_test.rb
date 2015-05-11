@@ -5,12 +5,12 @@ class UsersControllerTest < ActionController::TestCase
   include Devise::TestHelpers
 
   setup do
-    @user = users(:bart)
-    sign_in users(:admin)
+    @user = users(:project_owner)
+    sign_in users(:system_admin)
   end
 
   teardown do
-    sign_out users(:admin)
+    sign_out users(:system_admin)
   end
 
   test "should show users" do
@@ -25,7 +25,7 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   test "should update user" do
-    put :update, id: @user, user: { email: 'bart@example.org' }
+    put :update, id: @user, user: { email: 'project_owner@example.org' }
     assert_redirected_to users_path
   end
 end

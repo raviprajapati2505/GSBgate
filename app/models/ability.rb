@@ -31,16 +31,16 @@ class Ability
 
     user ||= User.new # guest user (not logged in)
 
-    if user.admin?
+    if user.system_admin?
       can :manage, :all
-    elsif user.certifier?
-      can :read, Project
-    elsif user.registered?
+    elsif user.project_owner?
+      can :manage, Project, user_id: user.id
+    elsif user.project_team_member?
       can :read, Project, project_authorizations: {user_id: user.id}
       # Waiting for https://github.com/CanCanCommunity/cancancan/pull/196
-      can :update, Project, project_authorizations: {user_id: user.id, permission: ['read_and_write', ProjectAuthorization.permissions[:read_and_write]]}
       can :manage, Project, project_authorizations: {user_id: user.id, permission: ['manage', ProjectAuthorization.permissions[:manage]]}
-      can :manage, Project, user_id: user.id
+    elsif user.enterprise_licence?
+      can :read, Project, project_authorizations: {user_id: user.id}
     else
       cannot :manage, :all
     end

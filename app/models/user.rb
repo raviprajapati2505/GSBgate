@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  enum role: [ :admin, :certifier, :registered, :anonymous ]
+  enum role: [ :system_admin, :certifier_project_manager, :certifier_team_member, :project_owner, :project_team_member, :enterprise_licence, :operations_inspector, :anonymous ]
 
   has_many :project_authorizations
   has_many :projects, through: :project_authorizations

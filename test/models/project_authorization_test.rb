@@ -19,18 +19,8 @@ class ProjectAuthorizationTest < ActiveSupport::TestCase
     assert ability.cannot?(:manage, authorization.project), "readonly team member can manager project"
   end
 
-  test "project can only be read by certifier" do
-    user = User.find(users(:karel).id)
-    user.certifier!
-    project = Project.find(projects(:one).id)
-    ability = Ability.new(user)
-    assert ability.can?(:read, project), "certifier cannot read project"
-    assert ability.cannot?(:update, project), "certifier can update project"
-    assert ability.cannot?(:manage, project), "certifier can manager project"
-  end
-
   test "project can not be accessed by non-team members" do
-    user = User.find(users(:tom).id)
+    user = User.find(users(:project_team_member_2).id)
     project = Project.find(projects(:one).id)
     ability = Ability.new(user)
     assert ability.cannot?(:read, project), "non-team member can read project"

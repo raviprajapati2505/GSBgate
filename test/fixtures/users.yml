@@ -10,27 +10,37 @@
 #two: {}
 #  column: value
 
-admin:
+system_admin:
   id: 1
-  email: admin@example.org
+  email: system_admin@example.org
   role: 0
 
-bart:
+project_owner:
   id: 2
-  email: bart@example.org
-  role: 2
+  email: project_owner@example.org
+  role: 3
 
-barry:
+project_team_member:
   id: 3
-  email: barry@example.org
-  role: 2
+  email: project_team_member@example.org
+  role: 4
 
-karel:
+enterprise_licence:
   id: 4
-  email: karel@example.org
-  role: 1
+  email: enterprise_licence@example.org
+  role: 5
 
-tom:
+project_owner_2:
   id: 5
-  email: tom@example.org
-  role: 2
+  email: project_owner2@example.org
+  role: 3
+
+project_team_member_2:
+  id: 6
+  email: project_team_member2@example.org
+  role: 4
+
+enterprise_licence_2:
+  id: 7
+  email: enterprise_licence2@example.org
+  role: 5

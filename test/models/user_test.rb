@@ -5,13 +5,13 @@ class UserTest < ActiveSupport::TestCase
   fixtures :users
 
   test "user role can be assigned" do
-    user = users(:bart)
-    user.admin!
-    assert_equal true, user.admin?
-    assert_equal false, user.anonymous?
-    user.registered!
-    assert_equal false, user.certifier?
-    assert_equal true, user.registered?
+    user = users(:system_admin)
+    user.project_owner!
+    assert_equal true, user.project_owner?
+    assert_equal false, user.system_admin?
+    user.project_team_member!
+    assert_equal false, user.project_owner?
+    assert_equal true, user.project_team_member?
   end
 
 end
