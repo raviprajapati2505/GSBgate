@@ -18,7 +18,7 @@ class User < ActiveRecord::Base
   }
 
   scope :with_no_admin_role, -> {
-    with_role_different_from(User.roles[:admin]) | with_no_role
+    with_role_different_from(User.roles[:system_admin]) | with_no_role
   }
 
   before_validation :assign_default_role, on: :create
