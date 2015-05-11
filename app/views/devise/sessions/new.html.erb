@@ -3,7 +3,7 @@
 
     <h3>Welcome to GSASgate</h3>
 
-    <p>Please enter below your <a href="http://www.linkme.qa/" target="_blank">link.me</a> credentials to log in.</p>
+    <p>Please enter your <a href="http://www.linkme.qa/" target="_blank">link.me</a> credentials below to log in.</p>
     <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
         <div class="form-group">
             <%= f.email_field :email, autofocus: true, class: 'form-control', placeholder: 'Email address'%>
