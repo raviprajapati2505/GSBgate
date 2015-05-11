@@ -27,7 +27,7 @@ class User < ActiveRecord::Base
 
   private
   def assign_default_role
-    self.role = :anonymous
+    self.role = :anonymous if self.role.nil?
   end
 
 end
