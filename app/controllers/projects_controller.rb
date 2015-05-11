@@ -5,7 +5,7 @@ class ProjectsController < AuthenticatedController
   # GET /projects
   # GET /projects.json
   def index
-    if not current_user.system_admin?
+    unless current_user.system_admin?
       @projects = Project.for_user current_user
     else
       @projects = Project.all
