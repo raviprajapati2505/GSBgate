@@ -208,6 +208,7 @@ DEPENDENCIES
   rails-assets-pace!
   rails-assets-slimScroll!
   rails-assets-underscore!
+  rgeo (= 0.3.20)
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
   turbolinks
