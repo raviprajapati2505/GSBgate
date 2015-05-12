@@ -86,5 +86,6 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-metisMenu'
   gem 'rails-assets-pace'
   gem 'rails-assets-slimScroll'
+  gem 'rails-assets-underscore'   # Dependency for gmaps4rails
 end
 
