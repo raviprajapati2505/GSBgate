@@ -29,6 +29,9 @@
                                     <% if can? :destroy, project %>
                                     <%= link_to raw('<i title="Delete" class="fa fa-trash" style="padding-right: 10px;"></i>'), project, method: :delete, data: {confirm: 'Are you sure?'} %>
                                     <% end %>
+                                    <% if can? :manage, project %>
+                                    <%= link_to raw('<i title="Team" class="fa fa-users" style="padding-right: 10px;"></i>'), project_project_authorizations_path(project) %>
+                                    <% end %>
                                 </td>
                             </tr>
                         <% end %>

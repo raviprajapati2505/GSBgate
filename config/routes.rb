@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  resources :projects
+  resources :projects do
+    resources :project_authorizations, only: [ :index, :new, :create, :edit, :update, :destroy ], path: 'authorizations'
+  end
   resources :users
   devise_for :user
   
