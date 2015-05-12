@@ -11,11 +11,7 @@
                         <tr>
                             <th>Name</th>
                             <th>Description</th>
-                            <th>Project status</th>
                             <th>Country</th>
-                            <th>City</th>
-                            <th>Street</th>
-                            <th>Number</th>
                             <th>Actions</th>
                         </tr>
                         </thead>
@@ -24,11 +20,7 @@
                             <tr>
                                 <td><%= project.name %></td>
                                 <td><%= project.description %></td>
-                                <td><%= project.project_status.name unless project.project_status.nil? %></td>
                                 <td><%= project.country %></td>
-                                <td><%= project.city %></td>
-                                <td><%= project.street %></td>
-                                <td><%= project.number %></td>
                                 <td>
                                     <%= link_to raw('<i title="Show" class="fa fa-search" style="padding-right: 10px;"></i>'), project %>
                                     <% if can? :edit, project %>

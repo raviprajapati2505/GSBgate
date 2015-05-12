@@ -10,30 +10,6 @@
   <%= @project.description %>
 </p>
 
-<p>
-  <strong>Project status:</strong>
-  <%= @project.project_status.name unless @project.project_status.nil? %>
-</p>
-
-<p>
-    <strong>Name:</strong>
-    <%= @project.country %>
-</p>
-
-<p>
-    <strong>Name:</strong>
-    <%= @project.city %>
-</p>
-
-<p>
-    <strong>Name:</strong>
-    <%= @project.street %>
-</p>
-
-<p>
-    <strong>Name:</strong>
-    <%= @project.number %>
-</p>
 
 <%= link_to 'Edit', edit_project_path(@project) %> |
 <%= link_to 'Back', projects_path %>
