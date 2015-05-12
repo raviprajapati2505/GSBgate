@@ -75,6 +75,6 @@ class ProjectsController < AuthenticatedController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def project_params
-      params.require(:project).permit(:name, :description, :project_status_id, :country, :city, :street, :number)
+      params.require(:project).permit(:name, :description, :address, :location, :country, :latlng)
     end
 end
