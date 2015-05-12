@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150512071755) do
+ActiveRecord::Schema.define(version: 20150512073718) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -82,16 +82,19 @@ ActiveRecord::Schema.define(version: 20150512071755) do
   end
 
   create_table "projects", force: :cascade do |t|
-    t.string   "name"
-    t.integer  "user_id"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
-    t.text     "description"
-    t.integer  "project_status_id"
-    t.string   "country"
-    t.string   "city"
-    t.string   "street"
-    t.string   "number"
+    t.string    "name"
+    t.integer   "user_id"
+    t.datetime  "created_at",                                                                 null: false
+    t.datetime  "updated_at",                                                                 null: false
+    t.text      "description"
+    t.text      "address"
+    t.string    "location"
+    t.string    "country"
+    t.geography "latlng",            limit: {:srid=>4326, :type=>"point", :geographic=>true}
+    t.integer   "gross_area"
+    t.integer   "certified_area"
+    t.integer   "carpark_area"
+    t.integer   "project_site_area"
   end
 
   add_index "projects", ["user_id"], name: "index_projects_on_user_id", using: :btree
@@ -110,10 +113,15 @@ ActiveRecord::Schema.define(version: 20150512071755) do
     t.integer  "certificate_id"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
-    t.string   "version"
   end
 
   add_index "schemes", ["certificate_id"], name: "index_schemes_on_certificate_id", using: :btree
+
+  create_table "typologies", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
