@@ -113,15 +113,10 @@ ActiveRecord::Schema.define(version: 20150512073718) do
     t.integer  "certificate_id"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
+    t.string   "version"
   end
 
   add_index "schemes", ["certificate_id"], name: "index_schemes_on_certificate_id", using: :btree
-
-  create_table "typologies", force: :cascade do |t|
-    t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false

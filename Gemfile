@@ -73,6 +73,10 @@ gem 'capistrano', '~> 3.4.0'
 # Google Map with overlays (markers, infowindows…)
 gem 'gmaps4rails'
 
+# Rails form builder
+# For documentation, go to https://github.com/bootstrap-ruby/rails-bootstrap-forms#usage
+gem 'bootstrap_form'
+
 # Rails-Assets: access bower packages from our gem file
 #  e.g. gem 'rails-assets-BOWER_PACKAGE_NAME'
 #  do not forget to:

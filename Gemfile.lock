@@ -44,6 +44,7 @@ GEM
     bcrypt (3.1.10-x86-mingw32)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
+    bootstrap_form (2.3.0)
     builder (3.2.2)
     byebug (4.0.5)
       columnize (= 0.9.0)
@@ -188,6 +189,7 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord-postgis-adapter (= 3.0.0.beta2)
+  bootstrap_form
   bundler (>= 1.8.4)
   byebug
   cancancan (~> 1.10.1)
