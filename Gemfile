@@ -87,10 +87,10 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-bootstrap'
   gem 'rails-assets-jquery'
   gem 'rails-assets-jquery-ujs'
+  gem 'rails-assets-jquery.steps'
   gem 'rails-assets-animate.css'
   gem 'rails-assets-metisMenu'
   gem 'rails-assets-pace'
   gem 'rails-assets-slimScroll'
   gem 'rails-assets-underscore'   # Dependency for gmaps4rails
 end
-

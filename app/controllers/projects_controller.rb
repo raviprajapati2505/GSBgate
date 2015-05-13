@@ -20,6 +20,7 @@ class ProjectsController < AuthenticatedController
   # GET /projects/new
   def new
     @project = Project.new
+    @certificates = Certificate.all
   end
 
   # GET /projects/1/edit

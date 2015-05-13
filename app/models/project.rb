@@ -7,6 +7,9 @@ class Project < ActiveRecord::Base
   belongs_to :project_status
   has_many :certification_paths
 
+  accepts_nested_attributes_for :certification_paths,
+                                :allow_destroy => true
+
   scope :for_user, ->(user) {
     for_owner(user) | for_authorized_user(user)
   }
