@@ -19,10 +19,17 @@ class CertificationPathsController < ApplicationController
   def create
     @certification_path = CertificationPath.new(certification_path_params)
     @certification_path.project = @project
-    if @certification_path.save
-      flash[:notice] = 'Certification path was successfully created.'
-      redirect_to project_path(@project)
+    if @certification_path.certificate_id == Certificate.where('label = ?', 'Operations Certificate').first.id
+      if @certification_path.save
+        @scheme_mix = SchemeMix.new(certification_path_id: @certification_path.id, scheme_id: Scheme.where('label = ?', 'Operations').first.id, weight: 100)
+        @scheme_mix.save
+        flash[:notice] = 'Certification path was successfully created.'
+        redirect_to project_path(@project)
+      else
+        render action: :new
+      end
     else
+      flash[:notice] = 'This certification path is not yet available.'
       render action: :new
     end
   end
