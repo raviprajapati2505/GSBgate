@@ -1,9 +1,4 @@
-<%- content_for(:js) do -%>
-    <%= javascript_include_tag 'https://maps.google.com/maps/api/js?v=3.13&sensor=false&libraries=geometry' %>
-    <%= javascript_include_tag 'https://google-maps-utility-library-v3.googlecode.com/svn/tags/markerclustererplus/2.0.14/src/markerclusterer_packed.js' %>
-    <%= javascript_include_tag 'gmaps/google' %>
-    <%= javascript_include_tag 'maps/project' %>
-<%- end -%>
+<% use_gmaps_for(:project) %>
 
 <%= bootstrap_form_for(@project) do |f| %>
     <% if @project.errors.any? %>
