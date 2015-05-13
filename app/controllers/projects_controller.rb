@@ -25,6 +25,7 @@ class ProjectsController < AuthenticatedController
 
   # GET /projects/1/edit
   def edit
+    @certificates = Certificate.all
   end
 
   # POST /projects
