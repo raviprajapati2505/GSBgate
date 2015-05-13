@@ -1,4 +1,5 @@
 class Project < ActiveRecord::Base
+
   # reference to project owner
   belongs_to :owner, class_name: 'User', foreign_key: 'user_id'
   has_many :project_authorizations

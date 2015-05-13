@@ -31,9 +31,9 @@ GEM
       activemodel (= 4.2.1)
       activesupport (= 4.2.1)
       arel (~> 6.0)
-    activerecord-postgis-adapter (3.0.0.beta2)
+    activerecord-postgis-adapter (3.0.0.beta5)
       activerecord (~> 4.2)
-      rgeo-activerecord (~> 2.1)
+      rgeo-activerecord (~> 3.0)
     activesupport (4.2.1)
       i18n (~> 0.7)
       json (~> 1.7, >= 1.7.7)
@@ -72,6 +72,9 @@ GEM
       warden (~> 1.2.3)
     erubis (2.7.0)
     execjs (2.5.2)
+    ffi (1.9.8-x86-mingw32)
+    ffi-geos (1.0.0)
+      ffi (>= 1.0.0)
     globalid (0.3.5)
       activesupport (>= 4.1.0)
     gmaps4rails (2.1.2)
@@ -80,7 +83,7 @@ GEM
       activesupport (>= 3.0.0, < 5)
       multi_json (~> 1.2)
     json (1.8.2)
-    loofah (2.0.1)
+    loofah (2.0.2)
       nokogiri (>= 1.5.9)
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
@@ -95,7 +98,7 @@ GEM
       mini_portile (~> 0.6.0)
     orm_adapter (0.5.0)
     pg (0.18.1-x86-mingw32)
-    rack (1.6.0)
+    rack (1.6.1)
     rack-test (0.6.3)
       rack (>= 1.0)
     rails (4.2.1)
@@ -143,7 +146,7 @@ GEM
     responders (2.1.0)
       railties (>= 4.2.0, < 5)
     rgeo (0.3.20)
-    rgeo-activerecord (2.1.1)
+    rgeo-activerecord (3.0.0)
       activerecord (~> 4.2)
       rgeo (~> 0.3)
     sass (3.4.13)
@@ -156,9 +159,9 @@ GEM
     sdoc (0.4.1)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
-    sprockets (3.0.3)
+    sprockets (3.1.0)
       rack (~> 1.0)
-    sprockets-rails (2.2.4)
+    sprockets-rails (2.3.0)
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (>= 2.8, < 4.0)
@@ -190,7 +193,7 @@ PLATFORMS
   x86-mingw32
 
 DEPENDENCIES
-  activerecord-postgis-adapter (= 3.0.0.beta2)
+  activerecord-postgis-adapter (= 3.0.0.beta5)
   bootstrap_form
   bundler (>= 1.8.4)
   byebug
@@ -199,6 +202,7 @@ DEPENDENCIES
   coffee-rails (~> 4.1.0)
   coffee-script-source (= 1.8.0)
   devise
+  ffi-geos
   gmaps4rails
   jbuilder (~> 2.0)
   pg

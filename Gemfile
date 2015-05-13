@@ -5,7 +5,8 @@ gem 'rails', '4.2.1'
 
 # Use postgresql as the database for Active Record
 gem 'pg'
-gem 'activerecord-postgis-adapter', '3.0.0.beta2'
+gem 'ffi-geos'
+gem 'activerecord-postgis-adapter', '3.0.0.beta5'
 gem 'rgeo', '0.3.20'
 
 # Use SCSS for stylesheets
