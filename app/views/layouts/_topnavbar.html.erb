@@ -1,21 +1,30 @@
-<div class="row border-bottom">
-    <nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">
-        <div class="navbar-header">
-            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary" href="#">
-              <i class="fa fa-bars"></i>
-            </a>
-            <!--<form role="search" class="navbar-form-custom" method="post" action="/">-->
-                <!--<div class="form-group">-->
-                    <!--<input type="text" placeholder="Search for something..." class="form-control" name="top-search" id="top-search" />-->
-                <!--</div>-->
-            <!--</form>-->
-        </div>
-        <!--<ul class="nav navbar-top-links navbar-right">-->
-            <!--<li>-->
-                <!--<a href="#">-->
-                    <!--<i class="fa fa-sign-out"></i> Log out-->
-                <!--</a>-->
-            <!--</li>-->
-        <!--</ul>-->
-    </nav>
+<div class="row border-bottom white-bg">
+    <div class="navbar-header navbar navbar-static-top" role="navigation">
+        <%= image_tag('layout/logo-small.gif') %>
+        <button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
+            <i class="fa fa-reorder"></i>
+        </button>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar">
+        <ul class="nav navbar-nav">
+            <li class="<%= 'active' if current_page?('/projects') || current_page?('/') %>">
+                <%= link_to "/projects" do %>
+                    <i class="fa fa-desktop"></i> <span class="nav-label">Projects</span>
+                <% end %>
+            </li>
+            <% if current_user && current_user.system_admin? %>
+                <li class="dropdown">
+                    <a aria-expanded="false" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cogs"></i> Admin <span class="caret"></span></a>
+                    <ul role="menu" class="dropdown-menu">
+                        <li><%= link_to 'Users', users_path %></li>
+                    </ul>
+                </li>
+            <% end %>
+        </ul>
+        <ul class="nav navbar-top-links navbar-right">
+            <li><%= link_to 'Edit profile', edit_user_registration_path %></li>
+            <li><%= link_to "Logout", destroy_user_session_path, method: :delete %></li>
+        </ul>
+
+    </div>
 </div>
