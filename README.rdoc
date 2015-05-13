@@ -12,3 +12,9 @@
 10. Restart IntelliJ and bundle install
 
 You are now ready to run this project.
+
+== How to release hanging DB connections for Postgresql 9.3
+
+1. login to database server via ssh
+2. $> sudo -u postgres psql
+3. $> select pg_terminate_backend(pid) from pg_stat_activity where datname='<your database name>';
