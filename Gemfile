@@ -71,9 +71,6 @@ gem 'bundler', '>= 1.8.4'
 # The `deploy:restart` hook for passenger applications is now in a separate gem called capistrano-passenger.  Just add it to your Gemfile and require it in your Capfile.
 gem 'capistrano', '~> 3.4.0'
 
-# Google Map with overlays (markers, infowindows…)
-gem 'gmaps4rails'
-
 # Rails form builder
 # For documentation, go to https://github.com/bootstrap-ruby/rails-bootstrap-forms#usage
 gem 'bootstrap_form'
@@ -93,5 +90,4 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-metisMenu'
   gem 'rails-assets-pace'
   gem 'rails-assets-slimScroll'
-  gem 'rails-assets-underscore'   # Dependency for gmaps4rails
 end

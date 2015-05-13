@@ -19,5 +19,6 @@
  *= require metisMenu
  *= require slimScroll
  *= require inspinia
- *= require underscore
+ *= require wicket/wicket
+ *= require wicket/wicket-gmap3
  */
