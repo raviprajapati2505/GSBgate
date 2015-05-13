@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150513055731) do
+ActiveRecord::Schema.define(version: 20150513095256) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -43,8 +43,9 @@ ActiveRecord::Schema.define(version: 20150513055731) do
 
   create_table "certification_paths", force: :cascade do |t|
     t.integer  "project_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.integer  "certificate_id"
   end
 
   add_index "certification_paths", ["project_id"], name: "index_certification_paths_on_project_id", using: :btree
@@ -98,6 +99,7 @@ ActiveRecord::Schema.define(version: 20150513055731) do
     t.integer  "weight"
     t.datetime "created_at",            null: false
     t.datetime "updated_at",            null: false
+    t.integer  "scheme_id"
   end
 
   add_index "scheme_mixes", ["certification_path_id"], name: "index_scheme_mixes_on_certification_path_id", using: :btree

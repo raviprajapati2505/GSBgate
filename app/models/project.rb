@@ -5,11 +5,7 @@ class Project < ActiveRecord::Base
   has_many :project_authorizations
   has_many :users, through: :project_authorizations
 
-  belongs_to :project_status
   has_many :certification_paths
-
-  accepts_nested_attributes_for :certification_paths,
-                                :allow_destroy => true
 
   scope :for_user, ->(user) {
     for_owner(user) | for_authorized_user(user)
@@ -23,6 +19,4 @@ class Project < ActiveRecord::Base
     includes(:project_authorizations)
     .where(project_authorizations: { user: user })
   }
-
-
 end

@@ -1,0 +1,21 @@
+<%= bootstrap_form_for([@certification_path.project, @certification_path]) do |f| %>
+    <% if @certification_path.errors.any? %>
+        <div id="error_explanation">
+            <h2><%= pluralize(@certification_path.errors.count, "error") %> prohibited this certification_path from being saved:</h2>
+
+            <ul>
+                <% @certification_path.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                <% end %>
+            </ul>
+        </div>
+    <% end %>
+
+    <div class="row">
+        <div class="col-md-6">
+            <%= f.collection_select :certificate_id, Certificate.all, :id, :label, {:include_blank => 'Make your choice...'} %>
+            <%= f.primary %>
+            <%= link_to 'Back', projects_path, class: 'btn btn-white' %>
+        </div>
+    </div>
+<% end %>
