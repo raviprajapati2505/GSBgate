@@ -20,6 +20,4 @@
  *= require slimScroll
  *= require inspinia
  *= require underscore
- *= require gmaps/google
- *= require_tree .
  */
