@@ -9,11 +9,6 @@
 # Add admin user
 User.create!(email: 'admin@vito.be', password: 'gsas-secret', password_confirmation: 'gsas-secret', role: :system_admin)
 
-ProjectStatus.create!(name: 'Certification in review')
-ProjectStatus.create!(name: 'GSAS certified')
-ProjectStatus.create!(name: 'Preliminary stage pending')
-ProjectStatus.create!(name: 'Suspended')
-
 # Category's
 Category.create!(code: 'UC', name: 'Urban Connectivity', weight: 8)
 Category.create!(code: 'S', name: 'Site', weight: 9)
