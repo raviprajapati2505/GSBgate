@@ -7,6 +7,8 @@
 5. Install NodeJS (https://nodejs.org)
 6. npm install -g bower
 7. Install OSGeo4W (32 bit version!!) via http://trac.osgeo.org/osgeo4w/
-8. Install geos package through OSGeo4W and bundle install
+8. Install geos package through OSGeo4W
+9. Set environment variable GEOS_LIBRARY_PATH to C:/OSGeo4W/bin/geos_c.dll (slashes like this!!)
+10. Restart IntelliJ and bundle install
 
 You are now ready to run this project.
