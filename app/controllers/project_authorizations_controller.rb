@@ -1,4 +1,5 @@
 class ProjectAuthorizationsController < ApplicationController
+  load_and_authorize_resource
   before_action :set_project, only: [:index, :new, :create]
   before_action :set_authorization, only: [:edit, :update, :destroy]
 
@@ -50,6 +51,6 @@ class ProjectAuthorizationsController < ApplicationController
     end
 
     def authorizations_params
-      params.require(:project_authorization).permit(:user_id, :permission, :category_id)
+      params.require(:authorization).permit(:user_id, :permission, :category_id)
     end
 end

@@ -35,12 +35,21 @@ class Ability
       can :manage, :all
     elsif user.project_owner?
       can :manage, Project, user_id: user.id
+      can :manage, ProjectAuthorization, project: {user_id: user.id}
+      can :new, ProjectAuthorization
+      can :create, ProjectAuthorization
     elsif user.project_team_member?
       can :read, Project, project_authorizations: {user_id: user.id}
       # Waiting for https://github.com/CanCanCommunity/cancancan/pull/196
       can :manage, Project, project_authorizations: {user_id: user.id, permission: ['manage', ProjectAuthorization.permissions[:manage]]}
+      can :manage, ProjectAuthorization, project: {project_authorizations: {user_id: user.id, permission: ['manage', ProjectAuthorization.permissions[:manage]]}}
+      if can? :manage, Project
+        can :new, ProjectAuthorization
+        can :create, ProjectAuthorization
+      end
     elsif user.enterprise_licence?
       can :read, Project, project_authorizations: {user_id: user.id}
+      can :read, ProjectAuthorization, project: {project_authorizations: {user_id: user.id}}
     else
       cannot :manage, :all
     end
