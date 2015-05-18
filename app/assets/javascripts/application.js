@@ -10,7 +10,6 @@
  *
  * NOTE: you must explicitly require external libraries here
   *
- *= require turbolinks
  *= require jquery
  *= require jquery-ujs
  *= require jquery.steps
