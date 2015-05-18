@@ -20,8 +20,21 @@
     <!-- Navbar -->
     <%= render 'layouts/topnavbar' %>
 
+    <div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-lg-10">
+            <h2><%= @page_title || 'GSASgate' %></h2>
+            <%= render 'layouts/breadcrumb' %>
+        </div>
+        <div class="col-lg-2">
+
+        </div>
+    </div>
+
 <div class="wrapper wrapper-content">
-<div class="container">
+
+
+    <div class="container">
+
     <% if notice %>
         <p class="alert alert-success"><%= notice %></p>
     <% end %>

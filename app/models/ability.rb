@@ -38,6 +38,9 @@ class Ability
       can :manage, ProjectAuthorization, project: {user_id: user.id}
       can :new, ProjectAuthorization
       can :create, ProjectAuthorization
+      can :manage, CertificationPath, project: {user_id: user.id}
+      can :new, CertificationPath
+      can :create, CertificationPath
     elsif user.project_team_member?
       can :read, Project, project_authorizations: {user_id: user.id}
       # Waiting for https://github.com/CanCanCommunity/cancancan/pull/196
@@ -47,9 +50,16 @@ class Ability
         can :new, ProjectAuthorization
         can :create, ProjectAuthorization
       end
+      can :manage, CertificationPath, project: {certification_paths: {user_id: user.id, permission: ['manage', CertificationPath.permissions[:manage]]}}
+      if can? :manage, Project
+        can :new, CertificationPath
+        can :create, CertificationPath
+      end
     elsif user.enterprise_licence?
       can :read, Project, project_authorizations: {user_id: user.id}
       can :read, ProjectAuthorization, project: {project_authorizations: {user_id: user.id}}
+      can :read, CertificationPath, project: {certification_paths: {user_id: user.id}}
+
     else
       cannot :manage, :all
     end
