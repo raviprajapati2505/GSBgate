@@ -1,11 +1,11 @@
 <ol class="breadcrumb">
     <li><%= link_to 'Projects', projects_path %></li>
 
-    <% unless @project.nil? %>
+    <% unless @project.nil? or @project.id.nil?%>
         <li class="active"><%= link_to @project.name, project_path(@project) %></li>
     <% end %>
 
-    <% unless @certification_path.nil? %>
+    <% unless @certification_path.nil? or @certification_path.id.nil? %>
         <li class="active"><%= link_to @certification_path.certificate.label, project_certification_path_path(@project, @certification_path) %></li>
     <% end %>
 </ol>
