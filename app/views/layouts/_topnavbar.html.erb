@@ -22,8 +22,16 @@
             <% end %>
         </ul>
         <ul class="nav navbar-top-links navbar-right">
-            <li><%= link_to 'Edit profile', edit_user_registration_path %></li>
-            <li><%= link_to "Logout", destroy_user_session_path, method: :delete %></li>
+            <li>
+                <%= link_to edit_user_registration_path do %>
+                    <i class="fa fa-user"></i> <span class="nav-label">Edit profile</span>
+                <% end %>
+            </li>
+            <li>
+                <%= link_to destroy_user_session_path, method: :delete do %>
+                    <i class="fa fa-sign-out"></i> <span class="nav-label">Log out</span>
+                <% end %>
+            </li>
         </ul>
 
     </div>
