@@ -2,10 +2,19 @@
   position: static;
 }
 
-.skin-gord .map {
-  border: 1px solid $border-color;
-}
-
 .skin-gord .container {
   width: 100%;
+}
+
+// Maps
+.skin-gord .map {
+  border: 1px solid $border-color;
+  position: relative;
+}
+.skin-gord .map iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100% !important;
+  height: 100% !important;
 }

@@ -14,6 +14,7 @@ $(function () {
                 $('#project_latlng').val(updatedWkt.write());
             }
         });
+        e.preventDefault();
     });
 });
 
