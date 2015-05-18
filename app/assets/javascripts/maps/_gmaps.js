@@ -33,6 +33,41 @@ var gmaps = {
 
         return marker;
     },
+    // Initializes a button on a map
+    initializeButton: function (map, buttonHtml, buttonTitle, callback) {
+        // Create a div wrapper
+        var controlDiv = document.createElement('div');
+        controlDiv.index = 1;
+
+        // Set CSS for the control border
+        var controlUI = document.createElement('div');
+        controlUI.style.backgroundColor = '#fff';
+        controlUI.style.border = '2px solid #fff';
+        controlUI.style.borderRadius = '3px';
+        controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+        controlUI.style.cursor = 'pointer';
+        controlUI.style.marginTop = '8px';
+        controlUI.style.textAlign = 'center';
+        controlUI.title = buttonTitle;
+        controlDiv.appendChild(controlUI);
+
+        // Set CSS for the control interior
+        var controlText = document.createElement('div');
+        controlText.style.color = 'rgb(25,25,25)';
+        controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+        controlText.style.fontSize = '14px';
+        controlText.style.lineHeight = '32px';
+        controlText.style.paddingLeft = '5px';
+        controlText.style.paddingRight = '5px';
+        controlText.innerHTML = buttonHtml;
+        controlUI.appendChild(controlText);
+
+        // Add an event listener for a click on the button
+        google.maps.event.addDomListener(controlUI, 'click', callback);
+
+        // Add the button to the map controls
+        map.controls[google.maps.ControlPosition.TOP_LEFT].push(controlDiv);
+    },
     // Retrieves coordinates by an address string
     geocode: function (address, callback) {
         var geocoder = new google.maps.Geocoder();

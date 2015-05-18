@@ -1,21 +1,9 @@
 var projectMap;
 var projectMarker;
+var projectButton;
 
 $(function () {
     google.maps.event.addDomListener(window, 'load', initializeProjectMap);
-
-    $("#geocode-project-address").click(function(e) {
-        var location = gmaps.geocode($('#project_address').val(), function(location) {
-            if (location != null) {
-                projectMarker.setPosition(location);
-                projectMap.panTo(location);
-
-                var updatedWkt = new Wkt.Wkt(projectMarker);
-                $('#project_latlng').val(updatedWkt.write());
-            }
-        });
-        e.preventDefault();
-    });
 });
 
 function initializeProjectMap() {
@@ -25,9 +13,33 @@ function initializeProjectMap() {
     // Get the coordinates from the form
     var wkt = new Wkt.Wkt($('#project_latlng').val());
 
-    // Initialize the marker, using the coordinates from the form
+    // Initialize a marker using the coordinates from the form
     projectMarker = gmaps.initializeMarker(projectMap, wkt.components[0].y, wkt.components[0].x, function() {
         var updatedWkt = new Wkt.Wkt(projectMarker);
         $('#project_latlng').val(updatedWkt.write());
+    });
+
+    // Initialize a button
+    projectButton = gmaps.initializeButton(
+        projectMap,
+        '<i class="fa fa-map-marker"></i>&nbsp;&nbsp;Move marker to project address',
+        'This button will move the marker to the project address\nusing the contents of the Address, Location and Country fields.',
+        moveMarkerToProjectAddress);
+}
+
+function moveMarkerToProjectAddress() {
+    var address = $('#project_address').val() + ' ' + $('#project_location').val() + ' ' + $('#project_country').val();
+
+    // Geocode the address
+    gmaps.geocode(address, function (location) {
+        if (location != null) {
+            // Move the marker to the geocoded location
+            projectMarker.setPosition(location);
+            projectMap.panTo(location);
+
+            // Update the WKT latlng text field
+            var updatedWkt = new Wkt.Wkt(projectMarker);
+            $('#project_latlng').val(updatedWkt.write());
+        }
     });
 }
