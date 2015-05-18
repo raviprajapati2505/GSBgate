@@ -20,7 +20,11 @@
                             <tr>
                                 <td><%= user.email %></td>
                                 <td><%= user.role %></td>
-                                <td><%= link_to raw('<i title="Edit" class="fa fa-edit" style="padding-right: 10px;"></i>'), edit_user_path(user) %></td>
+                                <td>
+                                    <% if user.id != 1 %>
+                                    <%= link_to raw('<i title="Edit" class="fa fa-edit" style="padding-right: 10px;"></i>'), edit_user_path(user) %>
+                                    <% end %>
+                                </td>
                             </tr>
                         <% end %>
                         </tbody>

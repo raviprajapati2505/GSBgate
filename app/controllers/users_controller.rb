@@ -3,13 +3,18 @@ class UsersController < AuthenticatedController
   load_and_authorize_resource
 
   def index
-    @users = User.with_no_admin_role
+    @users = User.all
   end
 
   def edit
   end
 
   def update
+    if @user.id == 1
+      flash[:alert] = 'This system user cannot be changed.'
+      render action: 'edit'
+      return
+    end
     if @user.update_without_password(user_params)
       flash[:notice] = 'Successfully updated user.'
       redirect_to users_path
