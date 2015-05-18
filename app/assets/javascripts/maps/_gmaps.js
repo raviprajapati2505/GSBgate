@@ -1,7 +1,10 @@
+/**
+ * Contains helper functions for the Google Maps JS API.
+ */
 var gmaps = {
     // Initializes a map
-    initializeMap: function () {
-        return new google.maps.Map(document.getElementById('map'), {
+    initializeMap: function (id) {
+        return new google.maps.Map(document.getElementById(id), {
             zoom: 15,
             streetViewControl: false,
             panControl: false,

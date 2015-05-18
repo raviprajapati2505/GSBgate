@@ -4,8 +4,9 @@ class Project < ActiveRecord::Base
   belongs_to :owner, class_name: 'User', foreign_key: 'user_id'
   has_many :project_authorizations
   has_many :users, through: :project_authorizations
-
   has_many :certification_paths
+
+  after_initialize :init
 
   scope :for_user, ->(user) {
     for_owner(user) | for_authorized_user(user)
@@ -19,4 +20,9 @@ class Project < ActiveRecord::Base
     includes(:project_authorizations)
     .where(project_authorizations: { user: user })
   }
+
+  def init
+    # Set default latlng location to Doha, Qatar
+    self.latlng ||= 'POINT(51.53043679999996 25.2916097)'
+  end
 end

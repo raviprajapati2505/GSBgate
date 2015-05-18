@@ -19,7 +19,7 @@ $(function () {
 
 function initializeProjectMap() {
     // Create the map
-    projectMap = gmaps.initializeMap();
+    projectMap = gmaps.initializeMap('project-map');
 
     // Get the coordinates from the form
     var wkt = new Wkt.Wkt($('#project_latlng').val());
