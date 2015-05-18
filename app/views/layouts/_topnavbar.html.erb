@@ -9,7 +9,7 @@
         <ul class="nav navbar-nav">
             <li class="<%= 'active' if current_page?('/projects') || current_page?('/') %>">
                 <%= link_to "/projects" do %>
-                    <i class="fa fa-desktop"></i> <span class="nav-label">Projects</span>
+                    <i class="fa fa-building-o"></i> <span class="nav-label">Projects</span>
                 <% end %>
             </li>
             <% if current_user && current_user.system_admin? %>
