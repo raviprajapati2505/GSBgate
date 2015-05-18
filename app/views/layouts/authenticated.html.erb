@@ -15,48 +15,45 @@
 <body class="top-navigation skin-gord">
 
 <div id="wrapper">
-<div id="page-wrapper" class="gray-bg">
+    <div id="page-wrapper" class="gray-bg">
 
-    <!-- Navbar -->
-    <%= render 'layouts/topnavbar' %>
+        <!-- Navbar -->
+        <%= render 'layouts/topnavbar' %>
 
-    <div class="row wrapper border-bottom white-bg page-heading">
-        <div class="col-lg-10">
-            <h2><%= @page_title || 'GSASgate' %></h2>
-            <%= render 'layouts/breadcrumb' %>
+        <div class="row wrapper border-bottom white-bg page-heading">
+            <div class="col-lg-10">
+                <h2><%= @page_title || 'GSASgate' %></h2>
+                <%= render 'layouts/breadcrumb' %>
+            </div>
+            <div class="col-lg-2">
+
+            </div>
         </div>
-        <div class="col-lg-2">
 
+        <div class="wrapper wrapper-content">
+
+
+            <div class="container">
+
+                <% if notice %>
+                    <p class="alert alert-success"><%= notice %></p>
+                <% end %>
+                <% if alert %>
+                    <p class="alert alert-danger"><%= alert %></p>
+                <% end %>
+
+                <!-- Main view  -->
+                <%= yield %>
+            </div>
         </div>
+
     </div>
 
-<div class="wrapper wrapper-content">
-
-
-    <div class="container">
-
-    <% if notice %>
-        <p class="alert alert-success"><%= notice %></p>
-    <% end %>
-    <% if alert %>
-        <p class="alert alert-danger"><%= alert %></p>
-    <% end %>
-
-    <!-- Main view  -->
-    <%= yield %>
-</div>
 </div>
 
-</div>
+<!-- Footer -->
+<%= render 'layouts/footer' %>
 
-</div>
-
-</div>
-    <!-- Footer -->
-    <%= render 'layouts/footer' %>
-
-</div>
-</div>
 
 <%= yield(:js) -%>
 
