@@ -1,5 +1,5 @@
 class CertificationPathsController < AuthenticatedController
-  before_action :set_project, only: [:show, :index, :new, :create]
+  before_action :set_project
   before_action :set_certification_path, only: [:show, :edit, :update, :destroy]
   load_and_authorize_resource
 
