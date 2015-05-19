@@ -90,4 +90,8 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-metisMenu'
   gem 'rails-assets-pace'
   gem 'rails-assets-slimScroll'
+  gem 'rails-assets-datatables'
+  gem 'rails-assets-datatables-responsive'
+  gem 'rails-assets-datatables-tabletools'
+  gem 'rails-assets-datatables-plugins'
 end

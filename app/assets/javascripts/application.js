@@ -20,4 +20,7 @@
  *= require inspinia
  *= require wicket/wicket
  *= require wicket/wicket-gmap3
+ *= require datatables
+ *= require datatables-responsive
+ *= require datatables-init
  */

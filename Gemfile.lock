@@ -114,6 +114,15 @@ GEM
     rails-assets-animate.css (3.2.6)
     rails-assets-bootstrap (3.3.4)
       rails-assets-jquery (>= 1.9.1)
+    rails-assets-datatables (1.10.7)
+      rails-assets-jquery (>= 1.7.0)
+    rails-assets-datatables-plugins (1.10.7)
+    rails-assets-datatables-responsive (1.0.6)
+      rails-assets-datatables (>= 1.10.1)
+      rails-assets-jquery (>= 1.7.0)
+    rails-assets-datatables-tabletools (2.2.4)
+      rails-assets-datatables (>= 1.9.0)
+      rails-assets-jquery (>= 1.7.0)
     rails-assets-fontawesome (4.3.0)
     rails-assets-jquery (2.1.4)
     rails-assets-jquery-ujs (1.0.3)
@@ -204,6 +213,10 @@ DEPENDENCIES
   rails (= 4.2.1)
   rails-assets-animate.css!
   rails-assets-bootstrap!
+  rails-assets-datatables!
+  rails-assets-datatables-plugins!
+  rails-assets-datatables-responsive!
+  rails-assets-datatables-tabletools!
   rails-assets-fontawesome!
   rails-assets-jquery!
   rails-assets-jquery-ujs!
