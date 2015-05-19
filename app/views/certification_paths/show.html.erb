@@ -17,7 +17,7 @@
     <div class="col-md-8">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Certification stages</h5>
+                <h5>Schemes</h5>
             </div>
             <div class="ibox-content">
                 <table class="table table-striped table-bordered table-hover">
@@ -25,21 +25,31 @@
                         <tr>
                             <th class="col-md-8">Scheme</th>
                             <th class="col-md-2">Weight</th>
-                            <th class="col-md-2">Actions</th>
+                            <!--
+                                <th class="col-md-2">Actions</th>
+                            -->
                         </tr>
                     </thead>
                     <tbody>
                     <% @certification_path.scheme_mixes.each do |scheme_mix| %>
                         <tr>
                             <td><%= scheme_mix.scheme.label %></td>
-                            <td></td>
+                            <td><%= scheme_mix.weight %></td>
+                            <!--
+                            <td>
+                                <%= link_to raw('<i title="Show" class="fa fa-search" style="padding-right: 10px;"></i>'), project_certification_path_scheme_mix_path(@project, @certification_path, scheme_mix) %>
+                                <%= link_to raw('<i title="Edit" class="fa fa-edit" style="padding-right: 10px;"></i>'), edit_project_certification_path_scheme_mix_path(@project, @certification_path, scheme_mix) %>
+                            </td>
+                            -->
                         </tr>
                     <% end %>
                     </tbody>
                 </table>
+                <!--
                 <div class="form-actions">
                     <%= link_to 'Add scheme with weight', new_project_certification_path_scheme_mix_path(@project, @certification_path), :class => 'btn btn-primary' %>
                 </div>
+                -->
             </div>
         </div>
     </div>
