@@ -4,12 +4,33 @@
     <div class="col-md-4">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Certificate stage details</h5>
+                <h5>Certification details</h5>
             </div>
             <div class="ibox-content">
                 <p>
                     <strong>Name:</strong>
                     <%= @certification_path.certificate.label %>
+                </p>
+
+                <% if @certification_path.schemes.count == 0 %>
+                    <p>
+                        <strong>Scheme:</strong>
+                        No scheme found
+                    </p>
+
+                <% elsif @certification_path.schemes.count == 1 %>
+                    <p>
+                        <strong>Scheme:</strong>
+                        <%= @certification_path.schemes.take.full_label %>
+                    </p>
+                <% else %>
+                <p>
+                    Todo: many schemes + management interface
+                </p>
+                <% end %>
+                <p>
+                    <strong>Status:</strong>
+                    <%= @certification_path.status %>
                 </p>
             </div>
         </div>
@@ -17,46 +38,11 @@
     <div class="col-md-8">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Schemes</h5>
+                <h5>Categories</h5>
             </div>
             <div class="ibox-content">
-                <table class="table table-striped table-bordered table-hover">
-                    <thead>
-                        <tr>
-                            <th class="col-md-8">Scheme</th>
-                            <th class="col-md-2">Weight</th>
-                            <!--
-                                <th class="col-md-2">Actions</th>
-                            -->
-                        </tr>
-                    </thead>
-                    <tbody>
-                    <% @certification_path.scheme_mixes.each do |scheme_mix| %>
-                        <tr>
-                            <td><%= scheme_mix.scheme.label %></td>
-                            <td><%= scheme_mix.weight %></td>
-                            <!--
-                            <td>
-                                <%= link_to raw('<i title="Show" class="fa fa-search" style="padding-right: 10px;"></i>'), project_certification_path_scheme_mix_path(@project, @certification_path, scheme_mix) %>
-                                <%= link_to raw('<i title="Edit" class="fa fa-edit" style="padding-right: 10px;"></i>'), edit_project_certification_path_scheme_mix_path(@project, @certification_path, scheme_mix) %>
-                            </td>
-                            -->
-                        </tr>
-                    <% end %>
-                    </tbody>
-                </table>
-                <!--
-                <div class="form-actions">
-                    <%= link_to 'Add scheme with weight', new_project_certification_path_scheme_mix_path(@project, @certification_path), :class => 'btn btn-primary' %>
-                </div>
-                -->
+
             </div>
         </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-12">
-        <%= link_to 'Edit', edit_certification_path_path(@certification_path), :class => 'btn btn-primary' %>
-        <%= link_to 'Back', project_path(@project), :class => 'btn btn-white' %>
     </div>
 </div>

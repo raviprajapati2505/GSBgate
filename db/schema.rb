@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150520084610) do
+ActiveRecord::Schema.define(version: 20150520115825) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,17 +35,12 @@ ActiveRecord::Schema.define(version: 20150520084610) do
     t.datetime "updated_at",       null: false
   end
 
-  create_table "certification_path_statuses", force: :cascade do |t|
-    t.string   "label"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "certification_paths", force: :cascade do |t|
     t.integer  "project_id"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
     t.integer  "certificate_id"
+    t.integer  "status"
   end
 
   add_index "certification_paths", ["project_id"], name: "index_certification_paths_on_project_id", using: :btree
