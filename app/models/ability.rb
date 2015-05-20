@@ -50,7 +50,7 @@ class Ability
         can :new, ProjectAuthorization
         can :create, ProjectAuthorization
       end
-      can :manage, CertificationPath, project: {certification_paths: {user_id: user.id, permission: ['manage', CertificationPath.permissions[:manage]]}}
+      can :manage, CertificationPath, project: {certification_paths: {user_id: user.id, permission: ['manage', ProjectAuthorization.permissions[:manage]]}}
       if can? :manage, Project
         can :new, CertificationPath
         can :create, CertificationPath
