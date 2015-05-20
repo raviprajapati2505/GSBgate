@@ -3,4 +3,5 @@ class Certificate < ActiveRecord::Base
   enum assessment_stage: [ :design_stage, :construction_stage, :operations_stage ]
 
   has_many :certification_paths
+  has_many :schemes
 end

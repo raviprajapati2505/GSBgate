@@ -8,6 +8,7 @@ class CertificationPathsController < AuthenticatedController
   end
 
   def show
+    redirect_to project_certification_path_scheme_mix_path(@project, @certification_path, @certification_path.scheme_mixes.take) if @certification_path.has_fixed_scheme?
     @page_title = "#{@certification_path.certificate.label} for #{@project.name}"
   end
 

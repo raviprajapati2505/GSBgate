@@ -1,4 +1,35 @@
 <p id="notice"><%= notice %></p>
 
-<%= link_to 'Edit', edit_certification_path_path(@certification_path) %> |
-<%= link_to 'Back', certification_paths_path %>
+<div class="row">
+    <div class="col-md-4">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>Certification details</h5>
+            </div>
+            <div class="ibox-content">
+                <p>
+                    <strong>Name:</strong>
+                    <%= @certification_path.certificate.label %>
+                </p>
+                <p>
+                    <strong>Status:</strong>
+                    <%= @certification_path.status %>
+                </p>
+                <p>
+                    <strong>Scheme:</strong>
+                    <%= @scheme_mix.scheme.full_label %>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>Categories</h5>
+            </div>
+            <div class="ibox-content">
+
+            </div>
+        </div>
+    </div>
+</div>

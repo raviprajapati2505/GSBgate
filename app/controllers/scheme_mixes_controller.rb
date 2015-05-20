@@ -1,7 +1,8 @@
-class SchemeMixesController < ApplicationController
-  before_action :set_project, only: [:index, :new, :create]
-  before_action :set_certification_path, only: [:index, :new, :create]
+class SchemeMixesController < AuthenticatedController
+  before_action :set_project
+  before_action :set_certification_path
   before_action :set_scheme_mix, only: [:show, :edit, :update, :destroy]
+  load_and_authorize_resource
 
   def index
     @scheme_mixes = SchemeMix.all

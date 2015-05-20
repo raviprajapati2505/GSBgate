@@ -11,23 +11,6 @@
                     <strong>Name:</strong>
                     <%= @certification_path.certificate.label %>
                 </p>
-
-                <% if @certification_path.schemes.count == 0 %>
-                    <p>
-                        <strong>Scheme:</strong>
-                        No scheme found
-                    </p>
-
-                <% elsif @certification_path.schemes.count == 1 %>
-                    <p>
-                        <strong>Scheme:</strong>
-                        <%= @certification_path.schemes.take.full_label %>
-                    </p>
-                <% else %>
-                <p>
-                    Todo: many schemes + management interface
-                </p>
-                <% end %>
                 <p>
                     <strong>Status:</strong>
                     <%= @certification_path.status %>
@@ -38,10 +21,12 @@
     <div class="col-md-8">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Categories</h5>
+                <h5>Schemes</h5>
             </div>
             <div class="ibox-content">
-
+                <% @certification_path.scheme_mixes.each do |scheme_mix| %>
+                    <p><%= link_to scheme_mix.scheme.full_label, project_certification_path_scheme_mix_path(@certification_path.project, @certification_path, scheme_mix) %></p>
+                <% end %>
             </div>
         </div>
     </div>

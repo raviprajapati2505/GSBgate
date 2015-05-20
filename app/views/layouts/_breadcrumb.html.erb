@@ -8,4 +8,8 @@
     <% unless @certification_path.nil? or @certification_path.id.nil? %>
         <li class="active"><%= link_to @certification_path.certificate.label, project_certification_path_path(@project, @certification_path) %></li>
     <% end %>
+
+    <% unless @scheme_mix.nil? or @scheme_mix.id.nil? %>
+        <li class="active"><%= link_to @scheme_mix.scheme.full_label, project_certification_path_scheme_mix_path(@project, @certification_path, @scheme_mix) %></li>
+    <% end %>
 </ol>

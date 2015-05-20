@@ -6,4 +6,8 @@ class CertificationPath < ActiveRecord::Base
 
   enum status: [ :registered ]
 
+  def has_fixed_scheme?
+    certificate.schemes.count == 1
+  end
+
 end
