@@ -24,3 +24,8 @@
  *= require datatables-responsive
  *= require datatables-init
  */
+
+// Tooltips demo
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+})

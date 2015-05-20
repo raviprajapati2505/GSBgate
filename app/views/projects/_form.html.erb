@@ -29,10 +29,11 @@
                             <%= f.text_field :country %>
                         </div>
                         <div class="col-md-3">
-                            <%= f.text_field :gross_area, append: 'm²' %>
-                            <%= f.text_field :certified_area, append: 'm²' %>
-                            <%= f.text_field :carpark_area, append: 'm²' %>
-                            <%= f.text_field :project_site_area, append: 'm²' %>
+                            <!-- todo: load labels from i18n translation file -->
+                            <%= f.text_field :gross_area, append: 'm²', label: ('Gross area ' + tooltip('Total built up area including parking areas such as underground or structured parking.')).html_safe %>
+                            <%= f.text_field :certified_area, append: 'm²', label: ('Certified area ' + tooltip('Total built up area excluding parking areas. All parking areas (whether underground, structured, or at grade) should NOT be included in this calculation. Other spaces, such as common areas, mechanical spaces, and circulation areas, should be included in the certified area of the building.')).html_safe %>
+                            <%= f.text_field :carpark_area, append: 'm²', label: ('Car park area ' + tooltip('Total built up area associated with parking (underground or structured parking). This does NOT include on-grade parking, as we are only interested in the built up area.')).html_safe %>
+                            <%= f.text_field :project_site_area, append: 'm²', label: ('Project site area ' + tooltip('Total site area including roadways, parking, landscape, etc.')).html_safe %>
                         </div>
                         <div class="col-md-6">
                             <div id="project-map" class="map" style="height: 400px;"></div>

@@ -16,4 +16,7 @@ module ApplicationHelper
     end
   end
 
+  def tooltip(title)
+    '<span class="tooltip-icon" data-toggle="tooltip" data-placement="top" title="' + title + '"><i class="fa fa-question-circle"></i></span>'
+  end
 end

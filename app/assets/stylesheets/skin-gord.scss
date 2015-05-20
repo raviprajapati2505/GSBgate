@@ -1,31 +1,65 @@
-.skin-gord .footer {
-  position: static;
-}
+.skin-gord {
+  // General
+  .footer {
+    position: static;
+  }
 
-.skin-gord .container {
-  width: 100%;
-}
+  .container {
+    width: 100%;
+  }
 
-// Maps
-.skin-gord .map {
-  border: 1px solid $border-color;
-  position: relative;
-}
-.skin-gord .map iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100% !important;
-  height: 100% !important;
-}
+  // Tooltips
+  .tooltip-inner {
+    background-color: $skin-gord-color;
+    text-align: left;
+    max-width: 350px;
+  }
 
-// Datatable
-.dataTables_length {
-  width: 250px;
-  float:left;
-}
+  .tooltip.top .tooltip-arrow {
+    border-top-color: $skin-gord-color;
+  }
 
-.dataTables_filter {
-  width: 250px;
-  float: right;
+  .tooltip.right .tooltip-arrow {
+    border-right-color: $skin-gord-color;
+  }
+
+  .tooltip.bottom .tooltip-arrow {
+    border-bottom-color: $skin-gord-color;
+  }
+
+  .tooltip.left .tooltip-arrow {
+    border-left-color: $skin-gord-color;
+  }
+
+  .tooltip-icon {
+    cursor: pointer;
+    margin-left: 2px;
+    color: $skin-gord-color;
+    font-size: 14px;
+  }
+
+  // Maps
+  .map {
+    border: 1px solid $border-color;
+    position: relative;
+  }
+
+  .map iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  // Datatable
+  .dataTables_length {
+    width: 250px;
+    float:left;
+  }
+
+  .dataTables_filter {
+    width: 250px;
+    float: right;
+  }
 }
