@@ -5,6 +5,7 @@ class ProjectsController < AuthenticatedController
   # GET /projects
   # GET /projects.json
   def index
+    @page_title = 'Projects overview'
     unless current_user.system_admin?
       @projects = Project.for_user current_user
     else
@@ -19,12 +20,14 @@ class ProjectsController < AuthenticatedController
 
   # GET /projects/new
   def new
+    @page_title = 'New project'
     @project = Project.new
     @certificates = Certificate.all
   end
 
   # GET /projects/1/edit
   def edit
+    @page_title = 'Edit project'
     @certificates = Certificate.all
   end
 
