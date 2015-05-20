@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150520080941) do
+ActiveRecord::Schema.define(version: 20150520084610) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -92,6 +92,17 @@ ActiveRecord::Schema.define(version: 20150520080941) do
 
   add_index "projects", ["user_id"], name: "index_projects_on_user_id", using: :btree
 
+  create_table "scheme_criteria", force: :cascade do |t|
+    t.integer  "scheme_id"
+    t.integer  "criterion_id"
+    t.decimal  "weight",       precision: 3, scale: 2
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+  end
+
+  add_index "scheme_criteria", ["criterion_id"], name: "index_scheme_criteria_on_criterion_id", using: :btree
+  add_index "scheme_criteria", ["scheme_id"], name: "index_scheme_criteria_on_scheme_id", using: :btree
+
   create_table "scheme_mixes", force: :cascade do |t|
     t.integer  "certification_path_id"
     t.integer  "weight"
@@ -115,12 +126,12 @@ ActiveRecord::Schema.define(version: 20150520080941) do
   create_table "scores", force: :cascade do |t|
     t.integer  "score"
     t.text     "description"
-    t.integer  "criterion_id"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+    t.integer  "scheme_criterion_id"
   end
 
-  add_index "scores", ["criterion_id"], name: "index_scores_on_criterion_id", using: :btree
+  add_index "scores", ["scheme_criterion_id"], name: "index_scores_on_scheme_criterion_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -147,8 +158,9 @@ ActiveRecord::Schema.define(version: 20150520080941) do
   add_foreign_key "project_authorizations", "projects"
   add_foreign_key "project_authorizations", "users"
   add_foreign_key "projects", "users"
+  add_foreign_key "scheme_criteria", "criteria"
+  add_foreign_key "scheme_criteria", "schemes"
   add_foreign_key "scheme_mixes", "certification_paths"
   add_foreign_key "scheme_mixes", "schemes"
   add_foreign_key "schemes", "certificates"
-  add_foreign_key "scores", "criteria"
 end

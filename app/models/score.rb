@@ -1,3 +1,3 @@
 class Score < ActiveRecord::Base
-  belongs_to :criterion
+  belongs_to :scheme_criterion
 end
