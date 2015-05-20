@@ -28,11 +28,23 @@
                 <h5>Categories</h5>
             </div>
             <div class="ibox-content">
-                <table>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Name</th>
+                        <th>Weighting</th>
+                        <th>Targeted score</th>
+                        <th>Requirement count</th>
+                    </tr>
+                    </thead>
                     <% @scheme_mix.scheme_mix_criteria.each do |scheme_mix_criterion| %>
                         <tr>
-                            <td><%= scheme_mix_criterion.scheme_criterion.criterion.code%></td>
+                            <td><%= scheme_mix_criterion.scheme_criterion.criterion.code %></td>
                             <td><%= scheme_mix_criterion.scheme_criterion.criterion.name %></td>
+                            <td><%= scheme_mix_criterion.scheme_criterion.weight %> %</td>
+                            <td><%= scheme_mix_criterion.targeted_score %></td>
+                            <td><%= scheme_mix_criterion.scheme_criterion.requirements.count %></td>
                         </tr>
                     <% end %>
                 </table>

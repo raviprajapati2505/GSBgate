@@ -121,12 +121,12 @@ Scheme.create!(label: 'Operations', version: '3.0', certificate: Certificate.fin
 # todo: Scheme.create!(label: 'Workers\' Accommodation', version: '3.0')
 # todo: Scheme.create!(label: 'Bespoke Schemes', version: '3.0')
 
-SchemeCriterion.create!(scheme: Scheme.find_by_label('Operations'), criterion: Criterion.find_by_code('E.1'), weight: 0.2)
-SchemeCriterion.create!(scheme: Scheme.find_by_label('Operations'), criterion: Criterion.find_by_code('E.2'), weight: 0.2)
-SchemeCriterion.create!(scheme: Scheme.find_by_label('Operations'), criterion: Criterion.find_by_code('E.3'), weight: 0.2)
-SchemeCriterion.create!(scheme: Scheme.find_by_label('Operations'), criterion: Criterion.find_by_code('E.4'), weight: 0.2)
-SchemeCriterion.create!(scheme: Scheme.find_by_label('Operations'), criterion: Criterion.find_by_code('E.5'), weight: 0.2)
-SchemeCriterion.create!(scheme: Scheme.find_by_label('Operations'), criterion: Criterion.find_by_code('W.1'), weight: 1)
+SchemeCriterion.create!(scheme: Scheme.find_by_label('Operations'), criterion: Criterion.find_by_code('E.1'), weight: 5.2)
+SchemeCriterion.create!(scheme: Scheme.find_by_label('Operations'), criterion: Criterion.find_by_code('E.2'), weight: 5.2)
+SchemeCriterion.create!(scheme: Scheme.find_by_label('Operations'), criterion: Criterion.find_by_code('E.3'), weight: 3.64)
+SchemeCriterion.create!(scheme: Scheme.find_by_label('Operations'), criterion: Criterion.find_by_code('E.4'), weight: 4.55)
+SchemeCriterion.create!(scheme: Scheme.find_by_label('Operations'), criterion: Criterion.find_by_code('E.5'), weight: 5.42)
+SchemeCriterion.create!(scheme: Scheme.find_by_label('Operations'), criterion: Criterion.find_by_code('W.1'), weight: 16)
 
 operations_scheme = Scheme.find_by_label('Operations')
 criterion_e1 = Criterion.find_by_code('E.1')
@@ -166,3 +166,4 @@ Score.create!(score: 0, description: '0.87  &lt; X &lte; 1.0',                  
 Score.create!(score: 1, description: '0.73  &lt; X &lte; 0.87',                     scheme_criterion: SchemeCriterion.find_by(scheme: operations_scheme, criterion: criterion_w1))
 Score.create!(score: 2, description: '0.6  &lt; X &lte; 0.73',                      scheme_criterion: SchemeCriterion.find_by(scheme: operations_scheme, criterion: criterion_w1))
 Score.create!(score: 3, description: 'X &lte; 0.6',                             scheme_criterion: SchemeCriterion.find_by(scheme: operations_scheme, criterion: criterion_w1))
+
