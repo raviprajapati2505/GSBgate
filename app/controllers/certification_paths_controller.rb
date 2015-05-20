@@ -22,15 +22,14 @@ class CertificationPathsController < AuthenticatedController
     @certification_path.project = @project
     if @certification_path.certificate_id == Certificate.where('label = ?', 'Operations Certificate').first.id
       if @certification_path.save
-        @scheme_mix = SchemeMix.new(certification_path_id: @certification_path.id, scheme_id: Scheme.where('label = ?', 'Operations').first.id, weight: 100)
-        @scheme_mix.save
-        flash[:notice] = 'Certification path was successfully created.'
+        SchemeMix.create(certification_path_id: @certification_path.id, scheme_id: Scheme.where('label = ?', 'Operations').first.id, weight: 100)
+        flash[:notice] = 'Successfully applied for certificate.'
         redirect_to project_certification_path_path(@project, @certification_path)
       else
         render action: :new
       end
     else
-      flash[:notice] = 'This certification path is not yet available.'
+      flash[:notice] = 'This certificate is not yet available.'
       render action: :new
     end
   end

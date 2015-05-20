@@ -9,6 +9,7 @@ class SchemeMixesController < AuthenticatedController
   end
 
   def show
+    @page_title = @scheme_mix.scheme.full_label
   end
 
   def new

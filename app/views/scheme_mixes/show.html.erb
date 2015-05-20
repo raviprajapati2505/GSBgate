@@ -28,7 +28,14 @@
                 <h5>Categories</h5>
             </div>
             <div class="ibox-content">
-
+                <table>
+                    <% @scheme_mix.scheme_mix_criteria.each do |scheme_mix_criterion| %>
+                        <tr>
+                            <td><%= scheme_mix_criterion.scheme_criterion.criterion.code%></td>
+                            <td><%= scheme_mix_criterion.scheme_criterion.criterion.name %></td>
+                        </tr>
+                    <% end %>
+                </table>
             </div>
         </div>
     </div>
