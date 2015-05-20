@@ -1,7 +1,8 @@
 <%= bootstrap_form_for([@certification_path.project, @certification_path]) do |f| %>
     <% if @certification_path.errors.any? %>
         <div id="error_explanation">
-            <h2><%= pluralize(@certification_path.errors.count, "error") %> prohibited this certification_path from being saved:</h2>
+            <h2><%= pluralize(@certification_path.errors.count, "error") %> prohibited this certification_path from
+                being saved:</h2>
 
             <ul>
                 <% @certification_path.errors.full_messages.each do |message| %>
@@ -12,10 +13,23 @@
     <% end %>
 
     <div class="row">
-        <div class="col-md-6">
-            <%= f.collection_select :certificate_id, Certificate.all, :id, :label, {:include_blank => 'Make your choice...'} %>
-            <%= f.primary %>
-            <%= link_to 'Back', projects_path, class: 'btn btn-white' %>
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>Project details</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <%= f.collection_select :certificate_id, Certificate.all, :id, :label, {:include_blank => 'Make your choice...'} %>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="hr-line-dashed"></div>
+                            <%= f.primary 'Apply for certificate' %> or <%= link_to 'Cancel', project_path(@certification_path.project), class: 'btn btn-default' %>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 <% end %>

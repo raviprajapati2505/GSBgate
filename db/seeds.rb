@@ -85,9 +85,9 @@ Criterion.create!(code: 'MO.7', name: 'Hospitality Management Plan', category: C
 Criterion.create!(code: 'MO.8', name: 'Sustainability Education & Awareness Plan', category: Category.find_by_code('MO'))
 Criterion.create!(code: 'MO.9', name: 'Building Legacy', category: Category.find_by_code('MO'))
 
-Certificate.create!(label: 'Letter of Conformance', certificate_type: :design_type, assessment_stage: :design_stage)
-Certificate.create!(label: 'Final Design Certificate', certificate_type: :design_type, assessment_stage: :construction_stage)
-Certificate.create!(label: 'Construction Certificate', certificate_type: :construction_type, assessment_stage: :construction_stage)
+Certificate.create!(label: 'Letter of Conformance (currently not available)', certificate_type: :design_type, assessment_stage: :design_stage)
+Certificate.create!(label: 'Final Design Certificate (currently not available)', certificate_type: :design_type, assessment_stage: :construction_stage)
+Certificate.create!(label: 'Construction Certificate (currently not available)', certificate_type: :construction_type, assessment_stage: :construction_stage)
 Certificate.create!(label: 'Operations Certificate', certificate_type: :operations_type, assessment_stage: :operations_stage)
 
 Scheme.create!(label: 'Districts', version: '3.0', certificate: Certificate.find_by(certificate_type: :design_type, assessment_stage: :design_stage))

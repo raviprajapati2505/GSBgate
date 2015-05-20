@@ -16,6 +16,7 @@ class ProjectsController < AuthenticatedController
   # GET /projects/1
   # GET /projects/1.json
   def show
+    @page_title = "Project #{@project.name}"
   end
 
   # GET /projects/new
@@ -27,7 +28,7 @@ class ProjectsController < AuthenticatedController
 
   # GET /projects/1/edit
   def edit
-    @page_title = 'Edit project'
+    @page_title = "Edit project #{@project.name}"
     @certificates = Certificate.all
   end
 
