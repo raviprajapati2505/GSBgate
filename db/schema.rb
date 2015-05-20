@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150520115825) do
+ActiveRecord::Schema.define(version: 20150520124031) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -98,6 +98,17 @@ ActiveRecord::Schema.define(version: 20150520115825) do
   add_index "scheme_criteria", ["criterion_id"], name: "index_scheme_criteria_on_criterion_id", using: :btree
   add_index "scheme_criteria", ["scheme_id"], name: "index_scheme_criteria_on_scheme_id", using: :btree
 
+  create_table "scheme_mix_criteria", force: :cascade do |t|
+    t.integer  "targeted_score"
+    t.integer  "scheme_mix_id"
+    t.integer  "scheme_criterion_id"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+  end
+
+  add_index "scheme_mix_criteria", ["scheme_criterion_id"], name: "index_scheme_mix_criteria_on_scheme_criterion_id", using: :btree
+  add_index "scheme_mix_criteria", ["scheme_mix_id"], name: "index_scheme_mix_criteria_on_scheme_mix_id", using: :btree
+
   create_table "scheme_mixes", force: :cascade do |t|
     t.integer  "certification_path_id"
     t.integer  "weight"
@@ -155,6 +166,8 @@ ActiveRecord::Schema.define(version: 20150520115825) do
   add_foreign_key "projects", "users"
   add_foreign_key "scheme_criteria", "criteria"
   add_foreign_key "scheme_criteria", "schemes"
+  add_foreign_key "scheme_mix_criteria", "scheme_criteria"
+  add_foreign_key "scheme_mix_criteria", "scheme_mixes"
   add_foreign_key "scheme_mixes", "certification_paths"
   add_foreign_key "scheme_mixes", "schemes"
   add_foreign_key "schemes", "certificates"
