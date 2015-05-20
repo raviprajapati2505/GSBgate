@@ -11,11 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150520130617) do
+ActiveRecord::Schema.define(version: 20150520143756) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
+
+  create_table "calculators", force: :cascade do |t|
+    t.string   "class_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "categories", force: :cascade do |t|
     t.string   "code",       limit: 2
@@ -56,6 +62,12 @@ ActiveRecord::Schema.define(version: 20150520130617) do
   add_index "criteria", ["category_id"], name: "index_criteria_on_category_id", using: :btree
   add_index "criteria", ["code"], name: "index_criteria_on_code", unique: true, using: :btree
 
+  create_table "documents", force: :cascade do |t|
+    t.string   "label"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "project_authorizations", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "project_id"
@@ -87,6 +99,13 @@ ActiveRecord::Schema.define(version: 20150520130617) do
 
   add_index "projects", ["user_id"], name: "index_projects_on_user_id", using: :btree
 
+  create_table "requirements", force: :cascade do |t|
+    t.integer  "reportable_id"
+    t.string   "reportable_type"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
   create_table "scheme_criteria", force: :cascade do |t|
     t.integer  "scheme_id"
     t.integer  "criterion_id"
@@ -97,6 +116,16 @@ ActiveRecord::Schema.define(version: 20150520130617) do
 
   add_index "scheme_criteria", ["criterion_id"], name: "index_scheme_criteria_on_criterion_id", using: :btree
   add_index "scheme_criteria", ["scheme_id"], name: "index_scheme_criteria_on_scheme_id", using: :btree
+
+  create_table "scheme_criterion_requirements", force: :cascade do |t|
+    t.integer  "scheme_criterion_id"
+    t.integer  "requirement_id"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+  end
+
+  add_index "scheme_criterion_requirements", ["requirement_id"], name: "index_scheme_criterion_requirements_on_requirement_id", using: :btree
+  add_index "scheme_criterion_requirements", ["scheme_criterion_id"], name: "index_scheme_criterion_requirements_on_scheme_criterion_id", using: :btree
 
   create_table "scheme_mix_criteria", force: :cascade do |t|
     t.integer  "targeted_score"
@@ -166,6 +195,8 @@ ActiveRecord::Schema.define(version: 20150520130617) do
   add_foreign_key "projects", "users"
   add_foreign_key "scheme_criteria", "criteria"
   add_foreign_key "scheme_criteria", "schemes"
+  add_foreign_key "scheme_criterion_requirements", "requirements"
+  add_foreign_key "scheme_criterion_requirements", "scheme_criteria"
   add_foreign_key "scheme_mix_criteria", "scheme_criteria"
   add_foreign_key "scheme_mix_criteria", "scheme_mixes"
   add_foreign_key "scheme_mixes", "certification_paths"
