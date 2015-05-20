@@ -23,6 +23,7 @@
  *= require datatables
  *= require datatables-responsive
  *= require datatables-init
+ *= require project_authorizations.js
  */
 
 // Tooltips demo

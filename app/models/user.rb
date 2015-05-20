@@ -9,6 +9,8 @@ class User < ActiveRecord::Base
   has_many :project_authorizations
   has_many :projects, through: :project_authorizations
 
+  default_scope { order(email: :asc) }
+
   scope :with_role_different_from, ->(role) {
     where.not(role: role)
   }

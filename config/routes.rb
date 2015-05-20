@@ -8,6 +8,11 @@ Rails.application.routes.draw do
   end
   resources :users
   devise_for :user
+
+  controller :project_authorizations do
+    post 'projects/:project_id/permissions' => :update_permissions, as: 'update_permissions'
+    delete 'projects/:project_id/users/:user_id/permissions' => :destroy_permissions, as: 'destroy_permissions'
+  end
   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

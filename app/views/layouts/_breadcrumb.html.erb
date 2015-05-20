@@ -12,4 +12,8 @@
     <% unless @scheme_mix.nil? or @scheme_mix.id.nil? %>
         <li class="active"><%= link_to @scheme_mix.scheme.full_label, project_certification_path_scheme_mix_path(@project, @certification_path, @scheme_mix) %></li>
     <% end %>
+
+    <% unless is_active_controller('project_authorizations').nil? or is_active_action('index').nil? %>
+    <li class="active"><%= link_to 'team', project_project_authorizations_path(@project) %></li>
+    <% end %>
 </ol>
