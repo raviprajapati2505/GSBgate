@@ -36,6 +36,11 @@
                             <%= f.text_field :project_site_area, append: 'm²', label: ('Project site area ' + tooltip('Total site area including roadways, parking, landscape, etc.')).html_safe %>
                         </div>
                         <div class="col-md-6">
+                            <div class="alert alert-info" role="alert">
+                                <i class="fa fa-info-circle"></i>&nbsp;&nbsp;The marker on the map below will automatically
+                                move to the location of the project address when the Address, Location and Country fields are filled out.
+                                Moreover, it is also possible to drag the marker to a custom location.
+                            </div>
                             <div id="project-map" class="map" style="height: 400px;"></div>
                             <div style="display:none;">
                                 <%= f.text_field :latlng %>
