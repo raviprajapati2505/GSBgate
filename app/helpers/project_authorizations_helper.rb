@@ -25,7 +25,7 @@ module ProjectAuthorizationsHelper
 
   def is_project_manager(project_id, user_id)
     permission = ProjectAuthorization.find_by(project_id: project_id, user_id: user_id, category_id: nil)
-    return permission.manage?
+    return !permission.nil? && permission.manage?
   end
 
 end
