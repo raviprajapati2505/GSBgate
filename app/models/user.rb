@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
 
   enum role: [ :system_admin, :certifier_project_manager, :certifier_team_member, :project_owner, :project_team_member, :enterprise_licence, :operations_inspector, :anonymous ]
 
+  has_many :owned_projects, class_name: 'Project', inverse_of: :owner
   has_many :project_authorizations
   has_many :projects, through: :project_authorizations
 
@@ -21,6 +22,12 @@ class User < ActiveRecord::Base
 
   scope :with_no_admin_role, -> {
     with_role_different_from(User.roles[:system_admin]) | with_no_role
+  }
+
+  scope :without_permissions_for_project, ->(project) {
+    where(role: [ 3, 4, 5 ])
+    .includes(:owned_projects).where(projects: {user_id: nil})
+    .includes(:project_authorizations).where(project_authorizations: {project: [nil, project] } )
   }
 
   before_validation :assign_default_role, on: :create

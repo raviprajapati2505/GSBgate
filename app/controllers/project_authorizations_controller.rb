@@ -18,6 +18,7 @@ class ProjectAuthorizationsController < AuthenticatedController
   def create
     @project_authorization = ProjectAuthorization.new(authorizations_params)
     @project_authorization.project = @project
+    @project_authorization.permission = :read_only
     if @project_authorization.save
       flash[:notice] = 'Authorization was successfully created.'
       redirect_to project_project_authorizations_path

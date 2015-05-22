@@ -1,7 +1,5 @@
-<%= bootstrap_form_for([@project_authorization.project, @project_authorization], as: :authorization) do |f| %>
-    <%= f.select :user_id, User.with_no_admin_role.map { |k| [k.email, k.id]} %>
-    <%= f.select :permission, ProjectAuthorization.permissions.keys.map { |k| [k, k]} %>
-    <%= f.select :category_id, Category.all.map { |k| [k.name, k.id]} %>
+<%= bootstrap_form_for([@project, @project_authorization], as: :authorization) do |f| %>
+    <%= f.select :user_id, User.without_permissions_for_project(@project).map { |k| [k.email, k.id]} %>
     <%= f.primary %>
     <%= link_to 'Back', project_project_authorizations_path, class: 'btn btn-white' %>
 <% end %>
