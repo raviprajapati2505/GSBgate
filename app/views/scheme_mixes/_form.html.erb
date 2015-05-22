@@ -16,7 +16,7 @@
             <%= f.collection_select :scheme_id, Scheme.all, :id, :label, {:include_blank => 'Make your choice...'} %>
             <%= f.text_field :weight %>
             <%= f.primary %>
-            <%= link_to 'Back', certification_path_path(@scheme_mix.certification_path), class: 'btn btn-white' %>
+            <%= link_to 'Back', project_certification_path_path(@project, @scheme_mix.certification_path), class: 'btn btn-white' %>
         </div>
     </div>
 <% end %>

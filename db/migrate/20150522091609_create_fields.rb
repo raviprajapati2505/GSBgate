@@ -1,9 +1,12 @@
 class CreateFields < ActiveRecord::Migration
   def change
     create_table :fields do |t|
+      t.references :calculator, index: true, foreign_key: true
+
       t.string :label
       t.string :name
-      t.references :calculator, index: true, foreign_key: true
+      t.string :type
+      t.string :validation
 
       t.timestamps null: false
     end

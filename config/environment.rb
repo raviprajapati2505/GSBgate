@@ -6,4 +6,5 @@ Rails.application.initialize!
 
 ActiveSupport::Inflector.inflections do |inflect|
   inflect.irregular 'criterion', 'criteria'
+  inflect.irregular 'datum', 'data'
 end

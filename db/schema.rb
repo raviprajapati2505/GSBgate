@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150522073642) do
+ActiveRecord::Schema.define(version: 20150522095209) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -62,16 +62,37 @@ ActiveRecord::Schema.define(version: 20150522073642) do
   add_index "criteria", ["category_id"], name: "index_criteria_on_category_id", using: :btree
   add_index "criteria", ["code"], name: "index_criteria_on_code", unique: true, using: :btree
 
+  create_table "document_data", force: :cascade do |t|
+    t.integer  "document_id"
+    t.string   "file_path"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "document_data", ["document_id"], name: "index_document_data_on_document_id", using: :btree
+
   create_table "documents", force: :cascade do |t|
     t.string   "label"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
+  create_table "field_data", force: :cascade do |t|
+    t.integer  "field_id"
+    t.string   "string_value"
+    t.integer  "integer_value"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "field_data", ["field_id"], name: "index_field_data_on_field_id", using: :btree
+
   create_table "fields", force: :cascade do |t|
+    t.integer  "calculator_id"
     t.string   "label"
     t.string   "name"
-    t.integer  "calculator_id"
+    t.string   "type"
+    t.string   "validation"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
   end
@@ -108,6 +129,13 @@ ActiveRecord::Schema.define(version: 20150522073642) do
   end
 
   add_index "projects", ["user_id"], name: "index_projects_on_user_id", using: :btree
+
+  create_table "requirement_data", force: :cascade do |t|
+    t.integer  "reportable_data_id"
+    t.string   "reportable_data_type"
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
 
   create_table "requirements", force: :cascade do |t|
     t.integer  "reportable_id"
@@ -147,6 +175,16 @@ ActiveRecord::Schema.define(version: 20150522073642) do
 
   add_index "scheme_mix_criteria", ["scheme_criterion_id"], name: "index_scheme_mix_criteria_on_scheme_criterion_id", using: :btree
   add_index "scheme_mix_criteria", ["scheme_mix_id"], name: "index_scheme_mix_criteria_on_scheme_mix_id", using: :btree
+
+  create_table "scheme_mix_criteria_requirement_data", force: :cascade do |t|
+    t.integer  "scheme_mix_criterion_id"
+    t.integer  "requirement_datum_id"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
+  add_index "scheme_mix_criteria_requirement_data", ["requirement_datum_id"], name: "by_requirement_datum", unique: true, using: :btree
+  add_index "scheme_mix_criteria_requirement_data", ["scheme_mix_criterion_id"], name: "by_scheme_mix_criterion", unique: true, using: :btree
 
   create_table "scheme_mixes", force: :cascade do |t|
     t.integer  "certification_path_id"
@@ -199,6 +237,8 @@ ActiveRecord::Schema.define(version: 20150522073642) do
 
   add_foreign_key "certification_paths", "projects"
   add_foreign_key "criteria", "categories"
+  add_foreign_key "document_data", "documents"
+  add_foreign_key "field_data", "fields"
   add_foreign_key "fields", "calculators"
   add_foreign_key "project_authorizations", "categories"
   add_foreign_key "project_authorizations", "projects"
@@ -210,6 +250,8 @@ ActiveRecord::Schema.define(version: 20150522073642) do
   add_foreign_key "scheme_criterion_requirements", "scheme_criteria"
   add_foreign_key "scheme_mix_criteria", "scheme_criteria"
   add_foreign_key "scheme_mix_criteria", "scheme_mixes"
+  add_foreign_key "scheme_mix_criteria_requirement_data", "requirement_data"
+  add_foreign_key "scheme_mix_criteria_requirement_data", "scheme_mix_criteria"
   add_foreign_key "scheme_mixes", "certification_paths"
   add_foreign_key "scheme_mixes", "schemes"
   add_foreign_key "schemes", "certificates"
