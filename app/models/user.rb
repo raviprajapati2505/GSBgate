@@ -27,7 +27,7 @@ class User < ActiveRecord::Base
   scope :without_permissions_for_project, ->(project) {
     where(role: [ 3, 4, 5 ])
     .includes(:owned_projects).where(projects: {user_id: nil})
-    .includes(:project_authorizations).where(project_authorizations: {project: [nil, project] } )
+    .includes(:project_authorizations).where('project_authorizations.project_id is null or project_authorizations.project_id <> ?', project.id)
   }
 
   before_validation :assign_default_role, on: :create
