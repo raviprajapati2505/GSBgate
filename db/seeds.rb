@@ -140,11 +140,14 @@ Score.create!(score: 0, description: '4000  &lt; l<sub>year</sub> &lte; 5000',  
 Score.create!(score: 1, description: '3000  &lt; l<sub>year</sub> &lte; 4000',       scheme_criterion: SchemeCriterion.find_by(scheme: operations_scheme, criterion: sc_op_wx1.criterion))
 Score.create!(score: 2, description: '2000  &lt; l<sub>year</sub> &lte; 3000',       scheme_criterion: SchemeCriterion.find_by(scheme: operations_scheme, criterion: sc_op_wx1.criterion))
 Score.create!(score: 3, description: 'l<sub>year</sub> &lte; 2000',                 scheme_criterion: SchemeCriterion.find_by(scheme: operations_scheme, criterion: sc_op_wx1.criterion))
-dummy_calculator = Calculator.create!(class_name: 'Calculator::Dummy')
-req1 = Requirement.create!(reportable: dummy_calculator)
-req2 = Requirement.create!(reportable: dummy_calculator)
+ec1 = Calculator.create!(class_name: 'Calculator::Dummy')
+wc1 = Calculator.create!(class_name: 'Calculator::Dummy')
+req1 = Requirement.create!(reportable: ec1)
+req2 = Requirement.create!(reportable: wc1)
 SchemeCriterionRequirement.create!(scheme_criterion: sc_op_ex1, requirement: req1)
 SchemeCriterionRequirement.create!(scheme_criterion: sc_op_wx1, requirement: req2)
+Field.create!(label: 'Yearly energy usage', name: 'kwh_year', calculator: ec1)
+Field.create!(label: 'Yearly water usage', name: 'l_year', calculator: wc1)
 
 
 # sc_op_e1 = SchemeCriterion.create!(scheme: Scheme.find_by_label('Operations'), criterion: Criterion.find_by_code('E.1'), weight: 5.2)
