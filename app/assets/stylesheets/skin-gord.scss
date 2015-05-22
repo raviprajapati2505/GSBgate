@@ -62,4 +62,33 @@
     width: 250px;
     float: right;
   }
+
+  // Checkbox
+  .icheckbox {
+    background-position: 0 0;
+    display: inline-block;
+    *display: inline;
+    vertical-align: middle;
+    margin: 0;
+    padding: 0;
+    width: 22px;
+    height: 22px;
+    background: url(green.png) no-repeat;
+    border: none;
+    cursor: pointer;
+  }
+
+  .icheckbox.hover {
+    background-position: -24px 0;
+  }
+  .icheckbox.checked {
+    background-position: -48px 0;
+  }
+  .icheckbox.disabled {
+    background-position: -72px 0;
+    cursor: default;
+  }
+  .icheckbox.checked.disabled {
+    background-position: -96px 0;
+  }
 }

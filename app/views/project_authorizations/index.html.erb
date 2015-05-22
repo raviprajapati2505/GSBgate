@@ -10,7 +10,7 @@
                 <tr>
                     <th rowspan="2">Member</th>
                     <th rowspan="2">Project manager</th>
-                    <th colspan="8">Categories write permission</th>
+                    <th colspan="8" class="text-center">Categories write permission</th>
                     <th rowspan="2">Actions</th>
                 </tr>
                 <tr>
@@ -24,9 +24,9 @@
                 <tr>
                     <td><%= user.email %></td>
                     <% is_manager = is_project_manager(@project.id, user.id) %>
-                    <td class="manager-permission"><%= get_project_manager_permission(user.id, is_manager) %></td>
+                    <td class="manager-permission text-center"><%= get_project_manager_permission(user.id, is_manager) %></td>
                     <% @categories.each do |category| %>
-                    <td class="category-permission"><%= get_permission(@project.id, user.id, category.id, is_manager) %></td>
+                    <td class="category-permission text-center"><%= get_permission(@project.id, user.id, category.id, is_manager) %></td>
                     <% end %>
                     <td><%= link_to raw('<i title="Delete" class="fa fa-trash" style="padding-right: 10px;"></i>'), destroy_permissions_path(@project.id, user.id), method: :delete, data: {confirm: 'Remove this team member from this project team?'} %></td>
                 </tr>

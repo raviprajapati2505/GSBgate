@@ -24,9 +24,11 @@
  *= require datatables-responsive
  *= require datatables-init
  *= require project_authorizations.js
+ *= require icheck
  */
 
 // Tooltips demo
 $(function () {
-    $('[data-toggle="tooltip"]').tooltip()
+    $('[data-toggle="tooltip"]').tooltip();
+    $('input').iCheck();
 })

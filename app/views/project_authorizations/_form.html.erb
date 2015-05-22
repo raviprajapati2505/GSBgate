@@ -1,5 +1,5 @@
 <%= bootstrap_form_for([@project, @project_authorization], as: :authorization) do |f| %>
     <%= f.select :user_id, User.without_permissions_for_project(@project).map { |k| [k.email, k.id]} %>
-    <%= f.primary %>
+    <%= f.primary 'Add team member' %>
     <%= link_to 'Back', project_project_authorizations_path, class: 'btn btn-white' %>
 <% end %>

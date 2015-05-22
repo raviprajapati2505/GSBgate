@@ -94,4 +94,5 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-datatables-responsive'
   gem 'rails-assets-datatables-tabletools'
   gem 'rails-assets-datatables-plugins'
+  gem 'rails-assets-icheck'
 end

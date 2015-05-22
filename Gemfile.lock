@@ -124,6 +124,8 @@ GEM
       rails-assets-datatables (>= 1.9.0)
       rails-assets-jquery (>= 1.7.0)
     rails-assets-fontawesome (4.3.0)
+    rails-assets-icheck (1.0.2)
+      rails-assets-jquery (>= 1.7)
     rails-assets-jquery (2.1.4)
     rails-assets-jquery-ujs (1.0.3)
       rails-assets-jquery (> 1.8)
@@ -218,6 +220,7 @@ DEPENDENCIES
   rails-assets-datatables-responsive!
   rails-assets-datatables-tabletools!
   rails-assets-fontawesome!
+  rails-assets-icheck!
   rails-assets-jquery!
   rails-assets-jquery-ujs!
   rails-assets-jquery.steps!
