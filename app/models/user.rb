@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  enum role: [ :system_admin, :certifier_project_manager, :certifier_team_member, :project_owner, :project_team_member, :enterprise_licence, :operations_inspector, :anonymous ]
+  enum role: [ :system_admin, :certifier_project_manager, :certifier_team_member, :project_team_member, :enterprise_licence, :operations_inspector, :anonymous ]
 
   has_many :owned_projects, class_name: 'Project', inverse_of: :owner
   has_many :project_authorizations
@@ -25,7 +25,7 @@ class User < ActiveRecord::Base
   }
 
   scope :without_permissions_for_project, ->(project) {
-    where(role: [ 3, 4, 5 ])
+    where(role: [ 3, 4 ])
     .includes(:owned_projects).where(projects: {user_id: nil})
     .includes(:project_authorizations).where('project_authorizations.project_id is null or project_authorizations.project_id <> ?', project.id)
   }

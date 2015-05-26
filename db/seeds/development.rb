@@ -1,7 +1,7 @@
 # Add admin user
 User.create!(email: 'admin@vito.be', password: 'gsas-secret', password_confirmation: 'gsas-secret', role: :system_admin)
 
-User.create!(email: 'owner@example.com', password: 'password', password_confirmation: 'password', role: :project_owner)
+User.create!(email: 'owner@example.com', password: 'password', password_confirmation: 'password', role: :project_team_member)
 User.create!(email: 'manager@example.com', password: 'password', password_confirmation: 'password', role: :project_team_member)
 User.create!(email: 'read_write@example.com', password: 'password', password_confirmation: 'password', role: :project_team_member)
 User.create!(email: 'read_only@example.com', password: 'password', password_confirmation: 'password', role: :project_team_member)

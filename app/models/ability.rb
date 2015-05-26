@@ -33,15 +33,15 @@ class Ability
 
     if user.system_admin?
       can :manage, :all
-    elsif user.project_owner?
+    elsif user.project_team_member?
       can :manage, Project, user_id: user.id
       can :manage, ProjectAuthorization, project: {user_id: user.id}
-      can :new, ProjectAuthorization
-      can :create, ProjectAuthorization
+      # can :new, ProjectAuthorization
+      # can :create, ProjectAuthorization
       can :manage, CertificationPath, project: {user_id: user.id}
-      can :new, CertificationPath
-      can :create, CertificationPath
-    elsif user.project_team_member?
+      # can :new, CertificationPath
+      # can :create, CertificationPath
+
       can :read, Project, project_authorizations: {user_id: user.id}
       # Waiting for https://github.com/CanCanCommunity/cancancan/pull/196
       can :manage, Project, project_authorizations: {user_id: user.id, permission: ['manage', ProjectAuthorization.permissions[:manage]]}
