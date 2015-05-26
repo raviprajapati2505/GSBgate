@@ -1,6 +1,6 @@
 <%= bootstrap_form_for @user do |f| %>
     <%= f.text_field :email %>
-    <%= f.select :role, User.roles.keys.map { |k| [k, k]} %>
+    <%= f.select :role, User.roles.keys.map { |k| [User.human_attribute_name(k), k]} %>
     <%= f.primary %>
     <%= link_to 'Back', users_path, class: 'btn btn-white' %>
 <% end %>

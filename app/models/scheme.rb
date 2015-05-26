@@ -5,7 +5,7 @@ class Scheme < ActiveRecord::Base
   has_many :scheme_criteria
 
   def full_label
-    "GSAS #{self.certificate.assessment_stage} Assessment v#{version}: #{label}"
+    "GSAS #{Certificate.human_attribute_name(self.certificate.assessment_stage)} Assessment v#{version}: #{label}"
   end
 
 end
