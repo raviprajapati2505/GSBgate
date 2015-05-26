@@ -1,5 +1,6 @@
 class CreateFields < ActiveRecord::Migration
   def change
+    drop_table :fields
     create_table :fields do |t|
       t.references :calculator, index: true, foreign_key: true
 
