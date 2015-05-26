@@ -13,7 +13,7 @@ var gmaps = {
         });
     },
     // Initializes a marker on a map
-    initializeMarker: function (map, lat, lng, callback) {
+    initializeMarker: function (map, lat, lng, draggable, callback) {
         // Create a point
         var latLng = new google.maps.LatLng(lat, lng);
 
@@ -24,7 +24,7 @@ var gmaps = {
         var marker = new google.maps.Marker({
             position: latLng,
             map: map,
-            draggable: true,
+            draggable: draggable,
             animation: google.maps.Animation.DROP
         });
 

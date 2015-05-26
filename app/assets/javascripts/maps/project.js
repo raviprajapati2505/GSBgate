@@ -14,7 +14,7 @@ function initializeProjectMap() {
     var wkt = new Wkt.Wkt($('#project_latlng').val());
 
     // Initialize a marker using the coordinates from the form
-    projectMarker = gmaps.initializeMarker(projectMap, wkt.components[0].y, wkt.components[0].x, function() {
+    projectMarker = gmaps.initializeMarker(projectMap, wkt.components[0].y, wkt.components[0].x, ($('#project_name').length > 0), function() {
         var updatedWkt = new Wkt.Wkt(projectMarker);
         $('#project_latlng').val(updatedWkt.write());
     });

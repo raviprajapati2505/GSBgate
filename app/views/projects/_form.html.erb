@@ -29,7 +29,6 @@
                             <%= f.text_field :country %>
                         </div>
                         <div class="col-md-3">
-                            <!-- todo: load labels from i18n translation file -->
                             <%= f.text_field :gross_area, append: 'm²', label: (Project.human_attribute_name('gross_area') + tooltip(t '.tooltip_gross_area')).html_safe %>
                             <%= f.text_field :certified_area, append: 'm²', label: (Project.human_attribute_name('certified_area') + tooltip(t '.tooltip_certified_area')).html_safe %>
                             <%= f.text_field :carpark_area, append: 'm²', label: (Project.human_attribute_name('carpark_area') + tooltip(t '.tooltip_carpark_area')).html_safe %>

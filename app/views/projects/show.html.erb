@@ -1,3 +1,5 @@
+<% use_gmaps_for(:project) %>
+
 <div class="row">
     <div class="col-md-4">
         <div class="ibox float-e-margins">
@@ -40,6 +42,10 @@
                 <p>
                     <strong>Project site area:</strong>
                     <%= @project.project_site_area %> m²
+                </p>
+                <p>
+                    <input type="hidden" id="project_latlng" value="<%= @project.latlng %>" />
+                    <div id="project-map" class="map" style="height: 300px;"></div>
                 </p>
                 <div class="hr-line-dashed"></div>
                     <%= link_to 'Edit', edit_project_path(@project), :class => 'btn btn-primary' %>
