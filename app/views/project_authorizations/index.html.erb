@@ -5,12 +5,12 @@
     <div class="ibox-content">
 
         <%= bootstrap_form_tag url: update_permissions_path(@project.id) do |f| %>
-            <table class="table table-striped table-bordered table-hover datatable">
+            <table id="permissions-grid" class="table table-striped table-bordered table-hover">
                 <thead>
                 <tr>
                     <th rowspan="2">Member</th>
                     <th rowspan="2">Project manager</th>
-                    <th colspan="8" class="text-center">Categories write permission</th>
+                    <th colspan="<%= @categories.count %>" class="text-center">Categories write permission</th>
                     <th rowspan="2">Actions</th>
                 </tr>
                 <tr>
