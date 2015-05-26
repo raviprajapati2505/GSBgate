@@ -1,19 +1,28 @@
 <ol class="breadcrumb">
-    <li><%= link_to 'Projects', projects_path %></li>
+    <% if is_active_controller('users') %>
+        <li><%= link_to 'Users', users_path %></li>
 
-    <% unless @project.nil? or @project.id.nil?%>
-        <li class="active"><%= link_to @project.name, project_path(@project) %></li>
-    <% end %>
+        <% unless @user.nil? %>
+            <li class="active"><%= link_to @user.email, edit_user_path %></li>
+        <% end %>
+    <% else %>
+        <li><%= link_to 'Projects', projects_path %></li>
 
-    <% unless @certification_path.nil? or @certification_path.id.nil? %>
-        <li class="active"><%= link_to @certification_path.certificate.label, project_certification_path_path(@project, @certification_path) %></li>
-    <% end %>
+        <% unless @project.nil? or @project.id.nil?%>
+            <li class="active"><%= link_to @project.name, project_path(@project) %></li>
+        <% end %>
 
-    <% unless @scheme_mix.nil? or @scheme_mix.id.nil? %>
-        <li class="active"><%= link_to @scheme_mix.scheme.full_label, project_certification_path_scheme_mix_path(@project, @certification_path, @scheme_mix) %></li>
-    <% end %>
+        <% unless @certification_path.nil? or @certification_path.id.nil? %>
+            <li class="active"><%= link_to @certification_path.certificate.label, project_certification_path_path(@project, @certification_path) %></li>
+        <% end %>
 
-    <% unless is_active_controller('project_authorizations').nil? or is_active_action('index').nil? %>
-    <li class="active"><%= link_to 'team', project_project_authorizations_path(@project) %></li>
+        <% unless @scheme_mix.nil? or @scheme_mix.id.nil? %>
+            <li class="active"><%= link_to @scheme_mix.scheme.full_label, project_certification_path_scheme_mix_path(@project, @certification_path, @scheme_mix) %></li>
+        <% end %>
+
+        <% unless is_active_controller('project_authorizations').nil? %>
+        <li class="active"><%= link_to 'team', project_project_authorizations_path(@project) %></li>
+        <% end %>
+
     <% end %>
 </ol>
