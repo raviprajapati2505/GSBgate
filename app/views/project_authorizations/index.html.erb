@@ -28,7 +28,7 @@
                     <% @categories.each do |category| %>
                     <td class="category-permission text-center"><%= get_permission(@project.id, user.id, category.id, is_manager) %></td>
                     <% end %>
-                    <td><%= link_to raw('<i title="Delete" class="fa fa-trash" style="padding-right: 10px;"></i>'), destroy_permissions_path(@project.id, user.id), method: :delete, data: {confirm: 'Remove this team member from this project team?'} %></td>
+                    <td><%= link_to raw('<i title="Delete" class="fa fa-lg fa-trash" style="padding-right: 10px;"></i>'), destroy_permissions_path(@project.id, user.id), method: :delete, data: {confirm: 'Remove this team member from this project team?'} %></td>
                 </tr>
                 <% end %>
                 </tbody>

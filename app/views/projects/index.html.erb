@@ -19,15 +19,15 @@
                     <td><%= project.description %></td>
                     <td><%= project.country %></td>
                     <td>
-                        <%= link_to raw('<i title="Show" class="fa fa-search" style="padding-right: 10px;"></i>'), project %>
+                        <%= link_to raw('<i title="Show" class="fa fa-lg fa-search" style="padding-right: 10px;"></i>'), project %>
                         <% if can? :edit, project %>
-                            <%= link_to raw('<i title="Edit" class="fa fa-edit" style="padding-right: 10px;"></i>'), edit_project_path(project) %>
+                            <%= link_to raw('<i title="Edit" class="fa fa-lg fa-edit" style="padding-right: 10px;"></i>'), edit_project_path(project) %>
                         <% end %>
                         <% if can? :destroy, project %>
-                            <%= link_to raw('<i title="Delete" class="fa fa-trash" style="padding-right: 10px;"></i>'), project, method: :delete, data: {confirm: 'Are you sure?'} %>
+                            <%= link_to raw('<i title="Delete" class="fa fa-lg fa-trash" style="padding-right: 10px;"></i>'), project, method: :delete, data: {confirm: 'Are you sure?'} %>
                         <% end %>
                         <% if can? :manage, project %>
-                            <%= link_to raw('<i title="Team" class="fa fa-users" style="padding-right: 10px;"></i>'), project_project_authorizations_path(project) %>
+                            <%= link_to raw('<i title="Team" class="fa fa-lg fa-users" style="padding-right: 10px;"></i>'), project_project_authorizations_path(project) %>
                         <% end %>
                     </td>
                 </tr>
