@@ -1,6 +1,17 @@
 <%= bootstrap_form_for @user do |f| %>
-    <%= f.text_field :email, disabled: 'disabled' %>
-    <%= f.select :role, User.roles.keys.map { |k| [User.human_attribute_name(k), k]} %>
-    <%= f.primary %>
-    <%= link_to 'Back', users_path, class: 'btn btn-white' %>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>User details</h5>
+                </div>
+                <div class="ibox-content">
+                    <%= f.text_field :email, disabled: 'disabled' %>
+                    <%= f.select :role, User.roles.keys.map { |k| [User.human_attribute_name(k), k] } %>
+                    <%= f.primary %>
+                    <%= link_to 'Back', users_path, class: 'btn btn-white' %>
+                </div>
+            </div>
+        </div>
+    </div>
 <% end %>

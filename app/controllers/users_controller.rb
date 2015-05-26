@@ -7,6 +7,7 @@ class UsersController < AuthenticatedController
   end
 
   def edit
+    @page_title = "Edit user #{@user.email}"
   end
 
   def update
