@@ -25,6 +25,7 @@
  *= require datatables-init
  *= require project_authorizations.js
  *= require icheck
+ *= require chosen
  */
 
 // Tooltips demo
