@@ -31,14 +31,16 @@
             </div>
             <div class="ibox-content">
                 <div class="panel-group" id="categories-accordion">
-                    <% @scheme_mix_criteria_by_categories.each do |id, category| %>
+                    <% @scheme_mix.categories.uniq.each do |category| %>
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h4 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#categories-accordion" href="#category-panel-<%= id %>" class="collapsed" aria-expanded="false">Category <%= id %></a>
+                                    <a data-toggle="collapse" data-parent="#categories-accordion" href="#category-panel-<%= category.id %>">
+                                        <%= category.name %>
+                                    </a>
                                 </h4>
                             </div>
-                            <div id="category-panel-<%= id %>" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                            <div id="category-panel-<%= category.id %>" class="panel-collapse collapse">
                                 <div class="panel-body">
                                     <table class="table">
                                         <thead>
@@ -51,7 +53,7 @@
                                                 <th>Requirement count</th>
                                             </tr>
                                         </thead>
-                                        <% category.each do |scheme_mix_criterion| %>
+                                        <% @scheme_mix.scheme_mix_criteria.for_category(category).each do |scheme_mix_criterion| %>
                                             <tr>
                                                 <td><%= scheme_mix_criterion.scheme_criterion.criterion.code %></td>
                                                 <td><%= scheme_mix_criterion.scheme_criterion.criterion.name %></td>

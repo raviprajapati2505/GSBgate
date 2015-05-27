@@ -2,6 +2,9 @@ class SchemeMix < ActiveRecord::Base
   belongs_to :certification_path
   belongs_to :scheme
   has_many :scheme_mix_criteria
+  has_many :scheme_criteria, through: :scheme
+  has_many :criteria, through: :scheme_criteria
+  has_many :categories, through: :criteria
 
   after_create :create_descendant_records
 

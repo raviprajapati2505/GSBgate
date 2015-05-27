@@ -28,8 +28,10 @@
  *= require chosen
  */
 
-// Tooltips demo
 $(function () {
+    // Tooltips
     $('[data-toggle="tooltip"]').tooltip();
+
+    // iCheck all checkboxes & radio buttons
     $('input').iCheck();
-})
+});

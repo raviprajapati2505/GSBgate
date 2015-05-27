@@ -9,4 +9,9 @@ class SchemeCriterion < ActiveRecord::Base
   def max_attainable_score
     scores.maximum(:score)
   end
+
+  default_scope {
+    joins(:criterion)
+    .order('criteria.name')
+  }
 end
