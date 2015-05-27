@@ -3,12 +3,12 @@
         <div class="col-lg-12">
             <div class="ibox">
                 <div class="ibox-title">
-                    <h5>Add team member</h5>
+                    <h5><%=t '.form_title' %></h5>
                 </div>
                 <div class="ibox-content">
                     <%= f.select :user_id, User.without_permissions_for_project(@project).map { |k| [k.email, k.id]}, {}, { class: 'chosen-select'} %>
-                    <%= f.primary 'Add team member' %>
-                    <%= link_to 'Back', project_project_authorizations_path, class: 'btn btn-white' %>
+                    <%= f.primary t('.btn_save') %>
+                    <%= link_to t('.btn_cancel'), project_project_authorizations_path, class: 'btn btn-white' %>
                 </div>
             </div>
         </div>

@@ -1,6 +1,6 @@
 <div class="ibox float-e-margins">
     <div class="ibox-title">
-        <h5>Listing users</h5>
+        <h5><%=t '.table_title' %></h5>
     </div>
     <div class="ibox-content">
         <table class="table table-striped table-bordered table-hover datatable">
@@ -19,7 +19,7 @@
                     <td><%= User.human_attribute_name(user.role) %></td>
                     <td>
                         <% if user.id != 1 %>
-                        <%= link_to raw('<i title="Edit" class="fa fa-lg fa-edit" style="padding-right: 10px;"></i>'), edit_user_path(user) %>
+                        <%= link_to "<i title=\"#{t('.action_edit_title')}\" class=\"fa fa-lg fa-edit\" style=\"padding-right: 10px;\"></i>".html_safe, edit_user_path(user) %>
                         <% end %>
                     </td>
                 </tr>

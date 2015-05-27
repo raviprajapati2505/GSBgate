@@ -1,8 +1,31 @@
 en:
   projects:
+    index:
+      action_team_title: "Team"
     form:
       info_text_map: "The marker on the map below will automatically move to the location of the project address when the Address, Location and Country fields are filled out. Moreover, it is also possible to drag the marker to a custom location."
       tooltip_gross_area: "Total built up area including parking areas such as underground or structured parking."
       tooltip_certified_area: "Total built up area excluding parking areas. All parking areas (whether underground, structured, or at grade) should NOT be included in this calculation. Other spaces, such as common areas, mechanical spaces, and circulation areas, should be included in the certified area of the building."
       tooltip_carpark_area: "Total built up area associated with parking (underground or structured parking). This does NOT include on-grade parking, as we are only interested in the built up area."
       tooltip_project_site_area: "Total site area including roadways, parking, landscape, etc."
+  project_authorizations:
+    index:
+      action_delete_title: "Delete"
+      btn_add_project_team_member: "Add project team member"
+      btn_save: "Save"
+      table_header_categories: "Category responsibilities"
+      table_header_project_manager: "Project manager"
+      table_header_project_team_member: "Member"
+      table_title: "Project team permissions and responsibilities"
+    form:
+      btn_cancel: "Back"
+      btn_save: "Add"
+      form_title: "Add team member"
+  users:
+    index:
+      action_edit_title: "Edit"
+      table_title: "Listing users"
+    form:
+      btn_cancel: "Back"
+      btn_save: "Update user"
+      form_title: "User details"
