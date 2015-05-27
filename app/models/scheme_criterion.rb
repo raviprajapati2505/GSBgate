@@ -5,4 +5,8 @@ class SchemeCriterion < ActiveRecord::Base
   has_many :scheme_mix_criteria
   has_many :scheme_criterion_requirements
   has_many :requirements, through: :scheme_criterion_requirements
+
+  def max_attainable_score
+    scores.maximum(:score)
+  end
 end

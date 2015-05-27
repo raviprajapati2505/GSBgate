@@ -36,6 +36,7 @@
                         <th>Code</th>
                         <th>Name</th>
                         <th>Weighting</th>
+                        <th>Max. Attainable score</th>
                         <th>Targeted score</th>
                         <th>Requirement count</th>
                     </tr>
@@ -45,6 +46,7 @@
                             <td><%= scheme_mix_criterion.scheme_criterion.criterion.code %></td>
                             <td><%= scheme_mix_criterion.scheme_criterion.criterion.name %></td>
                             <td><%= scheme_mix_criterion.scheme_criterion.weight %> %</td>
+                            <td><%= scheme_mix_criterion.scheme_criterion.max_attainable_score %></td>
                             <td><%= scheme_mix_criterion.targeted_score %></td>
                             <td><%= scheme_mix_criterion.scheme_criterion.requirements.count %></td>
                         </tr>
