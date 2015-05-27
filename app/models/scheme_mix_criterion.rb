@@ -13,4 +13,9 @@ class SchemeMixCriterion < ActiveRecord::Base
     joins(:scheme_criterion => [:criterion])
     .order('criteria.name')
   }
+
+  # returns targeted score taking into account the percentage for which it counts (=weight)
+  def weighted_targeted_score
+    targeted_score * scheme_criterion.weight / 100 * scheme_mix.weight / 100
+  end
 end
