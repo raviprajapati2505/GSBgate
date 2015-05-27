@@ -6,6 +6,15 @@ class SchemeMixesController < AuthenticatedController
 
   def show
     @page_title = @scheme_mix.scheme.full_label
+    @scheme_mix_criteria_by_categories = {}
+
+    @scheme_mix.scheme_mix_criteria.each do |scheme_mix_criterion|
+      unless @scheme_mix_criteria_by_categories.has_key?(scheme_mix_criterion.scheme_criterion.criterion.category.id)
+        @scheme_mix_criteria_by_categories[scheme_mix_criterion.scheme_criterion.criterion.category.id] = []
+      end
+
+      @scheme_mix_criteria_by_categories[scheme_mix_criterion.scheme_criterion.criterion.category.id] << scheme_mix_criterion
+    end
   end
 
   private

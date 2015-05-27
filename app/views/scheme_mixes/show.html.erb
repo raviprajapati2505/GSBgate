@@ -27,35 +27,51 @@
     <div class="col-md-8">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Categories</h5>
+                <h5>Categories &amp; criteria</h5>
             </div>
             <div class="ibox-content">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>Code</th>
-                        <th>Name</th>
-                        <th>Weighting</th>
-                        <th>Max. Attainable score</th>
-                        <th>Targeted score</th>
-                        <th>Requirement count</th>
-                    </tr>
-                    </thead>
-                    <% @scheme_mix.scheme_mix_criteria.each do |scheme_mix_criterion| %>
-                        <tr>
-                            <td><%= scheme_mix_criterion.scheme_criterion.criterion.code %></td>
-                            <td><%= scheme_mix_criterion.scheme_criterion.criterion.name %></td>
-                            <td><%= scheme_mix_criterion.scheme_criterion.weight %> %</td>
-                            <td><%= scheme_mix_criterion.scheme_criterion.max_attainable_score %></td>
-                            <td><%= scheme_mix_criterion.targeted_score %></td>
-                            <td><%= scheme_mix_criterion.scheme_criterion.requirements.count %></td>
-                        </tr>
+                <div class="panel-group" id="categories-accordion">
+                    <% @scheme_mix_criteria_by_categories.each do |id, category| %>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#categories-accordion" href="#category-panel-<%= id %>" class="collapsed" aria-expanded="false">Category <%= id %></a>
+                                </h4>
+                            </div>
+                            <div id="category-panel-<%= id %>" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                <div class="panel-body">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Code</th>
+                                                <th>Name</th>
+                                                <th>Weighting</th>
+                                                <th>Max. Attainable score</th>                                                
+                                                <th>Targeted score</th>
+                                                <th>Requirement count</th>
+                                            </tr>
+                                        </thead>
+                                        <% category.each do |scheme_mix_criterion| %>
+                                            <tr>
+                                                <td><%= scheme_mix_criterion.scheme_criterion.criterion.code %></td>
+                                                <td><%= scheme_mix_criterion.scheme_criterion.criterion.name %></td>
+                                                <td><%= scheme_mix_criterion.scheme_criterion.weight %> %</td>
+                                                <td><%= scheme_mix_criterion.scheme_criterion.max_attainable_score %></td>
+                                                <td><%= scheme_mix_criterion.targeted_score %></td>
+                                                <td><%= scheme_mix_criterion.scheme_criterion.requirements.count %></td>
+                                            </tr>
+                                        <% end %>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     <% end %>
-                </table>
+                </div>
             </div>
         </div>
     </div>
 
+    <% # todo: move the form below to the scheme_mix_criterion form %>
     <div class="col-md-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
