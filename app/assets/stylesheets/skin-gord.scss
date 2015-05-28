@@ -8,6 +8,25 @@
     width: 100%;
   }
 
+  // Progress bars
+  .progress {
+    background-color: inherit;
+    border-radius: 0;
+    margin-bottom: 0;
+  }
+
+  .progress-bar-offset {
+    background-color: inherit;
+  }
+
+  .progress-bar-max {
+    background-color: #6fa428;
+  }
+
+  .progress-bar-target {
+    background-color: #5bc0de;
+  }
+
   // Tooltips
   .tooltip-inner {
     background-color: $skin-gord-color;

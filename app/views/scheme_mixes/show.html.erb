@@ -48,21 +48,23 @@
                                                 <th>Code</th>
                                                 <th>Name</th>
                                                 <th>Weighting</th>
-                                                <th>Max. Attainable score</th>                                                
-                                                <th>Targeted score</th>
+                                                <th>Score</th>
                                                 <th>Requirement count</th>
                                             </tr>
                                         </thead>
+                                        <tbody>
+                                        <% min_score = @scheme_mix.scheme.min_score_for_category(category) %>
+                                        <% max_score = @scheme_mix.scheme.max_attainable_score_for_category(category) %>
                                         <% @scheme_mix.scheme_mix_criteria.for_category(category).each do |scheme_mix_criterion| %>
                                             <tr>
                                                 <td><%= scheme_mix_criterion.scheme_criterion.criterion.code %></td>
                                                 <td><%= scheme_mix_criterion.scheme_criterion.criterion.name %></td>
                                                 <td><%= scheme_mix_criterion.scheme_criterion.weight %> %</td>
-                                                <td><%= scheme_mix_criterion.scheme_criterion.max_attainable_score %></td>
-                                                <td><%= scheme_mix_criterion.targeted_score %></td>
+                                                <td><%= render partial: "score_widget", locals: {max_attainable: scheme_mix_criterion.scheme_criterion.max_attainable_score, target: scheme_mix_criterion.targeted_score, min: min_score, max: max_score} %></td>
                                                 <td><%= scheme_mix_criterion.scheme_criterion.requirements.count %></td>
                                             </tr>
                                         <% end %>
+                                        </tbody>
                                     </table>
                                 </div>
                             </div>
