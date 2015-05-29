@@ -8,6 +8,14 @@ class SchemeMix < ActiveRecord::Base
 
   after_create :create_descendant_records
 
+  def weighted_targeted_score_for_category(category)
+    scheme_mix_criteria.for_category(category).joins(:scheme_criterion).sum('targeted_score * scheme_criteria.weight / 100')
+  end
+
+  def weighted_submitted_score_for_category(category)
+    scheme_mix_criteria.for_category(category).joins(:scheme_criterion).sum('submitted_score * scheme_criteria.weight / 100')
+  end
+
   private
     def create_descendant_records
       scheme.scheme_criteria.each do |scheme_criterion|
