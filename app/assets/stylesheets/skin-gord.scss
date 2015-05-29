@@ -8,6 +8,15 @@
     width: 100%;
   }
 
+  // Accordion table
+  .accordion-body {
+    background-color: #eee;
+  }
+
+  .accordion-body table {
+    background-color: transparent;
+  }
+
   // Progress bars
   .progress {
     background-color: inherit;

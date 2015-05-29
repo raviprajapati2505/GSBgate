@@ -30,27 +30,36 @@
                 <h5>Categories &amp; criteria</h5>
             </div>
             <div class="ibox-content">
-                <div class="panel-group" id="categories-accordion">
-                    <% @scheme_mix.categories.uniq.each do |category| %>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h4 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#categories-accordion" href="#category-panel-<%= category.id %>">
-                                        <%= category.name %>
-                                    </a>
-                                </h4>
-                            </div>
-                            <div id="category-panel-<%= category.id %>" class="panel-collapse collapse">
-                                <div class="panel-body">
+                <div id="categories-accordion">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Code</th>
+                            <th>Name</th>
+                            <th>Weighting</th>
+                            <th>Score</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <% @scheme_mix.categories.uniq.each do |category| %>
+                        <tr class="accordion-toggle" data-toggle="collapse" data-target="#category-panel-<%= category.id %>" data-parent="#categories-accordion">
+                            <td><i class="fa fa-caret-square-o-right"></i>&nbsp;<%= category.code %></td>
+                            <td><%= category.name %></td>
+                            <td><%= @scheme_mix.scheme.total_weight_for_category(category) %> %</td>
+                            <td></td>
+                        </tr>
+                        <tr id="category-panel-<%= category.id %>" class="accordion-body collapse">
+                            <td colspan="4">
+                                <div>
                                     <table class="table">
                                         <thead>
-                                            <tr>
-                                                <th>Code</th>
-                                                <th>Name</th>
-                                                <th>Weighting</th>
-                                                <th>Score</th>
-                                                <th>Requirement count</th>
-                                            </tr>
+                                        <tr>
+                                            <th>Code</th>
+                                            <th>Name</th>
+                                            <th>Weighting</th>
+                                            <th>Score</th>
+                                            <th>Requirement count</th>
+                                        </tr>
                                         </thead>
                                         <tbody>
                                         <% min_score = @scheme_mix.scheme.min_score_for_category(category) %>
@@ -67,9 +76,11 @@
                                         </tbody>
                                     </table>
                                 </div>
-                            </div>
-                        </div>
-                    <% end %>
+                            </td>
+                        </tr>
+                        <% end %>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

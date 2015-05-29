@@ -34,4 +34,11 @@ $(function () {
 
     // iCheck all checkboxes & radio buttons
     $('input').iCheck();
+
+    // Accordion tables
+    $('.accordion-body').on('show.bs.collapse', function() {
+        $(this).prev().find('i.fa').removeClass('fa-caret-square-o-right').addClass('fa-caret-square-o-down');
+    }).on('hidden.bs.collapse', function() {
+        $(this).prev().find('i.fa').removeClass('fa-caret-square-o-down').addClass('fa-caret-square-o-right');
+    });
 });
