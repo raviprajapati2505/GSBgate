@@ -9,6 +9,10 @@
   }
 
   // Accordion table
+  .accordion-toggle {
+    cursor: pointer;
+  }
+
   .accordion-body {
     background-color: #eee;
   }
@@ -18,22 +22,31 @@
   }
 
   // Progress bars
-  .progress {
-    background-color: inherit;
-    border-radius: 0;
-    margin-bottom: 0;
-  }
-
-  .progress-bar-offset {
-    background-color: inherit;
-  }
-
   .progress-bar-max {
-    background-color: #6fa428;
+    fill: #ff3333;
   }
 
-  .progress-bar-target {
-    background-color: #5bc0de;
+  .progress-bar-targeted {
+    fill: #6fa428;
+  }
+
+  .progress-bar-submitted {
+    fill: #5bc0de;
+  }
+
+  .progress-bar text {
+    alignment-baseline: middle;
+    font: 10px sans-serif;
+  }
+
+  .axis path, .axis line {
+    fill: none;
+    shape-rendering: crispEdges;
+    stroke: black;
+  }
+
+  .axis text {
+    font: 10px sans-serif;
   }
 
   // Tooltips

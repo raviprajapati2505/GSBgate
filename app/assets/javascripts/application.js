@@ -26,6 +26,8 @@
  *= require project_authorizations.js
  *= require icheck
  *= require chosen
+ *= require d3
+ *= require score_widget.js
  */
 
 $(function () {

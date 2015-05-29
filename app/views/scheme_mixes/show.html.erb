@@ -43,12 +43,14 @@
                         <tbody>
                         <% min_weighted_score = @scheme_mix.scheme.weighted_min_score %>
                         <% max_weighted_score = @scheme_mix.scheme.weighted_max_attainable_score %>
-                        <% @scheme_mix.categories.uniq.each do |category| %>
+                        <% @scheme_mix.categories.uniq.each_with_index do |category, i| %>
                         <tr class="accordion-toggle" data-toggle="collapse" data-target="#category-panel-<%= category.id %>" data-parent="#categories-accordion">
                             <td><i class="fa fa-caret-square-o-right"></i>&nbsp;<%= category.code %></td>
                             <td><%= category.name %></td>
                             <td><%= @scheme_mix.scheme.total_weight_for_category(category) %> %</td>
-                            <td><%= render partial: "score_widget", locals: {max_attainable: @scheme_mix.scheme.weighted_max_attainable_score_for_category(category), target: 0, min: min_weighted_score.round(1), max: max_weighted_score.round(1)} %></td>
+                            <td>
+                                <div class="score-graph" data-show-x-axis="<%= if i == 0 then true else false end %>" data-width="250" data-height="50" data-min="<%= min_weighted_score.round(1) %>" data-max="<%= max_weighted_score.round(1) %>" data-max-attainable="<%= @scheme_mix.scheme.weighted_max_attainable_score_for_category(category) %>" data-targeted="0"></div>
+                            </td>
                         </tr>
                         <tr id="category-panel-<%= category.id %>" class="accordion-body collapse">
                             <td colspan="4">
@@ -66,12 +68,14 @@
                                         <tbody>
                                         <% min_score = @scheme_mix.scheme.min_score_for_category(category) %>
                                         <% max_score = @scheme_mix.scheme.max_attainable_score_for_category(category) %>
-                                        <% @scheme_mix.scheme_mix_criteria.for_category(category).each do |scheme_mix_criterion| %>
+                                        <% @scheme_mix.scheme_mix_criteria.for_category(category).each_with_index do |scheme_mix_criterion, j| %>
                                             <tr>
                                                 <td><%= scheme_mix_criterion.scheme_criterion.criterion.code %></td>
                                                 <td><%= scheme_mix_criterion.scheme_criterion.criterion.name %></td>
                                                 <td><%= scheme_mix_criterion.scheme_criterion.weight %> %</td>
-                                                <td><%= render partial: "score_widget", locals: {max_attainable: scheme_mix_criterion.scheme_criterion.max_attainable_score, target: scheme_mix_criterion.targeted_score, min: min_score, max: max_score} %></td>
+                                                <td>
+                                                    <div class="score-graph" data-show-x-axis="<%= if j == 0 then true else false end %>" data-width="250" data-height="50" data-min="<%= min_score %>" data-max="<%= max_score %>" data-max-attainable="<%= scheme_mix_criterion.scheme_criterion.max_attainable_score %>" data-targeted="<%= scheme_mix_criterion.targeted_score %>"></div>
+                                                </td>
                                                 <td><%= scheme_mix_criterion.scheme_criterion.requirements.count %></td>
                                             </tr>
                                         <% end %>

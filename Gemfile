@@ -96,4 +96,5 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-datatables-plugins'
   gem 'rails-assets-icheck'
   gem 'rails-assets-chosen'
+  gem 'rails-assets-d3'
 end
