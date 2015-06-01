@@ -1,0 +1,35 @@
+<% @scheme_mix_criterion.requirement_data.each_with_index do |requirement_datum, index| %>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a href="#requirement-<%= requirement_datum.id %>" data-parent="#accordion" data-toggle="collapse" class="collapsed" aria-expanded="false">Requirement <%= index + 1 %></a>
+            </h4>
+        </div>
+        <div class="panel-collapse collapse" id="requirement-<%= requirement_datum.id %>" aria-expanded="false" style="height: 0px;">
+            <div class="panel-body">
+                <%= bootstrap_form_tag url: "/requirement_data/#{requirement_datum.reportable_data_id}", method: "put", remote: true do |f| %>
+                    <% case requirement_datum.reportable_data_type %>
+                    <% when 'CalculatorDatum' %>
+                        <% calculator_template = requirement_datum.reportable_data.calculator.class_name.constantize.name.demodulize.downcase %>
+                        <div>
+                            <% if File.exist?("app/views/calculator/_#{calculator_template}.html.erb") %>
+                                <%= render "calculator/#{calculator_template}", requirement_datum: requirement_datum, calculator_template: calculator_template, f: f %>
+                            <% else %>
+                                <%= render "calculator/general", requirement_datum: requirement_datum, calculator_template: calculator_template, f: f %>
+                            <% end %>
+                        </div>
+                    <% when 'DocumentDatum' %>
+                        # ...
+                    <% end %>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="hr-line-dashed"></div>
+                            <%= f.primary %>
+                        </div>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
+<% end %>

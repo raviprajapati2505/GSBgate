@@ -8,5 +8,7 @@ class CreateFieldData < ActiveRecord::Migration
 
       t.timestamps null: false
     end
+
+    alter_table
   end
 end

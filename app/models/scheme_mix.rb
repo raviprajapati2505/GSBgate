@@ -48,18 +48,22 @@ class SchemeMix < ActiveRecord::Base
         scheme_criterion.requirements.each do |requirement|
           case requirement.reportable_type
             when 'Calculator'
-              requirement.reportable.fields.each do |field|
-                reportable_datum = RequirementDatum
-                                    .joins("INNER JOIN scheme_mix_criteria_requirement_data ON scheme_mix_criteria_requirement_data.requirement_datum_id = requirement_data.id")
-                                    .joins("INNER JOIN scheme_mix_criteria ON scheme_mix_criteria.id = scheme_mix_criteria_requirement_data.scheme_mix_criterion_id")
-                                    .joins("INNER JOIN field_data ON field_data.id = requirement_data.reportable_data_id")
-                                    .where("scheme_mix_criteria.scheme_mix_id = ?", self.id)
-                                    .where("field_data.field_id = ?", field.id).first
-                if reportable_datum.nil?
-                  reportable_datum = FieldDatum.create(field_id: field.id)
+              reportable_datum = RequirementDatum
+                                  .joins("INNER JOIN scheme_mix_criteria_requirement_data ON scheme_mix_criteria_requirement_data.requirement_datum_id = requirement_data.id")
+                                  .joins("INNER JOIN scheme_mix_criteria ON scheme_mix_criteria.id = scheme_mix_criteria_requirement_data.scheme_mix_criterion_id")
+                                  .joins("INNER JOIN calculator_data ON calculator_data.id = requirement_data.reportable_data_id")
+                                  .where("scheme_mix_criteria.scheme_mix_id = ?", self.id)
+                                  .where("calculator_data.calculator_id = ?", requirement.reportable_id).first
+
+              if reportable_datum.nil?
+                reportable_datum = CalculatorDatum.create(calculator_id: requirement.reportable_id)
+
+                requirement.reportable.fields.each do |field|
+                  reportable_datum.field_data.create(field_id: field.id)
                 end
-                scheme_mix_criterion.requirement_data.create(reportable_data_type: 'FieldDatum', reportable_data_id: reportable_datum.id)
               end
+
+              scheme_mix_criterion.requirement_data.create(reportable_data_type: 'CalculatorDatum', reportable_data_id: reportable_datum.id)
             when 'Document'
               reportable_datum = RequirementDatum
                                   .joins("INNER JOIN scheme_mix_criteria_requirement_data ON scheme_mix_criteria_requirement_data.requirement_datum_id = requirement_data.id")
@@ -67,9 +71,11 @@ class SchemeMix < ActiveRecord::Base
                                   .joins("INNER JOIN document_data ON document_data.id = requirement_data.reportable_data_id")
                                   .where("scheme_mix_criteria.scheme_mix_id = ?", self.id)
                                   .where("document_data.document_id = ?", requirement.reportable_id).first
+
               if reportable_datum.nil?
                 reportable_datum = DocumentDatum.create(document_id: requirement.reportable_id)
               end
+
               scheme_mix_criterion.requirement_data.create(reportable_data_type: 'DocumentDatum', reportable_data_id: reportable_datum.id)
           end
         end

@@ -4,6 +4,8 @@ class SchemeMixCriterion < ActiveRecord::Base
   belongs_to :scheme_mix
   belongs_to :scheme_criterion
 
+  validates :targeted_score, presence: true
+
   scope :for_category, ->(category) {
     includes(:scheme_criterion => [:criterion])
     .where(criteria: { category_id: category.id} )

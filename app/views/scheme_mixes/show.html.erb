@@ -126,32 +126,4 @@
             </div>
         </div>
     </div>
-
-    <% # todo: move the form below to the scheme_mix_criterion form %>
-    <div class="col-md-12">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <h5>Form</h5>
-            </div>
-            <div class="ibox-content">
-                <% @scheme_mix.scheme_mix_criteria.each do |scheme_mix_criterion| %>
-                    <% scheme_mix_criterion.scheme_criterion.requirements.each do |requirement| %>
-                        <% calculator_template = requirement.reportable.class_name.constantize.name.demodulize.downcase %>
-                        <div>
-                            <%= render "calculator/#{calculator_template}", calculator: requirement.reportable %>
-                        </div>
-                        <% requirement.reportable.fields.each do |field| %>
-                            <% if File.exist?("app/views/field/#{calculator_template}/_#{field.name}.html.erb") %>
-                                <%= render "field/#{calculator_template}/#{field.name}", field: field %>
-                            <% else %>
-                                <%= render "field/textfield", field: field %>
-                            <% end %>
-                            <div>
-                            </div>
-                        <% end %>
-                    <% end %>
-                <% end %>
-            </div>
-        </div>
-    </div>
 </div>

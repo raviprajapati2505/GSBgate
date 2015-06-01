@@ -1,0 +1,67 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>Criterion details</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                    <div class="col-md-12">
+                        ...
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-6">
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>Score</h5>
+            </div>
+            <div class="ibox-content">
+                <%= bootstrap_form_for([@project, @certification_path, @scheme_mix, @scheme_mix_criterion], url: project_certification_path_scheme_mix_scheme_mix_criterium_path, remote: true) do |f| %>
+                    <% if @scheme_mix_criterion.errors.any? %>
+                        <div id="error_explanation">
+                            <h2><%= pluralize(@scheme_mix_criterion.errors.count, "error") %> prohibited this criterion from being saved:</h2>
+
+                            <ul>
+                                <% @scheme_mix_criterion.errors.full_messages.each do |message| %>
+                                    <li><%= message %></li>
+                                <% end %>
+                            </ul>
+                        </div>
+                    <% end %>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <%= f.text_field :targeted_score %>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="hr-line-dashed"></div>
+                            <%= f.primary %> or <%= link_to 'Cancel', project_certification_path_scheme_mix_path(@project, @certification_path, @scheme_mix), class: 'btn btn-default' %>
+                        </div>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>Requirements</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="accordion" class="panel-group">
+                            <%= render "requirement_data/form", scheme_mix_criterion: @scheme_mix_criterion %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

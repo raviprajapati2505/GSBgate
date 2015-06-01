@@ -1,1 +1,5 @@
-Textfield: <input type="text" />
+<div class="row">
+    <div class="col-md-12">
+        <%= f.text_field "field-data-#{field_data.id}", value: field_data.string_value, label: field_data.field.label %>
+    </div>
+</div>

@@ -3,9 +3,12 @@ Rails.application.routes.draw do
   resources :projects do
     resources :project_authorizations, only: [ :index, :new, :create, :edit, :update, :destroy ], path: 'authorizations'
     resources :certification_paths, except: [ :edit, :update, :destroy ], path: 'certificates' do
-      resources :scheme_mixes, only: [ :show ], path: 'schemes'
+      resources :scheme_mixes, only: [ :edit, :show ], path: 'schemes' do
+        resources :scheme_mix_criteria, only: [:edit, :update], path: 'criteria'
+      end
     end
   end
+  resources :requirement_data, only: [:update]
   resources :users
   devise_for :user
 

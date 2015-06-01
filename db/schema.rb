@@ -11,11 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150529135325) do
+ActiveRecord::Schema.define(version: 20150601060908) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
+
+  create_table "calculator_data", force: :cascade do |t|
+    t.integer  "calculator_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "calculator_data", ["calculator_id"], name: "index_calculator_data_on_calculator_id", using: :btree
 
   create_table "calculators", force: :cascade do |t|
     t.string   "class_name"
@@ -81,8 +89,9 @@ ActiveRecord::Schema.define(version: 20150529135325) do
     t.integer  "field_id"
     t.string   "string_value"
     t.integer  "integer_value"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+    t.integer  "calculator_datum_id"
   end
 
   add_index "field_data", ["field_id"], name: "index_field_data_on_field_id", using: :btree
@@ -185,8 +194,8 @@ ActiveRecord::Schema.define(version: 20150529135325) do
     t.datetime "updated_at",              null: false
   end
 
-  add_index "scheme_mix_criteria_requirement_data", ["requirement_datum_id"], name: "by_requirement_datum", unique: true, using: :btree
-  add_index "scheme_mix_criteria_requirement_data", ["scheme_mix_criterion_id"], name: "by_scheme_mix_criterion", unique: true, using: :btree
+  add_index "scheme_mix_criteria_requirement_data", ["requirement_datum_id"], name: "by_requirement_datum", using: :btree
+  add_index "scheme_mix_criteria_requirement_data", ["scheme_mix_criterion_id"], name: "by_scheme_mix_criterion", using: :btree
 
   create_table "scheme_mixes", force: :cascade do |t|
     t.integer  "certification_path_id"
@@ -237,6 +246,7 @@ ActiveRecord::Schema.define(version: 20150529135325) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  add_foreign_key "calculator_data", "calculators"
   add_foreign_key "certification_paths", "projects"
   add_foreign_key "criteria", "categories"
   add_foreign_key "document_data", "documents"
