@@ -8,12 +8,36 @@ class SchemeMix < ActiveRecord::Base
 
   after_create :create_descendant_records
 
+  def weighted_min_score
+    weighted_max_attainable_score = 0
+    scheme_mix_criteria.each do |scheme_mix_criteria|
+      weighted_max_attainable_score += scheme_mix_criteria.scheme_criterion.scores.to_a.min_by(&:score).score * scheme_mix_criteria.scheme_criterion.weight / 100 * weight / 100
+    end
+    return weighted_max_attainable_score
+  end
+
+  def weighted_max_attainable_score
+    weighted_max_attainable_score = 0
+    scheme_mix_criteria.each do |scheme_mix_criteria|
+      weighted_max_attainable_score += scheme_mix_criteria.scheme_criterion.scores.to_a.max_by(&:score).score * scheme_mix_criteria.scheme_criterion.weight / 100 * weight / 100
+    end
+    return weighted_max_attainable_score
+  end
+
   def weighted_targeted_score_for_category(category)
     scheme_mix_criteria.for_category(category).joins(:scheme_criterion).sum('targeted_score * scheme_criteria.weight / 100')
   end
 
+  def weighted_targeted_score
+    scheme_mix_criteria.joins(:scheme_criterion).joins(:scheme_mix).sum('targeted_score * scheme_criteria.weight / 100 * scheme_mixes.weight / 100')
+  end
+
   def weighted_submitted_score_for_category(category)
     scheme_mix_criteria.for_category(category).joins(:scheme_criterion).sum('submitted_score * scheme_criteria.weight / 100')
+  end
+
+  def weighted_submitted_score
+    scheme_mix_criteria.joins(:scheme_criterion).joins(:scheme_mix).sum('submitted_score * scheme_criteria.weight / 100 * scheme_mixes.weight / 100')
   end
 
   private

@@ -21,6 +21,22 @@
                     <strong>Scheme:</strong>
                     <%= @scheme_mix.scheme.full_label %>
                 </p>
+                <p>
+                    <strong>Weighting:</strong>
+                    <%= @scheme_mix.weight %> %
+                </p>
+                <p>
+                    <strong>Points:</strong>
+                    <div class="score-graph"
+                         data-show-x-axis="true"
+                         data-width="250"
+                         data-height="50"
+                         data-min="<%= @scheme_mix.weighted_min_score.floor(1) %>"
+                         data-max="<%= @scheme_mix.weighted_max_attainable_score.ceil(1) %>"
+                         data-max-attainable="<%= @scheme_mix.weighted_max_attainable_score %>"
+                         data-targeted="<%= @scheme_mix.weighted_targeted_score %>"
+                         data-submitted="<%= @scheme_mix.weighted_submitted_score %>"></div>
+                </p>
             </div>
         </div>
     </div>
@@ -37,7 +53,7 @@
                             <th>Code</th>
                             <th>Name</th>
                             <th>Weighting</th>
-                            <th>Score</th>
+                            <th>Points</th>
                         </tr>
                         </thead>
                         <tbody>
