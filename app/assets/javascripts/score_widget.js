@@ -1,14 +1,14 @@
 $(function () {
     $('.score-graph').each(function () {
-        score_graph(this, $(this).data('show-x-axis'), $(this).data('width'), $(this).data('height'), $(this).data('min'), $(this).data('max'), $(this).data('maxAttainable'), $(this).data('targeted'), $(this).data('submitted'));
+        score_graph(this, $(this).data('show-legend'),  $(this).data('show-x-axis'), $(this).data('width'), $(this).data('height'), $(this).data('min'), $(this).data('max'), $(this).data('maxAttainable'), $(this).data('targeted'), $(this).data('submitted'));
     });
 });
 
-function score_graph($element, showXaxis, width, height, min, max, maxAttainable, targeted, submitted) {
+function score_graph($element, showLegend, showXaxis, width, height, min, max, maxAttainable, targeted, submitted) {
     if (!showXaxis) {
         height -= 18;
     }
-    var margin = {top: (showXaxis ? 18 : 0), right: 10, bottom: 0, left: 10},
+    var margin = {top: (showXaxis ? 18 : 0), right: 130, bottom: 0, left: 10},
         graph_width = width - margin.left - margin.right,
         graph_height = height - margin.top - margin.bottom,
         data = [{class: 'progress-bar-max', value: maxAttainable}, {class: 'progress-bar-targeted', value: targeted}, {class: 'progress-bar-submitted', value: submitted}];
@@ -35,9 +35,8 @@ function score_graph($element, showXaxis, width, height, min, max, maxAttainable
             .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
     var bars = svg.selectAll('.bar')
-                .data(data)
-                .enter()
-                .append('g')
+                    .data(data)
+                .enter().append('g')
                     .attr('class', 'progress-bar');
 
     bars.append('rect')
@@ -73,7 +72,7 @@ function score_graph($element, showXaxis, width, height, min, max, maxAttainable
             return d.value < 0 ? 'end' : 'start';
         });
 
-    if (showXaxis) {
+    if (showXaxis == true) {
         svg.append('g')
             .attr('class', 'x axis')
             .call(xAxis);
@@ -85,5 +84,30 @@ function score_graph($element, showXaxis, width, height, min, max, maxAttainable
             .attr('x1', x(0))
             .attr('x2', x(0))
             .attr('y2', graph_height);
+
+    if (showLegend == true) {
+        var legend = svg.selectAll('.legend')
+                .data([{class: 'progress-bar-max', value: 'Max. Attainable'}, {class: 'progress-bar-targeted', value: 'Targeted'}, {class: 'progress-bar-submitted', value: 'Submitted'}])
+            .enter().append('g')
+                .attr('class', 'legend')
+                .attr('transform', function (d, i) {
+                    return 'translate(0,' + i * 10 + ')';
+                });
+
+        legend.append('rect')
+            .attr('class', function (d) {
+                return d.class;
+            })
+            .attr('x', width - 100)
+            .attr('width', 9)
+            .attr('height', 9);
+
+        legend.append('text')
+            .attr('x', width - 90)
+            .attr('y', 9)
+            .text(function (d) {
+                return d.value;
+            });
+    }
 
 }

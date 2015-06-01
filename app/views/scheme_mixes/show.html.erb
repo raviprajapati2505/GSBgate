@@ -28,8 +28,9 @@
                 <p>
                     <strong>Points:</strong>
                     <div class="score-graph"
+                         data-show-legend="true"
                          data-show-x-axis="true"
-                         data-width="250"
+                         data-width="380"
                          data-height="50"
                          data-min="<%= @scheme_mix.weighted_min_score.floor(1) %>"
                          data-max="<%= @scheme_mix.weighted_max_attainable_score.ceil(1) %>"
@@ -66,8 +67,9 @@
                             <td><%= @scheme_mix.scheme.total_weight_for_category(category) %> %</td>
                             <td>
                                 <div class="score-graph"
+                                     data-show-legend="false"
                                      data-show-x-axis="<%= if i == 0 then true else false end %>"
-                                     data-width="250"
+                                     data-width="380"
                                      data-height="50"
                                      data-min="<%= min_weighted_score.round(1) %>"
                                      data-max="<%= max_weighted_score.round(1) %>"
@@ -99,8 +101,9 @@
                                                 <td><%= scheme_mix_criterion.scheme_criterion.weight %> %</td>
                                                 <td>
                                                     <div class="score-graph"
+                                                         data-show-legend="false"
                                                          data-show-x-axis="<%= if j == 0 then true else false end %>"
-                                                         data-width="250"
+                                                         data-width="380"
                                                          data-height="50"
                                                          data-min="<%= min_score %>"
                                                          data-max="<%= max_score %>"
