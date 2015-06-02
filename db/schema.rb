@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150601060908) do
+ActiveRecord::Schema.define(version: 20150602083226) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -247,15 +247,18 @@ ActiveRecord::Schema.define(version: 20150601060908) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
   add_foreign_key "calculator_data", "calculators"
+  add_foreign_key "certification_paths", "certificates"
   add_foreign_key "certification_paths", "projects"
   add_foreign_key "criteria", "categories"
   add_foreign_key "document_data", "documents"
+  add_foreign_key "field_data", "calculator_data"
   add_foreign_key "field_data", "fields"
   add_foreign_key "fields", "calculators"
   add_foreign_key "project_authorizations", "categories"
   add_foreign_key "project_authorizations", "projects"
   add_foreign_key "project_authorizations", "users"
   add_foreign_key "projects", "users"
+  add_foreign_key "requirement_data", "requirements"
   add_foreign_key "scheme_criteria", "criteria"
   add_foreign_key "scheme_criteria", "schemes"
   add_foreign_key "scheme_criterion_requirements", "requirements"
@@ -267,4 +270,5 @@ ActiveRecord::Schema.define(version: 20150601060908) do
   add_foreign_key "scheme_mixes", "certification_paths"
   add_foreign_key "scheme_mixes", "schemes"
   add_foreign_key "schemes", "certificates"
+  add_foreign_key "scores", "scheme_criteria"
 end
