@@ -34,11 +34,11 @@ class Ability
     if user.system_admin?
       can :manage, :all
     elsif user.assessor?
-      can :manage, Project, user_id: user.id
-      can :manage, ProjectAuthorization, project: {user_id: user.id}
+      can :manage, Project, owner_id: user.id
+      can :manage, ProjectAuthorization, project: {owner_id: user.id}
       # can :new, ProjectAuthorization
       # can :create, ProjectAuthorization
-      can :manage, CertificationPath, project: {user_id: user.id}
+      can :manage, CertificationPath, project: {owner_id: user.id}
       # can :new, CertificationPath
       # can :create, CertificationPath
 
