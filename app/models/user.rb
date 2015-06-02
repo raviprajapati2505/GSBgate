@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  enum role: [ :system_admin, :certifier_project_manager, :certifier_team_member, :project_team_member, :enterprise_licence, :operations_inspector, :anonymous ]
+  enum role: [ :system_admin, :certifier, :assessor, :enterprise_licence ]
 
   has_many :owned_projects, class_name: 'Project', inverse_of: :owner
   has_many :project_authorizations
@@ -25,9 +25,9 @@ class User < ActiveRecord::Base
   }
 
   scope :without_permissions_for_project, ->(project) {
-    where(role: [ 3, 4 ])
+    where(role: 2)
     .includes(:owned_projects).where(projects: {user_id: nil})
-    .includes(:project_authorizations).where('project_authorizations.project_id is null or project_authorizations.project_id <> ?', project.id)
+        .where.not('exists(select id from project_authorizations where user_id = users.id and project_id = ?)', project.id)
   }
 
   before_validation :assign_default_role, on: :create
@@ -36,7 +36,7 @@ class User < ActiveRecord::Base
 
   private
   def assign_default_role
-    self.role = :anonymous if self.role.nil?
+    self.role = :assessor if self.role.nil?
   end
 
 end
