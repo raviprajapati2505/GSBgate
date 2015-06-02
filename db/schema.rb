@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150602083226) do
+ActiveRecord::Schema.define(version: 20150602080501) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -114,16 +114,15 @@ ActiveRecord::Schema.define(version: 20150602083226) do
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.integer  "permission"
-    t.integer  "category_id"
+    t.integer  "requirement_datum_id"
   end
 
-  add_index "project_authorizations", ["category_id"], name: "index_project_authorizations_on_category_id", using: :btree
   add_index "project_authorizations", ["project_id"], name: "index_project_authorizations_on_project_id", using: :btree
+  add_index "project_authorizations", ["requirement_datum_id"], name: "index_project_authorizations_on_requirement_datum_id", using: :btree
   add_index "project_authorizations", ["user_id"], name: "index_project_authorizations_on_user_id", using: :btree
 
   create_table "projects", force: :cascade do |t|
     t.string    "name"
-    t.integer   "user_id"
     t.datetime  "created_at",                                                                 null: false
     t.datetime  "updated_at",                                                                 null: false
     t.text      "description"
@@ -135,9 +134,9 @@ ActiveRecord::Schema.define(version: 20150602083226) do
     t.integer   "certified_area"
     t.integer   "carpark_area"
     t.integer   "project_site_area"
+    t.integer   "client_id"
+    t.integer   "owner_id"
   end
-
-  add_index "projects", ["user_id"], name: "index_projects_on_user_id", using: :btree
 
   create_table "requirement_data", force: :cascade do |t|
     t.integer  "reportable_data_id"
@@ -194,8 +193,8 @@ ActiveRecord::Schema.define(version: 20150602083226) do
     t.datetime "updated_at",              null: false
   end
 
-  add_index "scheme_mix_criteria_requirement_data", ["requirement_datum_id"], name: "by_requirement_datum", using: :btree
-  add_index "scheme_mix_criteria_requirement_data", ["scheme_mix_criterion_id"], name: "by_scheme_mix_criterion", using: :btree
+  add_index "scheme_mix_criteria_requirement_data", ["requirement_datum_id"], name: "by_requirement_datum", unique: true, using: :btree
+  add_index "scheme_mix_criteria_requirement_data", ["scheme_mix_criterion_id"], name: "by_scheme_mix_criterion", unique: true, using: :btree
 
   create_table "scheme_mixes", force: :cascade do |t|
     t.integer  "certification_path_id"
@@ -254,8 +253,8 @@ ActiveRecord::Schema.define(version: 20150602083226) do
   add_foreign_key "field_data", "calculator_data"
   add_foreign_key "field_data", "fields"
   add_foreign_key "fields", "calculators"
-  add_foreign_key "project_authorizations", "categories"
   add_foreign_key "project_authorizations", "projects"
+  add_foreign_key "project_authorizations", "requirement_data"
   add_foreign_key "project_authorizations", "users"
   add_foreign_key "projects", "users"
   add_foreign_key "requirement_data", "requirements"

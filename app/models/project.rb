@@ -1,7 +1,8 @@
 class Project < ActiveRecord::Base
 
   # reference to project owner
-  belongs_to :owner, class_name: 'User', foreign_key: 'user_id', inverse_of: :owned_projects
+  belongs_to :owner, class_name: 'User', inverse_of: :owned_projects
+  belongs_to :client, class_name: 'User'
   has_many :project_authorizations
   has_many :users, through: :project_authorizations
   has_many :certification_paths

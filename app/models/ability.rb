@@ -56,9 +56,9 @@ class Ability
         can :create, CertificationPath
       end
     elsif user.enterprise_licence?
-      can :read, Project, project_authorizations: {user_id: user.id}
-      can :read, ProjectAuthorization, project: {project_authorizations: {user_id: user.id}}
-      can :read, CertificationPath, project: {certification_paths: {user_id: user.id}}
+      can :read, Project, client_id: user.id
+      can :read, ProjectAuthorization, project: {client_id: user.id}
+      can :read, CertificationPath, project: {client_id: user.id}
 
     else
       cannot :manage, :all

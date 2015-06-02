@@ -15,5 +15,5 @@ Project.create!(name: 'Qatar University', owner: User.find_by_email('owner@examp
 Project.create!(name: 'Site of Doha Convention Center and Tower', owner: User.find_by_email('owner@example.com'), address: 'Site of Doha Convention Center and Tower, Diplomatic Area', location: 'Doha', country: 'Qatar', latlng: 'POINT(51.531711 25.323105)')
 
 ProjectAuthorization.create!(user: User.find_by_email('manager@example.com'), project: Project.find_by_name('Grand Hyatt Doha'), permission: :manage)
-ProjectAuthorization.create!(user: User.find_by_email('read_write@example.com'), project: Project.find_by_name('Grand Hyatt Doha'), permission: :read_and_write, category: Category.find_by_code('E'))
+ProjectAuthorization.create!(user: User.find_by_email('read_write@example.com'), project: Project.find_by_name('Grand Hyatt Doha'), permission: :read_and_write)
 ProjectAuthorization.create!(user: User.find_by_email('enterprise@example.com'), project: Project.find_by_name('Grand Hyatt Doha'), permission: :read_only)
