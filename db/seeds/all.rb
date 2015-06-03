@@ -137,7 +137,7 @@ SchemeCriterionRequirement.create!(scheme_criterion: sc_op_ex1, requirement: req
 SchemeCriterionRequirement.create!(scheme_criterion: sc_op_ex1, requirement: req2)
 SchemeCriterionRequirement.create!(scheme_criterion: sc_op_wx1, requirement: req2)
 Field.create!(label: 'Yearly energy usage', name: 'kwh_year', calculator: ec1)
-Field.create!(label: 'Yearly water usage', name: 'l_year', calculator: wc1)
+Field.create!(label: 'Yearly water usage', name: 'l_year', suffix: 'liter', help_text: 'Please provide the yearly water usage in liter.', calculator: wc1)
 
 
 # sc_op_e1 = SchemeCriterion.create!(scheme: Scheme.find_by_label('Operations'), criterion: Criterion.find_by_code('E.1'), weight: 5.2)
