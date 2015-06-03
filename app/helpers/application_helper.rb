@@ -17,6 +17,10 @@ module ApplicationHelper
   end
 
   def tooltip(title)
-    '<span class="tooltip-icon" data-toggle="tooltip" data-placement="top" title="' + title + '"><i class="fa fa-question-circle"></i></span>'
+    if title.blank?
+      ''
+    else
+      '<span class="tooltip-icon" data-toggle="tooltip" data-placement="top" title="' + title + '"><i class="fa fa-question-circle"></i></span>'
+    end
   end
 end
