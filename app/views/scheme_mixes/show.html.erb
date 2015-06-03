@@ -38,6 +38,10 @@
                          data-targeted="<%= @scheme_mix.weighted_targeted_score %>"
                          data-submitted="<%= @scheme_mix.weighted_submitted_score %>"></div>
                 </p>
+                <p>
+                    <strong>Requirement progress:</strong>
+                    <%= RequirementDatum.for_scheme_mix(@scheme_mix).provided.count %>/<%= RequirementDatum.for_scheme_mix(@scheme_mix).count %>
+                </p>
             </div>
         </div>
     </div>
@@ -78,7 +82,7 @@
                                      data-targeted="<%= @scheme_mix.weighted_targeted_score_for_category(category) %>"
                                      data-submitted="<%= @scheme_mix.weighted_submitted_score_for_category(category) %>"></div>
                             </td>
-                            <td><%= RequirementDatum.for_scheme_mix_and_category(@scheme_mix, category).provided.count %>/<%= RequirementDatum.for_scheme_mix_and_category(@scheme_mix, category).count %></td>
+                            <td><%= RequirementDatum.for_scheme_mix(@scheme_mix).for_category(category).provided.count %>/<%= RequirementDatum.for_scheme_mix(@scheme_mix).for_category(category).count %></td>
                         </tr>
                         <tr id="category-panel-<%= category.id %>" class="accordion-body collapse">
                             <td colspan="5">

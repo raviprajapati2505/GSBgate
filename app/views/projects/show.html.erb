@@ -134,7 +134,7 @@
                     <% @project.users.distinct.each do |user| %>
                     <tr>
                         <td><%= user.email %></td>
-                        <td><%= RequirementDatum.for_user_and_project(user, @project).provided.count %>/<%= RequirementDatum.for_user_and_project(user, @project).count %></td>
+                        <td><%= RequirementDatum.for_user(user).for_project(@project).provided.count %>/<%= RequirementDatum.for_user(user).for_project(@project).count %></td>
                     </tr>
                     <% end %>
                     </tbody>

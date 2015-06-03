@@ -15,12 +15,20 @@ class RequirementDatum < ActiveRecord::Base
     where(status: 1)
   }
 
-  scope :for_user_and_project, ->(user, project) {
-    includes(:project_authorization).where(project_authorizations: {user_id: user.id, project_id: project.id})
+  scope :for_user, ->(user) {
+    includes(:project_authorization).where(project_authorizations: {user_id: user.id})
   }
 
-  scope :for_scheme_mix_and_category, ->(scheme_mix, category) {
-    includes(:scheme_mix_criteria => [:scheme_criterion => [:criterion]]).where(scheme_mix_criteria: {scheme_mix: scheme_mix}, criteria: {category_id: category.id})
+  scope :for_project, ->(project) {
+    includes(:scheme_mix_criteria => [:scheme_mix => [:certification_path]]).where(certification_paths: {project_id: project.id})
+  }
+
+  scope :for_category, ->(category) {
+    includes(:scheme_mix_criteria => [:scheme_criterion => [:criterion]]).where(criteria: {category_id: category.id})
+  }
+
+  scope :for_scheme_mix, ->(scheme_mix) {
+    includes(:scheme_mix_criteria).where(scheme_mix_criteria: {scheme_mix: scheme_mix})
   }
 
   private
