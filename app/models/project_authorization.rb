@@ -6,4 +6,8 @@ class ProjectAuthorization < ActiveRecord::Base
   enum permission: [ :read_only, :read_and_write, :manage ]
 
   validates :permission, inclusion: ProjectAuthorization.permissions.keys
+
+  scope :for_user_and_project, ->(user, project) {
+    where(user: user, project: project)
+  }
 end
