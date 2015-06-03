@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150602131840) do
+ActiveRecord::Schema.define(version: 20150603112625) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -104,6 +104,10 @@ ActiveRecord::Schema.define(version: 20150602131840) do
     t.string   "validation"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
+    t.boolean  "required"
+    t.text     "help_text"
+    t.string   "prefix"
+    t.string   "suffix"
   end
 
   add_index "fields", ["calculator_id"], name: "index_fields_on_calculator_id", using: :btree
