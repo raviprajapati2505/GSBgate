@@ -149,6 +149,7 @@ ActiveRecord::Schema.define(version: 20150603112625) do
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
     t.integer  "requirement_id"
+    t.integer  "status"
   end
 
   create_table "requirements", force: :cascade do |t|

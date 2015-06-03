@@ -2,10 +2,7 @@
 User.create!(email: 'admin@vito.be', password: 'gsas-secret', password_confirmation: 'gsas-secret', role: :system_admin)
 
 User.create!(email: 'owner@example.com', password: 'password', password_confirmation: 'password', role: :assessor)
-User.create!(email: 'manager@example.com', password: 'password', password_confirmation: 'password', role: :assessor)
-User.create!(email: 'read_write@example.com', password: 'password', password_confirmation: 'password', role: :assessor)
 User.create!(email: 'enterprise@example.com', password: 'password', password_confirmation: 'password', role: :enterprise_licence)
-User.create!(email: 'no_member@example.com', password: 'password', password_confirmation: 'password', role: :assessor)
 User.create!(email: 'certifier_pm@example.com', password: 'password', password_confirmation: 'password', role: :certifier)
 
 Project.create!(name: 'Grand Hyatt Doha', owner: User.find_by_email('owner@example.com'), client: User.find_by_email('enterprise@example.com'), certifier: User.find_by_email('certifier_pm@example.com'), address: 'Grand Hyatt Doha, Box 24010', location: 'Doha', country: 'Qatar', latlng: 'POINT(51.528132 25.377381)')
@@ -14,7 +11,3 @@ Project.create!(name: 'Gulf Laboratory & X-Ray', owner: User.find_by_email('owne
 Project.create!(name: 'Qatar Science & Technology Park (QSTP)', owner: User.find_by_email('owner@example.com'), client: User.find_by_email('enterprise@example.com'), certifier: User.find_by_email('certifier_pm@example.com'), address: 'Education City, Al Luqta St, Ar-Rayy?n', location: 'Doha', country: 'Qatar', latlng: 'POINT(51.437160 25.324565)')
 Project.create!(name: 'Qatar University', owner: User.find_by_email('owner@example.com'), client: User.find_by_email('enterprise@example.com'), certifier: User.find_by_email('certifier_pm@example.com'), address: 'Qatar University, Al Tarfa', location: 'Doha', country: 'Qatar', latlng: 'POINT(51.487169 25.377217)')
 Project.create!(name: 'Site of Doha Convention Center and Tower', owner: User.find_by_email('owner@example.com'), client: User.find_by_email('enterprise@example.com'), certifier: User.find_by_email('certifier_pm@example.com'), address: 'Site of Doha Convention Center and Tower, Diplomatic Area', location: 'Doha', country: 'Qatar', latlng: 'POINT(51.531711 25.323105)')
-
-ProjectAuthorization.create!(user: User.find_by_email('manager@example.com'), project: Project.find_by_name('Grand Hyatt Doha'), permission: :manage)
-ProjectAuthorization.create!(user: User.find_by_email('read_write@example.com'), project: Project.find_by_name('Grand Hyatt Doha'), permission: :read_and_write)
-ProjectAuthorization.create!(user: User.find_by_email('enterprise@example.com'), project: Project.find_by_name('Grand Hyatt Doha'), permission: :read_only)

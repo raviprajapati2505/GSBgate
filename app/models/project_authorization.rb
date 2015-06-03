@@ -7,7 +7,4 @@ class ProjectAuthorization < ActiveRecord::Base
 
   validates :permission, inclusion: ProjectAuthorization.permissions.keys
 
-  scope :for_user_and_project, ->(user, project) {
-    where(user: user, project: project)
-  }
 end

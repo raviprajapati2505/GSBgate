@@ -55,6 +55,7 @@
                             <th>Name</th>
                             <th>Weighting</th>
                             <th>Points</th>
+                            <th>Requirement progress</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -77,9 +78,10 @@
                                      data-targeted="<%= @scheme_mix.weighted_targeted_score_for_category(category) %>"
                                      data-submitted="<%= @scheme_mix.weighted_submitted_score_for_category(category) %>"></div>
                             </td>
+                            <td><%= RequirementDatum.for_scheme_mix_and_category(@scheme_mix, category).provided.count %>/<%= RequirementDatum.for_scheme_mix_and_category(@scheme_mix, category).count %></td>
                         </tr>
                         <tr id="category-panel-<%= category.id %>" class="accordion-body collapse">
-                            <td colspan="4">
+                            <td colspan="5">
                                 <div>
                                     <table class="table">
                                         <thead>
@@ -88,7 +90,7 @@
                                             <th>Name</th>
                                             <th>Weighting</th>
                                             <th>Score</th>
-                                            <th>Requirement count</th>
+                                            <th>Requirement progress</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -111,7 +113,7 @@
                                                          data-targeted="<%= scheme_mix_criterion.targeted_score %>"
                                                          data-submitted="<%= scheme_mix_criterion.submitted_score %>"></div>
                                                 </td>
-                                                <td><%= scheme_mix_criterion.scheme_criterion.requirements.count %></td>
+                                                <td><%= scheme_mix_criterion.requirement_data.provided.count %>/<%= scheme_mix_criterion.requirement_data.count %></td>
                                             </tr>
                                         <% end %>
                                         </tbody>

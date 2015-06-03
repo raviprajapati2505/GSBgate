@@ -123,23 +123,24 @@
                 <% if @project.users.distinct.count == 0%>
                 <p>This project has no team members.</p>
                 <% else %>
-                <table class="table table-striped table-bordered table-hover">
+                <table class="table table-striped table-bordered table-hover datatable">
                     <thead>
                     <tr>
                         <th>Member</th>
-                        <th>Requirement count</th>
+                        <th>Requirement progress</th>
                     </tr>
                     </thead>
                     <tbody>
                     <% @project.users.distinct.each do |user| %>
                     <tr>
                         <td><%= user.email %></td>
-                        <td><%= ProjectAuthorization.for_user_and_project(user, @project).count %></td>
+                        <td><%= RequirementDatum.for_user_and_project(user, @project).provided.count %>/<%= RequirementDatum.for_user_and_project(user, @project).count %></td>
                     </tr>
                     <% end %>
                     </tbody>
                 </table>
                 <% end %>
+                <div class="hr-line-dashed"></div>
             </div>
         </div>
     </div>
