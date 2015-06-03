@@ -194,8 +194,8 @@ ActiveRecord::Schema.define(version: 20150602131840) do
     t.datetime "updated_at",              null: false
   end
 
-  add_index "scheme_mix_criteria_requirement_data", ["requirement_datum_id"], name: "by_requirement_datum", unique: true, using: :btree
-  add_index "scheme_mix_criteria_requirement_data", ["scheme_mix_criterion_id"], name: "by_scheme_mix_criterion", unique: true, using: :btree
+  add_index "scheme_mix_criteria_requirement_data", ["requirement_datum_id"], name: "by_requirement_datum", using: :btree
+  add_index "scheme_mix_criteria_requirement_data", ["scheme_mix_criterion_id"], name: "by_scheme_mix_criterion", using: :btree
 
   create_table "scheme_mixes", force: :cascade do |t|
     t.integer  "certification_path_id"
