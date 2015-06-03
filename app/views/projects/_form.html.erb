@@ -33,6 +33,16 @@
                             <%= f.text_field :certified_area, append: 'm²', label: (Project.human_attribute_name('certified_area') + tooltip(t '.tooltip_certified_area')).html_safe %>
                             <%= f.text_field :carpark_area, append: 'm²', label: (Project.human_attribute_name('carpark_area') + tooltip(t '.tooltip_carpark_area')).html_safe %>
                             <%= f.text_field :project_site_area, append: 'm²', label: (Project.human_attribute_name('project_site_area') + tooltip(t '.tooltip_project_site_area')).html_safe %>
+                            <% if current_user.system_admin? %>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">Admin fields</div>
+                                    <div class="panel-body">
+                                        <%= f.select :owner_id, User.with_assessor_role.map { |k| [k.email, k.id]}, {}, { class: 'chosen-select'} %>
+                                        <%= f.select :client_id, User.with_enterprise_role.map { |k| [k.email, k.id]}, {}, { class: 'chosen-select'} %>
+                                        <%= f.select :certifier_id, User.with_certifier_role.map { |k| [k.email, k.id]}, {}, { class: 'chosen-select'} %>
+                                    </div>
+                                </div>
+                            <% end %>
                         </div>
                         <div class="col-md-6">
                             <div class="alert alert-info" role="alert">

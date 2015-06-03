@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150602083226) do
+ActiveRecord::Schema.define(version: 20150602131840) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -136,6 +136,7 @@ ActiveRecord::Schema.define(version: 20150602083226) do
     t.integer   "project_site_area"
     t.integer   "client_id"
     t.integer   "owner_id"
+    t.integer   "certifier_id"
   end
 
   create_table "requirement_data", force: :cascade do |t|
@@ -256,6 +257,9 @@ ActiveRecord::Schema.define(version: 20150602083226) do
   add_foreign_key "project_authorizations", "projects"
   add_foreign_key "project_authorizations", "requirement_data"
   add_foreign_key "project_authorizations", "users"
+  add_foreign_key "projects", "users", column: "certifier_id"
+  add_foreign_key "projects", "users", column: "client_id"
+  add_foreign_key "projects", "users", column: "owner_id"
   add_foreign_key "requirement_data", "requirements"
   add_foreign_key "scheme_criteria", "criteria"
   add_foreign_key "scheme_criteria", "schemes"

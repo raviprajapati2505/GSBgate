@@ -47,6 +47,36 @@
                     <input type="hidden" id="project_latlng" value="<%= @project.latlng %>" />
                     <div id="project-map" class="map" style="height: 300px;"></div>
                 </p>
+                <p>
+                    <strong>Certification Goal:</strong>
+                    <!-- targeted_score = @project.certification_paths[0].total_weighted_targeted_score %>
+                    < stars = @project.certification_paths[0].star_rating_for_score(targeted_score) %>
+                    <= stars %>&nbsp;
+                    (< stars.times do %>
+                        <i class="fa fa-star"></i>
+                    < end %>) - <= targeted_score %-->
+                </p>
+                <p>
+                    <strong>Current Rating:</strong>
+                    <!-- submitted_score = @project.certification_paths[0].total_weighted_submitted_score %>
+                    < stars = @project.certification_paths[0].star_rating_for_score(submitted_score) %>
+                    <= stars %>&nbsp;
+                    (< stars.times do %>
+                        <i class="fa fa-star"></i>
+                    < end %>) - <= submitted_score %-->
+                </p>
+                <p>
+                    <strong>Owner:</strong>
+                    <%= @project.owner.email if not @project.owner.nil? %>
+                </p>
+                <p>
+                    <strong>Enterprise client:</strong>
+                    <%= @project.client.email if not @project.client.nil? %>
+                </p>
+                <p>
+                    <strong>Certifier PM:</strong>
+                    <%= @project.certifier.email if not @project.certifier.nil?%>
+                </p>
                 <div class="hr-line-dashed"></div>
                     <%= link_to 'Edit', edit_project_path(@project), :class => 'btn btn-primary' %>
             </div>

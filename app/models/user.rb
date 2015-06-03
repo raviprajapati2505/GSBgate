@@ -12,21 +12,21 @@ class User < ActiveRecord::Base
 
   default_scope { order(email: :asc) }
 
-  scope :with_role_different_from, ->(role) {
-    where.not(role: role)
+  scope :with_certifier_role, -> {
+    where(role: 1)
   }
 
-  scope :with_no_role, -> {
-    where(role: nil)
+  scope :with_assessor_role, -> {
+    where(role: 2)
   }
 
-  scope :with_no_admin_role, -> {
-    with_role_different_from(User.roles[:system_admin]) | with_no_role
+  scope :with_enterprise_role, -> {
+    where(role: 3)
   }
 
   scope :without_permissions_for_project, ->(project) {
     where(role: 2)
-    .includes(:owned_projects).where(projects: {user_id: nil})
+    .includes(:owned_projects).where(projects: {owner_id: nil})
         .where.not('exists(select id from project_authorizations where user_id = users.id and project_id = ?)', project.id)
   }
 
