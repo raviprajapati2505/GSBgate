@@ -11,7 +11,7 @@ class RequirementDataController < AuthenticatedController
             field_datum.save
           end
         end
-      when 'FieldDatum'
+      when 'DocumentDatum'
         # ...
     end
 

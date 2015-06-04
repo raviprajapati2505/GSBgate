@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-md-12">
         <%= f.text_field "field-data-#{field_data.id}",
-                         value: field_data.string_value,
+                         value: field_data.value,
                          label: (field_data.field.label + tooltip(field_data.field.help_text)).html_safe,
                          append: field_data.field.suffix,
                          prepend: field_data.field.prefix %>
