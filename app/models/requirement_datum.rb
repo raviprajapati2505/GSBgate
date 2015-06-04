@@ -27,6 +27,18 @@ class RequirementDatum < ActiveRecord::Base
     includes(:scheme_mix_criteria => [:scheme_criterion => [:criterion]]).where(criteria: {category_id: category.id})
   }
 
+  scope :owned_by_user, ->(user) {
+    joins(:scheme_mix_criteria => [:scheme_mix => [:certification_path => [:project]]]).where(projects: {owner_id: user.id})
+  }
+
+  scope :managed_by_user, ->(user) {
+     joins(:scheme_mix_criteria => [:scheme_mix => [:certification_path => [:project => [:project_authorizations]]]]).where(project_authorizations: {user_id: user.id, permission: ['manage', ProjectAuthorization.permissions[:manage]]})
+  }
+
+  scope :updateable_by_user, ->(user) {
+    owned_by_user(user) | managed_by_user(user) | for_user(user)
+  }
+
   scope :for_scheme_mix, ->(scheme_mix) {
     includes(:scheme_mix_criteria).where(scheme_mix_criteria: {scheme_mix: scheme_mix})
   }

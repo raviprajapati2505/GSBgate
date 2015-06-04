@@ -1,4 +1,4 @@
-<% @scheme_mix_criterion.requirement_data.each_with_index do |requirement_datum, index| %>
+<% @scheme_mix_criterion.requirement_data.updateable_by_user(current_user).each_with_index do |requirement_datum, index| %>
     <div class="panel panel-default">
         <div class="panel-heading">
             <h4 class="panel-title">

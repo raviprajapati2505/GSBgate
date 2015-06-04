@@ -44,7 +44,7 @@ class ProjectAuthorizationsControllerTest < ActionController::TestCase
 
   test "owner should update project authorization" do
     sign_in users(:project_owner)
-    patch :update, authorization: {user_id: users(:project_team_member).id, permission: 'read_and_write', category_id: categories(:two).id}, project_id: projects(:one).id, id: project_authorizations(:one).id
+    patch :update, authorization: {user_id: users(:project_team_member).id, permission: 'read_write', category_id: categories(:two).id}, project_id: projects(:one).id, id: project_authorizations(:one).id
     assert_redirected_to project_project_authorizations_path(project_id: projects(:one).id)
     sign_out users(:project_owner)
   end

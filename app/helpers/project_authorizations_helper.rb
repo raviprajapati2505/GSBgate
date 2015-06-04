@@ -8,7 +8,7 @@ module ProjectAuthorizationsHelper
       disabled = 'disabled=\"disabled"'
       checked = 'checked=\"checked\"'
     else
-      unless permission.nil? || !permission.read_and_write?
+      unless permission.nil? || !permission.read_write?
         checked = 'checked=\"checked\"'
       end
     end

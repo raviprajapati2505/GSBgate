@@ -52,15 +52,15 @@ class ProjectAuthorizationsController < AuthenticatedController
   #       ProjectAuthorization.where(project: @project, user: user, category_id: nil).update_all(permission: :read_only)
   #     end
   #     if not params[:permission].nil?
-  #       # loop over project team members with manage permission or at least 1 read_and_write permission
+  #       # loop over project team members with manage permission or at least 1 read_write permission
   #       params[:permission].each do |user_id, category_permission|
   #         if category_permission.any? { |k, v| k == 'pm' }
   #           # set manager permission
   #           ProjectAuthorization.where(project: @project, user_id: user_id, category_id: nil).update_all(permission: 2)
   #         else
-  #           # set read_and_write permission per category
+  #           # set read_write permission per category
   #           category_permission.each do |category_id, permission|
-  #             ProjectAuthorization.create(project: @project, user_id: user_id, category_id: category_id, permission: :read_and_write)
+  #             ProjectAuthorization.create(project: @project, user_id: user_id, category_id: category_id, permission: :read_write)
   #           end
   #         end
   #       end

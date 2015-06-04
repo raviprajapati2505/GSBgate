@@ -33,17 +33,25 @@
                             </ul>
                         </div>
                     <% end %>
-                    <div class="row">
-                        <div class="col-md-3">
-                            <%= f.text_field :targeted_score %>
+                    <% if can? :manage, @scheme_mix_criterion %>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <%= f.text_field :targeted_score %>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="hr-line-dashed"></div>
-                            <%= f.primary %> or <%= link_to 'Cancel', project_certification_path_scheme_mix_path(@project, @certification_path, @scheme_mix), class: 'btn btn-default' %>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="hr-line-dashed"></div>
+                                <%= f.primary %> or <%= link_to 'Cancel', project_certification_path_scheme_mix_path(@project, @certification_path, @scheme_mix), class: 'btn btn-default' %>
+                            </div>
                         </div>
-                    </div>
+                    <% else %>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <%= f.text_field :targeted_score, disabled: 'disabled' %>
+                            </div>
+                        </div>
+                    <% end %>
                 <% end %>
             </div>
         </div>
