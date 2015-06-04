@@ -8,39 +8,43 @@
             </div>
             <div class="ibox-content">
                 <p>
-                  <strong>Name:</strong>
+                    <strong><%= Project.human_attribute_name('code') %>:</strong>
+                    <%= @project.code %>
+                </p>
+                <p>
+                  <strong><%= Project.human_attribute_name('name') %>:</strong>
                   <%= @project.name %>
                 </p>
                 <p>
-                    <strong>Description:</strong>
+                    <strong><%= Project.human_attribute_name('description') %>:</strong>
                     <%= @project.description %>
                 </p>
                 <p>
-                    <strong>Address:</strong>
+                    <strong><%= Project.human_attribute_name('address') %>:</strong>
                     <%= @project.address %>
                 </p>
                 <p>
-                    <strong>Location:</strong>
+                    <strong><%= Project.human_attribute_name('location') %>:</strong>
                     <%= @project.location %>
                 </p>
                 <p>
-                    <strong>Country:</strong>
+                    <strong><%= Project.human_attribute_name('country') %>:</strong>
                     <%= @project.country%>
                 </p>
                 <p>
-                    <strong>Gross area:</strong>
+                    <strong><%= Project.human_attribute_name('gross_area') %>:</strong>
                     <%= @project.gross_area %> m²
                 </p>
                 <p>
-                    <strong>Certified area:</strong>
+                    <strong><%= Project.human_attribute_name('certified_area') %>:</strong>
                     <%= @project.certified_area %> m²
                 </p>
                 <p>
-                    <strong>Carpark area:</strong>
+                    <strong><%= Project.human_attribute_name('carpark_area') %>:</strong>
                     <%= @project.carpark_area%> m²
                 </p>
                 <p>
-                    <strong>Project site area:</strong>
+                    <strong><%= Project.human_attribute_name('project_site_area') %>:</strong>
                     <%= @project.project_site_area %> m²
                 </p>
                 <p>

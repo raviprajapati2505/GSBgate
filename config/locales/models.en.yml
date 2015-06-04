@@ -2,4 +2,6 @@ en:
   activerecord:
     attributes:
       project:
+        code: "Project ID"
+        name: "Project name"
         carpark_area: "Car park area"
