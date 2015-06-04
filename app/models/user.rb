@@ -24,10 +24,16 @@ class User < ActiveRecord::Base
     where(role: 3)
   }
 
+  scope :not_owning_project, ->(project) {
+    where.not(id: project.owner_id)
+  }
+
+  scope :not_authorized_for_project, ->(project) {
+    where.not('exists(select id from project_authorizations where user_id = users.id and project_id = ?)', project.id)
+  }
+
   scope :without_permissions_for_project, ->(project) {
-    where(role: 2)
-    .includes(:owned_projects).where(projects: {owner_id: nil})
-        .where.not('exists(select id from project_authorizations where user_id = users.id and project_id = ?)', project.id)
+    where(role: 2) & not_owning_project(project) & not_authorized_for_project(project)
   }
 
   before_validation :assign_default_role, on: :create

@@ -1,6 +1,5 @@
 class Project < ActiveRecord::Base
 
-  # reference to project owner
   belongs_to :owner, class_name: 'User', inverse_of: :owned_projects
   belongs_to :client, class_name: 'User'
   belongs_to :certifier, class_name: 'User'
