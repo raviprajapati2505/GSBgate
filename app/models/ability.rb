@@ -42,6 +42,7 @@ class Ability
       # can :new, CertificationPath
       # can :create, CertificationPath
       can :manage, SchemeMix, certification_path: {project: {owner_id: user.id}}
+      can :manage, SchemeMixCriterion, scheme_mix: {certification_path: {project: {owner_id: user.id}}}
 
       can :read, Project, project_authorizations: {user_id: user.id}
       # Waiting for https://github.com/CanCanCommunity/cancancan/pull/196
@@ -57,6 +58,7 @@ class Ability
         can :create, CertificationPath
       end
       can :manage, SchemeMix, certification_path: {project: {project_authorizations: {user_id: user.id, permission:  ['manage', ProjectAuthorization.permissions[:manage]]}}}
+      can :manage, SchemeMixCriterion, scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id, permission:  ['manage', ProjectAuthorization.permissions[:manage]]}}}}
 
     elsif user.enterprise_licence?
       can :read, Project, client_id: user.id
