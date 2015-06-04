@@ -41,42 +41,63 @@ class SchemeMix < ActiveRecord::Base
   end
 
   private
+    # Mirrors all the descendant structural data records of the SchemeMix to user data records
     def create_descendant_records
+      # Loop all the criteria of the scheme
       scheme.scheme_criteria.each do |scheme_criterion|
+        # Create a SchemeMixCriterion for every criterion
         scheme_mix_criterion = SchemeMixCriterion.create(targeted_score: 0, scheme_mix: self, scheme_criterion: scheme_criterion)
 
+        # Loop all requirements of the criterion
         scheme_criterion.requirements.each do |requirement|
           case requirement.reportable_type
             when 'Calculator'
-              reportable_datum = RequirementDatum
+              # Check whether the RequirementDatum record already exists (a Requirement can be linked to multiple scheme criteria)
+              requirement_datum = RequirementDatum
                                   .joins("INNER JOIN scheme_mix_criteria_requirement_data ON scheme_mix_criteria_requirement_data.requirement_datum_id = requirement_data.id")
                                   .joins("INNER JOIN scheme_mix_criteria ON scheme_mix_criteria.id = scheme_mix_criteria_requirement_data.scheme_mix_criterion_id")
                                   .joins("INNER JOIN calculator_data ON calculator_data.id = requirement_data.reportable_data_id")
                                   .where("scheme_mix_criteria.scheme_mix_id = ?", self.id)
                                   .where("calculator_data.calculator_id = ?", requirement.reportable_id).first
 
-              if reportable_datum.nil?
-                reportable_datum = CalculatorDatum.create(calculator_id: requirement.reportable_id)
+              # If RequirementDatum doesn't exist
+              if requirement_datum.nil?
+                # Create a CalculatorDatum
+                calculator_datum = CalculatorDatum.create(calculator_id: requirement.reportable_id)
 
+                # Create a RequirementDatum
+                scheme_mix_criterion.requirement_data.create(reportable_data_type: 'CalculatorDatum', reportable_data_id: calculator_datum.id, requirement_id: requirement.id)
+
+                # Loop all fields of the calculator
                 requirement.reportable.fields.each do |field|
-                  reportable_datum.field_data.create(field_id: field.id)
+                  # Create a FieldDatum for each field
+                  calculator_datum.field_data.create(field_id: field.id, type: field.datum_type)
                 end
+              # If RequirementDatum exists
+              else
+                # Link the SchemeMixCriterium to the existing RequirementDatum
+                scheme_mix_criterion.scheme_mix_criteria_requirement_data.create(requirement_datum_id: requirement_datum.id)
               end
-
-              scheme_mix_criterion.requirement_data.create(reportable_data_type: 'CalculatorDatum', reportable_data_id: reportable_datum.id)
             when 'Document'
-              reportable_datum = RequirementDatum
+              # Check whether the RequirementDatum record already exists (a Requirement can be linked to multiple scheme criteria)
+              requirement_datum = RequirementDatum
                                   .joins("INNER JOIN scheme_mix_criteria_requirement_data ON scheme_mix_criteria_requirement_data.requirement_datum_id = requirement_data.id")
                                   .joins("INNER JOIN scheme_mix_criteria ON scheme_mix_criteria.id = scheme_mix_criteria_requirement_data.scheme_mix_criterion_id")
                                   .joins("INNER JOIN document_data ON document_data.id = requirement_data.reportable_data_id")
                                   .where("scheme_mix_criteria.scheme_mix_id = ?", self.id)
                                   .where("document_data.document_id = ?", requirement.reportable_id).first
 
-              if reportable_datum.nil?
-                reportable_datum = DocumentDatum.create(document_id: requirement.reportable_id)
-              end
+              # If RequirementDatum doesn't exist
+              if requirement_datum.nil?
+                # Create a DocumentDatum
+                document_datum = DocumentDatum.create(document_id: requirement.reportable_id)
 
-              scheme_mix_criterion.requirement_data.create(reportable_data_type: 'DocumentDatum', reportable_data_id: reportable_datum.id)
+                # Create a RequirementDatum
+                scheme_mix_criterion.requirement_data.create(reportable_data_type: 'DocumentDatum', reportable_data_id: document_datum.id, requirement_id: requirement.id)
+              else
+                # Link the SchemeMixCriterium to the existing RequirementDatum
+                scheme_mix_criterion.scheme_mix_criteria_requirement_data.create(requirement_datum_id: requirement_datum.id)
+              end
           end
         end
       end

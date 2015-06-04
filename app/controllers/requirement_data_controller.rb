@@ -7,12 +7,12 @@ class RequirementDataController < AuthenticatedController
       when 'CalculatorDatum'
         @requirement_datum.reportable_data.field_data.each do |field_datum|
           if params["field-data-#{field_datum.id}"]
-            field_datum.string_value = params["field-data-#{field_datum.id}"]
+            field_datum.value = params["field-data-#{field_datum.id}"]
             field_datum.save
           end
         end
       when 'DocumentDatum'
-        # ...
+        # todo
     end
 
     render json: @requirement_datum, status: :ok
