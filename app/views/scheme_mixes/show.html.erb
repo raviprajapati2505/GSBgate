@@ -103,7 +103,7 @@
                                         <% @scheme_mix.scheme_mix_criteria.for_category(category).each_with_index do |scheme_mix_criterion, j| %>
                                             <tr>
                                                 <td><%= scheme_mix_criterion.scheme_criterion.criterion.code %></td>
-                                                <td><%= scheme_mix_criterion.scheme_criterion.criterion.name %></td>
+                                                <td><%= link_to scheme_mix_criterion.scheme_criterion.criterion.name, edit_project_certification_path_scheme_mix_scheme_mix_criterion_path(@certification_path.project, @certification_path, @scheme_mix, scheme_mix_criterion), class: 'btn btn-default' %></td>
                                                 <td><%= scheme_mix_criterion.scheme_criterion.weight %> %</td>
                                                 <td>
                                                     <div class="score-graph"
