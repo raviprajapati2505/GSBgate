@@ -37,7 +37,7 @@ class User < ActiveRecord::Base
   }
 
   scope :authorized_for_project, ->(project) {
-    joins(:project_authorizations).where(project_authorization: {project_id: project.id}).distinct
+    joins(:project_authorizations).where(project_authorizations: {project_id: project.id}).distinct
   }
 
   before_validation :assign_default_role, on: :create

@@ -52,7 +52,9 @@
                     <div id="project-map" class="map" style="height: 300px;"></div>
                 </p>
                 <div class="hr-line-dashed"></div>
+                <% if can? :manage, @project %>
                     <%= link_to 'Edit', edit_project_path(@project), :class => 'btn btn-primary' %>
+                <% end %>
             </div>
         </div>
     </div>
@@ -103,7 +105,9 @@
                     </table>
                 <% end %>
                 <div class="hr-line-dashed"></div>
-                <%= link_to 'Apply for a certificate', new_project_certification_path_path(@project), :class => 'btn btn-primary' %>
+                <% if can? :manage, @project %>
+                    <%= link_to 'Apply for a certificate', new_project_certification_path_path(@project), :class => 'btn btn-primary' %>
+                <% end %>
             </div>
         </div>
         <% if can? :manage, @project %>

@@ -43,6 +43,7 @@ class Ability
       can :create, CertificationPath
       can :manage, SchemeMix, certification_path: {project: {owner_id: user.id}}
       can :manage, SchemeMixCriterion, scheme_mix: {certification_path: {project: {owner_id: user.id}}}
+      can :manage, RequirementDatum, scheme_mix_criteria: {scheme_mix: {certification_path: {project: {owner_id: user.id}}}}
 
       # Waiting for https://github.com/CanCanCommunity/cancancan/pull/196
       can :manage, Project, project_authorizations: {user_id: user.id, permission: ['manage', ProjectAuthorization.permissions[:manage]]}
@@ -50,11 +51,13 @@ class Ability
       can :manage, CertificationPath, project: {project_authorizations: {user_id: user.id, permission: ['manage', ProjectAuthorization.permissions[:manage]]}}
       can :manage, SchemeMix, certification_path: {project: {project_authorizations: {user_id: user.id, permission:  ['manage', ProjectAuthorization.permissions[:manage]]}}}
       can :manage, SchemeMixCriterion, scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id, permission:  ['manage', ProjectAuthorization.permissions[:manage]]}}}}
+      can :manage, RequirementDatum, project_authorization: {user_id: user.id, permission: ['manage', ProjectAuthorization.permissions[:manage]]}
 
       can :read, Project, project_authorizations: {user_id: user.id}
       can :read, CertificationPath, scheme_mixes: {scheme_mix_criteria: {requirement_data: {project_authorization: {user_id: user.id, permission: ['read_write', ProjectAuthorization.permissions[:read_write]]}}}}
       can :read, SchemeMix, scheme_mix_criteria: {requirement_data: {project_authorization: {user_id: user.id, permission: ['read_write', ProjectAuthorization.permissions[:read_write]]}}}
       can :update, SchemeMixCriterion, requirement_data: {project_authorization: {user_id: user.id, permission: ['read_write', ProjectAuthorization.permissions[:read_write]]}}
+      can :update, RequirementDatum, project_authorization: {user_id: user.id, permission: ['read_write', ProjectAuthorization.permissions[:read_write]]}
 
     elsif user.enterprise_licence?
       can :read, Project, client_id: user.id
