@@ -36,7 +36,11 @@ class RequirementDatum < ActiveRecord::Base
   }
 
   scope :updateable_by_user, ->(user) {
-    owned_by_user(user) | managed_by_user(user) | for_user(user)
+    if user.system_admin?
+      all
+    else
+      owned_by_user(user) | managed_by_user(user) | for_user(user)
+    end
   }
 
   scope :for_scheme_mix, ->(scheme_mix) {
