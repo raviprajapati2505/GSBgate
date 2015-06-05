@@ -36,6 +36,10 @@ class User < ActiveRecord::Base
     where(role: 2) & not_owning_project(project) & not_authorized_for_project(project)
   }
 
+  scope :authorized_for_project, ->(project) {
+    joins(:project_authorizations).where(project_authorization: {project_id: project.id}).distinct
+  }
+
   before_validation :assign_default_role, on: :create
 
   validates :role, inclusion: User.roles.keys

@@ -13,10 +13,12 @@ class CertificationPathsController < AuthenticatedController
   end
 
   def new
+    authorize! :manage, @project
     @certification_path = CertificationPath.new(project: @project)
   end
 
   def create
+    authorize! :manage, @project
     @certification_path = CertificationPath.new(certification_path_params)
     @certification_path.registered!
     @certification_path.project = @project

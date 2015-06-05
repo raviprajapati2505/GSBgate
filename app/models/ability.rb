@@ -36,26 +36,18 @@ class Ability
     elsif user.assessor?
       can :manage, Project, owner_id: user.id
       can :manage, ProjectAuthorization, project: {owner_id: user.id}
-      # can :new, ProjectAuthorization
-      # can :create, ProjectAuthorization
+      can :new, ProjectAuthorization
+      can :create, ProjectAuthorization
       can :manage, CertificationPath, project: {owner_id: user.id}
-      # can :new, CertificationPath
-      # can :create, CertificationPath
+      can :new, CertificationPath
+      can :create, CertificationPath
       can :manage, SchemeMix, certification_path: {project: {owner_id: user.id}}
       can :manage, SchemeMixCriterion, scheme_mix: {certification_path: {project: {owner_id: user.id}}}
 
       # Waiting for https://github.com/CanCanCommunity/cancancan/pull/196
       can :manage, Project, project_authorizations: {user_id: user.id, permission: ['manage', ProjectAuthorization.permissions[:manage]]}
       can :manage, ProjectAuthorization, project: {project_authorizations: {user_id: user.id, permission: ['manage', ProjectAuthorization.permissions[:manage]]}}
-      if can? :manage, Project
-        can :new, ProjectAuthorization
-        can :create, ProjectAuthorization
-      end
       can :manage, CertificationPath, project: {project_authorizations: {user_id: user.id, permission: ['manage', ProjectAuthorization.permissions[:manage]]}}
-      if can? :manage, Project
-        can :new, CertificationPath
-        can :create, CertificationPath
-      end
       can :manage, SchemeMix, certification_path: {project: {project_authorizations: {user_id: user.id, permission:  ['manage', ProjectAuthorization.permissions[:manage]]}}}
       can :manage, SchemeMixCriterion, scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id, permission:  ['manage', ProjectAuthorization.permissions[:manage]]}}}}
 

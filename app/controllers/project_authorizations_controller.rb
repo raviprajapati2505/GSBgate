@@ -9,6 +9,7 @@ class ProjectAuthorizationsController < AuthenticatedController
   # end
 
   def new
+    authorize! :manage, @project
     @project_authorization = ProjectAuthorization.new(project: @project)
   end
 
@@ -16,6 +17,7 @@ class ProjectAuthorizationsController < AuthenticatedController
   # end
 
   def create
+    authorize! :manage, @project
     @project_authorization = ProjectAuthorization.new(authorizations_params)
     @project_authorization.project = @project
     @project_authorization.permission = :read_only
