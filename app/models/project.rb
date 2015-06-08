@@ -10,11 +10,15 @@ class Project < ActiveRecord::Base
   after_initialize :init
 
   scope :for_user, ->(user) {
-    for_owner(user) | for_authorized_user(user)
+    for_owner(user) | for_client(user) | for_authorized_user(user)
   }
 
   scope :for_owner, ->(user) {
     where(owner: user)
+  }
+
+  scope :for_client, ->(user) {
+    where(client: user)
   }
 
   scope :for_authorized_user, -> (user) {

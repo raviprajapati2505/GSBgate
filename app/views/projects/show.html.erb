@@ -110,7 +110,7 @@
                 <% end %>
             </div>
         </div>
-        <% if can? :manage, @project %>
+        <% if (can? :manage, @project) || ((can? :read, @project) && current_user.enterprise_licence?) %>
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>Project team</h5>
@@ -150,7 +150,9 @@
                     </table>
                     <% end %>
                     <div class="hr-line-dashed"></div>
-                    <%= link_to t('.btn_add_project_team_member'), new_project_project_authorization_path(@project), class: 'btn btn-primary' %>
+                    <% if can? :manage, @project %>
+                        <%= link_to t('.btn_add_project_team_member'), new_project_project_authorization_path(@project), class: 'btn btn-primary' %>
+                    <% end %>
                 </div>
             </div>
         <% else %>

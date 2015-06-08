@@ -63,6 +63,9 @@ class Ability
       can :read, Project, client_id: user.id
       can :read, ProjectAuthorization, project: {client_id: user.id}
       can :read, CertificationPath, project: {client_id: user.id}
+      can :read, SchemeMix, certification_path: {project: {client_id: user.id}}
+      can :read, SchemeMixCriterion, scheme_mix: {certification_path: {project: {client_id: user.id}}}
+      can :edit, SchemeMixCriterion, scheme_mix: {certification_path: {project: {client_id: user.id}}}
 
     else
       cannot :manage, :all

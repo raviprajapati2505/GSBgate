@@ -9,11 +9,13 @@
             <div class="panel-body">
                 <%= bootstrap_form_tag url: project_requirement_datum_path(@project.id, requirement_datum.reportable_data_id), method: "put", remote: true do |f| %>
                     <% users = User.authorized_for_project(@project) %>
-                    <% if (can? :manage, @project) && (users.count > 0) %>
+                    <% if ((can? :manage, @project) || ((can? :read, @project) && current_user.enterprise_licence?)) && (users.count > 0) %>
                         <% if requirement_datum.project_authorization.nil? %>
-                            <%= f.select 'assign to user', options_for_select(users.map { |k| [k.email, k.id]}) %>
+                            <% if !current_user.enterprise_licence? %>
+                                <%= f.select 'assign to user', options_for_select(users.map { |k| [k.email, k.id]}) %>
+                            <% end %>
                         <% else %>
-                            <%= f.select 'assign to user', options_for_select(users.map { |k| [k.email, k.id]}, requirement_datum.project_authorization.user.id) %>
+                            <%= f.select 'assign to user', options_for_select(users.map { |k| [k.email, k.id]}, requirement_datum.project_authorization.user.id), {}, disabled: current_user.enterprise_licence? %>
                         <% end %>
                     <% end %>
                     <% case requirement_datum.reportable_data_type %>
@@ -33,7 +35,9 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="hr-line-dashed"></div>
-                            <%= f.primary %>
+                            <% if can? :update, requirement_datum %>
+                                <%= f.primary %>
+                            <% end %>
                         </div>
                     </div>
                 <% end %>

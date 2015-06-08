@@ -4,6 +4,7 @@
                          value: field_data.value,
                          label: (field_data.field.label + tooltip(field_data.field.help_text)).html_safe,
                          append: field_data.field.suffix,
-                         prepend: field_data.field.prefix %>
+                         prepend: field_data.field.prefix,
+                        disabled: current_user.enterprise_licence? %>
     </div>
 </div>
