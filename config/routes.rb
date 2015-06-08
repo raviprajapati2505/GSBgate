@@ -7,8 +7,9 @@ Rails.application.routes.draw do
         resources :scheme_mix_criteria, only: [:edit, :update], path: 'criteria', as: 'scheme_mix_criterion'
       end
     end
+    resources :requirement_data, only: [:update], path: 'requirement', as: 'requirement_data'
   end
-  resources :requirement_data, only: [:update]
+
   resources :users
   devise_for :user
 

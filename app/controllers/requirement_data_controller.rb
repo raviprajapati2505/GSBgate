@@ -3,6 +3,14 @@ class RequirementDataController < AuthenticatedController
   load_and_authorize_resource
 
   def update
+    project_authorization = ProjectAuthorization.find_by(requirement_datum: @requirement_datum)
+    if project_authorization.nil?
+      project_authorization = ProjectAuthorization.new(project_id: params[:project_id], user_id: params['assign to user'], requirement_datum: @requirement_datum, permission: :read_write)
+    else
+      project_authorization.user_id = params['assign to user']
+    end
+    project_authorization.save!
+
     case @requirement_datum.reportable_data_type
       when 'CalculatorDatum'
         @requirement_datum.reportable_data.field_data.each do |field_datum|
