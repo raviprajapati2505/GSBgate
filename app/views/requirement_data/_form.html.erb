@@ -8,10 +8,13 @@
         <div class="panel-collapse collapse" id="requirement-<%= requirement_datum.id %>" aria-expanded="false" style="height: 0px;">
             <div class="panel-body">
                 <%= bootstrap_form_tag url: project_requirement_datum_path(@project.id, requirement_datum.reportable_data_id), method: "put", remote: true do |f| %>
-                    <% if requirement_datum.project_authorization.nil? %>
-                        <%= f.select 'assign to user', options_for_select(User.authorized_for_project(@project).map { |k| [k.email, k.id]}) %>
-                    <% else %>
-                        <%= f.select 'assign to user', options_for_select(User.authorized_for_project(@project).map { |k| [k.email, k.id]}, requirement_datum.project_authorization.user.id) %>
+                    <% users = User.authorized_for_project(@project) %>
+                    <% if (can? :manage, @project) && (users.count > 0) %>
+                        <% if requirement_datum.project_authorization.nil? %>
+                            <%= f.select 'assign to user', options_for_select(users.map { |k| [k.email, k.id]}) %>
+                        <% else %>
+                            <%= f.select 'assign to user', options_for_select(users.map { |k| [k.email, k.id]}, requirement_datum.project_authorization.user.id) %>
+                        <% end %>
                     <% end %>
                     <% case requirement_datum.reportable_data_type %>
                     <% when 'CalculatorDatum' %>
