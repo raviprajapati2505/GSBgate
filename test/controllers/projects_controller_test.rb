@@ -10,6 +10,4 @@ class ProjectsControllerTest < ActionController::TestCase
     assert_not_nil assigns(:projects)
     sign_out users(:project_owner)
   end
-
-  test ''
 end
