@@ -1,11 +1,11 @@
 class GsasService
   include Singleton
 
-  GSAS_SERVICE_HOST = 'gord2.sas.vito.local'
-  GSAS_SERVICE_PATH = '/GSASService.svc/CallFunction/'
+  HOST = 'gord2.sas.vito.local'
+  PATH = '/GSASService.svc/CallFunction/'
 
-  GSAS_SERVICE_STATUS_ERROR = 'error'
-  GSAS_SERVICE_STATUS_SUCCESS = 'success'
+  STATUS_ERROR = 'error'
+  STATUS_SUCCESS = 'success'
 
   # Sends a function request to the GSAS webservice.
   #
@@ -20,34 +20,34 @@ class GsasService
   #
   def call_function(function_name, params = {})
     # Build the URI path
-    path = GSAS_SERVICE_PATH + URI.encode(function_name) + '/' + URI.encode(params.to_json)
+    path = PATH + URI.encode(function_name) + '/' + URI.encode(params.to_json)
 
     # Build the full URI
     begin
-      uri = URI::HTTP.build({host: GSAS_SERVICE_HOST, path: path})
+      uri = URI::HTTP.build({host: HOST, path: path})
     rescue StandardError
       return {
-          status: GSAS_SERVICE_STATUS_ERROR,
-          message: "An error occurred when building a GSAS webservice URI with host: '#{GSAS_SERVICE_HOST}' and path: '#{path}'. Error message: " + $!.to_s
+          status: STATUS_ERROR,
+          message: "An error occurred when building a GSAS webservice URI with host: '#{HOST}' and path: '#{path}'. Error message: " + $!.to_s
       }
     end
 
     # Execute the request
     begin
-      response = Net::HTTP.get_response(uri)
+      response_json = Net::HTTP.get_response(uri)
     rescue StandardError
       return {
-          status: GSAS_SERVICE_STATUS_ERROR,
+          status: STATUS_ERROR,
           message: "An error occurred when executing the GSAS webservice request with uri: '#{uri}'. Error message: " + $!.to_s
       }
     end
 
     # Parse JSON response body and return
     begin
-      JSON.parse response.body
+      JSON.parse response_json.body, :symbolize_names => true
     rescue StandardError
       return {
-          status: GSAS_SERVICE_STATUS_ERROR,
+          status: STATUS_ERROR,
           message: "An error occurred when trying to parse the JSON response of the GSAS webservice request with uri: '#{uri}'. Error message: " + $!.to_s
       }
     end
