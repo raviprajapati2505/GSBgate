@@ -1,4 +1,6 @@
 class GsasService
+  include Singleton
+
   GSAS_SERVICE_HOST = 'gord2.sas.vito.local'
   GSAS_SERVICE_PATH = '/GSASService.svc/CallFunction/'
 
