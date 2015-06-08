@@ -12,35 +12,30 @@
 
 system_admin:
   id: 1
-  email: system_admin@example.org
+  email: system_admin@example.com
   role: 0
 
 project_owner:
   id: 2
-  email: project_owner@example.org
-  role: 3
+  email: project_owner@example.com
+  role: 2
 
 project_team_member:
   id: 3
-  email: project_team_member@example.org
-  role: 4
+  email: project_team_member@example.com
+  role: 2
 
 enterprise_licence:
   id: 4
-  email: enterprise_licence@example.org
-  role: 5
+  email: enterprise_licence@example.com
+  role: 1
 
 project_owner_2:
   id: 5
-  email: project_owner2@example.org
-  role: 3
-
-project_team_member_2:
-  id: 6
-  email: project_team_member2@example.org
-  role: 4
+  email: project_owner_2@example.com
+  role: 2
 
 enterprise_licence_2:
-  id: 7
-  email: enterprise_licence2@example.org
-  role: 5
+  id: 6
+  email: enterprise_licence_2@example.com
+  role: 1

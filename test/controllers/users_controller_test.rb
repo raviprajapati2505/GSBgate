@@ -25,7 +25,7 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   test "should update user" do
-    put :update, id: @user, user: { email: 'project_owner@example.org' }
+    put :update, id: @user, user: { email: 'project_owner@example.com' }
     assert_redirected_to users_path
   end
 end

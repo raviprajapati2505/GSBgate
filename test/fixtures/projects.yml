@@ -3,9 +3,11 @@
 one:
   id: 1
   name: MyProject
-  user_id: 2
+  owner_id: 2
+  client_id: 4
 
 two:
   id: 2
   name: MySecondProject
-  user_id: 3
+  owner_id: 5
+  client_id: 6
