@@ -94,3 +94,10 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-chosen'
   gem 'rails-assets-d3'
 end
+
+
+group :production do
+  gem 'execjs'
+  # See https://github.com/sstephenson/execjs#readme for more supported runtimes
+  gem 'therubyracer'
+end
