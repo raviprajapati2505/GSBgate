@@ -52,9 +52,10 @@
             </div>
             <div class="ibox-content">
                 <div id="categories-accordion">
-                    <table class="table">
+                    <table class="table table-bordered">
                         <thead>
                         <tr>
+                            <th>&nbsp;</th>
                             <th>Code</th>
                             <th>Name</th>
                             <th>Weighting</th>
@@ -67,7 +68,8 @@
                         <% max_weighted_score = @scheme_mix.scheme.weighted_max_attainable_score %>
                         <% @scheme_mix.categories.uniq.each_with_index do |category, i| %>
                         <tr class="accordion-toggle" data-toggle="collapse" data-target="#category-panel-<%= category.id %>" data-parent="#categories-accordion">
-                            <td><i class="fa fa-caret-square-o-right"></i>&nbsp;<%= category.code %></td>
+                            <td><i class="fa fa-caret-square-o-right"></i></td>
+                            <td><%= category.code %></td>
                             <td><%= category.name %></td>
                             <td><%= @scheme_mix.scheme.total_weight_for_category(category) %> %</td>
                             <td>
@@ -85,7 +87,7 @@
                             <td><%= RequirementDatum.for_scheme_mix(@scheme_mix).for_category(category).provided.updateable_by_user(current_user).count %>/<%= RequirementDatum.for_scheme_mix(@scheme_mix).for_category(category).updateable_by_user(current_user).count %></td>
                         </tr>
                         <tr id="category-panel-<%= category.id %>" class="accordion-body collapse">
-                            <td colspan="5">
+                            <td colspan="6">
                                 <div>
                                     <table class="table">
                                         <thead>
