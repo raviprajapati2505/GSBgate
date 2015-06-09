@@ -17,3 +17,7 @@ You are now ready to run this project.
 1. login to database server via ssh
 2. $> sudo -u postgres psql
 3. $> select pg_terminate_backend(pid) from pg_stat_activity where datname='<your database name>';
+
+== Deploy in production
+1. svn update/switch
+2. bundle install --without development test
