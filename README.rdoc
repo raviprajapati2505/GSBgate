@@ -8,7 +8,7 @@
 6. Install OSGeo4W (32 bit version!!) via http://trac.osgeo.org/osgeo4w/
 7. Install geos package through OSGeo4W
 8. Set environment variable GEOS_LIBRARY_PATH to C:/OSGeo4W/bin/geos_c.dll (slashes like this!!)
-9. Restart IntelliJ and bundle install
+9. Restart IntelliJ and bundle install --without production
 
 You are now ready to run this project.
 
