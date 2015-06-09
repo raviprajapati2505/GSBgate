@@ -67,10 +67,6 @@ gem 'cancancan', '~> 1.10.1'
 # rails-assets needs Bundler >= 1.8.4
 gem 'bundler', '>= 1.8.4'
 
-# Remote multi-server automation tool
-# The `deploy:restart` hook for passenger applications is now in a separate gem called capistrano-passenger.  Just add it to your Gemfile and require it in your Capfile.
-gem 'capistrano', '~> 3.4.0'
-
 # Rails form builder
 # For documentation, go to https://github.com/bootstrap-ruby/rails-bootstrap-forms#usage
 gem 'bootstrap_form'
