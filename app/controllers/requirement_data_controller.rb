@@ -14,8 +14,8 @@ class RequirementDataController < AuthenticatedController
     case @requirement_datum.reportable_data_type
       when 'CalculatorDatum'
         @requirement_datum.reportable_data.field_data.each do |field_datum|
-          if params["field-data-#{field_datum.id}"]
-            field_datum.value = params["field-data-#{field_datum.id}"]
+          if params["field-datum-#{field_datum.id}"]
+            field_datum.value = params["field-datum-#{field_datum.id}"]
             field_datum.save
           end
         end

@@ -1,10 +1,10 @@
 <div class="row">
     <div class="col-md-12">
-        <%= f.text_field "field-data-#{field_data.id}",
-                         value: field_data.value,
-                         label: (field_data.field.label + tooltip(field_data.field.help_text)).html_safe,
-                         append: field_data.field.suffix,
-                         prepend: field_data.field.prefix,
+        <%= f.text_field "field-datum-#{field_datum.id}",
+                         value: field_datum.value,
+                         label: (field_datum.field.label + tooltip(field_datum.field.help_text)).html_safe,
+                         append: field_datum.field.suffix,
+                         prepend: field_datum.field.prefix,
                         disabled: current_user.enterprise_licence? %>
     </div>
 </div>
