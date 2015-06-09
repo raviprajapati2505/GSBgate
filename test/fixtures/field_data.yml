@@ -1,0 +1,12 @@
+
+one:
+  id: 1
+  field_id: 1
+  calculator_datum_id: 1
+  type: FieldDatum::IntegerValue
+
+two:
+  id: 2
+  field_id: 1
+  calculator_datum_id: 2
+  type: FieldDatum::IntegerValue

@@ -13,18 +13,18 @@ class UsersControllerTest < ActionController::TestCase
     sign_out users(:system_admin)
   end
 
-  test "should show users" do
+  test 'should show users' do
     get :index
     assert_response :success
     assert_not_nil assigns(:users)
   end
 
-  test "should get edit" do
+  test 'should get edit' do
     get :edit, id: @user
     assert_response :success
   end
 
-  test "should update user" do
+  test 'should update user' do
     put :update, id: @user, user: { email: 'project_owner@example.com' }
     assert_redirected_to users_path
   end

@@ -28,7 +28,7 @@ project_team_member:
 enterprise_licence:
   id: 4
   email: enterprise_licence@example.com
-  role: 1
+  role: 3
 
 project_owner_2:
   id: 5
@@ -38,4 +38,4 @@ project_owner_2:
 enterprise_licence_2:
   id: 6
   email: enterprise_licence_2@example.com
-  role: 1
+  role: 3

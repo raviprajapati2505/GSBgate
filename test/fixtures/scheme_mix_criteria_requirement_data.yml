@@ -1,0 +1,15 @@
+
+one:
+  id: 1
+  scheme_mix_criterion_id: 1
+  requirement_datum_id: 1
+
+two:
+  id: 2
+  scheme_mix_criterion_id: 1
+  requirement_datum_id: 2
+
+three:
+  id: 3
+  scheme_mix_criterion_id: 2
+  requirement_datum_id: 2
