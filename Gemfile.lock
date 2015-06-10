@@ -149,6 +149,7 @@ GEM
     rdoc (4.2.0)
       json (~> 1.4)
     ref (1.0.5)
+    remotipart (1.2.1)
     responders (2.1.0)
       railties (>= 4.2.0, < 5)
     rgeo (0.3.20)
@@ -225,6 +226,7 @@ DEPENDENCIES
   rails-assets-metisMenu!
   rails-assets-pace!
   rails-assets-slimScroll!
+  remotipart (~> 1.2.1)
   rgeo (= 0.3.20)
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)

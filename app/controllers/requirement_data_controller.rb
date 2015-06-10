@@ -20,7 +20,13 @@ class RequirementDataController < AuthenticatedController
           end
         end
       when 'DocumentDatum'
-        # todo
+        document_datum = @requirement_datum.reportable_data
+        if params["document-datum-#{document_datum.id}"]
+          uploaded_io = params["document-datum-#{document_datum.id}"]
+          File.open(Rails.root.join('private', 'uploads', uploaded_io.original_filename), 'wb') do |file|
+            file.write(uploaded_io.read)
+          end
+        end
     end
 
     render json: @requirement_datum, status: :ok

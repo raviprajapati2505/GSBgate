@@ -27,6 +27,7 @@
  *= require chosen
  *= require d3
  *= require score_widget.js
+ *= require jquery.remotipart
  */
 
 $(function () {
