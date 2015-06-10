@@ -23,7 +23,6 @@
  *= require datatables
  *= require datatables-responsive
  *= require datatables-init
- *= require project_authorizations.js
  *= require icheck
  *= require chosen
  *= require d3
@@ -36,6 +35,9 @@ $(function () {
 
     // iCheck all checkboxes & radio buttons
     $('input').iCheck();
+
+    // Chosen
+    $('.chosen-select').chosen();
 
     // Accordion tables
     $('.accordion-body').on('show.bs.collapse', function() {
