@@ -1,7 +1,7 @@
 <div>
     <% requirement_datum.reportable_data.field_data.each do |field_datum| %>
         <div>
-            <% if File.exist?("app/views/field/#{calculator_template}/_#{field_datum.field.name}.html.erb") %>
+            <% if File.exist?("app/views/fields/#{calculator_template}/_#{field_datum.field.name}.html.erb") %>
                 <%= render "fields/#{calculator_template}/#{field_datum.field.name}", field_datum: field_datum, f: f %>
             <% else %>
                 <%= render "fields/textfield", field_datum: field_datum, f: f %>
