@@ -1,7 +1,7 @@
 class CreateFieldData < ActiveRecord::Migration
   def change
     create_table :field_data do |t|
-      t.references :field, index: true, foreign_key: true
+      t.references :fields, index: true, foreign_key: true
 
       t.string :string_value
       t.integer :integer_value
