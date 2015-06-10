@@ -31,24 +31,25 @@ class RequirementDatum < ActiveRecord::Base
     joins(:scheme_mix_criteria => [:scheme_mix => [:certification_path => [:project]]]).where(projects: {owner_id: user.id})
   }
 
-  scope :certified_by_user, ->(user) {
-    joins(:scheme_mix_criteria => [:scheme_mix => [:certification_path => [:project]]]).where(projects: {client_id: user.id})
-  }
-
-  scope :managed_by_user, ->(user) {
-     joins(:scheme_mix_criteria => [:scheme_mix => [:certification_path => [:project => [:project_authorizations]]]]).where(project_authorizations: {user_id: user.id, permission: ['manage', ProjectAuthorization.permissions[:manage]]})
+  scope :for_client, ->(user) {
+    joins(:scheme_mix_criteria => [:scheme_mix => [:certification_path => [:project => [:project_authorizations]]]]).where(project_authorizations: {user_id: user.id})
   }
 
   scope :updateable_by_user, ->(user) {
     if user.system_admin?
       all
     else
-      owned_by_user(user) | certified_by_user(user) | managed_by_user(user) | for_user(user)
+      # TODO add for_client without breaking for_user
+      owned_by_user(user) | for_user(user)
     end
   }
 
   scope :for_scheme_mix, ->(scheme_mix) {
     includes(:scheme_mix_criteria).where(scheme_mix_criteria: {scheme_mix: scheme_mix})
+  }
+
+  scope :unassigned, -> {
+    where.not(ProjectAuthorization.for_requirement_datum.exists)
   }
 
   private

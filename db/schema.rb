@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150609091102) do
+ActiveRecord::Schema.define(version: 20150610093655) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -119,6 +119,7 @@ ActiveRecord::Schema.define(version: 20150609091102) do
     t.datetime "updated_at",           null: false
     t.integer  "permission"
     t.integer  "requirement_datum_id"
+    t.integer  "role"
   end
 
   add_index "project_authorizations", ["project_id"], name: "index_project_authorizations_on_project_id", using: :btree
@@ -138,9 +139,7 @@ ActiveRecord::Schema.define(version: 20150609091102) do
     t.integer   "certified_area"
     t.integer   "carpark_area"
     t.integer   "project_site_area"
-    t.integer   "client_id"
     t.integer   "owner_id"
-    t.integer   "certifier_id"
     t.string    "code"
   end
 
@@ -264,8 +263,6 @@ ActiveRecord::Schema.define(version: 20150609091102) do
   add_foreign_key "project_authorizations", "projects"
   add_foreign_key "project_authorizations", "requirement_data"
   add_foreign_key "project_authorizations", "users"
-  add_foreign_key "projects", "users", column: "certifier_id"
-  add_foreign_key "projects", "users", column: "client_id"
   add_foreign_key "projects", "users", column: "owner_id"
   add_foreign_key "requirement_data", "requirements"
   add_foreign_key "scheme_criteria", "criteria"

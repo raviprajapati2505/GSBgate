@@ -7,6 +7,7 @@
                 </div>
                 <div class="ibox-content">
                     <%= f.select :user_id, User.without_permissions_for_project(@project).map { |k| [k.email, k.id]}, {}, { class: 'chosen-select'} %>
+                    <%= f.select :role, ProjectAuthorization.roles.keys.map { |k| [ProjectAuthorization.human_attribute_name(k), k]} %>
                     <%= f.primary t('.btn_save') %>
                     <%= link_to t('.btn_cancel'), :back, class: 'btn btn-white' %>
                 </div>

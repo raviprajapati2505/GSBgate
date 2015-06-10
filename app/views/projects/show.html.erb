@@ -110,25 +110,12 @@
                 <% end %>
             </div>
         </div>
-        <% if (can? :manage, @project) || ((can? :read, @project) && current_user.enterprise_licence?) %>
+        <% if (@project.project_authorizations.nil?) ||  (can? :read, @project.project_authorizations.first) %>
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>Project team</h5>
                 </div>
                 <div class="ibox-content">
-                    <p>
-                        <strong>Assessor PM:</strong>
-                        <%= @project.owner.email if not @project.owner.nil? %>
-                    </p>
-                    <p>
-                        <strong>Enterprise client:</strong>
-                        <%= @project.client.email if not @project.client.nil? %>
-                    </p>
-                    <p>
-                        <strong>Certifier PM:</strong>
-                        <%= @project.certifier.email if not @project.certifier.nil?%>
-                    </p>
-                    <div class="hr-line-dashed"></div>
                     <% if @project.users.distinct.count == 0%>
                     <p>This project has no team members.</p>
                     <% else %>
@@ -140,6 +127,10 @@
                         </tr>
                         </thead>
                         <tbody>
+                        <tr>
+                            <td>Unassigned</td>
+                            <td><%= RequirementDatum.for_project(@project).unassigned.count %>/<%= RequirementDatum.for_project(@project).count %></td>
+                        </tr>
                         <% @project.users.distinct.each do |user| %>
                         <tr>
                             <td><%= user.email %></td>
@@ -150,7 +141,7 @@
                     </table>
                     <% end %>
                     <div class="hr-line-dashed"></div>
-                    <% if can? :manage, @project %>
+                    <% if (@project.project_authorizations.nil?) ||  (can? :manage, @project.project_authorizations.first) %>
                         <%= link_to t('.btn_add_project_team_member'), new_project_project_authorization_path(@project), class: 'btn btn-primary' %>
                     <% end %>
                 </div>

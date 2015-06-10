@@ -33,7 +33,7 @@ class Ability
 
     if user.system_admin?
       can :manage, :all
-    elsif user.assessor?
+    elsif user.user?
       can :manage, Project, owner_id: user.id
       can :manage, ProjectAuthorization, project: {owner_id: user.id}
       can :new, ProjectAuthorization
@@ -46,12 +46,12 @@ class Ability
       can :manage, RequirementDatum, scheme_mix_criteria: {scheme_mix: {certification_path: {project: {owner_id: user.id}}}}
 
       # Waiting for https://github.com/CanCanCommunity/cancancan/pull/196
-      can :manage, Project, project_authorizations: {user_id: user.id, permission: ['manage', ProjectAuthorization.permissions[:manage]]}
-      can :manage, ProjectAuthorization, project: {project_authorizations: {user_id: user.id, permission: ['manage', ProjectAuthorization.permissions[:manage]]}}
-      can :manage, CertificationPath, project: {project_authorizations: {user_id: user.id, permission: ['manage', ProjectAuthorization.permissions[:manage]]}}
-      can :manage, SchemeMix, certification_path: {project: {project_authorizations: {user_id: user.id, permission:  ['manage', ProjectAuthorization.permissions[:manage]]}}}
-      can :manage, SchemeMixCriterion, scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id, permission:  ['manage', ProjectAuthorization.permissions[:manage]]}}}}
-      can :manage, RequirementDatum, project_authorization: {user_id: user.id, permission: ['manage', ProjectAuthorization.permissions[:manage]]}
+      can :manage, Project, project_authorizations: {user_id: user.id, role: ['project_system_administrator', ProjectAuthorization.roles[:project_system_administrator]]}
+      can :manage, ProjectAuthorization, project: {project_authorizations: {user_id: user.id, role: ['project_system_administrator', ProjectAuthorization.roles[:project_system_administrator]]}}
+      can :manage, CertificationPath, project: {project_authorizations: {user_id: user.id, role: ['project_system_administrator', ProjectAuthorization.roles[:project_system_administrator]]}}
+      can :manage, SchemeMix, certification_path: {project: {project_authorizations: {user_id: user.id, role:  ['project_system_administrator', ProjectAuthorization.roles[:project_system_administrator]]}}}
+      can :manage, SchemeMixCriterion, scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id, role:  ['project_system_administrator', ProjectAuthorization.roles[:project_system_administrator]]}}}}
+      can :manage, RequirementDatum, project_authorization: {user_id: user.id, role: ['project_system_administrator', ProjectAuthorization.roles[:project_system_administrator]]}
 
       can :read, Project, project_authorizations: {user_id: user.id}
       can :read, CertificationPath, scheme_mixes: {scheme_mix_criteria: {requirement_data: {project_authorization: {user_id: user.id, permission: ['read_write', ProjectAuthorization.permissions[:read_write]]}}}}
@@ -59,14 +59,12 @@ class Ability
       can :update, SchemeMixCriterion, requirement_data: {project_authorization: {user_id: user.id, permission: ['read_write', ProjectAuthorization.permissions[:read_write]]}}
       can :update, RequirementDatum, project_authorization: {user_id: user.id, permission: ['read_write', ProjectAuthorization.permissions[:read_write]]}
 
-    elsif user.enterprise_licence?
-      can :read, Project, client_id: user.id
-      can :read, ProjectAuthorization, project: {client_id: user.id}
-      can :read, CertificationPath, project: {client_id: user.id}
-      can :read, SchemeMix, certification_path: {project: {client_id: user.id}}
-      can :read, SchemeMixCriterion, scheme_mix: {certification_path: {project: {client_id: user.id}}}
-      can :edit, SchemeMixCriterion, scheme_mix: {certification_path: {project: {client_id: user.id}}}
-
+      # can :read, Project, project_authorizations: {user_id: user.id, role: ['enterprise_account', ProjectAuthorization.roles[:enterprise_account]]}
+      can :read, ProjectAuthorization, project: {project_authorizations: {user_id: user.id, role: ['enterprise_account', ProjectAuthorization.roles[:enterprise_account]]}}
+      can :read, CertificationPath, project: {project_authorizations: {user_id: user.id, role: ['enterprise_account', ProjectAuthorization.roles[:enterprise_account]]}}
+      can :read, SchemeMix, certification_path: {project: {project_authorizations: {user_id: user.id, role:  ['enterprise_account', ProjectAuthorization.roles[:enterprise_account]]}}}
+      can :read, SchemeMixCriterion, scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id, role:  ['enterprise_account', ProjectAuthorization.roles[:enterprise_account]]}}}}
+      can :edit, SchemeMixCriterion, scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id, role:  ['enterprise_account', ProjectAuthorization.roles[:enterprise_account]]}}}}
     else
       cannot :manage, :all
     end

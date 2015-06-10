@@ -5,6 +5,6 @@
                          label: (field_datum.field.label + tooltip(field_datum.field.help_text)).html_safe,
                          append: field_datum.field.suffix,
                          prepend: field_datum.field.prefix,
-                        disabled: current_user.enterprise_licence? %>
+                        disabled: !(can? :update, requirement_datum) %>
     </div>
 </div>

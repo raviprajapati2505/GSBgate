@@ -18,7 +18,8 @@ class Project < ActiveRecord::Base
   }
 
   scope :for_client, ->(user) {
-    where(client: user)
+    includes(:project_authorizations)
+    .where(project_authorizations: {user: user, role: ['enterprise_account', ProjectAuthorization.roles[:enterprise_account]]})
   }
 
   scope :for_authorized_user, -> (user) {

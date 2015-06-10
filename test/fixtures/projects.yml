@@ -4,10 +4,8 @@ one:
   id: 1
   name: MyProject
   owner_id: 2
-  client_id: 4
 
 two:
   id: 2
   name: MySecondProject
   owner_id: 5
-  client_id: 6

@@ -9,13 +9,13 @@
             <div class="panel-body">
                 <%= bootstrap_form_tag url: project_requirement_datum_path(@project.id, requirement_datum.id), method: "put", remote: true, :html => { :multipart => true } do |f| %>
                     <% users = User.authorized_for_project(@project) %>
-                    <% if ((can? :manage, @project) || ((can? :read, @project) && current_user.enterprise_licence?)) && (users.count > 0) %>
+                    <% if (users.count > 0) && (can? :read, @project.project_authorizations.first) %>
                         <% if requirement_datum.project_authorization.nil? %>
-                            <% if !current_user.enterprise_licence? %>
+                            <% if (can? :manage, @project.project_authorizations.first) %>
                                 <%= f.select 'assign to user', options_for_select(users.map { |k| [k.email, k.id]}) %>
                             <% end %>
                         <% else %>
-                            <%= f.select 'assign to user', options_for_select(users.map { |k| [k.email, k.id]}, requirement_datum.project_authorization.user.id), {}, disabled: current_user.enterprise_licence? %>
+                            <%= f.select 'assign to user', options_for_select(users.map { |k| [k.email, k.id]}, requirement_datum.project_authorization.user.id), {}, disabled: !(can? :manage, @project.project_authorizations.first) %>
                         <% end %>
                     <% end %>
                     <% case requirement_datum.reportable_data_type %>

@@ -4,25 +4,13 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  enum role: [ :system_admin, :certifier, :assessor, :enterprise_licence ]
+  enum role: [ :system_admin, :user ]
 
   has_many :owned_projects, class_name: 'Project', inverse_of: :owner
   has_many :project_authorizations
   has_many :projects, through: :project_authorizations
 
   default_scope { order(email: :asc) }
-
-  scope :with_certifier_role, -> {
-    where(role: 1)
-  }
-
-  scope :with_assessor_role, -> {
-    where(role: 2)
-  }
-
-  scope :with_enterprise_role, -> {
-    where(role: 3)
-  }
 
   scope :not_owning_project, ->(project) {
     where.not(id: project.owner_id)
@@ -33,7 +21,7 @@ class User < ActiveRecord::Base
   }
 
   scope :without_permissions_for_project, ->(project) {
-    where(role: 2) & not_owning_project(project) & not_authorized_for_project(project)
+    where(role: 1) & not_owning_project(project) & not_authorized_for_project(project)
   }
 
   scope :authorized_for_project, ->(project) {
@@ -46,7 +34,7 @@ class User < ActiveRecord::Base
 
   private
   def assign_default_role
-    self.role = :assessor if self.role.nil?
+    self.role = :user if self.role.nil?
   end
 
 end

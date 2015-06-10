@@ -18,24 +18,24 @@ system_admin:
 project_owner:
   id: 2
   email: project_owner@example.com
-  role: 2
+  role: 1
 
 project_team_member:
   id: 3
   email: project_team_member@example.com
-  role: 2
+  role: 1
 
 enterprise_licence:
   id: 4
   email: enterprise_licence@example.com
-  role: 3
+  role: 1
 
 project_owner_2:
   id: 5
   email: project_owner_2@example.com
-  role: 2
+  role: 1
 
 enterprise_licence_2:
   id: 6
   email: enterprise_licence_2@example.com
-  role: 3
+  role: 1

@@ -38,6 +38,6 @@ class ProjectAuthorizationsController < AuthenticatedController
     end
 
     def authorizations_params
-      params.require(:authorization).permit(:user_id)
+      params.require(:authorization).permit(:user_id, :role)
     end
 end
