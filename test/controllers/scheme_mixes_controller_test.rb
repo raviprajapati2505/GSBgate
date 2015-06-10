@@ -12,7 +12,7 @@ class SchemeMixesControllerTest < ActionController::TestCase
     scheme = scheme_mixes(:one)
     get :show, project_id: project.id, certification_path_id: certification_path.id, id: scheme.id
     assert_response :success
-    assert_select '.accordion-body tbody tr', 2
+    assert_select '.accordion-body tbody tr', 2, 'wrong number of criteria'
     sign_out users(:project_owner)
   end
 
@@ -23,7 +23,7 @@ class SchemeMixesControllerTest < ActionController::TestCase
     scheme = scheme_mixes(:one)
     get :show, project_id: project.id, certification_path_id: certification_path.id, id: scheme.id
     assert_response :success
-    assert_select '.accordion-body tbody tr', 1
+    assert_select '.accordion-body tbody tr', 1, 'wrong number of criteria'
     sign_out users(:project_team_member)
   end
 
@@ -33,7 +33,7 @@ class SchemeMixesControllerTest < ActionController::TestCase
     certification_path = certification_paths(:one)
     scheme = scheme_mixes(:one)
     get :show, project_id: project.id, certification_path_id: certification_path.id, id: scheme.id
-    assert_select '.accordion-body tbody tr', 2
+    assert_select '.accordion-body tbody tr', 2, 'wrong number of criteria'
     sign_out users(:enterprise_licence)
   end
 end
