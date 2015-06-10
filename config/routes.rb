@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   resources :certification_paths
   resources :projects do
-    resources :project_authorizations, only: [ :index, :new, :create, :edit, :update, :destroy ], path: 'authorizations'
+    resources :project_authorizations, only: [ :new, :create, :destroy ], path: 'authorizations'
     resources :certification_paths, except: [ :edit, :update, :destroy ], path: 'certificates' do
       resources :scheme_mixes, only: [ :edit, :show ], path: 'schemes' do
         resources :scheme_mix_criteria, only: [:edit, :update], path: 'criteria', as: 'scheme_mix_criterion'
@@ -12,11 +12,6 @@ Rails.application.routes.draw do
 
   resources :users
   devise_for :user
-
-  controller :project_authorizations do
-    post 'projects/:project_id/permissions' => :update_permissions, as: 'update_permissions'
-    delete 'projects/:project_id/users/:user_id/permissions' => :destroy_permissions, as: 'destroy_permissions'
-  end
   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
