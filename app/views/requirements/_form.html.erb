@@ -7,7 +7,7 @@
         </div>
         <div class="panel-collapse collapse" id="requirement-<%= requirement_datum.id %>" aria-expanded="false" style="height: 0px;">
             <div class="panel-body">
-                <%= bootstrap_form_tag url: project_requirement_datum_path(@project.id, requirement_datum.reportable_data_id), method: "put", remote: true do |f| %>
+                <%= bootstrap_form_tag url: project_requirement_datum_path(@project.id, requirement_datum.id), method: "put", remote: true do |f| %>
                     <% users = User.authorized_for_project(@project) %>
                     <% if ((can? :manage, @project) || ((can? :read, @project) && current_user.enterprise_licence?)) && (users.count > 0) %>
                         <% if requirement_datum.project_authorization.nil? %>
@@ -19,7 +19,7 @@
                         <% end %>
                     <% end %>
                     <% case requirement_datum.reportable_data_type %>
-                    <% when 'CalculatorDatum' %>
+                <% when 'CalculatorDatum' %>
                         <% calculator_template = requirement_datum.reportable_data.calculator.class_name.constantize.name.demodulize.downcase %>
                         <div>
                             <% if File.exist?("app/views/calculator/_#{calculator_template}.html.erb") %>
