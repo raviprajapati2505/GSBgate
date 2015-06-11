@@ -1,12 +1,12 @@
 # Category's
-Category.create!(code: 'UC', name: 'Urban Connectivity', weight: 8)
-Category.create!(code: 'S', name: 'Site', weight: 9)
-Category.create!(code: 'E', name: 'Energy', weight: 24)
-Category.create!(code: 'W', name: 'Water', weight: 16)
-Category.create!(code: 'M', name: 'Materials', weight: 8)
-Category.create!(code: 'IE', name: 'Indoor Environment', weight: 16)
-Category.create!(code: 'CE', name: 'Cultural & Economic', weight: 13)
-Category.create!(code: 'MO', name: 'Management & Operations', weight: 6)
+Category.create!(code: 'UC', name: 'Urban Connectivity')
+Category.create!(code: 'S', name: 'Site')
+Category.create!(code: 'E', name: 'Energy')
+Category.create!(code: 'W', name: 'Water')
+Category.create!(code: 'M', name: 'Materials')
+Category.create!(code: 'IE', name: 'Indoor Environment')
+Category.create!(code: 'CE', name: 'Cultural & Economic')
+Category.create!(code: 'MO', name: 'Management & Operations')
 
 # Criteria
 Criterion.create!(code: 'UC.1', name: 'Proximity to Infrastructure', category: Category.find_by_code('UC'))
@@ -75,8 +75,8 @@ Criterion.create!(code: 'MO.8', name: 'Sustainability Education & Awareness Plan
 Criterion.create!(code: 'MO.9', name: 'Building Legacy', category: Category.find_by_code('MO'))
 
 # Custom criteria for release 1
-Category.create!(code: 'EX', name: 'Energy (existing buildings)', weight: 7)
-Category.create!(code: 'WX', name: 'Water (existing buildings)', weight: 8)
+Category.create!(code: 'EX', name: 'Energy (existing buildings)')
+Category.create!(code: 'WX', name: 'Water (existing buildings)')
 Criterion.create!(code: 'EX.1', name: 'Energy consumption', category: Category.find_by_code('EX'))
 Criterion.create!(code: 'WX.1', name: 'Water consumption', category: Category.find_by_code('WX'))
 
