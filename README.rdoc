@@ -18,8 +18,11 @@ You are now ready to run this project.
 2. $> sudo -u postgres psql
 3. $> select pg_terminate_backend(pid) from pg_stat_activity where datname='<your database name>';
 
-== Deploy on test server
+== Deploy GSAS Rails on linux test server
 1. (root) svn update/switch
 2. (non-root) bundle install --without development test
 3. (root) RAILS_ENV=production bundle exec rake assets:precompile
 4. (root) RAILS_ENV=production bundle exec rake db:migrate
+
+== Deploy GSASService and GSASVB6 on windows test server
+svn://svnext.vito.be/ENE/TEM/EMIS/GORD-GSAS/trunk/GSASServices/GSASServices/Docs/INSTALL.txt
