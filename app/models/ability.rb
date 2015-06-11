@@ -51,13 +51,13 @@ class Ability
       can :manage, CertificationPath, project: {project_authorizations: {user_id: user.id, role: ['project_system_administrator', ProjectAuthorization.roles[:project_system_administrator]]}}
       can :manage, SchemeMix, certification_path: {project: {project_authorizations: {user_id: user.id, role:  ['project_system_administrator', ProjectAuthorization.roles[:project_system_administrator]]}}}
       can :manage, SchemeMixCriterion, scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id, role:  ['project_system_administrator', ProjectAuthorization.roles[:project_system_administrator]]}}}}
-      can :manage, RequirementDatum, project_authorization: {user_id: user.id, role: ['project_system_administrator', ProjectAuthorization.roles[:project_system_administrator]]}
+      can :manage, RequirementDatum, scheme_mix_criteria: {scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id, role: ['project_system_administrator', ProjectAuthorization.roles[:project_system_administrator]]}}}}}
 
       can :read, Project, project_authorizations: {user_id: user.id}
-      can :read, CertificationPath, scheme_mixes: {scheme_mix_criteria: {requirement_data: {project_authorization: {user_id: user.id, permission: ['read_write', ProjectAuthorization.permissions[:read_write]]}}}}
-      can :read, SchemeMix, scheme_mix_criteria: {requirement_data: {project_authorization: {user_id: user.id, permission: ['read_write', ProjectAuthorization.permissions[:read_write]]}}}
-      can :update, SchemeMixCriterion, requirement_data: {project_authorization: {user_id: user.id, permission: ['read_write', ProjectAuthorization.permissions[:read_write]]}}
-      can :update, RequirementDatum, project_authorization: {user_id: user.id, permission: ['read_write', ProjectAuthorization.permissions[:read_write]]}
+      can :read, CertificationPath, scheme_mixes: {scheme_mix_criteria: {requirement_data: {user_id: user.id}}}
+      can :read, SchemeMix, scheme_mix_criteria: {requirement_data: {user_id: user.id}}
+      can :update, SchemeMixCriterion, requirement_data: {user_id: user.id}
+      can :update, RequirementDatum, user_id: user.id
 
       # can :read, Project, project_authorizations: {user_id: user.id, role: ['enterprise_account', ProjectAuthorization.roles[:enterprise_account]]}
       can :read, ProjectAuthorization, project: {project_authorizations: {user_id: user.id, role: ['enterprise_account', ProjectAuthorization.roles[:enterprise_account]]}}

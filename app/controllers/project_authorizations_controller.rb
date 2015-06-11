@@ -12,7 +12,6 @@ class ProjectAuthorizationsController < AuthenticatedController
     authorize! :manage, @project
     @project_authorization = ProjectAuthorization.new(authorizations_params)
     @project_authorization.project = @project
-    @project_authorization.permission = :read_only
     if @project_authorization.save
       flash[:notice] = 'Member was successfully added.'
       redirect_to project_path id: @project.id

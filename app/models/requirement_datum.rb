@@ -3,7 +3,7 @@ class RequirementDatum < ActiveRecord::Base
   has_many :scheme_mix_criteria, through: :scheme_mix_criteria_requirement_data
   belongs_to :reportable_data, polymorphic: true
   belongs_to :requirement
-  has_one :project_authorization
+  belongs_to :user
 
   enum status: [ :required, :provided, :not_required ]
 
@@ -15,12 +15,12 @@ class RequirementDatum < ActiveRecord::Base
     where(status: 1)
   }
 
-  scope :for_user, ->(user) {
-    includes(:project_authorization).where(project_authorizations: {user_id: user.id})
+  scope :assigned_to_user, ->(user) {
+    where(user: user)
   }
 
   scope :for_project, ->(project) {
-    includes(:scheme_mix_criteria => [:scheme_mix => [:certification_path]]).where(certification_paths: {project_id: project.id})
+      includes(:scheme_mix_criteria => [:scheme_mix => [:certification_path]]).where(certification_paths: {project_id: project.id})
   }
 
   scope :for_category, ->(category) {
@@ -32,15 +32,14 @@ class RequirementDatum < ActiveRecord::Base
   }
 
   scope :for_client, ->(user) {
-    joins(:scheme_mix_criteria => [:scheme_mix => [:certification_path => [:project => [:project_authorizations]]]]).where(project_authorizations: {user_id: user.id})
+    joins(:scheme_mix_criteria => [:scheme_mix => [:certification_path => [:project => [:project_authorizations]]]]).where(project_authorizations: {user_id: user.id, role: [ProjectAuthorization.roles[:enterprise_account]]})
   }
 
   scope :updateable_by_user, ->(user) {
     if user.system_admin?
       all
     else
-      # TODO add for_client without breaking for_user
-      owned_by_user(user) | for_user(user)
+      assigned_to_user(user) | for_client(user) | owned_by_user(user)
     end
   }
 
@@ -49,7 +48,7 @@ class RequirementDatum < ActiveRecord::Base
   }
 
   scope :unassigned, -> {
-    where.not(ProjectAuthorization.for_requirement_datum.exists)
+    where(user: nil)
   }
 
   private

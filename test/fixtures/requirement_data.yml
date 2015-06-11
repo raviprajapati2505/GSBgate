@@ -5,6 +5,7 @@ one:
   reportable_data_type: CalculatorDatum
   requirement_id: 1
   status: required
+  user_id: 3
 
 two:
   id: 2

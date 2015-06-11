@@ -9,6 +9,7 @@ class User < ActiveRecord::Base
   has_many :owned_projects, class_name: 'Project', inverse_of: :owner
   has_many :project_authorizations
   has_many :projects, through: :project_authorizations
+  has_many :requirement_data
 
   default_scope { order(email: :asc) }
 

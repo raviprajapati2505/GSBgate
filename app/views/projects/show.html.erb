@@ -110,7 +110,7 @@
                 <% end %>
             </div>
         </div>
-        <% if (@project.project_authorizations.nil?) ||  (can? :read, @project.project_authorizations.first) %>
+        <% if (@project.project_authorizations.count == 0) || (can? :read, @project.project_authorizations.first) %>
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>Project team</h5>
@@ -134,14 +134,14 @@
                         <% @project.users.distinct.each do |user| %>
                         <tr>
                             <td><%= user.email %></td>
-                            <td><%= RequirementDatum.for_user(user).for_project(@project).provided.count %>/<%= RequirementDatum.for_user(user).for_project(@project).count %></td>
+                            <td><%= user.requirement_data.for_project(@project).provided.count %>/<%= user.requirement_data.for_project(@project).count %></td>
                         </tr>
                         <% end %>
                         </tbody>
                     </table>
                     <% end %>
                     <div class="hr-line-dashed"></div>
-                    <% if (@project.project_authorizations.nil?) ||  (can? :manage, @project.project_authorizations.first) %>
+                    <% if (@project.project_authorizations.count == 0) ||  (can? :manage, @project.project_authorizations.first) %>
                         <%= link_to t('.btn_add_project_team_member'), new_project_project_authorization_path(@project), class: 'btn btn-primary' %>
                     <% end %>
                 </div>
