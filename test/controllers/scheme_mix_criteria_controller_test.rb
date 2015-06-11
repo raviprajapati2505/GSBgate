@@ -31,6 +31,20 @@ class SchemeMixCriteriaControllerTest < ActionController::TestCase
     sign_out users(:project_team_member)
   end
 
+  test 'project manager can edit scheme mix criteria' do
+    sign_in users(:project_manager)
+    project = projects(:one)
+    certification_path = certification_paths(:one)
+    scheme = scheme_mixes(:one)
+    scheme_mix_criteria = scheme_mix_criteria(:one)
+    get :edit, project_id: project.id, certification_path_id: certification_path.id, scheme_mix_id: scheme.id, id: scheme_mix_criteria.id
+    assert_redirected_to edit_user_registration_path
+    # assert_response :success
+    # assert_select '#accordion > div', 0, 'wrong number of requirements'
+    # assert_select '#accordion select[name="[user_id]"]', 0, 'wrong number of "assign to member" select boxes'
+    sign_out users(:project_manager)
+  end
+
   test 'client can edit scheme mix criteria' do
     sign_in users(:enterprise_licence)
     project = projects(:one)
@@ -42,6 +56,19 @@ class SchemeMixCriteriaControllerTest < ActionController::TestCase
     assert_select '#accordion > div', 2, 'wrong number of requirements'
     assert_select '#accordion select[name="[user_id]"]', 1, 'wrong number of "assign to member" select boxes'
     sign_out users(:enterprise_licence)
+  end
+
+  test 'project admin can edit scheme mix criteria' do
+    sign_in users(:project_admin)
+    project = projects(:one)
+    certification_path = certification_paths(:one)
+    scheme = scheme_mixes(:one)
+    scheme_mix_criteria = scheme_mix_criteria(:one)
+    get :edit, project_id: project.id, certification_path_id: certification_path.id, scheme_mix_id: scheme.id, id: scheme_mix_criteria.id
+    assert_response :success
+    assert_select '#accordion > div', 2, 'wrong number of requirements'
+    assert_select '#accordion select[name="[user_id]"]', 2, 'wrong number of "assign to member" select boxes'
+    sign_out users(:project_admin)
   end
 
 end

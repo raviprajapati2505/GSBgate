@@ -31,6 +31,16 @@ class ProjectsControllerTest < ActionController::TestCase
     sign_out users(:project_team_member)
   end
 
+  test 'project manager can show project' do
+    sign_in users(:project_manager)
+    project = projects(:one)
+    get :show, id: project.id
+    assert_response :success
+    assert_not_nil assigns(:project)
+    assert_select 'h5:last-of-type', 'Project Tasks'
+    sign_out users(:project_manager)
+  end
+
   test 'client can show project' do
     sign_in users(:enterprise_licence)
     project = projects(:one)
@@ -39,6 +49,16 @@ class ProjectsControllerTest < ActionController::TestCase
     assert_not_nil assigns(:project)
     assert_select 'h5:last-of-type', 'Project team'
     sign_out users(:enterprise_licence)
+  end
+
+  test 'project admin can show project' do
+    sign_in users(:project_admin)
+    project = projects(:one)
+    get :show, id: project.id
+    assert_response :success
+    assert_not_nil assigns(:project)
+    assert_select 'h5:last-of-type', 'Project team'
+    sign_out users(:project_admin)
   end
 
 end

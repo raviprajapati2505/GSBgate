@@ -30,12 +30,22 @@ enterprise_licence:
   email: enterprise_licence@example.com
   role: 1
 
-project_owner_2:
+project_admin:
   id: 5
+  email: project_admin@example.com
+  role: 1
+
+project_manager:
+  id: 6
+  email: project_manager@example.com
+  role: 1
+
+project_owner_2:
+  id: 7
   email: project_owner_2@example.com
   role: 1
 
 enterprise_licence_2:
-  id: 6
+  id: 8
   email: enterprise_licence_2@example.com
   role: 1
