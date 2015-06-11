@@ -22,3 +22,4 @@ You are now ready to run this project.
 1. svn update/switch
 2. bundle install --without development test
 3. RAILS_ENV=production bundle exec rake assets:precompile
+4. RAILS_ENV=production bundle exec rake db:migrate
