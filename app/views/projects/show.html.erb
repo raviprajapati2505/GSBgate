@@ -123,17 +123,20 @@
                         <thead>
                         <tr>
                             <th>Member</th>
+                            <th>Role</th>
                             <th>Requirement progress</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
                             <td>Unassigned</td>
+                            <td>-</td>
                             <td><%= RequirementDatum.for_project(@project).unassigned.count %>/<%= RequirementDatum.for_project(@project).count %></td>
                         </tr>
                         <% @project.users.distinct.each do |user| %>
                         <tr>
                             <td><%= user.email %></td>
+                            <td><%= user.project_authorizations.for_project(@project).first.role.humanize %></td>
                             <td><%= user.requirement_data.for_project(@project).provided.count %>/<%= user.requirement_data.for_project(@project).count %></td>
                         </tr>
                         <% end %>

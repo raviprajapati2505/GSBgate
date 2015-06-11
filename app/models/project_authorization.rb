@@ -6,4 +6,7 @@ class ProjectAuthorization < ActiveRecord::Base
 
   validates :role, inclusion: ProjectAuthorization.roles.keys
 
+  scope :for_project, ->(project) {
+    where(project: project)
+  }
 end
