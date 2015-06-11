@@ -15,7 +15,7 @@ Project.create!(name: 'Qatar Science & Technology Park (QSTP)', owner: User.find
 Project.create!(name: 'Qatar University', owner: User.find_by_email('owner@example.com'), address: 'Qatar University, Al Tarfa', location: 'Doha', country: 'Qatar', latlng: 'POINT(51.487169 25.377217)')
 Project.create!(name: 'Site of Doha Convention Center and Tower', owner: User.find_by_email('owner@example.com'), address: 'Site of Doha Convention Center and Tower, Diplomatic Area', location: 'Doha', country: 'Qatar', latlng: 'POINT(51.531711 25.323105)')
 
-ProjectAuthorization.create!(project: Project.find_by_name('Grand Hyatt Doha'), user: User.find_by_email('project_member_1@example.com', role: :project_team_member))
-ProjectAuthorization.create!(project: Project.find_by_name('Grand Hyatt Doha'), user: User.find_by_email('project_manager@example.com', role: :cgp_project_manager))
-ProjectAuthorization.create!(project: Project.find_by_name('Grand Hyatt Doha'), user: User.find_by_email('enterprise_client@example.com', role: :enterprise_account))
-ProjectAuthorization.create!(project: Project.find_by_name('Grand Hyatt Doha'), user: User.find_by_email('project_admin@example.com', role: :project_system_administrator))
+ProjectAuthorization.create!(project: Project.find_by_name('Grand Hyatt Doha'), user: User.find_by_email('project_member_1@example.com'), role: :project_team_member)
+ProjectAuthorization.create!(project: Project.find_by_name('Grand Hyatt Doha'), user: User.find_by_email('project_manager@example.com'), role: :cgp_project_manager)
+ProjectAuthorization.create!(project: Project.find_by_name('Grand Hyatt Doha'), user: User.find_by_email('enterprise_client@example.com'), role: :enterprise_account)
+ProjectAuthorization.create!(project: Project.find_by_name('Grand Hyatt Doha'), user: User.find_by_email('project_admin@example.com'), role: :project_system_administrator)

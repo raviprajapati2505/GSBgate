@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150611143831) do
+ActiveRecord::Schema.define(version: 20150611144834) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,15 +59,13 @@ ActiveRecord::Schema.define(version: 20150611143831) do
   add_index "certification_paths", ["project_id"], name: "index_certification_paths_on_project_id", using: :btree
 
   create_table "criteria", force: :cascade do |t|
-    t.string   "code",        limit: 5
     t.string   "name"
     t.integer  "category_id"
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   add_index "criteria", ["category_id"], name: "index_criteria_on_category_id", using: :btree
-  add_index "criteria", ["code"], name: "index_criteria_on_code", unique: true, using: :btree
 
   create_table "document_data", force: :cascade do |t|
     t.integer  "document_id"
@@ -165,6 +163,7 @@ ActiveRecord::Schema.define(version: 20150611143831) do
     t.datetime "created_at",                           null: false
     t.datetime "updated_at",                           null: false
     t.decimal  "weight",       precision: 4, scale: 2
+    t.string   "code"
   end
 
   add_index "scheme_criteria", ["criterion_id"], name: "index_scheme_criteria_on_criterion_id", using: :btree
