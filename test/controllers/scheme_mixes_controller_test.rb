@@ -33,9 +33,8 @@ class SchemeMixesControllerTest < ActionController::TestCase
     certification_path = certification_paths(:one)
     scheme = scheme_mixes(:one)
     get :show, project_id: project.id, certification_path_id: certification_path.id, id: scheme.id
-    assert_redirected_to edit_user_registration_path
-    # assert_response :success
-    # assert_select '.accordion-body tbody tr', 0, 'wrong number of criteria'
+    assert_response :success
+    assert_select '.accordion-body tbody tr', 2, 'wrong number of criteria'
     sign_out users(:project_manager)
   end
 

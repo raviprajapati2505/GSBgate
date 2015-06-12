@@ -31,6 +31,10 @@ class RequirementDatum < ActiveRecord::Base
     joins(:scheme_mix_criteria => [:scheme_mix => [:certification_path => [:project]]]).where(projects: {owner_id: user.id})
   }
 
+  scope :for_project_manager, ->(user) {
+    joins(:scheme_mix_criteria => [:scheme_mix => [:certification_path => [:project => [:project_authorizations]]]]).where(project_authorizations: {user_id: user.id, role: [ProjectAuthorization.roles[:cgp_project_manager]]})
+  }
+
   scope :for_client, ->(user) {
     joins(:scheme_mix_criteria => [:scheme_mix => [:certification_path => [:project => [:project_authorizations]]]]).where(project_authorizations: {user_id: user.id, role: [ProjectAuthorization.roles[:enterprise_account]]})
   }
@@ -43,7 +47,7 @@ class RequirementDatum < ActiveRecord::Base
     if user.system_admin?
       all
     else
-      assigned_to_user(user) | for_client(user) | for_project_admin(user) | owned_by_user(user)
+      assigned_to_user(user) | for_project_manager(user) | for_client(user) | for_project_admin(user) | owned_by_user(user)
     end
   }
 

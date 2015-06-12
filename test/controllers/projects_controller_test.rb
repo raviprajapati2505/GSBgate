@@ -17,7 +17,7 @@ class ProjectsControllerTest < ActionController::TestCase
     get :show, id: project.id
     assert_response :success
     assert_not_nil assigns(:project)
-    assert_select 'h5:last-of-type', 'Project team'
+    assert_select 'h5:nth-last-of-type(1)', 'Project team'
     sign_out users(:project_owner)
   end
 
@@ -27,7 +27,7 @@ class ProjectsControllerTest < ActionController::TestCase
     get :show, id: project.id
     assert_response :success
     assert_not_nil assigns(:project)
-    assert_select 'h5:last-of-type', 'Project Tasks'
+    assert_select 'h5:nth-last-of-type(1)', 'Certificates'
     sign_out users(:project_team_member)
   end
 
@@ -37,7 +37,7 @@ class ProjectsControllerTest < ActionController::TestCase
     get :show, id: project.id
     assert_response :success
     assert_not_nil assigns(:project)
-    assert_select 'h5:last-of-type', 'Project Tasks'
+    assert_select 'h5:nth-last-of-type(1)', 'Project team'
     sign_out users(:project_manager)
   end
 
@@ -47,7 +47,7 @@ class ProjectsControllerTest < ActionController::TestCase
     get :show, id: project.id
     assert_response :success
     assert_not_nil assigns(:project)
-    assert_select 'h5:last-of-type', 'Project team'
+    assert_select 'h5:nth-last-of-type(1)', 'Project team'
     sign_out users(:enterprise_licence)
   end
 
@@ -57,7 +57,7 @@ class ProjectsControllerTest < ActionController::TestCase
     get :show, id: project.id
     assert_response :success
     assert_not_nil assigns(:project)
-    assert_select 'h5:last-of-type', 'Project team'
+    assert_select 'h5:nth-last-of-type(1)', 'Project team'
     sign_out users(:project_admin)
   end
 
