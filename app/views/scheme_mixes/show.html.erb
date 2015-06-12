@@ -39,8 +39,12 @@
                          data-submitted="<%= @scheme_mix.weighted_submitted_score %>"></div>
                 </p>
                 <p>
-                    <strong>Requirement progress:</strong>
-                    <%= RequirementDatum.for_scheme_mix(@scheme_mix).provided.updateable_by_user(current_user).count %>/<%= RequirementDatum.for_scheme_mix(@scheme_mix).updateable_by_user(current_user).count %>
+                    <strong>Your requirement progress:</strong>
+                    <%= RequirementDatum.for_scheme_mix(@scheme_mix).provided.assigned_to_user(current_user).count %>/<%= RequirementDatum.for_scheme_mix(@scheme_mix).assigned_to_user(current_user).count %>
+                </p>
+                <p>
+                    <strong>Total requirement progress:</strong>
+                    <%= RequirementDatum.for_scheme_mix(@scheme_mix).provided.count %>/<%= RequirementDatum.for_scheme_mix(@scheme_mix).count %>
                 </p>
             </div>
         </div>
@@ -60,7 +64,8 @@
                             <th>Name</th>
                             <th>Weighting</th>
                             <th>Points</th>
-                            <th>Requirement progress</th>
+                            <th>Your requirement progress</th>
+                            <th>Total requirement progress</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -84,10 +89,11 @@
                                      data-targeted="<%= @scheme_mix.weighted_targeted_score_for_category(category) %>"
                                      data-submitted="<%= @scheme_mix.weighted_submitted_score_for_category(category) %>"></div>
                             </td>
-                            <td><%= RequirementDatum.for_scheme_mix(@scheme_mix).for_category(category).provided.updateable_by_user(current_user).count %>/<%= RequirementDatum.for_scheme_mix(@scheme_mix).for_category(category).updateable_by_user(current_user).count %></td>
+                            <td><%= RequirementDatum.for_scheme_mix(@scheme_mix).for_category(category).provided.assigned_to_user(current_user).count %>/<%= RequirementDatum.for_scheme_mix(@scheme_mix).for_category(category).assigned_to_user(current_user).count %></td>
+                            <td><%= RequirementDatum.for_scheme_mix(@scheme_mix).for_category(category).provided.count %>/<%= RequirementDatum.for_scheme_mix(@scheme_mix).for_category(category).count %></td>
                         </tr>
                         <tr id="category-panel-<%= category.id %>" class="accordion-body collapse">
-                            <td colspan="6">
+                            <td colspan="7">
                                 <div>
                                     <table class="table">
                                         <thead>
@@ -96,7 +102,8 @@
                                             <th>Name</th>
                                             <th>Weighting</th>
                                             <th>Score</th>
-                                            <th>Requirement progress</th>
+                                            <th>Your requirement progress</th>
+                                            <th>Total requirement progress</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -120,7 +127,8 @@
                                                          data-targeted="<%= scheme_mix_criterion.targeted_score %>"
                                                          data-submitted="<%= scheme_mix_criterion.submitted_score %>"></div>
                                                 </td>
-                                                <td><%= scheme_mix_criterion.requirement_data.provided.updateable_by_user(current_user).count %>/<%= scheme_mix_criterion.requirement_data.updateable_by_user(current_user).count %></td>
+                                                <td><%= scheme_mix_criterion.requirement_data.provided.assigned_to_user(current_user).count %>/<%= scheme_mix_criterion.requirement_data.assigned_to_user(current_user).count %></td>
+                                                <td><%= scheme_mix_criterion.requirement_data.provided.count %>/<%= scheme_mix_criterion.requirement_data.count %></td>
                                             </tr>
                                         <% end %>
                                         <% end %>

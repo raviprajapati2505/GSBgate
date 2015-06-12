@@ -27,30 +27,6 @@ class RequirementDatum < ActiveRecord::Base
     includes(:scheme_mix_criteria => [:scheme_criterion => [:criterion]]).where(criteria: {category_id: category.id})
   }
 
-  scope :owned_by_user, ->(user) {
-    joins(:scheme_mix_criteria => [:scheme_mix => [:certification_path => [:project]]]).where(projects: {owner_id: user.id})
-  }
-
-  scope :for_project_manager, ->(user) {
-    joins(:scheme_mix_criteria => [:scheme_mix => [:certification_path => [:project => [:project_authorizations]]]]).where(project_authorizations: {user_id: user.id, role: [ProjectAuthorization.roles[:cgp_project_manager]]})
-  }
-
-  scope :for_client, ->(user) {
-    joins(:scheme_mix_criteria => [:scheme_mix => [:certification_path => [:project => [:project_authorizations]]]]).where(project_authorizations: {user_id: user.id, role: [ProjectAuthorization.roles[:enterprise_account]]})
-  }
-
-  scope :for_project_admin, ->(user) {
-    joins(:scheme_mix_criteria => [:scheme_mix => [:certification_path => [:project => [:project_authorizations]]]]).where(project_authorizations: {user_id: user.id, role: [ProjectAuthorization.roles[:project_system_administrator]]})
-  }
-
-  scope :updateable_by_user, ->(user) {
-    if user.system_admin?
-      all
-    else
-      assigned_to_user(user) | for_project_manager(user) | for_client(user) | for_project_admin(user) | owned_by_user(user)
-    end
-  }
-
   scope :for_scheme_mix, ->(scheme_mix) {
     includes(:scheme_mix_criteria).where(scheme_mix_criteria: {scheme_mix: scheme_mix})
   }

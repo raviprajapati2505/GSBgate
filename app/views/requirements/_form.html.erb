@@ -1,6 +1,6 @@
-<% @scheme_mix_criterion.requirement_data.updateable_by_user(current_user).each_with_index do |requirement_datum| %>
+<% @scheme_mix_criterion.requirement_data.each_with_index do |requirement_datum| %>
     <div class="panel panel-default">
-        <div class="panel-heading">
+        <div class="panel-heading <%= 'assigned-requirement' if requirement_datum.user == current_user %>">
             <h4 class="panel-title">
                 <a href="#requirement-<%= requirement_datum.id %>" data-parent="#accordion" data-toggle="collapse" class="collapsed" aria-expanded="false"><%= requirement_datum.requirement.label %></a>
             </h4>
