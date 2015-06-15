@@ -67,20 +67,6 @@ ActiveRecord::Schema.define(version: 20150615073823) do
 
   add_index "criteria", ["category_id"], name: "index_criteria_on_category_id", using: :btree
 
-  create_table "document_data", force: :cascade do |t|
-    t.integer  "document_id"
-    t.string   "file_path"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-  end
-
-  add_index "document_data", ["document_id"], name: "index_document_data_on_document_id", using: :btree
-
-  create_table "documents", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "field_data", force: :cascade do |t|
     t.integer  "field_id"
     t.string   "string_value"
@@ -254,7 +240,6 @@ ActiveRecord::Schema.define(version: 20150615073823) do
   add_foreign_key "certification_paths", "certificates"
   add_foreign_key "certification_paths", "projects"
   add_foreign_key "criteria", "categories"
-  add_foreign_key "document_data", "documents"
   add_foreign_key "field_data", "calculator_data"
   add_foreign_key "field_data", "fields"
   add_foreign_key "fields", "calculators"
