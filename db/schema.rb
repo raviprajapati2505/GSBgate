@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150612085942) do
+ActiveRecord::Schema.define(version: 20150615073823) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -66,6 +66,20 @@ ActiveRecord::Schema.define(version: 20150612085942) do
   end
 
   add_index "criteria", ["category_id"], name: "index_criteria_on_category_id", using: :btree
+
+  create_table "document_data", force: :cascade do |t|
+    t.integer  "document_id"
+    t.string   "file_path"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "document_data", ["document_id"], name: "index_document_data_on_document_id", using: :btree
+
+  create_table "documents", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "field_data", force: :cascade do |t|
     t.integer  "field_id"
@@ -170,6 +184,8 @@ ActiveRecord::Schema.define(version: 20150612085942) do
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
     t.integer  "submitted_score"
+    t.integer  "status"
+    t.integer  "achieved_score"
   end
 
   add_index "scheme_mix_criteria", ["scheme_criterion_id"], name: "index_scheme_mix_criteria_on_scheme_criterion_id", using: :btree
@@ -238,6 +254,7 @@ ActiveRecord::Schema.define(version: 20150612085942) do
   add_foreign_key "certification_paths", "certificates"
   add_foreign_key "certification_paths", "projects"
   add_foreign_key "criteria", "categories"
+  add_foreign_key "document_data", "documents"
   add_foreign_key "field_data", "calculator_data"
   add_foreign_key "field_data", "fields"
   add_foreign_key "fields", "calculators"

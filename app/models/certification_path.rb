@@ -4,7 +4,7 @@ class CertificationPath < ActiveRecord::Base
   has_many :scheme_mixes
   has_many :schemes, through: :scheme_mixes
 
-  enum status: [ :registered ]
+  enum status: [ :registered, :preassessment ]
 
   def has_fixed_scheme?
     certificate.schemes.count == 1
