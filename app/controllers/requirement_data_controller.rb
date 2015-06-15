@@ -1,4 +1,6 @@
 class RequirementDataController < AuthenticatedController
+  require 'Reflection'
+
   before_action :set_requirement_datum
   load_and_authorize_resource
 
@@ -10,6 +12,22 @@ class RequirementDataController < AuthenticatedController
           field_datum.save
         end
       end
+
+      # Instantiate the calculator class
+      calculator_name = @requirement_datum.calculator_datum.calculator.name
+      if Reflection.class_exists calculator_name
+        calculator = calculator_name.constantize.new
+      else
+        calculator = "Calculator::GsasServiceCalculator".constantize.new calculator_name
+      end
+      # Create the calculator parameter hash
+      calculator_params = {}
+      @requirement_datum.calculator_datum.field_data.each do |field_datum|
+        field_name = field_datum.field.name
+        calculator_params[field_name] = field_datum.value
+      end
+      # Call the calculate method on the calculator class
+      @calculation_result = calculator.calculate calculator_params
     end
 
     @requirement_datum.user = User.find(params[:user_id])

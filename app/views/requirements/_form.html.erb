@@ -19,7 +19,7 @@
                         <% end %>
                     <% end %>
                     <% if requirement_datum.calculator_datum.present? %>
-                        <% calculator_template = requirement_datum.calculator_datum.calculator.class_name.constantize.name.demodulize.downcase %>
+                        <% calculator_template = requirement_datum.calculator_datum.calculator.name.constantize.name.demodulize.downcase %>
                         <div>
                             <% if File.exist?("app/views/calculators/_#{calculator_template}.html.erb") %>
                                 <%= render "calculators/#{calculator_template}", requirement_datum: requirement_datum, calculator_template: calculator_template, f: f %>
