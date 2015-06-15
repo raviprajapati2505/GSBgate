@@ -36,7 +36,7 @@
                     <% if can? :manage, @scheme_mix_criterion %>
                         <div class="row">
                             <div class="col-md-3">
-                                <%= f.text_field :targeted_score %>
+                                <%= f.select :targeted_score, @scheme_mix_criterion.scheme_criterion.scores.map { |k| [k.score, k.score]} %>
                             </div>
                         </div>
                         <div class="row">

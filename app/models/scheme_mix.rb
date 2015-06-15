@@ -46,7 +46,7 @@ class SchemeMix < ActiveRecord::Base
       # Loop all the criteria of the scheme
       scheme.scheme_criteria.each do |scheme_criterion|
         # Create a SchemeMixCriterion for every criterion
-        scheme_mix_criterion = SchemeMixCriterion.create(targeted_score: 0, scheme_mix: self, scheme_criterion: scheme_criterion)
+        scheme_mix_criterion = SchemeMixCriterion.create(targeted_score: scheme_criterion.max_attainable_score, scheme_mix: self, scheme_criterion: scheme_criterion)
 
         # Loop all requirements of the criterion
         scheme_criterion.requirements.each do |requirement|
