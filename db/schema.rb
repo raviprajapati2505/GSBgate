@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150611144834) do
+ActiveRecord::Schema.define(version: 20150612085942) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -66,20 +66,6 @@ ActiveRecord::Schema.define(version: 20150611144834) do
   end
 
   add_index "criteria", ["category_id"], name: "index_criteria_on_category_id", using: :btree
-
-  create_table "document_data", force: :cascade do |t|
-    t.integer  "document_id"
-    t.string   "file_path"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-  end
-
-  add_index "document_data", ["document_id"], name: "index_document_data_on_document_id", using: :btree
-
-  create_table "documents", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
 
   create_table "field_data", force: :cascade do |t|
     t.integer  "field_id"
@@ -138,10 +124,9 @@ ActiveRecord::Schema.define(version: 20150611144834) do
   end
 
   create_table "requirement_data", force: :cascade do |t|
-    t.integer  "reportable_data_id"
-    t.string   "reportable_data_type"
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
+    t.integer  "calculator_datum_id"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
     t.integer  "requirement_id"
     t.integer  "status"
     t.integer  "user_id"
@@ -150,10 +135,9 @@ ActiveRecord::Schema.define(version: 20150611144834) do
   add_index "requirement_data", ["user_id"], name: "index_requirement_data_on_user_id", using: :btree
 
   create_table "requirements", force: :cascade do |t|
-    t.integer  "reportable_id"
-    t.string   "reportable_type"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.integer  "calculator_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
     t.string   "label"
   end
 
@@ -254,7 +238,6 @@ ActiveRecord::Schema.define(version: 20150611144834) do
   add_foreign_key "certification_paths", "certificates"
   add_foreign_key "certification_paths", "projects"
   add_foreign_key "criteria", "categories"
-  add_foreign_key "document_data", "documents"
   add_foreign_key "field_data", "calculator_data"
   add_foreign_key "field_data", "fields"
   add_foreign_key "fields", "calculators"

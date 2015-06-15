@@ -3,22 +3,13 @@ class RequirementDataController < AuthenticatedController
   load_and_authorize_resource
 
   def update
-    case @requirement_datum.reportable_data_type
-      when 'CalculatorDatum'
-        @requirement_datum.reportable_data.field_data.each do |field_datum|
-          if params["field-datum-#{field_datum.id}"]
-            field_datum.value = params["field-datum-#{field_datum.id}"]
-            field_datum.save
-          end
+    if @requirement_datum.calculator_datum.present?
+      @requirement_datum.calculator_datum.field_data.each do |field_datum|
+        if params["field-datum-#{field_datum.id}"]
+          field_datum.value = params["field-datum-#{field_datum.id}"]
+          field_datum.save
         end
-      when 'DocumentDatum'
-        document_datum = @requirement_datum.reportable_data
-        if params["document-datum-#{document_datum.id}"]
-          uploaded_io = params["document-datum-#{document_datum.id}"]
-          File.open(Rails.root.join('private', 'uploads', uploaded_io.original_filename), 'wb') do |file|
-            file.write(uploaded_io.read)
-          end
-        end
+      end
     end
 
     @requirement_datum.user = User.find(params[:user_id])
