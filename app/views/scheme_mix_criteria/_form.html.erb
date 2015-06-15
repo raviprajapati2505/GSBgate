@@ -38,6 +38,14 @@
                             <div class="col-md-3">
                                 <%= f.select :targeted_score, @scheme_mix_criterion.scheme_criterion.scores.map { |k| [k.score, k.score]} %>
                             </div>
+                            <div class="col-md-3">
+                                <% project_authorizations = @project.project_authorizations.for_user(current_user) %>
+                                <% if (project_authorizations.count > 0) && project_authorizations.first.project_system_administrator? %>
+                                    <%= f.select :achieved_score, @scheme_mix_criterion.scheme_criterion.scores.map { |k| [k.score, k.score]}, {include_blank: 'Unclassified'} %>
+                                <% else %>
+                                    <%= f.select :achieved_score, @scheme_mix_criterion.scheme_criterion.scores.map { |k| [k.score, k.score]}, {include_blank: 'Unclassified'}, disabled: true %>
+                                <% end %>
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12">
@@ -49,6 +57,9 @@
                         <div class="row">
                             <div class="col-md-3">
                                 <%= f.text_field :targeted_score, disabled: 'disabled' %>
+                            </div>
+                            <div class="col-md-3">
+                                <%= f.text_field :achieved_score, disabled: 'disabled' %>
                             </div>
                         </div>
                     <% end %>

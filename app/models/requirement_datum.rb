@@ -11,6 +11,11 @@ class RequirementDatum < ActiveRecord::Base
 
   validates :status, inclusion: RequirementDatum.statuses.keys
 
+  default_scope {
+    joins(:requirement)
+    .order('requirements.label')
+  }
+
   scope :provided, -> {
     where(status: 1)
   }

@@ -36,7 +36,7 @@ class SchemeMixCriteriaController < AuthenticatedController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def scheme_mix_criterion_params
-    params.require(:scheme_mix_criterion).permit(:targeted_score)
+    params.require(:scheme_mix_criterion).permit(:targeted_score, :achieved_score)
   end
 
 end

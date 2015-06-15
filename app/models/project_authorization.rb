@@ -9,4 +9,8 @@ class ProjectAuthorization < ActiveRecord::Base
   scope :for_project, ->(project) {
     where(project: project)
   }
+
+  scope :for_user, ->(user) {
+    where(user: user)
+  }
 end
