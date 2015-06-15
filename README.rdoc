@@ -23,6 +23,7 @@ You are now ready to run this project.
 2. (non-root) bundle install --without development test
 3. (root) RAILS_ENV=production bundle exec rake assets:precompile
 4. (root) RAILS_ENV=production bundle exec rake db:migrate
+5. (root) service apache2 restart
 
 == Deploy GSASService and GSASVB6 on windows test server
 svn://svnext.vito.be/ENE/TEM/EMIS/GORD-GSAS/trunk/GSASServices/GSASServices/Docs/INSTALL.txt
