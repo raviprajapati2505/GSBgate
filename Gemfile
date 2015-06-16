@@ -7,6 +7,7 @@ gem 'rails', '4.2.1'
 gem 'pg'
 gem 'activerecord-postgis-adapter', '3.0.0.beta5'
 gem 'rgeo', '0.3.20'
+gem 'ffi-geos'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
@@ -45,8 +46,6 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # gem 'capistrano-rails', group: :development
 
 group :development, :test do
-  gem 'ffi-geos'
-
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
   # Access an IRB console on exception pages or by using <%= console %> in views
