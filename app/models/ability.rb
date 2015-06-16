@@ -52,6 +52,7 @@ class Ability
       can :manage, CertificationPath, project: {project_authorizations: {user_id: user.id, role: ['cgp_project_manager', ProjectAuthorization.roles[:cgp_project_manager]]}}
       can :read, CertificationPath, project: {project_authorizations: {user_id: user.id, role: ['enterprise_account', ProjectAuthorization.roles[:enterprise_account]]}}
       can :read, CertificationPath, scheme_mixes: {scheme_mix_criteria: {requirement_data: {user_id: user.id}}}
+      can :read, CertificationPath, scheme_mixes: {scheme_mix_criteria: {certifier_id: user.id}}
       can :create, CertificationPath
       # SchemeMix controller
       can :manage, SchemeMix, certification_path: {project: {owner_id: user.id}}
@@ -59,6 +60,7 @@ class Ability
       can :manage, SchemeMix, certification_path: {project: {project_authorizations: {user_id: user.id, role:  ['cgp_project_manager', ProjectAuthorization.roles[:cgp_project_manager]]}}}
       can :read, SchemeMix, certification_path: {project: {project_authorizations: {user_id: user.id, role:  ['enterprise_account', ProjectAuthorization.roles[:enterprise_account]]}}}
       can :read, SchemeMix, scheme_mix_criteria: {requirement_data: {user_id: user.id}}
+      can :read, SchemeMix, scheme_mix_criteria: {certifier_id: user.id}
       # SchemeMixCriterion controller
       can :manage, SchemeMixCriterion, scheme_mix: {certification_path: {project: {owner_id: user.id}}}
       can :manage, SchemeMixCriterion, scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id, role:  ['project_system_administrator', ProjectAuthorization.roles[:project_system_administrator]]}}}}
@@ -66,6 +68,7 @@ class Ability
       can :read, SchemeMixCriterion, scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id}}}}
       can :edit, SchemeMixCriterion, scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id}}}}
       can :update, SchemeMixCriterion, requirement_data: {user_id: user.id}
+      can :update, SchemeMixCriterion, certifier_id: user.id
       # RequirementDatum controller
       can :manage, RequirementDatum, scheme_mix_criteria: {scheme_mix: {certification_path: {project: {owner_id: user.id}}}}
       can :manage, RequirementDatum, scheme_mix_criteria: {scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id, role: ['project_system_administrator', ProjectAuthorization.roles[:project_system_administrator]]}}}}}
