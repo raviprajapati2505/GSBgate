@@ -10,10 +10,21 @@ class SchemeMixCriteriaController < AuthenticatedController
   end
 
   def update
-    if @scheme_mix_criterion.update(scheme_mix_criterion_params)
-      render json: @scheme_mix_criterion, status: :ok
-    else
-      render json: @scheme_mix_criterion.errors, status: :unprocessable_entity
+    respond_to do |format|
+      if @scheme_mix_criterion.update(scheme_mix_criterion_params)
+        # Save the documents
+        if params.has_key?(:documents)
+          params[:documents]['document_file'].each do |document_file|
+            @scheme_mix_criterion.documents.create!(:document_file => document_file)
+          end
+        end
+
+        format.html { redirect_to edit_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), notice: 'Criterion was successfully updated.' }
+        format.json { render json: @scheme_mix_criterion, status: :ok }
+      else
+        format.html { render :edit }
+        format.json { render json: @scheme_mix_criterion.errors, status: :unprocessable_entity }
+      end
     end
   end
 

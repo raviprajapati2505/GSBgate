@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150616085255) do
+ActiveRecord::Schema.define(version: 20150616093329) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -66,6 +66,16 @@ ActiveRecord::Schema.define(version: 20150616085255) do
   end
 
   add_index "criteria", ["category_id"], name: "index_criteria_on_category_id", using: :btree
+
+  create_table "documents", force: :cascade do |t|
+    t.string   "document_file"
+    t.integer  "user_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "documents", ["user_id"], name: "by_user", unique: true, using: :btree
+  add_index "documents", ["user_id"], name: "index_documents_on_user_id", using: :btree
 
   create_table "field_data", force: :cascade do |t|
     t.integer  "field_id"
@@ -180,6 +190,17 @@ ActiveRecord::Schema.define(version: 20150616085255) do
   add_index "scheme_mix_criteria", ["scheme_criterion_id"], name: "index_scheme_mix_criteria_on_scheme_criterion_id", using: :btree
   add_index "scheme_mix_criteria", ["scheme_mix_id"], name: "index_scheme_mix_criteria_on_scheme_mix_id", using: :btree
 
+  create_table "scheme_mix_criteria_documents", force: :cascade do |t|
+    t.integer  "scheme_mix_criterion_id"
+    t.integer  "document_id"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
+  add_index "scheme_mix_criteria_documents", ["document_id"], name: "index_scheme_mix_criteria_documents_on_document_id", using: :btree
+  add_index "scheme_mix_criteria_documents", ["scheme_mix_criterion_id", "document_id"], name: "scheme_mix_criteria_documents_unique", unique: true, using: :btree
+  add_index "scheme_mix_criteria_documents", ["scheme_mix_criterion_id"], name: "index_scheme_mix_criteria_documents_on_scheme_mix_criterion_id", using: :btree
+
   create_table "scheme_mix_criteria_requirement_data", force: :cascade do |t|
     t.integer  "scheme_mix_criterion_id"
     t.integer  "requirement_datum_id"
@@ -243,6 +264,7 @@ ActiveRecord::Schema.define(version: 20150616085255) do
   add_foreign_key "certification_paths", "certificates"
   add_foreign_key "certification_paths", "projects"
   add_foreign_key "criteria", "categories"
+  add_foreign_key "documents", "users"
   add_foreign_key "field_data", "calculator_data"
   add_foreign_key "field_data", "fields"
   add_foreign_key "fields", "calculators"
@@ -257,6 +279,8 @@ ActiveRecord::Schema.define(version: 20150616085255) do
   add_foreign_key "scheme_criterion_requirements", "scheme_criteria"
   add_foreign_key "scheme_mix_criteria", "scheme_criteria"
   add_foreign_key "scheme_mix_criteria", "scheme_mixes"
+  add_foreign_key "scheme_mix_criteria_documents", "documents"
+  add_foreign_key "scheme_mix_criteria_documents", "scheme_mix_criteria"
   add_foreign_key "scheme_mix_criteria_requirement_data", "requirement_data"
   add_foreign_key "scheme_mix_criteria_requirement_data", "scheme_mix_criteria"
   add_foreign_key "scheme_mixes", "certification_paths"

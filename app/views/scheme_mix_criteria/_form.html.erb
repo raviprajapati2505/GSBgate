@@ -21,11 +21,10 @@
                 <h5>Score</h5>
             </div>
             <div class="ibox-content">
-                <%= bootstrap_form_for([@project, @certification_path, @scheme_mix, @scheme_mix_criterion], url: project_certification_path_scheme_mix_scheme_mix_criterion_path, remote: true) do |f| %>
+                <%= bootstrap_form_for([@project, @certification_path, @scheme_mix, @scheme_mix_criterion], url: project_certification_path_scheme_mix_scheme_mix_criterion_path) do |f| %>
                     <% if @scheme_mix_criterion.errors.any? %>
                         <div id="error_explanation">
                             <h2><%= pluralize(@scheme_mix_criterion.errors.count, "error") %> prohibited this criterion from being saved:</h2>
-
                             <ul>
                                 <% @scheme_mix_criterion.errors.full_messages.each do |message| %>
                                     <li><%= message %></li>
@@ -44,8 +43,28 @@
                         </div>
                         <div class="row">
                             <div class="col-md-12">
+                                <%= f.fields_for :documents do |d| %>
+                                    <%= d.file_field :document_file, :multiple => true, name: "documents[document_file][]" %>
+                                <% end %>
+                                <% @scheme_mix_criterion.documents.each do |d| %>
+                                    <div class="well well-sm">
+                                        <ul>
+                                            <li>Icon: <%= image_tag Icon.for_filename(d.document_file.file.filename) %></li>
+                                            <li>Filename: <%= d.document_file.file.filename %></li>
+                                            <li>URL: <%= d.document_file.url %></li>
+                                            <li>Path: <%= d.document_file.path %></li>
+                                            <li>Content type: <%= d.document_file.content_type %></li>
+                                            <li>Size: <%= number_to_human_size(d.document_file.size) %></li>
+                                            <li>Extension: <%= File.extname(d.document_file.file.filename) %></li>
+                                        </ul>
+                                    </div>
+                                <% end %>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
                                 <div class="hr-line-dashed"></div>
-                                <%= f.primary %> or <%= link_to 'Cancel', project_certification_path_scheme_mix_path(@project, @certification_path, @scheme_mix), class: 'btn btn-default' %>
+                                <%= f.primary 'Save' %>
                             </div>
                         </div>
                     <% else %>

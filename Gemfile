@@ -70,8 +70,11 @@ gem 'bundler', '>= 1.8.4'
 # For documentation, go to https://github.com/bootstrap-ruby/rails-bootstrap-forms#usage
 gem 'bootstrap_form'
 
-# Use rempotipart for AJAX file uploads
-gem 'remotipart', '~> 1.2.1'
+# Simplified file uploading
+gem 'carrierwave', github:'carrierwaveuploader/carrierwave'
+
+# File icons
+gem 'rails-file-icons'
 
 # Rails-Assets: access bower packages from our gem file
 #  e.g. gem 'rails-assets-BOWER_PACKAGE_NAME'
