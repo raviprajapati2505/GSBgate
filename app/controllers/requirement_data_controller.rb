@@ -1,5 +1,5 @@
 class RequirementDataController < AuthenticatedController
-  require_dependency 'Reflection'
+  require_dependency 'reflection'
 
   before_action :set_requirement_datum
   load_and_authorize_resource
