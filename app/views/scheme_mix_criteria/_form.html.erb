@@ -56,6 +56,7 @@
                                             <li>Content type: <%= d.document_file.content_type %></li>
                                             <li>Size: <%= number_to_human_size(d.document_file.size) %></li>
                                             <li>Extension: <%= File.extname(d.document_file.file.filename) %></li>
+                                            <li>Owner: <%= d.user.email %></li>
                                         </ul>
                                     </div>
                                 <% end %>

@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
   enum role: [ :system_admin, :user ]
 
   has_many :owned_projects, class_name: 'Project', inverse_of: :owner
-  has_many :owned_documents, class_name: 'Document', inverse_of: :owner
+  has_many :documents
   has_many :project_authorizations
   has_many :projects, through: :project_authorizations
   has_many :requirement_data

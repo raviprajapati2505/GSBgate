@@ -74,7 +74,7 @@ ActiveRecord::Schema.define(version: 20150616093329) do
     t.datetime "updated_at",    null: false
   end
 
-  add_index "documents", ["user_id"], name: "by_user", unique: true, using: :btree
+  add_index "documents", ["user_id"], name: "by_user", using: :btree
   add_index "documents", ["user_id"], name: "index_documents_on_user_id", using: :btree
 
   create_table "field_data", force: :cascade do |t|

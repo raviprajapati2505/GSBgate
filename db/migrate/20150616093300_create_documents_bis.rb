@@ -7,6 +7,6 @@ class CreateDocumentsBis < ActiveRecord::Migration
       t.timestamps null: false
     end
 
-    add_index(:documents, :user_id, unique: true, name: 'by_user')
+    add_index(:documents, :user_id, name: 'by_user')
   end
 end

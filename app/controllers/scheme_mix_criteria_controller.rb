@@ -15,7 +15,7 @@ class SchemeMixCriteriaController < AuthenticatedController
         # Save the documents
         if params.has_key?(:documents)
           params[:documents]['document_file'].each do |document_file|
-            @scheme_mix_criterion.documents.create!(:document_file => document_file)
+            @scheme_mix_criterion.documents.create!(document_file: document_file, user: current_user)
           end
         end
 
