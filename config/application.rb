@@ -25,5 +25,7 @@ module Gord
 
     # Autoload classes from custom "services" folder
     config.autoload_paths << Rails.root.join('services')
+    # Autoload classes from custom "lib" folder
+    config.autoload_paths << Rails.root.join('lib')
   end
 end
