@@ -1,7 +1,7 @@
 class Project < ActiveRecord::Base
 
   belongs_to :owner, class_name: 'User', inverse_of: :owned_projects
-  has_many :project_authorizations
+  has_many :project_authorizations, dependent: :delete_all
   has_many :users, through: :project_authorizations
   has_many :certification_paths
 

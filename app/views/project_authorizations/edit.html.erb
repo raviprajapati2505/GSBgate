@@ -1,4 +1,4 @@
-<%= bootstrap_form_for([@project, @project_authorization], as: :authorization, url: project_authorizations_path(@project, @project_authorization)) do |f| %>
+<%= bootstrap_form_for([@project, @project_authorization], as: :authorization, url: project_authorization_path(@project, @project_authorization)) do |f| %>
     <div class="row">
         <div class="col-lg-12">
             <div class="ibox">
@@ -6,7 +6,7 @@
                     <h5><%=t '.form_title' %></h5>
                 </div>
                 <div class="ibox-content">
-                    <%= f.select :user_id, User.without_permissions_for_project(@project).map { |k| [k.email, k.id]}, {}, { class: 'chosen-select'} %>
+                    <%= f.select :user_id, [[@project_authorization.user.email, @project_authorization.user.id]], {}, { class: 'chosen-select', disabled: true} %>
                     <%= f.select :role, ProjectAuthorization.roles.keys.map { |k| [k.humanize, k]} %>
                     <%= f.primary t('.btn_save') %>
                     <%= link_to t('.btn_cancel'), :back, class: 'btn btn-white' %>

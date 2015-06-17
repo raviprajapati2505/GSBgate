@@ -1,7 +1,7 @@
 class ProjectAuthorizationsController < AuthenticatedController
   load_and_authorize_resource
-  before_action :set_project, only: [:new, :create]
-  before_action :set_authorization, only: [:destroy]
+  before_action :set_project, only: [:new, :create, :edit]
+  before_action :set_authorization, only: [:edit, :destroy]
 
   def new
     authorize! :manage, @project
@@ -20,10 +20,24 @@ class ProjectAuthorizationsController < AuthenticatedController
     end
   end
 
+  def edit
+
+  end
+
+  def update
+    if @project_authorization.update(authorizations_params)
+      flash[:notice] = 'Authorization was successfully updated.'
+      redirect_to project_path(@project_authorization.project)
+    else
+      render action: :edit
+    end
+  end
+
   def destroy
+    id = @project_authorization.project_id
     @project_authorization.destroy
     flash[:notice] = 'Authorization was successfully destroyed.'
-    redirect_to project_project_authorizations_path
+    redirect_to project_path id: id
   end
 
   private
