@@ -12,7 +12,7 @@ class SchemeMixCriteriaController < AuthenticatedController
   def update
     respond_to do |format|
       # if not attempting criterion
-      if params[:scheme_mix_criterion][:targeted_score] == '-1' && params[:scheme_mix_criterion][:status] == :complete.to_s
+      if @scheme_mix_criterion.targeted_score == -1 && params[:scheme_mix_criterion][:status] == :complete.to_s
         params[:scheme_mix_criterion][:submitted_score] = -1
       end
       if @scheme_mix_criterion.update(scheme_mix_criterion_params)
@@ -51,7 +51,7 @@ class SchemeMixCriteriaController < AuthenticatedController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def scheme_mix_criterion_params
-    params.require(:scheme_mix_criterion).permit(:targeted_score, :achieved_score, :submitted_score, :status)
+    params.require(:scheme_mix_criterion).permit(:targeted_score, :achieved_score, :submitted_score, :status, :justification)
   end
 
 end

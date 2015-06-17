@@ -37,13 +37,14 @@
                                 <%= f.select :achieved_score, @scheme_mix_criterion.scheme_criterion.scores.map { |k| [k.score, k.score]}, {include_blank: 'Unclassified'}, disabled: true %>
                             </div>
                             <div class="col-md-3">
-                                <%= f.select :status, SchemeMixCriterion.statuses.keys.map { |k| [k.humanize, k]} %>
+                                <%= f.static_control :status %>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="hr-line-dashed"></div>
                                 <%= f.primary 'Save' %>
+                                <button type="button" class="btn btn-white" data-toggle="modal" data-target="#updateCriterionStatusModal">Update status</button>
                             </div>
                         </div>
                     <% else %>
@@ -59,7 +60,7 @@
                                 <% end %>
                             </div>
                             <div class="col-md-3">
-                                <%= f.select :status, SchemeMixCriterion.statuses.keys.map { |k| [k.humanize, k]}, {}, disabled: true %>
+                                <%= f.static_control :status %>
                             </div>
                         </div>
                     <% end %>
@@ -131,3 +132,6 @@
         </div>
     </div>
 </div>
+<% if can? :manage, @scheme_mix_criterion %>
+<%= render 'modal', project: @project, certification_path: @certification_path, scheme_mix: @scheme_mix, scheme_mix_criterion: @scheme_mix_criterion %>
+<% end %>
