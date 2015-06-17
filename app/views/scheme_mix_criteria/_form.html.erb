@@ -46,19 +46,28 @@
                                 <%= f.fields_for :documents do |d| %>
                                     <%= d.file_field :document_file, :multiple => true, name: "documents[document_file][]" %>
                                 <% end %>
-                                <% @scheme_mix_criterion.documents.each do |d| %>
-                                    <div class="well well-sm">
-                                        <ul>
-                                            <li>Icon: <%= image_tag Icon.for_filename(d.document_file.file.filename) %></li>
-                                            <li>Filename: <%= d.document_file.file.filename %></li>
-                                            <li>URL: <%= d.document_file.url %></li>
-                                            <li>Path: <%= d.document_file.path %></li>
-                                            <li>Content type: <%= d.document_file.content_type %></li>
-                                            <li>Size: <%= number_to_human_size(d.document_file.size) %></li>
-                                            <li>Extension: <%= File.extname(d.document_file.file.filename) %></li>
-                                            <li>Owner: <%= d.user.email %></li>
-                                        </ul>
-                                    </div>
+                                <% if @scheme_mix_criterion.documents.any? %>
+                                    <table class="table table-striped table-bordered table-hover datatable">
+                                        <thead>
+                                            <tr>
+                                                <th>File name</th>
+                                                <th>Upload date</th>
+                                                <th>Uploaded by</th>
+                                                <th>File size</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% @scheme_mix_criterion.documents.each do |d| %>
+                                                <tr>
+                                                    <td data-order="<%= d.document_file.file.filename %>" data-search="<%= d.document_file.file.filename %>"><%= d.to_s %></td>
+                                                    <td><%= d.created_at %></td>
+                                                    <td><%= d.user.email %></td>
+                                                    <td data-order="<%= d.document_file.size %>"><%= number_to_human_size(d.document_file.size) %></td>
+                                                    <!--<td>Path: <%= d.document_file.path %></td>-->
+                                                </tr>
+                                            <% end %>
+                                        </tbody>
+                                    </table>
                                 <% end %>
                             </div>
                         </div>

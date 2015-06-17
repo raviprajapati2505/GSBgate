@@ -20,7 +20,7 @@ module ApplicationHelper
     if title.blank?
       ''
     else
-      '<span class="tooltip-icon" data-toggle="tooltip" data-placement="top" title="' + title + '"><i class="fa fa-question-circle"></i></span>'
+      ('<span class="tooltip-icon" data-toggle="tooltip" data-placement="top" title="' + title + '"><i class="fa fa-question-circle"></i></span>').html_safe
     end
   end
 end
