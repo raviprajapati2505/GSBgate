@@ -17,6 +17,7 @@
  *= require datatables-responsive
  *= require datatables-plugins/integration/bootstrap/3/dataTables.bootstrap
  *= require chosen
+ *= require bootstrap-datepicker
  *
  * NOTE: removed 'require_tree .', as this conflicts with sass/scss @import behaviour
  *   see: https://github.com/rails/sass-rails

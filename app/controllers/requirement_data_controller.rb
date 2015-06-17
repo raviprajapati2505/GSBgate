@@ -31,6 +31,7 @@ class RequirementDataController < AuthenticatedController
     end
 
     @requirement_datum.user = User.find(params[:user_id])
+    @requirement_datum.due_date = params[:due_date]
     @requirement_datum.save!
 
     render json: @requirement_datum, status: :ok

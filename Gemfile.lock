@@ -117,6 +117,9 @@ GEM
     rails-assets-animate.css (3.3.0)
     rails-assets-bootstrap (3.3.4)
       rails-assets-jquery (>= 1.9.1)
+    rails-assets-bootstrap-datepicker (1.4.0)
+      rails-assets-bootstrap (>= 2.0.4, < 4.0)
+      rails-assets-jquery (>= 1.7.1)
     rails-assets-chosen (1.4.2)
       rails-assets-jquery (>= 1.4.4)
     rails-assets-d3 (3.5.5)
@@ -223,6 +226,7 @@ DEPENDENCIES
   rails (= 4.2.1)
   rails-assets-animate.css!
   rails-assets-bootstrap!
+  rails-assets-bootstrap-datepicker!
   rails-assets-chosen!
   rails-assets-d3!
   rails-assets-datatables!

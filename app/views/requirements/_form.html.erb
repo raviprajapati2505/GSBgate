@@ -18,6 +18,7 @@
                             <%= f.select :user_id, options_for_select(users.map { |k| [k.email, k.id]}, requirement_datum.user.id), {}, disabled: !(can? :manage, @project.project_authorizations.first) %>
                         <% end %>
                     <% end %>
+                    <%= f.text_field :due_date, prepend: '<i class="fa fa-calendar"></i>'.html_safe, data: {provide: 'datepicker'}, disabled: !(can? :manage, @project.project_authorizations.first) %>
                     <% if requirement_datum.calculator_datum.present? %>
                         <% calculator_template = requirement_datum.calculator_datum.calculator.name.constantize.name.demodulize.downcase %>
                         <div>

@@ -27,6 +27,7 @@
  *= require chosen
  *= require d3
  *= require score_widget.js
+ *= require bootstrap-datepicker
  */
 
 $(function () {
@@ -38,6 +39,14 @@ $(function () {
 
     // Chosen
     $('.chosen-select').chosen();
+
+    // Datepicker
+    $('input[data-provide="datepicker"]').datepicker({
+        dateFormat: 'dd/mm/yyyy',
+        startDate: '0d',
+        todayBtn: true,
+        todayHighlight: true
+    });
 
     // Accordion tables
     $('.accordion-body').on('show.bs.collapse', function() {
