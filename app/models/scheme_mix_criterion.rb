@@ -7,6 +7,12 @@ class SchemeMixCriterion < ActiveRecord::Base
   belongs_to :scheme_criterion
   belongs_to :certifier, class_name: 'User'
 
+  enum status: [ :in_progress, :complete ]
+
+  before_validation :assign_default_status, on: :create
+
+  validates :status, inclusion: SchemeMixCriterion.statuses.keys
+
   validates :targeted_score, presence: true
 
   scope :for_category, ->(category) {
@@ -22,5 +28,10 @@ class SchemeMixCriterion < ActiveRecord::Base
   # returns targeted score taking into account the percentage for which it counts (=weight)
   def weighted_targeted_score
     targeted_score * scheme_criterion.weight / 100 * scheme_mix.weight / 100
+  end
+
+  private
+  def assign_default_status
+    self.status = :in_progress if self.status.nil?
   end
 end

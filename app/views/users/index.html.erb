@@ -16,7 +16,7 @@
             <% @users.each do |user| %>
                 <tr>
                     <td><%= user.email %></td>
-                    <td><%= User.human_attribute_name(user.role) %></td>
+                    <td><%= user.role.humanize %></td>
                     <td>
                         <% if user.id != 1 %>
                         <%= link_to "<i title=\"#{t('.action_edit_title')}\" class=\"fa fa-lg fa-edit\" style=\"padding-right: 10px;\"></i>".html_safe, edit_user_path(user) %>

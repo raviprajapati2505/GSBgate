@@ -15,7 +15,7 @@
                                 <%= f.select :user_id, options_for_select(users.map { |k| [k.email, k.id]}) %>
                             <% end %>
                         <% else %>
-                            <%= f.select :user_id, options_for_select(users.map { |k| [k.email, k.id]}, requirement_datum.user.id), {}, disabled: !(can? :manage, @project.project_authorizations.first) %>
+                            <%= f.select :user_id, options_for_select(users.map { |k| [k.email, k.id]}, requirement_datum.user.id), {label: 'Responsibility'}, disabled: !(can? :manage, @project.project_authorizations.first) %>
                         <% end %>
                     <% end %>
                     <%= f.text_field :due_date, prepend: '<i class="fa fa-calendar"></i>'.html_safe, data: {provide: 'datepicker'}, disabled: !(can? :manage, @project.project_authorizations.first) %>
