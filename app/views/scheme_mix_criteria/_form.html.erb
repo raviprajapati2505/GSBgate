@@ -111,7 +111,9 @@
                                         <tbody>
                                         <% @scheme_mix_criterion.documents.each do |d| %>
                                             <tr>
-                                                <td data-order="<%= d.document_file.file.filename %>" data-search="<%= d.document_file.file.filename %>"><%= d.to_s %></td>
+                                                <td data-order="<%= d.document_file.file.filename %>" data-search="<%= d.document_file.file.filename %>">
+                                                    <%= image_tag(Icon.for_filename(d.document_file.file.filename), alt: d.document_file.content_type, title: d.document_file.content_type) + ' ' + link_to(d.document_file.file.filename, download_document_path(d)) %>
+                                                </td>
                                                 <td><%= d.created_at %></td>
                                                 <td><%= d.user.email %></td>
                                                 <td data-order="<%= d.document_file.size %>"><%= number_to_human_size(d.document_file.size) %></td>

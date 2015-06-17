@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
   resources :certification_paths
-  resources :documents, only: [ :create ]
   resources :projects do
     resources :project_authorizations, only: [ :new, :create, :destroy ], path: 'authorizations'
     resources :certification_paths, except: [ :edit, :update, :destroy ], path: 'certificates' do
@@ -10,6 +9,8 @@ Rails.application.routes.draw do
     end
     resources :requirement_data, only: [:update], path: 'requirement', as: 'requirement_data'
   end
+  resources :documents, only: [ :create ]
+  get 'documents/:id/download' => 'documents#download', as: 'download_document'
 
   resources :users
   devise_for :user
