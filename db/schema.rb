@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150617125736) do
+ActiveRecord::Schema.define(version: 20150618073246) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -66,6 +66,19 @@ ActiveRecord::Schema.define(version: 20150617125736) do
   end
 
   add_index "criteria", ["category_id"], name: "index_criteria_on_category_id", using: :btree
+
+  create_table "criteria_status_logs", force: :cascade do |t|
+    t.text     "comment"
+    t.integer  "old_status"
+    t.integer  "new_status"
+    t.integer  "scheme_mix_criterion_id"
+    t.integer  "user_id"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
+  add_index "criteria_status_logs", ["scheme_mix_criterion_id"], name: "index_criteria_status_logs_on_scheme_mix_criterion_id", using: :btree
+  add_index "criteria_status_logs", ["user_id"], name: "index_criteria_status_logs_on_user_id", using: :btree
 
   create_table "documents", force: :cascade do |t|
     t.string   "document_file"
@@ -184,7 +197,6 @@ ActiveRecord::Schema.define(version: 20150617125736) do
     t.integer  "status"
     t.integer  "achieved_score"
     t.integer  "certifier_id"
-    t.text     "justification"
   end
 
   add_index "scheme_mix_criteria", ["certifier_id"], name: "index_scheme_mix_criteria_on_certifier_id", using: :btree
@@ -265,6 +277,8 @@ ActiveRecord::Schema.define(version: 20150617125736) do
   add_foreign_key "certification_paths", "certificates"
   add_foreign_key "certification_paths", "projects"
   add_foreign_key "criteria", "categories"
+  add_foreign_key "criteria_status_logs", "scheme_mix_criteria"
+  add_foreign_key "criteria_status_logs", "users"
   add_foreign_key "documents", "users"
   add_foreign_key "field_data", "calculator_data"
   add_foreign_key "field_data", "fields"

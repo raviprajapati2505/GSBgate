@@ -15,7 +15,12 @@ class SchemeMixCriteriaController < AuthenticatedController
       if @scheme_mix_criterion.targeted_score == -1 && params[:scheme_mix_criterion][:status] == :complete.to_s
         params[:scheme_mix_criterion][:submitted_score] = -1
       end
+      old_status = @scheme_mix_criterion[:status]
       if @scheme_mix_criterion.update(scheme_mix_criterion_params)
+        # Save justification comments
+        if params[:scheme_mix_criterion].has_key?(:criteria_status_logs)
+          @scheme_mix_criterion.criteria_status_logs.create!(comment: params[:scheme_mix_criterion][:criteria_status_logs][:comment], user: current_user, old_status: old_status, new_status: @scheme_mix_criterion[:status] )
+        end
         # Save the documents
         if params.has_key?(:documents)
           params[:documents]['document_file'].each do |document_file|
@@ -51,7 +56,7 @@ class SchemeMixCriteriaController < AuthenticatedController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def scheme_mix_criterion_params
-    params.require(:scheme_mix_criterion).permit(:targeted_score, :achieved_score, :submitted_score, :status, :justification)
+    params.require(:scheme_mix_criterion).permit(:targeted_score, :achieved_score, :submitted_score, :status)
   end
 
 end

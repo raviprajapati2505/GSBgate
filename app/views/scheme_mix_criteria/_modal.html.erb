@@ -6,15 +6,17 @@
                 <button type="button" class="close" data-dismiss="modal">
                     <span>&times;</span>
                 </button>
-                <h4 class="modal-title">Update Status</h4>
+                <h4 class="modal-title"><%= t('.modal_title') %></h4>
             </div>
             <div class="modal-body">
                 <%= f.select :status, SchemeMixCriterion.statuses.keys.map { |k| [k.humanize, k]} %>
-                <%= f.text_area :justification %>
+                <%= f.fields_for :criteria_status_logs do |l| %>
+                    <%= l.text_area :comment %>
+                <% end %>
             </div>
             <div class="modal-footer">
-                <%= f.primary 'Save' %>
-                <button type="button" class="btn btn-white" data-dismiss="modal">Back</button>
+                <%= f.primary t('.btn_save') %>
+                <button type="button" class="btn btn-white" data-dismiss="modal"><%= t('.btn_cancel') %></button>
             </div>
         </div>
         <% end %>

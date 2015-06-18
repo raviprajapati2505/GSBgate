@@ -19,6 +19,11 @@ en:
       btn_cancel: "Back"
       btn_save: "Add"
       form_title: "Add team member"
+  scheme_mix_criteria:
+    modal:
+      btn_cancel: "Back"
+      btn_save: "Update"
+      modal_title: "Update Status"
   users:
     index:
       action_edit_title: "Edit"
