@@ -1,0 +1,44 @@
+<%= bootstrap_form_for(document, html: {class: 'dropzone'}) do |f| %>
+    <%= f.hidden_field :scheme_mix_criterion, value: scheme_mix_criterion_id %>
+    <div class="fallback">
+        <%= f.file_field :document_file, hide_label: true %>
+        <%= f.primary 'Upload documentation' %>
+    </div>
+<% end %>
+<br /><input type="button" id="upload-all" class="btn btn-primary" value="Upload documentation" style="display:none;" />
+
+<% content_for :js do %>
+    <script type="text/javascript">
+        $(function() {
+            Dropzone.options.newDocument = {
+                autoProcessQueue: false, // Prevents Dropzone from uploading dropped files immediately
+                paramName: 'document[document_file]',
+                parallelUploads: 5,
+
+                init: function () {
+                    documentsDropzone = this;
+                    var uploadButton = $("#upload-all");
+
+                    // Process all queued files when the upload button is clicked
+                    uploadButton.click(function (e) {
+                        documentsDropzone.processQueue();
+                        e.preventDefault;
+                    });
+
+                    // Show the upload button when one or more files are added
+                    this.on("addedfile", function () {
+                        uploadButton.fadeIn();
+                    });
+                    // Once the upload button is clicked, the full queue can be processed
+                    this.on("processing", function () {
+                        this.options.autoProcessQueue = true;
+                    });
+                    // Reload the page when all uploads are completed
+                    this.on("queuecomplete", function () {
+                        location.reload();
+                    });
+                }
+            };
+        });
+    </script>
+<% end %>

@@ -28,6 +28,7 @@
  *= require d3
  *= require score_widget.js
  *= require bootstrap-datepicker
+ *= require dropzone
  */
 
 $(function () {

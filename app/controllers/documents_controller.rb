@@ -3,13 +3,14 @@ class DocumentsController < AuthenticatedController
   load_and_authorize_resource
 
   def create
-    if params.has_key?(:document)
-      params[:document]['document_file'].each do |document_file|
-        @document = Document.create!(document_file: document_file, user: current_user)
+    respond_to do |format|
+      if params.has_key?(:document)
+        @document = Document.create!(document_file: params[:document]['document_file'], user: current_user)
         SchemeMixCriteriaDocument.create!(scheme_mix_criterion_id: params[:document]['scheme_mix_criterion'], document: @document)
       end
 
-      redirect_to :back, notice: 'The documents were successfully created.'
+      format.html { redirect_to :back, notice: 'The document was successfully created.' }
+      format.json { render :json => @document }
     end
   end
 
