@@ -31,6 +31,11 @@ class SchemeMixCriterion < ActiveRecord::Base
     targeted_score * scheme_criterion.weight / 100 * scheme_mix.weight / 100
   end
 
+  def self::map_to_status_key(status_value)
+    value = self.statuses.find { |k,v| v == status_value }
+    return value[0].humanize unless value.nil?
+  end
+
   private
   def assign_default_status
     self.status = :in_progress if self.status.nil?

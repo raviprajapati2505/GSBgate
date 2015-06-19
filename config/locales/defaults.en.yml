@@ -22,4 +22,4 @@
 en:
   time:
     formats:
-      dbY_HM: '%d %b %Y %H:%M'
+      dbY_HM_Z: '%d %b %Y %H:%M %Z'

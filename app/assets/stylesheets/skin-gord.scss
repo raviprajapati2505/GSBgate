@@ -8,6 +8,10 @@
     width: 100%;
   }
 
+  .media-body {
+    width: auto;
+  }
+
   // display a vertical scrollbar when modal box height is almost browser view height
   .modal-body {
     max-height: calc(100vh - 212px);
