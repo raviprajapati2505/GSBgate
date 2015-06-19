@@ -76,6 +76,9 @@ gem 'carrierwave', github:'carrierwaveuploader/carrierwave'
 # File icons
 gem 'rails-file-icons'
 
+# Pagination for resultsets
+gem 'will_paginate-bootstrap', '~> 1.0.1'
+
 # Rails-Assets: access bower packages from our gem file
 #  e.g. gem 'rails-assets-BOWER_PACKAGE_NAME'
 #  do not forget to:
