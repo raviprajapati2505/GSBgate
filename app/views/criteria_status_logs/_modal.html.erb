@@ -1,0 +1,28 @@
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+                <h4 class="modal-title"><%= @scheme_mix_criterion.scheme_criterion.code + ' ' + @scheme_mix_criterion.scheme_criterion.criterion.name %></h4>
+            </div>
+            <div class="modal-body">
+                <div class="feed-activity-list">
+                <% @logs.each do |log| %>
+                    <div class="feed-element">
+                        <div class="media-body">
+                            <strong><%= log.user.email %></strong> changed status from <strong><%= log.old_status %></strong> to <strong><%= log.new_status %></strong><br>
+                            <small class="text-muted"><%= localize(log.created_at, format: :dbY_HM) %></small>
+                            <div class="well">
+                                <%= log.comment %>
+                            </div>
+                        </div>
+                    </div>
+                <% end %>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal"><%= t('.btn_cancel') %></button>
+            </div>
+        </div>
+    </div>

@@ -5,4 +5,11 @@ class CriteriaStatusLog < ActiveRecord::Base
   # validates :old_status, inclusion: SchemeMixCriterion.statuses.keys
   # validates :new_status, inclusion: SchemeMixCriterion.statuses.keys
 
+  default_scope {
+    order(created_at: :desc)
+  }
+
+  scope :for_criterion, ->(criterion) {
+    where(scheme_mix_criterion: criterion)
+  }
 end

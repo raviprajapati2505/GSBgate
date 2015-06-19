@@ -28,48 +28,42 @@
                             </ul>
                         </div>
                     <% end %>
-                    <% if can? :manage, @scheme_mix_criterion %>
-                        <div class="row">
-                            <div class="col-md-3">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <% if can? :manage, @scheme_mix_criterion %>
                                 <%= f.select :targeted_score, @scheme_mix_criterion.scheme_criterion.scores.map { |k| [k.score, k.score]} %>
-                            </div>
-                            <div class="col-md-3">
-                                <%= f.static_control :submitted_score %>
-                            </div>
-                            <div class="col-md-3">
-                                <%= f.select :achieved_score, @scheme_mix_criterion.scheme_criterion.scores.map { |k| [k.score, k.score]}, {include_blank: 'Unclassified'}, disabled: true %>
-                            </div>
-                            <div class="col-md-3">
-                                <%= f.static_control :status, help: false %>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="hr-line-dashed"></div>
-                                <%= f.primary 'Save' %>
-                                <button type="button" class="btn btn-white" data-toggle="modal" data-target="#updateCriterionStatusModal">Update status</button>
-                            </div>
-                        </div>
-                    <% else %>
-                        <div class="row">
-                            <div class="col-md-3">
+                            <% else %>
                                 <%= f.static_control :targeted_score %>
-                            </div>
-                            <div class="col-md-3">
-                                <%= f.static_control :submitted_score %>
-                            </div>
-                            <div class="col-md-3">
+                            <% end %>
+                        </div>
+                        <div class="col-md-3">
+                            <%= f.static_control :submitted_score %>
+                        </div>
+                        <div class="col-md-3">
+                            <% if can? :manage, @scheme_mix_criterion %>
+                                <%= f.select :achieved_score, @scheme_mix_criterion.scheme_criterion.scores.map { |k| [k.score, k.score]}, {include_blank: 'Unclassified'}, disabled: true %>
+                            <% else %>
                                 <% if @scheme_mix_criterion.certifier.id == current_user.id %>
                                     <%= f.select :achieved_score, @scheme_mix_criterion.scheme_criterion.scores.map { |k| [k.score, k.score]}, {include_blank: 'Unclassified'} %>
                                 <% else %>
                                     <%= f.static_control :achieved_score %>
                                 <% end %>
-                            </div>
-                            <div class="col-md-3">
-                                <%= f.static_control :status, help: false %>
-                            </div>
+                            <% end %>
                         </div>
-                    <% end %>
+                        <div class="col-md-3">
+                            <%= f.static_control :status, help: false %>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="hr-line-dashed"></div>
+                            <% if can? :manage, @scheme_mix_criterion %>
+                                <%= f.primary 'Save' %>
+                                <button type="button" class="btn btn-white" data-toggle="modal" data-target="#updateCriterionStatusModal">Update status</button>
+                            <% end %>
+                            <%= link_to 'Show status log', project_certification_path_scheme_mix_scheme_mix_criterion_status_logs_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), remote: true, class: 'btn btn-white' %>
+                        </div>
+                    </div>
                 <% end %>
             </div>
         </div>
@@ -141,3 +135,4 @@
 <% if can? :manage, @scheme_mix_criterion %>
 <%= render 'modal', project: @project, certification_path: @certification_path, scheme_mix: @scheme_mix, scheme_mix_criterion: @scheme_mix_criterion %>
 <% end %>
+<div id="showCriteriaStatusLogsModal" class="modal fade"></div>
