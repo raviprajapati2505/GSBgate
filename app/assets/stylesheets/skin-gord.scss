@@ -185,4 +185,13 @@
     color: white;
   }
 
+  // Dropzone
+  .dropzone {
+    border: 2px dashed #e7eaec;
+    background-color: #F9F9F9;
+  }
+
+  .dropzone .dz-message {
+    font-size: 16px;
+  }
 }
