@@ -5,12 +5,18 @@ class DocumentsController < AuthenticatedController
   def create
     respond_to do |format|
       if params.has_key?(:document)
-        @document = Document.create!(document_file: params[:document]['document_file'], user: current_user)
-        SchemeMixCriteriaDocument.create!(scheme_mix_criterion_id: params[:document]['scheme_mix_criterion'], document: @document)
-      end
+        @document = Document.new(document_file: params[:document]['document_file'], user: current_user)
 
-      format.html { redirect_to :back, notice: 'The document was successfully created.' }
-      format.json { render :json => @document }
+        if @document.save
+          SchemeMixCriteriaDocument.create!(scheme_mix_criterion_id: params[:document]['scheme_mix_criterion'], document: @document)
+
+          format.html { redirect_to :back, notice: 'The document was successfully uploaded.' }
+          format.json { render :json => @document }
+        else
+          format.html { redirect_to :back, alert: @document.errors['document_file'].to_s }
+          format.json { render json: @document.errors['document_file'].to_s, status: :unprocessable_entity }
+        end
+      end
     end
   end
 

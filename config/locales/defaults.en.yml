@@ -23,3 +23,8 @@ en:
   time:
     formats:
       dbY_HM_Z: '%d %b %Y %H:%M %Z'
+  errors:
+      messages:
+        wrong_size: "The file is the wrong size (should be %{file_size})"
+        size_too_small: "The file is too small (should be at least %{file_size})"
+        size_too_big: "The file is too big (should be at most %{file_size})"

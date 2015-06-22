@@ -228,11 +228,20 @@
     }
 
     .file-row:nth-child(even) {
-      background: #f9f9f9;
+      background-color: #f9f9f9;
+    }
+
+    .file-row.dz-error {
+      background-color: #f2dede;
     }
 
     .progress {
       border: 1px solid #e7eaec;
     }
+  }
+
+  #dropzone-uploading-notice {
+    font-size: 14px;
+    margin-top: 14px;
   }
 }

@@ -13,7 +13,7 @@
         <div><strong>Actions</strong></div>
     </div>
 </div>
-<input type="button" id="dropzone-upload-all" class="btn btn-primary" value="Upload documentation" style="display:none;" />
+<button id="dropzone-upload-all" class="btn btn-primary" style="display:none;">Upload documentation</button>
 
 <% content_for :js do %>
     <script type="text/javascript">
@@ -24,23 +24,30 @@
                 parallelUploads: 5,
                 dictDefaultMessage: 'Drop files here or click to upload documentation.',
                 previewsContainer: '#dropzone-previews',
-                previewTemplate: '<div class="file-row"> <div><p class="name" data-dz-name></p><strong class="error text-danger" data-dz-errormessage></strong></div> <div><p class="size" data-dz-size></p></div> <div> <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"> <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div> </div> </div> <div>        <a href="#" data-dz-remove> <i title="Delete" class="fa fa-lg fa-trash" style="padding-right: 10px;"></i></a> </div> </div>',
+                previewTemplate: '<div class="file-row"> <div><p class="name" data-dz-name></p><strong class="error text-danger" data-dz-errormessage></strong></div> <div><p class="size" data-dz-size></p></div> <div> <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"> <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div> </div> </div> <div> <a href="#" data-dz-remove> <i title="Delete" class="fa fa-lg fa-trash" style="padding-right: 10px;"></i></a> </div> </div>',
+                maxFilesize: <%= Document::MAXIMUM_DOCUMENT_FILE_SIZE %>, // in MB
+                acceptedFiles: '<%= '.' + DocumentUploader.new.extension_white_list.join(',.') %>',
 
                 init: function () {
                     documentsDropzone = this;
+                    var dropzoneForm = $('#new_document');
                     var uploadButton = $("#dropzone-upload-all");
                     var previewsContainer = $("#dropzone-previews");
 
                     // Process all queued files when the upload button is clicked
                     uploadButton.click(function (e) {
+                        // Notify the user of rejected files
+                        if (documentsDropzone.getRejectedFiles().length > 0) {
+                            alert('Some files are marked as invalid. Please note that they will not be uploaded.');
+                        }
                         documentsDropzone.processQueue();
                         e.preventDefault;
                     });
 
                     // Show the previews container and upload button when one or more files are added
                     this.on("addedfile", function () {
-                        previewsContainer.fadeIn();
-                        uploadButton.fadeIn();
+                        previewsContainer.show();
+                        uploadButton.show();
                     });
                     // Hide the previews container and upload button when all files are removed
                     this.on("removedfile", function () {
@@ -52,7 +59,20 @@
                     // Once the upload button is clicked, the full queue can be processed
                     this.on("processing", function () {
                         this.options.autoProcessQueue = true;
+                        uploadButton.html('<i class="fa fa-lg fa-cog fa-spin"></i>&nbsp;&nbsp;Uploading documentation...');
                         uploadButton.prop('disabled', true);
+                        dropzoneForm.hide();
+                    });
+                    // Notify the users of any errors
+                    this.on("error", function (file, errorMessage, XMLHttpRequest) {
+                        // Errors returned by the server
+                        if (XMLHttpRequest !== undefined) {
+                            alert(file.name + " was not uploaded because of the following validation error:\n\n- " + errorMessage);
+                        }
+                        // Errors on the client side
+                        else {
+                            // These errors are shown in the file row
+                        }
                     });
                     // Reload the page when all uploads are completed
                     this.on("queuecomplete", function () {
