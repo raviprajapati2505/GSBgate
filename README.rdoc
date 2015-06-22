@@ -19,11 +19,24 @@ You are now ready to run this project.
 3. $> select pg_terminate_backend(pid) from pg_stat_activity where datname='<your database name>';
 
 == Deploy GSAS Rails on linux test server
-1. (root) svn update/switch
-2. (non-root) bundle install --without development test
-3. (root) RAILS_ENV=production bundle exec rake assets:precompile
-4. (root) RAILS_ENV=production bundle exec rake db:migrate
-5. (root) service apache2 restart
+A) Build using Jenkins:
+    http://jenkins.sas.vito.local/job/GORD_Deploy/
+B) Build using CLI
+  ssh to gord.sas.vito.local
+  su jenkins
+  /home/jenkins/deploy_gord.sh
+C) Manually
+  ssh to gord.sas.vito.local
+  su jenkins
+  cd ~
+  source /etc/profile.d/rbenv.sh
+  cd /var/gord-gsas
+  svn update
+  bundle install --without development test --system
+  bundle install --without development test --binstubs
+  RAILS_ENV=production bundle exec rake assets:precompile
+  RAILS_ENV=production bundle exec rake db:migrate
+  sudo service apache2 restart
 
 == Deploy GSASService and GSASVB6 on windows test server
 svn://svnext.vito.be/ENE/TEM/EMIS/GORD-GSAS/trunk/GSASServices/GSASServices/Docs/INSTALL.txt
