@@ -21,21 +21,19 @@ class CertificationPathsController < AuthenticatedController
 
   def create
     authorize! :manage, @project
-    CertificationPath.transaction do
-      @certification_path = CertificationPath.new(certification_path_params)
-      @certification_path.registered!
-      @certification_path.project = @project
-      if @certification_path.certificate_id == Certificate.where('label = ?', 'Operations Certificate').first.id
-        if @certification_path.save
-          flash[:notice] = 'Successfully applied for certificate.'
-          redirect_to project_path(@project)
-        else
-          render action: :new
-        end
+    @certification_path = CertificationPath.new(certification_path_params)
+    @certification_path.registered!
+    @certification_path.project = @project
+    if @certification_path.certificate_id == Certificate.where('label = ?', 'Operations Certificate').first.id
+      if @certification_path.save
+        flash[:notice] = 'Successfully applied for certificate.'
+        redirect_to project_path(@project)
       else
-        flash[:notice] = 'This certificate is not yet available.'
         render action: :new
       end
+    else
+      flash[:alert] = 'This certificate is not yet available.'
+      render action: :new
     end
   end
 
@@ -44,16 +42,19 @@ class CertificationPathsController < AuthenticatedController
   end
 
   def update
-    # old_status = @certification_path.status
-    if @certification_path.update(certification_path_params)
-      # if old_status != @certification_path.status && @certification_path.preassessment?
-      if @certification_path.scheme_mixes.count == 0
-        SchemeMix.create(certification_path_id: @certification_path.id, scheme_id: Scheme.where('label = ?', 'Operations').first.id, weight: 100)
+    CertificationPath.transaction do
+      if @certification_path.status != certification_path_params[:status] && !current_user.system_admin?
+        raise CanCan::AccessDenied.new('Not Authorized to update certification_path status', :update, CertificationPath)
       end
-      flash[:notice] = 'Status is successfully updated.'
-      redirect_to edit_project_certification_path_path(@project, @certification_path)
-    else
-      render action: :edit
+      if @certification_path.update(certification_path_params)
+        if @certification_path.scheme_mixes.count == 0
+          SchemeMix.create(certification_path_id: @certification_path.id, scheme_id: Scheme.where('label = ?', 'Operations').first.id, weight: 100)
+        end
+        flash[:notice] = 'Status is successfully updated.'
+        redirect_to edit_project_certification_path_path(@project, @certification_path)
+      else
+        render action: :edit
+      end
     end
   end
 
