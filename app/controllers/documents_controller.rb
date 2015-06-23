@@ -13,7 +13,7 @@ class DocumentsController < AuthenticatedController
           format.html { redirect_to :back, notice: 'The document was successfully uploaded.' }
           format.json { render :json => @document }
         else
-          format.html { redirect_to :back, alert: @document.errors['document_file'].to_s }
+          format.html { redirect_to :back, alert: @document.errors['document_file'].first.to_s }
           format.json { render json: @document.errors['document_file'].to_s, status: :unprocessable_entity }
         end
       end

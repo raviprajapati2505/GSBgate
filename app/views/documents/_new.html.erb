@@ -5,6 +5,7 @@
         <%= f.primary 'Upload documentation' %>
     </div>
 <% end %>
+
 <div id="dropzone-previews" class="table table-striped table-bordered" style="display:none;">
     <div class="file-row header">
         <div><strong>File name</strong></div>
@@ -15,8 +16,25 @@
 </div>
 <button id="dropzone-upload-all" class="btn btn-primary" style="display:none;">Upload documentation</button>
 
+<div id="dropzone-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dropzone-modal-title">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header alert-danger">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <h4 class="modal-title" id="dropzone-modal-title"></h4>
+            </div>
+            <div class="modal-body"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <% content_for :js do %>
     <script type="text/javascript">
+        var dropzoneUploading = false;
+
         $(function() {
             Dropzone.options.newDocument = {
                 autoProcessQueue: false, // Prevents Dropzone from uploading dropped files immediately
@@ -29,18 +47,27 @@
                 acceptedFiles: '<%= '.' + DocumentUploader.new.extension_white_list.join(',.') %>',
 
                 init: function () {
-                    documentsDropzone = this;
+                    var documentsDropzone = this;
                     var dropzoneForm = $('#new_document');
+                    var dropzoneModal = $("#dropzone-modal");
                     var uploadButton = $("#dropzone-upload-all");
                     var previewsContainer = $("#dropzone-previews");
+                    var uploadErrors = [];
 
                     // Process all queued files when the upload button is clicked
                     uploadButton.click(function (e) {
-                        // Notify the user of rejected files
+                        // All rejected files should first be removed from the queue list
                         if (documentsDropzone.getRejectedFiles().length > 0) {
-                            alert('Some files are marked as invalid. Please note that they will not be uploaded.');
+                            // Show a modal box
+                            dropzoneModal.find('.modal-title').html('<i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;Validation error');
+                            dropzoneModal.find('.modal-body').html('Please remove all invalid files before uploading.');
+                            dropzoneModal.find('.modal-header').attr('class', 'modal-header alert-danger');
+                            dropzoneModal.modal('show');
                         }
-                        documentsDropzone.processQueue();
+                        else {
+                            dropzoneUploading = true;
+                            documentsDropzone.processQueue();
+                        }
                         e.preventDefault;
                     });
 
@@ -63,23 +90,59 @@
                         uploadButton.prop('disabled', true);
                         dropzoneForm.hide();
                     });
-                    // Notify the users of any errors
+                    // Catch all server errors
                     this.on("error", function (file, errorMessage, XMLHttpRequest) {
                         // Errors returned by the server
                         if (XMLHttpRequest !== undefined) {
-                            alert(file.name + " was not uploaded because of the following validation error:\n\n- " + errorMessage);
+                            uploadErrors.push('<strong>' + file.name + '</strong>: ' + errorMessage);
                         }
                         // Errors on the client side
                         else {
                             // These errors are shown in the file row
                         }
                     });
-                    // Reload the page when all uploads are completed
+                    // Notify the user when all uploads are completed
                     this.on("queuecomplete", function () {
-                        location.reload();
+                        if (dropzoneUploading) {
+                            var modalBody = '';
+                            var modalHeaderClass = '';
+
+                            // There were server errors during the upload
+                            if (uploadErrors.length > 0) {
+                                modalBody = '<div>Some documents weren\'t successfully uploaded because of the following errors:</div>';
+
+                                modalBody += '<ul>';
+                                $.each(uploadErrors, function(index, uploadError) {
+                                    modalBody += '<li>' + uploadError + '</li>';
+                                });
+                                modalBody += '</ul>';
+
+                                modalBody += '<div>All other documentation was uploaded successfully.</div>';
+                                modalHeaderClass = 'alert-warning';
+                            }
+                            // There were no errors
+                            else {
+                                modalBody = 'All documentation was successfully uploaded.';
+                                modalHeaderClass = 'alert-success';
+                            }
+
+                            // Show a modal box
+                            dropzoneModal.find('.modal-title').html('<i class="fa fa-check-circle"></i>&nbsp;&nbsp;Uploading completed');
+                            dropzoneModal.find('.modal-body').html(modalBody);
+                            dropzoneModal.find('.modal-header').attr('class', 'modal-header ' + modalHeaderClass);
+                            dropzoneModal.modal('show');
+                        }
                     });
                 }
             };
+
+            // Handle closing of modal box
+            $('#dropzone-modal').on('hide.bs.modal', function (e) {
+                // Reload the page when the upload notification is closed by the user
+                if (dropzoneUploading) {
+                    location.reload();
+                }
+            })
         });
     </script>
 <% end %>
