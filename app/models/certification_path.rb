@@ -4,6 +4,8 @@ class CertificationPath < ActiveRecord::Base
   has_many :scheme_mixes
   has_many :schemes, through: :scheme_mixes
 
+  accepts_nested_attributes_for :certificate
+
   enum status: [ :registered, :preassessment ]
 
   def has_fixed_scheme?

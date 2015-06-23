@@ -101,7 +101,7 @@
                                 <td>
                                     <%= link_to raw('<i title="Show" class="fa fa-lg fa-search" style="padding-right: 10px;"></i>'), project_certification_path_path(@project, certification_path) %>
                                     <% if can? :manage, certification_path %>
-                                    <!--= link_to raw('<i title="Edit" class="fa fa-lg fa-edit" style="padding-right: 10px;"></i>'), edit_certification_path_path(certification_path) %-->
+                                    <%= link_to raw('<i title="Edit" class="fa fa-lg fa-edit" style="padding-right: 10px;"></i>'), edit_project_certification_path_path(@project, certification_path) %>
                                     <% end %>
                                 </td>
                             </tr>

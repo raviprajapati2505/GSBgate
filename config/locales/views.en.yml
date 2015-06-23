@@ -1,4 +1,12 @@
 en:
+  certification_paths:
+    modal:
+      btn_cancel: "Back"
+      btn_save: "Update"
+      modal_title: "Update Status"
+  criteria_status_logs:
+    modal:
+      btn_cancel: "Back"
   projects:
     index:
       action_team_title: "Team"

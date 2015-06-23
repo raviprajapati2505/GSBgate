@@ -74,7 +74,9 @@ class Ability
       can :manage, RequirementDatum, scheme_mix_criteria: {scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id, role: ['project_system_administrator', ProjectAuthorization.roles[:project_system_administrator]]}}}}}
       can :manage, RequirementDatum, scheme_mix_criteria: {scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id, role: ['cgp_project_manager', ProjectAuthorization.roles[:cgp_project_manager]]}}}}}
       can :update, RequirementDatum, user_id: user.id
-
+      # Criteria status log
+      can :read, CriteriaStatusLog, scheme_mix_criterion: {scheme_mix: {certification_path: {project: {owner_id: user.id}}}}
+      can :read, CriteriaStatusLog, scheme_mix_criterion: {scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id}}}}}
     else
       cannot :manage, :all
     end

@@ -1,6 +1,6 @@
 class CertificationPathsController < AuthenticatedController
   before_action :set_project
-  before_action :set_certification_path, only: [:show]
+  before_action :set_certification_path, only: [:show, :edit]
   load_and_authorize_resource
 
   def index
@@ -8,7 +8,9 @@ class CertificationPathsController < AuthenticatedController
   end
 
   def show
-    redirect_to project_certification_path_scheme_mix_path(@project, @certification_path, @certification_path.scheme_mixes.take) if @certification_path.has_fixed_scheme?
+    if @certification_path.scheme_mixes.count == 1
+      redirect_to project_certification_path_scheme_mix_path(@project, @certification_path, @certification_path.scheme_mixes.take)
+    end
     @page_title = "#{@certification_path.certificate.label} for #{@project.name}"
   end
 
@@ -25,9 +27,8 @@ class CertificationPathsController < AuthenticatedController
       @certification_path.project = @project
       if @certification_path.certificate_id == Certificate.where('label = ?', 'Operations Certificate').first.id
         if @certification_path.save
-          SchemeMix.create(certification_path_id: @certification_path.id, scheme_id: Scheme.where('label = ?', 'Operations').first.id, weight: 100)
           flash[:notice] = 'Successfully applied for certificate.'
-          redirect_to project_certification_path_path(@project, @certification_path)
+          redirect_to project_path(@project)
         else
           render action: :new
         end
@@ -35,6 +36,24 @@ class CertificationPathsController < AuthenticatedController
         flash[:notice] = 'This certificate is not yet available.'
         render action: :new
       end
+    end
+  end
+
+  def edit
+
+  end
+
+  def update
+    # old_status = @certification_path.status
+    if @certification_path.update(certification_path_params)
+      # if old_status != @certification_path.status && @certification_path.preassessment?
+      if @certification_path.scheme_mixes.count == 0
+        SchemeMix.create(certification_path_id: @certification_path.id, scheme_id: Scheme.where('label = ?', 'Operations').first.id, weight: 100)
+      end
+      flash[:notice] = 'Status is successfully updated.'
+      redirect_to edit_project_certification_path_path(@project, @certification_path)
+    else
+      render action: :edit
     end
   end
 
@@ -48,6 +67,6 @@ class CertificationPathsController < AuthenticatedController
     end
 
     def certification_path_params
-      params.require(:certification_path).permit(:certificate_id)
+      params.require(:certification_path).permit(:certificate_id, :status)
     end
 end
