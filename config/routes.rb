@@ -1,4 +1,12 @@
 Rails.application.routes.draw do
+  get 'errors/not_found'
+
+  get 'errors/unprocessable_entity'
+
+  get 'errors/internal_server_error'
+
+  get 'errors/forbidden'
+
   resources :certification_paths
   resources :projects do
     resources :project_authorizations, only: [ :new, :edit, :update, :destroy ], path: 'authorizations', as: 'authorization'
@@ -17,6 +25,12 @@ Rails.application.routes.draw do
 
   resources :users
   devise_for :user
+
+  # Error pages
+  match '/403', to: 'errors#forbidden', via: :all, as: 'forbidden_error'
+  match '/404', to: 'errors#not_found', via: :all, as: 'not_found_error'
+  match '/422', to: 'errors#unprocessable_entity', via: :all, as: 'unprocessable_entity_error'
+  match '/500', to: 'errors#internal_server_error', via: :all, as: 'internal_server_error_error'
   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

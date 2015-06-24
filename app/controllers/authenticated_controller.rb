@@ -5,6 +5,6 @@ class AuthenticatedController < ApplicationController
 
   check_authorization
   rescue_from CanCan::AccessDenied do |exception|
-    redirect_to edit_user_registration_path, alert: exception.message
+    redirect_to forbidden_error_path
   end
 end

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gord</title>
+
+    <!-- Main css styles -->
+    <%= stylesheet_link_tag 'application', media: 'all' %>
+    <!-- Main javascript files -->
+    <%= javascript_include_tag 'application' %>
+    <%= csrf_meta_tags %>
+</head>
+
+<body class="skin-gord gray-bg">
+<div class="middle-box text-center animated fadeInDown errorscreen">
+    <div class="ibox-content">
+        <%= image_tag('layout/logo-medium.gif') %>
+        <h1><%= @status_code %></h1>
+        <h2 class="font-bold"><%= @title %></h2>
+        <div class="error-desc">
+            <p><%= @message %></p>
+            <p><%= link_to 'Click here', root_path %> to return to the home page.</p>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

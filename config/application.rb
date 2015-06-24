@@ -28,5 +28,8 @@ module Gord
 
     # Autoload classes from "lib" folder (https://gist.github.com/maxim/6503591)
     config.watchable_dirs['lib'] = [:rb]
+
+    # Create own routes for error pages
+    config.exceptions_app = self.routes
   end
 end
