@@ -177,36 +177,38 @@
                     <table class="table table-bordered">
                         <thead>
                         <tr>
+                            <th class="col-md-1">Code</th>
                             <th>Criteria</th>
                         </tr>
                         </thead>
                         <tbody>
                         <% SchemeMixCriterion.for_project(@project).assigned_to_user(current_user).order_by_code.group([:id, 'scheme_criteria.code', 'criteria.name']).each do |scheme_mix_criterion| %>
                             <tr>
-                                <td><%= scheme_mix_criterion.scheme_criterion.code %>&nbsp;<%= scheme_mix_criterion.scheme_criterion.criterion.name %></td>
+                                <td><%= scheme_mix_criterion.scheme_criterion.code %></td>
+                                <td><%= link_to scheme_mix_criterion.scheme_criterion.criterion.name, edit_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, scheme_mix_criterion.scheme_mix.certification_path, scheme_mix_criterion.scheme_mix, scheme_mix_criterion), class: 'btn btn-default' %></td>
                             </tr>
-                        <tr>
-                            <td colspan="1">
-                                <table class="table">
-                                    <thead>
-                                    <tr>
-                                        <th class="col-md-1">Provided</th>
-                                        <th class="col-md-9">Requirement</th>
-                                        <th class="col-md-2">Due date</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                        <% scheme_mix_criterion.requirement_data.assigned_to_user(current_user).each do |requirement_data| %>
-                                            <tr>
-                                                <td><% if !requirement_data.required? %><i class="fa fa-check-square-o"></i><% else %><i class="fa fa-square-o"></i><% end %></td>
-                                                <td><%= requirement_data.requirement.label %></td>
-                                                <td><%= requirement_data.due_date %></td>
-                                            </tr>
-                                        <% end %>
-                                    </tbody>
-                                </table>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th class="col-md-1">Provided</th>
+                                            <th class="col-md-9">Requirement</th>
+                                            <th class="col-md-2">Due date</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% scheme_mix_criterion.requirement_data.assigned_to_user(current_user).each do |requirement_data| %>
+                                                <tr>
+                                                    <td><% if !requirement_data.required? %><i class="fa fa-check-square-o"></i><% else %><i class="fa fa-square-o"></i><% end %></td>
+                                                    <td><%= requirement_data.requirement.label %></td>
+                                                    <td><%= requirement_data.due_date %></td>
+                                                </tr>
+                                            <% end %>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
                         <% end %>
                         </tbody>
                     </table>
