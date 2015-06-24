@@ -44,7 +44,7 @@
                 previewsContainer: '#dropzone-previews',
                 previewTemplate: '<div class="file-row"> <div><p class="name" data-dz-name></p><strong class="error text-danger" data-dz-errormessage></strong></div> <div><p class="size" data-dz-size></p></div> <div> <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"> <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div> </div> </div> <div> <a href="#" data-dz-remove> <i title="Delete" class="fa fa-lg fa-trash" style="padding-right: 10px;"></i></a> </div> </div>',
                 maxFilesize: <%= Document::MAXIMUM_DOCUMENT_FILE_SIZE %>, // in MB
-                acceptedFiles: '<%= '.' + DocumentUploader.new.extension_white_list.join(',.') %>',
+                acceptedFiles: '<%= DocumentUploader.new.extension_white_list_js %>',
 
                 init: function () {
                     var documentsDropzone = this;
