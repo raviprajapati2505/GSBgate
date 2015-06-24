@@ -20,9 +20,12 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
+  date:
+    formats:
+      default: '%d %b %Y'
   time:
     formats:
-      dbY_HM_Z: '%d %b %Y %H:%M %Z'
+      default: '%d %b %Y %H:%M %Z'
   errors:
       messages:
         wrong_size: "The file is the wrong size (should be %{file_size})"

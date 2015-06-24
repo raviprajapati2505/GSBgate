@@ -18,7 +18,7 @@
                 </td>
                 <td data-order="<%= d.document_file.size %>"><%= number_to_human_size(d.document_file.size) %></td>
                 <td><%= d.user.email %></td>
-                <td><%= d.created_at %></td>
+                <td><%= localize(d.created_at) %></td>
             </tr>
         <% end %>
         </tbody>

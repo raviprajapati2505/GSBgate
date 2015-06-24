@@ -12,7 +12,7 @@
                     <div class="feed-element">
                         <div class="media-body">
                             <strong><%= log.user.email %></strong> changed status from <strong><%= SchemeMixCriterion.map_to_status_key(log.old_status) %></strong> to <strong><%= SchemeMixCriterion.map_to_status_key(log.new_status) %></strong><br>
-                            <small class="text-muted"><%= localize(log.created_at, format: :dbY_HM_Z) %></small>
+                            <small class="text-muted"><%= localize(log.created_at) %></small>
                             <div class="well">
                                 <%= log.comment %>
                             </div>
