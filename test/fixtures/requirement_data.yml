@@ -1,15 +1,18 @@
 
 one:
   id: 1
-  reportable_data_id: 1
-  reportable_data_type: CalculatorDatum
+  calculator_datum_id: 1
   requirement_id: 1
   status: required
   user_id: 3
 
 two:
   id: 2
-  reportable_data_id: 2
-  reportable_data_type: CalculatorDatum
+  calculator_datum_id: 2
   requirement_id: 2
+  status: required
+
+three:
+  id: 3
+  requirement_id: 3
   status: required
