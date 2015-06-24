@@ -71,10 +71,10 @@ gem 'bundler', '>= 1.8.4'
 gem 'bootstrap_form'
 
 # Simplified file uploading
-gem 'carrierwave', github:'carrierwaveuploader/carrierwave'
+gem 'carrierwave', github: 'carrierwaveuploader/carrierwave'
 
 # File icons
-gem 'rails-file-icons', :git => 'git://github.com/sodalis/rails-file-icons.git' # Latest version is only available on github
+gem 'rails-file-icons', github: 'sodalis/rails-file-icons' # Latest version is only available on github
 
 # Pagination for resultsets
 gem 'will_paginate-bootstrap', '~> 1.0.1'
