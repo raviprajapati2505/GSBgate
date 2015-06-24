@@ -74,7 +74,7 @@ gem 'bootstrap_form'
 gem 'carrierwave', github:'carrierwaveuploader/carrierwave'
 
 # File icons
-gem 'rails-file-icons'
+gem 'rails-file-icons', :git => 'git://github.com/sodalis/rails-file-icons.git' # Latest version is only available on github
 
 # Pagination for resultsets
 gem 'will_paginate-bootstrap', '~> 1.0.1'

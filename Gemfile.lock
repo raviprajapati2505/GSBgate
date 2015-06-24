@@ -8,6 +8,12 @@ GIT
       json (>= 1.7)
       mime-types (>= 1.16)
 
+GIT
+  remote: git://github.com/sodalis/rails-file-icons.git
+  revision: 7a0e970ad5e6c188153ecb51a6b8a63e9eef0ca1
+  specs:
+    rails-file-icons (0.0.1)
+
 GEM
   remote: http://rubygems.org/
   remote: https://rails-assets.org/
@@ -152,7 +158,6 @@ GEM
       activesupport (>= 4.2.0.beta, < 5.0)
       nokogiri (~> 1.6.0)
       rails-deprecated_sanitizer (>= 1.0.1)
-    rails-file-icons (0.0.1)
     rails-html-sanitizer (1.0.2)
       loofah (~> 2.0)
     railties (4.2.1)
@@ -246,7 +251,7 @@ DEPENDENCIES
   rails-assets-metisMenu!
   rails-assets-pace!
   rails-assets-slimScroll!
-  rails-file-icons
+  rails-file-icons!
   rgeo (= 0.3.20)
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
