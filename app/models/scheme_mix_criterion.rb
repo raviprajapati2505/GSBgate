@@ -16,6 +16,19 @@ class SchemeMixCriterion < ActiveRecord::Base
 
   validates :targeted_score, presence: true
 
+  scope :order_by_code, -> {
+    joins(:scheme_criterion)
+    .reorder('scheme_criteria.code')
+  }
+  scope :assigned_to_user, ->(user) {
+    joins(:requirement_data)
+        .where(requirement_data: {user_id: user.id})
+  }
+
+  scope :for_project, ->(project) {
+    joins(:scheme_mix => [:certification_path]).where(certification_paths: {project_id: project.id})
+  }
+
   scope :for_category, ->(category) {
     includes(:scheme_criterion => [:criterion])
     .where(criteria: { category_id: category.id} )

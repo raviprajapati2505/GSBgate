@@ -171,7 +171,46 @@
                     <h5>Project Tasks</h5>
                 </div>
                 <div class="ibox-content">
-                    <p>TODO show current user tasks</p>
+                    <% if current_user.requirement_data.count == 0 %>
+                        <p>No tasks are assigned to you.</p>
+                    <% else %>
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>Criteria</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <% SchemeMixCriterion.for_project(@project).assigned_to_user(current_user).order_by_code.group([:id, 'scheme_criteria.code', 'criteria.name']).each do |scheme_mix_criterion| %>
+                            <tr>
+                                <td><%= scheme_mix_criterion.scheme_criterion.code %>&nbsp;<%= scheme_mix_criterion.scheme_criterion.criterion.name %></td>
+                            </tr>
+                        <tr>
+                            <td colspan="1">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th class="col-md-1">Provided</th>
+                                        <th class="col-md-9">Requirement</th>
+                                        <th class="col-md-2">Due date</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% scheme_mix_criterion.requirement_data.assigned_to_user(current_user).each do |requirement_data| %>
+                                            <tr>
+                                                <td><% if !requirement_data.required? %><i class="fa fa-check-square-o"></i><% else %><i class="fa fa-square-o"></i><% end %></td>
+                                                <td><%= requirement_data.requirement.label %></td>
+                                                <td><%= requirement_data.due_date %></td>
+                                            </tr>
+                                        <% end %>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <% end %>
+                        </tbody>
+                    </table>
+                    <% end %>
                 </div>
             </div>
     </div>
