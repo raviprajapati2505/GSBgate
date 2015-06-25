@@ -30,8 +30,8 @@ class RequirementDataController < AuthenticatedController
       @calculation_result = calculator.calculate calculator_params
     end
 
-    @requirement_datum.user = User.find(params[:user_id])
-    @requirement_datum.due_date = Date.strptime(params[:due_date], '%d/%m/%Y')
+    @requirement_datum.user = User.find(params[:user_id]) if params.has_key?(:user_id)
+    @requirement_datum.due_date = Date.strptime(params[:due_date], t('date.formats.short')) if params.has_key?(:due_date)
     @requirement_datum.save!
 
     render json: @requirement_datum, status: :ok

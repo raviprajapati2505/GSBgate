@@ -3,7 +3,7 @@
         <%= bootstrap_form_for([@project, @certification_path, @scheme_mix, @scheme_mix_criterion], url: project_certification_path_scheme_mix_scheme_mix_criterion_path) do |f| %>
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">
+                <button type="button" class="close" data-dismiss="modal" title="<%= t('.btn_close') %>" data-toggle="tooltip">
                     <span>&times;</span>
                 </button>
                 <h4 class="modal-title"><%= t('.modal_title') %></h4>

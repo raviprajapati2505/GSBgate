@@ -2,16 +2,21 @@ en:
   certification_paths:
     modal:
       btn_cancel: "Back"
+      btn_close: "Close"
       btn_save: "Update"
       modal_title: "Update Status"
   criteria_status_logs:
     modal:
       btn_cancel: "Back"
+      btn_close: "Close"
   projects:
     index:
       action_team_title: "Team"
     show:
       btn_add_project_team_member: "Add team member"
+      tooltip_due_date: "Due date passed"
+      tooltip_requirement_required: "Requirement required"
+      tooltip_requirement_provided: "Requirement provided or not required"
     form:
       info_text_map: "The marker on the map below will automatically move to the location of the project address when the Address, Location and Country fields are filled out. Moreover, it is also possible to drag the marker to a custom location."
       tooltip_gross_area: "Total built up area including parking areas such as underground or structured parking."
@@ -27,9 +32,15 @@ en:
       btn_cancel: "Back"
       btn_save: "Add"
       form_title: "Add team member"
+  requirements:
+    update:
+      tooltip_due_date: "Due date passed"
+      tooltip_requirement_required: "Requirement required"
+      tooltip_requirement_provided: "Requirement provided or not required"
   scheme_mix_criteria:
     modal:
       btn_cancel: "Back"
+      btn_close: "Close"
       btn_save: "Update"
       modal_title: "Update Status"
   users:

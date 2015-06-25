@@ -22,6 +22,10 @@
     color: green;
   }
 
+  .fa-clock-o {
+    color: red;
+  }
+
   .fa-star {
     color: #fc0;
   }
@@ -191,10 +195,14 @@
   .assigned-requirement {
     background-color: #0b50ff;
     color: white;
-  }
 
-  .assigned-requirement .fa-check-square-o {
-    color: white;
+    .fa-check-square-o {
+      color: white;
+    }
+
+    .fa-clock-o {
+      color: white;
+    }
   }
 
   // Dropzone
