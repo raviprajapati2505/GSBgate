@@ -103,6 +103,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-d3'
   gem 'rails-assets-bootstrap-datepicker'
   gem 'rails-assets-dropzone'
+  gem 'rails-assets-toastr'
 end
 
 

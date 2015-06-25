@@ -29,6 +29,7 @@
  *= require score_widget.js
  *= require bootstrap-datepicker
  *= require dropzone
+ *= require toastr
  */
 
 $(function () {
@@ -48,6 +49,23 @@ $(function () {
         todayBtn: true,
         todayHighlight: true
     });
+
+    // Toastr
+    toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "progressBar": true,
+        "positionClass": "toast-bottom-right",
+        "onclick": null,
+        "showDuration": "400",
+        "hideDuration": "1000",
+        "timeOut": "7000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    };
 
     // Accordion tables
     $('.accordion-body').on('show.bs.collapse', function() {

@@ -34,7 +34,9 @@ class RequirementDataController < AuthenticatedController
     @requirement_datum.due_date = Date.strptime(params[:due_date], t('date.formats.short')) if params.has_key?(:due_date)
     @requirement_datum.save!
 
-    render json: @requirement_datum, status: :ok
+    @flash = 'Successfully submitted changes'
+
+    render 'requirements/update'
   end
 
   private
