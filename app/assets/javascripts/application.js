@@ -43,7 +43,7 @@ $(function () {
 
     // Datepicker
     $('input[data-provide="datepicker"]').datepicker({
-        dateFormat: 'dd/mm/yyyy',
+        format: 'dd/mm/yyyy',
         startDate: '0d',
         todayBtn: true,
         todayHighlight: true

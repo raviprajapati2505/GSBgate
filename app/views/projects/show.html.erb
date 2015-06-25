@@ -198,11 +198,11 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                            <% scheme_mix_criterion.requirement_data.assigned_to_user(current_user).each do |requirement_data| %>
+                                            <% scheme_mix_criterion.requirement_data.assigned_to_user(current_user).each do |requirement_datum| %>
                                                 <tr>
-                                                    <td><% if !requirement_data.required? %><i class="fa fa-check-square-o"></i><% else %><i class="fa fa-square-o"></i><% end %></td>
-                                                    <td><%= requirement_data.requirement.label %></td>
-                                                    <td><%= requirement_data.due_date %></td>
+                                                    <td><% if !requirement_datum.required? %><i class="fa fa-check-square-o"></i><% else %><i class="fa fa-square-o"></i><% end %></td>
+                                                    <td><%= requirement_datum.requirement.label %></td>
+                                                    <td><%= requirement_datum.due_date %></td>
                                                 </tr>
                                             <% end %>
                                         </tbody>

@@ -18,6 +18,14 @@
     overflow-y: auto;
   }
 
+  .fa-check-square-o {
+    color: green;
+  }
+
+  .fa-star {
+    color: #fc0;
+  }
+
   // Accordion table
   .accordion-toggle {
     cursor: pointer;
@@ -181,7 +189,11 @@
   }
 
   .assigned-requirement {
-    background-color: #ff3333;
+    background-color: #0b50ff;
+    color: white;
+  }
+
+  .assigned-requirement .fa-check-square-o {
     color: white;
   }
 
