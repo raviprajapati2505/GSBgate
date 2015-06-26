@@ -6,7 +6,7 @@ class SchemeMixCriterion < ActiveRecord::Base
   has_many :criteria_status_logs, dependent: :delete_all
   belongs_to :scheme_mix
   belongs_to :scheme_criterion
-  belongs_to :certifier, class_name: 'User'
+  belongs_to :certifier, class_name: 'User', inverse_of: :scheme_mix_criteria
 
   enum status: [ :in_progress, :complete ]
 
@@ -32,6 +32,10 @@ class SchemeMixCriterion < ActiveRecord::Base
   scope :for_category, ->(category) {
     includes(:scheme_criterion => [:criterion])
     .where(criteria: { category_id: category.id} )
+  }
+
+  scope :unassigned, -> {
+    where(certifier: nil)
   }
 
   default_scope {

@@ -8,6 +8,7 @@ User.create!(email: 'project_manager@example.com', password: 'password', passwor
 User.create!(email: 'enterprise_client@example.com', password: 'password', password_confirmation: 'password', role: :user)
 User.create!(email: 'project_admin@example.com', password: 'password', password_confirmation: 'password', role: :user)
 User.create!(email: 'certifier_member@example.com', password: 'password', password_confirmation: 'password', role: :user)
+User.create!(email: 'certifier_manager@example.com', password: 'password', password_confirmation: 'password', role: :user)
 
 Project.create!(name: 'Grand Hyatt Doha', owner: User.find_by_email('owner@example.com'), address: 'Grand Hyatt Doha, Box 24010', location: 'Doha', country: 'Qatar', latlng: 'POINT(51.528132 25.377381)')
 Project.create!(name: 'Al Jazeera International', owner: User.find_by_email('owner@example.com'), address: 'Al Jazeera, Wadi Al Sail West, PO Box 23127', location: 'Doha', country: 'Qatar', latlng: 'POINT(51.498654 25.316083)')
@@ -20,4 +21,4 @@ ProjectAuthorization.create!(project: Project.find_by_name('Grand Hyatt Doha'), 
 ProjectAuthorization.create!(project: Project.find_by_name('Grand Hyatt Doha'), user: User.find_by_email('project_manager@example.com'), role: :cgp_project_manager)
 ProjectAuthorization.create!(project: Project.find_by_name('Grand Hyatt Doha'), user: User.find_by_email('enterprise_client@example.com'), role: :enterprise_account)
 ProjectAuthorization.create!(project: Project.find_by_name('Grand Hyatt Doha'), user: User.find_by_email('project_admin@example.com'), role: :project_system_administrator)
-ProjectAuthorization.create!(project: Project.find_by_name('Grand Hyatt Doha'), user: User.find_by_email('certifier_member@example.com'), role: :project_team_member)
+ProjectAuthorization.create!(project: Project.find_by_name('Grand Hyatt Doha'), user: User.find_by_email('certifier_manager@example.com'), role: :project_team_member)

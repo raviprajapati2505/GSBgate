@@ -11,6 +11,7 @@ class User < ActiveRecord::Base
   has_many :project_authorizations, dependent: :delete_all
   has_many :projects, through: :project_authorizations
   has_many :requirement_data, dependent: :nullify
+  has_many :scheme_mix_criteria, inverse_of: :certifier, foreign_key: 'certifier_id'
 
   default_scope { order(email: :asc) }
 

@@ -2,7 +2,8 @@ class Project < ActiveRecord::Base
 
   belongs_to :owner, class_name: 'User', inverse_of: :owned_projects
   has_many :project_authorizations, dependent: :delete_all
-  has_many :users, through: :project_authorizations
+  has_many :users, -> { where('project_authorizations.role < 4') },  through: :project_authorizations
+  has_many :certifiers, -> { where('project_authorizations.role > 3') }, through: :project_authorizations, source: :user
   has_many :certification_paths
 
   after_initialize :init

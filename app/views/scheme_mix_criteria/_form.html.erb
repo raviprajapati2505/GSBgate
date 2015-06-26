@@ -51,7 +51,7 @@
                             <% end %>
                         </div>
                         <div class="col-md-3">
-                            <%= f.static_control :status, help: false %>
+                            <%= f.static_control label: 'Status' do @scheme_mix_criterion.status.humanize end %>
                         </div>
                     </div>
                     <div class="row">
