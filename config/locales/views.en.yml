@@ -15,8 +15,9 @@ en:
     show:
       btn_add_project_team_member: "Add team member"
       tooltip_due_date: "Due date passed"
-      tooltip_requirement_required: "Requirement required"
-      tooltip_requirement_provided: "Requirement provided or not required"
+      tooltip_requirement_required: "Requirement not provided yet"
+      tooltip_requirement_provided: "Requirement provided"
+      tooltip_requirement_not_required: "Requirement not required"
     form:
       info_text_map: "The marker on the map below will automatically move to the location of the project address when the Address, Location and Country fields are filled out. Moreover, it is also possible to drag the marker to a custom location."
       tooltip_gross_area: "Total built up area including parking areas such as underground or structured parking."
@@ -35,8 +36,9 @@ en:
   requirements:
     update:
       tooltip_due_date: "Due date passed"
-      tooltip_requirement_required: "Requirement required"
-      tooltip_requirement_provided: "Requirement provided or not required"
+      tooltip_requirement_required: "Requirement not provided yet"
+      tooltip_requirement_provided: "Requirement provided"
+      tooltip_requirement_not_required: "Requirement not required"
   scheme_mix_criteria:
     modal:
       btn_cancel: "Back"

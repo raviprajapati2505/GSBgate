@@ -73,4 +73,13 @@ $(function () {
     }).on('hidden.bs.collapse', function() {
         $(this).prev().find('i.fa').removeClass('fa-caret-square-o-down').addClass('fa-caret-square-o-right');
     });
+
+    // Show flash messages in a notification
+    $('.alert.alert-success.hidden').each(function() {
+       toastr.success($(this).html());
+    });
+
+    $('.alert.alert-danger.hidden').each(function() {
+        toastr.error($(this).html());
+    })
 });

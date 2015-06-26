@@ -171,7 +171,7 @@
                     <h5>Project Tasks</h5>
                 </div>
                 <div class="ibox-content">
-                    <% if current_user.requirement_data.count == 0 %>
+                    <% if current_user.requirement_data.for_project(@project).count == 0 %>
                         <p>No tasks are assigned to you.</p>
                     <% else %>
                     <table class="table table-bordered">
@@ -200,7 +200,10 @@
                                         <tbody>
                                             <% scheme_mix_criterion.requirement_data.assigned_to_user(current_user).each do |requirement_datum| %>
                                                 <tr>
-                                                    <td><% if !requirement_datum.required? %><i class="fa fa-check-square-o" title="<%= t('.tooltip_requirement_provided') %>" data-toggle="tooltip"></i><% else %><i class="fa fa-square-o" title="<%= t('.tooltip_requirement_required') %>" data-toggle="tooltip"></i><% end %></td>
+                                                    <td><% if requirement_datum.required? %><i class="fa fa-square-o" title="<%= t('.tooltip_requirement_required') %>" data-toggle="tooltip"></i>
+                                                        <% elsif requirement_datum.provided? %><i class="fa fa-check-square-o" title="<%= t('.tooltip_requirement_provided') %>" data-toggle="tooltip"></i>
+                                                        <% else %><i class="fa fa-check-square" title="<%= t('.tooltip_requirement_not_required') %>" data-toggle="tooltip"></i><% end %>
+                                                    </td>
                                                     <td><%= requirement_datum.requirement.label %></td>
                                                     <td><%= requirement_datum.due_date %><% if requirement_datum.required? && !requirement_datum.due_date.nil? && Date.today > requirement_datum.due_date %>&nbsp;<i class="fa fa-clock-o" title="<%= t('.tooltip_due_date') %>" data-toggle="tooltip"></i><% end %></td>
                                                 </tr>
