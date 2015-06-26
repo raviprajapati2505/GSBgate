@@ -75,6 +75,12 @@
     font: 10px sans-serif;
   }
 
+  // Panels
+  .panel {
+    border-radius: 0px;
+    margin-bottom: 0px;
+  }
+
   // Tooltips
   .tooltip-inner {
     background-color: $skin-gord-color;
@@ -207,58 +213,85 @@
 
   // Dropzone
   .dropzone {
-    border: 2px dashed #e7eaec;
-    background-color: #f9f9f9;
-    min-height: 135px;
-    padding: 20px;
+    border: none;
+    min-height: 0px;
+    background: none;
+    padding: 0;
   }
 
   .dropzone {
+    #dropzone-top {
+      border: 2px dashed #e7eaec;
+      background-color: #f9f9f9;
+      height: 100px;
+      padding: 20px;
+      cursor: pointer;
+    }
+
     .dz-message {
       font-size: 16px;
       text-align: center;
-      margin: 2em 0;
+      margin: 18px 0;
+    }
+
+    #dropzone-previews {
+      display: table;
+      margin: 14px 0 0 0;
+      border: none;
+      border-left: 1px solid #e7eaec;
+      border-top: 1px solid #e7eaec;
+    }
+
+    #dropzone-bottom {
+      .file-row {
+        display: table-row;
+      }
+
+      .file-row > div {
+        display: table-cell;
+        vertical-align: top;
+        border-right: 1px solid #e7eaec;
+        border-bottom: 1px solid #e7eaec;
+        border-collapse: collapse;
+        padding: 8px;
+      }
+
+      .file-row:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+
+      .file-row.dz-error {
+        background-color: #f2dede;
+      }
+
+      .progress {
+        border: 1px solid #e7eaec;
+        margin-bottom: 0px;
+      }
+
+      .panel-heading {
+        padding: 7px 8px;
+        color: #676a6c;
+        font-weight: 600;
+      }
+
+      .panel-body {
+        padding: 10px;
+        min-height: 76px;
+      }
     }
   }
 
-  #dropzone-upload-all {
-    margin: 14px 0 0 0;
-  }
-
-  #dropzone-previews {
-    display: table;
-    margin: 14px 0 0 0;
+  .dropzone.dz-drag-hover {
     border: none;
-    border-left: 1px solid #e7eaec;
-    border-top: 1px solid #e7eaec;
   }
 
-  #dropzone-previews {
-    .file-row {
-      display: table-row;
-    }
+  .dz-browser-not-supported #dropzone-top {
+    display: none;
+  }
 
-    .file-row > div {
-      display: table-cell;
-      vertical-align: top;
-      border-right: 1px solid #e7eaec;
-      border-bottom: 1px solid #e7eaec;
-      border-collapse: collapse;
-      padding: 8px;
-    }
-
-    .file-row:nth-child(even) {
-      background-color: #f9f9f9;
-    }
-
-    .file-row.dz-error {
-      background-color: #f2dede;
-    }
-
-    .progress {
-      border: 1px solid #e7eaec;
-      margin-bottom: 0px;
-    }
+  .dropzone.dz-drag-hover #dropzone-top {
+    border: 2px solid #e7eaec;
   }
 
   #dropzone-uploading-notice {
@@ -270,6 +303,37 @@
     .modal-header {
       border-top-left-radius: 4px;
       border-top-right-radius: 4px;
+    }
+  }
+
+  #documents-select-criteria {
+    margin: 13px 0;
+    width: 100%;
+  }
+
+  ul#document-scheme-mix-criteria {
+    margin: 0;
+    padding-left: 6px;
+  }
+
+  ul#document-scheme-mix-criteria {
+    li {
+      list-style: none;
+      margin: 8px 0;
+    }
+
+    li a {
+      color: #676a6c;
+      font-weight: 600;
+    }
+
+    li ul {
+      padding-left: 6px;
+    }
+
+    li ul li label {
+      font-weight: normal;
+      display: inline;
     }
   }
 }

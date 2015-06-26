@@ -68,10 +68,8 @@ $(function () {
     };
 
     // Accordion tables
-    $('.accordion-body').on('show.bs.collapse', function() {
-        $(this).prev().find('i.fa').removeClass('fa-caret-square-o-right').addClass('fa-caret-square-o-down');
-    }).on('hidden.bs.collapse', function() {
-        $(this).prev().find('i.fa').removeClass('fa-caret-square-o-down').addClass('fa-caret-square-o-right');
+    $('.accordion-body').on('show.bs.collapse hidden.bs.collapse', function() {
+        $(this).prev().find('i.fa').toggleClass('fa-caret-square-o-right').toggleClass('fa-caret-square-o-down');
     });
 
     // Show flash messages in a notification

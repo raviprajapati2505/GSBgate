@@ -8,7 +8,9 @@ class DocumentsController < AuthenticatedController
         @document = Document.new(document_file: params[:document]['document_file'], user: current_user)
 
         if @document.save
-          SchemeMixCriteriaDocument.create!(scheme_mix_criterion_id: params[:document]['scheme_mix_criterion'], document: @document)
+          params[:document]['scheme_mix_criteria'].each do |scheme_mix_criterion_id|
+            SchemeMixCriteriaDocument.create!(scheme_mix_criterion_id: scheme_mix_criterion_id, document: @document)
+          end
 
           format.html { redirect_to :back, notice: 'The document was successfully uploaded.' }
           format.json { render :json => @document }
