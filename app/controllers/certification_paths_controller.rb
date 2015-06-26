@@ -50,7 +50,7 @@ class CertificationPathsController < AuthenticatedController
         if @certification_path.scheme_mixes.count == 0
           SchemeMix.create(certification_path_id: @certification_path.id, scheme_id: Scheme.where('label = ?', 'Operations').first.id, weight: 100)
         end
-        flash[:notice] = 'Status is successfully updated.'
+        flash[:notice] = 'Status was successfully updated.'
         redirect_to edit_project_certification_path_path(@project, @certification_path)
       else
         render action: :edit
