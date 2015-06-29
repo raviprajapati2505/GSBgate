@@ -3,9 +3,9 @@
         <div class="panel-heading <%= 'assigned-requirement' if requirement_datum.user == current_user %>">
             <h4 class="panel-title">
                 <a href="#requirement-<%= requirement_datum.id %>" data-parent="#accordion" data-toggle="collapse" class="collapsed" aria-expanded="false">
-                    <% if requirement_datum.required? %><i class="fa fa-square-o" title="<%= t('.tooltip_requirement_required') %>" data-toggle="tooltip"></i>
-                    <% elsif requirement_datum.provided? %><i class="fa fa-check-square-o" title="<%= t('.tooltip_requirement_provided') %>" data-toggle="tooltip"></i>
-                    <% else %><i class="fa fa-square" title="<%= t('.tooltip_requirement_not_required') %>" data-toggle="tooltip"></i><% end %>
+                    <% if requirement_datum.required? %><i class="fa fa-lg fa-square-o" title="<%= t('.tooltip_requirement_required') %>" data-toggle="tooltip"></i>
+                    <% elsif requirement_datum.provided? %><i class="fa fa-lg fa-check-square-o" title="<%= t('.tooltip_requirement_provided') %>" data-toggle="tooltip"></i>
+                    <% else %><i class="fa fa-lg fa-square" title="<%= t('.tooltip_requirement_not_required') %>" data-toggle="tooltip"></i><% end %>
                     &nbsp;&nbsp;<%= requirement_datum.requirement.label %>
                     <% if requirement_datum.required? && !requirement_datum.due_date.nil? && Date.today > requirement_datum.due_date %>&nbsp;<i class="fa fa-clock-o" title="<%= t('.tooltip_due_date') %>" data-toggle="tooltip"></i><% end %>
                 </a>
