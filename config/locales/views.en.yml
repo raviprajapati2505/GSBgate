@@ -5,14 +5,11 @@ en:
       btn_close: "Close"
       btn_save: "Update"
       modal_title: "Update Status"
-  criteria_status_logs:
-    modal:
-      btn_cancel: "Back"
-      btn_close: "Close"
   projects:
     index:
       action_team_title: "Team"
     show:
+      btn_add_certifier_team_member: "Add certifier manager"
       btn_add_project_team_member: "Add team member"
       tooltip_due_date: "Due date passed"
       tooltip_requirement_required: "Requirement not provided yet"
@@ -45,6 +42,10 @@ en:
       btn_close: "Close"
       btn_save: "Update"
       modal_title: "Update Status"
+  scheme_mix_criterion_logs:
+      modal:
+        btn_cancel: "Back"
+        btn_close: "Close"
   users:
     index:
       action_edit_title: "Edit"

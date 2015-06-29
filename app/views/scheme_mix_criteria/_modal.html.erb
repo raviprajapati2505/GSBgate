@@ -10,7 +10,7 @@
             </div>
             <div class="modal-body">
                 <%= f.select :status, SchemeMixCriterion.statuses.keys.map { |k| [k.humanize, k]} %>
-                <%= f.fields_for :criteria_status_logs do |l| %>
+                <%= f.fields_for :scheme_mix_criterion_logs do |l| %>
                     <%= l.text_area :comment %>
                 <% end %>
             </div>

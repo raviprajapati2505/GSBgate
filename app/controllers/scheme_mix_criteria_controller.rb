@@ -18,8 +18,8 @@ class SchemeMixCriteriaController < AuthenticatedController
       old_status = @scheme_mix_criterion[:status]
       if @scheme_mix_criterion.update(scheme_mix_criterion_params)
         # Save justification comments
-        if params[:scheme_mix_criterion].has_key?(:criteria_status_logs)
-          @scheme_mix_criterion.criteria_status_logs.create!(comment: params[:scheme_mix_criterion][:criteria_status_logs][:comment], user: current_user, old_status: old_status, new_status: @scheme_mix_criterion[:status] )
+        if params[:scheme_mix_criterion].has_key?(:scheme_mix_criterion_logs)
+          @scheme_mix_criterion.scheme_mix_criterion_logs.create!(comment: params[:scheme_mix_criterion][:scheme_mix_criterion_logs][:comment], user: current_user, old_status: old_status, new_status: @scheme_mix_criterion[:status] )
         end
         # Save the documents
         if params.has_key?(:documents)

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150618073246) do
+ActiveRecord::Schema.define(version: 20150629081715) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -66,19 +66,6 @@ ActiveRecord::Schema.define(version: 20150618073246) do
   end
 
   add_index "criteria", ["category_id"], name: "index_criteria_on_category_id", using: :btree
-
-  create_table "criteria_status_logs", force: :cascade do |t|
-    t.text     "comment"
-    t.integer  "old_status"
-    t.integer  "new_status"
-    t.integer  "scheme_mix_criterion_id"
-    t.integer  "user_id"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
-  end
-
-  add_index "criteria_status_logs", ["scheme_mix_criterion_id"], name: "index_criteria_status_logs_on_scheme_mix_criterion_id", using: :btree
-  add_index "criteria_status_logs", ["user_id"], name: "index_criteria_status_logs_on_user_id", using: :btree
 
   create_table "documents", force: :cascade do |t|
     t.string   "document_file"
@@ -224,6 +211,19 @@ ActiveRecord::Schema.define(version: 20150618073246) do
   add_index "scheme_mix_criteria_requirement_data", ["requirement_datum_id"], name: "by_requirement_datum", using: :btree
   add_index "scheme_mix_criteria_requirement_data", ["scheme_mix_criterion_id"], name: "by_scheme_mix_criterion", using: :btree
 
+  create_table "scheme_mix_criterion_logs", force: :cascade do |t|
+    t.text     "comment"
+    t.integer  "old_status"
+    t.integer  "new_status"
+    t.integer  "scheme_mix_criterion_id"
+    t.integer  "user_id"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
+  add_index "scheme_mix_criterion_logs", ["scheme_mix_criterion_id"], name: "index_scheme_mix_criterion_logs_on_scheme_mix_criterion_id", using: :btree
+  add_index "scheme_mix_criterion_logs", ["user_id"], name: "index_scheme_mix_criterion_logs_on_user_id", using: :btree
+
   create_table "scheme_mixes", force: :cascade do |t|
     t.integer  "certification_path_id"
     t.integer  "weight"
@@ -277,8 +277,6 @@ ActiveRecord::Schema.define(version: 20150618073246) do
   add_foreign_key "certification_paths", "certificates"
   add_foreign_key "certification_paths", "projects"
   add_foreign_key "criteria", "categories"
-  add_foreign_key "criteria_status_logs", "scheme_mix_criteria"
-  add_foreign_key "criteria_status_logs", "users"
   add_foreign_key "documents", "users"
   add_foreign_key "field_data", "calculator_data"
   add_foreign_key "field_data", "fields"
@@ -298,6 +296,8 @@ ActiveRecord::Schema.define(version: 20150618073246) do
   add_foreign_key "scheme_mix_criteria_documents", "scheme_mix_criteria"
   add_foreign_key "scheme_mix_criteria_requirement_data", "requirement_data"
   add_foreign_key "scheme_mix_criteria_requirement_data", "scheme_mix_criteria"
+  add_foreign_key "scheme_mix_criterion_logs", "scheme_mix_criteria"
+  add_foreign_key "scheme_mix_criterion_logs", "users"
   add_foreign_key "scheme_mixes", "certification_paths"
   add_foreign_key "scheme_mixes", "schemes"
   add_foreign_key "schemes", "certificates"

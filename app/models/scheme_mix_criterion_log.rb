@@ -1,4 +1,4 @@
-class CriteriaStatusLog < ActiveRecord::Base
+class SchemeMixCriterionLog < ActiveRecord::Base
   belongs_to :scheme_mix_criterion
   belongs_to :user
 
