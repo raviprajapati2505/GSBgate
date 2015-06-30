@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150630093609) do
+ActiveRecord::Schema.define(version: 20150630105550) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -66,6 +66,17 @@ ActiveRecord::Schema.define(version: 20150630093609) do
   end
 
   add_index "criteria", ["category_id"], name: "index_criteria_on_category_id", using: :btree
+
+  create_table "document_comments", force: :cascade do |t|
+    t.text     "body"
+    t.integer  "document_id"
+    t.integer  "user_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "document_comments", ["document_id"], name: "index_document_comments_on_document_id", using: :btree
+  add_index "document_comments", ["user_id"], name: "index_document_comments_on_user_id", using: :btree
 
   create_table "documents", force: :cascade do |t|
     t.string   "document_file"
@@ -277,6 +288,8 @@ ActiveRecord::Schema.define(version: 20150630093609) do
   add_foreign_key "certification_paths", "certificates"
   add_foreign_key "certification_paths", "projects"
   add_foreign_key "criteria", "categories"
+  add_foreign_key "document_comments", "documents"
+  add_foreign_key "document_comments", "users"
   add_foreign_key "documents", "users"
   add_foreign_key "field_data", "calculator_data"
   add_foreign_key "field_data", "fields"
