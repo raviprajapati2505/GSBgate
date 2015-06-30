@@ -1,4 +1,10 @@
 en:
+  layouts:
+    authenticated:
+      btn_cancel: "No"
+      btn_close: "Close"
+      btn_save: "Yes"
+      modal_title: "Confirm"
   certification_paths:
     modal:
       btn_cancel: "Back"

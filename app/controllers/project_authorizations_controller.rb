@@ -1,11 +1,14 @@
 class ProjectAuthorizationsController < AuthenticatedController
   load_and_authorize_resource
-  before_action :set_project, only: [:new, :create, :edit]
+  before_action :set_project, only: [:new, :create, :edit, :destroy]
   before_action :set_authorization, only: [:edit, :destroy]
 
   def new
     authorize! :manage, @project
     @project_authorization = ProjectAuthorization.new(project: @project)
+    if current_user.system_admin? && params.has_key?(:query) && params[:query] == 'certifiers'
+      @show_certifiers = true
+    end
   end
 
   def create
@@ -21,7 +24,9 @@ class ProjectAuthorizationsController < AuthenticatedController
   end
 
   def edit
-
+    if current_user.system_admin? && params.has_key?(:query) && params[:query] == 'certifiers'
+      @show_certifiers = true
+    end
   end
 
   def update
@@ -34,6 +39,20 @@ class ProjectAuthorizationsController < AuthenticatedController
   end
 
   def destroy
+    # remove user - requirement_data link
+    requirement_data = @project_authorization.user.requirement_data.for_project(@project)
+    requirement_data.each do |requirement_datum|
+      requirement_datum.user = nil
+      requirement_datum.save!
+    end
+
+    # remove user - scheme_mix_criteria link
+    scheme_mix_criteria = @project_authorization.user.scheme_mix_criteria.for_project(@project)
+    scheme_mix_criteria.each do |scheme_mix_criterion|
+      scheme_mix_criterion.certifier = nil
+      scheme_mix_criterion.save!
+    end
+
     id = @project_authorization.project_id
     @project_authorization.destroy
     flash[:notice] = 'Authorization was successfully destroyed.'

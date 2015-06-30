@@ -25,7 +25,7 @@
         <% end %>
 
         <% unless is_active_controller('project_authorizations').nil? %>
-            <li class="active"><%= link_to 'Project team', project_path(@project) %></li>
+            <li class="active"><%= link_to 'Add team member', project_path(@project) %></li>
         <% end %>
     <% end %>
 </ol>

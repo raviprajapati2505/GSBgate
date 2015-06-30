@@ -130,6 +130,7 @@
                             <th>Member</th>
                             <th>Role</th>
                             <th>Criteria progress</th>
+                            <th>Actions</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -137,6 +138,7 @@
                             <td>Unassigned</td>
                             <td>-</td>
                             <td><%= SchemeMixCriterion.for_project(@project).unassigned.distinct.count %>/<%= SchemeMixCriterion.for_project(@project).distinct.count %></td>
+                            <td></td>
                         </tr>
                         <% @project.certifiers.distinct.each do |certifier| %>
                         <tr>
@@ -144,11 +146,17 @@
                             <td><%= certifier.email %></td>
                             <td><%= project_authorization.role.humanize %></td>
                             <td>?/<%= certifier.scheme_mix_criteria.for_project(@project).count %></td>
+                            <td>
+                                <!--= link_to raw('<i title="Edit authorization" class="fa fa-lg fa-edit" style="padding-right: 10px;"></i>'),  edit_project_authorization_path(@project, project_authorization, query: 'certifiers') %-->
+                                <%= link_to raw('<i title="Delete authorization" class="fa fa-lg fa-trash" style="padding-right: 10px;"></i>'), project_authorization_path(@project, project_authorization), method: :delete, data: {confirm: 'Are you sure to remove certifier manager ?'} %>
+                            </td>
                         </tr>
                         <% end %>
                         </tbody>
                     </table>
                     <% end %>
+                    <div class="hr-line-dashed"></div>
+                    <%= link_to t('.btn_add_certifier_team_member'), new_project_authorization_path(@project, query: 'certifiers'), class: 'btn btn-primary' %>
                 </div>
             </div>
         <% end %>
@@ -188,7 +196,7 @@
                                 <%= link_to raw('<i title="Edit authorization" class="fa fa-lg fa-edit" style="padding-right: 10px;"></i>'),  edit_project_authorization_path(@project, project_authorization) %>
                             <% end %>
                             <% if can? :destroy, project_authorization %>
-                                <%= link_to raw('<i title="Delete authorization" class="fa fa-lg fa-trash" style="padding-right: 10px;"></i>'), project_authorization_path(@project, project_authorization), method: :delete, data: {confirm: 'Are you sure?'} %>
+                                <%= link_to raw('<i title="Delete authorization" class="fa fa-lg fa-trash" style="padding-right: 10px;"></i>'), project_authorization_path(@project, project_authorization), method: :delete, data: {confirm: 'Are you sure to remove team member ?'} %>
                             <% end %>
                             </td>
                         </tr>

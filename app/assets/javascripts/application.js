@@ -33,6 +33,27 @@
  */
 
 $(function () {
+    // Override the default confirm dialog by rails
+    $.rails.allowAction = function(link) {
+        if (link.data("confirm") == undefined) {
+            return true;
+        }
+        $.rails.showConfirmationDialog(link);
+        return false;
+    };
+
+    $.rails.showConfirmationDialog = function(link) {
+        var message = link.data("confirm");
+        var modal = $('#confirmationModal');
+        $('#confirmationModal .modal-body').html(message);
+        $('#confirmationModal .okBtn').on('click', function() {
+            link.data("confirm", null);
+            link.trigger("click.rails");
+            modal.modal('hide');
+        });
+        modal.modal();
+    };
+
     // Tooltips
     $('[data-toggle="tooltip"]').tooltip();
 
