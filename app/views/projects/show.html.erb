@@ -7,52 +7,54 @@
                 <h5>Project details</h5>
             </div>
             <div class="ibox-content">
-                <p>
-                    <strong><%= Project.human_attribute_name('code') %>:</strong>
-                    <%= @project.code %>
-                </p>
-                <p>
-                  <strong><%= Project.human_attribute_name('name') %>:</strong>
-                  <%= @project.name %>
-                </p>
-                <p>
-                    <strong><%= Project.human_attribute_name('description') %>:</strong>
-                    <%= @project.description %>
-                </p>
-                <p>
-                    <strong><%= Project.human_attribute_name('address') %>:</strong>
-                    <%= @project.address %>
-                </p>
-                <p>
-                    <strong><%= Project.human_attribute_name('location') %>:</strong>
-                    <%= @project.location %>
-                </p>
-                <p>
-                    <strong><%= Project.human_attribute_name('country') %>:</strong>
-                    <%= @project.country%>
-                </p>
-                <p>
-                    <strong><%= Project.human_attribute_name('gross_area') %>:</strong>
-                    <%= @project.gross_area %> m²
-                </p>
-                <p>
-                    <strong><%= Project.human_attribute_name('certified_area') %>:</strong>
-                    <%= @project.certified_area %> m²
-                </p>
-                <p>
-                    <strong><%= Project.human_attribute_name('carpark_area') %>:</strong>
-                    <%= @project.carpark_area%> m²
-                </p>
-                <p>
-                    <strong><%= Project.human_attribute_name('project_site_area') %>:</strong>
-                    <%= @project.project_site_area %> m²
-                </p>
-                <p>
-                    <input type="hidden" id="project_latlng" value="<%= @project.latlng %>" />
-                    <div id="project-map" class="map" style="height: 300px;"></div>
-                </p>
-                <div class="hr-line-dashed"></div>
+                <table class="table table-bordered table-striped">
+                    <tbody>
+                    <tr>
+                        <th><%= Project.human_attribute_name('code') %></th>
+                        <td><%= @project.code %></td>
+                    </tr>
+                    <tr>
+                        <th><%= Project.human_attribute_name('name') %></th>
+                        <td><%= @project.name %></td>
+                    </tr>
+                    <tr>
+                        <th><%= Project.human_attribute_name('description') %></th>
+                        <td><%= @project.description %></td>
+                    </tr>
+                    <tr>
+                        <th><%= Project.human_attribute_name('address') %></th>
+                        <td><%= @project.address %></td>
+                    </tr>
+                    <tr>
+                        <th><%= Project.human_attribute_name('location') %></th>
+                        <td><%= @project.location %></td>
+                    </tr>
+                    <tr>
+                        <th><%= Project.human_attribute_name('country') %></th>
+                        <td><%= @project.country %></td>
+                    </tr>
+                    <tr>
+                        <th><%= Project.human_attribute_name('gross_area') %></th>
+                        <td><%= @project.gross_area %> m²</td>
+                    </tr>
+                    <tr>
+                        <th><%= Project.human_attribute_name('certified_area') %></th>
+                        <td><%= @project.certified_area %> m²</td>
+                    </tr>
+                    <tr>
+                        <th><%= Project.human_attribute_name('carpark_area') %></th>
+                        <td><%= @project.carpark_area %> m²</td>
+                    </tr>
+                    <tr>
+                        <th><%= Project.human_attribute_name('project_site_area') %></th>
+                        <td><%= @project.project_site_area %> m²</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <input type="hidden" id="project_latlng" value="<%= @project.latlng %>" />
+                <div id="project-map" class="map" style="height: 300px;"></div>
                 <% if can? :manage, @project %>
+                    <div class="hr-line-dashed"></div>
                     <%= link_to 'Edit', edit_project_path(@project), :class => 'btn btn-primary' %>
                 <% end %>
             </div>

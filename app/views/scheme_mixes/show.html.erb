@@ -7,45 +7,47 @@
                 <h5>Certification details</h5>
             </div>
             <div class="ibox-content">
-                <p>
-                    <strong>Name:</strong>
-                    <%= @certification_path.certificate.label %>
-                </p>
-
-                <p>
-                    <strong>Status:</strong>
-                    <%= @certification_path.status.humanize %>
-                </p>
-
-                <p>
-                    <strong>Scheme:</strong>
-                    <%= @scheme_mix.scheme.full_label %>
-                </p>
-                <p>
-                    <strong>Weighting:</strong>
-                    <%= @scheme_mix.weight %> %
-                </p>
-                <p>
-                    <strong>Points:</strong>
-                    <div class="score-graph"
-                         data-show-legend="true"
-                         data-show-x-axis="true"
-                         data-width="380"
-                         data-height="50"
-                         data-min="<%= @scheme_mix.weighted_min_score %>"
-                         data-max="<%= @scheme_mix.weighted_max_attainable_score %>"
-                         data-max-attainable="<%= @scheme_mix.weighted_max_attainable_score %>"
-                         data-targeted="<%= @scheme_mix.weighted_targeted_score %>"
-                         data-submitted="<%= @scheme_mix.weighted_submitted_score %>"></div>
-                </p>
-                <p>
-                    <strong>Your requirement progress:</strong>
-                    <%= RequirementDatum.for_scheme_mix(@scheme_mix).provided.assigned_to_user(current_user).count %>/<%= RequirementDatum.for_scheme_mix(@scheme_mix).assigned_to_user(current_user).count %>
-                </p>
-                <p>
-                    <strong>Total requirement progress:</strong>
-                    <%= RequirementDatum.for_scheme_mix(@scheme_mix).provided.count %>/<%= RequirementDatum.for_scheme_mix(@scheme_mix).count %>
-                </p>
+                <table class="table table-bordered table-striped">
+                    <tbody>
+                    <tr>
+                        <th>Name</th>
+                        <td><%= @certification_path.certificate.label %></td>
+                    </tr>
+                    <tr>
+                        <th>Status</th>
+                        <td><%= @certification_path.status.humanize %></td>
+                    </tr>
+                    <tr>
+                        <th>Scheme</th>
+                        <td><%= @scheme_mix.scheme.full_label %></td>
+                    </tr>
+                    <tr>
+                        <th>Weighting</th>
+                        <td><%= @scheme_mix.weight %> %</td>
+                    </tr>
+                    <tr>
+                        <th>Points</th>
+                        <td><div class="score-graph"
+                                 data-show-legend="true"
+                                 data-show-x-axis="true"
+                                 data-width="380"
+                                 data-height="50"
+                                 data-min="<%= @scheme_mix.weighted_min_score %>"
+                                 data-max="<%= @scheme_mix.weighted_max_attainable_score %>"
+                                 data-max-attainable="<%= @scheme_mix.weighted_max_attainable_score %>"
+                                 data-targeted="<%= @scheme_mix.weighted_targeted_score %>"
+                                 data-submitted="<%= @scheme_mix.weighted_submitted_score %>"></div></td>
+                    </tr>
+                    <tr>
+                        <th>Your requirement progress</th>
+                        <td><%= RequirementDatum.for_scheme_mix(@scheme_mix).provided.assigned_to_user(current_user).count %>/<%= RequirementDatum.for_scheme_mix(@scheme_mix).assigned_to_user(current_user).count %></td>
+                    </tr>
+                    <tr>
+                        <th>Total requirement progress</th>
+                        <td><%= RequirementDatum.for_scheme_mix(@scheme_mix).provided.count %>/<%= RequirementDatum.for_scheme_mix(@scheme_mix).count %></td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

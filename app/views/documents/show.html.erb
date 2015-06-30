@@ -5,26 +5,30 @@
             <h5>Document details</h5>
         </div>
         <div class="ibox-content">
-            <p>
-                <strong>File name:</strong>
-                <%= image_tag(Icon.for_filename(@document.document_file.file.filename), alt: @document.document_file.content_type, title: @document.document_file.content_type) + ' ' + link_to(@document.document_file.file.filename, download_project_document_path(@project, @document), title: 'Click to download the document') %>
-            </p>
-            <p>
-                <strong>File size:</strong>
-                <%= number_to_human_size(@document.document_file.size) %>
-            </p>
-            <p>
-                <strong>Uploaded by:</strong>
-                <%= @document.user.email %>
-            </p>
-            <p>
-                <strong>Upload date:</strong>
-                <%= localize(@document.created_at) %>
-            </p>
-            <p>
-                <strong>Status:</strong>
-                TODO
-            </p>
+            <table class="table table-bordered table-striped">
+                <tbody>
+                <tr>
+                    <th>File name</th>
+                    <td><%= image_tag(Icon.for_filename(@document.document_file.file.filename), alt: @document.document_file.content_type, title: @document.document_file.content_type) + ' ' + link_to(@document.document_file.file.filename, download_project_document_path(@project, @document), title: 'Click to download the document') %></td>
+                </tr>
+                <tr>
+                    <th>File size</th>
+                    <td><%= number_to_human_size(@document.document_file.size) %></td>
+                </tr>
+                <tr>
+                    <th>Uploaded by</th>
+                    <td> <%= @document.user.email %></td>
+                </tr>
+                <tr>
+                    <th>Upload date</th>
+                    <td><%= localize(@document.created_at) %></td>
+                </tr>
+                <tr>
+                    <th>Status</th>
+                    <td>TODO</td>
+                </tr>
+                </tbody>
+            </table>
             <div class="hr-line-dashed"></div>
             <%= link_to('Download document', download_project_document_path(@project, @document), class: 'btn btn-primary') %>
         </div>
@@ -50,6 +54,8 @@
                     </div>
                 <% end %>
             <% end %>
+            <div class="hr-line-dashed"></div>
+            <%= link_to('Add comment', download_project_document_path(@project, @document), class: 'btn btn-primary') %>
         </div>
     </div>
 </div>
