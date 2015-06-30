@@ -6,11 +6,18 @@ class DocumentsController < AuthenticatedController
   def create
     respond_to do |format|
       if params.has_key?(:document)
+        # Create the document
         @document = Document.new(document_file: params[:document]['document_file'], user: current_user)
 
         if @document.save
+          # Create the comment
+          if params[:document]['comment'].present?
+            @document.document_comments.create!(body: params[:document]['comment'], user: current_user)
+          end
+
+          # Create links with the scheme mix criteria
           params[:document]['scheme_mix_criteria'].each do |scheme_mix_criterion_id|
-            SchemeMixCriteriaDocument.create!(scheme_mix_criterion_id: scheme_mix_criterion_id, document: @document)
+            @document.scheme_mix_criteria_documents.create!(scheme_mix_criterion_id: scheme_mix_criterion_id)
           end
 
           format.html { redirect_to :back, notice: 'The document was successfully uploaded.' }
