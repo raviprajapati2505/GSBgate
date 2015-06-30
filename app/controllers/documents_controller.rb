@@ -24,7 +24,7 @@ class DocumentsController < AuthenticatedController
   end
 
   def show
-    @page_title = "Document details"
+    @page_title = 'Document ' + @document.document_file.file.filename
   end
 
   def download

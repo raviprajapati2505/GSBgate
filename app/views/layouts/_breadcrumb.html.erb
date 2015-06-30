@@ -9,7 +9,7 @@
         <li><%= link_to 'Projects', projects_path %></li>
 
         <% unless @project.nil? or @project.id.nil?%>
-            <li class="active"><%= link_to @project.name, project_path(@project) %></li>
+            <li class="active"><%= link_to 'Project ' + @project.name, project_path(@project) %></li>
         <% end %>
 
         <% unless @certification_path.nil? or @certification_path.id.nil? %>
@@ -21,7 +21,7 @@
         <% end %>
 
         <% unless @document.nil? or @document.id.nil? %>
-            <li class="active"><%= link_to 'Document details', project_document_path(@project, @document) %></li>
+            <li class="active"><%= link_to 'Document ' + @document.document_file.file.filename, project_document_path(@project, @document) %></li>
         <% end %>
 
         <% unless is_active_controller('project_authorizations').nil? %>
