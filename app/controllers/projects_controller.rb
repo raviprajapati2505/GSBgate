@@ -1,5 +1,5 @@
 class ProjectsController < AuthenticatedController
-  before_action :set_project, only: [:show, :edit, :update, :destroy]
+  before_action :set_project, only: [:show, :edit, :update]
   load_and_authorize_resource
 
   # GET /projects
@@ -60,16 +60,6 @@ class ProjectsController < AuthenticatedController
         format.html { render :edit }
         format.json { render json: @project.errors, status: :unprocessable_entity }
       end
-    end
-  end
-
-  # DELETE /projects/1
-  # DELETE /projects/1.json
-  def destroy
-    @project.destroy
-    respond_to do |format|
-      format.html { redirect_to projects_url, notice: 'Project was successfully destroyed.' }
-      format.json { head :no_content }
     end
   end
 

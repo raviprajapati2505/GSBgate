@@ -25,9 +25,6 @@
                         <% if can? :edit, project %>
                             <%= link_to raw('<i title="Edit" class="fa fa-lg fa-edit" style="padding-right: 10px;"></i>'), edit_project_path(project) %>
                         <% end %>
-                        <% if can? :destroy, project %>
-                            <%= link_to raw('<i title="Delete" class="fa fa-lg fa-trash" style="padding-right: 10px;"></i>'), project, method: :delete, data: {confirm: 'Are you sure?'} %>
-                        <% end %>
                     </td>
                 </tr>
             <% end %>

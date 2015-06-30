@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   get 'errors/forbidden'
 
   resources :certification_paths
-  resources :projects do
+  resources :projects, except: [ :destroy ] do
     resources :project_authorizations, only: [ :new, :edit, :update, :destroy ], path: 'authorizations', as: 'authorization'
     resources :project_authorizations, only: [ :create ], path: 'authorizations', as: 'authorizations'
     resources :certification_paths, except: [ :destroy ], path: 'certificates' do
