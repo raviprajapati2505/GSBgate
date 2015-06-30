@@ -31,7 +31,7 @@ class DocumentsController < AuthenticatedController
   end
 
   def show
-    @page_title = 'Document ' + @document.document_file.file.filename
+    @page_title = (ActionController::Base.helpers.image_tag(Icon.for_filename(@document.document_file.file.filename)) + ' Document ' + @document.document_file.file.filename).html_safe
   end
 
   def download

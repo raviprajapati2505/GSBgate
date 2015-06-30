@@ -9,7 +9,7 @@
                 <tbody>
                 <tr>
                     <th>File name</th>
-                    <td><%= image_tag(Icon.for_filename(@document.document_file.file.filename), alt: @document.document_file.content_type, title: @document.document_file.content_type) + ' ' + link_to(@document.document_file.file.filename, download_project_document_path(@project, @document), title: 'Click to download the document') %></td>
+                    <td><%= @document.document_file.file.filename %></td>
                 </tr>
                 <tr>
                     <th>File size</th>
@@ -54,8 +54,6 @@
                     </div>
                 <% end %>
             <% end %>
-            <div class="hr-line-dashed"></div>
-            <%= link_to('Add comment', download_project_document_path(@project, @document), class: 'btn btn-primary') %>
         </div>
     </div>
 </div>
