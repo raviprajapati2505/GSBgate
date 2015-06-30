@@ -1,0 +1,45 @@
+<% use_gmaps_for(:project) %>
+
+<div class="row">
+<div class="col-md-5">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>Document details</h5>
+        </div>
+        <div class="ibox-content">
+            <p>
+                <strong>File name:</strong>
+                <%= image_tag(Icon.for_filename(@document.document_file.file.filename), alt: @document.document_file.content_type, title: @document.document_file.content_type) + ' ' + link_to(@document.document_file.file.filename, download_project_document_path(@project, @document), title: 'Click to download the document') %>
+            </p>
+            <p>
+                <strong>File size:</strong>
+                <%= number_to_human_size(@document.document_file.size) %>
+            </p>
+            <p>
+                <strong>Uploaded by:</strong>
+                <%= @document.user.email %>
+            </p>
+            <p>
+                <strong>Upload date:</strong>
+                <%= localize(@document.created_at) %>
+            </p>
+            <p>
+                <strong>Status:</strong>
+                TODO
+            </p>
+            <div class="hr-line-dashed"></div>
+            <%= link_to('Download document', download_project_document_path(@project, @document), class: 'btn btn-primary') %>
+        </div>
+    </div>
+</div>
+<div class="col-md-7">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>Comments</h5>
+        </div>
+        <div class="ibox-content">
+            TODO
+        </div>
+    </div>
+</div>
+</div>

@@ -19,9 +19,9 @@ Rails.application.routes.draw do
       end
     end
     resources :requirement_data, only: [:update], path: 'requirement', as: 'requirement_data'
+    resources :documents, only: [ :create, :show ], path: 'document'
   end
-  resources :documents, only: [ :create ]
-  get 'documents/:id/download' => 'documents#download', as: 'download_document'
+  get 'projects/:project_id/documents/:id/download' => 'documents#download', as: 'download_project_document'
 
   resources :users
   devise_for :user

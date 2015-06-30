@@ -20,9 +20,12 @@
             <li class="active"><%= link_to @scheme_mix.scheme.full_label, project_certification_path_scheme_mix_path(@project, @certification_path, @scheme_mix) %></li>
         <% end %>
 
-        <% unless is_active_controller('project_authorizations').nil? %>
-        <li class="active"><%= link_to 'team', project_path(@project) %></li>
+        <% unless @document.nil? or @document.id.nil? %>
+            <li class="active"><%= link_to 'Document details', project_document_path(@project, @document) %></li>
         <% end %>
 
+        <% unless is_active_controller('project_authorizations').nil? %>
+            <li class="active"><%= link_to 'Project team', project_path(@project) %></li>
+        <% end %>
     <% end %>
 </ol>

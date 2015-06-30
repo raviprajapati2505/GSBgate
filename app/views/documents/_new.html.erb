@@ -1,4 +1,4 @@
-<%= bootstrap_form_for(document, html: {class: 'dropzone'}) do |f| %>
+<%= bootstrap_form_for([project, document], html: {class: 'dropzone'}) do |f| %>
     <div class="fallback">
         <%= f.file_field :document_file, hide_label: true %>
         <%= f.primary 'Upload documentation' %>
@@ -23,13 +23,13 @@
                     <div class="panel-body">
                         <a href="#" id="documents-select-criteria" class="btn btn-white btn-sm"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;Select additional criteria</a>
                         <ul id="document-scheme-mix-criteria" style="display:none;">
-                            <% @scheme_mix.categories.uniq.each do |category| %>
+                            <% scheme_mix.categories.uniq.each do |category| %>
                                 <li>
                                     <a href="#"><i class="fa fa-caret-square-o-right"></i>&nbsp;<%= category.name %></a>
                                     <ul style="display:none;">
-                                        <% @scheme_mix.scheme_mix_criteria.for_category(category).each do |scheme_mix_criterion| %>
+                                        <% scheme_mix.scheme_mix_criteria.for_category(category).each do |scheme_mix_criterion| %>
                                             <li>
-                                                <% default_checkbox_value = ((not scheme_mix_criterion_id.nil?) and (scheme_mix_criterion_id == scheme_mix_criterion.id)) %>
+                                                <% default_checkbox_value = (scheme_mix_criterion_id.present? and (scheme_mix_criterion_id == scheme_mix_criterion.id)) %>
                                                 <%= check_box_tag 'document[scheme_mix_criteria][]', scheme_mix_criterion.id, default_checkbox_value, disabled: default_checkbox_value, id: 'document_scheme_mix_criterion_' + scheme_mix_criterion.id.to_s %>
                                                 <%= label_tag 'document_scheme_mix_criterion_' + scheme_mix_criterion.id.to_s, scheme_mix_criterion.scheme_criterion.code + ': ' + scheme_mix_criterion.scheme_criterion.criterion.name %>
                                             </li>

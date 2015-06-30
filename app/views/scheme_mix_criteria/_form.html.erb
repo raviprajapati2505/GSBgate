@@ -88,7 +88,7 @@
                 <h5>Upload documentation</h5>
             </div>
             <div class="ibox-content">
-                <%= render 'documents/new', document: Document.new, scheme_mix: @scheme_mix_criterion.scheme_mix, scheme_mix_criterion_id: @scheme_mix_criterion.id %>
+                <%= render 'documents/new', document: Document.new, scheme_mix: @scheme_mix, scheme_mix_criterion_id: @scheme_mix_criterion.id, project: @project %>
             </div>
         </div>
         <div class="ibox">
@@ -96,7 +96,7 @@
                 <h5>Documentation</h5>
             </div>
             <div class="ibox-content">
-                <%= render 'documents/index', documents: @scheme_mix_criterion.documents %>
+                <%= render 'documents/index', documents: @scheme_mix_criterion.documents, project: @project %>
             </div>
         </div>
     </div>

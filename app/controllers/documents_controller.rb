@@ -1,5 +1,6 @@
 class DocumentsController < AuthenticatedController
-  before_action :set_document, only: [:download]
+  before_action :set_document, only: [:show, :download]
+  before_action :set_project
   load_and_authorize_resource
 
   def create
@@ -22,6 +23,10 @@ class DocumentsController < AuthenticatedController
     end
   end
 
+  def show
+    @page_title = "Document details"
+  end
+
   def download
     send_file @document.document_file.file.path
   end
@@ -29,6 +34,10 @@ class DocumentsController < AuthenticatedController
   private
   def set_document
     @document = Document.find(params[:id])
+  end
+
+  def set_project
+    @project = Project.find(params[:project_id])
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
