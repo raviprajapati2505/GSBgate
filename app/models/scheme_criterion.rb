@@ -3,8 +3,8 @@ class SchemeCriterion < ActiveRecord::Base
   belongs_to :criterion
   has_many :scores
   has_many :scheme_mix_criteria
-  has_many :scheme_criterion_requirements
-  has_many :requirements, through: :scheme_criterion_requirements
+  has_many :scheme_criteria_requirements
+  has_many :requirements, through: :scheme_criteria_requirements
 
   scope :for_category, ->(category) {
     joins(:criterion).where(criteria: {category_id: category.id})

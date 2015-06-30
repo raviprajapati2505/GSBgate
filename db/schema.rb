@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150629081715) do
+ActiveRecord::Schema.define(version: 20150630093609) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -164,15 +164,15 @@ ActiveRecord::Schema.define(version: 20150629081715) do
   add_index "scheme_criteria", ["criterion_id"], name: "index_scheme_criteria_on_criterion_id", using: :btree
   add_index "scheme_criteria", ["scheme_id"], name: "index_scheme_criteria_on_scheme_id", using: :btree
 
-  create_table "scheme_criterion_requirements", force: :cascade do |t|
+  create_table "scheme_criteria_requirements", force: :cascade do |t|
     t.integer  "scheme_criterion_id"
     t.integer  "requirement_id"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
   end
 
-  add_index "scheme_criterion_requirements", ["requirement_id"], name: "index_scheme_criterion_requirements_on_requirement_id", using: :btree
-  add_index "scheme_criterion_requirements", ["scheme_criterion_id"], name: "index_scheme_criterion_requirements_on_scheme_criterion_id", using: :btree
+  add_index "scheme_criteria_requirements", ["requirement_id"], name: "index_scheme_criteria_requirements_on_requirement_id", using: :btree
+  add_index "scheme_criteria_requirements", ["scheme_criterion_id"], name: "index_scheme_criteria_requirements_on_scheme_criterion_id", using: :btree
 
   create_table "scheme_mix_criteria", force: :cascade do |t|
     t.integer  "targeted_score"
@@ -288,8 +288,8 @@ ActiveRecord::Schema.define(version: 20150629081715) do
   add_foreign_key "requirement_data", "users"
   add_foreign_key "scheme_criteria", "criteria"
   add_foreign_key "scheme_criteria", "schemes"
-  add_foreign_key "scheme_criterion_requirements", "requirements"
-  add_foreign_key "scheme_criterion_requirements", "scheme_criteria"
+  add_foreign_key "scheme_criteria_requirements", "requirements"
+  add_foreign_key "scheme_criteria_requirements", "scheme_criteria"
   add_foreign_key "scheme_mix_criteria", "scheme_criteria"
   add_foreign_key "scheme_mix_criteria", "scheme_mixes"
   add_foreign_key "scheme_mix_criteria_documents", "documents"
