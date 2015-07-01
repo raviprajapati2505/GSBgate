@@ -9,7 +9,7 @@
  * Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details about supported directives.
  *
  * NOTE: you must explicitly require external libraries here
-  *
+ *
  *= require jquery
  *= require jquery-ujs
  *= require jquery.steps
@@ -24,12 +24,14 @@
  *= require datatables-responsive
  *= require datatables-init
  *= require icheck
- *= require chosen
+ *= require select2
  *= require d3
  *= require score_widget.js
  *= require bootstrap-datepicker
  *= require dropzone
  *= require toastr
+ *= require select_user
+ *= require js-routes
  */
 
 $(function () {
@@ -59,9 +61,6 @@ $(function () {
 
     // iCheck all checkboxes & radio buttons
     $('input').iCheck();
-
-    // Chosen
-    $('.chosen-select').chosen();
 
     // Datepicker
     $('input[data-provide="datepicker"]').datepicker({

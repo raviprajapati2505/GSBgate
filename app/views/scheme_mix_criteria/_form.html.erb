@@ -55,6 +55,16 @@
                 <% end %>
             </div>
         </div>
+        <% if current_user.system_admin? %>
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>Certifier</h5>
+                </div>
+                <div class="ibox-content">
+                    <p>TODO : provide form to assign certifier to this criterion</p>
+                </div>
+            </div>
+        <% end %>
         <div class="ibox">
             <div class="ibox-title">
                 <h5>Requirements</h5>

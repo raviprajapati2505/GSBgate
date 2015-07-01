@@ -6,7 +6,8 @@
                     <h5><%=t '.form_title' %></h5>
                 </div>
                 <div class="ibox-content">
-                    <%= f.select :user_id, User.without_permissions_for_project(@project).map { |k| [k.email, k.id]}, {}, { class: 'chosen-select'} %>
+                    <!--= f.select :user_id, User.without_permissions_for_project(@project).map { |k| [k.email, k.id]}, {}, { class: 'chosen-select'} %-->
+                    <%= f.hidden_field :user_id, { class: 'select2-ajax', data: {project_id: @project.id } } %>
                     <% if @show_certifiers %>
                     <%= f.select :role, ProjectAuthorization.roles.keys[5..5].map { |k| [k.humanize, k] } %>
                     <% else %>

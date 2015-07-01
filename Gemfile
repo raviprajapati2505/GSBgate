@@ -79,6 +79,12 @@ gem 'rails-file-icons', github: 'sodalis/rails-file-icons' # Latest version is o
 # Pagination for resultsets
 gem 'will_paginate-bootstrap', '~> 1.0.1'
 
+# Selection box
+gem 'select2-rails', '~> 3.5.9.3'
+
+# Path helpers for javascript
+gem 'js-routes', '~> 1.0.1'
+
 # Rails-Assets: access bower packages from our gem file
 #  e.g. gem 'rails-assets-BOWER_PACKAGE_NAME'
 #  do not forget to:
@@ -99,7 +105,6 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-datatables-tabletools'
   gem 'rails-assets-datatables-plugins'
   gem 'rails-assets-icheck'
-  gem 'rails-assets-chosen'
   gem 'rails-assets-d3'
   gem 'rails-assets-bootstrap-datepicker'
   gem 'rails-assets-dropzone'

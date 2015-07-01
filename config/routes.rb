@@ -24,6 +24,7 @@ Rails.application.routes.draw do
   get 'projects/:project_id/documents/:id/download' => 'documents#download', as: 'download_project_document'
 
   resources :users
+  get 'projects/:project_id/users/new' => 'users#new_member', as: 'new_project_user'
   devise_for :user
 
   # Error pages

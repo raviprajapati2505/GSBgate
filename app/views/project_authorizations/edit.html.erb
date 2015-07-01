@@ -6,7 +6,7 @@
                     <h5><%=t '.form_title' %></h5>
                 </div>
                 <div class="ibox-content">
-                    <%= f.select :user_id, [[@project_authorization.user.email, @project_authorization.user.id]], {}, { class: 'chosen-select', disabled: true} %>
+                    <%= f.select :user_id, [[@project_authorization.user.email, @project_authorization.user.id]], {}, { disabled: true} %>
                     <% if @show_certifiers %>
                     <%= f.select :role, ProjectAuthorization.roles.keys[5..5].map { |k| [k.humanize, k]} %>
                     <% else %>
