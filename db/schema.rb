@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150630105550) do
+ActiveRecord::Schema.define(version: 20150701121416) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -66,17 +66,6 @@ ActiveRecord::Schema.define(version: 20150630105550) do
   end
 
   add_index "criteria", ["category_id"], name: "index_criteria_on_category_id", using: :btree
-
-  create_table "document_comments", force: :cascade do |t|
-    t.text     "body"
-    t.integer  "document_id"
-    t.integer  "user_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-  end
-
-  add_index "document_comments", ["document_id"], name: "index_document_comments_on_document_id", using: :btree
-  add_index "document_comments", ["user_id"], name: "index_document_comments_on_user_id", using: :btree
 
   create_table "documents", force: :cascade do |t|
     t.string   "document_file"
@@ -201,6 +190,17 @@ ActiveRecord::Schema.define(version: 20150630105550) do
   add_index "scheme_mix_criteria", ["scheme_criterion_id"], name: "index_scheme_mix_criteria_on_scheme_criterion_id", using: :btree
   add_index "scheme_mix_criteria", ["scheme_mix_id"], name: "index_scheme_mix_criteria_on_scheme_mix_id", using: :btree
 
+  create_table "scheme_mix_criteria_document_comments", force: :cascade do |t|
+    t.text     "body"
+    t.integer  "scheme_mix_criteria_document_id"
+    t.integer  "user_id"
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+  end
+
+  add_index "scheme_mix_criteria_document_comments", ["scheme_mix_criteria_document_id"], name: "index_scheme_mix_criteria_document_comments", using: :btree
+  add_index "scheme_mix_criteria_document_comments", ["user_id"], name: "index_scheme_mix_criteria_document_comments_on_user_id", using: :btree
+
   create_table "scheme_mix_criteria_documents", force: :cascade do |t|
     t.integer  "scheme_mix_criterion_id"
     t.integer  "document_id"
@@ -288,8 +288,6 @@ ActiveRecord::Schema.define(version: 20150630105550) do
   add_foreign_key "certification_paths", "certificates"
   add_foreign_key "certification_paths", "projects"
   add_foreign_key "criteria", "categories"
-  add_foreign_key "document_comments", "documents"
-  add_foreign_key "document_comments", "users"
   add_foreign_key "documents", "users"
   add_foreign_key "field_data", "calculator_data"
   add_foreign_key "field_data", "fields"
@@ -305,6 +303,8 @@ ActiveRecord::Schema.define(version: 20150630105550) do
   add_foreign_key "scheme_criteria_requirements", "scheme_criteria"
   add_foreign_key "scheme_mix_criteria", "scheme_criteria"
   add_foreign_key "scheme_mix_criteria", "scheme_mixes"
+  add_foreign_key "scheme_mix_criteria_document_comments", "scheme_mix_criteria_documents"
+  add_foreign_key "scheme_mix_criteria_document_comments", "users"
   add_foreign_key "scheme_mix_criteria_documents", "documents"
   add_foreign_key "scheme_mix_criteria_documents", "scheme_mix_criteria"
   add_foreign_key "scheme_mix_criteria_requirement_data", "requirement_data"

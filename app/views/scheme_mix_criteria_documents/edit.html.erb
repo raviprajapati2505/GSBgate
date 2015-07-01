@@ -48,15 +48,15 @@
                 <h5>Comments</h5>
             </div>
             <div class="ibox-content">
-                <% if @document.document_comments.empty? %>
+                <% if @scheme_mix_criteria_document.scheme_mix_criteria_document_comments.empty? %>
                     This document has no comments.
                 <% else %>
-                    <% @document.document_comments.each do |document_comment| %>
+                    <% @scheme_mix_criteria_document.scheme_mix_criteria_document_comments.each do |comment| %>
                         <div class="feed-element">
                             <div class="media-body">
-                                <strong><%= document_comment.user.email %></strong> commented on <strong><%= localize(document_comment.created_at) %></strong>
+                                <strong><%= comment.user.email %></strong> commented on <strong><%= localize(comment.created_at) %></strong>
                                 <div class="well">
-                                    <%= document_comment.body %>
+                                    <%= comment.body %>
                                 </div>
                             </div>
                         </div>

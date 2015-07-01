@@ -9,14 +9,14 @@ class DocumentsController < AuthenticatedController
         @document = Document.new(document_file: params[:document]['document_file'], user: current_user)
 
         if @document.save
-          # Create the comment
-          if params[:document]['comment'].present?
-            @document.document_comments.create!(body: params[:document]['comment'], user: current_user)
-          end
-
           # Create links with the scheme mix criteria
           params[:document]['scheme_mix_criteria'].each do |scheme_mix_criterion_id|
-            @document.scheme_mix_criteria_documents.create!(scheme_mix_criterion_id: scheme_mix_criterion_id)
+            if scheme_mix_criteria_document = @document.scheme_mix_criteria_documents.create!(scheme_mix_criterion_id: scheme_mix_criterion_id)
+              # Create the comment
+              if params[:document]['comment'].present?
+                scheme_mix_criteria_document.scheme_mix_criteria_document_comments.create!(body: params[:document]['comment'], user: current_user)
+              end
+            end
           end
 
           format.html { redirect_to :back, notice: 'The document was successfully uploaded.' }

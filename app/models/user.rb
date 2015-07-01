@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
 
   has_many :owned_projects, class_name: 'Project', inverse_of: :owner
   has_many :documents
+  has_many :scheme_mix_criteria_documents
   has_many :project_authorizations, dependent: :delete_all
   has_many :projects, through: :project_authorizations
   has_many :requirement_data, dependent: :nullify
