@@ -6,7 +6,7 @@ class SchemeMixCriteriaController < AuthenticatedController
   load_and_authorize_resource
 
   def edit
-    @page_title = @scheme_mix_criterion.scheme_criterion.code + ' ' + @scheme_mix_criterion.scheme_criterion.criterion.name
+    @page_title = @scheme_mix_criterion.scheme_criterion.code + ': ' + @scheme_mix_criterion.scheme_criterion.criterion.name
   end
 
   def update

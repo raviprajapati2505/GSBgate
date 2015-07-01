@@ -15,13 +15,13 @@ Rails.application.routes.draw do
       resources :scheme_mixes, only: [ :edit, :show ], path: 'schemes' do
         resources :scheme_mix_criteria, only: [:edit, :update], path: 'criteria', as: 'scheme_mix_criterion' do
           resources :scheme_mix_criterion_logs, only: [:index], path: 'status_logs', as: 'status_logs'
+          resources :scheme_mix_criteria_documents, only: [:edit], path: 'documentation', as: 'documentation'
         end
       end
     end
     resources :requirement_data, only: [:update], path: 'requirement', as: 'requirement_data'
-    resources :documents, only: [ :create, :show ], path: 'document'
   end
-  get 'projects/:project_id/documents/:id/download' => 'documents#download', as: 'download_project_document'
+  resources :documents, only: [ :create, :show ], path: 'document'
 
   resources :users
   get 'projects/:project_id/users/new' => 'users#new_member', as: 'new_project_user'

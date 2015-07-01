@@ -1,4 +1,4 @@
-<%= bootstrap_form_for([project, document], html: {class: 'dropzone'}) do |f| %>
+<%= bootstrap_form_for([document], html: {class: 'dropzone'}) do |f| %>
     <div class="fallback">
         <%= f.file_field :document_file, hide_label: true %>
         <%= f.primary 'Upload documentation' %>

@@ -1,0 +1,68 @@
+<div class="row">
+    <div class="col-md-5">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>Document details</h5>
+            </div>
+            <div class="ibox-content">
+                <table class="table table-bordered table-striped">
+                    <tbody>
+                    <tr>
+                        <th>File name</th>
+                        <td><%= @document.document_file.file.filename %></td>
+                    </tr>
+                    <tr>
+                        <th>File size</th>
+                        <td><%= number_to_human_size(@document.document_file.size) %></td>
+                    </tr>
+                    <tr>
+                        <th>Uploaded by</th>
+                        <td> <%= @document.user.email %></td>
+                    </tr>
+                    <tr>
+                        <th>Upload date</th>
+                        <td><%= localize(@document.created_at) %></td>
+                    </tr>
+                    <tr>
+                        <th>Status</th>
+                        <td>TODO</td>
+                    </tr>
+                    <tr>
+                        <th>Criteria</th>
+                        <td>
+                            <% @document.scheme_mix_criteria.each do |scheme_mix_criterion| %>
+                                <%= scheme_mix_criterion.scheme_criterion.code + ': ' + scheme_mix_criterion.scheme_criterion.criterion.name %><br />
+                            <% end %>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="hr-line-dashed"></div>
+                <%= link_to('Download document', @document, class: 'btn btn-primary') %>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-7">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>Comments</h5>
+            </div>
+            <div class="ibox-content">
+                <% if @document.document_comments.empty? %>
+                    This document has no comments.
+                <% else %>
+                    <% @document.document_comments.each do |document_comment| %>
+                        <div class="feed-element">
+                            <div class="media-body">
+                                <strong><%= document_comment.user.email %></strong> commented on <strong><%= localize(document_comment.created_at) %></strong>
+                                <div class="well">
+                                    <%= document_comment.body %>
+                                </div>
+                            </div>
+                        </div>
+                    <% end %>
+                <% end %>
+            </div>
+        </div>
+    </div>
+</div>

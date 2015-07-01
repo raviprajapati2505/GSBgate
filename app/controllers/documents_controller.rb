@@ -1,6 +1,5 @@
 class DocumentsController < AuthenticatedController
   before_action :set_document, only: [:show, :download]
-  before_action :set_project
   load_and_authorize_resource
 
   def create
@@ -31,20 +30,12 @@ class DocumentsController < AuthenticatedController
   end
 
   def show
-    @page_title = (ActionController::Base.helpers.image_tag(Icon.for_filename(@document.document_file.file.filename)) + ' Document ' + @document.document_file.file.filename).html_safe
-  end
-
-  def download
     send_file @document.document_file.file.path
   end
 
   private
   def set_document
     @document = Document.find(params[:id])
-  end
-
-  def set_project
-    @project = Project.find(params[:project_id])
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
