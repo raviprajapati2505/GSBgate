@@ -34,6 +34,10 @@ class Ability
     if user.system_admin?
       can :manage, :all
     elsif user.user?
+      # User controller
+      can :new_member, User, owner_id: user.id
+      can :new_member, User, project_authorizations: {user_id: user.id, role: ['project_system_administrator', ProjectAuthorization.roles[:project_system_administrator]]}
+      can :new_member, User, project_authorizations: {user_id: user.id, role: ['cgp_project_manager', ProjectAuthorization.roles[:cgp_project_manager]]}
       # Project controller
       can :manage, Project, owner_id: user.id
       # Waiting for https://github.com/CanCanCommunity/cancancan/pull/196
