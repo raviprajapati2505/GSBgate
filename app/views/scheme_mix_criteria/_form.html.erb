@@ -5,18 +5,6 @@
                 <h5>Criterion details</h5>
             </div>
             <div class="ibox-content">
-                <div class="row">
-                    <div class="col-md-12">
-                        ...
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="ibox">
-            <div class="ibox-title">
-                <h5>Score</h5>
-            </div>
-            <div class="ibox-content">
                 <%= bootstrap_form_for([@project, @certification_path, @scheme_mix, @scheme_mix_criterion], url: project_certification_path_scheme_mix_scheme_mix_criterion_path) do |f| %>
                     <% if @scheme_mix_criterion.errors.any? %>
                         <div id="error_explanation">
