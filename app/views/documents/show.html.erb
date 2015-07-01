@@ -27,6 +27,14 @@
                     <th>Status</th>
                     <td>TODO</td>
                 </tr>
+                <tr>
+                    <th>Criteria</th>
+                    <td>
+                        <% @document.scheme_mix_criteria.each do |scheme_mix_criterion| %>
+                            <%= scheme_mix_criterion.scheme_criterion.code + ': ' + scheme_mix_criterion.scheme_criterion.criterion.name %><br />
+                        <% end %>
+                    </td>
+                </tr>
                 </tbody>
             </table>
             <div class="hr-line-dashed"></div>
