@@ -37,6 +37,14 @@ class SchemeMixCriteriaController < AuthenticatedController
     end
   end
 
+  def assign_certifier
+    if params.has_key?(:user_id)
+      @scheme_mix_criterion.certifier = User.find(params[:user_id])
+      @scheme_mix_criterion.save!
+      redirect_to edit_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), notice: 'Criterion was successfully updated.'
+    end
+  end
+
   private
   def set_project
     @project = Project.find(params[:project_id])

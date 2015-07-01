@@ -15,7 +15,7 @@ en:
     index:
       action_team_title: "Team"
     show:
-      btn_add_certifier_team_member: "Add certifier manager"
+      btn_add_certifier_team_member: "Add certifier"
       btn_add_project_team_member: "Add team member"
       tooltip_due_date: "Due date passed"
       tooltip_requirement_required: "Requirement not provided yet"

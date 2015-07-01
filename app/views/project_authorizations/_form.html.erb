@@ -9,7 +9,7 @@
                     <!--= f.select :user_id, User.without_permissions_for_project(@project).map { |k| [k.email, k.id]}, {}, { class: 'chosen-select'} %-->
                     <%= f.hidden_field :user_id, { class: 'select2-ajax', data: {project_id: @project.id } } %>
                     <% if @show_certifiers %>
-                    <%= f.select :role, ProjectAuthorization.roles.keys[5..5].map { |k| [k.humanize, k] } %>
+                    <%= f.select :role, ProjectAuthorization.roles.keys[4..5].map { |k| [k.humanize, k] } %>
                     <% else %>
                     <%= f.select :role, ProjectAuthorization.roles.keys[0..3].map { |k| [k.humanize, k] } %>
                     <% end %>

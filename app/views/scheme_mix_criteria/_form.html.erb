@@ -61,7 +61,15 @@
                     <h5>Certifier</h5>
                 </div>
                 <div class="ibox-content">
-                    <p>TODO : provide form to assign certifier to this criterion</p>
+                    <%= bootstrap_form_tag url: assign_certifier_to_criteria_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), method: 'put' do |f| %>
+                        <% users = User.authorized_for_project(@project).with_certifier_project_role %>
+                        <% if @scheme_mix_criterion.certifier.nil? %>
+                            <%= f.select :user_id, options_for_select(users.map { |k| [k.email, k.id]}), {label: 'Responsibility'} %>
+                        <% else %>
+                            <%= f.select :user_id, options_for_select(users.map { |k| [k.email, k.id]}, @scheme_mix_criterion.certifier.id), {label: 'Responsibility'} %>
+                        <% end %>
+                        <%= f.primary 'Save' %>
+                    <% end %>
                 </div>
             </div>
         <% end %>

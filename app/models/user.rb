@@ -32,6 +32,14 @@ class User < ActiveRecord::Base
     joins(:project_authorizations).where(project_authorizations: {project_id: project.id})
   }
 
+  scope :with_assessor_project_role, -> {
+    where('project_authorizations.role in (0,1,2,3)')
+  }
+
+  scope :with_certifier_project_role, -> {
+    where('project_authorizations.role in (4,5)')
+  }
+
   before_validation :assign_default_role, on: :create
 
   validates :role, inclusion: User.roles.keys

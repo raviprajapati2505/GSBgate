@@ -14,11 +14,11 @@
         <div class="panel-collapse collapse" id="requirement-<%= requirement_datum.id %>" aria-expanded="false" style="height: 0px;">
             <div class="panel-body">
                 <%= bootstrap_form_tag url: project_requirement_datum_path(@project.id, requirement_datum.id), method: "put", remote: true, :html => { :multipart => true } do |f| %>
-                    <% users = User.authorized_for_project(@project) %>
+                    <% users = User.authorized_for_project(@project).with_assessor_project_role %>
                     <% if (users.count > 0) && (can? :read, @project.project_authorizations.first) %>
                         <% if requirement_datum.user.nil? %>
                             <% if (can? :manage, @project.project_authorizations.first) %>
-                                <%= f.select :user_id, options_for_select(users.map { |k| [k.email, k.id]}) %>
+                                <%= f.select :user_id, options_for_select(users.map { |k| [k.email, k.id]}), {label: 'Responsibility'} %>
                             <% end %>
                         <% else %>
                             <%= f.select :user_id, options_for_select(users.map { |k| [k.email, k.id]}, requirement_datum.user.id), {label: 'Responsibility'}, disabled: !(can? :manage, @project.project_authorizations.first) %>

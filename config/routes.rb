@@ -14,6 +14,7 @@ Rails.application.routes.draw do
     resources :requirement_data, only: [:update], path: 'requirement', as: 'requirement_data'
   end
   resources :documents, only: [ :create, :show ], path: 'document'
+  put 'projects/:project_id/certificates/:certification_path_id/schemes/:scheme_mix_id/criteria/:id/assign' => 'scheme_mix_criteria#assign_certifier', as: 'assign_certifier_to_criteria'
 
   resources :users
   get 'projects/:project_id/users/new' => 'users#new_member', as: 'new_project_user'
