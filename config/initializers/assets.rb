@@ -11,3 +11,4 @@ Rails.application.config.assets.version = '1.0'
 Rails.application.config.assets.precompile += %w( maps/_gmaps.js )
 Rails.application.config.assets.precompile += %w( maps/project.js )
 Rails.application.config.assets.precompile += %w( fileicons/* )
+Rails.application.config.assets.precompile += %w( select_user.js )

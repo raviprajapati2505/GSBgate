@@ -30,7 +30,6 @@
  *= require bootstrap-datepicker
  *= require dropzone
  *= require toastr
- *= require select_user
  *= require js-routes
  */
 
