@@ -1,12 +1,4 @@
 Rails.application.routes.draw do
-  get 'errors/not_found'
-
-  get 'errors/unprocessable_entity'
-
-  get 'errors/internal_server_error'
-
-  get 'errors/forbidden'
-
   resources :certification_paths
   resources :projects, except: [ :destroy ] do
     resources :project_authorizations, only: [ :new, :edit, :update, :destroy ], path: 'authorizations', as: 'authorization'
