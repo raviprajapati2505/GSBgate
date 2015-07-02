@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150701121416) do
+ActiveRecord::Schema.define(version: 20150702132948) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -184,6 +184,7 @@ ActiveRecord::Schema.define(version: 20150701121416) do
     t.integer  "status"
     t.integer  "achieved_score"
     t.integer  "certifier_id"
+    t.date     "due_date"
   end
 
   add_index "scheme_mix_criteria", ["certifier_id"], name: "index_scheme_mix_criteria_on_certifier_id", using: :btree
