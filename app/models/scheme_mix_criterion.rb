@@ -10,7 +10,7 @@ class SchemeMixCriterion < ActiveRecord::Base
 
   enum status: [ :in_progress, :complete ]
 
-  before_validation :assign_default_status, on: :create
+  after_initialize :init
 
   validates :status, inclusion: SchemeMixCriterion.statuses.keys
 
@@ -54,7 +54,8 @@ class SchemeMixCriterion < ActiveRecord::Base
   end
 
   private
-  def assign_default_status
-    self.status = :in_progress if self.status.nil?
+
+  def init
+    self.status ||= :in_progress
   end
 end
