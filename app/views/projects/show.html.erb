@@ -192,7 +192,7 @@
                             <% project_authorization = user.project_authorizations.for_project(@project).first %>
                             <td><%= user.email %></td>
                             <td><%= project_authorization.role.humanize %></td>
-                            <td><%= user.requirement_data.for_project(@project).provided.count %>/<%= user.requirement_data.for_project(@project).count %></td>
+                            <td><%= user.requirement_data.for_project(@project).completed.count %>/<%= user.requirement_data.for_project(@project).count %></td>
                             <td>
                             <% if can? :edit, project_authorization %>
                                 <%= link_to raw('<i title="Edit authorization" class="fa fa-lg fa-edit" style="padding-right: 10px;"></i>'),  edit_project_authorization_path(@project, project_authorization) %>

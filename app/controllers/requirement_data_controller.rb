@@ -32,6 +32,7 @@ class RequirementDataController < AuthenticatedController
 
     @requirement_datum.user = User.find(params[:user_id]) if params.has_key?(:user_id)
     @requirement_datum.due_date = Date.strptime(params[:due_date], t('date.formats.short')) if (params.has_key?(:due_date) && params[:due_date] != '')
+    @requirement_datum.status = params[:status]
     @requirement_datum.save!
 
     @flash = 'Requirement was successfully updated.'

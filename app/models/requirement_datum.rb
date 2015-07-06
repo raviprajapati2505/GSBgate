@@ -20,6 +20,14 @@ class RequirementDatum < ActiveRecord::Base
     where(status: 1)
   }
 
+  scope :not_required, -> {
+    where(status: 2)
+  }
+
+  scope :completed, -> {
+    provided | not_required
+  }
+
   scope :assigned_to_user, ->(user) {
     where(user: user)
   }

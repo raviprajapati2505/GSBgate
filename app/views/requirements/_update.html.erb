@@ -25,6 +25,7 @@
                         <% end %>
                     <% end %>
                     <%= f.text_field :due_date, value: ((l requirement_datum.due_date, format: :short) if !requirement_datum.due_date.nil?), prepend: '<i class="fa fa-calendar"></i>'.html_safe, data: {provide: 'datepicker'}, disabled: !(can? :manage, @project.project_authorizations.first) %>
+                    <div class="hr-line-dashed"></div>
                     <% if requirement_datum.calculator_datum.present? %>
                         <% calculator_template = requirement_datum.calculator_datum.calculator.name.constantize.name.demodulize.downcase %>
                         <div>
@@ -35,6 +36,7 @@
                             <% end %>
                         </div>
                     <% end %>
+                    <%= f.select :status, RequirementDatum.statuses.keys.map { |k| [k.humanize, k]} %>
 
                     <div class="row">
                         <div class="col-md-12">
