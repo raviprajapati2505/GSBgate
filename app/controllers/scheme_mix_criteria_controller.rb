@@ -9,6 +9,10 @@ class SchemeMixCriteriaController < AuthenticatedController
     @page_title = @scheme_mix_criterion.scheme_criterion.code + ': ' + @scheme_mix_criterion.scheme_criterion.criterion.name
   end
 
+  def show
+    redirect_to edit_project_certification_path_scheme_mix_scheme_mix_criterion_path, status: 301
+  end
+
   def update
     respond_to do |format|
       # if not attempting criterion

@@ -11,6 +11,10 @@ class SchemeMixCriteriaDocumentsController < AuthenticatedController
     @page_title = (ActionController::Base.helpers.image_tag(Icon.for_filename(@document.document_file.file.filename)) + ' Document ' + @document.document_file.file.filename).html_safe
   end
 
+  def show
+    redirect_to edit_project_certification_path_scheme_mix_scheme_mix_criterion_documentation_path, status: 301
+  end
+
   private
   def set_project
     @project = Project.find(params[:project_id])

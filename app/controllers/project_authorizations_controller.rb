@@ -29,6 +29,10 @@ class ProjectAuthorizationsController < AuthenticatedController
     end
   end
 
+  def show
+    redirect_to edit_project_authorization_path, status: 301
+  end
+
   def update
     if @project_authorization.update(authorizations_params)
       flash[:notice] = 'Authorization was successfully updated.'
