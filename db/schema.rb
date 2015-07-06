@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150702132948) do
+ActiveRecord::Schema.define(version: 20150706134203) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -207,6 +207,7 @@ ActiveRecord::Schema.define(version: 20150702132948) do
     t.integer  "document_id"
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
+    t.integer  "status"
   end
 
   add_index "scheme_mix_criteria_documents", ["document_id"], name: "index_scheme_mix_criteria_documents_on_document_id", using: :btree
