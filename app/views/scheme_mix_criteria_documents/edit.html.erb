@@ -62,7 +62,10 @@
                         </div>
                     <% end %>
                 <% end %>
+                <div class="hr-line-dashed"></div>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createSchemeMixCriteriaDocumentCommentModal">Add comment</button>
             </div>
         </div>
     </div>
 </div>
+<%= render 'scheme_mix_criteria_document_comments/modal', project: @project, certification_path: @certification_path, scheme_mix: @scheme_mix, scheme_mix_criterion: @scheme_mix_criterion, scheme_mix_criteria_document: @scheme_mix_criteria_document, scheme_mix_criteria_document_comment: SchemeMixCriteriaDocumentComment.new %>

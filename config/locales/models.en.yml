@@ -5,6 +5,8 @@ en:
         code: "Project ID"
         name: "Project name"
         carpark_area: "Car park area"
+      scheme_mix_criteria_document_comment:
+        body: "Comment"
     help:
       scheme_mix_criterion:
         status: "Mark as Complete to indicate if you have completed this criterion."

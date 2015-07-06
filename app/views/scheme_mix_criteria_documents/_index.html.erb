@@ -15,13 +15,13 @@
         <% scheme_mix_criteria_documents.each do |smcd| %>
             <tr>
                 <td data-order="<%= smcd.document.document_file.file.filename %>" data-search="<%= smcd.document.document_file.file.filename %>">
-                    <%= image_tag(Icon.for_filename(smcd.document.document_file.file.filename), alt: smcd.document.document_file.content_type, title: smcd.document.document_file.content_type) + ' ' + link_to(smcd.document.document_file.file.filename, edit_project_certification_path_scheme_mix_scheme_mix_criterion_documentation_path(smcd.scheme_mix_criterion.scheme_mix.certification_path.project, smcd.scheme_mix_criterion.scheme_mix.certification_path, smcd.scheme_mix_criterion.scheme_mix, smcd.scheme_mix_criterion, smcd), title: 'Click to view the document details') %>
+                    <%= image_tag(Icon.for_filename(smcd.document.document_file.file.filename), alt: smcd.document.document_file.content_type, title: smcd.document.document_file.content_type) + ' ' + link_to(smcd.document.document_file.file.filename, edit_project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_path(smcd.scheme_mix_criterion.scheme_mix.certification_path.project, smcd.scheme_mix_criterion.scheme_mix.certification_path, smcd.scheme_mix_criterion.scheme_mix, smcd.scheme_mix_criterion, smcd), title: 'Click to view the document details') %>
                 </td>
                 <td><%= smcd.document.user.email %></td>
                 <td><%= localize(smcd.document.created_at) %></td>
                 <td>TODO</td>
                 <td>
-                    <%= link_to raw('<i title="Document details" class="fa fa-lg fa-search" style="padding-right: 10px;"></i>'), edit_project_certification_path_scheme_mix_scheme_mix_criterion_documentation_path(smcd.scheme_mix_criterion.scheme_mix.certification_path.project, smcd.scheme_mix_criterion.scheme_mix.certification_path, smcd.scheme_mix_criterion.scheme_mix, smcd.scheme_mix_criterion, smcd) %>
+                    <%= link_to raw('<i title="Document details" class="fa fa-lg fa-search" style="padding-right: 10px;"></i>'), edit_project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_path(smcd.scheme_mix_criterion.scheme_mix.certification_path.project, smcd.scheme_mix_criterion.scheme_mix.certification_path, smcd.scheme_mix_criterion.scheme_mix, smcd.scheme_mix_criterion, smcd) %>
                     <%= link_to raw('<i title="Download document" class="fa fa-lg fa-download" style="padding-right: 10px;"></i>'), smcd.document %>
                 </td>
             </tr>

@@ -22,11 +22,11 @@
 en:
   date:
     formats:
-      default: '%d %b %Y'
+      default: '%e %b %Y'
       short: '%d/%m/%Y'
   time:
     formats:
-      default: '%d %b %Y %H:%M %Z'
+      default: '%e %b %Y %H:%M %Z'
   errors:
       messages:
         wrong_size: "The file is the wrong size (should be %{file_size})"

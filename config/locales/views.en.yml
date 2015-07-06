@@ -10,7 +10,7 @@ en:
       btn_cancel: "Back"
       btn_close: "Close"
       btn_save: "Update"
-      modal_title: "Update Status"
+      modal_title: "Update status"
   projects:
     index:
       action_team_title: "Team"

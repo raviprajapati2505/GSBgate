@@ -25,7 +25,7 @@
         <% end %>
 
         <% unless @scheme_mix_criteria_document.nil? or @scheme_mix_criteria_document.id.nil? %>
-            <li class="active"><%= link_to 'Document ' + @scheme_mix_criteria_document.document.document_file.file.filename, edit_project_certification_path_scheme_mix_scheme_mix_criterion_documentation_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, @scheme_mix_criteria_document) %></li>
+            <li class="active"><%= link_to 'Document ' + @scheme_mix_criteria_document.document.document_file.file.filename, edit_project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, @scheme_mix_criteria_document) %></li>
         <% end %>
 
         <% unless is_active_controller('project_authorizations').nil? %>
