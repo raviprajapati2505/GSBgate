@@ -36,7 +36,7 @@
                             <% end %>
                         </div>
                     <% end %>
-                    <%= f.select :status, RequirementDatum.statuses.keys.map { |k| [k.humanize, k]} %>
+                    <%= f.select :status, options_for_select(RequirementDatum.statuses.keys.map { |k| [k.humanize, k]}, requirement_datum.status) %>
 
                     <div class="row">
                         <div class="col-md-12">

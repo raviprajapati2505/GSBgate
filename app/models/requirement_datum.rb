@@ -48,6 +48,11 @@ class RequirementDatum < ActiveRecord::Base
     where(user: nil)
   }
 
+  scope :targeted, -> {
+    # includes(:scheme_mix_criteria).where.not(scheme_mix_criteria: {targeted_score: -1, status: 1})
+    includes(:scheme_mix_criteria).where.not('scheme_mix_criteria.targeted_score = -1 and scheme_mix_criteria.status = 1')
+  }
+
   private
   def assign_default_status
     self.status = :required if self.status.nil?
