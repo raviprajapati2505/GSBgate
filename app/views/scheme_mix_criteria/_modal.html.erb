@@ -9,7 +9,11 @@
                 <h4 class="modal-title"><%= t('.modal_title') %></h4>
             </div>
             <div class="modal-body">
-                <%= f.select :status, SchemeMixCriterion.statuses.keys.map { |k| [k.humanize, k]} %>
+                <% if @scheme_mix_criterion.achieved_score.nil? %>
+                    <%= f.select :status, SchemeMixCriterion.statuses.keys[0..1].map { |k| [k.humanize, k]} %>
+                <% else %>
+                    <%= f.select :status, SchemeMixCriterion.statuses.keys.map { |k| [k.humanize, k]} %>
+                <% end %>
                 <%= f.fields_for :scheme_mix_criterion_logs do |l| %>
                     <%= l.text_area :comment %>
                 <% end %>

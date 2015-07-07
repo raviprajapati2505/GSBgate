@@ -8,7 +8,7 @@ class SchemeMixCriterion < ActiveRecord::Base
   belongs_to :scheme_criterion
   belongs_to :certifier, class_name: 'User', inverse_of: :scheme_mix_criteria
 
-  enum status: [ :in_progress, :complete ]
+  enum status: [ :in_progress, :complete, :approved, :resubmit ]
 
   after_initialize :init
 

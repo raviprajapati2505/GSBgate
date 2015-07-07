@@ -29,7 +29,7 @@
                         </div>
                         <div class="col-md-3">
                             <% if can? :manage, @scheme_mix_criterion %>
-                                <%= f.select :achieved_score, @scheme_mix_criterion.scheme_criterion.scores.map { |k| [k.score, k.score]}, {include_blank: 'Unclassified'}, disabled: true %>
+                                <%= f.select :achieved_score, @scheme_mix_criterion.scheme_criterion.scores.map { |k| [k.score, k.score]}, {include_blank: 'Unclassified'} %>
                             <% else %>
                                 <% if !@scheme_mix_criterion.certifier.nil? && @scheme_mix_criterion.certifier.id == current_user.id %>
                                     <%= f.select :achieved_score, @scheme_mix_criterion.scheme_criterion.scores.map { |k| [k.score, k.score]}, {include_blank: 'Unclassified'} %>
