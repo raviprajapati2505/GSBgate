@@ -25,7 +25,7 @@
                     </tr>
                     <tr>
                         <th>Status</th>
-                        <td>TODO</td>
+                        <td><%= @scheme_mix_criteria_document.status.humanize %></td>
                     </tr>
                     <tr>
                         <th>Criteria</th>
@@ -39,6 +39,7 @@
                 </table>
                 <div class="hr-line-dashed"></div>
                 <%= link_to('Download document', @document, class: 'btn btn-primary') %>
+                <button type="button" class="btn btn-white" data-toggle="modal" data-target="#updateSchemeMixCriteriaDocumentStatusModal">Update status</button>
             </div>
         </div>
     </div>
@@ -68,4 +69,5 @@
         </div>
     </div>
 </div>
+<%= render 'scheme_mix_criteria_documents/modal', project: @project, certification_path: @certification_path, scheme_mix: @scheme_mix, scheme_mix_criterion: @scheme_mix_criterion, scheme_mix_criteria_document: @scheme_mix_criteria_document %>
 <%= render 'scheme_mix_criteria_document_comments/modal', project: @project, certification_path: @certification_path, scheme_mix: @scheme_mix, scheme_mix_criterion: @scheme_mix_criterion, scheme_mix_criteria_document: @scheme_mix_criteria_document, scheme_mix_criteria_document_comment: SchemeMixCriteriaDocumentComment.new %>

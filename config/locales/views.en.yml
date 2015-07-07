@@ -52,6 +52,9 @@ en:
       modal:
         btn_cancel: "Back"
         btn_close: "Close"
+  scheme_mix_criteria_documents:
+      modal:
+        info_text_review: "Review this document for compliance against this criterion. Set the status to approved if the document is compliant with the requirements."
   users:
     index:
       action_edit_title: "Edit"

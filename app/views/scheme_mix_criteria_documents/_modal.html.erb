@@ -1,0 +1,24 @@
+<div class="modal fade" id="updateSchemeMixCriteriaDocumentStatusModal">
+    <div class="modal-dialog">
+        <%= bootstrap_form_for([project, certification_path, scheme_mix, scheme_mix_criterion, scheme_mix_criteria_document]) do |f| %>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" title="Close" data-toggle="tooltip">
+                        <span>&times;</span>
+                    </button>
+                    <h4 class="modal-title">Update status</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-info" role="alert">
+                        <i class="fa fa-info-circle"></i>&nbsp;&nbsp;<%=t '.info_text_review' %>
+                    </div>
+                    <%= f.select :status, SchemeMixCriteriaDocument.statuses.keys.map { |k| [k.humanize, k]} %>
+                </div>
+                <div class="modal-footer">
+                    <%= f.primary 'Update' %>
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Back</button>
+                </div>
+            </div>
+        <% end %>
+    </div>
+</div>
