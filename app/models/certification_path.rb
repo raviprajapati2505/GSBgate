@@ -6,7 +6,7 @@ class CertificationPath < ActiveRecord::Base
 
   accepts_nested_attributes_for :certificate
 
-  enum status: [ :registered, :preassessment ]
+  enum status: [ :registered, :preassessment, :preliminary ]
 
   def has_fixed_scheme?
     certificate.schemes.count == 1

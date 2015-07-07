@@ -9,7 +9,11 @@
                     <h4 class="modal-title"><%= t('.modal_title') %></h4>
                 </div>
                 <div class="modal-body">
-                    <%= f.select :status, CertificationPath.statuses.keys.map { |k| [k.humanize, k]} %>
+                    <%= f.form_group :status do %>
+                        <% CertificationPath.statuses.keys.each do |k| %>
+                            <%= f.radio_button :status, k, label: k.humanize %>
+                        <% end %>
+                    <% end %>
                 </div>
                 <div class="modal-footer">
                     <%= f.primary t('.btn_save') %>
