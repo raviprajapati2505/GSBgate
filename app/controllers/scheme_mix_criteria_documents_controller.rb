@@ -3,9 +3,23 @@ class SchemeMixCriteriaDocumentsController < AuthenticatedController
   before_action :set_certification_path
   before_action :set_scheme_mix
   before_action :set_scheme_mix_criterion
-  before_action :set_scheme_mix_criteria_document
-  before_action :set_document
+  before_action :set_scheme_mix_criteria_document, only: [:edit, :update, :show, :destroy]
+  before_action :set_document, only: [:edit, :update, :show, :destroy]
   load_and_authorize_resource
+
+  def create
+    if SchemeMixCriteriaDocument.exists?(scheme_mix_criteria_document_params)
+      redirect_to :back, alert: 'This criterion is already linked to the document.'
+    else
+      scheme_mix_criteria_document = SchemeMixCriteriaDocument.new(scheme_mix_criteria_document_params)
+
+      if scheme_mix_criteria_document.save!
+        redirect_to :back, notice: 'The criterion was successfully linked to this document.'
+      else
+        redirect_to :back, alert: 'An error occurred when linking the criterion to this document, please try again later.'
+      end
+    end
+  end
 
   def edit
     @page_title = (ActionController::Base.helpers.image_tag(Icon.for_filename(@document.document_file.file.filename)) + ' Document ' + @document.document_file.file.filename).html_safe
@@ -30,6 +44,11 @@ class SchemeMixCriteriaDocumentsController < AuthenticatedController
     redirect_to edit_project_certification_path_scheme_mix_scheme_mix_criterion_documentation_path, status: 301
   end
 
+  def destroy
+    @scheme_mix_criteria_document.destroy!
+    redirect_to :back, notice: 'The criterion link was successfully removed from the document.'
+  end
+
   private
   def set_project
     @project = Project.find(params[:project_id])
@@ -48,15 +67,15 @@ class SchemeMixCriteriaDocumentsController < AuthenticatedController
   end
 
   def set_scheme_mix_criteria_document
-    @set_scheme_mix_criteria_document = SchemeMixCriteriaDocument.find(params[:id])
+    @scheme_mix_criteria_document = SchemeMixCriteriaDocument.find(params[:id])
   end
 
   def set_document
-    @document = @set_scheme_mix_criteria_document.document
+    @document = @scheme_mix_criteria_document.document
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def scheme_mix_criteria_document_params
-    params.require(:scheme_mix_criteria_document).permit(:status)
+    params.require(:scheme_mix_criteria_document).permit(:status, :scheme_mix_criterion_id, :document_id)
   end
 end

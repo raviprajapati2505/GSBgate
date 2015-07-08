@@ -3,7 +3,7 @@ class SchemeMixCriteriaDocument < ActiveRecord::Base
 
   belongs_to :document
   belongs_to :scheme_mix_criterion
-  has_many :scheme_mix_criteria_document_comments
+  has_many :scheme_mix_criteria_document_comments, :dependent => :delete_all
 
   after_initialize :init
 
