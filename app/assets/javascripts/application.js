@@ -59,7 +59,10 @@ $(function () {
     $('[data-toggle="tooltip"]').tooltip();
 
     // iCheck all checkboxes & radio buttons
-    $('input').iCheck();
+    $('input').iCheck({
+        checkboxClass: 'icheckbox_square-green',
+        radioClass: 'iradio_square-green'
+    });
 
     // Datepicker
     $('input[data-provide="datepicker"]').datepicker({
