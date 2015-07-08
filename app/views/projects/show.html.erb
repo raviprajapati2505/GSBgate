@@ -147,7 +147,7 @@
                             <% project_authorization = certifier.project_authorizations.for_project(@project).first %>
                             <td><%= certifier.email %></td>
                             <td><%= project_authorization.role.humanize %></td>
-                            <td>?/<%= certifier.scheme_mix_criteria.for_project(@project).count %></td>
+                            <td><%= certifier.scheme_mix_criteria.for_project(@project).reviewed.count %>/<%= certifier.scheme_mix_criteria.for_project(@project).count %></td>
                             <td>
                                 <!--= link_to raw('<i title="Edit authorization" class="fa fa-lg fa-edit" style="padding-right: 10px;"></i>'),  edit_project_authorization_path(@project, project_authorization, query: 'certifiers') %-->
                                 <%= link_to raw('<i title="Delete authorization" class="fa fa-lg fa-trash" style="padding-right: 10px;"></i>'), project_authorization_path(@project, project_authorization), method: :delete, data: {confirm: 'Are you sure to remove certifier manager ?'} %>

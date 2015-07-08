@@ -16,6 +16,10 @@ class SchemeMixCriterion < ActiveRecord::Base
 
   validates :targeted_score, presence: true
 
+  scope :reviewed, -> {
+    where(status: [2, 3])
+  }
+
   scope :order_by_code, -> {
     joins(:scheme_criterion)
     .reorder('scheme_criteria.code')
