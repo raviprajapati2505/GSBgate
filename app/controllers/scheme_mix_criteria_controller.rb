@@ -14,11 +14,30 @@ class SchemeMixCriteriaController < AuthenticatedController
   end
 
   def update
-    respond_to do |format|
-      # if not attempting criterion
-      if @scheme_mix_criterion.targeted_score == -1 && params[:scheme_mix_criterion][:status] == :complete.to_s
-        params[:scheme_mix_criterion][:submitted_score] = -1
+      if scheme_mix_criterion_params[:status] == :approved.to_s || scheme_mix_criterion_params[:status] == :resubmit.to_s
+        # if achieved score is not yet provided only the status can only be 'in progress' or 'complete'
+        if @scheme_mix_criterion.achieved_score.nil?
+          flash[:alert] = 'You first have to provide achieved score'
+          render :edit
+          return
+        end
+      elsif scheme_mix_criterion_params[:status] == :complete.to_s
+        # TODO All linked documents must be 'approved' (according the assessor manual, but what about rejected and superseded documents) ?
+        # and all requirements must be marked as 'provided' or 'not required'
+        @scheme_mix_criterion.requirement_data.each do |requirement_datum|
+          if requirement_datum.status == :required.to_s
+            flash[:alert] = 'All requirements should first be approved or set to \'not required\''
+            render :edit
+            return
+          end
+        end
+
+        # if not attempting criterion
+        if @scheme_mix_criterion.targeted_score == -1
+          params[:scheme_mix_criterion][:submitted_score] = -1
+        end
       end
+
       old_status = @scheme_mix_criterion[:status]
       if @scheme_mix_criterion.update(scheme_mix_criterion_params)
         # Save justification comments
@@ -32,13 +51,10 @@ class SchemeMixCriteriaController < AuthenticatedController
           end
         end
 
-        format.html { redirect_to edit_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), notice: 'Criterion was successfully updated.' }
-        format.json { render json: @scheme_mix_criterion, status: :ok }
+        redirect_to edit_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), notice: 'Criterion was successfully updated.'
       else
-        format.html { render :edit }
-        format.json { render json: @scheme_mix_criterion.errors, status: :unprocessable_entity }
+        render :edit
       end
-    end
   end
 
   def assign_certifier
