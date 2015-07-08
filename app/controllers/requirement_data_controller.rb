@@ -35,7 +35,9 @@ class RequirementDataController < AuthenticatedController
     @requirement_datum.status = params[:status]
     @requirement_datum.save!
 
-    @flash = 'Requirement was successfully updated.'
+    @project = Project.find(params[:project_id])
+
+    flash.now[:notice] = 'Requirement was successfully updated.'
 
     render 'requirements/update'
   end

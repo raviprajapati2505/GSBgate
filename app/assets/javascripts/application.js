@@ -94,12 +94,24 @@ $(function () {
         $(this).prev().find('i.fa').toggleClass('fa-caret-square-o-right').toggleClass('fa-caret-square-o-down');
     });
 
-    // Show flash messages in a notification
-    $('.alert.alert-success.hidden').each(function() {
-       toastr.success($(this).html());
+    // Process flash messages
+    flash_message();
+
+    // Process flash messages after AJAX response
+    $( document ).ajaxComplete(function() {
+        flash_message();
+    });
+});
+
+// Show flash messages in TOASTR popup
+function flash_message() {
+    $('.flash.flash-success.hidden').each(function() {
+        toastr.success($(this).html());
+        $(this).remove();
     });
 
-    $('.alert.alert-danger.hidden').each(function() {
+    $('.flash.flash-danger.hidden').each(function() {
         toastr.error($(this).html());
-    })
-});
+        $(this).remove();
+    });
+}

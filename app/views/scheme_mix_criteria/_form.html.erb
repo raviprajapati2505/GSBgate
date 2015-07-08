@@ -82,7 +82,11 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div id="accordion" class="panel-group">
-                            <%= render 'requirements/update', scheme_mix_criterion: @scheme_mix_criterion %>
+                            <% @scheme_mix_criterion.requirement_data.each_with_index do |requirement_datum| %>
+                                <div id="requirement-<%= requirement_datum.id %>">
+                                <%= render 'requirements/update', requirement_datum: requirement_datum %>
+                                </div>
+                            <% end %>
                         </div>
                     </div>
                 </div>

@@ -1,53 +1,51 @@
-<% @scheme_mix_criterion.requirement_data.each_with_index do |requirement_datum| %>
-    <div class="panel panel-default">
-        <div class="panel-heading <%= 'assigned-requirement' if requirement_datum.user == current_user %>">
-            <h4 class="panel-title">
-                <a href="#requirement-<%= requirement_datum.id %>" data-parent="#accordion" data-toggle="collapse" class="collapsed" aria-expanded="false">
-                    <% if requirement_datum.required? %><i class="fa fa-lg fa-square-o" title="<%= t('.tooltip_requirement_required') %>" data-toggle="tooltip"></i>
-                    <% elsif requirement_datum.provided? %><i class="fa fa-lg fa-check-square-o" title="<%= t('.tooltip_requirement_provided') %>" data-toggle="tooltip"></i>
-                    <% else %><i class="fa fa-lg fa-square" title="<%= t('.tooltip_requirement_not_required') %>" data-toggle="tooltip"></i><% end %>
-                    &nbsp;&nbsp;<%= requirement_datum.requirement.label %>
-                    <% if requirement_datum.required? && !requirement_datum.due_date.nil? && Date.today > requirement_datum.due_date %>&nbsp;<i class="fa fa-clock-o" title="<%= t('.tooltip_due_date') %>" data-toggle="tooltip"></i><% end %>
-                </a>
-            </h4>
-        </div>
-        <div class="panel-collapse collapse" id="requirement-<%= requirement_datum.id %>" aria-expanded="false" style="height: 0px;">
-            <div class="panel-body">
-                <%= bootstrap_form_tag url: project_requirement_datum_path(@project.id, requirement_datum.id), method: "put", remote: true, :html => { :multipart => true } do |f| %>
-                    <% users = User.authorized_for_project(@project).with_assessor_project_role %>
-                    <% if (users.count > 0) && (can? :read, @project.project_authorizations.first) %>
-                        <% if requirement_datum.user.nil? %>
-                            <% if (can? :manage, @project.project_authorizations.first) %>
-                                <%= f.select :user_id, options_for_select(users.map { |k| [k.email, k.id]}), {label: 'Responsibility'} %>
-                            <% end %>
-                        <% else %>
-                            <%= f.select :user_id, options_for_select(users.map { |k| [k.email, k.id]}, requirement_datum.user.id), {label: 'Responsibility'}, disabled: !(can? :manage, @project.project_authorizations.first) %>
+<div class="panel panel-default">
+    <div class="panel-heading <%= 'assigned-requirement' if requirement_datum.user == current_user %>">
+        <h4 class="panel-title">
+            <a href="#requirement-<%= requirement_datum.id %>-collapsable" data-parent="#accordion" data-toggle="collapse" class="collapsed" aria-expanded="false">
+                <% if requirement_datum.required? %><i class="fa fa-lg fa-square-o" title="<%= t('.tooltip_requirement_required') %>" data-toggle="tooltip"></i>
+                <% elsif requirement_datum.provided? %><i class="fa fa-lg fa-check-square-o" title="<%= t('.tooltip_requirement_provided') %>" data-toggle="tooltip"></i>
+                <% else %><i class="fa fa-lg fa-square" title="<%= t('.tooltip_requirement_not_required') %>" data-toggle="tooltip"></i><% end %>
+                &nbsp;&nbsp;<%= requirement_datum.requirement.label %>
+                <% if requirement_datum.required? && !requirement_datum.due_date.nil? && Date.today > requirement_datum.due_date %>&nbsp;<i class="fa fa-clock-o" title="<%= t('.tooltip_due_date') %>" data-toggle="tooltip"></i><% end %>
+            </a>
+        </h4>
+    </div>
+    <div class="panel-collapse collapse" id="requirement-<%= requirement_datum.id %>-collapsable" aria-expanded="false" style="height: 0px;">
+        <div class="panel-body">
+            <%= bootstrap_form_tag url: project_requirement_datum_path(@project.id, requirement_datum.id), method: "put", remote: true, :html => { :multipart => true } do |f| %>
+                <% users = User.authorized_for_project(@project).with_assessor_project_role %>
+                <% if (users.count > 0) && (can? :read, @project.project_authorizations.first) %>
+                    <% if requirement_datum.user.nil? %>
+                        <% if (can? :manage, @project.project_authorizations.first) %>
+                            <%= f.select :user_id, options_for_select(users.map { |k| [k.email, k.id]}), {label: 'Responsibility'} %>
                         <% end %>
+                    <% else %>
+                        <%= f.select :user_id, options_for_select(users.map { |k| [k.email, k.id]}, requirement_datum.user.id), {label: 'Responsibility'}, disabled: !(can? :manage, @project.project_authorizations.first) %>
                     <% end %>
-                    <%= f.text_field :due_date, value: ((l requirement_datum.due_date, format: :short) if !requirement_datum.due_date.nil?), prepend: '<i class="fa fa-calendar"></i>'.html_safe, data: {provide: 'datepicker'}, disabled: !(can? :manage, @project.project_authorizations.first) %>
-                    <div class="hr-line-dashed"></div>
-                    <% if requirement_datum.calculator_datum.present? %>
-                        <% calculator_template = requirement_datum.calculator_datum.calculator.name.constantize.name.demodulize.downcase %>
-                        <div>
-                            <% if File.exist?("app/views/calculators/_#{calculator_template}.html.erb") %>
-                                <%= render "calculators/#{calculator_template}", requirement_datum: requirement_datum, calculator_template: calculator_template, f: f %>
-                            <% else %>
-                                <%= render "calculators/general", requirement_datum: requirement_datum, calculator_template: calculator_template, f: f %>
-                            <% end %>
-                        </div>
-                    <% end %>
-                    <%= f.select :status, options_for_select(RequirementDatum.statuses.keys.map { |k| [k.humanize, k]}, requirement_datum.status) %>
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="hr-line-dashed"></div>
-                            <% if can? :update, requirement_datum %>
-                                <%= f.primary %>
-                            <% end %>
-                        </div>
+                <% end %>
+                <%= f.text_field :due_date, value: ((l requirement_datum.due_date, format: :short) if !requirement_datum.due_date.nil?), prepend: '<i class="fa fa-calendar"></i>'.html_safe, data: {provide: 'datepicker'}, disabled: !(can? :manage, @project.project_authorizations.first) %>
+                <div class="hr-line-dashed"></div>
+                <% if requirement_datum.calculator_datum.present? %>
+                    <% calculator_template = requirement_datum.calculator_datum.calculator.name.constantize.name.demodulize.downcase %>
+                    <div>
+                        <% if File.exist?("app/views/calculators/_#{calculator_template}.html.erb") %>
+                            <%= render "calculators/#{calculator_template}", requirement_datum: requirement_datum, calculator_template: calculator_template, f: f %>
+                        <% else %>
+                            <%= render "calculators/general", requirement_datum: requirement_datum, calculator_template: calculator_template, f: f %>
+                        <% end %>
                     </div>
                 <% end %>
-            </div>
+                <%= f.select :status, options_for_select(RequirementDatum.statuses.keys.map { |k| [k.humanize, k]}, requirement_datum.status) %>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="hr-line-dashed"></div>
+                        <% if can? :update, requirement_datum %>
+                            <%= f.primary %>
+                        <% end %>
+                    </div>
+                </div>
+            <% end %>
         </div>
     </div>
-<% end %>
+</div>
