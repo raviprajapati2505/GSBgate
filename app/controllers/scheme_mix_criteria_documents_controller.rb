@@ -30,9 +30,11 @@ class SchemeMixCriteriaDocumentsController < AuthenticatedController
     scheme_mix_criteria_documents = []
     scheme_mix_criteria_documents << @scheme_mix_criteria_document
 
-    params[:scheme_mix_criteria].each do |scheme_mix_criterion_id|
-      unless scheme_mix_criterion_id == @scheme_mix_criteria_document.id
-        scheme_mix_criteria_documents << SchemeMixCriteriaDocument.find_by(scheme_mix_criterion_id: scheme_mix_criterion_id, document_id: @scheme_mix_criteria_document.document_id)
+    if params[:scheme_mix_criteria].present?
+      params[:scheme_mix_criteria].each do |scheme_mix_criterion_id|
+        unless scheme_mix_criterion_id == @scheme_mix_criteria_document.id
+          scheme_mix_criteria_documents << SchemeMixCriteriaDocument.find_by(scheme_mix_criterion_id: scheme_mix_criterion_id, document_id: @scheme_mix_criteria_document.document_id)
+        end
       end
     end
 
