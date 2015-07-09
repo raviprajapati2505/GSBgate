@@ -1,4 +1,4 @@
-$('#requirement-<%= @requirement_datum.id %>').html("<%= escape_javascript(render 'requirements/update', requirement_datum: @requirement_datum) %>");
+$('#requirement-<%= @requirement_datum.id %>').replaceWith("<%= escape_javascript(render 'requirements/update', requirement_datum: @requirement_datum) %>");
 
 <% if notice %>
 $('#requirement-<%= @requirement_datum.id %>').append("<p class=\"flash flash-success hidden\"><%= escape_javascript(notice) %></p>");
