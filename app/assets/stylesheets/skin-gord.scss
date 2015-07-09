@@ -240,6 +240,14 @@
     }
   }
 
+  table {
+    tr {
+      .clickable {
+        cursor: pointer;
+      }
+    }
+  }
+
   // Dropzone
   .dropzone {
     border: none;

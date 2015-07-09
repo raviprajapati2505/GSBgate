@@ -101,6 +101,11 @@ $(function () {
     $( document ).ajaxComplete(function() {
         flash_message();
     });
+
+    // Clickable table rows
+    $('table tr.clickable').on('click', function() {
+        window.location = $(this).data('href');
+    });
 });
 
 // Show flash messages in TOASTR popup
