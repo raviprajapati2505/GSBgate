@@ -7,20 +7,27 @@
                 <h4 class="modal-title"><%= @scheme_mix_criterion.scheme_criterion.code + ' ' + @scheme_mix_criterion.scheme_criterion.criterion.name %></h4>
             </div>
             <div class="modal-body">
+                <% if @logs.empty? %>
+                <p>No logs available yet</p>
+                <% else %>
                 <div class="feed-activity-list">
                 <% @logs.each do |log| %>
                     <div class="feed-element">
                         <div class="media-body">
                             <strong><%= log.user.email %></strong> changed status from <strong><%= SchemeMixCriterion.map_to_status_key(log.old_status) %></strong> to <strong><%= SchemeMixCriterion.map_to_status_key(log.new_status) %></strong><br>
                             <small class="text-muted"><%= localize(log.created_at) %></small>
+                            <% if log.comment.empty? %>
+                            <% else %>
                             <div class="well">
                                 <%= log.comment %>
                             </div>
+                            <% end %>
                         </div>
                     </div>
                 <% end %>
                 <%= will_paginate @logs, renderer: BootstrapPagination::Rails %>
                 </div>
+                <% end %>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-white" data-dismiss="modal"><%= t('.btn_cancel') %></button>
