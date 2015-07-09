@@ -16,8 +16,7 @@
                             <div class="media-body">
                                 <small class="text-muted"><%= localize(notification.created_at) %></small>
                                 <div class="well<% unless notification.previous_changes.empty? %> highlight<% end %>">
-                                    <% #notification.body.html_safe %>
-                                    <%= notification.id %>
+                                    <%= notification.body.html_safe %>
                                 </div>
                             </div>
                         </div>

@@ -69,6 +69,7 @@
                             <%= f.select :user_id, options_for_select(users.map { |k| [k.email, k.id]}, @scheme_mix_criterion.certifier.id), {label: 'Responsibility'} %>
                         <% end %>
                         <%= f.text_field :due_date, value: ((l @scheme_mix_criterion.due_date, format: :short) if !@scheme_mix_criterion.due_date.nil?), prepend: '<i class="fa fa-calendar"></i>'.html_safe, data: {provide: 'datepicker'} %>
+                        <div class="hr-line-dashed"></div>
                         <%= f.primary 'Save' %>
                     <% end %>
                 </div>
