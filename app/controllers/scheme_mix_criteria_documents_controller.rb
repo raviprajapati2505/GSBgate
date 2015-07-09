@@ -26,18 +26,31 @@ class SchemeMixCriteriaDocumentsController < AuthenticatedController
   end
 
   def update
-    @scheme_mix_criteria_document.update(scheme_mix_criteria_document_params)
+    # Load all scheme_mix_criteria_documents that need to be updated
+    scheme_mix_criteria_documents = []
+    scheme_mix_criteria_documents << @scheme_mix_criteria_document
 
-    if @scheme_mix_criteria_document.save
-      # Create the comment
-      if params[:scheme_mix_criteria_document_status]['comment'].present?
-        @scheme_mix_criteria_document.scheme_mix_criteria_document_comments.create!(body: params[:scheme_mix_criteria_document_status]['comment'], user: current_user)
+    params[:scheme_mix_criteria].each do |scheme_mix_criterion_id|
+      unless scheme_mix_criterion_id == @scheme_mix_criteria_document.id
+        scheme_mix_criteria_documents << SchemeMixCriteriaDocument.find_by(scheme_mix_criterion_id: scheme_mix_criterion_id, document_id: @scheme_mix_criteria_document.document_id)
       end
-
-      redirect_to :back, notice: 'The document details were successfully updated.'
-    else
-      redirect_to :back, alert: 'The document details couldn\'t be saved, please try again later.'
     end
+
+    # Loop all scheme_mix_criteria_documents
+    scheme_mix_criteria_documents.each do |scheme_mix_criteria_document|
+      # Update the model data
+      scheme_mix_criteria_document.update(scheme_mix_criteria_document_params)
+
+      # Save the link scheme_mix_criteria_document
+      if scheme_mix_criteria_document.save
+        # Create the comment
+        if params[:scheme_mix_criteria_document_comment]['body'].present?
+          scheme_mix_criteria_document.scheme_mix_criteria_document_comments.create!(body: params[:scheme_mix_criteria_document_comment]['body'], user: current_user)
+        end
+      end
+    end
+
+    redirect_to :back, notice: 'The document details were successfully updated.'
   end
 
   def show
