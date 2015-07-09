@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150706134203) do
+ActiveRecord::Schema.define(version: 20150708135212) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -104,6 +104,16 @@ ActiveRecord::Schema.define(version: 20150706134203) do
   end
 
   add_index "fields", ["calculator_id"], name: "index_fields_on_calculator_id", using: :btree
+
+  create_table "notifications", force: :cascade do |t|
+    t.text     "body"
+    t.boolean  "read"
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "notifications", ["user_id"], name: "index_notifications_on_user_id", using: :btree
 
   create_table "project_authorizations", force: :cascade do |t|
     t.integer  "user_id"
@@ -294,6 +304,7 @@ ActiveRecord::Schema.define(version: 20150706134203) do
   add_foreign_key "field_data", "calculator_data"
   add_foreign_key "field_data", "fields"
   add_foreign_key "fields", "calculators"
+  add_foreign_key "notifications", "users"
   add_foreign_key "project_authorizations", "projects"
   add_foreign_key "project_authorizations", "users"
   add_foreign_key "projects", "users", column: "owner_id"

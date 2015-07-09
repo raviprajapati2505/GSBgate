@@ -22,6 +22,13 @@
             <% end %>
         </ul>
         <ul class="nav navbar-top-links navbar-right">
+            <li class="notifications<% unless current_user.notifications.unread.count.zero? %> new-notifications<%end %>">
+                <%= link_to notifications_path, remote: true do %>
+                    <i class="fa fa-bell fa-lg"></i>
+                    <% unless current_user.notifications.unread.count.zero? %><span class="badge"><%= current_user.notifications.unread.count %></span><% end %>
+                    <span class="nav-label">Notifications</span>
+                <% end %>
+            </li>
             <li>
                 <%= link_to edit_user_registration_path do %>
                     <i class="fa fa-lg fa-user"></i> <span class="nav-label">Edit profile</span>
@@ -36,3 +43,4 @@
 
     </div>
 </div>
+<div id="showNotificationsModal" class="modal fade"></div>

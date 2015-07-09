@@ -13,6 +13,7 @@ class User < ActiveRecord::Base
   has_many :projects, through: :project_authorizations
   has_many :requirement_data, dependent: :nullify
   has_many :scheme_mix_criteria, inverse_of: :certifier, foreign_key: 'certifier_id'
+  has_many :notifications
 
   default_scope { order(email: :asc) }
 

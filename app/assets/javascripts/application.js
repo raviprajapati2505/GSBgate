@@ -98,7 +98,7 @@ $(function () {
     flash_message();
 
     // Process flash messages after AJAX response
-    $( document ).ajaxComplete(function() {
+    $(document).ajaxComplete(function() {
         flash_message();
     });
 
