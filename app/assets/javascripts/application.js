@@ -55,9 +55,6 @@ $(function () {
         modal.modal();
     };
 
-    // Tooltips
-    $('[data-toggle="tooltip"]').tooltip();
-
     // iCheck all checkboxes & radio buttons
     $('input').iCheck({
         checkboxClass: 'icheckbox_square-green',
@@ -72,7 +69,17 @@ $(function () {
         todayHighlight: true
     });
 
-    // Toastr
+    // Accordion tables
+    $('.accordion-body').on('show.bs.collapse hidden.bs.collapse', function() {
+        $(this).prev().find('i.fa').toggleClass('fa-caret-square-o-right').toggleClass('fa-caret-square-o-down');
+    });
+
+    // Clickable table rows
+    $('table tr.clickable').on('click', function() {
+        window.location = $(this).data('href');
+    });
+
+    // Toastr options
     toastr.options = {
         "closeButton": true,
         "debug": false,
@@ -89,34 +96,35 @@ $(function () {
         "hideMethod": "fadeOut"
     };
 
-    // Accordion tables
-    $('.accordion-body').on('show.bs.collapse hidden.bs.collapse', function() {
-        $(this).prev().find('i.fa').toggleClass('fa-caret-square-o-right').toggleClass('fa-caret-square-o-down');
-    });
+    // Flash messages
+    GSAS.processFlashMessages();
 
-    // Process flash messages
-    flash_message();
+    // Tooltips
+    GSAS.processTooltips();
 
-    // Process flash messages after AJAX response
+    // After every AJAX call
     $(document).ajaxComplete(function() {
-        flash_message();
-    });
-
-    // Clickable table rows
-    $('table tr.clickable').on('click', function() {
-        window.location = $(this).data('href');
+        GSAS.processFlashMessages();
+        GSAS.processTooltips();
     });
 });
 
-// Show flash messages in TOASTR popup
-function flash_message() {
-    $('.flash.flash-success.hidden').each(function() {
-        toastr.success($(this).html());
-        $(this).remove();
-    });
+// General GSAS functions
+var GSAS = {
+    // Show flash messages in TOASTR popup
+    processFlashMessages: function () {
+        $('.flash.flash-success.hidden').each(function () {
+            toastr.success($(this).html());
+            $(this).remove();
+        });
 
-    $('.flash.flash-danger.hidden').each(function() {
-        toastr.error($(this).html());
-        $(this).remove();
-    });
+        $('.flash.flash-danger.hidden').each(function () {
+            toastr.error($(this).html());
+            $(this).remove();
+        });
+    },
+    // Find and process tooltips
+    processTooltips: function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    }
 }
