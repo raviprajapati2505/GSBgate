@@ -1,7 +1,7 @@
 require 'file_size_validator'
 
 class Document < ActiveRecord::Base
-  MAXIMUM_DOCUMENT_FILE_SIZE = 100 # in MB
+  MAXIMUM_DOCUMENT_FILE_SIZE = 25 # in MB
 
   belongs_to :user
   has_many :scheme_mix_criteria_documents
