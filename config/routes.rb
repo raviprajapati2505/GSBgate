@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  resources :certification_paths
   resources :projects, except: [ :destroy ] do
     resources :project_authorizations, only: [ :new, :edit, :show, :update, :destroy ], path: 'authorizations', as: 'authorization'
     resources :project_authorizations, only: [ :create ], path: 'authorizations', as: 'authorizations'
