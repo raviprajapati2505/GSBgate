@@ -87,7 +87,8 @@ class Ability
       # can :manage, Document, scheme_mix_criteria: {scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id, role: ['cgp_project_manager', ProjectAuthorization.roles[:cgp_project_manager]]}}}}}
       # can :create, Document, scheme_mix_criteria_documents: {scheme_mix_criterion: {requirement_data: {user_id: user.id}}}
       # can :download, Document, scheme_mix_criteria: {scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id}}}}}
-
+      # Notification controller
+      can :read, Notification
     else
       cannot :manage, :all
     end
