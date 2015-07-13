@@ -64,7 +64,7 @@ class CertificationPathsController < AuthenticatedController
   end
 
   def download_archive
-    send_file DocumentArchiverService.instance.create_archive(@certification_path.scheme_mix_criteria_documents)
+    send_file DocumentArchiverService.instance.create_archive(@certification_path.scheme_mix_criteria_documents.approved)
   end
 
   private
