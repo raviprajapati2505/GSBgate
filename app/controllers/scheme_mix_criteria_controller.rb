@@ -61,7 +61,15 @@ class SchemeMixCriteriaController < AuthenticatedController
     if params.has_key?(:user_id)
       @scheme_mix_criterion.certifier = User.find(params[:user_id])
       @scheme_mix_criterion.due_date = Date.strptime(params[:due_date], t('date.formats.short')) if (params.has_key?(:due_date) && params[:due_date] != '')
-      @scheme_mix_criterion.save!
+      SchemeMixCriterion.transaction do
+        # Notify certifier
+        if @scheme_mix_criterion.due_date.nil?
+          Notification.create(body: 'A criterion is assigned to you for review', uri: project_certification_path_scheme_mix_scheme_mix_criterion_path(params[:project_id], params[:certification_path_id], params[:scheme_mix_id], @scheme_mix_criterion), user: @scheme_mix_criterion.certifier)
+        else
+          Notification.create(body: 'A criterion is assigned to you for review before ' + (l @scheme_mix_criterion.due_date, format: :short), uri: project_certification_path_scheme_mix_scheme_mix_criterion_path(params[:project_id], params[:certification_path_id], params[:scheme_mix_id], @scheme_mix_criterion), user: @scheme_mix_criterion.certifier)
+        end
+        @scheme_mix_criterion.save!
+      end
       redirect_to edit_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), notice: 'Criterion was successfully updated.'
     end
   end
