@@ -84,7 +84,7 @@
                     <div class="col-md-12">
                         <div id="accordion" class="panel-group">
                             <% @scheme_mix_criterion.requirement_data.each_with_index do |requirement_datum| %>
-                                <%= render 'requirements/update', requirement_datum: requirement_datum %>
+                                <%= render 'requirements/update', requirement_datum: requirement_datum, certification_path_id: @certification_path.id, scheme_mix_id: @scheme_mix.id, scheme_mix_criterion_id: @scheme_mix_criterion.id %>
                             <% end %>
                         </div>
                     </div>

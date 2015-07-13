@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     resources :certification_paths, except: [ :destroy ], path: 'certificates' do
       resources :scheme_mixes, only: [ :edit, :show ], path: 'schemes' do
         resources :scheme_mix_criteria, only: [ :edit, :show, :update ], path: 'criteria', as: 'scheme_mix_criterion' do
+          resources :requirement_data, only: [ :update ], path: 'requirement', as: 'requirement_data'
           resources :scheme_mix_criterion_logs, only: [ :index ], path: 'status_logs', as: 'status_logs'
           resources :scheme_mix_criteria_documents, only: [ :create, :edit, :show, :update, :destroy ], path: 'documentation', as: 'scheme_mix_criteria_documents' do
             resources :scheme_mix_criteria_document_comments, only: [ :create ], path: 'comments', as: 'scheme_mix_criteria_document_comments'
@@ -12,7 +13,6 @@ Rails.application.routes.draw do
         end
       end
     end
-    resources :requirement_data, only: [ :update ], path: 'requirement', as: 'requirement_data'
   end
   resources :notifications, only: [ :index ]
   resources :documents, only: [ :create, :show ], path: 'document'

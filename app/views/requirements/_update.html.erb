@@ -12,7 +12,7 @@
     </div>
     <div class="panel-collapse collapse" id="requirement-<%= requirement_datum.id %>-collapsable" aria-expanded="false" style="height: 0px;">
         <div class="panel-body">
-            <%= bootstrap_form_tag url: project_requirement_datum_path(@project.id, requirement_datum.id), method: "put", remote: true, :html => { :multipart => true } do |f| %>
+            <%= bootstrap_form_tag url: project_certification_path_scheme_mix_scheme_mix_criterion_requirement_datum_path(@project, certification_path_id, scheme_mix_id, scheme_mix_criterion_id, requirement_datum.id), method: "put", remote: true, :html => { :multipart => true } do |f| %>
                 <% users = User.authorized_for_project(@project).with_assessor_project_role %>
                 <% if (users.count > 0) && (can? :read, @project.project_authorizations.first) %>
                     <% if requirement_datum.user.nil? %>
