@@ -30,17 +30,23 @@ class RequirementDataController < AuthenticatedController
       @calculation_result = calculator.calculate calculator_params
     end
 
+    old_user = @requirement_datum.user
     @requirement_datum.user = User.find(params[:user_id]) if params.has_key?(:user_id)
     @requirement_datum.due_date = Date.strptime(params[:due_date], t('date.formats.short')) if (params.has_key?(:due_date) && params[:due_date] != '')
-    if @requirement_datum.due_date.nil?
-      Notification.create(body: 'A requirement is assigned to you to provide', uri: project_certification_path_scheme_mix_scheme_mix_criterion_path(params[:project_id], params[:certification_path_id], params[:scheme_mix_id], @scheme_mix_criterion), user: @requirement_datum.user)
-    else
-      Notification.create(body: 'A requirement is assigned to you to provide before ' + (l @requirement_datum.due_date, format: :short), uri: project_certification_path_scheme_mix_scheme_mix_criterion_path(params[:project_id], params[:certification_path_id], params[:scheme_mix_id], @scheme_mix_criterion), user: @requirement_datum.user)
+    if !@requirement_datum.user.nil? && old_user != @requirement_datum.user
+      if @requirement_datum.due_date.nil?
+        Notification.create(body: 'A requirement is assigned to you to provide', uri: project_certification_path_scheme_mix_scheme_mix_criterion_path(params[:project_id], params[:certification_path_id], params[:scheme_mix_id], params[:scheme_mix_criterion_id]), user: @requirement_datum.user)
+      else
+        Notification.create(body: 'A requirement is assigned to you to provide before ' + (l @requirement_datum.due_date, format: :short), uri: project_certification_path_scheme_mix_scheme_mix_criterion_path(params[:project_id], params[:certification_path_id], params[:scheme_mix_id], params[:scheme_mix_criterion_id]), user: @requirement_datum.user)
+      end
     end
     @requirement_datum.status = params[:status]
     @requirement_datum.save!
 
     @project = Project.find(params[:project_id])
+    @certification_path_id = params[:certification_path_id]
+    @scheme_mix_id = params[:scheme_mix_id]
+    @scheme_mix_criterion_id = params[:scheme_mix_criterion_id]
 
     flash.now[:notice] = 'Requirement was successfully updated.'
 
