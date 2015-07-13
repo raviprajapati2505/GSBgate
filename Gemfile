@@ -85,6 +85,9 @@ gem 'select2-rails', '~> 3.5.9.3'
 # Path helpers for javascript
 gem 'js-routes', '~> 1.0.1'
 
+# Read/write zip files
+gem 'rubyzip', '~> 1.1.7'
+
 # Rails-Assets: access bower packages from our gem file
 #  e.g. gem 'rails-assets-BOWER_PACKAGE_NAME'
 #  do not forget to:

@@ -3,6 +3,8 @@ class CertificationPath < ActiveRecord::Base
   belongs_to :certificate
   has_many :scheme_mixes
   has_many :schemes, through: :scheme_mixes
+  has_many :scheme_mix_criteria, through: :scheme_mixes
+  has_many :scheme_mix_criteria_documents, through: :scheme_mix_criteria
 
   accepts_nested_attributes_for :certificate
 

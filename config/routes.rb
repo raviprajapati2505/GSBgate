@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   resources :notifications, only: [ :index ]
   resources :documents, only: [ :create, :show ], path: 'document'
   put 'projects/:project_id/certificates/:certification_path_id/schemes/:scheme_mix_id/criteria/:id/assign' => 'scheme_mix_criteria#assign_certifier', as: 'assign_certifier_to_criteria'
+  get 'projects/:project_id/certificates/:id/archive' => 'certification_paths#download_archive', as: 'archive_project_certification_path'
 
   resources :users
   get 'projects/:project_id/users/new' => 'users#new_member', as: 'new_project_user'

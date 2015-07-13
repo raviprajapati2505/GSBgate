@@ -63,6 +63,10 @@ class CertificationPathsController < AuthenticatedController
     end
   end
 
+  def download_archive
+    send_file DocumentArchiverService.instance.create_archive(@certification_path.scheme_mix_criteria_documents)
+  end
+
   private
     def set_project
       @project = Project.find(params[:project_id])
