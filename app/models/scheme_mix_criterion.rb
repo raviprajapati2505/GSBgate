@@ -17,7 +17,7 @@ class SchemeMixCriterion < ActiveRecord::Base
   validates :targeted_score, presence: true
 
   scope :reviewed, -> {
-    where(status: [2, 3])
+    approved | resubmit
   }
 
   scope :order_by_code, -> {
