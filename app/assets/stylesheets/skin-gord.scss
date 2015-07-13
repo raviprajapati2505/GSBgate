@@ -14,7 +14,7 @@
 
   .highlight {
     background-color: $skin-gord-color-light;
-    color: $skin-gord-color;
+    color: $skin-gord-a-color;
   }
 
   // display a vertical scrollbar when modal box height is almost browser view height
@@ -411,5 +411,16 @@
 
   .new-notifications a {
     background-color: $skin-gord-color-light!important;
+  }
+
+  .notification .well {
+    position: relative;
+    padding-right: 30px;
+  }
+
+  .notification .well .fa {
+    position: absolute;
+    top: 13px;
+    right: 12px;
   }
 }
