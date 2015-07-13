@@ -15,9 +15,12 @@
                         <div class="feed-element">
                             <div class="media-body">
                                 <small class="text-muted"><%= localize(notification.created_at) %></small>
-                                <div class="well<% unless notification.previous_changes.empty? %> highlight<% end %>">
-                                    <%= notification.body.html_safe %>
-                                </div>
+                                <a href="<%= notification.uri %>" class="notification">
+                                    <div class="well<% unless notification.previous_changes.empty? %> highlight<% end %>">
+                                        <%= notification.body.html_safe %>
+                                        <i class="fa fa-share pull-right"></i>
+                                    </div>
+                                </a>
                             </div>
                         </div>
                     <% end %>

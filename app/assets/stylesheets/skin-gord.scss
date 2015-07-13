@@ -253,6 +253,25 @@
     }
   }
 
+  .notification {
+    color: inherit;
+
+    .fa {
+      display: none;
+    }
+
+    &:hover {
+      .well {
+        background-color: #62a50a;
+        color: white;
+      }
+
+      .fa {
+        display: block;
+      }
+    }
+  }
+
   // Dropzone
   .dropzone {
     border: none;

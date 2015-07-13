@@ -43,8 +43,13 @@ class CertificationPathsController < AuthenticatedController
 
   def update
     CertificationPath.transaction do
-      if @certification_path.status != certification_path_params[:status] && !current_user.system_admin?
-        raise CanCan::AccessDenied.new('Not Authorized to update certification_path status', :update, CertificationPath)
+      if @certification_path.status != certification_path_params[:status]
+        if !current_user.system_admin?
+          raise CanCan::AccessDenied.new('Not Authorized to update certification_path status', :update, CertificationPath)
+        end
+        # Generate a notification for the project owner
+        project = Project.find(params[:project_id])
+        Notification.create(body: 'A certification path changed status', uri: project_certification_path_path(project, @certification_path), user: project.owner)
       end
       if @certification_path.update(certification_path_params)
         if @certification_path.scheme_mixes.count == 0
