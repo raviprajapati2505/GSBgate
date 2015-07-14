@@ -2,7 +2,7 @@
     <div class="col-lg-6">
         <div class="ibox">
             <div class="ibox-title">
-                <h5>Criterion details</h5>
+                <h5>Criterion score</h5>
             </div>
             <div class="ibox-content">
                 <%= bootstrap_form_for([@project, @certification_path, @scheme_mix, @scheme_mix_criterion], url: project_certification_path_scheme_mix_scheme_mix_criterion_path) do |f| %>
@@ -54,6 +54,19 @@
                     </div>
                 <% end %>
             </div>
+        </div>
+        <div class="ibox">
+          <div class="ibox-title">
+            <h5>Criterion details</h5>
+          </div>
+          <div class="ibox-content">
+            <div><strong>Description</strong></div>
+            <div><p><%= @scheme_mix_criterion.scheme_criterion.criterion.description %></p></div>
+            <div><strong>Measurement</strong></div>
+            <div><p><%= @scheme_mix_criterion.scheme_criterion.criterion.measurement %></p></div>
+            <div><strong>Measurement principle</strong></div>
+            <div><p><%= @scheme_mix_criterion.scheme_criterion.criterion.measurement_principle %></p></div>
+          </div>
         </div>
         <% if current_user.system_admin? %>
             <div class="ibox">
