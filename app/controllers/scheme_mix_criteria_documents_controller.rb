@@ -49,6 +49,9 @@ class SchemeMixCriteriaDocumentsController < AuthenticatedController
         if params[:scheme_mix_criteria_document_comment]['body'].present?
           scheme_mix_criteria_document.scheme_mix_criteria_document_comments.create!(body: params[:scheme_mix_criteria_document_comment]['body'], user: current_user)
         end
+
+        # Create a notification for the document uploader
+        Notification.create(body: 'The status of your document "' + @document.document_file.file.filename + '" in "' + scheme_mix_criteria_document.scheme_mix_criterion.name + '" was changed to "' + scheme_mix_criteria_document.status.humanize + '".', uri: edit_project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_path(@project, @certification_path, scheme_mix_criteria_document.scheme_mix_criterion.scheme_mix, scheme_mix_criteria_document.scheme_mix_criterion, scheme_mix_criteria_document), user: @document.user, project: @project)
       end
     end
 
@@ -56,7 +59,7 @@ class SchemeMixCriteriaDocumentsController < AuthenticatedController
   end
 
   def show
-    redirect_to edit_project_certification_path_scheme_mix_scheme_mix_criterion_documentation_path, status: 301
+    redirect_to edit_project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_path, status: 301
   end
 
   def destroy
