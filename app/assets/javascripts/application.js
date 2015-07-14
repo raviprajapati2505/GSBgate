@@ -96,6 +96,38 @@ $(function () {
         "hideMethod": "fadeOut"
     };
 
+    // Notifications (mark one as read)
+    $('body').on('click', 'a.notification', function(e) {
+        var notification = $(this);
+
+        if (notification.children('.highlight').length > 0) {
+            $.ajax({
+                url: notification.data('href'),
+                method: 'PUT'
+            }).done(function () {
+                window.location.href = notification.attr('href');
+            });
+
+            e.preventDefault();
+        }
+    });
+
+    // Notifications (mark all as read)
+    $('body').on('click', '#notifications-update-all', function(e) {
+        var button = $(this);
+
+        $.ajax({
+            url: button.data('href'),
+            method: 'PUT'
+        }).done(function () {
+            $('.notification .highlight').removeClass('highlight');
+            $('li.notifications').removeClass('new-notifications');
+            $('li.notifications .badge').hide();
+        });
+
+        e.preventDefault();
+    });
+
     // Flash messages
     GSAS.processFlashMessages();
 

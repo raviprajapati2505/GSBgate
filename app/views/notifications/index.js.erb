@@ -2,13 +2,3 @@
 $('#showNotificationsModal').html("<%= escape_javascript(render 'modal') %>");
 $('.pagination a').attr('data-remote', 'true');
 $('#showNotificationsModal').modal('show');
-
-// Update notifications counter
-var notificationCountPre = parseInt($('li.notifications .badge').text(), 10);
-var notificationSubstract = $('#showNotificationsModal').find('.highlight').length;
-var notificationCountPost = notificationCountPre - notificationSubstract;
-$('li.notifications .badge').text(notificationCountPost);
-if (notificationCountPost <= 0) {
-    $('li.notifications').removeClass('new-notifications');
-    $('li.notifications .badge').hide();
-}

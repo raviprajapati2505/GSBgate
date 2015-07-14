@@ -14,7 +14,8 @@ Rails.application.routes.draw do
       end
     end
   end
-  resources :notifications, only: [ :index ]
+  resources :notifications, only: [ :index, :update ]
+  put 'notification/update-all' => 'notifications#update_all', as: 'update_all_notifications'
   resources :documents, only: [ :create, :show ], path: 'document'
   put 'projects/:project_id/certificates/:certification_path_id/schemes/:scheme_mix_id/criteria/:id/assign' => 'scheme_mix_criteria#assign_certifier', as: 'assign_certifier_to_criteria'
   get 'projects/:project_id/certificates/:id/archive' => 'certification_paths#download_archive', as: 'archive_project_certification_path'
