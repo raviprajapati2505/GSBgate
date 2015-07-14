@@ -39,7 +39,7 @@ class RequirementDataController < AuthenticatedController
         @requirement_datum.due_date = nil
       end
     end
-    if !@requirement_datum.user_id_changed?
+    if @requirement_datum.user_id_changed?
       if @requirement_datum.due_date.nil?
         Notification.create(body: "Requirement '#{@requirement_datum.requirement.label}' is assigned to you.", uri: project_certification_path_scheme_mix_scheme_mix_criterion_path(params[:project_id], params[:certification_path_id], params[:scheme_mix_id], params[:scheme_mix_criterion_id]), user: @requirement_datum.user, project: @project)
       else
