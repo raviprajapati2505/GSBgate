@@ -31,14 +31,21 @@ class RequirementDataController < AuthenticatedController
       @calculation_result = calculator.calculate calculator_params
     end
 
-    old_user = @requirement_datum.user
     @requirement_datum.user = User.find(params[:user_id]) if params.has_key?(:user_id)
     @requirement_datum.due_date = Date.strptime(params[:due_date], t('date.formats.short')) if (params.has_key?(:due_date) && params[:due_date] != '')
-    if !@requirement_datum.user.nil? && (old_user != @requirement_datum.user)
+    if !@requirement_datum.user_id_changed?
       if @requirement_datum.due_date.nil?
-        Notification.create(body: 'Requirement "' + @requirement_datum.requirement.label + '" is assigned to you.', uri: project_certification_path_scheme_mix_scheme_mix_criterion_path(params[:project_id], params[:certification_path_id], params[:scheme_mix_id], params[:scheme_mix_criterion_id]), user: @requirement_datum.user, project: @project)
+        Notification.create(body: "Requirement '#{@requirement_datum.requirement.label}' is assigned to you.", uri: project_certification_path_scheme_mix_scheme_mix_criterion_path(params[:project_id], params[:certification_path_id], params[:scheme_mix_id], params[:scheme_mix_criterion_id]), user: @requirement_datum.user, project: @project)
       else
-        Notification.create(body: 'Requirement "' + @requirement_datum.requirement.label + '" is assigned to you. The due date is ' + (l @requirement_datum.due_date, format: :short) + '.', uri: project_certification_path_scheme_mix_scheme_mix_criterion_path(params[:project_id], params[:certification_path_id], params[:scheme_mix_id], params[:scheme_mix_criterion_id]), user: @requirement_datum.user, project: @project)
+        Notification.create(body: "Requirement '#{@requirement_datum.requirement.label}' is assigned to you. The due date is #{l @requirement_datum.due_date, format: :short}.", uri: project_certification_path_scheme_mix_scheme_mix_criterion_path(params[:project_id], params[:certification_path_id], params[:scheme_mix_id], params[:scheme_mix_criterion_id]), user: @requirement_datum.user, project: @project)
+      end
+    else
+      if @requirement_datum.due_date_changed?
+        if @requirement_datum.due_date.nil?
+          Notification.create(body: "Due date for requirement '#{@requirement_datum.requirement.label}' is removed.", uri: project_certification_path_scheme_mix_scheme_mix_criterion_path(params[:project_id], params[:certification_path_id], params[:scheme_mix_id], params[:scheme_mix_criterion_id]), user: @requirement_datum.user, project: @project)
+        else
+          Notification.create(body: "Due date for requirement '#{@requirement_datum.requirement.label}' is changed to #{l @requirement_datum.due_date, format: :short}.", uri: project_certification_path_scheme_mix_scheme_mix_criterion_path(params[:project_id], params[:certification_path_id], params[:scheme_mix_id], params[:scheme_mix_criterion_id]), user: @requirement_datum.user, project: @project)
+        end
       end
     end
     @requirement_datum.status = params[:status]

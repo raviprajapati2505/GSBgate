@@ -59,16 +59,25 @@ class SchemeMixCriteriaController < AuthenticatedController
 
   def assign_certifier
     if params.has_key?(:user_id)
-      old_user = @scheme_mix_criterion.certifier
       @scheme_mix_criterion.certifier = User.find(params[:user_id])
       @scheme_mix_criterion.due_date = Date.strptime(params[:due_date], t('date.formats.short')) if (params.has_key?(:due_date) && params[:due_date] != '')
       SchemeMixCriterion.transaction do
-        if !@scheme_mix_criterion.certifier.nil? && (old_user != @scheme_mix_criterion.certifier)
+        if @scheme_mix_criterion.certifier_id_changed?
           # Notify certifier
           if @scheme_mix_criterion.due_date.nil?
-            Notification.create(body: 'Criterion "' + @scheme_mix_criterion.name  + '" is assigned to you for review.', uri: project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), user: @scheme_mix_criterion.certifier, project: @project)
+            Notification.create(body: "Criterion '#{@scheme_mix_criterion.name}' is assigned to you for review.", uri: project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), user: @scheme_mix_criterion.certifier, project: @project)
           else
-            Notification.create(body: 'Criterion "' + @scheme_mix_criterion.name  + '" is assigned to you for review. The due date is ' + (l @scheme_mix_criterion.due_date, format: :short) + '.', uri: project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), user: @scheme_mix_criterion.certifier, project: @project)
+            Notification.create(body: "Criterion '#{@scheme_mix_criterion.name}' is assigned to you for review. The due date is #{l @scheme_mix_criterion.due_date, format: :short}.", uri: project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), user: @scheme_mix_criterion.certifier, project: @project)
+          end
+        else
+          if @scheme_mix_criterion.due_date_changed?
+            # Notify certifier
+            if @scheme_mix_criterion.due_date.nil?
+              Notification.create(body: "Due date for criterion '#{@scheme_mix_criterion.name}' is removed.", uri: project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), user: @scheme_mix_criterion.certifier, project: @project)
+            else
+              Notification.create(body: "Due date for criterion '#{@scheme_mix_criterion.name}' is changed to #{l @scheme_mix_criterion.due_date, format: :short}.", uri: project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), user: @scheme_mix_criterion.certifier, project: @project)
+            end
+
           end
         end
         @scheme_mix_criterion.save!
