@@ -52,6 +52,10 @@ class SchemeMixCriterion < ActiveRecord::Base
     return value[0].humanize unless value.nil?
   end
 
+  def name
+    "#{self.scheme_criterion.code}: #{self.scheme_criterion.criterion.name}"
+  end
+
   private
 
   def init

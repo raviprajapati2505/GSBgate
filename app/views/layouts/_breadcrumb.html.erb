@@ -21,7 +21,7 @@
         <% end %>
 
         <% unless @scheme_mix_criterion.nil? or @scheme_mix_criterion.id.nil? %>
-            <li class="active"><%= link_to @scheme_mix_criterion.scheme_criterion.code + ': ' + @scheme_mix_criterion.scheme_criterion.criterion.name, edit_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion) %></li>
+            <li class="active"><%= link_to @scheme_mix_criterion.name, edit_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion) %></li>
         <% end %>
 
         <% unless @scheme_mix_criteria_document.nil? or @scheme_mix_criteria_document.id.nil? %>

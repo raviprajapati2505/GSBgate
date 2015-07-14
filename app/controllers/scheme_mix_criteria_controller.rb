@@ -6,7 +6,7 @@ class SchemeMixCriteriaController < AuthenticatedController
   load_and_authorize_resource
 
   def edit
-    @page_title = @scheme_mix_criterion.scheme_criterion.code + ': ' + @scheme_mix_criterion.scheme_criterion.criterion.name
+    @page_title = @scheme_mix_criterion.name
   end
 
   def show
@@ -66,9 +66,9 @@ class SchemeMixCriteriaController < AuthenticatedController
         if !@scheme_mix_criterion.certifier.nil? && (old_user != @scheme_mix_criterion.certifier)
           # Notify certifier
           if @scheme_mix_criterion.due_date.nil?
-            Notification.create(body: 'Criterion "' + @scheme_mix_criterion.scheme_criterion.code + ': ' + @scheme_mix_criterion.scheme_criterion.criterion.name  + '" is assigned to you for review.', uri: project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), user: @scheme_mix_criterion.certifier, project: @project)
+            Notification.create(body: 'Criterion "' + @scheme_mix_criterion.name  + '" is assigned to you for review.', uri: project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), user: @scheme_mix_criterion.certifier, project: @project)
           else
-            Notification.create(body: 'Criterion "' + @scheme_mix_criterion.scheme_criterion.code + ': ' + @scheme_mix_criterion.scheme_criterion.criterion.name  + '" is assigned to you for review. The due date is ' + (l @scheme_mix_criterion.due_date, format: :short) + '.', uri: project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), user: @scheme_mix_criterion.certifier, project: @project)
+            Notification.create(body: 'Criterion "' + @scheme_mix_criterion.name  + '" is assigned to you for review. The due date is ' + (l @scheme_mix_criterion.due_date, format: :short) + '.', uri: project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), user: @scheme_mix_criterion.certifier, project: @project)
           end
         end
         @scheme_mix_criterion.save!

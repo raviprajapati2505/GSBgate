@@ -31,7 +31,7 @@
                         <th>Criteria</th>
                         <td>
                             <% @document.scheme_mix_criteria.each do |scheme_mix_criterion| %>
-                                <%= scheme_mix_criterion.scheme_criterion.code + ': ' + scheme_mix_criterion.scheme_criterion.criterion.name %>
+                                <%= scheme_mix_criterion.name %>
                                 <% unless scheme_mix_criterion == @scheme_mix_criterion %>
                                     <% smcd = SchemeMixCriteriaDocument.find_by(scheme_mix_criterion: scheme_mix_criterion, document: @document) %>
                                     <%= link_to raw('<i title="Remove criterion link" class="fa fa-lg fa-trash" style="padding-right: 10px;"></i>'), project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_path(@project, @certification_path, @scheme_mix, scheme_mix_criterion, smcd), method: :delete, data: {confirm: 'Are you sure you want to unlink this criterion?'} %>
