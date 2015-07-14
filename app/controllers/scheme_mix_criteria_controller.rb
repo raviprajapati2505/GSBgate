@@ -60,7 +60,13 @@ class SchemeMixCriteriaController < AuthenticatedController
   def assign_certifier
     if params.has_key?(:user_id)
       @scheme_mix_criterion.certifier = User.find(params[:user_id])
-      @scheme_mix_criterion.due_date = Date.strptime(params[:due_date], t('date.formats.short')) if (params.has_key?(:due_date) && params[:due_date] != '')
+      if params.has_key?(:due_date)
+        if params[:due_date] != ''
+          @scheme_mix_criterion.due_date = Date.strptime(params[:due_date], t('date.formats.short'))
+        else
+          @scheme_mix_criterion.due_date = nil
+        end
+      end
       SchemeMixCriterion.transaction do
         if @scheme_mix_criterion.certifier_id_changed?
           # Notify certifier
