@@ -5,6 +5,7 @@ class Project < ActiveRecord::Base
   has_many :users, -> { where('project_authorizations.role < 4') },  through: :project_authorizations
   has_many :certifiers, -> { where('project_authorizations.role > 3') }, through: :project_authorizations, source: :user
   has_many :certification_paths
+  has_many :notifications
 
   after_initialize :init
 

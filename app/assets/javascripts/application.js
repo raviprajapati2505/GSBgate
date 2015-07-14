@@ -123,6 +123,7 @@ $(function () {
             $('.notification .highlight').removeClass('highlight');
             $('li.notifications').removeClass('new-notifications');
             $('li.notifications .badge').hide();
+            button.prop('disabled', true);
         });
 
         e.preventDefault();

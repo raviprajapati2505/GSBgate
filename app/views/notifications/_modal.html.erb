@@ -15,7 +15,7 @@
                     <% @notifications.each do |notification| %>
                         <div class="feed-element">
                             <div class="media-body">
-                                <small class="text-muted"><%= localize(notification.created_at) %></small>
+                                <small class="text-muted"><%= localize(notification.created_at) %><% unless notification.project.nil? %> | <span class="context">Project: <%= notification.project.name %></span><% end %></small>
                                 <a href="<%= notification.uri %>" class="notification" data-href="<%= notification_path(notification) %>">
                                     <div class="well<% unless notification.read? %> highlight<% end %>">
                                         <%= notification.body.html_safe %>

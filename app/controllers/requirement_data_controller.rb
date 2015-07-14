@@ -1,6 +1,7 @@
 class RequirementDataController < AuthenticatedController
   require_dependency 'reflection'
 
+  before_action :set_project
   before_action :set_requirement_datum
   load_and_authorize_resource
 
@@ -33,17 +34,16 @@ class RequirementDataController < AuthenticatedController
     old_user = @requirement_datum.user
     @requirement_datum.user = User.find(params[:user_id]) if params.has_key?(:user_id)
     @requirement_datum.due_date = Date.strptime(params[:due_date], t('date.formats.short')) if (params.has_key?(:due_date) && params[:due_date] != '')
-    if !@requirement_datum.user.nil? && old_user != @requirement_datum.user
+    if !@requirement_datum.user.nil? && (old_user != @requirement_datum.user)
       if @requirement_datum.due_date.nil?
-        Notification.create(body: 'A requirement is assigned to you to provide', uri: project_certification_path_scheme_mix_scheme_mix_criterion_path(params[:project_id], params[:certification_path_id], params[:scheme_mix_id], params[:scheme_mix_criterion_id]), user: @requirement_datum.user)
+        Notification.create(body: 'Requirement "' + @requirement_datum.requirement.label + '" is assigned to you.', uri: project_certification_path_scheme_mix_scheme_mix_criterion_path(params[:project_id], params[:certification_path_id], params[:scheme_mix_id], params[:scheme_mix_criterion_id]), user: @requirement_datum.user, project: @project)
       else
-        Notification.create(body: 'A requirement is assigned to you to provide before ' + (l @requirement_datum.due_date, format: :short), uri: project_certification_path_scheme_mix_scheme_mix_criterion_path(params[:project_id], params[:certification_path_id], params[:scheme_mix_id], params[:scheme_mix_criterion_id]), user: @requirement_datum.user)
+        Notification.create(body: 'Requirement "' + @requirement_datum.requirement.label + '" is assigned to you. The due date is ' + (l @requirement_datum.due_date, format: :short) + '.', uri: project_certification_path_scheme_mix_scheme_mix_criterion_path(params[:project_id], params[:certification_path_id], params[:scheme_mix_id], params[:scheme_mix_criterion_id]), user: @requirement_datum.user, project: @project)
       end
     end
     @requirement_datum.status = params[:status]
     @requirement_datum.save!
 
-    @project = Project.find(params[:project_id])
     @certification_path_id = params[:certification_path_id]
     @scheme_mix_id = params[:scheme_mix_id]
     @scheme_mix_criterion_id = params[:scheme_mix_criterion_id]
@@ -54,6 +54,10 @@ class RequirementDataController < AuthenticatedController
   end
 
   private
+  def set_project
+    @project = Project.find(params[:project_id])
+  end
+
   def set_requirement_datum
     @requirement_datum = RequirementDatum.find(params[:id])
   end
