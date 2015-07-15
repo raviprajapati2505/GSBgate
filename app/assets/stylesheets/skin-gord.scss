@@ -17,6 +17,10 @@
     color: $skin-gord-a-color;
   }
 
+  .feed-element .well {
+    font-size: 12px;
+  }
+
   // display a vertical scrollbar when modal box height is almost browser view height
   .modal-body {
     max-height: calc(100vh - 212px);
@@ -267,6 +271,10 @@
       .fa {
         display: block;
       }
+    }
+
+    .keyword {
+      font-weight: bold;
     }
   }
 

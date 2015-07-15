@@ -51,7 +51,11 @@ class SchemeMixCriteriaDocumentsController < AuthenticatedController
         end
 
         # Create a notification for the document uploader
-        Notification.create(body: 'The status of your document "' + @document.document_file.file.filename + '" in "' + scheme_mix_criteria_document.scheme_mix_criterion.name + '" was changed to "' + scheme_mix_criteria_document.status.humanize + '".', uri: edit_project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_path(@project, @certification_path, scheme_mix_criteria_document.scheme_mix_criterion.scheme_mix, scheme_mix_criteria_document.scheme_mix_criterion, scheme_mix_criteria_document), user: @document.user, project: @project)
+        notify(body: 'The status of your document %s in %s was changed to %s.',
+               body_params: [@document.document_file.file.filename, scheme_mix_criteria_document.scheme_mix_criterion.name, scheme_mix_criteria_document.status.humanize],
+               uri: edit_project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_path(@project, @certification_path, scheme_mix_criteria_document.scheme_mix_criterion.scheme_mix, scheme_mix_criteria_document.scheme_mix_criterion, scheme_mix_criteria_document),
+               user: @document.user,
+               project: @project)
       end
     end
 
