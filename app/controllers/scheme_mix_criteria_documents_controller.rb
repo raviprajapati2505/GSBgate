@@ -53,17 +53,13 @@ class SchemeMixCriteriaDocumentsController < AuthenticatedController
         # Create a notification for the document uploader
         notify(body: 'The status of your document %s in %s was changed to %s.',
                body_params: [@document.document_file.file.filename, scheme_mix_criteria_document.scheme_mix_criterion.name, scheme_mix_criteria_document.status.humanize],
-               uri: edit_project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_path(@project, @certification_path, scheme_mix_criteria_document.scheme_mix_criterion.scheme_mix, scheme_mix_criteria_document.scheme_mix_criterion, scheme_mix_criteria_document),
+               uri: project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_path(@project, @certification_path, scheme_mix_criteria_document.scheme_mix_criterion.scheme_mix, scheme_mix_criteria_document.scheme_mix_criterion, scheme_mix_criteria_document),
                user: @document.user,
                project: @project)
       end
     end
 
     redirect_to :back, notice: 'The document details were successfully updated.'
-  end
-
-  def show
-    redirect_to edit_project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_path, status: 301
   end
 
   def destroy

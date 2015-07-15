@@ -7,7 +7,7 @@ Rails.application.routes.draw do
         resources :scheme_mix_criteria, only: [ :edit, :show, :update ], path: 'criteria', as: 'scheme_mix_criterion' do
           resources :requirement_data, only: [ :update ], path: 'requirement', as: 'requirement_data'
           resources :scheme_mix_criterion_logs, only: [ :index ], path: 'status_logs', as: 'status_logs'
-          resources :scheme_mix_criteria_documents, only: [ :create, :edit, :show, :update, :destroy ], path: 'documentation', as: 'scheme_mix_criteria_documents' do
+          resources :scheme_mix_criteria_documents, only: [ :create, :show, :update, :destroy ], path: 'documentation', as: 'scheme_mix_criteria_documents' do
             resources :scheme_mix_criteria_document_comments, only: [ :create ], path: 'comments', as: 'scheme_mix_criteria_document_comments'
           end
         end

@@ -5,12 +5,8 @@ class SchemeMixCriteriaController < AuthenticatedController
   before_action :set_scheme_mix_criterion
   load_and_authorize_resource
 
-  def edit
-    @page_title = @scheme_mix_criterion.name
-  end
-
   def show
-    redirect_to edit_project_certification_path_scheme_mix_scheme_mix_criterion_path, status: 301
+    @page_title = @scheme_mix_criterion.name
   end
 
   def update
@@ -51,7 +47,7 @@ class SchemeMixCriteriaController < AuthenticatedController
           end
         end
 
-        redirect_to edit_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), notice: 'Criterion was successfully updated.'
+        redirect_to project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), notice: 'Criterion was successfully updated.'
       else
         render :edit
       end
@@ -104,7 +100,7 @@ class SchemeMixCriteriaController < AuthenticatedController
         end
         @scheme_mix_criterion.save!
       end
-      redirect_to edit_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), notice: 'Criterion was successfully updated.'
+      redirect_to project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), notice: 'Criterion was successfully updated.'
     end
   end
 
