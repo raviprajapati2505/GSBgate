@@ -3,29 +3,22 @@
         <h5>Listing projects</h5>
     </div>
     <div class="ibox-content">
-        <table class="table table-striped table-bordered table-hover datatable">
+        <table class="table table-bordered table-hover datatable">
             <thead>
             <tr>
                 <th><%= Project.human_attribute_name('code') %></th>
                 <th><%= Project.human_attribute_name('name') %></th>
                 <th><%= Project.human_attribute_name('description') %></th>
                 <th><%= Project.human_attribute_name('country') %></th>
-                <th>Actions</th>
             </tr>
             </thead>
             <tbody>
             <% @projects.each do |project| %>
-                <tr>
+                <tr class="clickable" data-href="<%= project_path(project) %>">
                     <td><%= project.code %></td>
                     <td><%= project.name %></td>
                     <td><%= project.description %></td>
                     <td><%= project.country %></td>
-                    <td>
-                        <%= link_to raw('<i title="Show" class="fa fa-lg fa-search" style="padding-right: 10px;"></i>'), project %>
-                        <% if can? :edit, project %>
-                            <%= link_to raw('<i title="Edit" class="fa fa-lg fa-edit" style="padding-right: 10px;"></i>'), edit_project_path(project) %>
-                        <% end %>
-                    </td>
                 </tr>
             <% end %>
             </tbody>

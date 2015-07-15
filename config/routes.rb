@@ -2,8 +2,8 @@ Rails.application.routes.draw do
   resources :projects, except: [ :destroy ] do
     resources :project_authorizations, only: [ :new, :edit, :show, :update, :destroy ], path: 'authorizations', as: 'authorization'
     resources :project_authorizations, only: [ :create ], path: 'authorizations', as: 'authorizations'
-    resources :certification_paths, except: [ :destroy ], path: 'certificates' do
-      resources :scheme_mixes, only: [ :edit, :show ], path: 'schemes' do
+    resources :certification_paths, except: [ :edit, :destroy ], path: 'certificates' do
+      resources :scheme_mixes, only: [ :show ], path: 'schemes' do
         resources :scheme_mix_criteria, only: [ :edit, :show, :update ], path: 'criteria', as: 'scheme_mix_criterion' do
           resources :requirement_data, only: [ :update ], path: 'requirement', as: 'requirement_data'
           resources :scheme_mix_criterion_logs, only: [ :index ], path: 'status_logs', as: 'status_logs'

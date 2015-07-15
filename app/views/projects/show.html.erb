@@ -69,19 +69,18 @@
                 <% if @project.certification_paths.count == 0 %>
                     <p>This project hasn't applied for any certificate yet.</p>
                 <% else %>
-                    <table class="table table-striped table-bordered table-hover">
+                    <table class="table table-bordered table-hover">
                         <thead>
                             <tr>
                                 <th class="col-md-3">Stage</th>
                                 <th class="col-md-2">Status</th>
                                 <th class="col-md-2">Certification goal</th>
                                 <th class="col-md-2">Current rating</th>
-                                <th class="col-md-1">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                         <% @project.certification_paths.each do |certification_path| %>
-                            <tr>
+                            <tr class="clickable" data-href="<%= project_certification_path_path(@project, certification_path) %>">
                                 <td><%= certification_path.certificate.label %></td>
                                 <td><%= certification_path.status.humanize %></td>
                                 <% targeted_score = certification_path.total_weighted_targeted_score %>
@@ -99,12 +98,6 @@
                                     (<% stars.times do %>
                                         <i class="fa fa-star"></i>
                                     <% end %>) - <%= submitted_score %>
-                                </td>
-                                <td>
-                                    <%= link_to raw('<i title="Show" class="fa fa-lg fa-search" style="padding-right: 10px;"></i>'), project_certification_path_path(@project, certification_path) %>
-                                    <% if can? :manage, certification_path %>
-                                    <%= link_to raw('<i title="Edit" class="fa fa-lg fa-edit" style="padding-right: 10px;"></i>'), edit_project_certification_path_path(@project, certification_path) %>
-                                    <% end %>
                                 </td>
                             </tr>
                         <% end %>

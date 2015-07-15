@@ -40,3 +40,8 @@ C) Manually
 
 == Deploy GSASService and GSASVB6 on windows test server
 svn://svnext.vito.be/ENE/TEM/EMIS/GORD-GSAS/trunk/GSASServices/GSASServices/Docs/INSTALL.txt
+
+== Scheduled jobs on linux test server
+1. $> sudo cron -e
+2. add following line to crontab :
+   0 10 * * * rake gsas/notifyTaskDueDate

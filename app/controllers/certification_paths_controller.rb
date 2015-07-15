@@ -1,6 +1,6 @@
 class CertificationPathsController < AuthenticatedController
   before_action :set_project
-  before_action :set_certification_path, only: [:show, :edit]
+  before_action :set_certification_path, only: [:show]
   load_and_authorize_resource
 
   def index
@@ -8,9 +8,6 @@ class CertificationPathsController < AuthenticatedController
   end
 
   def show
-    if @certification_path.scheme_mixes.count == 1
-      redirect_to project_certification_path_scheme_mix_path(@project, @certification_path, @certification_path.scheme_mixes.take)
-    end
     @page_title = "#{@certification_path.certificate.label} for #{@project.name}"
   end
 
@@ -37,10 +34,6 @@ class CertificationPathsController < AuthenticatedController
     end
   end
 
-  def edit
-
-  end
-
   def update
     CertificationPath.transaction do
       if @certification_path.status != certification_path_params[:status]
@@ -57,7 +50,7 @@ class CertificationPathsController < AuthenticatedController
         flash[:notice] = 'Status was successfully updated.'
         redirect_to edit_project_certification_path_path(@project, @certification_path)
       else
-        render action: :edit
+        render action: :show
       end
     end
   end
