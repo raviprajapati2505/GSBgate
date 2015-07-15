@@ -9,7 +9,7 @@
         <li><%= link_to 'Projects', projects_path %></li>
 
         <% unless @project.nil? or @project.id.nil?%>
-            <li class="active"><%= link_to 'Project ' + @project.name, project_path(@project) %></li>
+            <li class="active"><%= link_to @project.name, project_path(@project) %></li>
         <% end %>
 
         <% unless @certification_path.nil? or @certification_path.id.nil? %>

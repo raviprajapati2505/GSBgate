@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gord</title>
+    <title>GSASGate &gt; <%= @page_title %></title>
 
     <!-- Main css styles -->
     <%= stylesheet_link_tag 'application', media: 'all' %>
@@ -11,12 +11,9 @@
     <%= javascript_include_tag 'application' %>
     <%= csrf_meta_tags %>
 </head>
-
 <body class="top-navigation skin-gord">
-
 <div id="wrapper">
     <div id="page-wrapper" class="gray-bg">
-
         <!-- Navbar -->
         <%= render 'layouts/topnavbar' %>
 
@@ -34,17 +31,10 @@
             </div>
         </div>
 
+        <!-- Footer -->
+        <%= render 'layouts/footer' %>
     </div>
-
 </div>
-
-
-<!-- Footer -->
-<%= render 'layouts/footer' %>
-
-
-
 <%= yield(:js) -%>
-
 </body>
 </html>
