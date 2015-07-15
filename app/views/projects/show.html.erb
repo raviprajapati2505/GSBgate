@@ -225,7 +225,7 @@
                         <% SchemeMixCriterion.for_project(@project).assigned_to_user(current_user).order_by_code.group([:id, 'scheme_criteria.code', 'criteria.name']).each do |scheme_mix_criterion| %>
                             <tr>
                                 <td><%= scheme_mix_criterion.scheme_criterion.code %></td>
-                                <td><%= link_to scheme_mix_criterion.scheme_criterion.criterion.name, edit_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, scheme_mix_criterion.scheme_mix.certification_path, scheme_mix_criterion.scheme_mix, scheme_mix_criterion), class: 'btn btn-default' %></td>
+                                <td><%= link_to scheme_mix_criterion.scheme_criterion.criterion.name, project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, scheme_mix_criterion.scheme_mix.certification_path, scheme_mix_criterion.scheme_mix, scheme_mix_criterion), class: 'btn btn-default' %></td>
                             </tr>
                             <tr>
                                 <td colspan="2">

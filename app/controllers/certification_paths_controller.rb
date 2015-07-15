@@ -3,10 +3,6 @@ class CertificationPathsController < AuthenticatedController
   before_action :set_certification_path, only: [:show]
   load_and_authorize_resource
 
-  def index
-    @certification_paths = CertificationPath.all
-  end
-
   def show
     @page_title = "#{@certification_path.certificate.label} for #{@project.name}"
   end
@@ -53,7 +49,7 @@ class CertificationPathsController < AuthenticatedController
           SchemeMix.create(certification_path_id: @certification_path.id, scheme_id: Scheme.where('label = ?', 'Operations').first.id, weight: 100)
         end
         flash[:notice] = 'Status was successfully updated.'
-        redirect_to edit_project_certification_path_path(@project, @certification_path)
+        redirect_to project_certification_path_path(@project, @certification_path)
       else
         render action: :show
       end

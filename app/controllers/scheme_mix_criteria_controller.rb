@@ -14,7 +14,7 @@ class SchemeMixCriteriaController < AuthenticatedController
         # if achieved score is not yet provided only the status can only be 'in progress' or 'complete'
         if @scheme_mix_criterion.achieved_score.nil?
           flash[:alert] = 'You first have to provide achieved score'
-          render :edit
+          render :show
           return
         end
       elsif scheme_mix_criterion_params[:status] == :complete.to_s
@@ -23,7 +23,7 @@ class SchemeMixCriteriaController < AuthenticatedController
         @scheme_mix_criterion.requirement_data.each do |requirement_datum|
           if requirement_datum.status == :required.to_s
             flash[:alert] = 'All requirements should first be approved or set to \'not required\''
-            render :edit
+            render :show
             return
           end
         end
@@ -49,7 +49,7 @@ class SchemeMixCriteriaController < AuthenticatedController
 
         redirect_to project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), notice: 'Criterion was successfully updated.'
       else
-        render :edit
+        render :show
       end
   end
 
