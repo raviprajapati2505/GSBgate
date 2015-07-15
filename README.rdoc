@@ -42,6 +42,12 @@ C) Manually
 svn://svnext.vito.be/ENE/TEM/EMIS/GORD-GSAS/trunk/GSASServices/GSASServices/Docs/INSTALL.txt
 
 == Scheduled jobs on linux test server
-1. $> sudo cron -e
-2. add following line to crontab :
-   0 10 * * * rake gsas/notifyTaskDueDate
+1. $> touch /home/jenkins/generate_notification.sh
+2. $> chmod +x /home/jenkins/generate_notifications.sh
+3. add following lines :
+   source /etc/profile.d/rbenv.sh
+   cd /var/gord-gsas
+   RAILS_ENV=production bundle exec rake gsas:notifyTaskDueDate
+4. $> sudo cron -e
+5. add following line to crontab :
+   0 10 * * * /home/jenkins/generate_notifications.sh
