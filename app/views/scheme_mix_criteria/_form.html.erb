@@ -55,19 +55,6 @@
                 <% end %>
             </div>
         </div>
-        <div class="ibox">
-          <div class="ibox-title">
-            <h5>Criterion details</h5>
-          </div>
-          <div class="ibox-content">
-            <div><strong>Description</strong></div>
-            <div><p><%= @scheme_mix_criterion.scheme_criterion.criterion.description %></p></div>
-            <div><strong>Measurement</strong></div>
-            <div><p><%= @scheme_mix_criterion.scheme_criterion.criterion.measurement %></p></div>
-            <div><strong>Measurement principle</strong></div>
-            <div><p><%= @scheme_mix_criterion.scheme_criterion.criterion.measurement_principle %></p></div>
-          </div>
-        </div>
         <% if current_user.system_admin? %>
             <div class="ibox">
                 <div class="ibox-title">
@@ -89,6 +76,21 @@
             </div>
         <% end %>
         <div class="ibox">
+          <div class="ibox-title">
+            <h5>Criterion details</h5>
+          </div>
+          <div class="ibox-content">
+            <div><strong>Description</strong></div>
+            <div><p><%= @scheme_mix_criterion.scheme_criterion.criterion.description %></p></div>
+            <div><strong>Measurement</strong></div>
+            <div><p><%= @scheme_mix_criterion.scheme_criterion.criterion.measurement %></p></div>
+            <div><strong>Measurement principle</strong></div>
+            <div><p><%= @scheme_mix_criterion.scheme_criterion.criterion.measurement_principle %></p></div>
+          </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="ibox">
             <div class="ibox-title">
                 <h5>Requirements</h5>
             </div>
@@ -104,8 +106,6 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="col-lg-6">
         <div class="ibox">
             <div class="ibox-title">
                 <h5>Upload documentation</h5>
