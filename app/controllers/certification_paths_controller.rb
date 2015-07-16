@@ -33,16 +33,27 @@ class CertificationPathsController < AuthenticatedController
   def update
     CertificationPath.transaction do
       if @certification_path.status != certification_path_params[:status]
-        if !current_user.system_admin?
-          raise CanCan::AccessDenied.new('Not Authorized to update certification_path status', :update, CertificationPath)
+        case CertificationPath.statuses[certification_path_params[:status]]
+          when CertificationPath.statuses[:preassessment]
+            if !current_user.system_admin?
+              raise CanCan::AccessDenied.new('Not Authorized to update certification_path status', :update, CertificationPath)
+            end
+            # Generate a notification for the project owner
+            notify(body: 'The status of %s was changed to %s.',
+                   body_params: [@certification_path.certificate.label, certification_path_params[:status]],
+                   uri: project_certification_path_path(@project, @certification_path),
+                   user: @project.owner,
+                   project: @project)
+          when CertificationPath.statuses[:preliminary]
+            # Generate a notification for the certifier managers
+            ProjectAuthorization.for_project(@project).certifier_manager.each do |project_authorization|
+              notify(body: 'The status of %s was changed to %s.',
+                     body_params: [@certification_path.certificate.label, certification_path_params[:status]],
+                     uri: project_certification_path_path(@project, @certification_path),
+                     user: project_authorization.user,
+                     project: @project)
+            end
         end
-
-        # Generate a notification for the project owner
-        notify(body: 'The status of %s was changed to %s.',
-               body_params: [@certification_path.certificate.label, @certification_path.status.humanize],
-               uri: project_certification_path_path(@project, @certification_path),
-               user: @project.owner,
-               project: @project)
       end
       if @certification_path.update(certification_path_params)
         if @certification_path.scheme_mixes.count == 0
