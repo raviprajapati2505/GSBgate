@@ -1,9 +1,13 @@
 class UsersController < AuthenticatedController
-  before_action :set_user, only: [:edit, :update]
+  before_action :set_user, only: [:task_index, :edit, :update]
   load_and_authorize_resource
 
   def index
     @users = User.all
+  end
+
+  def index_tasks
+    @project = Project.find(params[:project_id])
   end
 
   def edit

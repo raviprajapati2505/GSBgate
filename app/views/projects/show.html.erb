@@ -136,13 +136,12 @@
                             <td></td>
                         </tr>
                         <% @project.certifiers.distinct.each do |certifier| %>
-                        <tr>
+                        <tr class="clickable" data-href="<%= project_user_tasks_path(@project, certifier) %>">
                             <% project_authorization = certifier.project_authorizations.for_project(@project).first %>
                             <td><%= certifier.email %></td>
                             <td><%= project_authorization.role.humanize %></td>
                             <td><%= certifier.scheme_mix_criteria.for_project(@project).reviewed.count %>/<%= certifier.scheme_mix_criteria.for_project(@project).count %></td>
                             <td>
-                                <!--= link_to raw('<i title="Edit authorization" class="fa fa-lg fa-edit" style="padding-right: 10px;"></i>'),  edit_project_authorization_path(@project, project_authorization, query: 'certifiers') %-->
                                 <%= link_to raw('<i title="Delete authorization" class="fa fa-lg fa-trash" style="padding-right: 10px;"></i>'), project_authorization_path(@project, project_authorization), method: :delete, data: {confirm: 'Are you sure to remove certifier manager ?'} %>
                             </td>
                         </tr>
@@ -182,7 +181,7 @@
                             <td></td>
                         </tr>
                         <% @project.users.distinct.each do |user| %>
-                        <tr>
+                        <tr class="clickable" data-href="<%= project_user_tasks_path(@project, user) %>">
                             <% project_authorization = user.project_authorizations.for_project(@project).first %>
                             <td><%= user.email %></td>
                             <td><%= project_authorization.role.humanize %></td>
@@ -212,61 +211,7 @@
                     <h5>Project Tasks</h5>
                 </div>
                 <div class="ibox-content">
-                    <% assessor_task_count = current_user.requirement_data.for_project(@project).count %>
-                    <% certifier_task_count = current_user.scheme_mix_criteria.for_project(@project).count %>
-                    <% if assessor_task_count == 0 && certifier_task_count == 0 %>
-                        <p>No tasks are assigned to you.</p>
-                    <% else %>
-                    <table class="table table-bordered">
-                        <thead>
-                        <tr>
-                            <th class="col-md-1">Code</th>
-                            <th>Criteria</th>
-                            <% if certifier_task_count > 0 %>
-                            <th class="col-md-2">Due date</th>
-                            <% end %>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <% SchemeMixCriterion.for_project(@project).assigned_to_user(current_user).order_by_code.group([:id, 'scheme_criteria.code']).each do |scheme_mix_criterion| %>
-                            <tr class="clickable" data-href="<%= project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, scheme_mix_criterion.scheme_mix.certification_path, scheme_mix_criterion.scheme_mix, scheme_mix_criterion) %>">
-                                <td><%= scheme_mix_criterion.scheme_criterion.code %></td>
-                                <td><%= scheme_mix_criterion.scheme_criterion.criterion.name %></td>
-                                <% if certifier_task_count > 0 %>
-                                <td><%= scheme_mix_criterion.due_date %><% if !scheme_mix_criterion.due_date.nil? && Date.today > scheme_mix_criterion.due_date %>&nbsp;<i class="fa fa-clock-o" title="<%= t('.tooltip_due_date') %>" data-toggle="tooltip"></i><% end %></td>
-                                <% end %>
-                            </tr>
-                            <% if scheme_mix_criterion.requirement_data.assigned_to_user(current_user).exists? %>
-                            <tr>
-                                <td colspan="2">
-                                    <table class="table">
-                                        <thead>
-                                        <tr>
-                                            <th class="col-md-1">Provided</th>
-                                            <th class="col-md-9">Requirement</th>
-                                            <th class="col-md-2">Due date</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                            <% scheme_mix_criterion.requirement_data.assigned_to_user(current_user).each do |requirement_datum| %>
-                                                <tr>
-                                                    <td><% if requirement_datum.required? %><i class="fa fa-lg fa-square-o" title="<%= t('.tooltip_requirement_required') %>" data-toggle="tooltip"></i>
-                                                        <% elsif requirement_datum.provided? %><i class="fa fa-lg fa-check-square-o" title="<%= t('.tooltip_requirement_provided') %>" data-toggle="tooltip"></i>
-                                                        <% else %><i class="fa fa-lg fa-square" title="<%= t('.tooltip_requirement_not_required') %>" data-toggle="tooltip"></i><% end %>
-                                                    </td>
-                                                    <td><%= requirement_datum.requirement.label %></td>
-                                                    <td><%= requirement_datum.due_date %><% if requirement_datum.required? && !requirement_datum.due_date.nil? && Date.today > requirement_datum.due_date %>&nbsp;<i class="fa fa-clock-o" title="<%= t('.tooltip_due_date') %>" data-toggle="tooltip"></i><% end %></td>
-                                                </tr>
-                                            <% end %>
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
-                            <% end %>
-                        <% end %>
-                        </tbody>
-                    </table>
-                    <% end %>
+                    <%= render 'users/tasks', user: current_user %>
                 </div>
             </div>
     </div>

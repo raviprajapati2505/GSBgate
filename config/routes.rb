@@ -22,6 +22,7 @@ Rails.application.routes.draw do
 
   resources :users
   get 'projects/:project_id/users/new' => 'users#new_member', as: 'new_project_user'
+  get 'projects/:project_id/users/:id/tasks' => 'users#index_tasks', as: 'project_user_tasks'
   devise_for :user
 
   # Error pages

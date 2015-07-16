@@ -35,9 +35,13 @@ class Ability
       can :manage, :all
     elsif user.user?
       # User controller
-      can :new_member, User, owner_id: user.id
+      can :new_member, User, projects: {owner_id: user.id}
       can :new_member, User, project_authorizations: {user_id: user.id, role: ['project_system_administrator', ProjectAuthorization.roles[:project_system_administrator]]}
       can :new_member, User, project_authorizations: {user_id: user.id, role: ['cgp_project_manager', ProjectAuthorization.roles[:cgp_project_manager]]}
+      can :task_index, User, projects: {owner_id: user.id}
+      can :task_index, User, project_authorizations: {user_id: user.id, role: ['project_system_administrator', ProjectAuthorization.roles[:project_system_administrator]]}
+      can :task_index, User, project_authorizations: {user_id: user.id, role: ['cgp_project_manager', ProjectAuthorization.roles[:cgp_project_manager]]}
+      can :task_index, User, project_authorizations: {user_id: user.id, role: ['certifier_manager', ProjectAuthorization.roles[:certifier_manager]]}
       # Project controller
       can :manage, Project, owner_id: user.id
       # Waiting for https://github.com/CanCanCommunity/cancancan/pull/196
@@ -48,6 +52,7 @@ class Ability
       can :manage, ProjectAuthorization, project: {owner_id: user.id}
       can :manage, ProjectAuthorization, project: {project_authorizations: {user_id: user.id, role: ['project_system_administrator', ProjectAuthorization.roles[:project_system_administrator]]}}
       can :manage, ProjectAuthorization, project: {project_authorizations: {user_id: user.id, role: ['cgp_project_manager', ProjectAuthorization.roles[:cgp_project_manager]]}}
+      can :manage, ProjectAuthorization, project: {project_authorizations: {user_id: user.id, role: ['certifier_manager', ProjectAuthorization.roles[:certifier_manager]]}}
       can :read, ProjectAuthorization, project: {project_authorizations: {user_id: user.id, role: ['enterprise_account', ProjectAuthorization.roles[:enterprise_account]]}}
       can :create, ProjectAuthorization
       # CertificationPath controller
