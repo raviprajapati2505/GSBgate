@@ -49,7 +49,7 @@
                                 <%= f.primary 'Save' %>
                                 <button type="button" class="btn btn-white" data-toggle="modal" data-target="#updateCriterionStatusModal">Update status</button>
                             <% end %>
-                            <%= link_to 'Show status log', project_certification_path_scheme_mix_scheme_mix_criterion_status_logs_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), remote: true, class: 'btn btn-white' %>
+                            <%= link_to raw('<i title="Show status log" class="fa fa-lg fa-history" style="padding-right: 10px;"></i>Show status log'), project_certification_path_scheme_mix_scheme_mix_criterion_status_logs_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), remote: true, class: 'btn btn-white' %>
                         </div>
                     </div>
                 <% end %>
