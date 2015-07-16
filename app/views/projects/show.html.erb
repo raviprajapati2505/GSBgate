@@ -161,6 +161,7 @@
                     <h5>Project team</h5>
                 </div>
                 <div class="ibox-content">
+                    <p><strong>Project owner :</strong> <%= @project.owner.email %></p>
                     <% if @project.users.distinct.count == 0%>
                     <p>This project has no team members.</p>
                     <% else %>
@@ -211,7 +212,9 @@
                     <h5>Project Tasks</h5>
                 </div>
                 <div class="ibox-content">
-                    <% if current_user.requirement_data.for_project(@project).count == 0 %>
+                    <% assessor_task_count = current_user.requirement_data.for_project(@project).count %>
+                    <% certifier_task_count = current_user.scheme_mix_criteria.for_project(@project).count %>
+                    <% if assessor_task_count == 0 && certifier_task_count == 0 %>
                         <p>No tasks are assigned to you.</p>
                     <% else %>
                     <table class="table table-bordered">
@@ -219,14 +222,21 @@
                         <tr>
                             <th class="col-md-1">Code</th>
                             <th>Criteria</th>
+                            <% if certifier_task_count > 0 %>
+                            <th class="col-md-2">Due date</th>
+                            <% end %>
                         </tr>
                         </thead>
                         <tbody>
-                        <% SchemeMixCriterion.for_project(@project).assigned_to_user(current_user).order_by_code.group([:id, 'scheme_criteria.code', 'criteria.name']).each do |scheme_mix_criterion| %>
-                            <tr>
+                        <% SchemeMixCriterion.for_project(@project).assigned_to_user(current_user).order_by_code.group([:id, 'scheme_criteria.code']).each do |scheme_mix_criterion| %>
+                            <tr class="clickable" data-href="<%= project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, scheme_mix_criterion.scheme_mix.certification_path, scheme_mix_criterion.scheme_mix, scheme_mix_criterion) %>">
                                 <td><%= scheme_mix_criterion.scheme_criterion.code %></td>
-                                <td><%= link_to scheme_mix_criterion.scheme_criterion.criterion.name, project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, scheme_mix_criterion.scheme_mix.certification_path, scheme_mix_criterion.scheme_mix, scheme_mix_criterion), class: 'btn btn-default' %></td>
+                                <td><%= scheme_mix_criterion.scheme_criterion.criterion.name %></td>
+                                <% if certifier_task_count > 0 %>
+                                <td><%= scheme_mix_criterion.due_date %><% if !scheme_mix_criterion.due_date.nil? && Date.today > scheme_mix_criterion.due_date %>&nbsp;<i class="fa fa-clock-o" title="<%= t('.tooltip_due_date') %>" data-toggle="tooltip"></i><% end %></td>
+                                <% end %>
                             </tr>
+                            <% if scheme_mix_criterion.requirement_data.assigned_to_user(current_user).exists? %>
                             <tr>
                                 <td colspan="2">
                                     <table class="table">
@@ -252,6 +262,7 @@
                                     </table>
                                 </td>
                             </tr>
+                            <% end %>
                         <% end %>
                         </tbody>
                     </table>

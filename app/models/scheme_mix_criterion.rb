@@ -24,9 +24,9 @@ class SchemeMixCriterion < ActiveRecord::Base
     joins(:scheme_criterion)
     .reorder('scheme_criteria.code')
   }
+
   scope :assigned_to_user, ->(user) {
-    joins(:requirement_data)
-        .where(requirement_data: {user_id: user.id})
+    joins(:requirement_data).where('scheme_mix_criteria.certifier_id = ? or requirement_data.user_id = ?', user.id, user.id)
   }
 
   scope :for_project, ->(project) {
