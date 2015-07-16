@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150714141336) do
+ActiveRecord::Schema.define(version: 20150716074213) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -171,10 +171,14 @@ ActiveRecord::Schema.define(version: 20150714141336) do
   create_table "scheme_criteria", force: :cascade do |t|
     t.integer  "scheme_id"
     t.integer  "criterion_id"
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
-    t.decimal  "weight",       precision: 4, scale: 2
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
+    t.decimal  "weight",            precision: 4, scale: 2
     t.string   "code"
+    t.text     "score_description"
+    t.string   "score_class_name"
+    t.string   "score_type_a"
+    t.string   "score_type_b"
   end
 
   add_index "scheme_criteria", ["criterion_id"], name: "index_scheme_criteria_on_criterion_id", using: :btree
