@@ -125,7 +125,6 @@
                             <th>Member</th>
                             <th>Role</th>
                             <th>Criteria progress</th>
-                            <th>Actions</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -133,7 +132,6 @@
                             <td>Unassigned</td>
                             <td>-</td>
                             <td><%= SchemeMixCriterion.for_project(@project).unassigned.distinct.count %>/<%= SchemeMixCriterion.for_project(@project).distinct.count %></td>
-                            <td></td>
                         </tr>
                         <% @project.certifiers.distinct.each do |certifier| %>
                         <tr class="clickable" data-href="<%= project_user_tasks_path(@project, certifier) %>">
@@ -141,9 +139,6 @@
                             <td><%= certifier.email %></td>
                             <td><%= project_authorization.role.humanize %></td>
                             <td><%= certifier.scheme_mix_criteria.for_project(@project).reviewed.count %>/<%= certifier.scheme_mix_criteria.for_project(@project).count %></td>
-                            <td>
-                                <%= link_to raw('<i title="Delete authorization" class="fa fa-lg fa-trash" style="padding-right: 10px;"></i>'), project_authorization_path(@project, project_authorization), method: :delete, data: {confirm: 'Are you sure to remove certifier manager ?'} %>
-                            </td>
                         </tr>
                         <% end %>
                         </tbody>
@@ -170,7 +165,6 @@
                             <th>Member</th>
                             <th>Role</th>
                             <th>Requirement progress</th>
-                            <th>Actions</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -178,7 +172,6 @@
                             <td>Unassigned</td>
                             <td>-</td>
                             <td><%= RequirementDatum.for_project(@project).unassigned.targeted.count %>/<%= RequirementDatum.for_project(@project).targeted.count %></td>
-                            <td></td>
                         </tr>
                         <% @project.users.distinct.each do |user| %>
                         <tr class="clickable" data-href="<%= project_user_tasks_path(@project, user) %>">
@@ -186,14 +179,6 @@
                             <td><%= user.email %></td>
                             <td><%= project_authorization.role.humanize %></td>
                             <td><%= user.requirement_data.for_project(@project).completed.count %>/<%= user.requirement_data.for_project(@project).count %></td>
-                            <td>
-                            <% if can? :edit, project_authorization %>
-                                <%= link_to raw('<i title="Edit authorization" class="fa fa-lg fa-edit" style="padding-right: 10px;"></i>'),  edit_project_authorization_path(@project, project_authorization) %>
-                            <% end %>
-                            <% if can? :destroy, project_authorization %>
-                                <%= link_to raw('<i title="Delete authorization" class="fa fa-lg fa-trash" style="padding-right: 10px;"></i>'), project_authorization_path(@project, project_authorization), method: :delete, data: {confirm: 'Are you sure to remove team member ?'} %>
-                            <% end %>
-                            </td>
                         </tr>
                         <% end %>
                         </tbody>

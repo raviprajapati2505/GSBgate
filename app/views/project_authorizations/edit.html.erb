@@ -8,7 +8,7 @@
                 <div class="ibox-content">
                     <%= f.select :user_id, [[@project_authorization.user.email, @project_authorization.user.id]], {}, { disabled: true} %>
                     <% if @show_certifiers %>
-                    <%= f.select :role, ProjectAuthorization.roles.keys[5..5].map { |k| [k.humanize, k]} %>
+                    <%= f.select :role, ProjectAuthorization.roles.keys[4..5].map { |k| [k.humanize, k]} %>
                     <% else %>
                     <%= f.select :role, ProjectAuthorization.roles.keys[0..3].map { |k| [k.humanize, k]} %>
                     <% end %>
