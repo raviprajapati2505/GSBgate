@@ -43,13 +43,13 @@ class RequirementDataController < AuthenticatedController
       if @requirement_datum.due_date.nil?
         notify(body: 'Requirement %s is assigned to you.',
                body_params: [@requirement_datum.requirement.label],
-               uri: project_certification_path_scheme_mix_scheme_mix_criterion_path(params[:project_id], params[:certification_path_id], params[:scheme_mix_id], params[:scheme_mix_criterion_id]),
+               uri: project_certification_path_scheme_mix_scheme_mix_criterion_path(params[:project_id], params[:certification_path_id], params[:scheme_mix_id], params[:scheme_mix_criterion_id]) + '#requirement-' + @requirement_datum.id.to_s,
                user: @requirement_datum.user,
                project: @project)
       else
         notify(body: 'Requirement %s is assigned to you. The due date is %s.',
                body_params: [@requirement_datum.requirement.label, l(@requirement_datum.due_date, format: :short)],
-               uri: project_certification_path_scheme_mix_scheme_mix_criterion_path(params[:project_id], params[:certification_path_id], params[:scheme_mix_id], params[:scheme_mix_criterion_id]),
+               uri: project_certification_path_scheme_mix_scheme_mix_criterion_path(params[:project_id], params[:certification_path_id], params[:scheme_mix_id], params[:scheme_mix_criterion_id]) + '#requirement-' + @requirement_datum.id.to_s,
                user: @requirement_datum.user,
                project: @project)
       end
@@ -58,13 +58,13 @@ class RequirementDataController < AuthenticatedController
         if @requirement_datum.due_date.nil?
           notify(body: 'Due date for requirement %s is removed.',
                  body_params: [@requirement_datum.requirement.label],
-                 uri: project_certification_path_scheme_mix_scheme_mix_criterion_path(params[:project_id], params[:certification_path_id], params[:scheme_mix_id], params[:scheme_mix_criterion_id]),
+                 uri: project_certification_path_scheme_mix_scheme_mix_criterion_path(params[:project_id], params[:certification_path_id], params[:scheme_mix_id], params[:scheme_mix_criterion_id]) + '#requirement-' + @requirement_datum.id.to_s,
                  user: @requirement_datum.user,
                  project: @project)
         else
           notify(body: 'Due date for requirement %s is changed to %s.',
                  body_params: [@requirement_datum.requirement.label, l(@requirement_datum.due_date, format: :short)],
-                 uri: project_certification_path_scheme_mix_scheme_mix_criterion_path(params[:project_id], params[:certification_path_id], params[:scheme_mix_id], params[:scheme_mix_criterion_id]),
+                 uri: project_certification_path_scheme_mix_scheme_mix_criterion_path(params[:project_id], params[:certification_path_id], params[:scheme_mix_id], params[:scheme_mix_criterion_id]) + '#requirement-' + @requirement_datum.id.to_s,
                  user: @requirement_datum.user,
                  project: @project)
         end

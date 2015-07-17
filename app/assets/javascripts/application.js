@@ -119,6 +119,8 @@ $(function () {
 
             e.preventDefault();
         }
+
+        $('#showNotificationsModal').modal('hide');
     });
 
     // Notifications (mark all as read)
