@@ -61,11 +61,11 @@ ActiveRecord::Schema.define(version: 20150716094936) do
   create_table "criteria", force: :cascade do |t|
     t.string   "name"
     t.integer  "category_id"
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
     t.text     "description"
     t.text     "measurement"
     t.text     "measurement_principle"
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
   end
 
   add_index "criteria", ["category_id"], name: "index_criteria_on_category_id", using: :btree

@@ -96,6 +96,15 @@ $(function () {
         "hideMethod": "fadeOut"
     };
 
+    // Scroll to hash
+    if(window.location.hash) {
+        $('html, body').animate({
+            scrollTop: $(window.location.hash).offset().top
+        }, 1000, function() {
+            $(window.location.hash).addClass('flash animated');
+        });
+    }
+
     // Notifications (mark one as read)
     $('body').on('click', 'a.notification', function(e) {
         var notification = $(this);
