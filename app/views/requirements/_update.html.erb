@@ -41,7 +41,9 @@
                     <div class="col-md-12">
                         <div class="hr-line-dashed"></div>
                         <% if can? :update, requirement_datum %>
-                            <%= f.primary %>
+                            <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
+                                <i title="Save" class="fa fa-lg fa-save" style="padding-right: 10px;"></i>Save
+                            <% end %>
                         <% end %>
                     </div>
                 </div>

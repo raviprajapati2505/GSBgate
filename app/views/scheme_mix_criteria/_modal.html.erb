@@ -19,8 +19,10 @@
                 <% end %>
             </div>
             <div class="modal-footer">
-                <%= f.primary t('.btn_save') %>
-                <button type="button" class="btn btn-white" data-dismiss="modal"><%= t('.btn_cancel') %></button>
+                <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
+                    <i title="Save" class="fa fa-lg fa-save" style="padding-right: 10px;"></i><%= t('.btn_save') %>
+                <% end %>
+                <button type="button" class="btn btn-white" data-dismiss="modal"><i title="Cancel" class="fa fa-lg fa-times" style="padding-right: 10px;"></i><%= t('.btn_cancel') %></button>
             </div>
         </div>
         <% end %>

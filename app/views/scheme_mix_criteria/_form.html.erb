@@ -46,7 +46,9 @@
                         <div class="col-md-12">
                             <div class="hr-line-dashed"></div>
                             <% if can? :manage, @scheme_mix_criterion %>
-                                <%= f.primary 'Save' %>
+                                <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
+                                <i title="Save" class="fa fa-lg fa-save" style="padding-right: 10px;"></i>Save
+                                <% end %>
                                 <button type="button" class="btn btn-white" data-toggle="modal" data-target="#updateCriterionStatusModal">Update status</button>
                             <% end %>
                             <%= link_to raw('<i title="Show status log" class="fa fa-lg fa-history" style="padding-right: 10px;"></i>Show status log'), project_certification_path_scheme_mix_scheme_mix_criterion_status_logs_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), remote: true, class: 'btn btn-white' %>
@@ -70,7 +72,9 @@
                         <% end %>
                         <%= f.text_field :due_date, value: ((l @scheme_mix_criterion.due_date, format: :short) if !@scheme_mix_criterion.due_date.nil?), prepend: '<i class="fa fa-calendar"></i>'.html_safe, data: {provide: 'datepicker'} %>
                         <div class="hr-line-dashed"></div>
-                        <%= f.primary 'Save' %>
+                        <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
+                        <i title="Save" class="fa fa-lg fa-save" style="padding-right: 10px;"></i>Save
+                        <% end %>
                     <% end %>
                 </div>
             </div>

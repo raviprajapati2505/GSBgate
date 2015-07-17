@@ -145,7 +145,7 @@
                     </table>
                     <% end %>
                     <div class="hr-line-dashed"></div>
-                    <%= link_to raw('<i title="Add certifier team member" class="fa fa-lg fa-user" style="padding-right: 10px;"></i>') + t('.btn_add_certifier_team_member'), new_project_authorization_path(@project, query: 'certifiers'), class: 'btn btn-primary' %>
+                    <%= link_to raw('<i title="Add certifier team member" class="fa fa-lg fa-user-plus" style="padding-right: 10px;"></i>') + t('.btn_add_certifier_team_member'), new_project_authorization_path(@project, query: 'certifiers'), class: 'btn btn-primary' %>
                 </div>
             </div>
         <% end %>
@@ -186,18 +186,11 @@
                     <% end %>
                     <div class="hr-line-dashed"></div>
                     <% if (@project.project_authorizations.count == 0) ||  (can? :manage, @project.project_authorizations.first) %>
-                        <%= link_to raw('<i title="Add project team member" class="fa fa-lg fa-user" style="padding-right: 10px;"></i>') + t('.btn_add_project_team_member'), new_project_authorization_path(@project), class: 'btn btn-primary' %>
+                        <%= link_to raw('<i title="Add project team member" class="fa fa-lg fa-user-plus" style="padding-right: 10px;"></i>') + t('.btn_add_project_team_member'), new_project_authorization_path(@project), class: 'btn btn-primary' %>
                     <% end %>
                 </div>
             </div>
         <% end %>
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>Project Tasks</h5>
-                </div>
-                <div class="ibox-content">
-                    <%= render 'users/tasks', user: current_user %>
-                </div>
-            </div>
+        <%= render 'users/tasks', user: current_user %>
     </div>
 </div>

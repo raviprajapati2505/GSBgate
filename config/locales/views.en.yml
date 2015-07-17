@@ -7,9 +7,9 @@ en:
       modal_title: "Confirm"
   certification_paths:
     modal:
-      btn_cancel: "Back"
+      btn_cancel: "Cancel"
       btn_close: "Close"
-      btn_save: "Update"
+      btn_save: "Save"
       modal_title: "Update status"
   projects:
     index:
@@ -38,11 +38,15 @@ en:
       tooltip_requirement_required: "Requirement not provided yet"
       tooltip_requirement_provided: "Requirement provided"
       tooltip_requirement_not_required: "Requirement not required"
+  notifications:
+    modal:
+      btn_close: "Close"
+      modal_title: "Notifications"
   scheme_mix_criteria:
     modal:
-      btn_cancel: "Back"
+      btn_cancel: "Cancel"
       btn_close: "Close"
-      btn_save: "Update"
+      btn_save: "Save"
       modal_title: "Update Status"
   scheme_mix_criterion_logs:
       modal:
@@ -50,7 +54,17 @@ en:
         btn_close: "Close"
   scheme_mix_criteria_documents:
       modal:
+        btn_cancel: "Cancel"
+        btn_close: "Close"
+        btn_save: "Save"
         info_text_review: "Review this document for compliance against this criterion. Set the status to approved if the document is compliant with the requirements."
+        modal_title: "Update status"
+  scheme_mix_criteria_document_comments:
+      modal:
+        btn_cancel: "Cancel"
+        btn_close: "Close"
+        btn_save: "Save"
+        modal_title: "Add comment"
   users:
     index:
       action_edit_title: "Edit"
