@@ -1,22 +1,20 @@
 namespace :gsas do
   desc 'Notify users about approaching tasks due dates'
-  task :notifyTaskDueDate => :environment do
-
+  task :notify_task_due_date => :environment do
     # get all requirements with due date within 7 days
-    notify('Requirement \'%s\' should be completed within %d days.', 7)
+    notify_assessors('Requirement \'%s\' should be completed within %d days.', 7)
 
     # get all requirements with due date reached
-    notify('Requirement \'%s\' should be completed within %d days.', 0)
+    notify_assessors('Requirement \'%s\' should be completed within %d days.', 0)
 
     # get all scheme mix criteria with due date within 7 days
-    notifyCertifier('Criterion \'%s\' should be completed within %d days.', 7)
+    notify_certifiers('Criterion \'%s\' should be completed within %d days.', 7)
 
     # get all scheme mix criteria with due date reached
-    notifyCertifier('Criterion \'%s\' should be completed within %d days.', 0)
-
+    notify_certifiers('Criterion \'%s\' should be completed within %d days.', 0)
   end
 
-  def notify(message, days_before_due_date)
+  def notify_assessors(message, days_before_due_date)
     due_date = I18n.l(Date.today - days_before_due_date, format: '%Y-%m-%d')
     Rails.logger.info 'Start collecting requirements with due date = ' + due_date
     notification_count = 0
@@ -41,7 +39,7 @@ namespace :gsas do
     Rails.logger.info "Created #{notification_count} notifications for requirements #{days_before_due_date} before due date."
   end
 
-  def notifyCertifier(message, days_before_due_date)
+  def notify_certifiers(message, days_before_due_date)
     due_date = I18n.l(Date.today - days_before_due_date, format: '%Y-%m-%d')
     Rails.logger.info 'Start collecting criteria with due date = ' + due_date
     notification_count = 0
