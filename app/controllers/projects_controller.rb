@@ -17,6 +17,7 @@ class ProjectsController < AuthenticatedController
   # GET /projects/1.json
   def show
     @page_title = @project.name
+    @certification_path = CertificationPath.new(project: @project)
   end
 
   # GET /projects/new

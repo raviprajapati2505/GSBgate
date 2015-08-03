@@ -6,6 +6,11 @@ en:
       btn_save: "Yes"
       modal_title: "Confirm"
   certification_paths:
+    form:
+      btn_cancel: "Cancel"
+      btn_close: "Close"
+      btn_save: "Save"
+      modal_title: "Apply for certificate"
     modal:
       btn_cancel: "Cancel"
       btn_close: "Close"

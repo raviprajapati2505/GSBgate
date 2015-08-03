@@ -22,11 +22,11 @@ class CertificationPathsController < AuthenticatedController
         flash[:notice] = 'Successfully applied for certificate.'
         redirect_to project_path(@project)
       else
-        render action: :new
+        redirect_to :back
       end
     else
       flash[:alert] = 'This certificate is not yet available.'
-      render action: :new
+      redirect_to :back
     end
   end
 

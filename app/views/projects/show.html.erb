@@ -106,7 +106,7 @@
                 <% end %>
                 <div class="hr-line-dashed"></div>
                 <% if can? :manage, @project %>
-                    <%= link_to raw('<i title="Apply for a certificate" class="fa fa-lg fa-certificate" style="padding-right: 10px;"></i>Apply for a certificate'), new_project_certification_path_path(@project), :class => 'btn btn-primary' %>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addCertificationPathModal"><i title="Apply for a certificate" class="fa fa-lg fa-certificate" style="padding-right: 10px;"></i>Apply for a certificate</button>
                 <% end %>
             </div>
         </div>
@@ -194,3 +194,4 @@
         <%= render 'users/tasks', user: current_user %>
     </div>
 </div>
+<%= render 'certification_paths/form' %>
