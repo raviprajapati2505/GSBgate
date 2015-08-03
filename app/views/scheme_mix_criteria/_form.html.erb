@@ -28,14 +28,11 @@
                             <%= f.select :submitted_score, @scheme_mix_criterion.scheme_criterion.scores.map { |k| [k.score, k.score]} %>
                         </div>
                         <div class="col-md-3">
-                            <% if can? :manage, @scheme_mix_criterion %>
+                            <!-- only certifiers should be able to update this -->
+                            <% if can? :update, @scheme_mix_criterion %>
                                 <%= f.select :achieved_score, @scheme_mix_criterion.scheme_criterion.scores.map { |k| [k.score, k.score]}, {include_blank: 'Unclassified'} %>
                             <% else %>
-                                <% if !@scheme_mix_criterion.certifier.nil? && @scheme_mix_criterion.certifier.id == current_user.id %>
-                                    <%= f.select :achieved_score, @scheme_mix_criterion.scheme_criterion.scores.map { |k| [k.score, k.score]}, {include_blank: 'Unclassified'} %>
-                                <% else %>
-                                    <%= f.static_control :achieved_score %>
-                                <% end %>
+                                <%= f.static_control :achieved_score %>
                             <% end %>
                         </div>
                         <div class="col-md-3">
@@ -57,6 +54,7 @@
                 <% end %>
             </div>
         </div>
+        <!-- certifier manager should also be able to assign responsibilities -->
         <% if current_user.system_admin? %>
             <div class="ibox">
                 <div class="ibox-title">

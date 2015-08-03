@@ -110,6 +110,7 @@
                 <% end %>
             </div>
         </div>
+        <!-- add certifier manager to allowed users -->
         <% if current_user.system_admin? %>
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
@@ -149,6 +150,7 @@
                 </div>
             </div>
         <% end %>
+        <!-- certifier manager should not be able to see project team -->
         <% if (@project.project_authorizations.count == 0) || (can? :read, @project.project_authorizations.first) %>
             <div class="ibox float-e-margins">
                 <div class="ibox-title">

@@ -23,6 +23,7 @@
                         <%= f.select :user_id, options_for_select(users.map { |k| [k.email, k.id]}, requirement_datum.user.id), {label: 'Responsibility'}, disabled: !(can? :manage, @project.project_authorizations.first) %>
                     <% end %>
                 <% end %>
+                <!-- who can see the due date ? -->
                 <%= f.text_field :due_date, value: ((l requirement_datum.due_date, format: :short) if !requirement_datum.due_date.nil?), prepend: '<i class="fa fa-calendar"></i>'.html_safe, data: {provide: 'datepicker'}, disabled: !(can? :manage, @project.project_authorizations.first) %>
                 <div class="hr-line-dashed"></div>
                 <% if requirement_datum.calculator_datum.present? %>
