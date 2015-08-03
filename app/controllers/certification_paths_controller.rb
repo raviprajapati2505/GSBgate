@@ -7,11 +7,6 @@ class CertificationPathsController < AuthenticatedController
     @page_title = "#{@certification_path.certificate.label} for #{@project.name}"
   end
 
-  def new
-    authorize! :manage, @project
-    @certification_path = CertificationPath.new(project: @project)
-  end
-
   def create
     authorize! :manage, @project
     @certification_path = CertificationPath.new(certification_path_params)

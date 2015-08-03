@@ -35,6 +35,7 @@ en:
       form_title: "Edit team member authorization"
     form:
       btn_cancel: "Back"
+      btn_close: "Close"
       btn_save: "Add"
       form_title: "Add team member"
   requirements:

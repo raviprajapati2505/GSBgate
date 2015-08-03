@@ -1,15 +1,7 @@
 class ProjectAuthorizationsController < AuthenticatedController
   load_and_authorize_resource
-  before_action :set_project, only: [:new, :create, :edit, :destroy]
+  before_action :set_project, only: [:create, :edit, :destroy]
   before_action :set_authorization, only: [:edit, :destroy]
-
-  def new
-    authorize! :manage, @project
-    @project_authorization = ProjectAuthorization.new(project: @project)
-    if current_user.system_admin? && params.has_key?(:query) && params[:query] == 'certifiers'
-      @show_certifiers = true
-    end
-  end
 
   def create
     authorize! :manage, @project
@@ -19,7 +11,7 @@ class ProjectAuthorizationsController < AuthenticatedController
       flash[:notice] = 'Member was successfully added.'
       redirect_to project_path id: @project.id
     else
-      render action: :new
+      redirect_to :back
     end
   end
 

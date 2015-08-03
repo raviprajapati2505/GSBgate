@@ -145,7 +145,7 @@
                     </table>
                     <% end %>
                     <div class="hr-line-dashed"></div>
-                    <%= link_to raw('<i title="Add certifier team member" class="fa fa-lg fa-user-plus" style="padding-right: 10px;"></i>') + t('.btn_add_certifier_team_member'), new_project_authorization_path(@project, query: 'certifiers'), class: 'btn btn-primary' %>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addCertifierTeamMemberModal"><i title="Add certifier team member" class="fa fa-lg fa-certificate" style="padding-right: 10px;"></i><%= t('.btn_add_certifier_team_member') %></button>
                 </div>
             </div>
         <% end %>
@@ -186,7 +186,7 @@
                     <% end %>
                     <div class="hr-line-dashed"></div>
                     <% if (@project.project_authorizations.count == 0) ||  (can? :manage, @project.project_authorizations.first) %>
-                        <%= link_to raw('<i title="Add project team member" class="fa fa-lg fa-user-plus" style="padding-right: 10px;"></i>') + t('.btn_add_project_team_member'), new_project_authorization_path(@project), class: 'btn btn-primary' %>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addProjectTeamMemberModal"><i title="Add project team member" class="fa fa-lg fa-certificate" style="padding-right: 10px;"></i><%= t('.btn_add_project_team_member') %></button>
                     <% end %>
                 </div>
             </div>
@@ -195,3 +195,6 @@
     </div>
 </div>
 <%= render 'certification_paths/form' %>
+<%= render 'project_authorizations/form', show_certifiers: true %>
+<%= render 'project_authorizations/form', show_certifiers: false %>
+<%= javascript_include_tag 'select_user' %>

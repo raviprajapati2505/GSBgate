@@ -1,22 +1,43 @@
-<%= bootstrap_form_for([@project, @project_authorization], as: :authorization, url: project_authorizations_path(@project, @project_authorization)) do |f| %>
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="ibox">
-                <div class="ibox-title">
-                    <h5><%=t '.form_title' %></h5>
+<% if show_certifiers %>
+<div class="modal fade" id="addCertifierTeamMemberModal">
+<% else %>
+<div class="modal fade" id="addProjectTeamMemberModal">
+<% end %>
+    <div class="modal-dialog">
+        <%= bootstrap_form_for([@project, @project_authorization], as: :authorization, url: project_authorizations_path(@project, @project_authorization)) do |f| %>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" title="<%= t('.btn_close') %>" data-toggle="tooltip" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title"><%=t '.form_title' %></h4>
                 </div>
-                <div class="ibox-content">
+                <div class="modal-body">
+                    <% if @project_authorization.errors.any? %>
+                        <div id="error_explanation">
+                            <h2><%= pluralize(@project_authorization.errors.count, "error") %> prohibited this project_authorization from being saved:</h2>
+                            <ul>
+                                <% @project_authorization.errors.full_messages.each do |message| %>
+                                    <li><%= message %></li>
+                                <% end %>
+                            </ul>
+                        </div>
+                    <% end %>
                     <!--= f.select :user_id, User.without_permissions_for_project(@project).map { |k| [k.email, k.id]}, {}, { class: 'chosen-select'} %-->
                     <%= f.hidden_field :user_id, { class: 'select2-ajax', data: {project_id: @project.id } } %>
-                    <% if @show_certifiers %>
+                    <% if show_certifiers %>
                     <%= f.select :role, ProjectAuthorization.roles.keys[4..5].map { |k| [k.humanize, k] } %>
                     <% else %>
                     <%= f.select :role, ProjectAuthorization.roles.keys[0..3].map { |k| [k.humanize, k] } %>
                     <% end %>
-                    <%= f.primary t('.btn_save') %>
-                    <%= link_to t('.btn_cancel'), :back, class: 'btn btn-white' %>
+                </div>
+                <div class="modal-footer">
+                    <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
+                        <i title="Save" class="fa fa-lg fa-save" style="padding-right: 10px;"></i><%= t('.btn_save') %>
+                    <% end %>
+                    <button type="button" class="btn btn-white" data-dismiss="modal"><i title="Cancel" class="fa fa-lg fa-times" style="padding-right: 10px;"></i><%= t('.btn_cancel') %></button>
                 </div>
             </div>
-        </div>
+        <% end %>
     </div>
-<% end %>
+</div>
