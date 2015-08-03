@@ -2,7 +2,7 @@ class ProjectAuthorization < ActiveRecord::Base
   belongs_to :user
   belongs_to :project
 
-  enum role: [ :project_team_member, :cgp_project_manager, :enterprise_account, :project_system_administrator, :certifier, :certifier_manager ]
+  enum role: [ :project_team_member, :project_manager, :enterprise_account, :certifier, :certifier_manager ]
 
   validates :role, inclusion: ProjectAuthorization.roles.keys
 
