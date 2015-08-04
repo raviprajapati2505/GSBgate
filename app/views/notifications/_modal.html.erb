@@ -4,7 +4,8 @@
             <button type="button" class="close" data-dismiss="modal" title="<%= t('.btn_close') %>" data-toggle="tooltip">
                 <span>&times;</span>
             </button>
-            <button type="button" class="btn btn-sm btn-white" id="notifications-update-all" data-href="<%= update_all_notifications_path %>">Mark all notifications as read</button>
+            <button type="button" class="btn btn-sm btn-white" id="notifications-update-all" data-href="<%= update_all_notifications_path(time: Time.now.to_i) %>">Mark all as read</button>
+            <%= link_to 'You have new notifications, click here to refresh', notifications_path, remote: true, class: 'btn btn-sm btn-white highlight', id: 'notifications-refresh', style: 'display:none;' %>
             <h4 class="modal-title"><%= t('.modal_title') %></h4>
         </div>
         <div class="modal-body">

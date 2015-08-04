@@ -6,6 +6,10 @@ class NotificationsController < AuthenticatedController
     @notifications = Notification.for_user(current_user).paginate page: params[:page], per_page: 5
   end
 
+  def count
+    render json: Notification.for_user(current_user).unread.count
+  end
+
   def update
     @notification.read = true
     @notification.save
@@ -13,7 +17,7 @@ class NotificationsController < AuthenticatedController
   end
 
   def update_all
-    Notification.for_user(current_user).unread.update_all(read: true)
+    Notification.for_user(current_user).unread.where('created_at < ?', Time.at(params[:time].to_i).to_datetime).update_all(read: true)
     render nothing: true
   end
 
