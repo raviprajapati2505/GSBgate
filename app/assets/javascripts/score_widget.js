@@ -1,17 +1,20 @@
 $(function () {
     $('.score-graph').each(function () {
-        score_graph(this, $(this).data('show-legend'),  $(this).data('show-x-axis'), $(this).data('width'), $(this).data('height'), $(this).data('min'), $(this).data('max'), $(this).data('maxAttainable'), $(this).data('targeted'), $(this).data('submitted'));
+        score_graph(this, $(this).data('show-legend'),  $(this).data('show-x-axis'), $(this).data('show-values'), $(this).data('width'), $(this).data('height'), $(this).data('min'), $(this).data('max'), $(this).data('maxAttainable'), $(this).data('targeted'), $(this).data('submitted'), $(this).data('achieved'));
     });
 });
 
-function score_graph($element, showLegend, showXaxis, width, height, min, max, maxAttainable, targeted, submitted) {
+function score_graph($element, showLegend, showXaxis, showValues, width, height, min, max, maxAttainable, targeted, submitted, achieved) {
     if (!showXaxis) {
         height -= 18;
     }
     var margin = {top: (showXaxis ? 18 : 0), right: (showLegend ? 130 : 10), bottom: 0, left: 10},
         graph_width = width - margin.left - margin.right,
         graph_height = height - margin.top - margin.bottom,
-        data = [{class: 'progress-bar-max', value: maxAttainable}, {class: 'progress-bar-targeted', value: targeted}, {class: 'progress-bar-submitted', value: submitted}];
+        data = [{class: 'progress-bar-max', value: maxAttainable, name: 'Max. Attainable score'},
+            {class: 'progress-bar-targeted', value: targeted, name: 'Targeted score'},
+            {class: 'progress-bar-submitted', value: submitted, name: 'Submitted score'},
+            {class: 'progress-bar-achieved', value: achieved, name: 'Achieved score'}];
 
     var x = d3.scale.linear()
                 .domain([min, max])
@@ -20,7 +23,7 @@ function score_graph($element, showLegend, showXaxis, width, height, min, max, m
                 .domain(data.map(function(d) {
                     return d.class;
                 }))
-                .rangeRoundBands([0, graph_height], .1);
+                .rangeRoundBands([0, graph_height], .2);
 
     var xAxis = d3.svg.axis()
                 .scale(x)
@@ -34,10 +37,21 @@ function score_graph($element, showLegend, showXaxis, width, height, min, max, m
         .append('g')
             .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
+    var tip = d3.tip()
+        .attr('class', 'progress-bar-tip')
+        .offset([-10, 0])
+        .html(function(d) {
+            return d.name + ' = ' + d.value;
+        });
+
+    svg.call(tip);
+
     var bars = svg.selectAll('.bar')
                     .data(data)
                 .enter().append('g')
-                    .attr('class', 'progress-bar');
+                    .attr('class', 'progress-bar')
+                    .on('mouseover', tip.show)
+                    .on('mouseout', tip.hide);
 
     bars.append('rect')
         .attr('class', function(d) {
@@ -55,22 +69,24 @@ function score_graph($element, showLegend, showXaxis, width, height, min, max, m
         })
         .attr('height', y.rangeBand());
 
-    bars.append('text')
-        .text(function(d) {
-            return d.value;
-        })
-        .attr('x', function(d) {
-            return x(d.value);
-        })
-        .attr('y', function(d) {
-            return y(d.class) + y.rangeBand() / 2;
-        })
-        .attr('dx', function(d) {
-            return d.value < 0 ? '-.3em' : '.3em';
-        })
-        .attr('text-anchor', function(d) {
-            return d.value < 0 ? 'end' : 'start';
-        });
+    if (showValues == true) {
+        bars.append('text')
+            .text(function (d) {
+                return d.value;
+            })
+            .attr('x', function (d) {
+                return x(d.value);
+            })
+            .attr('y', function (d) {
+                return y(d.class) + y.rangeBand() / 2;
+            })
+            .attr('dx', function (d) {
+                return d.value < 0 ? '-.3em' : '.3em';
+            })
+            .attr('text-anchor', function (d) {
+                return d.value < 0 ? 'end' : 'start';
+            });
+    }
 
     if (showXaxis == true) {
         svg.append('g')
@@ -87,7 +103,7 @@ function score_graph($element, showLegend, showXaxis, width, height, min, max, m
 
     if (showLegend == true) {
         var legend = svg.selectAll('.legend')
-                .data([{class: 'progress-bar-max', value: 'Max. Attainable'}, {class: 'progress-bar-targeted', value: 'Targeted'}, {class: 'progress-bar-submitted', value: 'Submitted'}])
+                .data(data)
             .enter().append('g')
                 .attr('class', 'legend')
                 .attr('transform', function (d, i) {
@@ -106,7 +122,7 @@ function score_graph($element, showLegend, showXaxis, width, height, min, max, m
             .attr('x', width - 90)
             .attr('y', 9)
             .text(function (d) {
-                return d.value;
+                return d.name;
             });
     }
 

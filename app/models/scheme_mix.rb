@@ -40,6 +40,14 @@ class SchemeMix < ActiveRecord::Base
     scheme_mix_criteria.joins(:scheme_criterion).joins(:scheme_mix).sum('submitted_score * scheme_criteria.weight / 100 * scheme_mixes.weight / 100')
   end
 
+  def weighted_achieved_score_for_category(category)
+    scheme_mix_criteria.for_category(category).joins(:scheme_criterion).sum('achieved_score * scheme_criteria.weight / 100')
+  end
+
+  def weighted_achieved_score
+    scheme_mix_criteria.joins(:scheme_criterion).joins(:scheme_mix).sum('achieved_score * scheme_criteria.weight / 100 * scheme_mixes.weight / 100')
+  end
+
   private
     # Mirrors all the descendant structural data records of the SchemeMix to user data records
     def create_descendant_records

@@ -26,6 +26,7 @@
  *= require icheck
  *= require select2
  *= require d3
+ *= require d3-tip
  *= require score_widget.js
  *= require bootstrap-datepicker
  *= require dropzone

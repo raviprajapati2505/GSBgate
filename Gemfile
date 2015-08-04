@@ -109,6 +109,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-datatables-plugins'
   gem 'rails-assets-icheck'
   gem 'rails-assets-d3'
+  gem 'rails-assets-d3-tip'
   gem 'rails-assets-bootstrap-datepicker'
   gem 'rails-assets-dropzone'
   gem 'rails-assets-toastr'

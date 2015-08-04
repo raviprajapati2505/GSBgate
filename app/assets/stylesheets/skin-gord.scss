@@ -55,15 +55,48 @@
 
   // Progress bars
   .progress-bar-max {
+    color: #ff3333;
     fill: #ff3333;
   }
 
   .progress-bar-targeted {
+    color: #6fa428;
     fill: #6fa428;
   }
 
   .progress-bar-submitted {
+    color: #5bc0de;
     fill: #5bc0de;
+  }
+
+  .progress-bar-achieved {
+    color: #ffaf00;
+    fill: #ffaf00;
+  }
+
+  .progress-bar-tip {
+    background: rgba(0,0,0,0.8);
+    border-radius: 2px;
+    color: #fff;
+    line-height: 1;
+    padding: 12px;
+  }
+
+  .progress-bar-tip:after {
+    box-sizing: border-box;
+    color: rgba(0,0,0,0.8);
+    content: "\25BC";
+    display: inline;
+    line-height: 1;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+  }
+
+  .progress-bar-tip.n:after {
+    left: 0;
+    margin: -1px 0 0 0;
+    top: 100%;
   }
 
   .progress-bar text {

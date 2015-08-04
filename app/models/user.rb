@@ -34,11 +34,11 @@ class User < ActiveRecord::Base
   }
 
   scope :with_assessor_project_role, -> {
-    where('project_authorizations.role in (0,1,2,3)')
+    where('project_authorizations.role in (0, 1)')
   }
 
   scope :with_certifier_project_role, -> {
-    where('project_authorizations.role in (4,5)')
+    where('project_authorizations.role in (3, 4)')
   }
 
   before_validation :assign_default_role, on: :create
