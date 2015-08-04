@@ -6,7 +6,11 @@
         <% assessor_task_count = user.requirement_data.for_project(@project).count %>
         <% certifier_task_count = user.scheme_mix_criteria.for_project(@project).count %>
         <% if assessor_task_count == 0 && certifier_task_count == 0 %>
+            <% if current_user == user %>
             <p>No tasks are assigned to you.</p>
+            <% else %>
+            <p>No tasks are assigned to this user.</p>
+            <% end %>
         <% else %>
             <table class="table table-bordered">
                 <thead>

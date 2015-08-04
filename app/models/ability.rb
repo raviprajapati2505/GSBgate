@@ -38,9 +38,9 @@ class Ability
       can :new_member, User, projects: {owner_id: user.id}
       can :new_member, User, project_authorizations: {user_id: user.id, role: ['project_manager', ProjectAuthorization.roles[:project_manager]]}
       can :new_member, User, project_authorizations: {user_id: user.id, role: ['project_manager', ProjectAuthorization.roles[:certifier_manager]]}
-      can :task_index, User, projects: {owner_id: user.id}
-      can :task_index, User, project_authorizations: {user_id: user.id, role: ['project_manager', ProjectAuthorization.roles[:project_manager]]}
-      can :task_index, User, project_authorizations: {user_id: user.id, role: ['certifier_manager', ProjectAuthorization.roles[:certifier_manager]]}
+      can :index_tasks, User, projects: {owner_id: user.id}
+      can :index_tasks, User, project_authorizations: {user_id: user.id, role: ['project_manager', ProjectAuthorization.roles[:project_manager]]}
+      can :index_tasks, User, project_authorizations: {user_id: user.id, role: ['certifier_manager', ProjectAuthorization.roles[:certifier_manager]]}
       # Project controller
       can :manage, Project, owner_id: user.id
       # Waiting for https://github.com/CanCanCommunity/cancancan/pull/196
