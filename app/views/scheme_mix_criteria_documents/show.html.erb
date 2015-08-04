@@ -43,8 +43,10 @@
                             <%= bootstrap_form_for([@project, @certification_path, @scheme_mix, @scheme_mix_criterion, SchemeMixCriteriaDocument.new], layout: :inline) do |f| %>
                                 <%= f.hidden_field :document_id, value: @document.id %>
                                 <%= f.select :scheme_mix_criterion_id, @scheme_mix.scheme_mix_criteria.collect {|smc| [ smc.scheme_criterion.code + ': ' + smc.scheme_criterion.criterion.name, smc.id ] }, hide_label: true %>
-                                <%= button_tag(class: 'btn btn-primary no-margins', title: 'Add the criterion') do %>
-                                    <i class="fa fa-plus-circle"></i>
+                                <% if can? :create, SchemeMixCriteriaDocument %>
+                                    <%= button_tag(class: 'btn btn-primary no-margins', title: 'Add the criterion') do %>
+                                        <i class="fa fa-plus-circle"></i>
+                                    <% end %>
                                 <% end %>
                             <% end %>
                         </td>
@@ -52,8 +54,12 @@
                     </tbody>
                 </table>
                 <div class="hr-line-dashed"></div>
-                <%= link_to(raw('<i title="Download document" class="fa fa-lg fa-download" style="padding-right: 10px;"></i>Download document'), @document, class: 'btn btn-primary') %>
-                <button type="button" class="btn btn-white" data-toggle="modal" data-target="#updateSchemeMixCriteriaDocumentStatusModal">Update status</button>
+                <% if can? :show, @document %>
+                    <%= link_to(raw('<i title="Download document" class="fa fa-lg fa-download" style="padding-right: 10px;"></i>Download document'), @document, class: 'btn btn-primary') %>
+                <% end %>
+                <% if can? :edit, @scheme_mix_criteria_document %>
+                    <button type="button" class="btn btn-white" data-toggle="modal" data-target="#updateSchemeMixCriteriaDocumentStatusModal">Update status</button>
+                <% end %>
             </div>
         </div>
     </div>
@@ -77,8 +83,10 @@
                         </div>
                     <% end %>
                 <% end %>
-                <div class="hr-line-dashed"></div>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createSchemeMixCriteriaDocumentCommentModal"><i title="Add comment" class="fa fa-lg fa-comment" style="padding-right: 10px;"></i>Add comment</button>
+                <% if can? :create, SchemeMixCriteriaDocumentComment %>
+                    <div class="hr-line-dashed"></div>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createSchemeMixCriteriaDocumentCommentModal"><i title="Add comment" class="fa fa-lg fa-comment" style="padding-right: 10px;"></i>Add comment</button>
+                <% end %>
             </div>
         </div>
     </div>

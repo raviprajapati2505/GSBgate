@@ -11,12 +11,12 @@ class Ability
     #     can :read, :all
     #   end
     #
-    # The first argument to `can` is the action you are giving the user 
+    # The first argument to `can` is the action you are giving the user
     # permission to do.
     # If you pass :manage it will apply to every action. Other common actions
     # here are :read, :create, :update and :destroy.
     #
-    # The second argument is the resource the user can perform the action on. 
+    # The second argument is the resource the user can perform the action on.
     # If you pass :all it will apply to every resource. Otherwise pass a Ruby
     # class of the resource.
     #
@@ -82,10 +82,18 @@ class Ability
       can :read, SchemeMixCriterionLog, scheme_mix_criterion: {scheme_mix: {certification_path: {project: {owner_id: user.id}}}}
       can :read, SchemeMixCriterionLog, scheme_mix_criterion: {scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id}}}}}
       # Document controller
-      # can :manage, Document, scheme_mix_criteria: {scheme_mix: {certification_path: {project: {owner_id: user.id}}}}
-      # can :manage, Document, scheme_mix_criteria: {scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id, role: ['project_manager', ProjectAuthorization.roles[:project_manager]]}}}}}
-      # can :create, Document, scheme_mix_criteria_documents: {scheme_mix_criterion: {requirement_data: {user_id: user.id}}}
-      # can :download, Document, scheme_mix_criteria: {scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id}}}}}
+      can :manage, Document, scheme_mix_criteria: {scheme_mix: {certification_path: {project: {owner_id: user.id}}}}
+      can :manage, Document, scheme_mix_criteria: {scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id, role: ['project_manager', ProjectAuthorization.roles[:project_manager]]}}}}}
+      can :manage, Document, scheme_mix_criteria: {scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id, role: ['project_team_member', ProjectAuthorization.roles[:project_team_member]]}}}}}
+      can :read, Document, scheme_mix_criteria: {scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id}}}}}
+      # SchemeMixCriteriaDocument controller
+      can :manage, SchemeMixCriteriaDocument, scheme_mix_criterion: {scheme_mix: {certification_path: {project: {owner_id: user.id}}}}
+      can :manage, SchemeMixCriteriaDocument, scheme_mix_criterion: {scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id, role: ['project_manager', ProjectAuthorization.roles[:project_manager]]}}}}}
+      can :create, SchemeMixCriteriaDocument, scheme_mix_criterion: {scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id, role: ['project_team_member', ProjectAuthorization.roles[:project_team_member]]}}}}}
+      can :destroy, SchemeMixCriteriaDocument, scheme_mix_criterion: {scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id, role: ['project_team_member', ProjectAuthorization.roles[:project_team_member]]}}}}}
+      can :show, SchemeMixCriteriaDocument, scheme_mix_criterion: {scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id}}}}}
+      # SchemeMixCriteriaDocumentComment controller
+      can :create, SchemeMixCriteriaDocumentComment
       # Notification controller
       can :manage, Notification
     else

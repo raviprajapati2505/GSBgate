@@ -1,7 +1,6 @@
 class DocumentsController < AuthenticatedController
   before_action :set_document, only: [:show, :download]
-  # load_and_authorize_resource
-  skip_authorization_check
+  load_and_authorize_resource skip_load_resource # todo: remove skip_load_resource
 
   def create
     respond_to do |format|

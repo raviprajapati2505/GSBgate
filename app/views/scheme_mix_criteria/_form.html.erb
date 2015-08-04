@@ -108,14 +108,16 @@
                 </div>
             </div>
         </div>
-        <div class="ibox">
-            <div class="ibox-title">
-                <h5>Upload documentation</h5>
+        <% if can? :create, Document %>
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>Upload documentation</h5>
+                </div>
+                <div class="ibox-content">
+                    <%= render 'documents/new', document: Document.new, scheme_mix: @scheme_mix, scheme_mix_criterion_id: @scheme_mix_criterion.id %>
+                </div>
             </div>
-            <div class="ibox-content">
-                <%= render 'documents/new', document: Document.new, scheme_mix: @scheme_mix, scheme_mix_criterion_id: @scheme_mix_criterion.id %>
-            </div>
-        </div>
+        <% end %>
         <div class="ibox">
             <div class="ibox-title">
                 <h5>Documentation</h5>

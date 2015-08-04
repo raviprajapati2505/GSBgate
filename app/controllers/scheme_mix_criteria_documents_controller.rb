@@ -21,7 +21,7 @@ class SchemeMixCriteriaDocumentsController < AuthenticatedController
     end
   end
 
-  def edit
+  def show
     @page_title = (ActionController::Base.helpers.image_tag(Icon.for_filename(@document.document_file.file.filename)) + ' Document ' + @document.document_file.file.filename).html_safe
   end
 
