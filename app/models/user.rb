@@ -41,6 +41,15 @@ class User < ActiveRecord::Base
     where('project_authorizations.role in (3, 4)')
   }
 
+  def is_certifier_manager(project)
+    project_authorizations.each do |project_authorization|
+      if project_authorization.project == project && project_authorization.certifier_manager?
+        return true
+      end
+    end
+    return false
+  end
+
   before_validation :assign_default_role, on: :create
 
   validates :role, inclusion: User.roles.keys

@@ -110,8 +110,7 @@
                 <% end %>
             </div>
         </div>
-        <!-- add certifier manager to allowed users -->
-        <% if current_user.system_admin? %>
+        <% if current_user.system_admin? || current_user.is_certifier_manager(@project) %>
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>Certifier team</h5>

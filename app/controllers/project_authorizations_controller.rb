@@ -4,7 +4,6 @@ class ProjectAuthorizationsController < AuthenticatedController
   before_action :set_authorization, only: [:edit, :destroy]
 
   def create
-    authorize! :manage, @project
     @project_authorization = ProjectAuthorization.new(authorizations_params)
     @project_authorization.project = @project
     if @project_authorization.save
