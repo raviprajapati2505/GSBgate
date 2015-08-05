@@ -40,14 +40,18 @@ class ProjectsController < AuthenticatedController
     @project = Project.new(project_params)
     @project.owner = current_user
 
-    respond_to do |format|
-      if @project.save
-        format.html { redirect_to @project, notice: 'Project was successfully created.' }
-        format.json { render :show, status: :created, location: @project }
-      else
-        format.html { render :new }
-        format.json { render json: @project.errors, status: :unprocessable_entity }
+    if @project.save
+      # Generate a notification for the system admins
+      User.system_admin.each do |system_admin|
+        notify(body: 'A new project %s was created.',
+               body_params: [@project.name],
+               uri: project_path(@project),
+               user: system_admin,
+               project: @project)
       end
+      redirect_to @project, notice: 'Project was successfully created.'
+    else
+      render :new
     end
   end
 
