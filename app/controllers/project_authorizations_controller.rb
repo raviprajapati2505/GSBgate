@@ -7,8 +7,7 @@ class ProjectAuthorizationsController < AuthenticatedController
     @project_authorization = ProjectAuthorization.new(authorizations_params)
     @project_authorization.project = @project
     if @project_authorization.save
-      flash[:notice] = 'Member was successfully added.'
-      redirect_to project_path id: @project.id
+      redirect_to project_path(@project), notice: 'Member was successfully added.'
     else
       redirect_to :back
     end
@@ -26,8 +25,7 @@ class ProjectAuthorizationsController < AuthenticatedController
 
   def update
     if @project_authorization.update(authorizations_params)
-      flash[:notice] = 'Authorization was successfully updated.'
-      redirect_to project_path(@project_authorization.project)
+      redirect_to project_path(@project_authorization.project), notice: 'Authorization was successfully updated.'
     else
       render action: :edit
     end
@@ -48,10 +46,9 @@ class ProjectAuthorizationsController < AuthenticatedController
       scheme_mix_criterion.save!
     end
 
-    id = @project_authorization.project_id
+    project = @project_authorization.project
     @project_authorization.destroy
-    flash[:notice] = 'Authorization was successfully destroyed.'
-    redirect_to project_path id: id
+    redirect_to project_path(project), notice: 'Member was successfully removed.'
   end
 
   private

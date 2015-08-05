@@ -21,8 +21,7 @@ class UsersController < AuthenticatedController
       return
     end
     if @user.update_without_password(user_params)
-      flash[:notice] = 'Successfully updated user.'
-      redirect_to users_path
+      redirect_to users_path, notice: 'Successfully updated user.'
     else
       render action: 'edit'
     end

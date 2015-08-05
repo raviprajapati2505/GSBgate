@@ -13,14 +13,12 @@ class CertificationPathsController < AuthenticatedController
     @certification_path.project = @project
     if @certification_path.certificate_id == Certificate.where('label = ?', 'Operations Certificate').first.id
       if @certification_path.save
-        flash[:notice] = 'Successfully applied for certificate.'
-        redirect_to project_path(@project)
+        redirect_to project_path(@project), notice: 'Successfully applied for certificate.'
       else
         redirect_to :back
       end
     else
-      flash[:alert] = 'This certificate is not yet available.'
-      redirect_to :back
+      redirect_to :back, alert: 'This certificate is not yet available.'
     end
   end
 
@@ -53,8 +51,7 @@ class CertificationPathsController < AuthenticatedController
         if @certification_path.scheme_mixes.count == 0
           SchemeMix.create(certification_path_id: @certification_path.id, scheme_id: Scheme.where('label = ?', 'Operations').first.id, weight: 100)
         end
-        flash[:notice] = 'Status was successfully updated.'
-        redirect_to project_certification_path_path(@project, @certification_path)
+        redirect_to project_certification_path_path(@project, @certification_path), notice: 'Status was successfully updated.'
       else
         render action: :show
       end
