@@ -7,7 +7,7 @@ class ProjectsController < AuthenticatedController
   def index
     @page_title = 'Projects'
     unless current_user.system_admin?
-      @projects = Project.for_user current_user
+      @projects = Project.for_authorized_user current_user
     else
       @projects = Project.all
     end
@@ -40,18 +40,25 @@ class ProjectsController < AuthenticatedController
     @project = Project.new(project_params)
     @project.owner = current_user
 
-    if @project.save
-      # Generate a notification for the system admins
-      User.system_admin.each do |system_admin|
-        notify(body: 'A new project %s was created.',
-               body_params: [@project.name],
-               uri: project_path(@project),
-               user: system_admin,
-               project: @project)
+    @project.transaction do
+      if @project.save
+        project_authorization = ProjectAuthorization.new(project: @project, user: current_user, role: ProjectAuthorization.roles[:project_manager])
+        if project_authorization.save
+          # Generate a notification for the system admins
+          User.system_admin.each do |system_admin|
+            notify(body: 'A new project %s was created.',
+                   body_params: [@project.name],
+                   uri: project_path(@project),
+                   user: system_admin,
+                   project: @project)
+          end
+          redirect_to @project, notice: 'Project was successfully created.'
+          return
+        end
+        render :new
+      else
+        render :new
       end
-      redirect_to @project, notice: 'Project was successfully created.'
-    else
-      render :new
     end
   end
 

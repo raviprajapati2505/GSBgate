@@ -29,6 +29,10 @@ class ProjectAuthorizationsController < AuthenticatedController
   end
 
   def update
+    if @project.owner == @project_authorization.user
+      raise CanCan::AccessDenied.new('Not Authorized to edit project owner role', :update, ProjectAuthorization)
+    end
+
     if @project_authorization.update(authorizations_params)
       notify(body: 'Your role in project %s was changed to %s.',
              body_params: [@project.name, @project_authorization.role.humanize],
@@ -42,6 +46,10 @@ class ProjectAuthorizationsController < AuthenticatedController
   end
 
   def destroy
+    if @project.owner == @project_authorization.user
+      raise CanCan::AccessDenied.new('Not Authorized to remove project owner from team', :destroy, ProjectAuthorization)
+    end
+
     # remove user - requirement_data link
     requirement_data = @project_authorization.user.requirement_data.for_project(@project)
     requirement_data.each do |requirement_datum|

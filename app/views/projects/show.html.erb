@@ -155,13 +155,12 @@
                 </div>
             </div>
         <% end %>
-        <% if current_user.system_admin? || @project.owner == current_user || current_user.project_manager?(@project) || current_user.enterprise_account?(@project) %>
+        <% if current_user.system_admin? || current_user.project_manager?(@project) || current_user.enterprise_account?(@project) %>
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>Project team</h5>
                 </div>
                 <div class="ibox-content">
-                    <p><strong>Project owner :</strong> <%= @project.owner.email %></p>
                     <% if @project.users.distinct.count == 0%>
                     <p>This project has no team members.</p>
                     <% else %>
@@ -181,12 +180,8 @@
                         </tr>
                         <% @project.users.distinct.each do |user| %>
                             <% project_authorization = user.project_authorizations.for_project(@project).first %>
-                            <% if project_authorization.enterprise_account? %>
-                        <tr>
-                            <% else %>
                         <tr class="clickable" data-href="<%= project_user_tasks_path(@project, user) %>">
-                            <% end %>
-                            <td><%= user.email %></td>
+                            <td><%= user.email %><% if @project.owner == user %>&nbsp(owner)<% end %></td>
                             <td><%= project_authorization.role.humanize %></td>
                             <td><% if !project_authorization.enterprise_account? %><%= user.requirement_data.for_project(@project).completed.count %>/<%= user.requirement_data.for_project(@project).count %><% else %>-<% end %></td>
                         </tr>

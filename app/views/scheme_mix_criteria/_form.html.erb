@@ -18,7 +18,7 @@
                     <% end %>
                     <div class="row">
                         <div class="col-md-3">
-                            <% if (can? :update, @scheme_mix_criterion) && (current_user.system_admin? || @project.owner == current_user || current_user.project_manager?(@project)) %>
+                            <% if (can? :update, @scheme_mix_criterion) && (current_user.system_admin? || current_user.project_manager?(@project)) %>
                                 <%= f.select :targeted_score, @scheme_mix_criterion.scheme_criterion.scores.map { |k| [k.score, k.score]} %>
                             <% else %>
                                 <%= f.static_control :targeted_score %>
@@ -27,7 +27,6 @@
                         <div class="col-md-3">
                             <% if (can? :update, @scheme_mix_criterion) &&
                                     (current_user.system_admin? ||
-                                            @project.owner == current_user ||
                                             current_user.project_manager?(@project) ||
                                             @scheme_mix_criterion.contains_requirement_for?(current_user)
                                     ) %>
@@ -52,7 +51,6 @@
                             <div class="hr-line-dashed"></div>
                             <% if (can? :update, @scheme_mix_criterion) &&
                                     (current_user.system_admin? ||
-                                            @project.owner == current_user ||
                                             current_user.project_manager?(@project) ||
                                             @scheme_mix_criterion.contains_requirement_for?(current_user) ||
                                             @scheme_mix_criterion.certifier == current_user ||
