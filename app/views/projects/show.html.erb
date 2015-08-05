@@ -155,7 +155,7 @@
                 </div>
             </div>
         <% end %>
-        <% if @project.owner == current_user || current_user.project_manager?(@project) || current_user.enterprise_account?(@project) %>
+        <% if current_user.system_admin? || @project.owner == current_user || current_user.project_manager?(@project) || current_user.enterprise_account?(@project) %>
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>Project team</h5>
