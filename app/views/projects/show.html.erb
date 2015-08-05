@@ -180,11 +180,15 @@
                             <td><%= RequirementDatum.for_project(@project).unassigned.targeted.count %>/<%= RequirementDatum.for_project(@project).targeted.count %></td>
                         </tr>
                         <% @project.users.distinct.each do |user| %>
-                        <tr class="clickable" data-href="<%= project_user_tasks_path(@project, user) %>">
                             <% project_authorization = user.project_authorizations.for_project(@project).first %>
+                            <% if project_authorization.enterprise_account? %>
+                        <tr>
+                            <% else %>
+                        <tr class="clickable" data-href="<%= project_user_tasks_path(@project, user) %>">
+                            <% end %>
                             <td><%= user.email %></td>
                             <td><%= project_authorization.role.humanize %></td>
-                            <td><%= user.requirement_data.for_project(@project).completed.count %>/<%= user.requirement_data.for_project(@project).count %></td>
+                            <td><% if !project_authorization.enterprise_account? %><%= user.requirement_data.for_project(@project).completed.count %>/<%= user.requirement_data.for_project(@project).count %><% else %>-<% end %></td>
                         </tr>
                         <% end %>
                         </tbody>
