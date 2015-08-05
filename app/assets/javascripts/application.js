@@ -140,9 +140,11 @@ $(function () {
     });
 
     // Notifications (refresh count every 20 seconds)
-    setInterval(function() {
-        GSAS.refreshNotificationCount();
-    }, 20000);
+    if (('li.notifications').length > 0) {
+        setInterval(function() {
+            GSAS.refreshNotificationCount();
+        }, 20000);
+    }
 
     // Flash messages
     GSAS.processFlashMessages();
