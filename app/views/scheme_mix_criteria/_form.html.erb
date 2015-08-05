@@ -18,19 +18,27 @@
                     <% end %>
                     <div class="row">
                         <div class="col-md-3">
-                            <% if can? :manage, @scheme_mix_criterion %>
+                            <% if (can? :update, @scheme_mix_criterion) && (current_user.system_admin? || @project.owner == current_user || current_user.project_manager?(@project)) %>
                                 <%= f.select :targeted_score, @scheme_mix_criterion.scheme_criterion.scores.map { |k| [k.score, k.score]} %>
                             <% else %>
                                 <%= f.static_control :targeted_score %>
                             <% end %>
                         </div>
                         <div class="col-md-3">
-                            <%= f.select :submitted_score, @scheme_mix_criterion.scheme_criterion.scores.map { |k| [k.score, k.score]}, {include_blank: 'no score submitted'} %>
+                            <% if (can? :update, @scheme_mix_criterion) &&
+                                    (current_user.system_admin? ||
+                                            @project.owner == current_user ||
+                                            current_user.project_manager?(@project) ||
+                                            @scheme_mix_criterion.contains_requirement_for?(current_user)
+                                    ) %>
+                                <%= f.select :submitted_score, @scheme_mix_criterion.scheme_criterion.scores.map { |k| [k.score, k.score]}, {include_blank: '-'} %>
+                            <% else %>
+                                <%= f.static_control :submitted_score %>
+                            <% end %>
                         </div>
                         <div class="col-md-3">
-                            <!-- only certifiers should be able to update this -->
-                            <% if can? :update, @scheme_mix_criterion %>
-                                <%= f.select :achieved_score, @scheme_mix_criterion.scheme_criterion.scores.map { |k| [k.score, k.score]}, {include_blank: 'Unclassified'} %>
+                            <% if (can? :update, @scheme_mix_criterion) && (current_user.system_admin? || @scheme_mix_criterion.certifier == current_user || current_user.certifier_manager?(@project)) %>
+                                <%= f.select :achieved_score, @scheme_mix_criterion.scheme_criterion.scores.map { |k| [k.score, k.score]}, {include_blank: '-'} %>
                             <% else %>
                                 <%= f.static_control :achieved_score %>
                             <% end %>
@@ -42,11 +50,20 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="hr-line-dashed"></div>
-                            <% if can? :manage, @scheme_mix_criterion %>
+                            <% if (can? :update, @scheme_mix_criterion) &&
+                                    (current_user.system_admin? ||
+                                            @project.owner == current_user ||
+                                            current_user.project_manager?(@project) ||
+                                            @scheme_mix_criterion.contains_requirement_for?(current_user) ||
+                                            @scheme_mix_criterion.certifier == current_user ||
+                                            current_user.certifier_manager?(@project)
+                                    ) %>
                                 <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
                                 <i title="Save" class="fa fa-lg fa-save" style="padding-right: 10px;"></i>Save
                                 <% end %>
+                                <% if !@scheme_mix_criterion.contains_requirement_for?(current_user) %>
                                 <button type="button" class="btn btn-white" data-toggle="modal" data-target="#updateCriterionStatusModal">Update status</button>
+                                <% end %>
                             <% end %>
                             <%= link_to raw('<i title="Show status log" class="fa fa-lg fa-history" style="padding-right: 10px;"></i>Show status log'), project_certification_path_scheme_mix_scheme_mix_criterion_status_logs_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), remote: true, class: 'btn btn-white' %>
                         </div>
@@ -54,8 +71,7 @@
                 <% end %>
             </div>
         </div>
-        <!-- certifier manager should also be able to assign responsibilities -->
-        <% if current_user.system_admin? %>
+        <% if current_user.system_admin? || current_user.certifier_manager?(@project) %>
             <div class="ibox">
                 <div class="ibox-title">
                     <h5>Certifier</h5>
@@ -64,7 +80,7 @@
                     <%= bootstrap_form_tag url: assign_certifier_to_criteria_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), method: 'put' do |f| %>
                         <% users = User.authorized_for_project(@project).with_certifier_project_role %>
                         <% if @scheme_mix_criterion.certifier.nil? %>
-                            <%= f.select :user_id, options_for_select(users.map { |k| [k.email, k.id]}), {label: 'Responsibility'} %>
+                            <%= f.select :user_id, options_for_select(users.map { |k| [k.email, k.id]}), {label: 'Responsibility', include_blank: ''} %>
                         <% else %>
                             <%= f.select :user_id, options_for_select(users.map { |k| [k.email, k.id]}, @scheme_mix_criterion.certifier.id), {label: 'Responsibility'} %>
                         <% end %>
@@ -128,7 +144,5 @@
         </div>
     </div>
 </div>
-<% if can? :manage, @scheme_mix_criterion %>
 <%= render 'modal', project: @project, certification_path: @certification_path, scheme_mix: @scheme_mix, scheme_mix_criterion: @scheme_mix_criterion %>
-<% end %>
 <div id="showCriteriaStatusLogsModal" class="modal fade"></div>

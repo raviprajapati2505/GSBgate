@@ -13,18 +13,24 @@
     <div class="panel-collapse collapse" id="requirement-<%= requirement_datum.id %>-collapsable" aria-expanded="false" style="height: 0px;">
         <div class="panel-body">
             <%= bootstrap_form_tag url: project_certification_path_scheme_mix_scheme_mix_criterion_requirement_datum_path(@project, certification_path_id, scheme_mix_id, scheme_mix_criterion_id, requirement_datum.id), method: "put", remote: true, :html => { :multipart => true } do |f| %>
-                <% users = User.authorized_for_project(@project).with_assessor_project_role %>
-                <% if (users.count > 0) && (can? :read, @project.project_authorizations.first) %>
-                    <% if requirement_datum.user.nil? %>
-                        <% if (can? :manage, @project.project_authorizations.first) %>
-                            <%= f.select :user_id, options_for_select(users.map { |k| [k.email, k.id]}), {label: 'Responsibility'} %>
+                <% if current_user.system_admin? || @project.owner == current_user || current_user.project_manager?(@project) || current_user.enterprise_account?(@project) %>
+                    <% users = User.authorized_for_project(@project).with_assessor_project_role %>
+                    <% if (users.count > 0) && (can? :read, @project.project_authorizations.first) %>
+                        <% if requirement_datum.user.nil? %>
+                            <% if (can? :manage, @project.project_authorizations.first) %>
+                                <%= f.select :user_id, options_for_select(users.map { |k| [k.email, k.id]}), {label: 'Responsibility', include_blank: ''} %>
+                            <% else %>
+                                <p>This requirement is not assigned yet.</p>
+                            <% end %>
+                        <% else %>
+                            <%= f.select :user_id, options_for_select(users.map { |k| [k.email, k.id]}, requirement_datum.user.id), {label: 'Responsibility'}, disabled: !(can? :manage, @project.project_authorizations.first) %>
                         <% end %>
-                    <% else %>
-                        <%= f.select :user_id, options_for_select(users.map { |k| [k.email, k.id]}, requirement_datum.user.id), {label: 'Responsibility'}, disabled: !(can? :manage, @project.project_authorizations.first) %>
                     <% end %>
+                    <%= f.text_field :due_date, value: ((l requirement_datum.due_date, format: :short) if !requirement_datum.due_date.nil?), prepend: '<i class="fa fa-calendar"></i>'.html_safe, data: {provide: 'datepicker'}, disabled: !(can? :manage, @project.project_authorizations.first) %>
+                <% else %>
+                    <%= f.text_field :due_date, value: ((l requirement_datum.due_date, format: :short) if !requirement_datum.due_date.nil?), prepend: '<i class="fa fa-calendar"></i>'.html_safe, data: {provide: 'datepicker'}, disabled: true %>
                 <% end %>
-                <!-- who can see the due date ? -->
-                <%= f.text_field :due_date, value: ((l requirement_datum.due_date, format: :short) if !requirement_datum.due_date.nil?), prepend: '<i class="fa fa-calendar"></i>'.html_safe, data: {provide: 'datepicker'}, disabled: !(can? :manage, @project.project_authorizations.first) %>
+
                 <div class="hr-line-dashed"></div>
                 <% if requirement_datum.calculator_datum.present? %>
                     <% calculator_template = requirement_datum.calculator_datum.calculator.name.constantize.name.demodulize.downcase %>
@@ -36,12 +42,12 @@
                         <% end %>
                     </div>
                 <% end %>
-                <%= f.select :status, options_for_select(RequirementDatum.statuses.keys.map { |k| [k.humanize, k]}, requirement_datum.status) %>
+                <%= f.select :status, options_for_select(RequirementDatum.statuses.keys.map { |k| [k.humanize, k]}, requirement_datum.status), {}, disabled: !(can? :update, requirement_datum) %>
 
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="hr-line-dashed"></div>
                         <% if can? :update, requirement_datum %>
+                            <div class="hr-line-dashed"></div>
                             <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
                                 <i title="Save" class="fa fa-lg fa-save" style="padding-right: 10px;"></i>Save
                             <% end %>

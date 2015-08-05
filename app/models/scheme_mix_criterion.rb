@@ -56,6 +56,15 @@ class SchemeMixCriterion < ActiveRecord::Base
     "#{self.scheme_criterion.code}: #{self.scheme_criterion.criterion.name}"
   end
 
+  def contains_requirement_for?(user)
+    requirement_data.each do |requirement_datum|
+      if requirement_datum.user == user
+        return true
+      end
+    end
+    return false
+  end
+
   private
 
   def init

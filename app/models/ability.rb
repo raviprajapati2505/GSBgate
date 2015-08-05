@@ -75,6 +75,8 @@ class Ability
       can :edit, SchemeMixCriterion, scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id}}}}
       can :update, SchemeMixCriterion, requirement_data: {user_id: user.id}
       can :update, SchemeMixCriterion, certifier_id: user.id
+      can :update, SchemeMixCriterion, scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id, role: ['certifier_manager', ProjectAuthorization.roles[:certifier_manager]]}}}}
+      can :assign_certifier, SchemeMixCriterion, scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id, role: ['certifier_manager', ProjectAuthorization.roles[:certifier_manager]]}}}}
       # RequirementDatum controller
       can :manage, RequirementDatum, scheme_mix_criteria: {scheme_mix: {certification_path: {project: {owner_id: user.id}}}}
       can :manage, RequirementDatum, scheme_mix_criteria: {scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id, role: ['project_manager', ProjectAuthorization.roles[:project_manager]]}}}}}
