@@ -34,6 +34,10 @@
                         <td><%= @project.country %></td>
                     </tr>
                     <tr>
+                      <th><%= Project.human_attribute_name('construction_year') %></th>
+                      <td><%= @project.construction_year %></td>
+                    </tr>
+                    <tr>
                         <th><%= Project.human_attribute_name('gross_area') %></th>
                         <td><%= @project.gross_area %> m²</td>
                     </tr>
