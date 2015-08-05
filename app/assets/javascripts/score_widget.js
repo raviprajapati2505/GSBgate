@@ -32,8 +32,8 @@ function score_graph($element, showLegend, showXaxis, showValues, width, height,
 
     var svg = d3.select($element)
         .append('svg')
-            .attr('width', width)
-            .attr('height', height)
+            .attr('viewBox', '0 0 ' + width + ' ' + height)
+            .attr('preserveAspectRatio', 'none')
         .append('g')
             .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 

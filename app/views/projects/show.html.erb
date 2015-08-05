@@ -57,7 +57,7 @@
                 </table>
                 <input type="hidden" id="project_latlng" value="<%= @project.latlng %>" />
                 <div id="project-map" class="map" style="height: 300px;"></div>
-                <% if can? :manage, @project %>
+                <% if can? :update, @project %>
                     <div class="hr-line-dashed"></div>
                     <%= link_to raw('<i title="Edit project" class="fa fa-lg fa-edit" style="padding-right: 10px;"></i>Edit'), edit_project_path(@project), :class => 'btn btn-primary' %>
                 <% end %>
@@ -109,12 +109,12 @@
                     </table>
                 <% end %>
                 <div class="hr-line-dashed"></div>
-                <% if can? :manage, @project %>
+                <% if can? :create, CertificationPath %>
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addCertificationPathModal"><i title="Apply for a certificate" class="fa fa-lg fa-certificate" style="padding-right: 10px;"></i>Apply for a certificate</button>
                 <% end %>
             </div>
         </div>
-        <% if current_user.system_admin? || current_user.is_certifier_manager(@project) %>
+        <% if current_user.system_admin? || current_user.certifier_manager?(@project) %>
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>Certifier team</h5>
@@ -148,13 +148,14 @@
                         </tbody>
                     </table>
                     <% end %>
+                    <% if can? :create, ProjectAuthorization %>
                     <div class="hr-line-dashed"></div>
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addCertifierTeamMemberModal"><i title="Add certifier team member" class="fa fa-lg fa-user-plus" style="padding-right: 10px;"></i><%= t('.btn_add_certifier_team_member') %></button>
+                    <% end %>
                 </div>
             </div>
         <% end %>
-        <!-- certifier manager should not be able to see project team -->
-        <% if (@project.project_authorizations.count == 0) || (can? :read, @project.project_authorizations.first) %>
+        <% if @project.owner == current_user || current_user.project_manager?(@project) || current_user.enterprise_account?(@project) %>
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>Project team</h5>
@@ -189,9 +190,9 @@
                         </tbody>
                     </table>
                     <% end %>
+                    <% if can? :create, ProjectAuthorization %>
                     <div class="hr-line-dashed"></div>
-                    <% if (@project.project_authorizations.count == 0) ||  (can? :manage, @project.project_authorizations.first) %>
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addProjectTeamMemberModal"><i title="Add project team member" class="fa fa-lg fa-user-plus" style="padding-right: 10px;"></i><%= t('.btn_add_project_team_member') %></button>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addProjectTeamMemberModal"><i title="Add project team member" class="fa fa-lg fa-user-plus" style="padding-right: 10px;"></i><%= t('.btn_add_project_team_member') %></button>
                     <% end %>
                 </div>
             </div>

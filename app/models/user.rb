@@ -41,9 +41,27 @@ class User < ActiveRecord::Base
     where('project_authorizations.role in (3, 4)')
   }
 
-  def is_certifier_manager(project)
+  def certifier_manager?(project)
     project_authorizations.each do |project_authorization|
       if project_authorization.project == project && project_authorization.certifier_manager?
+        return true
+      end
+    end
+    return false
+  end
+
+  def project_manager?(project)
+    project_authorizations.each do |project_authorization|
+      if project_authorization.project == project && project_authorization.project_manager?
+        return true
+      end
+    end
+    return false
+  end
+
+  def enterprise_account?(project)
+    project_authorizations.each do |project_authorization|
+      if project_authorization.project == project && project_authorization.enterprise_account?
         return true
       end
     end

@@ -89,7 +89,7 @@
                             <td><%= category.code %></td>
                             <td><%= category.name %></td>
                             <td><%= @scheme_mix.scheme.total_weight_for_category(category) %> %</td>
-                            <td>
+                            <td style="min-width: 260px">
                                 <div class="score-graph"
                                      data-show-legend="false"
                                      data-show-x-axis="<%= if i == 0 then true else false end %>"
@@ -132,7 +132,7 @@
                                             <td><%= scheme_mix_criterion.scheme_criterion.criterion.name %></td>
                                             <td><%= scheme_mix_criterion.status.humanize %></td>
                                             <td><%= scheme_mix_criterion.scheme_criterion.weight %> %</td>
-                                            <td>
+                                            <td style="min-width: 260px">
                                                 <div class="score-graph"
                                                      data-show-legend="false"
                                                      data-show-x-axis="<%= if j == 0 then true else false end %>"
