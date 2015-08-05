@@ -13,6 +13,14 @@ class CertificationPathsController < AuthenticatedController
     @certification_path.project = @project
     if @certification_path.certificate_id == Certificate.where('label = ?', 'Operations Certificate').first.id
       if @certification_path.save
+        # Generate a notification for the system admins
+        User.system_admin.each do |system_admin|
+          notify(body: 'A new application for a %s was created.',
+                 body_params: [@certification_path.certificate.label],
+                 uri: project_path(@project),
+                 user: system_admin,
+                 project: @project)
+        end
         redirect_to project_path(@project), notice: 'Successfully applied for certificate.'
       else
         redirect_to :back
