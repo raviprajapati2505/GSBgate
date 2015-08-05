@@ -40,7 +40,7 @@ class CertificationPathsController < AuthenticatedController
             end
             # Generate a notification for the project owner
             notify(body: 'The status of %s was changed to %s.',
-                   body_params: [@certification_path.certificate.label, certification_path_params[:status]],
+                   body_params: [@certification_path.certificate.label, certification_path_params[:status].humanize],
                    uri: project_certification_path_path(@project, @certification_path),
                    user: @project.owner,
                    project: @project)
@@ -48,7 +48,7 @@ class CertificationPathsController < AuthenticatedController
             # Generate a notification for the certifier managers
             ProjectAuthorization.for_project(@project).certifier_manager.each do |project_authorization|
               notify(body: 'The status of %s was changed to %s.',
-                     body_params: [@certification_path.certificate.label, certification_path_params[:status]],
+                     body_params: [@certification_path.certificate.label, certification_path_params[:status].humanize],
                      uri: project_certification_path_path(@project, @certification_path),
                      user: project_authorization.user,
                      project: @project)
