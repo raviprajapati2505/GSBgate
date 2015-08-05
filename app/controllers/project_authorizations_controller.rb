@@ -1,12 +1,17 @@
 class ProjectAuthorizationsController < AuthenticatedController
   load_and_authorize_resource
-  before_action :set_project, only: [:create, :edit, :destroy]
+  before_action :set_project, only: [:create, :edit, :destroy, :update]
   before_action :set_authorization, only: [:edit, :destroy]
 
   def create
     @project_authorization = ProjectAuthorization.new(authorizations_params)
     @project_authorization.project = @project
     if @project_authorization.save
+      notify(body: 'You were added to project %s as a %s.',
+             body_params: [@project.name, @project_authorization.role.humanize],
+             uri: project_path(@project),
+             user: @project_authorization.user,
+             project: @project)
       redirect_to project_path(@project), notice: 'Member was successfully added.'
     else
       redirect_to :back
@@ -25,6 +30,11 @@ class ProjectAuthorizationsController < AuthenticatedController
 
   def update
     if @project_authorization.update(authorizations_params)
+      notify(body: 'Your role in project %s was changed to %s.',
+             body_params: [@project.name, @project_authorization.role.humanize],
+             uri: project_path(@project),
+             user: @project_authorization.user,
+             project: @project)
       redirect_to project_path(@project_authorization.project), notice: 'Authorization was successfully updated.'
     else
       render action: :edit
