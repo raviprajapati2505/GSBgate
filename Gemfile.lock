@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/carrierwaveuploader/carrierwave.git
-  revision: 05cd850e7517d1f4acdcb25002efd339bc9ed3b0
+  revision: 37cf31d34fa411db20e99cc654195020b06202c3
   specs:
     carrierwave (0.10.0)
       activemodel (>= 3.2.0)
@@ -56,6 +56,7 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
+    addressable (2.3.8)
     arel (6.0.0)
     bcrypt (3.1.10-x86-mingw32)
     binding_of_caller (0.7.2)
@@ -228,6 +229,7 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord-postgis-adapter (= 3.0.0.beta5)
+  addressable
   bootstrap_form
   bundler (>= 1.8.4)
   byebug

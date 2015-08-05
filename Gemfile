@@ -88,6 +88,9 @@ gem 'js-routes', '~> 1.0.1'
 # Read/write zip files
 gem 'rubyzip', '~> 1.1.7'
 
+# URI.encode / URI.escape is deprecated
+gem 'addressable'
+
 # Rails-Assets: access bower packages from our gem file
 #  e.g. gem 'rails-assets-BOWER_PACKAGE_NAME'
 #  do not forget to:

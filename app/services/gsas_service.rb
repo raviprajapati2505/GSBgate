@@ -1,8 +1,9 @@
 class GsasService
   include Singleton
+  require 'addressable/uri'
 
   HOST = 'gord2.sas.vito.local'
-  PATH = '/GSASService.svc/CallFunction/'
+  PATH = '/GSASService.svc/CallCalculator/'
 
   STATUS_ERROR = 'error'
   STATUS_SUCCESS = 'success'
@@ -10,7 +11,7 @@ class GsasService
   # Sends a function request to the GSAS webservice.
   #
   # The function parameters are:
-  # - function_name: The name of the webservice function in CamelCase.
+  # - calculator_name: The name of the calculator in CamelCase.
   # - params: A hash with key/value parameters for the webservice function.
   #
   # The function will return a hash with following keys:
@@ -18,11 +19,11 @@ class GsasService
   # - message: An error/success message depending on the status.
   # - score: An integer with the returned calculator score. Only present when status is "success".
   #
-  def call_function(function_name, params = {})
+  def call_calculator(calculator_name, params = {})
     error = false
 
     # Build the URI path
-    path = PATH + URI.encode(function_name) + '/' + URI.encode(params.to_json)
+    path = PATH + Addressable::URI.encode(calculator_name) + '/' + Addressable::URI.encode(params.to_json)
 
     # Build the full URI
     begin
