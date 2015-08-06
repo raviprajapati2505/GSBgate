@@ -3,6 +3,7 @@ Rails.application.routes.draw do
     resources :project_authorizations, only: [ :edit, :show, :update, :destroy ], path: 'authorizations', as: 'authorization'
     resources :project_authorizations, only: [ :create ], path: 'authorizations', as: 'authorizations'
     resources :certification_paths, except: [ :index, :new, :edit, :destroy ], path: 'certificates' do
+      resources :documents, only: [ :create, :show ], path: 'document'
       resources :scheme_mixes, only: [ :show ], path: 'schemes' do
         resources :scheme_mix_criteria, only: [ :show, :update ], path: 'criteria', as: 'scheme_mix_criterion' do
           resources :requirement_data, only: [ :update ], path: 'requirement', as: 'requirement_data'
@@ -17,7 +18,6 @@ Rails.application.routes.draw do
   resources :notifications, only: [ :index, :update ]
   put 'notification/update-all' => 'notifications#update_all', as: 'update_all_notifications'
   get 'notification/count' => 'notifications#count', as: 'count_notifications'
-  resources :documents, only: [ :create, :show ], path: 'document'
   put 'projects/:project_id/certificates/:certification_path_id/schemes/:scheme_mix_id/criteria/:id/assign' => 'scheme_mix_criteria#assign_certifier', as: 'assign_certifier_to_criteria'
   get 'projects/:project_id/certificates/:id/archive' => 'certification_paths#download_archive', as: 'archive_project_certification_path'
 

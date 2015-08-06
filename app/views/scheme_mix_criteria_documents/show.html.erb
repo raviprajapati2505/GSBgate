@@ -57,7 +57,7 @@
                 </table>
                 <div class="hr-line-dashed"></div>
                 <% if can? :show, @document %>
-                    <%= link_to(raw('<i title="Download document" class="fa fa-lg fa-download" style="padding-right: 10px;"></i>Download document'), @document, class: 'btn btn-primary') %>
+                    <%= link_to(raw('<i title="Download document" class="fa fa-lg fa-download" style="padding-right: 10px;"></i>Download document'), project_certification_path_document_path(@project, @certification_path, @document), class: 'btn btn-primary') %>
                 <% end %>
                 <% if can? :edit, @scheme_mix_criteria_document %>
                     <button type="button" class="btn btn-white" data-toggle="modal" data-target="#updateSchemeMixCriteriaDocumentStatusModal">Update status</button>
