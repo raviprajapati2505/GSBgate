@@ -4,6 +4,7 @@ class Project < ActiveRecord::Base
   has_many :project_authorizations, dependent: :delete_all
   has_many :users, -> { where('project_authorizations.role < 3') },  through: :project_authorizations
   has_many :certifiers, -> { where('project_authorizations.role > 2') }, through: :project_authorizations, source: :user
+  has_many :managers, -> { where('project_authorizations.role = 1') }, through: :project_authorizations, source: :user
   has_many :certification_paths
   has_many :notifications
 
