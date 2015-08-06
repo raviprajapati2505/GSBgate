@@ -181,8 +181,8 @@
                         <% @project.users.distinct.each do |user| %>
                             <% project_authorization = user.project_authorizations.for_project(@project).first %>
                         <tr class="clickable" data-href="<%= project_user_tasks_path(@project, user) %>">
-                            <td><%= user.email %><% if @project.owner == user %>&nbsp(owner)<% end %></td>
-                            <td><%= project_authorization.role.humanize %></td>
+                            <td><%= user.email %></td>
+                            <td><%= project_authorization.role.humanize %><% if @project.owner == user %>&nbsp;&amp;&nbsp;owner<% end %></td>
                             <td><% if !project_authorization.enterprise_account? %><%= user.requirement_data.for_project(@project).completed.count %>/<%= user.requirement_data.for_project(@project).count %><% else %>-<% end %></td>
                         </tr>
                         <% end %>
