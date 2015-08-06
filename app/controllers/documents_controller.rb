@@ -1,5 +1,7 @@
 class DocumentsController < AuthenticatedController
-  before_action :set_document, only: [:show, :download]
+  before_action :set_project, only: [:create]
+  before_action :set_certification_path, only: [:create]
+  before_action :set_document, only: [:show]
   load_and_authorize_resource skip_load_resource # todo: remove skip_load_resource
 
   def create
@@ -15,6 +17,15 @@ class DocumentsController < AuthenticatedController
               # Create the comment
               if params[:document]['comment'].present?
                 scheme_mix_criteria_document.scheme_mix_criteria_document_comments.create!(body: params[:document]['comment'], user: current_user)
+              end
+
+              # Notify the project managers of the new document
+              @project.managers.each do |project_manager|
+                notify(body: 'A new document %s was uploaded in %s.',
+                       body_params: [@document.document_file.file.filename, scheme_mix_criteria_document.scheme_mix_criterion.name],
+                       uri: project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_path(@project, @certification_path, scheme_mix_criteria_document.scheme_mix_criterion.scheme_mix, scheme_mix_criteria_document.scheme_mix_criterion, scheme_mix_criteria_document),
+                       user: project_manager,
+                       project: @project)
               end
             end
           end
@@ -34,6 +45,14 @@ class DocumentsController < AuthenticatedController
   end
 
   private
+  def set_project
+    @project = Project.find(params[:project_id])
+  end
+
+  def set_certification_path
+    @certification_path = CertificationPath.find(params[:certification_path_id])
+  end
+
   def set_document
     @document = Document.find(params[:id])
   end
