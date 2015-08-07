@@ -68,6 +68,15 @@ class User < ActiveRecord::Base
     return false
   end
 
+  def project_team_member?(project)
+    project_authorizations.each do |project_authorization|
+      if project_authorization.project == project && project_authorization.project_team_member?
+        return true
+      end
+    end
+    return false
+  end
+
   before_validation :assign_default_role, on: :create
 
   validates :role, inclusion: User.roles.keys

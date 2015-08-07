@@ -112,7 +112,8 @@
                 </div>
             </div>
         </div>
-        <% if can? :create, Document %>
+        <!-- if can? :create, Document %-->
+        <% if current_user.system_admin? || current_user.project_manager?(@project) || current_user.project_team_member?(@project) %>
             <div class="ibox">
                 <div class="ibox-title">
                     <h5>Upload documentation</h5>

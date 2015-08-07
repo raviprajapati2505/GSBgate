@@ -109,7 +109,8 @@
                     </table>
                 <% end %>
                 <div class="hr-line-dashed"></div>
-                <% if can? :create, CertificationPath %>
+                <!-- if can? :create, CertificationPath %-->
+                <% if current_user.system_admin? || current_user.project_manager?(@project) %>
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addCertificationPathModal"><i title="Apply for a certificate" class="fa fa-lg fa-certificate" style="padding-right: 10px;"></i>Apply for a certificate</button>
                 <% end %>
             </div>
@@ -148,7 +149,8 @@
                         </tbody>
                     </table>
                     <% end %>
-                    <% if can? :create, ProjectAuthorization %>
+                    <!-- if can? :create, ProjectAuthorization %-->
+                    <% if current_user.system_admin? || current_user.certifier_manager?(@project) %>
                     <div class="hr-line-dashed"></div>
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addCertifierTeamMemberModal"><i title="Add certifier team member" class="fa fa-lg fa-user-plus" style="padding-right: 10px;"></i><%= t('.btn_add_certifier_team_member') %></button>
                     <% end %>
@@ -189,7 +191,8 @@
                         </tbody>
                     </table>
                     <% end %>
-                    <% if can? :create, ProjectAuthorization %>
+                    <!-- if can? :create, ProjectAuthorization %-->
+                    <% if current_user.system_admin? || current_user.project_manager?(@project) %>
                     <div class="hr-line-dashed"></div>
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addProjectTeamMemberModal"><i title="Add project team member" class="fa fa-lg fa-user-plus" style="padding-right: 10px;"></i><%= t('.btn_add_project_team_member') %></button>
                     <% end %>

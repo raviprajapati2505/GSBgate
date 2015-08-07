@@ -40,7 +40,8 @@
                                 <% end %>
                                 <br />
                             <% end %>
-                            <% if can? :create, SchemeMixCriteriaDocument %>
+                            <!-- if can? :create, SchemeMixCriteriaDocument %-->
+                            <% if current_user.system_admin? || current_user.project_manager?(@project) || current_user.project_team_member?(@project) %>
                                 <hr />
                                 <p>If this document also supports requirements in other criteria, add a criterion below:</p>
                                 <%= bootstrap_form_for([@project, @certification_path, @scheme_mix, @scheme_mix_criterion, SchemeMixCriteriaDocument.new], layout: :inline) do |f| %>
@@ -85,10 +86,10 @@
                         </div>
                     <% end %>
                 <% end %>
-                <% if can? :create, SchemeMixCriteriaDocumentComment %>
+                <!-- if can? :create, SchemeMixCriteriaDocumentComment %-->
                     <div class="hr-line-dashed"></div>
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createSchemeMixCriteriaDocumentCommentModal"><i title="Add comment" class="fa fa-lg fa-comment" style="padding-right: 10px;"></i>Add comment</button>
-                <% end %>
+                <!-- end %-->
             </div>
         </div>
     </div>
