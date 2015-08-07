@@ -27,4 +27,4 @@ ProjectAuthorization.create!(project: Project.find_by_name('Site of Doha Convent
 ProjectAuthorization.create!(project: Project.find_by_name('Grand Hyatt Doha'), user: User.find_by_email('project_member_1@example.com'), role: :project_team_member)
 ProjectAuthorization.create!(project: Project.find_by_name('Grand Hyatt Doha'), user: User.find_by_email('project_manager@example.com'), role: :project_manager)
 ProjectAuthorization.create!(project: Project.find_by_name('Grand Hyatt Doha'), user: User.find_by_email('enterprise_client@example.com'), role: :enterprise_account)
-ProjectAuthorization.create!(project: Project.find_by_name('Grand Hyatt Doha'), user: User.find_by_email('certifier_manager@example.com'), role: :project_team_member)
+ProjectAuthorization.create!(project: Project.find_by_name('Grand Hyatt Doha'), user: User.find_by_email('certifier_manager@example.com'), role: :certifier_manager)
