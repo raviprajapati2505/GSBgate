@@ -108,9 +108,9 @@
                         </tbody>
                     </table>
                 <% end %>
-                <div class="hr-line-dashed"></div>
                 <!-- if can? :create, CertificationPath %-->
                 <% if current_user.system_admin? || current_user.project_manager?(@project) %>
+                    <div class="hr-line-dashed"></div>
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addCertificationPathModal"><i title="Apply for a certificate" class="fa fa-lg fa-certificate" style="padding-right: 10px;"></i>Apply for a certificate</button>
                 <% end %>
             </div>
