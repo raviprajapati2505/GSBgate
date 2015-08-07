@@ -36,6 +36,12 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
+                            <%= f.form_group :terms_and_conditions_accepted do %>
+                                <%= f.check_box :terms_and_conditions_accepted do %>
+                                    <small>Tick here to indicate you have read and agreed to the <%= link_to 'terms and conditions', asset_path('GSAS_Certification_TCs.pdf') %>.</small>
+                                <% end %>
+                            <% end %>
+
                             <div class="hr-line-dashed"></div>
                             <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
                                 <i title="Save" class="fa fa-lg fa-save" style="padding-right: 10px;"></i>Save

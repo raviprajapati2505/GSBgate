@@ -17,6 +17,7 @@ class Project < ActiveRecord::Base
   validates :carpark_area, numericality: true
   validates :project_site_area, numericality: true
   validates :construction_year, numericality: { only_integer: true, greater_than: 0 }
+  validates :terms_and_conditions_accepted, acceptance: true#, presence: { message: 'must be accepted' }
 
   after_initialize :init
 
