@@ -11,7 +11,7 @@ class RequirementDatum < ActiveRecord::Base
 
   validates :status, inclusion: RequirementDatum.statuses.keys
 
-  # before_validation :validate_fields
+  # validate :validate_fields
 
   default_scope {
     joins(:requirement)

@@ -8,6 +8,10 @@ class Project < ActiveRecord::Base
   has_many :certification_paths
   has_many :notifications
 
+  validates :name, presence: true
+  validates :address, presence: true
+  validates :location, presence: true
+  validates :country, presence: true
   validates :gross_area, numericality: true
   validates :certified_area, numericality: true
   validates :carpark_area, numericality: true
