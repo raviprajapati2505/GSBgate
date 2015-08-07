@@ -13,16 +13,6 @@
                     <h4 class="modal-title"><%=t '.form_title' %></h4>
                 </div>
                 <div class="modal-body">
-                    <% if @project_authorization.errors.any? %>
-                        <div id="error_explanation">
-                            <h2><%= pluralize(@project_authorization.errors.count, "error") %> prohibited this project_authorization from being saved:</h2>
-                            <ul>
-                                <% @project_authorization.errors.full_messages.each do |message| %>
-                                    <li><%= message %></li>
-                                <% end %>
-                            </ul>
-                        </div>
-                    <% end %>
                     <!--= f.select :user_id, User.without_permissions_for_project(@project).map { |k| [k.email, k.id]}, {}, { class: 'chosen-select'} %-->
                     <%= f.hidden_field :user_id, { class: 'select2-ajax', data: {project_id: @project.id } } %>
                     <% if show_certifiers %>

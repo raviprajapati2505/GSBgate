@@ -8,6 +8,12 @@ class Project < ActiveRecord::Base
   has_many :certification_paths
   has_many :notifications
 
+  validates :gross_area, numericality: true
+  validates :certified_area, numericality: true
+  validates :carpark_area, numericality: true
+  validates :project_site_area, numericality: true
+  validates :construction_year, numericality: { only_integer: true, greater_than: 0 }
+
   after_initialize :init
 
   scope :for_owner, ->(user) {

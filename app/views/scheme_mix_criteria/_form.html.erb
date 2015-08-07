@@ -6,16 +6,6 @@
             </div>
             <div class="ibox-content">
                 <%= bootstrap_form_for([@project, @certification_path, @scheme_mix, @scheme_mix_criterion], url: project_certification_path_scheme_mix_scheme_mix_criterion_path) do |f| %>
-                    <% if @scheme_mix_criterion.errors.any? %>
-                        <div id="error_explanation">
-                            <h2><%= pluralize(@scheme_mix_criterion.errors.count, "error") %> prohibited this criterion from being saved:</h2>
-                            <ul>
-                                <% @scheme_mix_criterion.errors.full_messages.each do |message| %>
-                                    <li><%= message %></li>
-                                <% end %>
-                            </ul>
-                        </div>
-                    <% end %>
                     <div class="row">
                         <div class="col-md-3">
                             <% if (can? :update, @scheme_mix_criterion) && (current_user.system_admin? || current_user.project_manager?(@project)) %>

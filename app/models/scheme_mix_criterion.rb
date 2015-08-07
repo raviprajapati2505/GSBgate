@@ -14,7 +14,9 @@ class SchemeMixCriterion < ActiveRecord::Base
 
   validates :status, inclusion: SchemeMixCriterion.statuses.keys
 
-  validates :targeted_score, presence: true
+  validates :targeted_score, numericality: { only_integer: true, greater_than_or_equal_to: -1, less_than_or_equal_to: 3 }, presence: true
+  validates :submitted_score, numericality: { only_integer: true, greater_than_or_equal_to: -1, less_than_or_equal_to: 3 }, allow_nil: true
+  validates :achieved_score, numericality: { only_integer: true, greater_than_or_equal_to: -1, less_than_or_equal_to: 3 }, allow_nil: true
 
   scope :reviewed, -> {
     approved | resubmit
