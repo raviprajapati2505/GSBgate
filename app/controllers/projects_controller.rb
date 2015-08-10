@@ -85,9 +85,9 @@ class ProjectsController < AuthenticatedController
     # Never trust parameters from the scary internet, only allow the white list through.
     def project_params
       if current_user.system_admin?
-        params.require(:project).permit(:code, :name, :description, :address, :location, :country, :construction_year, :latlng, :gross_area, :certified_area, :carpark_area, :project_site_area, :owner_id)
+        params.require(:project).permit(:name, :description, :address, :location, :country, :construction_year, :latlng, :gross_area, :certified_area, :carpark_area, :project_site_area, :owner_id, :code)
       else
-        params.require(:project).permit(:code, :name, :description, :address, :location, :country, :construction_year, :latlng, :gross_area, :certified_area, :carpark_area, :project_site_area)
+        params.require(:project).permit(:name, :description, :address, :location, :country, :construction_year, :latlng, :gross_area, :certified_area, :carpark_area, :project_site_area)
       end
     end
 end
