@@ -79,7 +79,7 @@
                                 <th class="col-md-3">Stage</th>
                                 <th class="col-md-2">Status</th>
                                 <th class="col-md-2">Certification goal</th>
-                                <th class="col-md-2">Current rating</th>
+                                <!--<th class="col-md-2">Current rating</th>-->
                             </tr>
                         </thead>
                         <tbody>
@@ -87,22 +87,26 @@
                             <tr class="clickable" data-href="<%= project_certification_path_path(@project, certification_path) %>">
                                 <td><%= certification_path.certificate.label %></td>
                                 <td><%= certification_path.status.humanize %></td>
-                                <% targeted_score = certification_path.total_weighted_targeted_score %>
-                                <% stars = certification_path.star_rating_for_score(targeted_score) %>
                                 <td>
-                                    <%= stars %> Stars&nbsp;
-                                    (<% stars.times do %>
-                                        <i class="fa fa-star"></i>
-                                    <% end %>) - <%= targeted_score %>
+                                    <% if certification_path.registered? %>
+                                        No goal set yet
+                                    <% else %>
+                                        <% targeted_score = certification_path.total_weighted_targeted_score %>
+                                        <% stars = certification_path.star_rating_for_score(targeted_score) %>
+                                        <%= stars %> Stars&nbsp;
+                                        (<% stars.times do %>
+                                            <i class="fa fa-star"></i>
+                                        <% end %>) - <%= targeted_score %>
+                                    <% end %>
                                 </td>
-                                <% submitted_score = certification_path.total_weighted_submitted_score %>
-                                <% stars = certification_path.star_rating_for_score(submitted_score) %>
+                                <!-- submitted_score = certification_path.total_weighted_submitted_score %>
+                                < stars = certification_path.star_rating_for_score(submitted_score) %>
                                 <td>
-                                    <%= stars %> Stars&nbsp;
-                                    (<% stars.times do %>
+                                    <= stars %> Stars&nbsp;
+                                    (< stars.times do %>
                                         <i class="fa fa-star"></i>
-                                    <% end %>) - <%= submitted_score %>
-                                </td>
+                                    < end %>) - <= submitted_score %>
+                                </td-->
                             </tr>
                         <% end %>
                         </tbody>

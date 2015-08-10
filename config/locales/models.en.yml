@@ -10,4 +10,5 @@ en:
     help:
       scheme_mix_criterion:
         status: "Mark as Complete to indicate if you have completed this criterion."
-        justification: "You can enter comments to provide feedback as required."
+      scheme_mix_criterion/scheme_mix_criterion_logs:
+        comment: "You can enter comments to provide feedback as required."
