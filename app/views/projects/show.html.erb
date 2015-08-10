@@ -119,46 +119,7 @@
                 <% end %>
             </div>
         </div>
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <h5>Certifier team</h5>
-            </div>
-            <div class="ibox-content">
-                <% if @project.certifiers.distinct.count == 0 %>
-                <p>This project has no certifiers.</p>
-                <% else %>
-                <table class="table table-striped table-bordered table-hover datatable">
-                    <thead>
-                    <tr>
-                        <th>Member</th>
-                        <th>Role</th>
-                        <th>Criteria progress</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>Unassigned</td>
-                        <td>-</td>
-                        <td><%= SchemeMixCriterion.for_project(@project).unassigned.distinct.count %>/<%= SchemeMixCriterion.for_project(@project).distinct.count %></td>
-                    </tr>
-                    <% @project.certifiers.distinct.each do |certifier| %>
-                    <tr class="clickable" data-href="<%= project_user_tasks_path(@project, certifier) %>">
-                        <% project_authorization = certifier.project_authorizations.for_project(@project).first %>
-                        <td><%= certifier.email %></td>
-                        <td><%= project_authorization.role.humanize %></td>
-                        <td><%= certifier.scheme_mix_criteria.for_project(@project).reviewed.count %>/<%= certifier.scheme_mix_criteria.for_project(@project).count %></td>
-                    </tr>
-                    <% end %>
-                    </tbody>
-                </table>
-                <% end %>
-                <!-- if can? :create, ProjectAuthorization %-->
-                <% if current_user.system_admin? || current_user.certifier_manager?(@project) %>
-                <div class="hr-line-dashed"></div>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addCertifierTeamMemberModal"><i title="Add certifier team member" class="fa fa-lg fa-user-plus" style="padding-right: 10px;"></i><%= t('.btn_add_certifier_team_member') %></button>
-                <% end %>
-            </div>
-        </div>
+        <%= render 'users/tasks', user: current_user %>
         <div class="ibox float-e-margins">
             <div class="ibox-title">
                 <h5>Project team</h5>
@@ -199,7 +160,46 @@
                 <% end %>
             </div>
         </div>
-        <%= render 'users/tasks', user: current_user %>
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>Certifier team</h5>
+            </div>
+            <div class="ibox-content">
+                <% if @project.certifiers.distinct.count == 0 %>
+                    <p>This project has no certifiers.</p>
+                <% else %>
+                    <table class="table table-striped table-bordered table-hover datatable">
+                        <thead>
+                        <tr>
+                            <th>Member</th>
+                            <th>Role</th>
+                            <th>Criteria progress</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>Unassigned</td>
+                            <td>-</td>
+                            <td><%= SchemeMixCriterion.for_project(@project).unassigned.distinct.count %>/<%= SchemeMixCriterion.for_project(@project).distinct.count %></td>
+                        </tr>
+                        <% @project.certifiers.distinct.each do |certifier| %>
+                            <tr class="clickable" data-href="<%= project_user_tasks_path(@project, certifier) %>">
+                                <% project_authorization = certifier.project_authorizations.for_project(@project).first %>
+                                <td><%= certifier.email %></td>
+                                <td><%= project_authorization.role.humanize %></td>
+                                <td><%= certifier.scheme_mix_criteria.for_project(@project).reviewed.count %>/<%= certifier.scheme_mix_criteria.for_project(@project).count %></td>
+                            </tr>
+                        <% end %>
+                        </tbody>
+                    </table>
+                <% end %>
+                <!-- if can? :create, ProjectAuthorization %-->
+                <% if current_user.system_admin? || current_user.certifier_manager?(@project) %>
+                    <div class="hr-line-dashed"></div>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addCertifierTeamMemberModal"><i title="Add certifier team member" class="fa fa-lg fa-user-plus" style="padding-right: 10px;"></i><%= t('.btn_add_certifier_team_member') %></button>
+                <% end %>
+            </div>
+        </div>
     </div>
 </div>
 <%= render 'certification_paths/form' %>

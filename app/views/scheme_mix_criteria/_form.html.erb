@@ -59,13 +59,14 @@
                 <% end %>
             </div>
         </div>
-        <% if current_user.system_admin? || current_user.certifier_manager?(@project) %>
-            <div class="ibox">
-                <div class="ibox-title">
-                    <h5>Certifier</h5>
-                </div>
-                <div class="ibox-content">
-                    <%= bootstrap_form_tag url: assign_certifier_to_criteria_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), method: 'put' do |f| %>
+
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>Certifier</h5>
+            </div>
+            <div class="ibox-content">
+                <%= bootstrap_form_tag url: assign_certifier_to_criteria_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), method: 'put' do |f| %>
+                    <% if current_user.system_admin? || current_user.certifier_manager?(@project) %>
                         <% users = User.authorized_for_project(@project).with_certifier_project_role %>
                         <% if @scheme_mix_criterion.certifier.nil? %>
                             <%= f.select :user_id, options_for_select(users.map { |k| [k.email, k.id]}), {label: 'Responsibility', include_blank: ''} %>
@@ -75,12 +76,20 @@
                         <%= f.text_field :due_date, value: ((l @scheme_mix_criterion.due_date, format: :short) if !@scheme_mix_criterion.due_date.nil?), prepend: '<i class="fa fa-calendar"></i>'.html_safe, data: {provide: 'datepicker'} %>
                         <div class="hr-line-dashed"></div>
                         <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
-                        <i title="Save" class="fa fa-lg fa-save" style="padding-right: 10px;"></i>Save
+                            <i title="Save" class="fa fa-lg fa-save" style="padding-right: 10px;"></i>Save
                         <% end %>
+                    <% else %>
+                        <% if @scheme_mix_criterion.certifier.nil? %>
+                            <p>This criterion is not assigned yet.</p>
+                        <% else %>
+                            <%= f.select :user_id, options_for_select([@scheme_mix_criterion.certifier].map { |k| [k.email, k.id]}, @scheme_mix_criterion.certifier.id), {label: 'Responsibility'}, disabled: true %>
+                        <% end %>
+                        <%= f.text_field :due_date, value: ((l @scheme_mix_criterion.due_date, format: :short) if !@scheme_mix_criterion.due_date.nil?), prepend: '<i class="fa fa-calendar"></i>'.html_safe, data: {provide: 'datepicker'}, disabled: true %>
                     <% end %>
-                </div>
+                <% end %>
             </div>
-        <% end %>
+        </div>
+
         <div class="ibox">
           <div class="ibox-title">
             <h5>Criterion details</h5>
