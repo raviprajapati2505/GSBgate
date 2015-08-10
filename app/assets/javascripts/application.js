@@ -98,11 +98,12 @@ $(function () {
     };
 
     // Scroll to hash
-    if(window.location.hash) {
+    if (window.location.hash) {
         $('html, body').animate({
             scrollTop: $(window.location.hash).offset().top
         }, 1000, function() {
             $(window.location.hash).addClass('flash animated');
+            $(window.location.hash).find('a.collapsed').trigger('click');
         });
     }
 
