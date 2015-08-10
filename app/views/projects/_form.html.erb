@@ -18,9 +18,9 @@
                             <%= f.text_area :address %>
                             <%= f.text_field :location %>
                             <%= f.text_field :country %>
-                            <%= f.text_field :construction_year %>
                         </div>
                         <div class="col-md-3">
+                            <%= f.text_field :construction_year %>
                             <%= f.text_field :gross_area, append: 'm²', label: (Project.human_attribute_name('gross_area') + tooltip(t '.tooltip_gross_area')).html_safe %>
                             <%= f.text_field :certified_area, append: 'm²', label: (Project.human_attribute_name('certified_area') + tooltip(t '.tooltip_certified_area')).html_safe %>
                             <%= f.text_field :carpark_area, append: 'm²', label: (Project.human_attribute_name('carpark_area') + tooltip(t '.tooltip_carpark_area')).html_safe %>
@@ -30,7 +30,7 @@
                             <div class="alert alert-info" role="alert">
                                 <i class="fa fa-info-circle"></i>&nbsp;&nbsp;<%=t '.info_text_map' %>
                             </div>
-                            <div id="project-map" class="map" style="height: 400px;"></div>
+                            <div id="project-map" class="map" style="height: 350px;"></div>
                             <div style="display:none;">
                                 <%= f.text_field :latlng %>
                             </div>
@@ -38,12 +38,13 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <%= f.form_group :terms_and_conditions_accepted do %>
-                                <%= f.check_box :terms_and_conditions_accepted do %>
-                                    <small>Tick here to indicate you have read and agreed to the <%= link_to 'terms and conditions', asset_path('GSAS_Certification_TCs.pdf'), target: '_blank' %>.</small>
+                            <% if @project.new_record? %>
+                                <%= f.form_group :terms_and_conditions_accepted do %>
+                                    <%= f.check_box :terms_and_conditions_accepted do %>
+                                        <small>Tick here to indicate you have read and agreed to the <%= link_to 'terms and conditions', asset_path('GSAS_Certification_TCs.pdf'), target: '_blank' %>.</small>
+                                    <% end %>
                                 <% end %>
                             <% end %>
-
                             <div class="hr-line-dashed"></div>
                             <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
                                 <i title="Save" class="fa fa-lg fa-save" style="padding-right: 10px;"></i>Save

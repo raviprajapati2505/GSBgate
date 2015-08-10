@@ -35,6 +35,10 @@
     color: #fc0;
   }
 
+  .checkbox label {
+    padding-left: 0;
+  }
+
   // Toastr
   .toast-success {
     background-color: $skin-gord-color;
