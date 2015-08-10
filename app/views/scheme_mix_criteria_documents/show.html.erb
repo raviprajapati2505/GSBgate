@@ -76,7 +76,7 @@
                     This document has no comments.
                 <% else %>
                     <% @scheme_mix_criteria_document.scheme_mix_criteria_document_comments.each do |comment| %>
-                        <div class="feed-element">
+                        <div id="comment-<%= comment.id %>" class="feed-element">
                             <div class="media-body">
                                 <strong><%= comment.user.email %></strong> commented on <strong><%= localize(comment.created_at) %></strong>
                                 <div class="well">
