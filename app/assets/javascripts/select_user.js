@@ -1,6 +1,6 @@
 $(function () {
     $('.select2-ajax').select2({
-        placeholder: "type the first letters of the email address",
+        placeholder: "Type the first letters of the email address",
         minimumInputLength: 1,
         ajax: {
             url: Routes.new_project_user_path({project_id: $('.select2-ajax').data('project-id')}),
