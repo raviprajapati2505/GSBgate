@@ -14,7 +14,10 @@
                 </div>
                 <div class="modal-body">
                     <!--= f.select :user_id, User.without_permissions_for_project(@project).map { |k| [k.email, k.id]}, {}, { class: 'chosen-select'} %-->
+                    <%= f.form_group do %>
+                    <%= f.label :user_id %><br>
                     <%= f.hidden_field :user_id, { class: 'select2-ajax', data: {project_id: @project.id } } %>
+                    <% end %>
                     <% if show_certifiers %>
                     <%= f.select :role, ProjectAuthorization.roles.keys[3..4].map { |k| [k.humanize, k] } %>
                     <% else %>
