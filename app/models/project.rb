@@ -12,10 +12,10 @@ class Project < ActiveRecord::Base
   validates :address, presence: true
   validates :location, presence: true
   validates :country, presence: true
-  validates :gross_area, numericality: true
-  validates :certified_area, numericality: true
-  validates :carpark_area, numericality: true
-  validates :project_site_area, numericality: true
+  validates :gross_area, numericality: { greater_than_or_equal_to: 0 }
+  validates :certified_area, numericality: { greater_than_or_equal_to: 0 }
+  validates :carpark_area, numericality: { greater_than_or_equal_to: 0 }
+  validates :project_site_area, numericality: { greater_than_or_equal_to: 0 }
   validates :construction_year, numericality: { only_integer: true, greater_than: 0 }
   validates :terms_and_conditions_accepted, acceptance: true#, presence: { message: 'must be accepted' }
 
