@@ -460,4 +460,48 @@
   .context {
     font-weight: bold;
   }
+
+  // Scheme mix criterion page
+  form.edit_scheme_mix_criterion table tr .form-group {
+    margin: 0;
+  }
+
+  .document-table {
+    tr:hover {
+      opacity: 1.4;
+    }
+
+    .document-awaiting-approval {
+      @extend .alert-warning;
+    }
+
+    .document-awaiting-approval:hover {
+      background-color: #FDF6D6;
+    }
+
+    .document-approved {
+      @extend .alert-success;
+    }
+
+    .document-approved:hover {
+      background-color: #D8F5CD;
+    }
+
+    .document-rejected {
+      @extend .alert-danger;
+    }
+
+    .document-rejected:hover {
+      background-color: #F1D0D0;
+    }
+
+    .document-superseded {
+      color: #ccc;
+      background-color: #fff;
+    }
+
+    .document-superseded:hover {
+      background-color: #FBFBFB;
+    }
+  }
 }
