@@ -26,8 +26,12 @@ class RequirementDatum < ActiveRecord::Base
     where(user: user)
   }
 
+  scope :not_assigned_to_user, ->(user) {
+    where('(requirement_data.user_id <> %d) OR (requirement_data.user_id IS NULL)', user.id)
+  }
+
   scope :for_project, ->(project) {
-      includes(:scheme_mix_criteria => [:scheme_mix => [:certification_path]]).where(certification_paths: {project_id: project.id})
+    includes(:scheme_mix_criteria => [:scheme_mix => [:certification_path]]).where(certification_paths: {project_id: project.id})
   }
 
   scope :for_category, ->(category) {

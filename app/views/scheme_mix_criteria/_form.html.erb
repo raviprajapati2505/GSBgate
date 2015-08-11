@@ -105,22 +105,46 @@
         </div>
     </div>
     <div class="col-lg-6">
-        <div class="ibox">
-            <div class="ibox-title">
-                <h5>Requirements</h5>
-            </div>
-            <div class="ibox-content">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div id="accordion" class="panel-group">
-                            <% @scheme_mix_criterion.requirement_data.each_with_index do |requirement_datum| %>
-                                <%= render 'requirements/update', requirement_datum: requirement_datum, certification_path_id: @certification_path.id, scheme_mix_id: @scheme_mix.id, scheme_mix_criterion_id: @scheme_mix_criterion.id %>
-                            <% end %>
+        <% if @scheme_mix_criterion.requirement_data.assigned_to_user(current_user).present? %>
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>Your requirements <%= tooltip('These requirements were assigned to you. It is your responsibility to provide documentation for these requirements.') %></h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="accordion" class="panel-group">
+                                <% @scheme_mix_criterion.requirement_data.assigned_to_user(current_user).each_with_index do |requirement_datum| %>
+                                    <%= render 'requirements/update', requirement_datum: requirement_datum, certification_path_id: @certification_path.id, scheme_mix_id: @scheme_mix.id, scheme_mix_criterion_id: @scheme_mix_criterion.id %>
+                                <% end %>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        <% end %>
+        <% if @scheme_mix_criterion.requirement_data.not_assigned_to_user(current_user).present? %>
+            <div class="ibox">
+                <div class="ibox-title">
+                    <% if @scheme_mix_criterion.requirement_data.assigned_to_user(current_user).present? %>
+                        <h5>Other requirements</h5>
+                    <% else %>
+                        <h5>Requirements</h5>
+                    <% end %>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="accordion" class="panel-group">
+                                <% @scheme_mix_criterion.requirement_data.not_assigned_to_user(current_user).each_with_index do |requirement_datum| %>
+                                    <%= render 'requirements/update', requirement_datum: requirement_datum, certification_path_id: @certification_path.id, scheme_mix_id: @scheme_mix.id, scheme_mix_criterion_id: @scheme_mix_criterion.id %>
+                                <% end %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <% end %>
         <!-- if can? :create, Document %-->
         <% if current_user.system_admin? || current_user.project_manager?(@project) || current_user.project_team_member?(@project) %>
             <div class="ibox">
