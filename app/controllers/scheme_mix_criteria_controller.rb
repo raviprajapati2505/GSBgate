@@ -13,7 +13,7 @@ class SchemeMixCriteriaController < AuthenticatedController
       if scheme_mix_criterion_params[:status] == :approved.to_s || scheme_mix_criterion_params[:status] == :resubmit.to_s
         # if achieved score is not yet provided only the status can only be 'in progress' or 'complete'
         if @scheme_mix_criterion.achieved_score.nil?
-          flash[:alert] = 'Please first provide the achieved score.'
+          flash.now[:alert] = 'Please first provide the achieved score.'
           render :show
           return
         end
@@ -22,7 +22,7 @@ class SchemeMixCriteriaController < AuthenticatedController
         # and all requirements must be marked as 'provided' or 'not required'
         @scheme_mix_criterion.requirement_data.each do |requirement_datum|
           if requirement_datum.status == :required.to_s
-            flash[:alert] = 'All requirements should first be approved or set to \'not required\'.'
+            flash.now[:alert] = 'All requirements should first be approved or set to \'not required\'.'
             render :show
             return
           end

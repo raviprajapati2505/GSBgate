@@ -48,7 +48,7 @@ class CertificationPathsController < AuthenticatedController
             # all scheme mix criteria must be marked as 'complete'
             @certification_path.scheme_mix_criteria.each do |scheme_mix_criteria|
               unless scheme_mix_criteria.complete?
-                flash[:alert] = 'All scheme mix criteria should first be completed.'
+                flash.now[:alert] = 'All scheme mix criteria should first be completed.'
                 render :show
                 return
               end

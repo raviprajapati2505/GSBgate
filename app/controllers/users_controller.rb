@@ -16,7 +16,7 @@ class UsersController < AuthenticatedController
 
   def update
     if @user.id == 1
-      flash[:alert] = 'This system user cannot be changed.'
+      flash.now[:alert] = 'This system user cannot be changed.'
       render action: 'edit'
       return
     end
