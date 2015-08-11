@@ -10,6 +10,10 @@ class CertificationPath < ActiveRecord::Base
 
   enum status: [ :registered, :preassessment, :preliminary ]
 
+  scope :with_all_criteria_completed, -> {
+    where.not('exists(select smc.id from scheme_mix_criteria smc inner join scheme_mixes sm on sm.id = smc.scheme_mix_id where smc.status = 0 and sm.certification_path_id = certification_paths.id)')
+  }
+
   def has_fixed_scheme?
     certificate.schemes.count == 1
   end

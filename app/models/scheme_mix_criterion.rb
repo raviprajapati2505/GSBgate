@@ -44,6 +44,10 @@ class SchemeMixCriterion < ActiveRecord::Base
     where(certifier: nil)
   }
 
+  scope :with_all_requirements_completed, -> {
+    where.not('exists(select rd.id from requirement_data rd inner join scheme_mix_criteria_requirement_data smcrd on smcrd.requirement_datum_id = rd.id where rd.status = 0 and smcrd.scheme_mix_criterion_id = scheme_mix_criteria.id)')
+  }
+
   # returns targeted score taking into account the percentage for which it counts (=weight)
   def weighted_targeted_score
     targeted_score * scheme_criterion.weight / 100 * scheme_mix.weight / 100

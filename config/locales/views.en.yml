@@ -80,6 +80,10 @@ en:
       btn_save: "Update user"
       form_title: "User details"
     tasks:
+      tooltip_certification_path_preassessment: "Pre-assessment: You should complete the certification path"
+      tooltip_certification_path_preliminary: "Preliminary"
+      tooltip_criterion_complete: "Completed"
+      tooltip_criterion_in_progress: "In Progress: You should complete the criterion"
       tooltip_due_date: "Due date passed"
       tooltip_requirement_required: "Requirement not provided yet"
       tooltip_requirement_provided: "Requirement provided"

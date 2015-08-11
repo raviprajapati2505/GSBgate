@@ -5,13 +5,21 @@
     <div class="ibox-content">
         <% assessor_task_count = user.requirement_data.for_project(@project).count %>
         <% certifier_task_count = user.scheme_mix_criteria.for_project(@project).count %>
-        <% if assessor_task_count == 0 && certifier_task_count == 0 %>
+        <% if user.project_manager?(@project) %>
+            <% assessor_mngr_crit_tasks = SchemeMixCriterion.for_project(@project).with_all_requirements_completed.in_progress %>
+            <% assessor_mngr_cert_tasks = CertificationPath.where(project: @project).with_all_criteria_completed.preassessment %>
+        <% else %>
+            <% assessor_mngr_crit_tasks = nil %>
+            <% assessor_mngr_cert_tasks = nil %>
+        <% end %>
+        <% if assessor_task_count == 0 && certifier_task_count == 0 && assessor_mngr_crit_tasks.present? && assessor_mngr_cert_tasks.present? %>
             <% if current_user == user %>
             <p>No tasks are assigned to you.</p>
             <% else %>
             <p>No tasks are assigned to this user.</p>
             <% end %>
-        <% else %>
+        <% end %>
+        <% unless assessor_task_count == 0 && certifier_task_count == 0 %>
             <table class="table table-bordered">
                 <thead>
                 <tr>
@@ -58,6 +66,50 @@
                             </td>
                         </tr>
                     <% end %>
+                <% end %>
+                </tbody>
+            </table>
+        <% end %>
+        <% unless assessor_mngr_crit_tasks.present? %>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th class="col-md-1">Completed</th>
+                    <th class="col-md-1">Code</th>
+                    <th>Criteria</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% assessor_mngr_crit_tasks.order_by_code.group([:id, 'scheme_criteria.code']).each do |scheme_mix_criterion| %>
+                <tr class="clickable" data-href="<%= project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, scheme_mix_criterion.scheme_mix.certification_path, scheme_mix_criterion.scheme_mix, scheme_mix_criterion) %>">
+                    <td><% if scheme_mix_criterion.in_progress? %><i class="fa fa-lg fa-square-o" title="<%= t('.tooltip_criterion_in_progress') %>" data-toggle="tooltip"></i>
+                        <% else %><i class="fa fa-lg fa-check-square-o" title="<%= t('.tooltip_criterion_complete') %>" data-toggle="tooltip"></i>
+                        <% end %>
+                    </td>
+                    <td><%= scheme_mix_criterion.scheme_criterion.code %></td>
+                    <td><%= scheme_mix_criterion.scheme_criterion.criterion.name %></td>
+                </tr>
+                <% end %>
+                </tbody>
+            </table>
+        <% end %>
+        <% unless assessor_mngr_cert_tasks.present? %>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th class="col-md-1">Preliminary</th>
+                    <th>Certification path</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% assessor_mngr_cert_tasks.each do |certification_path| %>
+                <tr class="clickable" data-href="<%= project_certification_path_path(@project, certification_path) %>">
+                    <td><% if certification_path.preliminary? %><i class="fa fa-lg fa-check-square-o" title="<%= t('.tooltip_certification_path_preliminary') %>" data-toggle="tooltip"></i>
+                        <% else %><i class="fa fa-lg fa-square-o" title="<%= t('.tooltip_certification_path_preassessment') %>" data-toggle="tooltip"></i>
+                        <% end %>
+                    </td>
+                    <td><%= certification_path.certificate.label %></td>
+                </tr>
                 <% end %>
                 </tbody>
             </table>
