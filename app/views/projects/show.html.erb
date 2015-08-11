@@ -140,7 +140,9 @@
                     <tr>
                         <td>Unassigned</td>
                         <td>-</td>
-                        <td><%= RequirementDatum.for_project(@project).unassigned.targeted.count %>/<%= RequirementDatum.for_project(@project).targeted.count %></td>
+                        <td>
+                          <%= RequirementDatum.for_project(@project).unassigned.completed.count %>/<%= RequirementDatum.for_project(@project).unassigned.count %>
+                        </td>
                     </tr>
                     <% @project.users.distinct.each do |user| %>
                         <% project_authorization = user.project_authorizations.for_project(@project).first %>

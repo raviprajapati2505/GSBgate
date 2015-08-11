@@ -23,11 +23,30 @@ class CertificationPath < ActiveRecord::Base
   end
 
   def total_weighted_targeted_score
-    scheme_mixes.joins(:scheme_mix_criteria).joins('INNER JOIN scheme_criteria ON scheme_criteria.id = scheme_mix_criteria.scheme_criterion_id').sum('scheme_mix_criteria.targeted_score * scheme_criteria.weight / 100 * scheme_mixes.weight / 100')
+    total = nil
+    scheme_mixes.each do |sm|
+      total ||= 0
+      total += sm.weighted_targeted_score
+    end
+    total.nil? ? -1 : total
   end
 
   def total_weighted_submitted_score
-    scheme_mixes.joins(:scheme_mix_criteria).joins('INNER JOIN scheme_criteria ON scheme_criteria.id = scheme_mix_criteria.scheme_criterion_id').sum('scheme_mix_criteria.submitted_score * scheme_criteria.weight / 100 * scheme_mixes.weight / 100')
+    total = nil
+    scheme_mixes.each do |sm|
+      total ||= 0
+      total += sm.weighted_submitted_score
+    end
+    total.nil? ? -1 : total
+  end
+
+  def total_weighted_achieved_score
+    total = nil
+    scheme_mixes.each do |sm|
+      total ||= 0
+      total += sm.weighted_achieved_score
+    end
+    total.nil? ? -1 : total
   end
 
   def star_rating_for_score(score)

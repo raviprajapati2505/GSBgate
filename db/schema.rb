@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150805081719) do
+ActiveRecord::Schema.define(version: 20150811060330) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -172,14 +172,14 @@ ActiveRecord::Schema.define(version: 20150805081719) do
   create_table "scheme_criteria", force: :cascade do |t|
     t.integer  "scheme_id"
     t.integer  "criterion_id"
-    t.datetime "created_at",                                null: false
-    t.datetime "updated_at",                                null: false
-    t.decimal  "weight",            precision: 4, scale: 2
+    t.datetime "created_at",                                     null: false
+    t.datetime "updated_at",                                     null: false
+    t.decimal  "weight",                 precision: 4, scale: 2
     t.string   "code"
     t.text     "score_description"
-    t.string   "score_class_name"
     t.string   "score_a"
     t.string   "score_b"
+    t.integer  "score_combination_type"
   end
 
   add_index "scheme_criteria", ["criterion_id"], name: "index_scheme_criteria_on_criterion_id", using: :btree
@@ -196,16 +196,19 @@ ActiveRecord::Schema.define(version: 20150805081719) do
   add_index "scheme_criteria_requirements", ["scheme_criterion_id"], name: "index_scheme_criteria_requirements_on_scheme_criterion_id", using: :btree
 
   create_table "scheme_mix_criteria", force: :cascade do |t|
-    t.integer  "targeted_score"
+    t.integer  "targeted_score_a"
     t.integer  "scheme_mix_id"
     t.integer  "scheme_criterion_id"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
-    t.integer  "submitted_score"
+    t.integer  "submitted_score_a"
     t.integer  "status"
-    t.integer  "achieved_score"
+    t.integer  "achieved_score_a"
     t.integer  "certifier_id"
     t.date     "due_date"
+    t.integer  "targeted_score_b"
+    t.integer  "submitted_score_b"
+    t.integer  "achieved_score_b"
   end
 
   add_index "scheme_mix_criteria", ["certifier_id"], name: "index_scheme_mix_criteria_on_certifier_id", using: :btree
@@ -278,16 +281,6 @@ ActiveRecord::Schema.define(version: 20150805081719) do
 
   add_index "schemes", ["certificate_id"], name: "index_schemes_on_certificate_id", using: :btree
 
-  create_table "scores", force: :cascade do |t|
-    t.integer  "score"
-    t.text     "description"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
-    t.integer  "scheme_criterion_id"
-  end
-
-  add_index "scores", ["scheme_criterion_id"], name: "index_scores_on_scheme_criterion_id", using: :btree
-
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
@@ -338,5 +331,4 @@ ActiveRecord::Schema.define(version: 20150805081719) do
   add_foreign_key "scheme_mixes", "certification_paths"
   add_foreign_key "scheme_mixes", "schemes"
   add_foreign_key "schemes", "certificates"
-  add_foreign_key "scores", "scheme_criteria"
 end

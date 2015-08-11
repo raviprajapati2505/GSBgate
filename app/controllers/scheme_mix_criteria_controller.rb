@@ -27,11 +27,14 @@ class SchemeMixCriteriaController < AuthenticatedController
             return
           end
         end
+      end
 
-        # if not attempting criterion
-        if @scheme_mix_criterion.targeted_score == -1
-          params[:scheme_mix_criterion][:submitted_score] = -1
-        end
+      # if not attempting criterion
+      if @scheme_mix_criterion.targeted_score_a == -1
+        params[:scheme_mix_criterion][:submitted_score_a] = -1
+      end
+      if @scheme_mix_criterion.targeted_score_b == -1
+        params[:scheme_mix_criterion][:submitted_score_b] = -1
       end
 
       old_status = @scheme_mix_criterion[:status]
@@ -123,7 +126,7 @@ class SchemeMixCriteriaController < AuthenticatedController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def scheme_mix_criterion_params
-    params.require(:scheme_mix_criterion).permit(:targeted_score, :achieved_score, :submitted_score, :status)
+    params.require(:scheme_mix_criterion).permit(:targeted_score_a, :achieved_score_a, :submitted_score_a, :targeted_score_b, :achieved_score_b, :submitted_score_b, :status)
   end
 
 end
