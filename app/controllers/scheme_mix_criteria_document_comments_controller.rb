@@ -19,6 +19,17 @@ class SchemeMixCriteriaDocumentCommentsController < AuthenticatedController
              user: @scheme_mix_criteria_document.document.user,
              project: @project)
 
+      # Notify all users that have added comments to the document
+      @scheme_mix_criteria_document.commenters.uniq.each do |commenter|
+        if commenter.id != @scheme_mix_criteria_document.document.user.id
+          notify(body: 'A comment was added to document %s.',
+                 body_params: [@scheme_mix_criteria_document.document.document_file.file.filename],
+                 uri: project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, @scheme_mix_criteria_document) + '#comment-' + comment.id.to_s,
+                 user: commenter,
+                 project: @project)
+        end
+      end
+
       redirect_to :back, notice: 'The comment was successfully added.'
     else
       redirect_to :back, alert: 'The comment couldn\'t be saved, please try again later.'
