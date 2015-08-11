@@ -31,7 +31,7 @@ class RequirementDataController < AuthenticatedController
       @calculation_result = calculator.calculate calculator_params
     end
 
-    @requirement_datum.user = User.find(params[:user_id]) if params.has_key?(:user_id)
+    @requirement_datum.user = User.find(params[:user_id]) unless params[:user_id].blank?
     if params.has_key?(:due_date)
       if params[:due_date] != ''
         @requirement_datum.due_date = Date.strptime(params[:due_date], t('date.formats.short'))

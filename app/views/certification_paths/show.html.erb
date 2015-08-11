@@ -54,6 +54,7 @@
                 <% end %>
             </div>
         </div>
+        <%= render 'users/tasks', user: current_user %>
     </div>
 </div>
 <%= render 'modal', project: @project, certification_path: @certification_path %>

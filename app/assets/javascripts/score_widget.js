@@ -8,7 +8,7 @@ function score_graph($element, showLegend, showXaxis, showValues, width, height,
     if (!showXaxis) {
         height -= 18;
     }
-    var margin = {top: (showXaxis ? 18 : 0), right: (showLegend ? 130 : 10), bottom: 0, left: 10},
+    var margin = {top: (showXaxis ? 18 : 0), right: (showLegend ? 150 : 25), bottom: 0, left: 25},
         graph_width = width - margin.left - margin.right,
         graph_height = height - margin.top - margin.bottom,
         data = [{class: 'progress-bar-max', value: maxAttainable, name: 'Max. Attainable score'},
