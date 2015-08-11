@@ -12,9 +12,15 @@
             <% assessor_mngr_crit_tasks = nil %>
             <% assessor_mngr_cert_tasks = nil %>
         <% end %>
+        <% if user.certifier_manager?(@project) %>
+            <% certifier_mngr_tasks = CertificationPath.where(project: @project).with_all_criteria_reviewed.preliminary %>
+        <% else %>
+            <% certifier_mngr_tasks = nil %>
+        <% end %>
         <% if assessor_task_count == 0 && certifier_task_count == 0 &&
                 (assessor_mngr_crit_tasks.nil? || assessor_mngr_crit_tasks.count == 0) &&
-                (assessor_mngr_cert_tasks.nil? || assessor_mngr_cert_tasks.count == 0) %>
+                (assessor_mngr_cert_tasks.nil? || assessor_mngr_cert_tasks.count == 0) &&
+                (certifier_mngr_tasks.nil? || certifier_mngr_tasks.count == 0)%>
             <% if current_user == user %>
             <p>No tasks are assigned to you.</p>
             <% else %>
@@ -96,6 +102,7 @@
             </table>
         <% end %>
         <% unless assessor_mngr_cert_tasks.nil? || assessor_mngr_cert_tasks.count == 0 %>
+            <h5>Project Manager Tasks</h5>
             <table class="table table-bordered">
                 <thead>
                 <tr>
@@ -108,6 +115,28 @@
                 <tr class="clickable" data-href="<%= project_certification_path_path(@project, certification_path) %>">
                     <td><% if certification_path.preliminary? %><i class="fa fa-lg fa-check-square-o" title="<%= t('.tooltip_certification_path_preliminary') %>" data-toggle="tooltip"></i>
                         <% else %><i class="fa fa-lg fa-square-o" title="<%= t('.tooltip_certification_path_preassessment') %>" data-toggle="tooltip"></i>
+                        <% end %>
+                    </td>
+                    <td><%= certification_path.certificate.label %></td>
+                </tr>
+                <% end %>
+                </tbody>
+            </table>
+        <% end %>
+        <% unless certifier_mngr_tasks.nil? || certifier_mngr_tasks.count == 0 %>
+            <h5>Certifier Manager Tasks</h5>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th class="col-md-1">Final</th>
+                    <th>Certification path</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% certifier_mngr_tasks.each do |certification_path| %>
+                <tr class="clickable" data-href="<%= project_certification_path_path(@project, certification_path) %>">
+                    <td><% if certification_path.status == 3 %><i class="fa fa-lg fa-check-square-o" title="<%= t('.tooltip_certification_path_final') %>" data-toggle="tooltip"></i>
+                        <% else %><i class="fa fa-lg fa-square-o" title="<%= t('.tooltip_certification_path_preliminary') %>" data-toggle="tooltip"></i>
                         <% end %>
                     </td>
                     <td><%= certification_path.certificate.label %></td>
