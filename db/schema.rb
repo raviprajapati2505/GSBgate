@@ -172,14 +172,14 @@ ActiveRecord::Schema.define(version: 20150811060330) do
   create_table "scheme_criteria", force: :cascade do |t|
     t.integer  "scheme_id"
     t.integer  "criterion_id"
-    t.datetime "created_at",                                     null: false
-    t.datetime "updated_at",                                     null: false
+    t.datetime "created_at",                                                 null: false
+    t.datetime "updated_at",                                                 null: false
     t.decimal  "weight",                 precision: 4, scale: 2
     t.string   "code"
     t.text     "score_description"
     t.string   "score_a"
     t.string   "score_b"
-    t.integer  "score_combination_type"
+    t.integer  "score_combination_type",                         default: 0
   end
 
   add_index "scheme_criteria", ["criterion_id"], name: "index_scheme_criteria_on_criterion_id", using: :btree
