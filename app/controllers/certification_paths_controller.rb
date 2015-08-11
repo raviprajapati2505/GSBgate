@@ -35,7 +35,7 @@ class CertificationPathsController < AuthenticatedController
       if @certification_path.status != certification_path_params[:status]
         case CertificationPath.statuses[certification_path_params[:status]]
           when CertificationPath.statuses[:preassessment]
-            if !current_user.system_admin?
+            unless current_user.system_admin?
               raise CanCan::AccessDenied.new('Not Authorized to update certification_path status', :update, CertificationPath)
             end
             # Generate a notification for the project owner
@@ -45,6 +45,15 @@ class CertificationPathsController < AuthenticatedController
                    user: @project.owner,
                    project: @project)
           when CertificationPath.statuses[:preliminary]
+            # all scheme mix criteria must be marked as 'complete'
+            @certification_path.scheme_mix_criteria.each do |scheme_mix_criteria|
+              unless scheme_mix_criteria.complete?
+                flash[:alert] = 'All scheme mix criteria should first be completed.'
+                render :show
+                return
+              end
+            end
+
             # Generate a notification for the certifier managers
             ProjectAuthorization.for_project(@project).certifier_manager.each do |project_authorization|
               notify(body: 'The status of %s was changed to %s.',
