@@ -467,10 +467,6 @@
   }
 
   .document-table {
-    tr:hover {
-      opacity: 1.4;
-    }
-
     .document-awaiting-approval {
       @extend .alert-warning;
     }
