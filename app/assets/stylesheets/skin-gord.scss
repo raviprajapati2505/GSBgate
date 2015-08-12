@@ -500,4 +500,29 @@
       background-color: #FBFBFB;
     }
   }
+
+  .criterion-details {
+    .criterion-details-subtitle {
+      font-weight: bold;
+      margin: 8px 0;
+    }
+
+    table {
+      width: auto;
+    }
+
+    table p {
+      margin: 0;
+      padding: 0;
+    }
+
+    table tr:first-child {
+      font-weight: bold;
+      background-color: #f9f9f9;
+    }
+
+    .criterion-details-score-description table tr:not(:first-child) td:first-child {
+      text-align: center;
+    }
+  }
 }

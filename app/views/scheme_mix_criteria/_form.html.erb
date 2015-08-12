@@ -170,19 +170,19 @@
             </div>
         </div>
 
-        <div class="ibox">
+        <div class="ibox criterion-details">
           <div class="ibox-title">
             <h5>Criterion details</h5>
           </div>
           <div class="ibox-content">
-            <div><strong>Description</strong></div>
-            <div><%= @scheme_mix_criterion.scheme_criterion.criterion.description.html_safe %></div>
-            <div><strong>Measurement</strong></div>
-            <div><%= @scheme_mix_criterion.scheme_criterion.criterion.measurement.html_safe %></div>
-            <div><strong>Measurement principle</strong></div>
-            <div><%= @scheme_mix_criterion.scheme_criterion.criterion.measurement_principle.html_safe %></div>
-            <div><strong>Score description</strong></div>
-            <div><%= @scheme_mix_criterion.scheme_criterion.score_description.html_safe %></div>
+            <div class="criterion-details-subtitle">Description</div>
+            <div class="criterion-details-description"><%= @scheme_mix_criterion.scheme_criterion.criterion.description.html_safe %></div>
+            <div class="criterion-details-subtitle">Measurement</div>
+            <div class="criterion-details-measurement"><%= @scheme_mix_criterion.scheme_criterion.criterion.measurement.html_safe %></div>
+            <div class="criterion-details-subtitle">Measurement principle</div>
+            <div class="criterion-details-measurement-principle"><%= @scheme_mix_criterion.scheme_criterion.criterion.measurement_principle.html_safe %></div>
+            <div class="criterion-details-subtitle">Score description</div>
+            <div class="criterion-details-score-description"><%= @scheme_mix_criterion.scheme_criterion.score_description.html_safe %></div>
           </div>
         </div>
     </div>
