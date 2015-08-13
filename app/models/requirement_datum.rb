@@ -42,6 +42,10 @@ class RequirementDatum < ActiveRecord::Base
     includes(:scheme_mix_criteria).where(scheme_mix_criteria: {scheme_mix: scheme_mix})
   }
 
+  scope :for_certification_path, ->(certification_path) {
+    includes(:scheme_mix_criteria => [:scheme_mix]).where(scheme_mixes: {certification_path_id: certification_path.id})
+  }
+
   scope :unassigned, -> {
     where(user: nil)
   }

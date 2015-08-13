@@ -38,8 +38,9 @@
                     <table class="table table-bordered table-hover">
                         <thead>
                         <tr>
-                            <th class="col-md-7">Scheme name</th>
+                            <th class="col-md-4">Scheme name</th>
                             <th class="col-md-2">Weight</th>
+                            <th class="col-md-2">Progress</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -47,6 +48,7 @@
                             <tr class="clickable" data-href="<%= project_certification_path_scheme_mix_path(@certification_path.project, @certification_path, scheme_mix) %>">
                                 <td><%= scheme_mix.scheme.full_label %></td>
                                 <td><%= scheme_mix.weight %> %</td>
+                                <td><%= RequirementDatum.for_scheme_mix(scheme_mix).completed.count * 100 / RequirementDatum.for_scheme_mix(scheme_mix).count %>%</td>
                             </tr>
                         <% end %>
                         </tbody>

@@ -17,6 +17,10 @@
     font-size: 12px;
   }
 
+  .project-certification-progress {
+    font-style: italic;
+  }
+
   // display a vertical scrollbar when modal box height is almost browser view height
   .modal-body {
     max-height: calc(100vh - 212px);

@@ -78,6 +78,7 @@
                             <tr>
                                 <th class="col-md-3">Stage</th>
                                 <th class="col-md-2">Status</th>
+                                <th class="col-md-1">Progress</th>
                                 <th class="col-md-2">Certification goal</th>
                                 <!--<th class="col-md-2">Current rating</th>-->
                             </tr>
@@ -87,6 +88,7 @@
                             <tr class="clickable" data-href="<%= project_certification_path_path(@project, certification_path) %>">
                                 <td><%= certification_path.certificate.label %></td>
                                 <td><%= certification_path.status.humanize %></td>
+                                <td><%= RequirementDatum.for_certification_path(certification_path).completed.count * 100 / RequirementDatum.for_certification_path(certification_path).count %>%</td>
                                 <td>
                                     <% if certification_path.registered? %>
                                         No goal set yet

@@ -16,8 +16,20 @@
             <% @projects.each do |project| %>
                 <tr class="clickable" data-href="<%= project_path(project) %>">
                     <td><%= project.code %></td>
-                    <td><%= project.name %></td>
-                    <td><%= project.description %></td>
+                    <td>
+                        <%= project.name %>
+                    </td>
+                    <td><%= project.description %><br>
+                        <% if project.certification_paths.count > 0 %>
+                            <% project.certification_paths.each do |certification_path| %>
+                                <% if certification_path.preassessment? %>
+                                    <div class="project-certification-progress"><%= certification_path.certificate.label %>: <%= certification_path.status %> for <%= RequirementDatum.for_certification_path(certification_path).completed.count * 100 / RequirementDatum.for_certification_path(certification_path).count %>% complete</div>
+                                <% else %>
+                                    <div class="project-certification-progress"><%= certification_path.certificate.label %>: <%= certification_path.status %></div>
+                                <% end %>
+                            <% end %>
+                        <% end %>
+                    </td>
                     <td><%= project.country %></td>
                 </tr>
             <% end %>
