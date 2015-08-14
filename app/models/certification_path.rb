@@ -69,4 +69,21 @@ class CertificationPath < ActiveRecord::Base
     end
   end
 
+  # Mirrors all the descendant structural data records of the Cerifi to user data records
+  def create_descendant_records
+    if self.scheme_mixes.any?
+      raise('Scheme_mixes are already created')
+    end
+
+    # if multiple schemes, user should do the weighting
+    if self.certificate.schemes.many?
+      weight = 0
+    else
+      weight = 100
+    end
+
+    self.certificate.schemes.each do |scheme|
+      SchemeMix.create(certification_path_id: self.id, scheme_id: scheme.id, weight: weight)
+    end
+  end
 end

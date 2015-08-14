@@ -9,10 +9,9 @@ class CertificationPathsController < AuthenticatedController
 
   def create
     @certification_path = CertificationPath.new(certification_path_params)
-    @certification_path.registered!
+    @certification_path.status = :registered
     @certification_path.project = @project
-    if @certification_path.certificate_id == Certificate.where('label = ?', 'Operations Certificate').first.id
-      if @certification_path.save
+    if @certification_path.save
         # Generate a notification for the system admins
         User.system_admin.each do |system_admin|
           notify(body: 'A new application for a %s was created.',
@@ -22,11 +21,9 @@ class CertificationPathsController < AuthenticatedController
                  project: @project)
         end
         redirect_to project_path(@project), notice: 'Successfully applied for certificate.'
-      else
-        redirect_to :back
-      end
     else
-      redirect_to :back, alert: 'This certificate is not yet available.'
+      redirect_to project_path(@project), notice: 'Error, could not apply for certificate'
+      # todo handle @certification_path.errors.
     end
   end
 
@@ -65,10 +62,10 @@ class CertificationPathsController < AuthenticatedController
         end
       end
       if @certification_path.update(certification_path_params)
-        if @certification_path.scheme_mixes.count == 0
-          SchemeMix.create(certification_path_id: @certification_path.id, scheme_id: Scheme.where('label = ?', 'Operations').first.id, weight: 100)
+        if @certification_path.scheme_mixes.empty?
+          @certification_path.create_descendant_records
+          redirect_to project_certification_path_path(@project, @certification_path), notice: 'Status was successfully updated.'
         end
-        redirect_to project_certification_path_path(@project, @certification_path), notice: 'Status was successfully updated.'
       else
         render action: :show
       end
