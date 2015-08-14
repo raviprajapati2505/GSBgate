@@ -4,4 +4,21 @@ class Certificate < ActiveRecord::Base
 
   has_many :certification_paths
   has_many :schemes
+
+  scope :letter_of_conformance, -> {
+    where(certificate_type: Certificate.certificate_types[:design_type], assessment_stage: Certificate.assessment_stages[:design_stage])
+  }
+
+  scope :final_design_certificate, -> {
+    where(certificate_type: Certificate.certificate_types[:design_type], assessment_stage: Certificate.assessment_stages[:construction_stage])
+  }
+
+  scope :construction_certificate, -> {
+    where(certificate_type: Certificate.certificate_types[:construction_type], assessment_stage: Certificate.assessment_stages[:construction_stage])
+  }
+
+  scope :operations_certificate, -> {
+    where(certificate_type: Certificate.certificate_types[:operations_type], assessment_stage: Certificate.assessment_stages[:operations_stage])
+  }
+
 end
