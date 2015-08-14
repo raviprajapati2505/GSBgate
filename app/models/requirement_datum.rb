@@ -11,8 +11,6 @@ class RequirementDatum < ActiveRecord::Base
 
   validates :status, inclusion: RequirementDatum.statuses.keys
 
-  # validate :validate_fields
-
   default_scope {
     joins(:requirement)
     .order('requirements.label')
@@ -54,14 +52,4 @@ class RequirementDatum < ActiveRecord::Base
   def assign_default_status
     self.status = :required if self.status.nil?
   end
-
-  # def validate_fields
-  #   calculator_datum.field_data.each do |field_datum|
-  #     if field_datum.invalid?
-  #       # errors.add("field-datum-#{field_datum.id}", field_datum.errors.messages.values)
-  #       errors.add("field-datum-#{field_datum.id}", field_datum.errors.first[1])
-  #     end
-  #   end
-  # end
-
 end

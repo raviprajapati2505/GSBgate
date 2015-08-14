@@ -10,6 +10,14 @@ class RequirementDataController < AuthenticatedController
       @requirement_datum.calculator_datum.field_data.each do |field_datum|
         if params["field-datum-#{field_datum.id}"]
           field_datum.value = params["field-datum-#{field_datum.id}"]
+          unless field_datum.valid?
+            # set value to nil otherwise 0 is used in case of integer_value
+            field_datum.value = nil
+            @certification_path_id = params[:certification_path_id]
+            @scheme_mix_id = params[:scheme_mix_id]
+            @scheme_mix_criterion_id = params[:scheme_mix_criterion_id]
+            render 'requirements/update' and return
+          end
           field_datum.save
         end
       end
