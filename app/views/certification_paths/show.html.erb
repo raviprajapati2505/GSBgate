@@ -48,7 +48,13 @@
                             <tr class="clickable" data-href="<%= project_certification_path_scheme_mix_path(@certification_path.project, @certification_path, scheme_mix) %>">
                                 <td><%= scheme_mix.scheme.full_label %></td>
                                 <td><%= scheme_mix.weight %> %</td>
-                                <% progress = RequirementDatum.for_scheme_mix(scheme_mix).completed.count * 100 / RequirementDatum.for_scheme_mix(scheme_mix).count %>
+                                <%
+                                    if RequirementDatum.for_scheme_mix(scheme_mix).count.nonzero?
+                                        progress = RequirementDatum.for_scheme_mix(scheme_mix).completed.count * 100 / RequirementDatum.for_scheme_mix(scheme_mix).count
+                                    else
+                                        progress = 100
+                                    end
+                                %>
                                 <td>
                                     <div class="progress">
                                         <div class="progress-bar" style="min-width: 2em; width: <%= progress %>%;"><%= progress %>%</div>
