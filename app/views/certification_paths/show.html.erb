@@ -50,7 +50,7 @@
                                 <td><%= scheme_mix.weight %> %</td>
                                 <%
                                    if @certification_path.requirement_data.count.nonzero?
-                                     progress = @certification_path.requirement_data.completed.count / @certification_path.requirement_data.count
+                                     progress = @certification_path.requirement_data.completed.count * 100 / @certification_path.requirement_data.count
                                    else
                                      progress = 100
                                    end
