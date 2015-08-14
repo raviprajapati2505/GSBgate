@@ -49,11 +49,11 @@
                                 <td><%= scheme_mix.scheme.full_label %></td>
                                 <td><%= scheme_mix.weight %> %</td>
                                 <%
-                                    if RequirementDatum.for_scheme_mix(scheme_mix).count.nonzero?
-                                        progress = RequirementDatum.for_scheme_mix(scheme_mix).completed.count * 100 / RequirementDatum.for_scheme_mix(scheme_mix).count
-                                    else
-                                        progress = 100
-                                    end
+                                   if @certification_path.requirement_data.count.nonzero?
+                                     progress = @certification_path.requirement_data.completed.count / @certification_path.requirement_data.count
+                                   else
+                                     progress = 100
+                                   end
                                 %>
                                 <td>
                                     <div class="progress">
