@@ -88,7 +88,13 @@
                             <tr class="clickable" data-href="<%= project_certification_path_path(@project, certification_path) %>">
                                 <td><%= certification_path.certificate.label %></td>
                                 <td><%= certification_path.status.humanize %></td>
-                                <% progress = RequirementDatum.for_certification_path(certification_path).completed.count * 100 / RequirementDatum.for_certification_path(certification_path).count %>
+                                <%
+                                   if certification_path.requirement_data.count.nonzero?
+                                     progress = certification_path.requirement_data.completed.count / certification_path.requirement_data.count
+                                   else
+                                     progress = 100
+                                   end
+                                %>
                                 <td>
                                     <div class="progress">
                                         <div class="progress-bar" style="min-width: 2em; width: <%= progress %>%;"><%= progress %>%</div>
