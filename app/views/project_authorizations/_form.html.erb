@@ -1,8 +1,4 @@
-<% if show_certifiers %>
-<div class="modal fade" id="addCertifierTeamMemberModal">
-<% else %>
-<div class="modal fade" id="addProjectTeamMemberModal">
-<% end %>
+<div class="modal fade" id="<%= show_certifiers ? 'addCertifierTeamMemberModal' : 'addProjectTeamMemberModal' %>">
     <div class="modal-dialog">
         <%= bootstrap_form_for([@project, @project_authorization], as: :authorization, url: project_authorizations_path(@project, @project_authorization)) do |f| %>
             <div class="modal-content">
