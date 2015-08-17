@@ -9,11 +9,11 @@ class Scheme < ActiveRecord::Base
   end
 
   def maximum_attainable_score
-    Scheme.calculate_score(scheme_criteria, 'maximum_attainable_score')
+    calculate_score(scheme_criteria, 'maximum_attainable_score')
   end
 
   def minimum_attainable_score
-    Scheme.calculate_score(scheme_criteria, 'minimum_attainable_score')
+    calculate_score(scheme_criteria, 'minimum_attainable_score')
   end
 
   # returns the total of all weights for the criteria belonging to the specified category
@@ -47,16 +47,20 @@ class Scheme < ActiveRecord::Base
   end
 
   private
-    # Class method to calculate the weighted score for this scheme mix
     def calculate_score(sc, score_method)
-      # First determine the total score of all scheme_criteria
-      total = nil
+      result = nil
       sc.each do |scheme_criterion|
-        total ||= 0
-        total += scheme_criterion.send(score_method)
+        result ||= scheme_criterion.send(score_method)
+        if score_method.include? 'minimum'
+          result = [result, scheme_criterion.send(score_method)].min
+        elsif score_method.include? 'maximum'
+          result = [result, scheme_criterion.send(score_method)].max
+        else
+          raise 'unexpected score_method: ' + score_method
+        end
       end
-      raise 'scheme without scheme mix criteria' if total.nil?
-      total
+      raise 'scheme without scheme mix criteria' if result.nil?
+      result
     end
 
 end
