@@ -7,13 +7,13 @@
         <% certifier_task_count = user.scheme_mix_criteria.for_project(@project).count %>
         <% if user.project_manager?(@project) %>
             <% assessor_mngr_crit_tasks = SchemeMixCriterion.for_project(@project).with_all_requirements_completed.in_progress %>
-            <% assessor_mngr_cert_tasks = CertificationPath.where(project: @project).with_all_criteria_completed.preassessment %>
+            <% assessor_mngr_cert_tasks = CertificationPath.where(project: @project).with_all_criteria_completed.in_submission %>
         <% else %>
             <% assessor_mngr_crit_tasks = nil %>
             <% assessor_mngr_cert_tasks = nil %>
         <% end %>
         <% if user.certifier_manager?(@project) %>
-            <% certifier_mngr_tasks = CertificationPath.where(project: @project).with_all_criteria_reviewed.preliminary %>
+            <% certifier_mngr_tasks = CertificationPath.where(project: @project).with_all_criteria_reviewed.in_screening %>
         <% else %>
             <% certifier_mngr_tasks = nil %>
         <% end %>

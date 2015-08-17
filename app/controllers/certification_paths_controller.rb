@@ -31,7 +31,7 @@ class CertificationPathsController < AuthenticatedController
     CertificationPath.transaction do
       if @certification_path.status != certification_path_params[:status]
         case CertificationPath.statuses[certification_path_params[:status]]
-          when CertificationPath.statuses[:preassessment]
+          when CertificationPath.statuses[:in_submission]
             unless current_user.system_admin?
               raise CanCan::AccessDenied.new('Not Authorized to update certification_path status', :update, CertificationPath)
             end
@@ -41,7 +41,7 @@ class CertificationPathsController < AuthenticatedController
                    uri: project_certification_path_path(@project, @certification_path),
                    user: @project.owner,
                    project: @project)
-          when CertificationPath.statuses[:preliminary]
+          when CertificationPath.statuses[:in_screening]
             # all scheme mix criteria must be marked as 'complete'
             @certification_path.scheme_mix_criteria.each do |scheme_mix_criteria|
               unless scheme_mix_criteria.complete?

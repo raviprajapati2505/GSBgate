@@ -12,7 +12,9 @@
                         <% end %>
                     </div>
                     <div class="row">
-                        <%= f.static_control :status %>
+                        <%= f.static_control nil, label: 'Status' do %>
+                            <%= @certification_path.status.humanize %>
+                        <% end %>
                     </div>
                     <div class="row">
                         <div class="col-md-12">

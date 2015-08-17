@@ -9,7 +9,7 @@
                 <h4 class="modal-title"><%= t('.modal_title') %></h4>
             </div>
             <div class="modal-body">
-                <% if @certification_path.preassessment? %>
+                <% if @certification_path.in_submission? %>
                     <%= f.select :status, SchemeMixCriterion.statuses.keys[0..1].map { |k| [k.humanize, k]} %>
                 <% else %>
                     <%= f.select :status, SchemeMixCriterion.statuses.keys[2..3].map { |k| [k.humanize, k]} %>
