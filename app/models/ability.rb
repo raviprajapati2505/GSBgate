@@ -49,25 +49,19 @@ class Ability
       can :read, ProjectAuthorization, project: {project_authorizations: {user_id: user.id, role: ['enterprise_account', ProjectAuthorization.roles[:enterprise_account]]}}
       can :create, ProjectAuthorization
       # CertificationPath controller
-      can :manage, CertificationPath, project: {project_authorizations: {user_id: user.id, role: ['project_manager', ProjectAuthorization.roles[:project_manager]]}}
-      can :read, CertificationPath, project: {project_authorizations: {user_id: user.id, role: ['enterprise_account', ProjectAuthorization.roles[:enterprise_account]]}}
-      # can :read, CertificationPath, scheme_mixes: {scheme_mix_criteria: {requirement_data: {user_id: user.id}}}
-      # can :read, CertificationPath, scheme_mixes: {scheme_mix_criteria: {certifier_id: user.id}}
+      can :manage, CertificationPath, project: {project_authorizations: {user_id: user.id, role: ['project_manager', ProjectAuthorization.roles[:project_manager]]}}, status: ['preassessment', CertificationPath.statuses[:preassessment]]
       can :read, CertificationPath, project: {project_authorizations: {user_id: user.id}}
       can :create, CertificationPath
       # SchemeMix controller
       can :manage, SchemeMix, certification_path: {project: {project_authorizations: {user_id: user.id, role:  ['project_manager', ProjectAuthorization.roles[:project_manager]]}}}
-      can :read, SchemeMix, certification_path: {project: {project_authorizations: {user_id: user.id, role:  ['enterprise_account', ProjectAuthorization.roles[:enterprise_account]]}}}
-      # can :read, SchemeMix, scheme_mix_criteria: {requirement_data: {user_id: user.id}}
-      # can :read, SchemeMix, scheme_mix_criteria: {certifier_id: user.id}
       can :read, SchemeMix, certification_path: {project: {project_authorizations: {user_id: user.id}}}
       # SchemeMixCriterion controller
-      can :manage, SchemeMixCriterion, scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id, role:  ['project_manager', ProjectAuthorization.roles[:project_manager]]}}}}
+      can :manage, SchemeMixCriterion, scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id, role:  ['project_manager', ProjectAuthorization.roles[:project_manager]]}}, status: ['preassessment', CertificationPath.statuses[:preassessment]]}}
       can :read, SchemeMixCriterion, scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id}}}}
       can :edit, SchemeMixCriterion, scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id}}}}
-      can :update, SchemeMixCriterion, requirement_data: {user_id: user.id}
-      can :update, SchemeMixCriterion, certifier_id: user.id
-      can :update, SchemeMixCriterion, scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id, role: ['certifier_manager', ProjectAuthorization.roles[:certifier_manager]]}}}}
+      can :update, SchemeMixCriterion, requirement_data: {user_id: user.id}, scheme_mix: {certification_path: {status: ['preassessment', CertificationPath.statuses[:preassessment]]}}
+      can :update, SchemeMixCriterion, certifier_id: user.id, scheme_mix: {certification_path: {status: ['preliminary', CertificationPath.statuses[:preliminary]]}}
+      can :update, SchemeMixCriterion, scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id, role: ['certifier_manager', ProjectAuthorization.roles[:certifier_manager]]}}, status: ['preliminary', CertificationPath.statuses[:preliminary]]}}
       can :assign_certifier, SchemeMixCriterion, scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id, role: ['certifier_manager', ProjectAuthorization.roles[:certifier_manager]]}}}}
       # RequirementDatum controller
       can :manage, RequirementDatum, scheme_mix_criteria: {scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id, role: ['project_manager', ProjectAuthorization.roles[:project_manager]]}}}}}

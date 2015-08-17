@@ -70,7 +70,7 @@
                 <h5>Certificates</h5>
             </div>
             <div class="ibox-content">
-                <% if @project.certification_paths.count == 0 %>
+                <% if @project.certification_paths.count.zero? %>
                     <p>This project hasn't applied for any certificate yet.</p>
                 <% else %>
                     <table class="table table-bordered table-hover">
@@ -137,7 +137,7 @@
                 <h5>Project team</h5>
             </div>
             <div class="ibox-content">
-                <% if @project.users.distinct.count == 0%>
+                <% if @project.users.distinct.count.zero? %>
                 <p>This project has no team members.</p>
                 <% else %>
                 <table class="table table-striped table-bordered table-hover datatable">
@@ -179,7 +179,7 @@
                 <h5>Certifier team</h5>
             </div>
             <div class="ibox-content">
-                <% if @project.certifiers.distinct.count == 0 %>
+                <% if @project.certifiers.distinct.count.zero? %>
                     <p>This project has no certifiers.</p>
                 <% else %>
                     <table class="table table-striped table-bordered table-hover datatable">

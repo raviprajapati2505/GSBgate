@@ -16,7 +16,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <% if (current_user.system_admin? && (@certification_path.registered? || @certification_path.preliminary?)) ||  ((can? :update, @certification_path) && @certification_path.preassessment?)%>
+                            <% if can? :update, @certification_path %>
                                 <div class="hr-line-dashed"></div>
                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#updateCertificatePathStatusModal">Update status</button>
                             <% end %>
@@ -32,7 +32,7 @@
                 <h5>Schemes</h5>
             </div>
             <div class="ibox-content">
-                <% if @certification_path.scheme_mixes.count == 0 %>
+                <% if @certification_path.scheme_mixes.count.zero? %>
                     <p>This certification path is in registered state. The GSAS administrator must first activate the certification path before you can continue.</p>
                 <% else %>
                     <table class="table table-bordered table-hover">

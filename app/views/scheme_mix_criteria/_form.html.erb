@@ -19,7 +19,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <%= f.static_control label: 'Status' do @scheme_mix_criterion.status.humanize end %>
-                        <% if !@scheme_mix_criterion.contains_requirement_for?(current_user) %>
+                        <% if can? :update, @scheme_mix_criterion %>
                             <button type="button" class="btn btn-white" data-toggle="modal" data-target="#updateCriterionStatusModal">Update status</button>
                         <% end %>
                         <%= link_to raw('<i title="Show status log" class="fa fa-lg fa-history" style="padding-right: 10px;"></i>Show status log'), project_certification_path_scheme_mix_scheme_mix_criterion_status_logs_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), remote: true, class: 'btn btn-white' %>
@@ -123,13 +123,7 @@
                 <div class="row">
                   <div class="col-md-12">
                     <div class="hr-line-dashed"></div>
-                    <% if (can? :update, @scheme_mix_criterion) &&
-                        (current_user.system_admin? ||
-                            current_user.project_manager?(@project) ||
-                            @scheme_mix_criterion.contains_requirement_for?(current_user) ||
-                            @scheme_mix_criterion.certifier == current_user ||
-                            current_user.certifier_manager?(@project)
-                        ) %>
+                    <% if can? :update, @scheme_mix_criterion %>
                       <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
                         <i title="Save" class="fa fa-lg fa-save" style="padding-right: 10px;"></i>Save
                       <% end %>

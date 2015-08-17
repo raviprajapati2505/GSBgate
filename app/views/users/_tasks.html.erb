@@ -17,17 +17,17 @@
         <% else %>
             <% certifier_mngr_tasks = nil %>
         <% end %>
-        <% if assessor_task_count == 0 && certifier_task_count == 0 &&
-                (assessor_mngr_crit_tasks.nil? || assessor_mngr_crit_tasks.count == 0) &&
-                (assessor_mngr_cert_tasks.nil? || assessor_mngr_cert_tasks.count == 0) &&
-                (certifier_mngr_tasks.nil? || certifier_mngr_tasks.count == 0)%>
+        <% if assessor_task_count.zero? && certifier_task_count.zero? &&
+                (assessor_mngr_crit_tasks.nil? || assessor_mngr_crit_tasks.count.zero?) &&
+                (assessor_mngr_cert_tasks.nil? || assessor_mngr_cert_tasks.count.zero?) &&
+                (certifier_mngr_tasks.nil? || certifier_mngr_tasks.count.zero?)%>
             <% if current_user == user %>
             <p>No tasks are assigned to you.</p>
             <% else %>
             <p>No tasks are assigned to this user.</p>
             <% end %>
         <% end %>
-        <% unless assessor_task_count == 0 && certifier_task_count == 0 %>
+        <% unless assessor_task_count.zero? && certifier_task_count.zero? %>
             <table class="table table-bordered">
                 <thead>
                 <tr>
@@ -78,7 +78,7 @@
                 </tbody>
             </table>
         <% end %>
-        <% unless assessor_mngr_crit_tasks.nil? || assessor_mngr_crit_tasks.count == 0 %>
+        <% unless assessor_mngr_crit_tasks.nil? || assessor_mngr_crit_tasks.count.zero? %>
             <table class="table table-bordered">
                 <thead>
                 <tr>
@@ -98,7 +98,7 @@
                 </tbody>
             </table>
         <% end %>
-        <% unless assessor_mngr_cert_tasks.nil? || assessor_mngr_cert_tasks.count == 0 %>
+        <% unless assessor_mngr_cert_tasks.nil? || assessor_mngr_cert_tasks.count.zero? %>
             <h5>Project Manager Tasks</h5>
             <table class="table table-bordered">
                 <thead>
@@ -117,7 +117,7 @@
                 </tbody>
             </table>
         <% end %>
-        <% unless certifier_mngr_tasks.nil? || certifier_mngr_tasks.count == 0 %>
+        <% unless certifier_mngr_tasks.nil? || certifier_mngr_tasks.count.zero? %>
             <h5>Certifier Manager Tasks</h5>
             <table class="table table-bordered">
                 <thead>
