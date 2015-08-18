@@ -17,7 +17,7 @@
         <% end %>
 
         <% unless @certification_path.nil? or @certification_path.id.nil? %>
-            <li><%= link_to @certification_path.certificate.label, project_certification_path_path(@project, @certification_path) %></li>
+            <li><%= link_to "#{@certification_path.certificate.label} (#{@certification_path.status.humanize})", project_certification_path_path(@project, @certification_path) %></li>
         <% end %>
 
         <% unless @scheme_mix.nil? or @scheme_mix.id.nil? %>
