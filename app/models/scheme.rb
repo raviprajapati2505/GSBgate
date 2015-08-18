@@ -50,11 +50,11 @@ class Scheme < ActiveRecord::Base
     def calculate_score(sc, score_method)
       result = nil
       sc.each do |scheme_criterion|
-        result ||= scheme_criterion.send(score_method)
+        result ||= 0
         if score_method.include? 'minimum'
-          result = [result, scheme_criterion.send(score_method)].min
+          result += scheme_criterion.send(score_method)
         elsif score_method.include? 'maximum'
-          result = [result, scheme_criterion.send(score_method)].max
+          result += scheme_criterion.send(score_method)
         else
           raise 'unexpected score_method: ' + score_method
         end
