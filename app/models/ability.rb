@@ -81,6 +81,12 @@ class Ability
       can :create, SchemeMixCriteriaDocumentComment
       # Notification controller
       can :manage, Notification
+    elsif user.gord_top_manager?
+      # dr. Youssef
+      can :manage, :all
+    elsif user.gord_manager?
+      # dr. Esam
+      can :manage, :all
     else
       cannot :manage, :all
     end

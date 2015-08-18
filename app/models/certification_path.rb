@@ -10,7 +10,7 @@ class CertificationPath < ActiveRecord::Base
 
   accepts_nested_attributes_for :certificate
 
-  enum status: [ :registered, :in_submission, :in_screening, :screened, :in_review, :reviewed, :in_verification, :certification_rejected, :awaiting_approval, :awaiting_signatures, :certified ]
+  enum status: [ :registered, :in_submission, :in_screening, :screened, :awaiting_pcr_admittance, :in_review, :reviewed, :in_verification, :certification_rejected, :awaiting_approval, :awaiting_signatures, :certified ]
 
   scope :with_all_criteria_completed, -> {
     where.not('exists(select smc.id from scheme_mix_criteria smc inner join scheme_mixes sm on sm.id = smc.scheme_mix_id where smc.status = 0 and sm.certification_path_id = certification_paths.id)')
