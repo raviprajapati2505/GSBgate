@@ -6,7 +6,7 @@ class ProjectsController < AuthenticatedController
   # GET /projects.json
   def index
     @page_title = 'Projects'
-    unless current_user.system_admin?
+    unless current_user.system_admin? || current_user.gord_manager? || current_user.gord_top_manager?
       @projects = Project.for_authorized_user current_user
     else
       @projects = Project.all
