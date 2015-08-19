@@ -23,4 +23,18 @@ module ApplicationHelper
       ('<span class="tooltip-icon" data-toggle="tooltip" data-placement="top" title="' + title + '"><i class="fa fa-question-circle"></i></span>').html_safe
     end
   end
+
+  def status_label(status, can_edit, modal)
+    if can_edit
+      ( '<a href="#" data-toggle="modal" data-target="#' + modal + '" title="Click to update the status">'\
+          '<span class="label status-label status-' + status.dasherize + ' pull-right">'\
+            '<i class="fa fa-lg fa-edit"></i>&nbsp;Status: ' + status.humanize + ''\
+          '</span>'\
+        '</a>').html_safe
+    else
+      ( '<span class="label status-label status-' + status.dasherize + ' pull-right">'\
+          'Status: ' + status.humanize + ''\
+        '</span>').html_safe
+    end
+  end
 end

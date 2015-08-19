@@ -505,8 +505,8 @@
     }
   }
 
-  .criterion-details {
-    .criterion-details-subtitle {
+  .criterion-information {
+    .subtitle {
       font-weight: bold;
       margin: 8px 0;
     }
@@ -525,8 +525,46 @@
       background-color: #f9f9f9;
     }
 
-    .criterion-details-score-description table tr:not(:first-child) td:first-child {
+    .score-description table tr:not(:first-child) td:first-child {
       text-align: center;
+    }
+  }
+
+  // Status
+  .status-label {
+    font-size: 13px;
+  }
+
+  .document-details {
+    .status-awaiting-approval {
+      @extend .alert-warning;
+    }
+
+    .status-approved {
+      @extend .alert-success;
+    }
+
+    .status-rejected {
+      @extend .alert-danger;
+    }
+
+    .status-superseded {
+    }
+  }
+
+  .criterion-details {
+    .status-complete {
+      @extend .alert-warning;
+    }
+
+    .status-approved {
+      @extend .alert-success;
+    }
+
+    .status-in-progress {
+    }
+
+    .status-resubmit {
     }
   }
 }

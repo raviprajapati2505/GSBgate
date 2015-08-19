@@ -2,6 +2,7 @@
     <div class="col-md-4">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
+                <%= status_label(@certification_path.status, can?(:update, @certification_path), 'updateCertificatePathStatusModal') %>
                 <h5>Certification details</h5>
             </div>
             <div class="ibox-content">
@@ -10,19 +11,6 @@
                         <%= f.fields_for :certificate do |ff| %>
                             <%= ff.static_control :label, label: 'Name' %>
                         <% end %>
-                    </div>
-                    <div class="row">
-                        <%= f.static_control nil, label: 'Status' do %>
-                            <%= @certification_path.status.humanize %>
-                        <% end %>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <% if can? :update, @certification_path %>
-                                <div class="hr-line-dashed"></div>
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#updateCertificatePathStatusModal">Update status</button>
-                            <% end %>
-                        </div>
                     </div>
                 <% end %>
             </div>
