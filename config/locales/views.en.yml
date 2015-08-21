@@ -48,6 +48,12 @@ en:
     modal:
       btn_close: "Close"
       modal_title: "Notifications"
+  scheme_mixes:
+      modal:
+        btn_cancel: "Cancel"
+        btn_close: "Close"
+        btn_save: "Save"
+        modal_title: "Allocate project team responsibility"
   scheme_mix_criteria:
     modal:
       btn_cancel: "Cancel"

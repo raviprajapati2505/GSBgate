@@ -567,4 +567,15 @@
     .status-resubmit {
     }
   }
+
+  // Allocate responsibility modals
+  .allocate-responsibility-modal {
+    table {
+      font-size: 12px;
+    }
+
+    table tr th {
+      background-color: #F5F5F6;
+    }
+  }
 }
