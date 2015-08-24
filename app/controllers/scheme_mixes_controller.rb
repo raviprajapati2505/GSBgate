@@ -31,7 +31,7 @@ class SchemeMixesController < AuthenticatedController
         status = params[:status]
       end
 
-      # Update all requirements
+      # Update all RequirementDatum models
       RequirementDatum.where(id: params[:requirement_data]).update_all(user_id: user_id, due_date: due_date, status: status)
 
       # TODO: Notify the allocated user
@@ -61,6 +61,37 @@ class SchemeMixesController < AuthenticatedController
       flash[:notice] = 'The selected requirements were successfully updated.'
     else
       flash[:alert] = 'No requirements were selected.'
+    end
+
+    redirect_to project_certification_path_scheme_mix_path(@certification_path.project, @certification_path, @scheme_mix)
+  end
+
+  def allocate_certifier_team_responsibility
+    if params.has_key?(:scheme_mix_criteria)
+      # Format the certifier id
+      if params[:certifier_id].empty?
+        certifier_id = nil
+      else
+        certifier_id = params[:certifier_id]
+      end
+
+      # Format the due date
+      if params[:due_date].empty?
+        due_date = nil
+      else
+        due_date = Date.strptime(params[:due_date], t('date.formats.short'))
+      end
+
+      # Update all SchemeMixCriteria models
+      SchemeMixCriterion.where(id: params[:scheme_mix_criteria]).update_all(certifier_id: certifier_id, due_date: due_date)
+
+      # TODO: Notify the allocated certifier
+
+      # TODO: Create tasks for the allocated certifier
+
+      flash[:notice] = 'The selected criteria were successfully updated.'
+    else
+      flash[:alert] = 'No criteria were selected.'
     end
 
     redirect_to project_certification_path_scheme_mix_path(@certification_path.project, @certification_path, @scheme_mix)

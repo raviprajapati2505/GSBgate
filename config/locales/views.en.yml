@@ -49,11 +49,16 @@ en:
       btn_close: "Close"
       modal_title: "Notifications"
   scheme_mixes:
-      modal:
+      allocate_project_team_responsibility:
         btn_cancel: "Cancel"
         btn_close: "Close"
         btn_save: "Save"
         modal_title: "Allocate project team responsibility"
+      allocate_certifier_team_responsibility:
+        btn_cancel: "Cancel"
+        btn_close: "Close"
+        btn_save: "Save"
+        modal_title: "Allocate certifier team responsibility"
   scheme_mix_criteria:
     modal:
       btn_cancel: "Cancel"

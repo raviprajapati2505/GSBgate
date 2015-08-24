@@ -54,8 +54,10 @@ class Ability
       can :read, CertificationPath, project: {project_authorizations: {user_id: user.id}}
       can :create, CertificationPath
       # SchemeMix controller
-      can :manage, SchemeMix, certification_path: {project: {project_authorizations: {user_id: user.id, role:  ['project_manager', ProjectAuthorization.roles[:project_manager]]}}}
+      can :read, SchemeMix, certification_path: {project: {project_authorizations: {user_id: user.id, role: ['project_manager', ProjectAuthorization.roles[:project_manager]]}}}
       can :read, SchemeMix, certification_path: {project: {project_authorizations: {user_id: user.id}}}
+      can :allocate_project_team_responsibility, SchemeMix, certification_path: {project: {project_authorizations: {user_id: user.id, role: ['project_manager', ProjectAuthorization.roles[:project_manager]]}}}
+      can :allocate_certifier_team_responsibility, SchemeMix, certification_path: {project: {project_authorizations: {user_id: user.id, role: ['certifier_manager', ProjectAuthorization.roles[:certifier_manager]]}}}
       # SchemeMixCriterion controller
       can :manage, SchemeMixCriterion, scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id, role:  ['project_manager', ProjectAuthorization.roles[:project_manager]]}}, status: ['in_submission', CertificationPath.statuses[:in_submission]]}}
       can :read, SchemeMixCriterion, scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id}}}}
