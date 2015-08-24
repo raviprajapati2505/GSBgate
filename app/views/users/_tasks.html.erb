@@ -3,51 +3,92 @@
         <h5>Tasks</h5>
     </div>
     <div class="ibox-content">
-        <% assessor_task_count = user.requirement_data.for_project(@project).count %>
-        <% certifier_task_count = user.scheme_mix_criteria.for_project(@project).count %>
-        <% if user.project_manager?(@project) %>
-            <% assessor_mngr_crit_tasks = SchemeMixCriterion.for_project(@project).with_all_requirements_completed.in_progress %>
-            <% assessor_mngr_cert_tasks = CertificationPath.where(project: @project).with_all_criteria_completed.in_submission %>
-        <% else %>
-            <% assessor_mngr_crit_tasks = nil %>
-            <% assessor_mngr_cert_tasks = nil %>
-        <% end %>
-        <% if user.certifier_manager?(@project) %>
-            <% certifier_mngr_tasks = CertificationPath.where(project: @project).with_all_criteria_reviewed.in_screening %>
-        <% else %>
-            <% certifier_mngr_tasks = nil %>
-        <% end %>
-        <% if assessor_task_count.zero? && certifier_task_count.zero? &&
+        <p>New task list :</p>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>Description</th>
+                <th>Object</th>
+            </tr>
+            </thead>
+            <tbody>
+            <% if current_user.system_admin?
+                 check_project_role = ''
+               else
+                 check_project_role = "or project_role = #{ProjectAuthorization.roles[@project.role_for_user(user)]}"
+               end %>
+            <% UserTask.where("(user_id = #{user.id} or role = #{User.roles[user.role]} #{check_project_role}) and project_id = #{@project.id}").each do |task|
+                case task.type
+                when CertificationPathTask.name.demodulize
+            %>
+                <tr class="clickable" data-href="<%= project_certification_path_path(@project, task.certification_path) %>">
+                    <td><%= t(".description_#{task.flow_index}") %></td>
+                    <td><%= task.certification_path.certificate.label %></td>
+                </tr>
+            <%  when RequirementDatumTask.name.demodulize %>
+                <tr class="clickable" data-href="<%= project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, task.scheme_mix_criterion.scheme_mix.certification_path, task.scheme_mix_criterion.scheme_mix, task.scheme_mix_criterion, anchor: "requirement-#{task.requirement_datum.id}") %>">
+                    <td><%= t(".description_#{task.flow_index}") %></td>
+                    <td><%= task.requirement_datum.requirement.label %><br/>
+                        Due date: <%= task.requirement_datum.due_date %></td>
+                </tr>
+            <%	 when SchemeMixCriterionTask.name.demodulize %>
+                <tr class="clickable" data-href="<%= project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, task.scheme_mix_criterion.scheme_mix.certification_path, task.scheme_mix_criterion.scheme_mix, task.scheme_mix_criterion) %>">
+                    <td><%= t(".description_#{task.flow_index}") %></td>
+                    <td><%= task.scheme_mix_criterion.name %><% if task.flow_index = 8 %><br/>
+                            Due date: <%= task.scheme_mix_criterion.due_date %><% end %></td>
+                </tr>
+            <%  end
+               end %>
+            </tbody>
+        </table>
+
+
+<!--
+        < assessor_task_count = user.requirement_data.for_project(@project).count %>
+        < certifier_task_count = user.scheme_mix_criteria.for_project(@project).count %>
+        < if user.project_manager?(@project) %>
+            < assessor_mngr_crit_tasks = SchemeMixCriterion.for_project(@project).with_all_requirements_completed.in_progress %>
+            < assessor_mngr_cert_tasks = CertificationPath.where(project: @project).with_all_criteria_completed.in_submission %>
+        < else %>
+            < assessor_mngr_crit_tasks = nil %>
+            < assessor_mngr_cert_tasks = nil %>
+        < end %>
+        < if user.certifier_manager?(@project) %>
+            < certifier_mngr_tasks = CertificationPath.where(project: @project).with_all_criteria_reviewed.in_screening %>
+        < else %>
+            < certifier_mngr_tasks = nil %>
+        < end %>
+        < if assessor_task_count.zero? && certifier_task_count.zero? &&
                 (assessor_mngr_crit_tasks.nil? || assessor_mngr_crit_tasks.count.zero?) &&
                 (assessor_mngr_cert_tasks.nil? || assessor_mngr_cert_tasks.count.zero?) &&
                 (certifier_mngr_tasks.nil? || certifier_mngr_tasks.count.zero?)%>
-            <% if current_user == user %>
+            < if current_user == user %>
             <p>No tasks are assigned to you.</p>
-            <% else %>
+            < else %>
             <p>No tasks are assigned to this user.</p>
-            <% end %>
-        <% end %>
-        <% unless assessor_task_count.zero? && certifier_task_count.zero? %>
+            < end %>
+        < end %>
+        < unless assessor_task_count.zero? && certifier_task_count.zero? %>
             <table class="table table-bordered">
                 <thead>
                 <tr>
                     <th class="col-md-1">Code</th>
                     <th>Criteria</th>
-                    <% if certifier_task_count > 0 %>
+                    < if certifier_task_count > 0 %>
                         <th class="col-md-2">Due date</th>
-                    <% end %>
+                    < end %>
                 </tr>
                 </thead>
                 <tbody>
-                <% SchemeMixCriterion.for_project(@project).assigned_to_user(user).order_by_code.group([:id, 'scheme_criteria.code']).each do |scheme_mix_criterion| %>
-                    <tr class="clickable" data-href="<%= project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, scheme_mix_criterion.scheme_mix.certification_path, scheme_mix_criterion.scheme_mix, scheme_mix_criterion) %>">
-                        <td><%= scheme_mix_criterion.scheme_criterion.code %></td>
-                        <td><%= scheme_mix_criterion.scheme_criterion.criterion.name %></td>
-                        <% if certifier_task_count > 0 %>
-                            <td><%= scheme_mix_criterion.due_date %><% if !scheme_mix_criterion.due_date.nil? && Date.today > scheme_mix_criterion.due_date %>&nbsp;<i class="fa fa-clock-o" title="<%= t('.tooltip_due_date') %>" data-toggle="tooltip"></i><% end %></td>
-                        <% end %>
+                < SchemeMixCriterion.for_project(@project).assigned_to_user(user).order_by_code.group([:id, 'scheme_criteria.code']).each do |scheme_mix_criterion| %>
+                    <tr class="clickable" data-href="<= project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, scheme_mix_criterion.scheme_mix.certification_path, scheme_mix_criterion.scheme_mix, scheme_mix_criterion) %>">
+                        <td><= scheme_mix_criterion.scheme_criterion.code %></td>
+                        <td><= scheme_mix_criterion.scheme_criterion.criterion.name %></td>
+                        < if certifier_task_count > 0 %>
+                            <td><= scheme_mix_criterion.due_date %>< if !scheme_mix_criterion.due_date.nil? && Date.today > scheme_mix_criterion.due_date %>&nbsp;<i class="fa fa-clock-o" title="<= t('.tooltip_due_date') %>" data-toggle="tooltip"></i>< end %></td>
+                        < end %>
                     </tr>
-                    <% if scheme_mix_criterion.requirement_data.assigned_to_user(user).exists? %>
+                    < if scheme_mix_criterion.requirement_data.assigned_to_user(user).exists? %>
                         <tr>
                             <td colspan="2">
                                 <table class="table">
@@ -59,26 +100,26 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <% scheme_mix_criterion.requirement_data.assigned_to_user(user).each do |requirement_datum| %>
-                                        <tr class="clickable" data-href="<%= project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, scheme_mix_criterion.scheme_mix.certification_path, scheme_mix_criterion.scheme_mix, scheme_mix_criterion, anchor: "requirement-#{requirement_datum.id}") %>">
-                                            <td><% if requirement_datum.required? %><i class="fa fa-lg fa-square-o" title="<%= t('.tooltip_requirement_required') %>" data-toggle="tooltip"></i>
-                                                <% elsif requirement_datum.provided? %><i class="fa fa-lg fa-check-square-o" title="<%= t('.tooltip_requirement_provided') %>" data-toggle="tooltip"></i>
-                                                <% else %><i class="fa fa-lg fa-square" title="<%= t('.tooltip_requirement_not_required') %>" data-toggle="tooltip"></i><% end %>
+                                    < scheme_mix_criterion.requirement_data.assigned_to_user(user).each do |requirement_datum| %>
+                                        <tr class="clickable" data-href="<= project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, scheme_mix_criterion.scheme_mix.certification_path, scheme_mix_criterion.scheme_mix, scheme_mix_criterion, anchor: "requirement-#{requirement_datum.id}") %>">
+                                            <td>< if requirement_datum.required? %><i class="fa fa-lg fa-square-o" title="<= t('.tooltip_requirement_required') %>" data-toggle="tooltip"></i>
+                                                < elsif requirement_datum.provided? %><i class="fa fa-lg fa-check-square-o" title="<= t('.tooltip_requirement_provided') %>" data-toggle="tooltip"></i>
+                                                < else %><i class="fa fa-lg fa-square" title="<= t('.tooltip_requirement_not_required') %>" data-toggle="tooltip"></i>< end %>
                                             </td>
-                                            <td><%= requirement_datum.requirement.label %></td>
-                                            <td><%= requirement_datum.due_date %><% if requirement_datum.required? && !requirement_datum.due_date.nil? && Date.today > requirement_datum.due_date %>&nbsp;<i class="fa fa-clock-o" title="<%= t('.tooltip_due_date') %>" data-toggle="tooltip"></i><% end %></td>
+                                            <td><= requirement_datum.requirement.label %></td>
+                                            <td><= requirement_datum.due_date %>< if requirement_datum.required? && !requirement_datum.due_date.nil? && Date.today > requirement_datum.due_date %>&nbsp;<i class="fa fa-clock-o" title="<= t('.tooltip_due_date') %>" data-toggle="tooltip"></i>< end %></td>
                                         </tr>
-                                    <% end %>
+                                    < end %>
                                     </tbody>
                                 </table>
                             </td>
                         </tr>
-                    <% end %>
-                <% end %>
+                    < end %>
+                < end %>
                 </tbody>
             </table>
-        <% end %>
-        <% unless assessor_mngr_crit_tasks.nil? || assessor_mngr_crit_tasks.count.zero? %>
+        < end %>
+        <unless assessor_mngr_crit_tasks.nil? || assessor_mngr_crit_tasks.count.zero? %>
             <table class="table table-bordered">
                 <thead>
                 <tr>
@@ -88,17 +129,17 @@
                 </tr>
                 </thead>
                 <tbody>
-                <% assessor_mngr_crit_tasks.order_by_code.group([:id, 'scheme_criteria.code']).each do |scheme_mix_criterion| %>
-                <tr class="clickable" data-href="<%= project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, scheme_mix_criterion.scheme_mix.certification_path, scheme_mix_criterion.scheme_mix, scheme_mix_criterion) %>">
-                    <td><%= scheme_mix_criterion.scheme_criterion.code %></td>
-                    <td><%= scheme_mix_criterion.scheme_criterion.criterion.name %></td>
+                < assessor_mngr_crit_tasks.order_by_code.group([:id, 'scheme_criteria.code']).each do |scheme_mix_criterion| %>
+                <tr class="clickable" data-href="<= project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, scheme_mix_criterion.scheme_mix.certification_path, scheme_mix_criterion.scheme_mix, scheme_mix_criterion) %>">
+                    <td><= scheme_mix_criterion.scheme_criterion.code %></td>
+                    <td><= scheme_mix_criterion.scheme_criterion.criterion.name %></td>
                     <td>All requirements are processed</td>
                 </tr>
-                <% end %>
+                < end %>
                 </tbody>
             </table>
-        <% end %>
-        <% unless assessor_mngr_cert_tasks.nil? || assessor_mngr_cert_tasks.count.zero? %>
+        < end %>
+        < unless assessor_mngr_cert_tasks.nil? || assessor_mngr_cert_tasks.count.zero? %>
             <h5>Project Manager Tasks</h5>
             <table class="table table-bordered">
                 <thead>
@@ -108,16 +149,16 @@
                 </tr>
                 </thead>
                 <tbody>
-                <% assessor_mngr_cert_tasks.each do |certification_path| %>
-                <tr class="clickable" data-href="<%= project_certification_path_path(@project, certification_path) %>">
-                    <td><%= certification_path.certificate.label %></td>
+                < assessor_mngr_cert_tasks.each do |certification_path| %>
+                <tr class="clickable" data-href="<= project_certification_path_path(@project, certification_path) %>">
+                    <td><= certification_path.certificate.label %></td>
                     <td>All criteria are processed</td>
                 </tr>
-                <% end %>
+                < end %>
                 </tbody>
             </table>
-        <% end %>
-        <% unless certifier_mngr_tasks.nil? || certifier_mngr_tasks.count.zero? %>
+        < end %>
+        < unless certifier_mngr_tasks.nil? || certifier_mngr_tasks.count.zero? %>
             <h5>Certifier Manager Tasks</h5>
             <table class="table table-bordered">
                 <thead>
@@ -127,14 +168,15 @@
                 </tr>
                 </thead>
                 <tbody>
-                <% certifier_mngr_tasks.each do |certification_path| %>
-                <tr class="clickable" data-href="<%= project_certification_path_path(@project, certification_path) %>">
-                    <td><%= certification_path.certificate.label %></td>
+                < certifier_mngr_tasks.each do |certification_path| %>
+                <tr class="clickable" data-href="<= project_certification_path_path(@project, certification_path) %>">
+                    <td><= certification_path.certificate.label %></td>
                     <td>Are criteria are processed</td>
                 </tr>
-                <% end %>
+                < end %>
                 </tbody>
             </table>
-        <% end %>
+        < end %>
     </div>
+    -->
 </div>

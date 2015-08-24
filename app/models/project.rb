@@ -7,6 +7,7 @@ class Project < ActiveRecord::Base
   has_many :managers, -> { where('project_authorizations.role = 1') }, through: :project_authorizations, source: :user
   has_many :certification_paths
   has_many :notifications
+  has_many :user_tasks, dependent: :destroy
 
   validates :name, presence: true
   validates :address, presence: true
@@ -29,6 +30,24 @@ class Project < ActiveRecord::Base
     includes(:project_authorizations)
     .where(project_authorizations: { user: user })
   }
+
+  def role_for_user(user)
+    project_authorizations.each do |project_authorization|
+      if project_authorization.user == user
+        return project_authorization.role
+      end
+    end
+    return false
+  end
+
+  def certifier_manager_assigned?
+    project_authorizations.each do |project_authorization|
+      if project_authorization.certifier_manager?
+        return true
+      end
+    end
+    return false
+  end
 
   def init
     # Set default code

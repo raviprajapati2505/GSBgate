@@ -20,6 +20,14 @@ class CertificationPathsController < AuthenticatedController
                  user: system_admin,
                  project: @project)
         end
+
+        # Generate a task for the system admins
+        if @project.certifier_manager_assigned?
+          CertificationPathTask.create!(flow_index: 2, role: User.roles[:system_admin], project: @project, certification_path: @certification_path)
+        else
+          CertificationPathTask.create!(flow_index: 1, role: User.roles[:system_admin], project: @project, certification_path: @certification_path)
+        end
+
         redirect_to project_path(@project), notice: 'Successfully applied for certificate.'
     else
       redirect_to project_path(@project), notice: 'Error, could not apply for certificate'
@@ -29,14 +37,47 @@ class CertificationPathsController < AuthenticatedController
 
   def update
     CertificationPath.transaction do
+      generate_tasks = false
       if @certification_path.status != certification_path_params[:status]
         generate_notifications(certification_path_params[:status])
+
+        case CertificationPath.statuses[certification_path_params[:status]]
+          # Generate tasks for project managers
+          when CertificationPath.statuses[:in_submission]
+            # Delete system admins task
+            CertificationPathTask.where(flow_index: 2, role: User.roles[:system_admin], project: @project, certification_path: @certification_path).each do |task|
+              task.destroy
+            end
+            generate_tasks = true
+          when CertificationPath.statuses[:in_screening]
+            CertificationPathTask.where(flow_index: 6, project_role: ProjectAuthorization.roles[:project_manager], project: @project, certification_path: @certification_path).each do |task|
+              task.destroy
+            end
+            # Generate tasks for certifier managers
+            @certification_path.scheme_mixes.each do |scheme_mix|
+              scheme_mix.scheme_mix_criteria.each do |scheme_mix_criterion|
+                SchemeMixCriterionTask.create!(flow_index: 7, project_role: ProjectAuthorization.roles[:certifier_manager], project: @project, scheme_mix_criterion: scheme_mix_criterion)
+              end
+            end
+        end
       end
+
       if @certification_path.update(certification_path_params)
         if @certification_path.scheme_mixes.empty?
           @certification_path.create_descendant_records
-          redirect_to project_certification_path_path(@project, @certification_path), notice: 'Status was successfully updated.'
+
+          if generate_tasks
+            # Generate tasks for project managers
+            @certification_path.scheme_mixes.each do |scheme_mix|
+              scheme_mix.scheme_mix_criteria.each do |scheme_mix_criterion|
+                scheme_mix_criterion.requirement_data.each do |requirement_data|
+                  RequirementDatumTask.create!(flow_index: 3, project_role: ProjectAuthorization.roles[:project_manager], project: @project, scheme_mix_criterion: scheme_mix_criterion, requirement_datum: requirement_data)
+                end
+              end
+            end
+          end
         end
+        redirect_to project_certification_path_path(@project, @certification_path), notice: 'Status was successfully updated.'
       else
         render action: :show
       end

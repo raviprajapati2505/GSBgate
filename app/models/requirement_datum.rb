@@ -4,6 +4,7 @@ class RequirementDatum < ActiveRecord::Base
   belongs_to :calculator_datum
   belongs_to :requirement
   belongs_to :user
+  has_many :user_tasks, dependent: :destroy
 
   enum status: [ :required, :provided, :not_required ]
 
