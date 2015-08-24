@@ -13,28 +13,40 @@
     <div class="panel-collapse collapse" id="requirement-<%= requirement_datum.id %>-collapsable" aria-expanded="false" style="height: 0px;">
         <div class="panel-body">
             <%= bootstrap_form_tag url: project_certification_path_scheme_mix_scheme_mix_criterion_requirement_datum_path(@project, certification_path_id, scheme_mix_id, scheme_mix_criterion_id, requirement_datum.id), method: "put", remote: true, :html => { :multipart => true } do |f| %>
-                <% if current_user.system_admin? || current_user.project_manager?(@project) %>
-                    <% users = User.authorized_for_project(@project).with_assessor_project_role %>
-                    <% if (users.count > 0) && (can? :read, @project.project_authorizations.first) %>
-                        <% if requirement_datum.user.nil? %>
-                            <%= f.select :user_id, options_for_select(users.map { |k| [k.email, k.id]}), {label: 'Responsibility', include_blank: ''} %>
-                        <% else %>
-                            <%= f.select :user_id, options_for_select(users.map { |k| [k.email, k.id]}, requirement_datum.user.id), {label: 'Responsibility'} %>
-                        <% end %>
-                    <% end %>
-                    <%= f.text_field :due_date, value: ((l requirement_datum.due_date, format: :short) if !requirement_datum.due_date.nil?), prepend: '<i class="fa fa-calendar"></i>'.html_safe, data: {provide: 'datepicker'}, autocomplete: 'off' %>
-                <% else %>
-                    <% if requirement_datum.user.nil? %>
-                        <%= f.label :user_id, 'Responsibility' %>
-                        <p>This requirement is not assigned yet.</p>
+                <div class="row">
+                    <% if current_user.system_admin? || current_user.project_manager?(@project) %>
+                        <div class="col-md-7">
+                            <% users = User.authorized_for_project(@project).with_assessor_project_role %>
+                            <% if (users.count > 0) && (can? :read, @project.project_authorizations.first) %>
+                                <% if requirement_datum.user.nil? %>
+                                    <%= f.select :user_id, options_for_select(users.map { |k| [k.email, k.id]}), {label: 'Responsibility', include_blank: ''} %>
+                                <% else %>
+                                    <%= f.select :user_id, options_for_select(users.map { |k| [k.email, k.id]}, requirement_datum.user.id), {label: 'Responsibility'} %>
+                                <% end %>
+                            <% end %>
+                        </div>
+                        <div class="col-md-5">
+                            <%= f.text_field :due_date, value: ((l requirement_datum.due_date, format: :short) if !requirement_datum.due_date.nil?), prepend: '<i class="fa fa-calendar"></i>'.html_safe, data: {provide: 'datepicker'}, autocomplete: 'off' %>
+                        </div>
                     <% else %>
-                        <%= f.select :user_id, options_for_select([requirement_datum.user].map { |k| [k.email, k.id]}, requirement_datum.user.id), {label: 'Responsibility'}, disabled: true %>
+                        <div class="col-md-7">
+                            <% if requirement_datum.user.nil? %>
+                                <%= f.label :user_id, 'Responsibility' %>
+                                <p>This requirement is not assigned yet.</p>
+                            <% else %>
+                                <%= f.select :user_id, options_for_select([requirement_datum.user].map { |k| [k.email, k.id]}, requirement_datum.user.id), {label: 'Responsibility'}, disabled: true %>
+                            <% end %>
+                        </div>
+                        <div class="col-md-5">
+                            <%= f.text_field :due_date, value: ((l requirement_datum.due_date, format: :short) if !requirement_datum.due_date.nil?), prepend: '<i class="fa fa-calendar"></i>'.html_safe, data: {provide: 'datepicker'}, autocomplete: 'off', disabled: true %>
+                        </div>
                     <% end %>
-                    <%= f.text_field :due_date, value: ((l requirement_datum.due_date, format: :short) if !requirement_datum.due_date.nil?), prepend: '<i class="fa fa-calendar"></i>'.html_safe, data: {provide: 'datepicker'}, autocomplete: 'off', disabled: true %>
-                <% end %>
-
-                <div class="hr-line-dashed"></div>
+                    <div class="col-md-12">
+                        <%= f.select :status, options_for_select(RequirementDatum.statuses.keys.map { |k| [k.humanize, k]}, requirement_datum.status), {}, disabled: !(can? :update, requirement_datum) %>
+                    </div>
+                </div>
                 <% if requirement_datum.calculator_datum.present? %>
+                    <div class="hr-line-dashed"></div>
                     <% calculator_template = requirement_datum.calculator_datum.calculator.name.constantize.name.demodulize.downcase %>
                     <div>
                         <% if File.exist?("app/views/calculators/_#{calculator_template}.html.erb") %>
@@ -44,8 +56,6 @@
                         <% end %>
                     </div>
                 <% end %>
-                <%= f.select :status, options_for_select(RequirementDatum.statuses.keys.map { |k| [k.humanize, k]}, requirement_datum.status), {}, disabled: !(can? :update, requirement_datum) %>
-
                 <div class="row">
                     <div class="col-md-12">
                         <% if can? :update, requirement_datum %>
