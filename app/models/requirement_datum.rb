@@ -8,7 +8,7 @@ class RequirementDatum < ActiveRecord::Base
 
   enum status: [ :required, :provided, :not_required ]
 
-  before_validation :assign_default_status, on: :create
+  after_initialize :init
 
   validates :status, inclusion: RequirementDatum.statuses.keys
 
@@ -50,7 +50,7 @@ class RequirementDatum < ActiveRecord::Base
   }
 
   private
-  def assign_default_status
-    self.status = :required if self.status.nil?
+  def init
+    self.status ||= :required
   end
 end

@@ -29,7 +29,7 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <%= label_tag 'status', 'Status', class: 'control-label' %>
-                                <%= select_tag 'status', options_for_select(RequirementDatum.statuses.keys.map { |k| [k.humanize, k]}), {include_blank: '- No status -', class: 'form-control'} %>
+                                <%= select_tag 'status', options_for_select(RequirementDatum.statuses.keys.map { |k| [k.humanize, k]}), {class: 'form-control'} %>
                             </div>
                         </div>
                     </div>
