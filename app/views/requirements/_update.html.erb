@@ -22,7 +22,7 @@
                             <%= f.select :user_id, options_for_select(users.map { |k| [k.email, k.id]}, requirement_datum.user.id), {label: 'Responsibility'} %>
                         <% end %>
                     <% end %>
-                    <%= f.text_field :due_date, value: ((l requirement_datum.due_date, format: :short) if !requirement_datum.due_date.nil?), prepend: '<i class="fa fa-calendar"></i>'.html_safe, data: {provide: 'datepicker'} %>
+                    <%= f.text_field :due_date, value: ((l requirement_datum.due_date, format: :short) if !requirement_datum.due_date.nil?), prepend: '<i class="fa fa-calendar"></i>'.html_safe, data: {provide: 'datepicker'}, autocomplete: 'off' %>
                 <% else %>
                     <% if requirement_datum.user.nil? %>
                         <%= f.label :user_id, 'Responsibility' %>
@@ -30,7 +30,7 @@
                     <% else %>
                         <%= f.select :user_id, options_for_select([requirement_datum.user].map { |k| [k.email, k.id]}, requirement_datum.user.id), {label: 'Responsibility'}, disabled: true %>
                     <% end %>
-                    <%= f.text_field :due_date, value: ((l requirement_datum.due_date, format: :short) if !requirement_datum.due_date.nil?), prepend: '<i class="fa fa-calendar"></i>'.html_safe, data: {provide: 'datepicker'}, disabled: true %>
+                    <%= f.text_field :due_date, value: ((l requirement_datum.due_date, format: :short) if !requirement_datum.due_date.nil?), prepend: '<i class="fa fa-calendar"></i>'.html_safe, data: {provide: 'datepicker'}, autocomplete: 'off', disabled: true %>
                 <% end %>
 
                 <div class="hr-line-dashed"></div>
