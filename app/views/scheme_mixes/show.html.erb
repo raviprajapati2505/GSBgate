@@ -150,7 +150,9 @@
                     </table>
                     <% if can? :update, @scheme_mix %>
                         <div class="hr-line-dashed"></div>
-                        <button type="button" class="btn btn-white" data-toggle="modal" data-target="#allocateProjectTeamResponsibilityModal"><i title="Show status log" class="fa fa-lg fa-th-list" style="padding-right: 10px;"></i>Allocate project team responsibility</button>
+                        <% if current_user.system_admin? || current_user.project_manager?(@project) %>
+                            <button type="button" class="btn btn-white" data-toggle="modal" data-target="#allocateProjectTeamResponsibilityModal"><i title="Show status log" class="fa fa-lg fa-th-list" style="padding-right: 10px;"></i>Allocate project team responsibility</button>
+                        <% end %>
                     <% end %>
                 </div>
             </div>
