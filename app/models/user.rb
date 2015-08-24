@@ -86,34 +86,16 @@ class User < ActiveRecord::Base
 
   # return certification_path list with task descriptions
   # def self::system_admin_tasks
-    # results = []
-    #V Check registration and payment (DB field?), assign certifier manager
-    # CertificationPath.joins(:project).where.not('exists(select pa.id from project_authorizations pa where pa.project_id = projects.id and pa.role = 4)').registered.each do |certification_path|
-    #   results << [certification_path, 'Check registration and payment, assign certifier manager']
-    # end
-    #V set status to in_submission
-    # CertificationPath.joins(:project).where('exists(select pa.id from project_authorizations pa where pa.project_id = projects.id and pa.role = 4)').registered.each do |certification_path|
-    #   results << [certification_path, 'Set status to \'in submission\'']
-    # end
-    # return results
-
-    # ---
     # if PCR track : Check PCR track payment and status to in_review
-    # TODO : append to result list
   # end
 
   # return certification_path, scheme_mix_criteria, requirement, document list with task descriptions
   # def project_manager_tasks
-    #V allocate requirements to project team members and set due dates
-    # ---
-    #V approve submitted scores and documents by setting criteria status to complete
-    #V set status to in_screening
-    # ---
-    # process screening comments and set status to (if PCR track) awaiting_pcr_admittance or in_verification
+    #! process screening comments and set status to (if PCR track) awaiting_pcr_admittance
     # ---
     # if PCR track : process review comments and set status to in_verification
-    # if certification_rejected : (if appeal) set status to in_verification
-    # if awaiting_approval: set status to in_verification (if no agreement and appealed) or awaiting_signatures
+    #! if certification_rejected : (if appeal) set status to in_verification
+    #! if awaiting_approval: set status to in_verification (if no agreement and appealed) or awaiting_signatures
     # ---
     # download certificate
   # end
@@ -121,38 +103,16 @@ class User < ActiveRecord::Base
   # return requirement list with task descriptions
   # def project_member_tasks
     # accept invitation
-    #V process requirement and set requirement status to provided
   # end
 
   # return certification_path and scheme_mix_criteria list with task descriptions
   # def certifier_manager_tasks
-    #V allocate criteria to certifier members and set due dates
-    # ---
-    #V set status to screened
-    # ---
     # if PCR track : set status to reviewed ?
-    # ---
-    # set status to certification_rejected or awaiting_approval
   # end
 
   # return scheme_mix_criteria list with task descriptions
   # def certifier_member_tasks
-    #V screen criterion and set criterion status to approved or resubmit ?
-    # ---
     # if PCR track : review criterion and set criterion status to approved or resubmit ?
-    # ---
-    # verify criterion and set criterion status to approved or resubmit ?
-  # end
-
-  # return certificate_path list with task descriptions
-  # def gord_manager_tasks
-    # quick check and approve
-  # end
-
-  # return certificate_path list with task descriptions
-  # def gord_top_manager_tasks
-    # approve and generate certificate
-    # set status to certified
   # end
 
   private

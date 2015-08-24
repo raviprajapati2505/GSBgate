@@ -49,7 +49,8 @@ class Ability
       can :read, ProjectAuthorization, project: {project_authorizations: {user_id: user.id, role: ['enterprise_account', ProjectAuthorization.roles[:enterprise_account]]}}
       can :create, ProjectAuthorization
       # CertificationPath controller
-      can :manage, CertificationPath, project: {project_authorizations: {user_id: user.id, role: ['project_manager', ProjectAuthorization.roles[:project_manager]]}}, status: ['in_submission', CertificationPath.statuses[:in_submission]]
+      can :manage, CertificationPath, project: {project_authorizations: {user_id: user.id, role: ['project_manager', ProjectAuthorization.roles[:project_manager]]}}, status: ['in_submission', 'screened', 'awaiting_approval']
+      can :update, CertificationPath, project: {project_authorizations: {user_id: user.id, role: ['certifier_manager', ProjectAuthorization.roles[:certifier_manager]]}}, status: ['in_screening', 'in_verification']
       can :read, CertificationPath, project: {project_authorizations: {user_id: user.id}}
       can :create, CertificationPath
       # SchemeMix controller
@@ -60,7 +61,7 @@ class Ability
       can :read, SchemeMixCriterion, scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id}}}}
       can :edit, SchemeMixCriterion, scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id}}}}
       can :update, SchemeMixCriterion, requirement_data: {user_id: user.id}, scheme_mix: {certification_path: {status: ['in_submission', CertificationPath.statuses[:in_submission]]}}
-      can :update, SchemeMixCriterion, certifier_id: user.id, scheme_mix: {certification_path: {status: ['in_screening', CertificationPath.statuses[:in_screening]]}}
+      can :update, SchemeMixCriterion, certifier_id: user.id, scheme_mix: {certification_path: {status: ['in_submission', 'in_verification']}}
       can :update, SchemeMixCriterion, scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id, role: ['certifier_manager', ProjectAuthorization.roles[:certifier_manager]]}}, status: ['in_screening', CertificationPath.statuses[:in_screening]]}}
       can :assign_certifier, SchemeMixCriterion, scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id, role: ['certifier_manager', ProjectAuthorization.roles[:certifier_manager]]}}}}
       # RequirementDatum controller

@@ -45,10 +45,17 @@ class SchemeMixCriteriaController < AuthenticatedController
             end
             scheme_mix_criterion_processed = true
           when SchemeMixCriterion.statuses[:approved], SchemeMixCriterion.statuses[:resubmit]
-            SchemeMixCriterionTask.where(flow_index: 8, project: @project, scheme_mix_criterion: @scheme_mix_criterion).each do |task|
-              task.destroy
+            if @certification_path.in_screening?
+              SchemeMixCriterionTask.where(flow_index: 8, project: @project, scheme_mix_criterion: @scheme_mix_criterion).each do |task|
+                task.destroy
+              end
+              scheme_mix_criterion_screened = true
+            elsif @certification_path.in_verification?
+              SchemeMixCriterionTask.where(flow_index: 11, project: @project, scheme_mix_criterion: @scheme_mix_criterion).each do |task|
+                task.destroy
+              end
+              scheme_mix_criterion_verified = true
             end
-            scheme_mix_criterion_screened = true
         end
       end
 
@@ -72,6 +79,10 @@ class SchemeMixCriteriaController < AuthenticatedController
         elsif scheme_mix_criterion_screened
           unless @certification_path.scheme_mix_criteria.complete.count.nonzero?
             CertificationPathTask.create!(flow_index: 9, project_role: ProjectAuthorization.roles[:certifier_manager], project: @project, certification_path: @certification_path)
+          end
+        elsif scheme_mix_criterion_verified
+          unless @certification_path.scheme_mix_criteria.complete.count.nonzero?
+            CertificationPathTask.create!(flow_index: 12, project_role: ProjectAuthorization.roles[:certifier_manager], project: @project, certification_path: @certification_path)
           end
         end
 

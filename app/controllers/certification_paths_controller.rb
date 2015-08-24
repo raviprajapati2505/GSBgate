@@ -44,12 +44,13 @@ class CertificationPathsController < AuthenticatedController
         case CertificationPath.statuses[certification_path_params[:status]]
           # Generate tasks for project managers
           when CertificationPath.statuses[:in_submission]
-            # Delete system admins task
+            # Delete system admin task
             CertificationPathTask.where(flow_index: 2, role: User.roles[:system_admin], project: @project, certification_path: @certification_path).each do |task|
               task.destroy
             end
             generate_tasks = true
           when CertificationPath.statuses[:in_screening]
+            # Delete project manager task
             CertificationPathTask.where(flow_index: 6, project_role: ProjectAuthorization.roles[:project_manager], project: @project, certification_path: @certification_path).each do |task|
               task.destroy
             end
@@ -58,6 +59,36 @@ class CertificationPathsController < AuthenticatedController
               scheme_mix.scheme_mix_criteria.each do |scheme_mix_criterion|
                 SchemeMixCriterionTask.create!(flow_index: 7, project_role: ProjectAuthorization.roles[:certifier_manager], project: @project, scheme_mix_criterion: scheme_mix_criterion)
               end
+            end
+          when CertificationPath.statuses[:screened]
+            CertificationPathTask.where(flow_index: 9, project_role: ProjectAuthorization.roles[:certifier_manager], project: @project, certification_path: @certification_path).each do |task|
+              task.flow_index = 10
+              task.project_role = ProjectAuthorization.roles[:project_manager]
+              task.save!
+            end
+          when CertificationPath.statuses[:in_verification]
+            # Delete project manager task
+            CertificationPathTask.where(flow_index: 10, project_role: ProjectAuthorization.roles[:project_manager], project: @project, certification_path: @certification_path).each do |task|
+              task.destroy
+            end
+            # Generate tasks for certifier members
+            @certification_path.scheme_mixes.each do |scheme_mix|
+              scheme_mix.scheme_mix_criteria.each do |scheme_mix_criterion|
+                SchemeMixCriterionTask.create!(flow_index: 11, user: scheme_mix_criterion.certifier, project: @project, scheme_mix_criterion: scheme_mix_criterion)
+              end
+            end
+          when CertificationPath.statuses[:awaiting_approval]
+            CertificationPathTask.where(flow_index: 12, project_role: ProjectAuthorization.roles[:certifier_manager], project: @project, certification_path: @certification_path).each do |task|
+              task.flow_index = 13
+              task.project_role = ProjectAuthorization.roles[:project_manager]
+              task.save!
+            end
+          when CertificationPath.statuses[:awaiting_signatures]
+            CertificationPathTask.where(flow_index: 13, project_role: ProjectAuthorization.roles[:project_manager], project: @project, certification_path: @certification_path).each do |task|
+              task.flow_index = 14
+              task.project_role = nil
+              task.role = User.roles[:gord_manager]
+              task.save!
             end
         end
       end
