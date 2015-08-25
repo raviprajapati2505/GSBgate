@@ -21,7 +21,14 @@
         <div class="row wrapper border-bottom white-bg page-heading">
             <div class="col-lg-12">
                 <h2><%= @page_title %></h2>
-                <%= render 'layouts/breadcrumb' %>
+                <div class="row">
+                    <div class="col-md-10 breadcrumb-wrapper">
+                        <%= render 'layouts/breadcrumb' %>
+                    </div>
+                    <div class="col-md-2 back-button-wrapper">
+                        <%= link_to('&laquo; Return to previous page'.html_safe, :back, class: 'btn btn-white btn-xs') %>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="wrapper wrapper-content">
