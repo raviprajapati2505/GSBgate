@@ -32,6 +32,7 @@
  *= require dropzone
  *= require toastr
  *= require js-routes
+ *= require certification_path
  */
 
 $(function () {

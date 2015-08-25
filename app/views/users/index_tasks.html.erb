@@ -14,19 +14,28 @@
                     </tr>
                     <tr>
                         <th>Role</th>
-                        <td><%= project_authorization.role.humanize %></td>
+                        <td><% if @user.system_admin? %>
+                                System admin
+                            <% elsif @user.gord_manager? %>
+                                GORD manager
+                            <% elsif @user.gord_top_manager? %>
+                                GORD top manager
+                            <% else %>
+                                <%= project_authorization.role.humanize %>
+                            <% end %>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
                 <div class="hr-line-dashed"></div>
-                <% if can? :edit, project_authorization %>
+                <% if !project_authorization.nil? && (can? :edit, project_authorization) %>
                     <% if project_authorization.certifier_manager? || project_authorization.certifier? %>
                         <%= link_to raw('<i title="Edit authorization" class="fa fa-lg fa-edit" style="padding-right: 10px;"></i>&nbsp;Edit role'),  edit_project_authorization_path(@project, project_authorization, query: 'certifiers'), :class => 'btn btn-primary' %>
                     <% elsif @project.owner != @user %>
                         <%= link_to raw('<i title="Edit authorization" class="fa fa-lg fa-edit" style="padding-right: 10px;"></i>&nbsp;Edit role'),  edit_project_authorization_path(@project, project_authorization), :class => 'btn btn-primary' %>
                     <% end %>
                 <% end %>
-                <% if (can? :destroy, project_authorization) && @project.owner != @user %>
+                <% if !project_authorization.nil? && (can? :destroy, project_authorization) && @project.owner != @user %>
                 <%= link_to raw('<i title="Delete authorization" class="fa fa-lg fa-user-times" style="padding-right: 10px;"></i>&nbsp;Remove from team'), project_authorization_path(@project, project_authorization), method: :delete, data: {confirm: 'Are you sure to remove team member ?'}, class: 'btn btn-white' %>
                 <% end %>
             </div>

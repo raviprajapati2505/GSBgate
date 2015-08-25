@@ -107,6 +107,7 @@ en:
       description_14: "Quick check and approve"
       description_15: "Approve and generate certificate"
       description_16: "Set status to certified"
+      description_17: "Download certificate"
       tooltip_certification_path_preassessment: "Pre-assessment: You should complete the certification path"
       tooltip_certification_path_preliminary: "Preliminary"
       tooltip_criterion_complete: "Completed"

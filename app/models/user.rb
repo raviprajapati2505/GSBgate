@@ -95,9 +95,7 @@ class User < ActiveRecord::Base
     # ---
     # if PCR track : process review comments and set status to in_verification
     #! if certification_rejected : (if appeal) set status to in_verification
-    #! if awaiting_approval: set status to in_verification (if no agreement and appealed) or awaiting_signatures
-    # ---
-    # download certificate
+    #! if awaiting_approval: set status to in_verification (if no agreement and appealed)
   # end
 
   # return requirement list with task descriptions

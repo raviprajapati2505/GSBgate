@@ -1,6 +1,6 @@
 class CertificationPathsController < AuthenticatedController
   before_action :set_project
-  before_action :set_certification_path, only: [:show]
+  before_action :set_certification_path, only: [:show, :sign_certificate]
   load_and_authorize_resource
 
   def show
@@ -90,6 +90,13 @@ class CertificationPathsController < AuthenticatedController
               task.role = User.roles[:gord_manager]
               task.save!
             end
+          when CertificationPath.statuses[:certified]
+            CertificationPathTask.where(flow_index: 16, role: User.roles[:gord_top_manager], project: @project, certification_path: @certification_path).each do |task|
+              task.flow_index = 17
+              task.role = nil
+              task.project_role = ProjectAuthorization.roles[:project_manager]
+              task.save!
+            end
         end
       end
 
@@ -117,6 +124,32 @@ class CertificationPathsController < AuthenticatedController
 
   def download_archive
     send_file DocumentArchiverService.instance.create_archive(@certification_path.scheme_mix_criteria_documents.approved)
+  end
+
+  def sign_certificate
+    if params.has_key?(:signed_by_mngr)
+      @certification_path.signed_by_mngr = params[:signed_by_mngr]
+      @certification_path.save!
+
+      CertificationPathTask.where(flow_index: 14, role: User.roles[:gord_manager], project: @project, certification_path: @certification_path).each do |task|
+        task.flow_index = 15
+        task.role = User.roles[:gord_top_manager]
+        task.save!
+      end
+
+      render json: {msg: "Certificate signed by GORD manager"} and return
+    end
+    if params.has_key?(:signed_by_top_mngr)
+      @certification_path.signed_by_top_mngr = params[:signed_by_top_mngr]
+      @certification_path.save!
+
+      CertificationPathTask.where(flow_index: 15, role: User.roles[:gord_top_manager], project: @project, certification_path: @certification_path).each do |task|
+        task.flow_index = 16
+        task.save!
+      end
+
+      render json: {msg: "Certificate signed by GORD top manager"} and return
+    end
   end
 
   private
