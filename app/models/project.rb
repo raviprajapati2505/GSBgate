@@ -1,4 +1,4 @@
-class Project < ActiveRecord::Base
+class Project < ActiveResource
 
   belongs_to :owner, class_name: 'User', inverse_of: :owned_projects
   has_many :project_authorizations, dependent: :delete_all

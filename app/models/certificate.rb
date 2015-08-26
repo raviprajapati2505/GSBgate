@@ -1,4 +1,4 @@
-class Certificate < ActiveRecord::Base
+class Certificate < ActiveResource
   enum certificate_type: [ :design_type, :construction_type, :operations_type ]
   enum assessment_stage: [ :design_stage, :construction_stage, :operations_stage ]
 

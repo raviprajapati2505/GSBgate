@@ -1,4 +1,4 @@
-class CertificationPath < ActiveRecord::Base
+class CertificationPath < ActiveResource
   belongs_to :project
   belongs_to :certificate
   has_many :scheme_mixes

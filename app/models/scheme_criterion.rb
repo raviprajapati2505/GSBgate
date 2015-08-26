@@ -1,4 +1,4 @@
-class SchemeCriterion < ActiveRecord::Base
+class SchemeCriterion < ActiveResource
   enum score_combination_type: [ :score_combination_unknown, :score_combination_only_a, :score_combination_average ]
   serialize :score_a
   serialize :score_b

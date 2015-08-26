@@ -1,4 +1,4 @@
-class ProjectAuthorization < ActiveRecord::Base
+class ProjectAuthorization < ActiveResource
   belongs_to :user
   belongs_to :project
 

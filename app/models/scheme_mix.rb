@@ -1,4 +1,4 @@
-class SchemeMix < ActiveRecord::Base
+class SchemeMix < ActiveResource
   belongs_to :certification_path
   belongs_to :scheme
   has_many :scheme_mix_criteria

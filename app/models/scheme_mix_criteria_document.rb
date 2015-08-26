@@ -1,4 +1,4 @@
-class SchemeMixCriteriaDocument < ActiveRecord::Base
+class SchemeMixCriteriaDocument < ActiveResource
   enum status: [ :awaiting_approval, :approved, :rejected, :superseded ]
 
   belongs_to :document

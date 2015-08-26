@@ -1,6 +1,6 @@
 require 'file_size_validator'
 
-class Document < ActiveRecord::Base
+class Document < ActiveResource
   MAXIMUM_DOCUMENT_FILE_SIZE = 25 # in MB
 
   belongs_to :user

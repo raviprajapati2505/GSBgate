@@ -1,4 +1,4 @@
-class CalculatorDatum < ActiveRecord::Base
+class CalculatorDatum < ActiveResource
   has_many :requirement_data
   has_many :field_data
   belongs_to :calculator

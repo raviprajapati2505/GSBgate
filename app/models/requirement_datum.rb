@@ -1,4 +1,4 @@
-class RequirementDatum < ActiveRecord::Base
+class RequirementDatum < ActiveResource
   has_many :scheme_mix_criteria_requirement_data
   has_many :scheme_mix_criteria, through: :scheme_mix_criteria_requirement_data
   belongs_to :calculator_datum
