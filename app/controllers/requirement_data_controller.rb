@@ -61,46 +61,8 @@ class RequirementDataController < AuthenticatedController
 
     @requirement_datum.status = params[:status]
 
-    # If there was a user assigned to this requirement, notify him
-    if @requirement_datum.user_id_changed?
-      if @requirement_datum.due_date.nil?
-        notify(body: 'Requirement %s is assigned to you.',
-               body_params: [@requirement_datum.requirement.label],
-               uri: project_certification_path_scheme_mix_scheme_mix_criterion_path(params[:project_id], params[:certification_path_id], params[:scheme_mix_id], params[:scheme_mix_criterion_id]) + '#requirement-' + @requirement_datum.id.to_s,
-               user: @requirement_datum.user,
-               project: @project)
-      else
-        notify(body: 'Requirement %s is assigned to you. The due date is %s.',
-               body_params: [@requirement_datum.requirement.label, l(@requirement_datum.due_date, format: :short)],
-               uri: project_certification_path_scheme_mix_scheme_mix_criterion_path(params[:project_id], params[:certification_path_id], params[:scheme_mix_id], params[:scheme_mix_criterion_id]) + '#requirement-' + @requirement_datum.id.to_s,
-               user: @requirement_datum.user,
-               project: @project)
-      end
-    # If the due date was changed, notify the assigned user
-    elsif @requirement_datum.due_date_changed?
-      if @requirement_datum.due_date.nil?
-        notify(body: 'Due date for requirement %s is removed.',
-               body_params: [@requirement_datum.requirement.label],
-               uri: project_certification_path_scheme_mix_scheme_mix_criterion_path(params[:project_id], params[:certification_path_id], params[:scheme_mix_id], params[:scheme_mix_criterion_id]) + '#requirement-' + @requirement_datum.id.to_s,
-               user: @requirement_datum.user,
-               project: @project)
-      else
-        notify(body: 'Due date for requirement %s is changed to %s.',
-               body_params: [@requirement_datum.requirement.label, l(@requirement_datum.due_date, format: :short)],
-               uri: project_certification_path_scheme_mix_scheme_mix_criterion_path(params[:project_id], params[:certification_path_id], params[:scheme_mix_id], params[:scheme_mix_criterion_id]) + '#requirement-' + @requirement_datum.id.to_s,
-               user: @requirement_datum.user,
-               project: @project)
-      end
-    # If the status was changed, notify the project managers
-    elsif @requirement_datum.status_changed?
-      @project.managers.each do |project_manager|
-        notify(body: 'The status of requirement %s is changed to %s.',
-               body_params: [@requirement_datum.requirement.label, @requirement_datum.status.humanize],
-               uri: project_certification_path_scheme_mix_scheme_mix_criterion_path(params[:project_id], params[:certification_path_id], params[:scheme_mix_id], params[:scheme_mix_criterion_id]) + '#requirement-' + @requirement_datum.id.to_s,
-               user: project_manager,
-               project: @project)
-      end
-
+    # If the status was changed
+    if @requirement_datum.status_changed?
       # Generate tasks for project managers
       unless @requirement_datum.required?
         RequirementDatumTask.where(flow_index: 3, project_role: ProjectAuthorization.roles[:project_manager], project: @project, requirement_datum: @requirement_datum).each do |task|
@@ -108,7 +70,6 @@ class RequirementDataController < AuthenticatedController
         end
         requirement_processed = true
       end
-
     end
 
     @requirement_datum.save!

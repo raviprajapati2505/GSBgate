@@ -2,6 +2,7 @@
     <div class="col-md-5">
         <div class="ibox float-e-margins document-details">
             <div class="ibox-title">
+                <%= audit_log_label(@scheme_mix_criteria_document) %>
                 <%= status_label(@scheme_mix_criteria_document.status, can?(:update, @scheme_mix_criteria_document), 'updateSchemeMixCriteriaDocumentStatusModal') %>
                 <h5>Document details</h5>
             </div>
@@ -10,11 +11,11 @@
                     <tbody>
                     <tr>
                         <th>File name</th>
-                        <td><%= @document.document_file.file.filename %></td>
+                        <td><%= @document.name %></td>
                     </tr>
                     <tr>
                         <th>File size</th>
-                        <td><%= number_to_human_size(@document.document_file.size) %></td>
+                        <td><%= number_to_human_size(@document.size) %></td>
                     </tr>
                     <tr>
                         <th>Uploaded by</th>
@@ -29,12 +30,6 @@
                         <td>
                             <% @document.scheme_mix_criteria.each do |scheme_mix_criterion| %>
                                 <%= scheme_mix_criterion.name %>
-                                <% unless scheme_mix_criterion == @scheme_mix_criterion %>
-                                    <% smcd = SchemeMixCriteriaDocument.find_by(scheme_mix_criterion: scheme_mix_criterion, document: @document) %>
-                                    <% if can? :destroy, smcd %>
-                                        <%= link_to raw('<i title="Remove criterion link" class="fa fa-lg fa-trash" style="padding-right: 10px;"></i>'), project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_path(@project, @certification_path, @scheme_mix, scheme_mix_criterion, smcd), method: :delete, data: {confirm: 'Are you sure you want to unlink this criterion?'} %>
-                                    <% end %>
-                                <% end %>
                                 <br />
                             <% end %>
                             <!-- if can? :create, SchemeMixCriteriaDocument %-->
@@ -60,33 +55,5 @@
             </div>
         </div>
     </div>
-    <div class="col-md-7">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <h5>Comments</h5>
-            </div>
-            <div class="ibox-content">
-                <% if @scheme_mix_criteria_document.scheme_mix_criteria_document_comments.empty? %>
-                    This document has no comments.
-                <% else %>
-                    <% @scheme_mix_criteria_document.scheme_mix_criteria_document_comments.each do |comment| %>
-                        <div id="comment-<%= comment.id %>" class="feed-element">
-                            <div class="media-body">
-                                <strong><%= comment.user.email %></strong> commented on <strong><%= localize(comment.created_at) %></strong>
-                                <div class="well">
-                                    <%= comment.body %>
-                                </div>
-                            </div>
-                        </div>
-                    <% end %>
-                <% end %>
-                <!-- if can? :create, SchemeMixCriteriaDocumentComment %-->
-                    <div class="hr-line-dashed"></div>
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createSchemeMixCriteriaDocumentCommentModal"><i title="Add comment" class="fa fa-lg fa-comment" style="padding-right: 10px;"></i>Add comment</button>
-                <!-- end %-->
-            </div>
-        </div>
-    </div>
 </div>
 <%= render 'scheme_mix_criteria_documents/modal', project: @project, certification_path: @certification_path, scheme_mix: @scheme_mix, scheme_mix_criterion: @scheme_mix_criterion, scheme_mix_criteria_document: @scheme_mix_criteria_document %>
-<%= render 'scheme_mix_criteria_document_comments/modal', project: @project, certification_path: @certification_path, scheme_mix: @scheme_mix, scheme_mix_criterion: @scheme_mix_criterion, scheme_mix_criteria_document: @scheme_mix_criteria_document, scheme_mix_criteria_document_comment: SchemeMixCriteriaDocumentComment.new %>

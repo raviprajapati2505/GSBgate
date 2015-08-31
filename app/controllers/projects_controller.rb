@@ -44,14 +44,6 @@ class ProjectsController < AuthenticatedController
       if @project.save
         project_authorization = ProjectAuthorization.new(project: @project, user: current_user, role: ProjectAuthorization.roles[:project_manager])
         if project_authorization.save
-          # Generate a notification for the system admins
-          User.system_admin.each do |system_admin|
-            notify(body: 'A new project %s was created.',
-                   body_params: [@project.name],
-                   uri: project_path(@project),
-                   user: system_admin,
-                   project: @project)
-          end
           redirect_to @project, notice: 'Project was successfully created.'
           return
         end

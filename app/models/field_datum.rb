@@ -1,5 +1,5 @@
 # Subclasses of this class can be found in the folder 'field_datum'
-class FieldDatum < ActiveResource
+class FieldDatum < ActiveRecord::Base
   belongs_to :calculator_datum
   belongs_to :field
 

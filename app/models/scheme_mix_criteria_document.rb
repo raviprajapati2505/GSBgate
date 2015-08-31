@@ -1,12 +1,26 @@
-class SchemeMixCriteriaDocument < ActiveResource
+class SchemeMixCriteriaDocument < AuditableRecord
   enum status: [ :awaiting_approval, :approved, :rejected, :superseded ]
 
   belongs_to :document
   belongs_to :scheme_mix_criterion
-  has_many :scheme_mix_criteria_document_comments, :dependent => :delete_all
-  has_many :commenters, through: :scheme_mix_criteria_document_comments, source: :user
 
   after_initialize :init
+
+  def name
+    self.document.name
+  end
+
+  def content_type
+    self.document.content_type
+  end
+
+  def path
+    self.document.path
+  end
+
+  def size
+    self.document.size
+  end
 
   private
 

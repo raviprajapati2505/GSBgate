@@ -26,8 +26,8 @@ module ApplicationHelper
 
   def status_label(status, can_edit, modal)
     if can_edit
-      ( '<a href="#" data-toggle="modal" data-target="#' + modal + '" title="Click to update the status">'\
-          '<span class="label status-label status-' + status.dasherize + ' pull-right">'\
+      ( '<a href="#" data-toggle="modal" data-target="#' + modal + '" title="Click to update the status" class="pull-right">'\
+          '<span class="label label-lg status-' + status.dasherize + '">'\
             '<i class="fa fa-lg fa-edit"></i>&nbsp;Status: ' + status.humanize + ''\
           '</span>'\
         '</a>').html_safe
@@ -36,5 +36,9 @@ module ApplicationHelper
           'Status: ' + status.humanize + ''\
         '</span>').html_safe
     end
+  end
+
+  def audit_log_label(auditable)
+    link_to('<span class="label label-lg"><i class="fa fa-lg fa-history"></i></span>'.html_safe, auditable_index_audit_logs_path(auditable.class.name, auditable.id), remote: true, title: 'Click to view the audit log of this page', class: 'pull-right')
   end
 end

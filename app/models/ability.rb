@@ -69,8 +69,6 @@ class Ability
       # RequirementDatum controller
       can :manage, RequirementDatum, scheme_mix_criteria: {scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id, role: ['project_manager', ProjectAuthorization.roles[:project_manager]]}}}}}
       can :update, RequirementDatum, user_id: user.id
-      # Criteria status log
-      can :read, SchemeMixCriterionLog, scheme_mix_criterion: {scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id}}}}}
       # Document controller
       can :manage, Document, scheme_mix_criteria: {scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id, role: ['project_manager', ProjectAuthorization.roles[:project_manager]]}}}}}
       can :manage, Document, scheme_mix_criteria: {scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id, role: ['project_team_member', ProjectAuthorization.roles[:project_team_member]]}}}}}
@@ -80,10 +78,8 @@ class Ability
       can :create, SchemeMixCriteriaDocument, scheme_mix_criterion: {scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id, role: ['project_team_member', ProjectAuthorization.roles[:project_team_member]]}}}}}
       can :destroy, SchemeMixCriteriaDocument, scheme_mix_criterion: {scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id, role: ['project_team_member', ProjectAuthorization.roles[:project_team_member]]}}}}}
       can :show, SchemeMixCriteriaDocument, scheme_mix_criterion: {scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id}}}}}
-      # SchemeMixCriteriaDocumentComment controller
-      can :create, SchemeMixCriteriaDocumentComment
-      # Notification controller
-      can :manage, Notification
+      # AuditLog controller
+      can :read, AuditLog
     elsif user.gord_top_manager?
       # dr. Youssef
       can :manage, :all

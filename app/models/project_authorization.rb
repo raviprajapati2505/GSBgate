@@ -1,4 +1,4 @@
-class ProjectAuthorization < ActiveResource
+class ProjectAuthorization < AuditableRecord
   belongs_to :user
   belongs_to :project
 

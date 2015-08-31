@@ -1,4 +1,4 @@
-class RequirementDatum < ActiveResource
+class RequirementDatum < AuditableRecord
   has_many :scheme_mix_criteria_requirement_data
   has_many :scheme_mix_criteria, through: :scheme_mix_criteria_requirement_data
   belongs_to :calculator_datum
@@ -48,6 +48,10 @@ class RequirementDatum < ActiveResource
   scope :unassigned, -> {
     where(user: nil)
   }
+
+  def name
+    requirement.label
+  end
 
   private
   def init

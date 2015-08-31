@@ -11,11 +11,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150824122110) do
+ActiveRecord::Schema.define(version: 20150826112333) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
+
+  create_table "audit_logs", force: :cascade do |t|
+    t.text     "system_message"
+    t.text     "user_comment"
+    t.integer  "auditable_id"
+    t.string   "auditable_type"
+    t.integer  "project_id"
+    t.integer  "user_id"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
+
+  add_index "audit_logs", ["auditable_type", "auditable_id"], name: "index_audit_logs_on_auditable_type_and_auditable_id", using: :btree
+  add_index "audit_logs", ["project_id"], name: "index_audit_logs_on_project_id", using: :btree
+  add_index "audit_logs", ["user_id"], name: "index_audit_logs_on_user_id", using: :btree
 
   create_table "calculator_data", force: :cascade do |t|
     t.integer  "calculator_id"
@@ -109,19 +124,6 @@ ActiveRecord::Schema.define(version: 20150824122110) do
   end
 
   add_index "fields", ["calculator_id"], name: "index_fields_on_calculator_id", using: :btree
-
-  create_table "notifications", force: :cascade do |t|
-    t.text     "body"
-    t.boolean  "read"
-    t.integer  "user_id"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
-    t.string   "uri",        limit: 2048
-    t.integer  "project_id"
-  end
-
-  add_index "notifications", ["project_id"], name: "index_notifications_on_project_id", using: :btree
-  add_index "notifications", ["user_id"], name: "index_notifications_on_user_id", using: :btree
 
   create_table "project_authorizations", force: :cascade do |t|
     t.integer  "user_id"
@@ -217,17 +219,6 @@ ActiveRecord::Schema.define(version: 20150824122110) do
   add_index "scheme_mix_criteria", ["scheme_criterion_id"], name: "index_scheme_mix_criteria_on_scheme_criterion_id", using: :btree
   add_index "scheme_mix_criteria", ["scheme_mix_id"], name: "index_scheme_mix_criteria_on_scheme_mix_id", using: :btree
 
-  create_table "scheme_mix_criteria_document_comments", force: :cascade do |t|
-    t.text     "body"
-    t.integer  "scheme_mix_criteria_document_id"
-    t.integer  "user_id"
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
-  end
-
-  add_index "scheme_mix_criteria_document_comments", ["scheme_mix_criteria_document_id"], name: "index_scheme_mix_criteria_document_comments", using: :btree
-  add_index "scheme_mix_criteria_document_comments", ["user_id"], name: "index_scheme_mix_criteria_document_comments_on_user_id", using: :btree
-
   create_table "scheme_mix_criteria_documents", force: :cascade do |t|
     t.integer  "scheme_mix_criterion_id"
     t.integer  "document_id"
@@ -249,19 +240,6 @@ ActiveRecord::Schema.define(version: 20150824122110) do
 
   add_index "scheme_mix_criteria_requirement_data", ["requirement_datum_id"], name: "by_requirement_datum", using: :btree
   add_index "scheme_mix_criteria_requirement_data", ["scheme_mix_criterion_id"], name: "by_scheme_mix_criterion", using: :btree
-
-  create_table "scheme_mix_criterion_logs", force: :cascade do |t|
-    t.text     "comment"
-    t.integer  "old_status"
-    t.integer  "new_status"
-    t.integer  "scheme_mix_criterion_id"
-    t.integer  "user_id"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
-  end
-
-  add_index "scheme_mix_criterion_logs", ["scheme_mix_criterion_id"], name: "index_scheme_mix_criterion_logs_on_scheme_mix_criterion_id", using: :btree
-  add_index "scheme_mix_criterion_logs", ["user_id"], name: "index_scheme_mix_criterion_logs_on_user_id", using: :btree
 
   create_table "scheme_mixes", force: :cascade do |t|
     t.integer  "certification_path_id"
@@ -324,6 +302,8 @@ ActiveRecord::Schema.define(version: 20150824122110) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  add_foreign_key "audit_logs", "projects"
+  add_foreign_key "audit_logs", "users"
   add_foreign_key "calculator_data", "calculators"
   add_foreign_key "certification_paths", "certificates"
   add_foreign_key "certification_paths", "projects"
@@ -332,7 +312,6 @@ ActiveRecord::Schema.define(version: 20150824122110) do
   add_foreign_key "field_data", "calculator_data"
   add_foreign_key "field_data", "fields"
   add_foreign_key "fields", "calculators"
-  add_foreign_key "notifications", "users"
   add_foreign_key "project_authorizations", "projects"
   add_foreign_key "project_authorizations", "users"
   add_foreign_key "projects", "users", column: "owner_id"
@@ -344,14 +323,10 @@ ActiveRecord::Schema.define(version: 20150824122110) do
   add_foreign_key "scheme_criteria_requirements", "scheme_criteria"
   add_foreign_key "scheme_mix_criteria", "scheme_criteria"
   add_foreign_key "scheme_mix_criteria", "scheme_mixes"
-  add_foreign_key "scheme_mix_criteria_document_comments", "scheme_mix_criteria_documents"
-  add_foreign_key "scheme_mix_criteria_document_comments", "users"
   add_foreign_key "scheme_mix_criteria_documents", "documents"
   add_foreign_key "scheme_mix_criteria_documents", "scheme_mix_criteria"
   add_foreign_key "scheme_mix_criteria_requirement_data", "requirement_data"
   add_foreign_key "scheme_mix_criteria_requirement_data", "scheme_mix_criteria"
-  add_foreign_key "scheme_mix_criterion_logs", "scheme_mix_criteria"
-  add_foreign_key "scheme_mix_criterion_logs", "users"
   add_foreign_key "scheme_mixes", "certification_paths"
   add_foreign_key "scheme_mixes", "schemes"
   add_foreign_key "schemes", "certificates"

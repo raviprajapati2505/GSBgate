@@ -7,9 +7,7 @@ Rails.application.routes.draw do
       resources :scheme_mixes, only: [ :show ], path: 'schemes' do
         resources :scheme_mix_criteria, only: [ :show, :update ], path: 'criteria', as: 'scheme_mix_criterion' do
           resources :requirement_data, only: [ :update ], path: 'requirement', as: 'requirement_data'
-          resources :scheme_mix_criterion_logs, only: [ :index ], path: 'status_logs', as: 'status_logs'
-          resources :scheme_mix_criteria_documents, only: [ :create, :show, :update, :destroy ], path: 'documentation', as: 'scheme_mix_criteria_documents' do
-            resources :scheme_mix_criteria_document_comments, only: [ :create ], path: 'comments', as: 'scheme_mix_criteria_document_comments'
+          resources :scheme_mix_criteria_documents, only: [ :create, :show, :update ], path: 'documentation', as: 'scheme_mix_criteria_documents' do
           end
         end
       end
@@ -18,6 +16,7 @@ Rails.application.routes.draw do
   resources :notifications, only: [ :index, :update ]
   put 'notification/update-all' => 'notifications#update_all', as: 'update_all_notifications'
   get 'notification/count' => 'notifications#count', as: 'count_notifications'
+  get 'audit-logs/:auditable_type/:auditable_id' => 'audit_logs#auditable_index', as: 'auditable_index_audit_logs'
   put 'projects/:project_id/certificates/:id/sign' => 'certification_paths#sign_certificate', as: 'sign_certification_path'
   put 'projects/:project_id/certificates/:certification_path_id/schemes/:scheme_mix_id/criteria/:id/assign' => 'scheme_mix_criteria#assign_certifier', as: 'assign_certifier_to_criteria'
   get 'projects/:project_id/certificates/:id/archive' => 'certification_paths#download_archive', as: 'archive_project_certification_path'

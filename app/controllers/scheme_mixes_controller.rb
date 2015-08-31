@@ -12,9 +12,9 @@ class SchemeMixesController < AuthenticatedController
     if params.has_key?(:requirement_data)
       # Format the user id
       if params[:user_id].empty?
-        user_id = nil
+        user = nil
       else
-        user_id = params[:user_id]
+        user = User.find(params[:user_id])
       end
 
       # Format the due date
@@ -31,32 +31,13 @@ class SchemeMixesController < AuthenticatedController
         status = params[:status]
       end
 
-      # Update all RequirementDatum models
-      RequirementDatum.where(id: params[:requirement_data]).update_all(user_id: user_id, due_date: due_date, status: status)
+      # Load the RequirementDatum models
+      requirement_data = RequirementDatum.find(params[:requirement_data])
 
-      # TODO: Notify the allocated user
-      # if user_id
-      #   requirement_data = RequirementDatum.find(params[:requirement_data])
-      #   user = User.find(user_id)
-      #
-      #   requirement_data.each do |requirement_datum|
-      #     if due_date
-      #       notify(body: 'Requirement %s is assigned to you. The due date is %s.',
-      #              body_params: [requirement_datum.requirement.label, l(requirement_datum.due_date, format: :short)],
-      #              uri: project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, params[:scheme_mix_criterion_id]) + '#requirement-' + requirement_datum.id.to_s,
-      #              user: user,
-      #              project: @project)
-      #     else
-      #       notify(body: 'Requirement %s is assigned to you.',
-      #              body_params: [requirement_datum.requirement.label],
-      #              uri: project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, params[:scheme_mix_criterion_id]) + '#requirement-' + requirement_datum.id.to_s,
-      #              user: user,
-      #              project: @project)
-      #     end
-      #   end
-      # end
-
-      # TODO: Create tasks for the allocated user
+      # Update the RequirementDatum models
+      requirement_data.each do |requirement_datum|
+        requirement_datum.update!(user: user, due_date: due_date, status: status)
+      end
 
       flash[:notice] = 'The selected requirements were successfully updated.'
     else
@@ -70,9 +51,9 @@ class SchemeMixesController < AuthenticatedController
     if params.has_key?(:scheme_mix_criteria)
       # Format the certifier id
       if params[:certifier_id].empty?
-        certifier_id = nil
+        certifier = nil
       else
-        certifier_id = params[:certifier_id]
+        certifier = User.find(params[:certifier_id])
       end
 
       # Format the due date
@@ -82,12 +63,13 @@ class SchemeMixesController < AuthenticatedController
         due_date = Date.strptime(params[:due_date], t('date.formats.short'))
       end
 
-      # Update all SchemeMixCriteria models
-      SchemeMixCriterion.where(id: params[:scheme_mix_criteria]).update_all(certifier_id: certifier_id, due_date: due_date)
+      # Load the SchemeMixCriteria models
+      scheme_mix_criteria = SchemeMixCriterion.find(params[:scheme_mix_criteria])
 
-      # TODO: Notify the allocated certifier
-
-      # TODO: Create tasks for the allocated certifier
+      # Update the SchemeMixCriteria models
+      scheme_mix_criteria.each do |scheme_mix_criterion|
+        scheme_mix_criterion.update!(certifier: certifier, due_date: due_date)
+      end
 
       flash[:notice] = 'The selected criteria were successfully updated.'
     else

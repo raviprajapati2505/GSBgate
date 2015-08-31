@@ -1,4 +1,4 @@
-class User < ActiveResource
+class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -13,7 +13,6 @@ class User < ActiveResource
   has_many :projects, through: :project_authorizations
   has_many :requirement_data, dependent: :nullify
   has_many :scheme_mix_criteria, inverse_of: :certifier, foreign_key: 'certifier_id'
-  has_many :notifications
   has_many :user_tasks, dependent: :destroy
 
   default_scope { order(email: :asc) }
@@ -41,6 +40,14 @@ class User < ActiveResource
   scope :with_certifier_project_role, -> {
     where('project_authorizations.role in (3, 4)')
   }
+
+  def self.current
+    Thread.current[:user]
+  end
+
+  def self.current=(user)
+    Thread.current[:user] = user
+  end
 
   def certifier_manager?(project)
     project_authorizations.each do |project_authorization|

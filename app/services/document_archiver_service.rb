@@ -11,8 +11,8 @@ class DocumentArchiverService
         category_name = smcd.scheme_mix_criterion.scheme_criterion.criterion.category.name
         criterion_code = smcd.scheme_mix_criterion.scheme_criterion.code
 
-        file_name = category_name + '/' + criterion_code + '/' + smcd.document.id.to_s + '_' + smcd.document.document_file.file.filename
-        file_path = smcd.document.document_file.file.path
+        file_name = category_name + '/' + criterion_code + '/' + smcd.document.id.to_s + '_' + smcd.name
+        file_path = smcd.path
 
         archive.add(file_name, file_path)
       end

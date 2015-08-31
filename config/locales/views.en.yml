@@ -65,10 +65,6 @@ en:
       btn_close: "Close"
       btn_save: "Save"
       modal_title: "Update Status"
-  scheme_mix_criterion_logs:
-      modal:
-        btn_cancel: "Back"
-        btn_close: "Close"
   scheme_mix_criteria_documents:
       modal:
         btn_cancel: "Cancel"

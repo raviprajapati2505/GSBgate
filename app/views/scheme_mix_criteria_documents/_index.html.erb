@@ -13,8 +13,8 @@
         <tbody>
         <% scheme_mix_criteria_documents.each do |smcd| %>
             <tr class="clickable document-<%= smcd.status.dasherize %>" data-href="<%= project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_path(smcd.scheme_mix_criterion.scheme_mix.certification_path.project, smcd.scheme_mix_criterion.scheme_mix.certification_path, smcd.scheme_mix_criterion.scheme_mix, smcd.scheme_mix_criterion, smcd) %>">
-                <td data-order="<%= smcd.document.document_file.file.filename %>" data-search="<%= smcd.document.document_file.file.filename %>">
-                    <%= image_tag(Icon.for_filename(smcd.document.document_file.file.filename), alt: smcd.document.document_file.content_type, title: smcd.document.document_file.content_type) + ' ' + smcd.document.document_file.file.filename %>
+                <td data-order="<%= smcd.name %>" data-search="<%= smcd.name %>">
+                    <%= image_tag(Icon.for_filename(smcd.name), alt: smcd.content_type, title: smcd.content_type) + ' ' + smcd.name %>
                 </td>
                 <td><%= smcd.document.user.email %></td>
                 <td><%= localize(smcd.document.created_at) %></td>

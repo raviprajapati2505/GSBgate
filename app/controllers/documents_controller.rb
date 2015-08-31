@@ -13,21 +13,7 @@ class DocumentsController < AuthenticatedController
         if @document.save
           # Create links with the scheme mix criteria
           params[:document]['scheme_mix_criteria'].each do |scheme_mix_criterion_id|
-            if scheme_mix_criteria_document = @document.scheme_mix_criteria_documents.create!(scheme_mix_criterion_id: scheme_mix_criterion_id)
-              # Create the comment
-              if params[:document]['comment'].present?
-                scheme_mix_criteria_document.scheme_mix_criteria_document_comments.create!(body: params[:document]['comment'], user: current_user)
-              end
-
-              # Notify the project managers of the new document
-              @project.managers.each do |project_manager|
-                notify(body: 'A new document %s was uploaded in %s.',
-                       body_params: [@document.document_file.file.filename, scheme_mix_criteria_document.scheme_mix_criterion.name],
-                       uri: project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_path(@project, @certification_path, scheme_mix_criteria_document.scheme_mix_criterion.scheme_mix, scheme_mix_criteria_document.scheme_mix_criterion, scheme_mix_criteria_document),
-                       user: project_manager,
-                       project: @project)
-              end
-            end
+            @document.scheme_mix_criteria_documents.create!(scheme_mix_criterion_id: scheme_mix_criterion_id, audit_log_user_comment: params[:scheme_mix_criteria_document]['audit_log_user_comment'])
           end
 
           format.html { redirect_to :back, notice: 'The document was successfully uploaded.' }
@@ -41,7 +27,7 @@ class DocumentsController < AuthenticatedController
   end
 
   def show
-    send_file @document.document_file.file.path
+    send_file @document.path
   end
 
   private

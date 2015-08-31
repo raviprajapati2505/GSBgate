@@ -1,4 +1,4 @@
-class CertificationPath < ActiveResource
+class CertificationPath < AuditableRecord
   belongs_to :project
   belongs_to :certificate
   has_many :scheme_mixes
@@ -20,6 +20,10 @@ class CertificationPath < ActiveResource
   scope :with_all_criteria_reviewed, -> {
     where.not('exists(select smc.id from scheme_mix_criteria smc inner join scheme_mixes sm on sm.id = smc.scheme_mix_id where (smc.status = 0 or smc.status = 1) and sm.certification_path_id = certification_paths.id)')
   }
+
+  def name
+    self.certificate.label
+  end
 
   def has_fixed_scheme?
     certificate.schemes.count == 1

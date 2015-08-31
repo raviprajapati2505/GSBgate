@@ -2,6 +2,7 @@
 <div class="col-lg-6">
     <div class="ibox criterion-details">
         <div class="ibox-title">
+            <%= audit_log_label(@scheme_mix_criterion) %>
             <%= status_label(@scheme_mix_criterion.status, can?(:update, @scheme_mix_criterion), 'updateCriterionStatusModal') %>
             <h5>Criterion details</h5>
         </div>
@@ -119,7 +120,6 @@
                                 <i title="Save" class="fa fa-lg fa-save" style="padding-right: 10px;"></i>Save
                             <% end %>
                         <% end %>
-                        <%= link_to raw('<i title="Show status log" class="fa fa-lg fa-history" style="padding-right: 10px;"></i>Show status log'), project_certification_path_scheme_mix_scheme_mix_criterion_status_logs_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), remote: true, class: 'btn btn-white' %>
                     </div>
                 </div>
             <% end %>

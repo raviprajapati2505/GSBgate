@@ -1,12 +1,10 @@
-class Project < ActiveResource
-
+class Project < AuditableRecord
   belongs_to :owner, class_name: 'User', inverse_of: :owned_projects
   has_many :project_authorizations, dependent: :delete_all
   has_many :users, -> { where('project_authorizations.role < 3') },  through: :project_authorizations
   has_many :certifiers, -> { where('project_authorizations.role > 2') }, through: :project_authorizations, source: :user
   has_many :managers, -> { where('project_authorizations.role = 1') }, through: :project_authorizations, source: :user
   has_many :certification_paths
-  has_many :notifications
   has_many :user_tasks, dependent: :destroy
 
   validates :name, presence: true

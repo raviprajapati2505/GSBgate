@@ -1,0 +1,149 @@
+class AuditableRecord < ActiveRecord::Base
+  self.abstract_class = true
+
+  AUDIT_LOG_CREATE = 0
+  AUDIT_LOG_UPDATE = 1
+  AUDIT_LOG_DESTROY = 2
+
+  attr_accessor :audit_log_user_comment
+
+  has_many :audit_logs, as: :auditable, :dependent => :delete_all
+
+  after_create :audit_log_create
+  after_update :audit_log_update
+  after_destroy :audit_log_destroy
+
+  private
+  def audit_log_create
+    audit_log(AUDIT_LOG_CREATE)
+  end
+
+  def audit_log_update
+    audit_log(AUDIT_LOG_UPDATE)
+  end
+
+  def audit_log_destroy
+    audit_log(AUDIT_LOG_DESTROY)
+  end
+
+  def audit_log(action)
+    system_messages = []
+    system_messages_params = []
+    auditable = self
+
+    # Set the system message(s)
+    case self.class.name
+      when Project.name.demodulize
+        project = self
+        if (action == AUDIT_LOG_CREATE)
+          system_messages << 'A new project %s was created.'
+          system_messages_params << [self.name]
+        elsif (action == AUDIT_LOG_UPDATE)
+          system_messages << 'The project details of %s were updated.'
+          system_messages_params << [self.name]
+        end
+      when ProjectAuthorization.name.demodulize
+        auditable = self.project
+        project = self.project
+        if (action == AUDIT_LOG_CREATE)
+          system_messages << 'User %s was added to project %s as a %s.'
+          system_messages_params << [self.user.email, self.project.name, self.role.humanize]
+        elsif (action == AUDIT_LOG_UPDATE)
+          if self.role_changed?
+            system_messages << 'The role of user %s in project %s was changed from %s to %s.'
+            system_messages_params << [self.user.email, self.project.name, self.changes[:role][0].humanize, self.changes[:role][1].humanize]
+          end
+        elsif (action == AUDIT_LOG_DESTROY)
+          system_messages << 'User %s was removed from project %s as a %s.'
+          system_messages_params << [self.user.email, self.project.name, self.role.humanize]
+        end
+      when CertificationPath.name.demodulize
+        project = self.project
+        if (action == AUDIT_LOG_CREATE)
+          system_messages << 'A new certification path %s was created in project %s.'
+          system_messages_params << [self.name, self.project.name]
+        elsif (action == AUDIT_LOG_UPDATE)
+          if self.status_changed?
+            system_messages << 'The status of certification path %s in project %s was changed from %s to %s.'
+            system_messages_params << [self.name, self.project.name, self.changes[:status][0].humanize, self.changes[:status][1].humanize]
+          end
+        end
+      when SchemeMixCriterion.name.demodulize
+        project = self.scheme_mix.certification_path.project
+        if (action == AUDIT_LOG_UPDATE)
+          if self.status_changed?
+            system_messages << 'The status of criterion %s was changed from %s to %s.'
+            system_messages_params << [self.name, self.changes[:status][0].humanize, self.changes[:status][1].humanize]
+          elsif self.certifier_id_changed? or self.due_date_changed?
+            if self.certifier_id.blank?
+              system_messages << 'A GORD certifier was unassigned from criterion %s.'
+              system_messages_params << [self.name]
+            elsif self.due_date?
+              system_messages << 'Criterion %s was assigned to GORD certifier %s for review. The due date is %s.'
+              system_messages_params << [self.name, self.certifier.email, I18n.l(self.due_date, format: :short)]
+            else
+              system_messages << 'Criterion %s was assigned to GORD certifier %s for review.'
+              system_messages_params << [self.name, self.certifier.email]
+            end
+          end
+        end
+      when SchemeMixCriteriaDocument.name.demodulize
+        project = self.scheme_mix_criterion.scheme_mix.certification_path.project
+        if (action == AUDIT_LOG_CREATE)
+          system_messages << 'A new document %s was added to criterion %s.'
+          system_messages_params << [self.name, self.scheme_mix_criterion.name]
+        elsif (action == AUDIT_LOG_UPDATE)
+          if self.status_changed?
+            system_messages << 'The status of document %s in %s was changed from %s to %s.'
+            system_messages_params << [self.name, self.scheme_mix_criterion.name, self.changes[:status][0].humanize, self.changes[:status][1].humanize]
+          end
+        end
+      when RequirementDatum.name.demodulize
+        project = self.scheme_mix_criteria.take.scheme_mix.certification_path.project
+        if (action == AUDIT_LOG_UPDATE)
+          if self.status_changed?
+            system_messages << 'The status of requirement %s was changed from %s to %s.'
+            system_messages_params << [self.name, self.changes[:status][0].humanize, self.changes[:status][1].humanize]
+          end
+          if self.user_id_changed? or self.due_date_changed?
+            if self.user_id.blank?
+              system_messages << 'A project team member was unassigned from requirement %s.'
+              system_messages_params << [self.name]
+            elsif self.due_date?
+              system_messages << 'Requirement %s was assigned to %s. The due date is %s.'
+              system_messages_params << [self.name, self.user.email, I18n.l(self.due_date, format: :short)]
+            else
+              system_messages << 'Requirement %s was assigned to %s.'
+              system_messages_params << [self.name, self.user.email]
+            end
+          end
+        end
+    end
+
+    # Format the system messages
+    if system_messages.present?
+      system_messages.each_with_index do |system_message, index|
+        system_messages[index] = system_message.gsub('%s', '<strong>%s</strong>') % system_messages_params[index]
+      end
+    end
+
+    # Format the user comment
+    if self.audit_log_user_comment.present?
+      user_comment = self.audit_log_user_comment
+    else
+      user_comment = nil
+    end
+
+    # Create the audit log record
+    if system_messages.present? or user_comment.present?
+      system_messages.each do |system_message|
+        AuditLog.create(
+            system_message: system_message,
+            user_comment: user_comment,
+            user: User.current,
+            auditable: auditable,
+            project: project)
+      end
+    end
+  end
+end

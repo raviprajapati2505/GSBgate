@@ -17,7 +17,7 @@
         <% end %>
 
         <% unless @certification_path.nil? or @certification_path.id.nil? %>
-            <li><%= link_to "#{@certification_path.certificate.label} (#{@certification_path.status.humanize})", project_certification_path_path(@project, @certification_path) %></li>
+            <li><%= link_to "#{@certification_path.name} (#{@certification_path.status.humanize})", project_certification_path_path(@project, @certification_path) %></li>
         <% end %>
 
         <% unless @scheme_mix.nil? or @scheme_mix.id.nil? %>
@@ -29,7 +29,7 @@
         <% end %>
 
         <% unless @scheme_mix_criteria_document.nil? or @scheme_mix_criteria_document.id.nil? %>
-            <li><%= link_to 'Document ' + @scheme_mix_criteria_document.document.document_file.file.filename, project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, @scheme_mix_criteria_document) %></li>
+            <li><%= link_to 'Document ' + @scheme_mix_criteria_document.name, project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, @scheme_mix_criteria_document) %></li>
         <% end %>
 
         <% unless is_active_controller('project_authorizations').nil? %>

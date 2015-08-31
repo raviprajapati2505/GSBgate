@@ -23,8 +23,7 @@
                             </li>
                         <% end %>
                     </ul>
-                    <%= label_tag 'scheme_mix_criteria_document_comment[body]', 'Comment' %>
-                    <%= text_area_tag 'scheme_mix_criteria_document_comment[body]', nil, class: 'form-control', rows: 4 %>
+                    <%= f.text_area :audit_log_user_comment, rows: 4 %>
                 </div>
                 <div class="modal-footer">
                     <%= button_tag type: 'submit', class: 'btn btn-primary' do %>

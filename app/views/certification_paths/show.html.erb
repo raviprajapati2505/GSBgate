@@ -2,7 +2,9 @@
     <div class="col-md-4">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
+                <%= audit_log_label(@certification_path) %>
                 <%= status_label(@certification_path.status, can?(:update, @certification_path), 'updateCertificatePathStatusModal') %>
+                <%= render 'modal', project: @project, certification_path: @certification_path %>
                 <h5>Certification details</h5>
             </div>
             <div class="ibox-content">
@@ -70,4 +72,3 @@
         <%= render 'users/tasks', user: current_user %>
     </div>
 </div>
-<%= render 'modal', project: @project, certification_path: @certification_path %>

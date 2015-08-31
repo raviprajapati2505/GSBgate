@@ -8,12 +8,6 @@ class ProjectAuthorizationsController < AuthenticatedController
     first_cert_mngr_assigned = !@project.certifier_manager_assigned? && @project_authorization.certifier_manager?
     @project_authorization.project = @project
     if @project_authorization.save
-      notify(body: 'You were added to project %s as a %s.',
-             body_params: [@project.name, @project_authorization.role.humanize],
-             uri: project_path(@project),
-             user: @project_authorization.user,
-             project: @project)
-
       # Update system admins task
       if first_cert_mngr_assigned
         CertificationPathTask.where(flow_index: 1, role: User.roles[:system_admin], project: @project).each do |task|
@@ -44,11 +38,6 @@ class ProjectAuthorizationsController < AuthenticatedController
     end
 
     if @project_authorization.update(authorizations_params)
-      notify(body: 'Your role in project %s was changed to %s.',
-             body_params: [@project.name, @project_authorization.role.humanize],
-             uri: project_path(@project),
-             user: @project_authorization.user,
-             project: @project)
       redirect_to project_path(@project_authorization.project), notice: 'Authorization was successfully updated.'
     else
       render action: :edit

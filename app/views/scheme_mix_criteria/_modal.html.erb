@@ -14,9 +14,7 @@
                 <% else %>
                     <%= f.select :status, SchemeMixCriterion.statuses.keys[2..3].map { |k| [k.humanize, k]} %>
                 <% end %>
-                <%= f.fields_for :scheme_mix_criterion_logs do |l| %>
-                    <%= l.text_area :comment %>
-                <% end %>
+                <%= f.text_area :audit_log_user_comment, rows: 4 %>
             </div>
             <div class="modal-footer">
                 <%= button_tag type: 'submit', class: 'btn btn-primary' do %>

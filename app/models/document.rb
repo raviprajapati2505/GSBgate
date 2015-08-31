@@ -1,6 +1,6 @@
 require 'file_size_validator'
 
-class Document < ActiveResource
+class Document < ActiveRecord::Base
   MAXIMUM_DOCUMENT_FILE_SIZE = 25 # in MB
 
   belongs_to :user
@@ -9,4 +9,20 @@ class Document < ActiveResource
 
   mount_uploader :document_file, DocumentUploader
   validates :document_file, file_size: {maximum: MAXIMUM_DOCUMENT_FILE_SIZE.megabytes.to_i }
+
+  def name
+    self.document_file.file.filename
+  end
+
+  def content_type
+    self.document_file.content_type
+  end
+
+  def path
+    self.document_file.file.path
+  end
+
+  def size
+    self.document_file.size
+  end
 end

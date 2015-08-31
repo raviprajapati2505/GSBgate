@@ -22,7 +22,7 @@ class SchemeMixCriteriaDocumentsController < AuthenticatedController
   end
 
   def show
-    @page_title = (ActionController::Base.helpers.image_tag(Icon.for_filename(@document.document_file.file.filename)) + ' Document ' + @document.document_file.file.filename).html_safe
+    @page_title = (ActionController::Base.helpers.image_tag(Icon.for_filename(@document.name)) + ' Document ' + @document.name).html_safe
   end
 
   def update
@@ -42,29 +42,9 @@ class SchemeMixCriteriaDocumentsController < AuthenticatedController
     scheme_mix_criteria_documents.each do |scheme_mix_criteria_document|
       # Update the model data
       scheme_mix_criteria_document.update(scheme_mix_criteria_document_params)
-
-      # Save the link scheme_mix_criteria_document
-      if scheme_mix_criteria_document.save
-        # Create the comment
-        if params[:scheme_mix_criteria_document_comment]['body'].present?
-          scheme_mix_criteria_document.scheme_mix_criteria_document_comments.create!(body: params[:scheme_mix_criteria_document_comment]['body'], user: current_user)
-        end
-
-        # Create a notification for the document uploader
-        notify(body: 'The status of your document %s in %s was changed to %s.',
-               body_params: [@document.document_file.file.filename, scheme_mix_criteria_document.scheme_mix_criterion.name, scheme_mix_criteria_document.status.humanize],
-               uri: project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_path(@project, @certification_path, scheme_mix_criteria_document.scheme_mix_criterion.scheme_mix, scheme_mix_criteria_document.scheme_mix_criterion, scheme_mix_criteria_document),
-               user: @document.user,
-               project: @project)
-      end
     end
 
     redirect_to :back, notice: 'The document details were successfully updated.'
-  end
-
-  def destroy
-    @scheme_mix_criteria_document.destroy!
-    redirect_to :back, notice: 'The criterion link was successfully removed from the document.'
   end
 
   private
@@ -94,6 +74,6 @@ class SchemeMixCriteriaDocumentsController < AuthenticatedController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def scheme_mix_criteria_document_params
-    params.require(:scheme_mix_criteria_document).permit(:status, :scheme_mix_criterion_id, :document_id)
+    params.require(:scheme_mix_criteria_document).permit(:status, :scheme_mix_criterion_id, :document_id, :audit_log_user_comment)
   end
 end

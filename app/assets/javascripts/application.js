@@ -108,46 +108,6 @@ $(function () {
         });
     }
 
-    // Notifications (mark one as read)
-    $('body').on('click', 'a.notification', function(e) {
-        var notification = $(this);
-        if (notification.children('.highlight').length > 0) {
-            $.ajax({
-                url: notification.data('href'),
-                method: 'PUT'
-            }).done(function () {
-                window.location.href = notification.attr('href');
-            });
-            e.preventDefault();
-        }
-        $('#showNotificationsModal').modal('hide');
-    });
-
-    // Notifications (mark all as read)
-    $('body').on('click', '#notifications-update-all', function(e) {
-        var button = $(this);
-        $.ajax({
-            url: button.data('href'),
-            method: 'PUT'
-        }).done(function () {
-            $('.notification .highlight').removeClass('highlight');
-            GSAS.refreshNotificationCount();
-        });
-        e.preventDefault();
-    });
-
-    // Notifications (mark all as read)
-    $('body').on('click', '#notifications-refresh', function(e) {
-        $('#notifications-refresh').hide();
-    });
-
-    // Notifications (refresh count every 20 seconds)
-    if (('li.notifications').length > 0) {
-        setInterval(function() {
-            GSAS.refreshNotificationCount();
-        }, 20000);
-    }
-
     // Flash messages
     GSAS.processFlashMessages();
 
@@ -179,28 +139,4 @@ var GSAS = {
     processTooltips: function () {
         $('[data-toggle="tooltip"]').tooltip();
     },
-    // Refreshes the notification count
-    refreshNotificationCount: function () {
-        $.ajax({
-            url: $('li.notifications').data('href'),
-            method: 'GET',
-            datatype: 'json'
-        }).done(function (count) {
-            if (!isNaN(count)) {
-                if (count > 0) {
-                    $('li.notifications').addClass('new-notifications');
-                    $('li.notifications .badge').show();
-                    if ($('li.notifications .badge').text() != count.toString()) {
-                        $('#notifications-refresh').show();
-                    }
-                }
-                else {
-                    $('li.notifications').removeClass('new-notifications');
-                    $('li.notifications .badge').hide();
-                }
-
-                $('li.notifications .badge').text(count.toString());
-            }
-        });
-    }
 }

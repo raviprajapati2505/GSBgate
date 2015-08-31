@@ -283,29 +283,6 @@
     }
   }
 
-  .notification {
-    color: inherit;
-
-    .fa {
-      display: none;
-    }
-
-    &:hover {
-      .well {
-        background-color: #62a50a;
-        color: white;
-      }
-
-      .fa {
-        display: block;
-      }
-    }
-
-    .keyword {
-      font-weight: bold;
-    }
-  }
-
   // Dropzone
   .dropzone {
     border: none;
@@ -432,43 +409,6 @@
     }
   }
 
-  // Notifications
-  .notifications .badge {
-    background-color: $skin-gord-color;
-    color: white;
-    position: absolute;
-    left: 28px;
-    top: 6px;
-    padding-left: 5px;
-    padding-right: 5px;
-  }
-
-  .new-notifications a {
-    background-color: $skin-gord-color-light!important;
-  }
-
-  .notification .well {
-    position: relative;
-    padding-right: 30px;
-  }
-
-  .notification .well .fa {
-    position: absolute;
-    top: 13px;
-    right: 12px;
-  }
-
-  #showNotificationsModal .modal-header .btn {
-    display: block;
-    float: right;
-    margin-top: -5px;
-    margin-right: 10px;
-  }
-
-  .context {
-    font-weight: bold;
-  }
-
   // Scheme mix criterion page
   form.edit_scheme_mix_criterion table tr .form-group {
     margin: 0;
@@ -535,7 +475,7 @@
   }
 
   // Status
-  .status-label {
+  .label-lg {
     font-size: 13px;
   }
 

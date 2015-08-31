@@ -5,10 +5,10 @@ en:
         code: "Project ID"
         name: "Project name"
         carpark_area: "Car park area"
-      scheme_mix_criteria_document_comment:
-        body: "Comment"
+      scheme_mix_criterion:
+        audit_log_user_comment: "Comment"
+      scheme_mix_criteria_document:
+        audit_log_user_comment: "Comment"
     help:
       scheme_mix_criterion:
         status: "Mark as Complete to indicate if you have completed this criterion."
-      scheme_mix_criterion/scheme_mix_criterion_logs:
-        comment: "You can enter comments to provide feedback as required."
