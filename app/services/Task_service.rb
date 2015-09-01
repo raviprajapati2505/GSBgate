@@ -118,7 +118,7 @@ class TaskService
           project_id: project_id,
           certification_path_id: certification_path.id,
           description_id: 1,
-          resource_name: certification_path.certificate.label,
+          resource_name: certification_path.name,
           resource_type: Task.resource_types[:certification_path])
       tasks << task
     end
@@ -146,7 +146,7 @@ class TaskService
           project_id: project_id,
           certification_path_id: certification_path.id,
           description_id: 2,
-          resource_name: certification_path.certificate.label,
+          resource_name: certification_path.name,
           resource_type: Task.resource_types[:certification_path])
       tasks << task
     end
@@ -168,7 +168,7 @@ class TaskService
           project_id: project_id,
           certification_path_id: certification_path.id,
           description_id: 11,
-          resource_name: certification_path.certificate.label,
+          resource_name: certification_path.name,
           resource_type: Task.resource_types[:certification_path])
       tasks << task
     end
@@ -195,7 +195,7 @@ class TaskService
           project_id: project_id,
           certification_path_id: certification_path.id,
           description_id: 20,
-          resource_name: certification_path.certificate.label,
+          resource_name: certification_path.name,
           resource_type: Task.resource_types[:certification_path])
       tasks << task
     end
@@ -222,7 +222,7 @@ class TaskService
           project_id: project_id,
           certification_path_id: certification_path.id,
           description_id: 21,
-          resource_name: certification_path.certificate.label,
+          resource_name: certification_path.name,
           resource_type: Task.resource_types[:certification_path])
       tasks << task
     end
@@ -249,7 +249,7 @@ class TaskService
           project_id: project_id,
           certification_path_id: certification_path.id,
           description_id: 19,
-          resource_name: certification_path.certificate.label,
+          resource_name: certification_path.name,
           resource_type: Task.resource_types[:certification_path])
       tasks << task
     end
@@ -282,7 +282,7 @@ class TaskService
             scheme_mix_criterion_id: scheme_mix_criterion.id,
             requirement_datum_id: requirement_datum.id,
             description_id: 3,
-            resource_name: requirement_datum.requirement.label,
+            resource_name: requirement_datum.requirement.name,
             resource_type: Task.resource_types[:requirement_datum]
         )
         tasks << task
@@ -356,7 +356,7 @@ class TaskService
           project_id: project_id,
           certification_path_id: certification_path.id,
           description_id: 6,
-          resource_name: certification_path.certificate.label,
+          resource_name: certification_path.name,
           resource_type: Task.resource_types[:certification_path])
       tasks << task
     end
@@ -384,7 +384,7 @@ class TaskService
           project_id: project_id,
           certification_path_id: certification_path.id,
           description_id: 10,
-          resource_name: certification_path.certificate.label,
+          resource_name: certification_path.name,
           resource_type: Task.resource_types[:certification_path])
       tasks << task
     end
@@ -412,7 +412,7 @@ class TaskService
           project_id: project_id,
           certification_path_id: certification_path.id,
           description_id: 14,
-          resource_name: certification_path.certificate.label,
+          resource_name: certification_path.name,
           resource_type: Task.resource_types[:certification_path])
       tasks << task
     end
@@ -440,7 +440,7 @@ class TaskService
           project_id: project_id,
           certification_path_id: certification_path.id,
           description_id: 17,
-          resource_name: certification_path.certificate.label,
+          resource_name: certification_path.name,
           resource_type: Task.resource_types[:certification_path])
       tasks << task
     end
@@ -468,7 +468,7 @@ class TaskService
           project_id: project_id,
           certification_path_id: certification_path.id,
           description_id: 18,
-          resource_name: certification_path.certificate.label,
+          resource_name: certification_path.name,
           resource_type: Task.resource_types[:certification_path])
       tasks << task
     end
@@ -496,7 +496,7 @@ class TaskService
           project_id: project_id,
           certification_path_id: certification_path.id,
           description_id: 22,
-          resource_name: certification_path.certificate.label,
+          resource_name: certification_path.name,
           resource_type: Task.resource_types[:certification_path])
       tasks << task
     end
@@ -524,7 +524,7 @@ class TaskService
             scheme_mix_criterion_id: scheme_mix_criterion.id,
             requirement_datum_id: requirement_datum.id,
             description_id: 4,
-            resource_name: requirement_datum.requirement.label,
+            resource_name: requirement_datum.requirement.name,
             resource_type: Task.resource_types[:requirement_datum]
         )
         tasks << task
@@ -595,7 +595,7 @@ class TaskService
           project_id: project_id,
           certification_path_id: certification_path.id,
           description_id: 9,
-          resource_name: certification_path.certificate.label,
+          resource_name: certification_path.name,
           resource_type: Task.resource_types[:certification_path])
       tasks << task
     end
@@ -629,7 +629,7 @@ class TaskService
           project_id: project_id,
           certification_path_id: certification_path.id,
           description_id: 13,
-          resource_name: certification_path.certificate.label,
+          resource_name: certification_path.name,
           resource_type: Task.resource_types[:certification_path])
       tasks << task
     end
@@ -663,7 +663,7 @@ class TaskService
           project_id: project_id,
           certification_path_id: certification_path.id,
           description_id: 16,
-          resource_name: certification_path.certificate.label,
+          resource_name: certification_path.name,
           resource_type: Task.resource_types[:certification_path])
       tasks << task
     end
