@@ -4,7 +4,7 @@ class CertificationPathsController < AuthenticatedController
   load_and_authorize_resource
 
   def show
-    @page_title = "#{@certification_path.certificate.label} for #{@project.name}"
+    @page_title = "#{@certification_path.certificate.name} for #{@project.name}"
   end
 
   def create

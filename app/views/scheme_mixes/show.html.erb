@@ -9,7 +9,7 @@
                     <tbody>
                     <tr>
                         <th>Scheme name</th>
-                        <td><%= @scheme_mix.scheme.full_label %></td>
+                        <td><%= @scheme_mix.scheme.full_name %></td>
                     </tr>
                     <tr>
                         <th>Weighting</th>
@@ -71,9 +71,11 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <% weighted_minimum_attainable_score = @scheme_mix.scheme.weighted_minimum_attainable_score %>
-                        <% weighted_maximum_attainable_score = @scheme_mix.scheme.weighted_maximum_attainable_score %>
-                        <% @scheme_mix.categories.uniq.each_with_index do |category, i| %>
+                        <!--% weighted_minimum_attainable_score = @scheme_mix.scheme.weighted_minimum_attainable_score %>-->
+                        <!--% weighted_maximum_attainable_score = @scheme_mix.scheme.weighted_maximum_attainable_score %-->
+                        <% minimum_weighted_minimum_attainable_score_by_category = @scheme_mix.scheme.minimum_weighted_minimum_attainable_score_by_category %>
+                        <% maximum_weighted_maximum_attainable_score_by_category = @scheme_mix.scheme.maximum_weighted_maximum_attainable_score_by_category %>
+                        <% @scheme_mix.scheme_categories.uniq.each_with_index do |category, i| %>
                         <tr class="accordion-toggle" data-toggle="collapse" data-target="#category-panel-<%= category.id %>" data-parent="#categories-accordion">
                             <td><i class="fa fa-caret-square-o-right"></i></td>
                             <td><%= category.code %></td>
@@ -86,8 +88,8 @@
                                      data-show-values="true"
                                      data-width="260"
                                      data-height="80"
-                                     data-min="<%= weighted_minimum_attainable_score %>"
-                                     data-max="<%= weighted_maximum_attainable_score %>"
+                                     data-min="<%= minimum_weighted_minimum_attainable_score_by_category %>"
+                                     data-max="<%= maximum_weighted_maximum_attainable_score_by_category %>"
                                      data-max-attainable="<%= @scheme_mix.scheme.weighted_maximum_attainable_score_for_category(category) %>"
                                      data-targeted="<%= @scheme_mix.weighted_targeted_score_for_category(category) %>"
                                      data-submitted="<%= @scheme_mix.weighted_submitted_score_for_category(category) %>"
@@ -114,10 +116,12 @@
                                         </tr>
                                         </thead>
                                         <tbody>
+                                        <% minimum_minimum_attainable_score_by_category = @scheme_mix.scheme.minimum_minimum_attainable_score_by_category %>
+                                        <% maximum_maximum_attainable_score_by_category = @scheme_mix.scheme.maximum_maximum_attainable_score_by_category %>
                                         <% @scheme_mix.scheme_mix_criteria.for_category(category).each_with_index do |scheme_mix_criterion, j| %>
                                         <tr class="clickable" data-href="<%= project_certification_path_scheme_mix_scheme_mix_criterion_path(@certification_path.project, @certification_path, @scheme_mix, scheme_mix_criterion) %>">
-                                            <td><%= scheme_mix_criterion.scheme_criterion.code %></td>
-                                            <td><%= scheme_mix_criterion.scheme_criterion.criterion.name %></td>
+                                            <td><%= scheme_mix_criterion.scheme_criterion.scheme_category.code %></td>
+                                            <td><%= scheme_mix_criterion.scheme_criterion.name %></td>
                                             <td><%= scheme_mix_criterion.status.humanize %></td>
                                             <td><%= scheme_mix_criterion.scheme_criterion.weight %> %</td>
                                             <td style="min-width: 260px">
@@ -127,8 +131,8 @@
                                                      data-show-values="true"
                                                      data-width="260"
                                                      data-height="80"
-                                                     data-min="-1"
-                                                     data-max="3"
+                                                     data-min="<%= minimum_minimum_attainable_score_by_category %>"
+                                                     data-max="<%= maximum_maximum_attainable_score_by_category %>"
                                                      data-max-attainable="<%= scheme_mix_criterion.scheme_criterion.maximum_attainable_score %>"
                                                      data-targeted="<%= scheme_mix_criterion.targeted_score %>"
                                                      data-submitted="<%= scheme_mix_criterion.submitted_score %>"

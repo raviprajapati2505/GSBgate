@@ -22,12 +22,12 @@
             %>
                 <tr class="clickable" data-href="<%= project_certification_path_path(@project, task.certification_path) %>">
                     <td><%= t(".description_#{task.flow_index}") %></td>
-                    <td><%= task.certification_path.certificate.label %></td>
+                    <td><%= task.certification_path.certificate.name %></td>
                 </tr>
             <%  when RequirementDatumTask.name.demodulize %>
                 <tr class="clickable" data-href="<%= project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, task.scheme_mix_criterion.scheme_mix.certification_path, task.scheme_mix_criterion.scheme_mix, task.scheme_mix_criterion, anchor: "requirement-#{task.requirement_datum.id}") %>">
                     <td><%= t(".description_#{task.flow_index}") %></td>
-                    <td><%= task.requirement_datum.requirement.label %><br/>
+                    <td><%= task.requirement_datum.requirement.name %><br/>
                         Due date: <%= task.requirement_datum.due_date %></td>
                 </tr>
             <%	 when SchemeMixCriterionTask.name.demodulize %>

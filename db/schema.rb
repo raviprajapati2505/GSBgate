@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150826112333) do
+ActiveRecord::Schema.define(version: 20150901083000) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,17 +46,8 @@ ActiveRecord::Schema.define(version: 20150826112333) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "categories", force: :cascade do |t|
-    t.string   "code",       limit: 2
-    t.string   "name"
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
-  end
-
-  add_index "categories", ["code"], name: "index_categories_on_code", unique: true, using: :btree
-
   create_table "certificates", force: :cascade do |t|
-    t.string   "label"
+    t.string   "name"
     t.integer  "certificate_type"
     t.integer  "assessment_stage"
     t.datetime "created_at",       null: false
@@ -74,18 +65,6 @@ ActiveRecord::Schema.define(version: 20150826112333) do
   end
 
   add_index "certification_paths", ["project_id"], name: "index_certification_paths_on_project_id", using: :btree
-
-  create_table "criteria", force: :cascade do |t|
-    t.string   "name"
-    t.integer  "category_id"
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
-    t.text     "description"
-    t.text     "measurement"
-    t.text     "measurement_principle"
-  end
-
-  add_index "criteria", ["category_id"], name: "index_criteria_on_category_id", using: :btree
 
   create_table "documents", force: :cascade do |t|
     t.string   "document_file"
@@ -111,8 +90,8 @@ ActiveRecord::Schema.define(version: 20150826112333) do
 
   create_table "fields", force: :cascade do |t|
     t.integer  "calculator_id"
-    t.string   "label"
     t.string   "name"
+    t.string   "machine_name"
     t.string   "datum_type"
     t.string   "validation"
     t.datetime "created_at",    null: false
@@ -170,24 +149,36 @@ ActiveRecord::Schema.define(version: 20150826112333) do
     t.integer  "calculator_id"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
-    t.string   "label"
+    t.string   "name"
   end
+
+  create_table "scheme_categories", force: :cascade do |t|
+    t.string   "name"
+    t.string   "code",            limit: 2
+    t.text     "description"
+    t.text     "impacts"
+    t.text     "mitigate_impact"
+    t.integer  "scheme_id"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
+
+  add_index "scheme_categories", ["code", "scheme_id"], name: "index_scheme_categories_on_code_and_scheme_id", unique: true, using: :btree
+  add_index "scheme_categories", ["scheme_id"], name: "index_scheme_categories_on_scheme_id", using: :btree
 
   create_table "scheme_criteria", force: :cascade do |t|
-    t.integer  "scheme_id"
-    t.integer  "criterion_id"
-    t.datetime "created_at",                                                 null: false
-    t.datetime "updated_at",                                                 null: false
-    t.decimal  "weight",                 precision: 5, scale: 2
-    t.string   "code"
-    t.text     "score_description"
-    t.string   "score_a"
-    t.string   "score_b"
-    t.integer  "score_combination_type",                         default: 0
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
+    t.decimal  "weight",             precision: 5, scale: 2
+    t.string   "name"
+    t.integer  "number"
+    t.string   "scores"
+    t.integer  "scheme_category_id"
   end
 
-  add_index "scheme_criteria", ["criterion_id"], name: "index_scheme_criteria_on_criterion_id", using: :btree
-  add_index "scheme_criteria", ["scheme_id"], name: "index_scheme_criteria_on_scheme_id", using: :btree
+  add_index "scheme_criteria", ["scheme_category_id", "name"], name: "index_scheme_criteria_on_scheme_category_id_and_name", unique: true, using: :btree
+  add_index "scheme_criteria", ["scheme_category_id", "number"], name: "index_scheme_criteria_on_scheme_category_id_and_number", unique: true, using: :btree
+  add_index "scheme_criteria", ["scheme_category_id"], name: "index_scheme_criteria_on_scheme_category_id", using: :btree
 
   create_table "scheme_criteria_requirements", force: :cascade do |t|
     t.integer  "scheme_criterion_id"
@@ -199,20 +190,30 @@ ActiveRecord::Schema.define(version: 20150826112333) do
   add_index "scheme_criteria_requirements", ["requirement_id"], name: "index_scheme_criteria_requirements_on_requirement_id", using: :btree
   add_index "scheme_criteria_requirements", ["scheme_criterion_id"], name: "index_scheme_criteria_requirements_on_scheme_criterion_id", using: :btree
 
+  create_table "scheme_criterion_texts", force: :cascade do |t|
+    t.string   "name"
+    t.text     "html_text"
+    t.integer  "display_weight"
+    t.boolean  "visible"
+    t.integer  "scheme_criterion_id"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+  end
+
+  add_index "scheme_criterion_texts", ["name", "scheme_criterion_id"], name: "index_scheme_criterion_texts_on_name_and_scheme_criterion_id", unique: true, using: :btree
+  add_index "scheme_criterion_texts", ["scheme_criterion_id"], name: "index_scheme_criterion_texts_on_scheme_criterion_id", using: :btree
+
   create_table "scheme_mix_criteria", force: :cascade do |t|
-    t.integer  "targeted_score_a"
     t.integer  "scheme_mix_id"
     t.integer  "scheme_criterion_id"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
-    t.integer  "submitted_score_a"
     t.integer  "status"
-    t.integer  "achieved_score_a"
     t.integer  "certifier_id"
     t.date     "due_date"
-    t.integer  "targeted_score_b"
-    t.integer  "submitted_score_b"
-    t.integer  "achieved_score_b"
+    t.integer  "targeted_score"
+    t.integer  "submitted_score"
+    t.integer  "achieved_score"
   end
 
   add_index "scheme_mix_criteria", ["certifier_id"], name: "index_scheme_mix_criteria_on_certifier_id", using: :btree
@@ -252,7 +253,7 @@ ActiveRecord::Schema.define(version: 20150826112333) do
   add_index "scheme_mixes", ["certification_path_id"], name: "index_scheme_mixes_on_certification_path_id", using: :btree
 
   create_table "schemes", force: :cascade do |t|
-    t.string   "label"
+    t.string   "name"
     t.integer  "certificate_id"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
@@ -260,6 +261,7 @@ ActiveRecord::Schema.define(version: 20150826112333) do
   end
 
   add_index "schemes", ["certificate_id"], name: "index_schemes_on_certificate_id", using: :btree
+  add_index "schemes", ["name", "version", "certificate_id"], name: "index_schemes_on_name_and_version_and_certificate_id", unique: true, using: :btree
 
   create_table "user_tasks", force: :cascade do |t|
     t.string   "type",                            null: false
@@ -307,7 +309,6 @@ ActiveRecord::Schema.define(version: 20150826112333) do
   add_foreign_key "calculator_data", "calculators"
   add_foreign_key "certification_paths", "certificates"
   add_foreign_key "certification_paths", "projects"
-  add_foreign_key "criteria", "categories"
   add_foreign_key "documents", "users"
   add_foreign_key "field_data", "calculator_data"
   add_foreign_key "field_data", "fields"
@@ -317,10 +318,11 @@ ActiveRecord::Schema.define(version: 20150826112333) do
   add_foreign_key "projects", "users", column: "owner_id"
   add_foreign_key "requirement_data", "requirements"
   add_foreign_key "requirement_data", "users"
-  add_foreign_key "scheme_criteria", "criteria"
-  add_foreign_key "scheme_criteria", "schemes"
+  add_foreign_key "scheme_categories", "schemes"
+  add_foreign_key "scheme_criteria", "scheme_categories"
   add_foreign_key "scheme_criteria_requirements", "requirements"
   add_foreign_key "scheme_criteria_requirements", "scheme_criteria"
+  add_foreign_key "scheme_criterion_texts", "scheme_criteria"
   add_foreign_key "scheme_mix_criteria", "scheme_criteria"
   add_foreign_key "scheme_mix_criteria", "scheme_mixes"
   add_foreign_key "scheme_mix_criteria_documents", "documents"

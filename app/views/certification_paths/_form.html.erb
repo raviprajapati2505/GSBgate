@@ -9,7 +9,7 @@
                 <h4 class="modal-title"><%= t('.modal_title') %></h4>
             </div>
             <div class="modal-body">
-                <%= f.collection_select :certificate_id, Certificate.all, :id, :label, {:include_blank => 'Make your choice...'} %>
+                <%= f.collection_select :certificate_id, Certificate.all, :id, :name, {:include_blank => 'Make your choice...'} %>
             </div>
             <div class="modal-footer">
                 <%= button_tag type: 'submit', class: 'btn btn-primary' do %>

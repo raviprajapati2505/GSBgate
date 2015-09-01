@@ -1,68 +1,46 @@
 class SchemeCriterion < ActiveRecord::Base
-  enum score_combination_type: [ :score_combination_unknown, :score_combination_only_a, :score_combination_average ]
-  serialize :score_a
-  serialize :score_b
-  belongs_to :scheme
-  belongs_to :criterion
+  belongs_to :scheme_category
+  has_many :scheme_criterion_texts
   has_many :scheme_mix_criteria
   has_many :scheme_criteria_requirements
   has_many :requirements, through: :scheme_criteria_requirements
+  serialize :scores
 
   scope :for_category, ->(category) {
-    joins(:criterion).where(criteria: {category_id: category.id})
+    # joins(:criterion).where(criteria: {category_id: category.id})
+    where(scheme_category_id: category.id)
   }
 
+  def full_name
+    "#{self.scheme_category.code}: #{self.name}"
+  end
+
   def minimum_attainable_score
-    calculate_score_combination('minimum_attainable_score')
+    # calculate_score_combination('minimum_attainable_score')
+    scores.min
   end
 
   def maximum_attainable_score
-    calculate_score_combination('maximum_attainable_score')
+    # calculate_score_combination('maximum_attainable_score')
+    scores.max
   end
 
-  def maximum_attainable_score_a
-    return nil if score_a.nil?
-    score_a['score_values'].keys.max
-  end
-
-  def maximum_attainable_score_b
-    return nil if score_b.nil?
-    score_b['score_values'].keys.max
-  end
-
-  def minimum_attainable_score_a
-    return nil if score_a.nil?
-    score_a['score_values'].keys.min
-  end
-
-  def minimum_attainable_score_b
-    return nil if score_b.nil?
-    score_b['score_values'].keys.min
-  end
-
-  # returns max attainable score taking into account the percentage for which it counts (=weight)
   def weighted_minimum_attainable_score
-    minimum_attainable_score * weight / 100
+    weighted_score(minimum_attainable_score)
   end
 
   def weighted_maximum_attainable_score
-    maximum_attainable_score * weight / 100
+    weighted_score(maximum_attainable_score)
   end
 
-  default_scope {
-    joins(:criterion)
-    .order('criteria.name')
-  }
+  def weighted_score(score)
+    # returns weighted score, taking into account the percentage for which it counts (=weight)
+    #NOTE: we multiply the weight with 3, as we need a final score on a scale based on a total of 3, not 1
+    (score / maximum_attainable_score) * ((3 * weight) / 100)
+  end
 
-  private
-    # Class method to calculate the score combination for this scheme criterion
-    def calculate_score_combination(score_method)
-      if self.score_combination_only_a?
-        self.send(score_method + '_a')
-      elsif self.score_combination_average?
-        (self.send(score_method + '_a') + self.send(score_method + '_b')) / 2
-      else
-        raise 'unknown score combination type: ' + self.score_combination_type
-      end
-    end
+  # default_scope {
+  #   joins(:criterion)
+  #   .order('criteria.name')
+  # }
 end

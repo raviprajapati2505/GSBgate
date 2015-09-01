@@ -22,7 +22,7 @@ class CertificationPath < AuditableRecord
   }
 
   def name
-    self.certificate.label
+    self.certificate.name
   end
 
   def has_fixed_scheme?

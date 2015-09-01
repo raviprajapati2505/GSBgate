@@ -6,14 +6,14 @@ class SchemeMixCriteriaController < AuthenticatedController
   load_and_authorize_resource
 
   def show
-    @page_title = @scheme_mix_criterion.name
+    @page_title = @scheme_mix_criterion.scheme_criterion.full_name
   end
 
   def update
       if scheme_mix_criterion_params[:status] == :approved.to_s || scheme_mix_criterion_params[:status] == :resubmit.to_s
         # if achieved score is not yet provided only the status can only be 'in progress' or 'complete'
         if (@scheme_mix_criterion.targeted_score_a.nil? && @scheme_mix_criterion.achieved_score_a.nil?) || (@scheme_mix_criterion.targeted_score_a.nil? && @scheme_mix_criterion.achieved_score_a.nil?)
-          flash.now[:alert] = 'Please provide the achieved score first.'
+          flash.now[:alert] = 'Please first provide the achieved score.'
           render :show
           return
         end
@@ -30,11 +30,8 @@ class SchemeMixCriteriaController < AuthenticatedController
       end
 
       # if not attempting criterion
-      if @scheme_mix_criterion.targeted_score_a == -1
-        params[:scheme_mix_criterion][:submitted_score_a] = -1
-      end
-      if @scheme_mix_criterion.targeted_score_b == -1
-        params[:scheme_mix_criterion][:submitted_score_b] = -1
+      if @scheme_mix_criterion.targeted_score == -1
+        params[:scheme_mix_criterion][:submitted_score] = -1
       end
 
       unless scheme_mix_criterion_params[:status].blank? || @scheme_mix_criterion.status == scheme_mix_criterion_params[:status]
@@ -132,7 +129,7 @@ class SchemeMixCriteriaController < AuthenticatedController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def scheme_mix_criterion_params
-    params.require(:scheme_mix_criterion).permit(:targeted_score_a, :achieved_score_a, :submitted_score_a, :targeted_score_b, :achieved_score_b, :submitted_score_b, :status, :audit_log_user_comment)
+    params.require(:scheme_mix_criterion).permit(:targeted_score, :achieved_score, :submitted_score, :status, :audit_log_user_comment)
   end
 
 end

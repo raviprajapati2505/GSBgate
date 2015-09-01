@@ -23,7 +23,7 @@
                     <div class="panel-body">
                         <a href="#" id="documents-select-criteria" class="btn btn-white btn-sm"><i class="fa fa-plus"></i>&nbsp;&nbsp;Select additional criteria</a>
                         <ul id="document-scheme-mix-criteria" class="checkbox-list" style="display:none;">
-                            <% scheme_mix.categories.uniq.each do |category| %>
+                            <% scheme_mix.scheme_categories.uniq.each do |category| %>
                                 <li>
                                     <a href="#"><i class="fa fa-caret-square-o-right"></i>&nbsp;<%= category.name %></a>
                                     <ul style="display:none;">
@@ -31,7 +31,7 @@
                                             <li>
                                                 <% default_checkbox_value = (scheme_mix_criterion_id.present? and (scheme_mix_criterion_id == scheme_mix_criterion.id)) %>
                                                 <%= check_box_tag 'document[scheme_mix_criteria][]', scheme_mix_criterion.id, default_checkbox_value, disabled: default_checkbox_value, id: 'document_scheme_mix_criterion_' + scheme_mix_criterion.id.to_s %>
-                                                <%= label_tag 'document_scheme_mix_criterion_' + scheme_mix_criterion.id.to_s, scheme_mix_criterion.name %>
+                                                <%= label_tag 'document_scheme_mix_criterion_' + scheme_mix_criterion.id.to_s, scheme_mix_criterion.scheme_criterion.full_name %>
                                             </li>
                                         <% end %>
                                     </ul>

@@ -24,12 +24,12 @@
                             <% project.certification_paths.each do |certification_path| %>
                                 <% if certification_path.in_submission? %>
                                     <% if RequirementDatum.for_certification_path(certification_path).count.nonzero? %>
-                                        <div class="project-certification-progress"><%= certification_path.certificate.label %>: <%= certification_path.status %> for <%= RequirementDatum.for_certification_path(certification_path).completed.count * 100 / RequirementDatum.for_certification_path(certification_path).count %>% complete</div>
+                                        <div class="project-certification-progress"><%= certification_path.certificate.name %>: <%= certification_path.status %> for <%= RequirementDatum.for_certification_path(certification_path).completed.count * 100 / RequirementDatum.for_certification_path(certification_path).count %>% complete</div>
                                     <% else %>
-                                        <div class="project-certification-progress"><%= certification_path.certificate.label %>: <%= certification_path.status %> with no progress yet</div>
+                                        <div class="project-certification-progress"><%= certification_path.certificate.name %>: <%= certification_path.status %> with no progress yet</div>
                                     <% end %>
                                 <% else %>
-                                    <div class="project-certification-progress"><%= certification_path.certificate.label %>: <%= certification_path.status %></div>
+                                    <div class="project-certification-progress"><%= certification_path.certificate.name %>: <%= certification_path.status %></div>
                                 <% end %>
                             <% end %>
                         <% end %>

@@ -34,11 +34,11 @@
                         </div>
                     </div>
                     <table class="table table-bordered">
-                        <% scheme_mix.categories.uniq.each do |category| %>
+                        <% scheme_mix.scheme_categories.uniq.each do |category| %>
                             <% scheme_mix.scheme_mix_criteria.for_category(category).each do |scheme_mix_criterion| %>
                                 <tr>
                                     <th><%= check_box_tag 'scheme_mix_criteria[]', scheme_mix_criterion.id, false, class: 'checkbox_parent' %></th>
-                                    <th><%= scheme_mix_criterion.name %></th>
+                                    <th><%= scheme_mix_criterion.scheme_criterion.full_name %></th>
                                     <th>Allocated&nbsp;to</th>
                                     <th>Due&nbsp;date</th>
                                     <th>Status</th>
@@ -46,7 +46,7 @@
                                 <% scheme_mix_criterion.requirement_data.each do |requirement_datum| %>
                                     <tr>
                                         <td><%= check_box_tag 'requirement_data[]', requirement_datum.id, false, class: "checkbox_child_#{scheme_mix_criterion.id}" %></td>
-                                        <td><%= requirement_datum.requirement.label %></td>
+                                        <td><%= requirement_datum.requirement.name %></td>
                                         <td><%= requirement_datum.user.email if requirement_datum.user %></td>
                                         <td><%= l(requirement_datum.due_date, format: :short) if requirement_datum.due_date %></td>
                                         <td><%= requirement_datum.status.humanize.gsub(' ', '&nbsp;').html_safe if requirement_datum.status %></td>

@@ -11,7 +11,7 @@
                 <%= bootstrap_form_for([@project, @certification_path], url: project_certification_path_path, layout: :horizontal) do |f| %>
                     <div class="row">
                         <%= f.fields_for :certificate do |ff| %>
-                            <%= ff.static_control :label, label: 'Name' %>
+                            <%= ff.static_control :name, label: 'Name' %>
                         <% end %>
                     </div>
                     <% if current_user.gord_manager? || current_user.gord_top_manager? %>
@@ -48,7 +48,7 @@
                         <tbody>
                         <% @certification_path.scheme_mixes.each do |scheme_mix| %>
                             <tr class="clickable" data-href="<%= project_certification_path_scheme_mix_path(@certification_path.project, @certification_path, scheme_mix) %>">
-                                <td><%= scheme_mix.scheme.full_label %></td>
+                                <td><%= scheme_mix.scheme.full_name %></td>
                                 <td><%= scheme_mix.weight %> %</td>
                                 <%
                                    if @certification_path.requirement_data.count.nonzero?

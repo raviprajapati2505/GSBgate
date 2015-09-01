@@ -14,7 +14,7 @@ class RequirementDatum < AuditableRecord
 
   default_scope {
     joins(:requirement)
-    .order('requirements.label')
+    .order('requirements.name')
   }
 
   scope :completed, -> {
@@ -34,7 +34,7 @@ class RequirementDatum < AuditableRecord
   }
 
   scope :for_category, ->(category) {
-    includes(:scheme_mix_criteria => [:scheme_criterion => [:criterion]]).where(criteria: {category_id: category.id})
+    includes(:scheme_mix_criteria => [:scheme_criterion]).where(scheme_criteria: {scheme_category_id: category.id})
   }
 
   scope :for_scheme_mix, ->(scheme_mix) {
@@ -50,7 +50,7 @@ class RequirementDatum < AuditableRecord
   }
 
   def name
-    requirement.label
+    requirement.name
   end
 
   private

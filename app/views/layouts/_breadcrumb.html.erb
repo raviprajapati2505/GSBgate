@@ -21,11 +21,11 @@
         <% end %>
 
         <% unless @scheme_mix.nil? or @scheme_mix.id.nil? %>
-            <li><%= link_to @scheme_mix.scheme.full_label, project_certification_path_scheme_mix_path(@project, @certification_path, @scheme_mix) %></li>
+            <li><%= link_to @scheme_mix.scheme.full_name, project_certification_path_scheme_mix_path(@project, @certification_path, @scheme_mix) %></li>
         <% end %>
 
         <% unless @scheme_mix_criterion.nil? or @scheme_mix_criterion.id.nil? %>
-            <li><%= link_to @scheme_mix_criterion.name, project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion) %></li>
+            <li><%= link_to @scheme_mix_criterion.scheme_criterion.full_name, project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion) %></li>
         <% end %>
 
         <% unless @scheme_mix_criteria_document.nil? or @scheme_mix_criteria_document.id.nil? %>

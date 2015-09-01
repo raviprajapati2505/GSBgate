@@ -22,11 +22,7 @@
                     <thead>
                     <tr>
                         <th></th>
-                        <th><%= @scheme_mix_criterion.scheme_criterion.score_a['score_name'] %></th>
-                        <% if !@scheme_mix_criterion.scheme_criterion.score_b.nil? %>
-                            <th><%= @scheme_mix_criterion.scheme_criterion.score_b['score_name'] %></th>
-                            <th>Final Score</th>
-                        <% end %>
+                        <th>Final Score</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -36,23 +32,11 @@
                         </th>
                         <td>
                             <% if (can? :update, @scheme_mix_criterion) && (current_user.system_admin? || current_user.project_manager?(@project)) %>
-                                <%= f.select :targeted_score_a, @scheme_mix_criterion.scheme_criterion.score_a['score_values'].map { |k,v| [k,k]}, hide_label: true %>
+                                <%= f.select :targeted_score, @scheme_mix_criterion.scheme_criterion.scores, hide_label: true %>
                             <% else %>
-                                <%= f.static_control :targeted_score_a, hide_label: true  %>
+                                <%= f.static_control :targeted_score, hide_label: true  %>
                             <% end %>
                         </td>
-                        <% if !@scheme_mix_criterion.scheme_criterion.score_b.nil? %>
-                            <td>
-                                <% if (can? :update, @scheme_mix_criterion) && (current_user.system_admin? || current_user.project_manager?(@project)) %>
-                                    <%= f.select :targeted_score_b, @scheme_mix_criterion.scheme_criterion.score_b['score_values'].map { |k,v| [k,k]}, hide_label: true %>
-                                <% else %>
-                                    <%= f.static_control :targeted_score_b, hide_label: true  %>
-                                <% end %>
-                            </td>
-                            <td>
-                                <%= f.static_control :targeted_score, hide_label: true %>
-                            </td>
-                        <% end %>
                     </tr>
                     <tr>
                         <th>
@@ -64,27 +48,11 @@
                                             current_user.project_manager?(@project) ||
                                             @scheme_mix_criterion.contains_requirement_for?(current_user)
                                     ) %>
-                                <%= f.select :submitted_score_a, @scheme_mix_criterion.scheme_criterion.score_a['score_values'].map { |k,v| [k,k]}, {include_blank: '-', hide_label: true} %>
+                                <%= f.select :submitted_score, @scheme_mix_criterion.scheme_criterion.scores, {include_blank: '-', hide_label: true} %>
                             <% else %>
-                                <%= f.static_control :submitted_score_a, hide_label: true %>
+                                <%= f.static_control :submitted_score, hide_label: true %>
                             <% end %>
                         </td>
-                        <% if !@scheme_mix_criterion.scheme_criterion.score_b.nil? %>
-                            <td>
-                                <% if (can? :update, @scheme_mix_criterion) &&
-                                        (current_user.system_admin? ||
-                                                current_user.project_manager?(@project) ||
-                                                @scheme_mix_criterion.contains_requirement_for?(current_user)
-                                        ) %>
-                                    <%= f.select :submitted_score_b, @scheme_mix_criterion.scheme_criterion.score_b['score_values'].map { |k,v| [k,k]}, {include_blank: '-', hide_label: true} %>
-                                <% else %>
-                                    <%= f.static_control :submitted_score_b, hide_label: true %>
-                                <% end %>
-                            </td>
-                            <td>
-                                <%= f.static_control :submitted_score, hide_label: true %>
-                            </td>
-                        <% end %>
                     </tr>
                     <tr>
                         <th>
@@ -92,23 +60,11 @@
                         </th>
                         <td>
                             <% if (can? :update, @scheme_mix_criterion) && (current_user.system_admin? || @scheme_mix_criterion.certifier == current_user || current_user.certifier_manager?(@project)) %>
-                                <%= f.select :achieved_score_a, @scheme_mix_criterion.scheme_criterion.score_a['score_values'].map { |k,v| [k,k]}, {include_blank: '-', hide_label: true} %>
+                                <%= f.select :achieved_score, @scheme_mix_criterion.scheme_criterion.scores, {include_blank: '-', hide_label: true} %>
                             <% else %>
-                                <%= f.static_control :achieved_score_a, hide_label: true %>
+                                <%= f.static_control :achieved_score, hide_label: true %>
                             <% end %>
                         </td>
-                        <% if !@scheme_mix_criterion.scheme_criterion.score_b.nil? %>
-                            <td>
-                                <% if (can? :update, @scheme_mix_criterion) && (current_user.system_admin? || @scheme_mix_criterion.certifier == current_user || current_user.certifier_manager?(@project)) %>
-                                    <%= f.select :achieved_score_b, @scheme_mix_criterion.scheme_criterion.score_b['score_values'].map { |k,v| [k,k]}, {include_blank: '-', hide_label: true} %>
-                                <% else %>
-                                    <%= f.static_control :achieved_score_b, hide_label: true %>
-                                <% end %>
-                            </td>
-                            <td>
-                                <%= f.static_control :achieved_score, hide_label: true %>
-                            </td>
-                        <% end %>
                     </tr>
                     </tbody>
                 </table>
@@ -174,14 +130,10 @@
             <h5>Criterion information</h5>
         </div>
         <div class="ibox-content">
-            <div class="subtitle">Description</div>
-            <div class="description"><%= @scheme_mix_criterion.scheme_criterion.criterion.description.html_safe %></div>
-            <div class="subtitle">Measurement</div>
-            <div class="measurement"><%= @scheme_mix_criterion.scheme_criterion.criterion.measurement.html_safe %></div>
-            <div class="subtitle">Measurement principle</div>
-            <div class="measurement-principle"><%= @scheme_mix_criterion.scheme_criterion.criterion.measurement_principle.html_safe %></div>
-            <div class="subtitle">Score description</div>
-            <div class="score-description"><%= @scheme_mix_criterion.scheme_criterion.score_description.html_safe %></div>
+            <% @scheme_mix_criterion.scheme_criterion.scheme_criterion_texts.each do |scheme_criterion_text| %>
+                <div class="subtitle"><%= scheme_criterion_text.name.capitalize %></div>
+                <div class="<%= scheme_criterion_text.name.downcase  %>"><%= scheme_criterion_text.html_text.html_safe %></div>
+            <% end %>
         </div>
     </div>
 </div>

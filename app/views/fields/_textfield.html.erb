@@ -5,14 +5,14 @@
                              wrapper: { class: 'has-error' },
                              help: field_datum.errors.messages.first[1][0],
                              value: field_datum.value,
-                             label: (field_datum.field.label + tooltip(field_datum.field.help_text)).html_safe,
+                             label: (field_datum.field.name + tooltip(field_datum.field.help_text)).html_safe,
                              append: field_datum.field.suffix,
                              prepend: field_datum.field.prefix,
                              disabled: !(can? :update, requirement_datum) %>
         <% else %>
             <%= f.text_field "field-datum-#{field_datum.id}",
                              value: field_datum.value,
-                             label: (field_datum.field.label + tooltip(field_datum.field.help_text)).html_safe,
+                             label: (field_datum.field.name + tooltip(field_datum.field.help_text)).html_safe,
                              append: field_datum.field.suffix,
                              prepend: field_datum.field.prefix,
                             disabled: !(can? :update, requirement_datum) %>

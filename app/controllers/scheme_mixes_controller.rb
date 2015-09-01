@@ -5,7 +5,7 @@ class SchemeMixesController < AuthenticatedController
   load_and_authorize_resource
 
   def show
-    @page_title = @scheme_mix.scheme.full_label
+    @page_title = @scheme_mix.scheme.full_name
   end
 
   def allocate_project_team_responsibility

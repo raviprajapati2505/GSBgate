@@ -2,9 +2,8 @@ class SchemeMix < ActiveRecord::Base
   belongs_to :certification_path
   belongs_to :scheme
   has_many :scheme_mix_criteria
-  has_many :scheme_criteria, through: :scheme
-  has_many :criteria, through: :scheme_criteria
-  has_many :categories, through: :criteria
+  has_many :scheme_categories, through: :scheme
+  has_many :scheme_criteria, through: :scheme_categories
 
   after_create :create_descendant_records
 
@@ -51,7 +50,7 @@ class SchemeMix < ActiveRecord::Base
       # Loop all the criteria of the scheme
       scheme.scheme_criteria.each do |scheme_criterion|
         # Create a SchemeMixCriterion for every criterion
-        scheme_mix_criterion = SchemeMixCriterion.create!(targeted_score_a: scheme_criterion.maximum_attainable_score_a, targeted_score_b: scheme_criterion.maximum_attainable_score_b, scheme_mix: self, scheme_criterion: scheme_criterion)
+        scheme_mix_criterion = SchemeMixCriterion.create!(targeted_score: scheme_criterion.scores.max, scheme_mix: self, scheme_criterion: scheme_criterion)
 
         # Loop all requirements of the criterion
         scheme_criterion.requirements.each do |requirement|

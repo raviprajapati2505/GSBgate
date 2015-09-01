@@ -36,32 +36,38 @@ class SchemeMixCriterion < AuditableRecord
   }
 
   scope :for_category, ->(category) {
-    includes(:scheme_criterion => [:criterion])
-    .where(criteria: { category_id: category.id} )
+    # includes(:scheme_criterion => [:criterion])
+    # .where(criteria: { category_id: category.id} )
+    joins(:scheme_criterion)
+    .where(scheme_criteria: {scheme_category_id: category.id})
   }
 
   scope :unassigned, -> {
     where(certifier: nil)
   }
 
-  def targeted_score
-    calculate_score_combination('targeted_score')
+   def targeted_score_safe
+    if targeted_score.nil?
+      scheme_criterion.minimum_attainable_score
+    else
+      targeted_score
+    end
   end
 
-  def submitted_score
-    calculate_score_combination('submitted_score')
+  def submitted_score_safe
+    if submitted_score.nil?
+      scheme_criterion.minimum_attainable_score
+    else
+      submitted_score
+    end
   end
 
-  def achieved_score
-    calculate_score_combination('achieved_score')
-  end
-
-  def minimum_attainable_score
-    calculate_score_combination('minimum_attainable_score')
-  end
-
-  def maximum_attainable_score
-    calculate_score_combination('maximum_attainable_score')
+  def achieved_score_safe
+    if achieved_score.nil?
+      scheme_criterion.minimum_attainable_score
+    else
+      achieved_score
+    end
   end
 
   scope :with_all_requirements_completed, -> {
@@ -70,32 +76,20 @@ class SchemeMixCriterion < AuditableRecord
 
   # returns targeted score taking into account the percentage for which it counts (=weight)
   def weighted_targeted_score
-    (targeted_score * scheme_criterion.weight / 100)
+    scheme_criterion.weighted_score(targeted_score_safe)
   end
 
   def weighted_submitted_score
-    (submitted_score * scheme_criterion.weight / 100)
+    scheme_criterion.weighted_score(submitted_score_safe)
   end
 
   def weighted_achieved_score
-    (achieved_score * scheme_criterion.weight / 100)
-  end
-
-  def weighted_minimum_attainable_score
-    (minimum_attainable_score * scheme_criterion.weight / 100)
-  end
-
-  def weighted_maximum_attainable_score
-    (maximum_attainable_score * scheme_criterion.weight / 100)
+    scheme_criterion.weighted_score(achieved_score_safe)
   end
 
   def self::map_to_status_key(status_value)
     value = self.statuses.find { |k,v| v == status_value }
     return value[0].humanize unless value.nil?
-  end
-
-  def name
-    "#{self.scheme_criterion.code}: #{self.scheme_criterion.criterion.name}"
   end
 
   def contains_requirement_for?(user)
@@ -108,25 +102,6 @@ class SchemeMixCriterion < AuditableRecord
   end
 
   private
-    # Class method to calculate the score combination for this scheme criterion
-    def calculate_score_combination(score_method)
-      if self.scheme_criterion.score_combination_only_a?
-        if self.send(score_method + '_a').nil?
-          self.scheme_criterion.minimum_attainable_score
-        else
-          self.send(score_method + '_a')
-        end
-      elsif self.scheme_criterion.score_combination_average?
-        if self.send(score_method + '_a').nil? or self.send(score_method + '_b').nil?
-          self.scheme_criterion.minimum_attainable_score
-        else
-          (self.send(score_method + '_a') + self.send(score_method + '_b')) / 2
-        end
-      else
-        raise 'unknown score combination type: ' + self.scheme_criterion.score_combination_type
-      end
-    end
-
     def init
       self.status ||= :in_progress
     end
