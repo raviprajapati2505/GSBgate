@@ -24,7 +24,7 @@ class CertificationPath < AuditableRecord
     total = nil
     scheme_mixes.each do |sm|
       total ||= 0
-      total += sm.weighted_targeted_score
+      total += sm.total_weighted_targeted_score
     end
     total.nil? ? -1 : total
   end
@@ -33,7 +33,7 @@ class CertificationPath < AuditableRecord
     total = nil
     scheme_mixes.each do |sm|
       total ||= 0
-      total += sm.weighted_submitted_score
+      total += sm.total_weighted_submitted_score
     end
     total.nil? ? -1 : total
   end
@@ -42,7 +42,7 @@ class CertificationPath < AuditableRecord
     total = nil
     scheme_mixes.each do |sm|
       total ||= 0
-      total += sm.weighted_achieved_score
+      total += sm.total_weighted_achieved_score
     end
     total.nil? ? -1 : total
   end
