@@ -469,8 +469,16 @@
       background-color: #f9f9f9;
     }
 
-    .score-description table tr:not(:first-child) td:first-child {
+    .score table tr:not(:first-child) td:first-child {
       text-align: center;
+    }
+
+    ul, ol {
+      padding: 0 0 0 14px;
+    }
+
+    li {
+      list-style: none;
     }
   }
 

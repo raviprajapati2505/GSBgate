@@ -11,7 +11,7 @@ class SchemeCriterion < ActiveRecord::Base
   }
 
   def full_name
-    "#{self.scheme_category.code}: #{self.name}"
+    "#{self.scheme_category.code}#{self.number}: #{self.name}"
   end
 
   def minimum_attainable_score
