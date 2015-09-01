@@ -1,9 +1,19 @@
 class AuditLogsController < AuthenticatedController
-  before_action :set_auditable, only: [:auditable_index]
+  before_action :set_auditable
   load_and_authorize_resource
 
   def auditable_index
-    @audit_logs = AuditLog.for_auditable(@auditable).paginate page: params[:page], per_page: 8
+    @audit_logs = AuditLog.for_auditable(@auditable).paginate page: params[:page], per_page: 6
+  end
+
+  def auditable_create
+    if params[:audit_log][:user_comment].present?
+      @auditable.audit_log_user_comment = params[:audit_log][:user_comment]
+      @auditable.touch
+      redirect_to :back, notice: 'Your comment was successfully added to the audit log.'
+    else
+      redirect_to :back, alert: 'Please fill out the comment field.'
+    end
   end
 
   private

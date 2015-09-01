@@ -1,6 +1,8 @@
 en:
   activerecord:
     attributes:
+      audit_log:
+        user_comment: "Comment"
       project:
         code: "Project ID"
         name: "Project name"

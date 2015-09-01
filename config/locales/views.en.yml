@@ -44,10 +44,6 @@ en:
       tooltip_requirement_required: "Requirement not provided yet"
       tooltip_requirement_provided: "Requirement provided"
       tooltip_requirement_not_required: "Requirement not required"
-  notifications:
-    modal:
-      btn_close: "Close"
-      modal_title: "Notifications"
   scheme_mixes:
       allocate_project_team_responsibility:
         btn_cancel: "Cancel"

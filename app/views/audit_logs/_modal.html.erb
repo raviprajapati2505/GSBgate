@@ -4,33 +4,50 @@
             <button type="button" class="close" data-dismiss="modal" title="Close" data-toggle="tooltip">
                 <span>&times;</span>
             </button>
+            <button type="button" class="btn btn-sm btn-white add-comment-button" data-href="#"><i class="fa fa-comment" style="margin-right: 5px;"></i> Add comment</button>
             <h4 class="modal-title">Audit log for <em><%= @auditable.name %></em></h4>
         </div>
-        <div class="modal-body">
-            <div class="feed-activity-list">
-                <% if @audit_logs.blank? %>
-                    This page has no audit logs yet.
-                <% else %>
-                    <% @audit_logs.each do |audit_log| %>
-                        <div class="feed-element">
-                            <div class="media-body">
-                                <small class="text-muted">Time: <%= localize(audit_log.created_at) %> | User: <%= audit_log.user.email %></small>
-                                <div class="well">
-                                    <%= audit_log.system_message.html_safe %>
+        <%= bootstrap_form_for(AuditLog.new, url: auditable_create_audit_log_path, method: 'post') do |f| %>
+            <div class="modal-body">
+                <div class="feed-activity-list">
+                    <% if @audit_logs.blank? %>
+                        This item has no audit logs yet.
+                    <% else %>
+                        <% @audit_logs.each do |audit_log| %>
+                            <div class="feed-element">
+                                <div class="media-body">
+                                    <small class="text-muted">
+                                        <i class="fa fa-clock-o" style="margin: 0 2px;"></i> <%= localize(audit_log.created_at) %> |
+                                        <i class="fa fa-user" style="margin: 0 2px"></i> <%= audit_log.user.email %>
+                                    </small>
+                                    <% if audit_log.system_message.present? %>
+                                        <div class="well">
+                                            <%= audit_log.system_message.html_safe %>
+                                        </div>
+                                    <% end %>
+                                    <% if audit_log.user_comment.present? %>
+                                        <div class="well">
+                                            <% # Don't make user input html_safe %>
+                                            <i class="fa fa-lg fa-comment" style="margin-right: 5px;"></i>
+                                            <%= audit_log.user_comment %>
+                                        </div>
+                                    <% end %>
                                 </div>
-                                <% if audit_log.user_comment.present? %>
-                                    <div class="well">
-                                        <% # Don't make user input html_safe %>
-                                        <i class="fa fa-lg fa-comment" style="margin-right: 5px;"></i>
-                                        <%= audit_log.user_comment %>
-                                    </div>
-                                <% end %>
                             </div>
-                        </div>
+                        <% end %>
+                        <%= will_paginate @audit_logs, renderer: BootstrapPagination::Rails %>
                     <% end %>
-                    <%= will_paginate @audit_logs, renderer: BootstrapPagination::Rails %>
-                <% end %>
+                </div>
+                <div class="comment-form" style="display:none;">
+                    <%= f.text_area :user_comment, rows: 4 %>
+                </div>
             </div>
-        </div>
+            <div class="modal-footer comment-form" style="display:none;">
+                <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
+                    <i title="Save" class="fa fa-lg fa-save" style="padding-right: 10px;"></i>Save
+                <% end %>
+                <button type="button" class="btn btn-white" data-dismiss="modal"><i title="Cancel" class="fa fa-lg fa-times" style="padding-right: 10px;"></i>Cancel</button>
+            </div>
+        <% end %>
     </div>
 </div>

@@ -108,6 +108,13 @@ $(function () {
         });
     }
 
+    // Audit log modal
+    $('body').on('click', '.audit-log-modal .add-comment-button', function() {
+        $(this).hide();
+        $('.audit-log-modal .feed-activity-list').hide();
+        $('.audit-log-modal .comment-form').show();
+    });
+
     // Flash messages
     GSAS.processFlashMessages();
 

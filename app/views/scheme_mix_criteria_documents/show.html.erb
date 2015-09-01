@@ -38,7 +38,7 @@
                                 <p>If this document also supports requirements in other criteria, add a criterion below:</p>
                                 <%= bootstrap_form_for([@project, @certification_path, @scheme_mix, @scheme_mix_criterion, SchemeMixCriteriaDocument.new], layout: :inline) do |f| %>
                                     <%= f.hidden_field :document_id, value: @document.id %>
-                                    <%= f.select :scheme_mix_criterion_id, @scheme_mix.scheme_mix_criteria.collect {|smc| [ smc.scheme_criterion.code + ': ' + smc.scheme_criterion.criterion.name, smc.id ] }, hide_label: true %>
+                                    <%= f.select :scheme_mix_criterion_id, @scheme_mix.scheme_mix_criteria.collect {|smc| [ smc.full_name, smc.id ] }, hide_label: true %>
                                     <%= button_tag(class: 'btn btn-primary no-margins', title: 'Add the criterion') do %>
                                         <i class="fa fa-plus-circle"></i>
                                     <% end %>

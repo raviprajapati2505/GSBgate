@@ -41,6 +41,14 @@ class SchemeMixCriterion < AuditableRecord
     where(certifier: nil)
   }
 
+  def name
+    self.scheme_criterion.name
+  end
+
+  def full_name
+    self.scheme_criterion.full_name
+  end
+
    def targeted_score_safe
     if targeted_score.nil?
       scheme_criterion.minimum_attainable_score

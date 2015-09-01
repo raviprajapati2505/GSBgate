@@ -39,6 +39,6 @@ module ApplicationHelper
   end
 
   def audit_log_label(auditable)
-    link_to('<span class="label label-lg"><i class="fa fa-lg fa-history"></i></span>'.html_safe, auditable_index_audit_logs_path(auditable.class.name, auditable.id), remote: true, title: 'Click to view the audit log of this page', class: 'pull-right')
+    link_to('<span class="label label-lg"><i class="fa fa-lg fa-history"></i></span>'.html_safe, auditable_index_audit_logs_path(auditable.class.name, auditable.id), remote: true, title: 'Click to view the audit log of this item', class: 'pull-right')
   end
 end

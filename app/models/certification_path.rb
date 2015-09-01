@@ -65,7 +65,7 @@ class CertificationPath < AuditableRecord
     end
   end
 
-  # Mirrors all the descendant structural data records of the Cerifi to user data records
+  # Mirrors all the descendant structural data records of the Certificate to user data records
   def create_descendant_records
     if self.scheme_mixes.any?
       raise('Scheme_mixes are already created')

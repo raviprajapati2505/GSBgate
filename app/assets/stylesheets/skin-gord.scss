@@ -35,7 +35,7 @@
     color: green;
   }
 
-  .fa-clock-o {
+  .fa-clock-o.due-date-expired {
     color: red;
   }
 
@@ -520,6 +520,15 @@
 
     table tr th {
       background-color: #F5F5F6;
+    }
+  }
+
+  // Audit logs
+  .audit-log-modal {
+    .add-comment-button {
+      float: right;
+      margin-top: -5px;
+      margin-right: 10px;
     }
   }
 }

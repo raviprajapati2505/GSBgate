@@ -4,6 +4,7 @@ class AuditableRecord < ActiveRecord::Base
   AUDIT_LOG_CREATE = 0
   AUDIT_LOG_UPDATE = 1
   AUDIT_LOG_DESTROY = 2
+  AUDIT_LOG_TOUCH = 3
 
   attr_accessor :audit_log_user_comment
 
@@ -12,6 +13,7 @@ class AuditableRecord < ActiveRecord::Base
   after_create :audit_log_create
   after_update :audit_log_update
   after_destroy :audit_log_destroy
+  after_touch :audit_log_touch
 
   private
   def audit_log_create
@@ -26,12 +28,15 @@ class AuditableRecord < ActiveRecord::Base
     audit_log(AUDIT_LOG_DESTROY)
   end
 
+  def audit_log_touch
+    audit_log(AUDIT_LOG_TOUCH)
+  end
+
   def audit_log(action)
     system_messages = []
     system_messages_params = []
     auditable = self
 
-    # Set the system message(s)
     case self.class.name
       when Project.name.demodulize
         project = self
@@ -99,7 +104,9 @@ class AuditableRecord < ActiveRecord::Base
           end
         end
       when RequirementDatum.name.demodulize
-        project = self.scheme_mix_criteria.take.scheme_mix.certification_path.project
+        if (action != AUDIT_LOG_CREATE)
+          project = self.scheme_mix_criteria.take.scheme_mix.certification_path.project
+        end
         if (action == AUDIT_LOG_UPDATE)
           if self.status_changed?
             system_messages << 'The status of requirement %s was changed from %s to %s.'
@@ -120,13 +127,6 @@ class AuditableRecord < ActiveRecord::Base
         end
     end
 
-    # Format the system messages
-    if system_messages.present?
-      system_messages.each_with_index do |system_message, index|
-        system_messages[index] = system_message.gsub('%s', '<strong>%s</strong>') % system_messages_params[index]
-      end
-    end
-
     # Format the user comment
     if self.audit_log_user_comment.present?
       user_comment = self.audit_log_user_comment
@@ -134,16 +134,23 @@ class AuditableRecord < ActiveRecord::Base
       user_comment = nil
     end
 
-    # Create the audit log record
-    if system_messages.present? or user_comment.present?
-      system_messages.each do |system_message|
-        AuditLog.create(
-            system_message: system_message,
+    # Create the audit log record(s)
+    if system_messages.present?
+      system_messages.each_with_index do |system_message, index|
+        AuditLog.create!(
+            system_message: system_message.gsub('%s', '<strong>%s</strong>') % system_messages_params[index],
             user_comment: user_comment,
             user: User.current,
             auditable: auditable,
             project: project)
       end
+    elsif user_comment.present?
+      AuditLog.create!(
+          system_message: nil,
+          user_comment: user_comment,
+          user: User.current,
+          auditable: auditable,
+          project: project)
     end
   end
 end
