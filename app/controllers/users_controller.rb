@@ -8,6 +8,7 @@ class UsersController < AuthenticatedController
 
   def index_tasks
     @project = Project.find(params[:project_id])
+    @tasks = TaskService::generate_tasks(user: @user, project_id: @project.id)
   end
 
   def edit

@@ -5,6 +5,7 @@ class CertificationPathsController < AuthenticatedController
 
   def show
     @page_title = "#{@certification_path.certificate.name} for #{@project.name}"
+    @tasks = TaskService::generate_tasks(user: current_user, project_id: @project.id, certification_path_id: @certification_path.id)
   end
 
   def create
@@ -12,13 +13,6 @@ class CertificationPathsController < AuthenticatedController
     @certification_path.status = :registered
     @certification_path.project = @project
     if @certification_path.save
-        # Generate a task for the system admins
-        if @project.certifier_manager_assigned?
-          CertificationPathTask.create!(flow_index: 2, role: User.roles[:system_admin], project: @project, certification_path: @certification_path)
-        else
-          CertificationPathTask.create!(flow_index: 1, role: User.roles[:system_admin], project: @project, certification_path: @certification_path)
-        end
-
         redirect_to project_path(@project), notice: 'Successfully applied for certificate.'
     else
       redirect_to project_path(@project), notice: 'Error, could not apply for certificate'
@@ -47,82 +41,11 @@ class CertificationPathsController < AuthenticatedController
               end
             end
         end
-
-        generate_tasks = false
-
-        case CertificationPath.statuses[certification_path_params[:status]]
-          # Generate tasks for project managers
-          when CertificationPath.statuses[:in_submission]
-            # Delete system admin task
-            CertificationPathTask.where(flow_index: 2, role: User.roles[:system_admin], project: @project, certification_path: @certification_path).each do |task|
-              task.destroy
-            end
-            generate_tasks = true
-          when CertificationPath.statuses[:in_screening]
-            # Delete project manager task
-            CertificationPathTask.where(flow_index: 6, project_role: ProjectAuthorization.roles[:project_manager], project: @project, certification_path: @certification_path).each do |task|
-              task.destroy
-            end
-            # Generate tasks for certifier managers
-            @certification_path.scheme_mixes.each do |scheme_mix|
-              scheme_mix.scheme_mix_criteria.each do |scheme_mix_criterion|
-                SchemeMixCriterionTask.create!(flow_index: 7, project_role: ProjectAuthorization.roles[:certifier_manager], project: @project, scheme_mix_criterion: scheme_mix_criterion)
-              end
-            end
-          when CertificationPath.statuses[:screened]
-            CertificationPathTask.where(flow_index: 9, project_role: ProjectAuthorization.roles[:certifier_manager], project: @project, certification_path: @certification_path).each do |task|
-              task.flow_index = 10
-              task.project_role = ProjectAuthorization.roles[:project_manager]
-              task.save!
-            end
-          when CertificationPath.statuses[:in_verification]
-            # Delete project manager task
-            CertificationPathTask.where(flow_index: 10, project_role: ProjectAuthorization.roles[:project_manager], project: @project, certification_path: @certification_path).each do |task|
-              task.destroy
-            end
-            # Generate tasks for certifier members
-            @certification_path.scheme_mixes.each do |scheme_mix|
-              scheme_mix.scheme_mix_criteria.each do |scheme_mix_criterion|
-                SchemeMixCriterionTask.create!(flow_index: 11, user: scheme_mix_criterion.certifier, project: @project, scheme_mix_criterion: scheme_mix_criterion)
-              end
-            end
-          when CertificationPath.statuses[:awaiting_approval]
-            CertificationPathTask.where(flow_index: 12, project_role: ProjectAuthorization.roles[:certifier_manager], project: @project, certification_path: @certification_path).each do |task|
-              task.flow_index = 13
-              task.project_role = ProjectAuthorization.roles[:project_manager]
-              task.save!
-            end
-          when CertificationPath.statuses[:awaiting_signatures]
-            CertificationPathTask.where(flow_index: 13, project_role: ProjectAuthorization.roles[:project_manager], project: @project, certification_path: @certification_path).each do |task|
-              task.flow_index = 14
-              task.project_role = nil
-              task.role = User.roles[:gord_manager]
-              task.save!
-            end
-          when CertificationPath.statuses[:certified]
-            CertificationPathTask.where(flow_index: 16, role: User.roles[:gord_top_manager], project: @project, certification_path: @certification_path).each do |task|
-              task.flow_index = 17
-              task.role = nil
-              task.project_role = ProjectAuthorization.roles[:project_manager]
-              task.save!
-            end
-        end
       end
 
       if @certification_path.update(certification_path_params)
         if @certification_path.scheme_mixes.empty?
           @certification_path.create_descendant_records
-
-          if generate_tasks
-            # Generate tasks for project managers
-            @certification_path.scheme_mixes.each do |scheme_mix|
-              scheme_mix.scheme_mix_criteria.each do |scheme_mix_criterion|
-                scheme_mix_criterion.requirement_data.each do |requirement_data|
-                  RequirementDatumTask.create!(flow_index: 3, project_role: ProjectAuthorization.roles[:project_manager], project: @project, scheme_mix_criterion: scheme_mix_criterion, requirement_datum: requirement_data)
-                end
-              end
-            end
-          end
         end
         redirect_to project_certification_path_path(@project, @certification_path), notice: 'Status was successfully updated.'
       else
@@ -140,22 +63,11 @@ class CertificationPathsController < AuthenticatedController
       @certification_path.signed_by_mngr = params[:signed_by_mngr]
       @certification_path.save!
 
-      CertificationPathTask.where(flow_index: 14, role: User.roles[:gord_manager], project: @project, certification_path: @certification_path).each do |task|
-        task.flow_index = 15
-        task.role = User.roles[:gord_top_manager]
-        task.save!
-      end
-
       render json: {msg: "Certificate signed by GORD manager"} and return
     end
     if params.has_key?(:signed_by_top_mngr)
       @certification_path.signed_by_top_mngr = params[:signed_by_top_mngr]
       @certification_path.save!
-
-      CertificationPathTask.where(flow_index: 15, role: User.roles[:gord_top_manager], project: @project, certification_path: @certification_path).each do |task|
-        task.flow_index = 16
-        task.save!
-      end
 
       render json: {msg: "Certificate signed by GORD top manager"} and return
     end

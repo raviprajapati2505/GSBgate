@@ -5,17 +5,8 @@ class ProjectAuthorizationsController < AuthenticatedController
 
   def create
     @project_authorization = ProjectAuthorization.new(authorizations_params)
-    first_cert_mngr_assigned = !@project.certifier_manager_assigned? && @project_authorization.certifier_manager?
     @project_authorization.project = @project
     if @project_authorization.save
-      # Update system admins task
-      if first_cert_mngr_assigned
-        CertificationPathTask.where(flow_index: 1, role: User.roles[:system_admin], project: @project).each do |task|
-          task.flow_index = 2
-          task.save!
-        end
-      end
-
       redirect_to project_path(@project), notice: 'Member was successfully added.'
     else
       redirect_to :back

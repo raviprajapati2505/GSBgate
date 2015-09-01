@@ -13,7 +13,6 @@ class User < ActiveRecord::Base
   has_many :projects, through: :project_authorizations
   has_many :requirement_data, dependent: :nullify
   has_many :scheme_mix_criteria, inverse_of: :certifier, foreign_key: 'certifier_id'
-  has_many :user_tasks, dependent: :destroy
 
   default_scope { order(email: :asc) }
 
@@ -88,37 +87,6 @@ class User < ActiveRecord::Base
   before_validation :assign_default_role, on: :create
 
   validates :role, inclusion: User.roles.keys
-
-  # Question : should only the remaining tasks be returned or also the already finished tasks ?
-
-  # return certification_path list with task descriptions
-  # def self::system_admin_tasks
-    # if PCR track : Check PCR track payment and status to in_review
-  # end
-
-  # return certification_path, scheme_mix_criteria, requirement, document list with task descriptions
-  # def project_manager_tasks
-    #! process screening comments and set status to (if PCR track) awaiting_pcr_admittance
-    # ---
-    # if PCR track : process review comments and set status to in_verification
-    #! if certification_rejected : (if appeal) set status to in_verification
-    #! if awaiting_approval: set status to in_verification (if no agreement and appealed)
-  # end
-
-  # return requirement list with task descriptions
-  # def project_member_tasks
-    # accept invitation
-  # end
-
-  # return certification_path and scheme_mix_criteria list with task descriptions
-  # def certifier_manager_tasks
-    # if PCR track : set status to reviewed ?
-  # end
-
-  # return scheme_mix_criteria list with task descriptions
-  # def certifier_member_tasks
-    # if PCR track : review criterion and set criterion status to approved or resubmit ?
-  # end
 
   private
   def assign_default_role

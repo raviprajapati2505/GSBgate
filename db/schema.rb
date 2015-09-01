@@ -263,28 +263,6 @@ ActiveRecord::Schema.define(version: 20150901083000) do
   add_index "schemes", ["certificate_id"], name: "index_schemes_on_certificate_id", using: :btree
   add_index "schemes", ["name", "version", "certificate_id"], name: "index_schemes_on_name_and_version_and_certificate_id", unique: true, using: :btree
 
-  create_table "user_tasks", force: :cascade do |t|
-    t.string   "type",                            null: false
-    t.integer  "flow_index",                      null: false
-    t.integer  "role"
-    t.integer  "project_role"
-    t.integer  "user_id"
-    t.integer  "project_id"
-    t.integer  "certification_path_id"
-    t.integer  "scheme_mix_criterion_id"
-    t.integer  "requirement_datum_id"
-    t.integer  "scheme_mix_criteria_document_id"
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
-  end
-
-  add_index "user_tasks", ["certification_path_id"], name: "index_user_tasks_on_certification_path_id", using: :btree
-  add_index "user_tasks", ["project_id"], name: "index_user_tasks_on_project_id", using: :btree
-  add_index "user_tasks", ["requirement_datum_id"], name: "index_user_tasks_on_requirement_datum_id", using: :btree
-  add_index "user_tasks", ["scheme_mix_criteria_document_id"], name: "index_user_tasks_on_scheme_mix_criteria_document_id", using: :btree
-  add_index "user_tasks", ["scheme_mix_criterion_id"], name: "index_user_tasks_on_scheme_mix_criterion_id", using: :btree
-  add_index "user_tasks", ["user_id"], name: "index_user_tasks_on_user_id", using: :btree
-
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
@@ -332,10 +310,4 @@ ActiveRecord::Schema.define(version: 20150901083000) do
   add_foreign_key "scheme_mixes", "certification_paths"
   add_foreign_key "scheme_mixes", "schemes"
   add_foreign_key "schemes", "certificates"
-  add_foreign_key "user_tasks", "certification_paths"
-  add_foreign_key "user_tasks", "projects"
-  add_foreign_key "user_tasks", "requirement_data"
-  add_foreign_key "user_tasks", "scheme_mix_criteria"
-  add_foreign_key "user_tasks", "scheme_mix_criteria_documents"
-  add_foreign_key "user_tasks", "users"
 end

@@ -5,7 +5,6 @@ class Project < AuditableRecord
   has_many :certifiers, -> { where('project_authorizations.role > 2') }, through: :project_authorizations, source: :user
   has_many :managers, -> { where('project_authorizations.role = 1') }, through: :project_authorizations, source: :user
   has_many :certification_paths
-  has_many :user_tasks, dependent: :destroy
 
   validates :name, presence: true
   validates :address, presence: true

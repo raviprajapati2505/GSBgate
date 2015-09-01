@@ -10,7 +10,8 @@ class SchemeMixCriteriaController < AuthenticatedController
   end
 
   def update
-      if scheme_mix_criterion_params[:status] == :approved.to_s || scheme_mix_criterion_params[:status] == :resubmit.to_s
+      if scheme_mix_criterion_params[:status] == :reviewed_approved.to_s || scheme_mix_criterion_params[:status] == :resubmit.to_s ||
+          scheme_mix_criterion_params[:status] == :verified_approved.to_s || scheme_mix_criterion_params[:status] == :disapproved
         # if achieved score is not yet provided only the status can only be 'in progress' or 'complete'
         if (@scheme_mix_criterion.targeted_score_a.nil? && @scheme_mix_criterion.achieved_score_a.nil?) || (@scheme_mix_criterion.targeted_score_a.nil? && @scheme_mix_criterion.achieved_score_a.nil?)
           flash.now[:alert] = 'Please first provide the achieved score.'
@@ -34,47 +35,11 @@ class SchemeMixCriteriaController < AuthenticatedController
         params[:scheme_mix_criterion][:submitted_score] = -1
       end
 
-      unless scheme_mix_criterion_params[:status].blank? || @scheme_mix_criterion.status == scheme_mix_criterion_params[:status]
-        case SchemeMixCriterion.statuses[scheme_mix_criterion_params[:status]]
-          when SchemeMixCriterion.statuses[:complete]
-            SchemeMixCriterionTask.where(flow_index: 5, project_role: ProjectAuthorization.roles[:project_manager], project: @project, scheme_mix_criterion: @scheme_mix_criterion).each do |task|
-              task.destroy
-            end
-            scheme_mix_criterion_processed = true
-          when SchemeMixCriterion.statuses[:approved], SchemeMixCriterion.statuses[:resubmit]
-            if @certification_path.in_screening?
-              SchemeMixCriterionTask.where(flow_index: 8, project: @project, scheme_mix_criterion: @scheme_mix_criterion).each do |task|
-                task.destroy
-              end
-              scheme_mix_criterion_screened = true
-            elsif @certification_path.in_verification?
-              SchemeMixCriterionTask.where(flow_index: 11, project: @project, scheme_mix_criterion: @scheme_mix_criterion).each do |task|
-                task.destroy
-              end
-              scheme_mix_criterion_verified = true
-            end
-        end
-      end
-
       if @scheme_mix_criterion.update(scheme_mix_criterion_params)
         # Save the documents
         if params.has_key?(:documents)
           params[:documents]['document_file'].each do |document_file|
             @scheme_mix_criterion.documents.create!(document_file: document_file, user: current_user)
-          end
-        end
-
-        if scheme_mix_criterion_processed
-          unless @certification_path.scheme_mix_criteria.in_progress.count.nonzero?
-            CertificationPathTask.create!(flow_index: 6, project_role: ProjectAuthorization.roles[:project_manager], project: @project, certification_path: @certification_path)
-          end
-        elsif scheme_mix_criterion_screened
-          unless @certification_path.scheme_mix_criteria.complete.count.nonzero?
-            CertificationPathTask.create!(flow_index: 9, project_role: ProjectAuthorization.roles[:certifier_manager], project: @project, certification_path: @certification_path)
-          end
-        elsif scheme_mix_criterion_verified
-          unless @certification_path.scheme_mix_criteria.complete.count.nonzero?
-            CertificationPathTask.create!(flow_index: 12, project_role: ProjectAuthorization.roles[:certifier_manager], project: @project, certification_path: @certification_path)
           end
         end
 
@@ -94,18 +59,7 @@ class SchemeMixCriteriaController < AuthenticatedController
           @scheme_mix_criterion.due_date = nil
         end
       end
-      SchemeMixCriterion.transaction do
-        if @scheme_mix_criterion.certifier_id_changed?
-          # Generate a task for the assigned certifier
-          SchemeMixCriterionTask.where(scheme_mix_criterion: @scheme_mix_criterion).each do |task|
-            task.flow_index = 8
-            task.project_role = nil
-            task.user = @scheme_mix_criterion.certifier
-            task.save!
-          end
-        end
-        @scheme_mix_criterion.save!
-      end
+      @scheme_mix_criterion.save!
     end
     redirect_to project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), notice: 'Criterion was successfully updated.'
   end

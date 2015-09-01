@@ -6,9 +6,8 @@ class SchemeMixCriterion < AuditableRecord
   belongs_to :scheme_mix
   belongs_to :scheme_criterion
   belongs_to :certifier, class_name: 'User', inverse_of: :scheme_mix_criteria
-  has_many :user_tasks, dependent: :destroy
 
-  enum status: [ :in_progress, :complete, :approved, :resubmit ]
+  enum status: [ :in_progress, :complete, :screened , :reviewed_approved, :resubmit, :verified_approved, :disapproved]
 
   after_initialize :init
 
@@ -17,10 +16,6 @@ class SchemeMixCriterion < AuditableRecord
   validates :targeted_score, numericality: { only_integer: true, greater_than_or_equal_to: -1, less_than_or_equal_to: 3 }, presence: true
   validates :submitted_score, numericality: { only_integer: true, greater_than_or_equal_to: -1, less_than_or_equal_to: 3 }, allow_nil: true
   validates :achieved_score, numericality: { only_integer: true, greater_than_or_equal_to: -1, less_than_or_equal_to: 3 }, allow_nil: true
-
-  scope :reviewed, -> {
-    approved | resubmit
-  }
 
   scope :order_by_code, -> {
     joins(:scheme_criterion)
