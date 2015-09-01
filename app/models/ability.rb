@@ -79,7 +79,7 @@ class Ability
       can :destroy, SchemeMixCriteriaDocument, scheme_mix_criterion: {scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id, role: ['project_team_member', ProjectAuthorization.roles[:project_team_member]]}}}}}
       can :show, SchemeMixCriteriaDocument, scheme_mix_criterion: {scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id}}}}}
       # AuditLog controller
-      can :read, AuditLog
+      can :auditable_index, AuditLog
     elsif user.gord_top_manager?
       # dr. Youssef
       can :manage, :all

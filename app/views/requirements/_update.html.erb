@@ -1,9 +1,8 @@
 <div id="requirement-<%= requirement_datum.id %>" class="panel panel-default">
     <div class="panel-heading">
         <h4 class="panel-title">
+            <%= audit_log_label(requirement_datum) %>
             <a href="#requirement-<%= requirement_datum.id %>-collapsable" data-parent="#accordion" data-toggle="collapse" class="collapsed" aria-expanded="false">
-                <%= audit_log_label(requirement_datum) %>
-
                 <% if requirement_datum.required? %><i class="fa fa-lg fa-square-o" title="<%= t('.tooltip_requirement_required') %>" data-toggle="tooltip"></i>
                 <% elsif requirement_datum.provided? %><i class="fa fa-lg fa-check-square-o" title="<%= t('.tooltip_requirement_provided') %>" data-toggle="tooltip"></i>
                 <% else %><i class="fa fa-lg fa-square" title="<%= t('.tooltip_requirement_not_required') %>" data-toggle="tooltip"></i><% end %>
