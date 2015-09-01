@@ -32,7 +32,7 @@ module ApplicationHelper
           '</span>'\
         '</a>').html_safe
     else
-      ( '<span class="label status-label status-' + status.dasherize + ' pull-right">'\
+      ( '<span class="label label-lg status-label status-' + status.dasherize + ' pull-right">'\
           'Status: ' + status.humanize + ''\
         '</span>').html_safe
     end
