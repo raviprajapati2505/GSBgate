@@ -7,7 +7,6 @@ class SchemeCriterion < ActiveRecord::Base
   serialize :scores
 
   scope :for_category, ->(category) {
-    # joins(:criterion).where(criteria: {category_id: category.id})
     where(scheme_category_id: category.id)
   }
 
@@ -16,12 +15,10 @@ class SchemeCriterion < ActiveRecord::Base
   end
 
   def minimum_attainable_score
-    # calculate_score_combination('minimum_attainable_score')
     scores.min
   end
 
   def maximum_attainable_score
-    # calculate_score_combination('maximum_attainable_score')
     scores.max
   end
 

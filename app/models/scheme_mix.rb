@@ -7,42 +7,40 @@ class SchemeMix < ActiveRecord::Base
 
   after_create :create_descendant_records
 
-  def weighted_targeted_score_for_category(category)
-    calculate_weighted_score(scheme_mix_criteria.for_category(category), 'weighted_targeted_score')
+  def total_weighted_targeted_score_for_category(category)
+    score = scheme_mix_criteria.for_category(category).collect {|sc| sc.weighted_targeted_score}.inject(:+)
+    weighted_score(score)
   end
 
-  def weighted_submitted_score_for_category(category)
-    calculate_weighted_score(scheme_mix_criteria.for_category(category), 'weighted_submitted_score')
+  def total_weighted_submitted_score_for_category(category)
+    score = scheme_mix_criteria.for_category(category).collect {|sc| sc.weighted_submitted_score}.inject(:+)
+    weighted_score(score)
   end
 
-  def weighted_achieved_score_for_category(category)
-    calculate_weighted_score(scheme_mix_criteria.for_category(category), 'weighted_achieved_score')
+  def total_weighted_achieved_score_for_category(category)
+    score = scheme_mix_criteria.for_category(category).collect {|sc| sc.weighted_achieved_score}.inject(:+)
+    weighted_score(score)
   end
 
-  def weighted_targeted_score
-    calculate_weighted_score(scheme_mix_criteria, 'weighted_targeted_score')
+  def total_weighted_targeted_score
+    score = scheme_mix_criteria.collect {|sc| sc.weighted_targeted_score}.inject(:+)
+    weighted_score(score)
   end
 
-  def weighted_submitted_score
-    calculate_weighted_score(scheme_mix_criteria, 'weighted_submitted_score')
+  def total_weighted_submitted_score
+    score = scheme_mix_criteria.collect {|sc| sc.weighted_submitted_score}.inject(:+)
+    weighted_score(score)
   end
 
-  def weighted_achieved_score
-    calculate_weighted_score(scheme_mix_criteria, 'weighted_achieved_score')
+  def total_weighted_achieved_score
+    score = scheme_mix_criteria.collect {|sc| sc.weighted_achieved_score}.inject(:+)
+    weighted_score(score)
   end
 
   private
     # Class method to calculate the weighted score for this scheme mix
-    def calculate_weighted_score(smc, score_method)
-      # First determine the total weighted score of all scheme_criteria
-      total = nil
-      smc.each do |scheme_mix_criterion|
-        total ||= 0
-        total += scheme_mix_criterion.send(score_method)
-      end
-      raise 'scheme without scheme mix criteria' if total.nil?
-      # Then apply the weighting for the scheme mix
-      (total * self.weight / 100)
+    def weighted_score(score)
+      (score * (self.weight / 100))
     end
 
     # Mirrors all the descendant structural data records of the SchemeMix to user data records
