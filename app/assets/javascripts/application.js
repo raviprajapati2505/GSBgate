@@ -77,7 +77,7 @@ $(function () {
     });
 
     // Clickable table rows
-    $('table tr.clickable').on('click', function() {
+    $('table').on('click', 'tr.clickable', function() {
         window.location = $(this).data('href');
     });
 
