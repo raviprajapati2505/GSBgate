@@ -74,6 +74,7 @@ module ApplicationHelper
         certification_path = model.scheme_mix_criteria.take.scheme_mix.certification_path
         scheme_mix = model.scheme_mix_criteria.take.scheme_mix
         scheme_mix_criterion = model.scheme_mix_criteria.take
+        requirement_datum = model
       else
         return breadcrumbs
     end
@@ -93,7 +94,9 @@ module ApplicationHelper
     if scheme_mix.present?
       breadcrumbs << link_to(scheme_mix.full_name, project_certification_path_scheme_mix_path(project, certification_path, scheme_mix))
     end
-    if scheme_mix_criterion.present?
+    if requirement_datum.present?
+      breadcrumbs << link_to(scheme_mix_criterion.full_name, project_certification_path_scheme_mix_scheme_mix_criterion_path(project, certification_path, scheme_mix, scheme_mix_criterion) + '#requirement-' + requirement_datum.id.to_s)
+    elsif scheme_mix_criterion.present?
       breadcrumbs << link_to(scheme_mix_criterion.full_name, project_certification_path_scheme_mix_scheme_mix_criterion_path(project, certification_path, scheme_mix, scheme_mix_criterion))
     end
     if scheme_mix_criterion_document.present?
