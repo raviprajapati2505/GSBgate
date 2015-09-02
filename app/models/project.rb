@@ -23,11 +23,6 @@ class Project < AuditableRecord
     where(owner: user)
   }
 
-  scope :for_authorized_user, ->(user) {
-    includes(:project_authorizations)
-    .where(project_authorizations: { user: user })
-  }
-
   def role_for_user(user)
     project_authorizations.each do |project_authorization|
       if project_authorization.user == user
