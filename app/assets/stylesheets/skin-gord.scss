@@ -17,8 +17,21 @@
     color: $skin-gord-a-color;
   }
 
+  .feed-element {
+    margin: 0;
+    padding: 10px 0;
+  }
+
+  .feed-element:first-child {
+    padding-top: 0;
+  }
+
   .feed-element .well {
     font-size: 12px;
+  }
+
+  .feed-element .user-comment {
+    font-style: italic;
   }
 
   .project-certification-progress {

@@ -5,6 +5,8 @@
         <% unless @user.nil? %>
             <li><%= link_to @user.email, edit_user_path %></li>
         <% end %>
+    <% elsif is_active_controller('audit_logs') %>
+        <li><%= link_to 'Audit log', audit_logs_path %></li>
     <% else %>
         <li><%= link_to 'Projects', projects_path %></li>
 

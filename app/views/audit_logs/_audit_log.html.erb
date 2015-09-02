@@ -1,0 +1,19 @@
+<div class="feed-element">
+    <div class="media-body">
+        <small class="text-muted">
+            <i class="fa fa-clock-o" style="margin: 0 2px;"></i> <%= localize(audit_log.created_at) %> |
+            <i class="fa fa-user" style="margin: 0 2px"></i> <%= audit_log.user.email %>
+        </small>
+        <% if audit_log.system_message.present? %>
+            <div class="well system-message">
+                <%= audit_log.system_message.html_safe %>
+            </div>
+        <% end %>
+        <% if audit_log.user_comment.present? %>
+            <div class="well user-comment">
+                <% # Don't make user input html_safe %>
+                <i class="fa fa-comment" title="User comment" style="margin-right: 2px;"></i> <%= audit_log.user_comment %>
+            </div>
+        <% end %>
+    </div>
+</div>

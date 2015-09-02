@@ -1,6 +1,11 @@
 class AuditLogsController < AuthenticatedController
-  before_action :set_auditable
+  before_action :set_auditable, except: [ :index ]
   load_and_authorize_resource
+
+  def index
+    @page_title = 'Audit log'
+    @audit_logs = AuditLog.for_user_projects(current_user).paginate page: params[:page], per_page: 12
+  end
 
   def auditable_index
     @audit_logs = AuditLog.for_auditable(@auditable).paginate page: params[:page], per_page: 6

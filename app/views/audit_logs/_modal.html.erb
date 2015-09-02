@@ -14,26 +14,7 @@
                         This item has no audit logs yet.
                     <% else %>
                         <% @audit_logs.each do |audit_log| %>
-                            <div class="feed-element">
-                                <div class="media-body">
-                                    <small class="text-muted">
-                                        <i class="fa fa-clock-o" style="margin: 0 2px;"></i> <%= localize(audit_log.created_at) %> |
-                                        <i class="fa fa-user" style="margin: 0 2px"></i> <%= audit_log.user.email %>
-                                    </small>
-                                    <% if audit_log.system_message.present? %>
-                                        <div class="well">
-                                            <%= audit_log.system_message.html_safe %>
-                                        </div>
-                                    <% end %>
-                                    <% if audit_log.user_comment.present? %>
-                                        <div class="well">
-                                            <% # Don't make user input html_safe %>
-                                            <i class="fa fa-lg fa-comment" style="margin-right: 5px;"></i>
-                                            <%= audit_log.user_comment %>
-                                        </div>
-                                    <% end %>
-                                </div>
-                            </div>
+                            <%= render 'audit_log', audit_log: audit_log %>
                         <% end %>
                         <%= will_paginate @audit_logs, renderer: BootstrapPagination::Rails %>
                     <% end %>
