@@ -4,7 +4,7 @@ class CertificationPathsController < AuthenticatedController
   load_and_authorize_resource
 
   def show
-    @page_title = "#{@certification_path.certificate.name} for #{@project.name}"
+    @page_title = @certification_path.name
     @tasks = TaskService::generate_tasks(user: current_user, project_id: @project.id, certification_path_id: @certification_path.id)
   end
 
@@ -80,6 +80,7 @@ class CertificationPathsController < AuthenticatedController
 
     def set_certification_path
       @certification_path = CertificationPath.find(params[:id])
+      @controller_model = @certification_path
     end
 
     def certification_path_params

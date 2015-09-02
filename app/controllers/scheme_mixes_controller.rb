@@ -5,7 +5,7 @@ class SchemeMixesController < AuthenticatedController
   load_and_authorize_resource
 
   def show
-    @page_title = @scheme_mix.scheme.full_name
+    @page_title = @scheme_mix.full_name
   end
 
   def allocate_project_team_responsibility
@@ -90,5 +90,6 @@ class SchemeMixesController < AuthenticatedController
 
   def set_scheme_mix
     @scheme_mix = SchemeMix.find(params[:id])
+    @controller_model = @scheme_mix
   end
 end

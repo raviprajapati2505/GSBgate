@@ -41,6 +41,7 @@ class DocumentsController < AuthenticatedController
 
   def set_document
     @document = Document.find(params[:id])
+    @controller_model = @document
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

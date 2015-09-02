@@ -7,6 +7,14 @@ class SchemeMix < ActiveRecord::Base
 
   after_create :create_descendant_records
 
+  def name
+    self.scheme.name
+  end
+
+  def full_name
+    self.scheme.full_name
+  end
+
   def total_weighted_targeted_score_for_category(category)
     score = scheme_mix_criteria.for_category(category).collect {|sc| sc.weighted_targeted_score}.inject(:+)
     weighted_score(score)

@@ -48,7 +48,7 @@
                         <tbody>
                         <% @certification_path.scheme_mixes.each do |scheme_mix| %>
                             <tr class="clickable" data-href="<%= project_certification_path_scheme_mix_path(@certification_path.project, @certification_path, scheme_mix) %>">
-                                <td><%= scheme_mix.scheme.full_name %></td>
+                                <td><%= scheme_mix.full_name %></td>
                                 <td><%= scheme_mix.weight %> %</td>
                                 <%
                                    if @certification_path.requirement_data.count.nonzero?

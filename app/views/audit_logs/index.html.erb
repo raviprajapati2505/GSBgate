@@ -1,13 +1,13 @@
 <div class="row">
     <div class="col-md-12">
-        <div class="ibox float-e-margins document-details">
+        <div class="ibox">
             <div class="ibox-title">
                 <h5>Audit log <%= tooltip('This page contains audit logs for all projects you have access to.') %></h5>
             </div>
             <div class="ibox-content">
                 <div class="feed-activity-list">
                     <% @audit_logs.each do |audit_log| %>
-                        <%= render 'audit_log', audit_log: audit_log %>
+                        <%= render 'audit_log', audit_log: audit_log, with_breadcrumbs: true %>
                     <% end %>
                 </div>
                 <%= will_paginate @audit_logs, renderer: BootstrapPagination::Rails %>

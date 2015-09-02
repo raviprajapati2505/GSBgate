@@ -67,6 +67,7 @@ class ProjectAuthorizationsController < AuthenticatedController
 
     def set_authorization
       @project_authorization = ProjectAuthorization.find(params[:id])
+      @controller_model = @project_authorization
     end
 
     def authorizations_params

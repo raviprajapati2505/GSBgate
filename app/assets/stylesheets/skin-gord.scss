@@ -4,6 +4,10 @@
     width: 100%;
   }
 
+  .breadcrumb a:hover {
+    text-decoration: underline;
+  }
+
   .media-body {
     width: auto;
   }
@@ -32,6 +36,14 @@
 
   .feed-element .user-comment {
     font-style: italic;
+  }
+
+  .feed-element .text-muted a {
+    color: inherit;
+  }
+
+  .feed-element .text-muted a:hover {
+    text-decoration: underline;
   }
 
   .project-certification-progress {

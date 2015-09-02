@@ -22,7 +22,7 @@ class SchemeMixCriteriaDocumentsController < AuthenticatedController
   end
 
   def show
-    @page_title = (ActionController::Base.helpers.image_tag(Icon.for_filename(@document.name)) + ' Document ' + @document.name).html_safe
+    @page_title = (ActionController::Base.helpers.image_tag(Icon.for_filename(@document.name)) + ' ' + @document.name).html_safe
   end
 
   def update
@@ -66,6 +66,7 @@ class SchemeMixCriteriaDocumentsController < AuthenticatedController
 
   def set_scheme_mix_criteria_document
     @scheme_mix_criteria_document = SchemeMixCriteriaDocument.find(params[:id])
+    @controller_model = @scheme_mix_criteria_document
   end
 
   def set_document

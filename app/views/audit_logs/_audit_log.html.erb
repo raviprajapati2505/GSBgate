@@ -1,8 +1,9 @@
 <div class="feed-element">
     <div class="media-body">
         <small class="text-muted">
-            <i class="fa fa-clock-o" style="margin: 0 2px;"></i> <%= localize(audit_log.created_at) %> |
-            <i class="fa fa-user" style="margin: 0 2px"></i> <%= audit_log.user.email %>
+            <i class="fa fa-clock-o" title="Date/time" style="margin: 0 2px;"></i> <%= localize(audit_log.created_at) %>
+             | <i class="fa fa-user" title="User" style="margin: 0 2px"></i> <%= audit_log.user.email %>
+            <% if with_breadcrumbs %> | <i class="fa fa-building-o" title="Project trail" style="margin: 0 2px"></i> <%= breadcrumbs(audit_log.auditable, with_prefix: false).join(' / ').html_safe %><% end %>
         </small>
         <% if audit_log.system_message.present? %>
             <div class="well system-message">

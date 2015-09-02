@@ -87,7 +87,7 @@
                         <tbody>
                         <% @project.certification_paths.each do |certification_path| %>
                             <tr class="clickable" data-href="<%= project_certification_path_path(@project, certification_path) %>">
-                                <td><%= certification_path.certificate.name %></td>
+                                <td><%= certification_path.name %></td>
                                 <td><%= certification_path.status.humanize %></td>
                                 <td>
                                 <%

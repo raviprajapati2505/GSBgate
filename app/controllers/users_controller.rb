@@ -46,6 +46,7 @@ class UsersController < AuthenticatedController
   private
     def set_user
       @user = User.find(params[:id])
+      @controller_model = @user
     end
 
     def user_params

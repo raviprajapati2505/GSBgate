@@ -71,5 +71,6 @@ class RequirementDataController < AuthenticatedController
 
   def set_requirement_datum
     @requirement_datum = RequirementDatum.find(params[:id])
+    @controller_model = @requirement_datum
   end
 end

@@ -72,6 +72,7 @@ class ProjectsController < AuthenticatedController
     # Use callbacks to share common setup or constraints between actions.
     def set_project
       @project = Project.find(params[:id])
+      @controller_model = @project
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

@@ -79,6 +79,7 @@ class SchemeMixCriteriaController < AuthenticatedController
 
   def set_scheme_mix_criterion
     @scheme_mix_criterion = SchemeMixCriterion.find(params[:id])
+    @controller_model = @scheme_mix_criterion
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

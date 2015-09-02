@@ -14,7 +14,7 @@
                         This item has no audit logs yet.
                     <% else %>
                         <% @audit_logs.each do |audit_log| %>
-                            <%= render 'audit_log', audit_log: audit_log %>
+                            <%= render 'audit_log', audit_log: audit_log, with_breadcrumbs: false %>
                         <% end %>
                         <%= will_paginate @audit_logs, renderer: BootstrapPagination::Rails %>
                     <% end %>
@@ -25,7 +25,7 @@
             </div>
             <div class="modal-footer comment-form" style="display:none;">
                 <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
-                    <i title="Save" class="fa fa-lg fa-save" style="padding-right: 10px;"></i>Save
+                    <i title="Add comment" class="fa fa-lg fa-save" style="padding-right: 10px;"></i>Add comment
                 <% end %>
                 <button type="button" class="btn btn-white" data-dismiss="modal"><i title="Cancel" class="fa fa-lg fa-times" style="padding-right: 10px;"></i>Cancel</button>
             </div>

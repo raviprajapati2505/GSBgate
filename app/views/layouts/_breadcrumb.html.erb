@@ -1,41 +1,7 @@
-<ol class="breadcrumb">
-    <% if is_active_controller('users') && !is_active_action('index_tasks') %>
-        <li><%= link_to 'Users', users_path %></li>
-
-        <% unless @user.nil? %>
-            <li><%= link_to @user.email, edit_user_path %></li>
+<% if @controller_model.present? %>
+    <ol class="breadcrumb">
+        <% breadcrumbs(@controller_model).each do |breadcrumb| %>
+            <li><%= breadcrumb.html_safe %></li>
         <% end %>
-    <% elsif is_active_controller('audit_logs') %>
-        <li><%= link_to 'Audit log', audit_logs_path %></li>
-    <% else %>
-        <li><%= link_to 'Projects', projects_path %></li>
-
-        <% unless @project.nil? or @project.id.nil? %>
-            <li><%= link_to @project.name, project_path(@project) %></li>
-        <% end %>
-
-        <% if is_active_action('index_tasks') %>
-            <li><%= link_to @user.email, project_user_tasks_path(@project, @user) %></li>
-        <% end %>
-
-        <% unless @certification_path.nil? or @certification_path.id.nil? %>
-            <li><%= link_to "#{@certification_path.name} (#{@certification_path.status.humanize})", project_certification_path_path(@project, @certification_path) %></li>
-        <% end %>
-
-        <% unless @scheme_mix.nil? or @scheme_mix.id.nil? %>
-            <li><%= link_to @scheme_mix.scheme.full_name, project_certification_path_scheme_mix_path(@project, @certification_path, @scheme_mix) %></li>
-        <% end %>
-
-        <% unless @scheme_mix_criterion.nil? or @scheme_mix_criterion.id.nil? %>
-            <li><%= link_to @scheme_mix_criterion.scheme_criterion.full_name, project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion) %></li>
-        <% end %>
-
-        <% unless @scheme_mix_criteria_document.nil? or @scheme_mix_criteria_document.id.nil? %>
-            <li><%= link_to 'Document ' + @scheme_mix_criteria_document.name, project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, @scheme_mix_criteria_document) %></li>
-        <% end %>
-
-        <% unless is_active_controller('project_authorizations').nil? %>
-            <li><%= link_to 'Add team member', project_path(@project) %></li>
-        <% end %>
-    <% end %>
-</ol>
+    </ol>
+<% end %>
