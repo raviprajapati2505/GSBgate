@@ -11,7 +11,7 @@
             <div class="modal-body">
                 <div class="feed-activity-list">
                     <% if @audit_logs.blank? %>
-                        This item has no audit logs yet.
+                        This resource has no audit logs yet.
                     <% else %>
                         <% @audit_logs.each do |audit_log| %>
                             <%= render 'audit_log', audit_log: audit_log, with_breadcrumbs: false %>

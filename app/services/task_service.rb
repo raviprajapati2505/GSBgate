@@ -1,7 +1,7 @@
 class TaskService
   include Singleton
 
-  def self::generate_tasks(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_tasks(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
 
     if user.system_admin?
@@ -41,7 +41,7 @@ class TaskService
     return tasks
   end
 
-  def self::generate_system_admin_tasks(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_system_admin_tasks(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
     tasks += generate_system_admin_tasks_1(user: user, project_id: project_id, certification_path_id: certification_path_id, scheme_mix_criterion_id: scheme_mix_criterion_id)
     tasks += generate_system_admin_tasks_2(user: user, project_id: project_id, certification_path_id: certification_path_id, scheme_mix_criterion_id: scheme_mix_criterion_id)
@@ -49,20 +49,20 @@ class TaskService
     return tasks
   end
 
-  def self::generate_gord_top_mngr_tasks(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_gord_top_mngr_tasks(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
     tasks += generate_gord_top_mngr_tasks_20(user: user, project_id: project_id, certification_path_id: certification_path_id, scheme_mix_criterion_id: scheme_mix_criterion_id)
     tasks += generate_gord_top_mngr_tasks_21(user: user, project_id: project_id, certification_path_id: certification_path_id, scheme_mix_criterion_id: scheme_mix_criterion_id)
     return tasks
   end
 
-  def self::generate_gord_mngr_tasks(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_gord_mngr_tasks(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
     tasks += generate_gord_mngr_tasks_19(user: user, project_id: project_id, certification_path_id: certification_path_id, scheme_mix_criterion_id: scheme_mix_criterion_id)
     return tasks
   end
 
-  def self::generate_project_mngr_tasks(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_project_mngr_tasks(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
     tasks += generate_project_mngr_tasks_3(user: user, project_id: project_id, certification_path_id: certification_path_id, scheme_mix_criterion_id: scheme_mix_criterion_id)
     tasks += generate_project_mngr_tasks_5(user: user, project_id: project_id, certification_path_id: certification_path_id, scheme_mix_criterion_id: scheme_mix_criterion_id)
@@ -75,13 +75,13 @@ class TaskService
     return tasks
   end
 
-  def self::generate_project_member_tasks(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_project_member_tasks(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
     tasks += generate_project_member_tasks_4(user: user, project_id: project_id, certification_path_id: certification_path_id, scheme_mix_criterion_id: scheme_mix_criterion_id)
     return tasks
   end
 
-  def self::generate_certifier_mngr_tasks(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_certifier_mngr_tasks(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
     tasks += generate_certifier_mngr_tasks_7(user: user, project_id: project_id, certification_path_id: certification_path_id, scheme_mix_criterion_id: scheme_mix_criterion_id)
     tasks += generate_certifier_mngr_tasks_9(user: user, project_id: project_id, certification_path_id: certification_path_id, scheme_mix_criterion_id: scheme_mix_criterion_id)
@@ -90,7 +90,7 @@ class TaskService
     return tasks
   end
 
-  def self::generate_certifier_member_tasks(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_certifier_member_tasks(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
     tasks += generate_certifier_member_tasks_8(user: user, project_id: project_id, certification_path_id: certification_path_id, scheme_mix_criterion_id: scheme_mix_criterion_id)
     tasks += generate_certifier_member_tasks_12(user: user, project_id: project_id, certification_path_id: certification_path_id, scheme_mix_criterion_id: scheme_mix_criterion_id)
@@ -98,7 +98,7 @@ class TaskService
     return tasks
   end
 
-  def self::generate_system_admin_tasks_1(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_system_admin_tasks_1(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
 
     # Query for certification_paths in 'registered' state and no certifier mngr assigned yet
@@ -126,7 +126,7 @@ class TaskService
     return tasks
   end
 
-  def self::generate_system_admin_tasks_2(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_system_admin_tasks_2(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
 
     # Query for certification_paths in 'registered' state and at least one certifier manager assigned
@@ -154,7 +154,7 @@ class TaskService
     return tasks
   end
 
-  def self::generate_system_admin_tasks_11(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_system_admin_tasks_11(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
 
     # Query for certification_paths in 'awaiting PCR admittance' state
@@ -176,7 +176,7 @@ class TaskService
     return tasks
   end
 
-  def self::generate_gord_top_mngr_tasks_20(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_gord_top_mngr_tasks_20(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
 
     # Query for certification_paths in 'awaiting signatures' state and not signed by top mngr yet
@@ -203,7 +203,7 @@ class TaskService
     return tasks
   end
 
-  def self::generate_gord_top_mngr_tasks_21(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_gord_top_mngr_tasks_21(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
 
     # Query for certification_paths in 'awaiting signatures' state and signed
@@ -230,7 +230,7 @@ class TaskService
     return tasks
   end
 
-  def self::generate_gord_mngr_tasks_19(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_gord_mngr_tasks_19(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
 
     # Query for certification_paths in 'awaiting signatures' state and not signed yet
@@ -257,7 +257,7 @@ class TaskService
     return tasks
   end
 
-  def self::generate_project_mngr_tasks_3(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_project_mngr_tasks_3(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
 
     # Query for requirement_data in 'required' state and no project team member assigned yet
@@ -292,7 +292,7 @@ class TaskService
     return tasks
   end
 
-  def self::generate_project_mngr_tasks_5(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_project_mngr_tasks_5(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
 
     # Query for scheme_mix_criteria in 'in progress' state and no linked requirement_data in 'required' state
@@ -330,7 +330,7 @@ class TaskService
     return tasks
   end
 
-  def self::generate_project_mngr_tasks_6(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_project_mngr_tasks_6(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
 
     # Query for certification_paths in 'in submission' state and no linked scheme_mix_criteria in 'in progress' state
@@ -364,7 +364,7 @@ class TaskService
     return tasks
   end
 
-  def self::generate_project_mngr_tasks_10(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_project_mngr_tasks_10(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
 
     # Query for certification_paths in 'screened' state
@@ -392,7 +392,7 @@ class TaskService
     return tasks
   end
 
-  def self::generate_project_mngr_tasks_14(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_project_mngr_tasks_14(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
 
     # Query for certification_paths in 'reviewed' state
@@ -420,7 +420,7 @@ class TaskService
     return tasks
   end
 
-  def self::generate_project_mngr_tasks_17(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_project_mngr_tasks_17(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
 
     # Query for certification_paths in 'certification rejected'
@@ -448,7 +448,7 @@ class TaskService
     return tasks
   end
 
-  def self::generate_project_mngr_tasks_18(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_project_mngr_tasks_18(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
 
     # Query for certification_paths in 'awaiting approval'
@@ -476,7 +476,7 @@ class TaskService
     return tasks
   end
 
-  def self::generate_project_mngr_tasks_22(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_project_mngr_tasks_22(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
 
     # Query for certification_paths in 'certified'
@@ -504,7 +504,7 @@ class TaskService
     return tasks
   end
 
-  def self::generate_project_member_tasks_4(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_project_member_tasks_4(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
 
     # Query for requirement_data in 'required' state and project team member assigned
@@ -534,7 +534,7 @@ class TaskService
     return tasks
   end
 
-  def self::generate_certifier_mngr_tasks_7(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_certifier_mngr_tasks_7(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
 
     # Query for scheme_mix_criteria in 'complete' status and no certifier member assigned yet
@@ -569,7 +569,7 @@ class TaskService
     return tasks
   end
 
-  def self::generate_certifier_mngr_tasks_9(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_certifier_mngr_tasks_9(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
 
     # Query for certification_paths in 'in screening' state and no linked scheme_mix_criteria in 'complete' state
@@ -603,7 +603,7 @@ class TaskService
     return tasks
   end
 
-  def self::generate_certifier_mngr_tasks_13(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_certifier_mngr_tasks_13(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
 
     # Query for certification_paths in 'in review' state all linked scheme_mix_criteria in 'reviewed_approved' or 'resubmit' state
@@ -637,7 +637,7 @@ class TaskService
     return tasks
   end
 
-  def self::generate_certifier_mngr_tasks_16(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_certifier_mngr_tasks_16(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
 
     # Query for certification_paths in 'in verification' state all linked scheme_mix_criteria in 'verified_approved' or 'disapproved' state
@@ -671,7 +671,7 @@ class TaskService
     return tasks
   end
 
-  def self::generate_certifier_member_tasks_8(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_certifier_member_tasks_8(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
 
     # Query for scheme_mix_criteria in 'complete' state and assigned certifier member
@@ -704,7 +704,7 @@ class TaskService
     return tasks
   end
 
-  def self::generate_certifier_member_tasks_12(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_certifier_member_tasks_12(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
 
     # Query for scheme_mix_criteria not in 'reviewed_approved' or 'resubmit' state and assigned to certifier member
@@ -737,7 +737,7 @@ class TaskService
     return tasks
   end
 
-  def self::generate_certifier_member_tasks_15(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_certifier_member_tasks_15(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
 
     # Query for scheme_mix_criteria not in 'verified_approved' or 'disapproved' state and assigned to certifier member

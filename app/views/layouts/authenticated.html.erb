@@ -23,7 +23,7 @@
                 <h2><%= @page_title %></h2>
                 <div class="row">
                     <div class="col-md-10 breadcrumb-wrapper">
-                        <%= render 'layouts/breadcrumb' %>
+                        <%= render 'layouts/breadcrumb', model: @controller_model %>
                     </div>
                     <div class="col-md-2 back-button-wrapper">
                         <%= link_to('&laquo; Return to previous page'.html_safe, :back, class: 'btn btn-white btn-xs') %>

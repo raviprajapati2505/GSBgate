@@ -1,7 +1,6 @@
-<% if @controller_model.present? %>
-    <ol class="breadcrumb">
-        <% breadcrumbs(@controller_model).each do |breadcrumb| %>
-            <li><%= breadcrumb.html_safe %></li>
-        <% end %>
-    </ol>
-<% end %>
+<ol class="breadcrumb">
+    <% breadcrumbs = breadcrumbs(model) %>
+    <% breadcrumbs[:names].each_with_index do |breadcrumb_name, index| %>
+        <li><%= link_to(breadcrumb_name, breadcrumbs[:paths][index]) %></li>
+    <% end %>
+</ol>

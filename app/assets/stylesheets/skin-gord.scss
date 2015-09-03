@@ -4,6 +4,10 @@
     width: 100%;
   }
 
+  .breadcrumb {
+    display: inline;
+  }
+
   .breadcrumb a:hover {
     text-decoration: underline;
   }

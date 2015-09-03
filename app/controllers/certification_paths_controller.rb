@@ -5,7 +5,7 @@ class CertificationPathsController < AuthenticatedController
 
   def show
     @page_title = @certification_path.name
-    @tasks = TaskService::generate_tasks(user: current_user, project_id: @project.id, certification_path_id: @certification_path.id)
+    @tasks = TaskService.instance.generate_tasks(user: current_user, project_id: @project.id, certification_path_id: @certification_path.id)
   end
 
   def create
