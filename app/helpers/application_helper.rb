@@ -48,9 +48,9 @@ module ApplicationHelper
     case model.class.name
       when Project.name.demodulize
         project = model
-      when ProjectAuthorization.name.demodulize
+      when ProjectsUser.name.demodulize
         project = model.project
-        project_authorization = model
+        projects_user = model
       when CertificationPath.name.demodulize
         project = model.project
         certification_path = model
@@ -88,8 +88,8 @@ module ApplicationHelper
       breadcrumbs[:paths] << project_path(project)
     end
     if project_authorization.present?
-      breadcrumbs[:names] << project_authorization.user.email
-      breadcrumbs[:paths] << project_authorization_path(project_authorization)
+      breadcrumbs[:names] << projects_user.user.email
+      breadcrumbs[:paths] << project_user_path(project, projects_user)
     end
     if certification_path.present?
       breadcrumbs[:names] << certification_path.name

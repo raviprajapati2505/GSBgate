@@ -47,7 +47,7 @@ class AuditableRecord < ActiveRecord::Base
           system_messages << 'The project details of %s were updated.'
           system_messages_params << [self.name]
         end
-      when ProjectAuthorization.name.demodulize
+      when ProjectsUser.name.demodulize
         auditable = self.project
         project = self.project
         if (action == AUDIT_LOG_CREATE)

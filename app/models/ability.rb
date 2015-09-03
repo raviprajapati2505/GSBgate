@@ -35,49 +35,49 @@ class Ability
       can :manage, :all
     elsif user.user?
       # User controller
-      can :new_member, User, projects: {project_authorizations: {user_id: user.id, role: ['project_manager', ProjectAuthorization.roles[:project_manager]]}}
-      can :new_member, User, projects: {project_authorizations: {user_id: user.id, role: ['certifier_manager', ProjectAuthorization.roles[:certifier_manager]]}}
-      can :index_tasks, User, projects: {project_authorizations: {user_id: user.id}}
+      can :new_member, User, projects: {projects_users: {user_id: user.id, role: ['project_manager', ProjectsUser.roles[:project_manager]]}}
+      can :new_member, User, projects: {projects_users: {user_id: user.id, role: ['certifier_manager', ProjectsUser.roles[:certifier_manager]]}}
+      can :index_tasks, User, projects: {projects_users: {user_id: user.id}}
       # Project controller
       can :manage, Project, owner_id: user.id
       # Waiting for https://github.com/CanCanCommunity/cancancan/pull/196
-      can :manage, Project, project_authorizations: {user_id: user.id, role: ['project_manager', ProjectAuthorization.roles[:project_manager]]}
-      can :read, Project, project_authorizations: {user_id: user.id}
-      # ProjectAuthorization controller
-      can :manage, ProjectAuthorization, project: {project_authorizations: {user_id: user.id, role: ['project_manager', ProjectAuthorization.roles[:project_manager]]}}
-      can :manage, ProjectAuthorization, project: {project_authorizations: {user_id: user.id, role: ['certifier_manager', ProjectAuthorization.roles[:certifier_manager]]}}
-      can :read, ProjectAuthorization, project: {project_authorizations: {user_id: user.id, role: ['enterprise_account', ProjectAuthorization.roles[:enterprise_account]]}}
-      can :create, ProjectAuthorization
+      can :manage, Project, projects_users: {user_id: user.id, role: ['project_manager', ProjectsUser.roles[:project_manager]]}
+      can :read, Project, projects_users: {user_id: user.id}
+      # ProjectsUsers controller
+      can :manage, ProjectsUser, project: {projects_users: {user_id: user.id, role: ['project_manager', ProjectsUser.roles[:project_manager]]}}
+      can :manage, ProjectsUser, project: {projects_users: {user_id: user.id, role: ['certifier_manager', ProjectsUser.roles[:certifier_manager]]}}
+      can :read, ProjectsUser, project: {projects_users: {user_id: user.id, role: ['enterprise_account', ProjectsUser.roles[:enterprise_account]]}}
+      can :create, ProjectsUser
       # CertificationPath controller
-      can :manage, CertificationPath, project: {project_authorizations: {user_id: user.id, role: ['project_manager', ProjectAuthorization.roles[:project_manager]]}}, status: ['in_submission', 'screened', 'awaiting_approval']
-      can :update, CertificationPath, project: {project_authorizations: {user_id: user.id, role: ['certifier_manager', ProjectAuthorization.roles[:certifier_manager]]}}, status: ['in_screening', 'in_verification']
-      can :read, CertificationPath, project: {project_authorizations: {user_id: user.id}}
+      can :manage, CertificationPath, project: {projects_users: {user_id: user.id, role: ['project_manager', ProjectsUser.roles[:project_manager]]}}, status: ['in_submission', 'screened', 'awaiting_approval']
+      can :update, CertificationPath, project: {projects_users: {user_id: user.id, role: ['certifier_manager', ProjectsUser.roles[:certifier_manager]]}}, status: ['in_screening', 'in_verification']
+      can :read, CertificationPath, project: {projects_users: {user_id: user.id}}
       can :create, CertificationPath
       # SchemeMix controller
-      can :read, SchemeMix, certification_path: {project: {project_authorizations: {user_id: user.id, role: ['project_manager', ProjectAuthorization.roles[:project_manager]]}}}
-      can :read, SchemeMix, certification_path: {project: {project_authorizations: {user_id: user.id}}}
-      can :allocate_project_team_responsibility, SchemeMix, certification_path: {project: {project_authorizations: {user_id: user.id, role: ['project_manager', ProjectAuthorization.roles[:project_manager]]}}}
-      can :allocate_certifier_team_responsibility, SchemeMix, certification_path: {project: {project_authorizations: {user_id: user.id, role: ['certifier_manager', ProjectAuthorization.roles[:certifier_manager]]}}}
+      can :read, SchemeMix, certification_path: {project: {projects_users: {user_id: user.id, role: ['project_manager', ProjectsUser.roles[:project_manager]]}}}
+      can :read, SchemeMix, certification_path: {project: {projects_users: {user_id: user.id}}}
+      can :allocate_project_team_responsibility, SchemeMix, certification_path: {project: {projects_users: {user_id: user.id, role: ['project_manager', ProjectsUser.roles[:project_manager]]}}}
+      can :allocate_certifier_team_responsibility, SchemeMix, certification_path: {project: {projects_users: {user_id: user.id, role: ['certifier_manager', ProjectsUser.roles[:certifier_manager]]}}}
       # SchemeMixCriterion controller
-      can :manage, SchemeMixCriterion, scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id, role:  ['project_manager', ProjectAuthorization.roles[:project_manager]]}}, status: ['in_submission', CertificationPath.statuses[:in_submission]]}}
-      can :read, SchemeMixCriterion, scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id}}}}
-      can :edit, SchemeMixCriterion, scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id}}}}
+      can :manage, SchemeMixCriterion, scheme_mix: {certification_path: {project: {projects_users: {user_id: user.id, role:  ['project_manager', ProjectsUser.roles[:project_manager]]}}, status: ['in_submission', CertificationPath.statuses[:in_submission]]}}
+      can :read, SchemeMixCriterion, scheme_mix: {certification_path: {project: {projects_users: {user_id: user.id}}}}
+      can :edit, SchemeMixCriterion, scheme_mix: {certification_path: {project: {projects_users: {user_id: user.id}}}}
       can :update, SchemeMixCriterion, requirement_data: {user_id: user.id}, scheme_mix: {certification_path: {status: ['in_submission', CertificationPath.statuses[:in_submission]]}}
       can :update, SchemeMixCriterion, certifier_id: user.id, scheme_mix: {certification_path: {status: ['in_submission', 'in_verification']}}
-      can :update, SchemeMixCriterion, scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id, role: ['certifier_manager', ProjectAuthorization.roles[:certifier_manager]]}}, status: ['in_screening', CertificationPath.statuses[:in_screening]]}}
-      can :assign_certifier, SchemeMixCriterion, scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id, role: ['certifier_manager', ProjectAuthorization.roles[:certifier_manager]]}}}}
+      can :update, SchemeMixCriterion, scheme_mix: {certification_path: {project: {projects_users: {user_id: user.id, role: ['certifier_manager', ProjectsUser.roles[:certifier_manager]]}}, status: ['in_screening', CertificationPath.statuses[:in_screening]]}}
+      can :assign_certifier, SchemeMixCriterion, scheme_mix: {certification_path: {project: {projects_users: {user_id: user.id, role: ['certifier_manager', ProjectsUser.roles[:certifier_manager]]}}}}
       # RequirementDatum controller
-      can :manage, RequirementDatum, scheme_mix_criteria: {scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id, role: ['project_manager', ProjectAuthorization.roles[:project_manager]]}}}}}
+      can :manage, RequirementDatum, scheme_mix_criteria: {scheme_mix: {certification_path: {project: {projects_users: {user_id: user.id, role: ['project_manager', ProjectsUser.roles[:project_manager]]}}}}}
       can :update, RequirementDatum, user_id: user.id
       # Document controller
-      can :manage, Document, scheme_mix_criteria: {scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id, role: ['project_manager', ProjectAuthorization.roles[:project_manager]]}}}}}
-      can :manage, Document, scheme_mix_criteria: {scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id, role: ['project_team_member', ProjectAuthorization.roles[:project_team_member]]}}}}}
-      can :read, Document, scheme_mix_criteria: {scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id}}}}}
+      can :manage, Document, scheme_mix_criteria: {scheme_mix: {certification_path: {project: {projects_users: {user_id: user.id, role: ['project_manager', ProjectsUser.roles[:project_manager]]}}}}}
+      can :manage, Document, scheme_mix_criteria: {scheme_mix: {certification_path: {project: {projects_users: {user_id: user.id, role: ['project_team_member', ProjectsUser.roles[:project_team_member]]}}}}}
+      can :read, Document, scheme_mix_criteria: {scheme_mix: {certification_path: {project: {projects_users: {user_id: user.id}}}}}
       # SchemeMixCriteriaDocument controller
-      can :manage, SchemeMixCriteriaDocument, scheme_mix_criterion: {scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id, role: ['project_manager', ProjectAuthorization.roles[:project_manager]]}}}}}
-      can :create, SchemeMixCriteriaDocument, scheme_mix_criterion: {scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id, role: ['project_team_member', ProjectAuthorization.roles[:project_team_member]]}}}}}
-      can :destroy, SchemeMixCriteriaDocument, scheme_mix_criterion: {scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id, role: ['project_team_member', ProjectAuthorization.roles[:project_team_member]]}}}}}
-      can :read, SchemeMixCriteriaDocument, scheme_mix_criterion: {scheme_mix: {certification_path: {project: {project_authorizations: {user_id: user.id}}}}}
+      can :manage, SchemeMixCriteriaDocument, scheme_mix_criterion: {scheme_mix: {certification_path: {project: {projects_users: {user_id: user.id, role: ['project_manager', ProjectsUser.roles[:project_manager]]}}}}}
+      can :create, SchemeMixCriteriaDocument, scheme_mix_criterion: {scheme_mix: {certification_path: {project: {projects_users: {user_id: user.id, role: ['project_team_member', ProjectsUser.roles[:project_team_member]]}}}}}
+      can :destroy, SchemeMixCriteriaDocument, scheme_mix_criterion: {scheme_mix: {certification_path: {project: {projects_users: {user_id: user.id, role: ['project_team_member', ProjectsUser.roles[:project_team_member]]}}}}}
+      can :read, SchemeMixCriteriaDocument, scheme_mix_criterion: {scheme_mix: {certification_path: {project: {projects_users: {user_id: user.id}}}}}
       # AuditLog controller
       can :read, AuditLog
       can :auditable_index, AuditLog

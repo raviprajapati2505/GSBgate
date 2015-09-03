@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150901083000) do
+ActiveRecord::Schema.define(version: 20150903144513) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -104,17 +104,6 @@ ActiveRecord::Schema.define(version: 20150901083000) do
 
   add_index "fields", ["calculator_id"], name: "index_fields_on_calculator_id", using: :btree
 
-  create_table "project_authorizations", force: :cascade do |t|
-    t.integer  "user_id"
-    t.integer  "project_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer  "role"
-  end
-
-  add_index "project_authorizations", ["project_id"], name: "index_project_authorizations_on_project_id", using: :btree
-  add_index "project_authorizations", ["user_id"], name: "index_project_authorizations_on_user_id", using: :btree
-
   create_table "projects", force: :cascade do |t|
     t.string    "name"
     t.datetime  "created_at",                                                                 null: false
@@ -132,6 +121,17 @@ ActiveRecord::Schema.define(version: 20150901083000) do
     t.string    "code"
     t.integer   "construction_year"
   end
+
+  create_table "projects_users", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "project_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "role"
+  end
+
+  add_index "projects_users", ["project_id"], name: "index_projects_users_on_project_id", using: :btree
+  add_index "projects_users", ["user_id"], name: "index_projects_users_on_user_id", using: :btree
 
   create_table "requirement_data", force: :cascade do |t|
     t.integer  "calculator_datum_id"
@@ -291,9 +291,9 @@ ActiveRecord::Schema.define(version: 20150901083000) do
   add_foreign_key "field_data", "calculator_data"
   add_foreign_key "field_data", "fields"
   add_foreign_key "fields", "calculators"
-  add_foreign_key "project_authorizations", "projects"
-  add_foreign_key "project_authorizations", "users"
   add_foreign_key "projects", "users", column: "owner_id"
+  add_foreign_key "projects_users", "projects"
+  add_foreign_key "projects_users", "users"
   add_foreign_key "requirement_data", "requirements"
   add_foreign_key "requirement_data", "users"
   add_foreign_key "scheme_categories", "schemes"

@@ -1,7 +1,6 @@
 Rails.application.routes.draw do
   resources :projects, except: [ :destroy ] do
-    resources :project_authorizations, only: [ :edit, :show, :update, :destroy ], path: 'authorizations', as: 'authorization'
-    resources :project_authorizations, only: [ :create ], path: 'authorizations', as: 'authorizations'
+    resources :projects_users, only: [ :create, :edit, :show, :update, :destroy ], path: 'users', as: 'users'
     resources :certification_paths, except: [ :index, :new, :edit, :destroy ], path: 'certificates' do
       resources :documents, only: [ :create, :show ], path: 'document'
       resources :scheme_mixes, only: [ :show ], path: 'schemes' do
@@ -21,10 +20,9 @@ Rails.application.routes.draw do
   get 'projects/:project_id/certificates/:id/archive' => 'certification_paths#download_archive', as: 'archive_project_certification_path'
   put 'projects/:project_id/certificates/:certification_path_id/schemes/:id/allocate-project-team-responsibility' => 'scheme_mixes#allocate_project_team_responsibility', as: 'allocate_project_team_responsibility'
   put 'projects/:project_id/certificates/:certification_path_id/schemes/:id/allocate-certifier-team-responsibility' => 'scheme_mixes#allocate_certifier_team_responsibility', as: 'allocate_certifier_team_responsibility'
+  get 'projects/:project_id/users' => 'projects_users#list_unauthorized_users', as: 'list_unauthorized_users'
 
   resources :users
-  get 'projects/:project_id/users/new' => 'users#new_member', as: 'new_project_user'
-  get 'projects/:project_id/users/:id/tasks' => 'users#index_tasks', as: 'project_user_tasks'
   devise_for :user
 
   # Error pages

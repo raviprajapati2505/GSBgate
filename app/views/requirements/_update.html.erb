@@ -18,7 +18,7 @@
                     <% if current_user.system_admin? || current_user.project_manager?(@project) %>
                         <div class="col-md-7">
                             <% users = User.authorized_for_project(@project).with_assessor_project_role %>
-                            <% if (users.count > 0) && (can? :read, @project.project_authorizations.first) %>
+                            <% if (users.count > 0) && (can? :read, @project.projects_users.first) %>
                                 <% if requirement_datum.user.nil? %>
                                     <%= f.select :user_id, options_for_select(users.map { |k| [k.email, k.id]}), {label: 'Responsibility', include_blank: ''} %>
                                 <% else %>

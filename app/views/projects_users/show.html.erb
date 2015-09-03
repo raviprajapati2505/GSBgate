@@ -5,7 +5,7 @@
                 <h5>User details</h5>
             </div>
             <div class="ibox-content">
-                <% project_authorization = ProjectAuthorization.for_project(@project).for_user(@user).first %>
+                <% projects_user = ProjectsUser.for_project(@project).for_user(@user).first %>
                 <table class="table table-bordered table-striped">
                     <tbody>
                     <tr>
@@ -21,22 +21,22 @@
                             <% elsif @user.gord_top_manager? %>
                                 GORD top manager
                             <% else %>
-                                <%= project_authorization.role.humanize %>
+                                <%= projects_user.role.humanize %>
                             <% end %>
                         </td>
                     </tr>
                     </tbody>
                 </table>
                 <div class="hr-line-dashed"></div>
-                <% if !project_authorization.nil? && (can? :edit, project_authorization) %>
-                    <% if project_authorization.certifier_manager? || project_authorization.certifier? %>
-                        <%= link_to raw('<i title="Edit authorization" class="fa fa-lg fa-edit" style="padding-right: 10px;"></i>&nbsp;Edit role'),  edit_project_authorization_path(@project, project_authorization, query: 'certifiers'), :class => 'btn btn-primary' %>
+                <% if !projects_user.nil? && (can? :edit, projects_user) %>
+                    <% if projects_user.certifier_manager? || projects_user.certifier? %>
+                        <%= link_to raw('<i title="Edit authorization" class="fa fa-lg fa-edit" style="padding-right: 10px;"></i>&nbsp;Edit role'),  edit_project_user_path(@project, projects_user, query: 'certifiers'), :class => 'btn btn-primary' %>
                     <% elsif @project.owner != @user %>
-                        <%= link_to raw('<i title="Edit authorization" class="fa fa-lg fa-edit" style="padding-right: 10px;"></i>&nbsp;Edit role'),  edit_project_authorization_path(@project, project_authorization), :class => 'btn btn-primary' %>
+                        <%= link_to raw('<i title="Edit authorization" class="fa fa-lg fa-edit" style="padding-right: 10px;"></i>&nbsp;Edit role'),  edit_project_user_path(@project, projects_user), :class => 'btn btn-primary' %>
                     <% end %>
                 <% end %>
-                <% if !project_authorization.nil? && (can? :destroy, project_authorization) && @project.owner != @user %>
-                <%= link_to raw('<i title="Delete authorization" class="fa fa-lg fa-user-times" style="padding-right: 10px;"></i>&nbsp;Remove from team'), project_authorization_path(@project, project_authorization), method: :delete, data: {confirm: 'Are you sure to remove team member ?'}, class: 'btn btn-white' %>
+                <% if !projects_user.nil? && (can? :destroy, projects_user) && @project.owner != @user %>
+                <%= link_to raw('<i title="Delete authorization" class="fa fa-lg fa-user-times" style="padding-right: 10px;"></i>&nbsp;Remove from team'), project_user_path(@project, projects_user), method: :delete, data: {confirm: 'Are you sure to remove team member ?'}, class: 'btn btn-white' %>
                 <% end %>
             </div>
         </div>

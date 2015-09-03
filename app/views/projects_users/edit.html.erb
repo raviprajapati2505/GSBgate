@@ -1,4 +1,4 @@
-<%= bootstrap_form_for([@project, @project_authorization], as: :authorization, url: project_authorization_path(@project, @project_authorization)) do |f| %>
+<%= bootstrap_form_for([@project, @projects_user], as: :authorization, url: project_user_path(@project, @projects_user)) do |f| %>
     <div class="row">
         <div class="col-lg-12">
             <div class="ibox">
@@ -6,11 +6,11 @@
                     <h5><%=t '.form_title' %></h5>
                 </div>
                 <div class="ibox-content">
-                    <%= f.select :user_id, [[@project_authorization.user.email, @project_authorization.user.id]], {}, { disabled: true} %>
+                    <%= f.select :user_id, [[@projects_user.user.email, @projects_user.user.id]], {}, { disabled: true} %>
                     <% if @show_certifiers %>
-                    <%= f.select :role, ProjectAuthorization.roles.keys[4..5].map { |k| [k.humanize, k]} %>
+                    <%= f.select :role, ProjectsUser.roles.keys[4..5].map { |k| [k.humanize, k]} %>
                     <% else %>
-                    <%= f.select :role, ProjectAuthorization.roles.keys[0..3].map { |k| [k.humanize, k]} %>
+                    <%= f.select :role, ProjectsUser.roles.keys[0..3].map { |k| [k.humanize, k]} %>
                     <% end %>
                     <%= f.primary t('.btn_save') %>
                     <%= link_to t('.btn_cancel'), :back, class: 'btn btn-white' %>

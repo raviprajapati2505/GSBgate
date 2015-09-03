@@ -18,7 +18,7 @@ class ProjectsController < AuthenticatedController
   def show
     @page_title = @project.name
     @certification_path = CertificationPath.new(project: @project)
-    @project_authorization = ProjectAuthorization.new(project: @project)
+    @projects_user = ProjectsUser.new(project: @project)
   end
 
   # GET /projects/new
@@ -42,8 +42,8 @@ class ProjectsController < AuthenticatedController
 
     @project.transaction do
       if @project.save
-        project_authorization = ProjectAuthorization.new(project: @project, user: current_user, role: ProjectAuthorization.roles[:project_manager])
-        if project_authorization.save
+        projects_user = ProjectsUser.new(project: @project, user: current_user, role: ProjectsUser.roles[:project_manager])
+        if projects_user.save
           redirect_to @project, notice: 'Project was successfully created.'
           return
         end

@@ -9,8 +9,8 @@ class User < ActiveRecord::Base
   has_many :owned_projects, class_name: 'Project', inverse_of: :owner
   has_many :documents
   has_many :scheme_mix_criteria_documents
-  has_many :project_authorizations, dependent: :delete_all
-  has_many :projects, through: :project_authorizations
+  has_many :projects_users, dependent: :delete_all
+  has_many :projects, through: :projects_users
   has_many :requirement_data, dependent: :nullify
   has_many :scheme_mix_criteria, inverse_of: :certifier, foreign_key: 'certifier_id'
 
@@ -21,7 +21,7 @@ class User < ActiveRecord::Base
   }
 
   scope :not_authorized_for_project, ->(project) {
-    where.not('exists(select id from project_authorizations where user_id = users.id and project_id = ?)', project.id)
+    where.not('exists(select id from projects_users where user_id = users.id and project_id = ?)', project.id)
   }
 
   scope :without_permissions_for_project, ->(project) {
@@ -29,15 +29,15 @@ class User < ActiveRecord::Base
   }
 
   scope :authorized_for_project, ->(project) {
-    joins(:project_authorizations).where(project_authorizations: {project_id: project.id})
+    joins(:projects_users).where(projects_users: {project_id: project.id})
   }
 
   scope :with_assessor_project_role, -> {
-    where('project_authorizations.role in (0, 1)')
+    where('projects_users.role in (0, 1)')
   }
 
   scope :with_certifier_project_role, -> {
-    where('project_authorizations.role in (3, 4)')
+    where('projects_users.role in (3, 4)')
   }
 
   def self.current
@@ -49,8 +49,8 @@ class User < ActiveRecord::Base
   end
 
   def certifier_manager?(project)
-    project_authorizations.each do |project_authorization|
-      if project_authorization.project == project && project_authorization.certifier_manager?
+    projects_users.each do |projects_user|
+      if projects_user.project == project && projects_user.certifier_manager?
         return true
       end
     end
@@ -58,8 +58,8 @@ class User < ActiveRecord::Base
   end
 
   def project_manager?(project)
-    project_authorizations.each do |project_authorization|
-      if project_authorization.project == project && project_authorization.project_manager?
+    projects_users.each do |projects_user|
+      if projects_user.project == project && projects_user.project_manager?
         return true
       end
     end
@@ -67,8 +67,8 @@ class User < ActiveRecord::Base
   end
 
   def enterprise_account?(project)
-    project_authorizations.each do |project_authorization|
-      if project_authorization.project == project && project_authorization.enterprise_account?
+    projects_users.each do |projects_user|
+      if projects_user.project == project && projects_user.enterprise_account?
         return true
       end
     end
@@ -76,8 +76,8 @@ class User < ActiveRecord::Base
   end
 
   def project_team_member?(project)
-    project_authorizations.each do |project_authorization|
-      if project_authorization.project == project && project_authorization.project_team_member?
+    projects_users.each do |projects_user|
+      if projects_user.project == project && projects_user.project_team_member?
         return true
       end
     end

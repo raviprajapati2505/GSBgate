@@ -1,9 +1,9 @@
 class Project < AuditableRecord
   belongs_to :owner, class_name: 'User', inverse_of: :owned_projects
-  has_many :project_authorizations, dependent: :delete_all
-  has_many :users, -> { where('project_authorizations.role < 3') },  through: :project_authorizations
-  has_many :certifiers, -> { where('project_authorizations.role > 2') }, through: :project_authorizations, source: :user
-  has_many :managers, -> { where('project_authorizations.role = 1') }, through: :project_authorizations, source: :user
+  has_many :projects_users, dependent: :delete_all
+  has_many :users, -> { where('projects_users.role < 3') },  through: :projects_users
+  has_many :certifiers, -> { where('projects_users.role > 2') }, through: :projects_users, source: :user
+  has_many :managers, -> { where('projects_users.role = 1') }, through: :projects_users, source: :user
   has_many :certification_paths
 
   validates :name, presence: true
@@ -24,17 +24,17 @@ class Project < AuditableRecord
   }
 
   def role_for_user(user)
-    project_authorizations.each do |project_authorization|
-      if project_authorization.user == user
-        return project_authorization.role
+    projects_users.each do |projects_user|
+      if projects_user.user == user
+        return projects_user.role
       end
     end
     return false
   end
 
   def certifier_manager_assigned?
-    project_authorizations.each do |project_authorization|
-      if project_authorization.certifier_manager?
+    projects_users.each do |projects_user|
+      if projects_user.certifier_manager?
         return true
       end
     end

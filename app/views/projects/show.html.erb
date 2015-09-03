@@ -158,11 +158,11 @@
                         </td>
                     </tr>
                     <% @project.users.distinct.each do |user| %>
-                        <% project_authorization = user.project_authorizations.for_project(@project).first %>
-                    <tr class="clickable" data-href="<%= project_user_tasks_path(@project, user) %>">
+                        <% projects_user = user.projects_users.for_project(@project).first %>
+                    <tr class="clickable" data-href="<%= project_user_path(@project, ProjectsUser.find_by(user: user, project: @project)) %>">
                         <td><%= user.email %></td>
-                        <td><%= project_authorization.role.humanize %><% if @project.owner == user %>&nbsp;&amp;&nbsp;owner<% end %></td>
-                        <td><% if !project_authorization.enterprise_account? %><%= user.requirement_data.for_project(@project).completed.count %>/<%= user.requirement_data.for_project(@project).count %><% else %>-<% end %></td>
+                        <td><%= projects_user.role.humanize %><% if @project.owner == user %>&nbsp;&amp;&nbsp;owner<% end %></td>
+                        <td><% if !projects_user.enterprise_account? %><%= user.requirement_data.for_project(@project).completed.count %>/<%= user.requirement_data.for_project(@project).count %><% else %>-<% end %></td>
                     </tr>
                     <% end %>
                     </tbody>
@@ -198,10 +198,10 @@
                             <td><%= SchemeMixCriterion.for_project(@project).unassigned.distinct.count %>/<%= SchemeMixCriterion.for_project(@project).distinct.count %></td>
                         </tr>
                         <% @project.certifiers.distinct.each do |certifier| %>
-                            <tr class="clickable" data-href="<%= project_user_tasks_path(@project, certifier) %>">
-                                <% project_authorization = certifier.project_authorizations.for_project(@project).first %>
+                            <tr class="clickable" data-href="<%= project_user_path(@project, ProjectsUser.find_by(user: certifier, project: @project)) %>">
+                                <% projects_user = certifier.projects_users.for_project(@project).first %>
                                 <td><%= certifier.email %></td>
-                                <td><%= project_authorization.role.humanize %></td>
+                                <td><%= projects_user.role.humanize %></td>
                                 <td>0/<%= certifier.scheme_mix_criteria.for_project(@project).count %></td>
                             </tr>
                         <% end %>
@@ -218,6 +218,6 @@
     </div>
 </div>
 <%= render 'certification_paths/form' %>
-<%= render 'project_authorizations/form', show_certifiers: true %>
-<%= render 'project_authorizations/form', show_certifiers: false %>
+<%= render 'projects_users/form', show_certifiers: true %>
+<%= render 'projects_users/form', show_certifiers: false %>
 <%= javascript_include_tag 'select_user' %>

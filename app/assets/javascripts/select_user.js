@@ -3,7 +3,7 @@ $(function () {
         placeholder: "Type the first letters of the email address",
         minimumInputLength: 1,
         ajax: {
-            url: Routes.new_project_user_path({project_id: $('.select2-ajax').data('project-id')}),
+            url: Routes.list_unauthorized_users_path({project_id: $('.select2-ajax').data('project-id')}),
             dataType: 'json',
             quietMillis: 250,
             data: function(term, page) {
