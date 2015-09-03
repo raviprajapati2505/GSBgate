@@ -6,11 +6,15 @@
             </div>
             <div class="ibox-content">
                 <div class="feed-activity-list">
-                    <% @audit_logs.each do |audit_log| %>
-                        <%= render 'audit_log', audit_log: audit_log, with_breadcrumbs: true %>
+                    <% if @audit_logs.blank? %>
+                        The audit log is empty.
+                    <% else %>
+                        <% @audit_logs.each do |audit_log| %>
+                            <%= render 'audit_log', audit_log: audit_log, with_breadcrumbs: true %>
+                        <% end %>
+                        <%= will_paginate @audit_logs, renderer: BootstrapPagination::Rails %>
                     <% end %>
                 </div>
-                <%= will_paginate @audit_logs, renderer: BootstrapPagination::Rails %>
             </div>
         </div>
     </div>
