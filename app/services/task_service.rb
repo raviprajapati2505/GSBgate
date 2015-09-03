@@ -102,12 +102,12 @@ class TaskService
     tasks = []
 
     # Query for certification_paths in 'registered' state and no certifier mngr assigned yet
-    if certification_path_id.nil?
+    if certification_path_id.blank?
       certification_paths = CertificationPath
                                 .where(status: [CertificationPath.statuses[:registered]])
                                 .where.not('exists(select pa.id from project_authorizations pa
                     where pa.project_id = certification_paths.project_id and pa.role = ?)', ProjectAuthorization.roles[:certifier_manager])
-    elsif !certification_path_id.nil?
+    else
       certification_paths = CertificationPath
                                 .where(status: [CertificationPath.statuses[:registered]], id: certification_path_id)
                                 .where.not('exists(select pa.id from project_authorizations pa
@@ -130,12 +130,12 @@ class TaskService
     tasks = []
 
     # Query for certification_paths in 'registered' state and at least one certifier manager assigned
-    if certification_path_id.nil?
+    if certification_path_id.blank?
       certification_paths = CertificationPath
                                 .where(status: [CertificationPath.statuses[:registered]])
                                 .where('exists(select pa.id from project_authorizations pa
                 where pa.project_id = certification_paths.project_id and pa.role = ?)', ProjectAuthorization.roles[:certifier_manager])
-    elsif !certification_path_id.nil?
+    else
       certification_paths = CertificationPath
                                 .where(status: [CertificationPath.statuses[:registered]], id: certification_path_id)
                                 .where('exists(select pa.id from project_authorizations pa
@@ -158,9 +158,9 @@ class TaskService
     tasks = []
 
     # Query for certification_paths in 'awaiting PCR admittance' state
-    if certification_path_id.nil?
+    if certification_path_id.blank?
       certification_paths = CertificationPath.where(status: [CertificationPath.statuses[:awaiting_pcr_admittance]])
-    elsif !certification_path_id.nil?
+    else
       certification_paths = CertificationPath.where(status: [CertificationPath.statuses[:awaiting_pcr_admittance]], id: certification_path_id)
     end
     certification_paths.each do |certification_path|
@@ -180,11 +180,11 @@ class TaskService
     tasks = []
 
     # Query for certification_paths in 'awaiting signatures' state and not signed by top mngr yet
-    if certification_path_id.nil?
+    if certification_path_id.blank?
       certification_paths = CertificationPath.where(status: [CertificationPath.statuses[:awaiting_signatures]],
                                                     signed_by_mngr: true,
                                                     signed_by_top_mngr: false)
-    elsif !certification_path_id.nil?
+    else
       certification_paths = CertificationPath.where(status: [CertificationPath.statuses[:awaiting_signatures]],
                                                     id: certification_path_id,
                                                     signed_by_mngr: true,
@@ -207,11 +207,11 @@ class TaskService
     tasks = []
 
     # Query for certification_paths in 'awaiting signatures' state and signed
-    if certification_path_id.nil?
+    if certification_path_id.blank?
       certification_paths = CertificationPath.where(status: [CertificationPath.statuses[:awaiting_signatures]],
                                                     signed_by_mngr: true,
                                                     signed_by_top_mngr: true)
-    elsif !certification_path_id.nil?
+    else
       certification_paths = CertificationPath.where(status: [CertificationPath.statuses[:awaiting_signatures]],
                                                     id: certification_path_id,
                                                     signed_by_mngr: true,
@@ -234,11 +234,11 @@ class TaskService
     tasks = []
 
     # Query for certification_paths in 'awaiting signatures' state and not signed yet
-    if certification_path_id.nil?
+    if certification_path_id.blank?
       certification_paths = CertificationPath.where(status: [CertificationPath.statuses[:awaiting_signatures]],
                                                     signed_by_mngr: false,
                                                     signed_by_top_mngr: false)
-    elsif !certification_path_id.nil?
+    else
       certification_paths = CertificationPath.where(status: [CertificationPath.statuses[:awaiting_signatures]],
                                                     id: certification_path_id,
                                                     signed_by_mngr: false,
@@ -261,12 +261,12 @@ class TaskService
     tasks = []
 
     # Query for requirement_data in 'required' state and no project team member assigned yet
-    if certification_path_id.nil?
+    if certification_path_id.blank?
       requirement_data = RequirementDatum
                              .joins(:scheme_mix_criteria => [:scheme_mix => [:certification_path => [:project => [:project_authorizations]]]])
                              .where(status: [RequirementDatum.statuses[:required]], user: nil,
                                     project_authorizations: {user_id: user.id, role: [ProjectAuthorization.roles[:project_manager]]})
-    elsif !certification_path_id.nil?
+    else
       requirement_data = RequirementDatum
                              .joins(:scheme_mix_criteria => [:scheme_mix => [:certification_path => [:project => [:project_authorizations]]]])
                              .where(status: [RequirementDatum.statuses[:required]], user: nil,
@@ -296,7 +296,7 @@ class TaskService
     tasks = []
 
     # Query for scheme_mix_criteria in 'in progress' state and no linked requirement_data in 'required' state
-    if certification_path_id.nil?
+    if certification_path_id.blank?
       scheme_mix_criteria = SchemeMixCriterion
                                 .joins(:scheme_mix => [:certification_path => [:project => [:project_authorizations]]])
                                 .where(status: [SchemeMixCriterion.statuses[:in_progress]],
@@ -304,7 +304,7 @@ class TaskService
                                 .where.not('exists(select rd.id from requirement_data rd
                     left join scheme_mix_criteria_requirement_data smcrd on smcrd.requirement_datum_id = rd.id
                     where smcrd.scheme_mix_criterion_id = scheme_mix_criteria.id and rd.status = ?)', RequirementDatum.statuses[:required])
-    elsif !certification_path_id.nil?
+    else
       scheme_mix_criteria = SchemeMixCriterion
                                 .joins(:scheme_mix => [:certification_path => [:project => [:project_authorizations]]])
                                 .where(status: [SchemeMixCriterion.statuses[:in_progress]],
@@ -334,7 +334,7 @@ class TaskService
     tasks = []
 
     # Query for certification_paths in 'in submission' state and no linked scheme_mix_criteria in 'in progress' state
-    if certification_path_id.nil?
+    if certification_path_id.blank?
       certification_paths = CertificationPath
                                 .joins(:project => [:project_authorizations])
                                 .where(status: [CertificationPath.statuses[:in_submission]],
@@ -342,7 +342,7 @@ class TaskService
                                 .where.not('exists(select smc.id from scheme_mix_criteria smc
                     left join scheme_mixes sm on sm.id = smc.scheme_mix_id
                     where sm.certification_path_id = certification_paths.id and smc.status = ?)', SchemeMixCriterion.statuses[:in_progress])
-    elsif !certification_path_id.nil?
+    else
       certification_paths = CertificationPath
                                 .joins(:project => [:project_authorizations])
                                 .where(status: [CertificationPath.statuses[:in_submission]], id: certification_path_id,
@@ -368,12 +368,12 @@ class TaskService
     tasks = []
 
     # Query for certification_paths in 'screened' state
-    if certification_path_id.nil?
+    if certification_path_id.blank?
       certification_paths = CertificationPath
                                 .joins(:project => [:project_authorizations])
                                 .where(status: [CertificationPath.statuses[:screened]],
                                        project_authorizations: {user_id: user.id, role: [ProjectAuthorization.roles[:project_manager]]})
-    elsif !certification_path_id.nil?
+    else
       certification_paths = CertificationPath
                                 .joins(:project => [:project_authorizations])
                                 .where(status: [CertificationPath.statuses[:screened]], id: certification_path_id,
@@ -396,12 +396,12 @@ class TaskService
     tasks = []
 
     # Query for certification_paths in 'reviewed' state
-    if certification_path_id.nil?
+    if certification_path_id.blank?
       certification_paths = CertificationPath
                                 .joins(:project => [:project_authorizations])
                                 .where(status: [CertificationPath.statuses[:reviewed]],
                                        project_authorizations: {user_id: user.id, role: [ProjectAuthorization.roles[:project_manager]]})
-    elsif !certification_path_id.nil?
+    else
       certification_paths = CertificationPath
                                 .joins(:project => [:project_authorizations])
                                 .where(status: [CertificationPath.statuses[:reviewed]], id: certification_path_id,
@@ -424,12 +424,12 @@ class TaskService
     tasks = []
 
     # Query for certification_paths in 'certification rejected'
-    if certification_path_id.nil?
+    if certification_path_id.blank?
       certification_paths = CertificationPath
                                 .joins(:project => [:project_authorizations])
                                 .where(status: [CertificationPath.statuses[:certification_rejected]],
                                        project_authorizations: {user_id: user.id, role: [ProjectAuthorization.roles[:project_manager]]})
-    elsif !certification_path_id.nil?
+    else
       certification_paths = CertificationPath
                                 .joins(:project => [:project_authorizations])
                                 .where(status: [CertificationPath.statuses[:certification_rejected]], id: certification_path_id,
@@ -452,12 +452,12 @@ class TaskService
     tasks = []
 
     # Query for certification_paths in 'awaiting approval'
-    if certification_path_id.nil?
+    if certification_path_id.blank?
       certification_paths = CertificationPath
                                 .joins(:project => [:project_authorizations])
                                 .where(status: [CertificationPath.statuses[:awaiting_approval]],
                                        project_authorizations: {user_id: user.id, role: [ProjectAuthorization.roles[:project_manager]]})
-    elsif !certification_path_id.nil?
+    else
       certification_paths = CertificationPath
                                 .joins(:project => [:project_authorizations])
                                 .where(status: [CertificationPath.statuses[:awaiting_approval]], id: certification_path_id,
@@ -480,12 +480,12 @@ class TaskService
     tasks = []
 
     # Query for certification_paths in 'certified'
-    if certification_path_id.nil?
+    if certification_path_id.blank?
       certification_paths = CertificationPath
                                 .joins(:project => [:project_authorizations])
                                 .where(status: [CertificationPath.statuses[:certified]],
                                        project_authorizations: {user_id: user.id, role: [ProjectAuthorization.roles[:project_manager]]})
-    elsif !certification_path_id.nil?
+    else
       certification_paths = CertificationPath
                                 .joins(:project => [:project_authorizations])
                                 .where(status: [CertificationPath.statuses[:certified]], id: certification_path_id,
@@ -508,9 +508,9 @@ class TaskService
     tasks = []
 
     # Query for requirement_data in 'required' state and project team member assigned
-    if certification_path_id.nil?
+    if certification_path_id.blank?
       requirement_data = RequirementDatum.where(status: [RequirementDatum.statuses[:required]], user: user)
-    elsif !certification_path_id.nil?
+    else
       requirement_data = RequirementDatum
                              .joins(:scheme_mix_criteria => [:scheme_mix => [:certification_path]])
                              .where(status: [RequirementDatum.statuses[:required]], user: user, certification_paths: {id: certification_path_id})
@@ -538,14 +538,14 @@ class TaskService
     tasks = []
 
     # Query for scheme_mix_criteria in 'complete' status and no certifier member assigned yet
-    if certification_path_id.nil?
+    if certification_path_id.blank?
       scheme_mix_criteria = SchemeMixCriterion
                                 .joins(:scheme_mix => [:certification_path => [:project => [:project_authorizations]]])
                                 .where(status: [SchemeMixCriterion.statuses[:complete]],
                                        certifier_id: nil,
                                        certification_paths: {status: [CertificationPath.statuses[:in_screening]]},
                                        project_authorizations: {user_id: user.id, role: [ProjectAuthorization.roles[:certifier_manager]]})
-    elsif !certification_path_id.nil?
+    else
       scheme_mix_criteria = SchemeMixCriterion
                                 .joins(:scheme_mix => [:certification_path => [:project => [:project_authorizations]]])
                                 .where(status: [SchemeMixCriterion.statuses[:complete]],
@@ -573,7 +573,7 @@ class TaskService
     tasks = []
 
     # Query for certification_paths in 'in screening' state and no linked scheme_mix_criteria in 'complete' state
-    if certification_path_id.nil?
+    if certification_path_id.blank?
       certification_paths = CertificationPath
                                 .joins(:project => [:project_authorizations])
                                 .where(status: [CertificationPath.statuses[:in_screening]],
@@ -581,7 +581,7 @@ class TaskService
                                 .where.not('exists(select smc.id from scheme_mix_criteria smc
                     left join scheme_mixes sm on sm.id = smc.scheme_mix_id
                     where sm.certification_path_id = certification_paths.id and smc.status = ?)', SchemeMixCriterion.statuses[:complete])
-    elsif !certification_path_id.nil?
+    else
       certification_paths = CertificationPath
                                 .joins(:project => [:project_authorizations])
                                 .where(status: [CertificationPath.statuses[:in_screening]], id: certification_path_id,
@@ -607,7 +607,7 @@ class TaskService
     tasks = []
 
     # Query for certification_paths in 'in review' state all linked scheme_mix_criteria in 'reviewed_approved' or 'resubmit' state
-    if certification_path_id.nil?
+    if certification_path_id.blank?
       certification_paths = CertificationPath
                                 .joins(:project => [:project_authorizations])
                                 .where(status: [CertificationPath.statuses[:in_review]],
@@ -615,7 +615,7 @@ class TaskService
                                 .where.not('exists(select smc.id from scheme_mix_criteria smc
                     left join scheme_mixes sm on sm.id = smc.scheme_mix_id
                     where sm.certification_path_id = certification_paths.id and smc.status = ?)', SchemeMixCriterion.statuses[:screened])
-    elsif !certification_path_id.nil?
+    else
       certification_paths = CertificationPath
                                 .joins(:project => [:project_authorizations])
                                 .where(status: [CertificationPath.statuses[:in_review]], id: certification_path_id,
@@ -641,7 +641,7 @@ class TaskService
     tasks = []
 
     # Query for certification_paths in 'in verification' state all linked scheme_mix_criteria in 'verified_approved' or 'disapproved' state
-    if certification_path_id.nil?
+    if certification_path_id.blank?
       certification_paths = CertificationPath
                                 .joins(:project => [:project_authorizations])
                                 .where(status: [CertificationPath.statuses[:in_verification]],
@@ -649,7 +649,7 @@ class TaskService
                                 .where.not('exists(select smc.id from scheme_mix_criteria smc
                     left join scheme_mixes sm on sm.id = smc.scheme_mix_id
                     where sm.certification_path_id = certification_paths.id and smc.status in (?, ?))', SchemeMixCriterion.statuses[:reviewed_approved], SchemeMixCriterion.statuses[:resubmit])
-    elsif !certification_path_id.nil?
+    else
       certification_paths = CertificationPath
                                 .joins(:project => [:project_authorizations])
                                 .where(status: [CertificationPath.statuses[:in_verification]], id: certification_path_id,
@@ -675,13 +675,13 @@ class TaskService
     tasks = []
 
     # Query for scheme_mix_criteria in 'complete' state and assigned certifier member
-    if certification_path_id.nil?
+    if certification_path_id.blank?
       scheme_mix_criteria = SchemeMixCriterion
                                 .joins(:scheme_mix => [:certification_path])
                                 .where(status: [SchemeMixCriterion.statuses[:complete]],
                                        certifier_id: user.id,
                                        certification_paths: {status: [CertificationPath.statuses[:in_screening]]})
-    elsif !certification_path_id.nil?
+    else
       scheme_mix_criteria = SchemeMixCriterion
                                 .joins(:scheme_mix => [:certification_path])
                                 .where(status: [SchemeMixCriterion.statuses[:complete]],
@@ -708,13 +708,13 @@ class TaskService
     tasks = []
 
     # Query for scheme_mix_criteria not in 'reviewed_approved' or 'resubmit' state and assigned to certifier member
-    if certification_path_id.nil?
+    if certification_path_id.blank?
       scheme_mix_criteria = SchemeMixCriterion
                                 .joins(:scheme_mix => [:certification_path])
                                 .where(certifier_id: user.id,
                                        certification_paths: {status: [CertificationPath.statuses[:in_review]]})
                                 .where.not(status: [SchemeMixCriterion.statuses[:reviewed_approved], SchemeMixCriterion.statuses[:resubmit]])
-    elsif !certification_path_id.nil?
+    else
       scheme_mix_criteria = SchemeMixCriterion
                                 .joins(:scheme_mix => [:certification_path])
                                 .where(certifier_id: user.id,
@@ -741,13 +741,13 @@ class TaskService
     tasks = []
 
     # Query for scheme_mix_criteria not in 'verified_approved' or 'disapproved' state and assigned to certifier member
-    if certification_path_id.nil?
+    if certification_path_id.blank?
       scheme_mix_criteria = SchemeMixCriterion
                                 .joins(:scheme_mix => [:certification_path])
                                 .where(certifier_id: user.id,
                                        certification_paths: {status: [CertificationPath.statuses[:in_verification]]})
                                 .where.not(status: [SchemeMixCriterion.statuses[:verified_approved], SchemeMixCriterion.statuses[:resubmit]])
-    elsif !certification_path_id.nil?
+    else
       scheme_mix_criteria = SchemeMixCriterion
                                 .joins(:scheme_mix => [:certification_path])
                                 .where(certifier_id: user.id,
