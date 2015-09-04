@@ -1,4 +1,4 @@
-$('#requirement-<%= @requirement_datum.id %>').replaceWith("<%= escape_javascript(render 'requirements/update', requirement_datum: @requirement_datum, certification_path_id: @certification_path_id, scheme_mix_id: @scheme_mix_id, scheme_mix_criterion_id: @scheme_mix_criterion_id) %>");
+$('#requirement-<%= @requirement_datum.id %>').replaceWith("<%= escape_javascript(render 'update', requirement_datum: @requirement_datum, certification_path_id: @certification_path_id, scheme_mix_id: @scheme_mix_id, scheme_mix_criterion_id: @scheme_mix_criterion_id) %>");
 $('#requirement-<%= @requirement_datum.id %>').find('a.collapsed').trigger('click');
 
 <% if notice %>

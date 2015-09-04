@@ -38,7 +38,7 @@ en:
       btn_close: "Close"
       btn_save: "Add"
       form_title: "Add team member"
-  requirements:
+  requirement_data:
     update:
       tooltip_due_date: "Due date passed"
       tooltip_requirement_required: "Requirement not provided yet"

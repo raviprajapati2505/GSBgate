@@ -148,7 +148,7 @@
                     <div class="col-md-12">
                         <div id="accordion" class="panel-group">
                             <% @scheme_mix_criterion.requirement_data.assigned_to_user(current_user).each do |requirement_datum| %>
-                                <%= render 'requirements/update', requirement_datum: requirement_datum, certification_path_id: @certification_path.id, scheme_mix_id: @scheme_mix.id, scheme_mix_criterion_id: @scheme_mix_criterion.id %>
+                                <%= render 'requirement_data/update', requirement_datum: requirement_datum, certification_path_id: @certification_path.id, scheme_mix_id: @scheme_mix.id, scheme_mix_criterion_id: @scheme_mix_criterion.id %>
                             <% end %>
                         </div>
                     </div>
@@ -170,7 +170,7 @@
                     <div class="col-md-12">
                         <div id="accordion" class="panel-group">
                             <% @scheme_mix_criterion.requirement_data.not_assigned_to_user(current_user).each do |requirement_datum| %>
-                                <%= render 'requirements/update', requirement_datum: requirement_datum, certification_path_id: @certification_path.id, scheme_mix_id: @scheme_mix.id, scheme_mix_criterion_id: @scheme_mix_criterion.id %>
+                                <%= render 'requirement_data/update', requirement_datum: requirement_datum, certification_path_id: @certification_path.id, scheme_mix_id: @scheme_mix.id, scheme_mix_criterion_id: @scheme_mix_criterion.id %>
                             <% end %>
                         </div>
                     </div>

@@ -16,7 +16,7 @@ class RequirementDataController < AuthenticatedController
             @certification_path_id = params[:certification_path_id]
             @scheme_mix_id = params[:scheme_mix_id]
             @scheme_mix_criterion_id = params[:scheme_mix_criterion_id]
-            render 'requirements/update' and return
+            render 'update' and return
           end
           field_datum.save
         end
@@ -61,7 +61,7 @@ class RequirementDataController < AuthenticatedController
 
     flash.now[:notice] = 'Requirement was successfully updated.'
 
-    render 'requirements/update'
+    render 'update'
   end
 
   private
