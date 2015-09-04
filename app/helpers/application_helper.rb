@@ -87,7 +87,7 @@ module ApplicationHelper
       breadcrumbs[:names] << project.name
       breadcrumbs[:paths] << project_path(project)
     end
-    if project_authorization.present?
+    if projects_user.present?
       breadcrumbs[:names] << projects_user.user.email
       breadcrumbs[:paths] << project_user_path(project, projects_user)
     end
