@@ -43,6 +43,12 @@ class CertificationPathsController < AuthenticatedController
         end
       end
 
+      # reset pcr_track_allowed if pcr_track is changed or is false
+      @certification_path.pcr_track = certification_path_params[:pcr_track]
+      if @certification_path.pcr_track_changed? || @certification_path.pcr_track == false
+        @certification_path.pcr_track_allowed = false
+      end
+
       if @certification_path.update(certification_path_params)
         if @certification_path.scheme_mixes.empty?
           @certification_path.create_descendant_records
@@ -84,6 +90,6 @@ class CertificationPathsController < AuthenticatedController
     end
 
     def certification_path_params
-      params.require(:certification_path).permit(:certificate_id, :status)
+      params.require(:certification_path).permit(:certificate_id, :status, :pcr_track, :pcr_track_allowed)
     end
 end

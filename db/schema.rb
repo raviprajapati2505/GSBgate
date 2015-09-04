@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150903144513) do
+ActiveRecord::Schema.define(version: 20150904095716) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -62,6 +62,8 @@ ActiveRecord::Schema.define(version: 20150903144513) do
     t.integer  "status"
     t.boolean  "signed_by_mngr",     default: false
     t.boolean  "signed_by_top_mngr", default: false
+    t.boolean  "pcr_track",          default: false
+    t.boolean  "pcr_track_allowed",  default: false
   end
 
   add_index "certification_paths", ["project_id"], name: "index_certification_paths_on_project_id", using: :btree
