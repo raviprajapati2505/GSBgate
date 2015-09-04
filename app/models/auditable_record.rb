@@ -33,6 +33,10 @@ class AuditableRecord < ActiveRecord::Base
   end
 
   def audit_log(action)
+    if User.current.blank?
+      return
+    end
+
     system_messages = []
     system_messages_params = []
     auditable = self
