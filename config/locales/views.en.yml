@@ -44,6 +44,12 @@ en:
       tooltip_requirement_required: "Requirement not provided yet"
       tooltip_requirement_provided: "Requirement provided"
       tooltip_requirement_not_required: "Requirement not required"
+    refuse_requirement:
+      btn_cancel: "Back"
+      btn_close: "Close"
+      btn_save: "Save"
+      info_refuse_requirement: "When you refuse this requirement, the project manager will have to reassign the requirement to another project team member. Please explain below why you can't complete the requirement."
+      modal_title: "Requirement refusal"
   scheme_mixes:
       allocate_project_team_responsibility:
         btn_cancel: "Cancel"

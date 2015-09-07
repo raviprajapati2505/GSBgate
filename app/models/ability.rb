@@ -68,7 +68,9 @@ class Ability
       can :assign_certifier, SchemeMixCriterion, scheme_mix: {certification_path: {project: {projects_users: {user_id: user.id, role: ['certifier_manager', ProjectsUser.roles[:certifier_manager]]}}}}
       # RequirementDatum controller
       can :manage, RequirementDatum, scheme_mix_criteria: {scheme_mix: {certification_path: {project: {projects_users: {user_id: user.id, role: ['project_manager', ProjectsUser.roles[:project_manager]]}}}}}
+      can :read, RequirementDatum, scheme_mix_criteria: {scheme_mix: {certification_path: {project: {projects_users: {user_id: user.id}}}}}
       can :update, RequirementDatum, user_id: user.id
+      can :refuse, RequirementDatum, user_id: user.id
       # Document controller
       can :manage, Document, scheme_mix_criteria: {scheme_mix: {certification_path: {project: {projects_users: {user_id: user.id, role: ['project_manager', ProjectsUser.roles[:project_manager]]}}}}}
       can :manage, Document, scheme_mix_criteria: {scheme_mix: {certification_path: {project: {projects_users: {user_id: user.id, role: ['project_team_member', ProjectsUser.roles[:project_team_member]]}}}}}

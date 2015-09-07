@@ -64,6 +64,15 @@ class RequirementDataController < AuthenticatedController
     render 'update'
   end
 
+  def refuse
+    if (current_user == @requirement_datum.user)
+      @requirement_datum.update(user: nil, audit_log_user_comment: params[:audit_log_user_comment])
+      redirect_to :back, notice: 'You are now unassigned from this requirement.'
+    else
+      redirect_to :back, alert: 'Only the assigned user can refuse this requirement.'
+    end
+  end
+
   private
   def set_project
     @project = Project.find(params[:project_id])

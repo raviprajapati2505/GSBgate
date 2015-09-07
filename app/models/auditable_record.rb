@@ -84,7 +84,7 @@ class AuditableRecord < ActiveRecord::Base
             else
               system_messages << 'The PCR track request was canceled for the certification path %s in project %s.'
             end
-            system_messages_params << [self.name, self.project.name, self.changes[:pcr_track][0], self.changes[:pcr_track][1]]
+            system_messages_params << [self.name, self.project.name]
           end
           if self.pcr_track_allowed_changed?
             if self.pcr_track_allowed?
@@ -92,7 +92,7 @@ class AuditableRecord < ActiveRecord::Base
             else
               system_messages << 'The PCR track request for certification path %s in project %s was rejected.'
             end
-            system_messages_params << [self.name, self.project.name, self.changes[:pcr_track_allowed][0], self.changes[:pcr_track_allowed][1]]
+            system_messages_params << [self.name, self.project.name]
           end
         end
       when SchemeMixCriterion.name.demodulize

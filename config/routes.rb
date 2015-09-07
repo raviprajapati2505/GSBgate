@@ -21,6 +21,7 @@ Rails.application.routes.draw do
   put 'projects/:project_id/certificates/:certification_path_id/schemes/:id/allocate-project-team-responsibility' => 'scheme_mixes#allocate_project_team_responsibility', as: 'allocate_project_team_responsibility'
   put 'projects/:project_id/certificates/:certification_path_id/schemes/:id/allocate-certifier-team-responsibility' => 'scheme_mixes#allocate_certifier_team_responsibility', as: 'allocate_certifier_team_responsibility'
   get 'projects/:project_id/users' => 'projects_users#list_unauthorized_users', as: 'list_unauthorized_users'
+  put '/projects/:project_id/certificates/:certification_path_id/schemes/:scheme_mix_id/criteria/:scheme_mix_criterion_id/requirement/:id/refuse' => 'requirement_data#refuse', as: 'refuse_requirement_datum'
 
   resources :users
   devise_for :user
