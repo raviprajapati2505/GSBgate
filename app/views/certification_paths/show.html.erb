@@ -12,8 +12,8 @@
                     <%= f.fields_for :certificate do |ff| %>
                         <%= ff.static_control :name, label: 'Name' %>
                     <% end %>
-                    <%= f.check_box :pcr_track, disabled: (true unless current_user.project_manager?(@project) || current_user.system_admin?), label: 'Apply for Pre-Certification Review (PCR) track' %>
-                    <%= f.check_box :pcr_track_allowed, disabled: (true unless current_user.system_admin? && @certification_path.pcr_track?), label: 'Pre-Certification Review (PCR) track is allowed' %>
+                    <%= f.check_box :pcr_track, disabled: (true unless (current_user.project_manager?(@project) || current_user.system_admin?) && CertificationPath.statuses[@certification_path.status] <= CertificationPath.statuses[:screened]), label: 'Apply for Pre-Certification Review (PCR) track' %>
+                    <%= f.check_box :pcr_track_allowed, disabled: (true unless (current_user.system_admin? && @certification_path.pcr_track?) && CertificationPath.statuses[@certification_path.status] <= CertificationPath.statuses[:awaiting_pcr_admittance]), label: 'Pre-Certification Review (PCR) track is allowed' %>
                     <% if current_user.project_manager?(@project) || current_user.system_admin? %>
                         <div class="hr-line-dashed"></div>
                         <%= f.primary 'Save' %>
