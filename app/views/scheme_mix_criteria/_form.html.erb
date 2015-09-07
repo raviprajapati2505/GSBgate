@@ -3,7 +3,7 @@
     <div class="ibox criterion-details">
         <div class="ibox-title">
             <%= audit_log_label(@scheme_mix_criterion) %>
-            <%= status_label(@scheme_mix_criterion.status, can?(:update, @scheme_mix_criterion), 'updateCriterionStatusModal') %>
+            <%= status_label(@scheme_mix_criterion.status, can?(:update, @scheme_mix_criterion) && !@scheme_mix_criterion.has_documents_awaiting_approval?, 'updateCriterionStatusModal') %>
             <h5>Criterion details</h5>
         </div>
         <div class="ibox-content">

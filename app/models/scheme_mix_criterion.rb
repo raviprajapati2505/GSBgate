@@ -73,9 +73,14 @@ class SchemeMixCriterion < AuditableRecord
     end
   end
 
-  scope :with_all_requirements_completed, -> {
-    where.not('exists(select rd.id from requirement_data rd inner join scheme_mix_criteria_requirement_data smcrd on smcrd.requirement_datum_id = rd.id where rd.status = 0 and smcrd.scheme_mix_criterion_id = scheme_mix_criteria.id)')
-  }
+  def has_documents_awaiting_approval?
+    scheme_mix_criteria_documents.each do |document|
+      if document.awaiting_approval?
+        return true
+      end
+    end
+    return false
+  end
 
   # returns targeted score taking into account the percentage for which it counts (=weight)
   def weighted_targeted_score

@@ -28,6 +28,12 @@ class SchemeMixCriteriaController < AuthenticatedController
             return
           end
         end
+        # no linked document can be 'awaiting approval'
+        if @scheme_mix_criterion.has_documents_awaiting_approval?
+          flash.now[:alert] = 'No document can be \'awaiting approval\'.'
+          render :show
+          return
+        end
       end
 
       # if not attempting criterion
