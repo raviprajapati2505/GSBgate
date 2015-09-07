@@ -12,30 +12,13 @@
             </thead>
             <tbody>
             <% @tasks.each do |task|
-                case task.resource_type
-                when Task.resource_types[:certification_path]
+                breadcrumbs = breadcrumbs(task.model, with_prefix: false)
              %>
-                <tr class="clickable" data-href="<%= project_certification_path_path(task.project_id, task.certification_path_id) %>">
+                <tr class="clickable" data-href="<%= breadcrumbs[:paths].last %>">
                     <td><%= t(".description_#{task.description_id}") %></td>
-                    <td><%= task.resource_name %></td>
+                    <td><%= breadcrumbs[:names].last %></td>
                 </tr>
-            <%  when Task.resource_types[:scheme_mix_criterion] %>
-                <tr class="clickable" data-href="<%= project_certification_path_scheme_mix_scheme_mix_criterion_path(task.project_id, task.certification_path_id, task.scheme_mix_id, task.scheme_mix_criterion_id) %>">
-                    <td><%= t(".description_#{task.description_id}") %></td>
-                    <td><%= task.resource_name %></td>
-                </tr>
-            <%  when Task.resource_types[:requirement_datum] %>
-                <tr class="clickable" data-href="<%= project_certification_path_scheme_mix_scheme_mix_criterion_path(task.project_id, task.certification_path_id, task.scheme_mix_id, task.scheme_mix_criterion_id, anchor: "requirement-#{task.requirement_datum_id}") %>">
-                    <td><%= t(".description_#{task.description_id}") %></td>
-                    <td><%= task.resource_name %></td>
-                </tr>
-            <%  when Task.resource_types[:scheme_mix_criteria_document] %>
-                <tr class="clickable" data-href="<%= project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_path(task.project_id, task.certification_path_id, task.scheme_mix_id, task.scheme_mix_criterion_id, task.scheme_mix_criteria_document_id) %>">
-                    <td><%= t(".description_#{task.description_id}") %></td>
-                    <td><%= task.resource_name %></td>
-                </tr>
-            <%  end
-               end %>
+            <% end %>
             </tbody>
         </table>
     </div>

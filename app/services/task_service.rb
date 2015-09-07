@@ -99,6 +99,8 @@ class TaskService
     return tasks
   end
 
+  private
+
   def generate_system_admin_tasks_1(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
 
@@ -116,11 +118,8 @@ class TaskService
     end
     certification_paths.each do |certification_path|
       task = Task.new(
-          project_id: project_id,
-          certification_path_id: certification_path.id,
-          description_id: 1,
-          resource_name: certification_path.name,
-          resource_type: Task.resource_types[:certification_path])
+          model: certification_path,
+          description_id: 1)
       tasks << task
     end
 
@@ -144,11 +143,8 @@ class TaskService
     end
     certification_paths.each do |certification_path|
       task = Task.new(
-          project_id: project_id,
-          certification_path_id: certification_path.id,
-          description_id: 2,
-          resource_name: certification_path.name,
-          resource_type: Task.resource_types[:certification_path])
+          model: certification_path,
+          description_id: 2)
       tasks << task
     end
 
@@ -166,11 +162,8 @@ class TaskService
     end
     certification_paths.each do |certification_path|
       task = Task.new(
-          project_id: project_id,
-          certification_path_id: certification_path.id,
-          description_id: 11,
-          resource_name: certification_path.name,
-          resource_type: Task.resource_types[:certification_path])
+          model: certification_path,
+          description_id: 11)
       tasks << task
     end
 
@@ -188,11 +181,8 @@ class TaskService
     end
     certification_paths.each do |certification_path|
       task = Task.new(
-          project_id: project_id,
-          certification_path_id: certification_path.id,
-          description_id: 12,
-          resource_name: certification_path.name,
-          resource_type: Task.resource_types[:certification_path])
+          model: certification_path,
+          description_id: 12)
       tasks << task
     end
 
@@ -216,11 +206,8 @@ class TaskService
     end
     certification_paths.each do |certification_path|
       task = Task.new(
-          project_id: project_id,
-          certification_path_id: certification_path.id,
-          description_id: 21,
-          resource_name: certification_path.name,
-          resource_type: Task.resource_types[:certification_path])
+          model: certification_path,
+          description_id: 21)
       tasks << task
     end
 
@@ -244,11 +231,8 @@ class TaskService
     end
     certification_paths.each do |certification_path|
       task = Task.new(
-          project_id: project_id,
-          certification_path_id: certification_path.id,
-          description_id: 22,
-          resource_name: certification_path.name,
-          resource_type: Task.resource_types[:certification_path])
+          model: certification_path,
+          description_id: 22)
       tasks << task
     end
 
@@ -272,11 +256,8 @@ class TaskService
     end
     certification_paths.each do |certification_path|
       task = Task.new(
-          project_id: project_id,
-          certification_path_id: certification_path.id,
-          description_id: 20,
-          resource_name: certification_path.name,
-          resource_type: Task.resource_types[:certification_path])
+          model: certification_path,
+          description_id: 20)
       tasks << task
     end
 
@@ -301,19 +282,10 @@ class TaskService
                                     projects_users: {user_id: user.id, role: [ProjectsUser.roles[:project_manager]]})
     end
     requirement_data.each do |requirement_datum|
-      requirement_datum.scheme_mix_criteria.each do |scheme_mix_criterion|
-        task = Task.new(
-            project_id: project_id,
-            certification_path_id: scheme_mix_criterion.scheme_mix.certification_path.id,
-            scheme_mix_id: scheme_mix_criterion.scheme_mix.id,
-            scheme_mix_criterion_id: scheme_mix_criterion.id,
-            requirement_datum_id: requirement_datum.id,
-            description_id: 3,
-            resource_name: requirement_datum.requirement.name,
-            resource_type: Task.resource_types[:requirement_datum]
-        )
-        tasks << task
-      end
+      task = Task.new(
+          model: requirement_datum,
+          description_id: 3)
+      tasks << task
     end
 
     return tasks
@@ -344,14 +316,8 @@ class TaskService
     end
     scheme_mix_criteria.each do |scheme_mix_criterion|
       task = Task.new(
-          project_id: project_id,
-          certification_path_id: scheme_mix_criterion.scheme_mix.certification_path.id,
-          scheme_mix_id: scheme_mix_criterion.scheme_mix.id,
-          scheme_mix_criterion_id: scheme_mix_criterion.id,
-          description_id: 5,
-          resource_name: scheme_mix_criterion.name,
-          resource_type: Task.resource_types[:scheme_mix_criterion]
-      )
+          model: scheme_mix_criterion,
+          description_id: 5)
       tasks << task
     end
 
@@ -381,11 +347,8 @@ class TaskService
     end
     certification_paths.each do |certification_path|
       task = Task.new(
-          project_id: project_id,
-          certification_path_id: certification_path.id,
-          description_id: 6,
-          resource_name: certification_path.name,
-          resource_type: Task.resource_types[:certification_path])
+          model: certification_path,
+          description_id: 6)
       tasks << task
     end
 
@@ -409,11 +372,8 @@ class TaskService
     end
     certification_paths.each do |certification_path|
       task = Task.new(
-          project_id: project_id,
-          certification_path_id: certification_path.id,
-          description_id: 10,
-          resource_name: certification_path.name,
-          resource_type: Task.resource_types[:certification_path])
+          model: certification_path,
+          description_id: 10)
       tasks << task
     end
 
@@ -437,11 +397,8 @@ class TaskService
     end
     certification_paths.each do |certification_path|
       task = Task.new(
-          project_id: project_id,
-          certification_path_id: certification_path.id,
-          description_id: 15,
-          resource_name: certification_path.name,
-          resource_type: Task.resource_types[:certification_path])
+          model: certification_path,
+          description_id: 15)
       tasks << task
     end
 
@@ -465,11 +422,8 @@ class TaskService
     end
     certification_paths.each do |certification_path|
       task = Task.new(
-          project_id: project_id,
-          certification_path_id: certification_path.id,
-          description_id: 18,
-          resource_name: certification_path.name,
-          resource_type: Task.resource_types[:certification_path])
+          model: certification_path,
+          description_id: 18)
       tasks << task
     end
 
@@ -493,11 +447,8 @@ class TaskService
     end
     certification_paths.each do |certification_path|
       task = Task.new(
-          project_id: project_id,
-          certification_path_id: certification_path.id,
-          description_id: 19,
-          resource_name: certification_path.name,
-          resource_type: Task.resource_types[:certification_path])
+          model: certification_path,
+          description_id: 19)
       tasks << task
     end
 
@@ -521,11 +472,8 @@ class TaskService
     end
     certification_paths.each do |certification_path|
       task = Task.new(
-          project_id: project_id,
-          certification_path_id: certification_path.id,
-          description_id: 23,
-          resource_name: certification_path.name,
-          resource_type: Task.resource_types[:certification_path])
+          model: certification_path,
+          description_id: 23)
       tasks << task
     end
 
@@ -546,19 +494,10 @@ class TaskService
                              .where(status: [RequirementDatum.statuses[:required]], user: user, certification_paths: {id: certification_path_id})
     end
     requirement_data.each do |requirement_datum|
-      requirement_datum.scheme_mix_criteria.each do |scheme_mix_criterion|
-        task = Task.new(
-            project_id: project_id,
-            certification_path_id: scheme_mix_criterion.scheme_mix.certification_path.id,
-            scheme_mix_id: scheme_mix_criterion.scheme_mix.id,
-            scheme_mix_criterion_id: scheme_mix_criterion.id,
-            requirement_datum_id: requirement_datum.id,
-            description_id: 4,
-            resource_name: requirement_datum.requirement.name,
-            resource_type: Task.resource_types[:requirement_datum]
-        )
-        tasks << task
-      end
+      task = Task.new(
+          model: requirement_datum,
+          description_id: 4)
+      tasks << task
     end
 
     return tasks
@@ -583,14 +522,8 @@ class TaskService
     end
     scheme_mix_criteria.each do |scheme_mix_criterion|
       task = Task.new(
-          project_id: project_id,
-          certification_path_id: scheme_mix_criterion.scheme_mix.certification_path.id,
-          scheme_mix_id: scheme_mix_criterion.scheme_mix.id,
-          scheme_mix_criterion_id: scheme_mix_criterion.id,
-          description_id: 7,
-          resource_name: scheme_mix_criterion.name,
-          resource_type: Task.resource_types[:scheme_mix_criterion]
-      )
+          model: scheme_mix_criterion,
+          description_id: 7)
       tasks << task
     end
 
@@ -620,11 +553,8 @@ class TaskService
     end
     certification_paths.each do |certification_path|
       task = Task.new(
-          project_id: project_id,
-          certification_path_id: certification_path.id,
-          description_id: 9,
-          resource_name: certification_path.name,
-          resource_type: Task.resource_types[:certification_path])
+          model: certification_path,
+          description_id: 9)
       tasks << task
     end
 
@@ -654,11 +584,8 @@ class TaskService
     end
     certification_paths.each do |certification_path|
       task = Task.new(
-          project_id: project_id,
-          certification_path_id: certification_path.id,
-          description_id: 14,
-          resource_name: certification_path.name,
-          resource_type: Task.resource_types[:certification_path])
+          model: certification_path,
+          description_id: 14)
       tasks << task
     end
 
@@ -688,11 +615,8 @@ class TaskService
     end
     certification_paths.each do |certification_path|
       task = Task.new(
-          project_id: project_id,
-          certification_path_id: certification_path.id,
-          description_id: 17,
-          resource_name: certification_path.name,
-          resource_type: Task.resource_types[:certification_path])
+          model: certification_path,
+          description_id: 17)
       tasks << task
     end
 
@@ -718,14 +642,8 @@ class TaskService
     end
     scheme_mix_criteria.each do |scheme_mix_criterion|
       task = Task.new(
-          project_id: project_id,
-          certification_path_id: scheme_mix_criterion.scheme_mix.certification_path.id,
-          scheme_mix_id: scheme_mix_criterion.scheme_mix.id,
-          scheme_mix_criterion_id: scheme_mix_criterion.id,
-          description_id: 8,
-          resource_name: scheme_mix_criterion.name,
-          resource_type: Task.resource_types[:scheme_mix_criterion]
-      )
+          model: scheme_mix_criterion,
+          description_id: 8)
       tasks << task
     end
 
@@ -751,14 +669,8 @@ class TaskService
     end
     scheme_mix_criteria.each do |scheme_mix_criterion|
       task = Task.new(
-          project_id: project_id,
-          certification_path_id: scheme_mix_criterion.scheme_mix.certification_path.id,
-          scheme_mix_id: scheme_mix_criterion.scheme_mix.id,
-          scheme_mix_criterion_id: scheme_mix_criterion.id,
-          description_id: 13,
-          resource_name: scheme_mix_criterion.name,
-          resource_type: Task.resource_types[:scheme_mix_criterion]
-      )
+          model: scheme_mix_criterion,
+          description_id: 13)
       tasks << task
     end
 
@@ -784,14 +696,8 @@ class TaskService
     end
     scheme_mix_criteria.each do |scheme_mix_criterion|
       task = Task.new(
-          project_id: project_id,
-          certification_path_id: scheme_mix_criterion.scheme_mix.certification_path.id,
-          scheme_mix_id: scheme_mix_criterion.scheme_mix.id,
-          scheme_mix_criterion_id: scheme_mix_criterion.id,
-          description_id: 16,
-          resource_name: scheme_mix_criterion.name,
-          resource_type: Task.resource_types[:scheme_mix_criterion]
-      )
+          model: scheme_mix_criterion,
+          description_id: 16)
       tasks << task
     end
 
