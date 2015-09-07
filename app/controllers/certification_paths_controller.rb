@@ -46,7 +46,7 @@ class CertificationPathsController < AuthenticatedController
       # reset pcr_track_allowed if pcr_track is changed or is false
       @certification_path.pcr_track = certification_path_params[:pcr_track]
       if @certification_path.pcr_track_changed? || @certification_path.pcr_track == false
-        @certification_path.pcr_track_allowed = false
+        params[:certification_path][:pcr_track_allowed] = false
       end
 
       if @certification_path.update(certification_path_params)

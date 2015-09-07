@@ -13,12 +13,13 @@
                         <%= ff.static_control :name, label: 'Name' %>
                     <% end %>
                     <%= f.check_box :pcr_track, disabled: (true unless current_user.project_manager?(@project) || current_user.system_admin?), label: 'Apply for Pre-Certification Review (PCR) track' %>
-                    <%= f.check_box :pcr_track_allowed, disabled: (true unless current_user.system_admin?), label: 'Pre-Certification Review (PCR) track is allowed' %>
+                    <%= f.check_box :pcr_track_allowed, disabled: (true unless current_user.system_admin? && @certification_path.pcr_track?), label: 'Pre-Certification Review (PCR) track is allowed' %>
                     <% if current_user.project_manager?(@project) || current_user.system_admin? %>
                         <div class="hr-line-dashed"></div>
                         <%= f.primary 'Save' %>
                     <% end %>
                     <% if current_user.gord_manager? || current_user.gord_top_manager? %>
+                        <div class="hr-line-dashed"></div>
                         <div class="form-group">
                         <%= check_box_tag :signed_by_mngr, true, @certification_path.signed_by_mngr, disabled: (true unless current_user.gord_manager?), data: {project_id: @project.id, id: @certification_path.id} %>
                         <%= label_tag :signed_by_mngr, 'Signed by GORD manager' %>

@@ -75,6 +75,20 @@ class AuditableRecord < ActiveRecord::Base
           if self.status_changed?
             system_messages << 'The status of certification path %s in project %s was changed from %s to %s.'
             system_messages_params << [self.name, self.project.name, self.changes[:status][0].humanize, self.changes[:status][1].humanize]
+          elsif self.pcr_track_changed?
+            if self.pcr_track?
+              system_messages << 'A PCR track request was issued for the certification path %s in project %s.'
+            else
+              system_messages << 'The PCR track request was canceled for the certification path %s in project %s.'
+            end
+            system_messages_params << [self.name, self.project.name, self.changes[:pcr_track][0], self.changes[:pcr_track][1]]
+          elsif self.pcr_track_allowed_changed?
+            if self.pcr_track_allowed?
+              system_messages << 'The PCR track request for certification path %s in project %s was granted.'
+            else
+              system_messages << 'The PCR track request for certification path %s in project %s was rejected.'
+            end
+            system_messages_params << [self.name, self.project.name, self.changes[:pcr_track_allowed][0], self.changes[:pcr_track_allowed][1]]
           end
         end
       when SchemeMixCriterion.name.demodulize
