@@ -99,7 +99,7 @@
                             <% end %>
                         </div>
                         <div class="col-md-5">
-                            <%= f.text_field :due_date, value: ((l @scheme_mix_criterion.due_date, format: :short) if !@scheme_mix_criterion.due_date.nil?), prepend: '<i class="fa fa-calendar"></i>'.html_safe, data: {provide: 'datepicker'}, autocomplete: 'off' %>
+                            <%= f.text_field :due_date, value: ((l @scheme_mix_criterion.due_date, format: :short) if !@scheme_mix_criterion.due_date.nil?), prepend: '<i class="fa fa-calendar"></i>'.html_safe, class: 'datepicker-future', autocomplete: 'off' %>
                         </div>
                     </div>
                     <div class="hr-line-dashed"></div>
@@ -117,7 +117,7 @@
                             <% end %>
                         </div>
                         <div class="col-md-5">
-                            <%= f.text_field :due_date, value: ((l @scheme_mix_criterion.due_date, format: :short) if !@scheme_mix_criterion.due_date.nil?), prepend: '<i class="fa fa-calendar"></i>'.html_safe, data: {provide: 'datepicker'}, autocomplete: 'off', disabled: true %>
+                            <%= f.text_field :due_date, value: ((l @scheme_mix_criterion.due_date, format: :short) if !@scheme_mix_criterion.due_date.nil?), prepend: '<i class="fa fa-calendar"></i>'.html_safe, class: 'datepicker-future', autocomplete: 'off', disabled: true %>
                         </div>
                     </div>
                 <% end %>

@@ -22,7 +22,7 @@
                                 <%= label_tag 'due_date', 'Due date', class: 'control-label' %>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                    <%= text_field_tag 'due_date', nil, {data: {provide: 'datepicker'}, class: 'form-control', autocomplete: 'off'} %>
+                                    <%= text_field_tag 'due_date', nil, {class: 'datepicker-future form-control', autocomplete: 'off'} %>
                                 </div>
                             </div>
                         </div>

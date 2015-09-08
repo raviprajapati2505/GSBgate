@@ -27,7 +27,7 @@
                             <% end %>
                         </div>
                         <div class="col-md-5">
-                            <%= f.text_field :due_date, value: ((l requirement_datum.due_date, format: :short) if !requirement_datum.due_date.nil?), prepend: '<i class="fa fa-calendar"></i>'.html_safe, data: {provide: 'datepicker'}, autocomplete: 'off' %>
+                            <%= f.text_field :due_date, value: ((l requirement_datum.due_date, format: :short) if !requirement_datum.due_date.nil?), prepend: '<i class="fa fa-calendar"></i>'.html_safe, class: 'datepicker-future', autocomplete: 'off' %>
                         </div>
                     <% else %>
                         <div class="col-md-7">
@@ -39,7 +39,7 @@
                             <% end %>
                         </div>
                         <div class="col-md-5">
-                            <%= f.text_field :due_date, value: ((l requirement_datum.due_date, format: :short) if !requirement_datum.due_date.nil?), prepend: '<i class="fa fa-calendar"></i>'.html_safe, data: {provide: 'datepicker'}, autocomplete: 'off', disabled: true %>
+                            <%= f.text_field :due_date, value: ((l requirement_datum.due_date, format: :short) if !requirement_datum.due_date.nil?), prepend: '<i class="fa fa-calendar"></i>'.html_safe, class: 'datepicker-future', autocomplete: 'off', disabled: true %>
                         </div>
                     <% end %>
                     <div class="col-md-12">

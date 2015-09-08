@@ -63,10 +63,18 @@ $(function () {
         radioClass: 'iradio_square-green'
     });
 
-    // Datepicker
-    $('input[data-provide="datepicker"]').datepicker({
+    // Datepicker (only today + future)
+    $('.datepicker-future').datepicker({
         format: 'dd/mm/yyyy',
         startDate: '0d',
+        todayBtn: true,
+        todayHighlight: true
+    });
+
+    // Datepicker (only today + past)
+    $('.datepicker-past').datepicker({
+        format: 'dd/mm/yyyy',
+        endDate: '0d',
         todayBtn: true,
         todayHighlight: true
     });

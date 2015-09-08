@@ -1,5 +1,50 @@
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-4 pull-right">
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>Audit log filter</h5>
+            </div>
+            <div class="ibox-content">
+                <%= bootstrap_form_tag(url: audit_logs_path, method: 'get') do |f| %>
+                    <%= f.text_field 'text', value: @default_values[:text], label: 'Message contains' %>
+                    <% # todo: admins have no projects -> fix %>
+                    <%= f.collection_select :project_id, (current_user.system_admin? or current_user.gord_manager? or current_user.gord_top_manager?) ? Project.all : current_user.projects, :id, :name, { include_blank: '- All projects -', selected: @default_values[:project_id] } %>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <%= label_tag 'start_date', 'Date from', class: 'control-label' %>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                    <%= text_field_tag 'date_from', @default_values[:date_from], {class: 'datepicker-past form-control', autocomplete: 'off'} %>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <%= label_tag 'to_date', 'Date to', class: 'control-label' %>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                    <%= text_field_tag 'date_to', @default_values[:date_to], {class: 'datepicker-past form-control', autocomplete: 'off'} %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <%= check_box_tag 'only_user_comments', 1, @default_values[:only_user_comments] %>
+                        <%= label_tag 'only_user_comments', 'Only show user comments' %>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
+                        <i title="Add comment" class="fa fa-lg fa-filter" style="padding-right: 10px;"></i>Apply filter
+                    <% end %>
+                    <%= link_to audit_logs_path, class: 'btn btn-white' do %>
+                        <i class="fa fa-lg fa-times" style="padding-right: 10px;"></i>Remove filter
+                    <% end %>
+            <% end %>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
         <div class="ibox">
             <div class="ibox-title">
                 <h5>Audit log <%= tooltip('This page contains audit logs for all projects you have access to.') %></h5>
@@ -7,7 +52,7 @@
             <div class="ibox-content">
                 <div class="feed-activity-list">
                     <% if @audit_logs.blank? %>
-                        The audit log is empty.
+                        No audit logs were found.
                     <% else %>
                         <% @audit_logs.each do |audit_log| %>
                             <%= render 'audit_log', audit_log: audit_log, with_breadcrumbs: true %>
