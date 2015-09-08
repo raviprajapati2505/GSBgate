@@ -1,7 +1,6 @@
 $(function () {
     $('.select2-ajax').select2({
         placeholder: "Type the first letters of the email address",
-        minimumInputLength: 1,
         ajax: {
             url: Routes.list_unauthorized_users_path({project_id: $('.select2-ajax').data('project-id')}),
             dataType: 'json',
