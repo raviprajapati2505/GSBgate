@@ -21,7 +21,7 @@
                     <tr class="clickable" data-href="<%= breadcrumbs[:paths].last %>">
                         <td><%= t(".description_#{task.description_id}") %></td>
                         <td><%= breadcrumbs[:names].last %></td>
-                        <td><% if task.model.due_date.present? %><%= l(task.model.due_date, format: :short) %><% else %>-<% end %></td>
+                        <td><% if task.model.class.method_defined?(:due_date) && task.model.due_date.present? %><%= l(task.model.due_date, format: :short) %><% else %>-<% end %></td>
                     </tr>
                 <% end %>
             <% end %>
