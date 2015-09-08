@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150904095716) do
+ActiveRecord::Schema.define(version: 20150908144251) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,6 +30,8 @@ ActiveRecord::Schema.define(version: 20150904095716) do
 
   add_index "audit_logs", ["auditable_type", "auditable_id"], name: "index_audit_logs_on_auditable_type_and_auditable_id", using: :btree
   add_index "audit_logs", ["project_id"], name: "index_audit_logs_on_project_id", using: :btree
+  add_index "audit_logs", ["system_message"], name: "index_audit_logs_on_system_message", using: :btree
+  add_index "audit_logs", ["user_comment"], name: "index_audit_logs_on_user_comment", using: :btree
   add_index "audit_logs", ["user_id"], name: "index_audit_logs_on_user_id", using: :btree
 
   create_table "calculator_data", force: :cascade do |t|
