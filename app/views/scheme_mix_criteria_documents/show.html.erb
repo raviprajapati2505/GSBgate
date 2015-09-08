@@ -29,7 +29,7 @@
                         <th>Criteria</th>
                         <td>
                             <% @document.scheme_mix_criteria.each do |scheme_mix_criterion| %>
-                                <%= scheme_mix_criterion.name %>
+                                <%= scheme_mix_criterion.full_name %>
                                 <br />
                             <% end %>
                             <!-- if can? :create, SchemeMixCriteriaDocument %-->
