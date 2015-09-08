@@ -19,6 +19,8 @@ class Project < AuditableRecord
 
   after_initialize :init
 
+  default_scope { order(name: :asc) }
+
   scope :for_owner, ->(user) {
     where(owner: user)
   }
