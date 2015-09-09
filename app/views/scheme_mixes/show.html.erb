@@ -32,13 +32,25 @@
                     </tr>
                     <tr>
                         <th>Your requirement progress</th>
-                        <td><%= RequirementDatum.for_scheme_mix(@scheme_mix).provided.assigned_to_user(current_user).count +
-                                        RequirementDatum.for_scheme_mix(@scheme_mix).not_required.assigned_to_user(current_user).count %>/<%= RequirementDatum.for_scheme_mix(@scheme_mix).assigned_to_user(current_user).count %></td>
+                        <td>
+                            <% my_processed_count = RequirementDatum.for_scheme_mix(@scheme_mix).provided.assigned_to_user(current_user).count +
+                                    RequirementDatum.for_scheme_mix(@scheme_mix).not_required.assigned_to_user(current_user).count %>
+                            <% my_total_count = RequirementDatum.for_scheme_mix(@scheme_mix).assigned_to_user(current_user).count %>
+                            <div class="progress">
+                                <div class="progress-bar" style="min-width: 2em; width: <%= (my_total_count != 0 ? (my_processed_count * 100 / my_total_count) : 100) %>%;"><%= my_processed_count %>/<%= my_total_count %></div>
+                            </div>
+                        </td>
                     </tr>
                     <tr>
                         <th>Total requirement progress</th>
-                        <td><%= RequirementDatum.for_scheme_mix(@scheme_mix).provided.count +
-                                        RequirementDatum.for_scheme_mix(@scheme_mix).not_required.count %>/<%= RequirementDatum.for_scheme_mix(@scheme_mix).count %></td>
+                        <td>
+                            <% processed_count = RequirementDatum.for_scheme_mix(@scheme_mix).provided.count +
+                                    RequirementDatum.for_scheme_mix(@scheme_mix).not_required.count %>
+                            <% total_count = RequirementDatum.for_scheme_mix(@scheme_mix).count %>
+                            <div class="progress">
+                                <div class="progress-bar" style="min-width: 2em; width: <%= (total_count != 0 ? (processed_count * 100 / total_count) : 100) %>%;"><%= processed_count %>/<%= total_count %></div>
+                            </div>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
@@ -93,10 +105,20 @@
                                      data-submitted="<%= @scheme_mix.total_weighted_submitted_score_for_category(category) %>"
                                      data-achieved="<%= @scheme_mix.total_weighted_achieved_score_for_category(category) %>"></div>
                             </td>
-                            <td><%= RequirementDatum.for_scheme_mix(@scheme_mix).for_category(category).provided.assigned_to_user(current_user).count +
-                                            RequirementDatum.for_scheme_mix(@scheme_mix).for_category(category).not_required.assigned_to_user(current_user).count %>/<%= RequirementDatum.for_scheme_mix(@scheme_mix).for_category(category).assigned_to_user(current_user).count %></td>
-                            <td><%= RequirementDatum.for_scheme_mix(@scheme_mix).for_category(category).provided.count +
-                                            RequirementDatum.for_scheme_mix(@scheme_mix).for_category(category).not_required.count %>/<%= RequirementDatum.for_scheme_mix(@scheme_mix).for_category(category).count %></td>
+                            <td><% my_processed_count = RequirementDatum.for_scheme_mix(@scheme_mix).for_category(category).provided.assigned_to_user(current_user).count +
+                                            RequirementDatum.for_scheme_mix(@scheme_mix).for_category(category).not_required.assigned_to_user(current_user).count %>
+                                <% my_total_count = RequirementDatum.for_scheme_mix(@scheme_mix).for_category(category).assigned_to_user(current_user).count %>
+                                <div class="progress">
+                                    <div class="progress-bar" style="min-width: 2em; width: <%= (my_total_count != 0 ? (my_processed_count * 100 / my_total_count) : 100) %>%;"><%= my_processed_count %>/<%= my_total_count %></div>
+                                </div>
+                            </td>
+                            <td><% processed_count = RequirementDatum.for_scheme_mix(@scheme_mix).for_category(category).provided.count +
+                                            RequirementDatum.for_scheme_mix(@scheme_mix).for_category(category).not_required.count %>
+                                <% total_count = RequirementDatum.for_scheme_mix(@scheme_mix).for_category(category).count %>
+                                <div class="progress">
+                                    <div class="progress-bar" style="min-width: 2em; width: <%= (total_count != 0 ? (processed_count * 100 / total_count) : 100) %>%;"><%= processed_count %>/<%= total_count %></div>
+                                </div>
+                            </td>
                         </tr>
                         <tr id="category-panel-<%= category.id %>" class="accordion-body collapse">
                             <td colspan="7">
@@ -136,8 +158,18 @@
                                                      data-submitted="<%= scheme_mix_criterion.submitted_score %>"
                                                      data-achieved="<%= scheme_mix_criterion.achieved_score %>"></div>
                                             </td>
-                                            <td><%= scheme_mix_criterion.requirement_data.provided.assigned_to_user(current_user).count + scheme_mix_criterion.requirement_data.not_required.assigned_to_user(current_user).count %>/<%= scheme_mix_criterion.requirement_data.assigned_to_user(current_user).count %></td>
-                                            <td><%= scheme_mix_criterion.requirement_data.provided.count + scheme_mix_criterion.requirement_data.not_required.count %>/<%= scheme_mix_criterion.requirement_data.count %></td>
+                                            <td><% my_processed_count = scheme_mix_criterion.requirement_data.provided.assigned_to_user(current_user).count + scheme_mix_criterion.requirement_data.not_required.assigned_to_user(current_user).count %>
+                                                <% my_total_count = scheme_mix_criterion.requirement_data.assigned_to_user(current_user).count %>
+                                                <div class="progress">
+                                                    <div class="progress-bar" style="min-width: 2em; width: <%= (my_total_count != 0 ? (my_processed_count * 100 / my_total_count) : 100) %>%;"><%= my_processed_count %>/<%= my_total_count %></div>
+                                                </div>
+                                            </td>
+                                            <td><% processed_count = scheme_mix_criterion.requirement_data.provided.count + scheme_mix_criterion.requirement_data.not_required.count %>
+                                                <% total_count = scheme_mix_criterion.requirement_data.count %>
+                                                <div class="progress">
+                                                    <div class="progress-bar" style="min-width: 2em; width: <%= (total_count != 0 ? (processed_count * 100 / total_count) : 100) %>%;"><%= processed_count %>/<%= total_count %></div>
+                                                </div>
+                                            </td>
                                         </tr>
                                         <% end %>
                                         </tbody>
