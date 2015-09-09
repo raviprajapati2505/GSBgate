@@ -59,7 +59,7 @@
                                    if @certification_path.requirement_data.count.nonzero?
                                      progress = @certification_path.requirement_data.completed.count * 100 / @certification_path.requirement_data.count
                                    else
-                                     progress = 100
+                                     progress = 0
                                    end
                                 %>
                                 <td>

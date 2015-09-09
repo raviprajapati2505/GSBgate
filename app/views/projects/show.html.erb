@@ -93,13 +93,13 @@
                                 <%
                                    if certification_path.requirement_data.count.nonzero?
                                      progress = certification_path.requirement_data.completed.count * 100 / certification_path.requirement_data.count
-                                 %>
+                                   else
+                                     progress = 0
+                                   end
+                                %>
                                     <div class="progress">
                                         <div class="progress-bar" style="min-width: 2em; width: <%= progress %>%;"><%= progress %>%</div>
                                     </div>
-                                <% else %>
-                                    No progress yet
-                                <% end %>
                                 </td>
                                 <td>
                                     <% if certification_path.registered? %>
