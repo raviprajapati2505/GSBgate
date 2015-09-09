@@ -73,6 +73,7 @@ class TaskService
     tasks += generate_project_mngr_tasks_18(user: user, project_id: project_id, certification_path_id: certification_path_id, scheme_mix_criterion_id: scheme_mix_criterion_id)
     tasks += generate_project_mngr_tasks_19(user: user, project_id: project_id, certification_path_id: certification_path_id, scheme_mix_criterion_id: scheme_mix_criterion_id)
     tasks += generate_project_mngr_tasks_23(user: user, project_id: project_id, certification_path_id: certification_path_id, scheme_mix_criterion_id: scheme_mix_criterion_id)
+    tasks += generate_project_mngr_tasks_24(user: user, project_id: project_id, certification_path_id: certification_path_id, scheme_mix_criterion_id: scheme_mix_criterion_id)
     return tasks
   end
 
@@ -474,6 +475,32 @@ class TaskService
       task = Task.new(
           model: certification_path,
           description_id: 23)
+      tasks << task
+    end
+
+    return tasks
+  end
+
+  def generate_project_mngr_tasks_24(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+    tasks = []
+
+    if project_id.present? && certification_path_id.blank?
+      scheme_mix_criteria_documents = SchemeMixCriteriaDocument
+                                          .joins(:scheme_mix_criterion => [:scheme_mix => [:certification_path => [:project => [:projects_users]]]])
+                                          .where(status: [SchemeMixCriteriaDocument.statuses[:awaiting_approval]],
+                                                 certification_paths: {project_id: project_id},
+                                                 projects_users: {user_id: user.id, role: [ProjectsUser.roles[:project_manager]]})
+    else
+      scheme_mix_criteria_documents = SchemeMixCriteriaDocument
+                                          .joins(:scheme_mix_criterion => [:scheme_mix => [:certification_path => [:project => [:projects_users]]]])
+                                          .where(status: [SchemeMixCriteriaDocument.statuses[:awaiting_approval]],
+                                                 certification_paths: {id: certification_path_id},
+                                                 projects_users: {user_id: user.id, role: [ProjectsUser.roles[:project_manager]]})
+    end
+    scheme_mix_criteria_documents.each do |document|
+      task = Task.new(
+                     model: document,
+                     description_id: 24)
       tasks << task
     end
 
