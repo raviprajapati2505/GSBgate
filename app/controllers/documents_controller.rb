@@ -10,6 +10,9 @@ class DocumentsController < AuthenticatedController
         # Create the document
         @document = Document.new(document_file: params[:document]['document_file'], user: current_user)
 
+        # Set the directory where the file will be stored, this is used by the DocumentUploader class
+        @document.store_dir = "projects/#{@project.id}/certification_paths/#{@certification_path.id}/documents"
+
         if @document.save
           # Create links with the scheme mix criteria
           params[:document]['scheme_mix_criteria'].each do |scheme_mix_criterion_id|
