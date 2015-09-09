@@ -106,6 +106,7 @@ en:
       description_22: "Set status to certified"
       description_23: "Download certificate"
       description_24: "Document is waiting for approval"
+      tooltip_due_date: "Task is overdue"
   users:
     index:
       action_edit_title: "Edit"
