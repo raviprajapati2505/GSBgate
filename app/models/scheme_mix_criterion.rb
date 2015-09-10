@@ -73,6 +73,15 @@ class SchemeMixCriterion < AuditableRecord
     end
   end
 
+  def has_required_requirements?
+    requirement_data.each do |requirement|
+      if requirement.required?
+        return true
+      end
+    end
+    return false
+  end
+
   def has_documents_awaiting_approval?
     scheme_mix_criteria_documents.each do |document|
       if document.awaiting_approval?

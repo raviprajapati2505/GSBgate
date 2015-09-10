@@ -19,8 +19,7 @@ class SchemeMixCriteriaController < AuthenticatedController
           return
         end
       elsif scheme_mix_criterion_params[:status] == :complete.to_s
-        # TODO All linked documents must be 'approved' (according the assessor manual, but what about rejected and superseded documents) ?
-        # and all requirements must be marked as 'provided' or 'not required'
+        # all requirements must be marked as 'provided' or 'not required'
         @scheme_mix_criterion.requirement_data.each do |requirement_datum|
           if requirement_datum.status == :required.to_s
             flash.now[:alert] = 'All requirements should first be approved or set to \'not required\'.'
