@@ -23,7 +23,7 @@ en:
       btn_add_certifier_team_member: "Add certifier"
       btn_add_project_team_member: "Add team member"
     form:
-      info_text_map: "The marker on the map below will automatically move to the location of the project address when the Address, Location and Country fields are filled out. Moreover, it is also possible to drag the marker to a custom location."
+      tooltip_latlng: "The latitude and longitude will automatically be updated when the Address, Location and Country fields are filled out. However, it is also possible to define a custom location by editing this field or by dragging the marker on the map."
       tooltip_gross_area: "Total built up area including parking areas such as underground or structured parking."
       tooltip_certified_area: "Total built up area excluding parking areas. All parking areas (whether underground, structured, or at grade) should NOT be included in this calculation. Other spaces, such as common areas, mechanical spaces, and circulation areas, should be included in the certified area of the building."
       tooltip_carpark_area: "Total built up area associated with parking (underground or structured parking). This does NOT include on-grade parking, as we are only interested in the built up area."

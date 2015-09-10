@@ -27,13 +27,24 @@
                             <%= f.text_field :project_site_area, append: 'm²', label: (Project.human_attribute_name('project_site_area') + tooltip(t '.tooltip_project_site_area')).html_safe %>
                         </div>
                         <div class="col-md-6">
-                            <div class="alert alert-info" role="alert">
-                                <i class="fa fa-info-circle"></i>&nbsp;&nbsp;<%=t '.info_text_map' %>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <%= label_tag :lat, ('Latitude' + tooltip(t '.tooltip_latlng')).html_safe %>
+                                        <%= text_field_tag :lat, @project.latlng.y, class: 'form-control' %>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <%= label_tag :lng, ('Longitude' + tooltip(t '.tooltip_latlng')).html_safe %>
+                                        <%= text_field_tag :lng, @project.latlng.x, class: 'form-control' %>
+                                    </div>
+                                </div>
                             </div>
-                            <div id="project-map" class="map" style="height: 350px;"></div>
                             <div style="display:none;">
                                 <%= f.text_field :latlng %>
                             </div>
+                            <div id="project-map" class="map" style="height: 350px;"></div>
                         </div>
                     </div>
                     <div class="row">
