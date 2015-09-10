@@ -8,7 +8,10 @@
 // Google Fonts
 @import url("//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&lang=en");
 
+// Fontawesome Fonts
 @import "fontawesome";
+// Fix for fonts with rails and sass
+@import "fontawesome-path-overrides";
 
 // Bootstrap
 //@import "bootstrap-sprockets";
