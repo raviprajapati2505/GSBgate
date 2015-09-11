@@ -2,22 +2,45 @@ class DocumentArchiverService
   include Singleton
   require 'zip'
 
-  # Creates a file archive of a list of SchemeMixCriteriaDocument models
-  def create_archive(scheme_mix_criteria_documents)
-    archive_path = 'private/archives/' + DateTime.now.to_i.to_s + '.zip'
+  ARCHIVES_PATH = 'private/archives/'
+  CLEAN_OLDER_THAN = 1.day
 
+  # Creates a file archive of all approved documents in a certification path
+  def create_archive(certification_path)
+    # Clean up old archives
+    cleanup_dir(ARCHIVES_PATH, CLEAN_OLDER_THAN)
+
+    # Set the path where the archive will be saved
+    archive_path = ARCHIVES_PATH + sanitize_filename(certification_path.project.name + ' - ' + certification_path.name) + ' - ' + Time.new.strftime(I18n.t('time.formats.filename'))  + '.zip'
+
+    # Create an empty archive
     Zip::File.open(archive_path, Zip::File::CREATE) do |archive|
-      scheme_mix_criteria_documents.each do |smcd|
-        category_name = smcd.scheme_mix_criterion.scheme_criterion.criterion.category.name
+      # Loop over all approved documents in the certification path
+      certification_path.scheme_mix_criteria_documents.approved.each do |smcd|
+        category_name = smcd.scheme_mix_criterion.scheme_criterion.scheme_category.name
         criterion_code = smcd.scheme_mix_criterion.scheme_criterion.code
 
         file_name = category_name + '/' + criterion_code + '/' + smcd.document.id.to_s + '_' + smcd.name
         file_path = smcd.path
 
+        # Add the document to the archive
         archive.add(file_name, file_path)
       end
     end
 
-    return archive_path
+    archive_path
+  end
+
+  private
+  def cleanup_dir(path, older_than)
+    Dir.glob("#{path}*").each do |file|
+      File.delete(file) if (File.mtime(file) < Time.now - older_than)
+    end
+  end
+
+  def sanitize_filename(name)
+    name.gsub!(/[^a-zA-Z0-9\.\-\+_ ]/, '_')
+    name = "_#{name}" if name =~ /^\.+$/
+    name
   end
 end

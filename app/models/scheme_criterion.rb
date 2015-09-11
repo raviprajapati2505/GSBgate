@@ -10,8 +10,12 @@ class SchemeCriterion < ActiveRecord::Base
     where(scheme_category_id: category.id)
   }
 
+  def code
+    "#{self.scheme_category.code}.#{self.number}"
+  end
+
   def full_name
-    "#{self.scheme_category.code}#{self.number}: #{self.name}"
+    "#{self.code}: #{self.name}"
   end
 
   def minimum_attainable_score

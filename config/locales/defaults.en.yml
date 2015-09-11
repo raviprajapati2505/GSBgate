@@ -27,6 +27,7 @@ en:
   time:
     formats:
       default: '%e %b %Y %H:%M %Z'
+      filename: '%Y%m%dT%H%M%S'
   errors:
       messages:
         wrong_size: "The file is the wrong size (should be %{file_size})"
