@@ -10,6 +10,7 @@ class CertificationPath < AuditableRecord
 
   accepts_nested_attributes_for :certificate
 
+  enum development_type: [ :single_use, :mixed_use, :mixed_development, :mixed_development_in_stages ]
   enum status: [ :registered, :in_submission, :in_screening, :screened, :awaiting_pcr_admittance, :in_review, :reviewed, :in_verification, :certification_rejected, :awaiting_approval, :awaiting_signatures, :certified ]
 
   def name
