@@ -35,6 +35,7 @@ class CertificationPathsController < AuthenticatedController
             # all scheme mix criteria must be marked as 'complete'
             @certification_path.scheme_mix_criteria.each do |scheme_mix_criteria|
               unless scheme_mix_criteria.complete?
+                @tasks = TaskService.instance.generate_tasks(user: current_user, project_id: @project.id, certification_path_id: @certification_path.id)
                 flash.now[:alert] = 'All scheme mix criteria should first be completed.'
                 render :show
                 return
@@ -44,9 +45,11 @@ class CertificationPathsController < AuthenticatedController
       end
 
       # reset pcr_track_allowed if pcr_track is false
-      @certification_path.pcr_track = certification_path_params[:pcr_track]
-      if @certification_path.pcr_track == false
-        params[:certification_path][:pcr_track_allowed] = false
+      if certification_path_params.has_key?(:pcr_track)
+        @certification_path.pcr_track = certification_path_params[:pcr_track]
+        if @certification_path.pcr_track == false
+          params[:certification_path][:pcr_track_allowed] = false
+        end
       end
 
       if @certification_path.update(certification_path_params)
@@ -55,6 +58,7 @@ class CertificationPathsController < AuthenticatedController
         end
         redirect_to project_certification_path_path(@project, @certification_path), notice: 'Status was successfully updated.'
       else
+        @tasks = TaskService.instance.generate_tasks(user: current_user, project_id: @project.id, certification_path_id: @certification_path.id)
         render action: :show
       end
     end
