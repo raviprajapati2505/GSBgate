@@ -10,7 +10,7 @@ class CertificationPathsController < AuthenticatedController
 
   def create
     @certification_path = CertificationPath.new(certification_path_params)
-    @certification_path.status = :registered
+    @certification_path.status = :awaiting_activation
     @certification_path.project = @project
     if @certification_path.save
         redirect_to project_path(@project), notice: 'Successfully applied for certificate.'
@@ -25,13 +25,13 @@ class CertificationPathsController < AuthenticatedController
       # Do some authorization/validation checks
       if @certification_path.status != certification_path_params[:status]
         case CertificationPath.statuses[certification_path_params[:status]]
-          # Only system admins can set status to in_submission
-          when CertificationPath.statuses[:in_submission]
+          # Only system admins can set status to awaiting_submission
+          when CertificationPath.statuses[:awaiting_submission]
             unless current_user.system_admin?
               raise CanCan::AccessDenied.new('Not Authorized to update certification_path status', :update, CertificationPath)
             end
-          # Only project managers can set status to in_screening
-          when CertificationPath.statuses[:in_screening]
+          # Only project managers can set status to awaiting_screening
+          when CertificationPath.statuses[:awaiting_screening]
             # all scheme mix criteria must be marked as 'complete'
             @certification_path.scheme_mix_criteria.each do |scheme_mix_criteria|
               unless scheme_mix_criteria.complete?

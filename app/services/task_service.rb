@@ -1,7 +1,7 @@
 class TaskService
   include Singleton
 
-  def generate_tasks(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_tasks(user: required, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
 
     if user.system_admin?
@@ -41,79 +41,76 @@ class TaskService
     return tasks
   end
 
-  def generate_system_admin_tasks(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_system_admin_tasks(user: required, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
     tasks += generate_system_admin_tasks_1(user: user, project_id: project_id, certification_path_id: certification_path_id, scheme_mix_criterion_id: scheme_mix_criterion_id)
     tasks += generate_system_admin_tasks_2(user: user, project_id: project_id, certification_path_id: certification_path_id, scheme_mix_criterion_id: scheme_mix_criterion_id)
     tasks += generate_system_admin_tasks_11(user: user, project_id: project_id, certification_path_id: certification_path_id, scheme_mix_criterion_id: scheme_mix_criterion_id)
     tasks += generate_system_admin_tasks_12(user: user, project_id: project_id, certification_path_id: certification_path_id, scheme_mix_criterion_id: scheme_mix_criterion_id)
+    tasks += generate_system_admin_tasks_19(user: user, project_id: project_id, certification_path_id: certification_path_id, scheme_mix_criterion_id: scheme_mix_criterion_id)
     return tasks
   end
 
-  def generate_gord_top_mngr_tasks(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_gord_top_mngr_tasks(user: required, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
-    tasks += generate_gord_top_mngr_tasks_21(user: user, project_id: project_id, certification_path_id: certification_path_id, scheme_mix_criterion_id: scheme_mix_criterion_id)
-    tasks += generate_gord_top_mngr_tasks_22(user: user, project_id: project_id, certification_path_id: certification_path_id, scheme_mix_criterion_id: scheme_mix_criterion_id)
+    tasks += generate_gord_top_mngr_tasks_26(user: user, project_id: project_id, certification_path_id: certification_path_id, scheme_mix_criterion_id: scheme_mix_criterion_id)
+    tasks += generate_gord_top_mngr_tasks_27(user: user, project_id: project_id, certification_path_id: certification_path_id, scheme_mix_criterion_id: scheme_mix_criterion_id)
     return tasks
   end
 
-  def generate_gord_mngr_tasks(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_gord_mngr_tasks(user: required, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
-    tasks += generate_gord_mngr_tasks_20(user: user, project_id: project_id, certification_path_id: certification_path_id, scheme_mix_criterion_id: scheme_mix_criterion_id)
+    tasks += generate_gord_mngr_tasks_25(user: user, project_id: project_id, certification_path_id: certification_path_id, scheme_mix_criterion_id: scheme_mix_criterion_id)
     return tasks
   end
 
-  def generate_project_mngr_tasks(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_project_mngr_tasks(user: required, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
     tasks += generate_project_mngr_tasks_3(user: user, project_id: project_id, certification_path_id: certification_path_id, scheme_mix_criterion_id: scheme_mix_criterion_id)
     tasks += generate_project_mngr_tasks_5(user: user, project_id: project_id, certification_path_id: certification_path_id, scheme_mix_criterion_id: scheme_mix_criterion_id)
     tasks += generate_project_mngr_tasks_6(user: user, project_id: project_id, certification_path_id: certification_path_id, scheme_mix_criterion_id: scheme_mix_criterion_id)
     tasks += generate_project_mngr_tasks_10(user: user, project_id: project_id, certification_path_id: certification_path_id, scheme_mix_criterion_id: scheme_mix_criterion_id)
     tasks += generate_project_mngr_tasks_15(user: user, project_id: project_id, certification_path_id: certification_path_id, scheme_mix_criterion_id: scheme_mix_criterion_id)
-    tasks += generate_project_mngr_tasks_18(user: user, project_id: project_id, certification_path_id: certification_path_id, scheme_mix_criterion_id: scheme_mix_criterion_id)
-    tasks += generate_project_mngr_tasks_19(user: user, project_id: project_id, certification_path_id: certification_path_id, scheme_mix_criterion_id: scheme_mix_criterion_id)
-    tasks += generate_project_mngr_tasks_23(user: user, project_id: project_id, certification_path_id: certification_path_id, scheme_mix_criterion_id: scheme_mix_criterion_id)
-    tasks += generate_project_mngr_tasks_24(user: user, project_id: project_id, certification_path_id: certification_path_id, scheme_mix_criterion_id: scheme_mix_criterion_id)
+    tasks += generate_project_mngr_tasks_28(user: user, project_id: project_id, certification_path_id: certification_path_id, scheme_mix_criterion_id: scheme_mix_criterion_id)
+    tasks += generate_project_mngr_tasks_29(user: user, project_id: project_id, certification_path_id: certification_path_id, scheme_mix_criterion_id: scheme_mix_criterion_id)
     return tasks
   end
 
-  def generate_project_member_tasks(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_project_member_tasks(user: required, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
     tasks += generate_project_member_tasks_4(user: user, project_id: project_id, certification_path_id: certification_path_id, scheme_mix_criterion_id: scheme_mix_criterion_id)
     return tasks
   end
 
-  def generate_certifier_mngr_tasks(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_certifier_mngr_tasks(user: required, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
     tasks += generate_certifier_mngr_tasks_7(user: user, project_id: project_id, certification_path_id: certification_path_id, scheme_mix_criterion_id: scheme_mix_criterion_id)
     tasks += generate_certifier_mngr_tasks_9(user: user, project_id: project_id, certification_path_id: certification_path_id, scheme_mix_criterion_id: scheme_mix_criterion_id)
-    tasks += generate_certifier_mngr_tasks_14(user: user, project_id: project_id, certification_path_id: certification_path_id, scheme_mix_criterion_id: scheme_mix_criterion_id)
     tasks += generate_certifier_mngr_tasks_17(user: user, project_id: project_id, certification_path_id: certification_path_id, scheme_mix_criterion_id: scheme_mix_criterion_id)
     return tasks
   end
 
-  def generate_certifier_member_tasks(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_certifier_member_tasks(user: required, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
     tasks += generate_certifier_member_tasks_8(user: user, project_id: project_id, certification_path_id: certification_path_id, scheme_mix_criterion_id: scheme_mix_criterion_id)
-    tasks += generate_certifier_member_tasks_13(user: user, project_id: project_id, certification_path_id: certification_path_id, scheme_mix_criterion_id: scheme_mix_criterion_id)
     tasks += generate_certifier_member_tasks_16(user: user, project_id: project_id, certification_path_id: certification_path_id, scheme_mix_criterion_id: scheme_mix_criterion_id)
     return tasks
   end
 
   private
 
-  def generate_system_admin_tasks_1(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_system_admin_tasks_1(user: required, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
 
-    # Query for certification_paths in 'registered' state and no certifier mngr assigned yet
+    # Query for certification_paths in 'awaiting activation' state and no certifier mngr assigned yet
     if project_id.present? && certification_path_id.blank?
       certification_paths = CertificationPath
-                                .where(status: [CertificationPath.statuses[:registered]], project_id: project_id)
+                                .where(status: [CertificationPath.statuses[:awaiting_activation]], project_id: project_id)
                                 .where.not('exists(select pa.id from projects_users pa
                     where pa.project_id = certification_paths.project_id and pa.role = ?)', ProjectsUser.roles[:certifier_manager])
     else
       certification_paths = CertificationPath
-                                .where(status: [CertificationPath.statuses[:registered]], id: certification_path_id)
+                                .where(status: [CertificationPath.statuses[:awaiting_activation]], id: certification_path_id)
                                 .where.not('exists(select pa.id from projects_users pa
                     where pa.project_id = certification_paths.project_id and pa.role = ?)', ProjectsUser.roles[:certifier_manager])
     end
@@ -127,18 +124,18 @@ class TaskService
     return tasks
   end
 
-  def generate_system_admin_tasks_2(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_system_admin_tasks_2(user: required, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
 
-    # Query for certification_paths in 'registered' state and at least one certifier manager assigned
+    # Query for certification_paths in 'awaiting activation' state and at least one certifier manager assigned
     if project_id.present? && certification_path_id.blank?
       certification_paths = CertificationPath
-                                .where(status: [CertificationPath.statuses[:registered]], project_id: project_id)
+                                .where(status: [CertificationPath.statuses[:awaiting_activation]], project_id: project_id)
                                 .where('exists(select pa.id from projects_users pa
                 where pa.project_id = certification_paths.project_id and pa.role = ?)', ProjectsUser.roles[:certifier_manager])
     else
       certification_paths = CertificationPath
-                                .where(status: [CertificationPath.statuses[:registered]], id: certification_path_id)
+                                .where(status: [CertificationPath.statuses[:awaiting_activation]], id: certification_path_id)
                                 .where('exists(select pa.id from projects_users pa
                 where pa.project_id = certification_paths.project_id and pa.role = ?)', ProjectsUser.roles[:certifier_manager])
     end
@@ -152,7 +149,7 @@ class TaskService
     return tasks
   end
 
-  def generate_system_admin_tasks_11(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_system_admin_tasks_11(user: required, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
 
     # Query for certification_paths in 'awaiting PCR admittance' state
@@ -171,14 +168,14 @@ class TaskService
     return tasks
   end
 
-  def generate_system_admin_tasks_12(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_system_admin_tasks_12(user: required, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
 
     # Query for certification_paths in 'awaiting PCR admittance' state
     if project_id.present? && certification_path_id.blank?
-      certification_paths = CertificationPath.where(pcr_track_allowed: true, status: [CertificationPath.statuses[:awaiting_pcr_admittance]], project_id: project_id)
+      certification_paths = CertificationPath.where(pcr_track_allowed: true, status: [CertificationPath.statuses[:awaiting_pcr_payment]], project_id: project_id)
     else
-      certification_paths = CertificationPath.where(pcr_track_allowed: true, status: [CertificationPath.statuses[:awaiting_pcr_admittance]], id: certification_path_id)
+      certification_paths = CertificationPath.where(pcr_track_allowed: true, status: [CertificationPath.statuses[:awaiting_pcr_payment]], id: certification_path_id)
     end
     certification_paths.each do |certification_path|
       task = Task.new(
@@ -190,17 +187,36 @@ class TaskService
     return tasks
   end
 
-  def generate_gord_top_mngr_tasks_21(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_system_admin_tasks_19(user: required, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
 
-    # Query for certification_paths in 'awaiting signatures' state and not signed by top mngr yet
+    # Query for certification_paths in 'awaiting appeal payment' state
     if project_id.present? && certification_path_id.blank?
-      certification_paths = CertificationPath.where(status: [CertificationPath.statuses[:awaiting_signatures]],
+      certification_paths = CertificationPath.where(status: [CertificationPath.statuses[:awaiting_appeal_payment]], project_id: project_id)
+    else
+      certification_paths = CertificationPath.where(status: [CertificationPath.statuses[:awaiting_appeal_payment]], id: certification_path_id)
+    end
+    certification_paths.each do |certification_path|
+      task = Task.new(
+           model: certification_path,
+           description_id: 19)
+      tasks << task
+    end
+
+    return tasks
+  end
+
+  def generate_gord_top_mngr_tasks_26(user: required, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+    tasks = []
+
+    # Query for certification_paths in 'awaiting management approvals' state and not signed by top mngr yet
+    if project_id.present? && certification_path_id.blank?
+      certification_paths = CertificationPath.where(status: [CertificationPath.statuses[:awaiting_management_approvals]],
                                                     project_id: project_id,
                                                     signed_by_mngr: true,
                                                     signed_by_top_mngr: false)
     else
-      certification_paths = CertificationPath.where(status: [CertificationPath.statuses[:awaiting_signatures]],
+      certification_paths = CertificationPath.where(status: [CertificationPath.statuses[:awaiting_management_approvals]],
                                                     id: certification_path_id,
                                                     signed_by_mngr: true,
                                                     signed_by_top_mngr: false)
@@ -208,24 +224,24 @@ class TaskService
     certification_paths.each do |certification_path|
       task = Task.new(
           model: certification_path,
-          description_id: 21)
+          description_id: 26)
       tasks << task
     end
 
     return tasks
   end
 
-  def generate_gord_top_mngr_tasks_22(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_gord_top_mngr_tasks_27(user: required, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
 
-    # Query for certification_paths in 'awaiting signatures' state and signed
+    # Query for certification_paths in 'awaiting management approvals' state and signed
     if project_id.present? && certification_path_id.blank?
-      certification_paths = CertificationPath.where(status: [CertificationPath.statuses[:awaiting_signatures]],
+      certification_paths = CertificationPath.where(status: [CertificationPath.statuses[:awaiting_management_approvals]],
                                                     project_id: project_id,
                                                     signed_by_mngr: true,
                                                     signed_by_top_mngr: true)
     else
-      certification_paths = CertificationPath.where(status: [CertificationPath.statuses[:awaiting_signatures]],
+      certification_paths = CertificationPath.where(status: [CertificationPath.statuses[:awaiting_management_approvals]],
                                                     id: certification_path_id,
                                                     signed_by_mngr: true,
                                                     signed_by_top_mngr: true)
@@ -233,24 +249,24 @@ class TaskService
     certification_paths.each do |certification_path|
       task = Task.new(
           model: certification_path,
-          description_id: 22)
+          description_id: 27)
       tasks << task
     end
 
     return tasks
   end
 
-  def generate_gord_mngr_tasks_20(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_gord_mngr_tasks_25(user: required, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
 
-    # Query for certification_paths in 'awaiting signatures' state and not signed yet
+    # Query for certification_paths in 'awaiting management approvals' state and not signed yet
     if project_id.present? && certification_path_id.blank?
-      certification_paths = CertificationPath.where(status: [CertificationPath.statuses[:awaiting_signatures]],
+      certification_paths = CertificationPath.where(status: [CertificationPath.statuses[:awaiting_management_approvals]],
                                                     project_id: project_id,
                                                     signed_by_mngr: false,
                                                     signed_by_top_mngr: false)
     else
-      certification_paths = CertificationPath.where(status: [CertificationPath.statuses[:awaiting_signatures]],
+      certification_paths = CertificationPath.where(status: [CertificationPath.statuses[:awaiting_management_approvals]],
                                                     id: certification_path_id,
                                                     signed_by_mngr: false,
                                                     signed_by_top_mngr: false)
@@ -258,14 +274,14 @@ class TaskService
     certification_paths.each do |certification_path|
       task = Task.new(
           model: certification_path,
-          description_id: 20)
+          description_id: 25)
       tasks << task
     end
 
     return tasks
   end
 
-  def generate_project_mngr_tasks_3(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_project_mngr_tasks_3(user: required, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
 
     # Query for requirement_data in 'required' state and no project team member assigned yet
@@ -292,7 +308,7 @@ class TaskService
     return tasks
   end
 
-  def generate_project_mngr_tasks_5(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_project_mngr_tasks_5(user: required, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
 
     # Query for scheme_mix_criteria in 'in progress' state and no linked requirement_data in 'required' state
@@ -325,14 +341,16 @@ class TaskService
     return tasks
   end
 
-  def generate_project_mngr_tasks_6(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_project_mngr_tasks_6(user: required, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
 
-    # Query for certification_paths in 'in submission' state and no linked scheme_mix_criteria in 'in progress' state
+    # Query for certification_paths in 'awaiting submission' state and no linked scheme_mix_criteria in 'in progress' state
     if project_id.present? && certification_path_id.blank?
       certification_paths = CertificationPath
                                 .joins(:project => [:projects_users])
-                                .where(status: [CertificationPath.statuses[:in_submission]], project_id: project_id,
+                                .where(status: [CertificationPath.statuses[:awaiting_submission],
+                                                CertificationPath.statuses[:awaiting_submission_after_appeal]],
+                                       project_id: project_id,
                                        projects_users: {user_id: user.id, role: [ProjectsUser.roles[:project_manager]]})
                                 .where.not('exists(select smc.id from scheme_mix_criteria smc
                     left join scheme_mixes sm on sm.id = smc.scheme_mix_id
@@ -340,7 +358,9 @@ class TaskService
     else
       certification_paths = CertificationPath
                                 .joins(:project => [:projects_users])
-                                .where(status: [CertificationPath.statuses[:in_submission]], id: certification_path_id,
+                                .where(status: [CertificationPath.statuses[:awaiting_submission],
+                                                CertificationPath.statuses[:awaiting_submission_after_appeal]],
+                                       id: certification_path_id,
                                        projects_users: {user_id: user.id, role: [ProjectsUser.roles[:project_manager]]})
                                 .where.not('exists(select smc.id from scheme_mix_criteria smc
                     left join scheme_mixes sm on sm.id = smc.scheme_mix_id
@@ -356,19 +376,25 @@ class TaskService
     return tasks
   end
 
-  def generate_project_mngr_tasks_10(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_project_mngr_tasks_10(user: required, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
 
-    # Query for certification_paths in 'screened' state
+    # Query for certification_paths in 'awaiting_submission_after_screening' state
     if project_id.present? && certification_path_id.blank?
       certification_paths = CertificationPath
                                 .joins(:project => [:projects_users])
-                                .where(status: [CertificationPath.statuses[:screened]], project_id: project_id,
+                                .where(status: [CertificationPath.statuses[:awaiting_submission_after_screening],
+                                                CertificationPath.statuses[:awaiting_approval_or_appeal],
+                                                CertificationPath.statuses[:awaiting_approval_after_appeal]],
+                                       project_id: project_id,
                                        projects_users: {user_id: user.id, role: [ProjectsUser.roles[:project_manager]]})
     else
       certification_paths = CertificationPath
                                 .joins(:project => [:projects_users])
-                                .where(status: [CertificationPath.statuses[:screened]], id: certification_path_id,
+                                .where(status: [CertificationPath.statuses[:awaiting_submission_after_screening],
+                                                CertificationPath.statuses[:awaiting_approval_or_appeal],
+                                                CertificationPath.statuses[:awaiting_approval_after_appeal]],
+                                       id: certification_path_id,
                                        projects_users: {user_id: user.id, role: [ProjectsUser.roles[:project_manager]]})
     end
     certification_paths.each do |certification_path|
@@ -381,19 +407,21 @@ class TaskService
     return tasks
   end
 
-  def generate_project_mngr_tasks_15(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_project_mngr_tasks_15(user: required, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
 
-    # Query for certification_paths in 'reviewed' state
+    # Query for certification_paths in 'awaiting submission after pcr' state
     if project_id.present? && certification_path_id.blank?
       certification_paths = CertificationPath
                                 .joins(:project => [:projects_users])
-                                .where(status: [CertificationPath.statuses[:reviewed]], project_id: project_id,
+                                .where(status: [CertificationPath.statuses[:awaiting_submission_after_pcr]],
+                                       project_id: project_id,
                                        projects_users: {user_id: user.id, role: [ProjectsUser.roles[:project_manager]]})
     else
       certification_paths = CertificationPath
                                 .joins(:project => [:projects_users])
-                                .where(status: [CertificationPath.statuses[:reviewed]], id: certification_path_id,
+                                .where(status: [CertificationPath.statuses[:awaiting_submission_after_pcr]],
+                                       id: certification_path_id,
                                        projects_users: {user_id: user.id, role: [ProjectsUser.roles[:project_manager]]})
     end
     certification_paths.each do |certification_path|
@@ -406,57 +434,7 @@ class TaskService
     return tasks
   end
 
-  def generate_project_mngr_tasks_18(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
-    tasks = []
-
-    # Query for certification_paths in 'certification rejected'
-    if project_id.present? && certification_path_id.blank?
-      certification_paths = CertificationPath
-                                .joins(:project => [:projects_users])
-                                .where(status: [CertificationPath.statuses[:certification_rejected]], project_id: project_id,
-                                       projects_users: {user_id: user.id, role: [ProjectsUser.roles[:project_manager]]})
-    else
-      certification_paths = CertificationPath
-                                .joins(:project => [:projects_users])
-                                .where(status: [CertificationPath.statuses[:certification_rejected]], id: certification_path_id,
-                                       projects_users: {user_id: user.id, role: [ProjectsUser.roles[:project_manager]]})
-    end
-    certification_paths.each do |certification_path|
-      task = Task.new(
-          model: certification_path,
-          description_id: 18)
-      tasks << task
-    end
-
-    return tasks
-  end
-
-  def generate_project_mngr_tasks_19(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
-    tasks = []
-
-    # Query for certification_paths in 'awaiting approval'
-    if project_id.present? && certification_path_id.blank?
-      certification_paths = CertificationPath
-                                .joins(:project => [:projects_users])
-                                .where(status: [CertificationPath.statuses[:awaiting_approval]], project_id: project_id,
-                                       projects_users: {user_id: user.id, role: [ProjectsUser.roles[:project_manager]]})
-    else
-      certification_paths = CertificationPath
-                                .joins(:project => [:projects_users])
-                                .where(status: [CertificationPath.statuses[:awaiting_approval]], id: certification_path_id,
-                                       projects_users: {user_id: user.id, role: [ProjectsUser.roles[:project_manager]]})
-    end
-    certification_paths.each do |certification_path|
-      task = Task.new(
-          model: certification_path,
-          description_id: 19)
-      tasks << task
-    end
-
-    return tasks
-  end
-
-  def generate_project_mngr_tasks_23(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_project_mngr_tasks_28(user: required, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
 
     # Query for certification_paths in 'certified'
@@ -474,14 +452,14 @@ class TaskService
     certification_paths.each do |certification_path|
       task = Task.new(
           model: certification_path,
-          description_id: 23)
+          description_id: 28)
       tasks << task
     end
 
     return tasks
   end
 
-  def generate_project_mngr_tasks_24(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_project_mngr_tasks_29(user: required, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
 
     if project_id.present? && certification_path_id.blank?
@@ -500,25 +478,27 @@ class TaskService
     scheme_mix_criteria_documents.each do |document|
       task = Task.new(
                      model: document,
-                     description_id: 24)
+                     description_id: 29)
       tasks << task
     end
 
     return tasks
   end
 
-  def generate_project_member_tasks_4(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_project_member_tasks_4(user: required, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
 
     # Query for requirement_data in 'required' state and project team member assigned
     if project_id.present? && certification_path_id.blank?
       requirement_data = RequirementDatum
                              .joins(:scheme_mix_criteria => [:scheme_mix => [:certification_path]])
-                             .where(status: [RequirementDatum.statuses[:required]], user: user, certification_paths: {project_id: project_id})
+                             .where(status: [RequirementDatum.statuses[:required]],
+                                    user: user, certification_paths: {project_id: project_id})
     else
       requirement_data = RequirementDatum
                              .joins(:scheme_mix_criteria => [:scheme_mix => [:certification_path]])
-                             .where(status: [RequirementDatum.statuses[:required]], user: user, certification_paths: {id: certification_path_id})
+                             .where(status: [RequirementDatum.statuses[:required]],
+                                    user: user, certification_paths: {id: certification_path_id})
     end
     requirement_data.each do |requirement_datum|
       task = Task.new(
@@ -530,7 +510,7 @@ class TaskService
     return tasks
   end
 
-  def generate_certifier_mngr_tasks_7(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_certifier_mngr_tasks_7(user: required, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
 
     # Query for scheme_mix_criteria with no certifier member assigned yet
@@ -557,26 +537,24 @@ class TaskService
     return tasks
   end
 
-  def generate_certifier_mngr_tasks_9(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_certifier_mngr_tasks_9(user: required, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
 
-    # Query for certification_paths in 'in screening' state and no linked scheme_mix_criteria in 'complete' state
+    # Query for certification_paths in 'awaiting screening' state
     if project_id.present? && certification_path_id.blank?
       certification_paths = CertificationPath
                                 .joins(:project => [:projects_users])
-                                .where(status: [CertificationPath.statuses[:in_screening]], project_id: project_id,
+                                .where(status: [CertificationPath.statuses[:awaiting_screening],
+                                                CertificationPath.statuses[:awaiting_submission_after_pcr]],
+                                       project_id: project_id,
                                        projects_users: {user_id: user.id, role: [ProjectsUser.roles[:certifier_manager]]})
-                                .where.not('exists(select smc.id from scheme_mix_criteria smc
-                    left join scheme_mixes sm on sm.id = smc.scheme_mix_id
-                    where sm.certification_path_id = certification_paths.id and smc.status = ?)', SchemeMixCriterion.statuses[:complete])
     else
       certification_paths = CertificationPath
                                 .joins(:project => [:projects_users])
-                                .where(status: [CertificationPath.statuses[:in_screening]], id: certification_path_id,
+                                .where(status: [CertificationPath.statuses[:awaiting_screening],
+                                                CertificationPath.statuses[:awaiting_submission_after_pcr]],
+                                       id: certification_path_id,
                                        projects_users: {user_id: user.id, role: [ProjectsUser.roles[:certifier_manager]]})
-                                .where.not('exists(select smc.id from scheme_mix_criteria smc
-                    left join scheme_mixes sm on sm.id = smc.scheme_mix_id
-                    where sm.certification_path_id = certification_paths.id and smc.status = ?)', SchemeMixCriterion.statuses[:complete])
     end
     certification_paths.each do |certification_path|
       task = Task.new(
@@ -588,51 +566,30 @@ class TaskService
     return tasks
   end
 
-  def generate_certifier_mngr_tasks_14(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_certifier_mngr_tasks_17(user: required, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
 
-    # Query for certification_paths in 'in review' state
+    # Query for certification_paths in 'awaiting verification' state
     if project_id.present? && certification_path_id.blank?
       certification_paths = CertificationPath
                                 .joins(:project => [:projects_users])
-                                .where(status: [CertificationPath.statuses[:in_review]], project_id: project_id,
-                                       projects_users: {user_id: user.id, role: [ProjectsUser.roles[:certifier_manager]]})
-    else
-      certification_paths = CertificationPath
-                                .joins(:project => [:projects_users])
-                                .where(status: [CertificationPath.statuses[:in_review]], id: certification_path_id,
-                                       projects_users: {user_id: user.id, role: [ProjectsUser.roles[:certifier_manager]]})
-    end
-    certification_paths.each do |certification_path|
-      task = Task.new(
-          model: certification_path,
-          description_id: 14)
-      tasks << task
-    end
-
-    return tasks
-  end
-
-  def generate_certifier_mngr_tasks_17(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
-    tasks = []
-
-    # Query for certification_paths in 'in verification' state
-    if project_id.present? && certification_path_id.blank?
-      certification_paths = CertificationPath
-                                .joins(:project => [:projects_users])
-                                .where(status: [CertificationPath.statuses[:in_verification]], project_id: project_id,
+                                .where(status: [CertificationPath.statuses[:awaiting_verification],
+                                                CertificationPath.statuses[:awaiting_verification_after_appeal]],
+                                       project_id: project_id,
                                        projects_users: {user_id: user.id, role: [ProjectsUser.roles[:certifier_manager]]})
                                 .where.not('exists(select smc.id from scheme_mix_criteria smc
                     left join scheme_mixes sm on sm.id = smc.scheme_mix_id
-                    where sm.certification_path_id = certification_paths.id and smc.status in (?, ?))', SchemeMixCriterion.statuses[:approved], SchemeMixCriterion.statuses[:resubmit])
+                    where sm.certification_path_id = certification_paths.id and smc.status = ?)', SchemeMixCriterion.statuses[:complete])
     else
       certification_paths = CertificationPath
                                 .joins(:project => [:projects_users])
-                                .where(status: [CertificationPath.statuses[:in_verification]], id: certification_path_id,
+                                .where(status: [CertificationPath.statuses[:awaiting_verification],
+                                                CertificationPath.statuses[:awaiting_verification_after_appeal]],
+                                       id: certification_path_id,
                                        projects_users: {user_id: user.id, role: [ProjectsUser.roles[:certifier_manager]]})
                                 .where.not('exists(select smc.id from scheme_mix_criteria smc
                     left join scheme_mixes sm on sm.id = smc.scheme_mix_id
-                    where sm.certification_path_id = certification_paths.id and smc.status in (?, ?))', SchemeMixCriterion.statuses[:approved], SchemeMixCriterion.statuses[:resubmit])
+                    where sm.certification_path_id = certification_paths.id and smc.status = ?)', SchemeMixCriterion.statuses[:complete])
     end
     certification_paths.each do |certification_path|
       task = Task.new(
@@ -644,7 +601,7 @@ class TaskService
     return tasks
   end
 
-  def generate_certifier_member_tasks_8(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_certifier_member_tasks_8(user: required, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
 
     # Query for scheme_mix_criteria in 'complete' state and assigned certifier member
@@ -653,13 +610,17 @@ class TaskService
                                 .joins(:scheme_mix => [:certification_path])
                                 .where(status: [SchemeMixCriterion.statuses[:complete]],
                                        certifier_id: user.id,
-                                       certification_paths: {status: [CertificationPath.statuses[:in_screening]], project_id: project_id})
+                                       certification_paths: {status: [CertificationPath.statuses[:awaiting_screening],
+                                                                      CertificationPath.statuses[:awaiting_submission_after_pcr]],
+                                                             project_id: project_id})
     else
       scheme_mix_criteria = SchemeMixCriterion
                                 .joins(:scheme_mix => [:certification_path])
                                 .where(status: [SchemeMixCriterion.statuses[:complete]],
                                        certifier_id: user.id,
-                                       certification_paths: {id: certification_path_id, status: [CertificationPath.statuses[:in_screening]]})
+                                       certification_paths: {id: certification_path_id,
+                                                             status: [CertificationPath.statuses[:awaiting_screening],
+                                                                      CertificationPath.statuses[:awaiting_submission_after_pcr]]})
     end
     scheme_mix_criteria.each do |scheme_mix_criterion|
       task = Task.new(
@@ -671,32 +632,7 @@ class TaskService
     return tasks
   end
 
-  def generate_certifier_member_tasks_13(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
-    tasks = []
-
-    # Query for scheme_mix_criteria assigned to certifier member
-    if project_id.present? && certification_path_id.blank?
-      scheme_mix_criteria = SchemeMixCriterion
-                                .joins(:scheme_mix => [:certification_path])
-                                .where(certifier_id: user.id,
-                                       certification_paths: {status: [CertificationPath.statuses[:in_review]], project_id: project_id})
-    else
-      scheme_mix_criteria = SchemeMixCriterion
-                                .joins(:scheme_mix => [:certification_path])
-                                .where(certifier_id: user.id,
-                                       certification_paths: {id: certification_path_id, status: [CertificationPath.statuses[:in_review]]})
-    end
-    scheme_mix_criteria.each do |scheme_mix_criterion|
-      task = Task.new(
-          model: scheme_mix_criterion,
-          description_id: 13)
-      tasks << task
-    end
-
-    return tasks
-  end
-
-  def generate_certifier_member_tasks_16(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
+  def generate_certifier_member_tasks_16(user: required, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
 
     # Query for scheme_mix_criteria not in 'approved' or 'resubmit' state and assigned to certifier member
@@ -704,13 +640,17 @@ class TaskService
       scheme_mix_criteria = SchemeMixCriterion
                                 .joins(:scheme_mix => [:certification_path])
                                 .where(certifier_id: user.id,
-                                       certification_paths: {status: [CertificationPath.statuses[:in_verification]], project_id: project_id})
+                                       certification_paths: {status: [CertificationPath.statuses[:awaiting_verification],
+                                                                      CertificationPath.statuses[:awaiting_verification_after_appeal]],
+                                                             project_id: project_id})
                                 .where.not(status: [SchemeMixCriterion.statuses[:approved], SchemeMixCriterion.statuses[:resubmit]])
     else
       scheme_mix_criteria = SchemeMixCriterion
                                 .joins(:scheme_mix => [:certification_path])
                                 .where(certifier_id: user.id,
-                                       certification_paths: {id: certification_path_id, status: [CertificationPath.statuses[:in_verification]]})
+                                       certification_paths: {id: certification_path_id,
+                                                             status: [CertificationPath.statuses[:awaiting_verification],
+                                                                      CertificationPath.statuses[:awaiting_verification_after_appeal]]})
                                 .where.not(status: [SchemeMixCriterion.statuses[:approved], SchemeMixCriterion.statuses[:resubmit]])
     end
     scheme_mix_criteria.each do |scheme_mix_criterion|
@@ -722,4 +662,5 @@ class TaskService
 
     return tasks
   end
+
 end

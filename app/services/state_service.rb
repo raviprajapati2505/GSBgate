@@ -83,7 +83,7 @@ class StateService
         end
       when CertificationPath.statuses[:awaiting_management_approvals]
         # Only GORD mngr and GORD top mngr can change state
-        if can_leave_awaiting_signatures_state?(certification_path)
+        if can_leave_awaiting_management_approvals_state?(certification_path)
           return CertificationPath.statuses[:certified]
         end
       when CertificationPath.statuses[:certified]

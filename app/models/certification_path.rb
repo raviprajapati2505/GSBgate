@@ -10,8 +10,8 @@ class CertificationPath < AuditableRecord
 
   accepts_nested_attributes_for :certificate
 
-  enum development_type: [ :single_use, :mixed_use, :mixed_development, :mixed_development_in_stages ]
-  enum status: [ :registered, :in_submission, :in_screening, :screened, :awaiting_pcr_admittance, :in_review, :reviewed, :in_verification, :certification_rejected, :awaiting_approval, :awaiting_signatures, :certified ]
+  enum development_type: { single_use: 0, mixed_use: 1, mixed_development: 2, mixed_development_in_stages: 3 }
+  enum status: { awaiting_activation: 0, awaiting_submission: 1, awaiting_screening: 2, awaiting_submission_after_screening: 3, awaiting_pcr_payment: 4, awaiting_submission_after_pcr: 5, awaiting_verification: 6, awaiting_approval_or_appeal: 7, awaiting_appeal_payment: 8, awaiting_submission_after_appeal: 9, awaiting_verification_after_appeal: 10, awaiting_approval_after_appeal: 11, awaiting_management_approvals: 12, certified: 13 }
 
   def name
     self.certificate.name

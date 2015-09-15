@@ -10,8 +10,7 @@ class SchemeMixCriteriaController < AuthenticatedController
   end
 
   def update
-      if scheme_mix_criterion_params[:status] == :reviewed_approved.to_s || scheme_mix_criterion_params[:status] == :resubmit.to_s ||
-          scheme_mix_criterion_params[:status] == :verified_approved.to_s || scheme_mix_criterion_params[:status] == :disapproved
+      if scheme_mix_criterion_params[:status] == :approved.to_s || scheme_mix_criterion_params[:status] == :resubmit.to_s
         # if achieved score is not yet provided only the status can only be 'in progress' or 'complete'
         if (@scheme_mix_criterion.targeted_score_a.nil? && @scheme_mix_criterion.achieved_score_a.nil?) || (@scheme_mix_criterion.targeted_score_a.nil? && @scheme_mix_criterion.achieved_score_a.nil?)
           flash.now[:alert] = 'Please first provide the achieved score.'
