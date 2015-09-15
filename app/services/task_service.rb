@@ -591,23 +591,17 @@ class TaskService
   def generate_certifier_mngr_tasks_14(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
 
-    # Query for certification_paths in 'in review' state all linked scheme_mix_criteria in 'reviewed_approved' or 'resubmit' state
+    # Query for certification_paths in 'in review' state
     if project_id.present? && certification_path_id.blank?
       certification_paths = CertificationPath
                                 .joins(:project => [:projects_users])
                                 .where(status: [CertificationPath.statuses[:in_review]], project_id: project_id,
                                        projects_users: {user_id: user.id, role: [ProjectsUser.roles[:certifier_manager]]})
-                                .where.not('exists(select smc.id from scheme_mix_criteria smc
-                    left join scheme_mixes sm on sm.id = smc.scheme_mix_id
-                    where sm.certification_path_id = certification_paths.id and smc.status = ?)', SchemeMixCriterion.statuses[:screened])
     else
       certification_paths = CertificationPath
                                 .joins(:project => [:projects_users])
                                 .where(status: [CertificationPath.statuses[:in_review]], id: certification_path_id,
                                        projects_users: {user_id: user.id, role: [ProjectsUser.roles[:certifier_manager]]})
-                                .where.not('exists(select smc.id from scheme_mix_criteria smc
-                    left join scheme_mixes sm on sm.id = smc.scheme_mix_id
-                    where sm.certification_path_id = certification_paths.id and smc.status = ?)', SchemeMixCriterion.statuses[:screened])
     end
     certification_paths.each do |certification_path|
       task = Task.new(
@@ -622,7 +616,7 @@ class TaskService
   def generate_certifier_mngr_tasks_17(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
 
-    # Query for certification_paths in 'in verification' state all linked scheme_mix_criteria in 'verified_approved' or 'disapproved' state
+    # Query for certification_paths in 'in verification' state
     if project_id.present? && certification_path_id.blank?
       certification_paths = CertificationPath
                                 .joins(:project => [:projects_users])
@@ -630,7 +624,7 @@ class TaskService
                                        projects_users: {user_id: user.id, role: [ProjectsUser.roles[:certifier_manager]]})
                                 .where.not('exists(select smc.id from scheme_mix_criteria smc
                     left join scheme_mixes sm on sm.id = smc.scheme_mix_id
-                    where sm.certification_path_id = certification_paths.id and smc.status in (?, ?))', SchemeMixCriterion.statuses[:reviewed_approved], SchemeMixCriterion.statuses[:resubmit])
+                    where sm.certification_path_id = certification_paths.id and smc.status in (?, ?))', SchemeMixCriterion.statuses[:approved], SchemeMixCriterion.statuses[:resubmit])
     else
       certification_paths = CertificationPath
                                 .joins(:project => [:projects_users])
@@ -638,7 +632,7 @@ class TaskService
                                        projects_users: {user_id: user.id, role: [ProjectsUser.roles[:certifier_manager]]})
                                 .where.not('exists(select smc.id from scheme_mix_criteria smc
                     left join scheme_mixes sm on sm.id = smc.scheme_mix_id
-                    where sm.certification_path_id = certification_paths.id and smc.status in (?, ?))', SchemeMixCriterion.statuses[:reviewed_approved], SchemeMixCriterion.statuses[:resubmit])
+                    where sm.certification_path_id = certification_paths.id and smc.status in (?, ?))', SchemeMixCriterion.statuses[:approved], SchemeMixCriterion.statuses[:resubmit])
     end
     certification_paths.each do |certification_path|
       task = Task.new(
@@ -680,19 +674,17 @@ class TaskService
   def generate_certifier_member_tasks_13(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
 
-    # Query for scheme_mix_criteria not in 'reviewed_approved' or 'resubmit' state and assigned to certifier member
+    # Query for scheme_mix_criteria assigned to certifier member
     if project_id.present? && certification_path_id.blank?
       scheme_mix_criteria = SchemeMixCriterion
                                 .joins(:scheme_mix => [:certification_path])
                                 .where(certifier_id: user.id,
                                        certification_paths: {status: [CertificationPath.statuses[:in_review]], project_id: project_id})
-                                .where.not(status: [SchemeMixCriterion.statuses[:reviewed_approved], SchemeMixCriterion.statuses[:resubmit]])
     else
       scheme_mix_criteria = SchemeMixCriterion
                                 .joins(:scheme_mix => [:certification_path])
                                 .where(certifier_id: user.id,
                                        certification_paths: {id: certification_path_id, status: [CertificationPath.statuses[:in_review]]})
-                                .where.not(status: [SchemeMixCriterion.statuses[:reviewed_approved], SchemeMixCriterion.statuses[:resubmit]])
     end
     scheme_mix_criteria.each do |scheme_mix_criterion|
       task = Task.new(
@@ -707,19 +699,19 @@ class TaskService
   def generate_certifier_member_tasks_16(user:, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil)
     tasks = []
 
-    # Query for scheme_mix_criteria not in 'verified_approved' or 'disapproved' state and assigned to certifier member
+    # Query for scheme_mix_criteria not in 'approved' or 'resubmit' state and assigned to certifier member
     if project_id.present? && certification_path_id.blank?
       scheme_mix_criteria = SchemeMixCriterion
                                 .joins(:scheme_mix => [:certification_path])
                                 .where(certifier_id: user.id,
                                        certification_paths: {status: [CertificationPath.statuses[:in_verification]], project_id: project_id})
-                                .where.not(status: [SchemeMixCriterion.statuses[:verified_approved], SchemeMixCriterion.statuses[:resubmit]])
+                                .where.not(status: [SchemeMixCriterion.statuses[:approved], SchemeMixCriterion.statuses[:resubmit]])
     else
       scheme_mix_criteria = SchemeMixCriterion
                                 .joins(:scheme_mix => [:certification_path])
                                 .where(certifier_id: user.id,
                                        certification_paths: {id: certification_path_id, status: [CertificationPath.statuses[:in_verification]]})
-                                .where.not(status: [SchemeMixCriterion.statuses[:verified_approved], SchemeMixCriterion.statuses[:resubmit]])
+                                .where.not(status: [SchemeMixCriterion.statuses[:approved], SchemeMixCriterion.statuses[:resubmit]])
     end
     scheme_mix_criteria.each do |scheme_mix_criterion|
       task = Task.new(

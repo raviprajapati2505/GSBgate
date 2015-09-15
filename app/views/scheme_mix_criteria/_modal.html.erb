@@ -11,12 +11,8 @@
             <div class="modal-body">
                 <% if @certification_path.in_submission? %>
                     <%= f.select :status, SchemeMixCriterion.statuses.keys[0..1].map { |k| [k.humanize, k]} %>
-                <% elsif @certification_path.in_screening? %>
-                    <%= f.select :status, SchemeMixCriterion.statuses.keys[2].map { |k| [k.humanize, k]} %>
-                <% elsif @certification_path.in_review? %>
-                    <%= f.select :status, SchemeMixCriterion.statuses.keys[3..4].map { |k| [k.humanize, k]} %>
                 <% elsif @certification_path.in_verification? %>
-                    <%= f.select :status, SchemeMixCriterion.statuses.keys[5..6].map { |k| [k.humanize, k]} %>
+                    <%= f.select :status, SchemeMixCriterion.statuses.keys[2..3].map { |k| [k.humanize, k]} %>
                 <% end %>
                 <%= f.text_area :audit_log_user_comment, rows: 4 %>
             </div>

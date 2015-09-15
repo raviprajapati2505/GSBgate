@@ -10,92 +10,78 @@ class StateService
   # returns one of CertificationPath.statuses otherwise
   def next_state(certification_path: required)
     case certification_path.status
-      when CertificationPath.statuses[:registered]
+      when CertificationPath.statuses[:awaiting_activation]
         # Only system_admin can change state
-        if can_leave_registered_state?(certification_path)
-          return CertificationPath.statuses[:in_submission]
+        if can_leave_awaiting_activation_state?(certification_path)
+          return CertificationPath.statuses[:awaiting_submission]
         end
-      when CertificationPath.statuses[:in_submission]
+      when CertificationPath.statuses[:awaiting_submission]
         # Only system_admin and project mngr can change state
-        if can_leave_in_submission_state?(certification_path)
-          return CertificationPath.statuses[:in_screening]
+        if can_leave_awaiting_submission_state?(certification_path)
+          return CertificationPath.statuses[:awaiting_screening]
         end
-      when CertificationPath.statuses[:in_screening]
+      when CertificationPath.statuses[:awaiting_screening]
         # Only system_admin and certifier mngr can change state
-        if can_leave_in_screening_state?(certification_path)
-          return CertificationPath.statuses[:screened]
+        if can_leave_awaiting_screening_state?(certification_path)
+          return CertificationPath.statuses[:awaiting_submission_after_screening]
         end
-      when CertificationPath.statuses[:screened]
+      when CertificationPath.statuses[:awaiting_submission_after_screening]
         # Only system_admin and project mngr can change state
-        if can_leave_screened_state?(certification_path)
-          # The next state depends on the PCR track flag (awaiting_pcr_admittance or in_verification)
+        if can_leave_awaiting_submission_after_screening_state?(certification_path)
+          # The next state depends on the PCR track flag
           if certification_path.pcr_track?
-            return CertificationPath.statuses[:awaiting_pcr_admittance]
+            return CertificationPath.statuses[:awaiting_pcr_payment]
           else
-            return CertificationPath.statuses[:in_verification]
+            return CertificationPath.statuses[:awaiting_verification]
           end
         end
-      when CertificationPath.statuses[:awaiting_pcr_admittance]
+      when CertificationPath.statuses[:awaiting_pcr_payment]
         # Only system_admin can change state
-        if can_leave_awaiting_pcr_admittance_state?(certification_path)
-          return CertificationPath.statuses[:in_review]
+        if can_leave_awaiting_pcr_payment_state?(certification_path)
+          return CertificationPath.statuses[:awaiting_submission_after_pcr]
         end
-      when CertificationPath.statuses[:in_review]
+      when CertificationPath.statuses[:awaiting_submission_after_pcr]
+        # Only system_admin, certifier mngr and project mngr can change state
+        if can_leave_awaiting_submission_after_pcr_state?(certification_path)
+          return CertificationPath.statuses[:awaiting_verification]
+        end
+      when CertificationPath.statuses[:awaiting_verification]
         # Only system_admin and certifier mngr can change state
-        if can_leave_in_review_state?(certification_path)
-          return CertificationPath.statuses[:reviewed]
-        end
-      when CertificationPath.statuses[:reviewed]
-        # Only system_admin and project mngr can change state
-        if can_leave_reviewed_state?(certification_path)
-          return CertificationPath.statuses[:in_verification]
-        end
-      when CertificationPath.statuses[:in_verification]
-        # Only system_admin and certifier mngr can change state
-        if can_leave_in_verification_state?(certification_path)
-          # The next state depends on the outcome of the verification process (certification_rejected or awaiting_approval)
+        if can_leave_awaiting_verification_state?(certification_path)
+          # The next state depends on the outcome of the verification process
           # TODO when is a certification path rejected ?
-          # return CertificationPath.statuses[:certification_rejected]
-          return CertificationPath.statuses[:awaiting_approval]
+          return CertificationPath.statuses[:awaiting_approval_or_appeal]
         end
-      when CertificationPath.statuses[:certification_rejected]
+      when CertificationPath.statuses[:awaiting_approval_or_appeal]
         # Only system_admin and project mngr can change state
-        if can_leave_certification_rejected_state?(certification_path)
-          return CertificationPath.statuses[:awaiting_appeal_approval]
-        end
-      when CertificationPath.statuses[:awaiting_approval]
-        # Only system_admin and project mngr can change state
-        if can_leave_awaiting_approval_state?(certification_path)
-          # The next state depends if appealed for at least 1 criterion (awaiting_appeal_approval or awaiting_signatures)
+        if can_leave_awaiting_approval_or_appeal_state?(certification_path)
+          # The next state depends if appealed for at least 1 criterion
           # TODO implement appeal
-          raise NotImplementedError
+          return CertificationPath.statuses[:awaiting_management_approvals]
         end
-      when CertificationPath.statuses[:awaiting_appeal_approval]
+      when CertificationPath.statuses[:awaiting_appeal_payment]
         # Only system_admin can change state
-        if can_leave_awaiting_appeal_approval_state?(certification_path)
-          return CertificationPath.statuses[:in_submission_after_appeal]
+        if can_leave_awaiting_appeal_payment_state?(certification_path)
+          return CertificationPath.statuses[:awaiting_submission_after_appeal]
         end
-      when CertificationPath.statuses[:in_submission_after_appeal]
+      when CertificationPath.statuses[:awaiting_submission_after_appeal]
         # Only system_admin and project mngr can change state
-        if can_leave_in_submission_after_appeal_state?(certification_path)
-          return CertificationPath.statuses[:in_verification_after_appeal]
+        if can_leave_awaiting_submission_after_appeal_state?(certification_path)
+          return CertificationPath.statuses[:awaiting_verification_after_appeal]
         end
-      when CertificationPath.statuses[:in_verification_after_appeal]
+      when CertificationPath.statuses[:awaiting_verification_after_appeal]
         # Only system_admin and certifier mngr can change state
-        if can_leave_in_verification_after_appeal_state?(certification_path)
-          # The next state depends on the outcome of the verification process (certification_rejected_after_appeal or awaiting_approval_after_appeal)
+        if can_leave_awaiting_verification_after_appeal_state?(certification_path)
+          # The next state depends on the outcome of the verification process
           # TODO when is a certification path rejected ?
-          # return CertificationPath.statuses[:certification_rejected_after_appeal]
           return CertificationPath.statuses[:awaiting_approval_after_appeal]
         end
-      when CertificationPath.statuses[:certification_rejected_after_appeal]
-        # TODO Does this state exist ?
       when CertificationPath.statuses[:awaiting_approval_after_appeal]
         # Only system_admin and project mngr can change state
         if can_leave_awaiting_approval_after_appeal_state?(certification_path)
-          return CertificationPath.statuses[:awaiting_signatures]
+          return CertificationPath.statuses[:awaiting_management_approvals]
         end
-      when CertificationPath.statuses[:awaiting_signatures]
+      when CertificationPath.statuses[:awaiting_management_approvals]
         # Only GORD mngr and GORD top mngr can change state
         if can_leave_awaiting_signatures_state?(certification_path)
           return CertificationPath.statuses[:certified]
@@ -119,7 +105,7 @@ class StateService
   #  2) certification path payment received
   #  3) project details are provided
   #  4) certifier mngr is assigned
-  def can_leave_registered_state?(certification_path: required)
+  def can_leave_awaiting_activation_state?(certification_path: required)
     # TODO certification path expiry date
     # certifier mngr is assigned
     if certification_path.project.certifier_manager_assigned?
@@ -130,7 +116,7 @@ class StateService
 
   # Conditions are
   #  1) all criteria are completed (= when all linked requirements and submitted scores are provided and no more documents waiting for approval)
-  def can_leave_in_submission_state?(certification_path: required)
+  def can_leave_awaiting_submission_state?(certification_path: required)
     certification_path.scheme_mix_criteria.each do |criterion|
       # all criteria are completed
       unless criterion.complete?
@@ -154,18 +140,13 @@ class StateService
 
   # Conditions are
   #  1) all criteria are screened
-  def can_leave_in_screening_state?(certification_path: required)
-    certification_path.scheme_mix_criteria.each do |criterion|
-      unless criterion.screened?
-        return false
-      end
-    end
+  def can_leave_awaiting_screening_state?(certification_path: required)
     return true
   end
 
   # Conditions are
   #  1) all criteria are completed (= when all linked requirements and submitted scores are provided and no more documents waiting for approval)
-  def can_leave_screened_state?(certification_path: required)
+  def can_leave_awaiting_submission_after_screening_state?(certification_path: required)
     certification_path.scheme_mix_criteria.each do |criterion|
       # all criteria are completed
       unless criterion.complete?
@@ -189,7 +170,7 @@ class StateService
 
   # Conditions are
   #  1) PCR track payment received
-  def can_leave_awaiting_pcr_admittance_state?(certification_path: required)
+  def can_leave_awaiting_pcr_payment_state?(certification_path: required)
     if certification_path.pcr_track_allowed?
       return true
     end
@@ -197,48 +178,16 @@ class StateService
   end
 
   # Conditions are
-  #  1) all criteria are reviewed (= when all achieved scores are provided)
-  def can_leave_in_review_state?(certification_path: required)
-    certification_path.scheme_mix_criteria.each do |criterion|
-      unless criterion.reviewed_approved? || criterion.resubmit?
-        return false
-      end
-      if criterion.achieved_score.blank?
-        return false
-      end
-    end
-    return true
-  end
-
-  # Conditions are
-  #  1) all criteria are completed (= when all linked requirements and submitted scores are provided and no more documents waiting for approval)
-  def can_leave_reviewed_state?(certification_path: required)
-    certification_path.scheme_mix_criteria.each do |criterion|
-      # all criteria are completed
-      unless criterion.complete?
-        return false
-      end
-      # all submitted scores provided
-      if criterion.submitted_score.blank?
-        return false
-      end
-      # all linked requirements are provided
-      if criterion.has_required_requirements?
-        return false
-      end
-      # no more documents waiting for approval
-      if criterion.has_documents_awaiting_approval?
-        return false
-      end
-    end
+  #  1) all criteria are reviewed
+  def can_leave_awaiting_submission_after_pcr_state?(certification_path: required)
     return true
   end
 
   # Conditions are
   #  1) all criteria are verified (= when all achieved scores are provided)
-  def can_leave_in_verification_state?(certification_path: required)
+  def can_leave_awaiting_verification_state?(certification_path: required)
     certification_path.scheme_mix_criteria.each do |criterion|
-      unless criterion.verified_approved? || criterion.disapproved?
+      unless criterion.approved? || criterion.resubmit?
         return false
       end
       if criterion.achieved_score.blank?
@@ -249,27 +198,20 @@ class StateService
   end
 
   # Conditions are
-  #  1) appealed for at least 1 criterion
-  def can_leave_certification_rejected_state?(certification_path: required)
-    # TODO implement appeal
-    raise NotImplementedError
-  end
-
-  # Conditions are
   #  none
-  def can_leave_awaiting_approval_state?(certification_path: required)
+  def can_leave_awaiting_approval_or_appeal_state?(certification_path: required)
     return true
   end
 
   # Conditions are
   #  1) payment received
-  def can_leave_awaiting_appeal_approval_state?(certification_path: required)
+  def can_leave_awaiting_appeal_payment_state?(certification_path: required)
     return true
   end
 
   # Conditions are
   #  1) all appealed criteria are completed (= when all linked requirements and submitted scores are provided and no more documents waiting for approval)
-  def can_leave_in_submission_after_appeal_state?(certification_path: required)
+  def can_leave_awaiting_submission_after_appeal_state?(certification_path: required)
     certification_path.scheme_mix_criteria.each do |criterion|
       # all criteria are completed
       unless criterion.complete?
@@ -293,9 +235,9 @@ class StateService
 
   # Conditions are
   #  1) all criteria are verified (= when all achieved scores are provided)
-  def can_leave_in_verification_after_appeal_state?(certification_path: required)
+  def can_leave_awaiting_verification_after_appeal_state?(certification_path: required)
     certification_path.scheme_mix_criteria.each do |criterion|
-      unless criterion.verified_approved? || criterion.disapproved?
+      unless criterion.approved? || criterion.resubmit?
         return false
       end
       if criterion.achieved_score.blank?
@@ -313,7 +255,7 @@ class StateService
 
   # Conditions are
   #  1) signed flag set for both GORD mngr and GORD top mngr
-  def can_leave_awaiting_signatures_state?(certification_path: required)
+  def can_leave_awaiting_management_approvals_state?(certification_path: required)
     if certification_path.signed_by_mngr? && certification_path.signed_by_top_mngr?
       return true
     end

@@ -7,7 +7,7 @@ class SchemeMixCriterion < AuditableRecord
   belongs_to :scheme_criterion
   belongs_to :certifier, class_name: 'User', inverse_of: :scheme_mix_criteria
 
-  enum status: [ :in_progress, :complete, :screened , :reviewed_approved, :resubmit, :verified_approved, :disapproved]
+  enum status: { in_progress: 0, complete: 1 , approved: 2, resubmit: 3 }
 
   after_initialize :init
 
