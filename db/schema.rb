@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150914092538) do
+ActiveRecord::Schema.define(version: 20150915095247) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,8 @@ ActiveRecord::Schema.define(version: 20150914092538) do
     t.integer  "user_id"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
+    t.integer  "new_status"
+    t.integer  "old_status"
   end
 
   add_index "audit_logs", ["auditable_type", "auditable_id"], name: "index_audit_logs_on_auditable_type_and_auditable_id", using: :btree

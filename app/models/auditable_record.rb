@@ -162,6 +162,8 @@ class AuditableRecord < ActiveRecord::Base
         AuditLog.create!(
             system_message: system_message.gsub('%s', '<strong>%s</strong>') % system_messages_params[index],
             user_comment: user_comment,
+            old_status: (self.has_attribute?(:status) and self.status_changed?) ? self.class.statuses[self.changes[:status][0]] : nil,
+            new_status: (self.has_attribute?(:status) and self.status_changed?) ? self.class.statuses[self.changes[:status][1]] : nil,
             user: User.current,
             auditable: auditable,
             project: project)
@@ -170,6 +172,8 @@ class AuditableRecord < ActiveRecord::Base
       AuditLog.create!(
           system_message: nil,
           user_comment: user_comment,
+          old_status: (self.has_attribute?(:status) and self.status_changed?) ? self.class.statuses[self.changes[:status][0]] : nil,
+          new_status: (self.has_attribute?(:status) and self.status_changed?) ? self.class.statuses[self.changes[:status][1]] : nil,
           user: User.current,
           auditable: auditable,
           project: project)
