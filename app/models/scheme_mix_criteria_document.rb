@@ -1,5 +1,5 @@
 class SchemeMixCriteriaDocument < AuditableRecord
-  enum status: [ :awaiting_approval, :approved, :rejected, :superseded ]
+  enum status: { awaiting_approval: 0, approved: 1, rejected: 2, superseded: 3 }
 
   belongs_to :document
   belongs_to :scheme_mix_criterion

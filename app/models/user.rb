@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  enum role: [ :system_admin, :user, :gord_top_manager, :gord_manager ]
+  enum role: { system_admin: 0, user: 1, gord_top_manager: 2, gord_manager: 3 }
 
   has_many :owned_projects, class_name: 'Project', inverse_of: :owner
   has_many :documents

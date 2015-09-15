@@ -2,7 +2,7 @@ class ProjectsUser < AuditableRecord
   belongs_to :user
   belongs_to :project
 
-  enum role: [ :project_team_member, :project_manager, :enterprise_account, :certifier, :certifier_manager ]
+  enum role: { project_team_member: 0, project_manager: 1, enterprise_account: 2, certifier: 3, certifier_manager: 4 }
 
   validates :role, inclusion: ProjectsUser.roles.keys
 

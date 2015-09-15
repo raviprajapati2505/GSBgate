@@ -1,6 +1,6 @@
 class Certificate < ActiveRecord::Base
-  enum certificate_type: [ :design_type, :construction_type, :operations_type ]
-  enum assessment_stage: [ :design_stage, :construction_stage, :operations_stage ]
+  enum certificate_type: { design_type: 0, construction_type: 1, operations_type: 2 }
+  enum assessment_stage: { design_stage: 0, construction_stage: 1, operations_stage: 2 }
 
   has_many :certification_paths
   has_many :schemes

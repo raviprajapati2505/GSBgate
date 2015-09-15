@@ -5,7 +5,7 @@ class RequirementDatum < AuditableRecord
   belongs_to :requirement
   belongs_to :user
 
-  enum status: [ :required, :provided, :not_required ]
+  enum status: { required: 0, provided: 1, not_required: 2 }
 
   after_initialize :init
 
