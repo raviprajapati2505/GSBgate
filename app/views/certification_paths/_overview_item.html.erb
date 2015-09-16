@@ -1,0 +1,43 @@
+<!-- TODO: use find_each and loop, as there can be multiple certification_paths for a specific certificate -->
+<% certification_path = project.certification_paths.find_by(certificate: certificate) %>
+
+<% can_create_certification_path = project.can_create_certification_path_for_certificate?(certificate) %>
+<% enabled = (certification_path.present? or can_create_certification_path) %>
+<li class="list-group-item container <%=  'disabled' if !enabled %>">
+    <% if certification_path.present? %>
+        <a href="<%= project_certification_path_path(project, certification_path) %>">
+            <span class="col-md-4"><%= certificate.name %></span>
+            <span class="col-md-4"><%= certification_path.status.humanize %></span>
+            <span class="col-md-4">
+                <% targeted_score = certification_path.total_weighted_targeted_score %>
+                <% stars = certification_path.star_rating_for_score(targeted_score) %>
+                <%= stars %> Stars&nbsp;
+                        (<% stars.times do %>
+                            <i class="fa fa-star"></i>
+                        <% end %>) - <%= targeted_score %>
+            </span>
+        </a>
+    <% else %>
+        <span class="col-md-4"><%= certificate.name %></span>
+        <% if enabled %>
+            <span class="col-md-4">
+                Not yet registered
+            </span>
+            <span class="col-md-4">
+                <!-- if can? :create, CertificationPath %-->
+                <% if current_user.system_admin? || current_user.project_manager?(project) %>
+                    <%= link_to('Apply', new_project_certification_path_path(@project, certificate: certificate.id)) %>
+                <% end %>
+            </span>
+        <% else %>
+            <span class="col-md-8">
+                <% if certificate.final_design_certificate? %>
+                    Please complete the Letter of conformance certificate first.
+                <% elsif certificate.construction_certificate? %>
+                    Please complete the Final Design certificate first.
+                <% end %>
+            </span>
+        <% end %>
+
+    <% end %>
+</li>

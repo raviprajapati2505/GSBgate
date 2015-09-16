@@ -1,0 +1,39 @@
+<%= bootstrap_form_for([@project, @certification_path]) do |f| %>
+
+    <!-- Set the certificate-->
+    <%= f.hidden_field :certificate_id, value: @certification_path.certificate_id %>
+
+    <!-- Select the duration -->
+    <%= f.select :duration, [['2 years', 2], ['3 years', 3], ['4 years', 4]], {:include_blank => 'Make your choice...', :class => 'form-control m-b'} %>
+
+    <!-- Development Type -->
+    <%= f.static_control label: 'Development Type' do %>
+        <%= @certification_path.development_type.to_s.humanize %>
+    <% end %>
+
+    <!-- Scheme Mixes -->
+    <%= f.static_control label: 'Schemes' do %>
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th class="col-md-4">Scheme name</th>
+                <th class="col-md-2">Weight</th>
+            </tr>
+            </thead>
+            <tbody>
+            <% @certification_path.scheme_mixes.each do |scheme_mix| %>
+                <tr>
+                    <td><%= scheme_mix.name %></td>
+                    <td><%= scheme_mix.weight %> %</td>
+                </tr>
+            <% end %>
+            </tbody>
+        </table>
+    <% end %>
+
+    <br/>
+    <%= button_tag(type: 'submit', class: 'btn btn-primary') do %>
+        <i title="Save" class="fa fa-lg fa-save" style="padding-right: 10px;"></i><%= t('.btn_save') %>
+    <% end %>
+    <button type="button" class="btn btn-white"><i title="Cancel" class="fa fa-lg fa-times" style="padding-right: 10px;"></i><%= t('.btn_cancel') %></button>
+<% end %>

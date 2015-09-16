@@ -9,9 +9,15 @@ class CertificationPath < AuditableRecord
   has_many :requirement_data, through: :scheme_mix_criteria_requirement_data
 
   accepts_nested_attributes_for :certificate
+  accepts_nested_attributes_for :scheme_mixes
 
-  enum development_type: { single_use: 0, mixed_use: 1, mixed_development: 2, mixed_development_in_stages: 3 }
+  enum development_type: { not_applicable: 0, single_use: 1, mixed_use: 2, mixed_development: 3, mixed_development_in_stages: 4 }
   enum status: { awaiting_activation: 0, awaiting_submission: 1, awaiting_screening: 2, awaiting_submission_after_screening: 3, awaiting_pcr_payment: 4, awaiting_submission_after_pcr: 5, awaiting_verification: 6, awaiting_approval_or_appeal: 7, awaiting_appeal_payment: 8, awaiting_submission_after_appeal: 9, awaiting_verification_after_appeal: 10, awaiting_approval_after_appeal: 11, awaiting_management_approvals: 12, certified: 13 }
+
+  validates :project, :presence => true
+  validates :certificate, :presence => true
+  validates_inclusion_of :development_type, in: CertificationPath.development_types.keys
+  validates_inclusion_of :status, in: CertificationPath.statuses.keys
 
   def name
     self.certificate.name
@@ -63,24 +69,6 @@ class CertificationPath < AuditableRecord
       return 6
     else
       return -1
-    end
-  end
-
-  # Mirrors all the descendant structural data records of the Certificate to user data records
-  def create_descendant_records
-    if self.scheme_mixes.any?
-      raise('Scheme_mixes are already created')
-    end
-
-    # if multiple schemes, user should do the weighting
-    if self.certificate.schemes.many?
-      weight = 0
-    else
-      weight = 100
-    end
-
-    self.certificate.schemes.each do |scheme|
-      SchemeMix.create(certification_path_id: self.id, scheme_id: scheme.id, weight: weight)
     end
   end
 end

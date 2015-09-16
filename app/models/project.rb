@@ -43,6 +43,22 @@ class Project < AuditableRecord
     return false
   end
 
+  def can_create_certification_path_for_certificate?(certificate)
+    # There should be only one certification path per certificate
+    # TODO: this may be a bad assumption, perhaps extend logic to also look at the status (e.g an older rejected certification_path may be allowed)
+    return false if certification_paths.exists?(certificate: certificate)
+    # No dependencies for Operations certificate
+    return true if certificate.operations_certificate?
+    # No dependencies for LOC certificate
+    return true if certificate.letter_of_conformance?
+    # No dependencies for Construction certificate
+    return true if certificate.construction_certificate?
+    # FinalDesign needs a LOC
+    return true if certificate.final_design_certificate? and certification_paths.exists?(certificate: Certificate.letter_of_conformance)
+    # default to false
+    return false
+  end
+
   def init
     # Set default code
     self.code ||= 'TBC'

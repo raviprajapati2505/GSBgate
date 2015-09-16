@@ -5,6 +5,9 @@ class Certificate < ActiveRecord::Base
   has_many :certification_paths
   has_many :schemes
 
+  validates_inclusion_of :certificate_type, in: Certificate.certificate_types.keys
+  validates_inclusion_of :assessment_stage, in: Certificate.assessment_stages.keys
+
   def letter_of_conformance?
     design_type? and design_stage?
   end

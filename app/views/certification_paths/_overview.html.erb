@@ -1,0 +1,12 @@
+<ul class="list-group">
+    <%= render partial: 'certification_paths/overview_item', locals: { project: project, certificate: Certificate.letter_of_conformance.first } %>
+    <%= render partial: 'certification_paths/overview_item', locals: { project: project, certificate: Certificate.final_design_certificate.first } %>
+</ul>
+<div class="hr-line-dashed"></div>
+<ul class="list-group">
+    <%= render partial: 'certification_paths/overview_item', locals: { project: project, certificate: Certificate.construction_certificate.first } %>
+</ul>
+<div class="hr-line-dashed"></div>
+<ul class="list-group">
+    <%= render partial: 'certification_paths/overview_item', locals: { project: project, certificate: Certificate.operations_certificate.first } %>
+</ul>

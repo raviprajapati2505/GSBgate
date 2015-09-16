@@ -1,0 +1,31 @@
+<%= bootstrap_form_for([@project, @certification_path]) do |f| %>
+    <!-- Set the certificate-->
+    <%= f.hidden_field :certificate_id, value: @certification_path.certificate_id %>
+
+    <!-- Display the duration -->
+    <%= f.static_control label: 'Duration' do %>
+        <%= @certification_path.duration %> years
+    <% end %>
+
+    <!-- Handle Single/Mixed Use/Development -->
+    <%= f.form_group :development_type, label: {text: 'Development Type'} do %>
+        <%= f.radio_button :development_type, :single_use, label: :single_use.to_s.humanize, checked: true %>
+        <br/>
+        <%= select_tag('scheme_single', options_from_collection_for_select(@certification_path.certificate.schemes, :id, :name), {:multiple => false, :class => 'select2-schemes-single form-control'}) %>
+        <div class="hr-line-dashed"></div>
+
+        <%= f.radio_button :development_type, :mixed_use, label: :mixed_use.to_s.humanize %>
+        <%= f.radio_button :development_type, :mixed_development, label: :mixed_development.to_s.humanize %>
+        <%= f.radio_button :development_type, :mixed_development_in_stages, label: :mixed_development_in_stages.to_s.humanize %>
+        <br/>
+        <%= select_tag('scheme_mixed', options_from_collection_for_select(@certification_path.certificate.schemes, :id, :name), {:multiple => true, :class => 'select2-schemes-multiple form-control'}) %>
+        <div class="hr-line-dashed"></div>
+    <% end %>
+
+    <br/>
+    <%= button_tag(type: 'submit', class: 'btn btn-primary') do %>
+        <i title="Save" class="fa fa-lg fa-save" style="padding-right: 10px;"></i><%= t('.btn_save') %>
+    <% end %>
+        <button type="button" class="btn btn-white"><i title="Cancel" class="fa fa-lg fa-times" style="padding-right: 10px;"></i><%= t('.btn_cancel') %></button>
+<% end %>
+<%= javascript_include_tag 'select_schemes' %>
