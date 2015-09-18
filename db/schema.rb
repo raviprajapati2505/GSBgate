@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150915095247) do
+ActiveRecord::Schema.define(version: 20150917093735) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -116,13 +116,13 @@ ActiveRecord::Schema.define(version: 20150915095247) do
 
   create_table "projects", force: :cascade do |t|
     t.string    "name"
-    t.datetime  "created_at",                                                                 null: false
-    t.datetime  "updated_at",                                                                 null: false
+    t.datetime  "created_at",                                                                      null: false
+    t.datetime  "updated_at",                                                                      null: false
     t.text      "description"
     t.text      "address"
     t.string    "location"
     t.string    "country"
-    t.geography "latlng",            limit: {:srid=>4326, :type=>"point", :geographic=>true}
+    t.geography "latlng",                 limit: {:srid=>4326, :type=>"point", :geographic=>true}
     t.integer   "gross_area"
     t.integer   "certified_area"
     t.integer   "carpark_area"
@@ -130,6 +130,10 @@ ActiveRecord::Schema.define(version: 20150915095247) do
     t.integer   "owner_id"
     t.string    "code"
     t.integer   "construction_year"
+    t.string    "location_plan_file"
+    t.string    "site_plan_file"
+    t.string    "design_brief_file"
+    t.string    "project_narrative_file"
   end
 
   create_table "projects_users", force: :cascade do |t|

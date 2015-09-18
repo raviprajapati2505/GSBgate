@@ -1,4 +1,8 @@
+require 'file_size_validator'
+
 class Project < AuditableRecord
+  MAXIMUM_DOCUMENT_FILE_SIZE = 25 # in MB
+
   belongs_to :owner, class_name: 'User', inverse_of: :owned_projects
   has_many :projects_users, dependent: :delete_all
   has_many :users, -> { where('projects_users.role < 3') },  through: :projects_users
@@ -16,8 +20,17 @@ class Project < AuditableRecord
   validates :project_site_area, numericality: { greater_than_or_equal_to: 0 }
   validates :construction_year, numericality: { only_integer: true, greater_than: 0 }
   validates :terms_and_conditions_accepted, acceptance: true
+  validates :location_plan_file, file_size: {maximum: MAXIMUM_DOCUMENT_FILE_SIZE.megabytes.to_i }
+  validates :site_plan_file, file_size: {maximum: MAXIMUM_DOCUMENT_FILE_SIZE.megabytes.to_i }
+  validates :design_brief_file, file_size: {maximum: MAXIMUM_DOCUMENT_FILE_SIZE.megabytes.to_i }
+  validates :project_narrative_file, file_size: {maximum: MAXIMUM_DOCUMENT_FILE_SIZE.megabytes.to_i }
 
   after_initialize :init
+
+  mount_uploader :location_plan_file, GeneralSubmittalUploader
+  mount_uploader :site_plan_file, GeneralSubmittalUploader
+  mount_uploader :design_brief_file, GeneralSubmittalUploader
+  mount_uploader :project_narrative_file, GeneralSubmittalUploader
 
   default_scope { order(name: :asc) }
 

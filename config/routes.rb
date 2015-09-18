@@ -12,6 +12,10 @@ Rails.application.routes.draw do
       end
     end
   end
+  get 'projects/:id/location_plan' => 'projects#download_location_plan', as: 'download_project_location_plan'
+  get 'projects/:id/site_plan' => 'projects#download_site_plan', as: 'download_project_site_plan'
+  get 'projects/:id/design_brief' => 'projects#download_design_brief', as: 'download_project_design_brief'
+  get 'projects/:id/narrative' => 'projects#download_project_narrative', as: 'download_project_narrative'
   resources :audit_logs, only: [ :index ], path: 'audit-logs'
   get 'audit-logs/:auditable_type/:auditable_id' => 'audit_logs#auditable_index', as: 'auditable_index_audit_logs'
   post 'audit-logs/:auditable_type/:auditable_id' => 'audit_logs#auditable_create', as: 'auditable_create_audit_log'

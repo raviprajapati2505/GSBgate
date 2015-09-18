@@ -1,5 +1,5 @@
 class ProjectsController < AuthenticatedController
-  before_action :set_project, only: [:show, :edit, :update]
+  before_action :set_project, only: [:show, :edit, :update, :download_location_plan, :download_site_plan, :download_design_brief, :download_project_narrative]
   load_and_authorize_resource
 
   # GET /projects
@@ -58,6 +58,11 @@ class ProjectsController < AuthenticatedController
   # PATCH/PUT /projects/1.json
   def update
     respond_to do |format|
+      params[:project][:location_plan_file] = @project.location_plan_file unless params[:project].has_key?(:location_plan_file) && params[:project][:location_plan_file].present?
+      params[:project][:site_plan_file] = @project.site_plan_file unless params[:project].has_key?(:site_plan_file) && params[:project][:site_plan_file].present?
+      params[:project][:design_brief_file] = @project.design_brief_file unless params[:project].has_key?(:design_brief_file) && params[:project][:design_brief_file].present?
+      params[:project][:project_narrative_file] = @project.project_narrative_file unless params[:project].has_key?(:project_narrative_file) && params[:project][:project_narrative_file].present?
+
       if @project.update(project_params)
         format.html { redirect_to @project, notice: 'Project was successfully updated.' }
         format.json { render :show, status: :ok, location: @project }
@@ -66,6 +71,22 @@ class ProjectsController < AuthenticatedController
         format.json { render json: @project.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def download_location_plan
+    send_file @project.location_plan_file.path
+  end
+
+  def download_site_plan
+    send_file @project.site_plan_file.path
+  end
+
+  def download_design_brief
+    send_file @project.design_brief_file.path
+  end
+
+  def download_project_narrative
+    send_file @project.project_narrative_file.path
   end
 
   private
@@ -78,9 +99,9 @@ class ProjectsController < AuthenticatedController
     # Never trust parameters from the scary internet, only allow the white list through.
     def project_params
       if current_user.system_admin?
-        params.require(:project).permit(:name, :description, :address, :location, :country, :construction_year, :latlng, :gross_area, :certified_area, :carpark_area, :project_site_area, :terms_and_conditions_accepted, :owner_id, :code)
+        params.require(:project).permit(:name, :description, :address, :location, :country, :construction_year, :latlng, :gross_area, :certified_area, :carpark_area, :project_site_area, :terms_and_conditions_accepted, :location_plan_file, :site_plan_file, :design_brief_file, :project_narrative_file, :owner_id, :code)
       else
-        params.require(:project).permit(:name, :description, :address, :location, :country, :construction_year, :latlng, :gross_area, :certified_area, :carpark_area, :project_site_area, :terms_and_conditions_accepted)
+        params.require(:project).permit(:name, :description, :address, :location, :country, :construction_year, :latlng, :gross_area, :certified_area, :carpark_area, :project_site_area, :terms_and_conditions_accepted, :location_plan_file, :site_plan_file, :design_brief_file, :project_narrative_file)
       end
     end
 end

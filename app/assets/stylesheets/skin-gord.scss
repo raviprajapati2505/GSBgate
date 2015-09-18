@@ -50,6 +50,10 @@
     text-decoration: underline;
   }
 
+  .input-group + .form-group {
+    margin-top: 10px;
+  }
+
   .project-certification-progress {
     font-style: italic;
   }
