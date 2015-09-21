@@ -7,6 +7,7 @@
             <div class="ibox-content">
                 <%= bootstrap_form_tag(url: audit_logs_path, method: 'get') do |f| %>
                     <%= f.text_field 'text', value: @default_values[:text], label: 'Message contains' %>
+                    <%= f.collection_select :user_id, @users, :id, :email, { include_blank: '- All users -', selected: @default_values[:user_id]} %>
                     <% # todo: admins have no projects -> fix %>
                     <%= f.collection_select :project_id, (current_user.system_admin? or current_user.gord_manager? or current_user.gord_top_manager?) ? Project.all : current_user.projects, :id, :name, { include_blank: '- All projects -', selected: @default_values[:project_id] } %>
                     <div class="row">
