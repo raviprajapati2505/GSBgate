@@ -7,18 +7,6 @@ class AuditLogsController < AuthenticatedController
     @default_values = {text: '', project_id: '', date_from: '', date_to: '', only_user_comments: false}
     @audit_logs = AuditLog.for_user_projects(current_user)
 
-    # Get all users linked to one of the projects in the filter
-    if current_user.system_admin? or current_user.gord_top_manager? or current_user.gord_manager?
-      @users = User.all
-    else
-      user = User.arel_table
-      projects_user = ProjectsUser.arel_table
-      join_on = user.create_on(user[:id].eq(projects_user[:user_id]))
-      outer_join = user.create_join(projects_user, join_on, Arel::Nodes::OuterJoin)
-      @users = User.joins(outer_join).where('users.role <> 1 OR projects_users.project_id in (select pu.project_id from projects_users pu where pu.user_id = ?)', current_user.id).distinct
-      # @users = User.includes(:projects_users).where('users.role <> 1 OR projects_users.project_id in (select pu.project_id from projects_users pu where pu.user_id = ?)', current_user.id).distinct
-    end
-
     # Text filter
     if params[:text].present?
       @audit_logs = @audit_logs.where('(system_message ILIKE ?) OR (user_comment ILIKE ?)' , "%#{params[:text]}%", "%#{params[:text]}%")

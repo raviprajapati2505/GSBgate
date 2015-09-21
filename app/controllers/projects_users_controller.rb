@@ -71,10 +71,41 @@ class ProjectsUsersController < AuthenticatedController
       # .where.not('exists(select id from projects_users where user_id = users.id and project_id = ?)', params[:project_id])
       items = User.select('id, email as text')
                   .where('email like ?', '%' + params[:q] + '%')
-                  .order(email: :asc)
                   .paginate(page: params[:page], per_page: 25)
                   .without_permissions_for_project(project)
       render json: {total_count: total_count, items: items}
+    end
+  end
+
+  def list_users_sharing_projects
+    if params.has_key?(:user_id) && params.has_key?(:q) && params.has_key?(:page)
+      if params[:user_id] == current_user.id.to_s
+        if current_user.system_admin? or current_user.gord_top_manager? or current_user.gord_manager?
+          total_count = User.where('email like ?', '%' + params[:q] + '%')
+                            .count
+          items = User.select('id, email as text')
+                      .where('email like ?', '%' + params[:q] + '%')
+                      .paginate(page: params[:page], per_page: 25)
+        else
+          user = User.arel_table
+          projects_user = ProjectsUser.arel_table
+          join_on = user.create_on(user[:id].eq(projects_user[:user_id]))
+          outer_join = user.create_join(projects_user, join_on, Arel::Nodes::OuterJoin)
+
+          total_count = User.distinct
+                            .joins(outer_join)
+                            .where('email like ? ', '%' + params[:q] + '%')
+                            .where('users.role <> 1 OR projects_users.project_id in (select pu.project_id from projects_users pu where pu.user_id = ?)', current_user.id)
+                            .count
+          items = User.select('users.id as id, users.email as text')
+                      .distinct
+                      .joins(outer_join)
+                      .where('email like ? ', '%' + params[:q] + '%')
+                      .where('users.role <> 1 OR projects_users.project_id in (select pu.project_id from projects_users pu where pu.user_id = ?)', current_user.id)
+                      .paginate(page: params[:page], per_page: 25)
+        end
+        render json: {total_count: total_count, items: items} and return
+      end
     end
   end
 
