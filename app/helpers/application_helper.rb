@@ -42,7 +42,7 @@ module ApplicationHelper
     link_to('<span class="label label-lg"><i class="fa fa-lg fa-history"></i></span>'.html_safe, auditable_index_audit_logs_path(auditable.class.name, auditable.id), remote: true, title: 'Click to view the audit log of this resource', class: 'pull-right')
   end
 
-  def breadcrumbs(model, with_prefix: true)
+  def breadcrumbs(model, with_prefix: true, return_url: false)
     breadcrumbs = { names: [], paths: [] }
 
     case model.class.name
@@ -81,34 +81,66 @@ module ApplicationHelper
 
     if with_prefix
       breadcrumbs[:names] << 'Projects'
-      breadcrumbs[:paths] << projects_path
+      unless return_url
+        breadcrumbs[:paths] << projects_path
+      else
+        breadcrumbs[:paths] << projects_url
+      end
     end
     if project.present?
       breadcrumbs[:names] << project.name
-      breadcrumbs[:paths] << project_path(project)
+      unless return_url
+        breadcrumbs[:paths] << project_path(project)
+      else
+        breadcrumbs[:paths] << project_url(project)
+      end
     end
     if projects_user.present?
       breadcrumbs[:names] << projects_user.user.email
-      breadcrumbs[:paths] << project_user_path(project, projects_user)
+      unless return_url
+        breadcrumbs[:paths] << project_user_path(project, projects_user)
+      else
+        breadcrumbs[:paths] << project_user_url(project, projects_user)
+      end
     end
     if certification_path.present?
       breadcrumbs[:names] << certification_path.name
-      breadcrumbs[:paths] << project_certification_path_path(project, certification_path)
+      unless return_url
+        breadcrumbs[:paths] << project_certification_path_path(project, certification_path)
+      else
+        breadcrumbs[:paths] << project_certification_path_url(project, certification_path)
+      end
     end
     if scheme_mix.present?
       breadcrumbs[:names] << scheme_mix.full_name
-      breadcrumbs[:paths] << project_certification_path_scheme_mix_path(project, certification_path, scheme_mix)
+      unless return_url
+        breadcrumbs[:paths] << project_certification_path_scheme_mix_path(project, certification_path, scheme_mix)
+      else
+        breadcrumbs[:paths] << project_certification_path_scheme_mix_url(project, certification_path, scheme_mix)
+      end
     end
     if requirement_datum.present?
       breadcrumbs[:names] << scheme_mix_criterion.full_name
-      breadcrumbs[:paths] << project_certification_path_scheme_mix_scheme_mix_criterion_path(project, certification_path, scheme_mix, scheme_mix_criterion) + '#requirement-' + requirement_datum.id.to_s
+      unless return_url
+        breadcrumbs[:paths] << project_certification_path_scheme_mix_scheme_mix_criterion_path(project, certification_path, scheme_mix, scheme_mix_criterion) + '#requirement-' + requirement_datum.id.to_s
+      else
+        breadcrumbs[:paths] << project_certification_path_scheme_mix_scheme_mix_criterion_url(project, certification_path, scheme_mix, scheme_mix_criterion) + '#requirement-' + requirement_datum.id.to_s
+      end
     elsif scheme_mix_criterion.present?
       breadcrumbs[:names] << scheme_mix_criterion.full_name
-      breadcrumbs[:paths] << project_certification_path_scheme_mix_scheme_mix_criterion_path(project, certification_path, scheme_mix, scheme_mix_criterion)
+      unless return_url
+        breadcrumbs[:paths] << project_certification_path_scheme_mix_scheme_mix_criterion_path(project, certification_path, scheme_mix, scheme_mix_criterion)
+      else
+        breadcrumbs[:paths] << project_certification_path_scheme_mix_scheme_mix_criterion_url(project, certification_path, scheme_mix, scheme_mix_criterion)
+      end
     end
     if scheme_mix_criterion_document.present?
       breadcrumbs[:names] << scheme_mix_criterion_document.name
-      breadcrumbs[:paths] << project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_path(project, certification_path, scheme_mix, scheme_mix_criterion, scheme_mix_criterion_document)
+      unless return_url
+        breadcrumbs[:paths] << project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_path(project, certification_path, scheme_mix, scheme_mix_criterion, scheme_mix_criterion_document)
+      else
+        breadcrumbs[:paths] << project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_url(project, certification_path, scheme_mix, scheme_mix_criterion, scheme_mix_criterion_document)
+      end
     end
 
     return breadcrumbs

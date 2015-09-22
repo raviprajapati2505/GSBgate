@@ -47,7 +47,7 @@ svn://svnext.vito.be/ENE/TEM/EMIS/GORD-GSAS/trunk/GSASServices/GSASServices/Docs
 3. add following lines :
    source /etc/profile.d/rbenv.sh
    cd /var/gord-gsas
-   RAILS_ENV=production bundle exec rake gsas:notifyTaskDueDate
+   RAILS_ENV=production bundle exec rake gsas:send_tasks_mail dry_run=false
 4. $> sudo cron -e
 5. add following line to crontab :
    0 10 * * * /home/jenkins/generate_notifications.sh

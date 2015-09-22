@@ -1,0 +1,38 @@
+<tr>
+    <td style="padding: .75pt .75pt;">
+        <p><span style='font-size: 18pt; font-family: "Verdana", "sans-serif"; color: #0B9ADC;'>Project Status Update</span></p>
+    </td>
+</tr>
+<tr>
+    <td style="width: 450pt; border: solid #CCC 1pt; background: white; padding: 15pt 15pt;">
+        <p><span style='font-size: 9pt; font-family: "Verdana", "sans-serif";'>Dear Ms/Mr<br/>
+        <br/>
+            Hereby we send you an overview of all your unfinished tasks.
+        </span></p>
+        <table style="width: 100%;">
+            <thead>
+            <tr>
+                <th style="border: none; border-bottom: solid #CCC 1pt;">Description</th>
+                <th style="border: none; border-bottom: solid #CCC 1pt;">Resource</th>
+                <th style="border: none; border-bottom: solid #CCC 1pt;">Due date</th>
+            </tr>
+            </thead>
+            <tbody>
+            <% @tasks.each do |task|
+              breadcrumbs = breadcrumbs(task.model, with_prefix: false, return_url: true)
+            %>
+                <tr>
+                    <td><%= I18n.t(".description_#{task.description_id}", scope: [:tasks, :tasks]) %></td>
+                    <td><%= link_to breadcrumbs[:names].last, breadcrumbs[:paths].last %></td>
+                    <td><% if task.model.class.method_defined?(:due_date) && task.model.due_date.present? %><%= I18n.l(task.model.due_date, format: :short) %><% if Date.today > task.model.due_date %>&nbsp;<i class="fa fa-clock-o due-date-expired" title="<%= I18n.t('.tooltip_due_date', scope: [:tasks, :tasks]) %>" data-toggle="tooltip"></i><% end %><% else %>-<% end %></td>
+                </tr>
+            <% end %>
+            </tbody>
+        </table>
+        <br/>
+        With kind regards,
+    </td>
+</tr>
+
+
+
