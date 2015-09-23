@@ -1,0 +1,57 @@
+<div class="row">
+    <div class="col-md-4 pull-right">
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>Criteria filter</h5>
+            </div>
+            <div class="ibox-content">
+                <%= bootstrap_form_tag(url: scheme_criteria_path, method: 'get') do |f| %>
+                    <%= f.collection_select :certificate_id, Certificate.all, :id, :name, { include_blank: '- All certificates -', selected: @default_values[:certificate_id] } %>
+                    <%= f.text_field :scheme_name, value: @default_values[:scheme_name], label: 'Scheme name contains' %>
+                    <%= f.text_field :scheme_category_name, value: @default_values[:scheme_category_name], label: 'Category name contains' %>
+                    <div class="hr-line-dashed"></div>
+                    <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
+                        <i title="Apply filter" class="fa fa-lg fa-filter" style="padding-right: 10px;"></i>Apply filter
+                    <% end %>
+                    <%= link_to scheme_criteria_path, class: 'btn btn-white' do %>
+                        <i class="fa fa-lg fa-times" style="padding-right: 10px;"></i>Remove filter
+                    <% end %>
+                <% end %>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>Criteria</h5>
+            </div>
+            <div class="ibox-content">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Certificate</th>
+                            <th>Scheme</th>
+                            <th>Category</th>
+                            <th>Criterion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <% if @scheme_criteria.empty? %>
+                        <tr><td colspan="3">Currently there are no criteria.</td></tr>
+                    <% else %>
+                        <% @scheme_criteria.each do |scheme_criterion| %>
+                            <tr class="clickable" data-href="<%= scheme_criterion_path(scheme_criterion) %>">
+                                <td><%= scheme_criterion.scheme_category.scheme.certificate.name %></td>
+                                <td><%= scheme_criterion.scheme_category.scheme.name %></td>
+                                <td><%= scheme_criterion.scheme_category.name %></td>
+                                <td><%= scheme_criterion.full_name %></td>
+                            </tr>
+                        <% end %>
+                    <% end %>
+                    </tbody>
+                </table>
+                <%= will_paginate @scheme_criteria, renderer: BootstrapPagination::Rails %>
+            </div>
+        </div>
+    </div>
+</div>

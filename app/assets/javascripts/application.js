@@ -34,6 +34,7 @@
  *= require toastr
  *= require js-routes
  *= require certification_path
+ *= require ckeditor/init
  */
 
 $(function () {

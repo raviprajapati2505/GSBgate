@@ -75,16 +75,32 @@ module ApplicationHelper
         scheme_mix = model.scheme_mix_criteria.take.scheme_mix
         scheme_mix_criterion = model.scheme_mix_criteria.take
         requirement_datum = model
+      when SchemeCriterion.name.demodulize
+        criterion = model
+        category = criterion.scheme_category
+        scheme = category.scheme
+        certificate = scheme.certificate
+      when SchemeCriterionText.name.demodulize
+        criterion_text = model
+        criterion = criterion_text.scheme_criterion
+        category = criterion.scheme_category
+        scheme = category.scheme
+        certificate = scheme.certificate
       else
         return breadcrumbs
     end
 
     if with_prefix
-      breadcrumbs[:names] << 'Projects'
-      unless return_url
-        breadcrumbs[:paths] << projects_path
+      unless criterion.present?
+        breadcrumbs[:names] << 'Projects'
+        unless return_url
+          breadcrumbs[:paths] << projects_path
+        else
+          breadcrumbs[:paths] << projects_url
+        end
       else
-        breadcrumbs[:paths] << projects_url
+        breadcrumbs[:names] << 'Criteria'
+        breadcrumbs[:paths] << scheme_criteria_path
       end
     end
     if project.present?
@@ -140,6 +156,26 @@ module ApplicationHelper
         breadcrumbs[:paths] << project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_path(project, certification_path, scheme_mix, scheme_mix_criterion, scheme_mix_criterion_document)
       else
         breadcrumbs[:paths] << project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_url(project, certification_path, scheme_mix, scheme_mix_criterion, scheme_mix_criterion_document)
+      end
+    end
+    if certificate.present?
+      breadcrumbs[:names] << certificate.name
+      breadcrumbs[:paths] << scheme_criteria_path() + '?certificate_id=' + certificate.id.to_s
+      if scheme.present?
+        breadcrumbs[:names] << scheme.name
+        breadcrumbs[:paths] << scheme_criteria_path() + '?certificate_id=' + certificate.id.to_s + '&scheme_name=' + scheme.name
+        if category.present?
+          breadcrumbs[:names] << category.name
+          breadcrumbs[:paths] << scheme_criteria_path() + '?certificate_id=' + certificate.id.to_s + '&scheme_name=' + scheme.name + '&category_name=' + category.name
+          if criterion.present?
+            breadcrumbs[:names] << criterion.full_name
+            breadcrumbs[:paths] << scheme_criterion_path(criterion)
+            if criterion_text.present?
+              breadcrumbs[:names] << criterion_text.name
+              breadcrumbs[:paths] << edit_scheme_criterion_text_path(criterion_text)
+            end
+          end
+        end
       end
     end
 

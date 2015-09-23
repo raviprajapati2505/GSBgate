@@ -19,6 +19,7 @@ Rails.application.routes.draw do
   resources :audit_logs, only: [ :index ], path: 'audit-logs'
   get 'audit-logs/:auditable_type/:auditable_id' => 'audit_logs#auditable_index', as: 'auditable_index_audit_logs'
   post 'audit-logs/:auditable_type/:auditable_id' => 'audit_logs#auditable_create', as: 'auditable_create_audit_log'
+  get 'tasks' => 'tasks#index', as: 'tasks'
   put 'projects/:project_id/certificates/:id/sign' => 'certification_paths#sign_certificate', as: 'sign_certification_path'
   put 'projects/:project_id/certificates/:certification_path_id/schemes/:scheme_mix_id/criteria/:id/assign' => 'scheme_mix_criteria#assign_certifier', as: 'assign_certifier_to_criteria'
   get 'projects/:project_id/certificates/:id/archive' => 'certification_paths#download_archive', as: 'archive_project_certification_path'
@@ -27,6 +28,8 @@ Rails.application.routes.draw do
   get 'projects/:project_id/users' => 'projects_users#list_unauthorized_users', as: 'list_unauthorized_users'
   get 'projects/users/:user_id' => 'projects_users#list_users_sharing_projects', as: 'list_users_sharing_projects'
   put '/projects/:project_id/certificates/:certification_path_id/schemes/:scheme_mix_id/criteria/:scheme_mix_criterion_id/requirement/:id/refuse' => 'requirement_data#refuse', as: 'refuse_requirement_datum'
+  resources :scheme_criteria, only: [ :index, :show ]
+  resources :scheme_criterion_texts, only: [:edit, :update]
 
   resources :users
   devise_for :user

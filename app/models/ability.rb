@@ -84,6 +84,8 @@ class Ability
       can :read, AuditLog
       can :auditable_index, AuditLog
       can :auditable_create, AuditLog
+      # Tasks controller
+      can :read, Task
     elsif user.gord_top_manager?
       # dr. Youssef
       can :manage, :all

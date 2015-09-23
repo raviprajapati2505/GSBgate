@@ -91,6 +91,9 @@ gem 'rubyzip', '~> 1.1.7'
 # URI.encode / URI.escape is deprecated
 gem 'addressable'
 
+# https://github.com/galetahub/ckeditor
+gem 'ckeditor', '~> 4.1.3'
+
 # Rails-Assets: access bower packages from our gem file
 #  e.g. gem 'rails-assets-BOWER_PACKAGE_NAME'
 #  do not forget to:

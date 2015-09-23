@@ -24,6 +24,8 @@
                         <td><% if task.model.class.method_defined?(:due_date) && task.model.due_date.present? %><%= l(task.model.due_date, format: :short) %><% if Date.today > task.model.due_date %>&nbsp;<i class="fa fa-clock-o due-date-expired" title="<%= t('.tooltip_due_date') %>" data-toggle="tooltip"></i><% end %><% else %>-<% end %></td>
                     </tr>
                 <% end %>
+                <!-- Next line is impossible because @tasks is an array and not a ActiveRecord Relation -->
+                <!--= will_paginate @tasks, renderer: BootstrapPagination::Rails %-->
             <% end %>
             </tbody>
         </table>
