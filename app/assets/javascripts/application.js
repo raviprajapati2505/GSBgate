@@ -23,6 +23,7 @@
  *= require datatables
  *= require datatables-responsive
  *= require datatables-init
+ *= require datatables-plugins/integration/bootstrap/3/dataTables.bootstrap
  *= require icheck
  *= require select2
  *= require d3
