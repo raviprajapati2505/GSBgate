@@ -50,6 +50,9 @@ en:
       btn_save: "Save"
       info_refuse_requirement: "When you refuse this requirement, the project manager will have to reassign the requirement to another project team member. Please explain below why you can't complete the requirement."
       modal_title: "Requirement refusal"
+  scheme_criteria:
+    show:
+      tooltip_sortable: "You can drag and drop the panels below to re-order their appearance."
   scheme_mixes:
       allocate_project_team_responsibility:
         btn_cancel: "Cancel"

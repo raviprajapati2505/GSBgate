@@ -1,0 +1,12 @@
+<div class="panel panel-default" data-id="<%= criterion_text.id %>">
+    <div class="panel-heading">
+        <div class="subtitle"><%= criterion_text.name %></div>
+    </div>
+    <div class="panel-body">
+        <div class="<%= criterion_text.name.downcase %>"><%= criterion_text.html_text.html_safe %></div>
+    </div>
+    <div class="panel-footer">
+        <%= link_to raw('<i title="Edit criterion text" class="fa fa-lg fa-edit" style="padding-right: 10px;"></i>Edit'), edit_scheme_criterion_text_path(criterion_text), :class => 'btn btn-primary' %>
+        <%= link_to raw('<i title="Delete criterion text" class="fa fa-lg fa-trash" style="padding-right: 10px;"></i>Remove'), scheme_criterion_text_path(criterion_text), method: :delete, data: {confirm: 'Are you sure to remove criterion text ?'}, :class => 'btn btn-danger' %>
+    </div>
+</div>

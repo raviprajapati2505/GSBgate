@@ -35,6 +35,7 @@
  *= require js-routes
  *= require certification_path
  *= require ckeditor/init
+ *= require html.sortable
  */
 
 $(function () {
@@ -136,6 +137,25 @@ $(function () {
         GSAS.processFlashMessages();
         GSAS.processTooltips();
     });
+
+    // Sortable lists
+    GSAS.setSortableListPositions();
+    $('.sortable').sortable();
+    $('.sortable').sortable().bind('sortupdate', function() {
+        updated_sortorder = [];
+
+        GSAS.setSortableListPositions();
+
+        $('.sortable > .panel.panel-default').each(function(i) {
+            updated_sortorder.push({ id: $(this).data('id'), display_weight: i+1 });
+        });
+
+        $.ajax({
+            type: "PUT",
+            url: Routes.sort_scheme_criterion_texts_path(),
+            data: { sort_order: updated_sortorder }
+        });
+    });
 });
 
 // General GSAS functions
@@ -156,4 +176,9 @@ var GSAS = {
     processTooltips: function () {
         $('[data-toggle="tooltip"]').tooltip();
     },
+    setSortableListPositions: function() {
+        $('.sortable > .panel.panel-default').each(function(i) {
+            $(this).attr("data-pos", i+1);
+        })
+    }
 }

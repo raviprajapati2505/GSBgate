@@ -172,7 +172,11 @@ module ApplicationHelper
             breadcrumbs[:paths] << scheme_criterion_path(criterion)
             if criterion_text.present?
               breadcrumbs[:names] << criterion_text.name
-              breadcrumbs[:paths] << edit_scheme_criterion_text_path(criterion_text)
+              if criterion_text.id.present?
+                breadcrumbs[:paths] << edit_scheme_criterion_text_path(criterion_text)
+              else
+                breadcrumbs[:paths] << new_scheme_criterion_text_path(scheme_criterion: criterion)
+              end
             end
           end
         end

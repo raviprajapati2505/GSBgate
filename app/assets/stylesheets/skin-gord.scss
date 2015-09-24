@@ -572,4 +572,18 @@
       margin-right: 10px;
     }
   }
+
+  // Sortable list
+  .sortable {
+    .panel {
+      margin-bottom: 10px;
+    }
+  }
+
+  .sortable-placeholder {
+    background-color: #f9f9f9;
+    border: 1px dashed #ccc;
+    height: 75px;
+    margin-bottom: 10px;
+  }
 }

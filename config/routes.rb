@@ -28,8 +28,11 @@ Rails.application.routes.draw do
   get 'projects/:project_id/users' => 'projects_users#list_unauthorized_users', as: 'list_unauthorized_users'
   get 'projects/users/:user_id' => 'projects_users#list_users_sharing_projects', as: 'list_users_sharing_projects'
   put '/projects/:project_id/certificates/:certification_path_id/schemes/:scheme_mix_id/criteria/:scheme_mix_criterion_id/requirement/:id/refuse' => 'requirement_data#refuse', as: 'refuse_requirement_datum'
-  resources :scheme_criteria, only: [ :index, :show ]
-  resources :scheme_criterion_texts, only: [:edit, :update]
+  resources :scheme_criteria, only: [ :index ]
+  resources :scheme_criteria, only: [ :show ], as: 'scheme_criterion'
+  resources :scheme_criterion_texts, only: [:edit, :update, :new, :create, :destroy] do
+    put :sort, on: :collection
+  end
 
   resources :users
   devise_for :user

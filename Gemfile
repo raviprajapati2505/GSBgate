@@ -119,6 +119,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-pace'
   gem 'rails-assets-slimScroll'
   gem 'rails-assets-toastr'
+  gem 'rails-assets-voidberg--html5sortable'
 end
 
 

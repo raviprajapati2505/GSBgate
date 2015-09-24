@@ -163,6 +163,8 @@ GEM
       rails-assets-jquery (>= 1.7)
     rails-assets-toastr (2.1.2)
       rails-assets-jquery (>= 1.6.3)
+    rails-assets-voidberg--html5sortable (0.3.0)
+      rails-assets-jquery (~> 2.1.3)
     rails-deprecated_sanitizer (1.0.3)
       activesupport (>= 4.2.0.alpha)
     rails-dom-testing (1.0.7)
@@ -269,6 +271,7 @@ DEPENDENCIES
   rails-assets-pace!
   rails-assets-slimScroll!
   rails-assets-toastr!
+  rails-assets-voidberg--html5sortable!
   rails-file-icons!
   rgeo (= 0.3.20)
   rubyzip (~> 1.1.7)

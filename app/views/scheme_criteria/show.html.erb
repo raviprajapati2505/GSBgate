@@ -2,23 +2,16 @@
     <div class="col-lg-6">
         <div class="ibox criterion-information">
             <div class="ibox-title">
-                <h5>Criterion information</h5>
+                <h5>Criterion texts <%= tooltip(t '.tooltip_sortable').html_safe %></h5>
             </div>
-            <div class="ibox-content">
+            <div class="ibox-content sortable">
+                <div class="sortable">
                 <% @scheme_criterion.scheme_criterion_texts.each do |criterion_text| %>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <div class="subtitle"><%= criterion_text.name %></div>
-                        </div>
-                        <div class="panel-body">
-                            <div class="<%= criterion_text.name.downcase %>"><%= criterion_text.html_text.html_safe %></div>
-                        </div>
-                        <div class="panel-footer">
-                            <%= link_to raw('<i title="Edit criterion text" class="fa fa-lg fa-edit" style="padding-right: 10px;"></i>Edit'), edit_scheme_criterion_text_path(criterion_text), :class => 'btn btn-primary' %>
-                        </div>
-                    </div>
-                    <div class="hr-line-dashed"></div>
+                    <%= render 'scheme_criterion_texts/text', criterion_text: criterion_text %>
                 <% end %>
+                </div>
+                <div class="hr-line-dashed"></div>
+                <%= link_to raw('<i title="Add criterion text" class="fa fa-lg fa-plus" style="padding-right: 10px;"></i>Add text'), new_scheme_criterion_text_path(scheme_criterion_id: @scheme_criterion.id), class: 'btn btn-primary' %>
             </div>
         </div>
     </div>

@@ -1,0 +1,26 @@
+<%= bootstrap_form_for(@scheme_criterion_text, layout: :horizontal) do |f| %>
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>Criterion text details</h5>
+                </div>
+                <div class="ibox-content">
+                    <%= f.hidden_field :scheme_criterion_id %>
+                    <%= f.text_field :name %>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="scheme_criterion_text_html_text">HTML text</label>
+                        <div class="col-sm-10">
+                            <%= f.cktext_area :html_text, value: @scheme_criterion_text.html_text %>
+                        </div>
+                    </div>
+                    <%= f.check_box :visible, label: 'Show this text on criterion page' %>
+                    <div class="hr-line-dashed"></div>
+                    <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
+                        <i title="Save" class="fa fa-lg fa-save" style="padding-right: 10px;"></i>Save
+                    <% end %>
+                </div>
+            </div>
+        </div>
+    </div>
+<% end %>
