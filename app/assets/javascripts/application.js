@@ -28,12 +28,10 @@
  *= require select2
  *= require d3
  *= require d3-tip
- *= require score_widget.js
  *= require bootstrap-datepicker
  *= require dropzone
  *= require toastr
  *= require js-routes
- *= require certification_path
  *= require ckeditor/init
  *= require html.sortable
  */
