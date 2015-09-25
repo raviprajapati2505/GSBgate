@@ -1,0 +1,77 @@
+<tr>
+    <td style="padding: .75pt .75pt;">
+        <p><span style='font-size: 18pt; font-family: "Verdana", "sans-serif"; color: #0B9ADC;'>Project Status Update</span></p>
+    </td>
+</tr>
+<tr>
+    <td style="width: 450pt; border: solid #CCC 1pt; background: white; padding: 15pt 15pt;">
+        <p>
+            <span style='font-size: 9pt; font-family: "Verdana", "sans-serif";'>Dear Ms/Mr<br/><br/>
+            Hereby we send you an overview of recent project changes and all your unfinished tasks.</span>
+        </p>
+        <p><%= link_to 'Audit log', audit_logs_url, {style: 'color: #000; font-size: 14pt; font-family: "Verdana", "sans-serif";'} %></p>
+        <% if @audit_logs.empty? %>
+            <p><span style='font-size: 9pt; font-family: "Verdana", "sans-serif";'>No audit logs found.</span></p>
+        <% else %>
+        <div>
+            <% @audit_logs.each do |audit_log| %>
+            <div style="border-bottom: 1pt solid #e7eaec; margin: 0; padding: 10pt 0;">
+                <small>
+                    <img src="<%= image_url('fa/clock-o_888888_16.png') %>" height="10">&nbsp;<span style='color: #888; font-size: 8.5pt; font-family: "Verdana", "sans-serif";'><%= I18n.l(audit_log.created_at) %></span>
+                    | <img src="<%= image_url('fa/user_888888_16.png') %>" height="10">&nbsp;<span style='color: #888; font-size: 8.5pt; font-family: "Verdana", "sans-serif"; text-decoration: none;'><%= audit_log.user.email %></span>
+                    | <img src="<%= image_url('fa/building-o_888888_16.png') %>" height="10">&nbsp;
+                    <% breadcrumbs = breadcrumbs(audit_log.auditable, return_url: true) %>
+                    <% breadcrumbs[:names].each_with_index do |breadcrumb_name, index| %>
+                        <%= '/' unless index == 0 %>
+                        <%= link_to(breadcrumb_name, breadcrumbs[:paths][index], {style: 'color: #888; font-size: 8.5pt; font-family: "Verdana", "sans-serif"; text-decoration: none;'}) %>
+                    <% end %>
+                </small>
+                <% if audit_log.system_message.present? %>
+                <div style='background-color: #f5f5f5; border: 1pt solid #e7eaec; margin-bottom: 5pt; margin-top: 10pt; padding: 10pt 10pt;'>
+                    <span style='color: #676a6c; font-size: 9pt; font-family: "Verdana", "sans-serif";'><%= audit_log.system_message.html_safe %></span>
+                </div>
+                <% end %>
+                <% if audit_log.user_comment.present? %>
+                <div style='background-color: #f5f5f5; border: 1pt solid #e7eaec; margin-bottom: 5pt; margin-top: 10pt; padding: 10pt 20pt;'>
+                    <img src="<%= image_url('fa/comment_888888_16.png') %>">&nbsp;<span style='color: #676a6c; font-size: 9pt; font-family: "Verdana", "sans-serif"; font-style: italic;'><%= audit_log.user_comment %></span>
+                </div>
+                <% end %>
+            </div>
+            <% end %>
+            <% if @more_audit_logs > 0 %>
+            <span style='font-size: 9pt; font-family: "Verdana", "sans-serif";'><%= @more_audit_logs %> <%= link_to 'more', audit_logs_url, {style: 'color: #000; font-size: 14pt; font-family: "Verdana", "sans-serif";'} %>...</span>
+            <% end %>
+        </div>
+        <% end %>
+        <p><%= link_to 'Tasks', tasks_url, {style: 'color: #000; font-size: 14pt; font-family: "Verdana", "sans-serif";'} %></p>
+        <% if @tasks.empty? %>
+            <p><span style='font-size: 9pt; font-family: "Verdana", "sans-serif";'>No tasks found.</span></p>
+        <% else %>
+        <table style="width: 100%;">
+            <thead>
+            <tr>
+                <th style="border: none; border-bottom: solid #CCC 1pt;">Description</th>
+                <th style="border: none; border-bottom: solid #CCC 1pt;">Resource</th>
+                <th style="border: none; border-bottom: solid #CCC 1pt;">Due date</th>
+            </tr>
+            </thead>
+            <tbody>
+            <% @tasks.each do |task|
+              breadcrumbs = breadcrumbs(task.model, with_prefix: false, return_url: true)
+            %>
+                <tr>
+                    <td><%= I18n.t(".description_#{task.description_id}", scope: [:tasks, :tasks]) %></td>
+                    <td><%= link_to breadcrumbs[:names].last, breadcrumbs[:paths].last %></td>
+                    <td><% if task.model.class.method_defined?(:due_date) && task.model.due_date.present? %><%= I18n.l(task.model.due_date, format: :short) %><% if Date.today > task.model.due_date %>&nbsp;<i class="fa fa-clock-o due-date-expired" title="<%= I18n.t('.tooltip_due_date', scope: [:tasks, :tasks]) %>" data-toggle="tooltip"></i><% end %><% else %>-<% end %></td>
+                </tr>
+            <% end %>
+            </tbody>
+        </table>
+        <% end %>
+        <br/>
+        <p><span style='font-size: 9pt; font-family: "Verdana", "sans-serif";'>With kind regards,</span></p>
+    </td>
+</tr>
+
+
+

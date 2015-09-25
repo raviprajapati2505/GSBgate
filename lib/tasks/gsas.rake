@@ -2,12 +2,12 @@ namespace :gsas do
 
   PAGE_SIZE = 100
 
-  # usage example: rake gsas:send_tasks_mail dry_run=false
-  desc "Send email to users with their list of unfinished tasks"
-  task :send_tasks_mail, [:dry_run] => :environment do |t, args|
+  # usage example: rake gsas:send_digest_mail dry_run=false
+  desc "Send email to users with a digest of their most recent project changes and their list of unfinished tasks"
+  task :send_digest_mail, [:dry_run] => :environment do |t, args|
     args.with_defaults(dry_run: false)
 
-    Rails.logger.info 'Start sending tasks emails...'
+    Rails.logger.info 'Start sending emails...'
 
     user_count = 0
     page = 0
@@ -15,9 +15,8 @@ namespace :gsas do
       page += 1
       users = User.all.paginate page: page, per_page: PAGE_SIZE
       users.each do |user|
-        tasks = TaskService.instance.generate_tasks(user: user)
         unless args.dry_run
-          TaskMailer.tasks_email(user, tasks).deliver_now
+          DigestMailer.digest_email(user).deliver_now
         end
       end
       user_count += users.size

@@ -1,0 +1,48 @@
+Project Status Update
+=====================
+
+Dear Ms/Mr
+
+Hereby we send you an overview of recent project changes and all your unfinished tasks.
+
+Audit log
+---------
+<% if @audit_logs.empty? %>
+No audit logs found.
+<% else %>
++-
+<% @audit_logs.each do |audit_log| %>
+<% small = '| ' + I18n.l(audit_log.created_at) + ' | ' + audit_log.user.email + ' | ' %>
+<% breadcrumbs = breadcrumbs(audit_log.auditable, return_url: true) %>
+<% breadcrumbs[:names].each_with_index do |breadcrumb_name, index| %>
+<% small += (index == 0 ? breadcrumb_name : '/' + breadcrumb_name) %>
+<% end %>
+<%= small %>
+<% if audit_log.system_message.present? %>
+| <%= audit_log.system_message %>
+<% end %>
+<% if audit_log.user_comment.present? %>
+| <%= audit_log.user_comment %>
+<% end %>
++-
+<% end %>
+<% if @more_audit_logs > 0 %>
+<%= @more_audit_logs %> more...
+<% end %>
+<% end %>
+
+Tasks
+-----
+<% if @tasks.empty? %>
+No tasks found.
+<% else %>
+ Description | Resource | Due date
+-------------+----------+----------
+<% @tasks.each do |task|
+  breadcrumbs = breadcrumbs(task.model, with_prefix: false, return_url: true)
+%>
+<%= I18n.t(".description_#{task.description_id}", scope: [:tasks, :tasks]) %> | <%= breadcrumbs[:names].last %> | <% if task.model.class.method_defined?(:due_date) && task.model.due_date.present? %><%= I18n.l(task.model.due_date, format: :short) %><% else %>-<% end %>
+<% end %>
+<% end %>
+
+With kind regards,
