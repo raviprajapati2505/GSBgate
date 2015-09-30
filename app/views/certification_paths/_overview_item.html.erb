@@ -3,18 +3,27 @@
 
 <% can_create_certification_path = project.can_create_certification_path_for_certificate?(certificate) %>
 <% enabled = (certification_path.present? or can_create_certification_path) %>
-<li class="list-group-item container <%=  'disabled' if !enabled %>">
+<li class="list-group-item container <%= 'disabled' if !enabled %>">
     <% if certification_path.present? %>
         <a href="<%= project_certification_path_path(project, certification_path) %>">
-            <span class="col-md-4"><%= certificate.name %></span>
-            <span class="col-md-4"><%= certification_path.status.humanize %></span>
-            <span class="col-md-4">
-                <% targeted_score = certification_path.total_weighted_targeted_score %>
-                <% stars = certification_path.star_rating_for_score(targeted_score) %>
-                <%= stars %> Stars&nbsp;
-                        (<% stars.times do %>
-                            <i class="fa fa-star"></i>
-                        <% end %>) - <%= targeted_score %>
+            <span class="col-md-3"><%= certificate.name %></span>
+            <span class="col-md-3"><%= certification_path.status.humanize %></span>
+            <span class="col-md-6">
+                <% if certification_path.certification_path_status_id == CertificationPathStatus::CERTIFIED or certification_path.certification_path_status_id == CertificationPathStatus::NOT_CERTIFIED %>
+                    <div class="row">
+                        <span class="col-md-3 text-right">Achieved</span>
+                        <span class="col-md-9"><%= render partial: 'certification_paths/star_rating', locals: {score: certification_path.total_weighted_achieved_score_relative_to_certification_path} %></span>
+                    </div>
+                <% else %>
+                    <div class="row">
+                        <span class="col-md-3 text-right">Targeted</span>
+                        <span class="col-md-9"><%= render partial: 'certification_paths/star_rating', locals: {score: certification_path.total_weighted_targeted_score_relative_to_certification_path} %></span>
+                    </div>
+                    <div class="row">
+                        <span class="col-md-3 text-right">Submitted</span>
+                        <span class="col-md-9"><%= render partial: 'certification_paths/star_rating', locals: {score: certification_path.total_weighted_submitted_score_relative_to_certification_path} %></span>
+                    </div>
+                <% end %>
             </span>
         </a>
     <% else %>

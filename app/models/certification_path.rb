@@ -50,29 +50,29 @@ class CertificationPath < ActiveRecord::Base
     certificate.schemes.count == 1
   end
 
-  def total_weighted_targeted_score
+  def total_weighted_targeted_score_relative_to_certification_path
     total = nil
     scheme_mixes.each do |sm|
       total ||= 0
-      total += sm.total_weighted_targeted_score
+      total += sm.total_weighted_targeted_score_relative_to_certification_path
     end
     total.nil? ? -1 : total
   end
 
-  def total_weighted_submitted_score
+  def total_weighted_submitted_score_relative_to_certification_path
     total = nil
     scheme_mixes.each do |sm|
       total ||= 0
-      total += sm.total_weighted_submitted_score
+      total += sm.total_weighted_submitted_score_relative_to_certification_path
     end
     total.nil? ? -1 : total
   end
 
-  def total_weighted_achieved_score
+  def total_weighted_achieved_score_relative_to_certification_path
     total = nil
     scheme_mixes.each do |sm|
       total ||= 0
-      total += sm.total_weighted_achieved_score
+      total += sm.total_weighted_achieved_score_relative_to_certification_path
     end
     total.nil? ? -1 : total
   end
@@ -102,24 +102,6 @@ class CertificationPath < ActiveRecord::Base
         errors.add(:duration, 'Duration for Final Design Certificate should be 2, 3 or 4 years')
       end
     elsif certificate.construction_certificate? or certificate.operations_certificate?
-    end
-  end
-
-  def star_rating_for_score(score)
-    if score >= 0 && score <= 0.5
-      return 1
-    elsif score > 0.5 && score <= 1
-      return 2
-    elsif score > 1 && score <= 1.5
-      return 3
-    elsif score > 1.5 && score <= 2
-      return 4
-    elsif score > 2 && score <= 2.5
-      return 5
-    elsif score > 2.5 && score <= 3
-      return 6
-    else
-      return -1
     end
   end
 
@@ -216,6 +198,28 @@ class CertificationPath < ActiveRecord::Base
     # only system_admin can use this function
     # TODO provide code for previous_status
     raise NotImplementedError
+  end
+
+  def self.star_rating_for_score(score)
+    if score < 0
+      return 0
+    elsif score >= 0 && score <= 0.5
+      return 1
+    elsif score > 0.5 && score <= 1
+      return 2
+    elsif score > 1 && score <= 1.5
+      return 3
+    elsif score > 1.5 && score <= 2
+      return 4
+    elsif score > 2 && score <= 2.5
+      return 5
+    elsif score > 2.5 && score <= 3
+      return 6
+    elsif score > 3 # due to incentive weights, you can actually score more than 3
+      return 6
+    else
+      return -1
+    end
   end
 
   private

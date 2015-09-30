@@ -16,33 +16,39 @@ class SchemeMix < ActiveRecord::Base
   end
 
   def total_weighted_targeted_score_for_category(category)
-    score = scheme_mix_criteria.for_category(category).collect {|sc| sc.weighted_targeted_score}.inject(:+)
-    weighted_score(score)
+    scheme_mix_criteria.for_category(category).collect {|sc| sc.weighted_targeted_score}.inject(:+)
   end
 
   def total_weighted_submitted_score_for_category(category)
-    score = scheme_mix_criteria.for_category(category).collect {|sc| sc.weighted_submitted_score}.inject(:+)
-    weighted_score(score)
+    scheme_mix_criteria.for_category(category).collect {|sc| sc.weighted_submitted_score}.inject(:+)
   end
 
   def total_weighted_achieved_score_for_category(category)
-    score = scheme_mix_criteria.for_category(category).collect {|sc| sc.weighted_achieved_score}.inject(:+)
-    weighted_score(score)
+    scheme_mix_criteria.for_category(category).collect {|sc| sc.weighted_achieved_score}.inject(:+)
   end
 
   def total_weighted_targeted_score
-    score = scheme_mix_criteria.collect {|sc| sc.weighted_targeted_score}.inject(:+)
-    weighted_score(score)
+    scheme_mix_criteria.collect {|sc| sc.weighted_targeted_score}.inject(:+)
   end
 
   def total_weighted_submitted_score
-    score = scheme_mix_criteria.collect {|sc| sc.weighted_submitted_score}.inject(:+)
-    weighted_score(score)
+    scheme_mix_criteria.collect {|sc| sc.weighted_submitted_score}.inject(:+)
   end
 
   def total_weighted_achieved_score
-    score = scheme_mix_criteria.collect {|sc| sc.weighted_achieved_score}.inject(:+)
-    weighted_score(score)
+    scheme_mix_criteria.collect {|sc| sc.weighted_achieved_score}.inject(:+)
+  end
+
+  def total_weighted_targeted_score_relative_to_certification_path
+    weighted_score(total_weighted_targeted_score)
+  end
+
+  def total_weighted_submitted_score_relative_to_certification_path
+    weighted_score(total_weighted_submitted_score)
+  end
+
+  def total_weighted_achieved_score_relative_to_certification_path
+    weighted_score(total_weighted_achieved_score)
   end
 
   private
