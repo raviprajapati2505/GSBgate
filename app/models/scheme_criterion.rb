@@ -37,7 +37,7 @@ class SchemeCriterion < ActiveRecord::Base
   def weighted_score(score)
     # returns weighted score, taking into account the percentage for which it counts (=weight)
     #NOTE: we multiply the weight with 3, as we need a final score on a scale based on a total of 3, not 1
-    (score / maximum_attainable_score) * ((3 * weight) / 100)
+    (score / maximum_attainable_score) * ((3 * weight) / 100.0)
   end
 
   # default_scope {

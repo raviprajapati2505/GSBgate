@@ -48,7 +48,7 @@ class SchemeMix < ActiveRecord::Base
   private
     # Class method to calculate the weighted score for this scheme mix
     def weighted_score(score)
-      (score * (self.weight / 100))
+      (score * (self.weight / 100.0))
     end
 
     # Mirrors all the descendant structural data records of the SchemeMix to user data records
