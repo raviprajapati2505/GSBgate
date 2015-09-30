@@ -109,7 +109,7 @@ class CertificationPathsController < AuthenticatedController
 
     if next_status.is_a? Integer
       @certification_path.update!(certification_path_status_id: next_status)
-      redirect_to project_certification_path_path(@project, @certification_path), notice: 'The ceritification details were successfully updated.'
+      redirect_to project_certification_path_path(@project, @certification_path), notice: 'The certification path status was successfully updated.'
     else
       redirect_to project_certification_path_path(@project, @certification_path), alert: next_status
     end

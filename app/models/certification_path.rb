@@ -105,8 +105,8 @@ class CertificationPath < ActiveRecord::Base
     end
   end
 
-  # returns false if not all conditions are met to advance to the next status
-  # returns one of CertificationPath.statuses otherwise
+  # return an error message if not all conditions are met to advance to the next status
+  # returns a CertificationPathStatus id otherwise
   def next_status
     error = catch(:error) do
       case certification_path_status_id
