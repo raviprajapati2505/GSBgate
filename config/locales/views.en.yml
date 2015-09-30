@@ -16,6 +16,8 @@ en:
       btn_close: "Close"
       btn_save: "Save"
       modal_title: "Update status"
+    new_final_design:
+      btn_save: "Save"
     new_letter_of_conformance:
       btn_save: "Save"
   projects:

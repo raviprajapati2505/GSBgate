@@ -49,6 +49,11 @@ class CertificationPathsController < AuthenticatedController
         }
       end
     elsif @certification_path.certificate.final_design_certificate?
+      if params.has_key?(:certification_path)
+        if params[:certification_path].has_key?(:duration)
+          @certification_path.duration = params[:certification_path][:duration]
+        end
+      end
       loc = @project.certification_paths.find_by(certificate: Certificate.letter_of_conformance)
       @certification_path.development_type = loc.development_type
       loc.scheme_mixes.each do |scheme_mix|
