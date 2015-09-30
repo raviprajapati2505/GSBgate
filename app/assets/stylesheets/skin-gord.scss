@@ -587,4 +587,81 @@
     height: 75px;
     margin-bottom: 10px;
   }
+
+  // Timeline
+  #vertical-timeline-legend {
+    margin-right: 12px;
+    float: right;
+  }
+
+  #vertical-timeline-legend {
+    .vertical-timeline-legend-item {
+      float: left;
+      margin-left: 36px;
+    }
+
+    .description {
+      font-size: 12px;
+      margin-top: 2px;
+    }
+
+    .vertical-timeline-icon {
+      display: inline;
+      top: auto;
+      left: auto;
+      height: 24px;
+      width: 24px;
+      font-size: 10px;
+      margin-left: -28px;
+    }
+
+    .vertical-timeline-icon i {
+      height: 12px;
+      width: 12px;
+      margin-left: -6px;
+      margin-top: -6px;
+    }
+  }
+
+  #vertical-timeline {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    clear: both;
+  }
+
+  #vertical-timeline {
+    .vertical-timeline-block {
+      margin: 0 0 1.3em 0;
+    }
+
+    .vertical-timeline-block:last-child {
+      margin: 0;
+    }
+
+    .vertical-timeline-block .vertical-timeline-content {
+      padding: 0.6em 1em;
+      opacity: 0.8;
+    }
+
+    .vertical-timeline-block:first-child .vertical-timeline-content {
+      opacity: 1;
+    }
+
+    .vertical-timeline-content p {
+      font-size: 12px;
+      margin: 0.5em 0 0 0;
+    }
+
+    .vertical-timeline-content h2 {
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .vertical-timeline-content .text-muted {
+      font-size: 10px;
+      display: block;
+      margin-top: -8px;
+    }
+  }
 }

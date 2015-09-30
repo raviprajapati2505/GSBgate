@@ -21,6 +21,7 @@ Rails.application.routes.draw do
   post 'audit-logs/:auditable_type/:auditable_id' => 'audit_logs#auditable_create', as: 'auditable_create_audit_log'
   get 'tasks' => 'tasks#index', as: 'tasks'
   put 'projects/:project_id/certificates/:id/sign' => 'certification_paths#sign_certificate', as: 'sign_certification_path'
+  put 'projects/:project_id/certificates/:id/update-status' => 'certification_paths#update_status', as: 'update_certification_path_status'
   put 'projects/:project_id/certificates/:certification_path_id/schemes/:scheme_mix_id/criteria/:id/assign' => 'scheme_mix_criteria#assign_certifier', as: 'assign_certifier_to_criteria'
   get 'projects/:project_id/certificates/:id/archive' => 'certification_paths#download_archive', as: 'archive_project_certification_path'
   put 'projects/:project_id/certificates/:certification_path_id/schemes/:id/allocate-project-team-responsibility' => 'scheme_mixes#allocate_project_team_responsibility', as: 'allocate_project_team_responsibility'

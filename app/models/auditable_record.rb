@@ -8,7 +8,7 @@ class AuditableRecord < ActiveRecord::Base
 
   attr_accessor :audit_log_user_comment
 
-  has_many :audit_logs, as: :auditable, :dependent => :delete_all
+  has_many :audit_logs, as: :auditable, dependent: :delete_all
 
   after_create :audit_log_create
   after_update :audit_log_update
@@ -39,6 +39,8 @@ class AuditableRecord < ActiveRecord::Base
 
     system_messages = []
     system_messages_params = []
+    old_status = nil
+    new_status = nil
     auditable = self
 
     case self.class.name
@@ -68,13 +70,19 @@ class AuditableRecord < ActiveRecord::Base
         end
       when CertificationPath.name.demodulize
         project = self.project
+        if self.certification_path_status_id_changed?
+          old_status = self.changes[:certification_path_status_id][0]
+          new_status = self.changes[:certification_path_status_id][1]
+          old_status_model = CertificationPathStatus.find_by_id(old_status)
+          new_status_model = CertificationPathStatus.find_by_id(new_status)
+        end
         if (action == AUDIT_LOG_CREATE)
           system_messages << 'A new certification path %s was created in project %s.'
           system_messages_params << [self.name, self.project.name]
         elsif (action == AUDIT_LOG_UPDATE)
-          if self.status_changed?
+          if self.certification_path_status_id_changed?
             system_messages << 'The status of certification path %s in project %s was changed from %s to %s.'
-            system_messages_params << [self.name, self.project.name, self.changes[:status][0].humanize, self.changes[:status][1].humanize]
+            system_messages_params << [self.name, self.project.name, old_status_model.name, new_status_model.name]
           end
         end
         if (action == AUDIT_LOG_CREATE || action == AUDIT_LOG_UPDATE)
@@ -162,8 +170,8 @@ class AuditableRecord < ActiveRecord::Base
         AuditLog.create!(
             system_message: system_message.gsub('%s', '<strong>%s</strong>') % system_messages_params[index],
             user_comment: user_comment,
-            old_status: (self.has_attribute?(:status) and self.status_changed?) ? self.class.statuses[self.changes[:status][0]] : nil,
-            new_status: (self.has_attribute?(:status) and self.status_changed?) ? self.class.statuses[self.changes[:status][1]] : nil,
+            old_status: old_status,
+            new_status: new_status,
             user: User.current,
             auditable: auditable,
             project: project)
@@ -172,8 +180,8 @@ class AuditableRecord < ActiveRecord::Base
       AuditLog.create!(
           system_message: nil,
           user_comment: user_comment,
-          old_status: (self.has_attribute?(:status) and self.status_changed?) ? self.class.statuses[self.changes[:status][0]] : nil,
-          new_status: (self.has_attribute?(:status) and self.status_changed?) ? self.class.statuses[self.changes[:status][1]] : nil,
+          old_status: old_status,
+          new_status: new_status,
           user: User.current,
           auditable: auditable,
           project: project)

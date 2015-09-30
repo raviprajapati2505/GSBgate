@@ -51,6 +51,8 @@ class Ability
       # CertificationPath controller
       can :manage, CertificationPath, project: {projects_users: {user_id: user.id, role: ['project_manager', ProjectsUser.roles[:project_manager]]}}
       can :update, CertificationPath, project: {projects_users: {user_id: user.id, role: ['certifier_manager', ProjectsUser.roles[:certifier_manager]]}}
+      can :update_status, CertificationPath, project: {projects_users: {user_id: user.id, role: ['project_manager', ProjectsUser.roles[:project_manager]]}}
+      can :update_status, CertificationPath, project: {projects_users: {user_id: user.id, role: ['certifier_manager', ProjectsUser.roles[:certifier_manager]]}}
       can :read, CertificationPath, project: {projects_users: {user_id: user.id}}
       can :create, CertificationPath, project: {projects_users: {user_id: user.id, role: ['project_manager', ProjectsUser.roles[:project_manager]]}}
       # SchemeMix controller
@@ -62,7 +64,7 @@ class Ability
       can :manage, SchemeMixCriterion, scheme_mix: {certification_path: {project: {projects_users: {user_id: user.id, role:  ['project_manager', ProjectsUser.roles[:project_manager]]}}}}
       can :read, SchemeMixCriterion, scheme_mix: {certification_path: {project: {projects_users: {user_id: user.id}}}}
       can :edit, SchemeMixCriterion, scheme_mix: {certification_path: {project: {projects_users: {user_id: user.id}}}}
-      can :update, SchemeMixCriterion, requirement_data: {user_id: user.id}, scheme_mix: {certification_path: {status: ['awaiting_submission', CertificationPath.statuses[:awaiting_submission]]}}
+      can :update, SchemeMixCriterion, requirement_data: {user_id: user.id}
       can :update, SchemeMixCriterion, certifier_id: user.id
       can :update, SchemeMixCriterion, scheme_mix: {certification_path: {project: {projects_users: {user_id: user.id, role: ['certifier_manager', ProjectsUser.roles[:certifier_manager]]}}}}
       can :assign_certifier, SchemeMixCriterion, scheme_mix: {certification_path: {project: {projects_users: {user_id: user.id, role: ['certifier_manager', ProjectsUser.roles[:certifier_manager]]}}}}

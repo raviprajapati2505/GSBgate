@@ -22,7 +22,7 @@
                     <td><%= project.description %><br>
                         <% if project.certification_paths.count > 0 %>
                             <% project.certification_paths.each do |certification_path| %>
-                                <% if certification_path.awaiting_submission? %>
+                                <% if certification_path.certification_path_status_id == CertificationPathStatus::SUBMITTING %>
                                     <% if RequirementDatum.for_certification_path(certification_path).count.nonzero? %>
                                         <div class="project-certification-progress"><%= certification_path.name %>: <%= certification_path.status %> for <%= RequirementDatum.for_certification_path(certification_path).completed.count * 100 / RequirementDatum.for_certification_path(certification_path).count %>% complete</div>
                                     <% else %>

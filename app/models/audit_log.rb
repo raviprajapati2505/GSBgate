@@ -3,7 +3,7 @@ class AuditLog < ActiveRecord::Base
   belongs_to :user
   belongs_to :project
 
-  default_scope { order(created_at: :desc) }
+  default_scope { order(id: :desc) }
 
   scope :for_auditable, ->(auditable) {
     where(auditable: auditable)

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150917093735) do
+ActiveRecord::Schema.define(version: 20150917145656) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -58,21 +58,31 @@ ActiveRecord::Schema.define(version: 20150917093735) do
     t.datetime "updated_at",       null: false
   end
 
+  create_table "certification_path_statuses", force: :cascade do |t|
+    t.string   "name"
+    t.string   "past_name"
+    t.text     "description"
+    t.integer  "context"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
   create_table "certification_paths", force: :cascade do |t|
     t.integer  "project_id"
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
     t.integer  "certificate_id"
-    t.integer  "status"
-    t.boolean  "signed_by_mngr",     default: false
-    t.boolean  "signed_by_top_mngr", default: false
-    t.boolean  "pcr_track",          default: false
-    t.boolean  "pcr_track_allowed",  default: false
+    t.boolean  "signed_by_mngr",               default: false
+    t.boolean  "signed_by_top_mngr",           default: false
+    t.boolean  "pcr_track",                    default: false
+    t.boolean  "pcr_track_allowed",            default: false
     t.integer  "duration"
     t.datetime "started_at"
     t.integer  "development_type"
+    t.integer  "certification_path_status_id"
   end
 
+  add_index "certification_paths", ["certification_path_status_id"], name: "index_certification_paths_on_certification_path_status_id", using: :btree
   add_index "certification_paths", ["project_id"], name: "index_certification_paths_on_project_id", using: :btree
 
   create_table "documents", force: :cascade do |t|

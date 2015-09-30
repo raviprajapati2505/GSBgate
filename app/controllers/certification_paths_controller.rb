@@ -24,7 +24,6 @@ class CertificationPathsController < AuthenticatedController
 
     # Set as many generic values as possible
     @certification_path.project = @project
-    @certification_path.status = :awaiting_activation
 
     if @certification_path.certificate.letter_of_conformance?
       @certification_path.duration = 1
@@ -56,7 +55,6 @@ class CertificationPathsController < AuthenticatedController
 
   def create
     @certification_path = CertificationPath.new(certification_path_params)
-    @certification_path.status = :awaiting_activation
     @certification_path.project = @project
     @certification_path.certificate_id = params[:certification_path][:certificate_id]
     @certification_path.duration = params[:certification_path][:duration]
@@ -88,28 +86,6 @@ class CertificationPathsController < AuthenticatedController
 
   def update
     CertificationPath.transaction do
-      # Do some authorization/validation checks
-      if @certification_path.status != certification_path_params[:status]
-        case CertificationPath.statuses[certification_path_params[:status]]
-          # Only system admins can set status to awaiting_submission
-          when CertificationPath.statuses[:awaiting_submission]
-            unless current_user.system_admin?
-              raise CanCan::AccessDenied.new('Not Authorized to update certification_path status', :update, CertificationPath)
-            end
-          # Only project managers can set status to awaiting_screening
-          when CertificationPath.statuses[:awaiting_screening]
-            # all scheme mix criteria must be marked as 'complete'
-            @certification_path.scheme_mix_criteria.each do |scheme_mix_criteria|
-              unless scheme_mix_criteria.complete?
-                @tasks = TaskService.instance.generate_tasks(user: current_user, project_id: @project.id, certification_path_id: @certification_path.id)
-                flash.now[:alert] = 'All scheme mix criteria should first be completed.'
-                render :show
-                return
-              end
-            end
-        end
-      end
-
       # reset pcr_track_allowed if pcr_track is false
       if certification_path_params.has_key?(:pcr_track)
         @certification_path.pcr_track = certification_path_params[:pcr_track]
@@ -119,11 +95,22 @@ class CertificationPathsController < AuthenticatedController
       end
 
       if @certification_path.update(certification_path_params)
-        redirect_to project_certification_path_path(@project, @certification_path), notice: 'Status was successfully updated.'
+        redirect_to project_certification_path_path(@project, @certification_path), notice: 'The ceritification details were successfully updated.'
       else
         @tasks = TaskService.instance.generate_tasks(user: current_user, project_id: @project.id, certification_path_id: @certification_path.id)
         render action: :show
       end
+    end
+  end
+
+  def update_status
+    next_status = @certification_path.next_status
+
+    if next_status.is_a? Integer
+      @certification_path.update!(certification_path_status_id: next_status)
+      redirect_to project_certification_path_path(@project, @certification_path), notice: 'The ceritification details were successfully updated.'
+    else
+      redirect_to project_certification_path_path(@project, @certification_path), alert: next_status
     end
   end
 
@@ -157,6 +144,6 @@ class CertificationPathsController < AuthenticatedController
     end
 
     def certification_path_params
-      params.require(:certification_path).permit(:project_id, :certificate_id, :status, :signed_by_mngr, :signed_by_top_mngr, :pcr_track, :pcr_track_allowed, :duration, :started_at, :development_type)
+      params.require(:certification_path).permit(:project_id, :certificate_id, :signed_by_mngr, :signed_by_top_mngr, :pcr_track, :pcr_track_allowed, :duration, :started_at, :development_type)
     end
 end

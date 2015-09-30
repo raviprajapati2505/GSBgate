@@ -1,23 +1,54 @@
 <div class="modal fade" id="updateCertificatePathStatusModal">
     <div class="modal-dialog">
-        <%= bootstrap_form_for([@project, @certification_path], url: project_certification_path_path) do |f| %>
+        <%= bootstrap_form_for([@project, @certification_path], url: update_certification_path_status_path, method: 'put') do |f| %>
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" title="<%= t('.btn_close') %>" data-toggle="tooltip">
                         <span>&times;</span>
                     </button>
+                    <div id="vertical-timeline-legend">
+                        <div class="vertical-timeline-legend-item">
+                            <div class="vertical-timeline-icon navy-bg">
+                                <i class="fa fa-user"></i>
+                            </div>
+                            <div class="description">
+                                Project team
+                            </div>
+                        </div>
+                        <div class="vertical-timeline-legend-item">
+                            <div class="vertical-timeline-icon yellow-bg">
+                                <i class="fa fa-user"></i>
+                            </div>
+                            <div class="description">
+                                GORD team
+                            </div>
+                        </div>
+                    </div>
                     <h4 class="modal-title"><%= t('.modal_title') %></h4>
                 </div>
                 <div class="modal-body">
-                    <%= f.form_group :status do %>
-                        <% CertificationPath.statuses.keys.each do |k| %>
-                            <%= f.radio_button :status, k, label: k.humanize %>
+                    <div id="vertical-timeline" class="vertical-container dark-timeline">
+                        <% @certification_path.status_history.each_with_index do |milestone, index| %>
+                            <div class="vertical-timeline-block">
+                                <div class="vertical-timeline-icon <% if milestone[:certification_path_status].project_team? %>navy-bg<% else %>yellow-bg<% end %>">
+                                    <i class="fa fa-user"></i>
+                                </div>
+                                <div class="vertical-timeline-content">
+                                    <h2><%= (index == 0) ? milestone[:certification_path_status].name : milestone[:certification_path_status].past_name %></h2>
+                                    <small class="text-muted">
+                                        <i class="fa fa-clock-o" title="Date/time" style="margin: 0 2px;"></i> <%= localize(milestone[:date]) %>
+                                    </small>
+                                    <% if (index == 0) %>
+                                        <p><%= milestone[:certification_path_status].description %></p>
+                                    <% end %>
+                                </div>
+                            </div>
                         <% end %>
-                    <% end %>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
-                        <i title="Save" class="fa fa-lg fa-save" style="padding-right: 10px;"></i><%= t('.btn_save') %>
+                        <i title="Save" class="fa fa-lg fa-forward" style="padding-right: 10px;"></i>Advance status
                     <% end %>
                     <button type="button" class="btn btn-white" data-dismiss="modal"><i title="Cancel" class="fa fa-lg fa-times" style="padding-right: 10px;"></i><%= t('.btn_cancel') %></button>
                 </div>
