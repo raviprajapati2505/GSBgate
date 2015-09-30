@@ -58,11 +58,6 @@ $(function () {
         modal.modal();
     };
 
-    // iCheck all checkboxes & radio buttons
-    $('input').iCheck({
-        checkboxClass: 'icheckbox_square-green',
-        radioClass: 'iradio_square-green'
-    });
 
     // Datepicker (only today + future)
     $('.datepicker-future').datepicker({
@@ -130,10 +125,14 @@ $(function () {
     // Tooltips
     GSAS.processTooltips();
 
+    // iCheck
+    GSAS.processiCheck();
+
     // After every AJAX call
     $(document).ajaxComplete(function() {
         GSAS.processFlashMessages();
         GSAS.processTooltips();
+        GSAS.processiCheck();
     });
 
     // Sortable lists
@@ -178,5 +177,12 @@ var GSAS = {
         $('.sortable > .panel.panel-default').each(function(i) {
             $(this).attr("data-pos", i+1);
         })
+    },
+    processiCheck: function() {
+        // iCheck all checkboxes & radio buttons
+        $('input').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green'
+        });
     }
 }

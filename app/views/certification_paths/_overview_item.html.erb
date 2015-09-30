@@ -26,7 +26,9 @@
             <span class="col-md-4">
                 <!-- if can? :create, CertificationPath %-->
                 <% if current_user.system_admin? || current_user.project_manager?(project) %>
-                    <%= link_to('Apply', new_project_certification_path_path(@project, certificate: certificate.id)) %>
+                    <!-- Do remote for loc or final, as we need to show a modal dialog for more input -->
+                    <% remote = (certificate.letter_of_conformance? or certificate.final_design_certificate?) %>
+                    <%= link_to('Apply', apply_certification_path_path(@project, certificate), remote: remote) %>
                 <% end %>
             </span>
         <% else %>

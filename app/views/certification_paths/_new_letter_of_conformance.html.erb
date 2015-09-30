@@ -1,4 +1,5 @@
-<%= bootstrap_form_for([@project, @certification_path]) do |f| %>
+<%= bootstrap_form_for(@certification_path, url: apply_certification_path_path(@project, @certification_path.certificate)) do |f| %>
+
     <!-- Set the certificate-->
     <%= f.hidden_field :certificate_id, value: @certification_path.certificate_id %>
 
@@ -8,24 +9,56 @@
     <% end %>
 
     <!-- Handle Single/Mixed Use/Development -->
-    <%= f.form_group :development_type, label: {text: 'Development Type'} do %>
-        <%= f.radio_button :development_type, :single_use, label: :single_use.to_s.humanize, checked: true %>
-        <br/>
-        <%= select_tag('scheme_single', options_from_collection_for_select(@certification_path.certificate.schemes, :id, :name), {:multiple => false, :class => 'select2-schemes-single form-control'}) %>
-        <div class="hr-line-dashed"></div>
-
-        <%= f.radio_button :development_type, :mixed_use, label: :mixed_use.to_s.humanize %>
-        <%= f.radio_button :development_type, :mixed_development, label: :mixed_development.to_s.humanize %>
-        <%= f.radio_button :development_type, :mixed_development_in_stages, label: :mixed_development_in_stages.to_s.humanize %>
-        <br/>
-        <%= select_tag('scheme_mixed', options_from_collection_for_select(@certification_path.certificate.schemes, :id, :name), {:multiple => true, :class => 'select2-schemes-multiple form-control'}) %>
-        <div class="hr-line-dashed"></div>
+    <%= f.form_group :development_type, label: {text: 'Development Type'}, class: 'development-type-group' do %>
+        <%= f.radio_button :development_type, :single_use, label: :single_use.to_s.humanize, checked: true, class: 'single single-use' %>
+        <%= f.radio_button :development_type, :mixed_use, label: :mixed_use.to_s.humanize, class: 'mixed mixed-use' %>
+        <%= f.radio_button :development_type, :mixed_development, label: :mixed_development.to_s.humanize, class: 'mixed mixed-development' %>
+        <%= f.radio_button :development_type, :mixed_development_in_stages, label: :mixed_development_in_stages.to_s.humanize, class: 'mixed mixed-development-in-stages' %>
     <% end %>
 
-    <br/>
+    <label class="control-label">Scheme(s)</label>
+    <div class="form-group scheme-single-group">
+        <%= select_tag('single_scheme_select', options_from_collection_for_select(@certification_path.certificate.schemes, :id, :name), {:include_blank => true, :multiple => false, :class => 'form-control single-scheme-select'}) %>
+    </div>
+    <div class="form-group scheme-mixed-group" style="display: none">
+        <div class="row">
+            <div class="col-md-10">
+                <%= select_tag('mixed_scheme_select', options_from_collection_for_select(@certification_path.certificate.schemes, :id, :name), {:include_blank => true, :multiple => false, :class => 'form-control mixed-scheme-select'}) %>
+            </div>
+            <div class="col-md-2">
+                <%= button_tag(type: 'button', class: 'form-control btn add_scheme') do %>
+                    <i title="Add scheme" class="fa fa-plus-circle"></i> Add scheme
+                <% end %>
+            </div>
+        </div>
+        <br/>
+        <div class="form-group schemes-group">
+            <table class="schemes table table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th class="col-md-7">Scheme name</th>
+                    <th class="col-md-4">Weight</th>
+                    <th class="col-md-1"></th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            <div class="row total-row font-bold">
+                <div class="col-md-7 text-right">Total</div>
+                <div class="col-md-4">
+                    <span class="scheme-mixed-total"></span> %
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="hr-line-dashed"></div>
+
     <%= button_tag(type: 'submit', class: 'btn btn-primary') do %>
         <i title="Save" class="fa fa-lg fa-save" style="padding-right: 10px;"></i><%= t('.btn_save') %>
     <% end %>
-        <button type="button" class="btn btn-white"><i title="Cancel" class="fa fa-lg fa-times" style="padding-right: 10px;"></i><%= t('.btn_cancel') %></button>
+
 <% end %>
-<%= javascript_include_tag 'select_schemes' %>
+<%= javascript_include_tag 'new_letter_of_conformance' %>
