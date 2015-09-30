@@ -1,4 +1,6 @@
-class ProjectsUser < AuditableRecord
+class ProjectsUser < ActiveRecord::Base
+  include Auditable
+
   belongs_to :user
   belongs_to :project
 

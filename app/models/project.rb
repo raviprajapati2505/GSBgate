@@ -1,6 +1,8 @@
 require 'file_size_validator'
 
-class Project < AuditableRecord
+class Project < ActiveRecord::Base
+  include Auditable
+
   MAXIMUM_DOCUMENT_FILE_SIZE = 25 # in MB
 
   belongs_to :owner, class_name: 'User', inverse_of: :owned_projects

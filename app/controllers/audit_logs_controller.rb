@@ -73,7 +73,7 @@ class AuditLogsController < AuthenticatedController
     auditable_class = Object.const_get params[:auditable_type]
     @auditable = auditable_class.find(params[:auditable_id])
 
-    unless @auditable.is_a?(AuditableRecord)
+    unless auditable_class.included_modules.include?(Auditable)
       raise CanCan::AccessDenied.new('Not Authorized to read audit logs for this model.', :read, AuditLog)
     end
 

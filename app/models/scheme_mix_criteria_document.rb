@@ -1,4 +1,6 @@
-class SchemeMixCriteriaDocument < AuditableRecord
+class SchemeMixCriteriaDocument < ActiveRecord::Base
+  include Auditable
+
   enum status: { awaiting_approval: 0, approved: 1, rejected: 2, superseded: 3 }
 
   belongs_to :document

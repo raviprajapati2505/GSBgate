@@ -1,4 +1,6 @@
-class CertificationPath < AuditableRecord
+class CertificationPath < ActiveRecord::Base
+  include Auditable
+
   belongs_to :project
   belongs_to :certificate
   belongs_to :certification_path_status
