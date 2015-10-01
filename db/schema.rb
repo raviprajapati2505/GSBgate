@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150917145656) do
+ActiveRecord::Schema.define(version: 20150928071538) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -287,6 +287,28 @@ ActiveRecord::Schema.define(version: 20150917145656) do
   add_index "schemes", ["certificate_id"], name: "index_schemes_on_certificate_id", using: :btree
   add_index "schemes", ["name", "version", "certificate_id"], name: "index_schemes_on_name_and_version_and_certificate_id", unique: true, using: :btree
 
+  create_table "tasks", force: :cascade do |t|
+    t.string   "task_type",                       null: false
+    t.integer  "task_description_id",             null: false
+    t.integer  "application_role"
+    t.integer  "project_role"
+    t.integer  "user_id"
+    t.integer  "project_id"
+    t.integer  "certification_path_id"
+    t.integer  "scheme_mix_criterion_id"
+    t.integer  "requirement_datum_id"
+    t.integer  "scheme_mix_criteria_document_id"
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+  end
+
+  add_index "tasks", ["certification_path_id"], name: "index_tasks_on_certification_path_id", using: :btree
+  add_index "tasks", ["project_id"], name: "index_tasks_on_project_id", using: :btree
+  add_index "tasks", ["requirement_datum_id"], name: "index_tasks_on_requirement_datum_id", using: :btree
+  add_index "tasks", ["scheme_mix_criteria_document_id"], name: "index_tasks_on_scheme_mix_criteria_document_id", using: :btree
+  add_index "tasks", ["scheme_mix_criterion_id"], name: "index_tasks_on_scheme_mix_criterion_id", using: :btree
+  add_index "tasks", ["user_id"], name: "index_tasks_on_user_id", using: :btree
+
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
@@ -334,4 +356,10 @@ ActiveRecord::Schema.define(version: 20150917145656) do
   add_foreign_key "scheme_mixes", "certification_paths"
   add_foreign_key "scheme_mixes", "schemes"
   add_foreign_key "schemes", "certificates"
+  add_foreign_key "tasks", "certification_paths"
+  add_foreign_key "tasks", "projects"
+  add_foreign_key "tasks", "requirement_data"
+  add_foreign_key "tasks", "scheme_mix_criteria"
+  add_foreign_key "tasks", "scheme_mix_criteria_documents"
+  add_foreign_key "tasks", "users"
 end

@@ -8,7 +8,7 @@ class CertificationPathsController < AuthenticatedController
 
   def show
     @page_title = @certification_path.name
-    @tasks = TaskService.instance.generate_tasks(user: current_user, project_id: @project.id, certification_path_id: @certification_path.id)
+    @tasks = OldTaskService.instance.generate_tasks(user: current_user, project_id: @project.id, certification_path_id: @certification_path.id)
   end
 
   def apply
@@ -98,7 +98,7 @@ class CertificationPathsController < AuthenticatedController
       if @certification_path.update(certification_path_params)
         redirect_to project_certification_path_path(@project, @certification_path), notice: 'The ceritification details were successfully updated.'
       else
-        @tasks = TaskService.instance.generate_tasks(user: current_user, project_id: @project.id, certification_path_id: @certification_path.id)
+        @tasks = OldTaskService.instance.generate_tasks(user: current_user, project_id: @project.id, certification_path_id: @certification_path.id)
         render action: :show
       end
     end

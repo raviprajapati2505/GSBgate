@@ -9,6 +9,6 @@ class TasksController < AuthenticatedController
     if params[:project_id].present? and (params[:project_id].to_i > 0)
       @default_values[:project_id] = params[:project_id]
     end
-    @tasks = TaskService.instance.generate_tasks(page: params[:page], user: current_user, project_id: @default_values[:project_id])
+    @tasks = OldTaskService.instance.generate_tasks(page: params[:page], user: current_user, project_id: @default_values[:project_id])
   end
 end

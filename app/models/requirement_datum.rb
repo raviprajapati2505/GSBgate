@@ -3,6 +3,7 @@ class RequirementDatum < ActiveRecord::Base
 
   has_many :scheme_mix_criteria_requirement_data
   has_many :scheme_mix_criteria, through: :scheme_mix_criteria_requirement_data
+  has_many :tasks, dependent: :destroy
   belongs_to :calculator_datum
   belongs_to :requirement
   belongs_to :user

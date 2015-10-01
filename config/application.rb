@@ -27,7 +27,7 @@ module Gord
     config.autoload_paths << Rails.root.join('services')
 
     # Autoload classes from STI folders
-    config.autoload_paths << Rails.root.join('app', 'models', 'user_task')
+    config.autoload_paths << Rails.root.join('app', 'models', 'task')
 
     # Autoload classes from "lib" folder (https://gist.github.com/maxim/6503591)
     config.watchable_dirs['lib'] = [:rb]

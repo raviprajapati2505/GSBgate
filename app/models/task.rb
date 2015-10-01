@@ -1,10 +1,5 @@
-class Task
-
-  attr_accessor :model, :description_id
-
-  def initialize(model:, description_id:)
-    @model = model
-    @description_id = description_id
-  end
+class Task < ActiveRecord::Base
+  belongs_to :user
+  belongs_to :project
 
 end

@@ -11,6 +11,7 @@ class Project < ActiveRecord::Base
   has_many :certifiers, -> { where('projects_users.role > 2') }, through: :projects_users, source: :user
   has_many :managers, -> { where('projects_users.role = 1') }, through: :projects_users, source: :user
   has_many :certification_paths
+  has_many :tasks, dependent: :destroy
 
   validates :name, presence: true
   validates :address, presence: true

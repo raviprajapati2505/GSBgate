@@ -10,6 +10,7 @@ class CertificationPath < ActiveRecord::Base
   has_many :scheme_mix_criteria_documents, through: :scheme_mix_criteria
   has_many :scheme_mix_criteria_requirement_data, through: :scheme_mix_criteria
   has_many :requirement_data, through: :scheme_mix_criteria_requirement_data
+  has_many :task, dependent: :destroy
 
   accepts_nested_attributes_for :certificate
   accepts_nested_attributes_for :scheme_mixes
