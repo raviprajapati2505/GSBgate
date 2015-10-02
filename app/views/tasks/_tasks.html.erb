@@ -3,31 +3,31 @@
         <h5>Tasks</h5>
     </div>
     <div class="ibox-content">
-        <table class="table table-bordered">
-            <thead>
-            <tr>
-                <th>Description</th>
-                <th>Resource</th>
-                <th>Due date</th>
-            </tr>
-            </thead>
-            <tbody>
-            <% if @tasks.empty? %>
-                <tr><td colspan="3">Currently there are no tasks.</td></tr>
-            <% else %>
-                <% @tasks.each do |task|
-                    breadcrumbs = breadcrumbs(task.model, with_prefix: false)
-                 %>
-                    <tr class="clickable" data-href="<%= breadcrumbs[:paths].last %>">
-                        <td><%= t(".description_#{task.description_id}") %></td>
-                        <td><%= breadcrumbs[:names].last %></td>
-                        <td><% if task.model.class.method_defined?(:due_date) && task.model.due_date.present? %><%= l(task.model.due_date, format: :short) %><% if Date.today > task.model.due_date %>&nbsp;<i class="fa fa-clock-o due-date-expired" title="<%= t('.tooltip_due_date') %>" data-toggle="tooltip"></i><% end %><% else %>-<% end %></td>
-                    </tr>
-                <% end %>
+        <% if @tasks.empty? %>
+            Currently there are no tasks.
+        <% else %>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Resource</th>
+                    <th>Due date</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <% @tasks.each do |task|
+                        breadcrumbs = breadcrumbs(task.model, with_prefix: false)
+                     %>
+                        <tr class="clickable" data-href="<%= breadcrumbs[:paths].last %>">
+                            <td><%= t(".description_#{task.description_id}") %></td>
+                            <td><%= breadcrumbs[:names].last %></td>
+                            <td><% if task.model.class.method_defined?(:due_date) && task.model.due_date.present? %><%= l(task.model.due_date, format: :short) %><% if Date.today > task.model.due_date %>&nbsp;<i class="fa fa-clock-o due-date-expired" title="<%= t('.tooltip_due_date') %>" data-toggle="tooltip"></i><% end %><% else %>-<% end %></td>
+                        </tr>
+                    <% end %>
                 <!-- Next line is impossible because @tasks is an array and not a ActiveRecord Relation -->
-                <!--= will_paginate @tasks, renderer: BootstrapPagination::Rails %-->
-            <% end %>
-            </tbody>
-        </table>
+                    <!--= will_paginate @tasks, renderer: BootstrapPagination::Rails %-->
+                </tbody>
+            </table>
+        <% end %>
     </div>
 </div>

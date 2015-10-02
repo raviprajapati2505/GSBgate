@@ -124,13 +124,13 @@ class CertificationPathsController < AuthenticatedController
       @certification_path.signed_by_mngr = params[:signed_by_mngr]
       @certification_path.save!
 
-      render json: {msg: "Certificate signed by GORD manager"} and return
+      render json: {msg: 'The manager approval was successfully updated.'} and return
     end
     if params.has_key?(:signed_by_top_mngr)
       @certification_path.signed_by_top_mngr = params[:signed_by_top_mngr]
       @certification_path.save!
 
-      render json: {msg: "Certificate signed by GORD top manager"} and return
+      render json: {msg: 'The manager approval was successfully updated.'} and return
     end
   end
 

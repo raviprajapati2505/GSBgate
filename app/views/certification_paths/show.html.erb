@@ -14,17 +14,6 @@
                     <% end %>
                     <%= f.check_box :pcr_track, disabled: (true unless (current_user.project_manager?(@project) || current_user.system_admin?)), label: 'Apply for Pre-Certification Review (PCR) track' %>
                     <%= f.check_box :pcr_track_allowed, disabled: (true unless (current_user.system_admin? && @certification_path.pcr_track?)), label: 'Pre-Certification Review (PCR) track is allowed' %>
-                    <% if current_user.gord_manager? || current_user.gord_top_manager? %>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group">
-                        <%= check_box_tag :signed_by_mngr, true, @certification_path.signed_by_mngr, disabled: (true unless current_user.gord_manager?), data: {project_id: @project.id, id: @certification_path.id} %>
-                        <%= label_tag :signed_by_mngr, 'Signed by GORD manager' %>
-                        </div>
-                        <div class="form-group">
-                        <%= check_box_tag :signed_by_top_mngr, true, @certification_path.signed_by_top_mngr, disabled: (true unless current_user.gord_top_manager?), data: {project_id: @project.id, id: @certification_path.id} %>
-                        <%= label_tag :signed_by_top_mngr, 'Signed by GORD top manager' %>
-                        </div>
-                    <% end %>
                     <div class="hr-line-dashed"></div>
                     <% if current_user.project_manager?(@project) || current_user.system_admin? %>
                         <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
@@ -37,6 +26,23 @@
                 <% end %>
             </div>
         </div>
+        <% if current_user.gord_manager? || current_user.gord_top_manager? || current_user.system_admin? %>
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Manager approvals</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="checkbox">
+                        <%= check_box_tag :signed_by_mngr, true, @certification_path.signed_by_mngr, disabled: (true unless current_user.gord_manager?), data: {project_id: @project.id, id: @certification_path.id} %>
+                        <%= label_tag :signed_by_mngr, 'Signed by GORD manager' %>
+                    </div>
+                    <div class="checkbox">
+                        <%= check_box_tag :signed_by_top_mngr, true, @certification_path.signed_by_top_mngr, disabled: (true unless current_user.gord_top_manager?), data: {project_id: @project.id, id: @certification_path.id} %>
+                        <%= label_tag :signed_by_top_mngr, 'Signed by GORD top manager' %>
+                    </div>
+                </div>
+            </div>
+        <% end %>
     </div>
     <div class="col-md-8">
         <div class="ibox float-e-margins">
