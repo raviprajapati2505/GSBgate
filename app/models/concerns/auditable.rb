@@ -1,11 +1,12 @@
 module Auditable
   extend ActiveSupport::Concern
-  included do
-    AUDIT_LOG_CREATE = 0
-    AUDIT_LOG_UPDATE = 1
-    AUDIT_LOG_DESTROY = 2
-    AUDIT_LOG_TOUCH = 3
 
+  AUDIT_LOG_CREATE = 0
+  AUDIT_LOG_UPDATE = 1
+  AUDIT_LOG_DESTROY = 2
+  AUDIT_LOG_TOUCH = 3
+
+  included do
     attr_accessor :audit_log_user_comment
 
     has_many :audit_logs, as: :auditable, dependent: :delete_all
