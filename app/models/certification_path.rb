@@ -319,25 +319,7 @@ class CertificationPath < ActiveRecord::Base
   # Conditions are
   #  1) all appealed criteria are completed (= when all linked requirements and submitted scores are provided and no more documents waiting for approval)
   def can_leave_submitting_after_appeal_status?
-    scheme_mix_criteria.each do |criterion|
-      # all criteria are completed
-      unless criterion.complete?
-        throw(:error, 'All criteria must have status complete.')
-      end
-      # all submitted scores provided
-      if criterion.submitted_score.blank?
-        throw(:error, 'There are submitted scores missing.')
-      end
-      # all linked requirements are provided
-      if criterion.has_required_requirements?
-        throw(:error, 'There are still requirements in status \'required\'.')
-      end
-      # no more documents waiting for approval
-      if criterion.has_documents_awaiting_approval?
-        throw(:error, 'There are still documents awaiting approval.')
-      end
-    end
-    return true
+    can_leave_submitting_status?
   end
 
   # Conditions are
