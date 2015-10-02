@@ -1,5 +1,6 @@
 class SchemeMixCriteriaDocument < ActiveRecord::Base
   include Auditable
+  include Taskable
 
   enum status: { awaiting_approval: 0, approved: 1, rejected: 2, superseded: 3 }
 

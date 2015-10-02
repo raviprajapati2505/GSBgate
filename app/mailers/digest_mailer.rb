@@ -16,7 +16,7 @@ class DigestMailer < ApplicationMailer
     @more_audit_logs = @more_audit_logs < 0 ? 0 : @more_audit_logs
 
     @audit_logs = @audit_logs.limit(MAX_LOG_ITEMS)
-    @tasks = OldTaskService.instance.generate_tasks(user: user)
+    @tasks = TaskService::get_tasks(page: 1, user: user)
     mail(to: @user.email, subject: 'GSAS : progress report') unless (@tasks.empty? and @audit_logs.empty?)
   end
 end

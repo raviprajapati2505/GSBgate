@@ -4,7 +4,7 @@ class AuditLogsController < AuthenticatedController
 
   def index
     @page_title = 'Audit log'
-    @default_values = {text: '', project_id: '', date_from: '', date_to: '', only_user_comments: false}
+    @default_values = {text: '', user_id: '', project_id: '', date_from: '', date_to: '', only_user_comments: false}
     @audit_logs = AuditLog.for_user_projects(current_user)
 
     # Text filter

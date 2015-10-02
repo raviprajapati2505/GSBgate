@@ -1,5 +1,6 @@
 class RequirementDatum < ActiveRecord::Base
   include Auditable
+  include Taskable
 
   has_many :scheme_mix_criteria_requirement_data
   has_many :scheme_mix_criteria, through: :scheme_mix_criteria_requirement_data

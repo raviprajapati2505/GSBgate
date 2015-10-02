@@ -1,5 +1,6 @@
 class CertificationPath < ActiveRecord::Base
   include Auditable
+  include Taskable
 
   belongs_to :project
   belongs_to :certificate
@@ -24,6 +25,10 @@ class CertificationPath < ActiveRecord::Base
   validate :certificate_duration
 
   after_initialize :init
+
+  scope :with_status, ->(status) {
+    where(certification_path_status_id: status)
+  }
 
   def init
     # Set status

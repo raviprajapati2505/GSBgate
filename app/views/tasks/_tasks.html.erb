@@ -6,28 +6,56 @@
         <% if @tasks.empty? %>
             Currently there are no tasks.
         <% else %>
-            <table class="table table-bordered">
-                <thead>
-                <tr>
-                    <th>Description</th>
-                    <th>Resource</th>
-                    <th>Due date</th>
-                </tr>
-                </thead>
-                <tbody>
-                    <% @tasks.each do |task|
-                        breadcrumbs = breadcrumbs(task.model, with_prefix: false)
-                     %>
-                        <tr class="clickable" data-href="<%= breadcrumbs[:paths].last %>">
-                            <td><%= t(".description_#{task.description_id}") %></td>
-                            <td><%= breadcrumbs[:names].last %></td>
-                            <td><% if task.model.class.method_defined?(:due_date) && task.model.due_date.present? %><%= l(task.model.due_date, format: :short) %><% if Date.today > task.model.due_date %>&nbsp;<i class="fa fa-clock-o due-date-expired" title="<%= t('.tooltip_due_date') %>" data-toggle="tooltip"></i><% end %><% else %>-<% end %></td>
-                        </tr>
-                    <% end %>
-                <!-- Next line is impossible because @tasks is an array and not a ActiveRecord Relation -->
-                    <!--= will_paginate @tasks, renderer: BootstrapPagination::Rails %-->
-                </tbody>
-            </table>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>Description</th>
+                <th>Resource</th>
+                <th>Due date</th>
+            </tr>
+            </thead>
+            <tbody>
+                <% @tasks.each do |task|
+                  case task.type
+                    when CertificationPathTask.name.demodulize
+                        breadcrumbs = breadcrumbs(task.certification_path, with_prefix: false)
+                 %>
+                    <tr class="clickable" data-href="<%= breadcrumbs[:paths].last %>">
+                        <td><%= t(".description_#{task.task_description_id}") %></td>
+                        <td><%= breadcrumbs[:names].last %></td>
+                        <td>-</td>
+                    </tr>
+                <%  when SchemeMixCriterionTask.name.demodulize
+                        breadcrumbs = breadcrumbs(task.scheme_mix_criterion, with_prefix: false)
+                 %>
+                    <tr class="clickable" data-href="<%= breadcrumbs[:paths].last %>">
+                        <td><%= t(".description_#{task.task_description_id}") %></td>
+                        <td><%= breadcrumbs[:names].last %></td>
+                        <td><% if task.scheme_mix_criterion.due_date.present? %><%= l(task.scheme_mix_criterion.due_date, format: :short) %><% if Date.today > task.scheme_mix_criterion.due_date %>&nbsp;<i class="fa fa-clock-o due-date-expired" title="<%= t('.tooltip_due_date') %>" data-toggle="tooltip"></i><% end %><% else %>-<% end %></td>
+                    </tr>
+                <%  when RequirementDatumTask.name.demodulize
+                        breadcrumbs = breadcrumbs(task.requirement_datum, with_prefix: false)
+                 %>
+                    <tr class="clickable" data-href="<%= breadcrumbs[:paths].last %>">
+                        <td><%= t(".description_#{task.task_description_id}") %></td>
+                        <td><%= breadcrumbs[:names].last %></td>
+                        <td><% if task.requirement_datum.due_date.present? %><%= l(task.requirement_datum.due_date, format: :short) %><% if Date.today > task.requirement_datum.due_date %>&nbsp;<i class="fa fa-clock-o due-date-expired" title="<%= t('.tooltip_due_date') %>" data-toggle="tooltip"></i><% end %><% else %>-<% end %></td>
+                    </tr>
+                <%  when SchemeMixCriterionDocumentTask.name.demodulize
+                        breadcrumbs = breadcrumbs(task.scheme_mix_criteria_document, with_prefix: false)
+                 %>
+                    <tr class="clickable" data-href="<%= breadcrumbs[:paths].last %>">
+                        <td><%= t(".description_#{task.task_description_id}") %></td>
+                        <td><%= breadcrumbs[:names].last %></td>
+                        <td>-</td>
+                    </tr>
+                <% end
+                   end
+                 %>
+
+            </tbody>
+        </table>
+        <%= will_paginate @tasks, renderer: BootstrapPagination::Rails %>
         <% end %>
     </div>
 </div>

@@ -96,7 +96,7 @@
                     <tr class="clickable" data-href="<%= project_user_path(@project, ProjectsUser.find_by(user: user, project: @project)) %>">
                         <td><%= user.email %></td>
                         <td><%= projects_user.role.humanize %><% if @project.owner == user %>&nbsp;&amp;&nbsp;owner<% end %></td>
-                        <td><% unless projects_user.enterprise_account? %><span class="badge"><%= OldTaskService.instance.generate_tasks(user: user, project_id: @project.id).count %></span><% else %>-<% end %></td>
+                        <td><% unless projects_user.enterprise_account? %><span class="badge"><%= TaskService::count_tasks(user: user, project_id: @project.id) %></span><% else %>-<% end %></td>
                     </tr>
                     <% end %>
                     </tbody>
@@ -131,7 +131,7 @@
                                 <% projects_user = certifier.projects_users.for_project(@project).first %>
                                 <td><%= certifier.email %></td>
                                 <td><%= projects_user.role.humanize %></td>
-                                <td><span class="badge"><%= OldTaskService.instance.generate_tasks(user: certifier, project_id: @project.id).count %></span></td>
+                                <td><span class="badge"><%= TaskService::count_tasks(user: certifier, project_id: @project.id) %></span></td>
                             </tr>
                         <% end %>
                         </tbody>

@@ -13,7 +13,7 @@ $(function () {
 
     if ((typeof element !== 'undefined') && (typeof url !== 'undefined')) {
         element.select2({
-            placeholder: "Type the first letters of the email address",
+            placeholder: "email address",
             width: "100%",
             ajax: {
                 url: url,
@@ -33,7 +33,7 @@ $(function () {
                     };
                 },
                 cache: false
-            }
+            },
         });
     }
 });

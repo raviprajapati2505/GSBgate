@@ -24,7 +24,7 @@ class ProjectsUsersController < AuthenticatedController
     @page_title = @projects_user.user.email
     @user = @projects_user.user
     @project = @projects_user.project
-    @tasks = OldTaskService.instance.generate_tasks(user: @user, project_id: @project.id)
+    @tasks = TaskService::get_tasks(page: params[:page], user: @user, project_id: @project.id)
   end
 
   def update

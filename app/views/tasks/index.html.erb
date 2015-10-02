@@ -6,6 +6,10 @@
             </div>
             <div class="ibox-content">
                 <%= bootstrap_form_tag(url: tasks_path, method: 'get') do |f| %>
+                    <%= f.form_group do %>
+                    <%= f.label :user_id %><br/>
+                    <%= f.hidden_field :user_id, { class: 'select2-ajax', data: {user_id: current_user.id } } %>
+                    <% end %>
                     <%= f.collection_select :project_id, (current_user.system_admin? or current_user.gord_manager? or current_user.gord_top_manager?) ? Project.all : current_user.projects, :id, :name, { include_blank: '- All projects -', selected: @default_values[:project_id] } %>
                     <div class="hr-line-dashed"></div>
                     <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
@@ -22,3 +26,4 @@
         <%= render 'tasks' %>
     </div>
 </div>
+<%= javascript_include_tag 'select_user' %>
