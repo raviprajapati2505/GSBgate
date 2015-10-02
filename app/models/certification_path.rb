@@ -89,18 +89,18 @@ class CertificationPath < ActiveRecord::Base
 
   def total_weight_is_equal_to_100_percent
     if total_weight != 100
-      errors.add(:scheme_mixes, 'Scheme weights should total 100%')
+      errors.add(:scheme_mixes, 'Scheme weights should total 100%.')
     end
   end
 
   def certificate_duration
     if certificate.letter_of_conformance?
       if duration != 1
-        errors.add(:duration, 'Duration for Letter of Conformance should be 1 year')
+        errors.add(:duration, 'Duration for Letter of Conformance should be 1 year.')
       end
     elsif certificate.final_design_certificate?
       if not [2,3,4].include? duration
-        errors.add(:duration, 'Duration for Final Design Certificate should be 2, 3 or 4 years')
+        errors.add(:duration, 'Duration for Final Design Certificate should be 2, 3 or 4 years.')
       end
     elsif certificate.construction_certificate? or certificate.operations_certificate?
     end
@@ -189,7 +189,7 @@ class CertificationPath < ActiveRecord::Base
           end
         when CertificationPathStatus::CERTIFIED, CertificationPathStatus::NOT_CERTIFIED
           # There is no next status
-          throw(:error, 'There is no next status')
+          throw(:error, 'There is no next status.')
       end
     end
     return error
@@ -236,7 +236,7 @@ class CertificationPath < ActiveRecord::Base
     if project.certifier_manager_assigned?
       return true
     end
-    throw(:error, 'A certifier manager must be assigned to the project first')
+    throw(:error, 'A certifier manager must be assigned to the project first.')
   end
 
   # Conditions are
@@ -245,19 +245,19 @@ class CertificationPath < ActiveRecord::Base
     scheme_mix_criteria.each do |criterion|
       # all criteria are completed
       unless criterion.complete?
-        throw(:error, 'All criteria must have status complete')
+        throw(:error, 'All criteria must have status \'complete\'.')
       end
       # all submitted scores provided
       if criterion.submitted_score.blank?
-        throw(:error, 'There are submitted scores missing')
+        throw(:error, 'There are submitted scores missing.')
       end
       # all linked requirements are provided
       if criterion.has_required_requirements?
-        throw(:error, 'There are still requirements in status \'required\'')
+        throw(:error, 'There are still requirements in status \'required\'.')
       end
       # no more documents waiting for approval
       if criterion.has_documents_awaiting_approval?
-        throw(:error, 'There are still documents awaiting approval')
+        throw(:error, 'There are still documents awaiting approval.')
       end
     end
     return true
@@ -272,25 +272,7 @@ class CertificationPath < ActiveRecord::Base
   # Conditions are
   #  1) all criteria are completed (= when all linked requirements and submitted scores are provided and no more documents waiting for approval)
   def can_leave_submitting_after_screening_status?
-    scheme_mix_criteria.each do |criterion|
-      # all criteria are completed
-      unless criterion.complete?
-        throw(:error, 'All criteria must have status complete')
-      end
-      # all submitted scores provided
-      if criterion.submitted_score.blank?
-        throw(:error, 'There are submitted scores missing')
-      end
-      # all linked requirements are provided
-      if criterion.has_required_requirements?
-        throw(:error, 'There are still requirements in status \'required\'')
-      end
-      # no more documents waiting for approval
-      if criterion.has_documents_awaiting_approval?
-        throw(:error, 'There are still documents awaiting approval')
-      end
-    end
-    return true
+    can_leave_submitting_status?
   end
 
   # Conditions are
@@ -299,13 +281,13 @@ class CertificationPath < ActiveRecord::Base
     if pcr_track_allowed?
       return true
     end
-    throw(:error, 'The PCR track allowed flag must be set first')
+    throw(:error, 'The PCR track allowed flag must be set first.')
   end
 
   # Conditions are
   #  1) all criteria are reviewed
   def can_leave_submitting_pcr_status?
-    return true
+    can_leave_submitting_status?
   end
 
   # Conditions are
@@ -313,10 +295,10 @@ class CertificationPath < ActiveRecord::Base
   def can_leave_verifying_status?
     scheme_mix_criteria.each do |criterion|
       unless criterion.approved? || criterion.resubmit?
-        throw(:error, 'There are still criteria in status \'complete\'')
+        throw(:error, 'There are still criteria in status \'complete\'.')
       end
       if criterion.achieved_score.blank?
-        throw(:error, 'There are achieved scores missing')
+        throw(:error, 'There are achieved scores missing.')
       end
     end
     return true
@@ -340,19 +322,19 @@ class CertificationPath < ActiveRecord::Base
     scheme_mix_criteria.each do |criterion|
       # all criteria are completed
       unless criterion.complete?
-        throw(:error, 'All criteria must have status complete')
+        throw(:error, 'All criteria must have status complete.')
       end
       # all submitted scores provided
       if criterion.submitted_score.blank?
-        throw(:error, 'There are submitted scores missing')
+        throw(:error, 'There are submitted scores missing.')
       end
       # all linked requirements are provided
       if criterion.has_required_requirements?
-        throw(:error, 'There are still requirements in status \'required\'')
+        throw(:error, 'There are still requirements in status \'required\'.')
       end
       # no more documents waiting for approval
       if criterion.has_documents_awaiting_approval?
-        throw(:error, 'There are still documents awaiting approval')
+        throw(:error, 'There are still documents awaiting approval.')
       end
     end
     return true
@@ -363,10 +345,10 @@ class CertificationPath < ActiveRecord::Base
   def can_leave_verifying_after_appeal_status?
     scheme_mix_criteria.each do |criterion|
       unless criterion.approved? || criterion.resubmit?
-        throw(:error, 'There are still criteria in status \'complete\'')
+        throw(:error, 'There are still criteria in status \'complete\'.')
       end
       if criterion.achieved_score.blank?
-        throw(:error, 'There are achieved scores missing')
+        throw(:error, 'There are achieved scores missing.')
       end
     end
     return true
@@ -384,6 +366,6 @@ class CertificationPath < ActiveRecord::Base
     if signed_by_mngr? && signed_by_top_mngr?
       return true
     end
-    throw(:error, 'Both signed by GORD manager and signed by GORD top manager must be set')
+    throw(:error, 'Both signed by GORD manager and signed by GORD top manager must be set.')
   end
 end
