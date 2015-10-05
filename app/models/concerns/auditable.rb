@@ -79,28 +79,28 @@ module Auditable
           new_status_model = CertificationPathStatus.find_by_id(new_status)
         end
         if (action == AUDIT_LOG_CREATE)
-          system_messages << 'A new certification path %s was created in project %s.'
+          system_messages << 'A new certificate %s was created in project %s.'
           system_messages_params << [self.name, self.project.name]
         elsif (action == AUDIT_LOG_UPDATE)
           if self.certification_path_status_id_changed?
-            system_messages << 'The status of certification path %s in project %s was changed from %s to %s.'
+            system_messages << 'The status of certificate %s in project %s was changed from %s to %s.'
             system_messages_params << [self.name, self.project.name, old_status_model.name, new_status_model.name]
           end
         end
         if (action == AUDIT_LOG_CREATE || action == AUDIT_LOG_UPDATE)
           if self.pcr_track_changed?
             if self.pcr_track?
-              system_messages << 'A PCR track request was issued for the certification path %s in project %s.'
+              system_messages << 'A PCR track request was issued for the certificate %s in project %s.'
             else
-              system_messages << 'The PCR track request was canceled for the certification path %s in project %s.'
+              system_messages << 'The PCR track request was canceled for the certificate %s in project %s.'
             end
             system_messages_params << [self.name, self.project.name]
           end
           if self.pcr_track_allowed_changed?
             if self.pcr_track_allowed?
-              system_messages << 'The PCR track request for certification path %s in project %s was granted.'
+              system_messages << 'The PCR track request for certificate %s in project %s was granted.'
             else
-              system_messages << 'The PCR track request for certification path %s in project %s was rejected.'
+              system_messages << 'The PCR track request for certificate %s in project %s was rejected.'
             end
             system_messages_params << [self.name, self.project.name]
           end
