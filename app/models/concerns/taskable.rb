@@ -43,7 +43,7 @@ module Taskable
   end
 
   def handle_created_projects_user
-    case self.role
+    case ProjectsUser.roles[self.role]
       # Certifier manager is assigned to project
       when ProjectsUser.roles[:certifier_manager]
         # Destroy all system admin tasks to assign a certifier manager for this project
@@ -86,7 +86,10 @@ module Taskable
 
   def handle_updated_projects_user
     if self.role_changed?
-      case self.role
+      # TODO ? unassign project team members from requirement tasks
+      # TODO ? unassign certifiers from criteria tasks
+      leave_role(self.role_was, self.user, self.project)
+      case ProjectsUser.roles[self.role]
         # A user with access to the project is now certifier manager
         when ProjectsUser.roles[:certifier_manager]
           # Destroy all system admin tasks to assign a certifier manager for this project
@@ -99,15 +102,6 @@ module Taskable
             task.destroy
           end
         else
-          unless self.project.certifier_manager_assigned?
-            self.project.certification_paths.each do |certification_path|
-              # Create system admin task to advance the certification path status
-              CertificationPathTask.create(task_description_id: 1,
-                                           application_role: User.roles[:system_admin],
-                                           project: certification_path.project,
-                                           certification_path: certification_path)
-            end
-          end
       end
     end
   end
@@ -219,7 +213,7 @@ module Taskable
           end
         when CertificationPathStatus::SUBMITTING_AFTER_APPEAL
           # Create project team members tasks to provide requirements
-          self.requirement_data.required.each do |requirement_datum|
+          self.requirement_data.where.not(user: nil).required.each do |requirement_datum|
             RequirementDatumTask.create(task_description_id: 4,
                                         user: requirement_datum.user,
                                         project: self.project,
@@ -286,7 +280,7 @@ module Taskable
 
   def handle_updated_scheme_mix_criterion
     if self.status_changed?
-      case self.status
+      case SchemeMixCriterion.statuses[self.status]
         when SchemeMixCriterion.statuses[:complete]
           # Test if no criteria with status 'in progress' are still linked to certification path in status 'submitting'
           unless self.scheme_mix.certification_path.with_status(CertificationPathStatus::SUBMITTING).scheme_mix_criteria.in_progress.count.nonzero?
@@ -389,7 +383,37 @@ module Taskable
   end
 
   def handle_destroyed_projects_user
-    # TODO check if last certifier manager is unassigned and if true then create necessary tasks for system admin to re-assign new certifier manager
+    leave_role(self.role, self.user, self.project)
+  end
+
+  def leave_role(role, user, project)
+    project.certification_paths.each do |certification_path|
+      case certification_path.certification_path_status_id
+        when CertificationPathStatus::SUBMITTING, CertificationPathStatus::SUBMITTING_AFTER_APPEAL
+          # get all required unassigned requirements for this certificate and with no task 3
+          certification_path.requirement_data.unassigned.required.where.not('exists(select tasks.id from tasks where tasks.requirement_datum_id = requirement_data.id)').each do |requirement_datum|
+            RequirementDatumTask.create(task_description_id: 3,
+                                        project_role: ProjectsUser.roles[:project_manager],
+                                        project: self.project,
+                                        requirement_datum: requirement_datum)
+          end
+      end
+    end
+
+    case ProjectsUser.roles[role]
+      when ProjectsUser.roles[:certifier]
+        # TODO create certifier manager tasks
+      when ProjectsUser.roles[:certifier_manager]
+        unless self.project.certifier_manager_assigned?
+          self.project.certification_paths.each do |certification_path|
+            # Create system admin task to assign a certifier manager
+            CertificationPathTask.create(task_description_id: 1,
+                                         application_role: User.roles[:system_admin],
+                                         project: certification_path.project,
+                                         certification_path: certification_path)
+          end
+        end
+    end
   end
 
   def handle_pcr_track
