@@ -1,0 +1,10 @@
+<%= bootstrap_form_for([project, certification_path], url: update_certification_path_pcr_path, method: 'put', layout: :horizontal) do |f| %>
+    <%= f.check_box :pcr_track, disabled: (true unless (current_user.project_manager?(project) || current_user.system_admin?)), label: 'Apply for PCR track' %>
+    <%= f.check_box :pcr_track_allowed, disabled: (true unless (current_user.system_admin? && certification_path.pcr_track?)), label: 'PCR track is allowed' %>
+    <% if current_user.project_manager?(project) || current_user.system_admin? %>
+        <div class="hr-line-dashed"></div>
+        <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
+            <i title="Save" class="fa fa-lg fa-save" style="padding-right: 10px;"></i>Save
+        <% end %>
+    <% end %>
+<% end %>

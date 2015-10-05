@@ -1,0 +1,10 @@
+<%= bootstrap_form_for([project, certification_path], url: update_certification_path_approvals_path, method: 'put', layout: :horizontal) do |f| %>
+    <%= f.check_box :signed_by_mngr, disabled: (true unless current_user.gord_manager?), label: 'Signed by GORD manager' %>
+    <%= f.check_box :signed_by_top_mngr, disabled: (true unless current_user.gord_top_manager?), label: 'Signed by GORD top manager' %>
+    <% if current_user.gord_manager? || current_user.gord_top_manager? %>
+        <div class="hr-line-dashed"></div>
+        <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
+            <i title="Save" class="fa fa-lg fa-save" style="padding-right: 10px;"></i>Save
+        <% end %>
+    <% end %>
+<% end %>

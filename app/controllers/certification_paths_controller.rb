@@ -5,7 +5,6 @@ class CertificationPathsController < AuthenticatedController
   load_and_authorize_resource :project
   load_and_authorize_resource :certification_path, :through => :project
 
-
   def show
     @page_title = @certification_path.name
     @tasks = TaskService::get_tasks(page: params[:page], user: current_user, project_id: @project.id, certification_path_id: @certification_path.id)
@@ -85,7 +84,7 @@ class CertificationPathsController < AuthenticatedController
     end
   end
 
-  def update
+  def update_pcr
     CertificationPath.transaction do
       # reset pcr_track_allowed if pcr_track is false
       if certification_path_params.has_key?(:pcr_track)
@@ -95,11 +94,8 @@ class CertificationPathsController < AuthenticatedController
         end
       end
 
-      if @certification_path.update(certification_path_params)
-        redirect_to project_certification_path_path(@project, @certification_path), notice: 'The ceritification details were successfully updated.'
-      else
-        @tasks = TaskService::get_tasks(page: params[:page], user: current_user, project_id: @project.id, certification_path_id: @certification_path.id)
-        render action: :show
+      if @certification_path.update!(certification_path_params)
+        redirect_to project_certification_path_path(@project, @certification_path), notice: 'The PCR checkboxes were succesfully updated.'
       end
     end
   end
@@ -119,18 +115,9 @@ class CertificationPathsController < AuthenticatedController
     send_file DocumentArchiverService.instance.create_archive(@certification_path)
   end
 
-  def sign_certificate
-    if params.has_key?(:signed_by_mngr)
-      @certification_path.signed_by_mngr = params[:signed_by_mngr]
-      @certification_path.save!
-
-      render json: {msg: 'The manager approval was successfully updated.'} and return
-    end
-    if params.has_key?(:signed_by_top_mngr)
-      @certification_path.signed_by_top_mngr = params[:signed_by_top_mngr]
-      @certification_path.save!
-
-      render json: {msg: 'The manager approval was successfully updated.'} and return
+  def update_approvals
+    if @certification_path.update!(certification_path_params)
+      redirect_to project_certification_path_path(@project, @certification_path), notice: 'The manager approval was successfully updated.'
     end
   end
 
