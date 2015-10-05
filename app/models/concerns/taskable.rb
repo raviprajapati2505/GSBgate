@@ -261,7 +261,10 @@ module Taskable
       case SchemeMixCriterion.statuses[self.status]
         when SchemeMixCriterion.statuses[:complete]
           # Test if no criteria with status 'in progress' are still linked to certification path in status 'submitting'
-          unless self.scheme_mix.certification_path.with_status(CertificationPathStatus::SUBMITTING).scheme_mix_criteria.in_progress.count.nonzero?
+          if CertificationPath.joins(:scheme_mixes)
+                 .where(id: self.scheme_mix.certification_path.id, certification_path_status_id: CertificationPathStatus::SUBMITTING)
+                 .where.not('exists(select smc.id from scheme_mix_criteria smc where smc.scheme_mix_id = scheme_mixes.id and smc.status = 0)')
+                 .count.nonzero?
             # Create project manager task to advance certification path status
             CertificationPathTask.create(task_description_id: 6,
                                          project_role: ProjectsUser.roles[:project_manager],
@@ -269,10 +272,13 @@ module Taskable
                                          certification_path: self.scheme_mix.certification_path)
           end
           # Destroy project manager tasks to set criterion status to complete
-          SchemeMixCriterion.delete_all(task_description_id: 5, scheme_mix_criterion: self)
+          SchemeMixCriterionTask.delete_all(task_description_id: 5, scheme_mix_criterion: self)
         when SchemeMixCriterion.statuses[:approved], SchemeMixCriterion.statuses[:resubmit]
           # Test if no criteria with status 'complete' are still linked to certification path in status 'verifying'
-          unless self.scheme_mix.certification_path.with_status(CertificationPathStatus::VERIFYING).scheme_mix_criteria.complete.count.nonzero?
+          if CertificationPath.joins(:scheme_mixes)
+                 .where(id: self.scheme_mix.certification_path.id, certification_path_status_id: CertificationPathStatus::VERIFYING)
+                 .where.not('exists(select smc.id from scheme_mix_criteria smc where smc.scheme_mix_id = scheme_mixes.id and smc.status = 1)')
+                 .count.nonzero?
             # Create certifier manager task to advance certification path status
             CertificationPathTask.create(task_description_id: 17,
                                          project_role: ProjectsUser.roles[:certifier_manager],
@@ -294,7 +300,7 @@ module Taskable
         # Destroy all certifier manager tasks to assign certifier team member to this criterion
         SchemeMixCriterionTask.delete_all(task_description_id: 7, scheme_mix_criterion: self)
         # Destroy all certifier team member tasks to screen the criterion which are assigned to another user
-        SchemeMixCriterionTask.delete_all(task_description_id: 8, scheme_mix_criterion: self).where.not(user: self.certifier)
+        SchemeMixCriterionTask.where.not(user: self.certifier).delete_all(task_description_id: 8, scheme_mix_criterion: self)
         if CertificationPathTask.where(task_description_id: 9, certification_path: self.scheme_mix.certification_path).blank?
           # Create certifier manager task to advance certificate path status
           CertificationPathTask.create(task_description_id: 9,
@@ -309,7 +315,10 @@ module Taskable
     if self.status_changed?
       if self.provided? or self.not_required?
         # Test if no requirements with status 'required' are still linked to criterion in status 'in progress'
-        unless self.scheme_mix_criteria.in_progress.requirement_data.required.count.nonzero?
+        if SchemeMixCriterion.joins(:scheme_mix_criteria_requirement_data)
+               .where(id: self.scheme_mix_criteria.first.id, status: 0)
+               .where.not('exists(select rd.id from requirement_data rd where rd.id = scheme_mix_criteria_requirement_data.requirement_datum_id and rd.status = 0)')
+               .count.nonzero?
           # Create project manager task to set criterion status to complete
           SchemeMixCriterionTask.create(task_description_id: 5,
                                         project_role: ProjectsUser.roles[:project_manager],
@@ -331,7 +340,7 @@ module Taskable
         # Destroy all project manager tasks to assign project team member
         RequirementDatumTask.delete_all(task_description_id: 3, requirement_datum: self)
         # Destroy all project team member tasks to provide the requirement which are assigned to another user
-        RequirementDatumTask.delete_all(task_description_id: 4, requirement_datum: self).where.not(user: self.user)
+        RequirementDatumTask.where.not(user: self.user).delete_all(task_description_id: 4, requirement_datum: self)
       end
     end
 
