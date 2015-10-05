@@ -360,7 +360,7 @@ module Taskable
     end
     # A/another project team member is assigned to the requirement
     if self.user_id_changed?
-      if self.required
+      if self.required?
         # Create project team member task to provide the requirement
         RequirementDatumTask.create(task_description_id: 4,
                                     user: self.user,
