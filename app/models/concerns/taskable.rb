@@ -4,6 +4,7 @@ module Taskable
   included do
     after_create :after_create
     after_update :after_update
+    before_destroy :before_destroy
     after_destroy :after_destroy
   end
 
@@ -32,6 +33,13 @@ module Taskable
         handle_updated_scheme_mix_criterion
       when SchemeMixCriteriaDocument.name.demodulize
         handle_updated_scheme_mix_criteria_document
+    end
+  end
+
+  def before_destroy
+    case self.class.name
+      when ProjectsUser.name.demodulize
+        Task.delete_all(user: self.user)
     end
   end
 
@@ -119,9 +127,7 @@ module Taskable
                                         requirement_datum: requirement_datum)
           end
           # Destroy all system admin tasks to advance the certification path status
-          CertificationPathTask.where(task_description_id: 2, certification_path: self).each do |task|
-            task.destroy
-          end
+          CertificationPathTask.delete_all(task_description_id: 2, certification_path: self)
         when CertificationPathStatus::SCREENING
           # Create certifier manager tasks to assign certifier team members to criteria
           self.scheme_mix_criteria.unassigned.complete.each do |scheme_mix_criterion|
@@ -131,9 +137,7 @@ module Taskable
                                           scheme_mix_criterion: scheme_mix_criterion)
           end
           # Destroy project manager tasks to advance certification path status
-          CertificationPathTask.where(task_description_id: 6, certification_path: self).each do |task|
-            task.destroy
-          end
+          CertificationPathTask.delete_all(task_description_id: 6, certification_path: self)
         when CertificationPathStatus::SUBMITTING_AFTER_SCREENING
           # SPECIAL CASE !!!
           # Create project manager task to process screening comments
@@ -142,20 +146,14 @@ module Taskable
                                        project: self.project,
                                        certification_path: self)
           # Destroy all certifier manager tasks to advance status
-          CertificationPathTask.where(task_description_id: 9, certification_path: self).each do |task|
-            task.destroy
-          end
+          CertificationPathTask.delete_all(task_description_id: 9, certification_path: self)
           self.scheme_mix_criteria.each do |criterion|
             # Destroy all certifier team member tasks to screen criteria
-            SchemeMixCriterionTask.where(task_description_id: 8, scheme_mix_criterion: criterion).each do |task|
-              task.destroy
-            end
+            SchemeMixCriterionTask.delete_all(task_description_id: 8, scheme_mix_criterion: criterion)
           end
         when CertificationPathStatus::PROCESSING_PCR_PAYMENT
           # Destroy all project manager tasks to process screening comments
-          CertificationPathTask.where(task_description_id: 10, certification_path: self).each do |task|
-            task.destroy
-          end
+          CertificationPathTask.delete_all(task_description_id: 10, certification_path: self)
         when CertificationPathStatus::SUBMITTING_PCR
           # SPECIAL CASE !!!
           # Create project manager task to advance status
@@ -171,9 +169,7 @@ module Taskable
                                           scheme_mix_criterion: scheme_mix_criterion)
           end
           # Destroy all system admin tasks to advance the certification path status
-          CertificationPathTask.where(task_description_id: 12, certification_path: self).each do |task|
-            task.destroy
-          end
+          CertificationPathTask.delete_all(task_description_id: 12, certification_path: self)
         when CertificationPathStatus::VERIFYING
           # SPECIAL CASE !!!
           # Create certifier team member task to verify criteria
@@ -188,9 +184,7 @@ module Taskable
             SchemeMixCriterionTask.where(task_description_id: 8, scheme_mix_criterion: scheme_mix_criterion)
           end
           # Destroy project manager tasks to advance status
-          CertificationPathTask.where(task_description_id: 15, certification_path: self).each do |task|
-            task.destroy
-          end
+          CertificationPathTask.delete_all(task_description_id: 15, certification_path: self)
         when CertificationPathStatus::ACKNOWLEDGING
           # Create project manager task to process verification comments
           CertificationPathTask.create(task_description_id: 10,
@@ -198,9 +192,7 @@ module Taskable
                                        project: self.project,
                                        certification_path: self)
           # Destroy all certifier manager tasks to advance status
-          CertificationPathTask.where(task_description_id: 17, certification_path: self).each do |task|
-            task.destroy
-          end
+          CertificationPathTask.delete_all(task_description_id: 17, certification_path: self)
         when CertificationPathStatus::PROCESSING_APPEAL_PAYMENT
           # Create system admin task to check appeal payment
           CertificationPathTask.create(task_description_id: 19,
@@ -208,9 +200,7 @@ module Taskable
                                        project: self.project,
                                        certification_path: self)
           # Destroy all project manager tasks to process verification comments
-          CertificationPathTask.where(task_description_id: 10, certification_path: self).each do |task|
-            task.destroy
-          end
+          CertificationPathTask.delete_all(task_description_id: 10, certification_path: self)
         when CertificationPathStatus::SUBMITTING_AFTER_APPEAL
           # Create project team members tasks to provide requirements
           self.requirement_data.where.not(user: nil).required.each do |requirement_datum|
@@ -220,9 +210,7 @@ module Taskable
                                         requirement_datum: requirement_datum)
           end
           # Destroy system admin tasks to check appeal payment
-          CertificationPathTask.where(task_description_id: 19, certification_path: self).each do |task|
-            task.destroy
-          end
+          CertificationPathTask.delete_all(task_description_id: 19, certification_path: self)
         when CertificationPathStatus::VERIFYING_AFTER_APPEAL
           # Create certifiers tasks to verify criteria
           self.scheme_mix_criteria.each do |scheme_mix_criterion|
@@ -232,9 +220,7 @@ module Taskable
                                           scheme_mix_criterion: scheme_mix_criterion)
           end
           # Destroy project manager tasks to advance certification path status
-          CertificationPathTask.where(task_description_id: 6, certification_path: self).each do |task|
-            task.destroy
-          end
+          CertificationPathTask.delete_all(task_description_id: 6, certification_path: self)
         when CertificationPathStatus::ACKNOWLEDGING_AFTER_APPEAL
           # Create project manager task to process verification comments
           CertificationPathTask.create(task_description_id: 10,
@@ -242,9 +228,7 @@ module Taskable
                                        project: self.project,
                                        certification_path: self)
           # Destroy all certifier manager tasks to advance status
-          CertificationPathTask.where(task_description_id: 17, certification_path: self).each do |task|
-            task.destroy
-          end
+          CertificationPathTask.delete_all(task_description_id: 17, certification_path: self)
         when CertificationPathStatus::APPROVING_BY_MANAGEMENT
           # Create task for GORD manager to quick check and approve
           CertificationPathTask.create(task_description_id: 25,
@@ -252,9 +236,7 @@ module Taskable
                                        project: self.project,
                                        certification_path: self)
           # Destroy all project manager tasks to process verification comments
-          CertificationPathTask.where(task_description_id: 10, certification_path: self).each do |task|
-            task.destroy
-          end
+          CertificationPathTask.delete_all(task_description_id: 10, certification_path: self)
         when CertificationPathStatus::CERTIFIED
           # Create project manager task to download certificate
           CertificationPathTask.create(task_description_id: 28,
@@ -262,14 +244,10 @@ module Taskable
                                        project: self.project,
                                        certification_path: self)
           # Destroy all gord top manager tasks to advance certification path status
-          CertificationPathTask.where(task_description_id: 27, certification_path: self).each do |task|
-            task.destroy
-          end
+          CertificationPathTask.delete_all(task_description_id: 27, certification_path: self)
         when CertificationPathStatus::NOT_CERTIFIED
           # Destroy all project manager tasks to process verification comments
-          CertificationPathTask.where(task_description_id: 10, certification_path: self).each do |task|
-            task.destroy
-          end
+          CertificationPathTask.delete_all(task_description_id: 10, certification_path: self)
       end
     end
     handle_pcr_track
@@ -291,9 +269,7 @@ module Taskable
                                          certification_path: self.scheme_mix.certification_path)
           end
           # Destroy project manager tasks to set criterion status to complete
-          SchemeMixCriterion.where(task_description_id: 5, scheme_mix_criterion: self).each do |task|
-            task.destroy
-          end
+          SchemeMixCriterion.delete_all(task_description_id: 5, scheme_mix_criterion: self)
         when SchemeMixCriterion.statuses[:approved], SchemeMixCriterion.statuses[:resubmit]
           # Test if no criteria with status 'complete' are still linked to certification path in status 'verifying'
           unless self.scheme_mix.certification_path.with_status(CertificationPathStatus::VERIFYING).scheme_mix_criteria.complete.count.nonzero?
@@ -304,9 +280,7 @@ module Taskable
                                          certification_path: self.scheme_mix.certification_path)
           end
           # Destroy certifier team member tasks to verify criteria
-          SchemeMixCriterionTask.where(task_description_id: 16, scheme_mix_criterion: self).each do |task|
-            task.destroy
-          end
+          SchemeMixCriterionTask.delete_all(task_description_id: 16, scheme_mix_criterion: self)
       end
     end
     # A/another certifier is assigned to the criterion
@@ -318,13 +292,9 @@ module Taskable
                                       project: self.scheme_mix.certification_path.project,
                                       scheme_mix_criterion: self)
         # Destroy all certifier manager tasks to assign certifier team member to this criterion
-        SchemeMixCriterionTask.where(task_description_id: 7, scheme_mix_criterion: self).each do |task|
-          task.destroy
-        end
+        SchemeMixCriterionTask.delete_all(task_description_id: 7, scheme_mix_criterion: self)
         # Destroy all certifier team member tasks to screen the criterion which are assigned to another user
-        SchemeMixCriterionTask.where(task_description_id: 8, scheme_mix_criterion: self).where.not(user: self.certifier).each do |task|
-          task.destroy
-        end
+        SchemeMixCriterionTask.delete_all(task_description_id: 8, scheme_mix_criterion: self).where.not(user: self.certifier)
         if CertificationPathTask.where(task_description_id: 9, certification_path: self.scheme_mix.certification_path).blank?
           # Create certifier manager task to advance certificate path status
           CertificationPathTask.create(task_description_id: 9,
@@ -347,9 +317,7 @@ module Taskable
                                         scheme_mix_criterion: self.scheme_mix_criteria.first)
         end
         # Destroy project team member tasks to provide the requirement
-        RequirementDatumTask.where(task_description_id: 4, requirement_datum: self).each do |task|
-          task.destroy
-        end
+        RequirementDatumTask.delete_all(task_description_id: 4, requirement_datum: self)
       end
     end
     # A/another project team member is assigned to the requirement
@@ -361,13 +329,9 @@ module Taskable
                                     project: self.scheme_mix_criteria.first.scheme_mix.certification_path.project,
                                     requirement_datum: self)
         # Destroy all project manager tasks to assign project team member
-        RequirementDatumTask.where(task_description_id: 3, requirement_datum: self).each do |task|
-          task.destroy
-        end
+        RequirementDatumTask.delete_all(task_description_id: 3, requirement_datum: self)
         # Destroy all project team member tasks to provide the requirement which are assigned to another user
-        RequirementDatumTask.where(task_description_id: 4, requirement_datum: self).where.not(user: self.user).each do |task|
-          task.destroy
-        end
+        RequirementDatumTask.delete_all(task_description_id: 4, requirement_datum: self).where.not(user: self.user)
       end
     end
 
@@ -376,9 +340,7 @@ module Taskable
   def handle_updated_scheme_mix_criteria_document
     if self.status_changed?
       # Destroy all project managers tasks to approve/reject document
-      SchemeMixCriterionDocumentTask.where(task_description_id: 29, scheme_mix_criteria_document: self).each do |task|
-        task.destroy
-      end
+      SchemeMixCriterionDocumentTask.delete_all(task_description_id: 29, scheme_mix_criteria_document: self)
     end
   end
 
@@ -399,10 +361,8 @@ module Taskable
           end
       end
     end
-
+    # TODO create certifier manager tasks
     case ProjectsUser.roles[role]
-      when ProjectsUser.roles[:certifier]
-        # TODO create certifier manager tasks
       when ProjectsUser.roles[:certifier_manager]
         unless self.project.certifier_manager_assigned?
           self.project.certification_paths.each do |certification_path|
@@ -427,9 +387,7 @@ module Taskable
                                        certification_path: self)
         end
       elsif self.pcr_track_allowed == false and self.certification_path_status_id < CertificationPathStatus::PROCESSING_PCR_PAYMENT
-        CertificationPathTask.where(task_description_id: 11, certification_path: self).each do |task|
-          task.destroy
-        end
+        CertificationPathTask.delete_all(task_description_id: 11, certification_path: self)
       end
     end
   end
@@ -444,18 +402,14 @@ module Taskable
                                        project: self.project,
                                        certification_path: self)
           # Destroy system admin tasks to check PCR payment
-          CertificationPathTask.where(task_description_id: 11, certification_path: self).each do |task|
-            task.destroy
-          end
+          CertificationPathTask.delete_all(task_description_id: 11, certification_path: self)
         end
       elsif self.pcr_track == true and self.certification_path_status_id < CertificationPathStatus::PROCESSING_PCR_PAYMENT
         CertificationPathTask.create(task_description_id: 11,
                                      application_role: User.roles[:system_admin],
                                      project: self.project,
                                      certification_path: self)
-        CertificationPathTask.where(task_description_id: 12, certification_path: self).each do |task|
-          task.destroy
-        end
+        CertificationPathTask.delete_all(task_description_id: 12, certification_path: self)
       end
     end
   end
@@ -470,18 +424,14 @@ module Taskable
                                        project: self.project,
                                        certification_path: self)
           # Destroy all GORD manager tasks to check and approve certificate
-          CertificationPathTask.where(task_description_id: 25, certification_path: self).each do |task|
-            task.destroy
-          end
+          CertificationPathTask.delete_all(task_description_id: 25, certification_path: self)
         end
       elsif self.signed_by_top_mngr == false and self.certification_path_status_id == CertificationPathStatus::APPROVING_BY_MANAGEMENT
         CertificationPathTask.create(task_description_id: 25,
                                      application_role: User.role[:gord_manager],
                                      project: self.project,
                                      certification_path: self)
-        CertificationPathTask.where(task_description_id: 26, certification_path: self).each do |task|
-          task.destroy
-        end
+        CertificationPathTask.delete_all(task_description_id: 26, certification_path: self)
       end
     end
   end
@@ -496,18 +446,14 @@ module Taskable
                                        project: self.project,
                                        certification_path: self)
           # Destroy all GORD top manager tasks to approve certificate
-          CertificationPathTask.where(task_description_id: 26, certification_path: self).each do |task|
-            task.destroy
-          end
+          CertificationPathTask.delete_all(task_description_id: 26, certification_path: self)
         end
       elsif self.signed_by_mngr == true and self.certification_path_status_id == CertificationPathStatus::APPROVING_BY_MANAGEMENT
         CertificationPathTask.create(task_description_id: 26,
                                      application_role: User.roles[:gord_top_manager],
                                      project: self.project,
                                      certification_path: self)
-        CertificationPathTask.where(task_description_id: 27, certification_path: self).each do |task|
-          task.destroy
-        end
+        CertificationPathTask.delete_all(task_description_id: 27, certification_path: self)
       end
     end
   end

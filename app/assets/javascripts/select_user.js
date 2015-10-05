@@ -5,10 +5,10 @@ $(function () {
         url = Routes.list_unauthorized_users_path({project_id: $('.select2-ajax').data('project-id')});
     }
 
-    var users_sharing_projects_list = $('.select2-ajax[data-user-id]');
+    var users_sharing_projects_list = $('.select2-ajax[data-current-user-id]');
     if (users_sharing_projects_list.length > 0) {
         element = users_sharing_projects_list;
-        url = Routes.list_users_sharing_projects_path({user_id: $('.select2-ajax').data('user-id')});
+        url = Routes.list_users_sharing_projects_path({user_id: $('.select2-ajax').data('current-user-id')});
     }
 
     if ((typeof element !== 'undefined') && (typeof url !== 'undefined')) {
@@ -34,6 +34,16 @@ $(function () {
                 },
                 cache: false
             },
+            initSelection: function(el, callback) {
+                return $.ajax({
+                    type: 'GET',
+                    url: Routes.user_path({id: el.val()}),
+                    dataType: 'json',
+                }).done(function(data) {
+                    selection = {id: data.id, text: data.email};
+                   callback(selection);
+                });
+            }
         });
     }
 });

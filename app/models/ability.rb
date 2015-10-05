@@ -35,6 +35,7 @@ class Ability
       can :manage, :all
     elsif user.user?
       # User controller
+      can :show, User
       can :new_member, User, projects: {projects_users: {user_id: user.id, role: ['project_manager', ProjectsUser.roles[:project_manager]]}}
       can :new_member, User, projects: {projects_users: {user_id: user.id, role: ['certifier_manager', ProjectsUser.roles[:certifier_manager]]}}
       can :index_tasks, User, projects: {projects_users: {user_id: user.id}}

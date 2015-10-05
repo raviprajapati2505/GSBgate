@@ -1,5 +1,5 @@
 class UsersController < AuthenticatedController
-  before_action :set_user, only: [:edit, :update]
+  before_action :set_user, only: [:edit, :update, :show]
   load_and_authorize_resource
 
   def index
@@ -20,6 +20,12 @@ class UsersController < AuthenticatedController
       redirect_to users_path, notice: 'Successfully updated user.'
     else
       render action: 'edit'
+    end
+  end
+
+  def show
+    respond_to do |format|
+      format.json { render json: @user, status: :ok }
     end
   end
 

@@ -9,7 +9,7 @@
                     <%= f.text_field 'text', value: @default_values[:text], label: 'Message contains' %>
                     <%= f.form_group do %>
                     <%= f.label :user_id %><br/>
-                    <%= f.hidden_field :user_id, { class: 'select2-ajax', data: {user_id: current_user.id } } %>
+                    <%= f.hidden_field :user_id, { class: 'select2-ajax', data: {current_user_id: current_user.id }, value: @default_values[:user_id] } %>
                     <% end %>
                     <% # todo: admins have no projects -> fix %>
                     <%= f.collection_select :project_id, (current_user.system_admin? or current_user.gord_manager? or current_user.gord_top_manager?) ? Project.all : current_user.projects, :id, :name, { include_blank: '- All projects -', selected: @default_values[:project_id] } %>
