@@ -161,9 +161,11 @@ class CertificationPath < ActiveRecord::Base
         when CertificationPathStatus::ACKNOWLEDGING
           # Only system_admin and project mngr can change status
           if can_leave_acknowledging_status?
-            # The next status depends if appealed for at least 1 criterion
-            # TODO implement appeal
-            return CertificationPathStatus::APPROVING_BY_MANAGEMENT
+            if appealed?
+              return CertificationPathStatus::PROCESSING_APPEAL_PAYMENT
+            else
+              return CertificationPathStatus::APPROVING_BY_MANAGEMENT
+            end
           end
         when CertificationPathStatus::PROCESSING_APPEAL_PAYMENT
           # Only system_admin can change status

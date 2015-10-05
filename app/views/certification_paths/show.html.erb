@@ -7,15 +7,13 @@
                 <h5>Certificate status</h5>
             </div>
             <div class="ibox-content">
-                <%= bootstrap_form_for([@project, @certification_path], url: update_certification_path_status_path, method: 'put') do |f| %>
-                    <%= render 'timeline', certification_path: @certification_path %>
-                    <div class="hr-line-dashed"></div>
-                    <%= button_tag type: 'submit', class: 'btn btn-primary', data: {confirm: 'Are you sure you want to advance the certificate status?'} do %>
-                        <i class="fa fa-lg fa-forward" style="padding-right: 10px;"></i>Advance status
-                    <% end %>
-                    <%= link_to archive_project_certification_path_path, class: 'btn btn-white', title: 'Creates a ZIP archive containing all approved documents in this certificate.' do %>
-                        <i class="fa fa-lg fa-archive" style="padding-right: 10px;"></i>Download archive
-                    <% end %>
+                <%= render 'timeline', certification_path: @certification_path %>
+                <div class="hr-line-dashed"></div>
+                <% if @certification_path.certification_path_status.id == CertificationPathStatus::ACKNOWLEDGING %>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#advanceStatusModal"><i class="fa fa-lg fa-check" style="padding-right: 10px;"></i>Accept all scores</button>
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#appealModal"><i class="fa fa-lg fa-times" style="padding-right: 10px;"></i>Apply for appeal</button>
+                <% else %>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#advanceStatusModal"><i class="fa fa-lg fa-forward" style="padding-right: 10px;"></i>Advance status</button>
                 <% end %>
             </div>
         </div>
@@ -37,6 +35,16 @@
                 </div>
             </div>
         <% end %>
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>Document archive</h5>
+            </div>
+            <div class="ibox-content">
+                <%= link_to archive_project_certification_path_path, class: 'btn btn-white', title: 'Creates a ZIP archive containing all approved documents in this certificate.' do %>
+                    <i class="fa fa-lg fa-archive" style="padding-right: 10px;"></i>Download archive
+                <% end %>
+            </div>
+        </div>
     </div>
     <div class="col-md-8">
         <div class="ibox float-e-margins">
@@ -82,4 +90,5 @@
         <%= render 'tasks/tasks' %>
     </div>
 </div>
-<%= javascript_include_tag 'certification_path' %>
+<%= render 'advance_status_modal' %>
+<%= render 'appeal_modal' %>

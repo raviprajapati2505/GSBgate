@@ -101,10 +101,12 @@ class CertificationPathsController < AuthenticatedController
   end
 
   def update_status
+    @certification_path.appealed = certification_path_params.has_key?(:appealed)
     next_status = @certification_path.next_status
-
     if next_status.is_a? Integer
-      @certification_path.update!(certification_path_status_id: next_status)
+      @certification_path.certification_path_status_id = next_status
+      @certification_path.audit_log_user_comment = params[:certification_path][:audit_log_user_comment]
+      @certification_path.save!
       redirect_to project_certification_path_path(@project, @certification_path), notice: 'The certificate status was successfully updated.'
     else
       redirect_to project_certification_path_path(@project, @certification_path), alert: next_status
@@ -146,6 +148,6 @@ class CertificationPathsController < AuthenticatedController
   end
 
   def certification_path_params
-    params.require(:certification_path).permit(:project_id, :certificate_id, :signed_by_mngr, :signed_by_top_mngr, :pcr_track, :pcr_track_allowed, :duration, :started_at, :development_type)
+    params.require(:certification_path).permit(:project_id, :certificate_id, :signed_by_mngr, :signed_by_top_mngr, :pcr_track, :pcr_track_allowed, :duration, :started_at, :development_type, :appealed)
   end
 end
