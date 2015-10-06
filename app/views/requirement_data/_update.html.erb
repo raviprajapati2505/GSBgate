@@ -15,7 +15,8 @@
         <div class="panel-body">
             <%= bootstrap_form_tag url: project_certification_path_scheme_mix_scheme_mix_criterion_requirement_datum_path(@project, certification_path_id, scheme_mix_id, scheme_mix_criterion_id, requirement_datum.id), method: 'put', remote: true, :html => { :multipart => true } do |f| %>
                 <div class="row">
-                    <% if current_user.system_admin? || current_user.project_manager?(@project) %>
+                    <% certification_path = CertificationPath.find(certification_path_id) # todo: avoid this %>
+                    <% if current_user.system_admin? || (certification_path.in_submission? && current_user.project_manager?(@project)) %>
                         <div class="col-md-7">
                             <% users = User.authorized_for_project(@project).with_assessor_project_role %>
                             <% if (users.count > 0) && (can? :read, @project.projects_users.first) %>
@@ -43,33 +44,33 @@
                         </div>
                     <% end %>
                     <div class="col-md-12">
-                        <%= f.select :status, options_for_select(RequirementDatum.statuses.keys.map { |k| [k.humanize, k]}, requirement_datum.status), {}, disabled: !(can? :update, requirement_datum) %>
+                        <%= f.select :status, options_for_select(RequirementDatum.statuses.keys.map { |k| [k.humanize, k]}, requirement_datum.status), {}, disabled: !(can?(:update, requirement_datum) && certification_path.in_submission?) %>
                     </div>
                 </div>
-                <% if requirement_datum.calculator_datum.present? %>
-                    <div class="hr-line-dashed"></div>
-                    <% calculator_template = requirement_datum.calculator_datum.calculator.name.constantize.name.demodulize.downcase %>
-                    <div>
-                        <% if File.exist?("app/views/calculators/_#{calculator_template}.html.erb") %>
-                            <%= render "calculators/#{calculator_template}", requirement_datum: requirement_datum, calculator_template: calculator_template, f: f %>
-                        <% else %>
-                            <%= render "calculators/general", requirement_datum: requirement_datum, calculator_template: calculator_template, f: f %>
-                        <% end %>
-                    </div>
+                <%-# START COMMENT -%>
+                <% if false %>
+                    <% if requirement_datum.calculator_datum.present? %>
+                        <div class="hr-line-dashed"></div>
+                        <% calculator_template = requirement_datum.calculator_datum.calculator.name.constantize.name.demodulize.downcase %>
+                        <div>
+                            <% if File.exist?("app/views/calculators/_#{calculator_template}.html.erb") %>
+                                <%= render "calculators/#{calculator_template}", requirement_datum: requirement_datum, calculator_template: calculator_template, f: f %>
+                            <% else %>
+                                <%= render "calculators/general", requirement_datum: requirement_datum, calculator_template: calculator_template, f: f %>
+                            <% end %>
+                        </div>
+                    <% end %>
                 <% end %>
-                <div class="row">
-                    <div class="col-md-12">
-                        <% if can? :update, requirement_datum %>
-                            <div class="hr-line-dashed"></div>
-                            <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
-                                <i title="Save" class="fa fa-lg fa-save" style="padding-right: 10px;"></i>Save
-                            <% end %>
-                            <% if (current_user == requirement_datum.user) %>
-                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#refuseRequirementModal<%= requirement_datum.id %>"><i class="fa fa-lg fa-ban" style="padding-right: 10px;"></i>Refuse this requirement</button>
-                            <% end %>
-                        <% end %>
-                    </div>
-                </div>
+                <%-# END COMMENT -%>
+                <% if certification_path.in_submission? && can?(:update, requirement_datum) %>
+                    <div class="hr-line-dashed"></div>
+                    <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
+                        <i title="Save" class="fa fa-lg fa-save" style="padding-right: 10px;"></i>Save
+                    <% end %>
+                    <% if (current_user == requirement_datum.user) %>
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#refuseRequirementModal<%= requirement_datum.id %>"><i class="fa fa-lg fa-ban" style="padding-right: 10px;"></i>Refuse this requirement</button>
+                    <% end %>
+                <% end %>
             <% end %>
         </div>
     </div>

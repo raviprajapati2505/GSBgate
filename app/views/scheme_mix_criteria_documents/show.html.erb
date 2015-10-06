@@ -3,7 +3,7 @@
         <div class="ibox float-e-margins document-details">
             <div class="ibox-title">
                 <%= audit_log_label(@scheme_mix_criteria_document) %>
-                <%= status_label(@scheme_mix_criteria_document.status, can?(:update, @scheme_mix_criteria_document), 'updateSchemeMixCriteriaDocumentStatusModal') %>
+                <%= status_label(@scheme_mix_criteria_document.status, @certification_path.in_submission? && can?(:update, @scheme_mix_criteria_document), 'updateSchemeMixCriteriaDocumentStatusModal') %>
                 <h5>Document details</h5>
             </div>
             <div class="ibox-content">
@@ -33,7 +33,7 @@
                                 <br />
                             <% end %>
                             <!-- if can? :create, SchemeMixCriteriaDocument %-->
-                            <% if current_user.system_admin? || current_user.project_manager?(@project) || current_user.project_team_member?(@project) %>
+                            <% if @certification_path.in_submission? && can?(:update, @scheme_mix_criteria_document) %>
                                 <hr />
                                 <p>If this document also supports requirements in other criteria, add a criterion below:</p>
                                 <%= bootstrap_form_for([@project, @certification_path, @scheme_mix, @scheme_mix_criterion, SchemeMixCriteriaDocument.new], layout: :inline) do |f| %>

@@ -112,18 +112,19 @@ class CertificationPath < ActiveRecord::Base
   end
 
   def can_advance_status?(user)
-    case CertificationPathStatus.waiting_fors[certification_path_status.waiting_for]
-      when CertificationPathStatus.waiting_fors[:project_manager]
-        return user.project_manager?(project)
-      when CertificationPathStatus.waiting_fors[:certifier_manager]
-        return user.certifier_manager?(project)
-      when CertificationPathStatus.waiting_fors[:system_admin]
-        return user.system_admin?
-      when CertificationPathStatus.waiting_fors[:gord_top_manager]
-        return user.gord_top_manager?
-      else
-        return false
+    unless [CertificationPathStatus::CERTIFIED, CertificationPathStatus::NOT_CERTIFIED].include?(certification_path_status_id)
+      case CertificationPathStatus.waiting_fors[certification_path_status.waiting_for]
+        when CertificationPathStatus.waiting_fors[:project_manager]
+          return user.project_manager?(project)
+        when CertificationPathStatus.waiting_fors[:certifier_manager]
+          return user.certifier_manager?(project)
+        when CertificationPathStatus.waiting_fors[:system_admin]
+          return user.system_admin?
+        when CertificationPathStatus.waiting_fors[:gord_top_manager]
+          return user.gord_top_manager?
+      end
     end
+    return false
   end
 
   # return an error message if not all conditions are met to advance to the next status
@@ -245,6 +246,21 @@ class CertificationPath < ActiveRecord::Base
     end
   end
 
+  # This function is used for toggling writability of form elements in the certification path flow
+  def in_submission?
+    return [CertificationPathStatus::SUBMITTING,
+            CertificationPathStatus::SUBMITTING_AFTER_SCREENING,
+            CertificationPathStatus::SUBMITTING_PCR,
+            CertificationPathStatus::SUBMITTING_AFTER_APPEAL].include?(certification_path_status_id)
+  end
+
+  # This function is used for toggling writability of form elements in the certification path flow
+  def in_verification?
+    return [CertificationPathStatus::SCREENING,
+            CertificationPathStatus::VERIFYING,
+            CertificationPathStatus::VERIFYING_AFTER_APPEAL].include?(certification_path_status_id)
+  end
+
   private
 
   # Conditions are
@@ -265,14 +281,6 @@ class CertificationPath < ActiveRecord::Base
   #  1) all criteria are completed (= when all linked requirements and submitted scores are provided and no more documents waiting for approval)
   def can_leave_submitting_status?
     scheme_mix_criteria.each do |criterion|
-      # all criteria are completed
-      unless criterion.complete?
-        throw(:error, 'All criteria must have status \'complete\'.')
-      end
-      # all submitted scores provided
-      if criterion.submitted_score.blank?
-        throw(:error, 'There are submitted scores missing.')
-      end
       # all linked requirements are provided
       if criterion.has_required_requirements?
         throw(:error, 'There are still requirements in status \'required\'.')
@@ -280,6 +288,14 @@ class CertificationPath < ActiveRecord::Base
       # no more documents waiting for approval
       if criterion.has_documents_awaiting_approval?
         throw(:error, 'There are still documents awaiting approval.')
+      end
+      # all criteria are completed
+      unless criterion.complete?
+        throw(:error, 'All criteria must have status \'complete\'.')
+      end
+      # all submitted scores provided
+      if criterion.submitted_score.blank?
+        throw(:error, 'There are submitted scores missing.')
       end
     end
     return true

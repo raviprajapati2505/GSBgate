@@ -3,7 +3,8 @@
     <div class="ibox criterion-details">
         <div class="ibox-title">
             <%= audit_log_label(@scheme_mix_criterion) %>
-            <%= status_label(@scheme_mix_criterion.status, can?(:update, @scheme_mix_criterion) && !@scheme_mix_criterion.has_documents_awaiting_approval?, 'updateCriterionStatusModal') %>
+            <% can_update_status = current_user.system_admin? || (@certification_path.in_submission? && current_user.project_manager?(@project)) || (@certification_path.in_verification? && current_user.certifier_manager?(@project)) %>
+            <%= status_label(@scheme_mix_criterion.status, can_update_status, 'updateCriterionStatusModal') %>
             <h5>Criterion details</h5>
         </div>
         <div class="ibox-content">
@@ -18,49 +19,43 @@
                         </ul>
                     </div>
                 <% end %>
+                <% show_save_button = false %>
                 <table class="table table-bordered table-striped">
                     <thead>
                     <tr>
                         <th></th>
-                        <th>Final Score</th>
+                        <th>Score</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
-                        <th>
-                            Targeted Score
-                        </th>
+                        <th>Targeted score</th>
                         <td>
-                            <% if (can? :update, @scheme_mix_criterion) && (current_user.system_admin? || current_user.project_manager?(@project)) %>
+                            <% if current_user.system_admin? || (@certification_path.in_submission? && current_user.project_manager?(@project)) %>
                                 <%= f.select :targeted_score, @scheme_mix_criterion.scheme_criterion.scores, hide_label: true %>
+                                <% show_save_button = true %>
                             <% else %>
                                 <%= f.static_control :targeted_score, hide_label: true  %>
                             <% end %>
                         </td>
                     </tr>
                     <tr>
-                        <th>
-                            Submitted Score
-                        </th>
+                        <th>Submitted score</th>
                         <td>
-                            <% if (can? :update, @scheme_mix_criterion) &&
-                                    (current_user.system_admin? ||
-                                            current_user.project_manager?(@project) ||
-                                            @scheme_mix_criterion.contains_requirement_for?(current_user)
-                                    ) %>
+                            <% if current_user.system_admin? || (@certification_path.in_submission? && (current_user.project_manager?(@project) || @scheme_mix_criterion.contains_requirement_for?(current_user))) %>
                                 <%= f.select :submitted_score, @scheme_mix_criterion.scheme_criterion.scores, {include_blank: '-', hide_label: true} %>
+                                <% show_save_button = true %>
                             <% else %>
                                 <%= f.static_control :submitted_score, hide_label: true %>
                             <% end %>
                         </td>
                     </tr>
                     <tr>
-                        <th>
-                            Achieved Score
-                        </th>
+                        <th>Achieved score</th>
                         <td>
-                            <% if (can? :update, @scheme_mix_criterion) && (current_user.system_admin? || @scheme_mix_criterion.certifier == current_user || current_user.certifier_manager?(@project)) %>
+                            <% if current_user.system_admin? || (@certification_path.in_verification? && ((@scheme_mix_criterion.certifier == current_user) || current_user.certifier_manager?(@project))) %>
                                 <%= f.select :achieved_score, @scheme_mix_criterion.scheme_criterion.scores, {include_blank: '-', hide_label: true} %>
+                                <% show_save_button = true %>
                             <% else %>
                                 <%= f.static_control :achieved_score, hide_label: true %>
                             <% end %>
@@ -68,16 +63,12 @@
                     </tr>
                     </tbody>
                 </table>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="hr-line-dashed"></div>
-                        <% if can? :update, @scheme_mix_criterion %>
-                            <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
-                                <i title="Save" class="fa fa-lg fa-save" style="padding-right: 10px;"></i>Save
-                            <% end %>
-                        <% end %>
-                    </div>
-                </div>
+                <% if show_save_button %>
+                    <div class="hr-line-dashed"></div>
+                    <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
+                        <i title="Save" class="fa fa-lg fa-save" style="padding-right: 10px;"></i>Save
+                    <% end %>
+                <% end %>
             <% end %>
         </div>
     </div>
@@ -88,7 +79,7 @@
         </div>
         <div class="ibox-content">
             <%= bootstrap_form_tag url: assign_certifier_to_criteria_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), method: 'put' do |f| %>
-                <% if current_user.system_admin? || current_user.certifier_manager?(@project) %>
+                <% if current_user.system_admin? || (@certification_path.in_verification? && current_user.certifier_manager?(@project)) %>
                     <div class="row">
                         <div class="col-md-7">
                             <% users = User.authorized_for_project(@project).with_certifier_project_role %>
@@ -111,7 +102,7 @@
                         <div class="col-md-7">
                             <% if @scheme_mix_criterion.certifier.nil? %>
                                 <%= f.label :user_id, 'Responsibility' %>
-                                <p>This criterion is not assigned yet.</p>
+                                <p>This criterion is not yet assigned.</p>
                             <% else %>
                                 <%= f.select :user_id, options_for_select([@scheme_mix_criterion.certifier].map { |k| [k.email, k.id]}, @scheme_mix_criterion.certifier.id), {label: 'Responsibility'}, disabled: true %>
                             <% end %>
@@ -178,8 +169,7 @@
             </div>
         </div>
     <% end %>
-    <!-- if can? :create, Document %-->
-    <% if current_user.system_admin? || current_user.project_manager?(@project) || current_user.project_team_member?(@project) %>
+    <% if current_user.system_admin? || (@certification_path.in_submission? && (current_user.project_manager?(@project) || current_user.project_team_member?(@project))) %>
         <div class="ibox">
             <div class="ibox-title">
                 <h5>Upload documentation</h5>

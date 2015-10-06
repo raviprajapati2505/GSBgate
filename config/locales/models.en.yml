@@ -13,6 +13,3 @@ en:
         audit_log_user_comment: "Comment"
       requirement_datum:
         audit_log_user_comment: "Comment"
-    help:
-      scheme_mix_criterion:
-        status: "Mark as Complete to indicate if you have completed this criterion."

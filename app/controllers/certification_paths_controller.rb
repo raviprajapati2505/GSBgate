@@ -101,15 +101,19 @@ class CertificationPathsController < AuthenticatedController
   end
 
   def update_status
-    @certification_path.appealed = certification_path_params.has_key?(:appealed)
-    next_status = @certification_path.next_status
-    if next_status.is_a? Integer
-      @certification_path.certification_path_status_id = next_status
-      @certification_path.audit_log_user_comment = params[:certification_path][:audit_log_user_comment]
-      @certification_path.save!
-      redirect_to project_certification_path_path(@project, @certification_path), notice: 'The certificate status was successfully updated.'
+    if !@certification_path.can_advance_status?(current_user)
+      redirect_to project_certification_path_path(@project, @certification_path), alert: 'You are not allowed to advance the certificate status at this time.'
     else
-      redirect_to project_certification_path_path(@project, @certification_path), alert: next_status
+      @certification_path.appealed = certification_path_params.has_key?(:appealed)
+      next_status = @certification_path.next_status
+      if next_status.is_a? Integer
+        @certification_path.certification_path_status_id = next_status
+        @certification_path.audit_log_user_comment = params[:certification_path][:audit_log_user_comment]
+        @certification_path.save!
+        redirect_to project_certification_path_path(@project, @certification_path), notice: 'The certificate status was successfully updated.'
+      else
+        redirect_to project_certification_path_path(@project, @certification_path), alert: next_status
+      end
     end
   end
 
