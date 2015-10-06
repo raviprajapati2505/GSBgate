@@ -120,7 +120,7 @@ module ApplicationHelper
       end
     end
     if certification_path.present?
-      breadcrumbs[:names] << certification_path.name
+      breadcrumbs[:names] << certification_path.name + ' (' + certification_path.status + ')'
       unless return_url
         breadcrumbs[:paths] << project_certification_path_path(project, certification_path)
       else
