@@ -94,6 +94,9 @@ gem 'addressable'
 # https://github.com/galetahub/ckeditor
 gem 'ckeditor', '~> 4.1.3'
 
+# PDF Generator
+gem 'prawn'
+
 # Rails-Assets: access bower packages from our gem file
 #  e.g. gem 'rails-assets-BOWER_PACKAGE_NAME'
 #  do not forget to:
