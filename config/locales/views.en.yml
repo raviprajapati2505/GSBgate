@@ -89,8 +89,8 @@ en:
         modal_title: "Add comment"
   tasks:
     tasks:
-      description_1: "Check registration and payment, and assign certifier manager"
-      description_2: "Check registration and payment, and set status to 'awaiting submission'"
+      description_1: "Check registration and payment and assign certifier manager"
+      description_2: "Check registration and payment and advance certificate status"
       description_3: "Allocate requirements to project team members and set due dates"
       description_4: "Process requirement and set requirement status to 'provided' or 'not required'"
       description_5: "Approve submitted scores by setting criteria status to 'complete'"
@@ -103,11 +103,11 @@ en:
       description_12: "Set status to 'awaiting submission after pcr'"
 #      description_13: see 8
 #      description_14: see 9
-      description_15: "Process reviewing comments and advance status"
+      description_15: "Process reviewing comments and advance certificate status"
       description_16: "Verify criterion and set criterion status to 'approved' or 'resubmit'"
       description_17: "Advance status"
 #      description_18: see 10
-      description_19: "Check payment for appeal and set status to 'awaiting submission after appeal'"
+      description_19: "Check payment for appeal and advance certificate status"
 #      description_20: see 4
 #      description_21: see 6
 #      description_22: see 16
