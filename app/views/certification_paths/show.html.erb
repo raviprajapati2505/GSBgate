@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-5">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
                 <%= audit_log_label(@certification_path) %>
@@ -17,36 +17,44 @@
                 <% end %>
             </div>
         </div>
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <h5>Pre-certification review (PCR)</h5>
-            </div>
-            <div class="ibox-content">
-                <%= render 'pcr_form', project: @project, certification_path: @certification_path %>
-            </div>
-        </div>
-        <% if current_user.gord_manager? || current_user.gord_top_manager? || current_user.system_admin? %>
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>Manager approvals</h5>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Pre-certification review (PCR)</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <%= render 'pcr_form', project: @project, certification_path: @certification_path %>
+                    </div>
                 </div>
-                <div class="ibox-content">
-                    <%= render 'manager_approvals_form', project: @project, certification_path: @certification_path %>
-                </div>
-            </div>
-        <% end %>
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <h5>Document archive</h5>
-            </div>
-            <div class="ibox-content">
-                <%= link_to archive_project_certification_path_path, class: 'btn btn-white', title: 'Creates a ZIP archive containing all approved documents in this certificate.' do %>
-                    <i class="fa fa-lg fa-archive" style="padding-right: 10px;"></i>Download archive
+                <% if current_user.gord_manager? || current_user.gord_top_manager? || current_user.system_admin? %>
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>Manager approvals</h5>
+                        </div>
+                        <div class="ibox-content">
+                            <%= render 'manager_approvals_form', project: @project, certification_path: @certification_path %>
+                        </div>
+                    </div>
                 <% end %>
+            </div>
+            <div class="col-md-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Document archive</h5>
+                    </div>
+                    <div class="ibox-content">
+                        This certificate contains <%= @certification_path.scheme_mix_criteria_documents.approved.count %> approved document(s).
+                        <div class="hr-line-dashed"></div>
+                        <%= link_to archive_project_certification_path_path, class: 'btn btn-white', title: 'Creates a ZIP archive containing all approved documents in this certificate.' do %>
+                            <i class="fa fa-lg fa-archive" style="padding-right: 10px;"></i>Download archive
+                        <% end %>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="col-md-8">
+    <div class="col-md-7">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
                 <h5>Schemes</h5>
@@ -58,9 +66,9 @@
                     <table class="table table-bordered table-hover">
                         <thead>
                         <tr>
-                            <th class="col-md-4">Scheme name</th>
+                            <th class="col-md-6">Scheme name</th>
                             <th class="col-md-2">Weight</th>
-                            <th class="col-md-2">Progress</th>
+                            <th class="col-md-4">Progress</th>
                         </tr>
                         </thead>
                         <tbody>
