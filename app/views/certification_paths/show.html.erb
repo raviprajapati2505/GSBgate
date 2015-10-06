@@ -8,20 +8,22 @@
             </div>
             <div class="ibox-content">
                 <%= render 'timeline', certification_path: @certification_path %>
-                <div class="hr-line-dashed"></div>
-                <% if @certification_path.certification_path_status.id == CertificationPathStatus::ACKNOWLEDGING %>
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#advanceStatusModal"><i class="fa fa-lg fa-check" style="padding-right: 10px;"></i>Accept all scores</button>
-                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#appealModal"><i class="fa fa-lg fa-times" style="padding-right: 10px;"></i>Apply for appeal</button>
-                <% else %>
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#advanceStatusModal"><i class="fa fa-lg fa-forward" style="padding-right: 10px;"></i>Advance status</button>
+                <% if @certification_path.can_advance_status?(current_user) %>
+                    <div class="hr-line-dashed"></div>
+                    <% if @certification_path.certification_path_status.id == CertificationPathStatus::ACKNOWLEDGING %>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#advanceStatusModal"><i class="fa fa-lg fa-check" style="padding-right: 10px;"></i>Accept all scores</button>
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#appealModal"><i class="fa fa-lg fa-times" style="padding-right: 10px;"></i>Apply for appeal</button>
+                    <% else %>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#advanceStatusModal"><i class="fa fa-lg fa-forward" style="padding-right: 10px;"></i>Advance status</button>
+                    <% end %>
                 <% end %>
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-lg-6">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h5>Pre-certification review (PCR)</h5>
+                        <h5>Pre-certification review (PCR) <%= tooltip('If the project team wants a PCR, a project manager should apply here by checking the checkbox.') %></h5>
                     </div>
                     <div class="ibox-content">
                         <%= render 'pcr_form', project: @project, certification_path: @certification_path %>
@@ -38,10 +40,10 @@
                     </div>
                 <% end %>
             </div>
-            <div class="col-md-6">
+            <div class="col-lg-6">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h5>Document archive</h5>
+                        <h5>Document archive <%= tooltip('An archive of all approved documents regarding the certificate can be downloaded here.') %></h5>
                     </div>
                     <div class="ibox-content">
                         This certificate contains <%= @certification_path.scheme_mix_criteria_documents.approved.count %> approved document(s).

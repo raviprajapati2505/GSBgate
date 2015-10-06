@@ -1,6 +1,6 @@
 class CertificationPathStatus < ActiveRecord::Base
   has_many :certification_paths
-  enum context: { gord_team: 0, project_team: 1 }
+  enum waiting_for: { project_manager: 0, certifier_manager: 1, system_admin: 2, gord_top_manager: 3 }
 
   # Statuses
   ACTIVATING = 1

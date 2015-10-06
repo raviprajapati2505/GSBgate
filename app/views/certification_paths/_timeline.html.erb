@@ -2,7 +2,7 @@
     <% date_previous = nil %>
     <% certification_path.status_history.each_with_index do |milestone, index| %>
         <div class="vertical-timeline-block">
-            <div class="vertical-timeline-icon <% if milestone[:certification_path_status].project_team? %>navy-bg<% else %>yellow-bg<% end %>">
+            <div class="vertical-timeline-icon <% if milestone[:certification_path_status].project_manager? %>navy-bg<% else %>yellow-bg<% end %>">
                 <i class="fa fa-user"></i>
             </div>
             <div class="vertical-timeline-content">

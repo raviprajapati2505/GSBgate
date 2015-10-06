@@ -111,6 +111,21 @@ class CertificationPath < ActiveRecord::Base
     end
   end
 
+  def can_advance_status?(user)
+    case CertificationPathStatus.waiting_fors[certification_path_status.waiting_for]
+      when CertificationPathStatus.waiting_fors[:project_manager]
+        return user.project_manager?(project)
+      when CertificationPathStatus.waiting_fors[:certifier_manager]
+        return user.certifier_manager?(project)
+      when CertificationPathStatus.waiting_fors[:system_admin]
+        return user.system_admin?
+      when CertificationPathStatus.waiting_fors[:gord_top_manager]
+        return user.gord_top_manager?
+      else
+        return false
+    end
+  end
+
   # return an error message if not all conditions are met to advance to the next status
   # returns a CertificationPathStatus id otherwise
   def next_status
