@@ -29,6 +29,9 @@ module Gord
     # Autoload classes from STI folders
     config.autoload_paths << Rails.root.join('app', 'models', 'task')
 
+    # Sets the Content-Length header on responses with fixed-length bodies.
+    config.middleware.use Rack::ContentLength
+
     # Autoload classes from "lib" folder (https://gist.github.com/maxim/6503591)
     config.watchable_dirs['lib'] = [:rb]
 
