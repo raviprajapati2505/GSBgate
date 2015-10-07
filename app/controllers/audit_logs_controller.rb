@@ -4,7 +4,7 @@ class AuditLogsController < AuthenticatedController
 
   def index
     @page_title = 'Audit log'
-    @default_values = {text: '', user_id: '', project_id: '', date_from: '', date_to: '', only_user_comments: false}
+    @default_values = {text: '', user_id: '', project_id: '', date_from: '', time_from: '0:00', date_to: '', time_to: '0:00', only_user_comments: false}
     @audit_logs = AuditLog.for_user_projects(current_user)
 
     # Text filter
@@ -28,20 +28,22 @@ class AuditLogsController < AuthenticatedController
     # Date from filter
     if params[:date_from].present?
       begin
-        @audit_logs = @audit_logs.where('created_at >= ?', Date.strptime(params[:date_from], t('date.formats.short')))
+        @audit_logs = @audit_logs.where('created_at >= ?', DateTime.strptime(params[:date_from] + ' ' + params[:time_from], t('time.formats.filter')))
         @default_values[:date_from] = params[:date_from]
+        @default_values[:time_from] = params[:time_from]
       rescue ArgumentError
-        flash[:alert] = 'The date from field contained invalid data.'
+        flash[:alert] = 'The date/time from fields contained invalid data.'
       end
     end
 
     # Date to filter
     if params[:date_to].present?
       begin
-        @audit_logs = @audit_logs.where('created_at <= ?', Date.strptime(params[:date_to], t('date.formats.short')))
+        @audit_logs = @audit_logs.where('created_at <= ?', DateTime.strptime(params[:date_to] + ' ' + params[:time_to], t('time.formats.filter')))
         @default_values[:date_to] = params[:date_to]
+        @default_values[:time_to] = params[:time_to]
       rescue ArgumentError
-        flash[:alert] = 'The date to field contained invalid data.'
+        flash[:alert] = 'The date/time to fields contained invalid data.'
       end
     end
 

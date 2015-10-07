@@ -14,21 +14,39 @@
                     <% # todo: admins have no projects -> fix %>
                     <%= f.collection_select :project_id, (current_user.system_admin? or current_user.gord_manager? or current_user.gord_top_manager?) ? Project.all : current_user.projects, :id, :name, { include_blank: '- All projects -', selected: @default_values[:project_id] } %>
                     <div class="row">
-                        <div class="col-lg-6">
+                        <div class="col-lg-7">
                             <div class="form-group">
-                                <%= label_tag 'start_date', 'Date from', class: 'control-label' %>
+                                <%= label_tag 'date_from', 'Date from', class: 'control-label' %>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                     <%= text_field_tag 'date_from', @default_values[:date_from], {class: 'datepicker-past form-control', autocomplete: 'off'} %>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-5">
                             <div class="form-group">
-                                <%= label_tag 'to_date', 'Date to', class: 'control-label' %>
+                                <%= label_tag 'time_from', 'Time from', class: 'control-label' %>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                                    <%= text_field_tag 'time_from', @default_values[:time_from], {class: 'timepicker form-control', autocomplete: 'off'} %>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-7">
+                            <div class="form-group">
+                                <%= label_tag 'date_to', 'Date to', class: 'control-label' %>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                     <%= text_field_tag 'date_to', @default_values[:date_to], {class: 'datepicker-past form-control', autocomplete: 'off'} %>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-5">
+                            <div class="form-group">
+                                <%= label_tag 'time_to', 'Time to', class: 'control-label' %>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                                    <%= text_field_tag 'time_to', @default_values[:time_to], {class: 'timepicker form-control', autocomplete: 'off'} %>
                                 </div>
                             </div>
                         </div>

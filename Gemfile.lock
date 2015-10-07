@@ -141,6 +141,9 @@ GEM
     rails-assets-bootstrap-datepicker (1.4.0)
       rails-assets-bootstrap (>= 2.0.4, < 4.0)
       rails-assets-jquery (>= 1.7.1)
+    rails-assets-bootstrap-timepicker (0.5.1)
+      rails-assets-bootstrap (~> 3.0)
+      rails-assets-jquery (~> 2.0)
     rails-assets-d3 (3.5.5)
     rails-assets-d3-tip (0.6.7)
       rails-assets-d3 (= 3.5.5)
@@ -264,6 +267,7 @@ DEPENDENCIES
   rails-assets-animate.css!
   rails-assets-bootstrap!
   rails-assets-bootstrap-datepicker!
+  rails-assets-bootstrap-timepicker!
   rails-assets-d3!
   rails-assets-d3-tip!
   rails-assets-datatables!

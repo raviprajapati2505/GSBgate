@@ -107,6 +107,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-animate.css'
   gem 'rails-assets-bootstrap'
   gem 'rails-assets-bootstrap-datepicker'
+  gem 'rails-assets-bootstrap-timepicker'
   gem 'rails-assets-d3'
   gem 'rails-assets-d3-tip'
   gem 'rails-assets-datatables'

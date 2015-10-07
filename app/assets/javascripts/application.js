@@ -29,6 +29,7 @@
  *= require d3
  *= require d3-tip
  *= require bootstrap-datepicker
+ *= require bootstrap-timepicker
  *= require dropzone
  *= require toastr
  *= require js-routes
@@ -73,6 +74,12 @@ $(function () {
         endDate: '0d',
         todayBtn: true,
         todayHighlight: true
+    });
+
+    $('.timepicker').timepicker({
+        template: false,
+        showMeridian: false,
+        defaultTime: '0:00'
     });
 
     // Accordion tables
