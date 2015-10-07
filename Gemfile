@@ -119,7 +119,6 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-icheck'
   gem 'rails-assets-jquery'
   gem 'rails-assets-jquery-ujs'
-  gem 'rails-assets-jquery.steps'
   gem 'rails-assets-metisMenu'
   gem 'rails-assets-pace'
   gem 'rails-assets-slimScroll'

@@ -27,7 +27,8 @@ en:
   time:
     formats:
       default: '%e %b %Y %H:%M %Z'
-      filter: '%d/%m/%Y %k:%M'
+      filter: '%d/%m/%Y %k:%M:%S'
+      short: '%k:%M'
       filename: '%Y%m%dT%H%M%S'
   errors:
       messages:

@@ -28,7 +28,7 @@ class AuditLogsController < AuthenticatedController
     # Date from filter
     if params[:date_from].present?
       begin
-        @audit_logs = @audit_logs.where('created_at >= ?', DateTime.strptime(params[:date_from] + ' ' + params[:time_from], t('time.formats.filter')))
+        @audit_logs = @audit_logs.where('created_at >= ?', DateTime.strptime(params[:date_from] + ' ' + params[:time_from] + ':00', t('time.formats.filter')))
         @default_values[:date_from] = params[:date_from]
         @default_values[:time_from] = params[:time_from]
       rescue ArgumentError
@@ -39,7 +39,7 @@ class AuditLogsController < AuthenticatedController
     # Date to filter
     if params[:date_to].present?
       begin
-        @audit_logs = @audit_logs.where('created_at <= ?', DateTime.strptime(params[:date_to] + ' ' + params[:time_to], t('time.formats.filter')))
+        @audit_logs = @audit_logs.where('created_at <= ?', DateTime.strptime(params[:date_to] + ' ' + params[:time_to] + ':59', t('time.formats.filter')))
         @default_values[:date_to] = params[:date_to]
         @default_values[:time_to] = params[:time_to]
       rescue ArgumentError

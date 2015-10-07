@@ -12,7 +12,6 @@
  *
  *= require jquery
  *= require jquery-ujs
- *= require jquery.steps
  *= require bootstrap
  *= require pace
  *= require metisMenu

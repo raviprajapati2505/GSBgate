@@ -648,20 +648,26 @@
       opacity: 1;
     }
 
-    .vertical-timeline-content p {
-      font-size: 12px;
-      margin: 0.5em 0 0 0;
-    }
+    .vertical-timeline-content {
+      p {
+        font-size: 12px;
+        margin: 0.5em 0 0 0;
+      }
 
-    .vertical-timeline-content h2 {
-      font-size: 13px;
-      font-weight: bold;
-    }
+      h2 {
+        font-size: 13px;
+        font-weight: bold;
+      }
 
-    .vertical-timeline-content .text-muted {
-      font-size: 10px;
-      display: block;
-      margin-top: -8px;
+      .status-audit-log {
+        float: right;
+      }
+
+      .text-muted {
+        font-size: 10px;
+        display: block;
+        margin-top: -8px;
+      }
     }
   }
 }
