@@ -2,6 +2,7 @@ class AuditLog < ActiveRecord::Base
   belongs_to :auditable, polymorphic: true
   belongs_to :user
   belongs_to :project
+  belongs_to :certification_path
 
   default_scope { order(id: :desc) }
 

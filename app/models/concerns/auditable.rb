@@ -41,6 +41,8 @@ module Auditable
 
     system_messages = []
     system_messages_params = []
+    project = nil
+    certification_path = nil
     old_status = nil
     new_status = nil
     auditable = self
@@ -72,6 +74,7 @@ module Auditable
         end
       when CertificationPath.name.demodulize
         project = self.project
+        certification_path = self
         if self.certification_path_status_id_changed?
           old_status = self.changes[:certification_path_status_id][0]
           new_status = self.changes[:certification_path_status_id][1]
@@ -107,6 +110,7 @@ module Auditable
         end
       when SchemeMixCriterion.name.demodulize
         project = self.scheme_mix.certification_path.project
+        certification_path = self.scheme_mix.certification_path
         if (action == AUDIT_LOG_UPDATE)
           if self.status_changed?
             system_messages << 'The status of criterion %s was changed from %s to %s.'
@@ -126,6 +130,7 @@ module Auditable
         end
       when SchemeMixCriteriaDocument.name.demodulize
         project = self.scheme_mix_criterion.scheme_mix.certification_path.project
+        certification_path = self.scheme_mix_criterion.scheme_mix.certification_path
         if (action == AUDIT_LOG_CREATE)
           system_messages << 'A new document %s was added to criterion %s.'
           system_messages_params << [self.name, self.scheme_mix_criterion.name]
@@ -138,6 +143,7 @@ module Auditable
       when RequirementDatum.name.demodulize
         if (action != AUDIT_LOG_CREATE)
           project = self.scheme_mix_criteria.take.scheme_mix.certification_path.project
+          certification_path = self.scheme_mix_criteria.take.scheme_mix.certification_path
         end
         if (action == AUDIT_LOG_UPDATE)
           if self.status_changed?
@@ -176,6 +182,7 @@ module Auditable
             new_status: new_status,
             user: User.current,
             auditable: auditable,
+            certification_path: certification_path,
             project: project)
       end
     elsif user_comment.present?
@@ -186,6 +193,7 @@ module Auditable
           new_status: new_status,
           user: User.current,
           auditable: auditable,
+          certification_path: certification_path,
           project: project)
     end
   end
