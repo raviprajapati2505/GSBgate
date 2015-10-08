@@ -163,6 +163,18 @@ module Auditable
             end
           end
         end
+      when SchemeCriterionText.name.demodulize
+        auditable = self.scheme_criterion
+        if (action == AUDIT_LOG_CREATE)
+          system_messages << 'Criterion text %s in %s was created.'
+          system_messages_params << [self.name, self.scheme_criterion.full_name]
+        elsif (action == AUDIT_LOG_UPDATE)
+          system_messages << 'Criterion text %s in %s was edited.'
+          system_messages_params << [self.name, self.scheme_criterion.full_name]
+        elsif (action == AUDIT_LOG_DESTROY)
+          system_messages << 'Criterion text %s in %s was removed.'
+          system_messages_params << [self.name, self.scheme_criterion.full_name]
+        end
     end
 
     # Format the user comment

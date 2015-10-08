@@ -1,4 +1,6 @@
 class SchemeCriterion < ActiveRecord::Base
+  include Auditable
+
   belongs_to :scheme_category
   has_many :scheme_criterion_texts
   has_many :scheme_mix_criteria
