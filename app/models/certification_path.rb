@@ -25,6 +25,7 @@ class CertificationPath < ActiveRecord::Base
   validate :certificate_duration
 
   after_initialize :init
+  before_update :set_certified_at
 
   scope :with_status, ->(status) {
     where(certification_path_status_id: status)
@@ -81,6 +82,18 @@ class CertificationPath < ActiveRecord::Base
       total += sm.total_weighted_achieved_score_relative_to_certification_path
     end
     total.nil? ? -1 : total
+  end
+
+  def targeted_star_rating
+    CertificationPath.star_rating_for_score(total_weighted_targeted_score_relative_to_certification_path)
+  end
+
+  def submitted_star_rating
+    CertificationPath.star_rating_for_score(total_weighted_sumitted_score_relative_to_certification_path)
+  end
+
+  def achieved_star_rating
+    CertificationPath.star_rating_for_score(total_weighted_achieved_score_relative_to_certification_path)
   end
 
   def total_weight
@@ -261,7 +274,18 @@ class CertificationPath < ActiveRecord::Base
             CertificationPathStatus::VERIFYING_AFTER_APPEAL].include?(certification_path_status_id)
   end
 
+  def is_completed?
+    return [CertificationPathStatus::CERTIFIED,
+            CertificationPathStatus::NOT_CERTIFIED].include?(certification_path_status_id)
+  end
+
   private
+
+  def set_certified_at
+    if is_completed?
+      self.certified_at = DateTime.now
+    end
+  end
 
   # Conditions are
   #  1) certification path is not expired
