@@ -1,3 +1,7 @@
+User.create!(email: 'bruce@wayne.com', password: 'password', password_confirmation: 'password', role: :user)
+User.create!(email: 'robin@wayne.com', password: 'password', password_confirmation: 'password', role: :user)
+User.create!(email: 'alfred@wayne.com', password: 'password', password_confirmation: 'password', role: :user)
+
 # Add admin user
 User.create!(email: 'sas@vito.be', password: 'password', password_confirmation: 'password', role: :system_admin)
 User.create!(email: 'dr.youssef@example.com', password: 'password', password_confirmation: 'password', role: :gord_top_manager)
