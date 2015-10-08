@@ -127,6 +127,10 @@ class CertificationPathsController < AuthenticatedController
     end
   end
 
+  def list
+    render json: @project.certification_paths_optionlist
+  end
+
   private
   def set_project
     @project = Project.find(params[:project_id])

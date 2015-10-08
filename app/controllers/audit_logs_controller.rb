@@ -4,8 +4,9 @@ class AuditLogsController < AuthenticatedController
 
   def index
     @page_title = 'Audit log'
-    @default_values = {text: '', user_id: '', project_id: '', date_from: '', time_from: '0:00', date_to: '', time_to: '0:00', only_user_comments: false}
+    @default_values = {text: '', user_id: '', project_id: '', certification_path_id: '', date_from: '', time_from: '0:00', date_to: '', time_to: '0:00', only_user_comments: false}
     @audit_logs = AuditLog.for_user_projects(current_user)
+    @certification_paths_optionlist = []
 
     # Text filter
     if params[:text].present?
@@ -23,6 +24,13 @@ class AuditLogsController < AuthenticatedController
     if params[:project_id].present? and (params[:project_id].to_i > 0)
       @audit_logs = @audit_logs.where(project_id: params[:project_id].to_i)
       @default_values[:project_id] = params[:project_id]
+      @certification_paths_optionlist = Project.find(params[:project_id].to_i).certification_paths_optionlist
+    end
+
+    # Certification path filter
+    if params[:certification_path_id].present? and (params[:certification_path_id].to_i > 0)
+      @audit_logs = @audit_logs.where(certification_path_id: params[:certification_path_id].to_i)
+      @default_values[:certification_path_id] = params[:certification_path_id]
     end
 
     # Date from filter

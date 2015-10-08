@@ -6,13 +6,15 @@
             </div>
             <div class="ibox-content">
                 <%= bootstrap_form_tag(url: audit_logs_path, method: 'get') do |f| %>
+                    <%= f.collection_select :project_id, (current_user.system_admin? or current_user.gord_manager? or current_user.gord_top_manager?) ? Project.all : current_user.projects, :id, :name, { include_blank: '- All projects -', selected: @default_values[:project_id] } %>
+                    <div id="select-certificate"<% if @default_values[:project_id].blank? %> style="display:none;<% end %>">
+                        <%= f.select :certification_path_id, @certification_paths_optionlist, label: 'Certificate', include_blank: '- All certificates -', selected: @default_values[:certification_path_id] %>
+                    </div>
                     <%= f.text_field 'text', value: @default_values[:text], label: 'Message contains' %>
                     <%= f.form_group do %>
                     <%= f.label :user_id %><br/>
                     <%= f.hidden_field :user_id, { class: 'select2-ajax', data: {current_user_id: current_user.id }, value: @default_values[:user_id] } %>
                     <% end %>
-                    <% # todo: admins have no projects -> fix %>
-                    <%= f.collection_select :project_id, (current_user.system_admin? or current_user.gord_manager? or current_user.gord_top_manager?) ? Project.all : current_user.projects, :id, :name, { include_blank: '- All projects -', selected: @default_values[:project_id] } %>
                     <div class="row">
                         <div class="col-lg-7">
                             <div class="form-group">
@@ -87,3 +89,4 @@
     </div>
 </div>
 <%= javascript_include_tag 'select_user' %>
+<%= javascript_include_tag 'audit_log_filter' %>

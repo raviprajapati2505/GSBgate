@@ -2,6 +2,9 @@ Rails.application.routes.draw do
   resources :projects, except: [ :destroy ] do
     resources :projects_users, only: [ :create, :edit, :show, :update, :destroy ], path: 'users', as: 'users'
     resources :certification_paths, except: [ :index, :edit, :destroy, :update], path: 'certificates' do
+      collection do
+        get 'list'
+      end
       resources :documents, only: [ :create, :show ], path: 'document'
       resources :scheme_mixes, only: [ :show ], path: 'schemes' do
         resources :scheme_mix_criteria, only: [ :show, :update ], path: 'criteria', as: 'scheme_mix_criterion' do
