@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151007123557) do
+ActiveRecord::Schema.define(version: 20151008092256) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -82,6 +82,7 @@ ActiveRecord::Schema.define(version: 20151007123557) do
     t.integer  "development_type"
     t.integer  "certification_path_status_id"
     t.boolean  "appealed",                     default: false
+    t.datetime "certified_at"
   end
 
   add_index "certification_paths", ["certification_path_status_id"], name: "index_certification_paths_on_certification_path_status_id", using: :btree
