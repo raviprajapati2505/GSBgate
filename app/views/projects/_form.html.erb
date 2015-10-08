@@ -27,7 +27,7 @@
                             <%= f.text_field :project_site_area, append: 'm²', label: (Project.human_attribute_name('project_site_area') + tooltip(t '.tooltip_project_site_area')).html_safe %>
                             <div class="form-group">
                                 <label class="control-label" for="project_location_plan_file"><%= Project.human_attribute_name('location_plan_file') %></label>
-                                <% if @project.location_plan_file.present? %>
+                                <% if @project.id.present? && @project.location_plan_file.present? %>
                                     <div class="input-group">
                                         <span class="input-group-btn"><%= link_to(raw('<i title="Download ' + Project.human_attribute_name('location_plan_file') + '" class="fa fa-lg fa-download"></i>'), download_project_location_plan_path(@project.id), class: 'btn btn-primary') %></span>
                                         <input type="text" class="form-control" disabled value="<%= @project.location_plan_file.file.filename %>">
@@ -37,7 +37,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="control-label" for="project_site_plan_file"><%= Project.human_attribute_name('site_plan_file') %></label>
-                                <% if @project.site_plan_file.present? %>
+                                <% if @project.id.present? && @project.site_plan_file.present? %>
                                     <div class="input-group">
                                         <span class="input-group-btn"><%= link_to(raw('<i title="Download ' + Project.human_attribute_name('site_plan_file') + '" class="fa fa-lg fa-download"></i>'), download_project_site_plan_path(@project.id), class: 'btn btn-primary') %></span>
                                         <input type="text" class="form-control" disabled value="<%= @project.site_plan_file.file.filename %>">
@@ -47,7 +47,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="control-label" for="project_design_brief_file"><%= Project.human_attribute_name('design_brief_file') %></label>
-                                <% if @project.design_brief_file.present? %>
+                                <% if @project.id.present? && @project.design_brief_file.present? %>
                                     <div class="input-group">
                                         <span class="input-group-btn"><%= link_to(raw('<i title="Download ' + Project.human_attribute_name('design_brief_file') + '" class="fa fa-lg fa-download"></i>'), download_project_design_brief_path(@project.id), class: 'btn btn-primary') %></span>
                                         <input type="text" class="form-control" disabled value="<%= @project.design_brief_file.file.filename %>">
@@ -57,7 +57,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="control-label" for="project_project_narrative_file"><%= Project.human_attribute_name('project_narrative_file') %></label>
-                                <% if @project.project_narrative_file.present? %>
+                                <% if @project.id.present? && @project.project_narrative_file.present? %>
                                     <div class="input-group">
                                         <span class="input-group-btn"><%= link_to(raw('<i title="Download ' + Project.human_attribute_name('project_narrative_file') + '" class="fa fa-lg fa-download"></i>'), download_project_narrative_path(@project.id), class: 'btn btn-primary') %></span>
                                         <input type="text" class="form-control" disabled value="<%= @project.project_narrative_file.file.filename %>">
