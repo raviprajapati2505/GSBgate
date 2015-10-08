@@ -26,40 +26,40 @@
                             <%= f.text_field :carpark_area, append: 'm²', label: (Project.human_attribute_name('carpark_area') + tooltip(t '.tooltip_carpark_area')).html_safe %>
                             <%= f.text_field :project_site_area, append: 'm²', label: (Project.human_attribute_name('project_site_area') + tooltip(t '.tooltip_project_site_area')).html_safe %>
                             <div class="form-group">
-                                <label class="control-label" for="project_location_plan_file">Location Plan</label>
+                                <label class="control-label" for="project_location_plan_file"><%= Project.human_attribute_name('location_plan_file') %></label>
                                 <% if @project.location_plan_file.present? %>
                                     <div class="input-group">
-                                        <span class="input-group-btn"><%= link_to(raw('<i title="Download location plan" class="fa fa-lg fa-download"></i>'), download_project_location_plan_path(@project.id), class: 'btn btn-primary') %></span>
+                                        <span class="input-group-btn"><%= link_to(raw('<i title="Download ' + Project.human_attribute_name('location_plan_file') + '" class="fa fa-lg fa-download"></i>'), download_project_location_plan_path(@project.id), class: 'btn btn-primary') %></span>
                                         <input type="text" class="form-control" disabled value="<%= @project.location_plan_file.file.filename %>">
                                     </div>
                                 <% end %>
                                 <%= f.file_field :location_plan_file, hide_label: true %>
                             </div>
                             <div class="form-group">
-                                <label class="control-label" for="project_site_plan_file">Site Plan</label>
+                                <label class="control-label" for="project_site_plan_file"><%= Project.human_attribute_name('site_plan_file') %></label>
                                 <% if @project.site_plan_file.present? %>
                                     <div class="input-group">
-                                        <span class="input-group-btn"><%= link_to(raw('<i title="Download site plan" class="fa fa-lg fa-download"></i>'), download_project_site_plan_path(@project.id), class: 'btn btn-primary') %></span>
+                                        <span class="input-group-btn"><%= link_to(raw('<i title="Download ' + Project.human_attribute_name('site_plan_file') + '" class="fa fa-lg fa-download"></i>'), download_project_site_plan_path(@project.id), class: 'btn btn-primary') %></span>
                                         <input type="text" class="form-control" disabled value="<%= @project.site_plan_file.file.filename %>">
                                     </div>
                                 <% end %>
                                 <%= f.file_field :site_plan_file, hide_label: true %>
                             </div>
                             <div class="form-group">
-                                <label class="control-label" for="project_design_brief_file">Design Brief</label>
+                                <label class="control-label" for="project_design_brief_file"><%= Project.human_attribute_name('design_brief_file') %></label>
                                 <% if @project.design_brief_file.present? %>
                                     <div class="input-group">
-                                        <span class="input-group-btn"><%= link_to(raw('<i title="Download design brief" class="fa fa-lg fa-download"></i>'), download_project_design_brief_path(@project.id), class: 'btn btn-primary') %></span>
+                                        <span class="input-group-btn"><%= link_to(raw('<i title="Download ' + Project.human_attribute_name('design_brief_file') + '" class="fa fa-lg fa-download"></i>'), download_project_design_brief_path(@project.id), class: 'btn btn-primary') %></span>
                                         <input type="text" class="form-control" disabled value="<%= @project.design_brief_file.file.filename %>">
                                     </div>
                                 <% end %>
                                 <%= f.file_field :design_brief_file, hide_label: true %>
                             </div>
                             <div class="form-group">
-                                <label class="control-label" for="project_project_narrative_file">Project Narrative</label>
+                                <label class="control-label" for="project_project_narrative_file"><%= Project.human_attribute_name('project_narrative_file') %></label>
                                 <% if @project.project_narrative_file.present? %>
                                     <div class="input-group">
-                                        <span class="input-group-btn"><%= link_to(raw('<i title="Download project narrative" class="fa fa-lg fa-download"></i>'), download_project_narrative_path(@project.id), class: 'btn btn-primary') %></span>
+                                        <span class="input-group-btn"><%= link_to(raw('<i title="Download ' + Project.human_attribute_name('project_narrative_file') + '" class="fa fa-lg fa-download"></i>'), download_project_narrative_path(@project.id), class: 'btn btn-primary') %></span>
                                         <input type="text" class="form-control" disabled value="<%= @project.project_narrative_file.file.filename %>">
                                     </div>
                                 <% end %>

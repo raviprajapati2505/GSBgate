@@ -7,6 +7,10 @@ en:
         code: "Project ID"
         name: "Project name"
         carpark_area: "Car park area"
+        location_plan_file: "Location plan"
+        site_plan_file: "Site plan"
+        design_brief_file: "Design brief"
+        project_narrative_file: "Project narrative"
       scheme_mix_criterion:
         audit_log_user_comment: "Comment"
       scheme_mix_criteria_document:
