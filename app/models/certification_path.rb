@@ -279,6 +279,10 @@ class CertificationPath < ActiveRecord::Base
             CertificationPathStatus::NOT_CERTIFIED].include?(certification_path_status_id)
   end
 
+  def is_certified?
+    return [CertificationPathStatus::CERTIFIED].include?(certification_path_status_id)
+  end
+
   private
 
   def set_certified_at
