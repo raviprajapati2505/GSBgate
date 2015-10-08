@@ -14,7 +14,7 @@
                         <%= milestone[:certification_path_status].past_name %>
                         <% audit_log_params = { project_id: @project.id, certification_path_id: @certification_path.id, date_from: milestone[:date].strftime(t('date.formats.short')), time_from: milestone[:date].strftime(t('time.formats.short')), date_to: date_previous.strftime(t('date.formats.short')), time_to: date_previous.strftime(t('time.formats.short')) } %>
                     <% end %>
-                    <%= link_to(audit_logs_path(audit_log_params), class: 'status-audit-log', title: "Click to view the audit logs that were created during the #{milestone[:certification_path_status].name} phase.") do %><span class="label label-lg"><i class="fa fa-history"></i></span><% end %>
+                    <%= link_to(audit_logs_path(audit_log_params), class: 'status-audit-log', title: "Click to view the audit logs that were created during the '#{milestone[:certification_path_status].name}' phase.") do %><span class="label label-lg"><i class="fa fa-history"></i></span><% end %>
                 </h2>
                 <% unless date_previous.nil? %>
                     <small class="text-muted">

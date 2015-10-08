@@ -184,7 +184,7 @@
             <h5>Documentation</h5>
         </div>
         <div class="ibox-content">
-            <%= render 'scheme_mix_criteria_documents/index', scheme_mix_criteria_documents: @scheme_mix_criterion.scheme_mix_criteria_documents %>
+            <%= render 'scheme_mix_criteria_documents/index', scheme_mix_criteria_documents: (current_user.certifier_manager?(@project) || current_user.certifier?(@project)) ? @scheme_mix_criterion.scheme_mix_criteria_documents.approved : @scheme_mix_criterion.scheme_mix_criteria_documents %>
         </div>
     </div>
 </div>

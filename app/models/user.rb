@@ -85,6 +85,15 @@ class User < ActiveRecord::Base
     return false
   end
 
+  def certifier?(project)
+    projects_users.each do |projects_user|
+      if projects_user.project == project && projects_user.certifier?
+        return true
+      end
+    end
+    return false
+  end
+
   before_validation :assign_default_role, on: :create
 
   validates :role, inclusion: User.roles.keys
