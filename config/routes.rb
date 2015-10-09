@@ -8,6 +8,11 @@ Rails.application.routes.draw do
       collection do
         get 'list'
       end
+      member do
+        get 'download_certificate_report' => 'reports#download_certificate', as: 'download_certificate_report'
+        get 'download_coverletter_report' => 'reports#download_certificate_coverletter', as: 'download_coverletter_report'
+        get 'download_scores_report' => 'reports#download_certificate_scores', as: 'download_scores_report'
+      end
       resources :documents, only: [ :create, :show ], path: 'document'
       resources :scheme_mixes, only: [ :show ], path: 'schemes' do
         resources :scheme_mix_criteria, only: [ :show, :update ], path: 'criteria', as: 'scheme_mix_criterion' do
