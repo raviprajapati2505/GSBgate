@@ -21,6 +21,9 @@ class ProjectsController < AuthenticatedController
     @projects_user = ProjectsUser.new(project: @project)
   end
 
+  def show_tools
+  end
+
   # GET /projects/new
   def new
     @page_title = 'New project'
