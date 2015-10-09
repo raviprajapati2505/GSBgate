@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
   resources :projects, except: [ :destroy ] do
+    member do
+      get 'tools' => 'projects#show_tools'
+    end
     resources :projects_users, only: [ :create, :edit, :show, :update, :destroy ], path: 'users', as: 'users'
     resources :certification_paths, except: [ :index, :edit, :destroy, :update], path: 'certificates' do
       collection do
