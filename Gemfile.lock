@@ -258,6 +258,7 @@ DEPENDENCIES
   ffi-geos
   jbuilder (~> 2.0)
   js-routes (~> 1.0.1)
+  pdf-core
   pg
   prawn
   prawn-table

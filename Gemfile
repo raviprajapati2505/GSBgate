@@ -95,6 +95,7 @@ gem 'addressable'
 gem 'ckeditor', '~> 4.1.3'
 
 # PDF Generator
+gem 'pdf-core'
 gem 'prawn'
 gem 'prawn-table'
 
