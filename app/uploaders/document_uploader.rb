@@ -13,7 +13,7 @@ class DocumentUploader < CarrierWave::Uploader::Base
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
   def store_dir
-    "../private/documents/#{model.store_dir}/#{model.id}"
+    "../private/#{model.store_dir}/#{model.id}"
   end
 
   def cache_dir
