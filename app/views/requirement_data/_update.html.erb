@@ -44,7 +44,7 @@
                         </div>
                     <% end %>
                     <div class="col-md-12">
-                        <%= f.select :status, options_for_select(RequirementDatum.statuses.keys.map { |k| [k.humanize, k]}, requirement_datum.status), {}, disabled: !(can?(:update, requirement_datum) && certification_path.in_submission?) %>
+                        <%= f.select :status, options_for_select(RequirementDatum.statuses.keys.map { |k| [k.humanize, k]}, requirement_datum.status), {}, disabled: !(current_user.system_admin? || (can?(:update, requirement_datum) && certification_path.in_submission?)) %>
                     </div>
                 </div>
                 <%-# START COMMENT -%>
@@ -62,7 +62,7 @@
                     <% end %>
                 <% end %>
                 <%-# END COMMENT -%>
-                <% if certification_path.in_submission? && can?(:update, requirement_datum) %>
+                <% if current_user.system_admin? || (certification_path.in_submission? && can?(:update, requirement_datum)) %>
                     <div class="hr-line-dashed"></div>
                     <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
                         <i title="Save" class="fa fa-lg fa-save" style="padding-right: 10px;"></i>Save
