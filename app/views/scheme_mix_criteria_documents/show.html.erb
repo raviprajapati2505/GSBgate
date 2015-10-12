@@ -3,7 +3,7 @@
         <div class="ibox float-e-margins document-details">
             <div class="ibox-title">
                 <%= audit_log_label(@scheme_mix_criteria_document) %>
-                <%= status_label(@scheme_mix_criteria_document.status, @certification_path.in_submission? && can?(:update, @scheme_mix_criteria_document), 'updateSchemeMixCriteriaDocumentStatusModal') %>
+                <%= status_label(@scheme_mix_criteria_document.status, current_user.system_admin? || (@certification_path.in_submission? && can?(:update, @scheme_mix_criteria_document)), 'updateSchemeMixCriteriaDocumentStatusModal') %>
                 <h5>Document details</h5>
             </div>
             <div class="ibox-content">
@@ -11,24 +11,24 @@
                     <tbody>
                     <tr>
                         <th>File name</th>
-                        <td><%= @document.name %></td>
+                        <td><%= @scheme_mix_criteria_document.document.name %></td>
                     </tr>
                     <tr>
                         <th>File size</th>
-                        <td><%= number_to_human_size(@document.size) %></td>
+                        <td><%= number_to_human_size(@scheme_mix_criteria_document.document.size) %></td>
                     </tr>
                     <tr>
                         <th>Uploaded by</th>
-                        <td> <%= @document.user.email %></td>
+                        <td> <%= @scheme_mix_criteria_document.document.user.email %></td>
                     </tr>
                     <tr>
                         <th>Upload date</th>
-                        <td><%= localize(@document.created_at) %></td>
+                        <td><%= localize(@scheme_mix_criteria_document.document.created_at) %></td>
                     </tr>
                     <tr>
                         <th>Criteria</th>
                         <td>
-                            <% @document.scheme_mix_criteria.each do |scheme_mix_criterion| %>
+                            <% @scheme_mix_criteria_document.document.scheme_mix_criteria.each do |scheme_mix_criterion| %>
                                 <%= scheme_mix_criterion.full_name %>
                                 <br />
                             <% end %>
@@ -37,7 +37,7 @@
                                 <hr />
                                 <p>If this document also supports requirements in other criteria, add a criterion below:</p>
                                 <%= bootstrap_form_for([@project, @certification_path, @scheme_mix, @scheme_mix_criterion, SchemeMixCriteriaDocument.new], layout: :inline) do |f| %>
-                                    <%= f.hidden_field :document_id, value: @document.id %>
+                                    <%= f.hidden_field :document_id, value: @scheme_mix_criteria_document.document.id %>
                                     <%= f.select :scheme_mix_criterion_id, @scheme_mix.scheme_mix_criteria.collect {|smc| [ smc.full_name, smc.id ] }, hide_label: true %>
                                     <%= button_tag(class: 'btn btn-primary no-margins', title: 'Add the criterion') do %>
                                         <i class="fa fa-plus-circle"></i>
@@ -49,8 +49,8 @@
                     </tbody>
                 </table>
                 <div class="hr-line-dashed"></div>
-                <% if can? :show, @document %>
-                    <%= link_to(raw('<i title="Download document" class="fa fa-lg fa-download" style="padding-right: 10px;"></i>Download document'), project_certification_path_document_path(@project, @certification_path, @document), class: 'btn btn-primary') %>
+                <% if can? :show, @scheme_mix_criteria_document.document %>
+                    <%= link_to(raw('<i title="Download document" class="fa fa-lg fa-download" style="padding-right: 10px;"></i>Download document'), project_certification_path_document_path(@project, @certification_path, @scheme_mix_criteria_document.document), class: 'btn btn-primary') %>
                 <% end %>
             </div>
         </div>
