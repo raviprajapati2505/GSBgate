@@ -2,16 +2,17 @@ class DocumentArchiverService
   include Singleton
   require 'zip'
 
-  ARCHIVES_PATH = 'private/archives/'
   CLEAN_OLDER_THAN = 1.day
 
   # Creates a file archive of all approved documents in a certification path
   def create_archive(certification_path)
-    # Clean up old archives
-    cleanup_dir(ARCHIVES_PATH, CLEAN_OLDER_THAN)
+    archive_path = Rails.root.join('private', 'projects', certification_path.project_id.to_s, 'certification_paths', certification_path.id.to_s, 'archives', sanitize_filename(certification_path.project.name + ' - ' + certification_path.name) + ' - ' + Time.new.strftime(I18n.t('time.formats.filename'))  + '.zip')
 
-    # Set the path where the archive will be saved
-    archive_path = ARCHIVES_PATH + sanitize_filename(certification_path.project.name + ' - ' + certification_path.name) + ' - ' + Time.new.strftime(I18n.t('time.formats.filename'))  + '.zip'
+    # Create the archive directory
+    FileUtils.mkdir_p(File.dirname(archive_path))
+
+    # Clean up old archives
+    cleanup_dir(File.dirname(archive_path), CLEAN_OLDER_THAN)
 
     # Create an empty archive
     Zip::File.open(archive_path, Zip::File::CREATE) do |archive|
@@ -33,7 +34,7 @@ class DocumentArchiverService
 
   private
   def cleanup_dir(path, older_than)
-    Dir.glob("#{path}*").each do |file|
+    Dir.glob("#{path}/*").each do |file|
       File.delete(file) if (File.mtime(file) < Time.now - older_than)
     end
   end
