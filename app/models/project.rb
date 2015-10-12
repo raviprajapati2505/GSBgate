@@ -27,10 +27,6 @@ class Project < ActiveRecord::Base
   validates :site_plan_file, file_size: {maximum: MAXIMUM_DOCUMENT_FILE_SIZE.megabytes.to_i }
   validates :design_brief_file, file_size: {maximum: MAXIMUM_DOCUMENT_FILE_SIZE.megabytes.to_i }
   validates :project_narrative_file, file_size: {maximum: MAXIMUM_DOCUMENT_FILE_SIZE.megabytes.to_i }
-  validates :location_plan_file, presence: true, on: :create
-  validates :site_plan_file, presence: true, on: :create
-  validates :design_brief_file, presence: true, on: :create
-  validates :project_narrative_file, presence: true, on: :create
 
   after_initialize :init
 

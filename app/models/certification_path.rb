@@ -306,8 +306,15 @@ class CertificationPath < ActiveRecord::Base
   end
 
   # Conditions are
-  #  1) all criteria are completed (= when all linked requirements and submitted scores are provided and no more documents waiting for approval)
+  #  1) all general submittals are provided
+  #  2) all criteria are completed (= when all linked requirements and submitted scores are provided and no more documents waiting for approval)
   def can_leave_submitting_status?
+    ['location_plan_file', 'site_plan_file', 'design_brief_file', 'project_narrative_file'].each do |general_submittal|
+      if project.send(general_submittal).blank?
+        throw(:error, 'Please add a \'' + Project.human_attribute_name(general_submittal) + '\' to the project first.')
+      end
+    end
+
     scheme_mix_criteria.each do |criterion|
       # all linked requirements are provided
       if criterion.has_required_requirements?
