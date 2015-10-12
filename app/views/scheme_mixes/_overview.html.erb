@@ -1,0 +1,51 @@
+<% if certification_path.scheme_mixes.count.zero? %>
+    <p>A GSAS administrator must first activate the certificate before you can continue.</p>
+<% else %>
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th class="col-md-6">Scheme name</th>
+            <th class="col-md-1">Weighting</th>
+            <th class="col-md-4">Score</th>
+            <th class="col-md-1">Progress</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% certification_path.scheme_mixes.each do |scheme_mix| %>
+            <tr class="clickable" data-href="<%= project_certification_path_scheme_mix_path(certification_path.project, certification_path, scheme_mix) %>">
+                <td><%= scheme_mix.full_name %></td>
+                <td><%= scheme_mix.weight %> %</td>
+                <td>
+                    <div style="min-width: 260px">
+                        <div class="score-graph"
+                             data-show-legend="true"
+                             data-show-x-axis="true"
+                             data-show-values="true"
+                             data-width="260"
+                             data-height="80"
+                             data-min="<%= scheme_mix.scheme.total_weighted_minimum_attainable_score %>"
+                             data-max="<%= scheme_mix.scheme.total_weighted_maximum_attainable_score %>"
+                             data-max-attainable="<%= scheme_mix.scheme.total_weighted_maximum_attainable_score %>"
+                             data-targeted="<%= scheme_mix.total_weighted_targeted_score %>"
+                             data-submitted="<%= scheme_mix.total_weighted_submitted_score %>"
+                             data-achieved="<%= scheme_mix.total_weighted_achieved_score %>"></div>
+                    </div>
+                </td>
+                <td>
+                    <div class="progress">
+                        <%
+                           if certification_path.requirement_data.count.nonzero?
+                             progress = certification_path.requirement_data.completed.count * 100 / certification_path.requirement_data.count
+                           else
+                             progress = 0
+                           end
+                        %>
+                        <div class="progress-bar" style="min-width: 2em; width: <%= progress %>%;"><%= progress %>%
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        <% end %>
+        </tbody>
+    </table>
+<% end %>

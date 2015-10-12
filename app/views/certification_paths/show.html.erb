@@ -80,39 +80,7 @@
                 <h5>Schemes</h5>
             </div>
             <div class="ibox-content">
-                <% if @certification_path.scheme_mixes.count.zero? %>
-                    <p>A GSAS administrator must first activate the certificate before you can continue.</p>
-                <% else %>
-                    <table class="table table-bordered table-hover">
-                        <thead>
-                        <tr>
-                            <th class="col-md-6">Scheme name</th>
-                            <th class="col-md-2">Weight</th>
-                            <th class="col-md-4">Progress</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <% @certification_path.scheme_mixes.each do |scheme_mix| %>
-                            <tr class="clickable" data-href="<%= project_certification_path_scheme_mix_path(@certification_path.project, @certification_path, scheme_mix) %>">
-                                <td><%= scheme_mix.full_name %></td>
-                                <td><%= scheme_mix.weight %> %</td>
-                                <%
-                                   if @certification_path.requirement_data.count.nonzero?
-                                     progress = @certification_path.requirement_data.completed.count * 100 / @certification_path.requirement_data.count
-                                   else
-                                     progress = 0
-                                   end
-                                %>
-                                <td>
-                                    <div class="progress">
-                                        <div class="progress-bar" style="min-width: 2em; width: <%= progress %>%;"><%= progress %>%</div>
-                                    </div>
-                                </td>
-                            </tr>
-                        <% end %>
-                        </tbody>
-                    </table>
-                <% end %>
+                <%= render 'scheme_mixes/overview', certification_path: @certification_path %>
             </div>
         </div>
         <%= render 'tasks/tasks' %>
@@ -120,3 +88,4 @@
 </div>
 <%= render 'advance_status_modal' %>
 <%= render 'appeal_modal' %>
+<%= javascript_include_tag 'score_widget' %>
