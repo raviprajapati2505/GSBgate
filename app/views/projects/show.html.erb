@@ -54,22 +54,30 @@
                         <th><%= Project.human_attribute_name('project_site_area') %></th>
                         <td><%= @project.project_site_area %> m²</td>
                     </tr>
-                    <tr>
-                        <th><%= Project.human_attribute_name('location_plan_file') %></th>
-                        <td><%= link_to(raw('<i title="Download ' + Project.human_attribute_name('location_plan_file') + '" class="fa fa-download"></i>'), download_project_location_plan_path(@project.id), class: 'btn btn-xs btn-primary') %></td>
-                    </tr>
-                    <tr>
-                        <th><%= Project.human_attribute_name('site_plan_file') %></th>
-                        <td><%= link_to(raw('<i title="Download ' + Project.human_attribute_name('site_plan_file') + '" class="fa fa-download"></i>'), download_project_site_plan_path(@project.id), class: 'btn btn-xs btn-primary') %></td>
-                    </tr>
-                    <tr>
-                        <th><%= Project.human_attribute_name('design_brief_file') %></th>
-                        <td><%= link_to(raw('<i title="Download ' + Project.human_attribute_name('design_brief_file') + '" class="fa fa-download"></i>'), download_project_design_brief_path(@project.id), class: 'btn btn-xs btn-primary') %></td>
-                    </tr>
-                    <tr>
-                        <th><%= Project.human_attribute_name('project_narrative_file') %></th>
-                        <td><%= link_to(raw('<i title="Download ' + Project.human_attribute_name('project_narrative_file') + '" class="fa fa-download"></i>'), download_project_narrative_path(@project.id), class: 'btn btn-xs btn-primary') %></td>
-                    </tr>
+                    <% if @project.location_plan_file.present? %>
+                        <tr>
+                            <th><%= Project.human_attribute_name('location_plan_file') %></th>
+                            <td><%= link_to(raw('<i title="Download ' + Project.human_attribute_name('location_plan_file') + '" class="fa fa-download"></i>'), download_project_location_plan_path(@project.id), class: 'btn btn-xs btn-primary') %> <%= truncate(@project.location_plan_file.file.filename, length: 35) %></td>
+                        </tr>
+                    <% end %>
+                    <% if @project.site_plan_file.present? %>
+                        <tr>
+                            <th><%= Project.human_attribute_name('site_plan_file') %></th>
+                            <td><%= link_to(raw('<i title="Download ' + Project.human_attribute_name('site_plan_file') + '" class="fa fa-download"></i>'), download_project_site_plan_path(@project.id), class: 'btn btn-xs btn-primary') %> <%= truncate(@project.site_plan_file.file.filename, length: 35) %></td>
+                        </tr>
+                    <% end %>
+                    <% if @project.design_brief_file.present? %>
+                        <tr>
+                            <th><%= Project.human_attribute_name('design_brief_file') %></th>
+                            <td><%= link_to(raw('<i title="Download ' + Project.human_attribute_name('design_brief_file') + '" class="fa fa-download"></i>'), download_project_design_brief_path(@project.id), class: 'btn btn-xs btn-primary') %> <%= truncate(@project.design_brief_file.file.filename, length: 35) %></td>
+                        </tr>
+                    <% end %>
+                    <% if @project.project_narrative_file.present? %>
+                        <tr>
+                            <th><%= Project.human_attribute_name('project_narrative_file') %></th>
+                            <td><%= link_to(raw('<i title="Download ' + Project.human_attribute_name('project_narrative_file') + '" class="fa fa-download"></i>'), download_project_narrative_path(@project.id), class: 'btn btn-xs btn-primary') %> <%= truncate(@project.project_narrative_file.file.filename, length: 35) %></td>
+                        </tr>
+                    <% end %>
                     </tbody>
                 </table>
                 <input type="hidden" id="project_latlng" value="<%= @project.latlng %>" />
