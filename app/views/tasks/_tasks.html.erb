@@ -6,7 +6,7 @@
         <% if @tasks.empty? %>
             Currently there are no tasks.
         <% else %>
-        <table class="table table-bordered">
+        <table class="table table-bordered table-hover">
             <thead>
             <tr>
                 <th>Description</th>
@@ -17,7 +17,9 @@
             <tbody>
                 <% @tasks.each do |task|
                   case task.type
-                    when CertificationPathTask.name.demodulize
+                    when ProjectTask.name.demodulize
+                 %>
+                <%  when CertificationPathTask.name.demodulize
                         breadcrumbs = breadcrumbs(task.certification_path, with_prefix: false)
                  %>
                     <tr class="clickable" data-href="<%= breadcrumbs[:paths].last %>">
@@ -38,7 +40,7 @@
                  %>
                     <tr class="clickable" data-href="<%= breadcrumbs[:paths].last %>">
                         <td><%= t(".description_#{task.task_description_id}") %></td>
-                        <td><%= breadcrumbs[:names].last %></td>
+                        <td><%= task.requirement_datum.name %></td>
                         <td><% if task.requirement_datum.due_date.present? %><%= l(task.requirement_datum.due_date, format: :short) %><% if Date.today > task.requirement_datum.due_date %>&nbsp;<i class="fa fa-clock-o due-date-expired" title="<%= t('.tooltip_due_date') %>" data-toggle="tooltip"></i><% end %><% else %>-<% end %></td>
                     </tr>
                 <%  when SchemeMixCriterionDocumentTask.name.demodulize

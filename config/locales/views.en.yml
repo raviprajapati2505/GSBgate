@@ -89,7 +89,7 @@ en:
         modal_title: "Add comment"
   tasks:
     tasks:
-      description_1: "Check registration and payment and assign certifier manager"
+      description_1: "Assign certifier manager"
       description_2: "Check registration and payment and advance certificate status"
       description_3: "Allocate requirements to project team members and set due dates"
       description_4: "Process requirement and set requirement status to 'provided' or 'not required'"

@@ -55,33 +55,22 @@ module Taskable
       # Certifier manager is assigned to project
       when ProjectsUser.roles[:certifier_manager]
         # Destroy all system admin tasks to assign a certifier manager for this project
-        CertificationPathTask.where(task_description_id: 1, project: self.project).each do |task|
-          if task.certification_path.certification_path_status_id == CertificationPathStatus::ACTIVATING
-            # Create system admin task to advance the certification path status
-            CertificationPathTask.create(task_description_id: 2,
-                                         application_role: User.roles[:system_admin],
-                                         project: task.project,
-                                         certification_path: task.certification_path)
-          end
-          task.destroy
-        end
+        CertificationPathTask.delete_all(task_description_id: 1, project: self.project)
     end
   end
 
   def handle_created_certification_path
     unless self.project.certifier_manager_assigned?
-      # Create system admin task to assign a certifier manager and advance the certification path status
-      CertificationPathTask.create(task_description_id: 1,
+      # Create system admin task to assign a certifier manager
+      ProjectTask.create(task_description_id: 1,
                                    application_role: User.roles[:system_admin],
-                                   project: self.project,
-                                   certification_path: self)
-    else
-      # Create system admin task to advance the certification path status
-      CertificationPathTask.create(task_description_id: 2,
-                                   application_role: User.roles[:system_admin],
-                                   project: self.project,
-                                   certification_path: self)
+                                   project: self.project)
     end
+    # Create system admin task to advance the certification path status
+    CertificationPathTask.create(task_description_id: 2,
+                                 application_role: User.roles[:system_admin],
+                                 project: self.project,
+                                 certification_path: self)
   end
 
   def handle_created_scheme_mix_criteria_document
@@ -101,14 +90,7 @@ module Taskable
         # A user with access to the project is now certifier manager
         when ProjectsUser.roles[:certifier_manager]
           # Destroy all system admin tasks to assign a certifier manager for this project
-          CertificationPathTask.where(task_description_id: 1, project: self.project).each do |task|
-            # Create system admin task to advance the certification path status
-            CertificationPathTask.create(task_description_id: 2,
-                                         application_role: User.roles[:system_admin],
-                                         project: task.project,
-                                         certification_path: task.certification_path)
-            task.destroy
-          end
+          CertificationPathTask.delete_all(task_description_id: 1, project: self.project)
         else
       end
     end
@@ -259,6 +241,8 @@ module Taskable
   def handle_updated_scheme_mix_criterion
     if self.status_changed?
       case SchemeMixCriterion.statuses[self.status]
+        when SchemeMixCriterion.statuses[:in_progress]
+          # TODO see if certification task must be destroyed and criterion task must be created
         when SchemeMixCriterion.statuses[:complete]
           # Test if no criteria with status 'in progress' are still linked to certification path in status 'submitting'
           if CertificationPath.joins(:scheme_mixes)
@@ -313,6 +297,7 @@ module Taskable
 
   def handle_updated_requirement_datum
     if self.status_changed?
+      # TODO prevent that toggling between provided and not_required creates tasks
       if self.provided? or self.not_required?
         # Test if no requirements with status 'required' are still linked to criterion in status 'in progress'
         if SchemeMixCriterion.joins(:scheme_mix_criteria_requirement_data)
@@ -331,7 +316,7 @@ module Taskable
     end
     # A/another project team member is assigned to the requirement
     if self.user_id_changed?
-      if self.required?
+      if RequirementDatum.statuses[self.status_was] == RequirementDatum.statuses[:required]
         # Create project team member task to provide the requirement
         RequirementDatumTask.create(task_description_id: 4,
                                     user: self.user,
@@ -374,13 +359,10 @@ module Taskable
     case ProjectsUser.roles[role]
       when ProjectsUser.roles[:certifier_manager]
         unless self.project.certifier_manager_assigned?
-          self.project.certification_paths.each do |certification_path|
-            # Create system admin task to assign a certifier manager
-            CertificationPathTask.create(task_description_id: 1,
-                                         application_role: User.roles[:system_admin],
-                                         project: certification_path.project,
-                                         certification_path: certification_path)
-          end
+          # Create system admin task to assign a certifier manager
+          ProjectTask.create(task_description_id: 1,
+                                       application_role: User.roles[:system_admin],
+                                       project: self.project)
         end
     end
   end
