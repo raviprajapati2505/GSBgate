@@ -1,6 +1,6 @@
 class ProjectsController < AuthenticatedController
-  before_action :set_project, only: [:show, :edit, :update, :download_location_plan, :download_site_plan, :download_design_brief, :download_project_narrative]
-  load_and_authorize_resource
+  load_and_authorize_resource :project
+  before_action :set_controller_model
 
   # GET /projects
   # GET /projects.json
@@ -93,9 +93,7 @@ class ProjectsController < AuthenticatedController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_project
-      @project = Project.find(params[:id])
+    def set_controller_model
       @controller_model = @project
     end
 

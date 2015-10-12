@@ -1,11 +1,10 @@
 class SchemeMixCriteriaDocumentsController < AuthenticatedController
-  before_action :set_project
-  before_action :set_certification_path
-  before_action :set_scheme_mix
-  before_action :set_scheme_mix_criterion
-  before_action :set_scheme_mix_criteria_document, only: [:edit, :update, :show, :destroy]
-  before_action :set_document, only: [:edit, :update, :show, :destroy]
-  load_and_authorize_resource
+  load_and_authorize_resource :project
+  load_and_authorize_resource :certification_path, :through => :project
+  load_and_authorize_resource :scheme_mix, :through => :certification_path
+  load_and_authorize_resource :scheme_mix_criterion, :through => :scheme_mix
+  load_and_authorize_resource :scheme_mix_criteria_document, :through => :scheme_mix_criterion
+  before_action :set_controller_model
 
   def create
     if SchemeMixCriteriaDocument.exists?(scheme_mix_criteria_document_params)
@@ -22,7 +21,7 @@ class SchemeMixCriteriaDocumentsController < AuthenticatedController
   end
 
   def show
-    @page_title = (ActionController::Base.helpers.image_tag(Icon.for_filename(@document.name)) + ' ' + @document.name).html_safe
+    @page_title = (ActionController::Base.helpers.image_tag(Icon.for_filename(@scheme_mix_criteria_document.document.name)) + ' ' + @scheme_mix_criteria_document.document.name).html_safe
   end
 
   def update
@@ -48,29 +47,8 @@ class SchemeMixCriteriaDocumentsController < AuthenticatedController
   end
 
   private
-  def set_project
-    @project = Project.find(params[:project_id])
-  end
-
-  def set_certification_path
-    @certification_path = CertificationPath.find(params[:certification_path_id])
-  end
-
-  def set_scheme_mix
-    @scheme_mix = SchemeMix.find(params[:scheme_mix_id])
-  end
-
-  def set_scheme_mix_criterion
-    @scheme_mix_criterion = SchemeMixCriterion.find(params[:scheme_mix_criterion_id])
-  end
-
-  def set_scheme_mix_criteria_document
-    @scheme_mix_criteria_document = SchemeMixCriteriaDocument.find(params[:id])
+  def set_controller_model
     @controller_model = @scheme_mix_criteria_document
-  end
-
-  def set_document
-    @document = @scheme_mix_criteria_document.document
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

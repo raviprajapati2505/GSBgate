@@ -1,7 +1,7 @@
 class ProjectsUsersController < AuthenticatedController
-  load_and_authorize_resource
-  before_action :set_project, only: [:create, :edit, :destroy, :update]
-  before_action :set_projects_user, only: [:show, :edit, :destroy]
+  load_and_authorize_resource :project
+  load_and_authorize_resource :project_user
+  before_action :set_controller_model
 
   def create
     @projects_user = ProjectsUser.new(authorizations_params)
@@ -110,13 +110,7 @@ class ProjectsUsersController < AuthenticatedController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_project
-      @project = Project.find(params[:project_id])
-    end
-
-    def set_projects_user
-      @projects_user = ProjectsUser.find(params[:id])
+    def set_controller_model
       @controller_model = @projects_user
     end
 

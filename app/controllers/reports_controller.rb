@@ -1,5 +1,6 @@
 class ReportsController < ApplicationController
-  before_action :set_certification_path
+  load_and_authorize_resource :project
+  load_and_authorize_resource :certification_path, :through => :project, :parent => false
 
   def download_certificate
     filepath = filepath_for_report 'Certificate'
@@ -29,10 +30,6 @@ class ReportsController < ApplicationController
   end
 
   private
-
-  def set_certification_path
-    @certification_path = CertificationPath.find(params[:id])
-  end
 
   def filepath_for_report(report_name)
     filename = "#{@certification_path.certificate.name} #{report_name}.pdf"

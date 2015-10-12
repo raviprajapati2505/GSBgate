@@ -1,9 +1,8 @@
 class CertificationPathsController < AuthenticatedController
-  before_action :set_project
-  before_action :set_certification_path, only: [:show, :sign_certificate]
-  before_action :certificate_exists_and_is_allowed, only: [:apply, :new, :create]
   load_and_authorize_resource :project
   load_and_authorize_resource :certification_path, :through => :project
+  before_action :set_controller_model
+  before_action :certificate_exists_and_is_allowed, only: [:apply, :new, :create]
 
   def show
     @page_title = @certification_path.name
@@ -132,12 +131,8 @@ class CertificationPathsController < AuthenticatedController
   end
 
   private
-  def set_project
-    @project = Project.find(params[:project_id])
-  end
 
-  def set_certification_path
-    @certification_path = CertificationPath.find(params[:id])
+  def set_controller_model
     @controller_model = @certification_path
   end
 

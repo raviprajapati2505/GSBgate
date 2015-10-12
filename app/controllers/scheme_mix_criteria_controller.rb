@@ -1,9 +1,9 @@
 class SchemeMixCriteriaController < AuthenticatedController
-  before_action :set_project
-  before_action :set_certification_path
-  before_action :set_scheme_mix
-  before_action :set_scheme_mix_criterion
-  load_and_authorize_resource
+  load_and_authorize_resource :project
+  load_and_authorize_resource :certification_path, :through => :project
+  load_and_authorize_resource :scheme_mix, :through => :certification_path
+  load_and_authorize_resource :scheme_mix_criterion, :through => :scheme_mix
+  before_action :set_controller_model
 
   def show
     @page_title = @scheme_mix_criterion.scheme_criterion.full_name
@@ -69,20 +69,7 @@ class SchemeMixCriteriaController < AuthenticatedController
   end
 
   private
-  def set_project
-    @project = Project.find(params[:project_id])
-  end
-
-  def set_certification_path
-    @certification_path = CertificationPath.find(params[:certification_path_id])
-  end
-
-  def set_scheme_mix
-    @scheme_mix = SchemeMix.find(params[:scheme_mix_id])
-  end
-
-  def set_scheme_mix_criterion
-    @scheme_mix_criterion = SchemeMixCriterion.find(params[:id])
+  def set_controller_model
     @controller_model = @scheme_mix_criterion
   end
 

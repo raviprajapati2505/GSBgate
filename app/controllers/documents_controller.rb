@@ -1,7 +1,8 @@
 class DocumentsController < AuthenticatedController
-  before_action :set_project, only: [:create]
-  before_action :set_certification_path, only: [:create]
-  before_action :set_document, only: [:show]
+  load_and_authorize_resource :project
+  load_and_authorize_resource :certification_path, :through => :project
+  load_and_authorize_resource :document
+  before_action :set_controller_model
   load_and_authorize_resource skip_load_resource # todo: remove skip_load_resource
 
   def create
@@ -34,16 +35,7 @@ class DocumentsController < AuthenticatedController
   end
 
   private
-  def set_project
-    @project = Project.find(params[:project_id])
-  end
-
-  def set_certification_path
-    @certification_path = CertificationPath.find(params[:certification_path_id])
-  end
-
-  def set_document
-    @document = Document.find(params[:id])
+  def set_controller_model
     @controller_model = @document
   end
 
