@@ -29,16 +29,6 @@
                         <%= render 'pcr_form', project: @project, certification_path: @certification_path %>
                     </div>
                 </div>
-                <% if current_user.gord_manager? || current_user.gord_top_manager? || current_user.system_admin? %>
-                    <div class="ibox float-e-margins">
-                        <div class="ibox-title">
-                            <h5>Manager approvals</h5>
-                        </div>
-                        <div class="ibox-content">
-                            <%= render 'manager_approvals_form', project: @project, certification_path: @certification_path %>
-                        </div>
-                    </div>
-                <% end %>
             </div>
             <div class="col-lg-6">
                 <div class="ibox float-e-margins">

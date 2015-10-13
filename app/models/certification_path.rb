@@ -133,6 +133,8 @@ class CertificationPath < ActiveRecord::Base
           return user.certifier_manager?(project)
         when CertificationPathStatus.waiting_fors[:system_admin]
           return user.system_admin?
+        when CertificationPathStatus.waiting_fors[:gord_manager]
+          return user.gord_manager?
         when CertificationPathStatus.waiting_fors[:gord_top_manager]
           return user.gord_top_manager?
       end
@@ -221,6 +223,11 @@ class CertificationPath < ActiveRecord::Base
         when CertificationPathStatus::APPROVING_BY_MANAGEMENT
           # Only GORD mngr and GORD top mngr can change status
           if can_leave_approving_by_management_status?
+            return CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT
+          end
+        when CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT
+          # Only GORD mngr and GORD top mngr can change status
+          if can_leave_approving_by_top_management_status?
             return CertificationPathStatus::CERTIFIED
           end
         when CertificationPathStatus::CERTIFIED, CertificationPathStatus::NOT_CERTIFIED
@@ -416,11 +423,14 @@ class CertificationPath < ActiveRecord::Base
   end
 
   # Conditions are
-  #  1) signed flag set for both GORD mngr and GORD top mngr
+  #  none
   def can_leave_approving_by_management_status?
-    if signed_by_mngr? && signed_by_top_mngr?
-      return true
-    end
-    throw(:error, 'Both signed by GORD manager and signed by GORD top manager must be set.')
+    return true
+  end
+
+  # Conditions are
+  #  none
+  def can_leave_approving_by_top_management_status?
+    return true
   end
 end

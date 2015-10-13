@@ -1,6 +1,6 @@
 class CertificationPathStatus < ActiveRecord::Base
   has_many :certification_paths
-  enum waiting_for: { project_manager: 0, certifier_manager: 1, system_admin: 2, gord_top_manager: 3 }
+  enum waiting_for: { project_manager: 0, certifier_manager: 1, system_admin: 2, gord_manager: 3, gord_top_manager: 4 }
 
   # Statuses
   ACTIVATING = 1
@@ -16,6 +16,7 @@ class CertificationPathStatus < ActiveRecord::Base
   VERIFYING_AFTER_APPEAL = 11
   ACKNOWLEDGING_AFTER_APPEAL = 12
   APPROVING_BY_MANAGEMENT = 13
-  CERTIFIED = 14
-  NOT_CERTIFIED = 15
+  APPROVING_BY_TOP_MANAGEMENT = 14
+  CERTIFIED = 15
+  NOT_CERTIFIED = 16
 end

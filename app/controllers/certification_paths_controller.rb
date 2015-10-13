@@ -120,12 +120,6 @@ class CertificationPathsController < AuthenticatedController
     send_file DocumentArchiverService.instance.create_archive(@certification_path)
   end
 
-  def update_approvals
-    if @certification_path.update!(certification_path_params)
-      redirect_to project_certification_path_path(@project, @certification_path), notice: 'The manager approval was successfully updated.'
-    end
-  end
-
   def list
     render json: @project.certification_paths_optionlist
   end
@@ -151,6 +145,6 @@ class CertificationPathsController < AuthenticatedController
   end
 
   def certification_path_params
-    params.require(:certification_path).permit(:project_id, :certificate_id, :signed_by_mngr, :signed_by_top_mngr, :pcr_track, :pcr_track_allowed, :duration, :started_at, :development_type, :appealed)
+    params.require(:certification_path).permit(:project_id, :certificate_id, :pcr_track, :pcr_track_allowed, :duration, :started_at, :development_type, :appealed)
   end
 end

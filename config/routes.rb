@@ -43,7 +43,6 @@ Rails.application.routes.draw do
   post 'audit-logs/:auditable_type/:auditable_id' => 'audit_logs#auditable_create', as: 'auditable_create_audit_log'
   get 'tasks' => 'tasks#index', as: 'tasks'
   match 'projects/:project_id/certificates/apply/:certificate_id' => 'certification_paths#apply', as: 'apply_certification_path', via: [:get, :post]
-  put 'projects/:project_id/certificates/:id/update-approvals' => 'certification_paths#update_approvals', as: 'update_certification_path_approvals'
   put 'projects/:project_id/certificates/:id/update-status' => 'certification_paths#update_status', as: 'update_certification_path_status'
   put 'projects/:project_id/certificates/:id/update-pcr' => 'certification_paths#update_pcr', as: 'update_certification_path_pcr'
   put 'projects/:project_id/certificates/:certification_path_id/schemes/:scheme_mix_id/criteria/:id/assign' => 'scheme_mix_criteria#assign_certifier', as: 'assign_certifier_to_criteria'
