@@ -12,7 +12,7 @@
                     <div class="hr-line-dashed"></div>
                     <% if @certification_path.certification_path_status.id == CertificationPathStatus::ACKNOWLEDGING %>
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#advanceStatusModal"><i class="fa fa-lg fa-check" style="padding-right: 10px;"></i>Accept all scores</button>
-                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#appealModal"><i class="fa fa-lg fa-times" style="padding-right: 10px;"></i>Apply for appeal</button>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#appealModal"><i class="fa fa-lg fa-hand-o-up" style="padding-right: 10px;"></i>Apply for appeal</button>
                     <% else %>
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#advanceStatusModal"><i class="fa fa-lg fa-forward" style="padding-right: 10px;"></i>Advance status</button>
                     <% end %>
@@ -36,7 +36,7 @@
                         <h5>Downloads<%= tooltip('All documents regarding the certificate can be downloaded here.') %></h5>
                     </div>
                     <div class="ibox-content">
-                        <% if not @certification_path.is_certified? %>
+                        <% if @certification_path.is_certified? %>
                             <div>
                             <%= link_to download_certificate_report_project_certification_path_path(@project, @certification_path), class: 'btn btn-white' do %>
                                 <i class="fa fa-lg fa-download" style="padding-right: 10px;"></i>Download Certificate
