@@ -1,6 +1,6 @@
 class ProjectsUsersController < AuthenticatedController
   load_and_authorize_resource :project
-  load_and_authorize_resource :project_user
+  load_and_authorize_resource :projects_user, :through => :project
   before_action :set_controller_model
 
   def create
