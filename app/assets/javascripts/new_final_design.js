@@ -5,8 +5,6 @@ $(function () {
         placeholder: "Select the duration",
     });
 
-    validate();
-
     // Do JS validation before submitting
     $('form.new_certification_path').submit(function (event) {
         var valid = validate();

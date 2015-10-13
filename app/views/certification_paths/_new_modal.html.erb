@@ -9,6 +9,8 @@
         <div class="modal-body">
             <%= render 'certification_paths/new_letter_of_conformance', modal: true if @certification_path.certificate.letter_of_conformance? %>
             <%= render 'certification_paths/new_final_design', modal: true if @certification_path.certificate.final_design_certificate? %>
+            <%= render 'certification_paths/new_construction', modal: true if @certification_path.certificate.construction_certificate? %>
+            <%= render 'certification_paths/new_operations', modal: true if @certification_path.certificate.operations_certificate? %>
         </div>
     </div>
 </div>

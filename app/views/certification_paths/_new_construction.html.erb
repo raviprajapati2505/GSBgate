@@ -1,0 +1,19 @@
+<%= bootstrap_form_for(@certification_path, url: apply_certification_path_path(@project, @certification_path.certificate)) do |f| %>
+
+    <!-- Set the certificate-->
+    <%= f.hidden_field :certificate_id, value: @certification_path.certificate_id %>
+
+    <!-- PCR -->
+    <%= f.form_group :pcr_track, label: {text: 'Pre Certification Review'} do %>
+        <%= f.check_box :pcr_track, label: 'Apply for the Pre Certification Review track (PCR)' %>
+    <% end %>
+
+    <!-- Scheme Mix -->
+    <%= f.static_control label: 'Scheme' do %>
+        <%= @certification_path.scheme_mixes.first.name.to_s.humanize %>
+    <% end %>
+
+    <%= button_tag(type: 'submit', class: 'btn btn-primary') do %>
+        <i title="Save" class="fa fa-lg fa-save" style="padding-right: 10px;"></i><%= t('.btn_save') %>
+    <% end %>
+<% end %>

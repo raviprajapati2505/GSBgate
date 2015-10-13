@@ -20,6 +20,10 @@ en:
       btn_save: "Save"
     new_letter_of_conformance:
       btn_save: "Save"
+    new_construction:
+      btn_save: "Save"
+    new_operations:
+      btn_save: "Save"
   projects:
     index:
       action_team_title: "Team"

@@ -24,6 +24,9 @@ class CertificationPathsController < AuthenticatedController
         }
         format.html {
           if params.has_key?(:certification_path)
+            if params[:certification_path].has_key?(:pcr_track)
+              @certification_path.pcr_track = params[:certification_path][:pcr_track]
+            end
             if params[:certification_path].has_key?(:development_type)
               @certification_path.development_type = params[:certification_path][:development_type]
             end
@@ -40,14 +43,17 @@ class CertificationPathsController < AuthenticatedController
             end
           end
           if @certification_path.save
-            return redirect_to(project_path(@project), notice: 'Successfully applied for certificate.')
+            return redirect_to(project_certification_path_path(@project, @certification_path), notice: 'Successfully applied for certificate.')
           else
-            return redirect_to(project_path(@project), alert: 'Error, could not apply for certificate')
+            return redirect_to(project_certification_path_path(@project), alert: 'Error, could not apply for certificate')
           end
         }
       end
     elsif @certification_path.certificate.final_design_certificate?
       if params.has_key?(:certification_path)
+        if params[:certification_path].has_key?(:pcr_track)
+          @certification_path.pcr_track = params[:certification_path][:pcr_track]
+        end
         if params[:certification_path].has_key?(:duration)
           @certification_path.duration = params[:certification_path][:duration]
         end
@@ -64,21 +70,32 @@ class CertificationPathsController < AuthenticatedController
         }
         format.html {
           if @certification_path.save
-            return redirect_to(project_path(@project), notice: 'Successfully applied for certificate.')
+            return redirect_to(project_certification_path_path(@project, @certification_path), notice: 'Successfully applied for certificate.')
           else
             return redirect_to(project_path(@project), alert: 'Error, could not apply for certificate')
           end
         }
       end
     elsif @certification_path.certificate.construction_certificate? or @certification_path.certificate.operations_certificate?
-      # We have enough information to create these certificate paths automatically
       @certification_path.development_type = :not_applicable
       @certification_path.duration = 0
       @certification_path.scheme_mixes.build({scheme_id: @certification_path.certificate.schemes.take.id, weight: 100})
-      if @certification_path.save
-        return redirect_to(project_path(@project), notice: 'Successfully applied for certificate.')
-      else
-        return redirect_to(project_path(@project), alert: 'Error, could not apply for certificate')
+      if params.has_key?(:certification_path)
+        if params[:certification_path].has_key?(:pcr_track)
+          @certification_path.pcr_track = params[:certification_path][:pcr_track]
+        end
+      end
+      respond_to do |format|
+        format.js {
+          return render 'apply'
+        }
+        format.html {
+          if @certification_path.save
+            return redirect_to(project_certification_path_path(@project, @certification_path), notice: 'Successfully applied for certificate.')
+          else
+            return redirect_to(project_path(@project), alert: 'Error, could not apply for certificate')
+          end
+        }
       end
     end
   end

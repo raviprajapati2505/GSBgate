@@ -35,9 +35,7 @@
             <span class="col-md-4">
                 <!-- if can? :create, CertificationPath %-->
                 <% if current_user.system_admin? || current_user.project_manager?(project) %>
-                    <!-- Do remote for loc or final, as we need to show a modal dialog for more input -->
-                    <% remote = (certificate.letter_of_conformance? or certificate.final_design_certificate?) %>
-                    <%= button_to('Apply', apply_certification_path_path(@project, certificate), {remote: remote, class: 'btn btn-primary'}) %>
+                    <%= button_to('Apply', apply_certification_path_path(@project, certificate), {remote: true, class: 'btn btn-primary'}) %>
                 <% end %>
             </span>
         <% else %>

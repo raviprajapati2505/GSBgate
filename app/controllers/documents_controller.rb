@@ -3,7 +3,6 @@ class DocumentsController < AuthenticatedController
   load_and_authorize_resource :certification_path, :through => :project
   load_and_authorize_resource :document
   before_action :set_controller_model
-  load_and_authorize_resource skip_load_resource # todo: remove skip_load_resource
 
   def create
     respond_to do |format|

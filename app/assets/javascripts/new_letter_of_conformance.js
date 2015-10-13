@@ -9,8 +9,7 @@ $(function () {
         placeholder: "Select and add one or more schemes",
     });
 
-    // Validate the form
-    validate();
+    calculate_total_weight();
 
     function calculate_total_weight() {
         var total = 0;
