@@ -2,28 +2,16 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
-    # Define abilities for the passed in user here. For example:
+    # Define abilities for the passed in user here.
     #
-    #   user ||= User.new # guest user (not logged in)
-    #   if user.admin?
-    #     can :manage, :all
-    #   else
-    #     can :read, :all
-    #   end
-    #
-    # The first argument to `can` is the action you are giving the user
-    # permission to do.
-    # If you pass :manage it will apply to every action. Other common actions
-    # here are :read, :create, :update and :destroy.
+    # The first argument to `can` is the action you are giving the user permission to do.
+    # If you pass :manage it will apply to every action. Other common actions here are :read, :create, :update and :destroy.
     #
     # The second argument is the resource the user can perform the action on.
-    # If you pass :all it will apply to every resource. Otherwise pass a Ruby
-    # class of the resource.
+    # If you pass :all it will apply to every resource. Otherwise pass a Ruby class of the resource.
     #
-    # The third argument is an optional hash of conditions to further filter the
-    # objects.
+    # The third argument is an optional hash of conditions to further filter the objects.
     # For example, here the user can only update published articles.
-    #
     #   can :update, Article, :published => true
     #
     # See the wiki for details:
@@ -45,10 +33,13 @@ class Ability
       can :manage, Project, projects_users: {user_id: user.id, role: ['project_manager', ProjectsUser.roles[:project_manager]]}
       can :read, Project, projects_users: {user_id: user.id}
       # ProjectsUsers controller
-      can :manage, ProjectsUser, project: {projects_users: {user_id: user.id, role: ['project_manager', ProjectsUser.roles[:project_manager]]}}
-      can :manage, ProjectsUser, project: {projects_users: {user_id: user.id, role: ['certifier_manager', ProjectsUser.roles[:certifier_manager]]}}
-      can :read, ProjectsUser, project: {projects_users: {user_id: user.id, role: ['enterprise_account', ProjectsUser.roles[:enterprise_account]]}}
-      can :create, ProjectsUser
+      can :manage, ProjectsUser, role: ['project_team_member', ProjectsUser.roles[:project_team_member], 'project_manager', ProjectsUser.roles[:project_manager], 'enterprise_account', ProjectsUser.roles[:enterprise_account]], project: {projects_users: {user_id: user.id, role: ['project_manager', ProjectsUser.roles[:project_manager]]}}
+      can :manage, ProjectsUser, role: ['certifier', ProjectsUser.roles[:certifier], 'certifier_manager', ProjectsUser.roles[:certifier_manager]], project: {projects_users: {user_id: user.id, role: ['certifier_manager', ProjectsUser.roles[:certifier_manager]]}}
+      can :read, ProjectsUser, project: {projects_users: {user_id: user.id}}
+      can :create, ProjectsUser, project: {owner_id: user.id}
+      cannot :destroy, ProjectsUser do |projects_user|
+        projects_user.project.owner_id == projects_user.user_id
+      end
       # CertificationPath controller
       can :manage, CertificationPath, project: {projects_users: {user_id: user.id, role: ['project_manager', ProjectsUser.roles[:project_manager]]}}
       can :update_pcr, CertificationPath, project: {projects_users: {user_id: user.id, role: ['certifier_manager', ProjectsUser.roles[:certifier_manager]]}}
