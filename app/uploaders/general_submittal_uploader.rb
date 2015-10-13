@@ -2,7 +2,7 @@ class GeneralSubmittalUploader < CarrierWave::Uploader::Base
   storage :file
 
   def store_dir
-    "../private/projects/#{model.id}/general_submittals"
+    "../private/projects/#{model.id}/general_submittals/#{mounted_as}"
   end
 
   def cache_dir
