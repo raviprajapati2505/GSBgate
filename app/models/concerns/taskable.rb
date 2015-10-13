@@ -212,13 +212,17 @@ module Taskable
           # Destroy all certifier manager tasks to advance status
           CertificationPathTask.delete_all(task_description_id: 17, certification_path: self)
         when CertificationPathStatus::APPROVING_BY_MANAGEMENT
-          # Create task for GORD manager to quick check and approve
-          CertificationPathTask.create(task_description_id: 25,
-                                       application_role: User.roles[:gord_manager],
-                                       project: self.project,
-                                       certification_path: self)
-          # Destroy all project manager tasks to process verification comments
-          CertificationPathTask.delete_all(task_description_id: 10, certification_path: self)
+          # todo: create task for manager (advance certificate path status)
+
+          # # Create task for GORD manager to quick check and approve
+          # CertificationPathTask.create(task_description_id: 25,
+          #                              application_role: User.roles[:gord_manager],
+          #                              project: self.project,
+          #                              certification_path: self)
+          # # Destroy all project manager tasks to process verification comments
+          # CertificationPathTask.delete_all(task_description_id: 10, certification_path: self)
+        when CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT
+          # todo: create task for top manager (advance certificate path status)
         when CertificationPathStatus::CERTIFIED
           # Create project manager task to download certificate
           CertificationPathTask.create(task_description_id: 28,
@@ -234,8 +238,6 @@ module Taskable
     end
     handle_pcr_track
     handle_pcr_track_allowed
-    handle_signed_by_gord_mngr
-    handle_signed_by_gord_top_mngr
   end
 
   def handle_updated_scheme_mix_criterion
@@ -405,6 +407,7 @@ module Taskable
     end
   end
 
+  # todo: remove this function
   def handle_signed_by_gord_mngr
     if self.signed_by_mngr_changed?
       if self.signed_by_mngr == true
@@ -427,6 +430,7 @@ module Taskable
     end
   end
 
+  # todo: remove this function
   def handle_signed_by_gord_top_mngr
     if self.signed_by_top_mngr_changed?
       if self.signed_by_top_mngr == true
