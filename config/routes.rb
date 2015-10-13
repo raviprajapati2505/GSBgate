@@ -1,4 +1,15 @@
 Rails.application.routes.draw do
+  # The priority is based upon order of creation: first created -> highest priority.
+  # See how all your routes lay out with "rake routes", or navigate to /rails/info
+
+  # You can have the root of your site routed with "root"
+  root 'projects#index'
+
+  # Login resource
+  resources :users
+  devise_for :user
+
+  # Main nested resources of our application
   resources :projects, except: [ :destroy ] do
     member do
       get 'tools' => 'projects#show_tools'
@@ -48,67 +59,16 @@ Rails.application.routes.draw do
     put :sort, on: :collection
   end
 
-  resources :users
-  devise_for :user
-
-  # Error pages
+  # Generic Error pages
   match '/403', to: 'errors#forbidden', via: :all, as: 'forbidden_error'
   match '/404', to: 'errors#not_found', via: :all, as: 'not_found_error'
   match '/422', to: 'errors#unprocessable_entity', via: :all, as: 'unprocessable_entity_error'
   match '/500', to: 'errors#internal_server_error', via: :all, as: 'internal_server_error_error'
-  
-  # The priority is based upon order of creation: first created -> highest priority.
-  # See how all your routes lay out with "rake routes".
 
-  # You can have the root of your site routed with "root"
-  root 'projects#index'
-
-  # Example of regular route:
-  #   get 'products/:id' => 'catalog#view'
-
-  # Example of named route that can be invoked with purchase_url(id: product.id)
-  #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
-
-  # Example resource route (maps HTTP verbs to controller actions automatically):
-  #   resources :products
-
-  # Example resource route with options:
-  #   resources :products do
-  #     member do
-  #       get 'short'
-  #       post 'toggle'
-  #     end
-  #
-  #     collection do
-  #       get 'sold'
-  #     end
-  #   end
-
-  # Example resource route with sub-resources:
-  #   resources :products do
-  #     resources :comments, :sales
-  #     resource :seller
-  #   end
-
-  # Example resource route with more complex sub-resources:
-  #   resources :products do
-  #     resources :comments
-  #     resources :sales do
-  #       get 'recent', on: :collection
-  #     end
-  #   end
-
-  # Example resource route with concerns:
-  #   concern :toggleable do
-  #     post 'toggle'
-  #   end
-  #   resources :posts, concerns: :toggleable
-  #   resources :photos, concerns: :toggleable
-
-  # Example resource route within a namespace:
-  #   namespace :admin do
-  #     # Directs /admin/products/* to Admin::ProductsController
-  #     # (app/controllers/admin/products_controller.rb)
-  #     resources :products
-  #   end
+  # CATCH ALL ROUTE, redirecting the user to a correct page
+  # BEWARE: this should be the last line, as it will match any path !!!
+  # -- to avoid unknown routes to pollute the logs, use this:
+  match '*path', to: 'errors#not_found', via: :all, as: 'not_found_error' unless Rails.env.development?
+  # -- or to redirect the user to the main page, use this:
+  #match '*path', to: 'projects#index', via: :all, as: 'not_found_error' unless Rails.env.development?
 end
