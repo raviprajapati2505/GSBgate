@@ -14,6 +14,7 @@ class User < ActiveRecord::Base
   has_many :requirement_data, dependent: :nullify
   has_many :scheme_mix_criteria, inverse_of: :certifier, foreign_key: 'certifier_id'
   has_many :tasks, dependent: :destroy
+  has_many :audit_logs
 
   default_scope { order(email: :asc) }
 

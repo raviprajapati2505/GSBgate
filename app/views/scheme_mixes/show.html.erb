@@ -17,7 +17,8 @@
                     </tr>
                     <tr>
                         <th>Score</th>
-                        <td><div class="score-graph"
+                        <td>
+                            <div class="score-graph"
                                  data-show-legend="false"
                                  data-show-x-axis="true"
                                  data-show-values="true"
@@ -28,17 +29,7 @@
                                  data-max-attainable="<%= @scheme_mix.scheme.total_weighted_maximum_attainable_score %>"
                                  data-targeted="<%= @scheme_mix.total_weighted_targeted_score %>"
                                  data-submitted="<%= @scheme_mix.total_weighted_submitted_score %>"
-                                 data-achieved="<%= @scheme_mix.total_weighted_achieved_score %>"></div></td>
-                    </tr>
-                    <tr>
-                        <th>Your requirement progress</th>
-                        <td>
-                            <% my_processed_count = RequirementDatum.for_scheme_mix(@scheme_mix).provided.assigned_to_user(current_user).count +
-                                    RequirementDatum.for_scheme_mix(@scheme_mix).not_required.assigned_to_user(current_user).count %>
-                            <% my_total_count = RequirementDatum.for_scheme_mix(@scheme_mix).assigned_to_user(current_user).count %>
-                            <div class="progress">
-                                <div class="progress-bar" style="min-width: 2em; width: <%= (my_total_count != 0 ? (my_processed_count * 100 / my_total_count) : 100) %>%;"><%= my_processed_count %>/<%= my_total_count %></div>
-                            </div>
+                                 data-achieved="<%= @scheme_mix.total_weighted_achieved_score %>"></div>
                         </td>
                     </tr>
                     <tr>
@@ -48,8 +39,15 @@
                                     RequirementDatum.for_scheme_mix(@scheme_mix).not_required.count %>
                             <% total_count = RequirementDatum.for_scheme_mix(@scheme_mix).count %>
                             <div class="progress">
-                                <div class="progress-bar" style="min-width: 2em; width: <%= (total_count != 0 ? (processed_count * 100 / total_count) : 100) %>%;"><%= processed_count %>/<%= total_count %></div>
+                                <div class="progress-bar" style="min-width: 2em; width: <%= (total_count != 0 ? (processed_count * 100 / total_count) : 100) %>%;"><%= processed_count %>
+                                    /<%= total_count %></div>
                             </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Approved Documents</th>
+                        <td>
+                            <%= @scheme_mix.scheme_mix_criteria_documents.approved.count %>
                         </td>
                     </tr>
                     </tbody>
@@ -78,105 +76,110 @@
                             <th>Name</th>
                             <th>Weighting</th>
                             <th>Points</th>
-                            <th>Your requirement progress</th>
                             <th>Total requirement progress</th>
+                            <th>Approved Documents</th>
                         </tr>
                         </thead>
                         <tbody>
                         <% minimum_of_total_weighted_minimum_attainable_score_per_category = @scheme_mix.scheme.minimum_of_total_weighted_minimum_attainable_score_per_category %>
                         <% maximum_of_total_weighted_maximum_attainable_score_per_category = @scheme_mix.scheme.maximum_of_total_weighted_maximum_attainable_score_per_category %>
                         <% @scheme_mix.scheme_categories.uniq.each_with_index do |category, i| %>
-                        <tr class="accordion-toggle" data-toggle="collapse" data-target="#category-panel-<%= category.id %>" data-parent="#categories-accordion">
-                            <td><i class="fa fa-caret-square-o-right"></i></td>
-                            <td><%= category.code %></td>
-                            <td><%= category.name %></td>
-                            <td><%= @scheme_mix.scheme.total_weight_for_category(category) %> %</td>
-                            <td style="min-width: 260px">
-                                <div class="score-graph"
-                                     data-show-legend="false"
-                                     data-show-x-axis="<%= if i == 0 then true else false end %>"
-                                     data-show-values="true"
-                                     data-width="260"
-                                     data-height="80"
-                                     data-min="<%= minimum_of_total_weighted_minimum_attainable_score_per_category %>"
-                                     data-max="<%= maximum_of_total_weighted_maximum_attainable_score_per_category %>"
-                                     data-max-attainable="<%= @scheme_mix.scheme.total_weighted_maximum_attainable_score_for_category(category) %>"
-                                     data-targeted="<%= @scheme_mix.total_weighted_targeted_score_for_category(category) %>"
-                                     data-submitted="<%= @scheme_mix.total_weighted_submitted_score_for_category(category) %>"
-                                     data-achieved="<%= @scheme_mix.total_weighted_achieved_score_for_category(category) %>"></div>
-                            </td>
-                            <td><% my_processed_count = RequirementDatum.for_scheme_mix(@scheme_mix).for_category(category).provided.assigned_to_user(current_user).count +
-                                            RequirementDatum.for_scheme_mix(@scheme_mix).for_category(category).not_required.assigned_to_user(current_user).count %>
-                                <% my_total_count = RequirementDatum.for_scheme_mix(@scheme_mix).for_category(category).assigned_to_user(current_user).count %>
-                                <div class="progress">
-                                    <div class="progress-bar" style="min-width: 2em; width: <%= (my_total_count != 0 ? (my_processed_count * 100 / my_total_count) : 100) %>%;"><%= my_processed_count %>/<%= my_total_count %></div>
-                                </div>
-                            </td>
-                            <td><% processed_count = RequirementDatum.for_scheme_mix(@scheme_mix).for_category(category).provided.count +
+                            <tr class="accordion-toggle" data-toggle="collapse" data-target="#category-panel-<%= category.id %>" data-parent="#categories-accordion">
+                                <td><i class="fa fa-caret-square-o-right"></i></td>
+                                <td><%= category.code %></td>
+                                <td><%= category.name %></td>
+                                <td><%= @scheme_mix.scheme.total_weight_for_category(category) %> %</td>
+                                <td style="min-width: 260px">
+                                    <div class="score-graph"
+                                         data-show-legend="false"
+                                         data-show-x-axis="<%= if i == 0 then
+                                                                 true
+                                                               else
+                                                                 false
+                                                               end %>"
+                                         data-show-values="true"
+                                         data-width="260"
+                                         data-height="80"
+                                         data-min="<%= minimum_of_total_weighted_minimum_attainable_score_per_category %>"
+                                         data-max="<%= maximum_of_total_weighted_maximum_attainable_score_per_category %>"
+                                         data-max-attainable="<%= @scheme_mix.scheme.total_weighted_maximum_attainable_score_for_category(category) %>"
+                                         data-targeted="<%= @scheme_mix.total_weighted_targeted_score_for_category(category) %>"
+                                         data-submitted="<%= @scheme_mix.total_weighted_submitted_score_for_category(category) %>"
+                                         data-achieved="<%= @scheme_mix.total_weighted_achieved_score_for_category(category) %>"></div>
+                                </td>
+                                <td>
+                                    <% processed_count = RequirementDatum.for_scheme_mix(@scheme_mix).for_category(category).provided.count +
                                             RequirementDatum.for_scheme_mix(@scheme_mix).for_category(category).not_required.count %>
-                                <% total_count = RequirementDatum.for_scheme_mix(@scheme_mix).for_category(category).count %>
-                                <div class="progress">
-                                    <div class="progress-bar" style="min-width: 2em; width: <%= (total_count != 0 ? (processed_count * 100 / total_count) : 100) %>%;"><%= processed_count %>/<%= total_count %></div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr id="category-panel-<%= category.id %>" class="accordion-body collapse">
-                            <td colspan="7">
-                                <div>
-                                    <table class="table table-hover">
-                                        <thead>
-                                        <tr>
-                                            <th>Code</th>
-                                            <th>Name</th>
-                                            <th>Status</th>
-                                            <th>Weighting</th>
-                                            <th>Score</th>
-                                            <th>Your requirement progress</th>
-                                            <th>Total requirement progress</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <% minimum_attainable_score_for_scheme = @scheme_mix.scheme.minimum_attainable_score_for_scheme %>
-                                        <% maximum_attainable_score_for_scheme = @scheme_mix.scheme.maximum_attainable_score_for_scheme %>
-                                        <% @scheme_mix.scheme_mix_criteria.for_category(category).each_with_index do |scheme_mix_criterion, j| %>
-                                        <tr class="clickable" data-href="<%= project_certification_path_scheme_mix_scheme_mix_criterion_path(@certification_path.project, @certification_path, @scheme_mix, scheme_mix_criterion) %>">
-                                            <td><%= scheme_mix_criterion.scheme_criterion.scheme_category.code %></td>
-                                            <td><%= scheme_mix_criterion.scheme_criterion.name %></td>
-                                            <td><%= scheme_mix_criterion.status.humanize %></td>
-                                            <td><%= scheme_mix_criterion.scheme_criterion.weight %> %</td>
-                                            <td style="min-width: 260px">
-                                                <div class="score-graph"
-                                                     data-show-legend="false"
-                                                     data-show-x-axis="<%= if j == 0 then true else false end %>"
-                                                     data-show-values="true"
-                                                     data-width="260"
-                                                     data-height="80"
-                                                     data-min="<%= minimum_attainable_score_for_scheme %>"
-                                                     data-max="<%= maximum_attainable_score_for_scheme %>"
-                                                     data-max-attainable="<%= scheme_mix_criterion.scheme_criterion.maximum_attainable_score %>"
-                                                     data-targeted="<%= scheme_mix_criterion.targeted_score %>"
-                                                     data-submitted="<%= scheme_mix_criterion.submitted_score %>"
-                                                     data-achieved="<%= scheme_mix_criterion.achieved_score %>"></div>
-                                            </td>
-                                            <td><% my_processed_count = scheme_mix_criterion.requirement_data.provided.assigned_to_user(current_user).count + scheme_mix_criterion.requirement_data.not_required.assigned_to_user(current_user).count %>
-                                                <% my_total_count = scheme_mix_criterion.requirement_data.assigned_to_user(current_user).count %>
-                                                <div class="progress">
-                                                    <div class="progress-bar" style="min-width: 2em; width: <%= (my_total_count != 0 ? (my_processed_count * 100 / my_total_count) : 100) %>%;"><%= my_processed_count %>/<%= my_total_count %></div>
-                                                </div>
-                                            </td>
-                                            <td><% processed_count = scheme_mix_criterion.requirement_data.provided.count + scheme_mix_criterion.requirement_data.not_required.count %>
-                                                <% total_count = scheme_mix_criterion.requirement_data.count %>
-                                                <div class="progress">
-                                                    <div class="progress-bar" style="min-width: 2em; width: <%= (total_count != 0 ? (processed_count * 100 / total_count) : 100) %>%;"><%= processed_count %>/<%= total_count %></div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <% end %>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </td>
-                        </tr>
+                                    <% total_count = RequirementDatum.for_scheme_mix(@scheme_mix).for_category(category).count %>
+                                    <div class="progress">
+                                        <div class="progress-bar" style="min-width: 2em; width: <%= (total_count != 0 ? (processed_count * 100 / total_count) : 100) %>%;"><%= processed_count %>
+                                            /<%= total_count %></div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <%= category.scheme_mix_criteria_documents.approved.count %>
+                                </td>
+                            </tr>
+                            <tr id="category-panel-<%= category.id %>" class="accordion-body collapse">
+                                <td colspan="7">
+                                    <div>
+                                        <table class="table table-hover">
+                                            <thead>
+                                            <tr>
+                                                <th>Code</th>
+                                                <th>Name</th>
+                                                <th>Status</th>
+                                                <th>Weighting</th>
+                                                <th>Score</th>
+                                                <th>Total requirement progress</th>
+                                                <th>Approved Documents</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <% minimum_attainable_score_for_scheme = @scheme_mix.scheme.minimum_attainable_score_for_scheme %>
+                                            <% maximum_attainable_score_for_scheme = @scheme_mix.scheme.maximum_attainable_score_for_scheme %>
+                                            <% @scheme_mix.scheme_mix_criteria.for_category(category).each_with_index do |scheme_mix_criterion, j| %>
+                                                <tr class="clickable" data-href="<%= project_certification_path_scheme_mix_scheme_mix_criterion_path(@certification_path.project, @certification_path, @scheme_mix, scheme_mix_criterion) %>">
+                                                    <td><%= scheme_mix_criterion.scheme_criterion.scheme_category.code %></td>
+                                                    <td><%= scheme_mix_criterion.scheme_criterion.name %></td>
+                                                    <td><%= scheme_mix_criterion.status.humanize %></td>
+                                                    <td><%= scheme_mix_criterion.scheme_criterion.weight %> %</td>
+                                                    <td style="min-width: 260px">
+                                                        <div class="score-graph"
+                                                             data-show-legend="false"
+                                                             data-show-x-axis="<%= if j == 0 then
+                                                                                     true
+                                                                                   else
+                                                                                     false
+                                                                                   end %>"
+                                                             data-show-values="true"
+                                                             data-width="260"
+                                                             data-height="80"
+                                                             data-min="<%= minimum_attainable_score_for_scheme %>"
+                                                             data-max="<%= maximum_attainable_score_for_scheme %>"
+                                                             data-max-attainable="<%= scheme_mix_criterion.scheme_criterion.maximum_attainable_score %>"
+                                                             data-targeted="<%= scheme_mix_criterion.targeted_score %>"
+                                                             data-submitted="<%= scheme_mix_criterion.submitted_score %>"
+                                                             data-achieved="<%= scheme_mix_criterion.achieved_score %>"></div>
+                                                    </td>
+                                                    <td>
+                                                        <% processed_count = scheme_mix_criterion.requirement_data.provided.count + scheme_mix_criterion.requirement_data.not_required.count %>
+                                                        <% total_count = scheme_mix_criterion.requirement_data.count %>
+                                                        <div class="progress">
+                                                            <div class="progress-bar" style="min-width: 2em; width: <%= (total_count != 0 ? (processed_count * 100 / total_count) : 100) %>%;"><%= processed_count %>
+                                                                /<%= total_count %></div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <%= scheme_mix_criterion.scheme_mix_criteria_documents.approved.count %>
+                                                    </td>
+                                                </tr>
+                                            <% end %>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </td>
+                            </tr>
                         <% end %>
                         </tbody>
                     </table>
@@ -184,11 +187,17 @@
                             (@certification_path.in_verification? && can?(:allocate_certifier_team_responsibility, @scheme_mix)) %>
                         <div class="hr-line-dashed"></div>
                         <% if (@certification_path.in_submission? && can?(:allocate_project_team_responsibility, @scheme_mix)) %>
-                            <button type="button" class="btn btn-white" data-toggle="modal" data-target="#allocateProjectTeamResponsibilityModal"><i class="fa fa-lg fa-th-list" style="padding-right: 10px;"></i>Allocate project team responsibility</button>
+                            <button type="button" class="btn btn-white" data-toggle="modal" data-target="#allocateProjectTeamResponsibilityModal">
+                                <i class="fa fa-lg fa-th-list" style="padding-right: 10px;"></i>Allocate project team
+                                responsibility
+                            </button>
                             <%= render 'allocate_project_team_responsibility', project: @project, certification_path: @certification_path, scheme_mix: @scheme_mix %>
                         <% end %>
                         <% if (@certification_path.in_verification? && can?(:allocate_certifier_team_responsibility, @scheme_mix)) %>
-                            <button type="button" class="btn btn-white" data-toggle="modal" data-target="#allocateCertifierTeamResponsibilityModal"><i class="fa fa-lg fa-th-list" style="padding-right: 10px;"></i>Allocate certifier team responsibility</button>
+                            <button type="button" class="btn btn-white" data-toggle="modal" data-target="#allocateCertifierTeamResponsibilityModal">
+                                <i class="fa fa-lg fa-th-list" style="padding-right: 10px;"></i>Allocate certifier team
+                                responsibility
+                            </button>
                             <%= render 'allocate_certifier_team_responsibility', project: @project, certification_path: @certification_path, scheme_mix: @scheme_mix %>
                         <% end %>
                     <% end %>
