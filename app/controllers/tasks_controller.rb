@@ -10,6 +10,6 @@ class TasksController < AuthenticatedController
       @default_values[:project_id] = params[:project_id]
     end
 
-    @tasks = TaskService::get_tasks(page: params[:page], user: current_user, project_id: @default_values[:project_id])
+    @tasks = TaskService::get_tasks(page: params[:page], per_page: 25, user: current_user, project_id: @default_values[:project_id])
   end
 end

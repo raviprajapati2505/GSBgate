@@ -6,7 +6,7 @@ class CertificationPathsController < AuthenticatedController
 
   def show
     @page_title = @certification_path.name
-    @tasks = TaskService::get_tasks(page: params[:page], user: current_user, project_id: @project.id, certification_path_id: @certification_path.id)
+    @tasks = TaskService::get_tasks(page: params[:page], per_page: 25, user: current_user, project_id: @project.id, certification_path_id: @certification_path.id)
   end
 
   def apply

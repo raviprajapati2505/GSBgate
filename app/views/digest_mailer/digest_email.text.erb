@@ -43,6 +43,9 @@ No tasks found.
 %>
 <%= I18n.t(".description_#{task.description_id}", scope: [:tasks, :tasks]) %> | <%= breadcrumbs[:names].last %> | <% if task.model.class.method_defined?(:due_date) && task.model.due_date.present? %><%= I18n.l(task.model.due_date, format: :short) %><% else %>-<% end %>
 <% end %>
+<% if @more_tasks > 0 %>
+    <%= @more_tasks %> more...
+<% end %>
 <% end %>
 
 With kind regards,

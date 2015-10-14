@@ -67,6 +67,9 @@
             <% end %>
             </tbody>
         </table>
+        <% if @more_tasks > 0 %>
+            <span style='font-size: 9pt; font-family: "Verdana", "sans-serif";'><%= @more_tasks %> <%= link_to 'more', tasks_url, {style: 'color: #000; font-size: 14pt; font-family: "Verdana", "sans-serif";'} %>...</span>
+        <% end %>
         <% end %>
         <br/>
         <p><span style='font-size: 9pt; font-family: "Verdana", "sans-serif";'>With kind regards,</span></p>
