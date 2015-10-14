@@ -39,15 +39,23 @@
                                     RequirementDatum.for_scheme_mix(@scheme_mix).not_required.count %>
                             <% total_count = RequirementDatum.for_scheme_mix(@scheme_mix).count %>
                             <div class="progress">
-                                <div class="progress-bar" style="min-width: 2em; width: <%= (total_count != 0 ? (processed_count * 100 / total_count) : 100) %>%;"><%= processed_count %>
-                                    /<%= total_count %></div>
+                                <div class="progress-bar" style="min-width: 2em; width: <%= (total_count != 0 ? (processed_count * 100 / total_count) : 100) %>%;">
+                                    <%= processed_count %>/<%= total_count %>
+                                </div>
                             </div>
                         </td>
                     </tr>
                     <tr>
                         <th>Approved Documents</th>
                         <td>
-                            <%= @scheme_mix.scheme_mix_criteria_documents.approved.count %>
+                            <% approved_count = @scheme_mix.scheme_mix_criteria_documents.approved.count %>
+                            <% awaiting_approval_count = @scheme_mix.scheme_mix_criteria_documents.awaiting_approval.count %>
+                            <% total_count = approved_count + awaiting_approval_count %>
+                            <div class="progress">
+                                <div class="progress-bar" style="min-width: 2em; width: <%= (total_count != 0 ? (approved_count * 100 / total_count) : 100) %>%;">
+                                    <%= approved_count %>/<%= total_count %>
+                                </div>
+                            </div>
                         </td>
                     </tr>
                     </tbody>
@@ -92,11 +100,7 @@
                                 <td style="min-width: 260px">
                                     <div class="score-graph"
                                          data-show-legend="false"
-                                         data-show-x-axis="<%= if i == 0 then
-                                                                 true
-                                                               else
-                                                                 false
-                                                               end %>"
+                                         data-show-x-axis="<%= if i == 0 then true else false end %>"
                                          data-show-values="true"
                                          data-width="260"
                                          data-height="80"
@@ -105,19 +109,28 @@
                                          data-max-attainable="<%= @scheme_mix.scheme.total_weighted_maximum_attainable_score_for_category(category) %>"
                                          data-targeted="<%= @scheme_mix.total_weighted_targeted_score_for_category(category) %>"
                                          data-submitted="<%= @scheme_mix.total_weighted_submitted_score_for_category(category) %>"
-                                         data-achieved="<%= @scheme_mix.total_weighted_achieved_score_for_category(category) %>"></div>
+                                         data-achieved="<%= @scheme_mix.total_weighted_achieved_score_for_category(category) %>">
+                                    </div>
                                 </td>
                                 <td>
                                     <% processed_count = RequirementDatum.for_scheme_mix(@scheme_mix).for_category(category).provided.count +
                                             RequirementDatum.for_scheme_mix(@scheme_mix).for_category(category).not_required.count %>
                                     <% total_count = RequirementDatum.for_scheme_mix(@scheme_mix).for_category(category).count %>
                                     <div class="progress">
-                                        <div class="progress-bar" style="min-width: 2em; width: <%= (total_count != 0 ? (processed_count * 100 / total_count) : 100) %>%;"><%= processed_count %>
-                                            /<%= total_count %></div>
+                                        <div class="progress-bar" style="min-width: 2em; width: <%= (total_count != 0 ? (processed_count * 100 / total_count) : 100) %>%;">
+                                            <%= processed_count %>/<%= total_count %>
+                                        </div>
                                     </div>
                                 </td>
                                 <td>
-                                    <%= category.scheme_mix_criteria_documents.approved.count %>
+                                    <% approved_count = category.scheme_mix_criteria_documents.approved.count %>
+                                    <% awaiting_approval_count = category.scheme_mix_criteria_documents.awaiting_approval.count %>
+                                    <% total_count = approved_count + awaiting_approval_count %>
+                                    <div class="progress">
+                                        <div class="progress-bar" style="min-width: 2em; width: <%= (total_count != 0 ? (approved_count * 100 / total_count) : 100) %>%;">
+                                            <%= approved_count %>/<%= total_count %>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                             <tr id="category-panel-<%= category.id %>" class="accordion-body collapse">
@@ -147,11 +160,7 @@
                                                     <td style="min-width: 260px">
                                                         <div class="score-graph"
                                                              data-show-legend="false"
-                                                             data-show-x-axis="<%= if j == 0 then
-                                                                                     true
-                                                                                   else
-                                                                                     false
-                                                                                   end %>"
+                                                             data-show-x-axis="<%= if j == 0 then true else false end %>"
                                                              data-show-values="true"
                                                              data-width="260"
                                                              data-height="80"
@@ -160,18 +169,27 @@
                                                              data-max-attainable="<%= scheme_mix_criterion.scheme_criterion.maximum_attainable_score %>"
                                                              data-targeted="<%= scheme_mix_criterion.targeted_score %>"
                                                              data-submitted="<%= scheme_mix_criterion.submitted_score %>"
-                                                             data-achieved="<%= scheme_mix_criterion.achieved_score %>"></div>
+                                                             data-achieved="<%= scheme_mix_criterion.achieved_score %>">
+                                                        </div>
                                                     </td>
                                                     <td>
                                                         <% processed_count = scheme_mix_criterion.requirement_data.provided.count + scheme_mix_criterion.requirement_data.not_required.count %>
                                                         <% total_count = scheme_mix_criterion.requirement_data.count %>
                                                         <div class="progress">
-                                                            <div class="progress-bar" style="min-width: 2em; width: <%= (total_count != 0 ? (processed_count * 100 / total_count) : 100) %>%;"><%= processed_count %>
-                                                                /<%= total_count %></div>
+                                                            <div class="progress-bar" style="min-width: 2em; width: <%= (total_count != 0 ? (processed_count * 100 / total_count) : 100) %>%;">
+                                                                <%= processed_count %>/<%= total_count %>
+                                                            </div>
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <%= scheme_mix_criterion.scheme_mix_criteria_documents.approved.count %>
+                                                        <% approved_count = scheme_mix_criterion.scheme_mix_criteria_documents.approved.count %>
+                                                        <% awaiting_approval_count = scheme_mix_criterion.scheme_mix_criteria_documents.awaiting_approval.count %>
+                                                        <% total_count = approved_count + awaiting_approval_count %>
+                                                        <div class="progress">
+                                                            <div class="progress-bar" style="min-width: 2em; width: <%= (total_count != 0 ? (approved_count * 100 / total_count) : 100) %>%;">
+                                                                <%= approved_count %>/<%= total_count %>
+                                                            </div>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             <% end %>
