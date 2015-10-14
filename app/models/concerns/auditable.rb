@@ -104,13 +104,41 @@ module Auditable
         if (action == AUDIT_LOG_UPDATE)
           if self.status_changed?
             system_messages << {message: 'The status of criterion %s was changed from %s to %s.', params: [self.name, self.changes[:status][0].humanize, self.changes[:status][1].humanize]}
-          elsif self.certifier_id_changed? or self.due_date_changed?
+          end
+          if self.certifier_id_changed? or self.due_date_changed?
             if self.certifier_id.blank?
               system_messages << {message: 'A GORD certifier was unassigned from criterion %s.', params: [self.name]}
             elsif self.due_date?
               system_messages << {message: 'Criterion %s was assigned to GORD certifier %s for review. The due date is %s.', params: [self.name, self.certifier.email, I18n.l(self.due_date, format: :short)]}
             else
               system_messages << {message: 'Criterion %s was assigned to GORD certifier %s for review.', params: [self.name, self.certifier.email]}
+            end
+          end
+          if self.targeted_score_changed?
+            if self.changes[:targeted_score][0].nil?
+              system_messages << {message: 'The targeted score of criterion %s was set to %s.', params: [self.name, self.changes[:targeted_score][1]]}
+            elsif self.changes[:targeted_score][1].nil?
+              system_messages << {message: 'The targeted score of criterion %s was removed.', params: [self.name]}
+            else
+              system_messages << {message: 'The targeted score of criterion %s was changed from %s to %s.', params: [self.name, self.changes[:targeted_score][0], self.changes[:targeted_score][1]]}
+            end
+          end
+          if self.submitted_score_changed?
+            if self.changes[:submitted_score][0].nil?
+              system_messages << {message: 'The submitted score of criterion %s was set to %s.', params: [self.name, self.changes[:submitted_score][1]]}
+            elsif self.changes[:submitted_score][1].nil?
+              system_messages << {message: 'The submitted score of criterion %s was removed.', params: [self.name]}
+            else
+              system_messages << {message: 'The submitted score of criterion %s was changed from %s to %s.', params: [self.name, self.changes[:submitted_score][0], self.changes[:submitted_score][1]]}
+            end
+          end
+          if self.achieved_score_changed?
+            if self.changes[:achieved_score][0].nil?
+              system_messages << {message: 'The achieved score of criterion %s was set to %s.', params: [self.name, self.changes[:achieved_score][1]]}
+            elsif self.changes[:achieved_score][1].nil?
+                system_messages << {message: 'The achieved score of criterion %s was removed.', params: [self.name]}
+            else
+              system_messages << {message: 'The achieved score of criterion %s was changed from %s to %s.', params: [self.name, self.changes[:achieved_score][0], self.changes[:achieved_score][1]]}
             end
           end
         end
