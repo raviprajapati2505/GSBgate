@@ -2,6 +2,9 @@ class DocumentsController < AuthenticatedController
   load_and_authorize_resource :project
   load_and_authorize_resource :certification_path, :through => :project
   load_and_authorize_resource :document
+  # cancan authorization will fail during create, as we don't have a link with the rest of our models yet
+  #  todo: have our form pass correctly formatted params, so cancan load resource can create the necessary child models, so we cna pass authorization
+  skip_authorize_resource :document, :only => :create
   before_action :set_controller_model
 
   def create
@@ -36,6 +39,10 @@ class DocumentsController < AuthenticatedController
   private
   def set_controller_model
     @controller_model = @document
+  end
+
+  def create_params
+    # TODO: handle custom params when creating a document
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
