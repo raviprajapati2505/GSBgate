@@ -332,8 +332,8 @@ class CertificationPath < ActiveRecord::Base
         throw(:error, 'There are still documents awaiting approval.')
       end
       # all criteria are completed
-      unless criterion.complete?
-        throw(:error, 'All criteria must have status \'complete\'.')
+      if criterion.in_progress?
+        throw(:error, 'All criteria must have status different from \'in progress\'.')
       end
       # all submitted scores provided
       if criterion.submitted_score.blank?

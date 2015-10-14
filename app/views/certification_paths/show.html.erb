@@ -20,6 +20,7 @@
             </div>
         </div>
         <div class="row">
+            <% if @certification_path.certification_path_status.id < CertificationPathStatus::SUBMITTING_PCR %>
             <div class="col-lg-6">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
@@ -30,6 +31,7 @@
                     </div>
                 </div>
             </div>
+            <% end %>
             <div class="col-lg-6">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">

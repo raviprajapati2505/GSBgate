@@ -18,7 +18,13 @@
                 <% @tasks.each do |task|
                   case task.type
                     when ProjectTask.name.demodulize
+                      breadcrumbs = breadcrumbs(task.project, with_prefix: false)
                  %>
+                    <tr class="clickable" data-href="<%= breadcrumbs[:paths].last %>">
+                        <td><%= t(".description_#{task.task_description_id}") %></td>
+                        <td><%= breadcrumbs[:names].last %></td>
+                        <td>-</td>
+                    </tr>
                 <%  when CertificationPathTask.name.demodulize
                         breadcrumbs = breadcrumbs(task.certification_path, with_prefix: false)
                  %>

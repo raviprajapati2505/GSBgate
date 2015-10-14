@@ -97,30 +97,21 @@ en:
       description_2: "Check registration and payment and advance certificate status"
       description_3: "Allocate requirements to project team members and set due dates"
       description_4: "Process requirement and set requirement status to 'provided' or 'not required'"
-      description_5: "Approve submitted scores by setting criteria status to 'complete'"
+      description_5: "Set submitted score and change criterion status to 'complete'"
       description_6: "Advance status"
       description_7: "Allocate criteria to certifier members and set due dates"
-      description_8: "Screen/Review criterion"
-      description_9: "Advance status"
-      description_10: "Process certifier comments and advance status (optionally apply for PCR track or appeal)"
+      description_8: "Screen criterion and advance status"
+      description_10: "Process certifier comments and advance status (optionally apply for PCR track)"
       description_11: "Check whether there is a PCR track and payment"
       description_12: "Set status to 'awaiting submission after pcr'"
-#      description_13: see 8
-#      description_14: see 9
-      description_15: "Process reviewing comments and advance certificate status"
+      description_14: "Advance status"
       description_16: "Verify criterion and set criterion status to 'approved' or 'resubmit'"
       description_17: "Advance status"
-#      description_18: see 10
+      description_18: "Process certifier comments and advance status (optionally apply for appeal)"
       description_19: "Check payment for appeal and advance certificate status"
-#      description_20: see 4
-#      description_21: see 6
-#      description_22: see 16
-#      description_23: see 17
-#      description_24: see 10
+      description_24: "Process certifier comments and advance status"
       description_25: "Quick check and approve"
       description_26: "Approve and generate certificate"
-      description_27: "Set status to certified"
-      description_28: "Download certificate"
       description_29: "Document is waiting for approval"
       tooltip_due_date: "Task is overdue"
   users:

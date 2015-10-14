@@ -1,6 +1,28 @@
 module Taskable
   extend ActiveSupport::Concern
 
+  SYS_ADMIN_ASSIGN = 1
+  SYS_ADMIN_REG_APPROVE = 2
+  PROJ_MNGR_ASSIGN = 3
+  PROJ_MEM_REQ = 4
+  PROJ_MNGR_CRIT_APPROVE = 5
+  PROJ_MNGR_SUB_APPROVE = 6
+  CERT_MNGR_ASSIGN = 7
+  CERT_MNGR_SCREEN = 8
+  PROJ_MNGR_PROC_SCREENING = 10
+  SYS_ADMIN_PCR_ALLOWED = 11
+  SYS_ADMIN_PCR_APPROVE = 12
+  PROJ_MNGR_PROC_PCR = 14
+  CERT_MEM_VERIFY = 16
+  CERT_MNGR_VERIFICATION_APPROVE = 17
+  PROJ_MNGR_PROC_VERIFICATION = 18
+  SYS_ADMIN_APPEAL_APPROVE = 19
+  PROJ_MNGR_PROC_VERIFICATION_APPEAL = 24
+  GORD_MNGR_APPROVE = 25
+  GORD_TOP_MNGR_APPROVE = 26
+  PROJ_MNGR_DOWNLOAD = 28
+  PROJ_MNGR_DOC_APPROVE = 29
+
   included do
     after_create :after_create
     after_update :after_update
@@ -52,22 +74,22 @@ module Taskable
 
   def handle_created_projects_user
     case ProjectsUser.roles[self.role]
-      # Certifier manager is assigned to project
+      # A certifier manager is assigned to project
       when ProjectsUser.roles[:certifier_manager]
         # Destroy all system admin tasks to assign a certifier manager for this project
-        CertificationPathTask.delete_all(task_description_id: 1, project: self.project)
+        ProjectTask.delete_all(task_description_id: SYS_ADMIN_ASSIGN, project: self.project)
     end
   end
 
   def handle_created_certification_path
     unless self.project.certifier_manager_assigned?
       # Create system admin task to assign a certifier manager
-      ProjectTask.create(task_description_id: 1,
-                                   application_role: User.roles[:system_admin],
-                                   project: self.project)
+      ProjectTask.create(task_description_id: SYS_ADMIN_ASSIGN,
+                         application_role: User.roles[:system_admin],
+                         project: self.project)
     end
     # Create system admin task to advance the certification path status
-    CertificationPathTask.create(task_description_id: 2,
+    CertificationPathTask.create(task_description_id: SYS_ADMIN_REG_APPROVE,
                                  application_role: User.roles[:system_admin],
                                  project: self.project,
                                  certification_path: self)
@@ -75,7 +97,7 @@ module Taskable
 
   def handle_created_scheme_mix_criteria_document
     # Create project manager task to approve/reject document
-    SchemeMixCriterionDocumentTask.create(task_description_id: 29,
+    SchemeMixCriterionDocumentTask.create(task_description_id: PROJ_MNGR_DOC_APPROVE,
                                           project_role: ProjectsUser.roles[:project_manager],
                                           project: self.scheme_mix_criterion.scheme_mix.certification_path.project,
                                           scheme_mix_criteria_document: self)
@@ -83,373 +105,406 @@ module Taskable
 
   def handle_updated_projects_user
     if self.role_changed?
-      # TODO ? unassign project team members from requirement tasks
-      # TODO ? unassign certifiers from criteria tasks
-      leave_role(self.role_was, self.user, self.project)
+      lost_role(self.role_was)
       case ProjectsUser.roles[self.role]
-        # A user with access to the project is now certifier manager
+        # when ProjectsUser.roles[:project_team_member]
+        # when ProjectsUser.roles[:certifier]
+        # project user role is changed to certifier manager
         when ProjectsUser.roles[:certifier_manager]
           # Destroy all system admin tasks to assign a certifier manager for this project
-          CertificationPathTask.delete_all(task_description_id: 1, project: self.project)
-        else
+          ProjectTask.delete_all(task_description_id: SYS_ADMIN_ASSIGN, project: self.project)
       end
     end
   end
 
   def handle_updated_certification_path
+    handle_certification_status_changed
+    handle_pcr_track_changed
+    handle_pcr_track_allowed_changed
+  end
+
+  def handle_certification_status_changed
     if self.certification_path_status_id_changed?
       case self.certification_path_status_id
         when CertificationPathStatus::ACTIVATING
+          # TODO
         when CertificationPathStatus::SUBMITTING
           # Create project manager tasks to assign project team members to requirements
           self.requirement_data.unassigned.required.each do |requirement_datum|
-            RequirementDatumTask.create(task_description_id: 3,
+            RequirementDatumTask.create(task_description_id: PROJ_MNGR_ASSIGN,
                                         project_role: ProjectsUser.roles[:project_manager],
                                         project: self.project,
                                         requirement_datum: requirement_datum)
           end
-          # Destroy all system admin tasks to advance the certification path status
-          CertificationPathTask.delete_all(task_description_id: 2, certification_path: self)
+          # Destroy system admin tasks to advance status
+          CertificationPathTask.delete_all(task_description_id: SYS_ADMIN_REG_APPROVE, certification_path: self)
         when CertificationPathStatus::SCREENING
+          # ASSUMING CERTIFIER MANAGER IS RESPONSIBLE FOR SCREENING !
+          # ---------------------------------------------------------
+          # Create certifier manager task to screen certification path
+          CertificationPathTask.create(task_description_id: CERT_MNGR_SCREEN,
+                                       project_role: ProjectsUser.roles[:certifier_manager],
+                                       project: self.project,
+                                       certification_path: self)
+          # Destroy project manager tasks to advance status
+          CertificationPathTask.delete_all(task_description_id: PROJ_MNGR_SUB_APPROVE, certification_path: self)
+        when CertificationPathStatus::SUBMITTING_AFTER_SCREENING
+          # Create project manager task to process screening comments
+          CertificationPathTask.create(task_description_id: PROJ_MNGR_PROC_SCREENING,
+                                       project_role: ProjectsUser.roles[:project_manager],
+                                       project: self.project,
+                                       certification_path: self)
+          # Destroy certifier manager tasks to screen certification path
+          CertificationPathTask.delete_all(task_description_id: CERT_MNGR_SCREEN, certification_path: self)
+        when CertificationPathStatus::PROCESSING_PCR_PAYMENT
+          if self.pcr_track_allowed == true
+            # Create system admin task to advance the certification path status
+            CertificationPathTask.create(task_description_id: SYS_ADMIN_PCR_APPROVE,
+                                         application_role: User.roles[:system_admin],
+                                         project: self.project,
+                                         certification_path: self)
+          end
+          # Destroy project manager tasks to process screening comments
+          CertificationPathTask.delete_all(task_description_id: PROJ_MNGR_PROC_SCREENING, certification_path: self)
+        when CertificationPathStatus::SUBMITTING_PCR
+          # ASSUMING PROJECT MANAGER IS RESPONSIBLE FOR TAKING ACTION !
+          # -----------------------------------------------------------
+          # Create project manager task to advance status
+          CertificationPathTask.create(task_description_id: PROJ_MNGR_PROC_PCR,
+                                       project_role: ProjectsUser.roles[:project_manager],
+                                       project: self.project,
+                                       certification_path: self)
           # Create certifier manager tasks to assign certifier team members to criteria
           self.scheme_mix_criteria.unassigned.complete.each do |scheme_mix_criterion|
-            SchemeMixCriterionTask.create(task_description_id: 7,
+            SchemeMixCriterionTask.create(task_description_id: CERT_MNGR_ASSIGN,
                                           project_role: ProjectsUser.roles[:certifier_manager],
                                           project: self.project,
                                           scheme_mix_criterion: scheme_mix_criterion)
           end
-          # Destroy project manager tasks to advance certification path status
-          CertificationPathTask.delete_all(task_description_id: 6, certification_path: self)
-        when CertificationPathStatus::SUBMITTING_AFTER_SCREENING
-          # SPECIAL CASE !!!
-          # Create project manager task to process screening comments
-          CertificationPathTask.create(task_description_id: 10,
-                                       project_role: ProjectsUser.roles[:project_manager],
-                                       project: self.project,
-                                       certification_path: self)
-          # Destroy all certifier manager tasks to advance status
-          CertificationPathTask.delete_all(task_description_id: 9, certification_path: self)
-          self.scheme_mix_criteria.each do |criterion|
-            # Destroy all certifier team member tasks to screen criteria
-            SchemeMixCriterionTask.delete_all(task_description_id: 8, scheme_mix_criterion: criterion)
-          end
-        when CertificationPathStatus::PROCESSING_PCR_PAYMENT
-          # Destroy all project manager tasks to process screening comments
-          CertificationPathTask.delete_all(task_description_id: 10, certification_path: self)
-        when CertificationPathStatus::SUBMITTING_PCR
-          # SPECIAL CASE !!!
-          # Create project manager task to advance status
-          CertificationPathTask.create(task_description_id: 15,
-                                       project_role: ProjectsUser.roles[:project_manager],
-                                       project: self.project,
-                                       certification_path: self)
-          # Create certifier team member task to review criteria (together with project manager?)
-          self.scheme_mix_criteria.each do |scheme_mix_criterion|
-            SchemeMixCriterionTask.create(task_description_id: 8,
-                                          user: scheme_mix_criterion.certifier,
-                                          project: self.project,
-                                          scheme_mix_criterion: scheme_mix_criterion)
-          end
-          # Destroy all system admin tasks to advance the certification path status
-          CertificationPathTask.delete_all(task_description_id: 12, certification_path: self)
+          # Destroy system admin tasks to advance the certification path status
+          CertificationPathTask.delete_all(task_description_id: SYS_ADMIN_PCR_APPROVE, certification_path: self)
         when CertificationPathStatus::VERIFYING
-          # SPECIAL CASE !!!
-          # Create certifier team member task to verify criteria
-          self.scheme_mix_criteria.each do |scheme_mix_criterion|
-            SchemeMixCriterionTask.create(task_description_id: 16,
+          self.scheme_mix_criteria.complete.where.not(certifier: nil).each do |scheme_mix_criterion|
+            # Create certifier team member task to verify the criterion
+            SchemeMixCriterionTask.create(task_description_id: CERT_MEM_VERIFY,
                                           user: scheme_mix_criterion.certifier,
                                           project: self.project,
                                           scheme_mix_criterion: scheme_mix_criterion)
           end
-          # Destroy certifier team member tasks to review criteria
-          self.scheme_mix_criteria.each do |scheme_mix_criterion|
-            SchemeMixCriterionTask.where(task_description_id: 8, scheme_mix_criterion: scheme_mix_criterion)
-          end
-          # Destroy project manager tasks to advance status
-          CertificationPathTask.delete_all(task_description_id: 15, certification_path: self)
+          # Destroy project manager tasks to process PCR comments
+          CertificationPathTask.delete_all(task_description_id: PROJ_MNGR_PROC_PCR, certification_path: self)
+          # IF PCR IS SKIPPED
+          # Destroy project manager tasks to process screening comments
+          CertificationPathTask.delete_all(task_description_id: PROJ_MNGR_PROC_SCREENING, certification_path: self)
         when CertificationPathStatus::ACKNOWLEDGING
           # Create project manager task to process verification comments
-          CertificationPathTask.create(task_description_id: 10,
+          CertificationPathTask.create(task_description_id: PROJ_MNGR_PROC_VERIFICATION,
                                        project_role: ProjectsUser.roles[:project_manager],
                                        project: self.project,
                                        certification_path: self)
-          # Destroy all certifier manager tasks to advance status
-          CertificationPathTask.delete_all(task_description_id: 17, certification_path: self)
+          # Destroy certifier manager tasks to advance status
+          CertificationPathTask.delete_all(task_description_id: CERT_MNGR_VERIFICATION_APPROVE, certification_path: self)
         when CertificationPathStatus::PROCESSING_APPEAL_PAYMENT
+          # TODO how is appeal implemented ?
           # Create system admin task to check appeal payment
-          CertificationPathTask.create(task_description_id: 19,
+          CertificationPathTask.create(task_description_id: SYS_ADMIN_APPEAL_APPROVE,
                                        application_role: User.roles[:system_admin],
                                        project: self.project,
                                        certification_path: self)
-          # Destroy all project manager tasks to process verification comments
-          CertificationPathTask.delete_all(task_description_id: 10, certification_path: self)
+          # Destroy project manager tasks to process verification comments
+          CertificationPathTask.delete_all(task_description_id: PROJ_MNGR_PROC_VERIFICATION, certification_path: self)
         when CertificationPathStatus::SUBMITTING_AFTER_APPEAL
-          # Create project team members tasks to provide requirements
-          self.requirement_data.where.not(user: nil).required.each do |requirement_datum|
-            RequirementDatumTask.create(task_description_id: 4,
-                                        user: requirement_datum.user,
-                                        project: self.project,
-                                        requirement_datum: requirement_datum)
-          end
+          # TODO criteria status must be reset to 'in progress' by whom (sys admin) ?
+          # TODO requirements status must be reset to 'required' by whom (sys admin) ?
           # Destroy system admin tasks to check appeal payment
-          CertificationPathTask.delete_all(task_description_id: 19, certification_path: self)
+          CertificationPathTask.delete_all(task_description_id: SYS_ADMIN_APPEAL_APPROVE, certification_path: self)
         when CertificationPathStatus::VERIFYING_AFTER_APPEAL
-          # Create certifiers tasks to verify criteria
-          self.scheme_mix_criteria.each do |scheme_mix_criterion|
-            SchemeMixCriterionTask.create(task_description_id: 16,
-                                          user: scheme_mix_criterion.certifier,
-                                          project: self.project,
-                                          scheme_mix_criterion: scheme_mix_criterion)
-          end
           # Destroy project manager tasks to advance certification path status
-          CertificationPathTask.delete_all(task_description_id: 6, certification_path: self)
+          CertificationPathTask.delete_all(task_description_id: PROJ_MNGR_SUB_APPROVE, certification_path: self)
         when CertificationPathStatus::ACKNOWLEDGING_AFTER_APPEAL
           # Create project manager task to process verification comments
-          CertificationPathTask.create(task_description_id: 10,
+          CertificationPathTask.create(task_description_id: PROJ_MNGR_PROC_VERIFICATION_APPEAL,
                                        project_role: ProjectsUser.roles[:project_manager],
                                        project: self.project,
                                        certification_path: self)
-          # Destroy all certifier manager tasks to advance status
-          CertificationPathTask.delete_all(task_description_id: 17, certification_path: self)
+          # Destroy certifier manager tasks to advance status
+          CertificationPathTask.delete_all(task_description_id: CERT_MNGR_VERIFICATION_APPROVE, certification_path: self)
         when CertificationPathStatus::APPROVING_BY_MANAGEMENT
-          # todo: create task for manager (advance certificate path status)
-
-          # # Create task for GORD manager to quick check and approve
-          # CertificationPathTask.create(task_description_id: 25,
-          #                              application_role: User.roles[:gord_manager],
-          #                              project: self.project,
-          #                              certification_path: self)
-          # # Destroy all project manager tasks to process verification comments
-          # CertificationPathTask.delete_all(task_description_id: 10, certification_path: self)
-        when CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT
-          # todo: create task for top manager (advance certificate path status)
-        when CertificationPathStatus::CERTIFIED
-          # Create project manager task to download certificate
-          CertificationPathTask.create(task_description_id: 28,
-                                       project_role: ProjectsUser.roles[:project_manager],
+          # Create GORD manager task to quick check and approve
+          CertificationPathTask.create(task_description_id: GORD_MNGR_APPROVE,
+                                       application_role: User.roles[:gord_manager],
                                        project: self.project,
                                        certification_path: self)
-          # Destroy all gord top manager tasks to advance certification path status
-          CertificationPathTask.delete_all(task_description_id: 27, certification_path: self)
+          # Destroy project manager tasks to process verification comments
+          CertificationPathTask.delete_all(task_description_id: PROJ_MNGR_PROC_VERIFICATION_APPEAL, certification_path: self)
+          # IF APPEAL IS SKIPPED
+          # Destroy project manager tasks to process verification comments
+          CertificationPathTask.delete_all(task_description_id: PROJ_MNGR_PROC_VERIFICATION, certification_path: self)
+        when CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT
+          # Create GORD top manager task to approve
+          CertificationPathTask.create(task_description_id: GORD_TOP_MNGR_APPROVE,
+                                       application_role: User.roles[:gord_top_manager],
+                                       project: self.project,
+                                       certification_path: self)
+          # Destroy GORD manager tasks to approve
+          CertificationPathTask.delete_all(task_description_id: GORD_MNGR_APPROVE, certification_path: self)
+        when CertificationPathStatus::CERTIFIED
+          # Destroy GORD top manager tasks to approve
+          CertificationPathTask.delete_all(task_description_id: GORD_TOP_MNGR_APPROVE, certification_path: self)
         when CertificationPathStatus::NOT_CERTIFIED
-          # Destroy all project manager tasks to process verification comments
-          CertificationPathTask.delete_all(task_description_id: 10, certification_path: self)
-      end
-    end
-    handle_pcr_track
-    handle_pcr_track_allowed
-  end
-
-  def handle_updated_scheme_mix_criterion
-    if self.status_changed?
-      case SchemeMixCriterion.statuses[self.status]
-        when SchemeMixCriterion.statuses[:in_progress]
-          # TODO see if certification task must be destroyed and criterion task must be created
-        when SchemeMixCriterion.statuses[:complete]
-          # Test if no criteria with status 'in progress' are still linked to certification path in status 'submitting'
-          if CertificationPath.joins(:scheme_mixes)
-                 .where(id: self.scheme_mix.certification_path.id, certification_path_status_id: CertificationPathStatus::SUBMITTING)
-                 .where.not('exists(select smc.id from scheme_mix_criteria smc where smc.scheme_mix_id = scheme_mixes.id and smc.status = 0)')
-                 .count.nonzero?
-            # Create project manager task to advance certification path status
-            CertificationPathTask.create(task_description_id: 6,
-                                         project_role: ProjectsUser.roles[:project_manager],
-                                         project: self.scheme_mix.certification_path.project,
-                                         certification_path: self.scheme_mix.certification_path)
-          end
-          # Destroy project manager tasks to set criterion status to complete
-          SchemeMixCriterionTask.delete_all(task_description_id: 5, scheme_mix_criterion: self)
-        when SchemeMixCriterion.statuses[:approved], SchemeMixCriterion.statuses[:resubmit]
-          # Test if no criteria with status 'complete' are still linked to certification path in status 'verifying'
-          if CertificationPath.joins(:scheme_mixes)
-                 .where(id: self.scheme_mix.certification_path.id, certification_path_status_id: CertificationPathStatus::VERIFYING)
-                 .where.not('exists(select smc.id from scheme_mix_criteria smc where smc.scheme_mix_id = scheme_mixes.id and smc.status = 1)')
-                 .count.nonzero?
-            # Create certifier manager task to advance certification path status
-            CertificationPathTask.create(task_description_id: 17,
-                                         project_role: ProjectsUser.roles[:certifier_manager],
-                                         project: self.scheme_mix.certification_path.project,
-                                         certification_path: self.scheme_mix.certification_path)
-          end
-          # Destroy certifier team member tasks to verify criteria
-          SchemeMixCriterionTask.delete_all(task_description_id: 16, scheme_mix_criterion: self)
-      end
-    end
-    # A/another certifier is assigned to the criterion
-    if self.certifier_id_changed?
-      if self.complete?
-        # Create certifier team member task to screen the criterion
-        SchemeMixCriterionTask.create(task_description_id: 8,
-                                      user: self.certifier,
-                                      project: self.scheme_mix.certification_path.project,
-                                      scheme_mix_criterion: self)
-        # Destroy all certifier manager tasks to assign certifier team member to this criterion
-        SchemeMixCriterionTask.delete_all(task_description_id: 7, scheme_mix_criterion: self)
-        # Destroy all certifier team member tasks to screen the criterion which are assigned to another user
-        SchemeMixCriterionTask.where.not(user: self.certifier).delete_all(task_description_id: 8, scheme_mix_criterion: self)
-        if CertificationPathTask.where(task_description_id: 9, certification_path: self.scheme_mix.certification_path).blank?
-          # Create certifier manager task to advance certificate path status
-          CertificationPathTask.create(task_description_id: 9,
-                                       project_role: ProjectsUser.roles[:certifier_manager],
-                                       certification_path: self.scheme_mix.certification_path)
-        end
+          # Destroy all certification path tasks
+          CertificationPathTask.delete_all(certification_path: self)
       end
     end
   end
 
-  def handle_updated_requirement_datum
-    if self.status_changed?
-      # TODO prevent that toggling between provided and not_required creates tasks
-      if self.provided? or self.not_required?
-        # Test if no requirements with status 'required' are still linked to criterion in status 'in progress'
-        if SchemeMixCriterion.joins(:scheme_mix_criteria_requirement_data)
-               .where(id: self.scheme_mix_criteria.first.id, status: 0)
-               .where.not('exists(select rd.id from requirement_data rd where rd.id = scheme_mix_criteria_requirement_data.requirement_datum_id and rd.status = 0)')
-               .count.nonzero?
-          # Create project manager task to set criterion status to complete
-          SchemeMixCriterionTask.create(task_description_id: 5,
-                                        project_role: ProjectsUser.roles[:project_manager],
-                                        project: self.scheme_mix_criteria.first.scheme_mix.certification_path.project,
-                                        scheme_mix_criterion: self.scheme_mix_criteria.first)
-        end
-        # Destroy project team member tasks to provide the requirement
-        RequirementDatumTask.delete_all(task_description_id: 4, requirement_datum: self)
-      end
-    end
-    # A/another project team member is assigned to the requirement
-    if self.user_id_changed?
-      if RequirementDatum.statuses[self.status_was] == RequirementDatum.statuses[:required]
-        # Create project team member task to provide the requirement
-        RequirementDatumTask.create(task_description_id: 4,
-                                    user: self.user,
-                                    project: self.scheme_mix_criteria.first.scheme_mix.certification_path.project,
-                                    requirement_datum: self)
-        # Destroy all project manager tasks to assign project team member
-        RequirementDatumTask.delete_all(task_description_id: 3, requirement_datum: self)
-        # Destroy all project team member tasks to provide the requirement which are assigned to another user
-        RequirementDatumTask.where.not(user: self.user).delete_all(task_description_id: 4, requirement_datum: self)
-      end
-    end
-
-  end
-
-  def handle_updated_scheme_mix_criteria_document
-    if self.status_changed?
-      # Destroy all project managers tasks to approve/reject document
-      SchemeMixCriterionDocumentTask.delete_all(task_description_id: 29, scheme_mix_criteria_document: self)
-    end
-  end
-
-  def handle_destroyed_projects_user
-    leave_role(self.role, self.user, self.project)
-  end
-
-  def leave_role(role, user, project)
-    project.certification_paths.each do |certification_path|
-      case certification_path.certification_path_status_id
-        when CertificationPathStatus::SUBMITTING, CertificationPathStatus::SUBMITTING_AFTER_APPEAL
-          # get all required unassigned requirements for this certificate and with no task 3
-          certification_path.requirement_data.unassigned.required.where.not('exists(select tasks.id from tasks where tasks.requirement_datum_id = requirement_data.id)').each do |requirement_datum|
-            RequirementDatumTask.create(task_description_id: 3,
-                                        project_role: ProjectsUser.roles[:project_manager],
-                                        project: self.project,
-                                        requirement_datum: requirement_datum)
-          end
-      end
-    end
-    # TODO create certifier manager tasks
-    case ProjectsUser.roles[role]
-      when ProjectsUser.roles[:certifier_manager]
-        unless self.project.certifier_manager_assigned?
-          # Create system admin task to assign a certifier manager
-          ProjectTask.create(task_description_id: 1,
-                                       application_role: User.roles[:system_admin],
-                                       project: self.project)
-        end
-    end
-  end
-
-  def handle_pcr_track
+  def handle_pcr_track_changed
     if self.pcr_track_changed?
       if self.pcr_track == true
         if self.pcr_track_allowed == false and self.certification_path_status_id < CertificationPathStatus::PROCESSING_PCR_PAYMENT
           # Create system admin task to check PCR payment
-          CertificationPathTask.create(task_description_id: 11,
+          CertificationPathTask.create(task_description_id: SYS_ADMIN_PCR_ALLOWED,
                                        application_role: User.roles[:system_admin],
                                        project: self.project,
                                        certification_path: self)
         end
       elsif self.pcr_track_allowed == false and self.certification_path_status_id < CertificationPathStatus::PROCESSING_PCR_PAYMENT
-        CertificationPathTask.delete_all(task_description_id: 11, certification_path: self)
+        # Destroy system admin tasks to check PCR payment
+        CertificationPathTask.delete_all(task_description_id: SYS_ADMIN_PCR_ALLOWED, certification_path: self)
       end
     end
   end
 
-  def handle_pcr_track_allowed
+  def handle_pcr_track_allowed_changed
     if self.pcr_track_allowed_changed?
       if self.pcr_track_allowed == true
-        if self.pcr_track == true and self.certification_path_status_id < CertificationPathStatus::PROCESSING_PCR_PAYMENT
-          # Create system admin task to advance the certification path status
-          CertificationPathTask.create(task_description_id: 12,
-                                       application_role: User.roles[:system_admin],
-                                       project: self.project,
-                                       certification_path: self)
+        if self.pcr_track == true and self.certification_path_status_id <= CertificationPathStatus::PROCESSING_PCR_PAYMENT
+          if self.certification_path_status_id == CertificationPathStatus::PROCESSING_PCR_PAYMENT
+            # Create system admin task to advance the certification path status
+            CertificationPathTask.create(task_description_id: SYS_ADMIN_PCR_APPROVE,
+                                         application_role: User.roles[:system_admin],
+                                         project: self.project,
+                                         certification_path: self)
+          end
           # Destroy system admin tasks to check PCR payment
-          CertificationPathTask.delete_all(task_description_id: 11, certification_path: self)
+          CertificationPathTask.delete_all(task_description_id: SYS_ADMIN_PCR_ALLOWED, certification_path: self)
         end
-      elsif self.pcr_track == true and self.certification_path_status_id < CertificationPathStatus::PROCESSING_PCR_PAYMENT
-        CertificationPathTask.create(task_description_id: 11,
+      elsif self.pcr_track == true and self.certification_path_status_id <= CertificationPathStatus::PROCESSING_PCR_PAYMENT
+        # Create system admin task to check PCR payment
+        CertificationPathTask.create(task_description_id: SYS_ADMIN_PCR_ALLOWED,
                                      application_role: User.roles[:system_admin],
                                      project: self.project,
                                      certification_path: self)
-        CertificationPathTask.delete_all(task_description_id: 12, certification_path: self)
+        # Destroy system admin tasks to advance the certification path status
+        CertificationPathTask.delete_all(task_description_id: SYS_ADMIN_PCR_APPROVE, certification_path: self)
       end
     end
   end
 
-  # todo: remove this function
-  def handle_signed_by_gord_mngr
-    if self.signed_by_mngr_changed?
-      if self.signed_by_mngr == true
-        if self.signed_by_top_mngr == false and self.certification_path_status_id == CertificationPathStatus::APPROVING_BY_MANAGEMENT
-          # Create GORD top manager task to approve
-          CertificationPathTask.create(task_description_id: 26,
-                                       application_role: User.roles[:gord_top_manager],
-                                       project: self.project,
-                                       certification_path: self)
-          # Destroy all GORD manager tasks to check and approve certificate
-          CertificationPathTask.delete_all(task_description_id: 25, certification_path: self)
-        end
-      elsif self.signed_by_top_mngr == false and self.certification_path_status_id == CertificationPathStatus::APPROVING_BY_MANAGEMENT
-        CertificationPathTask.create(task_description_id: 25,
-                                     application_role: User.role[:gord_manager],
-                                     project: self.project,
-                                     certification_path: self)
-        CertificationPathTask.delete_all(task_description_id: 26, certification_path: self)
+  def handle_updated_scheme_mix_criterion
+    handle_criterion_status_changed
+    handle_criterion_assignment_changed
+  end
+
+  def handle_criterion_status_changed
+    if self.status_changed?
+      case SchemeMixCriterion.statuses[self.status]
+        # Can criterion status be reset to 'in progress' ?
+        when SchemeMixCriterion.statuses[:in_progress]
+          # TODO
+        when SchemeMixCriterion.statuses[:complete]
+          # Check if certification with status 'submitting' has no linked criteria in status 'in progress'
+          unless CertificationPath.joins(:scheme_mixes)
+                     .where(id: self.scheme_mix.certification_path.id, certification_path_status_id: [CertificationPathStatus::SUBMITTING, CertificationPathStatus::SUBMITTING_AFTER_APPEAL])
+                     .where.not('exists(select smc.id from scheme_mix_criteria smc where smc.scheme_mix_id = scheme_mixes.id and smc.status = ?)', SchemeMixCriterion.statuses[:in_progress])
+                     .count.zero?
+            # Create project manager task to advance certification path status
+            CertificationPathTask.create(task_description_id: PROJ_MNGR_SUB_APPROVE,
+                                         project_role: ProjectsUser.roles[:project_manager],
+                                         project: self.scheme_mix.certification_path.project,
+                                         certification_path: self.scheme_mix.certification_path)
+          end
+          # Destroy project manager tasks to set criterion status to 'complete'
+          SchemeMixCriterionTask.delete_all(task_description_id: PROJ_MNGR_CRIT_APPROVE, scheme_mix_criterion: self)
+        when SchemeMixCriterion.statuses[:approved], SchemeMixCriterion.statuses[:resubmit]
+          # Check if certification with status 'verifying' has no linked criteria in status 'complete'
+          unless CertificationPath.joins(:scheme_mixes)
+                     .where(id: self.scheme_mix.certification_path.id, certification_path_status_id: [CertificationPathStatus::VERIFYING, CertificationPathStatus::VERIFYING_AFTER_APPEAL])
+                     .where.not('exists(select smc.id from scheme_mix_criteria smc where smc.scheme_mix_id = scheme_mixes.id and smc.status = ?)', SchemeMixCriterion.statuses[:complete])
+                     .count.zero?
+            # Create certifier manager task to advance certification path status
+            CertificationPathTask.create(task_description_id: CERT_MNGR_VERIFICATION_APPROVE,
+                                         project_role: ProjectsUser.roles[:certifier_manager],
+                                         project: self.scheme_mix.certification_path.project,
+                                         certification_path: self.scheme_mix.certification_path)
+          end
+          # Destroy certifier member tasks to verify criterion
+          SchemeMixCriterionTask.delete_all(task_description_id: CERT_MEM_VERIFY, scheme_mix_criterion: self)
       end
     end
   end
 
-  # todo: remove this function
-  def handle_signed_by_gord_top_mngr
-    if self.signed_by_top_mngr_changed?
-      if self.signed_by_top_mngr == true
-        if self.signed_by_mngr == true and self.certification_path_status_id == CertificationPathStatus::APPROVING_BY_MANAGEMENT
-          # Create GORD top manager task to advance certification path status
-          CertificationPathTask.create(task_description_id: 27,
-                                       application_role: User.roles[:gord_top_manager],
-                                       project: self.project,
-                                       certification_path: self)
-          # Destroy all GORD top manager tasks to approve certificate
-          CertificationPathTask.delete_all(task_description_id: 26, certification_path: self)
+  def handle_criterion_assignment_changed
+    if self.certifier_id_changed?
+      # Can a criterion be assigned to nil ?
+      if self.certifier_id.nil?
+        # Create certifier manager task to assign certifier to the criterion
+        SchemeMixCriterionTask.create(task_description_id: CERT_MNGR_ASSIGN,
+                                      project_role: ProjectsUser.roles[:certifier_manager],
+                                      project: self.scheme_mix.certification_path.project,
+                                      scheme_mix_criterion: self)
+        # Destroy all certifier team member tasks to verify the criterion
+        SchemeMixCriterionTask.delete_all(task_description_id: CERT_MEM_VERIFY, scheme_mix_criterion: self)
+      else
+        # Destroy all certifier team member tasks to verify the criterion which are assigned to another user
+        SchemeMixCriterionTask.delete_all(task_description_id: CERT_MEM_VERIFY, scheme_mix_criterion: self)
+        if SchemeMixCriterion.statuses[self.status] == SchemeMixCriterion.statuses[:complete]
+          case self.scheme_mix.certification_path.certification_path_status_id
+            when CertificationPathStatus::VERIFYING, CertificationPathStatus::VERIFYING_AFTER_APPEAL
+              # Create certifier team member task to screen the criterion
+              SchemeMixCriterionTask.create(task_description_id: CERT_MEM_VERIFY,
+                                            user: self.certifier,
+                                            project: self.scheme_mix.certification_path.project,
+                                            scheme_mix_criterion: self)
+          end
         end
-      elsif self.signed_by_mngr == true and self.certification_path_status_id == CertificationPathStatus::APPROVING_BY_MANAGEMENT
-        CertificationPathTask.create(task_description_id: 26,
-                                     application_role: User.roles[:gord_top_manager],
-                                     project: self.project,
-                                     certification_path: self)
-        CertificationPathTask.delete_all(task_description_id: 27, certification_path: self)
+        # Destroy all certifier manager tasks to assign certifier team member to this criterion
+        SchemeMixCriterionTask.delete_all(task_description_id: CERT_MNGR_ASSIGN, scheme_mix_criterion: self)
       end
+    end
+  end
+
+  def handle_updated_requirement_datum
+    handle_requirement_status_changed
+    handle_requirement_assignment_changed
+  end
+
+  def handle_requirement_status_changed
+    if self.status_changed?
+      case RequirementDatum.statuses[self.status]
+        # Can requirement status be reset to 'required' ?
+        when RequirementDatum.statuses[:required]
+          if self.user.nil?
+            # Create project manager task to assign a project team member to the requirement
+            RequirementDatumTask.create(task_description_id: PROJ_MNGR_ASSIGN,
+                                        project_role: ProjectsUser.roles[:project_manager],
+                                        project: self.scheme_mix_criteria.first.scheme_mix.certification_path.project,
+                                        requirement_datum: self)
+          else
+            # Create project team member task to provide the requirement
+            RequirementDatumTask.create(task_description_id: PROJ_MEM_REQ,
+                                        user: self.user,
+                                        project: self.scheme_mix_criteria.first.scheme_mix.certification_path.project,
+                                        requirement_datum: self)
+          end
+          # Destroy project manager tasks to set criterion status to complete
+          SchemeMixCriterionTask.delete_all(task_description_id: PROJ_MNGR_CRIT_APPROVE,
+                                            project_role: ProjectsUser.roles[:project_manager],
+                                            project: self.scheme_mix_criteria.first.scheme_mix.certification_path.project,
+                                            requirement_datum_id: self.id)
+        when RequirementDatum.statuses[:provided], RequirementDatum.statuses[:not_required]
+          # Check if criterion with status 'in progress' has no linked requirements in status 'required'
+          unless SchemeMixCriterion.joins(:scheme_mix_criteria_requirement_data)
+                     .where(id: self.scheme_mix_criteria.first.id, status: SchemeMixCriterion.statuses[:in_progress])
+                     .where.not('exists(select rd.id from requirement_data rd inner join scheme_mix_criteria_requirement_data smcrd on smcrd.requirement_datum_id = rd.id where smcrd.scheme_mix_criterion_id = scheme_mix_criteria.id and rd.status = ?)', RequirementDatum.statuses[:required])
+                     .count.zero?
+            # Create project manager task to set criterion status to complete
+            SchemeMixCriterionTask.create(task_description_id: PROJ_MNGR_CRIT_APPROVE,
+                                          project_role: ProjectsUser.roles[:project_manager],
+                                          project: self.scheme_mix_criteria.first.scheme_mix.certification_path.project,
+                                          scheme_mix_criterion: self.scheme_mix_criteria.first)
+          end
+          # Destroy project manager tasks to assign project team members to requirement and project team member tasks to provide the requirement
+          RequirementDatumTask.delete_all(task_description_id: [PROJ_MNGR_ASSIGN, PROJ_MEM_REQ], requirement_datum_id: self.id)
+      end
+    end
+  end
+
+  def handle_requirement_assignment_changed
+    if self.user_id_changed?
+      # Can a requirement be assigned to nil ?
+      if self.user_id.nil?
+        # Create project manager task to assign project team member
+        RequirementDatumTask.create(task_description_id: PROJ_MNGR_ASSIGN,
+                                    project_role: ProjectsUser.roles[:project_manager],
+                                    project: self.scheme_mix_criteria.first.scheme_mix.certification_path.project,
+                                    requirement_datum: self)
+        # Destroy project team member tasks to provide the requirement
+        RequirementDatumTask.delete_all(task_description_id: PROJ_MEM_REQ, requirement_datum_id: self.id)
+      else
+        # Destroy project team member tasks to provide the requirement (which are assigned to another user)
+        RequirementDatumTask.delete_all(task_description_id: PROJ_MEM_REQ, requirement_datum_id: self.id)
+        if RequirementDatum.statuses[self.status] == RequirementDatum.statuses[:required]
+          if self.scheme_mix_criteria.first.scheme_mix.certification_path.in_submission?
+            # Create project team member task to provide the requirement
+            RequirementDatumTask.create(task_description_id: PROJ_MEM_REQ,
+                                        user: self.user,
+                                        project: self.scheme_mix_criteria.first.scheme_mix.certification_path.project,
+                                        requirement_datum: self)
+          end
+        end
+        # Destroy project manager tasks to assign project team member
+        RequirementDatumTask.delete_all(task_description_id: PROJ_MNGR_ASSIGN, requirement_datum_id: self.id)
+      end
+    end
+  end
+
+  def handle_updated_scheme_mix_criteria_document
+    handle_document_status_changed
+  end
+
+  def handle_document_status_changed
+    if self.status_changed?
+      case SchemeMixCriteriaDocument.statuses[self.status]
+        when SchemeMixCriteriaDocument.statuses[:awaiting_approval]
+          # Create project manager task to approve/reject document
+          SchemeMixCriterionDocumentTask.create(task_description_id: PROJ_MNGR_DOC_APPROVE,
+                                                project_role: ProjectsUser.roles[:project_manager],
+                                                project: self.scheme_mix_criterion.scheme_mix.certification_path.project,
+                                                scheme_mix_criteria_document: self)
+        when SchemeMixCriteriaDocument.statuses[:approved], SchemeMixCriteriaDocument.statuses[:rejected], SchemeMixCriteriaDocument.statuses[:superseded]
+          # Destroy project managers tasks to approve/reject document
+          SchemeMixCriterionDocumentTask.delete_all(task_description_id: PROJ_MNGR_DOC_APPROVE, scheme_mix_criteria_document: self)
+      end
+    end
+  end
+
+  def handle_destroyed_projects_user
+    lost_role(self.role)
+  end
+
+  def lost_role(role)
+    case ProjectsUser.roles[role]
+      # A project team member is unassigned from project
+      when ProjectsUser.roles[:project_team_member]
+        # Create project manager tasks to assign project member to requirement
+        project.certification_paths.each do |certification_path|
+          certification_path.requirement_data.unassigned.required.where.not('exists(select tasks.id from tasks where tasks.requirement_datum_id = requirement_data.id and tasks.task_description_id = ?)', PROJ_MNGR_ASSIGN).each do |requirement_datum|
+            RequirementDatumTask.create(task_description_id: PROJ_MNGR_ASSIGN,
+                                        project_role: ProjectsUser.roles[:project_manager],
+                                        project: self.project,
+                                        requirement_datum: requirement_datum)
+          end
+        end
+      # A certifier is unassigned from project
+      when ProjectsUser.roles[:certifier]
+        # Create certifier manager tasks to assign certifier to criteria
+        project.certification_paths.each do |certification_path|
+          certification_path.scheme_mix_criteria.unassigned.where.not('exists(select tasks.id from tasks where tasks.scheme_mix_criterion_id = scheme_mix_criteria.id and tasks.task_description_id = ?)', CERT_MNGR_ASSIGN).each do |scheme_mix_criterion|
+            SchemeMixCriterionTask.create(task_description_id: CERT_MNGR_ASSIGN,
+                                          project_role: ProjectsUser.roles[:certifier_manager],
+                                          project: self.project,
+                                          scheme_mix_criterion: scheme_mix_criterion)
+          end
+        end
+      # A certifier manager is unassigned from project
+      when ProjectsUser.roles[:certifier_manager]
+        unless self.project.certifier_manager_assigned?
+          # Create system admin task to assign a certifier manager
+          ProjectTask.create(task_description_id: SYS_ADMIN_ASSIGN,
+                             application_role: User.roles[:system_admin],
+                             project: self.project)
+        end
     end
   end
 
