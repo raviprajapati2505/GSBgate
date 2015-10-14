@@ -3,13 +3,14 @@ class TasksController < AuthenticatedController
 
   def index
     @page_title = 'Tasks'
-    @default_values = {user_id: '', project_id: nil}
+
+    session[:project_id] = nil
 
     # Project filter
     if params[:project_id].present? and (params[:project_id].to_i > 0)
-      @default_values[:project_id] = params[:project_id]
+      session[:project_id] = params[:project_id]
     end
 
-    @tasks = TaskService::get_tasks(page: params[:page], per_page: 25, user: current_user, project_id: @default_values[:project_id])
+    @tasks = TaskService::get_tasks(page: params[:page], per_page: 25, user: current_user, project_id: session[:project_id])
   end
 end
