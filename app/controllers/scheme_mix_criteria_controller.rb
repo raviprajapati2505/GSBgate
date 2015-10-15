@@ -3,7 +3,7 @@ class SchemeMixCriteriaController < AuthenticatedController
   load_and_authorize_resource :certification_path, :through => :project
   load_and_authorize_resource :scheme_mix, :through => :certification_path
   load_and_authorize_resource :scheme_mix_criterion, :through => :scheme_mix
-  before_action :set_controller_model
+  before_action :set_controller_model, except: [:new, :create]
 
   def show
     @page_title = @scheme_mix_criterion.scheme_criterion.full_name

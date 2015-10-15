@@ -1,7 +1,7 @@
 class ProjectsUsersController < AuthenticatedController
   load_and_authorize_resource :project
   load_and_authorize_resource :projects_user, :through => :project
-  before_action :set_controller_model
+  before_action :set_controller_model, except: [:new, :create]
 
   def create
     @projects_user = ProjectsUser.new(authorizations_params)

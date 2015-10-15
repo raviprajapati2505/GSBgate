@@ -1,6 +1,6 @@
 class ProjectsController < AuthenticatedController
   load_and_authorize_resource :project
-  before_action :set_controller_model
+  before_action :set_controller_model, except: [:new, :create]
 
   # GET /projects
   # GET /projects.json

@@ -4,7 +4,7 @@ class SchemeMixCriteriaDocumentsController < AuthenticatedController
   load_and_authorize_resource :scheme_mix, :through => :certification_path
   load_and_authorize_resource :scheme_mix_criterion, :through => :scheme_mix
   load_and_authorize_resource :scheme_mix_criteria_document, :through => :scheme_mix_criterion
-  before_action :set_controller_model
+  before_action :set_controller_model, except: [:new, :create]
 
   def create
     if SchemeMixCriteriaDocument.exists?(scheme_mix_criteria_document_params)

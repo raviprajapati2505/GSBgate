@@ -6,7 +6,7 @@ class RequirementDataController < AuthenticatedController
   load_and_authorize_resource :scheme_mix, :through => :certification_path
   load_and_authorize_resource :scheme_mix_criterion, :through => :scheme_mix
   load_and_authorize_resource :requirement_datum, :through => :scheme_mix_criterion
-  before_action :set_controller_model
+  before_action :set_controller_model, except: [:new, :create]
 
   def update
     if @requirement_datum.calculator_datum.present?
