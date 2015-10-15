@@ -167,7 +167,11 @@ class CertificationPath < ActiveRecord::Base
           if can_leave_submitting_after_screening_status?
             # The next status depends on the PCR track flag
             if pcr_track?
-              return CertificationPathStatus::PROCESSING_PCR_PAYMENT
+              if pcr_track_allowed?
+                return CertificationPathStatus::SUBMITTING_PCR
+              else
+                return CertificationPathStatus::PROCESSING_PCR_PAYMENT
+              end
             else
               return CertificationPathStatus::VERIFYING
             end

@@ -193,6 +193,9 @@ module Taskable
           end
           # Destroy system admin tasks to advance the certification path status
           CertificationPathTask.delete_all(task_description_id: SYS_ADMIN_PCR_APPROVE, certification_path: self)
+          # IF PROCESSING PCR PAYMENT IS SKIPPED
+          # Destroy project manager tasks to process screening comments
+          CertificationPathTask.delete_all(task_description_id: PROJ_MNGR_PROC_SCREENING, certification_path: self)
         when CertificationPathStatus::VERIFYING
           self.scheme_mix_criteria.complete.where.not(certifier: nil).each do |scheme_mix_criterion|
             # Create certifier team member task to verify the criterion

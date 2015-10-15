@@ -3,7 +3,9 @@
     <div class="ibox criterion-details">
         <div class="ibox-title">
             <%= audit_log_label(@scheme_mix_criterion) %>
-            <% can_update_status = current_user.system_admin? || (@certification_path.in_submission? && current_user.project_manager?(@project)) || (@certification_path.in_verification? && current_user.certifier_manager?(@project)) %>
+            <% can_update_status = current_user.system_admin? ||
+                    (@certification_path.in_submission? && current_user.project_manager?(@project)) ||
+                    (@certification_path.in_verification? && (current_user.certifier_manager?(@project) || current_user.certifier?(@project))) %>
             <%= status_label(@scheme_mix_criterion.status, can_update_status, 'updateCriterionStatusModal') %>
             <h5>Criterion details</h5>
         </div>
