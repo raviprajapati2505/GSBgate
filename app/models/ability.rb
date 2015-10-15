@@ -47,6 +47,7 @@ class Ability
       can :update_status, CertificationPath, project: {projects_users: {user_id: user.id, role: ['certifier_manager', ProjectsUser.roles[:certifier_manager]]}}
       can :read, CertificationPath, project: {projects_users: {user_id: user.id}}
       can :apply, CertificationPath, project: {projects_users: {user_id: user.id, role: ['project_manager', ProjectsUser.roles[:project_manager]]}}
+      can :list, CertificationPath, project: {projects_users: {user_id: user.id}}
       # SchemeMix controller
       can :read, SchemeMix, certification_path: {project: {projects_users: {user_id: user.id, role: ['project_manager', ProjectsUser.roles[:project_manager]]}}}
       can :read, SchemeMix, certification_path: {project: {projects_users: {user_id: user.id}}}

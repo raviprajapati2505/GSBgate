@@ -14,7 +14,7 @@
             </li>
             <li>
                 <%= link_to tasks_path(user_id: current_user.id) do %>
-                    <i class="fa fa-lg fa-tasks"></i> <span class="nav-label">My Tasks</span>
+                    <i class="fa fa-lg fa-tasks"></i> <span class="nav-label">My Tasks<span class="badge"><%= TaskService::count_tasks(user: current_user) %></span></span>
                 <% end %>
             </li>
             <li>
