@@ -2,6 +2,7 @@ require 'file_size_validator'
 
 class Project < ActiveRecord::Base
   include Auditable
+  include Taskable
 
   MAXIMUM_DOCUMENT_FILE_SIZE = 25 # in MB
 

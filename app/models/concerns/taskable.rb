@@ -22,6 +22,7 @@ module Taskable
   GORD_TOP_MNGR_APPROVE = 26
   PROJ_MNGR_DOWNLOAD = 28
   PROJ_MNGR_DOC_APPROVE = 29
+  PROJ_MNGR_APPLY = 30
 
   included do
     after_create :after_create
@@ -36,6 +37,8 @@ module Taskable
     case self.class.name
       when CertificationPath.name.demodulize
         handle_created_certification_path
+      when Project.name.demodulize
+        handle_created_project
       when ProjectsUser.name.demodulize
         handle_created_projects_user
       when SchemeMixCriteriaDocument.name.demodulize
@@ -72,6 +75,11 @@ module Taskable
     end
   end
 
+  def handle_created_project
+    # Create a project manager task to apply for a certificate
+    ProjectTask.create(task_description_id: PROJ_MNGR_APPLY, project_role: ProjectsUser.roles[:project_manager], project: self)
+  end
+
   def handle_created_projects_user
     case ProjectsUser.roles[self.role]
       # A certifier manager is assigned to project
@@ -93,6 +101,8 @@ module Taskable
                                  application_role: User.roles[:system_admin],
                                  project: self.project,
                                  certification_path: self)
+    # Destroy project manager tasks to apply for a certification path
+    ProjectTask.delete_all(task_description_id: PROJ_MNGR_APPLY, project: self.project)
   end
 
   def handle_created_scheme_mix_criteria_document

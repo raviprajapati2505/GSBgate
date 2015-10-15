@@ -113,6 +113,7 @@ en:
       description_25: "Quick check and approve"
       description_26: "Approve and generate certificate"
       description_29: "Document is waiting for approval"
+      description_30: "Apply for a certification path"
       tooltip_due_date: "Task is overdue"
   users:
     index:

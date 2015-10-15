@@ -3,6 +3,11 @@ class TasksController < AuthenticatedController
 
   def index
     @page_title = 'Tasks'
+    if current_user.system_admin? or current_user.gord_manager? or current_user.gord_top_manager?
+      @projects = Project.all
+    else
+      @projects = current_user.projects
+    end
 
     session[:project_id] = nil
 
