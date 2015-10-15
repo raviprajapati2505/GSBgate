@@ -18,7 +18,7 @@ class TaskService
       tasks = tasks.where(project_id: project_id)
     end
 
-    tasks = tasks.distinct.paginate page: page, per_page: per_page
+    tasks = tasks.distinct.order('tasks.project_id', :certification_path_id, :scheme_mix_criterion_id, :requirement_datum_id, :scheme_mix_criteria_document_id).paginate page: page, per_page: per_page
   end
 
   def self::count_tasks(user: nil, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil, requirement_datum_id: nil, scheme_mix_criteria_document_id: nil)
