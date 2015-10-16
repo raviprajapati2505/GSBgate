@@ -86,9 +86,9 @@
                         <div class="col-md-7">
                             <% users = User.authorized_for_project(@project).with_certifier_project_role %>
                             <% if @scheme_mix_criterion.certifier.nil? %>
-                                <%= f.select :user_id, options_for_select(users.map { |k| [k.email, k.id]}), {label: 'Responsibility', include_blank: ''} %>
+                                <%= f.select :user_id, options_for_select(users.map { |k| [k.email, k.id]}), {label: 'Responsibility', include_blank: ''}, class: 'select2-certifier' %>
                             <% else %>
-                                <%= f.select :user_id, options_for_select(users.map { |k| [k.email, k.id]}, @scheme_mix_criterion.certifier.id), {label: 'Responsibility'} %>
+                                <%= f.select :user_id, options_for_select(users.map { |k| [k.email, k.id]}, @scheme_mix_criterion.certifier.id), {label: 'Responsibility', include_blank: ''}, class: 'select2-certifier' %>
                             <% end %>
                         </div>
                         <div class="col-md-5">
@@ -106,7 +106,7 @@
                                 <%= f.label :user_id, 'Responsibility' %>
                                 <p>This criterion is not yet assigned.</p>
                             <% else %>
-                                <%= f.select :user_id, options_for_select([@scheme_mix_criterion.certifier].map { |k| [k.email, k.id]}, @scheme_mix_criterion.certifier.id), {label: 'Responsibility'}, disabled: true %>
+                                <%= f.select :user_id, options_for_select([@scheme_mix_criterion.certifier].map { |k| [k.email, k.id]}, @scheme_mix_criterion.certifier.id), {label: 'Responsibility'}, disabled: true, class: 'select2-certifier' %>
                             <% end %>
                         </div>
                         <div class="col-md-5">
@@ -193,3 +193,5 @@
 </div>
 <%= render 'modal', project: @project, certification_path: @certification_path, scheme_mix: @scheme_mix, scheme_mix_criterion: @scheme_mix_criterion %>
 <div id="showCriteriaStatusLogsModal" class="modal fade"></div>
+<%= javascript_include_tag 'select_project_certifier' %>
+<%= javascript_include_tag 'select_project_assessor' %>

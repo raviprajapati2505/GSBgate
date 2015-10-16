@@ -219,5 +219,12 @@ var GSAS = {
             },
             initSelection: initSelectionFnc
         });
+    },
+    load_list: function (element, placeholder) {
+        element.select2({
+            allowClear: true,
+            placeholder: placeholder,
+            width: "100%"
+        });
     }
 }

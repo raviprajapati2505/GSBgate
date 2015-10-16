@@ -21,9 +21,9 @@
                             <% users = User.authorized_for_project(@project).with_assessor_project_role %>
                             <% if (users.count > 0) && (can? :read, @project.projects_users.first) %>
                                 <% if requirement_datum.user.nil? %>
-                                    <%= f.select :user_id, options_for_select(users.map { |k| [k.email, k.id]}), {label: 'Responsibility', include_blank: ''} %>
+                                    <%= f.select :user_id, options_for_select(users.map { |k| [k.email, k.id]}), {label: 'Responsibility', include_blank: ''}, class: 'select2-assessor' %>
                                 <% else %>
-                                    <%= f.select :user_id, options_for_select(users.map { |k| [k.email, k.id]}, requirement_datum.user.id), {label: 'Responsibility'} %>
+                                    <%= f.select :user_id, options_for_select(users.map { |k| [k.email, k.id]}, requirement_datum.user.id), {label: 'Responsibility', include_blank: ''}, class: 'select2-assessor' %>
                                 <% end %>
                             <% end %>
                         </div>
@@ -36,7 +36,7 @@
                                 <%= f.label :user_id, 'Responsibility' %>
                                 <p>This requirement is not assigned yet.</p>
                             <% else %>
-                                <%= f.select :user_id, options_for_select([requirement_datum.user].map { |k| [k.email, k.id]}, requirement_datum.user.id), {label: 'Responsibility'}, disabled: true %>
+                                <%= f.select :user_id, options_for_select([requirement_datum.user].map { |k| [k.email, k.id]}, requirement_datum.user.id), {label: 'Responsibility'}, disabled: true, class: 'select2-assessor' %>
                             <% end %>
                         </div>
                         <div class="col-md-5">
@@ -78,4 +78,3 @@
 <% if (current_user == requirement_datum.user) %>
     <%= render 'requirement_data/refuse_requirement', requirement_datum: requirement_datum, certification_path_id: certification_path_id, scheme_mix_id: scheme_mix_id, scheme_mix_criterion_id: scheme_mix_criterion_id %>
 <% end %>
-
