@@ -6,9 +6,12 @@
             </div>
             <div class="ibox-content">
                 <%= bootstrap_form_tag(url: tasks_path, method: 'get') do |f| %>
-                    <%= f.collection_select :project_id, @projects, :id, :name, { include_blank: '- All projects -', selected: session[:task_project_id] } %>
+                    <%= f.form_group do %>
+                        <%= f.label :project_id %><br/>
+                        <%= f.hidden_field :project_id, { class: 'select2-project-ajax', value: session[:task]['project_id'] } %>
+                    <% end %>
                     <div class="hr-line-dashed"></div>
-                    <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
+                    <%= button_tag type: 'submit', class: 'btn btn-primary', value: 'Apply_task_filter' do %>
                         <i title="Apply filter" class="fa fa-lg fa-filter" style="padding-right: 10px;"></i>Apply filter
                     <% end %>
                     <%= link_to tasks_path, class: 'btn btn-white' do %>
@@ -22,4 +25,4 @@
         <%= render 'tasks' %>
     </div>
 </div>
-<%= javascript_include_tag 'select_user' %>
+<%= javascript_include_tag 'select_project' %>

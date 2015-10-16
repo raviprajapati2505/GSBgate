@@ -9,13 +9,17 @@ class TasksController < AuthenticatedController
       @projects = current_user.projects
     end
 
-    session[:task_project_id] ||= nil
+    if params[:button].present?
+      session[:task] = {'project_id' => nil}
+    else
+      session[:task] ||= {'project_id' => nil}
+    end
 
     # Project filter
     if params[:project_id].present? and (params[:project_id].to_i > 0)
-      session[:task_project_id] = params[:project_id]
+      session[:task]['project_id'] = params[:project_id]
     end
 
-    @tasks = TaskService::get_tasks(page: params[:page], per_page: 25, user: current_user, project_id: session[:task_project_id])
+    @tasks = TaskService::get_tasks(page: params[:page], per_page: 25, user: current_user, project_id: session[:task]['project_id'])
   end
 end

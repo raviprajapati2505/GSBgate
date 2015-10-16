@@ -1,6 +1,6 @@
 class ProjectsController < AuthenticatedController
   load_and_authorize_resource :project
-  before_action :set_controller_model, except: [:new, :create]
+  before_action :set_controller_model, except: [:new, :create, :index]
 
   # GET /projects
   # GET /projects.json
@@ -16,9 +16,14 @@ class ProjectsController < AuthenticatedController
   # GET /projects/1
   # GET /projects/1.json
   def show
-    @page_title = @project.name
-    @certification_path = CertificationPath.new(project: @project)
-    @projects_user = ProjectsUser.new(project: @project)
+    respond_to do |format|
+      format.html {
+        @page_title = @project.name
+        @certification_path = CertificationPath.new(project: @project)
+        @projects_user = ProjectsUser.new(project: @project)
+      }
+      format.json { render json: @project, status: :ok }
+    end
   end
 
   def show_tools

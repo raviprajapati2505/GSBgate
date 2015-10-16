@@ -11,6 +11,9 @@ Rails.application.routes.draw do
 
   # Main nested resources of our application
   resources :projects, except: [ :destroy ] do
+    collection do
+      get 'list' => 'projects_users#list_projects'
+    end
     member do
       get 'tools' => 'projects#show_tools'
     end

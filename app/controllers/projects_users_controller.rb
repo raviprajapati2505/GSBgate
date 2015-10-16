@@ -1,6 +1,7 @@
 class ProjectsUsersController < AuthenticatedController
   load_and_authorize_resource :project
-  load_and_authorize_resource :projects_user, :through => :project
+  load_and_authorize_resource :projects_user, :through => :project, only: [:create, :edit, :show, :update, :destroy]
+  skip_authorization_check only: [:list_users_sharing_projects, :list_projects]
   before_action :set_controller_model, except: [:new, :create]
 
   def create
@@ -106,6 +107,35 @@ class ProjectsUsersController < AuthenticatedController
         end
         render json: {total_count: total_count, items: items} and return
       end
+    end
+  end
+
+  def list_projects
+    if params.has_key?(:q) && params.has_key?(:page)
+      if current_user.system_admin? or current_user.gord_top_manager? or current_user.gord_manager?
+        total_count = Project.where('name like ?', '%' + params[:q] + '%').count
+        items = Project.select('id, name as text')
+                    .where('name like ?', '%' + params[:q] + '%')
+                    .paginate(page: params[:page], per_page: 2)
+      else
+        project = Project.arel_table
+        projects_user = ProjectsUser.arel_table
+        join_on = project.create_on(project[:id].eq(projects_user[:project_id]))
+        outer_join = project.create_join(projects_user, join_on, Arel::Nodes::OuterJoin)
+
+        total_count = Project.distinct
+                          .joins(outer_join)
+                          .where('name like ?', '%' + params[:q] + '%')
+                          .where('projects_users.user_id = ?', current_user.id)
+                          .count
+        items = Project.select('projects.id as id, projects.name as text, projects.code as code, projects.latlng as latlng')
+                    .distinct
+                    .joins(outer_join)
+                    .where('name like ?', '%' + params[:q] + '%')
+                    .where('projects_users.user_id = ?', current_user.id)
+                    .paginate(page: params[:page], per_page: 2)
+      end
+      render json: {total_count: total_count, items: items}, status: :ok
     end
   end
 

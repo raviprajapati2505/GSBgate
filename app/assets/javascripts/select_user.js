@@ -13,6 +13,7 @@ $(function () {
 
     if ((typeof element !== 'undefined') && (typeof url !== 'undefined')) {
         element.select2({
+            allowClear: true,
             placeholder: "email address",
             width: "100%",
             ajax: {
@@ -41,7 +42,7 @@ $(function () {
                     dataType: 'json',
                 }).done(function(data) {
                     selection = {id: data.id, text: data.email};
-                   callback(selection);
+                    callback(selection);
                 });
             }
         });

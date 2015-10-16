@@ -10,49 +10,56 @@ class AuditLogsController < AuthenticatedController
       @projects = current_user.projects
     end
 
-    session[:audit_text] ||= ''
-    session[:audit_user_id] ||= ''
-    session[:audit_project_id] ||= ''
-    session[:audit_certification_path_id] ||= ''
-    session[:audit_date_from] ||= ''
-    session[:audit_time_from] ||= '0:00'
-    session[:audit_date_to] ||= ''
-    session[:audit_time_to] ||= '0:00'
-    session[:audit_only_comments] ||= false
+    if params[:button].present?
+      session[:audit] = {'text' => nil, 'user_id' => nil, 'project_id' => nil, 'certification_path_id' => nil, 'date_from' => '', 'time_from' => '0:00', 'date_to' => '', 'time_to' => '0:00', 'only_comments' => false}
+    else
+      session[:audit] ||= {'text' => nil, 'user_id' => nil, 'project_id' => nil, 'certification_path_id' => nil, 'date_from' => '', 'time_from' => '0:00', 'date_to' => '', 'time_to' => '0:00', 'only_comments' => false}
+    end
+
     @audit_logs = AuditLog.for_user_projects(current_user)
     @certification_paths_optionlist = []
 
     # Text filter
     if params[:text].present?
-      @audit_logs = @audit_logs.where('(system_message ILIKE ?) OR (user_comment ILIKE ?)' , "%#{params[:text]}%", "%#{params[:text]}%")
-      session[:audit_text] = params[:text]
+      session[:audit]['text'] = params[:text]
+    end
+    if session[:audit]['text'].present?
+      @audit_logs = @audit_logs.where('(system_message ILIKE ?) OR (user_comment ILIKE ?)' , "%#{session[:audit]['text']}%", "%#{session[:audit]['text']}%")
     end
 
     # User filter
     if params[:user_id].present? and (params[:user_id].to_i > 0)
-      @audit_logs = @audit_logs.where(user_id: params[:user_id].to_i)
-      session[:audit_user_id] = params[:user_id]
+      session[:audit]['user_id'] = params[:user_id]
+    end
+    if session[:audit]['user_id'].present?
+      @audit_logs = @audit_logs.where(user_id: session[:audit]['user_id'].to_i)
     end
 
     # Project filter
     if params[:project_id].present? and (params[:project_id].to_i > 0)
-      @audit_logs = @audit_logs.where(project_id: params[:project_id].to_i)
-      session[:audit_project_id] = params[:project_id]
-      @certification_paths_optionlist = Project.find(params[:project_id].to_i).certification_paths_optionlist
+      session[:audit]['project_id'] = params[:project_id]
+    end
+    if session[:audit]['project_id'].present?
+      @audit_logs = @audit_logs.where(project_id: session[:audit]['project_id'].to_i)
+      @certification_paths_optionlist = Project.find(session[:audit]['project_id'].to_i).certification_paths_optionlist
     end
 
     # Certification path filter
     if params[:certification_path_id].present? and (params[:certification_path_id].to_i > 0)
-      @audit_logs = @audit_logs.where(certification_path_id: params[:certification_path_id].to_i)
-      session[:audit_certification_path_id] = params[:certification_path_id]
+      session[:audit]['certification_path_id'] = params[:certification_path_id]
+    end
+    if session[:audit]['certification_path_id'].present?
+      @audit_logs = @audit_logs.where(certification_path_id: session[:audit]['certification_path_id'].to_i)
     end
 
     # Date from filter
     if params[:date_from].present?
+      session[:audit]['date_from'] = params[:date_from]
+      session[:audit]['tim_from'] = params[:time_from]
+    end
+    if session[:audit]['date_from'].present?
       begin
-        @audit_logs = @audit_logs.where('created_at >= ?', DateTime.strptime(params[:date_from] + ' ' + params[:time_from] + ':00', t('time.formats.filter')))
-        session[:audit_date_from] = params[:date_from]
-        session[:audit_time_from] = params[:time_from]
+        @audit_logs = @audit_logs.where('created_at >= ?', DateTime.strptime(session[:audit]['date_from'] + ' ' + session[:audit]['tim_from'] + ':00', t('time.formats.filter')))
       rescue ArgumentError
         flash[:alert] = 'The date/time from fields contained invalid data.'
       end
@@ -60,10 +67,12 @@ class AuditLogsController < AuthenticatedController
 
     # Date to filter
     if params[:date_to].present?
+      session[:audit]['date_to'] = params[:date_to]
+      session[:audit]['time_to'] = params[:time_to]
+    end
+    if session[:audit]['date_to'].present?
       begin
-        @audit_logs = @audit_logs.where('created_at <= ?', DateTime.strptime(params[:date_to] + ' ' + params[:time_to] + ':59', t('time.formats.filter')))
-        session[:audit_date_to] = params[:date_to]
-        session[:audit_time_to] = params[:time_to]
+        @audit_logs = @audit_logs.where('created_at <= ?', DateTime.strptime(session[:audit]['date_to'] + ' ' + session[:audit]['time_to'] + ':59', t('time.formats.filter')))
       rescue ArgumentError
         flash[:alert] = 'The date/time to fields contained invalid data.'
       end
@@ -71,8 +80,12 @@ class AuditLogsController < AuthenticatedController
 
     # Only show user comments filter
     if params[:only_user_comments].present?
+      session[:audit]['only_comments'] = true
+    else
+      session[:audit]['only_comments'] = false
+    end
+    if session[:audit]['only_comments'] == true
       @audit_logs = @audit_logs.where.not(user_comment: nil)
-      session[:audit_only_comments] = true
     end
 
     @audit_logs = @audit_logs.paginate page: params[:page], per_page: 12
