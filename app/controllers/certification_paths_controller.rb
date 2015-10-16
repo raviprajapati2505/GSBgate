@@ -5,8 +5,14 @@ class CertificationPathsController < AuthenticatedController
   before_action :certificate_exists_and_is_allowed, only: [:apply, :new, :create]
 
   def show
-    @page_title = @certification_path.name
-    @tasks = TaskService::get_tasks(page: params[:page], per_page: 25, user: current_user, project_id: @project.id, certification_path_id: @certification_path.id)
+    respond_to do |format|
+      format.html {
+        @page_title = @certification_path.name
+        @tasks = TaskService::get_tasks(page: params[:page], per_page: 25, user: current_user, project_id: @project.id, certification_path_id: @certification_path.id)
+      }
+      format.json { render json: {id: @certification_path.id, name: @certification_path.name}, status: :ok }
+    end
+
   end
 
   def apply
@@ -138,7 +144,7 @@ class CertificationPathsController < AuthenticatedController
   end
 
   def list
-    render json: @project.certification_paths_optionlist
+    render json: {total_count: @project.certification_paths.count, items: @project.certification_paths_optionlist}
   end
 
   private

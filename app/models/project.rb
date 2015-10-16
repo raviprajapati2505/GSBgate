@@ -77,9 +77,9 @@ class Project < ActiveRecord::Base
   end
 
   def certification_paths_optionlist
-    items = {}
+    items = []
     self.certification_paths.each do |certification_path|
-      items[certification_path.name] = certification_path.id
+      items << {id: certification_path.id, text: certification_path.name}
     end
     return items
   end

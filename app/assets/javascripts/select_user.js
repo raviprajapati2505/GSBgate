@@ -12,39 +12,17 @@ $(function () {
     }
 
     if ((typeof element !== 'undefined') && (typeof url !== 'undefined')) {
-        element.select2({
-            allowClear: true,
-            placeholder: "email address",
-            width: "100%",
-            ajax: {
-                url: url,
-                dataType: 'json',
-                quietMillis: 250,
-                data: function (term, page) {
-                    return {
-                        q: term,
-                        page: page
-                    };
-                },
-                results: function (data, page) {
-                    var more = (page * 25) < data.total_count;
-                    return {
-                        results: data.items,
-                        more: more
-                    };
-                },
-                cache: false
-            },
-            initSelection: function(el, callback) {
+
+        GSAS.load_list_ajax(element, '- All users -', url,
+            function(el, callback) {
                 return $.ajax({
                     type: 'GET',
                     url: Routes.user_path({id: el.val()}),
-                    dataType: 'json',
+                    dataType: 'json'
                 }).done(function(data) {
                     selection = {id: data.id, text: data.email};
                     callback(selection);
                 });
-            }
-        });
+            });
     }
 });

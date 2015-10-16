@@ -41,7 +41,6 @@ class AuditLogsController < AuthenticatedController
     end
     if session[:audit]['project_id'].present?
       @audit_logs = @audit_logs.where(project_id: session[:audit]['project_id'].to_i)
-      @certification_paths_optionlist = Project.find(session[:audit]['project_id'].to_i).certification_paths_optionlist
     end
 
     # Certification path filter

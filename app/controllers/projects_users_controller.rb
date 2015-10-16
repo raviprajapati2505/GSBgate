@@ -116,7 +116,7 @@ class ProjectsUsersController < AuthenticatedController
         total_count = Project.where('name like ?', '%' + params[:q] + '%').count
         items = Project.select('id, name as text')
                     .where('name like ?', '%' + params[:q] + '%')
-                    .paginate(page: params[:page], per_page: 2)
+                    .paginate(page: params[:page], per_page: 25)
       else
         project = Project.arel_table
         projects_user = ProjectsUser.arel_table
@@ -133,7 +133,7 @@ class ProjectsUsersController < AuthenticatedController
                     .joins(outer_join)
                     .where('name like ?', '%' + params[:q] + '%')
                     .where('projects_users.user_id = ?', current_user.id)
-                    .paginate(page: params[:page], per_page: 2)
+                    .paginate(page: params[:page], per_page: 25)
       end
       render json: {total_count: total_count, items: items}, status: :ok
     end

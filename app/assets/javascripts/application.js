@@ -190,5 +190,34 @@ var GSAS = {
             checkboxClass: 'icheckbox_square-green',
             radioClass: 'iradio_square-green'
         });
+    },
+
+    //Select2
+    load_list_ajax: function (element, placeholder, list_url, initSelectionFnc) {
+        element.select2({
+            allowClear: true,
+            placeholder: placeholder,
+            width: "100%",
+            ajax: {
+                url: list_url,
+                dataType: 'json',
+                quietMillis: 250,
+                data: function (term, page) {
+                    return {
+                        q: term,
+                        page: page
+                    };
+                },
+                results: function (data, page) {
+                    var more = (page * 25) < data.total_count;
+                    return {
+                        results: data.items,
+                        more: more
+                    };
+                },
+                cache: false
+            },
+            initSelection: initSelectionFnc
+        });
     }
 }
