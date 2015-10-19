@@ -1,0 +1,15 @@
+<%= link_to project_certification_path_path(certification_path.project, certification_path) do %>
+        <div>
+            <strong><%= certification_path.status %></strong>
+            <% if RequirementDatum.for_certification_path(certification_path).count.nonzero? %>
+            <span class="project-certification-progress">
+                (<%= RequirementDatum.for_certification_path(certification_path).completed.count * 100 / RequirementDatum.for_certification_path(certification_path).count %>&nbsp;%&nbsp;complete)
+            </span>
+            <% end %>
+        </div>
+        <div>
+            <%= render 'certification_paths/star_ratings', certification_path: certification_path %>
+        </div>
+<% end %>
+
+

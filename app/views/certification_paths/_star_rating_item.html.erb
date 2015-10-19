@@ -1,0 +1,23 @@
+<% achieved ||= false %>
+<% stars = CertificationPath.star_rating_for_score(score) %>
+<div>
+    <span class="text-right" style="width: 64px; display: inline-block;">
+        <%= score_label %>
+    </span>
+    <span class="text-right" style="width: 32px; display: inline-block;">
+        <%= number_with_precision(score, precisison: 2, significant: true) %>
+    </span>
+    <span>
+        &nbsp;&nbsp;=&nbsp;&nbsp;
+    </span>
+    <span style="white-space: nowrap">
+        <% if achieved %>
+            <% (5 + stars).times do %>
+                <i class="fa fa-star fa-lg"></i>
+            <% end %>
+        <% end %>
+    </span>
+    <span>
+        <%= "#{stars}&nbsp;#{'star'.pluralize(stars)}".html_safe %>
+    </span>
+</div>

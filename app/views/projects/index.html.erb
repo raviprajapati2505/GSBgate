@@ -3,38 +3,85 @@
         <h5>Project overview</h5>
     </div>
     <div class="ibox-content">
-        <table class="table table-bordered table-hover datatable">
+        <table class="table table-bordered table-hover nowrap datatable dt-responsive" cellspacing="0" width="100%">
             <thead>
+            <!--https://datatables.net/extensions/responsive/examples/display-control/classes.html-->
             <tr>
-                <th><%= Project.human_attribute_name('code') %></th>
-                <th><%= Project.human_attribute_name('name') %></th>
-                <th><%= Project.human_attribute_name('description') %></th>
-                <th><%= Project.human_attribute_name('country') %></th>
+                <th class="all"><%= Project.human_attribute_name('code') %></th>
+                <th class="all"><%= Project.human_attribute_name('name') %></th>
+                <th class="desktop">LOC</th>
+                <th class="desktop">Final Design</th>
+                <th class="desktop">Construction</th>
+                <th class="desktop">Operations</th>
+                <th class="desktop">Design Scheme(s)</th>
+                <th class="none"><%= Project.human_attribute_name('country') %></th>
+                <th class="none"><%= Project.human_attribute_name('construction_year') %></th>
+                <th class="none"><%= Project.human_attribute_name('description') %></th>
             </tr>
             </thead>
             <tbody>
             <% @projects.each do |project| %>
-                <tr class="clickable" data-href="<%= project_path(project) %>">
-                    <td><%= project.code %></td>
+                <tr>
                     <td>
-                        <%= project.name %>
+                        <%= project.code %>
                     </td>
-                    <td><%= project.description %><br>
-                        <% if project.certification_paths.count > 0 %>
-                            <% project.certification_paths.each do |certification_path| %>
-                                <% if certification_path.certification_path_status_id == CertificationPathStatus::SUBMITTING %>
-                                    <% if RequirementDatum.for_certification_path(certification_path).count.nonzero? %>
-                                        <div class="project-certification-progress"><%= certification_path.name %>: <%= certification_path.status %> for <%= RequirementDatum.for_certification_path(certification_path).completed.count * 100 / RequirementDatum.for_certification_path(certification_path).count %>% complete</div>
-                                    <% else %>
-                                        <div class="project-certification-progress"><%= certification_path.name %>: <%= certification_path.status %> with no progress yet</div>
-                                    <% end %>
-                                <% else %>
-                                    <div class="project-certification-progress"><%= certification_path.certificate.name %>: <%= certification_path.status %></div>
-                                <% end %>
-                            <% end %>
+                    <td>
+                        <%= link_to project_path(project) do %>
+                            <%= project.name %>
                         <% end %>
                     </td>
-                    <td><%= project.country %></td>
+                    <td>
+                        <ul class="list-unstyled">
+                            <% project.certification_paths.letter_of_conformance.each do |certification_path| %>
+                                <li>
+                                    <%= render 'certification_paths/summary', certification_path: certification_path %>
+                                </li>
+                            <% end %>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul class="list-unstyled">
+                            <% project.certification_paths.final_design_certificate.each do |certification_path| %>
+                                <li><%= render 'certification_paths/summary', certification_path: certification_path %></li>
+                            <% end %>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul class="list-unstyled">
+                            <% project.certification_paths.construction_certificate.each do |certification_path| %>
+                                <li><%= render 'certification_paths/summary', certification_path: certification_path %></li>
+                            <% end %>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul class="list-unstyled">
+                            <% project.certification_paths.operations_certificate.each do |certification_path| %>
+                                <li><%= render 'certification_paths/summary', certification_path: certification_path %></li>
+                            <% end %>
+                        </ul>
+                    </td>
+                    <td>
+                        <% if project.certification_paths.letter_of_conformance.present? %>
+                            <% certification_path = project.certification_paths.letter_of_conformance.first %>
+                            <% certification_path.scheme_mixes.each do |scheme_mix| %>
+                                <div>
+                                    <!--%= link_to project_certification_path_scheme_mix_path(project, certification_path, scheme_mix) do %-->
+                                        <%= scheme_mix.name %>
+                                    <!--% end %-->
+                                </div>
+                            <% end %>
+
+                        <% end %>
+                    </td>
+                    <td>
+                        <%= project.country %>
+                    </td>
+                    <td>
+                        <%= project.construction_year %>
+                    </td>
+                    <td>
+                        <%= project.description %>
+                    </td>
                 </tr>
             <% end %>
             </tbody>
