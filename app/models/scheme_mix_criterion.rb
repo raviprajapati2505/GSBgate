@@ -101,7 +101,7 @@ class SchemeMixCriterion < ActiveRecord::Base
     if submitting? or submitting_after_appeal?
       # Check requirements statusses
       if has_required_requirements?
-        todos << 'The status of all requirements should be set to \'provided\' or \'not required\' first.'
+        todos << 'The status of all requirements should be set to \'Provided\' or \'Not required\' first.'
       end
       # Check document statusses
       if has_documents_awaiting_approval?

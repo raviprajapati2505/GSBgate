@@ -1,21 +1,21 @@
 <div class="modal-dialog">
     <%= bootstrap_form_for([@project, @certification_path, @scheme_mix, @scheme_mix_criterion], url: update_status_project_certification_path_scheme_mix_scheme_mix_criterion_path, method: 'put') do |f| %>
     <div class="modal-content">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" title="<%= t('.btn_close') %>" data-toggle="tooltip" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            <h4 class="modal-title">
-                <% if params.has_key?(:achieved) && (params[:achieved] == '1') %>
-                    Criterion target achieved
-                <% elsif params.has_key?(:achieved) %>
-                    Criterion target not achieved
-                <% else %>
-                    Submit criterion
-                <% end %>
-            </h4>
-        </div>
-        <% if @scheme_mix_criterion.todo_before_status_advance.blank? %>
+        <% if todos.blank? %>
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" title="<%= t('.btn_close') %>" data-toggle="tooltip" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">
+                    <% if params.has_key?(:achieved) && (params[:achieved] == '1') %>
+                        Criterion target achieved
+                    <% elsif params.has_key?(:achieved) %>
+                        Criterion target not achieved
+                    <% else %>
+                        Submit criterion
+                    <% end %>
+                </h4>
+            </div>
             <% if params.has_key?(:achieved) && (params[:achieved] == '1') %>
                 <%= hidden_field_tag :achieved, 1 %>
             <% end %>
@@ -29,10 +29,17 @@
                 <button type="button" class="btn btn-white" data-dismiss="modal"><i title="Cancel" class="fa fa-lg fa-times" style="padding-right: 10px;"></i><%= t('.btn_cancel') %></button>
             </div>
         <% else %>
+            <div class="modal-header alert-danger">
+                <button type="button" class="close" data-dismiss="modal" title="<%= t('.btn_close') %>" data-toggle="tooltip" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">
+                    <i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;The status cannot be advanced yet because of the following issues:
+                </h4>
+            </div>
             <div class="modal-body">
-                <p>The status cannot be advanced yet because of the following issues:</p>
                 <ul>
-                    <% @scheme_mix_criterion.todo_before_status_advance.each do |todo| %>
+                    <% todos.each do |todo| %>
                         <li><%= todo %></li>
                     <% end %>
                 </ul>
