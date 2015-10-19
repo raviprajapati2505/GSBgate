@@ -16,7 +16,7 @@ class CertificationPath < ActiveRecord::Base
   accepts_nested_attributes_for :certificate
   accepts_nested_attributes_for :scheme_mixes
 
-  enum development_type: { not_applicable: 0, single_use: 1, mixed_use: 2, mixed_development: 3, mixed_development_in_stages: 4 }
+  enum development_type: {not_applicable: 0, single_use: 1, mixed_use: 2, mixed_development: 3, mixed_development_in_stages: 4}
 
   validates :project, presence: true
   validates :certificate, presence: true
@@ -29,6 +29,26 @@ class CertificationPath < ActiveRecord::Base
 
   scope :with_status, ->(status) {
     where(certification_path_status_id: status)
+  }
+
+  scope :letter_of_conformance, -> {
+    joins(:certificate)
+        .merge(Certificate.letter_of_conformance)
+  }
+
+  scope :final_design_certificate, -> {
+    joins(:certificate)
+        .merge(Certificate.final_design_certificate)
+  }
+
+  scope :construction_certificate, -> {
+    joins(:certificate)
+        .merge(Certificate.construction_certificate)
+  }
+
+  scope :operations_certificate, -> {
+    joins(:certificate)
+        .merge(Certificate.operations_certificate)
   }
 
   def init
@@ -48,7 +68,7 @@ class CertificationPath < ActiveRecord::Base
     audit_logs = self.audit_logs.where('new_status IS NOT NULL')
     status_history = []
     audit_logs.each do |audit_log|
-      status_history << { date: audit_log.created_at, certification_path_status: CertificationPathStatus.find_by_id(audit_log.new_status) }
+      status_history << {date: audit_log.created_at, certification_path_status: CertificationPathStatus.find_by_id(audit_log.new_status)}
     end
     status_history
   end
@@ -117,7 +137,7 @@ class CertificationPath < ActiveRecord::Base
         errors.add(:duration, 'Duration for Letter of Conformance should be 1 year.')
       end
     elsif certificate.final_design_certificate?
-      if not [2,3,4].include? duration
+      if not [2, 3, 4].include? duration
         errors.add(:duration, 'Duration for Final Design Certificate should be 2, 3 or 4 years.')
       end
     elsif certificate.construction_certificate? or certificate.operations_certificate?
@@ -283,6 +303,16 @@ class CertificationPath < ActiveRecord::Base
     return [CertificationPathStatus::SCREENING,
             CertificationPathStatus::VERIFYING,
             CertificationPathStatus::VERIFYING_AFTER_APPEAL].include?(certification_path_status_id)
+  end
+
+  # this function is used to toggle the visibility of the achieved score
+  def in_pre_verification?
+    return [CertificationPathStatus::ACTIVATING,
+            CertificationPathStatus::SUBMITTING,
+            CertificationPathStatus::SCREENING,
+            CertificationPathStatus::SUBMITTING_AFTER_SCREENING,
+            CertificationPathStatus::PROCESSING_PCR_PAYMENT,
+            CertificationPathStatus::SUBMITTING_PCR].include?(certification_path_status_id)
   end
 
   def is_completed?
