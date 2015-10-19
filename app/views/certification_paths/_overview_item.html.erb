@@ -4,15 +4,26 @@
 <% enabled = (certification_path.present? or can_create_certification_path) %>
 <li class="list-group-item container <%= 'disabled' if !enabled %>">
     <% if certification_path.present? %>
-        <a href="<%= project_certification_path_path(project, certification_path) %>">
             <div class="row">
-                <div class="col-md-3"><strong><%= certificate.name %></strong></div>
-                <div class="col-md-3"><%= certification_path.status.humanize %></div>
-                <div class="col-md-6">
+                <div class="col-lg-3 col-sm-6">
+                    <a href="<%= project_certification_path_path(project, certification_path) %>">
+                        <strong><%= certificate.name %></strong>
+                    </a>
+                </div>
+                <div class="col-lg-3 col-sm-6"><%= certification_path.status.humanize %></div>
+                <div class="col-lg-3 col-sm-6">
                     <%= render 'certification_paths/star_ratings', certification_path: certification_path %>
                 </div>
+                <div class="col-lg-3 col-sm-6">
+                    <% certification_path.scheme_mixes.each do |scheme_mix| %>
+                        <div>
+                        <%= link_to project_certification_path_scheme_mix_path(project, certification_path, scheme_mix) do %>
+                            <%= scheme_mix.name %>
+                        <% end %>
+                        </div>
+                    <% end %>
+                </div>
             </div>
-        </a>
     <% else %>
         <span class="col-md-4"><%= certificate.name %></span>
         <% if enabled %>
