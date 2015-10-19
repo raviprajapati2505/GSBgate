@@ -10,7 +10,7 @@
                 <%= render 'timeline', certification_path: @certification_path %>
                 <% if @certification_path.can_advance_status?(current_user) %>
                     <div class="hr-line-dashed"></div>
-                    <% if @certification_path.certification_path_status.id == CertificationPathStatus::ACKNOWLEDGING %>
+                    <% if @certification_path.certification_path_status_id == CertificationPathStatus::ACKNOWLEDGING %>
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#advanceStatusModal"><i class="fa fa-lg fa-check" style="padding-right: 10px;"></i>Accept all scores</button>
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#appealModal"><i class="fa fa-lg fa-hand-o-up" style="padding-right: 10px;"></i>Apply for appeal</button>
                     <% else %>
@@ -20,17 +20,17 @@
             </div>
         </div>
         <div class="row">
-            <% if @certification_path.certification_path_status.id < CertificationPathStatus::SUBMITTING_PCR %>
-            <div class="col-lg-6">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5>Pre-certification review (PCR) <%= tooltip('If the project team wants a PCR, a project manager should apply here by checking the checkbox.') %></h5>
-                    </div>
-                    <div class="ibox-content">
-                        <%= render 'pcr_form', project: @project, certification_path: @certification_path %>
+            <% if @certification_path.certification_path_status_id < CertificationPathStatus::SUBMITTING_PCR %>
+                <div class="col-lg-6">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>Pre-certification review (PCR) <%= tooltip('If the project team wants a PCR, a project manager should apply here by checking the checkbox.') %></h5>
+                        </div>
+                        <div class="ibox-content">
+                            <%= render 'pcr_form', project: @project, certification_path: @certification_path %>
+                        </div>
                     </div>
                 </div>
-            </div>
             <% end %>
             <div class="col-lg-6">
                 <div class="ibox float-e-margins">
@@ -80,5 +80,5 @@
     </div>
 </div>
 <%= render 'advance_status_modal' %>
-<%= render 'appeal_modal' %>
+<%= render 'appeal_modal' if (@certification_path.certification_path_status_id == CertificationPathStatus::ACKNOWLEDGING) %>
 <%= javascript_include_tag 'score_widget' %>

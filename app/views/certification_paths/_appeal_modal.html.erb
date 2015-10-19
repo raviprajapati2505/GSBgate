@@ -11,6 +11,25 @@
                 <div class="modal-body">
                     <%= f.hidden_field :appealed, value: true %>
                     <%= f.text_area :audit_log_user_comment, label: 'Comment', rows: 4 %>
+                    <p>Please select the criteria you want to appeal for:</p>
+                    <% @certification_path.scheme_mixes.each do |scheme_mix| %>
+                        <strong><%= scheme_mix.name %></strong>
+                        <ul class="criteria-checkboxes checkbox-list">
+                            <% scheme_mix.scheme_categories.uniq.each do |category| %>
+                                <li>
+                                    <a href="#"><i class="fa fa-caret-square-o-right"></i>&nbsp;<%= category.name %></a>
+                                    <ul style="display:none;">
+                                        <% scheme_mix.scheme_mix_criteria.for_category(category).each do |scheme_mix_criterion| %>
+                                            <li>
+                                                <%= check_box_tag 'scheme_mix_criterion[]', scheme_mix_criterion.id, false, id: 'scheme_mix_criterion_' + scheme_mix_criterion.id.to_s %>
+                                                <%= label_tag 'scheme_mix_criterion_' + scheme_mix_criterion.id.to_s, "#{scheme_mix_criterion.full_name} (#{scheme_mix_criterion.status.humanize})" %>
+                                            </li>
+                                        <% end %>
+                                    </ul>
+                                </li>
+                            <% end %>
+                        </ul>
+                    <% end %>
                 </div>
                 <div class="modal-footer">
                     <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
@@ -22,3 +41,4 @@
         </div>
     </div>
 </div>
+<%= javascript_include_tag 'criteria_checkboxes' %>

@@ -126,15 +126,29 @@ class CertificationPathsController < AuthenticatedController
     if !@certification_path.can_advance_status?(current_user)
       redirect_to project_certification_path_path(@project, @certification_path), alert: 'You are not allowed to advance the certificate status at this time.'
     else
-      @certification_path.appealed = certification_path_params.has_key?(:appealed)
-      next_status = @certification_path.next_status
-      if next_status.is_a? Integer
-        @certification_path.certification_path_status_id = next_status
-        @certification_path.audit_log_user_comment = params[:certification_path][:audit_log_user_comment]
-        @certification_path.save!
-        redirect_to project_certification_path_path(@project, @certification_path), notice: 'The certificate status was successfully updated.'
-      else
-        redirect_to project_certification_path_path(@project, @certification_path), alert: next_status
+      CertificationPath.transaction do
+        # Check if there's an appeal
+        @certification_path.appealed = certification_path_params.has_key?(:appealed)
+
+        # Retrieve the next status
+        next_status = @certification_path.next_status
+
+        if next_status.is_a? Integer
+          # Save the next status & user comment
+          @certification_path.certification_path_status_id = next_status
+          @certification_path.audit_log_user_comment = params[:certification_path][:audit_log_user_comment]
+          @certification_path.save!
+
+          # If there was an appeal, set the status of the selected criteria to 'Appealed'
+          if certification_path_params.has_key?(:appealed) && params.has_key?(:scheme_mix_criterion)
+            params[:scheme_mix_criterion].each do |smc_id|
+              SchemeMixCriterion.find(smc_id.to_i).appealed!
+            end
+          end
+          redirect_to project_certification_path_path(@project, @certification_path), notice: 'The certificate status was successfully updated.'
+        else
+          redirect_to project_certification_path_path(@project, @certification_path), alert: next_status
+        end
       end
     end
   end
