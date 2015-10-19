@@ -130,7 +130,7 @@
                 <% if @project.users.distinct.count.zero? %>
                     <p>This project has no team members.</p>
                 <% else %>
-                    <table class="table table-striped table-bordered table-hover datatable">
+                    <table class="table table-striped table-bordered table-hover datatable" cellspacing="0" width="100%">
                         <thead>
                         <tr>
                             <th>Member</th>
@@ -175,7 +175,7 @@
                 <% if @project.certifiers.distinct.count.zero? %>
                     <p>This project has no certifiers.</p>
                 <% else %>
-                    <table class="table table-striped table-bordered table-hover datatable">
+                    <table class="table table-striped table-bordered table-hover datatable" cellspacing="0" width="100%">
                         <thead>
                         <tr>
                             <th>Member</th>
