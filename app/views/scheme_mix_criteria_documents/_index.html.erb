@@ -1,26 +1,46 @@
-<% if scheme_mix_criteria_documents.empty? %>
+<% if scheme_mix_criteria_documents.blank? %>
     No documentation was uploaded yet.
 <% else %>
     <table class="table table-bordered datatable document-table">
         <thead>
         <tr>
-            <th>File name</th>
-            <th>Uploaded by</th>
-            <th>Upload date</th>
+            <th>File&nbsp;name</th>
+            <th>File&nbsp;size</th>
+            <th>Uploaded&nbsp;by</th>
+            <th>Upload&nbsp;date</th>
             <th>Status</th>
+            <th>Actions</th>
         </tr>
         </thead>
         <tbody>
         <% scheme_mix_criteria_documents.each do |smcd| %>
-            <tr class="clickable document-<%= smcd.status.dasherize %>" data-href="<%= project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_path(smcd.scheme_mix_criterion.scheme_mix.certification_path.project, smcd.scheme_mix_criterion.scheme_mix.certification_path, smcd.scheme_mix_criterion.scheme_mix, smcd.scheme_mix_criterion, smcd) %>">
-                <td data-order="<%= smcd.name %>" data-search="<%= smcd.name %>">
-                    <%= image_tag(Icon.for_filename(smcd.name), alt: smcd.content_type, title: smcd.content_type) + ' ' + smcd.name %>
-                </td>
-                <td><%= smcd.document.user.email %></td>
-                <td><%= localize(smcd.document.created_at) %></td>
-                <td><%= smcd.status.humanize %></td>
-            </tr>
+            <% if can?(:read, smcd) %>
+                <tr class="document-<%= smcd.status.dasherize %>">
+                    <td data-order="<%= smcd.name %>" data-search="<%= smcd.name %>">
+                        <%= image_tag(Icon.for_filename(smcd.name), alt: smcd.content_type, title: smcd.content_type) + ' ' + smcd.name %>
+                    </td>
+                    <td><%= number_to_human_size(smcd.size) %></td>
+                    <td><%= smcd.document.user.email %></td>
+                    <td data-order="<%= localize(smcd.document.created_at) %>" data-search="<%= localize(smcd.document.created_at) %>"><%= localize(smcd.document.created_at).gsub(' ', '&nbsp;').html_safe %></td>
+                    <td data-order="<%= smcd.status.humanize %>" data-search="<%= smcd.status.humanize %>">
+                        <% if (current_user.system_admin? || (@certification_path.in_submission? && can?(:update_status, smcd))) %>
+                            <%= link_to(smcd.status.humanize.gsub(' ', '&nbsp;').html_safe, edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, smcd), remote: true) %>
+                        <% else %>
+                            <%= smcd.status.humanize.gsub(' ', '&nbsp;').html_safe %>
+                        <% end %>
+                    </td>
+                    <td>
+                        <%= audit_log_label(smcd) %>
+                        <%= link_to(raw('<i title="Download document" class="fa fa-lg fa-download"></i>'), project_certification_path_document_path(@project, @certification_path, smcd.document), class: 'btn btn-sm btn-primary') %>
+                        <% if (current_user.system_admin? || (@certification_path.in_submission? && can?(:create_link, smcd))) %>
+                            <%= link_to(raw('<i title="Link document to other criteria" class="fa fa-lg fa-link"></i>'), new_link_project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, smcd), remote: true, class: 'btn btn-sm btn-primary') %>
+                        <% end %>
+                    </td>
+                </tr>
+            <% end %>
         <% end %>
         </tbody>
     </table>
+    <div id="editStatusSchemeMixCriteriaDocumentModal" class="modal fade"></div>
+    <div id="newLinkSchemeMixCriteriaDocumentModal" class="modal fade"></div>
 <% end %>

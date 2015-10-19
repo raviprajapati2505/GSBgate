@@ -4,27 +4,28 @@ class SchemeMixCriteriaDocumentsController < AuthenticatedController
   load_and_authorize_resource :scheme_mix, :through => :certification_path
   load_and_authorize_resource :scheme_mix_criterion, :through => :scheme_mix
   load_and_authorize_resource :scheme_mix_criteria_document, :through => :scheme_mix_criterion
-  before_action :set_controller_model, except: [:new, :create]
+  before_action :set_controller_model, except: [:new_link, :create]
 
-  def create
-    if SchemeMixCriteriaDocument.exists?(scheme_mix_criteria_document_params)
-      redirect_to :back, alert: 'This criterion is already linked to the document.'
-    else
-      scheme_mix_criteria_document = SchemeMixCriteriaDocument.new(scheme_mix_criteria_document_params)
+  def new_link
+  end
 
-      if scheme_mix_criteria_document.save!
-        redirect_to :back, notice: 'The criterion was successfully linked to this document.'
-      else
-        redirect_to :back, alert: 'An error occurred when linking the criterion to this document, please try again later.'
+  def create_link
+    if params[:scheme_mix_criteria_document].present?
+      params[:scheme_mix_criteria_document].each do |smcd_params|
+        smcd = SchemeMixCriteriaDocument.new(smcd_params.permit(:scheme_mix_criterion_id))
+        smcd.document_id = @scheme_mix_criteria_document.document_id
+        smcd.save!
       end
+      redirect_to :back, notice: 'The document was successfully linked to the criteria.'
+    else
+      redirect_to :back, alert: 'No criteria were selected.'
     end
   end
 
-  def show
-    @page_title = (ActionController::Base.helpers.image_tag(Icon.for_filename(@scheme_mix_criteria_document.document.name)) + ' ' + @scheme_mix_criteria_document.document.name).html_safe
+  def edit_status
   end
 
-  def update
+  def update_status
     # Load all scheme_mix_criteria_documents that need to be updated
     scheme_mix_criteria_documents = []
     scheme_mix_criteria_documents << @scheme_mix_criteria_document
@@ -43,7 +44,7 @@ class SchemeMixCriteriaDocumentsController < AuthenticatedController
       scheme_mix_criteria_document.update(scheme_mix_criteria_document_params)
     end
 
-    redirect_to :back, notice: 'The document details were successfully updated.'
+    redirect_to :back, notice: 'The document status was successfully updated.'
   end
 
   private

@@ -29,9 +29,21 @@ Rails.application.routes.draw do
       end
       resources :documents, only: [ :create, :show ], path: 'document'
       resources :scheme_mixes, only: [ :show ], path: 'schemes' do
-        resources :scheme_mix_criteria, only: [ :show, :update ], path: 'criteria', as: 'scheme_mix_criterion' do
+        resources :scheme_mix_criteria, only: [ :show ], path: 'criteria', as: 'scheme_mix_criterion' do
+          member do
+            get 'edit_status'
+            put 'update_status'
+            put 'update_scores'
+            put 'assign_certifier'
+          end
           resources :requirement_data, only: [ :update ], path: 'requirement', as: 'requirement_data'
-          resources :scheme_mix_criteria_documents, only: [ :create, :show, :update ], path: 'documentation', as: 'scheme_mix_criteria_documents' do
+          resources :scheme_mix_criteria_documents, only: [], path: 'documentation', as: 'scheme_mix_criteria_documents' do
+            member do
+              get 'new_link'
+              post 'create_link'
+              get 'edit_status'
+              put 'update_status'
+            end
           end
         end
       end
@@ -48,7 +60,6 @@ Rails.application.routes.draw do
   match 'projects/:project_id/certificates/apply/:certificate_id' => 'certification_paths#apply', as: 'apply_certification_path', via: [:get, :post]
   put 'projects/:project_id/certificates/:id/update-status' => 'certification_paths#update_status', as: 'update_certification_path_status'
   put 'projects/:project_id/certificates/:id/update-pcr' => 'certification_paths#update_pcr', as: 'update_certification_path_pcr'
-  put 'projects/:project_id/certificates/:certification_path_id/schemes/:scheme_mix_id/criteria/:id/assign' => 'scheme_mix_criteria#assign_certifier', as: 'assign_certifier_to_criteria'
   get 'projects/:project_id/certificates/:id/archive' => 'certification_paths#download_archive', as: 'archive_project_certification_path'
   put 'projects/:project_id/certificates/:certification_path_id/schemes/:id/allocate-project-team-responsibility' => 'scheme_mixes#allocate_project_team_responsibility', as: 'allocate_project_team_responsibility'
   put 'projects/:project_id/certificates/:certification_path_id/schemes/:id/allocate-certifier-team-responsibility' => 'scheme_mixes#allocate_certifier_team_responsibility', as: 'allocate_certifier_team_responsibility'

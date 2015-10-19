@@ -26,6 +26,7 @@ class CertificationPath < ActiveRecord::Base
 
   after_initialize :init
   before_update :set_certified_at
+  after_update :advance_scheme_mix_criteria_statuses
 
   scope :with_status, ->(status) {
     where(certification_path_status_id: status)
@@ -332,6 +333,39 @@ class CertificationPath < ActiveRecord::Base
     end
   end
 
+  def advance_scheme_mix_criteria_statuses
+    CertificationPath.transaction do
+      if certification_path_status_id_changed?
+        case certification_path_status_id
+          # If the certificate status is advanced to 'Verifying',
+          # also advance the status of all submitted criteria to 'Verifying'
+          when CertificationPathStatus::VERIFYING
+            scheme_mix_criteria.each do |smc|
+              if smc.submitted?
+                smc.verifying!
+              end
+            end
+          # If the certificate status is advanced to 'Submitting after appeal',
+          # also advance the status of all appealed criteria to 'Submitting after appeal'
+          when CertificationPathStatus::SUBMITTING_AFTER_APPEAL
+            scheme_mix_criteria.each do |smc|
+              if smc.appealed?
+                smc.submitting_after_appeal!
+              end
+            end
+          # If the certificate status is advanced to 'Verifying after appeal',
+          # also advance the status of all appealed criteria to 'Verifying after appeal'
+          when CertificationPathStatus::VERIFYING_AFTER_APPEAL
+            scheme_mix_criteria.each do |smc|
+              if smc.submitted_after_appeal?
+                smc.verifying_after_appeal!
+              end
+            end
+        end
+      end
+    end
+  end
+
   # Conditions are
   #  1) certification path is not expired
   #  2) certification path payment received
@@ -348,7 +382,7 @@ class CertificationPath < ActiveRecord::Base
 
   # Conditions are
   #  1) all general submittals are provided
-  #  2) all criteria are completed (= when all linked requirements and submitted scores are provided and no more documents waiting for approval)
+  #  2) all criteria are submitted (= when all linked requirements and submitted scores are provided and no more documents waiting for approval)
   def can_leave_submitting_status?
     ['location_plan_file', 'site_plan_file', 'design_brief_file', 'project_narrative_file'].each do |general_submittal|
       if project.send(general_submittal).blank?
@@ -359,19 +393,27 @@ class CertificationPath < ActiveRecord::Base
     scheme_mix_criteria.each do |criterion|
       # all linked requirements are provided
       if criterion.has_required_requirements?
-        throw(:error, 'There are still requirements in status \'required\'.')
+        throw(:error, 'All requirements should have status \'Provided\' or \'Not required\'.')
       end
       # no more documents waiting for approval
       if criterion.has_documents_awaiting_approval?
         throw(:error, 'There are still documents awaiting approval.')
       end
-      # all criteria are completed
-      if criterion.in_progress?
-        throw(:error, 'All criteria must have status different from \'in progress\'.')
+      # all targeted scores provided
+      if criterion.targeted_score.blank?
+        throw(:error, 'Every criterion should have a targeted score.')
       end
       # all submitted scores provided
       if criterion.submitted_score.blank?
-        throw(:error, 'There are submitted scores missing.')
+        throw(:error, 'Every criterion should have a submitted score.')
+      end
+      # all criteria are submitted
+      if criterion.submitting?
+        throw(:error, 'All criteria should have status \'Submitted\'.')
+      end
+      # all criteria are submitted after appealed
+      if criterion.submitting_after_appeal?
+        throw(:error, 'All criteria should have status \'Submitted after appeal\'.')
       end
     end
     return true
@@ -408,11 +450,14 @@ class CertificationPath < ActiveRecord::Base
   #  1) all criteria are verified (= when all achieved scores are provided)
   def can_leave_verifying_status?
     scheme_mix_criteria.each do |criterion|
-      unless criterion.approved? || criterion.resubmit?
-        throw(:error, 'There are still criteria in status \'complete\'.')
-      end
       if criterion.achieved_score.blank?
-        throw(:error, 'There are achieved scores missing.')
+        throw(:error, 'Every criterion should have an achieved score.')
+      end
+      if criterion.verifying?
+        throw(:error, 'All criteria should have status \'Target achieved\' or \'Target not achieved\'.')
+      end
+      if criterion.verifying_after_appeal?
+        throw(:error, 'All criteria should have status \'Target achieved after appeal\' or \'Target not achieved after appeal\'.')
       end
     end
     return true
@@ -439,15 +484,7 @@ class CertificationPath < ActiveRecord::Base
   # Conditions are
   #  1) all criteria are verified (= when all achieved scores are provided)
   def can_leave_verifying_after_appeal_status?
-    scheme_mix_criteria.each do |criterion|
-      unless criterion.approved? || criterion.resubmit?
-        throw(:error, 'There are still criteria in status \'complete\'.')
-      end
-      if criterion.achieved_score.blank?
-        throw(:error, 'There are achieved scores missing.')
-      end
-    end
-    return true
+    can_leave_verifying_status?
   end
 
   # Conditions are

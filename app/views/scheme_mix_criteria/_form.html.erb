@@ -1,16 +1,39 @@
 <div class="row">
-<div class="col-lg-6">
+<div class="col-lg-4">
     <div class="ibox criterion-details">
         <div class="ibox-title">
             <%= audit_log_label(@scheme_mix_criterion) %>
-            <% can_update_status = current_user.system_admin? ||
-                    (@certification_path.in_submission? && current_user.project_manager?(@project)) ||
-                    (@certification_path.in_verification? && (current_user.certifier_manager?(@project) || current_user.certifier?(@project))) %>
-            <%= status_label(@scheme_mix_criterion.status, can_update_status, 'updateCriterionStatusModal') %>
             <h5>Criterion details</h5>
         </div>
         <div class="ibox-content">
-            <%= bootstrap_form_for([@project, @certification_path, @scheme_mix, @scheme_mix_criterion], url: project_certification_path_scheme_mix_scheme_mix_criterion_path) do |f| %>
+            <table class="table table-bordered table-striped">
+                <tbody>
+                <tr>
+                    <th>Status</th>
+                    <td>
+                        <%= @scheme_mix_criterion.status.humanize %>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <% if can?(:edit_scores, @scheme_mix_criterion) %>
+                <% if @scheme_mix_criterion.verifying? || @scheme_mix_criterion.verifying_after_appeal? %>
+                    <div class="hr-line-dashed"></div>
+                    <%= link_to('<i title="Target achieved" class="fa fa-lg fa-check" style="padding-right: 10px;"></i>Target achieved'.html_safe, edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, achieved: 1), class: 'btn btn-primary', remote: true) %>
+                    <%= link_to('<i title="Target not achieved" class="fa fa-lg fa-times" style="padding-right: 10px;"></i>Target not achieved'.html_safe, edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, achieved: 0), class: 'btn btn-danger', remote: true) %>
+                <% elsif @scheme_mix_criterion.submitting? || @scheme_mix_criterion.submitting_after_appeal? %>
+                    <div class="hr-line-dashed"></div>
+                    <%= link_to('<i title="Submit criterion" class="fa fa-lg fa-check" style="padding-right: 10px;"></i>Submit criterion'.html_safe, edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), class: 'btn btn-primary', remote: true) %>
+                <% end %>
+            <% end %>
+        </div>
+    </div>
+    <div class="ibox criterion-details">
+        <div class="ibox-title">
+            <h5>Criterion scores</h5>
+        </div>
+        <div class="ibox-content">
+            <%= bootstrap_form_for([@project, @certification_path, @scheme_mix, @scheme_mix_criterion], url: update_scores_project_certification_path_scheme_mix_scheme_mix_criterion_path, method: 'put') do |f| %>
                 <% if @scheme_mix_criterion.errors.any? %>
                     <div id="error_explanation">
                         <h2><%= pluralize(@scheme_mix_criterion.errors.count, "error") %> prohibited this criterion from being saved:</h2>
@@ -80,7 +103,7 @@
             <h5>Certifier</h5>
         </div>
         <div class="ibox-content">
-            <%= bootstrap_form_tag url: assign_certifier_to_criteria_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), method: 'put' do |f| %>
+            <%= bootstrap_form_tag url: assign_certifier_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), method: 'put' do |f| %>
                 <% if current_user.system_admin? || (@certification_path.in_verification? && current_user.certifier_manager?(@project)) %>
                     <div class="row">
                         <div class="col-md-7">
@@ -130,7 +153,7 @@
         </div>
     </div>
 </div>
-<div class="col-lg-6">
+<div class="col-lg-8">
     <% if @scheme_mix_criterion.requirement_data.assigned_to_user(current_user).present? %>
         <div class="ibox">
             <div class="ibox-title">
@@ -177,11 +200,11 @@
                 <h5>Upload documentation</h5>
             </div>
             <div class="ibox-content">
-                <%= render 'documents/new', document: Document.new, project: @project, certification_path: @certification_path, scheme_mix: @scheme_mix, scheme_mix_criterion_id: @scheme_mix_criterion.id %>
+                <%= render 'documents/new', document: Document.new, project: @project, certification_path: @certification_path, scheme_mix: @scheme_mix,  scheme_mix_criterion_id: @scheme_mix_criterion.id %>
             </div>
         </div>
     <% end %>
-    <div class="ibox">
+    <div class="ibox" id="documentation">
         <div class="ibox-title">
             <h5>Documentation</h5>
         </div>
@@ -191,7 +214,6 @@
     </div>
 </div>
 </div>
-<%= render 'modal', project: @project, certification_path: @certification_path, scheme_mix: @scheme_mix, scheme_mix_criterion: @scheme_mix_criterion %>
-<div id="showCriteriaStatusLogsModal" class="modal fade"></div>
+<div id="editStatusSchemeMixCriterionModal" class="modal fade"></div>
 <%= javascript_include_tag 'select_project_certifier' %>
 <%= javascript_include_tag 'select_project_assessor' %>

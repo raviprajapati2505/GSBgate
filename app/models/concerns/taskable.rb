@@ -185,7 +185,7 @@ module Taskable
                                        project: self.project,
                                        certification_path: self)
           # Create certifier manager tasks to assign certifier team members to criteria
-          self.scheme_mix_criteria.unassigned.complete.each do |scheme_mix_criterion|
+          self.scheme_mix_criteria.unassigned.submitted.each do |scheme_mix_criterion|
             SchemeMixCriterionTask.create(task_description_id: CERT_MNGR_ASSIGN,
                                           project_role: ProjectsUser.roles[:certifier_manager],
                                           project: self.project,
@@ -197,7 +197,7 @@ module Taskable
           # Destroy project manager tasks to process screening comments
           CertificationPathTask.delete_all(task_description_id: PROJ_MNGR_PROC_SCREENING, certification_path: self)
         when CertificationPathStatus::VERIFYING
-          self.scheme_mix_criteria.complete.where.not(certifier: nil).each do |scheme_mix_criterion|
+          self.scheme_mix_criteria.submitted.where.not(certifier: nil).each do |scheme_mix_criterion|
             # Create certifier team member task to verify the criterion
             SchemeMixCriterionTask.create(task_description_id: CERT_MEM_VERIFY,
                                           user: scheme_mix_criterion.certifier,
@@ -322,14 +322,14 @@ module Taskable
   def handle_criterion_status_changed
     if self.status_changed?
       case SchemeMixCriterion.statuses[self.status]
-        # Can criterion status be reset to 'in progress' ?
-        when SchemeMixCriterion.statuses[:in_progress]
+        # Can criterion status be reset to 'submitting' ?
+        when SchemeMixCriterion.statuses[:submitting]
           # TODO
-        when SchemeMixCriterion.statuses[:complete]
-          # Check if certification with status 'submitting' has no linked criteria in status 'in progress'
+        when SchemeMixCriterion.statuses[:submitted]
+          # Check if certification with status 'submitted' has no linked criteria in status 'submitting'
           unless CertificationPath.joins(:scheme_mixes)
                      .where(id: self.scheme_mix.certification_path.id, certification_path_status_id: [CertificationPathStatus::SUBMITTING, CertificationPathStatus::SUBMITTING_AFTER_APPEAL])
-                     .where.not('exists(select smc.id from scheme_mix_criteria smc where smc.scheme_mix_id = scheme_mixes.id and smc.status = ?)', SchemeMixCriterion.statuses[:in_progress])
+                     .where.not('exists(select smc.id from scheme_mix_criteria smc where smc.scheme_mix_id = scheme_mixes.id and smc.status = ?)', SchemeMixCriterion.statuses[:submitting])
                      .count.zero?
             # Create project manager task to advance certification path status
             CertificationPathTask.create(task_description_id: PROJ_MNGR_SUB_APPROVE,
@@ -339,11 +339,11 @@ module Taskable
           end
           # Destroy project manager tasks to set criterion status to 'complete'
           SchemeMixCriterionTask.delete_all(task_description_id: PROJ_MNGR_CRIT_APPROVE, scheme_mix_criterion: self)
-        when SchemeMixCriterion.statuses[:approved], SchemeMixCriterion.statuses[:resubmit]
+        when SchemeMixCriterion.statuses[:target_achieved], SchemeMixCriterion.statuses[:target_not_achieved]
           # Check if certification with status 'verifying' has no linked criteria in status 'complete'
           unless CertificationPath.joins(:scheme_mixes)
                      .where(id: self.scheme_mix.certification_path.id, certification_path_status_id: [CertificationPathStatus::VERIFYING, CertificationPathStatus::VERIFYING_AFTER_APPEAL])
-                     .where.not('exists(select smc.id from scheme_mix_criteria smc where smc.scheme_mix_id = scheme_mixes.id and smc.status = ?)', SchemeMixCriterion.statuses[:complete])
+                     .where.not('exists(select smc.id from scheme_mix_criteria smc where smc.scheme_mix_id = scheme_mixes.id and smc.status = ?)', SchemeMixCriterion.statuses[:submitted])
                      .count.zero?
             # Create certifier manager task to advance certification path status
             CertificationPathTask.create(task_description_id: CERT_MNGR_VERIFICATION_APPROVE,
@@ -371,7 +371,7 @@ module Taskable
       else
         # Destroy all certifier team member tasks to verify the criterion which are assigned to another user
         SchemeMixCriterionTask.delete_all(task_description_id: CERT_MEM_VERIFY, scheme_mix_criterion: self)
-        if SchemeMixCriterion.statuses[self.status] == SchemeMixCriterion.statuses[:complete]
+        if SchemeMixCriterion.statuses[self.status] == SchemeMixCriterion.statuses[:submitted]
           case self.scheme_mix.certification_path.certification_path_status_id
             when CertificationPathStatus::VERIFYING, CertificationPathStatus::VERIFYING_AFTER_APPEAL
               # Create certifier team member task to screen the criterion
@@ -416,9 +416,9 @@ module Taskable
                                             project: self.scheme_mix_criteria.first.scheme_mix.certification_path.project,
                                             requirement_datum_id: self.id)
         when RequirementDatum.statuses[:provided], RequirementDatum.statuses[:not_required]
-          # Check if criterion with status 'in progress' has no linked requirements in status 'required'
+          # Check if criterion with status 'submitting' has no linked requirements in status 'required'
           unless SchemeMixCriterion.joins(:scheme_mix_criteria_requirement_data)
-                     .where(id: self.scheme_mix_criteria.first.id, status: SchemeMixCriterion.statuses[:in_progress])
+                     .where(id: self.scheme_mix_criteria.first.id, status: SchemeMixCriterion.statuses[:submitting])
                      .where.not('exists(select rd.id from requirement_data rd inner join scheme_mix_criteria_requirement_data smcrd on smcrd.requirement_datum_id = rd.id where smcrd.scheme_mix_criterion_id = scheme_mix_criteria.id and rd.status = ?)', RequirementDatum.statuses[:required])
                      .count.zero?
             # Create project manager task to set criterion status to complete

@@ -1,0 +1,49 @@
+<div class="modal-dialog">
+    <%= bootstrap_form_for([@project, @certification_path, @scheme_mix, @scheme_mix_criterion, @scheme_mix_criteria_document], url: create_link_project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_path, layout: :inline, method: 'post') do |f| %>
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" title="<%= t('.btn_close') %>" data-toggle="tooltip">
+                    <span>&times;</span>
+                </button>
+                <h4 class="modal-title"><%= t('.modal_title') %></h4>
+            </div>
+            <div class="modal-body">
+                <p>Document <strong><%= @scheme_mix_criteria_document.name %></strong> is currently linked to the following criteria:</p>
+                <ul>
+                    <% smcd_ids = [] %>
+                    <% @scheme_mix_criteria_document.document.scheme_mix_criteria.each do |scheme_mix_criterion| %>
+                        <% smcd_ids << scheme_mix_criterion.id %>
+                        <li><%= scheme_mix_criterion.full_name %></li>
+                    <% end %>
+                </ul>
+                <hr />
+                <p>If this document also supports requirements in other criteria, select them below:</p>
+                <ul class="criteria-checkboxes checkbox-list">
+                    <% @scheme_mix.scheme_categories.uniq.each do |category| %>
+                        <li>
+                            <a href="#"><i class="fa fa-caret-square-o-right"></i>&nbsp;<%= category.name %></a>
+                            <ul style="display:none;">
+                                <% @scheme_mix.scheme_mix_criteria.for_category(category).each do |scheme_mix_criterion| %>
+                                    <%= fields_for "scheme_mix_criteria_document[]", SchemeMixCriteriaDocument.new do |smcd_fields| %>
+                                        <li>
+                                            <% default_checkbox_value = smcd_ids.include?(scheme_mix_criterion.id) %>
+                                            <%= smcd_fields.check_box :scheme_mix_criterion_id, {id: 'scheme_mix_criteria_document__' + scheme_mix_criterion.id.to_s, checked: default_checkbox_value, disabled: default_checkbox_value}, scheme_mix_criterion.id, nil %>
+                                            <%= smcd_fields.label scheme_mix_criterion.id.to_s, scheme_mix_criterion.full_name %>
+                                        </li>
+                                    <% end %>
+                                <% end %>
+                            </ul>
+                        </li>
+                    <% end %>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
+                    <i title="Save" class="fa fa-lg fa-save" style="padding-right: 10px;"></i><%= t('.btn_save') %>
+                <% end %>
+                <button type="button" class="btn btn-white" data-dismiss="modal"><i title="Cancel" class="fa fa-lg fa-times" style="padding-right: 10px;"></i><%= t('.btn_cancel') %></button>
+            </div>
+        </div>
+    <% end %>
+</div>
+<%= javascript_include_tag 'criteria_checkboxes' %>

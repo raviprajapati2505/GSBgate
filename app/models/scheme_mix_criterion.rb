@@ -11,7 +11,7 @@ class SchemeMixCriterion < ActiveRecord::Base
   belongs_to :scheme_criterion
   belongs_to :certifier, class_name: 'User', inverse_of: :scheme_mix_criteria
 
-  enum status: { in_progress: 0, complete: 1 , approved: 2, resubmit: 3 }
+  enum status: {submitting: 0, submitted: 1, verifying: 2, target_achieved: 3, target_not_achieved: 4, appealed: 5, submitting_after_appeal: 6, submitted_after_appeal: 7, verifying_after_appeal: 8, target_achieved_after_appeal: 9, target_not_achieved_after_appeal: 10}
 
   after_initialize :init
 
@@ -95,6 +95,36 @@ class SchemeMixCriterion < ActiveRecord::Base
     return false
   end
 
+  def todo_before_status_advance
+    todos = []
+
+    if submitting? or submitting_after_appeal?
+      # Check requirements statusses
+      if has_required_requirements?
+        todos << 'The status of all requirements should be set to \'provided\' or \'not required\' first.'
+      end
+      # Check document statusses
+      if has_documents_awaiting_approval?
+        todos << 'There are still documents awaiting approval.'
+      end
+      # Check targeted score
+      if targeted_score.nil?
+        todos << 'The targeted score should be set first.'
+      end
+      # Check submitted score
+      if submitted_score.nil?
+        todos << 'The submitted score should be set first.'
+      end
+    elsif verifying? or verifying_after_appeal?
+      # Check submitted score
+      if achieved_score.nil?
+        todos << 'The achieved score should be set first.'
+      end
+    end
+
+    return todos
+  end
+
   # returns targeted score taking into account the percentage for which it counts (=weight)
   def weighted_targeted_score
     scheme_criterion.weighted_score(targeted_score_safe)
@@ -124,6 +154,6 @@ class SchemeMixCriterion < ActiveRecord::Base
 
   private
     def init
-      self.status ||= :in_progress
+      self.status ||= :submitting
     end
 end

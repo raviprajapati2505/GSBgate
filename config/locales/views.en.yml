@@ -73,18 +73,22 @@ en:
         btn_save: "Save"
         modal_title: "Allocate certifier team responsibility"
   scheme_mix_criteria:
-    modal:
+    edit_status:
       btn_cancel: "Cancel"
       btn_close: "Close"
-      btn_save: "Save"
-      modal_title: "Update Status"
   scheme_mix_criteria_documents:
-      modal:
+      edit_status:
         btn_cancel: "Cancel"
         btn_close: "Close"
         btn_save: "Save"
         info_text_review: "Review this document for compliance against this criterion. Set the status to approved if the document is compliant with the requirements."
         modal_title: "Update status"
+      new_link:
+        btn_cancel: "Cancel"
+        btn_close: "Close"
+        btn_save: "Save"
+        info_text_review: "If this document also supports requirements in other criteria, add a criterion below:"
+        modal_title: "Link document to other criteria"
   scheme_mix_criteria_document_comments:
       modal:
         btn_cancel: "Cancel"

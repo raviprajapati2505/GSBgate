@@ -9,48 +9,51 @@ class SchemeMixCriteriaController < AuthenticatedController
     @page_title = @scheme_mix_criterion.scheme_criterion.full_name
   end
 
-  def update
-      if scheme_mix_criterion_params[:status] == :approved.to_s || scheme_mix_criterion_params[:status] == :resubmit.to_s
-        # if achieved score is not yet provided only the status can only be 'in progress' or 'complete'
-        if @scheme_mix_criterion.targeted_score.nil? && @scheme_mix_criterion.achieved_score.nil?
-          flash.now[:alert] = 'Please first provide the achieved score.'
-          render :show
-          return
-        end
-      elsif scheme_mix_criterion_params[:status] == :complete.to_s
-        # all requirements must be marked as 'provided' or 'not required'
-        @scheme_mix_criterion.requirement_data.each do |requirement_datum|
-          if requirement_datum.status == :required.to_s
-            flash.now[:alert] = 'All requirements should first be approved or set to \'not required\'.'
-            render :show
-            return
-          end
-        end
-        # no linked document can be 'awaiting approval'
-        if @scheme_mix_criterion.has_documents_awaiting_approval?
-          flash.now[:alert] = 'No document can be \'awaiting approval\'.'
-          render :show
-          return
-        end
-      end
+  def edit_status
+  end
 
-      # if not attempting criterion
-      if @scheme_mix_criterion.targeted_score == -1
-        params[:scheme_mix_criterion][:submitted_score] = -1
-      end
+  def update_status
+    todos = @scheme_mix_criterion.todo_before_status_advance
 
-      if @scheme_mix_criterion.update(scheme_mix_criterion_params)
-        # Save the documents
-        if params.has_key?(:documents)
-          params[:documents]['document_file'].each do |document_file|
-            @scheme_mix_criterion.documents.create!(document_file: document_file, user: current_user)
-          end
+    if todos.blank?
+      if @scheme_mix_criterion.submitting?
+        status = :submitted
+      elsif @scheme_mix_criterion.submitting_after_appeal?
+        status = :submitted_after_appeal
+      elsif @scheme_mix_criterion.verifying?
+        if params.has_key?(:achieved)
+          status = :target_achieved
+        else
+          status = :target_not_achieved
         end
-
-        redirect_to project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), notice: 'Criterion was successfully updated.'
+      elsif @scheme_mix_criterion.verifying_after_appeal?
+        if params.has_key?(:achieved)
+          status = :target_achieved_after_appeal
+        else
+          status = :target_not_achieved_after_appeal
+        end
       else
-        render :show
+        flash[:alert] = 'The criterion status cannot be updated.'
       end
+
+      @scheme_mix_criterion.update!(status: status)
+      flash[:notice] = 'Criterion status was sucessfully updated.'
+    else
+      flash[:alert] = todos.first
+    end
+
+    redirect_to project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion)
+  end
+
+  def update_scores
+    # if not attempting criterion
+    if @scheme_mix_criterion.targeted_score == -1
+      params[:scheme_mix_criterion][:submitted_score] = -1
+    end
+
+    @scheme_mix_criterion.update!(scheme_mix_criterion_params)
+
+    redirect_to project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), notice: 'Criterion scores were successfully updated.'
   end
 
   def assign_certifier
@@ -65,7 +68,7 @@ class SchemeMixCriteriaController < AuthenticatedController
       end
       @scheme_mix_criterion.save!
     end
-    redirect_to project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), notice: 'Criterion was successfully updated.'
+    redirect_to project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), notice: 'Criterion certifier responsibility was successfully updated.'
   end
 
   private

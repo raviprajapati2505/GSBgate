@@ -21,8 +21,8 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Additional requirements <%= tooltip('If this documentation meets other requirements click here to select any additional criteria it applies to.') %></div>
                     <div class="panel-body">
-                        <a href="#" id="documents-select-criteria" class="btn btn-white btn-sm"><i class="fa fa-plus"></i>&nbsp;&nbsp;Select additional criteria</a>
-                        <ul id="document-scheme-mix-criteria" class="checkbox-list" style="display:none;">
+                        <a href="#" class="show-criteria-checkboxes btn btn-white btn-sm"><i class="fa fa-plus"></i>&nbsp;&nbsp;Select additional criteria</a>
+                        <ul class="criteria-checkboxes checkbox-list" style="display:none;">
                             <% scheme_mix.scheme_categories.uniq.each do |category| %>
                                 <li>
                                     <a href="#"><i class="fa fa-caret-square-o-right"></i>&nbsp;<%= category.name %></a>
@@ -30,12 +30,8 @@
                                         <% scheme_mix.scheme_mix_criteria.for_category(category).each do |scheme_mix_criterion| %>
                                             <li>
                                                 <% default_checkbox_value = (scheme_mix_criterion_id.present? and (scheme_mix_criterion_id == scheme_mix_criterion.id)) %>
-                                                <!--%= check_box_tag 'document[scheme_mix_criteria][]', scheme_mix_criterion.id, default_checkbox_value, disabled: default_checkbox_value, id: 'document_scheme_mix_criterion_' + scheme_mix_criterion.id.to_s %-->
-                                                <!--%= label_tag 'document_scheme_mix_criterion_' + scheme_mix_criterion.id.to_s, scheme_mix_criterion.scheme_criterion.full_name %-->
                                                 <%= check_box_tag 'document[scheme_mix_criteria_documents_attributes][][scheme_mix_criterion_id]', scheme_mix_criterion.id, default_checkbox_value, disabled: default_checkbox_value, id: 'document_scheme_mix_criterion_' + scheme_mix_criterion.id.to_s %>
-                                                <%= label_tag 'document_scheme_mix_criterion_' + scheme_mix_criterion.id.to_s, scheme_mix_criterion.scheme_criterion.full_name %>
-                                                <!--%= text_field_tag 'document[scheme_mix_criteria_documents_attributes][][scheme_mix_criterion_id]', scheme_mix_criterion.id %-->
-                                                <!--%= text_field_tag 'document[scheme_mix_criteria_documents_attributes][][status]', 'awaiting_approval' %-->
+                                                <%= label_tag 'document_scheme_mix_criterion_' + scheme_mix_criterion.id.to_s, scheme_mix_criterion.full_name %>
                                             </li>
                                         <% end %>
                                     </ul>
@@ -187,20 +183,7 @@
                     location.reload();
                 }
             });
-
-            // Handle select criteria button click
-            $('#documents-select-criteria').click(function(e) {
-                $(this).hide();
-                $('#document-scheme-mix-criteria').show();
-                e.preventDefault();
-            });
-
-            // Handle scheme mix criteria lists toggle
-            $('ul#document-scheme-mix-criteria li a').click(function (e) {
-                $(this).siblings('ul').slideToggle();
-                $(this).children('i').toggleClass('fa-caret-square-o-right').toggleClass('fa-caret-square-o-down');
-                e.preventDefault();
-            });
         });
     </script>
 <% end %>
+<%= javascript_include_tag 'criteria_checkboxes' %>

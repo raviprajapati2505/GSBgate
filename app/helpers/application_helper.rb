@@ -24,20 +24,6 @@ module ApplicationHelper
     end
   end
 
-  def status_label(status, can_edit, modal)
-    if can_edit
-      ( '<a href="#" data-toggle="modal" data-target="#' + modal + '" title="Click to update the status" class="pull-right">'\
-          '<span class="label label-lg status-' + status.dasherize + '">'\
-            '<i class="fa fa-lg fa-edit"></i>&nbsp;Status: ' + status.humanize + ''\
-          '</span>'\
-        '</a>').html_safe
-    else
-      ( '<span class="label label-lg status-label status-' + status.dasherize + ' pull-right">'\
-          'Status: ' + status.humanize + ''\
-        '</span>').html_safe
-    end
-  end
-
   def audit_log_label(auditable)
     link_to('<span class="label label-lg"><i class="fa fa-lg fa-history"></i></span>'.html_safe, auditable_index_audit_logs_path(auditable.class.name, auditable.id), remote: true, title: 'Click to view the audit log of this resource.', class: 'pull-right')
   end
@@ -153,11 +139,13 @@ module ApplicationHelper
     if scheme_mix_criterion_document.present?
       breadcrumbs[:names] << scheme_mix_criterion_document.name
       unless return_url
-        breadcrumbs[:paths] << project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_path(project, certification_path, scheme_mix, scheme_mix_criterion, scheme_mix_criterion_document)
+        breadcrumbs[:paths] << project_certification_path_scheme_mix_scheme_mix_criterion_path(project, certification_path, scheme_mix, scheme_mix_criterion) + '#documentation'
       else
-        breadcrumbs[:paths] << project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_url(project, certification_path, scheme_mix, scheme_mix_criterion, scheme_mix_criterion_document)
+        breadcrumbs[:paths] << project_certification_path_scheme_mix_scheme_mix_criterion_url(project, certification_path, scheme_mix, scheme_mix_criterion) + '#documentation'
       end
     end
+
+    # Only used for mail
     if certificate.present?
       breadcrumbs[:names] << certificate.name
       breadcrumbs[:paths] << scheme_criteria_path() + '?certificate_id=' + certificate.id.to_s
