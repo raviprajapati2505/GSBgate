@@ -152,9 +152,9 @@
                                             <% minimum_attainable_score_for_scheme = @scheme_mix.scheme.minimum_attainable_score_for_scheme %>
                                             <% maximum_attainable_score_for_scheme = @scheme_mix.scheme.maximum_attainable_score_for_scheme %>
                                             <% @scheme_mix.scheme_mix_criteria.for_category(category).each_with_index do |scheme_mix_criterion, j| %>
-                                                <tr class="clickable" data-href="<%= project_certification_path_scheme_mix_scheme_mix_criterion_path(@certification_path.project, @certification_path, @scheme_mix, scheme_mix_criterion) %>">
+                                                <tr>
                                                     <td><%= scheme_mix_criterion.scheme_criterion.scheme_category.code %></td>
-                                                    <td><%= scheme_mix_criterion.scheme_criterion.name %></td>
+                                                    <td><%= link_to(scheme_mix_criterion.scheme_criterion.name, project_certification_path_scheme_mix_scheme_mix_criterion_path(@certification_path.project, @certification_path, @scheme_mix, scheme_mix_criterion)) %></td>
                                                     <td><%= scheme_mix_criterion.status.humanize %></td>
                                                     <td><%= scheme_mix_criterion.scheme_criterion.weight %> %</td>
                                                     <td style="min-width: 260px">

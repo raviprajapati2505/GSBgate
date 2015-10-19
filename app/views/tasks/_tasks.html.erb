@@ -20,40 +20,40 @@
                     when ProjectTask.name.demodulize
                       breadcrumbs = breadcrumbs(task.project, with_prefix: false)
                  %>
-                    <tr class="clickable" data-href="<%= breadcrumbs[:paths].last %>">
-                        <td><%= t(".description_#{task.task_description_id}") %></td>
+                    <tr>
+                        <td><%= link_to(t(".description_#{task.task_description_id}"), breadcrumbs[:paths].last) %></td>
                         <td><%= render 'layouts/breadcrumb', model: task.project %></td>
                         <td>-</td>
                     </tr>
                 <%  when CertificationPathTask.name.demodulize
                         breadcrumbs = breadcrumbs(task.certification_path, with_prefix: false)
                  %>
-                    <tr class="clickable" data-href="<%= breadcrumbs[:paths].last %>">
-                        <td><%= t(".description_#{task.task_description_id}") %></td>
+                    <tr>
+                        <td><%= link_to(t(".description_#{task.task_description_id}"), breadcrumbs[:paths].last) %></td>
                         <td><%= render 'layouts/breadcrumb', model: task.certification_path %></td>
                         <td>-</td>
                     </tr>
                 <%  when SchemeMixCriterionTask.name.demodulize
                         breadcrumbs = breadcrumbs(task.scheme_mix_criterion, with_prefix: false)
                  %>
-                    <tr class="clickable" data-href="<%= breadcrumbs[:paths].last %>">
-                        <td><%= t(".description_#{task.task_description_id}") %></td>
+                    <tr>
+                        <td><%= link_to(t(".description_#{task.task_description_id}"), breadcrumbs[:paths].last) %></td>
                         <td><%= render 'layouts/breadcrumb', model: task.scheme_mix_criterion %></td>
                         <td><% if task.scheme_mix_criterion.due_date.present? %><%= l(task.scheme_mix_criterion.due_date, format: :short) %><% if Date.today > task.scheme_mix_criterion.due_date %>&nbsp;<i class="fa fa-clock-o due-date-expired" title="<%= t('.tooltip_due_date') %>" data-toggle="tooltip"></i><% end %><% else %>-<% end %></td>
                     </tr>
                 <%  when RequirementDatumTask.name.demodulize
                         breadcrumbs = breadcrumbs(task.requirement_datum, with_prefix: false)
                  %>
-                    <tr class="clickable" data-href="<%= breadcrumbs[:paths].last %>">
-                        <td><%= t(".description_#{task.task_description_id}") %></td>
+                    <tr>
+                        <td><%= link_to(t(".description_#{task.task_description_id}"), breadcrumbs[:paths].last) %></td>
                         <td><%= render 'layouts/breadcrumb', model: task.requirement_datum %></td>
                         <td><% if task.requirement_datum.due_date.present? %><%= l(task.requirement_datum.due_date, format: :short) %><% if Date.today > task.requirement_datum.due_date %>&nbsp;<i class="fa fa-clock-o due-date-expired" title="<%= t('.tooltip_due_date') %>" data-toggle="tooltip"></i><% end %><% else %>-<% end %></td>
                     </tr>
                 <%  when SchemeMixCriterionDocumentTask.name.demodulize
                         breadcrumbs = breadcrumbs(task.scheme_mix_criteria_document, with_prefix: false)
                  %>
-                    <tr class="clickable" data-href="<%= breadcrumbs[:paths].last %>">
-                        <td><%= t(".description_#{task.task_description_id}") %></td>
+                    <tr>
+                        <td><%= link_to(t(".description_#{task.task_description_id}"), breadcrumbs[:paths].last) %></td>
                         <td><%= render 'layouts/breadcrumb', model: task.scheme_mix_criteria_document %></td>
                         <td>-</td>
                     </tr>

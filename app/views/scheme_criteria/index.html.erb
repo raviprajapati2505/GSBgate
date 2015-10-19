@@ -40,8 +40,8 @@
                         <tr><td colspan="3">Currently there are no criteria.</td></tr>
                     <% else %>
                         <% @scheme_criteria.each do |scheme_criterion| %>
-                            <tr class="clickable" data-href="<%= scheme_criterion_path(scheme_criterion) %>">
-                                <td><%= scheme_criterion.scheme_category.scheme.certificate.name %></td>
+                            <tr>
+                                <td><%= link_to(scheme_criterion.scheme_category.scheme.certificate.name, scheme_criterion_path(scheme_criterion)) %></td>
                                 <td><%= scheme_criterion.scheme_category.scheme.name %></td>
                                 <td><%= scheme_criterion.scheme_category.name %></td>
                                 <td><%= scheme_criterion.full_name %></td>
