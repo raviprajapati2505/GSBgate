@@ -185,9 +185,9 @@
                         </thead>
                         <tbody>
                         <% @project.certifiers.distinct.each do |certifier| %>
-                            <tr class="clickable" data-href="<%= project_user_path(@project, ProjectsUser.find_by(user: certifier, project: @project)) %>">
+                            <tr>
                                 <% projects_user = certifier.projects_users.for_project(@project).first %>
-                                <td><%= certifier.email %></td>
+                                <td><%= link_to(certifier.email, project_user_path(@project, ProjectsUser.find_by(user: certifier, project: @project))) %></td>
                                 <td><%= projects_user.role.humanize %></td>
                                 <td>
                                     <span class="badge"><%= TaskService::count_tasks(user: certifier, project_id: @project.id) %></span>
