@@ -127,15 +127,14 @@ class CertificationPathsController < AuthenticatedController
       redirect_to project_certification_path_path(@project, @certification_path), alert: 'You are not allowed to advance the certificate status at this time.'
     else
       CertificationPath.transaction do
-        # Check if there's an appeal
-        @certification_path.appealed = certification_path_params.has_key?(:appealed)
+        todos = @certification_path.todo_before_status_advance
 
-        # Retrieve the next status
-        next_status = @certification_path.next_status
+        if todos.blank?
+          # Check if there's an appeal
+          @certification_path.appealed = certification_path_params.has_key?(:appealed)
 
-        if next_status.is_a? Integer
-          # Save the next status & user comment
-          @certification_path.certification_path_status_id = next_status
+          # Retrieve & save the next status
+          @certification_path.certification_path_status_id = @certification_path.next_status
           @certification_path.audit_log_user_comment = params[:certification_path][:audit_log_user_comment]
           @certification_path.save!
 
@@ -147,7 +146,7 @@ class CertificationPathsController < AuthenticatedController
           end
           redirect_to project_certification_path_path(@project, @certification_path), notice: 'The certificate status was successfully updated.'
         else
-          redirect_to project_certification_path_path(@project, @certification_path), alert: next_status
+          redirect_to project_certification_path_path(@project, @certification_path), alert: todos.first
         end
       end
     end

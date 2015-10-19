@@ -145,6 +145,7 @@ class CertificationPath < ActiveRecord::Base
     end
   end
 
+  # Checks if a user has permission to advance the certificate path to the next status
   def can_advance_status?(user)
     unless [CertificationPathStatus::CERTIFIED, CertificationPathStatus::NOT_CERTIFIED].include?(certification_path_status_id)
       case CertificationPathStatus.waiting_fors[certification_path_status.waiting_for]
@@ -158,115 +159,123 @@ class CertificationPath < ActiveRecord::Base
           return user.gord_manager?
         when CertificationPathStatus.waiting_fors[:gord_top_manager]
           return user.gord_top_manager?
+        else
+          return false
       end
     end
     return false
   end
 
-  # return an error message if not all conditions are met to advance to the next status
-  # returns a CertificationPathStatus id otherwise
+  # Returns the next CertificationPathStatus id in the status flow of the certificate
   def next_status
-    error = catch(:error) do
-      case certification_path_status_id
-        when CertificationPathStatus::ACTIVATING
-          # Only system_admin can change status
-          if can_leave_activating_status?
-            return CertificationPathStatus::SUBMITTING
-          end
-        when CertificationPathStatus::SUBMITTING
-          # Only system_admin and project mngr can change status
-          if can_leave_submitting_status?
-            return CertificationPathStatus::SCREENING
-          end
-        when CertificationPathStatus::SCREENING
-          # Only system_admin and certifier mngr can change status
-          if can_leave_screening_status?
-            return CertificationPathStatus::SUBMITTING_AFTER_SCREENING
-          end
-        when CertificationPathStatus::SUBMITTING_AFTER_SCREENING
-          # Only system_admin and project mngr can change status
-          if can_leave_submitting_after_screening_status?
-            # The next status depends on the PCR track flag
-            if pcr_track?
-              if pcr_track_allowed?
-                return CertificationPathStatus::SUBMITTING_PCR
-              else
-                return CertificationPathStatus::PROCESSING_PCR_PAYMENT
-              end
-            else
-              return CertificationPathStatus::VERIFYING
-            end
-          end
-        when CertificationPathStatus::PROCESSING_PCR_PAYMENT
-          # Only system_admin can change status
-          if can_leave_processing_pcr_payment_status?
+    case certification_path_status_id
+      when CertificationPathStatus::ACTIVATING
+        return CertificationPathStatus::SUBMITTING
+      when CertificationPathStatus::SUBMITTING
+        return CertificationPathStatus::SCREENING
+      when CertificationPathStatus::SCREENING
+        return CertificationPathStatus::SUBMITTING_AFTER_SCREENING
+      when CertificationPathStatus::SUBMITTING_AFTER_SCREENING
+        if pcr_track?
+          if pcr_track_allowed?
             return CertificationPathStatus::SUBMITTING_PCR
+          else
+            return CertificationPathStatus::PROCESSING_PCR_PAYMENT
           end
-        when CertificationPathStatus::SUBMITTING_PCR
-          # Only system_admin, certifier mngr and project mngr can change status
-          if can_leave_submitting_pcr_status?
-            return CertificationPathStatus::VERIFYING
-          end
-        when CertificationPathStatus::VERIFYING
-          # Only system_admin and certifier mngr can change status
-          if can_leave_verifying_status?
-            # The next status depends on the outcome of the verification process
-            # TODO when is a certification path rejected ?
-            return CertificationPathStatus::ACKNOWLEDGING
-          end
-        when CertificationPathStatus::ACKNOWLEDGING
-          # Only system_admin and project mngr can change status
-          if can_leave_acknowledging_status?
-            if appealed?
-              return CertificationPathStatus::PROCESSING_APPEAL_PAYMENT
-            else
-              return CertificationPathStatus::APPROVING_BY_MANAGEMENT
-            end
-          end
-        when CertificationPathStatus::PROCESSING_APPEAL_PAYMENT
-          # Only system_admin can change status
-          if can_leave_processing_appeal_payment_status?
-            return CertificationPathStatus::SUBMITTING_AFTER_APPEAL
-          end
-        when CertificationPathStatus::SUBMITTING_AFTER_APPEAL
-          # Only system_admin and project mngr can change status
-          if can_leave_submitting_after_appeal_status?
-            return CertificationPathStatus::VERIFYING_AFTER_APPEAL
-          end
-        when CertificationPathStatus::VERIFYING_AFTER_APPEAL
-          # Only system_admin and certifier mngr can change status
-          if can_leave_verifying_after_appeal_status?
-            # The next status depends on the outcome of the verification process
-            # TODO when is a certification path rejected ?
-            return CertificationPathStatus::ACKNOWLEDGING_AFTER_APPEAL
-          end
-        when CertificationPathStatus::ACKNOWLEDGING_AFTER_APPEAL
-          # Only system_admin and project mngr can change status
-          if can_leave_acknowledging_after_appeal_status?
-            return CertificationPathStatus::APPROVING_BY_MANAGEMENT
-          end
-        when CertificationPathStatus::APPROVING_BY_MANAGEMENT
-          # Only GORD mngr and GORD top mngr can change status
-          if can_leave_approving_by_management_status?
-            return CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT
-          end
-        when CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT
-          # Only GORD mngr and GORD top mngr can change status
-          if can_leave_approving_by_top_management_status?
-            return CertificationPathStatus::CERTIFIED
-          end
-        when CertificationPathStatus::CERTIFIED, CertificationPathStatus::NOT_CERTIFIED
-          # There is no next status
-          throw(:error, 'There is no next status.')
-      end
+        else
+          return CertificationPathStatus::VERIFYING
+        end
+      when CertificationPathStatus::PROCESSING_PCR_PAYMENT
+        return CertificationPathStatus::SUBMITTING_PCR
+      when CertificationPathStatus::SUBMITTING_PCR
+        return CertificationPathStatus::VERIFYING
+      when CertificationPathStatus::VERIFYING
+        return CertificationPathStatus::ACKNOWLEDGING
+      when CertificationPathStatus::ACKNOWLEDGING
+        if appealed?
+          return CertificationPathStatus::PROCESSING_APPEAL_PAYMENT
+        else
+          return CertificationPathStatus::APPROVING_BY_MANAGEMENT
+        end
+      when CertificationPathStatus::PROCESSING_APPEAL_PAYMENT
+        return CertificationPathStatus::SUBMITTING_AFTER_APPEAL
+      when CertificationPathStatus::SUBMITTING_AFTER_APPEAL
+        return CertificationPathStatus::VERIFYING_AFTER_APPEAL
+      when CertificationPathStatus::VERIFYING_AFTER_APPEAL
+        return CertificationPathStatus::ACKNOWLEDGING_AFTER_APPEAL
+      when CertificationPathStatus::ACKNOWLEDGING_AFTER_APPEAL
+        return CertificationPathStatus::APPROVING_BY_MANAGEMENT
+      when CertificationPathStatus::APPROVING_BY_MANAGEMENT
+        return CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT
+      when CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT
+        return CertificationPathStatus::CERTIFIED
+      else
+        return false
     end
-    return error
   end
 
   def previous_status
     # only system_admin can use this function
     # TODO provide code for previous_status
     raise NotImplementedError
+  end
+
+  def todo_before_status_advance
+    todos = []
+
+    case certification_path_status_id
+      when CertificationPathStatus::ACTIVATING
+        # TODO certification path expiry date
+        unless project.certifier_manager_assigned?
+          todos << 'A certifier manager must be assigned to the project first.'
+        end
+      when CertificationPathStatus::SUBMITTING, CertificationPathStatus::SUBMITTING_AFTER_SCREENING, CertificationPathStatus::SUBMITTING_PCR, CertificationPathStatus::SUBMITTING_AFTER_APPEAL
+        ['location_plan_file', 'site_plan_file', 'design_brief_file', 'project_narrative_file'].each do |general_submittal|
+          if project.send(general_submittal).blank?
+            todos << 'Please add a \'' + Project.human_attribute_name(general_submittal) + '\' to the project first.'
+          end
+        end
+        scheme_mix_criteria.each do |criterion|
+          if criterion.has_required_requirements?
+            todos << 'All requirements should have status \'Provided\' or \'Not required\'.'
+          end
+          if criterion.has_documents_awaiting_approval?
+            todos << 'There are still documents awaiting approval.'
+          end
+          if criterion.targeted_score.blank?
+            todos << 'Every criterion should have a targeted score.'
+          end
+          if criterion.submitted_score.blank?
+            todos << 'Every criterion should have a submitted score.'
+          end
+          if criterion.submitting?
+            todos << 'All criteria should have status \'Submitted\'.'
+          end
+          if criterion.submitting_after_appeal?
+            todos << 'All criteria should have status \'Submitted after appeal\'.'
+          end
+        end
+      when CertificationPathStatus::PROCESSING_PCR_PAYMENT
+        unless pcr_track_allowed?
+          todos << 'The PCR track allowed flag must be set first.'
+        end
+      when CertificationPathStatus::VERIFYING, CertificationPathStatus::VERIFYING_AFTER_APPEAL
+        scheme_mix_criteria.each do |criterion|
+          if criterion.achieved_score.blank?
+            todos << 'Every criterion should have an achieved score.'
+          end
+          if criterion.verifying?
+            todos << 'All criteria should have status \'Target achieved\' or \'Target not achieved\'.'
+          end
+          if criterion.verifying_after_appeal?
+            todos << 'All criteria should have status \'Target achieved after appeal\' or \'Target not achieved after appeal\'.'
+          end
+        end
+      when CertificationPathStatus::CERTIFIED, CertificationPathStatus::NOT_CERTIFIED
+        todos << 'This is the final status.'
+    end
+
+    return todos
   end
 
   def self.star_rating_for_score(score)
@@ -364,144 +373,5 @@ class CertificationPath < ActiveRecord::Base
         end
       end
     end
-  end
-
-  # Conditions are
-  #  1) certification path is not expired
-  #  2) certification path payment received
-  #  3) project details are provided
-  #  4) certifier mngr is assigned
-  def can_leave_activating_status?
-    # TODO certification path expiry date
-    # certifier mngr is assigned
-    if project.certifier_manager_assigned?
-      return true
-    end
-    throw(:error, 'A certifier manager must be assigned to the project first.')
-  end
-
-  # Conditions are
-  #  1) all general submittals are provided
-  #  2) all criteria are submitted (= when all linked requirements and submitted scores are provided and no more documents waiting for approval)
-  def can_leave_submitting_status?
-    ['location_plan_file', 'site_plan_file', 'design_brief_file', 'project_narrative_file'].each do |general_submittal|
-      if project.send(general_submittal).blank?
-        throw(:error, 'Please add a \'' + Project.human_attribute_name(general_submittal) + '\' to the project first.')
-      end
-    end
-
-    scheme_mix_criteria.each do |criterion|
-      # all linked requirements are provided
-      if criterion.has_required_requirements?
-        throw(:error, 'All requirements should have status \'Provided\' or \'Not required\'.')
-      end
-      # no more documents waiting for approval
-      if criterion.has_documents_awaiting_approval?
-        throw(:error, 'There are still documents awaiting approval.')
-      end
-      # all targeted scores provided
-      if criterion.targeted_score.blank?
-        throw(:error, 'Every criterion should have a targeted score.')
-      end
-      # all submitted scores provided
-      if criterion.submitted_score.blank?
-        throw(:error, 'Every criterion should have a submitted score.')
-      end
-      # all criteria are submitted
-      if criterion.submitting?
-        throw(:error, 'All criteria should have status \'Submitted\'.')
-      end
-      # all criteria are submitted after appealed
-      if criterion.submitting_after_appeal?
-        throw(:error, 'All criteria should have status \'Submitted after appeal\'.')
-      end
-    end
-    return true
-  end
-
-  # Conditions are
-  #  1) all criteria are screened
-  def can_leave_screening_status?
-    return true
-  end
-
-  # Conditions are
-  #  1) all criteria are completed (= when all linked requirements and submitted scores are provided and no more documents waiting for approval)
-  def can_leave_submitting_after_screening_status?
-    can_leave_submitting_status?
-  end
-
-  # Conditions are
-  #  1) PCR track payment received
-  def can_leave_processing_pcr_payment_status?
-    if pcr_track_allowed?
-      return true
-    end
-    throw(:error, 'The PCR track allowed flag must be set first.')
-  end
-
-  # Conditions are
-  #  1) all criteria are reviewed
-  def can_leave_submitting_pcr_status?
-    can_leave_submitting_status?
-  end
-
-  # Conditions are
-  #  1) all criteria are verified (= when all achieved scores are provided)
-  def can_leave_verifying_status?
-    scheme_mix_criteria.each do |criterion|
-      if criterion.achieved_score.blank?
-        throw(:error, 'Every criterion should have an achieved score.')
-      end
-      if criterion.verifying?
-        throw(:error, 'All criteria should have status \'Target achieved\' or \'Target not achieved\'.')
-      end
-      if criterion.verifying_after_appeal?
-        throw(:error, 'All criteria should have status \'Target achieved after appeal\' or \'Target not achieved after appeal\'.')
-      end
-    end
-    return true
-  end
-
-  # Conditions are
-  #  none
-  def can_leave_acknowledging_status?
-    return true
-  end
-
-  # Conditions are
-  #  1) payment received
-  def can_leave_processing_appeal_payment_status?
-    return true
-  end
-
-  # Conditions are
-  #  1) all appealed criteria are completed (= when all linked requirements and submitted scores are provided and no more documents waiting for approval)
-  def can_leave_submitting_after_appeal_status?
-    can_leave_submitting_status?
-  end
-
-  # Conditions are
-  #  1) all criteria are verified (= when all achieved scores are provided)
-  def can_leave_verifying_after_appeal_status?
-    can_leave_verifying_status?
-  end
-
-  # Conditions are
-  #  none
-  def can_leave_acknowledging_after_appeal_status?
-    return true
-  end
-
-  # Conditions are
-  #  none
-  def can_leave_approving_by_management_status?
-    return true
-  end
-
-  # Conditions are
-  #  none
-  def can_leave_approving_by_top_management_status?
-    return true
   end
 end
