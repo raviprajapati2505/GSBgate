@@ -12,6 +12,16 @@
     text-decoration: underline;
   }
 
+  .navbar-nav {
+    .badge {
+      background-color: $skin-gord-color;
+      color: #FFF;
+      position: absolute;
+      top: 8px;
+      left: 28px;
+    }
+  }
+
   .media-body {
     width: auto;
   }

@@ -9,12 +9,13 @@
         <ul class="nav navbar-nav">
             <li class="<%= 'active' if current_page?('/projects') || current_page?('/') %>">
                 <%= link_to "/projects" do %>
-                    <i class="fa fa-lg fa-building-o"></i> <span class="nav-label">My Projects</span>
+                    <i class="fa fa-lg fa-building-o"></i> <span class="nav-label">My projects</span>
                 <% end %>
             </li>
             <li>
+                <% task_count = TaskService::count_tasks(user: current_user) %>
                 <%= link_to tasks_path(user_id: current_user.id) do %>
-                    <i class="fa fa-lg fa-tasks"></i> <span class="nav-label">My Tasks<span class="badge"><%= TaskService::count_tasks(user: current_user) %></span></span>
+                    <i class="fa fa-lg fa-tasks"></i> <span class="nav-label">My tasks<% if task_count > 0 %><span class="badge"><%= task_count %></span><% end %></span>
                 <% end %>
             </li>
             <li>
