@@ -36,7 +36,7 @@ class Ability
       can :manage, ProjectsUser, role: ['project_team_member', ProjectsUser.roles[:project_team_member], 'project_manager', ProjectsUser.roles[:project_manager], 'enterprise_account', ProjectsUser.roles[:enterprise_account]], project: {projects_users: {user_id: user.id, role: ['project_manager', ProjectsUser.roles[:project_manager]]}}
       can :manage, ProjectsUser, role: ['certifier', ProjectsUser.roles[:certifier], 'certifier_manager', ProjectsUser.roles[:certifier_manager]], project: {projects_users: {user_id: user.id, role: ['certifier_manager', ProjectsUser.roles[:certifier_manager]]}}
       can :read, ProjectsUser, project: {projects_users: {user_id: user.id}}
-      can :create, ProjectsUser, project: {owner_id: user.id}
+      can :create, ProjectsUser, project: {projects_users: {user_id: user.id, role: ['project_manager', ProjectsUser.roles[:project_manager], 'certifier_manager', ProjectsUser.roles[:certifier_manager]]}}
       cannot :destroy, ProjectsUser do |projects_user|
         projects_user.project.owner_id == projects_user.user_id
       end
