@@ -232,7 +232,7 @@ class CertificationPath < ActiveRecord::Base
       when CertificationPathStatus::SUBMITTING, CertificationPathStatus::SUBMITTING_AFTER_SCREENING, CertificationPathStatus::SUBMITTING_PCR, CertificationPathStatus::SUBMITTING_AFTER_APPEAL
         ['location_plan_file', 'site_plan_file', 'design_brief_file', 'project_narrative_file'].each do |general_submittal|
           if project.send(general_submittal).blank?
-            todos << 'Please add a \'' + Project.human_attribute_name(general_submittal) + '\' to the project first.'
+            todos << 'A \'' + Project.human_attribute_name(general_submittal) + '\' needs to be added to the project.'
           end
         end
         scheme_mix_criteria.each do |criterion|
@@ -249,10 +249,10 @@ class CertificationPath < ActiveRecord::Base
             todos << 'Every criterion should have a submitted score.'
           end
           if criterion.submitting?
-            todos << 'All criteria should have status \'Submitted\'.'
+            todos << 'Some criteria still have status \'Submitting\'.'
           end
           if criterion.submitting_after_appeal?
-            todos << 'All criteria should have status \'Submitted after appeal\'.'
+            todos << 'Some criteria still have status \'Submitting after appeal\'.'
           end
         end
       when CertificationPathStatus::PROCESSING_PCR_PAYMENT
@@ -265,10 +265,10 @@ class CertificationPath < ActiveRecord::Base
             todos << 'Every criterion should have an achieved score.'
           end
           if criterion.verifying?
-            todos << 'All criteria should have status \'Target achieved\' or \'Target not achieved\'.'
+            todos << 'Some criteria still have status \'Verifying\'.'
           end
           if criterion.verifying_after_appeal?
-            todos << 'All criteria should have status \'Target achieved after appeal\' or \'Target not achieved after appeal\'.'
+            todos << 'Some criteria still have status \'Verifying after appeal\'.'
           end
         end
       when CertificationPathStatus::CERTIFIED, CertificationPathStatus::NOT_CERTIFIED
