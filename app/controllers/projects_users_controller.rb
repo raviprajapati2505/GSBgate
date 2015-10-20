@@ -114,7 +114,7 @@ class ProjectsUsersController < AuthenticatedController
     if params.has_key?(:q) && params.has_key?(:page)
       if current_user.system_admin? or current_user.gord_top_manager? or current_user.gord_manager?
         total_count = Project.where('name like ?', '%' + params[:q] + '%').count
-        items = Project.select('id, name as text')
+        items = Project.select('id, name as text, projects.code as code, projects.latlng as latlng')
                     .where('name like ?', '%' + params[:q] + '%')
                     .paginate(page: params[:page], per_page: 25)
       else
