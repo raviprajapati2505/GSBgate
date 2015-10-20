@@ -1,0 +1,3 @@
+// Fill & open modal
+$('#editStatusCertificationPathModal').html("<%= escape_javascript(render 'edit_status', todos: @certification_path.todo_before_status_advance) %>");
+$('#editStatusCertificationPathModal').modal('show');

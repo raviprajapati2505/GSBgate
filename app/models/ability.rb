@@ -43,8 +43,8 @@ class Ability
       # CertificationPath controller
       can :manage, CertificationPath, project: {projects_users: {user_id: user.id, role: ['project_manager', ProjectsUser.roles[:project_manager]]}}
       can :update_pcr, CertificationPath, project: {projects_users: {user_id: user.id, role: ['certifier_manager', ProjectsUser.roles[:certifier_manager]]}}
-      can :update_status, CertificationPath, project: {projects_users: {user_id: user.id, role: ['project_manager', ProjectsUser.roles[:project_manager]]}}
-      can :update_status, CertificationPath, project: {projects_users: {user_id: user.id, role: ['certifier_manager', ProjectsUser.roles[:certifier_manager]]}}
+      can [:edit_status, :update_status], CertificationPath, project: {projects_users: {user_id: user.id, role: ['project_manager', ProjectsUser.roles[:project_manager]]}}
+      can [:edit_status, :update_status], CertificationPath, project: {projects_users: {user_id: user.id, role: ['certifier_manager', ProjectsUser.roles[:certifier_manager]]}}
       can :read, CertificationPath, project: {projects_users: {user_id: user.id}}
       can :apply, CertificationPath, project: {projects_users: {user_id: user.id, role: ['project_manager', ProjectsUser.roles[:project_manager]]}}
       can :list, CertificationPath, project: {projects_users: {user_id: user.id}}

@@ -11,7 +11,7 @@ en:
       btn_close: "Close"
       btn_save: "Save"
       modal_title: "Apply for certificate"
-    modal:
+    edit_status:
       btn_cancel: "Cancel"
       btn_close: "Close"
       btn_save: "Save"

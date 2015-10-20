@@ -122,6 +122,9 @@ class CertificationPathsController < AuthenticatedController
     end
   end
 
+  def edit_status
+  end
+
   def update_status
     if !@certification_path.can_advance_status?(current_user)
       redirect_to project_certification_path_path(@project, @certification_path), alert: 'You are not allowed to advance the certificate status at this time.'
