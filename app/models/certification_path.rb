@@ -275,7 +275,7 @@ class CertificationPath < ActiveRecord::Base
         todos << 'This is the final status.'
     end
 
-    return todos
+    return todos.uniq
   end
 
   def self.star_rating_for_score(score)
