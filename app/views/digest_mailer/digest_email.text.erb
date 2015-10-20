@@ -13,7 +13,7 @@ No audit logs found.
 +-
 <% @audit_logs.each do |audit_log| %>
 <% small = '| ' + I18n.l(audit_log.created_at) + ' | ' + audit_log.user.email + ' | ' %>
-<% breadcrumbs = breadcrumbs(audit_log.auditable, return_url: true) %>
+<% breadcrumbs = breadcrumbs(audit_log.auditable) %>
 <% breadcrumbs[:names].each_with_index do |breadcrumb_name, index| %>
 <% small += (index == 0 ? breadcrumb_name : '/' + breadcrumb_name) %>
 <% end %>
@@ -39,7 +39,7 @@ No tasks found.
  Description | Resource | Due date
 -------------+----------+----------
 <% @tasks.each do |task|
-  breadcrumbs = breadcrumbs(task.model, with_prefix: false, return_url: true)
+  breadcrumbs = breadcrumbs(task.model, with_prefix: false)
 %>
 <%= I18n.t(".description_#{task.description_id}", scope: [:tasks, :tasks]) %> | <%= breadcrumbs[:names].last %> | <% if task.model.class.method_defined?(:due_date) && task.model.due_date.present? %><%= I18n.l(task.model.due_date, format: :short) %><% else %>-<% end %>
 <% end %>
