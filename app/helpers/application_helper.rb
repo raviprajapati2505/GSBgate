@@ -81,12 +81,12 @@ module ApplicationHelper
     end
 
     if with_prefix
-      unless criterion.present?
-        breadcrumbs[:names] << 'Projects'
-        breadcrumbs[:paths] << projects_url
-      else
+      if criterion.present?
         breadcrumbs[:names] << 'Criteria'
         breadcrumbs[:paths] << scheme_criteria_path
+      else
+        breadcrumbs[:names] << 'Projects'
+        breadcrumbs[:paths] << projects_url
       end
     end
     if project.present?
