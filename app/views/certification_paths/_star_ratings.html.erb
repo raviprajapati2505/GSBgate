@@ -1,6 +1,6 @@
 <% if certification_path.is_completed? %>
-    <%= render partial: 'certification_paths/star_rating_item', locals: {score_label: 'Achieved', score: certification_path.total_weighted_achieved_score_relative_to_certification_path, achieved: true} %>
+    <%= render partial: 'certification_paths/star_rating_item', locals: {score_label: 'Achieved', score: certification_path.achieved_score, achieved: true} %>
 <% else %>
-    <%= render partial: 'certification_paths/star_rating_item', locals: {score_label: 'Targeted', score: certification_path.total_weighted_targeted_score_relative_to_certification_path} %>
-    <%= render partial: 'certification_paths/star_rating_item', locals: {score_label: 'Submitted', score: certification_path.total_weighted_submitted_score_relative_to_certification_path} %>
+    <%= render partial: 'certification_paths/star_rating_item', locals: {score_label: 'Targeted', score: certification_path.targeted_score} %>
+    <%= render partial: 'certification_paths/star_rating_item', locals: {score_label: 'Submitted', score: certification_path.submitted_score} %>
 <% end %>

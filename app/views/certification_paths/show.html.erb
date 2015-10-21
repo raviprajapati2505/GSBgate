@@ -20,6 +20,41 @@
                 <% end %>
             </div>
         </div>
+
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>Certificate details</h5>
+            </div>
+            <div class="ibox-content">
+                <table class="table table-bordered table-striped">
+                    <tbody>
+                    <tr>
+                        <th>Certificate name</th>
+                        <td><%= @certification_path.name %></td>
+                    </tr>
+                    <tr>
+                        <th>Started</th>
+                        <td><%= @certification_path.started_at %></td>
+                    </tr>
+                    <tr>
+                        <th>Duration</th>
+                        <td><%= @certification_path.duration %></td>
+                    </tr>
+                    <tr>
+                        <th>Rating</th>
+                        <td><%= render 'certification_paths/star_ratings', certification_path: @certification_path %></td>
+                    </tr>
+                    <tr>
+                        <th>Score</th>
+                        <td>
+                            <%= render 'score/score', scores: @certification_path.absolute_scores %>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
         <div class="row">
             <% if @certification_path.certification_path_status_id < CertificationPathStatus::SUBMITTING_PCR %>
                 <div class="col-lg-6">

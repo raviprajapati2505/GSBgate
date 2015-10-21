@@ -17,13 +17,13 @@ class SchemeMixCriterion < ActiveRecord::Base
 
   validates :status, inclusion: SchemeMixCriterion.statuses.keys
 
-  validates :targeted_score, numericality: { only_integer: true, greater_than_or_equal_to: -1, less_than_or_equal_to: 3 }, presence: true
-  validates :submitted_score, numericality: { only_integer: true, greater_than_or_equal_to: -1, less_than_or_equal_to: 3 }, allow_nil: true
-  validates :achieved_score, numericality: { only_integer: true, greater_than_or_equal_to: -1, less_than_or_equal_to: 3 }, allow_nil: true
+  validates :targeted_score, numericality: {only_integer: true, greater_than_or_equal_to: -1, less_than_or_equal_to: 3}, presence: true
+  validates :submitted_score, numericality: {only_integer: true, greater_than_or_equal_to: -1, less_than_or_equal_to: 3}, allow_nil: true
+  validates :achieved_score, numericality: {only_integer: true, greater_than_or_equal_to: -1, less_than_or_equal_to: 3}, allow_nil: true
 
   scope :order_by_code, -> {
     joins(:scheme_criterion)
-    .reorder('scheme_criteria.code')
+        .reorder('scheme_criteria.code')
   }
 
   scope :assigned_to_user, ->(user) {
@@ -38,7 +38,7 @@ class SchemeMixCriterion < ActiveRecord::Base
     # includes(:scheme_criterion => [:criterion])
     # .where(criteria: { category_id: category.id} )
     joins(:scheme_criterion)
-    .where(scheme_criteria: {scheme_category_id: category.id})
+        .where(scheme_criteria: {scheme_category_id: category.id})
   }
 
   scope :unassigned, -> {
@@ -51,30 +51,6 @@ class SchemeMixCriterion < ActiveRecord::Base
 
   def full_name
     self.scheme_criterion.full_name
-  end
-
-   def targeted_score_safe
-    if targeted_score.nil?
-      scheme_criterion.minimum_attainable_score
-    else
-      targeted_score
-    end
-  end
-
-  def submitted_score_safe
-    if submitted_score.nil?
-      scheme_criterion.minimum_attainable_score
-    else
-      submitted_score
-    end
-  end
-
-  def achieved_score_safe
-    if achieved_score.nil?
-      scheme_criterion.minimum_attainable_score
-    else
-      achieved_score
-    end
   end
 
   def has_required_requirements?
@@ -125,21 +101,13 @@ class SchemeMixCriterion < ActiveRecord::Base
     return todos
   end
 
-  # returns targeted score taking into account the percentage for which it counts (=weight)
-  def weighted_targeted_score
-    scheme_criterion.weighted_score(targeted_score_safe)
-  end
-
-  def weighted_submitted_score
-    scheme_criterion.weighted_score(submitted_score_safe)
-  end
-
-  def weighted_achieved_score
-    scheme_criterion.weighted_score(achieved_score_safe)
+  # returns scores taking into account the percentage for which it counts (=weight)
+  def score_types
+    return [:absolute, :weighted]
   end
 
   def self::map_to_status_key(status_value)
-    value = self.statuses.find { |k,v| v == status_value }
+    value = self.statuses.find { |k, v| v == status_value }
     return value[0].humanize unless value.nil?
   end
 
@@ -152,8 +120,82 @@ class SchemeMixCriterion < ActiveRecord::Base
     return false
   end
 
-  private
-    def init
-      self.status ||= :submitting
+  def absolute_scores
+    {
+        :maximum => self.maximum_score,
+        :minimum => self.minimum_score,
+        :targeted => self.targeted_score_safe,
+        :submitted => self.submitted_score_safe,
+        :achieved => self.achieved_score_safe
+    }
+  end
+
+  def weighted_scores
+    {
+        :maximum => self.maximum_weighted_score,
+        :minimum => self.minimum_weighted_score,
+        :targeted => self.targeted_weighted_score,
+        :submitted => self.submitted_weighted_score,
+        :achieved => self.achieved_weighted_score
+    }
+  end
+
+  def targeted_score_safe
+    if targeted_score.nil?
+      scheme_criterion.minimum_score
+    else
+      targeted_score
     end
+  end
+
+  def submitted_score_safe
+    if submitted_score.nil?
+      scheme_criterion.minimum_score
+    else
+      submitted_score
+    end
+  end
+
+  def achieved_score_safe
+    if achieved_score.nil?
+      scheme_criterion.minimum_score
+    else
+      achieved_score
+    end
+  end
+
+  def maximum_score
+    scheme_criterion.maximum_score
+  end
+
+  def minimum_score
+    scheme_criterion.minimum_score
+  end
+
+  def maximum_weighted_score
+    scheme_criterion.weighted_score(maximum_score)
+  end
+
+  def minimum_weighted_score
+    scheme_criterion.weighted_score(minimum_score)
+  end
+
+  def targeted_weighted_score
+    scheme_criterion.weighted_score(targeted_score_safe)
+  end
+
+  def submitted_weighted_score
+    scheme_criterion.weighted_score(submitted_score_safe)
+  end
+
+  def achieved_weighted_score
+    scheme_criterion.weighted_score(achieved_score_safe)
+  end
+
+  private
+
+  def init
+    self.status ||= :submitting
+  end
+
 end

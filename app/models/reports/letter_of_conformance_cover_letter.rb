@@ -23,7 +23,7 @@ On behalf of Gulf Organisation for Research and Development, I would like to con
 
 In recognition of this accomplishment and appreciation of your participation in the GSAS v2.1 certification process, I would like to confer this "Provisional Certificate-LOC" to your building with a total built-up area of <b>#{@certification_path.project.project_site_area}</b> m².
 
-Based on the submitted data, the final score at the preliminary review stage is documented to be <b>#{@certification_path.total_weighted_achieved_score_relative_to_certification_path}</b>, which corresponds to the certification level of <b>#{@certification_path.achieved_star_rating} star(s)</b> in the GSAS v2.1 Design Assessment Rating scheme. Figures 1 to 3 summarize the score for the buildings, the score per category, achieved GSAS v2.1 certification level and GSAS v2.1 scoring bar chart respectively. Also, LOC Criteria Scores for the project is attached.
+Based on the submitted data, the final score at the preliminary review stage is documented to be <b>#{@certification_path.achieved_score}</b>, which corresponds to the certification level of <b>#{@certification_path.achieved_star_rating} star(s)</b> in the GSAS v2.1 Design Assessment Rating scheme. Figures 1 to 3 summarize the score for the buildings, the score per category, achieved GSAS v2.1 certification level and GSAS v2.1 scoring bar chart respectively. Also, LOC Criteria Scores for the project is attached.
 
 Kindly be advised that, this letter is only the predecessor towards achieving GSAS v2.1 Design & Build Certificate and <u>should not be considered as the final certificate</u>. For the final GSAS v2.1 Design & Build Certificate, kindly ensure that all certification requirements, during and after the construction of the project, are satisfied (<u>LOC Compliance Audit</u>) as indicated in the GSAS Technical Guide.
 
@@ -117,11 +117,11 @@ Congratulations once again for partaking in this noble endeavor, and together le
     data = []
     data.append(['Code', 'Category', 'Point'])
     scheme_mix.scheme_categories.each do |category|
-      data.append([category.code, category.name, scheme_mix.total_weighted_achieved_score_for_category(category)])
+      data.append([category.code, category.name, scheme_mix.achieved_score_for_category(category)])
     end
 
-    data.append(['', 'Total score', scheme_mix.total_weighted_achieved_score])
-    data.append(['', 'Level achieved', CertificationPath.star_rating_for_score(scheme_mix.total_weighted_achieved_score)])
+    data.append(['', 'Total score', scheme_mix.achieved_score])
+    data.append(['', 'Level achieved', CertificationPath.star_rating_for_score(scheme_mix.achieved_score)])
     # render table
     table(data) do
       rows(0).background_color = '4A452A'

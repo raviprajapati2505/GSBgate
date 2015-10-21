@@ -75,6 +75,7 @@
                             <% end %>
                         </td>
                     </tr>
+                    <% if current_user.system_admin? || (!@certification_path.in_pre_verification?) %>
                     <tr>
                         <th>Achieved score</th>
                         <td>
@@ -86,6 +87,7 @@
                             <% end %>
                         </td>
                     </tr>
+                    <% end %>
                     </tbody>
                 </table>
                 <% if show_save_button %>

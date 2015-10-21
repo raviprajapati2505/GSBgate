@@ -18,18 +18,12 @@
                     <tr>
                         <th>Score</th>
                         <td>
-                            <div class="score-graph"
-                                 data-show-legend="false"
-                                 data-show-x-axis="true"
-                                 data-show-values="true"
-                                 data-width="260"
-                                 data-height="80"
-                                 data-min="<%= @scheme_mix.scheme.total_weighted_minimum_attainable_score %>"
-                                 data-max="<%= @scheme_mix.scheme.total_weighted_maximum_attainable_score %>"
-                                 data-max-attainable="<%= @scheme_mix.scheme.total_weighted_maximum_attainable_score %>"
-                                 data-targeted="<%= @scheme_mix.total_weighted_targeted_score %>"
-                                 data-submitted="<%= @scheme_mix.total_weighted_submitted_score %>"
-                                 data-achieved="<%= @scheme_mix.total_weighted_achieved_score %>"></div>
+                            <%= render 'score/score_toggle', id_list: ["scheme_mix_#{@scheme_mix.id}"] %>
+                            <%= render 'score/score_tabs',
+                                       absolute_scores: @scheme_mix.absolute_scores,
+                                       weighted_scores: @scheme_mix.weighted_scores,
+                                       element_id: "scheme_mix_#{@scheme_mix.id}"
+                            %>
                         </td>
                     </tr>
                     <tr>
@@ -83,34 +77,39 @@
                             <th>Code</th>
                             <th>Name</th>
                             <th>Weighting</th>
-                            <th>Points</th>
+                            <th>
+                                Score
+                                <% id_list = @scheme_mix.scheme_categories.collect { |category| "category_#{category.id}" } %>
+                                <% id_list << @scheme_mix.scheme_mix_criteria.collect { |scheme_mix_criteria| "scheme_mix_criterion_#{scheme_mix_criteria.id}" } %>
+                                <%= render 'score/score_toggle', id_list: id_list %>
+                            </th>
                             <th>Total requirement progress</th>
                             <th>Approved Documents</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <% minimum_of_total_weighted_minimum_attainable_score_per_category = @scheme_mix.scheme.minimum_of_total_weighted_minimum_attainable_score_per_category %>
-                        <% maximum_of_total_weighted_maximum_attainable_score_per_category = @scheme_mix.scheme.maximum_of_total_weighted_maximum_attainable_score_per_category %>
+                        <%
+                           maximum_scale_absolute = @scheme_mix.scheme_categories.collect { |category| @scheme_mix.maximum_score_for_category(category) }.max
+                           maximum_scale_weighted = @scheme_mix.scheme_categories.collect { |category| @scheme_mix.maximum_weighted_score_for_category(category) }.max
+                           minimum_scale_absolute = @scheme_mix.scheme_categories.collect { |category| @scheme_mix.minimum_score_for_category(category) }.min
+                           minimum_scale_weighted = @scheme_mix.scheme_categories.collect { |category| @scheme_mix.minimum_weighted_score_for_category(category) }.min
+                        %>
                         <% @scheme_mix.scheme_categories.uniq.each_with_index do |category, i| %>
                             <tr class="accordion-toggle" data-toggle="collapse" data-target="#category-panel-<%= category.id %>" data-parent="#categories-accordion">
                                 <td><i class="fa fa-caret-square-o-right"></i></td>
                                 <td><%= category.code %></td>
                                 <td><%= category.name %></td>
-                                <td><%= @scheme_mix.scheme.total_weight_for_category(category) %> %</td>
-                                <td style="min-width: 260px">
-                                    <div class="score-graph"
-                                         data-show-legend="false"
-                                         data-show-x-axis="<%= if i == 0 then true else false end %>"
-                                         data-show-values="true"
-                                         data-width="260"
-                                         data-height="80"
-                                         data-min="<%= minimum_of_total_weighted_minimum_attainable_score_per_category %>"
-                                         data-max="<%= maximum_of_total_weighted_maximum_attainable_score_per_category %>"
-                                         data-max-attainable="<%= @scheme_mix.scheme.total_weighted_maximum_attainable_score_for_category(category) %>"
-                                         data-targeted="<%= @scheme_mix.total_weighted_targeted_score_for_category(category) %>"
-                                         data-submitted="<%= @scheme_mix.total_weighted_submitted_score_for_category(category) %>"
-                                         data-achieved="<%= @scheme_mix.total_weighted_achieved_score_for_category(category) %>">
-                                    </div>
+                                <td><%= @scheme_mix.scheme.weight_for_category(category) %> %</td>
+                                <td>
+                                    <%= render 'score/score_tabs',
+                                               absolute_scores: @scheme_mix.absolute_scores_for_category(category),
+                                               weighted_scores: @scheme_mix.weighted_scores_for_category(category),
+                                               element_id: "category_#{category.id}",
+                                               maximum_scale_absolute: maximum_scale_absolute,
+                                               minimum_scale_absolute: minimum_scale_absolute,
+                                               maximum_scale_weighted: maximum_scale_weighted,
+                                               minimum_scale_weighted: minimum_scale_weighted
+                                    %>
                                 </td>
                                 <td>
                                     <% processed_count = RequirementDatum.for_scheme_mix(@scheme_mix).for_category(category).provided.count +
@@ -149,28 +148,18 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <% minimum_attainable_score_for_scheme = @scheme_mix.scheme.minimum_attainable_score_for_scheme %>
-                                            <% maximum_attainable_score_for_scheme = @scheme_mix.scheme.maximum_attainable_score_for_scheme %>
                                             <% @scheme_mix.scheme_mix_criteria.for_category(category).each_with_index do |scheme_mix_criterion, j| %>
                                                 <tr>
                                                     <td><%= scheme_mix_criterion.scheme_criterion.scheme_category.code %></td>
                                                     <td><%= link_to(scheme_mix_criterion.scheme_criterion.name, project_certification_path_scheme_mix_scheme_mix_criterion_path(@certification_path.project, @certification_path, @scheme_mix, scheme_mix_criterion)) %></td>
                                                     <td><%= scheme_mix_criterion.status.humanize %></td>
                                                     <td><%= scheme_mix_criterion.scheme_criterion.weight %> %</td>
-                                                    <td style="min-width: 260px">
-                                                        <div class="score-graph"
-                                                             data-show-legend="false"
-                                                             data-show-x-axis="<%= if j == 0 then true else false end %>"
-                                                             data-show-values="true"
-                                                             data-width="260"
-                                                             data-height="80"
-                                                             data-min="<%= minimum_attainable_score_for_scheme %>"
-                                                             data-max="<%= maximum_attainable_score_for_scheme %>"
-                                                             data-max-attainable="<%= scheme_mix_criterion.scheme_criterion.maximum_attainable_score %>"
-                                                             data-targeted="<%= scheme_mix_criterion.targeted_score %>"
-                                                             data-submitted="<%= scheme_mix_criterion.submitted_score %>"
-                                                             data-achieved="<%= scheme_mix_criterion.achieved_score %>">
-                                                        </div>
+                                                    <td>
+                                                        <%= render 'score/score_tabs',
+                                                                   absolute_scores: scheme_mix_criterion.absolute_scores,
+                                                                   weighted_scores: scheme_mix_criterion.weighted_scores,
+                                                                   element_id: "scheme_mix_criterion_#{scheme_mix_criterion.id}"
+                                                        %>
                                                     </td>
                                                     <td>
                                                         <% processed_count = scheme_mix_criterion.requirement_data.provided.count + scheme_mix_criterion.requirement_data.not_required.count %>

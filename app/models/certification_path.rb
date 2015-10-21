@@ -78,52 +78,20 @@ class CertificationPath < ActiveRecord::Base
     certificate.schemes.count == 1
   end
 
-  def total_weighted_targeted_score_relative_to_certification_path
-    total = nil
-    scheme_mixes.each do |sm|
-      total ||= 0
-      total += sm.total_weighted_targeted_score_relative_to_certification_path
-    end
-    total.nil? ? -1 : total
-  end
-
-  def total_weighted_submitted_score_relative_to_certification_path
-    total = nil
-    scheme_mixes.each do |sm|
-      total ||= 0
-      total += sm.total_weighted_submitted_score_relative_to_certification_path
-    end
-    total.nil? ? -1 : total
-  end
-
-  def total_weighted_achieved_score_relative_to_certification_path
-    total = nil
-    scheme_mixes.each do |sm|
-      total ||= 0
-      total += sm.total_weighted_achieved_score_relative_to_certification_path
-    end
-    total.nil? ? -1 : total
-  end
-
   def targeted_star_rating
-    CertificationPath.star_rating_for_score(total_weighted_targeted_score_relative_to_certification_path)
+    CertificationPath.star_rating_for_score(targeted_score)
   end
 
   def submitted_star_rating
-    CertificationPath.star_rating_for_score(total_weighted_sumitted_score_relative_to_certification_path)
+    CertificationPath.star_rating_for_score(submitted_score)
   end
 
   def achieved_star_rating
-    CertificationPath.star_rating_for_score(total_weighted_achieved_score_relative_to_certification_path)
+    CertificationPath.star_rating_for_score(achieved_score)
   end
 
   def total_weight
-    total = nil
-    scheme_mixes.each do |sm|
-      total ||= 0
-      total += sm.weight
-    end
-    total.nil? ? 0 : total
+    scheme_mixes.collect { |sm| sm.weight }.inject(:+)
   end
 
   def total_weight_is_equal_to_100_percent
@@ -332,6 +300,36 @@ class CertificationPath < ActiveRecord::Base
 
   def is_certified?
     return [CertificationPathStatus::CERTIFIED].include?(certification_path_status_id)
+  end
+
+  def absolute_scores
+    {
+        :maximum => maximum_score,
+        :minimum => minimum_score,
+        :targeted => targeted_score,
+        :submitted => submitted_score,
+        :achieved => achieved_score
+    }
+  end
+
+  def maximum_score
+    scheme_mixes.collect { |sm| sm.maximum_weighted_score }.inject(:+)
+  end
+
+  def minimum_score
+    scheme_mixes.collect { |sm| sm.minimum_weighted_score }.inject(:+)
+  end
+
+  def targeted_score
+    scheme_mixes.collect { |sm| sm.targeted_weighted_score }.inject(:+)
+  end
+
+  def submitted_score
+    scheme_mixes.collect { |sm| sm.submitted_weighted_score }.inject(:+)
+  end
+
+  def achieved_score
+    scheme_mixes.collect { |sm| sm.achieved_weighted_score }.inject(:+)
   end
 
   private

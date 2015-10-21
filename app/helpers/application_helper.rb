@@ -28,6 +28,10 @@ module ApplicationHelper
     link_to('<span class="label label-lg"><i class="fa fa-lg fa-history"></i></span>'.html_safe, auditable_index_audit_logs_path(auditable.class.name, auditable.id), remote: true, title: 'Click to view the audit log of this resource.', class: 'pull-right')
   end
 
+  def round_score(score)
+    score.round(3) if score.present?
+  end
+
   def breadcrumbs(model, with_prefix: true)
     breadcrumbs = { names: [], paths: [] }
 

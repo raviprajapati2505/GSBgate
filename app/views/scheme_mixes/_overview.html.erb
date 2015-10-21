@@ -6,7 +6,11 @@
         <tr>
             <th class="col-md-5">Scheme name</th>
             <th class="col-md-1">Weighting</th>
-            <th class="col-md-4">Score</th>
+            <th class="col-md-4">
+                Score
+                <% id_list = certification_path.scheme_mixes.collect { |scheme_mix| "scheme_mix_#{scheme_mix.id}" } %>
+                <%= render 'score/score_toggle', id_list: id_list %>
+            </th>
             <th class="col-md-2">Progress</th>
         </tr>
         </thead>
@@ -16,20 +20,11 @@
                 <td><%= link_to(scheme_mix.full_name, project_certification_path_scheme_mix_path(certification_path.project, certification_path, scheme_mix)) %></td>
                 <td><%= scheme_mix.weight %> %</td>
                 <td>
-                    <div style="min-width: 260px">
-                        <div class="score-graph"
-                             data-show-legend="false"
-                             data-show-x-axis="true"
-                             data-show-values="true"
-                             data-width="260"
-                             data-height="80"
-                             data-min="<%= scheme_mix.scheme.total_weighted_minimum_attainable_score %>"
-                             data-max="<%= scheme_mix.scheme.total_weighted_maximum_attainable_score %>"
-                             data-max-attainable="<%= scheme_mix.scheme.total_weighted_maximum_attainable_score %>"
-                             data-targeted="<%= scheme_mix.total_weighted_targeted_score %>"
-                             data-submitted="<%= scheme_mix.total_weighted_submitted_score %>"
-                             data-achieved="<%= scheme_mix.total_weighted_achieved_score %>"></div>
-                    </div>
+                    <%= render 'score/score_tabs',
+                               absolute_scores: scheme_mix.absolute_scores,
+                               weighted_scores: scheme_mix.weighted_scores,
+                               element_id: "scheme_mix_#{scheme_mix.id}"
+                    %>
                 </td>
                 <td>
                     <div class="progress">

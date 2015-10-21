@@ -665,8 +665,26 @@
     }
   }
 
-  // Score chart D3.js
+  // Score chart
+  .score-tabs {
+    li {
+      a {
+        @extend .btn, .btn-xs;
+      }
+    }
+    li:not(.active) {
+      a {
+        @extend .btn-white;
+      }
+    }
+    li.active {
+      a {
+        @extend .btn-primary;
+      }
+    }
+  }
   .score-graph {
+    min-width: 256px;
     max-width: 300px;
   }
 }
