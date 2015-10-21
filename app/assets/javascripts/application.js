@@ -34,6 +34,7 @@
  *= require js-routes
  *= require ckeditor/init
  *= require html.sortable
+ *= require leaflet
  */
 
 $(function () {
