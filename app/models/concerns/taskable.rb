@@ -23,6 +23,7 @@ module Taskable
   PROJ_MNGR_DOWNLOAD = 28
   PROJ_MNGR_DOC_APPROVE = 29
   PROJ_MNGR_APPLY = 30
+  PROJ_MNGR_ASSIGN_AFTER_APPEAL = 31
 
   included do
     after_create :after_create
@@ -227,8 +228,13 @@ module Taskable
           # Destroy project manager tasks to process verification comments
           CertificationPathTask.delete_all(task_description_id: PROJ_MNGR_PROC_VERIFICATION, certification_path: self)
         when CertificationPathStatus::SUBMITTING_AFTER_APPEAL
-          # TODO criteria status must be reset to 'in progress' by whom (sys admin) ?
-          # TODO requirements status must be reset to 'required' by whom (sys admin) ?
+          # Create project manager tasks to assign project team members to requirements
+          self.requirement_data.unassigned.required.each do |requirement_datum|
+            RequirementDatumTask.create(task_description_id: PROJ_MNGR_ASSIGN_AFTER_APPEAL,
+                                        project_role: ProjectsUser.roles[:project_manager],
+                                        project: self.project,
+                                        requirement_datum: requirement_datum)
+          end
           # Destroy system admin tasks to check appeal payment
           CertificationPathTask.delete_all(task_description_id: SYS_ADMIN_APPEAL_APPROVE, certification_path: self)
         when CertificationPathStatus::VERIFYING_AFTER_APPEAL
@@ -322,29 +328,40 @@ module Taskable
   def handle_criterion_status_changed
     if self.status_changed?
       case SchemeMixCriterion.statuses[self.status]
-        # Can criterion status be reset to 'submitting' ?
-        when SchemeMixCriterion.statuses[:submitting]
-          # TODO
-        when SchemeMixCriterion.statuses[:submitted]
+        when SchemeMixCriterion.statuses[:submitted], SchemeMixCriterion.statuses[:submitted_after_appeal]
           # Check if certification with status 'submitted' has no linked criteria in status 'submitting'
-          unless CertificationPath.joins(:scheme_mixes)
+          if CertificationPath.joins(:scheme_mixes)
                      .where(id: self.scheme_mix.certification_path.id, certification_path_status_id: [CertificationPathStatus::SUBMITTING, CertificationPathStatus::SUBMITTING_AFTER_APPEAL])
-                     .where.not('exists(select smc.id from scheme_mix_criteria smc where smc.scheme_mix_id = scheme_mixes.id and smc.status = ?)', SchemeMixCriterion.statuses[:submitting])
-                     .count.zero?
+                     .where.not('exists(select smc.id from scheme_mix_criteria smc where smc.scheme_mix_id = scheme_mixes.id and smc.status in (?))', [SchemeMixCriterion.statuses[:submitting],SchemeMixCriterion.statuses[:submitting_after_appeal]])
+                     .count.nonzero?
             # Create project manager task to advance certification path status
             CertificationPathTask.create(task_description_id: PROJ_MNGR_SUB_APPROVE,
                                          project_role: ProjectsUser.roles[:project_manager],
                                          project: self.scheme_mix.certification_path.project,
                                          certification_path: self.scheme_mix.certification_path)
           end
-          # Destroy project manager tasks to set criterion status to 'complete'
+          # Destroy project manager tasks to set criterion status to 'submitted'
           SchemeMixCriterionTask.delete_all(task_description_id: PROJ_MNGR_CRIT_APPROVE, scheme_mix_criterion: self)
-        when SchemeMixCriterion.statuses[:target_achieved], SchemeMixCriterion.statuses[:target_not_achieved]
-          # Check if certification with status 'verifying' has no linked criteria in status 'complete'
-          unless CertificationPath.joins(:scheme_mixes)
+        when SchemeMixCriterion.statuses[:verifying], SchemeMixCriterion.statuses[:verifying_after_appeal]
+          if self.certifier_id.nil?
+            # Create certifier manager task to assign certifier to the criterion
+            SchemeMixCriterionTask.create(task_description_id: CERT_MNGR_ASSIGN,
+                                          project_role: ProjectsUser.roles[:certifier_manager],
+                                          project: self.scheme_mix.certification_path.project,
+                                          scheme_mix_criterion: self)
+          else
+            # Create certifier team member task to screen the criterion
+            SchemeMixCriterionTask.create(task_description_id: CERT_MEM_VERIFY,
+                                          user: self.certifier,
+                                          project: self.scheme_mix.certification_path.project,
+                                          scheme_mix_criterion: self)
+          end
+        when SchemeMixCriterion.statuses[:target_achieved], SchemeMixCriterion.statuses[:target_not_achieved], SchemeMixCriterion.statuses[:target_achieved_after_appeal], SchemeMixCriterion.statuses[:target_not_achieved_after_appeal]
+          # Check if certification with status 'verifying' has no linked criteria in status 'verifying'
+          if CertificationPath.joins(:scheme_mixes)
                      .where(id: self.scheme_mix.certification_path.id, certification_path_status_id: [CertificationPathStatus::VERIFYING, CertificationPathStatus::VERIFYING_AFTER_APPEAL])
-                     .where.not('exists(select smc.id from scheme_mix_criteria smc where smc.scheme_mix_id = scheme_mixes.id and smc.status = ?)', SchemeMixCriterion.statuses[:submitted])
-                     .count.zero?
+                     .where.not('exists(select smc.id from scheme_mix_criteria smc where smc.scheme_mix_id = scheme_mixes.id and smc.status in (?))', [SchemeMixCriterion.statuses[:verifying],SchemeMixCriterion.statuses[:verifying_after_appeal]])
+                     .count.nonzero?
             # Create certifier manager task to advance certification path status
             CertificationPathTask.create(task_description_id: CERT_MNGR_VERIFICATION_APPROVE,
                                          project_role: ProjectsUser.roles[:certifier_manager],
@@ -371,15 +388,12 @@ module Taskable
       else
         # Destroy all certifier team member tasks to verify the criterion which are assigned to another user
         SchemeMixCriterionTask.delete_all(task_description_id: CERT_MEM_VERIFY, scheme_mix_criterion: self)
-        if SchemeMixCriterion.statuses[self.status] == SchemeMixCriterion.statuses[:submitted]
-          case self.scheme_mix.certification_path.certification_path_status_id
-            when CertificationPathStatus::VERIFYING, CertificationPathStatus::VERIFYING_AFTER_APPEAL
-              # Create certifier team member task to screen the criterion
-              SchemeMixCriterionTask.create(task_description_id: CERT_MEM_VERIFY,
-                                            user: self.certifier,
-                                            project: self.scheme_mix.certification_path.project,
-                                            scheme_mix_criterion: self)
-          end
+        if [SchemeMixCriterion.statuses[:verifying], SchemeMixCriterion.statuses[:verifying_after_appeal]].include?(SchemeMixCriterion.statuses[self.status])
+          # Create certifier team member task to screen the criterion
+          SchemeMixCriterionTask.create(task_description_id: CERT_MEM_VERIFY,
+                                        user: self.certifier,
+                                        project: self.scheme_mix.certification_path.project,
+                                        scheme_mix_criterion: self)
         end
         # Destroy all certifier manager tasks to assign certifier team member to this criterion
         SchemeMixCriterionTask.delete_all(task_description_id: CERT_MNGR_ASSIGN, scheme_mix_criterion: self)
@@ -416,11 +430,11 @@ module Taskable
                                             project: self.scheme_mix_criteria.first.scheme_mix.certification_path.project,
                                             requirement_datum_id: self.id)
         when RequirementDatum.statuses[:provided], RequirementDatum.statuses[:not_required]
-          # Check if criterion with status 'submitting' has no linked requirements in status 'required'
-          unless SchemeMixCriterion.joins(:scheme_mix_criteria_requirement_data)
-                     .where(id: self.scheme_mix_criteria.first.id, status: SchemeMixCriterion.statuses[:submitting])
+          # Check if criterion with status 'submitting'/'submitting after appeal' has no linked requirements in status 'required'
+          if SchemeMixCriterion.joins(:scheme_mix_criteria_requirement_data)
+                     .where(id: self.scheme_mix_criteria.first.id, status: [SchemeMixCriterion.statuses[:submitting],SchemeMixCriterion.statuses[:submitting_after_appeal]])
                      .where.not('exists(select rd.id from requirement_data rd inner join scheme_mix_criteria_requirement_data smcrd on smcrd.requirement_datum_id = rd.id where smcrd.scheme_mix_criterion_id = scheme_mix_criteria.id and rd.status = ?)', RequirementDatum.statuses[:required])
-                     .count.zero?
+                     .count.nonzero?
             # Create project manager task to set criterion status to complete
             SchemeMixCriterionTask.create(task_description_id: PROJ_MNGR_CRIT_APPROVE,
                                           project_role: ProjectsUser.roles[:project_manager],

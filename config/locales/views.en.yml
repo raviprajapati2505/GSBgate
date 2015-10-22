@@ -118,6 +118,7 @@ en:
       description_26: "Approve the certificate by advancing the status."
       description_29: "The document is waiting for approval."
       description_30: "Apply for a certificate."
+      description_31: "Allocate appealed criteria requirements to project team members."
       tooltip_due_date: "Task is overdue"
   users:
     index:
