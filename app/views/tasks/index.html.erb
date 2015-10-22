@@ -14,7 +14,7 @@
                     <%= button_tag type: 'submit', class: 'btn btn-primary', value: 'Apply_task_filter' do %>
                         <i title="Apply filter" class="fa fa-lg fa-filter" style="padding-right: 10px;"></i>Apply filter
                     <% end %>
-                    <%= link_to tasks_path, class: 'btn btn-white' do %>
+                    <%= link_to tasks_path(reset: true), class: 'btn btn-white' do %>
                         <i class="fa fa-lg fa-times" style="padding-right: 10px;"></i>Remove filter
                     <% end %>
                 <% end %>
