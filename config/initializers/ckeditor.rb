@@ -1,0 +1,27 @@
+Ckeditor.setup do |config|
+  config.assets_languages = ['en']
+  config.assets_plugins = ['allyhelp.dialogs',
+                           'about.dialogs',
+                           'clipboard.dialogs',
+                           'colordialog.dialogs',
+                           'dialog',
+                           'div.dialogs',
+                           'find.dialogs',
+                           'forms',
+                           'iframe',
+                           'image',
+                           'link',
+                           'liststyle.dialogs',
+                           'magiclines.images',
+                           'pagebreak.images',
+                           'pastefromword.filter',
+                           'preview',
+                           'scayt',
+                           'showblocks.images',
+                           'smiley',
+                           'specialchar.dialogs',
+                           'table.dialogs',
+                           'tabletools.dialogs',
+                           'templates',
+                           'wsc']
+end
