@@ -21,8 +21,9 @@
                 <td><%= scheme_mix.weight %> %</td>
                 <td>
                     <%= render 'score/score_tabs',
-                               absolute_scores: scheme_mix.absolute_scores,
-                               weighted_scores: scheme_mix.weighted_scores,
+                               scores_in_certificate_points: scheme_mix.scores_in_certificate_points,
+                               scores_in_scheme_points: scheme_mix.scores_in_scheme_points,
+                               scores: scheme_mix.scores,
                                element_id: "scheme_mix_#{scheme_mix.id}"
                     %>
                 </td>

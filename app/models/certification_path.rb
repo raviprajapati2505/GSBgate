@@ -302,35 +302,17 @@ class CertificationPath < ActiveRecord::Base
     return [CertificationPathStatus::CERTIFIED].include?(certification_path_status_id)
   end
 
-  def absolute_scores
-    {
-        :maximum => maximum_score,
-        :minimum => minimum_score,
-        :targeted => targeted_score,
-        :submitted => submitted_score,
-        :achieved => achieved_score
-    }
+  def scores_in_certificate_points
+    ApplicationController.helpers.sum_score_hashes(scheme_mix_criteria.collect { |smc| smc.scores_in_certificate_points })
   end
 
-  def maximum_score
-    scheme_mixes.collect { |sm| sm.maximum_weighted_score }.inject(:+)
-  end
-
-  def minimum_score
-    scheme_mixes.collect { |sm| sm.minimum_weighted_score }.inject(:+)
-  end
-
-  def targeted_score
-    scheme_mixes.collect { |sm| sm.targeted_weighted_score }.inject(:+)
-  end
-
-  def submitted_score
-    scheme_mixes.collect { |sm| sm.submitted_weighted_score }.inject(:+)
-  end
-
-  def achieved_score
-    scheme_mixes.collect { |sm| sm.achieved_weighted_score }.inject(:+)
-  end
+  # def scores_in_scheme_points
+  #   ApplicationController.helpers.sum_score_hashes(scheme_mix_criteria.collect { |smc| smc.scores_in_scheme_points })
+  # end
+  #
+  # def scores
+  #   ApplicationController.helpers.sum_score_hashes(scheme_mix_criteria.collect { |smc| smc.scores })
+  # end
 
   private
 

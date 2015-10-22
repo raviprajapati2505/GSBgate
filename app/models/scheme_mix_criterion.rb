@@ -120,23 +120,33 @@ class SchemeMixCriterion < ActiveRecord::Base
     return false
   end
 
-  def absolute_scores
+  def scores_in_certificate_points
     {
-        :maximum => self.maximum_score,
-        :minimum => self.minimum_score,
-        :targeted => self.targeted_score_safe,
-        :submitted => self.submitted_score_safe,
-        :achieved => self.achieved_score_safe
+        :maximum => convert_to_certificate_points(maximum_score),
+        :minimum =>  convert_to_certificate_points(minimum_score),
+        :targeted => convert_to_certificate_points(targeted_score_safe),
+        :submitted => convert_to_certificate_points(submitted_score_safe),
+        :achieved => convert_to_certificate_points(achieved_score_safe)
     }
   end
 
-  def weighted_scores
+  def scores_in_scheme_points
     {
-        :maximum => self.maximum_weighted_score,
-        :minimum => self.minimum_weighted_score,
-        :targeted => self.targeted_weighted_score,
-        :submitted => self.submitted_weighted_score,
-        :achieved => self.achieved_weighted_score
+        :maximum => convert_to_scheme_points(maximum_score),
+        :minimum =>  convert_to_scheme_points(minimum_score),
+        :targeted => convert_to_scheme_points(targeted_score_safe),
+        :submitted => convert_to_scheme_points(submitted_score_safe),
+        :achieved => convert_to_scheme_points(achieved_score_safe)
+    }
+  end
+
+  def scores
+    {
+        :maximum => maximum_score,
+        :minimum =>  minimum_score,
+        :targeted => targeted_score_safe,
+        :submitted => submitted_score_safe,
+        :achieved => achieved_score_safe
     }
   end
 
@@ -172,24 +182,20 @@ class SchemeMixCriterion < ActiveRecord::Base
     scheme_criterion.minimum_score
   end
 
-  def maximum_weighted_score
-    scheme_criterion.weighted_score(maximum_score)
+  # these are actual fields
+  #   targeted_score
+  #   submitted_score
+  #   achieved_score
+
+  def convert_to_certificate_points(score)
+    score = convert_to_scheme_points(score)
+    (score.to_f * (scheme_mix.weight.to_f / 100.to_f))
   end
 
-  def minimum_weighted_score
-    scheme_criterion.weighted_score(minimum_score)
-  end
-
-  def targeted_weighted_score
-    scheme_criterion.weighted_score(targeted_score_safe)
-  end
-
-  def submitted_weighted_score
-    scheme_criterion.weighted_score(submitted_score_safe)
-  end
-
-  def achieved_weighted_score
-    scheme_criterion.weighted_score(achieved_score_safe)
+  def convert_to_scheme_points(score)
+    # returns weighted score, taking into account the percentage for which it counts (=weight)
+    #NOTE: we multiply the weight with 3, as we need a final score on a scale based on a total of 3, not 1
+    (score.to_f  / scheme_criterion.maximum_score.to_f ) * ((3.to_f  * scheme_criterion.weight.to_f ) / 100.to_f)
   end
 
   private

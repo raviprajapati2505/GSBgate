@@ -20,8 +20,9 @@
                         <td>
                             <%= render 'score/score_toggle', id_list: ["scheme_mix_#{@scheme_mix.id}"] %>
                             <%= render 'score/score_tabs',
-                                       absolute_scores: @scheme_mix.absolute_scores,
-                                       weighted_scores: @scheme_mix.weighted_scores,
+                                       scores_in_certificate_points: @scheme_mix.scores_in_certificate_points,
+                                       scores_in_scheme_points: @scheme_mix.scores_in_scheme_points,
+                                       scores: @scheme_mix.scores,
                                        element_id: "scheme_mix_#{@scheme_mix.id}"
                             %>
                         </td>
@@ -89,10 +90,13 @@
                         </thead>
                         <tbody>
                         <%
-                           maximum_scale_absolute = @scheme_mix.scheme_categories.collect { |category| @scheme_mix.maximum_score_for_category(category) }.max
-                           maximum_scale_weighted = @scheme_mix.scheme_categories.collect { |category| @scheme_mix.maximum_weighted_score_for_category(category) }.max
-                           minimum_scale_absolute = @scheme_mix.scheme_categories.collect { |category| @scheme_mix.minimum_score_for_category(category) }.min
-                           minimum_scale_weighted = @scheme_mix.scheme_categories.collect { |category| @scheme_mix.minimum_weighted_score_for_category(category) }.min
+                           smc_by_category = @scheme_mix.scheme_mix_criteria.group_by{|smc| smc.scheme_criterion.scheme_category}
+                           maximum_score_over_categories = smc_by_category.collect{|category, criteria| criteria.collect{|criterion| criterion.maximum_score}.inject(:+)}.max
+                           minimum_score_over_categories = smc_by_category.collect{|category, criteria| criteria.collect{|criterion| criterion.minimum_score}.inject(:+)}.min
+                           maximum_score_in_scheme_points_over_categories = smc_by_category.collect{|category, criteria| criteria.collect{|criterion| criterion.convert_to_scheme_points(criterion.maximum_score)}.inject(:+)}.max
+                           minimum_score_in_scheme_points_over_categories = smc_by_category.collect{|category, criteria| criteria.collect{|criterion| criterion.convert_to_scheme_points(criterion.minimum_score)}.inject(:+)}.min
+                           maximum_score_in_certificate_points_over_categories = smc_by_category.collect{|category, criteria| criteria.collect{|criterion| criterion.convert_to_certificate_points(criterion.maximum_score)}.inject(:+)}.max
+                           minimum_score_in_certificate_points_over_categories = smc_by_category.collect{|category, criteria| criteria.collect{|criterion| criterion.convert_to_certificate_points(criterion.minimum_score)}.inject(:+)}.min
                         %>
                         <% @scheme_mix.scheme_categories.uniq.each_with_index do |category, i| %>
                             <tr class="accordion-toggle" data-toggle="collapse" data-target="#category-panel-<%= category.id %>" data-parent="#categories-accordion">
@@ -102,13 +106,10 @@
                                 <td><%= @scheme_mix.scheme.weight_for_category(category) %> %</td>
                                 <td>
                                     <%= render 'score/score_tabs',
-                                               absolute_scores: @scheme_mix.absolute_scores_for_category(category),
-                                               weighted_scores: @scheme_mix.weighted_scores_for_category(category),
-                                               element_id: "category_#{category.id}",
-                                               maximum_scale_absolute: maximum_scale_absolute,
-                                               minimum_scale_absolute: minimum_scale_absolute,
-                                               maximum_scale_weighted: maximum_scale_weighted,
-                                               minimum_scale_weighted: minimum_scale_weighted
+                                               scores_in_certificate_points: @scheme_mix.scores_in_certificate_points_for_category(category).merge({:maximum_scale => maximum_score_in_certificate_points_over_categories, :minimum_scale => minimum_score_in_certificate_points_over_categories}),
+                                               scores_in_scheme_points: @scheme_mix.scores_in_scheme_points_for_category(category).merge({:maximum_scale => maximum_score_in_scheme_points_over_categories, :minimum_scale => minimum_score_in_scheme_points_over_categories}),
+                                               scores: @scheme_mix.scores_for_category(category).merge({:maximum_scale => maximum_score_over_categories, :minimum_scale => minimum_score_over_categories}),
+                                               element_id: "category_#{category.id}"
                                     %>
                                 </td>
                                 <td>
@@ -148,6 +149,15 @@
                                             </tr>
                                             </thead>
                                             <tbody>
+                                            <%
+                                                smc_for_category = @scheme_mix.scheme_mix_criteria.for_category(category)
+                                                maximum_score_in_category = smc_for_category.collect{|criterion| criterion.maximum_score}.max
+                                                minimum_score_in_category = smc_for_category.collect{|criterion| criterion.minimum_score}.min
+                                                maximum_score_in_scheme_points_in_category = smc_for_category.collect{|criterion| criterion.convert_to_scheme_points(criterion.maximum_score)}.max
+                                                minimum_score_in_scheme_points_in_category = smc_for_category.collect{|criterion| criterion.convert_to_scheme_points(criterion.minimum_score)}.min
+                                                maximum_score_in_certificate_points_in_category = smc_for_category.collect{|criterion| criterion.convert_to_certificate_points(criterion.maximum_score)}.max
+                                                minimum_score_in_certificate_points_in_category = smc_for_category.collect{|criterion| criterion.convert_to_certificate_points(criterion.minimum_score)}.min
+                                            %>
                                             <% @scheme_mix.scheme_mix_criteria.for_category(category).each_with_index do |scheme_mix_criterion, j| %>
                                                 <tr>
                                                     <td><%= scheme_mix_criterion.scheme_criterion.scheme_category.code %></td>
@@ -156,8 +166,9 @@
                                                     <td><%= scheme_mix_criterion.scheme_criterion.weight %> %</td>
                                                     <td>
                                                         <%= render 'score/score_tabs',
-                                                                   absolute_scores: scheme_mix_criterion.absolute_scores,
-                                                                   weighted_scores: scheme_mix_criterion.weighted_scores,
+                                                                   scores_in_certificate_points: scheme_mix_criterion.scores_in_certificate_points.merge({:maximum_scale => maximum_score_in_certificate_points_in_category, :minimum_scale => minimum_score_in_certificate_points_in_category}),
+                                                                   scores_in_scheme_points: scheme_mix_criterion.scores_in_scheme_points.merge({:maximum_scale => maximum_score_in_scheme_points_in_category, :minimum_scale => minimum_score_in_scheme_points_in_category}),
+                                                                   scores: scheme_mix_criterion.scores.merge({:maximum_scale => maximum_score_in_category, :minimum_scale => minimum_score_in_category}),
                                                                    element_id: "scheme_mix_criterion_#{scheme_mix_criterion.id}"
                                                         %>
                                                     </td>

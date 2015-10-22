@@ -28,12 +28,6 @@ class SchemeCriterion < ActiveRecord::Base
     scores.max
   end
 
-  def weighted_score(score)
-    # returns weighted score, taking into account the percentage for which it counts (=weight)
-    #NOTE: we multiply the weight with 3, as we need a final score on a scale based on a total of 3, not 1
-    (score.to_f  / maximum_score.to_f ) * ((3.to_f  * weight.to_f ) / 100.to_f)
-  end
-
   # default_scope {
   #   joins(:criterion)
   #   .order('criteria.name')

@@ -1,12 +1,17 @@
 <div class="tab-content">
-    <div role="tabpanel" class="tab-pane active" id="<%= "score_absolute_#{element_id}" %>">
-        <% maximum_scale_absolute ||= absolute_scores[:maximum] %>
-        <% minimum_scale_absolute ||= absolute_scores[:minimum] %>
-        <%= render 'score/score', scores: absolute_scores, maximum_scale: maximum_scale_absolute, minimum_scale: minimum_scale_absolute %>
-    </div>
-    <div role="tabpanel" class="tab-pane" id="<%= "score_weighted_#{element_id}" %>">
-        <% maximum_scale_weighted ||= weighted_scores[:maximum] %>
-        <% minimum_scale_weighted ||= weighted_scores[:minimum] %>
-        <%= render 'score/score', scores: weighted_scores, maximum_scale: maximum_scale_weighted, minimum_scale: minimum_scale_weighted %>
-    </div>
+    <% if local_assigns[:scores_in_certificate_points] %>
+        <div role="tabpanel" class="tab-pane active" id="<%= "scores_in_certificate_points_#{element_id}" %>">
+            <%= render 'score/score', scores: scores_in_certificate_points %>
+        </div>
+    <% end %>
+    <% if local_assigns[:scores_in_scheme_points] %>
+        <div role="tabpanel" class="tab-pane" id="<%= "scores_in_scheme_points_#{element_id}" %>">
+            <%= render 'score/score', scores: scores_in_scheme_points %>
+        </div>
+    <% end %>
+    <% if local_assigns[:scores] %>
+        <div role="tabpanel" class="tab-pane" id="<%= "scores_#{element_id}" %>">
+            <%= render 'score/score', scores: scores %>
+        </div>
+    <% end %>
 </div>

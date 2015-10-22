@@ -1,13 +1,18 @@
 <!-- This partial expects a lists of model id's -->
 <ul class="score-tabs list-inline pull-right" role="tablist">
     <li role="presentation" class="active">
-        <a data-target="#score_absolute_<%= id_list.join(', #score_absolute_') %>" aria-controls="<%= id_list.join(', score_absolute_') %>" role="tab" data-toggle="tab">
-            Absolute
+        <a data-target="#scores_in_certificate_points_<%= id_list.join(', #scores_in_certificate_points_') %>" aria-controls="<%= id_list.join(', scores_in_certificate_points_') %>" role="tab" data-toggle="tab">
+            Certificate Points
         </a>
     </li>
     <li role="presentation">
-        <a data-target="#score_weighted_<%= id_list.join(', #score_weighted_') %>" aria-controls="<%= id_list.join(', score_weighted_') %>" role="tab" data-toggle="tab">
-            Weighted
+        <a data-target="#scores_in_scheme_points_<%= id_list.join(', #scores_in_scheme_points_') %>" aria-controls="<%= id_list.join(', scores_in_scheme_points_') %>" role="tab" data-toggle="tab">
+            Scheme Points
+        </a>
+    </li>
+    <li role="presentation">
+        <a data-target="#scores_<%= id_list.join(', #scores_') %>" aria-controls="<%= id_list.join(', scores_') %>" role="tab" data-toggle="tab">
+            Scores
         </a>
     </li>
 </ul>

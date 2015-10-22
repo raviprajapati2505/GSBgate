@@ -32,6 +32,10 @@ module ApplicationHelper
     score.round(3) if score.present?
   end
 
+  def sum_score_hashes(score_hashes)
+    score_hashes.inject(Hash.new()){|total, score| total.merge(score){|k, a, b| a + b}}
+  end
+
   def breadcrumbs(model, with_prefix: true)
     breadcrumbs = { names: [], paths: [] }
 

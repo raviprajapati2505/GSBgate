@@ -1,13 +1,13 @@
-<% maximum_scale ||= scores[:maximum] %>
-<% minimum_scale ||= scores[:minimum] %>
+<% scores[:maximum_scale] ||= scores[:maximum] %>
+<% scores[:minimum_scale] ||= scores[:minimum] %>
 <div class="score-graph"
      data-show-legend="false"
      data-show-x-axis="true"
      data-show-values="true"
      data-width="260"
      data-height="80"
-     data-max="<%= round_score(maximum_scale) %>"
-     data-min="<%= round_score(minimum_scale) %>"
+     data-max="<%= round_score(scores[:maximum_scale]) %>"
+     data-min="<%= round_score(scores[:minimum_scale]) %>"
      data-max-attainable="<%= round_score(scores[:maximum]) %>"
      data-targeted="<%= round_score(scores[:targeted]) %>"
      data-submitted="<%= round_score(scores[:submitted]) %>"

@@ -16,132 +16,31 @@ class SchemeMix < ActiveRecord::Base
     self.scheme.full_name
   end
 
-  def absolute_scores
-    {
-        :maximum => maximum_score,
-        :minimum => minimum_score,
-        :targeted => targeted_score,
-        :submitted => submitted_score,
-        :achieved => achieved_score
-    }
+  def scores_in_certificate_points
+    ApplicationController.helpers.sum_score_hashes(scheme_mix_criteria.collect { |smc| smc.scores_in_certificate_points })
   end
 
-  def weighted_scores
-    {
-        :maximum => maximum_weighted_score,
-        :minimum => minimum_weighted_score,
-        :targeted => targeted_weighted_score,
-        :submitted => submitted_weighted_score,
-        :achieved => achieved_weighted_score
-    }
+  def scores_in_scheme_points
+    ApplicationController.helpers.sum_score_hashes(scheme_mix_criteria.collect { |smc| smc.scores_in_scheme_points })
   end
 
-  def absolute_scores_for_category(category)
-    {
-        :maximum => maximum_score_for_category(category),
-        :minimum => minimum_score_for_category(category),
-        :targeted => targeted_score_for_category(category),
-        :submitted => submitted_score_for_category(category),
-        :achieved => achieved_score_for_category(category),
-    }
+  def scores
+    ApplicationController.helpers.sum_score_hashes(scheme_mix_criteria.collect { |smc| smc.scores })
   end
 
-  def weighted_scores_for_category(category)
-    {
-        :maximum => maximum_weighted_score_for_category(category),
-        :minimum => minimum_weighted_score_for_category(category),
-        :targeted => targeted_weighted_score_for_category(category),
-        :submitted => submitted_weighted_score_for_category(category),
-        :achieved => achieved_weighted_score_for_category(category),
-    }
+  def scores_in_certificate_points_for_category(category)
+    ApplicationController.helpers.sum_score_hashes(scheme_mix_criteria.for_category(category).collect { |smc| smc.scores_in_certificate_points })
   end
 
-  def maximum_score
-    scheme_mix_criteria.collect { |smc| smc.maximum_weighted_score }.inject(:+)
+  def scores_in_scheme_points_for_category(category)
+    ApplicationController.helpers.sum_score_hashes(scheme_mix_criteria.for_category(category).collect { |smc| smc.scores_in_scheme_points })
   end
 
-  def minimum_score
-    scheme_mix_criteria.collect { |smc| smc.minimum_weighted_score }.inject(:+)
-  end
-
-  def targeted_score
-    scheme_mix_criteria.collect { |smc| smc.targeted_weighted_score }.inject(:+)
-  end
-
-  def submitted_score
-    scheme_mix_criteria.collect { |smc| smc.submitted_weighted_score }.inject(:+)
-  end
-
-  def achieved_score
-    scheme_mix_criteria.collect { |smc| smc.achieved_weighted_score }.inject(:+)
-  end
-
-  def maximum_score_for_category(category)
-    scheme_mix_criteria.for_category(category).collect { |smc| smc.maximum_weighted_score }.inject(:+)
-  end
-
-  def minimum_score_for_category(category)
-    scheme_mix_criteria.for_category(category).collect { |smc| smc.minimum_weighted_score }.inject(:+)
-  end
-
-  def targeted_score_for_category(category)
-    scheme_mix_criteria.for_category(category).collect { |smc| smc.targeted_weighted_score }.inject(:+)
-  end
-
-  def submitted_score_for_category(category)
-    scheme_mix_criteria.for_category(category).collect { |smc| smc.submitted_weighted_score }.inject(:+)
-  end
-
-  def achieved_score_for_category(category)
-    scheme_mix_criteria.for_category(category).collect { |smc| smc.achieved_weighted_score }.inject(:+)
-  end
-
-  def maximum_weighted_score
-    weighted_score(maximum_score)
-  end
-
-  def minimum_weighted_score
-    weighted_score(minimum_score)
-  end
-
-  def targeted_weighted_score
-    weighted_score(targeted_score)
-  end
-
-  def submitted_weighted_score
-    weighted_score(submitted_score)
-  end
-
-  def achieved_weighted_score
-    weighted_score(achieved_score)
-  end
-
-  def maximum_weighted_score_for_category(category)
-    weighted_score(maximum_score_for_category(category))
-  end
-
-  def minimum_weighted_score_for_category(category)
-    weighted_score(minimum_score_for_category(category))
-  end
-
-  def targeted_weighted_score_for_category(category)
-    weighted_score(targeted_score_for_category(category))
-  end
-
-  def submitted_weighted_score_for_category(category)
-    weighted_score(submitted_score_for_category(category))
-  end
-
-  def achieved_weighted_score_for_category(category)
-    weighted_score(achieved_score_for_category(category))
+  def scores_for_category(category)
+    ApplicationController.helpers.sum_score_hashes(scheme_mix_criteria.for_category(category).collect { |smc| smc.scores })
   end
 
   private
-
-  # Class method to calculate the weighted score for this scheme mix
-  def weighted_score(score)
-    (score.to_f * (weight.to_f / 100.to_f))
-  end
 
   # Mirrors all the descendant structural data records of the SchemeMix to user data records
   def create_descendant_records
