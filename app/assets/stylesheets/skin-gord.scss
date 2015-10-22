@@ -665,6 +665,11 @@
     }
   }
 
+  // Force labels of table detail rows, to not be placed next to the content
+  table.dataTable > tbody > tr.child span.dtr-title {
+    display: block;
+  }
+
   // Score chart
   .score-tabs {
     li {
