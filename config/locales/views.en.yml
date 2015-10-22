@@ -111,7 +111,7 @@ en:
       description_14: "Advance the certificate status."
       description_16: "Verify the criterion and indicate whether the target is achieved or not."
       description_17: "Advance the certificate status."
-      description_18: "Process certifier comments and advance the certificate status (optionally apply for appeal)."
+      description_18: "Advance the certificate status (optionally apply for appeal)."
       description_19: "Check payment for appeal and advance the certificate status."
       description_24: "Process certifier comments and advance the certificate status."
       description_25: "Approve the certificate by advancing the status."
