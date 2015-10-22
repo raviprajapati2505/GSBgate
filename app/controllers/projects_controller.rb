@@ -7,9 +7,7 @@ class ProjectsController < AuthenticatedController
   def index
     @page_title = 'Projects'
     unless current_user.system_admin? || current_user.gord_manager? || current_user.gord_top_manager?
-      @projects = current_user.projects
-    else
-      @projects = Project.all
+      @projects = @projects.for_user(current_user)
     end
   end
 

@@ -42,6 +42,10 @@ class Project < ActiveRecord::Base
     where(owner: user)
   }
 
+  scope :for_user, ->(user) {
+    joins(:projects_users).where(projects_users: {user_id: user.id})
+  }
+
   def role_for_user(user)
     projects_users.each do |projects_user|
       if projects_user.user == user
