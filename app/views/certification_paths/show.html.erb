@@ -38,7 +38,7 @@
                     </tr>
                     <tr>
                         <th>Duration</th>
-                        <td><%= @certification_path.duration %></td>
+                        <td><%= pluralize(@certification_path.duration, 'year') %></td>
                     </tr>
                     <tr>
                         <th>Rating</th>

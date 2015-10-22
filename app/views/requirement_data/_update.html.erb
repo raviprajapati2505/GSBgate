@@ -17,7 +17,7 @@
                 <div class="row">
                     <% certification_path = CertificationPath.find(certification_path_id) # todo: avoid this %>
                     <% if current_user.system_admin? || (certification_path.in_submission? && current_user.project_manager?(@project)) %>
-                        <div class="col-md-7">
+                        <div class="col-md-6">
                             <% users = User.authorized_for_project(@project).with_assessor_project_role %>
                             <% if (users.count > 0) && (can? :read, @project.projects_users.first) %>
                                 <% if requirement_datum.user.nil? %>
@@ -27,11 +27,11 @@
                                 <% end %>
                             <% end %>
                         </div>
-                        <div class="col-md-5">
+                        <div class="col-md-3">
                             <%= f.text_field :due_date, value: ((l requirement_datum.due_date, format: :short) if !requirement_datum.due_date.nil?), prepend: '<i class="fa fa-calendar"></i>'.html_safe, class: 'datepicker-future', autocomplete: 'off' %>
                         </div>
                     <% else %>
-                        <div class="col-md-7">
+                        <div class="col-md-6">
                             <% if requirement_datum.user.nil? %>
                                 <%= f.label :user_id, 'Responsibility' %>
                                 <p>This requirement is not assigned yet.</p>
@@ -39,11 +39,11 @@
                                 <%= f.select :user_id, options_for_select([requirement_datum.user].map { |k| [k.email, k.id]}, requirement_datum.user.id), {label: 'Responsibility'}, disabled: true, class: 'select2-assessor' %>
                             <% end %>
                         </div>
-                        <div class="col-md-5">
+                        <div class="col-md-3">
                             <%= f.text_field :due_date, value: ((l requirement_datum.due_date, format: :short) if !requirement_datum.due_date.nil?), prepend: '<i class="fa fa-calendar"></i>'.html_safe, class: 'datepicker-future', autocomplete: 'off', disabled: true %>
                         </div>
                     <% end %>
-                    <div class="col-md-12">
+                    <div class="col-md-3">
                         <%= f.select :status, options_for_select(RequirementDatum.statuses.keys.map { |k| [k.humanize, k]}, requirement_datum.status), {}, disabled: !(current_user.system_admin? || (can?(:update, requirement_datum) && certification_path.in_submission?)) %>
                     </div>
                 </div>
