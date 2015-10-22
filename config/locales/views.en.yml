@@ -113,7 +113,7 @@ en:
       description_17: "Advance the certificate status."
       description_18: "Advance the certificate status (optionally apply for appeal)."
       description_19: "Check payment for appeal and advance the certificate status."
-      description_24: "Process certifier comments and advance the certificate status."
+      description_24: "Advance the certificate status."
       description_25: "Approve the certificate by advancing the status."
       description_26: "Approve the certificate by advancing the status."
       description_29: "The document is waiting for approval."
