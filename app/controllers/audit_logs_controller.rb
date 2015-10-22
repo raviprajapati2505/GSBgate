@@ -84,8 +84,6 @@ class AuditLogsController < AuthenticatedController
       # Only show user comments filter
       if params[:only_user_comments].present?
         session[:audit]['only_comments'] = true
-      else
-        session[:audit]['only_comments'] = false
       end
       if session[:audit]['only_comments'] == true
         @audit_logs = @audit_logs.where.not(user_comment: nil)
