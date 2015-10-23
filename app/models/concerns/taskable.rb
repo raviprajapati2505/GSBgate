@@ -24,6 +24,7 @@ module Taskable
   PROJ_MNGR_DOC_APPROVE = 29
   PROJ_MNGR_APPLY = 30
   PROJ_MNGR_ASSIGN_AFTER_APPEAL = 31
+  PROJ_MNGR_GEN = 32
 
   included do
     after_create :after_create
@@ -51,6 +52,8 @@ module Taskable
     case self.class.name
       when CertificationPath.name.demodulize
         handle_updated_certification_path
+      when Project.name.demodulize
+        handle_updated_project
       when ProjectsUser.name.demodulize
         handle_updated_projects_user
       when RequirementDatum.name.demodulize
@@ -79,6 +82,10 @@ module Taskable
   def handle_created_project
     # Create a project manager task to apply for a certificate
     ProjectTask.create(task_description_id: PROJ_MNGR_APPLY, project_role: ProjectsUser.roles[:project_manager], project: self)
+    if self.location_plan_file.blank? || self.site_plan_file.blank? || self.design_brief_file.blank? || self.project_narrative_file.blank?
+      # Create a project manager task to provide the 'general submittal' documents
+      ProjectTask.create(task_description_id: PROJ_MNGR_GEN, project_role: ProjectsUser.roles[:project_manager], project: self)
+    end
   end
 
   def handle_created_projects_user
@@ -112,6 +119,20 @@ module Taskable
                                           project_role: ProjectsUser.roles[:project_manager],
                                           project: self.scheme_mix_criterion.scheme_mix.certification_path.project,
                                           scheme_mix_criteria_document: self)
+  end
+
+  def handle_updated_project
+    if self.location_plan_file_changed? || self.site_plan_file_changed? || self.design_brief_file_changed? || self.project_narrative_file_changed?
+      if self.location_plan_file.blank? || self.site_plan_file.blank? || self.design_brief_file.blank? || self.project_narrative_file.blank?
+        # Create a project manager task to provide the 'general submittal' documents if it not already exists
+        unless self.location_plan_file_was.blank? || self.site_plan_file_was.blank? || self.design_brief_file_was.blank? || self.project_narrative_file_was.blank?
+          # Create a project manager task to provide the 'general submittal' documents
+          ProjectTask.create(task_description_id: PROJ_MNGR_GEN, project_role: ProjectsUser.roles[:project_manager], project: self)
+        end
+      else
+        ProjectTask.delete_all(task_description_id: PROJ_MNGR_GEN, project: self)
+      end
+    end
   end
 
   def handle_updated_projects_user
@@ -451,11 +472,13 @@ module Taskable
     if self.user_id_changed?
       # Can a requirement be assigned to nil ?
       if self.user_id.nil?
-        # Create project manager task to assign project team member
-        RequirementDatumTask.create(task_description_id: PROJ_MNGR_ASSIGN,
-                                    project_role: ProjectsUser.roles[:project_manager],
-                                    project: self.scheme_mix_criteria.first.scheme_mix.certification_path.project,
-                                    requirement_datum: self)
+        if RequirementDatum.statuses[self.status] == RequirementDatum.statuses[:required]
+          # Create project manager task to assign project team member
+          RequirementDatumTask.create(task_description_id: PROJ_MNGR_ASSIGN,
+                                      project_role: ProjectsUser.roles[:project_manager],
+                                      project: self.scheme_mix_criteria.first.scheme_mix.certification_path.project,
+                                      requirement_datum: self)
+        end
         # Destroy project team member tasks to provide the requirement
         RequirementDatumTask.delete_all(task_description_id: PROJ_MEM_REQ, requirement_datum_id: self.id)
       else
