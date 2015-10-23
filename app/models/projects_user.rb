@@ -8,6 +8,7 @@ class ProjectsUser < ActiveRecord::Base
   enum role: { project_team_member: 0, project_manager: 1, enterprise_account: 2, certifier: 3, certifier_manager: 4 }
 
   validates :role, inclusion: ProjectsUser.roles.keys
+  validates :user, uniqueness: {scope:[:project, :role]}
 
   scope :for_project, ->(project) {
     where(project: project)
