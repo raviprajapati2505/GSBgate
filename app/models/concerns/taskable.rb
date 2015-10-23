@@ -433,11 +433,19 @@ module Taskable
         # Can requirement status be reset to 'required' ?
         when RequirementDatum.statuses[:required]
           if self.user.nil?
-            # Create project manager task to assign a project team member to the requirement
-            RequirementDatumTask.create(task_description_id: PROJ_MNGR_ASSIGN,
-                                        project_role: ProjectsUser.roles[:project_manager],
-                                        project: self.scheme_mix_criteria.first.scheme_mix.certification_path.project,
-                                        requirement_datum: self)
+            if self.scheme_mix_criteria.first.submitting?
+              # Create project manager task to assign a project team member to the requirement
+              RequirementDatumTask.create(task_description_id: PROJ_MNGR_ASSIGN,
+                                          project_role: ProjectsUser.roles[:project_manager],
+                                          project: self.scheme_mix_criteria.first.scheme_mix.certification_path.project,
+                                          requirement_datum: self)
+            elsif self.scheme_mix_criteria.first.submitting_after_appeal?
+              # Create project manager task to assign a project team member to the requirement
+              RequirementDatumTask.create(task_description_id: PROJ_MNGR_ASSIGN_AFTER_APPEAL,
+                                          project_role: ProjectsUser.roles[:project_manager],
+                                          project: self.scheme_mix_criteria.first.scheme_mix.certification_path.project,
+                                          requirement_datum: self)
+            end
           else
             # Create project team member task to provide the requirement
             RequirementDatumTask.create(task_description_id: PROJ_MEM_REQ,
@@ -463,7 +471,7 @@ module Taskable
                                           scheme_mix_criterion: self.scheme_mix_criteria.first)
           end
           # Destroy project manager tasks to assign project team members to requirement and project team member tasks to provide the requirement
-          RequirementDatumTask.delete_all(task_description_id: [PROJ_MNGR_ASSIGN, PROJ_MEM_REQ], requirement_datum_id: self.id)
+          RequirementDatumTask.delete_all(task_description_id: [PROJ_MNGR_ASSIGN, PROJ_MNGR_ASSIGN_AFTER_APPEAL, PROJ_MEM_REQ], requirement_datum_id: self.id)
       end
     end
   end
@@ -473,11 +481,19 @@ module Taskable
       # Can a requirement be assigned to nil ?
       if self.user_id.nil?
         if RequirementDatum.statuses[self.status] == RequirementDatum.statuses[:required]
-          # Create project manager task to assign project team member
-          RequirementDatumTask.create(task_description_id: PROJ_MNGR_ASSIGN,
-                                      project_role: ProjectsUser.roles[:project_manager],
-                                      project: self.scheme_mix_criteria.first.scheme_mix.certification_path.project,
-                                      requirement_datum: self)
+          if self.scheme_mix_criteria.first.submitting?
+            # Create project manager task to assign project team member
+            RequirementDatumTask.create(task_description_id: PROJ_MNGR_ASSIGN,
+                                        project_role: ProjectsUser.roles[:project_manager],
+                                        project: self.scheme_mix_criteria.first.scheme_mix.certification_path.project,
+                                        requirement_datum: self)
+          elsif self.scheme_mix_criteria.first.submitting_after_appeal?
+            # Create project manager task to assign project team member
+            RequirementDatumTask.create(task_description_id: PROJ_MNGR_ASSIGN_AFTER_APPEAL,
+                                        project_role: ProjectsUser.roles[:project_manager],
+                                        project: self.scheme_mix_criteria.first.scheme_mix.certification_path.project,
+                                        requirement_datum: self)
+          end
         end
         # Destroy project team member tasks to provide the requirement
         RequirementDatumTask.delete_all(task_description_id: PROJ_MEM_REQ, requirement_datum_id: self.id)
@@ -494,7 +510,7 @@ module Taskable
           end
         end
         # Destroy project manager tasks to assign project team member
-        RequirementDatumTask.delete_all(task_description_id: PROJ_MNGR_ASSIGN, requirement_datum_id: self.id)
+        RequirementDatumTask.delete_all(task_description_id: [PROJ_MNGR_ASSIGN, PROJ_MNGR_ASSIGN_AFTER_APPEAL], requirement_datum_id: self.id)
       end
     end
   end
@@ -528,9 +544,17 @@ module Taskable
       # A project team member is unassigned from project
       when ProjectsUser.roles[:project_team_member]
         # Create project manager tasks to assign project member to requirement
-        project.certification_paths.each do |certification_path|
+        project.certification_paths.with_status(CertificationPathStatus::SUBMITTING).each do |certification_path|
           certification_path.requirement_data.unassigned.required.where.not('exists(select tasks.id from tasks where tasks.requirement_datum_id = requirement_data.id and tasks.task_description_id = ?)', PROJ_MNGR_ASSIGN).each do |requirement_datum|
             RequirementDatumTask.create(task_description_id: PROJ_MNGR_ASSIGN,
+                                        project_role: ProjectsUser.roles[:project_manager],
+                                        project: self.project,
+                                        requirement_datum: requirement_datum)
+          end
+        end
+        project.certification_paths.with_status(CertificationPathStatus::SUBMITTING_AFTER_APPEAL).each do |certification_path|
+          certification_path.requirement_data.unassigned.required.where.not('exists(select tasks.id from tasks where tasks.requirement_datum_id = requirement_data.id and tasks.task_description_id = ?)', PROJ_MNGR_ASSIGN_AFTER_APPEAL).each do |requirement_datum|
+            RequirementDatumTask.create(task_description_id: PROJ_MNGR_ASSIGN_AFTER_APPEAL,
                                         project_role: ProjectsUser.roles[:project_manager],
                                         project: self.project,
                                         requirement_datum: requirement_datum)
