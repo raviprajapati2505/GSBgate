@@ -103,7 +103,15 @@
                                 <td><i class="fa fa-caret-square-o-right"></i></td>
                                 <td><%= category.code %></td>
                                 <td><%= category.name %></td>
-                                <td><%= @scheme_mix.scheme.weight_for_category(category) %> %</td>
+                                <td>
+                                    <div><%= @scheme_mix.scheme.weight_for_category(category) %> %</div>
+                                    <% if @scheme_mix.scheme.incentive_weight_for_category(category) > 0  %>
+                                        <div class="incentive-weight">
+                                            <%= @scheme_mix.scheme.incentive_weight_for_category(category) %> %
+                                            <%= tooltip('Incentive weight') %>
+                                        </div>
+                                    <% end %>
+                                </td>
                                 <td>
                                     <%= render 'score/score_tabs',
                                                scores_in_certificate_points: @scheme_mix.scores_in_certificate_points_for_category(category).merge({:maximum_scale => maximum_score_in_certificate_points_over_categories, :minimum_scale => minimum_score_in_certificate_points_over_categories}),
@@ -163,7 +171,15 @@
                                                     <td><%= scheme_mix_criterion.scheme_criterion.scheme_category.code %></td>
                                                     <td><%= link_to(scheme_mix_criterion.scheme_criterion.name, project_certification_path_scheme_mix_scheme_mix_criterion_path(@certification_path.project, @certification_path, @scheme_mix, scheme_mix_criterion)) %></td>
                                                     <td><%= scheme_mix_criterion.status.humanize %></td>
-                                                    <td><%= scheme_mix_criterion.scheme_criterion.weight %> %</td>
+                                                    <td>
+                                                        <%= scheme_mix_criterion.scheme_criterion.weight %> %
+                                                        <% if scheme_mix_criterion.scheme_criterion.incentive_weight > 0  %>
+                                                            <div class="incentive-weight">
+                                                                <%= scheme_mix_criterion.scheme_criterion.incentive_weight %> %
+                                                                <%= tooltip('Incentive weight') %>
+                                                            </div>
+                                                        <% end %>
+                                                    </td>
                                                     <td>
                                                         <%= render 'score/score_tabs',
                                                                    scores_in_certificate_points: scheme_mix_criterion.scores_in_certificate_points.merge({:maximum_scale => maximum_score_in_certificate_points_in_category, :minimum_scale => minimum_score_in_certificate_points_in_category}),

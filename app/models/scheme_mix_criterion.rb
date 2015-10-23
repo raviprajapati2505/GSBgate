@@ -165,7 +165,7 @@ class SchemeMixCriterion < ActiveRecord::Base
   def convert_to_scheme_points(score)
     # returns weighted score, taking into account the percentage for which it counts (=weight)
     #NOTE: we multiply the weight with 3, as we need a final score on a scale based on a total of 3, not 1
-    (score.to_f  / scheme_criterion.maximum_score.to_f ) * ((3.to_f  * scheme_criterion.weight.to_f ) / 100.to_f)
+    (score.to_f  / scheme_criterion.maximum_score.to_f ) * ((3.to_f  * (scheme_criterion.weight.to_f + scheme_criterion.incentive_weight.to_f )) / 100.to_f)
   end
 
   private
