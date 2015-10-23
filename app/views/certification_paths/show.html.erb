@@ -32,10 +32,12 @@
                         <th>Certificate name</th>
                         <td><%= @certification_path.name %></td>
                     </tr>
-                    <tr>
-                        <th>Started</th>
-                        <td><%= @certification_path.started_at %></td>
-                    </tr>
+                    <% if not @certification_path.is_activating? %>
+                        <tr>
+                            <th>Started</th>
+                            <td><%= @certification_path.started_at %></td>
+                        </tr>
+                    <% end %>
                     <% if @certification_path.certificate.letter_of_conformance? or @certification_path.certificate.final_design_certificate? %>
                         <tr>
                             <th>Duration</th>
@@ -52,24 +54,39 @@
                             <%= render 'score/score', scores: @certification_path.scores_in_certificate_points %>
                         </td>
                     </tr>
+                    <tr>
+                        <th>PCR<%= tooltip('Pre Certification Review. The project manager can apply for PCR. During PCR, GORD will assist the project team in completing the cerification process.') %></th>
+                        <td class="">
+                            <div class="pull-left">
+                                <% applied_icon = @certification_path.pcr_track? ? 'fa-check-square-o' : 'fa-square-o' %>
+                                <% payed_icon = @certification_path.pcr_track_allowed? ? 'fa-check-square-o' : 'fa-square-o' %>
+                                <div>
+                                    <i class="fa fa-lg <%= applied_icon %>" style="padding-right: 10px;"></i>
+                                    <span>Applied for PCR</span>
+                                </div>
+                                <div>
+                                    <i class="fa fa-lg <%= payed_icon %>" style="padding-right: 10px;"></i>
+                                    <span>PCR payment confirmed</span>
+                                </div>
+                            </div>
+                            <div class="pull-right">
+                                <% if @certification_path.certification_path_status_id < CertificationPathStatus::SUBMITTING_PCR %>
+                                    <% if (current_user.project_manager?(@project) || current_user.system_admin?) and not @certification_path.pcr_track? %>
+                                        <%= button_to('Apply', apply_for_pcr_project_certification_path_path, {class: 'btn btn-primary pull-right', disable_with:'Applying...', data: { confirm: 'You are now applying for the PCR track. This will require an extra fee. Are you sure?'}}) %>
+                                    <% end %>
+                                    <% if current_user.system_admin? and @certification_path.pcr_track? and not @certification_path.pcr_track_allowed? %>
+                                        <%= button_to('Approve', approve_pcr_payment_project_certification_path_path, {class: 'btn btn-primary pull-right', disable_with:'Approving...', data: { confirm: 'This will enable the PCR track for this certificate. Are you sure?'}}) %>
+                                    <% end %>
+                                <% end %>
+                            </div>
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
         </div>
 
         <div class="row">
-            <% if @certification_path.certification_path_status_id < CertificationPathStatus::SUBMITTING_PCR %>
-                <div class="col-lg-6">
-                    <div class="ibox float-e-margins">
-                        <div class="ibox-title">
-                            <h5>Pre-certification review (PCR) <%= tooltip('If the project team wants a PCR, a project manager should apply here by checking the checkbox.') %></h5>
-                        </div>
-                        <div class="ibox-content">
-                            <%= render 'pcr_form', project: @project, certification_path: @certification_path %>
-                        </div>
-                    </div>
-                </div>
-            <% end %>
             <div class="col-lg-6">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">

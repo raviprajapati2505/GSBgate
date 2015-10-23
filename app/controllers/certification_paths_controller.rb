@@ -106,19 +106,15 @@ class CertificationPathsController < AuthenticatedController
     end
   end
 
-  def update_pcr
-    CertificationPath.transaction do
-      # reset pcr_track_allowed if pcr_track is false
-      if certification_path_params.has_key?(:pcr_track)
-        @certification_path.pcr_track = certification_path_params[:pcr_track]
-        if @certification_path.pcr_track == false
-          params[:certification_path][:pcr_track_allowed] = false
-        end
-      end
+  def apply_for_pcr
+    if @certification_path.update!(:pcr_track => true)
+      redirect_to project_certification_path_path(@project, @certification_path), notice: 'Successfully applied for PCR track'
+    end
+  end
 
-      if @certification_path.update!(certification_path_params)
-        redirect_to project_certification_path_path(@project, @certification_path), notice: 'The PCR checkboxes were succesfully updated.'
-      end
+  def approve_pcr_payment
+    if @certification_path.update!(:pcr_track_allowed => true)
+      redirect_to project_certification_path_path(@project, @certification_path), notice: 'Approved PCR payment'
     end
   end
 
