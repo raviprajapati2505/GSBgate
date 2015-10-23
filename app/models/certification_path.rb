@@ -25,6 +25,7 @@ class CertificationPath < ActiveRecord::Base
   validate :certificate_duration
 
   after_initialize :init
+  before_update :set_started_at
   before_update :set_certified_at
   after_update :advance_scheme_mix_criteria_statuses
 
@@ -320,9 +321,15 @@ class CertificationPath < ActiveRecord::Base
 
   private
 
+  def set_started_at
+    if certification_path_status_id_changed? and certification_path_status_id == CertificationPathStatus::SUBMITTING
+      self.started_at = Time.zone.now
+    end
+  end
+
   def set_certified_at
-    if is_completed?
-      self.certified_at = DateTime.now
+    if certification_path_status_id_changed? and is_completed?
+      self.certified_at = Time.zone.now
     end
   end
 
