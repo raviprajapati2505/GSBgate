@@ -39,10 +39,30 @@ No tasks found.
  Description | Resource | Due date
 -------------+----------+----------
 <% @tasks.each do |task|
-  breadcrumbs = breadcrumbs(task.model, with_prefix: false)
+  case task.type
+    when ProjectTask.name.demodulize
+      breadcrumbs = breadcrumbs(task.project, with_prefix: false)
 %>
-<%= I18n.t(".description_#{task.description_id}", scope: [:tasks, :tasks]) %> | <%= breadcrumbs[:names].last %> | <% if task.model.class.method_defined?(:due_date) && task.model.due_date.present? %><%= I18n.l(task.model.due_date, format: :short) %><% else %>-<% end %>
-<% end %>
+    <%= I18n.t(".description_#{task.task_description_id}", scope: [:tasks, :tasks]) %> | <%= breadcrumbs[:names].last %> | -
+<%  when CertificationPathTask.name.demodulize
+      breadcrumbs = breadcrumbs(task.certification_path, with_prefix: false)
+%>
+    <%= I18n.t(".description_#{task.task_description_id}", scope: [:tasks, :tasks]) %> | <%= breadcrumbs[:names].last %> | -
+<%  when SchemeMixCriterionTask.name.demodulize
+      breadcrumbs = breadcrumbs(task.scheme_mix_criterion, with_prefix: false)
+%>
+    <%= I18n.t(".description_#{task.task_description_id}", scope: [:tasks, :tasks]) %> | <%= breadcrumbs[:names].last %> | <% if task.scheme_mix_criterion.due_date.present? %><%= I18n.l(task.scheme_mix_criterion.due_date, format: :short) %><% else %>-<% end %>
+<%  when RequirementDatumTask.name.demodulize
+      breadcrumbs = breadcrumbs(task.requirement_datum, with_prefix: false)
+%>
+    <%= I18n.t(".description_#{task.task_description_id}", scope: [:tasks, :tasks]) %> | <%= breadcrumbs[:names].last %> | <% if task.requirement_datum.due_date.present? %><%= I18n.l(task.requirement_datum.due_date, format: :short) %><% else %>-<% end %>
+<%  when SchemeMixCriterionDocumentTask.name.demodulize
+      breadcrumbs = breadcrumbs(task.scheme_mix_criteria_document, with_prefix: false)
+%>
+    <%= I18n.t(".description_#{task.task_description_id}", scope: [:tasks, :tasks]) %> | <%= breadcrumbs[:names].last %> | -
+<% end
+   end
+%>
 <% if @more_tasks > 0 %>
     <%= @more_tasks %> more...
 <% end %>
