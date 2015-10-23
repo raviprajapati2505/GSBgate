@@ -1,18 +1,18 @@
 <!-- This partial expects a lists of model id's -->
 <ul class="score-tabs list-inline pull-right" role="tablist">
     <li role="presentation" class="active">
-        <a data-target="#scores_in_certificate_points_<%= id_list.join(', #scores_in_certificate_points_') %>" aria-controls="<%= id_list.join(', scores_in_certificate_points_') %>" role="tab" data-toggle="tab">
-            Certificate Points
+        <a to data-target="#scores_in_certificate_points_<%= id_list.join(', #scores_in_certificate_points_') %>" aria-controls="<%= id_list.join(', scores_in_certificate_points_') %>" role="tab" data-toggle="tab">
+            <span data-toggle="tooltip" title="Score in certificate points. Takes both the criterion weights and the scheme weights into account.">Cert</span>
         </a>
     </li>
     <li role="presentation">
         <a data-target="#scores_in_scheme_points_<%= id_list.join(', #scores_in_scheme_points_') %>" aria-controls="<%= id_list.join(', scores_in_scheme_points_') %>" role="tab" data-toggle="tab">
-            Scheme Points
+            <span data-toggle="tooltip" title="Score in scheme points. Takes the criterion weights into account, but not the scheme weights.">Scheme</span>
         </a>
     </li>
     <li role="presentation">
         <a data-target="#scores_<%= id_list.join(', #scores_') %>" aria-controls="<%= id_list.join(', scores_') %>" role="tab" data-toggle="tab">
-            Scores
+            <span data-toggle="tooltip" title="Score of the criterion in absloute points. Does not take any weighting into acocunt.">Crit</span>
         </a>
     </li>
 </ul>

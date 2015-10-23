@@ -671,9 +671,10 @@
     display: block;
   }
 
-  // Score chart
-  .score-tabs {
+  .score-tabs  {
     li {
+      padding-left: 0px;
+      padding-right: 0px;
       a {
         @extend .btn, .btn-xs;
       }
@@ -693,4 +694,10 @@
     min-width: 256px;
     max-width: 300px;
   }
+
+  .incentive-weight {
+    font-size: smaller;
+    font-style: italic;
+  }
 }
+
