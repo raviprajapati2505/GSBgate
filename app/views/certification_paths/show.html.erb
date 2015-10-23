@@ -36,10 +36,12 @@
                         <th>Started</th>
                         <td><%= @certification_path.started_at %></td>
                     </tr>
-                    <tr>
-                        <th>Duration</th>
-                        <td><%= pluralize(@certification_path.duration, 'year') %></td>
-                    </tr>
+                    <% if @certification_path.certificate.letter_of_conformance? or @certification_path.certificate.final_design_certificate? %>
+                        <tr>
+                            <th>Duration</th>
+                            <td><%= pluralize(@certification_path.duration, 'year') %></td>
+                        </tr>
+                    <% end %>
                     <tr>
                         <th>Rating</th>
                         <td><%= render 'certification_paths/star_ratings', certification_path: @certification_path %></td>
