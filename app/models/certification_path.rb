@@ -270,36 +270,40 @@ class CertificationPath < ActiveRecord::Base
 
   # This function is used for toggling writability of form elements in the certification path flow
   def in_submission?
-    return [CertificationPathStatus::SUBMITTING,
-            CertificationPathStatus::SUBMITTING_AFTER_SCREENING,
-            CertificationPathStatus::SUBMITTING_PCR,
-            CertificationPathStatus::SUBMITTING_AFTER_APPEAL].include?(certification_path_status_id)
+    [CertificationPathStatus::SUBMITTING,
+     CertificationPathStatus::SUBMITTING_AFTER_SCREENING,
+     CertificationPathStatus::SUBMITTING_PCR,
+     CertificationPathStatus::SUBMITTING_AFTER_APPEAL].include?(certification_path_status_id)
   end
 
   # This function is used for toggling writability of form elements in the certification path flow
   def in_verification?
-    return [CertificationPathStatus::SCREENING,
-            CertificationPathStatus::VERIFYING,
-            CertificationPathStatus::VERIFYING_AFTER_APPEAL].include?(certification_path_status_id)
+    [CertificationPathStatus::SCREENING,
+     CertificationPathStatus::VERIFYING,
+     CertificationPathStatus::VERIFYING_AFTER_APPEAL].include?(certification_path_status_id)
   end
 
   # this function is used to toggle the visibility of the achieved score
   def in_pre_verification?
-    return [CertificationPathStatus::ACTIVATING,
-            CertificationPathStatus::SUBMITTING,
-            CertificationPathStatus::SCREENING,
-            CertificationPathStatus::SUBMITTING_AFTER_SCREENING,
-            CertificationPathStatus::PROCESSING_PCR_PAYMENT,
-            CertificationPathStatus::SUBMITTING_PCR].include?(certification_path_status_id)
+    [CertificationPathStatus::ACTIVATING,
+     CertificationPathStatus::SUBMITTING,
+     CertificationPathStatus::SCREENING,
+     CertificationPathStatus::SUBMITTING_AFTER_SCREENING,
+     CertificationPathStatus::PROCESSING_PCR_PAYMENT,
+     CertificationPathStatus::SUBMITTING_PCR].include?(certification_path_status_id)
+  end
+
+  def is_activating?
+    CertificationPathStatus::ACTIVATING == certification_path_status_id
   end
 
   def is_completed?
-    return [CertificationPathStatus::CERTIFIED,
-            CertificationPathStatus::NOT_CERTIFIED].include?(certification_path_status_id)
+    [CertificationPathStatus::CERTIFIED,
+     CertificationPathStatus::NOT_CERTIFIED].include?(certification_path_status_id)
   end
 
   def is_certified?
-    return [CertificationPathStatus::CERTIFIED].include?(certification_path_status_id)
+    CertificationPathStatus::CERTIFIED == certification_path_status_id
   end
 
   def scores_in_certificate_points

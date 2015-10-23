@@ -121,57 +121,32 @@ class SchemeMixCriterion < ActiveRecord::Base
   end
 
   def scores_in_certificate_points
-    {
-        :maximum => convert_to_certificate_points(maximum_score),
-        :minimum =>  convert_to_certificate_points(minimum_score),
-        :targeted => convert_to_certificate_points(targeted_score_safe),
-        :submitted => convert_to_certificate_points(submitted_score_safe),
-        :achieved => convert_to_certificate_points(achieved_score_safe)
-    }
+    score = scores
+    score.each{|k,v| score[k] = convert_to_certificate_points(v)}
+    return score
   end
 
   def scores_in_scheme_points
-    {
-        :maximum => convert_to_scheme_points(maximum_score),
-        :minimum =>  convert_to_scheme_points(minimum_score),
-        :targeted => convert_to_scheme_points(targeted_score_safe),
-        :submitted => convert_to_scheme_points(submitted_score_safe),
-        :achieved => convert_to_scheme_points(achieved_score_safe)
-    }
+    score = scores
+    score.each{|k,v| score[k] = convert_to_scheme_points(v)}
+    return score
   end
 
+  # A hash containing all scores, in absolute values, dependent on the current certification_path state
+  # all other score methods will get their data from here
   def scores
-    {
+    score = {
         :maximum => maximum_score,
-        :minimum =>  minimum_score,
-        :targeted => targeted_score_safe,
-        :submitted => submitted_score_safe,
-        :achieved => achieved_score_safe
+        :minimum =>  minimum_score
     }
-  end
-
-  def targeted_score_safe
-    if targeted_score.nil?
-      scheme_criterion.minimum_score
-    else
-      targeted_score
+    if not (scheme_mix.certification_path.is_activating?)
+      score[:targeted] = targeted_score.nil? ? scheme_criterion.minimum_score : targeted_score
+      score[:submitted] = submitted_score.nil? ? scheme_criterion.minimum_score : submitted_score
     end
-  end
-
-  def submitted_score_safe
-    if submitted_score.nil?
-      scheme_criterion.minimum_score
-    else
-      submitted_score
+    if !scheme_mix.certification_path.in_pre_verification?
+      score[:achieved] = achieved_score.nil? ? scheme_criterion.minimum_score : achieved_score
     end
-  end
-
-  def achieved_score_safe
-    if achieved_score.nil?
-      scheme_criterion.minimum_score
-    else
-      achieved_score
-    end
+    return score
   end
 
   def maximum_score
@@ -181,11 +156,6 @@ class SchemeMixCriterion < ActiveRecord::Base
   def minimum_score
     scheme_criterion.minimum_score
   end
-
-  # these are actual fields
-  #   targeted_score
-  #   submitted_score
-  #   achieved_score
 
   def convert_to_certificate_points(score)
     score = convert_to_scheme_points(score)

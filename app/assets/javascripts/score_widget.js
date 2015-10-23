@@ -21,6 +21,10 @@ function score_graph($element, showLegend, showXaxis, showValues, width, height,
     if(achieved) {
         data.push({class: 'progress-bar-achieved', value: achieved, name: 'Achieved score'});
     }
+    // Resize the height, to take into account that not all data rows are shown.
+    //   divide by (4 possible data rows and 1 header), and multiply by (actual data rows and 1 header)
+    height = ((height / 5.0) * (data.length + 1));
+
     var margin = {
             top: (showXaxis ? 18 : 0),
             right: (showLegend ? 160 : 35),
