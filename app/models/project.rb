@@ -75,7 +75,7 @@ class Project < ActiveRecord::Base
     # No dependencies for Construction certificate
     return true if certificate.construction_certificate?
     # FinalDesign needs a LOC
-    return true if certificate.final_design_certificate? and certification_paths.exists?(certificate: Certificate.letter_of_conformance)
+    return true if certificate.final_design_certificate? && certification_paths.exists?(certificate: Certificate.letter_of_conformance)
     # default to false
     return false
   end

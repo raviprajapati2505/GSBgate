@@ -29,7 +29,7 @@
                                     <ul style="display:none;">
                                         <% scheme_mix.scheme_mix_criteria.for_category(category).each do |scheme_mix_criterion| %>
                                             <li>
-                                                <% default_checkbox_value = (scheme_mix_criterion_id.present? and (scheme_mix_criterion_id == scheme_mix_criterion.id)) %>
+                                                <% default_checkbox_value = (scheme_mix_criterion_id.present? && (scheme_mix_criterion_id == scheme_mix_criterion.id)) %>
                                                 <%= check_box_tag 'document[scheme_mix_criteria_documents_attributes][][scheme_mix_criterion_id]', scheme_mix_criterion.id, default_checkbox_value, disabled: default_checkbox_value, id: 'document_scheme_mix_criterion_' + scheme_mix_criterion.id.to_s %>
                                                 <%= label_tag 'document_scheme_mix_criterion_' + scheme_mix_criterion.id.to_s, scheme_mix_criterion.full_name %>
                                             </li>

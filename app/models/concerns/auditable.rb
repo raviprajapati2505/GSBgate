@@ -105,7 +105,7 @@ module Auditable
           if self.status_changed?
             system_messages << {message: 'The status of criterion %s was changed from %s to %s.', params: [self.name, self.changes[:status][0].humanize, self.changes[:status][1].humanize]}
           end
-          if self.certifier_id_changed? or self.due_date_changed?
+          if self.certifier_id_changed? || self.due_date_changed?
             if self.certifier_id.blank?
               system_messages << {message: 'A GORD certifier was unassigned from criterion %s.', params: [self.name]}
             elsif self.due_date?
@@ -161,7 +161,7 @@ module Auditable
           if self.status_changed?
             system_messages << {message: 'The status of requirement %s was changed from %s to %s.', params: [self.name, self.changes[:status][0].humanize, self.changes[:status][1].humanize]}
           end
-          if self.user_id_changed? or self.due_date_changed?
+          if self.user_id_changed? || self.due_date_changed?
             if self.user_id.blank?
               system_messages << {message: 'A project team member was unassigned from requirement %s.', params: [self.name]}
             elsif self.due_date?

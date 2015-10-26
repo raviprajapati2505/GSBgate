@@ -20,7 +20,7 @@ class SchemeCriteriaController < AuthenticatedController
     end
 
     # Certificate filter
-    if params[:certificate_id].present? and (params[:certificate_id].to_i > 0)
+    if params[:certificate_id].present? && (params[:certificate_id].to_i > 0)
       @scheme_criteria = @scheme_criteria.joins(scheme_category: [:scheme]).where(schemes: {certificate_id: params[:certificate_id].to_i})
       @default_values[:certificate_id] = params[:certificate_id]
     end

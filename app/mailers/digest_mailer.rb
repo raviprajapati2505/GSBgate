@@ -6,7 +6,7 @@ class DigestMailer < ApplicationMailer
   def digest_email(user)
     @user = user
 
-    if user.system_admin? or user.gord_manager? or user.gord_top_manager?
+    if user.system_admin? || user.gord_manager? || user.gord_top_manager?
       @audit_logs = AuditLog.where('updated_at > ?', Date.yesterday)
     else
       @audit_logs = AuditLog.where('updated_at > ?', Date.yesterday)
@@ -19,6 +19,6 @@ class DigestMailer < ApplicationMailer
 
     @audit_logs = @audit_logs.limit(MAX_LOG_ITEMS)
     @tasks = TaskService::get_tasks(page: 1, per_page: MAX_LOG_ITEMS, user: user)
-    mail(to: @user.email, subject: 'GSAS : progress report') unless (@tasks.empty? and @audit_logs.empty?)
+    mail(to: @user.email, subject: 'GSAS : progress report') unless (@tasks.empty? && @audit_logs.empty?)
   end
 end

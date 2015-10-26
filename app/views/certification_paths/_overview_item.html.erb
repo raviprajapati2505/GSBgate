@@ -1,7 +1,7 @@
 <!-- TODO: use find_each and loop, as there can be multiple certification_paths for a specific certificate -->
 <% certification_path = project.certification_paths.find_by(certificate: certificate) %>
 <% can_create_certification_path = project.can_create_certification_path_for_certificate?(certificate) %>
-<% enabled = (certification_path.present? or can_create_certification_path) %>
+<% enabled = (certification_path.present? || can_create_certification_path) %>
 <li class="list-group-item container <%= 'disabled' if !enabled %>">
     <% if certification_path.present? %>
             <div class="row">

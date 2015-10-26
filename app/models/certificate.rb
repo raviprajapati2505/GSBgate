@@ -9,19 +9,19 @@ class Certificate < ActiveRecord::Base
   validates_inclusion_of :assessment_stage, in: Certificate.assessment_stages.keys
 
   def letter_of_conformance?
-    design_type? and design_stage?
+    design_type? && design_stage?
   end
 
   def final_design_certificate?
-    design_type? and construction_stage?
+    design_type? && construction_stage?
   end
 
   def construction_certificate?
-    construction_type? and construction_stage?
+    construction_type? && construction_stage?
   end
 
   def operations_certificate?
-    operations_type? and operations_stage?
+    operations_type? && operations_stage?
   end
 
   scope :letter_of_conformance, -> {

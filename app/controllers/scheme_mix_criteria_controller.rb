@@ -57,7 +57,7 @@ class SchemeMixCriteriaController < AuthenticatedController
   end
 
   def assign_certifier
-    if params.has_key?(:user_id) and params[:user_id].present?
+    if params.has_key?(:user_id) && params[:user_id].present?
       @scheme_mix_criterion.certifier = User.find(params[:user_id])
       if params.has_key?(:due_date)
         if params[:due_date] != ''

@@ -3,7 +3,7 @@ class TasksController < AuthenticatedController
 
   def index
     @page_title = 'Tasks'
-    if current_user.system_admin? or current_user.gord_manager? or current_user.gord_top_manager?
+    if current_user.system_admin? || current_user.gord_manager? || current_user.gord_top_manager?
       @projects = Project.all
     else
       @projects = current_user.projects
@@ -19,7 +19,7 @@ class TasksController < AuthenticatedController
       end
 
       # Project filter
-      if params[:project_id].present? and (params[:project_id].to_i > 0)
+      if params[:project_id].present? && (params[:project_id].to_i > 0)
         session[:task]['project_id'] = params[:project_id]
       end
     end

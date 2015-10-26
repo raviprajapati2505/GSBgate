@@ -5,7 +5,7 @@ class TaskService
 
     # User filter
     if user.present?
-      if user.system_admin? or user.gord_manager? or user.gord_top_manager?
+      if user.system_admin? || user.gord_manager? || user.gord_top_manager?
         check_project_role = ''
       else
         check_project_role = "or (projects_users.role = tasks.project_role and projects_users.user_id = #{user.id})"
@@ -26,7 +26,7 @@ class TaskService
 
     # User filter
     if user.present?
-      if user.system_admin? or user.gord_manager? or user.gord_top_manager?
+      if user.system_admin? || user.gord_manager? || user.gord_top_manager?
         check_project_role = ''
       else
         check_project_role = "or (projects_users.role = tasks.project_role and projects_users.user_id = #{user.id})"

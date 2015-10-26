@@ -74,7 +74,7 @@ class SchemeMixCriterion < ActiveRecord::Base
   def todo_before_status_advance
     todos = []
 
-    if submitting? or submitting_after_appeal?
+    if submitting? || submitting_after_appeal?
       # Check requirements statusses
       if has_required_requirements?
         todos << 'The status of all requirements should be set to \'Provided\' or \'Not required\' first.'
@@ -91,7 +91,7 @@ class SchemeMixCriterion < ActiveRecord::Base
       if submitted_score.nil?
         todos << 'The submitted score should be set first.'
       end
-    elsif verifying? or verifying_after_appeal?
+    elsif verifying? || verifying_after_appeal?
       # Check submitted score
       if achieved_score.nil?
         todos << 'The achieved score should be set first.'

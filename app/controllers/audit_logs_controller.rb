@@ -4,7 +4,7 @@ class AuditLogsController < AuthenticatedController
 
   def index
     @page_title = 'Audit log'
-    if current_user.system_admin? or current_user.gord_manager? or current_user.gord_top_manager?
+    if current_user.system_admin? || current_user.gord_manager? || current_user.gord_top_manager?
       @projects = Project.all
     else
       @projects = current_user.projects
@@ -32,7 +32,7 @@ class AuditLogsController < AuthenticatedController
       end
 
       # User filter
-      if params[:user_id].present? and (params[:user_id].to_i > 0)
+      if params[:user_id].present? && (params[:user_id].to_i > 0)
         session[:audit]['user_id'] = params[:user_id]
       end
       if session[:audit]['user_id'].present?
@@ -40,7 +40,7 @@ class AuditLogsController < AuthenticatedController
       end
 
       # Project filter
-      if params[:project_id].present? and (params[:project_id].to_i > 0)
+      if params[:project_id].present? && (params[:project_id].to_i > 0)
         session[:audit]['project_id'] = params[:project_id]
       end
       if session[:audit]['project_id'].present?
@@ -48,7 +48,7 @@ class AuditLogsController < AuthenticatedController
       end
 
       # Certification path filter
-      if params[:certification_path_id].present? and (params[:certification_path_id].to_i > 0)
+      if params[:certification_path_id].present? && (params[:certification_path_id].to_i > 0)
         session[:audit]['certification_path_id'] = params[:certification_path_id]
       end
       if session[:audit]['certification_path_id'].present?

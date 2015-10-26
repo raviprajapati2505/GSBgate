@@ -322,14 +322,14 @@ module Taskable
   def handle_pcr_track_changed
     if self.pcr_track_changed?
       if self.pcr_track == true
-        if self.pcr_track_allowed == false and self.certification_path_status_id < CertificationPathStatus::PROCESSING_PCR_PAYMENT
+        if self.pcr_track_allowed == false && self.certification_path_status_id < CertificationPathStatus::PROCESSING_PCR_PAYMENT
           # Create system admin task to check PCR payment
           CertificationPathTask.create(task_description_id: SYS_ADMIN_PCR_ALLOWED,
                                        application_role: User.roles[:system_admin],
                                        project: self.project,
                                        certification_path: self)
         end
-      elsif self.pcr_track_allowed == false and self.certification_path_status_id < CertificationPathStatus::PROCESSING_PCR_PAYMENT
+      elsif self.pcr_track_allowed == false && self.certification_path_status_id < CertificationPathStatus::PROCESSING_PCR_PAYMENT
         # Destroy system admin tasks to check PCR payment
         CertificationPathTask.delete_all(task_description_id: SYS_ADMIN_PCR_ALLOWED, certification_path: self)
       end
@@ -339,7 +339,7 @@ module Taskable
   def handle_pcr_track_allowed_changed
     if self.pcr_track_allowed_changed?
       if self.pcr_track_allowed == true
-        if self.pcr_track == true and self.certification_path_status_id <= CertificationPathStatus::PROCESSING_PCR_PAYMENT
+        if self.pcr_track == true && self.certification_path_status_id <= CertificationPathStatus::PROCESSING_PCR_PAYMENT
           if self.certification_path_status_id == CertificationPathStatus::PROCESSING_PCR_PAYMENT
             # Create system admin task to advance the certification path status
             CertificationPathTask.create(task_description_id: SYS_ADMIN_PCR_APPROVE,
@@ -350,7 +350,7 @@ module Taskable
           # Destroy system admin tasks to check PCR payment
           CertificationPathTask.delete_all(task_description_id: SYS_ADMIN_PCR_ALLOWED, certification_path: self)
         end
-      elsif self.pcr_track == true and self.certification_path_status_id <= CertificationPathStatus::PROCESSING_PCR_PAYMENT
+      elsif self.pcr_track == true && self.certification_path_status_id <= CertificationPathStatus::PROCESSING_PCR_PAYMENT
         # Create system admin task to check PCR payment
         CertificationPathTask.create(task_description_id: SYS_ADMIN_PCR_ALLOWED,
                                      application_role: User.roles[:system_admin],

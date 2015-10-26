@@ -40,7 +40,7 @@ class CertificationPathsController < AuthenticatedController
               if params.has_key?(:single_scheme_select)
                 @certification_path.scheme_mixes.build({scheme_id: params[:single_scheme_select], weight: 100})
               end
-            elsif @certification_path.mixed_use? or @certification_path.mixed_development? or @certification_path.mixed_development_in_stages?
+            elsif @certification_path.mixed_use? || @certification_path.mixed_development? || @certification_path.mixed_development_in_stages?
               if params[:certification_path].has_key?(:schemes)
                 params[:certification_path][:schemes].each do |scheme_params|
                   @certification_path.scheme_mixes.build({scheme_id: scheme_params[:scheme_id], weight: scheme_params[:weight]})
@@ -82,7 +82,7 @@ class CertificationPathsController < AuthenticatedController
           end
         }
       end
-    elsif @certification_path.certificate.construction_certificate? or @certification_path.certificate.operations_certificate?
+    elsif @certification_path.certificate.construction_certificate? || @certification_path.certificate.operations_certificate?
       @certification_path.development_type = :not_applicable
       @certification_path.duration = 0
       @certification_path.scheme_mixes.build({scheme_id: @certification_path.certificate.schemes.take.id, weight: 100})
@@ -180,6 +180,6 @@ class CertificationPathsController < AuthenticatedController
   end
 
   def certification_path_params
-    params.require(:certification_path).permit(:project_id, :certificate_id, :pcr_track, :pcr_track_allowed, :duration, :started_at, :development_type, :appealed)
+    params.require(:certification_path).permit(:project_id, :certificate_id, :pcr_track, :pcr_track_allowed, :duration, :started_at, :development_type, :appealed, :audit_log_user_comment)
   end
 end
