@@ -111,6 +111,7 @@ module Taskable
                                  certification_path: self)
     # Destroy project manager tasks to apply for a certification path
     ProjectTask.delete_all(task_description_id: PROJ_MNGR_APPLY, project: self.project)
+    handle_pcr_track_changed
   end
 
   def handle_created_scheme_mix_criteria_document
@@ -159,14 +160,21 @@ module Taskable
     if self.certification_path_status_id_changed?
       case self.certification_path_status_id
         when CertificationPathStatus::ACTIVATING
-          # TODO
+          #
         when CertificationPathStatus::SUBMITTING
           # Create project manager tasks to assign project team members to requirements
-          self.requirement_data.unassigned.required.each do |requirement_datum|
-            RequirementDatumTask.create(task_description_id: PROJ_MNGR_ASSIGN,
-                                        project_role: ProjectsUser.roles[:project_manager],
-                                        project: self.project,
-                                        requirement_datum: requirement_datum)
+          # self.requirement_data.unassigned.required.each do |requirement_datum|
+          #   RequirementDatumTask.create(task_description_id: PROJ_MNGR_ASSIGN,
+          #                               project_role: ProjectsUser.roles[:project_manager],
+          #                               project: self.project,
+          #                               requirement_datum: requirement_datum)
+          # end
+          if self.requirement_data.unassigned.required.count.nonzero?
+            # Create project manager task to assign project team members to requirements
+            CertificationPathTask.create(task_description_id: PROJ_MNGR_ASSIGN,
+                                         project_role: ProjectsUser.roles[:project_manager],
+                                         project: self.project,
+                                         certification_path: self)
           end
           # Destroy system admin tasks to advance status
           CertificationPathTask.delete_all(task_description_id: SYS_ADMIN_REG_APPROVE, certification_path: self)
@@ -207,11 +215,18 @@ module Taskable
                                        project: self.project,
                                        certification_path: self)
           # Create certifier manager tasks to assign certifier team members to criteria
-          self.scheme_mix_criteria.unassigned.submitted.each do |scheme_mix_criterion|
-            SchemeMixCriterionTask.create(task_description_id: CERT_MNGR_ASSIGN,
-                                          project_role: ProjectsUser.roles[:certifier_manager],
-                                          project: self.project,
-                                          scheme_mix_criterion: scheme_mix_criterion)
+          # self.scheme_mix_criteria.unassigned.submitted.each do |scheme_mix_criterion|
+          #   SchemeMixCriterionTask.create(task_description_id: CERT_MNGR_ASSIGN,
+          #                                 project_role: ProjectsUser.roles[:certifier_manager],
+          #                                 project: self.project,
+          #                                 scheme_mix_criterion: scheme_mix_criterion)
+          # end
+          # Create certifier manager task to assign certifier team members to criteria
+          if self.scheme_mix_criteria.unassigned.submitted.count.nonzero?
+            CertificationPathTask.create(task_description_id: CERT_MNGR_ASSIGN,
+                                         project_role: ProjectsUser.roles[:certifier_manager],
+                                         project: self.project,
+                                         certification_path: self)
           end
           # Destroy system admin tasks to advance the certification path status
           CertificationPathTask.delete_all(task_description_id: SYS_ADMIN_PCR_APPROVE, certification_path: self)
@@ -240,7 +255,6 @@ module Taskable
           # Destroy certifier manager tasks to advance status
           CertificationPathTask.delete_all(task_description_id: CERT_MNGR_VERIFICATION_APPROVE, certification_path: self)
         when CertificationPathStatus::PROCESSING_APPEAL_PAYMENT
-          # TODO how is appeal implemented ?
           # Create system admin task to check appeal payment
           CertificationPathTask.create(task_description_id: SYS_ADMIN_APPEAL_APPROVE,
                                        application_role: User.roles[:system_admin],
@@ -250,11 +264,18 @@ module Taskable
           CertificationPathTask.delete_all(task_description_id: PROJ_MNGR_PROC_VERIFICATION, certification_path: self)
         when CertificationPathStatus::SUBMITTING_AFTER_APPEAL
           # Create project manager tasks to assign project team members to requirements
-          self.requirement_data.unassigned.required.each do |requirement_datum|
-            RequirementDatumTask.create(task_description_id: PROJ_MNGR_ASSIGN_AFTER_APPEAL,
-                                        project_role: ProjectsUser.roles[:project_manager],
-                                        project: self.project,
-                                        requirement_datum: requirement_datum)
+          # self.requirement_data.unassigned.required.each do |requirement_datum|
+          #   RequirementDatumTask.create(task_description_id: PROJ_MNGR_ASSIGN_AFTER_APPEAL,
+          #                               project_role: ProjectsUser.roles[:project_manager],
+          #                               project: self.project,
+          #                               requirement_datum: requirement_datum)
+          # end
+          # Create project manager task to assign project team members to requirements
+          if self.requirement_data.unassigned.required.count.nonzero?
+            CertificationPathTask.create(task_description_id: PROJ_MNGR_ASSIGN_AFTER_APPEAL,
+                                         project_role: ProjectsUser.roles[:project_manager],
+                                         project: self.project,
+                                         certification_path: self)
           end
           # Destroy system admin tasks to check appeal payment
           CertificationPathTask.delete_all(task_description_id: SYS_ADMIN_APPEAL_APPROVE, certification_path: self)
@@ -366,10 +387,16 @@ module Taskable
         when SchemeMixCriterion.statuses[:verifying], SchemeMixCriterion.statuses[:verifying_after_appeal]
           if self.certifier_id.nil?
             # Create certifier manager task to assign certifier to the criterion
-            SchemeMixCriterionTask.create(task_description_id: CERT_MNGR_ASSIGN,
-                                          project_role: ProjectsUser.roles[:certifier_manager],
-                                          project: self.scheme_mix.certification_path.project,
-                                          scheme_mix_criterion: self)
+            # SchemeMixCriterionTask.create(task_description_id: CERT_MNGR_ASSIGN,
+            #                               project_role: ProjectsUser.roles[:certifier_manager],
+            #                               project: self.scheme_mix.certification_path.project,
+            #                               scheme_mix_criterion: self)
+            if CertificationPathTask.find_by(task_description_id: CERT_MNGR_ASSIGN, certification_path: self.scheme_mix.certification_path).nil?
+              CertificationPathTask.create(task_description_id: CERT_MNGR_ASSIGN,
+                                           project_role: ProjectsUser.roles[:certifier_manager],
+                                           project: self.scheme_mix.certification_path.project,
+                                           certification_path: self.scheme_mix.certification_path)
+            end
           else
             # Create certifier team member task to screen the criterion
             SchemeMixCriterionTask.create(task_description_id: CERT_MEM_VERIFY,
@@ -400,10 +427,16 @@ module Taskable
       # Can a criterion be assigned to nil ?
       if self.certifier_id.nil?
         # Create certifier manager task to assign certifier to the criterion
-        SchemeMixCriterionTask.create(task_description_id: CERT_MNGR_ASSIGN,
-                                      project_role: ProjectsUser.roles[:certifier_manager],
-                                      project: self.scheme_mix.certification_path.project,
-                                      scheme_mix_criterion: self)
+        # SchemeMixCriterionTask.create(task_description_id: CERT_MNGR_ASSIGN,
+        #                               project_role: ProjectsUser.roles[:certifier_manager],
+        #                               project: self.scheme_mix.certification_path.project,
+        #                               scheme_mix_criterion: self)
+        if CertificationPathTask.find_by(task_description_id: CERT_MNGR_ASSIGN, certification_path: self.scheme_mix.certification_path).nil?
+          CertificationPathTask.create(task_description_id: CERT_MNGR_ASSIGN,
+                                       project_role: ProjectsUser.roles[:certifier_manager],
+                                       project: self.scheme_mix.certification_path.project,
+                                       certification_path: self.scheme_mix.certification_path)
+        end
         # Destroy all certifier team member tasks to verify the criterion
         SchemeMixCriterionTask.delete_all(task_description_id: CERT_MEM_VERIFY, scheme_mix_criterion: self)
       else
@@ -417,7 +450,10 @@ module Taskable
                                         scheme_mix_criterion: self)
         end
         # Destroy all certifier manager tasks to assign certifier team member to this criterion
-        SchemeMixCriterionTask.delete_all(task_description_id: CERT_MNGR_ASSIGN, scheme_mix_criterion: self)
+        # SchemeMixCriterionTask.delete_all(task_description_id: CERT_MNGR_ASSIGN, scheme_mix_criterion: self)
+        if self.scheme_mix.certification_path.scheme_mix_criteria.unassigned.where(status: [SchemeMixCriterion.statuses[:verifying], SchemeMixCriterion.statuses[:verifying_afer_appeal]]).count.zero?
+          CertificationPathTask.delete_all(task_description_id: CERT_MNGR_ASSIGN, certification_path: self.scheme_mix.certification_path)
+        end
       end
     end
   end
@@ -435,16 +471,28 @@ module Taskable
           if self.user.nil?
             if self.scheme_mix_criteria.first.submitting?
               # Create project manager task to assign a project team member to the requirement
-              RequirementDatumTask.create(task_description_id: PROJ_MNGR_ASSIGN,
-                                          project_role: ProjectsUser.roles[:project_manager],
-                                          project: self.scheme_mix_criteria.first.scheme_mix.certification_path.project,
-                                          requirement_datum: self)
+              # RequirementDatumTask.create(task_description_id: PROJ_MNGR_ASSIGN,
+              #                             project_role: ProjectsUser.roles[:project_manager],
+              #                             project: self.scheme_mix_criteria.first.scheme_mix.certification_path.project,
+              #                             requirement_datum: self)
+              if CertificationPathTask.find_by(task_description_id: PROJ_MNGR_ASSIGN, certification_path: self.scheme_mix_criteria.first.scheme_mix.certification_path).nil?
+                CertificationPathTask.create(task_description_id: PROJ_MNGR_ASSIGN,
+                                             project_role: ProjectsUser.roles[:project_manager],
+                                             project: self.scheme_mix_criteria.first.scheme_mix.certification_path.project,
+                                             certification_path: self.scheme_mix_criteria.first.scheme_mix.certification_path)
+              end
             elsif self.scheme_mix_criteria.first.submitting_after_appeal?
               # Create project manager task to assign a project team member to the requirement
-              RequirementDatumTask.create(task_description_id: PROJ_MNGR_ASSIGN_AFTER_APPEAL,
-                                          project_role: ProjectsUser.roles[:project_manager],
-                                          project: self.scheme_mix_criteria.first.scheme_mix.certification_path.project,
-                                          requirement_datum: self)
+              # RequirementDatumTask.create(task_description_id: PROJ_MNGR_ASSIGN_AFTER_APPEAL,
+              #                             project_role: ProjectsUser.roles[:project_manager],
+              #                             project: self.scheme_mix_criteria.first.scheme_mix.certification_path.project,
+              #                             requirement_datum: self)
+              if CertificationPathTask.find_by(task_description_id: PROJ_MNGR_ASSIGN_AFTER_APPEAL, certification_path: self.scheme_mix_criteria.first.scheme_mix.certification_path).nil?
+                CertificationPathTask.create(task_description_id: PROJ_MNGR_ASSIGN_AFTER_APPEAL,
+                                             project_role: ProjectsUser.roles[:project_manager],
+                                             project: self.scheme_mix_criteria.first.scheme_mix.certification_path.project,
+                                             certification_path: self.scheme_mix_criteria.first.scheme_mix.certification_path)
+              end
             end
           else
             # Create project team member task to provide the requirement
@@ -471,7 +519,11 @@ module Taskable
                                           scheme_mix_criterion: self.scheme_mix_criteria.first)
           end
           # Destroy project manager tasks to assign project team members to requirement and project team member tasks to provide the requirement
-          RequirementDatumTask.delete_all(task_description_id: [PROJ_MNGR_ASSIGN, PROJ_MNGR_ASSIGN_AFTER_APPEAL, PROJ_MEM_REQ], requirement_datum_id: self.id)
+          # RequirementDatumTask.delete_all(task_description_id: [PROJ_MNGR_ASSIGN, PROJ_MNGR_ASSIGN_AFTER_APPEAL, PROJ_MEM_REQ], requirement_datum_id: self.id)
+          RequirementDatumTask.delete_all(task_description_id: PROJ_MEM_REQ, requirement_datum_id: self.id)
+          if self.scheme_mix_criteria.first.scheme_mix.certification_path.requirement_data.unassigned.where(status: RequirementDatum.statuses[:required]).count.zero?
+            CertificationPathTask.delete_all(task_description_id: [PROJ_MNGR_ASSIGN, PROJ_MNGR_ASSIGN_AFTER_APPEAL], certification_path: self.scheme_mix_criteria.first.scheme_mix.certification_path)
+          end
       end
     end
   end
@@ -483,16 +535,28 @@ module Taskable
         if RequirementDatum.statuses[self.status] == RequirementDatum.statuses[:required]
           if self.scheme_mix_criteria.first.submitting?
             # Create project manager task to assign project team member
-            RequirementDatumTask.create(task_description_id: PROJ_MNGR_ASSIGN,
-                                        project_role: ProjectsUser.roles[:project_manager],
-                                        project: self.scheme_mix_criteria.first.scheme_mix.certification_path.project,
-                                        requirement_datum: self)
+            # RequirementDatumTask.create(task_description_id: PROJ_MNGR_ASSIGN,
+            #                             project_role: ProjectsUser.roles[:project_manager],
+            #                             project: self.scheme_mix_criteria.first.scheme_mix.certification_path.project,
+            #                             requirement_datum: self)
+            if CertificationPathTask.find_by(task_description_id: PROJ_MNGR_ASSIGN, certification_path: self.scheme_mix_criteria.first.scheme_mix.certification_path).nil?
+              CertificationPathTask.create(task_description_id: PROJ_MNGR_ASSIGN,
+                                           project_role: ProjectsUser.roles[:project_manager],
+                                           project: self.scheme_mix_criteria.first.scheme_mix.certification_path.project,
+                                           certification_path: self.scheme_mix_criteria.first.scheme_mix.certification_path)
+            end
           elsif self.scheme_mix_criteria.first.submitting_after_appeal?
             # Create project manager task to assign project team member
-            RequirementDatumTask.create(task_description_id: PROJ_MNGR_ASSIGN_AFTER_APPEAL,
-                                        project_role: ProjectsUser.roles[:project_manager],
-                                        project: self.scheme_mix_criteria.first.scheme_mix.certification_path.project,
-                                        requirement_datum: self)
+            # RequirementDatumTask.create(task_description_id: PROJ_MNGR_ASSIGN_AFTER_APPEAL,
+            #                             project_role: ProjectsUser.roles[:project_manager],
+            #                             project: self.scheme_mix_criteria.first.scheme_mix.certification_path.project,
+            #                             requirement_datum: self)
+            if CertificationPathTask.find_by(task_description_id: PROJ_MNGR_ASSIGN_AFTER_APPEAL, certification_path: self.scheme_mix_criteria.first.scheme_mix.certification_path).nil?
+              CertificationPathTask.create(task_description_id: PROJ_MNGR_ASSIGN_AFTER_APPEAL,
+                                           project_role: ProjectsUser.roles[:project_manager],
+                                           project: self.scheme_mix_criteria.first.scheme_mix.certification_path.project,
+                                           certification_path: self.scheme_mix_criteria.first.scheme_mix.certification_path)
+            end
           end
         end
         # Destroy project team member tasks to provide the requirement
@@ -510,7 +574,10 @@ module Taskable
           end
         end
         # Destroy project manager tasks to assign project team member
-        RequirementDatumTask.delete_all(task_description_id: [PROJ_MNGR_ASSIGN, PROJ_MNGR_ASSIGN_AFTER_APPEAL], requirement_datum_id: self.id)
+        # RequirementDatumTask.delete_all(task_description_id: [PROJ_MNGR_ASSIGN, PROJ_MNGR_ASSIGN_AFTER_APPEAL], requirement_datum_id: self.id)
+        if self.scheme_mix_criteria.first.scheme_mix.certification_path.requirement_data.unassigned.where(status: RequirementDatum.statuses[:required]).count.zero?
+          CertificationPathTask.delete_all(task_description_id: [PROJ_MNGR_ASSIGN, PROJ_MNGR_ASSIGN_AFTER_APPEAL], certification_path: self.scheme_mix_criteria.first.scheme_mix.certification_path)
+        end
       end
     end
   end
@@ -545,19 +612,35 @@ module Taskable
       when ProjectsUser.roles[:project_team_member]
         # Create project manager tasks to assign project member to requirement
         project.certification_paths.with_status(CertificationPathStatus::SUBMITTING).each do |certification_path|
-          certification_path.requirement_data.unassigned.required.where.not('exists(select tasks.id from tasks where tasks.requirement_datum_id = requirement_data.id and tasks.task_description_id = ?)', PROJ_MNGR_ASSIGN).each do |requirement_datum|
-            RequirementDatumTask.create(task_description_id: PROJ_MNGR_ASSIGN,
-                                        project_role: ProjectsUser.roles[:project_manager],
-                                        project: self.project,
-                                        requirement_datum: requirement_datum)
+          # certification_path.requirement_data.unassigned.required.where.not('exists(select tasks.id from tasks where tasks.requirement_datum_id = requirement_data.id and tasks.task_description_id = ?)', PROJ_MNGR_ASSIGN).each do |requirement_datum|
+          #   RequirementDatumTask.create(task_description_id: PROJ_MNGR_ASSIGN,
+          #                               project_role: ProjectsUser.roles[:project_manager],
+          #                               project: self.project,
+          #                               requirement_datum: requirement_datum)
+          # end
+          if CertificationPathTask.find_by(task_description_id: PROJ_MNGR_ASSIGN, certification_path: certification_path).nil?
+            if certification_path.requirement_data.unassigned.required.count.nonzero?
+              CertificationPathTask.create(task_description_id: PROJ_MNGR_ASSIGN,
+                                           project_role: ProjectsUser.roles[:project_manager],
+                                           project: self.project,
+                                           certification_path: certification_path)
+            end
           end
         end
         project.certification_paths.with_status(CertificationPathStatus::SUBMITTING_AFTER_APPEAL).each do |certification_path|
-          certification_path.requirement_data.unassigned.required.where.not('exists(select tasks.id from tasks where tasks.requirement_datum_id = requirement_data.id and tasks.task_description_id = ?)', PROJ_MNGR_ASSIGN_AFTER_APPEAL).each do |requirement_datum|
-            RequirementDatumTask.create(task_description_id: PROJ_MNGR_ASSIGN_AFTER_APPEAL,
-                                        project_role: ProjectsUser.roles[:project_manager],
-                                        project: self.project,
-                                        requirement_datum: requirement_datum)
+          # certification_path.requirement_data.unassigned.required.where.not('exists(select tasks.id from tasks where tasks.requirement_datum_id = requirement_data.id and tasks.task_description_id = ?)', PROJ_MNGR_ASSIGN_AFTER_APPEAL).each do |requirement_datum|
+          #   RequirementDatumTask.create(task_description_id: PROJ_MNGR_ASSIGN_AFTER_APPEAL,
+          #                               project_role: ProjectsUser.roles[:project_manager],
+          #                               project: self.project,
+          #                               requirement_datum: requirement_datum)
+          # end
+          if CertificationPathTask.find_by(task_description_id: PROJ_MNGR_ASSIGN_AFTER_APPEAL, certification_path: certification_path).nil?
+            if certification_path.requirement_data.unassigned.required.count.nonzero?
+              CertificationPathTask.create(task_description_id: PROJ_MNGR_ASSIGN_AFTER_APPEAL,
+                                           project_role: ProjectsUser.roles[:project_manager],
+                                           project: self.project,
+                                           certification_path: certification_path)
+            end
           end
         end
       # A certifier is unassigned from project
@@ -569,6 +652,14 @@ module Taskable
                                           project_role: ProjectsUser.roles[:certifier_manager],
                                           project: self.project,
                                           scheme_mix_criterion: scheme_mix_criterion)
+          end
+          if CertificationPathTask.find_by(task_description_id: CERT_MNGR_ASSIGN, certification_path: certification_path).nil?
+            if certification_path.scheme_mix_criteria.unassigned.count.nonzero?
+              CertificationPathTask.create(task_description_id: CERT_MNGR_ASSIGN,
+                                           project_role: ProjectsUser.roles[:certifier_manager],
+                                           project: self.project,
+                                           certification_path: certification_path)
+            end
           end
         end
       # A certifier manager is unassigned from project
