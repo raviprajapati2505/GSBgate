@@ -3,6 +3,121 @@
         <div class="ibox float-e-margins">
             <div class="ibox-title">
                 <%= audit_log_label(@certification_path) %>
+                <h5>Certificate details</h5>
+            </div>
+            <div class="ibox-content">
+                <table class="table table-bordered table-striped">
+                    <tbody>
+                    <tr>
+                        <th>Certificate name</th>
+                        <td><%= @certification_path.name %></td>
+                    </tr>
+                    <% if @certification_path.is_certified? %>
+                        <tr>
+                            <th>Downloads</th>
+                            <td>
+                                <div>
+                                    <%= link_to download_certificate_report_project_certification_path_path(@project, @certification_path), class: 'btn btn-xs btn-primary' do %>
+                                        <i class="fa fa-lg fa-download"></i>
+                                    <% end %>
+                                    &nbsp;
+                                    Download Certificate
+                                </div>
+                                <div>
+                                    <%= link_to download_coverletter_report_project_certification_path_path(@project, @certification_path), class: 'btn btn-xs btn-primary' do %>
+                                        <i class="fa fa-lg fa-download"></i>
+                                    <% end %>
+                                    &nbsp;
+                                    Download Coverletter
+                                </div>
+                                <div>
+                                    <%= link_to download_scores_report_project_certification_path_path(@project, @certification_path), class: 'btn btn-xs btn-primary' do %>
+                                        <i class="fa fa-lg fa-download"></i>
+                                    <% end %>
+                                    &nbsp;
+                                    Download Score Report
+                                </div>
+                            </td>
+                        </tr>
+                    <% end %>
+                    <% if not @certification_path.is_activating? %>
+                        <tr>
+                            <th>Started</th>
+                            <td><%= @certification_path.started_at %></td>
+                        </tr>
+                    <% end %>
+                    <% if @certification_path.certificate.letter_of_conformance? || @certification_path.certificate.final_design_certificate? %>
+                        <tr>
+                            <th>Duration</th>
+                            <td><%= pluralize(@certification_path.duration, 'year') %></td>
+                        </tr>
+                    <% end %>
+                    <tr>
+                        <th>Rating</th>
+                        <td><%= render 'certification_paths/star_ratings', certification_path: @certification_path %></td>
+                    </tr>
+                    <tr>
+                        <th>Score</th>
+                        <td>
+                            <%= render 'score/score', scores: @certification_path.scores_in_certificate_points %>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            PCR
+                            <%= tooltip('Pre Certification Review. The project manager can apply for PCR. During PCR, GORD will assist the project team in completing the cerification process.') %>
+                        </th>
+                        <td>
+                            <% applied_icon = @certification_path.pcr_track? ? 'fa-check-square-o' : 'fa-square-o' %>
+                            <% payed_icon = @certification_path.pcr_track_allowed? ? 'fa-check-square-o' : 'fa-square-o' %>
+                            <div>
+                                <i class="fa fa-lg <%= applied_icon %>" style="padding-right: 10px;"></i>
+                                <span>Applied for PCR</span>
+                            </div>
+                            <div>
+                                <i class="fa fa-lg <%= payed_icon %>" style="padding-right: 10px;"></i>
+                                <span>PCR payment confirmed</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Documents
+                            <%= tooltip('An archive of all approved documents regarding the certificate can be downloaded here.') %>
+                        </th>
+                        <td>
+                            <% if @certification_path.scheme_mix_criteria_documents.approved.count > 0 %>
+                                <%= link_to archive_project_certification_path_path, class: 'btn btn-xs btn-primary', title: 'Creates a ZIP archive containing all approved documents in this certificate.' do %>
+                                    <i class="fa fa-lg fa-download"></i>
+                                <% end %>
+                                &nbsp;
+                                Download archive
+                                <%= tooltip("This document archive contains #{@certification_path.scheme_mix_criteria_documents.approved.count} approved document(s).") %>
+                            <% else %>
+                                There are no documents uploaded or approved yet.
+                            <% end %>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <% can_apply_for_pcr = (!@certification_path.pcr_track?) && (current_user.project_manager?(@project) || current_user.system_admin?) %>
+                <% can_approve_pcr = (!@certification_path.pcr_track_allowed?) && @certification_path.pcr_track? && current_user.system_admin? %>
+                <% if can_apply_for_pcr || can_approve_pcr %>
+                    <div class="hr-line-dashed"></div>
+                <% end %>
+                <% if @certification_path.certification_path_status_id < CertificationPathStatus::SUBMITTING_PCR %>
+                    <% if can_apply_for_pcr %>
+                        <%= link_to('Apply for PCR', apply_for_pcr_project_certification_path_path, { method: :post, class: 'btn btn-primary', disable_with:'Applying...', data: { confirm: 'You are now applying for the PCR track. This will require an extra fee. Please confirm your choice.'}}) %>
+                    <% end %>
+                    <% if can_approve_pcr %>
+                        <%= link_to('Approve PCR application', approve_pcr_payment_project_certification_path_path, { method: :post, class: 'btn btn-primary', disable_with:'Approving...', data: { confirm: 'This will enable the PCR track for this certificate. Please confirm your choice.'}}) %>
+                    <% end %>
+                <% end %>
+            </div>
+        </div>
+
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
                 <%= render 'timeline_legend' %>
                 <h5>Certificate status</h5>
             </div>
@@ -20,108 +135,8 @@
                 <% end %>
             </div>
         </div>
-
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <h5>Certificate details</h5>
-            </div>
-            <div class="ibox-content">
-                <table class="table table-bordered table-striped">
-                    <tbody>
-                    <tr>
-                        <th>Certificate name</th>
-                        <td><%= @certification_path.name %></td>
-                    </tr>
-                    <% if not @certification_path.is_activating? %>
-                        <tr>
-                            <th>Started</th>
-                            <td><%= @certification_path.started_at %></td>
-                        </tr>
-                    <% end %>
-                    <% if @certification_path.certificate.letter_of_conformance? or @certification_path.certificate.final_design_certificate? %>
-                        <tr>
-                            <th>Duration</th>
-                            <td><%= pluralize(@certification_path.duration, 'year') %></td>
-                        </tr>
-                    <% end %>
-                    <tr>
-                        <th>Rating</th>
-                        <td><%= render 'certification_paths/star_ratings', certification_path: @certification_path %></td>
-                    </tr>
-                    <tr>
-                        <th>Score</th>
-                        <td>
-                            <%= render 'score/score', scores: @certification_path.scores_in_certificate_points %>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>PCR<%= tooltip('Pre Certification Review. The project manager can apply for PCR. During PCR, GORD will assist the project team in completing the cerification process.') %></th>
-                        <td class="">
-                            <div class="pull-left">
-                                <% applied_icon = @certification_path.pcr_track? ? 'fa-check-square-o' : 'fa-square-o' %>
-                                <% payed_icon = @certification_path.pcr_track_allowed? ? 'fa-check-square-o' : 'fa-square-o' %>
-                                <div>
-                                    <i class="fa fa-lg <%= applied_icon %>" style="padding-right: 10px;"></i>
-                                    <span>Applied for PCR</span>
-                                </div>
-                                <div>
-                                    <i class="fa fa-lg <%= payed_icon %>" style="padding-right: 10px;"></i>
-                                    <span>PCR payment confirmed</span>
-                                </div>
-                            </div>
-                            <div class="pull-right">
-                                <% if @certification_path.certification_path_status_id < CertificationPathStatus::SUBMITTING_PCR %>
-                                    <% if (current_user.project_manager?(@project) || current_user.system_admin?) and not @certification_path.pcr_track? %>
-                                        <%= button_to('Apply', apply_for_pcr_project_certification_path_path, {class: 'btn btn-primary pull-right', disable_with:'Applying...', data: { confirm: 'You are now applying for the PCR track. This will require an extra fee. Are you sure?'}}) %>
-                                    <% end %>
-                                    <% if current_user.system_admin? and @certification_path.pcr_track? and not @certification_path.pcr_track_allowed? %>
-                                        <%= button_to('Approve', approve_pcr_payment_project_certification_path_path, {class: 'btn btn-primary pull-right', disable_with:'Approving...', data: { confirm: 'This will enable the PCR track for this certificate. Are you sure?'}}) %>
-                                    <% end %>
-                                <% end %>
-                            </div>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5>Downloads<%= tooltip('All documents regarding the certificate can be downloaded here.') %></h5>
-                    </div>
-                    <div class="ibox-content">
-                        <% if @certification_path.is_certified? %>
-                            <div>
-                            <%= link_to download_certificate_report_project_certification_path_path(@project, @certification_path), class: 'btn btn-white' do %>
-                                <i class="fa fa-lg fa-download" style="padding-right: 10px;"></i>Download Certificate
-                            <% end %>
-                            </div>
-                            <div>
-                            <%= link_to download_coverletter_report_project_certification_path_path(@project, @certification_path), class: 'btn btn-white' do %>
-                                <i class="fa fa-lg fa-download" style="padding-right: 10px;"></i>Download Coverletter
-                            <% end %>
-                            </div>
-                            <div>
-                            <%= link_to download_scores_report_project_certification_path_path(@project, @certification_path), class: 'btn btn-white' do %>
-                                <i class="fa fa-lg fa-download" style="padding-right: 10px;"></i>Download Score Report
-                            <% end %>
-                            </div>
-                            <div class="hr-line-dashed"></div>
-                        <% end %>
-                        This certificate contains <%= @certification_path.scheme_mix_criteria_documents.approved.count %> approved document(s).
-                        <%= link_to archive_project_certification_path_path, class: 'btn btn-white', title: 'Creates a ZIP archive containing all approved documents in this certificate.' do %>
-                            <i class="fa fa-lg fa-archive" style="padding-right: 10px;"></i>Download archive
-                        <% end %>
-                        <%= tooltip('An archive of all approved documents regarding the certificate can be downloaded here.') %>
-                        <div class="hr-line-dashed"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
+
     <div class="col-md-7">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
