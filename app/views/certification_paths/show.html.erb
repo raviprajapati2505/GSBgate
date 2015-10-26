@@ -107,10 +107,10 @@
                 <% end %>
                 <% if @certification_path.certification_path_status_id < CertificationPathStatus::SUBMITTING_PCR %>
                     <% if can_apply_for_pcr %>
-                        <%= link_to('Apply for PCR', apply_for_pcr_project_certification_path_path, { method: :post, class: 'btn btn-primary', disable_with:'Applying...', data: { confirm: 'You are now applying for the PCR track. This will require an extra fee. Please confirm your choice.'}}) %>
+                        <%= link_to('Apply for PCR', apply_for_pcr_project_certification_path_path, { method: :post, class: 'btn btn-primary', data: { disable_with:'Applying...', confirm: 'You are now applying for the PCR track. This will require an extra fee. Please confirm your choice.'}}) %>
                     <% end %>
                     <% if can_approve_pcr %>
-                        <%= link_to('Approve PCR application', approve_pcr_payment_project_certification_path_path, { method: :post, class: 'btn btn-primary', disable_with:'Approving...', data: { confirm: 'This will enable the PCR track for this certificate. Please confirm your choice.'}}) %>
+                        <%= link_to('Approve PCR application', approve_pcr_payment_project_certification_path_path, { method: :post, class: 'btn btn-primary', data: { disable_with:'Approving...', confirm: 'This will enable the PCR track for this certificate. Please confirm your choice.'}}) %>
                     <% end %>
                 <% end %>
             </div>
