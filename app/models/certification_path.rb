@@ -7,7 +7,7 @@ class CertificationPath < ActiveRecord::Base
   belongs_to :certification_path_status
   has_many :scheme_mixes
   has_many :schemes, through: :scheme_mixes
-  has_many :scheme_mix_criteria, through: :scheme_mixes
+  has_many :scheme_mix_criteria, through: :scheme_mixes, autosave: true
   has_many :scheme_mix_criteria_documents, through: :scheme_mix_criteria
   has_many :scheme_mix_criteria_requirement_data, through: :scheme_mix_criteria
   has_many :requirement_data, through: :scheme_mix_criteria_requirement_data
@@ -25,9 +25,9 @@ class CertificationPath < ActiveRecord::Base
   validate :certificate_duration
 
   after_initialize :init
+  before_update :advance_scheme_mix_criteria_statuses
   before_update :set_started_at
   before_update :set_certified_at
-  after_update :advance_scheme_mix_criteria_statuses
 
   scope :with_status, ->(status) {
     where(certification_path_status_id: status)
@@ -110,7 +110,7 @@ class CertificationPath < ActiveRecord::Base
       if not [2, 3, 4].include? duration
         errors.add(:duration, 'Duration for Final Design Certificate should be 2, 3 or 4 years.')
       end
-    elsif certificate.construction_certificate? or certificate.operations_certificate?
+    elsif certificate.construction_certificate? || certificate.operations_certificate?
     end
   end
 
@@ -322,46 +322,44 @@ class CertificationPath < ActiveRecord::Base
   private
 
   def set_started_at
-    if certification_path_status_id_changed? and certification_path_status_id == CertificationPathStatus::SUBMITTING
+    if certification_path_status_id_changed? && certification_path_status_id == CertificationPathStatus::SUBMITTING
       self.started_at = Time.zone.now
     end
   end
 
   def set_certified_at
-    if certification_path_status_id_changed? and is_completed?
+    if certification_path_status_id_changed? && is_completed?
       self.certified_at = Time.zone.now
     end
   end
 
   def advance_scheme_mix_criteria_statuses
-    CertificationPath.transaction do
-      if certification_path_status_id_changed?
-        case certification_path_status_id
-          # If the certificate status is advanced to 'Verifying',
-          # also advance the status of all submitted criteria to 'Verifying'
-          when CertificationPathStatus::VERIFYING
-            scheme_mix_criteria.each do |smc|
-              if smc.submitted?
-                smc.verifying!
-              end
+    if certification_path_status_id_changed?
+      case certification_path_status_id
+        # If the certificate status is advanced to 'Verifying',
+        # also advance the status of all submitted criteria to 'Verifying'
+        when CertificationPathStatus::VERIFYING
+          scheme_mix_criteria.each do |smc|
+            if smc.submitted?
+              smc.verifying!
             end
-          # If the certificate status is advanced to 'Submitting after appeal',
-          # also advance the status of all appealed criteria to 'Submitting after appeal'
-          when CertificationPathStatus::SUBMITTING_AFTER_APPEAL
-            scheme_mix_criteria.each do |smc|
-              if smc.appealed?
-                smc.submitting_after_appeal!
-              end
+          end
+        # If the certificate status is advanced to 'Submitting after appeal',
+        # also advance the status of all appealed criteria to 'Submitting after appeal'
+        when CertificationPathStatus::SUBMITTING_AFTER_APPEAL
+          scheme_mix_criteria.each do |smc|
+            if smc.appealed?
+              smc.submitting_after_appeal!
             end
-          # If the certificate status is advanced to 'Verifying after appeal',
-          # also advance the status of all appealed criteria to 'Verifying after appeal'
-          when CertificationPathStatus::VERIFYING_AFTER_APPEAL
-            scheme_mix_criteria.each do |smc|
-              if smc.submitted_after_appeal?
-                smc.verifying_after_appeal!
-              end
+          end
+        # If the certificate status is advanced to 'Verifying after appeal',
+        # also advance the status of all appealed criteria to 'Verifying after appeal'
+        when CertificationPathStatus::VERIFYING_AFTER_APPEAL
+          scheme_mix_criteria.each do |smc|
+            if smc.submitted_after_appeal?
+              smc.verifying_after_appeal!
             end
-        end
+          end
       end
     end
   end
