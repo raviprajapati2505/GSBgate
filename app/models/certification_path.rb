@@ -350,6 +350,11 @@ class CertificationPath < ActiveRecord::Base
           scheme_mix_criteria.each do |smc|
             if smc.appealed?
               smc.submitting_after_appeal!
+              # Reset linked requirements to 'required' and unassign from assessor
+              smc.requirement_data.each do |requirement|
+                requirement.user = nil
+                requirement.required!
+              end
             end
           end
         # If the certificate status is advanced to 'Verifying after appeal',
