@@ -51,3 +51,12 @@ svn://svnext.vito.be/ENE/TEM/EMIS/GORD-GSAS/trunk/GSASServices/GSASServices/Docs
 4. $> sudo cron -e
 5. add following line to crontab :
    0 10 * * * /home/jenkins/generate_notifications.sh
+6. $> touch /home/jenkins/generate_tasks.sh
+7. $> chmoc +x /home/jenkins/generate_tasks.sh
+8. add following lines :
+   source /etc/profile.d/rbenv.sh
+   cd /var/gord-gsas
+   RAILS_ENV=production bundle exec rake gsas:create_duration_task
+9. $> sudo cron -e
+10. add following line to crontab :
+    0 1 * * * /home/jenkins/generate_tasks.sh

@@ -30,4 +30,26 @@ namespace :gsas do
     Rails.logger.info "Processed #{ActionController::Base.helpers.pluralize(user_count, 'user')}."
   end
 
+  desc "Create a task for the system admin for every certification path with maximum duration exceeded"
+  task :create_duration_task, [] => :environment do |t, args|
+
+    Rails.logger.info 'Start creating duration tasks...'
+
+    certification_path_count = 0
+    page = 0
+    begin
+      page += 1
+      certification_paths = CertificationPath.where('(started_at + interval \'1\' year * duration) < ?', DateTime.now).paginate page: page, per_page: PAGE_SIZE
+      certification_paths.each do |certification_path|
+        CertificationPathTask.create(task_description_id: Taskable::SYS_ADMIN_DURATION,
+                                     application_role: User.roles[:system_admin],
+                                     project: certification_path.project,
+                                     certification_path: certification_path)
+      end
+      certification_path_count += certification_paths.size
+    end while certification_paths.size == PAGE_SIZE
+
+    Rails.logger.info "Found #{ActionController::Base.helpers.pluralize(certification_path_count, 'certification path')} with maximum duration exceeded."
+  end
+
 end

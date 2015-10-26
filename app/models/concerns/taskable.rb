@@ -25,6 +25,7 @@ module Taskable
   PROJ_MNGR_APPLY = 30
   PROJ_MNGR_ASSIGN_AFTER_APPEAL = 31
   PROJ_MNGR_GEN = 32
+  SYS_ADMIN_DURATION = 33
 
   included do
     after_create :after_create

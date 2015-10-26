@@ -120,6 +120,7 @@ en:
       description_30: "Apply for a certificate."
       description_31: "Allocate appealed criteria requirements to project team members."
       description_32: "Provide location plan, site plan, design brief and project narrative."
+      description_33: "Duration of certification path is exceeded."
       tooltip_due_date: "Task is overdue"
   users:
     index:
