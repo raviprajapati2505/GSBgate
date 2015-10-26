@@ -33,7 +33,7 @@
             <span class="col-md-4">
                 <!-- if can? :create, CertificationPath %-->
                 <% if current_user.system_admin? || current_user.project_manager?(project) %>
-                    <%= button_to('Apply', apply_certification_path_path(@project, certificate), {remote: true, class: 'btn btn-primary'}) %>
+                    <%= link_to('Apply', apply_certification_path_path(@project, certificate), {action: :post, remote: true, class: 'btn btn-primary'}) %>
                 <% end %>
             </span>
         <% else %>
