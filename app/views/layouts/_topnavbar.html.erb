@@ -15,7 +15,7 @@
             <li class="<%= 'active' if (controller_name == 'tasks') %>">
                 <% task_count = TaskService::count_tasks(user: current_user) %>
                 <%= link_to tasks_path do %>
-                    <i class="fa fa-lg fa-tasks"></i> <span class="nav-label">My tasks<% if task_count > 0 %><span class="badge"><%= task_count %></span><% end %></span>
+                    <i class="fa fa-lg fa-tasks"></i> <span class="nav-label">My tasks<!-- if task_count > 0 %--><span class="badge task-counter" data-user="<%= current_user.id %>"><%= task_count %></span><!-- end %--></span>
                 <% end %>
             </li>
             <li class="<%= 'active' if (controller_name == 'audit_logs') %>">
