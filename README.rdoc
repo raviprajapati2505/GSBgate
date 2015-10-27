@@ -57,6 +57,7 @@ svn://svnext.vito.be/ENE/TEM/EMIS/GORD-GSAS/trunk/GSASServices/GSASServices/Docs
    source /etc/profile.d/rbenv.sh
    cd /var/gord-gsas
    RAILS_ENV=production bundle exec rake gsas:create_duration_task
+   RAILS_ENV=production bundle exec rake gsas:create_overdue_task
 9. $> sudo cron -e
 10. add following line to crontab :
     0 1 * * * /home/jenkins/generate_tasks.sh
