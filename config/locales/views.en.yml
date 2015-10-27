@@ -121,6 +121,8 @@ en:
       description_31: "Allocate appealed criteria requirements to project team members."
       description_32: "Provide location plan, site plan, design brief and project narrative."
       description_33: "Duration of certification path is exceeded."
+      description_34: "Task is overdue."
+      description_35: "Task is overdue."
       tooltip_due_date: "Task is overdue"
   users:
     index:

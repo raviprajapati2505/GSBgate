@@ -26,6 +26,8 @@ module Taskable
   PROJ_MNGR_ASSIGN_AFTER_APPEAL = 31
   PROJ_MNGR_GEN = 32
   SYS_ADMIN_DURATION = 33
+  PROJ_MNGR_OVERDUE = 34
+  CERT_MNGR_OVERDUE = 35
 
   included do
     after_create :after_create

@@ -33,13 +33,16 @@ namespace :gsas do
   desc "Create a task for the system admin for every certification path with maximum duration exceeded"
   task :create_duration_task, [] => :environment do |t, args|
 
-    Rails.logger.info 'Start creating duration tasks...'
+    Rails.logger.info 'Start creating tasks for certification paths with maximum duration exceeded...'
 
     certification_path_count = 0
     page = 0
     begin
       page += 1
-      certification_paths = CertificationPath.where('(started_at + interval \'1\' year * duration) < ?', DateTime.now).paginate page: page, per_page: PAGE_SIZE
+      certification_paths = CertificationPath
+                                .where.not(certification_path_status_id: [CertificationPathStatus::CERTIFIED, CertificationPathStatus::NOT_CERTIFIED])
+                                .where('(started_at + interval \'1\' year * duration) < ?', DateTime.now)
+                                .paginate page: page, per_page: PAGE_SIZE
       certification_paths.each do |certification_path|
         CertificationPathTask.create(task_description_id: Taskable::SYS_ADMIN_DURATION,
                                      application_role: User.roles[:system_admin],
@@ -50,6 +53,53 @@ namespace :gsas do
     end while certification_paths.size == PAGE_SIZE
 
     Rails.logger.info "Found #{ActionController::Base.helpers.pluralize(certification_path_count, 'certification path')} with maximum duration exceeded."
+  end
+
+  desc "Create a task for the project/certifier manager for every overdue task"
+  task :create_overdue_task, [] => :environment do |t, args|
+
+    Rails.logger.info 'Start creating tasks for overdue tasks...'
+
+    task_count = 0
+    page = 0
+    begin
+      page += 1
+      requirements = RequirementDatum.joins(scheme_mix_criteria: [scheme_mix: [:certification_path]])
+                         .where(certification_paths: {certification_path_status_id: [CertificationPathStatus::SUBMITTING,
+                                                                                    CertificationPathStatus::SUBMITTING_AFTER_SCREENING,
+                                                                                    CertificationPathStatus::SUBMITTING_PCR,
+                                                                                    CertificationPathStatus::SUBMITTING_AFTER_APPEAL]})
+                         .where(status: RequirementDatum.statuses[:required])
+                         .where('requirement_data.due_date < ?', Date.current)
+                         .paginate page: page, per_page: PAGE_SIZE
+      requirements.each do |requirement|
+        RequirementDatumTask.create(task_description_id: Taskable::PROJ_MNGR_OVERDUE,
+                                    project_role: ProjectsUser.roles[:project_manager],
+                                    project: requirement.scheme_mix_criteria.first.scheme_mix.certification_path.project,
+                                    requirement_datum: requirement)
+      end
+      task_count += requirements.size
+    end while requirements.size == PAGE_SIZE
+
+    page = 0
+    begin
+      page += 1
+      criteria = SchemeMixCriterion.joins(scheme_mix: [:certification_path])
+                     .where(certification_paths: {certification_path_status_id: [CertificationPathStatus::VERIFYING,
+                                                                                CertificationPathStatus::VERIFYING_AFTER_APPEAL]})
+                     .where(status: [SchemeMixCriterion.statuses[:verifying], SchemeMixCriterion.statuses[:verifying_after_appeal]])
+                     .where('due_date < ?', Date.current)
+                     .paginate page: page, per_page: PAGE_SIZE
+      criteria.each do |criterion|
+        SchemeMixCriterionTask.create(task_description_id: Taskable::CERT_MNGR_OVERDUE,
+                                      project_role: ProjectsUser.roles[:certifier_manager],
+                                      project: criterion.scheme_mix.certification_path.project,
+                                      scheme_mix_criterion: criterion)
+      end
+      task_count += criteria.size
+    end while criteria.size == PAGE_SIZE
+
+    Rails.logger.info "Found #{ActionController::Base.helpers.pluralize(task_count, 'task')} which are overdue."
   end
 
 end
