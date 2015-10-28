@@ -21,9 +21,9 @@ class SchemeMixCriterion < ActiveRecord::Base
   validates :submitted_score, numericality: {only_integer: true, greater_than_or_equal_to: -1, less_than_or_equal_to: 3}, allow_nil: true
   validates :achieved_score, numericality: {only_integer: true, greater_than_or_equal_to: -1, less_than_or_equal_to: 3}, allow_nil: true
 
-  scope :order_by_code, -> {
+  default_scope {
     joins(:scheme_criterion)
-        .reorder('scheme_criteria.code')
+        .order('scheme_criteria.number')
   }
 
   scope :assigned_to_user, ->(user) {
