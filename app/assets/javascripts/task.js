@@ -24,9 +24,11 @@ function refreshTaskCount() {
                 datatype: 'json',
                 context: this
             }).done(function (count) {
-                if (!isNaN(count)) {
+                if (!isNaN(count) && (count > 0)) {
                     $(this).text(count.toString());
+                    $(this).removeClass('hidden');
                 } else {
+                    $(this).addClass('hidden');
                     $(this).text('0');
                 }
             });

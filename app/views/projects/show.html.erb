@@ -150,7 +150,7 @@
                                 </td>
                                 <td>
                                     <% unless projects_user.enterprise_account? %>
-                                        <span class="badge task-counter" data-user="<%= user.id %>" data-project="<%= @project.id %>"><%= TaskService::count_tasks(user: user, project_id: @project.id) %></span>
+                                        <span class="badge"><%= TaskService::count_tasks(user: user, project_id: @project.id) %></span>
                                     <% else %>-
                                     <% end %>
                                 </td>
@@ -190,7 +190,7 @@
                                 <td><%= link_to(certifier.email, project_user_path(@project, ProjectsUser.find_by(user: certifier, project: @project))) %></td>
                                 <td><%= projects_user.role.humanize %></td>
                                 <td>
-                                    <span class="badge task-counter" data-user="<%= certifier.id %>" data-project="<%= @project.id %>"><%= TaskService::count_tasks(user: certifier, project_id: @project.id) %></span>
+                                    <span class="badge"><%= TaskService::count_tasks(user: certifier, project_id: @project.id) %></span>
                                 </td>
                             </tr>
                         <% end %>
