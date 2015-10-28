@@ -368,6 +368,7 @@ module Taskable
   def handle_updated_scheme_mix_criterion
     handle_criterion_status_changed
     handle_criterion_assignment_changed
+    handle_criterion_due_date_changed
   end
 
   def handle_criterion_status_changed
@@ -421,6 +422,10 @@ module Taskable
           end
           # Destroy certifier member tasks to verify criterion
           SchemeMixCriterionTask.delete_all(task_description_id: CERT_MEM_VERIFY, scheme_mix_criterion: self)
+          if !self.due_date.blank? && self.due_date < Date.current
+            # Destroy certifier manager tasks to follow up overdue tasks
+            SchemeMixCriterionTask.delete_all(task_description_id: CERT_MNGR_OVERDUE, scheme_mix_criterion: self)
+          end
       end
     end
   end
@@ -461,9 +466,19 @@ module Taskable
     end
   end
 
+  def handle_criterion_due_date_changed
+    if self.due_date_changed?
+      if self.due_date_was < Date.current && (self.due_date.blank? || self.due_date > Date.current)
+        # Destroy certifier manager tasks to follow up overdue tasks
+        SchemeMixCriterionTask.delete_all(task_description_id: CERT_MNGR_OVERDUE, scheme_mix_criterion: self)
+      end
+    end
+  end
+
   def handle_updated_requirement_datum
     handle_requirement_status_changed
     handle_requirement_assignment_changed
+    handle_requirement_due_date_changed
   end
 
   def handle_requirement_status_changed
@@ -508,7 +523,7 @@ module Taskable
           SchemeMixCriterionTask.delete_all(task_description_id: PROJ_MNGR_CRIT_APPROVE,
                                             project_role: ProjectsUser.roles[:project_manager],
                                             project: self.scheme_mix_criteria.first.scheme_mix.certification_path.project,
-                                            requirement_datum_id: self.id)
+                                            scheme_mix_criterion: self.scheme_mix_criteria.first)
         when RequirementDatum.statuses[:provided], RequirementDatum.statuses[:not_required]
           # Check if criterion with status 'submitting'/'submitting after appeal' has no linked requirements in status 'required'
           if SchemeMixCriterion.joins(:scheme_mix_criteria_requirement_data)
@@ -526,6 +541,10 @@ module Taskable
           RequirementDatumTask.delete_all(task_description_id: PROJ_MEM_REQ, requirement_datum_id: self.id)
           if self.scheme_mix_criteria.first.scheme_mix.certification_path.requirement_data.unassigned.where(status: RequirementDatum.statuses[:required]).count.zero?
             CertificationPathTask.delete_all(task_description_id: [PROJ_MNGR_ASSIGN, PROJ_MNGR_ASSIGN_AFTER_APPEAL], certification_path: self.scheme_mix_criteria.first.scheme_mix.certification_path)
+          end
+          if !self.due_date.blank? && self.due_date < Date.current
+            # Destroy project manager tasks to follow up overdue tasks
+            RequirementDatumTask.delete_all(task_description_id: PROJ_MNGR_OVERDUE, requirement_datum: self)
           end
       end
     end
@@ -581,6 +600,15 @@ module Taskable
         if self.scheme_mix_criteria.first.scheme_mix.certification_path.requirement_data.unassigned.where(status: RequirementDatum.statuses[:required]).count.zero?
           CertificationPathTask.delete_all(task_description_id: [PROJ_MNGR_ASSIGN, PROJ_MNGR_ASSIGN_AFTER_APPEAL], certification_path: self.scheme_mix_criteria.first.scheme_mix.certification_path)
         end
+      end
+    end
+  end
+
+  def handle_requirement_due_date_changed
+    if self.due_date_changed?
+      if self.due_date_was < Date.current && (self.due_date.blank? || self.due_date > Date.current)
+        # Destroy project manager tasks to follow up overdue tasks
+        RequirementDatumTask.delete_all(task_description_id: PROJ_MNGR_OVERDUE, requirement_datum: self)
       end
     end
   end
