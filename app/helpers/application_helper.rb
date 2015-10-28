@@ -149,4 +149,16 @@ module ApplicationHelper
 
     return breadcrumbs
   end
+
+  def scores_legend
+    legend = <<END
+<ul class="list-unstyled list-inline">
+  <li><i class="fa fa-large fa-square progress-bar-max"></i> Max. Attainable score</li>
+  <li><i class="fa fa-large fa-square progress-bar-targeted"></i> Targeted score</li>
+  <li><i class="fa fa-large fa-square progress-bar-submitted"></i> Submitted score</li>
+  <li><i class="fa fa-large fa-square progress-bar-achieved"></i> Achieved score</li>
+</ul>
+END
+    legend.html_safe
+  end
 end
