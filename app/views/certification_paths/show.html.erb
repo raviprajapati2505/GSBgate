@@ -153,7 +153,7 @@
                             <i class="fa fa-lg fa-th-list" style="padding-right: 10px;"></i>Allocate project team
                             responsibility
                         </button>
-                        <%= render 'allocate_project_team_responsibility', project: @project, certification_path: @certification_path %>
+                        <%= render 'edit_project_team_responsibility', project: @project, certification_path: @certification_path %>
                     <% end %>
                     <% if (@certification_path.in_verification? && can?(:allocate_certifier_team_responsibility, @certification_path)) %>
                         <button type="button" class="btn btn-white" data-toggle="modal" data-target="#allocateCertifierTeamResponsibilityModal">

@@ -163,8 +163,8 @@
                                             %>
                                             <% @scheme_mix.scheme_mix_criteria.for_category(category).each_with_index do |scheme_mix_criterion, j| %>
                                                 <tr>
-                                                    <td><%= scheme_mix_criterion.scheme_criterion.scheme_category.code %></td>
-                                                    <td><%= link_to(scheme_mix_criterion.scheme_criterion.name, project_certification_path_scheme_mix_scheme_mix_criterion_path(@certification_path.project, @certification_path, @scheme_mix, scheme_mix_criterion)) %></td>
+                                                    <td><%= scheme_mix_criterion.code %></td>
+                                                    <td><%= link_to(scheme_mix_criterion.name, project_certification_path_scheme_mix_scheme_mix_criterion_path(@certification_path.project, @certification_path, @scheme_mix, scheme_mix_criterion)) %></td>
                                                     <td><%= scheme_mix_criterion.status.humanize %></td>
                                                     <td>
                                                         <%= scheme_mix_criterion.scheme_criterion.weight %> %
