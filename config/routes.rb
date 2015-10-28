@@ -21,8 +21,6 @@ Rails.application.routes.draw do
     resources :certification_paths, except: [ :index, :edit, :destroy, :update], path: 'certificates' do
       collection do
         get 'list'
-        put 'allocate_project_team_responsibility'
-        put 'allocate_certifier_team_responsibility'
       end
       member do
         get 'download_certificate_report' => 'reports#download_certificate', as: 'download_certificate_report'
@@ -32,6 +30,8 @@ Rails.application.routes.draw do
         put 'update_status'
         put 'apply_for_pcr'
         put 'approve_pcr_payment'
+        put 'allocate_project_team_responsibility', path: 'allocate-project-team-responsibility'
+        put 'allocate_certifier_team_responsibility', path: 'allocate-certifier-team-responsibility'
       end
       resources :documents, only: [ :create, :show ], path: 'document'
       resources :scheme_mixes, only: [ :show ], path: 'schemes' do
