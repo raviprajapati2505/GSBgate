@@ -1,6 +1,6 @@
-<div class="modal fade allocate-responsibility-modal" id="allocateProjectTeamResponsibilityModal">
+<div class="modal fade allocate-responsibility-modal" id="allocateCertifierTeamResponsibilityModal">
     <div class="modal-dialog modal-lg">
-        <%= bootstrap_form_for([project, certification_path, scheme_mix], url: allocate_project_team_responsibility_path, method: 'put') do |f| %>
+        <%= bootstrap_form_for([project, certification_path], url: allocate_certifier_team_responsibility_project_certification_paths_path, method: 'put') do |f| %>
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" title="<%= t('.btn_close') %>" data-toggle="tooltip">
@@ -10,14 +10,14 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-7">
                             <div class="form-group">
-                                <%= label_tag 'user_id', 'Allocate the selected requirements to', class: 'control-label' %>
-                                <% users = User.authorized_for_project(@project).with_assessor_project_role %>
-                                <%= select_tag 'user_id', options_for_select(users.map {|k| [k.email, k.id]}), {include_blank: '- Not allocated -', class: 'form-control'} %>
+                                <%= label_tag 'certifier_id', 'Allocate the selected criteria to', class: 'control-label' %>
+                                <% certifiers = User.authorized_for_project(@project).with_certifier_project_role %>
+                                <%= select_tag 'certifier_id', options_for_select(certifiers.map {|k| [k.email, k.id]}), {include_blank: '- Not allocated -', class: 'form-control'} %>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-5">
                             <div class="form-group">
                                 <%= label_tag 'due_date', 'Due date', class: 'control-label' %>
                                 <div class="input-group">
@@ -26,30 +26,25 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <%= label_tag 'status', 'Status', class: 'control-label' %>
-                                <%= select_tag 'status', options_for_select(RequirementDatum.statuses.keys.map { |k| [k.humanize, k]}), {class: 'form-control'} %>
-                            </div>
-                        </div>
                     </div>
                     <table class="table table-bordered">
-                        <% scheme_mix.scheme_categories.uniq.each do |category| %>
-                            <% scheme_mix.scheme_mix_criteria.for_category(category).each do |scheme_mix_criterion| %>
+                        <% certification_path.scheme_mixes.uniq.each do |scheme_mix| %>
+                            <tr><th colspan="5"><%= scheme_mix.name %></th></tr>
+                            <% scheme_mix.scheme_categories.uniq.each do |category| %>
                                 <tr>
-                                    <th><%= check_box_tag 'scheme_mix_criteria[]', scheme_mix_criterion.id, false, class: 'checkbox_parent' %></th>
-                                    <th><%= scheme_mix_criterion.scheme_criterion.full_name %></th>
+                                    <th><%= check_box_tag 'categories[]', category.id, false, class: 'checkbox_parent' %></th>
+                                    <th><%= category.name %></th>
                                     <th>Allocated&nbsp;to</th>
                                     <th>Due&nbsp;date</th>
                                     <th>Status</th>
                                 </tr>
-                                <% scheme_mix_criterion.requirement_data.each do |requirement_datum| %>
+                                <% scheme_mix.scheme_mix_criteria.for_category(category).each do |scheme_mix_criterion| %>
                                     <tr>
-                                        <td><%= check_box_tag 'requirement_data[]', requirement_datum.id, false, class: "checkbox_child_#{scheme_mix_criterion.id}" %></td>
-                                        <td><%= requirement_datum.requirement.name %></td>
-                                        <td><%= requirement_datum.user.email if requirement_datum.user %></td>
-                                        <td><%= l(requirement_datum.due_date, format: :short) if requirement_datum.due_date %></td>
-                                        <td><%= requirement_datum.status.humanize.gsub(' ', '&nbsp;').html_safe if requirement_datum.status %></td>
+                                        <td><%= check_box_tag 'scheme_mix_criteria[]', scheme_mix_criterion.id, false, class: "checkbox_child_#{category.id}" %></td>
+                                        <td><%= scheme_mix_criterion.scheme_criterion.full_name %></td>
+                                        <td><%= scheme_mix_criterion.certifier.email if scheme_mix_criterion.certifier %></td>
+                                        <td><%= l(scheme_mix_criterion.due_date, format: :short) if scheme_mix_criterion.due_date %></td>
+                                        <td><%= scheme_mix_criterion.status.humanize.gsub(' ', '&nbsp;').html_safe if scheme_mix_criterion.status %></td>
                                     </tr>
                                 <% end %>
                             <% end %>

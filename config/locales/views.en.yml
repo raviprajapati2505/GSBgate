@@ -24,6 +24,16 @@ en:
       btn_save: "Save"
     new_operations:
       btn_save: "Save"
+    allocate_project_team_responsibility:
+      btn_cancel: "Cancel"
+      btn_close: "Close"
+      btn_save: "Save"
+      modal_title: "Allocate project team responsibility"
+    allocate_certifier_team_responsibility:
+      btn_cancel: "Cancel"
+      btn_close: "Close"
+      btn_save: "Save"
+      modal_title: "Allocate certifier team responsibility"
   projects:
     index:
       action_team_title: "Team"
@@ -61,17 +71,6 @@ en:
   scheme_criteria:
     show:
       tooltip_sortable: "You can drag and drop the panels below to re-order their appearance."
-  scheme_mixes:
-      allocate_project_team_responsibility:
-        btn_cancel: "Cancel"
-        btn_close: "Close"
-        btn_save: "Save"
-        modal_title: "Allocate project team responsibility"
-      allocate_certifier_team_responsibility:
-        btn_cancel: "Cancel"
-        btn_close: "Close"
-        btn_save: "Save"
-        modal_title: "Allocate certifier team responsibility"
   scheme_mix_criteria:
     edit_status:
       btn_cancel: "Cancel"

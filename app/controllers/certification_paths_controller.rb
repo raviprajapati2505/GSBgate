@@ -159,6 +159,81 @@ class CertificationPathsController < AuthenticatedController
     render json: {total_count: @project.certification_paths.count, items: @project.certification_paths_optionlist}
   end
 
+  def allocate_project_team_responsibility
+    if params.has_key?(:requirement_data)
+      # Format the user id
+      if params[:user_id].empty?
+        user = nil
+      else
+        user = User.find(params[:user_id])
+      end
+
+      # Format the due date
+      if params[:due_date].empty?
+        due_date = nil
+      else
+        due_date = Date.strptime(params[:due_date], t('date.formats.short'))
+      end
+
+      # Format the status
+      if params[:status].empty?
+        status = nil
+      else
+        status = params[:status]
+      end
+
+      # Load the RequirementDatum models
+      requirement_data = RequirementDatum.find(params[:requirement_data])
+
+      # Update the RequirementDatum models
+      CertificationPath.transaction do
+        requirement_data.each do |requirement_datum|
+          requirement_datum.update!(user: user, due_date: due_date, status: status)
+        end
+      end
+
+      flash[:notice] = 'The selected requirements were successfully updated.'
+    else
+      flash[:alert] = 'No requirements were selected.'
+    end
+
+    redirect_to :back
+  end
+
+  def allocate_certifier_team_responsibility
+    if params.has_key?(:scheme_mix_criteria)
+      # Format the certifier id
+      if params[:certifier_id].empty?
+        certifier = nil
+      else
+        certifier = User.find(params[:certifier_id])
+      end
+
+      # Format the due date
+      if params[:due_date].empty?
+        due_date = nil
+      else
+        due_date = Date.strptime(params[:due_date], t('date.formats.short'))
+      end
+
+      # Load the SchemeMixCriteria models
+      scheme_mix_criteria = SchemeMixCriterion.find(params[:scheme_mix_criteria])
+
+      # Update the SchemeMixCriteria models
+      CertificationPath.transaction do
+        scheme_mix_criteria.each do |scheme_mix_criterion|
+          scheme_mix_criterion.update!(certifier: certifier, due_date: due_date)
+        end
+      end
+
+      flash[:notice] = 'The selected criteria were successfully updated.'
+    else
+      flash[:alert] = 'No criteria were selected.'
+    end
+
+    redirect_to :back
+  end
+
   private
 
   def set_controller_model

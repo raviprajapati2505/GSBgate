@@ -145,6 +145,24 @@
             <div class="ibox-content">
                 <%= scores_legend %>
                 <%= render 'scheme_mixes/overview', certification_path: @certification_path %>
+                <% if (@certification_path.in_submission? && can?(:allocate_project_team_responsibility, @certification_path)) ||
+                        (@certification_path.in_verification? && can?(:allocate_certifier_team_responsibility, @certification_path)) %>
+                    <div class="hr-line-dashed"></div>
+                    <% if (@certification_path.in_submission? && can?(:allocate_project_team_responsibility, @certification_path)) %>
+                        <button type="button" class="btn btn-white" data-toggle="modal" data-target="#allocateProjectTeamResponsibilityModal">
+                            <i class="fa fa-lg fa-th-list" style="padding-right: 10px;"></i>Allocate project team
+                            responsibility
+                        </button>
+                        <%= render 'allocate_project_team_responsibility', project: @project, certification_path: @certification_path %>
+                    <% end %>
+                    <% if (@certification_path.in_verification? && can?(:allocate_certifier_team_responsibility, @certification_path)) %>
+                        <button type="button" class="btn btn-white" data-toggle="modal" data-target="#allocateCertifierTeamResponsibilityModal">
+                            <i class="fa fa-lg fa-th-list" style="padding-right: 10px;"></i>Allocate certifier team
+                            responsibility
+                        </button>
+                        <%= render 'allocate_certifier_team_responsibility', project: @project, certification_path: @certification_path %>
+                    <% end %>
+                <% end %>
             </div>
         </div>
         <%= render 'tasks/tasks' %>

@@ -21,6 +21,8 @@ Rails.application.routes.draw do
     resources :certification_paths, except: [ :index, :edit, :destroy, :update], path: 'certificates' do
       collection do
         get 'list'
+        put 'allocate_project_team_responsibility'
+        put 'allocate_certifier_team_responsibility'
       end
       member do
         get 'download_certificate_report' => 'reports#download_certificate', as: 'download_certificate_report'
@@ -64,8 +66,6 @@ Rails.application.routes.draw do
   get 'tasks/user/:user_id' => 'tasks#count', as: 'count_tasks'
   match 'projects/:project_id/certificates/apply/:certificate_id' => 'certification_paths#apply', as: 'apply_certification_path', via: [:get, :post]
   get 'projects/:project_id/certificates/:id/archive' => 'certification_paths#download_archive', as: 'archive_project_certification_path'
-  put 'projects/:project_id/certificates/:certification_path_id/schemes/:id/allocate-project-team-responsibility' => 'scheme_mixes#allocate_project_team_responsibility', as: 'allocate_project_team_responsibility'
-  put 'projects/:project_id/certificates/:certification_path_id/schemes/:id/allocate-certifier-team-responsibility' => 'scheme_mixes#allocate_certifier_team_responsibility', as: 'allocate_certifier_team_responsibility'
   get 'projects/:project_id/users' => 'projects_users#list_unauthorized_users', as: 'list_unauthorized_users'
   get 'projects/users/:user_id' => 'projects_users#list_users_sharing_projects', as: 'list_users_sharing_projects'
   put '/projects/:project_id/certificates/:certification_path_id/schemes/:scheme_mix_id/criteria/:scheme_mix_criterion_id/requirement/:id/refuse' => 'requirement_data#refuse', as: 'refuse_requirement_datum'
