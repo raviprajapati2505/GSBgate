@@ -53,6 +53,10 @@ class SchemeMixCriterion < ActiveRecord::Base
     self.scheme_criterion.full_name
   end
 
+  def code
+    self.scheme_criterion.code
+  end
+
   def has_required_requirements?
     requirement_data.each do |requirement|
       if requirement.required?
