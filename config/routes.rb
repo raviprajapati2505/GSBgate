@@ -30,8 +30,8 @@ Rails.application.routes.draw do
         get 'download_scores_report' => 'reports#download_certificate_scores', as: 'download_scores_report'
         get 'edit_status'
         put 'update_status'
-        post 'apply_for_pcr'
-        post 'approve_pcr_payment'
+        put 'apply_for_pcr'
+        put 'approve_pcr_payment'
       end
       resources :documents, only: [ :create, :show ], path: 'document'
       resources :scheme_mixes, only: [ :show ], path: 'schemes' do
