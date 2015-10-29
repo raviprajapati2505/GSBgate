@@ -61,7 +61,7 @@ Congratulations once again for partaking in this noble endeavor, and together le
   end
 
   def draw_heading_date
-    text 'Date: ' + @certification_path.certified_at, :size => 9 if @certification_path.certified_at.present?
+    text 'Date: ' + @certification_path.to_s, :size => 9 if @certification_path.certified_at.present?
     text 'Ref: ' + @certification_path.project.code, :size => 9
   end
 
