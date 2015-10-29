@@ -80,15 +80,15 @@ class CertificationPath < ActiveRecord::Base
   end
 
   def targeted_star_rating
-    CertificationPath.star_rating_for_score(targeted_score)
+    CertificationPath.star_rating_for_score(scores_in_certificate_points[:targeted])
   end
 
   def submitted_star_rating
-    CertificationPath.star_rating_for_score(submitted_score)
+    CertificationPath.star_rating_for_score(scores_in_certificate_points[:submitted])
   end
 
   def achieved_star_rating
-    CertificationPath.star_rating_for_score(achieved_score)
+    CertificationPath.star_rating_for_score(scores_in_certificate_points[:achieved])
   end
 
   def total_weight
