@@ -119,9 +119,9 @@ Congratulations once again for partaking in this noble endeavor, and together le
     scheme_mix.scheme_categories.each do |category|
       data.append([category.code, category.name, scheme_mix.scores_in_certificate_points_for_category(category)[:achieved]])
     end
-
-    data.append(['', 'Total score', scheme_mix.achieved_score])
-    data.append(['', 'Level achieved', CertificationPath.star_rating_for_score(scheme_mix.scores_in_certificate_points[:achieved])])
+    achieved_score = scheme_mix.scores_in_certificate_points[:achieved]
+    data.append(['', 'Total score', achieved_score])
+    data.append(['', 'Level achieved', CertificationPath.star_rating_for_score(achieved_score)])
     # render table
     table(data) do
       rows(0).background_color = '4A452A'
