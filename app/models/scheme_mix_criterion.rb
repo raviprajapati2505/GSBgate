@@ -21,11 +21,6 @@ class SchemeMixCriterion < ActiveRecord::Base
   validates :submitted_score, numericality: {only_integer: true, greater_than_or_equal_to: -1, less_than_or_equal_to: 3}, allow_nil: true
   validates :achieved_score, numericality: {only_integer: true, greater_than_or_equal_to: -1, less_than_or_equal_to: 3}, allow_nil: true
 
-  default_scope {
-    joins(:scheme_criterion)
-        .order('scheme_criteria.number')
-  }
-
   scope :assigned_to_user, ->(user) {
     joins(:requirement_data).where('scheme_mix_criteria.certifier_id = ? or requirement_data.user_id = ?', user.id, user.id)
   }
