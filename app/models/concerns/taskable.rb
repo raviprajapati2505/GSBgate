@@ -468,7 +468,7 @@ module Taskable
 
   def handle_criterion_due_date_changed
     if self.due_date_changed?
-      if self.due_date_was < Date.current && (self.due_date.blank? || self.due_date > Date.current)
+      if (self.due_date_was.present? && (self.due_date_was < Date.current)) && (self.due_date.blank? || (self.due_date > Date.current))
         # Destroy certifier manager tasks to follow up overdue tasks
         SchemeMixCriterionTask.delete_all(task_description_id: CERT_MNGR_OVERDUE, scheme_mix_criterion: self)
       end
@@ -606,7 +606,7 @@ module Taskable
 
   def handle_requirement_due_date_changed
     if self.due_date_changed?
-      if self.due_date_was < Date.current && (self.due_date.blank? || self.due_date > Date.current)
+      if (self.due_date_was.present? && (self.due_date_was < Date.current)) && (self.due_date.blank? || (self.due_date > Date.current))
         # Destroy project manager tasks to follow up overdue tasks
         RequirementDatumTask.delete_all(task_description_id: PROJ_MNGR_OVERDUE, requirement_datum: self)
       end
