@@ -17,4 +17,21 @@ class ProjectsUser < ActiveRecord::Base
   scope :for_user, ->(user) {
     where(user: user)
   }
+
+  scope :assessors, -> {
+    where(role: [ProjectsUser.roles[:project_team_member], ProjectsUser.roles[:project_manager], ProjectsUser.roles[:enterprise_account]])
+  }
+
+  scope :assessor_managers, -> {
+    where(role: ProjectsUser.roles[:project_manager])
+  }
+
+  scope :certifiers, -> {
+    where(role: [ProjectsUser.roles[:certifier], ProjectsUser.roles[:certifier_manager]])
+  }
+
+  scope :certifier_managers, -> {
+    where(role: ProjectsUser.roles[:certifier_manager])
+  }
+
 end

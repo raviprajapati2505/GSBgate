@@ -6,9 +6,6 @@ class ProjectsController < AuthenticatedController
   # GET /projects.json
   def index
     @page_title = 'Projects'
-    unless current_user.system_admin? || current_user.gord_manager? || current_user.gord_top_manager?
-      @projects = @projects.for_user(current_user)
-    end
   end
 
   # GET /projects/1
@@ -25,12 +22,14 @@ class ProjectsController < AuthenticatedController
   end
 
   def show_tools
+    authorize! :show_tools, @project
   end
 
   # GET /projects/new
   def new
     @page_title = 'New project'
     @project = Project.new
+    @project.owner = current_user
     @certificates = Certificate.all
   end
 
@@ -80,18 +79,22 @@ class ProjectsController < AuthenticatedController
   end
 
   def download_location_plan
+    authorize! :download_location_plan, @project
     send_file @project.location_plan_file.path
   end
 
   def download_site_plan
+    authorize! :download_site_plan, @project
     send_file @project.site_plan_file.path
   end
 
   def download_design_brief
+    authorize! :download_design_brief, @project
     send_file @project.design_brief_file.path
   end
 
   def download_project_narrative
+    authorize! :download_project_narrative, @project
     send_file @project.project_narrative_file.path
   end
 

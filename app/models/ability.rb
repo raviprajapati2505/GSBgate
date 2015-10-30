@@ -17,40 +17,53 @@ class Ability
     # See the wiki for details:
     # https://github.com/ryanb/cancan/wiki/Defining-Abilities
 
+    # Note: there is a known issue, that complicates working with enums
+    # https://github.com/CanCanCommunity/cancancan/pull/196
+
     user ||= User.new # guest user (not logged in)
 
     if user.system_admin?
       can :manage, :all
     elsif user.user?
+
       # User controller
       can :show, User
       can :new_member, User, projects: {projects_users: {user_id: user.id, role: ['project_manager', ProjectsUser.roles[:project_manager]]}}
       can :new_member, User, projects: {projects_users: {user_id: user.id, role: ['certifier_manager', ProjectsUser.roles[:certifier_manager]]}}
       can :index_tasks, User, projects: {projects_users: {user_id: user.id}}
+
       # Project controller
-      can :manage, Project, owner_id: user.id
-      # Waiting for https://github.com/CanCanCommunity/cancancan/pull/196
-      can :manage, Project, projects_users: {user_id: user.id, role: ['project_manager', ProjectsUser.roles[:project_manager]]}
+      can :create, Project, {owner_id: user.id}
       can :read, Project, projects_users: {user_id: user.id}
+      can :manage, Project, projects_users: {user_id: user.id, role: ['project_manager', ProjectsUser.roles[:project_manager]]}
+      can :download_location_plan, Project, projects_users: {user_id: user.id}
+      can :download_site_plan, Project, projects_users: {user_id: user.id}
+      can :download_design_brief, Project, projects_users: {user_id: user.id}
+      can :download_project_narrative, Project, projects_users: {user_id: user.id}
+      can :show_tools, Project, projects_users: {user_id: user.id}
+
       # ProjectsUsers controller
-      can :manage, ProjectsUser, role: ['project_team_member', ProjectsUser.roles[:project_team_member], 'project_manager', ProjectsUser.roles[:project_manager], 'enterprise_account', ProjectsUser.roles[:enterprise_account]], project: {projects_users: {user_id: user.id, role: ['project_manager', ProjectsUser.roles[:project_manager]]}}
-      can :manage, ProjectsUser, role: ['certifier', ProjectsUser.roles[:certifier], 'certifier_manager', ProjectsUser.roles[:certifier_manager]], project: {projects_users: {user_id: user.id, role: ['certifier_manager', ProjectsUser.roles[:certifier_manager]]}}
       can :read, ProjectsUser, project: {projects_users: {user_id: user.id}}
       can :create, ProjectsUser, project: {projects_users: {user_id: user.id, role: ['project_manager', ProjectsUser.roles[:project_manager], 'certifier_manager', ProjectsUser.roles[:certifier_manager]]}}
+      can :manage, ProjectsUser, role: ['project_team_member', ProjectsUser.roles[:project_team_member], 'project_manager', ProjectsUser.roles[:project_manager], 'enterprise_account', ProjectsUser.roles[:enterprise_account]], project: {projects_users: {user_id: user.id, role: ['project_manager', ProjectsUser.roles[:project_manager]]}}
+      can :manage, ProjectsUser, role: ['certifier', ProjectsUser.roles[:certifier], 'certifier_manager', ProjectsUser.roles[:certifier_manager]], project: {projects_users: {user_id: user.id, role: ['certifier_manager', ProjectsUser.roles[:certifier_manager]]}}
       cannot :destroy, ProjectsUser do |projects_user|
         projects_user.project.owner_id == projects_user.user_id
       end
+
       # CertificationPath controller
-      can :manage, CertificationPath, project: {projects_users: {user_id: user.id, role: ['project_manager', ProjectsUser.roles[:project_manager]]}}
+      can :apply, CertificationPath, project: {projects_users: {user_id: user.id, role: ['project_manager', ProjectsUser.roles[:project_manager]]}}
+      can :read, CertificationPath, project: {projects_users: {user_id: user.id}}
       can :update_pcr, CertificationPath, project: {projects_users: {user_id: user.id, role: ['certifier_manager', ProjectsUser.roles[:certifier_manager]]}}
       can [:edit_status, :update_status], CertificationPath, project: {projects_users: {user_id: user.id, role: ['certifier_manager', ProjectsUser.roles[:certifier_manager]]}}
-      can :read, CertificationPath, project: {projects_users: {user_id: user.id}}
       can :list, CertificationPath, project: {projects_users: {user_id: user.id}}
       can :allocate_certifier_team_responsibility, CertificationPath, project: {projects_users: {user_id: user.id, role: ['certifier_manager', ProjectsUser.roles[:certifier_manager]]}}
       cannot :allocate_certifier_team_responsibility, CertificationPath, project: {projects_users: {user_id: user.id, role: ['project_manager', ProjectsUser.roles[:project_manager]]}}
+
       # SchemeMix controller
       can :read, SchemeMix, certification_path: {project: {projects_users: {user_id: user.id, role: ['project_manager', ProjectsUser.roles[:project_manager]]}}}
       can :read, SchemeMix, certification_path: {project: {projects_users: {user_id: user.id}}}
+
       # SchemeMixCriterion controller
       can :manage, SchemeMixCriterion, scheme_mix: {certification_path: {project: {projects_users: {user_id: user.id, role: ['certifier_manager', ProjectsUser.roles[:certifier_manager]]}}}}
       can :read, SchemeMixCriterion, scheme_mix: {certification_path: {project: {projects_users: {user_id: user.id}}}}
@@ -59,27 +72,33 @@ class Ability
       can :update_scores, SchemeMixCriterion, scheme_mix: {certification_path: {project: {projects_users: {user_id: user.id, role: ['project_manager', ProjectsUser.roles[:project_manager]]}}}}
       can :update_scores, SchemeMixCriterion, requirement_data: {user_id: user.id}
       can :update_scores, SchemeMixCriterion, certifier_id: user.id
+
       # RequirementDatum controller
       can :manage, RequirementDatum, scheme_mix_criteria: {scheme_mix: {certification_path: {project: {projects_users: {user_id: user.id, role: ['project_manager', ProjectsUser.roles[:project_manager]]}}}}}
       can :read, RequirementDatum, scheme_mix_criteria: {scheme_mix: {certification_path: {project: {projects_users: {user_id: user.id}}}}}
       can :update, RequirementDatum, user_id: user.id
       can :refuse, RequirementDatum, user_id: user.id
+
       # Document controller
       can :manage, Document, scheme_mix_criteria: {scheme_mix: {certification_path: {project: {projects_users: {user_id: user.id, role: ['project_manager', ProjectsUser.roles[:project_manager]]}}}}}
       can :manage, Document, scheme_mix_criteria: {scheme_mix: {certification_path: {project: {projects_users: {user_id: user.id, role: ['project_team_member', ProjectsUser.roles[:project_team_member]]}}}}}
       can :read, Document, scheme_mix_criteria: {scheme_mix: {certification_path: {project: {projects_users: {user_id: user.id}}}}}
+
       # SchemeMixCriteriaDocument controller
       can :manage, SchemeMixCriteriaDocument, scheme_mix_criterion: {scheme_mix: {certification_path: {project: {projects_users: {user_id: user.id, role: ['project_manager', ProjectsUser.roles[:project_manager]]}}}}}
       can :new_link, SchemeMixCriteriaDocument, scheme_mix_criterion: {scheme_mix: {certification_path: {project: {projects_users: {user_id: user.id, role: ['project_team_member', ProjectsUser.roles[:project_team_member]]}}}}}
       can :create_link, SchemeMixCriteriaDocument, scheme_mix_criterion: {scheme_mix: {certification_path: {project: {projects_users: {user_id: user.id, role: ['project_team_member', ProjectsUser.roles[:project_team_member]]}}}}}
       can :read, SchemeMixCriteriaDocument, scheme_mix_criterion: {scheme_mix: {certification_path: {project: {projects_users: {user_id: user.id}}}}}
+
       # AuditLog controller
       can :read, AuditLog
-      can :auditable_index, AuditLog
+      can :auditable_index, AuditLog, project: {projects_users: {user_id: user.id}}
       can :auditable_create, AuditLog
+
       # Tasks controller
       can :read, Task
       can :count, Task
+
     elsif user.gord_top_manager?
       # dr. Youssef
       can :manage, :all

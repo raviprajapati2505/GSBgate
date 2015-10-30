@@ -26,9 +26,7 @@
                         <%= project.code %>
                     </td>
                     <td>
-                        <%= link_to project_path(project) do %>
-                            <%= project.name %>
-                        <% end %>
+                        <%= can_link_to(project_path(project), project) { project.name } %>
                     </td>
                     <td>
                         <ul class="list-unstyled">
@@ -66,7 +64,7 @@
                             <% certification_path.scheme_mixes.each do |scheme_mix| %>
                                 <div>
                                     <!--%= link_to project_certification_path_scheme_mix_path(project, certification_path, scheme_mix) do %-->
-                                        <%= scheme_mix.name %>
+                                    <%= scheme_mix.name %>
                                     <!--% end %-->
                                 </div>
                             <% end %>
@@ -87,6 +85,10 @@
             </tbody>
         </table>
         <div class="hr-line-dashed"></div>
-        <%= link_to '<i class="fa fa-lg fa-building-o" style="padding-right: 10px;"></i>New Project'.html_safe, new_project_path, class: 'btn btn-primary' %>
+        <% if can? :create, Project.new(owner_id: current_user.id) %>
+            <%= link_to new_project_path, class: 'btn btn-primary' do %>
+                <%= fa_icon('building-o', 'New Project') %>
+            <% end %>
+        <% end %>
     </div>
 </div>

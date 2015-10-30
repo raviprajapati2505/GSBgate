@@ -1,4 +1,4 @@
-<%= link_to project_certification_path_path(certification_path.project, certification_path) do %>
+<%= can_link_to(project_certification_path_path(certification_path.project, certification_path), certification_path) do %>
     <div>
         <strong><%= certification_path.status %></strong>
         <% if !certification_path.is_activating? || !certification_path.is_completed? %>
@@ -13,5 +13,3 @@
         <%= render 'certification_paths/star_ratings', certification_path: certification_path %>
     </div>
 <% end %>
-
-

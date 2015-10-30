@@ -6,9 +6,9 @@
     <% if certification_path.present? %>
             <div class="row">
                 <div class="col-lg-3 col-sm-6">
-                    <a href="<%= project_certification_path_path(project, certification_path) %>">
-                        <strong><%= certificate.name %></strong>
-                    </a>
+                    <%= can_link_to(project_certification_path_path(project, certification_path), certification_path) do %>
+                        <%= certificate.name %>
+                    <% end %>
                 </div>
                 <div class="col-lg-3 col-sm-6"><%= certification_path.status.humanize %></div>
                 <div class="col-lg-3 col-sm-6">
@@ -17,7 +17,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <% certification_path.scheme_mixes.each do |scheme_mix| %>
                         <div>
-                        <%= link_to project_certification_path_scheme_mix_path(project, certification_path, scheme_mix) do %>
+                        <%= can_link_to(project_certification_path_scheme_mix_path(project, certification_path, scheme_mix), scheme_mix) do %>
                             <%= scheme_mix.name %>
                         <% end %>
                         </div>
@@ -31,8 +31,7 @@
                 Not yet registered
             </span>
             <span class="col-md-4">
-                <!-- if can? :create, CertificationPath %-->
-                <% if current_user.system_admin? || current_user.project_manager?(project) %>
+                <% if can? :apply, @certification_path, :project => @project %>
                     <%= link_to('Apply', apply_certification_path_path(@project, certificate), {action: :post, remote: true, class: 'btn btn-primary'}) %>
                 <% end %>
             </span>

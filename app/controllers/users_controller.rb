@@ -1,9 +1,9 @@
 class UsersController < AuthenticatedController
-  before_action :set_user, only: [:edit, :update, :show]
-  load_and_authorize_resource
+  load_and_authorize_resource :user
+  before_action :set_controller_model, except: [:new, :create, :index]
 
   def index
-    @users = User.all
+    # @users = User.all
   end
 
   def edit
@@ -30,12 +30,12 @@ class UsersController < AuthenticatedController
   end
 
   private
-    def set_user
-      @user = User.find(params[:id])
-      @controller_model = @user
-    end
 
-    def user_params
-      params.require(:user).permit(:email, :role)
-    end
+  def set_controller_model
+    @controller_model = @user
+  end
+
+  def user_params
+    params.require(:user).permit(:email, :role)
+  end
 end

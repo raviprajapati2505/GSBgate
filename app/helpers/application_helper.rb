@@ -20,12 +20,48 @@ module ApplicationHelper
     if title.blank?
       ''
     else
-      ('<span class="tooltip-icon" data-toggle="tooltip" data-placement="top" title="' + title + '"><i class="fa fa-question-circle"></i></span>').html_safe
+      ("<span class=\"tooltip-icon\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"#{title}\">#{fa_icon('question-circle')}</span>").html_safe
     end
   end
 
+  # Wraps the block param, with a link to th given path, if we have read access to the given model
+  # If we do not have read access, just render the block
+  def can_link_to(path, model, options = {})
+    if can? :read, model
+      link_to path, options do
+        if block_given?
+          capture do
+            yield
+          end
+        end
+      end
+    else
+      if block_given?
+        capture do
+          yield
+        end
+      end
+    end
+  end
+
+  def fa_icon(name, text = nil, icon_options = nil)
+    #raise(Exception) if icon_options.present? && !icon_options.is_a?(Hash)
+    options = {title: text, size: 'lg'}
+    options = options.merge(icon_options) if icon_options.present? && icon_options.is_a?(Hash)
+    options = options.merge(text) if icon_options.nil? && text.is_a?(Hash)
+    text_suffix= "&nbsp;&nbsp;&nbsp;#{text}" if text.is_a?(String)
+    html = <<END
+<i class="fa fa-#{name} fa-#{options[:size]} #{options[:class]}" title="#{options[:title]}"></i>#{text_suffix}
+END
+    html.html_safe
+  end
+
   def audit_log_label(auditable)
-    link_to('<span class="label label-lg"><i class="fa fa-lg fa-history"></i></span>'.html_safe, auditable_index_audit_logs_path(auditable.class.name, auditable.id), remote: true, title: 'Click to view the audit log of this resource.', class: 'pull-right')
+    if can?(:read, auditable)
+      link_to(auditable_index_audit_logs_path(auditable.class.name, auditable.id), remote: true, title: 'Click to view the audit log of this resource.', class: 'pull-right') {
+        "<span class=\"label label-lg\">#{fa_icon('history')}</span>".html_safe
+      }
+    end
   end
 
   def round_score(score)
@@ -33,11 +69,11 @@ module ApplicationHelper
   end
 
   def sum_score_hashes(score_hashes)
-    score_hashes.inject(Hash.new()){|total, score| total.merge(score){|k, a, b| a + b}}
+    score_hashes.inject(Hash.new()) { |total, score| total.merge(score) { |k, a, b| a + b } }
   end
 
   def breadcrumbs(model, with_prefix: true)
-    breadcrumbs = { names: [], paths: [] }
+    breadcrumbs = {names: [], paths: []}
 
     case model.class.name
       when Project.name.demodulize
@@ -153,10 +189,10 @@ module ApplicationHelper
   def scores_legend
     legend = <<END
 <ul class="list-unstyled list-inline">
-  <li><i class="fa fa-large fa-square progress-bar-max"></i> Max. Attainable score</li>
-  <li><i class="fa fa-large fa-square progress-bar-targeted"></i> Targeted score</li>
-  <li><i class="fa fa-large fa-square progress-bar-submitted"></i> Submitted score</li>
-  <li><i class="fa fa-large fa-square progress-bar-achieved"></i> Achieved score</li>
+  <li>#{fa_icon('square', 'Max. Attainable score', {class: 'progress-bar-max'})}</li>
+  <li>#{fa_icon('square', 'Targeted score', {class: 'progress-bar-targeted'})}</li>
+  <li>#{fa_icon('square', 'Submitted score', {class: 'progress-bar-submitted'})}</li>
+  <li>#{fa_icon('square', 'Achieved score', {class: 'progress-bar-achieved'})}</li>
 </ul>
 END
     legend.html_safe

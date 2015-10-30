@@ -9,8 +9,5 @@ class ApplicationController < ActionController::Base
   def init
     # Set default page title
     @page_title = 'GSASgate'
-
-    # Set current user
-    User.current = current_user
   end
 end

@@ -59,7 +59,12 @@
                         <th><%= Project.human_attribute_name('location_plan_file') %></th>
                         <td>
                             <% if @project.location_plan_file.present? %>
-                                <%= link_to(raw('<i title="Download ' + Project.human_attribute_name('location_plan_file') + '" class="fa fa-download"></i>'), download_project_location_plan_path(@project.id), class: 'btn btn-xs btn-primary') %> <%= truncate(@project.location_plan_file.file.filename, length: 35) %>
+                                <% if can? :download_location_plan, @project %>
+                                    <%= link_to(download_project_location_plan_path(@project.id), class: 'btn btn-xs btn-primary') do %>
+                                        <%= fa_icon('download', {size: 'sm', title: "Download #{Project.human_attribute_name('location_plan_file')}"}) %>
+                                    <% end %>
+                                <% end %>
+                                <%= truncate(@project.location_plan_file.file.filename, length: 35) %>
                             <% end %>
                         </td>
                     </tr>
@@ -68,7 +73,12 @@
                         <th><%= Project.human_attribute_name('site_plan_file') %></th>
                         <td>
                             <% if @project.site_plan_file.present? %>
-                                <%= link_to(raw('<i title="Download ' + Project.human_attribute_name('site_plan_file') + '" class="fa fa-download"></i>'), download_project_site_plan_path(@project.id), class: 'btn btn-xs btn-primary') %> <%= truncate(@project.site_plan_file.file.filename, length: 35) %>
+                                <% if can? :download_site_plan, @project %>
+                                    <%= link_to(download_project_site_plan_path(@project.id), class: 'btn btn-xs btn-primary') do %>
+                                        <%= fa_icon('download', {size: 'sm', title: "Download #{Project.human_attribute_name('site_plan_file')}"}) %>
+                                    <% end %>
+                                <% end %>
+                                <%= truncate(@project.site_plan_file.file.filename, length: 35) %>
                             <% end %>
                         </td>
                     </tr>
@@ -77,7 +87,12 @@
                         <th><%= Project.human_attribute_name('design_brief_file') %></th>
                         <td>
                             <% if @project.design_brief_file.present? %>
-                                <%= link_to(raw('<i title="Download ' + Project.human_attribute_name('design_brief_file') + '" class="fa fa-download"></i>'), download_project_design_brief_path(@project.id), class: 'btn btn-xs btn-primary') %> <%= truncate(@project.design_brief_file.file.filename, length: 35) %>
+                                <% if can? :download_design_brief, @project %>
+                                    <%= link_to(download_project_design_brief_path(@project.id), class: 'btn btn-xs btn-primary') do %>
+                                        <%= fa_icon('download', {size: 'sm', title: "Download #{Project.human_attribute_name('design_brief_file')}"}) %>
+                                    <% end %>
+                                <% end %>
+                                <%= truncate(@project.design_brief_file.file.filename, length: 35) %>
                             <% end %>
                         </td>
                     </tr>
@@ -87,7 +102,12 @@
                         <th><%= Project.human_attribute_name('project_narrative_file') %></th>
                         <td>
                             <% if @project.project_narrative_file.present? %>
-                                <%= link_to(raw('<i title="Download ' + Project.human_attribute_name('project_narrative_file') + '" class="fa fa-download"></i>'), download_project_narrative_path(@project.id), class: 'btn btn-xs btn-primary') %> <%= truncate(@project.project_narrative_file.file.filename, length: 35) %>
+                                <% if can? :download_project_narrative, @project %>
+                                    <%= link_to(download_project_narrative_path(@project.id), class: 'btn btn-xs btn-primary') do %>
+                                        <%= fa_icon('download', {size: 'sm', title: "Download #{Project.human_attribute_name('project_narrative_file')}"}) %>
+                                    <% end %>
+                                <% end %>
+                                <%= truncate(@project.project_narrative_file.file.filename, length: 35) %>
                             <% end %>
                         </td>
                     </tr>
@@ -98,22 +118,28 @@
                 <div id="project-map" class="map" style="height: 300px;"></div>
                 <% if can? :update, @project %>
                     <div class="hr-line-dashed"></div>
-                    <%= link_to raw('<i title="Edit project" class="fa fa-lg fa-edit" style="padding-right: 10px;"></i>Edit'), edit_project_path(@project), :class => 'btn btn-primary' %>
+                    <%= link_to edit_project_path(@project), :class => 'btn btn-primary' do %>
+                        <%= fa_icon('edit', 'Edit', {title: 'Edit project'}) %>
+                    <% end %>
                 <% end %>
             </div>
         </div>
     </div>
     <div class="col-md-8">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <h5>Project Tools</h5>
+
+        <% if can? :show_tools, @project %>
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Project Tools</h5>
+                </div>
+                <div class="ibox-content">
+                    <%= link_to tools_project_path(@project) do %>
+                        <%= fa_icon('street-view', '3D Visualization') %>
+                    <% end %>
+                </div>
             </div>
-            <div class="ibox-content">
-                <%= link_to tools_project_path(@project) do %>
-                    <i class="fa fa-lg fa-street-view"></i> <span class="nav-label">3D Visualization</span>
-                <% end %>
-            </div>
-        </div>
+        <% end %>
+
         <div class="ibox float-e-margins">
             <div class="ibox-title">
                 <h5>Certificates</h5>
@@ -122,12 +148,13 @@
                 <%= render partial: 'certification_paths/overview', locals: {project: @project} %>
             </div>
         </div>
+
         <div class="ibox float-e-margins">
             <div class="ibox-title">
                 <h5>Project team</h5>
             </div>
             <div class="ibox-content">
-                <% if @project.users.distinct.count.zero? %>
+                <% if @project.projects_users.assessors.distinct.count.zero? %>
                     <p>This project has no team members.</p>
                 <% else %>
                     <table class="table table-striped table-bordered table-hover datatable" cellspacing="0" width="100%">
@@ -139,19 +166,24 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <% @project.users.distinct.each do |user| %>
-                            <% projects_user = user.projects_users.for_project(@project).first %>
+                        <% @project.projects_users.assessors.distinct.each do |assessor| %>
                             <tr>
-                                <td><%= link_to(user.email, project_user_path(@project, ProjectsUser.find_by(user: user, project: @project))) %></td>
                                 <td>
-                                    <%= projects_user.role.humanize %>
-                                    <% if @project.owner == user %>&nbsp;&amp;&nbsp;owner
+                                    <%= can_link_to(project_user_path(@project, assessor), assessor) do %>
+                                        <%= assessor.user.email %>
+                                        <% if @project.owner == assessor.user %>
+                                            <%= fa_icon('home', {title: 'Project owner'}) %>
+                                        <% end %>
                                     <% end %>
                                 </td>
                                 <td>
-                                    <% unless projects_user.enterprise_account? %>
-                                        <span class="badge"><%= TaskService::count_tasks(user: user, project_id: @project.id) %></span>
-                                    <% else %>-
+                                    <%= assessor.role.humanize %>
+                                </td>
+                                <td>
+                                    <% if assessor.enterprise_account? %>
+                                        ---
+                                    <% else %>
+                                        <span class="badge"><%= TaskService::count_tasks(user: assessor.user, project_id: @project.id) %></span>
                                     <% end %>
                                 </td>
                             </tr>
@@ -159,20 +191,21 @@
                         </tbody>
                     </table>
                 <% end %>
-                <% if current_user.system_admin? || current_user.project_manager?(@project) %>
+                <% if can?(:create, ProjectsUser.new(:project_id => @project.id, :role => ProjectsUser.roles[:project_team_member])) or can?(:create, ProjectsUser.new(:project_id => @project.id, :role => ProjectsUser.roles[:project_manager])) or can?(:create, ProjectsUser.new(:project_id => @project.id, :role => ProjectsUser.roles[:enterprise_account])) %>
                     <div class="hr-line-dashed"></div>
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addProjectTeamMemberModal">
-                        <i title="Add team member" class="fa fa-lg fa-user-plus" style="padding-right: 10px;"></i><%= t('.btn_add_project_team_member') %>
+                        <%= fa_icon('user-plus', "#{t('.btn_add_project_team_member')}", {title: 'Add team member'}) %>
                     </button>
                 <% end %>
             </div>
         </div>
+
         <div class="ibox float-e-margins">
             <div class="ibox-title">
                 <h5>Certifier team</h5>
             </div>
             <div class="ibox-content">
-                <% if @project.certifiers.distinct.count.zero? %>
+                <% if @project.projects_users.certifiers.distinct.count.zero? %>
                     <p>This project has no certifiers.</p>
                 <% else %>
                     <table class="table table-striped table-bordered table-hover datatable" cellspacing="0" width="100%">
@@ -184,23 +217,29 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <% @project.certifiers.distinct.each do |certifier| %>
+                        <% @project.projects_users.certifiers.distinct.each do |certifier| %>
                             <tr>
-                                <% projects_user = certifier.projects_users.for_project(@project).first %>
-                                <td><%= link_to(certifier.email, project_user_path(@project, ProjectsUser.find_by(user: certifier, project: @project))) %></td>
-                                <td><%= projects_user.role.humanize %></td>
                                 <td>
-                                    <span class="badge"><%= TaskService::count_tasks(user: certifier, project_id: @project.id) %></span>
+                                    <%= can_link_to(project_user_path(@project, certifier), certifier) do %>
+                                        <%= certifier.user.email %>
+                                    <% end %>
+                                </td>
+                                <td>
+                                    <%= certifier.role.humanize %>
+                                </td>
+                                <td>
+                                    <span class="badge"><%= TaskService::count_tasks(user: certifier.user, project_id: @project.id) %></span>
                                 </td>
                             </tr>
                         <% end %>
                         </tbody>
                     </table>
                 <% end %>
-                <% if current_user.system_admin? || current_user.certifier_manager?(@project) %>
+                <!--current_user.certifier_manager?(@project)-->
+                <% if can?(:create, ProjectsUser.new(:project_id => @project.id, :role => ProjectsUser.roles[:certifier])) or can?(:create, ProjectsUser.new(:project_id => @project.id, :role => ProjectsUser.roles[:certifier_manager])) %>
                     <div class="hr-line-dashed"></div>
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addCertifierTeamMemberModal">
-                        <i title="Add certifier team member" class="fa fa-lg fa-user-plus" style="padding-right: 10px;"></i><%= t('.btn_add_certifier_team_member') %>
+                        <%= fa_icon('user-plus', "#{t('.btn_add_certifier_team_member')}", 'Add certifier member') %>
                     </button>
                 <% end %>
             </div>

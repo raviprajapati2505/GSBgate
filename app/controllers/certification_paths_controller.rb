@@ -17,8 +17,8 @@ class CertificationPathsController < AuthenticatedController
 
   def apply
     @certification_path = CertificationPath.new(certificate_id: params[:certificate_id])
-    # Set as many generic values as possible
     @certification_path.project = @project
+    authorize! :apply, @certification_path
 
     # LOC
     if @certification_path.certificate.letter_of_conformance?

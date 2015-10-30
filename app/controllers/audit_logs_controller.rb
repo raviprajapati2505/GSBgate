@@ -4,6 +4,7 @@ class AuditLogsController < AuthenticatedController
 
   def index
     @page_title = 'Audit log'
+    #TODO @projects should be loaded using cancan authorizations
     if current_user.system_admin? || current_user.gord_manager? || current_user.gord_top_manager?
       @projects = Project.all
     else
@@ -112,6 +113,7 @@ class AuditLogsController < AuthenticatedController
     auditable_class = Object.const_get params[:auditable_type]
     @auditable = auditable_class.find(params[:auditable_id])
 
+    #todo: check this with authorize!(auditable_index)
     unless auditable_class.included_modules.include?(Auditable)
       raise CanCan::AccessDenied.new('Not Authorized to read audit logs for this model.', :read, AuditLog)
     end
