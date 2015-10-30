@@ -122,6 +122,7 @@ en:
       description_33: "Duration of certification path is exceeded."
       description_34: "Task is overdue."
       description_35: "Task is overdue."
+      description_36: "Allocate criteria to certifier members."
       tooltip_due_date: "Task is overdue"
   users:
     index:

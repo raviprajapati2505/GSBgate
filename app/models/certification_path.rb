@@ -362,6 +362,8 @@ class CertificationPath < ActiveRecord::Base
         when CertificationPathStatus::VERIFYING_AFTER_APPEAL
           scheme_mix_criteria.each do |smc|
             if smc.submitted_after_appeal?
+              # Unassign from certifier
+              smc.certifier = nil
               smc.verifying_after_appeal!
             end
           end
