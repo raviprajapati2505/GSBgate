@@ -161,7 +161,7 @@
                                                 maximum_score_in_certificate_points_in_category = smc_for_category.collect{|criterion| criterion.convert_to_certificate_points(criterion.maximum_score)}.max
                                                 minimum_score_in_certificate_points_in_category = smc_for_category.collect{|criterion| criterion.convert_to_certificate_points(criterion.minimum_score)}.min
                                             %>
-                                            <% @scheme_mix.scheme_mix_criteria.for_category(category).each_with_index do |scheme_mix_criterion, j| %>
+                                            <% @scheme_mix.scheme_mix_criteria.for_category(category).order('scheme_criteria.number').each_with_index do |scheme_mix_criterion, j| %>
                                                 <tr>
                                                     <td><%= scheme_mix_criterion.code %></td>
                                                     <td><%= link_to(scheme_mix_criterion.name, project_certification_path_scheme_mix_scheme_mix_criterion_path(@certification_path.project, @certification_path, @scheme_mix, scheme_mix_criterion)) %></td>
