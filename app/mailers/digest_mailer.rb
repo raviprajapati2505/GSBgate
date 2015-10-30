@@ -15,7 +15,8 @@ class DigestMailer < ApplicationMailer
     @more_audit_logs = @audit_logs.count - MAX_LOG_ITEMS
     @more_audit_logs = @more_audit_logs < 0 ? 0 : @more_audit_logs
 
-    @more_tasks = TaskService::count_tasks(user: user)
+    @more_tasks = TaskService::count_tasks(user: user) - MAX_LOG_ITEMS
+    @more_tasks = @more_tasks < 0 ? 0 : @more_tasks
 
     @audit_logs = @audit_logs.limit(MAX_LOG_ITEMS)
     @tasks = TaskService::get_tasks(page: 1, per_page: MAX_LOG_ITEMS, user: user)

@@ -63,7 +63,11 @@
             %>
                 <tr>
                     <td><%= I18n.t(".description_#{task.task_description_id}", scope: [:tasks, :tasks]) %></td>
+                    <% if task.task_description_id == Taskable::PROJ_MNGR_GEN %>
+                    <td><%= link_to breadcrumbs[:names].last, edit_project_url(task.project_id) %></td>
+                    <% else %>
                     <td><%= link_to breadcrumbs[:names].last, breadcrumbs[:paths].last %></td>
+                    <% end %>
                     <td>-</td>
                 </tr>
             <%  when CertificationPathTask.name.demodulize
