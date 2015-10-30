@@ -18,6 +18,11 @@ class TaskService
       tasks = tasks.where(project_id: project_id)
     end
 
+    # Certification path filter
+    if certification_path_id.present?
+      tasks = tasks.where(certification_path_id: certification_path_id)
+    end
+
     tasks = tasks.distinct.order('tasks.project_id', :certification_path_id, :scheme_mix_criterion_id, :requirement_datum_id, :scheme_mix_criteria_document_id).paginate page: page, per_page: per_page
   end
 

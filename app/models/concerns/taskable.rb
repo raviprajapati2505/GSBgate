@@ -122,6 +122,7 @@ module Taskable
     SchemeMixCriterionDocumentTask.create(task_description_id: PROJ_MNGR_DOC_APPROVE,
                                           project_role: ProjectsUser.roles[:project_manager],
                                           project: self.scheme_mix_criterion.scheme_mix.certification_path.project,
+                                          certification_path: self.scheme_mix_criterion.scheme_mix.certification_path,
                                           scheme_mix_criteria_document: self)
   end
 
@@ -242,6 +243,7 @@ module Taskable
             SchemeMixCriterionTask.create(task_description_id: CERT_MEM_VERIFY,
                                           user: scheme_mix_criterion.certifier,
                                           project: self.project,
+                                          certification_path: self,
                                           scheme_mix_criterion: scheme_mix_criterion)
           end
           # Destroy project manager tasks to process PCR comments
@@ -406,6 +408,7 @@ module Taskable
             SchemeMixCriterionTask.create(task_description_id: CERT_MEM_VERIFY,
                                           user: self.certifier,
                                           project: self.scheme_mix.certification_path.project,
+                                          certification_path: self.scheme_mix.certification_path,
                                           scheme_mix_criterion: self)
           end
         when SchemeMixCriterion.statuses[:target_achieved], SchemeMixCriterion.statuses[:target_not_achieved], SchemeMixCriterion.statuses[:target_achieved_after_appeal], SchemeMixCriterion.statuses[:target_not_achieved_after_appeal]
@@ -455,6 +458,7 @@ module Taskable
           SchemeMixCriterionTask.create(task_description_id: CERT_MEM_VERIFY,
                                         user: self.certifier,
                                         project: self.scheme_mix.certification_path.project,
+                                        certification_path: self.scheme_mix.certification_path,
                                         scheme_mix_criterion: self)
         end
         # Destroy all certifier manager tasks to assign certifier team member to this criterion
@@ -517,6 +521,7 @@ module Taskable
             RequirementDatumTask.create(task_description_id: PROJ_MEM_REQ,
                                         user: self.user,
                                         project: self.scheme_mix_criteria.first.scheme_mix.certification_path.project,
+                                        certification_path: self.scheme_mix_criteria.first.scheme_mix.certification_path,
                                         requirement_datum: self)
           end
           # Destroy project manager tasks to set criterion status to complete
@@ -534,6 +539,7 @@ module Taskable
             SchemeMixCriterionTask.create(task_description_id: PROJ_MNGR_CRIT_APPROVE,
                                           project_role: ProjectsUser.roles[:project_manager],
                                           project: self.scheme_mix_criteria.first.scheme_mix.certification_path.project,
+                                          certification_path: self.scheme_mix_criteria.first.scheme_mix.certification_path,
                                           scheme_mix_criterion: self.scheme_mix_criteria.first)
           end
           # Destroy project manager tasks to assign project team members to requirement and project team member tasks to provide the requirement
@@ -592,6 +598,7 @@ module Taskable
             RequirementDatumTask.create(task_description_id: PROJ_MEM_REQ,
                                         user: self.user,
                                         project: self.scheme_mix_criteria.first.scheme_mix.certification_path.project,
+                                        certification_path: self.scheme_mix_criteria.first.scheme_mix.certification_path,
                                         requirement_datum: self)
           end
         end
@@ -625,6 +632,7 @@ module Taskable
           SchemeMixCriterionDocumentTask.create(task_description_id: PROJ_MNGR_DOC_APPROVE,
                                                 project_role: ProjectsUser.roles[:project_manager],
                                                 project: self.scheme_mix_criterion.scheme_mix.certification_path.project,
+                                                certification_path: self.scheme_mix_criterion.scheme_mix.certification_path,
                                                 scheme_mix_criteria_document: self)
         when SchemeMixCriteriaDocument.statuses[:approved], SchemeMixCriteriaDocument.statuses[:rejected], SchemeMixCriteriaDocument.statuses[:superseded]
           # Destroy project managers tasks to approve/reject document
@@ -682,6 +690,7 @@ module Taskable
             SchemeMixCriterionTask.create(task_description_id: CERT_MNGR_ASSIGN,
                                           project_role: ProjectsUser.roles[:certifier_manager],
                                           project: self.project,
+                                          certification_path: certification_path,
                                           scheme_mix_criterion: scheme_mix_criterion)
           end
           if CertificationPathTask.find_by(task_description_id: CERT_MNGR_ASSIGN, certification_path: certification_path).nil?
