@@ -33,7 +33,7 @@ class Ability
       can :index_tasks, User, projects: {projects_users: {user_id: user.id}}
 
       # Project controller
-      can :create, Project, {owner_id: user.id}
+      can :manage, Project, {owner_id: user.id}
       can :read, Project, projects_users: {user_id: user.id}
       can :manage, Project, projects_users: {user_id: user.id, role: ['project_manager', ProjectsUser.roles[:project_manager]]}
       can :download_location_plan, Project, projects_users: {user_id: user.id}
