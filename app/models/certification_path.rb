@@ -248,6 +248,7 @@ class CertificationPath < ActiveRecord::Base
   end
 
   def self.star_rating_for_score(score)
+    return -1 if score.nil?
     if score < 0
       return 0
     elsif score >= 0 && score <= 0.5
