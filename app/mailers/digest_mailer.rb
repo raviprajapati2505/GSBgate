@@ -22,4 +22,27 @@ class DigestMailer < ApplicationMailer
     @tasks = TaskService::get_tasks(page: 1, per_page: MAX_LOG_ITEMS, user: user)
     mail(to: @user.email, subject: 'GSAS : progress report') unless (@tasks.empty? && @audit_logs.empty?)
   end
+
+  def added_to_project_email(projectsuser)
+    @user = projectsuser.user
+    @project = projectsuser.project
+    @role = projectsuser.role.humanize
+
+    mail(to: @user.email, subject: "GSAS : you are added to project #{@project.name}")
+  end
+
+  def updated_role_email(projectsuser)
+    @user = projectsuser.user
+    @project = projectsuser.project
+    @role = projectsuser.role.humanize
+
+    mail(to: @user.email, subject: "GSAS : your role changed for project #{@project.name}")
+  end
+
+  def removed_from_project_email(projectsuser)
+    @user = projectsuser.user
+    @project = projectsuser.project
+
+    mail(to: @user.email, subject: "GSAS : you are removed from project #{@project.name}")
+  end
 end

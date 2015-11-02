@@ -8,6 +8,7 @@ class ProjectsUsersController < AuthenticatedController
     @projects_user = ProjectsUser.new(authorizations_params)
     @projects_user.project = @project
     if @projects_user.save
+      DigestMailer.added_to_project_email(@projects_user).deliver_now
       redirect_to project_path(@project), notice: 'Member was successfully added.'
     else
       redirect_to :back
@@ -34,6 +35,7 @@ class ProjectsUsersController < AuthenticatedController
     end
 
     if @projects_user.update(authorizations_params)
+      DigestMailer.updated_role_email(@projects_user).deliver_now
       redirect_to project_path(@projects_user.project), notice: 'Authorization was successfully updated.'
     else
       render action: :edit
@@ -61,6 +63,7 @@ class ProjectsUsersController < AuthenticatedController
 
     project = @projects_user.project
     @projects_user.destroy
+    DigestMailer.removed_from_project_email(@projects_user).deliver_now
     redirect_to project_path(project), notice: 'Member was successfully removed.'
   end
 

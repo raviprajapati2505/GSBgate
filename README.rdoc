@@ -42,6 +42,7 @@ C) Manually
 svn://svnext.vito.be/ENE/TEM/EMIS/GORD-GSAS/trunk/GSASServices/GSASServices/Docs/INSTALL.txt
 
 == Scheduled jobs on linux test server
+sudo -i su jenkins
 1. $> touch /home/jenkins/generate_notification.sh
 2. $> chmod +x /home/jenkins/generate_notifications.sh
 3. add following lines :
@@ -52,7 +53,7 @@ svn://svnext.vito.be/ENE/TEM/EMIS/GORD-GSAS/trunk/GSASServices/GSASServices/Docs
 5. add following line to crontab :
    0 10 * * * /home/jenkins/generate_notifications.sh
 6. $> touch /home/jenkins/generate_tasks.sh
-7. $> chmoc +x /home/jenkins/generate_tasks.sh
+7. $> chmod +x /home/jenkins/generate_tasks.sh
 8. add following lines :
    source /etc/profile.d/rbenv.sh
    cd /var/gord-gsas
