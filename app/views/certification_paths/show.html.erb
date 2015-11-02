@@ -98,6 +98,19 @@
                             <% end %>
                         </td>
                     </tr>
+                    <tr>
+                        <th>
+                            User comments
+                            <%= tooltip('An archive of all user comments regarding the certification can be downloaded here.') %>
+                        </th>
+                        <td>
+                            <%= link_to comments_project_cerficiation_path_path, class: 'btn btn-xs btn-primary', title: 'Creates a ZIP archive containing all user comments for this certificate.' do %>
+                                <i class="fa fa-lg fa-download"></i>
+                            <% end %>
+                            &nbsp;
+                            Download archive
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
                 <% can_apply_for_pcr = (!@certification_path.pcr_track?) && (current_user.project_manager?(@project) || current_user.system_admin?) %>

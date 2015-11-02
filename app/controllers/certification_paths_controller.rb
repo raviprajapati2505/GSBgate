@@ -155,6 +155,15 @@ class CertificationPathsController < AuthenticatedController
     send_file DocumentArchiverService.instance.create_archive(@certification_path)
   end
 
+  def download_comments
+    temp_file = Tempfile.new(request.remote_ip)
+    DocumentArchiverService.instance.create_user_comments_archive(@certification_path, temp_file)
+    send_file temp_file.path, type: 'application/zip', disposition: 'attachment', filename: 'user_comments.zip'
+    temp_file.close
+    # Delete the temp file
+    # temp_file.unlink
+  end
+
   def list
     render json: {total_count: @project.certification_paths.count, items: @project.certification_paths_optionlist}
   end
