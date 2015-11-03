@@ -167,6 +167,21 @@ class SchemeMixCriterion < ActiveRecord::Base
     (score.to_f  / scheme_criterion.maximum_score.to_f ) * ((3.to_f  * (scheme_criterion.weight.to_f + scheme_criterion.incentive_weight.to_f )) / 100.to_f)
   end
 
+  def in_submission?
+    # 'submitted' state is also a 'in submission' state because after screening and during PCR the criteria should be editable
+    if self.submitting? || self.submitting_after_appeal? || self.submitted?
+      return true
+    end
+    return false
+  end
+
+  def in_verification?
+    if self.verifying? || self.verifying_after_appeal?
+      return true
+    end
+    return false
+  end
+
   private
 
   def init

@@ -56,7 +56,7 @@
                     <tr>
                         <th>Targeted score</th>
                         <td>
-                            <% if current_user.system_admin? || (@certification_path.in_submission? && current_user.project_manager?(@project)) %>
+                            <% if current_user.system_admin? || (@certification_path.in_submission? && @scheme_mix_criterion.in_submission? && current_user.project_manager?(@project)) %>
                                 <%= f.select :targeted_score, @scheme_mix_criterion.scheme_criterion.scores, hide_label: true %>
                                 <% show_save_button = true %>
                             <% else %>
@@ -67,7 +67,7 @@
                     <tr>
                         <th>Submitted score</th>
                         <td>
-                            <% if current_user.system_admin? || (@certification_path.in_submission? && (current_user.project_manager?(@project) || @scheme_mix_criterion.contains_requirement_for?(current_user))) %>
+                            <% if current_user.system_admin? || (@certification_path.in_submission? && @scheme_mix_criterion.in_submission? && (current_user.project_manager?(@project) || @scheme_mix_criterion.contains_requirement_for?(current_user))) %>
                                 <%= f.select :submitted_score, @scheme_mix_criterion.scheme_criterion.scores, {include_blank: '-', hide_label: true} %>
                                 <% show_save_button = true %>
                             <% else %>
@@ -79,7 +79,7 @@
                     <tr>
                         <th>Achieved score</th>
                         <td>
-                            <% if current_user.system_admin? || (@certification_path.in_verification? && ((@scheme_mix_criterion.certifier == current_user) || current_user.certifier_manager?(@project))) %>
+                            <% if current_user.system_admin? || (@certification_path.in_verification? && @scheme_mix_criterion.in_verification? && ((@scheme_mix_criterion.certifier == current_user) || current_user.certifier_manager?(@project))) %>
                                 <%= f.select :achieved_score, @scheme_mix_criterion.scheme_criterion.scores, {include_blank: '-', hide_label: true} %>
                                 <% show_save_button = true %>
                             <% else %>
