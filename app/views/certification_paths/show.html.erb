@@ -126,7 +126,7 @@
                         <%= link_to('<i class="fa fa-lg fa-hand-o-up" style="padding-right: 10px;"></i>Apply for appeal'.html_safe, edit_status_project_certification_path_url(@project, @certification_path, appeal: 1), class: 'btn btn-primary', remote: true) %>
                     <% else %>
                         <div class="hr-line-dashed"></div>
-                        <%= link_to('<i class="fa fa-lg fa-forward" style="padding-right: 10px;"></i>Advance status'.html_safe, edit_status_project_certification_path_url(@project, @certification_path), class: 'btn btn-primary', remote: true) %>
+                        <%= link_to("<i class=\"fa fa-lg fa-forward\" style=\"padding-right: 10px;\"></i>Advance status to '#{CertificationPathStatus.find_by(id: @certification_path.next_status).name}'".html_safe, edit_status_project_certification_path_url(@project, @certification_path), class: 'btn btn-primary', remote: true) %>
                     <% end %>
                 <% end %>
             </div>
