@@ -152,7 +152,10 @@ class CertificationPathsController < AuthenticatedController
   end
 
   def download_archive
-    send_file DocumentArchiverService.instance.create_archive(@certification_path)
+    temp_file = Tempfile.new(request.remote_ip)
+    DocumentArchiverService.instance.create_archive(@certification_path, temp_file)
+    send_file temp_file.path, type: 'application/zip', disposition: 'attachment', filename: sanitize_filename(@certification_path.project.name + ' - ' + @certification_path.name) + ' - ' + Time.new.strftime(I18n.t('time.formats.filename'))  + '.zip'
+    temp_file.close
   end
 
   def download_comments
@@ -265,5 +268,11 @@ class CertificationPathsController < AuthenticatedController
 
   def certification_path_params
     params.require(:certification_path).permit(:project_id, :certificate_id, :pcr_track, :pcr_track_allowed, :duration, :started_at, :development_type, :appealed, :audit_log_user_comment)
+  end
+
+  def sanitize_filename(name)
+    name.gsub!(/[^a-zA-Z0-9\.\-\+_ ]/, '_')
+    name = "_#{name}" if name =~ /^\.+$/
+    name
   end
 end
