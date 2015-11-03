@@ -82,33 +82,16 @@
                     </tr>
                     <tr>
                         <th>
-                            Documents
-                            <%= tooltip('An archive of all approved documents regarding the certificate can be downloaded here.') %>
+                            Documents and audit logs
+                            <%= tooltip('An archive of all approved documents and CSV formatted audit logs regarding the certificate can be downloaded here.') %>
                         </th>
                         <td>
-                            <% if @certification_path.scheme_mix_criteria_documents.approved.count > 0 %>
-                                <%= link_to archive_project_certification_path_path, class: 'btn btn-xs btn-primary', title: 'Creates a ZIP archive containing all approved documents in this certificate.' do %>
-                                    <i class="fa fa-lg fa-download"></i>
-                                <% end %>
-                                &nbsp;
-                                Download archive
-                                <%= tooltip("This document archive contains #{@certification_path.scheme_mix_criteria_documents.approved.count} approved document(s).") %>
-                            <% else %>
-                                There are no documents uploaded or approved yet.
-                            <% end %>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            User comments
-                            <%= tooltip('An archive containing a CSV formatted file of all user comments regarding the certification can be downloaded here.') %>
-                        </th>
-                        <td>
-                            <%= link_to comments_project_cerficiation_path_path, class: 'btn btn-xs btn-primary', title: 'Creates a ZIP archive of a CSV formatted file containing all user comments for this certificate.' do %>
+                            <%= link_to archive_project_certification_path_path, class: 'btn btn-xs btn-primary', title: 'Creates a ZIP archive containing all approved documents in this certificate and related audit logs.' do %>
                                 <i class="fa fa-lg fa-download"></i>
                             <% end %>
                             &nbsp;
                             Download archive
+                            <%= tooltip("This document archive contains #{@certification_path.scheme_mix_criteria_documents.approved.count} approved document(s).") %>
                         </td>
                     </tr>
                     </tbody>
