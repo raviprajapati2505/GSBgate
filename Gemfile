@@ -5,6 +5,7 @@ gem 'rails', '~>4.2'
 
 # Use postgresql as the database for Active Record
 gem 'pg'
+gem 'activerecord-postgresql-adapter'
 gem 'activerecord-postgis-adapter', '~>3.0.0'
 gem 'rgeo', '0.3.20'
 gem 'ffi-geos'
