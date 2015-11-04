@@ -129,6 +129,9 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-voidberg--html5sortable'
 end
 
+group :development do
+  gem 'roo', '~> 2.2.0'
+end
 
 group :production do
   gem 'execjs'

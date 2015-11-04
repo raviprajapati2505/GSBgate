@@ -196,6 +196,9 @@ GEM
     rgeo-activerecord (4.0.0)
       activerecord (~> 4.2)
       rgeo (~> 0.3)
+    roo (2.2.0)
+      nokogiri (~> 1)
+      rubyzip (~> 1.1, < 2.0.0)
     rubyzip (1.1.7)
     sass (3.4.18)
     sass-rails (5.0.4)
@@ -287,6 +290,7 @@ DEPENDENCIES
   rails-assets-voidberg--html5sortable!
   rails-file-icons!
   rgeo (= 0.3.20)
+  roo (~> 2.2.0)
   rubyzip (~> 1.1.7)
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
