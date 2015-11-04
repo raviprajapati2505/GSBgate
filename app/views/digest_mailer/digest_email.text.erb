@@ -2,7 +2,9 @@ Project Status Update
 =====================
 
 Dear Ms/Mr
-
+<% if @user.gord_manager? || @user.gord_top_manager? %>
+Hereby we send you an overview of your unfinished tasks.
+<% else %>
 Hereby we send you an overview of recent project changes and all your unfinished tasks.
 
 Audit log
@@ -28,6 +30,7 @@ No audit logs found.
 <% end %>
 <% if @more_audit_logs > 0 %>
 <%= @more_audit_logs %> more...
+<% end %>
 <% end %>
 <% end %>
 

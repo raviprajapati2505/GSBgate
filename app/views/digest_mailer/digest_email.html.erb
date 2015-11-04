@@ -7,7 +7,11 @@
     <td style="width: 450pt; border: solid #CCC 1pt; background: white; padding: 15pt 15pt;">
         <p>
             <span style='font-size: 9pt; font-family: "Verdana", "sans-serif";'>Dear Ms/Mr<br/><br/>
-            Hereby we send you an overview of recent project changes and all your unfinished tasks.</span>
+    <% if @user.gord_manager? || @user.gord_top_manager? %>
+            Hereby we send you an overview of your unfinished tasks.</span>
+        </p>
+    <% else %>
+            Hereby we send you an overview of recent project changes and your unfinished tasks.</span>
         </p>
         <p><%= link_to 'Audit log', audit_logs_url, {style: 'color: #000; font-size: 14pt; font-family: "Verdana", "sans-serif";'} %></p>
         <% if @audit_logs.empty? %>
@@ -43,6 +47,7 @@
             <% end %>
         </div>
         <% end %>
+    <% end %>
         <p><%= link_to 'Tasks', tasks_url, {style: 'color: #000; font-size: 14pt; font-family: "Verdana", "sans-serif";'} %></p>
         <% if @tasks.empty? %>
             <p><span style='font-size: 9pt; font-family: "Verdana", "sans-serif";'>No tasks found.</span></p>
