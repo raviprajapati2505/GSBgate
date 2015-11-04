@@ -1,8 +1,13 @@
 # VITO Admin
 User.create!(email: 'sas@vito.be', password: 'password', password_confirmation: 'password', role: :system_admin)
+User.create!(email: 'karel.styns@vito.be', password: 'password', password_confirmation: 'password', role: :system_admin)
+User.create!(email: 'bart.dooms@vito.be', password: 'password', password_confirmation: 'password', role: :system_admin)
+User.create!(email: 'koen.dierckx@vito.be', password: 'password', password_confirmation: 'password', role: :system_admin)
+User.create!(email: 'bart.daniels@vito.be', password: 'password', password_confirmation: 'password', role: :system_admin)
+User.create!(email: 'kristof.dhalle@vito.be', password: 'password', password_confirmation: 'password', role: :system_admin)
 
 # GORD Users
-#User.create!(email: 'y.alhorr@gord.qa', password: 'password', password_confirmation: 'password', role: :gord_top_manager)
+User.create!(email: 'alhorr@gord.qa', password: 'password', password_confirmation: 'password', role: :gord_top_manager)
 User.create!(email: 'e.elsarrag@gord.qa', password: 'password', password_confirmation: 'password', role: :gord_manager)
 User.create!(email: 'o.khidir@gord.qa', password: 'password', password_confirmation: 'password', role: :system_admin)
 User.create!(email: 'm.manaman@gord.qa', password: 'password', password_confirmation: 'password', role: :user)
