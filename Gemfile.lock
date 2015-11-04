@@ -50,8 +50,6 @@ GEM
     activerecord-postgis-adapter (3.0.0)
       activerecord (~> 4.2)
       rgeo-activerecord (~> 4.0)
-    activerecord-postgresql-adapter (0.0.1)
-      pg
     activesupport (4.2.4)
       i18n (~> 0.7)
       json (~> 1.7, >= 1.7.7)
@@ -247,7 +245,6 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord-postgis-adapter (~> 3.0.0)
-  activerecord-postgresql-adapter
   addressable
   bootstrap_form
   bundler (>= 1.8.4)
