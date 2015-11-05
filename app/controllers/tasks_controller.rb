@@ -10,21 +10,28 @@ class TasksController < AuthenticatedController
     end
 
     if params[:reset].present?
-      session[:task] = {'project_id' => nil}
+      session[:task] = {'project_id' => nil, 'certification_path_id' => nil}
     else
       if params[:button].present?
-        session[:task] = {'project_id' => nil}
+        session[:task] = {'project_id' => nil, 'certification_path_id' => nil}
       else
-        session[:task] ||= {'project_id' => nil}
+        session[:task] ||= {'project_id' => nil, 'certification_path_id' => nil}
       end
 
       # Project filter
       if params[:project_id].present? && (params[:project_id].to_i > 0)
         session[:task]['project_id'] = params[:project_id]
       end
+
+      # Certificate filter
+      if params[:certification_path_id].present? && (params[:certification_path_id].to_i > 0)
+        session[:task]['certification_path_id'] = params[:certification_path_id]
+      end
     end
 
-    @tasks = TaskService::get_tasks(page: params[:page], per_page: 25, user: current_user, project_id: session[:task]['project_id'])
+    @tasks = TaskService::get_tasks(page: params[:page], per_page: 25, user: current_user,
+                                    project_id: session[:task]['project_id'],
+                                    certification_path_id: session[:task]['certification_path_id'])
   end
 
   def count

@@ -10,6 +10,10 @@
                         <%= f.label :project_id %><br/>
                         <%= f.hidden_field :project_id, { class: 'select2-project-ajax', value: session[:task]['project_id'] } %>
                     <% end %>
+                    <div id="select-certificate" class="form-group">
+                        <%= f.label :certification_path_id %><br/>
+                        <%= f.hidden_field :certification_path_id, { class: 'select2-certificate-ajax', value: session[:task]['certification_path_id'] } %>
+                    </div>
                     <div class="hr-line-dashed"></div>
                     <%= button_tag type: 'submit', class: 'btn btn-primary', value: 'Apply_task_filter' do %>
                         <i title="Apply filter" class="fa fa-lg fa-filter" style="padding-right: 10px;"></i>Apply filter
@@ -26,3 +30,4 @@
     </div>
 </div>
 <%= javascript_include_tag 'select_project' %>
+<%= javascript_include_tag 'select_project_certificate' %>
