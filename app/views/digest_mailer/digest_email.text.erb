@@ -2,15 +2,55 @@ Project Status Update
 =====================
 
 Dear Ms/Mr
+
 <% if @user.gord_manager? || @user.gord_top_manager? %>
-Hereby we send you an overview of your unfinished tasks.
+    Hereby we send you an overview of your unfinished tasks since <%= @user.last_notified_at %>.
 <% else %>
-Hereby we send you an overview of recent project changes and all your unfinished tasks.
+    Hereby we send you an overview of recent project changes and your unfinished tasks since <%= @user.last_notified_at %>.
+<% end %>
+
+Tasks
+-----
+<% if @tasks.empty? %>
+    No new tasks found.
+<% else %>
+    Description | Resource | Due date
+    -------------+----------+----------
+    <% @tasks.each do |task|
+      case task.type
+        when ProjectTask.name.demodulize
+          breadcrumbs = breadcrumbs(task.project, with_prefix: false)
+    %>
+            <%= I18n.t(".description_#{task.task_description_id}", scope: [:tasks, :tasks]) %> | <%= breadcrumbs[:names].last %> | -
+        <%  when CertificationPathTask.name.demodulize
+              breadcrumbs = breadcrumbs(task.certification_path, with_prefix: false)
+        %>
+            <%= I18n.t(".description_#{task.task_description_id}", scope: [:tasks, :tasks]) %> | <%= breadcrumbs[:names].last %> | -
+        <%  when SchemeMixCriterionTask.name.demodulize
+              breadcrumbs = breadcrumbs(task.scheme_mix_criterion, with_prefix: false)
+        %>
+            <%= I18n.t(".description_#{task.task_description_id}", scope: [:tasks, :tasks]) %> | <%= breadcrumbs[:names].last %> | <% if task.scheme_mix_criterion.due_date.present? %><%= I18n.l(task.scheme_mix_criterion.due_date, format: :short) %><% else %>-<% end %>
+        <%  when RequirementDatumTask.name.demodulize
+              breadcrumbs = breadcrumbs(task.requirement_datum, with_prefix: false)
+        %>
+            <%= I18n.t(".description_#{task.task_description_id}", scope: [:tasks, :tasks]) %> | <%= breadcrumbs[:names].last %> | <% if task.requirement_datum.due_date.present? %><%= I18n.l(task.requirement_datum.due_date, format: :short) %><% else %>-<% end %>
+        <%  when SchemeMixCriterionDocumentTask.name.demodulize
+              breadcrumbs = breadcrumbs(task.scheme_mix_criteria_document, with_prefix: false)
+        %>
+            <%= I18n.t(".description_#{task.task_description_id}", scope: [:tasks, :tasks]) %> | <%= breadcrumbs[:names].last %> | -
+        <% end
+           end
+        %>
+    <% if @more_tasks > 0 %>
+        <%= @more_tasks %> more...
+    <% end %>
+<% end %>
+<% unless @user.gord_manager? || @user.gord_top_manager? %>
 
 Audit log
 ---------
 <% if @audit_logs.empty? %>
-No audit logs found.
+No new audit logs found.
 <% else %>
 +-
 <% @audit_logs.each do |audit_log| %>
@@ -31,43 +71,6 @@ No audit logs found.
 <% if @more_audit_logs > 0 %>
 <%= @more_audit_logs %> more...
 <% end %>
-<% end %>
-<% end %>
-
-Tasks
------
-<% if @tasks.empty? %>
-No tasks found.
-<% else %>
- Description | Resource | Due date
--------------+----------+----------
-<% @tasks.each do |task|
-  case task.type
-    when ProjectTask.name.demodulize
-      breadcrumbs = breadcrumbs(task.project, with_prefix: false)
-%>
-    <%= I18n.t(".description_#{task.task_description_id}", scope: [:tasks, :tasks]) %> | <%= breadcrumbs[:names].last %> | -
-<%  when CertificationPathTask.name.demodulize
-      breadcrumbs = breadcrumbs(task.certification_path, with_prefix: false)
-%>
-    <%= I18n.t(".description_#{task.task_description_id}", scope: [:tasks, :tasks]) %> | <%= breadcrumbs[:names].last %> | -
-<%  when SchemeMixCriterionTask.name.demodulize
-      breadcrumbs = breadcrumbs(task.scheme_mix_criterion, with_prefix: false)
-%>
-    <%= I18n.t(".description_#{task.task_description_id}", scope: [:tasks, :tasks]) %> | <%= breadcrumbs[:names].last %> | <% if task.scheme_mix_criterion.due_date.present? %><%= I18n.l(task.scheme_mix_criterion.due_date, format: :short) %><% else %>-<% end %>
-<%  when RequirementDatumTask.name.demodulize
-      breadcrumbs = breadcrumbs(task.requirement_datum, with_prefix: false)
-%>
-    <%= I18n.t(".description_#{task.task_description_id}", scope: [:tasks, :tasks]) %> | <%= breadcrumbs[:names].last %> | <% if task.requirement_datum.due_date.present? %><%= I18n.l(task.requirement_datum.due_date, format: :short) %><% else %>-<% end %>
-<%  when SchemeMixCriterionDocumentTask.name.demodulize
-      breadcrumbs = breadcrumbs(task.scheme_mix_criteria_document, with_prefix: false)
-%>
-    <%= I18n.t(".description_#{task.task_description_id}", scope: [:tasks, :tasks]) %> | <%= breadcrumbs[:names].last %> | -
-<% end
-   end
-%>
-<% if @more_tasks > 0 %>
-    <%= @more_tasks %> more...
 <% end %>
 <% end %>
 

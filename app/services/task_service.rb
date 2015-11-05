@@ -1,6 +1,13 @@
 class TaskService
 
-  def self::get_tasks(page: 1, per_page: 25, user: nil, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil, requirement_datum_id: nil, scheme_mix_criteria_document_id: nil)
+  def self::get_tasks(page: 1, per_page: 25,
+      user: nil,
+      project_id: nil,
+      certification_path_id: nil,
+      scheme_mix_criterion_id: nil,
+      requirement_datum_id: nil,
+      scheme_mix_criteria_document_id: nil,
+      from_datetime: nil)
     tasks = Task
 
     # User filter
@@ -23,10 +30,21 @@ class TaskService
       tasks = tasks.where(certification_path_id: certification_path_id)
     end
 
+    # Date filter
+    if from_datetime.present?
+      tasks = tasks.where('tasks.updated_at > ?', from_datetime)
+    end
+
     tasks = tasks.distinct.order('tasks.project_id', :certification_path_id, :scheme_mix_criterion_id, :requirement_datum_id, :scheme_mix_criteria_document_id).paginate page: page, per_page: per_page
   end
 
-  def self::count_tasks(user: nil, project_id: nil, certification_path_id: nil, scheme_mix_criterion_id: nil, requirement_datum_id: nil, scheme_mix_criteria_document_id: nil)
+  def self::count_tasks(user: nil,
+      project_id: nil,
+      certification_path_id: nil,
+      scheme_mix_criterion_id: nil,
+      requirement_datum_id: nil,
+      scheme_mix_criteria_document_id: nil,
+      from_datetime: nil)
     tasks = Task
 
     # User filter
@@ -42,6 +60,11 @@ class TaskService
     # Project filter
     if project_id.present?
       tasks = tasks.where(project_id: project_id)
+    end
+
+    # Date filter
+    if from_datetime.present?
+      tasks = tasks.where('tasks.updated_at > ?', from_datetime)
     end
 
     tasks = tasks.distinct.count

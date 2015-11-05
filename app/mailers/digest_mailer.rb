@@ -24,10 +24,10 @@ class DigestMailer < ApplicationMailer
 
       @audit_logs = @audit_logs.limit(MAX_LOG_ITEMS)
     end
-    @more_tasks = TaskService::count_tasks(user: user) - MAX_LOG_ITEMS
+    @more_tasks = TaskService::count_tasks(user: user, from_datetime: user.last_notified_at) - MAX_LOG_ITEMS
     @more_tasks = @more_tasks < 0 ? 0 : @more_tasks
 
-    @tasks = TaskService::get_tasks(page: 1, per_page: MAX_LOG_ITEMS, user: user)
+    @tasks = TaskService::get_tasks(page: 1, per_page: MAX_LOG_ITEMS, user: user, from_datetime: user.last_notified_at)
     mail(to: @user.email, subject: 'GSAS : progress report') unless (@tasks.empty? && @audit_logs.empty?)
 
     user.last_notified_at = DateTime.current
