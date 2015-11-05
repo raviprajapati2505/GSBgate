@@ -70,18 +70,30 @@ class TaskService
 
     # Scheme mix criterion filter
     if scheme_mix_criterion_id.present?
-      tasks = tasks.where(scheme_mix_criterion_id: scheme_mix_criterion_id)
+      # tasks = tasks.where(scheme_mix_criterion_id: scheme_mix_criterion_id)
+      task = Task.arel_table
+      requirement_datum = RequirementDatum.arel_table
+      join_on_1 = task.create_on(task[:requirement_datum_id].eq(requirement_datum[:id]))
+      outer_join_1 = task.create_join(requirement_datum, join_on_1, Arel::Nodes::OuterJoin)
+      scheme_mix_criteria_requirement_datum = SchemeMixCriteriaRequirementDatum.arel_table
+      join_on_2 = requirement_datum.create_on(requirement_datum[:id].eq(scheme_mix_criteria_requirement_datum[:requirement_datum_id]))
+      outer_join_2 = requirement_datum.create_join(scheme_mix_criteria_requirement_datum, join_on_2, Arel::Nodes::OuterJoin)
+      scheme_mix_criteria_document = SchemeMixCriteriaDocument.arel_table
+      join_on_3 = task.create_on(task[:scheme_mix_criteria_document_id].eq(scheme_mix_criteria_document[:id]))
+      outer_join_3 = task.create_join(scheme_mix_criteria_document, join_on_3, Arel::Nodes::OuterJoin)
+
+      tasks = tasks.joins(outer_join_1, outer_join_2, outer_join_3).where('tasks.scheme_mix_criterion_id = ? or scheme_mix_criteria_requirement_data.scheme_mix_criterion_id = ? or scheme_mix_criteria_documents.scheme_mix_criterion_id = ?', scheme_mix_criterion_id, scheme_mix_criterion_id, scheme_mix_criterion_id)
     end
 
     # Requirement datum filter
-    if requirement_datum_id.present?
-      tasks = tasks.where(requirement_datum_id: requirement_datum_id)
-    end
+    # if requirement_datum_id.present?
+    #   tasks = tasks.where(requirement_datum_id: requirement_datum_id)
+    # end
 
     # Scheme mix criteria document filter
-    if scheme_mix_criteria_document_id.present?
-      tasks = tasks.where(scheme_mix_criteria_document_id: scheme_mix_criteria_document_id)
-    end
+    # if scheme_mix_criteria_document_id.present?
+    #   tasks = tasks.where(scheme_mix_criteria_document_id: scheme_mix_criteria_document_id)
+    # end
 
     # Date filter
     if from_datetime.present?
