@@ -80,10 +80,12 @@ class SchemeMixCriteriaController < AuthenticatedController
 
   def list
     total_count = SchemeMixCriterion.joins(:scheme_mix)
+                                    .joins(scheme_criterion: [:scheme_category])
                                     .where(scheme_mixes: {certification_path_id: @certification_path.id})
                                     .where('(scheme_categories.code || scheme_criteria.number || \': \' || scheme_criteria.name) like ?', '%' + params[:q] + '%')
                                     .count
-    items = SchemeMixCriterion.select('scheme_mixes.id || \';\' || scheme_mix_criteria.id as id_text, scheme_categories.code || scheme_criteria.number || \': \' || scheme_criteria.name as text, scheme_mix_criteria.status').joins(:scheme_mix)
+    items = SchemeMixCriterion.select('scheme_mixes.id || \';\' || scheme_mix_criteria.id as id_text, scheme_categories.code || scheme_criteria.number || \': \' || scheme_criteria.name as text, scheme_mix_criteria.status')
+                              .joins(:scheme_mix)
                               .joins(scheme_criterion: [:scheme_category])
                               .where(scheme_mixes: {certification_path_id: @certification_path.id})
                               .where('(scheme_categories.code || scheme_criteria.number || \': \' || scheme_criteria.name) like ?', '%' + params[:q] + '%')
