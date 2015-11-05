@@ -34,10 +34,16 @@ class TasksController < AuthenticatedController
       end
     end
 
+    if session[:task]['scheme_mix_criterion_id'].present?
+      scheme_mix_criterion_id = session[:task]['scheme_mix_criterion_id'].split(';')[1].to_i
+    else
+      scheme_mix_criterion_id = nil
+    end
+
     @tasks = TaskService::get_tasks(page: params[:page], per_page: 25, user: current_user,
                                     project_id: session[:task]['project_id'],
                                     certification_path_id: session[:task]['certification_path_id'],
-                                    scheme_mix_criterion_id: session[:task]['scheme_mix_criterion_id'])
+                                    scheme_mix_criterion_id: scheme_mix_criterion_id)
   end
 
   def count
