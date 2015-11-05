@@ -10,12 +10,12 @@ class TasksController < AuthenticatedController
     end
 
     if params[:reset].present?
-      session[:task] = {'project_id' => nil, 'certification_path_id' => nil}
+      session[:task] = {'project_id' => nil, 'certification_path_id' => nil, 'scheme_mix_criterion_id' => nil}
     else
       if params[:button].present?
-        session[:task] = {'project_id' => nil, 'certification_path_id' => nil}
+        session[:task] = {'project_id' => nil, 'certification_path_id' => nil, 'scheme_mix_criterion_id' => nil}
       else
-        session[:task] ||= {'project_id' => nil, 'certification_path_id' => nil}
+        session[:task] ||= {'project_id' => nil, 'certification_path_id' => nil, 'scheme_mix_criterion_id' => nil}
       end
 
       # Project filter
@@ -27,11 +27,17 @@ class TasksController < AuthenticatedController
       if params[:certification_path_id].present? && (params[:certification_path_id].to_i > 0)
         session[:task]['certification_path_id'] = params[:certification_path_id]
       end
+
+      # Criterion filter
+      if params[:scheme_mix_criterion_id].present? && (params[:scheme_mix_criterion_id].to_i > 0)
+        session[:task]['scheme_mix_criterion_id'] = params[:scheme_mix_criterion_id]
+      end
     end
 
     @tasks = TaskService::get_tasks(page: params[:page], per_page: 25, user: current_user,
                                     project_id: session[:task]['project_id'],
-                                    certification_path_id: session[:task]['certification_path_id'])
+                                    certification_path_id: session[:task]['certification_path_id'],
+                                    scheme_mix_criterion_id: session[:task]['scheme_mix_criterion_id'])
   end
 
   def count

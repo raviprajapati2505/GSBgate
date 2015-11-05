@@ -182,6 +182,18 @@ class SchemeMixCriterion < ActiveRecord::Base
     return false
   end
 
+  # This overrides default behaviour
+  # by default the 'id' is always an integer, but sometimes you want to use a string
+  # if an attribute 'id_text' exists then use the value for the 'id' attribute after explicit conversion to string
+  def as_json(options)
+    attrs = super(options)
+    if attrs['id_text'].present?
+      attrs['id'] = attrs['id_text'].to_s
+      attrs.delete('id_text')
+    end
+    attrs
+  end
+
   private
 
   def init

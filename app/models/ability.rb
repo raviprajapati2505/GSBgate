@@ -70,6 +70,7 @@ class Ability
       can :read, SchemeMixCriterion, scheme_mix: {certification_path: {project: {projects_users: {user_id: user.id}}}}
       can [:edit_status, :update_status], SchemeMixCriterion, scheme_mix: {certification_path: {project: {projects_users: {user_id: user.id, role: ['project_manager', ProjectsUser.roles[:project_manager]]}}}}
       can [:edit_status, :update_status], SchemeMixCriterion, certifier_id: user.id
+      can :list, SchemeMixCriterion, scheme_mix: {certification_path: {project: {projects_users: {user_id: user.id}}}}
       can :update_scores, SchemeMixCriterion, scheme_mix: {certification_path: {project: {projects_users: {user_id: user.id, role: ['project_manager', ProjectsUser.roles[:project_manager]]}}}}
       can :update_scores, SchemeMixCriterion, requirement_data: {user_id: user.id}
       can :update_scores, SchemeMixCriterion, certifier_id: user.id

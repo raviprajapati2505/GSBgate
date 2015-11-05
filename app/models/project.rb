@@ -77,14 +77,6 @@ class Project < ActiveRecord::Base
     return false
   end
 
-  def certification_paths_optionlist
-    items = []
-    self.certification_paths.each do |certification_path|
-      items << {id: certification_path.id, text: certification_path.name}
-    end
-    return items
-  end
-
   def init
     # Set default code
     self.code ||= 'TBC'

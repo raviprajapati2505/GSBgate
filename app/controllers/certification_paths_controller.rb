@@ -159,7 +159,16 @@ class CertificationPathsController < AuthenticatedController
   end
 
   def list
-    render json: {total_count: @project.certification_paths.count, items: @project.certification_paths_optionlist}
+    total_count = CertificationPath.joins(:certificate)
+                      .where(project_id: @project.id)
+                      .where('certificates.name like ?', '%' + params[:q] + '%')
+                      .count
+    items = CertificationPath.select('certification_paths.id as id, certificates.name as text, certification_paths.certification_path_status_id')
+                .joins(:certificate)
+                .where(project_id: @project.id)
+                .where('certificates.name like ?', '%' + params[:q] + '%')
+                .paginate page: params[:page], per_page: 25
+    render json: {total_count: total_count, items: items}
   end
 
   def allocate_project_team_responsibility

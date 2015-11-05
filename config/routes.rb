@@ -53,6 +53,11 @@ Rails.application.routes.draw do
           end
         end
       end
+      resources :scheme_mix_criteria, only: [ :list ], path: 'criteria' do
+        collection do
+          get 'list'
+        end
+      end
     end
   end
   get 'projects/:id/location_plan' => 'projects#download_location_plan', as: 'download_project_location_plan'
