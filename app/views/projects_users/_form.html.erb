@@ -22,10 +22,10 @@
                 </div>
                 <div class="modal-footer">
                     <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
-                        <i title="Save" class="fa fa-lg fa-save" style="padding-right: 10px;"></i><%= t('.btn_save') %>
+                        <%= fa_icon('save', t('.btn_save')) %>
                     <% end %>
                     <button type="button" class="btn btn-white" data-dismiss="modal">
-                        <i title="Cancel" class="fa fa-lg fa-times" style="padding-right: 10px;"></i><%= t('.btn_cancel') %>
+                        <%= fa_icon('times', 'Back') %>
                     </button>
                 </div>
             </div>
