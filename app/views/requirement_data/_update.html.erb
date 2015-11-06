@@ -13,10 +13,10 @@
     </div>
     <div class="panel-collapse collapse" id="requirement-<%= requirement_datum.id %>-collapsable" aria-expanded="false" style="height: 0px;">
         <div class="panel-body">
-            <%= bootstrap_form_tag url: project_certification_path_scheme_mix_scheme_mix_criterion_requirement_datum_path(@project, certification_path_id, scheme_mix_id, scheme_mix_criterion_id, requirement_datum.id), method: 'put', remote: true, :html => { :multipart => true } do |f| %>
+            <%= bootstrap_form_tag url: project_certification_path_scheme_mix_scheme_mix_criterion_requirement_datum_path(@project, @certification_path.id, @scheme_mix.id, @scheme_mix_criterion.id, requirement_datum.id), method: 'put', remote: true, :html => { :multipart => true } do |f| %>
                 <div class="row">
-                    <% certification_path = CertificationPath.find(certification_path_id) # todo: avoid this %>
-                    <% if current_user.system_admin? || (certification_path.in_submission? && current_user.project_manager?(@project)) %>
+                    <% certification_path = CertificationPath.find(@certification_path.id) # todo: avoid this %>
+                    <% if current_user.system_admin? || (certification_path.in_submission? && @scheme_mix_criterion.in_submission? && current_user.project_manager?(@project)) %>
                         <div class="col-md-6">
                             <% users = User.authorized_for_project(@project).with_assessor_project_role %>
                             <% if (users.count > 0) && (can? :read, @project.projects_users.first) %>
@@ -44,7 +44,7 @@
                         </div>
                     <% end %>
                     <div class="col-md-3">
-                        <%= f.select :status, options_for_select(RequirementDatum.statuses.keys.map { |k| [k.humanize, k]}, requirement_datum.status), {}, disabled: !(current_user.system_admin? || (can?(:update, requirement_datum) && certification_path.in_submission?)) %>
+                        <%= f.select :status, options_for_select(RequirementDatum.statuses.keys.map { |k| [k.humanize, k]}, requirement_datum.status), {}, disabled: !(current_user.system_admin? || (can?(:update, requirement_datum) && certification_path.in_submission? && @scheme_mix_criterion.in_submission?)) %>
                     </div>
                 </div>
                 <%-# START COMMENT -%>
@@ -62,7 +62,7 @@
                     <% end %>
                 <% end %>
                 <%-# END COMMENT -%>
-                <% if current_user.system_admin? || (certification_path.in_submission? && can?(:update, requirement_datum)) %>
+                <% if current_user.system_admin? || (certification_path.in_submission? && @scheme_mix_criterion.in_submission? && can?(:update, requirement_datum)) %>
                     <div class="hr-line-dashed"></div>
                     <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
                         <i title="Save" class="fa fa-lg fa-save" style="padding-right: 10px;"></i>Save
@@ -76,5 +76,5 @@
     </div>
 </div>
 <% if (current_user == requirement_datum.user) %>
-    <%= render 'requirement_data/refuse_requirement', requirement_datum: requirement_datum, certification_path_id: certification_path_id, scheme_mix_id: scheme_mix_id, scheme_mix_criterion_id: scheme_mix_criterion_id %>
+    <%= render 'requirement_data/refuse_requirement', requirement_datum: requirement_datum, certification_path_id: @certification_path.id, scheme_mix_id: @scheme_mix.id, scheme_mix_criterion_id: @scheme_mix_criterion.id %>
 <% end %>

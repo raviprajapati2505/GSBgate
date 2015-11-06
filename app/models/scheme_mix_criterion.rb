@@ -168,8 +168,7 @@ class SchemeMixCriterion < ActiveRecord::Base
   end
 
   def in_submission?
-    # 'submitted' state is also a 'in submission' state because after screening and during PCR the criteria should be editable
-    if self.submitting? || self.submitting_after_appeal? || self.submitted?
+    if self.submitting? || self.submitting_after_appeal?
       return true
     end
     return false
