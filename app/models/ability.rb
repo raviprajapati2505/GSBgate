@@ -59,6 +59,8 @@ class Ability
       can :update_pcr, CertificationPath, project: {projects_users: {user_id: user.id, role: ['certifier_manager', ProjectsUser.roles[:certifier_manager]]}}
       can [:edit_status, :update_status], CertificationPath, project: {projects_users: {user_id: user.id, role: ['certifier_manager', ProjectsUser.roles[:certifier_manager], 'project_manager', ProjectsUser.roles[:project_manager]]}}
       can :list, CertificationPath, project: {projects_users: {user_id: user.id}}
+      can :allocate_project_team_responsibility, CertificationPath, project: {projects_users: {user_id: user.id, role: ['project_manager', ProjectsUser.roles[:project_manager]]}}
+      cannot :allocate_project_team_responsibility, CertificationPath, project: {projects_users: {user_id: user.id, role: ['certifier_manager', ProjectsUser.roles[:certifier_manager]]}}
       can :allocate_certifier_team_responsibility, CertificationPath, project: {projects_users: {user_id: user.id, role: ['certifier_manager', ProjectsUser.roles[:certifier_manager]]}}
       cannot :allocate_certifier_team_responsibility, CertificationPath, project: {projects_users: {user_id: user.id, role: ['project_manager', ProjectsUser.roles[:project_manager]]}}
       can :download_archive, CertificationPath, project: {projects_users: {user_id: user.id}}
