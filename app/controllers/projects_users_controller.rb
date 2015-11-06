@@ -1,6 +1,6 @@
 class ProjectsUsersController < AuthenticatedController
   load_and_authorize_resource :project
-  load_and_authorize_resource :projects_user, :through => :project, only: [:create, :edit, :show, :update, :destroy]
+  load_and_authorize_resource :projects_user, :through => :project, only: [:create, :edit, :show, :update, :destroy, :make_owner]
   skip_authorization_check only: [:list_users_sharing_projects, :list_projects]
   before_action :set_controller_model, except: [:new, :create]
 
@@ -38,6 +38,22 @@ class ProjectsUsersController < AuthenticatedController
       DigestMailer.updated_role_email(@projects_user).deliver_now
       redirect_to project_path(@projects_user.project), notice: 'Authorization was successfully updated.'
     else
+      render action: :edit
+    end
+  end
+
+  def make_owner
+    begin
+      @project.transaction do
+        # change project role to project manager
+        @projects_user.role = ProjectsUser.roles[:project_manager]
+        @projects_user.save!
+        # change project owner
+        @project.owner = @projects_user.user
+        @project.save!
+      end
+      redirect_to project_path(@projects_user.project), notice: 'Project owner was successfully updated.'
+    rescue Exception
       render action: :edit
     end
   end

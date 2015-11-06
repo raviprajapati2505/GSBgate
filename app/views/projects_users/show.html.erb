@@ -34,6 +34,11 @@
                         <%= fa_icon('user-times', 'Remove from team', 'Delete authorization') %>
                     <% end %>
                 <% end %>
+                <% if can? :make_owner, @projects_user %>
+                    <%= link_to make_owner_path(@project, @projects_user), method: :post, data: {confirm: 'Are you sure to make this user the new project owner ?'}, :class => 'btn btn-primary' do %>
+                        <% fa_icon('lock', 'Make project owner', 'Edit authorization') %>
+                    <% end %>
+                <% end %>
             </div>
         </div>
     </div>
