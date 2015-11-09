@@ -37,7 +37,7 @@
                         <% certification_path.scheme_mixes.uniq.each do |scheme_mix| %>
                             <tr><th colspan="5"><%= scheme_mix.name %></th></tr>
                             <% scheme_mix.scheme_categories.uniq.each do |category| %>
-                                <% scheme_mix.scheme_mix_criteria.for_category(category).each do |scheme_mix_criterion| %>
+                                <% scheme_mix.scheme_mix_criteria.in_submission_or_submitted.for_category(category).each do |scheme_mix_criterion| %>
                                     <tr>
                                         <th><%= check_box_tag 'scheme_mix_criteria[]', scheme_mix_criterion.id, false, class: 'checkbox_parent' %></th>
                                         <th><%= scheme_mix_criterion.scheme_criterion.full_name %></th>

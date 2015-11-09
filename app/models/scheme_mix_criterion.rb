@@ -40,6 +40,10 @@ class SchemeMixCriterion < ActiveRecord::Base
     where(certifier: nil)
   }
 
+  scope :in_submission_or_submitted, -> {
+    where(status: [SchemeMixCriterion.statuses[:submitting], SchemeMixCriterion.statuses[:submitting_after_appeal], SchemeMixCriterion.statuses[:submitted], SchemeMixCriterion.statuses[:submitted_after_appeal]])
+  }
+
   def name
     self.scheme_criterion.name
   end
