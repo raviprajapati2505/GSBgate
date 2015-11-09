@@ -39,6 +39,14 @@ class SchemeMixCriteriaController < AuthenticatedController
         else
           status = :target_not_achieved_after_appeal
         end
+      elsif @scheme_mix_criterion.submitted? && @certification_path.certification_path_status_id == CertificationPathStatus::SUBMITTING
+        status = :submitting
+      elsif @scheme_mix_criterion.submitted_after_appeal? && @certification_path.certification_path_status_id == CertificationPathStatus::SUBMITTING
+        status = :submitting_after_appeal
+      elsif (@scheme_mix_criterion.target_achieved? || @scheme_mix_criterion.target_not_achieved?) && @certification_path.certification_path_status_id == CertificationPathStatus::VERIFYING
+        status = :verifying
+      elsif (@scheme_mix_criterion.target_achieved_after_appeal? || @scheme_mix_criterion.target_not_achieved_after_appeal?) && @certification_path.certification_path_status_id == CertificationPathStatus::VERIFYING_AFTER_APPEAL
+        status = :verifying_after_appeal
       else
         flash[:alert] = 'The criterion status cannot be updated.'
       end

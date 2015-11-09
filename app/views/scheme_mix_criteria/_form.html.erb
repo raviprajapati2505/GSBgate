@@ -16,14 +16,24 @@
                 </tr>
                 </tbody>
             </table>
-            <% if can?(:update_status, @scheme_mix_criterion) && (@certification_path.in_submission? && @scheme_mix_criterion.in_submission?) %>
-                <% if (@scheme_mix_criterion.verifying? || @scheme_mix_criterion.verifying_after_appeal?) && (current_user.certifier_manager?(@project) || current_user.certifier?(@project)) %>
-                    <div class="hr-line-dashed"></div>
-                    <%= link_to('<i class="fa fa-lg fa-check" style="padding-right: 10px;"></i>Target achieved'.html_safe, edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, achieved: 1), class: 'btn btn-primary', remote: true) %>
-                    <%= link_to('<i class="fa fa-lg fa-times" style="padding-right: 10px;"></i>Target not achieved'.html_safe, edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, achieved: 0), class: 'btn btn-danger', remote: true) %>
-                <% elsif (@scheme_mix_criterion.submitting? || @scheme_mix_criterion.submitting_after_appeal?) && current_user.project_manager?(@project) %>
-                    <div class="hr-line-dashed"></div>
-                    <%= link_to('<i class="fa fa-lg fa-check" style="padding-right: 10px;"></i>Submit criterion'.html_safe, edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), class: 'btn btn-primary', remote: true) %>
+            <% if can?(:update_status, @scheme_mix_criterion) %>
+                <% if @certification_path.in_submission? && current_user.project_manager?(@project) %>
+                    <% if @scheme_mix_criterion.in_submission? %>
+                        <div class="hr-line-dashed"></div>
+                        <%= link_to('<i class="fa fa-lg fa-check" style="padding-right: 10px;"></i>Submit criterion'.html_safe, edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), class: 'btn btn-primary', remote: true) %>
+                    <% else %>
+                        <div class="hr-line-dashed"></div>
+                        <%= link_to('<i class="fa fa-lg fa-undo" style="padding-right: 10px;"></i>Undo status change'.html_safe, edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), class: 'btn btn-danger', remote: true) %>
+                    <% end %>
+                <% elsif @certification_path.in_verification? && (current_user.certifier_manager?(@project) || current_user.certifier?(@project)) %>
+                    <% if @scheme_mix_criterion.in_verification? %>
+                        <div class="hr-line-dashed"></div>
+                        <%= link_to('<i class="fa fa-lg fa-check" style="padding-right: 10px;"></i>Target achieved'.html_safe, edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, achieved: 1), class: 'btn btn-primary', remote: true) %>
+                        <%= link_to('<i class="fa fa-lg fa-times" style="padding-right: 10px;"></i>Target not achieved'.html_safe, edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, achieved: 0), class: 'btn btn-danger', remote: true) %>
+                    <% else %>
+                        <div class="hr-line-dashed"></div>
+                        <%= link_to('<i class="fa fa-lg fa-undo" style="padding-right: 10px;"></i>Undo status change'.html_safe, edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), class: 'btn btn-danger', remote: true) %>
+                    <% end %>
                 <% end %>
             <% end %>
         </div>
