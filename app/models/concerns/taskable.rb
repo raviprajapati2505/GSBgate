@@ -483,8 +483,8 @@ module Taskable
     if self.status_changed?
       case RequirementDatum.statuses[self.status]
         when RequirementDatum.statuses[:required]
-          if !self.user_changed?
-            if self.user.nil?
+          if !self.user_id_changed?
+            if self.user_id.nil?
               if self.scheme_mix_criteria.first.submitting?
                 # Create project manager task to assign a project team member to the requirement
                 if CertificationPathTask.find_by(task_description_id: PROJ_MNGR_ASSIGN, certification_path: self.scheme_mix_criteria.first.scheme_mix.certification_path).nil?
