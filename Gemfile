@@ -126,6 +126,9 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-slimScroll'
   gem 'rails-assets-toastr'
   gem 'rails-assets-voidberg--html5sortable'
+  gem 'rails-assets-three.js'
+  gem 'rails-assets-leaflet-draw'
+  gem 'rails-assets-proj4'
 end
 
 group :development do

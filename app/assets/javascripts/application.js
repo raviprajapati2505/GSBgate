@@ -35,6 +35,9 @@
  *= require ckeditor/init
  *= require html.sortable
  *= require leaflet
+ *= require leaflet-draw
+ *= require proj4
+ *= require three.js/three.js 
  */
 
 $(function () {

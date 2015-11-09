@@ -5,9 +5,11 @@
                 <h5>Project Tools</h5>
             </div>
             <div class="ibox-content">
-                <div class="app_container_1" data-project-id="<%= @project.id %>"></div>
+		    <!--div class="app_container_1" data-project-id="<%= @project.id %>"></div-->
+		    <div id="building-properties" class="row"></div>
             </div>
         </div>
     </div>
 </div>
 <%= javascript_include_tag 'project_tools_library' %>
+<%= javascript_include_tag 'orbitcontrols' %>
