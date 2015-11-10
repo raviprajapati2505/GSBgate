@@ -3,7 +3,7 @@
         <h5>Project overview</h5>
     </div>
     <div class="ibox-content">
-        <table class="table table-bordered table-hover nowrap" cellspacing="0" width="100%">
+        <table class="table table-bordered table-hover nowrap datatable dt-responsive" cellspacing="0" width="100%">
             <thead>
             <!--https://datatables.net/extensions/responsive/examples/display-control/classes.html-->
             <tr>
@@ -84,7 +84,7 @@
             <% end %>
             </tbody>
         </table>
-        <%= will_paginate @projects, renderer: BootstrapPagination::Rails %>
+        <!--= will_paginate @projects, renderer: BootstrapPagination::Rails %-->
         <div class="hr-line-dashed"></div>
         <% if can? :create, Project.new(owner_id: current_user.id) %>
             <%= link_to new_project_path, class: 'btn btn-primary' do %>

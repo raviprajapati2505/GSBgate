@@ -157,7 +157,7 @@
                 <% if @project.projects_users.assessors.distinct.count.zero? %>
                     <p>This project has no team members.</p>
                 <% else %>
-                    <table class="table table-striped table-bordered table-hover" cellspacing="0" width="100%">
+                    <table class="table table-striped table-bordered table-hover datatable" cellspacing="0" width="100%">
                         <thead>
                         <tr>
                             <th>Member</th>
@@ -208,7 +208,7 @@
                 <% if @project.projects_users.certifiers.distinct.count.zero? %>
                     <p>This project has no certifiers.</p>
                 <% else %>
-                    <table class="table table-striped table-bordered table-hover" cellspacing="0" width="100%">
+                    <table class="table table-striped table-bordered table-hover datatable" cellspacing="0" width="100%">
                         <thead>
                         <tr>
                             <th>Member</th>
