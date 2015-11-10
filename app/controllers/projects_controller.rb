@@ -5,7 +5,17 @@ class ProjectsController < AuthenticatedController
   # GET /projects
   # GET /projects.json
   def index
-    @page_title = 'Projects'
+    respond_to do |format|
+      format.html {
+        @page_title = 'Projects'
+        if current_user.system_admin? || current_user.gord_manager? || current_user.gord_top_manager?
+          @projects = Project.all
+        else
+          @projects = current_user.projects
+        end
+        @projects = @projects.paginate page: params[:page], per_page: 25
+      }
+    end
   end
 
   # GET /projects/1
