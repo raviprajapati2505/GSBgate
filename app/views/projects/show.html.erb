@@ -217,6 +217,25 @@
                         </tr>
                         </thead>
                         <tbody>
+                        <% User.where.not(role: [User.roles[:user]]).each do |user| %>
+                            <tr>
+                                <td>
+                                    <% if user == current_user %>
+                                        <%= link_to tasks_path(project_id: @project.id) do %>
+                                            <%= user.email %>
+                                        <% end %>
+                                    <% else %>
+                                        <%= user.email %>
+                                    <% end %>
+                                </td>
+                                <td>
+                                    <%= user.role.humanize %>
+                                </td>
+                                <td>
+                                    <span class="badge"><%= TaskService::count_tasks(user: user, project_id: @project.id) %></span>
+                                </td>
+                            </tr>
+                        <% end %>
                         <% @project.projects_users.certifiers.distinct.each do |certifier| %>
                             <tr>
                                 <td>

@@ -3,11 +3,6 @@ class TasksController < AuthenticatedController
 
   def index
     @page_title = 'Tasks'
-    if current_user.system_admin? || current_user.gord_manager? || current_user.gord_top_manager?
-      @projects = Project.all
-    else
-      @projects = current_user.projects
-    end
 
     if params[:reset].present?
       session[:task] = {'project_id' => nil, 'certification_path_id' => nil, 'scheme_mix_criterion_id' => nil}
