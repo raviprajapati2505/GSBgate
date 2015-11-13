@@ -28,9 +28,9 @@
                 </thead>
                 <tbody>
                 <% @tasks.each do |task|
-                  case task.type
-                    when ProjectTask.name.demodulize
-                      breadcrumbs = breadcrumbs(task.project, with_prefix: false)
+                  case task.taskable_type
+                    when Project.name.demodulize
+                      breadcrumbs = breadcrumbs(task.taskable, with_prefix: false)
                 %>
                         <tr>
                             <td><%= I18n.t(".description_#{task.task_description_id}", scope: [:tasks, :tasks]) %></td>
@@ -41,32 +41,32 @@
                             <% end %>
                             <td>-</td>
                         </tr>
-                    <%  when CertificationPathTask.name.demodulize
-                          breadcrumbs = breadcrumbs(task.certification_path, with_prefix: false)
+                    <%  when CertificationPath.name.demodulize
+                          breadcrumbs = breadcrumbs(task.taskable, with_prefix: false)
                     %>
                         <tr>
                             <td><%= I18n.t(".description_#{task.task_description_id}", scope: [:tasks, :tasks]) %></td>
                             <td><%= link_to breadcrumbs[:names].last, breadcrumbs[:paths].last %></td>
                             <td>-</td>
                         </tr>
-                    <%  when SchemeMixCriterionTask.name.demodulize
-                          breadcrumbs = breadcrumbs(task.scheme_mix_criterion, with_prefix: false)
+                    <%  when SchemeMixCriterion.name.demodulize
+                          breadcrumbs = breadcrumbs(task.taskable, with_prefix: false)
                     %>
                         <tr>
                             <td><%= I18n.t(".description_#{task.task_description_id}", scope: [:tasks, :tasks]) %></td>
                             <td><%= link_to breadcrumbs[:names].last, breadcrumbs[:paths].last %></td>
-                            <td><% if task.scheme_mix_criterion.due_date.present? %><%= I18n.l(task.scheme_mix_criterion.due_date, format: :short) %><% if Date.today > task.scheme_mix_criterion.due_date %>&nbsp;<i class="fa fa-clock-o due-date-expired" title="<%= I18n.t('.tooltip_due_date', scope: [:tasks, :tasks]) %>" data-toggle="tooltip"></i><% end %><% else %>-<% end %></td>
+                            <td><% if task.taskable.due_date.present? %><%= I18n.l(task.taskable.due_date, format: :short) %><% if Date.today > task.taskable.due_date %>&nbsp;<i class="fa fa-clock-o due-date-expired" title="<%= I18n.t('.tooltip_due_date', scope: [:tasks, :tasks]) %>" data-toggle="tooltip"></i><% end %><% else %>-<% end %></td>
                         </tr>
-                    <%  when RequirementDatumTask.name.demodulize
-                          breadcrumbs = breadcrumbs(task.requirement_datum, with_prefix: false)
+                    <%  when RequirementDatum.name.demodulize
+                          breadcrumbs = breadcrumbs(task.taskable, with_prefix: false)
                     %>
                         <tr>
                             <td><%= I18n.t(".description_#{task.task_description_id}", scope: [:tasks, :tasks]) %></td>
                             <td><%= link_to breadcrumbs[:names].last, breadcrumbs[:paths].last %></td>
-                            <td><% if task.requirement_datum.due_date.present? %><%= I18n.l(task.requirement_datum.due_date, format: :short) %><% if Date.today > task.requirement_datum.due_date %>&nbsp;<i class="fa fa-clock-o due-date-expired" title="<%= I18n.t('.tooltip_due_date', scope: [:tasks, :tasks]) %>" data-toggle="tooltip"></i><% end %><% else %>-<% end %></td>
+                            <td><% if task.taskable.due_date.present? %><%= I18n.l(task.taskable.due_date, format: :short) %><% if Date.today > task.taskable.due_date %>&nbsp;<i class="fa fa-clock-o due-date-expired" title="<%= I18n.t('.tooltip_due_date', scope: [:tasks, :tasks]) %>" data-toggle="tooltip"></i><% end %><% else %>-<% end %></td>
                         </tr>
-                    <%  when SchemeMixCriterionDocumentTask.name.demodulize
-                          breadcrumbs = breadcrumbs(task.scheme_mix_criteria_document, with_prefix: false)
+                    <%  when SchemeMixCriterionDocument.name.demodulize
+                          breadcrumbs = breadcrumbs(task.taskable, with_prefix: false)
                     %>
                         <tr>
                             <td><%= I18n.t(".description_#{task.task_description_id}", scope: [:tasks, :tasks]) %></td>

@@ -6,7 +6,6 @@ class SchemeMixCriterion < ActiveRecord::Base
   has_many :requirement_data, through: :scheme_mix_criteria_requirement_data
   has_many :scheme_mix_criteria_documents
   has_many :documents, through: :scheme_mix_criteria_documents
-  has_many :tasks, dependent: :destroy
   belongs_to :scheme_mix
   belongs_to :scheme_criterion
   belongs_to :certifier, class_name: 'User', inverse_of: :scheme_mix_criteria

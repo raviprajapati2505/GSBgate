@@ -1,2 +1,0 @@
-class ProjectTask < Task
-end

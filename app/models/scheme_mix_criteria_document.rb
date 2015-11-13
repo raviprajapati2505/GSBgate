@@ -6,7 +6,6 @@ class SchemeMixCriteriaDocument < ActiveRecord::Base
 
   belongs_to :document
   belongs_to :scheme_mix_criterion
-  has_many :tasks, dependent: :destroy
 
   after_initialize :init
 
