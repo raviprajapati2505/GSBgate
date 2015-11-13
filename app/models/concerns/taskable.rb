@@ -437,7 +437,7 @@ module Taskable
           Task.delete_all(taskable: self, task_description_id: CERT_MEM_VERIFY)
           # Destroy certifier manager tasks to assign certifier team members to the criterion
           if self.scheme_mix.certification_path.scheme_mix_criteria.unassigned.where(status: [SchemeMixCriterion.statuses[:verifying], SchemeMixCriterion.statuses[:verifying_after_appeal]]).count.zero?
-            Task.delete_all(taskable: self.scheme_mix.certification_path, task_description_id: CERT_MNGR_ASSIGN_AFTER_APPEAL)
+            Task.delete_all(taskable: self.scheme_mix.certification_path, task_description_id: [CERT_MNGR_ASSIGN, CERT_MNGR_ASSIGN_AFTER_APPEAL])
           end
           if !self.due_date.blank? && self.due_date < Date.current
             # Destroy certifier manager tasks to follow up overdue tasks
