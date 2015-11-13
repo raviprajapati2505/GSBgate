@@ -7,12 +7,16 @@
             </div>
             <div class="ibox-content sortable">
                 <div class="sortable">
-                <% @scheme_criterion.scheme_criterion_texts.each do |criterion_text| %>
-                    <%= render 'scheme_criterion_texts/text', criterion_text: criterion_text %>
-                <% end %>
+                    <% @scheme_criterion.scheme_criterion_texts.each do |criterion_text| %>
+                        <%= render 'scheme_criterion_texts/text', criterion_text: criterion_text %>
+                    <% end %>
                 </div>
-                <div class="hr-line-dashed"></div>
-                <%= link_to raw('<i title="Add criterion text" class="fa fa-lg fa-plus" style="padding-right: 10px;"></i>Add text'), new_scheme_criterion_text_path(scheme_criterion_id: @scheme_criterion.id), class: 'btn btn-primary' %>
+                <% if can?(:create, SchemeCriterionText.new(scheme_criterion_id: @scheme_criterion.id)) %>
+                    <div class="hr-line-dashed"></div>
+                    <%= link_to(new_scheme_criterion_text_path(scheme_criterion_id: @scheme_criterion.id), class: 'btn btn-primary') do %>
+                        <%= fa_icon('plus', 'Add text') %>
+                    <% end %>
+                <% end %>
             </div>
         </div>
     </div>

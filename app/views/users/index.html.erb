@@ -18,8 +18,10 @@
                     <td><%= user.email %></td>
                     <td><%= user.role.humanize %></td>
                     <td>
-                        <% if user.id != 1 %>
-                        <%= link_to "<i title=\"#{t('.action_edit_title')}\" class=\"fa fa-lg fa-edit\" style=\"padding-right: 10px;\"></i>".html_safe, edit_user_path(user) %>
+                        <% if can?(:edit, user) %>
+                            <%= link_to edit_user_path(user) do %>
+                                <%= fa_icon('edit', {tooltip: t('.action_edit_title')}) %>
+                            <% end %>
                         <% end %>
                     </td>
                 </tr>

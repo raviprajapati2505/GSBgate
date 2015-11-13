@@ -23,10 +23,14 @@
                 <%= f.text_area :audit_log_user_comment, rows: 4 %>
             </div>
             <div class="modal-footer">
-                <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
-                    <i title="Save" class="fa fa-lg fa-save" style="padding-right: 10px;"></i>Save
+                <% if can?(:update_status, @scheme_mix_criterion) %>
+                    <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
+                        <%= fa_icon('save', 'Save') %>
+                    <% end %>
                 <% end %>
-                <button type="button" class="btn btn-white" data-dismiss="modal"><i title="Cancel" class="fa fa-lg fa-times" style="padding-right: 10px;"></i><%= t('.btn_cancel') %></button>
+                <button type="button" class="btn btn-white" data-dismiss="modal">
+                    <%= fa_icon('times', t('.btn_cancel'))%>
+                </button>
             </div>
         <% else %>
             <div class="modal-header alert-danger">
@@ -34,7 +38,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
                 <h4 class="modal-title">
-                    <i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;The status cannot be advanced yet because of the following issues:
+                    <%= fa_icon('exclamation-circle', 'The status cannot be advanced yet because of the following issues:') %>
                 </h4>
             </div>
             <div class="modal-body">

@@ -38,10 +38,14 @@
                 </ul>
             </div>
             <div class="modal-footer">
-                <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
-                    <i title="Save" class="fa fa-lg fa-save" style="padding-right: 10px;"></i><%= t('.btn_save') %>
+                <% if can?(:create_link, @scheme_mix_criteria_document) %>
+                    <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
+                        <%= fa_icon('save', t('.btn_save')) %>
+                    <% end %>
                 <% end %>
-                <button type="button" class="btn btn-white" data-dismiss="modal"><i title="Cancel" class="fa fa-lg fa-times" style="padding-right: 10px;"></i><%= t('.btn_cancel') %></button>
+                <button type="button" class="btn btn-white" data-dismiss="modal">
+                    <%= fa_icon('times', t('.btn_cancel')) %>
+                </button>
             </div>
         </div>
     <% end %>

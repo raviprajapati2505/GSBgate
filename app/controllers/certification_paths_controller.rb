@@ -119,34 +119,32 @@ class CertificationPathsController < AuthenticatedController
   end
 
   def edit_status
+    authorize! :edit_status, @certification_path
   end
 
   def update_status
-    if !@certification_path.can_advance_status?(current_user)
-      redirect_to project_certification_path_path(@project, @certification_path), alert: 'You are not allowed to advance the certificate status at this time.'
-    else
-      CertificationPath.transaction do
-        todos = @certification_path.todo_before_status_advance
+    authorize! :update_status, @certification_path
+    CertificationPath.transaction do
+      todos = @certification_path.todo_before_status_advance
 
-        if todos.blank?
-          # Check if there's an appeal
-          @certification_path.appealed = certification_path_params.has_key?(:appealed)
+      if todos.blank?
+        # Check if there's an appeal
+        @certification_path.appealed = certification_path_params.has_key?(:appealed)
 
-          # Retrieve & save the next status
-          @certification_path.certification_path_status_id = @certification_path.next_status
-          @certification_path.audit_log_user_comment = params[:certification_path][:audit_log_user_comment]
-          @certification_path.save!
+        # Retrieve & save the next status
+        @certification_path.certification_path_status_id = @certification_path.next_status
+        @certification_path.audit_log_user_comment = params[:certification_path][:audit_log_user_comment]
+        @certification_path.save!
 
-          # If there was an appeal, set the status of the selected criteria to 'Appealed'
-          if certification_path_params.has_key?(:appealed) && params.has_key?(:scheme_mix_criterion)
-            params[:scheme_mix_criterion].each do |smc_id|
-              SchemeMixCriterion.find(smc_id.to_i).appealed!
-            end
+        # If there was an appeal, set the status of the selected criteria to 'Appealed'
+        if certification_path_params.has_key?(:appealed) && params.has_key?(:scheme_mix_criterion)
+          params[:scheme_mix_criterion].each do |smc_id|
+            SchemeMixCriterion.find(smc_id.to_i).appealed!
           end
-          redirect_to project_certification_path_path(@project, @certification_path), notice: 'The certificate status was successfully updated.'
-        else
-          redirect_to project_certification_path_path(@project, @certification_path), alert: todos.first
         end
+        redirect_to project_certification_path_path(@project, @certification_path), notice: 'The certificate status was successfully updated.'
+      else
+        redirect_to project_certification_path_path(@project, @certification_path), alert: todos.first
       end
     end
   end

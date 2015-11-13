@@ -3,6 +3,11 @@ class TasksController < AuthenticatedController
 
   def index
     @page_title = 'Tasks'
+    if current_user.system_admin? || current_user.gord_manager? || current_user.gord_top_manager?
+      @projects = Project.all
+    else
+      @projects = current_user.projects
+    end
 
     if params[:reset].present?
       session[:task] = {'project_id' => nil, 'certification_path_id' => nil, 'scheme_mix_criterion_id' => nil}
@@ -35,6 +40,7 @@ class TasksController < AuthenticatedController
       scheme_mix_criterion_id = nil
     end
 
+    # TODO: investigate if refactor to use load_and_authorize_resource is possible ?
     @tasks = TaskService::get_tasks(page: params[:page], per_page: 25, user: current_user,
                                     project_id: session[:task]['project_id'],
                                     certification_path_id: session[:task]['certification_path_id'],

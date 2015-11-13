@@ -3,48 +3,50 @@
         <h4 class="panel-title">
             <%= audit_log_label(requirement_datum) %>
             <a href="#requirement-<%= requirement_datum.id %>-collapsable" data-parent="#accordion" data-toggle="collapse" class="collapsed" aria-expanded="false">
-                <% if requirement_datum.required? %><i class="fa fa-lg fa-square-o" title="<%= t('.tooltip_requirement_required') %>" data-toggle="tooltip"></i>
-                <% elsif requirement_datum.provided? %><i class="fa fa-lg fa-check-square-o" title="<%= t('.tooltip_requirement_provided') %>" data-toggle="tooltip"></i>
-                <% else %><i class="fa fa-lg fa-square" title="<%= t('.tooltip_requirement_not_required') %>" data-toggle="tooltip"></i><% end %>
+                <% if requirement_datum.required? %>
+                    <%= fa_icon('square-o', {tooltip: t('.tooltip_requirement_required')}) %>
+                <% elsif requirement_datum.provided? %>
+                    <%= fa_icon('check-square-o', {tooltip: t('.tooltip_requirement_provided')}) %>
+                <% else %>
+                    <%= fa_icon('square', {tooltip: t('.tooltip_requirement_not_required')}) %>
+                <% end %>
                 &nbsp;&nbsp;<%= requirement_datum.name %>
-                <% if requirement_datum.required? && !requirement_datum.due_date.nil? && Date.today > requirement_datum.due_date %>&nbsp;<i class="fa fa-clock-o due-date-expired" title="<%= t('.tooltip_due_date') %>" data-toggle="tooltip"></i><% end %>
+                <% if requirement_datum.required? && !requirement_datum.due_date.nil? && Date.today > requirement_datum.due_date %>
+                    &nbsp;<%= fa_icon('clock-o', {class: 'due-date-expired', tooltip: t('.tooltip_due_date')}) %>
+                <% end %>
             </a>
         </h4>
     </div>
     <div class="panel-collapse collapse" id="requirement-<%= requirement_datum.id %>-collapsable" aria-expanded="false" style="height: 0px;">
         <div class="panel-body">
-            <%= bootstrap_form_tag url: project_certification_path_scheme_mix_scheme_mix_criterion_requirement_datum_path(@project, @certification_path.id, @scheme_mix.id, @scheme_mix_criterion.id, requirement_datum.id), method: 'put', remote: true, :html => { :multipart => true } do |f| %>
+            <% can_update_requirement_datum = can?(:update, requirement_datum) %>
+            <% can_update_status_requirement_datum = can?(:update_status, requirement_datum) %>
+            <% can_refuse_requirement_datum = can?(:refuse, requirement_datum) %>
+
+            <!-- Determine the form path, and by extension, the controller action -->
+            <% if can_update_requirement_datum %>
+                <% form_path_requirement_datum = project_certification_path_scheme_mix_scheme_mix_criterion_requirement_datum_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, requirement_datum) %>
+            <% else %>
+                <% if can_update_status_requirement_datum %>
+                    <% form_path_requirement_datum = update_status_project_certification_path_scheme_mix_scheme_mix_criterion_requirement_datum_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, requirement_datum) %>
+                <% else %>
+                    <% form_path_requirement_datum = '#' %>
+                <% end %>
+            <% end %>
+
+            <%= bootstrap_form_tag url: form_path_requirement_datum, method: 'put', remote: true, :html => { :multipart => true } do |f| %>
                 <div class="row">
-                    <% certification_path = CertificationPath.find(@certification_path.id) # todo: avoid this %>
-                    <% if current_user.system_admin? || (certification_path.in_submission? && @scheme_mix_criterion.in_submission? && current_user.project_manager?(@project)) %>
-                        <div class="col-md-6">
-                            <% users = User.authorized_for_project(@project).with_assessor_project_role %>
-                            <% if (users.count > 0) && (can? :read, @project.projects_users.first) %>
-                                <% if requirement_datum.user.nil? %>
-                                    <%= f.select :user_id, options_for_select(users.map { |k| [k.email, k.id]}), {label: 'Responsibility', include_blank: ''}, class: 'select2-assessor' %>
-                                <% else %>
-                                    <%= f.select :user_id, options_for_select(users.map { |k| [k.email, k.id]}, requirement_datum.user.id), {label: 'Responsibility', include_blank: ''}, class: 'select2-assessor' %>
-                                <% end %>
-                            <% end %>
-                        </div>
-                        <div class="col-md-3">
-                            <%= f.text_field :due_date, value: ((l requirement_datum.due_date, format: :short) if !requirement_datum.due_date.nil?), prepend: '<i class="fa fa-calendar"></i>'.html_safe, class: 'datepicker-future', autocomplete: 'off' %>
-                        </div>
-                    <% else %>
-                        <div class="col-md-6">
-                            <% if requirement_datum.user.nil? %>
-                                <%= f.label :user_id, 'Responsibility' %>
-                                <p>This requirement is not assigned yet.</p>
-                            <% else %>
-                                <%= f.select :user_id, options_for_select([requirement_datum.user].map { |k| [k.email, k.id]}, requirement_datum.user.id), {label: 'Responsibility'}, disabled: true, class: 'select2-assessor' %>
-                            <% end %>
-                        </div>
-                        <div class="col-md-3">
-                            <%= f.text_field :due_date, value: ((l requirement_datum.due_date, format: :short) if !requirement_datum.due_date.nil?), prepend: '<i class="fa fa-calendar"></i>'.html_safe, class: 'datepicker-future', autocomplete: 'off', disabled: true %>
-                        </div>
-                    <% end %>
+                    <div class="col-md-6">
+                        <% users = User.authorized_for_project(@project).with_assessor_project_role %>
+                        <% user_id = requirement_datum.user.id if requirement_datum.user.present? %>
+                        <%= f.select :user_id, options_for_select(users.map { |k| [k.email, k.id]}, user_id), {include_blank: true, label: 'Responsibility'}, class: 'select2-assessor', disabled: !can_update_requirement_datum%>
+                    </div>
                     <div class="col-md-3">
-                        <%= f.select :status, options_for_select(RequirementDatum.statuses.keys.map { |k| [k.humanize, k]}, requirement_datum.status), {}, disabled: !(current_user.system_admin? || (can?(:update, requirement_datum) && certification_path.in_submission? && @scheme_mix_criterion.in_submission?)) %>
+                        <% due_date = ((l requirement_datum.due_date, format: :short) if !requirement_datum.due_date.nil?) %>
+                        <%= f.text_field :due_date, value: due_date, prepend: fa_icon('calendar'), class: 'datepicker-future', autocomplete: 'off', disabled: !can_update_requirement_datum %>
+                    </div>
+                    <div class="col-md-3">
+                        <%= f.select :status, options_for_select(RequirementDatum.statuses.keys.map { |k| [k.humanize, k]}, requirement_datum.status), {}, disabled: !(can_update_requirement_datum || can_update_status_requirement_datum) %>
                     </div>
                 </div>
                 <%-# START COMMENT -%>
@@ -62,12 +64,15 @@
                     <% end %>
                 <% end %>
                 <%-# END COMMENT -%>
-                <% if current_user.system_admin? || (certification_path.in_submission? && @scheme_mix_criterion.in_submission? && can?(:update, requirement_datum)) %>
+
+                <% if can_update_requirement_datum || can_update_status_requirement_datum || can_refuse_requirement_datum %>
                     <div class="hr-line-dashed"></div>
-                    <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
-                        <i title="Save" class="fa fa-lg fa-save" style="padding-right: 10px;"></i>Save
+                    <% if can_update_requirement_datum || can_update_status_requirement_datum %>
+                        <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
+                            <%= fa_icon('save', 'Save') %>
+                        <% end %>
                     <% end %>
-                    <% if (current_user == requirement_datum.user) %>
+                    <% if can_refuse_requirement_datum %>
                         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#refuseRequirementModal<%= requirement_datum.id %>"><i class="fa fa-lg fa-ban" style="padding-right: 10px;"></i>Refuse this requirement</button>
                     <% end %>
                 <% end %>
@@ -75,6 +80,6 @@
         </div>
     </div>
 </div>
-<% if (current_user == requirement_datum.user) %>
-    <%= render 'requirement_data/refuse_requirement', requirement_datum: requirement_datum, certification_path_id: @certification_path.id, scheme_mix_id: @scheme_mix.id, scheme_mix_criterion_id: @scheme_mix_criterion.id %>
+<% if can?(:refuse, requirement_datum) %>
+    <%= render 'requirement_data/refuse_requirement', requirement_datum: requirement_datum %>
 <% end %>

@@ -17,22 +17,30 @@
                 </tbody>
             </table>
             <% if can?(:update_status, @scheme_mix_criterion) %>
-                <% if @certification_path.in_submission? && current_user.project_manager?(@project) %>
-                    <% if @scheme_mix_criterion.in_submission? %>
-                        <div class="hr-line-dashed"></div>
-                        <%= link_to('<i class="fa fa-lg fa-check" style="padding-right: 10px;"></i>Submit criterion'.html_safe, edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), class: 'btn btn-primary', remote: true) %>
-                    <% else %>
-                        <div class="hr-line-dashed"></div>
-                        <%= link_to('<i class="fa fa-lg fa-undo" style="padding-right: 10px;"></i>Undo status change'.html_safe, edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), class: 'btn btn-danger', remote: true) %>
-                    <% end %>
-                <% elsif @certification_path.in_verification? && (current_user.certifier_manager?(@project) || current_user.certifier?(@project)) %>
+                <% if @scheme_mix_criterion.at_certifier_side? %>
+                    <div class="hr-line-dashed"></div>
                     <% if @scheme_mix_criterion.in_verification? %>
-                        <div class="hr-line-dashed"></div>
-                        <%= link_to('<i class="fa fa-lg fa-check" style="padding-right: 10px;"></i>Target achieved'.html_safe, edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, achieved: 1), class: 'btn btn-primary', remote: true) %>
-                        <%= link_to('<i class="fa fa-lg fa-times" style="padding-right: 10px;"></i>Target not achieved'.html_safe, edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, achieved: 0), class: 'btn btn-danger', remote: true) %>
+                        <%= can_link_to(edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, achieved: 1), @scheme_mix_criterion, { class: 'btn btn-primary', remote: true} ) do %>
+                            <%= fa_icon('check', 'Target achieved') %>
+                        <% end %>
+                        <%= can_link_to(edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, achieved: 0), @scheme_mix_criterion, { class: 'btn btn-danger', remote: true} ) do %>
+                            <%= fa_icon('times', 'Target not achieved') %>
+                        <% end %>
                     <% else %>
-                        <div class="hr-line-dashed"></div>
-                        <%= link_to('<i class="fa fa-lg fa-undo" style="padding-right: 10px;"></i>Undo status change'.html_safe, edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), class: 'btn btn-danger', remote: true) %>
+                        <%= can_link_to(edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), @scheme_mix_criterion, { class: 'btn btn-danger', remote: true} ) do %>
+                            <%= fa_icon('undo', 'Undo status change') %>
+                        <% end %>
+                    <% end %>
+                <% else %>
+                    <div class="hr-line-dashed"></div>
+                    <% if @scheme_mix_criterion.in_submission? %>
+                        <%= can_link_to(edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), @scheme_mix_criterion, { class: 'btn btn-primary', remote: true} ) do %>
+                            <%= fa_icon('check', 'Submit criterion') %>
+                        <% end %>
+                    <% else %>
+                        <%= can_link_to(edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), @scheme_mix_criterion, { class: 'btn btn-danger', remote: true} ) do %>
+                            <%= fa_icon('undo', 'Undo status change') %>
+                        <% end %>
                     <% end %>
                 <% end %>
             <% end %>
@@ -54,7 +62,6 @@
                         </ul>
                     </div>
                 <% end %>
-                <% show_save_button = false %>
                 <table class="table table-bordered table-striped">
                     <thead>
                     <tr>
@@ -66,9 +73,8 @@
                     <tr>
                         <th>Targeted score</th>
                         <td>
-                            <% if current_user.system_admin? || (@certification_path.in_submission? && @scheme_mix_criterion.in_submission? && current_user.project_manager?(@project)) %>
+                            <% if can?(:update_targeted_score, @scheme_mix_criterion) %>
                                 <%= f.select :targeted_score, @scheme_mix_criterion.scheme_criterion.scores, hide_label: true %>
-                                <% show_save_button = true %>
                             <% else %>
                                 <%= f.static_control :targeted_score, hide_label: true  %>
                             <% end %>
@@ -77,21 +83,19 @@
                     <tr>
                         <th>Submitted score</th>
                         <td>
-                            <% if current_user.system_admin? || (@certification_path.in_submission? && @scheme_mix_criterion.in_submission? && (current_user.project_manager?(@project) || @scheme_mix_criterion.contains_requirement_for?(current_user))) %>
+                            <% if can?(:update_submitted_score, @scheme_mix_criterion) %>
                                 <%= f.select :submitted_score, @scheme_mix_criterion.scheme_criterion.scores, {include_blank: '-', hide_label: true} %>
-                                <% show_save_button = true %>
                             <% else %>
                                 <%= f.static_control :submitted_score, hide_label: true %>
                             <% end %>
                         </td>
                     </tr>
-                    <% if current_user.system_admin? || (!@certification_path.in_pre_verification?) %>
+                    <% if !@certification_path.in_pre_verification? %>
                     <tr>
                         <th>Achieved score</th>
                         <td>
-                            <% if current_user.system_admin? || (@certification_path.in_verification? && @scheme_mix_criterion.in_verification? && ((@scheme_mix_criterion.certifier == current_user) || current_user.certifier_manager?(@project))) %>
+                            <% if can?(:update_achieved_score, @scheme_mix_criterion) %>
                                 <%= f.select :achieved_score, @scheme_mix_criterion.scheme_criterion.scores, {include_blank: '-', hide_label: true} %>
-                                <% show_save_button = true %>
                             <% else %>
                                 <%= f.static_control :achieved_score, hide_label: true %>
                             <% end %>
@@ -100,10 +104,10 @@
                     <% end %>
                     </tbody>
                 </table>
-                <% if show_save_button %>
+                <% if can?(:update_targeted_score, @scheme_mix_criterion) || can?(:update_submitted_score, @scheme_mix_criterion) || can?(:update_achieved_score, @scheme_mix_criterion) %>
                     <div class="hr-line-dashed"></div>
                     <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
-                        <i title="Save" class="fa fa-lg fa-save" style="padding-right: 10px;"></i>Save
+                        <%= fa_icon('save', 'Save') %>
                     <% end %>
                 <% end %>
             <% end %>
@@ -116,15 +120,12 @@
         </div>
         <div class="ibox-content">
             <%= bootstrap_form_tag url: assign_certifier_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), method: 'put' do |f| %>
-                <% if current_user.system_admin? || (@certification_path.in_verification? && current_user.certifier_manager?(@project)) %>
+                <% if can?(:assign_certifier, @scheme_mix_criterion) %>
                     <div class="row">
                         <div class="col-md-7">
                             <% users = User.authorized_for_project(@project).with_certifier_project_role %>
-                            <% if @scheme_mix_criterion.certifier.nil? %>
-                                <%= f.select :user_id, options_for_select(users.map { |k| [k.email, k.id]}), {label: 'Responsibility', include_blank: ''}, class: 'select2-certifier' %>
-                            <% else %>
-                                <%= f.select :user_id, options_for_select(users.map { |k| [k.email, k.id]}, @scheme_mix_criterion.certifier.id), {label: 'Responsibility', include_blank: ''}, class: 'select2-certifier' %>
-                            <% end %>
+                            <% user_id = @scheme_mix_criterion.certifier.id if @scheme_mix_criterion.certifier.present? %>
+                            <%= f.select :user_id, options_for_select(users.map { |k| [k.email, k.id]}, user_id), {label: 'Responsibility', include_blank: ''}, class: 'select2-certifier' %>
                         </div>
                         <div class="col-md-5">
                             <%= f.text_field :due_date, value: ((l @scheme_mix_criterion.due_date, format: :short) if !@scheme_mix_criterion.due_date.nil?), prepend: '<i class="fa fa-calendar"></i>'.html_safe, class: 'datepicker-future', autocomplete: 'off' %>
@@ -206,7 +207,7 @@
             </div>
         </div>
     <% end %>
-    <% if current_user.system_admin? || (@certification_path.in_submission? && (current_user.project_manager?(@project) || current_user.project_team_member?(@project))) %>
+    <% if can?(:create, Document.new(:scheme_mix_criteria_documents_attributes => [{:scheme_mix_criterion_id => @scheme_mix_criterion.id}])) %>
         <div class="ibox">
             <div class="ibox-title">
                 <h5>Upload documentation</h5>
@@ -221,7 +222,7 @@
             <h5>Documentation</h5>
         </div>
         <div class="ibox-content">
-            <%= render 'scheme_mix_criteria_documents/index', scheme_mix_criteria_documents: (current_user.certifier_manager?(@project) || current_user.certifier?(@project)) ? @scheme_mix_criterion.scheme_mix_criteria_documents.approved : @scheme_mix_criterion.scheme_mix_criteria_documents %>
+            <%= render 'scheme_mix_criteria_documents/index', scheme_mix_criteria_documents: @scheme_mix_criterion.scheme_mix_criteria_documents %>
         </div>
     </div>
 </div>

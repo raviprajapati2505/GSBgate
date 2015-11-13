@@ -11,10 +11,10 @@
                     <%= f.text_field :scheme_category_name, value: @default_values[:scheme_category_name], label: 'Category name contains' %>
                     <div class="hr-line-dashed"></div>
                     <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
-                        <i title="Apply filter" class="fa fa-lg fa-filter" style="padding-right: 10px;"></i>Apply filter
+                        <%= fa_icon('filter', 'Apply filter') %>
                     <% end %>
                     <%= link_to scheme_criteria_path, class: 'btn btn-white' do %>
-                        <i class="fa fa-lg fa-times" style="padding-right: 10px;"></i>Remove filter
+                        <%= fa_icon('times', 'Remove filter') %>
                     <% end %>
                 <% end %>
             </div>
@@ -29,10 +29,10 @@
                 <table class="table table-bordered">
                     <thead>
                         <tr>
+                            <th>Criterion</th>
                             <th>Certificate</th>
                             <th>Scheme</th>
                             <th>Category</th>
-                            <th>Criterion</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -41,10 +41,10 @@
                     <% else %>
                         <% @scheme_criteria.each do |scheme_criterion| %>
                             <tr>
-                                <td><%= link_to(scheme_criterion.scheme_category.scheme.certificate.name, scheme_criterion_path(scheme_criterion)) %></td>
+                                <td><%= link_to(scheme_criterion.full_name, scheme_criterion_path(scheme_criterion)) %></td>
+                                <td><%= scheme_criterion.scheme_category.scheme.certificate.name %></td>
                                 <td><%= scheme_criterion.scheme_category.scheme.name %></td>
                                 <td><%= scheme_criterion.scheme_category.name %></td>
-                                <td><%= scheme_criterion.full_name %></td>
                             </tr>
                         <% end %>
                     <% end %>

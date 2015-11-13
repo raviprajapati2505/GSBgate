@@ -16,27 +16,33 @@
                         <tr>
                             <th>Downloads</th>
                             <td>
-                                <div>
-                                    <%= link_to download_certificate_report_project_certification_path_path(@project, @certification_path), class: 'btn btn-xs btn-primary' do %>
-                                        <i class="fa fa-lg fa-download"></i>
-                                    <% end %>
-                                    &nbsp;
-                                    Download Certificate
-                                </div>
-                                <div>
-                                    <%= link_to download_coverletter_report_project_certification_path_path(@project, @certification_path), class: 'btn btn-xs btn-primary' do %>
-                                        <i class="fa fa-lg fa-download"></i>
-                                    <% end %>
-                                    &nbsp;
-                                    Download Coverletter
-                                </div>
-                                <div>
-                                    <%= link_to download_scores_report_project_certification_path_path(@project, @certification_path), class: 'btn btn-xs btn-primary' do %>
-                                        <i class="fa fa-lg fa-download"></i>
-                                    <% end %>
-                                    &nbsp;
-                                    Download Score Report
-                                </div>
+                                <% if can?(:download_certificate, @certification_path) %>
+                                    <div>
+                                        <%= link_to(download_certificate_report_project_certification_path_path(@project, @certification_path), { class: 'btn btn-xs btn-primary' }) do %>
+                                            <%= fa_icon('download') %>
+                                        <% end %>
+                                        &nbsp;
+                                        Download Certificate
+                                    </div>
+                                <% end %>
+                                <% if can?(:download_certificate_coverletter, @certification_path) %>
+                                    <div>
+                                        <%= link_to(download_coverletter_report_project_certification_path_path(@project, @certification_path), { class: 'btn btn-xs btn-primary' }) do %>
+                                            <%= fa_icon('download') %>
+                                        <% end %>
+                                        &nbsp;
+                                        Download Coverletter
+                                    </div>
+                                <% end %>
+                                <% if can?(:download_scores_report, @certification_path) %>
+                                    <div>
+                                        <%= link_to(download_scores_report_project_certification_path_path(@project, @certification_path), { class: 'btn btn-xs btn-primary' }) do %>
+                                            <%= fa_icon('download') %>
+                                        <% end %>
+                                        &nbsp;
+                                        Download Score Report
+                                    </div>
+                                <% end %>
                             </td>
                         </tr>
                     <% end %>
@@ -65,39 +71,41 @@
                     <tr>
                         <th>
                             PCR
-                            <%= tooltip('Pre Certification Review. The project manager can apply for PCR. During PCR, GORD will assist the project team in completing the cerification process.') %>
+                            <%= tooltip('Pre Certification Review. The project manager can apply for PCR. During PCR, GORD will assist the project team in completing the certification process.') %>
                         </th>
                         <td>
-                            <% applied_icon = @certification_path.pcr_track? ? 'fa-check-square-o' : 'fa-square-o' %>
-                            <% payed_icon = @certification_path.pcr_track_allowed? ? 'fa-check-square-o' : 'fa-square-o' %>
                             <div>
-                                <i class="fa fa-lg <%= applied_icon %>" style="padding-right: 10px;"></i>
+                                <%= fa_icon(@certification_path.pcr_track? ? 'check-square-o' : 'square-o') %>
                                 <span>Applied for PCR</span>
                             </div>
                             <div>
-                                <i class="fa fa-lg <%= payed_icon %>" style="padding-right: 10px;"></i>
+                                <%= fa_icon(@certification_path.pcr_track_allowed? ? 'check-square-o' : 'square-o') %>
                                 <span>PCR payment confirmed</span>
                             </div>
                         </td>
                     </tr>
-                    <tr>
-                        <th>
-                            Documents and audit logs
-                            <%= tooltip('An archive of all approved documents and CSV formatted audit logs regarding the certificate can be downloaded here.') %>
-                        </th>
-                        <td>
-                            <%= link_to archive_project_certification_path_path, class: 'btn btn-xs btn-primary', title: 'Creates a ZIP archive containing all approved documents in this certificate and related audit logs.' do %>
-                                <i class="fa fa-lg fa-download"></i>
-                            <% end %>
-                            &nbsp;
-                            Download archive
-                            <%= tooltip("This document archive contains #{@certification_path.scheme_mix_criteria_documents.approved.count} approved document(s).") %>
-                        </td>
-                    </tr>
+                    <% if can?(:download_archive, @certification_path) %>
+                        <tr>
+                            <th>
+                                Documents and audit logs
+                                <%= tooltip('An archive of all approved documents and CSV formatted audit logs regarding the certificate can be downloaded here.') %>
+                            </th>
+                            <td>
+                                <%= link_to(archive_project_certification_path_path, {class: 'btn btn-xs btn-primary', title: 'Creates a ZIP archive containing all approved documents in this certificate and related audit logs.'}) do %>
+                                    <%= fa_icon('download') %>
+                                <% end %>
+                                &nbsp;
+                                Download archive
+                                <%= tooltip("This document archive contains #{@certification_path.scheme_mix_criteria_documents.approved.count} approved document(s).") %>
+                            </td>
+                        </tr>
+                    <% end %>
                     </tbody>
                 </table>
-                <% can_apply_for_pcr = (!@certification_path.pcr_track?) && (current_user.project_manager?(@project) || current_user.system_admin?) %>
-                <% can_approve_pcr = (!@certification_path.pcr_track_allowed?) && @certification_path.pcr_track? && current_user.system_admin? %>
+                <!-- apply is only allowed if the user has the ability, AND  there has nog yet been applied for pcr -->
+                <% can_apply_for_pcr = can?(:apply_for_pcr, @certification_path) && !@certification_path.pcr_track? %>
+                <!-- approve is only allowed if the user has the ability, AND an apply has been done, but it has not yet been approved -->
+                <% can_approve_pcr = can?(:approve_pcr, @certification_path) && @certification_path.pcr_track? && !@certification_path.pcr_track_allowed? %>
                 <% if can_apply_for_pcr || can_approve_pcr %>
                     <div class="hr-line-dashed"></div>
                 <% end %>
@@ -119,14 +127,20 @@
             </div>
             <div class="ibox-content">
                 <%= render 'timeline', certification_path: @certification_path %>
-                <% if @certification_path.can_advance_status?(current_user) %>
+                <% if can?(:update_status, @certification_path) %>
                     <% if @certification_path.certification_path_status_id == CertificationPathStatus::ACKNOWLEDGING %>
                         <div class="hr-line-dashed"></div>
-                        <%= link_to('<i class="fa fa-lg fa-check" style="padding-right: 10px;"></i>Accept all scores'.html_safe, edit_status_project_certification_path_url(@project, @certification_path), class: 'btn btn-primary', remote: true) %>
-                        <%= link_to('<i class="fa fa-lg fa-hand-o-up" style="padding-right: 10px;"></i>Apply for appeal'.html_safe, edit_status_project_certification_path_url(@project, @certification_path, appeal: 1), class: 'btn btn-primary', remote: true) %>
+                        <%= link_to(edit_status_project_certification_path_url(@project, @certification_path), {class: 'btn btn-primary', remote: true}) do %>
+                            <%= fa_icon('check', 'Accept all scores') %>
+                        <% end %>
+                        <%= link_to(edit_status_project_certification_path_url(@project, @certification_path,  appeal: 1), {class: 'btn btn-primary', remote: true}) do %>
+                            <%= fa_icon('hand-o-up', 'Apply for appeal') %>
+                        <% end %>
                     <% else %>
                         <div class="hr-line-dashed"></div>
-                        <%= link_to("<i class=\"fa fa-lg fa-forward\" style=\"padding-right: 10px;\"></i>Advance status to '#{CertificationPathStatus.find_by(id: @certification_path.next_status).name}'".html_safe, edit_status_project_certification_path_url(@project, @certification_path), class: 'btn btn-primary', remote: true) %>
+                        <%= link_to(edit_status_project_certification_path_url(@project, @certification_path), {class: 'btn btn-primary', remote: true}) do %>
+                            <%= fa_icon('forward', "Advance status to '#{CertificationPathStatus.find_by(id: @certification_path.next_status).name}'") %>
+                        <% end %>
                     <% end %>
                 <% end %>
             </div>
@@ -141,20 +155,19 @@
             <div class="ibox-content">
                 <%= scores_legend %>
                 <%= render 'scheme_mixes/overview', certification_path: @certification_path %>
-                <% if (@certification_path.in_submission? && can?(:allocate_project_team_responsibility, @certification_path)) ||
-                        (@certification_path.in_verification? && can?(:allocate_certifier_team_responsibility, @certification_path)) %>
+                <% can_allocate_project_team_responsibility = @certification_path.in_submission? && can?(:allocate_project_team_responsibility, @certification_path) %>
+                <% can_allocate_certifier_team_responsibility = @certification_path.in_verification? && can?(:allocate_certifier_team_responsibility, @certification_path) %>
+                <% if can_allocate_project_team_responsibility || can_allocate_certifier_team_responsibility %>
                     <div class="hr-line-dashed"></div>
-                    <% if (@certification_path.in_submission? && can?(:allocate_project_team_responsibility, @certification_path)) %>
+                    <% if can_allocate_project_team_responsibility %>
                         <button type="button" class="btn btn-white" data-toggle="modal" data-target="#allocateProjectTeamResponsibilityModal">
-                            <i class="fa fa-lg fa-th-list" style="padding-right: 10px;"></i>Allocate project team
-                            responsibility
+                            <%= fa_icon('th-list', 'Allocate project team responsibility') %>
                         </button>
                         <%= render 'allocate_project_team_responsibility', project: @project, certification_path: @certification_path %>
                     <% end %>
-                    <% if (@certification_path.in_verification? && can?(:allocate_certifier_team_responsibility, @certification_path)) %>
+                    <% if can_allocate_certifier_team_responsibility %>
                         <button type="button" class="btn btn-white" data-toggle="modal" data-target="#allocateCertifierTeamResponsibilityModal">
-                            <i class="fa fa-lg fa-th-list" style="padding-right: 10px;"></i>Allocate certifier team
-                            responsibility
+                            <%= fa_icon('th-list', 'Allocate certifier team responsibility') %>
                         </button>
                         <%= render 'allocate_certifier_team_responsibility', project: @project, certification_path: @certification_path %>
                     <% end %>

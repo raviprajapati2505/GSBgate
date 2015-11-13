@@ -5,7 +5,7 @@
                 <h5>Scheme details</h5>
             </div>
             <div class="ibox-content">
-                <table class="table table-bordered table-striped">
+                <table class="table table-bordered table-striped" cellspacing="0" width="100%">
                     <tbody>
                     <tr>
                         <th>Scheme name</th>
@@ -30,8 +30,7 @@
                     <tr>
                         <th>Total requirement progress</th>
                         <td>
-                            <% processed_count = RequirementDatum.for_scheme_mix(@scheme_mix).provided.count +
-                                    RequirementDatum.for_scheme_mix(@scheme_mix).not_required.count %>
+                            <% processed_count = RequirementDatum.for_scheme_mix(@scheme_mix).provided.count + RequirementDatum.for_scheme_mix(@scheme_mix).not_required.count %>
                             <% total_count = RequirementDatum.for_scheme_mix(@scheme_mix).count %>
                             <div class="progress">
                                 <div class="progress-bar" style="min-width: 2em; width: <%= (total_count != 0 ? (processed_count * 100 / total_count) : 100) %>%;">
@@ -66,7 +65,7 @@
             <div class="ibox-content">
                 <%= scores_legend %>
                 <div id="categories-accordion">
-                    <table class="table table-bordered">
+                    <table class="table table-bordered" cellspacing="0" width="100%">
                         <thead>
                         <tr>
                             <th>&nbsp;</th>
@@ -95,7 +94,7 @@
                         %>
                         <% @scheme_mix.scheme_categories.uniq.each_with_index do |category, i| %>
                             <tr class="accordion-toggle" data-toggle="collapse" data-target="#category-panel-<%= category.id %>" data-parent="#categories-accordion">
-                                <td><i class="fa fa-caret-square-o-right"></i></td>
+                                <td><%= fa_icon('caret-square-o-right') %></td>
                                 <td><%= category.code %></td>
                                 <td><%= category.name %></td>
                                 <td>
@@ -164,7 +163,11 @@
                                             <% @scheme_mix.scheme_mix_criteria.for_category(category).order('scheme_criteria.number').each_with_index do |scheme_mix_criterion, j| %>
                                                 <tr>
                                                     <td><%= scheme_mix_criterion.code %></td>
-                                                    <td><%= link_to(scheme_mix_criterion.name, project_certification_path_scheme_mix_scheme_mix_criterion_path(@certification_path.project, @certification_path, @scheme_mix, scheme_mix_criterion)) %></td>
+                                                    <td>
+                                                        <%= can_link_to(project_certification_path_scheme_mix_scheme_mix_criterion_path(@certification_path.project, @certification_path, @scheme_mix, scheme_mix_criterion), scheme_mix_criterion) do %>
+                                                            <%= scheme_mix_criterion.name %>
+                                                        <% end %>
+                                                    </td>
                                                     <td><%= scheme_mix_criterion.status.humanize %></td>
                                                     <td>
                                                         <%= scheme_mix_criterion.scheme_criterion.weight %> %

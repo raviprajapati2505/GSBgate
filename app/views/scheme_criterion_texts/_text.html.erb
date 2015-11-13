@@ -5,8 +5,18 @@
     <div class="panel-body">
         <div class="<%= criterion_text.name.downcase %>"><%= criterion_text.html_text.html_safe %></div>
     </div>
-    <div class="panel-footer">
-        <%= link_to raw('<i title="Edit criterion text" class="fa fa-lg fa-edit" style="padding-right: 10px;"></i>Edit'), edit_scheme_criterion_text_path(criterion_text), :class => 'btn btn-primary' %>
-        <%= link_to raw('<i title="Delete criterion text" class="fa fa-lg fa-trash" style="padding-right: 10px;"></i>Remove'), scheme_criterion_text_path(criterion_text), method: :delete, data: {confirm: 'Are you sure to remove criterion text ?'}, :class => 'btn btn-danger' %>
-    </div>
+    <% if can?(:edit, criterion_text) || can?(:delete, criterion_text) %>
+        <div class="panel-footer">
+            <% if can?(:edit, criterion_text) %>
+                <%= link_to(edit_scheme_criterion_text_path(criterion_text), :class => 'btn btn-primary') do %>
+                    <%= fa_icon('edit', 'Edit') %>
+                <% end %>
+            <% end %>
+            <% if can?(:delete, criterion_text) %>
+                <%= link_to(scheme_criterion_text_path(criterion_text), method: :delete, data: {confirm: 'Are you sure to remove criterion text ?'}, :class => 'btn btn-danger') do %>
+                    <%= fa_icon('trash', 'Remove') %>
+                <% end %>
+            <% end %>
+        </div>
+    <% end %>
 </div>

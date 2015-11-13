@@ -13,7 +13,7 @@
                 <th class="desktop">Final Design</th>
                 <th class="desktop">Construction</th>
                 <th class="desktop">Operations</th>
-                <th class="desktop">Design Scheme(s)</th>
+                <th class="desktop">Scheme(s)</th>
                 <th class="none"><%= Project.human_attribute_name('country') %></th>
                 <th class="none"><%= Project.human_attribute_name('construction_year') %></th>
                 <th class="none"><%= Project.human_attribute_name('description') %></th>
@@ -60,15 +60,22 @@
                     </td>
                     <td>
                         <% if project.certification_paths.letter_of_conformance.present? %>
-                            <% certification_path = project.certification_paths.letter_of_conformance.first %>
-                            <% certification_path.scheme_mixes.each do |scheme_mix| %>
-                                <div>
-                                    <!--%= link_to project_certification_path_scheme_mix_path(project, certification_path, scheme_mix) do %-->
-                                    <%= scheme_mix.name %>
-                                    <!--% end %-->
-                                </div>
+                            <% loc = project.certification_paths.letter_of_conformance.first %>
+                            <% loc.scheme_mixes.each do |scheme_mix| %>
+                                <div><%= scheme_mix.name %></div>
                             <% end %>
-
+                        <% end %>
+                        <% if project.certification_paths.construction_certificate.present? %>
+                            <% construction = project.certification_paths.construction_certificate.first %>
+                            <% construction.scheme_mixes.each do |scheme_mix| %>
+                                <div><%= scheme_mix.name %></div>
+                            <% end %>
+                        <% end %>
+                        <% if project.certification_paths.operations_certificate.present? %>
+                            <% operations = project.certification_paths.operations_certificate.first %>
+                            <% operations.scheme_mixes.each do |scheme_mix| %>
+                                <div><%= scheme_mix.name %></div>
+                            <% end %>
                         <% end %>
                     </td>
                     <td>

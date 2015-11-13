@@ -3,8 +3,11 @@ class SchemeMixCriteriaController < AuthenticatedController
   load_and_authorize_resource :certification_path, :through => :project
   load_and_authorize_resource :scheme_mix, :through => :certification_path
   load_and_authorize_resource :scheme_mix_criterion, :through => :scheme_mix
+  # don't load the resource for the list action, as it uses a custom query
   skip_load_and_authorize_resource :scheme_mix, only: [:list]
   skip_load_and_authorize_resource :scheme_mix_criterion, only: [:list]
+  # skip default update_score authorization, as we have manually created authorization levels per score type
+  skip_authorize_resource :scheme_mix_criterion, only: :update_scores
   before_action :set_controller_model, except: [:new, :create, :list]
 
   def show
@@ -39,9 +42,9 @@ class SchemeMixCriteriaController < AuthenticatedController
         else
           status = :target_not_achieved_after_appeal
         end
-      elsif @scheme_mix_criterion.submitted? && @certification_path.certification_path_status_id == CertificationPathStatus::SUBMITTING
+      elsif @scheme_mix_criterion.submitted? && [CertificationPathStatus::SUBMITTING, CertificationPathStatus::SUBMITTING_AFTER_SCREENING, CertificationPathStatus::SUBMITTING_PCR].include?(@certification_path.certification_path_status_id)
         status = :submitting
-      elsif @scheme_mix_criterion.submitted_after_appeal? && @certification_path.certification_path_status_id == CertificationPathStatus::SUBMITTING
+      elsif @scheme_mix_criterion.submitted_after_appeal? && @certification_path.certification_path_status_id == CertificationPathStatus::SUBMITTING_AFTER_APPEAL
         status = :submitting_after_appeal
       elsif (@scheme_mix_criterion.target_achieved? || @scheme_mix_criterion.target_not_achieved?) && @certification_path.certification_path_status_id == CertificationPathStatus::VERIFYING
         status = :verifying
@@ -61,6 +64,10 @@ class SchemeMixCriteriaController < AuthenticatedController
   end
 
   def update_scores
+    authorize! :update_targeted_score, @scheme_mix_criterion, message: 'Not authorized to update targeted score' if scheme_mix_criterion_params.has_key?(:targeted_score)
+    authorize! :update_submitted_score, @scheme_mix_criterion, message: 'Not authorized to update submitted score' if scheme_mix_criterion_params.has_key?(:submitted_score)
+    authorize! :update_achieved_score, @scheme_mix_criterion, message: 'Not authorized to update achieved score' if scheme_mix_criterion_params.has_key?(:achieved_score)
+
     # if not attempting criterion
     if @scheme_mix_criterion.targeted_score == -1
       params[:scheme_mix_criterion][:submitted_score] = -1

@@ -31,7 +31,7 @@
                                     <div class="input-group">
                                         <span class="input-group-btn">
                                             <%= link_to(download_project_location_plan_path(@project.id), class: 'btn btn-primary') do %>
-                                                <%= fa_icon('download', {title: "Download #{Project.human_attribute_name('location_plan_file')}"}) %>
+                                                <%= fa_icon('download', {tooltip: "Download #{Project.human_attribute_name('location_plan_file')}"}) %>
                                             <% end %>
                                         </span>
                                         <input type="text" class="form-control" disabled value="<%= @project.location_plan_file.file.filename %>">
@@ -45,7 +45,7 @@
                                     <div class="input-group">
                                         <span class="input-group-btn">
                                             <%= link_to(download_project_site_plan_path(@project.id), class: 'btn btn-primary') do %>
-                                                <%= fa_icon('download', {title: "Download #{Project.human_attribute_name('site_plan_file')}"}) %>
+                                                <%= fa_icon('download', {tooltip: "Download #{Project.human_attribute_name('site_plan_file')}"}) %>
                                             <% end %>
                                         </span>
                                         <input type="text" class="form-control" disabled value="<%= @project.site_plan_file.file.filename %>">
@@ -59,7 +59,7 @@
                                     <div class="input-group">
                                         <span class="input-group-btn">
                                             <%= link_to(download_project_design_brief_path(@project.id), class: 'btn btn-primary') do %>
-                                                <%= fa_icon('download', {title: "Download #{Project.human_attribute_name('design_brief_file')}"}) %>
+                                                <%= fa_icon('download', {tooltip: "Download #{Project.human_attribute_name('design_brief_file')}"}) %>
                                             <% end %>
                                         </span>
                                         <input type="text" class="form-control" disabled value="<%= @project.design_brief_file.file.filename %>">
@@ -73,7 +73,7 @@
                                     <div class="input-group">
                                         <span class="input-group-btn">
                                             <%= link_to( download_project_narrative_path(@project.id), class: 'btn btn-primary') do %>
-                                                <%= fa_icon('download', {title: "Download #{Project.human_attribute_name('project_narrative_file')}"}) %>
+                                                <%= fa_icon('download', {tooltip: "Download #{Project.human_attribute_name('project_narrative_file')}"}) %>
                                             <% end %>
                                         </span>
                                         <input type="text" class="form-control" disabled value="<%= @project.project_narrative_file.file.filename %>">
@@ -113,7 +113,7 @@
                                 <% end %>
                             <% end %>
                             <div class="hr-line-dashed"></div>
-                            <% if can?(:manage, @project) %>
+                            <% if can?(:create, @project) || can?(:update, @project) %>
                                 <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
                                     <%= fa_icon('save', 'Save') %>
                                 <% end %>

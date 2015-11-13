@@ -21,7 +21,9 @@
                             <div class="form-group">
                                 <%= label_tag 'due_date', 'Due date', class: 'control-label' %>
                                 <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                    <span class="input-group-addon">
+                                        <%= fa_icon('calendar') %>
+                                    </span>
                                     <%= text_field_tag 'due_date', nil, {class: 'datepicker-future form-control', autocomplete: 'off'} %>
                                 </div>
                             </div>
@@ -52,10 +54,15 @@
                     </table>
                 </div>
                 <div class="modal-footer">
-                    <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
-                        <i title="Save" class="fa fa-lg fa-save" style="padding-right: 10px;"></i><%= t('.btn_save') %>
+                    <% can_allocate_certifier_team_responsibility = @certification_path.in_verification? && can?(:allocate_certifier_team_responsibility, @certification_path) %>
+                    <% if can_allocate_certifier_team_responsibility %>
+                        <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
+                            <%= fa_icon('save', t('.btn_save')) %>
+                        <% end %>
                     <% end %>
-                    <button type="button" class="btn btn-white" data-dismiss="modal"><i title="Cancel" class="fa fa-lg fa-times" style="padding-right: 10px;"></i><%= t('.btn_cancel') %></button>
+                    <button type="button" class="btn btn-white" data-dismiss="modal">
+                        <%= fa_icon('times', 'Cancel') %>
+                    </button>
                 </div>
             </div>
         <% end %>

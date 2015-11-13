@@ -1,7 +1,7 @@
-<% if certification_path.scheme_mixes.count.zero? %>
+<% if certification_path.is_activating? %>
     <p>A GSAS administrator must first activate the certificate before you can continue.</p>
 <% else %>
-    <table class="table table-bordered table-hover">
+    <table class="table table-bordered table-hover" cellspacing="0" width="100%">
         <thead>
         <tr>
             <th class="col-md-5">Scheme name</th>
@@ -17,7 +17,11 @@
         <tbody>
         <% certification_path.scheme_mixes.each do |scheme_mix| %>
             <tr>
-                <td><%= link_to(scheme_mix.full_name, project_certification_path_scheme_mix_path(certification_path.project, certification_path, scheme_mix)) %></td>
+                <td>
+                    <%= can_link_to(project_certification_path_scheme_mix_path(certification_path.project, certification_path, scheme_mix), scheme_mix) do %>
+                        <%= scheme_mix.full_name %>
+                    <% end %>
+                </td>
                 <td><%= scheme_mix.weight %> %</td>
                 <td>
                     <%= render 'score/score_tabs',

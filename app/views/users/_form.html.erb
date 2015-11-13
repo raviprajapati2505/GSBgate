@@ -8,7 +8,9 @@
                 <div class="ibox-content">
                     <%= f.text_field :email, disabled: 'disabled' %>
                     <%= f.select :role, User.roles.keys.map { |k| [k.humanize, k] } %>
-                    <%= f.primary t('.btn_save') %>
+                    <% if can?(:edit, @user) %>
+                        <%= f.primary t('.btn_save') %>
+                    <% end %>
                     <%= link_to t('.btn_cancel'), users_path, class: 'btn btn-white' %>
                 </div>
             </div>

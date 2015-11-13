@@ -23,17 +23,25 @@
                     <td><%= smcd.document.user.email %></td>
                     <td data-order="<%= localize(smcd.document.created_at) %>" data-search="<%= localize(smcd.document.created_at) %>"><%= localize(smcd.document.created_at).gsub(' ', '&nbsp;').html_safe %></td>
                     <td data-order="<%= smcd.status.humanize %>" data-search="<%= smcd.status.humanize %>">
-                        <% if (current_user.system_admin? || (@certification_path.in_submission? && can?(:update_status, smcd))) %>
-                            <%= link_to(smcd.status.humanize.gsub(' ', '&nbsp;').html_safe, edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, smcd), remote: true) %>
+                        <% if can?(:update_status, smcd) %>
+                            <%= link_to(edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, smcd), remote: true) do %>
+                                <%= smcd.status.humanize.gsub(' ', '&nbsp;').html_safe %>
+                            <% end %>
                         <% else %>
                             <%= smcd.status.humanize.gsub(' ', '&nbsp;').html_safe %>
                         <% end %>
                     </td>
                     <td>
                         <%= audit_log_label(smcd) %>
-                        <%= link_to(raw('<i title="Download document" class="fa fa-lg fa-download"></i>'), project_certification_path_document_path(@project, @certification_path, smcd.document), class: 'btn btn-sm btn-primary') %>
-                        <% if (current_user.system_admin? || (@certification_path.in_submission? && can?(:create_link, smcd))) %>
-                            <%= link_to(raw('<i title="Link document to other criteria" class="fa fa-lg fa-link"></i>'), new_link_project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, smcd), remote: true, class: 'btn btn-sm btn-primary') %>
+                        <% if can?(:read, smcd) %>
+                            <%= link_to(project_certification_path_document_path(@project, @certification_path, smcd.document), class: 'btn btn-sm btn-primary') do %>
+                                <%= fa_icon('download', {tooltip: 'Download document'}) %>
+                            <% end %>
+                        <% end %>
+                        <% if can?(:create_link, smcd) %>
+                            <%= link_to(new_link_project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, smcd), remote: true, class: 'btn btn-sm btn-primary') do %>
+                                <%= fa_icon('link', {tooltip: 'Link document to other criteria'}) %>
+                            <% end %>
                         <% end %>
                     </td>
                 </tr>

@@ -184,6 +184,10 @@ class SchemeMixCriterion < ActiveRecord::Base
     return false
   end
 
+  def at_certifier_side?
+    return verifying? || target_achieved? || target_not_achieved? || verifying_after_appeal? || target_achieved_after_appeal? || target_not_achieved_after_appeal?
+  end
+
   # This overrides default behaviour
   # by default the 'id' is always an integer, but sometimes you want to use a string
   # if an attribute 'id_text' exists then use the value for the 'id' attribute after explicit conversion to string

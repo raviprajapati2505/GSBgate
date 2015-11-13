@@ -1,6 +1,5 @@
 class CertificationPathStatus < ActiveRecord::Base
   has_many :certification_paths
-  enum waiting_for: { project_manager: 0, certifier_manager: 1, system_admin: 2, gord_manager: 3, gord_top_manager: 4 }
 
   # Statuses
   ACTIVATING = 1
@@ -19,4 +18,75 @@ class CertificationPathStatus < ActiveRecord::Base
   APPROVING_BY_TOP_MANAGEMENT = 14
   CERTIFIED = 15
   NOT_CERTIFIED = 16
+
+
+  # ------------------------------------------------------------------------
+  # STATUSES GROUPED BY 'SIDE'
+  # ------------------------------------------------------------------------
+  STATUSES_AT_ASSESSOR_SIDE = [
+      CertificationPathStatus::SUBMITTING,
+      CertificationPathStatus::SUBMITTING_AFTER_SCREENING,
+      CertificationPathStatus::SUBMITTING_PCR,
+      CertificationPathStatus::ACKNOWLEDGING,
+      CertificationPathStatus::SUBMITTING_AFTER_APPEAL,
+      CertificationPathStatus::ACKNOWLEDGING_AFTER_APPEAL
+  ]
+
+  STATUSES_AT_ADMIN_SIDE = [
+      CertificationPathStatus::ACTIVATING,
+      CertificationPathStatus::PROCESSING_PCR_PAYMENT,
+      CertificationPathStatus::PROCESSING_APPEAL_PAYMENT,
+  ]
+
+  STATUSES_AT_CERTIFIER_SIDE = [
+      CertificationPathStatus::SCREENING,
+      CertificationPathStatus::VERIFYING,
+      CertificationPathStatus::VERIFYING_AFTER_APPEAL
+  ]
+
+  STATUSES_AT_MANAGEMENT_SIDE = [
+      CertificationPathStatus::APPROVING_BY_MANAGEMENT,
+      CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT
+  ]
+
+  STATUSES_AT_END = [
+      CertificationPathStatus::CERTIFIED,
+      CertificationPathStatus::NOT_CERTIFIED
+  ]
+
+  STATUSES_AT_GORD_SIDE = STATUSES_AT_CERTIFIER_SIDE + STATUSES_AT_ADMIN_SIDE + STATUSES_AT_MANAGEMENT_SIDE
+
+
+  # ------------------------------------------------------------------------
+  # STATUSES GROUPED BY 'STAGE'
+  # ------------------------------------------------------------------------
+  # this function is used to toggle the visibility of the achieved score
+  STATUSES_IN_PRE_VERIFICATION = [
+      CertificationPathStatus::ACTIVATING,
+      CertificationPathStatus::SUBMITTING,
+      CertificationPathStatus::SCREENING,
+      CertificationPathStatus::SUBMITTING_AFTER_SCREENING,
+      CertificationPathStatus::PROCESSING_PCR_PAYMENT,
+      CertificationPathStatus::SUBMITTING_PCR
+  ]
+
+  # This function is used for toggling form elements writable state in the certification path flow
+  STATUSES_IN_SUBMISSION = [
+      CertificationPathStatus::SUBMITTING,
+      CertificationPathStatus::SUBMITTING_AFTER_SCREENING,
+      CertificationPathStatus::SUBMITTING_PCR,
+      CertificationPathStatus::SUBMITTING_AFTER_APPEAL
+  ]
+
+  # Used for toggling writability of form elements in the certification path flow
+  STATUSES_IN_VERIFICATION = [
+      # CertificationPathStatus::SCREENING,
+      CertificationPathStatus::VERIFYING,
+      CertificationPathStatus::VERIFYING_AFTER_APPEAL
+  ]
+
+  def self.at_gord_side?(id)
+    STATUSES_AT_GORD_SIDE.include?(id)
+  end
+
 end

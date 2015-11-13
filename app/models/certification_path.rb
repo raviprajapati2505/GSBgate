@@ -113,27 +113,6 @@ class CertificationPath < ActiveRecord::Base
     end
   end
 
-  # Checks if a user has permission to advance the certificate path to the next status
-  def can_advance_status?(user)
-    unless [CertificationPathStatus::CERTIFIED, CertificationPathStatus::NOT_CERTIFIED].include?(certification_path_status_id)
-      case CertificationPathStatus.waiting_fors[certification_path_status.waiting_for]
-        when CertificationPathStatus.waiting_fors[:project_manager]
-          return user.project_manager?(project)
-        when CertificationPathStatus.waiting_fors[:certifier_manager]
-          return user.certifier_manager?(project)
-        when CertificationPathStatus.waiting_fors[:system_admin]
-          return user.system_admin?
-        when CertificationPathStatus.waiting_fors[:gord_manager]
-          return user.gord_manager?
-        when CertificationPathStatus.waiting_fors[:gord_top_manager]
-          return user.gord_top_manager?
-        else
-          return false
-      end
-    end
-    return false
-  end
-
   # Returns the next CertificationPathStatus id in the status flow of the certificate
   def next_status
     case certification_path_status_id
@@ -271,27 +250,17 @@ class CertificationPath < ActiveRecord::Base
 
   # This function is used for toggling writability of form elements in the certification path flow
   def in_submission?
-    [CertificationPathStatus::SUBMITTING,
-     CertificationPathStatus::SUBMITTING_AFTER_SCREENING,
-     CertificationPathStatus::SUBMITTING_PCR,
-     CertificationPathStatus::SUBMITTING_AFTER_APPEAL].include?(certification_path_status_id)
+    CertificationPathStatus::STATUSES_IN_SUBMISSION.include?(certification_path_status_id)
   end
 
   # This function is used for toggling writability of form elements in the certification path flow
   def in_verification?
-    [CertificationPathStatus::SCREENING,
-     CertificationPathStatus::VERIFYING,
-     CertificationPathStatus::VERIFYING_AFTER_APPEAL].include?(certification_path_status_id)
+    CertificationPathStatus::STATUSES_IN_VERIFICATION.include?(certification_path_status_id)
   end
 
   # this function is used to toggle the visibility of the achieved score
   def in_pre_verification?
-    [CertificationPathStatus::ACTIVATING,
-     CertificationPathStatus::SUBMITTING,
-     CertificationPathStatus::SCREENING,
-     CertificationPathStatus::SUBMITTING_AFTER_SCREENING,
-     CertificationPathStatus::PROCESSING_PCR_PAYMENT,
-     CertificationPathStatus::SUBMITTING_PCR].include?(certification_path_status_id)
+    CertificationPathStatus::STATUSES_IN_PRE_VERIFICATION.include?(certification_path_status_id)
   end
 
   def is_activating?
@@ -299,8 +268,7 @@ class CertificationPath < ActiveRecord::Base
   end
 
   def is_completed?
-    [CertificationPathStatus::CERTIFIED,
-     CertificationPathStatus::NOT_CERTIFIED].include?(certification_path_status_id)
+    CertificationPathStatus::STATUSES_AT_END.include?(certification_path_status_id)
   end
 
   def is_certified?

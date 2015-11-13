@@ -1,6 +1,6 @@
 class ProjectsUsersController < AuthenticatedController
   load_and_authorize_resource :project
-  load_and_authorize_resource :projects_user, :through => :project, only: [:create, :edit, :show, :update, :destroy, :make_owner]
+  load_and_authorize_resource :projects_user, :through => :project, only: [:create, :edit, :show, :update, :destroy, :make_owner], param_method: :authorizations_params
   skip_authorization_check only: [:list_users_sharing_projects, :list_projects]
   before_action :set_controller_model, except: [:new, :create]
 

@@ -56,10 +56,14 @@
                                 <%= f.submit 'Update', class: 'btn btn-primary' %>
                                 <%= link_to 'Back', :back, class: 'btn btn-white' %>
                             </div>
+                            <!-- TODO: LINKME? -->
+                            <!-- COMMENTED OUT: user accounts can't be cancelled -->
+                            <!--<% unless current_user.system_admin? %>-->
+                                <!--<div class="col-sm-2 pull-right">-->
+                                    <!--<%= link_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete, class: 'btn btn-danger' %>-->
+                                <!--</div>-->
+                            <!--<% end %>-->
                         </div>
-                    <% end %>
-                    <% unless current_user.system_admin? %>
-                    <%= link_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete, class: 'btn btn-danger' %>
                     <% end %>
                 </div>
             </div>

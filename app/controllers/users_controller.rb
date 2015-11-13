@@ -3,7 +3,6 @@ class UsersController < AuthenticatedController
   before_action :set_controller_model, except: [:new, :create, :index]
 
   def index
-    # @users = User.all
   end
 
   def edit
@@ -11,11 +10,6 @@ class UsersController < AuthenticatedController
   end
 
   def update
-    if @user.id == 1
-      flash.now[:alert] = 'This system user cannot be changed.'
-      render action: 'edit'
-      return
-    end
     if @user.update_without_password(user_params)
       redirect_to users_path, notice: 'Successfully updated user.'
     else

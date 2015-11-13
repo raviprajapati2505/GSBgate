@@ -2,12 +2,9 @@ class DocumentsController < AuthenticatedController
   load_and_authorize_resource :project
   load_and_authorize_resource :certification_path, :through => :project
   load_and_authorize_resource :document
-  # cancan authorization fails (related to carrierwave?)
-  skip_authorize_resource :document, :only => :create
   before_action :set_controller_model, except: [:new, :create]
 
   def create
-    authorize! :create , Document
     respond_to do |format|
       if params.has_key?(:document)
         # Creates the document and its scheme_mix_criteria_documents

@@ -2,48 +2,69 @@
     <div class="navbar-header navbar navbar-static-top" role="navigation">
         <%= image_tag('layout/logo-small.gif') %>
         <button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
-            <i class="fa fa-reorder"></i>
+            <%= fa_icon('reorder') %>
         </button>
     </div>
     <div class="navbar-collapse collapse" id="navbar">
         <ul class="nav navbar-nav">
-            <li class="<%= 'active' if ['projects', 'projects_users', 'certification_paths', 'scheme_mixes', 'scheme_mix_criteria'].include?(controller_name) %>">
-                <%= link_to projects_path do %>
-                    <i class="fa fa-lg fa-building-o"></i> <span class="nav-label">My projects</span>
-                <% end %>
-            </li>
-            <li class="<%= 'active' if (controller_name == 'tasks') %>">
-                <% task_count = TaskService::count_tasks(user: current_user) %>
-                <%= link_to tasks_path do %>
-                    <i class="fa fa-lg fa-tasks"></i> <span class="nav-label">My tasks<span class="badge task-counter <% if task_count == 0 %>hidden<% end %>" data-user="<%= current_user.id %>"><%= task_count %></span></span>
-                <% end %>
-            </li>
-            <li class="<%= 'active' if (controller_name == 'audit_logs') %>">
-                <%= link_to audit_logs_path do %>
-                    <i class="fa fa-lg fa-history"></i> <span class="nav-label">Audit log</span>
-                <% end %>
-            </li>
-            <% if current_user && current_user.system_admin? %>
+
+            <% if can?(:index, Project) %>
+                <li class="<%= 'active' if ['projects', 'projects_users', 'certification_paths', 'scheme_mixes', 'scheme_mix_criteria'].include?(controller_name) %>">
+                    <%= link_to projects_path do %>
+                        <%= fa_icon('building-o') %><span class="nav-label">My projects</span>
+                    <% end %>
+                </li>
+            <% end %>
+
+            <% if can?(:index, Task) %>
+                <li class="<%= 'active' if (controller_name == 'tasks') %>">
+                    <% task_count = TaskService::count_tasks(user: current_user) %>
+                    <%= link_to tasks_path do %>
+                        <%= fa_icon('tasks') %><span class="nav-label">My tasks<span class="badge task-counter <% if task_count == 0 %>hidden<% end %>" data-user="<%= current_user.id %>"><%= task_count %></span></span>
+                    <% end %>
+                </li>
+            <% end %>
+
+            <% if can?(:index, AuditLog) %>
+                <li class="<%= 'active' if (controller_name == 'audit_logs') %>">
+                    <%= link_to audit_logs_path do %>
+                        <%= fa_icon('history') %><span class="nav-label">Audit log</span>
+                    <% end %>
+                </li>
+            <% end %>
+
+            <% can_index_scheme_criteria = can?(:index, SchemeCriterion)%>
+            <% can_index_users = can?(:index, User) %>
+            <% if can_index_users || can_index_scheme_criteria %>
                 <li class="dropdown<%= ' active' if ['scheme_criteria', 'users'].include?(controller_name) %>">
-                    <a aria-expanded="false" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-lg fa-cogs"></i> Admin <span class="caret"></span></a>
+                    <a aria-expanded="false" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <%= fa_icon('cogs') %> Admin <span class="caret"></span>
+                    </a>
                     <ul role="menu" class="dropdown-menu">
-                        <li><%= link_to 'Criteria', scheme_criteria_path %></li>
-                        <li><%= link_to 'Users', users_path %></li>
+                        <% if can_index_scheme_criteria %>
+                            <li><%= link_to 'Criteria', scheme_criteria_path %></li>
+                        <% end %>
+                        <% if can_index_users %>
+                            <li><%= link_to 'Users', users_path %></li>
+                        <% end %>
                     </ul>
                 </li>
             <% end %>
         </ul>
-        <ul class="nav navbar-top-links navbar-right">
-            <li>
-                <%= link_to edit_user_registration_path do %>
-                    <i class="fa fa-lg fa-user"></i> <span class="nav-label"><%= current_user.email %></span>
-                <% end %>
-            </li>
-            <li>
-                <%= link_to destroy_user_session_path, method: :delete do %>
-                    <i class="fa fa-lg fa-sign-out"></i> <span class="nav-label">Log out</span>
-                <% end %>
-            </li>
-        </ul>
+
+        <% if user_signed_in? %>
+            <ul class="nav navbar-top-links navbar-right">
+                <li>
+                    <%= link_to edit_user_registration_path do %>
+                        <%= fa_icon('user') %><span class="nav-label"><%= current_user.email %></span>
+                    <% end %>
+                </li>
+                <li>
+                    <%= link_to destroy_user_session_path, method: :delete do %>
+                        <%= fa_icon('sign-out') %><span class="nav-label">Log out</span>
+                    <% end %>
+                </li>
+            </ul>
+        <% end %>
     </div>
 </div>

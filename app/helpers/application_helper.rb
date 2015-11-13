@@ -45,19 +45,16 @@ module ApplicationHelper
   end
 
   def fa_icon(name, text = nil, icon_options = nil)
-    #raise(Exception) if icon_options.present? && !icon_options.is_a?(Hash)
-    options = {title: text, size: 'lg'}
+    options = {size: 'lg'}
     options = options.merge(icon_options) if icon_options.present? && icon_options.is_a?(Hash)
     options = options.merge(text) if icon_options.nil? && text.is_a?(Hash)
     text_suffix= "&nbsp;&nbsp;&nbsp;#{text}" if text.is_a?(String)
-    html = <<END
-<i class="fa fa-#{name} fa-#{options[:size]} #{options[:class]}" title="#{options[:title]}"></i>#{text_suffix}
-END
-    html.html_safe
+    tooltip_attributes = "title=\"#{options[:tooltip]}\" data-toggle=\"tooltip\"" if options.has_key?(:tooltip)
+    "<i class=\"fa fa-#{name} fa-#{options[:size]} #{options[:class]}\" #{tooltip_attributes}></i>#{text_suffix}".html_safe
   end
 
   def audit_log_label(auditable)
-    if can?(:read, auditable)
+    if can?(:auditable_index, AuditLog) && can?(:read, auditable)
       link_to(auditable_index_audit_logs_path(auditable.class.name, auditable.id), remote: true, title: 'Click to view the audit log of this resource.', class: 'pull-right') {
         "<span class=\"label label-lg\">#{fa_icon('history')}</span>".html_safe
       }

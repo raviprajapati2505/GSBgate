@@ -10,15 +10,15 @@ Rails.application.routes.draw do
   devise_for :user
 
   # Main nested resources of our application
-  resources :projects, except: [ :destroy ] do
+  resources :projects, except: [:destroy] do
     collection do
       get 'list' => 'projects_users#list_projects'
     end
     member do
       get 'tools' => 'projects#show_tools'
     end
-    resources :projects_users, only: [ :create, :edit, :show, :update, :destroy ], path: 'users', as: 'users'
-    resources :certification_paths, except: [ :index, :edit, :destroy, :update], path: 'certificates' do
+    resources :projects_users, only: [:create, :edit, :show, :update, :destroy], path: 'users', as: 'users'
+    resources :certification_paths, except: [:index, :edit, :destroy, :update], path: 'certificates' do
       collection do
         get 'list'
       end
@@ -33,16 +33,20 @@ Rails.application.routes.draw do
         put 'allocate_project_team_responsibility', path: 'allocate-project-team-responsibility'
         put 'allocate_certifier_team_responsibility', path: 'allocate-certifier-team-responsibility'
       end
-      resources :documents, only: [ :create, :show ], path: 'document'
-      resources :scheme_mixes, only: [ :show ], path: 'schemes' do
-        resources :scheme_mix_criteria, only: [ :show ], path: 'criteria', as: 'scheme_mix_criterion' do
+      resources :documents, only: [:create, :show], path: 'document'
+      resources :scheme_mixes, only: [:show], path: 'schemes' do
+        resources :scheme_mix_criteria, only: [:show], path: 'criteria', as: 'scheme_mix_criterion' do
           member do
             get 'edit_status'
             put 'update_status'
             put 'update_scores'
             put 'assign_certifier'
           end
-          resources :requirement_data, only: [ :update ], path: 'requirement', as: 'requirement_data'
+          resources :requirement_data, only: [:update], path: 'requirement', as: 'requirement_data' do
+            member do
+              put 'update_status'
+            end
+          end
           resources :scheme_mix_criteria_documents, only: [], path: 'documentation', as: 'scheme_mix_criteria_documents' do
             member do
               get 'new_link'
@@ -53,7 +57,7 @@ Rails.application.routes.draw do
           end
         end
       end
-      resources :scheme_mix_criteria, only: [ :list ], path: 'criteria' do
+      resources :scheme_mix_criteria, only: [:list], path: 'criteria' do
         collection do
           get 'list'
         end
@@ -64,7 +68,7 @@ Rails.application.routes.draw do
   get 'projects/:id/site_plan' => 'projects#download_site_plan', as: 'download_project_site_plan'
   get 'projects/:id/design_brief' => 'projects#download_design_brief', as: 'download_project_design_brief'
   get 'projects/:id/narrative' => 'projects#download_project_narrative', as: 'download_project_narrative'
-  resources :audit_logs, only: [ :index ], path: 'audit-logs'
+  resources :audit_logs, only: [:index], path: 'audit-logs'
   get 'audit-logs/:auditable_type/:auditable_id' => 'audit_logs#auditable_index', as: 'auditable_index_audit_logs'
   post 'audit-logs/:auditable_type/:auditable_id' => 'audit_logs#auditable_create', as: 'auditable_create_audit_log'
   get 'tasks' => 'tasks#index', as: 'tasks'
@@ -76,8 +80,8 @@ Rails.application.routes.draw do
   get 'projects/users/:user_id' => 'projects_users#list_users_sharing_projects', as: 'list_users_sharing_projects'
   post 'projects/:project_id/users/:id' => 'projects_users#make_owner', as: 'make_owner'
   put '/projects/:project_id/certificates/:certification_path_id/schemes/:scheme_mix_id/criteria/:scheme_mix_criterion_id/requirement/:id/refuse' => 'requirement_data#refuse', as: 'refuse_requirement_datum'
-  resources :scheme_criteria, only: [ :index ]
-  resources :scheme_criteria, only: [ :show ], as: 'scheme_criterion'
+  resources :scheme_criteria, only: [:index]
+  resources :scheme_criteria, only: [:show], as: 'scheme_criterion'
   resources :scheme_criterion_texts, only: [:edit, :update, :new, :create, :destroy] do
     put :sort, on: :collection
   end
