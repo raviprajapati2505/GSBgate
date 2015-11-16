@@ -9,7 +9,6 @@ class AuthenticatedController < ApplicationController
 
   rescue_from CanCan::AccessDenied do |exception|
     Rails.logger.debug "Access denied on #{exception.action} #{exception.subject.inspect}"
-    raise('DEBUG THIS')
     redirect_to forbidden_error_path
   end
 
