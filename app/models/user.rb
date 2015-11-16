@@ -70,6 +70,13 @@ class User < ActiveRecord::Base
     ProjectsUser.exists?(project: project, user: self, role: ProjectsUser.roles[:certifier])
   end
 
+  # Returns the humanized role of the user in a project.
+  # Returns the humanized system role of the user if the user isn't linked to the project.
+  def humanized_project_role(project)
+    project_user = ProjectsUser.find_by(project: project, user: self)
+    return project_user.present? ? project_user.role.humanize : self.role.humanize
+  end
+
   before_validation :assign_default_role, on: :create
 
   validates :role, inclusion: User.roles.keys
