@@ -51,48 +51,23 @@ class User < ActiveRecord::Base
   end
 
   def certifier_manager?(project)
-    projects_users.each do |projects_user|
-      if projects_user.project == project && projects_user.certifier_manager?
-        return true
-      end
-    end
-    return false
+    ProjectsUser.exists?(project: project, user: self, role: ProjectsUser.roles[:certifier_manager])
   end
 
   def project_manager?(project)
-    projects_users.each do |projects_user|
-      if projects_user.project == project && projects_user.project_manager?
-        return true
-      end
-    end
-    return false
+    ProjectsUser.exists?(project: project, user: self, role: ProjectsUser.roles[:project_manager])
   end
 
   def enterprise_account?(project)
-    projects_users.each do |projects_user|
-      if projects_user.project == project && projects_user.enterprise_account?
-        return true
-      end
-    end
-    return false
+    ProjectsUser.exists?(project: project, user: self, role: ProjectsUser.roles[:enterprise_account])
   end
 
   def project_team_member?(project)
-    projects_users.each do |projects_user|
-      if projects_user.project == project && projects_user.project_team_member?
-        return true
-      end
-    end
-    return false
+    ProjectsUser.exists?(project: project, user: self, role: ProjectsUser.roles[:project_team_member])
   end
 
   def certifier?(project)
-    projects_users.each do |projects_user|
-      if projects_user.project == project && projects_user.certifier?
-        return true
-      end
-    end
-    return false
+    ProjectsUser.exists?(project: project, user: self, role: ProjectsUser.roles[:certifier])
   end
 
   before_validation :assign_default_role, on: :create
