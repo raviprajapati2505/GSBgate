@@ -3,7 +3,6 @@ class DocumentArchiverService
   require 'zip'
   require 'csv'
 
-  CLEAN_OLDER_THAN = 1.day
   PAGE_SIZE = 100
 
   # Creates a file archive of all approved documents in a certification path and related audit logs
