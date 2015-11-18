@@ -6,7 +6,12 @@ Rails.application.routes.draw do
   root 'projects#index'
 
   # Login resource
-  resources :users
+  resources :users do
+      member do
+        get 'list_notifications', path: 'notifications'
+        put 'update_notifications', path: 'notifications'
+      end
+  end
   devise_for :user
 
   # Main nested resources of our application

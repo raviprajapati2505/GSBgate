@@ -132,3 +132,5 @@ en:
       btn_cancel: "Back"
       btn_save: "Update user"
       form_title: "User details"
+    list_notifications:
+      btn_save: "Update preferences"

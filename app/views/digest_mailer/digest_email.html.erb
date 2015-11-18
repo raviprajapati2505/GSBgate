@@ -7,6 +7,7 @@
     <td style="width: 650pt; border: solid #CCC 1pt; background: white; padding: 15pt 15pt;">
         <p>
             <span style='font-size: 9pt; font-family: "Verdana", "sans-serif";'>Dear Ms/Mr<br/><br/>
+    <% if @include_new_tasks %>
     <% if @user.gord_manager? || @user.gord_top_manager? %>
             Hereby we send you an overview of your unfinished tasks since <%= @user.last_notified_at %>.</span>
         </p>
@@ -65,7 +66,7 @@
                             <td><%= link_to breadcrumbs[:names].last, breadcrumbs[:paths].last %></td>
                             <td><% if task.taskable.due_date.present? %><%= I18n.l(task.taskable.due_date, format: :short) %><% if Date.today > task.taskable.due_date %>&nbsp;<i class="fa fa-clock-o due-date-expired" title="<%= I18n.t('.tooltip_due_date', scope: [:tasks, :tasks]) %>" data-toggle="tooltip"></i><% end %><% else %>-<% end %></td>
                         </tr>
-                    <%  when SchemeMixCriterionDocument.name.demodulize
+                    <%  when SchemeMixCriteriaDocument.name.demodulize
                           breadcrumbs = breadcrumbs(task.taskable, with_prefix: false)
                     %>
                         <tr>
@@ -83,6 +84,10 @@
             <% end %>
         <% end %>
         <br/>
+        <% else %>
+                Hereby we send you an overview of recent project changes since <%= @user.last_notified_at %>.</span>
+            </p>
+        <% end %>
         <% unless @user.gord_manager? || @user.gord_top_manager? %>
             <p><%= link_to 'Audit log', audit_logs_url, {style: 'color: #000; font-size: 14pt; font-family: "Verdana", "sans-serif";'} %></p>
             <% if @audit_logs.empty? %>

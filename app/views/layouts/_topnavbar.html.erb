@@ -25,6 +25,14 @@
                 </li>
             <% end %>
 
+            <% if can?(:list_notifications, User) %>
+                <li class="<%= 'active' if (controller_name == 'users' and action_name == 'list_notifications') %>">
+                    <%= link_to list_notifications_user_path id: current_user.id do %>
+                        <%= fa_icon('cog') %><span class="nav-label">My Preferences</span>
+                    <% end %>
+                </li>
+            <% end %>
+
             <% if can?(:index, AuditLog) %>
                 <li class="<%= 'active' if (controller_name == 'audit_logs') %>">
                     <%= link_to audit_logs_path do %>

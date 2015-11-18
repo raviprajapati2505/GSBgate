@@ -66,6 +66,7 @@ class Ability
     elsif user.user?
       # User controller
       #   Note: only admins can manage user accounts !
+      can [:list_notifications,:update_notifications], User, id: user.id
 
       # Project controller
       can :read, Project, projects_users: {user_id: user.id}
@@ -166,6 +167,8 @@ class Ability
       can :auditable_index, AuditLog
       # Task
       can :count, Task
+      # User controller
+      can [:list_notifications,:update_notifications], User, id: user.id
 
       if user.gord_top_manager?
         can [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT}

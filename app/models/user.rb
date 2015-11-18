@@ -15,6 +15,8 @@ class User < ActiveRecord::Base
   has_many :scheme_mix_criteria, inverse_of: :certifier, foreign_key: 'certifier_id'
   has_many :tasks, dependent: :destroy
   has_many :audit_logs
+  has_many :notification_types_users, dependent: :delete_all
+  has_many :notification_types, through: :notification_types_users
 
   default_scope { order(email: :asc) }
 

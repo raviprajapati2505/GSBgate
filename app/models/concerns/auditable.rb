@@ -103,7 +103,7 @@ module Auditable
         certification_path = self.scheme_mix.certification_path
         if (action == AUDIT_LOG_UPDATE)
           if self.status_changed?
-            system_messages << {message: 'The status of criterion %s was changed from %s to %s.', params: [self.name, self.changes[:status][0].humanize, self.changes[:status][1].humanize]}
+            system_messages << {message: 'The status of criterion %s was changed from %s to %s.', params: [self.name, self.changes[:status][0].humanize, self.changes[:status][1].humanize], old_status: self.status_was, new_status: self.status}
           end
           if self.certifier_id_changed? || self.due_date_changed?
             if self.certifier_id.blank?
@@ -145,11 +145,15 @@ module Auditable
       when SchemeMixCriteriaDocument.name.demodulize
         project = self.scheme_mix_criterion.scheme_mix.certification_path.project
         certification_path = self.scheme_mix_criterion.scheme_mix.certification_path
+        if self.status_changed?
+          old_status = self.status_was
+          new_status = self.status
+        end
         if (action == AUDIT_LOG_CREATE)
-          system_messages << {message: 'A new document %s was added to criterion %s.', params: [self.name, self.scheme_mix_criterion.name]}
+          system_messages << {message: 'A new document %s was added to criterion %s.', params: [self.name, self.scheme_mix_criterion.name], old_status: old_status, new_status: new_status}
         elsif (action == AUDIT_LOG_UPDATE)
           if self.status_changed?
-            system_messages << {message: 'The status of document %s in %s was changed from %s to %s.', params: [self.name, self.scheme_mix_criterion.name, self.changes[:status][0].humanize, self.changes[:status][1].humanize]}
+            system_messages << {message: 'The status of document %s in %s was changed from %s to %s.', params: [self.name, self.scheme_mix_criterion.name, self.changes[:status][0].humanize, self.changes[:status][1].humanize], old_status: old_status, new_status: new_status}
           end
         end
       when RequirementDatum.name.demodulize
@@ -159,7 +163,7 @@ module Auditable
         end
         if (action == AUDIT_LOG_UPDATE)
           if self.status_changed?
-            system_messages << {message: 'The status of requirement %s was changed from %s to %s.', params: [self.name, self.changes[:status][0].humanize, self.changes[:status][1].humanize]}
+            system_messages << {message: 'The status of requirement %s was changed from %s to %s.', params: [self.name, self.changes[:status][0].humanize, self.changes[:status][1].humanize], old_status: self.status_was, new_status: self.status}
           end
           if self.user_id_changed? || self.due_date_changed?
             if self.user_id.blank?

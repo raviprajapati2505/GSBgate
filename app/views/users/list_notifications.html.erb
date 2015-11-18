@@ -1,0 +1,23 @@
+<div class="row">
+    <div class="col-md-8">
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>User Notifications</h5>
+            </div>
+            <div class="ibox-content">
+                <% included_notification_types = @user.notification_types.to_a %>
+                <%= bootstrap_form_for(@user, url: update_notifications_user_path, method: 'put') do |f| %>
+                    <% NotificationType.all.each do |notification_type| %>
+                        <div class="checkbox">
+                            <%= check_box_tag 'notification_types[]', notification_type.id, included_notification_types.any? {|type| type.id == notification_type.id}, class: 'checkbox_parent' %>
+                            <%= label_tag notification_type.name %>
+                        </div>
+                    <% end %>
+                    <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
+                        <%= fa_icon('save', t('.btn_save')) %>
+                    <% end %>
+                <% end %>
+            </div>
+        </div>
+    </div>
+</div>

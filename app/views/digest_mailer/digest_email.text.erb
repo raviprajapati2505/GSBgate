@@ -3,6 +3,7 @@ Project Status Update
 
 Dear Ms/Mr
 
+<% if @include_new_tasks %>
 <% if @user.gord_manager? || @user.gord_top_manager? %>
     Hereby we send you an overview of your unfinished tasks since <%= @user.last_notified_at %>.
 <% else %>
@@ -34,7 +35,7 @@ Tasks
               breadcrumbs = breadcrumbs(task.taskable, with_prefix: false)
         %>
             <%= I18n.t(".description_#{task.task_description_id}", scope: [:tasks, :tasks]) %> | <%= breadcrumbs[:names].last %> | <% if task.taskable.due_date.present? %><%= I18n.l(task.taskable.due_date, format: :short) %><% else %>-<% end %>
-        <%  when SchemeMixCriterionDocument.name.demodulize
+        <%  when SchemeMixCriteriaDocument.name.demodulize
               breadcrumbs = breadcrumbs(task.taskable, with_prefix: false)
         %>
             <%= I18n.t(".description_#{task.task_description_id}", scope: [:tasks, :tasks]) %> | <%= breadcrumbs[:names].last %> | -
@@ -44,6 +45,9 @@ Tasks
     <% if @more_tasks > 0 %>
         <%= @more_tasks %> more...
     <% end %>
+<% end %>
+<% else %>
+    Hereby we send you an overview of recent project changes since <%= @user.last_notified_at %>.
 <% end %>
 <% unless @user.gord_manager? || @user.gord_top_manager? %>
 

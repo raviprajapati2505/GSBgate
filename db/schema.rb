@@ -124,6 +124,22 @@ ActiveRecord::Schema.define(version: 20151116125442) do
 
   add_index "fields", ["calculator_id"], name: "index_fields_on_calculator_id", using: :btree
 
+  create_table "notification_types", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "notification_types_users", force: :cascade do |t|
+    t.integer  "notification_type_id"
+    t.integer  "user_id"
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
+  add_index "notification_types_users", ["notification_type_id"], name: "index_notification_types_users_on_notification_type_id", using: :btree
+  add_index "notification_types_users", ["user_id"], name: "index_notification_types_users_on_user_id", using: :btree
+
   create_table "projects", force: :cascade do |t|
     t.string    "name"
     t.datetime  "created_at",                                                                      null: false
@@ -336,6 +352,8 @@ ActiveRecord::Schema.define(version: 20151116125442) do
   add_foreign_key "field_data", "calculator_data"
   add_foreign_key "field_data", "fields"
   add_foreign_key "fields", "calculators"
+  add_foreign_key "notification_types_users", "notification_types"
+  add_foreign_key "notification_types_users", "users"
   add_foreign_key "projects", "users", column: "owner_id"
   add_foreign_key "projects_users", "projects"
   add_foreign_key "projects_users", "users"
