@@ -11,7 +11,7 @@ class ProjectsUsersController < AuthenticatedController
       DigestMailer.added_to_project_email(@projects_user).deliver_now
       redirect_to project_path(@project), notice: 'Member was successfully added.'
     else
-      redirect_to :back
+      redirect_to :back, alert: 'All fields are required'
     end
   end
 
