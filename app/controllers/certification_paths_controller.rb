@@ -12,7 +12,6 @@ class CertificationPathsController < AuthenticatedController
       }
       format.json { render json: {id: @certification_path.id, name: @certification_path.name}, status: :ok }
     end
-
   end
 
   def apply
@@ -169,6 +168,14 @@ class CertificationPathsController < AuthenticatedController
     render json: {total_count: total_count, items: items}
   end
 
+  def edit_project_team_responsibility
+    @page_title = 'Allocate project team responsibility for ' + @certification_path.name
+  end
+
+  def edit_certifier_team_responsibility
+    @page_title = 'Allocate certifier team responsibility for ' + @certification_path.name
+  end
+
   def allocate_project_team_responsibility
     if params.has_key?(:requirement_data)
       # Format the user id
@@ -207,7 +214,11 @@ class CertificationPathsController < AuthenticatedController
       flash[:alert] = 'No requirements were selected.'
     end
 
-    redirect_to :back
+    if params.has_key?(:button) && (params[:button] == 'save-and-continue')
+      redirect_to edit_project_team_responsibility_project_certification_path_path
+    else
+      redirect_to project_certification_path_path
+    end
   end
 
   def allocate_certifier_team_responsibility
@@ -241,7 +252,11 @@ class CertificationPathsController < AuthenticatedController
       flash[:alert] = 'No criteria were selected.'
     end
 
-    redirect_to :back
+    if params.has_key?(:button) && (params[:button] == 'save-and-continue')
+      redirect_to edit_certifier_team_responsibility_project_certification_path_path
+    else
+      redirect_to project_certification_path_path
+    end
   end
 
   private

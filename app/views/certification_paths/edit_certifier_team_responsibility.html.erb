@@ -1,0 +1,68 @@
+<%= bootstrap_form_for([@project, @certification_path], url: allocate_certifier_team_responsibility_project_certification_path_path, method: 'put') do |f| %>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>Select criteria to allocate</h5>
+                </div>
+                <div class="ibox-content">
+                    <table class="table table-bordered allocate-responsibility-table">
+                        <% @certification_path.scheme_mixes.uniq.each do |scheme_mix| %>
+                            <tr><th colspan="5"><%= scheme_mix.name %></th></tr>
+                            <% scheme_mix.scheme_categories.uniq.each do |category| %>
+                                <tr>
+                                    <th><%= check_box_tag 'categories[]', category.id, false, class: 'checkbox_parent' %></th>
+                                    <th><%= category.name %></th>
+                                    <th>Allocated&nbsp;to</th>
+                                    <th>Due&nbsp;date</th>
+                                    <th>Status</th>
+                                </tr>
+                                <% scheme_mix.scheme_mix_criteria.for_category(category).order('scheme_criteria.number').each do |scheme_mix_criterion| %>
+                                    <tr>
+                                        <td><%= check_box_tag 'scheme_mix_criteria[]', scheme_mix_criterion.id, false, class: "checkbox_child_#{category.id}" %></td>
+                                        <td><%= scheme_mix_criterion.scheme_criterion.full_name %></td>
+                                        <td><%= scheme_mix_criterion.certifier.email if scheme_mix_criterion.certifier %></td>
+                                        <td><%= l(scheme_mix_criterion.due_date, format: :short) if scheme_mix_criterion.due_date %></td>
+                                        <td><%= scheme_mix_criterion.status.humanize.gsub(' ', '&nbsp;').html_safe if scheme_mix_criterion.status %></td>
+                                    </tr>
+                                <% end %>
+                            <% end %>
+                        <% end %>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>Allocate selected criteria</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="form-group">
+                        <%= label_tag 'certifier_id', 'Allocate the selected criteria to', class: 'control-label' %>
+                        <% certifiers = User.authorized_for_project(@project).with_certifier_project_role %>
+                        <%= select_tag 'certifier_id', options_for_select(certifiers.map {|k| [k.email, k.id]}), {include_blank: '- Not allocated -', class: 'form-control'} %>
+                    </div>
+                    <div class="form-group">
+                        <%= label_tag 'due_date', 'Due date', class: 'control-label' %>
+                        <div class="input-group">
+                            <span class="input-group-addon"><%= fa_icon('calendar') %></span>
+                            <%= text_field_tag 'due_date', nil, {class: 'datepicker-future form-control', autocomplete: 'off'} %>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
+                        <i class="fa fa-lg fa-save" style="padding-right: 10px;"></i><%= t('.btn_save') %>
+                    <% end %>
+                    <%= button_tag type: 'submit', class: 'btn btn-primary', value: 'save-and-continue' do %>
+                        <i class="fa fa-lg fa-save" style="padding-right: 10px;"></i><%= t('.btn_save_and_continue') %>
+                    <% end %>
+                    <%= link_to project_certification_path_path, class: 'btn btn-white' do %>
+                        <%= fa_icon('times', 'Cancel') %>
+                    <% end %>
+                </div>
+            </div>
+        </div>
+    </div>
+<% end %>
+<%= javascript_include_tag 'checkbox_multicheck' %>

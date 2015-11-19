@@ -155,21 +155,19 @@
             <div class="ibox-content">
                 <%= scores_legend %>
                 <%= render 'scheme_mixes/overview', certification_path: @certification_path %>
-                <% can_allocate_project_team_responsibility = @certification_path.in_submission? && can?(:allocate_project_team_responsibility, @certification_path) %>
-                <% can_allocate_certifier_team_responsibility = @certification_path.in_verification? && can?(:allocate_certifier_team_responsibility, @certification_path) %>
-                <% if can_allocate_project_team_responsibility || can_allocate_certifier_team_responsibility %>
+                <% can_edit_project_team_responsibility = can?(:allocate_project_team_responsibility, @certification_path) %>
+                <% can_edit_certifier_team_responsibility = can?(:allocate_certifier_team_responsibility, @certification_path) %>
+                <% if can_edit_project_team_responsibility || can_edit_certifier_team_responsibility %>
                     <div class="hr-line-dashed"></div>
-                    <% if can_allocate_project_team_responsibility %>
-                        <button type="button" class="btn btn-white" data-toggle="modal" data-target="#allocateProjectTeamResponsibilityModal">
+                    <% if can_edit_project_team_responsibility %>
+                        <%= link_to edit_project_team_responsibility_project_certification_path_path, class: 'btn btn-white' do %>
                             <%= fa_icon('th-list', 'Allocate project team responsibility') %>
-                        </button>
-                        <%= render 'allocate_project_team_responsibility', project: @project, certification_path: @certification_path %>
+                        <% end %>
                     <% end %>
-                    <% if can_allocate_certifier_team_responsibility %>
-                        <button type="button" class="btn btn-white" data-toggle="modal" data-target="#allocateCertifierTeamResponsibilityModal">
+                    <% if can_edit_certifier_team_responsibility %>
+                        <%= link_to edit_certifier_team_responsibility_project_certification_path_path, class: 'btn btn-white' do %>
                             <%= fa_icon('th-list', 'Allocate certifier team responsibility') %>
-                        </button>
-                        <%= render 'allocate_certifier_team_responsibility', project: @project, certification_path: @certification_path %>
+                        <% end %>
                     <% end %>
                 <% end %>
             </div>

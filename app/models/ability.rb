@@ -59,7 +59,8 @@ class Ability
       cannot [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::STATUSES_AT_ASSESSOR_SIDE }
       cannot [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::STATUSES_AT_MANAGEMENT_SIDE}
       cannot [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::STATUSES_AT_END}
-      cannot :update_achieved_score, SchemeMixCriterion do |scheme_mix_criterion| ![SchemeMixCriterion.statuses[:submitting], SchemeMixCriterion.statuses[:submitting_after_appeal]].include?(scheme_mix_criterion.status) end
+      cannot [:edit_project_team_responsibility, :allocate_project_team_responsibility], CertificationPath do |certification_path_status| !CertificationPathStatus::STATUSES_IN_SUBMISSION.include?(certification_path_status.id) end
+      cannot [:edit_certifier_team_responsibility, :allocate_certifier_team_responsibility], CertificationPath do |certification_path_status| !CertificationPathStatus::STATUSES_IN_VERIFICATION.include?(certification_path_status.id) end
       cannot :update_achieved_score, SchemeMixCriterion do |scheme_mix_criterion| ![SchemeMixCriterion.statuses[:submitting], SchemeMixCriterion.statuses[:submitting_after_appeal]].include?(scheme_mix_criterion.status) end
       cannot :update_achieved_score, SchemeMixCriterion do |scheme_mix_criterion| ![SchemeMixCriterion.statuses[:verifying], SchemeMixCriterion.statuses[:verifying_after_appeal]].include?(scheme_mix_criterion.status) end
       cannot :refuse, RequirementDatum do |requirement_datum| requirement_datum.user_id != user.id end
@@ -99,10 +100,8 @@ class Ability
       can [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::STATUSES_AT_ASSESSOR_SIDE}, project: project_with_user_as_project_manager
       can [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::STATUSES_AT_CERTIFIER_SIDE}, project: project_with_user_as_certifier_manager
 
-      can :allocate_project_team_responsibility, CertificationPath, project: project_with_user_as_project_manager
-      can :allocate_project_team_responsibility, CertificationPath, project: project_with_user_as_project_manager
-      cannot :allocate_project_team_responsibility, CertificationPath, project: project_with_user_as_certifier_manager
-      can :allocate_certifier_team_responsibility, CertificationPath, project: project_with_user_as_certifier_manager
+      can [:edit_project_team_responsibility, :allocate_project_team_responsibility], CertificationPath, project: project_with_user_as_project_manager, certification_path_status: {id: CertificationPathStatus::STATUSES_IN_SUBMISSION}
+      can [:edit_certifier_team_responsibility, :allocate_certifier_team_responsibility], CertificationPath, project: project_with_user_as_certifier_manager, certification_path_status: {id: CertificationPathStatus::STATUSES_IN_VERIFICATION}
       can [:download_certificate, :download_certificate_coverletter, :download_scores_report], CertificationPath, project: project_with_user_assigned
       can :download_archive, CertificationPath, project: project_with_user_assigned
 

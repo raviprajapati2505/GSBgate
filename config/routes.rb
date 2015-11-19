@@ -32,6 +32,8 @@ Rails.application.routes.draw do
         get 'download_coverletter_report' => 'reports#download_certificate_coverletter', as: 'download_coverletter_report'
         get 'download_scores_report' => 'reports#download_certificate_scores', as: 'download_scores_report'
         get 'edit_status'
+        get 'edit_project_team_responsibility', path: 'edit-project-team-responsibility'
+        get 'edit_certifier_team_responsibility', path: 'edit-certifier-team-responsibility'
         put 'update_status'
         put 'apply_for_pcr'
         put 'approve_pcr_payment'

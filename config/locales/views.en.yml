@@ -24,16 +24,14 @@ en:
       btn_save: "Save"
     new_operations:
       btn_save: "Save"
-    allocate_project_team_responsibility:
-      btn_cancel: "Cancel"
-      btn_close: "Close"
+    edit_project_team_responsibility:
       btn_save: "Save"
-      modal_title: "Allocate project team responsibility"
-    allocate_certifier_team_responsibility:
+      btn_save_and_continue: "Save and continue"
       btn_cancel: "Cancel"
-      btn_close: "Close"
+    edit_certifier_team_responsibility:
       btn_save: "Save"
-      modal_title: "Allocate certifier team responsibility"
+      btn_save_and_continue: "Save and continue"
+      btn_cancel: "Cancel"
   projects:
     index:
       action_team_title: "Team"
