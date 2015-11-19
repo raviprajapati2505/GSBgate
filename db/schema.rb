@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151116125442) do
+ActiveRecord::Schema.define(version: 20151118100408) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -126,8 +126,9 @@ ActiveRecord::Schema.define(version: 20151116125442) do
 
   create_table "notification_types", force: :cascade do |t|
     t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.boolean  "project_level"
   end
 
   create_table "notification_types_users", force: :cascade do |t|
@@ -135,9 +136,11 @@ ActiveRecord::Schema.define(version: 20151116125442) do
     t.integer  "user_id"
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
+    t.integer  "project_id"
   end
 
   add_index "notification_types_users", ["notification_type_id"], name: "index_notification_types_users_on_notification_type_id", using: :btree
+  add_index "notification_types_users", ["project_id"], name: "index_notification_types_users_on_project_id", using: :btree
   add_index "notification_types_users", ["user_id"], name: "index_notification_types_users_on_user_id", using: :btree
 
   create_table "projects", force: :cascade do |t|
@@ -353,6 +356,7 @@ ActiveRecord::Schema.define(version: 20151116125442) do
   add_foreign_key "field_data", "fields"
   add_foreign_key "fields", "calculators"
   add_foreign_key "notification_types_users", "notification_types"
+  add_foreign_key "notification_types_users", "projects"
   add_foreign_key "notification_types_users", "users"
   add_foreign_key "projects", "users", column: "owner_id"
   add_foreign_key "projects_users", "projects"

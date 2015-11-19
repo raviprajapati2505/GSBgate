@@ -77,6 +77,12 @@ class ProjectsUsersController < AuthenticatedController
       scheme_mix_criterion.save!
     end
 
+    # remove user - notification_type link
+    user = @projects_user.user
+    if user.user?
+      NotificationTypesUser.delete_all(user_id: user.id, project_id: @projects_user.project.id)
+    end
+
     project = @projects_user.project
     @projects_user.destroy
     DigestMailer.removed_from_project_email(@projects_user).deliver_now

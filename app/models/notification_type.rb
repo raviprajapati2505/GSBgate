@@ -1,5 +1,7 @@
 class NotificationType < ActiveRecord::Base
 
+  has_many :notification_types_users, dependent: :delete_all
+
   NEW_USER_COMMENT = 1
   PROJECT_CREATED = 2
   CERTIFICATE_APPLIED = 3
@@ -25,5 +27,17 @@ class NotificationType < ActiveRecord::Base
   NEW_DOCUMENT_WAITING_FOR_APPROVAL = 23
   DOCUMENT_APPROVED = 24
   NEW_TASK = 25
+
+  scope :for_user, ->(user_id) {
+    joins(:notification_types_users).where(notification_types_users: {user_id: user_id})
+  }
+
+  scope :for_project, ->(project_id) {
+    joins(:notification_types_users).where(notification_types_users: {project_id: project_id})
+  }
+
+  scope :for_general_level, ->() {
+    where(project_level: false)
+  }
 
 end

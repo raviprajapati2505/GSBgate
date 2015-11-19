@@ -9,6 +9,7 @@ class Project < ActiveRecord::Base
   belongs_to :owner, class_name: 'User', inverse_of: :owned_projects
   has_many :projects_users, dependent: :delete_all
   has_many :certification_paths
+  has_many :notification_types_users, dependent: :delete_all
 
   validates :name, presence: true
   validates :address, presence: true

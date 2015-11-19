@@ -28,7 +28,7 @@
             <% if can?(:list_notifications, User) %>
                 <li class="<%= 'active' if (controller_name == 'users' and action_name == 'list_notifications') %>">
                     <%= link_to list_notifications_user_path id: current_user.id do %>
-                        <%= fa_icon('cog') %><span class="nav-label">My Preferences</span>
+                        <%= fa_icon('cog') %><span class="nav-label">My preferences</span>
                     <% end %>
                 </li>
             <% end %>

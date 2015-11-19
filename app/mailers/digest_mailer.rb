@@ -5,33 +5,6 @@ class DigestMailer < ApplicationMailer
 
   def digest_email(user)
     @user = user
-    notification_types = user.notification_types.all.to_a
-    @include_new_tasks = notification_types.any? {|type| type.notification_type_id == NotificationType::NEW_TASK}
-    @include_user_comments = notification_types.any? {|type| type.notification_type_id == NotificationType::NEW_USER_COMMENT}
-    @include_created_projects = notification_types.any? {|type| type.notification_type_id == NotificationType::PROJECT_CREATED}
-    @include_applied_certificates = notification_types.any? {|type| type.notification_type_id == NotificationType::CERTIFICATE_APPLIED}
-    @include_activated_certificates = notification_types.any? {|type| type.notification_type_id == NotificationType::CERTIFICATE_ACTIVATED}
-    @include_submitted_certificates_screening = notification_types.any? {|type| type.notification_type_id == NotificationType::CERTIFICATE_SUBMITTED_FOR_SCREENING}
-    @include_screened_certificates = notification_types.any? {|type| type.notification_type_id == NotificationType::CERTIFICATE_SCREENED}
-    @include_pcr_selected = notification_types.any? {|type| type.notification_type_id == NotificationType::CERTIFICATE_PCR_SELECTED}
-    @include_pcr_approved = notification_types.any? {|type| type.notification_type_id == NotificationType::CERTIFICATE_PCR_APPROVED}
-    @include_submitted_certificates_verification = notification_types.any? {|type| type.notification_type_id == NotificationType::CERTIFICATE_SUBMITTED_FOR_VERIFICATION}
-    @include_verified_certificates = notification_types.any? {|type| type.notification_type_id == NotificationType::CERTIFICATE_VERIFIED}
-    @include_appealed_certificates = notification_types.any? {|type| type.notification_type_id == NotificationType::CERTIFICATE_APPEALED}
-    @include_appeal_approved = notification_types.any? {|type| type.notification_type_id == NotificationType::CERTIFICATE_APPEAL_APPROVED}
-    @include_submitted_appealed_certificates = notification_types.any? {|type| type.notification_type_id == NotificationType::CERTIFICATE_SUBMITTED_FOR_VERIFICATION_AFTER_APPEAL}
-    @include_verified_appealed_certificates = notification_types.any? {|type| type.notification_type_id == NotificationType::CERTIFICATE_VERIFIED_AFTER_APPEAL}
-    @include_approved_certificates = notification_types.any? {|type| type.notification_type_id == NotificationType::CERTIFICATE_APPROVED_BY_MNGT}
-    @include_issued_certificates = notification_types.any? {|type| type.notification_type_id == NotificationType::CERTIFICATE_ISSUED}
-    @include_submitted_criteria = notification_types.any? {|type| type.notification_type_id == NotificationType::CRITERION_SUBMITTED}
-    @include_verified_criteria = notification_types.any? {|type| type.notification_type_id == NotificationType::CRITERION_VERIFIED}
-    @include_appealed_criteria = notification_types.any? {|type| type.notification_type_id == NotificationType::CRITERION_APPEALED}
-    @include_submitted_appealed_criteria = notification_types.any? {|type| type.notification_type_id = NotificationType::CRITERION_SUBMITTED_AFTER_APPEAL}
-    @include_verified_appealed_criteria = notification_types.any? {|type| type.notification_type_id = NotificationType::CRITERION_VERIFIED_AFTER_APPEAL}
-    @include_provided_requirements = notification_types.any? {|type| type.notification_type_id = NotificationType::REQUIREMENT_PROVIDED}
-    @include_documents_waiting = notification_types.any? {|type| type.notification_type_id = NotificationType::NEW_DOCUMENT_WAITING_FOR_APPROVAL}
-    @include_approved_documents = notification_types.any? {|type| type.notification_type_id = NotificationType::DOCUMENT_APPROVED}
-
     user.last_notified_at ||= DateTime.new
 
     if user.gord_manager? || user.gord_top_manager?
@@ -47,101 +20,40 @@ class DigestMailer < ApplicationMailer
                             .where('project_id IN (select projects_users.project_id from projects_users where projects_users.user_id = ?)', user.id)
       end
 
-      unless @include_user_comments
-        @audit_logs = @audit_logs.where.not(user_comment: nil)
+      exclude_notifications = NotificationTypesUser.where(user: user, notification_type_id: NotificationType::NEW_USER_COMMENT)
+      if exclude_notifications.any?
+        exclude_notifications.each do |exclude_notification|
+          @audit_logs = @audit_logs.where.not(user_comment: nil, project_id: exclude_notification.project_id)
+        end
       end
 
-      unless @include_created_projects
+      exclude_notifications = NotificationTypesUser.where(user: user, notification_type_id: NotificationType::PROJECT_CREATED)
+      if exclude_notifications.any?
         @audit_logs = @audit_logs.where.not('audit_logs.auditable_type = ? and audit_logs.system_message like \'%created.\'', Project.name.demodulize)
       end
 
-      unless @include_applied_certificates
-        @audit_logs = @audit_logs.where.not('audit_logs.auditable_type = ? and audit_logs.new_status = ?', CertificationPath.name.demodulize, CertificationPathStatus::ACTIVATING)
-      end
-
-      unless @include_activated_certificates
-        @audit_logs = @audit_logs.where.not('audit_logs.auditable_type = ? and audit_logs.new_status = ?', CertificationPath.name.demodulize, CertificationPathStatus::SUBMITTING)
-      end
-
-      unless @include_submitted_certificates_screening
-        @audit_logs = @audit_logs.where.not('audit_logs.auditable_type= ? and audit_logs.new_status = ?', CertificationPath.name.demodulize, CertificationPathStatus::SCREENING)
-      end
-
-      unless @include_screened_certificates
-        @audit_logs = @audit_logs.where.not('audit_logs.auditable_type = ? and audit_logs.new_status = ?', CertificationPath.name.demodulize, CertificationPathStatus::SUBMITTING_AFTER_SCREENING)
-      end
-
-      unless @include_pcr_selected
-        @audit_logs = @audit_logs.where.not('audit_logs.auditable_type = ? and audit_logs.new_status = ?', CertificationPath.name.demodulize, CertificationPathStatus::PROCESSING_PCR_PAYMENT)
-      end
-
-      unless @include_pcr_approved
-        @audit_logs = @audit_logs.where.not('audit_logs.auditable_type= ? and audit_logs.new_status = ?', CertificationPath.name.demodulize, CertificationPathStatus::SUBMITTING_PCR)
-      end
-
-      unless @include_submitted_certificates_verification
-        @audit_logs = @audit_logs.where.not('audit_logs.auditable_type = ? and audit_logs.new_status = ?', CertificationPath.name.demodulize, CertificationPathStatus::VERIFYING)
-      end
-
-      unless @include_verified_certificates
-        @audit_logs = @audit_logs.where.not('audit_logs.auditable_type = ? and audit_logs.new_status = ?', CertificationPath.name.demodulize, CertificationPathStatus::ACKNOWLEDGING)
-      end
-
-      unless @include_appealed_certificates
-        @audit_logs = @audit_logs.where.not('audit_logs.auditable_type = ? and audit_logs.new_status = ?', CertificationPath.name.demodulize, CertificationPathStatus::PROCESSING_APPEAL_PAYMENT)
-      end
-
-      unless @include_appeal_approved
-        @audit_logs = @audit_logs.where.not('audit_logs.auditable_type = ? and audit_logs.new_status = ?', CertificationPath.name.demodulize, CertificationPathStatus::SUBMITTING_AFTER_APPEAL)
-      end
-
-      unless @include_submitted_appealed_certificates
-        @audit_logs = @audit_logs.where.not('audit_logs.auditable_type = ? and audit_logs.new_status = ?', CertificationPath.name.demodulize, CertificationPathStatus::VERIFYING_AFTER_APPEAL)
-      end
-
-      unless @include_verified_appealed_certificates
-        @audit_logs = @audit_logs.where.not('audit_logs.auditable_type = ? and audit_logs.new_status = ?', CertificationPath.name.demodulize, CertificationPathStatus::ACKNOWLEDGING_AFTER_APPEAL)
-      end
-
-      unless @include_approved_certificates
-        @audit_logs = @audit_logs.where.not('audit_logs.auditable_type = ? and audit_logs.new_status = ?', CertificationPath.name.demodulize, CertificationPathStatus::APPROVING_BY_MANAGEMENT)
-      end
-
-      unless @include_issued_certificates
-        @audit_logs = @audit_logs.where.not('audit_logs.auditable_type = ? and audit_logs.new_status = ?', CertificationPath.name.demodulize, CertificationPathStatus::CERTIFIED)
-      end
-
-      unless @include_submitted_criteria
-        @audit_logs = @audit_logs.where.not('audit_logs.auditable_type = ? and audit_logs.new_status = ?', SchemeMixCriterion.name.demodulize, SchemeMixCriterion::statuses[:submitted])
-      end
-
-      unless @include_verified_criteria
-        @audit_logs = @audit_logs.where.not('audit_logs.auditable_type = ? and audit_logs.new_status in (?,?)', SchemeMixCriterion.name.demodulize, SchemeMixCriterion::statuses[:target_achieved], SchemeMixCriterion::statuses[:target_not_achieved])
-      end
-
-      unless @include_appealed_criteria
-        @audit_logs = @audit_logs.where.not('audit_logs.auditable_type = ? and audit_logs.new_status = ?', SchemeMixCriterion.name.demodulize, SchemeMixCriterion::statuses[:appealed])
-      end
-
-      unless @include_submitted_appealed_criteria
-        @audit_logs = @audit_logs.where.not('audit_logs.auditable_type = ? and audit_logs.new_status = ?', SchemeMixCriterion.name.demodulize, SchemeMixCriterion::statuses[:submitted_after_appeal])
-      end
-
-      unless @include_verified_appealed_criteria
-        @audit_logs = @audit_logs.where.not('audit_logs.auditable_type = ? and audit_logs.new_status in (?,?)', SchemeMixCriterion.name.demodulize, SchemeMixCriterion::statuses[:target_achieved_after_appeal], SchemeMixCriterion::statuses[:target_not_achieved_after_appeal])
-      end
-
-      unless @include_provided_requirements
-        @audit_logs = @audit_logs.where.not('audit_logs.auditable_type = ? and audit_logs.new_status = ?', RequirementDatum.name.demodulize, RequirementDatum::statuses[:provided])
-      end
-
-      unless @include_documents_waiting
-        @audit_logs = @audit_logs.where.not('audit_logs.auditable_type = ? and audit_logs.new_status = ?', SchemeMixCriteriaDocument.name.demodulize, SchemeMixCriteriaDocument::statuses[:awaiting_approval])
-      end
-
-      unless @include_approved_documents
-        @audit_logs = @audit_logs.where.not('audit_logs.auditable_type = ? and audit_logs.new_status = ?', SchemeMixCriteriaDocument.name.demodulize, SchemeMixCriteriaDocument::statuses[:approved])
-      end
+      add_condition(user, NotificationType::CERTIFICATE_APPLIED, CertificationPath.name.demodulize, CertificationPathStatus::ACTIVATING)
+      add_condition(user, NotificationType::CERTIFICATE_ACTIVATED, CertificationPath.name.demodulize, CertificationPathStatus::SUBMITTING)
+      add_condition(user, NotificationType::CERTIFICATE_SUBMITTED_FOR_SCREENING, CertificationPath.name.demodulize, CertificationPathStatus::SCREENING)
+      add_condition(user, NotificationType::CERTIFICATE_SCREENED, CertificationPath.name.demodulize, CertificationPathStatus::SUBMITTING_AFTER_SCREENING)
+      add_condition(user, NotificationType::CERTIFICATE_PCR_SELECTED, CertificationPath.name.demodulize, CertificationPathStatus::PROCESSING_PCR_PAYMENT)
+      add_condition(user, NotificationType::CERTIFICATE_PCR_APPROVED, CertificationPath.name.demodulize, CertificationPathStatus::SUBMITTING_PCR)
+      add_condition(user, NotificationType::CERTIFICATE_SUBMITTED_FOR_VERIFICATION, CertificationPath.name.demodulize, CertificationPathStatus::VERIFYING)
+      add_condition(user, NotificationType::CERTIFICATE_VERIFIED, CertificationPath.name.demodulize, CertificationPathStatus::ACKNOWLEDGING)
+      add_condition(user, NotificationType::CERTIFICATE_APPEALED, CertificationPath.name.demodulize, CertificationPathStatus::PROCESSING_APPEAL_PAYMENT)
+      add_condition(user, NotificationType::CERTIFICATE_APPEAL_APPROVED, CertificationPath.name.demodulize, CertificationPathStatus::SUBMITTING_AFTER_APPEAL)
+      add_condition(user, NotificationType::CERTIFICATE_SUBMITTED_FOR_VERIFICATION_AFTER_APPEAL, CertificationPath.name.demodulize, CertificationPathStatus::VERIFYING_AFTER_APPEAL)
+      add_condition(user, NotificationType::CERTIFICATE_VERIFIED_AFTER_APPEAL, CertificationPath.name.demodulize, CertificationPathStatus::ACKNOWLEDGING_AFTER_APPEAL)
+      add_condition(user, NotificationType::CERTIFICATE_APPROVED_BY_MNGT, CertificationPath.name.demodulize, CertificationPathStatus::APPROVING_BY_MANAGEMENT)
+      add_condition(user, NotificationType::CERTIFICATE_ISSUED, CertificationPath.name.demodulize, CertificationPathStatus::CERTIFIED)
+      add_condition(user, NotificationType::CRITERION_SUBMITTED, SchemeMixCriterion.name.demodulize, SchemeMixCriterion::statuses[:submitted])
+      add_condition(user, NotificationType::CRITERION_VERIFIED, SchemeMixCriterion.name.demodulize, [SchemeMixCriterion::statuses[:target_achieved], SchemeMixCriterion::statuses[:target_not_achieved]])
+      add_condition(user, NotificationType::CRITERION_APPEALED, SchemeMixCriterion.name.demodulize, SchemeMixCriterion::statuses[:appealed])
+      add_condition(user, NotificationType::CRITERION_SUBMITTED_AFTER_APPEAL, SchemeMixCriterion.name.demodulize, SchemeMixCriterion::statuses[:submitted_after_appeal])
+      add_condition(user, NotificationType::CRITERION_VERIFIED_AFTER_APPEAL, SchemeMixCriterion.name.demodulize, [SchemeMixCriterion::statuses[:target_achieved_after_appeal], SchemeMixCriterion::statuses[:target_not_achieved_after_appeal]])
+      add_condition(user, NotificationType::REQUIREMENT_PROVIDED, RequirementDatum.name.demodulize, RequirementDatum::statuses[:provided])
+      add_condition(user, NotificationType::NEW_DOCUMENT_WAITING_FOR_APPROVAL, SchemeMixCriteriaDocument.name.demodulize, SchemeMixCriteriaDocument::statuses[:awaiting_approval])
+      add_condition(user, NotificationType::DOCUMENT_APPROVED, SchemeMixCriteriaDocument.name.demodulize, SchemeMixCriteriaDocument::statuses[:approved])
 
       @more_audit_logs = @audit_logs.count - MAX_LOG_ITEMS
       @more_audit_logs = @more_audit_logs < 0 ? 0 : @more_audit_logs
@@ -149,12 +61,15 @@ class DigestMailer < ApplicationMailer
       @audit_logs = @audit_logs.limit(MAX_LOG_ITEMS)
     end
 
-    if @include_new_tasks
+    exclude_new_tasks = NotificationTypesUser.where(user: user, notification_type_id: NotificationType::NEW_TASK)
+    unless exclude_new_tasks.any?
+      @include_new_tasks = true
       @more_tasks = TaskService::count_tasks(user: user, from_datetime: user.last_notified_at) - MAX_LOG_ITEMS
       @more_tasks = @more_tasks < 0 ? 0 : @more_tasks
 
       @tasks = TaskService::get_tasks(page: 1, per_page: MAX_LOG_ITEMS, user: user, from_datetime: user.last_notified_at)
     else
+      @include_new_tasks = false
       @tasks = []
       @more_tasks = 0
     end
@@ -186,5 +101,20 @@ class DigestMailer < ApplicationMailer
     @project = projectsuser.project
 
     mail(to: @user.email, subject: "GSAS : you are removed from project #{@project.name}")
+  end
+
+  private
+
+  def add_condition(user, notification_type, auditable_type, new_status)
+    exclude_notifications = NotificationTypesUser.where(user: user, notification_type_id: notification_type)
+    if exclude_notifications.any?
+      exclude_notifications.each do |exclude_notification|
+        if new_status.kind_of?(Array)
+          @audit_logs = @audit_logs.where.not('audit_logs.auditable_type = ? and audit_logs.new_status in (?) and project_id = ?', auditable_type, new_status, exclude_notification.project_id)
+        else
+          @audit_logs = @audit_logs.where.not('audit_logs.auditable_type = ? and audit_logs.new_status = ? and project_id = ?', auditable_type, new_status, exclude_notification.project_id)
+        end
+      end
+    end
   end
 end
