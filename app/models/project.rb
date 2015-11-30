@@ -79,9 +79,9 @@ class Project < ActiveRecord::Base
 
   def init
     # Set default code
-    self.code ||= 'TBC'
+    self.code ||= 'TBC' unless attributes['code'].nil?
 
     # Set default latlng location to Doha, Qatar
-    self.latlng ||= 'POINT(51.53043679999996 25.2916097)'
+    self.latlng ||= 'POINT(51.53043679999996 25.2916097)' unless attributes['latlng'].nil?
   end
 end
