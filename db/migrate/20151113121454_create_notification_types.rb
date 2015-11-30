@@ -1,5 +1,5 @@
 class CreateNotificationTypes < ActiveRecord::Migration
-  def change
+  def up
     create_table :notification_types do |t|
       t.string :name
 
@@ -31,5 +31,9 @@ class CreateNotificationTypes < ActiveRecord::Migration
     NotificationType.create!(id: NotificationType::NEW_DOCUMENT_WAITING_FOR_APPROVAL, name: 'New document uploaded for criterion')
     NotificationType.create!(id: NotificationType::DOCUMENT_APPROVED, name: 'Document approved')
     NotificationType.create!(id: NotificationType::NEW_TASK, name: 'New task')
+  end
+
+  def down
+    drop_table :notification_types
   end
 end
