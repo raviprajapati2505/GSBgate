@@ -14,23 +14,8 @@ class CopyTaskData < ActiveRecord::Migration
       task.updated_at = temp_task.updated_at
       task.project_id = temp_task.project_id
       task.certification_path_id = temp_task.certification_path_id
-      case temp_task.taskable_type
-        when Project.name.demodulize
-          project = Project.find(temp_task.taskable_id)
-          task.taskable = project
-        when CertificationPath.name.demodulize
-          certification_path = CertificationPath.find(temp_task.taskable_id)
-          task.taskable = certification_path
-        when SchemeMixCriterion.name.demodulize
-          scheme_mix_criterion = SchemeMixCriterion.find(temp_task.taskable_id)
-          task.taskable = scheme_mix_criterion
-        when RequirementDatum.name.demodulize
-          requirement_datum = RequirementDatum.find(temp_task.taskable_id)
-          task.taskable = requirement_datum
-        when SchemeMixCriteriaDocument.name.demodulize
-          scheme_mix_criteria_document = SchemeMixCriteriaDocument.find(temp_task.taskable_id)
-          task.taskable = scheme_mix_criteria_document
-      end
+      task.taskable_id = temp_task.taskable_id
+      task.taskable_type = temp_task.taskable_type
       task.save
     end
 
@@ -59,7 +44,7 @@ class CopyTaskData < ActiveRecord::Migration
       temp_task.user_id = task.user_id
       temp_task.created_at = task.created_at
       temp_task.updated_at = task.updated_at
-      temp_task.taskable_type = task.taskable_type
+      temp_task.taskable_type = task.taskable_type + 'Task'
       temp_task.taskable_id = task.taskable_id
       temp_task.project_id = task.project_id
       temp_task.certification_path_id = task.certification_path_id

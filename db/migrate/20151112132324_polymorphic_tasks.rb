@@ -21,6 +21,9 @@ class PolymorphicTasks < ActiveRecord::Migration
       t.string   "taskable_type"
     end
 
+    # Without this renaming rails will try to find the inheriting class
+    rename_column :tasks, :type, :temp_type
+
     Task.find_each do |task|
       temp_task = TempTask.new
       temp_task.task_description_id = task.task_description_id
@@ -29,10 +32,10 @@ class PolymorphicTasks < ActiveRecord::Migration
       temp_task.user_id = task.user_id
       temp_task.created_at = task.created_at
       temp_task.updated_at = task.updated_at
-      temp_task.taskable_type = task.type
+      temp_task.taskable_type = task.temp_type[0..-5]
       temp_task.project_id = task.project_id
       temp_task.certification_path_id = task.certification_path_id
-      case task.type
+      case temp_task.taskable_type
         when Project.name.demodulize
           temp_task.taskable_id = task.project_id
         when CertificationPath.name.demodulize
@@ -47,7 +50,7 @@ class PolymorphicTasks < ActiveRecord::Migration
       temp_task.save
     end
 
-    remove_column :tasks, :type, :string
+    remove_column :tasks, :temp_type, :string
     remove_column :tasks, :project_id, :integer
     remove_column :tasks, :certification_path_id, :integer
     remove_column :tasks, :scheme_mix_criterion_id, :integer
