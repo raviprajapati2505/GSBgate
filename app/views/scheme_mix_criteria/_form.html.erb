@@ -27,7 +27,7 @@
                             <%= fa_icon('times', 'Target not achieved') %>
                         <% end %>
                     <% else %>
-                        <%= can_link_to(edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), @scheme_mix_criterion, { class: 'btn btn-danger', remote: true} ) do %>
+                        <%= can_link_to(edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, undo: 1), @scheme_mix_criterion, { class: 'btn btn-danger', remote: true} ) do %>
                             <%= fa_icon('undo', 'Undo status change') %>
                         <% end %>
                     <% end %>
@@ -38,7 +38,7 @@
                             <%= fa_icon('check', 'Submit criterion') %>
                         <% end %>
                     <% else %>
-                        <%= can_link_to(edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), @scheme_mix_criterion, { class: 'btn btn-danger', remote: true} ) do %>
+                        <%= can_link_to(edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, undo: 1), @scheme_mix_criterion, { class: 'btn btn-danger', remote: true} ) do %>
                             <%= fa_icon('undo', 'Undo status change') %>
                         <% end %>
                     <% end %>
