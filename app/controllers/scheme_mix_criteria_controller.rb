@@ -50,12 +50,17 @@ class SchemeMixCriteriaController < AuthenticatedController
         status = :verifying
       elsif (@scheme_mix_criterion.target_achieved_after_appeal? || @scheme_mix_criterion.target_not_achieved_after_appeal?) && @certification_path.certification_path_status_id == CertificationPathStatus::VERIFYING_AFTER_APPEAL
         status = :verifying_after_appeal
+      end
+
+      if status.present?
+        @scheme_mix_criterion.status = status
+        @scheme_mix_criterion.audit_log_user_comment = params[:scheme_mix_criterion][:audit_log_user_comment]
+        @scheme_mix_criterion.save!
+
+        flash[:notice] = 'Criterion status was sucessfully updated.'
       else
         flash[:alert] = 'The criterion status cannot be updated.'
       end
-
-      @scheme_mix_criterion.update!(status: status)
-      flash[:notice] = 'Criterion status was sucessfully updated.'
     else
       flash[:alert] = todos.first
     end
