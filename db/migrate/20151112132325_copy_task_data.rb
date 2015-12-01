@@ -11,6 +11,7 @@ class CopyTaskData < ActiveRecord::Migration
   end
 
   def up
+    if Rails.env.production?
       TempTask.find_each do |temp_task|
         task = NewTask.new
         task.task_description_id = temp_task.task_description_id
@@ -27,9 +28,11 @@ class CopyTaskData < ActiveRecord::Migration
       end
 
       drop_table :temp_tasks
+    end
   end
 
   def down
+    if Rails.env.production?
       create_table "temp_tasks", force: :cascade do |t|
         t.integer  "task_description_id",             null: false
         t.integer  "application_role"
@@ -70,5 +73,6 @@ class CopyTaskData < ActiveRecord::Migration
       add_column :tasks, :scheme_mix_criteria_document_id, :integer
 
       NewTask.delete_all
+    end
   end
 end

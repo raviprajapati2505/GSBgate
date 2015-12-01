@@ -10,6 +10,7 @@ class PolymorphicTasks < ActiveRecord::Migration
   end
 
   def up
+    if Rails.env.production?
       create_table "temp_tasks", force: :cascade do |t|
         t.integer  "task_description_id",             null: false
         t.integer  "application_role"
@@ -64,9 +65,11 @@ class PolymorphicTasks < ActiveRecord::Migration
       add_reference :tasks, :certification_path, index: true, foreign_key: true
 
       OldTask.delete_all
+    end
   end
 
   def down
+    if Rails.env.production?
       TempTask.find_each do |temp_task|
         task = OldTask.new
         task.task_description_id = temp_task.task_description_id
@@ -90,5 +93,6 @@ class PolymorphicTasks < ActiveRecord::Migration
       end
 
       drop_table :temp_tasks
+    end
   end
 end
