@@ -22,7 +22,7 @@ class DocumentArchiverService
         zos << IO.read(file_path)
       end
 
-      zos.put_next_entry('user_comments.csv')
+      zos.put_next_entry('audit_logs.csv')
       # CSV column headers
       zos << ['timestamp', 'user', 'user_comment', 'system_message'].to_csv
       page = 0
