@@ -90,7 +90,7 @@ module Taskable
     Task.create(taskable: self, task_description_id: PROJ_MNGR_APPLY, project_role: ProjectsUser.roles[:project_manager], project: self)
     if self.location_plan_file.blank? || self.site_plan_file.blank? || self.design_brief_file.blank? || self.project_narrative_file.blank?
       # Create a project manager task to provide the 'general submittal' documents
-      Task.create(taskable: self, task_description_id: PROJ_MNGR_GEN, project_role: ProjectsUser.roles[:project_manager])
+      Task.create(taskable: self, task_description_id: PROJ_MNGR_GEN, project_role: ProjectsUser.roles[:project_manager], project: self)
     end
   end
 
