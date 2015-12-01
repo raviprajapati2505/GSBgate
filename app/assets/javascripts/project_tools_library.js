@@ -1,52 +1,52 @@
 $(function(){
-    
+
     $('#building-properties').html('<div class="col-md-4">' +
-    '    <div class="ibox float-e-margins">' +
-    '        <div class="ibox-title">' +
-    '            <h5>Building map</h5>' +
-    '        </div>' +
-    '        <div class="ibox-content">' +
-    '            <input type="hidden" id="project_latlng" value="POINT (-4.2699596999999585 55.8662876)" />' +
-    '            <div id="building-map" class="map" style="height: 300px;"></div>' +
-    '            <div class="hr-line-dashed"></div>' +
-    '            <a id="draw-building-btn" class="btn btn-primary display-none"><i title="Draw building shape" class="fa fa-lg fa-edit" style="padding-right: 10px;"></i>Draw</a>' +
-    '            <a id="edit-building-btn" class="btn btn-primary display-none"><i title="Edit building shape" class="fa fa-lg fa-edit" style="padding-right: 10px;"></i>Edit</a>' +
-    '            <a id="remove-building-btn" class="btn btn-danger display-none"><i title="Remove building shape" class="fa fa-lg fa-trash-o" style="padding-right: 10px;"></i>Remove</a>' +
-    '        </div>' +
-    '    </div>' +
-    '</div>' +
-    '<div class="col-md-4">' +
-    '    <div class="ibox float-e-margins">' +
-    '        <div class="ibox-title">' +
-    '            <h5>Building details</h5>' +
-    '        </div>' +
-    '        <div class="ibox-content">' +
-    '            <table class="table table-bordered table-striped">' +
-    '                <tbody>' +
-    '                <tr id="building-height">' +
-    '                    <th>Building height</th>' +
-    '                    <td></td>' +
-    '                </tr>' +
-    '                </tbody>' +
-    '            </table>' +
-    '            <table class="table table-bordered table-striped">' +
-    '                <tbody id="building-facade-tb">' +
-    '                </tbody>' +
-    '            </table>' +
-    '        </div>' +
-    '    </div>' +
-    '</div>' +
-    '<div class="col-md-4">' +
-    '    <div class="ibox float-e-margins">' +
-    '        <div class="ibox-title">' +
-    '            <h5>3D visualisation</h5>' +
-    '        </div>' +
-    '        <div class="ibox-content">' +
-    '            <input type="hidden" id="project_latlng" value="POINT (-4.2699596999999585 55.8662876)" />' +
-    '            <div id="viewport" style="height: 300px;"></div>' +
-    '        </div>' +
-    '    </div>' +
-    '</div>');
+        '    <div class="ibox float-e-margins">' +
+        '        <div class="ibox-title">' +
+        '            <h5>Building map</h5>' +
+        '        </div>' +
+        '        <div class="ibox-content">' +
+        '            <div id="building-map" class="map" style="height: 300px;"></div>' +
+        '            <div class="hr-line-dashed"></div>' +
+        '            <a id="draw-building-btn" class="btn btn-primary display-none"><i title="Draw building shape" class="fa fa-lg fa-edit" style="padding-right: 10px;"></i>Draw</a>' +
+        '            <a id="edit-building-btn" class="btn btn-primary display-none"><i title="Edit building shape" class="fa fa-lg fa-edit" style="padding-right: 10px;"></i>Edit</a>' +
+        '            <a id="remove-building-btn" class="btn btn-danger display-none"><i title="Remove building shape" class="fa fa-lg fa-trash-o" style="padding-right: 10px;"></i>Remove</a>' +
+        '        </div>' +
+        '    </div>' +
+        '</div>' +
+        '<div class="col-md-4">' +
+        '    <div class="ibox float-e-margins">' +
+        '        <div class="ibox-title">' +
+        '            <h5>Building details</h5>' +
+        '        </div>' +
+        '        <div class="ibox-content">' +
+        '            <table class="table table-bordered table-striped">' +
+        '                <tbody>' +
+        '                <tr id="building-height">' +
+        '                    <th>Building height</th>' +
+        '                    <td></td>' +
+        '                </tr>' +
+        '                </tbody>' +
+        '            </table>' +
+        '            <table class="table table-bordered table-striped">' +
+        '                <tbody id="building-facade-tb">' +
+        '                </tbody>' +
+        '            </table>' +
+        '        </div>' +
+        '    </div>' +
+        '</div>' +
+        '<div class="col-md-4">' +
+        '    <div class="ibox float-e-margins">' +
+        '        <div class="ibox-title">' +
+        '            <h5>3D visualisation</h5>' +
+        '        </div>' +
+        '        <div class="ibox-content">' +
+        '            <div id="viewport" style="height: 300px;"></div>' +
+        '            <div class="hr-line-dashed"></div>' +
+        '            <a id="save-building-btn" class="btn btn-primary"><i title="Save building" class="fa fa-lg fa-save" style="padding-right: 10px;"></i>Save</a>' +
+        '        </div>' +
+        '    </div>' +
+        '</div>');
 
     // test to add dialog window (not in use)
 
@@ -59,18 +59,18 @@ $(function(){
     // '      </div>' +
     // '      <div class="modal-body">' +
     // '<div class="row">' +
-    // '<div class="col-md-8">'+ 
-    // '    <div class="ibox float-e-margins">'+ 
-    // '        <div class="ibox-title">'+ 
+    // '<div class="col-md-8">'+
+    // '    <div class="ibox float-e-margins">'+
+    // '        <div class="ibox-title">'+
     // '            <h5>Building map</h5>'+
-    // '        </div>'+ 
+    // '        </div>'+
     // '        <div class="ibox-content">' +
     // '            <input type="hidden" id="project_latlng" value="POINT (-4.2699596999999585 55.8662876)" /> '+
-    // '            <div id="draw-map" class="map" style="height: 300px;"></div>'+ 
-    // '            <div class="hr-line-dashed"></div>'+ 
+    // '            <div id="draw-map" class="map" style="height: 300px;"></div>'+
+    // '            <div class="hr-line-dashed"></div>'+
     // '            <a class="btn btn-primary" href="/projects/7/edit"><i title="Edit project" class="fa fa-lg fa-edit" style="padding-right: 10px;"></i>Edit</a>' +
     // '        </div>' +
-    // '    </div>'+ 
+    // '    </div>'+
     // '</div>' +
     // '<div class="col-md-4">' +
     // '    <div class="ibox float-e-margins">' +
@@ -129,7 +129,7 @@ $(function(){
     // '            <div class="hr-line-dashed"></div>' +
     // '            <a class="btn btn-primary" href="/projects/7/edit"><i title="Edit project" class="fa fa-lg fa-edit" style="padding-right: 10px;"></i>Edit</a>' +
     // '        </div>' +
-    // '    </div>'+ 
+    // '    </div>'+
     // '</div>' +
     // '</div>' +
     // '      </div>' +
@@ -150,11 +150,14 @@ $(function(){
     //     });
     // });
 
+    // this is found in html/global?
+    var buildingId = 1234;
+
     var toMercator = proj4('EPSG:3857');
 
     var buildingFacadeTableBodyEl, drawBtn, editBtn, removeBtn, buildingHeightTrEl, viewportEl;
 
-    var map; 
+    var map;
     // layer references when draw and editing
     var drawLayer, editing, buildingLayer;
 
@@ -162,28 +165,33 @@ $(function(){
     // 3d building mesh reference
     var building3d, ground3d;
 
+    //var geojsonParam = JSON.parse(getUrlParameter('json'));
 
     // existing mock data "from the server"
 
-    var existingBuildingData = {
-        geoJson: {
-            geometry: {
-                type:"Polygon",
-                coordinates:[[[4.419819116592407,51.215448764543524],[4.419819116592407,51.215408441676914],[4.41926121711731,51.21529419336308],[4.41926121711731,51.215139621663695],[4.419143199920654,51.21511273957604],[4.419143199920654,51.215011931607584],[4.419958591461182,51.21513290114326],[4.420012235641479,51.2150656958849],[4.420216083526611,51.21507241641516],[4.420194625854492,51.21514634218317],[4.420098066329956,51.21514634218317],[4.41999077796936,51.215307634355895],[4.4199371337890625,51.215287472865214],[4.419883489608765,51.215408441676914],[4.419947862625122,51.21542188263637],[4.4198620319366455,51.21552268970725],[4.420044422149658,51.21558989429855],[4.420430660247803,51.21487752063965],[4.419572353363037,51.21476327100837],[4.419529438018799,51.21487080008094],[4.419357776641846,51.21486407952126],[4.419368505477905,51.21476327100837],[4.418896436691284,51.214736388701],[4.4187891483306885,51.21522698834014],[4.419025182723999,51.21525387036108],[4.418982267379761,51.21532107534476],[4.419819116592407,51.215448764543524]]]},
-            properties: {
-                glazing: [[40, 60, 80]],
-                height: 40
-            },
-            type: "Feature"
-        }
-    };
+    // var existingBuildingData = {
+    //     geoJson: geojsonParam
+    // };
 
-    // var merc = toMercator.forward([2.724609375, 54.028423787358115], [10.283203125, 49.69037600302214], [-0.087890625, 48.2480884280004], [2.724609375, 54.028423787358115]);
-    // console.log(merc);
+    // if(!existingBuildingData.geoJson.properties.glazing) {
+    //     existingBuildingData.geoJson.properties.glazing = [];
+    // }
+    // if(!existingBuildingData.geoJson.properties.height) {
+    //     existingBuildingData.geoJson.properties.height = 10;
+    // }
+
+    var existingBuildingData;
 
     $(window).load(function(){
 
-        init(existingBuildingData);
+        $.get('ssApi/buildings/' + buildingId, function(data) {
+
+            existingBuildingData = data || createNewBuilding();
+
+            init(existingBuildingData);
+
+        });
+
     });
 
     function initCss() {
@@ -199,6 +207,18 @@ $(function(){
         removeBtn = $('#remove-building-btn');
         buildingHeightTrEl = $('#building-height');
         viewportEl = $('#viewport');
+        saveBtn = $('#save-building-btn');
+
+        saveBtn.click(function(e) {
+            saveCurrentBuilding();
+        });
+    }
+
+    function saveCurrentBuilding() {
+        console.log(existingBuildingData);
+        $.post('ssApi/buildings', {buildingData: JSON.stringify(existingBuildingData)}, function(data, status) {
+            console.log(data, status);
+        });
     }
 
     function startEdit() {
@@ -207,7 +227,7 @@ $(function(){
         });
 
         editBtn.removeClass('btn-primary').addClass('btn-default').html('<i title="Save building shape" class="fa fa-lg fa-floppy-o" style="padding-right: 10px;"></i>Save</a>');
-        
+
         editing = true;
     }
 
@@ -306,7 +326,7 @@ $(function(){
     function initMap() {
         map = L.map('building-map', {
             zoomControl: false
-        }).setView([50.736455, 6.328125], 4);
+        }).setView([50.736455, 6.328125], 2);
 
         $('.leaflet-control-container').css({display: 'none'});
 
@@ -317,7 +337,7 @@ $(function(){
             subdomains: '1234'
         }).addTo(map);
 
-        // layers for Leaflet Draw   
+        // layers for Leaflet Draw
         var drawnItems = new L.FeatureGroup();
         map.addLayer(drawnItems);
 
@@ -331,8 +351,8 @@ $(function(){
                     allowIntersection: false,
                     guidelineDistance: 1,
                     drawError: {
-                        color: '#e1e100', 
-                        message: 'Polygon can not intersect!' 
+                        color: '#e1e100',
+                        message: 'Polygon can not intersect!'
                     },
                     shapeOptions: {
                         color: 'rgba(66, 139, 202, 1)',
@@ -345,13 +365,29 @@ $(function(){
             }
         };
 
+        console.log(map.getZoom());
+
         var drawControl = new L.Control.Draw(options);
 
         buildingLayer = L.geoJson().addTo(map);
-        buildingLayer.addData(existingBuildingData.geoJson);
+        // TODO: validate this in a nice way
+        if(existingBuildingData.geoJson &&
+            existingBuildingData.geoJson.geometry &&
+            existingBuildingData.geoJson.geometry.coordinates &&
+            existingBuildingData.geoJson.geometry.coordinates.length > 0) {
+            buildingLayer.addData(existingBuildingData.geoJson);
+            map.fitBounds(buildingLayer.getBounds());
+            console.log(map.getZoom());
 
-        map.fitBounds(buildingLayer.getBounds());
+        }
+
         existingBuildingData.mapSettings.zoomLevel = map.getZoom();
+
+        // wait for the map to adjust to building bounds before updating viewport
+        map.on('moveend', function(e) {
+            console.log(map.getZoom());
+            updateViewport(existingBuildingData);
+        });
 
         buildingLayer.on('click', function(e) {
             startEdit(e.layer);
@@ -413,6 +449,7 @@ $(function(){
             console.log('draw:edited');
             stopEdit();
         });
+
     }
 
     // this function takes the existing building data
@@ -422,20 +459,25 @@ $(function(){
         buildingData = buildingData || {};
 
         buildingData.geoJson = buildingData.geoJson || {
-            geometry: {
-                coordinates: [],
-                type: "Polygon"
-            },
-            properties: {
+                geometry: {
+                    coordinates: [],
+                    type: "Polygon"
+                },
+                properties: {
+                    glazing: [],
+                    height: 1
+                },
+                type: "Feature"
+            };
+
+        buildingData.geoJson.properties = buildingData.geoJson.properties || {
                 glazing: [],
-                height: 0
-            },
-            type: "Feature"
-        };
+                height: 1
+            };
 
         buildingData.mapSettings = buildingData.mapSettings || {
-            zoomLevel: 12
-        };
+                zoomLevel: 12
+            };
     }
 
     function init(buildingData) {
@@ -448,6 +490,7 @@ $(function(){
         updateBuildingHeightControl();
         initViewport();
         render();
+        // the update is done on bounds change event (moveend) because asynchronous operation when loading building
         updateViewport(buildingData);
     }
 
@@ -528,11 +571,11 @@ $(function(){
         var delta = 0;
 
         if ( ev.wheelDelta !== undefined ) {
-          // WebKit / Opera / Explorer 9
-          delta = ev.wheelDelta;
+            // WebKit / Opera / Explorer 9
+            delta = ev.wheelDelta;
         } else if ( ev.detail !== undefined ) {
-          // Firefox
-          delta = - ev.detail;
+            // Firefox
+            delta = - ev.detail;
         }
 
         var factor = 10;
@@ -585,71 +628,63 @@ $(function(){
             scene.remove(ground3d);
             ground3d = null;
         }
+        // bounds and center of building
         var bounds = buildingLayer.getBounds();
-        var centroid = bounds.getCenter();
-        var coords = buildingData.geoJson.geometry.coordinates[0];
-        var buildingHeight = buildingData.geoJson.properties.height;
-        var glazing = buildingData.geoJson.properties.glazing;
-        var footprint = [];
+        var layerCentroid = bounds.getCenter();
+        var mercatorCentroid = toMercator.forward([layerCentroid.lng, layerCentroid.lat]);
 
-        centroid = getCentroid(coords);
-        var center = toMercator.forward([centroid[0], centroid[1]]);
+        console.log(map.getZoom());
 
-        var i, point, 
-            buildingShape = new THREE.Shape(), 
-            groundShape = new THREE.Shape(), 
-            geometry, color = 0x0040f0,
+        // bounds of map
+        var mapBounds = map.getBounds(),
+            mapNorth = mapBounds.getNorth(),
+            mapEast = mapBounds.getEast(),
+            mapSouth = mapBounds.getSouth(),
+            mapWest = mapBounds.getWest(),
+            mapne = toMercator.forward([mapEast, mapNorth]),
+            mapsw = toMercator.forward([mapWest, mapSouth]),
+            mapRange = mapne[0]-mapsw[0];
+
+        var zoom = map.getZoom();
+
+        // 3d ground settings
+        THREE.ImageUtils.crossOrigin = '';
+        var imageQuery = "https://api.mapbox.com/v4/mapbox.streets/" + layerCentroid.lng + "," + layerCentroid.lat + "," + zoom + "/1024x1024.png?access_token=pk.eyJ1IjoiYW5kcmVhc3J1ZGVuYSIsImEiOiJkMDI4NTFlMjYwZTYwN2UzOTVmZTdhOWYzZDllMjhlZCJ9.gnOB9biEpo1QqdhUewn4TA",
+            groundImage = THREE.ImageUtils.loadTexture(imageQuery),
+            groundMaterial = new THREE.MeshBasicMaterial( {
+                side: THREE.DoubleSide,
+                map: groundImage
+            });
+
+        // building data
+        var coords = buildingData.geoJson.geometry.coordinates[0],
+            buildingHeight = buildingData.geoJson.properties.height,
+            glazing = buildingData.geoJson.properties.glazing,
+            footprint = [];
+
+        // 3d settings
+        var i, point,
+            buildingShape = new THREE.Shape(),
+            groundShape = new THREE.Shape(),
+            geometry,
+            material,
+            color = 0x0040f0,
             extrudeSettings = { amount: buildingHeight, bevelEnabled: false, bevelSegments: 1, steps: 1, bevelSize: 1, bevelThickness: 1 };
-
-        var north = bounds.getNorth(),
-            east = bounds.getEast(),
-            south = bounds.getSouth(),
-            west = bounds.getWest();
-
-        var ne = toMercator.forward([east, north]);
-        var sw = toMercator.forward([west, south]);
-
-        var zoom = buildingData.mapSettings.zoomLevel;
 
         if(ground3d) {
             scene.remove(ground3d);
         }
 
-        // TODO: revisit this to get range normally lowest-highest*-1 but coords can be negative
-        var range = ne[0]-sw[0];
-        var rangeFactor = range * 1.5;
-
-        groundShape.moveTo(sw[0] - rangeFactor, sw[1] - rangeFactor);
-        groundShape.lineTo(sw[0] - rangeFactor, ne[1] + rangeFactor);
-        groundShape.lineTo(ne[0] + rangeFactor, ne[1] + rangeFactor);
-        groundShape.lineTo(ne[0] + rangeFactor, sw[1] - rangeFactor);
-        groundShape.lineTo(sw[0] - rangeFactor, sw[1] - rangeFactor);
+        groundShape.moveTo(mercatorCentroid[0] - mapRange, mercatorCentroid[1] - mapRange);
+        groundShape.lineTo(mercatorCentroid[0] - mapRange, mercatorCentroid[1] + mapRange);
+        groundShape.lineTo(mercatorCentroid[0] + mapRange, mercatorCentroid[1] + mapRange);
+        groundShape.lineTo(mercatorCentroid[0] + mapRange, mercatorCentroid[1] - mapRange);
+        groundShape.lineTo(mercatorCentroid[0] - mapRange, mercatorCentroid[1] - mapRange);
 
         geometry = new THREE.ShapeGeometry( groundShape );
 
-        var imageQuery = "https://api.mapbox.com/v4/mapbox.streets/" + centroid[0] + "," + centroid[1] + "," + zoom + "/1024x1024.png?access_token=pk.eyJ1IjoiYW5kcmVhc3J1ZGVuYSIsImEiOiJkMDI4NTFlMjYwZTYwN2UzOTVmZTdhOWYzZDllMjhlZCJ9.gnOB9biEpo1QqdhUewn4TA";
-
-        THREE.ImageUtils.crossOrigin = '';
-        var groundImage = THREE.ImageUtils.loadTexture(imageQuery);
-        var groundTexture = new THREE.Texture(groundTexture);
-        groundTexture.needsUpdate = true; // important
-        groundTexture.wrapS = groundTexture.wrapT = THREE.ClampToEdgeWrapping;
-        var groundMaterial = new THREE.MeshBasicMaterial( { 
-            side: THREE.DoubleSide,
-            map: groundImage
-        });
-        
         ground3d = new THREE.Mesh( geometry, groundMaterial);
 
-        // ground3d = new THREE.Mesh( geometry, new THREE.MeshPhongMaterial( { 
-        //     side: THREE.DoubleSide, 
-        //     color: "#888888"
-        // } ) );
-
-        //https://api.mapbox.com/v4/{mapid}/{lon},{lat},{z}/{width}x{height}.{format}?access_token=<your access token>
-
-        //https://api.mapbox.com/v4/mapbox.streets/-73.99,40.70,13/500x300.png?access_token=pk.eyJ1IjoiYW5kcmVhc3J1ZGVuYSIsImEiOiJkMDI4NTFlMjYwZTYwN2UzOTVmZTdhOWYzZDllMjhlZCJ9.gnOB9biEpo1QqdhUewn4TA
-        
         assignUVs(geometry);
 
         ground3d.rotation.set( -90 * Math.PI / 180, 0, 0 );
@@ -667,21 +702,20 @@ $(function(){
             footprint.push(point);
         }
 
-        var area = polygonArea(footprint);
+        //var area = polygonArea(footprint);
         geometry = new THREE.ExtrudeGeometry( buildingShape, extrudeSettings );
-        var material = assignMaterials(geometry, footprint, glazing, buildingHeight);
+        material = assignMaterials(geometry, footprint, glazing, buildingHeight);
         assignUVs(geometry);
-        
+
         building3d = new THREE.Mesh( geometry, material );
         building3d.rotation.set( -90 * Math.PI / 180, 0, 0 );
 
         scene.add( building3d );
 
-
-        camera = new THREE.PerspectiveCamera( 45, viewportEl.width() / viewportEl.height(), range/3, range*10 );
+        camera = new THREE.PerspectiveCamera( 45, viewportEl.width() / viewportEl.height(), mapRange/3, mapRange*10 );
         controls = new THREE.OrbitControls( camera, viewportEl[0] );
-        controls.target.set( center[0], 0, -center[1]);
-        camera.position.set( center[0], range, -center[1]+(range*2));
+        controls.target.set( mercatorCentroid[0], 0, -mercatorCentroid[1]);
+        camera.position.set( mercatorCentroid[0], mapRange/2, -mercatorCentroid[1]+(mapRange));
 
         controls.update();
 
@@ -752,7 +786,7 @@ $(function(){
 
                     wallLength = wallP1.distanceTo(wallP2);
 
-                    wallTexture = new THREE.Texture(generateGlazingTexture(glazing[0][currentWallIndex])); 
+                    wallTexture = new THREE.Texture(generateGlazingTexture(glazing[0][currentWallIndex]));
                     wallTexture.needsUpdate = true; // important
                     wallTexture.wrapS = wallTexture.wrapT = THREE.RepeatWrapping;
                     wallTexture.repeat.set(numFloors, wallLength);
@@ -788,15 +822,15 @@ $(function(){
         var size = 256;
         var width = size * glazing / 100;
         var start = Math.round((size - width) * 0.25);
-        
+
         // create canvas
         var canvas = document.createElement( 'canvas' );
         canvas.width = size;
         canvas.height = size;
-        
+
         // get context
         var context = canvas.getContext( '2d' );
-        
+
         context.fillStyle = "grey";
         context.fillRect(0, 0, size, size);
         context.fillStyle = 'blue';
@@ -824,10 +858,10 @@ $(function(){
             cyTimes6SignedArea += (y(i) + y(i+1)) * twoSA;
         }
         var sixSignedArea = 3 * twoTimesSignedArea;
-        return [ cxTimes6SignedArea / sixSignedArea, cyTimes6SignedArea / sixSignedArea];        
+        return [ cxTimes6SignedArea / sixSignedArea, cyTimes6SignedArea / sixSignedArea];
     }
 
-    function polygonArea(points) { 
+    function polygonArea(points) {
         var area = 0, i, j;
         for (i = 0; i < points.length; i++) {
             j = (i + 1) % points.length;
@@ -846,7 +880,7 @@ $(function(){
                 if(!normalEquals(face.normal, prevNormal)) {
                     prevNormal = face.normal;
                     wallPoints.push([]);
-                } 
+                }
                 wallPoints[wallPoints.length-1].push(geo.vertices[face.a]);
                 wallPoints[wallPoints.length-1].push(geo.vertices[face.b]);
                 wallPoints[wallPoints.length-1].push(geo.vertices[face.c]);
@@ -866,8 +900,42 @@ $(function(){
             return false;
         }
         return (Math.round(n1.x*100)/100) === (Math.round(n2.x*100)/100) &&
-        (Math.round(n1.y*100)/100) === (Math.round(n2.y*100)/100) &&
-        (Math.round(n1.z*100)/100) === (Math.round(n2.z*100)/100);
+            (Math.round(n1.y*100)/100) === (Math.round(n2.y*100)/100) &&
+            (Math.round(n1.z*100)/100) === (Math.round(n2.z*100)/100);
+    }
+
+    function getUrlParameter(sParam) {
+        var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+            sURLVariables = sPageURL.split('&'),
+            sParameterName,
+            i;
+
+        for (i = 0; i < sURLVariables.length; i++) {
+            sParameterName = sURLVariables[i].split('=');
+
+            if (sParameterName[0] === sParam) {
+                return sParameterName[1] === undefined ? true : sParameterName[1];
+            }
+        }
+    }
+
+    function createNewBuilding() {
+        existingBuildingData = {
+            buildingId: buildingId,
+            userId: 'testUser',
+            geoJson: {
+                geometry: {
+                    type:"Polygon",
+                    coordinates:[[[4.419819116592407,51.215448764543524],[4.419819116592407,51.215408441676914],[4.41926121711731,51.21529419336308],[4.41926121711731,51.215139621663695],[4.419143199920654,51.21511273957604],[4.419143199920654,51.215011931607584],[4.419958591461182,51.21513290114326],[4.420012235641479,51.2150656958849],[4.420216083526611,51.21507241641516],[4.420194625854492,51.21514634218317],[4.420098066329956,51.21514634218317],[4.41999077796936,51.215307634355895],[4.4199371337890625,51.215287472865214],[4.419883489608765,51.215408441676914],[4.419947862625122,51.21542188263637],[4.4198620319366455,51.21552268970725],[4.420044422149658,51.21558989429855],[4.420430660247803,51.21487752063965],[4.419572353363037,51.21476327100837],[4.419529438018799,51.21487080008094],[4.419357776641846,51.21486407952126],[4.419368505477905,51.21476327100837],[4.418896436691284,51.214736388701],[4.4187891483306885,51.21522698834014],[4.419025182723999,51.21525387036108],[4.418982267379761,51.21532107534476],[4.419819116592407,51.215448764543524]]]},
+                properties: {
+                    glazing: [[40, 60, 80]],
+                    height: 40
+                },
+                type: "Feature"
+            }
+        };
+
+        return existingBuildingData;
     }
 
 });
