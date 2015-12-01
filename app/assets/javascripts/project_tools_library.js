@@ -184,7 +184,7 @@ $(function(){
 
     $(window).load(function(){
 
-        $.get('ssApi/buildings/' + buildingId, function(data) {
+        $.get('/ssApi/buildings/' + buildingId, function(data) {
 
             existingBuildingData = data || createNewBuilding();
 
@@ -216,7 +216,7 @@ $(function(){
 
     function saveCurrentBuilding() {
         console.log(existingBuildingData);
-        $.post('ssApi/buildings', {buildingData: JSON.stringify(existingBuildingData)}, function(data, status) {
+        $.post('/ssApi/buildings', {buildingData: JSON.stringify(existingBuildingData)}, function(data, status) {
             console.log(data, status);
         });
     }
