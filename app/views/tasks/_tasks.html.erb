@@ -53,7 +53,7 @@
                         <td><%= render 'layouts/breadcrumb', model: task.taskable %></td>
                         <td><% if task.taskable.due_date.present? %><%= l(task.taskable.due_date, format: :short) %><% if Date.today > task.taskable.due_date %>&nbsp;<i class="fa fa-clock-o due-date-expired" title="<%= t('.tooltip_due_date') %>" data-toggle="tooltip"></i><% end %><% else %>-<% end %></td>
                     </tr>
-                <%  when SchemeMixCriterionDocument.name.demodulize
+                <%  when SchemeMixCriteriaDocument.name.demodulize
                         breadcrumbs = breadcrumbs(task.taskable, with_prefix: false)
                  %>
                     <tr>
