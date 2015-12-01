@@ -203,7 +203,9 @@ class SchemeMixCriterion < ActiveRecord::Base
   private
 
   def init
-    self.status ||= :submitting unless attributes['status'].nil?
+    if self.has_attribute?('status')
+      self.status ||= :submitting
+    end
   end
 
 end
