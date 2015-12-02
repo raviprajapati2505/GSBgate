@@ -37,5 +37,9 @@ module Gord
 
     # Create own routes for error pages
     config.exceptions_app = self.routes
+
+    # Custom GORD config
+    config.x.tools_controller.url = 'http://127.0.0.1:4034'
+
   end
 end

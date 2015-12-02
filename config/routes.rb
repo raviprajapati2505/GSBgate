@@ -24,6 +24,10 @@ Rails.application.routes.draw do
       end
   end
 
+  # proxy all requests to the external api
+  match 'ssApi', to: 'tools#proxy', via: :all
+  match 'ssApi/*segment', to: 'tools#proxy', via: :all
+
   # Main nested resources of our application
   resources :projects, except: [:destroy] do
     collection do

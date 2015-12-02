@@ -65,6 +65,8 @@ class Ability
       cannot :update_achieved_score, SchemeMixCriterion do |scheme_mix_criterion| ![SchemeMixCriterion.statuses[:verifying], SchemeMixCriterion.statuses[:verifying_after_appeal]].include?(scheme_mix_criterion.status) end
       cannot :refuse, RequirementDatum do |requirement_datum| requirement_datum.user_id != user.id end
     elsif user.user?
+      can :manage, :tool
+
       # User controller
       #   Note: only admins can manage user accounts !
       can [:list_notifications,:update_notifications], User, id: user.id
@@ -177,7 +179,6 @@ class Ability
 
     else
       cannot :manage, :all
-
     end
   end
 end
