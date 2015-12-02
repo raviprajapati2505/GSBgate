@@ -5,14 +5,24 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'projects#index'
 
-  # Login resource
+  # Devise "user/*" routes
+  devise_for :user, skip: :registrations
+  devise_scope :user do
+    resource :registration,
+      only: [:new, :create, :edit, :update],
+      path: 'user',
+      path_names: { new: 'sign_up' },
+      controller: 'devise/registrations',
+      as: :user_registration
+  end
+
+  # Our own "users/*" routes
   resources :users do
       member do
         get 'list_notifications', path: 'notifications'
         put 'update_notifications', path: 'notifications'
       end
   end
-  devise_for :user
 
   # Main nested resources of our application
   resources :projects, except: [:destroy] do
@@ -71,6 +81,8 @@ Rails.application.routes.draw do
       end
     end
   end
+
+  # Custom routes
   get 'projects/:id/location_plan' => 'projects#download_location_plan', as: 'download_project_location_plan'
   get 'projects/:id/site_plan' => 'projects#download_site_plan', as: 'download_project_site_plan'
   get 'projects/:id/design_brief' => 'projects#download_design_brief', as: 'download_project_design_brief'
@@ -93,7 +105,7 @@ Rails.application.routes.draw do
     put :sort, on: :collection
   end
 
-  # Generic Error pages
+  # Error pages routes
   match '/403', to: 'errors#forbidden', via: :all, as: 'forbidden_error'
   match '/404', to: 'errors#not_found', via: :all, as: 'not_found_error'
   match '/422', to: 'errors#unprocessable_entity', via: :all, as: 'unprocessable_entity_error'
