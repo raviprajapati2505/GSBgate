@@ -1,0 +1,15 @@
+<div class="ibox-content">
+    <%= image_tag 'layout/logo-medium.gif' %>
+
+    <h3>Forgot your password</h3>
+
+    <p>After you fill out this form, you will receive an email with further instructions.</p>
+    <%= bootstrap_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+        <%= f.email_field :email, autofocus: true, placeholder: 'Email address', hide_label: true %>
+        <%= f.submit 'Reset password', class: 'btn btn-primary block full-width m-b' %>
+    <% end %>
+
+    <small>
+        <%= render 'devise/shared/links' %>
+    </small>
+</div>
