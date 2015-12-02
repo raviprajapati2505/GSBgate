@@ -1,71 +1,24 @@
-
-<div class="wrapper wrapper-content animated">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>Edit <%= resource_name.to_s.humanize %></h5>
-                </div>
-                <div class="ibox-content">
-                    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, class: 'form-horizontal' }) do |f| %>
-                        <div class="form-group <%= 'has-error' if resource.errors[:email].any? %>">
-                            <%= f.label :email, {class: 'control-label col-sm-2'} %>
-                            <div class="col-sm-10">
-                                <%= f.email_field :email, {class: 'form-control', autofocus: true} %>
-                                <% resource.errors[:email].each do |error| %>
-                                    <li class="help-block"><%= error %></li>
-                                <% end %>
-                            </div>
-                        </div>
-
-                        <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-                            <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
-                        <% end %>
-
-                        <div class="form-group <%= 'has-error' if resource.errors[:password].any? %>">
-                            <%= f.label :password, {class: 'control-label col-sm-2'} %>
-                            <div class="col-sm-10">
-                                <%= f.password_field :password, {class: 'form-control', autocomplete: 'off'} %>
-                                <span class="help-block">leave blank if you don't want to change it</span>
-                                <% resource.errors[:password].each do |error| %>
-                                    <li class="help-block"><%= error %></li>
-                                <% end %>
-                            </div>
-                        </div>
-                        <div class="form-group <%= 'has-error' if resource.errors[:password_confirmation].any? %>">
-                            <%= f.label :password_confirmation, {class: 'control-label col-sm-2'} %>
-                            <div class="col-sm-10">
-                                <%= f.password_field :password_confirmation, {class: 'form-control', autocomplete: 'off'} %>
-                                <% resource.errors[:password_confirmation].each do |error| %>
-                                    <li class="help-block"><%= error %></li>
-                                <% end %>
-                            </div>
-                        </div>
-                        <div class="form-group <%= 'has-error' if resource.errors[:current_password].any? %>">
-                            <%= f.label :current_password, {class: 'control-label col-sm-2'} %>
-                            <div class="col-sm-10">
-                                <%= f.password_field :current_password, {class: 'form-control', autocomplete: 'off'} %>
-                                <span class="help-block">we need your current password to confirm your changes</span>
-                                <% resource.errors[:current_password].each do |error| %>
-                                    <li class="help-block"><%= error %></li>
-                                <% end %>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-4 col-sm-offset-2">
-                                <%= f.submit 'Update', class: 'btn btn-primary' %>
-                                <%= link_to 'Back', :back, class: 'btn btn-white' %>
-                            </div>
-                            <!-- TODO: LINKME? -->
-                            <!-- COMMENTED OUT: user accounts can't be cancelled -->
-                            <!--<% unless current_user.system_admin? %>-->
-                                <!--<div class="col-sm-2 pull-right">-->
-                                    <!--<%= link_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete, class: 'btn btn-danger' %>-->
-                                <!--</div>-->
-                            <!--<% end %>-->
-                        </div>
+<% @page_title = 'Edit user account' %>
+<div class="row">
+    <div class="col-lg-4">
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>Account details</h5>
+            </div>
+            <div class="ibox-content">
+                <%= bootstrap_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+                    <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+                        <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
                     <% end %>
-                </div>
+                    <%= f.email_field :email %>
+                    <%= f.password_field :password, label: ('New password' + tooltip('Leave this field blank if you don\'t want to change your password.')).html_safe %>
+                    <%= f.password_field :password_confirmation, label: 'New password confirmation', autocomplete: 'off' %>
+                    <%= f.password_field :current_password, label: ('New password' + tooltip('We need your current password to confirm your changes.')).html_safe, autocomplete: 'off' %>
+                    <div class="hr-line-dashed"></div>
+                    <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
+                        <i title="Add comment" class="fa fa-lg fa-save" style="padding-right: 10px;"></i>Save
+                    <% end %>
+                <% end %>
             </div>
         </div>
     </div>

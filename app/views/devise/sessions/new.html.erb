@@ -3,7 +3,7 @@
 
     <h3>Welcome to GSASgate</h3>
 
-    <p>Please enter your <a href="http://www.linkme.qa/" target="_blank">LinkMe</a> credentials below to log in.</p>
+    <p>Please enter your credentials below.</p>
     <%= bootstrap_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
         <%= f.email_field :email, autofocus: true, placeholder: 'Email address', hide_label: true %>
         <%= f.password_field :password, autocomplete: "off", placeholder: 'Password', hide_label: true %>

@@ -125,10 +125,10 @@ en:
   users:
     index:
       action_edit_title: "Edit"
-      table_title: "Listing users"
+      table_title: "User overview"
     form:
       btn_cancel: "Back"
-      btn_save: "Update user"
+      btn_save: "Save"
       form_title: "User details"
     list_notifications:
       btn_save: "Update preferences"
