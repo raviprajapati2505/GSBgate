@@ -18,7 +18,8 @@ $(function () {
                 return $.ajax({
                     type: 'GET',
                     url: Routes.user_path({id: el.val()}),
-                    dataType: 'json'
+                    dataType: 'json',
+                    cache: false
                 }).done(function(data) {
                     selection = {id: data.id, text: data.email};
                     callback(selection);

@@ -19,7 +19,8 @@ function refresh_notification_list(user_id, project_id) {
         $.ajax({
             type: 'GET',
             url: Routes.list_notifications_user_path(user_id, {project_id: project_id}),
-            dataType: 'json'
+            dataType: 'json',
+            cache: false
         }).done(function(data) {
             $.each(data, function(index, value) {
                 $('#checkbox-list-notification-types .icheckbox_square-green input[type=checkbox][value=' + value.id + ']').iCheck('uncheck');

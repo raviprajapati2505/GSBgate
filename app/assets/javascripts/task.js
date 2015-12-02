@@ -22,6 +22,7 @@ function refreshTaskCount() {
                 url: Routes.count_tasks_path(search),
                 method: 'GET',
                 datatype: 'json',
+                cache: false,
                 context: this
             }).done(function (count) {
                 if (!isNaN(count) && (count > 0)) {

@@ -10,7 +10,8 @@ $(function () {
                 return $.ajax({
                     type: 'GET',
                     url: Routes.project_path({id: el.val()}),
-                    dataType: 'json'
+                    dataType: 'json',
+                    cache: false
                 }).done(function(data) {
                     selection = {id: data.id, text: data.name};
                     callback(selection);

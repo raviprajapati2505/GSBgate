@@ -22,7 +22,8 @@ function refresh_criterion_list(project_id, certification_path_id) {
                 return $.ajax({
                     type: 'GET',
                     url: Routes.project_certification_path_scheme_mix_scheme_mix_criterion_path(project_id, certification_path_id, ids[0], ids[1]),
-                    dataType: 'json'
+                    dataType: 'json',
+                    cache: false
                 }).done(function(data) {
                     selection = {id: data.id, text: data.name};
                     callback(selection);

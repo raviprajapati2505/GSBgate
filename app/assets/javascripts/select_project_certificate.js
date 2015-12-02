@@ -18,7 +18,8 @@ function refresh_certification_list(project_id) {
                 return $.ajax({
                     type: 'GET',
                     url: Routes.project_certification_path_path(project_id, el.val()),
-                    dataType: 'json'
+                    dataType: 'json',
+                    cache: false
                 }).done(function(data) {
                     selection = {id: data.id, text: data.name};
                     callback(selection);

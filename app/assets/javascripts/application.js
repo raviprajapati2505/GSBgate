@@ -160,6 +160,7 @@ $(function () {
         $.ajax({
             type: "PUT",
             url: Routes.sort_scheme_criterion_texts_path(),
+            cache: false,
             data: { sort_order: updated_sortorder }
         });
     });
@@ -205,6 +206,7 @@ var GSAS = {
             ajax: {
                 url: list_url,
                 dataType: 'json',
+                cache: false,
                 quietMillis: 250,
                 data: function (term, page) {
                     return {
