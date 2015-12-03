@@ -1,4 +1,4 @@
-<% if resource.errors.messages[:reset_password_token].first.present? %>
+<% if resource.errors.messages[:reset_password_token].present? %>
     <p class="alert alert-danger">
         The reset password token <%= resource.errors.messages[:reset_password_token].first %>.
     </p>
