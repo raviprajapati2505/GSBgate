@@ -60,9 +60,7 @@
                         <td>
                             <% if @project.location_plan_file.present? %>
                                 <% if can? :download_location_plan, @project %>
-                                    <%= link_to(download_project_location_plan_path(@project.id), class: 'btn btn-xs btn-primary') do %>
-                                        <%= fa_icon('download', {size: 'sm', tooltip: "Download #{Project.human_attribute_name('location_plan_file')}"}) %>
-                                    <% end %>
+                                    <%= btn_download(download_project_location_plan_path(@project), size: 'extra_small', tooltip: "Download #{Project.human_attribute_name('location_plan_file')}") %>
                                 <% end %>
                                 <%= truncate(@project.location_plan_file.file.filename, length: 35) %>
                             <% end %>
@@ -74,9 +72,7 @@
                         <td>
                             <% if @project.site_plan_file.present? %>
                                 <% if can? :download_site_plan, @project %>
-                                    <%= link_to(download_project_site_plan_path(@project.id), class: 'btn btn-xs btn-primary') do %>
-                                        <%= fa_icon('download', {size: 'sm', tooltip: "Download #{Project.human_attribute_name('site_plan_file')}"}) %>
-                                    <% end %>
+                                    <%= btn_download(download_project_site_plan_path(@project), size: 'extra_small', tooltip: "Download #{Project.human_attribute_name('site_plan_file')}") %>
                                 <% end %>
                                 <%= truncate(@project.site_plan_file.file.filename, length: 35) %>
                             <% end %>
@@ -88,9 +84,7 @@
                         <td>
                             <% if @project.design_brief_file.present? %>
                                 <% if can? :download_design_brief, @project %>
-                                    <%= link_to(download_project_design_brief_path(@project.id), class: 'btn btn-xs btn-primary') do %>
-                                        <%= fa_icon('download', {size: 'sm', tooltip: "Download #{Project.human_attribute_name('design_brief_file')}"}) %>
-                                    <% end %>
+                                    <%= btn_download(download_project_design_brief_path(@project), size: 'extra_small', tooltip: "Download #{Project.human_attribute_name('design_brief_file')}") %>
                                 <% end %>
                                 <%= truncate(@project.design_brief_file.file.filename, length: 35) %>
                             <% end %>
@@ -103,9 +97,7 @@
                         <td>
                             <% if @project.project_narrative_file.present? %>
                                 <% if can? :download_project_narrative, @project %>
-                                    <%= link_to(download_project_narrative_path(@project.id), class: 'btn btn-xs btn-primary') do %>
-                                        <%= fa_icon('download', {size: 'sm', tooltip: "Download #{Project.human_attribute_name('project_narrative_file')}"}) %>
-                                    <% end %>
+                                    <%= btn_download(download_project_narrative_path(@project), size: 'extra_small', tooltip: "Download #{Project.human_attribute_name('project_narrative_file')}") %>
                                 <% end %>
                                 <%= truncate(@project.project_narrative_file.file.filename, length: 35) %>
                             <% end %>
@@ -118,9 +110,7 @@
                 <div id="project-map" class="map" style="height: 300px;"></div>
                 <% if can? :update, @project %>
                     <div class="hr-line-dashed"></div>
-                    <%= link_to edit_project_path(@project), :class => 'btn btn-primary' do %>
-                        <%= fa_icon('edit', 'Edit') %>
-                    <% end %>
+                    <%= btn_link_to(edit_project_path(@project), icon: 'edit', text: 'Edit') %>
                 <% end %>
             </div>
         </div>
@@ -133,9 +123,7 @@
                     <h5>Project Tools</h5>
                 </div>
                 <div class="ibox-content">
-                    <%= link_to tools_project_path(@project) do %>
-                        <%= fa_icon('street-view', '3D Visualization') %>
-                    <% end %>
+                    <%= btn_link_to(tools_project_path(@project), icon: 'street-view', text: '3D Visualization') %>
                 </div>
             </div>
         <% end %>
@@ -172,7 +160,7 @@
                                     <%= can_link_to(project_user_path(@project, assessor), assessor) do %>
                                         <%= assessor.user.email %>
                                         <% if @project.owner == assessor.user %>
-                                            <%= fa_icon('home', {tooltip: 'Project owner'}) %>
+                                            <%= fa_icon('home', tooltip: 'Project owner') %>
                                         <% end %>
                                     <% end %>
                                 </td>
@@ -183,7 +171,7 @@
                                     <% if assessor.enterprise_account? %>
                                         ---
                                     <% else %>
-                                        <span class="badge"><%= TaskService::count_tasks(user: assessor.user, project_id: @project.id) %></span>
+                                        <span class="badge fa-lg"><%= TaskService::count_tasks(user: assessor.user, project_id: @project.id) %></span>
                                     <% end %>
                                 </td>
                             </tr>
@@ -193,9 +181,7 @@
                 <% end %>
                 <% if can?(:create, ProjectsUser.new(:project_id => @project.id, :role => ProjectsUser.roles[:project_team_member])) or can?(:create, ProjectsUser.new(:project_id => @project.id, :role => ProjectsUser.roles[:project_manager])) or can?(:create, ProjectsUser.new(:project_id => @project.id, :role => ProjectsUser.roles[:enterprise_account])) %>
                     <div class="hr-line-dashed"></div>
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addProjectTeamMemberModal">
-                        <%= fa_icon('user-plus', "#{t('.btn_add_project_team_member')}") %>
-                    </button>
+                    <%= btn_tag(icon: 'user-plus', text: t('.btn_add_project_team_member'), data: {toggle: 'modal', target: '#addProjectTeamMemberModal'}) %>
                 <% end %>
             </div>
         </div>
@@ -256,9 +242,7 @@
                 <% end %>
                 <% if can?(:create, ProjectsUser.new(:project_id => @project.id, :role => ProjectsUser.roles[:certifier])) or can?(:create, ProjectsUser.new(:project_id => @project.id, :role => ProjectsUser.roles[:certifier_manager])) %>
                     <div class="hr-line-dashed"></div>
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addCertifierTeamMemberModal">
-                        <%= fa_icon('user-plus', "#{t('.btn_add_certifier_team_member')}", {tooltip: 'Add certifier member'}) %>
-                    </button>
+                    <%= btn_tag(icon: 'user-plus', text: t('.btn_add_certifier_team_member'), data: {toggle: 'modal', target: '#addCertifierTeamMemberModal'}) %>
                 <% end %>
             </div>
         </div>

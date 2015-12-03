@@ -30,9 +30,7 @@
                                 <% if @project.id.present? && @project.location_plan_file.present? %>
                                     <div class="input-group">
                                         <span class="input-group-btn">
-                                            <%= link_to(download_project_location_plan_path(@project.id), class: 'btn btn-primary') do %>
-                                                <%= fa_icon('download', {tooltip: "Download #{Project.human_attribute_name('location_plan_file')}"}) %>
-                                            <% end %>
+                                            <%= btn_download(download_project_location_plan_path(@project), tooltip: "Download #{Project.human_attribute_name('location_plan_file')}") %>
                                         </span>
                                         <input type="text" class="form-control" disabled value="<%= @project.location_plan_file.file.filename %>">
                                     </div>
@@ -44,9 +42,7 @@
                                 <% if @project.id.present? && @project.site_plan_file.present? %>
                                     <div class="input-group">
                                         <span class="input-group-btn">
-                                            <%= link_to(download_project_site_plan_path(@project.id), class: 'btn btn-primary') do %>
-                                                <%= fa_icon('download', {tooltip: "Download #{Project.human_attribute_name('site_plan_file')}"}) %>
-                                            <% end %>
+                                            <%= btn_download(download_project_site_plan_path(@project),tooltip: "Download #{Project.human_attribute_name('site_plan_file')}") %>
                                         </span>
                                         <input type="text" class="form-control" disabled value="<%= @project.site_plan_file.file.filename %>">
                                     </div>
@@ -58,9 +54,7 @@
                                 <% if @project.id.present? && @project.design_brief_file.present? %>
                                     <div class="input-group">
                                         <span class="input-group-btn">
-                                            <%= link_to(download_project_design_brief_path(@project.id), class: 'btn btn-primary') do %>
-                                                <%= fa_icon('download', {tooltip: "Download #{Project.human_attribute_name('design_brief_file')}"}) %>
-                                            <% end %>
+                                            <%= btn_download(download_project_design_brief_path(@project), tooltip: "Download #{Project.human_attribute_name('design_brief_file')}") %>
                                         </span>
                                         <input type="text" class="form-control" disabled value="<%= @project.design_brief_file.file.filename %>">
                                     </div>
@@ -72,9 +66,7 @@
                                 <% if @project.id.present? && @project.project_narrative_file.present? %>
                                     <div class="input-group">
                                         <span class="input-group-btn">
-                                            <%= link_to( download_project_narrative_path(@project.id), class: 'btn btn-primary') do %>
-                                                <%= fa_icon('download', {tooltip: "Download #{Project.human_attribute_name('project_narrative_file')}"}) %>
-                                            <% end %>
+                                            <%= btn_download(download_project_narrative_path(@project), tooltip: "Download #{Project.human_attribute_name('project_narrative_file')}") %>
                                         </span>
                                         <input type="text" class="form-control" disabled value="<%= @project.project_narrative_file.file.filename %>">
                                     </div>
@@ -114,13 +106,9 @@
                             <% end %>
                             <div class="hr-line-dashed"></div>
                             <% if can?(:create, @project) || can?(:update, @project) %>
-                                <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
-                                    <%= fa_icon('save', 'Save') %>
-                                <% end %>
+                                <%= btn_save %>
                             <% end %>
-                            <%= link_to :back, class: 'btn btn-white' do %>
-                                <%= fa_icon('times', 'Cancel') %>
-                            <% end %>
+                            <%= btn_cancel_to(projects_path) %>
                         </div>
                     </div>
                 </div>

@@ -12,8 +12,8 @@
                     <% else %>
                     <%= f.select :role, ProjectsUser.roles.keys[0..2].map { |k| [k.humanize, k]} %>
                     <% end %>
-                    <%= f.primary t('.btn_save') %>
-                    <%= link_to t('.btn_cancel'), :back, class: 'btn btn-white' %>
+                    <%= btn_save %>
+                    <%= btn_cancel_to(project_user_path(@project, @projects_user)) %>
                 </div>
             </div>
         </div>
