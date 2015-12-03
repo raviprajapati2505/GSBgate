@@ -260,6 +260,7 @@ Devise.setup do |config|
 end
 
 Rails.application.config.to_prepare do
+  Devise::Mailer.layout 'mailer'
   Devise::SessionsController.layout 'narrow'
   Devise::PasswordsController.layout 'narrow'
   Devise::RegistrationsController.layout proc { |controller| user_signed_in? ? 'authenticated' : 'application' }
