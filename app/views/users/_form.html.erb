@@ -6,13 +6,13 @@
                     <h5><%= t '.form_title' %></h5>
                 </div>
                 <div class="ibox-content">
-                    <%= f.text_field :email, disabled: 'disabled' %>
+                    <%= f.text_field :email, disabled: !@user.new_record? %>
                     <%= f.select :role, User.roles.keys.map { |k| [k.humanize, k] } %>
                     <div class="hr-line-dashed"></div>
                     <% if can?(:edit, @user) %>
                         <%= btn_save %>
                     <% end %>
-                    <%= btn_cancel_to(user_path) %>
+                    <%= btn_cancel_to(users_path) %>
                 </div>
             </div>
         </div>

@@ -3,6 +3,26 @@ class UsersController < AuthenticatedController
   before_action :set_controller_model, except: [:new, :create, :index, :update_notifications]
 
   def index
+    @page_title = 'Users'
+  end
+
+  def new
+    @page_title = 'Add user'
+    @user = User.new
+  end
+
+  def create
+    @user = User.new(user_params)
+
+    # Generate a random password, this will be changed by the user later
+    @user = Devise.friendly_token.first(20)
+
+    if @user.save
+      redirect_to users_path, notice: 'User account was successfully created. The user will be notified by email.'
+    else
+      flash[:alert] = 'An error occurred when creating the user account, please try again later.'
+      render :new
+    end
   end
 
   def edit
