@@ -220,7 +220,6 @@
     cursor: pointer;
     margin-left: 2px;
     color: $skin-gord-color;
-    font-size: 14px;
   }
 
   // Maps
@@ -653,10 +652,6 @@
       h2 {
         font-size: 13px;
         font-weight: bold;
-      }
-
-      .status-audit-log {
-        float: right;
       }
 
       .text-muted {

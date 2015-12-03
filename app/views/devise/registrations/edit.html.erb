@@ -15,9 +15,7 @@
                     <%= f.password_field :password_confirmation, label: 'New password confirmation', autocomplete: 'off' %>
                     <%= f.password_field :current_password, label: ('New password' + tooltip('We need your current password to confirm your changes.')).html_safe, autocomplete: 'off' %>
                     <div class="hr-line-dashed"></div>
-                    <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
-                        <i title="Add comment" class="fa fa-lg fa-save" style="padding-right: 10px;"></i>Save
-                    <% end %>
+                    <%= btn_save() %>
                 <% end %>
             </div>
         </div>

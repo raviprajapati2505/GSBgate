@@ -59,15 +59,9 @@
                         <%= select_tag 'status', options_for_select(RequirementDatum.statuses.keys.map { |k| [k.humanize, k] }), {class: 'form-control'} %>
                     </div>
                     <div class="hr-line-dashed"></div>
-                    <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
-                        <i class="fa fa-lg fa-save" style="padding-right: 10px;"></i><%= t('.btn_save') %>
-                    <% end %>
-                    <%= button_tag type: 'submit', class: 'btn btn-primary', value: 'save-and-continue' do %>
-                        <i class="fa fa-lg fa-save" style="padding-right: 10px;"></i><%= t('.btn_save_and_continue') %>
-                    <% end %>
-                    <%= link_to project_certification_path_path, class: 'btn btn-white' do %>
-                        <%= fa_icon('times', 'Cancel') %>
-                    <% end %>
+                    <%= btn_save() %>
+                    <%= btn_save(value: 'save-and-continue', text: 'Save and continue') %>
+                    <%= btn_cancel_to(project_certification_path_path) %>
                 </div>
             </div>
         </div>

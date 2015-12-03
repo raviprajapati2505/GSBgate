@@ -4,15 +4,15 @@
             <%= audit_log_label(requirement_datum) %>
             <a href="#requirement-<%= requirement_datum.id %>-collapsable" data-parent="#accordion" data-toggle="collapse" class="collapsed" aria-expanded="false">
                 <% if requirement_datum.required? %>
-                    <%= fa_icon('square-o', {tooltip: t('.tooltip_requirement_required')}) %>
+                    <%= fa_icon('square-o', tooltip: t('.tooltip_requirement_required')) %>
                 <% elsif requirement_datum.provided? %>
-                    <%= fa_icon('check-square-o', {tooltip: t('.tooltip_requirement_provided')}) %>
+                    <%= fa_icon('check-square-o', tooltip: t('.tooltip_requirement_provided')) %>
                 <% else %>
-                    <%= fa_icon('square', {tooltip: t('.tooltip_requirement_not_required')}) %>
+                    <%= fa_icon('square', tooltip: t('.tooltip_requirement_not_required')) %>
                 <% end %>
                 &nbsp;&nbsp;<%= requirement_datum.name %>
                 <% if requirement_datum.required? && !requirement_datum.due_date.nil? && Date.today > requirement_datum.due_date %>
-                    &nbsp;<%= fa_icon('clock-o', {class: 'due-date-expired', tooltip: t('.tooltip_due_date')}) %>
+                    &nbsp;<%= fa_icon('clock-o', class: 'due-date-expired', tooltip: t('.tooltip_due_date')) %>
                 <% end %>
             </a>
         </h4>
@@ -68,12 +68,10 @@
                 <% if can_update_requirement_datum || can_update_status_requirement_datum || can_refuse_requirement_datum %>
                     <div class="hr-line-dashed"></div>
                     <% if can_update_requirement_datum || can_update_status_requirement_datum %>
-                        <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
-                            <%= fa_icon('save', 'Save') %>
-                        <% end %>
+                        <%= btn_save %>
                     <% end %>
                     <% if can_refuse_requirement_datum %>
-                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#refuseRequirementModal<%= requirement_datum.id %>"><i class="fa fa-lg fa-ban" style="padding-right: 10px;"></i>Refuse this requirement</button>
+                        <%= btn_tag(type: :button, icon: 'ban', style: 'danger', text: 'Refuse this requirement', data: {toggle: 'modal', target: "#refuseRequirementModal#{requirement_datum.id}"}) %>
                     <% end %>
                 <% end %>
             <% end %>

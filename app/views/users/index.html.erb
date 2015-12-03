@@ -20,7 +20,7 @@
                     <td>
                         <% if can?(:edit, user) %>
                             <%= link_to edit_user_path(user) do %>
-                                <%= fa_icon('edit', {tooltip: t('.action_edit_title')}) %>
+                                <%= fa_icon('edit', tooltip: t('.action_edit_title')) %>
                             <% end %>
                         <% end %>
                     </td>

@@ -1,10 +1,8 @@
 <div class="modal-dialog modal-lg">
     <div class="modal-content">
         <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" title="Close" data-toggle="tooltip">
-                <span>&times;</span>
-            </button>
-            <button type="button" class="btn btn-sm btn-white add-comment-button" data-href="#"><i class="fa fa-comment" style="margin-right: 5px;"></i> Add comment</button>
+            <%= btn_close_modal %>
+            <%= btn_tag(type: :button, size: 'small', style: 'white', class:'add-comment-button', icon: 'comment', text: 'Add comment') %>
             <h4 class="modal-title">Audit log for <em><%= @auditable.name %></em></h4>
         </div>
         <%= bootstrap_form_for(AuditLog.new, url: auditable_create_audit_log_path, method: 'post') do |f| %>
@@ -24,10 +22,7 @@
                 </div>
             </div>
             <div class="modal-footer comment-form" style="display:none;">
-                <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
-                    <i title="Add comment" class="fa fa-lg fa-save" style="padding-right: 10px;"></i>Add comment
-                <% end %>
-                <button type="button" class="btn btn-white" data-dismiss="modal"><i title="Cancel" class="fa fa-lg fa-times" style="padding-right: 10px;"></i>Cancel</button>
+                <%= btn_save(text: 'Add comment') %>
             </div>
         <% end %>
     </div>

@@ -5,13 +5,19 @@
         <thead>
         <tr>
             <th class="col-md-5">Scheme name</th>
-            <th class="col-md-1">Weighting</th>
+            <th class="col-md-1">
+              <span class="hidden-md">Weighting</span>
+              <span class="visible-md">W <%= tooltip('Weighting') %></span>
+            </th>
             <th class="col-md-4">
                 Score
                 <% id_list = certification_path.scheme_mixes.collect { |scheme_mix| "scheme_mix_#{scheme_mix.id}" } %>
                 <%= render 'score/score_toggle', id_list: id_list %>
             </th>
-            <th class="col-md-2">Progress</th>
+            <th class="col-md-2">
+              <span class="hidden-md">Progress</span>
+              <span class="visible-md">P <%= tooltip('Progress') %></span>
+            </th>
         </tr>
         </thead>
         <tbody>

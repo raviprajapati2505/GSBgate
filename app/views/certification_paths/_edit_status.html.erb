@@ -8,11 +8,9 @@
             <% end %>
         <% else %>
             <div class="modal-header alert-danger">
-                <button type="button" class="close" data-dismiss="modal" title="<%= t('.btn_close') %>" data-toggle="tooltip" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <%= btn_close_modal %>
                 <h4 class="modal-title">
-                    <%= fa_icon('exclamation-circle', 'The status cannot be advanced yet because of the following issues:') %>
+                    <%= fa_icon_with_text('exclamation-circle', 'The status cannot be advanced yet because of the following issues:') %>
                 </h4>
             </div>
             <div class="modal-body">

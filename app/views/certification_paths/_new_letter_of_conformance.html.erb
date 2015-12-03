@@ -27,16 +27,15 @@
     </div>
     <div class="form-group scheme-mixed-group" style="display: none">
         <div class="row">
-            <div class="col-md-10">
+            <div class="col-md-9">
                 <%= select_tag('mixed_scheme_select', options_from_collection_for_select(@certification_path.certificate.schemes, :id, :name), {:include_blank => true, :multiple => false, :class => 'form-control mixed-scheme-select'}) %>
             </div>
-            <div class="col-md-2">
-                <%= button_tag(type: 'button', class: 'form-control btn add_scheme') do %>
-                    <i title="Add scheme" class="fa fa-plus-circle"></i> Add scheme
-                <% end %>
+            <div class="col-md-3">
+                <%= btn_tag(icon: 'plus-circle', text: 'Add scheme', class: 'form-control add_scheme', type: 'button', style: 'white') %>
             </div>
         </div>
         <br/>
+
         <div class="form-group schemes-group">
             <table class="schemes table table-bordered table-hover">
                 <thead>
@@ -58,12 +57,7 @@
             </div>
         </div>
     </div>
-
     <div class="hr-line-dashed"></div>
-
-    <%= button_tag(type: 'submit', class: 'btn btn-primary') do %>
-        <i title="Save" class="fa fa-lg fa-save" style="padding-right: 10px;"></i><%= t('.btn_save') %>
-    <% end %>
-
+    <%= btn_save %>
 <% end %>
 <%= javascript_include_tag 'new_letter_of_conformance' %>

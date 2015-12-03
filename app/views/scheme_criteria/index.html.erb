@@ -10,12 +10,8 @@
                     <%= f.text_field :scheme_name, value: @default_values[:scheme_name], label: 'Scheme name contains' %>
                     <%= f.text_field :scheme_category_name, value: @default_values[:scheme_category_name], label: 'Category name contains' %>
                     <div class="hr-line-dashed"></div>
-                    <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
-                        <%= fa_icon('filter', 'Apply filter') %>
-                    <% end %>
-                    <%= link_to scheme_criteria_path, class: 'btn btn-white' do %>
-                        <%= fa_icon('times', 'Remove filter') %>
-                    <% end %>
+                    <%= btn_tag(icon: 'filter', text: 'Apply filter') %>
+                    <%= btn_link_to(scheme_criteria_path, style: 'white', icon: 'times', text: 'Remove filter') %>
                 <% end %>
             </div>
         </div>

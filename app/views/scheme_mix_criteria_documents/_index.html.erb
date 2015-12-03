@@ -34,14 +34,10 @@
                     <td>
                         <%= audit_log_label(smcd) %>
                         <% if can?(:read, smcd) %>
-                            <%= link_to(project_certification_path_document_path(@project, @certification_path, smcd.document), class: 'btn btn-sm btn-primary') do %>
-                                <%= fa_icon('download', {tooltip: 'Download document'}) %>
-                            <% end %>
+                            <%= btn_download(project_certification_path_document_path(@project, @certification_path, smcd.document), size: 'small', tooltip: 'Download document') %>
                         <% end %>
                         <% if can?(:create_link, smcd) %>
-                            <%= link_to(new_link_project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, smcd), remote: true, class: 'btn btn-sm btn-primary') do %>
-                                <%= fa_icon('link', {tooltip: 'Link document to other criteria'}) %>
-                            <% end %>
+                            <%= btn_link_to(new_link_project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, smcd), remote: true, size: 'small', icon: 'link', tooltip: 'Link document to other criteria') %>
                         <% end %>
                     </td>
                 </tr>

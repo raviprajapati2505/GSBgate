@@ -32,7 +32,7 @@
             </span>
             <span class="col-md-4">
                 <% if can? :apply, @certification_path, :project => @project %>
-                    <%= link_to('Apply', apply_certification_path_path(@project, certificate), {action: :post, remote: true, class: 'btn btn-primary'}) %>
+                    <%= btn_link_to(apply_certification_path_path(@project, certificate), text: 'Apply', action: :post, remote: true) %>
                 <% end %>
             </span>
         <% else %>

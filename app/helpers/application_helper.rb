@@ -16,47 +16,150 @@ module ApplicationHelper
     end
   end
 
-  def tooltip(title)
-    if title.blank?
-      ''
-    else
-      ("<span class=\"tooltip-icon\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"#{title}\">#{fa_icon('question-circle', {size: 'sm'})}</span>").html_safe
-    end
+  def tooltip(text)
+    fa_icon('question-circle', size: :normal, tooltip: text, class: 'tooltip-icon')
   end
 
   # Wraps the block param, with a link to th given path, if we have read access to the given model
   # If we do not have read access, just render the block
   def can_link_to(path, model, options = {})
+    _content = capture do
+      yield
+    end if block_given?
     if can? :read, model
-      link_to path, options do
-        if block_given?
-          capture do
-            yield
-          end
-        end
+      return link_to path, options do
+        _content
       end
     else
-      if block_given?
-        capture do
-          yield
-        end
+      return _content
+    end
+  end
+
+  def btn_save(options = {})
+    btn_tag({icon: 'save', text: 'Save'}.merge(options))
+  end
+
+  def btn_close_modal(options = {})
+    btn_tag({class: 'close', tooltip: 'Close', icon: 'times', size: 'extra_small', style: 'white', data: {dismiss: 'modal'}, aria: {label: 'close'}}.merge(options))
+  end
+
+  # def btn_back_modal(options = {})
+  #   btn_tag({icon: 'times', text: 'Back', style: 'white', data: {dismiss: 'modal'}}.merge(options))
+  # end
+
+  def btn_cancel_to(target, options = {})
+    btn_link_to(target, {icon: 'times', text: 'Cancel', style: 'white'}.merge(options))
+  end
+
+  def btn_download(target, options = {})
+    btn_link_to(target, {icon: 'download'}.merge(options))
+  end
+
+  def btn_tag(options = {})
+    btn_component(:button, options)
+  end
+
+  def btn_link_to(target, options = {})
+    btn_component(:link, {target: target}.merge(options))
+  end
+
+  def btn_component(component_type, options = {})
+    # -- style
+    options[:style] ||= 'primary'
+    _btn_style = "btn-#{options[:style]}"
+    # -- size
+    options[:size] ||= 'normal'
+    _btn_size = '' if options[:size] == 'normal'
+    _btn_size = 'btn-lg' if options[:size] == 'large'
+    _btn_size = 'btn-sm' if options[:size] == 'small'
+    _btn_size = 'btn-xs' if options[:size] == 'extra_small'
+    # -- icon size
+    _icon_size = 'normal' if options[:size] == 'small'
+    _icon_size = 'normal' if options[:size] == 'extra_small'
+    _icon_size ||= 'lg'
+    # -- toolip
+    if options.has_key?(:tooltip)
+      if options.has_key?(:title) || (options.has_key?(:data) && options[:data].has_key?(:toggle))
+        logger.fatal('btn_component: tooltip was not set, because a title or data-toggle attribute was also given')
+      else
+        options[:title] = options[:tooltip]
+        options[:data] ||= {}
+        options[:data][:toggle] = 'tooltip'
+      end
+    end
+
+    # Construct button content
+    _content = ''
+    # -- icon
+    _content << fa_icon(options[:icon], size: _icon_size) if options.has_key?(:icon)
+    _content << '&nbsp;&nbsp;' if options.has_key?(:icon) && (options.has_key?(:text))
+    # -- text
+    _content << options[:text] if options.has_key?(:text)
+    _content << '&nbsp;&nbsp;' if (options.has_key?(:icon) || options.has_key?(:text)) && block_given?
+    # -- block
+    _content << capture do
+      yield
+    end if block_given?
+
+    # Add the button classes
+    options[:class] ||= ''
+    options[:class] << " btn #{_btn_style} #{_btn_size}"
+    options[:class] = options[:class].split(' ').uniq.join(' ')
+
+    # Add the data classes
+    options[:data] ||= {}
+    # -- during 'processing', show the content prefixed with a spinner
+    options[:data][:disable_with] ||= "#{fa_icon('spinner fa-spin', size: _icon_size)}&nbsp;&nbsp;#{_content}"
+
+    # Create the options hash to pass to the default url or form helper
+    _options = options.except(:icon, :style, :size, :tooltip)
+
+    # component_type
+    if component_type == :link
+      # raise ('test')
+      return link_to options[:target], _options.except(:target) do
+        _content.html_safe
+      end
+    end
+    if component_type == :button
+      return button_tag _options do
+        _content.html_safe
       end
     end
   end
 
-  def fa_icon(name, text = nil, icon_options = nil)
-    options = {size: 'lg'}
-    options = options.merge(icon_options) if icon_options.present? && icon_options.is_a?(Hash)
-    options = options.merge(text) if icon_options.nil? && text.is_a?(Hash)
-    text_suffix= "&nbsp;&nbsp;&nbsp;#{text}" if text.is_a?(String)
-    tooltip_attributes = "title=\"#{options[:tooltip]}\" data-toggle=\"tooltip\"" if options.has_key?(:tooltip)
-    "<i class=\"fa fa-#{name} fa-#{options[:size]} #{options[:class]}\" #{tooltip_attributes}></i>#{text_suffix}".html_safe
+  def fa_icon_with_text(name, text, options = {})
+    "#{fa_icon(name, options)}&nbsp;&nbsp;#{text}".html_safe
+  end
+
+  def fa_icon(name, options = {})
+    # -- size
+    options[:size] ||= 'lg'
+    _icon_size = " fa-#{options[:size]}" unless options[:size] == 'normal'
+    # -- toolip
+    if options.has_key?(:tooltip)
+      if options.has_key?(:title) || (options.has_key?(:data) && options[:data].has_key?(:toggle))
+        logger.fatal('btn_component: tooltip was not set, because a title or data-toggle attribute was also given')
+      else
+        options[:title] = options[:tooltip]
+        options[:data] ||= {}
+        options[:data][:toggle] = 'tooltip'
+      end
+    end
+    # -- class
+    options[:class] ||= ''
+    options[:class] << " fa fa-#{name}"
+    options[:class] << _icon_size if _icon_size.present?
+    options[:class] = options[:class].split(' ').uniq.join(' ')
+    # remove handled attributes
+    _options = options.except(:size, :tooltip)
+    content_tag(:i, nil, _options)
   end
 
   def audit_log_label(auditable)
     if can?(:auditable_index, AuditLog) && can?(:read, auditable)
-      link_to(auditable_index_audit_logs_path(auditable.class.name, auditable.id), remote: true, title: 'Click to view the audit log of this resource.', class: 'pull-right') {
-        "<span class=\"label label-lg\">#{fa_icon('history')}</span>".html_safe
+      link_to(auditable_index_audit_logs_path(auditable.class.name, auditable.id), remote: true, title: 'Click to view the audit log of this resource.') {
+        content_tag(:span, fa_icon('history', size: :normal), class: 'label label-lg pull-right')
       }
     end
   end
@@ -184,14 +287,12 @@ module ApplicationHelper
   end
 
   def scores_legend
-    legend = <<END
-<ul class="list-unstyled list-inline">
-  <li>#{fa_icon('square', 'Max. Attainable score', {class: 'progress-bar-max'})}</li>
-  <li>#{fa_icon('square', 'Targeted score', {class: 'progress-bar-targeted'})}</li>
-  <li>#{fa_icon('square', 'Submitted score', {class: 'progress-bar-submitted'})}</li>
-  <li>#{fa_icon('square', 'Achieved score', {class: 'progress-bar-achieved'})}</li>
-</ul>
-END
-    legend.html_safe
+    max = content_tag(:li, fa_icon_with_text('square', 'Max. Attainable score', class: 'progress-bar-max'))
+    target = content_tag(:li, fa_icon_with_text('square', 'Targeted score', class: 'progress-bar-targeted'))
+    submit = content_tag(:li, fa_icon_with_text('square', 'Submitted score', class: 'progress-bar-submitted'))
+    achieved = content_tag(:li, fa_icon_with_text('square', 'Achieved score', class: 'progress-bar-achieved'))
+    content_tag(:ul, class: 'list-unstyled list-inline') do
+      max + target + submit + achieved
+    end
   end
 end

@@ -19,12 +19,8 @@
                         <%= f.hidden_field :scheme_mix_criterion_id, { class: 'select2-criterion-ajax', value: session[:task]['scheme_mix_criterion_id'] } %>
                     </div>
                     <div class="hr-line-dashed"></div>
-                    <%= button_tag type: 'submit', class: 'btn btn-primary', value: 'Apply_task_filter' do %>
-                        <i title="Apply filter" class="fa fa-lg fa-filter" style="padding-right: 10px;"></i>Apply filter
-                    <% end %>
-                    <%= link_to tasks_path(reset: true), class: 'btn btn-white' do %>
-                        <i class="fa fa-lg fa-times" style="padding-right: 10px;"></i>Remove filter
-                    <% end %>
+                    <%= btn_tag(text: 'Apply filter', value: 'Apply_task_filter', icon: 'filter') %>
+                    <%= btn_cancel_to(tasks_path(reset: true), text: 'Remove filter', style: 'white', icon: 'times') %>
                 <% end %>
             </div>
         </div>

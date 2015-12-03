@@ -3,20 +3,16 @@
         <div class="col-lg-3">
             <div class="ibox">
                 <div class="ibox-title">
-                    <h5><%=t '.form_title' %></h5>
+                    <h5><%= t '.form_title' %></h5>
                 </div>
                 <div class="ibox-content">
                     <%= f.text_field :email, disabled: 'disabled' %>
                     <%= f.select :role, User.roles.keys.map { |k| [k.humanize, k] } %>
                     <div class="hr-line-dashed"></div>
                     <% if can?(:edit, @user) %>
-                        <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
-                            <i title="Add comment" class="fa fa-lg fa-save" style="padding-right: 10px;"></i><%= t('.btn_save') %>
-                        <% end %>
+                        <%= btn_save %>
                     <% end %>
-                    <%= link_to users_path, class: 'btn btn-white' do %>
-                        <%= fa_icon('times', 'Cancel') %>
-                    <% end %>
+                    <%= btn_cancel_to(user_path) %>
                 </div>
             </div>
         </div>

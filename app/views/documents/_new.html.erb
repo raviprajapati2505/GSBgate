@@ -5,7 +5,7 @@
     </div>
     <div id="dropzone-top">
         <div class="dz-message">
-            <%= fa_icon('files-o', 'Drop files here or click to upload documentation.') %>
+            <%= fa_icon_with_text('files-o', 'Drop files here or click to upload documentation.') %>
         </div>
     </div>
     <div id="dropzone-bottom" style="display:none;">
@@ -17,20 +17,20 @@
                 <div><strong>Actions</strong></div>
             </div>
         </div>
-        <br />
+        <br/>
+
         <div class="row">
             <div class="col-md-5">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Additional requirements <%= tooltip('If this documentation meets other requirements click here to select any additional criteria it applies to.') %></div>
+                    <div class="panel-heading">Additional
+                        requirements <%= tooltip('If this documentation meets other requirements click here to select any additional criteria it applies to.') %></div>
                     <div class="panel-body">
-                        <a href="#" class="show-criteria-checkboxes btn btn-white btn-sm">
-                            <%= fa_icon('plus', 'Select additional criteria') %>
-                        </a>
+                        <%= btn_link_to('#', icon: 'plus', text: 'Select additional criteria', class: 'show-criteria-checkboxes', size: 'small', style: 'white') %>
                         <ul class="criteria-checkboxes checkbox-list" style="display:none;">
                             <% scheme_mix.scheme_categories.uniq.each do |category| %>
                                 <li>
                                     <a href="#">
-                                        <%= fa_icon('caret-square-o-right', category.name) %>
+                                        <%= fa_icon_with_text('caret-square-o-right', category.name) %>
                                     </a>
                                     <ul style="display:none;">
                                         <% scheme_mix.scheme_mix_criteria.for_category(category).each do |scheme_mix_criterion| %>
@@ -49,7 +49,8 @@
             </div>
             <div class="col-md-7">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Notes to support the documentation <%= tooltip('Please enter some additional comments relating to this documentation to help understand which requirements it relates to.') %></div>
+                    <div class="panel-heading">Notes to support the
+                        documentation <%= tooltip('Please enter some additional comments relating to this documentation to help understand which requirements it relates to.') %></div>
                     <div class="panel-body">
                         <%= text_area_tag 'scheme_mix_criteria_document[audit_log_user_comment]', nil, class: 'form-control' %>
                     </div>
@@ -57,16 +58,14 @@
             </div>
         </div>
         <div class="hr-line-dashed"></div>
-        <a href="#" id="dropzone-upload-all" class="btn btn-primary">
-            <%= fa_icon('upload', 'Upload documentation') %>
-        </a>
+        <%= btn_link_to('#', id: 'dropzone-upload-all', icon: 'upload', text: 'Upload documentation') %>
     </div>
 <% end %>
 <div id="dropzone-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dropzone-modal-title">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header alert-danger">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <%= btn_close_modal %>
                 <h4 class="modal-title" id="dropzone-modal-title"></h4>
             </div>
             <div class="modal-body"></div>

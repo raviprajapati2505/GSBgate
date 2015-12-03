@@ -13,9 +13,7 @@
                 </div>
                 <% if can?(:create, SchemeCriterionText.new(scheme_criterion_id: @scheme_criterion.id)) %>
                     <div class="hr-line-dashed"></div>
-                    <%= link_to(new_scheme_criterion_text_path(scheme_criterion_id: @scheme_criterion.id), class: 'btn btn-primary') do %>
-                        <%= fa_icon('plus', 'Add text') %>
-                    <% end %>
+                    <%= btn_link_to(new_scheme_criterion_text_path(scheme_criterion_id: @scheme_criterion.id), icon: 'plus', text: 'Add text') %>
                 <% end %>
             </div>
         </div>
