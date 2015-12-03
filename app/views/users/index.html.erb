@@ -28,5 +28,9 @@
             <% end %>
             </tbody>
         </table>
+        <div class="hr-line-dashed"></div>
+        <% if can? :create, User.new %>
+            <%= btn_link_to(new_user_path, icon: 'user', text: 'Add user') %>
+        <% end %>
     </div>
 </div>

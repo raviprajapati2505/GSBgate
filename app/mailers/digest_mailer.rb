@@ -74,7 +74,7 @@ class DigestMailer < ApplicationMailer
       @more_tasks = 0
     end
 
-    mail(to: @user.email, subject: 'GSAS : progress report') unless (@tasks.empty? && @audit_logs.empty?)
+    mail(to: @user.email, subject: 'GSASgate - progress report') unless (@tasks.empty? && @audit_logs.empty?)
 
     user.last_notified_at = DateTime.current
     user.save!
@@ -85,7 +85,7 @@ class DigestMailer < ApplicationMailer
     @project = projectsuser.project
     @role = projectsuser.role.humanize
 
-    mail(to: @user.email, subject: "GSAS : you are added to project #{@project.name}")
+    mail(to: @user.email, subject: "GSASgate - you are added to project #{@project.name}")
   end
 
   def updated_role_email(projectsuser)
@@ -93,14 +93,14 @@ class DigestMailer < ApplicationMailer
     @project = projectsuser.project
     @role = projectsuser.role.humanize
 
-    mail(to: @user.email, subject: "GSAS : your role changed for project #{@project.name}")
+    mail(to: @user.email, subject: "GSASgate - your role changed for project #{@project.name}")
   end
 
   def removed_from_project_email(projectsuser)
     @user = projectsuser.user
     @project = projectsuser.project
 
-    mail(to: @user.email, subject: "GSAS : you are removed from project #{@project.name}")
+    mail(to: @user.email, subject: "GSASgate - you are removed from project #{@project.name}")
   end
 
   private

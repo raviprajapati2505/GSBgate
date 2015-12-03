@@ -94,7 +94,7 @@
         <!--= will_paginate @projects, renderer: BootstrapPagination::Rails %-->
         <div class="hr-line-dashed fa-"></div>
         <% if can? :create, Project.new(owner_id: current_user.id) %>
-            <%= btn_link_to(new_project_path, icon: 'building-o', text: 'New Project') %>
+            <%= btn_link_to(new_project_path, icon: 'building-o', text: 'New project') %>
         <% end %>
     </div>
 </div>
