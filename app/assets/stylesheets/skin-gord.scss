@@ -193,6 +193,11 @@
     line-height: 18px;
   }
 
+  // Buttons
+  .btn.close.btn-white:hover {
+    border: 0;
+  }
+
   // Tooltips
   .tooltip-inner {
     background-color: $skin-gord-color;
