@@ -35,34 +35,77 @@ module ApplicationHelper
     end
   end
 
+  # generates a button_tag with save icon and save text, that can be used within forms
+  #
+  # :options: are documented at ApplicationHelper#btn_component
   def btn_save(options = {})
     btn_tag({icon: 'save', text: 'Save'}.merge(options))
   end
 
+  # generates a button_tag to dismiss a modal, with only a small close icon
+  #
+  # :options: are documented at ApplicationHelper#btn_component
   def btn_close_modal(options = {})
     btn_tag({class: 'close', tooltip: 'Close', icon: 'times', size: 'extra_small', style: 'white', data: {dismiss: 'modal'}, aria: {label: 'close'}}.merge(options))
   end
 
-  # def btn_back_modal(options = {})
-  #   btn_tag({icon: 'times', text: 'Back', style: 'white', data: {dismiss: 'modal'}}.merge(options))
-  # end
-
+  # generates a button link to the target, with a cancel icon and text
+  #
+  # :options: are documented at ApplicationHelper#btn_component
   def btn_cancel_to(target, options = {})
     btn_link_to(target, {icon: 'times', text: 'Cancel', style: 'white'}.merge(options))
   end
 
+  # generates a button link to the target, with only a download icon
+  #
+  # :options: are documented at ApplicationHelper#btn_component
   def btn_download(target, options = {})
     btn_link_to(target, {icon: 'download'}.merge(options))
   end
 
+  # generates a button_tag
+  #
+  # :options: are documented at ApplicationHelper#btn_component
   def btn_tag(options = {})
     btn_component(:button, options)
   end
 
+  # generates a button link
+  #
+  # :options: are documented at ApplicationHelper#btn_component
   def btn_link_to(target, options = {})
     btn_component(:link, {target: target}.merge(options))
   end
 
+  # generates a component with bootstrap button classes added to it
+  # - receives a disabled-with attribute, to avoid double click issues
+  # - uses default values for style and size
+  # - optionally can be given a fontawesome icon name
+  # - optionally can be given a text or content block
+  # - supports all default available attributes for the component (e.g. value, remote, data, ....)
+  #
+  # :component_type: should be either :button or :link
+  # :options: a hash to configure the button
+  # * :style a bootstrap button style
+  #   * primary (default)
+  #   * white
+  #   * danger
+  #   * ...
+  #
+  # * :size the size of the button
+  #   * normal (default)
+  #   * large
+  #   * small
+  #   * extra_small
+  #
+  # * :tooltip a bootstrap tooltip to add to the button
+  #   when using the tooltip attribute, you cannot explicitly add a title or data-toggle attribute
+  #
+  # * :icon the fontawesome icon name, without the 'fa-' prefix
+  #
+  # * :text the text for the button
+  #   The button contents can also be passed in as a block
+  #
   def btn_component(component_type, options = {})
     # -- style
     options[:style] ||= 'primary'
