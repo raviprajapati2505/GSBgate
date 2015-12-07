@@ -30,7 +30,7 @@ class ConfirmationsController < Devise::ConfirmationsController
           do_confirm
         else
           do_show
-          @confirmable.errors.clear # So :new doens't render
+          @confirmable.errors.clear # So :new doesn't render
         end
       else
         @confirmable.errors.add(:email, :password_already_set)
