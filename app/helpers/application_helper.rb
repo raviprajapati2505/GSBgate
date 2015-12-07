@@ -35,46 +35,69 @@ module ApplicationHelper
     end
   end
 
+  def audit_log_label(auditable)
+    if can?(:auditable_index, AuditLog) && can?(:read, auditable)
+      btn_audit_log(auditable) + btn_audit_log_comment(auditable)
+    end
+  end
+
+  def btn_audit_log(auditable)
+    btn_link_to(auditable_index_logs_path(auditable.class.name, auditable.id), remote: true, tooltip: 'View the complete audit log of this resource.', icon: 'mail-reply', size: 'extra_small', style: 'default', class: 'pull-right audit-log')
+  end
+
+  def btn_audit_log_comment(auditable)
+    btn_link_to(auditable_index_comments_path(auditable.class.name, auditable.id), remote: true, tooltip: 'View or add comments to the audit log of this resource.', icon: 'comment', size: 'extra_small', style: 'default', class: 'audit-log pull-right')
+  end
+
+  def btn_audit_log_filtered(status_name, audit_log_params)
+    btn_link_to(audit_logs_path(audit_log_params), tooltip: "Click to view the audit logs for all resources that were created during the '#{status_name}' phase.", icon: 'mail-reply-all', size: 'extra_small', style: 'default', class: 'pull-right audit-log')
+  end
+
+  def btn_audit_log_comments_filtered(status_name, audit_log_params)
+    audit_log_params[:only_user_comments] = true
+    btn_link_to(audit_logs_path(audit_log_params), tooltip: "Click to view the audit logs for all resources that were created during the '#{status_name}' phase.", icon: 'comments', size: 'extra_small', style: 'default', class: 'pull-right audit-log')
+  end
+
   # generates a button_tag with save icon and save text, that can be used within forms
   #
   # :options: are documented at ApplicationHelper#btn_component
-  def btn_save(options = {})
-    btn_tag({icon: 'save', text: 'Save'}.merge(options))
+  def btn_save(options = {}, &block)
+    btn_tag({icon: 'save', text: 'Save'}.merge(options), &block)
   end
 
   # generates a button_tag to dismiss a modal, with only a small close icon
   #
   # :options: are documented at ApplicationHelper#btn_component
-  def btn_close_modal(options = {})
-    btn_tag({class: 'close', tooltip: 'Close', icon: 'times', size: 'extra_small', style: 'white', data: {dismiss: 'modal'}, aria: {label: 'close'}}.merge(options))
+  def btn_close_modal(options = {}, &block)
+    btn_tag({class: 'close', icon: 'times', size: 'extra_small', style: 'white', data: {dismiss: 'modal'}, aria: {label: 'close'}}.merge(options), &block)
   end
 
   # generates a button link to the target, with a cancel icon and text
   #
   # :options: are documented at ApplicationHelper#btn_component
-  def btn_cancel_to(target, options = {})
-    btn_link_to(target, {icon: 'times', text: 'Cancel', style: 'white'}.merge(options))
+  def btn_cancel_to(target, options = {}, &block)
+    btn_link_to(target, {icon: 'times', text: 'Cancel', style: 'white'}.merge(options), &block)
   end
 
   # generates a button link to the target, with only a download icon
   #
   # :options: are documented at ApplicationHelper#btn_component
-  def btn_download(target, options = {})
-    btn_link_to(target, {icon: 'download'}.merge(options))
+  def btn_download(target, options = {}, &block)
+    btn_link_to(target, {icon: 'download'}.merge(options), &block)
   end
 
   # generates a button_tag
   #
   # :options: are documented at ApplicationHelper#btn_component
-  def btn_tag(options = {})
-    btn_component(:button, options)
+  def btn_tag(options = {}, &block)
+    btn_component(:button, options, &block)
   end
 
   # generates a button link
   #
   # :options: are documented at ApplicationHelper#btn_component
-  def btn_link_to(target, options = {})
-    btn_component(:link, {target: target}.merge(options))
+  def btn_link_to(target, options = {}, &block)
+    btn_component(:link, {target: target}.merge(options), &block)
   end
 
   # generates a component with bootstrap button classes added to it
@@ -106,7 +129,7 @@ module ApplicationHelper
   # * :text the text for the button
   #   The button contents can also be passed in as a block
   #
-  def btn_component(component_type, options = {})
+  def btn_component(component_type, options = {}, &block)
     # -- style
     options[:style] ||= 'primary'
     _btn_style = "btn-#{options[:style]}"
@@ -197,14 +220,6 @@ module ApplicationHelper
     # remove handled attributes
     _options = options.except(:size, :tooltip)
     content_tag(:i, nil, _options)
-  end
-
-  def audit_log_label(auditable)
-    if can?(:auditable_index, AuditLog) && can?(:read, auditable)
-      link_to(auditable_index_audit_logs_path(auditable.class.name, auditable.id), remote: true, title: 'Click to view the audit log of this resource.') {
-        content_tag(:span, fa_icon('history', size: :normal), class: 'label label-lg pull-right')
-      }
-    end
   end
 
   def round_score(score)

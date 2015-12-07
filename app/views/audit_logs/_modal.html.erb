@@ -3,13 +3,23 @@
         <div class="modal-header">
             <%= btn_close_modal %>
             <%= btn_tag(type: :button, size: 'small', style: 'white', class:'add-comment-button', icon: 'comment', text: 'Add comment') %>
-            <h4 class="modal-title">Audit log for <em><%= @auditable.name %></em></h4>
+            <h4 class="modal-title">
+                <% if @only_user_comments %>
+                    Comments for <em><%= @auditable.name %></em>
+                <% else %>
+                    Audit log for <em><%= @auditable.name %></em>
+                <% end %>
+            </h4>
         </div>
         <%= bootstrap_form_for(AuditLog.new, url: auditable_create_audit_log_path, method: 'post') do |f| %>
             <div class="modal-body">
                 <div class="feed-activity-list">
                     <% if @audit_logs.blank? %>
-                        <%= @auditable.name %> has no audit logs yet.
+                        <% if @only_user_comments %>
+                            <em><%= @auditable.name %></em> has no comments yet.
+                        <% else %>
+                            <em><%= @auditable.name %></em> has no audit logs yet.
+                        <% end %>
                     <% else %>
                         <% @audit_logs.each do |audit_log| %>
                             <%= render 'audit_log', audit_log: audit_log, with_breadcrumbs: false %>

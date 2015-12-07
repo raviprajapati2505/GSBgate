@@ -36,7 +36,7 @@
             <% if can?(:index, AuditLog) %>
                 <li class="<%= 'active' if (controller_name == 'audit_logs') %>">
                     <%= link_to audit_logs_path do %>
-                        <%= fa_icon('history') %><span class="nav-label">Audit log</span>
+                        <%= fa_icon('mail-reply-all') %><span class="nav-label">Audit log</span>
                     <% end %>
                 </li>
             <% end %>

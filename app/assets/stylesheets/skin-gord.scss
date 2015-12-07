@@ -198,6 +198,14 @@
     border: 0;
   }
 
+  .btn.audit-log {
+    background-color: $light-gray;
+    color: $label-badget-color;
+    border: 0;
+    margin-left: 8px;
+    padding: 3px 8px;
+  }
+
   // Tooltips
   .tooltip-inner {
     background-color: $skin-gord-color;
