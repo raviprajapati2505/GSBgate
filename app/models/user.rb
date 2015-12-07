@@ -79,6 +79,27 @@ class User < ActiveRecord::Base
     return project_user.present? ? project_user.role.humanize : self.role.humanize
   end
 
+  # Updates the current password of a user
+  def attempt_set_password(params)
+    p = {}
+    p[:password] = params[:password]
+    p[:password_confirmation] = params[:password_confirmation]
+    update_attributes(p)
+  end
+
+  def password_required?
+    # Password is required if it is being set, but not for new records
+    if !persisted?
+      false
+    else
+      !password.nil? || !password_confirmation.nil?
+    end
+  end
+
+  def only_if_unconfirmed
+    pending_any_confirmation {yield}
+  end
+
   before_validation :assign_default_role, on: :create
 
   validates :role, inclusion: User.roles.keys

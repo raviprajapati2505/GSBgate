@@ -14,8 +14,9 @@ class UsersController < AuthenticatedController
   def create
     @user = User.new(user_params)
 
-    # Generate a random password, this will be changed by the user later
-    @user.password = Devise.friendly_token.first(20)
+    # Leave the password blank for now,
+    # the user will provide this when he confirms the account.
+    @user.password = ''
 
     if @user.save
       redirect_to users_path, notice: 'User account was successfully created. The user will be notified by email.'

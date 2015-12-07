@@ -1,0 +1,20 @@
+<% if resource.errors.messages[:confirmation_token].present? %>
+    <p class="alert alert-danger">
+        The confirmation token <%= resource.errors.messages[:confirmation_token].first %>.
+    </p>
+<% end %>
+<div class="ibox-content">
+    <%= image_tag 'layout/logo-medium.gif' %>
+
+    <h3>Resend confirmation instructions</h3>
+
+    <%= bootstrap_form_for(resource, as: resource_name, url: user_confirmation_path, html: { method: :post }) do |f| %>
+        <%= hidden_field_tag :confirmation_token, @confirmation_token %>
+        <%= f.email_field :email, hide_label: true, placeholder: 'Email address', autofocus: true, value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email) %>
+        <%= btn_tag(text: 'Resend confirmation instructions', class: 'block full-width m-b') %>
+    <% end %>
+
+    <small>
+        <%= render 'devise/shared/links' %>
+    </small>
+</div>

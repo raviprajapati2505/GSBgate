@@ -6,13 +6,16 @@ Rails.application.routes.draw do
   root 'projects#index'
 
   # Devise "user/*" routes
-  devise_for :user, skip: :registrations
+  devise_for :user, skip: :registrations, :controllers => {:confirmations => 'confirmations'}
   devise_scope :user do
     resource :registration,
       only: [:edit, :update],
       path: 'user',
       controller: 'devise/registrations',
       as: :user_registration
+  end
+  as :user do
+    patch '/user/confirmation' => 'confirmations#update', :via => :patch, :as => :update_user_confirmation
   end
 
   # Our own "users/*" routes
