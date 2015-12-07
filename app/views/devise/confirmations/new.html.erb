@@ -8,6 +8,7 @@
 
     <h3>Resend confirmation instructions</h3>
 
+    <p>If your account was created but you didn't receive a confirmation mail, you can resend it here.</p>
     <%= bootstrap_form_for(resource, as: resource_name, url: user_confirmation_path, html: { method: :post }) do |f| %>
         <%= hidden_field_tag :confirmation_token, @confirmation_token %>
         <%= f.email_field :email, hide_label: true, placeholder: 'Email address', autofocus: true, value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email) %>
