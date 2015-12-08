@@ -99,6 +99,9 @@ gem 'pdf-core'
 gem 'prawn'
 gem 'prawn-table'
 
+# reCAPTCHA
+gem "recaptcha", require: "recaptcha/rails"
+
 # Rails-Assets: access bower packages from our gem file
 #  e.g. gem 'rails-assets-BOWER_PACKAGE_NAME'
 #  do not forget to:
