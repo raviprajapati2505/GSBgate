@@ -13,7 +13,7 @@
                     <%= f.email_field :email %>
                     <%= f.password_field :password, label: ('New password' + tooltip('Leave this field blank if you don\'t want to change your password.')).html_safe %>
                     <%= f.password_field :password_confirmation, label: 'New password confirmation', autocomplete: 'off' %>
-                    <%= f.password_field :current_password, label: ('New password' + tooltip('We need your current password to confirm your changes.')).html_safe, autocomplete: 'off' %>
+                    <%= f.password_field :current_password, label: ('Current password' + tooltip('We need your current password to confirm your changes.')).html_safe, autocomplete: 'off' %>
                     <div class="hr-line-dashed"></div>
                     <%= btn_save() %>
                 <% end %>
