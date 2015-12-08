@@ -10,12 +10,12 @@ $(function () {
         var valid = validate();
         if (!valid) {
             event.preventDefault();
+            return false;
         }
     });
 
     // Javascript validation
     function validate(){
-        var valid = true;
         // reset UI
         $('div.form-group').removeClass('has-error');
         // do validation

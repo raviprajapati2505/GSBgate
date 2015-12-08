@@ -59,6 +59,7 @@ $(function () {
         var valid = validate();
         if (!valid) {
             event.preventDefault();
+            return false;
         }
     });
 
