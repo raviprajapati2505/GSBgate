@@ -29,7 +29,8 @@ class DocumentArchiverService
       begin
         page += 1
         audit_logs = AuditLog
-                         .where(project_id: certification_path.project.id, certification_path: certification_path)
+                         .where(project_id: certification_path.project.id)
+                         .where('audit_logs.certification_path_id = ? or audit_logs.certification_path_id is null', certification_path.id)
                          .order(created_at: :ASC)
                          .paginate page: page, per_page: PAGE_SIZE
         audit_logs.each do |audit_log|
