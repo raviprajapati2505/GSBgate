@@ -43,7 +43,7 @@ en:
       tooltip_gross_area: "Total built up area including parking areas such as underground or structured parking."
       tooltip_certified_area: "Total built up area excluding parking areas. All parking areas (whether underground, structured, or at grade) should NOT be included in this calculation. Other spaces, such as common areas, mechanical spaces, and circulation areas, should be included in the certified area of the building."
       tooltip_carpark_area: "Total built up area associated with parking (underground or structured parking). This does NOT include on-grade parking, as we are only interested in the built up area."
-      tooltip_project_site_area: "Total site area including roadways, parking, landscape, etc."
+      tooltip_project_site_area: "Total plot area including roadways, parking, landscape, etc."
   projects_users:
     edit:
       btn_cancel: "Back"

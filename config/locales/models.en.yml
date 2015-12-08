@@ -7,6 +7,7 @@ en:
         code: "Project ID"
         name: "Project name"
         carpark_area: "Car park area"
+        project_site_area: "Project plot area"
         location_plan_file: "Location plan"
         site_plan_file: "Site plan"
         design_brief_file: "Design brief"
