@@ -59,6 +59,7 @@
                             <%= render 'score/score', scores: @certification_path.scores_in_certificate_points %>
                         </td>
                     </tr>
+                    <% if @certification_path.certificate.design_type? %>
                     <tr>
                         <th>
                             PCR
@@ -75,6 +76,7 @@
                             </div>
                         </td>
                     </tr>
+                    <% end %>
                     <% if can?(:download_archive, @certification_path) %>
                         <tr>
                             <th>

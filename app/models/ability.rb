@@ -55,6 +55,8 @@ class Ability
 
     if user.system_admin?
       can :manage, :all
+      cannot :apply_for_pcr, CertificationPath, pcr_track: true
+      cannot :apply_for_pcr, CertificationPath, certificate: {certificate_type: ['construction_type', Certificate.certificate_types[:construction_type], 'operations_type', Certificate.certificate_types[:operations_type]]}
       # Admins opt-out for specific abilities
       cannot [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::STATUSES_AT_ASSESSOR_SIDE }
       cannot [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::STATUSES_AT_MANAGEMENT_SIDE}
@@ -98,7 +100,7 @@ class Ability
       can :read, CertificationPath, project: project_with_user_assigned
       can :list, CertificationPath, project: project_with_user_assigned
       can :apply, CertificationPath, project: project_with_user_as_project_manager
-      can :apply_for_pcr, CertificationPath, pcr_track: false, project: project_with_user_as_project_manager
+      can :apply_for_pcr, CertificationPath, pcr_track: false, project: project_with_user_as_project_manager, certificate: {certificate_type: ['design_type', Certificate.certificate_types[:design_type]]}
       can [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::STATUSES_AT_ASSESSOR_SIDE}, project: project_with_user_as_project_manager
       can [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::STATUSES_AT_CERTIFIER_SIDE}, project: project_with_user_as_certifier_manager
 
