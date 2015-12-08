@@ -126,6 +126,10 @@ module ApplicationHelper
   #
   # * :icon the fontawesome icon name, without the 'fa-' prefix
   #
+  # * :icon_position the fontawesome icon position
+  #   * front (default)
+  #   * back
+  #
   # * :text the text for the button
   #   The button contents can also be passed in as a block
   #
@@ -143,6 +147,8 @@ module ApplicationHelper
     _icon_size = 'normal' if options[:size] == 'small'
     _icon_size = 'normal' if options[:size] == 'extra_small'
     _icon_size ||= 'lg'
+    # -- icon position
+    options[:icon_position] ||= 'front'
     # -- toolip
     if options.has_key?(:tooltip)
       if options.has_key?(:title) || (options.has_key?(:data) && options[:data].has_key?(:toggle))
@@ -155,17 +161,25 @@ module ApplicationHelper
     end
 
     # Construct button content
-    _content = ''
-    # -- icon
-    _content << fa_icon(options[:icon], size: _icon_size) if options.has_key?(:icon)
-    _content << '&nbsp;&nbsp;' if options.has_key?(:icon) && (options.has_key?(:text))
+    _content = []
     # -- text
     _content << options[:text] if options.has_key?(:text)
-    _content << '&nbsp;&nbsp;' if (options.has_key?(:icon) || options.has_key?(:text)) && block_given?
     # -- block
     _content << capture do
       yield
     end if block_given?
+    # -- icon
+    if options.has_key?(:icon)
+      _icon = fa_icon(options[:icon], size: _icon_size)
+      if options[:icon_position] == 'front'
+        _content.unshift(_icon)
+      else
+        _content << _icon
+      end
+    end
+
+    # Convert array to space delimited string
+    _content = _content.join('&nbsp;&nbsp;')
 
     # Add the button classes
     options[:class] ||= ''
@@ -178,7 +192,7 @@ module ApplicationHelper
     options[:data][:disable_with] ||= "#{fa_icon('spinner fa-spin', size: _icon_size)}&nbsp;&nbsp;#{_content}"
 
     # Create the options hash to pass to the default url or form helper
-    _options = options.except(:icon, :style, :size, :tooltip)
+    _options = options.except(:icon, :icon_position, :style, :size, :tooltip)
 
     # component_type
     if component_type == :link
