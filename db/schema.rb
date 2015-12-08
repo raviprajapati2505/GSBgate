@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151203094300) do
+ActiveRecord::Schema.define(version: 20151208134432) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -205,6 +205,7 @@ ActiveRecord::Schema.define(version: 20151203094300) do
     t.integer  "scheme_id"
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
+    t.integer  "display_weight"
   end
 
   add_index "scheme_categories", ["code", "scheme_id"], name: "index_scheme_categories_on_code_and_scheme_id", unique: true, using: :btree

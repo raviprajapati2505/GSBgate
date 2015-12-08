@@ -81,3 +81,25 @@ NotificationType.create!(id: NotificationType::REQUIREMENT_PROVIDED, name: 'Requ
 NotificationType.create!(id: NotificationType::NEW_DOCUMENT_WAITING_FOR_APPROVAL, name: 'New document uploaded for criterion', project_level: true)
 NotificationType.create!(id: NotificationType::DOCUMENT_APPROVED, name: 'Document approved', project_level: true)
 NotificationType.create!(id: NotificationType::NEW_TASK, name: 'New task', project_level: false)
+
+SchemeCategory.find_each do |category|
+  case category.code
+    when 'UC'
+      category.display_weight = 10
+    when 'S'
+      category.display_weight = 20
+    when 'E'
+      category.display_weight = 30
+    when 'W'
+      category.display_weight = 40
+    when 'M'
+      category.display_weight = 50
+    when 'IE'
+      category.display_weight = 60
+    when 'CE'
+      category.display_weight = 70
+    when 'MO'
+      category.display_weight = 80
+  end
+  category.save
+end
