@@ -8,7 +8,6 @@ class DigestMailer < ApplicationMailer
     user.last_notified_at ||= DateTime.new
 
     if user.gord_manager? || user.gord_top_manager?
-      # @audit_logs = AuditLog.where('updated_at > ?', Date.yesterday)
       # NO AUDIT LOG
       @audit_logs = []
       @more_audit_logs = 0
@@ -27,9 +26,49 @@ class DigestMailer < ApplicationMailer
         end
       end
 
+      exclude_notifications = NotificationTypesUser.where(user: user, notification_type_id: NotificationType::PROJECT_AUTHORIZATION_CHANGED)
+      if exclude_notifications.any?
+        @audit_logs = @audit_logs.where.not(auditable_type: ProjectsUser.name.demodulize)
+      end
       exclude_notifications = NotificationTypesUser.where(user: user, notification_type_id: NotificationType::PROJECT_CREATED)
       if exclude_notifications.any?
         @audit_logs = @audit_logs.where.not('audit_logs.auditable_type = ? and audit_logs.system_message like \'%created.\'', Project.name.demodulize)
+      end
+      exclude_notifications = NotificationTypesUser.where(user: user, notification_type_id: NotificationType::PROJECT_UPDATED)
+      if exclude_notifications.any?
+        @audit_logs = @audit_logs.where.not('audit_logs.auditable_type = ? and audit_logs.system_message like \'%updated.\'', Project.name.demodulize)
+      end
+      exclude_notifications = NotificationTypesUser.where(user: user, notification_type_id: NotificationType::CERTIFICATE_PCR_REQUESTED)
+      if exclude_notifications.any?
+        @audit_logs = @audit_logs.where.not('audit_logs.auditable_type = ? and audit_logs.system_message like \'%issued%\'', CertificationPath.name.demodulize)
+      end
+      exclude_notifications = NotificationTypesUser.where(user: user, notification_type_id: NotificationType::CERTIFICATE_PCR_CANCELED)
+      if exclude_notifications.any?
+        @audit_logs = @audit_logs.where.not('audit_logs.auditable_type = ? and audit_logs.system_message like \'%canceled%\'', CertificationPath.name.demodulize)
+      end
+      exclude_notifications = NotificationTypesUser.where(user: user, notification_type_id: NotificationType::CERTIFICATE_PCR_APPROVED)
+      if exclude_notifications.any?
+        @audit_logs = @audit_logs.where.not('audit_logs.auditable_type = ? and audit_logs.system_message like \'%granted.\'', CertificationPath.name.demodulize)
+      end
+      exclude_notifications = NotificationTypesUser.where(user: user, notification_type_id: NotificationType::CERTIFICATE_PCR_REJECTED)
+      if exclude_notifications.any?
+        @audit_logs = @audit_logs.where.not('audit_logs.auditable_type = ? and audit_logs.system_message like \'%rejected.\'', CertificationPath.name.demodulize)
+      end
+      exclude_notifications = NotificationTypesUser.where(user: user, notification_type_id: NotificationType::CRITERION_ASSIGNMENT_CHANGED)
+      if exclude_notifications.any?
+        @audit_logs = @audit_logs.where.not('audit_logs.auditable_type = ? and audit_logs.system_message like \'%assigned%\'', SchemeMixCriterion.name.demodulize)
+      end
+      exclude_notifications = NotificationTypesUser.where(user: user, notification_type_id: NotificationType::CRITERION_SCORE_CHANGED)
+      if exclude_notifications.any?
+        @audit_logs = @audit_logs.where.not('audit_logs.auditable_type = ? and audit_logs.system_message like \'%score%\'', SchemeMixCriterion.name.demodulize)
+      end
+      exclude_notifications = NotificationTypesUser.where(user: user, notification_type_id: NotificationType::CRITERION_TEXT_CHANGED)
+      if exclude_notifications.any?
+        @audit_logs = @audit_logs.where.not(auditable_type: SchemeCriterionText.name.demodulize)
+      end
+      exclude_notifications = NotificationTypesUser.where(user: user, notification_type_id: NotificationType::REQUIREMENT_ASSIGNMENT_CHANGED)
+      if exclude_notifications.any?
+        @audit_logs = @audit_logs.where.not('audit_logs.auditable_type = ? and audit_logs.system_message like \'%assigned%\'', RequirementDatum.name.demodulize)
       end
 
       add_condition(user, NotificationType::CERTIFICATE_APPLIED, CertificationPath.name.demodulize, CertificationPathStatus::ACTIVATING)
@@ -45,15 +84,21 @@ class DigestMailer < ApplicationMailer
       add_condition(user, NotificationType::CERTIFICATE_SUBMITTED_FOR_VERIFICATION_AFTER_APPEAL, CertificationPath.name.demodulize, CertificationPathStatus::VERIFYING_AFTER_APPEAL)
       add_condition(user, NotificationType::CERTIFICATE_VERIFIED_AFTER_APPEAL, CertificationPath.name.demodulize, CertificationPathStatus::ACKNOWLEDGING_AFTER_APPEAL)
       add_condition(user, NotificationType::CERTIFICATE_APPROVED_BY_MNGT, CertificationPath.name.demodulize, CertificationPathStatus::APPROVING_BY_MANAGEMENT)
+      add_condition(user, NotificationType::CERTIFICATE_APPROVED_BY_TOP_MNGT, CertificationPath.name.demodulize, CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT)
       add_condition(user, NotificationType::CERTIFICATE_ISSUED, CertificationPath.name.demodulize, CertificationPathStatus::CERTIFIED)
+      add_condition(user, NotificationType::CERTIFICATE_REJECTED, CertificationPath.name.demodulize, CertificationPathStatus::NOT_CERTIFIED)
       add_condition(user, NotificationType::CRITERION_SUBMITTED, SchemeMixCriterion.name.demodulize, SchemeMixCriterion::statuses[:submitted])
       add_condition(user, NotificationType::CRITERION_VERIFIED, SchemeMixCriterion.name.demodulize, [SchemeMixCriterion::statuses[:target_achieved], SchemeMixCriterion::statuses[:target_not_achieved]])
       add_condition(user, NotificationType::CRITERION_APPEALED, SchemeMixCriterion.name.demodulize, SchemeMixCriterion::statuses[:appealed])
       add_condition(user, NotificationType::CRITERION_SUBMITTED_AFTER_APPEAL, SchemeMixCriterion.name.demodulize, SchemeMixCriterion::statuses[:submitted_after_appeal])
       add_condition(user, NotificationType::CRITERION_VERIFIED_AFTER_APPEAL, SchemeMixCriterion.name.demodulize, [SchemeMixCriterion::statuses[:target_achieved_after_appeal], SchemeMixCriterion::statuses[:target_not_achieved_after_appeal]])
+      add_condition(user, NotificationType::CRITERION_OTHER_STATE_CHANGES, SchemeMixCriterion.name.demodulize, [SchemeMixCriterion::statuses[:submitting],SchemeMixCriterion::statuses[:verifying],SchemeMixCriterion::statuses[:submitting_after_appeal],SchemeMixCriterion::statuses[:verifying_after_appeal]])
       add_condition(user, NotificationType::REQUIREMENT_PROVIDED, RequirementDatum.name.demodulize, RequirementDatum::statuses[:provided])
+      add_condition(user, NotificationType::REQUIREMENT_PROVIDED, RequirementDatum.name.demodulize, [RequirementDatum::statuses[:required],RequirementDatum::statuses[:not_required]])
       add_condition(user, NotificationType::NEW_DOCUMENT_WAITING_FOR_APPROVAL, SchemeMixCriteriaDocument.name.demodulize, SchemeMixCriteriaDocument::statuses[:awaiting_approval])
       add_condition(user, NotificationType::DOCUMENT_APPROVED, SchemeMixCriteriaDocument.name.demodulize, SchemeMixCriteriaDocument::statuses[:approved])
+      add_condition(user, NotificationType::DOCUMENT_APPROVED, SchemeMixCriteriaDocument.name.demodulize, SchemeMixCriteriaDocument::statuses[:rejected])
+      add_condition(user, NotificationType::DOCUMENT_APPROVED, SchemeMixCriteriaDocument.name.demodulize, SchemeMixCriteriaDocument::statuses[:superseded])
 
       @more_audit_logs = @audit_logs.count - MAX_LOG_ITEMS
       @more_audit_logs = @more_audit_logs < 0 ? 0 : @more_audit_logs
