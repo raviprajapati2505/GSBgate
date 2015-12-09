@@ -50,7 +50,7 @@ class TaskService
 
     # User filter
     if user.present?
-      if user.system_admin? || user.gord_manager? || user.gord_top_manager?
+      if user.system_admin? || user.gord_manager? || user.gord_top_manager? || user.gord_admin?
         check_project_role = ''
       else
         check_project_role = "or (projects_users.role = tasks.project_role and projects_users.user_id = #{user.id})"

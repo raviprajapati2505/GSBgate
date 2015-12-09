@@ -108,13 +108,13 @@ module Taskable
       # Create system admin task to assign a certifier manager
       Task.create(taskable: self.project,
                  task_description_id: SYS_ADMIN_ASSIGN,
-                 application_role: User.roles[:system_admin],
+                 application_role: User.roles[:gord_admin],
                  project: self.project)
     end
     # Create system admin task to advance the certification path status
     Task.create(taskable: self,
                task_description_id: SYS_ADMIN_REG_APPROVE,
-               application_role: User.roles[:system_admin],
+               application_role: User.roles[:gord_admin],
                project: self.project,
                certification_path: self)
     # Destroy project manager tasks to apply for a certification path
@@ -206,7 +206,7 @@ module Taskable
             # Create system admin task to advance the certification path status
             Task.create(taskable: self,
                        task_description_id: SYS_ADMIN_PCR_APPROVE,
-                       application_role: User.roles[:system_admin],
+                       application_role: User.roles[:gord_admin],
                        project: self.project,
                        certification_path: self)
           end
@@ -261,7 +261,7 @@ module Taskable
           # Create system admin task to check appeal payment
           Task.create(taskable: self,
                      task_description_id: SYS_ADMIN_APPEAL_APPROVE,
-                     application_role: User.roles[:system_admin],
+                     application_role: User.roles[:gord_admin],
                      project: self.project,
                      certification_path: self)
           # Destroy project manager tasks to process verification comments
@@ -327,7 +327,7 @@ module Taskable
           # Create system admin task to check PCR payment
           Task.create(taskable: self,
                      task_description_id: SYS_ADMIN_PCR_ALLOWED,
-                     application_role: User.roles[:system_admin],
+                     application_role: User.roles[:gord_admin],
                      project: self.project,
                      certification_path: self)
         end
@@ -346,7 +346,7 @@ module Taskable
             # Create system admin task to advance the certification path status
             Task.create(taskable: self,
                        task_description_id: SYS_ADMIN_PCR_APPROVE,
-                       application_role: User.roles[:system_admin],
+                       application_role: User.roles[:gord_admin],
                        project: self.project,
                        certification_path: self)
           end
@@ -357,7 +357,7 @@ module Taskable
         # Create system admin task to check PCR payment
         Task.create(taskable: self,
                    task_description_id: SYS_ADMIN_PCR_ALLOWED,
-                   application_role: User.roles[:system_admin],
+                   application_role: User.roles[:gord_admin],
                    project: self.project,
                    certification_path: self)
         # Destroy system admin tasks to advance the certification path status
@@ -708,7 +708,7 @@ module Taskable
           # Create system admin task to assign a certifier manager
           Task.create(taskable: self.project,
                      task_description_id: SYS_ADMIN_ASSIGN,
-                     application_role: User.roles[:system_admin],
+                     application_role: User.roles[:gord_admin],
                      project: self.project)
         end
     end

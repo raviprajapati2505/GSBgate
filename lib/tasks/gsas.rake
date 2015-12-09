@@ -45,7 +45,7 @@ namespace :gsas do
                                 .paginate page: page, per_page: PAGE_SIZE
       certification_paths.each do |certification_path|
         CertificationPathTask.create(task_description_id: Taskable::SYS_ADMIN_DURATION,
-                                     application_role: User.roles[:system_admin],
+                                     application_role: User.roles[:gord_admin],
                                      project: certification_path.project,
                                      certification_path: certification_path)
       end

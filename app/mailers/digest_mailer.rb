@@ -12,7 +12,7 @@ class DigestMailer < ApplicationMailer
       @audit_logs = []
       @more_audit_logs = 0
     else
-      if user.system_admin?
+      if user.system_admin? || user.gord_admin?
         @audit_logs = AuditLog.where('updated_at > ?', user.last_notified_at)
       else
       @audit_logs = AuditLog.where('updated_at > ?', user.last_notified_at)

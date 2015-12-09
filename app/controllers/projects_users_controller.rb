@@ -17,7 +17,7 @@ class ProjectsUsersController < AuthenticatedController
 
   def edit
     @page_title = @projects_user.user.email
-    if current_user.system_admin? && params.has_key?(:query) && params[:query] == 'certifiers'
+    if (current_user.system_admin? || current_user.gord_admin?) && params.has_key?(:query) && params[:query] == 'certifiers'
       @show_certifiers = true
     end
   end
@@ -123,7 +123,7 @@ class ProjectsUsersController < AuthenticatedController
   def list_users_sharing_projects
     if params.has_key?(:user_id) && params.has_key?(:q) && params.has_key?(:page)
       if params[:user_id] == current_user.id.to_s
-        if current_user.system_admin? || current_user.gord_top_manager? || current_user.gord_manager?
+        if current_user.system_admin? || current_user.gord_top_manager? || current_user.gord_manager? || current_user.gord_admin?
           total_count = User.where('email like ?', '%' + params[:q] + '%')
                             .count
           items = User.select('id, email as text')
@@ -154,7 +154,7 @@ class ProjectsUsersController < AuthenticatedController
 
   def list_projects
     if params.has_key?(:q) && params.has_key?(:page)
-      if current_user.system_admin? || current_user.gord_top_manager? || current_user.gord_manager?
+      if current_user.system_admin? || current_user.gord_top_manager? || current_user.gord_manager? || current_user.gord_admin?
         total_count = Project.where('name like ?', '%' + params[:q] + '%').count
         items = Project.select('id, name as text, projects.code as code, projects.latlng as latlng')
                     .where('name like ?', '%' + params[:q] + '%')
