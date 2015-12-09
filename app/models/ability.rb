@@ -18,10 +18,6 @@ class Ability
     # See the wiki for details:
     # https://github.com/ryanb/cancan/wiki/Defining-Abilities
 
-    # Note: we use the following basic rule:
-    #   Admins can do everything, unless they explicitly OPT-OUT of specific abilities
-    #   Users can do nothing, unless they explicitly OPT-IN to specific abilities
-
     user ||= User.new # guest user (not logged in)
 
     alias_action :create, :read, :update, :destroy, :to => :crud
@@ -36,7 +32,7 @@ class Ability
     role_certifier = ['certifier', ProjectsUser.roles[:certifier]]
     assessor_roles = role_project_manager | role_project_team_member
     certifier_roles = role_certifier_manager | role_certifier
-    #role_enterprise_account = ['enterprise_account', ProjectsUser.roles[:enterprise_account]]
+    #role_enterprise_client = ['enterprise_client', ProjectsUser.roles[:enterprise_client]]
     #   SchemeMixCriterion.statuses
     scheme_mix_criterion_status_submitting = ['submitting', SchemeMixCriterion.statuses[:submitting], 'submitting_after_appeal', SchemeMixCriterion.statuses[:submitting_after_appeal]]
     scheme_mix_criterion_status_submitted = ['submitted', SchemeMixCriterion.statuses[:submitted], 'submitted_after_appeal', SchemeMixCriterion.statuses[:submitted_after_appeal]]
@@ -52,39 +48,41 @@ class Ability
     project_with_user_as_certifier_manager = {projects_users: {user_id: user.id, role: role_certifier_manager}}
     project_with_user_as_certifier = {projects_users: {user_id: user.id, role: certifier_roles}}
 
-
-    if user.system_admin?
-      can :manage, :all
-      cannot :apply_for_pcr, CertificationPath, pcr_track: true
-      cannot :apply_for_pcr, CertificationPath, certificate: {certificate_type: ['construction_type', Certificate.certificate_types[:construction_type], 'operations_type', Certificate.certificate_types[:operations_type]]}
-      # Admins opt-out for specific abilities
-      cannot [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::STATUSES_AT_ASSESSOR_SIDE }
-      cannot [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::STATUSES_AT_MANAGEMENT_SIDE}
-      cannot [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::STATUSES_AT_END}
-      cannot [:edit_project_team_responsibility, :allocate_project_team_responsibility], CertificationPath do |certification_path| !CertificationPathStatus::STATUSES_IN_SUBMISSION.include?(certification_path.certification_path_status_id) end
-      cannot [:edit_certifier_team_responsibility, :allocate_certifier_team_responsibility], CertificationPath do |certification_path| !CertificationPathStatus::STATUSES_IN_VERIFICATION.include?(certification_path.certification_path_status_id) end
-      cannot :update_achieved_score, SchemeMixCriterion do |scheme_mix_criterion| ![SchemeMixCriterion.statuses[:submitting], SchemeMixCriterion.statuses[:submitting_after_appeal]].include?(scheme_mix_criterion.status) end
-      cannot :update_achieved_score, SchemeMixCriterion do |scheme_mix_criterion| ![SchemeMixCriterion.statuses[:verifying], SchemeMixCriterion.statuses[:verifying_after_appeal]].include?(scheme_mix_criterion.status) end
-      cannot :refuse, RequirementDatum do |requirement_datum| requirement_datum.user_id != user.id end
-    elsif user.user?
-      can :manage, :tool
-
-      # User controller
-      #   Note: only admins can manage user accounts !
-      can [:list_notifications,:update_notifications], User, id: user.id
-
+    # ------------------------------------------------------------------------------------------------------------
+    # There are 3 types of user roles:
+    #   - USERS, can see ONLY projects they are linked with
+    #     - assessor
+    #     - certifier
+    #     - enterprise_client
+    #   - ADMIN, can see ALL projects, without explicitly being linked to it
+    #     - gord_admin
+    #     - gord_manager
+    #     - gord_top_mananager
+    #   - SYSTEM, can do anything, only needed for testing or emergencies!
+    #     - system_admin
+    # ------------------------------------------------------------------------------------------------------------
+    if user.assessor? || user.certifier? || user.enterprise_client?
       # Project controller
       can :read, Project, projects_users: {user_id: user.id}
-      can :create, Project, owner_id: user.id
-      can :update, Project, projects_users: {user_id: user.id, role: role_project_manager}
       can [:download_location_plan, :download_site_plan, :download_design_brief, :download_project_narrative], Project, projects_users: {user_id: user.id}
       can :show_tools, Project, projects_users: {user_id: user.id}
+      if user.assessor?
+        can :create, Project, owner_id: user.id
+        can :update, Project, projects_users: {user_id: user.id, role: role_project_manager}
+      end
 
       # ProjectsUsers controller
       can :read, ProjectsUser, role: assessor_roles, project: project_with_user_as_assessor
       can :read, ProjectsUser, role: certifier_roles, project: project_with_user_as_certifier
-      can :crud, ProjectsUser, role: assessor_roles, project: project_with_user_as_project_manager
-      can :crud, ProjectsUser, role: certifier_roles, project: project_with_user_as_certifier_manager
+      can :available, ProjectsUser
+      can :list_users_sharing_projects, ProjectsUser
+
+      if user.assessor?
+        can :crud, ProjectsUser, role: assessor_roles, project: project_with_user_as_project_manager
+      end
+      if user.certifier?
+        can :crud, ProjectsUser, role: certifier_roles, project: project_with_user_as_certifier_manager
+      end
       # only the project owner, can make another project_manager the project owner
       can :make_owner, ProjectsUser do |projects_user|
         projects_user.project.owner_id == user.id && projects_user.project_manager?
@@ -99,15 +97,18 @@ class Ability
       # CertificationPath controller
       can :read, CertificationPath, project: project_with_user_assigned
       can :list, CertificationPath, project: project_with_user_assigned
-      can :apply, CertificationPath, project: project_with_user_as_project_manager
-      can :apply_for_pcr, CertificationPath, pcr_track: false, project: project_with_user_as_project_manager, certificate: {certificate_type: ['design_type', Certificate.certificate_types[:design_type]]}
-      can [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::STATUSES_AT_ASSESSOR_SIDE}, project: project_with_user_as_project_manager
-      can [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::STATUSES_AT_CERTIFIER_SIDE}, project: project_with_user_as_certifier_manager
-
-      can [:edit_project_team_responsibility, :allocate_project_team_responsibility], CertificationPath, project: project_with_user_as_project_manager, certification_path_status: {id: CertificationPathStatus::STATUSES_IN_SUBMISSION}
-      can [:edit_certifier_team_responsibility, :allocate_certifier_team_responsibility], CertificationPath, project: project_with_user_as_certifier_manager, certification_path_status: {id: CertificationPathStatus::STATUSES_IN_VERIFICATION}
       can [:download_certificate, :download_certificate_coverletter, :download_scores_report], CertificationPath, project: project_with_user_assigned
       can :download_archive, CertificationPath, project: project_with_user_assigned
+      if user.assessor?
+        can :apply, CertificationPath, project: project_with_user_as_project_manager
+        can :apply_for_pcr, CertificationPath, pcr_track: false, project: project_with_user_as_project_manager, certificate: {certificate_type: ['design_type', Certificate.certificate_types[:design_type]]}
+        can [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::STATUSES_AT_ASSESSOR_SIDE}, project: project_with_user_as_project_manager
+        can [:edit_project_team_responsibility, :allocate_project_team_responsibility], CertificationPath, project: project_with_user_as_project_manager, certification_path_status: {id: CertificationPathStatus::STATUSES_IN_SUBMISSION}
+      end
+      if user.certifier?
+        can [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::STATUSES_AT_CERTIFIER_SIDE}, project: project_with_user_as_certifier_manager
+        can [:edit_certifier_team_responsibility, :allocate_certifier_team_responsibility], CertificationPath, project: project_with_user_as_certifier_manager, certification_path_status: {id: CertificationPathStatus::STATUSES_IN_VERIFICATION}
+      end
 
       # SchemeMix controller
       can :read, SchemeMix, certification_path: {project: project_with_user_assigned}
@@ -115,70 +116,137 @@ class Ability
       # SchemeMixCriterion controller
       can :read, SchemeMixCriterion, scheme_mix: {certification_path: {project: project_with_user_assigned}}
       can :list, SchemeMixCriterion, scheme_mix: {certification_path: {project: project_with_user_assigned}}
-      can [:edit_status, :update_status], SchemeMixCriterion, status: scheme_mix_criterion_status_submitting, scheme_mix: {certification_path: {certification_path_status: {id: CertificationPathStatus::STATUSES_IN_SUBMISSION}, project: project_with_user_as_project_manager}}
-      # allows a submitted state, to be reset
-      can [:edit_status, :update_status], SchemeMixCriterion, status: scheme_mix_criterion_status_submitted, scheme_mix: {certification_path: {certification_path_status: {id: CertificationPathStatus::STATUSES_IN_SUBMISSION}, project: project_with_user_as_project_manager}}
-      can [:edit_status, :update_status], SchemeMixCriterion, status: scheme_mix_criterion_status_verifying, scheme_mix: {certification_path: {certification_path_status: {id: CertificationPathStatus::STATUSES_IN_VERIFICATION}, project: project_with_user_as_certifier_manager}}
-      can [:edit_status, :update_status], SchemeMixCriterion, status: scheme_mix_criterion_status_verifying, certifier_id: user.id, scheme_mix: {certification_path: {certification_path_status: {id: CertificationPathStatus::STATUSES_IN_VERIFICATION}, project: project_with_user_as_certifier}}
-      # Managers can update scores depending on the status
-      can :update_targeted_score, SchemeMixCriterion, status: scheme_mix_criterion_status_submitting, scheme_mix: {certification_path: {project: project_with_user_as_project_manager}}
-      can :update_submitted_score, SchemeMixCriterion, status: scheme_mix_criterion_status_submitting, scheme_mix: {certification_path: {project: project_with_user_as_project_manager}}
-      can :update_submitted_score, SchemeMixCriterion, status: scheme_mix_criterion_status_submitting, requirement_data: {user_id: user.id}, scheme_mix: {certification_path: {project: project_with_user_as_assessor}}
-      can :update_achieved_score, SchemeMixCriterion, status: scheme_mix_criterion_status_verifying, scheme_mix: {certification_path: {project: project_with_user_as_certifier_manager}}
-      can :update_achieved_score, SchemeMixCriterion, status: scheme_mix_criterion_status_verifying, certifier_id: user.id, scheme_mix: {certification_path: {project: project_with_user_as_certifier}}
-      can :assign_certifier, SchemeMixCriterion, status: scheme_mix_criterion_status_verifying, scheme_mix: {certification_path: {project: project_with_user_as_certifier_manager}}
+      if user.assessor?
+        can [:edit_status, :update_status], SchemeMixCriterion, status: scheme_mix_criterion_status_submitting, scheme_mix: {certification_path: {certification_path_status: {id: CertificationPathStatus::STATUSES_IN_SUBMISSION}, project: project_with_user_as_project_manager}}
+        # allows a submitted state, to be reset
+        can [:edit_status, :update_status], SchemeMixCriterion, status: scheme_mix_criterion_status_submitted, scheme_mix: {certification_path: {certification_path_status: {id: CertificationPathStatus::STATUSES_IN_SUBMISSION}, project: project_with_user_as_project_manager}}
+        # Managers can update scores depending on the status
+        can :update_targeted_score, SchemeMixCriterion, status: scheme_mix_criterion_status_submitting, scheme_mix: {certification_path: {project: project_with_user_as_project_manager}}
+        can :update_submitted_score, SchemeMixCriterion, status: scheme_mix_criterion_status_submitting, scheme_mix: {certification_path: {project: project_with_user_as_project_manager}}
+        can :update_submitted_score, SchemeMixCriterion, status: scheme_mix_criterion_status_submitting, requirement_data: {user_id: user.id}, scheme_mix: {certification_path: {project: project_with_user_as_assessor}}
+      end
+      if user.certifier?
+        # allows a submitted state, to be reset
+        can [:edit_status, :update_status], SchemeMixCriterion, status: scheme_mix_criterion_status_verifying, scheme_mix: {certification_path: {certification_path_status: {id: CertificationPathStatus::STATUSES_IN_VERIFICATION}, project: project_with_user_as_certifier_manager}}
+        can [:edit_status, :update_status], SchemeMixCriterion, status: scheme_mix_criterion_status_verifying, certifier_id: user.id, scheme_mix: {certification_path: {certification_path_status: {id: CertificationPathStatus::STATUSES_IN_VERIFICATION}, project: project_with_user_as_certifier}}
+        # Managers can update scores depending on the status
+        can :update_achieved_score, SchemeMixCriterion, status: scheme_mix_criterion_status_verifying, scheme_mix: {certification_path: {project: project_with_user_as_certifier_manager}}
+        can :update_achieved_score, SchemeMixCriterion, status: scheme_mix_criterion_status_verifying, certifier_id: user.id, scheme_mix: {certification_path: {project: project_with_user_as_certifier}}
+        can :assign_certifier, SchemeMixCriterion, status: scheme_mix_criterion_status_verifying, scheme_mix: {certification_path: {project: project_with_user_as_certifier_manager}}
+      end
 
       # RequirementDatum controller
       can :read, RequirementDatum, scheme_mix_criteria: {scheme_mix: {certification_path: {project: project_with_user_assigned}}}
-      can :update, RequirementDatum, scheme_mix_criteria: {status: scheme_mix_criterion_status_submitting, scheme_mix: {certification_path: {project: project_with_user_as_project_manager}}}
-      can :update_status, RequirementDatum, user_id: user.id, scheme_mix_criteria: {status: scheme_mix_criterion_status_submitting, scheme_mix: {certification_path: {project: project_with_user_as_assessor}}}
-      can :refuse, RequirementDatum, user_id: user.id, scheme_mix_criteria: {status: scheme_mix_criterion_status_submitting, scheme_mix: {certification_path: {project: project_with_user_as_assessor}}}
+      if user.assessor?
+        can :update, RequirementDatum, scheme_mix_criteria: {status: scheme_mix_criterion_status_submitting, scheme_mix: {certification_path: {project: project_with_user_as_project_manager}}}
+        can :update_status, RequirementDatum, user_id: user.id, scheme_mix_criteria: {status: scheme_mix_criterion_status_submitting, scheme_mix: {certification_path: {project: project_with_user_as_assessor}}}
+        can :refuse, RequirementDatum, user_id: user.id, scheme_mix_criteria: {status: scheme_mix_criterion_status_submitting, scheme_mix: {certification_path: {project: project_with_user_as_assessor}}}
+      end
 
       # Document controller
       can :read, Document, scheme_mix_criteria_documents: { scheme_mix_criterion: {scheme_mix: {certification_path: {project: project_with_user_assigned}}}}
-      can :create, Document, scheme_mix_criteria_documents: { scheme_mix_criterion: {status: scheme_mix_criterion_status_submitting, scheme_mix: {certification_path: {project: project_with_user_as_assessor}}}}
+      if user.assessor?
+        can :create, Document, scheme_mix_criteria_documents: { scheme_mix_criterion: {status: scheme_mix_criterion_status_submitting, scheme_mix: {certification_path: {project: project_with_user_as_assessor}}}}
+      end
 
       # SchemeMixCriteriaDocument controller
-      can :read, SchemeMixCriteriaDocument, scheme_mix_criterion: {scheme_mix: {certification_path: {project: project_with_user_as_assessor}}}
-      can :read, SchemeMixCriteriaDocument, status: document_approved, scheme_mix_criterion: {scheme_mix: {certification_path: {project: project_with_user_as_certifier}}}
-      can :read, SchemeMixCriteriaDocument, scheme_mix_criterion: {scheme_mix: {certification_path: {project: project_with_user_as_certifier, certification_path_status: {id: CertificationPathStatus::SUBMITTING_PCR}}}}
-      can [:update_status, :edit_status], SchemeMixCriteriaDocument, scheme_mix_criterion: {status: scheme_mix_criterion_status_submitting, scheme_mix: {certification_path: {project: project_with_user_as_project_manager}}}
-      can [:create_link, :new_link], SchemeMixCriteriaDocument, scheme_mix_criterion: {status: scheme_mix_criterion_status_submitting, scheme_mix: {certification_path: {project: project_with_user_as_assessor}}}
+      if user.assessor?
+        can :read, SchemeMixCriteriaDocument, scheme_mix_criterion: {scheme_mix: {certification_path: {project: project_with_user_as_assessor}}}
+        can [:update_status, :edit_status], SchemeMixCriteriaDocument, scheme_mix_criterion: {status: scheme_mix_criterion_status_submitting, scheme_mix: {certification_path: {project: project_with_user_as_project_manager}}}
+        can [:create_link, :new_link], SchemeMixCriteriaDocument, scheme_mix_criterion: {status: scheme_mix_criterion_status_submitting, scheme_mix: {certification_path: {project: project_with_user_as_assessor}}}
+      end
+      if user.certifier?
+        can :read, SchemeMixCriteriaDocument, status: document_approved, scheme_mix_criterion: {scheme_mix: {certification_path: {project: project_with_user_as_certifier}}}
+        can :read, SchemeMixCriteriaDocument, scheme_mix_criterion: {scheme_mix: {certification_path: {project: project_with_user_as_certifier, certification_path_status: {id: CertificationPathStatus::SUBMITTING_PCR}}}}
+      end
 
       # AuditLog controller
       can :index, AuditLog, project: project_with_user_assigned
       can :auditable_index, AuditLog, project: project_with_user_assigned
-      can :auditable_create, AuditLog, project: project_with_user_assigned
+      can :auditable_index_comments, AuditLog, project: project_with_user_assigned
+      can :auditable_create, AuditLog #TODO:, project: project_with_user_assigned
 
       # Tasks controller
       can :read, Task
       can :count, Task
 
-    elsif user.gord_manager? || user.gord_top_manager?
+      # Tools controller
+      can :manage, :tool
+
+      # User controller
+      can [:list_notifications,:update_notifications], User, id: user.id
+
+    elsif user.gord_admin? || user.gord_manager? || user.gord_top_manager?
       can :read, :all
       # Project
       can [:download_location_plan, :download_site_plan, :download_design_brief, :download_project_narrative], Project
       can :show_tools, Project
+      if user.gord_admin?
+        can :update, Project
+        can :delete, Project
+      end
+      # Project Users
+      can :available, ProjectsUser
+      can :list_users_sharing_projects, ProjectsUser
+      if user.gord_admin?
+        can :crud, ProjectsUser, role: assessor_roles
+        can :crud, ProjectsUser, role: certifier_roles
+        # can make another project_manager the project owner
+        can :make_owner, ProjectsUser do |projects_user|
+          projects_user.project_manager?
+        end
+        # The project_owner details can't be changed, first make another project_manager the owner
+        cannot [:create, :update, :destroy, :make_owner], ProjectsUser do |projects_user|
+          projects_user.project.owner_id == projects_user.user_id
+        end
+        # You can't add yourself
+        cannot :create, ProjectsUser, user_id: user.id
+      end
       # Certification Path
       can :list, CertificationPath
       can [:download_certificate, :download_certificate_coverletter, :download_scores_report], CertificationPath
       can :download_archive, CertificationPath
+      if user.gord_admin?
+        can [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::STATUSES_AT_ADMIN_SIDE}
+        can [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::STATUSES_AT_ASSESSOR_SIDE}
+        can [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::STATUSES_AT_CERTIFIER_SIDE}
+      elsif user.gord_top_manager?
+        can [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT}
+      elsif user.gord_manager?
+        can [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::APPROVING_BY_MANAGEMENT}
+      end
       # SchemeMixCriterion
       can :list, SchemeMixCriterion
       # Audit log
       can :index, AuditLog
       can :auditable_index, AuditLog
+      can :auditable_index_comments, AuditLog
+      can :auditable_create, AuditLog
+
       # Task
+      can :read, Task
       can :count, Task
+      # Tools controller
+      can :manage, :tool
       # User controller
       can [:list_notifications,:update_notifications], User, id: user.id
-
-      if user.gord_top_manager?
-        can [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT}
-      elsif user.gord_manager?
-        can [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::APPROVING_BY_MANAGEMENT}
+      if user.gord_admin?
+        can :crud, User
       end
 
+      # # Admins opt-out for specific abilities
+      # cannot :apply_for_pcr, CertificationPath, pcr_track: true
+      # cannot :apply_for_pcr, CertificationPath, certificate: {certificate_type: ['construction_type', Certificate.certificate_types[:construction_type], 'operations_type', Certificate.certificate_types[:operations_type]]}
+      # cannot [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::STATUSES_AT_ASSESSOR_SIDE }
+      # cannot [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::STATUSES_AT_MANAGEMENT_SIDE}
+      # cannot [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::STATUSES_AT_END}
+      # cannot [:edit_project_team_responsibility, :allocate_project_team_responsibility], CertificationPath do |certification_path| !CertificationPathStatus::STATUSES_IN_SUBMISSION.include?(certification_path.certification_path_status_id) end
+      # cannot [:edit_certifier_team_responsibility, :allocate_certifier_team_responsibility], CertificationPath do |certification_path| !CertificationPathStatus::STATUSES_IN_VERIFICATION.include?(certification_path.certification_path_status_id) end
+      # cannot :update_achieved_score, SchemeMixCriterion do |scheme_mix_criterion| ![SchemeMixCriterion.statuses[:submitting], SchemeMixCriterion.statuses[:submitting_after_appeal]].include?(scheme_mix_criterion.status) end
+      # cannot :update_achieved_score, SchemeMixCriterion do |scheme_mix_criterion| ![SchemeMixCriterion.statuses[:verifying], SchemeMixCriterion.statuses[:verifying_after_appeal]].include?(scheme_mix_criterion.status) end
+      # cannot :refuse, RequirementDatum do |requirement_datum| requirement_datum.user_id != user.id end
+    elsif user.system_admin?
+      can :manage, :all
     else
       cannot :manage, :all
     end

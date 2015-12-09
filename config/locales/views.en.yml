@@ -35,9 +35,6 @@ en:
   projects:
     index:
       action_team_title: "Team"
-    show:
-      btn_add_certifier_team_member: "Add certifier"
-      btn_add_project_team_member: "Add team member"
     form:
       tooltip_latlng: "The latitude and longitude will automatically be updated when the Address, Location and Country fields are filled out. However, it is also possible to define a custom location by editing this field or by dragging the marker on the map."
       tooltip_gross_area: "Total built up area including parking areas such as underground or structured parking."
@@ -49,11 +46,6 @@ en:
       btn_cancel: "Back"
       btn_save: "Update authorization"
       form_title: "Edit team member authorization"
-    form:
-      btn_cancel: "Back"
-      btn_close: "Close"
-      btn_save: "Add"
-      form_title: "Add team member"
   requirement_data:
     update:
       tooltip_due_date: "Due date passed"

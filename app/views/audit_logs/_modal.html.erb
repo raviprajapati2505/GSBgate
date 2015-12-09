@@ -2,7 +2,9 @@
     <div class="modal-content">
         <div class="modal-header">
             <%= btn_close_modal %>
-            <%= btn_tag(type: :button, size: 'small', style: 'white', class:'add-comment-button', icon: 'comment', text: 'Add comment') %>
+            <% if can?(:auditable_create, AuditLog.new) %>
+                <%= btn_tag(type: :button, size: 'small', style: 'white', class:'add-comment-button', icon: 'comment', text: 'Add comment') %>
+            <% end %>
             <h4 class="modal-title">
                 <% if @only_user_comments %>
                     Comments for <em><%= @auditable.name %></em>
@@ -11,29 +13,31 @@
                 <% end %>
             </h4>
         </div>
-        <%= bootstrap_form_for(AuditLog.new, url: auditable_create_audit_log_path, method: 'post') do |f| %>
-            <div class="modal-body">
-                <div class="feed-activity-list">
-                    <% if @audit_logs.blank? %>
-                        <% if @only_user_comments %>
-                            <em><%= @auditable.name %></em> has no comments yet.
+        <% if can?(:auditable_create, AuditLog.new) %>
+            <%= bootstrap_form_for(AuditLog.new, url: auditable_create_audit_log_path, method: 'post') do |f| %>
+                <div class="modal-body">
+                    <div class="feed-activity-list">
+                        <% if @audit_logs.blank? %>
+                            <% if @only_user_comments %>
+                                <em><%= @auditable.name %></em> has no comments yet.
+                            <% else %>
+                                <em><%= @auditable.name %></em> has no audit logs yet.
+                            <% end %>
                         <% else %>
-                            <em><%= @auditable.name %></em> has no audit logs yet.
+                            <% @audit_logs.each do |audit_log| %>
+                                <%= render 'audit_log', audit_log: audit_log, with_breadcrumbs: false %>
+                            <% end %>
+                            <%= will_paginate @audit_logs, renderer: BootstrapPagination::Rails %>
                         <% end %>
-                    <% else %>
-                        <% @audit_logs.each do |audit_log| %>
-                            <%= render 'audit_log', audit_log: audit_log, with_breadcrumbs: false %>
-                        <% end %>
-                        <%= will_paginate @audit_logs, renderer: BootstrapPagination::Rails %>
-                    <% end %>
+                    </div>
+                    <div class="comment-form" style="display:none;">
+                        <%= f.text_area :user_comment, rows: 4 %>
+                    </div>
                 </div>
-                <div class="comment-form" style="display:none;">
-                    <%= f.text_area :user_comment, rows: 4 %>
+                <div class="modal-footer comment-form" style="display:none;">
+                    <%= btn_save(text: 'Add comment') %>
                 </div>
-            </div>
-            <div class="modal-footer comment-form" style="display:none;">
-                <%= btn_save(text: 'Add comment') %>
-            </div>
+            <% end %>
         <% end %>
     </div>
 </div>

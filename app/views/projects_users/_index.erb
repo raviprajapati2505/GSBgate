@@ -1,0 +1,123 @@
+<%
+   raise('Project must be specified') if project.nil?
+   raise('Role must be specified') if role.nil?
+   case role
+     when User.roles[:assessor]
+       title = 'Project team'
+       project_users = project.projects_users.assessors
+       project_user_roles = ProjectsUser.roles.slice(:project_team_member, :project_manager)
+       can_create_new_project_user = can?(:create, ProjectsUser.new(project_id: @project.id, role: ProjectsUser.roles[:project_team_member])) || can?(:create, ProjectsUser.new(project_id: @project.id, role: ProjectsUser.roles[:project_manager]))
+       title_modal = 'Add team member'
+       modal_id = 'addAssessorModal'
+     when User.roles[:certifier]
+       title = 'Certifier team'
+       project_users = project.projects_users.certifiers
+       project_user_roles =  ProjectsUser.roles.slice(:certifier, :certifier_manager)
+       can_create_new_project_user = can?(:create, ProjectsUser.new(project_id: @project.id, role: ProjectsUser.roles[:certifier])) || can?(:create, ProjectsUser.new(project_id: @project.id, role: ProjectsUser.roles[:certifier_manager]))
+       title_modal = 'Add certifier'
+       gord_user_roles = [User.roles[:gord_admin], User.roles[:gord_manager], User.roles[:gord_top_manager]]
+       modal_id = 'addCertifierModal'
+     when User.roles[:enterprise_client]
+       title = 'Enterprise Clients'
+       project_users = project.projects_users.enterprise_clients
+       can_create_new_project_user = can?(:create, ProjectsUser.new(project_id: @project.id, role: ProjectsUser.roles[:enterprise_client]))
+       title_modal = 'Add enterprise client'
+       project_user_roles =  ProjectsUser.roles.slice(:enterprise_client)
+       modal_id = 'addEnterpriseClientModal'
+   end
+%>
+
+<div class="ibox float-e-margins">
+    <div class="ibox-title">
+        <h5><%= title %></h5>
+    </div>
+    <div class="ibox-content">
+        <% if @project.projects_users.assessors.distinct.count.zero? %>
+            <p>This project has no <%= role.humanize.pluralize %></p>
+        <% else %>
+            <table class="table table-striped table-bordered table-hover datatable" cellspacing="0" width="100%">
+                <thead>
+                <tr>
+                    <th>Member</th>
+                    <th>Role</th>
+                    <% if role != User.roles[:enterprise_client] %>
+                        <th>Tasks</th>
+                    <% end %>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- Also show the GORD Admin users as members of the certifier team-->
+                <% if role == User.roles[:certifier] %>
+                    <% User.where(role: gord_user_roles).each do |admin_user| %>
+                        <tr>
+                            <td>
+                                <% if admin_user == current_user %>
+                                    <%= link_to tasks_path(project_id: project.id) do %>
+                                        <%= admin_user.email %>
+                                    <% end %>
+                                <% else %>
+                                    <%= admin_user.email %>
+                                <% end %>
+                            </td>
+                            <td>
+                                <%= admin_user.role.humanize %>
+                            </td>
+                            <td>
+                                <span class="badge"><%= TaskService::count_tasks(user: admin_user, project_id: project.id) %></span>
+                            </td>
+                        </tr>
+                    <% end %>
+                <% end %>
+
+                <% project_users.distinct.each do |projects_user| %>
+                    <tr>
+                        <td>
+                            <%= can_link_to(project_user_path(project, projects_user), projects_user) do %>
+                                <%= projects_user.user.email %>
+                                <% if project.owner == projects_user.user %>
+                                    <%= fa_icon('home', tooltip: 'Project owner') %>
+                                <% end %>
+                            <% end %>
+                        </td>
+                        <td>
+                            <%= projects_user.role.humanize %>
+                        </td>
+                        <% if role != User.roles[:enterprise_client] %>
+                            <td>
+                                <span class="badge fa-lg"><%= TaskService::count_tasks(user: projects_user.user, project_id: project.id) %></span>
+                            </td>
+                        <% end %>
+                    </tr>
+                <% end %>
+                </tbody>
+            </table>
+        <% end %>
+        <% if can_create_new_project_user %>
+            <div class="hr-line-dashed"></div>
+            <%= btn_tag(icon: 'user-plus', text: title_modal, data: {toggle: 'modal', target: "##{modal_id}"}) %>
+        <% end %>
+    </div>
+</div>
+
+<div class="modal fade" id="<%= modal_id %>" aria-hidden="true" >
+    <div class="modal-dialog">
+        <%= bootstrap_form_for([project, @projects_user], as: :authorization, url: project_users_path(project, @projects_user)) do |f| %>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <%= btn_close_modal %>
+                    <h4 class="modal-title"><%= title_modal %></h4>
+                </div>
+                <div class="modal-body">
+                    <%= f.form_group do %>
+                        <%= f.label :user_id %><br/>
+                        <%= f.hidden_field :user_id, {class: 'select2-ajax', data: {project_id: project.id, role: User.roles.keys[role]}} %>
+                    <% end %>
+                    <%= f.select :role, project_user_roles.keys.map { |k| [k.humanize, k] } %>
+                </div>
+                <div class="modal-footer">
+                    <%= btn_save %>
+                </div>
+            </div>
+        <% end %>
+    </div>
+</div>

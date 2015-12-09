@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :confirmable
 
-  enum role: { system_admin: 0, user: 1, gord_top_manager: 2, gord_manager: 3 }
+  enum role: { system_admin: 0, user: 1, gord_top_manager: 2, gord_manager: 3, gord_admin: 4, assessor: 5, certifier: 6, enterprise_client: 7 }
 
   has_many :owned_projects, class_name: 'Project', inverse_of: :owner
   has_many :documents
@@ -18,19 +18,39 @@ class User < ActiveRecord::Base
   has_many :notification_types_users, dependent: :delete_all
   has_many :notification_types, through: :notification_types_users
 
+  before_validation :assign_default_role, on: :create
+
+  validates :role, inclusion: User.roles.keys
+
   default_scope { order(email: :asc) }
 
-  scope :not_owning_project, ->(project) {
-    where.not(id: project.owner_id)
+  scope :assessors, -> {
+    where(role: User.roles[:assessor])
   }
 
-  scope :not_authorized_for_project, ->(project) {
-    where.not('exists(select id from projects_users where user_id = users.id and project_id = ?)', project.id)
+  scope :certifiers, -> {
+    where(role: User.roles[:certifier])
   }
 
-  scope :without_permissions_for_project, ->(project) {
-    where(role: 1) & not_owning_project(project) & not_authorized_for_project(project)
+  scope :enterprise_clients, -> {
+    where(role: User.roles[:enterprise_client])
   }
+
+  scope :search_email, ->(text) {
+    where('email like :search_text', search_text: "%#{text}%")
+  }
+
+  # scope :not_owning_project, ->(project) {
+  #   where.not(id: project.owner_id)
+  # }
+
+  # scope :not_authorized_for_project, ->(project) {
+  #   where.not('exists(select id from projects_users where user_id = users.id and project_id = ?)', project.id)
+  # }
+
+  # scope :without_permissions_for_project, ->(project) {
+  #   where(role: 1) & not_owning_project(project) & not_authorized_for_project(project)
+  # }
 
   scope :authorized_for_project, ->(project) {
     joins(:projects_users).where(projects_users: {project_id: project.id})
@@ -44,6 +64,7 @@ class User < ActiveRecord::Base
     where('projects_users.role in (3, 4)')
   }
 
+  # Store the user in the current Thread (needed for our concerns, so they can access the current user model)
   def self.current
     Thread.current[:user]
   end
@@ -52,24 +73,8 @@ class User < ActiveRecord::Base
     Thread.current[:user] = user
   end
 
-  def certifier_manager?(project)
-    ProjectsUser.exists?(project: project, user: self, role: ProjectsUser.roles[:certifier_manager])
-  end
-
-  def project_manager?(project)
-    ProjectsUser.exists?(project: project, user: self, role: ProjectsUser.roles[:project_manager])
-  end
-
-  def enterprise_account?(project)
-    ProjectsUser.exists?(project: project, user: self, role: ProjectsUser.roles[:enterprise_account])
-  end
-
-  def project_team_member?(project)
-    ProjectsUser.exists?(project: project, user: self, role: ProjectsUser.roles[:project_team_member])
-  end
-
-  def certifier?(project)
-    ProjectsUser.exists?(project: project, user: self, role: ProjectsUser.roles[:certifier])
+  def self.safe_roles
+    User.roles.except(:system_admin, :user)
   end
 
   # Returns the humanized role of the user in a project.
@@ -100,13 +105,9 @@ class User < ActiveRecord::Base
     pending_any_confirmation {yield}
   end
 
-  before_validation :assign_default_role, on: :create
-
-  validates :role, inclusion: User.roles.keys
-
   private
   def assign_default_role
-    self.role = :user if self.role.nil?
+    self.role = :assessor if self.role.nil?
   end
 
 end

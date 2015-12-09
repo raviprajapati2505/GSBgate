@@ -1,7 +1,7 @@
 class ProjectsUsersController < AuthenticatedController
-  load_and_authorize_resource :project
-  load_and_authorize_resource :projects_user, :through => :project, only: [:create, :edit, :show, :update, :destroy, :make_owner], param_method: :authorizations_params
-  skip_authorization_check only: [:list_users_sharing_projects, :list_projects]
+  load_and_authorize_resource :project, except: [:list_users_sharing_projects]
+  load_and_authorize_resource :projects_user, :through => :project, param_method: :authorizations_params, except: [:list_users_sharing_projects]
+  skip_authorization_check only: [:list_users_sharing_projects]
   before_action :set_controller_model, except: [:new, :create]
 
   def create
@@ -89,18 +89,35 @@ class ProjectsUsersController < AuthenticatedController
     redirect_to project_path(project), notice: 'Member was successfully removed.'
   end
 
-  def list_unauthorized_users
-    if params.has_key?(:project_id) && params.has_key?(:q) && params.has_key?(:page)
-      project = Project.find(params[:project_id])
-      # .where.not('exists(select id from projects_users where user_id = users.id and project_id = ?)', params[:project_id])
-      total_count = User.where('email like ?', '%' + params[:q] + '%').without_permissions_for_project(project).count
-      # .where.not('exists(select id from projects_users where user_id = users.id and project_id = ?)', params[:project_id])
-      items = User.select('id, email as text')
-                  .where('email like ?', '%' + params[:q] + '%')
-                  .paginate(page: params[:page], per_page: 25)
-                  .without_permissions_for_project(project)
-      render json: {total_count: total_count, items: items}
+  def available
+    # Filter by Role
+    if params.has_key?(:role)
+      case params[:role].to_sym
+        when :assessor
+          users = User.assessors
+        when :certifier
+          users = User.certifiers
+        when :enterprise_client
+          users = User.enterprise_clients
+        else
+          users = User.all
+      end
+    else
+      users = User.all
     end
+    # Filter by text in email field
+    users = users.search_email(params[:q]) if params.has_key?(:q)
+    # Filter out users already in project
+    project_user_ids = @projects_users.collect{|project_user| project_user.user_id}
+    users = users.where.not(id: project_user_ids)
+    # Paginate
+    if params.has_key?(:page)
+      users = users.page(params[:page])
+      total_count = users.total_entries
+    else
+      total_count = users.count
+    end
+    render json: {total_count: total_count, items: users.select('id, email as text')}
   end
 
   def list_users_sharing_projects

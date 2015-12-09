@@ -39,7 +39,11 @@ Rails.application.routes.draw do
     member do
       get 'tools' => 'projects#show_tools'
     end
-    resources :projects_users, only: [:create, :edit, :show, :update, :destroy], path: 'users', as: 'users'
+    resources :projects_users, only: [:create, :edit, :show, :update, :destroy], path: 'users', as: 'users', constraints: {id: /\d+/} do
+      collection do
+        get 'available/:role' => 'projects_users#available', as: 'available', default: {role: 'all'}, constraints: {role: /all|certifier|assessor|enterprise_client/}
+      end
+    end
     resources :certification_paths, except: [:index, :edit, :destroy, :update], path: 'certificates' do
       collection do
         get 'list'
@@ -103,7 +107,6 @@ Rails.application.routes.draw do
   match 'projects/:project_id/certificates/apply/:certificate_id' => 'certification_paths#apply', as: 'apply_certification_path', via: [:get, :post]
   get 'projects/:project_id/certificates/:id/archive' => 'certification_paths#download_archive', as: 'archive_project_certification_path'
   get 'projects/:project_id/certificates/:id/comments' => 'certification_paths#download_comments', as: 'comments_project_cerficiation_path'
-  get 'projects/:project_id/users' => 'projects_users#list_unauthorized_users', as: 'list_unauthorized_users'
   get 'projects/users/:user_id' => 'projects_users#list_users_sharing_projects', as: 'list_users_sharing_projects'
   post 'projects/:project_id/users/:id' => 'projects_users#make_owner', as: 'make_owner'
   put '/projects/:project_id/certificates/:certification_path_id/schemes/:scheme_mix_id/criteria/:scheme_mix_criterion_id/requirement/:id/refuse' => 'requirement_data#refuse', as: 'refuse_requirement_datum'

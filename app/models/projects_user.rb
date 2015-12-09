@@ -5,7 +5,7 @@ class ProjectsUser < ActiveRecord::Base
   belongs_to :user
   belongs_to :project
 
-  enum role: { project_team_member: 0, project_manager: 1, enterprise_account: 2, certifier: 3, certifier_manager: 4 }
+  enum role: { project_team_member: 0, project_manager: 1, enterprise_client: 2, certifier: 3, certifier_manager: 4 }
 
   validates :role, inclusion: ProjectsUser.roles.keys
   validates_presence_of :user
@@ -20,7 +20,7 @@ class ProjectsUser < ActiveRecord::Base
   }
 
   scope :assessors, -> {
-    where(role: [ProjectsUser.roles[:project_team_member], ProjectsUser.roles[:project_manager], ProjectsUser.roles[:enterprise_account]])
+    where(role: [ProjectsUser.roles[:project_team_member], ProjectsUser.roles[:project_manager], ProjectsUser.roles[:enterprise_client]])
   }
 
   scope :assessor_managers, -> {
@@ -35,4 +35,7 @@ class ProjectsUser < ActiveRecord::Base
     where(role: ProjectsUser.roles[:certifier_manager])
   }
 
+  scope :enterprise_clients, -> {
+    where(role: ProjectsUser.roles[:enterprise_client])
+  }
 end

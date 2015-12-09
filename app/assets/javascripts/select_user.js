@@ -1,29 +1,30 @@
 $(function () {
-    var unauthorized_users_list = $('.select2-ajax[data-project-id]');
-    if (unauthorized_users_list.length > 0) {
-        element = unauthorized_users_list;
-        url = Routes.list_unauthorized_users_path({project_id: $('.select2-ajax').data('project-id')});
-    }
 
-    var users_sharing_projects_list = $('.select2-ajax[data-current-user-id]');
-    if (users_sharing_projects_list.length > 0) {
-        element = users_sharing_projects_list;
-        url = Routes.list_users_sharing_projects_path({user_id: $('.select2-ajax').data('current-user-id')});
-    }
-
-    if ((typeof element !== 'undefined') && (typeof url !== 'undefined')) {
-
-        GSAS.load_list_ajax(element, '- All users -', url,
-            function(el, callback) {
-                return $.ajax({
-                    type: 'GET',
-                    url: Routes.user_path({id: el.val()}),
-                    dataType: 'json',
-                    cache: false
-                }).done(function(data) {
-                    selection = {id: data.id, text: data.email};
-                    callback(selection);
-                });
-            });
-    }
+    $('.select2-ajax').each(function(idx, element){
+        var select_element = $(element);
+        var url;
+        if((typeof select_element.data('project-id') !== 'undefined') && (typeof select_element.data('role') !== 'undefined')){
+            var project_id = select_element.data('project-id');
+            var role = select_element.data('role');
+            url = Routes.available_project_users_path({project_id: project_id, role: role});
+        }else if(typeof select_element.data('current-user-id') !== undefined){
+            var user_id = select_element.data('current-user-id');
+            url = Routes.list_users_sharing_projects_path({user_id: user_id});
+        }
+        if(url){
+            GSAS.load_list_ajax(select_element, '- All users -', url,
+                function(el, callback) {
+                    return $.ajax({
+                        type: 'GET',
+                        url: Routes.user_path({id: el.val()}),
+                        dataType: 'json',
+                        cache: false
+                    }).done(function(data) {
+                        selection = {id: data.id, text: data.email};
+                        callback(selection);
+                    });
+                }
+            );
+        }
+    });
 });
