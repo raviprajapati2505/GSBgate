@@ -5,27 +5,27 @@ class SchemeCriteriaController < AuthenticatedController
   def index
     @page_title = 'Criteria'
     @default_values = {certificate_id: '', scheme_name: '', scheme_category_name: ''}
-    @scheme_criteria = SchemeCriterion
+    @scheme_criteria = SchemeCriterion.joins(scheme_category: [:scheme])
 
-    # Certificate filter
+    # Catergory filter
     if params[:scheme_category_name].present?
-      @scheme_criteria = @scheme_criteria.joins(:scheme_category).where('scheme_categories.name ILIKE ?', "%#{params[:scheme_category_name]}%")
+      @scheme_criteria = @scheme_criteria.where('scheme_categories.name ILIKE ?', "%#{params[:scheme_category_name]}%")
       @default_values[:scheme_category_name] = params[:scheme_category_name]
     end
 
-    # Certificate filter
+    # Scheme filter
     if params[:scheme_name].present?
-      @scheme_criteria = @scheme_criteria.joins(scheme_category: [:scheme]).where('schemes.name ILIKE ?', "%#{params[:scheme_name]}%")
+      @scheme_criteria = @scheme_criteria.where('schemes.name ILIKE ?', "%#{params[:scheme_name]}%")
       @default_values[:scheme_name] = params[:scheme_name]
     end
 
     # Certificate filter
     if params[:certificate_id].present? && (params[:certificate_id].to_i > 0)
-      @scheme_criteria = @scheme_criteria.joins(scheme_category: [:scheme]).where(schemes: {certificate_id: params[:certificate_id].to_i})
+      @scheme_criteria = @scheme_criteria.where(schemes: {certificate_id: params[:certificate_id].to_i})
       @default_values[:certificate_id] = params[:certificate_id]
     end
 
-    @scheme_criteria = @scheme_criteria.paginate page: params[:page], per_page: 25
+    @scheme_criteria = @scheme_criteria.order('scheme_categories.code', 'number', 'schemes.certificate_id').paginate page: params[:page], per_page: 25
   end
 
   def show
