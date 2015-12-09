@@ -96,7 +96,7 @@ NotificationType.create!(id: NotificationType::DOCUMENT_APPROVED, name: 'Documen
 NotificationType.create!(id: NotificationType::DOCUMENT_REJECTED, name: 'Document rejected', project_level: true)
 NotificationType.create!(id: NotificationType::DOCUMENT_SUPERSEDED, name: 'Document superseded', project_level: true)
 NotificationType.create!(id: NotificationType::NEW_TASK, name: 'New task', project_level: false)
-NotificationType.create!(id: NotificationType::PROJECT_AUTHORIZATION_CHANGED, name: 'Project authorizations changed', projet_level: true)
+NotificationType.create!(id: NotificationType::PROJECT_AUTHORIZATION_CHANGED, name: 'Project authorizations changed', project_level: true)
 
 SchemeCategory.find_each do |category|
   case category.code
