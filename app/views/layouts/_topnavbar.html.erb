@@ -44,7 +44,7 @@
             <% can_index_scheme_criteria = can?(:index, SchemeCriterion)%>
             <% can_index_users = can?(:index, User) %>
             <% if can_index_users || can_index_scheme_criteria %>
-                <li class="dropdown<%= ' active' if ['scheme_criteria', 'users'].include?(controller_name) %>">
+                <li class="dropdown<%= ' active' if ['scheme_criteria', 'users'].include?(controller_name) && action_name != 'list_notifications' %>">
                     <a aria-expanded="false" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <%= fa_icon('cogs') %> Admin <span class="caret"></span>
                     </a>
