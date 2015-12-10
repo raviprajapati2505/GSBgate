@@ -14,6 +14,8 @@ class SchemeMixCriteriaController < AuthenticatedController
     respond_to do |format|
       format.html {
         @page_title = @scheme_mix_criterion.scheme_criterion.full_name
+        @prev_smc = @scheme_mix_criterion.previous_scheme_mix_criterion
+        @next_smc = @scheme_mix_criterion.next_scheme_mix_criterion
       }
       format.json { render json: {id: @scheme_mix_criterion.scheme_mix.id.to_s + ';' + @scheme_mix_criterion.id.to_s, name: @scheme_mix_criterion.full_name}, status: :ok }
     end
