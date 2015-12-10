@@ -1,8 +1,8 @@
 class ProjectsUsersController < AuthenticatedController
-  load_and_authorize_resource :project, except: [:list_users_sharing_projects]
-  load_and_authorize_resource :projects_user, :through => :project, param_method: :authorizations_params, except: [:list_users_sharing_projects]
-  skip_authorization_check only: [:list_users_sharing_projects]
-  before_action :set_controller_model, except: [:new, :create]
+  load_and_authorize_resource :project, except: [:list_users_sharing_projects, :list_projects]
+  load_and_authorize_resource :projects_user, :through => :project, param_method: :authorizations_params, except: [:list_users_sharing_projects, :list_projects]
+  skip_authorization_check only: [:list_users_sharing_projects, :list_projects]
+  before_action :set_controller_model, except: [:new, :create, :available, :list_users_sharing_projects, :list_projects]
 
   def create
     @projects_user = ProjectsUser.new(authorizations_params)

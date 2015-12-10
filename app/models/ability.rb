@@ -30,9 +30,10 @@ class Ability
     role_project_team_member = ['project_team_member', ProjectsUser.roles[:project_team_member]]
     role_certifier_manager = ['certifier_manager', ProjectsUser.roles[:certifier_manager]]
     role_certifier = ['certifier', ProjectsUser.roles[:certifier]]
+    role_enterprise_client = ['enterprise_client', ProjectsUser.roles[:enterprise_client]]
     assessor_roles = role_project_manager | role_project_team_member
     certifier_roles = role_certifier_manager | role_certifier
-    #role_enterprise_client = ['enterprise_client', ProjectsUser.roles[:enterprise_client]]
+    enterprise_client_roles = role_enterprise_client
     #   SchemeMixCriterion.statuses
     scheme_mix_criterion_status_submitting = ['submitting', SchemeMixCriterion.statuses[:submitting], 'submitting_after_appeal', SchemeMixCriterion.statuses[:submitting_after_appeal]]
     scheme_mix_criterion_status_submitted = ['submitted', SchemeMixCriterion.statuses[:submitted], 'submitted_after_appeal', SchemeMixCriterion.statuses[:submitted_after_appeal]]
@@ -74,8 +75,9 @@ class Ability
       # ProjectsUsers controller
       can :read, ProjectsUser, role: assessor_roles, project: project_with_user_as_assessor
       can :read, ProjectsUser, role: certifier_roles, project: project_with_user_as_certifier
-      can :available, ProjectsUser
-      can :list_users_sharing_projects, ProjectsUser
+      can :available, ProjectsUser, project: project_with_user_assigned
+      # can :list_users_sharing_projects, ProjectsUser
+      # can :list_projects, ProjectsUser
 
       if user.assessor?
         can :crud, ProjectsUser, role: assessor_roles, project: project_with_user_as_project_manager
@@ -187,10 +189,12 @@ class Ability
       end
       # Project Users
       can :available, ProjectsUser
-      can :list_users_sharing_projects, ProjectsUser
+      # can :list_users_sharing_projects, ProjectsUser
+      # can :list_projects, ProjectsUser
       if user.gord_admin?
         can :crud, ProjectsUser, role: assessor_roles
         can :crud, ProjectsUser, role: certifier_roles
+        can :crud, ProjectsUser, role: enterprise_client_roles
         # can make another project_manager the project owner
         can :make_owner, ProjectsUser do |projects_user|
           projects_user.project_manager?
