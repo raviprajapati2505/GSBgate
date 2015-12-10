@@ -20,14 +20,18 @@
 
         <div class="row wrapper border-bottom white-bg page-heading">
             <div class="col-lg-12">
-                <h2><%= @page_title %></h2>
+                <h2>
+                    <%= @page_title_prefix if @page_title_prefix.present? %>
+                    <%= @page_title %>
+                    <%= @page_title_suffix if @page_title_suffix.present? %>
+                </h2>
 
                 <div class="row">
                     <div class="col-md-10 breadcrumb-wrapper">
                         <%= render 'layouts/breadcrumb', model: @controller_model %>
                     </div>
                     <div class="col-md-2 back-button-wrapper">
-                        <%= btn_link_to(:back, text: '&laquo; Return to previous page'.html_safe, style: 'white', size: 'extra_small') %>
+                        <%= btn_link_to(:back, icon: 'caret-left', text: 'Return to previous page'.html_safe, style: 'white', size: 'extra_small') %>
                     </div>
                 </div>
             </div>
