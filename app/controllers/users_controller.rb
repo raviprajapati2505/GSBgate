@@ -5,12 +5,12 @@ class UsersController < AuthenticatedController
   def index
     @page_title = 'Users'
     # current_user can only create a new user, if he can use at least 1 user role !
-    @can_create_user = (user_roles_user_can(:create).size > 0)
+    @can_create_user = (user_roles_user_can_create.size > 0)
   end
 
   def new
     @page_title = 'Add user'
-    @user_roles = user_roles_user_can(:create)
+    @user_roles = user_roles_user_can_create
   end
 
   def create
@@ -30,7 +30,7 @@ class UsersController < AuthenticatedController
 
   def edit
     @page_title = "Edit user #{@user.email}"
-    @user_roles = user_roles_user_can(:edit)
+    @user_roles = user_roles_user_can_create
   end
 
   def update
@@ -121,7 +121,7 @@ class UsersController < AuthenticatedController
     params.require(:user).permit(:email, :role, :account_active)
   end
 
-  def user_roles_user_can(action = :crud)
-    User.roles.select {|role| can?(action, User.new(role: role.to_sym))}
+  def user_roles_user_can_create
+    User.roles.select {|role| can?(:create, User.new(role: role.to_sym))}
   end
 end
