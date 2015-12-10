@@ -16,7 +16,7 @@
                         <li>
                             <% default_checkbox_value = (@scheme_mix_criterion.id == smc.id) %>
                             <%= check_box_tag 'scheme_mix_criteria[]', smc.id, default_checkbox_value, disabled: default_checkbox_value, id: 'scheme_mix_criterion_' + smc.id.to_s %>
-                            <%= label_tag 'scheme_mix_criterion_' + smc.id.to_s, smc.name %>
+                            <%= label_tag 'scheme_mix_criterion_' + smc.id.to_s, smc.full_name %>
                         </li>
                     <% end %>
                 </ul>
