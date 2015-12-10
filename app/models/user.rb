@@ -18,7 +18,7 @@ class User < ActiveRecord::Base
   has_many :notification_types_users, dependent: :delete_all
   has_many :notification_types, through: :notification_types_users
 
-  before_validation :assign_default_role, on: :create
+  before_validation :init, on: :create
 
   validates :role, inclusion: User.roles.keys
 
@@ -105,9 +105,14 @@ class User < ActiveRecord::Base
     pending_any_confirmation {yield}
   end
 
+  def active_for_authentication?
+    account_active?
+  end
+
   private
-  def assign_default_role
+  def init
     self.role = :assessor if self.role.nil?
+    self.account_active = true if self.account_active.nil?
   end
 
 end

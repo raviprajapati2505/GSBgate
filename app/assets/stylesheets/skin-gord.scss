@@ -84,11 +84,11 @@
     text-align: left;
   }
 
-  .fa-check-square-o {
+  .fa-check-square-o, .table-users .fa-check {
     color: green;
   }
 
-  .fa-clock-o.due-date-expired {
+  .fa-clock-o.due-date-expired, .table-users .fa-times {
     color: red;
   }
 

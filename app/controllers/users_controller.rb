@@ -115,6 +115,6 @@ class UsersController < AuthenticatedController
   end
 
   def user_params
-    params.require(:user).permit(:email, :role)
+    params.require(:user).permit(:email, :role, :account_active)
   end
 end
