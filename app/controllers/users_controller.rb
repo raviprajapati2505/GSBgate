@@ -4,11 +4,13 @@ class UsersController < AuthenticatedController
 
   def index
     @page_title = 'Users'
+    # current_user can only create a new user, if he can use at least 1 user role !
+    @can_create_user = (user_roles_user_can(:create).size > 0)
   end
 
   def new
     @page_title = 'Add user'
-    @user = User.new
+    @user_roles = user_roles_user_can(:create)
   end
 
   def create
@@ -28,6 +30,7 @@ class UsersController < AuthenticatedController
 
   def edit
     @page_title = "Edit user #{@user.email}"
+    @user_roles = user_roles_user_can(:edit)
   end
 
   def update
@@ -75,7 +78,7 @@ class UsersController < AuthenticatedController
         # add unchecked notification types
         notification_types.each do |notification_type|
           unless notification_type.project_level
-            unless params[:notification_types].any? {|id| id.to_i == notification_type.id}
+            unless params[:notification_types].any? { |id| id.to_i == notification_type.id }
               NotificationTypesUser.create!(user: @user, project_id: nil, notification_type_id: notification_type.id)
             end
           end
@@ -93,7 +96,7 @@ class UsersController < AuthenticatedController
           # add unchecked notification types
           notification_types.each do |notification_type|
             if notification_type.project_level
-              unless params[:project_notification_types].any? {|id| id.to_i == notification_type.id}
+              unless params[:project_notification_types].any? { |id| id.to_i == notification_type.id }
                 # @user.notification_types_users << NotificationTypesUser.new(project_id: params[:project_id], notification_type_id: notification_type.id)
                 NotificationTypesUser.create!(user: @user, project_id: params[:project_id], notification_type_id: notification_type.id)
               end
@@ -116,5 +119,9 @@ class UsersController < AuthenticatedController
 
   def user_params
     params.require(:user).permit(:email, :role, :account_active)
+  end
+
+  def user_roles_user_can(action = :crud)
+    User.roles.select {|role| can?(action, User.new(role: role.to_sym))}
   end
 end

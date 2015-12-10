@@ -7,7 +7,7 @@
                 </div>
                 <div class="ibox-content">
                     <%= f.text_field :email, disabled: !@user.new_record? %>
-                    <%= f.select :role, User.roles.keys.sort_by{ |k| k }.map { |k| [k.humanize, k] } %>
+                    <%= f.select :role, @user_roles.keys.sort_by{ |k| k }.map { |k| [k.humanize, k] } %>
                     <%= f.check_box :account_active %>
                     <div class="hr-line-dashed"></div>
                     <% if can?(:edit, @user) %>

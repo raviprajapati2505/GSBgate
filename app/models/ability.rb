@@ -25,15 +25,22 @@ class Ability
     # Some convenience variables to work with enums in conditions
     #   Note: there is a known issue, that complicates working with enums
     #     https://github.com/CanCanCommunity/cancancan/pull/196
-    #   Roles
-    role_project_manager = ['project_manager', ProjectsUser.roles[:project_manager]]
-    role_project_team_member = ['project_team_member', ProjectsUser.roles[:project_team_member]]
-    role_certifier_manager = ['certifier_manager', ProjectsUser.roles[:certifier_manager]]
-    role_certifier = ['certifier', ProjectsUser.roles[:certifier]]
-    role_enterprise_client = ['enterprise_client', ProjectsUser.roles[:enterprise_client]]
-    assessor_roles = role_project_manager | role_project_team_member
-    certifier_roles = role_certifier_manager | role_certifier
-    enterprise_client_roles = role_enterprise_client
+    #   User Roles
+    user_role_assessor = ['assessor', User.roles[:assessor]]
+    user_role_certifier = ['certifier', User.roles[:certifier]]
+    user_role_enterprise_client = ['enterprise_client', User.roles[:enterprise_client]]
+    user_role_gord_admin = ['gord_admin', User.roles[:gord_admin]]
+    user_role_gord_manager = ['gord_manager', User.roles[:gord_manager]]
+    user_role_gord_top_manager = ['gord_top_manager', User.roles[:gord_top_manager]]
+    #   ProjectUser Roles
+    project_user_role_project_manager = ['project_manager', ProjectsUser.roles[:project_manager]]
+    project_user_role_project_team_member = ['project_team_member', ProjectsUser.roles[:project_team_member]]
+    project_user_role_certifier_manager = ['certifier_manager', ProjectsUser.roles[:certifier_manager]]
+    project_user_role_certifier = ['certifier', ProjectsUser.roles[:certifier]]
+    project_user_role_enterprise_client = ['enterprise_client', ProjectsUser.roles[:enterprise_client]]
+    project_user_assessor_roles = project_user_role_project_manager | project_user_role_project_team_member
+    project_user_certifier_roles = project_user_role_certifier_manager | project_user_role_certifier
+    project_user_enterprise_client_roles = project_user_role_enterprise_client
     #   SchemeMixCriterion.statuses
     scheme_mix_criterion_status_submitting = ['submitting', SchemeMixCriterion.statuses[:submitting], 'submitting_after_appeal', SchemeMixCriterion.statuses[:submitting_after_appeal]]
     scheme_mix_criterion_status_submitted = ['submitted', SchemeMixCriterion.statuses[:submitted], 'submitted_after_appeal', SchemeMixCriterion.statuses[:submitted_after_appeal]]
@@ -44,10 +51,10 @@ class Ability
 
     # Convenience conditions, to use within abilities
     project_with_user_assigned = {projects_users: {user_id: user.id}}
-    project_with_user_as_project_manager = {projects_users: {user_id: user.id, role: role_project_manager}}
-    project_with_user_as_assessor = {projects_users: {user_id: user.id, role: assessor_roles}}
-    project_with_user_as_certifier_manager = {projects_users: {user_id: user.id, role: role_certifier_manager}}
-    project_with_user_as_certifier = {projects_users: {user_id: user.id, role: certifier_roles}}
+    project_with_user_as_project_manager = {projects_users: {user_id: user.id, role: project_user_role_project_manager}}
+    project_with_user_as_assessor = {projects_users: {user_id: user.id, role: project_user_assessor_roles}}
+    project_with_user_as_certifier_manager = {projects_users: {user_id: user.id, role: project_user_role_certifier_manager}}
+    project_with_user_as_certifier = {projects_users: {user_id: user.id, role: project_user_certifier_roles}}
 
     # ------------------------------------------------------------------------------------------------------------
     # There are 3 types of user roles:
@@ -69,21 +76,21 @@ class Ability
       can :show_tools, Project, projects_users: {user_id: user.id}
       if user.assessor?
         can :create, Project, owner_id: user.id
-        can :update, Project, projects_users: {user_id: user.id, role: role_project_manager}
+        can :update, Project, projects_users: {user_id: user.id, role: project_user_role_project_manager}
       end
 
       # ProjectsUsers controller
-      can :read, ProjectsUser, role: assessor_roles, project: project_with_user_as_assessor
-      can :read, ProjectsUser, role: certifier_roles, project: project_with_user_as_certifier
+      can :read, ProjectsUser, role: project_user_assessor_roles, project: project_with_user_as_assessor
+      can :read, ProjectsUser, role: project_user_certifier_roles, project: project_with_user_as_certifier
       can :available, ProjectsUser, project: project_with_user_assigned
       # can :list_users_sharing_projects, ProjectsUser
       # can :list_projects, ProjectsUser
 
       if user.assessor?
-        can :crud, ProjectsUser, role: assessor_roles, project: project_with_user_as_project_manager
+        can :crud, ProjectsUser, role: project_user_assessor_roles, project: project_with_user_as_project_manager
       end
       if user.certifier?
-        can :crud, ProjectsUser, role: certifier_roles, project: project_with_user_as_certifier_manager
+        can :crud, ProjectsUser, role: project_user_certifier_roles, project: project_with_user_as_certifier_manager
       end
       # only the project owner, can make another project_manager the project owner
       can :make_owner, ProjectsUser do |projects_user|
@@ -192,9 +199,9 @@ class Ability
       # can :list_users_sharing_projects, ProjectsUser
       # can :list_projects, ProjectsUser
       if user.gord_admin?
-        can :crud, ProjectsUser, role: assessor_roles
-        can :crud, ProjectsUser, role: certifier_roles
-        can :crud, ProjectsUser, role: enterprise_client_roles
+        can :crud, ProjectsUser, role: project_user_assessor_roles
+        can :crud, ProjectsUser, role: project_user_certifier_roles
+        can :crud, ProjectsUser, role: project_user_enterprise_client_roles
         # can make another project_manager the project owner
         can :make_owner, ProjectsUser do |projects_user|
           projects_user.project_manager?
@@ -235,7 +242,8 @@ class Ability
       # User controller
       can [:list_notifications,:update_notifications], User, id: user.id
       if user.gord_admin?
-        can :crud, User
+        can :create, User, role: user_role_assessor | user_role_certifier | user_role_enterprise_client| user_role_gord_admin
+        can :edit, User.unassigned, role: user_role_assessor | user_role_certifier | user_role_enterprise_client| user_role_gord_admin
       end
 
       # # Admins opt-out for specific abilities

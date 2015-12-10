@@ -18,11 +18,15 @@ class User < ActiveRecord::Base
   has_many :notification_types_users, dependent: :delete_all
   has_many :notification_types, through: :notification_types_users
 
-  before_validation :init, on: :create
+  after_initialize :init, if: :new_record?
 
   validates :role, inclusion: User.roles.keys
 
   default_scope { order(email: :asc) }
+
+  scope :unassigned, -> {
+    User.joins(:projects).where(projects: {id: nil})
+  }
 
   scope :assessors, -> {
     where(role: User.roles[:assessor])
@@ -111,8 +115,8 @@ class User < ActiveRecord::Base
 
   private
   def init
-    self.role = :assessor if self.role.nil?
-    self.account_active = true if self.account_active.nil?
+    self.role ||= :assessor
+    self.account_active ||= true
   end
 
 end
