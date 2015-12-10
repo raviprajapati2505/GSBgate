@@ -10,7 +10,7 @@
                     <%= f.select :role, @user_roles.keys.sort_by{ |k| k }.map { |k| [k.humanize, k] } %>
                     <%= f.check_box :account_active %>
                     <div class="hr-line-dashed"></div>
-                    <% if can?(:edit, @user) %>
+                    <% if can?(:create, @user) || can?(:update, @user) %>
                         <%= btn_save %>
                     <% end %>
                     <%= btn_cancel_to(users_path) %>
