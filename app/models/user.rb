@@ -25,7 +25,7 @@ class User < ActiveRecord::Base
   default_scope { order(email: :asc) }
 
   scope :unassigned, -> {
-    User.joins(:projects).where(projects: {id: nil})
+    User.includes(:projects).where(projects: {id: nil})
   }
 
   scope :assessors, -> {
