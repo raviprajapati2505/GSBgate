@@ -110,7 +110,7 @@ class User < ActiveRecord::Base
   end
 
   def active_for_authentication?
-    account_active?
+    super and account_active?
   end
 
   private
