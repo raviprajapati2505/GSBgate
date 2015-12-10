@@ -243,7 +243,7 @@ class Ability
       can [:list_notifications,:update_notifications], User, id: user.id
       if user.gord_admin?
         can :create, User, role: user_role_assessor | user_role_certifier | user_role_enterprise_client| user_role_gord_admin
-        can :edit, User.unassigned, role: user_role_assessor | user_role_certifier | user_role_enterprise_client| user_role_gord_admin
+        can :update, User.unassigned, role: user_role_assessor | user_role_certifier | user_role_enterprise_client| user_role_gord_admin
       end
 
       # # Admins opt-out for specific abilities
