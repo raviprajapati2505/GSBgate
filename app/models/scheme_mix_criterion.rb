@@ -204,7 +204,7 @@ class SchemeMixCriterion < ActiveRecord::Base
   # or nil if there is no next model
   def next_scheme_mix_criterion
     self.class.includes(:scheme_mix, scheme_criterion: [:scheme_category])
-              .where('scheme_mixes.id = ? AND ((scheme_categories.display_weight = ? AND scheme_criteria.number > ?) OR (scheme_categories.display_weight > ?))', self.scheme_mix_id, self.scheme_criterion.scheme_category.display_weight, self.scheme_criterion.number, self.scheme_criterion.scheme_category.display_weight)
+              .where('scheme_mixes.id = ? AND ((scheme_categories.id = ? AND scheme_criteria.number > ?) OR (scheme_categories.display_weight > ?))', self.scheme_mix_id, self.scheme_criterion.scheme_category.id, self.scheme_criterion.number, self.scheme_criterion.scheme_category.display_weight)
               .order('scheme_categories.display_weight, scheme_criteria.number')
               .first
   end
@@ -213,7 +213,7 @@ class SchemeMixCriterion < ActiveRecord::Base
   # or nil if there is no previous model
   def previous_scheme_mix_criterion
     self.class.includes(:scheme_mix, scheme_criterion: [:scheme_category])
-              .where('scheme_mixes.id = ? AND ((scheme_categories.display_weight = ? AND scheme_criteria.number < ?) OR (scheme_categories.display_weight < ?))', self.scheme_mix_id, self.scheme_criterion.scheme_category.display_weight, self.scheme_criterion.number, self.scheme_criterion.scheme_category.display_weight)
+              .where('scheme_mixes.id = ? AND ((scheme_categories.id = ? AND scheme_criteria.number < ?) OR (scheme_categories.display_weight < ?))', self.scheme_mix_id, self.scheme_criterion.scheme_category.id, self.scheme_criterion.number, self.scheme_criterion.scheme_category.display_weight)
               .order('scheme_categories.display_weight, scheme_criteria.number')
               .last
   end
