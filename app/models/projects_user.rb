@@ -20,7 +20,7 @@ class ProjectsUser < ActiveRecord::Base
   }
 
   scope :assessors, -> {
-    where(role: [ProjectsUser.roles[:project_team_member], ProjectsUser.roles[:project_manager], ProjectsUser.roles[:enterprise_client]])
+    where(role: [ProjectsUser.roles[:project_team_member], ProjectsUser.roles[:project_manager]])
   }
 
   scope :assessor_managers, -> {
