@@ -5,7 +5,7 @@ class SchemeCriteriaController < AuthenticatedController
   def index
     @page_title = 'Criteria'
     @default_values = {certificate_id: '', scheme_name: '', scheme_category_name: ''}
-    @scheme_criteria = SchemeCriterion.joins(scheme_category: [:scheme])
+    @scheme_criteria = SchemeCriterion.includes(scheme_category: [:scheme])
 
     # Catergory filter
     if params[:scheme_category_name].present?
