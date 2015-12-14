@@ -228,6 +228,10 @@ class Ability
       end
       # SchemeMixCriterion
       can :list, SchemeMixCriterion
+      # SchemeCriterionText
+      if user.gord_admin?
+        can :crud, SchemeCriterionText
+      end
       # Audit log
       can :index, AuditLog
       can :auditable_index, AuditLog
