@@ -89,6 +89,8 @@ class ProjectsUsersController < AuthenticatedController
     redirect_to project_path(project), notice: 'Member was successfully removed.'
   end
 
+  # Returns all users still available to be assigned to a project
+  # Can optionally be filtered by role and email
   def available
     # Filter by Role
     if params.has_key?(:role)
