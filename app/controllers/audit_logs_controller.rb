@@ -5,8 +5,7 @@ class AuditLogsController < AuthenticatedController
   def index
     @page_title = 'Audit log'
 
-    # TODO: investigate if refactor to use load_and_authorize_resource is possible ?
-    @audit_logs = AuditLog.for_user_projects(current_user).includes(:user, :project)
+    @audit_logs = @audit_logs.includes(:user, :project)
     @certification_paths_optionlist = []
 
     if params[:reset].present?
