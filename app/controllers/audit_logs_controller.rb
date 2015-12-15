@@ -7,7 +7,7 @@ class AuditLogsController < AuthenticatedController
     @projects = Project.accessible_by(current_ability)
 
     # TODO: investigate if refactor to use load_and_authorize_resource is possible ?
-    @audit_logs = AuditLog.for_user_projects(current_user).includes(:user, :auditable, :project)
+    @audit_logs = AuditLog.for_user_projects(current_user).includes(:user, :project)
     @certification_paths_optionlist = []
 
     if params[:reset].present?
