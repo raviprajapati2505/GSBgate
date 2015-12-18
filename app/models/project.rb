@@ -7,9 +7,10 @@ class Project < ActiveRecord::Base
   MAXIMUM_DOCUMENT_FILE_SIZE = 25 # in MB
 
   belongs_to :owner, class_name: 'User', inverse_of: :owned_projects
-  has_many :projects_users, dependent: :delete_all
-  has_many :certification_paths
-  has_many :notification_types_users, dependent: :delete_all
+  has_many :projects_users, dependent: :destroy
+  has_many :certification_paths, dependent: :destroy
+  has_many :notification_types_users, dependent: :destroy
+  has_many :project_audit_logs, class_name: 'AuditLog', foreign_key: 'project_id', dependent: :destroy
 
   validates :name, presence: true
   validates :address, presence: true

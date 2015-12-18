@@ -1,7 +1,7 @@
 class SchemeMix < ActiveRecord::Base
   belongs_to :certification_path
   belongs_to :scheme
-  has_many :scheme_mix_criteria
+  has_many :scheme_mix_criteria, dependent: :destroy
   has_many :scheme_mix_criteria_documents, through: :scheme_mix_criteria
   has_many :scheme_categories, through: :scheme
   has_many :scheme_criteria, through: :scheme_categories

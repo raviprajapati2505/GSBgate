@@ -1,6 +1,6 @@
 class NotificationType < ActiveRecord::Base
 
-  has_many :notification_types_users, dependent: :delete_all
+  has_many :notification_types_users, dependent: :destroy
 
   NEW_USER_COMMENT = 1
   PROJECT_CREATED = 2

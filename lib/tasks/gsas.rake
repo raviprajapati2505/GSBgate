@@ -102,4 +102,28 @@ namespace :gsas do
     Rails.logger.info "Found #{ActionController::Base.helpers.pluralize(task_count, 'task')} which are overdue."
   end
 
+  desc "Destroy old projects without certificates or with unactivated certificates"
+  task :destroy_old_empty_projects, [] => :environment do |t, args|
+
+    Rails.logger.info 'Start destroying old empty projects...'
+
+    projects_count = 0
+    page = 0
+    begin
+      page += 1
+      # Destroy projects older than X without activated certificates
+      old_empty_projects = Project
+                              .where('created_at < ?', DateTime.now - 30.days)
+                              .where.not('EXISTS(SELECT id FROM certification_paths WHERE project_id = projects.id AND certification_path_status_id <> ?)', CertificationPathStatus::ACTIVATING)
+                              .paginate page: page, per_page: PAGE_SIZE
+      old_empty_projects.each do |old_empty_project|
+        Rails.logger.info 'Destroying ' + old_empty_project.name
+        old_empty_project.destroy
+      end
+      projects_count += old_empty_projects.size
+    end while old_empty_projects.size == PAGE_SIZE
+
+    Rails.logger.info "Destroyed #{ActionController::Base.helpers.pluralize(projects_count, 'old empty project')}."
+  end
+
 end

@@ -31,7 +31,7 @@ module Taskable
   CERT_MNGR_ASSIGN_AFTER_APPEAL = 36
 
   included do
-    has_many :tasks, as: :taskable, dependent: :delete_all
+    has_many :tasks, as: :taskable, dependent: :destroy
 
     after_create :after_create
     after_update :after_update

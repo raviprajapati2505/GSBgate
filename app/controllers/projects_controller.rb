@@ -2,8 +2,6 @@ class ProjectsController < AuthenticatedController
   load_and_authorize_resource :project
   before_action :set_controller_model, except: [:new, :create, :index]
 
-  # GET /projects
-  # GET /projects.json
   def index
     respond_to do |format|
       format.html {
@@ -13,8 +11,6 @@ class ProjectsController < AuthenticatedController
     end
   end
 
-  # GET /projects/1
-  # GET /projects/1.json
   def show
     respond_to do |format|
       format.html {
@@ -30,7 +26,6 @@ class ProjectsController < AuthenticatedController
     authorize! :show_tools, @project
   end
 
-  # GET /projects/new
   def new
     @page_title = 'New project'
     @project = Project.new
@@ -38,14 +33,11 @@ class ProjectsController < AuthenticatedController
     @certificates = Certificate.all
   end
 
-  # GET /projects/1/edit
   def edit
     @page_title = "Edit #{@project.name}"
     @certificates = Certificate.all
   end
 
-  # POST /projects
-  # POST /projects.json
   def create
     @project = Project.new(project_params)
     @project.owner = current_user
@@ -64,8 +56,6 @@ class ProjectsController < AuthenticatedController
     end
   end
 
-  # PATCH/PUT /projects/1
-  # PATCH/PUT /projects/1.json
   def update
     respond_to do |format|
       params[:project][:location_plan_file] = @project.location_plan_file unless params[:project].has_key?(:location_plan_file) && params[:project][:location_plan_file].present?

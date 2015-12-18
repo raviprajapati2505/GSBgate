@@ -4,7 +4,7 @@ class SchemeMixCriteriaDocument < ActiveRecord::Base
 
   enum status: { awaiting_approval: 0, approved: 1, rejected: 2, superseded: 3 }
 
-  belongs_to :document
+  belongs_to :document, dependent: :destroy
   belongs_to :scheme_mix_criterion
 
   after_initialize :init

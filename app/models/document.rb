@@ -4,7 +4,7 @@ class Document < ActiveRecord::Base
   MAXIMUM_DOCUMENT_FILE_SIZE = 10 # in MB
 
   belongs_to :user
-  has_many :scheme_mix_criteria_documents
+  has_many :scheme_mix_criteria_documents, dependent: :destroy
   has_many :scheme_mix_criteria, through: :scheme_mix_criteria_documents
 
   accepts_nested_attributes_for :scheme_mix_criteria_documents, :allow_destroy => true

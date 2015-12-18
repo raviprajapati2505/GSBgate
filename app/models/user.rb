@@ -9,13 +9,13 @@ class User < ActiveRecord::Base
   has_many :owned_projects, class_name: 'Project', inverse_of: :owner
   has_many :documents
   has_many :scheme_mix_criteria_documents
-  has_many :projects_users, dependent: :delete_all
+  has_many :projects_users, dependent: :destroy
   has_many :projects, through: :projects_users
   has_many :requirement_data, dependent: :nullify
   has_many :scheme_mix_criteria, inverse_of: :certifier, foreign_key: 'certifier_id'
   has_many :tasks, dependent: :destroy
   has_many :audit_logs
-  has_many :notification_types_users, dependent: :delete_all
+  has_many :notification_types_users, dependent: :destroy
   has_many :notification_types, through: :notification_types_users
 
   after_initialize :init, if: :new_record?

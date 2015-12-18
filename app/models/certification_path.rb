@@ -5,12 +5,13 @@ class CertificationPath < ActiveRecord::Base
   belongs_to :project
   belongs_to :certificate
   belongs_to :certification_path_status
-  has_many :scheme_mixes
+  has_many :scheme_mixes, dependent: :destroy
   has_many :schemes, through: :scheme_mixes
   has_many :scheme_mix_criteria, through: :scheme_mixes, autosave: true
   has_many :scheme_mix_criteria_documents, through: :scheme_mix_criteria
   has_many :scheme_mix_criteria_requirement_data, through: :scheme_mix_criteria
   has_many :requirement_data, through: :scheme_mix_criteria_requirement_data
+  has_many :certification_path_audit_logs, class_name: 'AuditLog', foreign_key: 'certification_path_id', dependent: :destroy
 
   accepts_nested_attributes_for :certificate
   accepts_nested_attributes_for :scheme_mixes

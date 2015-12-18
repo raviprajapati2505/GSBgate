@@ -2,9 +2,9 @@ class SchemeMixCriterion < ActiveRecord::Base
   include Auditable
   include Taskable
 
-  has_many :scheme_mix_criteria_requirement_data
+  has_many :scheme_mix_criteria_requirement_data, dependent: :destroy
   has_many :requirement_data, through: :scheme_mix_criteria_requirement_data
-  has_many :scheme_mix_criteria_documents
+  has_many :scheme_mix_criteria_documents, dependent: :destroy
   has_many :documents, through: :scheme_mix_criteria_documents
   belongs_to :scheme_mix
   belongs_to :scheme_criterion

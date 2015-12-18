@@ -2,9 +2,9 @@ class RequirementDatum < ActiveRecord::Base
   include Auditable
   include Taskable
 
-  has_many :scheme_mix_criteria_requirement_data
+  has_many :scheme_mix_criteria_requirement_data, dependent: :destroy
   has_many :scheme_mix_criteria, through: :scheme_mix_criteria_requirement_data
-  belongs_to :calculator_datum
+  belongs_to :calculator_datum, dependent: :destroy
   belongs_to :requirement
   belongs_to :user
 
