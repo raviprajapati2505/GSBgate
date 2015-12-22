@@ -1,9 +1,7 @@
 class AddDisplayWeightToCertificate < ActiveRecord::Migration
-  def change
-    add_column :certificates, :display_weight, :integer
-  end
-
   def up
+    add_column :certificates, :display_weight, :integer
+
     loc_certificate = Certificate.find_by(certificate_type: Certificate.certificate_types[:design_type], assessment_stage: Certificate.assessment_stages[:design_stage])
     loc_certificate.display_weight = 10
     loc_certificate.save!
@@ -19,5 +17,9 @@ class AddDisplayWeightToCertificate < ActiveRecord::Migration
     operations_certificate = Certificate.find_by(certificate_type: Certificate.certificate_types[:operations_type], assessment_stage: Certificate.assessment_stages[:operations_stage])
     operations_certificate.display_weight = 40
     operations_certificate.save!
+  end
+
+  def down
+    remove_column :certificates, :display_weight
   end
 end

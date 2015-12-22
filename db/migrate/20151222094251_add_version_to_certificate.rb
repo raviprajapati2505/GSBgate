@@ -1,9 +1,7 @@
 class AddVersionToCertificate < ActiveRecord::Migration
-  def change
-    add_column :certificates, :version, :string
-  end
-
   def up
+    add_column :certificates, :version, :string
+
     loc_certificate = Certificate.find_by(certificate_type: Certificate.certificate_types[:design_type], assessment_stage: Certificate.assessment_stages[:design_stage])
     loc_certificate.version = '2.1'
     loc_certificate.save!
@@ -21,4 +19,7 @@ class AddVersionToCertificate < ActiveRecord::Migration
     operations_certificate.save!
   end
 
+  def down
+    remove_column :certificates, :version
+  end
 end
