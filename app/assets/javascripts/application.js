@@ -180,18 +180,19 @@ var GSAS = {
             $(this).remove();
         });
     },
-    // Find and process tooltips
+    // Find and process tooltips (that weren't processed yet)
     processTooltips: function () {
-        $('[data-toggle="tooltip"]').tooltip();
+        $('[data-toggle="tooltip"]').not('.tooltip-processed').addClass('tooltip-processed').tooltip();
     },
     setSortableListPositions: function() {
         $('.sortable > .panel.panel-default').each(function(i) {
             $(this).attr("data-pos", i+1);
         })
     },
+    // Find and process iCheck checkboxes or radios (that weren't processed yet)
     processiCheck: function() {
         // iCheck all checkboxes & radio buttons
-        $('input').iCheck({
+        $('input[type=checkbox], input[type=radio]').not('.icheck-processed').addClass('icheck-processed').iCheck({
             checkboxClass: 'icheckbox_square-green',
             radioClass: 'iradio_square-green'
         });
