@@ -12,31 +12,35 @@
                         <th>Certificate name</th>
                         <td><%= @certification_path.name %></td>
                     </tr>
-                    <% if @certification_path.is_certified? %>
-                        <tr>
-                            <th>Downloads</th>
-                            <td>
-                                <% if can?(:download_certificate, @certification_path) %>
-                                    <div>
-                                        <%= btn_download(download_certificate_report_project_certification_path_path(@project, @certification_path), tooltip: 'Download Certificate', size: 'extra_small') %>
-                                        Download Certificate
-                                    </div>
-                                <% end %>
-                                <% if can?(:download_certificate_coverletter, @certification_path) %>
-                                    <div>
-                                        <%= btn_download(download_coverletter_report_project_certification_path_path(@project, @certification_path), tooltip: 'Download Coverletter', size: 'extra_small') %>
-                                        Download Coverletter
-                                    </div>
-                                <% end %>
-                                <% if can?(:download_scores_report, @certification_path) %>
-                                    <div>
-                                        <%= btn_download(download_scores_report_project_certification_path_path(@project, @certification_path), tooltip: 'Download Score Report', size: 'extra_small') %>
-                                        Download Score Report
-                                    </div>
-                                <% end %>
-                            </td>
-                        </tr>
+                    <% # BEGIN: PDF REPORT GENERATION IS DISABLED %>
+                    <% if false %>
+                        <% if @certification_path.is_certified? %>
+                            <tr>
+                                <th>Downloads</th>
+                                <td>
+                                    <% if can?(:download_certificate, @certification_path) %>
+                                        <div>
+                                            <%= btn_download(download_certificate_report_project_certification_path_path(@project, @certification_path), tooltip: 'Download Certificate', size: 'extra_small') %>
+                                            Download Certificate
+                                        </div>
+                                    <% end %>
+                                    <% if can?(:download_certificate_coverletter, @certification_path) %>
+                                        <div>
+                                            <%= btn_download(download_coverletter_report_project_certification_path_path(@project, @certification_path), tooltip: 'Download Coverletter', size: 'extra_small') %>
+                                            Download Coverletter
+                                        </div>
+                                    <% end %>
+                                    <% if can?(:download_scores_report, @certification_path) %>
+                                        <div>
+                                            <%= btn_download(download_scores_report_project_certification_path_path(@project, @certification_path), tooltip: 'Download Score Report', size: 'extra_small') %>
+                                            Download Score Report
+                                        </div>
+                                    <% end %>
+                                </td>
+                            </tr>
+                        <% end %>
                     <% end %>
+                    <% # END: PDF REPORT GENERATION IS DISABLED %>
                     <% if not @certification_path.is_activating? %>
                         <tr>
                             <th>Started</th>

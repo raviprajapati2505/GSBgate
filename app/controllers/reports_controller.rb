@@ -1,3 +1,7 @@
+# PDF REPORT GENERATION IS DISABLED!
+# To re-enable it:
+#   - uncomment the routes in /config/routes.rb
+#   - uncomment the download buttons in /app/views/certification_paths/show.html.erb
 class ReportsController < ApplicationController
   load_and_authorize_resource :project
   load_and_authorize_resource :certification_path, :through => :project, :parent => false

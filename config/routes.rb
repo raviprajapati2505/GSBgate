@@ -49,9 +49,11 @@ Rails.application.routes.draw do
         get 'list'
       end
       member do
-        get 'download_certificate_report' => 'reports#download_certificate', as: 'download_certificate_report'
-        get 'download_coverletter_report' => 'reports#download_certificate_coverletter', as: 'download_coverletter_report'
-        get 'download_scores_report' => 'reports#download_certificate_scores', as: 'download_scores_report'
+        # BEGIN: PDF REPORT GENERATION IS DISABLED
+        # get 'download_certificate_report' => 'reports#download_certificate', as: 'download_certificate_report'
+        # get 'download_coverletter_report' => 'reports#download_certificate_coverletter', as: 'download_coverletter_report'
+        # get 'download_scores_report' => 'reports#download_certificate_scores', as: 'download_scores_report'
+        # END: PDF REPORT GENERATION IS DISABLED
         get 'edit_status'
         get 'edit_project_team_responsibility', path: 'edit-project-team-responsibility'
         get 'edit_certifier_team_responsibility', path: 'edit-certifier-team-responsibility'
