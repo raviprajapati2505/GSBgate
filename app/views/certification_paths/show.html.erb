@@ -117,7 +117,7 @@
             </div>
             <div class="ibox-content">
                 <%= render 'timeline', certification_path: @certification_path %>
-                <% if can?(:update_status, @certification_path) %>
+                <% if can?(:update_status, @certification_path) && @certification_path.next_status.present? %>
                     <% if @certification_path.certification_path_status_id == CertificationPathStatus::ACKNOWLEDGING %>
                         <div class="hr-line-dashed"></div>
                         <%= btn_link_to(edit_status_project_certification_path_url(@project, @certification_path), remote: true, icon: 'check', text: 'Accept all scores') %>
