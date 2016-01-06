@@ -11,6 +11,7 @@
                         <div class="alert alert-warning">Currently waiting confirmation for <strong><%= resource.unconfirmed_email %></strong>. Please check your mailbox for further instructions.</div>
                     <% end %>
                     <%= f.email_field :email %>
+                    <%= f.select :role, [[resource.role.humanize, resource.role]], {}, {disabled: true} %>
                     <%= f.password_field :password, label: ('New password' + tooltip('Leave this field blank if you don\'t want to change your password.')).html_safe %>
                     <%= f.password_field :password_confirmation, label: 'New password confirmation', autocomplete: 'off' %>
                     <%= f.password_field :current_password, label: ('Current password' + tooltip('We need your current password to confirm your changes.')).html_safe, autocomplete: 'off' %>
