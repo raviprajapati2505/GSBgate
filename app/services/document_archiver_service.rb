@@ -32,7 +32,7 @@ class DocumentArchiverService
                          .where(project_id: certification_path.project.id)
                          .where('audit_logs.certification_path_id = ? or audit_logs.certification_path_id is null', certification_path.id)
                          .order(created_at: :ASC)
-                         .paginate page: page, per_page: PAGE_SIZE
+                         .page(params[:page]).per(PAGE_SIZE)
         audit_logs.each do |audit_log|
           zos << [audit_log.created_at, audit_log.user.email, audit_log.user_comment, audit_log.system_message].to_csv
         end

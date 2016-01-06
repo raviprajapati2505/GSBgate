@@ -1,6 +1,7 @@
 class CertificationPathsController < AuthenticatedController
   load_and_authorize_resource :project
   load_and_authorize_resource :certification_path, :through => :project
+
   before_action :set_controller_model, except: [:new, :create, :list]
   before_action :certificate_exists_and_is_allowed, only: [:apply, :new, :create]
 
@@ -164,7 +165,7 @@ class CertificationPathsController < AuthenticatedController
                 .joins(:certificate)
                 .where(project_id: @project.id)
                 .where('certificates.name like ?', '%' + params[:q] + '%')
-                .paginate page: params[:page], per_page: 25
+                .page(params[:page]).per(25)
     render json: {total_count: total_count, items: items}
   end
 

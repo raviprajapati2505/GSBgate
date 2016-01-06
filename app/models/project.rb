@@ -3,12 +3,15 @@ require 'file_size_validator'
 class Project < ActiveRecord::Base
   include Auditable
   include Taskable
+  include DatePlucker
 
   MAXIMUM_DOCUMENT_FILE_SIZE = 25 # in MB
 
   belongs_to :owner, class_name: 'User', inverse_of: :owned_projects
   has_many :projects_users, dependent: :destroy
   has_many :certification_paths, dependent: :destroy
+  has_many :certificates, through: :certification_paths
+  has_many :certification_path_statuses, through: :certification_paths
   has_many :notification_types_users, dependent: :destroy
   has_many :project_audit_logs, class_name: 'AuditLog', foreign_key: 'project_id', dependent: :destroy
 
@@ -34,14 +37,16 @@ class Project < ActiveRecord::Base
   mount_uploader :design_brief_file, GeneralSubmittalUploader
   mount_uploader :project_narrative_file, GeneralSubmittalUploader
 
-  default_scope { order(name: :asc) }
-
   scope :for_owner, ->(user) {
     where(owner: user)
   }
 
   scope :for_user, ->(user) {
     joins(:projects_users).where(projects_users: {user_id: user.id})
+  }
+
+  scope :without_certification_paths, -> {
+    includes(:certification_paths).where(certification_paths: {id: nil})
   }
 
   def role_for_user(user)
@@ -58,6 +63,13 @@ class Project < ActiveRecord::Base
       if projects_user.certifier_manager?
         return true
       end
+    end
+    return false
+  end
+
+  def has_active_certificate?
+    certification_paths.each do |certification_path|
+      return true if (certification_path.is_completed? == false)
     end
     return false
   end

@@ -1,12 +1,12 @@
 /*
  *
  *   INSPINIA - Responsive Admin Theme
- *   version 2.0
+ *   version 2.3
  *
 */
 
 // Google Fonts
-@import url("//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&lang=en");
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&lang=en");
 
 // Fontawesome Fonts
 @import "fontawesome";
@@ -17,7 +17,7 @@
 //@import "bootstrap-sprockets";
 @import "bootstrap";
 
-//// Variables, Mixins
+// Variables, Mixins
 @import "base/variables";
 @import "variable-overrides";
 @import "base/mixins";
@@ -33,7 +33,11 @@
 @import "base/base";
 @import "base/pages";
 @import "base/chat";
+@import "base/metismenu";
 @import "base/spinners";
+
+// Landing page
+@import "base/landing";
 
 // RTL Support
 @import "base/rtl";
@@ -43,6 +47,7 @@
 
 // INSPINIA Skins
 //@import "base/skins";
+//@import "base/md-skin";
 
 // Media query style
 @import "base/media";

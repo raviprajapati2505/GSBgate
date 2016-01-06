@@ -85,16 +85,16 @@ class AuditLogsController < AuthenticatedController
       end
     end
 
-    @audit_logs = @audit_logs.paginate page: params[:page], per_page: 12
+    @audit_logs = @audit_logs.page(params[:page]).per(12)
   end
 
   def auditable_index
-    @audit_logs = AuditLog.for_auditable(@auditable).paginate page: params[:page], per_page: 6
+    @audit_logs = AuditLog.for_auditable(@auditable).page(params[:page]).per(6)
     @only_user_comments = false
   end
 
   def auditable_index_comments
-    @audit_logs = AuditLog.for_auditable(@auditable).with_user_comment.paginate page: params[:page], per_page: 6
+    @audit_logs = AuditLog.for_auditable(@auditable).with_user_comment.page(params[:page]).per(6)
     @only_user_comments = true
   end
 

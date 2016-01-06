@@ -40,4 +40,7 @@ class Certificate < ActiveRecord::Base
     where(certificate_type: Certificate.certificate_types[:operations_type], assessment_stage: Certificate.assessment_stages[:operations_stage])
   }
 
+  def full_name
+    self.name + ', ' + self.version
+  end
 end

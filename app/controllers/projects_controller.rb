@@ -5,8 +5,16 @@ class ProjectsController < AuthenticatedController
   def index
     respond_to do |format|
       format.html {
-        @page_title = 'Projects'
-        @projects = @projects.paginate page: params[:page], per_page: 25
+        @page_title = 'Certificates & Projects'
+
+        @datatable_certificates = Effective::Datatables::CertificationPaths.new
+        @datatable_certificates.current_ability = current_ability
+        @datatable_certificates.table_html_class = 'table table-bordered table-striped table-hover'
+
+        @datatable_empty_projects = Effective::Datatables::Projects.new(empty_projects: true)
+        @datatable_empty_projects.current_ability = current_ability
+        @datatable_empty_projects.table_html_class = 'table table-bordered table-striped table-hover'
+
       }
     end
   end

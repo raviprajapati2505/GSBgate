@@ -19,10 +19,7 @@
  *= require inspinia
  *= require wicket/wicket
  *= require wicket/wicket-gmap3
- *= require datatables
- *= require datatables-responsive
- *= require datatables-init
- *= require datatables-plugins/integration/bootstrap/3/dataTables.bootstrap
+ *= require effective_datatables
  *= require icheck
  *= require select2
  *= require d3

@@ -25,7 +25,7 @@ class SchemeCriteriaController < AuthenticatedController
       @default_values[:certificate_id] = params[:certificate_id]
     end
 
-    @scheme_criteria = @scheme_criteria.order('scheme_categories.code', 'number', 'schemes.certificate_id').paginate page: params[:page], per_page: 25
+    @scheme_criteria = @scheme_criteria.order('scheme_categories.code', 'number', 'schemes.certificate_id').page(params[:page]).per(25)
   end
 
   def show

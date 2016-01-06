@@ -1,100 +1,29 @@
-<div class="ibox float-e-margins">
-    <div class="ibox-title">
-        <h5>Project overview</h5>
+<div class="row">
+    <div class="<%= @datatable_projects.present? ? 'col-md-12' : 'col-md-12' %>">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>Certificates overview</h5>
+            </div>
+            <div class="ibox-content">
+                <%= render_datatable(@datatable_certificates) %>
+                <div class="hr-line-dashed fa-"></div>
+                <% if can? :create, Project.new(owner_id: current_user.id) %>
+                    <%= btn_link_to(new_project_path, icon: 'building-o', text: 'New project') %>
+                <% end %>
+            </div>
+        </div>
     </div>
-    <div class="ibox-content">
-        <table class="table table-bordered table-hover nowrap datatable dt-responsive" cellspacing="0" width="100%">
-            <thead>
-            <!--https://datatables.net/extensions/responsive/examples/display-control/classes.html-->
-            <tr>
-                <th class="all"><%= Project.human_attribute_name('code') %></th>
-                <th class="all"><%= Project.human_attribute_name('name') %></th>
-                <th class="desktop">LOC</th>
-                <th class="desktop">Final Design</th>
-                <th class="desktop">Construction Management</th>
-                <th class="desktop">Operations</th>
-                <th class="desktop">Scheme(s)</th>
-                <th class="none"><%= Project.human_attribute_name('country') %></th>
-                <th class="none"><%= Project.human_attribute_name('construction_year') %></th>
-                <th class="none"><%= Project.human_attribute_name('description') %></th>
-            </tr>
-            </thead>
-            <tbody>
-            <% @projects.each do |project| %>
-                <tr>
-                    <td>
-                        <%= project.code %>
-                    </td>
-                    <td>
-                        <%= can_link_to(project_path(project), project) { project.name } %>
-                    </td>
-                    <td>
-                        <ul class="list-unstyled">
-                            <% project.certification_paths.letter_of_conformance.each do |certification_path| %>
-                                <li>
-                                    <%= render 'certification_paths/summary', certification_path: certification_path %>
-                                </li>
-                            <% end %>
-                        </ul>
-                    </td>
-                    <td>
-                        <ul class="list-unstyled">
-                            <% project.certification_paths.final_design_certificate.each do |certification_path| %>
-                                <li><%= render 'certification_paths/summary', certification_path: certification_path %></li>
-                            <% end %>
-                        </ul>
-                    </td>
-                    <td>
-                        <ul class="list-unstyled">
-                            <% project.certification_paths.construction_certificate.each do |certification_path| %>
-                                <li><%= render 'certification_paths/summary', certification_path: certification_path %></li>
-                            <% end %>
-                        </ul>
-                    </td>
-                    <td>
-                        <ul class="list-unstyled">
-                            <% project.certification_paths.operations_certificate.each do |certification_path| %>
-                                <li><%= render 'certification_paths/summary', certification_path: certification_path %></li>
-                            <% end %>
-                        </ul>
-                    </td>
-                    <td>
-                        <% if project.certification_paths.letter_of_conformance.present? %>
-                            <% loc = project.certification_paths.letter_of_conformance.first %>
-                            <% loc.scheme_mixes.each do |scheme_mix| %>
-                                <div><%= scheme_mix.name %></div>
-                            <% end %>
-                        <% end %>
-                        <% if project.certification_paths.construction_certificate.present? %>
-                            <% construction = project.certification_paths.construction_certificate.first %>
-                            <% construction.scheme_mixes.each do |scheme_mix| %>
-                                <div><%= scheme_mix.name %></div>
-                            <% end %>
-                        <% end %>
-                        <% if project.certification_paths.operations_certificate.present? %>
-                            <% operations = project.certification_paths.operations_certificate.first %>
-                            <% operations.scheme_mixes.each do |scheme_mix| %>
-                                <div><%= scheme_mix.name %></div>
-                            <% end %>
-                        <% end %>
-                    </td>
-                    <td>
-                        <%= project.country %>
-                    </td>
-                    <td>
-                        <%= project.construction_year %>
-                    </td>
-                    <td>
-                        <%= project.description %>
-                    </td>
-                </tr>
-            <% end %>
-            </tbody>
-        </table>
-        <!--= will_paginate @projects, renderer: BootstrapPagination::Rails %-->
-        <div class="hr-line-dashed fa-"></div>
-        <% if can? :create, Project.new(owner_id: current_user.id) %>
-            <%= btn_link_to(new_project_path, icon: 'building-o', text: 'New project') %>
-        <% end %>
-    </div>
+
+    <% if @datatable_empty_projects.present? %>
+        <div class="col-md-8">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Empty Projects</h5>
+                </div>
+                <div class="ibox-content">
+                    <%= render_datatable(@datatable_empty_projects) %>
+                </div>
+            </div>
+        </div>
+    <% end %>
 </div>

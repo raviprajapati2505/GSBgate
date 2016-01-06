@@ -254,6 +254,10 @@
     background-color: $skin-gord-color;
   }
 
+  // Effective Datatables, Collapsed responsive view
+  //table.dataTable > tbody > tr.child span.dtr-title { min-width: 175px; }
+  table.dataTable > tbody > tr.child span.dtr-data { white-space: normal; }
+
   .dataTables_length {
     width: 250px;
     float:left;
@@ -266,6 +270,11 @@
 
   .dataTables_wrapper {
     padding-bottom: 0;
+  }
+
+  // Show/Hide columns for effective datatables
+  .dropdown-menu > .active > a {
+    background-color: $skin-gord-a-color;
   }
 
   // icheck

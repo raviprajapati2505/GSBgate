@@ -27,7 +27,7 @@
                             <% @audit_logs.each do |audit_log| %>
                                 <%= render 'audit_log', audit_log: audit_log, with_breadcrumbs: false %>
                             <% end %>
-                            <%= will_paginate @audit_logs, renderer: BootstrapPagination::Rails %>
+                            <%= paginate @audit_logs %>
                         <% end %>
                     </div>
                     <div class="comment-form" style="display:none;">

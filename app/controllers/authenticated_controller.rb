@@ -12,6 +12,11 @@ class AuthenticatedController < ApplicationController
     redirect_to forbidden_error_path
   end
 
+  rescue_from Effective::AccessDenied do |exception|
+    Rails.logger.debug "Access denied on #{exception.action} #{exception.subject.inspect}"
+    redirect_to forbidden_error_path
+  end
+
   def set_current_user
     User.current = current_user
   end

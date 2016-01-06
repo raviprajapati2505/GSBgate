@@ -130,7 +130,7 @@ class ProjectsUsersController < AuthenticatedController
                             .count
           items = User.select('id, email as text')
                       .where('email like ?', '%' + params[:q] + '%')
-                      .paginate(page: params[:page], per_page: 25)
+                      .page(params[:page]).per(25)
         else
           user = User.arel_table
           projects_user = ProjectsUser.arel_table
@@ -147,7 +147,7 @@ class ProjectsUsersController < AuthenticatedController
                       .joins(outer_join)
                       .where('email like ? ', '%' + params[:q] + '%')
                       .where('users.role <> 1 OR projects_users.project_id in (select pu.project_id from projects_users pu where pu.user_id = ?)', current_user.id)
-                      .paginate(page: params[:page], per_page: 25)
+                      .page(params[:page]).per(25)
         end
         render json: {total_count: total_count, items: items} and return
       end
@@ -160,7 +160,7 @@ class ProjectsUsersController < AuthenticatedController
         total_count = Project.where('name like ?', '%' + params[:q] + '%').count
         items = Project.select('id, name as text, projects.code as code, projects.latlng as latlng')
                     .where('name like ?', '%' + params[:q] + '%')
-                    .paginate(page: params[:page], per_page: 25)
+                    .page(params[:page]).per(25)
       else
         project = Project.arel_table
         projects_user = ProjectsUser.arel_table
@@ -177,7 +177,7 @@ class ProjectsUsersController < AuthenticatedController
                     .joins(outer_join)
                     .where('name like ?', '%' + params[:q] + '%')
                     .where('projects_users.user_id = ?', current_user.id)
-                    .paginate(page: params[:page], per_page: 25)
+                    .page(params[:page]).per(25)
       end
       render json: {total_count: total_count, items: items}, status: :ok
     end

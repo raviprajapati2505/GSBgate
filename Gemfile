@@ -77,7 +77,7 @@ gem 'carrierwave', github: 'carrierwaveuploader/carrierwave'
 gem 'rails-file-icons', github: 'sodalis/rails-file-icons' # Latest version is only available on github
 
 # Pagination for resultsets
-gem 'will_paginate-bootstrap', '~> 1.0.1'
+gem 'kaminari'
 
 # Selection box
 gem 'select2-rails', '~> 3.5.9.3'
@@ -94,13 +94,15 @@ gem 'addressable'
 # https://github.com/galetahub/ckeditor
 gem 'ckeditor', '~> 4.1.3'
 
+gem 'effective_datatables', '~> 2.2.7'
+
 # PDF Generator
 gem 'pdf-core'
 gem 'prawn'
 gem 'prawn-table'
 
 # reCAPTCHA
-gem "recaptcha", require: "recaptcha/rails"
+gem 'recaptcha', require: 'recaptcha/rails'
 
 # Rails-Assets: access bower packages from our gem file
 #  e.g. gem 'rails-assets-BOWER_PACKAGE_NAME'
@@ -114,10 +116,6 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-bootstrap-timepicker'
   gem 'rails-assets-d3'
   gem 'rails-assets-d3-tip'
-  gem 'rails-assets-datatables'
-  gem 'rails-assets-datatables-plugins'
-  gem 'rails-assets-datatables-responsive'
-  gem 'rails-assets-datatables-tabletools'
   gem 'rails-assets-dropzone'
   gem 'rails-assets-fontawesome'
   gem 'rails-assets-icheck'

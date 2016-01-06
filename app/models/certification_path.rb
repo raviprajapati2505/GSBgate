@@ -1,6 +1,7 @@
 class CertificationPath < ActiveRecord::Base
   include Auditable
   include Taskable
+  include DatePlucker
 
   belongs_to :project
   belongs_to :certificate
@@ -8,6 +9,7 @@ class CertificationPath < ActiveRecord::Base
   has_many :scheme_mixes, dependent: :destroy
   has_many :schemes, through: :scheme_mixes
   has_many :scheme_mix_criteria, through: :scheme_mixes, autosave: true
+  has_many :scheme_criteria, through: :scheme_mix_criteria, autosave: true
   has_many :scheme_mix_criteria_documents, through: :scheme_mix_criteria
   has_many :scheme_mix_criteria_requirement_data, through: :scheme_mix_criteria
   has_many :requirement_data, through: :scheme_mix_criteria_requirement_data
@@ -29,8 +31,8 @@ class CertificationPath < ActiveRecord::Base
   before_update :set_started_at
   before_update :set_certified_at
 
-  scope :with_status, ->(status) {
-    where(certification_path_status_id: status)
+  scope :with_status, ->(statuses) {
+    joins(:certification_path_status).where(certification_path_status_id: statuses)
   }
 
   scope :letter_of_conformance, -> {
@@ -59,7 +61,7 @@ class CertificationPath < ActiveRecord::Base
   end
 
   def name
-    self.certificate.name
+    self.certificate.full_name
   end
 
   def status
@@ -269,7 +271,7 @@ class CertificationPath < ActiveRecord::Base
   end
 
   def is_completed?
-    CertificationPathStatus::STATUSES_AT_END.include?(certification_path_status_id)
+    CertificationPathStatus::STATUSES_COMPLETED.include?(certification_path_status_id)
   end
 
   def is_certified?
@@ -277,6 +279,7 @@ class CertificationPath < ActiveRecord::Base
   end
 
   def scores_in_certificate_points
+    # TODO: investigate memoization pattern for calculated values (or store the value with the certification_path when achieved)
     ApplicationController.helpers.sum_score_hashes(scheme_mix_criteria.collect { |smc| smc.scores_in_certificate_points })
   end
 

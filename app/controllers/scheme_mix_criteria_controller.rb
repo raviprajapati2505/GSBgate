@@ -112,7 +112,7 @@ class SchemeMixCriteriaController < AuthenticatedController
                               .where(scheme_mixes: {certification_path_id: @certification_path.id})
                               .where('(scheme_categories.code || scheme_criteria.number || \': \' || scheme_criteria.name) like ?', '%' + params[:q] + '%')
                               .order('scheme_categories.code', 'scheme_criteria.number')
-                              .paginate page: params[:page], per_page: 25
+                              .page(params[:page]).per(25)
     render json: {total_count: total_count, items: items}
   end
 

@@ -16,7 +16,7 @@ class TaskService
                                     scheme_mix_criteria_document_id: scheme_mix_criteria_document_id,
                                     from_datetime: from_datetime)
     tasks.distinct.order('tasks.project_id', :certification_path_id)
-                  .paginate page: page, per_page: per_page
+                  .page(page).per(per_page)
   end
 
   def self::count_tasks(

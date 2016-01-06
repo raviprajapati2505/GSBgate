@@ -1,7 +1,9 @@
 /*
+ *
  *   SKIN 1 - INSPINIA - Responsive Admin Theme
  *   NAME - Blue light
- */
+ *
+*/
 
 // Main colors
 $skin-1-color: #0e9aef;
@@ -28,7 +30,7 @@ $skin-1-page-bg: #f4f6fa;
 
 .skin-1 .nav-header {
   background: $skin-1-color;
-  background: url("patterns/header-profile-skin-1.png");
+  background: url('patterns/header-profile-skin-1.png');
 }
 
 .skin-1.mini-navbar .nav-second-level {
@@ -52,7 +54,7 @@ $skin-1-page-bg: #f4f6fa;
 }
 
 .skin-1 .nav > li.active > a {
-  color: white;
+  color: #fff;
 }
 
 .skin-1 .navbar-minimalize {
@@ -65,7 +67,7 @@ body.skin-1 {
 }
 
 .skin-1 .navbar-static-top {
-  background: white;
+  background: #ffffff;
 }
 
 .skin-1 .dashboard-header {
@@ -76,7 +78,7 @@ body.skin-1 {
 }
 
 .fixed-nav.skin-1 .navbar-fixed-top {
-  background: white;
+  background: #fff;
 }
 
 .skin-1 .wrapper-content {
@@ -104,12 +106,12 @@ body.skin-1 {
 }
 
 .skin-1 .nav-header a.dropdown-toggle {
-  color: white;
+  color: #fff;
   margin-top: 10px;
 }
 
 .skin-1 .nav-header a.dropdown-toggle .text-muted {
-  color: white;
+  color: #fff;
   opacity: 0.8;
 }
 
@@ -123,20 +125,23 @@ body.skin-1 {
 
 .skin-1 .navbar-default .nav > li > a:hover, .skin-1 .navbar-default .nav > li > a:focus {
   background: darken($skin-1-nav-bg, 2%);
-  color: white;
+  color: #fff;
 }
 
 .skin-1 .nav.nav-tabs > li.active > a {
   color: #555;
 }
+
 .skin-1 .nav.nav-tabs > li.active {
   background: transparent;
 }
 
 /*
+ *
  *   SKIN 2 - INSPINIA - Responsive Admin Theme
  *   NAME - Inspinia Ultra
- */
+ *
+*/
 
 // Main colors
 $skin-2-color: #23c6c8;
@@ -163,7 +168,7 @@ body.skin-2 {
 
 .skin-2 .nav-header {
   background: $skin-2-color;
-  background: url("patterns/header-profile-skin-2.png");
+  background: url('patterns/header-profile-skin-2.png');
 }
 
 .skin-2.mini-navbar .nav-second-level {
@@ -222,7 +227,7 @@ body.skin-2 {
 }
 
 .skin-2 #top-search {
-  color: white;
+  color: #fff;
 }
 
 body.skin-2 #wrapper {
@@ -254,7 +259,7 @@ body.skin-2 #wrapper {
 }
 
 .skin-2 .dashoard-1 .wrapper-content {
-  padding: 0px 30px 25px 30px;
+  padding: 0 30px 25px 30px;
 }
 
 .skin-2 .ibox-title {
@@ -315,14 +320,17 @@ body.skin-2 #wrapper {
 .skin-2 .nav.nav-tabs > li.active > a {
   color: #555;
 }
+
 .skin-2 .nav.nav-tabs > li.active {
   background: transparent;
 }
 
 /*
+ *
  *   SKIN 3 - INSPINIA - Responsive Admin Theme
  *   NAME - Yellow/purple
- */
+ *
+*/
 
 // Main colors
 $skin-3-color: #ecba52;
@@ -353,7 +361,7 @@ body.boxed-layout.skin-3 #wrapper {
 
 .skin-3 .nav-header {
   background: $skin-3-color;
-  background: url("patterns/header-profile-skin-3.png");
+  background: url('patterns/header-profile-skin-3.png');
 }
 
 .skin-3.mini-navbar .nav-second-level {
@@ -373,7 +381,7 @@ body.boxed-layout.skin-3 #wrapper {
 }
 
 .fixed-nav.skin-3 .navbar-fixed-top {
-  background: white;
+  background: #fff;
 }
 
 .skin-3 .nav > li > a {
@@ -381,7 +389,7 @@ body.boxed-layout.skin-3 #wrapper {
 }
 
 .skin-3 .nav > li.active > a {
-  color: white;
+  color: #fff;
 }
 
 .skin-3 .navbar-minimalize {
@@ -394,7 +402,7 @@ body.skin-3 {
 }
 
 .skin-3 .navbar-static-top {
-  background: white;
+  background: #ffffff;
 }
 
 .skin-3 .dashboard-header {
@@ -429,12 +437,12 @@ body.skin-3 {
 }
 
 .skin-3 .nav-header a.dropdown-toggle {
-  color: white;
+  color: #fff;
   margin-top: 10px;
 }
 
 .skin-3 .nav-header a.dropdown-toggle .text-muted {
-  color: white;
+  color: #fff;
   opacity: 0.8;
 }
 
@@ -448,13 +456,13 @@ body.skin-3 {
 
 .skin-3 .navbar-default .nav > li > a:hover, .skin-3 .navbar-default .nav > li > a:focus {
   background: darken($skin-3-nav-bg, 2%);
-  color: white;
+  color: #fff;
 }
-
 
 .skin-3 .nav.nav-tabs > li.active > a {
   color: #555;
 }
+
 .skin-3 .nav.nav-tabs > li.active {
   background: transparent;
 }

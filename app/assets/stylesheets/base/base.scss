@@ -1,13 +1,13 @@
 body {
-  font-family: $font-stack;
-  background-color: $nav-bg;
+  font-family: "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background-color: #2f4050;
   font-size: 13px;
   color: $text-color;
   overflow-x: hidden;
 
 }
 
-html,body {
+html, body {
   height: 100%;
 
 }
@@ -29,9 +29,9 @@ body.boxed-layout #wrapper {
   background-color: #2f4050;
   max-width: $boxed-width;
   margin: 0 auto;
-  -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
-  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.75);
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.75);
 }
 
 .top-navigation.boxed-layout #wrapper,
@@ -68,8 +68,6 @@ a:hover, a:focus {
   font-weight: 400;
 }
 
-
-
 .text-uppercase {
   text-transform: uppercase;
 }
@@ -95,8 +93,8 @@ a:hover, a:focus {
 }
 
 video {
-  width: 100%    !important;
-  height: auto   !important;
+  width: 100% !important;
+  height: auto !important;
 }
 
 /* GALLERY */
@@ -112,8 +110,12 @@ video {
 
 /* Summernote text editor  */
 .note-editor {
-  height: auto;
+  height: auto !important;
   min-height: 300px;
+}
+
+.note-editor.fullscreen {
+  z-index: 2050;
 }
 
 /* MODAL */
@@ -128,13 +130,12 @@ video {
 }
 
 .modal-dialog {
-  z-index: 1200;
+  z-index: 2200;
 }
 
 .modal-body {
   padding: 20px 30px 30px 30px;
 }
-
 
 .inmodal .modal-body {
   background: #f8fafb;
@@ -165,7 +166,6 @@ video {
   margin-top: 0;
 }
 
-
 /* WRAPPERS */
 
 #wrapper {
@@ -191,7 +191,7 @@ video {
   #page-wrapper {
     position: inherit;
     margin: 0 0 0 240px;
-    min-height: 1000px;
+    min-height: 2002px;
   }
 }
 
@@ -211,10 +211,9 @@ ul.unstyled, ol.unstyled {
 }
 
 .big-icon {
-  font-size: 160px;
+  font-size: 160px !important;
   color: #e5e6e7;
 }
-
 
 /* FOOTER */
 
@@ -235,7 +234,7 @@ ul.unstyled, ol.unstyled {
   left: 0;
   right: 0;
   z-index: 1000;
-  padding:10px 20px;
+  padding: 10px 20px;
   background: white;
   border-top: 1px solid $border-color;
 }
@@ -246,7 +245,7 @@ ul.unstyled, ol.unstyled {
   left: 0;
   right: 0;
   z-index: 1000;
-  padding:10px 20px;
+  padding: 10px 20px;
   background: white;
   border-top: 1px solid $border-color;
   margin-left: $sidebar-width;
@@ -267,14 +266,14 @@ body.fixed-sidebar.body-small.mini-navbar .footer.fixed {
 }
 
 body.body-small .footer.fixed {
-  margin-left: 0px;
+  margin-left: 0;
 }
 
 /* PANELS */
 
 .page-heading {
   border-top: 0;
-  padding: 0px 10px 20px 10px;
+  padding: 0 10px 20px 10px;
 }
 
 .panel-heading h1, .panel-heading h2 {
@@ -351,7 +350,7 @@ body.body-small .footer.fixed {
 }
 
 .ui-tab .tab-content {
-  padding: 20px 0px;
+  padding: 20px 0;
 }
 
 /* GLOBAL  */
@@ -373,7 +372,7 @@ body.body-small .footer.fixed {
 }
 
 .ibox-content.text-box {
-  padding-bottom: 0px;
+  padding-bottom: 0;
   padding-top: 15px;
 }
 
@@ -384,7 +383,7 @@ body.body-small .footer.fixed {
   border-bottom: none;
 }
 
-.border-left{
+.border-left {
   border-left: 1px solid $border-color;
   border-right: none;
   border-top: none;
@@ -496,12 +495,14 @@ code {
   padding: 0;
 }
 
-.ibox.collapsed .ibox-content{
+.ibox.collapsed .ibox-content {
   display: none;
 }
+
 .ibox.collapsed .fa.fa-chevron-up:before {
   content: "\f078";
 }
+
 .ibox.collapsed .fa.fa-chevron-down:before {
   content: "\f077";
 }
@@ -519,7 +520,7 @@ code {
   border-color: $border-color;
   border-image: none;
   border-style: solid solid none;
-  border-width: 4px 0px 0;
+  border-width: 3px 0 0;
   color: inherit;
   margin-bottom: 0;
   padding: 14px 15px 7px;
@@ -534,7 +535,15 @@ code {
   border-color: $border-color;
   border-image: none;
   border-style: solid solid none;
-  border-width: 1px 0px;
+  border-width: 1px 0;
+}
+
+.ibox-footer {
+  color: inherit;
+  border-top: 1px solid $border-color;
+  font-size: 90%;
+  background: #ffffff;
+  padding: 10px 15px;
 }
 
 table.table-mail tr td {
@@ -596,11 +605,12 @@ table.table-mail tr td {
 }
 
 .ibox-tools {
-  display: inline-block;
-  float: right;
+  display: block;
+  float: none;
   margin-top: 0;
   position: relative;
   padding: 0;
+  text-align: right;
 }
 
 .ibox-tools a {
@@ -618,7 +628,7 @@ table.table-mail tr td {
   font-size: 12px;
 }
 
-.ibox .open > .dropdown-menu {
+.ibox .ibox-tools.open > .dropdown-menu {
   left: auto;
   right: 0;
 }
@@ -725,7 +735,7 @@ table.table-mail tr td {
 
 .progress-mini, .progress-mini .progress-bar {
   height: 5px;
-  margin-bottom: 0px;
+  margin-bottom: 0;
 }
 
 .progress-bar-navy-light {
@@ -791,6 +801,10 @@ table.table-mail tr td {
   color: #888888;
 }
 
+.text-white {
+  color: #ffffff;
+}
+
 .simple_tag {
   background-color: #f3f3f4;
   border: 1px solid #e7eaec;
@@ -804,9 +818,9 @@ table.table-mail tr td {
 }
 
 .img-shadow {
-  -webkit-box-shadow: 0px 0px 3px 0px rgba(145,145,145,1);
-  -moz-box-shadow: 0px 0px 3px 0px rgba(145,145,145,1);
-  box-shadow: 0px 0px 3px 0px rgba(145,145,145,1);
+  -webkit-box-shadow: 0 0 3px 0 rgba(145, 145, 145, 1);
+  -moz-box-shadow: 0 0 3px 0 rgba(145, 145, 145, 1);
+  box-shadow: 0 0 3px 0 rgba(145, 145, 145, 1);
 }
 
 /* For handle diferent bg color in AngularJS version */
@@ -815,8 +829,9 @@ table.table-mail tr td {
 .mailbox\.inbox nav.navbar,
 .mailbox\.email_view nav.navbar,
 .mailbox\.email_compose nav.navbar,
-.dashboards\.dashboard_4_1 nav.navbar
-{
+.dashboards\.dashboard_4_1 nav.navbar,
+.metrics nav.navbar, .metrics\.index nav.navbar,
+.dashboards\.dashboard_5 nav.navbar {
   background: #fff;
 }
 
@@ -826,14 +841,15 @@ table.table-mail tr td {
 .Dashboard_4_1 .navbar.navbar-static-top,
 .ComposeEmail .navbar.navbar-static-top,
 .EmailView .navbar.navbar-static-top,
-.Inbox .navbar.navbar-static-top {
+.Inbox .navbar.navbar-static-top,
+.Metrics .navbar.navbar-static-top,
+.Dashboard_5 .navbar.navbar-static-top {
   background: #fff;
 }
 
-
 a.close-canvas-menu {
   position: absolute;
-  top:10px;
+  top: 10px;
   right: 15px;
   z-index: 1011;
   color: #a7b1c2;
@@ -843,8 +859,19 @@ a.close-canvas-menu:hover {
   color: #fff;
 }
 
-/* FULL HEIGHT */
+.close-canvas-menu {
+  display: none;
+}
 
+.canvas-menu .close-canvas-menu {
+  display: block
+}
+
+.light-navbar .navbar.navbar-static-top {
+  background-color: #fff
+}
+
+/* FULL HEIGHT */
 
 .full-height {
   height: 100%;
@@ -910,6 +937,35 @@ a.close-canvas-menu:hover {
 
 .p-xl {
   padding: 40px;
+}
+
+.p-w-xs {
+  padding: 0 10px;
+}
+
+.p-w-sm {
+  padding: 0 15px;
+
+}
+
+.p-w-m {
+  padding: 0 20px;
+
+}
+
+.p-w-md {
+  padding: 0 25px;
+
+}
+
+.p-w-lg {
+  padding: 0 30px;
+
+}
+
+.p-w-xl {
+  padding: 0 40px;
+
 }
 
 .m-xxs {
@@ -1196,13 +1252,62 @@ a.close-canvas-menu:hover {
   margin: 30px 0;
 }
 
+// Fullscreen functions
+
+.fullscreen-ibox-mode .animated {
+  animation: none;
+}
+
+body.fullscreen-ibox-mode {
+  overflow-y: hidden;
+}
+
+.ibox.fullscreen {
+  z-index: 2030;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: auto;
+  margin-bottom: 0;
+}
+
+.ibox.fullscreen .collapse-link {
+  display: none;
+}
+
+.ibox.fullscreen .ibox-content {
+  min-height: calc(100% - 48px);
+}
+
 // Bootstrap issue in 3.3.0 with modal https://github.com/twbs/bootstrap/issues/9855
 // Fix
-body.modal-open { padding-right:inherit !important; }
+body.modal-open {
+  padding-right: inherit !important;
+}
 
-/* Style correction for Vector Map */
-.jvectormap-zoomin, .jvectormap-zoomout {
-  width: 15px;
-  height: 15px;
-  background: #1ab394;
+// Fix for modal backdrop with animate.css
+body.modal-open .animated {
+  animation-fill-mode: initial;
+  z-index: inherit
+}
+
+/* Show profile dropdown on fixed sidebar */
+body.mini-navbar.fixed-sidebar .profile-element, .block {
+  display: block !important;
+}
+
+body.mini-navbar.fixed-sidebar .nav-header {
+  padding: 33px 25px;
+}
+
+body.mini-navbar.fixed-sidebar .logo-element {
+  display: none;
+}
+
+// Remove animation on fullscreen video
+
+.fullscreen-video .animated {
+  animation: none;
 }
