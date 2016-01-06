@@ -115,7 +115,7 @@ class ProjectsUsersController < AuthenticatedController
     # Paginate
     if params.has_key?(:page)
       users = users.page(params[:page])
-      total_count = users.total_entries
+      total_count = users.total_count
     else
       total_count = users.count
     end
