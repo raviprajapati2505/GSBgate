@@ -7,14 +7,9 @@ class ProjectsController < AuthenticatedController
       format.html {
         @page_title = 'Certificates & projects'
 
-        @datatable_certificates = Effective::Datatables::CertificationPaths.new
-        @datatable_certificates.current_ability = current_ability
-        @datatable_certificates.table_html_class = 'table table-bordered table-striped table-hover'
-
-        @datatable_empty_projects = Effective::Datatables::Projects.new(empty_projects: true)
-        @datatable_empty_projects.current_ability = current_ability
-        @datatable_empty_projects.table_html_class = 'table table-bordered table-striped table-hover'
-
+        @datatable = Effective::Datatables::ProjectsCertificationPaths.new
+        @datatable.current_ability = current_ability
+        @datatable.table_html_class = 'table table-bordered table-striped table-hover'
       }
     end
   end
