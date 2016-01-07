@@ -5,7 +5,7 @@ class ProjectsController < AuthenticatedController
   def index
     respond_to do |format|
       format.html {
-        @page_title = 'Certificates & Projects'
+        @page_title = 'Certificates & projects'
 
         @datatable_certificates = Effective::Datatables::CertificationPaths.new
         @datatable_certificates.current_ability = current_ability
