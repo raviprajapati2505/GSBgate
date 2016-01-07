@@ -269,11 +269,13 @@ module Taskable
         when CertificationPathStatus::SUBMITTING_AFTER_APPEAL
           # Create project manager task to assign project team members to requirements
           if self.requirement_data.unassigned.required.count.nonzero?
-            Task.create(taskable: self,
-                       task_description_id: PROJ_MNGR_ASSIGN_AFTER_APPEAL,
-                       project_role: ProjectsUser.roles[:project_manager],
-                       project: self.project,
-                       certification_path: self)
+            if Task.find_by(taskable: self, task_description_id: PROJ_MNGR_ASSIGN_AFTER_APPEAL).nil?
+              Task.create(taskable: self,
+                         task_description_id: PROJ_MNGR_ASSIGN_AFTER_APPEAL,
+                         project_role: ProjectsUser.roles[:project_manager],
+                         project: self.project,
+                         certification_path: self)
+            end
           end
           # Destroy system admin tasks to check appeal payment
           Task.delete_all(taskable: self, task_description_id: SYS_ADMIN_APPEAL_APPROVE)
