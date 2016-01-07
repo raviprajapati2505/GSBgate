@@ -11,7 +11,7 @@
                         <%= f.hidden_field :project_id, { class: 'select2-project-ajax', value: session[:task]['project_id'] } %>
                     <% end %>
                     <div id="select-certificate" class="form-group">
-                        <%= f.label :certification_path_id %><br/>
+                        <%= f.label :certification_path_id, 'Certificate' %><br/>
                         <%= f.hidden_field :certification_path_id, { class: 'select2-certificate-ajax', value: session[:task]['certification_path_id'] } %>
                     </div>
                     <div id="select-criterion" class="form-group">
