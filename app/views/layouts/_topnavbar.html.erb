@@ -11,7 +11,7 @@
             <% if can?(:index, Project) %>
                 <li class="<%= 'active' if ['projects', 'projects_users', 'certification_paths', 'scheme_mixes', 'scheme_mix_criteria'].include?(controller_name) %>">
                     <%= link_to projects_path do %>
-                        <%= fa_icon('building-o') %><span class="nav-label">My Projects &amp; Certificates</span>
+                        <%= fa_icon('building-o') %><span class="nav-label">My projects &amp; certificates</span>
                     <% end %>
                 </li>
             <% end %>
