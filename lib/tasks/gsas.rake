@@ -19,7 +19,7 @@ namespace :gsas do
       page = 0
       begin
         page += 1
-        users = User.all.paginate page: page, per_page: PAGE_SIZE
+        users = User.all.page(page).per(PAGE_SIZE)
         users.each do |user|
           DigestMailer.digest_email(user).deliver_now
         end
@@ -42,7 +42,7 @@ namespace :gsas do
       certification_paths = CertificationPath
                                 .where.not(certification_path_status_id: [CertificationPathStatus::CERTIFIED, CertificationPathStatus::NOT_CERTIFIED])
                                 .where('(started_at + interval \'1\' year * duration) < ?', DateTime.now)
-                                .paginate page: page, per_page: PAGE_SIZE
+                                .page(page).per(PAGE_SIZE)
       certification_paths.each do |certification_path|
         CertificationPathTask.create(task_description_id: Taskable::SYS_ADMIN_DURATION,
                                      application_role: User.roles[:gord_admin],
@@ -71,7 +71,7 @@ namespace :gsas do
                                                                                     CertificationPathStatus::SUBMITTING_AFTER_APPEAL]})
                          .where(status: RequirementDatum.statuses[:required])
                          .where('requirement_data.due_date < ?', Date.current)
-                         .paginate page: page, per_page: PAGE_SIZE
+                         .page(page).per(PAGE_SIZE)
       requirements.each do |requirement|
         RequirementDatumTask.create(task_description_id: Taskable::PROJ_MNGR_OVERDUE,
                                     project_role: ProjectsUser.roles[:project_manager],
@@ -89,7 +89,7 @@ namespace :gsas do
                                                                                 CertificationPathStatus::VERIFYING_AFTER_APPEAL]})
                      .where(status: [SchemeMixCriterion.statuses[:verifying], SchemeMixCriterion.statuses[:verifying_after_appeal]])
                      .where('due_date < ?', Date.current)
-                     .paginate page: page, per_page: PAGE_SIZE
+                     .page(page).per(PAGE_SIZE)
       criteria.each do |criterion|
         SchemeMixCriterionTask.create(task_description_id: Taskable::CERT_MNGR_OVERDUE,
                                       project_role: ProjectsUser.roles[:certifier_manager],
@@ -115,7 +115,7 @@ namespace :gsas do
       old_empty_projects = Project
                               .where('created_at < ?', DateTime.now - 30.days)
                               .where.not('EXISTS(SELECT id FROM certification_paths WHERE project_id = projects.id AND certification_path_status_id <> ?)', CertificationPathStatus::ACTIVATING)
-                              .paginate page: page, per_page: PAGE_SIZE
+                              .page(page).per(PAGE_SIZE)
       old_empty_projects.each do |old_empty_project|
         Rails.logger.info 'Destroying ' + old_empty_project.name
         old_empty_project.destroy
