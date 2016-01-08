@@ -83,7 +83,7 @@ module ApplicationHelper
   #
   # :options: are documented at ApplicationHelper#btn_component
   def btn_download(target, options = {}, &block)
-    btn_link_to(target, {icon: 'download'}.merge(options), &block)
+    btn_link_to(target, {icon: 'download', disabling: false}.merge(options), &block)
   end
 
   # generates a button_tag
@@ -129,6 +129,10 @@ module ApplicationHelper
   # * :icon_position the fontawesome icon position
   #   * front (default)
   #   * back
+  #
+  # * :disabling the component will disable other links and buttons during submit, and render itself using a processing mode (using ujs)
+  #   * true (default)
+  #   * false
   #
   # * :text the text for the button
   #   The button contents can also be passed in as a block
@@ -188,11 +192,12 @@ module ApplicationHelper
 
     # Add the data classes
     options[:data] ||= {}
+    options[:disabling] = true unless options.has_key?(:disabling)
     # -- during 'processing', show the content prefixed with a spinner
-    options[:data][:disable_with] ||= "#{fa_icon('spinner fa-spin', size: _icon_size)}&nbsp;&nbsp;#{_content}"
+    options[:data][:disable_with] ||= "#{fa_icon('spinner fa-spin', size: _icon_size)}&nbsp;&nbsp;#{_content}" if options[:disabling] == true
 
     # Create the options hash to pass to the default url or form helper
-    _options = options.except(:icon, :icon_position, :style, :size, :tooltip)
+    _options = options.except(:icon, :icon_position, :style, :size, :tooltip, :disabling)
 
     # component_type
     if component_type == :link
