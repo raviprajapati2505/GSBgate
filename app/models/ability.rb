@@ -45,7 +45,7 @@ class Ability
     scheme_mix_criterion_status_submitting = ['submitting', SchemeMixCriterion.statuses[:submitting], 'submitting_after_appeal', SchemeMixCriterion.statuses[:submitting_after_appeal]]
     scheme_mix_criterion_status_submitted = ['submitted', SchemeMixCriterion.statuses[:submitted], 'submitted_after_appeal', SchemeMixCriterion.statuses[:submitted_after_appeal]]
     scheme_mix_criterion_status_verifying = ['verifying', SchemeMixCriterion.statuses[:verifying], 'verifying_after_appeal', SchemeMixCriterion.statuses[:verifying_after_appeal]]
-    #scheme_mix_criterion_status_verified = ['target_achieved', SchemeMixCriterion.statuses[:target_achieved], 'target_not_achieved', SchemeMixCriterion.statuses[:target_not_achieved], 'target_achieved_after_appeal', SchemeMixCriterion.statuses[:target_achieved_after_appeal], 'target_not_achieved_after_appeal', SchemeMixCriterion.statuses[:target_not_achieved_after_appeal]]
+    #scheme_mix_criterion_status_verified = ['submitted_score_achieved', SchemeMixCriterion.statuses[:submitted_score_achieved], 'submitted_score_not_achieved', SchemeMixCriterion.statuses[:submitted_score_not_achieved], 'submitted_score_achieved_after_appeal', SchemeMixCriterion.statuses[:submitted_score_achieved_after_appeal], 'submitted_score_not_achieved_after_appeal', SchemeMixCriterion.statuses[:submitted_score_not_achieved_after_appeal]]
     #   SchemeMixCriteriaDocument.statuses
     document_approved = ['approved', SchemeMixCriteriaDocument.statuses[:approved]]
 

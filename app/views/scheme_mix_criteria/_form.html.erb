@@ -26,8 +26,8 @@
                 <div class="hr-line-dashed"></div>
                 <% if @scheme_mix_criterion.at_certifier_side? %>
                     <% if @scheme_mix_criterion.in_verification? %>
-                        <%= btn_link_to(edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, achieved: 1), remote: true, icon: 'check', text: 'Target achieved') %>
-                        <%= btn_link_to(edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, achieved: 0), remote: true, icon: 'times', text: 'Target not achieved', style: 'danger') %>
+                        <%= btn_link_to(edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, achieved: 1), remote: true, icon: 'check', text: 'Submitted score achieved') %>
+                        <%= btn_link_to(edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, achieved: 0), remote: true, icon: 'times', text: 'Submitted score not achieved', style: 'danger') %>
                     <% else %>
                         <%= btn_link_to(edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, undo: 1), remote: true, icon: 'undo', text: 'Undo status change', style: 'danger') %>
                     <% end %>

@@ -8,9 +8,9 @@
                     <% if params.has_key?(:undo) && (params[:undo] == '1') %>
                         Undo status change
                     <% elsif params.has_key?(:achieved) && (params[:achieved] == '1') %>
-                        Criterion target achieved
+                        Submitted score achieved
                     <% elsif params.has_key?(:achieved) %>
-                        Criterion target not achieved
+                        Submitted score not achieved
                     <% else %>
                         Submit criterion
                     <% end %>

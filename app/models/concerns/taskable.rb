@@ -422,7 +422,7 @@ module Taskable
                           certification_path: self.scheme_mix.certification_path)
             end
           end
-        when SchemeMixCriterion.statuses[:target_achieved], SchemeMixCriterion.statuses[:target_not_achieved], SchemeMixCriterion.statuses[:target_achieved_after_appeal], SchemeMixCriterion.statuses[:target_not_achieved_after_appeal]
+        when SchemeMixCriterion.statuses[:submitted_score_achieved], SchemeMixCriterion.statuses[:submitted_score_not_achieved], SchemeMixCriterion.statuses[:submitted_score_achieved_after_appeal], SchemeMixCriterion.statuses[:submitted_score_not_achieved_after_appeal]
           # Check if certification with status 'verifying' has no linked criteria in status 'verifying'
           if CertificationPath.joins(:scheme_mixes)
                      .where(id: self.scheme_mix.certification_path.id, certification_path_status_id: [CertificationPathStatus::VERIFYING, CertificationPathStatus::VERIFYING_AFTER_APPEAL])

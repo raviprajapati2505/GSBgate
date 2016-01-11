@@ -10,7 +10,7 @@ class SchemeMixCriterion < ActiveRecord::Base
   belongs_to :scheme_criterion
   belongs_to :certifier, class_name: 'User', inverse_of: :scheme_mix_criteria
 
-  enum status: {submitting: 0, submitted: 1, verifying: 2, target_achieved: 3, target_not_achieved: 4, appealed: 5, submitting_after_appeal: 6, submitted_after_appeal: 7, verifying_after_appeal: 8, target_achieved_after_appeal: 9, target_not_achieved_after_appeal: 10}
+  enum status: {submitting: 0, submitted: 1, verifying: 2, submitted_score_achieved: 3, submitted_score_not_achieved: 4, appealed: 5, submitting_after_appeal: 6, submitted_after_appeal: 7, verifying_after_appeal: 8, submitted_score_achieved_after_appeal: 9, submitted_score_not_achieved_after_appeal: 10}
 
   after_initialize :init
 
@@ -185,7 +185,7 @@ class SchemeMixCriterion < ActiveRecord::Base
   end
 
   def at_certifier_side?
-    return verifying? || target_achieved? || target_not_achieved? || verifying_after_appeal? || target_achieved_after_appeal? || target_not_achieved_after_appeal?
+    return verifying? || submitted_score_achieved? || submitted_score_not_achieved? || verifying_after_appeal? || submitted_score_achieved_after_appeal? || submitted_score_not_achieved_after_appeal?
   end
 
   # This overrides default behaviour
