@@ -7,7 +7,7 @@ class Scheme < ActiveRecord::Base
   has_many :certification_paths, through: :scheme_mixes
 
   def full_name
-    "GSAS #{Certificate.human_attribute_name(self.certificate.assessment_stage)} Assessment v#{version}: #{name}"
+    "GSAS #{Certificate.human_attribute_name(self.certificate.assessment_stage)} Assessment v#{gsas_version}: #{name}"
   end
 
   # sums the weights for all scheme_criteria belonging to the given category

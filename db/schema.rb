@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160111065759) do
+ActiveRecord::Schema.define(version: 20160111145852) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -58,7 +58,7 @@ ActiveRecord::Schema.define(version: 20160111065759) do
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
     t.integer  "display_weight"
-    t.string   "version"
+    t.string   "gsas_version"
   end
 
   create_table "certification_path_statuses", force: :cascade do |t|
@@ -308,11 +308,11 @@ ActiveRecord::Schema.define(version: 20160111065759) do
     t.integer  "certificate_id"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
-    t.string   "version"
+    t.string   "gsas_version"
   end
 
   add_index "schemes", ["certificate_id"], name: "index_schemes_on_certificate_id", using: :btree
-  add_index "schemes", ["name", "version", "certificate_id"], name: "index_schemes_on_name_and_version_and_certificate_id", unique: true, using: :btree
+  add_index "schemes", ["name", "gsas_version", "certificate_id"], name: "index_schemes_on_name_and_gsas_version_and_certificate_id", unique: true, using: :btree
 
   create_table "tasks", force: :cascade do |t|
     t.integer  "task_description_id",   null: false
