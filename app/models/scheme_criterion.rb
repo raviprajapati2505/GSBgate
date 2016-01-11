@@ -20,14 +20,6 @@ class SchemeCriterion < ActiveRecord::Base
     "#{self.code}: #{self.name}"
   end
 
-  def minimum_score
-    scores.min
-  end
-
-  def maximum_score
-    scores.max
-  end
-
   # default_scope {
   #   joins(:criterion)
   #   .order('criteria.name')
