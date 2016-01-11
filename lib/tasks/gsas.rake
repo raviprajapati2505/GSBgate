@@ -3,7 +3,7 @@ namespace :gsas do
   PAGE_SIZE = 100
 
   # usage example: rake gsas:send_digest_mail[<user_email>]
-  desc "Send email to users with a digest of their most recent project changes and their list of unfinished tasks"
+  desc 'Send email to users with a digest of their most recent project changes and their list of unfinished tasks'
   task :send_digest_mail, [:user_email] => :environment do |t, args|
 
     Rails.logger.info 'Start sending emails...'
@@ -30,7 +30,7 @@ namespace :gsas do
     Rails.logger.info "Processed #{ActionController::Base.helpers.pluralize(user_count, 'user')}."
   end
 
-  desc "Create a task for the system admin for every certification path with maximum duration exceeded"
+  desc 'Create a task for the system admin for every certification path with maximum duration exceeded'
   task :create_duration_task, [] => :environment do |t, args|
 
     Rails.logger.info 'Start creating tasks for certification paths with maximum duration exceeded...'
@@ -55,7 +55,7 @@ namespace :gsas do
     Rails.logger.info "Found #{ActionController::Base.helpers.pluralize(certification_path_count, 'certification path')} with maximum duration exceeded."
   end
 
-  desc "Create a task for the project/certifier manager for every overdue task"
+  desc 'Create a task for the project/certifier manager for every overdue task'
   task :create_overdue_task, [] => :environment do |t, args|
 
     Rails.logger.info 'Start creating tasks for overdue tasks...'
@@ -102,7 +102,7 @@ namespace :gsas do
     Rails.logger.info "Found #{ActionController::Base.helpers.pluralize(task_count, 'task')} which are overdue."
   end
 
-  desc "Destroy old projects without certificates or with unactivated certificates"
+  desc 'Destroy old projects without certificates or with unactivated certificates'
   task :destroy_old_empty_projects, [] => :environment do |t, args|
 
     Rails.logger.info 'Start destroying old empty projects...'
