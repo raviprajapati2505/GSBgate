@@ -8,6 +8,9 @@ class AddMinimumValidScoreField < ActiveRecord::Migration
     SchemeCriterion.update_all('minimum_valid_score = minimum_score')
     SchemeCriterion.joins(:scheme_category).where(scheme_categories: {code: 'E'}).update_all('minimum_valid_score = 0')
     SchemeCriterion.joins(:scheme_category).where(scheme_categories: {code: 'W'}).update_all('minimum_valid_score = 0')
+    change_column_null(:scheme_criteria, :minimum_score, false)
+    change_column_null(:scheme_criteria, :maximum_score, false)
+    change_column_null(:scheme_criteria, :minimum_valid_score, false)
   end
 
   def down

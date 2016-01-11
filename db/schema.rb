@@ -222,9 +222,9 @@ ActiveRecord::Schema.define(version: 20160111065759) do
     t.string   "scores"
     t.integer  "scheme_category_id"
     t.decimal  "incentive_weight",    precision: 5, scale: 2, default: 0.0
-    t.integer  "minimum_score"
-    t.integer  "maximum_score"
-    t.integer  "minimum_valid_score"
+    t.integer  "minimum_score",                                             null: false
+    t.integer  "maximum_score",                                             null: false
+    t.integer  "minimum_valid_score",                                       null: false
   end
 
   add_index "scheme_criteria", ["scheme_category_id", "name"], name: "index_scheme_criteria_on_scheme_category_id_and_name", unique: true, using: :btree
