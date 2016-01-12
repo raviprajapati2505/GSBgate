@@ -66,7 +66,7 @@
                     </thead>
                     <tbody>
                     <tr>
-                        <th>Targeted score <%= tooltip('The score the project team would like to achieve. Defaults to the maximum attainable score, but can be changed by a project manager') %></th>
+                        <th>Targeted score <%= tooltip('The score the project team would like to achieve. Defaults to the maximum attainable score, but can be changed by a project manager.') %></th>
                         <td>
                             <% if can?(:update_targeted_score, @scheme_mix_criterion) %>
                                 <%= f.select :targeted_score, @scheme_mix_criterion.scheme_criterion.scores, hide_label: true %>
@@ -76,7 +76,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>Submitted score <%= tooltip('The score the project team will submit to GORD for verification. Will be provided by a project manager or a project team member that has been assigned to its criteria.') %></th>
+                        <th>Submitted score <%= tooltip('The score the project team will submit to GORD for verification. Will be provided by a project manager or a project team member that has been assigned to this criterion.') %></th>
                         <td>
                             <% if can?(:update_submitted_score, @scheme_mix_criterion) %>
                                 <%= f.select :submitted_score, @scheme_mix_criterion.scheme_criterion.scores, {include_blank: '-', hide_label: true} %>
@@ -87,7 +87,7 @@
                     </tr>
                     <% if !@certification_path.in_pre_verification? %>
                     <tr>
-                        <th>Achieved score <%= tooltip('The score GORD has awarded to this criteria. Will be provided by the certifier team, and will be used for the final certification score.') %></th>
+                        <th>Achieved score <%= tooltip('The score GORD has awarded to this criterion. Will be provided by the certifier team and will be used for the final certification score.') %></th>
                         <td>
                             <% if can?(:update_achieved_score, @scheme_mix_criterion) %>
                                 <%= f.select :achieved_score, @scheme_mix_criterion.scheme_criterion.scores, {include_blank: '-', hide_label: true} %>

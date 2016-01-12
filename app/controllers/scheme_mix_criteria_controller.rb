@@ -80,6 +80,8 @@ class SchemeMixCriteriaController < AuthenticatedController
       params[:scheme_mix_criterion][:submitted_score] = '-1'
     end
 
+
+
     @scheme_mix_criterion.update!(scheme_mix_criterion_params)
 
     redirect_to project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), notice: 'Criterion scores were successfully updated.'
