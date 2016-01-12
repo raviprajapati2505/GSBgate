@@ -76,8 +76,8 @@ class SchemeMixCriteriaController < AuthenticatedController
     authorize! :update_achieved_score, @scheme_mix_criterion, message: 'Not authorized to update achieved score' if scheme_mix_criterion_params.has_key?(:achieved_score)
 
     # if not attempting criterion
-    if @scheme_mix_criterion.targeted_score == -1
-      params[:scheme_mix_criterion][:submitted_score] = -1
+    if scheme_mix_criterion_params.has_key?(:targeted_score) && (params[:scheme_mix_criterion][:targeted_score] == '-1')
+      params[:scheme_mix_criterion][:submitted_score] = '-1'
     end
 
     @scheme_mix_criterion.update!(scheme_mix_criterion_params)
