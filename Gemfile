@@ -12,17 +12,11 @@ gem 'ffi-geos'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 
-# Use Twitter Bootstrap
-# gem 'bootstrap-sass', '~> 3.3.4.1'
-
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 
-# Use CoffeeScript for .coffee assets and views
-gem 'coffee-rails', '~> 4.1.0'
-
 # See https://github.com/rails/execjs#readme for more supported runtimes
-# gem 'therubyracer', platforms: :ruby
+gem 'execjs'
 
 # Use jquery as the JavaScript library
 # gem 'jquery-rails'
@@ -31,10 +25,10 @@ gem 'coffee-rails', '~> 4.1.0'
 # gem 'turbolinks'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.0'
+# gem 'jbuilder', '~> 2.0'
 
 # bundle exec rake doc:rails generates the API under doc/api.
-gem 'sdoc', '~> 0.4.0', group: :doc
+# gem 'sdoc', '~> 0.4.0', group: :doc
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
@@ -50,12 +44,12 @@ group :development, :test do
   gem 'better_errors'
   # -- add REPL and local instance variable inspection to better_errors
   gem 'binding_of_caller'
+  # used by the xlsx2seed rake task
+  gem 'roo', '~> 2.2.0'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :jruby]
-
-gem 'coffee-script-source', '1.8.0'
 
 # Flexible authentication solution
 gem 'devise'
@@ -94,6 +88,7 @@ gem 'addressable'
 # https://github.com/galetahub/ckeditor
 gem 'ckeditor', '~> 4.1.3'
 
+# Datatables.net, with server-side searching, sorting and filtering
 gem 'effective_datatables', '~> 2.2.7'
 
 # PDF Generator
@@ -130,14 +125,4 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-three.js'
   gem 'rails-assets-leaflet-draw'
   gem 'rails-assets-proj4'
-end
-
-group :development do
-  gem 'roo', '~> 2.2.0'
-end
-
-group :production do
-  gem 'execjs'
-  # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  gem 'therubyracer'
 end
