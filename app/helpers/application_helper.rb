@@ -42,11 +42,11 @@ module ApplicationHelper
   end
 
   def btn_audit_log(auditable)
-    btn_link_to(auditable_index_logs_path(auditable.class.name, auditable.id), remote: true, tooltip: 'View the complete audit log of this resource.', icon: 'mail-reply', size: 'extra_small', style: 'default', class: 'pull-right audit-log')
+    btn_link_to(auditable_index_logs_path(auditable.class.name, auditable.id), disabling: false, remote: true, tooltip: 'View the complete audit log of this resource.', icon: 'mail-reply', size: 'extra_small', style: 'default', class: 'pull-right audit-log')
   end
 
   def btn_audit_log_comment(auditable)
-    btn_link_to(auditable_index_comments_path(auditable.class.name, auditable.id), remote: true, tooltip: 'View or add comments to the audit log of this resource.', icon: 'comment', size: 'extra_small', style: 'default', class: 'audit-log pull-right')
+    btn_link_to(auditable_index_comments_path(auditable.class.name, auditable.id), disabling: false, remote: true, tooltip: 'View or add comments to the audit log of this resource.', icon: 'comment', size: 'extra_small', style: 'default', class: 'audit-log pull-right')
   end
 
   def btn_audit_log_filtered(status_name, audit_log_params)

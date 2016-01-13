@@ -34,7 +34,7 @@
  *= require leaflet
  *= require leaflet-draw
  *= require proj4
- *= require three.js/three.js 
+ *= require three.js/three.js
  */
 
 $(function () {
@@ -179,7 +179,11 @@ var GSAS = {
     },
     // Find and process tooltips (that weren't processed yet)
     processTooltips: function () {
-        $('[data-toggle="tooltip"]').not('.tooltip-processed').addClass('tooltip-processed').tooltip();
+        $('[data-toggle="tooltip"]').not('.tooltip-processed').tooltip();
+        $('[data-toggle="tooltip"]').not('.tooltip-processed').on('click', function() {
+            $(this).tooltip('hide');
+        });
+        $('[data-toggle="tooltip"]').not('.tooltip-processed').addClass('tooltip-processed');
     },
     setSortableListPositions: function() {
         $('.sortable > .panel.panel-default').each(function(i) {
