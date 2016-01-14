@@ -2,6 +2,7 @@ class CertificationPath < ActiveRecord::Base
   include Auditable
   include Taskable
   include DatePlucker
+  include ScoreCalculator
 
   belongs_to :project
   belongs_to :certificate
@@ -79,18 +80,6 @@ class CertificationPath < ActiveRecord::Base
 
   def has_fixed_scheme?
     certificate.schemes.count == 1
-  end
-
-  def targeted_star_rating
-    CertificationPath.star_rating_for_score(scores_in_certificate_points[:targeted])
-  end
-
-  def submitted_star_rating
-    CertificationPath.star_rating_for_score(scores_in_certificate_points[:submitted])
-  end
-
-  def achieved_star_rating
-    CertificationPath.star_rating_for_score(scores_in_certificate_points[:achieved])
   end
 
   def total_weight
@@ -277,19 +266,6 @@ class CertificationPath < ActiveRecord::Base
   def is_certified?
     CertificationPathStatus::CERTIFIED == certification_path_status_id
   end
-
-  def scores_in_certificate_points
-    # TODO: investigate memoization pattern for calculated values (or store the value with the certification_path when achieved)
-    ApplicationController.helpers.sum_score_hashes(scheme_mix_criteria.collect { |smc| smc.scores_in_certificate_points })
-  end
-
-  # def scores_in_scheme_points
-  #   ApplicationController.helpers.sum_score_hashes(scheme_mix_criteria.collect { |smc| smc.scores_in_scheme_points })
-  # end
-  #
-  # def scores
-  #   ApplicationController.helpers.sum_score_hashes(scheme_mix_criteria.collect { |smc| smc.scores })
-  # end
 
   private
 

@@ -60,7 +60,7 @@
                     <tr>
                         <th>Score</th>
                         <td>
-                            <%= render 'score/score', scores: @certification_path.scores_in_certificate_points %>
+                            <%= render 'score/score', scores: @certification_path.scores_in_certificate_points, point_type: :certificate_points %>
                         </td>
                     </tr>
                     <% if @certification_path.certificate.design_type? %>

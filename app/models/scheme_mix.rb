@@ -1,4 +1,6 @@
 class SchemeMix < ActiveRecord::Base
+  include ScoreCalculator
+
   belongs_to :certification_path
   belongs_to :scheme
   has_many :scheme_mix_criteria, dependent: :destroy
@@ -16,30 +18,6 @@ class SchemeMix < ActiveRecord::Base
     self.scheme.full_name
   end
 
-  def scores_in_certificate_points
-    ApplicationController.helpers.sum_score_hashes(scheme_mix_criteria.collect { |smc| smc.scores_in_certificate_points })
-  end
-
-  def scores_in_scheme_points
-    ApplicationController.helpers.sum_score_hashes(scheme_mix_criteria.collect { |smc| smc.scores_in_scheme_points })
-  end
-
-  def scores
-    ApplicationController.helpers.sum_score_hashes(scheme_mix_criteria.collect { |smc| smc.scores })
-  end
-
-  def scores_in_certificate_points_for_category(category)
-    ApplicationController.helpers.sum_score_hashes(scheme_mix_criteria.for_category(category).collect { |smc| smc.scores_in_certificate_points })
-  end
-
-  def scores_in_scheme_points_for_category(category)
-    ApplicationController.helpers.sum_score_hashes(scheme_mix_criteria.for_category(category).collect { |smc| smc.scores_in_scheme_points })
-  end
-
-  def scores_for_category(category)
-    ApplicationController.helpers.sum_score_hashes(scheme_mix_criteria.for_category(category).collect { |smc| smc.scores })
-  end
-
   private
 
   # Mirrors all the descendant structural data records of the SchemeMix to user data records
@@ -47,7 +25,7 @@ class SchemeMix < ActiveRecord::Base
     # Loop all the criteria of the scheme
     scheme.scheme_criteria.each do |scheme_criterion|
       # Create a SchemeMixCriterion for every criterion
-      scheme_mix_criterion = SchemeMixCriterion.create!(targeted_score: scheme_criterion.scores.max, scheme_mix: self, scheme_criterion: scheme_criterion)
+      scheme_mix_criterion = SchemeMixCriterion.create!(targeted_score: scheme_criterion.maximum_score, scheme_mix: self, scheme_criterion: scheme_criterion)
 
       # Loop all requirements of the criterion
       scheme_criterion.requirements.each do |requirement|

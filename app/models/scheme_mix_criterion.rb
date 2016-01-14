@@ -1,6 +1,7 @@
 class SchemeMixCriterion < ActiveRecord::Base
   include Auditable
   include Taskable
+  include ScoreCalculator
 
   has_many :scheme_mix_criteria_requirement_data, dependent: :destroy
   has_many :requirement_data, through: :scheme_mix_criteria_requirement_data
@@ -103,11 +104,6 @@ class SchemeMixCriterion < ActiveRecord::Base
     return todos
   end
 
-  # returns scores taking into account the percentage for which it counts (=weight)
-  def score_types
-    return [:absolute, :weighted]
-  end
-
   def self::map_to_status_key(status_value)
     value = self.statuses.find { |k, v| v == status_value }
     return value[0].humanize unless value.nil?
@@ -122,55 +118,7 @@ class SchemeMixCriterion < ActiveRecord::Base
     return false
   end
 
-  def scores_in_certificate_points
-    score = scores
-    score.each{|k,v| score[k] = convert_to_certificate_points(v)}
-    return score
-  end
-
-  def scores_in_scheme_points
-    score = scores
-    score.each{|k,v| score[k] = convert_to_scheme_points(v)}
-    return score
-  end
-
-  # A hash containing all scores, in absolute values, dependent on the current certification_path state
-  # all other score methods will get their data from here
-  def scores
-    score = {
-        :maximum => maximum_score,
-        :minimum =>  minimum_score
-    }
-    if not (scheme_mix.certification_path.is_activating?)
-      score[:targeted] = targeted_score.nil? ? scheme_criterion.minimum_score : targeted_score
-      score[:submitted] = submitted_score.nil? ? scheme_criterion.minimum_score : submitted_score
-    end
-    if !scheme_mix.certification_path.in_pre_verification?
-      score[:achieved] = achieved_score.nil? ? scheme_criterion.minimum_score : achieved_score
-    end
-    return score
-  end
-
-  def maximum_score
-    scheme_criterion.maximum_score
-  end
-
-  def minimum_score
-    scheme_criterion.minimum_score
-  end
-
-  def convert_to_certificate_points(score)
-    score = convert_to_scheme_points(score)
-    (score.to_f * (scheme_mix.weight.to_f / 100.to_f))
-  end
-
-  def convert_to_scheme_points(score)
-    # returns weighted score, taking into account the percentage for which it counts (=weight)
-    #NOTE: we multiply the weight with 3, as we need a final score on a scale based on a total of 3, not 1
-    (score.to_f  / scheme_criterion.maximum_score.to_f ) * ((3.to_f  * (scheme_criterion.weight.to_f + scheme_criterion.incentive_weight.to_f )) / 100.to_f)
-  end
-
-  def in_submission?
+   def in_submission?
     if self.submitting? || self.submitting_after_appeal?
       return true
     end

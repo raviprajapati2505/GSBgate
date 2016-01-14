@@ -1,9 +1,10 @@
+<% scores = certification_path.scores_in_certificate_points %>
 <% if not certification_path.is_activating? %>
-    <%= render partial: 'certification_paths/star_rating_item', locals: {score_label: 'Targeted', score: certification_path.scores_in_certificate_points[:targeted]} %>
-    <%= render partial: 'certification_paths/star_rating_item', locals: {score_label: 'Submitted', score: certification_path.scores_in_certificate_points[:submitted]} %>
+    <%= render partial: 'certification_paths/star_rating_item', locals: {score_label: 'Targeted', score: scores[:targeted_score_in_certificate_points]} %>
+    <%= render partial: 'certification_paths/star_rating_item', locals: {score_label: 'Submitted', score: scores[:submitted_score_in_certificate_points]} %>
 <% else %>
     ---
 <% end %>
 <% if not certification_path.in_pre_verification? %>
-    <%= render partial: 'certification_paths/star_rating_item', locals: {score_label: 'Achieved', score: certification_path.scores_in_certificate_points[:achieved], achieved: true} %>
+    <%= render partial: 'certification_paths/star_rating_item', locals: {score_label: 'Achieved', score: scores[:achieved_score_in_certificate_points], achieved: true} %>
 <% end %>

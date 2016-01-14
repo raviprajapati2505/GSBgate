@@ -21,6 +21,18 @@
         </tr>
         </thead>
         <tbody>
+        <%
+           scheme_mix_criteria_scores = certification_path.scheme_mix_criteria_scores
+           scheme_mix_criteria_scores_by_scheme_mix = scheme_mix_criteria_scores.group_by{|item| item[:scheme_mix_id]}
+           scheme_mixes_scale = {
+               maximum_scale_in_certificate_points: scheme_mix_criteria_scores_by_scheme_mix.collect{|scheme_mix_id, scores| scores.collect{|score| score[:maximum_score_in_certificate_points]}.inject(:+)}.max,
+               minimum_scale_in_certificate_points: scheme_mix_criteria_scores_by_scheme_mix.collect{|scheme_mix_id, scores| scores.collect{|score| score[:minimum_score_in_certificate_points]}.inject(:+)}.min,
+               maximum_scale_in_scheme_points: scheme_mix_criteria_scores_by_scheme_mix.collect{|scheme_mix_id, scores| scores.collect{|score| score[:maximum_score_in_scheme_points]}.inject(:+)}.max,
+               minimum_scale_in_scheme_points: scheme_mix_criteria_scores_by_scheme_mix.collect{|scheme_mix_id, scores| scores.collect{|score| score[:minimum_score_in_scheme_points]}.inject(:+)}.min,
+               maximum_scale_in_criteria_points: scheme_mix_criteria_scores_by_scheme_mix.collect{|scheme_mix_id, scores| scores.collect{|score| score[:maximum_score_in_criteria_points]}.inject(:+)}.max,
+               minimum_scale_in_criteria_points: scheme_mix_criteria_scores_by_scheme_mix.collect{|scheme_mix_id, scores| scores.collect{|score| score[:minimum_score_in_criteria_points]}.inject(:+)}.min
+           }
+        %>
         <% certification_path.scheme_mixes.each do |scheme_mix| %>
             <tr>
                 <td>
@@ -30,12 +42,13 @@
                 </td>
                 <td><%= scheme_mix.weight %> %</td>
                 <td>
-                    <%= render 'score/score_tabs',
-                               scores_in_certificate_points: scheme_mix.scores_in_certificate_points,
-                               scores_in_scheme_points: scheme_mix.scores_in_scheme_points,
-                               scores: scheme_mix.scores,
-                               element_id: "scheme_mix_#{scheme_mix.id}"
+                    <%
+                       # summarize the scores for this scheme
+                       scheme_mix_scores = sum_score_hashes(scheme_mix_criteria_scores_by_scheme_mix[scheme_mix.id])
+                       # set the min and max scales, so all graphs use the same dimensions
+                       scheme_mix_scores = scheme_mix_scores.merge(scheme_mixes_scale)
                     %>
+                    <%= render 'score/score_tabs', scores: scheme_mix_scores, element_id: "scheme_mix_#{scheme_mix.id}" %>
                 </td>
                 <td>
                     <div class="progress">
