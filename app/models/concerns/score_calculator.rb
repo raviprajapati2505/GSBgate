@@ -114,17 +114,6 @@ module ScoreCalculator
     end
 
     def query_score_template(point_type, field_name, field_alias = '')
-      # determine template
-      if point_type == :criteria_points
-        template = 'SUM(GREATEST(%{field_table}.%{field_name}::float, scheme_criteria_score.minimum_score::float)) %{field_alias}'
-      elsif point_type == :scheme_points
-        template = 'SUM(((GREATEST(%{field_table}.%{field_name}::float, scheme_criteria_score.minimum_score::float) / scheme_criteria_score.maximum_score::float) * ((3.0 * (scheme_criteria_score.weight + scheme_criteria_score.incentive_weight)) / 100.0))) %{field_alias}'
-      elsif point_type == :certificate_points
-        template = 'SUM(((GREATEST(%{field_table}.%{field_name}::float, scheme_criteria_score.minimum_score::float) / scheme_criteria_score.maximum_score::float) * ((3.0 * (scheme_criteria_score.weight + scheme_criteria_score.incentive_weight)) / 100.0)  * (scheme_mixes_score.weight / 100.0))) %{field_alias}'
-      else
-        raise('Unexpected point type: ' + point_type.to_s)
-      end
-
       # determine table for field name
       if field_name == :maximum_score or field_name == :minimum_score
         field_table = 'scheme_criteria_score'
@@ -134,11 +123,36 @@ module ScoreCalculator
         raise('Unexpected score field: ' + field_name.to_s)
       end
 
+      # determine template
+      if point_type == :criteria_points
+        score_template = 'SUM(GREATEST(%{field_table}.%{field_name}::float, scheme_criteria_score.minimum_score::float))'
+      elsif point_type == :scheme_points
+        score_template = 'SUM(((GREATEST(%{field_table}.%{field_name}::float, scheme_criteria_score.minimum_score::float) / scheme_criteria_score.maximum_score::float) * ((3.0 * (scheme_criteria_score.weight + scheme_criteria_score.incentive_weight)) / 100.0)))'
+      elsif point_type == :certificate_points
+        score_template = 'SUM(((GREATEST(%{field_table}.%{field_name}::float, scheme_criteria_score.minimum_score::float) / scheme_criteria_score.maximum_score::float) * ((3.0 * (scheme_criteria_score.weight + scheme_criteria_score.incentive_weight)) / 100.0)  * (scheme_mixes_score.weight / 100.0)))'
+      else
+        raise('Unexpected point type: ' + point_type.to_s)
+      end
+      # build complete query string using parts
+      score_query = score_template % {field_table: field_table, field_name: field_name}
+
+      if field_name == :achieved_score
+        # Check if the score is not below the minimum required valid score
+        # -- first compare
+        # -- then convert to a number, so we can use an aggregate function
+        # -- then compare the aggregate result
+        # -- returning NULL if there was at least 1 invalid scheme mix criterion
+        # -- OR return the actual score sum query
+        validation_template = 'CASE MAX(CASE(%{field_table}.%{field_name} < scheme_criteria_score.minimum_valid_score) WHEN true then 1 else 0 end) WHEN 1 THEN null ELSE %{score_query} end'
+      else
+        validation_template = '%{score_query}'
+      end
+      validation_query = validation_template % {field_table: field_table, field_name: field_name, score_query: score_query}
+
       # alias part
       field_alias = ' as ' + field_alias unless field_alias.empty?
 
-      # build complete query string using parts
-      template % {field_table: field_table, field_name: field_name, field_alias: field_alias}
+      return '%{validation_query}%{field_alias}' % {validation_query: validation_query, field_alias: field_alias}
     end
 
     def base_score_query
