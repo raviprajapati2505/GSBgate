@@ -8,3 +8,5 @@ ActiveSupport::Inflector.inflections do |inflect|
   inflect.irregular 'criterion', 'criteria'
   inflect.irregular 'datum', 'data'
 end
+
+APP_VERSION = IO.popen('svnversion').readlines[0] rescue ''
