@@ -80,7 +80,6 @@
                 <% if !@scheme_mix.certification_path.in_pre_verification? && invalid_criteria_ids.size > 0 %>
                     <p class="alert alert-warning"><%= fa_icon('info-circle') %>
                         There are one or more criteria that have not achieved their minimum valid score.
-                        <%= invalid_criteria_ids %>
                     </p>
                 <% end %>
                 <%= scores_legend %>
