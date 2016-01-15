@@ -64,6 +64,11 @@
                         <th>Score</th>
                     </tr>
                     </thead>
+                    <% if @scheme_mix_criterion.scheme_criterion.minimum_score != @scheme_mix_criterion.scheme_criterion.minimum_valid_score %>
+                        <p class="alert alert-warning"><%= fa_icon('info-circle') %>
+                            The scores of this criterion should be at least <%= @scheme_mix_criterion.scheme_criterion.minimum_valid_score %> to be able to receive a certificate.
+                        </p>
+                    <% end %>
                     <tbody>
                     <tr>
                         <th>Targeted score <%= tooltip('The score the project team would like to achieve. Defaults to the maximum attainable score, but can be changed by a project manager.') %></th>

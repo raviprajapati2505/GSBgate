@@ -58,6 +58,28 @@
                 <h5>Categories &amp; criteria</h5>
             </div>
             <div class="ibox-content">
+                <%
+                   # fetch all score records
+                   scheme_mix_criteria_scores = @scheme_mix.scheme_mix_criteria_scores
+                   # check for criteria that violate their minimum_valid_score
+                   invalid_criteria_ids = scheme_mix_criteria_scores.collect { |score| score[:scheme_mix_criteria_id] if (score[:minimum_score_in_criteria_points] != score[:minimum_valid_score_in_criteria_points]) }
+                   # group by category
+                   scheme_mix_criteria_scores_by_category = scheme_mix_criteria_scores.group_by{|item| item[:scheme_category_id]}
+                   # calculate the max and min values for each category, and take the max min of those calculated values
+                   scheme_scale = {
+                       maximum_scale_in_certificate_points: scheme_mix_criteria_scores_by_category.collect{|category_id, scores| scores.collect{|score| score[:maximum_score_in_certificate_points]}.inject(:+)}.max,
+                       minimum_scale_in_certificate_points: scheme_mix_criteria_scores_by_category.collect{|category_id, scores| scores.collect{|score| score[:minimum_score_in_certificate_points]}.inject(:+)}.min,
+                       maximum_scale_in_scheme_points: scheme_mix_criteria_scores_by_category.collect{|category_id, scores| scores.collect{|score| score[:maximum_score_in_scheme_points]}.inject(:+)}.max,
+                       minimum_scale_in_scheme_points: scheme_mix_criteria_scores_by_category.collect{|category_id, scores| scores.collect{|score| score[:minimum_score_in_scheme_points]}.inject(:+)}.min,
+                       maximum_scale_in_criteria_points: scheme_mix_criteria_scores_by_category.collect{|category_id, scores| scores.collect{|score| score[:maximum_score_in_criteria_points]}.inject(:+)}.max,
+                       minimum_scale_in_criteria_points: scheme_mix_criteria_scores_by_category.collect{|category_id, scores| scores.collect{|score| score[:minimum_score_in_criteria_points]}.inject(:+)}.min
+                   }
+                %>
+                <% if invalid_criteria_ids.present? %>
+                    <p class="alert alert-warning"><%= fa_icon('info-circle') %>
+                        There are one or more criteria that have not achieved their minimum valid score.
+                    </p>
+                <% end %>
                 <%= scores_legend %>
                 <div id="categories-accordion">
                     <table class="table table-bordered" cellspacing="0" width="100%">
@@ -78,18 +100,6 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <%
-                           scheme_mix_criteria_scores = @scheme_mix.scheme_mix_criteria_scores
-                           scheme_mix_criteria_scores_by_category = scheme_mix_criteria_scores.group_by{|item| item[:scheme_category_id]}
-                           scheme_scale = {
-                               maximum_scale_in_certificate_points: scheme_mix_criteria_scores_by_category.collect{|category_id, scores| scores.collect{|score| score[:maximum_score_in_certificate_points]}.inject(:+)}.max,
-                               minimum_scale_in_certificate_points: scheme_mix_criteria_scores_by_category.collect{|category_id, scores| scores.collect{|score| score[:minimum_score_in_certificate_points]}.inject(:+)}.min,
-                               maximum_scale_in_scheme_points: scheme_mix_criteria_scores_by_category.collect{|category_id, scores| scores.collect{|score| score[:maximum_score_in_scheme_points]}.inject(:+)}.max,
-                               minimum_scale_in_scheme_points: scheme_mix_criteria_scores_by_category.collect{|category_id, scores| scores.collect{|score| score[:minimum_score_in_scheme_points]}.inject(:+)}.min,
-                               maximum_scale_in_criteria_points: scheme_mix_criteria_scores_by_category.collect{|category_id, scores| scores.collect{|score| score[:maximum_score_in_criteria_points]}.inject(:+)}.max,
-                               minimum_scale_in_criteria_points: scheme_mix_criteria_scores_by_category.collect{|category_id, scores| scores.collect{|score| score[:minimum_score_in_criteria_points]}.inject(:+)}.min
-                           }
-                        %>
                         <% @scheme_mix.scheme_categories.uniq.each_with_index do |category, i| %>
                             <%
                                # summarize the scores for this category
