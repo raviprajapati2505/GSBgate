@@ -2,7 +2,7 @@ module ScoreCalculator
   extend ActiveSupport::Concern
 
   POINT_TYPES = [:criteria_points, :scheme_points, :certificate_points]
-  SCORE_FIELDS = [:achieved_score, :submitted_score, :targeted_score, :maximum_score, :minimum_score]
+  SCORE_FIELDS = [:achieved_score, :submitted_score, :targeted_score, :maximum_score, :minimum_score, :minimum_valid_score]
   GROUP_TYPES = [:scheme_mix_criteria_id, :certification_path_id, :scheme_mix_id, :scheme_criteria_id, :scheme_category_id]
 
   included do
@@ -115,7 +115,7 @@ module ScoreCalculator
 
     def query_score_template(point_type, field_name, field_alias = '')
       # determine table for field name
-      if field_name == :maximum_score or field_name == :minimum_score
+      if field_name == :maximum_score or field_name == :minimum_score or field_name == :minimum_valid_score
         field_table = 'scheme_criteria_score'
       elsif field_name == :achieved_score or field_name == :submitted_score or field_name == :targeted_score
         field_table = 'scheme_mix_criteria_score'
