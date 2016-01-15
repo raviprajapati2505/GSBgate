@@ -114,16 +114,53 @@ module ScoreCalculator
     end
 
     def query_score_template(point_type, field_name, field_alias = '')
-      # determine table for field name
-      if field_name == :maximum_score or field_name == :minimum_score or field_name == :minimum_valid_score
-        field_table = 'scheme_criteria_score'
-      elsif field_name == :achieved_score or field_name == :submitted_score or field_name == :targeted_score
-        field_table = 'scheme_mix_criteria_score'
+      # determine corresponding table for a given score field name
+      field_table = field_table_for_field_name(field_name)
+
+      # query that calculates the score for a specific score field
+      score_calculation_query = build_score_calculation_query(field_name, field_table, point_type)
+
+      # validations
+      if field_name == :achieved_score or field_name == :submitted_score or field_name == :targeted_score
+        # - validate certification path status
+        check_certification_path_state = build_check_certification_path_state_query(field_name)
+
+        # - validate minimum valid score (if the score is not below the minimum required valid score)
+        check_minimum_valid_score = build_check_minimum_valid_score_query(field_name, field_table)
+
+        # NOTE: to use validations in a query, we do some magic tricks
+        # - convert the boolean check value to a number, so we can use an aggregate function on it
+        # - returning NULL if not all validations are ok
+        # - OR returning the actual score calculation query
+        validation_query_template = 'CASE MIN(CASE(%{check_certification_path_state} AND %{check_minimum_valid_score}) WHEN true then 1 else 0 end) WHEN 1 THEN %{score_calculation_query} ELSE null end'
+        validation_query = validation_query_template % {check_certification_path_state: check_certification_path_state, check_minimum_valid_score: check_minimum_valid_score, score_calculation_query: score_calculation_query}
       else
-        raise('Unexpected score field: ' + field_name.to_s)
+        validation_query = score_calculation_query
       end
 
-      # determine template
+      # alias part
+      field_alias = ' as ' + field_alias unless field_alias.empty?
+      return '%{validation_query}%{field_alias}' % {validation_query: validation_query, field_alias: field_alias}
+    end
+
+    def build_check_minimum_valid_score_query(field_name, field_table)
+      check_minimum_valid_score_template = '(%{field_table}.%{field_name} >= scheme_criteria_score.minimum_valid_score)'
+      check_minimum_valid_score_template % {field_table: field_table, field_name: field_name}
+    end
+
+    def build_check_certification_path_state_query(field_name)
+      if field_name == :targeted_score
+        minimum_certification_path_status_id = CertificationPathStatus::SUBMITTING
+      elsif field_name == :submitted_score
+        minimum_certification_path_status_id = CertificationPathStatus::SUBMITTING
+      elsif field_name == :achieved_score
+        minimum_certification_path_status_id = CertificationPathStatus::VERIFYING
+      end
+      check_certification_path_state_template = '(certification_paths_score.certification_path_status_id >= %{certification_path_status_id})'
+      check_certification_path_state_template % {certification_path_status_id: minimum_certification_path_status_id}
+    end
+
+    def build_score_calculation_query(field_name, field_table, point_type)
       if point_type == :criteria_points
         score_template = 'SUM(GREATEST(%{field_table}.%{field_name}::float, scheme_criteria_score.minimum_score::float))'
       elsif point_type == :scheme_points
@@ -133,26 +170,19 @@ module ScoreCalculator
       else
         raise('Unexpected point type: ' + point_type.to_s)
       end
-      # build complete query string using parts
-      score_query = score_template % {field_table: field_table, field_name: field_name}
+      # build score calculation query
+      score_template % {field_table: field_table, field_name: field_name}
+    end
 
-      if field_name == :achieved_score or field_name == :submitted_score or field_name == :targeted_score
-        # Check if the score is not below the minimum required valid score
-        # -- first compare
-        # -- then convert to a number, so we can use an aggregate function
-        # -- then compare the aggregate result
-        # -- returning NULL if there was at least 1 invalid scheme mix criterion
-        # -- OR return the actual score sum query
-        validation_template = 'CASE MAX(CASE(%{field_table}.%{field_name} < scheme_criteria_score.minimum_valid_score) WHEN true then 1 else 0 end) WHEN 1 THEN null ELSE %{score_query} end'
+    def field_table_for_field_name(field_name)
+      if field_name == :maximum_score or field_name == :minimum_score or field_name == :minimum_valid_score
+        field_table = 'scheme_criteria_score'
+      elsif field_name == :achieved_score or field_name == :submitted_score or field_name == :targeted_score
+        field_table = 'scheme_mix_criteria_score'
       else
-        validation_template = '%{score_query}'
+        raise('Unexpected score field: ' + field_name.to_s)
       end
-      validation_query = validation_template % {field_table: field_table, field_name: field_name, score_query: score_query}
-
-      # alias part
-      field_alias = ' as ' + field_alias unless field_alias.empty?
-
-      return '%{validation_query}%{field_alias}' % {validation_query: validation_query, field_alias: field_alias}
+      field_table
     end
 
     def base_score_query
