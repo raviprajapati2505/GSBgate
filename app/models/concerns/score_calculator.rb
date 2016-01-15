@@ -136,7 +136,7 @@ module ScoreCalculator
       # build complete query string using parts
       score_query = score_template % {field_table: field_table, field_name: field_name}
 
-      if field_name == :achieved_score
+      if field_name == :achieved_score or field_name == :submitted_score or field_name == :targeted_score
         # Check if the score is not below the minimum required valid score
         # -- first compare
         # -- then convert to a number, so we can use an aggregate function
