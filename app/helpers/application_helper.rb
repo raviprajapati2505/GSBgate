@@ -246,7 +246,17 @@ module ApplicationHelper
   end
 
   def sum_score_hashes(score_hashes)
-    score_hashes.inject(Hash.new()) { |total, score| total.merge(score) { |k, a, b| a + b } }
+    score_hashes.inject(Hash.new()) { |total, score|
+      total.merge(score) { |k, (a, b)|
+        # if any value is nil, the end result shall be nil
+        if (a.nil? || b.nil?)
+          res = nil
+        else
+          res = a + b
+        end
+        res
+      }
+    }
   end
 
   def breadcrumbs(model, with_prefix: true)
