@@ -75,13 +75,13 @@ class SchemeMixCriteriaController < AuthenticatedController
     authorize! :update_submitted_score, @scheme_mix_criterion, message: 'Not authorized to update submitted score' if scheme_mix_criterion_params.has_key?(:submitted_score)
     authorize! :update_achieved_score, @scheme_mix_criterion, message: 'Not authorized to update achieved score' if scheme_mix_criterion_params.has_key?(:achieved_score)
 
-    # If not attempting this criterion, set submitted score to -1
-    if scheme_mix_criterion_params.has_key?(:targeted_score) && (params[:scheme_mix_criterion][:targeted_score] == '-1')
-      params[:scheme_mix_criterion][:submitted_score] = '-1'
-    end
-
     redirect_path = project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion)
     min_valid_score = @scheme_mix_criterion.scheme_criterion.minimum_valid_score
+
+    # If not attempting this criterion, set submitted score to minimum valid score
+    if scheme_mix_criterion_params.has_key?(:targeted_score) && (params[:scheme_mix_criterion][:targeted_score].to_i == min_valid_score)
+      params[:scheme_mix_criterion][:submitted_score] = params[:scheme_mix_criterion][:targeted_score]
+    end
 
     # The targeted & submitted scores should always be higher than or equal to the minimum valid score of the criterion
     if ((scheme_mix_criterion_params.has_key?(:targeted_score) && (params[:scheme_mix_criterion][:targeted_score].to_i < min_valid_score)) || (scheme_mix_criterion_params.has_key?(:submitted_score) && (params[:scheme_mix_criterion][:submitted_score].to_i < min_valid_score)))
