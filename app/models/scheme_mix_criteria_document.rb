@@ -9,6 +9,14 @@ class SchemeMixCriteriaDocument < ActiveRecord::Base
 
   after_initialize :init
 
+  scope :for_category, ->(category) {
+    includes(:scheme_mix_criterion => [:scheme_criterion]).where(scheme_criteria: {scheme_category_id: category.id})
+  }
+
+  scope :for_scheme_mix, ->(scheme_mix) {
+    includes(:scheme_mix_criterion).where(scheme_mix_criteria: {scheme_mix_id: scheme_mix.id})
+  }
+
   def name
     self.document.name
   end

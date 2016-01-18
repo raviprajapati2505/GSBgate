@@ -138,8 +138,8 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <% approved_count = category.scheme_mix_criteria_documents.approved.count %>
-                                    <% awaiting_approval_count = category.scheme_mix_criteria_documents.awaiting_approval.count %>
+                                    <% approved_count = SchemeMixCriteriaDocument.for_scheme_mix(@scheme_mix).for_category(category).approved.count %>
+                                    <% awaiting_approval_count = SchemeMixCriteriaDocument.for_scheme_mix(@scheme_mix).for_category(category).awaiting_approval.count %>
                                     <% total_count = approved_count + awaiting_approval_count %>
                                     <div class="progress">
                                         <div class="progress-bar" style="min-width: 2em; width: <%= (total_count != 0 ? (approved_count * 100 / total_count) : 100) %>%;">
