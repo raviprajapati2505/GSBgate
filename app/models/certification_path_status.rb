@@ -44,6 +44,24 @@ class CertificationPathStatus < ActiveRecord::Base
       CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT
   ]
 
+  STATUSES_ACTIVATED = [
+      CertificationPathStatus::SUBMITTING,
+      CertificationPathStatus::SCREENING,
+      CertificationPathStatus::SUBMITTING_AFTER_SCREENING,
+      CertificationPathStatus::PROCESSING_PCR_PAYMENT,
+      CertificationPathStatus::SUBMITTING_PCR,
+      CertificationPathStatus::VERIFYING,
+      CertificationPathStatus::ACKNOWLEDGING,
+      CertificationPathStatus::PROCESSING_APPEAL_PAYMENT,
+      CertificationPathStatus::SUBMITTING_AFTER_APPEAL,
+      CertificationPathStatus::VERIFYING_AFTER_APPEAL,
+      CertificationPathStatus::ACKNOWLEDGING_AFTER_APPEAL,
+      CertificationPathStatus::APPROVING_BY_MANAGEMENT,
+      CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT,
+      CertificationPathStatus::CERTIFIED,
+      CertificationPathStatus::NOT_CERTIFIED
+  ]
+
   STATUSES_COMPLETED = [
       CertificationPathStatus::CERTIFIED,
       CertificationPathStatus::NOT_CERTIFIED

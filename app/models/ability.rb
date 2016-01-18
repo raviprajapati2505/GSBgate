@@ -120,11 +120,11 @@ class Ability
       end
 
       # SchemeMix controller
-      can :read, SchemeMix, certification_path: {project: project_with_user_assigned}
+      can :read, SchemeMix, certification_path: {project: project_with_user_assigned, certification_path_status: {id: CertificationPathStatus::STATUSES_ACTIVATED}}
 
       # SchemeMixCriterion controller
-      can :read, SchemeMixCriterion, scheme_mix: {certification_path: {project: project_with_user_assigned}}
-      can :list, SchemeMixCriterion, scheme_mix: {certification_path: {project: project_with_user_assigned}}
+      can :read, SchemeMixCriterion, scheme_mix: {certification_path: {project: project_with_user_assigned, certification_path_status: {id: CertificationPathStatus::STATUSES_ACTIVATED}}}
+      can :list, SchemeMixCriterion, scheme_mix: {certification_path: {project: project_with_user_assigned, certification_path_status: {id: CertificationPathStatus::STATUSES_ACTIVATED}}}
       if user.assessor?
         can [:edit_status, :update_status], SchemeMixCriterion, status: scheme_mix_criterion_status_submitting, scheme_mix: {certification_path: {certification_path_status: {id: CertificationPathStatus::STATUSES_IN_SUBMISSION}, project: project_with_user_as_project_manager}}
         # allows a submitted state, to be reset
@@ -145,7 +145,7 @@ class Ability
       end
 
       # RequirementDatum controller
-      can :read, RequirementDatum, scheme_mix_criteria: {scheme_mix: {certification_path: {project: project_with_user_assigned}}}
+      can :read, RequirementDatum, scheme_mix_criteria: {scheme_mix: {certification_path: {project: project_with_user_assigned, certification_path_status: {id: CertificationPathStatus::STATUSES_ACTIVATED}}}}
       if user.assessor?
         can :update, RequirementDatum, scheme_mix_criteria: {status: scheme_mix_criterion_status_submitting, scheme_mix: {certification_path: {project: project_with_user_as_project_manager}}}
         can :update_status, RequirementDatum, user_id: user.id, scheme_mix_criteria: {status: scheme_mix_criterion_status_submitting, scheme_mix: {certification_path: {project: project_with_user_as_assessor}}}
@@ -227,8 +227,13 @@ class Ability
       elsif user.gord_manager?
         can [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::APPROVING_BY_MANAGEMENT}
       end
+      # SchemeMix
+      cannot :read, SchemeMix, certification_path: {certification_path_status: {id: CertificationPathStatus::ACTIVATING}}
       # SchemeMixCriterion
-      can :list, SchemeMixCriterion
+      cannot :read, SchemeMixCriterion, scheme_mix: {certification_path: {certification_path_status: {id: CertificationPathStatus::ACTIVATING}}}
+      cannot :list, SchemeMixCriterion, scheme_mix: {certification_path: {certification_path_status: {id: CertificationPathStatus::ACTIVATING}}}
+      # RequirementDatum
+      cannot :read, RequirementDatum, scheme_mix_criteria: {scheme_mix: {certification_path: {certification_path_status: {id: CertificationPathStatus::ACTIVATING}}}}
       # SchemeCriterionText
       if user.gord_admin?
         can :crud, SchemeCriterionText
