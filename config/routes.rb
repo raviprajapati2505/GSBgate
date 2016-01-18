@@ -60,6 +60,7 @@ Rails.application.routes.draw do
         put 'update_status'
         put 'apply_for_pcr'
         put 'approve_pcr_payment'
+        put 'cancel_pcr'
         put 'allocate_project_team_responsibility', path: 'allocate-project-team-responsibility'
         put 'allocate_certifier_team_responsibility', path: 'allocate-certifier-team-responsibility'
       end

@@ -99,16 +99,20 @@
                 <!-- apply is only allowed if the user has the ability, AND  there has nog yet been applied for pcr -->
                 <% can_apply_for_pcr = can?(:apply_for_pcr, @certification_path) && !@certification_path.pcr_track? %>
                 <!-- approve is only allowed if the user has the ability, AND an apply has been done, but it has not yet been approved -->
-                <% can_approve_pcr_payment = can?(:approve_pcr_payment, @certification_path) && @certification_path.pcr_track? && !@certification_path.pcr_track_allowed? %>
-                <% if can_apply_for_pcr || can_approve_pcr_payment %>
+                <% can_approve_pcr_payment = can?(:approve_pcr_payment, @certification_path) %>
+                <% can_cancel_pcr = can?(:cancel_pcr, @certification_path) %>
+                <% if can_apply_for_pcr || can_approve_pcr_payment || can_cancel_pcr %>
                     <div class="hr-line-dashed"></div>
                 <% end %>
                 <% if @certification_path.certification_path_status_id < CertificationPathStatus::SUBMITTING_PCR %>
                     <% if can_apply_for_pcr %>
-                        <%= btn_link_to(apply_for_pcr_project_certification_path_path, text: 'Apply for PCR', method: :put, confirm: 'You are now applying for the PCR track. This will require an extra fee. Please confirm your choice.') %>
+                        <%= btn_link_to(apply_for_pcr_project_certification_path_path, text: 'Apply for PCR', method: :put, data: {confirm: 'You are now applying for the PCR track. This will require an extra fee. Please confirm your choice.'}) %>
                     <% end %>
                     <% if can_approve_pcr_payment %>
-                        <%= btn_link_to(approve_pcr_payment_project_certification_path_path, text: 'Approve PCR application', method: :put, confirm: 'This will enable the PCR track for this certificate. Please confirm your choice.') %>
+                        <%= btn_link_to(approve_pcr_payment_project_certification_path_path, text: 'Approve PCR application', method: :put, data: {confirm: 'This will enable the PCR track for this certificate. Please confirm your choice.'}) %>
+                    <% end %>
+                    <% if can_cancel_pcr %>
+                        <%= btn_link_to(cancel_pcr_project_certification_path_path, text: 'Cancel PCR', method: :put, data: {confirm: 'This will cancel the PCR for this certificate. Please confirm your choice.'}) %>
                     <% end %>
                 <% end %>
             </div>

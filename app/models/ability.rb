@@ -219,6 +219,7 @@ class Ability
       can :download_archive, CertificationPath
       if user.gord_admin?
         can :approve_pcr_payment, CertificationPath, pcr_track: true, pcr_track_allowed: false
+        can :cancel_pcr, CertificationPath, pcr_track: true
         can [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::STATUSES_AT_ADMIN_SIDE}
         can [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::STATUSES_AT_ASSESSOR_SIDE}
         can [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::STATUSES_AT_CERTIFIER_SIDE}
