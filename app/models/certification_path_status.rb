@@ -126,6 +126,11 @@ class CertificationPathStatus < ActiveRecord::Base
       CertificationPathStatus::VERIFYING_AFTER_APPEAL
   ]
 
+  STATUSES_IN_ACKNOWLEDGING = [
+      CertificationPathStatus::ACKNOWLEDGING,
+      CertificationPathStatus::ACKNOWLEDGING_AFTER_APPEAL
+  ]
+
   def self.at_gord_side?(id)
     STATUSES_AT_GORD_SIDE.include?(id)
   end

@@ -133,8 +133,10 @@ class CertificationPath < ActiveRecord::Base
       when CertificationPathStatus::ACKNOWLEDGING
         if appealed?
           return CertificationPathStatus::PROCESSING_APPEAL_PAYMENT
-        else
+        elsif has_achieved_score?
           return CertificationPathStatus::APPROVING_BY_MANAGEMENT
+        else
+          return CertificationPathStatus::NOT_CERTIFIED
         end
       when CertificationPathStatus::PROCESSING_APPEAL_PAYMENT
         return CertificationPathStatus::SUBMITTING_AFTER_APPEAL
@@ -143,7 +145,11 @@ class CertificationPath < ActiveRecord::Base
       when CertificationPathStatus::VERIFYING_AFTER_APPEAL
         return CertificationPathStatus::ACKNOWLEDGING_AFTER_APPEAL
       when CertificationPathStatus::ACKNOWLEDGING_AFTER_APPEAL
-        return CertificationPathStatus::APPROVING_BY_MANAGEMENT
+        if has_achieved_score?
+          return CertificationPathStatus::APPROVING_BY_MANAGEMENT
+        else
+          return CertificationPathStatus::NOT_CERTIFIED
+        end
       when CertificationPathStatus::APPROVING_BY_MANAGEMENT
         return CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT
       when CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT
@@ -255,8 +261,16 @@ class CertificationPath < ActiveRecord::Base
     CertificationPathStatus::STATUSES_IN_PRE_VERIFICATION.include?(certification_path_status_id)
   end
 
+  def in_acknowledging?
+    CertificationPathStatus::STATUSES_IN_ACKNOWLEDGING.include?(certification_path_status_id)
+  end
+
   def is_activating?
     CertificationPathStatus::ACTIVATING == certification_path_status_id
+  end
+
+  def is_activated?
+    CertificationPathStatus::STATUSES_ACTIVATED.include?(certification_path_status_id)
   end
 
   def is_completed?

@@ -27,6 +27,10 @@ module ScoreCalculator
       fetch_scores(point_types, score_fields, GROUP_TYPES)
     end
 
+    def has_achieved_score?
+      !scores_in_certificate_points[:achieved_score_in_certificate_points].nil?
+    end
+
     private
 
     def fetch_scores(point_types=POINT_TYPES, score_fields=SCORE_FIELDS, group_types=[])

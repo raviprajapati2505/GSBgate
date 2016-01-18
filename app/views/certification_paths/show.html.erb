@@ -126,10 +126,16 @@
             <div class="ibox-content">
                 <%= render 'timeline', certification_path: @certification_path %>
                 <% if can?(:update_status, @certification_path) && @certification_path.next_status.present? %>
-                    <% if @certification_path.certification_path_status_id == CertificationPathStatus::ACKNOWLEDGING %>
+                    <% if @certification_path.in_acknowledging? %>
                         <div class="hr-line-dashed"></div>
-                        <%= btn_link_to(edit_status_project_certification_path_url(@project, @certification_path), remote: true, icon: 'check', text: 'Accept all scores') %>
-                        <%= btn_link_to(edit_status_project_certification_path_url(@project, @certification_path, appeal: 1), remote: true, icon: 'hand-o-up', text: 'Apply for appeal') %>
+                        <% if @certification_path.has_achieved_score? %>
+                            <%= btn_link_to(edit_status_project_certification_path_url(@project, @certification_path), remote: true, icon: 'check', text: 'Accept achieved score') %>
+                        <% else %>
+                            <%= btn_link_to(edit_status_project_certification_path_url(@project, @certification_path), remote: true, icon: 'check', text: 'Accept certificate denied', data: {confirm: 'There are one or more criteria that have not achieved their minimum valid score. As a result, the certificate does not have an achieved score. If you proceed a GSAS certificate will be denied. Are you sure?'}) %>
+                        <% end %>
+                        <% if @certification_path.certification_path_status_id == CertificationPathStatus::ACKNOWLEDGING %>
+                            <%= btn_link_to(edit_status_project_certification_path_url(@project, @certification_path, appeal: 1), remote: true, icon: 'hand-o-up', text: 'Apply for appeal') %>
+                        <% end %>
                     <% else %>
                         <div class="hr-line-dashed"></div>
                         <%= btn_link_to(edit_status_project_certification_path_url(@project, @certification_path), remote: true, icon: 'forward', text: "Advance status to '#{CertificationPathStatus.find_by(id: @certification_path.next_status).name}'") %>
