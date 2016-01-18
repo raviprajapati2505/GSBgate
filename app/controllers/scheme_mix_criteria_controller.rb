@@ -40,7 +40,7 @@ class SchemeMixCriteriaController < AuthenticatedController
         end
       elsif @scheme_mix_criterion.verifying_after_appeal?
         if params.has_key?(:achieved)
-          status = :submitted_score_after_appeal
+          status = :submitted_score_achieved_after_appeal
         else
           status = :submitted_score_not_achieved_after_appeal
         end
