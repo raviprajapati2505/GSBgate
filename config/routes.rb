@@ -128,7 +128,7 @@ Rails.application.routes.draw do
   # CATCH ALL ROUTE, redirecting the user to a correct page
   # BEWARE: this should be the last line, as it will match any path !!!
   # -- to avoid unknown routes to pollute the logs, use this:
-  match '*path', to: 'errors#not_found', via: :all unless Rails.env.development?
+  # match '*path', to: 'errors#not_found', via: :all unless Rails.env.development?
   # -- or to redirect the user to the main page, use this:
   #match '*path', to: 'projects#index', via: :all unless Rails.env.development?
 end
