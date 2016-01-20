@@ -3,10 +3,7 @@
     <!-- Set the certificate-->
     <%= f.hidden_field :certificate_id, value: @certification_path.certificate_id %>
 
-    <!-- PCR -->
-    <!--= f.form_group :pcr_track, label: {text: 'Pre Certification Review'} do %-->
-        <!--= f.check_box :pcr_track, label: 'Apply for the Pre Certification Review track (PCR)' %-->
-    <!--% end %-->
+    <%= f.select :certificate_id, options_for_select(Certificate.construction_certificate.uniq.map {|certificate| [certificate.gsas_version, certificate.id]}, @certification_path.certificate_id), label: 'GSAS version' %>
 
     <!-- Scheme Mix -->
     <%= f.static_control label: 'Scheme' do %>
