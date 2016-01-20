@@ -6,7 +6,7 @@
             </div>
             <div class="ibox-content">
                 <%= bootstrap_form_tag(url: scheme_criteria_path, method: 'get') do |f| %>
-                    <%= f.collection_select :certificate_id, Certificate.all, :id, :name, { include_blank: '- All certificates -', selected: @default_values[:certificate_id] } %>
+                    <%= f.collection_select :certificate_id, Certificate.all, :id, :full_name, { include_blank: '- All certificates -', selected: @default_values[:certificate_id] } %>
                     <%= f.text_field :scheme_name, value: @default_values[:scheme_name], label: 'Scheme name contains' %>
                     <%= f.text_field :scheme_category_name, value: @default_values[:scheme_category_name], label: 'Category name contains' %>
                     <div class="hr-line-dashed"></div>
@@ -38,7 +38,7 @@
                         <% @scheme_criteria.each do |scheme_criterion| %>
                             <tr>
                                 <td><%= link_to(scheme_criterion.full_name, scheme_criterion_path(scheme_criterion)) %></td>
-                                <td><%= scheme_criterion.scheme_category.scheme.certificate.name %></td>
+                                <td><%= scheme_criterion.scheme_category.scheme.certificate.full_name %></td>
                                 <td><%= scheme_criterion.scheme_category.scheme.name %></td>
                                 <td><%= scheme_criterion.scheme_category.name %></td>
                             </tr>

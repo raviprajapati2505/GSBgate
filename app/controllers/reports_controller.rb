@@ -36,7 +36,7 @@ class ReportsController < ApplicationController
   private
 
   def filepath_for_report(report_name)
-    filename = "#{@certification_path.certificate.name} #{report_name}.pdf"
+    filename = "#{@certification_path.certificate.full_name} #{report_name}.pdf"
     Rails.root.join('private', 'projects', @certification_path.project.id.to_s, 'certification_paths', @certification_path.id.to_s, 'reports', filename)
   end
 

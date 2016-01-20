@@ -349,7 +349,7 @@ module ApplicationHelper
 
     # Only used for mail
     if certificate.present?
-      breadcrumbs[:names] << certificate.name
+      breadcrumbs[:names] << certificate.full_name
       breadcrumbs[:paths] << scheme_criteria_path() + '?certificate_id=' + certificate.id.to_s
       if scheme.present?
         breadcrumbs[:names] << scheme.name

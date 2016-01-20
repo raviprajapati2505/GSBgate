@@ -63,7 +63,7 @@ class Reports::CertificateReport < Reports::BaseReport
                         :font => "Helvetica",
                         :size => title_size,
                        },
-                       {:text => @certification_path.certificate.name,
+                       {:text => @certification_path.certificate.full_name,
                         :font => "Courier",
                         :size => title_size,
                         :styles => [:bold],

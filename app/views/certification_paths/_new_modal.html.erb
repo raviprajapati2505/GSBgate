@@ -2,7 +2,7 @@
     <div class="modal-content">
         <div class="modal-header">
             <%= btn_close_modal %>
-            <h4 class="modal-title">Applying for <em><%= @certification_path.certificate.name %></em></h4>
+            <h4 class="modal-title">Applying for <em><%= @certification_path.name %></em></h4>
         </div>
         <div class="modal-body">
             <%= render 'certification_paths/new_letter_of_conformance', modal: true if @certification_path.certificate.letter_of_conformance? %>

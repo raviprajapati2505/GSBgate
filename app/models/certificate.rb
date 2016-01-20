@@ -41,6 +41,6 @@ class Certificate < ActiveRecord::Base
   }
 
   def full_name
-    self.name + ', ' + self.gsas_version
+    self.name + ' ' + self.gsas_version
   end
 end

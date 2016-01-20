@@ -33,7 +33,7 @@ module Effective
         table_column 'owner_email', column: 'owner.email', label: 'Project Owner Email', visible: false
 
         #table_column 'certification_path_id', column: 'certification_paths.id', type: :integer, label: 'Certificate ID'
-        table_column 'certificate_id', column: 'certificates.id', label: 'Certificate Name', filter: {type: :select, values: Proc.new { Certificate.all.order(:display_weight).map { |certificate| [certificate.name + ' ' + certificate.gsas_version, certificate.id] } }} do |rec|
+        table_column 'certificate_id', column: 'certificates.id', label: 'Certificate Name', filter: {type: :select, values: Proc.new { Certificate.all.order(:display_weight).map { |certificate| [certificate.full_name, certificate.id] } }} do |rec|
           if rec.certification_path_id.present?
             link_to(project_certification_path_path(rec.project_nr, rec.certification_path_id)) do
               rec.certificate_name

@@ -7,7 +7,7 @@
             <div class="row">
                 <div class="col-lg-3 col-sm-6">
                     <%= can_link_to(project_certification_path_path(project, certification_path), certification_path) do %>
-                        <%= certificate.name %>
+                        <%= certificate.full_name %>
                     <% end %>
                 </div>
                 <div class="col-lg-3 col-sm-6"><%= certification_path.status.humanize %></div>
