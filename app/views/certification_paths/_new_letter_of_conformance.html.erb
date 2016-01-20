@@ -1,7 +1,12 @@
 <%= bootstrap_form_for(@certification_path, url: apply_certification_path_path(@project, @certification_path.certificate)) do |f| %>
 
+    <!-- Set the project-->
+    <%= f.hidden_field :project_id, value: @project.id %>
+
     <!-- Set the certificate-->
-    <%= f.hidden_field :certificate_id, value: @certification_path.certificate_id %>
+    <!--= f.hidden_field :certificate_id, value: @certification_path.certificate_id %-->
+
+    <%= f.select :certificate_id, options_for_select(Certificate.letter_of_conformance.uniq.map {|certificate| [certificate.gsas_version, certificate.id]}, @certification_path.certificate_id), label: 'GSAS version' %>
 
     <!-- PCR -->
     <%= f.form_group :pcr_track, label: {text: 'Pre Certification Review'} do %>

@@ -138,4 +138,15 @@ $(function () {
         $(this).closest('tr').remove();
         validate();
     });
+
+    $('#certification_path_certificate_id').change(function() {
+        var project_id = $('#certification_path_project_id').val();
+        var certificate_id = $(this).val();
+        $.ajax({
+           type: 'POST',
+            url: Routes.apply_certification_path_path(project_id, certificate_id),
+            dataType: 'script',
+            cache: false
+        });
+    });
 });

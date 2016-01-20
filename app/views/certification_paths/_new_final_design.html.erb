@@ -3,6 +3,8 @@
     <!-- Set the certificate-->
     <%= f.hidden_field :certificate_id, value: @certification_path.certificate_id %>
 
+    <!-- GSAS version should be the same as LOC -->
+
     <!-- PCR -->
     <%= f.form_group :pcr_track, label: {text: 'Pre Certification Review'} do %>
         <%= f.check_box :pcr_track, label: 'Apply for the Pre Certification Review track (PCR)' %>

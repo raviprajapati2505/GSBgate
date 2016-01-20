@@ -1,5 +1,5 @@
 <!-- TODO: use find_each and loop, as there can be multiple certification_paths for a specific certificate -->
-<% certification_path = project.certification_paths.find_by(certificate: certificate) %>
+<% certification_path = CertificationPath.joins(:certificate).where(project: project, certificates: {certificate_type: Certificate.certificate_types[certificate.certificate_type], assessment_stage: Certificate.assessment_stages[certificate.assessment_stage]}).first %>
 <% can_create_certification_path = project.can_create_certification_path_for_certificate?(certificate) %>
 <% enabled = (certification_path.present? || can_create_certification_path) %>
 <li class="list-group-item container <%= 'disabled' if !enabled %>">

@@ -66,6 +66,8 @@ class CertificationPathsController < AuthenticatedController
       end
       loc = @project.certification_paths.find_by(certificate: Certificate.letter_of_conformance)
       @certification_path.development_type = loc.development_type
+      # Final Design Certificate version must be equal to Letter Of Conformance version
+      @certification_path.certificate = Certificate.final_design_certificate.where(gsas_version: loc.certificate.gsas_version).first
       loc.scheme_mixes.each do |scheme_mix|
         @certification_path.scheme_mixes.build({scheme_id: scheme_mix.scheme_id, weight: scheme_mix.weight})
       end
