@@ -4,6 +4,7 @@ class DocumentArchiverService
   require 'csv'
 
   PAGE_SIZE = 100
+  CSV_COL_SEPARATOR = ';'
 
   # Creates a file archive of all approved documents in a certification path and related audit logs
   def create_archive(certification_path, temp_file)
@@ -24,7 +25,7 @@ class DocumentArchiverService
 
       zos.put_next_entry('audit_logs.csv')
       # CSV column headers
-      zos << ['timestamp', 'user', 'user_comment', 'system_message'].to_csv
+      zos << ['timestamp', 'user', 'user_comment', 'system_message'].to_csv(col_sep: CSV_COL_SEPARATOR)
       page = 0
       begin
         page += 1
@@ -34,7 +35,7 @@ class DocumentArchiverService
                          .order(created_at: :ASC)
                          .page(page).per(PAGE_SIZE)
         audit_logs.each do |audit_log|
-          zos << [audit_log.created_at, audit_log.user.email, audit_log.user_comment, audit_log.system_message].to_csv
+          zos << [audit_log.created_at, audit_log.user.email, audit_log.user_comment, ActionController::Base.helpers.strip_tags(audit_log.system_message)].to_csv(col_sep: CSV_COL_SEPARATOR)
         end
       end while audit_logs.size == PAGE_SIZE
     end
