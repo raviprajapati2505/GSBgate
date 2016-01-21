@@ -25,7 +25,7 @@ class DocumentArchiverService
 
       zos.put_next_entry('audit_logs.csv')
       # CSV column headers
-      zos << ['timestamp', 'user', 'user_comment', 'system_message'].to_csv(col_sep: CSV_COL_SEPARATOR)
+      zos << ['Date/time', 'User', 'User comment', 'System message'].to_csv(col_sep: CSV_COL_SEPARATOR)
       page = 0
       begin
         page += 1
