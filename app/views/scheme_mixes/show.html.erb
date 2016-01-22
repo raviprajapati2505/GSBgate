@@ -78,9 +78,9 @@
                    }
                 %>
                 <% if !@scheme_mix.certification_path.in_pre_verification? && invalid_criteria_ids.size > 0 %>
-                    <p class="alert alert-warning"><%= fa_icon('info-circle') %>
-                        There are one or more criteria that have not achieved their minimum valid score.
-                    </p>
+                    <div class="alert alert-warning" role="alert">
+                        <%= fa_icon_with_text('exclamation-circle', 'There are one or more criteria that have not achieved their minimum valid score.') %>
+                    </div>
                 <% end %>
                 <%= scores_legend %>
                 <div id="categories-accordion">

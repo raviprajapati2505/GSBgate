@@ -1,70 +1,66 @@
-<% if certification_path.is_activating? %>
-    <p>A GSAS administrator must first activate the certificate before you can continue.</p>
-<% else %>
-    <table class="table table-bordered table-hover" cellspacing="0" width="100%">
-        <thead>
+<table class="table table-bordered table-hover" cellspacing="0" width="100%">
+    <thead>
+    <tr>
+        <th class="col-md-5">Scheme name</th>
+        <th class="col-md-1">
+          <span class="hidden-md">Weighting</span>
+          <span class="visible-md">W <%= tooltip('Weighting') %></span>
+        </th>
+        <th class="col-md-4">
+            Score
+            <% id_list = certification_path.scheme_mixes.collect { |scheme_mix| "scheme_mix_#{scheme_mix.id}" } %>
+            <%= render 'score/score_toggle', id_list: id_list %>
+        </th>
+        <th class="col-md-2">
+          <span class="hidden-md">Progress</span>
+          <span class="visible-md">P <%= tooltip('Progress') %></span>
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    <%
+       scheme_mix_criteria_scores = certification_path.scheme_mix_criteria_scores
+       scheme_mix_criteria_scores_by_scheme_mix = scheme_mix_criteria_scores.group_by{|item| item[:scheme_mix_id]}
+       scheme_mixes_scale = {
+           maximum_scale_in_certificate_points: scheme_mix_criteria_scores_by_scheme_mix.collect{|scheme_mix_id, scores| scores.collect{|score| score[:maximum_score_in_certificate_points]}.inject(:+)}.max,
+           minimum_scale_in_certificate_points: scheme_mix_criteria_scores_by_scheme_mix.collect{|scheme_mix_id, scores| scores.collect{|score| score[:minimum_score_in_certificate_points]}.inject(:+)}.min,
+           maximum_scale_in_scheme_points: scheme_mix_criteria_scores_by_scheme_mix.collect{|scheme_mix_id, scores| scores.collect{|score| score[:maximum_score_in_scheme_points]}.inject(:+)}.max,
+           minimum_scale_in_scheme_points: scheme_mix_criteria_scores_by_scheme_mix.collect{|scheme_mix_id, scores| scores.collect{|score| score[:minimum_score_in_scheme_points]}.inject(:+)}.min,
+           maximum_scale_in_criteria_points: scheme_mix_criteria_scores_by_scheme_mix.collect{|scheme_mix_id, scores| scores.collect{|score| score[:maximum_score_in_criteria_points]}.inject(:+)}.max,
+           minimum_scale_in_criteria_points: scheme_mix_criteria_scores_by_scheme_mix.collect{|scheme_mix_id, scores| scores.collect{|score| score[:minimum_score_in_criteria_points]}.inject(:+)}.min
+       }
+    %>
+    <% certification_path.scheme_mixes.each do |scheme_mix| %>
         <tr>
-            <th class="col-md-5">Scheme name</th>
-            <th class="col-md-1">
-              <span class="hidden-md">Weighting</span>
-              <span class="visible-md">W <%= tooltip('Weighting') %></span>
-            </th>
-            <th class="col-md-4">
-                Score
-                <% id_list = certification_path.scheme_mixes.collect { |scheme_mix| "scheme_mix_#{scheme_mix.id}" } %>
-                <%= render 'score/score_toggle', id_list: id_list %>
-            </th>
-            <th class="col-md-2">
-              <span class="hidden-md">Progress</span>
-              <span class="visible-md">P <%= tooltip('Progress') %></span>
-            </th>
-        </tr>
-        </thead>
-        <tbody>
-        <%
-           scheme_mix_criteria_scores = certification_path.scheme_mix_criteria_scores
-           scheme_mix_criteria_scores_by_scheme_mix = scheme_mix_criteria_scores.group_by{|item| item[:scheme_mix_id]}
-           scheme_mixes_scale = {
-               maximum_scale_in_certificate_points: scheme_mix_criteria_scores_by_scheme_mix.collect{|scheme_mix_id, scores| scores.collect{|score| score[:maximum_score_in_certificate_points]}.inject(:+)}.max,
-               minimum_scale_in_certificate_points: scheme_mix_criteria_scores_by_scheme_mix.collect{|scheme_mix_id, scores| scores.collect{|score| score[:minimum_score_in_certificate_points]}.inject(:+)}.min,
-               maximum_scale_in_scheme_points: scheme_mix_criteria_scores_by_scheme_mix.collect{|scheme_mix_id, scores| scores.collect{|score| score[:maximum_score_in_scheme_points]}.inject(:+)}.max,
-               minimum_scale_in_scheme_points: scheme_mix_criteria_scores_by_scheme_mix.collect{|scheme_mix_id, scores| scores.collect{|score| score[:minimum_score_in_scheme_points]}.inject(:+)}.min,
-               maximum_scale_in_criteria_points: scheme_mix_criteria_scores_by_scheme_mix.collect{|scheme_mix_id, scores| scores.collect{|score| score[:maximum_score_in_criteria_points]}.inject(:+)}.max,
-               minimum_scale_in_criteria_points: scheme_mix_criteria_scores_by_scheme_mix.collect{|scheme_mix_id, scores| scores.collect{|score| score[:minimum_score_in_criteria_points]}.inject(:+)}.min
-           }
-        %>
-        <% certification_path.scheme_mixes.each do |scheme_mix| %>
-            <tr>
-                <td>
-                    <%= can_link_to(project_certification_path_scheme_mix_path(certification_path.project, certification_path, scheme_mix), scheme_mix) do %>
-                        <%= scheme_mix.full_name %>
-                    <% end %>
-                </td>
-                <td><%= scheme_mix.weight %> %</td>
-                <td>
+            <td>
+                <%= can_link_to(project_certification_path_scheme_mix_path(certification_path.project, certification_path, scheme_mix), scheme_mix) do %>
+                    <%= scheme_mix.full_name %>
+                <% end %>
+            </td>
+            <td><%= scheme_mix.weight %> %</td>
+            <td>
+                <%
+                   # summarize the scores for this scheme
+                   scheme_mix_scores = sum_score_hashes(scheme_mix_criteria_scores_by_scheme_mix[scheme_mix.id])
+                   # set the min and max scales, so all graphs use the same dimensions
+                   scheme_mix_scores = scheme_mix_scores.merge(scheme_mixes_scale)
+                %>
+                <%= render 'score/score_tabs', scores: scheme_mix_scores, element_id: "scheme_mix_#{scheme_mix.id}" %>
+            </td>
+            <td>
+                <div class="progress">
                     <%
-                       # summarize the scores for this scheme
-                       scheme_mix_scores = sum_score_hashes(scheme_mix_criteria_scores_by_scheme_mix[scheme_mix.id])
-                       # set the min and max scales, so all graphs use the same dimensions
-                       scheme_mix_scores = scheme_mix_scores.merge(scheme_mixes_scale)
+                       if certification_path.requirement_data.count.nonzero?
+                         progress = certification_path.requirement_data.completed.count * 100 / certification_path.requirement_data.count
+                       else
+                         progress = 0
+                       end
                     %>
-                    <%= render 'score/score_tabs', scores: scheme_mix_scores, element_id: "scheme_mix_#{scheme_mix.id}" %>
-                </td>
-                <td>
-                    <div class="progress">
-                        <%
-                           if certification_path.requirement_data.count.nonzero?
-                             progress = certification_path.requirement_data.completed.count * 100 / certification_path.requirement_data.count
-                           else
-                             progress = 0
-                           end
-                        %>
-                        <div class="progress-bar" style="min-width: 2em; width: <%= progress %>%;"><%= progress %>%
-                        </div>
+                    <div class="progress-bar" style="min-width: 2em; width: <%= progress %>%;"><%= progress %>%
                     </div>
-                </td>
-            </tr>
-        <% end %>
-        </tbody>
-    </table>
-<% end %>
+                </div>
+            </td>
+        </tr>
+    <% end %>
+    </tbody>
+</table>

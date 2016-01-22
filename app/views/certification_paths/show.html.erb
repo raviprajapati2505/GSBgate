@@ -151,6 +151,11 @@
                 <h5>Schemes</h5>
             </div>
             <div class="ibox-content">
+                <% if @certification_path.is_activating? %>
+                    <div class="alert alert-info" role="alert">
+                        <%= fa_icon_with_text('info-circle', 'The schemes will be clickable after a GORD administrator activates the certificate.') %>
+                    </div>
+                <% end %>
                 <%= scores_legend %>
                 <%= render 'scheme_mixes/overview', certification_path: @certification_path %>
                 <% can_edit_project_team_responsibility = can?(:edit_project_team_responsibility, @certification_path) %>
