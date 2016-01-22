@@ -8,7 +8,7 @@
                 <div class="ibox-content">
                     <table class="table table-bordered allocate-responsibility-table">
                         <% @certification_path.scheme_mixes.uniq.each do |scheme_mix| %>
-                            <tr><th colspan="5"><%= scheme_mix.name %></th></tr>
+                            <tr><th colspan="5" class="scheme-name"><%= scheme_mix.name %></th></tr>
                             <% scheme_mix.scheme_categories.uniq.each do |category| %>
                                 <tr>
                                     <th><%= check_box_tag 'categories[]', category.id, false, class: 'checkbox_parent' %></th>

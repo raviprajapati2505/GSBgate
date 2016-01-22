@@ -9,7 +9,7 @@
                     <table class="table table-bordered allocate-responsibility-table">
                         <% @certification_path.scheme_mixes.uniq.each do |scheme_mix| %>
                             <tr>
-                                <th colspan="5"><%= scheme_mix.name %></th>
+                                <th colspan="5" class="scheme-name"><%= scheme_mix.name %></th>
                             </tr>
                             <% scheme_mix.scheme_categories.uniq.each do |category| %>
                                 <% scheme_mix.scheme_mix_criteria.in_submission_or_submitted.for_category(category).order('scheme_criteria.number').each do |scheme_mix_criterion| %>
