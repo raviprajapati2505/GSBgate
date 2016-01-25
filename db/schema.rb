@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160111145852) do
+ActiveRecord::Schema.define(version: 20160125120855) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -205,9 +205,10 @@ ActiveRecord::Schema.define(version: 20160111145852) do
     t.text     "impacts"
     t.text     "mitigate_impact"
     t.integer  "scheme_id"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
     t.integer  "display_weight"
+    t.boolean  "shared",                    default: false, null: false
   end
 
   add_index "scheme_categories", ["code", "scheme_id"], name: "index_scheme_categories_on_code_and_scheme_id", unique: true, using: :btree
