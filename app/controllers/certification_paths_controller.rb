@@ -40,7 +40,7 @@ class CertificationPathsController < AuthenticatedController
               if params.has_key?(:single_scheme_select)
                 @certification_path.scheme_mixes.build({scheme_id: params[:single_scheme_select], weight: 100})
               end
-            elsif @certification_path.mixed_use? || @certification_path.mixed_development? || @certification_path.mixed_development_in_stages?
+            elsif @certification_path.has_multiple_scheme_mixes?
               if params[:certification_path].has_key?(:schemes)
                 params[:certification_path][:schemes].each do |scheme_params|
                   @certification_path.scheme_mixes.build({scheme_id: scheme_params[:scheme_id], weight: scheme_params[:weight]})
@@ -51,7 +51,7 @@ class CertificationPathsController < AuthenticatedController
           if @certification_path.save
             return redirect_to(project_certification_path_path(@project, @certification_path), notice: 'Successfully applied for certificate.')
           else
-            return redirect_to(project_certification_path_path(@project), alert: 'Error, could not apply for certificate')
+            return redirect_to(project_certification_path_path(@project), alert: 'Error, could not apply for certificate.')
           end
         }
       end

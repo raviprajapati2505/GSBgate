@@ -29,6 +29,7 @@ module Taskable
   PROJ_MNGR_OVERDUE = 34
   CERT_MNGR_OVERDUE = 35
   CERT_MNGR_ASSIGN_AFTER_APPEAL = 36
+  SYS_ADMIN_SELECT_MAIN_SCHEME = 37
 
   included do
     has_many :tasks, as: :taskable, dependent: :destroy
@@ -111,6 +112,14 @@ module Taskable
                  application_role: User.roles[:gord_admin],
                  project: self.project)
     end
+    if (self.has_multiple_scheme_mixes? && (self.main_scheme_mix_selected? == false))
+      # Create system admin task to select a main scheme
+      Task.create(taskable: self,
+                  task_description_id: SYS_ADMIN_SELECT_MAIN_SCHEME,
+                  application_role: User.roles[:gord_admin],
+                  project: self.project,
+                  certification_path: self)
+    end
     # Create system admin task to advance the certification path status
     Task.create(taskable: self,
                task_description_id: SYS_ADMIN_REG_APPROVE,
@@ -163,6 +172,7 @@ module Taskable
     handle_certification_status_changed
     handle_pcr_track_changed
     handle_pcr_track_allowed_changed
+    handle_main_scheme_mix_selected_changed
   end
 
   def handle_certification_status_changed
@@ -364,6 +374,14 @@ module Taskable
                    certification_path: self)
         # Destroy system admin tasks to advance the certification path status
         Task.delete_all(taskable: self, task_description_id: SYS_ADMIN_PCR_APPROVE)
+      end
+    end
+  end
+
+  def handle_main_scheme_mix_selected_changed
+    if self.main_scheme_mix_selected_changed?
+      if self.main_scheme_mix_selected?
+        Task.delete_all(taskable: self, task_description_id: SYS_ADMIN_SELECT_MAIN_SCHEME)
       end
     end
   end
