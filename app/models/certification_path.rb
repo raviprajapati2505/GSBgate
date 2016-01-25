@@ -175,7 +175,7 @@ class CertificationPath < ActiveRecord::Base
         unless project.certifier_manager_assigned?
           todos << 'A certifier manager must be assigned to the project.'
         end
-        unless main_scheme_mix_selected?
+        if User.current.can?(:edit_main_scheme_mix, @certification_path) && (main_scheme_mix_selected? == false)
           todos << 'A main scheme needs to be selected.'
         end
       when CertificationPathStatus::SUBMITTING, CertificationPathStatus::SUBMITTING_AFTER_SCREENING, CertificationPathStatus::SUBMITTING_PCR, CertificationPathStatus::SUBMITTING_AFTER_APPEAL

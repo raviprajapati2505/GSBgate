@@ -24,6 +24,8 @@ class User < ActiveRecord::Base
 
   default_scope { order(email: :asc) }
 
+  delegate :can?, :cannot?, :to => :ability
+
   scope :unassigned, -> {
     User.includes(:projects_users).where(projects_users: {id: nil})
   }
@@ -111,6 +113,10 @@ class User < ActiveRecord::Base
 
   def active_for_authentication?
     super and account_active?
+  end
+
+  def ability
+    @ability ||= Ability.new(self)
   end
 
   private
