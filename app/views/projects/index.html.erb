@@ -6,8 +6,8 @@
             </div>
             <div class="ibox-content">
                 <%= render_datatable(@datatable) %>
-                <div class="hr-line-dashed fa-"></div>
                 <% if can? :create, Project.new(owner_id: current_user.id) %>
+                    <div class="hr-line-dashed"></div>
                     <%= btn_link_to(new_project_path, icon: 'building-o', text: 'New project') %>
                 <% end %>
             </div>
