@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160125120855) do
+ActiveRecord::Schema.define(version: 20160125132540) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -82,9 +82,12 @@ ActiveRecord::Schema.define(version: 20160125120855) do
     t.integer  "certification_path_status_id"
     t.boolean  "appealed",                     default: false
     t.datetime "certified_at"
+    t.integer  "main_scheme_mix_id"
+    t.boolean  "main_scheme_mix_selected",     default: false, null: false
   end
 
   add_index "certification_paths", ["certification_path_status_id"], name: "index_certification_paths_on_certification_path_status_id", using: :btree
+  add_index "certification_paths", ["main_scheme_mix_id"], name: "index_certification_paths_on_main_scheme_mix_id", using: :btree
   add_index "certification_paths", ["project_id"], name: "index_certification_paths_on_project_id", using: :btree
 
   create_table "documents", force: :cascade do |t|
@@ -364,6 +367,7 @@ ActiveRecord::Schema.define(version: 20160125120855) do
   add_foreign_key "calculator_data", "calculators"
   add_foreign_key "certification_paths", "certificates"
   add_foreign_key "certification_paths", "projects"
+  add_foreign_key "certification_paths", "scheme_mixes", column: "main_scheme_mix_id"
   add_foreign_key "documents", "users"
   add_foreign_key "field_data", "calculator_data"
   add_foreign_key "field_data", "fields"
