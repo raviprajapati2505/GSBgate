@@ -127,11 +127,9 @@ class CertificationPathsController < AuthenticatedController
   end
 
   def edit_status
-    authorize! :edit_status, @certification_path
   end
 
   def update_status
-    authorize! :update_status, @certification_path
     CertificationPath.transaction do
       todos = @certification_path.todo_before_status_advance
 
