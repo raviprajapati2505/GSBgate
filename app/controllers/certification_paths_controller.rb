@@ -266,6 +266,17 @@ class CertificationPathsController < AuthenticatedController
     end
   end
 
+  def edit_main_scheme_mix
+  end
+
+  def update_main_scheme_mix
+    if params[:certification_path].has_key?(:main_scheme_mix_id) && @certification_path.update!(main_scheme_mix_id: params[:certification_path][:main_scheme_mix_id], main_scheme_mix_selected: true)
+      redirect_to project_certification_path_path(@project, @certification_path), notice: 'The main scheme was successfully saved.'
+    else
+      redirect_to project_certification_path_path(@project, @certification_path), alert: 'An error occurred when saving the main scheme. Please try again later.'
+    end
+  end
+
   private
 
   def set_controller_model

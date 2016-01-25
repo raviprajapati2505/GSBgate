@@ -158,10 +158,14 @@
                 <% end %>
                 <%= scores_legend %>
                 <%= render 'scheme_mixes/overview', certification_path: @certification_path %>
+                <% can_edit_main_scheme_mix = can?(:edit_main_scheme_mix, @certification_path) %>
                 <% can_edit_project_team_responsibility = can?(:edit_project_team_responsibility, @certification_path) %>
                 <% can_edit_certifier_team_responsibility = can?(:edit_certifier_team_responsibility, @certification_path) %>
-                <% if can_edit_project_team_responsibility || can_edit_certifier_team_responsibility %>
+                <% if can_edit_main_scheme_mix || can_edit_project_team_responsibility || can_edit_certifier_team_responsibility %>
                     <div class="hr-line-dashed"></div>
+                    <% if can_edit_main_scheme_mix %>
+                        <%= btn_link_to(edit_main_scheme_mix_project_certification_path_path, remote: true, icon: 'certificate', text: 'Select main scheme') %>
+                    <% end %>
                     <% if can_edit_project_team_responsibility %>
                         <%= btn_link_to(edit_project_team_responsibility_project_certification_path_path, style: 'white', icon: 'th-list', text: 'Allocate project team responsibility') %>
                     <% end %>
@@ -175,4 +179,5 @@
     </div>
 </div>
 <div id="editStatusCertificationPathModal" class="modal fade"></div>
+<div id="editMainSchemeMixModal" class="modal fade"></div>
 <%= javascript_include_tag 'score_widget' %>

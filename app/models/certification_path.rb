@@ -7,6 +7,7 @@ class CertificationPath < ActiveRecord::Base
   belongs_to :project
   belongs_to :certificate
   belongs_to :certification_path_status
+  belongs_to :main_scheme_mix, class_name: 'SchemeMix'
   has_many :scheme_mixes, dependent: :destroy
   has_many :schemes, through: :scheme_mixes
   has_many :scheme_mix_criteria, through: :scheme_mixes, autosave: true
@@ -173,6 +174,9 @@ class CertificationPath < ActiveRecord::Base
         # TODO certification path expiry date
         unless project.certifier_manager_assigned?
           todos << 'A certifier manager must be assigned to the project.'
+        end
+        unless main_scheme_mix_selected?
+          todos << 'A main scheme needs to be selected.'
         end
       when CertificationPathStatus::SUBMITTING, CertificationPathStatus::SUBMITTING_AFTER_SCREENING, CertificationPathStatus::SUBMITTING_PCR, CertificationPathStatus::SUBMITTING_AFTER_APPEAL
         ['location_plan_file', 'site_plan_file', 'design_brief_file', 'project_narrative_file'].each do |general_submittal|
