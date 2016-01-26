@@ -84,7 +84,7 @@ $(function () {
 
     // Accordion tables
     $('.accordion-body').on('show.bs.collapse hidden.bs.collapse', function() {
-        $(this).prev().find('i.fa').toggleClass('fa-caret-square-o-right').toggleClass('fa-caret-square-o-down');
+        $(this).prev().find('.category-accordion-icon i.fa').toggleClass('fa-caret-square-o-right').toggleClass('fa-caret-square-o-down');
     });
 
     // Clickable table rows
