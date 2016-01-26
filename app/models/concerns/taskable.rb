@@ -92,6 +92,8 @@ module Taskable
     if self.location_plan_file.blank? || self.site_plan_file.blank? || self.design_brief_file.blank? || self.project_narrative_file.blank?
       # Create a project manager task to provide the 'general submittal' documents
       Task.create(taskable: self, task_description_id: PROJ_MNGR_GEN, project_role: ProjectsUser.roles[:project_manager], project: self)
+    else
+      DigestMailer.project_registered_email(self).deliver_now
     end
   end
 
@@ -150,6 +152,7 @@ module Taskable
         end
       else
         Task.delete_all(taskable: self, task_description_id: PROJ_MNGR_GEN)
+        DigestMailer.project_registered_email(self).deliver_now
       end
     end
   end
@@ -191,6 +194,7 @@ module Taskable
           end
           # Destroy system admin tasks to advance status
           Task.delete_all(taskable: self, task_description_id: SYS_ADMIN_REG_APPROVE)
+          DigestMailer.certification_activated_email(self).deliver_now
         when CertificationPathStatus::SCREENING
           # ASSUMING CERTIFIER MANAGER IS RESPONSIBLE FOR SCREENING !
           # ---------------------------------------------------------

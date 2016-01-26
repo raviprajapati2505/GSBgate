@@ -35,19 +35,35 @@ namespace :gsas do
 
     Rails.logger.info 'Start creating tasks for certification paths with maximum duration exceeded...'
 
+    backgroundExecution = BackgroundExecution.find_by(name: BackgroundExecution::DURATION_TASK)
+    if backgroundExecution.nil?
+      from_datetime = nil
+      backgroundTask = BackgroundExecution.new(name: BackgroundExecution::DURATION_TASK)
+      backgroundTask.save
+    else
+      from_datetime = backgroundExecution.updated_at
+      backgroundExecution.touch
+    end
+
     certification_path_count = 0
     page = 0
     begin
       page += 1
-      certification_paths = CertificationPath
+      certification_paths = CertificationPath.joins(:certificate)
+                                .where(certificates: {certificate_type: 0})
                                 .where.not(certification_path_status_id: [CertificationPathStatus::CERTIFIED, CertificationPathStatus::NOT_CERTIFIED])
                                 .where('(started_at + interval \'1\' year * duration) < ?', DateTime.now)
-                                .page(page).per(PAGE_SIZE)
+      unless from_datetime.nil?
+        certification_paths = certification_paths.where('(started_at + interval \'1\' year * duration) >= ?', from_datetime)
+      end
+      certification_paths = certification_paths.page(page).per(PAGE_SIZE)
       certification_paths.each do |certification_path|
-        CertificationPathTask.create(task_description_id: Taskable::SYS_ADMIN_DURATION,
-                                     application_role: User.roles[:gord_admin],
-                                     project: certification_path.project,
-                                     certification_path: certification_path)
+        Task.create(taskable: certification_path,
+                    task_description_id: Taskable::SYS_ADMIN_DURATION,
+                    application_role: User.roles[:gord_admin],
+                    project: certification_path.project,
+                    certification_path: certification_path)
+        DigestMailer.certification_expired_email(certification_path).deliver_now
       end
       certification_path_count += certification_paths.size
     end while certification_paths.size == PAGE_SIZE
@@ -60,6 +76,16 @@ namespace :gsas do
 
     Rails.logger.info 'Start creating tasks for overdue tasks...'
 
+    backgroundExecution = BackgroundExecution.find_by(name: BackgroundExecution::OVERDUE_TASK)
+    if backgroundExecution.nil?
+      from_datetime = nil
+      backgroundTask = BackgroundExecution.new(name: BackgroundExecution::OVERDUE_TASK)
+      backgroundTask.save
+    else
+      from_datetime = backgroundExecution.updated_at
+      backgroundExecution.touch
+    end
+
     task_count = 0
     page = 0
     begin
@@ -71,12 +97,16 @@ namespace :gsas do
                                                                                     CertificationPathStatus::SUBMITTING_AFTER_APPEAL]})
                          .where(status: RequirementDatum.statuses[:required])
                          .where('requirement_data.due_date < ?', Date.current)
-                         .page(page).per(PAGE_SIZE)
+      unless from_datetime.nil?
+        requirements = requirements.where('requirement_data.due_date >= ?', from_datetime)
+      end
+      requirements = requirements.page(page).per(PAGE_SIZE)
       requirements.each do |requirement|
-        RequirementDatumTask.create(task_description_id: Taskable::PROJ_MNGR_OVERDUE,
-                                    project_role: ProjectsUser.roles[:project_manager],
-                                    project: requirement.scheme_mix_criteria.first.scheme_mix.certification_path.project,
-                                    requirement_datum: requirement)
+        Task.create(taskable: requirement,
+                    task_description_id: Taskable::PROJ_MNGR_OVERDUE,
+                    project_role: ProjectsUser.roles[:project_manager],
+                    project: requirement.scheme_mix_criteria.first.scheme_mix.certification_path.project,
+                    certification_path: requirement.scheme_mix_criteria.first.scheme_mix.certification_path)
       end
       task_count += requirements.size
     end while requirements.size == PAGE_SIZE
@@ -89,12 +119,16 @@ namespace :gsas do
                                                                                 CertificationPathStatus::VERIFYING_AFTER_APPEAL]})
                      .where(status: [SchemeMixCriterion.statuses[:verifying], SchemeMixCriterion.statuses[:verifying_after_appeal]])
                      .where('due_date < ?', Date.current)
-                     .page(page).per(PAGE_SIZE)
+      unless from_datetime.nil?
+        criteria = criteria.where('due_date >= ?', from_datetime)
+      end
+      criteria = criteria.page(page).per(PAGE_SIZE)
       criteria.each do |criterion|
-        SchemeMixCriterionTask.create(task_description_id: Taskable::CERT_MNGR_OVERDUE,
-                                      project_role: ProjectsUser.roles[:certifier_manager],
-                                      project: criterion.scheme_mix.certification_path.project,
-                                      scheme_mix_criterion: criterion)
+        Task.create(taskable: criterion,
+                    task_description_id: Taskable::CERT_MNGR_OVERDUE,
+                    project_role: ProjectsUser.roles[:certifier_manager],
+                    project: criterion.scheme_mix.certification_path.project,
+                    certification_path: criterion.scheme_mix.certification_path)
       end
       task_count += criteria.size
     end while criteria.size == PAGE_SIZE

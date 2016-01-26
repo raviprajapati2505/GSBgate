@@ -81,4 +81,6 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { :host => 'gord.vito.be' }
   config.action_mailer.smtp_settings = { :address => 'smtp.vito.local' }
   config.action_mailer.asset_host = 'http://gord.vito.be'
+
+  config.x.gsas_info.email = 'GSAS-Trust-Info@gord.qa'
 end

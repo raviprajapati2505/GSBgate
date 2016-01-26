@@ -148,6 +148,24 @@ class DigestMailer < ApplicationMailer
     mail(to: @user.email, subject: "GSASgate - you are removed from project #{@project.name}")
   end
 
+  def project_registered_email(project)
+    @project = project
+
+    mail(to: Rails.configuration.x.gsas_info.email, subject: "GSASgate - new project #{@project.name} registered")
+  end
+
+  def certification_activated_email(certification_path)
+    @certification_path = certification_path
+
+    mail(to: Rails.configuration.x.gsas_info.email, subject: "GSASgate - certification #{@certification_path.name} for #{@certification_path.project.name} is activated")
+  end
+
+  def certification_expired_email(certification_path)
+    @certification_path = certification_path
+
+    mail(to: Rails.configuration.x.gsas_info.email, subject: "GSASgate - certification #{@certification_path.name} for #{@certification_path.project.name} is expired")
+  end
+
   private
 
   def add_condition(user, notification_type, auditable_type, new_status)

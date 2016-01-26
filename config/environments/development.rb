@@ -44,4 +44,6 @@ Rails.application.configure do
   config.action_mailer.asset_host = 'http://localhost:3000'
 
   config.log_tags = [ :uuid ]
+
+  config.x.gsas_info.email = 'GSAS-Trust-Info@gord.qa'
 end

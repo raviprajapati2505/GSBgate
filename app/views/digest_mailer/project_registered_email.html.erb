@@ -1,0 +1,54 @@
+<tr>
+    <td style="padding: .75pt .75pt;">
+        <p><span style='font-size: 18pt; font-family: "Verdana", "sans-serif"; color: #0B9ADC;'>Project Registered</span></p>
+    </td>
+</tr>
+<tr>
+    <td style="width: 650pt; border: solid #CCC 1pt; background: white; padding: 15pt 15pt;">
+        <p>
+            <span style='font-size: 9pt; font-family: "Verdana", "sans-serif";'>Dear Ms/Mr<br/><br/>
+            A new project with name <%= @project.name %> is registered.</span>
+        </p>
+        <br/>
+        <table>
+            <tr>
+                <td>description</td>
+                <td><%= @project.description %></td>
+            </tr>
+            <tr>
+                <td>construction year</td>
+                <td><%= @project.construction_year %></td>
+            </tr>
+            <tr>
+                <td>address</td>
+                <td><%= @project.address %></td>
+            </tr>
+            <tr>
+                <td>location</td>
+                <td><%= @project.location %></td>
+            </tr>
+            <tr>
+                <td>country</td>
+                <td><%= @project.country %></td>
+            </tr>
+            <tr>
+                <td>gross area</td>
+                <td><%= @project.gross_area %></td>
+            </tr>
+            <tr>
+                <td>certified area</td>
+                <td><%= @project.certified_area %></td>
+            </tr>
+            <tr>
+                <td>car park area</td>
+                <td><%= @project.carpark_area %></td>
+            </tr>
+            <tr>
+                <td>project plot area</td>
+                <td><%= @project.project_site_area %></td>
+            </tr>
+        </table>
+        <br/>
+        <p><span style='font-size: 9pt; font-family: "Verdana", "sans-serif";'>With kind regards,</span></p>
+    </td>
+</tr>
