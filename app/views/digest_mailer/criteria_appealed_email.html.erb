@@ -1,0 +1,20 @@
+<tr>
+    <td style="padding: .75pt .75pt;">
+        <p><span style='font-size: 18pt; font-family: "Verdana", "sans-serif"; color: #0B9ADC;'>Criteria Appealed</span></p>
+    </td>
+</tr>
+<tr>
+    <td>
+        <p>
+            <span style='font-size: 9pt; font-family: "Verdana", "sans-serif";'>Dear Ms/Mr<br/><br/>
+            The <%= @certification_path.name %> certification path for project with name <%= @certification_path.project.name %> has the following appealed criteria :</span>
+            <ol>
+            <% @appealed_criteria.each do |appealed_criterion| %>
+            <li><%= appealed_criterion.name %></li>
+            <% end %>
+            </ol>
+        </p>
+        <br/>
+        <p><span style='font-size: 9pt; font-family: "Verdana", "sans-serif";'>With kind regards,</span></p>
+    </td>
+</tr>

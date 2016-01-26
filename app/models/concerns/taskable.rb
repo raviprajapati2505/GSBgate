@@ -293,6 +293,7 @@ module Taskable
           end
           # Destroy system admin tasks to check appeal payment
           Task.delete_all(taskable: self, task_description_id: SYS_ADMIN_APPEAL_APPROVE)
+          DigestMailer.criteria_appealed_email(self).deliver_now
         when CertificationPathStatus::VERIFYING_AFTER_APPEAL
           # Destroy project manager tasks to advance certification path status
           Task.delete_all(taskable: self, task_description_id: PROJ_MNGR_SUB_APPROVE)

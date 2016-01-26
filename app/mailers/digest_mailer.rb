@@ -166,6 +166,13 @@ class DigestMailer < ApplicationMailer
     mail(to: Rails.configuration.x.gsas_info.email, subject: "GSASgate - certification #{@certification_path.name} for #{@certification_path.project.name} is expired")
   end
 
+  def criteria_appealed_email(certification_path)
+    @certification_path = certification_path
+    @appealed_criteria = @certification_path.scheme_mix_criteria.where(status: [SchemeMixCriterion.statuses[:submitting_after_appeal]])
+
+    mail(to: Rails.configuration.x.gsas_info.email, subject: "GSASgate - certification #{@certification_path.name} for #{certification_path.project.name} has appealed criteria")
+  end
+
   private
 
   def add_condition(user, notification_type, auditable_type, new_status)
