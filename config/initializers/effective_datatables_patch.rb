@@ -1,3 +1,5 @@
+require 'effective_datatables'
+
 Rails.application.config.after_initialize do
 
   Effective::DatatablesController.class_eval do
