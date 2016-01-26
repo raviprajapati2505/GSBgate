@@ -127,11 +127,11 @@ module Effective
                    .select('(%s) AS total_targeted_score' % ProjectsCertificationPaths.query_score_in_certificate_points(:targeted_score))
         # Ensure we always have an ability, so we will not show unauthorized data
         if current_ability.nil?
-          Rails.logger.debug "NO ABILITY"
+          # Rails.logger.debug "NO ABILITY"
           return coll.none
         else
           # use cancan ability to limit the authorized projects
-          Rails.logger.debug "ABILITY OK"
+          # Rails.logger.debug "ABILITY OK"
           return coll.accessible_by(current_ability)
         end
       end
