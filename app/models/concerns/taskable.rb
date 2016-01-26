@@ -112,7 +112,7 @@ module Taskable
                  application_role: User.roles[:gord_admin],
                  project: self.project)
     end
-    if (self.has_multiple_scheme_mixes? && (self.main_scheme_mix_selected? == false))
+    if (self.mixed? && (self.main_scheme_mix_selected? == false))
       # Create system admin task to select a main scheme
       Task.create(taskable: self,
                   task_description_id: SYS_ADMIN_SELECT_MAIN_SCHEME,

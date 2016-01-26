@@ -6,15 +6,17 @@
           <span class="hidden-md">Weighting</span>
           <span class="visible-md">W <%= tooltip('Weighting') %></span>
         </th>
-        <th class="col-md-4">
-            Score
-            <% id_list = certification_path.scheme_mixes.collect { |scheme_mix| "scheme_mix_#{scheme_mix.id}" } %>
-            <%= render 'score/score_toggle', id_list: id_list %>
-        </th>
-        <th class="col-md-2">
-          <span class="hidden-md">Progress</span>
-          <span class="visible-md">P <%= tooltip('Progress') %></span>
-        </th>
+        <% if certification_path.is_activated? %>
+            <th class="col-md-4">
+                Score
+                <% id_list = certification_path.scheme_mixes.collect { |scheme_mix| "scheme_mix_#{scheme_mix.id}" } %>
+                <%= render 'score/score_toggle', id_list: id_list %>
+            </th>
+            <th class="col-md-2">
+                <span class="hidden-md">Progress</span>
+                <span class="visible-md">P <%= tooltip('Progress') %></span>
+            </th>
+        <% end %>
     </tr>
     </thead>
     <tbody>
@@ -41,28 +43,30 @@
                 <% end %>
             </td>
             <td><%= scheme_mix.weight %> %</td>
-            <td>
-                <%
-                   # summarize the scores for this scheme
-                   scheme_mix_scores = sum_score_hashes(scheme_mix_criteria_scores_by_scheme_mix[scheme_mix.id])
-                   # set the min and max scales, so all graphs use the same dimensions
-                   scheme_mix_scores = scheme_mix_scores.merge(scheme_mixes_scale)
-                %>
-                <%= render 'score/score_tabs', scores: scheme_mix_scores, element_id: "scheme_mix_#{scheme_mix.id}" %>
-            </td>
-            <td>
-                <div class="progress">
+            <% if certification_path.is_activated? %>
+                <td>
                     <%
-                       if certification_path.requirement_data.count.nonzero?
-                         progress = certification_path.requirement_data.completed.count * 100 / certification_path.requirement_data.count
-                       else
-                         progress = 0
-                       end
+                       # summarize the scores for this scheme
+                       scheme_mix_scores = sum_score_hashes(scheme_mix_criteria_scores_by_scheme_mix[scheme_mix.id])
+                       # set the min and max scales, so all graphs use the same dimensions
+                       scheme_mix_scores = scheme_mix_scores.merge(scheme_mixes_scale)
                     %>
-                    <div class="progress-bar" style="min-width: 2em; width: <%= progress %>%;"><%= progress %>%
+                    <%= render 'score/score_tabs', scores: scheme_mix_scores, element_id: "scheme_mix_#{scheme_mix.id}" %>
+                </td>
+                <td>
+                    <div class="progress">
+                        <%
+                           if certification_path.requirement_data.count.nonzero?
+                             progress = certification_path.requirement_data.completed.count * 100 / certification_path.requirement_data.count
+                           else
+                             progress = 0
+                           end
+                        %>
+                        <div class="progress-bar" style="min-width: 2em; width: <%= progress %>%;"><%= progress %>%
+                        </div>
                     </div>
-                </div>
-            </td>
+                </td>
+            <% end %>
         </tr>
     <% end %>
     </tbody>

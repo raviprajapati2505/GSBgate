@@ -40,7 +40,7 @@ class CertificationPathsController < AuthenticatedController
               if params.has_key?(:single_scheme_select)
                 @certification_path.scheme_mixes.build({scheme_id: params[:single_scheme_select], weight: 100})
               end
-            elsif @certification_path.has_multiple_scheme_mixes?
+            elsif @certification_path.mixed?
               if params[:certification_path].has_key?(:schemes)
                 params[:certification_path][:schemes].each do |scheme_params|
                   @certification_path.scheme_mixes.build({scheme_id: scheme_params[:scheme_id], weight: scheme_params[:weight]})
