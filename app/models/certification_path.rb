@@ -29,6 +29,7 @@ class CertificationPath < ActiveRecord::Base
   validate :certificate_duration
 
   after_initialize :init
+  before_update :create_descendant_records
   before_update :advance_scheme_mix_criteria_statuses
   before_update :set_started_at
   before_update :set_certified_at
@@ -337,6 +338,14 @@ class CertificationPath < ActiveRecord::Base
               smc.verifying_after_appeal!
             end
           end
+      end
+    end
+  end
+
+  def create_descendant_records
+    if certification_path_status_id_changed? && (certification_path_status_id_was == CertificationPathStatus::ACTIVATING)
+      scheme_mixes.each do |scheme_mix|
+        scheme_mix.create_descendant_records
       end
     end
   end

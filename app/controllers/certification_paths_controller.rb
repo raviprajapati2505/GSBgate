@@ -68,10 +68,10 @@ class CertificationPathsController < AuthenticatedController
       @certification_path.development_type = loc.development_type
       # Final Design Certificate version must be equal to Letter Of Conformance version
       @certification_path.certificate = Certificate.final_design_certificate.where(gsas_version: loc.certificate.gsas_version).first
-      # Duplicate the LOC scheme mixes
+      # Mirror the LOC scheme mixes
       loc.scheme_mixes.each do |scheme_mix|
         new_scheme_mix = @certification_path.scheme_mixes.build({scheme_id: scheme_mix.scheme_id, weight: scheme_mix.weight})
-        # Duplicate the main scheme mix
+        # Mirror the main scheme mix
         if loc.main_scheme_mix_id.present? && (scheme_mix.id == loc.main_scheme_mix_id)
           @certification_path.main_scheme_mix = new_scheme_mix
           @certification_path.main_scheme_mix_selected = true

@@ -53,16 +53,18 @@
                             <td><%= pluralize(@certification_path.duration, 'year') %></td>
                         </tr>
                     <% end %>
-                    <tr>
-                        <th>Rating</th>
-                        <td><%= render 'certification_paths/star_ratings', certification_path: @certification_path %></td>
-                    </tr>
-                    <tr>
-                        <th>Score</th>
-                        <td>
-                            <%= render 'score/score', scores: @certification_path.scores_in_certificate_points, point_type: :certificate_points %>
-                        </td>
-                    </tr>
+                    <% if @certification_path.is_activated? %>
+                        <tr>
+                            <th>Rating</th>
+                            <td><%= render 'certification_paths/star_ratings', certification_path: @certification_path %></td>
+                        </tr>
+                        <tr>
+                            <th>Score</th>
+                            <td>
+                                <%= render 'score/score', scores: @certification_path.scores_in_certificate_points, point_type: :certificate_points %>
+                            </td>
+                        </tr>
+                    <% end %>
                     <% if @certification_path.certificate.design_type? %>
                     <tr>
                         <th>
@@ -155,8 +157,9 @@
                     <div class="alert alert-info" role="alert">
                         <%= fa_icon_with_text('info-circle', 'The schemes will be clickable after a GORD administrator activates the certificate.') %>
                     </div>
+                <% else %>
+                    <%= scores_legend %>
                 <% end %>
-                <%= scores_legend %>
                 <%= render 'scheme_mixes/overview', certification_path: @certification_path %>
                 <% can_edit_main_scheme_mix = can?(:edit_main_scheme_mix, @certification_path) %>
                 <% can_edit_project_team_responsibility = can?(:edit_project_team_responsibility, @certification_path) %>
