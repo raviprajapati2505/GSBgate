@@ -556,11 +556,13 @@ module Taskable
               end
             else
               # Create project team member task to provide the requirement
-              Task.create(taskable: self,
-                          task_description_id: PROJ_MEM_REQ,
-                          user: self.user,
-                          project: self.scheme_mix_criteria.first.scheme_mix.certification_path.project,
-                          certification_path: self.scheme_mix_criteria.first.scheme_mix.certification_path)
+              if Task.find_by(taskable: self.scheme_mix_criteria.first, task_description_id: PROJ_MEM_REQ, user: self.user).nil?
+                Task.create(taskable: self.scheme_mix_criteria.first,
+                            task_description_id: PROJ_MEM_REQ,
+                            user: self.user,
+                            project: self.scheme_mix_criteria.first.scheme_mix.certification_path.project,
+                            certification_path: self.scheme_mix_criteria.first.scheme_mix.certification_path)
+              end
             end
           end
           # Destroy project manager tasks to set criterion status to complete
@@ -581,8 +583,13 @@ module Taskable
                         project: self.scheme_mix_criteria.first.scheme_mix.certification_path.project,
                         certification_path: self.scheme_mix_criteria.first.scheme_mix.certification_path)
           end
+          unless self.user_id_changed?
+            count = self.scheme_mix_criteria.first.requirement_data.where(status: RequirementDatum.statuses[:required], user: self.user).count
+          end
+          if count.zero?
+            Task.delete_all(taskable: self.scheme_mix_criteria.first, task_description_id: PROJ_MEM_REQ, user: self.user)
+          end
           # Destroy project manager tasks to assign project team members to requirement and project team member tasks to provide the requirement
-          Task.delete_all(taskable: self, task_description_id: PROJ_MEM_REQ)
           if self.scheme_mix_criteria.first.scheme_mix.certification_path.requirement_data.unassigned.where(status: RequirementDatum.statuses[:required]).count.zero?
             Task.delete_all(taskable: self.scheme_mix_criteria.first.scheme_mix.certification_path, task_description_id: [PROJ_MNGR_ASSIGN, PROJ_MNGR_ASSIGN_AFTER_APPEAL])
           end
@@ -619,18 +626,24 @@ module Taskable
           end
         end
         # Destroy project team member tasks to provide the requirement
-        Task.delete_all(taskable: self, task_description_id: PROJ_MEM_REQ)
+        if self.scheme_mix_criteria.first.requirement_data.where(status: RequirementDatum.statuses[:required], user_id: self.user_id_was).count.zero?
+          Task.delete_all(taskable: self, task_description_id: PROJ_MEM_REQ, user_id: self.user_id_was)
+        end
       else
         # Destroy project team member tasks to provide the requirement (which are assigned to another user)
-        Task.delete_all(taskable: self, task_description_id: PROJ_MEM_REQ)
+        if self.scheme_mix_criteria.first.requirement_data.where(status: RequirementDatum.statuses[:required], user_id: self.user_id_was).count.zero?
+          Task.delete_all(taskable: self, task_description_id: PROJ_MEM_REQ, user_id: self.user_id_was)
+        end
         if RequirementDatum.statuses[self.status] == RequirementDatum.statuses[:required]
           if self.scheme_mix_criteria.first.scheme_mix.certification_path.in_submission?
             # Create project team member task to provide the requirement
-            Task.create(taskable: self,
-                        task_description_id: PROJ_MEM_REQ,
-                        user: self.user,
-                        project: self.scheme_mix_criteria.first.scheme_mix.certification_path.project,
-                        certification_path: self.scheme_mix_criteria.first.scheme_mix.certification_path)
+            if Task.find_by(taskable: self.scheme_mix_criteria.first, task_description_id: PROJ_MEM_REQ, user: self.user).nil?
+              Task.create(taskable: self.scheme_mix_criteria.first,
+                          task_description_id: PROJ_MEM_REQ,
+                          user: self.user,
+                          project: self.scheme_mix_criteria.first.scheme_mix.certification_path.project,
+                          certification_path: self.scheme_mix_criteria.first.scheme_mix.certification_path)
+            end
           end
         end
         # Destroy project manager tasks to assign project team member
