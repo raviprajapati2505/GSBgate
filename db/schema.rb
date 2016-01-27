@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160126120840) do
+ActiveRecord::Schema.define(version: 20160126153238) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -269,17 +269,19 @@ ActiveRecord::Schema.define(version: 20160126120840) do
   create_table "scheme_mix_criteria", force: :cascade do |t|
     t.integer  "scheme_mix_id"
     t.integer  "scheme_criterion_id"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
     t.integer  "status"
     t.integer  "certifier_id"
     t.date     "due_date"
     t.integer  "targeted_score"
     t.integer  "submitted_score"
     t.integer  "achieved_score"
+    t.integer  "main_scheme_mix_criterion_id"
   end
 
   add_index "scheme_mix_criteria", ["certifier_id"], name: "index_scheme_mix_criteria_on_certifier_id", using: :btree
+  add_index "scheme_mix_criteria", ["main_scheme_mix_criterion_id"], name: "index_scheme_mix_criteria_on_main_scheme_mix_criterion_id", using: :btree
   add_index "scheme_mix_criteria", ["scheme_criterion_id"], name: "index_scheme_mix_criteria_on_scheme_criterion_id", using: :btree
   add_index "scheme_mix_criteria", ["scheme_mix_id"], name: "index_scheme_mix_criteria_on_scheme_mix_id", using: :btree
 

@@ -18,23 +18,41 @@ class SchemeMix < ActiveRecord::Base
 
   # Mirrors all the descendant structural data records of the SchemeMix to user data records
   def create_descendant_records
-    # Build a list of all criteria codes of the main scheme mix
-    main_scheme_mix_criteria_codes = []
+    # Build a list of all criteria codes/ids of the main scheme mix
+    main_scheme_mix_criteria = {}
     if certification_path.main_scheme_mix.present?
       certification_path.main_scheme_mix.scheme.scheme_categories.each do |main_scheme_category|
         main_scheme_category.scheme_criteria.each do |main_scheme_criterion|
-          main_scheme_mix_criteria_codes << main_scheme_criterion.code
+          main_scheme_mix_criteria[main_scheme_criterion.code] = main_scheme_criterion.id
         end
       end
     end
 
     # Loop all the criteria of the scheme
     scheme.scheme_criteria.each do |scheme_criterion|
-      # Create a SchemeMixCriterion for every criterion
-      scheme_mix_criterion = SchemeMixCriterion.create!(targeted_score: scheme_criterion.maximum_score, scheme_mix: self, scheme_criterion: scheme_criterion)
+      # Check whether the new scheme mix criterion will have a main scheme mix criterion
+      has_main_scheme_mix_criterion = (certification_path.mixed? && certification_path.main_scheme_mix.present? && scheme_criterion.scheme_category.shared? && (id != certification_path.main_scheme_mix_id) && main_scheme_mix_criteria.has_key?(scheme_criterion.code))
+
+      # If there is a main scheme mix criterion, get the id
+      main_scheme_mix_criterion_id = nil
+      if has_main_scheme_mix_criterion
+        # Find the id of the main scheme criterion by code
+        main_scheme_criterion_id = main_scheme_mix_criteria[scheme_criterion.code]
+
+        # Load the SchemeMixCriterion by scheme id & scheme criterion id
+        main_scheme_mix_criterion = SchemeMixCriterion.select(:id).find_by(scheme_mix_id: certification_path.main_scheme_mix_id, scheme_criterion_id: main_scheme_criterion_id)
+
+        # Set the main scheme criterion id
+        if main_scheme_mix_criterion.present?
+          main_scheme_mix_criterion_id = main_scheme_mix_criterion.id
+        end
+      end
+
+      # Create a SchemeMixCriterion record
+      scheme_mix_criterion = SchemeMixCriterion.create!(targeted_score: scheme_criterion.maximum_score, scheme_mix: self, scheme_criterion: scheme_criterion, main_scheme_mix_criterion_id: main_scheme_mix_criterion_id)
 
       # Don't create requirement data records for criteria that inherit their scores from the main scheme mix
-      unless (certification_path.mixed? && certification_path.main_scheme_mix.present? && scheme_criterion.scheme_category.shared? && (id != certification_path.main_scheme_mix_id) && main_scheme_mix_criteria_codes.include?(scheme_mix_criterion.scheme_criterion.code))
+      unless has_main_scheme_mix_criterion
         # Loop all requirements of the criterion
         scheme_criterion.requirements.each do |requirement|
           # Check whether the RequirementDatum record already exists (a Requirement can be linked to multiple scheme criteria)
@@ -64,7 +82,7 @@ class SchemeMix < ActiveRecord::Base
               # Create a RequirementDatum
               scheme_mix_criterion.requirement_data.create!(requirement_id: requirement.id)
             end
-            # If RequirementDatum exists
+          # If RequirementDatum exists
           else
             # Link the SchemeMixCriterium to the existing RequirementDatum
             scheme_mix_criterion.scheme_mix_criteria_requirement_data.create!(requirement_datum_id: requirement_datum.id)

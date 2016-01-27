@@ -10,6 +10,7 @@ class SchemeMixCriterion < ActiveRecord::Base
   belongs_to :scheme_mix
   belongs_to :scheme_criterion
   belongs_to :certifier, class_name: 'User', inverse_of: :scheme_mix_criteria
+  belongs_to :main_scheme_mix_criterion, class_name: 'SchemeMixCriterion'
 
   enum status: {submitting: 0, submitted: 1, verifying: 2, submitted_score_achieved: 3, submitted_score_not_achieved: 4, appealed: 5, submitting_after_appeal: 6, submitted_after_appeal: 7, verifying_after_appeal: 8, submitted_score_achieved_after_appeal: 9, submitted_score_not_achieved_after_appeal: 10}
 

@@ -342,10 +342,23 @@ class CertificationPath < ActiveRecord::Base
     end
   end
 
+  # Triggers the 'create_descendant_records' method of underlying scheme mixes
   def create_descendant_records
+    # Only trigger when the certification path is being activated
     if certification_path_status_id_changed? && (certification_path_status_id_was == CertificationPathStatus::ACTIVATING)
-      scheme_mixes.each do |scheme_mix|
-        scheme_mix.create_descendant_records
+      CertificationPath.transaction do
+        # If there is a main scheme mix, it should be handled first
+        if (mixed? && main_scheme_mix.present?)
+          main_scheme_mix.create_descendant_records
+          scheme_mixes.where.not(id: main_scheme_mix_id).each do |scheme_mix|
+            scheme_mix.create_descendant_records
+          end
+        # If there is no main scheme mix, order doesn't matter
+        else
+          scheme_mixes.each do |scheme_mix|
+            scheme_mix.create_descendant_records
+          end
+        end
       end
     end
   end
