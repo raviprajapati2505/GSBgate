@@ -135,11 +135,13 @@ module Taskable
 
   def handle_created_scheme_mix_criteria_document
     # Create project manager task to approve/reject document
-    Task.create(taskable: self,
-                task_description_id: PROJ_MNGR_DOC_APPROVE,
-                project_role: ProjectsUser.roles[:project_manager],
-                project: self.scheme_mix_criterion.scheme_mix.certification_path.project,
-                certification_path: self.scheme_mix_criterion.scheme_mix.certification_path)
+    if Task.find_by(taskable: self.scheme_mix_criterion, task_description_id: PROJ_MNGR_DOC_APPROVE).nil?
+      Task.create(taskable: self.scheme_mix_criterion,
+                  task_description_id: PROJ_MNGR_DOC_APPROVE,
+                  project_role: ProjectsUser.roles[:project_manager],
+                  project: self.scheme_mix_criterion.scheme_mix.certification_path.project,
+                  certification_path: self.scheme_mix_criterion.scheme_mix.certification_path)
+    end
   end
 
   def handle_updated_project
@@ -672,14 +674,18 @@ module Taskable
       case SchemeMixCriteriaDocument.statuses[self.status]
         when SchemeMixCriteriaDocument.statuses[:awaiting_approval]
           # Create project manager task to approve/reject document
-          Task.create(taskable: self,
-                      task_description_id: PROJ_MNGR_DOC_APPROVE,
-                      project_role: ProjectsUser.roles[:project_manager],
-                      project: self.scheme_mix_criterion.scheme_mix.certification_path.project,
-                      certification_path: self.scheme_mix_criterion.scheme_mix.certification_path)
+          if Task.find_by(taskable: self.scheme_mix_criterion, task_description_id: PROJ_MNGR_DOC_APPROVE).nil?
+            Task.create(taskable: self.scheme_mix_criterion,
+                        task_description_id: PROJ_MNGR_DOC_APPROVE,
+                        project_role: ProjectsUser.roles[:project_manager],
+                        project: self.scheme_mix_criterion.scheme_mix.certification_path.project,
+                        certification_path: self.scheme_mix_criterion.scheme_mix.certification_path)
+          end
         when SchemeMixCriteriaDocument.statuses[:approved], SchemeMixCriteriaDocument.statuses[:rejected], SchemeMixCriteriaDocument.statuses[:superseded]
           # Destroy project managers tasks to approve/reject document
-          Task.delete_all(taskable: self, task_description_id: PROJ_MNGR_DOC_APPROVE)
+          if self.scheme_mix_criterion.scheme_mix_criteria_documents.where(status: SchemeMixCriteriaDocument.statuses[:awaiting_approval]).count.zero?
+            Task.delete_all(taskable: self.scheme_mix_criterion, task_description_id: PROJ_MNGR_DOC_APPROVE)
+          end
       end
     end
   end
