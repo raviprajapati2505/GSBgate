@@ -70,8 +70,17 @@
                     </tr>
                     </thead>
                     <% if @scheme_mix_criterion.scheme_criterion.minimum_score != @scheme_mix_criterion.scheme_criterion.minimum_valid_score %>
-                        <p class="alert alert-warning"><%= fa_icon('info-circle') %>
+                        <p class="alert alert-warning"><%= fa_icon('exclamation-circle') %>
                             The scores of this criterion should be at least <%= @scheme_mix_criterion.scheme_criterion.minimum_valid_score %> to be able to receive a certificate.
+                        </p>
+                    <% end %>
+                    <% if (@certification_path.main_scheme_mix_id == @scheme_mix.id) && @scheme_mix_criterion.scheme_criterion.scheme_category.shared? %>
+                        <p class="alert alert-info"><%= fa_icon('info-circle') %>
+                            The scores of this criterion will by inherited by other schemes.
+                        </p>
+                    <% elsif @scheme_mix_criterion.main_scheme_mix_criterion_id.present? %>
+                        <p class="alert alert-info"><%= fa_icon('info-circle') %>
+                            The scores of this criterion are inherited from "<%= link_to(@scheme_mix_criterion.main_scheme_mix_criterion.full_name, project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @certification_path.main_scheme_mix, @scheme_mix_criterion.main_scheme_mix_criterion)) %>" in the "<%= link_to(@certification_path.main_scheme_mix.name, project_certification_path_scheme_mix_path(@project, @certification_path, @certification_path.main_scheme_mix)) %>" scheme.
                         </p>
                     <% end %>
                     <tbody>
