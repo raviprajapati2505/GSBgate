@@ -126,43 +126,45 @@
         </div>
     </div>
 
-    <div class="ibox">
-        <div class="ibox-title">
-            <h5>Certifier</h5>
-        </div>
-        <div class="ibox-content">
-            <%= bootstrap_form_tag url: assign_certifier_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), method: 'put' do |f| %>
-                <% if can?(:assign_certifier, @scheme_mix_criterion) %>
-                    <div class="row">
-                        <div class="col-md-7">
-                            <% users = User.authorized_for_project(@project).with_certifier_project_role %>
-                            <% user_id = @scheme_mix_criterion.certifier.id if @scheme_mix_criterion.certifier.present? %>
-                            <%= f.select :user_id, options_for_select(users.map { |k| [k.email, k.id]}, user_id), {label: 'Responsibility', include_blank: ''}, class: 'select2-certifier' %>
+    <% unless @scheme_mix_criterion.main_scheme_mix_criterion_id.present? %>
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>Certifier</h5>
+            </div>
+            <div class="ibox-content">
+                <%= bootstrap_form_tag url: assign_certifier_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), method: 'put' do |f| %>
+                    <% if can?(:assign_certifier, @scheme_mix_criterion) %>
+                        <div class="row">
+                            <div class="col-md-7">
+                                <% users = User.authorized_for_project(@project).with_certifier_project_role %>
+                                <% user_id = @scheme_mix_criterion.certifier.id if @scheme_mix_criterion.certifier.present? %>
+                                <%= f.select :user_id, options_for_select(users.map { |k| [k.email, k.id]}, user_id), {label: 'Responsibility', include_blank: ''}, class: 'select2-certifier' %>
+                            </div>
+                            <div class="col-md-5">
+                                <%= f.text_field :due_date, value: ((l @scheme_mix_criterion.due_date, format: :short) if !@scheme_mix_criterion.due_date.nil?), prepend: '<i class="fa fa-calendar"></i>'.html_safe, class: 'datepicker-future', autocomplete: 'off' %>
+                            </div>
                         </div>
-                        <div class="col-md-5">
-                            <%= f.text_field :due_date, value: ((l @scheme_mix_criterion.due_date, format: :short) if !@scheme_mix_criterion.due_date.nil?), prepend: '<i class="fa fa-calendar"></i>'.html_safe, class: 'datepicker-future', autocomplete: 'off' %>
+                        <div class="hr-line-dashed"></div>
+                        <%= btn_save %>
+                    <% else %>
+                        <div class="row">
+                            <div class="col-md-7">
+                                <% if @scheme_mix_criterion.certifier.nil? %>
+                                    <%= f.label :user_id, 'Responsibility' %>
+                                    <p>This criterion is not yet assigned.</p>
+                                <% else %>
+                                    <%= f.select :user_id, options_for_select([@scheme_mix_criterion.certifier].map { |k| [k.email, k.id]}, @scheme_mix_criterion.certifier.id), {label: 'Responsibility'}, disabled: true, class: 'select2-certifier' %>
+                                <% end %>
+                            </div>
+                            <div class="col-md-5">
+                                <%= f.text_field :due_date, value: ((l @scheme_mix_criterion.due_date, format: :short) if !@scheme_mix_criterion.due_date.nil?), prepend: '<i class="fa fa-calendar"></i>'.html_safe, class: 'datepicker-future', autocomplete: 'off', disabled: true %>
+                            </div>
                         </div>
-                    </div>
-                    <div class="hr-line-dashed"></div>
-                    <%= btn_save %>
-                <% else %>
-                    <div class="row">
-                        <div class="col-md-7">
-                            <% if @scheme_mix_criterion.certifier.nil? %>
-                                <%= f.label :user_id, 'Responsibility' %>
-                                <p>This criterion is not yet assigned.</p>
-                            <% else %>
-                                <%= f.select :user_id, options_for_select([@scheme_mix_criterion.certifier].map { |k| [k.email, k.id]}, @scheme_mix_criterion.certifier.id), {label: 'Responsibility'}, disabled: true, class: 'select2-certifier' %>
-                            <% end %>
-                        </div>
-                        <div class="col-md-5">
-                            <%= f.text_field :due_date, value: ((l @scheme_mix_criterion.due_date, format: :short) if !@scheme_mix_criterion.due_date.nil?), prepend: '<i class="fa fa-calendar"></i>'.html_safe, class: 'datepicker-future', autocomplete: 'off', disabled: true %>
-                        </div>
-                    </div>
+                    <% end %>
                 <% end %>
-            <% end %>
+            </div>
         </div>
-    </div>
+    <% end %>
 
     <div class="ibox criterion-information">
         <div class="ibox-title">
@@ -176,66 +178,68 @@
         </div>
     </div>
 </div>
-<div class="col-lg-8">
-    <% if @scheme_mix_criterion.requirement_data.assigned_to_user(current_user).present? %>
-        <div class="ibox">
-            <div class="ibox-title">
-                <h5>Your requirements <%= tooltip('These requirements were assigned to you. It is your responsibility to provide documentation for these requirements.') %></h5>
-            </div>
-            <div class="ibox-content">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div id="accordion" class="panel-group">
-                            <% @scheme_mix_criterion.requirement_data.assigned_to_user(current_user).each do |requirement_datum| %>
-                                <%= render 'requirement_data/update', requirement_datum: requirement_datum %>
-                            <% end %>
+<% unless @scheme_mix_criterion.main_scheme_mix_criterion_id.present? %>
+    <div class="col-lg-8">
+        <% if @scheme_mix_criterion.requirement_data.assigned_to_user(current_user).present? %>
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>Your requirements <%= tooltip('These requirements were assigned to you. It is your responsibility to provide documentation for these requirements.') %></h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="accordion" class="panel-group">
+                                <% @scheme_mix_criterion.requirement_data.assigned_to_user(current_user).each do |requirement_datum| %>
+                                    <%= render 'requirement_data/update', requirement_datum: requirement_datum %>
+                                <% end %>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    <% end %>
-    <% if @scheme_mix_criterion.requirement_data.not_assigned_to_user(current_user).present? %>
-        <div class="ibox">
-            <div class="ibox-title">
-                <% if @scheme_mix_criterion.requirement_data.assigned_to_user(current_user).present? %>
-                    <h5>Other requirements</h5>
-                <% else %>
-                    <h5>Requirements</h5>
-                <% end %>
-            </div>
-            <div class="ibox-content">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div id="accordion" class="panel-group">
-                            <% @scheme_mix_criterion.requirement_data.not_assigned_to_user(current_user).each do |requirement_datum| %>
-                                <%= render 'requirement_data/update', requirement_datum: requirement_datum %>
-                            <% end %>
+        <% end %>
+        <% if @scheme_mix_criterion.requirement_data.not_assigned_to_user(current_user).present? %>
+            <div class="ibox">
+                <div class="ibox-title">
+                    <% if @scheme_mix_criterion.requirement_data.assigned_to_user(current_user).present? %>
+                        <h5>Other requirements</h5>
+                    <% else %>
+                        <h5>Requirements</h5>
+                    <% end %>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="accordion" class="panel-group">
+                                <% @scheme_mix_criterion.requirement_data.not_assigned_to_user(current_user).each do |requirement_datum| %>
+                                    <%= render 'requirement_data/update', requirement_datum: requirement_datum %>
+                                <% end %>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    <% end %>
-    <% if can?(:create, Document.new(:scheme_mix_criteria_documents_attributes => [{:scheme_mix_criterion_id => @scheme_mix_criterion.id}])) %>
-        <div class="ibox">
+        <% end %>
+        <% if can?(:create, Document.new(:scheme_mix_criteria_documents_attributes => [{:scheme_mix_criterion_id => @scheme_mix_criterion.id}])) %>
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>Upload documentation</h5>
+                </div>
+                <div class="ibox-content">
+                    <%= render 'documents/new', document: Document.new, project: @project, certification_path: @certification_path, scheme_mix: @scheme_mix,  scheme_mix_criterion_id: @scheme_mix_criterion.id %>
+                </div>
+            </div>
+        <% end %>
+        <div class="ibox" id="documentation">
             <div class="ibox-title">
-                <h5>Upload documentation</h5>
+                <h5>Documentation</h5>
             </div>
             <div class="ibox-content">
-                <%= render 'documents/new', document: Document.new, project: @project, certification_path: @certification_path, scheme_mix: @scheme_mix,  scheme_mix_criterion_id: @scheme_mix_criterion.id %>
+                <%= render 'scheme_mix_criteria_documents/index', scheme_mix_criteria_documents: @scheme_mix_criterion.scheme_mix_criteria_documents %>
             </div>
-        </div>
-    <% end %>
-    <div class="ibox" id="documentation">
-        <div class="ibox-title">
-            <h5>Documentation</h5>
-        </div>
-        <div class="ibox-content">
-            <%= render 'scheme_mix_criteria_documents/index', scheme_mix_criteria_documents: @scheme_mix_criterion.scheme_mix_criteria_documents %>
         </div>
     </div>
-</div>
+<% end %>
 </div>
 <div id="editStatusSchemeMixCriterionModal" class="modal fade"></div>
 <%= javascript_include_tag 'select_project_certifier' %>
