@@ -7,45 +7,45 @@
     <td style="width: 650pt; border: solid #CCC 1pt; background: white; padding: 15pt 15pt;">
         <p>
             <span style='font-size: 9pt; font-family: "Verdana", "sans-serif";'>Dear Ms/Mr<br/><br/>
-            A new project with name <%= @project.name %> is registered.</span>
+            A new project with name <b><%= @project.name %></b> is registered.</span>
         </p>
         <br/>
-        <table>
+        <table style='font-size: 9pt; font-family: "Verdana", "sans-serif";'>
             <tr>
-                <td>description</td>
+                <td><b>Description</b></td>
                 <td><%= @project.description %></td>
             </tr>
             <tr>
-                <td>construction year</td>
+                <td><b>Construction Year</b></td>
                 <td><%= @project.construction_year %></td>
             </tr>
             <tr>
-                <td>address</td>
+                <td><b>Address</b></td>
                 <td><%= @project.address %></td>
             </tr>
             <tr>
-                <td>location</td>
+                <td><b>Location</b></td>
                 <td><%= @project.location %></td>
             </tr>
             <tr>
-                <td>country</td>
+                <td><b>Country</b></td>
                 <td><%= @project.country %></td>
             </tr>
             <tr>
-                <td>gross area</td>
-                <td><%= @project.gross_area %></td>
+                <td><b>Gross Area</b></td>
+                <td><%= @project.gross_area %>m²</td>
             </tr>
             <tr>
-                <td>certified area</td>
-                <td><%= @project.certified_area %></td>
+                <td><b>Certified Area (area excluding car parking)</b></td>
+                <td><%= @project.certified_area %>m²</td>
             </tr>
             <tr>
-                <td>car park area</td>
-                <td><%= @project.carpark_area %></td>
+                <td><b>Car Park Area</b></td>
+                <td><%= @project.carpark_area %>m²</td>
             </tr>
             <tr>
-                <td>project plot area</td>
-                <td><%= @project.project_site_area %></td>
+                <td><b>Project Plot Area</b></td>
+                <td><%= @project.project_site_area %>m²</td>
             </tr>
         </table>
         <br/>

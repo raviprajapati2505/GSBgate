@@ -1,8 +1,15 @@
-Certification Activated
+Certificate Activated
 =======================
 
 Dear Ms/Mr
 
-The <%= @certification_path.name %> certification path for project with name <%= @certification_path.project.name %> is activated.
+The <%= @certification_path.name %> certificate for project with name <%= @certification_path.project.name %> is activated.
+
+Development Type : <%= @certification_path.development_type.humanize %>
+<% unless @certification_path.duration == 0 %>Duration : <%= pluralize(@certification_path.duration, 'year') %><% end %>
+Schemes :
+<% @certification_path.scheme_mixes.each do |scheme_mix| %>
+<%= scheme_mix.weight %>% <%= scheme_mix.full_name %>
+<% end %>
 
 With kind regards,
