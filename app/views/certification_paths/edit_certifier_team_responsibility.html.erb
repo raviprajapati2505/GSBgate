@@ -8,23 +8,34 @@
                 <div class="ibox-content">
                     <table class="table table-bordered allocate-responsibility-table">
                         <% @certification_path.scheme_mixes.uniq.each do |scheme_mix| %>
-                            <tr><th colspan="5" class="scheme-name"><%= scheme_mix.name %></th></tr>
+                            <tr>
+                                <th colspan="5" class="scheme-name">
+                                    <%= scheme_mix.name %>
+                                    <% if @certification_path.main_scheme_mix_id == scheme_mix.id %>
+                                        <%= fa_icon('certificate', tooltip: 'This is the main scheme (or main typology). Some of its criteria scores will be inherited by other schemes.', class: 'main-scheme-icon') %>
+                                    <% end %>
+                                </th>
+                            </tr>
                             <% scheme_mix.scheme_categories.uniq.each do |category| %>
-                                <tr>
-                                    <th><%= check_box_tag 'categories[]', category.id, false, class: 'checkbox_parent' %></th>
-                                    <th><%= category.name %></th>
-                                    <th>Allocated&nbsp;to</th>
-                                    <th>Due&nbsp;date</th>
-                                    <th>Status</th>
-                                </tr>
-                                <% scheme_mix.scheme_mix_criteria.for_category(category).order('scheme_criteria.number').each do |scheme_mix_criterion| %>
+                                <% if scheme_mix.scheme_mix_criteria.for_category(category).exists?(main_scheme_mix_criterion_id: nil) %>
                                     <tr>
-                                        <td><%= check_box_tag 'scheme_mix_criteria[]', scheme_mix_criterion.id, false, class: "checkbox_child_#{category.id}" %></td>
-                                        <td><%= scheme_mix_criterion.scheme_criterion.full_name %></td>
-                                        <td><%= scheme_mix_criterion.certifier.email if scheme_mix_criterion.certifier %></td>
-                                        <td><%= l(scheme_mix_criterion.due_date, format: :short) if scheme_mix_criterion.due_date %></td>
-                                        <td><%= scheme_mix_criterion.status.humanize.gsub(' ', '&nbsp;').html_safe if scheme_mix_criterion.status %></td>
+                                        <th><%= check_box_tag 'categories[]', category.id, false, class: 'checkbox_parent' %></th>
+                                        <th><%= category.name %></th>
+                                        <th>Allocated&nbsp;to</th>
+                                        <th>Due&nbsp;date</th>
+                                        <th>Status</th>
                                     </tr>
+                                    <% scheme_mix.scheme_mix_criteria.for_category(category).order('scheme_criteria.number').each do |scheme_mix_criterion| %>
+                                        <% unless scheme_mix_criterion.main_scheme_mix_criterion_id.present? %>
+                                            <tr>
+                                                <td><%= check_box_tag 'scheme_mix_criteria[]', scheme_mix_criterion.id, false, class: "checkbox_child_#{category.id}" %></td>
+                                                <td><%= scheme_mix_criterion.scheme_criterion.full_name %></td>
+                                                <td><%= scheme_mix_criterion.certifier.email if scheme_mix_criterion.certifier %></td>
+                                                <td><%= l(scheme_mix_criterion.due_date, format: :short) if scheme_mix_criterion.due_date %></td>
+                                                <td><%= scheme_mix_criterion.status.humanize.gsub(' ', '&nbsp;').html_safe if scheme_mix_criterion.status %></td>
+                                            </tr>
+                                        <% end %>
+                                    <% end %>
                                 <% end %>
                             <% end %>
                         <% end %>

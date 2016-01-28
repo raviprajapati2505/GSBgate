@@ -9,25 +9,32 @@
                     <table class="table table-bordered allocate-responsibility-table">
                         <% @certification_path.scheme_mixes.uniq.each do |scheme_mix| %>
                             <tr>
-                                <th colspan="5" class="scheme-name"><%= scheme_mix.name %></th>
+                                <th colspan="5" class="scheme-name">
+                                    <%= scheme_mix.name %>
+                                    <% if @certification_path.main_scheme_mix_id == scheme_mix.id %>
+                                        <%= fa_icon('certificate', tooltip: 'This is the main scheme (or main typology). Some of its criteria scores will be inherited by other schemes.', class: 'main-scheme-icon') %>
+                                    <% end %>
+                                </th>
                             </tr>
                             <% scheme_mix.scheme_categories.uniq.each do |category| %>
                                 <% scheme_mix.scheme_mix_criteria.in_submission_or_submitted.for_category(category).order('scheme_criteria.number').each do |scheme_mix_criterion| %>
-                                    <tr>
-                                        <th><%= check_box_tag 'scheme_mix_criteria[]', scheme_mix_criterion.id, false, class: 'checkbox_parent' %></th>
-                                        <th><%= scheme_mix_criterion.scheme_criterion.full_name %></th>
-                                        <th>Allocated&nbsp;to</th>
-                                        <th>Due&nbsp;date</th>
-                                        <th>Status</th>
-                                    </tr>
-                                    <% scheme_mix_criterion.requirement_data.each do |requirement_datum| %>
+                                    <% unless scheme_mix_criterion.main_scheme_mix_criterion_id.present? || (scheme_mix_criterion.requirement_data.count < 1) %>
                                         <tr>
-                                            <td><%= check_box_tag 'requirement_data[]', requirement_datum.id, false, class: "checkbox_child_#{scheme_mix_criterion.id}" %></td>
-                                            <td><%= requirement_datum.requirement.name %></td>
-                                            <td><%= requirement_datum.user.email if requirement_datum.user %></td>
-                                            <td><%= l(requirement_datum.due_date, format: :short) if requirement_datum.due_date %></td>
-                                            <td><%= requirement_datum.status.humanize.gsub(' ', '&nbsp;').html_safe if requirement_datum.status %></td>
+                                            <th><%= check_box_tag 'scheme_mix_criteria[]', scheme_mix_criterion.id, false, class: 'checkbox_parent' %></th>
+                                            <th><%= scheme_mix_criterion.scheme_criterion.full_name %></th>
+                                            <th>Allocated&nbsp;to</th>
+                                            <th>Due&nbsp;date</th>
+                                            <th>Status</th>
                                         </tr>
+                                        <% scheme_mix_criterion.requirement_data.each do |requirement_datum| %>
+                                            <tr>
+                                                <td><%= check_box_tag 'requirement_data[]', requirement_datum.id, false, class: "checkbox_child_#{scheme_mix_criterion.id}" %></td>
+                                                <td><%= requirement_datum.requirement.name %></td>
+                                                <td><%= requirement_datum.user.email if requirement_datum.user %></td>
+                                                <td><%= l(requirement_datum.due_date, format: :short) if requirement_datum.due_date %></td>
+                                                <td><%= requirement_datum.status.humanize.gsub(' ', '&nbsp;').html_safe if requirement_datum.status %></td>
+                                            </tr>
+                                        <% end %>
                                     <% end %>
                                 <% end %>
                             <% end %>
