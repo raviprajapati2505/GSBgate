@@ -16,6 +16,10 @@
                 <span class="hidden-md">Progress</span>
                 <span class="visible-md">P <%= tooltip('Progress') %></span>
             </th>
+        <% else %>
+            <% if can?(:edit, certification_path.scheme_mixes.first) %>
+                <th class="col-md-2">Action</th>
+            <% end %>
         <% end %>
     </tr>
     </thead>
@@ -66,8 +70,13 @@
                         </div>
                     </div>
                 </td>
+            <% else %>
+                <% if can?(:edit, scheme_mix) %>
+                <td><%= btn_link_to(edit_project_certification_path_scheme_mix_path(certification_path.project, certification_path, scheme_mix), text: 'Change name', icon: 'edit', action: :get, remote: true) %></td>
+                <% end %>
             <% end %>
         </tr>
     <% end %>
     </tbody>
 </table>
+<div id="editSchemeMixNameModal" class="modal fade"></div>

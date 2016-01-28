@@ -1,0 +1,16 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <%= btn_close_modal %>
+            <h4 class="modal-title">Edit scheme name</h4>
+        </div>
+        <%= bootstrap_form_for(@scheme_mix, url: project_certification_path_scheme_mix_path(@project, @certification_path, @scheme_mix), method: 'put') do |f| %>
+        <div class="modal-body">
+            <%= f.text_field :name %>
+        </div>
+        <div class="modal-footer">
+            <%= btn_save(text: 'Save') %>
+        </div>
+        <% end %>
+    </div>
+</div>

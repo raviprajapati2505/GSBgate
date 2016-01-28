@@ -13,7 +13,7 @@ class SchemeMix < ActiveRecord::Base
   after_initialize :init
 
   def full_name
-    "GSAS #{Certificate.human_attribute_name(self.scheme.certificate.assessment_stage)} Assessment v#{self.scheme.gsas_version}: #{name}"
+    "GSAS #{Certificate.human_attribute_name(self.scheme.certificate.assessment_stage)} Assessment v#{self.scheme.gsas_version}: #{self.scheme.name} (#{name})"
   end
 
   # Mirrors all the descendant structural data records of the SchemeMix to user data records

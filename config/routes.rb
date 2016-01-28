@@ -67,7 +67,7 @@ Rails.application.routes.draw do
         put 'update_main_scheme_mix', path: 'update-main-scheme'
       end
       resources :documents, only: [:create, :show], path: 'document'
-      resources :scheme_mixes, only: [:show], path: 'schemes' do
+      resources :scheme_mixes, only: [:show, :edit, :update], path: 'schemes' do
         resources :scheme_mix_criteria, only: [:show], path: 'criteria', as: 'scheme_mix_criterion' do
           member do
             get 'edit_status'
