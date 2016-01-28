@@ -93,16 +93,13 @@ $(function () {
             var scheme_name = scheme_data.text;
             // Clear selection
             scheme_select.val(null)
-            // Remove that option
-            $('select.mixed-scheme-select option[value="' + scheme_id + '"]').remove();
-            // Refresh select2
-            scheme_select.select2({placeholder: "Select and add one or more schemes",});
             // Create fields
             var scheme_col = scheme_name;
             scheme_col += '<input type="hidden" value="' + scheme_id + '" name="certification_path[schemes][][scheme_id]">';
+            var name_col = '<input class="form-control" value="' + scheme_name + '" required name="certification_path[schemes][][name]">';
             var weight_col = '<div class="input-group"><input class="form-control weight" type="number" value="0" min="0" max="100" step="1" required name="certification_path[schemes][][weight]"><span class="input-group-addon">%</span></div>';
             var action_col = '<button type="button" class="btn btn-sm remove_scheme" data-scheme-id="' + scheme_id +'" data-scheme-name="' + scheme_name +'"><i title="Remove scheme" class="fa fa-trash"></i></button>';
-            var scheme_row = '<tr><td>' + scheme_col + '</td><td>' + weight_col + '</td><td>' + action_col + '</td></tr>';
+            var scheme_row = '<tr><td>' + scheme_col + '</td><td>' + name_col + '</td><td>' + weight_col + '</td><td>' + action_col + '</td></tr>';
             $('table.schemes').append(scheme_row);
             validate();
         }
@@ -115,25 +112,6 @@ $(function () {
 
     // Remove a scheme from the table, but add it back to the mixed select
     $('table.schemes>tbody').on('click', 'button.remove_scheme', function () {
-        // Find the current scheme information
-        var scheme_id = $(this).data('scheme-id');
-        var scheme_name = $(this).data('scheme-name');
-        // Add the option back to the select box
-        var scheme_select = $('select.mixed-scheme-select');
-        scheme_select.append($('<option>', {value: scheme_id, text: scheme_name}));
-        // Sort the options
-        var scheme_select_options = $('select.mixed-scheme-select option');
-        scheme_select_options.sort(function sort(a,b){
-            a = a.text.toLowerCase();
-            b = b.text.toLowerCase();
-            if(a > b) {
-                return 1;
-            } else if (a < b) {
-                return -1;
-            }
-            return 0;
-        });
-        scheme_select.html(scheme_select_options);
         // Remove the row
         $(this).closest('tr').remove();
         validate();
