@@ -55,10 +55,20 @@ class SchemeMixCriteriaController < AuthenticatedController
       end
 
       if status.present?
-        @scheme_mix_criterion.status = status
-        @scheme_mix_criterion.audit_log_user_comment = params[:scheme_mix_criterion][:audit_log_user_comment]
-        @scheme_mix_criterion.save!
+        @scheme_mix_criterion.transaction do
+          # Update the scheme mix criterion
+          @scheme_mix_criterion.status = status
+          @scheme_mix_criterion.audit_log_user_comment = params[:scheme_mix_criterion][:audit_log_user_comment]
+          @scheme_mix_criterion.save!
 
+          # If the criterion is in a shared category of the main scheme mix, also update scheme mix criteria that inherit their status from this one
+          if (@certification_path.main_scheme_mix_id == @scheme_mix.id) && @scheme_mix_criterion.scheme_criterion.scheme_category.shared?
+            @certification_path.scheme_mix_criteria.where(main_scheme_mix_criterion_id: @scheme_mix_criterion.id).each do |smc_inherit|
+              smc_inherit.status = status
+              smc_inherit.save!
+            end
+          end
+        end
         flash[:notice] = 'Criterion status was sucessfully updated.'
       else
         flash[:alert] = 'The criterion status cannot be updated.'
@@ -87,7 +97,17 @@ class SchemeMixCriteriaController < AuthenticatedController
     if ((scheme_mix_criterion_params.has_key?(:targeted_score) && (params[:scheme_mix_criterion][:targeted_score].to_i < min_valid_score)) || (scheme_mix_criterion_params.has_key?(:submitted_score) && (params[:scheme_mix_criterion][:submitted_score].to_i < min_valid_score)))
       redirect_to redirect_path, alert: "The targeted and submitted scores of this criterion must be higher than or equal to #{min_valid_score.to_s}."
     else
-      @scheme_mix_criterion.update!(scheme_mix_criterion_params)
+      @scheme_mix_criterion.transaction do
+        # Update the scheme mix criterion
+        @scheme_mix_criterion.update!(scheme_mix_criterion_params)
+
+        # If the criterion is in a shared category of the main scheme mix, also update scheme mix criteria that inherit scores from this one
+        if (@certification_path.main_scheme_mix_id == @scheme_mix.id) && @scheme_mix_criterion.scheme_criterion.scheme_category.shared?
+          @certification_path.scheme_mix_criteria.where(main_scheme_mix_criterion_id: @scheme_mix_criterion.id).each do |smc_inherit|
+            smc_inherit.update!(scheme_mix_criterion_params)
+          end
+        end
+      end
       redirect_to redirect_path, notice: 'Criterion scores were successfully updated.'
     end
   end

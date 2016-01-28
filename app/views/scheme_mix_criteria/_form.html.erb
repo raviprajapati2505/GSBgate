@@ -76,7 +76,7 @@
                     <% end %>
                     <% if (@certification_path.main_scheme_mix_id == @scheme_mix.id) && @scheme_mix_criterion.scheme_criterion.scheme_category.shared? %>
                         <p class="alert alert-info"><%= fa_icon('info-circle') %>
-                            The scores of this criterion will by inherited by other schemes.
+                            The scores of this criterion will be inherited by other schemes.
                         </p>
                     <% elsif @scheme_mix_criterion.main_scheme_mix_criterion_id.present? %>
                         <p class="alert alert-info"><%= fa_icon('info-circle') %>
