@@ -1,4 +1,16 @@
 module ApplicationHelper
+  FILEICON_EXTENSIONS = %w{
+    3gp 7z ace ai aif aiff amr asf asx bat bin bmp bup cab cbr cda cdl cdr chm
+    dat divx dll dmg doc docx dss dvf dwg eml eps exe fla flv gif gz hqx htm html
+    ifo indd iso jar jpeg jpg lnk log m4a m4b m4p m4v mcd mdb mid mov mp2 mp4
+    mpeg mpg msi mswmm ogg pdf png pps ppsx ppt pptx ps psd pst ptb pub qbb qbw qxd ram
+    rar rm rmvb rtf sea ses sit sitx ss swf tgz thm tif tmp torrent ttf txt
+    vcd vob wav wma wmv wps xls xlsx xpi zip
+    }.inject({}) do |fileicon_extensions, ext|
+    fileicon_extensions[ext] = "fileicons/file_extension_#{ext}.png"
+    fileicon_extensions
+  end
+
   def is_active_controller(controller_name)
     params[:controller] == controller_name ? "active" : nil
   end
@@ -384,5 +396,14 @@ module ApplicationHelper
     content_tag(:ul, class: 'list-unstyled list-inline') do
       max + target + submit + achieved
     end
+  end
+
+  def icon_for_filename filename
+    icon_for_ext File.extname(filename)
+  end
+
+  def icon_for_ext file_extension
+    ext = file_extension.start_with?('.') ? file_extension[1..-1] : file_extension
+    FILEICON_EXTENSIONS[ext.downcase] || 'fileicons/file_extension_unknown.png'
   end
 end

@@ -74,9 +74,6 @@ gem 'bootstrap_form'
 # Simplified file uploading
 gem 'carrierwave', github: 'carrierwaveuploader/carrierwave'
 
-# File icons
-gem 'rails-file-icons', github: 'sodalis/rails-file-icons' # Latest version is only available on github
-
 # Pagination for resultsets
 gem 'kaminari'
 

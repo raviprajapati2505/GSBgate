@@ -8,12 +8,6 @@ GIT
       json (>= 1.7)
       mime-types (>= 1.16)
 
-GIT
-  remote: git://github.com/sodalis/rails-file-icons.git
-  revision: 7a0e970ad5e6c188153ecb51a6b8a63e9eef0ca1
-  specs:
-    rails-file-icons (0.0.1)
-
 GEM
   remote: http://rubygems.org/
   remote: https://rails-assets.org/
@@ -302,7 +296,6 @@ DEPENDENCIES
   rails-assets-three.js!
   rails-assets-toastr!
   rails-assets-voidberg--html5sortable!
-  rails-file-icons!
   recaptcha
   rgeo (= 0.3.20)
   roo (~> 2.2.0)
