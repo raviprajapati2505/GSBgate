@@ -47,7 +47,7 @@ module Auditable
       new_status = nil
       auditable = self
 
-      case self.class.name
+      case self.class.name.demodulize
         when Project.name.demodulize
           project = self
           if (action == AUDIT_LOG_CREATE)
@@ -102,47 +102,59 @@ module Auditable
         when SchemeMixCriterion.name.demodulize
           project = self.scheme_mix.certification_path.project
           certification_path = self.scheme_mix.certification_path
+          system_messages_temp = []
           if (action == AUDIT_LOG_UPDATE)
             if self.status_changed?
-              system_messages << {message: 'The status of criterion %s was changed from %s to %s.', params: [self.name, self.changes[:status][0].humanize, self.changes[:status][1].humanize], old_status: self.status_was, new_status: self.status}
+              system_messages_temp << {message: 'The status of criterion %s was changed from %s to %s.', params: [self.name, self.changes[:status][0].humanize, self.changes[:status][1].humanize], old_status: self.status_was, new_status: self.status}
             end
             if self.certifier_id_changed? || self.due_date_changed?
               if self.certifier_id.blank?
-                system_messages << {message: 'A GORD certifier was unassigned from criterion %s.', params: [self.name]}
+                system_messages_temp << {message: 'A GORD certifier was unassigned from criterion %s.', params: [self.name]}
               elsif self.due_date?
-                system_messages << {message: 'Criterion %s was assigned to GORD certifier %s for review. The due date is %s.', params: [self.name, self.certifier.email, I18n.l(self.due_date, format: :short)]}
+                system_messages_temp << {message: 'Criterion %s was assigned to GORD certifier %s for review. The due date is %s.', params: [self.name, self.certifier.email, I18n.l(self.due_date, format: :short)]}
               else
-                system_messages << {message: 'Criterion %s was assigned to GORD certifier %s for review.', params: [self.name, self.certifier.email]}
+                system_messages_temp << {message: 'Criterion %s was assigned to GORD certifier %s for review.', params: [self.name, self.certifier.email]}
               end
             end
             if self.targeted_score_changed?
               if self.changes[:targeted_score][0].nil?
-                system_messages << {message: 'The targeted score of criterion %s was set to %s.', params: [self.name, self.changes[:targeted_score][1]]}
+                system_messages_temp << {message: 'The targeted score of criterion %s was set to %s.', params: [self.name, self.changes[:targeted_score][1]]}
               elsif self.changes[:targeted_score][1].nil?
-                system_messages << {message: 'The targeted score of criterion %s was removed.', params: [self.name]}
+                system_messages_temp << {message: 'The targeted score of criterion %s was removed.', params: [self.name]}
               else
-                system_messages << {message: 'The targeted score of criterion %s was changed from %s to %s.', params: [self.name, self.changes[:targeted_score][0], self.changes[:targeted_score][1]]}
+                system_messages_temp << {message: 'The targeted score of criterion %s was changed from %s to %s.', params: [self.name, self.changes[:targeted_score][0], self.changes[:targeted_score][1]]}
               end
             end
             if self.submitted_score_changed?
               if self.changes[:submitted_score][0].nil?
-                system_messages << {message: 'The submitted score of criterion %s was set to %s.', params: [self.name, self.changes[:submitted_score][1]]}
+                system_messages_temp << {message: 'The submitted score of criterion %s was set to %s.', params: [self.name, self.changes[:submitted_score][1]]}
               elsif self.changes[:submitted_score][1].nil?
-                system_messages << {message: 'The submitted score of criterion %s was removed.', params: [self.name]}
+                system_messages_temp << {message: 'The submitted score of criterion %s was removed.', params: [self.name]}
               else
-                system_messages << {message: 'The submitted score of criterion %s was changed from %s to %s.', params: [self.name, self.changes[:submitted_score][0], self.changes[:submitted_score][1]]}
+                system_messages_temp << {message: 'The submitted score of criterion %s was changed from %s to %s.', params: [self.name, self.changes[:submitted_score][0], self.changes[:submitted_score][1]]}
               end
             end
             if self.achieved_score_changed?
               if self.changes[:achieved_score][0].nil?
-                system_messages << {message: 'The achieved score of criterion %s was set to %s.', params: [self.name, self.changes[:achieved_score][1]]}
+                system_messages_temp << {message: 'The achieved score of criterion %s was set to %s.', params: [self.name, self.changes[:achieved_score][1]]}
               elsif self.changes[:achieved_score][1].nil?
-                system_messages << {message: 'The achieved score of criterion %s was removed.', params: [self.name]}
+                system_messages_temp << {message: 'The achieved score of criterion %s was removed.', params: [self.name]}
               else
-                system_messages << {message: 'The achieved score of criterion %s was changed from %s to %s.', params: [self.name, self.changes[:achieved_score][0], self.changes[:achieved_score][1]]}
+                system_messages_temp << {message: 'The achieved score of criterion %s was changed from %s to %s.', params: [self.name, self.changes[:achieved_score][0], self.changes[:achieved_score][1]]}
               end
             end
           end
+          # If the scheme mix criterion inherits from a criterion in the main scheme mix,
+          # notify the user that the changes were automated.
+          if self.main_scheme_mix_criterion_id.present?
+            system_messages_temp.map! do |x|
+              x[:message] += ' This change was automated because the criterion inherits from %s in the %s scheme.'
+              x[:params] << self.main_scheme_mix_criterion.full_name
+              x[:params] << self.scheme_mix.certification_path.main_scheme_mix.name
+              x
+            end
+          end
+          system_messages = system_messages + system_messages_temp
         when SchemeMixCriteriaDocument.name.demodulize
           project = self.scheme_mix_criterion.scheme_mix.certification_path.project
           certification_path = self.scheme_mix_criterion.scheme_mix.certification_path
