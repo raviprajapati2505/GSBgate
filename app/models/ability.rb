@@ -121,7 +121,7 @@ class Ability
 
       # SchemeMix controller
       can :read, SchemeMix, certification_path: {project: project_with_user_assigned, certification_path_status: {id: CertificationPathStatus::STATUSES_ACTIVATED}}
-      can :update, SchemeMix, certification_path: {project: project_with_user_as_project_manager}
+      can :update, SchemeMix, certification_path: {project: project_with_user_as_project_manager, certification_path_status: {id: CertificationPathStatus::ACTIVATING}, development_type: ['mixed_use', CertificationPath.development_types[:mixed_use], 'mixed_development', CertificationPath.development_types[:mixed_development], 'mixed_development_in_stages', CertificationPath.development_types[:mixed_development_in_stages]]}
 
       # SchemeMixCriterion controller
       can :read, SchemeMixCriterion, scheme_mix: {certification_path: {project: project_with_user_assigned, certification_path_status: {id: CertificationPathStatus::STATUSES_ACTIVATED}}}
@@ -232,6 +232,7 @@ class Ability
       end
       # SchemeMix
       cannot :read, SchemeMix, certification_path: {certification_path_status: {id: CertificationPathStatus::ACTIVATING}}
+      can :update, SchemeMix, certification_path: {certification_path_status: {id: CertificationPathStatus::ACTIVATING}, development_type: ['mixed_use', CertificationPath.development_types[:mixed_use], 'mixed_development', CertificationPath.development_types[:mixed_development], 'mixed_development_in_stages', CertificationPath.development_types[:mixed_development_in_stages]]}
       # SchemeMixCriterion
       cannot :read, SchemeMixCriterion, scheme_mix: {certification_path: {certification_path_status: {id: CertificationPathStatus::ACTIVATING}}}
       cannot :list, SchemeMixCriterion, scheme_mix: {certification_path: {certification_path_status: {id: CertificationPathStatus::ACTIVATING}}}

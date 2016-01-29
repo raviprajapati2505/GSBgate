@@ -43,7 +43,10 @@ class CertificationPathsController < AuthenticatedController
             elsif @certification_path.mixed?
               if params[:certification_path].has_key?(:schemes)
                 params[:certification_path][:schemes].each do |scheme_params|
-                  @certification_path.scheme_mixes.build({scheme_id: scheme_params[:scheme_id], weight: scheme_params[:weight], name: scheme_params[:name]})
+                  if scheme_params[:custom_name].blank?
+                    scheme_params[:custom_name] = nil
+                  end
+                  @certification_path.scheme_mixes.build({scheme_id: scheme_params[:scheme_id], weight: scheme_params[:weight], custom_name: scheme_params[:custom_name]})
                 end
               end
             end
@@ -70,7 +73,7 @@ class CertificationPathsController < AuthenticatedController
       @certification_path.certificate = Certificate.final_design_certificate.where(gsas_version: loc.certificate.gsas_version).first
       # Mirror the LOC scheme mixes
       loc.scheme_mixes.each do |scheme_mix|
-        new_scheme_mix = @certification_path.scheme_mixes.build({scheme_id: scheme_mix.scheme_id, weight: scheme_mix.weight, name: scheme_mix.name})
+        new_scheme_mix = @certification_path.scheme_mixes.build({scheme_id: scheme_mix.scheme_id, weight: scheme_mix.weight, custom_name: scheme_mix.custom_name})
         # Mirror the main scheme mix
         if loc.main_scheme_mix_id.present? && (scheme_mix.id == loc.main_scheme_mix_id)
           @certification_path.main_scheme_mix = new_scheme_mix

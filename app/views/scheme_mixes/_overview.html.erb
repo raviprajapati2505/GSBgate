@@ -72,7 +72,7 @@
                 </td>
             <% else %>
                 <% if can?(:edit, scheme_mix) %>
-                <td><%= btn_link_to(edit_project_certification_path_scheme_mix_path(certification_path.project, certification_path, scheme_mix), text: 'Change name', icon: 'edit', action: :get, remote: true) %></td>
+                <td><%= btn_link_to(edit_project_certification_path_scheme_mix_path(certification_path.project, certification_path, scheme_mix), icon: 'edit', size: 'small', action: :get, remote: true) %></td>
                 <% end %>
             <% end %>
         </tr>

@@ -8,12 +8,16 @@ class SchemeMix < ActiveRecord::Base
   has_many :scheme_categories, through: :scheme
   has_many :scheme_criteria, through: :scheme_categories
 
-  validates :name, presence: true
-
-  after_initialize :init
+  def name
+    if custom_name.present?
+      "#{self.scheme.name} (#{custom_name})"
+    else
+      "#{self.scheme.name}"
+    end
+  end
 
   def full_name
-    "GSAS #{Certificate.human_attribute_name(self.scheme.certificate.assessment_stage)} Assessment v#{self.scheme.gsas_version}: #{self.scheme.name} (#{name})"
+      "GSAS #{Certificate.human_attribute_name(self.scheme.certificate.assessment_stage)} Assessment v#{self.scheme.gsas_version}: #{self.name}"
   end
 
   # Mirrors all the descendant structural data records of the SchemeMix to user data records
@@ -90,11 +94,6 @@ class SchemeMix < ActiveRecord::Base
         end
       end
     end
-  end
-
-  private
-  def init
-    self.name ||= self.scheme.name
   end
 
 end
