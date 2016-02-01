@@ -587,9 +587,9 @@ module Taskable
           end
           unless self.user_id_changed?
             count = self.scheme_mix_criteria.first.requirement_data.where(status: RequirementDatum.statuses[:required], user: self.user).count
-          end
-          if count.zero?
-            Task.delete_all(taskable: self.scheme_mix_criteria.first, task_description_id: PROJ_MEM_REQ, user: self.user)
+            if !count.nil? && count.zero?
+              Task.delete_all(taskable: self.scheme_mix_criteria.first, task_description_id: PROJ_MEM_REQ, user: self.user)
+            end
           end
           # Destroy project manager tasks to assign project team members to requirement and project team member tasks to provide the requirement
           if self.scheme_mix_criteria.first.scheme_mix.certification_path.requirement_data.unassigned.where(status: RequirementDatum.statuses[:required]).count.zero?
