@@ -219,13 +219,22 @@ class CertificationPathsController < AuthenticatedController
       requirement_data = RequirementDatum.find(params[:requirement_data])
 
       # Update the RequirementDatum models
+      all_saved = true
       CertificationPath.transaction do
         requirement_data.each do |requirement_datum|
-          requirement_datum.update!(user: user, due_date: due_date, status: status)
+          if can?(:update, requirement_datum)
+            requirement_datum.update!(user: user, due_date: due_date, status: status)
+          else
+            all_saved = false
+          end
         end
       end
 
-      flash[:notice] = 'The selected requirements were successfully updated.'
+      if all_saved
+        flash[:notice] = 'The selected requirements were successfully updated.'
+      else
+        flash[:alert] = 'Not all requirements were successfully updated because some criteria are already submitted.'
+      end
     else
       flash[:alert] = 'No requirements were selected.'
     end
@@ -257,13 +266,22 @@ class CertificationPathsController < AuthenticatedController
       scheme_mix_criteria = SchemeMixCriterion.find(params[:scheme_mix_criteria])
 
       # Update the SchemeMixCriteria models
+      all_saved = true
       CertificationPath.transaction do
         scheme_mix_criteria.each do |scheme_mix_criterion|
-          scheme_mix_criterion.update!(certifier: certifier, due_date: due_date)
+          if can?(:assign_certifier, scheme_mix_criterion)
+            scheme_mix_criterion.update!(certifier: certifier, due_date: due_date)
+          else
+            all_saved = false
+          end
         end
       end
 
-      flash[:notice] = 'The selected criteria were successfully updated.'
+      if all_saved
+        flash[:notice] = 'The selected criteria were successfully updated.'
+      else
+        flash[:alert] = 'Not all criteria were successfully updated because they are already verified.'
+      end
     else
       flash[:alert] = 'No criteria were selected.'
     end
