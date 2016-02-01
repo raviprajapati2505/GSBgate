@@ -8,6 +8,8 @@ class SchemeMix < ActiveRecord::Base
   has_many :scheme_categories, through: :scheme
   has_many :scheme_criteria, through: :scheme_categories
 
+  validates :weight, numericality: { greater_than: 0 }
+
   def name
     if custom_name.present?
       "#{self.scheme.name} (#{custom_name})"

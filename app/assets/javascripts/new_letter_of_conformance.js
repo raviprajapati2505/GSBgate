@@ -48,7 +48,18 @@ $(function () {
             var total = calculate_total_weight();
             if (total != 100) {
                 valid = false;
-                $('div.schemes-group input.weight').parent().addClass('has-error');
+            } else {
+                // none of the scheme mixes can have 0% weight
+                $('table.schemes input.weight').each(function (idx, el) {
+                    var elem = $(el);
+                    var value = parseInt(elem.val(), 10);
+                    if (value == 0) {
+                        valid = false;
+                        elem.parent().addClass('has-error');
+                    } else {
+                        elem.parent().removeClass('has-error');
+                    }
+                });
             }
 
             // Search for schemes with same name
