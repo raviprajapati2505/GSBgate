@@ -14,10 +14,6 @@
                         <%= f.label :certification_path_id, 'Certificate' %><br/>
                         <%= f.hidden_field :certification_path_id, { class: 'select2-certificate-ajax', value: session[:task]['certification_path_id'] } %>
                     </div>
-                    <div id="select-criterion" class="form-group">
-                        <%= f.label :scheme_mix_criterion_id %><br/>
-                        <%= f.hidden_field :scheme_mix_criterion_id, { class: 'select2-criterion-ajax', value: session[:task]['scheme_mix_criterion_id'] } %>
-                    </div>
                     <div class="hr-line-dashed"></div>
                     <%= btn_tag(text: 'Apply filter', value: 'Apply_task_filter', icon: 'filter') %>
                     <%= btn_cancel_to(tasks_path(reset: true), text: 'Remove filter', style: 'white', icon: 'times') %>
@@ -31,4 +27,3 @@
 </div>
 <%= javascript_include_tag 'select_project' %>
 <%= javascript_include_tag 'select_project_certificate' %>
-<%= javascript_include_tag 'select_certificate_criterion' %>

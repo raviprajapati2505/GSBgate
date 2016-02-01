@@ -11,6 +11,7 @@ class RequirementDatum < ActiveRecord::Base
   enum status: { required: 0, provided: 1, not_required: 2 }
 
   after_initialize :init
+  after_update :submit_scheme_mix_criterion_if_not_required
 
   validates :status, inclusion: RequirementDatum.statuses.keys
 
@@ -58,5 +59,31 @@ class RequirementDatum < ActiveRecord::Base
   private
   def init
     self.status ||= :required
+  end
+
+  # Set targeted & submitted scores of the parent SchemeMixCriterion to the minimum valid score & submit it,
+  # if all requirement datum records are flagged as "not required"
+  def submit_scheme_mix_criterion_if_not_required
+    self.transaction do
+      # Loop all requirement data records of the scheme mix criterion parent
+      scheme_mix_criteria.each do |smc|
+        if smc.in_submission?
+          all_not_required = true
+          smc.requirement_data.each do |requirement_datum|
+            unless requirement_datum.not_required?
+              all_not_required = false
+              break
+            end
+          end
+
+          # If all requirement datum records are flagged as "not required",
+          # set targeted & submitted scores to the minimum valid score & submit the criterion
+          if all_not_required
+            min_valid_score = smc.scheme_criterion.minimum_valid_score
+            smc.update!(targeted_score: min_valid_score, submitted_score: min_valid_score, status: smc.next_status)
+          end
+        end
+      end
+    end
   end
 end
