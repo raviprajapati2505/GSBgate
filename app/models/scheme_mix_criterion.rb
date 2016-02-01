@@ -172,6 +172,36 @@ class SchemeMixCriterion < ActiveRecord::Base
               .last
   end
 
+  def next_status
+    if submitting?
+      return :submitted
+    elsif submitting_after_appeal?
+      return :submitted_after_appeal
+    elsif verifying?
+      if params.has_key?(:achieved)
+        return :submitted_score_achieved
+      else
+        return :submitted_score_not_achieved
+      end
+    elsif verifying_after_appeal?
+      if params.has_key?(:achieved)
+        return :submitted_score_achieved_after_appeal
+      else
+        return :submitted_score_not_achieved_after_appeal
+      end
+    elsif submitted? && [CertificationPathStatus::SUBMITTING, CertificationPathStatus::SUBMITTING_AFTER_SCREENING, CertificationPathStatus::SUBMITTING_PCR].include?(scheme_mix.certification_path.certification_path_status_id)
+      return :submitting
+    elsif submitted_after_appeal? && (scheme_mix.certification_path.certification_path_status_id == CertificationPathStatus::SUBMITTING_AFTER_APPEAL)
+      return :submitting_after_appeal
+    elsif (submitted_score_achieved? || submitted_score_not_achieved?) && (scheme_mix.certification_path.certification_path_status_id == CertificationPathStatus::VERIFYING)
+      return :verifying
+    elsif (submitted_score_achieved_after_appeal? || submitted_score_not_achieved_after_appeal?) && (scheme_mix.certification_path.certification_path_status_id == CertificationPathStatus::VERIFYING_AFTER_APPEAL)
+      return :verifying_after_appeal
+    else
+      return false
+    end
+  end
+
   private
 
   def init

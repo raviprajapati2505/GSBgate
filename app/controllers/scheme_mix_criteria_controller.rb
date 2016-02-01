@@ -28,31 +28,7 @@ class SchemeMixCriteriaController < AuthenticatedController
     todos = @scheme_mix_criterion.todo_before_status_advance
 
     if todos.blank?
-      if @scheme_mix_criterion.submitting?
-        status = :submitted
-      elsif @scheme_mix_criterion.submitting_after_appeal?
-        status = :submitted_after_appeal
-      elsif @scheme_mix_criterion.verifying?
-        if params.has_key?(:achieved)
-          status = :submitted_score_achieved
-        else
-          status = :submitted_score_not_achieved
-        end
-      elsif @scheme_mix_criterion.verifying_after_appeal?
-        if params.has_key?(:achieved)
-          status = :submitted_score_achieved_after_appeal
-        else
-          status = :submitted_score_not_achieved_after_appeal
-        end
-      elsif @scheme_mix_criterion.submitted? && [CertificationPathStatus::SUBMITTING, CertificationPathStatus::SUBMITTING_AFTER_SCREENING, CertificationPathStatus::SUBMITTING_PCR].include?(@certification_path.certification_path_status_id)
-        status = :submitting
-      elsif @scheme_mix_criterion.submitted_after_appeal? && @certification_path.certification_path_status_id == CertificationPathStatus::SUBMITTING_AFTER_APPEAL
-        status = :submitting_after_appeal
-      elsif (@scheme_mix_criterion.submitted_score_achieved? || @scheme_mix_criterion.submitted_score_not_achieved?) && @certification_path.certification_path_status_id == CertificationPathStatus::VERIFYING
-        status = :verifying
-      elsif (@scheme_mix_criterion.submitted_score_achieved_after_appeal? || @scheme_mix_criterion.submitted_score_not_achieved_after_appeal?) && @certification_path.certification_path_status_id == CertificationPathStatus::VERIFYING_AFTER_APPEAL
-        status = :verifying_after_appeal
-      end
+      status = @scheme_mix_criterion.next_status
 
       if status.present?
         @scheme_mix_criterion.transaction do
