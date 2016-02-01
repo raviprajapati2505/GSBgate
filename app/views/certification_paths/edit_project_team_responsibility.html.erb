@@ -6,6 +6,7 @@
                     <h5>Select requirements to allocate</h5>
                 </div>
                 <div class="ibox-content">
+                    <p class="alert alert-info"><%= fa_icon('info-circle') %> Use the checkboxes and the form to update the status of requirements or to assign requirements to project team members. Submitted criteria or criteria without requirements will not be listed here.</p>
                     <table class="table table-bordered allocate-responsibility-table">
                         <% @certification_path.scheme_mixes.uniq.each do |scheme_mix| %>
                             <tr>
@@ -17,7 +18,7 @@
                                 </th>
                             </tr>
                             <% scheme_mix.scheme_categories.uniq.each do |category| %>
-                                <% scheme_mix.scheme_mix_criteria.in_submission_or_submitted.for_category(category).order('scheme_criteria.number').each do |scheme_mix_criterion| %>
+                                <% scheme_mix.scheme_mix_criteria.in_submission.for_category(category).order('scheme_criteria.number').each do |scheme_mix_criterion| %>
                                     <% unless scheme_mix_criterion.main_scheme_mix_criterion_id.present? || (scheme_mix_criterion.requirement_data.count < 1) %>
                                         <tr>
                                             <th><%= check_box_tag 'scheme_mix_criteria[]', scheme_mix_criterion.id, false, class: 'checkbox_parent' %></th>

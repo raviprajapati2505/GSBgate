@@ -6,6 +6,7 @@
                     <h5>Select criteria to allocate</h5>
                 </div>
                 <div class="ibox-content">
+                    <p class="alert alert-info"><%= fa_icon('info-circle') %> Use the checkboxes to assign criteria to certifier members. Verified criteria will not be listed here.</p>
                     <table class="table table-bordered allocate-responsibility-table">
                         <% @certification_path.scheme_mixes.uniq.each do |scheme_mix| %>
                             <tr>
@@ -17,7 +18,7 @@
                                 </th>
                             </tr>
                             <% scheme_mix.scheme_categories.uniq.each do |category| %>
-                                <% if scheme_mix.scheme_mix_criteria.for_category(category).exists?(main_scheme_mix_criterion_id: nil) %>
+                                <% if scheme_mix.scheme_mix_criteria.in_verification.for_category(category).exists?(main_scheme_mix_criterion_id: nil) %>
                                     <tr>
                                         <th><%= check_box_tag 'categories[]', category.id, false, class: 'checkbox_parent' %></th>
                                         <th><%= category.name %></th>
@@ -25,7 +26,7 @@
                                         <th>Due&nbsp;date</th>
                                         <th>Status</th>
                                     </tr>
-                                    <% scheme_mix.scheme_mix_criteria.for_category(category).order('scheme_criteria.number').each do |scheme_mix_criterion| %>
+                                    <% scheme_mix.scheme_mix_criteria.in_verification.for_category(category).order('scheme_criteria.number').each do |scheme_mix_criterion| %>
                                         <% unless scheme_mix_criterion.main_scheme_mix_criterion_id.present? %>
                                             <tr>
                                                 <td><%= check_box_tag 'scheme_mix_criteria[]', scheme_mix_criterion.id, false, class: "checkbox_child_#{category.id}" %></td>

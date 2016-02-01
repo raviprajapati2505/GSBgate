@@ -41,8 +41,12 @@ class SchemeMixCriterion < ActiveRecord::Base
     where(certifier: nil)
   }
 
-  scope :in_submission_or_submitted, -> {
-    where(status: [SchemeMixCriterion.statuses[:submitting], SchemeMixCriterion.statuses[:submitting_after_appeal], SchemeMixCriterion.statuses[:submitted], SchemeMixCriterion.statuses[:submitted_after_appeal]])
+  scope :in_submission, -> {
+    where(status: [SchemeMixCriterion.statuses[:submitting], SchemeMixCriterion.statuses[:submitting_after_appeal]])
+  }
+
+  scope :in_verification, -> {
+    where(status: [SchemeMixCriterion.statuses[:verifying], SchemeMixCriterion.statuses[:verifying_after_appeal]])
   }
 
   def name
@@ -78,7 +82,7 @@ class SchemeMixCriterion < ActiveRecord::Base
   def todo_before_status_advance
     todos = []
 
-    if submitting? || submitting_after_appeal?
+    if in_submission?
       # Check requirements statusses
       if has_required_requirements?
         todos << 'The status of all requirements should be set to \'Provided\' or \'Not required\' first.'
@@ -95,7 +99,7 @@ class SchemeMixCriterion < ActiveRecord::Base
       if submitted_score.nil?
         todos << 'The submitted score should be set first.'
       end
-    elsif verifying? || verifying_after_appeal?
+    elsif in_verification?
       # Check submitted score
       if achieved_score.nil?
         todos << 'The achieved score should be set first.'
