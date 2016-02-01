@@ -15,6 +15,7 @@ class SchemeMixCriterion < ActiveRecord::Base
   enum status: {submitting: 0, submitted: 1, verifying: 2, submitted_score_achieved: 3, submitted_score_not_achieved: 4, appealed: 5, submitting_after_appeal: 6, submitted_after_appeal: 7, verifying_after_appeal: 8, submitted_score_achieved_after_appeal: 9, submitted_score_not_achieved_after_appeal: 10}
 
   after_initialize :init
+  after_update :update_inheriting_criteria
 
   validates :status, inclusion: SchemeMixCriterion.statuses.keys
 
@@ -176,6 +177,24 @@ class SchemeMixCriterion < ActiveRecord::Base
   def init
     if self.has_attribute?('status')
       self.status ||= :submitting
+    end
+  end
+
+  # Updates SchemeMixCriterion models that inherit from this model
+  def update_inheriting_criteria
+    scheme_mix = self.scheme_mix
+    certification_path = self.scheme_mix.certification_path
+
+    # If the criterion is in a shared category of the main scheme mix,
+    # also update scheme mix criteria that inherit from this one
+    if (certification_path.main_scheme_mix_id == scheme_mix.id) && scheme_criterion.scheme_category.shared?
+      certification_path.scheme_mix_criteria.where(main_scheme_mix_criterion_id: id).each do |smc_inherit|
+        (smc_inherit.status = status) if status_changed?
+        (smc_inherit.targeted_score = targeted_score) if targeted_score_changed?
+        (smc_inherit.submitted_score = submitted_score) if submitted_score_changed?
+        (smc_inherit.achieved_score = achieved_score) if achieved_score_changed?
+        smc_inherit.save!
+      end
     end
   end
 
