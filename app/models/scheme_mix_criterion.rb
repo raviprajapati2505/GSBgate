@@ -172,19 +172,19 @@ class SchemeMixCriterion < ActiveRecord::Base
               .last
   end
 
-  def next_status
+  def next_status(target_achieved = true)
     if submitting?
       return :submitted
     elsif submitting_after_appeal?
       return :submitted_after_appeal
     elsif verifying?
-      if params.has_key?(:achieved)
+      if target_achieved
         return :submitted_score_achieved
       else
         return :submitted_score_not_achieved
       end
     elsif verifying_after_appeal?
-      if params.has_key?(:achieved)
+      if target_achieved
         return :submitted_score_achieved_after_appeal
       else
         return :submitted_score_not_achieved_after_appeal
