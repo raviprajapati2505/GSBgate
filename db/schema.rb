@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160205104646) do
+ActiveRecord::Schema.define(version: 20160210072428) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -329,7 +329,7 @@ ActiveRecord::Schema.define(version: 20160205104646) do
   end
 
   add_index "schemes", ["certificate_id"], name: "index_schemes_on_certificate_id", using: :btree
-  add_index "schemes", ["name", "gsas_version", "certificate_id"], name: "index_schemes_on_name_and_gsas_version_and_certificate_id", unique: true, using: :btree
+  add_index "schemes", ["name", "gsas_version", "certificate_id", "renovation"], name: "index_schemes_on_name_gsasversion_certificateid_renovation", unique: true, using: :btree
 
   create_table "tasks", force: :cascade do |t|
     t.integer  "task_description_id",   null: false
