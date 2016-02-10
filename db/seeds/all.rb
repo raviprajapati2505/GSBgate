@@ -1,43 +1,24 @@
 # ruby encoding: utf-8
-# Custom criteria for release 1
-Scheme.create!(name: "Operations", gsas_version: "2.1", certificate: Certificate.find_by(certificate_type: Certificate.certificate_types[:operations_type], assessment_stage: Certificate.assessment_stages[:operations_stage]))
-
-SchemeCategory.create!(scheme: Scheme.find_by(name: "Operations", gsas_version: "2.1", certificate: Certificate.find_by(certificate_type: Certificate.certificate_types[:operations_type], assessment_stage: Certificate.assessment_stages[:operations_stage])), code: "E", name: "Energy (existing buildings)", description: "<p>Energy TODO</p>", impacts: "<p>Impacts TODO</p>", mitigate_impact: "<p>Mitigate Impact TODO</p>", shared: false)
-SchemeCategory.create!(scheme: Scheme.find_by(name: "Operations", gsas_version: "2.1", certificate: Certificate.find_by(certificate_type: Certificate.certificate_types[:operations_type], assessment_stage: Certificate.assessment_stages[:operations_stage])), code: "W", name: "Water (existing buildings)", description: "<p>Water TODO</p>", impacts: "<p>Impacts TODO</p>", mitigate_impact: "<p>Mitigate Impact TODO</p>", shared: false)
-
-SchemeCriterion.create!(name: "Energy Conservation", number: 1, scores: [0, 1], minimum_score: 0, maximum_score: 1, minimum_valid_score: 0, weight: 60, scheme_category: SchemeCategory.find_by(code: "E", scheme: Scheme.find_by(name: "Operations", gsas_version: "2.1", certificate: Certificate.find_by(certificate_type: Certificate.certificate_types[:operations_type], assessment_stage: Certificate.assessment_stages[:operations_stage]))))
-SchemeCriterion.create!(name: "Water Conservation", number: 1, scores: [0, 1], minimum_score: 0, maximum_score: 1, minimum_valid_score: 0, weight: 40, scheme_category: SchemeCategory.find_by(code: "W", scheme: Scheme.find_by(name: "Operations", gsas_version: "2.1", certificate: Certificate.find_by(certificate_type: Certificate.certificate_types[:operations_type], assessment_stage: Certificate.assessment_stages[:operations_stage]))))
-
-SchemeCriterionText.create!(scheme_criterion: SchemeCriterion.find_by(scheme_category: SchemeCategory.find_by(code: "E", scheme: Scheme.find_by(name: "Operations", gsas_version: "2.1", certificate: Certificate.find_by(certificate_type: Certificate.certificate_types[:operations_type], assessment_stage: Certificate.assessment_stages[:operations_stage]))), name: "Energy Consumption"), name: "SCORE", display_weight: 1, visible: true, html_text: "<p>SCORE TODO</p>")
-SchemeCriterionText.create!(scheme_criterion: SchemeCriterion.find_by(scheme_category: SchemeCategory.find_by(code: "W", scheme: Scheme.find_by(name: "Operations", gsas_version: "2.1", certificate: Certificate.find_by(certificate_type: Certificate.certificate_types[:operations_type], assessment_stage: Certificate.assessment_stages[:operations_stage]))), name: "Water Consumption"), name: "SCORE", display_weight: 1, visible: true, html_text: "<p>SCORE TODO</p>")
-
 # Incentive Weights
 ["Healthcare", "Sports", "Railways"].each do |scheme|
   [{:code => "S", :name => "GSAS Construction Management - Full", :incentive => 1.0},
    {:code => "M", :name => "Life Cycle Assessment (LCA)", :incentive => 2.0},
    {:code => "MO", :name => "Energy & Water Use Sub-metering", :incentive => 1.0}
   ].each do |incentive_criteria|
-    loc_criterion = SchemeCriterion.find_by(scheme_category: SchemeCategory.find_by(code: incentive_criteria[:code], scheme: Scheme.find_by(name: scheme, gsas_version: "2.1", certificate: Certificate.find_by(certificate_type: Certificate.certificate_types[:design_type], assessment_stage: Certificate.assessment_stages[:design_stage]))), name: incentive_criteria[:name])
+    loc_criterion = SchemeCriterion.find_by(scheme_category: SchemeCategory.find_by(code: incentive_criteria[:code], scheme: Scheme.find_by(name: scheme, gsas_version: "2.1", certificate: Certificate.find_by(certificate_type: Certificate.certificate_types[:design_type], assessment_stage: Certificate.assessment_stages[:design_stage], gsas_version: "2.1"))), name: incentive_criteria[:name])
     loc_criterion.update_attributes(:incentive_weight => incentive_criteria[:incentive], :weight => loc_criterion.weight - incentive_criteria[:incentive])
-    final_criterion = SchemeCriterion.find_by(scheme_category: SchemeCategory.find_by(code: incentive_criteria[:code], scheme: Scheme.find_by(name: scheme, gsas_version: "2.1", certificate: Certificate.find_by(certificate_type: Certificate.certificate_types[:design_type], assessment_stage: Certificate.assessment_stages[:construction_stage]))), name: incentive_criteria[:name])
+    final_criterion = SchemeCriterion.find_by(scheme_category: SchemeCategory.find_by(code: incentive_criteria[:code], scheme: Scheme.find_by(name: scheme, gsas_version: "2.1", certificate: Certificate.find_by(certificate_type: Certificate.certificate_types[:design_type], assessment_stage: Certificate.assessment_stages[:construction_stage], gsas_version: "2.1"))), name: incentive_criteria[:name])
     final_criterion.update_attributes(:incentive_weight => incentive_criteria[:incentive], :weight => final_criterion.weight - incentive_criteria[:incentive])
   end
 end
 
-ec1 = Calculator.create!(name: 'Calculator::Dummy')
-wc1 = Calculator.create!(name: 'Calculator::Dummy')
-req1 = Requirement.create!(calculator: ec1, name: 'Energy calculator')
-req2 = Requirement.create!(calculator: wc1, name: 'Water calculator')
-req3 = Requirement.create!(name: 'Specifications and documentation regarding the available infrastructure showing that the existing structures can handle the additional load from the building')
-req4 = Requirement.create!(name: 'Ground plan')
-req5 = Requirement.create!(name: 'Ventilation plan')
-SchemeCriteriaRequirement.create!(scheme_criterion: SchemeCriterion.find_by(scheme_category: SchemeCategory.find_by(code: "E", scheme: Scheme.find_by(name: "Operations", gsas_version: "2.1", certificate: Certificate.find_by(certificate_type: Certificate.certificate_types[:operations_type], assessment_stage: Certificate.assessment_stages[:operations_stage])))), requirement: req1)
-SchemeCriteriaRequirement.create!(scheme_criterion: SchemeCriterion.find_by(scheme_category: SchemeCategory.find_by(code: "W", scheme: Scheme.find_by(name: "Operations", gsas_version: "2.1", certificate: Certificate.find_by(certificate_type: Certificate.certificate_types[:operations_type], assessment_stage: Certificate.assessment_stages[:operations_stage])))), requirement: req2)
-SchemeCriteriaRequirement.create!(scheme_criterion: SchemeCriterion.find_by(scheme_category: SchemeCategory.find_by(code: "E", scheme: Scheme.find_by(name: "Operations", gsas_version: "2.1", certificate: Certificate.find_by(certificate_type: Certificate.certificate_types[:operations_type], assessment_stage: Certificate.assessment_stages[:operations_stage])))), requirement: req3)
-SchemeCriteriaRequirement.create!(scheme_criterion: SchemeCriterion.find_by(scheme_category: SchemeCategory.find_by(code: "W", scheme: Scheme.find_by(name: "Operations", gsas_version: "2.1", certificate: Certificate.find_by(certificate_type: Certificate.certificate_types[:operations_type], assessment_stage: Certificate.assessment_stages[:operations_stage])))), requirement: req4)
-SchemeCriteriaRequirement.create!(scheme_criterion: SchemeCriterion.find_by(scheme_category: SchemeCategory.find_by(code: "E", scheme: Scheme.find_by(name: "Operations", gsas_version: "2.1", certificate: Certificate.find_by(certificate_type: Certificate.certificate_types[:operations_type], assessment_stage: Certificate.assessment_stages[:operations_stage])))), requirement: req5)
-Field.create!(name: 'Yearly energy usage', machine_name: 'kwh_year', calculator: ec1, datum_type: 'FieldDatum::IntegerValue')
-Field.create!(name: 'Yearly water usage', machine_name: 'l_year', suffix: 'liter', help_text: 'Please provide the yearly water usage in liter.', calculator: wc1, datum_type: 'FieldDatum::IntegerValue')
+# ec1 = Calculator.create!(name: 'Calculator::Dummy')
+# wc1 = Calculator.create!(name: 'Calculator::Dummy')
+# req1 = Requirement.create!(calculator: ec1, name: 'Energy calculator')
+# req2 = Requirement.create!(calculator: wc1, name: 'Water calculator')
+# req3 = Requirement.create!(name: 'Specifications and documentation regarding the available infrastructure showing that the existing structures can handle the additional load from the building')
+# req4 = Requirement.create!(name: 'Ground plan')
+# req5 = Requirement.create!(name: 'Ventilation plan')
 
 CertificationPathStatus.create!(id: CertificationPathStatus::ACTIVATING, name: 'Activating', past_name: 'Activated', description: 'The certificate is created. After payment is received, a GSAS administrator will advance the status of the certificate.')
 CertificationPathStatus.create!(id: CertificationPathStatus::SUBMITTING, name: 'Submitting', past_name: 'Submitted', description: 'The certificate is activated by a GSAS administrator. The project team can now provide the requirements for all criteria and set the submitted scores of all criteria. When all criteria are completed, a project team manager will advance the status of the certificate.')
