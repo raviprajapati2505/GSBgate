@@ -69,7 +69,7 @@ namespace :xlsx2seed do
           seeds_file << text_line
           Rails.logger.info text_line
 
-          text_line = "SchemeCriteriaRequirement.create!(requirement: #{requirement_identifier}, scheme_criterion: SchemeCriterion.find_by(scheme_category: SchemeCategory.find_by(name: \"#{category_name}\", scheme: Scheme.find_by(name: \"#{typology_name}\", version: \"#{version}\", renovation: #{renovation}, certificate: Certificate.#{certificate_scopes[certificate_name]})), name: \"#{criterion_name}\"))\n"
+          text_line = "SchemeCriteriaRequirement.create!(requirement: #{requirement_identifier}, scheme_criterion: SchemeCriterion.find_by(scheme_category: SchemeCategory.find_by(name: \"#{category_name}\", scheme: Scheme.find_by(name: \"#{typology_name}\", gsas_version: \"#{version}\", renovation: #{renovation}, certificate: Certificate.#{certificate_scopes[certificate_name]})), name: \"#{criterion_name}\"))\n"
           # write create scheme criteria requirement statement
           seeds_file << text_line
           Rails.logger.info text_line
