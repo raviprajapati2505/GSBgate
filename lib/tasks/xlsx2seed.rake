@@ -34,6 +34,7 @@ namespace :xlsx2seed do
       version = sheet.cell(current_row_index, 'A')
       certificate_name = sheet.cell(current_row_index, 'B')
       typology_name = sheet.cell(current_row_index, 'C')
+      renovation = sheet.cell(current_row_index, 'D')
       category_name = sheet.cell(current_row_index, 'E')
       # criterion_code = sheet.cell(current_row_index, 'F')
       criterion_name = sheet.cell(current_row_index, 'G')
@@ -54,7 +55,7 @@ namespace :xlsx2seed do
       begin
         requirement_text = sheet.cell(current_row_index, 7 + current_col_index)
         if requirement_text.present?
-          requirement_identifier = "REQUIREMENT_#{current_col_index}_FOR_V#{version}_CERTIFICATE_#{certificate_index}_SCHEME_#{typology_name}_CATEGORY_#{category_name}_CRITERION_#{criterion_index}"
+          requirement_identifier = "REQUIREMENT_#{current_col_index}_FOR_V#{version}_CERTIFICATE_#{certificate_index}_SCHEME_#{typology_name}_#{renovation}_CATEGORY_#{category_name}_CRITERION_#{criterion_index}"
           requirement_identifier.gsub!(' ', '_')
           requirement_identifier.gsub!('.', '_')
           requirement_identifier.gsub!('-', '_')
@@ -67,7 +68,7 @@ namespace :xlsx2seed do
           seeds_file << text_line
           Rails.logger.info text_line
 
-          text_line = "SchemeCriteriaRequirement.create!(requirement: #{requirement_identifier}, scheme_criterion: SchemeCriterion.find_by(scheme_category: SchemeCategory.find_by(name: \"#{category_name}\", scheme: Scheme.find_by(name: \"#{typology_name}\", version: \"#{version}\", certificate: Certificate.#{certificate_scopes[certificate_name]})), name: \"#{criterion_name}\"))\n"
+          text_line = "SchemeCriteriaRequirement.create!(requirement: #{requirement_identifier}, scheme_criterion: SchemeCriterion.find_by(scheme_category: SchemeCategory.find_by(name: \"#{category_name}\", scheme: Scheme.find_by(name: \"#{typology_name}\", version: \"#{version}\", renovation: #{renovation}, certificate: Certificate.#{certificate_scopes[certificate_name]})), name: \"#{criterion_name}\"))\n"
           # write create scheme criteria requirement statement
           seeds_file << text_line
           Rails.logger.info text_line
