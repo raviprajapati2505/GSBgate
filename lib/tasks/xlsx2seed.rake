@@ -18,8 +18,8 @@ namespace :xlsx2seed do
     xlsx = Roo::Spreadsheet.open(args.input_filename)
     sheet = xlsx.sheet(0)
 
-    certificate_scopes = {'Construction Management Certificate' => 'construction_certificate',
-                          'GSAS Design & Build Certificate' => 'final_design_certificate',
+    certificate_scopes = {'Construction Certificate' => 'construction_certificate',
+                          'GSAS Design Certificate' => 'final_design_certificate',
                           'Letter of Conformance' => 'letter_of_conformance',
                           'Operations Certificate' => 'operations_certificate'}
 
@@ -31,13 +31,12 @@ namespace :xlsx2seed do
     current_row_index = first_row_index + 1
     while current_row_index <= last_row_index
 
-      certificate_name = sheet.cell(current_row_index, 'A')
-      # category_name = sheet.cell(current_row_index, 'B')
-      category_code = sheet.cell(current_row_index, 'C')
-      # criterion_code = sheet.cell(current_row_index, 'D')
-      # criterion_number = sheet.cell(current_row_index, 'E')
-      criterion_name = sheet.cell(current_row_index, 'F')
-      typology_name = sheet.cell(current_row_index, 'G')
+      version = sheet.cell(current_row_index, 'A')
+      certificate_name = sheet.cell(current_row_index, 'B')
+      typology_name = sheet.cell(current_row_index, 'C')
+      category_name = sheet.cell(current_row_index, 'E')
+      # criterion_code = sheet.cell(current_row_index, 'F')
+      criterion_name = sheet.cell(current_row_index, 'G')
 
       certificate_index = certificates.index(certificate_name)
       if certificate_index.nil?
@@ -55,7 +54,7 @@ namespace :xlsx2seed do
       begin
         requirement_text = sheet.cell(current_row_index, 7 + current_col_index)
         if requirement_text.present?
-          requirement_identifier = "REQUIREMENT_#{current_col_index}_FOR_CERTIFICATE_#{certificate_index}_SCHEME_#{typology_name}_CATEGORY_#{category_code}_CRITERION_#{criterion_index}"
+          requirement_identifier = "REQUIREMENT_#{current_col_index}_FOR_V#{version}_CERTIFICATE_#{certificate_index}_SCHEME_#{typology_name}_CATEGORY_#{category_name}_CRITERION_#{criterion_index}"
           requirement_identifier.gsub!(' ', '_')
           requirement_identifier.gsub!('.', '_')
           requirement_identifier.gsub!('-', '_')
@@ -68,7 +67,7 @@ namespace :xlsx2seed do
           seeds_file << text_line
           Rails.logger.info text_line
 
-          text_line = "SchemeCriteriaRequirement.create!(requirement: #{requirement_identifier}, scheme_criterion: SchemeCriterion.find_by(scheme_category: SchemeCategory.find_by(code: \"#{category_code}\", scheme: Scheme.find_by(name: \"#{typology_name}\", version: \"2.1\", certificate: Certificate.#{certificate_scopes[certificate_name]})), name: \"#{criterion_name}\"))\n"
+          text_line = "SchemeCriteriaRequirement.create!(requirement: #{requirement_identifier}, scheme_criterion: SchemeCriterion.find_by(scheme_category: SchemeCategory.find_by(name: \"#{category_name}\", scheme: Scheme.find_by(name: \"#{typology_name}\", version: \"#{version}\", certificate: Certificate.#{certificate_scopes[certificate_name]})), name: \"#{criterion_name}\"))\n"
           # write create scheme criteria requirement statement
           seeds_file << text_line
           Rails.logger.info text_line
