@@ -11,7 +11,7 @@ def create_confirmed_user(email, password, role)
 end
 
 # Load the seed files
-['generated', 'all', Rails.env].each do |seed|
+['generated', 'requirements', 'all', Rails.env].each do |seed|
   seed_file = "#{Rails.root}/db/seeds/#{seed}.rb"
   if File.exists?(seed_file)
     puts "*** Loading #{seed} seed data"

@@ -8,7 +8,7 @@ namespace :xlsx2seed do
 
     if args.input_filename.blank? || args.output_filename.blank?
       Rails.logger.error 'usage : rake xlsx2seed:convert[<input_filename>,<output_filename>]'
-      Rails.logger.error ' e.g. : rake xlsx2seed:convert[RequirementsTemplate.xlsx,db/seeds/generated2.rb]'
+      Rails.logger.error ' e.g. : rake xlsx2seed:convert[RequirementsTemplate.xlsx,db/seeds/requirements.rb]'
       exit
     end
     Rails.logger.info "#{args}"
@@ -26,6 +26,7 @@ namespace :xlsx2seed do
     certificates = []
     criteria = []
 
+    missing_requirements_count = 0
     first_row_index = sheet.first_row
     last_row_index = sheet.last_row
     current_row_index = first_row_index + 1
@@ -72,12 +73,23 @@ namespace :xlsx2seed do
           # write create scheme criteria requirement statement
           seeds_file << text_line
           Rails.logger.info text_line
+
+          current_col_index += 1
         end
-        current_col_index += 1
       end while requirement_text.present?
+
+      if current_col_index == 1
+        missing_requirements_count += 1
+        Rails.logger.warn "No requirements found for row #{current_row_index}!"
+      end
+
       current_row_index += 1
     end
 
     seeds_file.close
+
+    if missing_requirements_count > 0
+      Rails.logger.warn("#{missing_requirements_count} rows without requirements found!")
+    end
   end
 end
