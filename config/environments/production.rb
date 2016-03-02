@@ -78,9 +78,9 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
-  config.action_mailer.default_url_options = { :host => 'gord.vito.be' }
+  config.action_mailer.default_url_options = { :host => 'www.gsas.qa' }
   config.action_mailer.smtp_settings = { :address => 'smtp.vito.local' }
-  config.action_mailer.asset_host = 'http://gord.vito.be'
+  config.action_mailer.asset_host = 'http://www.gsas.qa'
 
   config.x.gsas_info.email = 'GSAS-Trust-Info@gord.qa'
 end
