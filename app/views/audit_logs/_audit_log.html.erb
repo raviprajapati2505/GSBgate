@@ -14,7 +14,7 @@
             </div>
         <% end %>
         <% if audit_log.user_comment.present? %>
-            <div class="well user-comment">
+            <div class="well <% if audit_log.user.assessor? %>user-comment-project-team<% else %>user-comment-gord-team<%end %>">
                 <% # Don't make user input html_safe %>
                 <i class="fa fa-comment" title="User comment" style="margin-right: 2px;"></i> <%= audit_log.user_comment %>
             </div>

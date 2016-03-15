@@ -57,9 +57,14 @@
     font-size: 12px;
   }
 
-  .feed-element .user-comment {
+  .feed-element .user-comment-gord-team {
     font-style: italic;
-    background-color: $skin-gord-color-light;
+    background-color: $skin-gord-color-gord-team-light;
+  }
+
+  .feed-element .user-comment-project-team {
+    font-style: italic;
+    background-color: $skin-gord-color-project-team-light;
   }
 
   .feed-element .text-muted {
@@ -76,6 +81,16 @@
 
   .input-group + .form-group {
     margin-top: 10px;
+  }
+
+  .gord-team {
+    color: #ffffff;
+    background-color: $skin-gord-color-gord-team;
+  }
+
+  .project-team {
+    color: #ffffff;
+    background-color: $skin-gord-color-project-team;
   }
 
   .project-certification-progress {

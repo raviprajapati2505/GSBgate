@@ -3,8 +3,8 @@
     <% certification_path.status_history.each_with_index do |milestone, index| %>
         <div class="vertical-timeline-block">
             <div class="vertical-timeline-icon
-          <% if CertificationPathStatus.at_gord_side?(milestone[:certification_path_status].id) %>yellow-bg
-          <% else %>navy-bg
+          <% if CertificationPathStatus.at_gord_side?(milestone[:certification_path_status].id) %>gord-team
+          <% else %>project-team
           <% end %>">
                 <%= fa_icon('user') %>
             </div>
