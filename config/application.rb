@@ -41,5 +41,7 @@ module Gord
     # Custom GORD config
     config.x.tools_controller.url = 'http://127.0.0.1:4034'
 
+    config.time_zone = 'Asia/Qatar'
+
   end
 end
