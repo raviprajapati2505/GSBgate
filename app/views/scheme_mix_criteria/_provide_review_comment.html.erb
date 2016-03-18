@@ -1,0 +1,18 @@
+<div class="modal-dialog">
+  <%= bootstrap_form_for([@project, @certification_path, @scheme_mix, @scheme_mix_criterion], url: add_review_comment_project_certification_path_scheme_mix_scheme_mix_criterion_path, method: 'put') do |f| %>
+      <div class="modal-content">
+        <div class="modal-header">
+          <%= btn_close_modal %>
+          <h4 class="modal-title">Provide PCR Review Comment</h4>
+        </div>
+        <div class="modal-body">
+          <%= f.text_area :audit_log_user_comment, rows: 4 %>
+        </div>
+        <div class="modal-footer">
+          <% if can?(:provide_review_comment, @scheme_mix_criterion) %>
+              <%= btn_save %>
+          <% end %>
+        </div>
+      </div>
+  <% end %>
+</div>

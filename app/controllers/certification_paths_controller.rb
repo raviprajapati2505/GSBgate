@@ -123,12 +123,6 @@ class CertificationPathsController < AuthenticatedController
     end
   end
 
-  def approve_pcr_payment
-    if @certification_path.update!(:pcr_track_allowed => true)
-      redirect_to project_certification_path_path(@project, @certification_path), notice: 'Approved PCR payment'
-    end
-  end
-
   def cancel_pcr
     if @certification_path.update!(:pcr_track => false, :pcr_track_allowed => false)
       redirect_to project_certification_path_path(@project, @certification_path), notice: 'PCR is cancelled'
@@ -325,7 +319,7 @@ class CertificationPathsController < AuthenticatedController
   end
 
   def certification_path_params
-    params.require(:certification_path).permit(:project_id, :certificate_id, :pcr_track, :pcr_track_allowed, :duration, :started_at, :development_type, :appealed, :audit_log_user_comment)
+    params.require(:certification_path).permit(:project_id, :certificate_id, :pcr_track, :duration, :started_at, :development_type, :appealed, :audit_log_user_comment)
   end
 
   def sanitize_filename(name)

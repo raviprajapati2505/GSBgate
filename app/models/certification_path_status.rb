@@ -10,8 +10,6 @@ class CertificationPathStatus < ActiveRecord::Base
   SUBMITTING = 2
   SCREENING = 3
   SUBMITTING_AFTER_SCREENING = 4
-  PROCESSING_PCR_PAYMENT = 5
-  SUBMITTING_PCR = 6
   VERIFYING = 7
   ACKNOWLEDGING = 8
   PROCESSING_APPEAL_PAYMENT = 9
@@ -32,8 +30,6 @@ class CertificationPathStatus < ActiveRecord::Base
       CertificationPathStatus::SUBMITTING,
       CertificationPathStatus::SCREENING,
       CertificationPathStatus::SUBMITTING_AFTER_SCREENING,
-      CertificationPathStatus::PROCESSING_PCR_PAYMENT,
-      CertificationPathStatus::SUBMITTING_PCR,
       CertificationPathStatus::VERIFYING,
       CertificationPathStatus::ACKNOWLEDGING,
       CertificationPathStatus::PROCESSING_APPEAL_PAYMENT,
@@ -48,8 +44,6 @@ class CertificationPathStatus < ActiveRecord::Base
       CertificationPathStatus::SUBMITTING,
       CertificationPathStatus::SCREENING,
       CertificationPathStatus::SUBMITTING_AFTER_SCREENING,
-      CertificationPathStatus::PROCESSING_PCR_PAYMENT,
-      CertificationPathStatus::SUBMITTING_PCR,
       CertificationPathStatus::VERIFYING,
       CertificationPathStatus::ACKNOWLEDGING,
       CertificationPathStatus::PROCESSING_APPEAL_PAYMENT,
@@ -73,7 +67,6 @@ class CertificationPathStatus < ActiveRecord::Base
   STATUSES_AT_ASSESSOR_SIDE = [
       CertificationPathStatus::SUBMITTING,
       CertificationPathStatus::SUBMITTING_AFTER_SCREENING,
-      CertificationPathStatus::SUBMITTING_PCR,
       CertificationPathStatus::ACKNOWLEDGING,
       CertificationPathStatus::SUBMITTING_AFTER_APPEAL,
       CertificationPathStatus::ACKNOWLEDGING_AFTER_APPEAL
@@ -81,7 +74,6 @@ class CertificationPathStatus < ActiveRecord::Base
 
   STATUSES_AT_ADMIN_SIDE = [
       CertificationPathStatus::ACTIVATING,
-      CertificationPathStatus::PROCESSING_PCR_PAYMENT,
       CertificationPathStatus::PROCESSING_APPEAL_PAYMENT,
   ]
 
@@ -107,15 +99,12 @@ class CertificationPathStatus < ActiveRecord::Base
       CertificationPathStatus::SUBMITTING,
       CertificationPathStatus::SCREENING,
       CertificationPathStatus::SUBMITTING_AFTER_SCREENING,
-      CertificationPathStatus::PROCESSING_PCR_PAYMENT,
-      CertificationPathStatus::SUBMITTING_PCR
   ]
 
   # This function is used for toggling form elements writable state in the certification path flow
   STATUSES_IN_SUBMISSION = [
       CertificationPathStatus::SUBMITTING,
       CertificationPathStatus::SUBMITTING_AFTER_SCREENING,
-      CertificationPathStatus::SUBMITTING_PCR,
       CertificationPathStatus::SUBMITTING_AFTER_APPEAL
   ]
 

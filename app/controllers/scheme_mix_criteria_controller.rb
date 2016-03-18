@@ -104,6 +104,28 @@ class SchemeMixCriteriaController < AuthenticatedController
     render json: {total_count: total_count, items: items}
   end
 
+  def request_review
+    # TODO check review counter
+    @scheme_mix_criterion.in_review = true
+    @scheme_mix_criterion.save!
+    flash[:notice] = 'Criterion is sent for review.'
+    redirect_to project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion)
+  end
+
+  def provide_review_comment
+
+  end
+
+  def add_review_comment
+    @scheme_mix_criterion.transaction do
+      @scheme_mix_criterion.audit_log_user_comment = params[:scheme_mix_criterion][:audit_log_user_comment]
+      @scheme_mix_criterion.in_review = false
+      @scheme_mix_criterion.save!
+    end
+    flash[:notice] = 'Criterion review submitted.'
+    redirect_to project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion)
+  end
+
   private
   def set_controller_model
     @controller_model = @scheme_mix_criterion

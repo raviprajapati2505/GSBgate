@@ -117,18 +117,6 @@ class CertificationPath < ActiveRecord::Base
       when CertificationPathStatus::SCREENING
         return CertificationPathStatus::SUBMITTING_AFTER_SCREENING
       when CertificationPathStatus::SUBMITTING_AFTER_SCREENING
-        if pcr_track?
-          if pcr_track_allowed?
-            return CertificationPathStatus::SUBMITTING_PCR
-          else
-            return CertificationPathStatus::PROCESSING_PCR_PAYMENT
-          end
-        else
-          return CertificationPathStatus::VERIFYING
-        end
-      when CertificationPathStatus::PROCESSING_PCR_PAYMENT
-        return CertificationPathStatus::SUBMITTING_PCR
-      when CertificationPathStatus::SUBMITTING_PCR
         return CertificationPathStatus::VERIFYING
       when CertificationPathStatus::VERIFYING
         return CertificationPathStatus::ACKNOWLEDGING
@@ -179,7 +167,7 @@ class CertificationPath < ActiveRecord::Base
         if mixed? && (main_scheme_mix_selected? == false)
           todos << 'A main scheme needs to be selected.'
         end
-      when CertificationPathStatus::SUBMITTING, CertificationPathStatus::SUBMITTING_AFTER_SCREENING, CertificationPathStatus::SUBMITTING_PCR, CertificationPathStatus::SUBMITTING_AFTER_APPEAL
+      when CertificationPathStatus::SUBMITTING, CertificationPathStatus::SUBMITTING_AFTER_SCREENING, CertificationPathStatus::SUBMITTING_AFTER_APPEAL
         ['location_plan_file', 'site_plan_file', 'design_brief_file', 'project_narrative_file'].each do |general_submittal|
           if project.send(general_submittal).blank?
             todos << "A '#{Project.human_attribute_name(general_submittal)}' must be added to the project."
@@ -204,10 +192,6 @@ class CertificationPath < ActiveRecord::Base
           if criterion.submitting_after_appeal?
             todos << 'Some criteria still have status \'Submitting after appeal\'.'
           end
-        end
-      when CertificationPathStatus::PROCESSING_PCR_PAYMENT
-        unless pcr_track_allowed?
-          todos << 'The PCR track allowed flag must be set.'
         end
       when CertificationPathStatus::VERIFYING, CertificationPathStatus::VERIFYING_AFTER_APPEAL
         scheme_mix_criteria.each do |criterion|

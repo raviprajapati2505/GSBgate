@@ -91,13 +91,6 @@ module Auditable
                 system_messages << {message: 'The PCR track request was canceled for the certificate %s in project %s.', params: [self.name, self.project.name]}
               end
             end
-            if self.pcr_track_allowed_changed?
-              if self.pcr_track_allowed?
-                system_messages << {message: 'The PCR track request for certificate %s in project %s was granted.', params: [self.name, self.project.name]}
-              else
-                system_messages << {message: 'The PCR track request for certificate %s in project %s was rejected.', params: [self.name, self.project.name]}
-              end
-            end
           end
         when SchemeMixCriterion.name.demodulize
           project = self.scheme_mix.certification_path.project

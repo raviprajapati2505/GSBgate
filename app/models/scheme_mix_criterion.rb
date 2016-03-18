@@ -189,7 +189,7 @@ class SchemeMixCriterion < ActiveRecord::Base
       else
         return :submitted_score_not_achieved_after_appeal
       end
-    elsif submitted? && [CertificationPathStatus::SUBMITTING, CertificationPathStatus::SUBMITTING_AFTER_SCREENING, CertificationPathStatus::SUBMITTING_PCR].include?(scheme_mix.certification_path.certification_path_status_id)
+    elsif submitted? && [CertificationPathStatus::SUBMITTING, CertificationPathStatus::SUBMITTING_AFTER_SCREENING].include?(scheme_mix.certification_path.certification_path_status_id)
       return :submitting
     elsif submitted_after_appeal? && (scheme_mix.certification_path.certification_path_status_id == CertificationPathStatus::SUBMITTING_AFTER_APPEAL)
       return :submitting_after_appeal

@@ -70,7 +70,6 @@ module Effective
 
         # Certification path
         table_column :pcr_track, visible: false
-        table_column :pcr_track_allowed, visible: false
         table_column :development_type, visible: false, filter: {type: :select, values: Proc.new { CertificationPath.development_types.map { |k| [k[0].humanize, k[1]] } }
         } do |certification_path|
           certification_path.development_type.humanize

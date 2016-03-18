@@ -93,7 +93,6 @@ namespace :gsas do
       requirements = RequirementDatum.joins(scheme_mix_criteria: [scheme_mix: [:certification_path]])
                          .where(certification_paths: {certification_path_status_id: [CertificationPathStatus::SUBMITTING,
                                                                                     CertificationPathStatus::SUBMITTING_AFTER_SCREENING,
-                                                                                    CertificationPathStatus::SUBMITTING_PCR,
                                                                                     CertificationPathStatus::SUBMITTING_AFTER_APPEAL]})
                          .where(status: RequirementDatum.statuses[:required])
                          .where('requirement_data.due_date < ?', Date.current)

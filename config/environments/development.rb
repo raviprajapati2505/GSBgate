@@ -45,5 +45,6 @@ Rails.application.configure do
 
   config.log_tags = [ :uuid ]
 
-  config.x.gsas_info.email = 'gsas@example.com'
+  # config.x.gsas_info.email = 'gsas@example.com'
+  config.x.gsas_info.email = 'bart.daniels@vito.be'
 end

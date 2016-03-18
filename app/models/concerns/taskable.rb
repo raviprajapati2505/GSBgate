@@ -10,9 +10,6 @@ module Taskable
   CERT_MNGR_ASSIGN = 7
   CERT_MNGR_SCREEN = 8
   PROJ_MNGR_PROC_SCREENING = 10
-  SYS_ADMIN_PCR_ALLOWED = 11
-  SYS_ADMIN_PCR_APPROVE = 12
-  PROJ_MNGR_PROC_PCR = 14
   CERT_MEM_VERIFY = 16
   CERT_MNGR_VERIFICATION_APPROVE = 17
   PROJ_MNGR_PROC_VERIFICATION = 18
@@ -130,7 +127,6 @@ module Taskable
                certification_path: self)
     # Destroy project manager tasks to apply for a certification path
     Task.delete_all(taskable: self.project, task_description_id: PROJ_MNGR_APPLY)
-    handle_pcr_track_changed
   end
 
   def handle_created_scheme_mix_criteria_document
@@ -175,8 +171,6 @@ module Taskable
 
   def handle_updated_certification_path
     handle_certification_status_changed
-    handle_pcr_track_changed
-    handle_pcr_track_allowed_changed
     handle_main_scheme_mix_selected_changed
   end
 
@@ -217,39 +211,6 @@ module Taskable
                      certification_path: self)
           # Destroy certifier manager tasks to screen certification path
           Task.delete_all(taskable: self, task_description_id: CERT_MNGR_SCREEN)
-        when CertificationPathStatus::PROCESSING_PCR_PAYMENT
-          if self.pcr_track_allowed == true
-            # Create system admin task to advance the certification path status
-            Task.create(taskable: self,
-                       task_description_id: SYS_ADMIN_PCR_APPROVE,
-                       application_role: User.roles[:gord_admin],
-                       project: self.project,
-                       certification_path: self)
-          end
-          # Destroy project manager tasks to process screening comments
-          Task.delete_all(taskable: self, task_description_id: PROJ_MNGR_PROC_SCREENING)
-        when CertificationPathStatus::SUBMITTING_PCR
-          # ASSUMING PROJECT MANAGER IS RESPONSIBLE FOR TAKING ACTION !
-          # -----------------------------------------------------------
-          # Create project manager task to advance status
-          Task.create(taskable: self,
-                     task_description_id: PROJ_MNGR_PROC_PCR,
-                     project_role: ProjectsUser.roles[:project_manager],
-                     project: self.project,
-                     certification_path: self)
-          # Create certifier manager task to assign certifier team members to criteria
-          if self.scheme_mix_criteria.unassigned.submitted.count.nonzero?
-            Task.create(taskable: self,
-                       task_description_id: CERT_MNGR_ASSIGN,
-                       project_role: ProjectsUser.roles[:certifier_manager],
-                       project: self.project,
-                       certification_path: self)
-          end
-          # Destroy system admin tasks to advance the certification path status
-          Task.delete_all(taskable: self, task_description_id: SYS_ADMIN_PCR_APPROVE)
-          # IF PROCESSING PCR PAYMENT IS SKIPPED
-          # Destroy project manager tasks to process screening comments
-          Task.delete_all(taskable: self, task_description_id: PROJ_MNGR_PROC_SCREENING)
         when CertificationPathStatus::VERIFYING
           self.scheme_mix_criteria.submitted.where.not(certifier: nil).each do |scheme_mix_criterion|
             # Create certifier team member task to verify the criterion
@@ -259,8 +220,6 @@ module Taskable
                         project: self.project,
                         certification_path: self)
           end
-          # Destroy project manager tasks to process PCR comments
-          Task.delete_all(taskable: self, task_description_id: PROJ_MNGR_PROC_PCR)
           # IF PCR IS SKIPPED
           # Destroy project manager tasks to process screening comments
           Task.delete_all(taskable: self, task_description_id: PROJ_MNGR_PROC_SCREENING)
@@ -335,52 +294,6 @@ module Taskable
         when CertificationPathStatus::NOT_CERTIFIED
           # Destroy all certification path tasks
           Task.delete_all(taskable: self)
-      end
-    end
-  end
-
-  def handle_pcr_track_changed
-    if self.pcr_track_changed?
-      if self.pcr_track == true
-        if self.pcr_track_allowed == false && self.certification_path_status_id < CertificationPathStatus::PROCESSING_PCR_PAYMENT
-          # Create system admin task to check PCR payment
-          Task.create(taskable: self,
-                     task_description_id: SYS_ADMIN_PCR_ALLOWED,
-                     application_role: User.roles[:gord_admin],
-                     project: self.project,
-                     certification_path: self)
-        end
-      elsif self.pcr_track_allowed == false && self.certification_path_status_id < CertificationPathStatus::PROCESSING_PCR_PAYMENT
-        # Destroy system admin tasks to check PCR payment
-        Task.delete_all(taskable: self, task_description_id: SYS_ADMIN_PCR_ALLOWED)
-      end
-    end
-  end
-
-  def handle_pcr_track_allowed_changed
-    if self.pcr_track_allowed_changed?
-      if self.pcr_track_allowed == true
-        if self.pcr_track == true && self.certification_path_status_id <= CertificationPathStatus::PROCESSING_PCR_PAYMENT
-          if self.certification_path_status_id == CertificationPathStatus::PROCESSING_PCR_PAYMENT
-            # Create system admin task to advance the certification path status
-            Task.create(taskable: self,
-                       task_description_id: SYS_ADMIN_PCR_APPROVE,
-                       application_role: User.roles[:gord_admin],
-                       project: self.project,
-                       certification_path: self)
-          end
-          # Destroy system admin tasks to check PCR payment
-          Task.delete_all(taskable: self, task_description_id: SYS_ADMIN_PCR_ALLOWED)
-        end
-      elsif self.pcr_track == true && self.certification_path_status_id <= CertificationPathStatus::PROCESSING_PCR_PAYMENT
-        # Create system admin task to check PCR payment
-        Task.create(taskable: self,
-                   task_description_id: SYS_ADMIN_PCR_ALLOWED,
-                   application_role: User.roles[:gord_admin],
-                   project: self.project,
-                   certification_path: self)
-        # Destroy system admin tasks to advance the certification path status
-        Task.delete_all(taskable: self, task_description_id: SYS_ADMIN_PCR_APPROVE)
       end
     end
   end

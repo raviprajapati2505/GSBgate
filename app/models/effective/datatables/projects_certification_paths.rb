@@ -42,7 +42,6 @@ module Effective
         end
 
         table_column 'certification_path_pcr_track', column: 'certification_paths.pcr_track', label: 'Certificate PCR Track', type: :boolean, visible: false
-        table_column 'certification_path_pcr_track_allowed', column: 'certification_paths.pcr_track_allowed', label: 'Certificate PCR Track Allowed', type: :boolean, visible: false
         table_column 'certification_path_development_type', column: 'certification_paths.development_type', type: :integer, label: 'Certificate Development Type', visible: false, filter: {type: :select, values: Proc.new { CertificationPath.development_types.map { |k| [k[0].humanize, k[1]] } }} do |rec|
           CertificationPath.development_types.keys[rec.certification_path_development_type].humanize unless rec.certification_path_development_type.nil?
         end
@@ -108,7 +107,6 @@ module Effective
                    .select('certification_paths.certificate_id as certificate_id')
                    .select('certification_paths.certification_path_status_id as certification_path_certification_path_status_id')
                    .select('certification_paths.pcr_track as certification_path_pcr_track')
-                   .select('certification_paths.pcr_track_allowed as certification_path_pcr_track_allowed')
                    .select('certification_paths.development_type as certification_path_development_type')
                    .select('certification_paths.appealed as certification_path_appealed')
                    .select('certification_paths.created_at as certification_path_created_at')

@@ -46,14 +46,6 @@ class DigestMailer < ApplicationMailer
       if exclude_notifications.any?
         @audit_logs = @audit_logs.where.not('audit_logs.auditable_type = ? and audit_logs.system_message like \'%canceled%\'', CertificationPath.name.demodulize)
       end
-      exclude_notifications = NotificationTypesUser.where(user: user, notification_type_id: NotificationType::CERTIFICATE_PCR_APPROVED)
-      if exclude_notifications.any?
-        @audit_logs = @audit_logs.where.not('audit_logs.auditable_type = ? and audit_logs.system_message like \'%granted.\'', CertificationPath.name.demodulize)
-      end
-      exclude_notifications = NotificationTypesUser.where(user: user, notification_type_id: NotificationType::CERTIFICATE_PCR_REJECTED)
-      if exclude_notifications.any?
-        @audit_logs = @audit_logs.where.not('audit_logs.auditable_type = ? and audit_logs.system_message like \'%rejected.\'', CertificationPath.name.demodulize)
-      end
       exclude_notifications = NotificationTypesUser.where(user: user, notification_type_id: NotificationType::CRITERION_ASSIGNMENT_CHANGED)
       if exclude_notifications.any?
         @audit_logs = @audit_logs.where.not('audit_logs.auditable_type = ? and audit_logs.system_message like \'%assigned%\'', SchemeMixCriterion.name.demodulize)
@@ -75,8 +67,6 @@ class DigestMailer < ApplicationMailer
       add_condition(user, NotificationType::CERTIFICATE_ACTIVATED, CertificationPath.name.demodulize, CertificationPathStatus::SUBMITTING)
       add_condition(user, NotificationType::CERTIFICATE_SUBMITTED_FOR_SCREENING, CertificationPath.name.demodulize, CertificationPathStatus::SCREENING)
       add_condition(user, NotificationType::CERTIFICATE_SCREENED, CertificationPath.name.demodulize, CertificationPathStatus::SUBMITTING_AFTER_SCREENING)
-      add_condition(user, NotificationType::CERTIFICATE_PCR_SELECTED, CertificationPath.name.demodulize, CertificationPathStatus::PROCESSING_PCR_PAYMENT)
-      add_condition(user, NotificationType::CERTIFICATE_PCR_APPROVED, CertificationPath.name.demodulize, CertificationPathStatus::SUBMITTING_PCR)
       add_condition(user, NotificationType::CERTIFICATE_SUBMITTED_FOR_VERIFICATION, CertificationPath.name.demodulize, CertificationPathStatus::VERIFYING)
       add_condition(user, NotificationType::CERTIFICATE_VERIFIED, CertificationPath.name.demodulize, CertificationPathStatus::ACKNOWLEDGING)
       add_condition(user, NotificationType::CERTIFICATE_APPEALED, CertificationPath.name.demodulize, CertificationPathStatus::PROCESSING_APPEAL_PAYMENT)

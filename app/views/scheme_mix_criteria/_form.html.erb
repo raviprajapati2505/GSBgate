@@ -48,10 +48,21 @@
                             <% data = {} %>
                         <% end %>
                         <%= btn_link_to(edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), remote: true, icon: 'check', text: 'Submit criterion', data: data) %>
+                        <% if can?(:request_review, @scheme_mix_criterion) %>
+                          <% if @scheme_mix_criterion.in_review? %>
+                            <%= btn_link_to(request_review_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), icon: 'life-saver', text: 'PCR review in progress', class: 'disabled') %>
+                          <% else %>
+                              <%= btn_link_to(request_review_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), icon: 'life-saver', text: 'Request PCR review') %>
+                          <% end %>
+                        <% end %>
                     <% else %>
                         <%= btn_link_to(edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, undo: 1), remote: true, icon: 'undo', text: 'Undo status change', style: 'danger') %>
                     <% end %>
                 <% end %>
+            <% else %>
+              <% if can?(:provide_review_comment, @scheme_mix_criterion) %>
+                <%= btn_link_to(provide_review_comment_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), remote: true, icon: 'life-saver', text: 'Provide PCR review comment') %>
+              <% end %>
             <% end %>
         </div>
     </div>
@@ -242,5 +253,6 @@
 <% end %>
 </div>
 <div id="editStatusSchemeMixCriterionModal" class="modal fade"></div>
+<div id="reviewSchemeMixCriterionModal" class="modal fade"></div>
 <%= javascript_include_tag 'select_project_certifier' %>
 <%= javascript_include_tag 'select_project_assessor' %>
