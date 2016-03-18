@@ -9,7 +9,9 @@ module Taskable
   PROJ_MNGR_SUB_APPROVE = 6
   CERT_MNGR_ASSIGN = 7
   CERT_MNGR_SCREEN = 8
+  CERT_MNGR_REVIEW = 9
   PROJ_MNGR_PROC_SCREENING = 10
+  PROJ_MNGR_REVIEW = 11
   CERT_MEM_VERIFY = 16
   CERT_MNGR_VERIFICATION_APPROVE = 17
   PROJ_MNGR_PROC_VERIFICATION = 18
@@ -310,12 +312,14 @@ module Taskable
     handle_criterion_status_changed
     handle_criterion_assignment_changed
     handle_criterion_due_date_changed
+    handle_criterion_in_review_changed
   end
 
   def handle_criterion_status_changed
     if self.status_changed?
       case SchemeMixCriterion.statuses[self.status]
         when SchemeMixCriterion.statuses[:submitted], SchemeMixCriterion.statuses[:submitted_after_appeal]
+          Task.delete_all(taskable: self, task_description_id: PROJ_MNGR_REVIEW)
           # Check if certification with status 'submitted' has no linked criteria in status 'submitting'
           if CertificationPath.joins(:scheme_mixes)
                      .where(id: self.scheme_mix.certification_path.id, certification_path_status_id: [CertificationPathStatus::SUBMITTING, CertificationPathStatus::SUBMITTING_AFTER_APPEAL])
@@ -434,6 +438,27 @@ module Taskable
       if (self.due_date_was.present? && (self.due_date_was < Date.current)) && (self.due_date.blank? || (self.due_date > Date.current))
         # Destroy certifier manager tasks to follow up overdue tasks
         Task.delete_all(taskable: self, task_description_id: CERT_MNGR_OVERDUE)
+      end
+    end
+  end
+
+  def handle_criterion_in_review_changed
+    if self.in_review_changed?
+      if self.in_review?
+        Task.delete_all(taskable: self, task_description_id: PROJ_MNGR_REVIEW)
+        if Task.find_by(taskable: self, task_description_id: CERT_MNGR_REVIEW).nil?
+          # Create certifier manager task to provide a PCR review comment
+          Task.create(taskable: self,
+                      task_description_id: CERT_MNGR_REVIEW,
+                      project_role: ProjectsUser.roles[:certifier_manager],
+                      project: self.scheme_mix.certification_path.project,
+                      certification_path: self.scheme_mix.certification_path)
+        end
+      else
+        Task.delete_all(taskable: self, task_description_id: CERT_MNGR_REVIEW)
+        if Task.find_by(taskable: self, task_description_id: PROJ_MNGR_REVIEW).nil?
+          Task.create(taskable: self, task_description_id: PROJ_MNGR_REVIEW, project_role: ProjectsUser.roles[:project_manager], project: self.scheme_mix.certification_path.project, certification_path: self.scheme_mix.certification_path)
+        end
       end
     end
   end
