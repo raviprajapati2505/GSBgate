@@ -58,7 +58,7 @@ en:
         btn_advance_status: Advance status to '%{status}'
       schemes:
         title: Schemes
-        info_activating: The schemes will be clickable after a GORD administrator activates the certification.
+        info_activating: The schemes will be clickable after a GSAS trust administrator activates the certification.
         btn_edit_project_team_responsibility: Allocate project team responsibility
         btn_edit_certifier_team_responsibility: Allocate GSAS trust team responsibility
     new:
