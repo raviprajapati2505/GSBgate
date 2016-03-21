@@ -5,8 +5,7 @@ class ProjectsController < AuthenticatedController
   def index
     respond_to do |format|
       format.html {
-        @page_title = 'Certificates & projects'
-
+        @page_title = t('projects.index.title_html')
         @datatable = Effective::Datatables::ProjectsCertificationPaths.new
         @datatable.current_ability = current_ability
         @datatable.table_html_class = 'table table-bordered table-striped table-hover'

@@ -7,7 +7,7 @@
     <td>
         <p>
             <span style='font-size: 9pt; font-family: "Verdana", "sans-serif";'>Dear Ms/Mr<br/><br/>
-            The <b><%= @certification_path.name %></b> certificate for project with name <b><%= @certification_path.project.name %></b> has the following appealed criteria :</span>
+            The <b><%= @certification_path.name %></b> certification for project with name <b><%= @certification_path.project.name %></b> has the following appealed criteria :</span>
             <ul style='font-size: 9pt; font-family: "Verdana", "sans-serif";'>
             <% @appealed_criteria.each do |appealed_criterion| %>
             <li><%= appealed_criterion.name %></li>

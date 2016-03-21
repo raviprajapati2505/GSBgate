@@ -12,7 +12,7 @@
                     <% end %>
                     <%= f.email_field :email %>
                     <%= f.static_control :role do %>
-                      <%= resource.role.humanize %>
+                      <%= t(resource.role, scope: 'activerecord.attributes.user.roles') %>
                     <% end %>
                     <%= f.password_field :password, label: ('New password' + tooltip('Leave this field blank if you don\'t want to change your password.')).html_safe %>
                     <%= f.password_field :password_confirmation, label: 'New password confirmation', autocomplete: 'off' %>

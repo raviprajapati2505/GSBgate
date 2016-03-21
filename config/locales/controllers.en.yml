@@ -1,0 +1,14 @@
+en:
+  certification_paths_controller:
+    certificate_duration:
+      error_duration_not_one: Duration for Letter of Conformance should be 1 year.
+      error_duration_not_two_three_four: Duration for Final Design Certification should be 2, 3 or 4 years.
+    certificate_exists_and_is_allowed:
+      error_no_certificate: Error, this certificate does not exist.
+      error_can_create_certificate: Error, not allowed to create this certificate.
+    edit_project_team_responsibility:
+      page_title: Allocate project team responsibility for %{certificate}
+    edit_certifier_team_responsibility:
+      page_title: Allocate GSAS trust team responsibility for %{certificate}
+    update_status:
+      notice_success: The certification status was successfully updated.

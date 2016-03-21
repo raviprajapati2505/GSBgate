@@ -13,7 +13,7 @@
                     </tr>
                     <tr>
                         <th>Role</th>
-                        <td><%= @projects_user.role.humanize %></td>
+                        <td><%= t(@projects_user.role, scope: 'activerecord.attributes.projects_user.roles' ) %></td>
                     </tr>
                     </tbody>
                 </table>

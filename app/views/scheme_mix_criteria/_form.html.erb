@@ -88,7 +88,7 @@
                 <% end %>
                 <% if @scheme_mix_criterion.scheme_criterion.minimum_score != @scheme_mix_criterion.scheme_criterion.minimum_valid_score %>
                     <p class="alert alert-warning"><%= fa_icon('exclamation-circle') %>
-                        The scores of this criterion should be at least <%= @scheme_mix_criterion.scheme_criterion.minimum_valid_score %> to be able to receive a certificate.
+                        <%= t('.scores.minimum_valid_score_warning', minimum_valid_score: @scheme_mix_criterion.scheme_criterion.minimum_valid_score) %>
                     </p>
                 <% end %>
                 <table class="table table-bordered table-striped">
@@ -100,7 +100,7 @@
                     </thead>
                     <tbody>
                     <tr>
-                        <th>Targeted score <%= tooltip('The score the project team would like to achieve. Defaults to the maximum attainable score, but can be changed by a project manager.') %></th>
+                        <th>Targeted score <%= tooltip(t('.scores.targeted_score.tooltip')) %></th>
                         <td>
                             <% if can?(:update_targeted_score, @scheme_mix_criterion) %>
                                 <%= f.select :targeted_score, @scheme_mix_criterion.scheme_criterion.scores, hide_label: true %>
@@ -110,7 +110,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>Submitted score <%= tooltip('The score the project team will submit to GORD for verification. Will be provided by a project manager or a project team member that has been assigned to this criterion.') %></th>
+                        <th>Submitted score <%= tooltip(t('.scores.submitted_score.tooltip')) %></th>
                         <td>
                             <% if can?(:update_submitted_score, @scheme_mix_criterion) %>
                                 <%= f.select :submitted_score, @scheme_mix_criterion.scheme_criterion.scores, {include_blank: '-', hide_label: true} %>
@@ -121,7 +121,7 @@
                     </tr>
                     <% if !@certification_path.in_pre_verification? %>
                     <tr>
-                        <th>Achieved score <%= tooltip('The score GORD has awarded to this criterion. Will be provided by the certifier team and will be used for the final certification score.') %></th>
+                        <th>Achieved score <%= tooltip(t('.scores.achieved_score.tooltip')) %></th>
                         <td>
                             <% if can?(:update_achieved_score, @scheme_mix_criterion) %>
                                 <%= f.select :achieved_score, @scheme_mix_criterion.scheme_criterion.scores, {include_blank: '-', hide_label: true} %>
@@ -144,7 +144,7 @@
     <% unless @scheme_mix_criterion.main_scheme_mix_criterion_id.present? %>
         <div class="ibox">
             <div class="ibox-title">
-                <h5>Certifier</h5>
+                <h5><%= t('.certifier.title') %></h5>
             </div>
             <div class="ibox-content">
                 <%= bootstrap_form_tag url: assign_certifier_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), method: 'put' do |f| %>

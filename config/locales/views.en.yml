@@ -1,126 +1,192 @@
 en:
+  audit_logs:
+    audit_log_filter:
+      certification_path_label: Certification
   layouts:
     authenticated:
-      btn_cancel: "No"
-      btn_close: "Close"
-      btn_save: "Yes"
-      modal_title: "Confirm"
+      btn_cancel: No
+      btn_close: Close
+      btn_save: Yes
+      modal_title: Confirm
+    topnavbar:
+      navbar:
+        projects_html: My projects &amp; certifications
+        tasks: My tasks
+        preferences: My preferences
+        audit_log: Audit log
+        admin: Admin
+        admin_criteria: Criteria
+        admin_users: Users
   certification_paths:
-    form:
-      btn_cancel: "Cancel"
-      btn_close: "Close"
-      btn_save: "Save"
-      modal_title: "Apply for certificate"
     edit_status:
-      btn_cancel: "Cancel"
-      btn_close: "Close"
-      btn_save: "Save"
-      modal_title: "Update status"
-    new_final_design:
-      btn_save: "Save"
-    new_letter_of_conformance:
-      btn_save: "Save"
-    new_construction:
-      btn_save: "Save"
-    new_operations:
-      btn_save: "Save"
+      modal_title: Update status
     edit_project_team_responsibility:
-      btn_save: "Save"
-      btn_save_and_continue: "Save and continue"
-      btn_cancel: "Cancel"
+      btn_save_and_continue: Save and continue
     edit_certifier_team_responsibility:
-      btn_save: "Save"
-      btn_save_and_continue: "Save and continue"
-      btn_cancel: "Cancel"
+      btn_save_and_continue: Save and continue
+    show:
+      certification_path:
+        title: Certification details
+        name: Certification name
+        download_certificate:
+          text: Download Certification
+          tooltip: Download Certification
+        download_coverletter:
+          text: Download Coverletter
+          tooltip: Download Coverletter
+        download_scores_report:
+          text: Download Score Report
+          tooltip: Download Score Report
+        download_archive:
+          text: Download archive
+          tooltip: Download a ZIP archive containing all approved documents in this certification and related audit logs.(Currently containing %{approved_count} approved document(s))
+        apply_pcr:
+          confirm: You are now applying for the PCR track. This will require an extra fee. Please confirm your choice.
+          text: Apply for PCR
+        cancel_pcr:
+          confirm: This will cancel the PCR for this certification. Please confirm your choice.
+          text: Cancel PCR
+      certification_path_status:
+        title: Certification status
+        btn_accept_achieved: Accept achieved score
+        btn_accept_denied:
+          text: Accept certification denied
+          confirm: There are one or more criteria that have not achieved their minimum valid score. As a result, the certification does not have an achieved score. If you proceed a GSAS certification will be denied. Are you sure?
+        btn_apply_appeal: Apply for appeal
+        btn_advance_status: Advance status to '%{status}'
+      schemes:
+        title: Schemes
+        info_activating: The schemes will be clickable after a GORD administrator activates the certification.
+        btn_edit_project_team_responsibility: Allocate project team responsibility
+        btn_edit_certifier_team_responsibility: Allocate GSAS trust team responsibility
+    new:
+      title: Applying for %{certificate} Certification
+    overview_item:
+      warning_complete_loc: Please complete the Letter of conformance certification first.
+    timeline_legend:
+      project_team: Project team
+      certifier_team: GSAS trust team
+    update_status_advance:
+      title: Advancing certification status
   projects:
     index:
-      action_team_title: "Team"
+      title_html: Projects &amp; certifications
+      btn_new_project: New project
     form:
-      tooltip_latlng: "The latitude and longitude will automatically be updated when the Address, Location and Country fields are filled out. However, it is also possible to define a custom location by editing this field or by dragging the marker on the map."
-      tooltip_gross_area: "Total built up area including parking areas such as underground or structured parking."
-      tooltip_certified_area: "Total built up area excluding parking areas. All parking areas (whether underground, structured, or at grade) should NOT be included in this calculation. Other spaces, such as common areas, mechanical spaces, and circulation areas, should be included in the certified area of the building."
-      tooltip_carpark_area: "Total built up area associated with parking (underground or structured parking). This does NOT include on-grade parking, as we are only interested in the built up area."
-      tooltip_project_site_area: "Total plot area including roadways, parking, landscape, etc."
+      title: Project details
+      tooltip_gross_area: Total built up area including parking areas such as underground or structured parking.
+      tooltip_certified_area: Total built up area excluding parking areas. All parking areas (whether underground, structured, or at grade) should NOT be included in this calculation. Other spaces, such as common areas, mechanical spaces, and circulation areas, should be included in the certified area of the building.
+      tooltip_carpark_area: Total built up area associated with parking (underground or structured parking). This does NOT include on-grade parking, as we are only interested in the built up area.
+      tooltip_project_site_area: Total plot area including roadways, parking, landscape, etc.
+      tooltip_latlng: The latitude and longitude will automatically be updated when the Address, Location and Country fields are filled out. However, it is also possible to define a custom location by editing this field or by dragging the marker on the map.
+    show:
+      project_details:
+        title: Project details
+      project_tools:
+        title: Project tools
+      certificates:
+        title: Certifications
   projects_users:
     edit:
-      btn_cancel: "Back"
-      btn_save: "Update authorization"
-      form_title: "Edit team member authorization"
+      btn_cancel: Back
+      btn_save: Update authorization
+      form_title: Edit team member authorization
+    index:
+      project_team:
+        title: Project team
+        title_modal: Add project team member
+      certifier_team:
+        title: GSAS trust team
+        title_modal: Add GSAS trust member
+      enterprise_clients:
+        title: Enterprise clients
+        title_modal: Add enterprise client
   requirement_data:
     update:
-      tooltip_due_date: "Due date passed"
-      tooltip_requirement_required: "Requirement not provided yet"
-      tooltip_requirement_provided: "Requirement provided"
-      tooltip_requirement_not_required: "Requirement not required"
+      tooltip_due_date: Due date passed
+      tooltip_requirement_required: Requirement not provided yet
+      tooltip_requirement_provided: Requirement provided
+      tooltip_requirement_not_required: Requirement not required
     refuse_requirement:
-      btn_cancel: "Back"
-      btn_close: "Close"
-      btn_save: "Save"
-      info_refuse_requirement: "When you refuse this requirement, the project manager will have to reassign the requirement to another project team member. Please explain below why you can't complete the requirement."
-      modal_title: "Requirement refusal"
+      info_refuse_requirement: When you refuse this requirement, the CGP project manager will have to reassign the requirement to another project team member. Please explain below why you can't complete the requirement.
+      modal_title: Requirement refusal
   scheme_criteria:
+    index:
+      criteria:
+        certificate: Certification
+      filter:
+        certificate: Certification
+        blank: '- All certifications -'
     show:
-      tooltip_sortable: "You can drag and drop the panels below to re-order their appearance."
+      tooltip_sortable: You can drag and drop the panels below to re-order their appearance.
   scheme_mix_criteria:
-    edit_status:
-      btn_cancel: "Cancel"
-      btn_close: "Close"
+    form:
+      scores:
+        minimum_valid_score_warning: The scores of this criterion should be at least %{minimum_valid_score} to be able to receive a certification.
+        targeted_score:
+          tooltip: The score the project team would like to achieve. Defaults to the maximum attainable score, but can be changed by a CGP project manager.
+        submitted_score:
+          tooltip: The score the project team will submit to GSAS trust for verification. Will be provided by a CGP project manager or a project team member that has been assigned to this criterion.
+        achieved_score:
+          tooltip: The score the GSAS trust team has awarded to this criterion. Will be provided by the GSAS trust team and will be used for the final certification score.
+      certifier:
+        title: Certifier
   scheme_mix_criteria_documents:
       edit_status:
-        btn_cancel: "Cancel"
-        btn_close: "Close"
-        btn_save: "Save"
-        info_text_review: "Review this document for compliance against this criterion. Set the status to approved if the document is compliant with the requirements."
-        modal_title: "Update status"
+        info_text_review: Review this document for compliance against this criterion. Set the status to approved if the document is compliant with the requirements.
+        modal_title: Update status
       new_link:
-        btn_cancel: "Cancel"
-        btn_close: "Close"
-        btn_save: "Save"
-        info_text_review: "If this document also supports requirements in other criteria, add a criterion below:"
-        modal_title: "Link document to other criteria"
-  scheme_mix_criteria_document_comments:
-      modal:
-        btn_cancel: "Cancel"
-        btn_close: "Close"
-        btn_save: "Save"
-        modal_title: "Add comment"
+        modal_title: Link document to other criteria
+  score:
+    score_toggle:
+      scores_in_certificate_points:
+        text: Cert
+        tooltip: Score in certification points. Takes both the criterion weights and the scheme weights into account.
+      scores_in_scheme_points:
+        text: Scheme
+        tooltip: Score in scheme points. Takes the criterion weights into account, but not the scheme weights.
+      scores:
+        text: Crit
+        tooltip: Score of the criterion in absolute points. Does not take any weighting into account.
   tasks:
+    index:
+      filter:
+        certificate_label: Certification
     tasks:
-      description_1: "Assign a certifier manager to the project."
-      description_2: "Check registration and payment and advance the certificate status."
-      description_3: "Allocate criteria requirements to project team members."
-      description_4: "Provide documentation and change the status of the requirements."
-      description_5: "Set the submitted score and submit the criterion."
-      description_6: "Advance the certificate status."
-      description_7: "Allocate criteria to certifier members."
-      description_8: "Screen all criteria and advance the certificate status."
-      description_9: "Review the criterion and provide a PCR review comment."
-      description_10: "Process certifier comments and advance the certificate status (optionally apply for PCR track)."
-      description_11: "Process certifier review comments"
-      description_16: "Verify the criterion and indicate whether the target is achieved or not."
-      description_17: "Advance the certificate status."
-      description_18: "Advance the certificate status (optionally apply for appeal)."
-      description_19: "Check payment for appeal and advance the certificate status."
-      description_24: "Advance the certificate status."
-      description_25: "Approve the certificate by advancing the status."
-      description_26: "Approve the certificate by advancing the status."
-      description_29: "Documents are waiting for approval."
-      description_30: "Apply for a certificate."
-      description_31: "Allocate appealed criteria requirements to project team members."
-      description_32: "Provide location plan, site plan, design brief and project narrative."
-      description_33: "Duration of certification path is exceeded."
-      description_34: "Task is overdue."
-      description_35: "Task is overdue."
-      description_36: "Allocate criteria to certifier members."
-      description_37: "Select a main scheme."
-      tooltip_due_date: "Task is overdue"
+      description_1: Assign a certifier manager to the project.
+      description_2: Check registration and payment and advance the certification status.
+      description_3: Allocate criteria requirements to project team members.
+      description_4: Provide documentation and change the status of the requirements.
+      description_5: Set the submitted score and submit the criterion.
+      description_6: Advance the certification status.
+      description_7: Allocate criteria to certifier members.
+      description_8: Screen all criteria and advance the certification status.
+      description_9: Review the criterion and provide a PCR review comment.
+      description_10: Process GSAS trust team comments and advance the certification status (optionally apply for PCR track).
+      description_11: Process GSAS trust team review comments
+      description_11: Process GSAS trust team review comments
+      description_16: Verify the criterion and indicate whether the target is achieved or not.
+      description_17: Advance the certification status.
+      description_18: Advance the certification status (optionally apply for appeal).
+      description_19: Check payment for appeal and advance the certification status.
+      description_24: Advance the certification status.
+      description_25: Approve the certification by advancing the status.
+      description_26: Approve the certification by advancing the status.
+      description_29: Documents are waiting for approval.
+      description_30: Apply for a certification.
+      description_31: Allocate appealed criteria requirements to project team members.
+      description_32: Provide location plan, site plan, design brief and project narrative.
+      description_33: Duration of certification is exceeded.
+      description_34: Task is overdue.
+      description_35: Task is overdue.
+      description_36: Allocate criteria to GSAS trust team members.
+      description_37: Select a main scheme.
+      tooltip_due_date: Task is overdue
   users:
     index:
-      action_edit_title: "Edit"
-      table_title: "User overview"
+      action_edit_title: Edit
+      table_title: User overview
     form:
-      btn_cancel: "Back"
-      btn_save: "Save"
-      form_title: "User details"
+      form_title: User details
     list_notifications:
-      btn_save: "Update preferences"
+      btn_save: Update preferences

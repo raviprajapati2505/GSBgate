@@ -3,10 +3,10 @@
     <%= render partial: 'certification_paths/overview_item', locals: { project: project, certificate: Certificate.final_design_certificate.order(gsas_version: :desc).first } %>
 </ul>
 <% # TODO: uncomment this when the Construction & Operations certificates are available %>
-<!--<ul class="list-group">-->
-    <% #render partial: 'certification_paths/overview_item', locals: { project: project, certificate: Certificate.construction_certificate.order(gsas_version: :desc).first } %>
-<!--</ul>-->
-<!--<ul class="list-group">-->
-    <% #render partial: 'certification_paths/overview_item', locals: { project: project, certificate: Certificate.operations_certificate.order(gsas_version: :desc).first } %>
-<!--</ul>-->
+<ul class="list-group">
+    <%= render partial: 'certification_paths/overview_item', locals: { project: project, certificate: Certificate.construction_certificate.order(gsas_version: :desc).first } %>
+</ul>
+<ul class="list-group">
+    <%= render partial: 'certification_paths/overview_item', locals: { project: project, certificate: Certificate.operations_certificate.order(gsas_version: :desc).first } %>
+</ul>
 <div id="applyForCertificateModal" class="modal fade"></div>

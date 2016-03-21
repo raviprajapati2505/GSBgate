@@ -1,6 +1,6 @@
 <div class="ibox float-e-margins">
     <div class="ibox-title">
-        <h5>Applying for <%= @certification_path.certificate.full_name %> Certificate</h5>
+        <h5><%= t('.title', certificate: @certification_path.certificate.full_name) %></h5>
     </div>
     <div class="ibox-content">
         <%= render 'certification_paths/new_letter_of_conformance' if @certification_path.certificate.letter_of_conformance? %>

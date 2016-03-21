@@ -1,11 +1,11 @@
-Certificate Activated
+Certification Activated
 =======================
 
 Dear Ms/Mr
 
-The <%= @certification_path.name %> certificate for project with name <%= @certification_path.project.name %> is activated.
+The <%= @certification_path.name %> certification for project with name <%= @certification_path.project.name %> is activated.
 
-Development Type : <%= @certification_path.development_type.humanize %>
+Development Type : <%= t(@certification_path.development_type, scope: 'activerecord.attributes.certification_path.development_types' ) %>
 <% unless @certification_path.duration == 0 %>Duration : <%= pluralize(@certification_path.duration, 'year') %><% end %>
 Schemes :
 <% @certification_path.scheme_mixes.each do |scheme_mix| %>

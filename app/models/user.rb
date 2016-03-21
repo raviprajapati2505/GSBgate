@@ -87,7 +87,7 @@ class User < ActiveRecord::Base
   # Returns the humanized system role of the user if the user isn't linked to the project.
   def humanized_project_role(project)
     project_user = ProjectsUser.find_by(project: project, user: self)
-    return project_user.present? ? project_user.role.humanize : self.role.humanize
+    return project_user.present? ? I18n.t(project_user.role, scope: 'activerecord.attributes.projects_user.roles') : I18n.t(self.role, scope: 'activerecord.attributes.user.roles')
   end
 
   # Updates the current password of a user

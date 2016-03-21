@@ -22,7 +22,7 @@
             <div class="col-lg-12">
                 <h2>
                     <%= @page_title_prefix if @page_title_prefix.present? %>
-                    <%= @page_title %>
+                    <%= @page_title.html_safe %>
                     <%= @page_title_suffix if @page_title_suffix.present? %>
                 </h2>
 
@@ -65,8 +65,8 @@
             <div class="modal-body">
             </div>
             <div class="modal-footer">
-                <%= btn_tag(text: 'Yes', class: 'okBtn') %>
-                <%= btn_tag(text: 'No', style: 'white', data: {dismiss: 'modal'}) %>
+                <%= btn_tag(text: t('.btn_save'), class: 'okBtn') %>
+                <%= btn_tag(text: t('.btn_cancel'), style: 'white', data: {dismiss: 'modal'}) %>
             </div>
         </div>
     </div>

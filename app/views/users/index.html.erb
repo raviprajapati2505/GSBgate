@@ -17,7 +17,7 @@
             <% @users.each do |user| %>
                 <tr>
                     <td><%= user.email %></td>
-                    <td><%= user.role.humanize %></td>
+                    <td><%= t(user.role, scope: 'activerecord.attributes.user.roles') %></td>
                     <td><%= user.account_active? ? fa_icon_with_text('check', 'Yes') : fa_icon_with_text('times', 'No') %></td>
                     <td>
                         <% if can?(:edit, user) %>

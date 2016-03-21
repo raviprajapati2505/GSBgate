@@ -4,7 +4,7 @@
         <%= f.hidden_field :project_id, { class: 'select2-project-ajax', value: session[:audit]['project_id'] } %>
     <% end %>
     <div id="select-certificate" class="form-group">
-        <%= f.label :certification_path_id, 'Certificate' %><br/>
+        <%= f.label :certification_path_id, t('.certification_path_label') %><br/>
         <%= f.hidden_field :certification_path_id, { class: 'select2-certificate-ajax', value: session[:audit]['certification_path_id'] } %>
     </div>
     <%= f.text_field 'text', value: session[:audit]['text'], label: 'Message contains' %>

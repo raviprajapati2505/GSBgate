@@ -98,11 +98,11 @@ class CertificationPath < ActiveRecord::Base
   def certificate_duration
     if certificate.letter_of_conformance?
       if duration != 1
-        errors.add(:duration, 'Duration for Letter of Conformance should be 1 year.')
+        errors.add(:duration, t('certification_paths_controller.certificate_duration.error_duration_not_one'))
       end
     elsif certificate.final_design_certificate?
       if not [2, 3, 4].include? duration
-        errors.add(:duration, 'Duration for Final Design Certificate should be 2, 3 or 4 years.')
+        errors.add(:duration, t('certification_paths_controller.certificate_duration.error_duration_not_two_three_four'))
       end
     elsif certificate.construction_certificate? || certificate.operations_certificate?
     end

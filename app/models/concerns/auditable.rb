@@ -59,13 +59,13 @@ module Auditable
           auditable = self.project
           project = self.project
           if (action == AUDIT_LOG_CREATE)
-            system_messages << {message: 'User %s was added to project %s as a %s.', params: [self.user.email, self.project.name, self.role.humanize]}
+            system_messages << {message: 'User %s was added to project %s as a %s.', params: [self.user.email, self.project.name, I18n.t(self.role, scope: 'activerecord.attributes.projects_users.roles')]}
           elsif (action == AUDIT_LOG_UPDATE)
             if self.role_changed?
-              system_messages << {message: 'The role of user %s in project %s was changed from %s to %s.', params: [self.user.email, self.project.name, self.changes[:role][0].humanize, self.changes[:role][1].humanize]}
+              system_messages << {message: 'The role of user %s in project %s was changed from %s to %s.', params: [self.user.email, self.project.name, I18n.t(self.changes[:role][0], scope: 'activerecord.attributes.projects_user.roles'), I18n.t(self.changes[:role][1], scope: 'activerecord.attributes.projects_user.roles')]}
             end
           elsif (action == AUDIT_LOG_DESTROY)
-            system_messages << {message: 'User %s was removed from project %s as a %s.', params: [self.user.email, self.project.name, self.role.humanize]}
+            system_messages << {message: 'User %s was removed from project %s as a %s.', params: [self.user.email, self.project.name, I18n.t(self.role, scope: 'activerecord.attributes.projects_user.roles')]}
           end
         when CertificationPath.name.demodulize
           project = self.project
@@ -77,18 +77,18 @@ module Auditable
             new_status_model = CertificationPathStatus.find_by_id(new_status)
           end
           if (action == AUDIT_LOG_CREATE)
-            system_messages << {message: 'A new certificate %s was created in project %s.', params: [self.name, self.project.name], old_status: old_status, new_status: new_status}
+            system_messages << {message: 'A new certification %s was created in project %s.', params: [self.name, self.project.name], old_status: old_status, new_status: new_status}
           elsif (action == AUDIT_LOG_UPDATE)
             if self.certification_path_status_id_changed?
-              system_messages << {message: 'The status of certificate %s in project %s was changed from %s to %s.', params: [self.name, self.project.name, old_status_model.name, new_status_model.name], old_status: old_status, new_status: new_status}
+              system_messages << {message: 'The status of certification %s in project %s was changed from %s to %s.', params: [self.name, self.project.name, old_status_model.name, new_status_model.name], old_status: old_status, new_status: new_status}
             end
           end
           if (action == AUDIT_LOG_CREATE || action == AUDIT_LOG_UPDATE)
             if self.pcr_track_changed?
               if self.pcr_track?
-                system_messages << {message: 'A PCR track request was issued for the certificate %s in project %s.', params: [self.name, self.project.name]}
+                system_messages << {message: 'A PCR track request was issued for the certification %s in project %s.', params: [self.name, self.project.name]}
               else
-                system_messages << {message: 'The PCR track request was canceled for the certificate %s in project %s.', params: [self.name, self.project.name]}
+                system_messages << {message: 'The PCR track request was canceled for the certification %s in project %s.', params: [self.name, self.project.name]}
               end
             end
           end

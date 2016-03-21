@@ -38,14 +38,6 @@ class DigestMailer < ApplicationMailer
       if exclude_notifications.any?
         @audit_logs = @audit_logs.where.not('audit_logs.auditable_type = ? and audit_logs.system_message like \'%updated.\'', Project.name.demodulize)
       end
-      exclude_notifications = NotificationTypesUser.where(user: user, notification_type_id: NotificationType::CERTIFICATE_PCR_REQUESTED)
-      if exclude_notifications.any?
-        @audit_logs = @audit_logs.where.not('audit_logs.auditable_type = ? and audit_logs.system_message like \'%issued%\'', CertificationPath.name.demodulize)
-      end
-      exclude_notifications = NotificationTypesUser.where(user: user, notification_type_id: NotificationType::CERTIFICATE_PCR_CANCELED)
-      if exclude_notifications.any?
-        @audit_logs = @audit_logs.where.not('audit_logs.auditable_type = ? and audit_logs.system_message like \'%canceled%\'', CertificationPath.name.demodulize)
-      end
       exclude_notifications = NotificationTypesUser.where(user: user, notification_type_id: NotificationType::CRITERION_ASSIGNMENT_CHANGED)
       if exclude_notifications.any?
         @audit_logs = @audit_logs.where.not('audit_logs.auditable_type = ? and audit_logs.system_message like \'%assigned%\'', SchemeMixCriterion.name.demodulize)
@@ -118,7 +110,7 @@ class DigestMailer < ApplicationMailer
   def added_to_project_email(projectsuser)
     @user = projectsuser.user
     @project = projectsuser.project
-    @role = projectsuser.role.humanize
+    @role = I18n.t(projectsuser.role, scope: 'activerecord.attributes.projects_user.roles')
 
     mail(to: @user.email, subject: "GSASgate - you are added to project #{@project.name}")
   end
@@ -126,7 +118,7 @@ class DigestMailer < ApplicationMailer
   def updated_role_email(projectsuser)
     @user = projectsuser.user
     @project = projectsuser.project
-    @role = projectsuser.role.humanize
+    @role = I18n.t(projectsuser.role, scope: 'activerecord.attributes.projects_user.roles')
 
     mail(to: @user.email, subject: "GSASgate - your role changed for project #{@project.name}")
   end

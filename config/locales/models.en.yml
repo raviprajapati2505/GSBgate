@@ -2,19 +2,87 @@ en:
   activerecord:
     attributes:
       audit_log:
-        user_comment: "Comment"
+        user_comment: Comment
+      certification_path:
+        development_types:
+          not_applicable: Not applicable
+          single_use: Single use
+          mixed_use: Mixed use building
+          mixed_development: Neighbourhood (mixed development)
+          mixed_development_in_stages: Neighbourhood in stages (Mixed development in stages)
+      effective:
+        datatables:
+          certification_paths:
+            certification_path_status:
+              label: Certification Status
+          projects_certification_paths:
+            certificate_id:
+              label: Certification name
+            certification_path_pcr_track:
+              label: Certification PCR Track
+            certification_path_pcr_track_allowed:
+              label: Certification PCR Track Allowed
+            certification_path_development_type:
+              label: Certification Development Type
+            certification_path_appealed:
+              label: Certification Appealed
+            certification_path_created_at:
+              label: Certification Created At
+            certification_path_started_at:
+              label: Certification Started At
+            certification_path_certified_at:
+              label: Certification Certified At
+            certification_path_duration:
+              label: Certification Duration
+            certification_path_certification_path_status_id:
+              label: Certification Status
+            certification_path_status_is_active:
+              label: Certification Active
+            stars:
+              label: Certification Star Rating
+            total_achieved_score:
+              label: Certification Achieved Score
+            total_submitted_score:
+              label: Certification Submitted Score
+            total_targeted_score:
+              label: Certification Targeted Score
+            schemes_array:
+              label: Certification Typologies
+            assessors_array:
+              label: Project team
+            certifiers_array:
+              label: GSAS trust team
+            enterprise_clients_array:
+              label: Enterprise clients
       project:
-        code: "Project ID"
-        name: "Project name"
-        carpark_area: "Car park area"
-        project_site_area: "Project plot area"
-        location_plan_file: "Location plan"
-        site_plan_file: "Site plan"
-        design_brief_file: "Design brief"
-        project_narrative_file: "Project narrative"
+        code: Project ID
+        name: Project name
+        carpark_area: Car park area
+        project_site_area: Project plot area
+        location_plan_file: Location plan
+        site_plan_file: Site plan
+        design_brief_file: Design brief
+        project_narrative_file: Project narrative
+      projects_user:
+        roles:
+          project_team_member: Project team member
+          project_manager: CGP Project manager
+          enterprise_client: Enterprise client
+          certifier: Certifier
+          certifier_manager: Certification manager
       scheme_mix_criterion:
-        audit_log_user_comment: "Comment"
+        audit_log_user_comment: Comment
       scheme_mix_criteria_document:
-        audit_log_user_comment: "Comment"
+        audit_log_user_comment: Comment
       requirement_datum:
-        audit_log_user_comment: "Comment"
+        audit_log_user_comment: Comment
+      user:
+        roles:
+          system_admin: System administrator
+          user: User
+          gord_top_manager: GSAS trust top manager
+          gord_manager: GSAS trust manager
+          gord_admin: GSAS trust admin
+          certifier: GSAS trust member
+          assessor: Project team member
+          enterprise_client: Enterprise client

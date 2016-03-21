@@ -15,7 +15,7 @@
 
     <!-- Development Type -->
     <%= f.static_control label: 'Development Type' do %>
-        <%= @certification_path.development_type.to_s.humanize %>
+        <%= t(@certification_path.development_type, scope: 'activerecord.attributes.certification_path.development_types') %>
     <% end %>
 
     <!-- Scheme Mixes -->

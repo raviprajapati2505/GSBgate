@@ -38,7 +38,7 @@
         <% else %>
             <span class="col-md-8">
                 <% if certificate.final_design_certificate? %>
-                    Please complete the Letter of conformance certificate first.
+                    <%= t('.warning_complete_loc') %>
                 <% end %>
             </span>
         <% end %>

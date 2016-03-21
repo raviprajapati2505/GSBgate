@@ -55,7 +55,7 @@ module Effective
           end
         end
         # CertificationPathStatus
-        table_column :certification_path_status, label: 'Certificate Status',
+        table_column :certification_path_status, label: I18n.t('activerecord.attributes.effective.datatables.certification_paths.certification_path_status.label'),
                      filter: {type: :select, values: Proc.new { CertificationPathStatus.all.map { |status| [status.name, status.id] } }
                      } do |certification_path|
           certification_path.certification_path_status.name
@@ -70,9 +70,9 @@ module Effective
 
         # Certification path
         table_column :pcr_track, visible: false
-        table_column :development_type, visible: false, filter: {type: :select, values: Proc.new { CertificationPath.development_types.map { |k| [k[0].humanize, k[1]] } }
+        table_column :development_type, visible: false, filter: {type: :select, values: Proc.new { CertificationPath.development_types.map { |k| [I18n.t(k[0], scope: 'activerecord.attributes.certification_path.development_types'), k[1]] } }
         } do |certification_path|
-          certification_path.development_type.humanize
+          I18n.t(certification_path.development_type, scope: 'activerecord.attributes.certification_path.development_types')
         end
         table_column :appealed, visible: false
         table_column :created_at, visible: false, filter: {type: :select, values: Proc.new { CertificationPath.pluck_date_field_by_year_month_day(:created_at, :desc) }}
