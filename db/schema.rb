@@ -89,7 +89,7 @@ ActiveRecord::Schema.define(version: 20160318133232) do
     t.datetime "certified_at"
     t.integer  "main_scheme_mix_id"
     t.boolean  "main_scheme_mix_selected",     default: false, null: false
-    t.integer  "max_review_count",             default: 1
+    t.integer  "max_review_count",             default: 2
   end
 
   add_index "certification_paths", ["certification_path_status_id"], name: "index_certification_paths_on_certification_path_status_id", using: :btree
