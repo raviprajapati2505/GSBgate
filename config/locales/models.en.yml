@@ -66,7 +66,7 @@ en:
       projects_user:
         roles:
           project_team_member: Project team member
-          project_manager: CGP Project manager
+          project_manager: CGP project manager
           enterprise_client: Enterprise client
           certifier: Certifier
           certifier_manager: Certification manager
