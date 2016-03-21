@@ -11,8 +11,8 @@ module Effective
             certification_path.project.code + ', ' + certification_path.project.name
           end
         end
-        table_column 'project_owner', column: 'users.email' do |certification_path|
-          certification_path.project.owner.email
+        table_column 'project_owner', column: 'projects.owner' do |certification_path|
+          certification_path.project.owner
         end
         table_column 'project_code', visible: false, type: :string, column: 'projects.code' do |certification_path|
           can_link_to(project_path(certification_path.project), certification_path.project) do

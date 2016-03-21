@@ -7,7 +7,6 @@ class Project < ActiveRecord::Base
 
   MAXIMUM_DOCUMENT_FILE_SIZE = 25 # in MB
 
-  belongs_to :owner, class_name: 'User', inverse_of: :owned_projects
   has_many :projects_users, dependent: :destroy
   has_many :certification_paths, dependent: :destroy
   has_many :certificates, through: :certification_paths
@@ -16,6 +15,7 @@ class Project < ActiveRecord::Base
   has_many :project_audit_logs, class_name: 'AuditLog', foreign_key: 'project_id', dependent: :destroy
 
   validates :name, presence: true
+  validates :owner, presence: true
   validates :address, presence: true
   validates :location, presence: true
   validates :country, presence: true
@@ -36,10 +36,6 @@ class Project < ActiveRecord::Base
   mount_uploader :site_plan_file, GeneralSubmittalUploader
   mount_uploader :design_brief_file, GeneralSubmittalUploader
   mount_uploader :project_narrative_file, GeneralSubmittalUploader
-
-  scope :for_owner, ->(user) {
-    where(owner: user)
-  }
 
   scope :for_user, ->(user) {
     joins(:projects_users).where(projects_users: {user_id: user.id})

@@ -30,7 +30,7 @@ module Effective
         table_column 'project_site_area', column: 'projects.project_site_area', type: :integer, visible: false
         table_column 'project_created_at', column: 'projects.created_at', type: :datetime, visible: false, filter: {type: :select, values: Proc.new { Project.pluck_date_field_by_year_month_day(:created_at, :desc) }}
 
-        table_column 'owner_email', column: 'owner.email', label: 'Project Owner Email', visible: false
+        table_column 'project_owner', column: 'projects.owner', label: 'Project Owner', visible: false
 
         #table_column 'certification_path_id', column: 'certification_paths.id', type: :integer, label: 'Certificate ID'
         table_column 'certificate_id', column: 'certificates.id', label: I18n.t('activerecord.attributes.effective.datatables.projects_certification_paths.certificate_id.label'), filter: {type: :select, values: Proc.new { Certificate.all.order(:display_weight).map { |certificate| [certificate.full_name, certificate.id] } }} do |rec|
@@ -78,13 +78,12 @@ module Effective
 
       def collection
         coll = Project
-                   .joins('INNER JOIN users as owner ON owner.id = projects.owner_id')
                    .joins('LEFT OUTER JOIN projects_users ON projects_users.project_id = projects.id')
                    .joins('LEFT OUTER JOIN certification_paths ON certification_paths.project_id = projects.id')
                    .joins('LEFT JOIN certificates ON certificates.id = certification_paths.certificate_id')
                    .joins('LEFT JOIN certification_path_statuses ON certification_path_statuses.id = certification_paths.certification_path_status_id')
                    .group('projects.id')
-                   .group('owner.id')
+                   .group('projects.owner')
                    .group('certification_paths.id')
                    .group('certificates.id')
                    .group('certification_path_statuses.id')
@@ -101,8 +100,7 @@ module Effective
                    .select('projects.carpark_area as project_carpark_area')
                    .select('projects.project_site_area as project_site_area')
                    .select('projects.created_at as project_created_at')
-                   .select('projects.owner_id as project_owner_id')
-                   .select('owner.email as owner_email')
+                   .select('projects.owner as project_owner')
                    .select('certification_paths.id as certification_path_id')
                    .select('certification_paths.certificate_id as certificate_id')
                    .select('certification_paths.certification_path_status_id as certification_path_certification_path_status_id')

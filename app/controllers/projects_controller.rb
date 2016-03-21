@@ -31,7 +31,6 @@ class ProjectsController < AuthenticatedController
   def new
     @page_title = 'New project'
     @project = Project.new
-    @project.owner = current_user
     @certificates = Certificate.all
   end
 
@@ -42,7 +41,6 @@ class ProjectsController < AuthenticatedController
 
   def create
     @project = Project.new(project_params)
-    @project.owner = current_user
 
     @project.transaction do
       if @project.save
@@ -103,7 +101,7 @@ class ProjectsController < AuthenticatedController
     # Never trust parameters from the scary internet, only allow the white list through.
     def project_params
       if current_user.system_admin? || current_user.gord_admin?
-        params.require(:project).permit(:name, :description, :address, :location, :country, :construction_year, :latlng, :gross_area, :certified_area, :carpark_area, :project_site_area, :terms_and_conditions_accepted, :location_plan_file, :site_plan_file, :design_brief_file, :project_narrative_file, :owner_id, :code)
+        params.require(:project).permit(:name, :owner, :description, :address, :location, :country, :construction_year, :latlng, :gross_area, :certified_area, :carpark_area, :project_site_area, :terms_and_conditions_accepted, :location_plan_file, :site_plan_file, :design_brief_file, :project_narrative_file, :code)
       else
         params.require(:project).permit(:name, :description, :address, :location, :country, :construction_year, :latlng, :gross_area, :certified_area, :carpark_area, :project_site_area, :terms_and_conditions_accepted, :location_plan_file, :site_plan_file, :design_brief_file, :project_narrative_file)
       end

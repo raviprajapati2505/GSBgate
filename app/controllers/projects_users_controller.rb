@@ -30,10 +30,6 @@ class ProjectsUsersController < AuthenticatedController
   end
 
   def update
-    if @project.owner == @projects_user.user
-      raise CanCan::AccessDenied.new('Not Authorized to edit project owner role', :update, ProjectsUser)
-    end
-
     if @projects_user.update(authorizations_params)
       DigestMailer.updated_role_email(@projects_user).deliver_now
       redirect_to project_path(@projects_user.project), notice: 'Authorization was successfully updated.'
@@ -42,27 +38,7 @@ class ProjectsUsersController < AuthenticatedController
     end
   end
 
-  def make_owner
-    begin
-      @project.transaction do
-        # change project role to project manager
-        @projects_user.role = ProjectsUser.roles[:project_manager]
-        @projects_user.save!
-        # change project owner
-        @project.owner = @projects_user.user
-        @project.save!
-      end
-      redirect_to project_path(@projects_user.project), notice: 'Project owner was successfully updated.'
-    rescue Exception
-      render action: :edit
-    end
-  end
-
   def destroy
-    if @project.owner == @projects_user.user
-      raise CanCan::AccessDenied.new('Not Authorized to remove project owner from team', :destroy, ProjectsUser)
-    end
-
     # remove user - requirement_data link
     requirement_data = @projects_user.user.requirement_data.for_project(@project)
     requirement_data.each do |requirement_datum|

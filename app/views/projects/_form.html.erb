@@ -14,6 +14,11 @@
                                 <%= f.text_field :code %>
                             <% end %>
                             <%= f.text_field :name %>
+                            <%= f.text_field :owner %>
+                            <%= f.form_group do %>
+                              <label>Or choose a predefined property owner</label>
+                              <input type="hidden" class="select2-ajax">
+                            <% end %>
                             <%= f.text_area :description %>
                             <%= f.text_field :construction_year %>
                             <%= f.text_area :address %>
@@ -116,3 +121,4 @@
         </div>
     </div>
 <% end %>
+<%= javascript_include_tag 'select_owner' %>

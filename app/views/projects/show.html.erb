@@ -19,6 +19,10 @@
                         <td><%= @project.name %></td>
                     </tr>
                     <tr>
+                        <th><%= Project.human_attribute_name('owner') %></th>
+                        <td><%= @project.owner %></td>
+                    </tr>
+                    <tr>
                         <th><%= Project.human_attribute_name('description') %></th>
                         <td><%= @project.description %></td>
                     </tr>

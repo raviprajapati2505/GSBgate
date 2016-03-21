@@ -6,7 +6,6 @@ class User < ActiveRecord::Base
 
   enum role: { system_admin: 0, user: 1, gord_top_manager: 2, gord_manager: 3, gord_admin: 4, assessor: 5, certifier: 6, enterprise_client: 7 }
 
-  has_many :owned_projects, class_name: 'Project', inverse_of: :owner
   has_many :documents
   has_many :scheme_mix_criteria_documents
   has_many :projects_users, dependent: :destroy
@@ -45,10 +44,6 @@ class User < ActiveRecord::Base
   scope :search_email, ->(text) {
     where('email like :search_text', search_text: "%#{text}%")
   }
-
-  # scope :not_owning_project, ->(project) {
-  #   where.not(id: project.owner_id)
-  # }
 
   # scope :not_authorized_for_project, ->(project) {
   #   where.not('exists(select id from projects_users where user_id = users.id and project_id = ?)', project.id)

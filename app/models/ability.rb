@@ -75,7 +75,7 @@ class Ability
       can [:download_location_plan, :download_site_plan, :download_design_brief, :download_project_narrative], Project, projects_users: {user_id: user.id}
       can :show_tools, Project, projects_users: {user_id: user.id}
       if user.assessor?
-        can :create, Project, owner_id: user.id
+        can :create, Project
         can :update, Project, projects_users: {user_id: user.id, role: project_user_role_project_manager}
       end
 
@@ -91,14 +91,6 @@ class Ability
       end
       if user.certifier?
         can :crud, ProjectsUser, role: project_user_certifier_roles, project: project_with_user_as_certifier_manager
-      end
-      # only the project owner, can make another project_manager the project owner
-      can :make_owner, ProjectsUser do |projects_user|
-        projects_user.project.owner_id == user.id && projects_user.project_manager?
-      end
-      # The project_owner details can't be changed, first make another project_manager the owner
-      cannot [:create, :update, :destroy, :make_owner], ProjectsUser do |projects_user|
-        projects_user.project.owner_id == projects_user.user_id
       end
       # You can't add yourself
       cannot :create, ProjectsUser, user_id: user.id
@@ -188,6 +180,9 @@ class Ability
       # User controller
       can [:list_notifications,:update_notifications], User, id: user.id
 
+      # Owner
+      can [:index, :show], Owner
+
     elsif user.gord_admin? || user.gord_manager? || user.gord_top_manager?
       can :read, :all
       # Project
@@ -205,14 +200,6 @@ class Ability
         can :crud, ProjectsUser, role: project_user_assessor_roles
         can :crud, ProjectsUser, role: project_user_certifier_roles
         can :crud, ProjectsUser, role: project_user_enterprise_client_roles
-        # can make another project_manager the project owner
-        can :make_owner, ProjectsUser do |projects_user|
-          projects_user.project_manager?
-        end
-        # The project_owner details can't be changed, first make another project_manager the owner
-        cannot [:create, :update, :destroy, :make_owner], ProjectsUser do |projects_user|
-          projects_user.project.owner_id == projects_user.user_id
-        end
         # You can't add yourself
         cannot :create, ProjectsUser, user_id: user.id
       end
@@ -260,6 +247,9 @@ class Ability
         can :create, User, role: user_role_assessor | user_role_certifier | user_role_enterprise_client| user_role_gord_admin
         can :update, User.unassigned, role: user_role_assessor | user_role_certifier | user_role_enterprise_client| user_role_gord_admin
       end
+
+      # Owner
+      can [:index, :show], Owner
 
       # # Admins opt-out for specific abilities
       # cannot :apply_for_pcr, CertificationPath, pcr_track: true

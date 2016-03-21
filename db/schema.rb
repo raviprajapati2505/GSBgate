@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160318133232) do
+ActiveRecord::Schema.define(version: 20160321075544) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -154,10 +154,17 @@ ActiveRecord::Schema.define(version: 20160318133232) do
   add_index "notification_types_users", ["project_id"], name: "index_notification_types_users_on_project_id", using: :btree
   add_index "notification_types_users", ["user_id"], name: "index_notification_types_users_on_user_id", using: :btree
 
+  create_table "owners", force: :cascade do |t|
+    t.string  "name",              null: false
+    t.boolean "governmental"
+    t.boolean "private_developer"
+    t.boolean "private_owner"
+  end
+
   create_table "projects", force: :cascade do |t|
     t.string    "name"
-    t.datetime  "created_at",                                                                      null: false
-    t.datetime  "updated_at",                                                                      null: false
+    t.datetime  "created_at",                                                                                       null: false
+    t.datetime  "updated_at",                                                                                       null: false
     t.text      "description"
     t.text      "address"
     t.string    "location"
@@ -167,13 +174,13 @@ ActiveRecord::Schema.define(version: 20160318133232) do
     t.integer   "certified_area"
     t.integer   "carpark_area"
     t.integer   "project_site_area"
-    t.integer   "owner_id"
     t.string    "code"
     t.integer   "construction_year"
     t.string    "location_plan_file"
     t.string    "site_plan_file"
     t.string    "design_brief_file"
     t.string    "project_narrative_file"
+    t.string    "owner",                                                                           default: "VITO", null: false
   end
 
   create_table "projects_users", force: :cascade do |t|
@@ -390,7 +397,6 @@ ActiveRecord::Schema.define(version: 20160318133232) do
   add_foreign_key "notification_types_users", "notification_types"
   add_foreign_key "notification_types_users", "projects"
   add_foreign_key "notification_types_users", "users"
-  add_foreign_key "projects", "users", column: "owner_id"
   add_foreign_key "projects_users", "projects"
   add_foreign_key "projects_users", "users"
   add_foreign_key "requirement_data", "requirements"

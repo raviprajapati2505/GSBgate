@@ -28,9 +28,6 @@
                 <% if can? :destroy, @projects_user %>
                     <%= btn_link_to(project_user_path(@project, @projects_user), icon: 'user-times', text: 'Remove from team', style: 'white', method: :delete, data: {confirm: 'Are you sure to remove team member ?'}) %>
                 <% end %>
-                <% if can? :make_owner, @projects_user %>
-                    <%= btn_link_to(make_owner_path(@project, @projects_user), icon: 'home', text: 'Make project owner', method: :post, data: {confirm: 'Are you sure to make this user the new project owner ?'}) %>
-                <% end %>
             </div>
         </div>
     </div>

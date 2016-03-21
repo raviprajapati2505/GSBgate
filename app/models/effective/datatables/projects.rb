@@ -11,8 +11,8 @@ module Effective
             project.code + ', ' + project.name
           end
         end
-        table_column 'project_owner', column: 'users.email' do |project|
-          project.owner.email
+        table_column 'project_owner', column: 'owner' do |project|
+          project.owner
         end
         table_column :created_at, filter: {type: :select, values: Proc.new {
           projects = Project.all
