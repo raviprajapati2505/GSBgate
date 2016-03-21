@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160317122118) do
+ActiveRecord::Schema.define(version: 20160318133232) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -89,6 +89,7 @@ ActiveRecord::Schema.define(version: 20160317122118) do
     t.datetime "certified_at"
     t.integer  "main_scheme_mix_id"
     t.boolean  "main_scheme_mix_selected",     default: false, null: false
+    t.integer  "max_review_count",             default: 1
   end
 
   add_index "certification_paths", ["certification_path_status_id"], name: "index_certification_paths_on_certification_path_status_id", using: :btree
@@ -278,6 +279,7 @@ ActiveRecord::Schema.define(version: 20160317122118) do
     t.integer  "achieved_score"
     t.integer  "main_scheme_mix_criterion_id"
     t.boolean  "in_review",                    default: false
+    t.integer  "review_count",                 default: 0
   end
 
   add_index "scheme_mix_criteria", ["certifier_id"], name: "index_scheme_mix_criteria_on_certifier_id", using: :btree

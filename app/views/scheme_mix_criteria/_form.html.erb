@@ -49,10 +49,14 @@
                         <% end %>
                         <%= btn_link_to(edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), remote: true, icon: 'check', text: 'Submit criterion', data: data) %>
                         <% if can?(:request_review, @scheme_mix_criterion) %>
-                          <% if @scheme_mix_criterion.in_review? %>
-                            <%= btn_link_to(request_review_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), icon: 'life-saver', text: 'PCR review in progress', class: 'disabled') %>
+                          <% if @scheme_mix_criterion.review_count < @certification_path.max_review_count %>
+                            <% if @scheme_mix_criterion.in_review?%>
+                              <%= btn_link_to(request_review_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), icon: 'life-saver', text: 'PCR review in progress', class: 'disabled') %>
+                            <% else %>
+                                <%= btn_link_to(request_review_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), icon: 'life-saver', text: 'Request PCR review') %>
+                            <% end %>
                           <% else %>
-                              <%= btn_link_to(request_review_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), icon: 'life-saver', text: 'Request PCR review') %>
+                              <%= btn_link_to(request_review_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), icon: 'life-saver', text: 'Max. PCR reviews reached', class: 'disabled') %>
                           <% end %>
                         <% end %>
                     <% else %>

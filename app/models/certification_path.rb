@@ -24,6 +24,7 @@ class CertificationPath < ActiveRecord::Base
 
   validates :project, presence: true
   validates :certificate, presence: true
+  validates :max_review_count, numericality: { greater_than: 0 }
   validates_inclusion_of :development_type, in: CertificationPath.development_types.keys
   validate :total_weight_is_equal_to_100_percent
   validate :certificate_duration

@@ -78,6 +78,17 @@
                             </div>
                         </td>
                     </tr>
+                    <% if can?(:update_max_review_count, @certification_path) %>
+                        <tr>
+                          <th>
+                            Maximum number of PCR reviews
+                          </th>
+                          <td>
+                            <span><%= @certification_path.max_review_count %> review(s)</span>
+                            <%= btn_link_to(edit_max_review_count_project_certification_path_path(@project, @certification_path), remote: true, text: 'Set maximum', class: 'pull-right') %>
+                          </td>
+                        </tr>
+                    <% end %>
                     <% end %>
                     <% if can?(:download_archive, @certification_path) %>
                         <tr>
@@ -175,4 +186,5 @@
 </div>
 <div id="editStatusCertificationPathModal" class="modal fade"></div>
 <div id="editMainSchemeMixModal" class="modal fade"></div>
+<div id="editMaxReviewCountModal" class="modal fade"></div>
 <%= javascript_include_tag 'score_widget' %>

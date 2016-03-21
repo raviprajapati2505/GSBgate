@@ -106,9 +106,14 @@ class SchemeMixCriteriaController < AuthenticatedController
 
   def request_review
     # TODO check review counter
-    @scheme_mix_criterion.in_review = true
-    @scheme_mix_criterion.save!
-    flash[:notice] = 'Criterion is sent for review.'
+    if @scheme_mix_criterion.review_count < @certification_path.max_review_count
+      @scheme_mix_criterion.review_count += 1
+      @scheme_mix_criterion.in_review = true
+      @scheme_mix_criterion.save!
+      flash[:notice] = 'Criterion is sent for review.'
+    else
+      flash[:alert] = 'Maximum number of PCR review requests reached for this criterion.'
+    end
     redirect_to project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion)
   end
 

@@ -298,6 +298,17 @@ class CertificationPathsController < AuthenticatedController
     end
   end
 
+  def edit_max_review_count
+
+  end
+
+  def update_max_review_count
+    @certification_path.max_review_count = params[:certification_path][:max_review_count]
+    @certification_path.save!
+    flash[:notice] = 'The maximum number of PCR reviews is saved succesfullly.'
+    redirect_to project_certification_path_path
+  end
+
   private
 
   def set_controller_model
