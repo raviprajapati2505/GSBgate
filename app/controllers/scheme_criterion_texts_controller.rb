@@ -3,7 +3,7 @@ class SchemeCriterionTextsController < AuthenticatedController
   load_and_authorize_resource
 
   def edit
-    @page_title = "Edit #{@scheme_criterion_text.scheme_criterion.full_name} #{@scheme_criterion_text.name} text"
+    @page_title = "Edit #{ERB::Util.html_escape(@scheme_criterion_text.scheme_criterion.full_name.to_s)} #{ERB::Util.html_escape(@scheme_criterion_text.name.to_s)} text"
   end
 
   def update

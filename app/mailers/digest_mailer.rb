@@ -1,4 +1,5 @@
 class DigestMailer < ApplicationMailer
+  include ActionView::Helpers::TranslationHelper
   add_template_helper(ApplicationHelper)
 
   MAX_LOG_ITEMS = 10
@@ -110,7 +111,7 @@ class DigestMailer < ApplicationMailer
   def added_to_project_email(projectsuser)
     @user = projectsuser.user
     @project = projectsuser.project
-    @role = I18n.t(projectsuser.role, scope: 'activerecord.attributes.projects_user.roles')
+    @role = t(projectsuser.role, scope: 'activerecord.attributes.projects_user.roles')
 
     mail(to: @user.email, subject: "GSASgate - you are added to project #{@project.name}")
   end
@@ -118,7 +119,7 @@ class DigestMailer < ApplicationMailer
   def updated_role_email(projectsuser)
     @user = projectsuser.user
     @project = projectsuser.project
-    @role = I18n.t(projectsuser.role, scope: 'activerecord.attributes.projects_user.roles')
+    @role = t(projectsuser.role, scope: 'activerecord.attributes.projects_user.roles')
 
     mail(to: @user.email, subject: "GSASgate - your role changed for project #{@project.name}")
   end

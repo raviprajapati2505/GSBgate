@@ -29,7 +29,7 @@ class SchemeCriteriaController < AuthenticatedController
   end
 
   def show
-    @page_title = @scheme_criterion.full_name
+    @page_title = ERB::Util.html_escape(@scheme_criterion.full_name)
   end
 
   private

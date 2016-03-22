@@ -5,7 +5,7 @@ class SchemeMixesController < AuthenticatedController
   before_action :set_controller_model, except: [:new, :create]
 
   def show
-    @page_title = @scheme_mix.full_name
+    @page_title = ERB::Util.html_escape(@scheme_mix.full_name.to_s)
   end
 
   def edit

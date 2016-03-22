@@ -13,7 +13,7 @@ class SchemeMixCriteriaController < AuthenticatedController
   def show
     respond_to do |format|
       format.html {
-        @page_title = @scheme_mix_criterion.scheme_criterion.full_name
+        @page_title = ERB::Util.html_escape(@scheme_mix_criterion.scheme_criterion.full_name.to_s)
         @prev_smc = @scheme_mix_criterion.previous_scheme_mix_criterion
         @next_smc = @scheme_mix_criterion.next_scheme_mix_criterion
       }

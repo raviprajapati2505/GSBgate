@@ -1,4 +1,5 @@
 class ProjectsController < AuthenticatedController
+  include ActionView::Helpers::TranslationHelper
   load_and_authorize_resource :project
   before_action :set_controller_model, except: [:new, :create, :index]
 
@@ -16,7 +17,7 @@ class ProjectsController < AuthenticatedController
   def show
     respond_to do |format|
       format.html {
-        @page_title = @project.name
+        @page_title = ERB::Util.html_escape(@project.name.to_s)
         @certification_path = CertificationPath.new(project: @project)
         @projects_user = ProjectsUser.new(project: @project)
       }
@@ -35,7 +36,7 @@ class ProjectsController < AuthenticatedController
   end
 
   def edit
-    @page_title = "Edit #{@project.name}"
+    @page_title = "Edit #{ERB::Util.html_escape(@project.name.to_s)}"
     @certificates = Certificate.all
   end
 

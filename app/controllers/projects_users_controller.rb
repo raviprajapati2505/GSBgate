@@ -16,14 +16,14 @@ class ProjectsUsersController < AuthenticatedController
   end
 
   def edit
-    @page_title = @projects_user.user.email
+    @page_title = ERB::Util.html_escape(@projects_user.user.email)
     if (current_user.system_admin? || current_user.gord_admin?) && params.has_key?(:query) && params[:query] == 'certifiers'
       @show_certifiers = true
     end
   end
 
   def show
-    @page_title = @projects_user.user.email
+    @page_title = ERB::Util.html_escape(@projects_user.user.email)
     @user = @projects_user.user
     @project = @projects_user.project
     @tasks = TaskService::get_tasks(page: params[:page], per_page: 25, user: @user, project_id: @project.id)

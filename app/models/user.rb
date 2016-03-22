@@ -1,6 +1,5 @@
-require 'bcrypt'
-
 class User < ActiveRecord::Base
+  include ActionView::Helpers::TranslationHelper
   include BCrypt
 
   enum role: { system_admin: 0, user: 1, gord_top_manager: 2, gord_manager: 3, gord_admin: 4, assessor: 5, certifier: 6, enterprise_client: 7 }
@@ -51,7 +50,7 @@ class User < ActiveRecord::Base
   scope :local_users, -> {
     where(linkme_user: false)
   }
-  
+
   # scope :not_authorized_for_project, ->(project) {
   #   where.not('exists(select id from projects_users where user_id = users.id and project_id = ?)', project.id)
   # }
@@ -98,7 +97,7 @@ class User < ActiveRecord::Base
   # Returns the humanized system role of the user if the user isn't linked to the project.
   def humanized_project_role(project)
     project_user = ProjectsUser.find_by(project: project, user: self)
-    return project_user.present? ? I18n.t(project_user.role, scope: 'activerecord.attributes.projects_user.roles') : I18n.t(self.role, scope: 'activerecord.attributes.user.roles')
+    return project_user.present? ? t(project_user.role, scope: 'activerecord.attributes.projects_user.roles') : t(self.role, scope: 'activerecord.attributes.user.roles')
   end
 
   def ability

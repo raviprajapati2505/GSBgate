@@ -1,4 +1,5 @@
 class CertificationPath < ActiveRecord::Base
+  include ActionView::Helpers::TranslationHelper
   include Auditable
   include Taskable
   include DatePlucker
@@ -98,11 +99,11 @@ class CertificationPath < ActiveRecord::Base
   def certificate_duration
     if certificate.letter_of_conformance?
       if duration != 1
-        errors.add(:duration, I18n.t('models.certification_path.certificate_duration.error_duration_not_one'))
+        errors.add(:duration, t('models.certification_path.certificate_duration.error_duration_not_one'))
       end
     elsif certificate.final_design_certificate?
       if not [2, 3, 4].include? duration
-        errors.add(:duration, I18n.t('models.certification_path.certificate_duration.error_duration_not_two_three_four'))
+        errors.add(:duration, t('models.certification_path.certificate_duration.error_duration_not_two_three_four'))
       end
     elsif certificate.construction_certificate? || certificate.operations_certificate?
     end

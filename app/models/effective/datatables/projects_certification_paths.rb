@@ -1,6 +1,7 @@
 module Effective
   module Datatables
     class ProjectsCertificationPaths < Effective::Datatable
+      include ActionView::Helpers::TranslationHelper
       include ScoreCalculator
 
       attr_accessor :current_ability
@@ -33,7 +34,7 @@ module Effective
         table_column 'project_owner', column: 'projects.owner', label: 'Project Owner', visible: false
 
         #table_column 'certification_path_id', column: 'certification_paths.id', type: :integer, label: 'Certificate ID'
-        table_column 'certificate_id', column: 'certificates.id', label: I18n.t('models.effective.datatables.projects_certification_paths.certificate_id.label'), filter: {type: :select, values: Proc.new { Certificate.all.order(:display_weight).map { |certificate| [certificate.full_name, certificate.id] } }} do |rec|
+        table_column 'certificate_id', column: 'certificates.id', label: t('models.effective.datatables.projects_certification_paths.certificate_id.label'), filter: {type: :select, values: Proc.new { Certificate.all.order(:display_weight).map { |certificate| [certificate.full_name, certificate.id] } }} do |rec|
           if rec.certification_path_id.present?
             link_to(project_certification_path_path(rec.project_nr, rec.certification_path_id)) do
               rec.certificate_name
@@ -41,38 +42,38 @@ module Effective
           end
         end
 
-        table_column 'certification_path_pcr_track', column: 'certification_paths.pcr_track', label: I18n.t('models.effective.datatables.projects_certification_paths.certification_path_pcr_track.label'), type: :boolean, visible: false
-        table_column 'certification_path_development_type', column: 'certification_paths.development_type', type: :integer, label: I18n.t('models.effective.datatables.projects_certification_paths.certification_path_development_type.label'), visible: false, filter: {type: :select, values: Proc.new { CertificationPath.development_types.map { |k| [I18n.t(k[0], scope: 'activerecord.attributes.certification_path.development_types'), k[1]] } }} do |rec|
+        table_column 'certification_path_pcr_track', column: 'certification_paths.pcr_track', label: t('models.effective.datatables.projects_certification_paths.certification_path_pcr_track.label'), type: :boolean, visible: false
+        table_column 'certification_path_development_type', column: 'certification_paths.development_type', type: :integer, label: t('models.effective.datatables.projects_certification_paths.certification_path_development_type.label'), visible: false, filter: {type: :select, values: Proc.new { CertificationPath.development_types.map { |k| [t(k[0], scope: 'activerecord.attributes.certification_path.development_types'), k[1]] } }} do |rec|
           t(CertificationPath.development_types.keys[rec.certification_path_development_type], scope: 'activerecord.attributes.certification_path.development_types') unless rec.certification_path_development_type.nil?
         end
-        table_column 'certification_path_appealed', column: 'certification_paths.appealed', label: I18n.t('models.effective.datatables.projects_certification_paths.certification_path_appealed.label'), type: :boolean, visible: false
-        table_column 'certification_path_created_at', column: 'certification_paths.created_at', label: I18n.t('models.effective.datatables.projects_certification_paths.certification_path_created_at.label'), type: :datetime, visible: false, filter: {type: :select, values: Proc.new { CertificationPath.pluck_date_field_by_year_month_day(:created_at, :desc) }}
-        table_column 'certification_path_started_at', column: 'certification_paths.started_at', label: I18n.t('models.effective.datatables.projects_certification_paths.certification_path_started_at.label'), type: :datetime, visible: false, filter: {type: :select, values: Proc.new { CertificationPath.pluck_date_field_by_year_month_day(:started_at, :desc) }}
-        table_column 'certification_path_certified_at', column: 'certification_paths.certified_at', label: I18n.t('models.effective.datatables.projects_certification_paths.certification_path_certified_at.label'), type: :datetime, visible: false, filter: {type: :select, values: Proc.new { CertificationPath.pluck_date_field_by_year_month_day(:certified_at, :desc) }}
-        table_column 'certification_path_duration', column: 'certification_paths.duration', label: I18n.t('models.effective.datatables.projects_certification_paths.certification_path_duration.label'), type: :integer, visible: false
+        table_column 'certification_path_appealed', column: 'certification_paths.appealed', label: t('models.effective.datatables.projects_certification_paths.certification_path_appealed.label'), type: :boolean, visible: false
+        table_column 'certification_path_created_at', column: 'certification_paths.created_at', label: t('models.effective.datatables.projects_certification_paths.certification_path_created_at.label'), type: :datetime, visible: false, filter: {type: :select, values: Proc.new { CertificationPath.pluck_date_field_by_year_month_day(:created_at, :desc) }}
+        table_column 'certification_path_started_at', column: 'certification_paths.started_at', label: t('models.effective.datatables.projects_certification_paths.certification_path_started_at.label'), type: :datetime, visible: false, filter: {type: :select, values: Proc.new { CertificationPath.pluck_date_field_by_year_month_day(:started_at, :desc) }}
+        table_column 'certification_path_certified_at', column: 'certification_paths.certified_at', label: t('models.effective.datatables.projects_certification_paths.certification_path_certified_at.label'), type: :datetime, visible: false, filter: {type: :select, values: Proc.new { CertificationPath.pluck_date_field_by_year_month_day(:certified_at, :desc) }}
+        table_column 'certification_path_duration', column: 'certification_paths.duration', label: t('models.effective.datatables.projects_certification_paths.certification_path_duration.label'), type: :integer, visible: false
         # Note: internally we use the status id, so sorting is done by id and not the name !
-        table_column 'certification_path_certification_path_status_id', column: 'certification_paths.certification_path_status_id', label: I18n.t('models.effective.datatables.projects_certification_paths.certification_path_certification_path_status_id.label'), filter: {type: :select, values: Proc.new { CertificationPathStatus.all.map { |status| [status.name, status.id] } }} do |rec|
+        table_column 'certification_path_certification_path_status_id', column: 'certification_paths.certification_path_status_id', label: t('models.effective.datatables.projects_certification_paths.certification_path_certification_path_status_id.label'), filter: {type: :select, values: Proc.new { CertificationPathStatus.all.map { |status| [status.name, status.id] } }} do |rec|
           rec.certification_path_status_name
         end
         # table_column 'certification_path_status_name', column: 'certification_path_statuses.name', label: 'Certificate Status', filter: {type: :select, values: Proc.new{CertificationPathStatus.all.map{|status| status.name}}}
-        table_column 'certification_path_status_is_active', column: 'CASE WHEN certification_path_statuses.id IS NULL THEN false WHEN certification_path_statuses.id = 15 THEN false WHEN certification_path_statuses.id = 16 THEN false ELSE true END', type: :boolean, label: I18n.t('models.effective.datatables.projects_certification_paths.certification_path_status_is_active.label')
+        table_column 'certification_path_status_is_active', column: 'CASE WHEN certification_path_statuses.id IS NULL THEN false WHEN certification_path_statuses.id = 15 THEN false WHEN certification_path_statuses.id = 16 THEN false ELSE true END', type: :boolean, label: t('models.effective.datatables.projects_certification_paths.certification_path_status_is_active.label')
 
-        table_column 'stars', :partial => '/certification_paths/stars', :partial_local => 'rec', filter: false, type: :decimal, label: I18n.t('models.effective.datatables.projects_certification_paths.stars.label'), column: '(%s)' % ProjectsCertificationPaths.query_score_in_certificate_points(:achieved_score)
-        table_column 'total_achieved_score', type: :decimal, label: I18n.t('models.effective.datatables.projects_certification_paths.total_achieved_score.label'), column: '(%s)' % ProjectsCertificationPaths.query_score_in_certificate_points(:achieved_score)
-        table_column 'total_submitted_score', type: :decimal, label: I18n.t('models.effective.datatables.projects_certification_paths.total_submitted_score.label'), column: '(%s)' % ProjectsCertificationPaths.query_score_in_certificate_points(:submitted_score)
-        table_column 'total_targeted_score', type: :decimal, label: I18n.t('models.effective.datatables.projects_certification_paths.total_targeted_score.label'), column: '(%s)' % ProjectsCertificationPaths.query_score_in_certificate_points(:targeted_score)
+        table_column 'stars', :partial => '/certification_paths/stars', :partial_local => 'rec', filter: false, type: :decimal, label: t('models.effective.datatables.projects_certification_paths.stars.label'), column: '(%s)' % ProjectsCertificationPaths.query_score_in_certificate_points(:achieved_score)
+        table_column 'total_achieved_score', type: :decimal, label: t('models.effective.datatables.projects_certification_paths.total_achieved_score.label'), column: '(%s)' % ProjectsCertificationPaths.query_score_in_certificate_points(:achieved_score)
+        table_column 'total_submitted_score', type: :decimal, label: t('models.effective.datatables.projects_certification_paths.total_submitted_score.label'), column: '(%s)' % ProjectsCertificationPaths.query_score_in_certificate_points(:submitted_score)
+        table_column 'total_targeted_score', type: :decimal, label: t('models.effective.datatables.projects_certification_paths.total_targeted_score.label'), column: '(%s)' % ProjectsCertificationPaths.query_score_in_certificate_points(:targeted_score)
 
-        table_column 'schemes_array', label: I18n.t('models.effective.datatables.projects_certification_paths.schemes_array.label'), column: "ARRAY_TO_STRING(ARRAY(SELECT case when scheme_mixes.custom_name is null then concat(schemes.name, ' ', schemes.gsas_version) else CONCAT(schemes.name, ' (', scheme_mixes.custom_name, ') ', schemes.gsas_version) end from schemes INNER JOIN scheme_mixes ON schemes.id = scheme_mixes.scheme_id WHERE scheme_mixes.certification_path_id = certification_paths.id), '|||')" do |rec|
-          rec.schemes_array.split('|||').sort.join('<br/>').html_safe unless rec.schemes_array.nil?
+        table_column 'schemes_array', label: t('models.effective.datatables.projects_certification_paths.schemes_array.label'), column: "ARRAY_TO_STRING(ARRAY(SELECT case when scheme_mixes.custom_name is null then concat(schemes.name, ' ', schemes.gsas_version) else CONCAT(schemes.name, ' (', scheme_mixes.custom_name, ') ', schemes.gsas_version) end from schemes INNER JOIN scheme_mixes ON schemes.id = scheme_mixes.scheme_id WHERE scheme_mixes.certification_path_id = certification_paths.id), '|||')" do |rec|
+          rec.schemes_array.split('|||').sort.join('<br/>') unless rec.schemes_array.nil?
         end
-        table_column 'assessors_array', label: I18n.t('models.effective.datatables.projects_certification_paths.assessors_array.label'), visible: false, column: "ARRAY_TO_STRING(ARRAY(SELECT assessor_users.email FROM users as assessor_users INNER JOIN projects_users as assessor_project_users ON assessor_project_users.user_id = assessor_users.id  WHERE assessor_project_users.role IN (0,1) AND assessor_project_users.project_id = projects.id), '|||')" do |rec|
-          rec.assessors_array.split('|||').sort.join('<br/>').html_safe unless rec.assessors_array.nil?
+        table_column 'assessors_array', label: t('models.effective.datatables.projects_certification_paths.assessors_array.label'), visible: false, column: "ARRAY_TO_STRING(ARRAY(SELECT assessor_users.email FROM users as assessor_users INNER JOIN projects_users as assessor_project_users ON assessor_project_users.user_id = assessor_users.id  WHERE assessor_project_users.role IN (0,1) AND assessor_project_users.project_id = projects.id), '|||')" do |rec|
+          rec.assessors_array.split('|||').sort.join('<br/>') unless rec.assessors_array.nil?
         end
-        table_column 'certifiers_array', label: I18n.t('models.effective.datatables.projects_certification_paths.certifiers_array.label'), visible: false, column: "ARRAY_TO_STRING(ARRAY(SELECT certifier_users.email FROM users as certifier_users INNER JOIN projects_users as certifier_project_users ON certifier_project_users.user_id = certifier_users.id  WHERE certifier_project_users.role IN (3,4) AND certifier_project_users.project_id = projects.id), '|||')" do |rec|
-          rec.certifiers_array.split('|||').sort.join('<br/>').html_safe unless rec.certifiers_array.nil?
+        table_column 'certifiers_array', label: t('models.effective.datatables.projects_certification_paths.certifiers_array.label'), visible: false, column: "ARRAY_TO_STRING(ARRAY(SELECT certifier_users.email FROM users as certifier_users INNER JOIN projects_users as certifier_project_users ON certifier_project_users.user_id = certifier_users.id  WHERE certifier_project_users.role IN (3,4) AND certifier_project_users.project_id = projects.id), '|||')" do |rec|
+          rec.certifiers_array.split('|||').sort.join('<br/>') unless rec.certifiers_array.nil?
         end
-        table_column 'enterprise_clients_array', label: I18n.t('models.effective.datatables.projects_certification_paths.enterprise_clients_array.label'), visible: false, column: "ARRAY_TO_STRING(ARRAY(SELECT enterprise_client_users.email FROM users as enterprise_client_users INNER JOIN projects_users as enterprise_client_project_users ON enterprise_client_project_users.user_id = enterprise_client_users.id  WHERE enterprise_client_project_users.role IN (2) AND enterprise_client_project_users.project_id = projects.id), '|||')" do |rec|
-          rec.enterprise_clients_array.split('|||').sort.join('<br/>').html_safe unless rec.enterprise_clients_array.nil?
+        table_column 'enterprise_clients_array', label: t('models.effective.datatables.projects_certification_paths.enterprise_clients_array.label'), visible: false, column: "ARRAY_TO_STRING(ARRAY(SELECT enterprise_client_users.email FROM users as enterprise_client_users INNER JOIN projects_users as enterprise_client_project_users ON enterprise_client_project_users.user_id = enterprise_client_users.id  WHERE enterprise_client_project_users.role IN (2) AND enterprise_client_project_users.project_id = projects.id), '|||')" do |rec|
+          rec.enterprise_clients_array.split('|||').sort.join('<br/>') unless rec.enterprise_clients_array.nil?
         end
       end
 

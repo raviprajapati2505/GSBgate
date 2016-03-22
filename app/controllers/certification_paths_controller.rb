@@ -1,4 +1,5 @@
 class CertificationPathsController < AuthenticatedController
+  include ActionView::Helpers::TranslationHelper
   load_and_authorize_resource :project
   load_and_authorize_resource :certification_path, :through => :project
 
@@ -8,7 +9,7 @@ class CertificationPathsController < AuthenticatedController
   def show
     respond_to do |format|
       format.html {
-        @page_title = @certification_path.name
+        @page_title = ERB::Util.html_escape(@certification_path.name.to_s)
         @tasks = TaskService::get_tasks(page: params[:page], per_page: 25, user: current_user, project_id: @project.id, certification_path_id: @certification_path.id)
       }
       format.json { render json: {id: @certification_path.id, name: @certification_path.name}, status: :ok }
@@ -151,7 +152,7 @@ class CertificationPathsController < AuthenticatedController
             SchemeMixCriterion.find(smc_id.to_i).appealed!
           end
         end
-        redirect_to project_certification_path_path(@project, @certification_path), notice: I18n.t('controllers.certification_paths_controller.update_status.notice_success')
+        redirect_to project_certification_path_path(@project, @certification_path), notice: t('controllers.certification_paths_controller.update_status.notice_success')
       else
         redirect_to project_certification_path_path(@project, @certification_path), alert: todos.first
       end
@@ -161,7 +162,7 @@ class CertificationPathsController < AuthenticatedController
   def download_archive
     temp_file = Tempfile.new(request.remote_ip)
     DocumentArchiverService.instance.create_archive(@certification_path, temp_file)
-    send_file temp_file.path, type: 'application/zip', disposition: 'attachment', filename: sanitize_filename(@certification_path.project.name + ' - ' + @certification_path.name) + ' - ' + Time.new.strftime(I18n.t('time.formats.filename'))  + '.zip'
+    send_file temp_file.path, type: 'application/zip', disposition: 'attachment', filename: sanitize_filename(@certification_path.project.name + ' - ' + @certification_path.name) + ' - ' + Time.new.strftime(t('time.formats.filename'))  + '.zip'
     temp_file.close
   end
 
@@ -179,11 +180,11 @@ class CertificationPathsController < AuthenticatedController
   end
 
   def edit_project_team_responsibility
-    @page_title = I18n.t('controllers.certification_paths_controller.edit_project_team_responsibility.page_title', certificate: @certification_path.name)
+    @page_title = t('controllers.certification_paths_controller.edit_project_team_responsibility.page_title', certificate: @certification_path.name)
   end
 
   def edit_certifier_team_responsibility
-    @page_title = I18n.t('controllers.certification_paths_controller.edit_certifier_team_responsibility.page_title', certificate: @certification_path.name)
+    @page_title = t('controllers.certification_paths_controller.edit_certifier_team_responsibility.page_title', certificate: @certification_path.name)
   end
 
   def allocate_project_team_responsibility
@@ -321,11 +322,11 @@ class CertificationPathsController < AuthenticatedController
     certificate = Certificate.find(certificate_id)
     # Verify the requested certificate exists.
     if certificate.nil?
-      return redirect_to project_path(@project), alert: I18n.t('controllers.certification_paths_controller.certificate_exists_and_is_allowed.error_no_certificate')
+      return redirect_to project_path(@project), alert: t('controllers.certification_paths_controller.certificate_exists_and_is_allowed.error_no_certificate')
     end
     # Verify the requested certificate is allowed to be created at this time
     if not @project.can_create_certification_path_for_certificate?(certificate)
-      return redirect_to project_path(@project), alert: I18n.t('controllers.certification_paths_controller.certificate_exists_and_is_allowed.error_can_create_certificate')
+      return redirect_to project_path(@project), alert: t('controllers.certification_paths_controller.certificate_exists_and_is_allowed.error_can_create_certificate')
     end
   end
 

@@ -34,7 +34,7 @@
                       breadcrumbs = breadcrumbs(task.taskable, with_prefix: false)
                 %>
                         <tr>
-                            <td><%= I18n.t(".description_#{task.task_description_id}", scope: [:tasks, :tasks]) %></td>
+                            <td><%= t(".description_#{task.task_description_id}", scope: [:tasks, :tasks]) %></td>
                             <% if task.task_description_id == Taskable::PROJ_MNGR_GEN %>
                                 <td><%= link_to breadcrumbs[:names].last, edit_project_url(task.project_id) %></td>
                             <% else %>
@@ -46,7 +46,7 @@
                           breadcrumbs = breadcrumbs(task.taskable, with_prefix: false)
                     %>
                         <tr>
-                            <td><%= I18n.t(".description_#{task.task_description_id}", scope: [:tasks, :tasks]) %></td>
+                            <td><%= t(".description_#{task.task_description_id}", scope: [:tasks, :tasks]) %></td>
                             <td><%= link_to breadcrumbs[:names].last, breadcrumbs[:paths].last %></td>
                             <td>-</td>
                         </tr>
@@ -54,23 +54,23 @@
                           breadcrumbs = breadcrumbs(task.taskable, with_prefix: false)
                     %>
                         <tr>
-                            <td><%= I18n.t(".description_#{task.task_description_id}", scope: [:tasks, :tasks]) %></td>
+                            <td><%= t(".description_#{task.task_description_id}", scope: [:tasks, :tasks]) %></td>
                             <td><%= link_to breadcrumbs[:names].last, breadcrumbs[:paths].last %></td>
-                            <td><% if task.taskable.due_date.present? %><%= I18n.l(task.taskable.due_date, format: :short) %><% if Date.today > task.taskable.due_date %>&nbsp;<i class="fa fa-clock-o due-date-expired" title="<%= I18n.t('.tooltip_due_date', scope: [:tasks, :tasks]) %>" data-toggle="tooltip"></i><% end %><% else %>-<% end %></td>
+                            <td><% if task.taskable.due_date.present? %><%= l(task.taskable.due_date, format: :short) %><% if Date.today > task.taskable.due_date %>&nbsp;<i class="fa fa-clock-o due-date-expired" title="<%= t('.tooltip_due_date', scope: [:tasks, :tasks]) %>" data-toggle="tooltip"></i><% end %><% else %>-<% end %></td>
                         </tr>
                     <%  when RequirementDatum.name.demodulize
                           breadcrumbs = breadcrumbs(task.taskable, with_prefix: false)
                     %>
                         <tr>
-                            <td><%= I18n.t(".description_#{task.task_description_id}", scope: [:tasks, :tasks]) %></td>
+                            <td><%= t(".description_#{task.task_description_id}", scope: [:tasks, :tasks]) %></td>
                             <td><%= link_to breadcrumbs[:names].last, breadcrumbs[:paths].last %></td>
-                            <td><% if task.taskable.due_date.present? %><%= I18n.l(task.taskable.due_date, format: :short) %><% if Date.today > task.taskable.due_date %>&nbsp;<i class="fa fa-clock-o due-date-expired" title="<%= I18n.t('.tooltip_due_date', scope: [:tasks, :tasks]) %>" data-toggle="tooltip"></i><% end %><% else %>-<% end %></td>
+                            <td><% if task.taskable.due_date.present? %><%= l(task.taskable.due_date, format: :short) %><% if Date.today > task.taskable.due_date %>&nbsp;<i class="fa fa-clock-o due-date-expired" title="<%= t('.tooltip_due_date', scope: [:tasks, :tasks]) %>" data-toggle="tooltip"></i><% end %><% else %>-<% end %></td>
                         </tr>
                     <%  when SchemeMixCriteriaDocument.name.demodulize
                           breadcrumbs = breadcrumbs(task.taskable, with_prefix: false)
                     %>
                         <tr>
-                            <td><%= I18n.t(".description_#{task.task_description_id}", scope: [:tasks, :tasks]) %></td>
+                            <td><%= t(".description_#{task.task_description_id}", scope: [:tasks, :tasks]) %></td>
                             <td><%= link_to breadcrumbs[:names].last, breadcrumbs[:paths].last %></td>
                             <td>-</td>
                         </tr>
@@ -97,7 +97,7 @@
                     <% @audit_logs.each do |audit_log| %>
                         <div style="border-bottom: 1pt solid #e7eaec; margin: 0; padding: 10pt 0;">
                             <small>
-                                <img src="<%= image_url('fa/clock-o_888888_16.png') %>" height="10">&nbsp;<span style='color: #888; font-size: 8.5pt; font-family: "Verdana", "sans-serif";'><%= I18n.l(audit_log.created_at) %></span>
+                                <img src="<%= image_url('fa/clock-o_888888_16.png') %>" height="10">&nbsp;<span style='color: #888; font-size: 8.5pt; font-family: "Verdana", "sans-serif";'><%= l(audit_log.created_at) %></span>
                                 | <img src="<%= image_url('fa/user_888888_16.png') %>" height="10">&nbsp;<span style='color: #888; font-size: 8.5pt; font-family: "Verdana", "sans-serif"; text-decoration: none;'><%= audit_log.user.email %></span>
                                 | <img src="<%= image_url('fa/building-o_888888_16.png') %>" height="10">&nbsp;
                                 <% breadcrumbs = breadcrumbs(audit_log.auditable) %>
