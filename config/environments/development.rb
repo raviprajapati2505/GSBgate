@@ -45,6 +45,12 @@ Rails.application.configure do
 
   config.log_tags = [ :uuid ]
 
-  # config.x.gsas_info.email = 'gsas@example.com'
-  config.x.gsas_info.email = 'bart.daniels@vito.be'
+  config.x.gsas_info.email = 'sas@vito.be'
+
+  # Linkme.qa API config
+  config.x.linkme.api_url = 'api.yourmembership.com'
+  config.x.linkme.api_verion = '2.03'
+  config.x.linkme.public_api_key = '05BE43AB-B4FF-4E0B-89F3-9A1F3C281152'
+  config.x.linkme.private_api_key = '5D621211-8E39-4871-A3F3-05C5C8833A57'
+  config.x.linkme.sa_passcode = 'Y05KzqB77cs6'
 end

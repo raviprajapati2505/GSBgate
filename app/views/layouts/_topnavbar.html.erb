@@ -63,12 +63,12 @@
         <% if user_signed_in? %>
             <ul class="nav navbar-top-links navbar-right">
                 <li>
-                    <%= link_to edit_user_registration_path do %>
-                        <%= fa_icon('user') %><span class="nav-label"><%= current_user.email %></span>
+                    <%= link_to 'http://www.linkme.qa/members/manage_profile.asp', target: '_blank' do %>
+                        <%= fa_icon('user') %><span class="nav-label"><%= current_user.username %></span>
                     <% end %>
                 </li>
                 <li>
-                    <%= link_to destroy_user_session_path, method: :delete do %>
+                    <%= link_to sessions_path, method: :delete do %>
                         <%= fa_icon('sign-out') %><span class="nav-label">Log out</span>
                     <% end %>
                 </li>

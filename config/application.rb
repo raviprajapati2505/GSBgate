@@ -23,11 +23,14 @@ module Gord
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
 
-    # Autoload classes from custom "services" folder
-    config.autoload_paths << Rails.root.join('services')
-
     # Autoload classes from STI folders
     config.autoload_paths << Rails.root.join('app', 'models', 'task')
+
+    # Autoload classes from custom "services" folder (contains GSAS specific services)
+    config.autoload_paths << Rails.root.join('services')
+
+    # Autoload classes from custom "strategies" folder (contains Warden strategies)
+    config.autoload_paths << Rails.root.join('strategies')
 
     # Sets the Content-Length header on responses with fixed-length bodies.
     config.middleware.use Rack::ContentLength

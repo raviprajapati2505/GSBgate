@@ -58,8 +58,8 @@ end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :jruby]
 
-# Flexible authentication solution
-gem 'devise'
+# Rack middleware that provides authentication for rack applications
+gem 'warden', '~> 1.2', '>= 1.2.6'
 
 # Simple authorization solution
 gem 'cancancan', '~> 1.10.1'
@@ -100,15 +100,18 @@ gem 'pdf-core'
 gem 'prawn'
 gem 'prawn-table'
 
-# reCAPTCHA
-gem 'recaptcha', require: 'recaptcha/rails'
+# HTML, XML, SAX, and Reader parser.
+gem 'nokogiri', '~> 1.6', '>= 1.6.6.2'
+
+# Required for password encryption
+gem 'bcrypt-ruby', '~> 3.1', '>= 3.1.5'
 
 # Rails-Assets: access bower packages from our gem file
 #  e.g. gem 'rails-assets-BOWER_PACKAGE_NAME'
 #  do not forget to:
 #   'require' them in application.js for javascript files
 #   @import them in style.scss for (s)css files
-source 'https://rails-assets.org' do
+source 'http://rails-assets.org' do
   gem 'rails-assets-animate.css'
   gem 'rails-assets-bootstrap'
   gem 'rails-assets-bootstrap-datepicker'

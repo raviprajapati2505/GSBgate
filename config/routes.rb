@@ -5,26 +5,15 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'projects#index'
 
-  # Devise "user/*" routes
-  devise_for :user, skip: :registrations, :controllers => {:confirmations => 'confirmations'}
-  devise_scope :user do
-    resource :registration,
-      only: [:new, :create, :edit, :update],
-      path: 'user',
-      path_names: { new: 'sign_up' },
-      controller: 'registrations',
-      as: :user_registration
-  end
-  as :user do
-    patch '/user/confirmation' => 'confirmations#update', :via => :patch, :as => :update_user_confirmation
-  end
-
   # Our own "users/*" routes
-  resources :users do
-      member do
-        get 'list_notifications', path: 'notifications'
-        put 'update_notifications', path: 'notifications'
-      end
+  resources :users, only: [:index] do
+    collection do
+      resource :sessions, only: [:new, :create, :destroy]
+    end
+    member do
+      get 'list_notifications', path: 'notifications'
+      put 'update_notifications', path: 'notifications'
+    end
   end
 
   # proxy all requests to the external api

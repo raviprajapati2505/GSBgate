@@ -1,50 +1,9 @@
 class UsersController < AuthenticatedController
   load_and_authorize_resource :user
-  before_action :set_controller_model, except: [:new, :create, :index, :update_notifications]
+  before_action :set_controller_model, except: [:index, :update_notifications]
 
   def index
     @page_title = 'Users'
-    # current_user can only create a new user, if he can use at least 1 user role !
-    @can_create_user = (user_roles_user_can_create.size > 0)
-  end
-
-  def new
-    @page_title = 'Add user'
-    @user_roles = user_roles_user_can_create
-  end
-
-  def create
-    @user = User.new(user_params)
-
-    # Leave the password blank for now,
-    # the user will provide this when he confirms the account.
-    @user.password = ''
-
-    if @user.save
-      redirect_to users_path, notice: 'User account was successfully created. The user will be notified by email.'
-    else
-      flash[:alert] = 'An error occurred when creating the user account, please try again later.'
-      render :new
-    end
-  end
-
-  def edit
-    @page_title = "Edit user #{@user.email}"
-    @user_roles = user_roles_user_can_create
-  end
-
-  def update
-    if @user.update_without_password(user_params)
-      redirect_to users_path, notice: 'Successfully updated user.'
-    else
-      render action: 'edit'
-    end
-  end
-
-  def show
-    respond_to do |format|
-      format.json { render json: @user, status: :ok }
-    end
   end
 
   def list_notifications
@@ -115,13 +74,5 @@ class UsersController < AuthenticatedController
 
   def set_controller_model
     @controller_model = @user
-  end
-
-  def user_params
-    params.require(:user).permit(:email, :role, :account_active)
-  end
-
-  def user_roles_user_can_create
-    User.roles.select {|role| can?(:create, User.new(role: role.to_sym))}
   end
 end

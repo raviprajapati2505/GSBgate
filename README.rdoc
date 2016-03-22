@@ -62,3 +62,10 @@ sudo -i su jenkins
 9. $> sudo cron -e
 10. add following line to crontab :
     0 1 * * * /home/jenkins/generate_tasks.sh
+
+== Fix SSL certificate issue on Windows
+When running Rails on Windows with the Rails Installer,
+follow these instructions to fix an SSL issue with the net/http library:
+1. Download http://curl.haxx.se/ca/cacert.pem to C:\RailsInstaller\cacert.pem
+2. Add the following environment variable to your IntelliJ run configuration: SSL_CERT_FILE=C:\RailsInstaller\cacert.pem
+NOTE: The linkme.qa API will not work without this fix. For more info, see https://gist.github.com/fnichol/867550

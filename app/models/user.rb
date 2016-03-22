@@ -1,8 +1,7 @@
+require 'bcrypt'
+
 class User < ActiveRecord::Base
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :confirmable
+  include BCrypt
 
   enum role: { system_admin: 0, user: 1, gord_top_manager: 2, gord_manager: 3, gord_admin: 4, assessor: 5, certifier: 6, enterprise_client: 7 }
 
@@ -21,7 +20,7 @@ class User < ActiveRecord::Base
 
   validates :role, inclusion: User.roles.keys
 
-  default_scope { order(email: :asc) }
+  default_scope { order(username: :asc) }
 
   delegate :can?, :cannot?, :to => :ability
 
@@ -45,6 +44,14 @@ class User < ActiveRecord::Base
     where('email like :search_text', search_text: "%#{text}%")
   }
 
+  scope :linkme_users, -> {
+    where(linkme_user: true)
+  }
+
+  scope :local_users, -> {
+    where(linkme_user: false)
+  }
+  
   # scope :not_authorized_for_project, ->(project) {
   #   where.not('exists(select id from projects_users where user_id = users.id and project_id = ?)', project.id)
   # }
@@ -64,6 +71,15 @@ class User < ActiveRecord::Base
   scope :with_certifier_project_role, -> {
     where('projects_users.role in (3, 4)')
   }
+
+  def password
+    @password ||= Password.new(self.encrypted_password)
+  end
+
+  def password=(new_password)
+    @password = Password.create(new_password)
+    self.encrypted_password = @password
+  end
 
   # Store the user in the current Thread (needed for our concerns, so they can access the current user model)
   def self.current
@@ -85,39 +101,20 @@ class User < ActiveRecord::Base
     return project_user.present? ? I18n.t(project_user.role, scope: 'activerecord.attributes.projects_user.roles') : I18n.t(self.role, scope: 'activerecord.attributes.user.roles')
   end
 
-  # Updates the current password of a user
-  def attempt_set_password(params)
-    p = {}
-    p[:password] = params[:password]
-    p[:password_confirmation] = params[:password_confirmation]
-    update_attributes(p)
-  end
-
-  def password_required?
-    # Password is required if it is being set, but not for new records
-    if !persisted?
-      false
-    else
-      !password.nil? || !password_confirmation.nil?
-    end
-  end
-
-  def only_if_unconfirmed
-    pending_any_confirmation {yield}
-  end
-
-  def active_for_authentication?
-    super and account_active?
-  end
-
   def ability
     @ability ||= Ability.new(self)
+  end
+
+  def log_sign_in
+    self.last_sign_in_at = Time.now.utc
+    self.sign_in_count ||= 0
+    self.sign_in_count += 1
   end
 
   private
   def init
     self.role ||= :assessor
-    self.account_active ||= true
+    self.linkme_user ||= :true
   end
 
 end
