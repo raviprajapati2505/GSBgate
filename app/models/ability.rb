@@ -77,6 +77,7 @@ class Ability
       if user.assessor?
         can :create, Project
         can :update, Project, projects_users: {user_id: user.id, role: project_user_role_project_manager}
+        cannot :update, Project, projects_users: {user_id: user.id, role: project_user_role_project_manager}, certification_paths: {certification_path_status: {id: CertificationPathStatus::STATUSES_ACTIVATED}}
       end
 
       # ProjectsUsers controller
