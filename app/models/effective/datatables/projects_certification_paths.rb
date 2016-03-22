@@ -64,16 +64,16 @@ module Effective
         table_column 'total_targeted_score', type: :decimal, label: t('models.effective.datatables.projects_certification_paths.total_targeted_score.label'), column: '(%s)' % ProjectsCertificationPaths.query_score_in_certificate_points(:targeted_score)
 
         table_column 'schemes_array', label: t('models.effective.datatables.projects_certification_paths.schemes_array.label'), column: "ARRAY_TO_STRING(ARRAY(SELECT case when scheme_mixes.custom_name is null then concat(schemes.name, ' ', schemes.gsas_version) else CONCAT(schemes.name, ' (', scheme_mixes.custom_name, ') ', schemes.gsas_version) end from schemes INNER JOIN scheme_mixes ON schemes.id = scheme_mixes.scheme_id WHERE scheme_mixes.certification_path_id = certification_paths.id), '|||')" do |rec|
-          rec.schemes_array.split('|||').sort.join('<br/>') unless rec.schemes_array.nil?
+          ERB::Util.html_escape(rec.schemes_array).split('|||').sort.join('<br/>') unless rec.schemes_array.nil?
         end
         table_column 'assessors_array', label: t('models.effective.datatables.projects_certification_paths.assessors_array.label'), visible: false, column: "ARRAY_TO_STRING(ARRAY(SELECT assessor_users.email FROM users as assessor_users INNER JOIN projects_users as assessor_project_users ON assessor_project_users.user_id = assessor_users.id  WHERE assessor_project_users.role IN (0,1) AND assessor_project_users.project_id = projects.id), '|||')" do |rec|
-          rec.assessors_array.split('|||').sort.join('<br/>') unless rec.assessors_array.nil?
+          ERB::Util.html_escape(rec.assessors_array).split('|||').sort.join('<br/>') unless rec.assessors_array.nil?
         end
         table_column 'certifiers_array', label: t('models.effective.datatables.projects_certification_paths.certifiers_array.label'), visible: false, column: "ARRAY_TO_STRING(ARRAY(SELECT certifier_users.email FROM users as certifier_users INNER JOIN projects_users as certifier_project_users ON certifier_project_users.user_id = certifier_users.id  WHERE certifier_project_users.role IN (3,4) AND certifier_project_users.project_id = projects.id), '|||')" do |rec|
-          rec.certifiers_array.split('|||').sort.join('<br/>') unless rec.certifiers_array.nil?
+          ERB::Util.html_escape(rec.certifiers_array).split('|||').sort.join('<br/>') unless rec.certifiers_array.nil?
         end
         table_column 'enterprise_clients_array', label: t('models.effective.datatables.projects_certification_paths.enterprise_clients_array.label'), visible: false, column: "ARRAY_TO_STRING(ARRAY(SELECT enterprise_client_users.email FROM users as enterprise_client_users INNER JOIN projects_users as enterprise_client_project_users ON enterprise_client_project_users.user_id = enterprise_client_users.id  WHERE enterprise_client_project_users.role IN (2) AND enterprise_client_project_users.project_id = projects.id), '|||')" do |rec|
-          rec.enterprise_clients_array.split('|||').sort.join('<br/>') unless rec.enterprise_clients_array.nil?
+          ERB::Util.html_escape(rec.enterprise_clients_array).split('|||').sort.join('<br/>') unless rec.enterprise_clients_array.nil?
         end
       end
 
