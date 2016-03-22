@@ -1,6 +1,6 @@
 module Auditable
   extend ActiveSupport::Concern
-  include ActionView::Helpers
+  include ActionView::Helpers::TranslationHelper
 
   AUDIT_LOG_CREATE = 0
   AUDIT_LOG_UPDATE = 1
@@ -58,13 +58,13 @@ module Auditable
           auditable = self.project
           project = self.project
           if (action == AUDIT_LOG_CREATE)
-            system_messages << {message: t('models.concerns.auditable.projects_user.create_html', user: self.user.email, project: self.project.name, role: I18n.t(self.role, scope: 'activerecord.attributes.projects_user.roles'))}
+            system_messages << {message: t('models.concerns.auditable.projects_user.create_html', user: self.user.email, project: self.project.name, role: t(self.role, scope: 'activerecord.attributes.projects_user.roles'))}
           elsif (action == AUDIT_LOG_UPDATE)
             if self.role_changed?
-              system_messages << {message: t('models.concerns.auditable.projects_user.update_html', user: self.user.email, project: self.project.name, role_old: I18n.t(self.role_was, scope: 'activerecord.attributes.projects_user.roles'), role_new: I18n.t(self.role, scope: 'activerecord.attributes.projects_user.roles'))}
+              system_messages << {message: t('models.concerns.auditable.projects_user.update_html', user: self.user.email, project: self.project.name, role_old: t(self.role_was, scope: 'activerecord.attributes.projects_user.roles'), role_new: t(self.role, scope: 'activerecord.attributes.projects_user.roles'))}
             end
           elsif (action == AUDIT_LOG_DESTROY)
-            system_messages << {message: t('models.concerns.auditable.projects_user.destroy_html', user: self.user.email, project: self.project.name, role: I18n.t(self.role, scope: 'activerecord.attributes.projects_user.roles'))}
+            system_messages << {message: t('models.concerns.auditable.projects_user.destroy_html', user: self.user.email, project: self.project.name, role: t(self.role, scope: 'activerecord.attributes.projects_user.roles'))}
           end
         when CertificationPath.name.demodulize
           project = self.project
@@ -101,7 +101,7 @@ module Auditable
               if self.certifier_id.blank?
                 system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.certifier.unassigned_html', criterion: self.name)}
               elsif self.due_date?
-                system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.certifier.assigned_due_html', criterion: self.name, user: self.certifier.email, due_date: I18n.l(self.due_date, format: :short))}
+                system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.certifier.assigned_due_html', criterion: self.name, user: self.certifier.email, due_date: l(self.due_date, format: :short))}
               else
                 system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.certifier.assigned_html', criterion: self.name, user: self.certifier.email)}
               end
@@ -134,11 +134,13 @@ module Auditable
               end
             end
           end
-          # If the scheme mix criterion inherits from a criterion in the main scheme mix,
-          # notify the user that the changes were automated.
+          # If the scheme mix criterion inherits from a criterion in the main scheme mix, notify the user that the changes were automated.
           if self.main_scheme_mix_criterion_id.present?
-            system_messages_temp.each_with_index do |index, value|
-              system_messages_temp[index] = value + ' ' + t('models.concerns.auditable.scheme_mix_criterion.main.update_html', main_criterion: self.main_scheme_mix_criterion.full_name, main_scheme: self.scheme_mix.certification_path.main_scheme_mix.name)
+            # append a string to each message
+            system_messages_temp = system_messages_temp.map do |item|
+              item[:message] += ' '
+              item[:message] += t('models.concerns.auditable.scheme_mix_criterion.main.update_html', main_criterion: self.main_scheme_mix_criterion.full_name, main_scheme: self.scheme_mix.certification_path.main_scheme_mix.name)
+              item
             end
           end
           system_messages = system_messages + system_messages_temp
@@ -165,7 +167,7 @@ module Auditable
               if self.user_id.blank?
                 system_messages << {message: t('models.concerns.auditable.requirement_datum.user.unassigned_html', requirement: self.name)}
               elsif self.due_date?
-                system_messages << {message: t('models.concerns.auditable.requirement_datum.user.assigned_due_html', requirement: self.name, user: self.user.email, due_date: I18n.l(self.due_date, format: :short))}
+                system_messages << {message: t('models.concerns.auditable.requirement_datum.user.assigned_due_html', requirement: self.name, user: self.user.email, due_date: l(self.due_date, format: :short))}
               else
                 system_messages << {message: t('models.concerns.auditable.requirement_datum.user.assigned_html', requirement: self.name, user: self.user.email)}
               end
