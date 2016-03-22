@@ -52,9 +52,9 @@ class CertificationPathsController < AuthenticatedController
             end
           end
           if @certification_path.save
-            return redirect_to(project_certification_path_path(@project, @certification_path), notice: 'Successfully applied for certification.')
+            return redirect_to(project_certification_path_path(@project, @certification_path), notice: t('controllers.certification_paths_controller.apply.success'))
           else
-            return redirect_to(project_path(@project), alert: 'Error, could not apply for certificate.')
+            return redirect_to(project_path(@project), alert: t('controllers.certification_paths_controller.apply.error'))
           end
         }
       end
@@ -87,9 +87,9 @@ class CertificationPathsController < AuthenticatedController
         }
         format.html {
           if @certification_path.save
-            return redirect_to(project_certification_path_path(@project, @certification_path), notice: 'Successfully applied for certificate.')
+            return redirect_to(project_certification_path_path(@project, @certification_path), notice: t('controllers.certification_paths_controller.apply.success'))
           else
-            return redirect_to(project_path(@project), alert: 'Error, could not apply for certificate')
+            return redirect_to(project_path(@project), alert: t('controllers.certification_paths_controller.apply.error'))
           end
         }
       end
@@ -108,9 +108,9 @@ class CertificationPathsController < AuthenticatedController
         }
         format.html {
           if @certification_path.save
-            return redirect_to(project_certification_path_path(@project, @certification_path), notice: 'Successfully applied for certificate.')
+            return redirect_to(project_certification_path_path(@project, @certification_path), notice: t('controllers.certification_paths_controller.apply.success'))
           else
-            return redirect_to(project_path(@project), alert: 'Error, could not apply for certificate')
+            return redirect_to(project_path(@project), alert: t('controllers.certification_paths_controller.apply.error'))
           end
         }
       end
@@ -151,7 +151,7 @@ class CertificationPathsController < AuthenticatedController
             SchemeMixCriterion.find(smc_id.to_i).appealed!
           end
         end
-        redirect_to project_certification_path_path(@project, @certification_path), notice: I18n.t('certification_paths_controller.update_status.notice_success')
+        redirect_to project_certification_path_path(@project, @certification_path), notice: I18n.t('controllers.certification_paths_controller.update_status.notice_success')
       else
         redirect_to project_certification_path_path(@project, @certification_path), alert: todos.first
       end
@@ -179,11 +179,11 @@ class CertificationPathsController < AuthenticatedController
   end
 
   def edit_project_team_responsibility
-    @page_title = I18n.t('certification_paths_controller.edit_project_team_responsibility.page_title', certificate: @certification_path.name)
+    @page_title = I18n.t('controllers.certification_paths_controller.edit_project_team_responsibility.page_title', certificate: @certification_path.name)
   end
 
   def edit_certifier_team_responsibility
-    @page_title = I18n.t('certification_paths_controller.edit_certifier_team_responsibility.page_title', certificate: @certification_path.name)
+    @page_title = I18n.t('controllers.certification_paths_controller.edit_certifier_team_responsibility.page_title', certificate: @certification_path.name)
   end
 
   def allocate_project_team_responsibility
@@ -321,11 +321,11 @@ class CertificationPathsController < AuthenticatedController
     certificate = Certificate.find(certificate_id)
     # Verify the requested certificate exists.
     if certificate.nil?
-      return redirect_to project_path(@project), alert: I18n.t('certification_paths_controller.certificate_exists_and_is_allowed.error_no_certificate')
+      return redirect_to project_path(@project), alert: I18n.t('controllers.certification_paths_controller.certificate_exists_and_is_allowed.error_no_certificate')
     end
     # Verify the requested certificate is allowed to be created at this time
     if not @project.can_create_certification_path_for_certificate?(certificate)
-      return redirect_to project_path(@project), alert: I18n.t('certification_paths_controller.certificate_exists_and_is_allowed.error_can_create_certificate')
+      return redirect_to project_path(@project), alert: I18n.t('controllers.certification_paths_controller.certificate_exists_and_is_allowed.error_can_create_certificate')
     end
   end
 

@@ -1,5 +1,6 @@
 module Auditable
   extend ActiveSupport::Concern
+  include ActionView::Helpers
 
   AUDIT_LOG_CREATE = 0
   AUDIT_LOG_UPDATE = 1
@@ -43,52 +44,48 @@ module Auditable
       system_messages = []
       project = nil
       certification_path = nil
-      old_status = nil
-      new_status = nil
       auditable = self
 
       case self.class.name.demodulize
         when Project.name.demodulize
           project = self
           if (action == AUDIT_LOG_CREATE)
-            system_messages << {message: 'A new project %s was created.', params: [self.name]}
+            system_messages << {message: t('models.concerns.auditable.project.create_html', project: self.name)}
           elsif (action == AUDIT_LOG_UPDATE)
-            system_messages << {message: 'The project details of %s were updated.', params: [self.name]}
+            system_messages << {message: t('models.concerns.auditable.project.update_html', project: self.name)}
           end
         when ProjectsUser.name.demodulize
           auditable = self.project
           project = self.project
           if (action == AUDIT_LOG_CREATE)
-            system_messages << {message: 'User %s was added to project %s as a %s.', params: [self.user.email, self.project.name, I18n.t(self.role, scope: 'activerecord.attributes.projects_users.roles')]}
+            system_messages << {message: t('models.concerns.auditable.projects_user.create_html', user: self.user.email, project: self.project.name, role: I18n.t(self.role, scope: 'activerecord.attributes.projects_user.roles'))}
           elsif (action == AUDIT_LOG_UPDATE)
             if self.role_changed?
-              system_messages << {message: 'The role of user %s in project %s was changed from %s to %s.', params: [self.user.email, self.project.name, I18n.t(self.changes[:role][0], scope: 'activerecord.attributes.projects_user.roles'), I18n.t(self.changes[:role][1], scope: 'activerecord.attributes.projects_user.roles')]}
+              system_messages << {message: t('models.concerns.auditable.projects_user.update_html', user: self.user.email, project: self.project.name, role_old: I18n.t(self.role_was, scope: 'activerecord.attributes.projects_user.roles'), role_new: I18n.t(self.role, scope: 'activerecord.attributes.projects_user.roles'))}
             end
           elsif (action == AUDIT_LOG_DESTROY)
-            system_messages << {message: 'User %s was removed from project %s as a %s.', params: [self.user.email, self.project.name, I18n.t(self.role, scope: 'activerecord.attributes.projects_user.roles')]}
+            system_messages << {message: t('models.concerns.auditable.projects_user.destroy_html', user: self.user.email, project: self.project.name, role: I18n.t(self.role, scope: 'activerecord.attributes.projects_user.roles'))}
           end
         when CertificationPath.name.demodulize
           project = self.project
           certification_path = self
           if self.certification_path_status_id_changed?
-            old_status = self.changes[:certification_path_status_id][0]
-            new_status = self.changes[:certification_path_status_id][1]
-            old_status_model = CertificationPathStatus.find_by_id(old_status)
-            new_status_model = CertificationPathStatus.find_by_id(new_status)
+            old_status_model = CertificationPathStatus.find_by_id(self.status_was)
+            new_status_model = CertificationPathStatus.find_by_id(self.status)
           end
           if (action == AUDIT_LOG_CREATE)
-            system_messages << {message: 'A new certification %s was created in project %s.', params: [self.name, self.project.name], old_status: old_status, new_status: new_status}
+            system_messages << {message: t('models.concerns.auditable.certification_path.status.create_html', certification_path: self.name, project: self.project.name), old_status: self.status_was, new_status: self.status}
           elsif (action == AUDIT_LOG_UPDATE)
             if self.certification_path_status_id_changed?
-              system_messages << {message: 'The status of certification %s in project %s was changed from %s to %s.', params: [self.name, self.project.name, old_status_model.name, new_status_model.name], old_status: old_status, new_status: new_status}
+              system_messages << {message: t('models.concerns.auditable.certification_path.status.update_html', certification_path: self.name, project: self.project.name, old_status: old_status_model.name, new_status: new_status_model.name), old_status: self.status_was, new_status: self.status}
             end
           end
           if (action == AUDIT_LOG_CREATE || action == AUDIT_LOG_UPDATE)
             if self.pcr_track_changed?
               if self.pcr_track?
-                system_messages << {message: 'A PCR track request was issued for the certification %s in project %s.', params: [self.name, self.project.name]}
+                system_messages << {message: t('models.concerns.auditable.certification_path.pcr.issued_html', certification_path: self.name, project: self.project.name)}
               else
-                system_messages << {message: 'The PCR track request was canceled for the certification %s in project %s.', params: [self.name, self.project.name]}
+                system_messages << {message: t('models.concerns.auditable.certification_path.pcr.cancelled_html', certification_path: self.name, project: self.project.name)}
               end
             end
           end
@@ -98,68 +95,61 @@ module Auditable
           system_messages_temp = []
           if (action == AUDIT_LOG_UPDATE)
             if self.status_changed?
-              system_messages_temp << {message: 'The status of criterion %s was changed from %s to %s.', params: [self.name, self.changes[:status][0].humanize, self.changes[:status][1].humanize], old_status: self.status_was, new_status: self.status}
+              system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.status.update_html', criterion: self.name, old_status: self.status_was.humanize, new_status: self.status.humanize), old_status: self.status_was, new_status: self.status}
             end
             if self.certifier_id_changed? || self.due_date_changed?
               if self.certifier_id.blank?
-                system_messages_temp << {message: 'A GORD certifier was unassigned from criterion %s.', params: [self.name]}
+                system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.certifier.unassigned_html', criterion: self.name)}
               elsif self.due_date?
-                system_messages_temp << {message: 'Criterion %s was assigned to GORD certifier %s for review. The due date is %s.', params: [self.name, self.certifier.email, I18n.l(self.due_date, format: :short)]}
+                system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.certifier.assigned_due_html', criterion: self.name, user: self.certifier.email, due_date: I18n.l(self.due_date, format: :short))}
               else
-                system_messages_temp << {message: 'Criterion %s was assigned to GORD certifier %s for review.', params: [self.name, self.certifier.email]}
+                system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.certifier.assigned_html', criterion: self.name, user: self.certifier.email)}
               end
             end
             if self.targeted_score_changed?
-              if self.changes[:targeted_score][0].nil?
-                system_messages_temp << {message: 'The targeted score of criterion %s was set to %s.', params: [self.name, self.changes[:targeted_score][1]]}
-              elsif self.changes[:targeted_score][1].nil?
-                system_messages_temp << {message: 'The targeted score of criterion %s was removed.', params: [self.name]}
+              if self.targeted_score_was.nil?
+                system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.targeted_score.set_html', criterion: self.name, score: self.targeted_score)}
+              elsif self.targeted_score.nil?
+                system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.targeted_score.unset_html', criterion: self.name)}
               else
-                system_messages_temp << {message: 'The targeted score of criterion %s was changed from %s to %s.', params: [self.name, self.changes[:targeted_score][0], self.changes[:targeted_score][1]]}
+                system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.targeted_score.update_html', criterion: self.name, old_score: self.targeted_score_was, new_score: self.targeted_score)}
               end
             end
             if self.submitted_score_changed?
-              if self.changes[:submitted_score][0].nil?
-                system_messages_temp << {message: 'The submitted score of criterion %s was set to %s.', params: [self.name, self.changes[:submitted_score][1]]}
-              elsif self.changes[:submitted_score][1].nil?
-                system_messages_temp << {message: 'The submitted score of criterion %s was removed.', params: [self.name]}
+              if self.submitted_score_was.nil?
+                system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.submitted_score.set_html', criterion: self.name, score: self.submitted_score)}
+              elsif self.submitted_score.nil?
+                system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.submitted_score.unset_html', criterion: self.name)}
               else
-                system_messages_temp << {message: 'The submitted score of criterion %s was changed from %s to %s.', params: [self.name, self.changes[:submitted_score][0], self.changes[:submitted_score][1]]}
+                system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.submitted_score.update_html', criterion: self.name, old_score: self.submitted_score_was, new_score: self.submitted_score)}
               end
             end
             if self.achieved_score_changed?
-              if self.changes[:achieved_score][0].nil?
-                system_messages_temp << {message: 'The achieved score of criterion %s was set to %s.', params: [self.name, self.changes[:achieved_score][1]]}
-              elsif self.changes[:achieved_score][1].nil?
-                system_messages_temp << {message: 'The achieved score of criterion %s was removed.', params: [self.name]}
+              if self.achieved_score_was.nil?
+                system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.achieved_score.set_html', criterion: self.name, score: self.achieved_score)}
+              elsif self.achieved_score.nil?
+                system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.achieved_score.unset_html', criterion: self.name)}
               else
-                system_messages_temp << {message: 'The achieved score of criterion %s was changed from %s to %s.', params: [self.name, self.changes[:achieved_score][0], self.changes[:achieved_score][1]]}
+                system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.achieved_score.update_html',  criterion: self.name, old_score: self.achieved_score_was, new_score: self.achieved_score)}
               end
             end
           end
           # If the scheme mix criterion inherits from a criterion in the main scheme mix,
           # notify the user that the changes were automated.
           if self.main_scheme_mix_criterion_id.present?
-            system_messages_temp.map! do |x|
-              x[:message] += ' This change was automated because the criterion inherits from %s in the %s scheme.'
-              x[:params] << self.main_scheme_mix_criterion.full_name
-              x[:params] << self.scheme_mix.certification_path.main_scheme_mix.name
-              x
+            system_messages_temp.each_with_index do |index, value|
+              system_messages_temp[index] = value + ' ' + t('models.concerns.auditable.scheme_mix_criterion.main.update_html', main_criterion: self.main_scheme_mix_criterion.full_name, main_scheme: self.scheme_mix.certification_path.main_scheme_mix.name)
             end
           end
           system_messages = system_messages + system_messages_temp
         when SchemeMixCriteriaDocument.name.demodulize
           project = self.scheme_mix_criterion.scheme_mix.certification_path.project
           certification_path = self.scheme_mix_criterion.scheme_mix.certification_path
-          if self.status_changed?
-            old_status = self.status_was
-            new_status = self.status
-          end
           if (action == AUDIT_LOG_CREATE)
-            system_messages << {message: 'A new document %s was added to criterion %s.', params: [self.name, self.scheme_mix_criterion.name], old_status: old_status, new_status: new_status}
+            system_messages << {message: t('models.concerns.auditable.scheme_mix_criteria_document.status.create_html', document: self.name, criterion: self.scheme_mix_criterion.name), old_status: self.status_was, new_status: self.status}
           elsif (action == AUDIT_LOG_UPDATE)
             if self.status_changed?
-              system_messages << {message: 'The status of document %s in %s was changed from %s to %s.', params: [self.name, self.scheme_mix_criterion.name, self.changes[:status][0].humanize, self.changes[:status][1].humanize], old_status: old_status, new_status: new_status}
+              system_messages << {message: t('models.concerns.auditable.scheme_mix_criteria_document.status.update_html', document: self.name, criterion: self.scheme_mix_criterion.name, old_status: self.status_was.humanize, new_status: self.status.humanize), old_status: self.status_was, new_status: self.status}
             end
           end
         when RequirementDatum.name.demodulize
@@ -169,26 +159,26 @@ module Auditable
           end
           if (action == AUDIT_LOG_UPDATE)
             if self.status_changed?
-              system_messages << {message: 'The status of requirement %s was changed from %s to %s.', params: [self.name, self.changes[:status][0].humanize, self.changes[:status][1].humanize], old_status: self.status_was, new_status: self.status}
+              system_messages << {message: t('models.concerns.auditable.requirement_datum.status.update_html', requirement: self.name, old_status: self.status_was.humanize, new_status: self.status.humanize), old_status: self.status_was, new_status: self.status}
             end
             if self.user_id_changed? || self.due_date_changed?
               if self.user_id.blank?
-                system_messages << {message: 'A project team member was unassigned from requirement %s.', params: [self.name]}
+                system_messages << {message: t('models.concerns.auditable.requirement_datum.user.unassigned_html', requirement: self.name)}
               elsif self.due_date?
-                system_messages << {message: 'Requirement %s was assigned to %s. The due date is %s.', params: [self.name, self.user.email, I18n.l(self.due_date, format: :short)]}
+                system_messages << {message: t('models.concerns.auditable.requirement_datum.user.assigned_due_html', requirement: self.name, user: self.user.email, due_date: I18n.l(self.due_date, format: :short))}
               else
-                system_messages << {message: 'Requirement %s was assigned to %s.', params: [self.name, self.user.email]}
+                system_messages << {message: t('models.concerns.auditable.requirement_datum.user.assigned_html', requirement: self.name, user: self.user.email)}
               end
             end
           end
         when SchemeCriterionText.name.demodulize
           auditable = self.scheme_criterion
           if (action == AUDIT_LOG_CREATE)
-            system_messages << {message: 'Criterion text %s in %s was created.', params: [self.name, self.scheme_criterion.full_name]}
+            system_messages << {message: t('models.concerns.auditable.scheme_criterion_text.status.create_html', text: self.name, criterion: self.scheme_criterion.full_name)}
           elsif (action == AUDIT_LOG_UPDATE)
-            system_messages << {message: 'Criterion text %s in %s was edited.', params: [self.name, self.scheme_criterion.full_name]}
+            system_messages << {message: t('models.concerns.auditable.scheme_criterion_text.status.update_html', text: self.name, criterion: self.scheme_criterion.full_name)}
           elsif (action == AUDIT_LOG_DESTROY)
-            system_messages << {message: 'Criterion text %s in %s was removed.', params: [self.name, self.scheme_criterion.full_name]}
+            system_messages << {message: t('models.concerns.auditable.scheme_criterion_text.status.destroy_html', text: self.name, criterion: self.scheme_criterion.full_name)}
           end
       end
 
@@ -203,7 +193,7 @@ module Auditable
       if system_messages.present?
         system_messages.each do |system_message|
           AuditLog.create!(
-              system_message: system_message[:message].gsub('%s', '<strong>%s</strong>') % system_message[:params],
+              system_message: system_message[:message],
               user_comment: user_comment,
               old_status: system_message.has_key?(:old_status) ? system_message[:old_status] : nil,
               new_status: system_message.has_key?(:new_status) ? system_message[:new_status] : nil,

@@ -55,7 +55,7 @@ module Effective
           end
         end
         # CertificationPathStatus
-        table_column :certification_path_status, label: I18n.t('activerecord.attributes.effective.datatables.certification_paths.certification_path_status.label'),
+        table_column :certification_path_status, label: I18n.t('models.effective.datatables.certification_paths.certification_path_status.label'),
                      filter: {type: :select, values: Proc.new { CertificationPathStatus.all.map { |status| [status.name, status.id] } }
                      } do |certification_path|
           certification_path.certification_path_status.name
