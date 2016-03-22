@@ -4,9 +4,8 @@ en:
       certification_path_label: Certification
   layouts:
     authenticated:
-      btn_cancel: No
-      btn_close: Close
-      btn_save: Yes
+      btn_cancel: 'No'
+      btn_save: 'Yes'
       modal_title: Confirm
     topnavbar:
       navbar:
