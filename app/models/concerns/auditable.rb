@@ -70,14 +70,14 @@ module Auditable
           project = self.project
           certification_path = self
           if self.certification_path_status_id_changed?
-            old_status_model = CertificationPathStatus.find_by_id(self.status_was)
-            new_status_model = CertificationPathStatus.find_by_id(self.status)
+            old_status_model = CertificationPathStatus.find_by_id(self.certification_path_status_id_was)
+            new_status_model = CertificationPathStatus.find_by_id(self.certification_path_status_id)
           end
           if (action == AUDIT_LOG_CREATE)
-            system_messages << {message: t('models.concerns.auditable.certification_path.status.create_html', certification_path: self.name, project: self.project.name), old_status: self.status_was, new_status: self.status}
+            system_messages << {message: t('models.concerns.auditable.certification_path.status.create_html', certification_path: self.name, project: self.project.name), old_status: self.certification_path_status_id_was, new_status: self.certification_path_status_id}
           elsif (action == AUDIT_LOG_UPDATE)
             if self.certification_path_status_id_changed?
-              system_messages << {message: t('models.concerns.auditable.certification_path.status.update_html', certification_path: self.name, project: self.project.name, old_status: old_status_model.name, new_status: new_status_model.name), old_status: self.status_was, new_status: self.status}
+              system_messages << {message: t('models.concerns.auditable.certification_path.status.update_html', certification_path: self.name, project: self.project.name, old_status: old_status_model.name, new_status: new_status_model.name), old_status: self.certification_path_status_id_was, new_status: self.certification_path_status_id}
             end
           end
           if (action == AUDIT_LOG_CREATE || action == AUDIT_LOG_UPDATE)
