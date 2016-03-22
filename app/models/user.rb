@@ -1,3 +1,5 @@
+require 'bcrypt'
+
 class User < ActiveRecord::Base
   include ActionView::Helpers::TranslationHelper
   include BCrypt
