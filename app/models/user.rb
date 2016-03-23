@@ -107,8 +107,14 @@ class User < ActiveRecord::Base
   private
   def init
     self.role ||= :default_role
-    self.linkme_user ||= true
-    self.gsas_trust_team ||= false
-    self.cgp_license ||= false
+    if self.linkme_user.nil?
+      self.linkme_user = true
+    end
+    if self.gsas_trust_team.nil?
+      self.linkme_user = false
+    end
+    if self.linkme_user.nil?
+      self.cgp_license = false
+    end
   end
 end
