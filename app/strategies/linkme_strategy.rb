@@ -5,7 +5,7 @@ class LinkmeStrategy < BaseStrategy
       # Fetch the form params
       user_data = params.fetch('user', {})
 
-      # Setup a linkme.qa API session
+      # Create a linkme.qa service object
       linkme = LinkmeService.new
 
       # Create an API session
@@ -44,8 +44,10 @@ class LinkmeStrategy < BaseStrategy
 
       # Abandon the linkme API session
       linkme.session_abandon
-    rescue LinkmeServiceError
-      fail 'An error occurred when trying to log in, please try again. If this problem persists, please contact an administrator.'
+    rescue LinkmeService::AccountLockedError
+      fail 'Too many failed authentication attempts have been made on this account. This account is now locked out for 5 minutes.'
+    rescue LinkmeService::ApiError
+      fail 'An error occurred when trying to log in, please try again later. If this problem persists, please contact an administrator.'
     end
   end
 end

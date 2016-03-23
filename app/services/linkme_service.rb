@@ -110,32 +110,50 @@ class LinkmeService
       end
 
       if (response.body.blank? || response.code.blank? || response.message.blank?)
-        raise LinkmeServiceError, 'Invalid response'
+        raise ApiError, 'Invalid response'
       elsif (response.code != '200')
-        raise LinkmeServiceError, 'HTTP error code ' + response.code + ' ' + response.message
+        raise ApiError, 'HTTP error ' + response.code + ' ' + response.message
       else
         # Parse the response XML
         response_xml = Nokogiri::XML(response.body)
 
-        # Check if the ErrCode XML node exists
+        # Get the error code
         error_code = response_xml.at_xpath('//ErrCode').text
 
-        # Check if there is an error
-        if (error_code == '0')
-          # Return the response XML
+        # Return response or handle error
+        if error_code == '0'
+          # When there's no error, return the response XML
           response_xml
         else
-          error_description = response_xml.at_xpath('//ErrDesc').text
-          raise LinkmeServiceError, 'API error code ' + error_code + ' ' + error_description
+          error_description = 'API error ' + error_code + ' ' + response_xml.at_xpath('//ErrDesc').text
+          case error_code
+            when '406'
+              # Method could not uniquely identify a record on which to operate.
+              raise NotFoundError, error_description
+            when '501'
+              # Too many failed authentication attempts have been made on this account. This account is now locked out for 5 minutes.
+              raise AccountLockedError, error_description
+            else
+              # Other error
+              raise ApiError, error_description
+          end
         end
       end
     rescue StandardError => e
       Rails.logger.error 'Error when executing a linkme API request: ' + e.to_s
-      raise LinkmeServiceError, 'Error when executing a linkme API request: ' + e.to_s
+      raise e
     end
   end
-end
 
-# todo: move this class to a separate file
-class LinkmeServiceError < StandardError
+  # General error class
+  class ApiError < StandardError
+  end
+
+  # linkme API error code 406: Method could not uniquely identify a record on which to operate.
+  class NotFoundError < ApiError
+  end
+
+  # linkme API error code 501: Too many failed authentication attempts have been made on this account. This account is now locked out for 5 minutes.
+  class AccountLockedError < ApiError
+  end
 end
