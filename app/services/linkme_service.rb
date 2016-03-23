@@ -38,6 +38,7 @@ class LinkmeService
         id: response_xml.at_xpath('//Member.Profile.Get//ID').text,
         username: response_xml.at_xpath('//Member.Profile.Get//Username').text,
         email: response_xml.at_xpath('//Member.Profile.Get//EmailAddr').text,
+        picture: response_xml.at_xpath('//Member.Profile.Get//HeadshotImageURI').text,
         membership: response_xml.at_xpath('//Member.Profile.Get//Membership').text,
         employer: response_xml.at_xpath('//Member.Profile.Get//Employer').text
     }

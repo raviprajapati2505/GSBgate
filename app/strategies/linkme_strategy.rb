@@ -26,6 +26,7 @@ class LinkmeStrategy < BaseStrategy
         user.linkme_member_id = member_profile[:id]
         user.username = member_profile[:username]
         user.email = member_profile[:email]
+        user.picture = member_profile[:picture]
         user.cgp_license = (member_profile[:membership] == 'Practitioner - Certificate')
         user.gsas_trust_team = (member_profile[:employer] == 'GORD')
 
