@@ -52,7 +52,7 @@
                 <div class="ibox-content">
                     <div class="form-group">
                         <%= label_tag 'user_id', 'User', class: 'control-label' %>
-                        <% users = User.authorized_for_project(@project).with_assessor_project_role %>
+                        <% users = User.authorized_for_project(@project).with_project_team_role %>
                         <%= select_tag 'user_id', options_for_select(users.map { |k| [k.email, k.id] }), {include_blank: '- Not allocated -', class: 'form-control'} %>
                     </div>
                     <div class="form-group">

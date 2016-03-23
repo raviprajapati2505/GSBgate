@@ -17,7 +17,7 @@ class ProjectsUsersController < AuthenticatedController
 
   def edit
     @page_title = ERB::Util.html_escape(@projects_user.user.email)
-    if (current_user.system_admin? || current_user.gord_admin?) && params.has_key?(:query) && params[:query] == 'certifiers'
+    if (current_user.system_admin? || current_user.gsas_trust_admin?) && params.has_key?(:query) && params[:query] == 'certifiers'
       @show_certifiers = true
     end
   end
@@ -55,9 +55,7 @@ class ProjectsUsersController < AuthenticatedController
 
     # remove user - notification_type link
     user = @projects_user.user
-    if user.user?
-      NotificationTypesUser.delete_all(user_id: user.id, project_id: @projects_user.project.id)
-    end
+    NotificationTypesUser.delete_all(user_id: user.id, project_id: @projects_user.project.id)
 
     project = @projects_user.project
     @projects_user.destroy
@@ -69,20 +67,21 @@ class ProjectsUsersController < AuthenticatedController
   # Can optionally be filtered by role and email
   def available
     # Filter by Role
-    if params.has_key?(:role)
-      case params[:role].to_sym
-        when :assessor
-          users = User.assessors
-        when :certifier
-          users = User.certifiers
-        when :enterprise_client
-          users = User.enterprise_clients
-        else
-          users = User.all
-      end
-    else
-      users = User.all
-    end
+    # if params.has_key?(:role)
+    #   case params[:role].to_sym
+    #     when :assessor
+    #       users = User.assessors
+    #     when :certifier
+    #       users = User.certifiers
+    #     when :enterprise_client
+    #       users = User.enterprise_clients
+    #     else
+    #       users = User.all
+    #   end
+    # else
+    #   users = User.all
+    # end
+    users = User.default_role.all
     # Filter by text in email field
     users = users.search_email(params[:q]) if params.has_key?(:q)
     # Filter out users already in project
@@ -101,7 +100,7 @@ class ProjectsUsersController < AuthenticatedController
   def list_users_sharing_projects
     if params.has_key?(:user_id) && params.has_key?(:q) && params.has_key?(:page)
       if params[:user_id] == current_user.id.to_s
-        if current_user.system_admin? || current_user.gord_top_manager? || current_user.gord_manager? || current_user.gord_admin?
+        if current_user.system_admin? || current_user.gsas_trust_top_manager? || current_user.gsas_trust_manager? || current_user.gsas_trust_admin?
           total_count = User.where('email like ?', '%' + params[:q] + '%')
                             .count
           items = User.select('id, email as text')
@@ -132,7 +131,7 @@ class ProjectsUsersController < AuthenticatedController
 
   def list_projects
     if params.has_key?(:q) && params.has_key?(:page)
-      if current_user.system_admin? || current_user.gord_top_manager? || current_user.gord_manager? || current_user.gord_admin?
+      if current_user.system_admin? || current_user.gsas_trust_top_manager? || current_user.gsas_trust_manager? || current_user.gsas_trust_admin?
         total_count = Project.where('name like ?', '%' + params[:q] + '%').count
         items = Project.select('id, name as text, projects.code as code, projects.latlng as latlng')
                     .where('name like ?', '%' + params[:q] + '%')

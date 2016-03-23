@@ -5,7 +5,7 @@ class ProjectsUser < ActiveRecord::Base
   belongs_to :user
   belongs_to :project
 
-  enum role: { project_team_member: 0, project_manager: 1, enterprise_client: 2, certifier: 3, certifier_manager: 4 }
+  enum role: { project_team_member: 0, cgp_project_manager: 1, enterprise_client: 2, certifier: 3, certification_manager: 4 }
 
   validates :role, inclusion: ProjectsUser.roles.keys
   validates_presence_of :user
@@ -19,23 +19,31 @@ class ProjectsUser < ActiveRecord::Base
     where(user: user)
   }
 
-  scope :assessors, -> {
-    where(role: [ProjectsUser.roles[:project_team_member], ProjectsUser.roles[:project_manager]])
+  scope :project_team, -> {
+    where(role: [ProjectsUser.roles[:project_team_member], ProjectsUser.roles[:cgp_project_manager]])
   }
 
-  scope :assessor_managers, -> {
-    where(role: ProjectsUser.roles[:project_manager])
+  scope :cgp_project_managers, -> {
+    where(role: ProjectsUser.roles[:cgp_project_manager])
   }
 
-  scope :certifiers, -> {
-    where(role: [ProjectsUser.roles[:certifier], ProjectsUser.roles[:certifier_manager]])
+  scope :gsas_trust_team, -> {
+    where(role: [ProjectsUser.roles[:certifier], ProjectsUser.roles[:certification_manager]])
   }
 
-  scope :certifier_managers, -> {
-    where(role: ProjectsUser.roles[:certifier_manager])
+  scope :certification_managers, -> {
+    where(role: ProjectsUser.roles[:certification_manager])
   }
 
   scope :enterprise_clients, -> {
     where(role: ProjectsUser.roles[:enterprise_client])
   }
+
+  def project_team?
+    self.project_team_member? || self.cgp_project_manager?
+  end
+
+  def gsas_trust_team?
+    self.certifier? || self.certification_manager?
+  end
 end

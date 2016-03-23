@@ -163,7 +163,7 @@ class CertificationPath < ActiveRecord::Base
     case certification_path_status_id
       when CertificationPathStatus::ACTIVATING
         # TODO certification path expiry date
-        unless project.certifier_manager_assigned?
+        unless project.certification_manager_assigned?
           todos << 'A certifier manager must be assigned to the project.'
         end
         if mixed? && (main_scheme_mix_selected? == false)
@@ -307,7 +307,7 @@ class CertificationPath < ActiveRecord::Base
           scheme_mix_criteria.each do |smc|
             if smc.appealed?
               smc.submitting_after_appeal!
-              # Reset linked requirements to 'required' and unassign from assessor
+              # Reset linked requirements to 'required' and unassign from project team member
               smc.requirement_data.each do |requirement|
                 requirement.user = nil
                 requirement.required!

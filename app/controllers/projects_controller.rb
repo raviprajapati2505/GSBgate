@@ -45,7 +45,7 @@ class ProjectsController < AuthenticatedController
 
     @project.transaction do
       if @project.save
-        projects_user = ProjectsUser.new(project: @project, user: current_user, role: ProjectsUser.roles[:project_manager])
+        projects_user = ProjectsUser.new(project: @project, user: current_user, role: ProjectsUser.roles[:cgp_project_manager])
         if projects_user.save
           redirect_to @project, notice: 'Project was successfully created.'
           return
@@ -101,7 +101,7 @@ class ProjectsController < AuthenticatedController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def project_params
-      if current_user.system_admin? || current_user.gord_admin?
+      if current_user.system_admin? || current_user.gsas_trust_admin?
         params.require(:project).permit(:name, :owner, :description, :address, :location, :country, :construction_year, :latlng, :gross_area, :certified_area, :carpark_area, :project_site_area, :terms_and_conditions_accepted, :location_plan_file, :site_plan_file, :design_brief_file, :project_narrative_file, :code)
       else
         params.require(:project).permit(:name, :description, :address, :location, :country, :construction_year, :latlng, :gross_area, :certified_area, :carpark_area, :project_site_area, :terms_and_conditions_accepted, :location_plan_file, :site_plan_file, :design_brief_file, :project_narrative_file)

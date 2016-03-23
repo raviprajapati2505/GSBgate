@@ -30,7 +30,7 @@ Rails.application.routes.draw do
     end
     resources :projects_users, only: [:create, :edit, :show, :update, :destroy], path: 'users', as: 'users', constraints: {id: /\d+/} do
       collection do
-        get 'available/:role' => 'projects_users#available', as: 'available', default: {role: 'all'}, constraints: {role: /all|certifier|assessor|enterprise_client/}
+        get 'available/:role' => 'projects_users#available', as: 'available', default: {role: 'all'}, constraints: {role: /all|default_role/}
       end
     end
     resources :certification_paths, except: [:index, :edit, :destroy, :update], path: 'certificates' do

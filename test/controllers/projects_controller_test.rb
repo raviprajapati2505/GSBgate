@@ -32,13 +32,13 @@ class ProjectsControllerTest < ActionController::TestCase
   end
 
   test 'project manager can show project' do
-    sign_in users(:project_manager)
+    sign_in users(:cgp_project_manager)
     project = projects(:one)
     get :show, id: project.id
     assert_response :success
     assert_not_nil assigns(:project)
     assert_select 'h5:nth-last-of-type(1)', 'Project team'
-    sign_out users(:project_manager)
+    sign_out users(:cgp_project_manager)
   end
 
   test 'client can show project' do

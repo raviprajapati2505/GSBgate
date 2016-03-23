@@ -15,7 +15,7 @@ class AuditLog < ActiveRecord::Base
   }
 
   scope :for_user_projects, ->(user) {
-    if user.system_admin? || user.gord_manager? || user.gord_top_manager? || user.gord_admin?
+    if user.system_admin? || user.gsas_trust_manager? || user.gsas_trust_top_manager? || user.gsas_trust_admin?
       all
     else
       where(project: user.projects)

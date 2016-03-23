@@ -8,12 +8,12 @@ class DigestMailer < ApplicationMailer
     @user = user
     user.last_notified_at ||= DateTime.new
 
-    if user.gord_manager? || user.gord_top_manager?
+    if user.gsas_trust_manager? || user.gsas_trust_top_manager?
       # NO AUDIT LOG
       @audit_logs = []
       @more_audit_logs = 0
     else
-      if user.system_admin? || user.gord_admin?
+      if user.system_admin? || user.gsas_trust_admin?
         @audit_logs = AuditLog.where('updated_at > ?', user.last_notified_at)
       else
       @audit_logs = AuditLog.where('updated_at > ?', user.last_notified_at)

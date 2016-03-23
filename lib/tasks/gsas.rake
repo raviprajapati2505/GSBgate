@@ -60,7 +60,7 @@ namespace :gsas do
       certification_paths.each do |certification_path|
         Task.create(taskable: certification_path,
                     task_description_id: Taskable::SYS_ADMIN_DURATION,
-                    application_role: User.roles[:gord_admin],
+                    application_role: User.roles[:gsas_trust_admin],
                     project: certification_path.project,
                     certification_path: certification_path)
         DigestMailer.certification_expired_email(certification_path).deliver_now
@@ -103,7 +103,7 @@ namespace :gsas do
       requirements.each do |requirement|
         Task.create(taskable: requirement,
                     task_description_id: Taskable::PROJ_MNGR_OVERDUE,
-                    project_role: ProjectsUser.roles[:project_manager],
+                    project_role: ProjectsUser.roles[:cgp_project_manager],
                     project: requirement.scheme_mix_criteria.first.scheme_mix.certification_path.project,
                     certification_path: requirement.scheme_mix_criteria.first.scheme_mix.certification_path)
       end
@@ -125,7 +125,7 @@ namespace :gsas do
       criteria.each do |criterion|
         Task.create(taskable: criterion,
                     task_description_id: Taskable::CERT_MNGR_OVERDUE,
-                    project_role: ProjectsUser.roles[:certifier_manager],
+                    project_role: ProjectsUser.roles[:certification_manager],
                     project: criterion.scheme_mix.certification_path.project,
                     certification_path: criterion.scheme_mix.certification_path)
       end

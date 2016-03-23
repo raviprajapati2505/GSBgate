@@ -3,7 +3,7 @@ class TasksController < AuthenticatedController
 
   def index
     @page_title = 'Tasks'
-    if current_user.system_admin? || current_user.gord_manager? || current_user.gord_top_manager? || current_user.gord_admin?
+    if current_user.system_admin? || current_user.gsas_trust_manager? || current_user.gsas_trust_top_manager? || current_user.gsas_trust_admin?
       @projects = Project.all
     else
       @projects = current_user.projects

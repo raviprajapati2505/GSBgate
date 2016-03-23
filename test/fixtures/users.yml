@@ -35,9 +35,9 @@ project_admin:
   email: project_admin@example.com
   role: 1
 
-project_manager:
+cgp_project_manager:
   id: 6
-  email: project_manager@example.com
+  email: cgp_project_manager@example.com
   role: 1
 
 project_owner_2:

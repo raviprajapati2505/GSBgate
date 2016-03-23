@@ -151,7 +151,7 @@
                     <% if can?(:assign_certifier, @scheme_mix_criterion) %>
                         <div class="row">
                             <div class="col-md-7">
-                                <% users = User.authorized_for_project(@project).with_certifier_project_role %>
+                                <% users = User.authorized_for_project(@project).with_gsas_trust_team_role %>
                                 <% user_id = @scheme_mix_criterion.certifier.id if @scheme_mix_criterion.certifier.present? %>
                                 <%= f.select :user_id, options_for_select(users.map { |k| [k.email, k.id]}, user_id), {label: 'Responsibility', include_blank: ''}, class: 'select2-certifier' %>
                             </div>
@@ -259,4 +259,4 @@
 <div id="editStatusSchemeMixCriterionModal" class="modal fade"></div>
 <div id="reviewSchemeMixCriterionModal" class="modal fade"></div>
 <%= javascript_include_tag 'select_project_certifier' %>
-<%= javascript_include_tag 'select_project_assessor' %>
+<%= javascript_include_tag 'select_project_team_member' %>

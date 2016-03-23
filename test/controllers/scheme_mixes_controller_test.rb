@@ -28,14 +28,14 @@ class SchemeMixesControllerTest < ActionController::TestCase
   end
 
   test 'project manager can show scheme mix' do
-    sign_in users(:project_manager)
+    sign_in users(:cgp_project_manager)
     project = projects(:one)
     certification_path = certification_paths(:one)
     scheme = scheme_mixes(:one)
     get :show, project_id: project.id, certification_path_id: certification_path.id, id: scheme.id
     assert_response :success
     assert_select '.accordion-body tbody tr', 2, 'wrong number of criteria'
-    sign_out users(:project_manager)
+    sign_out users(:cgp_project_manager)
   end
 
   test 'client can show scheme mix' do

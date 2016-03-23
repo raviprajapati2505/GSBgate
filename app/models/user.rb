@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   include ActionView::Helpers::TranslationHelper
   include BCrypt
 
-  enum role: { system_admin: 0, user: 1, gord_top_manager: 2, gord_manager: 3, gord_admin: 4, assessor: 5, certifier: 6, enterprise_client: 7 }
+  enum role: { system_admin: 0, default_role: 1, gsas_trust_top_manager: 2, gsas_trust_manager: 3, gsas_trust_admin: 4 }
 
   has_many :documents
   has_many :scheme_mix_criteria_documents
@@ -29,16 +29,8 @@ class User < ActiveRecord::Base
     User.includes(:projects_users).where(projects_users: {id: nil})
   }
 
-  scope :assessors, -> {
-    where(role: User.roles[:assessor])
-  }
-
-  scope :certifiers, -> {
-    where(role: User.roles[:certifier])
-  }
-
-  scope :enterprise_clients, -> {
-    where(role: User.roles[:enterprise_client])
+  scope :default_role, -> {
+    where(role: User.roles[:default_role])
   }
 
   scope :search_email, ->(text) {
@@ -65,11 +57,11 @@ class User < ActiveRecord::Base
     joins(:projects_users).where(projects_users: {project_id: project.id})
   }
 
-  scope :with_assessor_project_role, -> {
+  scope :with_project_team_role, -> {
     where('projects_users.role in (0, 1)')
   }
 
-  scope :with_certifier_project_role, -> {
+  scope :with_gsas_trust_team_role, -> {
     where('projects_users.role in (3, 4)')
   }
 
@@ -114,8 +106,9 @@ class User < ActiveRecord::Base
 
   private
   def init
-    self.role ||= :assessor
-    self.linkme_user ||= :true
+    self.role ||= :default_role
+    self.linkme_user ||= true
+    self.gsas_trust_team ||= false
+    self.cgp_license ||= false
   end
-
 end

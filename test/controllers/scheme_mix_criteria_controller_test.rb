@@ -32,7 +32,7 @@ class SchemeMixCriteriaControllerTest < ActionController::TestCase
   end
 
   test 'project manager can edit scheme mix criteria' do
-    sign_in users(:project_manager)
+    sign_in users(:cgp_project_manager)
     project = projects(:one)
     certification_path = certification_paths(:one)
     scheme = scheme_mixes(:one)
@@ -41,7 +41,7 @@ class SchemeMixCriteriaControllerTest < ActionController::TestCase
     assert_response :success
     assert_select '#accordion > div', 2, 'wrong number of requirements'
     assert_select '#accordion select[name="[user_id]"]', 2, 'wrong number of "assign to member" select boxes'
-    sign_out users(:project_manager)
+    sign_out users(:cgp_project_manager)
   end
 
   test 'client can edit scheme mix criteria' do

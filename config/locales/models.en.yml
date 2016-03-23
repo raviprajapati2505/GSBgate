@@ -22,10 +22,10 @@ en:
       projects_user:
         roles:
           project_team_member: Project team member
-          project_manager: CGP project manager
+          cgp_project_manager: CGP project manager
           enterprise_client: Enterprise client
           certifier: Certifier
-          certifier_manager: Certification manager
+          certification_manager: Certification manager
       scheme_mix_criterion:
         audit_log_user_comment: Comment
       scheme_mix_criteria_document:
@@ -35,13 +35,10 @@ en:
       user:
         roles:
           system_admin: System administrator
-          user: User
-          gord_top_manager: GSAS trust top manager
-          gord_manager: GSAS trust manager
-          gord_admin: GSAS trust admin
-          certifier: GSAS trust member
-          assessor: Project team member
-          enterprise_client: Enterprise client
+          gsas_trust_top_manager: GSAS trust top manager
+          gsas_trust_manager: GSAS trust manager
+          gsas_trust_admin: GSAS trust admin
+          default_role: Default role
   models:
     concerns:
       auditable:
@@ -138,9 +135,9 @@ en:
             label: Certification Targeted Score
           schemes_array:
             label: Certification Typologies
-          assessors_array:
+          project_team_array:
             label: Project team
-          certifiers_array:
+          gsas_trust_team_array:
             label: GSAS trust team
           enterprise_clients_array:
             label: Enterprise clients

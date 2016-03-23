@@ -54,9 +54,9 @@ class Project < ActiveRecord::Base
     return false
   end
 
-  def certifier_manager_assigned?
+  def certification_manager_assigned?
     projects_users.each do |projects_user|
-      if projects_user.certifier_manager?
+      if projects_user.certification_manager?
         return true
       end
     end

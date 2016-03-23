@@ -64,7 +64,7 @@ class CertificationPathStatus < ActiveRecord::Base
   # ------------------------------------------------------------------------
   # STATUSES GROUPED BY 'SIDE'
   # ------------------------------------------------------------------------
-  STATUSES_AT_ASSESSOR_SIDE = [
+  STATUSES_AT_PROJECT_TEAM_SIDE = [
       CertificationPathStatus::SUBMITTING,
       CertificationPathStatus::SUBMITTING_AFTER_SCREENING,
       CertificationPathStatus::ACKNOWLEDGING,
@@ -88,7 +88,7 @@ class CertificationPathStatus < ActiveRecord::Base
       CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT
   ]
 
-  STATUSES_AT_GORD_SIDE = STATUSES_AT_CERTIFIER_SIDE + STATUSES_AT_ADMIN_SIDE + STATUSES_AT_MANAGEMENT_SIDE
+  STATUSES_AT_GSAS_TRUST_TEAM_SIDE = STATUSES_AT_CERTIFIER_SIDE + STATUSES_AT_ADMIN_SIDE + STATUSES_AT_MANAGEMENT_SIDE
 
   # ------------------------------------------------------------------------
   # STATUSES GROUPED BY 'STAGE'
@@ -120,8 +120,8 @@ class CertificationPathStatus < ActiveRecord::Base
       CertificationPathStatus::ACKNOWLEDGING_AFTER_APPEAL
   ]
 
-  def self.at_gord_side?(id)
-    STATUSES_AT_GORD_SIDE.include?(id)
+  def self.at_gsas_trust_team_side?(id)
+    STATUSES_AT_GSAS_TRUST_TEAM_SIDE.include?(id)
   end
 
 end
