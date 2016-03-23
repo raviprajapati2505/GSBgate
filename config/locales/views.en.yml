@@ -150,6 +150,8 @@ en:
         modal_title: Update status
       new_link:
         modal_title: Link document to other criteria
+      unlink:
+        modal_title: Unlink document from criteria
   score:
     score_toggle:
       scores_in_certificate_points:

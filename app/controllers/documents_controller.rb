@@ -28,6 +28,35 @@ class DocumentsController < AuthenticatedController
     end
   end
 
+  def destroy
+    respond_to do |format|
+      # test if document has no approved links before accepting request
+      unless Document.where(id: @document.id).joins(:scheme_mix_criteria_documents).exists?(scheme_mix_criteria_documents: {status: SchemeMixCriteriaDocument.statuses[:approved]})
+        directories = @document.document_file.store_dir.split('/')
+        directories.delete_at(0) # delete '..'
+        directories.delete_at(0) # delete 'private' subdirectory
+        directory = directories.join('/')
+        filepath = Rails.root.to_s + '/private/' + directory + '/' + @document.name
+        # delete physical file
+        File.delete(filepath)
+        # delete empty directories
+        begin
+          until directories.empty?
+            directory = directories.join('/')
+            Dir.delete(Rails.root.to_s + '/private/' + directory)
+            directories.pop
+          end
+        rescue SystemCallError
+        end
+        # delete database record
+        @document.destroy
+        format.html { redirect_to :back, notice: 'The document was successfully deleted.' }
+      else
+        format.html { redirect_to :back, alert: 'The document is already approved for some criteria and can not be deleted anymore.' }
+      end
+    end
+  end
+
   def show
     send_file @document.path
   end

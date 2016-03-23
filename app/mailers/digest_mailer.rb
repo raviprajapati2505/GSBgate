@@ -81,7 +81,6 @@ class DigestMailer < ApplicationMailer
       add_condition(user, NotificationType::NEW_DOCUMENT_WAITING_FOR_APPROVAL, SchemeMixCriteriaDocument.name.demodulize, SchemeMixCriteriaDocument::statuses[:awaiting_approval])
       add_condition(user, NotificationType::DOCUMENT_APPROVED, SchemeMixCriteriaDocument.name.demodulize, SchemeMixCriteriaDocument::statuses[:approved])
       add_condition(user, NotificationType::DOCUMENT_APPROVED, SchemeMixCriteriaDocument.name.demodulize, SchemeMixCriteriaDocument::statuses[:rejected])
-      add_condition(user, NotificationType::DOCUMENT_APPROVED, SchemeMixCriteriaDocument.name.demodulize, SchemeMixCriteriaDocument::statuses[:superseded])
 
       @more_audit_logs = @audit_logs.count - MAX_LOG_ITEMS
       @more_audit_logs = @more_audit_logs < 0 ? 0 : @more_audit_logs

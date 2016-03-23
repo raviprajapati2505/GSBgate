@@ -22,6 +22,22 @@ class SchemeMixCriteriaDocumentsController < AuthenticatedController
     end
   end
 
+  def unlink
+  end
+
+  def destroy_link
+    if params[:scheme_mix_criteria_document].present?
+      # delete audit logs
+      AuditLog.delete_all(auditable_type: 'SchemeMixCriteriaDocument', auditable_id: @scheme_mix_criteria_document.id)
+      SchemeMixCriteriaDocument.where(document_id: @scheme_mix_criteria_document.document_id)
+          .where.not(scheme_mix_criterion_id: params[:scheme_mix_criteria_document].map {|smcd| smcd[:scheme_mix_criterion_id].to_i})
+          .delete_all
+      redirect_to :back, notice: 'The document was successfully unlinked from the criteria.'
+    else
+      redirect_to :back, alert: 'No criteria were selected.'
+    end
+  end
+
   def edit_status
   end
 

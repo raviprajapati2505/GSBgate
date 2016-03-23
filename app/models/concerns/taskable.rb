@@ -75,6 +75,10 @@ module Taskable
     case self.class.name
       when ProjectsUser.name.demodulize
         Task.delete_all(user: self.user)
+      when SchemeMixCriteriaDocument.name.demodulize
+        if self.scheme_mix_criterion.scheme_mix_criteria_documents.where(status: SchemeMixCriteriaDocument.statuses[:awaiting_approval]).count.zero?
+          Task.delete_all(taskable: self.scheme_mix_criterion, task_description_id: PROJ_MNGR_DOC_APPROVE)
+        end
     end
   end
 
@@ -626,7 +630,7 @@ module Taskable
                         project: self.scheme_mix_criterion.scheme_mix.certification_path.project,
                         certification_path: self.scheme_mix_criterion.scheme_mix.certification_path)
           end
-        when SchemeMixCriteriaDocument.statuses[:approved], SchemeMixCriteriaDocument.statuses[:rejected], SchemeMixCriteriaDocument.statuses[:superseded]
+        when SchemeMixCriteriaDocument.statuses[:approved], SchemeMixCriteriaDocument.statuses[:rejected]
           # Destroy project managers tasks to approve/reject document
           if self.scheme_mix_criterion.scheme_mix_criteria_documents.where(status: SchemeMixCriteriaDocument.statuses[:awaiting_approval]).count.zero?
             Task.delete_all(taskable: self.scheme_mix_criterion, task_description_id: PROJ_MNGR_DOC_APPROVE)

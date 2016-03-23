@@ -39,6 +39,12 @@
                         <% if can?(:create_link, smcd) %>
                             <%= btn_link_to(new_link_project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, smcd), remote: true, size: 'small', icon: 'link', tooltip: 'Link document to other criteria') %>
                         <% end %>
+                        <% if can?(:unlink, smcd) %>
+                          <%= btn_link_to(unlink_project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, smcd), remote: true, size: 'small', icon: 'chain-broken', tooltip: 'Unlink document from other criteria') %>
+                        <% end %>
+                        <% if can?(:destroy, smcd.document) %>
+                          <%= btn_link_to(project_certification_path_document_path(@project, @certification_path, smcd.document), method: :delete, data: {confirm: 'Are you sure to delete the document and unlink it from all criteria ?'}, style: 'danger', size: 'small', icon: 'trash', tooltip: 'Delete document') %>
+                        <% end %>
                     </td>
                 </tr>
             <% end %>
@@ -47,4 +53,5 @@
     </table>
     <div id="editStatusSchemeMixCriteriaDocumentModal" class="modal fade"></div>
     <div id="newLinkSchemeMixCriteriaDocumentModal" class="modal fade"></div>
+    <div id="destroyLinkSchemeMixCriteriaDocumentModal" class="modal fade"></div>
 <% end %>
