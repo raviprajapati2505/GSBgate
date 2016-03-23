@@ -29,7 +29,9 @@ module Effective
         table_column 'project_certified_area', column: 'projects.certified_area', type: :integer, visible: false
         table_column 'project_carpark_area', column: 'projects.carpark_area', type: :integer, visible: false
         table_column 'project_site_area', column: 'projects.project_site_area', type: :integer, visible: false
-        table_column 'project_created_at', column: 'projects.created_at', type: :datetime, visible: false, filter: {type: :select, values: Proc.new { Project.pluck_date_field_by_year_month_day(:created_at, :desc) }}
+        table_column 'project_created_at', column: 'projects.created_at', type: :datetime, visible: false, filter: {type: :select, values: Proc.new { Project.pluck_date_field_by_year_month_day(:created_at, :desc) }} do |rec|
+          localize(rec.project_created_at.in_time_zone) unless rec.project_created_at.nil?
+        end
 
         table_column 'project_owner', column: 'projects.owner', label: 'Project Owner', visible: false
 
@@ -47,9 +49,15 @@ module Effective
           t(CertificationPath.development_types.keys[rec.certification_path_development_type], scope: 'activerecord.attributes.certification_path.development_types') unless rec.certification_path_development_type.nil?
         end
         table_column 'certification_path_appealed', column: 'certification_paths.appealed', label: t('models.effective.datatables.projects_certification_paths.certification_path_appealed.label'), type: :boolean, visible: false
-        table_column 'certification_path_created_at', column: 'certification_paths.created_at', label: t('models.effective.datatables.projects_certification_paths.certification_path_created_at.label'), type: :datetime, visible: false, filter: {type: :select, values: Proc.new { CertificationPath.pluck_date_field_by_year_month_day(:created_at, :desc) }}
-        table_column 'certification_path_started_at', column: 'certification_paths.started_at', label: t('models.effective.datatables.projects_certification_paths.certification_path_started_at.label'), type: :datetime, visible: false, filter: {type: :select, values: Proc.new { CertificationPath.pluck_date_field_by_year_month_day(:started_at, :desc) }}
-        table_column 'certification_path_certified_at', column: 'certification_paths.certified_at', label: t('models.effective.datatables.projects_certification_paths.certification_path_certified_at.label'), type: :datetime, visible: false, filter: {type: :select, values: Proc.new { CertificationPath.pluck_date_field_by_year_month_day(:certified_at, :desc) }}
+        table_column 'certification_path_created_at', column: 'certification_paths.created_at', label: t('models.effective.datatables.projects_certification_paths.certification_path_created_at.label'), type: :datetime, visible: false, filter: {type: :select, values: Proc.new { CertificationPath.pluck_date_field_by_year_month_day(:created_at, :desc) }} do |rec|
+          localize(rec.certification_path_created_at.in_time_zone) unless rec.certification_path_created_at.nil?
+        end
+        table_column 'certification_path_started_at', column: 'certification_paths.started_at', label: t('models.effective.datatables.projects_certification_paths.certification_path_started_at.label'), type: :datetime, visible: false, filter: {type: :select, values: Proc.new { CertificationPath.pluck_date_field_by_year_month_day(:started_at, :desc) }} do |rec|
+          localize(rec.certification_path_started_at.in_time_zone) unless rec.certification_path_started_at.nil?
+        end
+        table_column 'certification_path_certified_at', column: 'certification_paths.certified_at', label: t('models.effective.datatables.projects_certification_paths.certification_path_certified_at.label'), type: :datetime, visible: false, filter: {type: :select, values: Proc.new { CertificationPath.pluck_date_field_by_year_month_day(:certified_at, :desc) }} do |rec|
+          localize(rec.certification_path_certified_at.in_time_zone) unless rec.certification_path_certified_at.nil?
+        end
         table_column 'certification_path_duration', column: 'certification_paths.duration', label: t('models.effective.datatables.projects_certification_paths.certification_path_duration.label'), type: :integer, visible: false
         # Note: internally we use the status id, so sorting is done by id and not the name !
         table_column 'certification_path_certification_path_status_id', column: 'certification_paths.certification_path_status_id', label: t('models.effective.datatables.projects_certification_paths.certification_path_certification_path_status_id.label'), filter: {type: :select, values: Proc.new { CertificationPathStatus.all.map { |status| [status.name, status.id] } }} do |rec|
