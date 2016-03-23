@@ -12,7 +12,7 @@ class SchemeMixCriterion < ActiveRecord::Base
   belongs_to :certifier, class_name: 'User', inverse_of: :scheme_mix_criteria
   belongs_to :main_scheme_mix_criterion, class_name: 'SchemeMixCriterion'
 
-  enum status: {submitting: 0, submitted: 1, verifying: 2, submitted_score_achieved: 3, submitted_score_not_achieved: 4, appealed: 5, submitting_after_appeal: 6, submitted_after_appeal: 7, verifying_after_appeal: 8, submitted_score_achieved_after_appeal: 9, submitted_score_not_achieved_after_appeal: 10}
+  enum status: {submitting: 10, submitted: 20, verifying: 30, score_awarded: 41, score_downgraded: 42, score_upgraded: 43, score_minimal:44, appealed: 50, submitting_after_appeal: 60, submitted_after_appeal: 70, verifying_after_appeal: 80, score_awarded_after_appeal: 91, score_downgraded_after_appeal: 92, score_upgraded_after_appeal: 93, score_minimal_after_appeal:94 }
 
   after_initialize :init
   after_update :update_inheriting_criteria
@@ -139,7 +139,7 @@ class SchemeMixCriterion < ActiveRecord::Base
   end
 
   def at_certifier_side?
-    return verifying? || submitted_score_achieved? || submitted_score_not_achieved? || verifying_after_appeal? || submitted_score_achieved_after_appeal? || submitted_score_not_achieved_after_appeal?
+    return verifying? || score_minimal? || score_awarded? || score_downgraded? || score_upgraded? || verifying_after_appeal? || score_minimal_after_appeal? || score_awarded_after_appeal? || score_downgraded_after_appeal? || score_upgraded_after_appeal?
   end
 
   # This overrides default behaviour
@@ -172,30 +172,32 @@ class SchemeMixCriterion < ActiveRecord::Base
               .last
   end
 
-  def next_status(target_achieved = true)
+  def next_status
     if submitting?
       return :submitted
     elsif submitting_after_appeal?
       return :submitted_after_appeal
     elsif verifying?
-      if target_achieved
-        return :submitted_score_achieved
-      else
-        return :submitted_score_not_achieved
-      end
+      return :score_minimal if achieved_score == scheme_criterion.minimum_score
+      return :score_awarded if achieved_score == submitted_score
+      return :score_downgraded if achieved_score < submitted_score
+      return :score_upgraded if achieved_score > submitted_score
+      logger.fatal('Error advancing status from verifying')
+      return false
     elsif verifying_after_appeal?
-      if target_achieved
-        return :submitted_score_achieved_after_appeal
-      else
-        return :submitted_score_not_achieved_after_appeal
-      end
+      return :score_minimal_after_appeal if achieved_score = scheme_criterion.minimum_score
+      return :score_awarded_after_appeal if achieved_score = submitted_score
+      return :score_downgraded_after_appeal if achieved_score < submitted_score
+      return :score_upgraded_after_appeal if achieved_score > submitted_score
+      logger.fatal('Error advancing status from verifying_after_appeal')
+      return false
     elsif submitted? && [CertificationPathStatus::SUBMITTING, CertificationPathStatus::SUBMITTING_AFTER_SCREENING].include?(scheme_mix.certification_path.certification_path_status_id)
       return :submitting
     elsif submitted_after_appeal? && (scheme_mix.certification_path.certification_path_status_id == CertificationPathStatus::SUBMITTING_AFTER_APPEAL)
       return :submitting_after_appeal
-    elsif (submitted_score_achieved? || submitted_score_not_achieved?) && (scheme_mix.certification_path.certification_path_status_id == CertificationPathStatus::VERIFYING)
+    elsif (score_minimal? || score_awarded? || score_downgraded? || score_upgraded?) && (scheme_mix.certification_path.certification_path_status_id == CertificationPathStatus::VERIFYING)
       return :verifying
-    elsif (submitted_score_achieved_after_appeal? || submitted_score_not_achieved_after_appeal?) && (scheme_mix.certification_path.certification_path_status_id == CertificationPathStatus::VERIFYING_AFTER_APPEAL)
+    elsif (score_minimal_after_appeal? || score_awarded_after_appeal? || score_downgraded_after_appeal? || score_upgraded_after_appeal?) && (scheme_mix.certification_path.certification_path_status_id == CertificationPathStatus::VERIFYING_AFTER_APPEAL)
       return :verifying_after_appeal
     else
       return false

@@ -28,6 +28,22 @@ en:
           certification_manager: Certification manager
       scheme_mix_criterion:
         audit_log_user_comment: Comment
+        statuses:
+          submitting: Submitting
+          submitted: Submitted
+          verifying: Verifying
+          score_awarded: Awarded level
+          score_downgraded: Downgraded level
+          score_upgraded: Upgraded level
+          score_minimal: Minimum level assigned
+          appealed: Appealed
+          submitting_after_appeal: Submitting after appeal
+          submitted_after_appeal: Submitted after appeal
+          verifying_after_appeal: Verifying after appeal
+          score_awarded_after_appeal: Awarded level after appeal
+          score_downgraded_after_appeal: Downgraded level after appeal
+          score_upgraded_after_appeal: Upgraded level after appeal
+          score_minimal_after_appeal: Minimum level assigned after appeal
       scheme_mix_criteria_document:
         audit_log_user_comment: Comment
       requirement_datum:

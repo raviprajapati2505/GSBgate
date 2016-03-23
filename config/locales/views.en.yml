@@ -122,16 +122,16 @@ en:
       tooltip_sortable: You can drag and drop the panels below to re-order their appearance.
   scheme_mix_criteria:
     edit_status:
+      info:
+        achieved_html: The criterion status will advance to <strong>%{status}</strong>.
       title:
         undo: Revert status
-        achieved: Submitted score achieved
-        not_achieved: Submitted score not achieved
         submit: Submit criterion
+        verify: Verify criterion
     form:
       details:
         btn_edit_status:
-          achieved: Submitted score achieved
-          not_achieved: Submitted score not achieved
+          verified: Criterion has been verified
           undo: Revert status
           submit: Submit criterion
       scores:

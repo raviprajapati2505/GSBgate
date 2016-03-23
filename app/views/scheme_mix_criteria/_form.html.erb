@@ -26,7 +26,7 @@
                 <tr>
                     <th>Status</th>
                     <td>
-                        <%= @scheme_mix_criterion.status.humanize %>
+                        <%= t(@scheme_mix_criterion.status, scope: 'activerecord.attributes.scheme_mix_criterion.statuses') %>
                     </td>
                 </tr>
                 </tbody>
@@ -35,8 +35,7 @@
                 <div class="hr-line-dashed"></div>
                 <% if @scheme_mix_criterion.at_certifier_side? %>
                     <% if @scheme_mix_criterion.in_verification? %>
-                        <%= btn_link_to(edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, achieved: 1), remote: true, icon: 'check', text: t('.details.btn_edit_status.achieved')) %>
-                        <%= btn_link_to(edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, achieved: 0), remote: true, icon: 'times', text: t('.details.btn_edit_status.not_achieved'), style: 'danger') %>
+                        <%= btn_link_to(edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), remote: true, icon: 'check', text: t('.details.btn_edit_status.verified')) %>
                     <% else %>
                         <%= btn_link_to(edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, undo: 1), remote: true, icon: 'undo', text: t('.details.btn_edit_status.undo'), style: 'danger') %>
                     <% end %>

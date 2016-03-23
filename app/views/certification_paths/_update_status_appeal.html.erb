@@ -19,7 +19,7 @@
                                     <% unless scheme_mix_criterion.main_scheme_mix_criterion_id.present? %>
                                         <li>
                                             <%= check_box_tag 'scheme_mix_criterion[]', scheme_mix_criterion.id, false, id: 'scheme_mix_criterion_' + scheme_mix_criterion.id.to_s %>
-                                            <%= label_tag 'scheme_mix_criterion_' + scheme_mix_criterion.id.to_s, "#{scheme_mix_criterion.full_name} (#{scheme_mix_criterion.status.humanize})" %>
+                                            <%= label_tag 'scheme_mix_criterion_' + scheme_mix_criterion.id.to_s, "#{scheme_mix_criterion.full_name} (#{t(scheme_mix_criterion.status, scope: 'activerecord.attributes.scheme_mix_criterion.statuses')})" %>
                                         </li>
                                     <% end %>
                                 <% end %>

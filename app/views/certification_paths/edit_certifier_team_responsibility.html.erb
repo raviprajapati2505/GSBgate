@@ -33,7 +33,7 @@
                                                 <td><%= scheme_mix_criterion.scheme_criterion.full_name %></td>
                                                 <td><%= scheme_mix_criterion.certifier.email if scheme_mix_criterion.certifier %></td>
                                                 <td><%= l(scheme_mix_criterion.due_date, format: :short) if scheme_mix_criterion.due_date %></td>
-                                                <td><%= scheme_mix_criterion.status.humanize.gsub(' ', '&nbsp;').html_safe if scheme_mix_criterion.status %></td>
+                                                <td><%= t(scheme_mix_criterion.status, scope: 'activerecord.attributes.scheme_mix_criterion.statuses').gsub(' ', '&nbsp;').html_safe if scheme_mix_criterion.status %></td>
                                             </tr>
                                         <% end %>
                                     <% end %>

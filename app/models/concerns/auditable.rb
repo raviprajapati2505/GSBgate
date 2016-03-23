@@ -95,7 +95,7 @@ module Auditable
           system_messages_temp = []
           if (action == AUDIT_LOG_UPDATE)
             if self.status_changed?
-              system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.status.update_html', criterion: self.name, old_status: self.status_was.humanize, new_status: self.status.humanize), old_status: self.status_was, new_status: self.status}
+              system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.status.update_html', criterion: self.name, old_status: t(self.status_was, scope: 'activerecord.attributes.scheme_mix_criterion.statuses'), new_status: t(self.status, scope: 'activerecord.attributes.scheme_mix_criterion.statuses')), old_status: self.status_was, new_status: self.status}
             end
             if self.certifier_id_changed? || self.due_date_changed?
               if self.certifier_id.blank?

@@ -7,19 +7,19 @@
                 <h4 class="modal-title">
                     <% if params.has_key?(:undo) && (params[:undo] == '1') %>
                         <%= t('.title.undo') %>
-                    <% elsif params.has_key?(:achieved) && (params[:achieved] == '1') %>
-                        <%= t('.title.achieved') %>
-                    <% elsif params.has_key?(:achieved) %>
-                        <%= t('.title.not_achieved') %>
+                    <% elsif @scheme_mix_criterion.verifying? || @scheme_mix_criterion.verifying_after_appeal? %>
+                        <%= t('.title.verify') %>
                     <% else %>
                         <%= t('.title.submit') %>
                     <% end %>
                 </h4>
             </div>
-            <% if params.has_key?(:achieved) && (params[:achieved] == '1') %>
-                <%= hidden_field_tag :achieved, 1 %>
-            <% end %>
             <div class="modal-body">
+                <% if @scheme_mix_criterion.verifying? || @scheme_mix_criterion.verifying_after_appeal? %>
+                    <p class="alert alert-info"><%= fa_icon('info-circle') %>
+                        <%= t('.info.achieved_html', status: t(@scheme_mix_criterion.next_status, scope: 'activerecord.attributes.scheme_mix_criterion.statuses')) %>
+                    </p>
+                <% end %>
                 <%= f.text_area :audit_log_user_comment, rows: 4 %>
             </div>
             <div class="modal-footer">

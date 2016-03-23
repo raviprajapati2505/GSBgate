@@ -28,7 +28,7 @@ class SchemeMixCriteriaController < AuthenticatedController
     todos = @scheme_mix_criterion.todo_before_status_advance
 
     if todos.blank?
-      status = @scheme_mix_criterion.next_status(params.has_key?(:achieved))
+      status = @scheme_mix_criterion.next_status
 
       if status.present?
         @scheme_mix_criterion.transaction do

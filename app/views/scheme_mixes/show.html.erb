@@ -211,7 +211,7 @@
                                                             <%= fa_icon('files-o', tooltip: 'The scores of this criterion are inherited from a criterion with the same name in the main scheme.') %>
                                                         <% end %>
                                                     </td>
-                                                    <td><%= scheme_mix_criterion.status.humanize %></td>
+                                                    <td><%= t(scheme_mix_criterion.status, scope: 'activerecord.attributes.scheme_mix_criterion.statuses') %></td>
                                                     <td>
                                                         <%= scheme_mix_criterion.scheme_criterion.weight %> %
                                                         <% if scheme_mix_criterion.scheme_criterion.incentive_weight > 0  %>
