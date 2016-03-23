@@ -6,13 +6,13 @@
                 <%= btn_close_modal %>
                 <h4 class="modal-title">
                     <% if params.has_key?(:undo) && (params[:undo] == '1') %>
-                        Undo status change
+                        <%= t('.title.undo') %>
                     <% elsif params.has_key?(:achieved) && (params[:achieved] == '1') %>
-                        Submitted score achieved
+                        <%= t('.title.achieved') %>
                     <% elsif params.has_key?(:achieved) %>
-                        Submitted score not achieved
+                        <%= t('.title.not_achieved') %>
                     <% else %>
-                        Submit criterion
+                        <%= t('.title.submit') %>
                     <% end %>
                 </h4>
             </div>
