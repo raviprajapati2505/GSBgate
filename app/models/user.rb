@@ -121,9 +121,9 @@ class User < ActiveRecord::Base
       self.linkme_user = true
     end
     if self.gsas_trust_team.nil?
-      self.linkme_user = false
+      self.gsas_trust_team = false
     end
-    if self.linkme_user.nil?
+    if self.cgp_license.nil?
       self.cgp_license = false
     end
   end
