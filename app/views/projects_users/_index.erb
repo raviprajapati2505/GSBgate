@@ -26,7 +26,7 @@
        modal_id = 'addEnterpriseClientModal'
    end
 %>
-
+<% if can?(:read, project_users[0]) %>
 <div class="ibox float-e-margins">
     <div class="ibox-title">
         <h5><%= title %></h5>
@@ -117,3 +117,4 @@
         <% end %>
     </div>
 </div>
+<% end %>

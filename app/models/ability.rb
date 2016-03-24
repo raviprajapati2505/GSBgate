@@ -48,6 +48,7 @@ class Ability
     project_with_user_in_project_team = {projects_users: {user_id: user.id, role: project_user_project_team_roles}}
     project_with_user_as_certification_manager = {projects_users: {user_id: user.id, role: project_user_role_certification_manager}}
     project_with_user_in_gsas_trust_team = {projects_users: {user_id: user.id, role: project_user_gsas_trust_team_roles}}
+    project_with_user_as_enterprise_client = {projects_users: {user_id: user.id, role: project_user_enterprise_client_roles}}
 
     # ------------------------------------------------------------------------------------------------------------
     # There are 3 types of user roles:
@@ -72,11 +73,10 @@ class Ability
       end
 
       # ProjectsUsers controller
-      can :read, ProjectsUser, role: project_user_project_team_roles, project: project_with_user_in_project_team
+      can :read, ProjectsUser, role: project_user_project_team_roles, project: project_with_user_assigned
       can :read, ProjectsUser, role: project_user_gsas_trust_team_roles, project: project_with_user_in_gsas_trust_team
+      can :read, ProjectsUser, role: project_user_enterprise_client_roles, project: project_with_user_as_enterprise_client
       can :available, ProjectsUser, project: project_with_user_assigned
-      # can :list_users_sharing_projects, ProjectsUser
-      # can :list_projects, ProjectsUser
 
       # Project team
       can :crud, ProjectsUser, role: project_user_project_team_roles, project: project_with_user_as_cgp_project_manager
