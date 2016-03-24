@@ -1,0 +1,13 @@
+<div class="ibox float-e-margins">
+  <div class="ibox-title">
+    <h5>GSAS contact</h5>
+  </div>
+  <div class="ibox-content">
+    <% gord_contact = ProjectsUser.for_project(project).certification_managers.first %>
+    <% unless gord_contact.nil? %>
+        <p>You can contact <a href="mailto:<%= gord_contact.user.email %>"><%= gord_contact.user.email %></a> to discuss certification review/verification matters.</p>
+    <% else %>
+        <p>No certifier manager assigned yet.</p>
+    <% end %>
+  </div>
+</div>

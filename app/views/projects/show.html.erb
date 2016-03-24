@@ -141,6 +141,7 @@
             </div>
         </div>
 
+        <%= render partial: 'projects_users/show_gord_contact', locals: {project: @project} %>
         <%= render partial: 'projects_users/index', locals: {project: @project, team: :project_team} %>
         <%= render partial: 'projects_users/index', locals: {project: @project, team: :gsas_trust_team} %>
         <%= render partial: 'projects_users/index', locals: {project: @project, team: :enterprise_clients} %>
