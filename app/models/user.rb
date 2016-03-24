@@ -65,6 +65,16 @@ class User < ActiveRecord::Base
     where('projects_users.role in (3, 4)')
   }
 
+  def full_name
+    name_fields = [self.name_prefix, self.first_name, self.middle_name, self.last_name, self.name_suffix]
+    name_fields = name_fields.reject { |n| n.blank? }
+    full_name = name_fields.join(' ')
+    if full_name.blank?
+      full_name = self.username
+    end
+    full_name
+  end
+
   def password
     @password ||= Password.new(self.encrypted_password)
   end

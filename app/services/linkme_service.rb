@@ -40,7 +40,12 @@ class LinkmeService
         email: response_xml.at_xpath('//Member.Profile.Get//EmailAddr').text,
         picture: response_xml.at_xpath('//Member.Profile.Get//HeadshotImageURI').text,
         membership: response_xml.at_xpath('//Member.Profile.Get//Membership').text,
-        employer: response_xml.at_xpath('//Member.Profile.Get//Employer').text
+        employer: response_xml.at_xpath('//Member.Profile.Get//Employer').text,
+        name_prefix: response_xml.at_xpath('//Member.Profile.Get//NamePrefix').text,
+        first_name: response_xml.at_xpath('//Member.Profile.Get//FirstName').text,
+        middle_name: response_xml.at_xpath('//Member.Profile.Get//MiddleName').text,
+        last_name: response_xml.at_xpath('//Member.Profile.Get//LastName').text,
+        name_suffix: response_xml.at_xpath('//Member.Profile.Get//NameSuffix').text
     }
   end
 

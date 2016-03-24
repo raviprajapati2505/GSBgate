@@ -29,6 +29,11 @@ class LinkmeStrategy < BaseStrategy
         user.picture = member_profile[:picture]
         user.cgp_license = (member_profile[:membership] == 'Practitioner - Certificate')
         user.gsas_trust_team = (member_profile[:employer] == 'GORD')
+        user.name_prefix = member_profile[:name_prefix]
+        user.first_name = member_profile[:first_name]
+        user.middle_name = member_profile[:middle_name]
+        user.last_name = member_profile[:last_name]
+        user.name_suffix = member_profile[:name_suffix]
 
         # Update user sign in statistics
         user.log_sign_in
