@@ -79,6 +79,7 @@ class UsersController < AuthenticatedController
   def find_users_by_email
     check_gsas_trust_team = params.has_key?(:gsas_trust_team) && (params[:gsas_trust_team] == '1')
     users = []
+    existing_user_ids = []
     result = {items: {}, total_count: 0}
 
     begin
@@ -106,13 +107,21 @@ class UsersController < AuthenticatedController
         # Find local DB users by email and add them to the array
         users = users + User.local_users.where(email: email)
 
+        # Retrieve the ids of all users that are already linked to the project
+        if params.has_key?(:project_id)
+          existing_user_ids = ProjectsUser.where(project_id: params[:project_id]).pluck(:user_id)
+        end
+
         # Add users to the json result
         users.each do |u|
           result[:items][u.id] = {}
           result[:items][u.id][:user_name] = u.full_name
 
+          # Check if the user is already linked to the project
+          if (existing_user_ids.include?(u.id))
+            result[:items][u.id][:error] = 'This user is already linked to the project.'
           # Check for gsas_trust_team flag if required
-          if (check_gsas_trust_team && !u.gsas_trust_team?)
+          elsif (check_gsas_trust_team && !u.gsas_trust_team?)
             result[:items][u.id][:error] = 'This user is not a GORD employee and cannot be added to the GSAS trust team.'
           end
         end

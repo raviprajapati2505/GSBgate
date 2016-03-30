@@ -61,16 +61,22 @@ $(function () {
                     else {
                         if (data.total_count > 0) {
                             $.each(data.items, function (user_id, user_data) {
-                                if ('error' in user_data) {
-                                    findUsersByEmail.addTableRow(error_user_template.replace(/____error____/g, user_data.error).replace(/____user_name____/g, user_data.user_name));
-                                }
-                                else {
-                                    findUsersByEmail.addTableRow(existing_user_template.replace(/____user_id____/g, user_id).replace(/____user_name____/g, user_data.user_name));
+                                // Check uniqueness
+                                if (modal.find("[data-user-uid='" + user_id + "']").length < 1) {
+                                    if ('error' in user_data) {
+                                        findUsersByEmail.addTableRow(error_user_template.replace(/____error____/g, user_data.error).replace(/____user_id____/g, user_id).replace(/____user_name____/g, user_data.user_name));
+                                    }
+                                    else {
+                                        findUsersByEmail.addTableRow(existing_user_template.replace(/____user_id____/g, user_id).replace(/____user_name____/g, user_data.user_name));
+                                    }
                                 }
                             });
                         }
                         else {
-                            findUsersByEmail.addTableRow(unknown_user_template.replace(/____email____/g, email_field.val()));
+                            // Check uniqueness
+                            if (modal.find("[data-user-uid='" + email_field.val() + "']").length < 1) {
+                                findUsersByEmail.addTableRow(unknown_user_template.replace(/____email____/g, email_field.val()));
+                            }
                         }
                         findUsersByEmail.resetForm();
                     }

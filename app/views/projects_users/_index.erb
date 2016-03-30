@@ -107,13 +107,13 @@
                     <div class="modal-body find-users-modal" data-project-id="<%= @project.id %>" data-gsas-trust-team="<%= (team == :gsas_trust_team) ? '1' : '0' %>">
                         <div class="templates" style="display:none;">
                             <script class="existing-user" type="text/x-custom-template">
-                                <tr>
+                                <tr data-user-uid="____user_id____">
                                     <td>
                                         ____user_name____
                                         <%= pu.hidden_field :user_id, { value: '____user_id____' } %>
                                     </td>
                                     <td>
-                                        will be added to the project as<br />
+                                        This user will be added to the project as<br />
                                         <%= pu.select :role, project_user_roles.keys.map { |k| [t(k, scope: 'activerecord.attributes.projects_user.roles'), k] } %>
                                     </td>
                                     <td>
@@ -122,13 +122,13 @@
                                 </tr>
                             </script>
                             <script class="unknown-user" type="text/x-custom-template">
-                                <tr>
+                                <tr data-user-uid="____email____">
                                     <td>
                                         ____email____
                                         <%= hidden_field_tag 'emails[]', '____email____' %>
                                     </td>
                                     <td>
-                                        will be invited to linkme.qa by email
+                                        This user will be invited to linkme.qa by email.
                                     </td>
                                     <td>
                                         <%= btn_tag(style: 'danger', size: 'small', icon: 'trash', class: 'remove', type: 'button') %>
@@ -136,7 +136,7 @@
                                 </tr>
                             </script>
                             <script class="error-user" type="text/x-custom-template">
-                                <tr>
+                                <tr data-user-uid="____user_id____">
                                     <td>
                                         ____user_name____
                                     </td>
