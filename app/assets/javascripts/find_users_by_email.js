@@ -50,7 +50,7 @@ $(function () {
         else {
             $.ajax({
                 type: 'GET',
-                url: Routes.find_users_by_email_users_path({email: encodeURIComponent(email_field.val()), project_id: modal.data('project-id'), gsas_trust_team: modal.data('gsas-trust-team')}),
+                url: Routes.find_users_by_email_users_path({email: encodeURIComponent(email_field.val()), project_id: modal.data('project-id'), gord_employee: modal.data('gord-employee')}),
                 dataType: 'json',
                 cache: false
             })

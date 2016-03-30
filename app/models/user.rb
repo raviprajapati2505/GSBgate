@@ -131,7 +131,7 @@ class User < ActiveRecord::Base
     user.email = member_profile[:email]
     user.picture = member_profile[:picture]
     user.cgp_license = (member_profile[:membership] == 'Practitioner - Certificate')
-    user.gsas_trust_team = (member_profile[:employer] == 'GORD')
+    user.gord_employee = (member_profile[:employer] == 'GORD')
     user.name_prefix = member_profile[:name_prefix]
     user.first_name = member_profile[:first_name]
     user.middle_name = member_profile[:middle_name]
@@ -150,8 +150,8 @@ class User < ActiveRecord::Base
     if self.linkme_user.nil?
       self.linkme_user = true
     end
-    if self.gsas_trust_team.nil?
-      self.gsas_trust_team = false
+    if self.gord_employee.nil?
+      self.gord_employee = false
     end
     if self.cgp_license.nil?
       self.cgp_license = false

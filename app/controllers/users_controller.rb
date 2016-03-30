@@ -77,7 +77,7 @@ class UsersController < AuthenticatedController
   end
 
   def find_users_by_email
-    check_gsas_trust_team = params.has_key?(:gsas_trust_team) && (params[:gsas_trust_team] == '1')
+    check_gord_employee = params.has_key?(:gord_employee) && (params[:gord_employee] == '1')
     users = []
     existing_user_ids = []
     result = {items: {}, total_count: 0}
@@ -124,8 +124,8 @@ class UsersController < AuthenticatedController
           # Check if the user is already linked to the project
           if (existing_user_ids.include?(u.id))
             result[:items][u.id][:error] = 'This user is already linked to the project.'
-            # Check for gsas_trust_team flag if required
-          elsif (check_gsas_trust_team && !u.gsas_trust_team?)
+            # Check for gord_employee flag if required
+          elsif (check_gord_employee && !u.gord_employee?)
             result[:items][u.id][:error] = 'This user is not a GORD employee and cannot be added to the GSAS trust team.'
           end
         end

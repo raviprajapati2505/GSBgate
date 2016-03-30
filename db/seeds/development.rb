@@ -11,9 +11,9 @@ User.create!(username: 'dr.youssef@example.com', password: 'password', email: 's
 User.create!(username: 'omeima@example.com', password: 'password', email: 'sas@vito.be', linkme_user: false, role: :gsas_trust_admin, first_name: 'GSAS trust admin')
 
 # GSAS trust
-User.create!(username: 'bart.daniels@vito.be', password: 'password', email: 'bart.daniels@vito.be', linkme_user: false, role: :default_role, cgp_license: true, gsas_trust_team: true, first_name: 'Bart', last_name: 'Daniels')
-User.create!(username: 'karel.styns@vito.be', password: 'password', email: 'karel.styns@vito.be', linkme_user: false, role: :default_role, cgp_license: false, gsas_trust_team: true, first_name: 'Karel', last_name: 'Styns')
+User.create!(username: 'bart.daniels@vito.be', password: 'password', email: 'bart.daniels@vito.be', linkme_user: false, role: :default_role, cgp_license: true, gord_employee: true, first_name: 'Bart', last_name: 'Daniels')
+User.create!(username: 'karel.styns@vito.be', password: 'password', email: 'karel.styns@vito.be', linkme_user: false, role: :default_role, cgp_license: false, gord_employee: true, first_name: 'Karel', last_name: 'Styns')
 
 # Project team
-User.create!(username: 'koen.dierckx@vito.be', password: 'password', email: 'koen.dierckx@vito.be', linkme_user: false, role: :default_role, cgp_license: true, gsas_trust_team: false, first_name: 'Koen', last_name: 'Dierckx')
-User.create!(username: 'kristof.dhalle@vito.be', password: 'password', email: 'kristof.dhalle@vito.be', linkme_user: false, role: :default_role, cgp_license: false, gsas_trust_team: false, first_name: 'Kristof', last_name: 'Dhallé')
+User.create!(username: 'koen.dierckx@vito.be', password: 'password', email: 'koen.dierckx@vito.be', linkme_user: false, role: :default_role, cgp_license: true, gord_employee: false, first_name: 'Koen', last_name: 'Dierckx')
+User.create!(username: 'kristof.dhalle@vito.be', password: 'password', email: 'kristof.dhalle@vito.be', linkme_user: false, role: :default_role, cgp_license: false, gord_employee: false, first_name: 'Kristof', last_name: 'Dhallé')
