@@ -5,6 +5,15 @@
     </div>
     <div class="modal-body">
         <%= f.text_area :audit_log_user_comment, label: 'Comment', rows: 4 %>
+
+      <% if can?(:index, AuditLog.new(audit_log_visibility_id: AuditLogVisibility::INTERNAL, project: @project)) %>
+          <%= f.form_group :audit_log_visibility do %>
+              <%= f.radio_button :audit_log_visibility, AuditLogVisibility::PUBLIC, label: 'Public Comment', checked: true, disabled: true %>
+              <span class="help-block">Everyone assigned to this project will be apble to view this comment</span>
+              <%= f.radio_button :audit_log_visibility, AuditLogVisibility::INTERNAL, label: 'GSAS Internal Comment', disabled: true %>
+              <span class="help-block">Only GORD GSAS personel can view this comment</span>
+          <% end %>
+      <% end %>
     </div>
     <div class="modal-footer">
         <%= btn_tag(icon: 'forward', text: 'Advance status') %>

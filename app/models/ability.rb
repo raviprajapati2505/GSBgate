@@ -75,7 +75,7 @@ class Ability
       # ProjectsUsers controller
       can :read, ProjectsUser, role: project_user_project_team_roles, project: project_with_user_assigned
       can :read, ProjectsUser, role: project_user_gsas_trust_team_roles, project: project_with_user_in_gsas_trust_team
-      can :read, ProjectsUser, role: project_user_enterprise_client_roles, project: project_with_user_as_enterprise_client
+      can :read, ProjectsUser, role: project_user_enterprise_client_roles, project: project_with_user_assigned
 
       # Project team
       can :crud, ProjectsUser, role: project_user_project_team_roles, project: project_with_user_as_cgp_project_manager

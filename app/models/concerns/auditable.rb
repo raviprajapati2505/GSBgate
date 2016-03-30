@@ -67,6 +67,7 @@ module Auditable
       project = nil
       certification_path = nil
       auditable = self
+      force_visibility_public = false
 
       case self.class.name.demodulize
         when Project.name.demodulize
@@ -94,6 +95,22 @@ module Auditable
           if self.certification_path_status_id_changed?
             old_status_model = CertificationPathStatus.find_by_id(self.certification_path_status_id_was)
             new_status_model = CertificationPathStatus.find_by_id(self.certification_path_status_id)
+            if CertificationPathStatus::STATUSES_IN_VERIFICATION.include?(old_status_model.id)
+              # generate publicly visible AuditLog record
+              force_visibility_public = true
+              # generate a audit log for all linked scheme mix criteria
+              self.scheme_mix_criteria.each do |scheme_mix_criterion|
+                AuditLog.create!(system_message: t('models.concerns.auditable.scheme_mix_criterion.status.after_verification', criterion: scheme_mix_criterion.name, new_status: scheme_mix_criterion.status, achieved_score: scheme_mix_criterion.achieved_score),
+                                 user_comment: nil,
+                                 old_status: nil,
+                                 new_status: scheme_mix_criterion.status,
+                                 user: User.current,
+                                 auditable: scheme_mix_criterion,
+                                 certification_path: certification_path,
+                                 project: project,
+                                 audit_log_visibility_id: AuditLogVisibility::PUBLIC)
+              end
+            end
           end
           if (action == AUDIT_LOG_CREATE)
             system_messages << {message: t('models.concerns.auditable.certification_path.status.create_html', certification_path: self.name, project: self.project.name), old_status: self.certification_path_status_id_was, new_status: self.certification_path_status_id}
@@ -213,21 +230,25 @@ module Auditable
         user_comment = nil
       end
 
-      projects_user = ProjectsUser.for_project(project).for_user(User.current).first
-      if projects_user.nil?
-        if self.audit_log_visibility.present?
-          visibility = self.audit_log_visibility.to_i
-        else
-          visibility = AuditLogVisibility::INTERNAL
-        end
-      elsif projects_user.gsas_trust_team?
-        if projects_user.certification_manager? && self.audit_log_visibility.present?
-          visibility = self.audit_log_visibility.to_i
-        else
-          visibility = AuditLogVisibility::INTERNAL
-        end
-      else
+      if force_visibility_public
         visibility = AuditLogVisibility::PUBLIC
+      else
+        projects_user = ProjectsUser.for_project(project).for_user(User.current).first
+        if projects_user.nil?
+          if self.audit_log_visibility.present?
+            visibility = self.audit_log_visibility.to_i
+          else
+            visibility = AuditLogVisibility::INTERNAL
+          end
+        elsif projects_user.gsas_trust_team?
+          if projects_user.certification_manager? && self.audit_log_visibility.present?
+            visibility = self.audit_log_visibility.to_i
+          else
+            visibility = AuditLogVisibility::INTERNAL
+          end
+        else
+          visibility = AuditLogVisibility::PUBLIC
+        end
       end
 
       # Create the audit log record(s)

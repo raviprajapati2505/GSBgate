@@ -35,6 +35,7 @@ class SchemeMixCriteriaController < AuthenticatedController
           # Update the scheme mix criterion
           @scheme_mix_criterion.status = status
           @scheme_mix_criterion.audit_log_user_comment = params[:scheme_mix_criterion][:audit_log_user_comment]
+          @scheme_mix_criterion.audit_log_visibility = params[:scheme_mix_criterion][:audit_log_visibility]
           @scheme_mix_criterion.save!
         end
         flash[:notice] = 'Criterion status was sucessfully updated.'
@@ -118,12 +119,18 @@ class SchemeMixCriteriaController < AuthenticatedController
   end
 
   def provide_review_comment
-
+    @is_certifier = false
+    projects_user = ProjectsUser.for_project(@project).for_user(current_user).first
+    if projects_user.nil?
+    elsif projects_user.gsas_trust_team?
+      @is_certifier = projects_user.certifier?
+    end
   end
 
   def add_review_comment
     @scheme_mix_criterion.transaction do
       @scheme_mix_criterion.audit_log_user_comment = params[:scheme_mix_criterion][:audit_log_user_comment]
+      @scheme_mix_criterion.audit_log_visibility =  params[:scheme_mix_criterion][:audit_log_visibility]
       @scheme_mix_criterion.in_review = false
       @scheme_mix_criterion.save!
     end
@@ -138,7 +145,7 @@ class SchemeMixCriteriaController < AuthenticatedController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def scheme_mix_criterion_params
-    params.require(:scheme_mix_criterion).permit(:targeted_score, :achieved_score, :submitted_score, :status, :audit_log_user_comment)
+    params.require(:scheme_mix_criterion).permit(:targeted_score, :achieved_score, :submitted_score, :status, :audit_log_user_comment, :audit_log_visibility)
   end
 
 end

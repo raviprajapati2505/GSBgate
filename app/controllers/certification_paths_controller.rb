@@ -144,6 +144,7 @@ class CertificationPathsController < AuthenticatedController
         # Retrieve & save the next status
         @certification_path.certification_path_status_id = @certification_path.next_status
         @certification_path.audit_log_user_comment = params[:certification_path][:audit_log_user_comment]
+        @certification_path.audit_log_visibility =  params[:certification_path][:audit_log_visibility]
         @certification_path.save!
 
         # If there was an appeal, set the status of the selected criteria to 'Appealed'
@@ -331,7 +332,7 @@ class CertificationPathsController < AuthenticatedController
   end
 
   def certification_path_params
-    params.require(:certification_path).permit(:project_id, :certificate_id, :pcr_track, :duration, :started_at, :development_type, :appealed, :audit_log_user_comment)
+    params.require(:certification_path).permit(:project_id, :certificate_id, :pcr_track, :duration, :started_at, :development_type, :appealed, :audit_log_user_comment, :audit_log_visibility)
   end
 
   def sanitize_filename(name)

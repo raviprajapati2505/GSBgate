@@ -141,6 +141,7 @@
     </div>
 
     <% unless @scheme_mix_criterion.main_scheme_mix_criterion_id.present? %>
+      <% if can?(:read, ProjectsUser.new(project: @project, role: ProjectsUser.roles[:certifier])) %>
         <div class="ibox">
             <div class="ibox-title">
                 <h5><%= t('.certifier.title') %></h5>
@@ -178,6 +179,7 @@
                 <% end %>
             </div>
         </div>
+      <% end %>
     <% end %>
 
     <div class="ibox criterion-information">

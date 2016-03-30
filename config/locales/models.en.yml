@@ -75,6 +75,7 @@ en:
         scheme_mix_criterion:
           status:
             update_html: The status of criterion <strong>%{criterion}</strong> was changed from <strong>%{old_status}</strong> to <strong>%{new_status}</strong>.
+            after_verification: The achieved score for criterion <strong>%{criterion}</strong> is <strong>%{achieved_score}</strong>. The criterion status was changed to <strong>%{new_status}</strong>.
           certifier:
             unassigned_html: A GSAS trust certifier was unassigned from criterion <strong>%{criterion}</strong>.
             assigned_due_html: Criterion <strong>%{criterion}</strong> was assigned to GSAS trust certifier <strong>%{user}</strong> for review. The due date is <strong>%{due_date}</strong>.
