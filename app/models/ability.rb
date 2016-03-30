@@ -149,9 +149,12 @@ class Ability
       can :read, SchemeMixCriteriaDocument, scheme_mix_criterion: {in_review: true, scheme_mix: {certification_path: {project: project_with_user_in_gsas_trust_team}}}
 
       # AuditLog controller
-      can :index, AuditLog, project: project_with_user_assigned
-      can :auditable_index, AuditLog, project: project_with_user_assigned
-      can :auditable_index_comments, AuditLog, project: project_with_user_assigned
+      can :index, AuditLog, audit_log_visibility_id: AuditLog::VISIBILITY_PUBLIC, project: project_with_user_assigned
+      can :index, AuditLog, audit_log_visibility_id: AuditLog::VISIBILITY_INTERN, project: project_with_user_in_gsas_trust_team
+      can :auditable_index, AuditLog, audit_log_visibility_id: AuditLog::VISIBILITY_PUBLIC, project: project_with_user_assigned
+      can :auditable_index, AuditLog, audit_log_visibility_id: AuditLog::VISIBILITY_INTERN, project: project_with_user_in_gsas_trust_team
+      can :auditable_index_comments, AuditLog, audit_log_visibility_id: AuditLog::VISIBILITY_PUBLIC, project: project_with_user_assigned
+      can :auditable_index_comments, AuditLog, audit_log_visibility_id: AuditLog::VISIBILITY_INTERN, project: project_with_user_in_gsas_trust_team
       can :auditable_create, AuditLog #TODO:, project: project_with_user_assigned
 
       # Tasks controller

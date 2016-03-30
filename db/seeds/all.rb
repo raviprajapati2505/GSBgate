@@ -146,3 +146,6 @@ Owner.create!(name: 'Shk. Khalid Jassim Al Thani', private_owner: true)
 Owner.create!(name: 'Shk. Ahmed bin Abdulla bin Zail Al Mahmoud', private_owner: true)
 Owner.create!(name: 'Mohamed Naser Hassan Al Nasr', private_owner: true)
 Owner.create!(name: 'Abdulla Bin Fahad Al Marri', private_owner: true)
+
+AuditLogVisibility.create!(name: 'public')
+AuditLogVisibility.create!(name: 'GORD internal')

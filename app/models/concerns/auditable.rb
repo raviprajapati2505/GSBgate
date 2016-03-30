@@ -9,6 +9,7 @@ module Auditable
 
   included do
     attr_accessor :audit_log_user_comment
+    attr_accessor :audit_log_visibility
 
     has_many :audit_logs, as: :auditable, dependent: :destroy
 
@@ -16,6 +17,27 @@ module Auditable
     after_update :audit_log_update
     after_destroy :audit_log_destroy
     after_touch :audit_log_touch
+  end
+
+  def get_project
+    project = nil
+    case self.class.name.demodulize
+      when Project.name.demodulize
+        project = self
+      when ProjectsUser.name.demodulize
+        project = self.project
+      when CertificationPath.name.demodulize
+        project = self.project
+      when SchemeMixCriterion.name.demodulize
+        project = self.scheme_mix.certification_path.project
+      when SchemeMixCriteriaDocument.name.demodulize
+        project = self.scheme_mix_criterion.scheme_mix.certification_path.project
+      when RequirementDatum.name.demodulize
+        project = self.scheme_mix_criteria.take.scheme_mix.certification_path.project
+      when SchemeCriterionText.name.demodulize
+        project = self.scheme_criterion.scheme_mix_criteria.scheme_mix.certification_path.project
+    end
+    return project
   end
 
   private
@@ -191,6 +213,23 @@ module Auditable
         user_comment = nil
       end
 
+      projects_user = ProjectsUser.for_project(project).for_user(User.current).first
+      if projects_user.nil?
+        if self.audit_log_visibility.present?
+          visibility = self.audit_log_visibility.to_i
+        else
+          visibility = AuditLog::VISIBILITY_INTERN
+        end
+      elsif projects_user.gsas_trust_team?
+        if projects_user.certification_manager? && self.audit_log_visibility.present?
+          visibility = self.audit_log_visibility.to_i
+        else
+          visibility = AuditLog::VISIBILITY_INTERN
+        end
+      else
+        visibility = AuditLog::VISIBILITY_PUBLIC
+      end
+
       # Create the audit log record(s)
       if system_messages.present?
         system_messages.each do |system_message|
@@ -202,7 +241,8 @@ module Auditable
               user: User.current,
               auditable: auditable,
               certification_path: certification_path,
-              project: project)
+              project: project,
+              audit_log_visibility_id: visibility)
         end
       elsif user_comment.present?
         AuditLog.create!(
@@ -210,7 +250,8 @@ module Auditable
             user: User.current,
             auditable: auditable,
             certification_path: certification_path,
-            project: project)
+            project: project,
+            audit_log_visibility_id: visibility)
       end
     rescue NoMethodError
     end

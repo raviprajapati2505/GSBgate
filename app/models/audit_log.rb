@@ -3,6 +3,10 @@ class AuditLog < ActiveRecord::Base
   belongs_to :user
   belongs_to :project
   belongs_to :certification_path
+  has_one :audit_log_visibility
+
+  VISIBILITY_PUBLIC = 1
+  VISIBILITY_INTERN = 2
 
   default_scope { order(id: :desc) }
 

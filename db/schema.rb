@@ -11,11 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160324070154) do
+ActiveRecord::Schema.define(version: 20160329065322) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
+
+  create_table "audit_log_visibilities", force: :cascade do |t|
+    t.string "name", null: false
+  end
 
   create_table "audit_logs", force: :cascade do |t|
     t.text     "system_message"
@@ -24,13 +28,15 @@ ActiveRecord::Schema.define(version: 20160324070154) do
     t.string   "auditable_type"
     t.integer  "project_id"
     t.integer  "user_id"
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
     t.integer  "new_status"
     t.integer  "old_status"
     t.integer  "certification_path_id"
+    t.integer  "audit_log_visibility_id"
   end
 
+  add_index "audit_logs", ["audit_log_visibility_id"], name: "index_audit_logs_on_audit_log_visibility_id", using: :btree
   add_index "audit_logs", ["auditable_type", "auditable_id"], name: "index_audit_logs_on_auditable_type_and_auditable_id", using: :btree
   add_index "audit_logs", ["project_id"], name: "index_audit_logs_on_project_id", using: :btree
   add_index "audit_logs", ["system_message"], name: "index_audit_logs_on_system_message", using: :btree
@@ -382,6 +388,7 @@ ActiveRecord::Schema.define(version: 20160324070154) do
   add_index "users", ["linkme_member_id"], name: "index_users_on_linkme_member_id", unique: true, using: :btree
   add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
 
+  add_foreign_key "audit_logs", "audit_log_visibilities"
   add_foreign_key "audit_logs", "projects"
   add_foreign_key "audit_logs", "users"
   add_foreign_key "calculator_data", "calculators"

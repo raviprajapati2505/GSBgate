@@ -89,18 +89,36 @@ class AuditLogsController < AuthenticatedController
   end
 
   def auditable_index
-    @audit_logs = AuditLog.for_auditable(@auditable).page(params[:page]).per(6)
+    projects_user = ProjectsUser.for_project(@auditable.get_project).for_user(current_user).first
+    if projects_user.nil?
+      @audit_logs = AuditLog.for_auditable(@auditable).page(params[:page]).per(6)
+    elsif projects_user.gsas_trust_team?
+      @audit_logs = AuditLog.for_auditable(@auditable).page(params[:page]).per(6)
+    else
+      @audit_logs = AuditLog.for_auditable(@auditable).where(audit_log_visibility_id: AuditLog::VISIBILITY_PUBLIC).page(params[:page]).per(6)
+    end
     @only_user_comments = false
   end
 
   def auditable_index_comments
-    @audit_logs = AuditLog.for_auditable(@auditable).with_user_comment.page(params[:page]).per(6)
+    @project = @auditable.get_project
+    @is_certifier = false
+    projects_user = ProjectsUser.for_project(@project).for_user(current_user).first
+    if projects_user.nil?
+      @audit_logs = AuditLog.for_auditable(@auditable).with_user_comment.page(params[:page]).per(6)
+    elsif projects_user.gsas_trust_team?
+      @audit_logs = AuditLog.for_auditable(@auditable).with_user_comment.page(params[:page]).per(6)
+      @is_certifier = projects_user.certifier?
+    else
+      @audit_logs = AuditLog.for_auditable(@auditable).where(audit_log_visibility_id: AuditLog::VISIBILITY_PUBLIC).with_user_comment.page(params[:page]).per(6)
+    end
     @only_user_comments = true
   end
 
   def auditable_create
     if params[:audit_log][:user_comment].present?
       @auditable.audit_log_user_comment = params[:audit_log][:user_comment]
+      @auditable.audit_log_visibility =  params[:audit_log][:audit_log_visibility]
       @auditable.touch
       redirect_to :back, notice: 'Your comment was successfully added to the audit log.'
     else
