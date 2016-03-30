@@ -21,8 +21,8 @@ class ProjectsUsersController < AuthenticatedController
           projects_user.role = pu[:role]
           projects_user.project = @project
 
-          # Check ability
-          if can?(:create, projects_user)
+          # Check ability & gsas_trust_team flag
+          if can?(:create, projects_user) && (!projects_user.gsas_trust_team? || projects_user.user.gsas_trust_team?)
             projects_user.save!
             projects_users << projects_user
           end
