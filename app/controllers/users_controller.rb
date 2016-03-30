@@ -77,6 +77,8 @@ class UsersController < AuthenticatedController
   end
 
   def find_users_by_email
+    check_gsas_trust_team = params.has_key?(:gsas_trust_team) && (params[:gsas_trust_team] == '1')
+    users = []
     result = {items: {}, total_count: 0}
 
     begin
@@ -98,16 +100,21 @@ class UsersController < AuthenticatedController
           # Update or create the linkme user in the DB
           user = User.update_or_create_linkme_user!(member_profile)
 
-          # Add the user id to the result
-          result[:items][user.id] = user.full_name
+          users << user
         end
 
-        # Find local DB users by email
-        local_users = User.local_users.where(email: email)
+        # Find local DB users by email and add them to the array
+        users = users + User.local_users.where(email: email)
 
-        # Add the local user ids to the result
-        local_users.each do |local_user|
-          result[:items][local_user.id] = local_user.full_name
+        # Add users to the json result
+        users.each do |u|
+          result[:items][u.id] = {}
+          result[:items][u.id][:user_name] = u.full_name
+
+          # Check for gsas_trust_team flag if required
+          if (check_gsas_trust_team && !u.gsas_trust_team?)
+            result[:items][u.id][:error] = 'This user is not a GORD employee and cannot be added to the GSAS trust team.'
+          end
         end
 
         # Count the users

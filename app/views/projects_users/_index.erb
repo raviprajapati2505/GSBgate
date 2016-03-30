@@ -104,7 +104,7 @@
                         <%= btn_close_modal %>
                         <h4 class="modal-title"><%= title_modal %></h4>
                     </div>
-                    <div class="modal-body find-users-modal">
+                    <div class="modal-body find-users-modal" data-project-id="<%= @project.id %>" data-gsas-trust-team="<%= (team == :gsas_trust_team) ? '1' : '0' %>">
                         <div class="templates" style="display:none;">
                             <script class="existing-user" type="text/x-custom-template">
                                 <tr>
@@ -113,6 +113,7 @@
                                         <%= pu.hidden_field :user_id, { value: '____user_id____' } %>
                                     </td>
                                     <td>
+                                        will be added to the project as<br />
                                         <%= pu.select :role, project_user_roles.keys.map { |k| [t(k, scope: 'activerecord.attributes.projects_user.roles'), k] } %>
                                     </td>
                                     <td>
@@ -125,6 +126,22 @@
                                     <td>
                                         ____email____
                                         <%= hidden_field_tag 'emails[]', '____email____' %>
+                                    </td>
+                                    <td>
+                                        will be invited to linkme.qa by email
+                                    </td>
+                                    <td>
+                                        <%= btn_tag(style: 'danger', size: 'small', icon: 'trash', class: 'remove', type: 'button') %>
+                                    </td>
+                                </tr>
+                            </script>
+                            <script class="error-user" type="text/x-custom-template">
+                                <tr>
+                                    <td>
+                                        ____user_name____
+                                    </td>
+                                    <td>
+                                        ____error____
                                     </td>
                                     <td>
                                         <%= btn_tag(style: 'danger', size: 'small', icon: 'trash', class: 'remove', type: 'button') %>
@@ -146,20 +163,12 @@
                             </div>
                             <p class="help-block"></p>
                         </div>
-                        <table class="table table-striped table-bordered table-hover datatable existing-users" style="display:none;">
+                        <table class="table table-striped table-bordered table-hover datatable users-table" style="display:none;">
                             <tbody>
                                 <tr>
                                     <th>User</th>
-                                    <th>will be added to the project as</th>
-                                    <th></th>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <table class="table table-striped table-bordered table-hover datatable unknown-users" style="display:none;">
-                            <tbody>
-                                <tr>
-                                    <th>Will be invited to linkme.qa by email</th>
-                                    <th></th>
+                                    <th>Action</th>
+                                    <th>&nbsp;</th>
                                 </tr>
                             </tbody>
                         </table>

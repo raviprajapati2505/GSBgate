@@ -4,12 +4,12 @@ $(function () {
         var modal = $(this).parents('.modal-body');
         var find_button = $(this)
         var help_block = modal.find('.help-block');
-        var existing_users_table = modal.find('.existing-users');
-        var unknown_users_table = modal.find('.unknown-users');
+        var users_table = modal.find('.users-table');
         var form_group = modal.find('.form-group');
         var email_field = modal.find('.email-field');
         var existing_user_template = modal.find('.templates .existing-user').html();
         var unknown_user_template = modal.find('.templates .unknown-user').html();
+        var error_user_template = modal.find('.templates .error-user').html();
         var findUsersByEmail = {
             showInfoMessage: function (message) {
                 help_block.text(message);
@@ -32,6 +32,9 @@ $(function () {
             resetForm: function () {
                 help_block.text('');
                 email_field.prop('disabled', false).val('');
+            },
+            addTableRow: function (content) {
+                users_table.show().children('tbody').append(content);
             }
         }
 
@@ -47,7 +50,7 @@ $(function () {
         else {
             $.ajax({
                 type: 'GET',
-                url: Routes.find_users_by_email_users_path({email: encodeURIComponent(email_field.val())}),
+                url: Routes.find_users_by_email_users_path({email: encodeURIComponent(email_field.val()), project_id: modal.data('project-id'), gsas_trust_team: modal.data('gsas-trust-team')}),
                 dataType: 'json',
                 cache: false
             })
@@ -57,12 +60,17 @@ $(function () {
                     }
                     else {
                         if (data.total_count > 0) {
-                            $.each(data.items, function (user_id, user_name) {
-                                existing_users_table.show().children('tbody').append(existing_user_template.replace(/____user_id____/g, user_id).replace(/____user_name____/g, user_name));
+                            $.each(data.items, function (user_id, user_data) {
+                                if ('error' in user_data) {
+                                    findUsersByEmail.addTableRow(error_user_template.replace(/____error____/g, user_data.error).replace(/____user_name____/g, user_data.user_name));
+                                }
+                                else {
+                                    findUsersByEmail.addTableRow(existing_user_template.replace(/____user_id____/g, user_id).replace(/____user_name____/g, user_data.user_name));
+                                }
                             });
                         }
                         else {
-                            unknown_users_table.show().children('tbody').append(unknown_user_template.replace(/____email____/g, email_field.val()));
+                            findUsersByEmail.addTableRow(unknown_user_template.replace(/____email____/g, email_field.val()));
                         }
                         findUsersByEmail.resetForm();
                     }
