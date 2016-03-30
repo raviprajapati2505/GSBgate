@@ -218,16 +218,16 @@ module Auditable
         if self.audit_log_visibility.present?
           visibility = self.audit_log_visibility.to_i
         else
-          visibility = AuditLog::VISIBILITY_INTERN
+          visibility = AuditLogVisibility::INTERNAL
         end
       elsif projects_user.gsas_trust_team?
         if projects_user.certification_manager? && self.audit_log_visibility.present?
           visibility = self.audit_log_visibility.to_i
         else
-          visibility = AuditLog::VISIBILITY_INTERN
+          visibility = AuditLogVisibility::INTERNAL
         end
       else
-        visibility = AuditLog::VISIBILITY_PUBLIC
+        visibility = AuditLogVisibility::PUBLIC
       end
 
       # Create the audit log record(s)

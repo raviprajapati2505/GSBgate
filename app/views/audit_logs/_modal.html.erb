@@ -33,13 +33,13 @@
                     <div class="comment-form" style="display:none;">
                         <%= f.text_area :user_comment, rows: 4 %>
 
-                      <% if can?(:index, AuditLog.new(audit_log_visibility_id: AuditLog::VISIBILITY_INTERN, project: @project)) %>
+                      <% if can?(:index, AuditLog.new(audit_log_visibility_id: AuditLogVisibility::INTERNAL, project: @project)) %>
                         <% disabled = @is_certifier %>
                         <%= f.form_group :audit_log_visibility do %>
-                          <%= f.radio_button :audit_log_visibility, AuditLog::VISIBILITY_PUBLIC, label: 'Public Comment', disabled: disabled %>
+                          <%= f.radio_button :audit_log_visibility, AuditLogVisibility::PUBLIC, label: 'Public Comment', disabled: disabled %>
                             <span class="help-block">Everyone assigned to this project will be apble to view this comment</span>
-                          <%= f.radio_button :audit_log_visibility, AuditLog::VISIBILITY_INTERN, label: 'GORD Internal Comment', checked: true, disabled: disabled %>
-                            <span class="help-block">Only GORD personel can view this comment</span>
+                          <%= f.radio_button :audit_log_visibility, AuditLogVisibility::INTERNAL, label: 'GSAS Internal Comment', checked: true, disabled: disabled %>
+                            <span class="help-block">Only GORD GSAS personel can view this comment</span>
                         <% end %>
                       <% end %>
                     </div>

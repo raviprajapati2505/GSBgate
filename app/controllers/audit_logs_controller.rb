@@ -95,7 +95,7 @@ class AuditLogsController < AuthenticatedController
     elsif projects_user.gsas_trust_team?
       @audit_logs = AuditLog.for_auditable(@auditable).page(params[:page]).per(6)
     else
-      @audit_logs = AuditLog.for_auditable(@auditable).where(audit_log_visibility_id: AuditLog::VISIBILITY_PUBLIC).page(params[:page]).per(6)
+      @audit_logs = AuditLog.for_auditable(@auditable).where(audit_log_visibility_id: AuditLogVisibility::PUBLIC).page(params[:page]).per(6)
     end
     @only_user_comments = false
   end
@@ -110,7 +110,7 @@ class AuditLogsController < AuthenticatedController
       @audit_logs = AuditLog.for_auditable(@auditable).with_user_comment.page(params[:page]).per(6)
       @is_certifier = projects_user.certifier?
     else
-      @audit_logs = AuditLog.for_auditable(@auditable).where(audit_log_visibility_id: AuditLog::VISIBILITY_PUBLIC).with_user_comment.page(params[:page]).per(6)
+      @audit_logs = AuditLog.for_auditable(@auditable).where(audit_log_visibility_id: AuditLogVisibility::PUBLIC).with_user_comment.page(params[:page]).per(6)
     end
     @only_user_comments = true
   end
