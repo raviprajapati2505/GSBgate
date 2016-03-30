@@ -1,18 +1,63 @@
 class ProjectsUsersController < AuthenticatedController
+  include ActionView::Helpers::TextHelper
+
   load_and_authorize_resource :project, except: [:list_users_sharing_projects, :list_projects]
-  load_and_authorize_resource :projects_user, :through => :project, param_method: :authorizations_params, except: [:list_users_sharing_projects, :list_projects]
-  skip_authorization_check only: [:list_users_sharing_projects, :list_projects]
-  before_action :set_controller_model, except: [:new, :create, :available, :list_users_sharing_projects, :list_projects]
+  load_and_authorize_resource :projects_user, :through => :project, except: [:create, :list_users_sharing_projects, :list_projects]
+  skip_authorization_check only: [:create, :list_users_sharing_projects, :list_projects]
+  before_action :set_controller_model, except: [:create, :list_users_sharing_projects, :list_projects]
 
   def create
-    @projects_user = ProjectsUser.new(authorizations_params)
-    @projects_user.project = @project
-    if @projects_user.save
-      DigestMailer.added_to_project_email(@projects_user).deliver_now
-      redirect_to project_path(@project), notice: 'Member was successfully added.'
-    else
-      redirect_to :back, alert: 'All fields are required'
+    notices = []
+
+    # Create ProjectUser records for existing users
+    if params.has_key?(:projects_users)
+      projects_users = []
+
+      ProjectsUser.transaction do
+        params[:projects_users].each do |pu|
+          # Create the model
+          projects_user = ProjectsUser.new
+          projects_user.user_id = pu[:user_id]
+          projects_user.role = pu[:role]
+          projects_user.project = @project
+
+          # Check ability
+          if can?(:create, projects_user)
+            projects_user.save!
+            projects_users << projects_user
+          end
+        end
+      end
+
+      # Notify new members by email
+      projects_users.each do |pu|
+        DigestMailer.added_to_project_email(pu).deliver_now
+      end
+
+      if (projects_users.count > 0)
+        notices << pluralize(projects_users.count, 'user was', 'users were') + ' added to the team.'
+      end
     end
+
+    # Invite new users to linkme.qa by email
+    if params.has_key?(:emails)
+      params[:emails].each do |email|
+        DigestMailer.linkme_invitation_email(email, current_user).deliver_now
+      end
+
+      if (params[:emails].count > 0)
+        notices << pluralize(params[:emails].count, 'user was', 'users were') + ' invited to linkme.qa.'
+      end
+    end
+
+    # Set flash message
+    if (notices.count > 0)
+      flash[:notice] = notices.join('<br />')
+    else
+      flash[:alert] = 'No users were added.'
+    end
+
+    redirect_to project_path(@project)
   end
 
   def edit
@@ -30,7 +75,7 @@ class ProjectsUsersController < AuthenticatedController
   end
 
   def update
-    if @projects_user.update(authorizations_params)
+    if @projects_user.update(projects_user_params)
       DigestMailer.updated_role_email(@projects_user).deliver_now
       redirect_to project_path(@projects_user.project), notice: 'Authorization was successfully updated.'
     else
@@ -63,40 +108,6 @@ class ProjectsUsersController < AuthenticatedController
     redirect_to project_path(project), notice: 'Member was successfully removed.'
   end
 
-  # Returns all users still available to be assigned to a project
-  # Can optionally be filtered by role and email
-  def available
-    # Filter by Role
-    # if params.has_key?(:role)
-    #   case params[:role].to_sym
-    #     when :assessor
-    #       users = User.assessors
-    #     when :certifier
-    #       users = User.certifiers
-    #     when :enterprise_client
-    #       users = User.enterprise_clients
-    #     else
-    #       users = User.all
-    #   end
-    # else
-    #   users = User.all
-    # end
-    users = User.default_role.all
-    # Filter by text in email field
-    users = users.search_email(params[:q]) if params.has_key?(:q)
-    # Filter out users already in project
-    project_user_ids = @projects_users.collect{|project_user| project_user.user_id}
-    users = users.where.not(id: project_user_ids)
-    # Paginate
-    if params.has_key?(:page)
-      users = users.page(params[:page])
-      total_count = users.total_count
-    else
-      total_count = users.count
-    end
-    render json: {total_count: total_count, items: users.select('id, email as text')}
-  end
-
   def list_users_sharing_projects
     if params.has_key?(:user_id) && params.has_key?(:q) && params.has_key?(:page)
       if params[:user_id] == current_user.id.to_s
@@ -117,7 +128,7 @@ class ProjectsUsersController < AuthenticatedController
                             .where('email like ? ', '%' + params[:q] + '%')
                             .where('users.role <> 1 OR projects_users.project_id in (select pu.project_id from projects_users pu where pu.user_id = ?)', current_user.id)
                             .count
-          items = User.select('users.id as id, users.email as text')
+          items = User.select('users.id as id, users.email as text, users.username as username')
                       .distinct
                       .joins(outer_join)
                       .where('email like ? ', '%' + params[:q] + '%')
@@ -163,7 +174,7 @@ class ProjectsUsersController < AuthenticatedController
       @controller_model = @projects_user
     end
 
-    def authorizations_params
-      params.require(:authorization).permit(:user_id, :role)
+    def projects_user_params
+      params.require(:projects_user).permit(:user_id, :role)
     end
 end

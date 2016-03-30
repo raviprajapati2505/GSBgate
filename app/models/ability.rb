@@ -25,7 +25,7 @@ class Ability
     # Some convenience variables to work with enums in conditions
     #   Note: there is a known issue, that complicates working with enums
     #     https://github.com/CanCanCommunity/cancancan/pull/196
-    #   ProjectUser Roles
+    #   ProjectsUser Roles
     project_user_role_cgp_project_manager = ['cgp_project_manager', ProjectsUser.roles[:cgp_project_manager]]
     project_user_role_project_team_member = ['project_team_member', ProjectsUser.roles[:project_team_member]]
     project_user_role_certification_manager = ['certification_manager', ProjectsUser.roles[:certification_manager]]
@@ -76,7 +76,6 @@ class Ability
       can :read, ProjectsUser, role: project_user_project_team_roles, project: project_with_user_assigned
       can :read, ProjectsUser, role: project_user_gsas_trust_team_roles, project: project_with_user_in_gsas_trust_team
       can :read, ProjectsUser, role: project_user_enterprise_client_roles, project: project_with_user_as_enterprise_client
-      can :available, ProjectsUser, project: project_with_user_assigned
 
       # Project team
       can :crud, ProjectsUser, role: project_user_project_team_roles, project: project_with_user_as_cgp_project_manager
@@ -166,6 +165,7 @@ class Ability
 
       # User controller
       can [:list_notifications,:update_notifications], User, id: user.id
+      can :find_users_by_email, User
 
       # Owner
       can [:index, :show], Owner
@@ -180,7 +180,6 @@ class Ability
         can :delete, Project
       end
       # Project Users
-      can :available, ProjectsUser
       # can :list_users_sharing_projects, ProjectsUser
       # can :list_projects, ProjectsUser
       if user.gsas_trust_admin?
@@ -230,6 +229,7 @@ class Ability
       can :manage, :tool
       # User controller
       can [:list_notifications,:update_notifications], User, id: user.id
+      can :find_users_by_email, User
 
       # Owner
       can [:index, :show], Owner

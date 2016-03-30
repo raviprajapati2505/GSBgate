@@ -6,9 +6,10 @@ Rails.application.routes.draw do
   root 'projects#index'
 
   # Our own "users/*" routes
-  resources :users, only: [:index] do
+  resources :users, only: [:index, :show] do
     collection do
       resource :sessions, only: [:new, :create, :destroy]
+      get 'find_users_by_email/:email' => 'users#find_users_by_email', as: 'find_users_by_email', :constraints => { :email => /[^\/]+/ }
     end
     member do
       get 'list_notifications', path: 'notifications'

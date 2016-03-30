@@ -16,24 +16,8 @@ class LinkmeStrategy < BaseStrategy
         # Get the linkme member profile
         member_profile = linkme.member_profile_get
 
-        # Check if the user exists in the GSAS DB
-        user = User.linkme_users.find_by_linkme_member_id(member_profile[:id])
-
-        # If the user record doesn't exist, create it
-        user ||= User.new
-
-        # Update the user's data from linkme.qa
-        user.linkme_member_id = member_profile[:id]
-        user.username = member_profile[:username]
-        user.email = member_profile[:email]
-        user.picture = member_profile[:picture]
-        user.cgp_license = (member_profile[:membership] == 'Practitioner - Certificate')
-        user.gsas_trust_team = (member_profile[:employer] == 'GORD')
-        user.name_prefix = member_profile[:name_prefix]
-        user.first_name = member_profile[:first_name]
-        user.middle_name = member_profile[:middle_name]
-        user.last_name = member_profile[:last_name]
-        user.name_suffix = member_profile[:name_suffix]
+        # Update or create the linkme.qa user in the GSAS DB
+        user = User.update_or_create_linkme_user!(member_profile)
 
         # Update user sign in statistics
         user.log_sign_in

@@ -1,4 +1,4 @@
-<%= bootstrap_form_for([@project, @projects_user], as: :authorization, url: project_user_path(@project, @projects_user)) do |f| %>
+<%= bootstrap_form_for([@project, @projects_user], url: project_user_path(@project, @projects_user)) do |f| %>
     <div class="row">
         <div class="col-lg-12">
             <div class="ibox">

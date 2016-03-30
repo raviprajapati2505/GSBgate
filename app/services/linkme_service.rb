@@ -6,6 +6,22 @@ class LinkmeService
   attr_accessor :call_id
   attr_accessor :session_id
 
+  # Fields that will be returned by the service
+  # when an linkme member profile is requested.
+  MEMBER_PROFILE_FIELDS = {
+      id: 'ID',
+      username: 'Username',
+      email: 'EmailAddr',
+      picture: 'HeadshotImageURI',
+      membership: 'Membership',
+      employer: 'Employer',
+      name_prefix: 'NamePrefix',
+      first_name: 'FirstName',
+      middle_name: 'MiddleName',
+      last_name: 'LastName',
+      name_suffix: 'NameSuffix'
+  }
+
   # Session.Create
   def session_create
     request_xml = prepare_api_request('Session.Create')
@@ -21,7 +37,7 @@ class LinkmeService
 
   # Auth.Authenticate
   # Authenticates a linkme.qa user. On success, the user will be linked to the current API session.
-  # Returns TRUE if successful, FALSE if unsuccessful.
+  # Returns TRUE if successful, FALSE if unsuccessful. Raises an AccountLockedError when the account is locked.
   def auth_authenticate(username, password)
     request_xml = prepare_api_request('Auth.Authenticate', method_params: {Username: username, Password: password}, session_id: @session_id)
     response_xml = execute_api_request(request_xml)
@@ -34,31 +50,23 @@ class LinkmeService
   def member_profile_get
     request_xml = prepare_api_request('Member.Profile.Get', session_id: @session_id)
     response_xml = execute_api_request(request_xml)
-    {
-        id: response_xml.at_xpath('//Member.Profile.Get//ID').text,
-        username: response_xml.at_xpath('//Member.Profile.Get//Username').text,
-        email: response_xml.at_xpath('//Member.Profile.Get//EmailAddr').text,
-        picture: response_xml.at_xpath('//Member.Profile.Get//HeadshotImageURI').text,
-        membership: response_xml.at_xpath('//Member.Profile.Get//Membership').text,
-        employer: response_xml.at_xpath('//Member.Profile.Get//Employer').text,
-        name_prefix: response_xml.at_xpath('//Member.Profile.Get//NamePrefix').text,
-        first_name: response_xml.at_xpath('//Member.Profile.Get//FirstName').text,
-        middle_name: response_xml.at_xpath('//Member.Profile.Get//MiddleName').text,
-        last_name: response_xml.at_xpath('//Member.Profile.Get//LastName').text,
-        name_suffix: response_xml.at_xpath('//Member.Profile.Get//NameSuffix').text
-    }
+    Hash[ MEMBER_PROFILE_FIELDS.map{|key, value| [key, response_xml.at_xpath("//Member.Profile.Get//#{value}").text] } ]
   end
 
   # Sa.People.Profile.FindID
-  def sa_people_profile_findid
-    # todo
-  raise NotImplementedError
+  # Retrieves a list of member profile ids of linkme.qa users by email.
+  # Returns an array of member profile ids or raises a NotFoundError if no member ids were found.
+  def sa_people_profile_findid(email)
+    request_xml = prepare_api_request('Sa.People.Profile.FindID', sa_request: true, method_params: {Email: email})
+    response_xml = execute_api_request(request_xml)
+    response_xml.xpath('//Sa.People.Profile.FindID//ID').map { |xml_node| xml_node.text }
   end
 
   # Sa.People.Profile.Get
-  def sa_people_profile_get
-    # todo
-    raise NotImplementedError
+  def sa_people_profile_get(id)
+    request_xml = prepare_api_request('Sa.People.Profile.Get', sa_request: true, method_params: {ID: id})
+    response_xml = execute_api_request(request_xml)
+    Hash[ MEMBER_PROFILE_FIELDS.map{|key, value| [key, response_xml.at_xpath("//Sa.People.Profile.Get//#{value}").text] } ]
   end
 
   private

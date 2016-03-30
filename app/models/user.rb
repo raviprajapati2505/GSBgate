@@ -114,6 +114,36 @@ class User < ActiveRecord::Base
     self.sign_in_count += 1
   end
 
+
+  # Updates or creates a linkme user in the DB.
+  # - member_profile: A linkme member profile hash returned by the LinkmeService
+  def self.update_or_create_linkme_user!(member_profile)
+    # Check if the user exists in the GSAS DB
+    user = linkme_users.find_by_linkme_member_id(member_profile[:id])
+
+    # If the user record doesn't exist, create it
+    user ||= new
+
+    # Update the user's data
+    user.linkme_user = true
+    user.linkme_member_id = member_profile[:id]
+    user.username = member_profile[:username]
+    user.email = member_profile[:email]
+    user.picture = member_profile[:picture]
+    user.cgp_license = (member_profile[:membership] == 'Practitioner - Certificate')
+    user.gsas_trust_team = (member_profile[:employer] == 'GORD')
+    user.name_prefix = member_profile[:name_prefix]
+    user.first_name = member_profile[:first_name]
+    user.middle_name = member_profile[:middle_name]
+    user.last_name = member_profile[:last_name]
+    user.name_suffix = member_profile[:name_suffix]
+
+    # Save the user
+    user.save!
+
+    user
+  end
+
   private
   def init
     self.role ||= :default_role
