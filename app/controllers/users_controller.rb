@@ -82,26 +82,30 @@ class UsersController < AuthenticatedController
     existing_user_ids = []
     result = {items: {}, total_count: 0}
 
-    begin
-      if params.has_key?(:email)
-        # Clean up the email address
-        email = params[:email].squish.downcase
+    if params.has_key?(:email)
+      begin
+        begin
+          # Clean up the email address
+          email = params[:email].squish.downcase
 
-        # Create a linkme.qa service object
-        linkme = LinkmeService.new
+          # Create a linkme.qa service object
+          linkme = LinkmeService.new
 
-        # Find linkme member(s) by email
-        linkme_member_ids = linkme.sa_people_profile_findid(email)
+          # Find linkme member(s) by email
+          linkme_member_ids = linkme.sa_people_profile_findid(email)
 
-        # Loop the found users
-        linkme_member_ids.each do |linkme_member_id|
-          # Retrieve the user's linkme member profile
-          member_profile = linkme.sa_people_profile_get(linkme_member_id)
+          # Loop the found users
+          linkme_member_ids.each do |linkme_member_id|
+            # Retrieve the user's linkme member profile
+            member_profile = linkme.sa_people_profile_get(linkme_member_id)
 
-          # Update or create the linkme user in the DB
-          user = User.update_or_create_linkme_user!(member_profile)
+            # Update or create the linkme user in the DB
+            user = User.update_or_create_linkme_user!(member_profile)
 
-          users << user
+            users << user
+          end
+        rescue LinkmeService::NotFoundError
+          # Do nothing if the user wasn't found in the linkme DB
         end
 
         # Find local DB users by email and add them to the array
@@ -120,7 +124,7 @@ class UsersController < AuthenticatedController
           # Check if the user is already linked to the project
           if (existing_user_ids.include?(u.id))
             result[:items][u.id][:error] = 'This user is already linked to the project.'
-          # Check for gsas_trust_team flag if required
+            # Check for gsas_trust_team flag if required
           elsif (check_gsas_trust_team && !u.gsas_trust_team?)
             result[:items][u.id][:error] = 'This user is not a GORD employee and cannot be added to the GSAS trust team.'
           end
@@ -128,11 +132,9 @@ class UsersController < AuthenticatedController
 
         # Count the users
         result[:total_count] = result[:items].count
+      rescue LinkmeService::ApiError
+        result = {error: 'An error occurred when trying to find users by email. Please try again later.'}
       end
-    rescue LinkmeService::NotFoundError
-      # Do nothing
-    rescue LinkmeService::ApiError
-      result = {error: 'An error occurred when trying to find users by email. Please try again later.'}
     end
 
     render json: result
