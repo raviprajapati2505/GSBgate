@@ -15,7 +15,7 @@
        project_users = project.projects_users.gsas_trust_team
        project_user_roles =  ProjectsUser.roles.slice(:certifier, :certification_manager)
        can_create_new_project_user = can?(:create, ProjectsUser.new(project_id: @project.id, role: ProjectsUser.roles[:certifier])) || can?(:create, ProjectsUser.new(project_id: @project.id, role: ProjectsUser.roles[:certification_manager]))
-       gsas_trust_team_roles = [User.roles[:gsas_trust_admin], User.roles[:gsas_trust_manager], User.roles[:gsas_trust_top_manager]]
+       gsas_trust_admin_and_manager_roles = [User.roles[:gsas_trust_admin], User.roles[:gsas_trust_manager], User.roles[:gsas_trust_top_manager]]
        modal_id = 'addGsasTrustTeamModal'
      when :enterprise_clients
        title = t('.enterprise_clients.title')
@@ -32,7 +32,7 @@
         <h5><%= title %></h5>
     </div>
     <div class="ibox-content">
-        <% if project_users.count.zero? %>
+        <% if (team != :gsas_trust_team) && project_users.count.zero? %>
             <p>No users found.</p>
         <% else %>
             <table class="table table-striped table-bordered table-hover datatable" cellspacing="0" width="100%">
@@ -48,7 +48,7 @@
                 </thead>
                 <tbody>
                 <% if team == :gsas_trust_team %>
-                    <% User.where(role: gsas_trust_team_roles).each do |admin_user| %>
+                    <% User.where(role: gsas_trust_admin_and_manager_roles).each do |admin_user| %>
                         <tr>
                             <td>
                                 <% if admin_user == current_user %>
