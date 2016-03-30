@@ -156,7 +156,7 @@
                         <div class="form-group">
                             <%= label_tag 'email' + team.to_s, 'Find users by email', class: 'control-label' %>
                             <div class="input-group">
-                                <%= text_field_tag 'email' + team.to_s, 'kristof.dhalle@vito.be', class: 'email-field form-control' %>
+                                <%= text_field_tag 'email' + team.to_s, '', class: 'email-field form-control' %>
                                 <span class="input-group-btn">
                                     <%= btn_tag(class: 'find-users-by-email-btn', icon: 'search', style: 'white', type: 'button') %>
                                 </span>
