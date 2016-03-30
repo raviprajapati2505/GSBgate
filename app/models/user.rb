@@ -124,8 +124,9 @@ class User < ActiveRecord::Base
     user.username = member_profile[:username]
     user.email = member_profile[:email]
     user.picture = member_profile[:picture]
-    user.cgp_license = (member_profile[:membership] == 'Practitioner - Certificate')
     user.gord_employee = (member_profile[:employer] == 'GORD')
+    user.cgp_license = (member_profile[:membership] == 'Practitioner - Certificate')
+    user.cgp_license_expired = (user.cgp_license_was && !user.cgp_license)
 
     # Concat the user's name
     user.name = ''

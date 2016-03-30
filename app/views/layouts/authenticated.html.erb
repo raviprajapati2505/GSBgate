@@ -44,6 +44,16 @@
                 <% if alert %>
                     <p class="flash flash-danger hidden"><%= alert.html_safe %></p>
                 <% end %>
+                <% if current_user.cgp_license_expired? %>
+                    <div class="row">
+                        <div class="col-md-4" style="margin: 0 auto; float: none;">
+                            <div class="alert alert-warning alert-dismissible" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                Your CGP license has expired. Please contact GORD for a renewal.
+                            </div>
+                        </div>
+                    </div>
+                <% end %>
 
                 <!-- Main view  -->
                 <%= yield %>
