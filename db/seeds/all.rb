@@ -148,4 +148,4 @@ Owner.create!(name: 'Mohamed Naser Hassan Al Nasr', private_owner: true)
 Owner.create!(name: 'Abdulla Bin Fahad Al Marri', private_owner: true)
 
 AuditLogVisibility.create!(name: 'public')
-AuditLogVisibility.create!(name: 'GSAS internal')
+AuditLogVisibility.create!(name: 'GSAS trust team internal')
