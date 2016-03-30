@@ -16,4 +16,4 @@ User.create!(username: 'karel.styns@vito.be', password: 'password', email: 'kare
 
 # Project team
 User.create!(username: 'koen.dierckx@vito.be', password: 'password', email: 'koen.dierckx@vito.be', linkme_user: false, role: :default_role, cgp_license: true, gsas_trust_team: false, first_name: 'Koen', last_name: 'Dierckx')
-User.create!(username: 'kristof.dhalle@vito.be', password: 'password', email: 'kristof.dhalle@vito.be', linkme_user: false, role: :default_role, cgp_license: false, gsas_trust_team: false, first_name: 'Kristof', last_name: 'Dhallé')
+User.create!(username: 'kristof.dhalle@vito.be', password: 'password', email: 'kristof.dhalle@vito.be', linkme_user: false, role: :default_role, cgp_license: false, gsas_trust_team: false, first_name: 'Kristof', last_name: 'DhallÃ©')
