@@ -80,13 +80,13 @@ module Auditable
           auditable = self.project
           project = self.project
           if (action == AUDIT_LOG_CREATE)
-            system_messages << {message: t('models.concerns.auditable.projects_user.create_html', user: self.user.email, project: self.project.name, role: t(self.role, scope: 'activerecord.attributes.projects_user.roles'))}
+            system_messages << {message: t('models.concerns.auditable.projects_user.create_html', user: self.user.full_name, project: self.project.name, role: t(self.role, scope: 'activerecord.attributes.projects_user.roles'))}
           elsif (action == AUDIT_LOG_UPDATE)
             if self.role_changed?
-              system_messages << {message: t('models.concerns.auditable.projects_user.update_html', user: self.user.email, project: self.project.name, role_old: t(self.role_was, scope: 'activerecord.attributes.projects_user.roles'), role_new: t(self.role, scope: 'activerecord.attributes.projects_user.roles'))}
+              system_messages << {message: t('models.concerns.auditable.projects_user.update_html', user: self.user.full_name, project: self.project.name, role_old: t(self.role_was, scope: 'activerecord.attributes.projects_user.roles'), role_new: t(self.role, scope: 'activerecord.attributes.projects_user.roles'))}
             end
           elsif (action == AUDIT_LOG_DESTROY)
-            system_messages << {message: t('models.concerns.auditable.projects_user.destroy_html', user: self.user.email, project: self.project.name, role: t(self.role, scope: 'activerecord.attributes.projects_user.roles'))}
+            system_messages << {message: t('models.concerns.auditable.projects_user.destroy_html', user: self.user.full_name, project: self.project.name, role: t(self.role, scope: 'activerecord.attributes.projects_user.roles'))}
           end
         when CertificationPath.name.demodulize
           project = self.project
@@ -123,9 +123,9 @@ module Auditable
               if self.certifier_id.blank?
                 system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.certifier.unassigned_html', criterion: self.name)}
               elsif self.due_date?
-                system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.certifier.assigned_due_html', criterion: self.name, user: self.certifier.email, due_date: l(self.due_date, format: :short))}
+                system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.certifier.assigned_due_html', criterion: self.name, user: self.certifier.full_name, due_date: l(self.due_date, format: :short))}
               else
-                system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.certifier.assigned_html', criterion: self.name, user: self.certifier.email)}
+                system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.certifier.assigned_html', criterion: self.name, user: self.certifier.full_name)}
               end
             end
             if self.targeted_score_changed?
@@ -189,9 +189,9 @@ module Auditable
               if self.user_id.blank?
                 system_messages << {message: t('models.concerns.auditable.requirement_datum.user.unassigned_html', requirement: self.name)}
               elsif self.due_date?
-                system_messages << {message: t('models.concerns.auditable.requirement_datum.user.assigned_due_html', requirement: self.name, user: self.user.email, due_date: l(self.due_date, format: :short))}
+                system_messages << {message: t('models.concerns.auditable.requirement_datum.user.assigned_due_html', requirement: self.name, user: self.user.full_name, due_date: l(self.due_date, format: :short))}
               else
-                system_messages << {message: t('models.concerns.auditable.requirement_datum.user.assigned_html', requirement: self.name, user: self.user.email)}
+                system_messages << {message: t('models.concerns.auditable.requirement_datum.user.assigned_html', requirement: self.name, user: self.user.full_name)}
               end
             end
           end

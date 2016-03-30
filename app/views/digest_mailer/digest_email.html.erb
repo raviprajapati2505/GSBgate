@@ -98,7 +98,7 @@
                         <div style="border-bottom: 1pt solid #e7eaec; margin: 0; padding: 10pt 0;">
                             <small>
                                 <img src="<%= image_url('fa/clock-o_888888_16.png') %>" height="10">&nbsp;<span style='color: #888; font-size: 8.5pt; font-family: "Verdana", "sans-serif";'><%= l(audit_log.created_at) %></span>
-                                | <img src="<%= image_url('fa/user_888888_16.png') %>" height="10">&nbsp;<span style='color: #888; font-size: 8.5pt; font-family: "Verdana", "sans-serif"; text-decoration: none;'><%= audit_log.user.email %></span>
+                                | <img src="<%= image_url('fa/user_888888_16.png') %>" height="10">&nbsp;<span style='color: #888; font-size: 8.5pt; font-family: "Verdana", "sans-serif"; text-decoration: none;'><%= audit_log.user.full_name %></span>
                                 | <img src="<%= image_url('fa/building-o_888888_16.png') %>" height="10">&nbsp;
                                 <% breadcrumbs = breadcrumbs(audit_log.auditable) %>
                                 <% breadcrumbs[:names].each_with_index do |breadcrumb_name, index| %>

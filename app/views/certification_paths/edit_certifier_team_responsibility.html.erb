@@ -31,7 +31,7 @@
                                             <tr>
                                                 <td><%= check_box_tag 'scheme_mix_criteria[]', scheme_mix_criterion.id, false, class: "checkbox_child_#{category.id}" %></td>
                                                 <td><%= scheme_mix_criterion.scheme_criterion.full_name %></td>
-                                                <td><%= scheme_mix_criterion.certifier.email if scheme_mix_criterion.certifier %></td>
+                                                <td><%= scheme_mix_criterion.certifier.full_name if scheme_mix_criterion.certifier %></td>
                                                 <td><%= l(scheme_mix_criterion.due_date, format: :short) if scheme_mix_criterion.due_date %></td>
                                                 <td><%= t(scheme_mix_criterion.status, scope: 'activerecord.attributes.scheme_mix_criterion.statuses').gsub(' ', '&nbsp;').html_safe if scheme_mix_criterion.status %></td>
                                             </tr>
@@ -53,7 +53,7 @@
                     <div class="form-group">
                         <%= label_tag 'certifier_id', 'Allocate the selected criteria to', class: 'control-label' %>
                         <% certifiers = User.authorized_for_project(@project).with_gsas_trust_team_role %>
-                        <%= select_tag 'certifier_id', options_for_select(certifiers.map {|k| [k.email, k.id]}), {include_blank: '- Not allocated -', class: 'form-control'} %>
+                        <%= select_tag 'certifier_id', options_for_select(certifiers.map {|k| [k.full_name, k.id]}), {include_blank: '- Not allocated -', class: 'form-control'} %>
                     </div>
                     <div class="form-group">
                         <%= label_tag 'due_date', 'Due date', class: 'control-label' %>

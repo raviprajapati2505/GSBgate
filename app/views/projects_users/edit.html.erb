@@ -6,7 +6,7 @@
                     <h5><%=t '.form_title' %></h5>
                 </div>
                 <div class="ibox-content">
-                    <%= f.select :user_id, [[@projects_user.user.email, @projects_user.user.id]], {}, { disabled: true} %>
+                    <%= f.select :user_id, [[@projects_user.user.full_name, @projects_user.user.id]], {}, { disabled: true} %>
                     <% if @show_certifiers %>
                     <%= f.select :role, ProjectsUser.roles.keys[3..4].map { |k| [t(k, scope: 'activerecord.attributes.projects_user.roles'), k]} %>
                     <% else %>

@@ -58,7 +58,7 @@ No new audit logs found.
 <% else %>
 +-
 <% @audit_logs.each do |audit_log| %>
-<% small = '| ' + l(audit_log.created_at) + ' | ' + audit_log.user.email + ' | ' %>
+<% small = '| ' + l(audit_log.created_at) + ' | ' + audit_log.user.full_name + ' | ' %>
 <% breadcrumbs = breadcrumbs(audit_log.auditable) %>
 <% breadcrumbs[:names].each_with_index do |breadcrumb_name, index| %>
 <% small += (index == 0 ? breadcrumb_name : '/' + breadcrumb_name) %>

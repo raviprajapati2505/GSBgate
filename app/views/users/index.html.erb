@@ -8,6 +8,7 @@
             <thead>
             <tr>
                 <th><%= User.human_attribute_name('username') %></th>
+                <th>Name</th>
                 <th><%= User.human_attribute_name('email') %></th>
                 <th><%= User.human_attribute_name('role') %></th>
                 <th>User type</th>
@@ -19,6 +20,7 @@
             <% @users.each do |user| %>
                 <tr>
                     <td><%= user.username %></td>
+                    <td><%= user.full_name %></td>
                     <td><%= user.email %></td>
                     <td><%= t(user.role, scope: 'activerecord.attributes.user.roles') %></td>
                     <td><%= user.linkme_user? ? 'linkme.qa user' : 'Local user' %></td>

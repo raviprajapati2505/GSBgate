@@ -20,7 +20,7 @@
                         <%= image_tag(icon_for_filename(smcd.name), alt: smcd.content_type, title: smcd.content_type) + ' ' + smcd.name %>
                     </td>
                     <td><%= number_to_human_size(smcd.size) %></td>
-                    <td><%= smcd.document.user.email %></td>
+                    <td><%= smcd.document.user.full_name %></td>
                     <td data-order="<%= localize(smcd.document.created_at) %>" data-search="<%= localize(smcd.document.created_at) %>"><%= localize(smcd.document.created_at).gsub(' ', '&nbsp;').html_safe %></td>
                     <td data-order="<%= smcd.status.humanize %>" data-search="<%= smcd.status.humanize %>">
                         <% if can?(:update_status, smcd) %>

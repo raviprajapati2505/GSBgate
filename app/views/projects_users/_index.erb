@@ -38,7 +38,8 @@
             <table class="table table-striped table-bordered table-hover datatable" cellspacing="0" width="100%">
                 <thead>
                 <tr>
-                    <th>Member</th>
+                    <th>Member name</th>
+                    <th>Email</th>
                     <th>Role</th>
                     <% if team != :enterprise_clients %>
                         <th>Tasks</th>
@@ -52,11 +53,14 @@
                             <td>
                                 <% if admin_user == current_user %>
                                     <%= link_to tasks_path(project_id: project.id) do %>
-                                        <%= admin_user.email %>
+                                        <%= admin_user.full_name %>
                                     <% end %>
                                 <% else %>
-                                    <%= admin_user.email %>
+                                    <%= admin_user.full_name %>
                                 <% end %>
+                            </td>
+                            <td>
+                                <%= admin_user.email %>
                             </td>
                             <td>
                                 <%= t(admin_user.role, scope: 'activerecord.attributes.user.roles' ) %>
@@ -72,8 +76,11 @@
                     <tr>
                         <td>
                             <%= can_link_to(project_user_path(project, projects_user), projects_user) do %>
-                                <%= projects_user.user.email %>
+                                <%= projects_user.user.full_name %>
                             <% end %>
+                        </td>
+                        <td>
+                            <%= projects_user.user.email %>
                         </td>
                         <td>
                             <%= t(projects_user.role, scope: 'activerecord.attributes.projects_user.roles' ) %>

@@ -336,7 +336,7 @@ module ApplicationHelper
       breadcrumbs[:paths] << project_url(project)
     end
     if projects_user.present?
-      breadcrumbs[:names] << projects_user.user.email
+      breadcrumbs[:names] << projects_user.user.full_name
       breadcrumbs[:paths] << project_user_url(project, projects_user)
     end
     if certification_path.present?

@@ -35,7 +35,7 @@ class DocumentArchiverService
                          .order(created_at: :ASC)
                          .page(page).per(PAGE_SIZE)
         audit_logs.each do |audit_log|
-          zos << [audit_log.created_at, audit_log.user.email, audit_log.user_comment, ActionController::Base.helpers.strip_tags(audit_log.system_message)].to_csv(col_sep: CSV_COL_SEPARATOR)
+          zos << [audit_log.created_at, audit_log.user.full_name, audit_log.user_comment, ActionController::Base.helpers.strip_tags(audit_log.system_message)].to_csv(col_sep: CSV_COL_SEPARATOR)
         end
       end while audit_logs.size == PAGE_SIZE
     end
