@@ -21,7 +21,7 @@ class User < ActiveRecord::Base
 
   validates :role, inclusion: User.roles.keys
 
-  default_scope { order(username: :asc) }
+  default_scope { order(name: :asc) }
 
   delegate :can?, :cannot?, :to => :ability
 
@@ -66,13 +66,7 @@ class User < ActiveRecord::Base
   }
 
   def full_name
-    name_fields = [self.name_prefix, self.first_name, self.middle_name, self.last_name, self.name_suffix]
-    name_fields = name_fields.reject { |n| n.blank? }
-    full_name = name_fields.join(' ')
-    if full_name.blank?
-      full_name = self.username
-    end
-    full_name
+    name
   end
 
   def password
@@ -132,11 +126,15 @@ class User < ActiveRecord::Base
     user.picture = member_profile[:picture]
     user.cgp_license = (member_profile[:membership] == 'Practitioner - Certificate')
     user.gord_employee = (member_profile[:employer] == 'GORD')
-    user.name_prefix = member_profile[:name_prefix]
-    user.first_name = member_profile[:first_name]
-    user.middle_name = member_profile[:middle_name]
-    user.last_name = member_profile[:last_name]
-    user.name_suffix = member_profile[:name_suffix]
+
+    # Concat the user's name
+    user.name = ''
+    name_fields = [member_profile[:name_prefix], member_profile[:first_name], member_profile[:middle_name], member_profile[:last_name], member_profile[:name_suffix]]
+    name_fields = name_fields.reject { |n| n.blank? }
+    user.name = name_fields.join(' ')
+    if user.name.blank?
+      user.name = self.username
+    end
 
     # Save the user
     user.save!

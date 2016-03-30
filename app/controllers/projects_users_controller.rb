@@ -112,10 +112,10 @@ class ProjectsUsersController < AuthenticatedController
     if params.has_key?(:user_id) && params.has_key?(:q) && params.has_key?(:page)
       if params[:user_id] == current_user.id.to_s
         if current_user.system_admin? || current_user.gsas_trust_top_manager? || current_user.gsas_trust_manager? || current_user.gsas_trust_admin?
-          total_count = User.where('email like ?', '%' + params[:q] + '%')
+          total_count = User.where('name like ?', '%' + params[:q] + '%')
                             .count
-          items = User.select('id, email as text')
-                      .where('email like ?', '%' + params[:q] + '%')
+          items = User.select('id, name as text')
+                      .where('name like ?', '%' + params[:q] + '%')
                       .page(params[:page]).per(25)
         else
           user = User.arel_table
@@ -125,13 +125,13 @@ class ProjectsUsersController < AuthenticatedController
 
           total_count = User.distinct
                             .joins(outer_join)
-                            .where('email like ? ', '%' + params[:q] + '%')
+                            .where('name like ? ', '%' + params[:q] + '%')
                             .where('users.role <> 1 OR projects_users.project_id in (select pu.project_id from projects_users pu where pu.user_id = ?)', current_user.id)
                             .count
-          items = User.select('users.id as id, users.email as text, users.username as username')
+          items = User.select('users.id as id, users.name as text')
                       .distinct
                       .joins(outer_join)
-                      .where('email like ? ', '%' + params[:q] + '%')
+                      .where('name like ? ', '%' + params[:q] + '%')
                       .where('users.role <> 1 OR projects_users.project_id in (select pu.project_id from projects_users pu where pu.user_id = ?)', current_user.id)
                       .page(params[:page]).per(25)
         end

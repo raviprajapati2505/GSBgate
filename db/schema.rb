@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160330121530) do
+ActiveRecord::Schema.define(version: 20160330122900) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -378,11 +378,7 @@ ActiveRecord::Schema.define(version: 20160330121530) do
     t.boolean  "gord_employee",      default: false, null: false
     t.boolean  "cgp_license",        default: false, null: false
     t.text     "picture"
-    t.string   "name_prefix"
-    t.string   "first_name"
-    t.string   "middle_name"
-    t.string   "last_name"
-    t.string   "name_suffix"
+    t.string   "name"
   end
 
   add_index "users", ["linkme_member_id"], name: "index_users_on_linkme_member_id", unique: true, using: :btree

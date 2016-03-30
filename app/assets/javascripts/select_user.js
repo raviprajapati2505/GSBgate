@@ -16,7 +16,7 @@ $(function () {
                         dataType: 'json',
                         cache: false
                     }).done(function (data) {
-                        selection = {id: data.id, text: data.email};
+                        selection = {id: data.id, text: data.name};
                         callback(selection);
                     });
                 }
