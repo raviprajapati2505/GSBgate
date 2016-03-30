@@ -91,6 +91,10 @@ $(function () {
 
     // Remove user from table
     $('.find-users-modal').on('click', '.remove', function () {
+        tbody = $(this).parent('td').parent('tr').parent('tbody');
         $(this).parent('td').parent('tr').remove();
+        if (tbody.children().length < 2) {
+            tbody.parent('table').hide();
+        }
     });
 });
