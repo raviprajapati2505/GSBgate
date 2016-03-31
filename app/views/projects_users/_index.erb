@@ -1,32 +1,43 @@
 <%
    raise('Project must be specified') if project.nil?
    raise('Team must be specified') if team.nil?
+   project_user_roles = {}
    case team
      when :project_team
        title = t('.project_team.title')
        title_modal = t('.project_team.title_modal')
        project_users = project.projects_users.project_team
-       project_user_roles = ProjectsUser.roles.slice(:project_team_member)
-       can_create_new_project_user = can?(:create, ProjectsUser.new(project_id: @project.id, role: ProjectsUser.roles[:project_team_member])) || can?(:create, ProjectsUser.new(project_id: @project.id, role: ProjectsUser.roles[:cgp_project_manager]))
+       if can?(:create, ProjectsUser.new(project_id: project.id, role: ProjectsUser.roles[:project_team_member]))
+         project_user_roles[:project_team_member] = ProjectsUser.roles[:project_team_member]
+       end
+       if can?(:create, ProjectsUser.new(project_id: project.id, role: ProjectsUser.roles[:cgp_project_manager]))
+         project_user_roles[:cgp_project_manager] = ProjectsUser.roles[:cgp_project_manager]
+       end
        modal_id = 'addProjectTeamModal'
      when :gsas_trust_team
        title = t('.certifier_team.title')
        title_modal = t('.certifier_team.title_modal')
        project_users = project.projects_users.gsas_trust_team
-       project_user_roles =  ProjectsUser.roles.slice(:certifier, :certification_manager)
-       can_create_new_project_user = can?(:create, ProjectsUser.new(project_id: @project.id, role: ProjectsUser.roles[:certifier])) || can?(:create, ProjectsUser.new(project_id: @project.id, role: ProjectsUser.roles[:certification_manager]))
+       if can?(:create, ProjectsUser.new(project_id: project.id, role: ProjectsUser.roles[:certifier]))
+         project_user_roles[:certifier] = ProjectsUser.roles[:certifier]
+       end
+       if can?(:create, ProjectsUser.new(project_id: project.id, role: ProjectsUser.roles[:certification_manager]))
+         project_user_roles[:certification_manager] = ProjectsUser.roles[:certification_manager]
+       end
        gsas_trust_admin_and_manager_roles = [User.roles[:gsas_trust_admin], User.roles[:gsas_trust_manager], User.roles[:gsas_trust_top_manager]]
        modal_id = 'addGsasTrustTeamModal'
      when :enterprise_clients
        title = t('.enterprise_clients.title')
        title_modal = t('.enterprise_clients.title_modal')
        project_users = project.projects_users.enterprise_clients
-       can_create_new_project_user = can?(:create, ProjectsUser.new(project_id: @project.id, role: ProjectsUser.roles[:enterprise_client]))
-       project_user_roles =  ProjectsUser.roles.slice(:enterprise_client)
+       if can?(:create, ProjectsUser.new(project_id: project.id, role: ProjectsUser.roles[:enterprise_client]))
+         project_user_roles[:enterprise_client] = ProjectsUser.roles[:enterprise_client]
+       end
        modal_id = 'addEnterpriseClientModal'
    end
+   can_create_new_project_user = (project_user_roles.count > 0)
 %>
-<% if can?(:read, ProjectsUser.new(project: project, role: project_user_roles.values[0])) %>
+<% if can?(:read, project_users[0]) %>
 <div class="ibox float-e-margins">
     <div class="ibox-title">
         <h5><%= title %></h5>
