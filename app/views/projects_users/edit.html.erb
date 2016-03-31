@@ -7,10 +7,12 @@
                 </div>
                 <div class="ibox-content">
                     <%= f.select :user_id, [[@projects_user.user.full_name, @projects_user.user.id]], {}, { disabled: true} %>
-                    <% if @show_certifiers %>
-                    <%= f.select :role, ProjectsUser.roles.keys[3..4].map { |k| [t(k, scope: 'activerecord.attributes.projects_user.roles'), k]} %>
+                    <% if @projects_user.project_team? %>
+                        <%= f.select :role, ProjectsUser.roles.keys[0..1].map { |k| [t(k, scope: 'activerecord.attributes.projects_user.roles'), k]} %>
+                    <% elsif @projects_user.gsas_trust_team? %>
+                        <%= f.select :role, ProjectsUser.roles.keys[3..4].map { |k| [t(k, scope: 'activerecord.attributes.projects_user.roles'), k]} %>
                     <% else %>
-                    <%= f.select :role, ProjectsUser.roles.keys[0..2].map { |k| [t(k, scope: 'activerecord.attributes.projects_user.roles'), k]} %>
+                        <%= f.select :role, ProjectsUser.roles.keys[2].map { |k| [t(k, scope: 'activerecord.attributes.projects_user.roles'), k]} %>
                     <% end %>
                     <%= btn_save %>
                     <%= btn_cancel_to(project_user_path(@project, @projects_user)) %>

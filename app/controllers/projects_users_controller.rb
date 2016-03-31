@@ -62,9 +62,6 @@ class ProjectsUsersController < AuthenticatedController
 
   def edit
     @page_title = ERB::Util.html_escape(@projects_user.user.full_name)
-    if (current_user.system_admin? || current_user.gsas_trust_admin?) && params.has_key?(:query) && params[:query] == 'certifiers'
-      @show_certifiers = true
-    end
   end
 
   def show
