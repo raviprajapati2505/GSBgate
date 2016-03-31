@@ -12,6 +12,8 @@
                 <th><%= User.human_attribute_name('email') %></th>
                 <th><%= User.human_attribute_name('role') %></th>
                 <th>User type</th>
+                <th>CGP license</th>
+                <th>GORD employee</th>
                 <th><%= User.human_attribute_name('last_sign_in_at') %></th>
                 <th><%= User.human_attribute_name('sign_in_count') %></th>
             </tr>
@@ -24,6 +26,8 @@
                     <td><%= user.email %></td>
                     <td><%= t(user.role, scope: 'activerecord.attributes.user.roles') %></td>
                     <td><%= user.linkme_user? ? 'linkme.qa user' : 'Local user' %></td>
+                    <td><%= user.cgp_license? ? 'Yes' : 'No' %></td>
+                    <td><%= user.gord_employee? ? 'Yes' : 'No' %></td>
                     <td><%= user.last_sign_in_at.present? ? localize(user.last_sign_in_at): 'Never' %></td>
                     <td><%= user.sign_in_count %></td>
                 </tr>
