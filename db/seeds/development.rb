@@ -12,7 +12,7 @@ User.create!(username: 'omeima@example.com', password: 'password', email: 'sas@v
 
 # GSAS trust
 User.create!(username: 'bart.daniels@vito.be', password: 'password', email: 'bart.daniels@vito.be', linkme_user: false, role: :default_role, cgp_license: true, cgp_license_expired: false, gord_employee: true, name: 'Bart Daniels')
-User.create!(username: 'karel.styns@vito.be', password: 'password', email: 'karel.styns@vito.be', linkme_user: false, role: :default_role, cgp_license: false, cgp_license_expired: false, gord_employee: false, name: 'Karel Styns')
+User.create!(username: 'karel.styns@vito.be', password: 'password', email: 'karel.styns@vito.be', linkme_user: false, role: :default_role, cgp_license: false, cgp_license_expired: false, gord_employee: true, name: 'Karel Styns')
 
 # Project team
 User.create!(username: 'koen.dierckx@vito.be', password: 'password', email: 'koen.dierckx@vito.be', linkme_user: false, role: :default_role, cgp_license: true, cgp_license_expired: false, gord_employee: false, name: 'Koen Dierckx')
