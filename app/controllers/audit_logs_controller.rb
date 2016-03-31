@@ -53,11 +53,11 @@ class AuditLogsController < AuthenticatedController
       # Date from filter
       if params[:date_from].present?
         session[:audit]['date_from'] = params[:date_from]
-        session[:audit]['tim_from'] = params[:time_from]
+        session[:audit]['time_from'] = params[:time_from]
       end
       if session[:audit]['date_from'].present?
         begin
-          @audit_logs = @audit_logs.where('audit_logs.created_at >= ?', DateTime.strptime(session[:audit]['date_from'] + ' ' + session[:audit]['tim_from'] + ':00', t('time.formats.filter')))
+          @audit_logs = @audit_logs.where('audit_logs.created_at >= ?', DateTime.strptime(session[:audit]['date_from'] + ' ' + session[:audit]['time_from'] + ':00+03:00', t('time.formats.filter')).utc)
         rescue ArgumentError
           flash[:alert] = 'The date/time from fields contained invalid data.'
         end
@@ -70,7 +70,7 @@ class AuditLogsController < AuthenticatedController
       end
       if session[:audit]['date_to'].present?
         begin
-          @audit_logs = @audit_logs.where('audit_logs.created_at <= ?', DateTime.strptime(session[:audit]['date_to'] + ' ' + session[:audit]['time_to'] + ':59', t('time.formats.filter')))
+          @audit_logs = @audit_logs.where('audit_logs.created_at <= ?', DateTime.strptime(session[:audit]['date_to'] + ' ' + session[:audit]['time_to'] + ':59+03:00', t('time.formats.filter')).utc)
         rescue ArgumentError
           flash[:alert] = 'The date/time to fields contained invalid data.'
         end
