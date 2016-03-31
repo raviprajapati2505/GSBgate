@@ -6,7 +6,7 @@
        title = t('.project_team.title')
        title_modal = t('.project_team.title_modal')
        project_users = project.projects_users.project_team
-       project_user_roles = ProjectsUser.roles.slice(:project_team_member, :cgp_project_manager)
+       project_user_roles = ProjectsUser.roles.slice(:project_team_member)
        can_create_new_project_user = can?(:create, ProjectsUser.new(project_id: @project.id, role: ProjectsUser.roles[:project_team_member])) || can?(:create, ProjectsUser.new(project_id: @project.id, role: ProjectsUser.roles[:cgp_project_manager]))
        modal_id = 'addProjectTeamModal'
      when :gsas_trust_team

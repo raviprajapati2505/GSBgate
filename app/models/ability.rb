@@ -78,7 +78,7 @@ class Ability
       can :read, ProjectsUser, role: project_user_enterprise_client_roles, project: project_with_user_assigned
 
       # Project team
-      can :crud, ProjectsUser, role: project_user_project_team_roles, project: project_with_user_as_cgp_project_manager
+      can :crud, ProjectsUser, role: project_user_role_project_team_member, project: project_with_user_as_cgp_project_manager
       # GSAS trust team
       can :crud, ProjectsUser, role: project_user_gsas_trust_team_roles, project: project_with_user_as_certification_manager
       # You can't add yourself
@@ -183,7 +183,7 @@ class Ability
       # can :list_users_sharing_projects, ProjectsUser
       # can :list_projects, ProjectsUser
       if user.gsas_trust_admin?
-        can :crud, ProjectsUser, role: project_user_project_team_roles
+        can :crud, ProjectsUser, role: project_user_role_project_team_member
         can :crud, ProjectsUser, role: project_user_gsas_trust_team_roles
         can :crud, ProjectsUser, role: project_user_enterprise_client_roles
         # You can't add yourself
