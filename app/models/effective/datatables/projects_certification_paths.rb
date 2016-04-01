@@ -46,7 +46,7 @@ module Effective
 
         table_column 'certification_path_pcr_track', column: 'certification_paths.pcr_track', label: t('models.effective.datatables.projects_certification_paths.certification_path_pcr_track.label'), type: :boolean, visible: false
         table_column 'certification_path_development_type', column: 'certification_paths.development_type', type: :integer, label: t('models.effective.datatables.projects_certification_paths.certification_path_development_type.label'), visible: false, filter: {type: :select, values: Proc.new { CertificationPath.development_types.map { |k| [t(k[0], scope: 'activerecord.attributes.certification_path.development_types'), k[1]] } }} do |rec|
-          t(CertificationPath.development_types.keys[rec.certification_path_development_type], scope: 'activerecord.attributes.certification_path.development_types') unless rec.certification_path_development_type.nil?
+          t(CertificationPath.development_types.key(rec.certification_path_development_type), scope: 'activerecord.attributes.certification_path.development_types') unless rec.certification_path_development_type.nil?
         end
         table_column 'certification_path_appealed', column: 'certification_paths.appealed', label: t('models.effective.datatables.projects_certification_paths.certification_path_appealed.label'), type: :boolean, visible: false
         table_column 'certification_path_created_at', column: 'certification_paths.created_at', label: t('models.effective.datatables.projects_certification_paths.certification_path_created_at.label'), type: :datetime, visible: false, filter: {type: :select, values: Proc.new { CertificationPath.pluck_date_field_by_year_month_day(:created_at, :desc) }} do |rec|
