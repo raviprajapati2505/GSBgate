@@ -16,6 +16,7 @@
                 <th>GORD employee</th>
                 <th><%= User.human_attribute_name('last_sign_in_at') %></th>
                 <th><%= User.human_attribute_name('sign_in_count') %></th>
+                <% if can?(:masquerade, User) %><th>Masquerade</th><% end %>
             </tr>
             </thead>
             <tbody>
@@ -30,6 +31,7 @@
                     <td><%= user.gord_employee? ? 'Yes' : 'No' %></td>
                     <td><%= user.last_sign_in_at.present? ? localize(user.last_sign_in_at): 'Never' %></td>
                     <td><%= user.sign_in_count %></td>
+                    <% if can?(:masquerade, user) %><td><%= btn_link_to(masquerade_users_path(user.id), icon: 'user-secret', size: 'small') %></td><% end %>
                 </tr>
             <% end %>
             </tbody>

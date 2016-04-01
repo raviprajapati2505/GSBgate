@@ -9,7 +9,8 @@ Rails.application.routes.draw do
   resources :users, only: [:index, :show] do
     collection do
       resource :sessions, only: [:new, :create, :destroy]
-      get 'find_users_by_email/:email/:project_id(/:gord_employee)' => 'users#find_users_by_email', as: 'find_users_by_email', :constraints => { email: /[^\/]+/ }
+      get 'masquerade/:user_id' => 'users#masquerade', as: 'masquerade', constraints: { user_id: /\d+/ }
+      get 'find_users_by_email/:email/:project_id(/:gord_employee)' => 'users#find_users_by_email', as: 'find_users_by_email', constraints: { email: /[^\/]+/ }
     end
     member do
       get 'list_notifications', path: 'notifications'

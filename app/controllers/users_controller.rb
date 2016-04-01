@@ -12,6 +12,27 @@ class UsersController < AuthenticatedController
     end
   end
 
+  def masquerade
+    if params.has_key?(:user_id)
+      user = User.find(params[:user_id])
+
+      unless can?(:masquerade, user)
+        raise CanCan::AccessDenied.new('Not Authorized.') and return
+      end
+
+      if user.blank?
+        flash[:alert] = "Couldn't find the user."
+      else
+        warden.set_user(user)
+        flash[:notice] = "You are now logged in as #{user.full_name}."
+      end
+    else
+      flash[:alert] = 'No user id specified.'
+    end
+
+    redirect_to :root
+  end
+
   def list_notifications
     respond_to do |format|
       format.html {
