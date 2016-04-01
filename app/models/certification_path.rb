@@ -164,7 +164,7 @@ class CertificationPath < ActiveRecord::Base
       when CertificationPathStatus::ACTIVATING
         # TODO certification path expiry date
         unless project.certification_manager_assigned?
-          todos << 'A certifier manager must be assigned to the project.'
+          todos << 'A certification manager must be assigned to the project.'
         end
         if mixed? && (main_scheme_mix_selected? == false)
           todos << 'A main scheme needs to be selected.'

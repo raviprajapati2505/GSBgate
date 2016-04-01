@@ -168,7 +168,7 @@ en:
       filter:
         certificate_label: Certification
     tasks:
-      description_1: Assign a certifier manager to the project.
+      description_1: Assign a certification manager to the project.
       description_2: Check registration and payment and advance the certification status.
       description_3: Allocate criteria requirements to project team members.
       description_4: Provide documentation and change the status of the requirements.

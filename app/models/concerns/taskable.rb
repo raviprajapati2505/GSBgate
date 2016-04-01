@@ -102,16 +102,16 @@ module Taskable
 
   def handle_created_projects_user
     case ProjectsUser.roles[self.role]
-      # A certifier manager is assigned to project
+      # A certification manager is assigned to project
       when ProjectsUser.roles[:certification_manager]
-        # Destroy all system admin tasks to assign a certifier manager for this project
+        # Destroy all system admin tasks to assign a certification manager for this project
         Task.delete_all(taskable: self.project, task_description_id: SYS_ADMIN_ASSIGN)
     end
   end
 
   def handle_created_certification_path
     unless self.project.certification_manager_assigned?
-      # Create system admin task to assign a certifier manager
+      # Create system admin task to assign a certification manager
       Task.create(taskable: self.project,
                  task_description_id: SYS_ADMIN_ASSIGN,
                  application_role: User.roles[:gsas_trust_admin],
@@ -167,9 +167,9 @@ module Taskable
       case ProjectsUser.roles[self.role]
         # when ProjectsUser.roles[:project_team_member]
         # when ProjectsUser.roles[:certifier]
-        # project user role is changed to certifier manager
+        # project user role is changed to certification manager
         when ProjectsUser.roles[:certification_manager]
-          # Destroy all system admin tasks to assign a certifier manager for this project
+          # Destroy all system admin tasks to assign a certification manager for this project
           Task.delete_all(taskable: self.project, task_description_id: SYS_ADMIN_ASSIGN)
       end
     end
@@ -198,9 +198,9 @@ module Taskable
           Task.delete_all(taskable: self, task_description_id: SYS_ADMIN_REG_APPROVE)
           DigestMailer.certification_activated_email(self).deliver_now
         when CertificationPathStatus::SCREENING
-          # ASSUMING CERTIFIER MANAGER IS RESPONSIBLE FOR SCREENING !
+          # ASSUMING certification manager IS RESPONSIBLE FOR SCREENING !
           # ---------------------------------------------------------
-          # Create certifier manager task to screen certification path
+          # Create certification manager task to screen certification path
           Task.create(taskable: self,
                      task_description_id: CERT_MNGR_SCREEN,
                      project_role: ProjectsUser.roles[:certification_manager],
@@ -215,7 +215,7 @@ module Taskable
                      project_role: ProjectsUser.roles[:cgp_project_manager],
                      project: self.project,
                      certification_path: self)
-          # Destroy certifier manager tasks to screen certification path
+          # Destroy certification manager tasks to screen certification path
           Task.delete_all(taskable: self, task_description_id: CERT_MNGR_SCREEN)
         when CertificationPathStatus::VERIFYING
           self.scheme_mix_criteria.submitted.where.not(certifier: nil).each do |scheme_mix_criterion|
@@ -236,7 +236,7 @@ module Taskable
                      project_role: ProjectsUser.roles[:cgp_project_manager],
                      project: self.project,
                      certification_path: self)
-          # Destroy certifier manager tasks to advance status
+          # Destroy certification manager tasks to advance status
           Task.delete_all(taskable: self, task_description_id: CERT_MNGR_VERIFICATION_APPROVE)
         when CertificationPathStatus::PROCESSING_APPEAL_PAYMENT
           # Create system admin task to check appeal payment
@@ -271,7 +271,7 @@ module Taskable
                      project_role: ProjectsUser.roles[:cgp_project_manager],
                      project: self.project,
                      certification_path: self)
-          # Destroy certifier manager tasks to advance status
+          # Destroy certification manager tasks to advance status
           Task.delete_all(taskable: self, task_description_id: CERT_MNGR_VERIFICATION_APPROVE)
         when CertificationPathStatus::APPROVING_BY_MANAGEMENT
           # Create GORD manager task to quick check and approve
@@ -341,7 +341,7 @@ module Taskable
         when SchemeMixCriterion.statuses[:verifying], SchemeMixCriterion.statuses[:verifying_after_appeal]
           if !self.certifier_id_changed?
             if self.certifier_id.nil?
-              # Create certifier manager task to assign certifier to the criterion
+              # Create certification manager task to assign certifier to the criterion
               if self.verifying?
                 if Task.find_by(taskable: self.scheme_mix.certification_path, task_description_id: CERT_MNGR_ASSIGN).nil?
                   Task.create(taskable: self.scheme_mix.certification_path,
@@ -381,7 +381,7 @@ module Taskable
                      .where(id: self.scheme_mix.certification_path.id, certification_path_status_id: [CertificationPathStatus::VERIFYING, CertificationPathStatus::VERIFYING_AFTER_APPEAL])
                      .where.not('exists(select smc.id from scheme_mix_criteria smc where smc.scheme_mix_id = scheme_mixes.id and smc.status in (?))', [SchemeMixCriterion.statuses[:verifying],SchemeMixCriterion.statuses[:verifying_after_appeal]])
                      .count.nonzero?
-            # Create certifier manager task to advance certification path status
+            # Create certification manager task to advance certification path status
             Task.create(taskable: self.scheme_mix.certification_path,
                        task_description_id: CERT_MNGR_VERIFICATION_APPROVE,
                        project_role: ProjectsUser.roles[:certification_manager],
@@ -390,12 +390,12 @@ module Taskable
           end
           # Destroy certifier member tasks to verify criterion
           Task.delete_all(taskable: self, task_description_id: CERT_MEM_VERIFY)
-          # Destroy certifier manager tasks to assign certifier team members to the criterion
+          # Destroy certification manager tasks to assign certifier team members to the criterion
           if self.scheme_mix.certification_path.scheme_mix_criteria.unassigned.where(status: [SchemeMixCriterion.statuses[:verifying], SchemeMixCriterion.statuses[:verifying_after_appeal]]).count.zero?
             Task.delete_all(taskable: self.scheme_mix.certification_path, task_description_id: [CERT_MNGR_ASSIGN, CERT_MNGR_ASSIGN_AFTER_APPEAL])
           end
           if !self.due_date.blank? && self.due_date < Date.current
-            # Destroy certifier manager tasks to follow up overdue tasks
+            # Destroy certification manager tasks to follow up overdue tasks
             Task.delete_all(taskable: self, task_description_id: CERT_MNGR_OVERDUE)
           end
       end
@@ -405,7 +405,7 @@ module Taskable
   def handle_criterion_assignment_changed
     if self.certifier_id_changed?
       if self.certifier_id.nil?
-        # Create certifier manager task to assign certifier to the criterion
+        # Create certification manager task to assign certifier to the criterion
         if self.verifying?
           if Task.find_by(taskable: self.scheme_mix.certification_path, task_description_id: CERT_MNGR_ASSIGN).nil?
             Task.create(taskable: self.scheme_mix.certification_path,
@@ -436,7 +436,7 @@ module Taskable
                       project: self.scheme_mix.certification_path.project,
                       certification_path: self.scheme_mix.certification_path)
         end
-        # Destroy all certifier manager tasks to assign certifier team member to this criterion
+        # Destroy all certification manager tasks to assign certifier team member to this criterion
         if self.scheme_mix.certification_path.scheme_mix_criteria.unassigned.where(status: [SchemeMixCriterion.statuses[:verifying], SchemeMixCriterion.statuses[:verifying_afer_appeal]]).count.zero?
           Task.delete_all(taskable: self.scheme_mix.certification_path, task_description_id: [CERT_MNGR_ASSIGN, CERT_MNGR_ASSIGN_AFTER_APPEAL])
         end
@@ -447,7 +447,7 @@ module Taskable
   def handle_criterion_due_date_changed
     if self.due_date_changed?
       if (self.due_date_was.present? && (self.due_date_was < Date.current)) && (self.due_date.blank? || (self.due_date > Date.current))
-        # Destroy certifier manager tasks to follow up overdue tasks
+        # Destroy certification manager tasks to follow up overdue tasks
         Task.delete_all(taskable: self, task_description_id: CERT_MNGR_OVERDUE)
       end
     end
@@ -458,7 +458,7 @@ module Taskable
       if self.in_review?
         Task.delete_all(taskable: self, task_description_id: PROJ_MNGR_REVIEW)
         if Task.find_by(taskable: self, task_description_id: CERT_MNGR_REVIEW).nil?
-          # Create certifier manager task to provide a PCR review comment
+          # Create certification manager task to provide a PCR review comment
           Task.create(taskable: self,
                       task_description_id: CERT_MNGR_REVIEW,
                       project_role: ProjectsUser.roles[:certification_manager],
@@ -672,7 +672,7 @@ module Taskable
         end
       # A certifier is unassigned from project
       when ProjectsUser.roles[:certifier]
-        # Create certifier manager tasks to assign certifier team members to criteria
+        # Create certification manager tasks to assign certifier team members to criteria
         project.certification_paths.with_status(CertificationPathStatus::VERIFYING).each do |certification_path|
           if Task.find_by(taskable: certification_path, task_description_id: CERT_MNGR_ASSIGN).nil?
             if certification_path.scheme_mix_criteria.unassigned.verifying.count.nonzero?
@@ -695,10 +695,10 @@ module Taskable
             end
           end
         end
-      # A certifier manager is unassigned from project
+      # A certification manager is unassigned from project
       when ProjectsUser.roles[:certification_manager]
         unless self.project.certification_manager_assigned?
-          # Create system admin task to assign a certifier manager
+          # Create system admin task to assign a certification manager
           Task.create(taskable: self.project,
                      task_description_id: SYS_ADMIN_ASSIGN,
                      application_role: User.roles[:gsas_trust_admin],

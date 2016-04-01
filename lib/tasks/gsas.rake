@@ -71,7 +71,7 @@ namespace :gsas do
     Rails.logger.info "Found #{ActionController::Base.helpers.pluralize(certification_path_count, 'certification path')} with maximum duration exceeded."
   end
 
-  desc 'Create a task for the project/certifier manager for every overdue task'
+  desc 'Create a task for the CGP project manager or certification manager for every overdue task'
   task :create_overdue_task, [] => :environment do |t, args|
 
     Rails.logger.info 'Start creating tasks for overdue tasks...'
