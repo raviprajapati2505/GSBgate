@@ -73,6 +73,7 @@ module Auditable
         when Project.name.demodulize
           project = self
           if (action == AUDIT_LOG_CREATE)
+            force_visibility_public = true
             system_messages << {message: t('models.concerns.auditable.project.create_html', project: self.name)}
           elsif (action == AUDIT_LOG_UPDATE)
             system_messages << {message: t('models.concerns.auditable.project.update_html', project: self.name)}
