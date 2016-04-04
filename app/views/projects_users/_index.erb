@@ -42,7 +42,7 @@
         <h5><%= title %></h5>
     </div>
     <div class="ibox-content">
-        <% if (team != :gsas_trust_team) && project_users.count.zero? %>
+        <% if project_users.count.zero? %>
             <p>No users found.</p>
         <% else %>
             <table class="table table-striped table-bordered table-hover datatable" cellspacing="0" width="100%">
