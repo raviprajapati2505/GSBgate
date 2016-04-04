@@ -68,13 +68,12 @@
                     <% if @certification_path.certificate.design_type? %>
                     <tr>
                         <th>
-                            PCR
+                            Applied for PCR
                             <%= tooltip(t('.certification_path.pcr.tooltip')) %>
                         </th>
                         <td>
                             <div>
-                                <%= fa_icon(@certification_path.pcr_track? ? 'check-square-o' : 'square-o') %>
-                                <span>Applied for PCR</span>
+                                <%= @certification_path.pcr_track? ? 'Yes' : 'No' %>
                             </div>
                         </td>
                     </tr>
