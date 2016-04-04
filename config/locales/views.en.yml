@@ -98,7 +98,7 @@ en:
         title_modal: Add project team member
       certifier_team:
         title: GSAS trust team
-        title_modal: Add GSAS trust member
+        title_modal: Add GSAS trust team member
       enterprise_clients:
         title: Enterprise clients
         title_modal: Add enterprise client
