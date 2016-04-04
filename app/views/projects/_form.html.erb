@@ -14,6 +14,7 @@
                                 <%= f.text_field :code %>
                             <% end %>
                             <%= f.text_field :name %>
+                            <%= f.text_field :service_provider %>
                             <%= f.text_field :owner %>
                             <%= f.form_group do %>
                               <label>Or choose a predefined property owner</label>
@@ -97,7 +98,7 @@
                             <div style="display:none;">
                                 <%= f.text_field :latlng %>
                             </div>
-                            <div id="project-map" class="map" style="height: 350px;"></div>
+                            <div id="project-map" class="map" style="height: 450px;"></div>
                         </div>
                     </div>
                     <div class="row">
