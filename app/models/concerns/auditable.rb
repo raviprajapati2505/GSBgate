@@ -97,7 +97,7 @@ module Auditable
             new_status_model = CertificationPathStatus.find_by_id(self.certification_path_status_id)
             # generate publicly visible AuditLog record
             force_visibility_public = true
-            if CertificationPathStatus::STATUSES_IN_VERIFICATION.include?(old_status_model.id)
+            if old_status_model.present? && CertificationPathStatus::STATUSES_IN_VERIFICATION.include?(old_status_model.id)
               # generate a audit log for all linked scheme mix criteria
               self.scheme_mix_criteria.each do |scheme_mix_criterion|
                 AuditLog.create!(system_message: t('models.concerns.auditable.scheme_mix_criterion.status.after_verification', criterion: scheme_mix_criterion.name, new_status: scheme_mix_criterion.status, achieved_score: scheme_mix_criterion.achieved_score),
@@ -274,7 +274,8 @@ module Auditable
             project: project,
             audit_log_visibility_id: visibility)
       end
-    rescue NoMethodError
+    rescue NoMethodError => e
+      Rails.logger.error 'Error when creating an audit log: ' + e.to_s
     end
   end
 end
