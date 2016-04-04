@@ -104,7 +104,7 @@ gem 'prawn-table'
 gem 'nokogiri', '~> 1.6', '>= 1.6.6.2'
 
 # Required for password encryption
-gem 'bcrypt-ruby', '~> 3.1', '>= 3.1.5'
+gem 'bcrypt', '~> 3.1', '>= 3.1.5'
 
 # Rails-Assets: access bower packages from our gem file
 #  e.g. gem 'rails-assets-BOWER_PACKAGE_NAME'
