@@ -24,7 +24,6 @@
        if can?(:create, ProjectsUser.new(project_id: project.id, role: ProjectsUser.roles[:certification_manager]))
          project_user_roles[:certification_manager] = ProjectsUser.roles[:certification_manager]
        end
-       gsas_trust_admin_and_manager_roles = [User.roles[:gsas_trust_admin], User.roles[:gsas_trust_manager], User.roles[:gsas_trust_top_manager]]
        modal_id = 'addGsasTrustTeamModal'
      when :enterprise_clients
        title = t('.enterprise_clients.title')
@@ -58,31 +57,6 @@
                 </tr>
                 </thead>
                 <tbody>
-                <% if team == :gsas_trust_team %>
-                    <% User.where(role: gsas_trust_admin_and_manager_roles).each do |admin_user| %>
-                        <tr>
-                            <td>
-                                <% if admin_user == current_user %>
-                                    <%= link_to tasks_path(project_id: project.id) do %>
-                                        <%= admin_user.full_name %>
-                                    <% end %>
-                                <% else %>
-                                    <%= admin_user.full_name %>
-                                <% end %>
-                            </td>
-                            <td>
-                                <%= admin_user.email %>
-                            </td>
-                            <td>
-                                <%= t(admin_user.role, scope: 'activerecord.attributes.user.roles' ) %>
-                            </td>
-                            <td>
-                                <span class="badge"><%= TaskService::count_tasks(user: admin_user, project_id: project.id) %></span>
-                            </td>
-                        </tr>
-                    <% end %>
-                <% end %>
-
                 <% project_users.distinct.each do |projects_user| %>
                     <tr>
                         <td>
