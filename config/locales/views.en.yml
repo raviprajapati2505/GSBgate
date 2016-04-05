@@ -159,13 +159,13 @@ en:
   score:
     score_toggle:
       scores_in_certificate_points:
-        text: Cert
+        text: Certification
         tooltip: Score in certification points. Takes both the criterion weights and the scheme weights into account.
       scores_in_scheme_points:
         text: Scheme
         tooltip: Score in scheme points. Takes the criterion weights into account, but not the scheme weights.
       scores:
-        text: Crit
+        text: Criterion
         tooltip: Score of the criterion in absolute points. Does not take any weighting into account.
   tasks:
     index:
