@@ -33,7 +33,7 @@ module Effective
         #   localize(rec.project_created_at.in_time_zone) unless rec.project_created_at.nil?
         # end
 
-        table_column 'certificate_id', column: 'certificates.id', label: t('models.effective.datatables.certifier_criteria.certificate_id.label'), filter: {type: :select, values: Proc.new { Certificate.all.order(:display_weight).map { |certificate| [certificate.full_name, certificate.id] } }} do |rec|
+        table_column 'certificate_id', column: 'certificates.id', label: t('models.effective.datatables.certifiers_criteria.certificate_id.label'), filter: {type: :select, values: Proc.new { Certificate.all.order(:display_weight).map { |certificate| [certificate.full_name, certificate.id] } }} do |rec|
           if rec.certification_path_id.present?
             link_to(project_certification_path_path(rec.project_id, rec.certification_path_id)) do
               rec.certificate_name
@@ -41,7 +41,7 @@ module Effective
           end
         end
 
-        # table_column 'certification_path_certification_path_status_id', column: 'certification_paths.certification_path_status_id', label: t('models.effective.datatables.certifier_criteria.certification_path_certification_path_status_id.label'), filter: {type: :select, values: Proc.new { CertificationPathStatus.all.map { |status| [status.name, status.id] } }} do |rec|
+        # table_column 'certification_path_certification_path_status_id', column: 'certification_paths.certification_path_status_id', label: t('models.effective.datatables.certifiers_criteria.certification_path_certification_path_status_id.label'), filter: {type: :select, values: Proc.new { CertificationPathStatus.all.map { |status| [status.name, status.id] } }} do |rec|
         #   rec.certification_path_status_name
         # end
         # table_column 'certification_path_status_is_active', column: 'CASE WHEN certification_path_statuses.id IS NULL THEN false WHEN certification_path_statuses.id = 15 THEN false WHEN certification_path_statuses.id = 16 THEN false ELSE true END', type: :boolean, label: t('models.effective.datatables.projects_certification_paths.certification_path_status_is_active.label')
@@ -54,7 +54,7 @@ module Effective
           end
         end
 
-        # table_column 'scheme_mix_criteria_status', column: 'scheme_mix_criteria.status', type: :integer, label: t('models.effective.datatables.certifier_criteria.scheme_mix_criteria_status.label'), filter: {type: :select, values: Proc.new { SchemeMixCriterion.statuses.map { |k| [t(k[0], scope: 'activerecord.attributes.scheme_mix_criterion.statuses'), k[1]] } }} do |rec|
+        # table_column 'scheme_mix_criteria_status', column: 'scheme_mix_criteria.status', type: :integer, label: t('models.effective.datatables.certifiers_criteria.scheme_mix_criteria_status.label'), filter: {type: :select, values: Proc.new { SchemeMixCriterion.statuses.map { |k| [t(k[0], scope: 'activerecord.attributes.scheme_mix_criterion.statuses'), k[1]] } }} do |rec|
         #   t(SchemeMixCriterion.statuses.key(rec.scheme_mix_criteria_status), scope: 'activerecord.attributes.scheme_mix_criterion.statuses') unless rec.scheme_mix_criteria_status.nil?
         # end
       end
@@ -103,7 +103,7 @@ module Effective
           # Rails.logger.debug "NO ABILITY"
           return coll.none
         else
-          # use cancan ability to limit the authorized projects
+          # use cancan ability to limit the authorized certifier criteria
           # Rails.logger.debug "ABILITY OK"
           return coll.accessible_by(current_ability)
         end
