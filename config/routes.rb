@@ -41,9 +41,9 @@ Rails.application.routes.draw do
       end
       member do
         # BEGIN: PDF REPORT GENERATION IS DISABLED
-        # get 'download_certificate_report' => 'reports#download_certificate', as: 'download_certificate_report'
-        # get 'download_coverletter_report' => 'reports#download_certificate_coverletter', as: 'download_coverletter_report'
-        # get 'download_scores_report' => 'reports#download_certificate_scores', as: 'download_scores_report'
+        # get 'download_certificate_report'
+        # get 'download_coverletter_report'
+        # get 'download_scores_report'
         # END: PDF REPORT GENERATION IS DISABLED
         get 'edit_status'
         get 'edit_project_team_responsibility', path: 'edit-project-team-responsibility'
@@ -119,6 +119,8 @@ Rails.application.routes.draw do
   end
   get 'owners/:id' => 'owners#show', as: 'owner'
   get 'owners' => 'owners#index', as: 'owners'
+  # Reports
+  get 'reports/certifiers_criteria' => 'reports#certifiers_criteria'
 
   # Error pages routes
   match '/403', to: 'errors#forbidden', via: :all, as: 'forbidden_error'

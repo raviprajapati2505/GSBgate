@@ -29,6 +29,7 @@ en:
       default: '%e %b %Y %H:%M %Z'
       filter: '%d/%m/%Y %k:%M:%S%:z'
       short: '%k:%M'
+      date_only: '%e %b %Y'
       filename: '%Y%m%dT%H%M%S'
   errors:
       messages:

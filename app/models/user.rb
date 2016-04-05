@@ -58,11 +58,11 @@ class User < ActiveRecord::Base
   }
 
   scope :with_project_team_role, -> {
-    where('projects_users.role in (0, 1)')
+    joins(:projects_users).where(projects_users: {role: [0, 1]})
   }
 
   scope :with_gsas_trust_team_role, -> {
-    where('projects_users.role in (3, 4)')
+    joins(:projects_users).where(projects_users: {role: [3, 4]})
   }
 
   def full_name

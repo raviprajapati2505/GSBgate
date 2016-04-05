@@ -43,7 +43,8 @@
 
             <% can_index_scheme_criteria = can?(:index, SchemeCriterion)%>
             <% can_index_users = can?(:index, User) %>
-            <% if can_index_users || can_index_scheme_criteria %>
+            <% can_certifiers_and_criteria_report = can?(:certifiers_and_criteria, :report) %>
+            <% if can_index_users || can_index_scheme_criteria || can_certifiers_and_criteria_report %>
                 <li class="dropdown<%= ' active' if ['scheme_criteria', 'users'].include?(controller_name) && action_name != 'list_notifications' %>">
                     <a aria-expanded="false" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <%= fa_icon('cogs', size: 'lg') %><%= t('.navbar.admin') %><span class="caret"></span>
@@ -54,6 +55,9 @@
                         <% end %>
                         <% if can_index_users %>
                             <li><%= link_to t('.navbar.admin_users'), users_path %></li>
+                        <% end %>
+                        <% if can_certifiers_and_criteria_report %>
+                            <li><%= link_to t('.navbar.certifiers_and_criteria_report'), reports_certifiers_criteria_path %></li>
                         <% end %>
                     </ul>
                 </li>

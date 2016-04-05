@@ -89,7 +89,7 @@ class Ability
       # CertificationPath controller
       can :read, CertificationPath, project: project_with_user_assigned
       can :list, CertificationPath, project: project_with_user_assigned
-      can [:download_certificate, :download_certificate_coverletter, :download_scores_report], CertificationPath, project: project_with_user_assigned
+      can [:download_certificate_report, :download_coverletter_report, :download_scores_report], CertificationPath, project: project_with_user_assigned
       can :download_archive, CertificationPath, project: project_with_user_assigned
       # Project team
       can :apply, CertificationPath, project: project_with_user_as_cgp_project_manager
@@ -194,7 +194,7 @@ class Ability
       end
       # Certification Path
       can :list, CertificationPath
-      can [:download_certificate, :download_certificate_coverletter, :download_scores_report], CertificationPath
+      can [:download_certificate_report, :download_coverletter_report, :download_scores_report], CertificationPath
       can :download_archive, CertificationPath
       if user.gsas_trust_admin?
         can [:edit_main_scheme_mix, :update_main_scheme_mix], CertificationPath, certification_path_status: {id: CertificationPathStatus::ACTIVATING}, development_type: ['mixed_use', CertificationPath.development_types[:mixed_use], 'mixed_development', CertificationPath.development_types[:mixed_development], 'mixed_development_in_stages', CertificationPath.development_types[:mixed_development_in_stages]]
@@ -233,6 +233,8 @@ class Ability
       # User controller
       can [:list_notifications,:update_notifications], User, id: user.id
       can :find_users_by_email, User
+      # Reports controller
+      can :certifiers_and_criteria, :report
 
       # Owner
       can [:index, :show], Owner

@@ -18,13 +18,13 @@
                             <tr>
                                 <th>Downloads</th>
                                 <td>
-                                    <% if can?(:download_certificate, @certification_path) %>
+                                    <% if can?(:download_certificate_report, @certification_path) %>
                                         <div>
                                             <%= btn_download(download_certificate_report_project_certification_path_path(@project, @certification_path), tooltip: t('.certification_path.download_certificate.tooltip'), size: 'extra_small') %>
                                             <%= t('.certification_path.download_certificate.text') %>
                                         </div>
                                     <% end %>
-                                    <% if can?(:download_certificate_coverletter, @certification_path) %>
+                                    <% if can?(:download_coverletter_report, @certification_path) %>
                                         <div>
                                             <%= btn_download(download_coverletter_report_project_certification_path_path(@project, @certification_path), tooltip: t('.certification_path.download_coverletter.tooltip'), size: 'extra_small') %>
                                             <%= t('.certification_path.download_coverletter.text') %>

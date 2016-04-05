@@ -121,6 +121,13 @@ en:
         certification_paths:
           certification_path_status:
             label: Certification Status
+        certifiers_criteria:
+          certificate_id:
+            label: Certification name
+          certification_path_certification_path_status_id:
+            label: Certification Status
+          scheme_mix_criteria_status:
+            label: Criteria Status
         projects_certification_paths:
           certificate_id:
             label: Certification name

@@ -2,6 +2,7 @@ class SchemeMixCriterion < ActiveRecord::Base
   include Auditable
   include Taskable
   include ScoreCalculator
+  include DatePlucker
 
   has_many :scheme_mix_criteria_requirement_data, dependent: :destroy
   has_many :requirement_data, through: :scheme_mix_criteria_requirement_data
@@ -25,6 +26,10 @@ class SchemeMixCriterion < ActiveRecord::Base
 
   scope :assigned_to_user, ->(user) {
     joins(:requirement_data).where('scheme_mix_criteria.certifier_id = ? or requirement_data.user_id = ?', user.id, user.id)
+  }
+
+  scope :assigned_to_certifier, ->(certifier) {
+    where(certifier_id: certifier.id)
   }
 
   scope :for_project, ->(project) {
