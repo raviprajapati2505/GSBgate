@@ -6,8 +6,8 @@ module Effective
       attr_accessor :current_ability
 
       datatable do
-        table_column 'username'
         table_column 'name'
+        table_column 'username'
         table_column 'email'
         table_column 'role', type: :integer, filter: {type: :select, values: Proc.new { User.roles.map { |k| [t(k[0], scope: 'activerecord.attributes.user.roles'), k[1]] } }} do |rec|
           t(rec.role, scope: 'activerecord.attributes.user.roles') unless rec.role.nil?
