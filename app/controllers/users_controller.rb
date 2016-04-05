@@ -4,6 +4,9 @@ class UsersController < AuthenticatedController
 
   def index
     @page_title = 'Users'
+    @datatable = Effective::Datatables::Users.new
+    @datatable.current_ability = current_ability
+    @datatable.table_html_class = 'table table-bordered table-striped table-hover'
   end
 
   def show

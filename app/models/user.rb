@@ -3,6 +3,7 @@ require 'bcrypt'
 class User < ActiveRecord::Base
   include ActionView::Helpers::TranslationHelper
   include BCrypt
+  include DatePlucker
 
   enum role: { system_admin: 0, default_role: 1, gsas_trust_top_manager: 2, gsas_trust_manager: 3, gsas_trust_admin: 4 }
 
@@ -20,8 +21,6 @@ class User < ActiveRecord::Base
   after_initialize :init, if: :new_record?
 
   validates :role, inclusion: User.roles.keys
-
-  default_scope { order(name: :asc) }
 
   delegate :can?, :cannot?, :to => :ability
 

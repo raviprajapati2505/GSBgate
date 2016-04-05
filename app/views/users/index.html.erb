@@ -4,37 +4,6 @@
     </div>
     <div class="ibox-content">
         <p class="alert alert-info"><%= fa_icon('info-circle') %> This is an overview of all users using the GSASgate system. User management should be done through the linkme.qa system.</p>
-        <table class="table table-striped table-bordered table-hover datatable table-users">
-            <thead>
-            <tr>
-                <th><%= User.human_attribute_name('username') %></th>
-                <th>Name</th>
-                <th><%= User.human_attribute_name('email') %></th>
-                <th><%= User.human_attribute_name('role') %></th>
-                <th>User type</th>
-                <th>CGP license</th>
-                <th>GORD employee</th>
-                <th><%= User.human_attribute_name('last_sign_in_at') %></th>
-                <th><%= User.human_attribute_name('sign_in_count') %></th>
-                <% if can?(:masquerade, User) %><th>Masquerade</th><% end %>
-            </tr>
-            </thead>
-            <tbody>
-            <% @users.each do |user| %>
-                <tr>
-                    <td><%= user.username %></td>
-                    <td><%= user.full_name %></td>
-                    <td><%= user.email %></td>
-                    <td><%= t(user.role, scope: 'activerecord.attributes.user.roles') %></td>
-                    <td><%= user.linkme_user? ? 'linkme.qa user' : 'Local user' %></td>
-                    <td><%= user.cgp_license? ? 'Yes' : 'No' %></td>
-                    <td><%= user.gord_employee? ? 'Yes' : 'No' %></td>
-                    <td><%= user.last_sign_in_at.present? ? localize(user.last_sign_in_at): 'Never' %></td>
-                    <td><%= user.sign_in_count %></td>
-                    <% if can?(:masquerade, user) %><td><%= btn_link_to(masquerade_users_path(user.id), icon: 'user-secret', size: 'small') %></td><% end %>
-                </tr>
-            <% end %>
-            </tbody>
-        </table>
+        <%= render_datatable(@datatable) %>
     </div>
 </div>
