@@ -9,7 +9,7 @@ en:
           single_use: Single use building
           mixed_use: Mixed use building
           mixed_development: Neighbourhood (mixed development)
-          mixed_development_in_stages: Neighbourhood in stages (Mixed development in stages)
+          mixed_development_in_stages: Neighbourhood in stages (mixed development in stages)
       project:
         code: Project ID
         name: Project name
