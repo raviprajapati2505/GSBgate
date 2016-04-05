@@ -83,7 +83,7 @@
                             Maximum number of PCR reviews
                           </th>
                           <td>
-                            <span><%= @certification_path.max_review_count %> review(s)</span>
+                            <span><%= pluralize(@certification_path.max_review_count, 'review') %></span>
                             <%= btn_link_to(edit_max_review_count_project_certification_path_path(@project, @certification_path), remote: true, text: 'Set maximum', class: 'pull-right') %>
                           </td>
                         </tr>
