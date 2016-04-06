@@ -132,12 +132,15 @@ module ScoreCalculator
         # - validate minimum valid score (if the score is not below the minimum required valid score)
         check_minimum_valid_score = build_check_minimum_valid_score_query(field_name, field_table)
 
+        # - validate scheme mix criterion status
+        check_scheme_mix_criterion_state = build_check_scheme_mix_criterion_state_query(field_name)
+
         # NOTE: to use validations in a query, we do some magic tricks
         # - convert the boolean check value to a number, so we can use an aggregate function on it
         # - returning NULL if not all validations are ok
         # - OR returning the actual score calculation query
-        validation_query_template = 'CASE MIN(CASE(%{check_certification_path_state} AND %{check_minimum_valid_score}) WHEN true then 1 else 0 end) WHEN 1 THEN %{score_calculation_query} ELSE null end'
-        validation_query = validation_query_template % {check_certification_path_state: check_certification_path_state, check_minimum_valid_score: check_minimum_valid_score, score_calculation_query: score_calculation_query}
+        validation_query_template = 'CASE MIN(CASE(%{check_certification_path_state} AND %{check_minimum_valid_score} AND %{check_scheme_mix_criterion_state}) WHEN true then 1 else 0 end) WHEN 1 THEN %{score_calculation_query} ELSE null end'
+        validation_query = validation_query_template % {check_certification_path_state: check_certification_path_state, check_minimum_valid_score: check_minimum_valid_score, check_scheme_mix_criterion_state: check_scheme_mix_criterion_state, score_calculation_query: score_calculation_query}
       else
         validation_query = score_calculation_query
       end
@@ -145,6 +148,17 @@ module ScoreCalculator
       # alias part
       field_alias = ' as ' + field_alias unless field_alias.empty?
       return '%{validation_query}%{field_alias}' % {validation_query: validation_query, field_alias: field_alias}
+    end
+
+    def build_check_scheme_mix_criterion_state_query(field_name)
+      if field_name == :achieved_score
+        excluded_statuses = [SchemeMixCriterion::statuses[:verifying], SchemeMixCriterion::statuses[:verifying_after_appeal]]
+        included_roles = [ProjectsUser::roles[:certification_manager], ProjectsUser::roles[:certifier]]
+        check_scheme_mix_criterion_state_template = '(scheme_mix_criteria_score.status NOT IN (%{scheme_mix_criterion_statuses}) OR EXISTS(SELECT user_id FROM projects_users WHERE projects_users.project_id = projects.id AND projects_users.user_id = %{user_id} AND projects_users.role IN (%{project_roles})) OR NOT EXISTS(SELECT user_id FROM projects_users WHERE projects_users.user_id = %{user_id}))'
+        check_scheme_mix_criterion_state_template % {scheme_mix_criterion_statuses: excluded_statuses.join(', '), user_id: User.current.id, project_roles: included_roles.join(', ')}
+      else
+        'true'
+      end
     end
 
     def build_check_minimum_valid_score_query(field_name, field_table)
@@ -195,6 +209,7 @@ module ScoreCalculator
                      .joins('INNER JOIN scheme_criteria as scheme_criteria_score ON scheme_criteria_score.id = scheme_mix_criteria_score.scheme_criterion_id')
                      .joins('INNER JOIN scheme_mixes as scheme_mixes_score ON scheme_mixes_score.id = scheme_mix_criteria_score.scheme_mix_id')
                      .joins('INNER JOIN certification_paths as certification_paths_score ON certification_paths_score.id = scheme_mixes_score.certification_path_id')
+                     .joins('INNER JOIN projects ON projects.id = certification_paths_score.project_id')
       case self.name
         when CertificationPath.name, SchemeMix.name, SchemeMixCriterion.name
           relation

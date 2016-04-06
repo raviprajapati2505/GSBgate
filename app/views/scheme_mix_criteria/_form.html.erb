@@ -119,6 +119,7 @@
                         </td>
                     </tr>
                     <% if !@certification_path.in_pre_verification? %>
+                    <% if !@certification_path.in_verification? || (@certification_path.certification_path_status_id == CertificationPathStatus::VERIFYING_AFTER_APPEAL && !@scheme_mix_criterion.verifying_after_appeal?) || !User.current.default_role? || @project.role_for_user(User.current) == ProjectsUser.roles.keys[ProjectsUser.roles[:certifier]] || @project.role_for_user(User.current) == ProjectsUser.roles.keys[ProjectsUser.roles[:certification_manager]] %>
                     <tr>
                         <th>Achieved score <%= tooltip(t('.scores.achieved_score.tooltip')) %></th>
                         <td>
@@ -129,6 +130,7 @@
                             <% end %>
                         </td>
                     </tr>
+                    <% end %>
                     <% end %>
                     </tbody>
                 </table>
