@@ -16,8 +16,23 @@ class DigestMailer < ApplicationMailer
       if user.system_admin? || user.gsas_trust_admin?
         @audit_logs = AuditLog.where('updated_at > ?', user.last_notified_at)
       else
-      @audit_logs = AuditLog.where('updated_at > ?', user.last_notified_at)
-                            .where('project_id IN (select projects_users.project_id from projects_users where projects_users.user_id = ?)', user.id)
+        audit_log = AuditLog.arel_table
+        project = Project.arel_table
+        projects_user = ProjectsUser.arel_table
+        project_join_on = audit_log.create_on(audit_log[:project_id].eq(project[:id]))
+        project_inner_join = audit_log.create_join(project, project_join_on, Arel::Nodes::InnerJoin)
+        projects_user_join_on = project.create_on(project[:id].eq(projects_user[:project_id]))
+        projects_user_outer_join = project.create_join(projects_user, projects_user_join_on, Arel::Nodes::OuterJoin)
+        @audit_logs = AuditLog.joins(project_inner_join)
+                          .joins(projects_user_outer_join)
+                          .where(audit_log[:updated_at].gt(user.last_notified_at)
+                                     .and(audit_log[:project_id].in(ProjectsUser.where(user_id: user.id).pluck(:project_id)))
+                                     .and(audit_log[:audit_log_visibility_id].eq(AuditLogVisibility::PUBLIC).or(projects_user[:user_id].eq(user.id).and(projects_user[:role].in([ProjectsUser.roles[:certification_manager], ProjectsUser.roles[:certifier]]))))
+                          )
+
+        Rails.logger = Logger.new(STDOUT)
+        Rails.logger.info @audit_logs.to_sql
+
       end
 
       exclude_notifications = NotificationTypesUser.where(user: user, notification_type_id: NotificationType::NEW_USER_COMMENT)

@@ -2,15 +2,15 @@ namespace :gsas do
 
   PAGE_SIZE = 100
 
-  # usage example: rake gsas:send_digest_mail[<user_email>]
+  # usage example: rake gsas:send_digest_mail[<username>]
   desc 'Send email to users with a digest of their most recent project changes and their list of unfinished tasks'
-  task :send_digest_mail, [:user_email] => :environment do |t, args|
+  task :send_digest_mail, [:username] => :environment do |t, args|
 
     Rails.logger.info 'Start sending emails...'
 
     user_count = 0
-    if args.user_email.present?
-      user = User.find_by_email(args.user_email)
+    if args.username.present?
+      user = User.find_by_username(args.username)
       if user.present?
         DigestMailer.digest_email(user).deliver_now
         user_count += 1
