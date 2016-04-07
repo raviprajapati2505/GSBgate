@@ -2,6 +2,7 @@ $(function () {
     // Find user by email and add him to one of the tables
     $('.find-users-by-email-btn').click(function () {
         var modal = $(this).parents('.modal-body');
+        var modal_footer = modal.siblings('.modal-footer');
         var find_button = $(this)
         var help_block = modal.find('.help-block');
         var users_table = modal.find('.users-table');
@@ -22,10 +23,12 @@ $(function () {
                 find_button.addClass('btn-danger').removeClass('btn-white');
             },
             enableForm: function () {
+                modal_footer.show();
                 email_field.prop('disabled', false);
                 find_button.prop('disabled', false);
             },
             disableForm: function () {
+                modal_footer.hide();
                 email_field.prop('disabled', true);
                 find_button.prop('disabled', true);
             },
