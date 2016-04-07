@@ -152,10 +152,18 @@ module ScoreCalculator
 
     def build_check_scheme_mix_criterion_state_query(field_name)
       if field_name == :achieved_score
-        excluded_statuses = [SchemeMixCriterion::statuses[:verifying], SchemeMixCriterion::statuses[:verifying_after_appeal]]
+        scheme_mix_criterion_verifying = SchemeMixCriterion::statuses[:verifying]
+        scheme_mix_criterion_verifying_after_appeal = SchemeMixCriterion::statuses[:verifying_after_appeal]
+        certification_path_status_verifying = CertificationPathStatus::VERIFYING
+        certification_path_status_verifying_after_appeal = CertificationPathStatus::VERIFYING_AFTER_APPEAL
         included_roles = [ProjectsUser::roles[:certification_manager], ProjectsUser::roles[:certifier]]
-        check_scheme_mix_criterion_state_template = '(scheme_mix_criteria_score.status NOT IN (%{scheme_mix_criterion_statuses}) OR EXISTS(SELECT user_id FROM projects_users WHERE projects_users.project_id = projects.id AND projects_users.user_id = %{user_id} AND projects_users.role IN (%{project_roles})) OR NOT EXISTS(SELECT user_id FROM projects_users WHERE projects_users.user_id = %{user_id}))'
-        check_scheme_mix_criterion_state_template % {scheme_mix_criterion_statuses: excluded_statuses.join(', '), user_id: User.current.id, project_roles: included_roles.join(', ')}
+        check_scheme_mix_criterion_state_template = '(scheme_mix_criteria_score.status < %{scheme_mix_criterion_verifying} AND certification_paths_score.certification_path_status_id = %{certification_path_status_verifying}) OR (scheme_mix_criteria_score.status < %{scheme_mix_criterion_verifying_after_appeal} AND certification_paths_score.certification_path_status_id = %{certification_path_status_verifying_after_appeal}) OR EXISTS(SELECT user_id FROM projects_users WHERE projects_users.project_id = projects.id AND projects_users.user_id = %{user_id} AND projects_users.role IN (%{project_roles})) OR NOT EXISTS(SELECT user_id FROM projects_users WHERE projects_users.user_id = %{user_id})'
+        check_scheme_mix_criterion_state_template % {scheme_mix_criterion_verifying: scheme_mix_criterion_verifying,
+                                                     scheme_mix_criterion_verifying_after_appeal: scheme_mix_criterion_verifying_after_appeal,
+                                                     certification_path_status_verifying: certification_path_status_verifying,
+                                                     certification_path_status_verifying_after_appeal: certification_path_status_verifying_after_appeal,
+                                                     user_id: User.current.id,
+                                                     project_roles: included_roles.join(', ')}
       else
         'true'
       end
