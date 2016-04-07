@@ -200,7 +200,7 @@
                                                    minimum_scale_in_criteria_points: scheme_mix_criteria_scores_by_category[category.id].collect{|score| score[:minimum_score_in_criteria_points]}.min
                                                }
                                             %>
-                                            <% @scheme_mix.scheme_mix_criteria.for_category(category).order('scheme_criteria.number').each_with_index do |scheme_mix_criterion, j| %>
+                                            <% @scheme_mix.scheme_mix_criteria.for_category(category).order('scheme_criteria.number').map { |scheme_mix_criterion| scheme_mix_criterion.visible_status }.each do |scheme_mix_criterion| %>
                                                 <tr>
                                                     <td><%= scheme_mix_criterion.code %></td>
                                                     <td>

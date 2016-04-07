@@ -209,6 +209,20 @@ class SchemeMixCriterion < ActiveRecord::Base
     end
   end
 
+  def visible_status
+    # hide real criterion status in some cases
+    certification_path = self.scheme_mix.certification_path
+    project = certification_path.project
+    if User.current.default_role? && (project.role_for_user(User.current) != ProjectsUser.roles.keys[ProjectsUser.roles[:certifier]] && project.role_for_user(User.current) != ProjectsUser.roles.keys[ProjectsUser.roles[:certification_manager]])
+      if certification_path.certification_path_status_id == CertificationPathStatus::VERIFYING
+        self.status = SchemeMixCriterion::statuses[:verifying]
+      elsif certification_path.certification_path_status_id == CertificationPathStatus::VERIFYING_AFTER_APPEAL && SchemeMixCriterion::statuses[self.status] >= SchemeMixCriterion::statuses[:verifying_after_appeal]
+        self.status = SchemeMixCriterion::statuses[:verifying_after_appeal]
+      end
+    end
+    return self
+  end
+
   private
 
   def init

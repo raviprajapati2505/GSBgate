@@ -16,6 +16,8 @@ class SchemeMixCriteriaController < AuthenticatedController
         @page_title = ERB::Util.html_escape(@scheme_mix_criterion.scheme_criterion.full_name.to_s)
         @prev_smc = @scheme_mix_criterion.previous_scheme_mix_criterion
         @next_smc = @scheme_mix_criterion.next_scheme_mix_criterion
+        # hide real criterion status in some cases
+        @scheme_mix_criterion.visible_status
       }
       format.json { render json: {id: @scheme_mix_criterion.scheme_mix.id.to_s + ';' + @scheme_mix_criterion.id.to_s, name: @scheme_mix_criterion.full_name}, status: :ok }
     end
