@@ -3,7 +3,7 @@ class CertificationPathsController < AuthenticatedController
   load_and_authorize_resource :project
   load_and_authorize_resource :certification_path, :through => :project
 
-  before_action :set_controller_model, except: [:new, :create, :list]
+  before_action :set_controller_model, except: [:create, :list]
   # TODO ???????????
   # before_action :certificate_exists_and_is_allowed, only: [:apply, :new, :create]
 

@@ -45,72 +45,75 @@ $(function () {
     function validate(){
         var valid = true;
 
-        // No validation needed, for Final Design Certificate
-        var certification_type = $('#certification_path_certification_type').val();
-        if (certification_type == 20){
-            return valid;
-        }
-
         // reset UI
         $('div.form-group').removeClass('has-error');
         $('div.schemes-group .input-group').removeClass('has-error');
         $('div.schemes-group .input-group span.help-block').remove();
 
-        // Determine the selected development type
-        if($('select.single-scheme-select').length) {
-            valid = ("" != $('select.single-scheme-select').val());
+        // No validation needed, for Final Design Certificate
+        var certification_type = $('#certification_path_certification_type').val();
+        if (certification_type == 20){
+            valid = ("" != $('#certification_path_duration').val());
             if(!valid){
-                $('div.scheme-single-group').addClass('has-error');
+                $('div.duration-group').addClass('has-error');
             }
-        } else if ($('select.mixed-scheme-select').length) {
-            var total = calculate_total_weight();
-            if (total != 100) {
-                valid = false;
-            } else {
-                // none of the scheme mixes can have 0% weight
-                $('table.schemes input.weight').each(function (idx, el) {
-                    var elem = $(el);
-                    var value = parseInt(elem.val(), 10);
-                    if (value == 0) {
-                        valid = false;
-                        elem.parent().addClass('has-error');
-                    } else {
-                        elem.parent().removeClass('has-error');
-                    }
-                });
-            }
-
-            // Search for schemes with same name
-            var scheme_rows = $('table.schemes tbody tr');
-            scheme_rows.each(function(index, object) {
-                var curr_scheme_id = $(object).find('input[type="hidden"]').val();
-                // Get all scheme rows with the same scheme name (or scheme id)
-                var identical_scheme_rows = $('table.schemes input[type="hidden"][value=' + curr_scheme_id + ']').parents('tbody tr');
-                // Check if more rows exist with an identical scheme name
-                if (identical_scheme_rows.size() > 1) {
-                    var curr_name_input = $(object).find('input.name');
-                    // The custom name is required now
-                    if (curr_name_input.val() == '') {
-                        valid = false;
-                        curr_name_input.parent().addClass('has-error');
-                        curr_name_input.parent().append('<span class="help-block">This field cannot be blank.</span>');
-                        return true;
-                    }
-                    // Custom names must be unique over all rows with the same scheme name
-                    identical_scheme_rows.each(function(index, object2) {
-                        var name_input = $(object2).find('input.name');
-                        if ((curr_name_input.data('id') != name_input.data('id')) && (curr_name_input.val() == name_input.val())) {
+        }else {
+            // Determine the selected development type
+            if ($('select.single-scheme-select').length) {
+                valid = ("" != $('select.single-scheme-select').val());
+                if (!valid) {
+                    $('div.scheme-single-group').addClass('has-error');
+                }
+            } else if ($('select.mixed-scheme-select').length) {
+                var total = calculate_total_weight();
+                if (total != 100) {
+                    valid = false;
+                } else {
+                    // none of the scheme mixes can have 0% weight
+                    $('table.schemes input.weight').each(function (idx, el) {
+                        var elem = $(el);
+                        var value = parseInt(elem.val(), 10);
+                        if (value == 0) {
                             valid = false;
-                            curr_name_input.parent().addClass('has-error');
-                            curr_name_input.parent().append('<span class="help-block">The custom name must be unique among rows with same scheme name.</span>');
-                            return true;
+                            elem.parent().addClass('has-error');
+                        } else {
+                            elem.parent().removeClass('has-error');
                         }
                     });
                 }
-            });
-        } else {
-            valid = false;
-            $('#certification_path_development_type').parent().addClass('has-error');
+
+                // Search for schemes with same name
+                var scheme_rows = $('table.schemes tbody tr');
+                scheme_rows.each(function (index, object) {
+                    var curr_scheme_id = $(object).find('input[type="hidden"]').val();
+                    // Get all scheme rows with the same scheme name (or scheme id)
+                    var identical_scheme_rows = $('table.schemes input[type="hidden"][value=' + curr_scheme_id + ']').parents('tbody tr');
+                    // Check if more rows exist with an identical scheme name
+                    if (identical_scheme_rows.size() > 1) {
+                        var curr_name_input = $(object).find('input.name');
+                        // The custom name is required now
+                        if (curr_name_input.val() == '') {
+                            valid = false;
+                            curr_name_input.parent().addClass('has-error');
+                            curr_name_input.parent().append('<span class="help-block">This field cannot be blank.</span>');
+                            return true;
+                        }
+                        // Custom names must be unique over all rows with the same scheme name
+                        identical_scheme_rows.each(function (index, object2) {
+                            var name_input = $(object2).find('input.name');
+                            if ((curr_name_input.data('id') != name_input.data('id')) && (curr_name_input.val() == name_input.val())) {
+                                valid = false;
+                                curr_name_input.parent().addClass('has-error');
+                                curr_name_input.parent().append('<span class="help-block">The custom name must be unique among rows with same scheme name.</span>');
+                                return true;
+                            }
+                        });
+                    }
+                });
+            } else {
+                valid = false;
+                $('#certification_path_development_type').parent().addClass('has-error');
+            }
         }
         return valid;
     }
@@ -129,6 +132,10 @@ $(function () {
     });
 
     $('select.mixed-scheme-select').on("change", function (e) {
+        validate();
+    });
+
+    $('#certification_path_duration').on("change", function (e) {
         validate();
     });
 
