@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160411060000) do
+ActiveRecord::Schema.define(version: 20160411102445) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -360,7 +360,6 @@ ActiveRecord::Schema.define(version: 20160411060000) do
 
   create_table "schemes", force: :cascade do |t|
     t.string   "name"
-    t.integer  "certificate_id"
     t.datetime "created_at",                       null: false
     t.datetime "updated_at",                       null: false
     t.string   "gsas_version"
@@ -368,9 +367,6 @@ ActiveRecord::Schema.define(version: 20160411060000) do
     t.string   "gsas_document"
     t.integer  "certificate_type"
   end
-
-  add_index "schemes", ["certificate_id"], name: "index_schemes_on_certificate_id", using: :btree
-  add_index "schemes", ["name", "gsas_version", "certificate_id", "renovation"], name: "index_schemes_on_name_gsasversion_certificateid_renovation", unique: true, using: :btree
 
   create_table "tasks", force: :cascade do |t|
     t.integer  "task_description_id",   null: false
