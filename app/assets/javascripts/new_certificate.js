@@ -180,13 +180,27 @@ $(function () {
         validate();
     });
 
-    $('#gsas_version, #certification_path_development_type').change(function() {
+    $('#gsas_version').change(function() {
+        var project_id = $('#certification_path_project_id').val();
+        var certification_type = $('#certification_path_certification_type').val();
+        var gsas_version = $('#gsas_version').val();
+        $.ajax({
+           type: 'POST',
+            url: Routes.apply_certification_path_path(project_id, certification_type),
+            dataType: 'script',
+            cache: false,
+            data: {
+                gsas_version: gsas_version,
+            },
+        });
+    });
+    $('#certification_path_development_type').change(function() {
         var project_id = $('#certification_path_project_id').val();
         var certification_type = $('#certification_path_certification_type').val();
         var gsas_version = $('#gsas_version').val();
         var development_type = $('#certification_path_development_type').val();
         $.ajax({
-           type: 'POST',
+            type: 'POST',
             url: Routes.apply_certification_path_path(project_id, certification_type),
             dataType: 'script',
             cache: false,
