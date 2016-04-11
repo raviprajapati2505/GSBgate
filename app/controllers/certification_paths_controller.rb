@@ -4,7 +4,8 @@ class CertificationPathsController < AuthenticatedController
   load_and_authorize_resource :certification_path, :through => :project
 
   before_action :set_controller_model, except: [:new, :create, :list]
-  before_action :certificate_exists_and_is_allowed, only: [:apply, :new, :create]
+  # TODO ???????????
+  # before_action :certificate_exists_and_is_allowed, only: [:apply, :new, :create]
 
   def show
     respond_to do |format|
@@ -17,104 +18,111 @@ class CertificationPathsController < AuthenticatedController
   end
 
   def apply
-    @certification_path = CertificationPath.new(certificate_id: params[:certificate_id])
-    @certification_path.project = @project
+    # create a new object, for our project
+    @certification_path = CertificationPath.new(project_id: @project.id)
+    # check if the user is authorized to apply for a new certification_path in out project
     authorize! :apply, @certification_path
 
-    # LOC
+    # To determine the certificate, we need both the certification_type and the gsas_version
+    #  - The certification_type is passed as part of the url
+    #  TODO: verify 'certification_type', as it is a required param !
+    @certification_type = Certificate.certification_types.key(params[:certification_type].to_i)
+
+    # Note: FinalDesign reuses the version from LetterOfConformance !!
+    if Certificate.certification_types[@certification_type] == Certificate.certification_types[:final_design_certificate]
+      @gsas_version = @certification_path.project.completed_letter_of_conformances.first.certificate.gsas_version
+    else
+      #  - The gsas_version can be passed as post data, but we also provide a default based on the available data
+      #  TODO: verify 'gsas_version' is valid
+      @gsas_versions = Certificate.with_certification_type(Certificate.certification_types[@certification_type]).order(gsas_version: :desc).distinct.pluck(:gsas_version, :gsas_version)
+      if params.has_key?(:gsas_version)
+        @gsas_version = params[:gsas_version]
+      else
+        @gsas_version = @gsas_versions.first
+      end
+    end
+
+    #  - Determine the resulting certificate, and add it to our certification_path
+    #  TODO: verify there is only 1 certificate
+    @certificates = Certificate.with_gsas_version(@gsas_version).with_certification_type(Certificate.certification_types[@certification_type])
+    @certification_path.certificate = @certificates.first
+
+    # PCR Track
+    if params.has_key?(:certification_path) && params[:certification_path].has_key?(:pcr_track)
+      @certification_path.pcr_track = params[:certification_path][:pcr_track]
+    else
+      @certification_path.pcr_track = false
+    end
+
+    # Duration
     if @certification_path.certificate.letter_of_conformance?
       @certification_path.duration = 1
-      # show the modal, so the user can enter certification_path details
-      respond_to do |format|
-        format.js {
-          return render 'apply'
-        }
-        format.html {
-          if params.has_key?(:certification_path)
-            if params[:certification_path].has_key?(:pcr_track)
-              @certification_path.pcr_track = params[:certification_path][:pcr_track]
-            end
-            if params[:certification_path].has_key?(:development_type)
-              @certification_path.development_type = params[:certification_path][:development_type]
-            end
-            if @certification_path.single_use?
-              if params.has_key?(:single_scheme_select)
-                @certification_path.scheme_mixes.build({scheme_id: params[:single_scheme_select], weight: 100})
-              end
-            elsif @certification_path.mixed?
-              if params[:certification_path].has_key?(:schemes)
-                params[:certification_path][:schemes].each do |scheme_params|
-                  if scheme_params[:custom_name].blank?
-                    scheme_params[:custom_name] = nil
-                  end
-                  @certification_path.scheme_mixes.build({scheme_id: scheme_params[:scheme_id], weight: scheme_params[:weight], custom_name: scheme_params[:custom_name]})
-                end
-              end
-            end
-          end
-          if @certification_path.save
-            return redirect_to(project_certification_path_path(@project, @certification_path), notice: t('controllers.certification_paths_controller.apply.success'))
-          else
-            return redirect_to(project_path(@project), alert: t('controllers.certification_paths_controller.apply.error'))
-          end
-        }
-      end
     elsif @certification_path.certificate.final_design_certificate?
-      if params.has_key?(:certification_path)
-        if params[:certification_path].has_key?(:pcr_track)
-          @certification_path.pcr_track = params[:certification_path][:pcr_track]
-        end
-        if params[:certification_path].has_key?(:duration)
-          @certification_path.duration = params[:certification_path][:duration]
-        end
+      @durations = [['2 years', 2], ['3 years', 3], ['4 years', 4]]
+      if params.has_key?(:certification_path) && params[:certification_path].has_key?(:duration)
+        @certification_path.duration = params[:certification_path][:duration]
+      else
+        @certification_path.duration = @durations.first[1]
       end
-      loc = @project.certification_paths.find_by(certificate: Certificate.letter_of_conformance)
-      @certification_path.development_type = loc.development_type
-      # Final Design Certificate version must be equal to Letter Of Conformance version
-      @certification_path.certificate = Certificate.final_design_certificate.where(gsas_version: loc.certificate.gsas_version).first
+    else
+      @certification_path.duration = 0
+    end
+
+    # Development Type
+    # Note: FinalDesign uses a similar DevelopmentType as Letter Of Conformace !!
+    if Certificate.certification_types[@certification_type] == Certificate.certification_types[:final_design_certificate]
+      # Note: we currently use the name to match, this coul be done cleaner
+      development_type_name = @certification_path.project.completed_letter_of_conformances.first.development_type.name
+      @certification_path.development_type = DevelopmentType.find_by(name: development_type_name, certificate: @certification_path.certificate)
+    else
+      @development_types = @certification_path.certificate.development_types
+      if params.has_key?(:certification_path) && params[:certification_path].has_key?(:development_type)
+        @certification_path.development_type = DevelopmentType.find_by_id(params[:certification_path][:development_type].to_i)
+      else
+        @certification_path.development_type = @certification_path.certificate.development_types.first
+      end
+    end
+
+    if Certificate.certification_types[@certification_type] == Certificate.certification_types[:final_design_certificate]
       # Mirror the LOC scheme mixes
-      loc.scheme_mixes.each do |scheme_mix|
+      @certification_path.project.completed_letter_of_conformances.first.scheme_mixes.each do |scheme_mix|
         new_scheme_mix = @certification_path.scheme_mixes.build({scheme_id: scheme_mix.scheme_id, weight: scheme_mix.weight, custom_name: scheme_mix.custom_name})
         # Mirror the main scheme mix
-        if loc.main_scheme_mix_id.present? && (scheme_mix.id == loc.main_scheme_mix_id)
+        if @certification_path.project.completed_letter_of_conformances.first.main_scheme_mix_id.present? && (scheme_mix.id == @certification_path.project.completed_letter_of_conformances.first.main_scheme_mix_id)
           @certification_path.main_scheme_mix = new_scheme_mix
           @certification_path.main_scheme_mix_selected = true
         end
       end
-      # show the modal, so the user can enter certification_path details
-      respond_to do |format|
-        format.js {
-          return render 'apply'
-        }
-        format.html {
-          if @certification_path.save
-            return redirect_to(project_certification_path_path(@project, @certification_path), notice: t('controllers.certification_paths_controller.apply.success'))
-          else
-            return redirect_to(project_path(@project), alert: t('controllers.certification_paths_controller.apply.error'))
+    else
+      if @certification_path.development_type.mixable?
+        if params[:certification_path].has_key?(:schemes)
+          params[:certification_path][:schemes].each do |scheme_params|
+            if scheme_params[:custom_name].blank?
+              scheme_params[:custom_name] = nil
+            end
+            @certification_path.scheme_mixes.build({scheme_id: scheme_params[:scheme_id], weight: scheme_params[:weight], custom_name: scheme_params[:custom_name]})
           end
-        }
-      end
-    elsif @certification_path.certificate.construction_certificate? || @certification_path.certificate.operations_certificate?
-      @certification_path.development_type = :not_applicable
-      @certification_path.duration = 0
-      @certification_path.scheme_mixes.build({scheme_id: @certification_path.certificate.schemes.take.id, weight: 100})
-      if params.has_key?(:certification_path)
-        if params[:certification_path].has_key?(:pcr_track)
-          @certification_path.pcr_track = params[:certification_path][:pcr_track]
+        end
+      else
+        if params.has_key?(:single_scheme_select)
+          @certification_path.scheme_mixes.build({scheme_id: params[:single_scheme_select], weight: 100})
         end
       end
-      respond_to do |format|
-        format.js {
-          return render 'apply'
-        }
-        format.html {
-          if @certification_path.save
-            return redirect_to(project_certification_path_path(@project, @certification_path), notice: t('controllers.certification_paths_controller.apply.success'))
-          else
-            return redirect_to(project_path(@project), alert: t('controllers.certification_paths_controller.apply.error'))
-          end
-        }
-      end
+    end
+
+    respond_to do |format|
+      # refresh modal using js, to show updated values, based on the received post data
+      format.js {
+        return render 'apply'
+      }
+      # save the certificate, as the user has clicked save
+      format.html {
+        if @certification_path.save
+          return redirect_to(project_certification_path_path(@project, @certification_path), notice: t('controllers.certification_paths_controller.apply.success'))
+        else
+          return redirect_to(project_path(@project), alert: t('controllers.certification_paths_controller.apply.error'))
+        end
+      }
     end
   end
 
@@ -349,19 +357,20 @@ class CertificationPathsController < AuthenticatedController
     @controller_model = @certification_path
   end
 
-  def certificate_exists_and_is_allowed
-    certificate_id = params[:certificate_id]
-    certificate_id ||= params[:certification_path][:certificate_id]
-    certificate = Certificate.find(certificate_id)
-    # Verify the requested certificate exists.
-    if certificate.nil?
-      return redirect_to project_path(@project), alert: t('controllers.certification_paths_controller.certificate_exists_and_is_allowed.error_no_certificate')
-    end
-    # Verify the requested certificate is allowed to be created at this time
-    if not @project.can_create_certification_path_for_certificate?(certificate)
-      return redirect_to project_path(@project), alert: t('controllers.certification_paths_controller.certificate_exists_and_is_allowed.error_can_create_certificate')
-    end
-  end
+  # TODO ???????????
+  # def certificate_exists_and_is_allowed
+  #   certificate_id = params[:certificate_id]
+  #   certificate_id ||= params[:certification_path][:certificate_id]
+  #   certificate = Certificate.find(certificate_id)
+  #   # Verify the requested certificate exists.
+  #   if certificate.nil?
+  #     return redirect_to project_path(@project), alert: t('controllers.certification_paths_controller.certificate_exists_and_is_allowed.error_no_certificate')
+  #   end
+  #   # Verify the requested certificate is allowed to be created at this time
+  #   if not @project.can_create_certification_path_for_certificate?(certificate)
+  #     return redirect_to project_path(@project), alert: t('controllers.certification_paths_controller.certificate_exists_and_is_allowed.error_can_create_certificate')
+  #   end
+  # end
 
   def certification_path_params
     params.require(:certification_path).permit(:project_id, :certificate_id, :pcr_track, :duration, :started_at, :development_type, :appealed, :audit_log_user_comment, :audit_log_visibility)

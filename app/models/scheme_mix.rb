@@ -19,7 +19,7 @@ class SchemeMix < ActiveRecord::Base
   end
 
   def full_name
-      "GSAS #{Certificate.human_attribute_name(self.scheme.certificate.assessment_stage)} Assessment v#{self.scheme.gsas_version}: #{self.name}"
+      "GSAS #{Certificate.human_attribute_name(self.certification_path.certificate.assessment_stage)} Assessment v#{self.scheme.gsas_version}: #{self.name}"
   end
 
   # Mirrors all the descendant structural data records of the SchemeMix to user data records
@@ -37,7 +37,7 @@ class SchemeMix < ActiveRecord::Base
     # Loop all the criteria of the scheme
     scheme.scheme_criteria.each do |scheme_criterion|
       # Check whether the new scheme mix criterion will have a main scheme mix criterion
-      has_main_scheme_mix_criterion = (certification_path.mixed? && certification_path.main_scheme_mix.present? && scheme_criterion.scheme_category.shared? && (id != certification_path.main_scheme_mix_id) && main_scheme_mix_criteria.has_key?(scheme_criterion.code))
+      has_main_scheme_mix_criterion = (certification_path.development_type.mixable? && certification_path.main_scheme_mix.present? && scheme_criterion.scheme_category.shared? && (id != certification_path.main_scheme_mix_id) && main_scheme_mix_criteria.has_key?(scheme_criterion.code))
 
       # If there is a main scheme mix criterion, get the id
       main_scheme_mix_criterion_id = nil

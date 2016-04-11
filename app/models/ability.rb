@@ -34,6 +34,11 @@ class Ability
     project_user_project_team_roles = project_user_role_cgp_project_manager | project_user_role_project_team_member
     project_user_gsas_trust_team_roles = project_user_role_certification_manager | project_user_role_certifier
     project_user_enterprise_client_roles = project_user_role_enterprise_client
+    #   Certificate.certification_types
+    certificate_certification_types_letter_of_conformance = ['letter_of_conformance', Certificate.certification_types[:letter_of_conformance]]
+    certificate_certification_types_final_design_certificate = ['final_design_certificate', Certificate.certification_types[:final_design_certificate]]
+    certificate_certification_types_construction_certificate = ['construction_certificate', Certificate.certification_types[:construction_certificate]]
+    certificate_certification_types_operations_certificate = ['operations_certificate', Certificate.certification_types[:operations_certificate]]
     #   SchemeMixCriterion.statuses
     scheme_mix_criterion_status_submitting = ['submitting', SchemeMixCriterion.statuses[:submitting], 'submitting_after_appeal', SchemeMixCriterion.statuses[:submitting_after_appeal]]
     scheme_mix_criterion_status_submitted = ['submitted', SchemeMixCriterion.statuses[:submitted], 'submitted_after_appeal', SchemeMixCriterion.statuses[:submitted_after_appeal]]
@@ -102,7 +107,9 @@ class Ability
 
       # SchemeMix controller
       can :read, SchemeMix, certification_path: {project: project_with_user_assigned, certification_path_status: {id: CertificationPathStatus::STATUSES_ACTIVATED}}
-      can :update, SchemeMix, certification_path: {project: project_with_user_as_cgp_project_manager, certification_path_status: {id: CertificationPathStatus::ACTIVATING}, development_type: ['mixed_use', CertificationPath.development_types[:mixed_use], 'mixed_development', CertificationPath.development_types[:mixed_development], 'mixed_development_in_stages', CertificationPath.development_types[:mixed_development_in_stages]]}
+      # TODO ????????????
+      #can :update, SchemeMix, certification_path: {project: project_with_user_as_cgp_project_manager, certification_path_status: {id: CertificationPathStatus::ACTIVATING}, development_type: ['mixed_use', CertificationPath.development_types[:mixed_use], 'mixed_development', CertificationPath.development_types[:mixed_development], 'mixed_development_in_stages', CertificationPath.development_types[:mixed_development_in_stages]]}
+      can :update, SchemeMix, certification_path: {project: project_with_user_as_cgp_project_manager, certification_path_status: {id: CertificationPathStatus::ACTIVATING}}
 
       # SchemeMixCriterion controller
       can :read, SchemeMixCriterion, scheme_mix: {certification_path: {project: project_with_user_assigned, certification_path_status: {id: CertificationPathStatus::STATUSES_ACTIVATED}}}

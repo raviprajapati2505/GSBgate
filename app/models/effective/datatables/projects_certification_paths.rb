@@ -45,9 +45,10 @@ module Effective
         end
 
         table_column 'certification_path_pcr_track', column: 'certification_paths.pcr_track', label: t('models.effective.datatables.projects_certification_paths.certification_path_pcr_track.label'), type: :boolean, visible: false
-        table_column 'certification_path_development_type', column: 'certification_paths.development_type', type: :integer, label: t('models.effective.datatables.projects_certification_paths.certification_path_development_type.label'), visible: false, filter: {type: :select, values: Proc.new { CertificationPath.development_types.map { |k| [t(k[0], scope: 'activerecord.attributes.certification_path.development_types'), k[1]] } }} do |rec|
-          t(CertificationPath.development_types.key(rec.certification_path_development_type), scope: 'activerecord.attributes.certification_path.development_types') unless rec.certification_path_development_type.nil?
+        table_column 'development_type_name', column: 'development_types.name', label: t('models.effective.datatables.projects_certification_paths.certification_path_development_type.label'), visible: false, filter: {type: :select, values: Proc.new { DevelopmentType.select(:name, :display_weight).order(:display_weight).distinct.map{|development_type| [development_type.name, development_type.name]} }} do |rec|
+          rec.development_type_name
         end
+
         table_column 'certification_path_appealed', column: 'certification_paths.appealed', label: t('models.effective.datatables.projects_certification_paths.certification_path_appealed.label'), type: :boolean, visible: false
         table_column 'certification_path_created_at', column: 'certification_paths.created_at', label: t('models.effective.datatables.projects_certification_paths.certification_path_created_at.label'), type: :datetime, visible: false, filter: {type: :select, values: Proc.new { CertificationPath.pluck_date_field_by_year_month_day(:created_at, :desc) }} do |rec|
           localize(rec.certification_path_created_at.in_time_zone) unless rec.certification_path_created_at.nil?
@@ -91,11 +92,13 @@ module Effective
                    .joins('LEFT OUTER JOIN certification_paths ON certification_paths.project_id = projects.id')
                    .joins('LEFT JOIN certificates ON certificates.id = certification_paths.certificate_id')
                    .joins('LEFT JOIN certification_path_statuses ON certification_path_statuses.id = certification_paths.certification_path_status_id')
+                   .joins('LEFT JOIN development_types ON development_types.id = certification_paths.development_type_id')
                    .group('projects.id')
                    .group('projects.owner')
                    .group('certification_paths.id')
                    .group('certificates.id')
                    .group('certification_path_statuses.id')
+                   .group('development_types.id')
                    .select('projects.id as project_nr')
                    .select('projects.code as project_code')
                    .select('projects.name as project_name')
@@ -114,7 +117,8 @@ module Effective
                    .select('certification_paths.certificate_id as certificate_id')
                    .select('certification_paths.certification_path_status_id as certification_path_certification_path_status_id')
                    .select('certification_paths.pcr_track as certification_path_pcr_track')
-                   .select('certification_paths.development_type as certification_path_development_type')
+                   .select('development_types.id as development_type_id')
+                   .select('development_types.name as development_type_name')
                    .select('certification_paths.appealed as certification_path_appealed')
                    .select('certification_paths.created_at as certification_path_created_at')
                    .select('certification_paths.started_at as certification_path_started_at')

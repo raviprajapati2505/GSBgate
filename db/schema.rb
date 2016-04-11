@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160406092028) do
+ActiveRecord::Schema.define(version: 20160411060000) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -67,10 +67,11 @@ ActiveRecord::Schema.define(version: 20160406092028) do
     t.string   "name"
     t.integer  "certificate_type"
     t.integer  "assessment_stage"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
     t.integer  "display_weight"
     t.string   "gsas_version"
+    t.integer  "certification_type"
   end
 
   create_table "certification_path_statuses", force: :cascade do |t|
@@ -89,18 +90,40 @@ ActiveRecord::Schema.define(version: 20160406092028) do
     t.boolean  "pcr_track",                    default: false
     t.integer  "duration"
     t.datetime "started_at"
-    t.integer  "development_type"
     t.integer  "certification_path_status_id"
     t.boolean  "appealed",                     default: false
     t.datetime "certified_at"
     t.integer  "main_scheme_mix_id"
     t.boolean  "main_scheme_mix_selected",     default: false, null: false
     t.integer  "max_review_count",             default: 2
+    t.integer  "development_type_id"
   end
 
   add_index "certification_paths", ["certification_path_status_id"], name: "index_certification_paths_on_certification_path_status_id", using: :btree
+  add_index "certification_paths", ["development_type_id"], name: "index_certification_paths_on_development_type_id", using: :btree
   add_index "certification_paths", ["main_scheme_mix_id"], name: "index_certification_paths_on_main_scheme_mix_id", using: :btree
   add_index "certification_paths", ["project_id"], name: "index_certification_paths_on_project_id", using: :btree
+
+  create_table "development_type_schemes", force: :cascade do |t|
+    t.integer  "development_type_id"
+    t.integer  "scheme_id"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+  end
+
+  add_index "development_type_schemes", ["development_type_id"], name: "index_development_type_schemes_on_development_type_id", using: :btree
+  add_index "development_type_schemes", ["scheme_id"], name: "index_development_type_schemes_on_scheme_id", using: :btree
+
+  create_table "development_types", force: :cascade do |t|
+    t.integer  "certificate_id"
+    t.string   "name"
+    t.integer  "display_weight"
+    t.boolean  "mixable"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
+
+  add_index "development_types", ["certificate_id"], name: "index_development_types_on_certificate_id", using: :btree
 
   create_table "documents", force: :cascade do |t|
     t.string   "document_file"
@@ -332,16 +355,18 @@ ActiveRecord::Schema.define(version: 20160406092028) do
     t.string   "custom_name"
   end
 
+  add_index "scheme_mixes", ["certification_path_id", "scheme_id", "custom_name"], name: "ui_custom_name_scheme", unique: true, using: :btree
   add_index "scheme_mixes", ["certification_path_id"], name: "index_scheme_mixes_on_certification_path_id", using: :btree
-  add_index "scheme_mixes", ["custom_name", "scheme_id"], name: "ui_custom_name_scheme", unique: true, using: :btree
 
   create_table "schemes", force: :cascade do |t|
     t.string   "name"
     t.integer  "certificate_id"
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
     t.string   "gsas_version"
-    t.boolean  "renovation",     default: false, null: false
+    t.boolean  "renovation",       default: false, null: false
+    t.string   "gsas_document"
+    t.integer  "certificate_type"
   end
 
   add_index "schemes", ["certificate_id"], name: "index_schemes_on_certificate_id", using: :btree
@@ -395,6 +420,9 @@ ActiveRecord::Schema.define(version: 20160406092028) do
   add_foreign_key "certification_paths", "certification_path_statuses"
   add_foreign_key "certification_paths", "projects"
   add_foreign_key "certification_paths", "scheme_mixes", column: "main_scheme_mix_id"
+  add_foreign_key "development_type_schemes", "development_types"
+  add_foreign_key "development_type_schemes", "schemes"
+  add_foreign_key "development_types", "certificates"
   add_foreign_key "documents", "users"
   add_foreign_key "field_data", "calculator_data"
   add_foreign_key "field_data", "fields"
@@ -419,7 +447,6 @@ ActiveRecord::Schema.define(version: 20160406092028) do
   add_foreign_key "scheme_mix_criteria_requirement_data", "scheme_mix_criteria"
   add_foreign_key "scheme_mixes", "certification_paths"
   add_foreign_key "scheme_mixes", "schemes"
-  add_foreign_key "schemes", "certificates"
   add_foreign_key "tasks", "certification_paths"
   add_foreign_key "tasks", "projects"
   add_foreign_key "tasks", "users"

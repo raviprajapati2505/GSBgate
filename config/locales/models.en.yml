@@ -3,6 +3,12 @@ en:
     attributes:
       audit_log:
         user_comment: Comment
+      certificate:
+        certification_types:
+          letter_of_conformance: Letter of conformance
+          final_design_certificate: Final design certificate
+          construction_certificate: Construction certificate
+          operations_certificate: Operations certificate
       certification_path:
         development_types:
           not_applicable: Not applicable

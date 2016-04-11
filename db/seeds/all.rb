@@ -1,14 +1,15 @@
 # ruby encoding: utf-8
 # Incentive Weights
-["Healthcare", "Sports", "Railways"].each do |scheme|
+["Healthcare", "Sports", "Railways"].each do |scheme_name|
   [{:code => "S", :name => "GSAS Construction Management - Full", :incentive => 1.0},
    {:code => "M", :name => "Life Cycle Assessment (LCA)", :incentive => 2.0},
    {:code => "MO", :name => "Energy & Water Use Sub-metering", :incentive => 1.0}
   ].each do |incentive_criteria|
-    loc_criterion = SchemeCriterion.find_by(scheme_category: SchemeCategory.find_by(code: incentive_criteria[:code], scheme: Scheme.find_by(name: scheme, gsas_version: "2.1", certificate: Certificate.find_by(certificate_type: Certificate.certificate_types[:design_type], assessment_stage: Certificate.assessment_stages[:design_stage], gsas_version: "2.1"))), name: incentive_criteria[:name])
-    loc_criterion.update_attributes(:incentive_weight => incentive_criteria[:incentive], :weight => loc_criterion.weight - incentive_criteria[:incentive])
-    final_criterion = SchemeCriterion.find_by(scheme_category: SchemeCategory.find_by(code: incentive_criteria[:code], scheme: Scheme.find_by(name: scheme, gsas_version: "2.1", certificate: Certificate.find_by(certificate_type: Certificate.certificate_types[:design_type], assessment_stage: Certificate.assessment_stages[:construction_stage], gsas_version: "2.1"))), name: incentive_criteria[:name])
-    final_criterion.update_attributes(:incentive_weight => incentive_criteria[:incentive], :weight => final_criterion.weight - incentive_criteria[:incentive])
+    schemes = Scheme.where(name: scheme_name, gsas_version: "2.1", certificate_type: Certificate.certificate_types[:design_type])
+    schemes.each do | scheme|
+      criterion = SchemeCriterion.find_by(scheme_category: SchemeCategory.find_by(code: incentive_criteria[:code], scheme: scheme), name: incentive_criteria[:name])
+      criterion.update_attributes(:incentive_weight => incentive_criteria[:incentive], :weight => criterion.weight - incentive_criteria[:incentive]) unless criterion.nil?
+    end
   end
 end
 

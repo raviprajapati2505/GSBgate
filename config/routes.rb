@@ -107,7 +107,7 @@ Rails.application.routes.draw do
   post 'audit-logs/:auditable_type/:auditable_id' => 'audit_logs#auditable_create', as: 'auditable_create_audit_log'
   get 'tasks' => 'tasks#index', as: 'tasks'
   get 'tasks/user/:user_id' => 'tasks#count', as: 'count_tasks'
-  match 'projects/:project_id/certificates/apply/:certificate_id' => 'certification_paths#apply', as: 'apply_certification_path', via: [:get, :post]
+  match 'projects/:project_id/certificates/apply/:certification_type' => 'certification_paths#apply', as: 'apply_certification_path', via: [:get, :post]
   get 'projects/:project_id/certificates/:id/archive' => 'certification_paths#download_archive', as: 'archive_project_certification_path'
   get 'projects/:project_id/certificates/:id/comments' => 'certification_paths#download_comments', as: 'comments_project_cerficiation_path'
   get 'projects/users/:user_id' => 'projects_users#list_users_sharing_projects', as: 'list_users_sharing_projects'

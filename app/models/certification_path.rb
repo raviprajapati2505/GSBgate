@@ -8,6 +8,7 @@ class CertificationPath < ActiveRecord::Base
   belongs_to :project
   belongs_to :certificate
   belongs_to :certification_path_status
+  belongs_to :development_type
   belongs_to :main_scheme_mix, class_name: 'SchemeMix'
   has_many :scheme_mixes, dependent: :destroy
   has_many :schemes, through: :scheme_mixes
@@ -21,12 +22,12 @@ class CertificationPath < ActiveRecord::Base
   accepts_nested_attributes_for :certificate
   accepts_nested_attributes_for :scheme_mixes
 
-  enum development_type: {not_applicable: 0, single_use: 1, mixed_use: 2, mixed_development: 3, mixed_development_in_stages: 4}
+  # enum development_type: {not_applicable: 0, single_use: 1, mixed_use: 2, mixed_development: 3, mixed_development_in_stages: 4}
 
   validates :project, presence: true
   validates :certificate, presence: true
   validates :max_review_count, numericality: { greater_than: 0 }
-  validates_inclusion_of :development_type, in: CertificationPath.development_types.keys
+  # validates_inclusion_of :development_type, in: CertificationPath.development_types.keys
   validate :total_weight_is_equal_to_100_percent
   validate :certificate_duration
 
@@ -40,25 +41,33 @@ class CertificationPath < ActiveRecord::Base
     joins(:certification_path_status).where(certification_path_status_id: statuses)
   }
 
-  scope :letter_of_conformance, -> {
-    joins(:certificate)
-        .merge(Certificate.letter_of_conformance)
+  scope :with_project, ->(project) {
+    where(project: project)
   }
 
-  scope :final_design_certificate, -> {
-    joins(:certificate)
-        .merge(Certificate.final_design_certificate)
+  scope :with_certification_type, ->(certification_type) {
+    joins(:certificate).where(certificates: {certification_type: certification_type})
   }
 
-  scope :construction_certificate, -> {
-    joins(:certificate)
-        .merge(Certificate.construction_certificate)
-  }
-
-  scope :operations_certificate, -> {
-    joins(:certificate)
-        .merge(Certificate.operations_certificate)
-  }
+  # scope :letter_of_conformance, -> {
+  #   joins(:certificate)
+  #       .merge(Certificate.letter_of_conformance)
+  # }
+  #
+  # scope :final_design_certificate, -> {
+  #   joins(:certificate)
+  #       .merge(Certificate.final_design_certificate)
+  # }
+  #
+  # scope :construction_certificate, -> {
+  #   joins(:certificate)
+  #       .merge(Certificate.construction_certificate)
+  # }
+  #
+  # scope :operations_certificate, -> {
+  #   joins(:certificate)
+  #       .merge(Certificate.operations_certificate)
+  # }
 
   def init
     # Set status
@@ -166,7 +175,7 @@ class CertificationPath < ActiveRecord::Base
         unless project.certification_manager_assigned?
           todos << 'A certification manager must be assigned to the project.'
         end
-        if mixed? && (main_scheme_mix_selected? == false)
+        if development_type.mixable? && (main_scheme_mix_selected? == false)
           todos << 'A main scheme needs to be selected.'
         end
       when CertificationPathStatus::SUBMITTING, CertificationPathStatus::SUBMITTING_AFTER_SCREENING, CertificationPathStatus::SUBMITTING_AFTER_APPEAL
@@ -272,10 +281,6 @@ class CertificationPath < ActiveRecord::Base
     CertificationPathStatus::CERTIFIED == certification_path_status_id
   end
 
-  def mixed?
-    (mixed_use? || mixed_development? || mixed_development_in_stages?)
-  end
-
   private
 
   def set_started_at
@@ -334,7 +339,7 @@ class CertificationPath < ActiveRecord::Base
     if certification_path_status_id_changed? && (certification_path_status_id_was == CertificationPathStatus::ACTIVATING)
       CertificationPath.transaction do
         # If there is a main scheme mix, it should be handled first
-        if (mixed? && main_scheme_mix.present?)
+        if (development_type.mixable? && main_scheme_mix.present?)
           main_scheme_mix.create_descendant_records
           scheme_mixes.where.not(id: main_scheme_mix_id).each do |scheme_mix|
             scheme_mix.create_descendant_records

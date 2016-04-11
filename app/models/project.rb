@@ -45,6 +45,10 @@ class Project < ActiveRecord::Base
     includes(:certification_paths).where(certification_paths: {id: nil})
   }
 
+  def completed_letter_of_conformances
+    CertificationPath.with_project(self).with_status(CertificationPathStatus::STATUSES_COMPLETED).with_certification_type(Certificate.certification_types[:letter_of_conformance])
+  end
+
   def role_for_user(user)
     projects_users.each do |projects_user|
       if projects_user.user == user
@@ -70,21 +74,21 @@ class Project < ActiveRecord::Base
     return false
   end
 
-  def can_create_certification_path_for_certificate?(certificate)
-    # There should be only one certification path per certificate
-    # TODO: this may be a bad assumption, perhaps extend logic to also look at the status (e.g an older rejected certification_path may be allowed)
-    return false if certification_paths.exists?(certificate: certificate)
-    # No dependencies for Operations certificate
-    return true if certificate.operations_certificate?
-    # No dependencies for LOC certificate
-    return true if certificate.letter_of_conformance?
-    # No dependencies for Construction certificate
-    return true if certificate.construction_certificate?
-    # FinalDesign needs a LOC
-    return true if certificate.final_design_certificate? && certification_paths.exists?(certificate: Certificate.letter_of_conformance, certification_path_status_id: CertificationPathStatus::CERTIFIED)
-    # default to false
-    return false
-  end
+  # def can_create_certification_path_for_certification_type?(certification_type)
+  #   # There should be only one certification path per certificate
+  #   # TODO: this may be a bad assumption, perhaps extend logic to also look at the status (e.g an older rejected certification_path may be allowed)
+  #   return false if CertificationPath.joins(:certificate).exists?(project: self, certificates: {certification_type: certification_type})
+  #   # No dependencies for Operations certificate
+  #   return true if certification_type == Certificate.certification_types[:operations_certificate]
+  #   # No dependencies for LOC certificate
+  #   return true if certification_type == Certificate.certification_types[:letter_of_conformance]
+  #   # No dependencies for Construction certificate
+  #   return true if certification_type == Certificate.certification_types[:construction_certificate]
+  #   # FinalDesign needs a LOC
+  #   return true if certification_type == Certificate.certification_types[:final_design_certificate] && CertificationPath.joins(:certificate).exists?(project: self, certificates: {certification_type:  Certificate.certification_types[:letter_of_conformance]})
+  #   # default to false
+  #   return false
+  # end
 
   def init
     if self.has_attribute?('code')

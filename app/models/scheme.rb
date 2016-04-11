@@ -1,5 +1,6 @@
 class Scheme < ActiveRecord::Base
-  belongs_to :certificate
+  has_many :development_type_scheme
+  has_many :development_types, through: :development_type_schemes
   has_many :scheme_categories
   has_many :scheme_criteria, through: :scheme_categories
   has_many :scheme_mixes

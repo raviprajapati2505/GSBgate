@@ -311,12 +311,14 @@ module ApplicationHelper
         criterion = model
         category = criterion.scheme_category
         scheme = category.scheme
+        #TODO: refactor
         certificate = scheme.certificate
       when SchemeCriterionText.name.demodulize
         criterion_text = model
         criterion = criterion_text.scheme_criterion
         category = criterion.scheme_category
         scheme = category.scheme
+        #TODO: refactor
         certificate = scheme.certificate
       else
         return breadcrumbs

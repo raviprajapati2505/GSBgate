@@ -38,6 +38,7 @@
                         <% @scheme_criteria.each do |scheme_criterion| %>
                             <tr>
                                 <td><%= link_to(scheme_criterion.full_name, scheme_criterion_path(scheme_criterion)) %></td>
+                                <!-- TODO: refactor -->
                                 <td><%= scheme_criterion.scheme_category.scheme.certificate.full_name %></td>
                                 <td><%= scheme_criterion.scheme_category.scheme.name %></td>
                                 <td><%= scheme_criterion.scheme_category.name %></td>
