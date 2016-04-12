@@ -307,19 +307,6 @@ module ApplicationHelper
         scheme_mix = model.scheme_mix_criteria.take.scheme_mix
         scheme_mix_criterion = model.scheme_mix_criteria.take
         requirement_datum = model
-      when SchemeCriterion.name.demodulize
-        criterion = model
-        category = criterion.scheme_category
-        scheme = category.scheme
-        #TODO: refactor
-        certificate = scheme.certificate
-      when SchemeCriterionText.name.demodulize
-        criterion_text = model
-        criterion = criterion_text.scheme_criterion
-        category = criterion.scheme_category
-        scheme = category.scheme
-        #TODO: refactor
-        certificate = scheme.certificate
       else
         return breadcrumbs
     end
