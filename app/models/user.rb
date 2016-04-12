@@ -19,6 +19,7 @@ class User < ActiveRecord::Base
   has_many :notification_types, through: :notification_types_users
 
   after_initialize :init, if: :new_record?
+  before_create :before_create
 
   validates :role, inclusion: User.roles.keys
 
@@ -154,5 +155,9 @@ class User < ActiveRecord::Base
     if self.cgp_license.nil?
       self.cgp_license = false
     end
+  end
+
+  def before_create
+    self.last_notified_at = Time.current
   end
 end

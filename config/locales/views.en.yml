@@ -174,11 +174,11 @@ en:
     tasks:
       description_1: Assign a certification manager to the project.
       description_2: Check registration and payment and advance the certification status.
-      description_3: Allocate criteria requirements to project team members.
+      description_3: Allocate project team responsibility.
       description_4: Provide documentation and change the status of the requirements.
       description_5: Set the submitted score and submit the criterion.
       description_6: Advance the certification status.
-      description_7: Allocate criteria to certifiers.
+      description_7: Allocate GSAS trust team responsibility.
       description_8: Screen all criteria and advance the certification status.
       description_9: Review the criterion and provide a PCR review comment.
       description_10: Process GSAS trust team comments and advance the certification status.
@@ -192,12 +192,12 @@ en:
       description_26: Approve the certification by advancing the status.
       description_29: Documents are waiting for approval.
       description_30: Apply for a certification.
-      description_31: Allocate appealed criteria requirements to project team members.
+      description_31: Allocate project team responsibility for appealed criteria.
       description_32: Provide location plan, site plan, design brief and project narrative.
       description_33: Duration of certification is exceeded.
       description_34: Task is overdue.
       description_35: Task is overdue.
-      description_36: Allocate criteria to GSAS trust team members.
+      description_36: Allocate GSAS trust team responsibility.
       description_37: Select a main scheme.
       tooltip_due_date: Task is overdue.
   users:

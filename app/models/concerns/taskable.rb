@@ -322,6 +322,9 @@ module Taskable
   def handle_criterion_status_changed
     if self.status_changed?
       case SchemeMixCriterion.statuses[self.status]
+        when SchemeMixCriterion.statuses[:submitting], SchemeMixCriterion.statuses[:submitting_after_appeal]
+          # Remove CGP task to advance certification path status
+          Task.delete_all(taskable: self.scheme_mix.certification_path, task_description_id: PROJ_MNGR_SUB_APPROVE)
         when SchemeMixCriterion.statuses[:submitted], SchemeMixCriterion.statuses[:submitted_after_appeal]
           Task.delete_all(taskable: self, task_description_id: PROJ_MNGR_REVIEW)
           # Check if certification with status 'submitted' has no linked criteria in status 'submitting'
@@ -339,6 +342,8 @@ module Taskable
           # Destroy project manager tasks to set criterion status to 'submitted'
           Task.delete_all(taskable: self, task_description_id: PROJ_MNGR_CRIT_APPROVE)
         when SchemeMixCriterion.statuses[:verifying], SchemeMixCriterion.statuses[:verifying_after_appeal]
+          # Remove Cert mngr task to advance certification path status
+          Task.delete_all(taskable: self.scheme_mix.certification_path, task_description_id: CERT_MNGR_VERIFICATION_APPROVE)
           if !self.certifier_id_changed?
             if self.certifier_id.nil?
               # Create certification manager task to assign certifier to the criterion
