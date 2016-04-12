@@ -152,16 +152,14 @@ module ScoreCalculator
 
     def build_check_scheme_mix_criterion_state_query(field_name)
       if field_name == :achieved_score
-        # Note: scored is a one of score_awarded, score_downgraded, score_upgraded, score_minimal
-        scheme_mix_criterion_scored = SchemeMixCriterion::statuses[:score_minimal]
-        scheme_mix_criterion_scored_after_appeal = SchemeMixCriterion::statuses[:score_minimal_after_appeal]
+        # SchemeMixCriterion status
+        scheme_mix_criterion_verifying = SchemeMixCriterion::statuses[:verifying]
         # Certification path status
         certification_path_status_verifying = CertificationPathStatus::VERIFYING
         certification_path_status_verifying_after_appeal = CertificationPathStatus::VERIFYING_AFTER_APPEAL
         included_roles = [ProjectsUser::roles[:certification_manager], ProjectsUser::roles[:certifier]]
-        check_scheme_mix_criterion_state_template = '(scheme_mix_criteria_score.status <= %{scheme_mix_criterion_scored} AND certification_paths_score.certification_path_status_id = %{certification_path_status_verifying}) OR (scheme_mix_criteria_score.status <= %{scheme_mix_criterion_scored_after_appeal} AND certification_paths_score.certification_path_status_id = %{certification_path_status_verifying_after_appeal}) OR EXISTS(SELECT user_id FROM projects_users WHERE projects_users.project_id = projects.id AND projects_users.user_id = %{user_id} AND projects_users.role IN (%{project_roles})) OR NOT EXISTS(SELECT user_id FROM projects_users WHERE projects_users.user_id = %{user_id})'
-        check_scheme_mix_criterion_state_template % {scheme_mix_criterion_scored: scheme_mix_criterion_scored,
-                                                     scheme_mix_criterion_scored_after_appeal: scheme_mix_criterion_scored_after_appeal,
+        check_scheme_mix_criterion_state_template = '(certification_paths_score.certification_path_status_id <> %{certification_path_status_verifying} AND (scheme_mix_criteria_score.status < %{scheme_mix_criterion_verifying} OR certification_paths_score.certification_path_status_id <> %{certification_path_status_verifying_after_appeal})) OR EXISTS(SELECT user_id FROM projects_users WHERE projects_users.project_id = projects.id AND projects_users.user_id = %{user_id} AND projects_users.role IN (%{project_roles})) OR NOT EXISTS(SELECT user_id FROM projects_users WHERE projects_users.user_id = %{user_id})'
+        check_scheme_mix_criterion_state_template % {scheme_mix_criterion_verifying: scheme_mix_criterion_verifying,
                                                      certification_path_status_verifying: certification_path_status_verifying,
                                                      certification_path_status_verifying_after_appeal: certification_path_status_verifying_after_appeal,
                                                      user_id: User.current.id,
