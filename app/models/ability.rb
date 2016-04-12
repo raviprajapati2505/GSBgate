@@ -72,9 +72,9 @@ class Ability
       can [:download_location_plan, :download_site_plan, :download_design_brief, :download_project_narrative], Project, projects_users: {user_id: user.id}
       can :show_tools, Project, projects_users: {user_id: user.id}
       cannot :update, Project, projects_users: {user_id: user.id, role: project_user_role_cgp_project_manager}, certification_paths: {certification_path_status: {id: CertificationPathStatus::STATUSES_ACTIVATED}}
+      can :update, Project, projects_users: {user_id: user.id, role: project_user_role_cgp_project_manager}
       if user.cgp_license?
         can :create, Project
-        can :update, Project, projects_users: {user_id: user.id, role: project_user_role_cgp_project_manager}
       end
 
       # ProjectsUsers controller - Project team
