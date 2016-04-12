@@ -1,53 +1,12 @@
 <div class="row">
-    <div class="col-md-4 pull-right">
-        <div class="ibox">
-            <div class="ibox-title">
-                <h5>Criteria filter</h5>
-            </div>
-            <div class="ibox-content">
-                <%= bootstrap_form_tag(url: scheme_criteria_path, method: 'get') do |f| %>
-                    <%= f.collection_select :certificate_id, Certificate.all, :id, :full_name, { label: t('.filter.certificate'), include_blank: t('.filter.blank'), selected: @default_values[:certificate_id] } %>
-                    <%= f.text_field :scheme_name, value: @default_values[:scheme_name], label: 'Scheme name contains' %>
-                    <%= f.text_field :scheme_category_name, value: @default_values[:scheme_category_name], label: 'Category name contains' %>
-                    <div class="hr-line-dashed"></div>
-                    <%= btn_tag(icon: 'filter', text: 'Apply filter') %>
-                    <%= btn_link_to(scheme_criteria_path, style: 'white', icon: 'times', text: 'Remove filter') %>
-                <% end %>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-8">
+    <div class="col-md-12">
         <div class="ibox">
             <div class="ibox-title">
                 <h5>Criteria</h5>
             </div>
             <div class="ibox-content">
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Criterion</th>
-                            <th><%= t('.criteria.certificate') %></th>
-                            <th>Scheme</th>
-                            <th>Category</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    <% if @scheme_criteria.empty? %>
-                        <tr><td colspan="3">Currently there are no criteria.</td></tr>
-                    <% else %>
-                        <% @scheme_criteria.each do |scheme_criterion| %>
-                            <tr>
-                                <td><%= link_to(scheme_criterion.full_name, scheme_criterion_path(scheme_criterion)) %></td>
-                                <!-- TODO: refactor -->
-                                <td><%= scheme_criterion.scheme_category.scheme.certificate.full_name %></td>
-                                <td><%= scheme_criterion.scheme_category.scheme.name %></td>
-                                <td><%= scheme_criterion.scheme_category.name %></td>
-                            </tr>
-                        <% end %>
-                    <% end %>
-                    </tbody>
-                </table>
-                <%= paginate @scheme_criteria %>
+                <p class="alert alert-info"><%= fa_icon('info-circle') %> This is an overview of all GSAS criteria. You can manage all texts that are defined for each criteria.</p>
+                <%= render_datatable(@datatable) %>
             </div>
         </div>
     </div>
