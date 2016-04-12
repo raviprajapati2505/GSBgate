@@ -183,6 +183,7 @@ $(function () {
     $('#gsas_version').change(function() {
         var project_id = $('#certification_path_project_id').val();
         var certification_type = $('#certification_path_certification_type').val();
+        var pcr_track = $('#certification_path_pcr_track').val();
         var gsas_version = $('#gsas_version').val();
         $.ajax({
            type: 'POST',
@@ -191,12 +192,16 @@ $(function () {
             cache: false,
             data: {
                 gsas_version: gsas_version,
+                certification_path: {
+                    pcr_track: pcr_track,
+                },
             },
         });
     });
     $('#certification_path_development_type').change(function() {
         var project_id = $('#certification_path_project_id').val();
         var certification_type = $('#certification_path_certification_type').val();
+        var pcr_track = $('#certification_path_pcr_track').val();
         var gsas_version = $('#gsas_version').val();
         var development_type = $('#certification_path_development_type').val();
         $.ajax({
@@ -207,6 +212,7 @@ $(function () {
             data: {
                 gsas_version: gsas_version,
                 certification_path: {
+                    pcr_track: pcr_track,
                     development_type: development_type,
                 },
             },
