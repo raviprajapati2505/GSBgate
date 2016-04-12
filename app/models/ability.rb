@@ -108,7 +108,7 @@ class Ability
       # SchemeMix controller
       can :read, SchemeMix, certification_path: {project: project_with_user_assigned, certification_path_status: {id: CertificationPathStatus::STATUSES_ACTIVATED}}
       # TODO ????????????
-      #can :update, SchemeMix, certification_path: {project: project_with_user_as_cgp_project_manager, certification_path_status: {id: CertificationPathStatus::ACTIVATING}, development_type: ['mixed_use', CertificationPath.development_types[:mixed_use], 'mixed_development', CertificationPath.development_types[:mixed_development], 'mixed_development_in_stages', CertificationPath.development_types[:mixed_development_in_stages]]}
+      #can :update, SchemeMix, certification_path: {project: project_with_user_as_cgp_project_manager, certification_path_status: {id: CertificationPathStatus::ACTIVATING}, development_type: {mixable: true}}
       can :update, SchemeMix, certification_path: {project: project_with_user_as_cgp_project_manager, certification_path_status: {id: CertificationPathStatus::ACTIVATING}}
 
       # SchemeMixCriterion controller
@@ -204,7 +204,7 @@ class Ability
       can [:download_certificate_report, :download_coverletter_report, :download_scores_report], CertificationPath
       can :download_archive, CertificationPath
       if user.gsas_trust_admin?
-        can [:edit_main_scheme_mix, :update_main_scheme_mix], CertificationPath, certification_path_status: {id: CertificationPathStatus::ACTIVATING}, development_type: ['mixed_use', CertificationPath.development_types[:mixed_use], 'mixed_development', CertificationPath.development_types[:mixed_development], 'mixed_development_in_stages', CertificationPath.development_types[:mixed_development_in_stages]]
+        can [:edit_main_scheme_mix, :update_main_scheme_mix], CertificationPath, certification_path_status: {id: CertificationPathStatus::ACTIVATING}, development_type: {mixable: true}
         can [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::STATUSES_AT_ADMIN_SIDE}
         can [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::STATUSES_AT_PROJECT_TEAM_SIDE}
         can [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::STATUSES_AT_CERTIFIER_SIDE}
@@ -216,7 +216,7 @@ class Ability
       end
       # SchemeMix
       cannot :read, SchemeMix, certification_path: {certification_path_status: {id: CertificationPathStatus::ACTIVATING}}
-      can :update, SchemeMix, certification_path: {certification_path_status: {id: CertificationPathStatus::ACTIVATING}, development_type: ['mixed_use', CertificationPath.development_types[:mixed_use], 'mixed_development', CertificationPath.development_types[:mixed_development], 'mixed_development_in_stages', CertificationPath.development_types[:mixed_development_in_stages]]}
+      can :update, SchemeMix, certification_path: {certification_path_status: {id: CertificationPathStatus::ACTIVATING}, development_type: {mixable: true}}
       # SchemeMixCriterion
       cannot :read, SchemeMixCriterion, scheme_mix: {certification_path: {certification_path_status: {id: CertificationPathStatus::ACTIVATING}}}
       cannot :list, SchemeMixCriterion, scheme_mix: {certification_path: {certification_path_status: {id: CertificationPathStatus::ACTIVATING}}}
