@@ -388,7 +388,7 @@ module Taskable
                        project: self.scheme_mix.certification_path.project,
                        certification_path: self.scheme_mix.certification_path)
           end
-          # Destroy certifier member tasks to verify criterion
+          # Destroy certifier tasks to verify criterion
           Task.delete_all(taskable: self, task_description_id: CERT_MEM_VERIFY)
           # Destroy certification manager tasks to assign certifier team members to the criterion
           if self.scheme_mix.certification_path.scheme_mix_criteria.unassigned.where(status: [SchemeMixCriterion.statuses[:verifying], SchemeMixCriterion.statuses[:verifying_after_appeal]]).count.zero?
