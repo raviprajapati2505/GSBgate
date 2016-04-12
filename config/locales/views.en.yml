@@ -182,9 +182,8 @@ en:
       description_8: Screen all criteria and advance the certification status.
       description_9: Review the criterion and provide a PCR review comment.
       description_10: Process GSAS trust team comments and advance the certification status.
-      description_11: Process GSAS trust team review comments
-      description_11: Process GSAS trust team review comments
-      description_16: Verify the criterion and indicate whether the target is achieved or not.
+      description_11: Process GSAS trust team review comments.
+      description_16: Verify the criterion.
       description_17: Advance the certification status.
       description_18: Advance the certification status (optionally apply for appeal).
       description_19: Check payment for appeal and advance the certification status.
@@ -200,7 +199,7 @@ en:
       description_35: Task is overdue.
       description_36: Allocate criteria to GSAS trust team members.
       description_37: Select a main scheme.
-      tooltip_due_date: Task is overdue
+      tooltip_due_date: Task is overdue.
   users:
     index:
       action_edit_title: Edit
