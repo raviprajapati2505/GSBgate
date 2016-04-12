@@ -181,7 +181,7 @@ en:
       description_7: Allocate criteria to certifier members.
       description_8: Screen all criteria and advance the certification status.
       description_9: Review the criterion and provide a PCR review comment.
-      description_10: Process GSAS trust team comments and advance the certification status (optionally apply for PCR track).
+      description_10: Process GSAS trust team comments and advance the certification status.
       description_11: Process GSAS trust team review comments
       description_11: Process GSAS trust team review comments
       description_16: Verify the criterion and indicate whether the target is achieved or not.
