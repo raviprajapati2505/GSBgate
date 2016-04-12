@@ -5,7 +5,7 @@
 $(function () {
     setInterval(function() {
         refreshTaskCount();
-    }, 60000);
+    }, 1800000); // 30 minutes
 });
 
 function refreshTaskCount() {
