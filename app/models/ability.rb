@@ -241,7 +241,7 @@ class Ability
       can [:list_notifications,:update_notifications], User, id: user.id
       can :find_users_by_email, User
       # Reports controller
-      can :certifiers_and_criteria, :report
+      can :certifiers_criteria, :report
 
       # Owner
       can [:index, :show], Owner
