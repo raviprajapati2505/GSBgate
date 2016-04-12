@@ -1,6 +1,6 @@
 # ruby encoding: utf-8
 # Incentive Weights
-["Healthcare", "Sports", "Railways"].each do |scheme_name|
+["Healthcare", "Sports", "Railways", "Parks"].each do |scheme_name|
   [{:code => "S", :name => "GSAS Construction Management - Full", :incentive => 1.0},
    {:code => "M", :name => "Life Cycle Assessment (LCA)", :incentive => 2.0},
    {:code => "MO", :name => "Energy & Water Use Sub-metering", :incentive => 1.0}
