@@ -307,6 +307,15 @@ module ApplicationHelper
         scheme_mix = model.scheme_mix_criteria.take.scheme_mix
         scheme_mix_criterion = model.scheme_mix_criteria.take
         requirement_datum = model
+      when SchemeCriterion.name.demodulize
+        criterion = model
+        # category = criterion.scheme_category
+        # scheme = category.scheme
+      when SchemeCriterionText.name.demodulize
+        criterion_text = model
+        # criterion = criterion_text.scheme_criterion
+        # category = criterion.scheme_category
+        # scheme = category.scheme
       else
         return breadcrumbs
     end
@@ -347,33 +356,18 @@ module ApplicationHelper
       breadcrumbs[:names] << scheme_mix_criterion_document.name
       breadcrumbs[:paths] << project_certification_path_scheme_mix_scheme_mix_criterion_url(project, certification_path, scheme_mix, scheme_mix_criterion) + '#documentation'
     end
-
-    # Only used for mail
-    if certificate.present?
-      breadcrumbs[:names] << certificate.full_name
-      breadcrumbs[:paths] << scheme_criteria_path() + '?certificate_id=' + certificate.id.to_s
-      if scheme.present?
-        breadcrumbs[:names] << scheme.name
-        breadcrumbs[:paths] << scheme_criteria_path() + '?certificate_id=' + certificate.id.to_s + '&scheme_name=' + scheme.name
-        if category.present?
-          breadcrumbs[:names] << category.name
-          breadcrumbs[:paths] << scheme_criteria_path() + '?certificate_id=' + certificate.id.to_s + '&scheme_name=' + scheme.name + '&category_name=' + category.name
-          if criterion.present?
-            breadcrumbs[:names] << criterion.full_name
-            breadcrumbs[:paths] << scheme_criterion_path(criterion)
-            if criterion_text.present?
-              breadcrumbs[:names] << criterion_text.name
-              if criterion_text.id.present?
-                breadcrumbs[:paths] << edit_scheme_criterion_text_path(criterion_text)
-              else
-                breadcrumbs[:paths] << new_scheme_criterion_text_path(scheme_criterion: criterion)
-              end
-            end
-          end
-        end
+    if criterion.present?
+      breadcrumbs[:names] << criterion.full_name
+      breadcrumbs[:paths] << scheme_criterion_path(criterion)
+    end
+    if criterion_text.present?
+      breadcrumbs[:names] << criterion_text.name
+      if criterion_text.id.present?
+        breadcrumbs[:paths] << edit_scheme_criterion_text_path(criterion_text)
+      else
+        breadcrumbs[:paths] << new_scheme_criterion_text_path(scheme_criterion: criterion)
       end
     end
-
     return breadcrumbs
   end
 
