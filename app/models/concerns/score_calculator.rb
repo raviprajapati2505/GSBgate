@@ -151,19 +151,28 @@ module ScoreCalculator
     end
 
     def build_check_scheme_mix_criterion_state_query(field_name)
+      # Note: this check ensures that assessors can not see the achieved scores, while the certification path is still under review
+      # with one notable exception, they can see the scores for non appealed criteria during verification after appeal
       if field_name == :achieved_score
-        # SchemeMixCriterion status
-        scheme_mix_criterion_verifying = SchemeMixCriterion::statuses[:verifying]
-        # Certification path status
-        certification_path_status_verifying = CertificationPathStatus::VERIFYING
-        certification_path_status_verifying_after_appeal = CertificationPathStatus::VERIFYING_AFTER_APPEAL
-        included_roles = [ProjectsUser::roles[:certification_manager], ProjectsUser::roles[:certifier]]
-        check_scheme_mix_criterion_state_template = '(certification_paths_score.certification_path_status_id <> %{certification_path_status_verifying} AND (scheme_mix_criteria_score.status < %{scheme_mix_criterion_verifying} OR certification_paths_score.certification_path_status_id <> %{certification_path_status_verifying_after_appeal})) OR EXISTS(SELECT user_id FROM projects_users WHERE projects_users.project_id = projects.id AND projects_users.user_id = %{user_id} AND projects_users.role IN (%{project_roles})) OR NOT EXISTS(SELECT user_id FROM projects_users WHERE projects_users.user_id = %{user_id})'
-        check_scheme_mix_criterion_state_template % {scheme_mix_criterion_verifying: scheme_mix_criterion_verifying,
-                                                     certification_path_status_verifying: certification_path_status_verifying,
-                                                     certification_path_status_verifying_after_appeal: certification_path_status_verifying_after_appeal,
-                                                     user_id: User.current.id,
-                                                     project_roles: included_roles.join(', ')}
+        # This check is only needed for 'verifying' an 'verifying after appeal', so if the state is different from those we can return 'true'
+        certification_path_statuses_ok = 'certification_paths_score.certification_path_status_id NOT IN (%{certification_path_statuses})' % {certification_path_statuses: [CertificationPathStatus::VERIFYING, CertificationPathStatus::VERIFYING_AFTER_APPEAL].join(', ')}
+        # if 'verifying' or 'verifying after appeal', return true for gsas trust admins and managers, or project certifiers, as they are allowed to see the achieved scores
+        certification_path_status_verifying_or_verifying_after_appeal = 'certification_paths_score.certification_path_status_id IN (%{certification_path_statuses})' % {certification_path_statuses: [CertificationPathStatus::VERIFYING, CertificationPathStatus::VERIFYING_AFTER_APPEAL].join(', ')}
+        user_is_manager = 'EXISTS(SELECT id FROM users WHERE id = %{user_id} AND role IN (%{user_roles}))' % {user_id: User.current.id, user_roles: [User.roles[:system_admin], User.roles[:gsas_trust_top_manager], User.roles[:gsas_trust_manager], User.roles[:gsas_trust_admin]].join(', ')}
+        user_is_project_certifier = 'EXISTS(SELECT user_id FROM projects_users WHERE projects_users.project_id = projects.id AND projects_users.user_id = %{user_id} AND projects_users.role IN (%{project_roles}))' % {user_id: User.current.id, project_roles: [ProjectsUser.roles[:certifier], ProjectsUser.roles[:certification_manager]].join(', ')}
+        # if 'verifying after appeal', assessor are only allowed to see the criteria without appeals (so those where accepted scores are: score_awarded, score_downgraded, score_upgraded or score_minimal)
+        certification_path_status_verifying_after_appeal = 'certification_paths_score.certification_path_status_id = %{certification_path_status}' % {certification_path_status: CertificationPathStatus::VERIFYING_AFTER_APPEAL}
+        scores_are_accepted = 'scheme_mix_criteria_score.status IN (%{scheme_mix_criterion_statuses})' % {scheme_mix_criterion_statuses: [SchemeMixCriterion::statuses[:score_awarded], SchemeMixCriterion::statuses[:score_downgraded], SchemeMixCriterion::statuses[:score_upgraded], SchemeMixCriterion::statuses[:score_minimal]].join(', ')}
+        # combine all conditions above
+        check_scheme_mix_criterion_state_template = '%{certification_path_statuses_ok} OR (%{certification_path_status_verifying_or_verifying_after_appeal} AND (%{user_is_manager} OR %{user_is_project_certifier})) OR (%{certification_path_status_verifying_after_appeal} AND %{scores_are_accepted})' %
+            {certification_path_statuses_ok: certification_path_statuses_ok,
+             certification_path_status_verifying_or_verifying_after_appeal: certification_path_status_verifying_or_verifying_after_appeal,
+             user_is_manager: user_is_manager,
+             user_is_project_certifier: user_is_project_certifier,
+             certification_path_status_verifying_after_appeal: certification_path_status_verifying_after_appeal,
+             scores_are_accepted: scores_are_accepted,
+            }
+        return check_scheme_mix_criterion_state_template
       else
         'true'
       end
