@@ -190,8 +190,8 @@ class SchemeMixCriterion < ActiveRecord::Base
       logger.fatal('Error advancing status from verifying')
       return false
     elsif verifying_after_appeal?
-      return :score_minimal_after_appeal if achieved_score = scheme_criterion.minimum_score
-      return :score_awarded_after_appeal if achieved_score = submitted_score
+      return :score_minimal_after_appeal if achieved_score == scheme_criterion.minimum_score
+      return :score_awarded_after_appeal if achieved_score == submitted_score
       return :score_downgraded_after_appeal if achieved_score < submitted_score
       return :score_upgraded_after_appeal if achieved_score > submitted_score
       logger.fatal('Error advancing status from verifying_after_appeal')
