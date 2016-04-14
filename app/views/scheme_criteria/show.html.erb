@@ -3,7 +3,23 @@
         <div class="ibox criterion-information">
             <div class="ibox-title">
                 <%= audit_log_label(@scheme_criterion) %>
-                <h5>Criterion texts <%= tooltip(t '.tooltip_sortable').html_safe %></h5>
+                <h5>Criterion</h5>
+            </div>
+            <div class="ibox-content">
+                <%= @scheme_criterion.full_name %>
+                <% if can? :update, @scheme_criterion %>
+                    <div class="hr-line-dashed"></div>
+                    <%= btn_link_to(edit_scheme_criterion_path(@scheme_criterion), icon: 'edit', text: 'Edit', action: :get, remote: true) %>
+                <% end %>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-6">
+        <div class="ibox criterion-information">
+            <div class="ibox-title">
+                <h5>Criterion texts <%= tooltip(t '.tooltip_sortable') %></h5>
             </div>
             <div class="ibox-content sortable">
                 <div class="sortable">
@@ -19,3 +35,4 @@
         </div>
     </div>
 </div>
+<div id="editSchemeCriteriaModal" class="modal fade"></div>
