@@ -14,6 +14,9 @@ module Effective
         table_column 'project_owner', column: 'owner' do |project|
           project.owner
         end
+        table_column 'project_developer', column: 'developer' do |project|
+          project.developer
+        end
         table_column :created_at, filter: {type: :select, values: Proc.new {
           projects = Project.all
           if attributes.has_key?(:empty_projects)

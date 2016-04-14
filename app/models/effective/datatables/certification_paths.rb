@@ -14,6 +14,9 @@ module Effective
         table_column 'project_owner', column: 'projects.owner' do |certification_path|
           certification_path.project.owner
         end
+        table_column 'project_developer', column: 'projects.developer' do |certification_path|
+          certification_path.project.developer
+        end
         table_column 'project_code', visible: false, type: :string, column: 'projects.code' do |certification_path|
           can_link_to(project_path(certification_path.project), certification_path.project) do
             certification_path.project.code
@@ -90,7 +93,7 @@ module Effective
         coll = CertificationPath.all unless current_ability.present?
         coll = CertificationPath.accessible_by(current_ability) if current_ability.present?
         coll.includes(:certificate)
-            .includes(project: [:owner])
+            .includes(project: [:owner, :developer])
             .references(:projects)
             .includes(:certification_path_status)
       end

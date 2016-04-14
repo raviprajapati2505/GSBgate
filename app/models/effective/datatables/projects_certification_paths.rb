@@ -34,6 +34,7 @@ module Effective
         end
 
         table_column 'project_owner', column: 'projects.owner', label: 'Project Owner', visible: false
+        table_column 'project_developer', column: 'projects.developer', label: 'Project Developer', visible: false
 
         #table_column 'certification_path_id', column: 'certification_paths.id', type: :integer, label: 'Certificate ID'
         table_column 'certificate_id', column: 'certificates.id', label: t('models.effective.datatables.projects_certification_paths.certificate_id.label'), filter: {type: :select, values: Proc.new { Certificate.all.order(:display_weight).map { |certificate| [certificate.full_name, certificate.id] } }} do |rec|
@@ -95,6 +96,7 @@ module Effective
                    .joins('LEFT JOIN development_types ON development_types.id = certification_paths.development_type_id')
                    .group('projects.id')
                    .group('projects.owner')
+                   .group('projects.developer')
                    .group('certification_paths.id')
                    .group('certificates.id')
                    .group('certification_path_statuses.id')
@@ -113,6 +115,7 @@ module Effective
                    .select('projects.project_site_area as project_site_area')
                    .select('projects.created_at as project_created_at')
                    .select('projects.owner as project_owner')
+                   .select('projects.developer as project_developer')
                    .select('certification_paths.id as certification_path_id')
                    .select('certification_paths.certificate_id as certificate_id')
                    .select('certification_paths.certification_path_status_id as certification_path_certification_path_status_id')

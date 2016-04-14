@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160411102445) do
+ActiveRecord::Schema.define(version: 20160414074639) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -211,6 +211,7 @@ ActiveRecord::Schema.define(version: 20160411102445) do
     t.string    "project_narrative_file"
     t.string    "owner",                                                                           default: "", null: false
     t.string    "service_provider",                                                                default: "", null: false
+    t.string    "developer"
   end
 
   create_table "projects_users", force: :cascade do |t|
