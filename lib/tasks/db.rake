@@ -1,5 +1,13 @@
 namespace :db do
 
+  namespace :seed do
+    task :single => :environment do
+      filename = Dir[File.join(Rails.root, 'db', 'seeds', "#{ENV['SEED']}.rb")][0]
+      puts "Seeding #{filename}..."
+      load(filename) if File.exist?(filename)
+    end
+  end
+
   def dump_path
     Rails.root.join('db/production_backup').to_path
   end
@@ -26,5 +34,4 @@ namespace :db do
     cmd = "pg_restore -v --clean --no-owner --host=#{config['host']} --username=#{config['username']} --dbname=#{config['database']} #{dump_path}"
     system cmd or raise "Error restoring database"
   end
-
 end
