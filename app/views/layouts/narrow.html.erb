@@ -1,33 +1,42 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GSASGate &gt; <%= strip_tags @page_title %></title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GSASGate &gt; <%= strip_tags @page_title %></title>
 
-  <!-- Main css styles -->
-  <%= stylesheet_link_tag 'application', media: 'all' %>
-  <!-- Main javascript files -->
-  <%= javascript_include_tag 'application' %>
-  <%= csrf_meta_tags %>
+    <!-- Main css styles -->
+    <%= stylesheet_link_tag 'application', media: 'all' %>
+    <!-- Main javascript files -->
+    <%= javascript_include_tag 'application' %>
+    <%= csrf_meta_tags %>
 </head>
 
-<body class="skin-gord gray-bg">
-<div class="middle-box text-center narrow animated fadeInDown">
-    <div>
-        <% if notice %>
-            <p class="alert alert-success"><%= notice %></p>
-        <% end %>
-        <% if alert %>
-            <p class="alert alert-danger"><%= alert %></p>
-        <% end %>
+<body class="skin-gord login-bg">
+<div class="animated fadeInDown">
+        <div>
+            <% if notice %>
+                <p class="alert alert-success"><%= notice %></p>
+            <% end %>
+            <% if alert %>
+                <p class="alert alert-danger"><%= alert %></p>
+            <% end %>
 
-        <!-- Main view  -->
-        <%= yield %>
+            <!-- Main view  -->
+            <%= yield %>
+        </div>
     </div>
-</div>
 
+    <div class="footer">
+        <div class="pull-right">
+            <% if APP_VERSION.present? %>v<%= APP_VERSION %>
+            <% end %>
+        </div>
+        <div>
+            <strong>Copyright</strong> &copy; GORD <%= Time.now.year %>
+        </div>
+    </div>
 </body>
 <!-- End wrapper-->
 

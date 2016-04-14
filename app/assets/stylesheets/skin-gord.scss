@@ -1,4 +1,73 @@
+@font-face {
+  font-family: 'pf_din_text_universalbold';
+  src: url(font_path('pfdintextuniversal-bold-webfont.woff2')) format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'pf_din_text_universalmedium';
+  src: url(font_path('pfdintextuniversal-medium-webfont.woff2')) format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'pf_din_text_universalregular';
+  src: url(font_path('pfdintextuniversal-regular-webfont.woff2')) format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.login-bg {
+  background: image-url('layout/gsas_trust_background.jpg') no-repeat right center fixed;
+  background-size: cover;
+}
+
+.footer {
+  background-color: $skin-gord-logo-green;
+  opacity: 0.5;
+  color: white;
+  //background: none repeat scroll 0 0 white;
+  //border-top: 1px solid $border-color;
+  //bottom: 0;
+  //left: 0;
+  //padding: 10px 20px;
+  //position: absolute;
+  //right: 0;
+}
+
 .skin-gord {
+
+  .loginColumns{
+    text-align: center;
+    color: $skin-gord-logo-blue;
+    .row {
+      text-align: left;
+      height: 360px;
+      .login-left{
+        width: 360px;
+        height: 100%;
+        padding: 32px;
+        font-family: pf_din_text_universalbold;
+        background-color:rgba(243,243,243,0.5);
+        color: $skin-gord-logo-blue;
+        .logo {
+          width: 256px;
+        }
+      }
+      .login-right{
+        width: 360px;
+        height: 100%;
+        padding: 32px;
+        font-family: pf_din_text_universalregular;
+        background-color:rgba(97,166,14,0.5);
+        color: white;
+        button {
+          background-color: $skin-gord-logo-green;
+        }
+      }
+    }
+  }
+
   // General
   .container {
     width: 100%;

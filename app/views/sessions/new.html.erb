@@ -1,21 +1,27 @@
-<div class="ibox-content">
-    <%= image_tag 'layout/logo-medium.png' %>
-
-    <h3>Welcome to GSASgate</h3>
-
-    <p>
-        Please log in with your <%= link_to 'linkme.qa', 'http://www.linkme.qa', target: '_blank' %> account.<br />
-        If you do not have an account yet, <%= link_to 'click here', 'http://www.linkme.qa/general/register_start.asp', target: '_blank' %>.
-    </p>
-    <%= bootstrap_form_for(User.new, url: sessions_path) do |f| %>
-        <%= f.text_field :username, autofocus: true, placeholder: 'Username', hide_label: true %>
-        <%= f.password_field :password, autocomplete: 'off', placeholder: 'Password', hide_label: true %>
-
-        <%= btn_tag(text: 'Log in', class: 'block full-width m-b') %>
-    <% end %>
-
-    <small>
-        <%= link_to 'Create a linkme.qa account', 'http://www.linkme.qa/general/register_start.asp', target: '_blank' %><br />
-        <%= link_to 'Forgot your linkme.qa username or password?', 'http://www.linkme.qa/general/email_pass.asp', target: '_blank' %>
-    </small>
+<div class="loginColumns">
+    Please sign in before continuing
+    <br />
+    <br />
+    <div class="row">
+        <div class="col-md-6 login-left">
+            <%= image_tag 'layout/gsas_trust_logo.png', class: 'logo' %>
+            <br/>
+            <h2>WELCOME TO</h2>
+            <h1>GSASGATE</h1>
+            <br/>
+            <br/>
+            <%= link_to 'Create a linkme.qa account', 'http://www.linkme.qa/general/register_start.asp', target: '_blank' %><br/>
+            <%= link_to 'Forgot your linkme.qa username or password?', 'http://www.linkme.qa/general/email_pass.asp', target: '_blank' %>
+        </div>
+        <div class="col-md-6 login-right">
+            <h2>Login</h2>
+            <p>Please enter your credentials below</p>
+            <%= bootstrap_form_for(User.new, url: sessions_path) do |f| %>
+                <%= f.text_field :username, autofocus: true, placeholder: 'Username', hide_label: true %>
+                <%= f.password_field :password, autocomplete: 'off', placeholder: 'Password', hide_label: true %>
+                <%= btn_tag(text: 'Login', class: 'block full-width m-b') %>
+            <% end %>
+        </div>
+    </div>
+</div>
 </div>
