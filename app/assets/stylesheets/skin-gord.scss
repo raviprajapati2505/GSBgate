@@ -17,60 +17,98 @@
   font-style: normal;
 }
 
-.login-bg {
+.skin-gord-login {
+  $login-height: 200px;
   background: image-url('layout/gsas_trust_background.jpg') no-repeat right center fixed;
   background-size: cover;
-}
-
-.footer {
-  background-color: $skin-gord-logo-green;
-  opacity: 0.5;
-  color: white;
-  //background: none repeat scroll 0 0 white;
-  //border-top: 1px solid $border-color;
-  //bottom: 0;
-  //left: 0;
-  //padding: 10px 20px;
-  //position: absolute;
-  //right: 0;
-}
-
-.skin-gord {
-
-  .loginColumns{
-    text-align: center;
-    color: $skin-gord-logo-blue;
-    .row {
-      text-align: left;
-      height: 360px;
-      .login-left{
-        width: 360px;
-        height: 100%;
-        padding: 32px;
+  .login-content{
+    margin-bottom: $login-height;
+    .loginColumns {
+      text-align: center;
+      color: $skin-gord-logo-blue;
+      font-family: pf_din_text_universalregular;
+      h2 {
+        margin: 0;
+        font-size: 24px;
         font-family: pf_din_text_universalbold;
-        background-color:rgba(243,243,243,0.5);
-        color: $skin-gord-logo-blue;
-        .logo {
-          width: 256px;
-        }
       }
-      .login-right{
-        width: 360px;
-        height: 100%;
-        padding: 32px;
-        font-family: pf_din_text_universalregular;
-        background-color:rgba(97,166,14,0.5);
-        color: white;
-        button {
-          background-color: $skin-gord-logo-green;
+      h1 {
+        margin: 0;
+        font-size: 40px;
+        font-family: pf_din_text_universalbold;
+      }
+      .row {
+        margin-top: 16px;
+        text-align: left;
+        .login-left {
+          height: 300px;
+          padding: 32px;
+          background-color: rgba(243, 243, 243, 0.5);
+          color: $skin-gord-logo-blue;
+          .logo {
+            width: 192px;
+          }
+          .title {
+            margin-top: 32px;
+          }
+          .links {
+            margin-top: 32px;
+            a {
+              color: $skin-gord-logo-blue;
+            }
+          }
         }
-        input {
-          color: $text-color;
+        .login-right {
+          height: 300px;
+          padding: 32px;
+          background-color: rgba(97, 166, 14, 0.5);
+          color: white;
+          button {
+            background-color: $skin-gord-logo-green;
+            font-size: 24px;
+          }
+          input {
+            color: $text-color;
+            border-radius: 4px;
+          }
         }
       }
     }
   }
+  .login-footer {
+    height: $login-height;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    background-color : transparent;
+    border: none;
+    padding: 0;
+    .login-footer-logo {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 50%;
+      img {
+        width: 192px;
+      }
+    }
+    .login-footer-text {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      bottom: 0;
+      background-color:rgba(97,166,14,0.5);
+      color: white;
+      padding: 32px;
+    }
+  }
+}
 
+.skin-gord {
   // General
   .container {
     width: 100%;
