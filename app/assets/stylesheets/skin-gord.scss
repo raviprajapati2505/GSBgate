@@ -110,6 +110,59 @@
 
 .skin-gord {
   // General
+  background: image-url('layout/gsas_trust_background.jpg') no-repeat right center fixed;
+  background-size: cover;
+
+  .gord-transparent{
+    background-color: transparent;
+  }
+
+  .gord-transparent-green {
+    background-color:rgba(97,166,14,0.5);
+    color: white;
+  }
+
+  .navbar-header {
+    img {
+      max-height: 50px;
+      background-color: white;
+    }
+  }
+  .navbar-right {
+    margin-right: 0;
+    border: none;
+    li {
+      a {
+        color: white;
+      }
+    }
+  }
+
+  .navbar-nav {
+    li:first-child {
+      border-left: 1px solid white;
+    }
+    li {
+      border-right: 1px solid white;
+      a {
+        color: white;
+      }
+    }
+  }
+
+  .page-heading {
+    h2 {
+      font-family: pf_din_text_universalbold;
+      color: $skin-gord-logo-blue;
+    }
+    .back-button-wrapper {
+      margin-top: 16px;
+    }
+  }
+  .footer {
+    border-top: none;
+  }
+
   .container {
     width: 100%;
   }
