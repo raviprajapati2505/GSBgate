@@ -1,18 +1,30 @@
 @font-face {
   font-family: 'pf_din_text_universalbold';
-  src: url(font_path('pfdintextuniversal-bold-webfont.woff2')) format('woff2');
+  src: url(font_path('pfdintextuniversal-bold-webfont.eot'));
+  src: url(font_path('pfdintextuniversal-bold-webfont.eot?#iefix')) format("embedded-opentype"),
+       url(font_path('pfdintextuniversal-bold-webfont.woff2')) format("woff2"),
+       url(font_path('pfdintextuniversal-bold-webfont.woff')) format("woff"),
+       url(font_path('pfdintextuniversal-bold-webfont.ttf')) format("truetype");
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: 'pf_din_text_universalmedium';
-  src: url(font_path('pfdintextuniversal-medium-webfont.woff2')) format('woff2');
+  src: url(font_path('pfdintextuniversal-medium-webfont.eot'));
+  src: url(font_path('pfdintextuniversal-medium-webfont.eot?#iefix')) format("embedded-opentype"),
+       url(font_path('pfdintextuniversal-medium-webfont.woff2')) format("woff2"),
+       url(font_path('pfdintextuniversal-medium-webfont.woff')) format("woff"),
+       url(font_path('pfdintextuniversal-medium-webfont.ttf')) format("truetype");
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: 'pf_din_text_universalregular';
-  src: url(font_path('pfdintextuniversal-regular-webfont.woff2')) format('woff2');
+  src: url(font_path('pfdintextuniversal-regular-webfont.eot'));
+  src: url(font_path('pfdintextuniversal-regular-webfont.eot?#iefix')) format("embedded-opentype"),
+       url(font_path('pfdintextuniversal-regular-webfont.woff2')) format("woff2"),
+       url(font_path('pfdintextuniversal-regular-webfont.woff')) format("woff"),
+       url(font_path('pfdintextuniversal-regular-webfont.ttf')) format("truetype");
   font-weight: normal;
   font-style: normal;
 }
@@ -60,7 +72,10 @@
             }
             input {
               color: $text-color;
-              border-radius: 4px;
+              border-radius: 0 4px 4px 0;
+            }
+            .input-group-addon {
+              border-radius: 4px 0 0 4px;
             }
           }
           .links {
