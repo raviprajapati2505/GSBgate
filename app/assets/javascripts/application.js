@@ -15,7 +15,7 @@
  *= require bootstrap
  *= require pace
  *= require metisMenu
- *= require slimScroll
+ *= require slimScroll/jquery.slimscroll
  *= require inspinia
  *= require wicket/wicket
  *= require wicket/wicket-gmap3

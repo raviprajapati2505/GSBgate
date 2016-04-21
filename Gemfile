@@ -5,15 +5,15 @@ gem 'rails', '~>4.2'
 
 # Use postgresql as the database for Active Record
 gem 'pg'
-gem 'activerecord-postgis-adapter', '~>3.0.0'
-gem 'rgeo', '0.3.20'
+gem 'activerecord-postgis-adapter'
+gem 'rgeo'
 gem 'ffi-geos'
 
 # Use SCSS for stylesheets
-gem 'sass-rails', '~> 5.0'
+gem 'sass-rails'
 
 # Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '>= 1.3.0'
+gem 'uglifier'
 
 # Use CoffeeScript for .coffee assets and views
 # gem 'coffee-rails', '~> 4.1.0'
@@ -52,20 +52,20 @@ group :development, :test do
   # -- add REPL and local instance variable inspection to better_errors
   gem 'binding_of_caller'
   # used by the xlsx2seed rake task
-  gem 'roo', '~> 2.2.0'
+  gem 'roo'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :jruby]
 
 # Rack middleware that provides authentication for rack applications
-gem 'warden', '~> 1.2', '>= 1.2.6'
+gem 'warden'
 
 # Simple authorization solution
-gem 'cancancan', '~> 1.10.1'
+gem 'cancancan'
 
 # rails-assets needs Bundler >= 1.8.4
-gem 'bundler', '>= 1.8.4'
+gem 'bundler'
 
 # Rails form builder
 # For documentation, go to https://github.com/bootstrap-ruby/rails-bootstrap-forms#usage
@@ -78,22 +78,22 @@ gem 'carrierwave', github: 'carrierwaveuploader/carrierwave'
 gem 'kaminari'
 
 # Selection box
-gem 'select2-rails', '~> 3.5.9.3'
+gem 'select2-rails', '< 4.0.0'
 
 # Path helpers for javascript
-gem 'js-routes', '~> 1.0.1'
+gem 'js-routes'
 
 # Read/write zip files
-gem 'rubyzip', '~> 1.1.7'
+gem 'rubyzip'
 
 # URI.encode / URI.escape is deprecated
 gem 'addressable'
 
 # https://github.com/galetahub/ckeditor
-gem 'ckeditor', '~> 4.1.3'
+gem 'ckeditor'
 
 # Datatables.net, with server-side searching, sorting and filtering
-gem 'effective_datatables', '~> 2.2.7'
+gem 'effective_datatables'
 
 # PDF Generator
 gem 'pdf-core'
@@ -101,10 +101,10 @@ gem 'prawn'
 gem 'prawn-table'
 
 # HTML, XML, SAX, and Reader parser.
-gem 'nokogiri', '~> 1.6', '>= 1.6.6.2'
+gem 'nokogiri'
 
 # Required for password encryption
-gem 'bcrypt', '~> 3.1', '>= 3.1.5'
+gem 'bcrypt'
 
 # Rails-Assets: access bower packages from our gem file
 #  e.g. gem 'rails-assets-BOWER_PACKAGE_NAME'
