@@ -31,22 +31,25 @@
         </div>
     </div>
     <div class="login-footer">
-        <div class="login-footer-logo">
-            <%= image_tag 'layout/gord_logo.jpg', class: 'logo' %>
-        </div>
-        <div class="login-footer-text">
-            <div class="row">
-                <div class="col-md-6">
-                    Copyright &copy; GORD <%= Time.now.year %>
+        <div class="row">
+            <div class="col-md-6">
+                &copy; <%= Time.now.year %>
+                <br/>
+                <% if APP_VERSION.present? %>
+                    v<%= APP_VERSION %>
+                <% end %>
+            </div>
+            <div class="col-md-6 text-right">
+                <div>
+                    <%= link_to 'Home', '/' %>
+                    <%= link_to 'Contact', 'http://www.gord.qa/', target: '_blank' %>
                 </div>
-                <div class="col-md-6 text-right">
-                    <% if APP_VERSION.present? %>
-                        v<%= APP_VERSION %>
-                    <% end %>
+                <div>
+                    <%= link_to 'Terms & Conditions', asset_url('GSAS_Certification_TCs.pdf'), target: '_blank' %>
+                    <%= link_to 'Privacy Policy', 'http://www.gord.qa/privacy-policy', target: '_blank' %>
                 </div>
             </div>
         </div>
-
     </div>
 <%= yield(:js) -%>
 </body>
