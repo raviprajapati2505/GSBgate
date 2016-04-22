@@ -72,7 +72,7 @@ gem 'bundler'
 gem 'bootstrap_form'
 
 # Simplified file uploading
-gem 'carrierwave', github: 'carrierwaveuploader/carrierwave'
+gem 'carrierwave'
 
 # Pagination for resultsets
 gem 'kaminari'
