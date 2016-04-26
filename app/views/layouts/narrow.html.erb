@@ -32,14 +32,14 @@
     </div>
     <div class="login-footer">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-xs-6">
                 &copy; <%= Time.now.year %>
                 <br/>
                 <% if APP_VERSION.present? %>
                     v<%= APP_VERSION %>
                 <% end %>
             </div>
-            <div class="col-md-6 text-right">
+            <div class="col-xs-6 text-right">
                 <div>
                     <%= link_to 'Home', '/' %>
                     <%= link_to 'Contact', 'http://www.gord.qa/', target: '_blank' %>
