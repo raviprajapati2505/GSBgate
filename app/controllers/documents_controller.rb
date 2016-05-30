@@ -38,7 +38,10 @@ class DocumentsController < AuthenticatedController
         directory = directories.join('/')
         filepath = Rails.root.to_s + '/private/' + directory + '/' + @document.name
         # delete physical file
-        File.delete(filepath)
+        begin
+          File.delete(filepath)
+        rescue Errno::ENOENT
+        end
         # delete empty directories
         begin
           until directories.empty?
@@ -58,7 +61,11 @@ class DocumentsController < AuthenticatedController
   end
 
   def show
-    send_file @document.path
+    begin
+      send_file @document.path
+    rescue ActionController::MissingFile
+      redirect_to :back, alert: 'This document is no longer available for download. This could be due to a detection of malware.'
+    end
   end
 
   private
