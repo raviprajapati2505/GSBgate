@@ -70,30 +70,36 @@
                     <tr>
                         <th><%= Project.human_attribute_name('location_plan_file') %></th>
                         <td>
-                            <% if can? :download_location_plan, @project %>
-                                <%= btn_download(download_project_location_plan_path(@project), size: 'extra_small', tooltip: "Download #{Project.human_attribute_name('location_plan_file')}") %>
-                            <% end %>
-                            <%= truncate(@project.location_plan_file.file.filename, length: 35) %>
+                          <% if @project.location_plan_file.present? %>
+                              <% if can? :download_location_plan, @project %>
+                                  <%= btn_download(download_project_location_plan_path(@project), size: 'extra_small', tooltip: "Download #{Project.human_attribute_name('location_plan_file')}") %>
+                              <% end %>
+                              <%= truncate(@project.location_plan_file.file.filename, length: 35) %>
+                          <% end %>
                         </td>
                     </tr>
 
                     <tr>
                         <th><%= Project.human_attribute_name('site_plan_file') %></th>
                         <td>
-                            <% if can? :download_site_plan, @project %>
-                                <%= btn_download(download_project_site_plan_path(@project), size: 'extra_small', tooltip: "Download #{Project.human_attribute_name('site_plan_file')}") %>
-                            <% end %>
-                            <%= truncate(@project.site_plan_file.file.filename, length: 35) %>
+                          <% if @project.site_plan_file.present? %>
+                              <% if can? :download_site_plan, @project %>
+                                  <%= btn_download(download_project_site_plan_path(@project), size: 'extra_small', tooltip: "Download #{Project.human_attribute_name('site_plan_file')}") %>
+                              <% end %>
+                              <%= truncate(@project.site_plan_file.file.filename, length: 35) %>
+                          <% end %>
                         </td>
                     </tr>
 
                     <tr>
                         <th><%= Project.human_attribute_name('design_brief_file') %></th>
                         <td>
-                            <% if can? :download_design_brief, @project %>
-                                <%= btn_download(download_project_design_brief_path(@project), size: 'extra_small', tooltip: "Download #{Project.human_attribute_name('design_brief_file')}") %>
-                            <% end %>
-                            <%= truncate(@project.design_brief_file.file.filename, length: 35) %>
+                          <% if @project.design_brief_file.present? %>
+                              <% if can? :download_design_brief, @project %>
+                                  <%= btn_download(download_project_design_brief_path(@project), size: 'extra_small', tooltip: "Download #{Project.human_attribute_name('design_brief_file')}") %>
+                              <% end %>
+                              <%= truncate(@project.design_brief_file.file.filename, length: 35) %>
+                          <% end %>
                         </td>
                     </tr>
 
@@ -101,10 +107,12 @@
                     <tr>
                         <th><%= Project.human_attribute_name('project_narrative_file') %></th>
                         <td>
-                            <% if can? :download_project_narrative, @project %>
-                                <%= btn_download(download_project_narrative_path(@project), size: 'extra_small', tooltip: "Download #{Project.human_attribute_name('project_narrative_file')}") %>
-                            <% end %>
-                            <%= truncate(@project.project_narrative_file.file.filename, length: 35) %>
+                          <% if @project.project_narrative_file.present? %>
+                              <% if can? :download_project_narrative, @project %>
+                                  <%= btn_download(download_project_narrative_path(@project), size: 'extra_small', tooltip: "Download #{Project.human_attribute_name('project_narrative_file')}") %>
+                              <% end %>
+                              <%= truncate(@project.project_narrative_file.file.filename, length: 35) %>
+                          <% end %>
                         </td>
                     </tr>
                     </tbody>
