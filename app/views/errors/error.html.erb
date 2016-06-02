@@ -16,8 +16,7 @@
 <div class="middle-box text-center animated fadeInDown errorscreen">
     <div class="ibox-content">
         <%= image_tag('layout/gsas_trust_logo-small.png') %>
-        <h1><%= @status_code %></h1>
-        <h2 class="font-bold"><%= @title %></h2>
+        <h2 class="font-bold"><%= @title %> (<%= @status_code %>)</h2>
         <div class="error-desc">
             <p><%= @message %></p>
             <p>Support ID: <%= request.uuid %></p>
