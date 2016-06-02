@@ -12,15 +12,17 @@ class DocumentArchiverService
     Zip::OutputStream.open(temp_file) do |zos|
       # Loop over all approved documents in the certification path
       certification_path.scheme_mix_criteria_documents.approved.each do |smcd|
-        category_name = smcd.scheme_mix_criterion.scheme_criterion.scheme_category.name
-        criterion_code = smcd.scheme_mix_criterion.scheme_criterion.code
+        if smcd.document.document_file.present?
+          category_name = smcd.scheme_mix_criterion.scheme_criterion.scheme_category.name
+          criterion_code = smcd.scheme_mix_criterion.scheme_criterion.code
 
-        file_name = category_name + '/' + criterion_code + '/' + smcd.document.id.to_s + '_' + smcd.name
-        file_path = smcd.path
+          file_name = category_name + '/' + criterion_code + '/' + smcd.document.id.to_s + '_' + smcd.name
+          file_path = smcd.path
 
-        # Add the document to the archive
-        zos.put_next_entry(file_name)
-        zos << IO.read(file_path)
+          # Add the document to the archive
+          zos.put_next_entry(file_name)
+          zos << IO.read(file_path)
+        end
       end
 
       zos.put_next_entry('audit_logs.csv')
