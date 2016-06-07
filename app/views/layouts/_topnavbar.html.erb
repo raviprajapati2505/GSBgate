@@ -41,6 +41,12 @@
                 </li>
             <% end %>
 
+            <li>
+              <%= link_to asset_url('GSASgate_Manual.pdf'), target: '_blank' do %>
+                  <%= fa_icon('book', size: 'lg') %><span class="nav-label"><%= t('.navbar.manual') %></span>
+              <% end %>
+            </li>
+
             <% can_index_scheme_criteria = can?(:index, SchemeCriterion)%>
             <% can_index_users = can?(:index, User) %>
             <% can_certifiers_criteria_report = can?(:certifiers_criteria, :report) %>

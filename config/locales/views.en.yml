@@ -17,6 +17,7 @@ en:
         admin_criteria: Criteria
         admin_users: Users
         certifiers_and_criteria_report: Certifiers and criteria
+        manual: User manual
   certification_paths:
     edit_status:
       modal_title: Update status
