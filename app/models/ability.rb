@@ -157,6 +157,8 @@ class Ability
       # GSAS trust team
       can :read, SchemeMixCriteriaDocument, status: document_approved, scheme_mix_criterion: {scheme_mix: {certification_path: {project: project_with_user_in_gsas_trust_team}}}
       can :read, SchemeMixCriteriaDocument, scheme_mix_criterion: {in_review: true, scheme_mix: {certification_path: {project: project_with_user_in_gsas_trust_team}}}
+      # Enterprise clients
+      can :read, SchemeMixCriteriaDocument, status: document_approved, scheme_mix_criterion: {scheme_mix: {certification_path: {project: project_with_user_as_enterprise_client}}}
 
       # AuditLog controller
       can :index, AuditLog, audit_log_visibility_id: AuditLogVisibility::PUBLIC, project: project_with_user_assigned
