@@ -88,6 +88,8 @@ GEM
     ffi (1.9.10-x86-mingw32)
     ffi-geos (1.1.1)
       ffi (>= 1.0.0)
+    font-awesome-rails (4.3.0.0)
+      railties (>= 3.2, < 5.0)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
     haml (4.0.7)
@@ -159,7 +161,6 @@ GEM
     rails-assets-d3-tip (0.6.7)
       rails-assets-d3 (= 3.5.5)
     rails-assets-dropzone (4.3.0)
-    rails-assets-fontawesome (4.6.1)
     rails-assets-icheck (1.0.2)
       rails-assets-jquery (>= 1.7)
     rails-assets-jquery (2.2.3)
@@ -253,6 +254,7 @@ DEPENDENCIES
   effective_datatables
   execjs
   ffi-geos
+  font-awesome-rails
   js-routes
   kaminari
   nokogiri
@@ -268,7 +270,6 @@ DEPENDENCIES
   rails-assets-d3!
   rails-assets-d3-tip!
   rails-assets-dropzone!
-  rails-assets-fontawesome!
   rails-assets-icheck!
   rails-assets-jquery!
   rails-assets-jquery-ujs!

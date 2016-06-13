@@ -106,6 +106,9 @@ gem 'nokogiri'
 # Required for password encryption
 gem 'bcrypt'
 
+# Font awesome
+gem 'font-awesome-rails'
+
 # Rails-Assets: access bower packages from our gem file
 #  e.g. gem 'rails-assets-BOWER_PACKAGE_NAME'
 #  do not forget to:
@@ -119,7 +122,6 @@ source 'http://rails-assets.org' do
   gem 'rails-assets-d3'
   gem 'rails-assets-d3-tip'
   gem 'rails-assets-dropzone'
-  gem 'rails-assets-fontawesome'
   gem 'rails-assets-icheck'
   gem 'rails-assets-jquery'
   gem 'rails-assets-jquery-ujs'
