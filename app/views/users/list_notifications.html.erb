@@ -5,7 +5,7 @@
                 <h5>User E-mail Notifications</h5>
             </div>
             <div class="ibox-content">
-                <p class="alert alert-info"><%= fa_icon('info-circle') %> Below you can select for which types of audit log and task events a notification must be included in the digest e-mail.
+                <p class="alert alert-info"><%= ikoen('info-circle') %> Below you can select for which types of audit log and task events a notification must be included in the digest e-mail.
                 Some event types can be specified on a per project basis. These event types will be visible after first selecting a project. Changes will only be saved for the currently selected project.</p>
                 <% excluded_notification_types = @user.notification_types.where(project_level: false).to_a %>
                 <% notification_types = NotificationType.all %>

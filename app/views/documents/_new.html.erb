@@ -5,7 +5,7 @@
     </div>
     <div id="dropzone-top">
         <div class="dz-message">
-            <%= fa_icon_with_text('files-o', 'Drop files here or click to upload documentation.') %>
+            <%= ikoen_with_text('files-o', 'Drop files here or click to upload documentation.') %>
         </div>
     </div>
     <div id="dropzone-bottom" style="display:none;">
@@ -31,7 +31,7 @@
                                 <% if scheme_mix.scheme_mix_criteria.for_category(category).exists?(main_scheme_mix_criterion_id: nil) %>
                                     <li>
                                         <a href="#">
-                                            <%= fa_icon_with_text('caret-square-o-right', category.name) %>
+                                            <%= ikoen_with_text('caret-square-o-right', category.name) %>
                                         </a>
                                         <ul style="display:none;">
                                             <% scheme_mix.scheme_mix_criteria.for_category(category).order('scheme_criteria.number').each do |scheme_mix_criterion| %>

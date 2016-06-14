@@ -9,7 +9,7 @@
         <%= bootstrap_form_for(@certification_path, url: update_main_scheme_mix_project_certification_path_path(@project, @certification_path), method: 'put') do |f| %>
             <div class="modal-body">
                 <div class="alert alert-info" role="alert">
-                    <%= fa_icon_with_text('info-circle', 'Some category scores of the main scheme (or main typology) will be inherited by other schemes.') %>
+                    <%= ikoen_with_text('info-circle', 'Some category scores of the main scheme (or main typology) will be inherited by other schemes.') %>
                 </div>
                 <%= f.select :main_scheme_mix_id, options_for_select(@certification_path.scheme_mixes.map {|scheme_mix| [scheme_mix.name, scheme_mix.id]}, @certification_path.main_scheme_mix_id), {label: 'Main scheme', include_blank: '- There is no main scheme -'} %>
             </div>

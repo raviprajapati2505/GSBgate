@@ -4,15 +4,15 @@
             <%= audit_log_label(requirement_datum) %>
             <a href="#requirement-<%= requirement_datum.id %>-collapsable" data-parent="#accordion" data-toggle="collapse" class="collapsed" aria-expanded="false">
                 <% if requirement_datum.required? %>
-                    <%= fa_icon('square-o', tooltip: t('.tooltip_requirement_required')) %>
+                    <%= ikoen('square-o', tooltip: t('.tooltip_requirement_required')) %>
                 <% elsif requirement_datum.provided? %>
-                    <%= fa_icon('check-square-o', tooltip: t('.tooltip_requirement_provided')) %>
+                    <%= ikoen('check-square-o', tooltip: t('.tooltip_requirement_provided')) %>
                 <% else %>
-                    <%= fa_icon('square', tooltip: t('.tooltip_requirement_not_required')) %>
+                    <%= ikoen('square', tooltip: t('.tooltip_requirement_not_required')) %>
                 <% end %>
                 &nbsp;&nbsp;<%= requirement_datum.name %>
                 <% if requirement_datum.required? && !requirement_datum.due_date.nil? && Date.today > requirement_datum.due_date %>
-                    &nbsp;<%= fa_icon('clock-o', class: 'due-date-expired', tooltip: t('.tooltip_due_date')) %>
+                    &nbsp;<%= ikoen('clock-o', class: 'due-date-expired', tooltip: t('.tooltip_due_date')) %>
                 <% end %>
             </a>
         </h4>
@@ -43,7 +43,7 @@
                     </div>
                     <div class="col-md-3">
                         <% due_date = ((l requirement_datum.due_date, format: :short) if !requirement_datum.due_date.nil?) %>
-                        <%= f.text_field :due_date, value: due_date, prepend: fa_icon('calendar'), class: 'datepicker-future', autocomplete: 'off', disabled: !can_update_requirement_datum %>
+                        <%= f.text_field :due_date, value: due_date, prepend: ikoen('calendar'), class: 'datepicker-future', autocomplete: 'off', disabled: !can_update_requirement_datum %>
                     </div>
                     <div class="col-md-3">
                         <%= f.select :status, options_for_select(RequirementDatum.statuses.keys.map { |k| [k.humanize, k]}, requirement_datum.status), {}, disabled: !(can_update_requirement_datum || can_update_status_requirement_datum) %>

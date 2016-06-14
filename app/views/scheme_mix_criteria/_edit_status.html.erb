@@ -16,7 +16,7 @@
             </div>
             <div class="modal-body">
                 <% if @scheme_mix_criterion.verifying? || @scheme_mix_criterion.verifying_after_appeal? %>
-                    <p class="alert alert-info"><%= fa_icon('info-circle') %>
+                    <p class="alert alert-info"><%= ikoen('info-circle') %>
                         <%= t('.info.achieved_html', status: t(@scheme_mix_criterion.next_status, scope: 'activerecord.attributes.scheme_mix_criterion.statuses')) %>
                     </p>
                 <% end %>
@@ -40,7 +40,7 @@
                 <div class="modal-header alert-danger">
                     <%= btn_close_modal %>
                     <h4 class="modal-title">
-                        <%= fa_icon_with_text('exclamation-circle', 'The status cannot be advanced yet because of the following issues:') %>
+                        <%= ikoen_with_text('exclamation-circle', 'The status cannot be advanced yet because of the following issues:') %>
                     </h4>
                 </div>
                 <div class="modal-body">

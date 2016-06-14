@@ -42,7 +42,7 @@
                 <%= can_link_to(project_certification_path_scheme_mix_path(certification_path.project, certification_path, scheme_mix), scheme_mix) do %>
                     <%= scheme_mix.full_name %>
                     <% if certification_path.main_scheme_mix_id == scheme_mix.id %>
-                        <%= fa_icon('certificate', tooltip: 'This is the main scheme (or main typology). Some of its criteria scores will be inherited by other schemes.', class: 'main-scheme-icon') %>
+                        <%= ikoen('certificate', tooltip: 'This is the main scheme (or main typology). Some of its criteria scores will be inherited by other schemes.', class: 'main-scheme-icon') %>
                     <% end %>
                 <% end %>
             </td>

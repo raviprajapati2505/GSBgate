@@ -29,7 +29,7 @@ module ApplicationHelper
   end
 
   def tooltip(text)
-    fa_icon('question-circle', size: :normal, tooltip: text, class: 'tooltip-icon')
+    ikoen('question-circle', size: :normal, tooltip: text, class: 'tooltip-icon')
   end
 
   # Wraps the block param, with a link to th given path, if we have read access to the given model
@@ -186,7 +186,7 @@ module ApplicationHelper
     end if block_given?
     # -- icon
     if options.has_key?(:icon)
-      _icon = fa_icon(options[:icon], size: _icon_size)
+      _icon = ikoen(options[:icon], size: _icon_size)
       if options[:icon_position] == 'front'
         _content.unshift(_icon)
       else
@@ -206,7 +206,7 @@ module ApplicationHelper
     options[:data] ||= {}
     options[:disabling] = true unless options.has_key?(:disabling)
     # -- during 'processing', show the content prefixed with a spinner
-    options[:data][:disable_with] ||= "#{fa_icon('spinner fa-spin', size: _icon_size)}&nbsp;&nbsp;#{_content}" if options[:disabling] == true
+    options[:data][:disable_with] ||= "#{ikoen('spinner fa-spin', size: _icon_size)}&nbsp;&nbsp;#{_content}" if options[:disabling] == true
 
     # Create the options hash to pass to the default url or form helper
     _options = options.except(:icon, :icon_position, :style, :size, :tooltip, :disabling)
@@ -225,11 +225,11 @@ module ApplicationHelper
     end
   end
 
-  def fa_icon_with_text(name, text, options = {})
-    "#{fa_icon(name, options)}&nbsp;&nbsp;#{text}".html_safe
+  def ikoen_with_text(name, text, options = {})
+    "#{ikoen(name, options)}&nbsp;&nbsp;#{text}".html_safe
   end
 
-  def fa_icon(name, options = {})
+  def ikoen(name, options = {})
     # -- size
     options[:size] ||= 'lg'
     _icon_size = " fa-#{options[:size]}" unless options[:size] == 'normal'
@@ -372,10 +372,10 @@ module ApplicationHelper
   end
 
   def scores_legend
-    max = content_tag(:li, fa_icon_with_text('square', 'Max. Attainable score', class: 'progress-bar-max'))
-    target = content_tag(:li, fa_icon_with_text('square', 'Targeted score', class: 'progress-bar-targeted'))
-    submit = content_tag(:li, fa_icon_with_text('square', 'Submitted score', class: 'progress-bar-submitted'))
-    achieved = content_tag(:li, fa_icon_with_text('square', 'Achieved score', class: 'progress-bar-achieved'))
+    max = content_tag(:li, ikoen_with_text('square', 'Max. Attainable score', class: 'progress-bar-max'))
+    target = content_tag(:li, ikoen_with_text('square', 'Targeted score', class: 'progress-bar-targeted'))
+    submit = content_tag(:li, ikoen_with_text('square', 'Submitted score', class: 'progress-bar-submitted'))
+    achieved = content_tag(:li, ikoen_with_text('square', 'Achieved score', class: 'progress-bar-achieved'))
     content_tag(:ul, class: 'list-unstyled list-inline') do
       max + target + submit + achieved
     end

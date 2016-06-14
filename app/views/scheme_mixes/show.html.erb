@@ -12,7 +12,7 @@
                         <td>
                             <%= @scheme_mix.full_name %>
                             <% if @scheme_mix.certification_path.main_scheme_mix_id == @scheme_mix.id %>
-                                <%= fa_icon('certificate', tooltip: 'This is the main scheme (or main typology). Some of its criteria scores will be inherited by other schemes.', class: 'main-scheme-icon') %>
+                                <%= ikoen('certificate', tooltip: 'This is the main scheme (or main typology). Some of its criteria scores will be inherited by other schemes.', class: 'main-scheme-icon') %>
                             <% end %>
                         </td>
                     </tr>
@@ -92,7 +92,7 @@
                 %>
                 <% if !@scheme_mix.certification_path.in_pre_verification? && invalid_criteria_ids.size > 0 %>
                     <div class="alert alert-warning" role="alert">
-                        <%= fa_icon_with_text('exclamation-circle', 'There are one or more criteria that have not achieved their minimum valid score.') %>
+                        <%= ikoen_with_text('exclamation-circle', 'There are one or more criteria that have not achieved their minimum valid score.') %>
                     </div>
                 <% end %>
                 <%= scores_legend %>
@@ -124,12 +124,12 @@
                             %>
 
                             <tr class="accordion-toggle" data-toggle="collapse" data-target="#category-panel-<%= category.id %>" data-parent="#categories-accordion">
-                                <td class="category-accordion-icon"><%= fa_icon('caret-square-o-right') %></td>
+                                <td class="category-accordion-icon"><%= ikoen('caret-square-o-right') %></td>
                                 <td><%= category.code %></td>
                                 <td>
                                     <%= category.name %>
                                     <% if (@scheme_mix.certification_path.main_scheme_mix_id == @scheme_mix.id) && category.shared? %>
-                                        <%= fa_icon('certificate', tooltip: 'The criteria scores of this category will be inherited by criteria with the same name in other schemes.', class: 'main-scheme-icon') %>
+                                        <%= ikoen('certificate', tooltip: 'The criteria scores of this category will be inherited by criteria with the same name in other schemes.', class: 'main-scheme-icon') %>
                                     <% end %>
                                 </td>
                                 <td>
@@ -208,7 +208,7 @@
                                                             <%= scheme_mix_criterion.name %>
                                                         <% end %>
                                                         <% if scheme_mix_criterion.main_scheme_mix_criterion_id.present? %>
-                                                            <%= fa_icon('files-o', tooltip: 'The scores of this criterion are inherited from a criterion with the same name in the main scheme.') %>
+                                                            <%= ikoen('files-o', tooltip: 'The scores of this criterion are inherited from a criterion with the same name in the main scheme.') %>
                                                         <% end %>
                                                     </td>
                                                     <td><%= t(scheme_mix_criterion.status, scope: 'activerecord.attributes.scheme_mix_criterion.statuses') %></td>

@@ -2,7 +2,7 @@
     <div class="navbar-header navbar navbar-static-top gord-transparent" role="navigation">
         <%= image_tag('layout/gsas_trust_logo.png') %>
         <button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
-            <%= fa_icon('reorder') %>
+            <%= ikoen('reorder') %>
         </button>
     </div>
     <div class="navbar-collapse collapse" id="navbar">
@@ -11,7 +11,7 @@
             <% if can?(:index, Project) %>
                 <li class="<%= 'active' if ['projects', 'projects_users', 'certification_paths', 'scheme_mixes', 'scheme_mix_criteria'].include?(controller_name) %>">
                     <%= link_to projects_path do %>
-                        <%= fa_icon('building-o', size: 'lg') %><span class="nav-label"><%= t('.navbar.projects_html') %></span>
+                        <%= ikoen('building-o', size: 'lg') %><span class="nav-label"><%= t('.navbar.projects_html') %></span>
                     <% end %>
                 </li>
             <% end %>
@@ -20,7 +20,7 @@
                 <li class="<%= 'active' if (controller_name == 'tasks') %>">
                     <% task_count = TaskService::count_tasks(user: current_user) %>
                     <%= link_to tasks_path do %>
-                        <%= fa_icon('tasks', size: 'lg') %><span class="nav-label"><%= t('.navbar.tasks') %><span class="badge task-counter <% if task_count == 0 %>hidden<% end %>" data-user="<%= current_user.id %>"><%= task_count %></span></span>
+                        <%= ikoen('tasks', size: 'lg') %><span class="nav-label"><%= t('.navbar.tasks') %><span class="badge task-counter <% if task_count == 0 %>hidden<% end %>" data-user="<%= current_user.id %>"><%= task_count %></span></span>
                     <% end %>
                 </li>
             <% end %>
@@ -28,7 +28,7 @@
             <% if can?(:list_notifications, User) %>
                 <li class="<%= 'active' if (controller_name == 'users' and action_name == 'list_notifications') %>">
                     <%= link_to list_notifications_user_path id: current_user.id do %>
-                        <%= fa_icon('cog', size: 'lg') %><span class="nav-label"><%= t('.navbar.preferences') %></span>
+                        <%= ikoen('cog', size: 'lg') %><span class="nav-label"><%= t('.navbar.preferences') %></span>
                     <% end %>
                 </li>
             <% end %>
@@ -36,14 +36,14 @@
             <% if can?(:index, AuditLog) %>
                 <li class="<%= 'active' if (controller_name == 'audit_logs') %>">
                     <%= link_to audit_logs_path do %>
-                        <%= fa_icon('mail-reply-all', size: 'lg') %><span class="nav-label"><%= t('.navbar.audit_log') %></span>
+                        <%= ikoen('mail-reply-all', size: 'lg') %><span class="nav-label"><%= t('.navbar.audit_log') %></span>
                     <% end %>
                 </li>
             <% end %>
 
             <li>
               <%= link_to asset_url('GSASgate_Manual.pdf'), target: '_blank' do %>
-                  <%= fa_icon('book', size: 'lg') %><span class="nav-label"><%= t('.navbar.manual') %></span>
+                  <%= ikoen('book', size: 'lg') %><span class="nav-label"><%= t('.navbar.manual') %></span>
               <% end %>
             </li>
 
@@ -53,7 +53,7 @@
             <% if can_index_users || can_index_scheme_criteria || can_certifiers_criteria_report %>
                 <li class="dropdown<%= ' active' if ['scheme_criteria', 'users'].include?(controller_name) && action_name != 'list_notifications' %>">
                     <a aria-expanded="false" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <%= fa_icon('cogs', size: 'lg') %><%= t('.navbar.admin') %><span class="caret"></span>
+                        <%= ikoen('cogs', size: 'lg') %><%= t('.navbar.admin') %><span class="caret"></span>
                     </a>
                     <ul role="menu" class="dropdown-menu">
                         <% if can_index_scheme_criteria %>
@@ -77,14 +77,14 @@
                         <% if current_user.picture.present? %>
                             <img src="<%= current_user.picture %>" class="img-circle profile-picture">
                         <% else %>
-                            <%= fa_icon('user', size: 'lg') %>
+                            <%= ikoen('user', size: 'lg') %>
                         <% end %>
                         <span class="nav-label"><%= current_user.full_name %></span>
                     <% end %>
                 </li>
                 <li>
                     <%= link_to sessions_path, method: :delete do %>
-                        <%= fa_icon('sign-out', size: 'lg') %><span class="nav-label">Log out</span>
+                        <%= ikoen('sign-out', size: 'lg') %><span class="nav-label">Log out</span>
                     <% end %>
                 </li>
             </ul>

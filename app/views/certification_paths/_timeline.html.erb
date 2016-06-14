@@ -6,7 +6,7 @@
           <% if CertificationPathStatus.at_gsas_trust_team_side?(milestone[:certification_path_status].id) %>gsas-trust-team
           <% else %>project-team
           <% end %>">
-                <%= fa_icon('user') %>
+                <%= ikoen('user') %>
             </div>
             <div class="vertical-timeline-content">
                 <% if (index == 0) %>
@@ -23,7 +23,7 @@
                 </h2>
                 <% unless date_previous.nil? %>
                     <small class="text-muted">
-                        <%= fa_icon_with_text('clock-o', localize(date_previous), size: 'normal') %>
+                        <%= ikoen_with_text('clock-o', localize(date_previous), size: 'normal') %>
                     </small>
                 <% end %>
                 <% if (index == 0) %>
