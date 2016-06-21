@@ -179,9 +179,9 @@ class DigestMailer < ApplicationMailer
     if exclude_notifications.any?
       exclude_notifications.each do |exclude_notification|
         if new_status.kind_of?(Array)
-          @audit_logs = @audit_logs.where.not('audit_logs.auditable_type = ? and audit_logs.new_status in (?) and project_id = ?', auditable_type, new_status, exclude_notification.project_id)
+          @audit_logs = @audit_logs.where.not('audit_logs.auditable_type = ? and audit_logs.new_status in (?) and audit_logs.project_id = ?', auditable_type, new_status, exclude_notification.project_id)
         else
-          @audit_logs = @audit_logs.where.not('audit_logs.auditable_type = ? and audit_logs.new_status = ? and project_id = ?', auditable_type, new_status, exclude_notification.project_id)
+          @audit_logs = @audit_logs.where.not('audit_logs.auditable_type = ? and audit_logs.new_status = ? and audit_logs.project_id = ?', auditable_type, new_status, exclude_notification.project_id)
         end
       end
     end
