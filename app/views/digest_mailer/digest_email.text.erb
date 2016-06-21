@@ -7,7 +7,7 @@ Dear Ms/Mr
 <% if @user.gsas_trust_manager? || @user.gsas_trust_top_manager? %>
     Hereby we send you an overview of your unfinished tasks since <%= @user.last_notified_at %>.
 <% else %>
-    Hereby we send you an overview of recent project changes and your unfinished tasks since <%= @user.last_notified_at %>.
+    Hereby we send you an overview of recent project changes and your unfinished tasks since <%= l(@user.last_notified_at) %>.
 <% end %>
 
 Tasks
@@ -22,23 +22,23 @@ Tasks
         when Project.name.demodulize
           breadcrumbs = breadcrumbs(task.taskable, with_prefix: false)
     %>
-            <%= t(".description_#{task.task_description_id}", scope: [:tasks, :tasks]) %> | <%= breadcrumbs[:names].last %> | -
+            <%= t("description_#{task.task_description_id}", scope: [:tasks, :tasks]) %> | <%= breadcrumbs[:names].last %> | -
         <%  when CertificationPath.name.demodulize
               breadcrumbs = breadcrumbs(task.taskable, with_prefix: false)
         %>
-            <%= t(".description_#{task.task_description_id}", scope: [:tasks, :tasks]) %> | <%= breadcrumbs[:names].last %> | -
+            <%= t("description_#{task.task_description_id}", scope: [:tasks, :tasks]) %> | <%= breadcrumbs[:names].last %> | -
         <%  when SchemeMixCriterion.name.demodulize
               breadcrumbs = breadcrumbs(task.taskable, with_prefix: false)
         %>
-            <%= t(".description_#{task.task_description_id}", scope: [:tasks, :tasks]) %> | <%= breadcrumbs[:names].last %> | <% if task.taskable.due_date.present? %><%= l(task.taskable.due_date, format: :short) %><% else %>-<% end %>
+            <%= t("description_#{task.task_description_id}", scope: [:tasks, :tasks]) %> | <%= breadcrumbs[:names].last %> | <% if task.taskable.due_date.present? %><%= l(task.taskable.due_date, format: :short) %><% else %>-<% end %>
         <%  when RequirementDatum.name.demodulize
               breadcrumbs = breadcrumbs(task.taskable, with_prefix: false)
         %>
-            <%= t(".description_#{task.task_description_id}", scope: [:tasks, :tasks]) %> | <%= breadcrumbs[:names].last %> | <% if task.taskable.due_date.present? %><%= l(task.taskable.due_date, format: :short) %><% else %>-<% end %>
+            <%= t("description_#{task.task_description_id}", scope: [:tasks, :tasks]) %> | <%= breadcrumbs[:names].last %> | <% if task.taskable.due_date.present? %><%= l(task.taskable.due_date, format: :short) %><% else %>-<% end %>
         <%  when SchemeMixCriteriaDocument.name.demodulize
               breadcrumbs = breadcrumbs(task.taskable, with_prefix: false)
         %>
-            <%= t(".description_#{task.task_description_id}", scope: [:tasks, :tasks]) %> | <%= breadcrumbs[:names].last %> | -
+            <%= t("description_#{task.task_description_id}", scope: [:tasks, :tasks]) %> | <%= breadcrumbs[:names].last %> | -
         <% end
            end
         %>
