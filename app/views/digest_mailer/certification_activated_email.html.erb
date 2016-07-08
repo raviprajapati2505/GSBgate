@@ -13,7 +13,7 @@
         <table style='font-size: 9pt; font-family: "Verdana", "sans-serif";'>
             <tr>
                 <td><b>Development Type</b></td>
-                <td><%= t(@certification_path.development_type, scope: 'activerecord.attributes.certification_path.development_types') %></td>
+                <td><%= @certification_path.development_type.name %></td>
             </tr>
             <% unless @certification_path.duration == 0 %>
             <tr>
