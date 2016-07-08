@@ -106,10 +106,10 @@
                 <% can_apply_for_pcr = can?(:apply_for_pcr, @certification_path) && !@certification_path.pcr_track? %>
                 <!-- approve is only allowed if the user has the ability, AND an apply has been done, but it has not yet been approved -->
                 <% can_cancel_pcr = can?(:cancel_pcr, @certification_path) %>
-                <% if can_apply_for_pcr || can_cancel_pcr %>
-                    <div class="hr-line-dashed"></div>
-                <% end %>
                 <% if @certification_path.certification_path_status_id < CertificationPathStatus::ACTIVATING %>
+                    <% if can_apply_for_pcr || can_cancel_pcr %>
+                        <div class="hr-line-dashed"></div>
+                    <% end %>
                     <% if can_apply_for_pcr %>
                         <%= btn_link_to(apply_for_pcr_project_certification_path_path, text: t('.certification_path.apply_pcr.text'), method: :put, data: {confirm: t('.certification_path.apply_pcr.confirm')}) %>
                     <% end %>
