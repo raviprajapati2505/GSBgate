@@ -25,8 +25,8 @@ en:
         site_plan_file: Site plan
         design_brief_file: Design brief
         project_narrative_file: Project narrative
-        owner: Property owner name
-        service_provider: Service provider name
+        owner: Property owner
+        service_provider: Service provider
       projects_user:
         roles:
           project_team_member: Project team member
