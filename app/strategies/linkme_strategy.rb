@@ -29,7 +29,7 @@ class LinkmeStrategy < BaseStrategy
         success! user
       else
         # Linkme credentials NOT OK
-        fail 'Your linkme.qa username or password was incorrect.'
+        fail 'The username and password you entered do not match. Forgot your username or password? <a href="http://www.linkme.qa/general/email_pass.asp" target="_blank">Please click here.</a>'
       end
 
       # Abandon the linkme API session

@@ -20,10 +20,10 @@
             <div class="animated fadeInDown">
                 <div>
                     <% if notice %>
-                        <p class="alert alert-success"><%= notice %></p>
+                        <p class="alert alert-success"><%= notice.html_safe %></p>
                     <% end %>
                     <% if alert %>
-                        <p class="alert alert-danger"><%= alert %></p>
+                        <p class="alert alert-danger"><%= alert.html_safe %></p>
                     <% end %>
 
                     <!-- Main view  -->
