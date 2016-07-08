@@ -98,7 +98,6 @@ class Ability
       can :download_archive, CertificationPath, project: project_with_user_assigned
       # Project team
       can :apply, CertificationPath, project: project_with_user_as_cgp_project_manager
-      can :apply_for_pcr, CertificationPath, pcr_track: false, project: project_with_user_as_cgp_project_manager, certificate: {certificate_type: ['design_type', Certificate.certificate_types[:design_type]]}
       can [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::STATUSES_AT_PROJECT_TEAM_SIDE}, project: project_with_user_as_cgp_project_manager
       can [:edit_project_team_responsibility, :allocate_project_team_responsibility], CertificationPath, project: project_with_user_as_cgp_project_manager, certification_path_status: {id: CertificationPathStatus::STATUSES_IN_SUBMISSION}
       # GSAS trust team
@@ -203,6 +202,7 @@ class Ability
       end
       # Certification Path
       can :list, CertificationPath
+      can :apply_for_pcr, CertificationPath, pcr_track: false
       can [:download_certificate_report, :download_coverletter_report, :download_scores_report], CertificationPath
       can :download_archive, CertificationPath
       if user.gsas_trust_admin?

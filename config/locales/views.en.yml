@@ -48,7 +48,7 @@ en:
           confirm: This will cancel the PCR for this certification. Please confirm your choice.
           text: Cancel PCR
         pcr:
-          tooltip: Pre Certification Review. The CGP project manager can apply for PCR. During PCR, the GSAS trust team will assist the project team in completing the certification process.
+          tooltip: Pre Certification Review. During PCR, the GSAS trust team will assist the project team in completing the certification process. The CGP project manager can enable PCR when applying for a certificate. Please contact GORD if you want to enable the PCR track in a later stage of the certification process.
       certification_path_status:
         title: Certification status
         btn_accept_achieved: Accept achieved score
