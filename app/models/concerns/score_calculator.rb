@@ -199,9 +199,9 @@ module ScoreCalculator
       if point_type == :criteria_points
         score_template = 'SUM(GREATEST(%{field_table}.%{field_name}::float, scheme_criteria_score.minimum_score::float))'
       elsif point_type == :scheme_points
-        score_template = 'SUM(((GREATEST(%{field_table}.%{field_name}::float, scheme_criteria_score.minimum_score::float) / scheme_criteria_score.maximum_score::float) * ((3.0 * (scheme_criteria_score.weight + scheme_criteria_score.incentive_weight)) / 100.0)))'
+        score_template = 'SUM(((GREATEST(%{field_table}.%{field_name}::float, scheme_criteria_score.minimum_score::float) / scheme_criteria_score.maximum_score::float) * ((3.0 * (scheme_criteria_score.weight + (CASE GREATEST(%{field_table}.%{field_name}::float, scheme_criteria_score.minimum_score::float) WHEN -1 THEN scheme_criteria_score.incentive_weight_minus_1 WHEN 0 THEN scheme_criteria_score.incentive_weight_0 WHEN 1 THEN scheme_criteria_score.incentive_weight_1 WHEN 2 THEN scheme_criteria_score.incentive_weight_2  WHEN 3 THEN scheme_criteria_score.incentive_weight_3 ELSE 0 END))) / 100.0)))'
       elsif point_type == :certificate_points
-        score_template = 'SUM(((GREATEST(%{field_table}.%{field_name}::float, scheme_criteria_score.minimum_score::float) / scheme_criteria_score.maximum_score::float) * ((3.0 * (scheme_criteria_score.weight + scheme_criteria_score.incentive_weight)) / 100.0)  * (scheme_mixes_score.weight / 100.0)))'
+        score_template = 'SUM(((GREATEST(%{field_table}.%{field_name}::float, scheme_criteria_score.minimum_score::float) / scheme_criteria_score.maximum_score::float) * ((3.0 * (scheme_criteria_score.weight + (CASE GREATEST(%{field_table}.%{field_name}::float, scheme_criteria_score.minimum_score::float) WHEN -1 THEN scheme_criteria_score.incentive_weight_minus_1 WHEN 0 THEN scheme_criteria_score.incentive_weight_0 WHEN 1 THEN scheme_criteria_score.incentive_weight_1 WHEN 2 THEN scheme_criteria_score.incentive_weight_2  WHEN 3 THEN scheme_criteria_score.incentive_weight_3 ELSE 0 END))) / 100.0)  * (scheme_mixes_score.weight / 100.0)))'
       else
         raise('Unexpected point type: ' + point_type.to_s)
       end

@@ -241,6 +241,7 @@ module ApplicationHelper
         options[:title] = options[:tooltip]
         options[:data] ||= {}
         options[:data][:toggle] = 'tooltip'
+        options[:data][:html] = 'true'
       end
     end
     # -- class

@@ -15,8 +15,4 @@ class Scheme < ActiveRecord::Base
   def weight_for_category(category)
     scheme_criteria.for_category(category).sum(:weight)
   end
-
-  def incentive_weight_for_category(category)
-    scheme_criteria.for_category(category).sum(:incentive_weight)
-  end
 end

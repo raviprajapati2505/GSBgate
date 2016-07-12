@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160614114459) do
+ActiveRecord::Schema.define(version: 20160706120656) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -263,17 +263,21 @@ ActiveRecord::Schema.define(version: 20160614114459) do
   add_index "scheme_categories", ["scheme_id"], name: "index_scheme_categories_on_scheme_id", using: :btree
 
   create_table "scheme_criteria", force: :cascade do |t|
-    t.datetime "created_at",                                                null: false
-    t.datetime "updated_at",                                                null: false
-    t.decimal  "weight",              precision: 5, scale: 2
+    t.datetime "created_at",                                                     null: false
+    t.datetime "updated_at",                                                     null: false
+    t.decimal  "weight",                   precision: 5, scale: 2
     t.string   "name"
     t.integer  "number"
     t.string   "scores"
     t.integer  "scheme_category_id"
-    t.decimal  "incentive_weight",    precision: 5, scale: 2, default: 0.0
-    t.integer  "minimum_score",                                             null: false
-    t.integer  "maximum_score",                                             null: false
-    t.integer  "minimum_valid_score",                                       null: false
+    t.integer  "minimum_score",                                                  null: false
+    t.integer  "maximum_score",                                                  null: false
+    t.integer  "minimum_valid_score",                                            null: false
+    t.decimal  "incentive_weight_minus_1", precision: 5, scale: 2, default: 0.0
+    t.decimal  "incentive_weight_0",       precision: 5, scale: 2, default: 0.0
+    t.decimal  "incentive_weight_1",       precision: 5, scale: 2, default: 0.0
+    t.decimal  "incentive_weight_2",       precision: 5, scale: 2, default: 0.0
+    t.decimal  "incentive_weight_3",       precision: 5, scale: 2, default: 0.0
   end
 
   add_index "scheme_criteria", ["number"], name: "index_scheme_criteria_on_number", using: :btree
