@@ -31,7 +31,7 @@ class ProjectsUsersController < AuthenticatedController
 
       # Notify new members by email
       projects_users.each do |pu|
-        DigestMailer.added_to_project_email(pu).deliver_now
+        DigestMailer.added_to_project_email(pu, current_user).deliver_now
       end
 
       if (projects_users.count > 0)
@@ -42,7 +42,7 @@ class ProjectsUsersController < AuthenticatedController
     # Invite new users to linkme.qa by email
     if params.has_key?(:emails)
       params[:emails].each do |email|
-        DigestMailer.linkme_invitation_email(email, current_user).deliver_now
+        DigestMailer.linkme_invitation_email(email, current_user, @project).deliver_now
       end
 
       if (params[:emails].count > 0)

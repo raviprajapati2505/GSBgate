@@ -118,10 +118,11 @@ class DigestMailer < ApplicationMailer
     user.save!
   end
 
-  def added_to_project_email(projectsuser)
+  def added_to_project_email(projectsuser, invited_by)
     @user = projectsuser.user
     @project = projectsuser.project
     @role = t(projectsuser.role, scope: 'activerecord.attributes.projects_user.roles')
+    @invited_by = invited_by
 
     mail(to: @user.email, subject: "GSASgate - you are added to project #{@project.name}")
   end
@@ -166,8 +167,9 @@ class DigestMailer < ApplicationMailer
     mail(to: Rails.configuration.x.gsas_info.email, subject: "GSASgate - certification #{@certification_path.name} for #{certification_path.project.name} has appealed criteria")
   end
 
-  def linkme_invitation_email(email, user)
+  def linkme_invitation_email(email, user, project)
     @user = user
+    @project = project
 
     mail(to: email, subject: 'GSASgate - linkme.qa invitation')
   end
