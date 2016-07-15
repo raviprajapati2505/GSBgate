@@ -89,6 +89,9 @@ gem 'rubyzip'
 # URI.encode / URI.escape is deprecated
 gem 'addressable'
 
+# Makes http fun again!
+gem 'httparty'
+
 # https://github.com/galetahub/ckeditor
 gem 'ckeditor'
 

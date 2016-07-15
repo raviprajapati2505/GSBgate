@@ -1,9 +1,12 @@
 class GsasService
-  include Singleton
   require 'addressable/uri'
+  include Singleton
+  include HTTParty
+  uri_adapter Addressable::URI
 
+  SCHEME = 'http'
   HOST = 'gord2.sas.vito.local'
-  PATH = '/GSASService.svc/CallCalculator/'
+  PATH = 'GSASService.svc/CallCalculator'
 
   STATUS_ERROR = 'error'
   STATUS_SUCCESS = 'success'
@@ -19,44 +22,23 @@ class GsasService
   # - message: An error/success message depending on the status.
   # - score: An integer with the returned calculator score. Only present when status is "success".
   #
-  def call_calculator(calculator_name, params = {})
-    error = false
-
-    # Build the URI path
-    path = PATH + Addressable::URI.encode(calculator_name) + '/' + Addressable::URI.encode(params.to_json)
-
-    # Build the full URI
+  def call_calculator(calculator_name, data = {})
     begin
-      uri = URI::HTTP.build({host: HOST, path: path})
+      # Build the URI
+      uri_string = "#{SCHEME}://#{HOST}/#{PATH}/#{calculator_name}"
+      uri = Addressable::URI.escape(uri_string)
+      # Do the request
+      response = self.class.post(uri, {body: data.to_json, headers: {'Content-Type' => 'application/javascript'}})
+      # Parse body, should contain json
+      response_hash = JSON.parse response.body, :symbolize_names => true
     rescue StandardError
-      error = true
-      # todo: log this -> "An error occurred when building a GSAS webservice URI with host: '#{HOST}' and path: '#{path}'. Error message: " + $!.to_s
-    end
-
-    # Execute the request
-    begin
-      response_json = Net::HTTP.get_response(uri)
-    rescue StandardError
-      error = true
-      # todo: log this -> "An error occurred when executing the GSAS webservice request with uri: '#{uri}'. Error message: " + $!.to_s
-    end
-
-    # Parse JSON response body
-    begin
-      response_hash = JSON.parse response_json.body, :symbolize_names => true
-    rescue StandardError
-      error = true
-      # todo: log this -> "An error occurred when trying to parse the JSON response of the GSAS webservice request with uri: '#{uri}'. Error message: " + $!.to_s
-    end
-
-    # Return hash or error
-    if error
-      {
-          status: STATUS_ERROR,
-          message: 'An error occurred when calculating the score. Please try again later.'
+      Rails.logger.error "An error occurred when building a GSAS webservice URI with host: '#{HOST}' and path: '#{path}'. Error message: " + $!.to_s
+      response_hash = {
+            status: STATUS_ERROR,
+            message: 'An error occurred when calculating the score. Please try again later.'
       }
-    else
-      response_hash
     end
+    response_hash
   end
+
 end
