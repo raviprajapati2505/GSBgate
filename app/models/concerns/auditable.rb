@@ -135,7 +135,7 @@ module Auditable
           system_messages_temp = []
           if (action == AUDIT_LOG_UPDATE)
             if self.status_changed?
-              system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.status.update_html', criterion: self.name, old_status: t(self.status_was, scope: 'activerecord.attributes.scheme_mix_criterion.statuses'), new_status: t(self.status, scope: 'activerecord.attributes.scheme_mix_criterion.statuses')), old_status: self.status_was, new_status: self.status}
+              system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.status.update_html', criterion: self.name, old_status: t(self.status_was, scope: 'activerecord.attributes.scheme_mix_criterion.statuses'), new_status: t(self.status, scope: 'activerecord.attributes.scheme_mix_criterion.statuses'))}
             end
             if self.certifier_id_changed? || self.due_date_changed?
               if self.certifier_id.blank?
@@ -188,10 +188,10 @@ module Auditable
           project = self.scheme_mix_criterion.scheme_mix.certification_path.project
           certification_path = self.scheme_mix_criterion.scheme_mix.certification_path
           if (action == AUDIT_LOG_CREATE)
-            system_messages << {message: t('models.concerns.auditable.scheme_mix_criteria_document.status.create_html', document: self.name, criterion: self.scheme_mix_criterion.name), old_status: self.status_was, new_status: self.status}
+            system_messages << {message: t('models.concerns.auditable.scheme_mix_criteria_document.status.create_html', document: self.name, criterion: self.scheme_mix_criterion.name)}
           elsif (action == AUDIT_LOG_UPDATE)
             if self.status_changed?
-              system_messages << {message: t('models.concerns.auditable.scheme_mix_criteria_document.status.update_html', document: self.name, criterion: self.scheme_mix_criterion.name, old_status: self.status_was.humanize, new_status: self.status.humanize), old_status: self.status_was, new_status: self.status}
+              system_messages << {message: t('models.concerns.auditable.scheme_mix_criteria_document.status.update_html', document: self.name, criterion: self.scheme_mix_criterion.name, old_status: self.status_was.humanize, new_status: self.status.humanize)}
             end
           end
         when RequirementDatum.name.demodulize
@@ -201,7 +201,7 @@ module Auditable
           end
           if (action == AUDIT_LOG_UPDATE)
             if self.status_changed?
-              system_messages << {message: t('models.concerns.auditable.requirement_datum.status.update_html', requirement: self.name, old_status: self.status_was.humanize, new_status: self.status.humanize), old_status: self.status_was, new_status: self.status}
+              system_messages << {message: t('models.concerns.auditable.requirement_datum.status.update_html', requirement: self.name, old_status: self.status_was.humanize, new_status: self.status.humanize)}
             end
             if self.user_id_changed? || self.due_date_changed?
               if self.user_id.blank?
