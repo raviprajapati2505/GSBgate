@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
   include BCrypt
   include DatePlucker
 
-  enum role: { system_admin: 0, default_role: 1, gsas_trust_top_manager: 2, gsas_trust_manager: 3, gsas_trust_admin: 4 }
+  enum role: { system_admin: 5, default_role: 1, gsas_trust_top_manager: 2, gsas_trust_manager: 3, gsas_trust_admin: 4 }
 
   has_many :documents
   has_many :scheme_mix_criteria_documents
@@ -58,11 +58,11 @@ class User < ActiveRecord::Base
   }
 
   scope :with_project_team_role, -> {
-    joins(:projects_users).where(projects_users: {role: [0, 1]})
+    joins(:projects_users).where(projects_users: {role: [ProjectsUser.roles[:project_team_member], ProjectsUser.roles[:cgp_project_manager]]})
   }
 
   scope :with_gsas_trust_team_role, -> {
-    joins(:projects_users).where(projects_users: {role: [3, 4]})
+    joins(:projects_users).where(projects_users: {role: [ProjectsUser.roles[:certifier], ProjectsUser.roles[:certification_manager]]})
   }
 
   def full_name

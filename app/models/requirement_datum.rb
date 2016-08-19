@@ -8,7 +8,7 @@ class RequirementDatum < ActiveRecord::Base
   belongs_to :requirement
   belongs_to :user
 
-  enum status: { required: 0, provided: 1, not_required: 2 }
+  enum status: { required: 3, provided: 1, not_required: 2 }
 
   after_initialize :init
   after_update :submit_scheme_mix_criterion_if_not_required

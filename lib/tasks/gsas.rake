@@ -50,7 +50,7 @@ namespace :gsas do
     begin
       page += 1
       certification_paths = CertificationPath.joins(:certificate)
-                                .where(certificates: {certificate_type: 0})
+                                .where(certificates: {certificate_type: Certificate.certification_types[:design_type]})
                                 .where.not(certification_path_status_id: [CertificationPathStatus::CERTIFIED, CertificationPathStatus::NOT_CERTIFIED])
                                 .where('(started_at + interval \'1\' year * duration) < ?', DateTime.now)
       unless from_datetime.nil?

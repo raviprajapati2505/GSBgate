@@ -5,7 +5,7 @@ class ProjectsUser < ActiveRecord::Base
   belongs_to :user
   belongs_to :project
 
-  enum role: { project_team_member: 0, cgp_project_manager: 1, enterprise_client: 2, certifier: 3, certification_manager: 4 }
+  enum role: { project_team_member: 5, cgp_project_manager: 1, enterprise_client: 2, certifier: 3, certification_manager: 4 }
 
   validates :role, inclusion: ProjectsUser.roles.keys
   validates_presence_of :user

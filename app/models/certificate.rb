@@ -1,6 +1,6 @@
 class Certificate < ActiveRecord::Base
-  enum certificate_type: { design_type: 0, construction_type: 1, operations_type: 2 }
-  enum assessment_stage: { design_stage: 0, construction_stage: 1, operations_stage: 2 }
+  enum certificate_type: { design_type: 3, construction_type: 1, operations_type: 2 }
+  enum assessment_stage: { design_stage: 3, construction_stage: 1, operations_stage: 2 }
 
   enum certification_type: { letter_of_conformance: 10, final_design_certificate: 20, construction_certificate: 30, operations_certificate: 40 }
 
