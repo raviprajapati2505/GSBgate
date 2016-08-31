@@ -159,4 +159,11 @@ namespace :gsas do
     Rails.logger.info "Destroyed #{ActionController::Base.helpers.pluralize(projects_count, 'old empty project')}."
   end
 
+  desc 'Clean Carrierwave cache dir'
+  task :clean_carrierwave_cache, [] => :environment do |t, args|
+    Rails.logger.info 'Start cleaning Carrierwave cache dir'
+    CarrierWave.clean_cached_files!
+    Rails.logger.info 'Carrierwave cache dir cleaned'
+  end
+
 end
