@@ -4,7 +4,7 @@ $(function () {
     Dropzone.options.newDocument = {
         autoProcessQueue: false, // Prevents Dropzone from uploading dropped files immediately
         paramName: 'document[document_file]',
-        parallelUploads: 1,
+        parallelUploads: 5,
         previewsContainer: '#dropzone-previews',
         clickable: '#dropzone-top',
         previewTemplate: '<div class="file-row"> <div><p class="name" data-dz-name></p><strong class="error text-danger" data-dz-errormessage></strong></div> <div><p class="size" data-dz-size></p></div> <div> <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"> <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div> </div> </div> <div> <a href="#" data-dz-remove> <i title="Remove upload" data-toggle="tooltip" class="fa fa-lg fa-trash" style="padding-right: 10px;"></i></a> </div> </div>',
