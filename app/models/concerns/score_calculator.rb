@@ -206,7 +206,7 @@ module ScoreCalculator
       elsif point_type == :scheme_points
         score_template = "SUM((#{score} / #{maximum_score}) * ((3.0 * (#{criteria_weight})) / 100.0) + (3.0 * #{incentive_weight} / 100.0))"
       elsif point_type == :certificate_points
-        score_template = "SUM((#{score} / #{maximum_score}) * ((3.0 * (#{criteria_weight})) / 100.0) + (3.0 * #{incentive_weight} / 100.0) * (#{scheme_weight} / 100.0))"
+        score_template = "SUM(((#{score} / #{maximum_score}) * ((3.0 * (#{criteria_weight})) / 100.0) + (3.0 * #{incentive_weight} / 100.0)) * (#{scheme_weight} / 100.0))"
       else
         raise('Unexpected point type: ' + point_type.to_s)
       end
