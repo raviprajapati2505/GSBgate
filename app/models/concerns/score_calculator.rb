@@ -196,12 +196,17 @@ module ScoreCalculator
     end
 
     def build_score_calculation_query(field_name, field_table, point_type)
+      score = 'GREATEST(%{field_table}.%{field_name}::float, scheme_criteria_score.minimum_score::float)'
+      maximum_score = 'scheme_criteria_score.maximum_score::float'
+      criteria_weight = 'scheme_criteria_score.weight'
+      incentive_weight = "(CASE #{score} WHEN -1 THEN scheme_criteria_score.incentive_weight_minus_1 WHEN 0 THEN scheme_criteria_score.incentive_weight_0 WHEN 1 THEN scheme_criteria_score.incentive_weight_1 WHEN 2 THEN scheme_criteria_score.incentive_weight_2  WHEN 3 THEN scheme_criteria_score.incentive_weight_3 ELSE 0 END)"
+      scheme_weight = 'scheme_mixes_score.weight'
       if point_type == :criteria_points
-        score_template = 'SUM(GREATEST(%{field_table}.%{field_name}::float, scheme_criteria_score.minimum_score::float))'
+        score_template = "SUM(#{score})"
       elsif point_type == :scheme_points
-        score_template = 'SUM(((GREATEST(%{field_table}.%{field_name}::float, scheme_criteria_score.minimum_score::float) / scheme_criteria_score.maximum_score::float) * ((3.0 * (scheme_criteria_score.weight + (CASE GREATEST(%{field_table}.%{field_name}::float, scheme_criteria_score.minimum_score::float) WHEN -1 THEN scheme_criteria_score.incentive_weight_minus_1 WHEN 0 THEN scheme_criteria_score.incentive_weight_0 WHEN 1 THEN scheme_criteria_score.incentive_weight_1 WHEN 2 THEN scheme_criteria_score.incentive_weight_2  WHEN 3 THEN scheme_criteria_score.incentive_weight_3 ELSE 0 END))) / 100.0)))'
+        score_template = "SUM((#{score} / #{maximum_score}) * ((3.0 * (#{criteria_weight})) / 100.0) + (3.0 * #{incentive_weight} / 100.0))"
       elsif point_type == :certificate_points
-        score_template = 'SUM(((GREATEST(%{field_table}.%{field_name}::float, scheme_criteria_score.minimum_score::float) / scheme_criteria_score.maximum_score::float) * ((3.0 * (scheme_criteria_score.weight + (CASE GREATEST(%{field_table}.%{field_name}::float, scheme_criteria_score.minimum_score::float) WHEN -1 THEN scheme_criteria_score.incentive_weight_minus_1 WHEN 0 THEN scheme_criteria_score.incentive_weight_0 WHEN 1 THEN scheme_criteria_score.incentive_weight_1 WHEN 2 THEN scheme_criteria_score.incentive_weight_2  WHEN 3 THEN scheme_criteria_score.incentive_weight_3 ELSE 0 END))) / 100.0)  * (scheme_mixes_score.weight / 100.0)))'
+        score_template = "SUM((#{score} / #{maximum_score}) * ((3.0 * (#{criteria_weight})) / 100.0) + (3.0 * #{incentive_weight} / 100.0) * (#{scheme_weight} / 100.0))"
       else
         raise('Unexpected point type: ' + point_type.to_s)
       end
