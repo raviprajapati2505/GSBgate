@@ -110,7 +110,7 @@ class LinkmeService
   def execute_api_request(request_xml)
     begin
       # Build the API URL
-      url = URI::HTTPS.build(host: Rails.application.config.x.linkme.api_url)
+      url = URI::HTTPS.build(host: Rails.application.config.x.linkme.api_url, path: '/')
 
       # Prepare a POST request
       request = Net::HTTP::Post.new(url.to_s, {'Host' => url.hostname, 'Content-Type' => 'application/x-www-form-urlencoded'})
