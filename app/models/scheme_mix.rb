@@ -7,6 +7,7 @@ class SchemeMix < ActiveRecord::Base
   has_many :scheme_mix_criteria_documents, through: :scheme_mix_criteria
   has_many :scheme_categories, through: :scheme
   has_many :scheme_criteria, through: :scheme_categories
+  has_many :certification_paths, class_name: "CertificationPath", foreign_key: "main_scheme_mix_id", dependent: :nullify
 
   validates :weight, numericality: { greater_than: 0 }
 
