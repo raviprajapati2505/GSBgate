@@ -143,24 +143,28 @@ $(function () {
     });
 
     // Sortable lists
-    GSAS.setSortableListPositions();
-    $('.sortable').sortable();
-    $('.sortable').sortable().bind('sortupdate', function() {
-        updated_sortorder = [];
-
+    if ($('.sortable').length > 0) {
         GSAS.setSortableListPositions();
+        sortable('.sortable');
+        $('.sortable').each(function() {
+            $(this).get(0).addEventListener('sortupdate', function(e) {
+                updated_sortorder = [];
 
-        $('.sortable > .panel.panel-default').each(function(i) {
-            updated_sortorder.push({ id: $(this).data('id'), display_weight: i+1 });
-        });
+                GSAS.setSortableListPositions();
 
-        $.ajax({
-            type: "PUT",
-            url: Routes.sort_scheme_criterion_texts_path(),
-            cache: false,
-            data: { sort_order: updated_sortorder }
+                $('.sortable > .panel.panel-default').each(function(i) {
+                    updated_sortorder.push({ id: $(this).data('id'), display_weight: i+1 });
+                });
+
+                $.ajax({
+                    type: "PUT",
+                    url: Routes.sort_scheme_criterion_texts_path(),
+                    cache: false,
+                    data: { sort_order: updated_sortorder }
+                });
+            });
         });
-    });
+    }
 });
 
 // General GSAS functions
