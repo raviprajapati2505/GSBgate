@@ -35,18 +35,17 @@ function score_graph($element, showLegend, showXaxis, showValues, width, height,
         graph_height = (height - margin.top - margin.bottom),
         data = data;
 
-    var x = d3.scale.linear()
+    var x = d3.scaleLinear()
         .domain([min, max])
         .range([0, graph_width]);
-    var y = d3.scale.ordinal()
+    var y = d3.scaleBand()
         .domain(data.map(function (d) {
             return d.class;
         }))
-        .rangeRoundBands([0, graph_height], .2);
+        .rangeRound([0, graph_height]).padding(.2);
 
-    var xAxis = d3.svg.axis()
+    var xAxis = d3.axisTop()
         .scale(x)
-        .orient("top")
         .ticks(5);
 
     var svg = d3.select($element)
@@ -88,7 +87,7 @@ function score_graph($element, showLegend, showXaxis, showValues, width, height,
         .attr('width', function (d) {
             return Math.abs(x(d.value) - x(0));
         })
-        .attr('height', y.rangeBand());
+        .attr('height', y.bandwidth());
 
     if (showValues == true) {
         bars.append('text')
@@ -99,7 +98,7 @@ function score_graph($element, showLegend, showXaxis, showValues, width, height,
                 return x(d.value);
             })
             .attr('y', function (d) {
-                return y(d.class) + y.rangeBand() / 2;
+                return y(d.class) + y.bandwidth() / 2;
             })
             .attr('dx', function (d) {
                 return d.value < 0 ? '-.3em' : '.3em';
