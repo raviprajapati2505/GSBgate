@@ -4,6 +4,7 @@ en:
       apply:
         success: Successfully applied for certification.
         error: Error, could not apply for certification.
+        already_applied: You have already applied for this certificate. Please refresh the page if the certification is not visible.
       certificate_exists_and_is_allowed:
         error_no_certificate: Error, this certification does not exist.
         error_can_create_certificate: Error, not allowed to create this certification.

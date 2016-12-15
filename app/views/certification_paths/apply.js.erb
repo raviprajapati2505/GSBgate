@@ -1,3 +1,7 @@
-// Fill & open modal
-$('#applyForCertificateModal').html("<%= escape_javascript(render 'certification_paths/new_certificate') %>");
-$('#applyForCertificateModal').modal('show');
+<% if alert %>
+  $('body').append("<p class=\"flash flash-danger hidden\"><%= escape_javascript(alert) %></p>");
+<% else %>
+  // Fill & open modal
+  $('#applyForCertificateModal').html("<%= escape_javascript(render 'certification_paths/new_certificate') %>");
+  $('#applyForCertificateModal').modal('show');
+<% end %>

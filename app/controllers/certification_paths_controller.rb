@@ -18,9 +18,22 @@ class CertificationPathsController < AuthenticatedController
   end
 
   def apply
+    # Prevent adding multiple certification paths of the same type
+    if @project.certificates.pluck(:certification_type).include?(params[:certification_type].to_i)
+      respond_to do |format|
+        format.js {
+          flash.now[:alert] = t('controllers.certification_paths_controller.apply.already_applied')
+          return render 'apply'
+        }
+        format.html {
+          return redirect_to(project_path(@project), alert: t('controllers.certification_paths_controller.apply.already_applied'))
+        }
+      end
+    end
+
     # create a new object, for our project
     @certification_path = CertificationPath.new(project_id: @project.id)
-    # check if the user is authorized to apply for a new certification_path in out project
+    # check if the user is authorized to apply for a new certification_path in our project
     authorize! :apply, @certification_path
 
     # To determine the certificate, we need both the certification_type and the gsas_version
