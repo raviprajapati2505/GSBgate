@@ -96,7 +96,7 @@ gem 'httparty'
 gem 'ckeditor'
 
 # Datatables.net, with server-side searching, sorting and filtering
-gem 'effective_datatables'
+gem 'effective_datatables' , '<= 2.4.6'
 
 # PDF Generator
 gem 'pdf-core'
