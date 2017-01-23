@@ -60,6 +60,7 @@ Rails.application.routes.draw do
         put 'update_max_review_count'
       end
       resources :documents, only: [:create, :show, :destroy], path: 'document'
+      resources :certification_path_documents, only: [:create, :show, :destroy], path: 'certification_path_document'
       resources :scheme_mixes, only: [:show, :edit, :update], path: 'schemes' do
         resources :scheme_mix_criteria, only: [:show], path: 'criteria', as: 'scheme_mix_criterion' do
           member do

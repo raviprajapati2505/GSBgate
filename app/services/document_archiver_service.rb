@@ -25,6 +25,30 @@ class DocumentArchiverService
         end
       end
 
+      # Loop over all CGP documents in the certification path
+      certification_path.cgp_certification_path_documents.each do |ccpd|
+        if ccpd.document_file.present?
+          file_name = ccpd.id.to_s + '_' + ccpd.name
+          file_path = ccpd.path
+
+          # Add the document to the archive
+          zos.put_next_entry(file_name)
+          zos << IO.read(file_path)
+        end
+      end
+
+      # Loop over all Certifier documents in the certification path
+      certification_path.certifier_certification_path_documents.each do |ccpd|
+        if ccpd.document_file.present?
+          file_name = ccpd.id.to_s + '_' + ccpd.name
+          file_path = ccpd.path
+
+          # Add the document to the archive
+          zos.put_next_entry(file_name)
+          zos << IO.read(file_path)
+        end
+      end
+
       zos.put_next_entry('audit_logs.csv')
       # CSV column headers
       zos << ['Date/time', 'User', 'User comment', 'System message'].to_csv(col_sep: CSV_COL_SEPARATOR)

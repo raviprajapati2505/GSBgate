@@ -286,6 +286,14 @@ module ApplicationHelper
       when CertificationPath.name.demodulize
         project = model.project
         certification_path = model
+      when CgpCertificationPathDocument.name.demodulize
+        project = model.certification_path.project
+        certification_path = model.certification_path
+        certification_path_document = model
+      when CertifierCertificationPathDocument.name.demodulize
+        project = model.certification_path.project
+        certification_path = model.certification_path
+        certification_path_document = model
       when SchemeMix.name.demodulize
         project = model.certification_path.project
         certification_path = model.certification_path
@@ -340,6 +348,16 @@ module ApplicationHelper
     if certification_path.present?
       breadcrumbs[:names] << certification_path.name + ' (' + certification_path.status + ')'
       breadcrumbs[:paths] << project_certification_path_url(project, certification_path)
+    end
+    if certification_path_document.present?
+      breadcrumbs[:names] << certification_path_document.name
+      case model.class.name
+        when CgpCertificationPathDocument.name.demodulize
+          breadcrumbs[:paths] << project_certification_path_url(project, certification_path) + '#cgp-documentation'
+        when CertifierCertificationPathDocument.name.demodulize
+          breadcrumbs[:paths] << project_certification_path_url(project, certification_path) + '#certifier-documentation'
+      end
+
     end
     if scheme_mix.present?
       breadcrumbs[:names] << scheme_mix.full_name

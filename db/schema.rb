@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160908075601) do
+ActiveRecord::Schema.define(version: 20170118083844) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -128,11 +128,14 @@ ActiveRecord::Schema.define(version: 20160908075601) do
   create_table "documents", force: :cascade do |t|
     t.string   "document_file"
     t.integer  "user_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
     t.text     "store_dir"
+    t.string   "type"
+    t.integer  "certification_path_id"
   end
 
+  add_index "documents", ["certification_path_id"], name: "index_documents_on_certification_path_id", using: :btree
   add_index "documents", ["user_id"], name: "by_user", using: :btree
   add_index "documents", ["user_id"], name: "index_documents_on_user_id", using: :btree
 
@@ -424,6 +427,7 @@ ActiveRecord::Schema.define(version: 20160908075601) do
   add_foreign_key "development_type_schemes", "development_types"
   add_foreign_key "development_type_schemes", "schemes"
   add_foreign_key "development_types", "certificates"
+  add_foreign_key "documents", "certification_paths"
   add_foreign_key "documents", "users"
   add_foreign_key "field_data", "calculator_data"
   add_foreign_key "field_data", "fields"

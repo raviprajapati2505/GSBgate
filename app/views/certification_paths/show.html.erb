@@ -177,6 +177,44 @@
             </div>
         </div>
         <%= render 'tasks/tasks' %>
+
+        <% if can?(:create, CertifierCertificationPathDocument.new(:certification_path_id => @certification_path.id)) %>
+          <div class="ibox">
+            <div class="ibox-title">
+              <h5>Upload certification documentation</h5>
+            </div>
+            <div class="ibox-content">
+              <%= render 'certification_path_documents/new', document: CertifierCertificationPathDocument.new, project: @project, certification_path: @certification_path %>
+            </div>
+          </div>
+        <% elsif can?(:create, CgpCertificationPathDocument.new(:certification_path_id => @certification_path.id)) %>
+          <div class="ibox">
+            <div class="ibox-title">
+              <h5>Upload certification documentation</h5>
+            </div>
+            <div class="ibox-content">
+              <%= render 'certification_path_documents/new', document: CgpCertificationPathDocument.new, project: @project, certification_path: @certification_path %>
+            </div>
+          </div>
+        <% end %>
+        <div class="ibox" id="cgp-documentation">
+          <div class="ibox-title">
+            <h5>CGP Documentation</h5>
+          </div>
+          <div class="ibox-content">
+            <%= render 'certification_path_documents/index', certification_path_documents: @certification_path.cgp_certification_path_documents %>
+          </div>
+        </div>
+        <div class="ibox" id="certifier-documentation">
+          <div class="ibox-title">
+            <h5>Certifier Documentation</h5>
+          </div>
+          <div class="ibox-content">
+            <%= render 'certification_path_documents/index', certification_path_documents: @certification_path.certifier_certification_path_documents %>
+          </div>
+        </div>
+
+
     </div>
 </div>
 <div id="editStatusCertificationPathModal" class="modal fade"></div>

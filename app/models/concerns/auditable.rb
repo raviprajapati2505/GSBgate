@@ -28,6 +28,10 @@ module Auditable
         project = self.project
       when CertificationPath.name.demodulize
         project = self.project
+      when CertifierCertificationPathDocument.name.demodulize
+        project = self.certification_path.project
+      when CgpCertificationPathDocument.name.demodulize
+        project = self.certification_path.project
       when SchemeMixCriterion.name.demodulize
         project = self.scheme_mix.certification_path.project
       when SchemeMixCriteriaDocument.name.demodulize
@@ -128,6 +132,18 @@ module Auditable
                 system_messages << {message: t('models.concerns.auditable.certification_path.pcr.cancelled_html', certification_path: self.name, project: self.project.name)}
               end
             end
+          end
+        when CertifierCertificationPathDocument.name.demodulize
+          project = self.certification_path.project
+          certification_path = self.certification_path
+          if (action == AUDIT_LOG_CREATE)
+            system_messages << {message: t('models.concerns.auditable.certification_path_document.status.create_html', document: self.name)}
+          end
+        when CgpCertificationPathDocument.name.demodulize
+          project = self.certification_path.project
+          certification_path = self.certification_path
+          if (action == AUDIT_LOG_CREATE)
+            system_messages << {message: t('models.concerns.auditable.certification_path_document.status.create_html', document: self.name)}
           end
         when SchemeMixCriterion.name.demodulize
           project = self.scheme_mix.certification_path.project
