@@ -103,15 +103,18 @@
                         <td>
                             <% if can?(:update_targeted_score, @scheme_mix_criterion) %>
                               <% if @certification_path.certificate.construction_issue_1? %>
-                                <div class="input-group">
-                                  <%= f.number_field :targeted_score, in: 0.0..@scheme_mix_criterion.scheme_criterion.weight, step: 0.1, hide_label: true %>
-                                  <span class="input-group-addon">%</span>
-                                </div>
+                                <%= f.number_field :targeted_score, in: 0.0..@scheme_mix_criterion.scheme_criterion.weight, step: 0.1, hide_label: true, append: '%' %>
                               <% else %>
                                 <%= f.select :targeted_score, @scheme_mix_criterion.scheme_criterion.scores, hide_label: true %>
                               <% end %>
                             <% else %>
-                                <%= f.static_control :targeted_score, hide_label: true  %>
+                              <%= f.static_control label: 'targeted score', hide_label: true do %>
+                                <% if @certification_path.certificate.construction_issue_1? %>
+                                  <%= number_to_percentage(@scheme_mix_criterion.targeted_score, precision: 1) %>
+                                <% else %>
+                                  <%= number_with_precision(@scheme_mix_criterion.targeted_score, precision: 0, significant: true) %>
+                                <% end %>
+                              <% end %>
                             <% end %>
                         </td>
                     </tr>
@@ -120,15 +123,18 @@
                         <td>
                             <% if can?(:update_submitted_score, @scheme_mix_criterion) %>
                               <% if @certification_path.certificate.construction_issue_1? %>
-                                <div class="input-group">
-                                  <%= f.number_field :submitted_score, in: 0.0..@scheme_mix_criterion.scheme_criterion.weight, step: 0.1, hide_label: true %>
-                                  <span class="input-group-addon">%</span>
-                                </div>
+                                <%= f.number_field :submitted_score, in: 0.0..@scheme_mix_criterion.scheme_criterion.weight, step: 0.1, hide_label: true, append: '%' %>
                               <% else %>
                                 <%= f.select :submitted_score, @scheme_mix_criterion.scheme_criterion.scores, {include_blank: '-', hide_label: true} %>
                               <% end %>
                             <% else %>
-                                <%= f.static_control :submitted_score, hide_label: true %>
+                              <%= f.static_control label: 'submitted score', hide_label: true do %>
+                                  <% if @certification_path.certificate.construction_issue_1? %>
+                                      <%= number_to_percentage(@scheme_mix_criterion.submitted_score, precision: 1) %>
+                                  <% else %>
+                                      <%= number_with_precision(@scheme_mix_criterion.submitted_score, precision: 0, significant: true) %>
+                                  <% end %>
+                              <% end %>
                             <% end %>
                         </td>
                     </tr>
@@ -139,15 +145,18 @@
                         <td>
                             <% if can?(:update_achieved_score, @scheme_mix_criterion) %>
                               <% if @certification_path.certificate.construction_issue_1? %>
-                                <div class="input-group">
-                                  <%= f.number_field :achieved_score, in: 0.0..@scheme_mix_criterion.scheme_criterion.weight, step: 0.1, hide_label: true %>
-                                  <span class="input-group-addon">%</span>
-                                </div>
+                                <%= f.number_field :achieved_score, in: 0.0..@scheme_mix_criterion.scheme_criterion.weight, step: 0.1, hide_label: true, append: '%' %>
                               <% else %>
                                 <%= f.select :achieved_score, @scheme_mix_criterion.scheme_criterion.scores, {include_blank: '-', hide_label: true} %>
                               <% end %>
                             <% else %>
-                                <%= f.static_control :achieved_score, hide_label: true %>
+                              <%= f.static_control label: 'achieved score', hide_label: true do %>
+                                  <% if @certification_path.certificate.construction_issue_1? %>
+                                      <%= number_to_percentage(@scheme_mix_criterion.achieved_score, precision: 1) %>
+                                  <% else %>
+                                      <%= number_with_precision(@scheme_mix_criterion.achieved_score, precision: 0, significant: true) %>
+                                  <% end %>
+                              <% end %>
                             <% end %>
                         </td>
                     </tr>
