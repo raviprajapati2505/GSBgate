@@ -225,26 +225,56 @@ class CertificationPath < ActiveRecord::Base
     return todos.uniq
   end
 
-  def self.star_rating_for_score(score)
+  def self.star_rating_for_score(score, certificate: nil, certificate_name: nil)
     return -1 if score.nil?
-    if score < 0
-      return 0
-    elsif score >= 0 && score <= 0.5
-      return 1
-    elsif score > 0.5 && score <= 1
-      return 2
-    elsif score > 1 && score <= 1.5
-      return 3
-    elsif score > 1.5 && score <= 2
-      return 4
-    elsif score > 2 && score <= 2.5
-      return 5
-    elsif score > 2.5 && score <= 3
-      return 6
-    elsif score > 3 # due to incentive weights, you can actually score more than 3
-      return 6
+    if (!certificate.nil? && certificate.construction_issue_1?) || (!certificate_name.nil? && certificate_name == 'Construction Certificate 2.1 issue 1')
+      if score < 35
+        return 0
+      elsif score >= 35 && score < 65
+        return 2
+      elsif score >= 65 && score < 85
+        return 4
+      elsif score >= 85 && score <= 100
+        return 6
+      else
+        return -1
+      end
+    elsif (!certificate.nil? && certificate.construction_issue_3?) || (!certificate_name.nil? && certificate_name == 'Construction Certificate 2.1 issue 3')
+      if score < 0.5
+        return 0
+      elsif score >= 0.5 && score < 1
+        return 2
+      elsif score >= 1 && score < 1.5
+        return 3
+      elsif score >= 1.5 && score < 2
+        return 4
+      elsif score >= 2 && score < 2.5
+        return 5
+      elsif score >= 2.5
+        return 6
+      else
+        return -1
+      end
     else
-      return -1
+      if score < 0
+        return 0
+      elsif score >= 0 && score <= 0.5
+        return 1
+      elsif score > 0.5 && score <= 1
+        return 2
+      elsif score > 1 && score <= 1.5
+        return 3
+      elsif score > 1.5 && score <= 2
+        return 4
+      elsif score > 2 && score <= 2.5
+        return 5
+      elsif score > 2.5 && score <= 3
+        return 6
+      elsif score > 3 # due to incentive weights, you can actually score more than 3
+        return 6
+      else
+        return -1
+      end
     end
   end
 

@@ -56,7 +56,7 @@ Congratulations once again for partaking in this noble endeavor, and together le
 
     @certification_path.scheme_mixes.each do |scheme_mix|
       start_new_page
-      draw_category_table(scheme_mix)
+      draw_category_table(scheme_mix, @certification_path.certificate)
     end
   end
 
@@ -109,7 +109,7 @@ Congratulations once again for partaking in this noble endeavor, and together le
     text ISSUER_TITLE, :style => :bold
   end
 
-  def draw_category_table(scheme_mix)
+  def draw_category_table(scheme_mix, certificate)
     text scheme_mix.scheme.name, :style => :bold, :size => 24
     text "Weight: #{scheme_mix.weight}", :size => 12
     newline
@@ -121,7 +121,7 @@ Congratulations once again for partaking in this noble endeavor, and together le
     end
     achieved_score = scheme_mix.scores_in_certificate_points[:achieved]
     data.append(['', 'Total score', achieved_score])
-    data.append(['', 'Level achieved', CertificationPath.star_rating_for_score(achieved_score)])
+    data.append(['', 'Level achieved', CertificationPath.star_rating_for_score(achieved_score, certificate)])
     # render table
     table(data) do
       rows(0).background_color = '4A452A'

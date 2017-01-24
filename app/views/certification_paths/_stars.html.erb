@@ -1,4 +1,4 @@
-<% stars = CertificationPath.star_rating_for_score(rec.total_achieved_score) %>
+<% stars = CertificationPath.star_rating_for_score(rec.total_achieved_score, certificate_name: rec.certificate_name) %>
 <% stars.times do %>
     <i class="fa fa-star fa-lg"></i>
 <% end %>
