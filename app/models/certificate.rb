@@ -19,6 +19,10 @@ class Certificate < ActiveRecord::Base
     where(certification_type: certification_type)
   }
 
+  def construction_issue_1?
+    construction_certificate? && gsas_version == '2.1 issue 1'
+  end
+
   # def letter_of_conformance?
   #   design_type? && design_stage?
   # end
