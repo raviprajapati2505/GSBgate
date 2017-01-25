@@ -55,6 +55,7 @@ class SchemeMixCriteriaController < AuthenticatedController
     authorize! :update_targeted_score, @scheme_mix_criterion, message: 'Not authorized to update targeted score' if scheme_mix_criterion_params.has_key?(:targeted_score)
     authorize! :update_submitted_score, @scheme_mix_criterion, message: 'Not authorized to update submitted score' if scheme_mix_criterion_params.has_key?(:submitted_score)
     authorize! :update_achieved_score, @scheme_mix_criterion, message: 'Not authorized to update achieved score' if scheme_mix_criterion_params.has_key?(:achieved_score)
+    authorize! :update_incentive_score, @scheme_mix_criterion, message: 'Not authorized to update incentive flag' if scheme_mix_criterion_params.has_key?(:incentive_score)
 
     redirect_path = project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion)
     min_valid_score = @scheme_mix_criterion.scheme_criterion.minimum_valid_score
@@ -147,7 +148,7 @@ class SchemeMixCriteriaController < AuthenticatedController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def scheme_mix_criterion_params
-    params.require(:scheme_mix_criterion).permit(:targeted_score, :achieved_score, :submitted_score, :status, :audit_log_user_comment, :audit_log_visibility)
+    params.require(:scheme_mix_criterion).permit(:targeted_score, :achieved_score, :submitted_score, :status, :audit_log_user_comment, :audit_log_visibility, :incentive_scored)
   end
 
 end

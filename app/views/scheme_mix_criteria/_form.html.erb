@@ -160,6 +160,18 @@
                             <% end %>
                         </td>
                     </tr>
+                    <% if @certification_path.certificate.construction_issue_3? && @scheme_mix_criterion.scheme_criterion.incentive_weight > 0 %>
+                      <tr>
+                        <th>Incentive earned ?</th>
+                        <td>
+                          <% if can?(:update_incentive_scored, @scheme_mix_criterion) %>
+                            <%= f.check_box :incentive_scored, label: '' %>
+                          <% else %>
+                            <%= @scheme_mix_criterion.incentive_scored? ? 'Yes' : 'No' %>
+                          <% end %>
+                        </td>
+                      </tr>
+                    <% end %>
                     <% end %>
                     <% end %>
                     </tbody>
