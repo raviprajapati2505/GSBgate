@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170123103520) do
+ActiveRecord::Schema.define(version: 20170124151431) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -281,6 +281,7 @@ ActiveRecord::Schema.define(version: 20170123103520) do
     t.decimal  "incentive_weight_1",       precision: 5, scale: 2, default: 0.0
     t.decimal  "incentive_weight_2",       precision: 5, scale: 2, default: 0.0
     t.decimal  "incentive_weight_3",       precision: 5, scale: 2, default: 0.0
+    t.decimal  "incentive_weight",         precision: 3, scale: 1, default: 0.0
   end
 
   add_index "scheme_criteria", ["number"], name: "index_scheme_criteria_on_number", using: :btree
@@ -325,6 +326,7 @@ ActiveRecord::Schema.define(version: 20170123103520) do
     t.integer  "main_scheme_mix_criterion_id"
     t.boolean  "in_review",                                            default: false
     t.integer  "review_count",                                         default: 0
+    t.boolean  "incentive_scored",                                     default: false
   end
 
   add_index "scheme_mix_criteria", ["certifier_id"], name: "index_scheme_mix_criteria_on_certifier_id", using: :btree

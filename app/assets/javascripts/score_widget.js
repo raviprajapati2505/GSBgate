@@ -36,7 +36,7 @@ function score_graph($element, showLegend, showXaxis, showValues, width, height,
         data = data;
 
     var x = d3.scaleLinear()
-        .domain([min, max])
+        .domain([Math.min(0, min), max])
         .range([0, graph_width]);
     var y = d3.scaleBand()
         .domain(data.map(function (d) {
