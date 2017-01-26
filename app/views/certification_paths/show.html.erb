@@ -65,27 +65,29 @@
                             </td>
                         </tr>
                     <% end %>
-                    <tr>
-                        <th>
-                            Applied for PCR
-                            <%= tooltip(t('.certification_path.pcr.tooltip')) %>
-                        </th>
-                        <td>
-                            <div>
-                                <%= @certification_path.pcr_track? ? 'Yes' : 'No' %>
-                            </div>
-                        </td>
-                    </tr>
-                    <% if can?(:update_max_review_count, @certification_path) %>
-                        <tr>
+                    <% unless @certification_path.certificate.construction_certificate? %>
+                      <tr>
                           <th>
-                            Maximum number of PCR reviews
+                              Applied for PCR
+                              <%= tooltip(t('.certification_path.pcr.tooltip')) %>
                           </th>
                           <td>
-                            <span><%= pluralize(@certification_path.max_review_count, 'review') %></span>
-                            <%= btn_link_to(edit_max_review_count_project_certification_path_path(@project, @certification_path), remote: true, text: 'Set maximum', class: 'pull-right') %>
+                              <div>
+                                  <%= @certification_path.pcr_track? ? 'Yes' : 'No' %>
+                              </div>
                           </td>
-                        </tr>
+                      </tr>
+                      <% if can?(:update_max_review_count, @certification_path) %>
+                          <tr>
+                            <th>
+                              Maximum number of PCR reviews
+                            </th>
+                            <td>
+                              <span><%= pluralize(@certification_path.max_review_count, 'review') %></span>
+                              <%= btn_link_to(edit_max_review_count_project_certification_path_path(@project, @certification_path), remote: true, text: 'Set maximum', class: 'pull-right') %>
+                            </td>
+                          </tr>
+                      <% end %>
                     <% end %>
                     <% if can?(:download_archive, @certification_path) %>
                         <tr>

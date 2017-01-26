@@ -109,7 +109,7 @@ class SchemeMixCriteriaController < AuthenticatedController
   end
 
   def request_review
-    # TODO check review counter
+    # check review counter
     if @scheme_mix_criterion.review_count < @certification_path.max_review_count
       @scheme_mix_criterion.review_count += 1
       @scheme_mix_criterion.in_review = true

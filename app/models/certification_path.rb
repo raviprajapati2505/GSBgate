@@ -132,7 +132,11 @@ class CertificationPath < ActiveRecord::Base
       when CertificationPathStatus::SUBMITTING_AFTER_SCREENING
         return CertificationPathStatus::VERIFYING
       when CertificationPathStatus::VERIFYING
-        return CertificationPathStatus::ACKNOWLEDGING
+        if self.certificate.construction_certificate?
+          return CertificationPathStatus::APPROVING_BY_MANAGEMENT
+        else
+          return CertificationPathStatus::ACKNOWLEDGING
+        end
       when CertificationPathStatus::ACKNOWLEDGING
         if appealed?
           return CertificationPathStatus::PROCESSING_APPEAL_PAYMENT
