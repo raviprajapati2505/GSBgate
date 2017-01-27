@@ -19,6 +19,10 @@ class Certificate < ActiveRecord::Base
     where(certification_type: certification_type)
   }
 
+  scope :with_display_weight, ->(display_weight) {
+    where(display_weight: display_weight)
+  }
+
   def construction_issue_1?
     construction_certificate? && gsas_version == '2.1 issue 1'
   end

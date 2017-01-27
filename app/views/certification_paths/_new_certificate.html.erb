@@ -10,9 +10,10 @@
                 <!-- Set the project and certification_type, so we can access them easily from JS to reconstruct the current path -->
                 <%= f.hidden_field :project_id, value: @certification_path.project_id %>
                 <%= f.hidden_field :certification_type, value: Certificate.certification_types[@certification_type] %>
+                <%= f.hidden_field :display_weight, value: @certificate.display_weight %>
 
                 <!-- PCR -->
-                <% unless @certification_path.certificate.construction_certificate? %>
+                <% unless @certificate.construction_certificate? %>
                 <%= f.form_group :pcr_track, label: {text: 'Pre Certification Review'} do %>
                     <%= f.check_box :pcr_track, label: 'Apply for the Pre Certification Review track (PCR)' %>
                 <% end %>
@@ -32,7 +33,7 @@
                 <!-- Custom select for version, so we can determine the certificate -->
                 <%= f.static_control label: 'GSAS Version' do %>
                     <% if Certificate.certification_types[@certification_type] == Certificate.certification_types[:final_design_certificate] %>
-                        <%= @certification_path.certificate.gsas_version %> year
+                        <%= @certificate.gsas_version %> year
                     <% else %>
                         <%= select_tag(:gsas_version, options_for_select(@gsas_versions, @gsas_version), {:class => 'form-control'}) %>
                     <% end %>

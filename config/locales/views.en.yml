@@ -66,6 +66,8 @@ en:
       title: Applying for %{certificate} Certification
     overview_item:
       warning_complete_loc: Please complete the Letter of conformance certification first.
+      warning_complete_stage1: Please complete the Construction stage 1 first.
+      warning_complete_stage2: Please complete the Construction stage 2 first.
     timeline_legend:
       project_team: Project team
       certifier_team: GSAS trust team

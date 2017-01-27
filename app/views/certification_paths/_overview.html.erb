@@ -1,11 +1,13 @@
 <ul class="list-group">
-    <%= render partial: 'certification_paths/overview_item', locals: { project: project, certification_type: Certificate.certification_types[:letter_of_conformance] } %>
-    <%= render partial: 'certification_paths/overview_item', locals: { project: project, certification_type: Certificate.certification_types[:final_design_certificate] } %>
+    <%= render partial: 'certification_paths/overview_item', locals: { project: project, certification_type: Certificate.certification_types[:letter_of_conformance], display_weight: 10 } %>
+    <%= render partial: 'certification_paths/overview_item', locals: { project: project, certification_type: Certificate.certification_types[:final_design_certificate], display_weight: 20 } %>
 </ul>
 <ul class="list-group">
-    <%= render partial: 'certification_paths/overview_item', locals: { project: project, certification_type: Certificate.certification_types[:construction_certificate] } %>
+    <%= render partial: 'certification_paths/overview_item', locals: { project: project, certification_type: Certificate.certification_types[:construction_certificate], display_weight: 31 } %>
+    <%= render partial: 'certification_paths/overview_item', locals: { project: project, certification_type: Certificate.certification_types[:construction_certificate], display_weight: 32 } %>
+    <%= render partial: 'certification_paths/overview_item', locals: { project: project, certification_type: Certificate.certification_types[:construction_certificate], display_weight: 33 } %>
 </ul>
 <ul class="list-group">
-    <%= render partial: 'certification_paths/overview_item', locals: { project: project, certification_type: Certificate.certification_types[:operations_certificate] } %>
+    <%= render partial: 'certification_paths/overview_item', locals: { project: project, certification_type: Certificate.certification_types[:operations_certificate], display_weight: 40 } %>
 </ul>
 <div id="applyForCertificateModal" class="modal fade"></div>

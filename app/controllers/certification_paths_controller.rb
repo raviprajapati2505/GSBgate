@@ -19,7 +19,7 @@ class CertificationPathsController < AuthenticatedController
 
   def apply
     # Prevent adding multiple certification paths of the same type
-    if @project.certificates.pluck(:certification_type).include?(params[:certification_type].to_i)
+    if @project.certificates.pluck(:certification_type).include?(params[:certification_type].to_i) && @project.certificates.pluck(:display_weight).include?(params[:certification_path][:display_weight].to_i)
       respond_to do |format|
         format.js {
           flash.now[:alert] = t('controllers.certification_paths_controller.apply.already_applied')
@@ -57,20 +57,20 @@ class CertificationPathsController < AuthenticatedController
 
     #  - Determine the resulting certificate, and add it to our certification_path
     #  TODO: verify there is only 1 certificate
-    @certificates = Certificate.with_gsas_version(@gsas_version).with_certification_type(Certificate.certification_types[@certification_type])
-    @certification_path.certificate = @certificates.first
+    @certificate = Certificate.with_gsas_version(@gsas_version).with_certification_type(Certificate.certification_types[@certification_type]).with_display_weight(params[:certification_path][:display_weight]).first
+    @certification_path.certificate = @certificate
 
     # PCR Track
-    if params.has_key?(:certification_path) && params[:certification_path].has_key?(:pcr_track) && !@certification_path.certificate.construction_certificate?
+    if params.has_key?(:certification_path) && params[:certification_path].has_key?(:pcr_track) && !@certificate.construction_certificate?
       @certification_path.pcr_track = params[:certification_path][:pcr_track]
     else
       @certification_path.pcr_track = false
     end
 
     # Duration
-    if @certification_path.certificate.letter_of_conformance?
+    if @certificate.letter_of_conformance?
       @certification_path.duration = 1
-    elsif @certification_path.certificate.final_design_certificate?
+    elsif @certificate.final_design_certificate?
       @durations = [['2 years', 2], ['3 years', 3], ['4 years', 4]]
       if params.has_key?(:certification_path) && params[:certification_path].has_key?(:duration)
         @certification_path.duration = params[:certification_path][:duration]
@@ -88,11 +88,11 @@ class CertificationPathsController < AuthenticatedController
       development_type_name = @certification_path.project.completed_letter_of_conformances.first.development_type.name
       @certification_path.development_type = DevelopmentType.find_by(name: development_type_name, certificate: @certification_path.certificate)
     else
-      @development_types = @certification_path.certificate.development_types
+      @development_types = @certificate.development_types
       if params.has_key?(:certification_path) && params[:certification_path].has_key?(:development_type)
         @certification_path.development_type = DevelopmentType.find_by_id(params[:certification_path][:development_type].to_i)
       else
-        @certification_path.development_type = @certification_path.certificate.development_types.first
+        @certification_path.development_type = @certificate.development_types.first
       end
     end
 
