@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170126101555) do
+ActiveRecord::Schema.define(version: 20170127095248) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -273,9 +273,9 @@ ActiveRecord::Schema.define(version: 20170126101555) do
     t.integer  "number"
     t.string   "scores"
     t.integer  "scheme_category_id"
-    t.decimal  "minimum_score",            precision: 3, scale: 1,               null: false
-    t.decimal  "maximum_score",            precision: 3, scale: 1,               null: false
-    t.decimal  "minimum_valid_score",      precision: 3, scale: 1,               null: false
+    t.decimal  "minimum_score",            precision: 4, scale: 1,               null: false
+    t.decimal  "maximum_score",            precision: 4, scale: 1,               null: false
+    t.decimal  "minimum_valid_score",      precision: 4, scale: 1,               null: false
     t.decimal  "incentive_weight_minus_1", precision: 5, scale: 2, default: 0.0
     t.decimal  "incentive_weight_0",       precision: 5, scale: 2, default: 0.0
     t.decimal  "incentive_weight_1",       precision: 5, scale: 2, default: 0.0
@@ -320,9 +320,9 @@ ActiveRecord::Schema.define(version: 20170126101555) do
     t.integer  "status"
     t.integer  "certifier_id"
     t.date     "due_date"
-    t.decimal  "targeted_score",               precision: 3, scale: 1
-    t.decimal  "submitted_score",              precision: 3, scale: 1
-    t.decimal  "achieved_score",               precision: 3, scale: 1
+    t.decimal  "targeted_score",               precision: 4, scale: 1
+    t.decimal  "submitted_score",              precision: 4, scale: 1
+    t.decimal  "achieved_score",               precision: 4, scale: 1
     t.integer  "main_scheme_mix_criterion_id"
     t.boolean  "in_review",                                            default: false
     t.integer  "review_count",                                         default: 0

@@ -321,6 +321,10 @@ class CertificationPath < ActiveRecord::Base
     CertificationPathStatus::CERTIFIED == certification_path_status_id
   end
 
+  def is_construction_stage3?
+    certificate.construction_certificate? && certificate.display_weight == 33
+  end
+
   private
 
   def set_started_at
