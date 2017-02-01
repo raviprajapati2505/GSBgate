@@ -18,8 +18,6 @@ class CertificationPath < ActiveRecord::Base
   has_many :scheme_mix_criteria_requirement_data, through: :scheme_mix_criteria
   has_many :requirement_data, through: :scheme_mix_criteria_requirement_data
   has_many :certification_path_audit_logs, class_name: 'AuditLog', foreign_key: 'certification_path_id', dependent: :destroy
-  has_many :cgp_certification_path_documents, dependent: :destroy
-  has_many :certifier_certification_path_documents, dependent: :destroy
 
   accepts_nested_attributes_for :certificate
   accepts_nested_attributes_for :scheme_mixes
@@ -49,10 +47,6 @@ class CertificationPath < ActiveRecord::Base
 
   scope :with_certification_type, ->(certification_type) {
     joins(:certificate).where(certificates: {certification_type: certification_type})
-  }
-
-  scope :with_display_weight, ->(display_weight) {
-    joins(:certificate).where(certificates: {display_weight: display_weight})
   }
 
   # scope :letter_of_conformance, -> {
@@ -136,11 +130,7 @@ class CertificationPath < ActiveRecord::Base
       when CertificationPathStatus::SUBMITTING_AFTER_SCREENING
         return CertificationPathStatus::VERIFYING
       when CertificationPathStatus::VERIFYING
-        if self.certificate.construction_certificate?
-          return CertificationPathStatus::APPROVING_BY_MANAGEMENT
-        else
-          return CertificationPathStatus::ACKNOWLEDGING
-        end
+        return CertificationPathStatus::ACKNOWLEDGING
       when CertificationPathStatus::ACKNOWLEDGING
         if appealed?
           return CertificationPathStatus::PROCESSING_APPEAL_PAYMENT
@@ -233,56 +223,26 @@ class CertificationPath < ActiveRecord::Base
     return todos.uniq
   end
 
-  def self.star_rating_for_score(score, certificate: nil, certificate_name: nil)
+  def self.star_rating_for_score(score)
     return -1 if score.nil?
-    if (!certificate.nil? && certificate.construction_issue_1?) || (!certificate_name.nil? && certificate_name == 'Construction Certificate 2.1 issue 1')
-      if score < 35
-        return 0
-      elsif score >= 35 && score < 65
-        return 2
-      elsif score >= 65 && score < 85
-        return 4
-      elsif score >= 85 && score <= 100
-        return 6
-      else
-        return -1
-      end
-    elsif (!certificate.nil? && certificate.construction_issue_3?) || (!certificate_name.nil? && certificate_name == 'Construction Certificate 2.1 issue 3')
-      if score < 0.5
-        return 0
-      elsif score >= 0.5 && score < 1
-        return 2
-      elsif score >= 1 && score < 1.5
-        return 3
-      elsif score >= 1.5 && score < 2
-        return 4
-      elsif score >= 2 && score < 2.5
-        return 5
-      elsif score >= 2.5
-        return 6
-      else
-        return -1
-      end
+    if score < 0
+      return 0
+    elsif score >= 0 && score <= 0.5
+      return 1
+    elsif score > 0.5 && score <= 1
+      return 2
+    elsif score > 1 && score <= 1.5
+      return 3
+    elsif score > 1.5 && score <= 2
+      return 4
+    elsif score > 2 && score <= 2.5
+      return 5
+    elsif score > 2.5 && score <= 3
+      return 6
+    elsif score > 3 # due to incentive weights, you can actually score more than 3
+      return 6
     else
-      if score < 0
-        return 0
-      elsif score >= 0 && score <= 0.5
-        return 1
-      elsif score > 0.5 && score <= 1
-        return 2
-      elsif score > 1 && score <= 1.5
-        return 3
-      elsif score > 1.5 && score <= 2
-        return 4
-      elsif score > 2 && score <= 2.5
-        return 5
-      elsif score > 2.5 && score <= 3
-        return 6
-      elsif score > 3 # due to incentive weights, you can actually score more than 3
-        return 6
-      else
-        return -1
-      end
+      return -1
     end
   end
 
@@ -319,10 +279,6 @@ class CertificationPath < ActiveRecord::Base
 
   def is_certified?
     CertificationPathStatus::CERTIFIED == certification_path_status_id
-  end
-
-  def is_construction_stage3?
-    certificate.construction_certificate? && certificate.display_weight == 33
   end
 
   private

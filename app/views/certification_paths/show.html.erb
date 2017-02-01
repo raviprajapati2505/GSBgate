@@ -65,29 +65,27 @@
                             </td>
                         </tr>
                     <% end %>
-                    <% unless @certification_path.certificate.construction_certificate? %>
-                      <tr>
+                    <tr>
+                        <th>
+                            Applied for PCR
+                            <%= tooltip(t('.certification_path.pcr.tooltip')) %>
+                        </th>
+                        <td>
+                            <div>
+                                <%= @certification_path.pcr_track? ? 'Yes' : 'No' %>
+                            </div>
+                        </td>
+                    </tr>
+                    <% if can?(:update_max_review_count, @certification_path) %>
+                        <tr>
                           <th>
-                              Applied for PCR
-                              <%= tooltip(t('.certification_path.pcr.tooltip')) %>
+                            Maximum number of PCR reviews
                           </th>
                           <td>
-                              <div>
-                                  <%= @certification_path.pcr_track? ? 'Yes' : 'No' %>
-                              </div>
+                            <span><%= pluralize(@certification_path.max_review_count, 'review') %></span>
+                            <%= btn_link_to(edit_max_review_count_project_certification_path_path(@project, @certification_path), remote: true, text: 'Set maximum', class: 'pull-right') %>
                           </td>
-                      </tr>
-                      <% if can?(:update_max_review_count, @certification_path) %>
-                          <tr>
-                            <th>
-                              Maximum number of PCR reviews
-                            </th>
-                            <td>
-                              <span><%= pluralize(@certification_path.max_review_count, 'review') %></span>
-                              <%= btn_link_to(edit_max_review_count_project_certification_path_path(@project, @certification_path), remote: true, text: 'Set maximum', class: 'pull-right') %>
-                            </td>
-                          </tr>
-                      <% end %>
+                        </tr>
                     <% end %>
                     <% if can?(:download_archive, @certification_path) %>
                         <tr>
@@ -179,44 +177,6 @@
             </div>
         </div>
         <%= render 'tasks/tasks' %>
-
-        <% if can?(:create, CertifierCertificationPathDocument.new(:certification_path_id => @certification_path.id)) %>
-          <div class="ibox">
-            <div class="ibox-title">
-              <h5>Upload certification documentation</h5>
-            </div>
-            <div class="ibox-content">
-              <%= render 'certification_path_documents/new', document: CertifierCertificationPathDocument.new, project: @project, certification_path: @certification_path %>
-            </div>
-          </div>
-        <% elsif can?(:create, CgpCertificationPathDocument.new(:certification_path_id => @certification_path.id)) %>
-          <div class="ibox">
-            <div class="ibox-title">
-              <h5>Upload certification documentation</h5>
-            </div>
-            <div class="ibox-content">
-              <%= render 'certification_path_documents/new', document: CgpCertificationPathDocument.new, project: @project, certification_path: @certification_path %>
-            </div>
-          </div>
-        <% end %>
-        <div class="ibox" id="cgp-documentation">
-          <div class="ibox-title">
-            <h5>CGP Documentation</h5>
-          </div>
-          <div class="ibox-content">
-            <%= render 'certification_path_documents/index', certification_path_documents: @certification_path.cgp_certification_path_documents %>
-          </div>
-        </div>
-        <div class="ibox" id="certifier-documentation">
-          <div class="ibox-title">
-            <h5>Certifier Documentation</h5>
-          </div>
-          <div class="ibox-content">
-            <%= render 'certification_path_documents/index', certification_path_documents: @certification_path.certifier_certification_path_documents %>
-          </div>
-        </div>
-
-
     </div>
 </div>
 <div id="editStatusCertificationPathModal" class="modal fade"></div>

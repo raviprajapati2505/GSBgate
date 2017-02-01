@@ -102,19 +102,9 @@
                         <th>Targeted score <%= tooltip(t('.scores.targeted_score.tooltip')) %></th>
                         <td>
                             <% if can?(:update_targeted_score, @scheme_mix_criterion) %>
-                              <% if @certification_path.certificate.construction_issue_1? %>
-                                <%= f.number_field :targeted_score, in: 0.0..@scheme_mix_criterion.scheme_criterion.weight, step: 0.1, hide_label: true, append: '%' %>
-                              <% else %>
                                 <%= f.select :targeted_score, @scheme_mix_criterion.scheme_criterion.scores, hide_label: true %>
-                              <% end %>
                             <% else %>
-                              <%= f.static_control label: 'targeted score', hide_label: true do %>
-                                <% if @certification_path.certificate.construction_issue_1? %>
-                                  <%= number_to_percentage(@scheme_mix_criterion.targeted_score, precision: 1) %>
-                                <% else %>
-                                  <%= number_with_precision(@scheme_mix_criterion.targeted_score, precision: 0, significant: true) %>
-                                <% end %>
-                              <% end %>
+                                <%= f.static_control :targeted_score, hide_label: true  %>
                             <% end %>
                         </td>
                     </tr>
@@ -122,19 +112,9 @@
                         <th>Submitted score <%= tooltip(t('.scores.submitted_score.tooltip')) %></th>
                         <td>
                             <% if can?(:update_submitted_score, @scheme_mix_criterion) %>
-                              <% if @certification_path.certificate.construction_issue_1? %>
-                                <%= f.number_field :submitted_score, in: 0.0..@scheme_mix_criterion.scheme_criterion.weight, step: 0.1, hide_label: true, append: '%' %>
-                              <% else %>
                                 <%= f.select :submitted_score, @scheme_mix_criterion.scheme_criterion.scores, {include_blank: '-', hide_label: true} %>
-                              <% end %>
                             <% else %>
-                              <%= f.static_control label: 'submitted score', hide_label: true do %>
-                                  <% if @certification_path.certificate.construction_issue_1? %>
-                                      <%= number_to_percentage(@scheme_mix_criterion.submitted_score, precision: 1) %>
-                                  <% else %>
-                                      <%= number_with_precision(@scheme_mix_criterion.submitted_score, precision: 0, significant: true) %>
-                                  <% end %>
-                              <% end %>
+                                <%= f.static_control :submitted_score, hide_label: true %>
                             <% end %>
                         </td>
                     </tr>
@@ -144,34 +124,12 @@
                         <th>Achieved score <%= tooltip(t('.scores.achieved_score.tooltip')) %></th>
                         <td>
                             <% if can?(:update_achieved_score, @scheme_mix_criterion) %>
-                              <% if @certification_path.certificate.construction_issue_1? %>
-                                <%= f.number_field :achieved_score, in: 0.0..@scheme_mix_criterion.scheme_criterion.weight, step: 0.1, hide_label: true, append: '%' %>
-                              <% else %>
                                 <%= f.select :achieved_score, @scheme_mix_criterion.scheme_criterion.scores, {include_blank: '-', hide_label: true} %>
-                              <% end %>
                             <% else %>
-                              <%= f.static_control label: 'achieved score', hide_label: true do %>
-                                  <% if @certification_path.certificate.construction_issue_1? %>
-                                      <%= number_to_percentage(@scheme_mix_criterion.achieved_score, precision: 1) %>
-                                  <% else %>
-                                      <%= number_with_precision(@scheme_mix_criterion.achieved_score, precision: 0, significant: true) %>
-                                  <% end %>
-                              <% end %>
+                                <%= f.static_control :achieved_score, hide_label: true %>
                             <% end %>
                         </td>
                     </tr>
-                    <% if @certification_path.certificate.construction_issue_3? && @scheme_mix_criterion.scheme_criterion.incentive_weight > 0 %>
-                      <tr>
-                        <th>Incentive earned ?</th>
-                        <td>
-                          <% if can?(:update_incentive_scored, @scheme_mix_criterion) %>
-                            <%= f.check_box :incentive_scored, label: '' %>
-                          <% else %>
-                            <%= @scheme_mix_criterion.incentive_scored? ? 'Yes' : 'No' %>
-                          <% end %>
-                        </td>
-                      </tr>
-                    <% end %>
                     <% end %>
                     <% end %>
                     </tbody>
@@ -283,7 +241,7 @@
         <% if can?(:create, Document.new(:scheme_mix_criteria_documents_attributes => [{:scheme_mix_criterion_id => @scheme_mix_criterion.id}])) %>
             <div class="ibox">
                 <div class="ibox-title">
-                    <h5>Upload criterion documentation</h5>
+                    <h5>Upload documentation</h5>
                 </div>
                 <div class="ibox-content">
                     <%= render 'documents/new', document: Document.new, project: @project, certification_path: @certification_path, scheme_mix: @scheme_mix,  scheme_mix_criterion_id: @scheme_mix_criterion.id %>
@@ -292,7 +250,7 @@
         <% end %>
         <div class="ibox" id="documentation">
             <div class="ibox-title">
-                <h5>Criterion Documentation</h5>
+                <h5>Documentation</h5>
             </div>
             <div class="ibox-content">
                 <%= render 'scheme_mix_criteria_documents/index', scheme_mix_criteria_documents: @scheme_mix_criterion.scheme_mix_criteria_documents %>

@@ -1,4 +1,4 @@
-<% certification_paths = CertificationPath.with_project(project).with_certification_type(Certificate.certification_types[Certificate.certification_types.key(certification_type)]).with_display_weight(display_weight) %>
+<% certification_paths = CertificationPath.with_project(project).with_certification_type(Certificate.certification_types[Certificate.certification_types.key(certification_type)]) %>
 <% certification_paths.each do |certification_path| %>
     <li class="list-group-item container">
         <div class="row">
@@ -27,27 +27,18 @@
 <% end %>
 <% if certification_paths.empty? %>
     <% no_completed_letter_of_conformance_for_final_design = (certification_type == Certificate.certification_types[:final_design_certificate] && project.completed_letter_of_conformances.empty?) %>
-    <% no_stage1_construction_for_stage2 = (certification_type == Certificate.certification_types[:construction_certificate] && display_weight == 32 && project.completed_construction_stage1.empty?) %>
-    <% no_stage2_construction_for_stage3 = (certification_type == Certificate.certification_types[:construction_certificate] && display_weight == 33 && project.completed_construction_stage2.empty?) %>
-    <% no_stage3_construction_for_overall = (certification_type == Certificate.certification_types[:construction_certificate] && display_weight == 39 && project.completed_construction_stage3.empty?) %>
-    <li class="list-group-item container <%= 'disabled' if no_completed_letter_of_conformance_for_final_design || no_stage1_construction_for_stage2 || no_stage2_construction_for_stage3 || no_stage3_construction_for_overall %>">
+    <li class="list-group-item container <%= 'disabled' if no_completed_letter_of_conformance_for_final_design %>">
         <div class="row">
-            <span class="col-md-4"><%= Certificate.find_by(certification_type: certification_type, display_weight: display_weight).name %></span>
+            <span class="col-md-4"><%= t(Certificate.certification_types.key(certification_type), scope: 'activerecord.attributes.certificate.certification_types') %></span>
             <% if no_completed_letter_of_conformance_for_final_design %>
                 <%= t('.warning_complete_loc') %>
-            <% elsif no_stage1_construction_for_stage2 %>
-              <%= t('.warning_complete_stage1') %>
-            <% elsif no_stage2_construction_for_stage3 %>
-              <%= t('.warning_complete_stage2') %>
-            <% elsif no_stage3_construction_for_overall %>
-              <%= t('.warning_complete_stage3') %>
             <% else %>
                 <span class="col-md-4">
                     Not yet registered
                 </span>
                 <span class="col-md-4">
                         <% if can? :apply, @certification_path, :project => @project %>
-                            <%= btn_link_to(apply_certification_path_path(@project, certification_type, 'certification_path[display_weight]' => display_weight), text: 'Apply', icon: 'play', action: :post, remote: true) %>
+                            <%= btn_link_to(apply_certification_path_path(@project, certification_type), text: 'Apply', icon: 'play', action: :post, remote: true) %>
                         <% end %>
                 </span>
             <% end %>

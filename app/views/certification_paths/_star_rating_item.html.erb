@@ -1,15 +1,11 @@
 <% achieved ||= false %>
-<% stars = CertificationPath.star_rating_for_score(score, certificate: certificate) %>
+<% stars = CertificationPath.star_rating_for_score(score) %>
 <div>
     <span class="text-right" style="width: 72px; display: inline-block;">
         <%= score_label %>
     </span>
-    <span class="text-right" style="width: 40px; display: inline-block;">
-      <% if certificate.construction_issue_1? %>
-          <%= number_to_percentage(score, precision: 1) %>
-      <% else %>
-        <%= number_with_precision(score, precision: 2) %>
-      <% end %>
+    <span class="text-right" style="width: 32px; display: inline-block;">
+        <%= number_with_precision(score, precisison: 2, significant: true) %>
     </span>
     <span>
         &nbsp;&nbsp;=&nbsp;&nbsp;

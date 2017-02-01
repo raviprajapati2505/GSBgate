@@ -199,19 +199,14 @@ module ScoreCalculator
       score = 'GREATEST(%{field_table}.%{field_name}::float, scheme_criteria_score.minimum_score::float)'
       maximum_score = 'scheme_criteria_score.maximum_score::float'
       criteria_weight = 'scheme_criteria_score.weight'
-      score_dependent_incentive_weight = "(CASE #{score} WHEN -1 THEN scheme_criteria_score.incentive_weight_minus_1 WHEN 0 THEN scheme_criteria_score.incentive_weight_0 WHEN 1 THEN scheme_criteria_score.incentive_weight_1 WHEN 2 THEN scheme_criteria_score.incentive_weight_2  WHEN 3 THEN scheme_criteria_score.incentive_weight_3 ELSE 0 END)"
-      incentive_weight = "(CASE (certificates_score.certificate_type = 1 AND certificates_score.gsas_version = '2.1 issue 3') WHEN true THEN (CASE scheme_mix_criteria_score.incentive_scored WHEN true THEN scheme_criteria_score.incentive_weight ELSE 0 END) ELSE #{score_dependent_incentive_weight} END)"
+      incentive_weight = "(CASE #{score} WHEN -1 THEN scheme_criteria_score.incentive_weight_minus_1 WHEN 0 THEN scheme_criteria_score.incentive_weight_0 WHEN 1 THEN scheme_criteria_score.incentive_weight_1 WHEN 2 THEN scheme_criteria_score.incentive_weight_2  WHEN 3 THEN scheme_criteria_score.incentive_weight_3 ELSE 0 END)"
       scheme_weight = 'scheme_mixes_score.weight'
       if point_type == :criteria_points
         score_template = "SUM(#{score})"
       elsif point_type == :scheme_points
-        # score_template = "SUM((#{score} / #{maximum_score}) * ((3.0 * (#{criteria_weight})) / 100.0) + (3.0 * #{incentive_weight} / 100.0))"
-        base_3_score = "(#{score} / #{maximum_score}) * ((3.0 * (#{criteria_weight})) / 100.0) + (3.0 * #{incentive_weight} / 100.0)"
-        score_template = "SUM( CASE (certificates_score.certificate_type = 1 AND certificates_score.gsas_version = '2.1 issue 1') WHEN true THEN (#{score}) ELSE (#{base_3_score}) END)"
+        score_template = "SUM((#{score} / #{maximum_score}) * ((3.0 * (#{criteria_weight})) / 100.0) + (3.0 * #{incentive_weight} / 100.0))"
       elsif point_type == :certificate_points
-        # score_template = "SUM(((#{score} / #{maximum_score}) * ((3.0 * (#{criteria_weight})) / 100.0) + (3.0 * #{incentive_weight} / 100.0)) * (#{scheme_weight} / 100.0))"
-        base_3_score = "((#{score} / #{maximum_score}) * ((3.0 * (#{criteria_weight})) / 100.0) + (3.0 * #{incentive_weight} / 100.0)) * (#{scheme_weight} / 100.0)"
-        score_template = "SUM( CASE (certificates_score.certificate_type = 1 AND certificates_score.gsas_version = '2.1 issue 1') WHEN true THEN (#{score} * (#{scheme_weight} / 100.0)) ELSE (#{base_3_score}) END)"
+        score_template = "SUM(((#{score} / #{maximum_score}) * ((3.0 * (#{criteria_weight})) / 100.0) + (3.0 * #{incentive_weight} / 100.0)) * (#{scheme_weight} / 100.0))"
       else
         raise('Unexpected point type: ' + point_type.to_s)
       end
@@ -236,7 +231,6 @@ module ScoreCalculator
                      .joins('INNER JOIN scheme_criteria as scheme_criteria_score ON scheme_criteria_score.id = scheme_mix_criteria_score.scheme_criterion_id')
                      .joins('INNER JOIN scheme_mixes as scheme_mixes_score ON scheme_mixes_score.id = scheme_mix_criteria_score.scheme_mix_id')
                      .joins('INNER JOIN certification_paths as certification_paths_score ON certification_paths_score.id = scheme_mixes_score.certification_path_id')
-                     .joins('INNER JOIN certificates as certificates_score ON certificates_score.id = certification_paths_score.certificate_id')
                      .joins('INNER JOIN projects ON projects.id = certification_paths_score.project_id')
       case self.name
         when CertificationPath.name, SchemeMix.name, SchemeMixCriterion.name

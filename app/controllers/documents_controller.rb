@@ -1,4 +1,4 @@
-class DocumentsController < BaseDocumentController
+class DocumentsController < AuthenticatedController
   load_and_authorize_resource :project
   load_and_authorize_resource :certification_path, :through => :project
   load_and_authorize_resource :document
@@ -32,12 +32,11 @@ class DocumentsController < BaseDocumentController
     respond_to do |format|
       # test if document has no approved links before accepting request
       unless Document.where(id: @document.id).joins(:scheme_mix_criteria_documents).exists?(scheme_mix_criteria_documents: {status: SchemeMixCriteriaDocument.statuses[:approved]})
-        #super
-        directories = @controller_model.document_file.store_dir.split('/')
+        directories = @document.document_file.store_dir.split('/')
         directories.delete_at(0) # delete '..'
         directories.delete_at(0) # delete 'private' subdirectory
         directory = directories.join('/')
-        filepath = Rails.root.to_s + '/private/' + directory + '/' + @controller_model.name
+        filepath = Rails.root.to_s + '/private/' + directory + '/' + @document.name
         # delete physical file
         begin
           File.delete(filepath)
@@ -53,11 +52,19 @@ class DocumentsController < BaseDocumentController
         rescue SystemCallError
         end
         # delete database record
-        @controller_model.destroy
+        @document.destroy
         format.html { redirect_to :back, notice: 'The document was successfully deleted.' }
       else
         format.html { redirect_to :back, alert: 'The document is already approved for some criteria and can not be deleted anymore.' }
       end
+    end
+  end
+
+  def show
+    begin
+      send_file @document.path
+    rescue ActionController::MissingFile
+      redirect_to :back, alert: 'This document is no longer available for download. This could be due to a detection of malware.'
     end
   end
 

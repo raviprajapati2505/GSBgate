@@ -143,15 +143,6 @@
                                             <%= tooltip(tooltip_text) %>
                                         </div>
                                     <% end %>
-                                    <% if (@scheme_mix.scheme.scheme_criteria.for_category(category).sum(:incentive_weight)) > 0 %>
-                                        <div class="incentive-weight">
-                                            <%
-                                                tooltip_text = 'Incentive weights<br/>'
-                                                tooltip_text += "Up to #{@scheme_mix.scheme.scheme_criteria.for_category(category).sum(:incentive_weight)}%"
-                                            %>
-                                            <%= tooltip(tooltip_text) %>
-                                        </div>
-                                    <% end %>
                                 </td>
                                 <td>
                                     <%=
@@ -226,7 +217,7 @@
                                                     <td><%= t(scheme_mix_criterion.status, scope: 'activerecord.attributes.scheme_mix_criterion.statuses') %></td>
                                                     <td>
                                                         <%= scheme_mix_criterion.scheme_criterion.weight %> %
-                                                        <% if (scheme_mix_criterion.scheme_criterion.incentive_weight_minus_1 + scheme_mix_criterion.scheme_criterion.incentive_weight_0 + scheme_mix_criterion.scheme_criterion.incentive_weight_1 + scheme_mix_criterion.scheme_criterion.incentive_weight_2 + scheme_mix_criterion.scheme_criterion.incentive_weight_3 + scheme_mix_criterion.scheme_criterion.incentive_weight)  > 0  %>
+                                                        <% if (scheme_mix_criterion.scheme_criterion.incentive_weight_minus_1 + scheme_mix_criterion.scheme_criterion.incentive_weight_0 + scheme_mix_criterion.scheme_criterion.incentive_weight_1 + scheme_mix_criterion.scheme_criterion.incentive_weight_2 + scheme_mix_criterion.scheme_criterion.incentive_weight_3)  > 0  %>
                                                                 <%
                                                                     tooltip_text = 'Incentive weights<br/>'
                                                                     tooltip_text += "Score&nbsp;-1: #{scheme_mix_criterion.scheme_criterion.incentive_weight_minus_1}%<br/>" if scheme_mix_criterion.scheme_criterion.incentive_weight_minus_1 > 0
@@ -234,7 +225,6 @@
                                                                     tooltip_text += "Score&nbsp;&nbsp;1: #{scheme_mix_criterion.scheme_criterion.incentive_weight_1}%<br/>" if scheme_mix_criterion.scheme_criterion.incentive_weight_1 > 0
                                                                     tooltip_text += "Score&nbsp;&nbsp;2: #{scheme_mix_criterion.scheme_criterion.incentive_weight_2}%<br/>" if scheme_mix_criterion.scheme_criterion.incentive_weight_2 > 0
                                                                     tooltip_text += "Score&nbsp;&nbsp;3: #{scheme_mix_criterion.scheme_criterion.incentive_weight_3}%<br/>" if scheme_mix_criterion.scheme_criterion.incentive_weight_3 > 0
-                                                                    tooltip_text += "#{scheme_mix_criterion.scheme_criterion.incentive_weight}%<br/>" if scheme_mix_criterion.scheme_criterion.incentive_weight > 0
                                                                 %>
                                                             <div class="incentive-weight">
                                                                 <%= tooltip(tooltip_text) %>

@@ -80,9 +80,6 @@ en:
           pcr:
             issued_html: A PCR track request was issued for the certification <strong>%{certification_path}</strong> in project <strong>%{project}</strong>.
             cancelled_html: The PCR track request was canceled for the certification <strong>%{certification_path}</strong> in project <strong>%{project}</strong>.
-        certification_path_document:
-          status:
-            create_html: A new document <strong>%{document}</strong> was added
         scheme_mix_criterion:
           status:
             update_html: The status of criterion <strong>%{criterion}</strong> was changed from <strong>%{old_status}</strong> to <strong>%{new_status}</strong>.

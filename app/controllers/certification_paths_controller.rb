@@ -19,7 +19,7 @@ class CertificationPathsController < AuthenticatedController
 
   def apply
     # Prevent adding multiple certification paths of the same type
-    if @project.certificates.pluck(:certification_type).include?(params[:certification_type].to_i) && @project.certificates.pluck(:display_weight).include?(params[:certification_path][:display_weight].to_i)
+    if @project.certificates.pluck(:certification_type).include?(params[:certification_type].to_i)
       respond_to do |format|
         format.js {
           flash.now[:alert] = t('controllers.certification_paths_controller.apply.already_applied')
@@ -57,20 +57,20 @@ class CertificationPathsController < AuthenticatedController
 
     #  - Determine the resulting certificate, and add it to our certification_path
     #  TODO: verify there is only 1 certificate
-    @certificate = Certificate.with_gsas_version(@gsas_version).with_certification_type(Certificate.certification_types[@certification_type]).with_display_weight(params[:certification_path][:display_weight]).first
-    @certification_path.certificate = @certificate
+    @certificates = Certificate.with_gsas_version(@gsas_version).with_certification_type(Certificate.certification_types[@certification_type])
+    @certification_path.certificate = @certificates.first
 
     # PCR Track
-    if params.has_key?(:certification_path) && params[:certification_path].has_key?(:pcr_track) && !@certificate.construction_certificate?
+    if params.has_key?(:certification_path) && params[:certification_path].has_key?(:pcr_track)
       @certification_path.pcr_track = params[:certification_path][:pcr_track]
     else
       @certification_path.pcr_track = false
     end
 
     # Duration
-    if @certificate.letter_of_conformance?
+    if @certification_path.certificate.letter_of_conformance?
       @certification_path.duration = 1
-    elsif @certificate.final_design_certificate?
+    elsif @certification_path.certificate.final_design_certificate?
       @durations = [['2 years', 2], ['3 years', 3], ['4 years', 4]]
       if params.has_key?(:certification_path) && params[:certification_path].has_key?(:duration)
         @certification_path.duration = params[:certification_path][:duration]
@@ -88,11 +88,11 @@ class CertificationPathsController < AuthenticatedController
       development_type_name = @certification_path.project.completed_letter_of_conformances.first.development_type.name
       @certification_path.development_type = DevelopmentType.find_by(name: development_type_name, certificate: @certification_path.certificate)
     else
-      @development_types = @certificate.development_types
+      @development_types = @certification_path.certificate.development_types
       if params.has_key?(:certification_path) && params[:certification_path].has_key?(:development_type)
         @certification_path.development_type = DevelopmentType.find_by_id(params[:certification_path][:development_type].to_i)
       else
-        @certification_path.development_type = @certificate.development_types.first
+        @certification_path.development_type = @certification_path.certificate.development_types.first
       end
     end
 
@@ -159,11 +159,6 @@ class CertificationPathsController < AuthenticatedController
       todos = @certification_path.todo_before_status_advance
 
       if todos.blank?
-        # Force NO appeal for construction certificates
-        if certification_path_params.has_key?(:appealed) && @certification_path.certificate.construction_certificate?
-          certification_path_params[:appealed] = false
-        end
-
         # Check if there's an appeal
         @certification_path.appealed = certification_path_params.has_key?(:appealed)
 
@@ -179,24 +174,6 @@ class CertificationPathsController < AuthenticatedController
             SchemeMixCriterion.find(smc_id.to_i).appealed!
           end
         end
-
-        # Create Construction Certificate if Construction stage 3 certification path is certified
-        if @certification_path.is_certified? && @certification_path.is_construction_stage3?
-          average_scores = @project.average_scores_all_construction_stages
-
-          certificate = Certificate.find_by(certification_type: Certificate.certification_types[:construction_certificate], display_weight: 39, gsas_version: @certification_path.certificate.gsas_version)
-          # Only 1 pseudo development type linked to this certificate
-          development_type = certificate.development_types.first
-          overall_certification_path = CertificationPath.new(project: @project, certificate: certificate, certification_path_status_id: CertificationPathStatus::CERTIFIED, main_scheme_mix_selected: false, development_type: development_type)
-          # Only 1 pseudo scheme linked to this development type
-          scheme = development_type.schemes.first
-          overall_certification_path.scheme_mixes.build(scheme: scheme, weight: 100)
-          overall_certification_path.save!
-          scheme.scheme_criteria.each do |scheme_criterion|
-            SchemeMixCriterion.create!(scheme_mix: overall_certification_path.scheme_mixes.first, scheme_criterion: scheme_criterion, targeted_score: average_scores[:targeted_score], submitted_score: average_scores[:submitted_score], achieved_score: average_scores[:achieved_score])
-          end
-        end
-
         redirect_to project_certification_path_path(@project, @certification_path), notice: t('controllers.certification_paths_controller.update_status.notice_success')
       else
         redirect_to project_certification_path_path(@project, @certification_path), alert: todos.first
