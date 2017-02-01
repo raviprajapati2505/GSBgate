@@ -153,7 +153,7 @@ class ProjectsController < AuthenticatedController
               development_type[:id] = result.development_type_id
               development_type[:name] = result.development_type_name
             else
-              certification_path = projects[:certification_paths][cp_i]
+              certification_path = project[:certification_paths][cp_i]
             end
 
             # scheme mix
