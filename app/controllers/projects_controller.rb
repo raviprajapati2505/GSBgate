@@ -108,7 +108,8 @@ class ProjectsController < AuthenticatedController
             project[:address] = result.project_address
             project[:location] = result.project_location
             project[:country] = result.project_country
-            project[:latlng] = result.project_latlng
+            project[:latitude] = result.project_latlng.y
+            project[:longitude] = result.project_latlng.x
             project[:gross_area] = result.project_gross_area
             project[:certified_area] = result.project_certified_area
             project[:carpark_area] = result.project_carpark_area
