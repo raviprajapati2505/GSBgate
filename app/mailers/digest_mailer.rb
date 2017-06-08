@@ -28,7 +28,7 @@ class DigestMailer < ApplicationMailer
                           .where(audit_log[:updated_at].gt(user.last_notified_at)
                                      .and(audit_log[:project_id].in(ProjectsUser.where(user_id: user.id).pluck(:project_id)))
                                      .and(audit_log[:audit_log_visibility_id].eq(AuditLogVisibility::PUBLIC).or(projects_user[:user_id].eq(user.id).and(projects_user[:role].in([ProjectsUser.roles[:certification_manager], ProjectsUser.roles[:certifier]]))))
-                          )
+                          ).distinct
       end
 
       exclude_notifications = NotificationTypesUser.where(user: user, notification_type_id: NotificationType::NEW_USER_COMMENT)
