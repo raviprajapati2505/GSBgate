@@ -222,6 +222,11 @@ class Ability
       # SchemeMixCriterion
       cannot :read, SchemeMixCriterion, scheme_mix: {certification_path: {certification_path_status: {id: CertificationPathStatus::ACTIVATING}}}
       cannot :list, SchemeMixCriterion, scheme_mix: {certification_path: {certification_path_status: {id: CertificationPathStatus::ACTIVATING}}}
+      if user.gsas_trust_admin?
+        can :update_targeted_score, SchemeMixCriterion
+        can :update_submitted_score, SchemeMixCriterion
+        can :update_achieved_score, SchemeMixCriterion
+      end
       # RequirementDatum
       cannot :read, RequirementDatum, scheme_mix_criteria: {scheme_mix: {certification_path: {certification_path_status: {id: CertificationPathStatus::ACTIVATING}}}}
       # SchemeCriterionText
