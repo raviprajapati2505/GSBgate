@@ -23,12 +23,13 @@ Rails.application.routes.draw do
   match 'ssApi/*segment', to: 'tools#proxy', via: :all
 
   # Main nested resources of our application
-  resources :projects, except: [:destroy] do
+  resources :projects do
     collection do
       get 'list' => 'projects_users#list_projects'
     end
     member do
       get 'tools' => 'projects#show_tools'
+      get 'confirm_destroy' => 'projects#confirm_destroy'
     end
     resources :projects_users, only: [:create, :edit, :show, :update, :destroy], path: 'users', as: 'users', constraints: {id: /\d+/} do
       collection do

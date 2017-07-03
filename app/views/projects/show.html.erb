@@ -120,9 +120,14 @@
                 <input type="hidden" id="project_latlng" value="<%= @project.latlng %>"/>
 
                 <div id="project-map" class="map" style="height: 300px;"></div>
-                <% if can? :update, @project %>
-                    <div class="hr-line-dashed"></div>
-                    <%= btn_link_to(edit_project_path(@project), icon: 'edit', text: 'Edit') %>
+                <% if can?(:update, @project) || can?(:destroy, @project) %>
+                  <div class="hr-line-dashed"></div>
+                  <% if can? :update, @project %>
+                      <%= btn_link_to(edit_project_path(@project), icon: 'edit', text: 'Edit') %>
+                  <% end %>
+                  <% if can? :confirm_destroy, @project %>
+                      <%= btn_link_to(confirm_destroy_project_path(@project), {icon: 'trash', text: 'Delete', style: 'danger', method: :get, data: {confirm: 'Do you really want to delete this project?'}}) %>
+                  <% end %>
                 <% end %>
             </div>
         </div>

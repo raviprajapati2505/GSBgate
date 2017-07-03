@@ -279,6 +279,17 @@ class ProjectsController < AuthenticatedController
     end
   end
 
+  def confirm_destroy
+  end
+
+  def destroy
+    if @project.destroy
+      redirect_to projects_path, notice: 'The project was successfully removed.'
+    else
+      redirect_to project_path, alert: 'An error occurred when trying to remove the project. Please try again later.'
+    end
+  end
+
   private
     def set_controller_model
       @controller_model = @project

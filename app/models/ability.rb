@@ -189,6 +189,7 @@ class Ability
       can :show_tools, Project
       if user.gsas_trust_admin?
         can :update, Project
+        can [:confirm_destroy, :destroy], Project # Be careful with this!
       end
       # Project Users
       # can :list_users_sharing_projects, ProjectsUser

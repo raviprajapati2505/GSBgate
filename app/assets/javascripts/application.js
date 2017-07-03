@@ -181,6 +181,11 @@ $(function () {
             });
         });
     }
+
+    // Enable delete button after a word is typed in a confirmation text box
+    $('body').on('keyup', '#confirm_deletion', function() {
+        $("#delete-button").prop('disabled', ($(this).val() != 'delete'));
+    });
 });
 
 // General GSAS functions

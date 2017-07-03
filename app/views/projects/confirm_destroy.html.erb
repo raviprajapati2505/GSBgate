@@ -1,0 +1,25 @@
+<% # Added an extra ability check in the view to be super safe %>
+<% if can?(:destroy, @project) %>
+  <div class="row">
+    <div class="col-md-3">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <h5>Confirm deletion of project <%= @project.name %></h5>
+        </div>
+        <div class="ibox-content">
+          <div class="alert alert-danger"><%= ikoen('exclamation-triangle') %>
+          You are about to delete project <strong><%= @project.name %></strong> (<strong><%= @project.code %></strong>) and all its certifications, scores, documents, audit logs ...</div>
+          <%= bootstrap_form_for(@project, method: :delete) do |f| %>
+              <div class="form-group">
+                <%= label_tag :confirm_deletion, 'To confirm the deletion, please type the word "delete" in the textbox below and click on the button.', class: 'control-label' %>
+                <%= text_field_tag :confirm_deletion, '', class: 'form-control', autocomplete: false %>
+              </div>
+              <%= btn_tag({id: 'delete-button', icon: 'trash', text: 'Delete the project', style: 'danger', disabled: true}) %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% else %>
+    Access denied.
+<% end %>
