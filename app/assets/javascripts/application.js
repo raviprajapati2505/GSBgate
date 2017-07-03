@@ -110,7 +110,7 @@ $(function () {
     };
 
     // Scroll to hash
-    if (window.location.hash) {
+    if (window.location.hash && ($(window.location.hash).length > 0)) {
         $('html, body').animate({
             scrollTop: $(window.location.hash).offset().top
         }, 1000, function() {
