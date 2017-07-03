@@ -112,7 +112,12 @@ class DigestMailer < ApplicationMailer
       @more_tasks = 0
     end
 
-    mail(to: @user.email, subject: 'GSASgate - progress report') unless (@tasks.empty? && @audit_logs.empty?)
+    if (@user.gsas_trust_manager? || @user.gsas_trust_top_manager?)
+      subject = 'Tasks for approval for GORD Management ( Dr. Yousef & Dr. Esam )'
+    else
+      subject = 'GSASgate - progress report'
+    end
+    mail(to: @user.email, subject: subject) unless (@tasks.empty? && @audit_logs.empty?)
 
     user.last_notified_at = DateTime.current
     user.save!
