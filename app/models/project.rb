@@ -19,6 +19,10 @@ class Project < ActiveRecord::Base
   validates :address, presence: true
   validates :location, presence: true
   validates :country, presence: true
+  validates :location_plan_file, presence: true
+  validates :site_plan_file, presence: true
+  validates :design_brief_file, presence: true
+  validates :project_narrative_file, presence: true
   validates :gross_area, numericality: { greater_than_or_equal_to: 0 }
   validates :certified_area, numericality: { greater_than_or_equal_to: 0 }
   validates :carpark_area, numericality: { greater_than_or_equal_to: 0 }
@@ -31,6 +35,7 @@ class Project < ActiveRecord::Base
   validates :project_narrative_file, file_size: {maximum: MAXIMUM_DOCUMENT_FILE_SIZE.megabytes.to_i }
 
   after_initialize :init
+  after_create :send_project_registered_email
 
   mount_uploader :location_plan_file, GeneralSubmittalUploader
   mount_uploader :site_plan_file, GeneralSubmittalUploader
@@ -90,6 +95,7 @@ class Project < ActiveRecord::Base
   #   return false
   # end
 
+  private
   def init
     if self.has_attribute?('code')
       # Set default code
@@ -100,5 +106,9 @@ class Project < ActiveRecord::Base
       # Set default latlng location to Doha, Qatar
       self.latlng ||= 'POINT(51.53043679999996 25.2916097)'
     end
+  end
+
+  def send_project_registered_email
+    DigestMailer.project_registered_email(self).deliver_now
   end
 end

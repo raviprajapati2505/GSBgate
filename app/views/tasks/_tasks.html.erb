@@ -21,11 +21,7 @@
                       breadcrumbs = breadcrumbs(task.taskable, with_prefix: false)
                  %>
                     <tr>
-                        <% if task.task_description_id == Taskable::PROJ_MNGR_GEN %>
-                        <td><%= link_to(t(".description_#{task.task_description_id}"), edit_project_path(task.project_id)) %></td>
-                        <% else %>
                         <td><%= link_to(t(".description_#{task.task_description_id}"), breadcrumbs[:paths].last) %></td>
-                        <% end %>
                         <td><%= render 'layouts/breadcrumb', model: task.taskable %></td>
                         <td>-</td>
                     </tr>

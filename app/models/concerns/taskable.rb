@@ -23,7 +23,7 @@ module Taskable
   PROJ_MNGR_DOC_APPROVE = 29
   PROJ_MNGR_APPLY = 30
   PROJ_MNGR_ASSIGN_AFTER_APPEAL = 31
-  PROJ_MNGR_GEN = 32
+  PROJ_MNGR_GEN = 32 # This task is removed
   SYS_ADMIN_DURATION = 33
   PROJ_MNGR_OVERDUE = 34
   CERT_MNGR_OVERDUE = 35
@@ -92,12 +92,6 @@ module Taskable
   def handle_created_project
     # Create a project manager task to apply for a certificate
     Task.create(taskable: self, task_description_id: PROJ_MNGR_APPLY, project_role: ProjectsUser.roles[:cgp_project_manager], project: self)
-    if self.location_plan_file.blank? || self.site_plan_file.blank? || self.design_brief_file.blank? || self.project_narrative_file.blank?
-      # Create a project manager task to provide the 'general submittal' documents
-      Task.create(taskable: self, task_description_id: PROJ_MNGR_GEN, project_role: ProjectsUser.roles[:cgp_project_manager], project: self)
-    else
-      DigestMailer.project_registered_email(self).deliver_now
-    end
   end
 
   def handle_created_projects_user
@@ -147,18 +141,6 @@ module Taskable
   end
 
   def handle_updated_project
-    if self.location_plan_file_changed? || self.site_plan_file_changed? || self.design_brief_file_changed? || self.project_narrative_file_changed?
-      if self.location_plan_file.blank? || self.site_plan_file.blank? || self.design_brief_file.blank? || self.project_narrative_file.blank?
-        # Create a project manager task to provide the 'general submittal' documents if it not already exists
-        unless self.location_plan_file_was.blank? || self.site_plan_file_was.blank? || self.design_brief_file_was.blank? || self.project_narrative_file_was.blank?
-          # Create a project manager task to provide the 'general submittal' documents
-          Task.create(taskable: self, task_description_id: PROJ_MNGR_GEN, project_role: ProjectsUser.roles[:cgp_project_manager], project: self)
-        end
-      else
-        Task.delete_all(taskable: self, task_description_id: PROJ_MNGR_GEN)
-        DigestMailer.project_registered_email(self).deliver_now
-      end
-    end
   end
 
   def handle_updated_projects_user

@@ -35,11 +35,7 @@
                 %>
                         <tr>
                             <td style='font-size: 9pt; font-family: "Verdana", "sans-serif";'><%= t("description_#{task.task_description_id}", scope: [:tasks, :tasks]) %></td>
-                            <% if task.task_description_id == Taskable::PROJ_MNGR_GEN %>
-                                <td style='font-size: 9pt; font-family: "Verdana", "sans-serif";'><%= link_to breadcrumbs[:names].last, edit_project_url(task.project_id) %></td>
-                            <% else %>
-                                <td style='font-size: 9pt; font-family: "Verdana", "sans-serif";'><%= link_to breadcrumbs[:names].last, breadcrumbs[:paths].last %></td>
-                            <% end %>
+                            <td style='font-size: 9pt; font-family: "Verdana", "sans-serif";'><%= link_to breadcrumbs[:names].last, breadcrumbs[:paths].last %></td>
                             <td>-</td>
                         </tr>
                     <%  when CertificationPath.name.demodulize
