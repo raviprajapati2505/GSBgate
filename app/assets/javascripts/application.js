@@ -119,11 +119,27 @@ $(function () {
         });
     }
 
-    // Audit log modal
+    // Audit log modal (click add comment button)
     $('body').on('click', '.audit-log-modal .add-comment-button', function() {
         $(this).hide();
         $('.audit-log-modal .feed-activity-list').hide();
         $('.audit-log-modal .comment-form').show();
+    });
+
+    // Audit log modal (toggle duplicate comment button visibility)
+    $('body').on('mouseenter', '.audit-log-modal .user-comment', function() {
+        $(this).find('.duplicate-comment-button').show();
+    });
+    $('body').on('mouseleave', '.audit-log-modal .user-comment', function() {
+        $(this).find('.duplicate-comment-button').hide();
+    });
+
+    // Audit log modal (click duplicate comment button)
+    $('body').on('click', '.audit-log-modal .duplicate-comment-button', function() {
+        $('.audit-log-modal .add-comment-button').hide();
+        $('.audit-log-modal .feed-activity-list').hide();
+        $('.audit-log-modal .comment-form').show();
+        $('.audit-log-modal #audit_log_user_comment').val($(this).data('comment'));
     });
 
     // Flash messages

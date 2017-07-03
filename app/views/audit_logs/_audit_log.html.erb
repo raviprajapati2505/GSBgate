@@ -15,9 +15,16 @@
         <% end %>
         <% if audit_log.user_comment.present? %>
             <% projects_user = ProjectsUser.find_by(user_id: audit_log.user_id, project_id: audit_log.project_id) %>
-            <div class="well <% if (projects_user.present? && projects_user.project_team?) %>user-comment-project-team<% else %>user-comment-gsas-trust-team<%end %>">
+            <div class="well user-comment <% if (projects_user.present? && projects_user.project_team?) %>user-comment-project-team<% else %>user-comment-gsas-trust-team<%end %>">
                 <% # Don't make user input html_safe %>
-                <i class="fa fa-comment" title="User comment" style="margin-right: 2px;"></i><% if audit_log.audit_log_visibility_id != AuditLogVisibility::PUBLIC %><i class="fa fa-lock" title="GSAS trust internal" style="margin-right: 2px;"></i><% end %> <%= audit_log.user_comment %>
+                <%= ikoen('comment', size: :small, title: 'User comment') %>
+                <% if audit_log.audit_log_visibility_id != AuditLogVisibility::PUBLIC %>
+                  <%= ikoen('lock', size: :small, title: 'GSAS trust internal') %>
+                <% end %>
+                <%= audit_log.user_comment %>
+                <a href="#" class="btn btn-sm btn-default pull-right duplicate-comment-button" data-comment="<%= audit_log.user_comment %>" style="display:none;">
+                  <%= ikoen('copy', size: :small, title: 'Duplicate (and modify) this comment') %>
+                </a>
             </div>
         <% end %>
     </div>

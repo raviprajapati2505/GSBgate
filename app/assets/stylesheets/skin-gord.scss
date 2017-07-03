@@ -808,6 +808,16 @@
     }
   }
 
+  .user-comment {
+    position: relative;
+
+    .duplicate-comment-button {
+      position: absolute;
+      bottom: 3px;
+      right: 5px;
+    }
+  }
+
   // Sortable list
   .sortable {
     .panel {
