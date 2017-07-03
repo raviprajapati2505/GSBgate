@@ -146,7 +146,7 @@ class CertificationPathsController < AuthenticatedController
   end
 
   def cancel_pcr
-    if @certification_path.update!(:pcr_track => false, :pcr_track_allowed => false)
+    if @certification_path.update!(:pcr_track => false)
       redirect_to project_certification_path_path(@project, @certification_path), notice: 'PCR is cancelled'
     end
   end

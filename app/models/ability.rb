@@ -203,6 +203,7 @@ class Ability
       # Certification Path
       can :list, CertificationPath
       can :apply_for_pcr, CertificationPath, pcr_track: false
+      can :cancel_pcr, CertificationPath, pcr_track: true
       can [:download_certificate_report, :download_coverletter_report, :download_scores_report], CertificationPath
       can :download_archive, CertificationPath
       if user.gsas_trust_admin?
