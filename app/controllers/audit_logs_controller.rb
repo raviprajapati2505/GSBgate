@@ -89,6 +89,7 @@ class AuditLogsController < AuthenticatedController
   end
 
   def auditable_index
+    @project = @auditable.get_project
     projects_user = ProjectsUser.for_project(@auditable.get_project).for_user(current_user).first
     if projects_user.nil?
       @audit_logs = AuditLog.for_auditable(@auditable).page(params[:page]).per(6)
