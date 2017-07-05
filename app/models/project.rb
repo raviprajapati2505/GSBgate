@@ -13,6 +13,8 @@ class Project < ActiveRecord::Base
   has_many :certification_path_statuses, through: :certification_paths
   has_many :notification_types_users, dependent: :destroy
   has_many :project_audit_logs, class_name: 'AuditLog', foreign_key: 'project_id', dependent: :destroy
+  belongs_to :building_type_group
+  belongs_to :building_type
 
   validates :name, presence: true
   validates :owner, presence: true
@@ -23,6 +25,8 @@ class Project < ActiveRecord::Base
   validates :site_plan_file, presence: true
   validates :design_brief_file, presence: true
   validates :project_narrative_file, presence: true
+  validates :building_type_id, presence: true
+  validates :building_type_group_id, presence: true
   validates :gross_area, numericality: { greater_than_or_equal_to: 0 }
   validates :certified_area, numericality: { greater_than_or_equal_to: 0 }
   validates :carpark_area, numericality: { greater_than_or_equal_to: 0 }

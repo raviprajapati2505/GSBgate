@@ -1,6 +1,6 @@
 <% use_gmaps_for(:project) %>
 
-<%= bootstrap_form_for(@project) do |f| %>
+<%= bootstrap_form_for(@project, html: { class: 'project-form' }) do |f| %>
     <div class="row">
         <div class="col-lg-12">
             <div class="ibox">
@@ -21,6 +21,10 @@
                               <input type="hidden" class="select2-ajax">
                             <% end %>
                             <%= f.text_field :developer %>
+                            <%= f.select(:building_type_group_id, options_from_collection_for_select(BuildingTypeGroup.all.order(:name), :id, :name, @project.building_type_group_id), {include_blank: '- Select a predefined building type category -', placeholder: 'qsdf', class: 'form-control'}) %>
+                            <div id="building-type-select">
+                              <%= f.select(:building_type_id, options_for_select(BuildingType.all.map{ |bt| [bt.name, bt.id, {'data-building-type-group-id' => bt.building_type_group_id}]}, @project.building_type_id), {include_blank: '- Select a predefined building type -', class: 'form-control'}) %>
+                            </div>
                             <%= f.text_area :description %>
                             <%= f.text_field :construction_year %>
                             <%= f.text_area :address %>

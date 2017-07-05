@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170703114201) do
+ActiveRecord::Schema.define(version: 20170704074751) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -48,6 +48,21 @@ ActiveRecord::Schema.define(version: 20170703114201) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  create_table "building_type_groups", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "building_types", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "building_type_group_id"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  add_index "building_types", ["building_type_group_id"], name: "index_building_types_on_building_type_group_id", using: :btree
 
   create_table "calculator_data", force: :cascade do |t|
     t.integer  "calculator_id"
@@ -212,7 +227,12 @@ ActiveRecord::Schema.define(version: 20170703114201) do
     t.string    "owner",                                                                           default: "", null: false
     t.string    "service_provider",                                                                default: "", null: false
     t.string    "developer"
+    t.integer   "building_type_group_id"
+    t.integer   "building_type_id"
   end
+
+  add_index "projects", ["building_type_group_id"], name: "index_projects_on_building_type_group_id", using: :btree
+  add_index "projects", ["building_type_id"], name: "index_projects_on_building_type_id", using: :btree
 
   create_table "projects_users", force: :cascade do |t|
     t.integer  "user_id"
@@ -416,6 +436,7 @@ ActiveRecord::Schema.define(version: 20170703114201) do
   add_foreign_key "audit_logs", "audit_log_visibilities"
   add_foreign_key "audit_logs", "projects"
   add_foreign_key "audit_logs", "users"
+  add_foreign_key "building_types", "building_type_groups"
   add_foreign_key "calculator_data", "calculators"
   add_foreign_key "certification_paths", "certificates"
   add_foreign_key "certification_paths", "certification_path_statuses"
@@ -431,6 +452,8 @@ ActiveRecord::Schema.define(version: 20170703114201) do
   add_foreign_key "notification_types_users", "notification_types"
   add_foreign_key "notification_types_users", "projects"
   add_foreign_key "notification_types_users", "users"
+  add_foreign_key "projects", "building_type_groups"
+  add_foreign_key "projects", "building_types"
   add_foreign_key "projects_users", "projects"
   add_foreign_key "projects_users", "users"
   add_foreign_key "requirement_data", "requirements"

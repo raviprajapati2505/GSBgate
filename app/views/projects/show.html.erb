@@ -31,6 +31,14 @@
                         <td><%= @project.developer %></td>
                     </tr>
                     <tr>
+                        <th><%= Project.human_attribute_name('building_type_group_id') %></th>
+                        <td><%= @project.building_type_group.name if @project.building_type_group.present? %></td>
+                    </tr>
+                    <tr>
+                      <th><%= Project.human_attribute_name('building_type_id') %></th>
+                      <td><%= @project.building_type.name if @project.building_type.present? %></td>
+                    </tr>
+                    <tr>
                         <th><%= Project.human_attribute_name('description') %></th>
                         <td><%= @project.description %></td>
                     </tr>

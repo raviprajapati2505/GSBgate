@@ -186,6 +186,24 @@ $(function () {
     $('body').on('keyup', '#confirm_deletion', function() {
         $("#delete-button").prop('disabled', ($(this).val() != 'delete'));
     });
+
+    // Building type group & building type dropdowns in project form
+    $('.project-form').on('change', '#project_building_type_group_id', function(event, wasTriggered) {
+        $('.project-form #building-type-select select option').hide();
+
+        if ($(this).val() == '') {
+            $('.project-form #building-type-select').hide();
+        }
+        else {
+            $(".project-form #building-type-select option[data-building-type-group-id=" + $(this).val() + "]").show();
+            $('.project-form #building-type-select').show();
+        }
+
+        if (!wasTriggered) {
+            $('.project-form #building-type-select option:first').show().prop('selected', true);
+        }
+    });
+    $('.project-form #project_building_type_group_id').trigger('change', true);
 });
 
 // General GSAS functions
