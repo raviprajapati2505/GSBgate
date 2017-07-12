@@ -297,7 +297,7 @@ class ChangeCriteriaWeights < ActiveRecord::Migration
                            '<tr><td><p>0</p></td><td><p>Facility Management Plan does not demonstrate compliance.</p></td></tr>' \
                            '<tr><td><p>1</p></td><td><p>Facility Management Plan demonstrates partial compliance.</p></td></tr>' \
                            '<tr><td><p>3</p></td><td><p>Facility Management Plan demonstrates full compliance.*</p></td></tr></tbody></table>' \
-                           '<p></p><p>&nbsp;</p><p>*</p>'
+                           '<p></p><p>&nbsp;</p><p>* Facility Management includes strategic planning for 2-5 years plan.</p>'
           end
           text.save!
         end
