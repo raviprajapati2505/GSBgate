@@ -195,7 +195,7 @@ module Auditable
             end
           end
         when RequirementDatum.name.demodulize
-          if (action != AUDIT_LOG_CREATE)
+          if ((action == AUDIT_LOG_UPDATE) || (action == AUDIT_LOG_TOUCH))
             project = self.scheme_mix_criteria.take.scheme_mix.certification_path.project
             certification_path = self.scheme_mix_criteria.take.scheme_mix.certification_path
           end
