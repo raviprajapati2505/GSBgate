@@ -276,7 +276,8 @@ module Auditable
             audit_log_visibility_id: visibility)
       end
     rescue NoMethodError => e
-      Rails.logger.error 'Error when creating an audit log: ' + e.to_s
+      Rails.logger.error "Error when creating an audit log for #{self.class.name} ##{self.id}: #{e.to_s}"
+      Rails.logger.error e.backtrace.join("\n")
     end
   end
 end
