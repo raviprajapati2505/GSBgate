@@ -204,6 +204,18 @@ $(function () {
         }
     });
     $('.project-form #project_building_type_group_id').trigger('change', true);
+
+    // Turn document table in standard jQuery DataTable for sorting
+    $('.document-table').DataTable({
+        buttons: [],
+        paging: false,
+        info: false,
+        order: [[3, "desc"]],
+        columnDefs: [{
+            "targets": 5,
+            "orderable": false
+        }]
+    });
 });
 
 // General GSAS functions

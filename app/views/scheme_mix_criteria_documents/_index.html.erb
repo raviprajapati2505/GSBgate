@@ -1,7 +1,7 @@
 <% if scheme_mix_criteria_documents.blank? %>
     No documentation was uploaded yet.
 <% else %>
-    <table class="table table-bordered datatable document-table" cellspacing="0" width="100%">
+    <table class="table table-bordered document-table" cellspacing="0" width="100%">
         <thead>
         <tr>
             <th class="all">File&nbsp;name</th>
@@ -13,16 +13,16 @@
         </tr>
         </thead>
         <tbody>
-        <% scheme_mix_criteria_documents.each do |smcd| %>
+        <% scheme_mix_criteria_documents.order(created_at: :desc).each do |smcd| %>
             <% if can?(:read, smcd) %>
                 <tr class="document-<%= smcd.status.dasherize %>">
                     <td data-order="<%= smcd.name %>" data-search="<%= smcd.name %>">
                         <%= image_tag(icon_for_filename(smcd.name), alt: smcd.content_type, title: smcd.content_type) + ' ' + smcd.name %>
                     </td>
-                    <td><%= number_to_human_size(smcd.size) %></td>
+                    <td data-order="<%= smcd.size %>"><%= number_to_human_size(smcd.size) %></td>
                     <td><%= smcd.document.user.full_name %></td>
-                    <td data-order="<%= localize(smcd.document.created_at) %>" data-search="<%= localize(smcd.document.created_at) %>"><%= localize(smcd.document.created_at).gsub(' ', '&nbsp;').html_safe %></td>
-                    <td data-order="<%= smcd.status.humanize %>" data-search="<%= smcd.status.humanize %>">
+                    <td data-order="<%= smcd.document.created_at.to_i %>"><%= localize(smcd.document.created_at).gsub(' ', '&nbsp;').html_safe %></td>
+                    <td data-order="<%= smcd.status.humanize %>">
                         <% if can?(:update_status, smcd) %>
                             <%= link_to(edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, smcd), remote: true) do %>
                                 <%= smcd.status.humanize.gsub(' ', '&nbsp;').html_safe %>
