@@ -36,7 +36,7 @@ Rails.application.routes.draw do
         get 'available/:role' => 'projects_users#available', as: 'available', default: {role: 'all'}, constraints: {role: /all|default_role/}
       end
     end
-    resources :certification_paths, except: [:index, :edit, :destroy, :update], path: 'certificates' do
+    resources :certification_paths, except: [:index, :edit, :update], path: 'certificates' do
       collection do
         get 'list'
       end
@@ -51,6 +51,7 @@ Rails.application.routes.draw do
         get 'edit_certifier_team_responsibility', path: 'edit-certifier-team-responsibility'
         get 'edit_main_scheme_mix', path: 'edit-main-scheme-mix'
         get 'edit_max_review_count'
+        get 'confirm_destroy' => 'certification_paths#confirm_destroy'
         put 'update_status'
         put 'apply_for_pcr'
         put 'approve_pcr_payment'

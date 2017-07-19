@@ -6,6 +6,9 @@
                 <%= can_link_to(project_certification_path_path(project, certification_path), certification_path) do %>
                     <%= certification_path.certificate.full_name %>
                 <% end %>
+                <% if can? :confirm_destroy, @certification_path %>
+                    <%= btn_link_to(confirm_destroy_project_certification_path_path(@project, certification_path), {icon: 'trash', style: 'danger', size: 'extra_small', method: :get, data: {confirm: 'Do you really want to delete this certification?'}}) %>
+                <% end %>
             </div>
             <div class="col-lg-3 col-sm-6">
                 <%= certification_path.status.humanize %>

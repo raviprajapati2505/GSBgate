@@ -364,6 +364,17 @@ class CertificationPathsController < AuthenticatedController
   #   send_file filepath, :type => 'application/pdf', :x_sendfile => true
   # end
 
+  def confirm_destroy
+  end
+
+  def destroy
+    if @certification_path.destroy
+      redirect_to project_path(@project), notice: 'The certification was successfully removed.'
+    else
+      redirect_to project_path(@project), alert: 'An error occurred when trying to remove the certification. Please try again later.'
+    end
+  end
+
   private
 
   def set_controller_model

@@ -213,6 +213,7 @@ class Ability
         can [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::STATUSES_AT_PROJECT_TEAM_SIDE}
         can [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::STATUSES_AT_CERTIFIER_SIDE}
         can [:edit_max_review_count, :update_max_review_count], CertificationPath
+        can [:confirm_destroy, :destroy], CertificationPath # Be careful with this!
       elsif user.gsas_trust_top_manager?
         can [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT}
       elsif user.gsas_trust_manager?
