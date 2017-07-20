@@ -1,5 +1,6 @@
 class CertificationPathsController < AuthenticatedController
   include ActionView::Helpers::TranslationHelper
+  include ApplicationHelper
   load_and_authorize_resource :project
   load_and_authorize_resource :certification_path, :through => :project
 
@@ -182,8 +183,7 @@ class CertificationPathsController < AuthenticatedController
   end
 
   def download_archive
-    temp_file = Tempfile.new(request.remote_ip)
-    DocumentArchiverService.instance.create_archive(@certification_path, temp_file)
+    temp_file = DocumentArchiverService.instance.create_certification_path_archive(@certification_path)
     send_file temp_file.path, type: 'application/zip', disposition: 'attachment', filename: sanitize_filename(@certification_path.project.name + ' - ' + @certification_path.name) + ' - ' + Time.new.strftime(t('time.formats.filename'))  + '.zip'
     temp_file.close
   end
@@ -398,12 +398,6 @@ class CertificationPathsController < AuthenticatedController
 
   def certification_path_params
     params.require(:certification_path).permit(:project_id, :certificate_id, :pcr_track, :duration, :started_at, :development_type, :appealed, :audit_log_user_comment, :audit_log_visibility)
-  end
-
-  def sanitize_filename(name)
-    name.gsub!(/[^a-zA-Z0-9\.\-\+_ ]/, '_')
-    name = "_#{name}" if name =~ /^\.+$/
-    name
   end
 
   def filepath_for_report(report_name)

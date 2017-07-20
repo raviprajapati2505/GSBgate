@@ -389,4 +389,10 @@ module ApplicationHelper
     ext = file_extension.start_with?('.') ? file_extension[1..-1] : file_extension
     FILEICON_EXTENSIONS[ext.downcase] || 'fileicons/file_extension_unknown.png'
   end
+
+  def sanitize_filename(name)
+    name.gsub!(/[^a-zA-Z0-9\.\-\+_ ]/, '_')
+    name = "_#{name}" if name =~ /^\.+$/
+    name
+  end
 end

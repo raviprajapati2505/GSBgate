@@ -1,4 +1,5 @@
 class SchemeMixCriteriaController < AuthenticatedController
+  include ApplicationHelper
   load_and_authorize_resource :project
   load_and_authorize_resource :certification_path, :through => :project
   load_and_authorize_resource :scheme_mix, :through => :certification_path
@@ -138,6 +139,12 @@ class SchemeMixCriteriaController < AuthenticatedController
     end
     flash[:notice] = 'Criterion review submitted.'
     redirect_to project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion)
+  end
+
+  def download_archive
+    temp_file = DocumentArchiverService.instance.create_scheme_mix_criterion_archive(@scheme_mix_criterion)
+    send_file temp_file.path, type: 'application/zip', disposition: 'attachment', filename: sanitize_filename(@certification_path.project.name + ' - ' + @certification_path.name + ' - ' + @scheme_mix.name + ' - ' + @scheme_mix_criterion.code + ' ' + @scheme_mix_criterion.name) + ' - ' + Time.new.strftime(t('time.formats.filename'))  + '.zip'
+    temp_file.close
   end
 
   private

@@ -7,7 +7,10 @@ class DocumentArchiverService
   CSV_COL_SEPARATOR = ';'
 
   # Creates a file archive of all approved documents in a certification path and related audit logs
-  def create_archive(certification_path, temp_file)
+  def create_certification_path_archive(certification_path)
+    # Create a temporary file that can later be streamed
+    temp_file = Tempfile.new(Time.now.to_i.to_s + '_c_' + certification_path.id.to_s)
+
     # Create the zipped output stream
     Zip::OutputStream.open(temp_file) do |zos|
       # Loop over all approved documents in the certification path
@@ -45,4 +48,26 @@ class DocumentArchiverService
     temp_file
   end
 
+  # Creates a file archive of all approved documents in a scheme mix criterion
+  def create_scheme_mix_criterion_archive(scheme_mix_criterion)
+    # Create a temporary file that can later be streamed
+    temp_file = Tempfile.new(Time.now.to_i.to_s + '_smc_' + scheme_mix_criterion.id.to_s)
+
+    # Create the zipped output stream
+    Zip::OutputStream.open(temp_file) do |zos|
+      # Loop over all approved documents in the scheme mix criterion
+      scheme_mix_criterion.scheme_mix_criteria_documents.approved.each do |smcd|
+        if smcd.document.document_file.present?
+          file_name = smcd.document.id.to_s + '_' + smcd.name
+          file_path = smcd.path
+
+          # Add the document to the archive
+          zos.put_next_entry(file_name)
+          zos << IO.read(file_path)
+        end
+      end
+    end
+
+    temp_file
+  end
 end

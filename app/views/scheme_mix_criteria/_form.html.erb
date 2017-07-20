@@ -251,6 +251,9 @@
         <div class="ibox" id="documentation">
             <div class="ibox-title">
                 <h5>Documentation</h5>
+                <% if can?(:download_archive, @scheme_mix_criterion) && @scheme_mix_criterion.scheme_mix_criteria_documents.any? %>
+                  <%= btn_download(archive_project_certification_path_scheme_mix_scheme_mix_criterion_path, text: 'Download all approved documents', size: 'extra_small', class: 'pull-right') %>
+                <% end %>
             </div>
             <div class="ibox-content">
                 <%= render 'scheme_mix_criteria_documents/index', scheme_mix_criteria_documents: @scheme_mix_criterion.scheme_mix_criteria_documents %>

@@ -113,6 +113,7 @@ class Ability
       # SchemeMixCriterion controller
       can :read, SchemeMixCriterion, scheme_mix: {certification_path: {project: project_with_user_assigned, certification_path_status: {id: CertificationPathStatus::STATUSES_ACTIVATED}}}
       can :list, SchemeMixCriterion, scheme_mix: {certification_path: {project: project_with_user_assigned, certification_path_status: {id: CertificationPathStatus::STATUSES_ACTIVATED}}}
+      can :download_archive, SchemeMixCriterion, scheme_mix: {certification_path: {project: project_with_user_assigned, certification_path_status: {id: CertificationPathStatus::STATUSES_ACTIVATED}}}
       # Project team
       can [:edit_status, :update_status], SchemeMixCriterion, main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_submitting, scheme_mix: {certification_path: {certification_path_status: {id: CertificationPathStatus::STATUSES_IN_SUBMISSION}, project: project_with_user_as_cgp_project_manager}}
       # allows a submitted state, to be reset
@@ -230,6 +231,7 @@ class Ability
         can :update_submitted_score, SchemeMixCriterion
         can :update_achieved_score, SchemeMixCriterion
       end
+      can :download_archive, SchemeMixCriterion, scheme_mix: {certification_path: {certification_path_status: {id: CertificationPathStatus::STATUSES_ACTIVATED}}}
       # RequirementDatum
       cannot :read, RequirementDatum, scheme_mix_criteria: {scheme_mix: {certification_path: {certification_path_status: {id: CertificationPathStatus::ACTIVATING}}}}
       # SchemeCriterionText
