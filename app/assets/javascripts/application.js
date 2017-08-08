@@ -213,8 +213,7 @@ $(function () {
         order: [[3, "desc"]],
         columnDefs: [{
             "targets": 6,
-            "orderable": false,
-            "width": "200px"
+            "orderable": false
         }]
     });
 });
