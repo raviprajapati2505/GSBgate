@@ -212,8 +212,9 @@ $(function () {
         info: false,
         order: [[3, "desc"]],
         columnDefs: [{
-            "targets": 5,
-            "orderable": false
+            "targets": 6,
+            "orderable": false,
+            "width": "200px"
         }]
     });
 });

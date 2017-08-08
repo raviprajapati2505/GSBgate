@@ -16,6 +16,7 @@ class DocumentsController < AuthenticatedController
         # Add the user comment to all scheme_mix_criteria_documents
         @document.scheme_mix_criteria_documents.each do |scheme_mix_criteria_document|
           scheme_mix_criteria_document.audit_log_user_comment = params[:scheme_mix_criteria_document]['audit_log_user_comment']
+          scheme_mix_criteria_document.pcr_context = scheme_mix_criteria_document.scheme_mix_criterion.review_count if scheme_mix_criteria_document.scheme_mix_criterion.in_review
         end
         if @document.save
           format.html { redirect_to :back, notice: 'The document was successfully uploaded.' }

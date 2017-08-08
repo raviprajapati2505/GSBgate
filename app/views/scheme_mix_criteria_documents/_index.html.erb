@@ -8,6 +8,7 @@
             <th class="desktop">File&nbsp;size</th>
             <th class="desktop">Uploaded&nbsp;by</th>
             <th class="desktop">Upload&nbsp;date</th>
+            <th class="all">PCR</th>
             <th class="all">Status</th>
             <th class="all">Actions</th>
         </tr>
@@ -22,6 +23,7 @@
                     <td data-order="<%= smcd.size %>"><%= number_to_human_size(smcd.size) %></td>
                     <td><%= smcd.document.user.full_name %></td>
                     <td data-order="<%= smcd.document.created_at.to_i %>"><%= localize(smcd.document.created_at).gsub(' ', '&nbsp;').html_safe %></td>
+                    <td><%= smcd.pcr_context %></td>
                     <td data-order="<%= smcd.status.humanize %>">
                         <% if can?(:update_status, smcd) %>
                             <%= link_to(edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, smcd), remote: true) do %>
