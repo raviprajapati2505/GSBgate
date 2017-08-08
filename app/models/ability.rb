@@ -234,8 +234,12 @@ class Ability
       can :download_archive, SchemeMixCriterion, scheme_mix: {certification_path: {certification_path_status: {id: CertificationPathStatus::STATUSES_ACTIVATED}}}
       # RequirementDatum
       cannot :read, RequirementDatum, scheme_mix_criteria: {scheme_mix: {certification_path: {certification_path_status: {id: CertificationPathStatus::ACTIVATING}}}}
-      # SchemeCriterionText
       if user.gsas_trust_admin?
+        # Document
+        can [:create, :destroy], Document
+        # SchemeMixCriteriaDocument
+        can [:update_status, :edit_status, :create_link, :new_link, :unlink, :destroy_link], SchemeMixCriteriaDocument
+        # SchemeCriterionText
         can :crud, SchemeCriterionText
       end
       # Audit log
