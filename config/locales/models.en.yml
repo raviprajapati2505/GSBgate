@@ -167,8 +167,12 @@ en:
             label: Certification Targeted Score
           schemes_array:
             label: Certification Typologies
+          cgp_project_manager_array:
+            label: CGP project manager
           project_team_array:
             label: Project team
+          certification_manager_array:
+            label: Certification manager
           gsas_trust_team_array:
             label: GSAS trust team
           enterprise_clients_array:
