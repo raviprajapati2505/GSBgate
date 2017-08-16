@@ -1,21 +1,11 @@
-<% has_loc = CertificationPath.with_project(project).with_certification_type(Certificate.certification_types[:letter_of_conformance]).any? %>
-<% has_construction = CertificationPath.with_project(project).with_certification_type(Certificate.certification_types[:construction_certificate]).any? %>
-<% has_operations = CertificationPath.with_project(project).with_certification_type(Certificate.certification_types[:operations_certificate]).any? %>
-
-<% unless has_construction || has_operations %>
 <ul class="list-group">
     <%= render partial: 'certification_paths/overview_item', locals: { project: project, certification_type: Certificate.certification_types[:letter_of_conformance] } %>
     <%= render partial: 'certification_paths/overview_item', locals: { project: project, certification_type: Certificate.certification_types[:final_design_certificate] } %>
 </ul>
-<% end %>
-<% unless has_loc || has_operations %>
 <ul class="list-group">
     <%= render partial: 'certification_paths/overview_item', locals: { project: project, certification_type: Certificate.certification_types[:construction_certificate] } %>
 </ul>
-<% end %>
-<% unless has_loc || has_construction %>
 <ul class="list-group">
     <%= render partial: 'certification_paths/overview_item', locals: { project: project, certification_type: Certificate.certification_types[:operations_certificate] } %>
 </ul>
-<% end %>
 <div id="applyForCertificateModal" class="modal fade"></div>

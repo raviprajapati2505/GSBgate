@@ -40,9 +40,9 @@
                     Not yet registered
                 </span>
                 <span class="col-md-4">
-                        <% if can? :apply, @certification_path, :project => @project %>
-                            <%= btn_link_to(apply_certification_path_path(@project, certification_type), text: 'Apply', icon: 'play', action: :post, remote: true) %>
-                        <% end %>
+                  <% if can?(:apply, @certification_path, project: @project) && (project.certification_paths.empty? || ((certification_type == Certificate.certification_types[:final_design_certificate]) && project.completed_letter_of_conformances.any?)) %>
+                      <%= btn_link_to(apply_certification_path_path(@project, certification_type), text: 'Apply', icon: 'play', action: :post, remote: true) %>
+                  <% end %>
                 </span>
             <% end %>
         </div>
