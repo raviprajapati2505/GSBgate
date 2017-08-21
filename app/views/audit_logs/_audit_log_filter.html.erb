@@ -50,9 +50,9 @@
             </div>
         </div>
     </div>
-    <div class="checkbox">
-        <%= check_box_tag 'only_user_comments', 1, session[:audit]['only_comments'] %>
-        <%= label_tag 'only_user_comments', 'Only show user comments' %>
+    <div class="form-group">
+      <%= label_tag 'audit_log_type', 'Audit log type' %>
+      <%= select_tag 'audit_log_type', options_for_select([['Show all audit logs', 'all'], ['Only show audit logs with a user comment', 'user_comment'], ['Only show audit logs with an attachment', 'attachment']], session[:audit]['audit_log_type']), class: 'form-control' %>
     </div>
     <div class="hr-line-dashed"></div>
     <%= btn_tag(text: 'Apply filter', value: 'Apply_audit_filter', icon: 'filter') %>

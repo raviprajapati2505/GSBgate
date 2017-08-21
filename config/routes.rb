@@ -106,6 +106,7 @@ Rails.application.routes.draw do
   resources :audit_logs, only: [:index], path: 'audit-logs'
   get 'audit-logs/:auditable_type/:auditable_id' => 'audit_logs#auditable_index', as: 'auditable_index_logs'
   get 'audit-logs/:auditable_type/:auditable_id/comments' => 'audit_logs#auditable_index_comments', as: 'auditable_index_comments'
+  get 'audit-logs/:auditable_type/:auditable_id/download-attachment/:id' => 'audit_logs#download_attachment', as: 'download_audit_log_attachment'
   post 'audit-logs/:auditable_type/:auditable_id' => 'audit_logs#auditable_create', as: 'auditable_create_audit_log'
   get 'tasks' => 'tasks#index', as: 'tasks'
   get 'tasks/user/:user_id' => 'tasks#count', as: 'count_tasks'

@@ -5,7 +5,13 @@ class AuditLog < ActiveRecord::Base
   belongs_to :certification_path
   has_one :audit_log_visibility
 
+  MAXIMUM_DOCUMENT_FILE_SIZE = 100 # in MB
+
   default_scope { order(id: :desc) }
+
+  mount_uploader :attachment_file, AuditLogAttachmentUploader
+
+  validates :attachment_file, file_size: {maximum: MAXIMUM_DOCUMENT_FILE_SIZE.megabytes.to_i }
 
   scope :for_auditable, ->(auditable) {
     where(auditable: auditable)

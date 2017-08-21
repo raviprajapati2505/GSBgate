@@ -31,11 +31,13 @@
                         <% end %>
                     </div>
                     <div class="comment-form" style="display:none;">
-                        <%= f.text_area :user_comment, rows: 4 %>
+                      <%= f.text_area :user_comment, rows: 4 %>
+                      <%= f.file_field :attachment_file %>
 
                       <% if can?(:index, AuditLog.new(audit_log_visibility_id: AuditLogVisibility::INTERNAL, project: @project)) %>
                         <% disabled = @is_certifier %>
                         <%= f.form_group :audit_log_visibility do %>
+                          <%= f.label :audit_log_visibility, 'Comment visibility' %>
                           <%= f.radio_button :audit_log_visibility, AuditLogVisibility::PUBLIC, label: 'Public Comment', disabled: disabled %>
                             <span class="help-block">Everyone assigned to this project will be able to view this comment</span>
                           <%= f.radio_button :audit_log_visibility, AuditLogVisibility::INTERNAL, label: 'GSAS Trust Internal Comment', checked: true, disabled: disabled %>

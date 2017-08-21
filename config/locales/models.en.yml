@@ -2,6 +2,7 @@ en:
   activerecord:
     attributes:
       audit_log:
+        attachment_file: Attachment
         user_comment: Comment
       certificate:
         certification_types:

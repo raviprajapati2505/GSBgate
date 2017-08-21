@@ -1,5 +1,5 @@
 class AuditLogsController < AuthenticatedController
-  before_action :set_auditable, except: [ :index ]
+  before_action :set_auditable, except: [:index]
   load_and_authorize_resource
 
   def index
@@ -9,13 +9,13 @@ class AuditLogsController < AuthenticatedController
     @certification_paths_optionlist = []
 
     if params[:reset].present?
-      session[:audit] = {'text' => nil, 'user_id' => nil, 'project_id' => nil, 'certification_path_id' => nil, 'date_from' => '', 'time_from' => '0:00', 'date_to' => '', 'time_to' => '0:00', 'only_comments' => false}
+      session[:audit] = {'text' => nil, 'user_id' => nil, 'project_id' => nil, 'certification_path_id' => nil, 'date_from' => '', 'time_from' => '0:00', 'date_to' => '', 'time_to' => '0:00', 'audit_log_type' => 'all'}
     else
 
       if params[:button].present?
-        session[:audit] = {'text' => nil, 'user_id' => nil, 'project_id' => nil, 'certification_path_id' => nil, 'date_from' => '', 'time_from' => '0:00', 'date_to' => '', 'time_to' => '0:00', 'only_comments' => false}
+        session[:audit] = {'text' => nil, 'user_id' => nil, 'project_id' => nil, 'certification_path_id' => nil, 'date_from' => '', 'time_from' => '0:00', 'date_to' => '', 'time_to' => '0:00', 'audit_log_type' => 'all'}
       else
-        session[:audit] ||= {'text' => nil, 'user_id' => nil, 'project_id' => nil, 'certification_path_id' => nil, 'date_from' => '', 'time_from' => '0:00', 'date_to' => '', 'time_to' => '0:00', 'only_comments' => false}
+        session[:audit] ||= {'text' => nil, 'user_id' => nil, 'project_id' => nil, 'certification_path_id' => nil, 'date_from' => '', 'time_from' => '0:00', 'date_to' => '', 'time_to' => '0:00', 'audit_log_type' => 'all'}
       end
 
       # Text filter
@@ -76,12 +76,13 @@ class AuditLogsController < AuthenticatedController
         end
       end
 
-      # Only show user comments filter
-      if params[:only_user_comments].present?
-        session[:audit]['only_comments'] = true
-      end
-      if session[:audit]['only_comments'] == true
-        @audit_logs = @audit_logs.where.not(user_comment: nil)
+      # Audit log type filter
+      session[:audit]['audit_log_type'] = params[:audit_log_type] if params[:audit_log_type].present?
+      case session[:audit]['audit_log_type']
+        when 'user_comment'
+          @audit_logs = @audit_logs.where.not(user_comment: nil)
+        when 'attachment'
+          @audit_logs = @audit_logs.where.not(attachment_file: nil)
       end
     end
 
@@ -119,11 +120,28 @@ class AuditLogsController < AuthenticatedController
   def auditable_create
     if params[:audit_log][:user_comment].present?
       @auditable.audit_log_user_comment = params[:audit_log][:user_comment]
-      @auditable.audit_log_visibility =  params[:audit_log][:audit_log_visibility]
+      @auditable.audit_log_attachment_file = params[:audit_log][:attachment_file]
+      @auditable.audit_log_visibility = params[:audit_log][:audit_log_visibility]
       @auditable.touch
-      redirect_to :back, notice: 'Your comment was successfully added to the audit log.'
+
+      if @auditable.audit_log_errors.blank?
+        redirect_to :back, notice: 'Your comment was successfully added to the audit log.'
+      else
+        @auditable.audit_log_errors.messages.each do |field, errors|
+          redirect_to :back, alert: errors.first
+          return
+        end
+      end
     else
       redirect_to :back, alert: 'Please fill out the comment field.'
+    end
+  end
+
+  def download_attachment
+    begin
+      send_file @audit_log.attachment_file.path
+    rescue ActionController::MissingFile
+      redirect_to :back, alert: 'This document is no longer available for download. This could be due to a detection of malware.'
     end
   end
 

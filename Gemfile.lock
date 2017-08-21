@@ -297,6 +297,3 @@ DEPENDENCIES
   tzinfo-data
   uglifier
   warden
-
-BUNDLED WITH
-   1.12.5

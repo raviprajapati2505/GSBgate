@@ -27,5 +27,11 @@
                 </a>
             </div>
         <% end %>
+        <% if audit_log.attachment_file.present? && can?(:download_attachment, audit_log) %>
+            <div>
+              <%= btn_download(download_audit_log_attachment_path(audit_log.auditable.class.name, audit_log.auditable.id, audit_log.id), size: 'extra_small', tooltip: "Download #{AuditLog.human_attribute_name('attachment_file')}") %>
+              <%= truncate(audit_log.attachment_file.file.filename, length: 100) %>
+            </div>
+        <% end %>
     </div>
 </div>

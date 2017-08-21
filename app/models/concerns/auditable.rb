@@ -9,7 +9,9 @@ module Auditable
 
   included do
     attr_accessor :audit_log_user_comment
+    attr_accessor :audit_log_attachment_file
     attr_accessor :audit_log_visibility
+    attr_accessor :audit_log_errors
 
     has_many :audit_logs, as: :auditable, dependent: :destroy
 
@@ -231,6 +233,14 @@ module Auditable
         user_comment = nil
       end
 
+      # Format the attachment
+      if self.audit_log_attachment_file.present?
+        attachment_file = self.audit_log_attachment_file
+      else
+        attachment_file = nil
+      end
+
+      # Determine visibility
       if force_visibility_public
         visibility = AuditLogVisibility::PUBLIC
       else
@@ -258,6 +268,7 @@ module Auditable
           AuditLog.create!(
               system_message: system_message[:message],
               user_comment: user_comment,
+              attachment_file: attachment_file,
               old_status: system_message.has_key?(:old_status) ? system_message[:old_status] : nil,
               new_status: system_message.has_key?(:new_status) ? system_message[:new_status] : nil,
               user: User.current,
@@ -266,14 +277,16 @@ module Auditable
               project: project,
               audit_log_visibility_id: visibility)
         end
-      elsif user_comment.present?
-        AuditLog.create!(
+      elsif (user_comment.present? || attachment_file.present?)
+        audit_log = AuditLog.new(
             user_comment: user_comment,
+            attachment_file: attachment_file,
             user: User.current,
             auditable: auditable,
             certification_path: certification_path,
             project: project,
             audit_log_visibility_id: visibility)
+        self.audit_log_errors = audit_log.errors unless audit_log.save
       end
     rescue NoMethodError => e
       Rails.logger.error "Error when creating an audit log for #{self.class.name} ##{self.id}: #{e.to_s}"

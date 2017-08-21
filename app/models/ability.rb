@@ -161,12 +161,8 @@ class Ability
       can :read, SchemeMixCriteriaDocument, status: document_approved, scheme_mix_criterion: {scheme_mix: {certification_path: {project: project_with_user_as_enterprise_client}}}
 
       # AuditLog controller
-      can :index, AuditLog, audit_log_visibility_id: AuditLogVisibility::PUBLIC, project: project_with_user_assigned
-      can :index, AuditLog, audit_log_visibility_id: AuditLogVisibility::INTERNAL, project: project_with_user_in_gsas_trust_team
-      can :auditable_index, AuditLog, audit_log_visibility_id: AuditLogVisibility::PUBLIC, project: project_with_user_assigned
-      can :auditable_index, AuditLog, audit_log_visibility_id: AuditLogVisibility::INTERNAL, project: project_with_user_in_gsas_trust_team
-      can :auditable_index_comments, AuditLog, audit_log_visibility_id: AuditLogVisibility::PUBLIC, project: project_with_user_assigned
-      can :auditable_index_comments, AuditLog, audit_log_visibility_id: AuditLogVisibility::INTERNAL, project: project_with_user_in_gsas_trust_team
+      can [:index, :auditable_index, :auditable_index_comments, :download_attachment], AuditLog, audit_log_visibility_id: AuditLogVisibility::PUBLIC, project: project_with_user_assigned
+      can [:index, :auditable_index, :auditable_index_comments, :download_attachment], AuditLog, audit_log_visibility_id: AuditLogVisibility::INTERNAL, project: project_with_user_in_gsas_trust_team
       can :auditable_create, AuditLog #TODO:, project: project_with_user_assigned
 
       # Tasks controller
@@ -243,10 +239,7 @@ class Ability
         can :crud, SchemeCriterionText
       end
       # Audit log
-      can :index, AuditLog
-      can :auditable_index, AuditLog
-      can :auditable_index_comments, AuditLog
-      can :auditable_create, AuditLog
+      can [:index, :auditable_index, :auditable_index_comments, :auditable_create, :download_attachment], AuditLog
 
       # Task
       can :read, Task

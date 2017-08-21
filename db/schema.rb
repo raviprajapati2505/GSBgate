@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170808071111) do
+ActiveRecord::Schema.define(version: 20170816143909) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,6 +34,7 @@ ActiveRecord::Schema.define(version: 20170808071111) do
     t.integer  "old_status"
     t.integer  "certification_path_id"
     t.integer  "audit_log_visibility_id"
+    t.string   "attachment_file"
   end
 
   add_index "audit_logs", ["audit_log_visibility_id"], name: "index_audit_logs_on_audit_log_visibility_id", using: :btree
