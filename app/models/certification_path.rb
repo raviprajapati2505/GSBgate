@@ -1,9 +1,13 @@
+require 'file_size_validator'
+
 class CertificationPath < ActiveRecord::Base
   include ActionView::Helpers::TranslationHelper
   include Auditable
   include Taskable
   include DatePlucker
   include ScoreCalculator
+
+  MAXIMUM_DOCUMENT_FILE_SIZE = 100 # in MB
 
   belongs_to :project
   belongs_to :certificate
@@ -22,6 +26,8 @@ class CertificationPath < ActiveRecord::Base
   accepts_nested_attributes_for :certificate
   accepts_nested_attributes_for :scheme_mixes
 
+  mount_uploader :signed_certificate_file, SignedCertificateUploader
+
   # enum development_type: {not_applicable: 0, single_use: 1, mixed_use: 2, mixed_development: 3, mixed_development_in_stages: 4}
 
   validates :project, presence: true
@@ -30,6 +36,7 @@ class CertificationPath < ActiveRecord::Base
   # validates_inclusion_of :development_type, in: CertificationPath.development_types.keys
   validate :total_weight_is_equal_to_100_percent
   validate :certificate_duration
+  validates :signed_certificate_file, file_size: {maximum: MAXIMUM_DOCUMENT_FILE_SIZE.megabytes.to_i }
 
   after_initialize :init
   before_update :create_descendant_records

@@ -120,6 +120,9 @@ module Auditable
           elsif (action == AUDIT_LOG_UPDATE)
             if self.certification_path_status_id_changed?
               system_messages << {message: t('models.concerns.auditable.certification_path.status.update_html', certification_path: self.name, project: self.project.name, old_status: old_status_model.name, new_status: new_status_model.name), old_status: self.certification_path_status_id_was, new_status: self.certification_path_status_id}
+            elsif self.signed_certificate_file_changed?
+              force_visibility_public = true
+              system_messages << {message: t('models.concerns.auditable.certification_path.signed_certificate.update_html', document: self.signed_certificate_file.file.filename)}
             end
           end
           if (action == AUDIT_LOG_CREATE || action == AUDIT_LOG_UPDATE)

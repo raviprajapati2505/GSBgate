@@ -52,6 +52,7 @@ Rails.application.routes.draw do
         get 'edit_main_scheme_mix', path: 'edit-main-scheme-mix'
         get 'edit_max_review_count'
         get 'confirm_destroy' => 'certification_paths#confirm_destroy'
+        get 'download_signed_certificate'
         put 'update_status'
         put 'apply_for_pcr'
         put 'approve_pcr_payment'
@@ -60,6 +61,7 @@ Rails.application.routes.draw do
         put 'allocate_certifier_team_responsibility', path: 'allocate-certifier-team-responsibility'
         put 'update_main_scheme_mix', path: 'update-main-scheme'
         put 'update_max_review_count'
+        put 'update_signed_certificate'
       end
       resources :documents, only: [:create, :show, :destroy], path: 'document'
       resources :scheme_mixes, only: [:show, :edit, :update], path: 'schemes' do

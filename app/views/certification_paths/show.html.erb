@@ -118,6 +118,27 @@
             </div>
         </div>
 
+        <% if (can?(:download_signed_certificate, @certification_path) && @certification_path.signed_certificate_file.present?) || can?(:update_signed_certificate, @certification_path) %>
+        <div class="ibox float-e-margins">
+          <div class="ibox-title">
+            <h5><%= t('.certification_path_signed_certificate.title') %></h5>
+          </div>
+          <div class="ibox-content">
+            <% if can?(:download_signed_certificate, @certification_path) && @certification_path.signed_certificate_file.present? %>
+              <%= btn_download(download_signed_certificate_project_certification_path_path(@project, @certification_path), size: 'medium', tooltip: "Download the officially signed certificate") %>
+              <%= truncate(@certification_path.signed_certificate_file.file.filename, length: 100) %>
+            <% end %>
+            <% if can?(:update_signed_certificate, @certification_path) %>
+              <%= bootstrap_form_for(@certification_path, url: update_signed_certificate_project_certification_path_path(@project, @certification_path), method: 'put') do |f| %>
+                  <%= f.file_field :signed_certificate_file, label: 'Upload new signed certificate' %>
+                  <div class="hr-line-dashed"></div>
+                  <%= btn_save %>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+        <% end %>
+
         <div class="ibox float-e-margins">
             <div class="ibox-title">
                 <%= render 'timeline_legend' %>

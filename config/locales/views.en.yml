@@ -57,6 +57,8 @@ en:
           confirm: There are one or more criteria that have not achieved their minimum valid score. As a result, the certification does not have an achieved score. If you proceed a GSAS certification will be denied. Are you sure?
         btn_apply_appeal: Apply for appeal
         btn_advance_status: Advance status to '%{status}'
+      certification_path_signed_certificate:
+        title: Officially signed certificate
       schemes:
         title: Schemes
         info_activating: The schemes will be clickable after a GSAS trust administrator activates the certification.

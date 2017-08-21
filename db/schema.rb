@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170816143909) do
+ActiveRecord::Schema.define(version: 20170821120502) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -113,6 +113,7 @@ ActiveRecord::Schema.define(version: 20170816143909) do
     t.boolean  "main_scheme_mix_selected",     default: false, null: false
     t.integer  "max_review_count",             default: 2
     t.integer  "development_type_id"
+    t.string   "signed_certificate_file"
   end
 
   add_index "certification_paths", ["certification_path_status_id"], name: "index_certification_paths_on_certification_path_status_id", using: :btree
