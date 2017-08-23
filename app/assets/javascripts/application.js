@@ -216,6 +216,17 @@ $(function () {
             "orderable": false
         }]
     });
+
+    $('.cert-doc-table').DataTable({
+        buttons: [],
+        paging: false,
+        info: false,
+        order: [[3, "desc"]],
+        columnDefs: [{
+            "targets": 4,
+            "orderable": false
+        }]
+    })
 });
 
 // General GSAS functions
