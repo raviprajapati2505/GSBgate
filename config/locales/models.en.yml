@@ -83,6 +83,9 @@ en:
             cancelled_html: The PCR track request was canceled for the certification <strong>%{certification_path}</strong> in project <strong>%{project}</strong>.
           signed_certificate:
             update_html: The officially signed certificate <strong>%{document}</strong> was uploaded.
+        certification_path_document:
+          status:
+            create_html: A new document <strong>%{document}</strong> was added
         scheme_mix_criterion:
           status:
             update_html: The status of criterion <strong>%{criterion}</strong> was changed from <strong>%{old_status}</strong> to <strong>%{new_status}</strong>.

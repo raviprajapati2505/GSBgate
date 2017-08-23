@@ -241,7 +241,7 @@
         <% if can?(:create, Document.new(:scheme_mix_criteria_documents_attributes => [{:scheme_mix_criterion_id => @scheme_mix_criterion.id}])) %>
             <div class="ibox">
                 <div class="ibox-title">
-                    <h5>Upload documentation</h5>
+                    <h5>Upload criterion documentation</h5>
                 </div>
                 <div class="ibox-content">
                     <%= render 'documents/new', document: Document.new, project: @project, certification_path: @certification_path, scheme_mix: @scheme_mix,  scheme_mix_criterion_id: @scheme_mix_criterion.id %>
@@ -250,7 +250,7 @@
         <% end %>
         <div class="ibox" id="documentation">
             <div class="ibox-title">
-                <h5>Documentation</h5>
+                <h5>Criterion Documentation</h5>
                 <% if can?(:download_archive, @scheme_mix_criterion) && @scheme_mix_criterion.scheme_mix_criteria_documents.any? %>
                   <%= btn_download(archive_project_certification_path_scheme_mix_scheme_mix_criterion_path, text: 'Download all approved documents', size: 'extra_small', class: 'pull-right') %>
                 <% end %>

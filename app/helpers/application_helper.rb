@@ -316,6 +316,14 @@ module ApplicationHelper
         # criterion = criterion_text.scheme_criterion
         # category = criterion.scheme_category
         # scheme = category.scheme
+      when CgpCertificationPathDocument.name.demodulize
+        certification_path = model.certification_path
+        project = certification_path.project
+        certification_path_document = model
+      when CertifierCertificationPathDocument.name.demodulize
+        certification_path = model.certification_path
+        project = certification_path.project
+        certification_path_document = model
       else
         return breadcrumbs
     end
@@ -366,6 +374,15 @@ module ApplicationHelper
         breadcrumbs[:paths] << edit_scheme_criterion_text_path(criterion_text)
       else
         breadcrumbs[:paths] << new_scheme_criterion_text_path(scheme_criterion: criterion)
+      end
+    end
+    if certification_path_document.present?
+      breadcrumbs[:names] << certification_path_document.name
+      case model.class.name
+        when CgpCertificationPathDocument.name.demodulize
+          breadcrumbs[:paths] << project_certification_path_url(project, certification_path) + '#cgp-documentation'
+        when CertifierCertificationPathDocument.name.demodulize
+          breadcrumbs[:paths] << project_certification_path_url(project, certification_path) + '#certifier-documentation'
       end
     end
     return breadcrumbs

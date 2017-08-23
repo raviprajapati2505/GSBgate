@@ -149,6 +149,11 @@ class Ability
       can :create, Document, scheme_mix_criteria_documents: { scheme_mix_criterion: {main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_submitting, scheme_mix: {certification_path: {project: project_with_user_in_project_team}}}}
       can :destroy, Document, scheme_mix_criteria_documents: { scheme_mix_criterion: {main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_submitting, scheme_mix: {certification_path: {project: project_with_user_as_cgp_project_manager}}}}
 
+      # CertificationPathDocument controller
+      can :read, CertificationPathDocument, certification_path: {project: project_with_user_assigned}
+      can [:create, :destroy], CgpCertificationPathDocument, certification_path: {project: project_with_user_as_cgp_project_manager}
+      can [:create, :destroy], CertifierCertificationPathDocument, certification_path: {project: project_with_user_as_certification_manager}
+
       # SchemeMixCriteriaDocument controller
       # Project team
       can :read, SchemeMixCriteriaDocument, scheme_mix_criterion: {scheme_mix: {certification_path: {project: project_with_user_in_project_team}}}

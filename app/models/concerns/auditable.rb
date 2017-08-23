@@ -38,6 +38,10 @@ module Auditable
         project = self.scheme_mix_criteria.take.scheme_mix.certification_path.project
       when SchemeCriterionText.name.demodulize
         project = self.scheme_criterion.scheme_mix_criteria.scheme_mix.certification_path.project
+      when CgpCertificationPathDocument.name.demodulize
+        project = self.certification_path.project
+      when CertifierCertificationPathDocument.name.demodulize
+        project = self.certification_path.project
     end
     return project
   end
@@ -226,6 +230,18 @@ module Auditable
             system_messages << {message: t('models.concerns.auditable.scheme_criterion_text.status.update_html', text: self.name, criterion: self.scheme_criterion.full_name)}
           elsif (action == AUDIT_LOG_DESTROY)
             system_messages << {message: t('models.concerns.auditable.scheme_criterion_text.status.destroy_html', text: self.name, criterion: self.scheme_criterion.full_name)}
+          end
+        when CgpCertificationPathDocument.name.demodulize
+          certification_path = self.certification_path
+          project = certification_path.project
+          if (action == AUDIT_LOG_CREATE)
+            system_messages << {message: t('models.concerns.auditable.certification_path_document.status.create_html', document: self.name)}
+          end
+        when CertifierCertificationPathDocument.name.demodulize
+          certification_path = self.certification_path
+          project = certification_path.project
+          if (action == AUDIT_LOG_CREATE)
+            system_messages << {message: t('models.concerns.auditable.certification_path_document.status.create_html', document: self.name)}
           end
       end
 
