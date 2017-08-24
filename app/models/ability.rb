@@ -123,7 +123,7 @@ class Ability
       can :update_targeted_score, SchemeMixCriterion, main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_submitting, scheme_mix: {certification_path: {project: project_with_user_as_cgp_project_manager}}
       can :update_submitted_score, SchemeMixCriterion, main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_submitting, scheme_mix: {certification_path: {project: project_with_user_as_cgp_project_manager}}
       can :update_submitted_score, SchemeMixCriterion, main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_submitting, requirement_data: {user_id: user.id}, scheme_mix: {certification_path: {project: project_with_user_in_project_team}}
-      can :request_review, SchemeMixCriterion, main_scheme_mix_criterion: nil, status: ['submitting', SchemeMixCriterion.statuses[:submitting]], scheme_mix: {certification_path: {certification_path_status: {id: [CertificationPathStatus::SUBMITTING, CertificationPathStatus::SUBMITTING_AFTER_SCREENING]}, project: project_with_user_as_cgp_project_manager, pcr_track: true}}
+      can :request_review, SchemeMixCriterion, main_scheme_mix_criterion: nil, status: ['submitting', SchemeMixCriterion.statuses[:submitting]], scheme_mix: {certification_path: {certificate: {certification_type: [Certificate.certification_types[:letter_of_conformance], Certificate.certification_types[:final_design_certificate], Certificate.certification_types[:operations_certificate]]}, certification_path_status: {id: [CertificationPathStatus::SUBMITTING, CertificationPathStatus::SUBMITTING_AFTER_SCREENING]}, project: project_with_user_as_cgp_project_manager, pcr_track: true}}
       # GSAS trust team
       can [:edit_status, :update_status], SchemeMixCriterion, main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_verifying, scheme_mix: {certification_path: {certification_path_status: {id: CertificationPathStatus::STATUSES_IN_VERIFICATION}, project: project_with_user_as_certification_manager}}
       can [:edit_status, :update_status], SchemeMixCriterion, main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_verifying, certifier_id: user.id, scheme_mix: {certification_path: {certification_path_status: {id: CertificationPathStatus::STATUSES_IN_VERIFICATION}, project: project_with_user_in_gsas_trust_team}}
@@ -206,8 +206,8 @@ class Ability
       end
       # Certification Path
       can :list, CertificationPath
-      can :apply_for_pcr, CertificationPath, pcr_track: false
-      can :cancel_pcr, CertificationPath, pcr_track: true
+      can :apply_for_pcr, CertificationPath, pcr_track: false, certificate: {certification_type: [Certificate.certification_types[:letter_of_conformance], Certificate.certification_types[:final_design_certificate], Certificate.certification_types[:operations_certificate]]}
+      can :cancel_pcr, CertificationPath, pcr_track: true, certificate: {certification_type: [Certificate.certification_types[:letter_of_conformance], Certificate.certification_types[:final_design_certificate], Certificate.certification_types[:operations_certificate]]}
       can [:download_certificate_report, :download_coverletter_report, :download_scores_report], CertificationPath
       can :download_archive, CertificationPath
       can :download_signed_certificate, CertificationPath, certification_path_status: {id: CertificationPathStatus::CERTIFIED}
