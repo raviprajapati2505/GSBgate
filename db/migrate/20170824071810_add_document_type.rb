@@ -1,9 +1,5 @@
 class AddDocumentType < ActiveRecord::Migration
   def change
-    documents = Document.where(type: nil)
-    documents.each do |document|
-      document.type = 'Document'
-      document.save!
-    end
+    BaseDocument.where(type: nil).update_all(type: 'Document')
   end
 end
