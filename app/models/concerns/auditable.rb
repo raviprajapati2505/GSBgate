@@ -235,12 +235,14 @@ module Auditable
           certification_path = self.certification_path
           project = certification_path.project
           if (action == AUDIT_LOG_CREATE)
+            force_visibility_public = true
             system_messages << {message: t('models.concerns.auditable.certification_path_document.status.create_html', document: self.name)}
           end
         when CertifierCertificationPathDocument.name.demodulize
           certification_path = self.certification_path
           project = certification_path.project
           if (action == AUDIT_LOG_CREATE)
+            force_visibility_public = true
             system_messages << {message: t('models.concerns.auditable.certification_path_document.status.create_html', document: self.name)}
           end
       end

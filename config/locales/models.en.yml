@@ -85,7 +85,7 @@ en:
             update_html: The officially signed certificate <strong>%{document}</strong> was uploaded.
         certification_path_document:
           status:
-            create_html: A new document <strong>%{document}</strong> was added
+            create_html: A new document <strong>%{document}</strong> was added.
         scheme_mix_criterion:
           status:
             update_html: The status of criterion <strong>%{criterion}</strong> was changed from <strong>%{old_status}</strong> to <strong>%{new_status}</strong>.
