@@ -204,9 +204,11 @@ module ScoreCalculator
       if point_type == :criteria_points
         score_template = "SUM(#{score})"
       elsif point_type == :scheme_points
-        score_template = "SUM((#{score} / #{maximum_score}) * ((3.0 * (#{criteria_weight})) / 100.0) + (3.0 * #{incentive_weight} / 100.0))"
+        # score_template = "SUM((#{score} / #{maximum_score}) * ((3.0 * (#{criteria_weight})) / 100.0) + (3.0 * #{incentive_weight} / 100.0))"
+        score_template = "SUM( CASE (certificates_score.gsas_version = '2.1 issue 1') WHEN true THEN (#{score}) ELSE ((#{score} / #{maximum_score}) * ((3.0 * (#{criteria_weight})) / 100.0) + (3.0 * #{incentive_weight} / 100.0)) END)"
       elsif point_type == :certificate_points
-        score_template = "SUM(((#{score} / #{maximum_score}) * ((3.0 * (#{criteria_weight})) / 100.0) + (3.0 * #{incentive_weight} / 100.0)) * (#{scheme_weight} / 100.0))"
+        # score_template = "SUM(((#{score} / #{maximum_score}) * ((3.0 * (#{criteria_weight})) / 100.0) + (3.0 * #{incentive_weight} / 100.0)) * (#{scheme_weight} / 100.0))"
+        score_template = "SUM( CASE (certificates_score.gsas_version = '2.1 issue 1') WHEN true THEN (#{score} * (#{scheme_weight} / 100.0)) ELSE (((#{score} / #{maximum_score}) * ((3.0 * (#{criteria_weight})) / 100.0) + (3.0 * #{incentive_weight} / 100.0)) * (#{scheme_weight} / 100.0)) END)"
       else
         raise('Unexpected point type: ' + point_type.to_s)
       end
@@ -231,6 +233,7 @@ module ScoreCalculator
                      .joins('INNER JOIN scheme_criteria as scheme_criteria_score ON scheme_criteria_score.id = scheme_mix_criteria_score.scheme_criterion_id')
                      .joins('INNER JOIN scheme_mixes as scheme_mixes_score ON scheme_mixes_score.id = scheme_mix_criteria_score.scheme_mix_id')
                      .joins('INNER JOIN certification_paths as certification_paths_score ON certification_paths_score.id = scheme_mixes_score.certification_path_id')
+                     .joins('INNER JOIN certificates as certificates_score ON certificates_score.id = certification_paths_score.certificate_id')
                      .joins('INNER JOIN projects ON projects.id = certification_paths_score.project_id')
       case self.name
         when CertificationPath.name, SchemeMix.name, SchemeMixCriterion.name
