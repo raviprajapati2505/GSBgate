@@ -58,6 +58,18 @@ class Project < ActiveRecord::Base
     CertificationPath.with_project(self).with_status(CertificationPathStatus::STATUSES_COMPLETED).with_certification_type(Certificate.certification_types[:letter_of_conformance])
   end
 
+  def completed_construction_stage1
+    CertificationPath.with_project(self).with_status(CertificationPathStatus::STATUSES_COMPLETED).with_certification_type(Certificate.certification_types[:construction_certificate_stage1])
+  end
+
+  def completed_construction_stage2
+    CertificationPath.with_project(self).with_status(CertificationPathStatus::STATUSES_COMPLETED).with_certification_type(Certificate.certification_types[:construction_certificate_stage2])
+  end
+
+  def completed_construction_stage3
+    CertificationPath.with_project(self).with_status(CertificationPathStatus::STATUSES_COMPLETED).with_certification_type(Certificate.certification_types[:construction_certificate_stage3])
+  end
+
   def role_for_user(user)
     projects_users.each do |projects_user|
       if projects_user.user == user

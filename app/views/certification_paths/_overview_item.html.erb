@@ -30,17 +30,23 @@
 <% end %>
 <% if certification_paths.empty? %>
     <% no_completed_letter_of_conformance_for_final_design = (certification_type == Certificate.certification_types[:final_design_certificate] && project.completed_letter_of_conformances.empty?) %>
-    <li class="list-group-item container <%= 'disabled' if no_completed_letter_of_conformance_for_final_design %>">
+    <% no_stage1_construction_for_stage2 = (certification_type == Certificate.certification_types[:construction_certificate_stage2] && project.completed_construction_stage1.empty?) %>
+    <% no_stage2_construction_for_stage3 = (certification_type == Certificate.certification_types[:construction_certificate_stage3] && project.completed_construction_stage2.empty?) %>
+    <li class="list-group-item container <%= 'disabled' if (no_completed_letter_of_conformance_for_final_design || no_stage1_construction_for_stage2 || no_stage2_construction_for_stage3) %>">
         <div class="row">
             <span class="col-md-4"><%= t(Certificate.certification_types.key(certification_type), scope: 'activerecord.attributes.certificate.certification_types') %></span>
             <% if no_completed_letter_of_conformance_for_final_design %>
                 <%= t('.warning_complete_loc') %>
+            <% elsif no_stage1_construction_for_stage2 %>
+              <%= t('.warning_complete_stage1') %>
+            <% elsif no_stage2_construction_for_stage3 %>
+              <%= t('.warning_complete_stage2') %>
             <% else %>
                 <span class="col-md-4">
                     Not yet registered
                 </span>
                 <span class="col-md-4">
-                  <% if can?(:apply, @certification_path, project: @project) && (project.certification_paths.empty? || ((certification_type == Certificate.certification_types[:final_design_certificate]) && project.completed_letter_of_conformances.any?)) %>
+                  <% if can?(:apply, @certification_path, project: @project) && (project.certification_paths.empty? || ((certification_type == Certificate.certification_types[:final_design_certificate]) && project.completed_letter_of_conformances.any?) || ((certification_type == Certificate.certification_types[:construction_certificate_stage2]) && project.completed_construction_stage1.any?) || ((certification_type == Certificate.certification_types[:construction_certificate_stage3]) && project.completed_construction_stage2.any?)) %>
                       <%= btn_link_to(apply_certification_path_path(@project, certification_type), text: 'Apply', icon: 'play', action: :post, remote: true) %>
                   <% end %>
                 </span>

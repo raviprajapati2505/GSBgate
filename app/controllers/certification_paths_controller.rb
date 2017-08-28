@@ -62,7 +62,7 @@ class CertificationPathsController < AuthenticatedController
     @certification_path.certificate = @certificates.first
 
     # Force NO PCR for construction certificates
-    if params.has_key?(:certification_path) && params[:certification_path].has_key?(:pcr_track) && @certification_path.certificate.construction_certificate?
+    if params.has_key?(:certification_path) && params[:certification_path].has_key?(:pcr_track) && @certification_path.certificate.construction_type?
       params[:pcr_track] = false
     end
 
@@ -166,7 +166,7 @@ class CertificationPathsController < AuthenticatedController
 
       if todos.blank?
         # Force NO appeal for construction certificates
-        if certification_path_params.has_key?(:appealed) && @certification_path.certificate.construction_certificate?
+        if certification_path_params.has_key?(:appealed) && @certification_path.certificate.construction_type?
           certification_path_params[:appealed] = false
         end
 

@@ -123,7 +123,7 @@ class CertificationPath < ActiveRecord::Base
       if not [2, 3, 4].include? duration
         errors.add(:duration, t('models.certification_path.certificate_duration.error_duration_not_two_three_four'))
       end
-    elsif certificate.construction_certificate? || certificate.operations_certificate?
+    elsif certificate.construction_type? || certificate.operations_certificate?
     end
   end
 
@@ -139,7 +139,7 @@ class CertificationPath < ActiveRecord::Base
       when CertificationPathStatus::SUBMITTING_AFTER_SCREENING
         return CertificationPathStatus::VERIFYING
       when CertificationPathStatus::VERIFYING
-        if self.certificate.construction_certificate?
+        if self.certificate.construction_type?
           return CertificationPathStatus::APPROVING_BY_MANAGEMENT
         else
           return CertificationPathStatus::ACKNOWLEDGING

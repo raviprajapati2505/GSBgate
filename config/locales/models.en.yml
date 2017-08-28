@@ -8,7 +8,9 @@ en:
         certification_types:
           letter_of_conformance: Letter of conformance
           final_design_certificate: Final design certificate
-          construction_certificate: Construction certificate
+          construction_certificate_stage1: Construction certificate stage 1
+          construction_certificate_stage2: Construction certificate stage 2
+          construction_certificate_stage3: Construction certificate stage 3
           operations_certificate: Operations certificate
       certification_path:
         development_types:

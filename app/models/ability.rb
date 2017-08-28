@@ -37,7 +37,9 @@ class Ability
     #   Certificate.certification_types
     certificate_certification_types_letter_of_conformance = ['letter_of_conformance', Certificate.certification_types[:letter_of_conformance]]
     certificate_certification_types_final_design_certificate = ['final_design_certificate', Certificate.certification_types[:final_design_certificate]]
-    certificate_certification_types_construction_certificate = ['construction_certificate', Certificate.certification_types[:construction_certificate]]
+    certificate_certification_types_construction_certificate_stage1 = ['construction_certificate_stage1', Certificate.certification_types[:construction_certificate_stage1]]
+    certificate_certification_types_construction_certificate_stage2 = ['construction_certificate_stage2', Certificate.certification_types[:construction_certificate_stage2]]
+    certificate_certification_types_construction_certificate_stage3 = ['construction_certificate_stage3', Certificate.certification_types[:construction_certificate_stage3]]
     certificate_certification_types_operations_certificate = ['operations_certificate', Certificate.certification_types[:operations_certificate]]
     #   SchemeMixCriterion.statuses
     scheme_mix_criterion_status_submitting = ['submitting', SchemeMixCriterion.statuses[:submitting], 'submitting_after_appeal', SchemeMixCriterion.statuses[:submitting_after_appeal]]
