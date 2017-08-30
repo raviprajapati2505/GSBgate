@@ -89,6 +89,7 @@
                         </tr>
                     <% end %>
                     <% end %>
+                    <% unless @certification_path.certificate.construction_certificate? %>
                     <% if can?(:download_archive, @certification_path) %>
                         <tr>
                             <th>
@@ -101,6 +102,7 @@
                                 <%= t('.certification_path.download_archive.text') %>
                             </td>
                         </tr>
+                    <% end %>
                     <% end %>
                     </tbody>
                 </table>
@@ -141,6 +143,7 @@
         </div>
         <% end %>
 
+      <% unless @certification_path.certificate.construction_certificate? %>
         <div class="ibox float-e-margins">
             <div class="ibox-title">
                 <%= render 'timeline_legend' %>
@@ -166,8 +169,10 @@
                 <% end %>
             </div>
         </div>
+      <% end %>
     </div>
 
+  <% unless @certification_path.certificate.construction_certificate? %>
     <div class="col-md-7">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
@@ -237,6 +242,7 @@
         </div>
       </div>
     </div>
+  <% end %>
 </div>
 <div id="editStatusCertificationPathModal" class="modal fade"></div>
 <div id="editMainSchemeMixModal" class="modal fade"></div>

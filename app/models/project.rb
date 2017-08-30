@@ -70,6 +70,34 @@ class Project < ActiveRecord::Base
     CertificationPath.with_project(self).with_status(CertificationPathStatus::STATUSES_COMPLETED).with_certification_type(Certificate.certification_types[:construction_certificate_stage3])
   end
 
+  def average_scores_all_construction_stages
+    certification_paths = CertificationPath.with_project(self).with_status(CertificationPathStatus::STATUSES_COMPLETED).with_certificate_type(Certificate.certificate_types[:construction_type])
+    unless certification_paths.count < 3
+      average_scores = {targeted_score: 0, submitted_score: 0, achieved_score: 0}
+      certification_paths.each do |certification_path|
+        scores = certification_path.scores_in_certificate_points
+        average_scores[:targeted_score] += scores[:targeted_score_in_certificate_points]
+        average_scores[:submitted_score] += scores[:submitted_score_in_certificate_points]
+        average_scores[:achieved_score] += scores[:achieved_score_in_certificate_points]
+      end
+      average_scores[:targeted_score] /= 3
+      average_scores[:submitted_score] /= 3
+      average_scores[:achieved_score] /= 3
+      return average_scores
+    end
+  end
+
+  def are_all_construction_stages_certified?
+    count = CertificationPath.with_project(self)
+                .with_status(CertificationPathStatus::CERTIFIED)
+                .with_certificate_type(Certificate.certificate_types[:construction_type])
+                .count
+    if count == 3
+      return true
+    end
+    return false
+  end
+
   def role_for_user(user)
     projects_users.each do |projects_user|
       if projects_user.user == user

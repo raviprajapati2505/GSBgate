@@ -58,6 +58,10 @@ class CertificationPath < ActiveRecord::Base
     joins(:certificate).where(certificates: {certification_type: certification_type})
   }
 
+  scope :with_certificate_type, ->(certificate_type) {
+    joins(:certificate).where(certificates: {certificate_type: certificate_type})
+  }
+
   # scope :letter_of_conformance, -> {
   #   joins(:certificate)
   #       .merge(Certificate.letter_of_conformance)
