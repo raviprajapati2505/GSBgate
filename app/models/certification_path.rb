@@ -240,10 +240,10 @@ class CertificationPath < ActiveRecord::Base
     return todos.uniq
   end
 
-  def self.star_rating_for_score(score, certificate: nil, certificate_name: nil)
+  def self.star_rating_for_score(score, certificate: nil, certificate_gsas_version: nil)
     return -1 if score.nil?
 
-    if (!certificate.nil? && certificate.construction_issue_1?) || (!certificate_name.nil? && certificate_name == 'Construction Certificate 2.1 issue 1')
+    if (!certificate.nil? && certificate.construction_issue_1?) || (!certificate_gsas_version.nil? && certificate_gsas_version == '2.1 issue 1')
       if score < 35
         return 0
       elsif score >= 35 && score < 65
@@ -255,7 +255,7 @@ class CertificationPath < ActiveRecord::Base
       else
         return -1
       end
-    elsif (!certificate.nil? && certificate.construction_issue_3?) || (!certificate_name.nil? && certificate_name == 'Construction Certificate 2.1 issue 3')
+    elsif (!certificate.nil? && certificate.construction_issue_3?) || (!certificate_gsas_version.nil? && certificate_gsas_version == '2.1 issue 3')
       if score < 0.5
         return 0
       elsif score >= 0.5 && score < 1

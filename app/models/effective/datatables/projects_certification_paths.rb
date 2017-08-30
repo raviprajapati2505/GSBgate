@@ -134,6 +134,7 @@ module Effective
                    .select('certification_paths.certified_at as certification_path_certified_at')
                    .select('certification_paths.duration as certification_path_duration')
                    .select("CONCAT(certificates.name, ' ', certificates.gsas_version) as certificate_name")
+                   .select('certificates.gsas_version as certificate_gsas_version')
                    .select('certification_path_statuses.name as certification_path_status_name')
                    .select('CASE WHEN certification_path_statuses.id IS NULL THEN false WHEN certification_path_statuses.id = 15 THEN false WHEN certification_path_statuses.id = 16 THEN false ELSE true END as certification_path_status_is_active')
                    .select("ARRAY_TO_STRING(ARRAY(SELECT case when scheme_mixes.custom_name is null then concat(schemes.name, ' ', schemes.gsas_version) else CONCAT(schemes.name, ' (', scheme_mixes.custom_name, ') ', schemes.gsas_version) end from schemes INNER JOIN scheme_mixes ON schemes.id = scheme_mixes.scheme_id WHERE scheme_mixes.certification_path_id = certification_paths.id), '|||') AS schemes_array")
