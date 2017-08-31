@@ -8,8 +8,8 @@ class Reports::BaseReport
   FONTS_DIR = '/app/assets/fonts/reports'
   IMAGES_DIR = '/app/assets/images/reports/'
 
-  def newline
-    text "\n"
+  def newline(amount = 1)
+    text "\n" * amount
   end
 
   def font_path(filename)
