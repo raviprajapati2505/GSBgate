@@ -5,6 +5,7 @@ class Reports::CriteriaScores < Reports::BaseReport
   BACKGROUND_COLOR = 'EEEEEE'.freeze
   HEADER_LOGO = 'gsas_logo.jpg'.freeze
   FOOTER_LOGO = 'gord_logo_black.jpg'.freeze
+  STAR_ICON = 'green_star.png'.freeze
   FOOTER_URL = "<link href='http://www.gord.qa'>www.gord.qa</link>".freeze
   MAX_ROWS_PER_PAGE = 24
   PAGE_MARGIN = 50
@@ -62,7 +63,7 @@ class Reports::CriteriaScores < Reports::BaseReport
         bounding_box([PAGE_MARGIN, 800], width: 400) do
           text "#{@certification_path.name} Criteria Summary", size: 20, color: MAIN_COLOR
           text @scheme_mix.scheme.full_name, size: 20, color: MAIN_COLOR
-          text "#{@certification_path.project.name}: #{@scheme_mix.name}", size: 20, color: MAIN_COLOR
+          text "#{@certification_path.project.name}: #{@scheme_mix.name}", size: 16, color: MAIN_COLOR
         end
 
         # Logo
