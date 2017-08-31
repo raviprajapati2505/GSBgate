@@ -38,6 +38,13 @@ class SchemeMixesController < AuthenticatedController
     end
   end
 
+  def download_scores_report
+    filepath = filepath_for_report 'Criteria Summary for ' + @scheme_mix.name
+    report = Reports::CriteriaScores.new(@scheme_mix)
+    report.save_as(filepath)
+    send_file filepath, :type => 'application/pdf', :x_sendfile => true
+  end
+
   private
   def set_controller_model
     @controller_model = @scheme_mix
@@ -45,5 +52,10 @@ class SchemeMixesController < AuthenticatedController
 
   def scheme_mix_params
     params.require(:scheme_mix).permit(:custom_name)
+  end
+
+  def filepath_for_report(report_name)
+    filename = "#{@project.code} - #{@certification_path.certificate.full_name} - #{report_name}.pdf"
+    Rails.root.join('private', 'projects', @certification_path.project.id.to_s, 'certification_paths', @certification_path.id.to_s, 'reports', filename)
   end
 end

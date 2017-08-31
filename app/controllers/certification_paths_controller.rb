@@ -379,24 +379,13 @@ class CertificationPathsController < AuthenticatedController
   #   # end
   #   send_file filepath, :type => 'application/pdf', :x_sendfile => true
   # end
-  #
-  # def download_coverletter_report
-  #   filepath = filepath_for_report 'Cover Letter'
-  #   # if not File.exists?(filepath)
-  #   report = Reports::LetterOfConformanceCoverLetter.new(@certification_path)
-  #   report.save_as(filepath)
-  #   # end
-  #   send_file filepath, :type => 'application/pdf', :x_sendfile => true
-  # end
-  #
-  # def download_scores_report
-  #   filepath = filepath_for_report 'Criteria Score v2.1'
-  #   # if not File.exists?(filepath)
-  #   report = Reports::CriteriaScores.new(@certification_path)
-  #   report.save_as(filepath)
-  #   # end
-  #   send_file filepath, :type => 'application/pdf', :x_sendfile => true
-  # end
+
+  def download_coverletter_report
+    filepath = filepath_for_report 'Cover Letter'
+    report = Reports::LetterOfConformanceCoverLetter.new(@certification_path)
+    report.save_as(filepath)
+    send_file filepath, :type => 'application/pdf', :x_sendfile => true
+  end
 
   def confirm_destroy
   end
@@ -460,7 +449,7 @@ class CertificationPathsController < AuthenticatedController
   end
 
   def filepath_for_report(report_name)
-    filename = "#{@certification_path.certificate.full_name} #{report_name}.pdf"
+    filename = "#{@project.code} - #{@certification_path.certificate.full_name} - #{report_name}.pdf"
     Rails.root.join('private', 'projects', @certification_path.project.id.to_s, 'certification_paths', @certification_path.id.to_s, 'reports', filename)
   end
 

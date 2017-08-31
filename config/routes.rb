@@ -43,8 +43,7 @@ Rails.application.routes.draw do
       member do
         # BEGIN: PDF REPORT GENERATION IS DISABLED
         # get 'download_certificate_report'
-        # get 'download_coverletter_report'
-        # get 'download_scores_report'
+        get 'download_coverletter_report'
         # END: PDF REPORT GENERATION IS DISABLED
         get 'edit_status'
         get 'edit_project_team_responsibility', path: 'edit-project-team-responsibility'
@@ -66,6 +65,9 @@ Rails.application.routes.draw do
       resources :documents, only: [:create, :show, :destroy], path: 'document'
       resources :certification_path_documents, only: [:create, :show, :destroy], path: 'certification_path_document'
       resources :scheme_mixes, only: [:show, :edit, :update], path: 'schemes' do
+        member do
+          get 'download_scores_report'
+        end
         resources :scheme_mix_criteria, only: [:show], path: 'criteria', as: 'scheme_mix_criterion' do
           member do
             get 'edit_status'
