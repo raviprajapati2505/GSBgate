@@ -6,6 +6,10 @@
       </div>
       <div class="ibox-content">
         <%= @scheme.name %>
+        <% if can? :update, @scheme %>
+          <div class="hr-line-dashed"></div>
+            <%= btn_link_to(edit_scheme_path(@scheme), icon: 'edit', text: 'Edit', action: :get, remote: true) %>
+        <% end %>
       </div>
     </div>
   </div>
@@ -26,3 +30,4 @@
     </div>
   </div>
 </div>
+<div id="editSchemeModal" class="modal fade"></div>

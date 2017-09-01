@@ -130,6 +130,7 @@ Rails.application.routes.draw do
     put :sort, on: :collection
   end
   resources :scheme_categories, only: [:show], as: 'scheme_category'
+  resources :schemes, only: [:edit, :update]
   resources :schemes, only: [:show], as: 'scheme'
   get 'owners/:id' => 'owners#show', as: 'owner'
   get 'owners' => 'owners#index', as: 'owners'
