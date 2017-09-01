@@ -1,0 +1,16 @@
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <%= btn_close_modal %>
+      <h4 class="modal-title">Edit requirement</h4>
+    </div>
+    <%= bootstrap_form_for(@requirement, url: requirement_path(@requirement), method: 'put') do |f| %>
+        <div class="modal-body">
+          <%= f.text_field :name %>
+        </div>
+        <div class="modal-footer">
+          <%= btn_save(text: 'Save') %>
+        </div>
+    <% end %>
+  </div>
+</div>

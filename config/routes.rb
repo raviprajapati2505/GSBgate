@@ -121,6 +121,8 @@ Rails.application.routes.draw do
   get 'projects/:project_id/certificates/:id/comments' => 'certification_paths#download_comments', as: 'comments_project_cerficiation_path'
   get 'projects/users/:user_id' => 'projects_users#list_users_sharing_projects', as: 'list_users_sharing_projects'
   put '/projects/:project_id/certificates/:certification_path_id/schemes/:scheme_mix_id/criteria/:scheme_mix_criterion_id/requirement/:id/refuse' => 'requirement_data#refuse', as: 'refuse_requirement_datum'
+  resources :requirements, only: [:edit, :update]
+  resources :requirements, only: [:show], as: 'requirement'
   resources :scheme_criteria, only: [:index, :edit, :update]
   resources :scheme_criteria, only: [:show], as: 'scheme_criterion'
   resources :scheme_criterion_texts, only: [:edit, :update, :new, :create, :destroy] do

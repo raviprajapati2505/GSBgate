@@ -1,0 +1,15 @@
+<div class="panel panel-default" data-id="<%= requirement.id %>">
+  <!--<div class="panel-heading">-->
+    <!--<div class="subtitle"><%= requirement.name %></div>-->
+  <!--</div>-->
+  <div class="panel-body">
+    <div class="<%= requirement.name.downcase %>"><%= requirement.name %></div>
+  </div>
+  <% if can?(:edit, requirement) || can?(:delete, requirement) %>
+    <div class="panel-footer">
+      <% if can?(:edit, requirement) %>
+        <%= btn_link_to(requirement_path(requirement), icon: 'edit', text: 'Edit') %>
+      <% end %>
+    </div>
+  <% end %>
+</div>

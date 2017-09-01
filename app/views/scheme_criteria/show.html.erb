@@ -34,5 +34,19 @@
             </div>
         </div>
     </div>
+    <div class="col-lg-6">
+      <div class="ibox">
+        <div class="ibox-title">
+          <h5>Criterion requirements</h5>
+        </div>
+        <div class="ibox-content">
+          <div class="non-sortable">
+            <% @scheme_criterion.requirements.each do |requirement| %>
+              <%= render 'requirements/name', requirement: requirement %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
 </div>
 <div id="editSchemeCriteriaModal" class="modal fade"></div>

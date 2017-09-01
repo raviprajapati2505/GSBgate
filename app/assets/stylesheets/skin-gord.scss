@@ -826,6 +826,12 @@
     }
   }
 
+  .non-sortable {
+    .panel {
+      margin-bottom: 10px;
+    }
+  }
+
   .sortable-placeholder {
     background-color: #f9f9f9;
     border: 1px dashed #ccc;

@@ -251,6 +251,8 @@ class Ability
         can :crud, SchemeCriterionText
         # SchemeCategory
         can :crud, SchemeCategory
+        # Scheme
+        can :crud, Scheme
       end
       # Audit log
       can [:index, :auditable_index, :auditable_index_comments, :auditable_create, :download_attachment], AuditLog

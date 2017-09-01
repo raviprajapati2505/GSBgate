@@ -1,4 +1,6 @@
 class Scheme < ActiveRecord::Base
+  include Auditable
+
   has_many :development_type_scheme
   has_many :development_types, through: :development_type_schemes
   has_many :scheme_categories

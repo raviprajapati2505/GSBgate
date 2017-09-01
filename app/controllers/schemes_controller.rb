@@ -1,4 +1,5 @@
 class SchemesController < AuthenticatedController
+  before_action :set_scheme, only: [:edit, :update]
   load_and_authorize_resource :scheme
 
   def show
@@ -14,6 +15,10 @@ class SchemesController < AuthenticatedController
   end
 
   private
+
+  def set_scheme
+    @controller_model = @scheme
+  end
 
   def scheme_params
     params.require(:scheme).permit(:name)

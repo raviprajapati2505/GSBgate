@@ -22,28 +22,30 @@
         <h5>Category texts</h5>
       </div>
       <div class="ibox-content">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <div class="subtitle">Description</div>
+        <div class="non-sortable">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <div class="subtitle">Description</div>
+            </div>
+            <div class="panel-body">
+              <div class="<%= @scheme_category.name.downcase %>"><%= @scheme_category.description.html_safe %></div>
+            </div>
           </div>
-          <div class="panel-body">
-            <div class="<%= @scheme_category.name.downcase %>"><%= @scheme_category.description.html_safe %></div>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <div class="subtitle">Impacts</div>
+            </div>
+            <div class="panel-body">
+              <div class="<%= @scheme_category.name.downcase %>"><%= @scheme_category.impacts.html_safe %></div>
+            </div>
           </div>
-        </div>
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <div class="subtitle">Impacts</div>
-          </div>
-          <div class="panel-body">
-            <div class="<%= @scheme_category.name.downcase %>"><%= @scheme_category.impacts.html_safe %></div>
-          </div>
-        </div>
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <div class="subtitle">Mitigate impacts</div>
-          </div>
-          <div class="panel-body">
-            <div class="<%= @scheme_category.name.downcase %>"><%= @scheme_category.mitigate_impact.html_safe %></div>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <div class="subtitle">Mitigate impacts</div>
+            </div>
+            <div class="panel-body">
+              <div class="<%= @scheme_category.name.downcase %>"><%= @scheme_category.mitigate_impact.html_safe %></div>
+            </div>
           </div>
         </div>
       </div>

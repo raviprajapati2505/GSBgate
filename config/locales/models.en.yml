@@ -126,6 +126,15 @@ en:
             create_html: Criterion text <strong>%{text}</strong> in <strong>%{criterion}</strong> was created.
             update_html: Criterion text <strong>%{text}</strong> in <strong>%{criterion}</strong> was edited.
             destroy_html: Criterion text <strong>%{text}</strong> in <strong>%{criterion}</strong> was removed.
+        scheme_criterion:
+          status:
+            update_html: Criterion <strong>%{new_name}</strong> was renamed.
+        scheme_category:
+          status:
+            update_html: Category <strong>%{new_name}</strong> was renamed.
+        scheme:
+          status:
+            update_html: Scheme <strong>%{new_name}</strong> was renamed.
     certification_path:
       certificate_duration:
         error_duration_not_one: Duration for Letter of Conformance should be 1 year.

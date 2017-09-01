@@ -222,6 +222,8 @@ module Auditable
               end
             end
           end
+        when Requirement.name.demodulize
+
         when SchemeCriterionText.name.demodulize
           auditable = self.scheme_criterion
           if (action == AUDIT_LOG_CREATE)
@@ -230,6 +232,18 @@ module Auditable
             system_messages << {message: t('models.concerns.auditable.scheme_criterion_text.status.update_html', text: self.name, criterion: self.scheme_criterion.full_name)}
           elsif (action == AUDIT_LOG_DESTROY)
             system_messages << {message: t('models.concerns.auditable.scheme_criterion_text.status.destroy_html', text: self.name, criterion: self.scheme_criterion.full_name)}
+          end
+        when SchemeCriterion.name.demodulize
+          if (action == AUDIT_LOG_UPDATE)
+            system_messages << {message: t('models.concerns.auditable.scheme_criterion.status.update_html', new_name: self.name)}
+          end
+        when SchemeCategory.name.demodulize
+          if (action == AUDIT_LOG_UPDATE)
+            system_messages << {message: t('models.concerns.auditable.scheme_category.status.update_html', new_name: self.name)}
+          end
+        when Scheme.name.demodulize
+          if (action == AUDIT_LOG_UPDATE)
+            system_messages << {message: t('models.concerns.auditable.scheme.status.update_html', new_name: self.name)}
           end
         when CgpCertificationPathDocument.name.demodulize
           certification_path = self.certification_path
