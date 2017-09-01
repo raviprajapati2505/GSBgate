@@ -1,0 +1,28 @@
+<div class="row">
+  <div class="col-lg-6">
+    <div class="ibox criterion-information">
+      <div class="ibox-title">
+        <h5>Scheme</h5>
+      </div>
+      <div class="ibox-content">
+        <%= @scheme.name %>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-6">
+    <div class="ibox criterion-information">
+      <div class="ibox-title">
+        <h5>Scheme categories <%= tooltip(t '.tooltip_sortable') %></h5>
+      </div>
+      <div class="ibox-content sortable" data-url="<%= sort_scheme_categories_path() %>">
+        <div class="sortable">
+          <% @scheme.scheme_categories.each do |category| %>
+            <%= render 'scheme_categories/name', category: category %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -126,6 +126,11 @@ Rails.application.routes.draw do
   resources :scheme_criterion_texts, only: [:edit, :update, :new, :create, :destroy] do
     put :sort, on: :collection
   end
+  resources :scheme_categories, only: [:edit, :update] do
+    put :sort, on: :collection
+  end
+  resources :scheme_categories, only: [:show], as: 'scheme_category'
+  resources :schemes, only: [:show], as: 'scheme'
   get 'owners/:id' => 'owners#show', as: 'owner'
   get 'owners' => 'owners#index', as: 'owners'
   # Reports

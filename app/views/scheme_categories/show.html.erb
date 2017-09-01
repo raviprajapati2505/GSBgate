@@ -1,0 +1,53 @@
+<div class="row">
+  <div class="col-lg-6">
+    <div class="ibox">
+      <div class="ibox-title">
+        <%= audit_log_label(@scheme_category) %>
+        <h5>Category</h5>
+      </div>
+      <div class="ibox-content">
+        <%= @scheme_category.code%>: <%= @scheme_category.name %>
+        <% if can? :update, @scheme_category %>
+          <div class="hr-line-dashed"></div>
+            <%= btn_link_to(edit_scheme_category_path(@scheme_category), icon: 'edit', text: 'Edit', action: :get, remote: true) %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-6">
+    <div class="ibox criterion-information">
+      <div class="ibox-title">
+        <h5>Category texts</h5>
+      </div>
+      <div class="ibox-content">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <div class="subtitle">Description</div>
+          </div>
+          <div class="panel-body">
+            <div class="<%= @scheme_category.name.downcase %>"><%= @scheme_category.description.html_safe %></div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <div class="subtitle">Impacts</div>
+          </div>
+          <div class="panel-body">
+            <div class="<%= @scheme_category.name.downcase %>"><%= @scheme_category.impacts.html_safe %></div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <div class="subtitle">Mitigate impacts</div>
+          </div>
+          <div class="panel-body">
+            <div class="<%= @scheme_category.name.downcase %>"><%= @scheme_category.mitigate_impact.html_safe %></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="editSchemeCategoryModal" class="modal fade"></div>

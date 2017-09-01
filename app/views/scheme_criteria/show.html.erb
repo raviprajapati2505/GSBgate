@@ -21,7 +21,7 @@
             <div class="ibox-title">
                 <h5>Criterion texts <%= tooltip(t '.tooltip_sortable') %></h5>
             </div>
-            <div class="ibox-content sortable">
+            <div class="ibox-content sortable" data-url="<%= sort_scheme_criterion_texts_path() %>">
                 <div class="sortable">
                     <% @scheme_criterion.scheme_criterion_texts.each do |criterion_text| %>
                         <%= render 'scheme_criterion_texts/text', criterion_text: criterion_text %>

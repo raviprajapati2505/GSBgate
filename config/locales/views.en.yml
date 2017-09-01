@@ -14,7 +14,7 @@ en:
         preferences: My preferences
         audit_log: Audit log
         admin: Admin
-        admin_criteria: Criteria
+        admin_system_data: Manage system data
         admin_users: Users
         certifiers_and_criteria_report: Certifiers and criteria
         manual: User manual
@@ -112,6 +112,9 @@ en:
   reports:
     certifiers_criteria:
       title_html: Certifiers & criteria
+  schemes:
+    show:
+      tooltip_sortable: You can drag and drop the panels below to re-order their appearance.
   requirement_data:
     update:
       tooltip_due_date: Due date passed

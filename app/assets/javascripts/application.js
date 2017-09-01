@@ -162,6 +162,7 @@ $(function () {
     if ($('.sortable').length > 0) {
         GSAS.setSortableListPositions();
         sortable('.sortable');
+        var url = $('.sortable:first').data('url');
         $('.sortable').each(function() {
             $(this).get(0).addEventListener('sortupdate', function(e) {
                 updated_sortorder = [];
@@ -174,7 +175,7 @@ $(function () {
 
                 $.ajax({
                     type: "PUT",
-                    url: Routes.sort_scheme_criterion_texts_path(),
+                    url: url,
                     cache: false,
                     data: { sort_order: updated_sortorder }
                 });

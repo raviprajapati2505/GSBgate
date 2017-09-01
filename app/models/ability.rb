@@ -249,6 +249,8 @@ class Ability
         can [:update_status, :edit_status, :create_link, :new_link, :unlink, :destroy_link], SchemeMixCriteriaDocument
         # SchemeCriterionText
         can :crud, SchemeCriterionText
+        # SchemeCategory
+        can :crud, SchemeCategory
       end
       # Audit log
       can [:index, :auditable_index, :auditable_index_comments, :auditable_create, :download_attachment], AuditLog
