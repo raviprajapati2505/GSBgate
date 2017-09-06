@@ -223,7 +223,9 @@ module Auditable
             end
           end
         when Requirement.name.demodulize
-
+          if (action == AUDIT_LOG_UPDATE)
+            system_messages << {message: t('models.concerns.auditable.requirement.name.update_html', old_name: self.name_was, new_name: self.name)}
+          end
         when SchemeCriterionText.name.demodulize
           auditable = self.scheme_criterion
           if (action == AUDIT_LOG_CREATE)
@@ -235,15 +237,37 @@ module Auditable
           end
         when SchemeCriterion.name.demodulize
           if (action == AUDIT_LOG_UPDATE)
-            system_messages << {message: t('models.concerns.auditable.scheme_criterion.status.update_html', new_name: self.name)}
+            if self.name_changed?
+              system_messages << {message: t('models.concerns.auditable.scheme_criterion.name.update_html', old_name: self.name_was, new_name: self.name)}
+            elsif self.weight_changed?
+              system_messages << {message: t('models.concerns.auditable.scheme_criterion.weight.update_html', old_weight: self.weight_was, new_weight: self.weight)}
+            elsif self.scores_changed?
+              system_messages << {message: t('models.concerns.auditable.scheme_criterion.scores.update_html', old_scores: self.scores_was.to_s, new_scores: self.scores.to_s)}
+            elsif self.incentive_weight_minus_1_changed?
+              system_messages << {message: t('models.concerns.auditable.scheme_criterion.incentive_weight.update_html', old_incentive: self.incentive_weight_minus_1_was, new_incentive: self.incentive_weight_minus_1)}
+            elsif self.incentive_weight_0_changed?
+              system_messages << {message: t('models.concerns.auditable.scheme_criterion.incentive_weight.update_html', old_incentive: self.incentive_weight_0_was, new_incentive: self.incentive_weight_0)}
+            elsif self.incentive_weight_1_changed?
+              system_messages << {message: t('models.concerns.auditable.scheme_criterion.incentive_weight.update_html', old_incentive: self.incentive_weight_1_was, new_incentive: self.incentive_weight_1)}
+            elsif self.incentive_weight_2_changed?
+              system_messages << {message: t('models.concerns.auditable.scheme_criterion.incentive_weight.update_html', old_incentive: self.incentive_weight_2_was, new_incentive: self.incentive_weight_2)}
+            elsif self.incentive_weight_3_changed?
+              system_messages << {message: t('models.concerns.auditable.scheme_criterion.incentive_weight.update_html', old_incentive: self.incentive_weight_3_was, new_incentive: self.incentive_weight_3)}
+            elsif self.incentive_weight_changed?
+              system_messages << {message: t('models.concerns.auditable.scheme_criterion.incentive_weight.update_html', old_incentive: self.incentive_weight_was, new_incentive: self.incentive_weight)}
+            end
           end
         when SchemeCategory.name.demodulize
           if (action == AUDIT_LOG_UPDATE)
-            system_messages << {message: t('models.concerns.auditable.scheme_category.status.update_html', new_name: self.name)}
+            if self.name_changed?
+              system_messages << {message: t('models.concerns.auditable.scheme_category.name.update_html', old_name: self.name_was, new_name: self.name)}
+            elsif self.display_weight_changed?
+              system_messages << {message: t('models.concerns.auditable.scheme_category.display_weight.update_html', new_display_weight: self.display_weight)}
+            end
           end
         when Scheme.name.demodulize
           if (action == AUDIT_LOG_UPDATE)
-            system_messages << {message: t('models.concerns.auditable.scheme.status.update_html', new_name: self.name)}
+            system_messages << {message: t('models.concerns.auditable.scheme.name.update_html', old_name: self.name_was, new_name: self.name)}
           end
         when CgpCertificationPathDocument.name.demodulize
           certification_path = self.certification_path

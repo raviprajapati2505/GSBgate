@@ -121,20 +121,31 @@ en:
             unassigned_html: A project team member was unassigned from requirement <strong>%{requirement}</strong>.
             assigned_due_html: Requirement <strong>%{requirement}</strong> was assigned to <strong>%{user}</strong>. The due date is <strong>%{due_date}</strong>.
             assigned_html: Requirement <strong>%{requirement}</strong> was assigned to <strong>%{user}</strong>.
+        requirement:
+          name:
+            update_html: Requirement <strong>%{old_name}</strong> was renamed to <strong>%{new_name}</strong>.
         scheme_criterion_text:
           status:
             create_html: Criterion text <strong>%{text}</strong> in <strong>%{criterion}</strong> was created.
             update_html: Criterion text <strong>%{text}</strong> in <strong>%{criterion}</strong> was edited.
             destroy_html: Criterion text <strong>%{text}</strong> in <strong>%{criterion}</strong> was removed.
         scheme_criterion:
-          status:
-            update_html: Criterion <strong>%{new_name}</strong> was renamed.
+          name:
+            update_html: Criterion <strong>%{old_name}</strong> was renamed to <strong>%{new_name}</strong>.
+          weight:
+            update_html: Criterion weight changed from <strong>%{old_weight}</strong> to <strong>%{new_weight}</strong>.
+          scores:
+            update_html: Criterion scores changed from <strong>%{old_scores}</strong> to <strong>%{new_scores}</strong>.
+          incentive_weight:
+            update_html: Criterion incentive weights changed from <strong>%{old_incentive}</strong> to <strong>%{new_incentive}</strong>.
         scheme_category:
-          status:
-            update_html: Category <strong>%{new_name}</strong> was renamed.
+          name:
+            update_html: Category <strong>%{old_name}</strong> was renamed to <strong>%{new_name}</strong>.
+          display_weight:
+            update_html: Category display weight changed to <strong>%{new_display_weight}</strong>.
         scheme:
-          status:
-            update_html: Scheme <strong>%{new_name}</strong> was renamed.
+          name:
+            update_html: Scheme <strong>%{old_name}</strong> was renamed to <strong>%{new_name}</strong>.
     certification_path:
       certificate_duration:
         error_duration_not_one: Duration for Letter of Conformance should be 1 year.

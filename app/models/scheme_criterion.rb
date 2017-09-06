@@ -30,19 +30,25 @@ class SchemeCriterion < ActiveRecord::Base
   private
 
   def handle_scores
-    new_scores = []
-    self.scores.each do |score|
-      unless score.is_a?(Array)
-        unless score.empty?
-          new_scores.push([score.to_i, score.to_f])
+    unless self.scores.nil?
+      new_scores = []
+      self.scores.each do |score|
+        unless score.is_a?(Array)
+          unless score.empty?
+            new_scores.push([score.to_i, score.to_f])
+          end
+        else
+          new_scores.push(score)
         end
-      else
-        new_scores.push(score)
       end
+      self.minimum_score = new_scores.first[1]
+      self.maximum_score = new_scores.last[1]
+      self.minimum_valid_score = self.minimum_score
+      self.scores = YAML.load(new_scores.to_s)
+    else
+      self.minimum_score = 0.0
+      self.maximum_score = self.weight
+      self.minimum_valid_score = 0.0
     end
-    self.minimum_score = new_scores.first[1]
-    self.maximum_score = new_scores.last[1]
-    self.minimum_valid_score = self.minimum_score
-    self.scores = YAML.load(new_scores.to_s)
   end
 end
