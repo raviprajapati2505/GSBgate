@@ -90,4 +90,8 @@ Rails.application.configure do
   config.x.linkme.public_api_key = '05BE43AB-B4FF-4E0B-89F3-9A1F3C281152'
   config.x.linkme.private_api_key = '5D621211-8E39-4871-A3F3-05C5C8833A57'
   config.x.linkme.sa_passcode = 'Y05KzqB77cs6'
+
+  # Chart generator API config
+  config.x.chart_generator.api_url = 'localhost'
+  config.x.chart_generator.api_port = 8082
 end

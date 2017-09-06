@@ -20,7 +20,7 @@ class Reports::LetterOfConformanceCoverLetter < Reports::BaseReport
     @scheme_names = @certification_path.schemes.collect(&:name)
     @score = @certification_path.scores_in_certificate_points[:achieved_score_in_certificate_points]
     @stars = CertificationPath.star_rating_for_score(@score, certificate: @certification_path.certificate).to_s +
-        ' ' + 'Star'.pluralize(CertificationPath.star_rating_for_score(@score, certificate: @certification_path.certificate))
+             ' ' + 'Star'.pluralize(CertificationPath.star_rating_for_score(@score, certificate: @certification_path.certificate))
 
     @addressee = "Mr. [FIRSTNAME] [LASTNAME]\n[FUNCTION]\n#{@certification_path.project.owner}"
     @addressee_copy = "Service Provider:   #{@certification_path.project.service_provider}"
@@ -63,8 +63,44 @@ Congratulations once again for partaking in this noble endeavor, and together le
       draw_heading_project
       newline(2)
       draw_content
-      newline
       draw_signature
+    end
+
+    start_new_page
+    draw_page do
+      chart_generator = ChartGeneratorService.new
+
+      barchart_config = {
+        type: 'horizontalBar',
+        data: {
+          labels: ['Urban Connectivity', 'Site', 'Management & Operations', 'Urban Connectivity', 'Site', 'Management & Operations'],
+          datasets: [{
+            label: 'Points Attainable',
+            data: [0.540, 0.300, 0.240, 0.540, 0.300, 0.240],
+            backgroundColor: 'rgb(255, 99, 132)',
+            borderColor: 'rgb(255, 99, 132)',
+            borderWidth: 1
+          },
+                     {
+                       label: 'Achieved',
+                       data: [0.120, 0.220, -0.015, 0.120, 0.220, -0.015],
+                       backgroundColor: 'rgb(54, 162, 235)',
+                       borderColor: 'rgb(54, 162, 235)',
+                       borderWidth: 1
+                     }]
+        },
+        options: {
+          legend: {
+            position: 'bottom'
+          }
+        }
+      }
+
+      begin
+        image chart_generator.generate_chart(barchart_config, 600, 300).path, width: 400
+      rescue LinkmeService::ApiError
+        text 'An error occurred when creating the chart.'
+      end
     end
 
     table_models = [@certification_path] + @certification_path.scheme_mixes.to_a

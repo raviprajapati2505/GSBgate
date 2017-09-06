@@ -1,0 +1,25 @@
+{
+    "type": "horizontalBar",
+    "data": {
+        "labels": ["Urban Connectivity", "Site", "Management & Operations", "Urban Connectivity", "Site", "Management & Operations"],
+        "datasets": [{
+            "label": "Points Attainable",
+            "data": [0.540, 0.300, 0.240, 0.540, 0.300, 0.240],
+            "backgroundColor": "rgb(255, 99, 132)",
+            "borderColor": "rgb(255, 99, 132)",
+            "borderWidth": 1
+        },
+        {
+            "label": "Achieved",
+            "data": [0.120, 0.220, -0.015, 0.120, 0.220, -0.015],
+            "backgroundColor": "rgb(54, 162, 235)",
+            "borderColor": "rgb(54, 162, 235)",
+            "borderWidth": 1
+        }]
+    },
+    "options": {
+        "legend": {
+            "position": "bottom"
+        }
+    }
+}

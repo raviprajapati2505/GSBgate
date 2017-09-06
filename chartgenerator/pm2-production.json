@@ -1,0 +1,19 @@
+{
+  /**
+   * Application configuration section
+   * http://pm2.keymetrics.io/docs/usage/application-declaration/
+   */
+  apps : [
+    {
+      name      : "gsas-chart-generator",
+      script    : "server.js",
+      cwd       : "/var/gord-gsas/chartgenerator",
+      env: {
+        NODE_ENV: "production"
+      },
+      env_production : {
+        NODE_ENV: "production"
+      }
+    },
+  ],
+}
