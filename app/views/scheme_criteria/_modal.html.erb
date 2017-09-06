@@ -7,6 +7,43 @@
         <%= bootstrap_form_for(@scheme_criterion, url: scheme_criterion_path(@scheme_criterion), method: 'put') do |f| %>
             <div class="modal-body">
                 <%= f.text_field :name %>
+                <%= f.number_field :weight, in: 0.00..100.00, step: 0.01, append: '%' %>
+              <% unless @scheme_criterion.scheme_category.nil? \
+                   || @scheme_criterion.scheme_category.scheme.nil? \
+                   || @scheme_criterion.scheme_category.scheme.development_types.nil? \
+                   || @scheme_criterion.scheme_category.scheme.development_types.first.nil? \
+                   || @scheme_criterion.scheme_category.scheme.development_types.first.certificate.nil? %>
+                <% unless @scheme_criterion.scheme_category.scheme.development_types.first.certificate.construction_issue_1? %>
+                  <%= f.select :scores, options_for_select([['-1', -1.0],['0', 0.0],['1', 1.0],['2', 2.0],['3', 3.0]], @scheme_criterion.scores.map {|s| s[1]}), {}, {:multiple => true} %>
+                  <%= f.label :incentive_weight_minus_1, 'Incentive weight for score -1' %>
+                  <%= f.number_field :incentive_weight_minus_1, in: 0.00..100.00, step: 0.01, hide_label: true, append: '%' %>
+                  <%= f.label :incentive_weight_0, 'Incentive weight for score 0' %>
+                  <%= f.number_field :incentive_weight_0, in: 0.00..100.00, step: 0.01, hide_label: true, append: '%' %>
+                  <%= f.label :incentive_weight_1, 'Incentive weight for score 1' %>
+                  <%= f.number_field :incentive_weight_1, in: 0.00..100.00, step: 0.01, hide_label: true, append: '%' %>
+                  <%= f.label :incentive_weight_2, 'Incentive weight for score 2' %>
+                  <%= f.number_field :incentive_weight_2, in: 0.00..100.00, step: 0.01, hide_label: true, append: '%' %>
+                  <%= f.label :incentive_weight_3, 'Incentive weight for score 3' %>
+                  <%= f.number_field :incentive_weight_3, in: 0.00..100.00, step: 0.01, hide_label: true, append: '%' %>
+                <% else %>
+                  <%= f.label :incentive_weight, 'Incentive weight for a Construction Management 2.1 issue 1 criterion' %>
+                  <%= f.number_field :incentive_weight, in: 0.0..100.0, step: 0.1, hide_label: true, append: '%' %>
+                <% end %>
+              <% else %>
+                  <%= f.select :scores, options_for_select([['-1', -1.0],['0', 0.0],['1', 1.0],['2', 2.0],['3', 3.0]], @scheme_criterion.scores.map {|s| s[1]}), {}, {:multiple => true} %>
+                  <%= f.label :incentive_weight_minus_1, 'Incentive weight for score -1' %>
+                  <%= f.number_field :incentive_weight_minus_1, in: 0.00..100.00, step: 0.01, hide_label: true, append: '%' %>
+                  <%= f.label :incentive_weight_0, 'Incentive weight for score 0' %>
+                  <%= f.number_field :incentive_weight_0, in: 0.00..100.00, step: 0.01, hide_label: true, append: '%' %>
+                  <%= f.label :incentive_weight_1, 'Incentive weight for score 1' %>
+                  <%= f.number_field :incentive_weight_1, in: 0.00..100.00, step: 0.01, hide_label: true, append: '%' %>
+                  <%= f.label :incentive_weight_2, 'Incentive weight for score 2' %>
+                  <%= f.number_field :incentive_weight_2, in: 0.00..100.00, step: 0.01, hide_label: true, append: '%' %>
+                  <%= f.label :incentive_weight_3, 'Incentive weight for score 3' %>
+                  <%= f.number_field :incentive_weight_3, in: 0.00..100.00, step: 0.01, hide_label: true, append: '%' %>
+                  <%= f.label :incentive_weight, 'Incentive weight for a Construction Management 2.1 issue 1 criterion' %>
+                  <%= f.number_field :incentive_weight, in: 0.0..100.0, step: 0.1, hide_label: true, append: '%' %>
+              <% end %>
             </div>
             <div class="modal-footer">
                 <%= btn_save(text: 'Save') %>

@@ -17,6 +17,7 @@ class SchemeCriteriaController < AuthenticatedController
   end
 
   def update
+    @scheme_criterion.scores = params[:scheme_criterion][:scores]
     if @scheme_criterion.update(scheme_criterion_params)
       redirect_to scheme_criterion_path(@scheme_criterion), notice: 'Criterion was successfully updated.'
     else
@@ -28,6 +29,6 @@ class SchemeCriteriaController < AuthenticatedController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def scheme_criterion_params
-    params.require(:scheme_criterion).permit(:name)
+    params.require(:scheme_criterion).permit(:name, :scores, :weight, :incentive_weight_minus_1, :incentive_weight_0, :incentive_weight_1, :incentive_weight_2, :incentive_weight_3, :incentive_weight)
   end
 end

@@ -8,6 +8,8 @@ class SchemeCriterion < ActiveRecord::Base
   has_many :requirements, through: :scheme_criteria_requirements
   serialize :scores
 
+  before_save :handle_scores
+
   scope :for_category, ->(category) {
     where(scheme_category_id: category.id)
   }
@@ -24,4 +26,23 @@ class SchemeCriterion < ActiveRecord::Base
   #   joins(:criterion)
   #   .order('criteria.name')
   # }
+
+  private
+
+  def handle_scores
+    new_scores = []
+    self.scores.each do |score|
+      unless score.is_a?(Array)
+        unless score.empty?
+          new_scores.push([score.to_i, score.to_f])
+        end
+      else
+        new_scores.push(score)
+      end
+    end
+    self.minimum_score = new_scores.first[1]
+    self.maximum_score = new_scores.last[1]
+    self.minimum_valid_score = self.minimum_score
+    self.scores = YAML.load(new_scores.to_s)
+  end
 end
