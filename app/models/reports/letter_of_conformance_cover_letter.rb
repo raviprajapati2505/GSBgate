@@ -66,57 +66,43 @@ Congratulations once again for partaking in this noble endeavor, and together le
       draw_signature
     end
 
+    total_category_scores = {}
+    @certification_path.scheme_mixes.each do |scheme_mix|
+      # Fetch all scheme mix criteria score records
+      scheme_mix_criteria_scores = scheme_mix.scheme_mix_criteria_scores
+
+      # Group the scores by category
+      scheme_mix_criteria_scores_by_category = scheme_mix_criteria_scores.group_by { |item| item[:scheme_category_id] }
+
+      scheme_mix.scheme_categories.each do |category|
+        total_category_scores[category.code] = { name: category.name, achieved_score: 0, maximum_score: 0 } unless total_category_scores.key?(category.code)
+        category_scores = sum_score_hashes(scheme_mix_criteria_scores_by_category[category.id])
+        total_category_scores[category.code][:achieved_score] += category_scores[:achieved_score_in_certificate_points]
+        total_category_scores[category.code][:maximum_score] += category_scores[:maximum_score_in_certificate_points]
+      end
+    end
+
     start_new_page
     draw_page do
-      chart_generator = ChartGeneratorService.new
-
-      barchart_config = {
-        type: 'horizontalBar',
-        data: {
-          labels: ['Urban Connectivity', 'Site', 'Management & Operations', 'Urban Connectivity', 'Site', 'Management & Operations'],
-          datasets: [{
-            label: 'Points Attainable',
-            data: [0.540, 0.300, 0.240, 0.540, 0.300, 0.240],
-            backgroundColor: 'rgb(255, 99, 132)',
-            borderColor: 'rgb(255, 99, 132)',
-            borderWidth: 1
-          },
-                     {
-                       label: 'Achieved',
-                       data: [0.120, 0.220, -0.015, 0.120, 0.220, -0.015],
-                       backgroundColor: 'rgb(54, 162, 235)',
-                       borderColor: 'rgb(54, 162, 235)',
-                       borderWidth: 1
-                     }]
-        },
-        options: {
-          legend: {
-            position: 'bottom'
-          }
-        }
-      }
-
-      begin
-        image chart_generator.generate_chart(barchart_config, 600, 300).path, width: 400
-      rescue LinkmeService::ApiError
-        text 'An error occurred when creating the chart.'
-      end
+      draw_certificate_table(total_category_scores)
+      newline(2)
+      draw_category_graph(total_category_scores)
     end
 
-    table_models = [@certification_path] + @certification_path.scheme_mixes.to_a
-
-    while table_models.any?
-      start_new_page
-      draw_page do
-        (1..2).each do |i|
-          newline(2) if i == 2
-          if table_models.any?
-            table_model = table_models.shift
-            table_model.is_a?(SchemeMix) ? draw_category_table(table_model) : draw_scheme_mix_table(table_model)
-          end
-        end
-      end
-    end
+    # table_models = [@certification_path] + @certification_path.scheme_mixes.to_a
+    #
+    # while table_models.any?
+    #   start_new_page
+    #   draw_page do
+    #     (1..2).each do |i|
+    #       newline(2) if i == 2
+    #       if table_models.any?
+    #         table_model = table_models.shift
+    #         table_model.is_a?(SchemeMix) ? draw_category_table(table_model) : draw_scheme_mix_table(table_model)
+    #       end
+    #     end
+    #   end
+    # end
 
     draw_footers
   end
@@ -196,64 +182,118 @@ Congratulations once again for partaking in this noble endeavor, and together le
     text ISSUER_TITLE, style: :bold
   end
 
-  def draw_scheme_mix_table(certification_path)
-    # Fetch the certification path scores
-    certification_path_scores = certification_path.scores_in_certificate_points
+  def draw_category_graph(total_category_scores)
+    chart_generator = ChartGeneratorService.new
+    barchart_config = {
+        type: 'horizontalBar',
+        data: {
+            labels: total_category_scores.map { |category_code, category| category[:name] },
+            datasets: [{
+                           label: 'Points Attainable',
+                           data: total_category_scores.map { |category_code, category| category[:maximum_score] },
+                           backgroundColor: 'rgb(255, 99, 132)',
+                           borderColor: 'rgb(255, 99, 132)',
+                           borderWidth: 1
+                       },
+                       {
+                           label: 'Achieved',
+                           data: total_category_scores.map { |category_code, category| category[:achieved_score] },
+                           backgroundColor: 'rgb(54, 162, 235)',
+                           borderColor: 'rgb(54, 162, 235)',
+                           borderWidth: 1
+                       }]
+        },
+        options: {
+            legend: {
+                position: 'bottom'
+            }
+        }
+    }
 
-    achieved_certification_path_score = number_with_precision(certification_path_scores[:achieved_score_in_certificate_points], precision: 3)
+    begin
+      image chart_generator.generate_chart(barchart_config, 600, 300).path, width: 400
+    rescue LinkmeService::ApiError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, Errno::ECONNREFUSED,
+        EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError
+      text 'An error occurred when creating the chart.'
+    end
+  end
 
+  def draw_certificate_table(total_category_scores)
     # Prepare table data
     data = []
-    data.append(%w(Weight Scheme Points))
+    data.append(%w(No Category Point))
 
     # Add the category rows to the table
-    certification_path.scheme_mixes.each do |scheme_mix|
-      achieved_scheme_mix_score = number_with_precision(scheme_mix.scores[:achieved_score_in_certificate_points], precision: 3)
-      data.append(["#{scheme_mix.weight}%", scheme_mix.name, achieved_scheme_mix_score])
+    total_category_scores.each do |category_code, category|
+      data.append([category_code, category[:name], number_with_precision(category[:achieved_score], precision: 3)])
     end
 
     # Add footer to the table
-    data.append(['', 'Total points', achieved_certification_path_score])
+    data.append(['', 'Total points',  number_with_precision(@score, precision: 3)])
     data.append(['', 'Level achieved', @stars])
-
-    # Output table title
-    text "Certification: #{certification_path.name}", style: :bold, size: 15, color: '69AB87', align: :center
 
     # Output table
     draw_table(data, true)
   end
 
-  def draw_category_table(scheme_mix)
-    # Fetch the scheme mix scores
-    scheme_mix_scores = scheme_mix.scores
-    achieved_scheme_mix_score = number_with_precision(scheme_mix_scores[:achieved_score_in_certificate_points], precision: 3)
-
-    # Fetch all scheme mix criteria score records
-    scheme_mix_criteria_scores = scheme_mix.scheme_mix_criteria_scores
-
-    # Group the scores by category
-    scheme_mix_criteria_scores_by_category = scheme_mix_criteria_scores.group_by { |item| item[:scheme_category_id] }
-
-    # Prepare table data
-    data = []
-    data.append(%w(No Category Points))
-
-    # Add the category rows to the table
-    scheme_mix.scheme_categories.each do |category|
-      category_scores = sum_score_hashes(scheme_mix_criteria_scores_by_category[category.id])
-      achieved_category_score = number_with_precision(category_scores[:achieved_score_in_certificate_points], precision: 3)
-      data.append([category.code, category.name, achieved_category_score])
-    end
-
-    # Add footer to the table
-    data.append(['', 'Total points', achieved_scheme_mix_score])
-
-    # Output table title
-    text "Scheme: #{scheme_mix.name} - #{scheme_mix.weight}%", style: :bold, size: 15, color: '69AB87', align: :center
-
-    # Output table
-    draw_table(data)
-  end
+  # def draw_scheme_mix_table(certification_path)
+  #   # Fetch the certification path scores
+  #   certification_path_scores = certification_path.scores_in_certificate_points
+  #
+  #   achieved_certification_path_score = number_with_precision(certification_path_scores[:achieved_score_in_certificate_points], precision: 3)
+  #
+  #   # Prepare table data
+  #   data = []
+  #   data.append(%w(Weight Scheme Points))
+  #
+  #   # Add the category rows to the table
+  #   certification_path.scheme_mixes.each do |scheme_mix|
+  #     achieved_scheme_mix_score = number_with_precision(scheme_mix.scores[:achieved_score_in_certificate_points], precision: 3)
+  #     data.append(["#{scheme_mix.weight}%", scheme_mix.name, achieved_scheme_mix_score])
+  #   end
+  #
+  #   # Add footer to the table
+  #   data.append(['', 'Total points', achieved_certification_path_score])
+  #   data.append(['', 'Level achieved', @stars])
+  #
+  #   # Output table title
+  #   text "Certification: #{certification_path.name}", style: :bold, size: 15, color: '69AB87', align: :center
+  #
+  #   # Output table
+  #   draw_table(data, true)
+  # end
+  #
+  # def draw_category_table(scheme_mix)
+  #   # Fetch the scheme mix scores
+  #   scheme_mix_scores = scheme_mix.scores
+  #   achieved_scheme_mix_score = number_with_precision(scheme_mix_scores[:achieved_score_in_certificate_points], precision: 3)
+  #
+  #   # Fetch all scheme mix criteria score records
+  #   scheme_mix_criteria_scores = scheme_mix.scheme_mix_criteria_scores
+  #
+  #   # Group the scores by category
+  #   scheme_mix_criteria_scores_by_category = scheme_mix_criteria_scores.group_by { |item| item[:scheme_category_id] }
+  #
+  #   # Prepare table data
+  #   data = []
+  #   data.append(%w(No Category Points))
+  #
+  #   # Add the category rows to the table
+  #   scheme_mix.scheme_categories.each do |category|
+  #     category_scores = sum_score_hashes(scheme_mix_criteria_scores_by_category[category.id])
+  #     achieved_category_score = number_with_precision(category_scores[:achieved_score_in_certificate_points], precision: 3)
+  #     data.append([category.code, category.name, achieved_category_score])
+  #   end
+  #
+  #   # Add footer to the table
+  #   data.append(['', 'Total points', achieved_scheme_mix_score])
+  #
+  #   # Output table title
+  #   text "Scheme: #{scheme_mix.name} - #{scheme_mix.weight}%", style: :bold, size: 15, color: '69AB87', align: :center
+  #
+  #   # Output table
+  #   draw_table(data)
+  # end
 
   def draw_table(data, has_level_achieved_footer = false)
     table(data, width: @document.bounds.right - CONTENT_PADDING) do
