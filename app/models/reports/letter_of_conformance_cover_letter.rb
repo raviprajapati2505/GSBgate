@@ -211,7 +211,7 @@ Congratulations once again for partaking in this noble endeavor, and together le
     }
 
     begin
-      image chart_generator.generate_chart(barchart_config, 600, 300).path, width: 400
+      image chart_generator.generate_chart(barchart_config, 450, 350).path, width: 450
     rescue LinkmeService::ApiError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, Errno::ECONNREFUSED,
         EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError
       text 'An error occurred when creating the chart.'
