@@ -85,8 +85,16 @@ Congratulations once again for partaking in this noble endeavor, and together le
     start_new_page
     draw_page do
       draw_certificate_table(total_category_scores)
-      newline(2)
+      text 'Figure 1 Scoring summary', align: :center
+      newline(3)
       draw_category_graph(total_category_scores)
+      text 'Figure 2 Certfication level chart', align: :center
+    end
+
+    start_new_page
+    draw_page do
+      draw_score_graph
+      text 'Figure 3 Certfication level chart', align: :center
     end
 
     # table_models = [@certification_path] + @certification_path.scheme_mixes.to_a
@@ -185,35 +193,122 @@ Congratulations once again for partaking in this noble endeavor, and together le
   def draw_category_graph(total_category_scores)
     chart_generator = ChartGeneratorService.new
     barchart_config = {
-        type: 'horizontalBar',
-        data: {
-            labels: total_category_scores.map { |category_code, category| category[:name] },
-            datasets: [{
-                           label: 'Points Attainable',
-                           data: total_category_scores.map { |category_code, category| category[:maximum_score] },
-                           backgroundColor: 'rgb(255, 99, 132)',
-                           borderColor: 'rgb(255, 99, 132)',
-                           borderWidth: 1
-                       },
-                       {
-                           label: 'Achieved',
-                           data: total_category_scores.map { |category_code, category| category[:achieved_score] },
-                           backgroundColor: 'rgb(54, 162, 235)',
-                           borderColor: 'rgb(54, 162, 235)',
-                           borderWidth: 1
-                       }]
+      type: 'horizontalBar',
+      data: {
+        labels: total_category_scores.map { |_category_code, category| category[:name] },
+        datasets: [{
+          label: 'Points Attainable',
+          data: total_category_scores.map { |_category_code, category| category[:maximum_score] },
+          backgroundColor: 'rgb(255, 99, 132)',
+          borderColor: 'rgb(255, 99, 132)',
+          borderWidth: 1
         },
-        options: {
-            legend: {
-                position: 'bottom'
-            }
+                   {
+                     label: 'Achieved',
+                     data: total_category_scores.map { |_category_code, category| category[:achieved_score] },
+                     backgroundColor: 'rgb(54, 162, 235)',
+                     borderColor: 'rgb(54, 162, 235)',
+                     borderWidth: 1
+                   }]
+      },
+      options: {
+        legend: {
+          position: 'bottom'
         }
+      }
     }
 
     begin
-      image chart_generator.generate_chart(barchart_config, 450, 350).path, width: 450
+      image chart_generator.generate_chart(barchart_config, 600, 400).path, width: 450
     rescue LinkmeService::ApiError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, Errno::ECONNREFUSED,
-        EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError
+           EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError
+      text 'An error occurred when creating the chart.'
+    end
+  end
+
+  def draw_score_graph
+    chart_generator = ChartGeneratorService.new
+
+    labels = ['',
+              '', '', '', '',
+              'Certification denied',
+              '', '', '', '',
+              '*',
+              '', '', '', '',
+              '**',
+              '', '', '', '',
+              '***',
+              '', '', '', '',
+              '****',
+              '', '', '', '',
+              '*****',
+              '', '', '', '',
+              '******']
+
+    data = [
+        -1,
+        -0.9, -0.8, -0.7, -0.6,
+        -0.5,
+        -0.4, -0.3, -0.2, -0.1,
+        0,
+        0.1, 0.2, 0.3, 0.4,
+        0.5,
+        0.6, 0.7, 0.8, 0.9,
+        1,
+        1.1, 1.2, 1.3, 1.4,
+        1.5,
+        1.6, 1.7, 1.8, 1.9,
+        2,
+        2.1, 2.2, 2.3, 2.4,
+        2.5
+    ]
+
+    point_radius = [
+        4,
+        0, 0, 0, 0,
+        4,
+        0, 0, 0, 0,
+        4,
+        0, 0, 0, 0,
+        4,
+        0, 0, 0, 0,
+        4,
+        0, 0, 0, 0,
+        4,
+        0, 0, 0, 0,
+        4,
+        0, 0, 0, 0,
+        4
+    ]
+
+    # Mark the certificate score on the line chart
+    plot_index = data.index(@score.round(1))
+    point_radius[plot_index] = 12 unless plot_index.nil?
+
+    barchart_config = {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: '',
+          data: data,
+          pointRadius: point_radius,
+          backgroundColor: 'rgb(54, 162, 235)',
+          borderColor: 'rgb(54, 162, 235)',
+          fill: false
+        }]
+      },
+      options: {
+        legend: {
+          position: 'bottom'
+        }
+      }
+    }
+
+    begin
+      image chart_generator.generate_chart(barchart_config, 600, 400).path, width: 450
+    rescue LinkmeService::ApiError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, Errno::ECONNREFUSED,
+           EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError
       text 'An error occurred when creating the chart.'
     end
   end
@@ -229,7 +324,7 @@ Congratulations once again for partaking in this noble endeavor, and together le
     end
 
     # Add footer to the table
-    data.append(['', 'Total points',  number_with_precision(@score, precision: 3)])
+    data.append(['', 'Total points', number_with_precision(@score, precision: 3)])
     data.append(['', 'Level achieved', @stars])
 
     # Output table
