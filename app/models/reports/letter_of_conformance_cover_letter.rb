@@ -307,7 +307,7 @@ Congratulations once again for partaking in this noble endeavor, and together le
       },
       options: {
         legend: {
-          display: false
+          position: 'bottom'
         }
       }
     }
