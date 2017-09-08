@@ -38,6 +38,10 @@
             <span class="col-md-4"><%= t(Certificate.certification_types.key(certification_type), scope: 'activerecord.attributes.certificate.certification_types') %></span>
             <% if no_completed_letter_of_conformance_for_final_design %>
                 <%= t('.warning_complete_loc') %>
+            <% elsif Certificate.certification_types[:construction_certificate_stage1] == certification_type %>
+              <span class="col-md-4">
+                Not yet registered
+              </span>
             <% elsif no_stage1_construction_for_stage2 %>
               <%= t('.warning_complete_stage1') %>
             <% elsif no_stage2_construction_for_stage3 %>
