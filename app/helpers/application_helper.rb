@@ -27,8 +27,8 @@ module ApplicationHelper
     end
   end
 
-  def tooltip(text)
-    ikoen('question-circle', size: :normal, tooltip: text, class: 'tooltip-icon')
+  def tooltip(text, data_options = {})
+    ikoen('question-circle', size: :normal, tooltip: text, data: data_options, class: 'tooltip-icon')
   end
 
   # Wraps the block param, with a link to th given path, if we have read access to the given model

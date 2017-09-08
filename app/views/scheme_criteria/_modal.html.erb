@@ -14,7 +14,8 @@
                    || @scheme_criterion.scheme_category.scheme.development_types.first.nil? \
                    || @scheme_criterion.scheme_category.scheme.development_types.first.certificate.nil? %>
                 <% unless @scheme_criterion.scheme_category.scheme.development_types.first.certificate.construction_issue_1? %>
-                  <%= f.select :scores, options_for_select([['-1', -1.0],['0', 0.0],['1', 1.0],['2', 2.0],['3', 3.0]], @scheme_criterion.scores.map {|s| s[1]}), {}, {:multiple => true} %>
+                  <%= f.label :scores, ('Scores' + tooltip('By holding the Ctrl-button it is possible to (de)select multiple scores.', placement: 'right')).html_safe %>
+                  <%= f.select :scores, options_for_select([['-1', -1.0],['0', 0.0],['1', 1.0],['2', 2.0],['3', 3.0]], @scheme_criterion.scores.map {|s| s[1]}), {hide_label: true}, {:multiple => true} %>
                   <%= f.label :incentive_weight_minus_1, 'Incentive weight for score -1' %>
                   <%= f.number_field :incentive_weight_minus_1, in: 0.00..100.00, step: 0.01, hide_label: true, append: '%' %>
                   <%= f.label :incentive_weight_0, 'Incentive weight for score 0' %>
@@ -30,7 +31,8 @@
                   <%= f.number_field :incentive_weight, in: 0.0..100.0, step: 0.1, hide_label: true, append: '%' %>
                 <% end %>
               <% else %>
-                  <%= f.select :scores, options_for_select([['-1', -1.0],['0', 0.0],['1', 1.0],['2', 2.0],['3', 3.0]], @scheme_criterion.scores.map {|s| s[1]}), {}, {:multiple => true} %>
+                  <%= f.label :scores, ('Scores' + tooltip('By holding the Ctrl-button it is possible to (de)select multiple scores.', placement: 'right')).html_safe %>
+                  <%= f.select :scores, options_for_select([['-1', -1.0],['0', 0.0],['1', 1.0],['2', 2.0],['3', 3.0]], @scheme_criterion.scores.map {|s| s[1]}), {hide_label: true}, {:multiple => true} %>
                   <%= f.label :incentive_weight_minus_1, 'Incentive weight for score -1' %>
                   <%= f.number_field :incentive_weight_minus_1, in: 0.00..100.00, step: 0.01, hide_label: true, append: '%' %>
                   <%= f.label :incentive_weight_0, 'Incentive weight for score 0' %>
