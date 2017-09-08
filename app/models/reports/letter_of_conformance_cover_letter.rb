@@ -196,37 +196,29 @@ Congratulations once again for partaking in this noble endeavor, and together le
   def draw_category_graph(total_category_scores)
     chart_generator = ChartGeneratorService.new
     barchart_config = {
-        type: 'horizontalBar',
-        data: {
-            labels: total_category_scores.map {|_category_code, category| category[:name]},
-            datasets: [{
-                           label: 'Points Attainable',
-                           data: total_category_scores.map {|_category_code, category| category[:maximum_score]},
-                           backgroundColor: 'rgb(255, 99, 132)',
-                           borderColor: 'rgb(255, 99, 132)',
-                           borderWidth: 1
-                       },
-                       {
-                           label: 'Achieved',
-                           data: total_category_scores.map {|_category_code, category| category[:achieved_score]},
-                           backgroundColor: 'rgb(54, 162, 235)',
-                           borderColor: 'rgb(54, 162, 235)',
-                           borderWidth: 1
-                       }]
+      type: 'horizontalBar',
+      data: {
+        labels: total_category_scores.map { |_category_code, category| category[:name] },
+        datasets: [{
+          label: 'Points Attainable',
+          data: total_category_scores.map { |_category_code, category| category[:maximum_score] },
+          backgroundColor: 'rgb(255, 99, 132)',
+          borderColor: 'rgb(255, 99, 132)',
+          borderWidth: 1
         },
-        options: {
-            legend: {
-                position: 'bottom'
-            },
-            scales: {
-                xAxes: [{
-                            ticks: {
-                                maxRotation: 0,
-                                minRotation: 0
-                            }
-                        }]
-            }
+                   {
+                     label: 'Achieved',
+                     data: total_category_scores.map { |_category_code, category| category[:achieved_score] },
+                     backgroundColor: 'rgb(54, 162, 235)',
+                     borderColor: 'rgb(54, 162, 235)',
+                     borderWidth: 1
+                   }]
+      },
+      options: {
+        legend: {
+          position: 'bottom'
         }
+      }
     }
 
     begin
@@ -316,6 +308,14 @@ Congratulations once again for partaking in this noble endeavor, and together le
       options: {
         legend: {
           display: false
+        },
+        scales: {
+            xAxes: [{
+                        ticks: {
+                            maxRotation: 0,
+                            minRotation: 0
+                        }
+                    }]
         }
       }
     }
