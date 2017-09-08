@@ -85,15 +85,18 @@ Congratulations once again for partaking in this noble endeavor, and together le
     start_new_page
     draw_page do
       draw_certificate_table(total_category_scores)
+      newline
       text 'Figure 1 Scoring summary', align: :center
       newline(3)
       draw_category_graph(total_category_scores)
+      newline
       text 'Figure 2 Certfication level chart', align: :center
     end
 
     start_new_page
     draw_page do
       draw_score_graph
+      newline
       text 'Figure 3 Certfication level chart', align: :center
     end
 
@@ -193,29 +196,37 @@ Congratulations once again for partaking in this noble endeavor, and together le
   def draw_category_graph(total_category_scores)
     chart_generator = ChartGeneratorService.new
     barchart_config = {
-      type: 'horizontalBar',
-      data: {
-        labels: total_category_scores.map { |_category_code, category| category[:name] },
-        datasets: [{
-          label: 'Points Attainable',
-          data: total_category_scores.map { |_category_code, category| category[:maximum_score] },
-          backgroundColor: 'rgb(255, 99, 132)',
-          borderColor: 'rgb(255, 99, 132)',
-          borderWidth: 1
+        type: 'horizontalBar',
+        data: {
+            labels: total_category_scores.map {|_category_code, category| category[:name]},
+            datasets: [{
+                           label: 'Points Attainable',
+                           data: total_category_scores.map {|_category_code, category| category[:maximum_score]},
+                           backgroundColor: 'rgb(255, 99, 132)',
+                           borderColor: 'rgb(255, 99, 132)',
+                           borderWidth: 1
+                       },
+                       {
+                           label: 'Achieved',
+                           data: total_category_scores.map {|_category_code, category| category[:achieved_score]},
+                           backgroundColor: 'rgb(54, 162, 235)',
+                           borderColor: 'rgb(54, 162, 235)',
+                           borderWidth: 1
+                       }]
         },
-                   {
-                     label: 'Achieved',
-                     data: total_category_scores.map { |_category_code, category| category[:achieved_score] },
-                     backgroundColor: 'rgb(54, 162, 235)',
-                     borderColor: 'rgb(54, 162, 235)',
-                     borderWidth: 1
-                   }]
-      },
-      options: {
-        legend: {
-          position: 'bottom'
+        options: {
+            legend: {
+                position: 'bottom'
+            },
+            scales: {
+                xAxes: [{
+                            ticks: {
+                                maxRotation: 0,
+                                minRotation: 0
+                            }
+                        }]
+            }
         }
-      }
     }
 
     begin
@@ -260,10 +271,14 @@ Congratulations once again for partaking in this noble endeavor, and together le
         1.6, 1.7, 1.8, 1.9,
         2,
         2.1, 2.2, 2.3, 2.4,
-        2.5
+        2.5,
+        2.6, 2.7, 2.8, 2.9,
+        3
     ]
 
     point_radius = [
+        4,
+        0, 0, 0, 0,
         4,
         0, 0, 0, 0,
         4,
@@ -300,7 +315,7 @@ Congratulations once again for partaking in this noble endeavor, and together le
       },
       options: {
         legend: {
-          position: 'bottom'
+          display: false
         }
       }
     }
