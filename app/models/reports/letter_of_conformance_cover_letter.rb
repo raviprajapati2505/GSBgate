@@ -310,14 +310,6 @@ Congratulations once again for partaking in this noble endeavor, and together le
       options: {
         legend: {
           display: false
-        },
-        scales: {
-            xAxes: [{
-                        ticks: {
-                            maxRotation: 0,
-                            minRotation: 0
-                        }
-                    }]
         }
       }
     }
