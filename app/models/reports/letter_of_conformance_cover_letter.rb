@@ -232,23 +232,23 @@ Congratulations once again for partaking in this noble endeavor, and together le
   def draw_score_graph
     chart_generator = ChartGeneratorService.new
 
-    labels = ['',
-              '', '', '', '',
-              'Certification denied',
-              '', '', '', '',
-              '*',
-              '', '', '', '',
-              '**',
-              '', '', '', '',
-              '***',
-              '', '', '', '',
-              '****',
-              '', '', '', '',
-              '*****',
-              '', '', '', '',
-              '******',
-              '', '', '', '',
-              '']
+    labels = [
+        '',
+        '', '', '', '',
+        'Certification denied',
+        '', '', '', '',
+        '*',
+        '', '', '', '',
+        '**',
+        '', '', '', '',
+        '***',
+        '', '', '', '',
+        '****',
+        '', '', '', '',
+        '*****',
+        '', '', '', '',
+        '******'
+    ]
 
     data = [
         -1,
@@ -265,14 +265,10 @@ Congratulations once again for partaking in this noble endeavor, and together le
         1.6, 1.7, 1.8, 1.9,
         2,
         2.1, 2.2, 2.3, 2.4,
-        2.5,
-        2.6, 2.7, 2.8, 2.9,
-        3
+        2.5
     ]
 
     point_radius = [
-        4,
-        0, 0, 0, 0,
         4,
         0, 0, 0, 0,
         4,
@@ -315,7 +311,7 @@ Congratulations once again for partaking in this noble endeavor, and together le
     }
 
     begin
-      image chart_generator.generate_chart(barchart_config, 600, 600).path, width: 450
+      image chart_generator.generate_chart(barchart_config, 600, 400).path, width: 450
     rescue LinkmeService::ApiError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, Errno::ECONNREFUSED,
            EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError
       text 'An error occurred when creating the chart.'
