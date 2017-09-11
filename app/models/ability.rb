@@ -211,7 +211,7 @@ class Ability
       can :list, CertificationPath
       can :apply_for_pcr, CertificationPath, pcr_track: false, certificate: {certification_type: [Certificate.certification_types[:letter_of_conformance], Certificate.certification_types[:final_design_certificate], Certificate.certification_types[:operations_certificate]]}
       can :cancel_pcr, CertificationPath, pcr_track: true, certificate: {certification_type: [Certificate.certification_types[:letter_of_conformance], Certificate.certification_types[:final_design_certificate], Certificate.certification_types[:operations_certificate]]}
-      can :download_coverletter_report, CertificationPath, certification_path_status: {id: CertificationPathStatus::CERTIFIED}
+      can :download_coverletter_report, CertificationPath, certification_path_status: {id: CertificationPathStatus::CERTIFIED}, certificate: {certification_type: Certificate.certification_types[:letter_of_conformance]}
       can :download_archive, CertificationPath
       can :download_signed_certificate, CertificationPath, certification_path_status: {id: CertificationPathStatus::CERTIFIED}
       if user.gsas_trust_admin?
@@ -230,7 +230,7 @@ class Ability
       # SchemeMix
       cannot :read, SchemeMix, certification_path: {certification_path_status: {id: CertificationPathStatus::ACTIVATING}}
       can :update, SchemeMix, certification_path: {certification_path_status: {id: CertificationPathStatus::ACTIVATING}, development_type: {mixable: true}}
-      can :download_scores_report, SchemeMix, certification_path: {certification_path_status: {id: CertificationPathStatus::CERTIFIED}}
+      can :download_scores_report, SchemeMix, certification_path: {certification_path_status: {id: CertificationPathStatus::CERTIFIED}, certificate: {certification_type: Certificate.certification_types[:letter_of_conformance]}}
       # SchemeMixCriterion
       cannot :read, SchemeMixCriterion, scheme_mix: {certification_path: {certification_path_status: {id: CertificationPathStatus::ACTIVATING}}}
       cannot :list, SchemeMixCriterion, scheme_mix: {certification_path: {certification_path_status: {id: CertificationPathStatus::ACTIVATING}}}
