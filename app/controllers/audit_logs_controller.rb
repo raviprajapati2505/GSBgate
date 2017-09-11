@@ -38,14 +38,14 @@ class AuditLogsController < AuthenticatedController
     else
       # Generate CSV
       csv_string = CSV.generate(headers: true, col_sep: ';') do |csv|
-        csv << ['Date/time', 'User', 'User comment', 'System message']
+        csv << ['Date/time', 'User', 'User comment', 'System message', 'Project', 'Certification']
         page = 0
         logs_per_page = 100
         begin
           page += 1
           audit_logs = @audit_logs.page(page).per(logs_per_page)
           audit_logs.each do |audit_log|
-            csv << [audit_log.created_at, audit_log.user.full_name, audit_log.user_comment, ActionController::Base.helpers.strip_tags(audit_log.system_message)]
+            csv << [audit_log.created_at, audit_log.user.full_name, audit_log.user_comment, ActionController::Base.helpers.strip_tags(audit_log.system_message), audit_log.project.present? ? "#{audit_log.project.name} (#{audit_log.project.code})" : '', audit_log.certification_path.present? ? audit_log.certification_path.name : '']
           end
         end while audit_logs.size == logs_per_page
       end
