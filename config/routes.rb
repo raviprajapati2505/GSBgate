@@ -108,7 +108,11 @@ Rails.application.routes.draw do
   get 'projects/:id/site_plan' => 'projects#download_site_plan', as: 'download_project_site_plan'
   get 'projects/:id/design_brief' => 'projects#download_design_brief', as: 'download_project_design_brief'
   get 'projects/:id/narrative' => 'projects#download_project_narrative', as: 'download_project_narrative'
-  resources :audit_logs, only: [:index], path: 'audit-logs'
+  resources :audit_logs, only: [:index], path: 'audit-logs' do
+    collection do
+      get 'export'
+    end
+  end
   get 'audit-logs/:auditable_type/:auditable_id' => 'audit_logs#auditable_index', as: 'auditable_index_logs'
   get 'audit-logs/:auditable_type/:auditable_id/comments' => 'audit_logs#auditable_index_comments', as: 'auditable_index_comments'
   get 'audit-logs/:auditable_type/:auditable_id/download-attachment/:id' => 'audit_logs#download_attachment', as: 'download_audit_log_attachment'

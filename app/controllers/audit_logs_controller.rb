@@ -1,5 +1,7 @@
 class AuditLogsController < AuthenticatedController
-  before_action :set_auditable, except: [:index]
+  require 'csv'
+
+  before_action :set_auditable, except: [:index, :export]
   load_and_authorize_resource
 
   def index
@@ -7,86 +9,44 @@ class AuditLogsController < AuthenticatedController
 
     @audit_logs = @audit_logs.includes(:user, :project)
     @certification_paths_optionlist = []
+    empty_filters = {'text' => nil, 'user_id' => nil, 'project_id' => nil, 'certification_path_id' => nil, 'date_from' => '', 'time_from' => '0:00', 'date_to' => '', 'time_to' => '0:00', 'audit_log_type' => 'all'}
 
     if params[:reset].present?
-      session[:audit] = {'text' => nil, 'user_id' => nil, 'project_id' => nil, 'certification_path_id' => nil, 'date_from' => '', 'time_from' => '0:00', 'date_to' => '', 'time_to' => '0:00', 'audit_log_type' => 'all'}
+      session[:audit] = empty_filters
     else
-
       if params[:button].present?
-        session[:audit] = {'text' => nil, 'user_id' => nil, 'project_id' => nil, 'certification_path_id' => nil, 'date_from' => '', 'time_from' => '0:00', 'date_to' => '', 'time_to' => '0:00', 'audit_log_type' => 'all'}
+        session[:audit] = empty_filters
       else
-        session[:audit] ||= {'text' => nil, 'user_id' => nil, 'project_id' => nil, 'certification_path_id' => nil, 'date_from' => '', 'time_from' => '0:00', 'date_to' => '', 'time_to' => '0:00', 'audit_log_type' => 'all'}
+        session[:audit] ||= empty_filters
       end
 
-      # Text filter
-      if params[:text].present?
-        session[:audit]['text'] = params[:text]
-      end
-      if session[:audit]['text'].present?
-        @audit_logs = @audit_logs.where('(system_message ILIKE ?) OR (user_comment ILIKE ?)' , "%#{session[:audit]['text']}%", "%#{session[:audit]['text']}%")
-      end
-
-      # User filter
-      if params[:user_id].present? && (params[:user_id].to_i > 0)
-        session[:audit]['user_id'] = params[:user_id]
-      end
-      if session[:audit]['user_id'].present?
-        @audit_logs = @audit_logs.where(user_id: session[:audit]['user_id'].to_i)
-      end
-
-      # Project filter
-      if params[:project_id].present? && (params[:project_id].to_i > 0)
-        session[:audit]['project_id'] = params[:project_id]
-      end
-      if session[:audit]['project_id'].present?
-        @audit_logs = @audit_logs.where(project_id: session[:audit]['project_id'].to_i)
-      end
-
-      # Certification path filter
-      if params[:certification_path_id].present? && (params[:certification_path_id].to_i > 0)
-        session[:audit]['certification_path_id'] = params[:certification_path_id]
-      end
-      if session[:audit]['certification_path_id'].present?
-        @audit_logs = @audit_logs.where(certification_path_id: session[:audit]['certification_path_id'].to_i)
-      end
-
-      # Date from filter
-      if params[:date_from].present?
-        session[:audit]['date_from'] = params[:date_from]
-        session[:audit]['time_from'] = params[:time_from]
-      end
-      if session[:audit]['date_from'].present?
-        begin
-          @audit_logs = @audit_logs.where('audit_logs.created_at >= ?', DateTime.strptime(session[:audit]['date_from'] + ' ' + session[:audit]['time_from'] + ':00+03:00', t('time.formats.filter')).utc)
-        rescue ArgumentError
-          flash[:alert] = 'The date/time from fields contained invalid data.'
-        end
-      end
-
-      # Date to filter
-      if params[:date_to].present?
-        session[:audit]['date_to'] = params[:date_to]
-        session[:audit]['time_to'] = params[:time_to]
-      end
-      if session[:audit]['date_to'].present?
-        begin
-          @audit_logs = @audit_logs.where('audit_logs.created_at <= ?', DateTime.strptime(session[:audit]['date_to'] + ' ' + session[:audit]['time_to'] + ':59+03:00', t('time.formats.filter')).utc)
-        rescue ArgumentError
-          flash[:alert] = 'The date/time to fields contained invalid data.'
-        end
-      end
-
-      # Audit log type filter
-      session[:audit]['audit_log_type'] = params[:audit_log_type] if params[:audit_log_type].present?
-      case session[:audit]['audit_log_type']
-        when 'user_comment'
-          @audit_logs = @audit_logs.where.not(user_comment: nil)
-        when 'attachment'
-          @audit_logs = @audit_logs.where.not(attachment_file: nil)
-      end
+      session[:audit] = set_session_filters(session[:audit], params)
+      @audit_logs = filter_audit_logs(@audit_logs, session[:audit])
     end
 
     @audit_logs = @audit_logs.page(params[:page]).per(12)
+  end
+
+  def export
+    session[:audit] ||= EMPTY_FILTERS
+    @audit_logs = @audit_logs.includes(:user, :project)
+    @audit_logs = filter_audit_logs(@audit_logs, session[:audit])
+
+    # Generate CSV
+    csv_string = CSV.generate(headers: true, col_sep: ';') do |csv|
+      csv << ['Date/time', 'User', 'User comment', 'System message']
+      page = 0
+      logs_per_page = 100
+      begin
+        page += 1
+        audit_logs = @audit_logs.page(page).per(logs_per_page)
+        audit_logs.each do |audit_log|
+          csv << [audit_log.created_at, audit_log.user.full_name, audit_log.user_comment, ActionController::Base.helpers.strip_tags(audit_log.system_message)]
+        end
+      end while audit_logs.size == logs_per_page
+    end
+
+    send_data csv_string, filename: "audit_logs_export_#{Time.now.to_i}.csv"
   end
 
   def auditable_index
@@ -158,5 +118,86 @@ class AuditLogsController < AuthenticatedController
     unless can?(:read, @auditable)
       raise CanCan::AccessDenied.new('Not Authorized to read audit logs for this model.', :read, AuditLog)
     end
+  end
+
+  def set_session_filters(session_filters, new_filters)
+    # Text filter
+    session_filters['text'] = new_filters[:text] if new_filters[:text].present?
+
+    # User filter
+    session_filters['user_id'] = new_filters[:user_id] if (new_filters[:user_id].present? && (new_filters[:user_id].to_i > 0))
+
+    # Project filter
+    session_filters['project_id'] = new_filters[:project_id] if (new_filters[:project_id].present? && (new_filters[:project_id].to_i > 0))
+
+    # Certification path filter
+    session_filters['certification_path_id'] = new_filters[:certification_path_id] if (new_filters[:certification_path_id].present? && (new_filters[:certification_path_id].to_i > 0))
+
+    # Date from filter
+    if new_filters[:date_from].present?
+      session_filters['date_from'] = new_filters[:date_from]
+      session_filters['time_from'] = new_filters[:time_from]
+    end
+
+    # Date to filter
+    if new_filters[:date_to].present?
+      session_filters['date_to'] = new_filters[:date_to]
+      session_filters['time_to'] = new_filters[:time_to]
+    end
+
+    # Audit log type filter
+    session_filters['audit_log_type'] = new_filters[:audit_log_type] if new_filters[:audit_log_type].present?
+
+    session_filters
+  end
+
+  def filter_audit_logs(audit_logs, session_filters)
+    # Text filter
+    if session_filters['text'].present?
+      audit_logs = audit_logs.where('(system_message ILIKE ?) OR (user_comment ILIKE ?)' , "%#{session_filters['text']}%", "%#{session_filters['text']}%")
+    end
+
+    # User filter
+    if session_filters['user_id'].present?
+      audit_logs = audit_logs.where(user_id: session_filters['user_id'].to_i)
+    end
+
+    # Project filter
+    if session_filters['project_id'].present?
+      audit_logs = audit_logs.where(project_id: session_filters['project_id'].to_i)
+    end
+
+    # Certification path filter
+    if session_filters['certification_path_id'].present?
+      audit_logs = audit_logs.where(certification_path_id: session_filters['certification_path_id'].to_i)
+    end
+
+    # Date from filter
+    if session_filters['date_from'].present?
+      begin
+        audit_logs = audit_logs.where('audit_logs.created_at >= ?', DateTime.strptime(session_filters['date_from'] + ' ' + session_filters['time_from'] + ':00+03:00', t('time.formats.filter')).utc)
+      rescue ArgumentError
+        flash[:alert] = 'The date/time from fields contained invalid data.'
+      end
+    end
+
+    # Date to filter
+    if session_filters['date_to'].present?
+      begin
+        audit_logs = audit_logs.where('audit_logs.created_at <= ?', DateTime.strptime(session_filters['date_to'] + ' ' + session_filters['time_to'] + ':59+03:00', t('time.formats.filter')).utc)
+      rescue ArgumentError
+        flash[:alert] = 'The date/time to fields contained invalid data.'
+      end
+    end
+
+    # Audit log type filter
+    case session_filters['audit_log_type']
+      when 'user_comment'
+        audit_logs = audit_logs.where.not(user_comment: nil)
+      when 'attachment'
+        audit_logs = audit_logs.where.not(attachment_file: nil)
+    end
+
+    audit_logs
   end
 end
