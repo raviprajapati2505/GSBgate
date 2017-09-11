@@ -31,22 +31,27 @@ class AuditLogsController < AuthenticatedController
     session[:audit] ||= EMPTY_FILTERS
     @audit_logs = @audit_logs.includes(:user, :project)
     @audit_logs = filter_audit_logs(@audit_logs, session[:audit])
+    max_logs_to_export = 100000
 
-    # Generate CSV
-    csv_string = CSV.generate(headers: true, col_sep: ';') do |csv|
-      csv << ['Date/time', 'User', 'User comment', 'System message']
-      page = 0
-      logs_per_page = 100
-      begin
-        page += 1
-        audit_logs = @audit_logs.page(page).per(logs_per_page)
-        audit_logs.each do |audit_log|
-          csv << [audit_log.created_at, audit_log.user.full_name, audit_log.user_comment, ActionController::Base.helpers.strip_tags(audit_log.system_message)]
-        end
-      end while audit_logs.size == logs_per_page
+    if @audit_logs.count > max_logs_to_export
+      redirect_to :back, alert: "You have selected more than #{max_logs_to_export} audit logs. Please narrow your selection."
+    else
+      # Generate CSV
+      csv_string = CSV.generate(headers: true, col_sep: ';') do |csv|
+        csv << ['Date/time', 'User', 'User comment', 'System message']
+        page = 0
+        logs_per_page = 100
+        begin
+          page += 1
+          audit_logs = @audit_logs.page(page).per(logs_per_page)
+          audit_logs.each do |audit_log|
+            csv << [audit_log.created_at, audit_log.user.full_name, audit_log.user_comment, ActionController::Base.helpers.strip_tags(audit_log.system_message)]
+          end
+        end while audit_logs.size == logs_per_page
+      end
+
+      send_data csv_string, filename: "audit_logs_export_#{Time.now.to_i}.csv"
     end
-
-    send_data csv_string, filename: "audit_logs_export_#{Time.now.to_i}.csv"
   end
 
   def auditable_index
