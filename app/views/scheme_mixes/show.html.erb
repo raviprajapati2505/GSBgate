@@ -116,6 +116,7 @@
                         </thead>
                         <tbody>
                         <% @scheme_mix.scheme_categories.uniq.each_with_index do |category, i| %>
+                        <% if can?(:list, category) %>
                             <%
                                # summarize the scores for this category
                                category_scores = sum_score_hashes(scheme_mix_criteria_scores_by_category[category.id])
@@ -213,6 +214,7 @@
                                                }
                                             %>
                                             <% @scheme_mix.scheme_mix_criteria.for_category(category).order('scheme_criteria.number').map { |scheme_mix_criterion| scheme_mix_criterion.visible_status }.each do |scheme_mix_criterion| %>
+                                            <% if can?(:list, scheme_mix_criterion) %>
                                                 <tr>
                                                     <td><%= scheme_mix_criterion.code %></td>
                                                     <td>
@@ -277,11 +279,13 @@
                                                     </td>
                                                 </tr>
                                             <% end %>
+                                            <% end %>
                                             </tbody>
                                         </table>
                                     </div>
                                 </td>
                             </tr>
+                        <% end %>
                         <% end %>
                         </tbody>
                     </table>
