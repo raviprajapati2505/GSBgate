@@ -28,15 +28,13 @@ class Reports::LetterOfConformanceCoverLetter < Reports::BaseReport
     @content = <<-CONTENTTEMPLATE
 Dear,
 
-On behalf of Gulf Organisation for Research and Development, I would like to congratulate you on the successful completion of the Provisional Certification (LOC) stage of your project "#{@certification_path.project.name}", using #{@scheme_names.join(', ')}.
+On behalf of GSAS Trust, I would like to confer this Provisional GSAS Design & Build Certificate in the form of "Letter of Conformance-LOC" to the project mentioned above for the successful completion of GSAS Mixed Development v2.0 certification requirements.
 
-In recognition of this accomplishment and appreciation of your participation in the GSAS v2.1 certification process, I would like to confer this "Provisional Certificate-LOC" to your building with a total built-up area of <b>#{@certification_path.project.project_site_area}</b> m².
+Based on the submitted data, the score is documented to be <b><u>#{@score}</u></b>, which corresponds to the certification level of <b><u>#{@stars}</u></b>. Figures 1 to 3 summarize the score for the project, the score per category, achieved certification level and scoring bar chart respectively. Also, LOC Criteria Summary for the project is attached.
 
-Based on the submitted data, the final score at the preliminary review stage is documented to be <b><u>#{@score}</u></b>, which corresponds to the certification level of <b><u>#{@stars}</u></b> in the GSAS v2.1 Design Assessment Rating scheme. Figures 1 to 3 summarize the score for the buildings, the score per category, achieved GSAS v2.1 certification level and GSAS v2.1 scoring bar chart respectively. Also, LOC Criteria Scores for the project is attached.
+Kindly be advised that, this letter is only the predecessor towards achieving the final GSAS Design & Build Certificate and <u>should not be considered as the final certificate</u>. The project should satisfy during the construction stage the requirements of <u>Conformance to Design Audit</u> which is a prerequisite for the final GSAS Design & Build Certificate as indicated in the GSAS Technical Guide.
 
-Kindly be advised that, this letter is only the predecessor towards achieving GSAS v2.1 Design & Build Certificate and <u>should not be considered as the final certificate</u>. For the final GSAS v2.1 Design & Build Certificate, kindly ensure that all certification requirements, during and after the construction of the project, are satisfied (<u>LOC Compliance Audit</u>) as indicated in the GSAS Technical Guide.
-
-In the event of any changes to the design plan, from previously assessed, please note that the project is required to be reassessed once again. To understand the terms and conditions pertaining to GSAS v2.1 certification, please refer to the certification policy on the website: <u><link href='http://www.gord.qa'>www.gord.qa</link></u>.
+In the event of any future changes applied to the criteria pertaining to the issued LOC, the changes are required to be re-assessed once again. To understand the terms and conditions pertaining to GSAS certification, please refer to: <u><link href='http://www.gord.qa'>www.gord.qa</link></u>. 
 
 Congratulations once again for partaking in this noble endeavor, and together let us build a healthy and a sustainable future.
 
@@ -188,7 +186,7 @@ Congratulations once again for partaking in this noble endeavor, and together le
 
   def draw_signature
     text SIGNATURE_CLOSING
-    newline(4)
+    newline(5)
     text ISSUER_NAME, style: :bold
     text ISSUER_TITLE, style: :bold
   end
