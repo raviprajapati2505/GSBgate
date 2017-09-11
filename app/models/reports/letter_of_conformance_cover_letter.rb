@@ -30,7 +30,7 @@ Dear,
 
 On behalf of GSAS Trust, I would like to confer this Provisional GSAS Design & Build Certificate in the form of "Letter of Conformance-LOC" to the project mentioned above for the successful completion of GSAS Mixed Development v2.0 certification requirements.
 
-Based on the submitted data, the score is documented to be <b><u>#{@score}</u></b>, which corresponds to the certification level of <b><u>#{@stars}</u></b>. Figures 1 to 3 summarize the score for the project, the score per category, achieved certification level and scoring bar chart respectively. Also, LOC Criteria Summary for the project is attached.
+Based on the submitted data, the score is documented to be <b><u>#{number_with_precision(@score, precision: 3)}</u></b>, which corresponds to the certification level of <b><u>#{@stars}</u></b>. Figures 1 to 3 summarize the score for the project, the score per category, achieved certification level and scoring bar chart respectively. Also, LOC Criteria Summary for the project is attached.
 
 Kindly be advised that, this letter is only the predecessor towards achieving the final GSAS Design & Build Certificate and <u>should not be considered as the final certificate</u>. The project should satisfy during the construction stage the requirements of <u>Conformance to Design Audit</u> which is a prerequisite for the final GSAS Design & Build Certificate as indicated in the GSAS Technical Guide.
 
