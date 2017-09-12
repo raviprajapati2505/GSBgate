@@ -270,6 +270,12 @@ class Ability
         # Scheme
         can :crud, Scheme
       end
+
+      # Category/criteria overview
+      can :list, SchemeCategory
+      can :read, SchemeMixCriterion
+      can :list, SchemeMixCriterion
+
       # Audit log
       can [:index, :auditable_index, :auditable_index_comments, :auditable_create, :download_attachment], AuditLog
 
