@@ -20,10 +20,10 @@ module Effective
         table_column 'scheme_gsas_version', column: 'schemes.gsas_version', :filter => {:type => :select, :values => Proc.new{Scheme.order(:gsas_version).distinct.pluck(:gsas_version)}}
         table_column 'scheme_renovation', column: 'schemes.renovation', type: :boolean
         table_column 'scheme_gsas_document', visible: false, column: 'schemes.gsas_document', :filter => {:type => :select, :values => Proc.new{Scheme.order(:gsas_document).distinct.pluck(:gsas_document)}}
-        table_column 'development_types_array', label: "Development Types", column: "ARRAY_TO_STRING(ARRAY(SELECT distinct development_types.name FROM development_types INNER JOIN development_type_schemes ON development_type_schemes.development_type_id = development_types.id WHERE development_type_schemes.scheme_id = schemes.id), '|||') AS development_types_array" do |rec|
+        table_column 'development_types_array', filter: false, sortable: false, label: "Development Types", column: "ARRAY_TO_STRING(ARRAY(SELECT distinct development_types.name FROM development_types INNER JOIN development_type_schemes ON development_type_schemes.development_type_id = development_types.id WHERE development_type_schemes.scheme_id = schemes.id), '|||') AS development_types_array" do |rec|
           ERB::Util::html_escape(rec.development_types_array).split('|||').sort.join('<br/>') unless rec.development_types_array.nil?
         end
-        table_column 'certificates_array', label: "Certificates", column: "ARRAY_TO_STRING(ARRAY(SELECT distinct certificates.name FROM certificates INNER JOIN development_types ON development_types.certificate_id = certificates.id INNER JOIN development_type_schemes ON development_type_schemes.development_type_id = development_types.id WHERE development_type_schemes.scheme_id = schemes.id), '|||') AS certificates_array" do |rec|
+        table_column 'certificates_array', filter: false, sortable: false, label: "Certificates", column: "ARRAY_TO_STRING(ARRAY(SELECT distinct certificates.name FROM certificates INNER JOIN development_types ON development_types.certificate_id = certificates.id INNER JOIN development_type_schemes ON development_type_schemes.development_type_id = development_types.id WHERE development_type_schemes.scheme_id = schemes.id), '|||') AS certificates_array" do |rec|
           ERB::Util::html_escape(rec.certificates_array).split('|||').sort.join('<br/>') unless rec.certificates_array.nil?
         end
       end
