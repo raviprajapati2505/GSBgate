@@ -25,7 +25,7 @@
                 <% unless @scheme_criterion.scores.nil? %>
                 <tr>
                   <th><%= SchemeCriterion.human_attribute_name('scores') %></th>
-                  <td><%= @scheme_criterion.scores.map { |score| score[0] } %></td>
+                  <td><%= @scheme_criterion.scores.map { |score| score[0] }.join(', ') %></td>
                 </tr>
                 <% end %>
                 </tbody>

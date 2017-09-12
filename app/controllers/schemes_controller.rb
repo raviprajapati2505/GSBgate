@@ -10,7 +10,7 @@ class SchemesController < AuthenticatedController
     if @scheme.update(scheme_params)
       redirect_to scheme_path(@scheme), notice: 'Scheme was successfully updated.'
     else
-      render action: :edit, alert: 'Scheme could not be updated.'
+      redirect_to scheme_path(@scheme), alert: 'Scheme could not be updated.'
     end
   end
 

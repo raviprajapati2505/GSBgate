@@ -14,7 +14,7 @@ class SchemeCategoriesController < AuthenticatedController
     if @scheme_category.update(scheme_category_params)
       redirect_to scheme_category_path(@scheme_category), notice: 'Category was successfully updated.'
     else
-      render action: :edit, alert: 'Category could not be updated.'
+      redirect_to scheme_category_path(@scheme_category), alert: 'Category could not be updated.'
     end
   end
 
