@@ -259,8 +259,12 @@ class Ability
         can [:create, :destroy], Document
         # SchemeMixCriteriaDocument
         can [:update_status, :edit_status, :create_link, :new_link, :unlink, :destroy_link], SchemeMixCriteriaDocument
+        # SchemeCriterion
+        can :crud, SchemeCriterion
         # SchemeCriterionText
         can :crud, SchemeCriterionText
+        # Requirement
+        can :crud, Requirement
         # SchemeCategory
         can :crud, SchemeCategory
         # Scheme
