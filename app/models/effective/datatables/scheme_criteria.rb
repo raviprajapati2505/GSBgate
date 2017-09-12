@@ -10,7 +10,7 @@ module Effective
           link_to(rec.scheme_category_name, scheme_category_path(rec.scheme_category_id))
         end
         table_column 'scheme_category_code', column: 'scheme_categories.code', :filter => {:type => :select, :values => Proc.new{SchemeCategory.unscope(:order).order(:code).distinct.pluck(:code)}}
-        table_column 'scheme_criterion_number', column: 'scheme_criteria.number'
+        table_column 'scheme_criterion_number', column: 'scheme_criteria.number', :as => :integer, :filter => {:type => :select, :values => Proc.new{SchemeCriterion.unscope(:order).order(:number).distinct.pluck(:number)}}
         table_column 'scheme_criterion_name', column: 'scheme_criteria.name', :filter => {:type => :select, :values => Proc.new{SchemeCriterion.order(:name).distinct.pluck(:name)}} do |rec|
           link_to(rec.scheme_criterion_name, scheme_criterion_path(rec.scheme_criterion_id))
         end
