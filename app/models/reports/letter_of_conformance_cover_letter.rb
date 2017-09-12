@@ -49,20 +49,21 @@ Congratulations once again for partaking in this noble endeavor, and together le
 
     draw_headers
 
-    draw_page do
-      draw_heading_date
-      newline(2)
-      draw_heading_addressee
-      newline
-      draw_heading_addressee_copy
-      newline
-      draw_heading_subject
-      newline
-      draw_heading_project
-      newline(2)
-      draw_content
-      draw_signature
-    end
+    # draw_page do
+    #   draw_heading_date
+    #   newline(2)
+    #   draw_heading_addressee
+    #   newline
+    #   draw_heading_addressee_copy
+    #   newline
+    #   draw_heading_subject
+    #   newline
+    #   draw_heading_project
+    #   newline(2)
+    #   draw_content
+    #   draw_signature
+    # end
+    # start_new_page
 
     total_category_scores = {}
     @certification_path.scheme_mixes.each do |scheme_mix|
@@ -80,7 +81,6 @@ Congratulations once again for partaking in this noble endeavor, and together le
       end
     end
 
-    start_new_page
     draw_page do
       draw_certificate_table(total_category_scores)
       newline
