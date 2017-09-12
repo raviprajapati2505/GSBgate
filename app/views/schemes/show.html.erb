@@ -1,12 +1,19 @@
 <div class="row">
   <div class="col-lg-6">
-    <div class="ibox criterion-information">
+    <div class="ibox">
       <div class="ibox-title">
         <%= audit_log_label(@scheme) %>
         <h5>Scheme</h5>
       </div>
       <div class="ibox-content">
-        <%= @scheme.name %>
+        <table class="table table-bordered table-striped">
+          <tbody>
+          <tr>
+            <th><%= Scheme.human_attribute_name('name') %></th>
+            <td><%= @scheme.name %></td>
+          </tr>
+          </tbody>
+        </table>
         <% if can? :update, @scheme %>
           <div class="hr-line-dashed"></div>
             <%= btn_link_to(edit_scheme_path(@scheme), icon: 'edit', text: 'Edit', action: :get, remote: true) %>

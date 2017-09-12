@@ -1,12 +1,35 @@
 <div class="row">
     <div class="col-lg-6">
-        <div class="ibox criterion-information">
+        <div class="ibox">
             <div class="ibox-title">
                 <%= audit_log_label(@scheme_criterion) %>
                 <h5>Criterion</h5>
             </div>
             <div class="ibox-content">
-                <%= @scheme_criterion.full_name %>
+              <table class="table table-bordered table-striped">
+                <tbody>
+                <tr>
+                  <th><%= SchemeCriterion.human_attribute_name('name') %></th>
+                  <td><%= @scheme_criterion.name %></td>
+                </tr>
+                <tr>
+                  <th><%= SchemeCriterion.human_attribute_name('code') %></th>
+                  <td><%= @scheme_criterion.code %></td>
+                </tr>
+                <% unless @scheme_criterion.weight.nil? %>
+                <tr>
+                  <th><%= SchemeCriterion.human_attribute_name('weight') %></th>
+                  <td><%= @scheme_criterion.weight %>%</td>
+                </tr>
+                <% end %>
+                <% unless @scheme_criterion.scores.nil? %>
+                <tr>
+                  <th><%= SchemeCriterion.human_attribute_name('scores') %></th>
+                  <td><%= @scheme_criterion.scores.map { |score| score[0] } %></td>
+                </tr>
+                <% end %>
+                </tbody>
+              </table>
                 <% if can? :update, @scheme_criterion %>
                     <div class="hr-line-dashed"></div>
                     <%= btn_link_to(edit_scheme_criterion_path(@scheme_criterion), icon: 'edit', text: 'Edit', action: :get, remote: true) %>
