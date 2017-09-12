@@ -33,8 +33,8 @@ en:
           text: Download Certification
           tooltip: Download Certification
         download_coverletter:
-          text: Download Coverletter
-          tooltip: Download Coverletter
+          text: Download Certificate Summary
+          tooltip: Download Certificate Summary
         download_scores_report:
           text: Download Score Report
           tooltip: Download Score Report
