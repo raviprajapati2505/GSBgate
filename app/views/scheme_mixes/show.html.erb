@@ -1,297 +1,293 @@
- <div class="row">
-    <div class="col-lg-4">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <h5>Scheme details</h5>
-            </div>
-            <div class="ibox-content">
-                <table class="table table-bordered table-striped" cellspacing="0" width="100%">
-                    <tbody>
-                    <tr>
-                        <th>Scheme name</th>
-                        <td>
-                            <%= @scheme_mix.full_name %>
-                            <% if @scheme_mix.certification_path.main_scheme_mix_id == @scheme_mix.id %>
-                                <%= ikoen('certificate', tooltip: 'This is the main scheme (or main typology). Some of its criteria scores will be inherited by other schemes.', class: 'main-scheme-icon') %>
-                            <% end %>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Weighting</th>
-                        <td><%= @scheme_mix.weight %> %</td>
-                    </tr>
-                    <tr>
-                        <th>Score</th>
-                        <td>
-                            <%= render 'score/score_toggle', id_list: ["scheme_mix_#{@scheme_mix.id}"] %>
-                            <%= render 'score/score_tabs', scores: @scheme_mix.scores, element_id: "scheme_mix_#{@scheme_mix.id}" %>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Total requirement progress</th>
-                        <td>
-                            <% processed_count = RequirementDatum.for_scheme_mix(@scheme_mix).provided.count + RequirementDatum.for_scheme_mix(@scheme_mix).not_required.count %>
-                            <% total_count = RequirementDatum.for_scheme_mix(@scheme_mix).count %>
-                            <% if total_count == 0 %>
-                                No requirements
-                            <% else %>
-                                <div class="progress">
-                                    <div class="progress-bar" style="min-width: 2em; width: <%= (total_count != 0 ? (processed_count * 100 / total_count) : 100) %>%;">
-                                        <%= processed_count %>/<%= total_count %>
-                                    </div>
-                                </div>
-                            <% end %>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Approved documents</th>
-                        <td>
-                            <% approved_count = @scheme_mix.scheme_mix_criteria_documents.approved.count %>
-                            <% awaiting_approval_count = @scheme_mix.scheme_mix_criteria_documents.awaiting_approval.count %>
-                            <% total_count = approved_count + awaiting_approval_count %>
-                            <% if total_count == 0 %>
-                                No documents
-                            <% else %>
-                                <div class="progress">
-                                    <div class="progress-bar" style="min-width: 2em; width: <%= (total_count != 0 ? (approved_count * 100 / total_count) : 100) %>%;">
-                                        <%= approved_count %>/<%= total_count %>
-                                    </div>
-                                </div>
-                            <% end %>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-8">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <h5>Categories &amp; criteria</h5>
-            </div>
-            <div class="ibox-content">
-                <%
-                   # fetch all score records
-                   scheme_mix_criteria_scores = @scheme_mix.scheme_mix_criteria_scores
-                   # check for criteria that violate their minimum_valid_score
-                   invalid_criteria_ids = scheme_mix_criteria_scores
-                       .select {|score| score[:achieved_score_in_criteria_points].nil? && score[:minimum_valid_score_in_criteria_points] > score[:minimum_score_in_criteria_points] }
-                       .map{|score| score[:scheme_mix_criteria_id]}
-                   # group by category
-                   scheme_mix_criteria_scores_by_category = scheme_mix_criteria_scores.group_by{|item| item[:scheme_category_id]}
-                   # calculate the max and min values for each category, and take the max min of those calculated values
-                   scheme_scale = {
-                       maximum_scale_in_certificate_points: scheme_mix_criteria_scores_by_category.collect{|category_id, scores| scores.collect{|score| score[:maximum_score_in_certificate_points]}.inject(:+)}.max,
-                       minimum_scale_in_certificate_points: scheme_mix_criteria_scores_by_category.collect{|category_id, scores| scores.collect{|score| score[:minimum_score_in_certificate_points]}.inject(:+)}.min,
-                       maximum_scale_in_scheme_points: scheme_mix_criteria_scores_by_category.collect{|category_id, scores| scores.collect{|score| score[:maximum_score_in_scheme_points]}.inject(:+)}.max,
-                       minimum_scale_in_scheme_points: scheme_mix_criteria_scores_by_category.collect{|category_id, scores| scores.collect{|score| score[:minimum_score_in_scheme_points]}.inject(:+)}.min,
-                       maximum_scale_in_criteria_points: scheme_mix_criteria_scores_by_category.collect{|category_id, scores| scores.collect{|score| score[:maximum_score_in_criteria_points]}.inject(:+)}.max,
-                       minimum_scale_in_criteria_points: scheme_mix_criteria_scores_by_category.collect{|category_id, scores| scores.collect{|score| score[:minimum_score_in_criteria_points]}.inject(:+)}.min
-                   }
-                %>
-                <% if !@scheme_mix.certification_path.in_pre_verification? && invalid_criteria_ids.size > 0 %>
-                    <div class="alert alert-warning" role="alert">
-                        <%= ikoen_with_text('exclamation-circle', 'There are one or more criteria that have not achieved their minimum valid score.') %>
+<div class="row">
+  <div class="col-lg-4">
+    <div class="ibox float-e-margins">
+      <div class="ibox-title">
+        <h5>Scheme details</h5>
+      </div>
+      <div class="ibox-content">
+        <table class="table table-bordered table-striped" cellspacing="0" width="100%">
+          <tbody>
+          <tr>
+            <th>Scheme name</th>
+            <td>
+              <%= @scheme_mix.full_name %>
+              <% if @scheme_mix.certification_path.main_scheme_mix_id == @scheme_mix.id %>
+                  <%= ikoen('certificate', tooltip: 'This is the main scheme (or main typology). Some of its criteria scores will be inherited by other schemes.', class: 'main-scheme-icon') %>
+              <% end %>
+            </td>
+          </tr>
+          <tr>
+            <th>Weighting</th>
+            <td><%= @scheme_mix.weight %> %</td>
+          </tr>
+          <tr>
+            <th>Score</th>
+            <td>
+              <%= render 'score/score_toggle', id_list: ["scheme_mix_#{@scheme_mix.id}"] %>
+              <%= render 'score/score_tabs', scores: @scheme_mix.scores, element_id: "scheme_mix_#{@scheme_mix.id}" %>
+            </td>
+          </tr>
+          <tr>
+            <th>Total requirement progress</th>
+            <td>
+              <% processed_count = RequirementDatum.for_scheme_mix(@scheme_mix).provided.count + RequirementDatum.for_scheme_mix(@scheme_mix).not_required.count %>
+              <% total_count = RequirementDatum.for_scheme_mix(@scheme_mix).count %>
+              <% if total_count == 0 %>
+                  No requirements
+              <% else %>
+                  <div class="progress">
+                    <div class="progress-bar" style="min-width: 2em; width: <%= (total_count != 0 ? (processed_count * 100 / total_count) : 100) %>%;">
+                      <%= processed_count %>/<%= total_count %>
                     </div>
-                <% end %>
-                <%= scores_legend %>
-                <div id="categories-accordion">
-                    <table class="table table-bordered" cellspacing="0" width="100%">
+                  </div>
+              <% end %>
+            </td>
+          </tr>
+          <tr>
+            <th>Approved documents</th>
+            <td>
+              <% approved_count = @scheme_mix.scheme_mix_criteria_documents.approved.count %>
+              <% awaiting_approval_count = @scheme_mix.scheme_mix_criteria_documents.awaiting_approval.count %>
+              <% total_count = approved_count + awaiting_approval_count %>
+              <% if total_count == 0 %>
+                  No documents
+              <% else %>
+                  <div class="progress">
+                    <div class="progress-bar" style="min-width: 2em; width: <%= (total_count != 0 ? (approved_count * 100 / total_count) : 100) %>%;">
+                      <%= approved_count %>/<%= total_count %>
+                    </div>
+                  </div>
+              <% end %>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-8">
+    <div class="ibox float-e-margins">
+      <div class="ibox-title">
+        <h5>Categories &amp; criteria</h5>
+      </div>
+      <div class="ibox-content">
+        <%
+          # fetch all score records
+          scheme_mix_criteria_scores = @scheme_mix.scheme_mix_criteria_scores
+          # check for criteria that violate their minimum_valid_score
+          invalid_criteria_ids = scheme_mix_criteria_scores
+              .select {|score| score[:achieved_score_in_criteria_points].nil? && score[:minimum_valid_score_in_criteria_points] > score[:minimum_score_in_criteria_points] }
+              .map{|score| score[:scheme_mix_criteria_id]}
+          # group by category
+          scheme_mix_criteria_scores_by_category = scheme_mix_criteria_scores.group_by{|item| item[:scheme_category_id]}
+          # calculate the max and min values for each category, and take the max min of those calculated values
+          scheme_scale = {
+              maximum_scale_in_certificate_points: scheme_mix_criteria_scores_by_category.collect{|category_id, scores| scores.collect{|score| score[:maximum_score_in_certificate_points]}.inject(:+)}.max,
+              minimum_scale_in_certificate_points: scheme_mix_criteria_scores_by_category.collect{|category_id, scores| scores.collect{|score| score[:minimum_score_in_certificate_points]}.inject(:+)}.min,
+              maximum_scale_in_scheme_points: scheme_mix_criteria_scores_by_category.collect{|category_id, scores| scores.collect{|score| score[:maximum_score_in_scheme_points]}.inject(:+)}.max,
+              minimum_scale_in_scheme_points: scheme_mix_criteria_scores_by_category.collect{|category_id, scores| scores.collect{|score| score[:minimum_score_in_scheme_points]}.inject(:+)}.min,
+              maximum_scale_in_criteria_points: scheme_mix_criteria_scores_by_category.collect{|category_id, scores| scores.collect{|score| score[:maximum_score_in_criteria_points]}.inject(:+)}.max,
+              minimum_scale_in_criteria_points: scheme_mix_criteria_scores_by_category.collect{|category_id, scores| scores.collect{|score| score[:minimum_score_in_criteria_points]}.inject(:+)}.min
+          }
+        %>
+        <% if !@scheme_mix.certification_path.in_pre_verification? && invalid_criteria_ids.size > 0 %>
+            <div class="alert alert-warning" role="alert">
+              <%= ikoen_with_text('exclamation-circle', 'There are one or more criteria that have not achieved their minimum valid score.') %>
+            </div>
+        <% end %>
+        <%= scores_legend %>
+        <div id="categories-accordion">
+          <table class="table table-bordered" cellspacing="0" width="100%">
+            <thead>
+            <tr>
+              <th>&nbsp;</th>
+              <th>Code</th>
+              <th>Name</th>
+              <th>Weighting</th>
+              <th>
+                Score
+                <% id_list = @scheme_mix.scheme_categories.collect { |category| "category_#{category.id}" } %>
+                <% id_list << @scheme_mix.scheme_mix_criteria.collect { |scheme_mix_criteria| "scheme_mix_criterion_#{scheme_mix_criteria.id}" } %>
+                <%= render 'score/score_toggle', id_list: id_list %>
+              </th>
+              <th>Total requirement progress</th>
+              <th>Approved documents</th>
+            </tr>
+            </thead>
+            <tbody>
+            <% @scheme_mix.scheme_categories.uniq.each_with_index do |category, i| %>
+                <%
+                  # summarize the scores for this category
+                  category_scores = sum_score_hashes(scheme_mix_criteria_scores_by_category[category.id])
+                  # set the min and max scales, so all graphs use the same dimensions
+                  category_scores = category_scores.merge(scheme_scale)
+                %>
+
+                <tr class="accordion-toggle" data-toggle="collapse" data-target="#category-panel-<%= category.id %>" data-parent="#categories-accordion">
+                  <td class="category-accordion-icon"><%= ikoen('caret-square-o-right') %></td>
+                  <td><%= category.code %></td>
+                  <td>
+                    <%= category.name %>
+                    <% if (@scheme_mix.certification_path.main_scheme_mix_id == @scheme_mix.id) && category.shared? %>
+                        <%= ikoen('certificate', tooltip: 'The criteria scores of this category will be inherited by criteria with the same name in other schemes.', class: 'main-scheme-icon') %>
+                    <% end %>
+                  </td>
+                  <td>
+                    <div><%= @scheme_mix.scheme.weight_for_category(category) %> %</div>
+                    <% if (@scheme_mix.scheme.scheme_criteria.for_category(category).sum(:incentive_weight_minus_1) + @scheme_mix.scheme.scheme_criteria.for_category(category).sum(:incentive_weight_0) + @scheme_mix.scheme.scheme_criteria.for_category(category).sum(:incentive_weight_1) + @scheme_mix.scheme.scheme_criteria.for_category(category).sum(:incentive_weight_2) + @scheme_mix.scheme.scheme_criteria.for_category(category).sum(:incentive_weight_3)) > 0  %>
+                        <div class="incentive-weight">
+                          <%
+                            tooltip_text = 'Incentive weights<br/>'
+                            tooltip_text += "Between #{@scheme_mix.scheme.scheme_criteria.for_category(category).sum(:incentive_weight_minus_1)}% and #{@scheme_mix.scheme.scheme_criteria.for_category(category).sum(:incentive_weight_3)}%"
+                          %>
+                          <%= tooltip(tooltip_text) %>
+                        </div>
+                    <% end %>
+                    <% if (@scheme_mix.scheme.scheme_criteria.for_category(category).sum(:incentive_weight)) > 0 %>
+                        <div class="incentive-weight">
+                          <%
+                            tooltip_text = 'Incentive weights<br/>'
+                            tooltip_text += "Up to #{@scheme_mix.scheme.scheme_criteria.for_category(category).sum(:incentive_weight)}%"
+                          %>
+                          <%= tooltip(tooltip_text) %>
+                        </div>
+                    <% end %>
+                  </td>
+                  <td>
+                    <%=
+                      render 'score/score_tabs', scores: category_scores, element_id: "category_#{category.id}"
+                    %>
+                  </td>
+                  <td>
+                    <% processed_count = RequirementDatum.for_scheme_mix(@scheme_mix).for_category(category).provided.count + RequirementDatum.for_scheme_mix(@scheme_mix).for_category(category).not_required.count %>
+                    <% total_count = RequirementDatum.for_scheme_mix(@scheme_mix).for_category(category).count %>
+                    <% if total_count == 0 %>
+                        No requirements
+                    <% else %>
+                        <div class="progress">
+                          <div class="progress-bar" style="min-width: 2em; width: <%= (total_count != 0 ? (processed_count * 100 / total_count) : 100) %>%;">
+                            <%= processed_count %>/<%= total_count %>
+                          </div>
+                        </div>
+                    <% end %>
+                  </td>
+                  <td>
+                    <% approved_count = SchemeMixCriteriaDocument.for_scheme_mix(@scheme_mix).for_category(category).approved.count %>
+                    <% awaiting_approval_count = SchemeMixCriteriaDocument.for_scheme_mix(@scheme_mix).for_category(category).awaiting_approval.count %>
+                    <% total_count = approved_count + awaiting_approval_count %>
+                    <% if total_count == 0 %>
+                        No documents
+                    <% else %>
+                        <div class="progress">
+                          <div class="progress-bar" style="min-width: 2em; width: <%= (total_count != 0 ? (approved_count * 100 / total_count) : 100) %>%;">
+                            <%= approved_count %>/<%= total_count %>
+                          </div>
+                        </div>
+                    <% end %>
+                  </td>
+                </tr>
+                <tr id="category-panel-<%= category.id %>" class="accordion-body collapse">
+                  <td colspan="7">
+                    <div>
+                      <table class="table table-hover">
                         <thead>
                         <tr>
-                            <th>&nbsp;</th>
-                            <th>Code</th>
-                            <th>Name</th>
-                            <th>Weighting</th>
-                            <th>
-                                Score
-                                <% id_list = @scheme_mix.scheme_categories.collect { |category| "category_#{category.id}" } %>
-                                <% id_list << @scheme_mix.scheme_mix_criteria.collect { |scheme_mix_criteria| "scheme_mix_criterion_#{scheme_mix_criteria.id}" } %>
-                                <%= render 'score/score_toggle', id_list: id_list %>
-                            </th>
-                            <th>Total requirement progress</th>
-                            <th>Approved documents</th>
+                          <th>Code</th>
+                          <th>Name</th>
+                          <th>Status</th>
+                          <th>Weighting</th>
+                          <th>Score</th>
+                          <th>Total requirement progress</th>
+                          <th>Approved documents</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <% @scheme_mix.scheme_categories.uniq.each_with_index do |category, i| %>
-                        <% if can?(:list, category) %>
-                            <%
-                               # summarize the scores for this category
-                               category_scores = sum_score_hashes(scheme_mix_criteria_scores_by_category[category.id])
-                               # set the min and max scales, so all graphs use the same dimensions
-                               category_scores = category_scores.merge(scheme_scale)
-                            %>
-
-                            <tr class="accordion-toggle" data-toggle="collapse" data-target="#category-panel-<%= category.id %>" data-parent="#categories-accordion">
-                                <td class="category-accordion-icon"><%= ikoen('caret-square-o-right') %></td>
-                                <td><%= category.code %></td>
-                                <td>
-                                    <%= category.name %>
-                                    <% if (@scheme_mix.certification_path.main_scheme_mix_id == @scheme_mix.id) && category.shared? %>
-                                        <%= ikoen('certificate', tooltip: 'The criteria scores of this category will be inherited by criteria with the same name in other schemes.', class: 'main-scheme-icon') %>
-                                    <% end %>
-                                </td>
-                                <td>
-                                    <div><%= @scheme_mix.scheme.weight_for_category(category) %> %</div>
-                                    <% if (@scheme_mix.scheme.scheme_criteria.for_category(category).sum(:incentive_weight_minus_1) + @scheme_mix.scheme.scheme_criteria.for_category(category).sum(:incentive_weight_0) + @scheme_mix.scheme.scheme_criteria.for_category(category).sum(:incentive_weight_1) + @scheme_mix.scheme.scheme_criteria.for_category(category).sum(:incentive_weight_2) + @scheme_mix.scheme.scheme_criteria.for_category(category).sum(:incentive_weight_3)) > 0  %>
-                                        <div class="incentive-weight">
-                                            <%
-                                                tooltip_text = 'Incentive weights<br/>'
-                                                tooltip_text += "Between #{@scheme_mix.scheme.scheme_criteria.for_category(category).sum(:incentive_weight_minus_1)}% and #{@scheme_mix.scheme.scheme_criteria.for_category(category).sum(:incentive_weight_3)}%"
-                                            %>
-                                            <%= tooltip(tooltip_text) %>
-                                        </div>
-                                    <% end %>
-                                    <% if (@scheme_mix.scheme.scheme_criteria.for_category(category).sum(:incentive_weight)) > 0 %>
-                                        <div class="incentive-weight">
-                                          <%
-                                            tooltip_text = 'Incentive weights<br/>'
-                                            tooltip_text += "Up to #{@scheme_mix.scheme.scheme_criteria.for_category(category).sum(:incentive_weight)}%"
-                                          %>
-                                          <%= tooltip(tooltip_text) %>
-                                        </div>
-                                    <% end %>
-                                </td>
-                                <td>
-                                    <%=
-                                        render 'score/score_tabs', scores: category_scores, element_id: "category_#{category.id}"
+                        <%
+                          category_scale = {
+                              maximum_scale_in_certificate_points: scheme_mix_criteria_scores_by_category[category.id].collect{|score| score[:maximum_score_in_certificate_points]}.max,
+                              minimum_scale_in_certificate_points: scheme_mix_criteria_scores_by_category[category.id].collect{|score| score[:minimum_score_in_certificate_points]}.min,
+                              maximum_scale_in_scheme_points: scheme_mix_criteria_scores_by_category[category.id].collect{|score| score[:maximum_score_in_scheme_points]}.max,
+                              minimum_scale_in_scheme_points: scheme_mix_criteria_scores_by_category[category.id].collect{|score| score[:minimum_score_in_scheme_points]}.min,
+                              maximum_scale_in_criteria_points: scheme_mix_criteria_scores_by_category[category.id].collect{|score| score[:maximum_score_in_criteria_points]}.max,
+                              minimum_scale_in_criteria_points: scheme_mix_criteria_scores_by_category[category.id].collect{|score| score[:minimum_score_in_criteria_points]}.min
+                          }
+                        %>
+                        <% @scheme_mix.scheme_mix_criteria.for_category(category).order('scheme_criteria.number').map { |scheme_mix_criterion| scheme_mix_criterion.visible_status }.each do |scheme_mix_criterion| %>
+                            <tr>
+                              <td><%= scheme_mix_criterion.code %></td>
+                              <td>
+                                <%= can_link_to(project_certification_path_scheme_mix_scheme_mix_criterion_path(@certification_path.project, @certification_path, @scheme_mix, scheme_mix_criterion), scheme_mix_criterion) do %>
+                                    <%= scheme_mix_criterion.name %>
+                                <% end %>
+                                <% if scheme_mix_criterion.main_scheme_mix_criterion_id.present? %>
+                                    <%= ikoen('files-o', tooltip: 'The scores of this criterion are inherited from a criterion with the same name in the main scheme.') %>
+                                <% end %>
+                              </td>
+                              <td><%= t(scheme_mix_criterion.status, scope: 'activerecord.attributes.scheme_mix_criterion.statuses') %></td>
+                              <td>
+                                <%= scheme_mix_criterion.scheme_criterion.weight %> %
+                                <% if (scheme_mix_criterion.scheme_criterion.incentive_weight_minus_1 + scheme_mix_criterion.scheme_criterion.incentive_weight_0 + scheme_mix_criterion.scheme_criterion.incentive_weight_1 + scheme_mix_criterion.scheme_criterion.incentive_weight_2 + scheme_mix_criterion.scheme_criterion.incentive_weight_3 + scheme_mix_criterion.scheme_criterion.incentive_weight)  > 0  %>
+                                    <%
+                                      tooltip_text = 'Incentive weights<br/>'
+                                      tooltip_text += "Score&nbsp;-1: #{scheme_mix_criterion.scheme_criterion.incentive_weight_minus_1}%<br/>" if scheme_mix_criterion.scheme_criterion.incentive_weight_minus_1 > 0
+                                      tooltip_text += "Score&nbsp;&nbsp;0: #{scheme_mix_criterion.scheme_criterion.incentive_weight_0}%<br/>" if scheme_mix_criterion.scheme_criterion.incentive_weight_0 > 0
+                                      tooltip_text += "Score&nbsp;&nbsp;1: #{scheme_mix_criterion.scheme_criterion.incentive_weight_1}%<br/>" if scheme_mix_criterion.scheme_criterion.incentive_weight_1 > 0
+                                      tooltip_text += "Score&nbsp;&nbsp;2: #{scheme_mix_criterion.scheme_criterion.incentive_weight_2}%<br/>" if scheme_mix_criterion.scheme_criterion.incentive_weight_2 > 0
+                                      tooltip_text += "Score&nbsp;&nbsp;3: #{scheme_mix_criterion.scheme_criterion.incentive_weight_3}%<br/>" if scheme_mix_criterion.scheme_criterion.incentive_weight_3 > 0
+                                      tooltip_text += "#{scheme_mix_criterion.scheme_criterion.incentive_weight}%<br/>" if scheme_mix_criterion.scheme_criterion.incentive_weight > 0
                                     %>
-                                </td>
-                                <td>
-                                    <% processed_count = RequirementDatum.for_scheme_mix(@scheme_mix).for_category(category).provided.count + RequirementDatum.for_scheme_mix(@scheme_mix).for_category(category).not_required.count %>
-                                    <% total_count = RequirementDatum.for_scheme_mix(@scheme_mix).for_category(category).count %>
-                                    <% if total_count == 0 %>
-                                        No requirements
-                                    <% else %>
-                                        <div class="progress">
-                                            <div class="progress-bar" style="min-width: 2em; width: <%= (total_count != 0 ? (processed_count * 100 / total_count) : 100) %>%;">
-                                                <%= processed_count %>/<%= total_count %>
-                                            </div>
-                                        </div>
-                                    <% end %>
-                                </td>
-                                <td>
-                                    <% approved_count = SchemeMixCriteriaDocument.for_scheme_mix(@scheme_mix).for_category(category).approved.count %>
-                                    <% awaiting_approval_count = SchemeMixCriteriaDocument.for_scheme_mix(@scheme_mix).for_category(category).awaiting_approval.count %>
-                                    <% total_count = approved_count + awaiting_approval_count %>
-                                    <% if total_count == 0 %>
-                                        No documents
-                                    <% else %>
-                                        <div class="progress">
-                                            <div class="progress-bar" style="min-width: 2em; width: <%= (total_count != 0 ? (approved_count * 100 / total_count) : 100) %>%;">
-                                                <%= approved_count %>/<%= total_count %>
-                                            </div>
-                                        </div>
-                                    <% end %>
-                                </td>
-                            </tr>
-                            <tr id="category-panel-<%= category.id %>" class="accordion-body collapse">
-                                <td colspan="7">
-                                    <div>
-                                        <table class="table table-hover">
-                                            <thead>
-                                            <tr>
-                                                <th>Code</th>
-                                                <th>Name</th>
-                                                <th>Status</th>
-                                                <th>Weighting</th>
-                                                <th>Score</th>
-                                                <th>Total requirement progress</th>
-                                                <th>Approved documents</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <%
-                                               category_scale = {
-                                                   maximum_scale_in_certificate_points: scheme_mix_criteria_scores_by_category[category.id].collect{|score| score[:maximum_score_in_certificate_points]}.max,
-                                                   minimum_scale_in_certificate_points: scheme_mix_criteria_scores_by_category[category.id].collect{|score| score[:minimum_score_in_certificate_points]}.min,
-                                                   maximum_scale_in_scheme_points: scheme_mix_criteria_scores_by_category[category.id].collect{|score| score[:maximum_score_in_scheme_points]}.max,
-                                                   minimum_scale_in_scheme_points: scheme_mix_criteria_scores_by_category[category.id].collect{|score| score[:minimum_score_in_scheme_points]}.min,
-                                                   maximum_scale_in_criteria_points: scheme_mix_criteria_scores_by_category[category.id].collect{|score| score[:maximum_score_in_criteria_points]}.max,
-                                                   minimum_scale_in_criteria_points: scheme_mix_criteria_scores_by_category[category.id].collect{|score| score[:minimum_score_in_criteria_points]}.min
-                                               }
-                                            %>
-                                            <% @scheme_mix.scheme_mix_criteria.for_category(category).order('scheme_criteria.number').map { |scheme_mix_criterion| scheme_mix_criterion.visible_status }.each do |scheme_mix_criterion| %>
-                                            <% if can?(:list, scheme_mix_criterion) %>
-                                                <tr>
-                                                    <td><%= scheme_mix_criterion.code %></td>
-                                                    <td>
-                                                        <%= can_link_to(project_certification_path_scheme_mix_scheme_mix_criterion_path(@certification_path.project, @certification_path, @scheme_mix, scheme_mix_criterion), scheme_mix_criterion) do %>
-                                                            <%= scheme_mix_criterion.name %>
-                                                        <% end %>
-                                                        <% if scheme_mix_criterion.main_scheme_mix_criterion_id.present? %>
-                                                            <%= ikoen('files-o', tooltip: 'The scores of this criterion are inherited from a criterion with the same name in the main scheme.') %>
-                                                        <% end %>
-                                                    </td>
-                                                    <td><%= t(scheme_mix_criterion.status, scope: 'activerecord.attributes.scheme_mix_criterion.statuses') %></td>
-                                                    <td>
-                                                        <%= scheme_mix_criterion.scheme_criterion.weight %> %
-                                                        <% if (scheme_mix_criterion.scheme_criterion.incentive_weight_minus_1 + scheme_mix_criterion.scheme_criterion.incentive_weight_0 + scheme_mix_criterion.scheme_criterion.incentive_weight_1 + scheme_mix_criterion.scheme_criterion.incentive_weight_2 + scheme_mix_criterion.scheme_criterion.incentive_weight_3 + scheme_mix_criterion.scheme_criterion.incentive_weight)  > 0  %>
-                                                                <%
-                                                                    tooltip_text = 'Incentive weights<br/>'
-                                                                    tooltip_text += "Score&nbsp;-1: #{scheme_mix_criterion.scheme_criterion.incentive_weight_minus_1}%<br/>" if scheme_mix_criterion.scheme_criterion.incentive_weight_minus_1 > 0
-                                                                    tooltip_text += "Score&nbsp;&nbsp;0: #{scheme_mix_criterion.scheme_criterion.incentive_weight_0}%<br/>" if scheme_mix_criterion.scheme_criterion.incentive_weight_0 > 0
-                                                                    tooltip_text += "Score&nbsp;&nbsp;1: #{scheme_mix_criterion.scheme_criterion.incentive_weight_1}%<br/>" if scheme_mix_criterion.scheme_criterion.incentive_weight_1 > 0
-                                                                    tooltip_text += "Score&nbsp;&nbsp;2: #{scheme_mix_criterion.scheme_criterion.incentive_weight_2}%<br/>" if scheme_mix_criterion.scheme_criterion.incentive_weight_2 > 0
-                                                                    tooltip_text += "Score&nbsp;&nbsp;3: #{scheme_mix_criterion.scheme_criterion.incentive_weight_3}%<br/>" if scheme_mix_criterion.scheme_criterion.incentive_weight_3 > 0
-                                                                    tooltip_text += "#{scheme_mix_criterion.scheme_criterion.incentive_weight}%<br/>" if scheme_mix_criterion.scheme_criterion.incentive_weight > 0
-                                                                %>
-                                                            <div class="incentive-weight">
-                                                                <%= tooltip(tooltip_text) %>
-                                                            </div>
-                                                        <% end %>
-                                                    </td>
-                                                    <td>
-                                                        <%
-                                                           scheme_mix_criteria_score = scheme_mix_criteria_scores.find{|item| item[:scheme_mix_criteria_id] == scheme_mix_criterion.id }
-                                                           scheme_mix_criteria_score = scheme_mix_criteria_score.merge(category_scale)
-                                                        %>
-                                                        <%= render 'score/score_tabs', scores: scheme_mix_criteria_score, element_id: "scheme_mix_criterion_#{scheme_mix_criterion.id}" %>
-                                                    </td>
-                                                    <td>
-                                                        <% processed_count = scheme_mix_criterion.requirement_data.provided.count + scheme_mix_criterion.requirement_data.not_required.count %>
-                                                        <% total_count = scheme_mix_criterion.requirement_data.count %>
-                                                        <% if total_count == 0 %>
-                                                            No requirements
-                                                        <% else %>
-                                                            <div class="progress">
-                                                                <div class="progress-bar" style="min-width: 2em; width: <%= (total_count != 0 ? (processed_count * 100 / total_count) : 100) %>%;">
-                                                                    <%= processed_count %>/<%= total_count %>
-                                                                </div>
-                                                            </div>
-                                                        <% end %>
-                                                    </td>
-                                                    <td>
-                                                        <% approved_count = scheme_mix_criterion.scheme_mix_criteria_documents.approved.count %>
-                                                        <% awaiting_approval_count = scheme_mix_criterion.scheme_mix_criteria_documents.awaiting_approval.count %>
-                                                        <% total_count = approved_count + awaiting_approval_count %>
-                                                        <% if total_count == 0 %>
-                                                            No documents
-                                                        <% else %>
-                                                            <div class="progress">
-                                                                <div class="progress-bar" style="min-width: 2em; width: <%= (total_count != 0 ? (approved_count * 100 / total_count) : 100) %>%;">
-                                                                    <%= approved_count %>/<%= total_count %>
-                                                                </div>
-                                                            </div>
-                                                        <% end %>
-                                                    </td>
-                                                </tr>
-                                            <% end %>
-                                            <% end %>
-                                            </tbody>
-                                        </table>
+                                    <div class="incentive-weight">
+                                      <%= tooltip(tooltip_text) %>
                                     </div>
-                                </td>
+                                <% end %>
+                              </td>
+                              <td>
+                                <%
+                                  scheme_mix_criteria_score = scheme_mix_criteria_scores.find{|item| item[:scheme_mix_criteria_id] == scheme_mix_criterion.id }
+                                  scheme_mix_criteria_score = scheme_mix_criteria_score.merge(category_scale)
+                                %>
+                                <%= render 'score/score_tabs', scores: scheme_mix_criteria_score, element_id: "scheme_mix_criterion_#{scheme_mix_criterion.id}" %>
+                              </td>
+                              <td>
+                                <% processed_count = scheme_mix_criterion.requirement_data.provided.count + scheme_mix_criterion.requirement_data.not_required.count %>
+                                <% total_count = scheme_mix_criterion.requirement_data.count %>
+                                <% if total_count == 0 %>
+                                    No requirements
+                                <% else %>
+                                    <div class="progress">
+                                      <div class="progress-bar" style="min-width: 2em; width: <%= (total_count != 0 ? (processed_count * 100 / total_count) : 100) %>%;">
+                                        <%= processed_count %>/<%= total_count %>
+                                      </div>
+                                    </div>
+                                <% end %>
+                              </td>
+                              <td>
+                                <% approved_count = scheme_mix_criterion.scheme_mix_criteria_documents.approved.count %>
+                                <% awaiting_approval_count = scheme_mix_criterion.scheme_mix_criteria_documents.awaiting_approval.count %>
+                                <% total_count = approved_count + awaiting_approval_count %>
+                                <% if total_count == 0 %>
+                                    No documents
+                                <% else %>
+                                    <div class="progress">
+                                      <div class="progress-bar" style="min-width: 2em; width: <%= (total_count != 0 ? (approved_count * 100 / total_count) : 100) %>%;">
+                                        <%= approved_count %>/<%= total_count %>
+                                      </div>
+                                    </div>
+                                <% end %>
+                              </td>
                             </tr>
-                        <% end %>
                         <% end %>
                         </tbody>
-                    </table>
-                </div>
-            </div>
+                      </table>
+                    </div>
+                  </td>
+                </tr>
+            <% end %>
+            </tbody>
+          </table>
         </div>
+      </div>
     </div>
+  </div>
 </div>
 <%= javascript_include_tag 'score_widget' %>

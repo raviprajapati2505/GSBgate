@@ -34,7 +34,6 @@ class Ability
     project_user_project_team_roles = project_user_role_cgp_project_manager | project_user_role_project_team_member
     project_user_gsas_trust_team_roles = project_user_role_certification_manager | project_user_role_certifier
     project_user_enterprise_client_roles = project_user_role_enterprise_client
-    project_user_manager_and_client_roles = project_user_role_cgp_project_manager | project_user_role_certification_manager | project_user_role_enterprise_client
     #   Certificate.certification_types
     certificate_certification_types_letter_of_conformance = ['letter_of_conformance', Certificate.certification_types[:letter_of_conformance]]
     certificate_certification_types_final_design_certificate = ['final_design_certificate', Certificate.certification_types[:final_design_certificate]]
@@ -57,7 +56,6 @@ class Ability
     project_with_user_as_certification_manager = {projects_users: {user_id: user.id, role: project_user_role_certification_manager}}
     project_with_user_in_gsas_trust_team = {projects_users: {user_id: user.id, role: project_user_gsas_trust_team_roles}}
     project_with_user_as_enterprise_client = {projects_users: {user_id: user.id, role: project_user_enterprise_client_roles}}
-    project_with_user_as_manager_or_client = {projects_users: {user_id: user.id, role: project_user_manager_and_client_roles}}
 
     # ------------------------------------------------------------------------------------------------------------
     # There are 3 types of user roles:
@@ -114,19 +112,9 @@ class Ability
       #can :update, SchemeMix, certification_path: {project: project_with_user_as_cgp_project_manager, certification_path_status: {id: CertificationPathStatus::ACTIVATING}, development_type: {mixable: true}}
       can :update, SchemeMix, certification_path: {project: project_with_user_as_cgp_project_manager, certification_path_status: {id: CertificationPathStatus::ACTIVATING}}
 
-      # SchemeCategory controller
-      can :list, SchemeCategory, scheme_mix_criteria: {scheme_mix: {certification_path: {project: project_with_user_as_manager_or_client, certification_path_status: {id: CertificationPathStatus::STATUSES_ACTIVATED}}}}
-      can :list, SchemeCategory, scheme_mix_criteria: {scheme_mix: {certification_path: {project: project_with_user_assigned, certification_path_status: {id: CertificationPathStatus::STATUSES_ACTIVATED}}}, certifier_id: user.id}
-      can :list, SchemeCategory, scheme_mix_criteria: {scheme_mix: {certification_path: {project: project_with_user_assigned, certification_path_status: {id: CertificationPathStatus::STATUSES_ACTIVATED}}}, requirement_data: {user_id: user.id}}
-
       # SchemeMixCriterion controller
       can :read, SchemeMixCriterion, scheme_mix: {certification_path: {project: project_with_user_assigned, certification_path_status: {id: CertificationPathStatus::STATUSES_ACTIVATED}}}
-      # SchememixCriterion can be listed if cgp project manager or certification manager or enterprise client
-      can :list, SchemeMixCriterion, scheme_mix: {certification_path: {project: project_with_user_as_manager_or_client, certification_path_status: {id: CertificationPathStatus::STATUSES_ACTIVATED}}}
-      # SchemeMixCriterion can be listed if certifier has criterion assigned to him
-      can :list, SchemeMixCriterion, scheme_mix: {certification_path: {project: project_with_user_assigned, certification_path_status: {id: CertificationPathStatus::STATUSES_ACTIVATED}}}, certifier_id: user.id
-      # SchemeMixCriterion can be listed if team member has requirement assigned to him
-      can :list, SchemeMixCriterion, scheme_mix: {certification_path: {project: project_with_user_assigned, certification_path_status: {id: CertificationPathStatus::STATUSES_ACTIVATED}}}, requirement_data: {user_id: user.id}
+      can :list, SchemeMixCriterion, scheme_mix: {certification_path: {project: project_with_user_assigned, certification_path_status: {id: CertificationPathStatus::STATUSES_ACTIVATED}}}
       can :download_archive, SchemeMixCriterion, scheme_mix: {certification_path: {project: project_with_user_assigned, certification_path_status: {id: CertificationPathStatus::STATUSES_ACTIVATED}}}
       # Project team
       can [:edit_status, :update_status], SchemeMixCriterion, main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_submitting, scheme_mix: {certification_path: {certification_path_status: {id: CertificationPathStatus::STATUSES_IN_SUBMISSION}, project: project_with_user_as_cgp_project_manager}}
@@ -270,11 +258,6 @@ class Ability
         # Scheme
         can :crud, Scheme
       end
-
-      # Category/criteria overview
-      can :list, SchemeCategory
-      can :read, SchemeMixCriterion
-      can :list, SchemeMixCriterion
 
       # Audit log
       can [:index, :auditable_index, :auditable_index_comments, :auditable_create, :download_attachment], AuditLog
