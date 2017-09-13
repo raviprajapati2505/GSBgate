@@ -6,6 +6,16 @@ class SchemeMixesController < AuthenticatedController
 
   def show
     @page_title = ERB::Util.html_escape(@scheme_mix.full_name.to_s)
+    # creating hash with key = category.id and value = hash with category and its linked criteria
+    @category_criterion_map = {}
+    scheme_mix_criteria = @scheme_mix.scheme_mix_criteria.joins(:scheme_criterion).order('scheme_criteria.number').map { |scheme_mix_criterion| scheme_mix_criterion.visible_status }
+    scheme_mix_criteria.each do |scheme_mix_criterion|
+      unless @category_criterion_map.has_key?(scheme_mix_criterion.scheme_criterion.scheme_category.id)
+        @category_criterion_map[scheme_mix_criterion.scheme_criterion.scheme_category.id] = {category: scheme_mix_criterion.scheme_criterion.scheme_category, scheme_mix_criteria: []}
+      end
+      @category_criterion_map[scheme_mix_criterion.scheme_criterion.scheme_category.id][:scheme_mix_criteria] << scheme_mix_criterion
+    end
+    @category_criterion_map = @category_criterion_map.sort_by {|key, value| value[:category].display_weight }
   end
 
   def edit
