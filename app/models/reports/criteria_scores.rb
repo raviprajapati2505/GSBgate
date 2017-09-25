@@ -1,5 +1,6 @@
 class Reports::CriteriaScores < Reports::BaseReport
   include ActionView::Helpers::NumberHelper
+  include ActionView::Helpers::TranslationHelper
 
   MAIN_COLOR = '62A744'.freeze
   BACKGROUND_COLOR = 'EEEEEE'.freeze
@@ -63,7 +64,7 @@ class Reports::CriteriaScores < Reports::BaseReport
         bounding_box([PAGE_MARGIN, 800], width: 400) do
           text "#{@certification_path.name} Criteria Summary", size: 20, color: MAIN_COLOR
           text @scheme_mix.scheme.full_name, size: 20, color: MAIN_COLOR
-          text "#{@certification_path.project.name}: #{@scheme_mix.name}", size: 16, color: MAIN_COLOR
+          text "#{@certification_path.project.name}", size: 16, color: MAIN_COLOR
         end
 
         # Logo
@@ -77,7 +78,6 @@ class Reports::CriteriaScores < Reports::BaseReport
           newline
           table(
               [[
-                   "<color rgb='#{MAIN_COLOR}'>Ref:</color> #{@certification_path.project.code}",
                    "<color rgb='#{MAIN_COLOR}'>Date:</color> #{@certification_path.certified_at.strftime('%B %d, %Y') if @certification_path.certified_at.present?}",
                    "<color rgb='#{MAIN_COLOR}'>Project ID:</color> #{@certification_path.project.code}"
                ]],
@@ -129,7 +129,7 @@ class Reports::CriteriaScores < Reports::BaseReport
   def draw_awarded_target
     table(
         [[
-             'Awarded Target',
+             'Awarded',
              @stars
          ]],
         width: @document.bounds.width,
@@ -151,11 +151,11 @@ class Reports::CriteriaScores < Reports::BaseReport
   def draw_criteria_table(scheme_category, scheme_mix_criteria)
     # Prepare table data
     data = []
-    data.append([{content: "#{scheme_category.name.upcase} [#{scheme_category.code}]", rowspan: scheme_mix_criteria.size + 1}, 'Criterion', 'Targeted Score', 'Achieved Score', 'Comments'])
+    data.append([{content: "#{scheme_category.name.upcase} [#{scheme_category.code}]", rowspan: scheme_mix_criteria.size + 1}, 'Criterion', 'Targeted', 'Achieved', 'Comments'])
 
     # Add the category rows to the table
     scheme_mix_criteria.each do |smc|
-      data.append([smc.full_name, number_with_precision(smc.targeted_score, precision: 0, significant: true), number_with_precision(smc.achieved_score, precision: 0, significant: true), smc.status.humanize])
+      data.append([smc.full_name, number_with_precision(smc.targeted_score, precision: 0, significant: true), number_with_precision(smc.achieved_score, precision: 0, significant: true), t(smc.status, scope: 'activerecord.attributes.scheme_mix_criterion.statuses')])
     end
 
     # Output table
@@ -213,6 +213,9 @@ class Reports::CriteriaScores < Reports::BaseReport
     end
 
     # Order the array by criteria count
-    categories_with_criteria.sort! {|x, y| y[:criteria].count <=> x[:criteria].count}
+    # categories_with_criteria.sort! {|x, y| y[:criteria].count <=> x[:criteria].count}
+
+    # Order the array by category display weight
+    categories_with_criteria.sort_by {|value| value[:category].display_weight }
   end
 end
