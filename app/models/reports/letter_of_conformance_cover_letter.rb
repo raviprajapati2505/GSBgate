@@ -322,7 +322,7 @@ Congratulations once again for partaking in this noble endeavor, and together le
     text 'Level Achieved', size: 14, color: '36A2EB', style: :bold, align: :left
 
     begin
-      image chart_generator.generate_chart(barchart_config, 600, 400).path, width: 450
+      image chart_generator.generate_chart(barchart_config, 600, 500).path, width: 450
     rescue LinkmeService::ApiError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, Errno::ECONNREFUSED,
            EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError
       text 'An error occurred when creating the chart.'
