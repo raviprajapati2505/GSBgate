@@ -18,7 +18,7 @@ class Reports::CriteriaScores < Reports::BaseReport
                                     margin: [170, PAGE_MARGIN, 110, PAGE_MARGIN])
     @scheme_mix = scheme_mix
     @certification_path = @scheme_mix.certification_path
-    @score = @scheme_mix.scores_in_certificate_points[:achieved_score_in_certificate_points]
+    @score = @scheme_mix.scores_in_scheme_points[:achieved_score_in_scheme_points]
     @stars = CertificationPath.star_rating_for_score(@score, certificate: @certification_path.certificate).to_s +
         ' ' + 'Star'.pluralize(CertificationPath.star_rating_for_score(@score, certificate: @certification_path.certificate))
     do_render

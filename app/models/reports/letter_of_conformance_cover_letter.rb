@@ -2,6 +2,8 @@ class Reports::LetterOfConformanceCoverLetter < Reports::BaseReport
   include ApplicationHelper
   include ActionView::Helpers::NumberHelper
 
+  MAIN_COLOR = '62A744'.freeze
+
   HEADER_HEIGHT = 70
   FOOTER_HEIGHT = 20
   CONTENT_PADDING = 20
@@ -83,19 +85,13 @@ Congratulations once again for partaking in this noble endeavor, and together le
 
     draw_page do
       draw_certificate_table(total_category_scores)
-      newline
-      text 'Figure 1 Scoring summary', align: :center
       newline(3)
       draw_category_graph(total_category_scores)
-      newline
-      text 'Figure 2 Certfication level chart', align: :center
     end
 
     start_new_page
     draw_page do
       draw_score_graph
-      newline
-      text 'Figure 3 Certfication level chart', align: :center
     end
 
     # table_models = [@certification_path] + @certification_path.scheme_mixes.to_a
@@ -120,6 +116,12 @@ Congratulations once again for partaking in this noble endeavor, and together le
     repeat(:all) do
       bounding_box([@document.bounds.left, @document.bounds.top], width: 120, height: HEADER_HEIGHT) do
         image image_path(HEADER_LOGO), width: 120
+      end
+
+      bounding_box([@document.bounds.width - 370, @document.bounds.top], width: 370) do
+        text "#{@certification_path.name}", size: 17, color: MAIN_COLOR
+        text @scheme_names.join(', '), size: 17, color: MAIN_COLOR
+        text "#{@certification_path.project.name} - #{@certification_path.project.code}", size: 13, color: MAIN_COLOR
       end
     end
   end
@@ -225,6 +227,9 @@ Congratulations once again for partaking in this noble endeavor, and together le
            EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError
       text 'An error occurred when creating the chart.'
     end
+
+    newline
+    text 'Figure 2 Certfication Level Chart', align: :center
   end
 
   def draw_score_graph
@@ -245,7 +250,9 @@ Congratulations once again for partaking in this noble endeavor, and together le
         '', '', '', '',
         '*****',
         '', '', '', '',
-        '******'
+        '******',
+        '', '', '', '',
+        ''
     ]
 
     data = [
@@ -263,11 +270,15 @@ Congratulations once again for partaking in this noble endeavor, and together le
         1.6, 1.7, 1.8, 1.9,
         2,
         2.1, 2.2, 2.3, 2.4,
-        2.5
+        2.5,
+        2.6, 2.7, 2.8, 2.9,
+        3.0
     ]
 
     point_radius = [
-        4,
+        0,
+        0, 0, 0, 0,
+        0,
         0, 0, 0, 0,
         4,
         0, 0, 0, 0,
@@ -281,7 +292,7 @@ Congratulations once again for partaking in this noble endeavor, and together le
         0, 0, 0, 0,
         4,
         0, 0, 0, 0,
-        4
+        0
     ]
 
     # Mark the certificate score on the line chart
@@ -308,18 +319,59 @@ Congratulations once again for partaking in this noble endeavor, and together le
       }
     }
 
+    text 'Level Achieved', size: 14, color: '36A2EB', style: :bold, align: :left
+
     begin
       image chart_generator.generate_chart(barchart_config, 600, 400).path, width: 450
     rescue LinkmeService::ApiError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, Errno::ECONNREFUSED,
            EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError
       text 'An error occurred when creating the chart.'
     end
+
+    newline
+    text 'Figure 3 Certfication Level Chart', align: :center
+
+    # Output the legend
+    newline(2)
+    text 'Legend', size: 13, style: :bold, align: :left
+    data = []
+    data.append(['Level', 'Range'])
+    data.append(['-', 'X<0'])
+    data.append(['*', '0.0<=X<=0.5'])
+    data.append(['**', '0.5<X<=1.0'])
+    data.append(['***', '1.0<X<=1.5'])
+    data.append(['****', '1.5<X<=2.0'])
+    data.append(['*****', '2.0<X<=2.5'])
+    data.append(['******', '2.5<X<=3.0'])
+
+    table(data, width: 250) do
+      column(1).align = :center
+      rows(1..-1).borders = [:right, :left]
+      row(-1).borders = [:right, :bottom, :left]
+    end
+
+    newline(2)
+    text 'Level Achieved', size: 12, align: :left
+    data = []
+    @certification_path.scheme_mixes.each do |scheme_mix|
+      score = scheme_mix.scores_in_scheme_points[:achieved_score_in_scheme_points]
+      stars = CertificationPath.star_rating_for_score(score, certificate: @certification_path.certificate).to_s +
+          ' ' + 'Star'.pluralize(CertificationPath.star_rating_for_score(score, certificate: @certification_path.certificate))
+      data.append([stars, scheme_mix.scheme.name])
+    end
+
+    table(data, width: 250) do
+      cells.align = :center
+      cells.size = 13
+      cells.borders = []
+      cells.background_color = '36A2EB'
+    end
   end
 
   def draw_certificate_table(total_category_scores)
     # Prepare table data
     data = []
-    data.append(%w(No Category Point))
+    data.append(['', 'Category', 'Point'])
 
     # Add the category rows to the table
     total_category_scores.each do |category_code, category|
@@ -332,6 +384,8 @@ Congratulations once again for partaking in this noble endeavor, and together le
 
     # Output table
     draw_table(data, true)
+    newline
+    text 'Figure 1 Scoring Summary', align: :center
   end
 
   # def draw_scheme_mix_table(certification_path)
