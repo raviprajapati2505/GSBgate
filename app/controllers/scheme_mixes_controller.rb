@@ -8,7 +8,7 @@ class SchemeMixesController < AuthenticatedController
     @page_title = ERB::Util.html_escape(@scheme_mix.full_name.to_s)
     # creating hash with key = category.id and value = hash with category and its linked criteria
     @category_criterion_map = {}
-    scheme_mix_criteria = @scheme_mix.scheme_mix_criteria.joins(:scheme_criterion).accessible_by(current_ability).order('scheme_criteria.number').map { |scheme_mix_criterion| scheme_mix_criterion.visible_status }
+    scheme_mix_criteria = @scheme_mix.scheme_mix_criteria.joins(:scheme_criterion).accessible_by(current_ability, :show).order('scheme_criteria.number').map { |scheme_mix_criterion| scheme_mix_criterion.visible_status }
     scheme_mix_criteria.each do |scheme_mix_criterion|
       unless @category_criterion_map.has_key?(scheme_mix_criterion.scheme_criterion.scheme_category.id)
         @category_criterion_map[scheme_mix_criterion.scheme_criterion.scheme_category.id] = {category: scheme_mix_criterion.scheme_criterion.scheme_category, scheme_mix_criteria: []}
@@ -25,7 +25,7 @@ class SchemeMixesController < AuthenticatedController
   def update
     # Check if other scheme mixes with same scheme_id exist
     # and if this custom_name is blank or the custom_name is already used
-    identical_scheme_mixes = @certification_path.scheme_mixes.where(scheme_id: @scheme_mix.scheme_id);
+    identical_scheme_mixes = @certification_path.scheme_mixes.where(scheme_id: @scheme_mix.scheme_id)
     if identical_scheme_mixes.count > 1
       if params[:scheme_mix][:custom_name].blank?
         redirect_to(project_certification_path_path(@project, @certification_path), alert: 'Custom name cannot be blank.')
