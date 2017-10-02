@@ -85,12 +85,6 @@ class CertificationPath < ActiveRecord::Base
   def init
     # Set status
     self.certification_path_status_id ||= CertificationPathStatus::ACTIVATING
-    # GORD-30 : GORD wants that project members only see their assigned requirements after a certain date
-    if DateTime.now.to_date >= Date.strptime('01/10/2017', '%d/%m/%Y')
-      self.show_all_criteria = false
-    else
-      self.show_all_criteria = true
-    end
   end
 
   def name
