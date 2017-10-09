@@ -53,7 +53,7 @@ namespace :xlsx2seed do
   end
 
   def writeCreateRequirementLine(seeds_file, requirement_text, current_col_index, scheme_criteria_id)
-    requirement_identifier = "REQUIREMENT_#{current_col_index}_FOR_SCHEME_CRITERIA_ID_#{scheme_criteria_id}"
+    requirement_identifier = "requirement_#{current_col_index}_for_scheme_criterion_id_#{scheme_criteria_id}"
     requirement_identifier.gsub!(' ', '_')
     requirement_identifier.gsub!('.', '_')
     requirement_identifier.gsub!('-', '_')
