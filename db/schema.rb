@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171009060309) do
+ActiveRecord::Schema.define(version: 20171009070246) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -273,7 +273,7 @@ ActiveRecord::Schema.define(version: 20171009060309) do
 
   create_table "scheme_categories", force: :cascade do |t|
     t.string   "name"
-    t.string   "code",            limit: 2
+    t.string   "code",            limit: 4
     t.text     "description"
     t.text     "impacts"
     t.text     "mitigate_impact"

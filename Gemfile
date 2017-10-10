@@ -53,6 +53,8 @@ group :development, :test do
   gem 'binding_of_caller'
   # used by the xlsx2seed rake task
   gem 'roo'
+  # gem 'axlsx', '~> 2.0.1'
+  # gem 'axlsx_rails', '~> 0.5.1'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

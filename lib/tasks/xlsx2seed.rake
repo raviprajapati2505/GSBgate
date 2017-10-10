@@ -1,6 +1,52 @@
 namespace :xlsx2seed do
 
+  # gems roo and axlsx cannot be loaded at the same time due to rubyzip version conflicts
   require 'roo'
+  # require 'axlsx'
+
+  # desc "Creates xlsx file for operations 2.1 criteria which can be completed with requirements"
+  # task :generate, [:output_filename] => :environment do |t, args|
+  #   Rails.logger = Logger.new(STDOUT)
+  #
+  #   if args.output_filename.blank?
+  #     Rails.logger.error 'usage : rake xlsx2seed:generate[<output_filename>]'
+  #     Rails.logger.error ' e.g. : rake xlsx2seed:generate[RequirementsTemplate.xlsx]'
+  #     exit
+  #   end
+  #   Rails.logger.info "#{args}"
+  #
+  #   p = Axlsx::Package.new
+  #   wb = p.workbook
+  #   wb.styles do |style|
+  #     blue_cell = style.add_style bg_color: "9bbb59", b: true
+  #
+  #     wb.add_worksheet(name: 'requirements') do |sheet|
+  #       sheet.add_row ['scheme ID', 'category ID', 'criterion ID', 'version', 'certificate', 'scheme', 'renovation', 'category', 'criterion number', 'criterion name', 'requirement 1', 'requirement 2', 'requirement 3', 'requirement 4', 'requirement 5', 'requirement 6', 'requirement 7', 'requirement 8', 'requirement 9', 'requirement 10', 'requirement 11', 'requirement 12', 'requirement 13', 'requirement 14', 'requirement 15'], style: blue_cell
+  #
+  #       scheme_criteria = SchemeCriterion.joins(scheme_category: [scheme: [development_types: [:certificate]]]).where(certificates: {certificate_type: Certificate.certificate_types[:operations_type], gsas_version: '2.1'})
+  #       scheme_criteria.each do |scheme_criterion|
+  #         row_cells = []
+  #         row_cells << scheme_criterion.scheme_category.scheme_id
+  #         row_cells << scheme_criterion.scheme_category_id
+  #         row_cells << scheme_criterion.id
+  #         row_cells << scheme_criterion.scheme_category.scheme.development_types[0].certificate.gsas_version
+  #         row_cells << scheme_criterion.scheme_category.scheme.development_types[0].certificate.name
+  #         row_cells << scheme_criterion.scheme_category.scheme.name
+  #         row_cells << scheme_criterion.scheme_category.scheme.renovation
+  #         row_cells << scheme_criterion.scheme_category.name
+  #         row_cells << scheme_criterion.scheme_category.code + '.' + scheme_criterion.number.to_s
+  #         row_cells << scheme_criterion.name
+  #         sheet.add_row row_cells
+  #       end
+  #
+  #       last_row_index = sheet.rows.last.index + 1
+  #       sheet.auto_filter = "A1:J#{last_row_index}"
+  #     end
+  #   end
+  #
+  #   p.serialize(args.output_filename)
+  #
+  # end
 
   desc "Converts xlsx file to seeds file"
   task :convert, [:input_filename, :output_filename] => :environment do |t, args|
