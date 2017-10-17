@@ -347,7 +347,7 @@ module Taskable
                 end
               end
             else
-              # Create certifier team member task to screen the criterion
+              # Create certifier team member task to verify the criterion
               Task.create(taskable: self,
                           task_description_id: CERT_MEM_VERIFY,
                           user: self.certifier,
