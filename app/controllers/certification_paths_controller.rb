@@ -235,15 +235,15 @@ class CertificationPathsController < AuthenticatedController
     render json: {total_count: total_count, items: items}
   end
 
-  def edit_project_team_responsibility
-    @page_title = t('controllers.certification_paths_controller.edit_project_team_responsibility.page_title', certificate: @certification_path.name)
+  def edit_project_team_responsibility_for_submittal
+    @page_title = t('controllers.certification_paths_controller.edit_project_team_responsibility_for_submittal.page_title', certificate: @certification_path.name)
   end
 
-  def edit_certifier_team_responsibility
-    @page_title = t('controllers.certification_paths_controller.edit_certifier_team_responsibility.page_title', certificate: @certification_path.name)
+  def edit_certifier_team_responsibility_for_verification
+    @page_title = t('controllers.certification_paths_controller.edit_certifier_team_responsibility_for_verification.page_title', certificate: @certification_path.name)
   end
 
-  def allocate_project_team_responsibility
+  def allocate_project_team_responsibility_for_submittal
     if params.has_key?(:requirement_data)
       # Format the user id
       if params[:user_id].empty?
@@ -291,13 +291,13 @@ class CertificationPathsController < AuthenticatedController
     end
 
     if params.has_key?(:button) && (params[:button] == 'save-and-continue')
-      redirect_to edit_project_team_responsibility_project_certification_path_path
+      redirect_to edit_project_team_responsibility_for_submittal_project_certification_path_path
     else
       redirect_to project_certification_path_path
     end
   end
 
-  def allocate_certifier_team_responsibility
+  def allocate_certifier_team_responsibility_for_verification
     if params.has_key?(:scheme_mix_criteria)
       # Format the certifier id
       if params[:certifier_id].empty?
@@ -338,7 +338,7 @@ class CertificationPathsController < AuthenticatedController
     end
 
     if params.has_key?(:button) && (params[:button] == 'save-and-continue')
-      redirect_to edit_certifier_team_responsibility_project_certification_path_path
+      redirect_to edit_certifier_team_responsibility_for_verification_project_certification_path_path
     else
       redirect_to project_certification_path_path
     end

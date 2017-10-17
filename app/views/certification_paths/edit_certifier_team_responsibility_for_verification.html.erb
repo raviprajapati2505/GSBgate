@@ -1,9 +1,9 @@
-<%= bootstrap_form_for([@project, @certification_path], url: allocate_certifier_team_responsibility_project_certification_path_path, method: 'put') do |f| %>
+<%= bootstrap_form_for([@project, @certification_path], url: allocate_certifier_team_responsibility_for_verification_project_certification_path_path, method: 'put') do |f| %>
     <div class="row">
         <div class="col-md-8">
             <div class="ibox">
                 <div class="ibox-title">
-                    <h5>Select criteria to allocate</h5>
+                    <h5>Select criteria to allocate for verification</h5>
                 </div>
                 <div class="ibox-content">
                     <p class="alert alert-info"><%= ikoen('info-circle') %> Use the checkboxes to assign criteria to certifiers. Verified criteria will not be listed here.</p>
@@ -47,7 +47,7 @@
         <div class="col-md-4">
             <div class="ibox">
                 <div class="ibox-title">
-                    <h5>Allocate selected criteria</h5>
+                    <h5>Allocate selected criteria for submittal</h5>
                 </div>
                 <div class="ibox-content">
                     <div class="form-group">

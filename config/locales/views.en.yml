@@ -21,9 +21,9 @@ en:
   certification_paths:
     edit_status:
       modal_title: Update status
-    edit_project_team_responsibility:
+    edit_project_team_responsibility_for_submittal:
       btn_save_and_continue: Save and continue
-    edit_certifier_team_responsibility:
+    edit_certifier_team_responsibility_for_verification:
       btn_save_and_continue: Save and continue
     show:
       certification_path:
@@ -64,8 +64,8 @@ en:
       schemes:
         title: Schemes
         info_activating: The schemes will be clickable after a GSAS trust administrator activates the certification.
-        btn_edit_project_team_responsibility: Allocate project team responsibility
-        btn_edit_certifier_team_responsibility: Allocate GSAS trust team responsibility
+        btn_edit_project_team_responsibility_for_submittal: Allocate project team responsibility for submittal
+        btn_edit_certifier_team_responsibility_for_verification: Allocate GSAS trust team responsibility for verification
     new:
       title: Applying for %{certificate} Certification
     overview_item:
@@ -185,11 +185,11 @@ en:
     tasks:
       description_1: Assign a certification manager to the project.
       description_2: Check registration and payment and advance the certification status.
-      description_3: Allocate project team responsibility.
+      description_3: Allocate project team responsibility for submittal.
       description_4: Provide documentation and change the status of the requirements.
       description_5: Set the submitted score and submit the criterion.
       description_6: Advance the certification status.
-      description_7: Allocate GSAS trust team responsibility.
+      description_7: Allocate GSAS trust team responsibility for verification.
       description_8: Screen all criteria and advance the certification status.
       description_9: Review the criterion and provide a PCR review comment.
       description_10: Process GSAS trust team comments and advance the certification status.
@@ -203,12 +203,12 @@ en:
       description_26: Approve the certification by advancing the status.
       description_29: Documents are waiting for approval.
       description_30: Apply for a certification.
-      description_31: Allocate project team responsibility for appealed criteria.
+      description_31: Allocate project team responsibility for submittal of appealed criteria.
       description_32: Provide location plan, site plan, design brief and project narrative.
       description_33: Duration of certification is exceeded.
       description_34: Task is overdue.
       description_35: Task is overdue.
-      description_36: Allocate GSAS trust team responsibility.
+      description_36: Allocate GSAS trust team responsibility for verification after appeal.
       description_37: Select a main scheme.
       tooltip_due_date: Task is overdue.
   users:

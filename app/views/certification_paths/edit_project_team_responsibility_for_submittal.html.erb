@@ -1,9 +1,9 @@
-<%= bootstrap_form_for([@project, @certification_path], url: allocate_project_team_responsibility_project_certification_path_path, method: 'put') do |f| %>
+<%= bootstrap_form_for([@project, @certification_path], url: allocate_project_team_responsibility_for_submittal_project_certification_path_path, method: 'put') do |f| %>
     <div class="row">
         <div class="col-md-8">
             <div class="ibox">
                 <div class="ibox-title">
-                    <h5>Select requirements to allocate</h5>
+                    <h5>Select requirements to allocate for submittal</h5>
                 </div>
                 <div class="ibox-content">
                     <p class="alert alert-info"><%= ikoen('info-circle') %> Use the checkboxes and the form to update the status of requirements or to assign requirements to project team members. Submitted criteria or criteria without requirements will not be listed here.</p>
@@ -47,7 +47,7 @@
         <div class="col-md-4">
             <div class="ibox">
                 <div class="ibox-title">
-                    <h5>Allocate selected requirements</h5>
+                    <h5>Allocate selected requirements for submittal</h5>
                 </div>
                 <div class="ibox-content">
                     <div class="form-group">

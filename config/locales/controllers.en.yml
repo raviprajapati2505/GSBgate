@@ -8,9 +8,9 @@ en:
       certificate_exists_and_is_allowed:
         error_no_certificate: Error, this certification does not exist.
         error_can_create_certificate: Error, not allowed to create this certification.
-      edit_project_team_responsibility:
-        page_title: Allocate project team responsibility for %{certificate}
-      edit_certifier_team_responsibility:
-        page_title: Allocate GSAS trust team responsibility for %{certificate}
+      edit_project_team_responsibility_for_submittal:
+        page_title: Allocate project team responsibility for submittal
+      edit_certifier_team_responsibility_for_verification:
+        page_title: Allocate GSAS trust team responsibility for verification
       update_status:
         notice_success: The certification status was successfully updated.
