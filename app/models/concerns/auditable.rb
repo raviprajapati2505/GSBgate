@@ -146,13 +146,26 @@ module Auditable
             if self.status_changed?
               system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.status.update_html', criterion: self.name, old_status: t(self.status_was, scope: 'activerecord.attributes.scheme_mix_criterion.statuses'), new_status: t(self.status, scope: 'activerecord.attributes.scheme_mix_criterion.statuses'))}
             end
+            if self.screened_changed? && self.screened
+              system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.screened.update_html', criterion: self.name)}
+            end
             if self.certifier_id_changed? || self.due_date_changed?
-              if self.certifier_id.blank?
-                system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.certifier.unassigned_html', criterion: self.name)}
-              elsif self.due_date?
-                system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.certifier.assigned_due_html', criterion: self.name, user: self.certifier.full_name, due_date: l(self.due_date, format: :short))}
-              else
-                system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.certifier.assigned_html', criterion: self.name, user: self.certifier.full_name)}
+              if certification_path.in_verification?
+                if self.certifier_id.blank?
+                  system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.certifier.unassigned_html', criterion: self.name)}
+                elsif self.due_date?
+                  system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.certifier.assigned_for_verification_due_html', criterion: self.name, user: self.certifier.full_name, due_date: l(self.due_date, format: :short))}
+                else
+                  system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.certifier.assigned_for_verification_html', criterion: self.name, user: self.certifier.full_name)}
+                end
+              elsif certification_path.in_screening?
+                if self.certifier_id.blank?
+                  system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.certifier.unassigned_html', criterion: self.name)}
+                elsif self.due_date?
+                  system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.certifier.assigned_for_screening_due_html', criterion: self.name, user: self.certifier.full_name, due_date: l(self.due_date, format: :short))}
+                else
+                  system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.certifier.assigned_for_screening_html', criterion: self.name, user: self.certifier.full_name)}
+                end
               end
             end
             if self.targeted_score_changed?
@@ -216,9 +229,9 @@ module Auditable
               if self.user_id.blank?
                 system_messages << {message: t('models.concerns.auditable.requirement_datum.user.unassigned_html', requirement: self.name)}
               elsif self.due_date?
-                system_messages << {message: t('models.concerns.auditable.requirement_datum.user.assigned_due_html', requirement: self.name, user: self.user.full_name, due_date: l(self.due_date, format: :short))}
+                system_messages << {message: t('models.concerns.auditable.requirement_datum.user.assigned_for_submittal_due_html', requirement: self.name, user: self.user.full_name, due_date: l(self.due_date, format: :short))}
               else
-                system_messages << {message: t('models.concerns.auditable.requirement_datum.user.assigned_html', requirement: self.name, user: self.user.full_name)}
+                system_messages << {message: t('models.concerns.auditable.requirement_datum.user.assigned_for_submittal_html', requirement: self.name, user: self.user.full_name)}
               end
             end
           end

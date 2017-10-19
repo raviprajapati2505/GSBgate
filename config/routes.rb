@@ -48,6 +48,7 @@ Rails.application.routes.draw do
         get 'edit_status'
         get 'edit_project_team_responsibility_for_submittal', path: 'edit-project-team-responsibility-for-submittal'
         get 'edit_certifier_team_responsibility_for_verification', path: 'edit-certifier-team-responsibility-for-verification'
+        get 'edit_certifier_team_responsibility_for_screening', path: 'edit-certifier-team-responsibility-for-screening'
         get 'edit_main_scheme_mix', path: 'edit-main-scheme-mix'
         get 'edit_max_review_count'
         get 'confirm_destroy' => 'certification_paths#confirm_destroy'
@@ -58,6 +59,7 @@ Rails.application.routes.draw do
         put 'cancel_pcr'
         put 'allocate_project_team_responsibility_for_submittal', path: 'allocate-project-team-responsibility-for-submittal'
         put 'allocate_certifier_team_responsibility_for_verification', path: 'allocate-certifier-team-responsibility-for-verification'
+        put 'allocate_certifier_team_responsibility_for_screening', path: 'allocate-certifier-team-responsibility-for-screening'
         put 'update_main_scheme_mix', path: 'update-main-scheme'
         put 'update_max_review_count'
         put 'update_signed_certificate'
@@ -75,6 +77,7 @@ Rails.application.routes.draw do
             get 'provide_review_comment'
             put 'update_status'
             put 'add_review_comment'
+            put 'screen'
             put 'update_scores'
             put 'assign_certifier'
           end

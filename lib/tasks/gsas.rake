@@ -132,6 +132,27 @@ namespace :gsas do
       task_count += criteria.size
     end while criteria.size == PAGE_SIZE
 
+    page = 0
+    begin
+      page += 1
+      criteria = SchemeMixCriterion.joins(scheme_mix: [:certification_path])
+                     .where(certification_paths: {certification_path_status_id: CertificationPathStatus::SCREENING})
+                     .where(screened: false)
+                     .where('due_date < ?', Date.current)
+      unless from_datetime.nil?
+        criteria = criteria.where('due_date >= ?', from_datetime)
+      end
+      criteria = criteria.page(page).per(PAGE_SIZE)
+      criteria.each do |criterion|
+        Task.create(taskable: criterion,
+                    task_description_id: Taskable::CERT_MNGR_OVERDUE,
+                    project_role: ProjectsUser.roles[:certification_manager],
+                    project: criterion.scheme_mix.certification_path.project,
+                    certification_path: criterion.scheme_mix.certification_path)
+      end
+      task_count += criteria.size
+    end while criteria.size == PAGE_SIZE
+
     Rails.logger.info "Found #{ActionController::Base.helpers.pluralize(task_count, 'task')} which are overdue."
   end
 

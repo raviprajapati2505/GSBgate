@@ -29,6 +29,14 @@
                         <%= t(@scheme_mix_criterion.status, scope: 'activerecord.attributes.scheme_mix_criterion.statuses') %>
                     </td>
                 </tr>
+                <% if @certification_path.in_screening? %>
+                <tr>
+                    <th>Screened</th>
+                    <td>
+                        <%= @scheme_mix_criterion.screened ? 'Yes' : 'No' %>
+                    </td>
+                </tr>
+                <% end %>
                 </tbody>
             </table>
             <% if can?(:update_status, @scheme_mix_criterion) %>
@@ -62,10 +70,12 @@
                         <%= btn_link_to(edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, undo: 1), remote: true, icon: 'undo', text: t('.details.btn_edit_status.undo'), style: 'danger') %>
                     <% end %>
                 <% end %>
-            <% else %>
-              <% if can?(:provide_review_comment, @scheme_mix_criterion) %>
-                <%= btn_link_to(provide_review_comment_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), remote: true, icon: 'life-saver', text: 'Provide PCR review comment') %>
-              <% end %>
+            <% elsif can?(:provide_review_comment, @scheme_mix_criterion) %>
+              <div class="hr-line-dashed"></div>
+              <%= btn_link_to(provide_review_comment_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), remote: true, icon: 'life-saver', text: 'Provide PCR review comment') %>
+            <% elsif can?(:screen, @scheme_mix_criterion) %>
+              <div class="hr-line-dashed"></div>
+              <%= btn_link_to(screen_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), method: :put, icon: 'eye', text: 'Mark as screened') %>
             <% end %>
         </div>
     </div>

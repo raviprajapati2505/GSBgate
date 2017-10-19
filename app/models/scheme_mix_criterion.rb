@@ -58,6 +58,10 @@ class SchemeMixCriterion < ActiveRecord::Base
     where(status: [SchemeMixCriterion.statuses[:verifying], SchemeMixCriterion.statuses[:verifying_after_appeal]])
   }
 
+  scope :unscreened, -> {
+    where(screened: false)
+  }
+
   def name
     self.scheme_criterion.name
   end
@@ -247,6 +251,7 @@ class SchemeMixCriterion < ActiveRecord::Base
         (smc_inherit.targeted_score = targeted_score) if targeted_score_changed?
         (smc_inherit.submitted_score = submitted_score) if submitted_score_changed?
         (smc_inherit.achieved_score = achieved_score) if achieved_score_changed?
+        (smc_inherit.screened = screened) if screened_changed?
         smc_inherit.save!
       end
     end

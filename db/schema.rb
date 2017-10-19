@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171009070246) do
+ActiveRecord::Schema.define(version: 20171019135434) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -350,6 +350,7 @@ ActiveRecord::Schema.define(version: 20171009070246) do
     t.boolean  "in_review",                                            default: false
     t.integer  "review_count",                                         default: 0
     t.boolean  "incentive_scored",                                     default: false
+    t.boolean  "screened",                                             default: false, null: false
   end
 
   add_index "scheme_mix_criteria", ["certifier_id"], name: "index_scheme_mix_criteria_on_certifier_id", using: :btree

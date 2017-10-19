@@ -195,6 +195,12 @@ class CertificationPath < ActiveRecord::Base
         if development_type.mixable? && (main_scheme_mix_selected? == false)
           todos << 'A main scheme needs to be selected.'
         end
+      when CertificationPathStatus::SCREENING
+        scheme_mix_criteria.each do |criterion|
+          unless criterion.screened
+            todos << 'Some criteria aren\'t screened yet. Please allocate team responsibility for screening or skip screening by marking all criteria as "screened".'
+          end
+        end
       when CertificationPathStatus::SUBMITTING, CertificationPathStatus::SUBMITTING_AFTER_SCREENING, CertificationPathStatus::SUBMITTING_AFTER_APPEAL
         ['location_plan_file', 'site_plan_file', 'design_brief_file', 'project_narrative_file'].each do |general_submittal|
           if project.send(general_submittal).blank?
@@ -299,6 +305,10 @@ class CertificationPath < ActiveRecord::Base
     CertificationPathStatus::STATUSES_IN_SUBMISSION.include?(certification_path_status_id)
   end
 
+  def in_screening?
+    CertificationPathStatus::SCREENING == certification_path_status_id
+  end
+
   # This function is used for toggling writability of form elements in the certification path flow
   def in_verification?
     CertificationPathStatus::STATUSES_IN_VERIFICATION.include?(certification_path_status_id)
@@ -351,6 +361,7 @@ class CertificationPath < ActiveRecord::Base
         when CertificationPathStatus::VERIFYING
           scheme_mix_criteria.each do |smc|
             if smc.submitted?
+              smc.certifier = nil
               smc.verifying!
             end
           end

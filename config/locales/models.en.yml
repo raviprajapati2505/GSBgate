@@ -92,10 +92,14 @@ en:
           status:
             update_html: The status of criterion <strong>%{criterion}</strong> was changed from <strong>%{old_status}</strong> to <strong>%{new_status}</strong>.
             after_verification: The achieved score for criterion <strong>%{criterion}</strong> is <strong>%{achieved_score}</strong>. The criterion status was changed to <strong>%{new_status}</strong>.
+          screened:
+            update_html: The criterion <strong>%{criterion}</strong> was screened.
           certifier:
             unassigned_html: A GSAS trust certifier was unassigned from criterion <strong>%{criterion}</strong>.
-            assigned_due_html: Criterion <strong>%{criterion}</strong> was assigned to GSAS trust certifier <strong>%{user}</strong> for review. The due date is <strong>%{due_date}</strong>.
-            assigned_html: Criterion <strong>%{criterion}</strong> was assigned to GSAS trust certifier <strong>%{user}</strong> for review.
+            assigned_for_screening_due_html: Criterion <strong>%{criterion}</strong> was assigned to GSAS trust certifier <strong>%{user}</strong> for screening. The due date is <strong>%{due_date}</strong>.
+            assigned_for_screening_html: Criterion <strong>%{criterion}</strong> was assigned to GSAS trust certifier <strong>%{user}</strong> for screening.
+            assigned_for_verification_due_html: Criterion <strong>%{criterion}</strong> was assigned to GSAS trust certifier <strong>%{user}</strong> for verification. The due date is <strong>%{due_date}</strong>.
+            assigned_for_verification_html: Criterion <strong>%{criterion}</strong> was assigned to GSAS trust certifier <strong>%{user}</strong> for verification.
           targeted_score:
             set_html: The targeted score of criterion <strong>%{criterion}</strong> was set to <strong>%{score}</strong>.
             unset_html: The targeted score of criterion <strong>%{criterion}</strong> was removed.
@@ -119,8 +123,8 @@ en:
             update_html: The status of requirement <strong>%{requirement}</strong> was changed from <strong>%{old_status}</strong> to <strong>%{new_status}</strong>.
           user:
             unassigned_html: A project team member was unassigned from requirement <strong>%{requirement}</strong>.
-            assigned_due_html: Requirement <strong>%{requirement}</strong> was assigned to <strong>%{user}</strong>. The due date is <strong>%{due_date}</strong>.
-            assigned_html: Requirement <strong>%{requirement}</strong> was assigned to <strong>%{user}</strong>.
+            assigned_for_submittal_due_html: Requirement <strong>%{requirement}</strong> was assigned to <strong>%{user}</strong> for submittal. The due date is <strong>%{due_date}</strong>.
+            assigned_for_submittal_html: Requirement <strong>%{requirement}</strong> was assigned to <strong>%{user}</strong> for submittal.
         requirement:
           name:
             update_html: Requirement <strong>%{old_name}</strong> was renamed to <strong>%{new_name}</strong>.

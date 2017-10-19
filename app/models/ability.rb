@@ -44,6 +44,7 @@ class Ability
     #   SchemeMixCriterion.statuses
     scheme_mix_criterion_status_submitting = ['submitting', SchemeMixCriterion.statuses[:submitting], 'submitting_after_appeal', SchemeMixCriterion.statuses[:submitting_after_appeal]]
     scheme_mix_criterion_status_submitted = ['submitted', SchemeMixCriterion.statuses[:submitted], 'submitted_after_appeal', SchemeMixCriterion.statuses[:submitted_after_appeal]]
+    scheme_mix_criterion_status_screening = ['submitted', SchemeMixCriterion.statuses[:submitted]]
     scheme_mix_criterion_status_verifying = ['verifying', SchemeMixCriterion.statuses[:verifying], 'verifying_after_appeal', SchemeMixCriterion.statuses[:verifying_after_appeal]]
     scheme_mix_criterion_status_verified = ['score_awarded', SchemeMixCriterion.statuses[:score_awarded], 'score_downgraded', SchemeMixCriterion.statuses[:score_downgraded], 'score_upgraded', SchemeMixCriterion.statuses[:score_upgraded], 'score_minimal', SchemeMixCriterion.statuses[:score_minimal], 'score_awarded_after_appeal', SchemeMixCriterion.statuses[:score_awarded_after_appeal], 'score_downgraded_after_appeal', SchemeMixCriterion.statuses[:score_downgraded_after_appeal], 'score_upgraded_after_appeal', SchemeMixCriterion.statuses[:score_upgraded_after_appeal], 'score_minimal_after_appeal', SchemeMixCriterion.statuses[:score_minimal_after_appeal]]
     #   SchemeMixCriteriaDocument.statuses
@@ -106,6 +107,7 @@ class Ability
       # GSAS trust team
       can [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::STATUSES_AT_CERTIFIER_SIDE}, project: project_with_user_as_certification_manager
       can [:edit_certifier_team_responsibility_for_verification, :allocate_certifier_team_responsibility_for_verification], CertificationPath, project: project_with_user_as_certification_manager, certification_path_status: {id: CertificationPathStatus::STATUSES_IN_VERIFICATION}
+      can [:edit_certifier_team_responsibility_for_screening, :allocate_certifier_team_responsibility_for_screening], CertificationPath, project: project_with_user_as_certification_manager, certification_path_status: {id: CertificationPathStatus::SCREENING}
 
       # SchemeMix controller
       can :read, SchemeMix, certification_path: {project: project_with_user_assigned, certification_path_status: {id: CertificationPathStatus::STATUSES_ACTIVATED}}
@@ -139,9 +141,11 @@ class Ability
       can :update_achieved_score, SchemeMixCriterion, main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_verifying, scheme_mix: {certification_path: {project: project_with_user_as_certification_manager}}
       can :update_achieved_score, SchemeMixCriterion, main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_verifying, certifier_id: user.id, scheme_mix: {certification_path: {project: project_with_user_in_gsas_trust_team}}
       can :assign_certifier, SchemeMixCriterion, main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_verifying, scheme_mix: {certification_path: {project: project_with_user_as_certification_manager}}
+      can :assign_certifier, SchemeMixCriterion, main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_screening, scheme_mix: {certification_path: {project: project_with_user_as_certification_manager}}
       can [:provide_review_comment, :add_review_comment], SchemeMixCriterion, main_scheme_mix_criterion: nil, in_review: true, scheme_mix: {certification_path: {project: project_with_user_as_certification_manager}}
       can :update_incentive_scored, SchemeMixCriterion, main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_verifying, scheme_mix: {certification_path: {project: project_with_user_as_certification_manager}}
       can :update_incentive_scored, SchemeMixCriterion, main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_verifying, certifier_id: user.id, scheme_mix: {certification_path: {project: project_with_user_in_gsas_trust_team}}
+      can :screen, SchemeMixCriterion, main_scheme_mix_criterion: nil, screened: false, scheme_mix: {certification_path: {certification_path_status: {id: CertificationPathStatus::SCREENING}, project: project_with_user_in_gsas_trust_team}}
 
       # RequirementDatum controller
       can :read, RequirementDatum, scheme_mix_criteria: {scheme_mix: {certification_path: {project: project_with_user_assigned, certification_path_status: {id: CertificationPathStatus::STATUSES_ACTIVATED}}}}

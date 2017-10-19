@@ -25,6 +25,8 @@ en:
       btn_save_and_continue: Save and continue
     edit_certifier_team_responsibility_for_verification:
       btn_save_and_continue: Save and continue
+    edit_certifier_team_responsibility_for_screening:
+      btn_save_and_continue: Save and continue
     show:
       certification_path:
         title: Certification details
@@ -66,6 +68,7 @@ en:
         info_activating: The schemes will be clickable after a GSAS trust administrator activates the certification.
         btn_edit_project_team_responsibility_for_submittal: Allocate project team responsibility for submittal
         btn_edit_certifier_team_responsibility_for_verification: Allocate GSAS trust team responsibility for verification
+        btn_edit_certifier_team_responsibility_for_screening: Allocate GSAS trust team responsibility for screening
     new:
       title: Applying for %{certificate} Certification
     overview_item:
@@ -190,7 +193,7 @@ en:
       description_5: Set the submitted score and submit the criterion.
       description_6: Advance the certification status.
       description_7: Allocate GSAS trust team responsibility for verification.
-      description_8: Screen all criteria and advance the certification status.
+      description_8: Allocate GSAS trust team responsibility for screening.
       description_9: Review the criterion and provide a PCR review comment.
       description_10: Process GSAS trust team comments and advance the certification status.
       description_11: Process GSAS trust team review comments.
@@ -210,6 +213,8 @@ en:
       description_35: Task is overdue.
       description_36: Allocate GSAS trust team responsibility for verification after appeal.
       description_37: Select a main scheme.
+      description_38: Screen the criterion.
+      description_39: Advance the certification status.
       tooltip_due_date: Task is overdue.
   users:
     index:

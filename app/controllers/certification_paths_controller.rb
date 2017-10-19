@@ -243,6 +243,10 @@ class CertificationPathsController < AuthenticatedController
     @page_title = t('controllers.certification_paths_controller.edit_certifier_team_responsibility_for_verification.page_title', certificate: @certification_path.name)
   end
 
+  def edit_certifier_team_responsibility_for_screening
+    @page_title = t('controllers.certification_paths_controller.edit_certifier_team_responsibility_for_screening.page_title', certificate: @certification_path.name)
+  end
+
   def allocate_project_team_responsibility_for_submittal
     if params.has_key?(:requirement_data)
       # Format the user id
@@ -339,6 +343,56 @@ class CertificationPathsController < AuthenticatedController
 
     if params.has_key?(:button) && (params[:button] == 'save-and-continue')
       redirect_to edit_certifier_team_responsibility_for_verification_project_certification_path_path
+    else
+      redirect_to project_certification_path_path
+    end
+  end
+
+  def allocate_certifier_team_responsibility_for_screening
+    if params.has_key?(:scheme_mix_criteria)
+      # Format the certifier id
+      if params[:certifier_id].empty?
+        certifier = nil
+      else
+        certifier = User.find(params[:certifier_id])
+      end
+
+      # Format the due date
+      if params[:due_date].empty?
+        due_date = nil
+      else
+        due_date = Date.strptime(params[:due_date], t('date.formats.short'))
+      end
+
+      # Format the screened flag
+      screened = params.has_key?(:mark_as_screened)
+
+      # Load the SchemeMixCriteria models
+      scheme_mix_criteria = SchemeMixCriterion.find(params[:scheme_mix_criteria])
+
+      # Update the SchemeMixCriteria models
+      all_saved = true
+      CertificationPath.transaction do
+        scheme_mix_criteria.each do |scheme_mix_criterion|
+          if can?(:assign_certifier, scheme_mix_criterion)
+            scheme_mix_criterion.update!(certifier: certifier, due_date: due_date, screened: screened)
+          else
+            all_saved = false
+          end
+        end
+      end
+
+      if all_saved
+        flash[:notice] = 'The selected criteria were successfully updated.'
+      else
+        flash[:alert] = 'Not all criteria were successfully updated because they are already screened.'
+      end
+    else
+      flash[:alert] = 'No criteria were selected.'
+    end
+
+    if params.has_key?(:button) && (params[:button] == 'save-and-continue')
+      redirect_to edit_certifier_team_responsibility_for_screening_project_certification_path_path
     else
       redirect_to project_certification_path_path
     end

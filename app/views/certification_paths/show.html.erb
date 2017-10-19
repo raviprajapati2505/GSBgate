@@ -186,13 +186,17 @@
                 <% can_edit_main_scheme_mix = can?(:edit_main_scheme_mix, @certification_path) %>
                 <% can_edit_project_team_responsibility_for_submittal = can?(:edit_project_team_responsibility_for_submittal, @certification_path) %>
                 <% can_edit_certifier_team_responsibility_for_verification = can?(:edit_certifier_team_responsibility_for_verification, @certification_path) %>
-                <% if can_edit_main_scheme_mix || can_edit_project_team_responsibility_for_submittal || can_edit_certifier_team_responsibility_for_verification %>
+                <% can_edit_certifier_team_responsibility_for_screening = can?(:edit_certifier_team_responsibility_for_screening, @certification_path) %>
+                <% if can_edit_main_scheme_mix || can_edit_project_team_responsibility_for_submittal || can_edit_certifier_team_responsibility_for_verification || can_edit_certifier_team_responsibility_for_screening %>
                     <div class="hr-line-dashed"></div>
                     <% if can_edit_main_scheme_mix %>
                         <%= btn_link_to(edit_main_scheme_mix_project_certification_path_path, remote: true, icon: 'certificate', text: 'Select main scheme') %>
                     <% end %>
                     <% if can_edit_project_team_responsibility_for_submittal %>
                         <%= btn_link_to(edit_project_team_responsibility_for_submittal_project_certification_path_path, style: 'white', icon: 'th-list', text: t('.schemes.btn_edit_project_team_responsibility_for_submittal')) %>
+                    <% end %>
+                    <% if can_edit_certifier_team_responsibility_for_screening %>
+                        <%= btn_link_to(edit_certifier_team_responsibility_for_screening_project_certification_path_path, style: 'white', icon: 'th-list', text: t('.schemes.btn_edit_certifier_team_responsibility_for_screening')) %>
                     <% end %>
                     <% if can_edit_certifier_team_responsibility_for_verification %>
                         <%= btn_link_to(edit_certifier_team_responsibility_for_verification_project_certification_path_path, style: 'white', icon: 'th-list', text: t('.schemes.btn_edit_certifier_team_responsibility_for_verification')) %>

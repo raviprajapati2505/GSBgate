@@ -224,6 +224,9 @@
                                 <% if scheme_mix_criterion.main_scheme_mix_criterion_id.present? %>
                                     <%= ikoen('files-o', tooltip: 'The scores of this criterion are inherited from a criterion with the same name in the main scheme.') %>
                                 <% end %>
+                                <% if @certification_path.in_screening? && scheme_mix_criterion.screened %>
+                                    <%= ikoen('eye', tooltip: 'The criterion was screened.') %>
+                                <% end %>
                               </td>
                               <td><%= t(scheme_mix_criterion.status, scope: 'activerecord.attributes.scheme_mix_criterion.statuses') %></td>
                               <td>

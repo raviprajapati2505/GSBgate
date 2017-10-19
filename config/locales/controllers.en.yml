@@ -12,5 +12,7 @@ en:
         page_title: Allocate project team responsibility for submittal
       edit_certifier_team_responsibility_for_verification:
         page_title: Allocate GSAS trust team responsibility for verification
+      edit_certifier_team_responsibility_for_screening:
+        page_title: Allocate GSAS trust team responsibility for screening
       update_status:
         notice_success: The certification status was successfully updated.
