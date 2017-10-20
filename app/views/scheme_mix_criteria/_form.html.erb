@@ -22,7 +22,7 @@
                 </p>
             <% end %>
             <table class="table table-bordered table-striped">
-                <tbody>
+              <tbody>
                 <tr>
                     <th>Status</th>
                     <td>
@@ -37,7 +37,21 @@
                     </td>
                 </tr>
                 <% end %>
-                </tbody>
+                <% if can?(:request_review, @scheme_mix_criterion) || can?(:provide_review_comment, @scheme_mix_criterion) %>
+                <tr>
+                  <th>PCR reviews requested</th>
+                  <td>
+                    <%= @scheme_mix_criterion.review_count %>
+                  </td>
+                </tr>
+                <tr>
+                  <th>PCR reviews available</th>
+                  <td>
+                    <%= @scheme_mix_criterion.reviews_available %>
+                  </td>
+                </tr>
+                <% end %>
+              </tbody>
             </table>
             <% if can?(:update_status, @scheme_mix_criterion) %>
                 <div class="hr-line-dashed"></div>
@@ -57,7 +71,7 @@
                         <%= btn_link_to(edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), remote: true, icon: 'check', text: t('.details.btn_edit_status.submit'), data: data) %>
                         <% if can?(:request_review, @scheme_mix_criterion) %>
                           <% if @scheme_mix_criterion.review_count < @certification_path.max_review_count %>
-                            <% if @scheme_mix_criterion.in_review?%>
+                            <% if @scheme_mix_criterion.in_review? %>
                               <%= btn_link_to(request_review_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), icon: 'life-saver', text: 'PCR review in progress', class: 'disabled') %>
                             <% else %>
                                 <%= btn_link_to(request_review_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), icon: 'life-saver', text: 'Request PCR review') %>

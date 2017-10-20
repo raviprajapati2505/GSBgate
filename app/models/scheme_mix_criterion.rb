@@ -230,6 +230,12 @@ class SchemeMixCriterion < ActiveRecord::Base
     return self
   end
 
+  # Returns the number of PCR reviews that are still available for this criterion
+  def reviews_available
+    count = self.scheme_mix.certification_path.max_review_count - self.review_count
+    (count < 0) ? 0 : count
+  end
+
   private
 
   def init
