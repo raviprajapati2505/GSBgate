@@ -37,7 +37,7 @@
                     </td>
                 </tr>
                 <% end %>
-                <% if can?(:request_review, @scheme_mix_criterion) || can?(:provide_review_comment, @scheme_mix_criterion) %>
+                <% if @certification_path.in_pre_verification? && @certification_path.pcr_track? && @scheme_mix_criterion.main_scheme_mix_criterion.blank? %>
                 <tr>
                   <th>PCR reviews requested</th>
                   <td>
