@@ -194,7 +194,7 @@ en:
       description_6: Advance the certification status.
       description_7: Allocate GSAS trust team responsibility for verification.
       description_8: Allocate GSAS trust team responsibility for screening.
-      description_9: Review the criterion and provide a PCR review comment.
+      description_9: Provide a PCR review comment or allocate responsibility to a certifier team member.
       description_10: Process GSAS trust team comments and advance the certification status.
       description_11: Process GSAS trust team review comments.
       description_16: Verify the criterion.
@@ -215,6 +215,8 @@ en:
       description_37: Select a main scheme.
       description_38: Screen the criterion.
       description_39: Advance the certification status.
+      description_40: Provide a draft PCR review comment.
+      description_41: Publish the draft PCR review comment provided by a certifier team member.
       tooltip_due_date: Task is overdue.
   users:
     index:

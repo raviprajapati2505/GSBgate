@@ -40,6 +40,7 @@ class SchemeMixCriteriaController < AuthenticatedController
           @scheme_mix_criterion.audit_log_user_comment = params[:scheme_mix_criterion][:audit_log_user_comment]
           @scheme_mix_criterion.audit_log_visibility = params[:scheme_mix_criterion][:audit_log_visibility]
           @scheme_mix_criterion.save!
+          @scheme_mix_criterion.update_column(:in_review, false)
         end
         flash[:notice] = 'Criterion status was sucessfully updated.'
       else
@@ -110,11 +111,16 @@ class SchemeMixCriteriaController < AuthenticatedController
   end
 
   def request_review
-    # TODO check review counter
     if @scheme_mix_criterion.review_count < @certification_path.max_review_count
       @scheme_mix_criterion.review_count += 1
       @scheme_mix_criterion.in_review = true
       @scheme_mix_criterion.save!
+
+      # Clear any previous PCR data
+      @scheme_mix_criterion.update_column(:certifier_id, nil)
+      @scheme_mix_criterion.update_column(:due_date, nil)
+      @scheme_mix_criterion.update_column(:pcr_review_draft, nil)
+
       flash[:notice] = 'Criterion is sent for review.'
     else
       flash[:alert] = 'Maximum number of PCR review requests reached for this criterion.'
@@ -122,19 +128,28 @@ class SchemeMixCriteriaController < AuthenticatedController
     redirect_to project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion)
   end
 
-  def provide_review_comment
-    @is_certifier = false
-    projects_user = ProjectsUser.for_project(@project).for_user(current_user).first
-    if projects_user.nil?
-    elsif projects_user.gsas_trust_team?
-      @is_certifier = projects_user.certifier?
+  def provide_draft_review_comment
+  end
+
+  def add_draft_review_comment
+    @scheme_mix_criterion.transaction do
+      @scheme_mix_criterion.audit_log_user_comment = params[:scheme_mix_criterion][:pcr_review_draft]
+      @scheme_mix_criterion.audit_log_visibility = AuditLogVisibility::INTERNAL
+      @scheme_mix_criterion.pcr_review_draft = params[:scheme_mix_criterion][:pcr_review_draft]
+      @scheme_mix_criterion.save!
     end
+    flash[:notice] = 'Criterion draft PCR review submitted.'
+    redirect_to project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion)
+  end
+
+  def provide_review_comment
+    @scheme_mix_criterion.audit_log_user_comment = @scheme_mix_criterion.pcr_review_draft
   end
 
   def add_review_comment
     @scheme_mix_criterion.transaction do
       @scheme_mix_criterion.audit_log_user_comment = params[:scheme_mix_criterion][:audit_log_user_comment]
-      @scheme_mix_criterion.audit_log_visibility =  params[:scheme_mix_criterion][:audit_log_visibility]
+      @scheme_mix_criterion.audit_log_visibility = AuditLogVisibility::PUBLIC
       @scheme_mix_criterion.in_review = false
       @scheme_mix_criterion.save!
     end

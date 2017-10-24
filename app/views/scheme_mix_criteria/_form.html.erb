@@ -84,9 +84,12 @@
                         <%= btn_link_to(edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, undo: 1), remote: true, icon: 'undo', text: t('.details.btn_edit_status.undo'), style: 'danger') %>
                     <% end %>
                 <% end %>
+            <% elsif can?(:provide_draft_review_comment, @scheme_mix_criterion) %>
+              <div class="hr-line-dashed"></div>
+              <%= btn_link_to(provide_draft_review_comment_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), remote: true, icon: 'life-saver', text: 'Provide Draft PCR review comment') %>
             <% elsif can?(:provide_review_comment, @scheme_mix_criterion) %>
               <div class="hr-line-dashed"></div>
-              <%= btn_link_to(provide_review_comment_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), remote: true, icon: 'life-saver', text: 'Provide PCR review comment') %>
+              <%= btn_link_to(provide_review_comment_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), remote: true, icon: 'life-saver', text: @scheme_mix_criterion.pcr_review_draft.present? ? 'Publish PCR review comment' : 'Provide PCR review comment') %>
             <% elsif can?(:screen, @scheme_mix_criterion) %>
               <div class="hr-line-dashed"></div>
               <%= btn_link_to(screen_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), method: :put, icon: 'eye', text: 'Mark as screened') %>

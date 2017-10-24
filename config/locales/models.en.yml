@@ -39,6 +39,7 @@ en:
           certification_manager: Certification manager
       scheme_mix_criterion:
         audit_log_user_comment: Comment
+        pcr_review_draft: Comment
         statuses:
           submitting: Submitting
           submitted: Submitted
@@ -100,6 +101,8 @@ en:
             assigned_for_screening_html: Criterion <strong>%{criterion}</strong> was assigned to GSAS trust certifier <strong>%{user}</strong> for screening.
             assigned_for_verification_due_html: Criterion <strong>%{criterion}</strong> was assigned to GSAS trust certifier <strong>%{user}</strong> for verification. The due date is <strong>%{due_date}</strong>.
             assigned_for_verification_html: Criterion <strong>%{criterion}</strong> was assigned to GSAS trust certifier <strong>%{user}</strong> for verification.
+            assigned_for_pcr_review_due_html: Criterion <strong>%{criterion}</strong> was assigned to GSAS trust certifier <strong>%{user}</strong> for PCR review. The due date is <strong>%{due_date}</strong>.
+            assigned_for_pcr_review_html: Criterion <strong>%{criterion}</strong> was assigned to GSAS trust certifier <strong>%{user}</strong> for PCR review.
           targeted_score:
             set_html: The targeted score of criterion <strong>%{criterion}</strong> was set to <strong>%{score}</strong>.
             unset_html: The targeted score of criterion <strong>%{criterion}</strong> was removed.
@@ -114,6 +117,11 @@ en:
             update_html: The achieved score of criterion <strong>%{criterion}</strong> was changed from <strong>%{old_score}</strong> to <strong>%{new_score}</strong>.
           main:
             update_html: This change was automated because the criterion inherits from <strong>%{main_criterion}</strong> in the <strong>%{main_scheme}</strong> scheme.
+          pcr_review_draft:
+            update_html: A draft PCR review was provided for criterion <strong>%{criterion}</strong>.
+          in_review:
+            provided_html: A PCR review was provided for criterion <strong>%{criterion}</strong>.
+            requested_html: A PCR review was requested for criterion <strong>%{criterion}</strong>.
         scheme_mix_criteria_document:
           status:
             create_html: A new document <strong>%{document}</strong> was added to criterion <strong>%{criterion}</strong>.

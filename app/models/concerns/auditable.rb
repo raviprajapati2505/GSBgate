@@ -149,6 +149,16 @@ module Auditable
             if self.screened_changed? && self.screened
               system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.screened.update_html', criterion: self.name)}
             end
+            if self.in_review_changed?
+              if self.in_review?
+                system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.in_review.requested_html', criterion: self.name)}
+              else
+                system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.in_review.provided_html', criterion: self.name)}
+              end
+            end
+            if self.pcr_review_draft_changed?
+              system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.pcr_review_draft.update_html', criterion: self.name)}
+            end
             if self.certifier_id_changed? || self.due_date_changed?
               if certification_path.in_verification?
                 if self.certifier_id.blank?
@@ -165,6 +175,14 @@ module Auditable
                   system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.certifier.assigned_for_screening_due_html', criterion: self.name, user: self.certifier.full_name, due_date: l(self.due_date, format: :short))}
                 else
                   system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.certifier.assigned_for_screening_html', criterion: self.name, user: self.certifier.full_name)}
+                end
+              elsif certification_path.in_submission?
+                if self.certifier_id.blank?
+                  system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.certifier.unassigned_html', criterion: self.name)}
+                elsif self.due_date?
+                  system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.certifier.assigned_for_pcr_review_due_html', criterion: self.name, user: self.certifier.full_name, due_date: l(self.due_date, format: :short))}
+                else
+                  system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.certifier.assigned_for_pcr_review_html', criterion: self.name, user: self.certifier.full_name)}
                 end
               end
             end

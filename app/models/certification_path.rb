@@ -356,38 +356,59 @@ class CertificationPath < ActiveRecord::Base
   def advance_scheme_mix_criteria_statuses
     if certification_path_status_id_changed?
       case certification_path_status_id
-        # If the certificate status is advanced to 'Verifying',
-        # also advance the status of all submitted criteria to 'Verifying'
-        when CertificationPathStatus::VERIFYING
+        # If the certificate status is advanced to 'Screening',
+        # clear the responsible user & due date of the requirements
+        when CertificationPathStatus::SCREENING
+          scheme_mix_criteria.update_all(certifier: nil, due_date: nil)
           scheme_mix_criteria.each do |smc|
+            smc.requirement_data.update_all(user_id: nil, due_date: nil)
+          end
+        # If the certificate status is advanced to 'Submitting after screening',
+        # clear the responsible certifier & due date of the criteria
+        when CertificationPathStatus::SUBMITTING_AFTER_SCREENING
+          scheme_mix_criteria.update_all(certifier: nil, due_date: nil)
+        # If the certificate status is advanced to 'Verifying',
+        # clear the responsible user & due date of the requirements
+        # and advance the status of all submitted criteria to 'Verifying'
+        when CertificationPathStatus::VERIFYING
+          scheme_mix_criteria.update_all(certifier: nil, due_date: nil)
+          scheme_mix_criteria.each do |smc|
+            smc.requirement_data.update_all(user_id: nil, due_date: nil)
             if smc.submitted?
-              smc.certifier = nil
               smc.verifying!
             end
           end
         # If the certificate status is advanced to 'Submitting after appeal',
         # also advance the status of all appealed criteria to 'Submitting after appeal'
         when CertificationPathStatus::SUBMITTING_AFTER_APPEAL
+          scheme_mix_criteria.update_all(certifier: nil, due_date: nil)
           scheme_mix_criteria.each do |smc|
             if smc.appealed?
               smc.submitting_after_appeal!
               # Reset linked requirements to 'required' and unassign from project team member
               smc.requirement_data.each do |requirement|
-                requirement.user = nil
                 requirement.required!
               end
             end
           end
+        # If the certificate status is advanced to 'Acknowledging',
+        # clear the responsible certifier & due date of the criteria
+        when CertificationPathStatus::ACKNOWLEDGING
+          scheme_mix_criteria.update_all(certifier: nil, due_date: nil)
         # If the certificate status is advanced to 'Verifying after appeal',
-        # also advance the status of all appealed criteria to 'Verifying after appeal'
+        # clear the responsible user & due date of the requirements
+        # and advance the status of all appealed criteria to 'Verifying after appeal'
         when CertificationPathStatus::VERIFYING_AFTER_APPEAL
+          smc.requirement_data.update_all(user_id: nil, due_date: nil)
           scheme_mix_criteria.each do |smc|
             if smc.submitted_after_appeal?
-              # Unassign from certifier
-              smc.certifier = nil
               smc.verifying_after_appeal!
             end
           end
+        # If the certificate status is advanced to 'Acknowledging after appeal',
+        # clear the responsible certifier & due date of the criteria
+        when CertificationPathStatus::ACKNOWLEDGING_AFTER_APPEAL
+          scheme_mix_criteria.update_all(certifier: nil, due_date: nil)
       end
     end
   end
