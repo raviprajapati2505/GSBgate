@@ -359,19 +359,19 @@ class CertificationPath < ActiveRecord::Base
         # If the certificate status is advanced to 'Screening',
         # clear the responsible user & due date of the requirements
         when CertificationPathStatus::SCREENING
-          scheme_mix_criteria.update_all(certifier: nil, due_date: nil)
+          scheme_mix_criteria.update_all(certifier_id: nil, due_date: nil)
           scheme_mix_criteria.each do |smc|
             smc.requirement_data.update_all(user_id: nil, due_date: nil)
           end
         # If the certificate status is advanced to 'Submitting after screening',
         # clear the responsible certifier & due date of the criteria
         when CertificationPathStatus::SUBMITTING_AFTER_SCREENING
-          scheme_mix_criteria.update_all(certifier: nil, due_date: nil)
+          scheme_mix_criteria.update_all(certifier_id: nil, due_date: nil)
         # If the certificate status is advanced to 'Verifying',
         # clear the responsible user & due date of the requirements
         # and advance the status of all submitted criteria to 'Verifying'
         when CertificationPathStatus::VERIFYING
-          scheme_mix_criteria.update_all(certifier: nil, due_date: nil)
+          scheme_mix_criteria.update_all(certifier_id: nil, due_date: nil)
           scheme_mix_criteria.each do |smc|
             smc.requirement_data.update_all(user_id: nil, due_date: nil)
             if smc.submitted?
@@ -381,7 +381,7 @@ class CertificationPath < ActiveRecord::Base
         # If the certificate status is advanced to 'Submitting after appeal',
         # also advance the status of all appealed criteria to 'Submitting after appeal'
         when CertificationPathStatus::SUBMITTING_AFTER_APPEAL
-          scheme_mix_criteria.update_all(certifier: nil, due_date: nil)
+          scheme_mix_criteria.update_all(certifier_id: nil, due_date: nil)
           scheme_mix_criteria.each do |smc|
             if smc.appealed?
               smc.submitting_after_appeal!
@@ -394,7 +394,7 @@ class CertificationPath < ActiveRecord::Base
         # If the certificate status is advanced to 'Acknowledging',
         # clear the responsible certifier & due date of the criteria
         when CertificationPathStatus::ACKNOWLEDGING
-          scheme_mix_criteria.update_all(certifier: nil, due_date: nil)
+          scheme_mix_criteria.update_all(certifier_id: nil, due_date: nil)
         # If the certificate status is advanced to 'Verifying after appeal',
         # clear the responsible user & due date of the requirements
         # and advance the status of all appealed criteria to 'Verifying after appeal'
@@ -408,7 +408,7 @@ class CertificationPath < ActiveRecord::Base
         # If the certificate status is advanced to 'Acknowledging after appeal',
         # clear the responsible certifier & due date of the criteria
         when CertificationPathStatus::ACKNOWLEDGING_AFTER_APPEAL
-          scheme_mix_criteria.update_all(certifier: nil, due_date: nil)
+          scheme_mix_criteria.update_all(certifier_id: nil, due_date: nil)
       end
     end
   end
