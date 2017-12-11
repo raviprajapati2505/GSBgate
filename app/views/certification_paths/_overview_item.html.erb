@@ -35,7 +35,11 @@
     <% no_stage3_construction_for_overall = (certification_type == Certificate.certification_types[:construction_certificate] && project.completed_construction_stage3.empty?) %>
     <li class="list-group-item container <%= 'disabled' if (no_completed_letter_of_conformance_for_final_design || no_stage1_construction_for_stage2 || no_stage2_construction_for_stage3) %>">
         <div class="row">
-            <span class="col-md-4"><%= t(Certificate.certification_types.key(certification_type), scope: 'activerecord.attributes.certificate.certification_types') %></span>
+            <span class="col-md-4">
+              <%= t(Certificate.certification_types.key(certification_type), scope: 'activerecord.attributes.certificate.certification_types') %>
+              <br />
+              <%= t(Certificate.certification_types.key(certification_type), scope: 'activerecord.attributes.certificate.certification_types_subtitles') %>
+            </span>
             <% if no_completed_letter_of_conformance_for_final_design %>
                 <%= t('.warning_complete_loc') %>
             <% elsif no_stage1_construction_for_stage2 %>
