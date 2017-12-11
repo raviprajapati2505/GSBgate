@@ -33,6 +33,7 @@ module Taskable
   CERT_MNGR_SCREENING_APPROVE = 39
   CERT_MEM_REVIEW = 40
   CERT_MNGR_PUBLISH_REVIEW = 41
+  PROJ_MNGR_UPLOAD_CMP = 42
 
   included do
     has_many :tasks, as: :taskable, dependent: :destroy
@@ -55,6 +56,8 @@ module Taskable
         handle_created_projects_user
       when SchemeMixCriteriaDocument.name.demodulize
         handle_created_scheme_mix_criteria_document
+      when CgpCertificationPathDocument.name.demodulize
+        handle_created_cgp_certification_path_document
     end
   end
 
@@ -123,6 +126,14 @@ module Taskable
                   project: self.project,
                   certification_path: self)
     end
+    if self.certificate.construction_certificate_stage1?
+      # Create CGP project manager task to upload CMP (in case of construction stage 1)
+      Task.create(taskable: self,
+                  task_description_id: PROJ_MNGR_UPLOAD_CMP,
+                  application_role: ProjectsUser.roles[:cgp_project_manager],
+                  project: self.project,
+                  certification_path: self)
+    end
     # Create system admin task to advance the certification path status
     Task.create(taskable: self,
                task_description_id: SYS_ADMIN_REG_APPROVE,
@@ -142,6 +153,11 @@ module Taskable
                   project: self.scheme_mix_criterion.scheme_mix.certification_path.project,
                   certification_path: self.scheme_mix_criterion.scheme_mix.certification_path)
     end
+  end
+
+  def handle_created_cgp_certification_path_document
+    # Destroy CGP project managers upload CMP tasks
+    Task.delete_all(taskable: self.certification_path, task_description_id: PROJ_MNGR_UPLOAD_CMP)
   end
 
   def handle_updated_project
