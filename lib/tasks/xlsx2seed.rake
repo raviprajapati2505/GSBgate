@@ -70,22 +70,27 @@ namespace :xlsx2seed do
     current_row_index = first_row_index + 1
     while current_row_index <= last_row_index
 
-      scheme_criteria_id = sheet.cell(current_row_index, 'C')
+      certificate_name = sheet.cell(current_row_index, 'E')
 
-      current_col_index = 1
-      begin
-        requirement_text = sheet.cell(current_row_index, 10 + current_col_index)
-        if requirement_text.present?
-          requirement_identifier = writeCreateRequirementLine(seeds_file, requirement_text, current_col_index, scheme_criteria_id)
-          writeCreateSchemeCriteriaRequirementLine(seeds_file, requirement_identifier, scheme_criteria_id)
+      # Ignore Construction Management stage 2 & 3 to prevent duplicate requirements
+      unless ['Construction Certificate (sub- and superstructure stage:2)', 'Construction Certificate (finishing stage:3)'].include?(certificate_name)
+        scheme_criteria_id = sheet.cell(current_row_index, 'C')
 
-          current_col_index += 1
+        current_col_index = 1
+        begin
+          requirement_text = sheet.cell(current_row_index, 10 + current_col_index)
+          if requirement_text.present?
+            requirement_identifier = writeCreateRequirementLine(seeds_file, requirement_text, current_col_index, scheme_criteria_id)
+            writeCreateSchemeCriteriaRequirementLine(seeds_file, requirement_identifier, scheme_criteria_id)
+
+            current_col_index += 1
+          end
+        end while requirement_text.present?
+
+        if current_col_index == 1
+          missing_requirements_count += 1
+          Rails.logger.warn "No requirements found for row #{current_row_index}!"
         end
-      end while requirement_text.present?
-
-      if current_col_index == 1
-        missing_requirements_count += 1
-        Rails.logger.warn "No requirements found for row #{current_row_index}!"
       end
 
       current_row_index += 1
