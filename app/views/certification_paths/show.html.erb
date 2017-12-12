@@ -37,7 +37,6 @@
                             </td>
                         </tr>
                     <% end %>
-                    <% unless @certification_path.certificate.construction_type? %>
                     <tr>
                         <th>
                             Applied for PCR
@@ -59,7 +58,6 @@
                             <%= btn_link_to(edit_max_review_count_project_certification_path_path(@project, @certification_path), remote: true, text: 'Set maximum', class: 'pull-right') %>
                           </td>
                         </tr>
-                    <% end %>
                     <% end %>
                     <% unless @certification_path.certificate.construction_certificate? %>
                     <% if can?(:download_archive, @certification_path) %>
