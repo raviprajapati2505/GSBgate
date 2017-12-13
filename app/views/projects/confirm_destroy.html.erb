@@ -12,7 +12,7 @@
           <%= bootstrap_form_for(@project, method: :delete) do |f| %>
               <div class="form-group">
                 <%= label_tag :confirm_deletion, 'To confirm the deletion, please type the word "delete" in the textbox below and click on the button.', class: 'control-label' %>
-                <%= text_field_tag :confirm_deletion, '', class: 'form-control', autocomplete: false %>
+                <%= text_field_tag :confirm_deletion, '', class: 'form-control', autocomplete: 'off' %>
               </div>
               <%= btn_tag({id: 'delete-button', icon: 'trash', text: 'Delete the project', style: 'danger', disabled: true}) %>
           <% end %>
