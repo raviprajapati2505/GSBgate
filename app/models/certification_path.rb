@@ -165,7 +165,11 @@ class CertificationPath < ActiveRecord::Base
           return CertificationPathStatus::NOT_CERTIFIED
         end
       when CertificationPathStatus::APPROVING_BY_MANAGEMENT
-        return CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT
+        if self.certificate.construction_type?
+          return CertificationPathStatus::CERTIFIED
+        else
+          return CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT
+        end
       when CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT
         return CertificationPathStatus::CERTIFIED
       else
