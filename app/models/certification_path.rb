@@ -399,8 +399,8 @@ class CertificationPath < ActiveRecord::Base
         # clear the responsible user & due date of the requirements
         # and advance the status of all appealed criteria to 'Verifying after appeal'
         when CertificationPathStatus::VERIFYING_AFTER_APPEAL
-          smc.requirement_data.update_all(user_id: nil, due_date: nil)
           scheme_mix_criteria.each do |smc|
+            smc.requirement_data.update_all(user_id: nil, due_date: nil)
             if smc.submitted_after_appeal?
               smc.verifying_after_appeal!
             end
