@@ -165,11 +165,6 @@ class CertificationPathsController < AuthenticatedController
       todos = @certification_path.todo_before_status_advance
 
       if todos.blank?
-        # Force NO appeal for construction certificates
-        if certification_path_params.has_key?(:appealed) && @certification_path.certificate.construction_type?
-          certification_path_params[:appealed] = false
-        end
-
         # Check if there's an appeal
         @certification_path.appealed = certification_path_params.has_key?(:appealed)
 
