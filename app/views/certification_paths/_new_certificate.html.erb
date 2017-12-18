@@ -30,12 +30,14 @@
                 <% end %>
 
                 <!-- Custom select for version, so we can determine the certificate -->
-                <%= f.static_control label: 'GSAS Version' do %>
-                    <% if Certificate.certification_types[@certification_type] == Certificate.certification_types[:final_design_certificate] %>
-                        <%= @certification_path.certificate.gsas_version %> year
-                    <% else %>
-                        <%= select_tag(:gsas_version, options_for_select(@gsas_versions, @gsas_version), {:class => 'form-control'}) %>
-                    <% end %>
+                <% unless @certification_path.certificate.construction_certificate_stage2? || @certification_path.certificate.construction_certificate_stage3? %>
+                  <%= f.static_control label: 'GSAS Version' do %>
+                      <% if Certificate.certification_types[@certification_type] == Certificate.certification_types[:final_design_certificate] %>
+                          <%= @certification_path.certificate.gsas_version %> year
+                      <% else %>
+                          <%= select_tag(:gsas_version, options_for_select(@gsas_versions, @gsas_version), {:class => 'form-control'}) %>
+                      <% end %>
+                  <% end %>
                 <% end %>
                 <!-- For debugging, to visualize the resulting certificate -->
                 <!--%= f.collection_check_boxes :certificate_id, @certificates, :id, :name %-->

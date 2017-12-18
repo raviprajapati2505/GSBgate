@@ -45,6 +45,8 @@ class CertificationPathsController < AuthenticatedController
     # Note: FinalDesign reuses the version from LetterOfConformance !!
     if Certificate.certification_types[@certification_type] == Certificate.certification_types[:final_design_certificate]
       @gsas_version = @certification_path.project.completed_letter_of_conformances.first.certificate.gsas_version
+    elsif (Certificate.certification_types[@certification_type] == Certificate.certification_types[:construction_certificate_stage2]) || (Certificate.certification_types[@certification_type] == Certificate.certification_types[:construction_certificate_stage3])
+      @gsas_version = @certification_path.project.completed_construction_stage1.first.certificate.gsas_version
     else
       #  - The gsas_version can be passed as post data, but we also provide a default based on the available data
       #  TODO: verify 'gsas_version' is valid
