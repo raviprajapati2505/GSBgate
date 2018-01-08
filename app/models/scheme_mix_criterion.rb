@@ -20,11 +20,11 @@ class SchemeMixCriterion < ActiveRecord::Base
 
   validates :status, inclusion: SchemeMixCriterion.statuses.keys
 
-  validates :targeted_score, numericality: {only_integer: false, greater_than_or_equal_to: -1, less_than_or_equal_to: 3}, presence: true, unless: 'scheme_mix.certification_path.certificate.construction_issue_1?'
+  validates :targeted_score, numericality: {only_integer: false, greater_than_or_equal_to: -1, less_than_or_equal_to: 3}, presence: true, unless: 'scheme_mix.certification_path.certificate.construction_issue_1? || scheme_mix.certification_path.certificate.construction_certificate?'
   validates :targeted_score, numericality: {only_integer: false, greater_than_or_equal_to: 0, less_than_or_equal_to: 100}, presence: true, if: 'scheme_mix.certification_path.certificate.construction_issue_1?'
-  validates :submitted_score, numericality: {only_integer: false, greater_than_or_equal_to: -1, less_than_or_equal_to: 3}, allow_nil: true, unless: 'scheme_mix.certification_path.certificate.construction_issue_1?'
+  validates :submitted_score, numericality: {only_integer: false, greater_than_or_equal_to: -1, less_than_or_equal_to: 3}, allow_nil: true, unless: 'scheme_mix.certification_path.certificate.construction_issue_1? || scheme_mix.certification_path.certificate.construction_certificate?'
   validates :submitted_score, numericality: {only_integer: false, greater_than_or_equal_to: 0, less_than_or_equal_to: 100}, allow_nil: true, if: 'scheme_mix.certification_path.certificate.construction_issue_1?'
-  validates :achieved_score, numericality: {only_integer: false, greater_than_or_equal_to: -1, less_than_or_equal_to: 3}, allow_nil: true, unless: 'scheme_mix.certification_path.certificate.construction_issue_1?'
+  validates :achieved_score, numericality: {only_integer: false, greater_than_or_equal_to: -1, less_than_or_equal_to: 3}, allow_nil: true, unless: 'scheme_mix.certification_path.certificate.construction_issue_1? || scheme_mix.certification_path.certificate.construction_certificate?'
   validates :achieved_score, numericality: {only_integer: false, greater_than_or_equal_to: 0, less_than_or_equal_to: 100}, allow_nil: true, if: 'scheme_mix.certification_path.certificate.construction_issue_1?'
 
   scope :assigned_to_user, ->(user) {
