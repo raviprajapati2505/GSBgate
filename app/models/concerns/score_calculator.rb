@@ -200,18 +200,18 @@ module ScoreCalculator
       maximum_score = 'scheme_criteria_score.maximum_score::float'
       criteria_weight = 'scheme_criteria_score.weight'
       score_dependent_incentive_weight = "(CASE #{score} WHEN -1 THEN scheme_criteria_score.incentive_weight_minus_1 WHEN 0 THEN scheme_criteria_score.incentive_weight_0 WHEN 1 THEN scheme_criteria_score.incentive_weight_1 WHEN 2 THEN scheme_criteria_score.incentive_weight_2  WHEN 3 THEN scheme_criteria_score.incentive_weight_3 ELSE 0 END)"
-      incentive_weight = "(CASE (certificates_score.gsas_version = '2.1 issue 3') WHEN true THEN (CASE scheme_mix_criteria_score.incentive_scored WHEN true THEN scheme_criteria_score.incentive_weight ELSE 0 END) ELSE #{score_dependent_incentive_weight} END)"
+      incentive_weight = "(CASE (certificates_score.gsas_version = 'v2.1 Issue 3.0') WHEN true THEN (CASE scheme_mix_criteria_score.incentive_scored WHEN true THEN scheme_criteria_score.incentive_weight ELSE 0 END) ELSE #{score_dependent_incentive_weight} END)"
       scheme_weight = 'scheme_mixes_score.weight'
       if point_type == :criteria_points
         score_template = "SUM(#{score})"
       elsif point_type == :scheme_points
         # score_template = "SUM((#{score} / #{maximum_score}) * ((3.0 * (#{criteria_weight})) / 100.0) + (3.0 * #{incentive_weight} / 100.0))"
         base_3_score = "(#{score} / #{maximum_score}) * ((3.0 * (#{criteria_weight})) / 100.0) + (3.0 * #{incentive_weight} / 100.0)"
-        score_template = "SUM( CASE (certificates_score.gsas_version = '2.1 issue 1') WHEN true THEN (#{score}) ELSE (#{base_3_score}) END)"
+        score_template = "SUM( CASE (certificates_score.gsas_version = 'v2.1 Issue 1.0') WHEN true THEN (#{score}) ELSE (#{base_3_score}) END)"
       elsif point_type == :certificate_points
         # score_template = "SUM(((#{score} / #{maximum_score}) * ((3.0 * (#{criteria_weight})) / 100.0) + (3.0 * #{incentive_weight} / 100.0)) * (#{scheme_weight} / 100.0))"
         base_3_score = "((#{score} / #{maximum_score}) * ((3.0 * (#{criteria_weight})) / 100.0) + (3.0 * #{incentive_weight} / 100.0)) * (#{scheme_weight} / 100.0)"
-        score_template = "SUM( CASE (certificates_score.gsas_version = '2.1 issue 1') WHEN true THEN (#{score} * (#{scheme_weight} / 100.0)) ELSE (#{base_3_score}) END)"
+        score_template = "SUM( CASE (certificates_score.gsas_version = 'v2.1 Issue 1.0') WHEN true THEN (#{score} * (#{scheme_weight} / 100.0)) ELSE (#{base_3_score}) END)"
       else
         raise('Unexpected point type: ' + point_type.to_s)
       end

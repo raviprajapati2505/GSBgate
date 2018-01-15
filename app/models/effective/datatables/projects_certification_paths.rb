@@ -135,7 +135,7 @@ module Effective
                    .select('certification_paths.started_at as certification_path_started_at')
                    .select('certification_paths.certified_at as certification_path_certified_at')
                    .select('certification_paths.expires_at as certification_path_expires_at')
-                   .select("CONCAT(certificates.name, ' ', certificates.gsas_version) as certificate_name")
+                   .select("certificates.name as certificate_name")
                    .select('certificates.gsas_version as certificate_gsas_version')
                    .select('certification_path_statuses.name as certification_path_status_name')
                    .select('CASE WHEN certification_path_statuses.id IS NULL THEN false WHEN certification_path_statuses.id = 15 THEN false WHEN certification_path_statuses.id = 16 THEN false ELSE true END as certification_path_status_is_active')

@@ -222,7 +222,7 @@ class CertificationPathsController < AuthenticatedController
                       .where(project_id: @project.id)
                       .where('certificates.name like ?', '%' + params[:q] + '%')
                       .count
-    items = CertificationPath.select('certification_paths.id as id, CONCAT(certificates.name, \' \', certificates.gsas_version) as text, certification_paths.certification_path_status_id')
+    items = CertificationPath.select('certification_paths.id as id, certificates.name as text, certification_paths.certification_path_status_id')
                 .joins(:certificate)
                 .where(project_id: @project.id)
                 .where('certificates.name like ?', '%' + params[:q] + '%')

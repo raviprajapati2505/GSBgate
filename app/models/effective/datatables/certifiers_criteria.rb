@@ -77,7 +77,7 @@ module Effective
                    .select('certification_paths.id as certification_path_id')
                    .select('certification_paths.certificate_id as certificate_id')
                    .select('certification_paths.certification_path_status_id as certification_path_certification_path_status_id')
-                   .select("CONCAT(certificates.name, ' ', certificates.gsas_version) as certificate_name")
+                   .select("certificates.name as certificate_name")
                    .select('certification_path_statuses.name as certification_path_status_name')
                    .select('CASE WHEN certification_path_statuses.id IS NULL THEN false WHEN certification_path_statuses.id = 15 THEN false WHEN certification_path_statuses.id = 16 THEN false ELSE true END as certification_path_status_is_active')
                    .select('scheme_mixes.id as scheme_mix_id')

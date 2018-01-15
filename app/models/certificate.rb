@@ -20,11 +20,11 @@ class Certificate < ActiveRecord::Base
   }
 
   def construction_issue_1?
-    construction_type? && gsas_version == '2.1 issue 1'
+    construction_type? && gsas_version == 'v2.1 Issue 1.0'
   end
 
   def construction_issue_3?
-    construction_type? && gsas_version == '2.1 issue 3'
+    construction_type? && gsas_version == 'v2.1 Issue 3.0'
   end
 
   # def letter_of_conformance?
@@ -60,6 +60,6 @@ class Certificate < ActiveRecord::Base
   # }
 
   def full_name
-    self.name + ' ' + self.gsas_version
+    self.name
   end
 end
