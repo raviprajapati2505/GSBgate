@@ -15,10 +15,10 @@
                 <td><b>Development Type</b></td>
                 <td><%= @certification_path.development_type.name %></td>
             </tr>
-            <% unless @certification_path.duration == 0 %>
+            <% unless @certification_path.expires_at.nil? %>
             <tr>
-                <td><b>Duration</b></td>
-                <td><%= pluralize(@certification_path.duration, 'year') %></td>
+                <td><b>Expires at</b></td>
+                <td><%= localize(@certification_path.expires_at) %></td>
             </tr>
             <% end %>
             <tr>

@@ -37,7 +37,6 @@ class CertificationPath < ActiveRecord::Base
   validates :max_review_count, numericality: { greater_than: 0 }
   # validates_inclusion_of :development_type, in: CertificationPath.development_types.keys
   validate :total_weight_is_equal_to_100_percent
-  validate :certificate_duration
   validates :signed_certificate_file, file_size: {maximum: MAXIMUM_DOCUMENT_FILE_SIZE.megabytes.to_i }
 
   after_initialize :init
@@ -115,19 +114,6 @@ class CertificationPath < ActiveRecord::Base
   def total_weight_is_equal_to_100_percent
     if total_weight != 100
       errors.add(:scheme_mixes, 'Scheme weights should total 100%.')
-    end
-  end
-
-  def certificate_duration
-    if certificate.letter_of_conformance?
-      if duration != 1
-        errors.add(:duration, t('models.certification_path.certificate_duration.error_duration_not_one'))
-      end
-    elsif certificate.final_design_certificate?
-      if not [2, 3, 4].include? duration
-        errors.add(:duration, t('models.certification_path.certificate_duration.error_duration_not_two_three_four'))
-      end
-    elsif certificate.construction_type? || certificate.operations_certificate?
     end
   end
 

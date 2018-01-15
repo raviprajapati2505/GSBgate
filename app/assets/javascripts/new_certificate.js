@@ -1,10 +1,6 @@
 //# sourceURL=new_certificate.js
 $(function () {
     // Initialize the select2 boxes
-    $('#certification_path_duration').select2({
-        placeholder: "Select the duration",
-        minimumResultsForSearch: -1,
-    });
     $('#gsas_version').select2({
         placeholder: "Select the version",
         minimumResultsForSearch: -1,
@@ -53,7 +49,7 @@ $(function () {
         // No validation needed, for Final Design Certificate
         var certification_type = $('#certification_path_certification_type').val();
         if (certification_type == 20){
-            valid = ("" != $('#certification_path_duration').val());
+            valid = ("" != $('#certification_path_expires_at').val());
             if(!valid){
                 $('div.duration-group').addClass('has-error');
             }
@@ -135,7 +131,7 @@ $(function () {
         validate();
     });
 
-    $('#certification_path_duration').on("change", function (e) {
+    $('#certification_path_expires_at').on("change", function (e) {
         validate();
     });
 

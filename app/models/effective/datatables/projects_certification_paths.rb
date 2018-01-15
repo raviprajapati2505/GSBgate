@@ -60,7 +60,9 @@ module Effective
         table_column 'certification_path_certified_at', column: 'certification_paths.certified_at', label: t('models.effective.datatables.projects_certification_paths.certification_path_certified_at.label'), type: :datetime, visible: false, filter: {type: :select, values: Proc.new { CertificationPath.pluck_date_field_by_year_month_day(:certified_at, :desc) }} do |rec|
           localize(rec.certification_path_certified_at.in_time_zone) unless rec.certification_path_certified_at.nil?
         end
-        table_column 'certification_path_duration', column: 'certification_paths.duration', label: t('models.effective.datatables.projects_certification_paths.certification_path_duration.label'), type: :integer, visible: false
+        table_column 'certification_path_expires_at', column: 'certification_paths.expires_at', label: t('models.effective.datatables.projects_certification_paths.certification_path_expires_at.label'), type: :timestamp, visible: false, filter: {type: :select, values: Proc.new { CertificationPath.pluck_date_field_by_year_month_day(:expires_at, :desc) }} do |rec|
+          localize(rec.certification_path_expires_at.in_time_zone) unless rec.certification_path_expires_at.nil?
+        end
         # Note: internally we use the status id, so sorting is done by id and not the name !
         table_column 'certification_path_certification_path_status_id', column: 'certification_paths.certification_path_status_id', label: t('models.effective.datatables.projects_certification_paths.certification_path_certification_path_status_id.label'), filter: {type: :select, values: Proc.new { CertificationPathStatus.all.map { |status| [status.name, status.id] } }} do |rec|
           rec.certification_path_status_name
@@ -132,7 +134,7 @@ module Effective
                    .select('certification_paths.created_at as certification_path_created_at')
                    .select('certification_paths.started_at as certification_path_started_at')
                    .select('certification_paths.certified_at as certification_path_certified_at')
-                   .select('certification_paths.duration as certification_path_duration')
+                   .select('certification_paths.expires_at as certification_path_expires_at')
                    .select("CONCAT(certificates.name, ' ', certificates.gsas_version) as certificate_name")
                    .select('certificates.gsas_version as certificate_gsas_version')
                    .select('certification_path_statuses.name as certification_path_status_name')

@@ -21,11 +21,15 @@
                 <!-- Duration (if applicable)-->
                 <% if ((Certificate.certification_types[@certification_type] == Certificate.certification_types[:letter_of_conformance]) or (Certificate.certification_types[@certification_type] == Certificate.certification_types[:final_design_certificate])) %>
                     <% if Certificate.certification_types[@certification_type] == Certificate.certification_types[:letter_of_conformance] %>
-                        <%= f.static_control label: 'Duration' do %>
-                            <%= @certification_path.duration %> year
+                        <%= f.static_control label: 'Expires' do %>
+                            <%= localize(@certification_path.expires_at) %>
                         <% end %>
                     <% elsif Certificate.certification_types[@certification_type] == Certificate.certification_types[:final_design_certificate] %>
-                        <%= f.select :duration, @durations, {wrapper_class: 'form-control'} %>
+                        <%= f.form_group :expires_at, label: {text: 'Duration'} do %>
+                          <%= f.radio_button :expires_at, 2, label: '2 years from now', checked: true %>
+                          <%= f.radio_button :expires_at, 3, label: '3 years from now' %>
+                          <%= f.radio_button :expires_at, 4, label: '4 years from now' %>
+                        <% end %>
                     <% end %>
                 <% end %>
 
@@ -33,7 +37,7 @@
                 <% unless @certification_path.certificate.construction_certificate_stage2? || @certification_path.certificate.construction_certificate_stage3? %>
                   <%= f.static_control label: 'GSAS Version' do %>
                       <% if Certificate.certification_types[@certification_type] == Certificate.certification_types[:final_design_certificate] %>
-                          <%= @certification_path.certificate.gsas_version %> year
+                          <%= @certification_path.certificate.gsas_version %>
                       <% else %>
                           <%= select_tag(:gsas_version, options_for_select(@gsas_versions, @gsas_version), {:class => 'form-control'}) %>
                       <% end %>

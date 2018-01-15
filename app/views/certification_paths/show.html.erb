@@ -21,8 +21,8 @@
                     <% end %>
                     <% if @certification_path.certificate.letter_of_conformance? || @certification_path.certificate.final_design_certificate? %>
                         <tr>
-                            <th>Duration</th>
-                            <td><%= pluralize(@certification_path.duration, 'year') %></td>
+                            <th>Expires</th>
+                            <td><%= localize(@certification_path.expires_at) %></td>
                         </tr>
                     <% end %>
                     <% if @certification_path.is_activated? %>

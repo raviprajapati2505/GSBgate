@@ -30,10 +30,10 @@ namespace :gsas do
     Rails.logger.info "Processed #{ActionController::Base.helpers.pluralize(user_count, 'user')}."
   end
 
-  desc 'Create a task for the system admin for every certification path with maximum duration exceeded'
+  desc 'Create a task for the system admin for every expired certification path'
   task :create_duration_task, [] => :environment do |t, args|
 
-    Rails.logger.info 'Start creating tasks for certification paths with maximum duration exceeded...'
+    Rails.logger.info 'Start creating tasks for expired certification paths...'
 
     backgroundExecution = BackgroundExecution.find_by(name: BackgroundExecution::DURATION_TASK)
     if backgroundExecution.nil?
@@ -52,9 +52,9 @@ namespace :gsas do
       certification_paths = CertificationPath.joins(:certificate)
                                 .where(certificates: {certificate_type: Certificate.certification_types[:design_type]})
                                 .where.not(certification_path_status_id: [CertificationPathStatus::CERTIFIED, CertificationPathStatus::NOT_CERTIFIED])
-                                .where('(started_at + interval \'1\' year * duration) < ?', DateTime.now)
+                                .where('expires_at < ?', DateTime.now)
       unless from_datetime.nil?
-        certification_paths = certification_paths.where('(started_at + interval \'1\' year * duration) >= ?', from_datetime)
+        certification_paths = certification_paths.where('expires_at >= ?', from_datetime)
       end
       certification_paths = certification_paths.page(page).per(PAGE_SIZE)
       certification_paths.each do |certification_path|
@@ -68,7 +68,7 @@ namespace :gsas do
       certification_path_count += certification_paths.size
     end while certification_paths.size == PAGE_SIZE
 
-    Rails.logger.info "Found #{ActionController::Base.helpers.pluralize(certification_path_count, 'certification path')} with maximum duration exceeded."
+    Rails.logger.info "Found #{ActionController::Base.helpers.pluralize(certification_path_count, 'certification path')} which are expired."
   end
 
   desc 'Create a task for the CGP project manager or certification manager for every overdue task'

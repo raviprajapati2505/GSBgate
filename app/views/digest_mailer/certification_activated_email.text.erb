@@ -6,7 +6,7 @@ Dear Ms/Mr
 The <%= @certification_path.name %> certification for project with name <%= @certification_path.project.name %> is activated.
 
 Development Type : <%= @certification_path.development_type.name %>
-<% unless @certification_path.duration == 0 %>Duration : <%= pluralize(@certification_path.duration, 'year') %><% end %>
+<% unless @certification_path.expires_at.nil? %>Expires at : <%= localize(@certification_path.expires_at) %><% end %>
 Schemes :
 <% @certification_path.scheme_mixes.each do |scheme_mix| %>
 <%= scheme_mix.weight %>% <%= scheme_mix.full_name %>

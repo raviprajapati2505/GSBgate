@@ -75,18 +75,16 @@ class CertificationPathsController < AuthenticatedController
       @certification_path.pcr_track = false
     end
 
-    # Duration
+    # Expiry
     if @certification_path.certificate.letter_of_conformance?
-      @certification_path.duration = 1
+      @certification_path.expires_at = 1.year.from_now
     elsif @certification_path.certificate.final_design_certificate?
-      @durations = [['2 years', 2], ['3 years', 3], ['4 years', 4]]
-      if params.has_key?(:certification_path) && params[:certification_path].has_key?(:duration)
-        @certification_path.duration = params[:certification_path][:duration]
+      @durations = [2, 3, 4]
+      if params.has_key?(:certification_path) && params[:certification_path].has_key?(:expires_at)
+        @certification_path.expires_at = params[:certification_path][:expires_at].to_i.years.from_now
       else
-        @certification_path.duration = @durations.first[1]
+        @certification_path.expires_at = @durations.first.years.from_now
       end
-    else
-      @certification_path.duration = 0
     end
 
     # Development Type
@@ -496,7 +494,7 @@ class CertificationPathsController < AuthenticatedController
   # end
 
   def certification_path_params
-    params.require(:certification_path).permit(:project_id, :certificate_id, :pcr_track, :duration, :started_at, :development_type, :appealed, :audit_log_user_comment, :audit_log_visibility)
+    params.require(:certification_path).permit(:project_id, :certificate_id, :pcr_track, :expires_at, :started_at, :development_type, :appealed, :audit_log_user_comment, :audit_log_visibility)
   end
 
   def filepath_for_report(report_name)

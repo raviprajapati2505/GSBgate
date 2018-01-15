@@ -167,10 +167,6 @@ en:
         scheme:
           name:
             update_html: Scheme <strong>%{old_name}</strong> was renamed to <strong>%{new_name}</strong>.
-    certification_path:
-      certificate_duration:
-        error_duration_not_one: Duration for Letter of Conformance should be 1 year.
-        error_duration_not_two_three_four: Duration for Final Design Certification should be 2, 3 or 4 years.
     effective:
       datatables:
         certification_paths:
@@ -200,8 +196,8 @@ en:
             label: Certification Started At
           certification_path_certified_at:
             label: Certification Certified At
-          certification_path_duration:
-            label: Certification Duration
+          certification_path_expires_at:
+            label: Certification Expires At
           certification_path_certification_path_status_id:
             label: Certification Status
           certification_path_status_is_active:

@@ -81,7 +81,7 @@ module Effective
         table_column :created_at, visible: false, filter: {type: :select, values: Proc.new { CertificationPath.pluck_date_field_by_year_month_day(:created_at, :desc) }}
         table_column :started_at, visible: false, filter: {type: :select, values: Proc.new { CertificationPath.pluck_date_field_by_year_month_day(:started_at, :desc) }}
         table_column :certified_at, visible: false, filter: {type: :select, values: Proc.new { CertificationPath.pluck_date_field_by_year_month_day(:certified_at, :desc) }}
-        table_column :duration, visible: false
+        table_column :expires_at, visible: false, filter: {type: :select, values: Proc.new { CertificationPath.pluck_date_field_by_year_month_day(:expires_at, :desc) }}
 
         # TODO: when a score has been achieved, cache its value in the certification_path, so we can sort/filter it serverside
         # array_column :score, visible: false, sortable: false, filter: false do |certification_path|
