@@ -67,8 +67,8 @@
                         <%= select_tag 'status', options_for_select(RequirementDatum.statuses.keys.map { |k| [k.humanize, k] }), {class: 'form-control'} %>
                     </div>
                     <div class="hr-line-dashed"></div>
-                    <%= btn_save() %>
-                    <%= btn_save(value: 'save-and-continue', text: 'Save and continue') %>
+                    <%= btn_save(text: 'Save and continue') %>
+                    <%= btn_save(value: 'save-and-continue') %>
                     <%= btn_cancel_to(project_certification_path_path) %>
                 </div>
             </div>
