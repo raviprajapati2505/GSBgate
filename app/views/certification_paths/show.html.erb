@@ -139,7 +139,6 @@
         </div>
         <% end %>
 
-      <% unless @certification_path.certificate.construction_certificate? %>
         <div class="ibox float-e-margins">
             <div class="ibox-title">
                 <%= render 'timeline_legend' %>
@@ -165,7 +164,6 @@
                 <% end %>
             </div>
         </div>
-      <% end %>
     </div>
 
   <% unless @certification_path.certificate.construction_certificate? %>

@@ -134,12 +134,21 @@ module Taskable
                   project: self.project,
                   certification_path: self)
     end
-    # Create system admin task to advance the certification path status
-    Task.create(taskable: self,
-               task_description_id: SYS_ADMIN_REG_APPROVE,
-               application_role: User.roles[:gsas_trust_admin],
-               project: self.project,
-               certification_path: self)
+    unless self.certificate.construction_certificate?
+      # Create system admin task to advance the certification path status
+      Task.create(taskable: self,
+                 task_description_id: SYS_ADMIN_REG_APPROVE,
+                 application_role: User.roles[:gsas_trust_admin],
+                 project: self.project,
+                 certification_path: self)
+    else
+      # Create GORD top manager task to approve
+      Task.create(taskable: self,
+                  task_description_id: GSAS_TRUST_TOP_MNGR_APPROVE,
+                  application_role: User.roles[:gsas_trust_top_manager],
+                  project: self.project,
+                  certification_path: self)
+    end
     # Destroy project manager tasks to apply for a certification path
     Task.delete_all(taskable: self.project, task_description_id: PROJ_MNGR_APPLY)
   end

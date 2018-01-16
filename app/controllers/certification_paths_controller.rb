@@ -188,9 +188,9 @@ class CertificationPathsController < AuthenticatedController
           certificate = Certificate.find_by(certification_type: Certificate.certification_types[:construction_certificate], display_weight: 39, gsas_version: @certification_path.certificate.gsas_version)
           # Only 1 pseudo development type linked to this certificate
           development_type = certificate.development_types.first
-          # Only set certificate path to certified if all construction stages are certified
+          # Only set certificate path to approving_by_top_management if all construction stages are certified
           if @project.are_all_construction_stages_certified?
-            status = CertificationPathStatus::CERTIFIED
+            status = CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT
           else
             status = CertificationPathStatus::NOT_CERTIFIED
           end
