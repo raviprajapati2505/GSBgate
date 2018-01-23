@@ -7,6 +7,16 @@
         <%= bootstrap_form_for(@scheme_criterion, url: scheme_criterion_path(@scheme_criterion), method: 'put') do |f| %>
             <div class="modal-body">
                 <%= f.text_field :name %>
+              <div class="container">
+              <div class="row">
+                <div class="<% unless @scheme_criterion.scores_b.nil? %>col-md-6<% end %>">
+              <div class="panel panel-default">
+                <% unless @scheme_criterion.scores_b.nil? %>
+                <div class="panel-heading">
+                  <h3 class="panel-title">Calculated Scores</h3>
+                </div>
+                <% end %>
+                <div class="panel-body">
                 <%= f.number_field :weight, in: 0.00..100.00, step: 0.01, append: '%' %>
               <% unless @scheme_criterion.scheme_category.nil? \
                    || @scheme_criterion.scheme_category.scheme.nil? \
@@ -41,6 +51,57 @@
                   <%= f.label :incentive_weight_3, 'Incentive weight for score 3' %>
                   <%= f.number_field :incentive_weight_3, in: 0.00..100.00, step: 0.01, hide_label: true, append: '%' %>
               <% end %>
+                </div>
+            </div>
+                </div>
+            <% unless @scheme_criterion.scores_b.nil? %>
+              <div class="col-md-6">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">Measured scores</h3>
+              </div>
+              <div class="panel-body">
+              <%= f.label :weight_b, 'Weight B' %>
+              <%= f.number_field :weight_b, in: 0.00..100.00, step: 0.01, hide_label: true, append: '%' %>
+              <% unless @scheme_criterion.scheme_category.nil? \
+                   || @scheme_criterion.scheme_category.scheme.nil? \
+                   || @scheme_criterion.scheme_category.scheme.development_types.nil? \
+                   || @scheme_criterion.scheme_category.scheme.development_types.first.nil? \
+                   || @scheme_criterion.scheme_category.scheme.development_types.first.certificate.nil? %>
+                <% unless @scheme_criterion.scheme_category.scheme.development_types.first.certificate.construction_issue_1? %>
+                  <%= f.label :scores_b, ('Scores B' + tooltip('- For windows: Hold down the control (ctrl) button to select multiple options<br />- For Mac: Hold down the command button to select multiple options', placement: 'right')).html_safe %>
+                  <%= f.select :scores_b, options_for_select([['-1', -1.0],['0', 0.0],['1', 1.0],['2', 2.0],['3', 3.0]], @scheme_criterion.scores_b.map {|s| s[1]}), {hide_label: true}, {:multiple => true} %>
+                  <%= f.label :incentive_weight_minus_1_b, 'Incentive weight B for score -1' %>
+                  <%= f.number_field :incentive_weight_minus_1_b, in: 0.00..100.00, step: 0.01, hide_label: true, append: '%' %>
+                  <%= f.label :incentive_weight_0_b, 'Incentive weight B for score 0' %>
+                  <%= f.number_field :incentive_weight_0_b, in: 0.00..100.00, step: 0.01, hide_label: true, append: '%' %>
+                  <%= f.label :incentive_weight_1_b, 'Incentive weight B for score 1' %>
+                  <%= f.number_field :incentive_weight_1_b, in: 0.00..100.00, step: 0.01, hide_label: true, append: '%' %>
+                  <%= f.label :incentive_weight_2_b, 'Incentive weight B for score 2' %>
+                  <%= f.number_field :incentive_weight_2_b, in: 0.00..100.00, step: 0.01, hide_label: true, append: '%' %>
+                  <%= f.label :incentive_weight_3_b, 'Incentive weight B for score 3' %>
+                  <%= f.number_field :incentive_weight_3_b, in: 0.00..100.00, step: 0.01, hide_label: true, append: '%' %>
+                <% end %>
+              <% else %>
+                <%= f.label :scores_b, ('Scores B' + tooltip('- For windows: Hold down the control (ctrl) button to select multiple options<br />- For Mac: Hold down the command button to select multiple options', placement: 'right')).html_safe %>
+                <%= f.select :scores_b, options_for_select([['-1', -1.0],['0', 0.0],['1', 1.0],['2', 2.0],['3', 3.0]], @scheme_criterion.scores_b.map {|s| s[1]}), {hide_label: true}, {:multiple => true} %>
+                <%= f.label :incentive_weight_minus_1_b, 'Incentive weight B for score -1' %>
+                <%= f.number_field :incentive_weight_minus_1_b, in: 0.00..100.00, step: 0.01, hide_label: true, append: '%' %>
+                <%= f.label :incentive_weight_0_b, 'Incentive weight B for score 0' %>
+                <%= f.number_field :incentive_weight_0_b, in: 0.00..100.00, step: 0.01, hide_label: true, append: '%' %>
+                <%= f.label :incentive_weight_1_b, 'Incentive weight B for score 1' %>
+                <%= f.number_field :incentive_weight_1_b, in: 0.00..100.00, step: 0.01, hide_label: true, append: '%' %>
+                <%= f.label :incentive_weight_2_b, 'Incentive weight B for score 2' %>
+                <%= f.number_field :incentive_weight_2_b, in: 0.00..100.00, step: 0.01, hide_label: true, append: '%' %>
+                <%= f.label :incentive_weight_3_b, 'Incentive weight B for score 3' %>
+                <%= f.number_field :incentive_weight_3_b, in: 0.00..100.00, step: 0.01, hide_label: true, append: '%' %>
+              <% end %>
+              </div>
+            </div>
+              </div>
+            <% end %>
+            </div>
+            </div>
             </div>
             <div class="modal-footer">
                 <%= btn_save(text: 'Save') %>

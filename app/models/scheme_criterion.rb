@@ -43,56 +43,8 @@ class SchemeCriterion < ActiveRecord::Base
     total_weight
   end
 
-  def has_incentive_weight_a?
-    incentive_weight_minus_1 + incentive_weight_0 + incentive_weight_1 + incentive_weight_2 + incentive_weight_3 > 0
-  end
-
-  def has_incentive_weight_b?
-    incentive_weight_minus_1_b + incentive_weight_0_b + incentive_weight_1_b + incentive_weight_2_b + incentive_weight_3_b > 0
-  end
-
-  def has_incentive_weight?
-    has_incentive_weight_minus_1? || has_incentive_weight_0? || has_incentive_weight_1? || has_incentive_weight_2? || has_incentive_weight_3?
-  end
-
-  def has_incentive_weight_minus_1?
-    total_incentive_weight_minus_1 = 0
-    INCENTIVE_MINUS_1_ATTRIBUTES.each do |incentive_minus_1|
-      total_incentive_weight_minus_1 += self.read_attribute(incentive_minus_1)
-    end
-    total_incentive_weight_minus_1 > 0
-  end
-
-  def has_incentive_weight_0?
-    total_incentive_weight_0 = 0
-    INCENTIVE_0_ATTRIBUTES.each do |incentive_0|
-      total_incentive_weight_0 += self.read_attribute(incentive_0)
-    end
-    total_incentive_weight_0 > 0
-  end
-
-  def has_incentive_weight_1?
-    total_incentive_weight_1 = 0
-    INCENTIVE_1_ATTRIBUTES.each do |incentive_1|
-      total_incentive_weight_1 += self.read_attribute(incentive_1)
-    end
-    total_incentive_weight_1 > 0
-  end
-
-  def has_incentive_weight_2?
-    total_incentive_weight_2 = 0
-    INCENTIVE_2_ATTRIBUTES.each do |incentive_2|
-      total_incentive_weight_2 += self.read_attribute(incentive_2)
-    end
-    total_incentive_weight_2 > 0
-  end
-
-  def has_incentive_weight_3?
-    total_incentive_weight_3 = 0
-    INCENTIVE_3_ATTRIBUTES.each do |incentive_3|
-      total_incentive_weight_3 += self.read_attribute(incentive_3)
-    end
-    total_incentive_weight_3 > 0
+  def has_incentive_weight?(index)
+    self.read_attribute(INCENTIVE_MINUS_1_ATTRIBUTES[index]) + self.read_attribute(INCENTIVE_0_ATTRIBUTES[index]) + self.read_attribute(INCENTIVE_1_ATTRIBUTES[index]) + self.read_attribute(INCENTIVE_2_ATTRIBUTES[index]) + self.read_attribute(INCENTIVE_3_ATTRIBUTES[index]) > 0
   end
 
   def get_incentive_weight_array(type)

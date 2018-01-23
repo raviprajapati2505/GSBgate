@@ -17,7 +17,7 @@
                   <td><%= @scheme_criterion.code %></td>
                 </tr>
                 <% SchemeCriterion::WEIGHT_ATTRIBUTES.each_with_index do |weight, index| %>
-                  <% unless @scheme_criterion.read_attribute(weight).nil? %>
+                  <% unless @scheme_criterion.read_attribute(weight).nil? || @scheme_criterion.read_attribute(weight) == 0 %>
                   <tr>
                     <th><%= SchemeCriterion.human_attribute_name(weight) %></th>
                     <td><%= @scheme_criterion.read_attribute(weight) %>%</td>
