@@ -53,6 +53,6 @@ class SchemeCriteriaController < AuthenticatedController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def scheme_criterion_params
-    params.require(:scheme_criterion).permit(:name, :scores, :weight, :incentive_weight_minus_1, :incentive_weight_0, :incentive_weight_1, :incentive_weight_2, :incentive_weight_3, :incentive_weight)
+    params.require(:scheme_criterion).permit(:name, :scores, :scores_b, :weight, :weight_b, :incentive_weight_minus_1, :incentive_weight_minus_1_b, :incentive_weight_0, :incentive_weight_0_b, :incentive_weight_1, :incentive_weight_1_b, :incentive_weight_2, :incentive_weight_2_b, :incentive_weight_3, :incentive_weight_3_b)
   end
 end

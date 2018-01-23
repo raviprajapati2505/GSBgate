@@ -284,8 +284,6 @@ module Auditable
               system_messages << {message: t('models.concerns.auditable.scheme_criterion.incentive_weight.update_html', old_incentive: self.incentive_weight_2_was, new_incentive: self.incentive_weight_2)}
             elsif self.incentive_weight_3_changed?
               system_messages << {message: t('models.concerns.auditable.scheme_criterion.incentive_weight.update_html', old_incentive: self.incentive_weight_3_was, new_incentive: self.incentive_weight_3)}
-            elsif self.incentive_weight_changed?
-              system_messages << {message: t('models.concerns.auditable.scheme_criterion.incentive_weight.update_html', old_incentive: self.incentive_weight_was, new_incentive: self.incentive_weight)}
             end
           end
         when SchemeCategory.name.demodulize

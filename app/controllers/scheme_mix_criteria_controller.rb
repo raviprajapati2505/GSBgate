@@ -68,15 +68,23 @@ class SchemeMixCriteriaController < AuthenticatedController
     end
 
     # The targeted & submitted scores should always be higher than or equal to the minimum valid score of the criterion
-    if ((scheme_mix_criterion_params.has_key?(:targeted_score) && (params[:scheme_mix_criterion][:targeted_score].to_i < min_valid_score)) || (scheme_mix_criterion_params.has_key?(:submitted_score) && (params[:scheme_mix_criterion][:submitted_score].to_i < min_valid_score)))
-      redirect_to redirect_path, alert: "The targeted and submitted scores of this criterion must be higher than or equal to #{min_valid_score.to_s}."
-    else
+    if validate_score(redirect_path)
       @scheme_mix_criterion.transaction do
         # Update the scheme mix criterion
         @scheme_mix_criterion.update!(scheme_mix_criterion_params)
       end
       redirect_to redirect_path, notice: 'Criterion scores were successfully updated.'
     end
+  end
+
+  def validate_score(redirect_path)
+    SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES.each_with_index do |targeted_score, index|
+      min_valid_score = @scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::MIN_VALID_SCORE_ATTRIBUTES[index])
+      if ((scheme_mix_criterion_params.has_key?(targeted_score.to_sym) && (params[:scheme_mix_criterion][targeted_score.to_sym].to_i < min_valid_score)) || (scheme_mix_criterion_params.has_key?(SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES[index].to_sym) && (params[:scheme_mix_criterion][SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES[index].to_sym].to_i < min_valid_score)))
+        redirect_to redirect_path, alert: "The targeted and submitted scores of this criterion must be higher than or equals to #{min_valid_score.to_s}."
+      end
+    end
+    true
   end
 
   def assign_certifier
@@ -177,7 +185,7 @@ class SchemeMixCriteriaController < AuthenticatedController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def scheme_mix_criterion_params
-    params.require(:scheme_mix_criterion).permit(:targeted_score, :achieved_score, :submitted_score, :status, :audit_log_user_comment, :audit_log_visibility, :incentive_scored)
+    params.require(:scheme_mix_criterion).permit(:targeted_score, :targeted_score_b, :achieved_score, :achieved_score_b, :submitted_score, :submitted_score_b, :status, :audit_log_user_comment, :audit_log_visibility, :incentive_scored, :incentive_scored_b)
   end
 
 end

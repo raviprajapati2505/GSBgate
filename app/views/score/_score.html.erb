@@ -1,6 +1,9 @@
-
-<% scores[('maximum_scale_in_%s' % point_type).to_sym] ||= scores[('maximum_score_in_%s' % point_type).to_sym] %>
-<% scores[('minimum_scale_in_%s' % point_type).to_sym] ||= scores[('minimum_score_in_%s' % point_type).to_sym] %>
+<% subscore ||= '' %>
+<% scores[('maximum_scale_in_%s' % point_type).to_sym] ||= scores[('maximum_score%s_in_%s' % [subscore, point_type]).to_sym] %>
+<% scores[('minimum_scale_in_%s' % point_type).to_sym] ||= scores[('minimum_score%s_in_%s' % [subscore, point_type]).to_sym] %>
+<% unless score_label.nil? %>
+  <p><%= score_label %></p>
+<% end %>
 <div class="score-graph"
      data-show-legend="false"
      data-show-x-axis="true"
@@ -9,9 +12,9 @@
      data-height="80"
      data-max="<%= round_score(scores[('maximum_scale_in_%s' % point_type).to_sym]) %>"
      data-min="<%= round_score(scores[('minimum_scale_in_%s' % point_type).to_sym]) %>"
-     data-max-attainable="<%= round_score(scores[('maximum_score_in_%s' % point_type).to_sym]) %>"
-     data-targeted="<%= round_score(scores[('targeted_score_in_%s' % point_type).to_sym]) %>"
-     data-submitted="<%= round_score(scores[('submitted_score_in_%s' % point_type).to_sym]) %>"
-     data-achieved="<%= round_score(scores[('achieved_score_in_%s' % point_type).to_sym]) %>"
+     data-max-attainable="<%= round_score(scores[('maximum_score%s_in_%s' % [subscore, point_type]).to_sym]) %>"
+     data-targeted="<%= round_score(scores[('targeted_score%s_in_%s' % [subscore, point_type]).to_sym]) %>"
+     data-submitted="<%= round_score(scores[('submitted_score%s_in_%s' % [subscore, point_type]).to_sym]) %>"
+     data-achieved="<%= round_score(scores[('achieved_score%s_in_%s' % [subscore, point_type]).to_sym]) %>"
 >
 </div>

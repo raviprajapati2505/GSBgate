@@ -15,6 +15,6 @@ class Scheme < ActiveRecord::Base
 
   # sums the weights for all scheme_criteria belonging to the given category
   def weight_for_category(category)
-    scheme_criteria.for_category(category).sum(:weight)
+    scheme_criteria.for_category(category).sum(SchemeCriterion::WEIGHT_ATTRIBUTES.join(' + '))
   end
 end

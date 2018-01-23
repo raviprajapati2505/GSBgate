@@ -56,7 +56,12 @@ class SchemeMix < ActiveRecord::Base
       end
 
       # Create a SchemeMixCriterion record
-      scheme_mix_criterion = SchemeMixCriterion.create!(targeted_score: scheme_criterion.maximum_score, scheme_mix: self, scheme_criterion: scheme_criterion, main_scheme_mix_criterion_id: main_scheme_mix_criterion_id)
+      parameter_list = {scheme_mix: self, scheme_criterion: scheme_criterion, main_scheme_mix_criterion_id: main_scheme_mix_criterion_id}
+      SchemeCriterion.MAX_SCORE_ATTRIBUTES.each_with_index do |max_score, index|
+        parameter_list[SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES[index]] = scheme_criterion.read_attribute(max_score)
+        parameter_list[SchemeMixCriterion::INCENTIVE_SCORED_ATTRIBUTES[index]] = scheme_criterion.read_attribute(SchemeCriterion::CALCULATE_INCENTIVE_ATTRIBUTES[index])
+      end
+      scheme_mix_criterion = SchemeMixCriterion.create!(parameter_list)
 
       # Don't create requirement data records for criteria that inherit their scores from the main scheme mix
       unless has_main_scheme_mix_criterion

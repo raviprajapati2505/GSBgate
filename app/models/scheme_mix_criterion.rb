@@ -15,6 +15,11 @@ class SchemeMixCriterion < ActiveRecord::Base
 
   enum status: {submitting: 10, submitted: 20, verifying: 30, score_awarded: 41, score_downgraded: 42, score_upgraded: 43, score_minimal:44, appealed: 50, submitting_after_appeal: 60, submitted_after_appeal: 70, verifying_after_appeal: 80, score_awarded_after_appeal: 91, score_downgraded_after_appeal: 92, score_upgraded_after_appeal: 93, score_minimal_after_appeal:94 }
 
+  TARGETED_SCORE_ATTRIBUTES = ['targeted_score', 'targeted_score_b'].freeze
+  SUBMITTED_SCORE_ATTRIBUTES = ['submitted_score', 'submitted_score_b'].freeze
+  ACHIEVED_SCORE_ATTRIBUTES = ['achieved_score', 'achieved_score_b'].freeze
+  INCENTIVE_SCORED_ATTRIBUTES = ['incentive_scored', 'incentive_scored_b'].freeze
+
   after_initialize :init
   after_update :update_inheriting_criteria
 

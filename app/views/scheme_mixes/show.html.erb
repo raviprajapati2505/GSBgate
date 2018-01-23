@@ -73,7 +73,7 @@
       <div class="ibox-content">
         <%
           # fetch all score records
-          scheme_mix_criteria_scores = @scheme_mix.scheme_mix_criteria_scores
+          scheme_mix_criteria_scores = @scheme_mix.scheme_mix_criteria_scores([:criteria_points, :scheme_points, :certificate_points], [:achieved_score, :submitted_score, :targeted_score, :maximum_score, :minimum_score, :minimum_valid_score, :achieved_score_a, :submitted_score_a, :targeted_score_a, :maximum_score_a, :minimum_score_a, :minimum_valid_score_a, :achieved_score_b, :submitted_score_b, :targeted_score_b, :maximum_score_b, :minimum_score_b, :minimum_valid_score_b])
           # check for criteria that violate their minimum_valid_score
           invalid_criteria_ids = scheme_mix_criteria_scores
               .select {|score| score[:achieved_score_in_criteria_points].nil? && score[:minimum_valid_score_in_criteria_points] > score[:minimum_score_in_criteria_points] }
@@ -136,20 +136,15 @@
                   </td>
                   <td>
                     <div><%= @scheme_mix.scheme.weight_for_category(category) %> %</div>
-                    <% if (@scheme_mix.scheme.scheme_criteria.for_category(category).sum(:incentive_weight_minus_1) + @scheme_mix.scheme.scheme_criteria.for_category(category).sum(:incentive_weight_0) + @scheme_mix.scheme.scheme_criteria.for_category(category).sum(:incentive_weight_1) + @scheme_mix.scheme.scheme_criteria.for_category(category).sum(:incentive_weight_2) + @scheme_mix.scheme.scheme_criteria.for_category(category).sum(:incentive_weight_3)) > 0  %>
+                    <% if (@scheme_mix.scheme.scheme_criteria.for_category(category).sum(SchemeCriterion::INCENTIVE_MINUS_1_ATTRIBUTES.join(' + ')) + @scheme_mix.scheme.scheme_criteria.for_category(category).sum(SchemeCriterion::INCENTIVE_0_ATTRIBUTES.join(' + ')) + @scheme_mix.scheme.scheme_criteria.for_category(category).sum(SchemeCriterion::INCENTIVE_1_ATTRIBUTES.join(' + ')) + @scheme_mix.scheme.scheme_criteria.for_category(category).sum(SchemeCriterion::INCENTIVE_2_ATTRIBUTES.join(' + ')) + @scheme_mix.scheme.scheme_criteria.for_category(category).sum(SchemeCriterion::INCENTIVE_3_ATTRIBUTES.join(' + '))) > 0  %>
                         <div class="incentive-weight">
                           <%
                             tooltip_text = 'Incentive weights<br/>'
-                            tooltip_text += "Between #{@scheme_mix.scheme.scheme_criteria.for_category(category).sum(:incentive_weight_minus_1)}% and #{@scheme_mix.scheme.scheme_criteria.for_category(category).sum(:incentive_weight_3)}%"
-                          %>
-                          <%= tooltip(tooltip_text) %>
-                        </div>
-                    <% end %>
-                    <% if (@scheme_mix.scheme.scheme_criteria.for_category(category).sum(:incentive_weight)) > 0 %>
-                        <div class="incentive-weight">
-                          <%
-                            tooltip_text = 'Incentive weights<br/>'
-                            tooltip_text += "Up to #{@scheme_mix.scheme.scheme_criteria.for_category(category).sum(:incentive_weight)}%"
+                            minimum_incentives = []
+                            SchemeCriterion::INCENTIVE_MINUS_1_ATTRIBUTES.each do |incentive_minus_1|
+                              minimum_incentives << @scheme_mix.scheme.scheme_criteria.for_category(category).minimum(incentive_minus_1)
+                            end
+                            tooltip_text += "Between #{minimum_incentives.min}% and #{@scheme_mix.scheme.scheme_criteria.for_category(category).sum(SchemeCriterion::INCENTIVE_3_ATTRIBUTES.join(' + '))}%"
                           %>
                           <%= tooltip(tooltip_text) %>
                         </div>
@@ -216,8 +211,8 @@
                         %>
                         <% criteria.each do |scheme_mix_criterion| %>
                             <tr>
-                              <td><%= scheme_mix_criterion.code %></td>
-                              <td>
+                              <td rowspan="2"><%= scheme_mix_criterion.code %></td>
+                              <td rowspan="2">
                                 <%= can_link_to(project_certification_path_scheme_mix_scheme_mix_criterion_path(@certification_path.project, @certification_path, @scheme_mix, scheme_mix_criterion), scheme_mix_criterion) do %>
                                     <%= scheme_mix_criterion.name %>
                                 <% end %>
@@ -228,10 +223,10 @@
                                     <%= ikoen('eye', tooltip: 'The criterion was screened.') %>
                                 <% end %>
                               </td>
-                              <td><%= t(scheme_mix_criterion.status, scope: 'activerecord.attributes.scheme_mix_criterion.statuses') %></td>
+                              <td rowspan="2"><%= t(scheme_mix_criterion.status, scope: 'activerecord.attributes.scheme_mix_criterion.statuses') %></td>
                               <td>
                                 <%= scheme_mix_criterion.scheme_criterion.weight %> %
-                                <% if (scheme_mix_criterion.scheme_criterion.incentive_weight_minus_1 + scheme_mix_criterion.scheme_criterion.incentive_weight_0 + scheme_mix_criterion.scheme_criterion.incentive_weight_1 + scheme_mix_criterion.scheme_criterion.incentive_weight_2 + scheme_mix_criterion.scheme_criterion.incentive_weight_3 + scheme_mix_criterion.scheme_criterion.incentive_weight)  > 0  %>
+                                <% if scheme_mix_criterion.scheme_criterion.has_incentive_weight_a?  %>
                                     <%
                                       tooltip_text = 'Incentive weights<br/>'
                                       tooltip_text += "Score&nbsp;-1: #{scheme_mix_criterion.scheme_criterion.incentive_weight_minus_1}%<br/>" if scheme_mix_criterion.scheme_criterion.incentive_weight_minus_1 > 0
@@ -239,7 +234,6 @@
                                       tooltip_text += "Score&nbsp;&nbsp;1: #{scheme_mix_criterion.scheme_criterion.incentive_weight_1}%<br/>" if scheme_mix_criterion.scheme_criterion.incentive_weight_1 > 0
                                       tooltip_text += "Score&nbsp;&nbsp;2: #{scheme_mix_criterion.scheme_criterion.incentive_weight_2}%<br/>" if scheme_mix_criterion.scheme_criterion.incentive_weight_2 > 0
                                       tooltip_text += "Score&nbsp;&nbsp;3: #{scheme_mix_criterion.scheme_criterion.incentive_weight_3}%<br/>" if scheme_mix_criterion.scheme_criterion.incentive_weight_3 > 0
-                                      tooltip_text += "#{scheme_mix_criterion.scheme_criterion.incentive_weight}%<br/>" if scheme_mix_criterion.scheme_criterion.incentive_weight > 0
                                     %>
                                     <div class="incentive-weight">
                                       <%= tooltip(tooltip_text) %>
@@ -250,10 +244,11 @@
                                 <%
                                   scheme_mix_criteria_score = scheme_mix_criteria_scores.find{|item| item[:scheme_mix_criteria_id] == scheme_mix_criterion.id }
                                   scheme_mix_criteria_score = scheme_mix_criteria_score.merge(category_scale)
+                                  score_label = 'calculated' unless scheme_mix_criterion.scheme_criterion.scores_b.nil?
                                 %>
-                                <%= render 'score/score_tabs', scores: scheme_mix_criteria_score, element_id: "scheme_mix_criterion_#{scheme_mix_criterion.id}" %>
+                                <%= render 'score/score_tabs', scores: scheme_mix_criteria_score, subscore: '_a', score_label: score_label, element_id: "scheme_mix_criterion_#{scheme_mix_criterion.id}" %>
                               </td>
-                              <td>
+                              <td rowspan="2">
                                 <% processed_count = scheme_mix_criterion.requirement_data.provided.count + scheme_mix_criterion.requirement_data.not_required.count %>
                                 <% total_count = scheme_mix_criterion.requirement_data.count %>
                                 <% if total_count == 0 %>
@@ -266,7 +261,7 @@
                                     </div>
                                 <% end %>
                               </td>
-                              <td>
+                              <td rowspan="2">
                                 <% approved_count = scheme_mix_criterion.scheme_mix_criteria_documents.approved.count %>
                                 <% awaiting_approval_count = scheme_mix_criterion.scheme_mix_criteria_documents.awaiting_approval.count %>
                                 <% total_count = approved_count + awaiting_approval_count %>
@@ -278,6 +273,35 @@
                                         <%= approved_count %>/<%= total_count %>
                                       </div>
                                     </div>
+                                <% end %>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <% unless scheme_mix_criterion.scheme_criterion.scores_b.nil? %>
+                                  <%= scheme_mix_criterion.scheme_criterion.weight_b %> %
+                                  <% if scheme_mix_criterion.scheme_criterion.has_incentive_weight_b? %>
+                                    <%
+                                      tooltip_text = 'Incentive weights<br/>'
+                                      tooltip_text += "Score&nbsp;-1: #{scheme_mix_criterion.scheme_criterion.incentive_weight_minus_1_b}%<br/>" if scheme_mix_criterion.scheme_criterion.incentive_weight_minus_1_b > 0
+                                      tooltip_text += "Score&nbsp;&nbsp;0: #{scheme_mix_criterion.scheme_criterion.incentive_weight_0_b}%<br/>" if scheme_mix_criterion.scheme_criterion.incentive_weight_0_b > 0
+                                      tooltip_text += "Score&nbsp;&nbsp;1: #{scheme_mix_criterion.scheme_criterion.incentive_weight_1_b}%<br/>" if scheme_mix_criterion.scheme_criterion.incentive_weight_1_b > 0
+                                      tooltip_text += "Score&nbsp;&nbsp;2: #{scheme_mix_criterion.scheme_criterion.incentive_weight_2_b}%<br/>" if scheme_mix_criterion.scheme_criterion.incentive_weight_2_b > 0
+                                      tooltip_text += "Score&nbsp;&nbsp;3: #{scheme_mix_criterion.scheme_criterion.incentive_weight_3_b}%<br/>" if scheme_mix_criterion.scheme_criterion.incentive_weight_3_b > 0
+                                    %>
+                                    <div class="incentive-weight">
+                                      <%= tooltip(tooltip_text) %>
+                                    </div>
+                                  <% end %>
+                                <% end %>
+                              </td>
+                              <td>
+                                <% unless scheme_mix_criterion.scheme_criterion.scores_b.nil? %>
+                                  <%
+                                    scheme_mix_criteria_score = scheme_mix_criteria_scores.find{|item| item[:scheme_mix_criteria_id] == scheme_mix_criterion.id }
+                                    scheme_mix_criteria_score = scheme_mix_criteria_score.merge(category_scale)
+                                  %>
+                                  <%= render 'score/score_tabs', scores: scheme_mix_criteria_score, subscore: '_b', score_label: 'measured', element_id: "scheme_mix_criterion_#{scheme_mix_criterion.id}" %>
                                 <% end %>
                               </td>
                             </tr>

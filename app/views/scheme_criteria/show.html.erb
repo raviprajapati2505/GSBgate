@@ -16,17 +16,19 @@
                   <th><%= SchemeCriterion.human_attribute_name('code') %></th>
                   <td><%= @scheme_criterion.code %></td>
                 </tr>
-                <% unless @scheme_criterion.weight.nil? %>
-                <tr>
-                  <th><%= SchemeCriterion.human_attribute_name('weight') %></th>
-                  <td><%= @scheme_criterion.weight %>%</td>
-                </tr>
-                <% end %>
-                <% unless @scheme_criterion.scores.nil? %>
-                <tr>
-                  <th><%= SchemeCriterion.human_attribute_name('scores') %></th>
-                  <td><%= @scheme_criterion.scores.map { |score| score[0] }.join(', ') %></td>
-                </tr>
+                <% SchemeCriterion::WEIGHT_ATTRIBUTES.each_with_index do |weight, index| %>
+                  <% unless @scheme_criterion.read_attribute(weight).nil? %>
+                  <tr>
+                    <th><%= SchemeCriterion.human_attribute_name(weight) %></th>
+                    <td><%= @scheme_criterion.read_attribute(weight) %>%</td>
+                  </tr>
+                  <% end %>
+                  <% unless @scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index]).nil? %>
+                  <tr>
+                    <th><%= SchemeCriterion.human_attribute_name(SchemeCriterion::SCORE_ATTRIBUTES[index]) %></th>
+                    <td><%= @scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index]).map { |score| score[0] }.join(', ') %></td>
+                  </tr>
+                  <% end %>
                 <% end %>
                 </tbody>
               </table>
