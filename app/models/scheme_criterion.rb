@@ -96,7 +96,7 @@ class SchemeCriterion < ActiveRecord::Base
         # self.write_attribute(MIN_SCORE_ATTRIBUTES[index], 0.0)
         self.send(MIN_SCORE_ATTRIBUTES[index] + '=', 0.0)
         # self.write_attribute(MAX_SCORE_ATTRIBUTES[index], self.read_attribute(WEIGHT_ATTRIBUTES[index]))
-        self.send(MAX_SCORE_ATTRIBUTES[index] + '=', self.read_attribute(WEIGHT_ATTRIBUTES[index]))
+        self.send(MAX_SCORE_ATTRIBUTES[index] + '=', 1.0)
         # self.write_attribute(MIN_VALID_SCORE_ATTRIBUTES[index], 0.0)
         self.send(MIN_VALID_SCORE_ATTRIBUTES[index] + '=', 0.0)
       end
