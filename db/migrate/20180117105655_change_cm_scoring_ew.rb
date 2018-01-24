@@ -43,7 +43,7 @@ class ChangeCmScoringEw < ActiveRecord::Migration
     scheme_criteria.each do |scheme_criterion|
       scheme_criterion.weight = 5.0
       scheme_criterion.weight_b = scheme_criterion.weight
-      scheme_criterion.scores_b = scheme_criterion.scores
+      scheme_criterion.scores_b = YAML.load(scheme_criterion.scores)
       scheme_criterion.minimum_score_b = scheme_criterion.minimum_score
       scheme_criterion.maximum_score_b = scheme_criterion.maximum_score
       scheme_criterion.minimum_valid_score_b = scheme_criterion.minimum_valid_score
@@ -61,7 +61,7 @@ class ChangeCmScoringEw < ActiveRecord::Migration
     scheme_criteria.each do |scheme_criterion|
       scheme_criterion.weight = 3.0
       scheme_criterion.weight_b = scheme_criterion.weight
-      scheme_criterion.scores_b = scheme_criterion.scores
+      scheme_criterion.scores_b = YAML.load(scheme_criterion.scores)
       scheme_criterion.minimum_score_b = scheme_criterion.minimum_score
       scheme_criterion.maximum_score_b = scheme_criterion.maximum_score
       scheme_criterion.minimum_valid_score_b = scheme_criterion.minimum_valid_score
