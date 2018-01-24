@@ -195,28 +195,6 @@ module ScoreCalculator
       check_certification_path_state_template % {certification_path_status_id: minimum_certification_path_status_id}
     end
 
-    def old_build_score_calculation_query(field_name, field_table, point_type)
-      score = 'GREATEST(%{field_table}.%{field_name}::float, scheme_criteria_score.minimum_score::float)'
-      maximum_score = 'scheme_criteria_score.maximum_score::float'
-      criteria_weight = 'scheme_criteria_score.weight'
-      score_dependent_incentive_weight = "(CASE #{score} WHEN -1 THEN scheme_criteria_score.incentive_weight_minus_1 WHEN 0 THEN scheme_criteria_score.incentive_weight_0 WHEN 1 THEN scheme_criteria_score.incentive_weight_1 WHEN 2 THEN scheme_criteria_score.incentive_weight_2  WHEN 3 THEN scheme_criteria_score.incentive_weight_3 ELSE 0 END)"
-      incentive_weight = "(CASE scheme_mix_criteria_score.incentive_scored WHEN true THEN #{score_dependent_incentive_weight} ELSE 0 END)"
-      scheme_weight = 'scheme_mixes_score.weight'
-      if point_type == :criteria_points
-        score_template = "SUM(#{score})"
-      elsif point_type == :scheme_points
-        base_3_score = "(#{score} / #{maximum_score}) * ((3.0 * (#{criteria_weight})) / 100.0) + (3.0 * #{incentive_weight} / 100.0)"
-        score_template = "SUM( CASE (certificates_score.gsas_version = 'v2.1 Issue 1.0') WHEN true THEN (#{score}) ELSE (#{base_3_score}) END)"
-      elsif point_type == :certificate_points
-        base_3_score = "((#{score} / #{maximum_score}) * ((3.0 * (#{criteria_weight})) / 100.0) + (3.0 * #{incentive_weight} / 100.0)) * (#{scheme_weight} / 100.0)"
-        score_template = "SUM( CASE (certificates_score.gsas_version = 'v2.1 Issue 1.0') WHEN true THEN (#{score} * (#{scheme_weight} / 100.0)) ELSE (#{base_3_score}) END)"
-      else
-        raise('Unexpected point type: ' + point_type.to_s)
-      end
-      # build score calculation query
-      score_template % {field_table: field_table, field_name: field_name}
-    end
-
     # Sum of scores on criterion level
     # Sum of criterion weighted scores on scheme level
     # sum of scheme weighted scores on certificate level
@@ -318,9 +296,9 @@ module ScoreCalculator
     end
 
     def field_table_for_field_name(field_name)
-      if SchemeCriterion::MAX_SCORE_ATTRIBUTES.include?(field_name.to_s) or SchemeCriterion::MIN_SCORE_ATTRIBUTES.include?(field_name.to_s) or SchemeCriterion::MIN_VALID_SCORE_ATTRIBUTES.include?(field_name.to_s) or field_name == :maximum_score_a or field_name == :minimum_score_a or field_name == :minimum_valid_score_a
+      if SchemeCriterion::MAX_SCORE_A_ATTR.include?(field_name.to_s) || SchemeCriterion::MIN_SCORE_A_ATTR.include?(field_name.to_s) || SchemeCriterion::MIN_VALID_SCORE_A_ATTR.include?(field_name.to_s)
         field_table = 'scheme_criteria_score'
-      elsif SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES.include?(field_name.to_s) or SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES.include?(field_name.to_s) or SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES.include?(field_name.to_s) or field_name == :achieved_score_a or field_name == :submitted_score_a or field_name == :targeted_score_a
+      elsif SchemeMixCriterion::ACHIEVED_SCORE_A_ATTR.include?(field_name.to_s) || SchemeMixCriterion::SUBMITTED_SCORE_A_ATTR.include?(field_name.to_s) || SchemeMixCriterion::TARGETED_SCORE_A_ATTR.include?(field_name.to_s)
         field_table = 'scheme_mix_criteria_score'
       else
         raise('Unexpected score field: ' + field_name.to_s)

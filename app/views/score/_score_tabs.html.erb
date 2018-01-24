@@ -1,19 +1,22 @@
 <div class="tab-content">
-    <% subscore ||= '' %>
-    <% score_label ||= nil %>
+    <% maximum_score_attribute ||= 'maximum_score' %>
+    <% minimum_score_attribute ||= 'minimum_score' %>
+    <% targeted_score_attribute ||= 'targeted_score' %>
+    <% submitted_score_attribute ||= 'submitted_score' %>
+    <% achieved_score_attribute ||= 'achieved_score' %>
     <% if scores.has_key?(:targeted_score_in_certificate_points) %>
         <div role="tabpanel" class="tab-pane active" id="<%= "scores_in_certificate_points_#{element_id}" %>">
-            <%= render 'score/score', scores: scores, subscore: subscore, score_label: score_label, point_type: :certificate_points %>
+            <%= render 'score/score', scores: scores, maximum_score_attribute: maximum_score_attribute, minimum_score_attribute: minimum_score_attribute, targeted_score_attribute: targeted_score_attribute, submitted_score_attribute: submitted_score_attribute, achieved_score_attribute: achieved_score_attribute, point_type: :certificate_points %>
         </div>
     <% end %>
     <% if scores.has_key?(:targeted_score_in_scheme_points) %>
         <div role="tabpanel" class="tab-pane" id="<%= "scores_in_scheme_points_#{element_id}" %>">
-            <%= render 'score/score', scores: scores, subscore: subscore, score_label: score_label, point_type: :scheme_points %>
+            <%= render 'score/score', scores: scores, maximum_score_attribute: maximum_score_attribute, minimum_score_attribute: minimum_score_attribute, targeted_score_attribute: targeted_score_attribute, submitted_score_attribute: submitted_score_attribute, achieved_score_attribute: achieved_score_attribute, point_type: :scheme_points %>
         </div>
     <% end %>
     <% if scores.has_key?(:targeted_score_in_criteria_points) %>
         <div role="tabpanel" class="tab-pane" id="<%= "scores_#{element_id}" %>">
-            <%= render 'score/score', scores: scores, subscore: subscore, score_label: score_label, point_type: :criteria_points %>
+            <%= render 'score/score', scores: scores, maximum_score_attribute: maximum_score_attribute, minimum_score_attribute: minimum_score_attribute, targeted_score_attribute: targeted_score_attribute, submitted_score_attribute: submitted_score_attribute, achieved_score_attribute: achieved_score_attribute, point_type: :criteria_points %>
         </div>
     <% end %>
 </div>

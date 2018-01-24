@@ -20,6 +20,10 @@ class SchemeMixCriterion < ActiveRecord::Base
   ACHIEVED_SCORE_ATTRIBUTES = ['achieved_score', 'achieved_score_b'].freeze
   INCENTIVE_SCORED_ATTRIBUTES = ['incentive_scored', 'incentive_scored_b'].freeze
 
+  TARGETED_SCORE_A_ATTR = TARGETED_SCORE_ATTRIBUTES + ['targeted_score_a']
+  SUBMITTED_SCORE_A_ATTR = SUBMITTED_SCORE_ATTRIBUTES + ['submitted_score_a']
+  ACHIEVED_SCORE_A_ATTR = ACHIEVED_SCORE_ATTRIBUTES + ['achieved_score_a']
+
   after_initialize :init
   after_update :update_inheriting_criteria
 

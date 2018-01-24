@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180117105655) do
+ActiveRecord::Schema.define(version: 20180124135848) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -289,34 +289,37 @@ ActiveRecord::Schema.define(version: 20180117105655) do
   add_index "scheme_categories", ["scheme_id"], name: "index_scheme_categories_on_scheme_id", using: :btree
 
   create_table "scheme_criteria", force: :cascade do |t|
-    t.datetime "created_at",                                                         null: false
-    t.datetime "updated_at",                                                         null: false
-    t.decimal  "weight",                     precision: 5, scale: 2
+    t.datetime "created_at",                                                          null: false
+    t.datetime "updated_at",                                                          null: false
+    t.decimal  "weight",                      precision: 5, scale: 2
     t.string   "name"
     t.integer  "number"
     t.string   "scores"
     t.integer  "scheme_category_id"
-    t.decimal  "minimum_score",              precision: 4, scale: 1,                 null: false
-    t.decimal  "maximum_score",              precision: 4, scale: 1,                 null: false
-    t.decimal  "minimum_valid_score",        precision: 4, scale: 1,                 null: false
-    t.decimal  "incentive_weight_minus_1",   precision: 5, scale: 2, default: 0.0
-    t.decimal  "incentive_weight_0",         precision: 5, scale: 2, default: 0.0
-    t.decimal  "incentive_weight_1",         precision: 5, scale: 2, default: 0.0
-    t.decimal  "incentive_weight_2",         precision: 5, scale: 2, default: 0.0
-    t.decimal  "incentive_weight_3",         precision: 5, scale: 2, default: 0.0
-    t.boolean  "calculate_incentive",                                default: true
-    t.boolean  "assign_incentive_manually",                          default: false
-    t.decimal  "weight_b",                   precision: 5, scale: 2, default: 0.0
+    t.decimal  "minimum_score",               precision: 4, scale: 1,                 null: false
+    t.decimal  "maximum_score",               precision: 4, scale: 1,                 null: false
+    t.decimal  "minimum_valid_score",         precision: 4, scale: 1,                 null: false
+    t.decimal  "incentive_weight_minus_1",    precision: 5, scale: 2, default: 0.0
+    t.decimal  "incentive_weight_0",          precision: 5, scale: 2, default: 0.0
+    t.decimal  "incentive_weight_1",          precision: 5, scale: 2, default: 0.0
+    t.decimal  "incentive_weight_2",          precision: 5, scale: 2, default: 0.0
+    t.decimal  "incentive_weight_3",          precision: 5, scale: 2, default: 0.0
+    t.boolean  "calculate_incentive",                                 default: true
+    t.boolean  "assign_incentive_manually",                           default: false
+    t.decimal  "weight_b",                    precision: 5, scale: 2, default: 0.0
     t.string   "scores_b"
-    t.decimal  "minimum_score_b",            precision: 4, scale: 1
-    t.decimal  "maximum_score_b",            precision: 4, scale: 1
-    t.decimal  "minimum_valid_score_b",      precision: 4, scale: 1
-    t.decimal  "incentive_weight_minus_1_b", precision: 5, scale: 2, default: 0.0
-    t.decimal  "incentive_weight_0_b",       precision: 5, scale: 2, default: 0.0
-    t.decimal  "incentive_weight_1_b",       precision: 5, scale: 2, default: 0.0
-    t.decimal  "incentive_weight_2_b",       precision: 5, scale: 2, default: 0.0
-    t.decimal  "incentive_weight_3_b",       precision: 5, scale: 2, default: 0.0
-    t.boolean  "calculate_incentive_b",                              default: false
+    t.decimal  "minimum_score_b",             precision: 4, scale: 1
+    t.decimal  "maximum_score_b",             precision: 4, scale: 1
+    t.decimal  "minimum_valid_score_b",       precision: 4, scale: 1
+    t.decimal  "incentive_weight_minus_1_b",  precision: 5, scale: 2, default: 0.0
+    t.decimal  "incentive_weight_0_b",        precision: 5, scale: 2, default: 0.0
+    t.decimal  "incentive_weight_1_b",        precision: 5, scale: 2, default: 0.0
+    t.decimal  "incentive_weight_2_b",        precision: 5, scale: 2, default: 0.0
+    t.decimal  "incentive_weight_3_b",        precision: 5, scale: 2, default: 0.0
+    t.boolean  "calculate_incentive_b",                               default: false
+    t.boolean  "assign_incentive_manually_b",                         default: false
+    t.string   "label"
+    t.string   "label_b"
   end
 
   add_index "scheme_criteria", ["number"], name: "index_scheme_criteria_on_number", using: :btree

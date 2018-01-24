@@ -19,13 +19,13 @@
                 <% SchemeCriterion::WEIGHT_ATTRIBUTES.each_with_index do |weight, index| %>
                   <% unless @scheme_criterion.read_attribute(weight).nil? || @scheme_criterion.read_attribute(weight) == 0 %>
                   <tr>
-                    <th><%= SchemeCriterion.human_attribute_name(weight) %></th>
+                    <th>Weight <%= @scheme_criterion.read_attribute(SchemeCriterion::LABEL_ATTRIBUTES[index]) %></th>
                     <td><%= @scheme_criterion.read_attribute(weight) %>%</td>
                   </tr>
                   <% end %>
                   <% unless @scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index]).nil? %>
                   <tr>
-                    <th><%= SchemeCriterion.human_attribute_name(SchemeCriterion::SCORE_ATTRIBUTES[index]) %></th>
+                    <th>Scores <%= @scheme_criterion.read_attribute(SchemeCriterion::LABEL_ATTRIBUTES[index]) %></th>
                     <td><%= @scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index]).map { |score| score[0] }.join(', ') %></td>
                   </tr>
                   <% end %>

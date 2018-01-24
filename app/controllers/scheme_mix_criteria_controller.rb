@@ -185,7 +185,12 @@ class SchemeMixCriteriaController < AuthenticatedController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def scheme_mix_criterion_params
-    params.require(:scheme_mix_criterion).permit(:targeted_score, :targeted_score_b, :achieved_score, :achieved_score_b, :submitted_score, :submitted_score_b, :status, :audit_log_user_comment, :audit_log_visibility, :incentive_scored, :incentive_scored_b)
+    permitted_params = [:status, :audit_log_user_comment, :audit_log_visibility]
+    permitted_params += SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES
+    permitted_params += SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES
+    permitted_params += SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES
+    permitted_params += SchemeMixCriterion::INCENTIVE_SCORED_ATTRIBUTES
+    params.require(:scheme_mix_criterion).permit(permitted_params)
   end
 
 end

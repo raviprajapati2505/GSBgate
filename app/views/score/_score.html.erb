@@ -1,9 +1,10 @@
-<% subscore ||= '' %>
-<% scores[('maximum_scale_in_%s' % point_type).to_sym] ||= scores[('maximum_score%s_in_%s' % [subscore, point_type]).to_sym] %>
-<% scores[('minimum_scale_in_%s' % point_type).to_sym] ||= scores[('minimum_score%s_in_%s' % [subscore, point_type]).to_sym] %>
-<% unless score_label.nil? %>
-  <p><%= score_label %></p>
-<% end %>
+<% maximum_score_attribute ||= 'maximum_score' %>
+<% minimum_score_attribute ||= 'minimum_score' %>
+<% targeted_score_attribute ||= 'targeted_score' %>
+<% submitted_score_attribute ||= 'submitted_score' %>
+<% achieved_score_attribute ||= 'achieved_score' %>
+<% scores[('maximum_scale_in_%s' % point_type).to_sym] ||= scores[('%s_in_%s' % [maximum_score_attribute, point_type]).to_sym] %>
+<% scores[('minimum_scale_in_%s' % point_type).to_sym] ||= scores[('%s_in_%s' % [minimum_score_attribute, point_type]).to_sym] %>
 <div class="score-graph"
      data-show-legend="false"
      data-show-x-axis="true"
@@ -12,9 +13,9 @@
      data-height="80"
      data-max="<%= round_score(scores[('maximum_scale_in_%s' % point_type).to_sym]) %>"
      data-min="<%= round_score(scores[('minimum_scale_in_%s' % point_type).to_sym]) %>"
-     data-max-attainable="<%= round_score(scores[('maximum_score%s_in_%s' % [subscore, point_type]).to_sym]) %>"
-     data-targeted="<%= round_score(scores[('targeted_score%s_in_%s' % [subscore, point_type]).to_sym]) %>"
-     data-submitted="<%= round_score(scores[('submitted_score%s_in_%s' % [subscore, point_type]).to_sym]) %>"
-     data-achieved="<%= round_score(scores[('achieved_score%s_in_%s' % [subscore, point_type]).to_sym]) %>"
+     data-max-attainable="<%= round_score(scores[('%s_in_%s' % [maximum_score_attribute, point_type]).to_sym]) %>"
+     data-targeted="<%= round_score(scores[('%s_in_%s' % [targeted_score_attribute, point_type]).to_sym]) %>"
+     data-submitted="<%= round_score(scores[('%s_in_%s' % [submitted_score_attribute, point_type]).to_sym]) %>"
+     data-achieved="<%= round_score(scores[('%s_in_%s' % [achieved_score_attribute, point_type]).to_sym]) %>"
 >
 </div>
