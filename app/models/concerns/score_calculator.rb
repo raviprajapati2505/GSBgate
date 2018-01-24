@@ -227,7 +227,7 @@ module ScoreCalculator
         score_dependent_incentive_weight = "(CASE #{scores[index]} WHEN -1 THEN scheme_criteria_score.#{SchemeCriterion::INCENTIVE_MINUS_1_ATTRIBUTES[index]} WHEN 0 THEN scheme_criteria_score.#{SchemeCriterion::INCENTIVE_0_ATTRIBUTES[index]} WHEN 1 THEN scheme_criteria_score.#{SchemeCriterion::INCENTIVE_1_ATTRIBUTES[index]} WHEN 2 THEN scheme_criteria_score.#{SchemeCriterion::INCENTIVE_2_ATTRIBUTES[index]}  WHEN 3 THEN scheme_criteria_score.#{SchemeCriterion::INCENTIVE_3_ATTRIBUTES[index]} ELSE 0 END)"
         incentive_weight = "(CASE scheme_mix_criteria_score.#{SchemeMixCriterion::INCENTIVE_SCORED_ATTRIBUTES[index]} WHEN true THEN #{score_dependent_incentive_weight} ELSE 0 END)"
         weighted_scores << "(#{scores[index]} / (CASE WHEN scheme_criteria_score.#{SchemeCriterion::MAX_SCORE_ATTRIBUTES[index]} IS NULL THEN 1 ELSE scheme_criteria_score.#{SchemeCriterion::MAX_SCORE_ATTRIBUTES[index]}::float END)) * ((3.0 * (scheme_criteria_score.#{SchemeCriterion::WEIGHT_ATTRIBUTES[index]})) / 100.0) + (3.0 * #{incentive_weight} / 100.0)"
-        criterion_weighted_scores << "#{scores[index]} * scheme_criteria_score.#{SchemeCriterion::WEIGHT_ATTRIBUTES[index]} / (#{criterion_weights.join(' + ')})"
+        criterion_weighted_scores << "CASE (#{criterion_weights.join(' + ')}) WHEN 0 THEN 0 ELSE #{scores[index]} * scheme_criteria_score.#{SchemeCriterion::WEIGHT_ATTRIBUTES[index]} / (#{criterion_weights.join(' + ')}) END"
       end
       if point_type == :criteria_points
         score_template = "SUM(#{criterion_weighted_scores.join(' + ')})"
