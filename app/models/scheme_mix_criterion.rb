@@ -344,13 +344,13 @@ class SchemeMixCriterion < ActiveRecord::Base
       certification_path.scheme_mix_criteria.where(main_scheme_mix_criterion_id: id).each do |smc_inherit|
         (smc_inherit.status = status) if status_changed?
         SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES.each do |targeted_score|
-          (smc_inherit.write_attribute(targeted_score, self.read_attribute(targeted_score))) if self.send("#{targeted_score}_changed?")
+          (smc_inherit.send("#{targeted_score}=", self.read_attribute(targeted_score))) if self.send("#{targeted_score}_changed?")
         end
         SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES.each do |submitted_score|
-          (smc_inherit.write_attribute(submitted_score, self.read_attribute(submitted_score))) if self.send("#{submitted_score}_changed?")
+          (smc_inherit.send("#{submitted_score}=", self.read_attribute(submitted_score))) if self.send("#{submitted_score}_changed?")
         end
         SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES.each do |achieved_score|
-          (smc_inherit.write_attribute(achieved_score, self.read_attribute(achieved_score))) if self.send("#{achieved_score}_changed?")
+          (smc_inherit.send("#{achieved_score}=", self.read_attribute(achieved_score))) if self.send("#{achieved_score}_changed?")
         end
         (smc_inherit.screened = screened) if screened_changed?
         smc_inherit.save!

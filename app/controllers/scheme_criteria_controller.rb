@@ -41,7 +41,7 @@ class SchemeCriteriaController < AuthenticatedController
         redirect_to scheme_criterion_path(@scheme_criterion), alert: "Criterion could not be updated. #{error_message}"
         return
       else
-        @scheme_criterion.write_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index], params[:scheme_criterion][SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym])
+        @scheme_criterion.send("#{SchemeCriterion::SCORE_ATTRIBUTES[index]}=", params[:scheme_criterion][SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym])
       end
     end
 
