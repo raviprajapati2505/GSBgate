@@ -40,18 +40,18 @@ class SchemeCriterion < ActiveRecord::Base
   def total_weight
     total_weight = 0
     WEIGHT_ATTRIBUTES.each do |weight_attr|
-      total_weight += self.read_attribute(weight_attr)
+      total_weight += self.read_attribute(weight_attr.to_sym)
     end
     total_weight
   end
 
   def has_incentive_weight?(index)
-    self.read_attribute(INCENTIVE_MINUS_1_ATTRIBUTES[index]) + self.read_attribute(INCENTIVE_0_ATTRIBUTES[index]) + self.read_attribute(INCENTIVE_1_ATTRIBUTES[index]) + self.read_attribute(INCENTIVE_2_ATTRIBUTES[index]) + self.read_attribute(INCENTIVE_3_ATTRIBUTES[index]) > 0
+    self.read_attribute(INCENTIVE_MINUS_1_ATTRIBUTES[index].to_sym) + self.read_attribute(INCENTIVE_0_ATTRIBUTES[index].to_sym) + self.read_attribute(INCENTIVE_1_ATTRIBUTES[index].to_sym) + self.read_attribute(INCENTIVE_2_ATTRIBUTES[index].to_sym) + self.read_attribute(INCENTIVE_3_ATTRIBUTES[index].to_sym) > 0
   end
 
   def has_manual_incentive?
     MANUAL_INCENTIVE_ATTRIBUTES.each do |manual_incentive|
-      return true if self.read_attribute(manual_incentive) == true
+      return true if self.read_attribute(manual_incentive.to_sym) == true
     end
     return false
   end
@@ -59,7 +59,7 @@ class SchemeCriterion < ActiveRecord::Base
   def get_incentive_weight_array(type)
     incentive_weight_array = []
     type.each do |incentive_weight|
-      incentive_weight_array << self.read_attribute(incentive_weight)
+      incentive_weight_array << self.read_attribute(incentive_weight.to_sym)
     end
     incentive_weight_array
   end
@@ -68,9 +68,9 @@ class SchemeCriterion < ActiveRecord::Base
 
   def handle_scores
     SCORE_ATTRIBUTES.each_with_index do |score_attr, index|
-      unless self.read_attribute(score_attr).nil?
+      unless self.read_attribute(score_attr.to_sym).nil?
         new_scores = []
-        yaml_scores = self.read_attribute(score_attr)
+        yaml_scores = self.read_attribute(score_attr.to_sym)
         yaml_scores = YAML.load(yaml_scores) if yaml_scores.is_a?(String)
         yaml_scores.each do |score|
           unless score.is_a?(Array)
@@ -86,7 +86,7 @@ class SchemeCriterion < ActiveRecord::Base
         # self.write_attribute(MAX_SCORE_ATTRIBUTES[index], new_scores.last[1])
         self.send(MAX_SCORE_ATTRIBUTES[index] + '=', new_scores.last[1])
         # self.write_attribute(MIN_VALID_SCORE_ATTRIBUTES[index], self.read_attribute(MIN_SCORE_ATTRIBUTES[index]))
-        self.send(MIN_VALID_SCORE_ATTRIBUTES[index] + '=', self.read_attribute(MIN_SCORE_ATTRIBUTES[index]))
+        self.send(MIN_VALID_SCORE_ATTRIBUTES[index] + '=', self.read_attribute(MIN_SCORE_ATTRIBUTES[index].to_sym))
         # self.write_attribute(score_attr, YAML.load(new_scores.to_s))
         self.send(score_attr + '=', new_scores)
       else

@@ -28,26 +28,30 @@ class SchemeMixCriterion < ActiveRecord::Base
   validate :validate_score
 
   def validate_score
-    unless self.scheme_mix.certification_path.certificate.construction_issue_1?
-      max_value = 3
-      min_value = -1
-    else
+    return true if self.scheme_mix.certification_path.certificate.construction_certificate?
+    if self.scheme_mix.certification_path.certificate.construction_issue_1?
       max_value = 100
       min_value = 0
+    else
+      max_value = 3
+      min_value = -1
     end
     SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES.each_with_index do |targeted_score, index|
-      unless self.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index]).nil?
-        validates targeted_score.to_sym, numericality: {only_integer: false, greater_than_or_equal_to: min_value, less_than_or_equal_to: max_value}, presence: true
+      unless self.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym).nil?
+        validates_presence_of targeted_score.to_sym
+        validates_numericality_of targeted_score.to_sym, only_integer: false, greater_than_or_equal_to: min_value, less_than_or_equal_to: max_value
       end
     end
     SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES.each_with_index do |submitted_score, index|
-      unless self.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index]).nil?
-        validates submitted_score.to_sym, numericality: {only_integer: false, greater_than_or_equal_to: min_value, less_than_or_equal_to: max_value}, presence: true
+      unless self.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym).nil?
+        next if self.read_attribute(SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES[index].to_sym).nil?
+        validates_numericality_of submitted_score.to_sym, only_integer: false, greater_than_or_equal_to: min_value, less_than_or_equal_to: max_value
       end
     end
     SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES.each_with_index do |achieved_score, index|
-      unless self.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index]).nil?
-        validates achieved_score.to_sym, numericality: {only_integer: false, greater_than_or_equal_to: min_value, less_than_or_equal_to: max_value}, presence: true
+      unless self.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym).nil?
+        next if self.read_attribute(SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES[index].to_sym).nil?
+        validates_numericality_of achieved_score.to_sym, only_integer: false, greater_than_or_equal_to: min_value, less_than_or_equal_to: max_value
       end
     end
   end
@@ -103,8 +107,8 @@ class SchemeMixCriterion < ActiveRecord::Base
     total_targeted_score = 0
     total_weight = self.scheme_criterion.total_weight
     TARGETED_SCORE_ATTRIBUTES.each_with_index do |targeted_score, index|
-      unless self.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index]).nil?
-        total_targeted_score += self.read_attribute(targeted_score) * self.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[index]) / total_weight
+      unless self.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym).nil?
+        total_targeted_score += self.read_attribute(targeted_score.to_sym) * self.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[index].to_sym) / total_weight
       end
     end
     return total_targeted_score
@@ -114,8 +118,8 @@ class SchemeMixCriterion < ActiveRecord::Base
     total_submitted_score = 0
     total_weight = self.scheme_criterion.total_weight
     SUBMITTED_SCORE_ATTRIBUTES.each_with_index do |submitted_score, index|
-      unless self.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index]).nil?
-        total_submitted_score += self.read_attribute(submitted_score) * self.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[index]) / total_weight
+      unless self.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym).nil?
+        total_submitted_score += self.read_attribute(submitted_score.to_sym) * self.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[index].to_sym) / total_weight
       end
     end
     return total_submitted_score
@@ -125,8 +129,8 @@ class SchemeMixCriterion < ActiveRecord::Base
     total_achieved_score = 0
     total_weight = self.scheme_criterion.total_weight
     ACHIEVED_SCORE_ATTRIBUTES.each_with_index do |achieved_score, index|
-      unless self.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index]).nil?
-        total_achieved_score += self.read_attribute(achieved_score) * self.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[index]) / total_weight
+      unless self.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym).nil?
+        total_achieved_score += self.read_attribute(achieved_score.to_sym) * self.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[index].to_sym) / total_weight
       end
     end
     return total_achieved_score
@@ -164,16 +168,16 @@ class SchemeMixCriterion < ActiveRecord::Base
       end
       # Check targeted score
       SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES.each_with_index do |targeted_score, index|
-        unless self.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index]).nil?
-          if self.read_attribute(targeted_score).nil?
+        unless self.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym).nil?
+          if self.read_attribute(targeted_score.to_sym).nil?
             todos << 'The targeted score should be set first.'
           end
         end
       end
       # Check submitted score
       SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES.each do |submitted_score|
-        unless self.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index]).nil?
-          if self.read_attribute(submitted_score).nil?
+        unless self.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym).nil?
+          if self.read_attribute(submitted_score.to_sym).nil?
             todos << 'The submitted score should be set first.'
           end
         end
@@ -181,8 +185,8 @@ class SchemeMixCriterion < ActiveRecord::Base
     elsif in_verification?
       # Check submitted score
       SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES.each do |achieved_score|
-        unless self.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index]).nil?
-          if self.read_attribute(achieved_score).nil?
+        unless self.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym).nil?
+          if self.read_attribute(achieved_score.to_sym).nil?
             todos << 'The achieved score should be set first.'
           end
         end
@@ -258,20 +262,20 @@ class SchemeMixCriterion < ActiveRecord::Base
     total_weight = self.scheme_criterion.total_weight
     total_achieved_score = 0
     SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES.each_with_index do |achieved_score, index|
-      unless self.read_attribute(achieved_score).nil?
-        total_achieved_score += self.read_attribute(achieved_score) * self.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[index]) / total_weight
+      unless self.read_attribute(achieved_score.to_sym).nil?
+        total_achieved_score += self.read_attribute(achieved_score.to_sym) * self.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[index].to_sym) / total_weight
       end
     end
     total_submitted_score = 0
     SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES.each_with_index do |submitted_score, index|
-      unless self.read_attribute(submitted_score).nil?
-        total_submitted_score += self.read_attribute(submitted_score) * self.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[index]) / total_weight
+      unless self.read_attribute(submitted_score.to_sym).nil?
+        total_submitted_score += self.read_attribute(submitted_score.to_sym) * self.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[index].to_sym) / total_weight
       end
     end
     total_minimal_score = 0
     SchemeCriterion::MIN_SCORE_ATTRIBUTES.each_with_index do |minimal_score, index|
-      unless self.scheme_criterion.read_attribute(minimal_score).nil?
-        total_minimal_score += self.scheme_criterion.read_attribute(minimal_score) * self.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[index]) / total_weight
+      unless self.scheme_criterion.read_attribute(minimal_score.to_sym).nil?
+        total_minimal_score += self.scheme_criterion.read_attribute(minimal_score.to_sym) * self.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[index].to_sym) / total_weight
       end
     end
     if submitting?
@@ -344,13 +348,13 @@ class SchemeMixCriterion < ActiveRecord::Base
       certification_path.scheme_mix_criteria.where(main_scheme_mix_criterion_id: id).each do |smc_inherit|
         (smc_inherit.status = status) if status_changed?
         SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES.each do |targeted_score|
-          (smc_inherit.send("#{targeted_score}=", self.read_attribute(targeted_score))) if self.send("#{targeted_score}_changed?")
+          (smc_inherit.send("#{targeted_score}=", self.read_attribute(targeted_score.to_sym))) if self.send("#{targeted_score}_changed?")
         end
         SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES.each do |submitted_score|
-          (smc_inherit.send("#{submitted_score}=", self.read_attribute(submitted_score))) if self.send("#{submitted_score}_changed?")
+          (smc_inherit.send("#{submitted_score}=", self.read_attribute(submitted_score.to_sym))) if self.send("#{submitted_score}_changed?")
         end
         SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES.each do |achieved_score|
-          (smc_inherit.send("#{achieved_score}=", self.read_attribute(achieved_score))) if self.send("#{achieved_score}_changed?")
+          (smc_inherit.send("#{achieved_score}=", self.read_attribute(achieved_score.to_sym))) if self.send("#{achieved_score}_changed?")
         end
         (smc_inherit.screened = screened) if screened_changed?
         smc_inherit.save!

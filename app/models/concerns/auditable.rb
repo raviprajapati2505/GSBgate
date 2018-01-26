@@ -189,33 +189,33 @@ module Auditable
             SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES.each do |targeted_score|
               if self.send("#{targeted_score}_changed?")
                 if self.send("#{targeted_score}_was").nil?
-                  system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.targeted_score.set_html', criterion: self.name, score: self.read_attribute(targeted_score))}
-                elsif self.read_attribute(targeted_score).nil?
+                  system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.targeted_score.set_html', criterion: self.name, score: self.read_attribute(targeted_score.to_sym))}
+                elsif self.read_attribute(targeted_score.to_sym).nil?
                   system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.targeted_score.unset_html', criterion: self.name)}
                 else
-                  system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.targeted_score.update_html', criterion: self.name, old_score: self.send("#{targeted_score}_was"), new_score: self.read_attribute(targeted_score))}
+                  system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.targeted_score.update_html', criterion: self.name, old_score: self.send("#{targeted_score}_was"), new_score: self.read_attribute(targeted_score.to_sym))}
                 end
               end
             end
             SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES.each do |submitted_score|
               if self.send("#{submitted_score}_changed?")
                 if self.send("#{submitted_score}_was").nil?
-                  system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.submitted_score.set_html', criterion: self.name, score: self.read_attribute(submitted_score))}
-                elsif self.read_attribute(submitted_score).nil?
+                  system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.submitted_score.set_html', criterion: self.name, score: self.read_attribute(submitted_score.to_sym))}
+                elsif self.read_attribute(submitted_score.to_sym).nil?
                   system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.submitted_score.unset_html', criterion: self.name)}
                 else
-                  system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.submitted_score.update_html', criterion: self.name, old_score: self.send("#{submitted_score}_was"), new_score: self.read_attribute(submitted_score))}
+                  system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.submitted_score.update_html', criterion: self.name, old_score: self.send("#{submitted_score}_was"), new_score: self.read_attribute(submitted_score.to_sym))}
                 end
               end
             end
             SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES.each do |achieved_score|
               if self.send("#{achieved_score}_changed?")
                 if self.send("#{achieved_score}_was").nil?
-                  system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.achieved_score.set_html', criterion: self.name, score: self.read_attribute(achieved_score))}
-                elsif self.read_attribute(achieved_score).nil?
+                  system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.achieved_score.set_html', criterion: self.name, score: self.read_attribute(achieved_score.to_sym))}
+                elsif self.read_attribute(achieved_score.to_sym).nil?
                   system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.achieved_score.unset_html', criterion: self.name)}
                 else
-                  system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.achieved_score.update_html',  criterion: self.name, old_score: self.send("#{achieved_score}_was"), new_score: self.read_attribute(achieved_score))}
+                  system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion.achieved_score.update_html',  criterion: self.name, old_score: self.send("#{achieved_score}_was"), new_score: self.read_attribute(achieved_score.to_sym))}
                 end
               end
             end
@@ -279,19 +279,19 @@ module Auditable
             else
               SchemeCriterion::SCORE_ATTRIBUTES.each_with_index do |scores, index|
                 if self.send("#{SchemeCriterion::WEIGHT_ATTRIBUTES[index]}_changed?")
-                  system_messages << {message: t('models.concerns.auditable.scheme_criterion.weight.update_html', old_weight: self.send("#{SchemeCriterion::WEIGHT_ATTRIBUTES[index]}_was"), new_weight: self.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[index]))}
+                  system_messages << {message: t('models.concerns.auditable.scheme_criterion.weight.update_html', old_weight: self.send("#{SchemeCriterion::WEIGHT_ATTRIBUTES[index]}_was"), new_weight: self.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[index].to_sym))}
                 elsif self.send("#{scores}_changed?")
-                  system_messages << {message: t('models.concerns.auditable.scheme_criterion.scores.update_html', old_scores: self.send("#{scores}_was").to_s, new_scores: self.read_attribute(scores).to_s)}
+                  system_messages << {message: t('models.concerns.auditable.scheme_criterion.scores.update_html', old_scores: self.send("#{scores}_was").to_s, new_scores: self.read_attribute(scores.to_sym).to_s)}
                 elsif self.send("#{SchemeCriterion::INCENTIVE_MINUS_1_ATTRIBUTES[index]}_changed?")
-                  system_messages << {message: t('models.concerns.auditable.scheme_criterion.incentive_weight.update_html', old_incentive: self.send("#{SchemeCriterion::INCENTIVE_MINUS_1_ATTRIBUTES[index]}_was"), new_incentive: self.read_attribute(SchemeCriterion::INCENTIVE_MINUS_1_ATTRIBUTES[index]))}
+                  system_messages << {message: t('models.concerns.auditable.scheme_criterion.incentive_weight.update_html', old_incentive: self.send("#{SchemeCriterion::INCENTIVE_MINUS_1_ATTRIBUTES[index]}_was"), new_incentive: self.read_attribute(SchemeCriterion::INCENTIVE_MINUS_1_ATTRIBUTES[index].to_sym))}
                 elsif self.send("#{SchemeCriterion::INCENTIVE_0_ATTRIBUTES[index]}_changed?")
-                  system_messages << {message: t('models.concerns.auditable.scheme_criterion.incentive_weight.update_html', old_incentive: self.send("#{SchemeCriterion::INCENTIVE_0_ATTRIBUTES[index]}_was"), new_incentive: self.read_attribute(SchemeCriterion::INCENTIVE_0_ATTRIBUTES[index]))}
+                  system_messages << {message: t('models.concerns.auditable.scheme_criterion.incentive_weight.update_html', old_incentive: self.send("#{SchemeCriterion::INCENTIVE_0_ATTRIBUTES[index]}_was"), new_incentive: self.read_attribute(SchemeCriterion::INCENTIVE_0_ATTRIBUTES[index].to_sym))}
                 elsif self.send("#{SchemeCriterion::INCENTIVE_1_ATTRIBUTES[index]}_changed?")
-                  system_messages << {message: t('models.concerns.auditable.scheme_criterion.incentive_weight.update_html', old_incentive: self.send("#{SchemeCriterion::INCENTIVE_1_ATTRIBUTES[index]}_was"), new_incentive: self.read_attribute(SchemeCriterion::INCENTIVE_1_ATTRIBUTES[index]))}
+                  system_messages << {message: t('models.concerns.auditable.scheme_criterion.incentive_weight.update_html', old_incentive: self.send("#{SchemeCriterion::INCENTIVE_1_ATTRIBUTES[index]}_was"), new_incentive: self.read_attribute(SchemeCriterion::INCENTIVE_1_ATTRIBUTES[index].to_sym))}
                 elsif self.send("#{SchemeCriterion::INCENTIVE_2_ATTRIBUTES[index]}_changed?")
-                  system_messages << {message: t('models.concerns.auditable.scheme_criterion.incentive_weight.update_html', old_incentive: self.send("#{SchemeCriterion::INCENTIVE_2_ATTRIBUTES[index]}_was"), new_incentive: self.read_attribute(SchemeCriterion::INCENTIVE_2_ATTRIBUTES[index]))}
+                  system_messages << {message: t('models.concerns.auditable.scheme_criterion.incentive_weight.update_html', old_incentive: self.send("#{SchemeCriterion::INCENTIVE_2_ATTRIBUTES[index]}_was"), new_incentive: self.read_attribute(SchemeCriterion::INCENTIVE_2_ATTRIBUTES[index].to_sym))}
                 elsif self.send("#{SchemeCriterion::INCENTIVE_3_ATTRIBUTES[index]}_changed?")
-                  system_messages << {message: t('models.concerns.auditable.scheme_criterion.incentive_weight.update_html', old_incentive: self.send("#{SchemeCriterion::INCENTIVE_3_ATTRIBUTES[index]}_was"), new_incentive: self.read_attribute(SchemeCriterion::INCENTIVE_3_ATTRIBUTES[index]))}
+                  system_messages << {message: t('models.concerns.auditable.scheme_criterion.incentive_weight.update_html', old_incentive: self.send("#{SchemeCriterion::INCENTIVE_3_ATTRIBUTES[index]}_was"), new_incentive: self.read_attribute(SchemeCriterion::INCENTIVE_3_ATTRIBUTES[index].to_sym))}
                   # TODO add _b - score fields
                 end
               end

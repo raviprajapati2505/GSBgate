@@ -80,8 +80,8 @@ class RequirementDatum < ActiveRecord::Base
           # set targeted & submitted scores to the minimum valid score & submit the criterion
           if all_not_required
             SchemeCriterion::MIN_VALID_SCORE_ATTRIBUTES.each_with_index do |min_valid_score, index|
-              unless smc.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index]).nil?
-                min_valid_score = smc.scheme_criterion.read_attribute(min_valid_score)
+              unless smc.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym).nil?
+                min_valid_score = smc.scheme_criterion.read_attribute(min_valid_score.to_sym)
                 smc.send("#{SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES[index]}=", min_valid_score)
                 smc.send("#{SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES[index]}=", min_valid_score)
               end

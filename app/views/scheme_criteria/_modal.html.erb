@@ -9,10 +9,10 @@
                 <%= f.text_field :name %>
               <div class="container">
               <% SchemeCriterion::SCORE_ATTRIBUTES.each_with_index do |scores, index| %>
-                <% unless @scheme_criterion.read_attribute(scores).nil? %>
+                <% unless @scheme_criterion.read_attribute(scores.to_sym).nil? %>
                   <div class="panel panel-default">
                     <div class="panel-heading">
-                      <h3 class="panel-title">Scores <%= @scheme_criterion.read_attribute(SchemeCriterion::LABEL_ATTRIBUTES[index]) %></h3>
+                      <h3 class="panel-title">Scores <%= @scheme_criterion.read_attribute(SchemeCriterion::LABEL_ATTRIBUTES[index].to_sym) %></h3>
                     </div>
                     <div class="panel-body">
                       <%= f.label SchemeCriterion::WEIGHT_ATTRIBUTES[index].to_sym, 'Weight' %>
@@ -24,7 +24,7 @@
                           || @scheme_criterion.scheme_category.scheme.development_types.first.certificate.nil? %>
                         <% unless @scheme_criterion.scheme_category.scheme.development_types.first.certificate.construction_issue_1? %>
                           <%= f.label scores.to_sym, ('Scores' + tooltip('- For windows: Hold down the control (ctrl) button to select multiple options<br />- For Mac: Hold down the command button to select multiple options', placement: 'right')).html_safe %>
-                          <%= f.select scores.to_sym, options_for_select([['-1', -1.0],['0', 0.0],['1', 1.0],['2', 2.0],['3', 3.0]], @scheme_criterion.read_attribute(scores).map {|s| s[1]}), {hide_label: true}, {:multiple => true} %>
+                          <%= f.select scores.to_sym, options_for_select([['-1', -1.0],['0', 0.0],['1', 1.0],['2', 2.0],['3', 3.0]], @scheme_criterion.read_attribute(scores.to_sym).map {|s| s[1]}), {hide_label: true}, {:multiple => true} %>
                           <%= f.label SchemeCriterion::INCENTIVE_MINUS_1_ATTRIBUTES[index].to_sym, 'Incentive weight for score -1' %>
                           <%= f.number_field SchemeCriterion::INCENTIVE_MINUS_1_ATTRIBUTES[index].to_sym, in: 0.00..100.00, step: 0.01, hide_label: true, append: '%' %>
                           <%= f.label SchemeCriterion::INCENTIVE_0_ATTRIBUTES[index].to_sym, 'Incentive weight for score 0' %>
@@ -38,7 +38,7 @@
                         <% end %>
                       <% else %>
                         <%= f.label scores.to_sym, ('Scores' + tooltip('- For windows: Hold down the control (ctrl) button to select multiple options<br />- For Mac: Hold down the command button to select multiple options', placement: 'right')).html_safe %>
-                        <%= f.select scores.to_sym, options_for_select([['-1', -1.0],['0', 0.0],['1', 1.0],['2', 2.0],['3', 3.0]], @scheme_criterion.read_attribute(scores).map {|s| s[1]}), {hide_label: true}, {:multiple => true} %>
+                        <%= f.select scores.to_sym, options_for_select([['-1', -1.0],['0', 0.0],['1', 1.0],['2', 2.0],['3', 3.0]], @scheme_criterion.read_attribute(scores.to_sym).map {|s| s[1]}), {hide_label: true}, {:multiple => true} %>
                         <%= f.label SchemeCriterion::INCENTIVE_MINUS_1_ATTRIBUTES[index].to_sym, 'Incentive weight for score -1' %>
                         <%= f.number_field SchemeCriterion::INCENTIVE_MINUS_1_ATTRIBUTES[index].to_sym, in: 0.00..100.00, step: 0.01, hide_label: true, append: '%' %>
                         <%= f.label SchemeCriterion::INCENTIVE_0_ATTRIBUTES[index].to_sym, 'Incentive weight for score 0' %>

@@ -62,7 +62,7 @@ class SchemeMixCriteriaController < AuthenticatedController
 
     # If not attempting this criterion, set submitted score to minimum valid score
     SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES.each_with_index do |targeted_score, index|
-      if scheme_mix_criterion_params.has_key?(targeted_score.to_sym) && (params[:scheme_mix_criterion][targeted_score.to_sym].to_i == @scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::MIN_VALID_SCORE_ATTRIBUTES[index]))
+      if scheme_mix_criterion_params.has_key?(targeted_score.to_sym) && (params[:scheme_mix_criterion][targeted_score.to_sym].to_i == @scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::MIN_VALID_SCORE_ATTRIBUTES[index].to_sym))
         params[:scheme_mix_criterion][SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES[index].to_sym] = params[:scheme_mix_criterion][targeted_score.to_sym]
       end
     end
@@ -79,7 +79,7 @@ class SchemeMixCriteriaController < AuthenticatedController
 
   def validate_score(redirect_path)
     SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES.each_with_index do |targeted_score, index|
-      min_valid_score = @scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::MIN_VALID_SCORE_ATTRIBUTES[index])
+      min_valid_score = @scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::MIN_VALID_SCORE_ATTRIBUTES[index].to_sym)
       if ((scheme_mix_criterion_params.has_key?(targeted_score.to_sym) && (params[:scheme_mix_criterion][targeted_score.to_sym].to_i < min_valid_score)) || (scheme_mix_criterion_params.has_key?(SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES[index].to_sym) && (params[:scheme_mix_criterion][SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES[index].to_sym].to_i < min_valid_score)))
         redirect_to redirect_path, alert: "The targeted and submitted scores of this criterion must be higher than or equals to #{min_valid_score.to_s}."
       end

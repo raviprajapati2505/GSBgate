@@ -58,8 +58,8 @@ class SchemeMix < ActiveRecord::Base
       # Create a SchemeMixCriterion record
       parameter_list = {scheme_mix: self, scheme_criterion: scheme_criterion, main_scheme_mix_criterion_id: main_scheme_mix_criterion_id}
       SchemeCriterion::MAX_SCORE_ATTRIBUTES.each_with_index do |max_score, index|
-        parameter_list[SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES[index]] = scheme_criterion.read_attribute(max_score)
-        parameter_list[SchemeMixCriterion::INCENTIVE_SCORED_ATTRIBUTES[index]] = scheme_criterion.read_attribute(SchemeCriterion::CALCULATE_INCENTIVE_ATTRIBUTES[index])
+        parameter_list[SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES[index].to_sym] = scheme_criterion.read_attribute(max_score.to_sym)
+        parameter_list[SchemeMixCriterion::INCENTIVE_SCORED_ATTRIBUTES[index].to_sym] = scheme_criterion.read_attribute(SchemeCriterion::CALCULATE_INCENTIVE_ATTRIBUTES[index].to_sym)
       end
       scheme_mix_criterion = SchemeMixCriterion.create!(parameter_list)
 

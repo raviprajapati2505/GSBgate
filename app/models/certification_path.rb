@@ -202,15 +202,15 @@ class CertificationPath < ActiveRecord::Base
             todos << 'There are still documents awaiting approval.'
           end
           SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES.each_with_index do |targeted_score, index|
-            unless criterion.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index]).nil?
-              if criterion.read_attribute(targeted_score).blank?
+            unless criterion.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym).nil?
+              if criterion.read_attribute(targeted_score.to_sym).blank?
                 todos << 'Every criterion should have a targeted score.'
               end
             end
           end
           SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES.each_with_index do |submitted_score, index|
-            unless criterion.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index]).nil?
-              if criterion.read_attribute(submitted_score).blank?
+            unless criterion.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym).nil?
+              if criterion.read_attribute(submitted_score.to_sym).blank?
                 todos << 'Every criterion should have a submitted score.'
               end
             end
@@ -225,8 +225,8 @@ class CertificationPath < ActiveRecord::Base
       when CertificationPathStatus::VERIFYING, CertificationPathStatus::VERIFYING_AFTER_APPEAL
         scheme_mix_criteria.each do |criterion|
           SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES.each_with_index do |achieved_score, index|
-            unless criterion.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index]).nil?
-              if criterion.read_attribute(achieved_score).blank?
+            unless criterion.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym).nil?
+              if criterion.read_attribute(achieved_score.to_sym).blank?
                 todos << 'Every criterion should have an achieved score.'
               end
             end

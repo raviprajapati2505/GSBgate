@@ -17,16 +17,16 @@
                   <td><%= @scheme_criterion.code %></td>
                 </tr>
                 <% SchemeCriterion::WEIGHT_ATTRIBUTES.each_with_index do |weight, index| %>
-                  <% unless @scheme_criterion.read_attribute(weight).nil? || @scheme_criterion.read_attribute(weight) == 0 %>
+                  <% unless @scheme_criterion.read_attribute(weight.to_sym).nil? || @scheme_criterion.read_attribute(weight.to_sym) == 0 %>
                   <tr>
-                    <th>Weight <%= @scheme_criterion.read_attribute(SchemeCriterion::LABEL_ATTRIBUTES[index]) %></th>
-                    <td><%= @scheme_criterion.read_attribute(weight) %>%</td>
+                    <th>Weight <%= @scheme_criterion.read_attribute(SchemeCriterion::LABEL_ATTRIBUTES[index].to_sym) %></th>
+                    <td><%= @scheme_criterion.read_attribute(weight.to_sym) %>%</td>
                   </tr>
                   <% end %>
-                  <% unless @scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index]).nil? %>
+                  <% unless @scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym).nil? %>
                   <tr>
-                    <th>Scores <%= @scheme_criterion.read_attribute(SchemeCriterion::LABEL_ATTRIBUTES[index]) %></th>
-                    <td><%= @scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index]).map { |score| score[0] }.join(', ') %></td>
+                    <th>Scores <%= @scheme_criterion.read_attribute(SchemeCriterion::LABEL_ATTRIBUTES[index].to_sym) %></th>
+                    <td><%= @scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym).map { |score| score[0] }.join(', ') %></td>
                   </tr>
                   <% end %>
                 <% end %>
