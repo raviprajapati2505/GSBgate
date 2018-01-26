@@ -79,8 +79,15 @@ class RequirementDatum < ActiveRecord::Base
           # If all requirement datum records are flagged as "not required",
           # set targeted & submitted scores to the minimum valid score & submit the criterion
           if all_not_required
-            min_valid_score = smc.scheme_criterion.minimum_valid_score
-            smc.update!(targeted_score: min_valid_score, submitted_score: min_valid_score, status: smc.next_status)
+            SchemeCriterion::MIN_VALID_SCORE_ATTRIBUTES.each_with_index do |min_valid_score, index|
+              unless smc.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index]).nil?
+                min_valid_score = smc.scheme_criterion.read_attribute(min_valid_score)
+                smc.write_attribute(SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES[index], min_valid_score)
+                smc.write_attribute(SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES[index], min_valid_score)
+              end
+            end
+            smc.status = smc.next_status
+            smc.save!
           end
         end
       end

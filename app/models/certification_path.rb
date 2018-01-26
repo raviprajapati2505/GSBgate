@@ -84,6 +84,7 @@ class CertificationPath < ActiveRecord::Base
   def init
     # Set status
     self.certification_path_status_id ||= CertificationPathStatus::ACTIVATING
+    self.expires_at ||= 1.year.from_now
   end
 
   def name
@@ -200,11 +201,19 @@ class CertificationPath < ActiveRecord::Base
           if criterion.has_documents_awaiting_approval?
             todos << 'There are still documents awaiting approval.'
           end
-          if criterion.targeted_score.blank?
-            todos << 'Every criterion should have a targeted score.'
+          SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES.each_with_index do |targeted_score, index|
+            unless criterion.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index]).nil?
+              if criterion.read_attribute(targeted_score).blank?
+                todos << 'Every criterion should have a targeted score.'
+              end
+            end
           end
-          if criterion.submitted_score.blank?
-            todos << 'Every criterion should have a submitted score.'
+          SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES.each_with_index do |submitted_score, index|
+            unless criterion.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index]).nil?
+              if criterion.read_attribute(submitted_score).blank?
+                todos << 'Every criterion should have a submitted score.'
+              end
+            end
           end
           if criterion.submitting?
             todos << 'Some criteria still have status \'Submitting\'.'
@@ -215,8 +224,12 @@ class CertificationPath < ActiveRecord::Base
         end
       when CertificationPathStatus::VERIFYING, CertificationPathStatus::VERIFYING_AFTER_APPEAL
         scheme_mix_criteria.each do |criterion|
-          if criterion.achieved_score.blank?
-            todos << 'Every criterion should have an achieved score.'
+          SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES.each_with_index do |achieved_score, index|
+            unless criterion.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index]).nil?
+              if criterion.read_attribute(achieved_score).blank?
+                todos << 'Every criterion should have an achieved score.'
+              end
+            end
           end
           if criterion.verifying?
             todos << 'Some criteria still have status \'Verifying\'.'

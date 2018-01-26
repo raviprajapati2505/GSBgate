@@ -15,26 +15,42 @@ class SchemeMixCriterion < ActiveRecord::Base
 
   enum status: {submitting: 10, submitted: 20, verifying: 30, score_awarded: 41, score_downgraded: 42, score_upgraded: 43, score_minimal:44, appealed: 50, submitting_after_appeal: 60, submitted_after_appeal: 70, verifying_after_appeal: 80, score_awarded_after_appeal: 91, score_downgraded_after_appeal: 92, score_upgraded_after_appeal: 93, score_minimal_after_appeal:94 }
 
-  TARGETED_SCORE_ATTRIBUTES = ['targeted_score', 'targeted_score_b'].freeze
-  SUBMITTED_SCORE_ATTRIBUTES = ['submitted_score', 'submitted_score_b'].freeze
-  ACHIEVED_SCORE_ATTRIBUTES = ['achieved_score', 'achieved_score_b'].freeze
-  INCENTIVE_SCORED_ATTRIBUTES = ['incentive_scored', 'incentive_scored_b'].freeze
-
-  TARGETED_SCORE_A_ATTR = TARGETED_SCORE_ATTRIBUTES + ['targeted_score_a']
-  SUBMITTED_SCORE_A_ATTR = SUBMITTED_SCORE_ATTRIBUTES + ['submitted_score_a']
-  ACHIEVED_SCORE_A_ATTR = ACHIEVED_SCORE_ATTRIBUTES + ['achieved_score_a']
+  TARGETED_SCORE_ATTRIBUTES = ['targeted_score_a', 'targeted_score_b'].freeze
+  SUBMITTED_SCORE_ATTRIBUTES = ['submitted_score_a', 'submitted_score_b'].freeze
+  ACHIEVED_SCORE_ATTRIBUTES = ['achieved_score_a', 'achieved_score_b'].freeze
+  INCENTIVE_SCORED_ATTRIBUTES = ['incentive_scored_a', 'incentive_scored_b'].freeze
 
   after_initialize :init
   after_update :update_inheriting_criteria
 
   validates :status, inclusion: SchemeMixCriterion.statuses.keys
 
-  validates :targeted_score, numericality: {only_integer: false, greater_than_or_equal_to: -1, less_than_or_equal_to: 3}, presence: true, unless: 'scheme_mix.certification_path.certificate.construction_issue_1? || scheme_mix.certification_path.certificate.construction_certificate?'
-  validates :targeted_score, numericality: {only_integer: false, greater_than_or_equal_to: 0, less_than_or_equal_to: 100}, presence: true, if: 'scheme_mix.certification_path.certificate.construction_issue_1?'
-  validates :submitted_score, numericality: {only_integer: false, greater_than_or_equal_to: -1, less_than_or_equal_to: 3}, allow_nil: true, unless: 'scheme_mix.certification_path.certificate.construction_issue_1? || scheme_mix.certification_path.certificate.construction_certificate?'
-  validates :submitted_score, numericality: {only_integer: false, greater_than_or_equal_to: 0, less_than_or_equal_to: 100}, allow_nil: true, if: 'scheme_mix.certification_path.certificate.construction_issue_1?'
-  validates :achieved_score, numericality: {only_integer: false, greater_than_or_equal_to: -1, less_than_or_equal_to: 3}, allow_nil: true, unless: 'scheme_mix.certification_path.certificate.construction_issue_1? || scheme_mix.certification_path.certificate.construction_certificate?'
-  validates :achieved_score, numericality: {only_integer: false, greater_than_or_equal_to: 0, less_than_or_equal_to: 100}, allow_nil: true, if: 'scheme_mix.certification_path.certificate.construction_issue_1?'
+  validate :validate_score
+
+  def validate_score
+    unless self.scheme_mix.certification_path.certificate.construction_issue_1?
+      max_value = 3
+      min_value = -1
+    else
+      max_value = 100
+      min_value = 0
+    end
+    SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES.each_with_index do |targeted_score, index|
+      unless self.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index]).nil?
+        validates targeted_score.to_sym, numericality: {only_integer: false, greater_than_or_equal_to: min_value, less_than_or_equal_to: max_value}, presence: true
+      end
+    end
+    SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES.each_with_index do |submitted_score, index|
+      unless self.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index]).nil?
+        validates submitted_score.to_sym, numericality: {only_integer: false, greater_than_or_equal_to: min_value, less_than_or_equal_to: max_value}, presence: true
+      end
+    end
+    SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES.each_with_index do |achieved_score, index|
+      unless self.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index]).nil?
+        validates achieved_score.to_sym, numericality: {only_integer: false, greater_than_or_equal_to: min_value, less_than_or_equal_to: max_value}, presence: true
+      end
+    end
+  end
 
   scope :assigned_to_user, ->(user) {
     joins(:requirement_data).where('scheme_mix_criteria.certifier_id = ? or requirement_data.user_id = ?', user.id, user.id)
@@ -83,6 +99,39 @@ class SchemeMixCriterion < ActiveRecord::Base
     self.scheme_criterion.code
   end
 
+  def targeted_score
+    total_targeted_score = 0
+    total_weight = self.scheme_criterion.total_weight
+    TARGETED_SCORE_ATTRIBUTES.each_with_index do |targeted_score, index|
+      unless self.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index]).nil?
+        total_targeted_score += self.read_attribute(targeted_score) * self.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[index]) / total_weight
+      end
+    end
+    return total_targeted_score
+  end
+
+  def submitted_score
+    total_submitted_score = 0
+    total_weight = self.scheme_criterion.total_weight
+    SUBMITTED_SCORE_ATTRIBUTES.each_with_index do |submitted_score, index|
+      unless self.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index]).nil?
+        total_submitted_score += self.read_attribute(submitted_score) * self.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[index]) / total_weight
+      end
+    end
+    return total_submitted_score
+  end
+
+  def achieved_score
+    total_achieved_score = 0
+    total_weight = self.scheme_criterion.total_weight
+    ACHIEVED_SCORE_ATTRIBUTES.each_with_index do |achieved_score, index|
+      unless self.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index]).nil?
+        total_achieved_score += self.read_attribute(achieved_score) * self.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[index]) / total_weight
+      end
+    end
+    return total_achieved_score
+  end
+
   def has_required_requirements?
     requirement_data.each do |requirement|
       if requirement.required?
@@ -114,17 +163,29 @@ class SchemeMixCriterion < ActiveRecord::Base
         todos << 'There are still documents awaiting approval.'
       end
       # Check targeted score
-      if targeted_score.nil?
-        todos << 'The targeted score should be set first.'
+      SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES.each_with_index do |targeted_score, index|
+        unless self.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index]).nil?
+          if self.read_attribute(targeted_score).nil?
+            todos << 'The targeted score should be set first.'
+          end
+        end
       end
       # Check submitted score
-      if submitted_score.nil?
-        todos << 'The submitted score should be set first.'
+      SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES.each do |submitted_score|
+        unless self.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index]).nil?
+          if self.read_attribute(submitted_score).nil?
+            todos << 'The submitted score should be set first.'
+          end
+        end
       end
     elsif in_verification?
       # Check submitted score
-      if achieved_score.nil?
-        todos << 'The achieved score should be set first.'
+      SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES.each do |achieved_score|
+        unless self.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index]).nil?
+          if self.read_attribute(achieved_score).nil?
+            todos << 'The achieved score should be set first.'
+          end
+        end
       end
     end
 
@@ -194,22 +255,41 @@ class SchemeMixCriterion < ActiveRecord::Base
   end
 
   def next_status
+    total_weight = self.scheme_criterion.total_weight
+    total_achieved_score = 0
+    SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES.each_with_index do |achieved_score, index|
+      unless self.read_attribute(achieved_score).nil?
+        total_achieved_score += self.read_attribute(achieved_score) * self.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[index]) / total_weight
+      end
+    end
+    total_submitted_score = 0
+    SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES.each_with_index do |submitted_score, index|
+      unless self.read_attribute(submitted_score).nil?
+        total_submitted_score += self.read_attribute(submitted_score) * self.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[index]) / total_weight
+      end
+    end
+    total_minimal_score = 0
+    SchemeCriterion::MIN_SCORE_ATTRIBUTES.each_with_index do |minimal_score, index|
+      unless self.scheme_criterion.read_attribute(minimal_score).nil?
+        total_minimal_score += self.scheme_criterion.read_attribute(minimal_score) * self.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[index]) / total_weight
+      end
+    end
     if submitting?
       return :submitted
     elsif submitting_after_appeal?
       return :submitted_after_appeal
     elsif verifying?
-      return :score_minimal if achieved_score == scheme_criterion.minimum_score
-      return :score_awarded if achieved_score == submitted_score
-      return :score_downgraded if achieved_score < submitted_score
-      return :score_upgraded if achieved_score > submitted_score
+      return :score_minimal if total_achieved_score == total_minimum_score
+      return :score_awarded if total_achieved_score == total_submitted_score
+      return :score_downgraded if total_achieved_score < total_submitted_score
+      return :score_upgraded if total_achieved_score > total_submitted_score
       logger.fatal('Error advancing status from verifying')
       return false
     elsif verifying_after_appeal?
-      return :score_minimal_after_appeal if achieved_score == scheme_criterion.minimum_score
-      return :score_awarded_after_appeal if achieved_score == submitted_score
-      return :score_downgraded_after_appeal if achieved_score < submitted_score
-      return :score_upgraded_after_appeal if achieved_score > submitted_score
+      return :score_minimal_after_appeal if total_achieved_score == total_minimum_score
+      return :score_awarded_after_appeal if total_achieved_score == total_submitted_score
+      return :score_downgraded_after_appeal if total_achieved_score < total_submitted_score
+      return :score_upgraded_after_appeal if total_achieved_score > total_submitted_score
       logger.fatal('Error advancing status from verifying_after_appeal')
       return false
     elsif submitted? && [CertificationPathStatus::SUBMITTING, CertificationPathStatus::SUBMITTING_AFTER_SCREENING].include?(scheme_mix.certification_path.certification_path_status_id)
@@ -263,9 +343,15 @@ class SchemeMixCriterion < ActiveRecord::Base
     if (certification_path.main_scheme_mix_id == scheme_mix.id) && scheme_criterion.scheme_category.shared?
       certification_path.scheme_mix_criteria.where(main_scheme_mix_criterion_id: id).each do |smc_inherit|
         (smc_inherit.status = status) if status_changed?
-        (smc_inherit.targeted_score = targeted_score) if targeted_score_changed?
-        (smc_inherit.submitted_score = submitted_score) if submitted_score_changed?
-        (smc_inherit.achieved_score = achieved_score) if achieved_score_changed?
+        SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES.each do |targeted_score|
+          (smc_inherit.write_attribute(targeted_score, self.read_attribute(targeted_score))) if self.send("#{targeted_score}_changed?")
+        end
+        SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES.each do |submitted_score|
+          (smc_inherit.write_attribute(submitted_score, self.read_attribute(submitted_score))) if self.send("#{submitted_score}_changed?")
+        end
+        SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES.each do |achieved_score|
+          (smc_inherit.write_attribute(achieved_score, self.read_attribute(achieved_score))) if self.send("#{achieved_score}_changed?")
+        end
         (smc_inherit.screened = screened) if screened_changed?
         smc_inherit.save!
       end

@@ -6,27 +6,22 @@ class SchemeCriterion < ActiveRecord::Base
   has_many :scheme_mix_criteria
   has_many :scheme_criteria_requirements
   has_many :requirements, through: :scheme_criteria_requirements
-  serialize :scores
+  serialize :scores_a
   serialize :scores_b
 
-  WEIGHT_ATTRIBUTES = ['weight', 'weight_b'].freeze
-  SCORE_ATTRIBUTES = ['scores', 'scores_b'].freeze
-  MIN_SCORE_ATTRIBUTES = ['minimum_score', 'minimum_score_b'].freeze
-  MAX_SCORE_ATTRIBUTES = ['maximum_score', 'maximum_score_b'].freeze
-  MIN_VALID_SCORE_ATTRIBUTES = ['minimum_valid_score', 'minimum_valid_score_b'].freeze
-  INCENTIVE_MINUS_1_ATTRIBUTES = ['incentive_weight_minus_1', 'incentive_weight_minus_1_b'].freeze
-  INCENTIVE_0_ATTRIBUTES = ['incentive_weight_0', 'incentive_weight_0_b'].freeze
-  INCENTIVE_1_ATTRIBUTES = ['incentive_weight_1', 'incentive_weight_1_b'].freeze
-  INCENTIVE_2_ATTRIBUTES = ['incentive_weight_2', 'incentive_weight_2_b'].freeze
-  INCENTIVE_3_ATTRIBUTES = ['incentive_weight_3', 'incentive_weight_3_b'].freeze
-  CALCULATE_INCENTIVE_ATTRIBUTES = ['calculate_incentive', 'calculate_incentive_b'].freeze
-  MANUAL_INCENTIVE_ATTRIBUTES = ['assign_incentive_manually', 'assign_incentive_manually_b'].freeze
-  LABEL_ATTRIBUTES = ['label', 'label_b'].freeze
-
-  SCORE_A_ATTR = SCORE_ATTRIBUTES + ['scores_a']
-  MAX_SCORE_A_ATTR = MAX_SCORE_ATTRIBUTES + ['maximum_score_a']
-  MIN_SCORE_A_ATTR = MIN_SCORE_ATTRIBUTES + ['minimum_score_a']
-  MIN_VALID_SCORE_A_ATTR = MIN_VALID_SCORE_ATTRIBUTES + ['minimum_valid_score_a']
+  WEIGHT_ATTRIBUTES = ['weight_a', 'weight_b'].freeze
+  SCORE_ATTRIBUTES = ['scores_a', 'scores_b'].freeze
+  MIN_SCORE_ATTRIBUTES = ['minimum_score_a', 'minimum_score_b'].freeze
+  MAX_SCORE_ATTRIBUTES = ['maximum_score_a', 'maximum_score_b'].freeze
+  MIN_VALID_SCORE_ATTRIBUTES = ['minimum_valid_score_a', 'minimum_valid_score_b'].freeze
+  INCENTIVE_MINUS_1_ATTRIBUTES = ['incentive_weight_minus_1_a', 'incentive_weight_minus_1_b'].freeze
+  INCENTIVE_0_ATTRIBUTES = ['incentive_weight_0_a', 'incentive_weight_0_b'].freeze
+  INCENTIVE_1_ATTRIBUTES = ['incentive_weight_1_a', 'incentive_weight_1_b'].freeze
+  INCENTIVE_2_ATTRIBUTES = ['incentive_weight_2_a', 'incentive_weight_2_b'].freeze
+  INCENTIVE_3_ATTRIBUTES = ['incentive_weight_3_a', 'incentive_weight_3_b'].freeze
+  CALCULATE_INCENTIVE_ATTRIBUTES = ['calculate_incentive_a', 'calculate_incentive_b'].freeze
+  MANUAL_INCENTIVE_ATTRIBUTES = ['assign_incentive_manually_a', 'assign_incentive_manually_b'].freeze
+  LABEL_ATTRIBUTES = ['label_a', 'label_b'].freeze
 
   before_save :handle_scores
 
@@ -56,7 +51,7 @@ class SchemeCriterion < ActiveRecord::Base
 
   def has_manual_incentive?
     MANUAL_INCENTIVE_ATTRIBUTES.each do |manual_incentive|
-      return true if manual_incentive == true
+      return true if self.read_attribute(manual_incentive) == true
     end
     return false
   end
@@ -75,7 +70,9 @@ class SchemeCriterion < ActiveRecord::Base
     SCORE_ATTRIBUTES.each_with_index do |score_attr, index|
       unless self.read_attribute(score_attr).nil?
         new_scores = []
-        self.read_attribute(score_attr).each do |score|
+        yaml_scores = self.read_attribute(score_attr)
+        yaml_scores = YAML.load(yaml_scores) if yaml_scores.is_a?(String)
+        yaml_scores.each do |score|
           unless score.is_a?(Array)
             unless score.empty?
               new_scores.push([score.to_i, score.to_f])
@@ -91,7 +88,7 @@ class SchemeCriterion < ActiveRecord::Base
         # self.write_attribute(MIN_VALID_SCORE_ATTRIBUTES[index], self.read_attribute(MIN_SCORE_ATTRIBUTES[index]))
         self.send(MIN_VALID_SCORE_ATTRIBUTES[index] + '=', self.read_attribute(MIN_SCORE_ATTRIBUTES[index]))
         # self.write_attribute(score_attr, YAML.load(new_scores.to_s))
-        self.send(score_attr + '=', YAML.load(new_scores.to_s))
+        self.send(score_attr + '=', new_scores)
       else
         # self.write_attribute(MIN_SCORE_ATTRIBUTES[index], 0.0)
         self.send(MIN_SCORE_ATTRIBUTES[index] + '=', 0.0)

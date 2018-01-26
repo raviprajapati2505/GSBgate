@@ -200,7 +200,7 @@ class CertificationPathsController < AuthenticatedController
           overall_certification_path.scheme_mixes.build(scheme: scheme, weight: 100)
           overall_certification_path.save!
           scheme.scheme_criteria.each do |scheme_criterion|
-            SchemeMixCriterion.create!(scheme_mix: overall_certification_path.scheme_mixes.first, scheme_criterion: scheme_criterion, targeted_score: average_scores[:targeted_score], submitted_score: average_scores[:submitted_score], achieved_score: average_scores[:achieved_score])
+            SchemeMixCriterion.create!(scheme_mix: overall_certification_path.scheme_mixes.first, scheme_criterion: scheme_criterion, targeted_score_a: average_scores[:targeted_score], submitted_score_a: average_scores[:submitted_score], achieved_score_a: average_scores[:achieved_score])
           end
         end
 

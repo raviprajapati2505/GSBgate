@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180124135848) do
+ActiveRecord::Schema.define(version: 20180125091233) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -291,21 +291,21 @@ ActiveRecord::Schema.define(version: 20180124135848) do
   create_table "scheme_criteria", force: :cascade do |t|
     t.datetime "created_at",                                                          null: false
     t.datetime "updated_at",                                                          null: false
-    t.decimal  "weight",                      precision: 5, scale: 2
+    t.decimal  "weight_a",                    precision: 5, scale: 2
     t.string   "name"
     t.integer  "number"
-    t.string   "scores"
+    t.string   "scores_a"
     t.integer  "scheme_category_id"
-    t.decimal  "minimum_score",               precision: 4, scale: 1,                 null: false
-    t.decimal  "maximum_score",               precision: 4, scale: 1,                 null: false
-    t.decimal  "minimum_valid_score",         precision: 4, scale: 1,                 null: false
-    t.decimal  "incentive_weight_minus_1",    precision: 5, scale: 2, default: 0.0
-    t.decimal  "incentive_weight_0",          precision: 5, scale: 2, default: 0.0
-    t.decimal  "incentive_weight_1",          precision: 5, scale: 2, default: 0.0
-    t.decimal  "incentive_weight_2",          precision: 5, scale: 2, default: 0.0
-    t.decimal  "incentive_weight_3",          precision: 5, scale: 2, default: 0.0
-    t.boolean  "calculate_incentive",                                 default: true
-    t.boolean  "assign_incentive_manually",                           default: false
+    t.decimal  "minimum_score_a",             precision: 4, scale: 1,                 null: false
+    t.decimal  "maximum_score_a",             precision: 4, scale: 1,                 null: false
+    t.decimal  "minimum_valid_score_a",       precision: 4, scale: 1,                 null: false
+    t.decimal  "incentive_weight_minus_1_a",  precision: 5, scale: 2, default: 0.0
+    t.decimal  "incentive_weight_0_a",        precision: 5, scale: 2, default: 0.0
+    t.decimal  "incentive_weight_1_a",        precision: 5, scale: 2, default: 0.0
+    t.decimal  "incentive_weight_2_a",        precision: 5, scale: 2, default: 0.0
+    t.decimal  "incentive_weight_3_a",        precision: 5, scale: 2, default: 0.0
+    t.boolean  "calculate_incentive_a",                               default: true
+    t.boolean  "assign_incentive_manually_a",                         default: false
     t.decimal  "weight_b",                    precision: 5, scale: 2, default: 0.0
     t.string   "scores_b"
     t.decimal  "minimum_score_b",             precision: 4, scale: 1
@@ -318,7 +318,7 @@ ActiveRecord::Schema.define(version: 20180124135848) do
     t.decimal  "incentive_weight_3_b",        precision: 5, scale: 2, default: 0.0
     t.boolean  "calculate_incentive_b",                               default: false
     t.boolean  "assign_incentive_manually_b",                         default: false
-    t.string   "label"
+    t.string   "label_a"
     t.string   "label_b"
   end
 
@@ -358,13 +358,13 @@ ActiveRecord::Schema.define(version: 20180124135848) do
     t.integer  "status"
     t.integer  "certifier_id"
     t.date     "due_date"
-    t.decimal  "targeted_score",               precision: 4, scale: 1
-    t.decimal  "submitted_score",              precision: 4, scale: 1
-    t.decimal  "achieved_score",               precision: 4, scale: 1
+    t.decimal  "targeted_score_a",             precision: 4, scale: 1
+    t.decimal  "submitted_score_a",            precision: 4, scale: 1
+    t.decimal  "achieved_score_a",             precision: 4, scale: 1
     t.integer  "main_scheme_mix_criterion_id"
     t.boolean  "in_review",                                            default: false
     t.integer  "review_count",                                         default: 0
-    t.boolean  "incentive_scored",                                     default: false
+    t.boolean  "incentive_scored_a",                                   default: false
     t.boolean  "screened",                                             default: false, null: false
     t.text     "pcr_review_draft"
     t.decimal  "targeted_score_b",             precision: 3, scale: 1

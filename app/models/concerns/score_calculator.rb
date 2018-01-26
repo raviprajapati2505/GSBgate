@@ -2,7 +2,9 @@ module ScoreCalculator
   extend ActiveSupport::Concern
 
   POINT_TYPES = [:criteria_points, :scheme_points, :certificate_points]
-  SCORE_FIELDS = [:achieved_score, :submitted_score, :targeted_score, :maximum_score, :minimum_score, :minimum_valid_score]
+  SCHEMECRITERION_FIELDS = [:maximum_score_a, :minimum_score_a, :minimum_valid_score_a, :maximum_score_b, :minimum_score_b, :minimum_valid_score_b, :maximum_score, :minimum_score, :minimum_valid_score].freeze
+  SCHEMEMIXCRITERION_FIELDS = [:achieved_score_a, :submitted_score_a, :targeted_score_a, :achieved_score_b, :submitted_score_b, :targeted_score_b, :achieved_score, :submitted_score, :targeted_score].freeze
+  SCORE_FIELDS = SCHEMECRITERION_FIELDS + SCHEMEMIXCRITERION_FIELDS
   GROUP_TYPES = [:scheme_mix_criteria_id, :certification_path_id, :scheme_mix_id, :scheme_criteria_id, :scheme_category_id]
 
   included do
@@ -125,7 +127,7 @@ module ScoreCalculator
       score_calculation_query = build_score_calculation_query(field_name, field_table, point_type)
 
       # validations
-      if field_name == :achieved_score or field_name == :submitted_score or field_name == :targeted_score
+      if SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES.include?(field_name.to_s) || SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES.include?(field_name.to_s) || SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES.include?(field_name.to_s)
         # - validate certification path status
         check_certification_path_state = build_check_certification_path_state_query(field_name)
 
@@ -153,7 +155,7 @@ module ScoreCalculator
     def build_check_scheme_mix_criterion_state_query(field_name)
       # Note: this check ensures that assessors can not see the achieved scores, while the certification path is still under review
       # with one notable exception, they can see the scores for non appealed criteria during verification after appeal
-      if field_name == :achieved_score
+      if field_name == :achieved_score || SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES.include?(field_name.to_s)
         # This check is only needed for 'verifying' an 'verifying after appeal', so if the state is different from those we can return 'true'
         certification_path_statuses_ok = 'certification_paths_score.certification_path_status_id NOT IN (%{certification_path_statuses})' % {certification_path_statuses: [CertificationPathStatus::VERIFYING, CertificationPathStatus::VERIFYING_AFTER_APPEAL].join(', ')}
         # if 'verifying' or 'verifying after appeal', return true for gsas trust admins and managers, or project certifiers, as they are allowed to see the achieved scores
@@ -179,16 +181,23 @@ module ScoreCalculator
     end
 
     def build_check_minimum_valid_score_query(field_name, field_table)
-      check_minimum_valid_score_template = '(%{field_table}.%{field_name} >= scheme_criteria_score.minimum_valid_score)'
-      check_minimum_valid_score_template % {field_table: field_table, field_name: field_name}
+      if SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES.include?(field_name.to_s)
+        index = SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES.index(field_name.to_s)
+      elsif SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES.include?(field_name.to_s)
+        index = SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES.index(field_name.to_s)
+      elsif SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES.include?(field_name.to_s)
+        index = SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES.index(field_name.to_s)
+      end
+      check_minimum_valid_score_template = '(%{field_table}.%{field_name} >= scheme_criteria_score.%{minimum_valid_score_field})'
+      check_minimum_valid_score_template % {field_table: field_table, field_name: field_name, minimum_valid_score_field: SchemeCriterion::MIN_VALID_SCORE_ATTRIBUTES[index]}
     end
 
     def build_check_certification_path_state_query(field_name)
-      if field_name == :targeted_score
+      if field_name == :targeted_score || SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES.include?(field_name.to_s)
         minimum_certification_path_status_id = CertificationPathStatus::SUBMITTING
-      elsif field_name == :submitted_score
+      elsif field_name == :submitted_score || SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES.include?(field_name.to_s)
         minimum_certification_path_status_id = CertificationPathStatus::SUBMITTING
-      elsif field_name == :achieved_score
+      elsif field_name == :achieved_score || SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES.include?(field_name.to_s)
         minimum_certification_path_status_id = CertificationPathStatus::VERIFYING
       end
       check_certification_path_state_template = '(certification_paths_score.certification_path_status_id >= %{certification_path_status_id})'
@@ -243,40 +252,19 @@ module ScoreCalculator
     end
 
     def build_sub_score_calculation_query(field_name, field_table, point_type)
-      case field_name
-        when :achieved_score_a
-          field_name = :achieved_score
-          index = 0
-        when :submitted_score_a
-          field_name = :submitted_score
-          index = 0
-        when :targeted_score_a
-          field_name = :targeted_score
-          index = 0
-        when :maximum_score_a
-          field_name = :maximum_score
-          index = 0
-        when :minimum_score_a
-          field_name = :minimum_score
-          index = 0
-        when :minimum_valid_score_a
-          field_name = :minimum_valid_score
-          index = 0
-        else
-          field_name = field_name.to_s
-          if SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES.include?(field_name)
-            index = SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES.index(field_name)
-          elsif SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES.include?(field_name)
-            index = SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES.index(field_name)
-          elsif SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES.include?(field_name)
-            index = SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES.index(field_name)
-          elsif SchemeCriterion::MAX_SCORE_ATTRIBUTES.include?(field_name)
-            index = SchemeCriterion::MAX_SCORE_ATTRIBUTES.index(field_name)
-          elsif SchemeCriterion::MIN_SCORE_ATTRIBUTES.include?(field_name)
-            index = SchemeCriterion::MIN_SCORE_ATTRIBUTES.index(field_name)
-          elsif SchemeCriterion::MIN_VALID_SCORE_ATTRIBUTES.include?(field_name)
-            index = SchemeCriterion::MIN_VALID_SCORE_ATTRIBUTES.index(field_name)
-          end
+      field_name = field_name.to_s
+      if SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES.include?(field_name)
+        index = SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES.index(field_name)
+      elsif SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES.include?(field_name)
+        index = SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES.index(field_name)
+      elsif SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES.include?(field_name)
+        index = SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES.index(field_name)
+      elsif SchemeCriterion::MAX_SCORE_ATTRIBUTES.include?(field_name)
+        index = SchemeCriterion::MAX_SCORE_ATTRIBUTES.index(field_name)
+      elsif SchemeCriterion::MIN_SCORE_ATTRIBUTES.include?(field_name)
+        index = SchemeCriterion::MIN_SCORE_ATTRIBUTES.index(field_name)
+      elsif SchemeCriterion::MIN_VALID_SCORE_ATTRIBUTES.include?(field_name)
+        index = SchemeCriterion::MIN_VALID_SCORE_ATTRIBUTES.index(field_name)
       end
       score = "(CASE WHEN %{field_table}.%{field_name} IS NULL THEN 0 ELSE GREATEST(%{field_table}.%{field_name}::float, scheme_criteria_score.#{SchemeCriterion::MIN_SCORE_ATTRIBUTES[index]}::float) END)"
       score_dependent_incentive_weight = "(CASE #{score} WHEN -1 THEN scheme_criteria_score.#{SchemeCriterion::INCENTIVE_MINUS_1_ATTRIBUTES[index]} WHEN 0 THEN scheme_criteria_score.#{SchemeCriterion::INCENTIVE_0_ATTRIBUTES[index]} WHEN 1 THEN scheme_criteria_score.#{SchemeCriterion::INCENTIVE_1_ATTRIBUTES[index]} WHEN 2 THEN scheme_criteria_score.#{SchemeCriterion::INCENTIVE_2_ATTRIBUTES[index]}  WHEN 3 THEN scheme_criteria_score.#{SchemeCriterion::INCENTIVE_3_ATTRIBUTES[index]} ELSE 0 END)"
@@ -296,9 +284,9 @@ module ScoreCalculator
     end
 
     def field_table_for_field_name(field_name)
-      if SchemeCriterion::MAX_SCORE_A_ATTR.include?(field_name.to_s) || SchemeCriterion::MIN_SCORE_A_ATTR.include?(field_name.to_s) || SchemeCriterion::MIN_VALID_SCORE_A_ATTR.include?(field_name.to_s)
+      if SCHEMECRITERION_FIELDS.include?(field_name)
         field_table = 'scheme_criteria_score'
-      elsif SchemeMixCriterion::ACHIEVED_SCORE_A_ATTR.include?(field_name.to_s) || SchemeMixCriterion::SUBMITTED_SCORE_A_ATTR.include?(field_name.to_s) || SchemeMixCriterion::TARGETED_SCORE_A_ATTR.include?(field_name.to_s)
+      elsif SCHEMEMIXCRITERION_FIELDS.include?(field_name)
         field_table = 'scheme_mix_criteria_score'
       else
         raise('Unexpected score field: ' + field_name.to_s)

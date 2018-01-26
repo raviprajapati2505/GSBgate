@@ -112,25 +112,29 @@
                         </ul>
                     </div>
                 <% end %>
-                <% if @scheme_mix_criterion.scheme_criterion.minimum_score != @scheme_mix_criterion.scheme_criterion.minimum_valid_score %>
+                <% SchemeCriterion::MIN_SCORE_ATTRIBUTES.each_with_index do |min_score, index| %>
+                <% if @scheme_mix_criterion.scheme_criterion.read_attribute(min_score) != @scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::MIN_VALID_SCORE_ATTRIBUTES[index]) %>
                     <p class="alert alert-warning"><%= ikoen('exclamation-circle') %>
                       <% if @certification_path.certificate.construction_issue_1? %>
-                        <%= t('.scores.minimum_valid_score_warning', minimum_valid_score: number_to_percentage(@scheme_mix_criterion.scheme_criterion.minimum_valid_score, precision: 1)) %>
+                        <%= t('.scores.minimum_valid_score_warning', minimum_valid_score: number_to_percentage(@scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::MIN_VALID_SCORE_ATTRIBUTES[index]), precision: 1)) %>
                       <% else %>
-                        <%= t('.scores.minimum_valid_score_warning', minimum_valid_score: number_with_precision(@scheme_mix_criterion.scheme_criterion.minimum_valid_score, precision: 0, significant: true)) %>
+                        <%= t('.scores.minimum_valid_score_warning', minimum_valid_score: number_with_precision(@scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::MIN_VALID_SCORE_ATTRIBUTES[index]), precision: 0, significant: true)) %>
                       <% end %>
                     </p>
+                <% end %>
                 <% end %>
                 <table class="table table-bordered table-striped">
                     <thead>
                     <tr>
                         <th></th>
-                        <!-- SchemeCriterion::LABEL_ATTRIBUTES -->
-                        <% unless @scheme_mix_criterion.scheme_criterion.scores_b.nil? %>
-                        <th>Calculated Score</th>
-                        <th>Measured Score</th>
+                        <% SchemeCriterion::SCORE_ATTRIBUTES.each_with_index do |scores, index| %>
+                        <% unless @scheme_mix_criterion.scheme_criterion.read_attribute(scores).nil? %>
+                        <% unless @scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::LABEL_ATTRIBUTES[index]).nil? %>
+                          <th><%= @scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::LABEL_ATTRIBUTES[index]) %></th>
                         <% else %>
-                        <th>Score</th>
+                          <th>Score</th>
+                        <% end %>
+                        <% end %>
                         <% end %>
                     </tr>
                     </thead>
@@ -210,20 +214,20 @@
                       <% end %>
                     </tr>
                     <% if @scheme_mix_criterion.scheme_criterion.has_manual_incentive? %>
-                        <tr>
-                          <th>Incentive earned ?</th>
-                          <% SchemeCriterion::MANUAL_INCENTIVE_ATTRIBUTES.each_with_index do |manual_incentive, index| %>
-                          <td>
-                            <% if manual_incentive == true %>
-                            <% if can?(:update_incentive_scored, @scheme_mix_criterion) && @scheme_mix_criterion.read_attribute(SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES[index]) > 0 %>
-                              <%= f.check_box SchemeMixCriterion::INCENTIVE_SCORED_ATTRIBUTES[index].to_sym, label: '' %>
-                            <% else %>
-                              <%= @scheme_mix_criterion.read_attribute(SchemeMixCriterion::INCENTIVE_SCORED_ATTRIBUTES[index]) == true ? 'Yes' : 'No' %>
-                            <% end %>
-                            <% end %>
-                          </td>
-                        </tr>
-                    <% end %>
+                    <tr>
+                      <th>Incentive earned ?</th>
+                      <% SchemeCriterion::MANUAL_INCENTIVE_ATTRIBUTES.each_with_index do |manual_incentive, index| %>
+                      <td>
+                        <% if @scheme_mix_criterion.scheme_criterion.read_attribute(manual_incentive) == true %>
+                        <% if can?(:update_incentive_scored, @scheme_mix_criterion) && @scheme_mix_criterion.read_attribute(SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES[index]) > 0 %>
+                          <%= f.check_box SchemeMixCriterion::INCENTIVE_SCORED_ATTRIBUTES[index].to_sym, label: '' %>
+                        <% else %>
+                          <%= @scheme_mix_criterion.read_attribute(SchemeMixCriterion::INCENTIVE_SCORED_ATTRIBUTES[index]) == true ? 'Yes' : 'No' %>
+                        <% end %>
+                        <% end %>
+                      </td>
+                      <% end %>
+                    </tr>
                     <% end %>
                     <% end %>
                     <% end %>

@@ -54,17 +54,17 @@ class SchemeMixCriteriaController < AuthenticatedController
   end
 
   def update_scores
-    authorize! :update_targeted_score, @scheme_mix_criterion, message: 'Not authorized to update targeted score' if scheme_mix_criterion_params.has_key?(:targeted_score)
-    authorize! :update_submitted_score, @scheme_mix_criterion, message: 'Not authorized to update submitted score' if scheme_mix_criterion_params.has_key?(:submitted_score)
-    authorize! :update_achieved_score, @scheme_mix_criterion, message: 'Not authorized to update achieved score' if scheme_mix_criterion_params.has_key?(:achieved_score)
-    authorize! :update_incentive_score, @scheme_mix_criterion, message: 'Not authorized to update incentive flag' if scheme_mix_criterion_params.has_key?(:incentive_score)
+    authorize! :update_targeted_score, @scheme_mix_criterion, message: 'Not authorized to update targeted score' if scheme_mix_criterion_params.has_key?(:targeted_score_a)
+    authorize! :update_submitted_score, @scheme_mix_criterion, message: 'Not authorized to update submitted score' if scheme_mix_criterion_params.has_key?(:submitted_score_a)
+    authorize! :update_achieved_score, @scheme_mix_criterion, message: 'Not authorized to update achieved score' if scheme_mix_criterion_params.has_key?(:achieved_score_a)
 
     redirect_path = project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion)
-    min_valid_score = @scheme_mix_criterion.scheme_criterion.minimum_valid_score
 
     # If not attempting this criterion, set submitted score to minimum valid score
-    if scheme_mix_criterion_params.has_key?(:targeted_score) && (params[:scheme_mix_criterion][:targeted_score].to_i == min_valid_score)
-      params[:scheme_mix_criterion][:submitted_score] = params[:scheme_mix_criterion][:targeted_score]
+    SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES.each_with_index do |targeted_score, index|
+      if scheme_mix_criterion_params.has_key?(targeted_score.to_sym) && (params[:scheme_mix_criterion][targeted_score.to_sym].to_i == @scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::MIN_VALID_SCORE_ATTRIBUTES[index]))
+        params[:scheme_mix_criterion][SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES[index].to_sym] = params[:scheme_mix_criterion][targeted_score.to_sym]
+      end
     end
 
     # The targeted & submitted scores should always be higher than or equal to the minimum valid score of the criterion

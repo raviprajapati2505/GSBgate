@@ -18,28 +18,31 @@ class SchemeCriteriaController < AuthenticatedController
 
   def update
     # Get all scores that are in use
-    used_targeted_scores = SchemeMixCriterion.where(scheme_criterion_id: @scheme_criterion.id).distinct.pluck(:targeted_score)
-    used_submitted_scores = SchemeMixCriterion.where(scheme_criterion_id: @scheme_criterion.id).distinct.pluck(:submitted_score)
-    used_achieved_scores = SchemeMixCriterion.where(scheme_criterion_id: @scheme_criterion.id).distinct.pluck(:achieved_score)
-    all_used_scores = used_targeted_scores | used_submitted_scores | used_achieved_scores
+    SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES.each_with_index do |targeted_score, index|
+      used_targeted_scores = SchemeMixCriterion.where(scheme_criterion_id: @scheme_criterion.id).distinct.pluck(targeted_score.to_sym)
+      used_submitted_scores = SchemeMixCriterion.where(scheme_criterion_id: @scheme_criterion.id).distinct.pluck(SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES[index].to_sym)
+      used_achieved_scores = SchemeMixCriterion.where(scheme_criterion_id: @scheme_criterion.id).distinct.pluck(SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES[index].to_sym)
 
-    # Check if there are removed scores that are in use
-    removed_scores_in_use = []
-    all_used_scores.each do |used_score|
-      removed_scores_in_use << used_score unless params[:scheme_criterion][:scores].include?(used_score.to_s)
-    end
+      all_used_scores = used_targeted_scores | used_submitted_scores | used_achieved_scores
 
-    # Notify the user if there are scores in use that he tried to remove
-    if removed_scores_in_use.count > 0
-      if (removed_scores_in_use.count == 1)
-        error_message = "Score #{removed_scores_in_use[0].to_i} cannot be removed because it's already in use."
-      else
-        error_message = "Scores #{removed_scores_in_use.map { |score| score.to_i }.to_sentence} cannot be removed because they are already in use."
+      # Check if there are removed scores that are in use
+      removed_scores_in_use = []
+      all_used_scores.each do |used_score|
+        removed_scores_in_use << used_score unless params[:scheme_criterion][SchemeCriterion::SCORE_ATTRIBUTES[inddex].to_sym].include?(used_score.to_s)
       end
-      redirect_to scheme_criterion_path(@scheme_criterion), alert: "Criterion could not be updated. #{error_message}"
-      return
-    else
-      @scheme_criterion.scores = params[:scheme_criterion][:scores]
+
+      # Notify the user if there are scores in use that he tried to remove
+      if removed_scores_in_use.count > 0
+        if (removed_scores_in_use.count == 1)
+          error_message = "Score #{removed_scores_in_use[0].to_i} cannot be removed because it's already in use."
+        else
+          error_message = "Scores #{removed_scores_in_use.map { |score| score.to_i }.to_sentence} cannot be removed because they are already in use."
+        end
+        redirect_to scheme_criterion_path(@scheme_criterion), alert: "Criterion could not be updated. #{error_message}"
+        return
+      else
+        @scheme_criterion.write_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index], params[:scheme_criterion][SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym])
+      end
     end
 
     if @scheme_criterion.update(scheme_criterion_params)
