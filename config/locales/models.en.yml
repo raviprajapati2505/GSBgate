@@ -113,17 +113,17 @@ en:
             assigned_for_pcr_review_due_html: Criterion <strong>%{criterion}</strong> was assigned to GSAS trust certifier <strong>%{user}</strong> for PCR review. The due date is <strong>%{due_date}</strong>.
             assigned_for_pcr_review_html: Criterion <strong>%{criterion}</strong> was assigned to GSAS trust certifier <strong>%{user}</strong> for PCR review.
           targeted_score:
-            set_html: The targeted score of criterion <strong>%{criterion}</strong> was set to <strong>%{score}</strong>.
-            unset_html: The targeted score of criterion <strong>%{criterion}</strong> was removed.
-            update_html: The targeted score of criterion <strong>%{criterion}</strong> was changed from <strong>%{old_score}</strong> to <strong>%{new_score}</strong>.
+            set_html: The %{score_label} targeted score of criterion <strong>%{criterion}</strong> was set to <strong>%{score}</strong>.
+            unset_html: The %{score_label} targeted score of criterion <strong>%{criterion}</strong> was removed.
+            update_html: The %{score_label} targeted score of criterion <strong>%{criterion}</strong> was changed from <strong>%{old_score}</strong> to <strong>%{new_score}</strong>.
           submitted_score:
-            set_html: The submitted score of criterion <strong>%{criterion}</strong> was set to <strong>%{score}</strong>.
-            unset_html: The submitted score of criterion <strong>%{criterion}</strong> was removed.
-            update_html: The submitted score of criterion <strong>%{criterion}</strong> was changed from <strong>%{old_score}</strong> to <strong>%{new_score}</strong>.
+            set_html: The %{score_label} submitted score of criterion <strong>%{criterion}</strong> was set to <strong>%{score}</strong>.
+            unset_html: The %{score_label} submitted score of criterion <strong>%{criterion}</strong> was removed.
+            update_html: The %{score_label} submitted score of criterion <strong>%{criterion}</strong> was changed from <strong>%{old_score}</strong> to <strong>%{new_score}</strong>.
           achieved_score:
-            set_html: The achieved score of criterion <strong>%{criterion}</strong> was set to <strong>%{score}</strong>.
-            unset_html: The achieved score of criterion <strong>%{criterion}</strong> was removed.
-            update_html: The achieved score of criterion <strong>%{criterion}</strong> was changed from <strong>%{old_score}</strong> to <strong>%{new_score}</strong>.
+            set_html: The %{score_label} achieved score of criterion <strong>%{criterion}</strong> was set to <strong>%{score}</strong>.
+            unset_html: The %{score_label} achieved score of criterion <strong>%{criterion}</strong> was removed.
+            update_html: The %{score_label} achieved score of criterion <strong>%{criterion}</strong> was changed from <strong>%{old_score}</strong> to <strong>%{new_score}</strong>.
           main:
             update_html: This change was automated because the criterion inherits from <strong>%{main_criterion}</strong> in the <strong>%{main_scheme}</strong> scheme.
           pcr_review_draft:
