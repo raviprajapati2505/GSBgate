@@ -37,7 +37,7 @@ class RenameScoreFields < ActiveRecord::Migration
       scheme_criterion.save!
     end
 
-    execute("update certification_paths set expires_at = (current_timestamp '1' year * duration) where expires_at is null")
+    execute("update certification_paths set expires_at = (current_timestamp + interval '1' year) where expires_at is null")
 
   end
 end
