@@ -28,7 +28,7 @@ class SchemeCriteriaController < AuthenticatedController
       # Check if there are removed scores that are in use
       removed_scores_in_use = []
       all_used_scores.each do |used_score|
-        removed_scores_in_use << used_score unless params[:scheme_criterion][SchemeCriterion::SCORE_ATTRIBUTES[inddex].to_sym].include?(used_score.to_s)
+        removed_scores_in_use << used_score unless params[:scheme_criterion][SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym].include?(used_score.to_s)
       end
 
       # Notify the user if there are scores in use that he tried to remove
