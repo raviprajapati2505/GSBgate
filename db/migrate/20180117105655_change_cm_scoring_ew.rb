@@ -41,7 +41,7 @@ class ChangeCmScoringEw < ActiveRecord::Migration
     # E.1 and E.2
     scheme_criteria = SchemeCriterion.joins(scheme_category: {scheme: {development_types: :certificate}}).where(scheme_categories: {code: 'E'}).where("certificates.certificate_type = 1 AND certificates.gsas_version = 'v2.1 Issue 3.0' AND certificates.certification_type IN (31, 32, 33)").distinct
     scheme_criteria.each do |scheme_criterion|
-      scheme_criterion.weight = 5.0
+      scheme_criterion.weight = scheme_criterion.weight / 2
       scheme_criterion.weight_b = scheme_criterion.weight
       scheme_criterion.scores_b = YAML.load(scheme_criterion.scores.to_s)
       scheme_criterion.minimum_score_b = scheme_criterion.minimum_score
@@ -59,7 +59,7 @@ class ChangeCmScoringEw < ActiveRecord::Migration
     # W.1 and W.2
     scheme_criteria = SchemeCriterion.joins(scheme_category: {scheme: {development_types: :certificate}}).where(scheme_categories: {code: 'W'}).where("certificates.certificate_type = 1 AND certificates.gsas_version = 'v2.1 Issue 3.0' AND certificates.certification_type IN (31, 32, 33)").distinct
     scheme_criteria.each do |scheme_criterion|
-      scheme_criterion.weight = 3.0
+      scheme_criterion.weight = scheme_criterion.weight / 2
       scheme_criterion.weight_b = scheme_criterion.weight
       scheme_criterion.scores_b = YAML.load(scheme_criterion.scores.to_s)
       scheme_criterion.minimum_score_b = scheme_criterion.minimum_score
