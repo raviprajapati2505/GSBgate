@@ -175,7 +175,7 @@ class SchemeMixCriterion < ActiveRecord::Base
         end
       end
       # Check submitted score
-      SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES.each do |submitted_score|
+      SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES.each_with_index do |submitted_score, index|
         unless self.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym).nil?
           if self.read_attribute(submitted_score.to_sym).nil?
             todos << 'The submitted score should be set first.'
@@ -184,7 +184,7 @@ class SchemeMixCriterion < ActiveRecord::Base
       end
     elsif in_verification?
       # Check submitted score
-      SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES.each do |achieved_score|
+      SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES.each_with_index do |achieved_score, index|
         unless self.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym).nil?
           if self.read_attribute(achieved_score.to_sym).nil?
             todos << 'The achieved score should be set first.'
