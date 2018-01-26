@@ -272,10 +272,10 @@ class SchemeMixCriterion < ActiveRecord::Base
         total_submitted_score += self.read_attribute(submitted_score.to_sym) * self.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[index].to_sym) / total_weight
       end
     end
-    total_minimal_score = 0
+    total_minimum_score = 0
     SchemeCriterion::MIN_SCORE_ATTRIBUTES.each_with_index do |minimal_score, index|
       unless self.scheme_criterion.read_attribute(minimal_score.to_sym).nil?
-        total_minimal_score += self.scheme_criterion.read_attribute(minimal_score.to_sym) * self.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[index].to_sym) / total_weight
+        total_minimum_score += self.scheme_criterion.read_attribute(minimal_score.to_sym) * self.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[index].to_sym) / total_weight
       end
     end
     if submitting?
