@@ -216,10 +216,10 @@
                     <% if @scheme_mix_criterion.scheme_criterion.has_manual_incentive? %>
                     <tr>
                       <th>Incentive earned ?</th>
-                      <% SchemeCriterion::MANUAL_INCENTIVE_ATTRIBUTES.each_with_index do |manual_incentive, index| %>
+                      <% SchemeCriterion::SCORE_ATTRIBUTES.each_with_index do |scores, index| %>
                       <td>
-                        <% if @scheme_mix_criterion.scheme_criterion.read_attribute(manual_incentive.to_sym) == true %>
-                        <% if can?(:update_incentive_scored, @scheme_mix_criterion) && @scheme_mix_criterion.read_attribute(SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES[index].to_sym) > 0 %>
+                        <% if @scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::MANUAL_INCENTIVE_ATTRIBUTES[index].to_sym) == true %>
+                        <% if can?(:update_incentive_scored, @scheme_mix_criterion) && (!['E','W'].include?(@scheme_mix_criterion.scheme_criterion.scheme_category.code) || @scheme_mix_criterion.read_attribute(SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES[index].to_sym) > 0) %>
                           <%= f.check_box SchemeMixCriterion::INCENTIVE_SCORED_ATTRIBUTES[index].to_sym, label: '' %>
                         <% else %>
                           <%= @scheme_mix_criterion.read_attribute(SchemeMixCriterion::INCENTIVE_SCORED_ATTRIBUTES[index].to_sym) == true ? 'Yes' : 'No' %>
