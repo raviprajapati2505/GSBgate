@@ -261,21 +261,23 @@ class SchemeMixCriterion < ActiveRecord::Base
   def next_status
     total_weight = self.scheme_criterion.total_weight
     total_achieved_score = 0
-    SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES.each_with_index do |achieved_score, index|
-      unless self.read_attribute(achieved_score.to_sym).nil?
-        total_achieved_score += self.read_attribute(achieved_score.to_sym) * self.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[index].to_sym) / total_weight
-      end
-    end
     total_submitted_score = 0
-    SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES.each_with_index do |submitted_score, index|
-      unless self.read_attribute(submitted_score.to_sym).nil?
-        total_submitted_score += self.read_attribute(submitted_score.to_sym) * self.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[index].to_sym) / total_weight
-      end
-    end
     total_minimum_score = 0
-    SchemeCriterion::MIN_SCORE_ATTRIBUTES.each_with_index do |minimal_score, index|
-      unless self.scheme_criterion.read_attribute(minimal_score.to_sym).nil?
-        total_minimum_score += self.scheme_criterion.read_attribute(minimal_score.to_sym) * self.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[index].to_sym) / total_weight
+    if total_weight > 0
+      SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES.each_with_index do |achieved_score, index|
+        unless self.read_attribute(achieved_score.to_sym).nil?
+          total_achieved_score += self.read_attribute(achieved_score.to_sym) * self.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[index].to_sym) / total_weight
+        end
+      end
+      SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES.each_with_index do |submitted_score, index|
+        unless self.read_attribute(submitted_score.to_sym).nil?
+          total_submitted_score += self.read_attribute(submitted_score.to_sym) * self.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[index].to_sym) / total_weight
+        end
+      end
+      SchemeCriterion::MIN_SCORE_ATTRIBUTES.each_with_index do |minimal_score, index|
+        unless self.scheme_criterion.read_attribute(minimal_score.to_sym).nil?
+          total_minimum_score += self.scheme_criterion.read_attribute(minimal_score.to_sym) * self.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[index].to_sym) / total_weight
+        end
       end
     end
     if submitting?
