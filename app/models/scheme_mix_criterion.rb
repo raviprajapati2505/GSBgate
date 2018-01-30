@@ -287,14 +287,14 @@ class SchemeMixCriterion < ActiveRecord::Base
       return :score_awarded if total_achieved_score == total_submitted_score
       return :score_downgraded if total_achieved_score < total_submitted_score
       return :score_upgraded if total_achieved_score > total_submitted_score
-      logger.fatal('Error advancing status from verifying')
+      logger.fatal("Error advancing status from verifying for scheme_mix_criterion with ID=#{self.id.to_s}. total_submitted_score=#{total_submitted_score}|total_achieved_score=#{total_achieved_score}|total_minimum_score=#{total_minimum_score}|total_weight=#{total_weight}")
       return false
     elsif verifying_after_appeal?
       return :score_minimal_after_appeal if total_achieved_score == total_minimum_score
       return :score_awarded_after_appeal if total_achieved_score == total_submitted_score
       return :score_downgraded_after_appeal if total_achieved_score < total_submitted_score
       return :score_upgraded_after_appeal if total_achieved_score > total_submitted_score
-      logger.fatal('Error advancing status from verifying_after_appeal')
+      logger.fatal("Error advancing status from verifying_after_appeal for scheme_mix_criterion with ID=#{self.id.to_s}. total_submitted_score=#{total_submitted_score}|total_achieved_score=#{total_achieved_score}|total_minimum_score=#{total_minimum_score}|total_weight=#{total_weight}")
       return false
     elsif submitted? && [CertificationPathStatus::SUBMITTING, CertificationPathStatus::SUBMITTING_AFTER_SCREENING].include?(scheme_mix.certification_path.certification_path_status_id)
       return :submitting
