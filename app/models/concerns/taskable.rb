@@ -130,7 +130,7 @@ module Taskable
       # Create CGP project manager task to upload CMP (in case of construction stage 1)
       Task.create(taskable: self,
                   task_description_id: PROJ_MNGR_UPLOAD_CMP,
-                  application_role: ProjectsUser.roles[:cgp_project_manager],
+                  project_role: ProjectsUser.roles[:cgp_project_manager],
                   project: self.project,
                   certification_path: self)
     end
