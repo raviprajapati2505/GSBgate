@@ -83,8 +83,12 @@ class CertificationPath < ActiveRecord::Base
 
   def init
     # Set status
-    self.certification_path_status_id ||= CertificationPathStatus::ACTIVATING
-    self.expires_at ||= 1.year.from_now
+    if self.has_attribute?('certification_path_status_id')
+      self.certification_path_status_id ||= CertificationPathStatus::ACTIVATING
+    end
+    if self.has_attribute?('expires_at')
+      self.expires_at ||= 1.year.from_now
+    end
   end
 
   def name
