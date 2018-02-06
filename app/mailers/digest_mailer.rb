@@ -179,6 +179,12 @@ class DigestMailer < ApplicationMailer
     mail(to: email, subject: 'GSASgate - linkme.qa invitation')
   end
 
+  def archive_created_email(archive)
+    @archive = archive
+
+    mail(to: @archive.user.email, subject: 'GSASgate - your archive was generated')
+  end
+
   private
 
   def add_condition(user, notification_type, auditable_type, new_status)

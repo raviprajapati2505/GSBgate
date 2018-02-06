@@ -199,6 +199,8 @@ class Ability
       # Owner
       can [:index, :show], Owner
 
+      # Archive
+      can :show, Archive, user_id: user.id
     elsif user.gsas_trust_admin? || user.gsas_trust_manager? || user.gsas_trust_top_manager?
       can :read, :all
       # Project
@@ -287,6 +289,9 @@ class Ability
 
       # Owner
       can [:index, :show], Owner
+
+      # Archive
+      can :show, Archive, user_id: user.id
 
       # # Admins opt-out for specific abilities
       # cannot :apply_for_pcr, CertificationPath, pcr_track: true

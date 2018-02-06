@@ -41,8 +41,8 @@ en:
           text: Download Score Report
           tooltip: Download Score Report
         download_archive:
-          text: Download archive
-          tooltip: Download a ZIP archive containing all approved documents in this certification and related audit logs.(Currently containing %{approved_count} approved document(s))
+          text: Generate & download archive
+          tooltip: A ZIP archive containing all approved documents in this certification and related audit logs will be generated for you. (Currently containing %{approved_count} approved document(s))
         apply_pcr:
           confirm: You are now applying for the PCR track. This will require an extra fee. Please confirm your choice.
           text: Apply for PCR

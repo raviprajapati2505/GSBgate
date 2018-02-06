@@ -17,6 +17,7 @@ class User < ActiveRecord::Base
   has_many :audit_logs
   has_many :notification_types_users, dependent: :destroy
   has_many :notification_types, through: :notification_types_users
+  has_many :archives
 
   after_initialize :init, if: :new_record?
   before_create :before_create

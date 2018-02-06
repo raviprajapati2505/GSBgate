@@ -210,4 +210,21 @@ namespace :gsas do
     Rails.logger.info 'Carrierwave cache dir cleaned'
   end
 
+  desc 'Clean up expired archives'
+  task :clean_up_expired_archives, [] => :environment do |t, args|
+    Rails.logger.info 'Cleaning up expired archives'
+
+    expired_archives = Archive.where('created_at < ? AND status = ?', Time.now - 1.day, Archive.statuses[:generated])
+
+    puts expired_archives.inspect
+
+    expired_archives.each do |archive|
+      puts "- Cleaning up archive #{archive.id}"
+      File.delete(archive.archive_path) if archive.archive_file.present?
+      archive.delete
+    end
+
+    Rails.logger.info 'Expired archives were cleaned'
+  end
+
 end

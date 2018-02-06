@@ -24,6 +24,7 @@ class CertificationPath < ActiveRecord::Base
   has_many :certification_path_audit_logs, class_name: 'AuditLog', foreign_key: 'certification_path_id', dependent: :destroy
   has_many :cgp_certification_path_documents, dependent: :destroy
   has_many :certifier_certification_path_documents, dependent: :destroy
+  has_many :archives, as: :subject, dependent: :destroy
 
   accepts_nested_attributes_for :certificate
   accepts_nested_attributes_for :scheme_mixes

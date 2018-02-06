@@ -173,9 +173,18 @@ class SchemeMixCriteriaController < AuthenticatedController
   end
 
   def download_archive
-    temp_file = DocumentArchiverService.instance.create_scheme_mix_criterion_archive(@scheme_mix_criterion)
-    send_file temp_file.path, type: 'application/zip', disposition: 'attachment', filename: sanitize_filename(@certification_path.project.name + ' - ' + @certification_path.name + ' - ' + @scheme_mix.name + ' - ' + @scheme_mix_criterion.code + ' ' + @scheme_mix_criterion.name) + ' - ' + Time.new.strftime(t('time.formats.filename'))  + '.zip'
-    temp_file.close
+    last_archive = Archive.order(created_at: :desc).find_by(user_id: current_user.id, subject: @scheme_mix_criterion)
+
+    if last_archive.present? && (last_archive.created_at > (Time.now - 3.minutes))
+      redirect_to project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), alert: 'You have recently requested an archive for this criterion.'
+    else
+      archive = Archive.new
+      archive.user_id = current_user.id
+      archive.subject = @scheme_mix_criterion
+      archive.save!
+      GenerateArchiveJob.perform_later(archive)
+      redirect_to project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), notice: 'A ZIP archive is being generated. You will be notified by email when the file can be downloaded.'
+    end
   end
 
   private

@@ -11,11 +11,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180201124522) do
+ActiveRecord::Schema.define(version: 20180201153201) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
+
+  create_table "archives", force: :cascade do |t|
+    t.string   "archive_file"
+    t.integer  "status"
+    t.integer  "subject_id"
+    t.string   "subject_type"
+    t.integer  "user_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "archives", ["subject_type", "subject_id"], name: "index_archives_on_subject_type_and_subject_id", using: :btree
+  add_index "archives", ["user_id"], name: "index_archives_on_user_id", using: :btree
 
   create_table "audit_log_visibilities", force: :cascade do |t|
     t.string "name", null: false
@@ -463,6 +476,7 @@ ActiveRecord::Schema.define(version: 20180201124522) do
   add_index "users", ["linkme_member_id"], name: "index_users_on_linkme_member_id", unique: true, using: :btree
   add_index "users", ["username", "linkme_member_id"], name: "index_users_on_username_and_linkme_member_id", unique: true, using: :btree
 
+  add_foreign_key "archives", "users"
   add_foreign_key "audit_logs", "audit_log_visibilities"
   add_foreign_key "audit_logs", "projects"
   add_foreign_key "audit_logs", "users"

@@ -212,9 +212,18 @@ class CertificationPathsController < AuthenticatedController
   end
 
   def download_archive
-    temp_file = DocumentArchiverService.instance.create_certification_path_archive(@certification_path)
-    send_file temp_file.path, type: 'application/zip', disposition: 'attachment', filename: sanitize_filename(@certification_path.project.name + ' - ' + @certification_path.name) + ' - ' + Time.new.strftime(t('time.formats.filename'))  + '.zip'
-    temp_file.close
+    last_archive = Archive.order(created_at: :desc).find_by(user_id: current_user.id, subject: @certification_path)
+
+    if last_archive.present? && (last_archive.created_at > (Time.now - 3.minutes))
+      redirect_to project_certification_path_path(@project, @certification_path), alert: 'You have recently requested an archive for this certificate.'
+    else
+      archive = Archive.new
+      archive.user_id = current_user.id
+      archive.subject = @certification_path
+      archive.save!
+      GenerateArchiveJob.perform_later(archive)
+      redirect_to project_certification_path_path(@project, @certification_path), notice: 'A ZIP archive is being generated. You will be notified by email when the file can be downloaded.'
+    end
   end
 
   def list

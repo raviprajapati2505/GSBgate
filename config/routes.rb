@@ -147,6 +147,7 @@ Rails.application.routes.draw do
   get 'owners' => 'owners#index', as: 'owners'
   # Reports
   get 'reports/certifiers_criteria' => 'reports#certifiers_criteria'
+  resources :archives, only: [:show]
 
   # Error pages routes
   match '/403', to: 'errors#forbidden', via: :all, as: 'forbidden_error'
