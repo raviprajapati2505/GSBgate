@@ -220,8 +220,8 @@ class CertificationPathsController < AuthenticatedController
       archive = Archive.new
       archive.user_id = current_user.id
       archive.subject = @certification_path
+      archive.status = :not_generated
       archive.save!
-      GenerateArchiveJob.perform_later(archive)
       redirect_to project_certification_path_path(@project, @certification_path), notice: 'A ZIP archive is being generated. You will be notified by email when the file can be downloaded.'
     end
   end

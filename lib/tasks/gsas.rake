@@ -6,7 +6,7 @@ namespace :gsas do
   desc 'Send email to users with a digest of their most recent project changes and their list of unfinished tasks'
   task :send_digest_mail, [:username] => :environment do |t, args|
 
-    Rails.logger.info 'Start sending emails...'
+    puts 'Start sending emails...'
 
     user_count = 0
     if args.username.present?
@@ -27,13 +27,13 @@ namespace :gsas do
       end while users.size == PAGE_SIZE
     end
 
-    Rails.logger.info "Processed #{ActionController::Base.helpers.pluralize(user_count, 'user')}."
+    puts "Processed #{ActionController::Base.helpers.pluralize(user_count, 'user')}."
   end
 
   desc 'Create a task for the system admin for every expired certification path'
   task :create_duration_task, [] => :environment do |t, args|
 
-    Rails.logger.info 'Start creating tasks for expired certification paths...'
+    puts 'Start creating tasks for expired certification paths...'
 
     backgroundExecution = BackgroundExecution.find_by(name: BackgroundExecution::DURATION_TASK)
     if backgroundExecution.nil?
@@ -68,13 +68,13 @@ namespace :gsas do
       certification_path_count += certification_paths.size
     end while certification_paths.size == PAGE_SIZE
 
-    Rails.logger.info "Found #{ActionController::Base.helpers.pluralize(certification_path_count, 'certification path')} which are expired."
+    puts "Found #{ActionController::Base.helpers.pluralize(certification_path_count, 'certification path')} which are expired."
   end
 
   desc 'Create a task for the CGP project manager or certification manager for every overdue task'
   task :create_overdue_task, [] => :environment do |t, args|
 
-    Rails.logger.info 'Start creating tasks for overdue tasks...'
+    puts 'Start creating tasks for overdue tasks...'
 
     backgroundExecution = BackgroundExecution.find_by(name: BackgroundExecution::OVERDUE_TASK)
     if backgroundExecution.nil?
@@ -176,13 +176,13 @@ namespace :gsas do
       task_count += criteria.size
     end while criteria.size == PAGE_SIZE
 
-    Rails.logger.info "Found #{ActionController::Base.helpers.pluralize(task_count, 'task')} which are overdue."
+    puts "Found #{ActionController::Base.helpers.pluralize(task_count, 'task')} which are overdue."
   end
 
   desc 'Destroy old projects without certificates or with unactivated certificates'
   task :destroy_old_empty_projects, [] => :environment do |t, args|
 
-    Rails.logger.info 'Start destroying old empty projects...'
+    puts 'Start destroying old empty projects...'
 
     projects_count = 0
     page = 0
@@ -194,29 +194,27 @@ namespace :gsas do
                               .where.not('EXISTS(SELECT id FROM certification_paths WHERE project_id = projects.id AND certification_path_status_id <> ?)', CertificationPathStatus::ACTIVATING)
                               .page(page).per(PAGE_SIZE)
       old_empty_projects.each do |old_empty_project|
-        Rails.logger.info 'Destroying ' + old_empty_project.name
+        puts 'Destroying ' + old_empty_project.name
         old_empty_project.destroy
       end
       projects_count += old_empty_projects.size
     end while old_empty_projects.size == PAGE_SIZE
 
-    Rails.logger.info "Destroyed #{ActionController::Base.helpers.pluralize(projects_count, 'old empty project')}."
+    puts "Destroyed #{ActionController::Base.helpers.pluralize(projects_count, 'old empty project')}."
   end
 
   desc 'Clean Carrierwave cache dir'
   task :clean_carrierwave_cache, [] => :environment do |t, args|
-    Rails.logger.info 'Start cleaning Carrierwave cache dir'
+    puts 'Start cleaning Carrierwave cache dir'
     CarrierWave.clean_cached_files!
-    Rails.logger.info 'Carrierwave cache dir cleaned'
+    puts 'Carrierwave cache dir cleaned'
   end
 
   desc 'Clean up expired archives'
   task :clean_up_expired_archives, [] => :environment do |t, args|
-    Rails.logger.info 'Cleaning up expired archives'
+    puts 'Cleaning up expired archives'
 
-    expired_archives = Archive.where('created_at < ? AND status = ?', Time.now - 1.day, Archive.statuses[:generated])
-
-    puts expired_archives.inspect
+    expired_archives = Archive.where('updated_at < ? AND status = ?', Time.now - 1.day, Archive.statuses[:generated])
 
     expired_archives.each do |archive|
       puts "- Cleaning up archive #{archive.id}"
@@ -224,7 +222,22 @@ namespace :gsas do
       archive.delete
     end
 
-    Rails.logger.info 'Expired archives were cleaned'
+    puts 'Expired archives were cleaned'
+  end
+
+  desc 'Generate archives'
+  task :generate_archives, [] => :environment do |t, args|
+    puts 'Generate archives'
+
+    ungenerated_archives = Archive.not_generated
+
+    ungenerated_archives.each do |archive|
+      puts "- Generating archive #{archive.id}"
+      archive.generate!
+      DigestMailer.archive_created_email(archive).deliver_now
+    end
+
+    puts 'All archives generated'
   end
 
 end

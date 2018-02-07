@@ -181,8 +181,8 @@ class SchemeMixCriteriaController < AuthenticatedController
       archive = Archive.new
       archive.user_id = current_user.id
       archive.subject = @scheme_mix_criterion
+      archive.status = :not_generated
       archive.save!
-      GenerateArchiveJob.perform_later(archive)
       redirect_to project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), notice: 'A ZIP archive is being generated. You will be notified by email when the file can be downloaded.'
     end
   end
