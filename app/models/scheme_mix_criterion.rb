@@ -26,7 +26,7 @@ class SchemeMixCriterion < ActiveRecord::Base
 
   validates :status, inclusion: SchemeMixCriterion.statuses.keys
 
-  validate :validate_score
+  validate :validate_score, :validate_incentive_scored
 
   def validate_score
     return true if self.scheme_mix.certification_path.certificate.construction_certificate?
@@ -53,6 +53,16 @@ class SchemeMixCriterion < ActiveRecord::Base
       unless self.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym).nil?
         next if self.read_attribute(SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES[index].to_sym).nil?
         validates_numericality_of achieved_score.to_sym, only_integer: false, greater_than_or_equal_to: min_value, less_than_or_equal_to: max_value
+      end
+    end
+  end
+
+  def validate_incentive_scored
+    if ['E','W'].include?(self.scheme_criterion.scheme_category.code)
+      SchemeCriterion::SCORE_ATTRIBUTES.each_with_index do |scores, index|
+        if self.read_attribute(SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES[index].to_sym) <= 0 && self.read_attribute(SchemeMixCriterion::INCENTIVE_SCORED_ATTRIBUTES[index].to_sym) == true
+          errors.add(SchemeMixCriterion::INCENTIVE_SCORED_ATTRIBUTES[index].to_sym, 'should be > 0 for Energy and Water categories.')
+        end
       end
     end
   end

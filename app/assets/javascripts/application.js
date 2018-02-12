@@ -260,10 +260,14 @@ var GSAS = {
     // Find and process iCheck checkboxes or radios (that weren't processed yet)
     processiCheck: function() {
         // iCheck all checkboxes & radio buttons
-        $('input[type=checkbox], input[type=radio]').not('.icheck-processed').addClass('icheck-processed').iCheck({
+        $('input[type=checkbox], input[type=radio]').not('input[readonly]').not('.icheck-processed').addClass('icheck-processed').iCheck({
             checkboxClass: 'icheckbox_square-green',
             radioClass: 'iradio_square-green'
         });
+        $('input[type=checkbox][readonly], input[type=radio][readonly]').not('.icheck-processed').addClass('icheck-processed').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green'
+        }).iCheck('disable');
     },
 
     //Select2

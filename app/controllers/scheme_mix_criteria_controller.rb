@@ -69,11 +69,23 @@ class SchemeMixCriteriaController < AuthenticatedController
 
     # The targeted & submitted scores should always be higher than or equal to the minimum valid score of the criterion
     if validate_score(redirect_path)
+      # reset incentive_scored for categories E and W for achieved scores <= 0
+      reset_incentive_scored
       @scheme_mix_criterion.transaction do
         # Update the scheme mix criterion
         @scheme_mix_criterion.update!(scheme_mix_criterion_params)
       end
       redirect_to redirect_path, notice: 'Criterion scores were successfully updated.'
+    end
+  end
+
+  def reset_incentive_scored
+    if ['E','W'].include?(@scheme_mix_criterion.scheme_criterion.scheme_category.code)
+      SchemeCriterion::SCORE_ATTRIBUTES.each_with_index do |scores, index|
+        if (scheme_mix_criterion_params.has_key?(SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES[index].to_sym) && scheme_mix_criterion_params[SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES[index].to_sym].to_i <= 0) && (!scheme_mix_criterion_params.has_key?(SchemeMixCriterion::INCENTIVE_SCORED_ATTRIBUTES[index].to_sym) || (scheme_mix_criterion_params.has_key?(SchemeMixCriterion::INCENTIVE_SCORED_ATTRIBUTES[index].to_sym) && scheme_mix_criterion_params[SchemeMixCriterion::INCENTIVE_SCORED_ATTRIBUTES[index].to_sym].to_i == 1))
+          params[:scheme_mix_criterion][SchemeMixCriterion::INCENTIVE_SCORED_ATTRIBUTES[index]] = false
+        end
+      end
     end
   end
 

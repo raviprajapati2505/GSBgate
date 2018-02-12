@@ -124,6 +124,10 @@ en:
             set_html: The %{score_label} achieved score of criterion <strong>%{criterion}</strong> was set to <strong>%{score}</strong>.
             unset_html: The %{score_label} achieved score of criterion <strong>%{criterion}</strong> was removed.
             update_html: The %{score_label} achieved score of criterion <strong>%{criterion}</strong> was changed from <strong>%{old_score}</strong> to <strong>%{new_score}</strong>.
+          incentive_scored:
+            set_html: The %{score_label} incentive scored flag for criterion <strong>%{criterion}</strong> was set to <strong>%{incentive_scored}</strong>.
+            unset_html: The %{score_label} incentive scored flag for criterion <strong>%{criterion}</strong> was reset.
+            update_html: The %{score_label} incentive scored flag for criterion <strong>%{criterion}</strong> was changed from <strong>%{old_incentive_scored}</strong> to <strong>%{new_incentive_scored}</strong>.
           main:
             update_html: This change was automated because the criterion inherits from <strong>%{main_criterion}</strong> in the <strong>%{main_scheme}</strong> scheme.
           pcr_review_draft:
@@ -154,11 +158,11 @@ en:
           name:
             update_html: Criterion <strong>%{old_name}</strong> was renamed to <strong>%{new_name}</strong>.
           weight:
-            update_html: Criterion weight changed from <strong>%{old_weight}</strong> to <strong>%{new_weight}</strong>.
+            update_html: Criterion %{score_label} weight changed from <strong>%{old_weight}</strong> to <strong>%{new_weight}</strong>.
           scores:
-            update_html: Criterion scores changed from <strong>%{old_scores}</strong> to <strong>%{new_scores}</strong>.
+            update_html: Criterion %{score_label} scores changed from <strong>%{old_scores}</strong> to <strong>%{new_scores}</strong>.
           incentive_weight:
-            update_html: Criterion incentive weights changed from <strong>%{old_incentive}</strong> to <strong>%{new_incentive}</strong>.
+            update_html: Criterion %{score_label} incentive weights changed from <strong>%{old_incentive}</strong> to <strong>%{new_incentive}</strong>.
         scheme_category:
           name:
             update_html: Category <strong>%{old_name}</strong> was renamed to <strong>%{new_name}</strong>.

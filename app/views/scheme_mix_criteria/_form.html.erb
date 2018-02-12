@@ -189,7 +189,7 @@
                     </tr>
                     <% if !@certification_path.in_pre_verification? %>
                     <% if !@certification_path.in_verification? || (@certification_path.certification_path_status_id == CertificationPathStatus::VERIFYING_AFTER_APPEAL && SchemeMixCriterion::statuses[@scheme_mix_criterion.status] < SchemeMixCriterion::statuses[:verifying_after_appeal]) || !current_user.default_role? || @project.role_for_user(current_user) == ProjectsUser.roles.keys[ProjectsUser.roles[:certifier]] || @project.role_for_user(current_user) == ProjectsUser.roles.keys[ProjectsUser.roles[:certification_manager]] %>
-                    <tr>
+                    <tr class="achieved_score_row">
                         <th>Achieved score <%= tooltip(t('.scores.achieved_score.tooltip')) %></th>
                       <% SchemeCriterion::SCORE_ATTRIBUTES.each_with_index do |scores, index| %>
                       <% unless @scheme_mix_criterion.scheme_criterion.read_attribute(scores.to_sym).nil? %>
@@ -198,7 +198,7 @@
                             <% if @certification_path.certificate.construction_issue_1? %>
                               <%= f.number_field SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES[index].to_sym, in: 0.0..@scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[index].to_sym), step: 0.1, hide_label: true, append: '%' %>
                             <% else %>
-                              <%= f.select SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES[index].to_sym, @scheme_mix_criterion.scheme_criterion.read_attribute(scores.to_sym), {include_blank: '-', hide_label: true} %>
+                              <%= f.select SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES[index].to_sym, @scheme_mix_criterion.scheme_criterion.read_attribute(scores.to_sym), {include_blank: '-', hide_label: true}, data: {index: index} %>
                             <% end %>
                           <% else %>
                             <%= f.static_control label: 'achieved score', hide_label: true do %>
@@ -218,15 +218,26 @@
                       <th>Incentive earned ?</th>
                       <% SchemeCriterion::SCORE_ATTRIBUTES.each_with_index do |scores, index| %>
                       <% unless @scheme_mix_criterion.scheme_criterion.read_attribute(scores.to_sym).nil? %>
-                      <td>
                         <% if @scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::MANUAL_INCENTIVE_ATTRIBUTES[index].to_sym) == true %>
-                        <% if !['E','W'].include?(@scheme_mix_criterion.scheme_criterion.scheme_category.code) || @scheme_mix_criterion.read_attribute(SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES[index].to_sym) > 0 %>
-                          <%= f.check_box SchemeMixCriterion::INCENTIVE_SCORED_ATTRIBUTES[index].to_sym, label: '' %>
+                          <% if ['E','W'].include?(@scheme_mix_criterion.scheme_criterion.scheme_category.code) %>
+                            <% if !@scheme_mix_criterion.read_attribute(SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES[index].to_sym).nil? && @scheme_mix_criterion.read_attribute(SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES[index].to_sym) > 0 %>
+                              <td class="achieved_score_dependent_checkbox">
+                                <%= f.check_box SchemeMixCriterion::INCENTIVE_SCORED_ATTRIBUTES[index].to_sym, label: '', data: {index: index} %>
+                              </td>
+                            <% else %>
+                              <td class="achieved_score_dependent_checkbox">
+                                <%= f.check_box SchemeMixCriterion::INCENTIVE_SCORED_ATTRIBUTES[index].to_sym, label: '', readonly: true, data: {index: index} %>
+                              </td>
+                            <% end %>
+                          <% else %>
+                              <td>
+                                <%= f.check_box SchemeMixCriterion::INCENTIVE_SCORED_ATTRIBUTES[index].to_sym, label: '' %>
+                              </td>
+                          <% end %>
                         <% else %>
-                          <%= @scheme_mix_criterion.read_attribute(SchemeMixCriterion::INCENTIVE_SCORED_ATTRIBUTES[index].to_sym) == true ? 'Yes' : 'No' %>
+                          <td>
+                          </td>
                         <% end %>
-                        <% end %>
-                      </td>
                       <% end %>
                       <% end %>
                     </tr>
@@ -367,3 +378,4 @@
 <div id="reviewSchemeMixCriterionModal" class="modal fade"></div>
 <%= javascript_include_tag 'select_project_certifier' %>
 <%= javascript_include_tag 'select_project_team_member' %>
+<%= javascript_include_tag 'incentive_scored' %>
