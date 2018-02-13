@@ -34,6 +34,7 @@ module Taskable
   CERT_MEM_REVIEW = 40
   CERT_MNGR_PUBLISH_REVIEW = 41
   PROJ_MNGR_UPLOAD_CMP = 42
+  CERT_MNGR_CMP_UPLOADED = 43
 
   included do
     has_many :tasks, as: :taskable, dependent: :destroy
@@ -167,6 +168,15 @@ module Taskable
   def handle_created_cgp_certification_path_document
     # Destroy CGP project managers upload CMP tasks
     Task.delete_all(taskable: self.certification_path, task_description_id: PROJ_MNGR_UPLOAD_CMP)
+    # Create certification manager task to read the GSAS CMP document
+    if self.certification_path.certificate.construction_type? && self.certification_path.cgp_certification_path_documents.count == 1
+      Task.create(taskable: self.certification_path,
+                  task_description_id: CERT_MNGR_CMP_UPLOADED,
+                  project_role: ProjectsUser.roles[:certification_manager],
+                  project: self.certification_path.project,
+                  certification_path: self.certification_path
+                  )
+    end
   end
 
   def handle_updated_project
@@ -207,6 +217,8 @@ module Taskable
           end
           # Destroy system admin tasks to advance status
           Task.delete_all(taskable: self, task_description_id: SYS_ADMIN_REG_APPROVE)
+          # Destroy certifier manager notification that CMP was uploaded
+          Task.delete_all(taskable: self, task_description_id: CERT_MNGR_CMP_UPLOADED)
           DigestMailer.certification_activated_email(self).deliver_now
         when CertificationPathStatus::SCREENING
           # Create certification manager task to assign certifiers to criteria for screening
@@ -226,6 +238,8 @@ module Taskable
                      certification_path: self)
           # Destroy certification manager tasks to advance status
           Task.delete_all(taskable: self, task_description_id: CERT_MNGR_SCREENING_APPROVE)
+          # Destroy certifier manager notification that CMP was uploaded
+          Task.delete_all(taskable: self, task_description_id: CERT_MNGR_CMP_UPLOADED)
         when CertificationPathStatus::VERIFYING
           self.scheme_mix_criteria.submitted.where.not(certifier: nil).each do |scheme_mix_criterion|
             # Create certifier team member task to verify the criterion
@@ -247,6 +261,8 @@ module Taskable
                      certification_path: self)
           # Destroy certification manager tasks to advance status
           Task.delete_all(taskable: self, task_description_id: CERT_MNGR_VERIFICATION_APPROVE)
+          # Destroy certifier manager notification that CMP was uploaded
+          Task.delete_all(taskable: self, task_description_id: CERT_MNGR_CMP_UPLOADED)
         when CertificationPathStatus::PROCESSING_APPEAL_PAYMENT
           # Create system admin task to check appeal payment
           Task.create(taskable: self,
@@ -269,6 +285,8 @@ module Taskable
           end
           # Destroy system admin tasks to check appeal payment
           Task.delete_all(taskable: self, task_description_id: SYS_ADMIN_APPEAL_APPROVE)
+          # Destroy certifier manager notification that CMP was uploaded
+          Task.delete_all(taskable: self, task_description_id: CERT_MNGR_CMP_UPLOADED)
           DigestMailer.criteria_appealed_email(self).deliver_now
         when CertificationPathStatus::VERIFYING_AFTER_APPEAL
           # Destroy project manager tasks to advance certification path status
@@ -282,6 +300,8 @@ module Taskable
                      certification_path: self)
           # Destroy certification manager tasks to advance status
           Task.delete_all(taskable: self, task_description_id: CERT_MNGR_VERIFICATION_APPROVE)
+          # Destroy certifier manager notification that CMP was uploaded
+          Task.delete_all(taskable: self, task_description_id: CERT_MNGR_CMP_UPLOADED)
         when CertificationPathStatus::APPROVING_BY_MANAGEMENT
           # Create GORD manager task to quick check and approve
           Task.create(taskable: self,

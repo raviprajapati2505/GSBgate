@@ -218,6 +218,7 @@ en:
       description_40: Provide a draft PCR review comment.
       description_41: Publish the draft PCR review comment provided by a certifier team member.
       description_42: Upload the GSAS Construction Management Plan (GSAS-CMP) via the certification documentation box.
+      description_43: A GSAS Construction Management Plan (GSAS-CMP) was uploaded.
       tooltip_due_date: Task is overdue.
   users:
     index:
