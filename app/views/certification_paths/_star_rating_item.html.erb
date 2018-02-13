@@ -11,6 +11,7 @@
         <%= number_with_precision(score, precisison: 2, significant: true) %>
       <% end %>
     </span>
+    <% unless certificate.construction_certificate_stage1? || certificate.construction_certificate_stage2? || certificate.construction_certificate_stage3? %>
     <span>
         &nbsp;&nbsp;=&nbsp;&nbsp;
     </span>
@@ -24,4 +25,5 @@
     <span>
         <%= "#{stars}&nbsp;#{'star'.pluralize(stars)}".html_safe %>
     </span>
+    <% end %>
 </div>

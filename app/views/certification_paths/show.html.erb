@@ -166,7 +166,36 @@
         </div>
     </div>
 
-  <% unless @certification_path.certificate.construction_certificate? %>
+  <% if @certification_path.certificate.construction_certificate? %>
+    <div class="col-md-7">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <h5>Summary of stages</h5>
+        </div>
+        <div class="ibox-content">
+          <%= scores_legend %>
+          <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+              <th></th>
+              <th>Rating</th>
+              <th>Score</th>
+            </tr>
+            </thead>
+            <tbody>
+            <% @certification_path.project.certification_paths.with_certification_type([Certificate::certification_types[:construction_certificate_stage1], Certificate::certification_types[:construction_certificate_stage2], Certificate::certification_types[:construction_certificate_stage3]]).each do |certification_path| %>
+              <tr>
+                <td><%= can_link_to(project_certification_path_path(@certification_path.project, certification_path), certification_path) do %><%= certification_path.name %><% end %></td>
+                <td><%= render 'certification_paths/star_ratings', certification_path: certification_path %></td>
+                <td><%= render 'score/score', scores: certification_path.scores_in_certificate_points, point_type: :certificate_points %></td>
+              </tr>
+            <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  <% else %>
     <div class="col-md-7">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
