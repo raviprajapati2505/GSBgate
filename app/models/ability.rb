@@ -271,6 +271,8 @@ class Ability
         can :crud, SchemeCategory
         # Scheme
         can :crud, Scheme
+        # CertificationPath advance status even when there are CM 2.1 Issue 3.0 criteria of categories E and W with score 0
+        can :edit_status_low_score, CertificationPath
       end
 
       # Audit log
