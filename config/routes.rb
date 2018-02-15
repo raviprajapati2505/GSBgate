@@ -52,6 +52,8 @@ Rails.application.routes.draw do
         get 'edit_main_scheme_mix', path: 'edit-main-scheme-mix'
         get 'edit_max_review_count'
         get 'confirm_destroy' => 'certification_paths#confirm_destroy'
+        get 'confirm_deny' => 'certification_paths#confirm_deny'
+        get 'deny' => 'certification_paths#deny'
         get 'download_signed_certificate'
         put 'update_status'
         put 'apply_for_pcr'

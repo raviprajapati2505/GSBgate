@@ -1,0 +1,23 @@
+<% if can?(:deny, @certification_path) %>
+  <div class="row">
+    <div class="col-md-3">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <h5>Confirm denying certification for <%= @certification_path.name %></h5>
+        </div>
+        <div class="ibox-content">
+          <div class="alert alert-danger"><%= ikoen('exclamation-triangle') %>
+            You are about to deny certification for <strong><%= @certification_path.name %></strong> in project <strong><%= @project.name %></strong> (<strong><%= @project.code %></strong>)
+          </div>
+          <%= bootstrap_form_for([@project, @certification_path], url: deny_project_certification_path_path(@project, @certification_path), method: :get) do |f| %>
+            <div class="form-group">
+              <%= label_tag :confirm_deny, 'To confirm denying certification, please type the word "deny" in the textbox below and click on the button.', class: 'control-label' %>
+              <%= text_field_tag :confirm_deny, '', class: 'form-control', autocomplete: 'off' %>
+            </div>
+            <%= btn_tag({id: 'deny-button', icon: 'ban', text: 'Deny certificate', style: 'danger', disabled: true}) %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

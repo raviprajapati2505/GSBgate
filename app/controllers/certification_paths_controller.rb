@@ -456,6 +456,15 @@ class CertificationPathsController < AuthenticatedController
     end
   end
 
+  def confirm_deny
+  end
+
+  def deny
+    @certification_path.certification_path_status_id = CertificationPathStatus::NOT_CERTIFIED
+    @certification_path.save!
+    redirect_to project_path(@project), notice: 'The certification was successfully denied.'
+  end
+
   def update_signed_certificate
     if params[:certification_path][:signed_certificate_file].present?
       @certification_path.signed_certificate_file = params[:certification_path][:signed_certificate_file]

@@ -188,6 +188,11 @@ $(function () {
         $("#delete-button").prop('disabled', ($(this).val() != 'delete'));
     });
 
+    // Enable deny button after a word is typed in a confirmation text box
+    $('body').on('keyup', '#confirm_deny', function() {
+        $("#deny-button").prop('disabled', ($(this).val() != 'deny'));
+    });
+
     // Building type group & building type dropdowns in project form
     $('.project-form').on('change', '#project_building_type_group_id', function(event, wasTriggered) {
         $('.project-form #building-type-select select option').hide();
