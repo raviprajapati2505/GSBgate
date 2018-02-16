@@ -218,7 +218,13 @@ namespace :gsas do
 
     expired_archives.each do |archive|
       puts "- Cleaning up archive #{archive.id}"
-      File.delete(archive.archive_path) if archive.archive_file.present?
+
+      begin
+        File.delete(archive.archive_path) if archive.archive_file.present?
+      rescue Errno::ENOENT => e
+        puts "-- File for archive #{archive.id} was not found on disk"
+      end
+
       archive.delete
     end
 
