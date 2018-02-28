@@ -51,7 +51,7 @@ class Archive < ActiveRecord::Base
   # Creates a file archive of all approved documents in a certification path and related audit logs
   def genereate_certification_path_archive
     certification_path = subject
-    zip_name = DateTime.now.strftime('%Y%m%d_%H%M') + '_' + user.id.to_s + '_' + sanitize_filename(certification_path.project.name + '_' + certification_path.name) + '.zip'
+    zip_name = DateTime.now.strftime('%Y%m%d_%H%M') + '_' + user.id.to_s + '_' + certification_path.id.to_s + '_' + sanitize_filename(certification_path.project.name + '_' + certification_path.name) + '.zip'
     zip_path = "#{Rails.root.to_s}/#{Archive::STORE_DIR}/#{zip_name}"
     csv_path = "#{Rails.root.to_s}/tmp/audit_logs_#{user.id.to_s}_#{certification_path.id}_#{DateTime.now.to_i}.csv"
 
@@ -124,7 +124,7 @@ class Archive < ActiveRecord::Base
   # Creates a file archive of all approved documents in a scheme mix criterion
   def create_scheme_mix_criterion_archive
     scheme_mix_criterion = subject
-    zip_name = DateTime.now.strftime('%Y%m%d_%H%M') + '_' + user.id.to_s + '_' + sanitize_filename(scheme_mix_criterion.name) + '.zip'
+    zip_name = DateTime.now.strftime('%Y%m%d_%H%M') + '_' + user.id.to_s + '_' + scheme_mix_criterion.id.to_s + '_' + sanitize_filename(scheme_mix_criterion.name) + '.zip'
     zip_path = "#{Rails.root.to_s}/#{Archive::STORE_DIR}/#{zip_name}"
 
     # Create the zipped output stream
