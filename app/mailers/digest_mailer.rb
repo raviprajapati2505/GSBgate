@@ -112,8 +112,10 @@ class DigestMailer < ApplicationMailer
       @more_tasks = 0
     end
 
-    if (@user.gsas_trust_manager? || @user.gsas_trust_top_manager?)
-      subject = 'Tasks for approval for GORD Management ( Dr. Yousef & Dr. Esam )'
+    if @user.gsas_trust_top_manager?
+      subject = 'Tasks for approval for Chairman (Dr. Yousef)'
+    elsif @user.gsas_trust_manager?
+      subject = 'Tasks for approval for Head of GSAS'
     else
       subject = 'GSASgate - progress report'
     end

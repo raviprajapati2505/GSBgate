@@ -2,10 +2,10 @@
 User.create!(username: 'sas@vito.be', password: 'password', email: 'sas@vito.be', linkme_user: false, role: :system_admin, name: 'System admin')
 
 # GSAS trust managers
-User.create!(username: 'dr.esam@example.com', password: 'password', email: 'sas@vito.be', linkme_user: false, role: :gsas_trust_manager, name: 'GSAS trust manager')
+User.create!(username: 'dr.esam@example.com', password: 'password', email: 'sas@vito.be', linkme_user: false, role: :gsas_trust_manager, name: 'Head of GSAS')
 
 # GSAS trust top managers
-User.create!(username: 'dr.youssef@example.com', password: 'password', email: 'sas@vito.be', linkme_user: false, role: :gsas_trust_top_manager, name: 'GSAS trust top manager')
+User.create!(username: 'dr.youssef@example.com', password: 'password', email: 'sas@vito.be', linkme_user: false, role: :gsas_trust_top_manager, name: 'Chairman')
 
 # GSAS trust admins
 User.create!(username: 'omeima@example.com', password: 'password', email: 'sas@vito.be', linkme_user: false, role: :gsas_trust_admin, name: 'GSAS trust admin')

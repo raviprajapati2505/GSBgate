@@ -72,8 +72,8 @@ en:
       user:
         roles:
           system_admin: System administrator
-          gsas_trust_top_manager: GSAS trust top manager
-          gsas_trust_manager: GSAS trust manager
+          gsas_trust_top_manager: Chairman
+          gsas_trust_manager: Head of GSAS
           gsas_trust_admin: GSAS trust admin
           default_role: Default role
   models:
