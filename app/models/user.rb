@@ -66,6 +66,10 @@ class User < ActiveRecord::Base
     joins(:projects_users).where(projects_users: {role: [ProjectsUser.roles[:certifier], ProjectsUser.roles[:certification_manager]]})
   }
 
+  scope :with_cgp_project_manager_role_for_project, ->(project) {
+    joins(:projects_users).where(projects_users: {project_id: project.id, role: ProjectsUser.roles[:cgp_project_manager]})
+  }
+
   def full_name
     name
   end

@@ -103,7 +103,7 @@ class Ability
       can :download_signed_certificate, CertificationPath, project: project_with_user_assigned, certification_path_status: {id: CertificationPathStatus::CERTIFIED}
       # Project team
       can :apply, CertificationPath, project: project_with_user_as_cgp_project_manager
-      can [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::STATUSES_AT_PROJECT_TEAM_SIDE}, project: project_with_user_as_cgp_project_manager
+      can [:edit_status, :update_status], CertificationPath.not_expired, certification_path_status: {id: CertificationPathStatus::STATUSES_AT_PROJECT_TEAM_SIDE}, project: project_with_user_as_cgp_project_manager
       can [:edit_project_team_responsibility_for_submittal, :allocate_project_team_responsibility_for_submittal], CertificationPath, project: project_with_user_as_cgp_project_manager, certification_path_status: {id: CertificationPathStatus::STATUSES_IN_SUBMISSION}
       # GSAS trust team
       can [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::STATUSES_AT_CERTIFIER_SIDE}, project: project_with_user_as_certification_manager
@@ -233,6 +233,7 @@ class Ability
         can [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::STATUSES_AT_PROJECT_TEAM_SIDE}
         can [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::STATUSES_AT_CERTIFIER_SIDE}
         can [:edit_max_review_count, :update_max_review_count], CertificationPath
+        can [:edit_expires_at, :update_expires_at], CertificationPath
         can [:confirm_destroy, :destroy], CertificationPath # Be careful with this!
         can [:confirm_deny, :deny], CertificationPath, certification_path_status: {id: CertificationPathStatus::STATUSES_IN_PROGRESS}
         can :update_signed_certificate, CertificationPath, certification_path_status: {id: CertificationPathStatus::CERTIFIED}

@@ -22,7 +22,10 @@
                     <% if @certification_path.certificate.letter_of_conformance? || @certification_path.certificate.final_design_certificate? %>
                         <tr>
                             <th>Expires</th>
-                            <td><%= localize(@certification_path.expires_at) %></td>
+                            <td>
+                              <span><%= localize(@certification_path.expires_at) %></span>
+                              <%= btn_link_to(edit_expires_at_project_certification_path_path(@project, @certification_path), remote: true, text: 'Set new date', class: 'pull-right') if can?(:update_expires_at, @certification_path) %>
+                            </td>
                         </tr>
                     <% end %>
                     <% if @certification_path.is_activated? %>
@@ -278,4 +281,5 @@
 <div id="editStatusCertificationPathModal" class="modal fade"></div>
 <div id="editMainSchemeMixModal" class="modal fade"></div>
 <div id="editMaxReviewCountModal" class="modal fade"></div>
+<div id="editExpiresAtModal" class="modal fade"></div>
 <%= javascript_include_tag 'score_widget' %>

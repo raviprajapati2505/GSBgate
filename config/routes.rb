@@ -51,6 +51,7 @@ Rails.application.routes.draw do
         get 'edit_certifier_team_responsibility_for_screening', path: 'edit-certifier-team-responsibility-for-screening'
         get 'edit_main_scheme_mix', path: 'edit-main-scheme-mix'
         get 'edit_max_review_count'
+        get 'edit_expires_at'
         get 'confirm_destroy' => 'certification_paths#confirm_destroy'
         get 'confirm_deny' => 'certification_paths#confirm_deny'
         get 'deny' => 'certification_paths#deny'
@@ -64,6 +65,7 @@ Rails.application.routes.draw do
         put 'allocate_certifier_team_responsibility_for_screening', path: 'allocate-certifier-team-responsibility-for-screening'
         put 'update_main_scheme_mix', path: 'update-main-scheme'
         put 'update_max_review_count'
+        put 'update_expires_at'
         put 'update_signed_certificate'
       end
       resources :documents, only: [:create, :show, :destroy], path: 'document'

@@ -46,6 +46,10 @@ class CertificationPath < ActiveRecord::Base
   before_update :set_started_at
   before_update :set_certified_at
 
+  scope :not_expired, -> {
+    where('expires_at > ?', DateTime.now)
+  }
+
   scope :with_status, ->(statuses) {
     joins(:certification_path_status).where(certification_path_status_id: statuses)
   }

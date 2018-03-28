@@ -167,6 +167,14 @@ class DigestMailer < ApplicationMailer
     mail(to: Rails.configuration.x.gsas_info.email, subject: "GSASgate - certification #{@certification_path.name} for #{@certification_path.project.name} is expired")
   end
 
+  def certification_expires_in_near_future_email(certification_path)
+    @certification_path = certification_path
+
+    User.with_cgp_project_manager_role_for_project(@certification_path.project).each do |user|
+      mail(to: user.email, subject: "GSASgate - certification #{@certification_path.name} for #{@certification_path.project.name} is going to expire on #{@certification_path.expires_at.strftime(t('date.formats.short'))}")
+    end
+  end
+
   def criteria_appealed_email(certification_path)
     @certification_path = certification_path
     @appealed_criteria = @certification_path.scheme_mix_criteria.where(status: [SchemeMixCriterion.statuses[:submitting_after_appeal]])

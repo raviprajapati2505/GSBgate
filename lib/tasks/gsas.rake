@@ -50,7 +50,7 @@ namespace :gsas do
     begin
       page += 1
       certification_paths = CertificationPath.joins(:certificate)
-                                .where(certificates: {certificate_type: Certificate.certification_types[:design_type]})
+                                .where(certificates: {certificate_type: Certificate.certificate_types[:design_type]})
                                 .where.not(certification_path_status_id: [CertificationPathStatus::CERTIFIED, CertificationPathStatus::NOT_CERTIFIED])
                                 .where('expires_at < ?', DateTime.now)
       unless from_datetime.nil?
@@ -69,6 +69,43 @@ namespace :gsas do
     end while certification_paths.size == PAGE_SIZE
 
     puts "Found #{ActionController::Base.helpers.pluralize(certification_path_count, 'certification path')} which are expired."
+  end
+
+  desc 'Send email notifications for the CGP manager for all certification paths that expire within 3/2/1 month'
+  task :send_expiry_mail, [] => :environment do |t, args|
+
+    puts 'Start sending expiry emails...'
+
+    backgroundExecution = BackgroundExecution.find_by(name: BackgroundExecution::EXPIRY_TASK)
+    if backgroundExecution.nil?
+      from_datetime = nil
+      backgroundExecution = BackgroundExecution.new(name: BackgroundExecution::EXPIRY_TASK)
+      backgroundExecution.save
+    else
+      from_datetime = backgroundExecution.updated_at
+      backgroundExecution.touch
+    end
+
+    certification_path_count = 0
+    page = 0
+    begin
+      page += 1
+      certification_paths = CertificationPath.joins(:certificate)
+                                .where(certificates: {certificate_type: Certificate.certificate_types[:design_type]})
+                                .where.not(certification_path_status_id: [CertificationPathStatus::CERTIFIED, CertificationPathStatus::NOT_CERTIFIED])
+                                .where('expires_at < ?', 3.months.from_now)
+      unless from_datetime.nil?
+        certification_paths = certification_paths.where('((expires_at - interval \'3 months\') >= ? and (expires_at - interval \'3 months\') < current_timestamp) or ((expires_at - interval \'2 months\') >= ? and (expires_at - interval \'2 months\') < current_timestamp) or ((expires_at - interval \'1 months\') >= ? and (expires_at - interval \'1 months\') < current_timestamp)', from_datetime, from_datetime, from_datetime)
+      end
+      certification_paths = certification_paths.page(page).per(PAGE_SIZE)
+      certification_paths.each do |certification_path|
+        DigestMailer.certification_expires_in_near_future_email(certification_path).deliver_now
+      end
+
+      certification_path_count += certification_paths.size
+    end while certification_paths.size == PAGE_SIZE
+
+    puts "Found #{ActionController::Base.helpers.pluralize(certification_path_count, 'certification path')} which expires within 3 months."
   end
 
   desc 'Create a task for the CGP project manager or certification manager for every overdue task'

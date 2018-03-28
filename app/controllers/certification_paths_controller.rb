@@ -420,7 +420,18 @@ class CertificationPathsController < AuthenticatedController
   def update_max_review_count
     @certification_path.max_review_count = params[:certification_path][:max_review_count]
     @certification_path.save!
-    flash[:notice] = 'The maximum number of PCR reviews is saved succesfullly.'
+    flash[:notice] = 'The maximum number of PCR reviews is saved succesfully.'
+    redirect_to project_certification_path_path
+  end
+
+  def edit_expires_at
+
+  end
+
+  def update_expires_at
+    @certification_path.expires_at = params[:certification_path][:expires_at]
+    @certification_path.save!
+    flash[:notice] = 'The expiry date is saved successfully.'
     redirect_to project_certification_path_path
   end
 
