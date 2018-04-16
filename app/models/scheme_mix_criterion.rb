@@ -58,7 +58,7 @@ class SchemeMixCriterion < ActiveRecord::Base
   end
 
   def validate_incentive_scored
-    if ['E','W'].include?(self.scheme_criterion.scheme_category.code)
+    if ['E','W'].include?(self.scheme_criterion.scheme_category.code) && self.scheme_mix.certification_path.certificate.construction_issue_3?
       SchemeCriterion::SCORE_ATTRIBUTES.each_with_index do |scores, index|
         if !self.read_attribute(SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES[index].to_sym).nil? && self.read_attribute(SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES[index].to_sym) <= 0 && self.read_attribute(SchemeMixCriterion::INCENTIVE_SCORED_ATTRIBUTES[index].to_sym) == true
           errors.add(SchemeMixCriterion::INCENTIVE_SCORED_ATTRIBUTES[index].to_sym, 'should be > 0 for Energy and Water categories.')
