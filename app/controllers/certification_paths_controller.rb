@@ -90,7 +90,7 @@ class CertificationPathsController < AuthenticatedController
     # Development Type
     # Note: FinalDesign uses a similar DevelopmentType as Letter Of Conformace !!
     if Certificate.certification_types[@certification_type] == Certificate.certification_types[:final_design_certificate]
-      # Note: we currently use the name to match, this coul be done cleaner
+      # Note: we currently use the name to match, this could be done cleaner
       development_type_name = @certification_path.project.completed_letter_of_conformances.first.development_type.name
       @certification_path.development_type = DevelopmentType.find_by(name: development_type_name, certificate: @certification_path.certificate)
     else
