@@ -82,7 +82,7 @@ module Taskable
   def before_destroy
     case self.class.name
       when ProjectsUser.name.demodulize
-        Task.delete_all(user: self.user)
+        Task.delete_all(project: self.project, user: self.user)
       when SchemeMixCriteriaDocument.name.demodulize
         if self.scheme_mix_criterion.scheme_mix_criteria_documents.where(status: SchemeMixCriteriaDocument.statuses[:awaiting_approval]).count.zero?
           Task.delete_all(taskable: self.scheme_mix_criterion, task_description_id: PROJ_MNGR_DOC_APPROVE)
