@@ -32,6 +32,6 @@ class AddE1ToExistingBuildingDevType < ActiveRecord::Migration
         calculate_incentive_b: false,
         assign_incentive_manually_b: false,
         label_b: nil,
-        scheme_category: SchemeCategory.find_by(code: "E", scheme: Scheme.find_by(name: "Residential - Group", gsas_document: "Operations GSAS Assessment v2.1.html", gsas_version: "2.1", certificate_type: Certificate.certificate_types[:design_type], renovation:true)))
+        scheme_category: SchemeCategory.find_by(code: "E", scheme: Scheme.find_by(name: "Residential - Group", gsas_document: "Operations GSAS Assessment v2.1.html", gsas_version: "2.1", renovation:true)))
   end
 end
