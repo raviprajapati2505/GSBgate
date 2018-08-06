@@ -41,11 +41,11 @@ class AddW1ToExistingBuildingDevType < ActiveRecord::Migration
     requirement_4 = Requirement.create!(name: 'HVAC Systems Specifications')
     requirement_5 = Requirement.create!(name: 'Condensate Water Collection Plans and Specifications')
 
-    SchemeCriteriaRequirement.create!(schmee_criterion_id: criterion.id, requirement: requirement_1)
-    SchemeCriteriaRequirement.create!(schmee_criterion_id: criterion.id, requirement: requirement_2)
-    SchemeCriteriaRequirement.create!(schmee_criterion_id: criterion.id, requirement: requirement_3)
-    SchemeCriteriaRequirement.create!(schmee_criterion_id: criterion.id, requirement: requirement_4)
-    SchemeCriteriaRequirement.create!(schmee_criterion_id: criterion.id, requirement: requirement_5)
+    SchemeCriteriaRequirement.create!(scheme_criterion_id: criterion.id, requirement: requirement_1)
+    SchemeCriteriaRequirement.create!(scheme_criterion_id: criterion.id, requirement: requirement_2)
+    SchemeCriteriaRequirement.create!(scheme_criterion_id: criterion.id, requirement: requirement_3)
+    SchemeCriteriaRequirement.create!(scheme_criterion_id: criterion.id, requirement: requirement_4)
+    SchemeCriteriaRequirement.create!(scheme_criterion_id: criterion.id, requirement: requirement_5)
 
     SchemeCriterionText.create!(name: 'SCORE', html_text: '<table class="table table-bordered">
 <colgroup>
