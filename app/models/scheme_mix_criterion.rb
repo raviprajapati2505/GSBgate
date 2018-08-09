@@ -23,6 +23,8 @@ class SchemeMixCriterion < ActiveRecord::Base
 
   after_initialize :init
   after_update :update_inheriting_criteria
+  # 'prepend' makes sure that this before_destroy callback will be executed first (before the destroy callbacks on the associations)
+  before_destroy :destroy_requirements_documents, prepend: true
 
   validates :status, inclusion: SchemeMixCriterion.statuses.keys
 
@@ -372,6 +374,14 @@ class SchemeMixCriterion < ActiveRecord::Base
         (smc_inherit.screened = screened) if screened_changed?
         smc_inherit.save!
       end
+    end
+  end
+
+  def destroy_requirements_documents
+    RequirementDatum.joins(:scheme_mix_criteria_requirement_data).destroy_all(scheme_mix_criteria_requirement_data: {scheme_mix_criterion_id: id})
+
+    documents.each do |document|
+      document.destroy! unless document.scheme_mix_criteria_documents.size > 1
     end
   end
 
