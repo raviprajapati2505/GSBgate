@@ -82,7 +82,7 @@ Rails.application.configure do
   config.action_mailer.smtp_settings = { :address => 'smtp.vito.local' }
   config.action_mailer.asset_host = 'http://www.gsas.qa'
 
-  config.x.gsas_info.email = 'GSAS-Trust-Info@gord.qa, m.osama@gord.qa, e.eliskandarani@gord.qa, alhorr@gord.qa, sas@vito.be'
+  config.x.gsas_info.email = 'GSAS-Trust-Info@gord.qa, m.osama@gord.qa, e.eliskandarani@gord.qa, alhorr@gord.qa, v.dixit@gord.qa, sas@vito.be'
 
   # Linkme.qa API config
   config.x.linkme.api_url = 'api.yourmembership.com'
