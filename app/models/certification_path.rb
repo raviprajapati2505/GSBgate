@@ -224,7 +224,7 @@ class CertificationPath < ActiveRecord::Base
               end
             end
           end
-          if criterion.submitted_score <= 0 && ['E','W'].include?(criterion.scheme_criterion.scheme_category.code) && self.certificate.construction_issue_3?
+          if ['E','W'].include?(criterion.scheme_criterion.scheme_category.code) && self.certificate.construction_issue_3? && (criterion.submitted_score <= 0)
             if User.current.cannot?(:edit_status_low_score, self)
               todos << 'All Energy and Water criteria scores must be > 0.'
             end
