@@ -35,7 +35,8 @@
                       <%= f.file_field :attachment_file %>
 
                       <% if can?(:index, AuditLog.new(audit_log_visibility_id: AuditLogVisibility::INTERNAL, project: @project)) %>
-                        <% disabled = @is_certifier %>
+                        <%# disabled = @is_certifier %>
+                        <% disabled = false %>
                         <%= f.form_group :audit_log_visibility do %>
                           <%= f.label :audit_log_visibility, 'Comment visibility' %>
                           <%= f.radio_button :audit_log_visibility, AuditLogVisibility::PUBLIC, label: 'Public Comment', disabled: disabled %>
