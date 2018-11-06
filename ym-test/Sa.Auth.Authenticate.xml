@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<YourMembership>
+    <Version>2.03</Version>
+    <ApiKey>5D621211-8E39-4871-A3F3-05C5C8833A57</ApiKey>
+    <CallID>002</CallID>
+    <SaPasscode>Y05KzqB77cs6</SaPasscode>
+    <SessionID>D42AEA70-A14F-487D-92D0-03E0293936D5</SessionID>
+    <Call Method="Sa.Auth.Authenticate">
+        <Username>krisd</Username>
+        <Password>otivotiv123</Password>
+    </Call>
+</YourMembership>

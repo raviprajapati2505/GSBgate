@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<YourMembership>
+    <Version>2.03</Version>
+    <ApiKey>196747B3-A1F8-47C2-9B0E-A9C8F8361A98</ApiKey>
+    <CallID>003</CallID>
+    <SessionID>898AEAB1-D7AD-4EBA-AACD-E38FE0B840CC</SessionID>
+    <Call Method="Member.Profile.Get"></Call>
+</YourMembership>
