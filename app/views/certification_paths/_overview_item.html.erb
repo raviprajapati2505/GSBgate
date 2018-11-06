@@ -7,10 +7,10 @@
                     <%= certification_path.certificate.full_name %>
                 <% end %>
                 <% if can? :confirm_destroy, @certification_path %>
-                    <%= btn_link_to(confirm_destroy_project_certification_path_path(@project, certification_path), {icon: 'trash', style: 'danger', size: 'extra_small', method: :get, data: {confirm: 'Do you really want to delete this certification?'}}) %>
+                    <%= btn_link_to(confirm_destroy_project_certification_path_path(@project, certification_path), {icon: 'trash', style: 'danger', size: 'extra_small', tooltip: 'Destroy all certification data', method: :get, data: {confirm: 'Do you really want to delete this certification?'}}) %>
                 <% end %>
                 <% if can? :confirm_deny, certification_path %>
-                  <%= btn_link_to(confirm_deny_project_certification_path_path(@project, certification_path), {icon: 'ban', style: 'danger', size: 'extra_small', method: :get, data: {confirm: 'Do you really want to deny certification?'}}) %>
+                  <%= btn_link_to(confirm_deny_project_certification_path_path(@project, certification_path), {icon: 'ban', style: 'danger', size: 'extra_small', tooltip: 'Deny certificate', method: :get, data: {confirm: 'Do you really want to deny certification?'}}) %>
                 <% end %>
             </div>
             <div class="col-lg-3 col-sm-6">
