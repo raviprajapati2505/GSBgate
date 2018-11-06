@@ -214,21 +214,25 @@ class CertificationPath < ActiveRecord::Base
             unless criterion.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym).nil?
               if criterion.read_attribute(targeted_score.to_sym).blank?
                 todos << 'Every criterion should have a targeted score.'
+                break
               end
             end
           end
+          criteria_exist_blank = false
           SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES.each_with_index do |submitted_score, index|
             unless criterion.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym).nil?
               if criterion.read_attribute(submitted_score.to_sym).blank?
+                criteria_exist_blank = true
                 todos << 'Every criterion should have a submitted score.'
+                break
               end
             end
           end
-          # if ['E','W'].include?(criterion.scheme_criterion.scheme_category.code) && self.certificate.construction_issue_3? && (criterion.submitted_score <= 0)
-          #   if User.current.cannot?(:edit_status_low_score, self)
-          #     todos << 'All Energy and Water criteria scores must be > 0.'
-          #   end
-          # end
+          if !criteria_exist_blank && ['E','W'].include?(criterion.scheme_criterion.scheme_category.code) && self.certificate.construction_issue_3? && (criterion.submitted_score <= 0)
+            if User.current.cannot?(:edit_status_low_score, self)
+              todos << 'All Energy and Water criteria scores must be > 0.'
+            end
+          end
           if criterion.submitting?
             todos << 'Some criteria still have status \'Submitting\'.'
           end
