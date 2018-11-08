@@ -1,0 +1,37 @@
+<tr>
+  <td style="padding: .75pt .75pt;">
+    <p><span style='font-size: 18pt; font-family: "Verdana", "sans-serif"; color: #0B9ADC;'>Applied for Certification</span></p>
+  </td>
+</tr>
+<tr>
+  <td style="width: 650pt; border: solid #CCC 1pt; background: white; padding: 15pt 15pt;">
+    <p>
+            <span style='font-size: 9pt; font-family: "Verdana", "sans-serif";'>Dear Ms/Mr<br/><br/>
+            A new certification with name <b><%= @certification_path.name %></b> is applied for for project with name <b><%= @certification_path.project.name %></b>.</span>
+    </p>
+    <br/>
+    <table style='font-size: 9pt; font-family: "Verdana", "sans-serif";'>
+      <tr>
+        <td><b>Development Type</b></td>
+        <td><%= @certification_path.development_type.name %></td>
+      </tr>
+      <% unless @certification_path.expires_at.nil? %>
+        <tr>
+          <td><b>Expires at</b></td>
+          <td><%= localize(@certification_path.expires_at) %></td>
+        </tr>
+      <% end %>
+      <tr>
+        <td colspan="2"><b>Schemes</b>
+          <ul>
+            <% @certification_path.scheme_mixes.each do |scheme_mix| %>
+              <li><%= scheme_mix.weight %>% <%= scheme_mix.full_name %></li>
+            <% end %>
+          </ul>
+        <td></td>
+      </tr>
+    </table>
+    <br/>
+    <p><span style='font-size: 9pt; font-family: "Verdana", "sans-serif";'>With kind regards,</span></p>
+  </td>
+</tr>

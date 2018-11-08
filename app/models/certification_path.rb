@@ -41,6 +41,7 @@ class CertificationPath < ActiveRecord::Base
   validates :signed_certificate_file, file_size: {maximum: MAXIMUM_DOCUMENT_FILE_SIZE.megabytes.to_i }
 
   after_initialize :init
+  after_create :send_applied_for_certification_email
   before_update :create_descendant_records
   before_update :advance_scheme_mix_criteria_statuses
   before_update :set_started_at
@@ -449,5 +450,9 @@ class CertificationPath < ActiveRecord::Base
         end
       end
     end
+  end
+
+  def send_applied_for_certification_email
+    DigestMailer.applied_for_certification(self).deliver_now
   end
 end

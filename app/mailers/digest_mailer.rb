@@ -155,6 +155,12 @@ class DigestMailer < ApplicationMailer
     mail(to: Rails.configuration.x.gsas_info.email, subject: "GSASgate - new project #{@project.name} registered")
   end
 
+  def applied_for_certification(certification_path)
+    @certification_path = certification_path
+
+    mail(to: Rails.configuration.x.gsas_info.email, subject: "GSASgate - new certification #{@certification_path.name} applied for")
+  end
+
   def certification_activated_email(certification_path)
     @certification_path = certification_path
 
