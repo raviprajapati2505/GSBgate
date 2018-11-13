@@ -24,9 +24,9 @@
 
               <% if can?(:index, AuditLog.new(audit_log_visibility_id: AuditLogVisibility::INTERNAL, project: @project)) %>
                   <%= f.form_group :audit_log_visibility do %>
-                      <%= f.radio_button :audit_log_visibility, AuditLogVisibility::PUBLIC, label: 'Public Comment', disabled: false %>
+                      <%= f.radio_button :audit_log_visibility, AuditLogVisibility::PUBLIC, label: 'Public Comment', disabled: true %>
                       <span class="help-block">Everyone assigned to this project will be able to view this comment</span>
-                      <%= f.radio_button :audit_log_visibility, AuditLogVisibility::INTERNAL, label: 'GSAS Trust Internal Comment', checked: true, disabled: false %>
+                      <%= f.radio_button :audit_log_visibility, AuditLogVisibility::INTERNAL, label: 'GSAS Trust Internal Comment', checked: true, disabled: true %>
                       <span class="help-block">Only the GSAS trust team can view this comment</span>
                   <% end %>
               <% end %>
