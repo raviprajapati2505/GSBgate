@@ -193,16 +193,32 @@ $(function () {
         $("#deny-button").prop('disabled', ($(this).val() != 'deny'));
     });
 
+    // Certificate type and Service provider 2 in project form
+    $('.project-form').on('change', '#project_certificate_type', function(event, wasTriggered) {
+        if ($(this).val() == 3) {
+            $('.project-form .design-fields').show();
+        } else {
+            $('.project-form .design-fields').hide();
+        }
+    });
+    $('.project-form #project_certificate_type').trigger('change', true);
+
     // Building type group & building type dropdowns in project form
     $('.project-form').on('change', '#project_building_type_group_id', function(event, wasTriggered) {
         $('.project-form #building-type-select select option').hide();
 
         if ($(this).val() == '') {
             $('.project-form #building-type-select').hide();
+            $('.project-form .district-fields').hide();
         }
         else {
             $(".project-form #building-type-select option[data-building-type-group-id=" + $(this).val() + "]").show();
             $('.project-form #building-type-select').show();
+            if ($(this).val() == 8) {
+                $('.project-form .district-fields').show();
+            } else {
+                $('.project-form .district-fields').hide();
+            }
         }
 
         if (!wasTriggered) {

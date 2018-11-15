@@ -7,8 +7,8 @@ $(function() {
         $(this).on('change', function(e) {
             $('#project_owner').val($(this).select2('data').text);
         });
-        var select_element = $(element);
-        var url = Routes.owners_path();
+        const select_element = $(element);
+        const url = Routes.owners_path();
         GSAS.load_list_ajax(select_element, '- Select a predefined property owner -', url,
             function(el, callback) {
                 return $.ajax({
@@ -17,7 +17,7 @@ $(function() {
                     dataType: 'json',
                     cache: false
                 }).done(function(data) {
-                    selection = {id: data.id, text: data.name};
+                    const selection = {id: data.id, text: data.name};
                     callback(selection);
                 });
             }

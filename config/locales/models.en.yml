@@ -5,6 +5,10 @@ en:
         attachment_file: Attachment
         user_comment: Comment
       certificate:
+        certificate_types:
+          design_type: Design & Build
+          construction_type: Construction Management Certificate
+          operations_type: Operations Cerfificate
         certification_types:
           letter_of_conformance: Letter of conformance
           final_design_certificate: Final design certificate

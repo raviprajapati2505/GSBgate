@@ -14,7 +14,11 @@
                                 <%= f.text_field :code %>
                             <% end %>
                             <%= f.text_field :name %>
+                            <%= f.select(:certificate_type, options_for_select(Certificate.certificate_types.map { |k, v| [t(k, scope: 'activerecord.attributes.certificate.certificate_types'), v]})) %>
                             <%= f.text_field :service_provider %>
+                            <div class="design-fields">
+                            <%= f.text_field :service_provider_2 %>
+                            </div>
                             <%= f.text_field :owner %>
                             <%= f.form_group do %>
                               <label>Or choose a predefined property owner</label>
@@ -25,13 +29,19 @@
                             <div id="building-type-select">
                               <%= f.select(:building_type_id, options_for_select(BuildingType.all.map{ |bt| [bt.name, bt.id, {'data-building-type-group-id' => bt.building_type_group_id}]}, @project.building_type_id), {include_blank: '- Select a predefined building type -', class: 'form-control'}) %>
                             </div>
+                            <%= f.text_field :estimated_project_cost %>
+                            <%= f.text_field :cost_square_meter %>
+                            <div class="district-fields">
+                            <%= f.text_field :estimated_building_cost %>
+                            <%= f.text_field :estimated_infrastructure_cost %>
+                            </div>
                             <%= f.text_area :description %>
                             <%= f.text_field :construction_year %>
+                        </div>
+                        <div class="col-md-3">
                             <%= f.text_area :address %>
                             <%= f.text_field :location %>
                             <%= f.text_field :country %>
-                        </div>
-                        <div class="col-md-3">
                             <%= f.text_field :gross_area, append: 'm²', label: (Project.human_attribute_name('gross_area') + tooltip(t '.tooltip_gross_area')).html_safe %>
                             <%= f.text_field :certified_area, append: 'm²', label: (Project.human_attribute_name('certified_area') + tooltip(t '.tooltip_certified_area')).html_safe %>
                             <%= f.text_field :carpark_area, append: 'm²', label: (Project.human_attribute_name('carpark_area') + tooltip(t '.tooltip_carpark_area')).html_safe %>

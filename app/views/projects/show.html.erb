@@ -19,9 +19,21 @@
                         <td><%= @project.name %></td>
                     </tr>
                     <tr>
+                      <th><%= Project.human_attribute_name('certificate type') %></th>
+                      <td><%= t(Certificate.certificate_types.key(@project.certificate_type), scope: 'activerecord.attributes.certificate.certificate_types') %></td>
+                    </tr>
+                    <tr>
                         <th><%= Project.human_attribute_name('service_provider') %></th>
                         <td><%= @project.service_provider %></td>
                     </tr>
+
+                    <% if @project.certificate_type == Certificate.certificate_types[:design_type] %>
+                    <tr>
+                      <th><%= Project.human_attribute_name('service_provider_2') %></th>
+                      <td><%= @project.service_provider_2 %></td>
+                    </tr>
+                    <% end %>
+
                     <tr>
                         <th><%= Project.human_attribute_name('owner') %></th>
                         <td><%= @project.owner %></td>
@@ -38,6 +50,24 @@
                       <th><%= Project.human_attribute_name('building_type_id') %></th>
                       <td><%= @project.building_type.name if @project.building_type.present? %></td>
                     </tr>
+                    <tr>
+                      <th><%= Project.human_attribute_name('estimated_project_cost') %></th>
+                      <td><%= @project.estimated_project_cost %></td>
+                    </tr>
+                    <tr>
+                      <th><%= Project.human_attribute_name('cost_square_meter') %></th>
+                      <td><%= @project.cost_square_meter %></td>
+                    </tr>
+                    <% if @project.building_type_group_id == 8 %>
+                    <tr>
+                      <th><%= Project.human_attribute_name('estimated_building_cost') %></th>
+                      <td><%= @project.estimated_building_cost %></td>
+                    </tr>
+                    <tr>
+                      <th><%= Project.human_attribute_name('estimated_infrastructure_cost') %></th>
+                      <td><%= @project.estimated_infrastructure_cost %></td>
+                    </tr>
+                    <% end %>
                     <tr>
                         <th><%= Project.human_attribute_name('description') %></th>
                         <td><%= @project.description %></td>
