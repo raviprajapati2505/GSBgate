@@ -48,7 +48,7 @@
             <table class="table table-striped table-bordered table-hover datatable" cellspacing="0" width="100%">
                 <thead>
                 <tr>
-                    <th>Member name</th>
+                    <th>Member Name</th>
                     <th>Email</th>
                     <th>Role</th>
                     <% if team != :enterprise_clients %>
@@ -146,7 +146,7 @@
                             Linkme.qa users can be added to the project immediately. Users without a linkme.qa account can be invited by email.
                         </p>
                         <div class="form-group">
-                            <%= label_tag 'email' + team.to_s, 'Find users by email', class: 'control-label' %>
+                            <%= label_tag 'email' + team.to_s, 'Find Users by Email', class: 'control-label' %>
                             <div class="input-group">
                                 <%= text_field_tag 'email' + team.to_s, '', class: 'email-field form-control' %>
                                 <span class="input-group-btn">

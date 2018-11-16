@@ -12,13 +12,13 @@ module Effective
         table_column 'role', type: :integer, filter: {type: :select, values: Proc.new { User.roles.map { |k| [t(k[0], scope: 'activerecord.attributes.user.roles'), k[1]] } }} do |rec|
           t(rec.role, scope: 'activerecord.attributes.user.roles') unless rec.role.nil?
         end
-        table_column 'linkme_user', label: 'Linkme.qa user'
-        table_column 'cgp_license', label: 'CGP license'
-        table_column 'gord_employee', label: 'GORD employee'
-        table_column 'last_sign_in_at', label: 'Last sign in at', type: :datetime, filter: {type: :select, values: Proc.new { User.pluck_date_field_by_year_month_day(:last_sign_in_at, :desc) }} do |rec|
+        table_column 'linkme_user', label: 'Linkme.qa User'
+        table_column 'cgp_license', label: 'CGP License'
+        table_column 'gord_employee', label: 'GORD Employee'
+        table_column 'last_sign_in_at', label: 'Last Sign in at', type: :datetime, filter: {type: :select, values: Proc.new { User.pluck_date_field_by_year_month_day(:last_sign_in_at, :desc) }} do |rec|
           localize(rec.last_sign_in_at.in_time_zone) unless rec.last_sign_in_at.nil?
         end
-        table_column 'sign_in_count', label: 'Sign in count', type: :number
+        table_column 'sign_in_count', label: 'Sign in Count', type: :number
         if User.current.can?(:masquerade, User)
           table_column 'id', label: 'Masquerade', filter: false, sortable: false do |rec|
             btn_link_to(masquerade_users_path(rec.id), icon: 'user-secret', size: 'small')

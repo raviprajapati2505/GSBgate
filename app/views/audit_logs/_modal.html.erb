@@ -9,7 +9,7 @@
                 <% if @only_user_comments %>
                     Comments for <em><%= @auditable.name %></em>
                 <% else %>
-                    Audit log for <em><%= @auditable.name %></em>
+                    Audit Log for <em><%= @auditable.name %></em>
                 <% end %>
             </h4>
         </div>
@@ -37,7 +37,7 @@
                       <% if can?(:index, AuditLog.new(audit_log_visibility_id: AuditLogVisibility::INTERNAL, project: @project)) %>
                         <% disabled = @is_certifier %>
                         <%= f.form_group :audit_log_visibility do %>
-                          <%= f.label :audit_log_visibility, 'Comment visibility' %>
+                          <%= f.label :audit_log_visibility, 'Comment Visibility' %>
                           <%= f.radio_button :audit_log_visibility, AuditLogVisibility::PUBLIC, label: 'Public Comment', disabled: disabled %>
                             <span class="help-block">Everyone assigned to this project will be able to view this comment</span>
                           <%= f.radio_button :audit_log_visibility, AuditLogVisibility::INTERNAL, label: 'GSAS Trust Internal Comment', checked: true, disabled: disabled %>

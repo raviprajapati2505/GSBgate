@@ -2,7 +2,7 @@
     <div class="col-md-4 pull-right">
         <div class="ibox">
             <div class="ibox-title">
-                <h5>Audit log filter</h5>
+                <h5>Audit Log Filter</h5>
             </div>
             <div class="ibox-content">
                 <%= render 'audit_log_filter' %>
@@ -12,7 +12,7 @@
     <div class="col-md-8">
         <div class="ibox">
             <div class="ibox-title">
-                <h5>Audit log <%= tooltip('This page contains audit logs for all projects you have access to.') %></h5>
+                <h5>Audit Log <%= tooltip('This page contains audit logs for all projects you have access to.') %></h5>
                 <%= btn_download(export_audit_logs_path, text: 'Export all selected audit logs', size: 'extra_small', class: 'pull-right') %>
             </div>
             <div class="ibox-content">

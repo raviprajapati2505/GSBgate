@@ -55,7 +55,7 @@
                     <% if can?(:update_max_review_count, @certification_path) %>
                         <tr>
                           <th>
-                            Maximum number of PCR reviews
+                            Maximum Number of PCR Reviews
                           </th>
                           <td>
                             <span><%= pluralize(@certification_path.max_review_count, 'review') %></span>
@@ -68,7 +68,7 @@
                     <% if can?(:download_archive, @certification_path) %>
                         <tr>
                             <th>
-                                Documents and audit logs
+                                Documents and Audit Logs
                                 <%= tooltip('An archive of all approved documents and CSV formatted audit logs regarding the certificate can be downloaded here.') %>
                             </th>
                             <td>
@@ -133,7 +133,7 @@
             <% end %>
             <% if can?(:update_signed_certificate, @certification_path) %>
               <%= bootstrap_form_for(@certification_path, url: update_signed_certificate_project_certification_path_path(@project, @certification_path), method: 'put') do |f| %>
-                  <%= f.file_field :signed_certificate_file, label: 'Upload new signed certificate' %>
+                  <%= f.file_field :signed_certificate_file, label: 'Upload New Signed Certificate' %>
                   <div class="hr-line-dashed"></div>
                   <%= btn_save %>
               <% end %>
@@ -173,7 +173,7 @@
     <div class="col-md-7">
       <div class="ibox float-e-margins">
         <div class="ibox-title">
-          <h5>Summary of stages</h5>
+          <h5>Summary of Stages</h5>
         </div>
         <div class="ibox-content">
           <%= scores_legend %>
@@ -269,7 +269,7 @@
       </div>
       <div class="ibox" id="certifier-documentation">
         <div class="ibox-title">
-          <h5>GSAS trust team documentation</h5>
+          <h5>GSAS Trust Team Documentation</h5>
         </div>
         <div class="ibox-content">
           <%= render 'certification_path_documents/index', certification_path_documents: @certification_path.certifier_certification_path_documents %>

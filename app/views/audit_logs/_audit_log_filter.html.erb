@@ -7,7 +7,7 @@
         <%= f.label :certification_path_id, t('.certification_path_label') %><br/>
         <%= f.hidden_field :certification_path_id, { class: 'select2-certificate-ajax', value: session[:audit]['certification_path_id'] } %>
     </div>
-    <%= f.text_field 'text', value: session[:audit]['text'], label: 'Message contains' %>
+    <%= f.text_field 'text', value: session[:audit]['text'], label: 'Message Contains' %>
     <%= f.form_group do %>
         <%= f.label :user_id %><br/>
         <%= f.hidden_field :user_id, { class: 'select2-ajax', data: {current_user_id: current_user.id }, value: session[:audit]['user_id'] } %>
@@ -15,7 +15,7 @@
     <div class="row">
         <div class="col-lg-7">
             <div class="form-group">
-                <%= label_tag 'date_from', 'Date from', class: 'control-label' %>
+                <%= label_tag 'date_from', 'Date From', class: 'control-label' %>
                 <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                     <%= text_field_tag 'date_from', session[:audit]['date_from'], {class: 'datepicker-past form-control', autocomplete: 'off'} %>
@@ -24,7 +24,7 @@
         </div>
         <div class="col-lg-5">
             <div class="form-group">
-                <%= label_tag 'time_from', 'Time from', class: 'control-label' %>
+                <%= label_tag 'time_from', 'Time From', class: 'control-label' %>
                 <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
                     <%= text_field_tag 'time_from', session[:audit]['time_from'], {class: 'timepicker form-control', autocomplete: 'off'} %>
@@ -33,7 +33,7 @@
         </div>
         <div class="col-lg-7">
             <div class="form-group">
-                <%= label_tag 'date_to', 'Date to', class: 'control-label' %>
+                <%= label_tag 'date_to', 'Date To', class: 'control-label' %>
                 <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                     <%= text_field_tag 'date_to', session[:audit]['date_to'], {class: 'datepicker-past form-control', autocomplete: 'off'} %>
@@ -42,7 +42,7 @@
         </div>
         <div class="col-lg-5">
             <div class="form-group">
-                <%= label_tag 'time_to', 'Time to', class: 'control-label' %>
+                <%= label_tag 'time_to', 'Time To', class: 'control-label' %>
                 <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
                     <%= text_field_tag 'time_to', session[:audit]['time_to'], {class: 'timepicker form-control', autocomplete: 'off'} %>
@@ -51,7 +51,7 @@
         </div>
     </div>
     <div class="form-group">
-      <%= label_tag 'audit_log_type', 'Audit log type' %>
+      <%= label_tag 'audit_log_type', 'Audit Log Type' %>
       <%= select_tag 'audit_log_type', options_for_select([['Show all audit logs', 'all'], ['Only show audit logs with a user comment', 'user_comment'], ['Only show audit logs with an attachment', 'attachment']], session[:audit]['audit_log_type']), class: 'form-control' %>
     </div>
     <div class="hr-line-dashed"></div>

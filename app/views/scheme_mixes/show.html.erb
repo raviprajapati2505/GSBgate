@@ -2,13 +2,13 @@
   <div class="col-lg-4">
     <div class="ibox float-e-margins">
       <div class="ibox-title">
-        <h5>Scheme details</h5>
+        <h5>Scheme Details</h5>
       </div>
       <div class="ibox-content">
         <table class="table table-bordered table-striped" cellspacing="0" width="100%">
           <tbody>
           <tr>
-            <th>Scheme name</th>
+            <th>Scheme Name</th>
             <td>
               <%= @scheme_mix.full_name %>
               <% if @scheme_mix.certification_path.main_scheme_mix_id == @scheme_mix.id %>
@@ -28,7 +28,7 @@
             </td>
           </tr>
           <tr>
-            <th>Total requirement progress</th>
+            <th>Total Requirement Progress</th>
             <td>
               <% processed_count = RequirementDatum.for_scheme_mix(@scheme_mix).provided.count + RequirementDatum.for_scheme_mix(@scheme_mix).not_required.count %>
               <% total_count = RequirementDatum.for_scheme_mix(@scheme_mix).count %>
@@ -44,7 +44,7 @@
             </td>
           </tr>
           <tr>
-            <th>Approved documents</th>
+            <th>Approved Documents</th>
             <td>
               <% approved_count = @scheme_mix.scheme_mix_criteria_documents.approved.count %>
               <% awaiting_approval_count = @scheme_mix.scheme_mix_criteria_documents.awaiting_approval.count %>
@@ -68,7 +68,7 @@
   <div class="col-lg-8">
     <div class="ibox float-e-margins">
       <div class="ibox-title">
-        <h5>Categories &amp; criteria</h5>
+        <h5>Categories &amp; Criteria</h5>
       </div>
       <div class="ibox-content">
         <%
@@ -110,8 +110,8 @@
                 <% id_list << @scheme_mix.scheme_mix_criteria.collect { |scheme_mix_criteria| "scheme_mix_criterion_#{scheme_mix_criteria.id}" } %>
                 <%= render 'score/score_toggle', id_list: id_list %>
               </th>
-              <th>Total requirement progress</th>
-              <th>Approved documents</th>
+              <th>Total Requirement Progress</th>
+              <th>Approved Documents</th>
             </tr>
             </thead>
             <tbody>
@@ -194,8 +194,8 @@
                           <th>Status</th>
                           <th>Weighting</th>
                           <th>Score</th>
-                          <th>Total requirement progress</th>
-                          <th>Approved documents</th>
+                          <th>Total Requirement Progress</th>
+                          <th>Approved Documents</th>
                         </tr>
                         </thead>
                         <tbody>

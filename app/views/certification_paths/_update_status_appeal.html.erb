@@ -1,7 +1,7 @@
 <%= bootstrap_form_for([@project, @certification_path], url: update_status_project_certification_path_url, method: 'put') do |f| %>
     <div class="modal-header">
         <%= btn_close_modal %>
-        <h4 class="modal-title">Applying for appeal</h4>
+        <h4 class="modal-title">Applying for Appeal</h4>
     </div>
     <div class="modal-body">
         <%= f.hidden_field :appealed, value: true %>

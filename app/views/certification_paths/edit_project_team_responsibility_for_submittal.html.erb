@@ -3,7 +3,7 @@
         <div class="col-md-8">
             <div class="ibox">
                 <div class="ibox-title">
-                    <h5>Select requirements to allocate for submittal</h5>
+                    <h5>Select Requirements to Allocate for Submittal</h5>
                 </div>
                 <div class="ibox-content">
                     <p class="alert alert-info"><%= ikoen('info-circle') %> Use the checkboxes and the form to update the status of requirements or to assign requirements to project team members. Submitted criteria or criteria without requirements will not be listed here.</p>
@@ -24,7 +24,7 @@
                                             <th><%= check_box_tag 'scheme_mix_criteria[]', scheme_mix_criterion.id, false, class: 'checkbox_parent' %></th>
                                             <th><%= scheme_mix_criterion.scheme_criterion.full_name %></th>
                                             <th>Allocated&nbsp;to</th>
-                                            <th>Due&nbsp;date</th>
+                                            <th>Due&nbsp;Date</th>
                                             <th>Status</th>
                                         </tr>
                                         <% scheme_mix_criterion.requirement_data.each do |requirement_datum| %>
@@ -47,7 +47,7 @@
         <div class="col-md-4">
             <div class="ibox">
                 <div class="ibox-title">
-                    <h5>Allocate selected requirements for submittal</h5>
+                    <h5>Allocate Selected Requirements for Submittal</h5>
                 </div>
                 <div class="ibox-content">
                     <div class="form-group">
@@ -56,7 +56,7 @@
                         <%= select_tag 'user_id', options_for_select(users.map { |k| [k.full_name, k.id] }), {include_blank: '- Not allocated -', class: 'form-control'} %>
                     </div>
                     <div class="form-group">
-                        <%= label_tag 'due_date', 'Due date', class: 'control-label' %>
+                        <%= label_tag 'due_date', 'Due Date', class: 'control-label' %>
                         <div class="input-group">
                             <span class="input-group-addon"><%= ikoen('calendar') %></span>
                             <%= text_field_tag 'due_date', nil, {class: 'datepicker-future form-control', autocomplete: 'off'} %>

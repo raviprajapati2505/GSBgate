@@ -9,15 +9,15 @@ en:
       modal_title: Confirm
     topnavbar:
       navbar:
-        projects_html: My projects &amp; certifications
-        tasks: My tasks
-        preferences: My preferences
-        audit_log: Audit log
+        projects_html: My Projects &amp; Certifications
+        tasks: My Tasks
+        preferences: My Preferences
+        audit_log: Audit Log
         admin: Admin
-        admin_system_data: Manage system data
+        admin_system_data: Manage System Data
         admin_users: Users
-        certifiers_and_criteria_report: Certifiers and criteria
-        manual: User manual
+        certifiers_and_criteria_report: Certifiers and Criteria
+        manual: User Manual
   certification_paths:
     edit_status:
       modal_title: Update status
@@ -29,8 +29,8 @@ en:
       btn_save_and_continue: Save and continue
     show:
       certification_path:
-        title: Certification details
-        name: Certification name
+        title: Certification Details
+        name: Certification Name
         download_certificate:
           text: Download Certification
           tooltip: Download Certification
@@ -52,7 +52,7 @@ en:
         pcr:
           tooltip: Pre Certification Review. During PCR, the GSAS trust team will assist the project team in completing the certification process. The CGP project manager can enable PCR when applying for a certificate. Please contact GORD if you want to enable the PCR track in a later stage of the certification process.
       certification_path_status:
-        title: Certification status
+        title: Certification Status
         btn_accept_achieved: Accept achieved score
         btn_accept_denied:
           text: Accept certification denied
@@ -60,9 +60,9 @@ en:
         btn_apply_appeal: Apply for appeal
         btn_advance_status: Advance status to '%{status}'
       certification_path_reports:
-        title: Generated reports
+        title: Generated Reports
       certification_path_signed_certificate:
-        title: Officially signed certificate
+        title: Officially Signed Certificate
       schemes:
         title: Schemes
         info_activating: The schemes will be clickable after a GSAS trust administrator activates the certification.
@@ -77,16 +77,16 @@ en:
       warning_complete_stage2: Please complete the GSAS-CM - Stage 2 first.
       warning_complete_stage3: Please complete all GSAS-CM stages first.
     timeline_legend:
-      project_team: Project team
-      certifier_team: GSAS trust team
+      project_team: Project Team
+      certifier_team: GSAS Trust Team
     update_status_advance:
-      title: Advancing certification status
+      title: Advancing Certification Status
   projects:
     index:
-      title_html: Projects &amp; certifications
+      title_html: Projects &amp; Certifications
       btn_new_project: New project
     form:
-      title: Project details
+      title: Project Details
       tooltip_gross_area: Total built up area including parking areas such as underground or structured parking.
       tooltip_certified_area: Total built up area excluding parking areas. All parking areas (whether underground, structured, or at grade) should NOT be included in this calculation. Other spaces, such as common areas, mechanical spaces, and circulation areas, should be included in the certified area of the building.
       tooltip_carpark_area: Total built up area associated with parking (underground or structured parking). This does NOT include on-grade parking, as we are only interested in the built up area.
@@ -94,29 +94,29 @@ en:
       tooltip_latlng: The latitude and longitude will automatically be updated when the Address, Location and Country fields are filled out. However, it is also possible to define a custom location by editing this field or by dragging the marker on the map.
     show:
       project_details:
-        title: Project details
+        title: Project Details
       project_tools:
-        title: Project tools
+        title: Project Tools
       certificates:
         title: Certifications
   projects_users:
     edit:
       btn_cancel: Back
       btn_save: Update authorization
-      form_title: Edit team member authorization
+      form_title: Edit Team Member Authorization
     index:
       project_team:
-        title: Project team
-        title_modal: Add project team member
+        title: Project Team
+        title_modal: Add Project Team Member
       certifier_team:
-        title: GSAS trust team
-        title_modal: Add GSAS trust team member
+        title: GSAS Trust Team
+        title_modal: Add GSAS Trust Team Member
       enterprise_clients:
-        title: Enterprise clients
-        title_modal: Add enterprise client
+        title: Enterprise Clients
+        title_modal: Add Enterprise Client
   reports:
     certifiers_criteria:
-      title_html: Certifiers & criteria
+      title_html: Certifiers & Criteria
   schemes:
     show:
       tooltip_sortable: You can drag and drop the panels below to re-order their appearance.
@@ -128,7 +128,7 @@ en:
       tooltip_requirement_not_required: Requirement not required
     refuse_requirement:
       info_refuse_requirement: When you refuse this requirement, the CGP project manager will have to reassign the requirement to another project team member. Please explain below why you can't complete the requirement.
-      modal_title: Requirement refusal
+      modal_title: Requirement Refusal
   scheme_criteria:
     index:
       criteria:
@@ -143,9 +143,9 @@ en:
       info:
         achieved_html: The criterion status will advance to <strong>%{status}</strong>.
       title:
-        undo: Revert status
-        submit: Submit criterion
-        verify: Verify criterion
+        undo: Revert Status
+        submit: Submit Criterion
+        verify: Verify Criterion
     form:
       details:
         btn_edit_status:
@@ -165,11 +165,11 @@ en:
   scheme_mix_criteria_documents:
       edit_status:
         info_text_review: Review this document for compliance against this criterion. Set the status to approved if the document is compliant with the requirements.
-        modal_title: Update status
+        modal_title: Update Status
       new_link:
-        modal_title: Link document to other criteria
+        modal_title: Link Document to Other Criteria
       unlink:
-        modal_title: Unlink document from criteria
+        modal_title: Unlink Document From Criteria
   score:
     score_toggle:
       scores_in_certificate_points:
@@ -223,7 +223,7 @@ en:
   users:
     index:
       action_edit_title: Edit
-      table_title: User overview
+      table_title: User Overview
     form:
       form_title: User details
     list_notifications:

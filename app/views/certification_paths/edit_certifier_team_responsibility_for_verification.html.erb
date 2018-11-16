@@ -3,7 +3,7 @@
         <div class="col-md-8">
             <div class="ibox">
                 <div class="ibox-title">
-                    <h5>Select criteria to allocate for verification</h5>
+                    <h5>Select Criteria to Allocate for Verification</h5>
                 </div>
                 <div class="ibox-content">
                     <p class="alert alert-info"><%= ikoen('info-circle') %> Use the checkboxes to assign criteria to certifiers. Verified criteria will not be listed here.</p>
@@ -23,7 +23,7 @@
                                         <th><%= check_box_tag 'categories[]', category.id, false, class: 'checkbox_parent' %></th>
                                         <th><%= category.name %></th>
                                         <th>Allocated&nbsp;to</th>
-                                        <th>Due&nbsp;date</th>
+                                        <th>Due&nbsp;Date</th>
                                         <th>Status</th>
                                     </tr>
                                     <% scheme_mix.scheme_mix_criteria.in_verification.for_category(category).order('scheme_criteria.number').each do |scheme_mix_criterion| %>
@@ -47,7 +47,7 @@
         <div class="col-md-4">
             <div class="ibox">
                 <div class="ibox-title">
-                    <h5>Allocate selected criteria for verification</h5>
+                    <h5>Allocate Selected Criteria for Verification</h5>
                 </div>
                 <div class="ibox-content">
                     <div class="form-group">
@@ -56,7 +56,7 @@
                         <%= select_tag 'certifier_id', options_for_select(certifiers.map {|k| [k.full_name, k.id]}), {include_blank: '- Not allocated -', class: 'form-control'} %>
                     </div>
                     <div class="form-group">
-                        <%= label_tag 'due_date', 'Due date', class: 'control-label' %>
+                        <%= label_tag 'due_date', 'Due Date', class: 'control-label' %>
                         <div class="input-group">
                             <span class="input-group-addon"><%= ikoen('calendar') %></span>
                             <%= text_field_tag 'due_date', nil, {class: 'datepicker-future form-control', autocomplete: 'off'} %>
