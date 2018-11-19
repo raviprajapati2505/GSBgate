@@ -81,6 +81,8 @@ module Taskable
 
   def before_destroy
     case self.class.name
+      when CertificationPath.name.demodulize
+        Task.delete_all(certification_path: self)
       when ProjectsUser.name.demodulize
         Task.delete_all(project: self.project, user: self.user)
       when SchemeMixCriteriaDocument.name.demodulize
@@ -236,6 +238,8 @@ module Taskable
                      project_role: ProjectsUser.roles[:cgp_project_manager],
                      project: self.project,
                      certification_path: self)
+          # Destroy certification manager tasks for assigning people for screening
+          Task.delete_all(taskable: self, task_description_id: CERT_MNGR_ASSIGN_FOR_SCREENING)
           # Destroy certification manager tasks to advance status
           Task.delete_all(taskable: self, task_description_id: CERT_MNGR_SCREENING_APPROVE)
           # Destroy certifier manager notification that CMP was uploaded
@@ -252,6 +256,14 @@ module Taskable
           # IF PCR IS SKIPPED
           # Destroy project manager tasks to process screening comments
           Task.delete_all(taskable: self, task_description_id: PROJ_MNGR_PROC_SCREENING)
+          # Destroy project manager tasks to follow up overdue tasks
+          Task.delete_all(task_description_id: PROJ_MNGR_OVERDUE, certification_path: self)
+          # Destroy project manager tasks to approve documents
+          Task.delete_all(task_description_id: PROJ_MNGR_DOC_APPROVE, certification_path: self)
+          # Destroy project manager tasks to process review comments
+          Task.delete_all(task_description_id: PROJ_MNGR_REVIEW, certification_path: self)
+          # Destroy tasks to provide requirement documentation
+          Task.delete_all(task_description_id: PROJ_MEM_REQ, certification_path: self)
         when CertificationPathStatus::ACKNOWLEDGING
           # Create project manager task to process verification comments
           Task.create(taskable: self,
@@ -263,6 +275,10 @@ module Taskable
           Task.delete_all(taskable: self, task_description_id: CERT_MNGR_VERIFICATION_APPROVE)
           # Destroy certifier manager notification that CMP was uploaded
           Task.delete_all(taskable: self, task_description_id: CERT_MNGR_CMP_UPLOADED)
+          # Destroy certification manager tasks to follow up overdue tasks
+          Task.delete_all(task_description_id: CERT_MNGR_OVERDUE, certification_path: self)
+          # Destroy certification manager tasks to provided PCR review comment
+          Task.delete_all(task_description_id: CERT_MNGR_REVIEW, certification_path: self)
         when CertificationPathStatus::PROCESSING_APPEAL_PAYMENT
           # Create system admin task to check appeal payment
           Task.create(taskable: self,
@@ -289,8 +305,16 @@ module Taskable
           Task.delete_all(taskable: self, task_description_id: CERT_MNGR_CMP_UPLOADED)
           DigestMailer.criteria_appealed_email(self).deliver_now
         when CertificationPathStatus::VERIFYING_AFTER_APPEAL
+          # Destroy project manager tasks to follow up overdue tasks
+          Task.delete_all(task_description_id: PROJ_MNGR_OVERDUE, certification_path: self)
           # Destroy project manager tasks to advance certification path status
           Task.delete_all(taskable: self, task_description_id: PROJ_MNGR_SUB_APPROVE)
+          # Destroy project manager tasks to approve documents
+          Task.delete_all(task_description_id: PROJ_MNGR_DOC_APPROVE, certification_path: self)
+          # Destroy project manager tasks to process review comments
+          Task.delete_all(task_description_id: PROJ_MNGR_REVIEW, certification_path: self)
+          # Destroy tasks to provide requirement documentation
+          Task.delete_all(task_description_id: PROJ_MEM_REQ, certification_path: self)
         when CertificationPathStatus::ACKNOWLEDGING_AFTER_APPEAL
           # Create project manager task to process verification comments
           Task.create(taskable: self,
@@ -302,6 +326,10 @@ module Taskable
           Task.delete_all(taskable: self, task_description_id: CERT_MNGR_VERIFICATION_APPROVE)
           # Destroy certifier manager notification that CMP was uploaded
           Task.delete_all(taskable: self, task_description_id: CERT_MNGR_CMP_UPLOADED)
+          # Destroy certification manager tasks to follow up overdue tasks
+          Task.delete_all(task_description_id: CERT_MNGR_OVERDUE, certification_path: self)
+          # Destroy certification manager tasks to provided PCR review comment
+          Task.delete_all(task_description_id: CERT_MNGR_REVIEW, certification_path: self)
         when CertificationPathStatus::APPROVING_BY_MANAGEMENT
           # Create GORD manager task to quick check and approve
           Task.create(taskable: self,
@@ -325,10 +353,12 @@ module Taskable
           Task.delete_all(taskable: self, task_description_id: GSAS_TRUST_MNGR_APPROVE)
         when CertificationPathStatus::CERTIFIED
           # Destroy GORD top manager tasks to approve
-          Task.delete_all(taskable: self, task_description_id: GSAS_TRUST_TOP_MNGR_APPROVE)
+          # Task.delete_all(taskable: self, task_description_id: GSAS_TRUST_TOP_MNGR_APPROVE)
+          # Destroy all certification path tasks
+          Task.delete_all(certification_path: self)
         when CertificationPathStatus::NOT_CERTIFIED
           # Destroy all certification path tasks
-          Task.delete_all(taskable: self)
+          Task.delete_all(certification_path: self)
       end
     end
   end
@@ -519,31 +549,6 @@ module Taskable
       if (self.due_date_was.present? && (self.due_date_was < Date.current)) && (self.due_date.blank? || (self.due_date > Date.current))
         # Destroy certification manager tasks to follow up overdue tasks
         Task.delete_all(taskable: self, task_description_id: CERT_MNGR_OVERDUE)
-      end
-    end
-  end
-
-  def handle_criterion_in_review_changed
-    if self.in_review_changed?
-      if self.in_review?
-        Task.delete_all(taskable: self, task_description_id: PROJ_MNGR_REVIEW)
-        if Task.find_by(taskable: self, task_description_id: CERT_MNGR_REVIEW).nil?
-          # Create certification manager task to provide a PCR review comment
-          Task.create(taskable: self,
-                      task_description_id: CERT_MNGR_REVIEW,
-                      project_role: ProjectsUser.roles[:certification_manager],
-                      project: self.scheme_mix.certification_path.project,
-                      certification_path: self.scheme_mix.certification_path)
-        end
-      else
-        Task.delete_all(taskable: self, task_description_id: [CERT_MNGR_REVIEW, CERT_MEM_REVIEW])
-        if Task.find_by(taskable: self, task_description_id: PROJ_MNGR_REVIEW).nil?
-          Task.create(taskable: self, task_description_id: PROJ_MNGR_REVIEW, project_role: ProjectsUser.roles[:cgp_project_manager], project: self.scheme_mix.certification_path.project, certification_path: self.scheme_mix.certification_path)
-        end
-        if self.due_date.present? && self.due_date < Date.current
-          # Destroy certification manager tasks to follow up overdue tasks
-          Task.delete_all(taskable: self, task_description_id: CERT_MNGR_OVERDUE)
-        end
       end
     end
   end
