@@ -15,6 +15,9 @@ gem 'sass-rails'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier'
 
+# Puma service
+gem 'puma'
+
 # Use CoffeeScript for .coffee assets and views
 # gem 'coffee-rails', '~> 4.1.0'
 # gem 'coffee-script-source', '1.8.0'
