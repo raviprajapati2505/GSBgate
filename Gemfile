@@ -147,7 +147,7 @@ source 'http://rails-assets.org' do
   gem 'rails-assets-pace'
   gem 'rails-assets-slimScroll'
   gem 'rails-assets-toastr'
-  gem 'rails-assets-voidberg--html5sortable'
+  gem 'rails-assets-voidberg--html5sortable', '~> 0.4.2'
   gem 'rails-assets-three.js'
   gem 'rails-assets-leaflet-draw'
   gem 'rails-assets-proj4'

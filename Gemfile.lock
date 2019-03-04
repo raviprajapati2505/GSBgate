@@ -219,7 +219,7 @@ GEM
     rails-assets-three.js (0.89.0)
     rails-assets-toastr (2.1.3)
       rails-assets-jquery (>= 1.6.3, < 3)
-    rails-assets-voidberg--html5sortable (0.9.8)
+    rails-assets-voidberg--html5sortable (0.4.6)
     rails-deprecated_sanitizer (1.0.3)
       activesupport (>= 4.2.0.alpha)
     rails-dom-testing (1.0.9)
@@ -344,7 +344,7 @@ DEPENDENCIES
   rails-assets-slimScroll!
   rails-assets-three.js!
   rails-assets-toastr!
-  rails-assets-voidberg--html5sortable!
+  rails-assets-voidberg--html5sortable (~> 0.4.2)!
   rgeo
   roo
   rubyzip
