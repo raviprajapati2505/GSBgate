@@ -58,15 +58,6 @@ group :development, :test do
   gem 'roo'
   # gem 'axlsx', '~> 2.0.1'
   # gem 'axlsx_rails', '~> 0.5.1'
-
-
-  # Capistrano gems
-  gem 'capistrano'
-  gem 'capistrano-rails'
-  gem 'capistrano-rbenv'
-  gem 'capistrano-bundler'
-  gem 'capistrano-yarn' # In case you use the yarn package manager
-  gem 'capistrano-systemd'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
@@ -118,7 +109,7 @@ gem 'prawn'
 gem 'prawn-table'
 
 # HTML, XML, SAX, and Reader parser.
-gem 'nokogiri'
+gem 'nokogiri', '1.10.1'
 
 # Required for password encryption
 gem 'bcrypt'
@@ -147,7 +138,7 @@ source 'http://rails-assets.org' do
   gem 'rails-assets-pace'
   gem 'rails-assets-slimScroll'
   gem 'rails-assets-toastr'
-  gem 'rails-assets-voidberg--html5sortable', '0.4.2'
+  gem 'rails-assets-voidberg--html5sortable'
   gem 'rails-assets-three.js'
   gem 'rails-assets-leaflet-draw'
   gem 'rails-assets-proj4'
