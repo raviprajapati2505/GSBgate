@@ -109,7 +109,11 @@ gem 'prawn'
 gem 'prawn-table'
 
 # HTML, XML, SAX, and Reader parser.
-gem 'nokogiri', '1.10.1'
+gem 'nokogiri', '~> 1.10.1'
+
+gem 'rails-dom-testing', '~> 1.0.9'
+
+gem 'html2haml', '~> 2.2.0'
 
 # Required for password encryption
 gem 'bcrypt'
