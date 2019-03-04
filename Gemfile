@@ -49,13 +49,14 @@ gem 'execjs'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+# used by the xlsx2seed rake task
+gem 'roo'
+
 group :development, :test do
   # replaces standard error page (stack trace, variable inspection, source code)
   gem 'better_errors'
   # -- add REPL and local instance variable inspection to better_errors
   gem 'binding_of_caller'
-  # used by the xlsx2seed rake task
-  gem 'roo'
   # gem 'axlsx', '~> 2.0.1'
   # gem 'axlsx_rails', '~> 0.5.1'
 end
