@@ -17,7 +17,7 @@
 default: &default
   host:     <%= ENV['DATABASE_SERVER'] %>
   database: <%= ENV['DATABASE_NAME'] %>
-  user:     <%= ENV['DATABASE_USER'] %>
+  username: <%= ENV['DATABASE_USERNAME'] %>
   password: <%= ENV['DATABASE_PASSWORD'] %>
   adapter: postgis
   postgis_extension: true
