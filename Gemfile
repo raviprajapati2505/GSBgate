@@ -58,6 +58,15 @@ group :development, :test do
   gem 'roo'
   # gem 'axlsx', '~> 2.0.1'
   # gem 'axlsx_rails', '~> 0.5.1'
+
+
+  # Capistrano gems
+  gem 'capistrano'
+  gem 'capistrano-rails'
+  gem 'capistrano-rbenv'
+  gem 'capistrano-bundler'
+  gem 'capistrano-yarn' # In case you use the yarn package manager
+  gem 'capistrano-systemd'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
