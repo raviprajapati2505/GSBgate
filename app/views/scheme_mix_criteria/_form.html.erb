@@ -80,7 +80,7 @@
                               <%= btn_link_to(request_review_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), icon: 'life-saver', text: 'Max. PCR reviews reached', class: 'disabled') %>
                           <% end %>
                         <% end %>
-                    <% else %>
+                    <% elsif can?(:edit_status, @scheme_mix_criterion) %>
                         <%= btn_link_to(edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, undo: 1), remote: true, icon: 'undo', text: t('.details.btn_edit_status.undo'), style: 'danger') %>
                     <% end %>
                 <% end %>

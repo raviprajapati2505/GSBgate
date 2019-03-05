@@ -13,13 +13,14 @@ class LinkmeService
       username: 'Username',
       email: 'EmailAddr',
       picture: 'HeadshotImageURI',
-      membership: 'Membership',
       employer: 'Employer',
       name_prefix: 'NamePrefix',
       first_name: 'FirstName',
       middle_name: 'MiddleName',
       last_name: 'LastName',
-      name_suffix: 'NameSuffix'
+      name_suffix: 'NameSuffix',
+      membership: 'Membership',
+      membership_expiry: 'MembershipExpiry'
   }
 
   # Session.Create

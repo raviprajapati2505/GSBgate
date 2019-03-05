@@ -153,16 +153,32 @@
                     <% if @certification_path.in_acknowledging? %>
                         <div class="hr-line-dashed"></div>
                         <% if @certification_path.has_achieved_score? %>
+                          <% if current_user.cgp_license_expired? %>
+                            <%= btn_link_to(edit_status_project_certification_path_url(@project, @certification_path), remote: true, icon: 'check', text: t('.certification_path_status.btn_accept_achieved'), class: 'disabled') %>
+                          <% else %>
                             <%= btn_link_to(edit_status_project_certification_path_url(@project, @certification_path), remote: true, icon: 'check', text: t('.certification_path_status.btn_accept_achieved')) %>
+                          <% end %>
                         <% else %>
+                          <% if current_user.cgp_license_expired? %>
+                            <%= btn_link_to(edit_status_project_certification_path_url(@project, @certification_path), remote: true, icon: 'check', text: t('.certification_path_status.btn_accept_denied.text'), data: {confirm: t('.certification_path_status.btn_accept_denied.confirm') }, class: 'disabled') %>
+                          <% else %>
                             <%= btn_link_to(edit_status_project_certification_path_url(@project, @certification_path), remote: true, icon: 'check', text: t('.certification_path_status.btn_accept_denied.text'), data: {confirm: t('.certification_path_status.btn_accept_denied.confirm') }) %>
+                          <% end %>
                         <% end %>
                         <% if @certification_path.certification_path_status_id == CertificationPathStatus::ACKNOWLEDGING %>
+                          <% if current_user.cgp_license_expired? %>
+                            <%= btn_link_to(edit_status_project_certification_path_url(@project, @certification_path, appeal: 1), remote: true, icon: 'hand-o-up', text: t('.certification_path_status.btn_apply_appeal'), class: 'disabled') %>
+                          <% else %>
                             <%= btn_link_to(edit_status_project_certification_path_url(@project, @certification_path, appeal: 1), remote: true, icon: 'hand-o-up', text: t('.certification_path_status.btn_apply_appeal')) %>
+                          <% end %>
                         <% end %>
                     <% else %>
                         <div class="hr-line-dashed"></div>
-                        <%= btn_link_to(edit_status_project_certification_path_url(@project, @certification_path), remote: true, icon: 'forward', text: t( '.certification_path_status.btn_advance_status', status: CertificationPathStatus.find_by(id: @certification_path.next_status).name)) %>
+                        <% if current_user.cgp_license_expired? %>
+                          <%= btn_link_to(edit_status_project_certification_path_url(@project, @certification_path), remote: true, icon: 'forward', text: t( '.certification_path_status.btn_advance_status', status: CertificationPathStatus.find_by(id: @certification_path.next_status).name), class: 'disabled') %>
+                        <% else %>
+                          <%= btn_link_to(edit_status_project_certification_path_url(@project, @certification_path), remote: true, icon: 'forward', text: t( '.certification_path_status.btn_advance_status', status: CertificationPathStatus.find_by(id: @certification_path.next_status).name)) %>
+                        <% end %>
                     <% end %>
                 <% end %>
             </div>

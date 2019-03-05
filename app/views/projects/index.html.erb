@@ -8,7 +8,11 @@
                 <%= render_datatable(@datatable) %>
                 <% if can? :create, Project.new %>
                     <div class="hr-line-dashed"></div>
+                  <% if current_user.cgp_license_expired? %>
+                    <%= btn_link_to(new_project_path, icon: 'building-o', text: t('.btn_new_project'), class: 'disabled') %>
+                  <% else %>
                     <%= btn_link_to(new_project_path, icon: 'building-o', text: t('.btn_new_project')) %>
+                  <% end %>
                 <% end %>
             </div>
         </div>
