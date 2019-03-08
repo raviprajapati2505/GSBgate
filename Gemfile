@@ -116,6 +116,8 @@ gem 'rails-dom-testing', '~> 1.0.9'
 
 gem 'html2haml', '~> 2.2.0'
 
+gem 'sprockets', '< 4.0.0'
+
 # Required for password encryption
 gem 'bcrypt'
 
