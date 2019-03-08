@@ -305,6 +305,7 @@ DEPENDENCIES
   rubyzip
   sass-rails
   select2-rails (< 4.0.0)
+  sprockets (< 4.0.0)
   tzinfo-data
   uglifier
   warden
