@@ -15,7 +15,6 @@ ActiveRecord::Schema.define(version: 20181119104231) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "postgis"
 
   create_table "archives", force: :cascade do |t|
     t.string   "archive_file"
