@@ -1,10 +1,10 @@
 source 'http://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~>4.2'
+gem 'rails', '~> 4.2'
 
 # Use postgresql as the database for Active Record
-gem 'pg', '0.18'
+gem 'pg', '~> 0.21'
 gem 'activerecord-postgis-adapter'
 gem 'rgeo'
 gem 'ffi-geos'
@@ -62,7 +62,7 @@ group :development, :test do
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :jruby]
+gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
 
 # Rack middleware that provides authentication for rack applications
 gem 'warden'
