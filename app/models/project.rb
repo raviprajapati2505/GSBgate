@@ -90,9 +90,9 @@ class Project < ActiveRecord::Base
 
   def are_all_construction_stages_certified?
     count = CertificationPath.with_project(self)
-                .with_status(CertificationPathStatus::CERTIFIED)
-                .with_certificate_type(Certificate.certificate_types[:construction_type])
-                .count
+              .with_status(CertificationPathStatus::CERTIFIED)
+              .with_certificate_type(Certificate.certificate_types[:construction_type])
+              .count
     if count == 3
       return true
     end
@@ -147,9 +147,9 @@ class Project < ActiveRecord::Base
       self.code ||= 'TBC'
     end
 
-    if self.has_attribute?('latlng')
-      # Set default latlng location to Doha, Qatar
-      self.latlng ||= 'POINT(51.53043679999996 25.2916097)'
+    if self.has_attribute?('coordinates')
+      # Set default lat/lng location to Doha, Qatar
+      self.coordinates ||= '25.2916097,51.53043679999996'
     end
   end
 

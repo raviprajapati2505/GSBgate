@@ -21,7 +21,7 @@ namespace :db do
   task :db_dump_production do
     config = Rails.configuration.database_configuration['production']
     if config.has_key?('url')
-      cmd = "pg_dump --format=c #{config['url'].sub('postgis://', 'postgres://')} --file=#{dump_path}"
+      cmd = "pg_dump --format=c #{config['url']} --file=#{dump_path}"
     else
       cmd = "pg_dump --format=c --host=#{config['host']} --username=#{config['username']} --dbname=#{config['database']} --file=#{dump_path}"
     end

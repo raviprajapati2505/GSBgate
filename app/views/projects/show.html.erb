@@ -1,201 +1,201 @@
 <% use_gmaps_for(:project) %>
 
 <div class="row">
-    <div class="col-md-4">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <%= audit_log_label(@project) %>
-                <h5><%= t('.project_details.title') %></h5>
-            </div>
-            <div class="ibox-content">
-                <table class="table table-bordered table-striped">
-                    <tbody>
-                    <tr>
-                        <th><%= Project.human_attribute_name('code') %></th>
-                        <td><%= @project.code %></td>
-                    </tr>
-                    <tr>
-                        <th><%= Project.human_attribute_name('name') %></th>
-                        <td><%= @project.name %></td>
-                    </tr>
-                    <tr>
-                      <th><%= Project.human_attribute_name('certificate type') %></th>
-                      <td><%= t(Certificate.certificate_types.key(@project.certificate_type), scope: 'activerecord.attributes.certificate.certificate_types') %></td>
-                    </tr>
-                    <tr>
-                        <th><%= Project.human_attribute_name('service_provider') %></th>
-                        <td><%= @project.service_provider %></td>
-                    </tr>
+  <div class="col-md-4">
+    <div class="ibox float-e-margins">
+      <div class="ibox-title">
+        <%= audit_log_label(@project) %>
+        <h5><%= t('.project_details.title') %></h5>
+      </div>
+      <div class="ibox-content">
+        <table class="table table-bordered table-striped">
+          <tbody>
+          <tr>
+            <th><%= Project.human_attribute_name('code') %></th>
+            <td><%= @project.code %></td>
+          </tr>
+          <tr>
+            <th><%= Project.human_attribute_name('name') %></th>
+            <td><%= @project.name %></td>
+          </tr>
+          <tr>
+            <th><%= Project.human_attribute_name('certificate type') %></th>
+            <td><%= t(Certificate.certificate_types.key(@project.certificate_type), scope: 'activerecord.attributes.certificate.certificate_types') %></td>
+          </tr>
+          <tr>
+            <th><%= Project.human_attribute_name('service_provider') %></th>
+            <td><%= @project.service_provider %></td>
+          </tr>
 
-                    <% if @project.certificate_type == Certificate.certificate_types[:design_type] %>
-                    <tr>
-                      <th><%= Project.human_attribute_name('service_provider_2') %></th>
-                      <td><%= @project.service_provider_2 %></td>
-                    </tr>
-                    <% end %>
+          <% if @project.certificate_type == Certificate.certificate_types[:design_type] %>
+            <tr>
+              <th><%= Project.human_attribute_name('service_provider_2') %></th>
+              <td><%= @project.service_provider_2 %></td>
+            </tr>
+          <% end %>
 
-                    <tr>
-                        <th><%= Project.human_attribute_name('owner') %></th>
-                        <td><%= @project.owner %></td>
-                    </tr>
-                    <tr>
-                        <th><%= Project.human_attribute_name('developer') %></th>
-                        <td><%= @project.developer %></td>
-                    </tr>
-                    <tr>
-                        <th><%= Project.human_attribute_name('building_type_group_id') %></th>
-                        <td><%= @project.building_type_group.name if @project.building_type_group.present? %></td>
-                    </tr>
-                    <tr>
-                      <th><%= Project.human_attribute_name('building_type_id') %></th>
-                      <td><%= @project.building_type.name if @project.building_type.present? %></td>
-                    </tr>
-                    <tr>
-                      <th><%= Project.human_attribute_name('estimated_project_cost') %></th>
-                      <td><%= @project.estimated_project_cost %></td>
-                    </tr>
-                    <tr>
-                      <th><%= Project.human_attribute_name('cost_square_meter') %></th>
-                      <td><%= @project.cost_square_meter %></td>
-                    </tr>
-                    <% if @project.building_type_group_id == 8 %>
-                    <tr>
-                      <th><%= Project.human_attribute_name('estimated_building_cost') %></th>
-                      <td><%= @project.estimated_building_cost %></td>
-                    </tr>
-                    <tr>
-                      <th><%= Project.human_attribute_name('estimated_infrastructure_cost') %></th>
-                      <td><%= @project.estimated_infrastructure_cost %></td>
-                    </tr>
-                    <% end %>
-                    <tr>
-                        <th><%= Project.human_attribute_name('description') %></th>
-                        <td><%= @project.description %></td>
-                    </tr>
-                    <tr>
-                        <th><%= Project.human_attribute_name('address') %></th>
-                        <td><%= @project.address %></td>
-                    </tr>
-                    <tr>
-                        <th><%= Project.human_attribute_name('location') %></th>
-                        <td><%= @project.location %></td>
-                    </tr>
-                    <tr>
-                        <th><%= Project.human_attribute_name('country') %></th>
-                        <td><%= @project.country %></td>
-                    </tr>
-                    <tr>
-                        <th><%= Project.human_attribute_name('construction_year') %></th>
-                        <td><%= @project.construction_year %></td>
-                    </tr>
-                    <tr>
-                        <th><%= Project.human_attribute_name('gross_area') %></th>
-                        <td><%= @project.gross_area %> m²</td>
-                    </tr>
-                    <tr>
-                        <th><%= Project.human_attribute_name('certified_area') %></th>
-                        <td><%= @project.certified_area %> m²</td>
-                    </tr>
-                    <tr>
-                        <th><%= Project.human_attribute_name('carpark_area') %></th>
-                        <td><%= @project.carpark_area %> m²</td>
-                    </tr>
-                    <tr>
-                        <th><%= Project.human_attribute_name('project_site_area') %></th>
-                        <td><%= @project.project_site_area %> m²</td>
-                    </tr>
+          <tr>
+            <th><%= Project.human_attribute_name('owner') %></th>
+            <td><%= @project.owner %></td>
+          </tr>
+          <tr>
+            <th><%= Project.human_attribute_name('developer') %></th>
+            <td><%= @project.developer %></td>
+          </tr>
+          <tr>
+            <th><%= Project.human_attribute_name('building_type_group_id') %></th>
+            <td><%= @project.building_type_group.name if @project.building_type_group.present? %></td>
+          </tr>
+          <tr>
+            <th><%= Project.human_attribute_name('building_type_id') %></th>
+            <td><%= @project.building_type.name if @project.building_type.present? %></td>
+          </tr>
+          <tr>
+            <th><%= Project.human_attribute_name('estimated_project_cost') %></th>
+            <td><%= @project.estimated_project_cost %></td>
+          </tr>
+          <tr>
+            <th><%= Project.human_attribute_name('cost_square_meter') %></th>
+            <td><%= @project.cost_square_meter %></td>
+          </tr>
+          <% if @project.building_type_group_id == 8 %>
+            <tr>
+              <th><%= Project.human_attribute_name('estimated_building_cost') %></th>
+              <td><%= @project.estimated_building_cost %></td>
+            </tr>
+            <tr>
+              <th><%= Project.human_attribute_name('estimated_infrastructure_cost') %></th>
+              <td><%= @project.estimated_infrastructure_cost %></td>
+            </tr>
+          <% end %>
+          <tr>
+            <th><%= Project.human_attribute_name('description') %></th>
+            <td><%= @project.description %></td>
+          </tr>
+          <tr>
+            <th><%= Project.human_attribute_name('address') %></th>
+            <td><%= @project.address %></td>
+          </tr>
+          <tr>
+            <th><%= Project.human_attribute_name('location') %></th>
+            <td><%= @project.location %></td>
+          </tr>
+          <tr>
+            <th><%= Project.human_attribute_name('country') %></th>
+            <td><%= @project.country %></td>
+          </tr>
+          <tr>
+            <th><%= Project.human_attribute_name('construction_year') %></th>
+            <td><%= @project.construction_year %></td>
+          </tr>
+          <tr>
+            <th><%= Project.human_attribute_name('gross_area') %></th>
+            <td><%= @project.gross_area %> m²</td>
+          </tr>
+          <tr>
+            <th><%= Project.human_attribute_name('certified_area') %></th>
+            <td><%= @project.certified_area %> m²</td>
+          </tr>
+          <tr>
+            <th><%= Project.human_attribute_name('carpark_area') %></th>
+            <td><%= @project.carpark_area %> m²</td>
+          </tr>
+          <tr>
+            <th><%= Project.human_attribute_name('project_site_area') %></th>
+            <td><%= @project.project_site_area %> m²</td>
+          </tr>
 
-                    <tr>
-                        <th><%= Project.human_attribute_name('location_plan_file') %></th>
-                        <td>
-                          <% if @project.location_plan_file.present? %>
-                              <% if can? :download_location_plan, @project %>
-                                  <%= btn_download(download_project_location_plan_path(@project), size: 'extra_small', tooltip: "Download #{Project.human_attribute_name('location_plan_file')}") %>
-                              <% end %>
-                              <%= truncate(@project.location_plan_file.file.filename, length: 35) %>
-                          <% end %>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <th><%= Project.human_attribute_name('site_plan_file') %></th>
-                        <td>
-                          <% if @project.site_plan_file.present? %>
-                              <% if can? :download_site_plan, @project %>
-                                  <%= btn_download(download_project_site_plan_path(@project), size: 'extra_small', tooltip: "Download #{Project.human_attribute_name('site_plan_file')}") %>
-                              <% end %>
-                              <%= truncate(@project.site_plan_file.file.filename, length: 35) %>
-                          <% end %>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <th><%= Project.human_attribute_name('design_brief_file') %></th>
-                        <td>
-                          <% if @project.design_brief_file.present? %>
-                              <% if can? :download_design_brief, @project %>
-                                  <%= btn_download(download_project_design_brief_path(@project), size: 'extra_small', tooltip: "Download #{Project.human_attribute_name('design_brief_file')}") %>
-                              <% end %>
-                              <%= truncate(@project.design_brief_file.file.filename, length: 35) %>
-                          <% end %>
-                        </td>
-                    </tr>
-
-
-                    <tr>
-                        <th><%= Project.human_attribute_name('project_narrative_file') %></th>
-                        <td>
-                          <% if @project.project_narrative_file.present? %>
-                              <% if can? :download_project_narrative, @project %>
-                                  <%= btn_download(download_project_narrative_path(@project), size: 'extra_small', tooltip: "Download #{Project.human_attribute_name('project_narrative_file')}") %>
-                              <% end %>
-                              <%= truncate(@project.project_narrative_file.file.filename, length: 35) %>
-                          <% end %>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-                <input type="hidden" id="project_latlng" value="<%= @project.latlng %>"/>
-
-                <div id="project-map" class="map" style="height: 300px;"></div>
-                <% if can?(:update, @project) || can?(:destroy, @project) %>
-                  <div class="hr-line-dashed"></div>
-                  <% if can? :update, @project %>
-                      <%= btn_link_to(edit_project_path(@project), icon: 'edit', text: 'Edit') %>
-                  <% end %>
-                  <% if can? :confirm_destroy, @project %>
-                      <%= btn_link_to(confirm_destroy_project_path(@project), {icon: 'trash', text: 'Delete', style: 'danger', method: :get, data: {confirm: 'Do you really want to delete this project?'}}) %>
-                  <% end %>
+          <tr>
+            <th><%= Project.human_attribute_name('location_plan_file') %></th>
+            <td>
+              <% if @project.location_plan_file.present? %>
+                <% if can? :download_location_plan, @project %>
+                  <%= btn_download(download_project_location_plan_path(@project), size: 'extra_small', tooltip: "Download #{Project.human_attribute_name('location_plan_file')}") %>
                 <% end %>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-8">
-        <% # Project tools are only accessible for system admins for now %>
-        <% if can?(:show_tools, @project) && current_user.system_admin? %>
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5><%= t('.project_tools.title') %></h5>
-                </div>
-                <div class="ibox-content">
-                    <%= btn_link_to(tools_project_path(@project), icon: 'street-view', text: '3D Visualization') %>
-                </div>
-            </div>
+                <%= truncate(@project.location_plan_file.file.filename, length: 35) %>
+              <% end %>
+            </td>
+          </tr>
+
+          <tr>
+            <th><%= Project.human_attribute_name('site_plan_file') %></th>
+            <td>
+              <% if @project.site_plan_file.present? %>
+                <% if can? :download_site_plan, @project %>
+                  <%= btn_download(download_project_site_plan_path(@project), size: 'extra_small', tooltip: "Download #{Project.human_attribute_name('site_plan_file')}") %>
+                <% end %>
+                <%= truncate(@project.site_plan_file.file.filename, length: 35) %>
+              <% end %>
+            </td>
+          </tr>
+
+          <tr>
+            <th><%= Project.human_attribute_name('design_brief_file') %></th>
+            <td>
+              <% if @project.design_brief_file.present? %>
+                <% if can? :download_design_brief, @project %>
+                  <%= btn_download(download_project_design_brief_path(@project), size: 'extra_small', tooltip: "Download #{Project.human_attribute_name('design_brief_file')}") %>
+                <% end %>
+                <%= truncate(@project.design_brief_file.file.filename, length: 35) %>
+              <% end %>
+            </td>
+          </tr>
+
+
+          <tr>
+            <th><%= Project.human_attribute_name('project_narrative_file') %></th>
+            <td>
+              <% if @project.project_narrative_file.present? %>
+                <% if can? :download_project_narrative, @project %>
+                  <%= btn_download(download_project_narrative_path(@project), size: 'extra_small', tooltip: "Download #{Project.human_attribute_name('project_narrative_file')}") %>
+                <% end %>
+                <%= truncate(@project.project_narrative_file.file.filename, length: 35) %>
+              <% end %>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+        <input type="hidden" id="project_coordinates" value="<%= @project.coordinates %>"/>
+
+        <div id="project-map" class="map" style="height: 300px;"></div>
+        <% if can?(:update, @project) || can?(:destroy, @project) %>
+          <div class="hr-line-dashed"></div>
+          <% if can? :update, @project %>
+            <%= btn_link_to(edit_project_path(@project), icon: 'edit', text: 'Edit') %>
+          <% end %>
+          <% if can? :confirm_destroy, @project %>
+            <%= btn_link_to(confirm_destroy_project_path(@project), {icon: 'trash', text: 'Delete', style: 'danger', method: :get, data: {confirm: 'Do you really want to delete this project?'}}) %>
+          <% end %>
         <% end %>
-
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <h5><%= t('.certificates.title') %></h5>
-            </div>
-            <div class="ibox-content">
-                <%= render partial: 'certification_paths/overview', locals: {project: @project} %>
-            </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-8">
+    <% # Project tools are only accessible for system admins for now %>
+    <% if can?(:show_tools, @project) && current_user.system_admin? %>
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <h5><%= t('.project_tools.title') %></h5>
         </div>
+        <div class="ibox-content">
+          <%= btn_link_to(tools_project_path(@project), icon: 'street-view', text: '3D Visualization') %>
+        </div>
+      </div>
+    <% end %>
 
-        <%= render partial: 'projects_users/show_gord_contact', locals: {project: @project} %>
-        <%= render partial: 'projects_users/index', locals: {project: @project, team: :project_team} %>
-        <%= render partial: 'projects_users/index', locals: {project: @project, team: :gsas_trust_team} %>
-        <%= render partial: 'projects_users/index', locals: {project: @project, team: :enterprise_clients} %>
-</div>
+    <div class="ibox float-e-margins">
+      <div class="ibox-title">
+        <h5><%= t('.certificates.title') %></h5>
+      </div>
+      <div class="ibox-content">
+        <%= render partial: 'certification_paths/overview', locals: {project: @project} %>
+      </div>
+    </div>
+
+    <%= render partial: 'projects_users/show_gord_contact', locals: {project: @project} %>
+    <%= render partial: 'projects_users/index', locals: {project: @project, team: :project_team} %>
+    <%= render partial: 'projects_users/index', locals: {project: @project, team: :gsas_trust_team} %>
+    <%= render partial: 'projects_users/index', locals: {project: @project, team: :enterprise_clients} %>
+  </div>
 </div>
 <%= javascript_include_tag 'find_users_by_email' %>

@@ -11,10 +11,10 @@ function initializeProjectMap() {
     projectMap = gmaps.initializeMap('project-map');
 
     // Get the coordinates from the form
-    var wkt = new Wkt.Wkt($('#project_latlng').val());
+    var coordinates = $('#project_coordinates').val().split(',');
 
     // Initialize a marker using the coordinates from the form
-    projectMarker = gmaps.initializeMarker(projectMap, wkt.components[0].y, wkt.components[0].x, ($('#project_name').length > 0), function() {
+    projectMarker = gmaps.initializeMarker(projectMap, coordinates[0], coordinates[1], ($('#project_name').length > 0), function() {
         updateLatLngFields(projectMarker);
     });
 
@@ -55,7 +55,7 @@ function moveMarkerToProjectAddress() {
                 projectMarker.setPosition(latLng);
                 projectMap.panTo(latLng);
 
-                // Update the WKT latlng text fields
+                // Update the latlng & coordinates fields
                 updateLatLngFields(projectMarker);
             }
         });
@@ -74,13 +74,16 @@ function moveMarkerToCoordinates() {
         projectMap.panTo(latLng);
     }
 
-    // Update the WKT latlng text fields
+    // Update the latlng & coordinates fields
     updateLatLngFields(projectMarker);
 }
 
 function updateLatLngFields(projectMarker) {
-    var updatedWkt = new Wkt.Wkt(projectMarker);
-    $('#project_latlng').val(updatedWkt.write());
-    $('#lat').val(updatedWkt.components[0].y);
-    $('#lng').val(updatedWkt.components[0].x);
+    var markerPosition = projectMarker.getPosition();
+    var markerLat = markerPosition.lat();
+    var markerLng = markerPosition.lng();
+
+    $('#project_coordinates').val(markerLat + ',' + markerLng);
+    $('#lat').val(markerLat);
+    $('#lng').val(markerLng);
 }

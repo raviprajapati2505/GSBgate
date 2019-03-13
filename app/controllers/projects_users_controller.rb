@@ -110,10 +110,10 @@ class ProjectsUsersController < AuthenticatedController
       if params[:user_id] == current_user.id.to_s
         if current_user.system_admin? || current_user.gsas_trust_top_manager? || current_user.gsas_trust_manager? || current_user.gsas_trust_admin?
           total_count = User.where('name like ?', '%' + params[:q] + '%')
-                            .count
+                          .count
           items = User.select('id, name as text')
-                      .where('name like ?', '%' + params[:q] + '%')
-                      .page(params[:page]).per(25)
+                    .where('name like ?', '%' + params[:q] + '%')
+                    .page(params[:page]).per(25)
         else
           user = User.arel_table
           projects_user = ProjectsUser.arel_table
@@ -121,16 +121,16 @@ class ProjectsUsersController < AuthenticatedController
           outer_join = user.create_join(projects_user, join_on, Arel::Nodes::OuterJoin)
 
           total_count = User.distinct
-                            .joins(outer_join)
-                            .where('name like ? ', '%' + params[:q] + '%')
-                            .where('users.role <> 1 OR projects_users.project_id in (select pu.project_id from projects_users pu where pu.user_id = ?)', current_user.id)
-                            .count
+                          .joins(outer_join)
+                          .where('name like ? ', '%' + params[:q] + '%')
+                          .where('users.role <> 1 OR projects_users.project_id in (select pu.project_id from projects_users pu where pu.user_id = ?)', current_user.id)
+                          .count
           items = User.select('users.id as id, users.name as text')
-                      .distinct
-                      .joins(outer_join)
-                      .where('name like ? ', '%' + params[:q] + '%')
-                      .where('users.role <> 1 OR projects_users.project_id in (select pu.project_id from projects_users pu where pu.user_id = ?)', current_user.id)
-                      .page(params[:page]).per(25)
+                    .distinct
+                    .joins(outer_join)
+                    .where('name like ? ', '%' + params[:q] + '%')
+                    .where('users.role <> 1 OR projects_users.project_id in (select pu.project_id from projects_users pu where pu.user_id = ?)', current_user.id)
+                    .page(params[:page]).per(25)
         end
         render json: {total_count: total_count, items: items} and return
       end
@@ -141,9 +141,9 @@ class ProjectsUsersController < AuthenticatedController
     if params.has_key?(:q) && params.has_key?(:page)
       if current_user.system_admin? || current_user.gsas_trust_top_manager? || current_user.gsas_trust_manager? || current_user.gsas_trust_admin?
         total_count = Project.where('name like ?', '%' + params[:q] + '%').count
-        items = Project.select('id, name as text, projects.code as code, projects.latlng as latlng')
-                    .where('name like ?', '%' + params[:q] + '%')
-                    .page(params[:page]).per(25)
+        items = Project.select('id, name as text, projects.code as code, projects.coordinates as coordinates')
+                  .where('name like ?', '%' + params[:q] + '%')
+                  .page(params[:page]).per(25)
       else
         project = Project.arel_table
         projects_user = ProjectsUser.arel_table
@@ -151,27 +151,27 @@ class ProjectsUsersController < AuthenticatedController
         outer_join = project.create_join(projects_user, join_on, Arel::Nodes::OuterJoin)
 
         total_count = Project.distinct
-                          .joins(outer_join)
-                          .where('name like ?', '%' + params[:q] + '%')
-                          .where('projects_users.user_id = ?', current_user.id)
-                          .count
-        items = Project.select('projects.id as id, projects.name as text, projects.code as code, projects.latlng as latlng')
-                    .distinct
-                    .joins(outer_join)
-                    .where('name like ?', '%' + params[:q] + '%')
-                    .where('projects_users.user_id = ?', current_user.id)
-                    .page(params[:page]).per(25)
+                        .joins(outer_join)
+                        .where('name like ?', '%' + params[:q] + '%')
+                        .where('projects_users.user_id = ?', current_user.id)
+                        .count
+        items = Project.select('projects.id as id, projects.name as text, projects.code as code, projects.coordinates as coordinates')
+                  .distinct
+                  .joins(outer_join)
+                  .where('name like ?', '%' + params[:q] + '%')
+                  .where('projects_users.user_id = ?', current_user.id)
+                  .page(params[:page]).per(25)
       end
       render json: {total_count: total_count, items: items}, status: :ok
     end
   end
 
   private
-    def set_controller_model
-      @controller_model = @projects_user
-    end
+  def set_controller_model
+    @controller_model = @projects_user
+  end
 
-    def projects_user_params
-      params.require(:projects_user).permit(:user_id, :role)
-    end
+  def projects_user_params
+    params.require(:projects_user).permit(:user_id, :role)
+  end
 end

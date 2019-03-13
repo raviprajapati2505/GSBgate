@@ -49,50 +49,50 @@ class ProjectsController < AuthenticatedController
         scheme_outer_join = scheme_mix_at.create_join(scheme_at, scheme_join_on, Arel::Nodes::OuterJoin)
 
         result_set = Project.select('projects.id as project_id')
-                            .select('projects.name as project_name')
-                            .select('projects.address as project_address')
-                            .select('projects.location as project_location')
-                            .select('projects.country as project_country')
-                            .select('projects.latlng as project_latlng')
-                            .select('projects.gross_area as project_gross_area')
-                            .select('projects.certified_area as project_certified_area')
-                            .select('projects.carpark_area as project_carpark_area')
-                            .select('projects.project_site_area as project_site_area')
-                            .select('certification_paths.id as certification_path_id')
-                            .select('certification_paths.project_id as certification_path_project_id')
-                            .select('certification_paths.certificate_id as certification_path_certificate_id')
-                            .select('certification_paths.certification_path_status_id as certification_path_certification_path_status_id')
-                            .select('certification_paths.development_type_id as certification_path_development_type_id')
-                            .select('(%s) AS total_targeted_score' % Effective::Datatables::ProjectsCertificationPaths.query_score_in_certificate_points(:targeted_score))
-                            .select('(%s) AS total_submitted_score' % Effective::Datatables::ProjectsCertificationPaths.query_score_in_certificate_points(:submitted_score))
-                            .select('(%s) AS total_achieved_score' % Effective::Datatables::ProjectsCertificationPaths.query_score_in_certificate_points(:achieved_score))
-                            .select('certificates.id as certificate_id')
-                            .select('certificates.name as certificate_name')
-                            .select('certificates.gsas_version as certificate_gsas_version')
-                            .select('certification_path_statuses.id as certification_path_status_id')
-                            .select('certification_path_statuses.name as certification_path_status_name')
-                            .select('development_types.id as development_type_id')
-                            .select('development_types.name as development_type_name')
-                            .select('scheme_mixes.id as scheme_mix_id')
-                            .select('scheme_mixes.certification_path_id as scheme_mix_certification_path_id')
-                            .select('scheme_mixes.scheme_id as scheme_mix_scheme_id')
-                            .select('scheme_mixes.weight as scheme_mix_weight')
-                            .select('schemes.id as scheme_id')
-                            .select('schemes.name as scheme_name')
-                            .joins(cert_path_outer_join)
-                            .joins(cert_outer_join)
-                            .joins(cert_path_status_outer_join)
-                            .joins(dev_type_outer_join)
-                            .joins(scheme_mix_outer_join)
-                            .joins(scheme_outer_join)
-                            .order('projects.id ASC')
-                            .limit(limit)
-                            .offset(offset)
+                       .select('projects.name as project_name')
+                       .select('projects.address as project_address')
+                       .select('projects.location as project_location')
+                       .select('projects.country as project_country')
+                       .select('projects.coordinates as project_coordinates')
+                       .select('projects.gross_area as project_gross_area')
+                       .select('projects.certified_area as project_certified_area')
+                       .select('projects.carpark_area as project_carpark_area')
+                       .select('projects.project_site_area as project_site_area')
+                       .select('certification_paths.id as certification_path_id')
+                       .select('certification_paths.project_id as certification_path_project_id')
+                       .select('certification_paths.certificate_id as certification_path_certificate_id')
+                       .select('certification_paths.certification_path_status_id as certification_path_certification_path_status_id')
+                       .select('certification_paths.development_type_id as certification_path_development_type_id')
+                       .select('(%s) AS total_targeted_score' % Effective::Datatables::ProjectsCertificationPaths.query_score_in_certificate_points(:targeted_score))
+                       .select('(%s) AS total_submitted_score' % Effective::Datatables::ProjectsCertificationPaths.query_score_in_certificate_points(:submitted_score))
+                       .select('(%s) AS total_achieved_score' % Effective::Datatables::ProjectsCertificationPaths.query_score_in_certificate_points(:achieved_score))
+                       .select('certificates.id as certificate_id')
+                       .select('certificates.name as certificate_name')
+                       .select('certificates.gsas_version as certificate_gsas_version')
+                       .select('certification_path_statuses.id as certification_path_status_id')
+                       .select('certification_path_statuses.name as certification_path_status_name')
+                       .select('development_types.id as development_type_id')
+                       .select('development_types.name as development_type_name')
+                       .select('scheme_mixes.id as scheme_mix_id')
+                       .select('scheme_mixes.certification_path_id as scheme_mix_certification_path_id')
+                       .select('scheme_mixes.scheme_id as scheme_mix_scheme_id')
+                       .select('scheme_mixes.weight as scheme_mix_weight')
+                       .select('schemes.id as scheme_id')
+                       .select('schemes.name as scheme_name')
+                       .joins(cert_path_outer_join)
+                       .joins(cert_outer_join)
+                       .joins(cert_path_status_outer_join)
+                       .joins(dev_type_outer_join)
+                       .joins(scheme_mix_outer_join)
+                       .joins(scheme_outer_join)
+                       .order('projects.id ASC')
+                       .limit(limit)
+                       .offset(offset)
 
         if current_ability.nil?
           result_set = result_set.none
         else
-        #   use cancan ability to limit the authorized projects
+          #   use cancan ability to limit the authorized projects
           result_set = result_set.accessible_by(current_ability)
         end
 
@@ -108,8 +108,8 @@ class ProjectsController < AuthenticatedController
             project[:address] = result.project_address
             project[:location] = result.project_location
             project[:country] = result.project_country
-            project[:latitude] = result.project_latlng.y
-            project[:longitude] = result.project_latlng.x
+            project[:latitude] = result.coordinates.split(',')[0]
+            project[:longitude] = result.coordinates.split(',')[1]
             project[:gross_area] = result.project_gross_area
             project[:certified_area] = result.project_certified_area
             project[:carpark_area] = result.project_carpark_area
@@ -291,16 +291,16 @@ class ProjectsController < AuthenticatedController
   end
 
   private
-    def set_controller_model
-      @controller_model = @project
-    end
+  def set_controller_model
+    @controller_model = @project
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def project_params
-      if current_user.system_admin? || current_user.gsas_trust_admin?
-        params.require(:project).permit(:name, :certificate_type, :owner, :developer, :service_provider, :service_provider_2, :description, :address, :location, :country, :construction_year, :latlng, :gross_area, :certified_area, :carpark_area, :project_site_area, :terms_and_conditions_accepted, :location_plan_file, :location_plan_file_cache, :site_plan_file, :site_plan_file_cache, :design_brief_file, :design_brief_file_cache, :project_narrative_file, :project_narrative_file_cache, :building_type_group_id, :building_type_id, :estimated_project_cost, :cost_square_meter, :estimated_building_cost, :estimated_infrastructure_cost, :code)
-      else
-        params.require(:project).permit(:name, :certificate_type, :owner, :developer, :service_provider, :service_provider_2, :description, :address, :location, :country, :construction_year, :latlng, :gross_area, :certified_area, :carpark_area, :project_site_area, :terms_and_conditions_accepted, :location_plan_file, :location_plan_file_cache, :site_plan_file, :site_plan_file_cache, :design_brief_file, :design_brief_file_cache, :project_narrative_file, :project_narrative_file_cache, :building_type_group_id, :building_type_id, :estimated_project_cost, :cost_square_meter, :estimated_building_cost, :estimated_infrastructure_cost)
-      end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def project_params
+    if current_user.system_admin? || current_user.gsas_trust_admin?
+      params.require(:project).permit(:name, :certificate_type, :owner, :developer, :service_provider, :service_provider_2, :description, :address, :location, :country, :construction_year, :coordinates, :gross_area, :certified_area, :carpark_area, :project_site_area, :terms_and_conditions_accepted, :location_plan_file, :location_plan_file_cache, :site_plan_file, :site_plan_file_cache, :design_brief_file, :design_brief_file_cache, :project_narrative_file, :project_narrative_file_cache, :building_type_group_id, :building_type_id, :estimated_project_cost, :cost_square_meter, :estimated_building_cost, :estimated_infrastructure_cost, :code)
+    else
+      params.require(:project).permit(:name, :certificate_type, :owner, :developer, :service_provider, :service_provider_2, :description, :address, :location, :country, :construction_year, :coordinates, :gross_area, :certified_area, :carpark_area, :project_site_area, :terms_and_conditions_accepted, :location_plan_file, :location_plan_file_cache, :site_plan_file, :site_plan_file_cache, :design_brief_file, :design_brief_file_cache, :project_narrative_file, :project_narrative_file_cache, :building_type_group_id, :building_type_id, :estimated_project_cost, :cost_square_meter, :estimated_building_cost, :estimated_infrastructure_cost)
     end
+  end
 end

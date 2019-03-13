@@ -1,136 +1,136 @@
 <% use_gmaps_for(:project) %>
 
 <%= bootstrap_form_for(@project, html: { class: 'project-form' }) do |f| %>
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="ibox">
-                <div class="ibox-title">
-                    <h5><%= t('.title') %></h5>
-                </div>
-                <div class="ibox-content">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <% if current_user.system_admin? || current_user.gsas_trust_manager? || current_user.gsas_trust_top_manager? || current_user.gsas_trust_admin? %>
-                                <%= f.text_field :code %>
-                            <% end %>
-                            <%= f.text_field :name %>
-                            <%= f.select(:certificate_type, options_for_select(Certificate.certificate_types.map { |k, v| [t(k, scope: 'activerecord.attributes.certificate.certificate_types'), v]})) %>
-                            <%= f.text_field :service_provider %>
-                            <div class="design-fields">
-                            <%= f.text_field :service_provider_2 %>
-                            </div>
-                            <%= f.text_field :owner %>
-                            <%= f.form_group do %>
-                              <label>Or choose a predefined property owner</label>
-                              <input type="hidden" class="select2-ajax">
-                            <% end %>
-                            <%= f.text_field :developer %>
-                            <%= f.select(:building_type_group_id, options_from_collection_for_select(BuildingTypeGroup.all.order(:name), :id, :name, @project.building_type_group_id), {include_blank: '- Select a predefined building type category -', placeholder: 'qsdf', class: 'form-control'}) %>
-                            <div id="building-type-select">
-                              <%= f.select(:building_type_id, options_for_select(BuildingType.all.map{ |bt| [bt.name, bt.id, {'data-building-type-group-id' => bt.building_type_group_id}]}, @project.building_type_id), {include_blank: '- Select a predefined building type -', class: 'form-control'}) %>
-                            </div>
-                            <%= f.text_field :estimated_project_cost %>
-                            <%= f.text_field :cost_square_meter %>
-                            <div class="district-fields">
-                            <%= f.text_field :estimated_building_cost %>
-                            <%= f.text_field :estimated_infrastructure_cost %>
-                            </div>
-                            <%= f.text_area :description %>
-                            <%= f.text_field :construction_year %>
-                        </div>
-                        <div class="col-md-3">
-                            <%= f.text_area :address %>
-                            <%= f.text_field :location %>
-                            <%= f.text_field :country %>
-                            <%= f.text_field :gross_area, append: 'm²', label: (Project.human_attribute_name('gross_area') + tooltip(t '.tooltip_gross_area')).html_safe %>
-                            <%= f.text_field :certified_area, append: 'm²', label: (Project.human_attribute_name('certified_area') + tooltip(t '.tooltip_certified_area')).html_safe %>
-                            <%= f.text_field :carpark_area, append: 'm²', label: (Project.human_attribute_name('carpark_area') + tooltip(t '.tooltip_carpark_area')).html_safe %>
-                            <%= f.text_field :project_site_area, append: 'm²', label: (Project.human_attribute_name('project_site_area') + tooltip(t '.tooltip_project_site_area')).html_safe %>
-                            <div class="form-group">
-                                <label class="control-label" for="project_location_plan_file"><%= Project.human_attribute_name('location_plan_file') %></label>
-                                <% if @project.location_plan_file.present? %>
-                                    <div class="input-group">
-                                      <span class="input-group-addon"><%= ikoen('file', title: 'Currently uploaded file. Will be overridden when you select a new file.') %></span>
-                                      <input type="text" class="form-control" disabled value="<%= @project.location_plan_file.file.filename %>">
-                                    </div>
-                                <% end %>
-                                <%= f.file_field :location_plan_file, hide_label: true %>
-                                <%= f.hidden_field :location_plan_file_cache %>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label" for="project_site_plan_file"><%= Project.human_attribute_name('site_plan_file') %></label>
-                                <% if @project.site_plan_file.present? %>
-                                    <div class="input-group">
-                                      <span class="input-group-addon"><%= ikoen('file', title: 'Currently uploaded file. Will be overridden when you select a new file.') %></span>
-                                      <input type="text" class="form-control" disabled value="<%= @project.site_plan_file.file.filename %>">
-                                    </div>
-                                <% end %>
-                                <%= f.file_field :site_plan_file, hide_label: true %>
-                                <%= f.hidden_field :site_plan_file_cache %>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label" for="project_design_brief_file"><%= Project.human_attribute_name('design_brief_file') %></label>
-                                <% if @project.design_brief_file.present? %>
-                                    <div class="input-group">
-                                      <span class="input-group-addon"><%= ikoen('file', title: 'Currently uploaded file. Will be overridden when you select a new file.') %></span>
-                                      <input type="text" class="form-control" disabled value="<%= @project.design_brief_file.file.filename %>">
-                                    </div>
-                                <% end %>
-                                <%= f.file_field :design_brief_file, hide_label: true %>
-                                <%= f.hidden_field :design_brief_file_cache %>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label" for="project_project_narrative_file"><%= Project.human_attribute_name('project_narrative_file') %></label>
-                                <% if @project.project_narrative_file.present? %>
-                                    <div class="input-group">
-                                      <span class="input-group-addon"><%= ikoen('file', title: 'Currently uploaded file. Will be overridden when you select a new file.') %></span>
-                                      <input type="text" class="form-control" disabled value="<%= @project.project_narrative_file.file.filename %>">
-                                    </div>
-                                <% end %>
-                                <%= f.file_field :project_narrative_file, hide_label: true %>
-                                <%= f.hidden_field :project_narrative_file_cache %>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <%= label_tag :lat, ('Latitude' + tooltip(t '.tooltip_latlng')).html_safe %>
-                                        <%= text_field_tag :lat, @project.latlng.y, class: 'form-control' %>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <%= label_tag :lng, ('Longitude' + tooltip(t '.tooltip_latlng')).html_safe %>
-                                        <%= text_field_tag :lng, @project.latlng.x, class: 'form-control' %>
-                                    </div>
-                                </div>
-                            </div>
-                            <div style="display:none;">
-                                <%= f.text_field :latlng %>
-                            </div>
-                            <div id="project-map" class="map" style="height: 450px;"></div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <% if @project.new_record? %>
-                                <%= f.form_group :terms_and_conditions_accepted do %>
-                                    <%= f.check_box :terms_and_conditions_accepted do %>
-                                        <small>Tick here to indicate you have read and agreed to the <%= link_to 'terms and conditions', asset_path('GSAS_Certification_TCs.pdf'), target: '_blank' %>.</small>
-                                    <% end %>
-                                <% end %>
-                            <% end %>
-                            <div class="hr-line-dashed"></div>
-                            <% if can?(:create, @project) || can?(:update, @project) %>
-                                <%= btn_save %>
-                            <% end %>
-                            <%= btn_cancel_to(projects_path) %>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="ibox">
+        <div class="ibox-title">
+          <h5><%= t('.title') %></h5>
         </div>
+        <div class="ibox-content">
+          <div class="row">
+            <div class="col-md-3">
+              <% if current_user.system_admin? || current_user.gsas_trust_manager? || current_user.gsas_trust_top_manager? || current_user.gsas_trust_admin? %>
+                <%= f.text_field :code %>
+              <% end %>
+              <%= f.text_field :name %>
+              <%= f.select(:certificate_type, options_for_select(Certificate.certificate_types.map { |k, v| [t(k, scope: 'activerecord.attributes.certificate.certificate_types'), v]})) %>
+              <%= f.text_field :service_provider %>
+              <div class="design-fields">
+                <%= f.text_field :service_provider_2 %>
+              </div>
+              <%= f.text_field :owner %>
+              <%= f.form_group do %>
+                <label>Or choose a predefined property owner</label>
+                <input type="hidden" class="select2-ajax">
+              <% end %>
+              <%= f.text_field :developer %>
+              <%= f.select(:building_type_group_id, options_from_collection_for_select(BuildingTypeGroup.all.order(:name), :id, :name, @project.building_type_group_id), {include_blank: '- Select a predefined building type category -', placeholder: 'qsdf', class: 'form-control'}) %>
+              <div id="building-type-select">
+                <%= f.select(:building_type_id, options_for_select(BuildingType.all.map{ |bt| [bt.name, bt.id, {'data-building-type-group-id' => bt.building_type_group_id}]}, @project.building_type_id), {include_blank: '- Select a predefined building type -', class: 'form-control'}) %>
+              </div>
+              <%= f.text_field :estimated_project_cost %>
+              <%= f.text_field :cost_square_meter %>
+              <div class="district-fields">
+                <%= f.text_field :estimated_building_cost %>
+                <%= f.text_field :estimated_infrastructure_cost %>
+              </div>
+              <%= f.text_area :description %>
+              <%= f.text_field :construction_year %>
+            </div>
+            <div class="col-md-3">
+              <%= f.text_area :address %>
+              <%= f.text_field :location %>
+              <%= f.text_field :country %>
+              <%= f.text_field :gross_area, append: 'm²', label: (Project.human_attribute_name('gross_area') + tooltip(t '.tooltip_gross_area')).html_safe %>
+              <%= f.text_field :certified_area, append: 'm²', label: (Project.human_attribute_name('certified_area') + tooltip(t '.tooltip_certified_area')).html_safe %>
+              <%= f.text_field :carpark_area, append: 'm²', label: (Project.human_attribute_name('carpark_area') + tooltip(t '.tooltip_carpark_area')).html_safe %>
+              <%= f.text_field :project_site_area, append: 'm²', label: (Project.human_attribute_name('project_site_area') + tooltip(t '.tooltip_project_site_area')).html_safe %>
+              <div class="form-group">
+                <label class="control-label" for="project_location_plan_file"><%= Project.human_attribute_name('location_plan_file') %></label>
+                <% if @project.location_plan_file.present? %>
+                  <div class="input-group">
+                    <span class="input-group-addon"><%= ikoen('file', title: 'Currently uploaded file. Will be overridden when you select a new file.') %></span>
+                    <input type="text" class="form-control" disabled value="<%= @project.location_plan_file.file.filename %>">
+                  </div>
+                <% end %>
+                <%= f.file_field :location_plan_file, hide_label: true %>
+                <%= f.hidden_field :location_plan_file_cache %>
+              </div>
+              <div class="form-group">
+                <label class="control-label" for="project_site_plan_file"><%= Project.human_attribute_name('site_plan_file') %></label>
+                <% if @project.site_plan_file.present? %>
+                  <div class="input-group">
+                    <span class="input-group-addon"><%= ikoen('file', title: 'Currently uploaded file. Will be overridden when you select a new file.') %></span>
+                    <input type="text" class="form-control" disabled value="<%= @project.site_plan_file.file.filename %>">
+                  </div>
+                <% end %>
+                <%= f.file_field :site_plan_file, hide_label: true %>
+                <%= f.hidden_field :site_plan_file_cache %>
+              </div>
+              <div class="form-group">
+                <label class="control-label" for="project_design_brief_file"><%= Project.human_attribute_name('design_brief_file') %></label>
+                <% if @project.design_brief_file.present? %>
+                  <div class="input-group">
+                    <span class="input-group-addon"><%= ikoen('file', title: 'Currently uploaded file. Will be overridden when you select a new file.') %></span>
+                    <input type="text" class="form-control" disabled value="<%= @project.design_brief_file.file.filename %>">
+                  </div>
+                <% end %>
+                <%= f.file_field :design_brief_file, hide_label: true %>
+                <%= f.hidden_field :design_brief_file_cache %>
+              </div>
+              <div class="form-group">
+                <label class="control-label" for="project_project_narrative_file"><%= Project.human_attribute_name('project_narrative_file') %></label>
+                <% if @project.project_narrative_file.present? %>
+                  <div class="input-group">
+                    <span class="input-group-addon"><%= ikoen('file', title: 'Currently uploaded file. Will be overridden when you select a new file.') %></span>
+                    <input type="text" class="form-control" disabled value="<%= @project.project_narrative_file.file.filename %>">
+                  </div>
+                <% end %>
+                <%= f.file_field :project_narrative_file, hide_label: true %>
+                <%= f.hidden_field :project_narrative_file_cache %>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <%= label_tag :lat, ('Latitude' + tooltip(t '.tooltip_coordinates')).html_safe %>
+                    <%= text_field_tag :lat, @project.coordinates.split(',')[0], class: 'form-control' %>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <%= label_tag :lng, ('Longitude' + tooltip(t '.tooltip_coordinates')).html_safe %>
+                    <%= text_field_tag :lng, @project.coordinates.split(',')[1], class: 'form-control' %>
+                  </div>
+                </div>
+              </div>
+              <div style="display:none;">
+                <%= f.text_field :coordinates %>
+              </div>
+              <div id="project-map" class="map" style="height: 450px;"></div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <% if @project.new_record? %>
+                <%= f.form_group :terms_and_conditions_accepted do %>
+                  <%= f.check_box :terms_and_conditions_accepted do %>
+                    <small>Tick here to indicate you have read and agreed to the <%= link_to 'terms and conditions', asset_path('GSAS_Certification_TCs.pdf'), target: '_blank' %>.</small>
+                  <% end %>
+                <% end %>
+              <% end %>
+              <div class="hr-line-dashed"></div>
+              <% if can?(:create, @project) || can?(:update, @project) %>
+                <%= btn_save %>
+              <% end %>
+              <%= btn_cancel_to(projects_path) %>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 <% end %>
 <%= javascript_include_tag 'select_owner' %>

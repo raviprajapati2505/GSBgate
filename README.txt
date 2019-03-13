@@ -21,7 +21,6 @@ The minimum software requirements are:
 2. Database server:
 	- Linux Ubuntu 14.4 LTS
 	- PostgreSQL 9.3
-	- PostGIS 2.1.2
 
 
 == How to set up this project

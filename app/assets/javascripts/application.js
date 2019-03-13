@@ -17,8 +17,6 @@
  *= require metisMenu
  *= require slimScroll/jquery.slimscroll
  *= require inspinia
- *= require wicket/wicket
- *= require wicket/wicket-gmap3
  *= require effective_datatables
  *= require icheck
  *= require select2
