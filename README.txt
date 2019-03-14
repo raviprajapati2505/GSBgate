@@ -18,6 +18,9 @@ The minimum software requirements are:
 	- Linux Ubuntu 14.4 LTS
 	- Apache 2 with Passenger
 	- Ruby 2.2.2
+	- For the chart generation in PDFs:
+	    - Node 6.16.0
+	    - Packages listed here: https://github.com/Automattic/node-canvas
 2. Database server:
 	- Linux Ubuntu 14.4 LTS
 	- PostgreSQL 9.3
@@ -34,7 +37,10 @@ The minimum software requirements are:
 7. Perform a 'rake db:reset'.
 8. Precompile the assets with 'rake assets:precompile'.
 9. Create an Apache 'www.gsas.qa' vhost for the newly created folder.
-10. Instal the SSL certificate for 'www.gsas.qa'.
+10. Install the SSL certificate for 'www.gsas.qa'.
+11. For the chart generation in PDFs, run the following commands in the "chartgenerator" folder of the project:
+    - npm install
+    - pm2 start pm2-production.json
 
 
 == How to set up the cron jobs
