@@ -23,6 +23,10 @@ set :npm_target_path, -> { release_path.join('chartgenerator') }
 set :npm_roles, :app
 after "deploy:finished", "deploy:start_chartgenerator"
 
+# Ensure scripts can be executed
+after "deploy:finished", "deploy:set_script_permissions"
+
+# Custom deploy tasks
 namespace :deploy do
   task :start_chartgenerator do
     on roles(:app) do
@@ -31,6 +35,14 @@ namespace :deploy do
         # See https://capistranorb.com/documentation/getting-started/tasks/
         execute :pm2, :delete, 'pm2-production.json'
         execute :pm2, :start, 'pm2-production.json'
+      end
+    end
+  end
+
+  task :set_script_permissions do
+    on roles(:app) do
+      within release_path  do
+        execute :chmod, '-R 775 sh/'
       end
     end
   end
