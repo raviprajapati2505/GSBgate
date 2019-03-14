@@ -1,16 +1,40 @@
-# config valid for current version and patch releases of Capistrano
-lock "~> 3.11.0"
-
+# Git
 set :repo_url, "ssh://git@git.vito.local:7999/sgg/gsasgate.git"
 
+# Systemd
 set :systemd_use_sudo, true
 set :systemd_roles, %w(app)
 set :systemd_unit, -> { "sas-puma-#{fetch :application}"}
 
-
+# DB
 set :migration_role, :app
+
+# Assets
 set :assets_roles, [:app]
-set :yarn_roles, [:app] # In case you use the yarn package manager
+
+# Linked dirs
+append :linked_dirs, "log", "private", "tmp/pids", "tmp/cache", "tmp/puma", "tmp/sockets", "public/system", "public/uploads"
+
+# Rbenv
+set :rbenv_custom_path, '/usr/local/rbenv'
+
+# Chartgenerator
+set :npm_target_path, -> { release_path.join('chartgenerator') }
+set :npm_roles, :app
+after "deploy:finished", "deploy:start_chartgenerator"
+
+namespace :deploy do
+  task :start_chartgenerator do
+    on roles(:app) do
+      within "#{release_path}/chartgenerator" do
+        # First argument of "execute" should not contain spaces!
+        # See https://capistranorb.com/documentation/getting-started/tasks/
+        execute :pm2, :delete, 'pm2-production.json'
+        execute :pm2, :start, 'pm2-production.json'
+      end
+    end
+  end
+end
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
@@ -31,14 +55,8 @@ set :yarn_roles, [:app] # In case you use the yarn package manager
 # Default value for :linked_files is []
 # append :linked_files, "config/database.yml"
 
-# Default value for linked_dirs is []
-# append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system"
-append :linked_dirs, "log", "private", "tmp/pids", "tmp/cache", "tmp/puma", "tmp/sockets", "public/system", "public/uploads"
-
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
-
-set :rbenv_custom_path, '/usr/local/rbenv'
 
 # Default value for local_user is ENV['USER']
 # set :local_user, -> { `git config user.name`.chomp }
