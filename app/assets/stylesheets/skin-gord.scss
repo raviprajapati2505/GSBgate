@@ -951,5 +951,19 @@
     font-size: smaller;
     font-style: italic;
   }
+
+  #environment {
+    font-size: 15px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: red;
+    position: absolute;
+    top: 12px;
+    left: 35px;
+    transform: rotate(-10deg);
+    border: 2px solid red;
+    background-color: white;
+    opacity: 0.7;
+  }
 }
 

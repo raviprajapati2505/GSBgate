@@ -1,5 +1,8 @@
 <div class="row gord-transparent-green">
     <div class="navbar-header navbar navbar-static-top gord-transparent" role="navigation">
+        <% unless Rails.env == 'production' %>
+          <div id="environment"><%= Rails.env %></div>
+        <% end %>
         <%= image_tag('layout/gsas_trust_logo.png') %>
         <button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
             <%= ikoen('reorder') %>
