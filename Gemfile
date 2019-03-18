@@ -5,7 +5,7 @@ gem 'rails', '~> 5.2.0'
 gem 'addressable'
 gem 'bcrypt'
 gem 'bootsnap'
-gem 'bootstrap_form'
+gem 'bootstrap_form', '~> 2.7'
 gem 'bundler'
 gem 'cancancan'
 gem 'carrierwave'
@@ -50,7 +50,7 @@ end
 #   @import them in style.scss for (s)css files
 source 'http://rails-assets.org' do
   gem 'rails-assets-animate.css'
-  gem 'rails-assets-bootstrap'
+  gem 'rails-assets-bootstrap', '~> 3.0'
   gem 'rails-assets-bootstrap-datepicker'
   gem 'rails-assets-bootstrap-timepicker'
   gem 'rails-assets-d3'
