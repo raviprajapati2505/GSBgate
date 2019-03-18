@@ -1,4 +1,4 @@
-class AuditLogVisibility < ActiveRecord::Base
+class AuditLogVisibility < ApplicationRecord
 
   PUBLIC = 1
   INTERNAL = 2

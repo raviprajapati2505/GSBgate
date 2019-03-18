@@ -1,8 +1,8 @@
-class SchemeMix < ActiveRecord::Base
+class SchemeMix < ApplicationRecord
   include ScoreCalculator
 
-  belongs_to :certification_path
-  belongs_to :scheme
+  belongs_to :certification_path, optional: true
+  belongs_to :scheme, optional: true
   has_many :scheme_mix_criteria, dependent: :destroy
   has_many :scheme_mix_criteria_documents, through: :scheme_mix_criteria
   has_many :scheme_categories, through: :scheme

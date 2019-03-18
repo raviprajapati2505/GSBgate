@@ -28,7 +28,7 @@
  *= require toastr
  *= require js-routes
  *= require ckeditor/init
- *= require html.sortable
+ *= require html5sortable
  *= require leaflet
  *= require leaflet-draw
  *= require proj4

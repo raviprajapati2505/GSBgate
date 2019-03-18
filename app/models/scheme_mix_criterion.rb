@@ -1,4 +1,4 @@
-class SchemeMixCriterion < ActiveRecord::Base
+class SchemeMixCriterion < ApplicationRecord
   include Auditable
   include Taskable
   include ScoreCalculator
@@ -8,10 +8,10 @@ class SchemeMixCriterion < ActiveRecord::Base
   has_many :requirement_data, through: :scheme_mix_criteria_requirement_data
   has_many :scheme_mix_criteria_documents, dependent: :destroy
   has_many :documents, through: :scheme_mix_criteria_documents
-  belongs_to :scheme_mix
-  belongs_to :scheme_criterion
-  belongs_to :certifier, class_name: 'User', inverse_of: :scheme_mix_criteria
-  belongs_to :main_scheme_mix_criterion, class_name: 'SchemeMixCriterion'
+  belongs_to :scheme_mix, optional: true
+  belongs_to :scheme_criterion, optional: true
+  belongs_to :certifier, class_name: 'User', inverse_of: :scheme_mix_criteria, optional: true
+  belongs_to :main_scheme_mix_criterion, class_name: 'SchemeMixCriterion', optional: true
   has_many :archives, as: :subject, dependent: :destroy
 
   enum status: {submitting: 10, submitted: 20, verifying: 30, score_awarded: 41, score_downgraded: 42, score_upgraded: 43, score_minimal:44, appealed: 50, submitting_after_appeal: 60, submitted_after_appeal: 70, verifying_after_appeal: 80, score_awarded_after_appeal: 91, score_downgraded_after_appeal: 92, score_upgraded_after_appeal: 93, score_minimal_after_appeal:94 }

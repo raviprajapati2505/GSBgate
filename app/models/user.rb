@@ -1,6 +1,6 @@
 require 'bcrypt'
 
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   include ActionView::Helpers::TranslationHelper
   include BCrypt
   include DatePlucker

@@ -1,10 +1,10 @@
 require 'file_size_validator'
 
-class AuditLog < ActiveRecord::Base
-  belongs_to :auditable, polymorphic: true
-  belongs_to :user
-  belongs_to :project
-  belongs_to :certification_path
+class AuditLog < ApplicationRecord
+  belongs_to :auditable, polymorphic: true, optional: true
+  belongs_to :user, optional: true
+  belongs_to :project, optional: true
+  belongs_to :certification_path, optional: true
   has_one :audit_log_visibility
 
   MAXIMUM_DOCUMENT_FILE_SIZE = 100 # in MB
