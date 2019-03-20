@@ -13,11 +13,11 @@ gem 'ckeditor'
 gem 'effective_datatables', '<= 2.4.6'
 gem 'execjs'
 gem 'font-awesome-rails'
-gem 'html2haml', '~> 2.2.0'
+gem 'html2haml'
 gem 'httparty'
 gem 'js-routes'
 gem 'kaminari'
-gem 'nokogiri', '~> 1.10.1'
+gem 'nokogiri'
 gem 'pdf-core'
 gem 'pg'
 gem 'prawn'
@@ -27,7 +27,7 @@ gem 'roo'
 gem 'rubyzip'
 gem 'sass-rails'
 gem 'select2-rails', '< 4.0.0'
-gem 'sprockets', '< 4.0.0'
+gem 'sprockets'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
 gem 'uglifier'
 gem 'warden'
@@ -43,18 +43,13 @@ group :development do
   gem 'capistrano-systemd'
 end
 
-# Rails-Assets: access bower packages from our gem file
-#  e.g. gem 'rails-assets-BOWER_PACKAGE_NAME'
-#  do not forget to:
-#   'require' them in application.js for javascript files
-#   @import them in style.scss for (s)css files
 source 'http://rails-assets.org' do
   gem 'rails-assets-animate.css'
   gem 'rails-assets-bootstrap', '~> 3.0'
   gem 'rails-assets-bootstrap-datepicker'
   gem 'rails-assets-bootstrap-timepicker'
-  gem 'rails-assets-d3'
-  gem 'rails-assets-d3-tip'
+  gem 'rails-assets-d3', '~> 4.13'
+  gem 'rails-assets-d3-tip', '~> 0.7.1'
   gem 'rails-assets-dropzone'
   gem 'rails-assets-icheck'
   gem 'rails-assets-jquery'

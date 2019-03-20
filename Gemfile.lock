@@ -212,12 +212,9 @@ GEM
     rails-assets-bootstrap-datepicker (1.8.0)
       rails-assets-jquery (>= 1.7.1, < 4.0.0)
     rails-assets-bootstrap-timepicker (0.1.1)
-    rails-assets-d3 (5.9.2)
-    rails-assets-d3-collection (1.0.7)
-    rails-assets-d3-selection (1.3.2)
-    rails-assets-d3-tip (0.9.1)
-      rails-assets-d3-collection (>= 1.0.1, < 2)
-      rails-assets-d3-selection (>= 1.0.2, < 2)
+    rails-assets-d3 (4.13.0)
+    rails-assets-d3-tip (0.7.1)
+      rails-assets-d3 (>= 4.2, < 5)
     rails-assets-dropzone (5.5.0)
     rails-assets-icheck (1.0.2)
       rails-assets-jquery (>= 1.7)
@@ -328,11 +325,11 @@ DEPENDENCIES
   effective_datatables (<= 2.4.6)
   execjs
   font-awesome-rails
-  html2haml (~> 2.2.0)
+  html2haml
   httparty
   js-routes
   kaminari
-  nokogiri (~> 1.10.1)
+  nokogiri
   pdf-core
   pg
   prawn
@@ -343,8 +340,8 @@ DEPENDENCIES
   rails-assets-bootstrap (~> 3.0)!
   rails-assets-bootstrap-datepicker!
   rails-assets-bootstrap-timepicker!
-  rails-assets-d3!
-  rails-assets-d3-tip!
+  rails-assets-d3 (~> 4.13)!
+  rails-assets-d3-tip (~> 0.7.1)!
   rails-assets-dropzone!
   rails-assets-icheck!
   rails-assets-jquery!
@@ -362,7 +359,7 @@ DEPENDENCIES
   rubyzip
   sass-rails
   select2-rails (< 4.0.0)
-  sprockets (< 4.0.0)
+  sprockets
   tzinfo-data
   uglifier
   warden
