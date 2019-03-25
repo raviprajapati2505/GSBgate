@@ -150,6 +150,10 @@ class User < ActiveRecord::Base
     user
   end
 
+  def jwt_subject
+    id
+  end
+
   private
   def init
     self.role ||= :default_role

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181119104231) do
+ActiveRecord::Schema.define(version: 20190313124138) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -224,35 +224,35 @@ ActiveRecord::Schema.define(version: 20181119104231) do
   end
 
   create_table "projects", force: :cascade do |t|
-    t.string    "name"
-    t.datetime  "created_at",                                                                                          null: false
-    t.datetime  "updated_at",                                                                                          null: false
-    t.text      "description"
-    t.text      "address"
-    t.string    "location"
-    t.string    "country"
-    t.geography "latlng",                        limit: {:srid=>4326, :type=>"point", :geographic=>true}
-    t.integer   "gross_area"
-    t.integer   "certified_area"
-    t.integer   "carpark_area"
-    t.integer   "project_site_area"
-    t.string    "code"
-    t.integer   "construction_year"
-    t.string    "location_plan_file"
-    t.string    "site_plan_file"
-    t.string    "design_brief_file"
-    t.string    "project_narrative_file"
-    t.string    "owner",                                                                                  default: "", null: false
-    t.string    "service_provider",                                                                       default: "", null: false
-    t.string    "developer"
-    t.integer   "building_type_group_id"
-    t.integer   "building_type_id"
-    t.integer   "certificate_type"
-    t.string    "service_provider_2"
-    t.string    "estimated_project_cost"
-    t.string    "cost_square_meter"
-    t.string    "estimated_building_cost"
-    t.string    "estimated_infrastructure_cost"
+    t.string   "name"
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
+    t.text     "description"
+    t.text     "address"
+    t.string   "location"
+    t.string   "country"
+    t.integer  "gross_area"
+    t.integer  "certified_area"
+    t.integer  "carpark_area"
+    t.integer  "project_site_area"
+    t.string   "code"
+    t.integer  "construction_year"
+    t.string   "location_plan_file"
+    t.string   "site_plan_file"
+    t.string   "design_brief_file"
+    t.string   "project_narrative_file"
+    t.string   "owner",                         default: "", null: false
+    t.string   "service_provider",              default: "", null: false
+    t.string   "developer"
+    t.integer  "building_type_group_id"
+    t.integer  "building_type_id"
+    t.integer  "certificate_type"
+    t.string   "service_provider_2"
+    t.string   "estimated_project_cost"
+    t.string   "cost_square_meter"
+    t.string   "estimated_building_cost"
+    t.string   "estimated_infrastructure_cost"
+    t.string   "coordinates"
   end
 
   add_index "projects", ["building_type_group_id"], name: "index_projects_on_building_type_group_id", using: :btree

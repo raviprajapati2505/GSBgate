@@ -32,7 +32,7 @@ gem 'execjs'
 # gem 'turbolinks'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-# gem 'jbuilder', '~> 2.0'
+gem 'jbuilder', '~> 2.6.4'
 
 # bundle exec rake doc:rails generates the API under doc/api.
 # gem 'sdoc', '~> 0.4.0', group: :doc
@@ -130,6 +130,9 @@ gem 'bcrypt'
 
 # Font awesome
 gem 'font-awesome-rails'
+
+# JWT
+gem 'warden-jwt_auth', '~> 0.3.5'
 
 # Rails-Assets: access bower packages from our gem file
 #  e.g. gem 'rails-assets-BOWER_PACKAGE_NAME'
