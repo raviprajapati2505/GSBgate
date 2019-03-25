@@ -132,8 +132,9 @@ class User < ActiveRecord::Base
     user.gord_employee = (member_profile[:employer] == 'GORD')
     user.cgp_license = !['GSAS-CGP Associate'].include?(member_profile[:membership])
     # user.cgp_license_expired = (user.cgp_license_was && !user.cgp_license)
-    user.cgp_license_expired = member_profile[:membership_expiry].blank? ? false : DateTime.strptime(member_profile[:membership_expiry], '%Y-%m-%d %H:%M:%S')
-    user.cgp_license_expired = user.cgp_license_expired < DateTime.now unless !user.cgp_license_expired
+    membership_expiry = member_profile[:membership_expiry].blank? ? false : DateTime.strptime(member_profile[:membership_expiry], '%Y-%m-%d %H:%M:%S')
+    membership_expiry = membership_expiry < DateTime.now unless !membership_expiry
+    user.cgp_license_expired = membership_expiry
 
     # Concat the user's name
     user.name = ''
