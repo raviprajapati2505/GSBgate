@@ -3,8 +3,8 @@ json.project_id @project.code
 json.name @project.name
 json.owner @project.owner
 json.description @project.description
-# json.building_type_group @project.building_type_group.name
-# json.building_type @project.building_type.name
+json.building_type_group (@project.building_type_group.nil? ? nil : @project.building_type_group.name)
+json.building_type (@project.building_type.nil? ? nil : @project.building_type.name)
 json.address @project.address
 json.lat_lng_wgs84 @project.coordinates
 json.construction_year @project.construction_year
@@ -23,6 +23,13 @@ json.certificates(@project.certification_paths) do |certification_path|
     json.name scheme_mix.scheme.name
     json.main_scheme (certification_path.main_scheme_mix == scheme_mix)
     json.weight_percent scheme_mix.weight
-    # json.achieved_score
+    json.achieved_score scheme_mix.scores[:achieved_score_in_scheme_points]
+
+    json.categories(scheme_mix.scheme_categories) do |scheme_category|
+      json.name scheme_category.name
+      json.code scheme_category.code
+      json.weight_percent scheme_mix.scheme.weight_for_category(scheme_category)
+      json.achieved_score sum_score_hashes(scheme_mix.scheme_mix_criteria_scores.group_by{|item| item[:scheme_category_id]}[scheme_category.id])[:achieved_score_in_scheme_points]
+    end
   end
 end
