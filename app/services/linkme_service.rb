@@ -23,6 +23,22 @@ class LinkmeService
       membership_expiry: 'MembershipExpiry'
   }
 
+  PEOPLE_PROFILE_FIELDS = {
+      id: 'ID',
+      username: 'Username',
+      email: 'EmailAddr',
+      picture: 'HeadshotImageURI',
+      employer: 'Employer',
+      name_prefix: 'NamePrefix',
+      first_name: 'FirstName',
+      middle_name: 'MiddleName',
+      last_name: 'LastName',
+      name_suffix: 'NameSuffix',
+      membership: 'Membership',
+      membership_expiry: 'MembershipExpiry',
+      master_id: 'MasterID'
+  }
+
   # Session.Create
   def session_create
     request_xml = prepare_api_request('Session.Create')
@@ -67,7 +83,7 @@ class LinkmeService
   def sa_people_profile_get(id)
     request_xml = prepare_api_request('Sa.People.Profile.Get', sa_request: true, method_params: {ID: id})
     response_xml = execute_api_request(request_xml)
-    Hash[ MEMBER_PROFILE_FIELDS.map{|key, value| [key, response_xml.at_xpath("//Sa.People.Profile.Get//#{value}").text] } ]
+    Hash[ PEOPLE_PROFILE_FIELDS.map{|key, value| [key, response_xml.at_xpath("//Sa.People.Profile.Get//#{value}").text] } ]
   end
 
   private
