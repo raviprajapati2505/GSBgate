@@ -124,6 +124,9 @@ class Project < ActiveRecord::Base
     return false
   end
 
+  # returns the most important scheme mix which is
+  # either the main scheme mix for the oldest certification path (should be the same as following certification paths)
+  # or the scheme mix of the oldest certification path with the highest weight
   def most_important_scheme_mix
     oldest_cert_path = certification_paths.sort_by {|cat| cat.created_at}.first
     unless oldest_cert_path.nil?
@@ -135,13 +138,17 @@ class Project < ActiveRecord::Base
     return nil
   end
 
+  # returns a hash with key = category code; value = achieved score in certificate points (sum for all scheme mixes)
   def categories
     categories = {}
     certification_paths.each do |cp|
       cp.scheme_mixes.each do |sm|
-        sm.scheme_categories.each do |c|
-          categories[c.code] = [] if categories[c.code].nil?
-          categories[c.code] << c
+        scheme_mix_criteria_scores_by_category = sm.scheme_mix_criteria_scores.group_by{|item| item[:scheme_category_id]}
+        unless scheme_mix_criteria_scores_by_category.nil?
+          sm.scheme_categories.each do |c|
+            categories[c.code] = 0 if categories[c.code].nil?
+            categories[c.code] += scheme_mix_criteria_scores_by_category[c.id].sum {|score| score[:achieved_score_in_certificate_points].nil? ? 0 : score[:achieved_score_in_certificate_points]} unless scheme_mix_criteria_scores_by_category[c.id].nil?
+          end
         end
       end
     end

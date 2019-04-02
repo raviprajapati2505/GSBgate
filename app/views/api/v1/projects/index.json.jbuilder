@@ -10,7 +10,7 @@ json.projects(@projects) do |project|
 
   json.main_scheme_name (project.most_important_scheme_mix.nil? ? nil : project.most_important_scheme_mix.scheme.name)
   json.categories(project.categories) do |category_hash|
-    json.code category_hash.code
-    # json.achieved_score
+    json.code category_hash[0]
+    json.achieved_score category_hash[1]
   end
 end

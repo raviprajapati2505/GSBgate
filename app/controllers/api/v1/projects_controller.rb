@@ -2,10 +2,12 @@ class Api::V1::ProjectsController < Api::ApiController
   # load_and_authorize_resource
   # load_resource
 
+  # curl -v -H "Accept: application/json" -H "Authorization: Bearer ..." "http://localhost:3000/api/v1/projects"
   def index
     limit = 100
 
-    query = Project.accessible_by(current_ability)
+    # restrict to Operations projects
+    query = Project.accessible_by(current_ability).joins(certification_paths: [:certificate]).where(certificates: {certificate_type: Certificate::certificate_types[:operations_type]})
     if params.has_key?(:filter)
       filter = Hash[URI.decode_www_form(params[:filter])]
       if filter.has_key?('owner')
@@ -15,10 +17,10 @@ class Api::V1::ProjectsController < Api::ApiController
         query = query.where('construction_year = ?', filter['construction_year'])
       end
       if filter.has_key?('rating')
-
+      #   TODO not yet implemented
       end
       if filter.has_key?('main_scheme')
-
+      #   TODO not yet implemented
       end
     end
     total_count = query.count
@@ -49,6 +51,7 @@ class Api::V1::ProjectsController < Api::ApiController
     render 'index', formats: :json
   end
 
+  # curl -v -H "Accept: application/json" -H "Authorization: Bearer ..." "http://localhost:3000/api/v1/projects/<id>"
   def show
     @project = Project.accessible_by(current_ability).find_by(id: params[:id])
     if @project.nil?
