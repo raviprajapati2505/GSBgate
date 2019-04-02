@@ -212,6 +212,9 @@ class ProjectsController < AuthenticatedController
 
   def create
     @project = Project.new(project_params)
+    unless project_params.has_key?(:service_provider)
+      @project.service_provider = current_user.employer_name
+    end
 
     @project.transaction do
       if @project.save
