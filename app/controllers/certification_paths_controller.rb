@@ -453,7 +453,7 @@ class CertificationPathsController < AuthenticatedController
     filepath = filepath_for_report 'Cover Letter'
     report = Reports::LetterOfConformanceCoverLetter.new(@certification_path)
     report.save_as(filepath)
-    send_file filepath, :type => 'application/pdf', :x_sendfile => true
+    send_file filepath, :type => 'application/pdf' # , :x_sendfile => true
   end
 
   def confirm_destroy
