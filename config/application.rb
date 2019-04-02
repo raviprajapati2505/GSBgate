@@ -30,7 +30,7 @@ module Gord
     config.autoload_paths << Rails.root.join('services')
 
     # Autoload classes from custom "strategies" folder (contains Warden strategies)
-    config.autoload_paths << Rails.root.join('strategies')
+    # config.autoload_paths << Rails.root.join('strategies')
 
     # Sets the Content-Length header on responses with fixed-length bodies.
     config.middleware.use Rack::ContentLength

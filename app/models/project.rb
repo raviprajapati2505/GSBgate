@@ -124,6 +124,30 @@ class Project < ActiveRecord::Base
     return false
   end
 
+  def most_important_scheme_mix
+    oldest_cert_path = certification_paths.sort_by {|cat| cat.created_at}.first
+    unless oldest_cert_path.nil?
+      # return main scheme_mix
+      return oldest_cert_path.main_scheme_mix unless oldest_cert_path.main_scheme_mix.nil?
+      # return heaviest scheme_mix
+      return oldest_cert_path.scheme_mixes.max_by {|sm| sm.weight}
+    end
+    return nil
+  end
+
+  def categories
+    categories = {}
+    certification_paths.each do |cp|
+      cp.scheme_mixes.each do |sm|
+        sm.scheme_categories.each do |c|
+          categories[c.code] = [] if categories[c.code].nil?
+          categories[c.code] << c
+        end
+      end
+    end
+    return categories
+  end
+
   # def can_create_certification_path_for_certification_type?(certification_type)
   #   # There should be only one certification path per certificate
   #   # TODO: this may be a bad assumption, perhaps extend logic to also look at the status (e.g an older rejected certification_path may be allowed)
