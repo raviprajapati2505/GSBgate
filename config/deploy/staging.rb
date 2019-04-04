@@ -1,4 +1,4 @@
-role :app, %w{jenkins@dev02.gord.sas.vito.local}
+role :app, %w{jenkins@web02.gord.sas.vito.local}
 set :application, "gord_staging"
 set :stages, ["staging"]
 set :branch, :staging
