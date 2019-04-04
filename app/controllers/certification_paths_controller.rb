@@ -453,7 +453,7 @@ class CertificationPathsController < AuthenticatedController
     filepath = filepath_for_report 'Cover Letter'
     report = Reports::LetterOfConformanceCoverLetter.new(@certification_path)
     report.save_as(filepath)
-    send_file filepath, :type => 'application/pdf' # , :x_sendfile => true
+    send_file filepath, :type => 'application/pdf', :x_sendfile => false
   end
 
   def confirm_destroy
@@ -495,7 +495,7 @@ class CertificationPathsController < AuthenticatedController
 
   def download_signed_certificate
     begin
-      send_file @certification_path.signed_certificate_file.path
+      send_file @certification_path.signed_certificate_file.path, x_sendfile: false
     rescue ActionController::MissingFile
       redirect_to :back, alert: 'This document is no longer available for download. This could be due to a detection of malware.'
     end
