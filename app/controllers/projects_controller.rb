@@ -201,6 +201,7 @@ class ProjectsController < AuthenticatedController
   def new
     @page_title = 'New project'
     @project = Project.new
+    @project.service_provider = current_user.employer_name
     @certificates = Certificate.all
   end
 
@@ -211,6 +212,9 @@ class ProjectsController < AuthenticatedController
 
   def create
     @project = Project.new(project_params)
+    unless project_params.has_key?(:service_provider)
+      @project.service_provider = current_user.employer_name
+    end
 
     @project.transaction do
       if @project.save
@@ -300,7 +304,7 @@ class ProjectsController < AuthenticatedController
     if current_user.system_admin? || current_user.gsas_trust_admin?
       params.require(:project).permit(:name, :certificate_type, :owner, :developer, :service_provider, :service_provider_2, :description, :address, :location, :country, :construction_year, :coordinates, :gross_area, :certified_area, :carpark_area, :project_site_area, :terms_and_conditions_accepted, :location_plan_file, :location_plan_file_cache, :site_plan_file, :site_plan_file_cache, :design_brief_file, :design_brief_file_cache, :project_narrative_file, :project_narrative_file_cache, :building_type_group_id, :building_type_id, :estimated_project_cost, :cost_square_meter, :estimated_building_cost, :estimated_infrastructure_cost, :code)
     else
-      params.require(:project).permit(:name, :certificate_type, :owner, :developer, :service_provider, :service_provider_2, :description, :address, :location, :country, :construction_year, :coordinates, :gross_area, :certified_area, :carpark_area, :project_site_area, :terms_and_conditions_accepted, :location_plan_file, :location_plan_file_cache, :site_plan_file, :site_plan_file_cache, :design_brief_file, :design_brief_file_cache, :project_narrative_file, :project_narrative_file_cache, :building_type_group_id, :building_type_id, :estimated_project_cost, :cost_square_meter, :estimated_building_cost, :estimated_infrastructure_cost)
+      params.require(:project).permit(:name, :certificate_type, :owner, :developer, :service_provider_2, :description, :address, :location, :country, :construction_year, :coordinates, :gross_area, :certified_area, :carpark_area, :project_site_area, :terms_and_conditions_accepted, :location_plan_file, :location_plan_file_cache, :site_plan_file, :site_plan_file_cache, :design_brief_file, :design_brief_file_cache, :project_narrative_file, :project_narrative_file_cache, :building_type_group_id, :building_type_id, :estimated_project_cost, :cost_square_meter, :estimated_building_cost, :estimated_infrastructure_cost)
     end
   end
 end

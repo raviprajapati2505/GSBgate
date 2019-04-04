@@ -116,7 +116,8 @@ class User < ActiveRecord::Base
 
   # Updates or creates a linkme user in the DB.
   # - member_profile: A linkme member profile hash returned by the LinkmeService
-  def self.update_or_create_linkme_user!(member_profile)
+  # - master_profile: A linkme member profile hash returned by the LinkmeService which functions as the Service Provider/Employer
+  def self.update_or_create_linkme_user!(member_profile, master_profile)
     # Check if the user exists in the GSAS DB
     user = linkme_users.find_by_linkme_member_id(member_profile[:id])
 
@@ -131,9 +132,16 @@ class User < ActiveRecord::Base
     user.picture = member_profile[:picture]
     user.gord_employee = (member_profile[:employer] == 'GORD')
     user.cgp_license = !['GSAS-CGP Associate'].include?(member_profile[:membership])
-    # user.cgp_license_expired = (user.cgp_license_was && !user.cgp_license)
-    membership_expiry = member_profile[:membership_expiry].blank? ? false : DateTime.strptime(member_profile[:membership_expiry], '%Y-%m-%d %H:%M:%S')
+    user.employer_name = member_profile[:employer]
+    # CGP license expiry logic
+    # ------------------------
+    membership_expiry = (master_profile.nil? || master_profile[:membership_expiry].blank?) ? false : DateTime.strptime(master_profile[:membership_expiry], '%Y-%m-%d %H:%M:%S')
     membership_expiry = membership_expiry < DateTime.now unless !membership_expiry
+    # Service Provider membership expired ?
+    unless membership_expiry
+      membership_expiry = member_profile[:membership_expiry].blank? ? false : DateTime.strptime(member_profile[:membership_expiry], '%Y-%m-%d %H:%M:%S')
+      membership_expiry = membership_expiry < DateTime.now unless !membership_expiry
+    end
     user.cgp_license_expired = membership_expiry
 
     # Concat the user's name
