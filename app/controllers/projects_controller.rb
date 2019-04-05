@@ -8,8 +8,6 @@ class ProjectsController < AuthenticatedController
       format.html {
         @page_title = t('projects.index.title_html')
         @datatable = Effective::Datatables::ProjectsCertificationPaths.new
-        @datatable.current_ability = current_ability
-        @datatable.table_html_class = 'table table-bordered table-striped table-hover'
       }
       format.json {
         if (params.has_key?(:limit))
