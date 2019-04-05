@@ -104,7 +104,7 @@ class AuditLogsController < AuthenticatedController
 
   def download_attachment
     begin
-      send_file @audit_log.attachment_file.path
+      send_file @audit_log.attachment_file.path, x_sendfile: false
     rescue ActionController::MissingFile
       redirect_to :back, alert: 'This document is no longer available for download. This could be due to a detection of malware.'
     end

@@ -250,7 +250,7 @@ class ProjectsController < AuthenticatedController
   def download_location_plan
     authorize! :download_location_plan, @project
     begin
-      send_file @project.location_plan_file.path
+      send_file @project.location_plan_file.path, x_sendfile: false
     rescue ActionController::MissingFile
       redirect_to :back, alert: 'This document is no longer available for download. This could be due to a detection of malware.'
     end
@@ -259,7 +259,7 @@ class ProjectsController < AuthenticatedController
   def download_site_plan
     authorize! :download_site_plan, @project
     begin
-      send_file @project.site_plan_file.path
+      send_file @project.site_plan_file.path, x_sendfile: false
     rescue ActionController::MissingFile
       redirect_to :back, alert: 'This document is no longer available for download. This could be due to a detection of malware.'
     end
@@ -268,7 +268,7 @@ class ProjectsController < AuthenticatedController
   def download_design_brief
     authorize! :download_design_brief, @project
     begin
-      send_file @project.design_brief_file.path
+      send_file @project.design_brief_file.path, x_sendfile: false
     rescue ActionController::MissingFile
       redirect_to :back, alert: 'This document is no longer available for download. This could be due to a detection of malware.'
     end
@@ -277,7 +277,7 @@ class ProjectsController < AuthenticatedController
   def download_project_narrative
     authorize! :download_project_narrative, @project
     begin
-      send_file @project.project_narrative_file.path
+      send_file @project.project_narrative_file.path, x_sendfile: false
     rescue ActionController::MissingFile
       redirect_to :back, alert: 'This document is no longer available for download. This could be due to a detection of malware.'
     end

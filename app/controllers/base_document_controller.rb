@@ -33,7 +33,7 @@ class BaseDocumentController < AuthenticatedController
 
   def show
     begin
-      send_file @controller_model.path
+      send_file @controller_model.path, x_sendfile: false
     rescue ActionController::MissingFile
       redirect_to :back, alert: 'This document is no longer available for download. This could be due to a detection of malware.'
     end
