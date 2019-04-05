@@ -43,8 +43,6 @@ Rails.application.configure do
   config.action_mailer.smtp_settings = { :address => 'smtp.vito.local' }
   config.action_mailer.asset_host = 'http://localhost:3000'
 
-  config.action_dispatch.x_sendfile_header = 'X-Sendfile' # for Apache
-
   config.log_tags = [ :uuid ]
 
   config.x.gsas_info.email = 'sas@vito.be'
@@ -59,5 +57,6 @@ Rails.application.configure do
   # Chart generator API config
   config.x.chart_generator.api_url = 'localhost'
   config.x.chart_generator.api_port = 8082
+
   config.x.shared_path = ENV['SHARED_PATH']
 end
