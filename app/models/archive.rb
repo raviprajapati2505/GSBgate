@@ -12,7 +12,7 @@ class Archive < ActiveRecord::Base
   belongs_to :user
 
   def archive_path
-    "#{Rails.root.to_s}/#{Archive::STORE_DIR}/#{archive_file}"
+    "#{Rails.application.config.x.shared_path}/#{Archive::STORE_DIR}/#{archive_file}"
   end
 
   def generate!
