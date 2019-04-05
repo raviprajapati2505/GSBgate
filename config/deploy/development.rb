@@ -1,7 +1,6 @@
 role :app, %w{jenkins@p4dev.sas.vito.local}
 set :application, "gord_development"
 set :stages, ["development"]
-# set :branch, 'bugfix/x_sendfile'
 
 
 # server-based syntax
