@@ -57,6 +57,4 @@ Rails.application.configure do
   # Chart generator API config
   config.x.chart_generator.api_url = 'localhost'
   config.x.chart_generator.api_port = 8082
-
-  config.x.shared_path = ENV['SHARED_PATH']
 end
