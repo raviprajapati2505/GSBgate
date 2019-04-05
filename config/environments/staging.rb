@@ -72,5 +72,6 @@ Rails.application.configure do
   config.x.chart_generator.api_url = 'localhost'
   config.x.chart_generator.api_port = 8082
 
+  config.action_dispatch.x_sendfile_header = 'X-Sendfile' # for Apache
   config.x.shared_path = ENV['SHARED_PATH']
 end
