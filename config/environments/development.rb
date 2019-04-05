@@ -43,6 +43,8 @@ Rails.application.configure do
   config.action_mailer.smtp_settings = { :address => 'smtp.vito.local' }
   config.action_mailer.asset_host = 'http://localhost:3000'
 
+  config.action_dispatch.x_sendfile_header = 'X-Sendfile' # for Apache
+
   config.log_tags = [ :uuid ]
 
   config.x.gsas_info.email = 'sas@vito.be'
