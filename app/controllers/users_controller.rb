@@ -64,10 +64,9 @@ class UsersController < AuthenticatedController
         # end
         # add unchecked notification types
         notification_types.each do |notification_type|
-          unless notification_type.project_level
-            unless params[:notification_types].any? { |id| id.to_i == notification_type.id }
-              NotificationTypesUser.create!(user: @user, project_id: nil, notification_type_id: notification_type.id)
-            end
+          next unless params.key?(:notification_types) && params[:notification_types].present?
+          unless params[:notification_types].any? { |id| id.to_i == notification_type.id }
+            NotificationTypesUser.create!(user: @user, project_id: nil, notification_type_id: notification_type.id)
           end
         end
 
@@ -82,11 +81,10 @@ class UsersController < AuthenticatedController
           # end
           # add unchecked notification types
           notification_types.each do |notification_type|
-            if notification_type.project_level
-              unless params[:project_notification_types].any? { |id| id.to_i == notification_type.id }
-                # @user.notification_types_users << NotificationTypesUser.new(project_id: params[:project_id], notification_type_id: notification_type.id)
-                NotificationTypesUser.create!(user: @user, project_id: params[:project_id], notification_type_id: notification_type.id)
-              end
+            next unless notification_type.project_level && params.key?(:project_notification_types) && params[:project_notification_types].present?
+            unless params[:project_notification_types].any? { |id| id.to_i == notification_type.id }
+              # @user.notification_types_users << NotificationTypesUser.new(project_id: params[:project_id], notification_type_id: notification_type.id)
+              NotificationTypesUser.create!(user: @user, project_id: params[:project_id], notification_type_id: notification_type.id)
             end
           end
         end
