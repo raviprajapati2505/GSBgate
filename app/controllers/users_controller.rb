@@ -51,15 +51,15 @@ class UsersController < AuthenticatedController
   end
 
   def update_notifications
-    begin
+    # begin
       NotificationTypesUser.transaction do
         notification_types = NotificationType.all
         # project independent notification settings
-        NotificationTypesUser.delete_all(user: @user, project_id: nil)
+        NotificationTypesUser.where(user: @user, project_id: nil).delete_all
         # delete checked notification types
         # params[:notification_types].each do |notification_type_id|
         #   if @user.notification_types.for_general_level.any? {|type| type.id == notification_type_id.to_i}
-        #     NotificationTypesUser.delete_all(user: @user, project_id: nil, notification_type_id: notification_type_id)
+        #     NotificationTypesUser.where(user: @user, project_id: nil, notification_type_id: notification_type_id).delete_all
         #    end
         # end
         # add unchecked notification types
@@ -73,11 +73,11 @@ class UsersController < AuthenticatedController
 
         # project dependent notification settings
         if params.has_key?(:project_id)
-          NotificationTypesUser.delete_all(user: @user, project_id: params[:project_id])
+          NotificationTypesUser.where(user: @user, project_id: params[:project_id]).delete_all
           # delete checked notification types
           # params[:project_notification_types].each do |notification_type_id|
           #   if @user.notification_types.for_project(params[:project_id]).any? {|type| type.id == notification_type_id.to_i}
-          #     NotificationTypesUser.delete_all(user: @user, project_id: params[:project_id], notification_type_id: notification_type_id)
+          #     NotificationTypesUser.where(user: @user, project_id: params[:project_id], notification_type_id: notification_type_id).delete_all
           #   end
           # end
           # add unchecked notification types
@@ -92,9 +92,9 @@ class UsersController < AuthenticatedController
         end
       end
       flash[:notice] = 'User preferences were successfully updated.'
-    rescue Exception
-      flash[:alert] = 'An error occured while updating user preferences.'
-    end
+    # rescue Exception
+    #   flash[:alert] = 'An error occured while updating user preferences.'
+    # end
     redirect_back(fallback_location: list_notifications_user_path)
   end
 
