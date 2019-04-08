@@ -51,7 +51,7 @@ class UsersController < AuthenticatedController
   end
 
   def update_notifications
-    # begin
+    begin
       NotificationTypesUser.transaction do
         notification_types = NotificationType.all
         # project independent notification settings
@@ -90,9 +90,9 @@ class UsersController < AuthenticatedController
         end
       end
       flash[:notice] = 'User preferences were successfully updated.'
-    # rescue Exception
-    #   flash[:alert] = 'An error occured while updating user preferences.'
-    # end
+    rescue Exception
+      flash[:alert] = 'An error occured while updating user preferences.'
+    end
     redirect_back(fallback_location: list_notifications_user_path)
   end
 
