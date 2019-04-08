@@ -378,7 +378,7 @@ class SchemeMixCriterion < ApplicationRecord
   end
 
   def destroy_requirements_documents
-    RequirementDatum.joins(:scheme_mix_criteria_requirement_data).destroy_all(scheme_mix_criteria_requirement_data: {scheme_mix_criterion_id: id})
+    RequirementDatum.joins(:scheme_mix_criteria_requirement_data).where(scheme_mix_criteria_requirement_data: {scheme_mix_criterion_id: id}).destroy_all
 
     documents.each do |document|
       document.destroy! unless document.scheme_mix_criteria_documents.size > 1
