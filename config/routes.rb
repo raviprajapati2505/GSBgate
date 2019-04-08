@@ -19,8 +19,8 @@ Rails.application.routes.draw do
   end
 
   # proxy all requests to the external api
-  # match 'ssApi', to: 'tools#proxy', via: :all
-  # match 'ssApi/*segment', to: 'tools#proxy', via: :all
+  match 'ssApi', to: 'tools#proxy', via: :all
+  match 'ssApi/*segment', to: 'tools#proxy', via: :all
 
   # Main nested resources of our application
   resources :projects do
@@ -126,7 +126,7 @@ Rails.application.routes.draw do
   post 'audit-logs/:auditable_type/:auditable_id' => 'audit_logs#auditable_create', as: 'auditable_create_audit_log'
   get 'tasks' => 'tasks#index', as: 'tasks'
   get 'tasks/user/:user_id' => 'tasks#count', as: 'count_tasks'
-  # match 'projects/:project_id/certificates/apply/:certification_type' => 'certification_paths#apply', as: 'apply_certification_path', via: [:get, :post]
+  match 'projects/:project_id/certificates/apply/:certification_type' => 'certification_paths#apply', as: 'apply_certification_path', via: [:get, :post]
   get 'projects/:project_id/certificates/:id/archive' => 'certification_paths#download_archive', as: 'archive_project_certification_path'
   get 'projects/:project_id/certificates/:certification_path_id/schemes/:scheme_mix_id/criteria/:id/archive' => 'scheme_mix_criteria#download_archive', as: 'archive_project_certification_path_scheme_mix_scheme_mix_criterion'
   get 'projects/:project_id/certificates/:id/comments' => 'certification_paths#download_comments', as: 'comments_project_cerficiation_path'
@@ -152,10 +152,10 @@ Rails.application.routes.draw do
   resources :archives, only: [:show]
 
   # Error pages routes
-  # match '/403', to: 'errors#forbidden', via: :all, as: 'forbidden_error'
-  # match '/404', to: 'errors#not_found', via: :all, as: 'not_found_error'
-  # match '/422', to: 'errors#unprocessable_entity', via: :all, as: 'unprocessable_entity_error'
-  # match '/500', to: 'errors#internal_server_error', via: :all, as: 'internal_server_error_error'
+  match '/403', to: 'errors#forbidden', via: :all, as: 'forbidden_error'
+  match '/404', to: 'errors#not_found', via: :all, as: 'not_found_error'
+  match '/422', to: 'errors#unprocessable_entity', via: :all, as: 'unprocessable_entity_error'
+  match '/500', to: 'errors#internal_server_error', via: :all, as: 'internal_server_error_error'
 
   # CATCH ALL ROUTE, redirecting the user to a correct page
   # BEWARE: this should be the last line, as it will match any path !!!
