@@ -481,15 +481,15 @@ class CertificationPathsController < AuthenticatedController
       @certification_path.signed_certificate_file = params[:certification_path][:signed_certificate_file]
 
       if @certification_path.save
-        redirect_to :back, notice: 'The signed certificate was uploaded successfully.'
+        redirect_back(fallback_location: root_path, notice: 'The signed certificate was uploaded successfully.')
       else
         @certification_path.errors.messages.each do |field, errors|
-          redirect_to :back, alert: errors.first
+          redirect_back(fallback_location: root_path, alert: errors.first)
           return
         end
       end
     else
-      redirect_to :back, alert: 'Please select a file to upload.'
+      redirect_back(fallback_location: root_path, alert: 'Please select a file to upload.')
     end
   end
 
@@ -497,7 +497,7 @@ class CertificationPathsController < AuthenticatedController
     begin
       send_file @certification_path.signed_certificate_file.path
     rescue ActionController::MissingFile
-      redirect_to :back, alert: 'This document is no longer available for download. This could be due to a detection of malware.'
+      redirect_back(fallback_location: root_path, alert: 'This document is no longer available for download. This could be due to a detection of malware.')
     end
   end
 

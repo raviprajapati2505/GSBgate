@@ -95,7 +95,7 @@ class UsersController < AuthenticatedController
     rescue Exception
       flash[:alert] = 'An error occured while updating user preferences.'
     end
-    redirect_to :back
+    redirect_back(fallback_location: list_notifications_user_path)
   end
 
   def find_users_by_email
