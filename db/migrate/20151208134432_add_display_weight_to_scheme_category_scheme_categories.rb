@@ -1,4 +1,4 @@
-class AddDisplayWeightToSchemeCategorySchemeCategories < ActiveRecord::Migration
+class AddDisplayWeightToSchemeCategorySchemeCategories < ActiveRecord::Migration[4.2]
   def change
     add_column :scheme_categories, :display_weight, :integer
 

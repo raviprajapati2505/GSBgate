@@ -1,4 +1,4 @@
-class CreateFields < ActiveRecord::Migration
+class CreateFields < ActiveRecord::Migration[4.2]
   def change
     drop_table :fields
     create_table :fields do |t|

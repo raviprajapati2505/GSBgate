@@ -1,4 +1,4 @@
-class CreateFieldData < ActiveRecord::Migration
+class CreateFieldData < ActiveRecord::Migration[4.2]
   def change
     create_table :field_data do |t|
       t.references :fields, index: true, foreign_key: true

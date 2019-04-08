@@ -1,4 +1,4 @@
-class AddRequirementsE1 < ActiveRecord::Migration
+class AddRequirementsE1 < ActiveRecord::Migration[4.2]
   def change
     requirement_1 = Requirement.create!(name: 'Energy Performance Evaluation Calculator')
     requirement_2 = Requirement.create!(name: 'Design drawings')

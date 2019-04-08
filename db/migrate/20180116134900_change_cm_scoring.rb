@@ -1,4 +1,4 @@
-class ChangeCmScoring < ActiveRecord::Migration
+class ChangeCmScoring < ActiveRecord::Migration[4.2]
   def change
     # Add column calculate_incentive and assign_incentive_manually to scheme_criteria
     add_column :scheme_criteria, :calculate_incentive, :boolean, default: true

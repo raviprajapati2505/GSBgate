@@ -1,4 +1,4 @@
-class CreateDocumentsBis < ActiveRecord::Migration
+class CreateDocumentsBis < ActiveRecord::Migration[4.2]
   def change
     create_table :documents do |t|
       t.string :document_file

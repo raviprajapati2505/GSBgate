@@ -1,4 +1,4 @@
-class RefactorSchemesAndCategoriesAndSchemeCriteria < ActiveRecord::Migration
+class RefactorSchemesAndCategoriesAndSchemeCriteria < ActiveRecord::Migration[4.2]
   def change
     #renaming label to name
     rename_column :certificates, :label, :name

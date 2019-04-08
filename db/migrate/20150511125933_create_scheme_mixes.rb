@@ -1,4 +1,4 @@
-class CreateSchemeMixes < ActiveRecord::Migration
+class CreateSchemeMixes < ActiveRecord::Migration[4.2]
   def change
     create_table :scheme_mixes do |t|
       t.references :certification_path, index: true, foreign_key: true

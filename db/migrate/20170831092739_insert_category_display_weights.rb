@@ -1,4 +1,4 @@
-class InsertCategoryDisplayWeights < ActiveRecord::Migration
+class InsertCategoryDisplayWeights < ActiveRecord::Migration[4.2]
   def change
     categories = SchemeCategory.where(display_weight: nil)
     categories.each do |category|

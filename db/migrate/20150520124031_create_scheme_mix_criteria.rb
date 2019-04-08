@@ -1,4 +1,4 @@
-class CreateSchemeMixCriteria < ActiveRecord::Migration
+class CreateSchemeMixCriteria < ActiveRecord::Migration[4.2]
   def change
     create_table :scheme_mix_criteria do |t|
       t.integer :targeted_score

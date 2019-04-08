@@ -1,4 +1,4 @@
-class CreateDocumentData < ActiveRecord::Migration
+class CreateDocumentData < ActiveRecord::Migration[4.2]
   def change
     create_table :document_data do |t|
       t.references :document, index: true, foreign_key: true

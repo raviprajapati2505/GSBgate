@@ -1,4 +1,4 @@
-class RenameAndAddProjectBaseFields < ActiveRecord::Migration
+class RenameAndAddProjectBaseFields < ActiveRecord::Migration[4.2]
   def change
     remove_column :projects, :country
     remove_column :projects, :city

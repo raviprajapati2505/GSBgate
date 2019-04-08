@@ -1,4 +1,4 @@
-class AddCertifierToProject < ActiveRecord::Migration
+class AddCertifierToProject < ActiveRecord::Migration[4.2]
   def change
     add_reference :projects, :certifier, references: :users
     add_foreign_key :projects, :users, column: :owner_id

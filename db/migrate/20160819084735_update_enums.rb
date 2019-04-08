@@ -1,4 +1,4 @@
-class UpdateEnums < ActiveRecord::Migration
+class UpdateEnums < ActiveRecord::Migration[4.2]
   def change
   #   update certificate certificate_type
     Certificate.where(certificate_type: 0).update_all(certificate_type: Certificate.certificate_types[:design_type])

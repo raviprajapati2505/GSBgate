@@ -1,4 +1,4 @@
-class RemoveCm21Issue3Projects < ActiveRecord::Migration
+class RemoveCm21Issue3Projects < ActiveRecord::Migration[4.2]
   def change
 
     # Destroy all user data

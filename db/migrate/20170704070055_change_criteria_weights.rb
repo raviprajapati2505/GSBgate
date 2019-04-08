@@ -1,4 +1,4 @@
-class ChangeCriteriaWeights < ActiveRecord::Migration
+class ChangeCriteriaWeights < ActiveRecord::Migration[4.2]
   def change
       # MO.2 scores and MO.2&MO.3 weights
 

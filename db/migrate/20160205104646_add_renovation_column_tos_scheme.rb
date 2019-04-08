@@ -1,4 +1,4 @@
-class AddRenovationColumnTosScheme < ActiveRecord::Migration
+class AddRenovationColumnTosScheme < ActiveRecord::Migration[4.2]
   def up
     add_column :schemes, :renovation, :boolean, null: false, default: false
   end

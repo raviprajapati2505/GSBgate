@@ -1,4 +1,4 @@
-class CreateBuildingTypes < ActiveRecord::Migration
+class CreateBuildingTypes < ActiveRecord::Migration[4.2]
   def change
     create_table :building_types do |t|
       t.string :name

@@ -1,4 +1,4 @@
-class CreateCriterions < ActiveRecord::Migration
+class CreateCriterions < ActiveRecord::Migration[4.2]
   def change
     create_table :criterions do |t|
       t.string :code, limit: 5

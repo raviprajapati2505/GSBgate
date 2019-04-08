@@ -1,4 +1,4 @@
-class AddIncentiveWeightPerScore < ActiveRecord::Migration
+class AddIncentiveWeightPerScore < ActiveRecord::Migration[4.2]
   def up
     add_column :scheme_criteria, :incentive_weight_minus_1, :decimal, precision: 5, scale:2, default: 0
     add_column :scheme_criteria, :incentive_weight_0, :decimal, precision: 5, scale:2, default: 0

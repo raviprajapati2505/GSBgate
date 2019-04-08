@@ -1,4 +1,4 @@
-class PolymorphicTasks < ActiveRecord::Migration
+class PolymorphicTasks < ActiveRecord::Migration[4.2]
   # class TempTask < ActiveRecord::Base
   #
   # end

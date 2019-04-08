@@ -1,4 +1,4 @@
-class DeleteJustificationFromSchemeMixCriteria < ActiveRecord::Migration
+class DeleteJustificationFromSchemeMixCriteria < ActiveRecord::Migration[4.2]
   def change
     remove_column :scheme_mix_criteria, :justification, :text
     create_table :criteria_status_logs do |t|

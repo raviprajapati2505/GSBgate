@@ -1,4 +1,4 @@
-class CreateCalculatorData < ActiveRecord::Migration
+class CreateCalculatorData < ActiveRecord::Migration[4.2]
   def change
     create_table :calculator_data do |t|
       t.references :calculator, index: true, foreign_key: true

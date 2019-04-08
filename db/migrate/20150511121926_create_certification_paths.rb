@@ -1,4 +1,4 @@
-class CreateCertificationPaths < ActiveRecord::Migration
+class CreateCertificationPaths < ActiveRecord::Migration[4.2]
   def change
     create_table :certification_paths do |t|
       t.references :project, index: true, foreign_key: true

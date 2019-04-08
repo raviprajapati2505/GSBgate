@@ -1,4 +1,4 @@
-class AddOperations21Criteria < ActiveRecord::Migration
+class AddOperations21Criteria < ActiveRecord::Migration[4.2]
   def change
     change_column :scheme_categories, :code, :string, limit: 4
 
