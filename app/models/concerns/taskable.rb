@@ -185,8 +185,8 @@ module Taskable
   end
 
   def handle_updated_projects_user
-    if self.role_changed?
-      lost_role(self.role_was)
+    if self.saved_change_to_role?
+      lost_role(self.role_before_last_save)
       case ProjectsUser.roles[self.role]
         # when ProjectsUser.roles[:project_team_member]
         # when ProjectsUser.roles[:certifier]
@@ -204,7 +204,7 @@ module Taskable
   end
 
   def handle_certification_status_changed
-    if self.certification_path_status_id_changed?
+    if self.saved_change_to_certification_path_status_id?
       case self.certification_path_status_id
         when CertificationPathStatus::ACTIVATING
           #
@@ -364,7 +364,7 @@ module Taskable
   end
 
   def handle_main_scheme_mix_selected_changed
-    if self.main_scheme_mix_selected_changed?
+    if self.saved_change_to_main_scheme_mix_selected?
       if self.main_scheme_mix_selected?
         Task.where(taskable: self, task_description_id: SYS_ADMIN_SELECT_MAIN_SCHEME).delete_all
       end
@@ -381,7 +381,7 @@ module Taskable
   end
 
   def handle_criterion_status_changed
-    if self.status_changed?
+    if self.saved_change_to_status?
       case SchemeMixCriterion.statuses[self.status]
         when SchemeMixCriterion.statuses[:submitting], SchemeMixCriterion.statuses[:submitting_after_appeal]
           # Remove CGP task to advance certification path status
@@ -405,7 +405,7 @@ module Taskable
         when SchemeMixCriterion.statuses[:verifying], SchemeMixCriterion.statuses[:verifying_after_appeal]
           # Remove certification manager task to advance certification path status
           Task.where(taskable: self.scheme_mix.certification_path, task_description_id: CERT_MNGR_VERIFICATION_APPROVE).delete_all
-          if !self.certifier_id_changed?
+          if !self.saved_change_to_certifier_id?
             if self.certifier_id.nil?
               # Create certification manager task to assign certifier to the criterion
               if self.verifying?
@@ -469,7 +469,7 @@ module Taskable
   end
 
   def handle_criterion_assignment_changed
-    if self.certifier_id_changed?
+    if self.saved_change_to_certifier_id?
       if self.certifier_id.nil?
         # Create certification manager task to assign certifier to the criterion
         if self.verifying?
@@ -545,8 +545,8 @@ module Taskable
   end
 
   def handle_criterion_due_date_changed
-    if self.due_date_changed?
-      if (self.due_date_was.present? && (self.due_date_was < Date.current)) && (self.due_date.blank? || (self.due_date > Date.current))
+    if self.saved_change_to_due_date?
+      if (self.due_date_before_last_save.present? && (self.due_date_before_last_save < Date.current)) && (self.due_date.blank? || (self.due_date > Date.current))
         # Destroy certification manager tasks to follow up overdue tasks
         Task.where(taskable: self, task_description_id: CERT_MNGR_OVERDUE).delete_all
       end
@@ -554,7 +554,7 @@ module Taskable
   end
 
   def handle_criterion_pcr_review_draft_changed
-    if self.pcr_review_draft_changed? && self.pcr_review_draft.present?
+    if self.saved_change_to_pcr_review_draft? && self.pcr_review_draft.present?
       Task.where(taskable: self, task_description_id: CERT_MEM_REVIEW).delete_all
       if Task.find_by(taskable: self, task_description_id: CERT_MNGR_PUBLISH_REVIEW).nil?
         # Create certification manager task to publish the draft PCR review comment
@@ -572,7 +572,7 @@ module Taskable
   end
 
   def handle_criterion_in_review_changed
-    if self.in_review_changed?
+    if self.saved_change_to_in_review?
       if self.in_review?
         Task.where(taskable: self, task_description_id: PROJ_MNGR_REVIEW).delete_all
         if Task.find_by(taskable: self, task_description_id: CERT_MNGR_REVIEW).nil?
@@ -597,7 +597,7 @@ module Taskable
   end
 
   def handle_criterion_screened_changed
-    if self.screened_changed? && self.scheme_mix.certification_path.in_screening?
+    if self.saved_change_to_screened? && self.scheme_mix.certification_path.in_screening?
       if self.screened
         # Destroy certifier tasks to screen criterion
         Task.where(taskable: self, task_description_id: CERT_MEM_SCREEN).delete_all
@@ -629,10 +629,10 @@ module Taskable
   end
 
   def handle_requirement_status_changed
-    if self.status_changed?
+    if self.saved_change_to_status?
       case RequirementDatum.statuses[self.status]
         when RequirementDatum.statuses[:required]
-          if !self.user_id_changed?
+          if !self.saved_change_to_user_id?
             if self.user_id.nil?
               if self.scheme_mix_criteria.first.submitting?
                 # Create project manager task to assign a project team member to the requirement
@@ -682,7 +682,7 @@ module Taskable
                         project: self.scheme_mix_criteria.first.scheme_mix.certification_path.project,
                         certification_path: self.scheme_mix_criteria.first.scheme_mix.certification_path)
           end
-          unless self.user_id_changed?
+          unless self.saved_change_to_user_id?
             count = self.scheme_mix_criteria.first.requirement_data.where(status: RequirementDatum.statuses[:required], user: self.user).count
             if !count.nil? && count.zero?
               Task.where(taskable: self.scheme_mix_criteria.first, task_description_id: PROJ_MEM_REQ, user: self.user).delete_all
@@ -701,7 +701,7 @@ module Taskable
   end
 
   def handle_requirement_assignment_changed
-    if self.user_id_changed?
+    if self.saved_change_to_user_id?
       if self.user_id.nil?
         if RequirementDatum.statuses[self.status] == RequirementDatum.statuses[:required]
           if self.scheme_mix_criteria.first.submitting?
@@ -725,13 +725,13 @@ module Taskable
           end
         end
         # Destroy project team member tasks to provide the requirement
-        if self.scheme_mix_criteria.first.requirement_data.where(status: RequirementDatum.statuses[:required], user_id: self.user_id_was).count.zero?
-          Task.where(taskable: self, task_description_id: PROJ_MEM_REQ, user_id: self.user_id_was).delete_all
+        if self.scheme_mix_criteria.first.requirement_data.where(status: RequirementDatum.statuses[:required], user_id: self.user_id_before_last_save).count.zero?
+          Task.where(taskable: self, task_description_id: PROJ_MEM_REQ, user_id: self.user_id_before_last_save).delete_all
         end
       else
         # Destroy project team member tasks to provide the requirement (which are assigned to another user)
-        if self.scheme_mix_criteria.first.requirement_data.where(status: RequirementDatum.statuses[:required], user_id: self.user_id_was).count.zero?
-          Task.where(taskable: self, task_description_id: PROJ_MEM_REQ, user_id: self.user_id_was).delete_all
+        if self.scheme_mix_criteria.first.requirement_data.where(status: RequirementDatum.statuses[:required], user_id: self.user_id_before_last_save).count.zero?
+          Task.where(taskable: self, task_description_id: PROJ_MEM_REQ, user_id: self.user_id_before_last_save).delete_all
         end
         if RequirementDatum.statuses[self.status] == RequirementDatum.statuses[:required]
           if self.scheme_mix_criteria.first.scheme_mix.certification_path.in_submission?
@@ -754,8 +754,8 @@ module Taskable
   end
 
   def handle_requirement_due_date_changed
-    if self.due_date_changed?
-      if (self.due_date_was.present? && (self.due_date_was < Date.current)) && (self.due_date.blank? || (self.due_date > Date.current))
+    if self.saved_change_to_due_date?
+      if (self.due_date_before_last_save.present? && (self.due_date_before_last_save < Date.current)) && (self.due_date.blank? || (self.due_date > Date.current))
         # Destroy project manager tasks to follow up overdue tasks
         Task.where(taskable: self, task_description_id: PROJ_MNGR_OVERDUE).delete_all
       end
@@ -767,7 +767,7 @@ module Taskable
   end
 
   def handle_document_status_changed
-    if self.status_changed?
+    if self.saved_change_to_status?
       case SchemeMixCriteriaDocument.statuses[self.status]
         when SchemeMixCriteriaDocument.statuses[:awaiting_approval]
           # Create project manager task to approve/reject document

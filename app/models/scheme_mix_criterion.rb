@@ -361,17 +361,17 @@ class SchemeMixCriterion < ApplicationRecord
     # also update scheme mix criteria that inherit from this one
     if (certification_path.main_scheme_mix_id == scheme_mix.id) && scheme_criterion.scheme_category.shared?
       certification_path.scheme_mix_criteria.where(main_scheme_mix_criterion_id: id).each do |smc_inherit|
-        (smc_inherit.status = status) if status_changed?
+        (smc_inherit.status = status) if saved_change_to_status?
         SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES.each do |targeted_score|
-          (smc_inherit.send("#{targeted_score}=", self.read_attribute(targeted_score.to_sym))) if self.send("#{targeted_score}_changed?")
+          (smc_inherit.send("#{targeted_score}=", self.read_attribute(targeted_score.to_sym))) if self.send("saved_change_to_#{targeted_score}?")
         end
         SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES.each do |submitted_score|
-          (smc_inherit.send("#{submitted_score}=", self.read_attribute(submitted_score.to_sym))) if self.send("#{submitted_score}_changed?")
+          (smc_inherit.send("#{submitted_score}=", self.read_attribute(submitted_score.to_sym))) if self.send("saved_change_to_#{submitted_score}?")
         end
         SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES.each do |achieved_score|
-          (smc_inherit.send("#{achieved_score}=", self.read_attribute(achieved_score.to_sym))) if self.send("#{achieved_score}_changed?")
+          (smc_inherit.send("#{achieved_score}=", self.read_attribute(achieved_score.to_sym))) if self.send("saved_change_to_#{achieved_score}?")
         end
-        (smc_inherit.screened = screened) if screened_changed?
+        (smc_inherit.screened = screened) if saved_change_to_screened?
         smc_inherit.save!
       end
     end
