@@ -234,7 +234,8 @@ $(function () {
         columnDefs: [{
             "targets": 6,
             "orderable": false
-        }]
+        }],
+        searching: false
     });
 
     $('.cert-doc-table').DataTable({
