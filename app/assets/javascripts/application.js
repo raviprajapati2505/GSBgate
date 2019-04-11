@@ -246,7 +246,8 @@ $(function () {
         columnDefs: [{
             "targets": 4,
             "orderable": false
-        }]
+        }],
+        searching: false
     })
 });
 
