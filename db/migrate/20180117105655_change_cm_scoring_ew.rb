@@ -1,4 +1,4 @@
-class ChangeCmScoringEw < ActiveRecord::Migration
+class ChangeCmScoringEw < ActiveRecord::Migration[4.2]
   def change
     add_column :scheme_mix_criteria, :targeted_score_b, :decimal, precision: 3, scale: 1
     add_column :scheme_mix_criteria, :submitted_score_b, :decimal, precision: 3, scale: 1

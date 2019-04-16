@@ -121,7 +121,7 @@
               <% if @project.new_record? %>
                 <%= f.form_group :terms_and_conditions_accepted do %>
                   <%= f.check_box :terms_and_conditions_accepted do %>
-                    <small>Tick here to indicate you have read and agreed to the <%= link_to 'terms and conditions', asset_path('GSAS_Certification_TCs.pdf'), target: '_blank' %>.</small>
+                    <small>Tick here to indicate you have read and agreed to the <%= link_to 'terms and conditions', '/GSAS_Certification_TCs.pdf', target: '_blank' %>.</small>
                   <% end %>
                 <% end %>
               <% end %>

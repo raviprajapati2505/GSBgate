@@ -1,4 +1,4 @@
-class ChangeCriteriaNames < ActiveRecord::Migration
+class ChangeCriteriaNames < ActiveRecord::Migration[4.2]
   def change
     # Change MO.2 & MO.3 criteria names
     schemes = Scheme.where(id: [2, 14, 15, 21, 22, 26, 32, 34, 41, 47, 53, 60, 67, 68, 74,  76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86])

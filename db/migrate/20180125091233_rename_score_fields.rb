@@ -1,4 +1,4 @@
-class RenameScoreFields < ActiveRecord::Migration
+class RenameScoreFields < ActiveRecord::Migration[4.2]
   def change
     rename_column :scheme_criteria, :weight, :weight_a
     rename_column :scheme_criteria, :scores, :scores_a

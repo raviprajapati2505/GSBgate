@@ -1,4 +1,4 @@
-class AddBuildingTypeGroupsAndBuildingTypes < ActiveRecord::Migration
+class AddBuildingTypeGroupsAndBuildingTypes < ActiveRecord::Migration[4.2]
   def change
     # Main building types (level 0)
     BuildingTypeGroup.create!(id: 1, name: 'Railways')

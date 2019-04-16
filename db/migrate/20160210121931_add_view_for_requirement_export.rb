@@ -1,4 +1,4 @@
-class AddViewForRequirementExport < ActiveRecord::Migration
+class AddViewForRequirementExport < ActiveRecord::Migration[4.2]
   def up
     execute <<-SQL
       CREATE VIEW criteria_summary AS

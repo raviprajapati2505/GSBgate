@@ -1,4 +1,4 @@
-class AddLinkmeFieldsToUser < ActiveRecord::Migration
+class AddLinkmeFieldsToUser < ActiveRecord::Migration[4.2]
   def change
     add_column :users, :linkme_member_id, :string
     add_column :users, :username, :string, null: false

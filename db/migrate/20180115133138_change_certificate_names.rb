@@ -1,4 +1,4 @@
-class ChangeCertificateNames < ActiveRecord::Migration
+class ChangeCertificateNames < ActiveRecord::Migration[4.2]
   def change
     certificates = Certificate.all
     certificates.each do |certificate|

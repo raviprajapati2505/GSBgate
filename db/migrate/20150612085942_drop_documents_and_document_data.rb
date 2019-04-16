@@ -1,4 +1,4 @@
-class DropDocumentsAndDocumentData < ActiveRecord::Migration
+class DropDocumentsAndDocumentData < ActiveRecord::Migration[4.2]
   def change
     rename_column :requirements, :reportable_id, :calculator_id
     rename_column :requirement_data, :reportable_data_id, :calculator_datum_id

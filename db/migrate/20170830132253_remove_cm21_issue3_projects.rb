@@ -1,4 +1,4 @@
-class RemoveCm21Issue3Projects < ActiveRecord::Migration
+class RemoveCm21Issue3Projects < ActiveRecord::Migration[4.2]
   def change
 
     # Destroy all user data
@@ -11,28 +11,28 @@ class RemoveCm21Issue3Projects < ActiveRecord::Migration
     scheme_mix_criteria = SchemeMixCriterion.where(scheme_mix: scheme_mixes)
 
     # Destroy scheme_mix_criteria_documents
-    destroyed_documents = SchemeMixCriteriaDocument.destroy_all(scheme_mix_criterion: scheme_mix_criteria)
+    destroyed_documents = SchemeMixCriteriaDocument.where(scheme_mix_criterion: scheme_mix_criteria).destroy_all
 
     # Destroy documents
-    Document.destroy_all(id: destroyed_documents.map { |document| document['document_id'] })
+    Document.where(id: destroyed_documents.map { |document| document['document_id'] }).destroy_all
 
     # Destroy scheme_mix_criteria_requirement_data
-    destroyed_data = SchemeMixCriteriaRequirementDatum.destroy_all(scheme_mix_criterion: scheme_mix_criteria)
+    destroyed_data = SchemeMixCriteriaRequirementDatum.where(scheme_mix_criterion: scheme_mix_criteria).destroy_all
 
     # Destroy requirement_data
-    RequirementDatum.destroy_all(id: destroyed_data.map { |datum| datum['requirement_datum_id'] })
+    RequirementDatum.where(id: destroyed_data.map { |datum| datum['requirement_datum_id'] }).destroy_all
 
     # Destroy scheme_mix_criteria
-    scheme_mix_criteria.destroy_all()
+    scheme_mix_criteria.destroy_all
 
     # Destroy scheme_mixes
-    scheme_mixes.destroy_all()
+    scheme_mixes.destroy_all
 
     # Destroy audit_logs
-    AuditLog.destroy_all(certification_path: certification_paths)
+    AuditLog.where(certification_path: certification_paths).destroy_all
 
     # Destroy certification_paths
-    certification_paths.destroy_all()
+    certification_paths.destroy_all
 
   end
 end

@@ -1,4 +1,4 @@
-class SubClassDocument < ActiveRecord::Migration
+class SubClassDocument < ActiveRecord::Migration[4.2]
   def change
     change_table :documents do |t|
       t.column :type, :string

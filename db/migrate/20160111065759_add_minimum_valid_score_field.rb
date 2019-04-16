@@ -1,4 +1,4 @@
-class AddMinimumValidScoreField < ActiveRecord::Migration
+class AddMinimumValidScoreField < ActiveRecord::Migration[4.2]
   def up
     add_column :scheme_criteria, :minimum_score, :integer
     add_column :scheme_criteria, :maximum_score, :integer

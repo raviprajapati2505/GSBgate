@@ -1,4 +1,4 @@
-class AddExtraProjectFields < ActiveRecord::Migration
+class AddExtraProjectFields < ActiveRecord::Migration[4.2]
   def up
     add_column :projects, :certificate_type, :integer
     # add second service provider for LOC/Final Design projects

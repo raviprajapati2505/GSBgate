@@ -1,4 +1,4 @@
-class CreateSchemeCriteria < ActiveRecord::Migration
+class CreateSchemeCriteria < ActiveRecord::Migration[4.2]
   def change
     create_table :scheme_criteria do |t|
       t.references :scheme, index: true, foreign_key: true

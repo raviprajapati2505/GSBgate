@@ -1,4 +1,4 @@
-class Scheme < ActiveRecord::Base
+class Scheme < ApplicationRecord
   include Auditable
 
   has_many :development_type_schemes

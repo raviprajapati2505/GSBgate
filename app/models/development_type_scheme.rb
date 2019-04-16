@@ -1,4 +1,4 @@
-class DevelopmentTypeScheme < ActiveRecord::Base
-  belongs_to :development_type
-  belongs_to :scheme
+class DevelopmentTypeScheme < ApplicationRecord
+  belongs_to :development_type, optional: true
+  belongs_to :scheme, optional: true
 end

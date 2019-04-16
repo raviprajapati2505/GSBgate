@@ -97,7 +97,7 @@ class ProjectsUsersController < AuthenticatedController
 
     # remove user - notification_type link
     user = @projects_user.user
-    NotificationTypesUser.delete_all(user_id: user.id, project_id: @projects_user.project.id)
+    NotificationTypesUser.where(user_id: user.id, project_id: @projects_user.project.id).delete_all
 
     project = @projects_user.project
     @projects_user.destroy

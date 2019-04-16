@@ -1,4 +1,4 @@
-class InsertOverallConstructionCertificate < ActiveRecord::Migration
+class InsertOverallConstructionCertificate < ActiveRecord::Migration[4.2]
   def change
     overall_construction_certificate = Certificate.new(name: 'Construction Certificate', certificate_type: Certificate.certificate_types[:construction_type], assessment_stage: Certificate.assessment_stages[:construction_stage], display_weight: 39, gsas_version: '2.1 issue 1', certification_type: Certificate.certification_types[:construction_certificate])
     overall_construction_certificate.save!

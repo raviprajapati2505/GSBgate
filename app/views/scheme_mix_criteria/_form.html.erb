@@ -350,7 +350,11 @@
                 </div>
             </div>
         <% end %>
-        <% if can?(:create, Document.new(:scheme_mix_criteria_documents_attributes => [{:scheme_mix_criterion_id => @scheme_mix_criterion.id}])) %>
+        <%
+          cancan_document = Document.new
+          cancan_document.scheme_mix_criteria_documents.build(scheme_mix_criterion_id: @scheme_mix_criterion.id)
+        %>
+        <% if can?(:create, cancan_document) %>
             <div class="ibox">
                 <div class="ibox-title">
                     <h5>Upload Criterion Documentation</h5>

@@ -1,4 +1,4 @@
-class CreateSchemeMixCriteriaDocumentComments < ActiveRecord::Migration
+class CreateSchemeMixCriteriaDocumentComments < ActiveRecord::Migration[4.2]
   def change
     create_table :scheme_mix_criteria_document_comments do |t|
       t.text :body

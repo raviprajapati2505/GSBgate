@@ -15,3 +15,18 @@
 # Ignore IntelliJ settings
 /.idea
 *.iml
+
+# Ignore master key for decrypting credentials and more.
+/config/master.key
+
+# Ignore byebug history
+.byebug_history
+
+# Ignore node modules from chart generator
+/chartgenerator/node_modules
+
+# Ignore private uploaded files
+/private
+
+# Ignore public uploaded files
+/public/uploads

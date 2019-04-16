@@ -1,4 +1,4 @@
-class AddVisibilityToAuditLogs < ActiveRecord::Migration
+class AddVisibilityToAuditLogs < ActiveRecord::Migration[4.2]
   def change
     create_table :audit_log_visibilities do |t|
       t.string :name, null: false

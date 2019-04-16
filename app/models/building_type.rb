@@ -1,4 +1,4 @@
-class BuildingType < ActiveRecord::Base
+class BuildingType < ApplicationRecord
   has_many :projects
-  belongs_to :building_type_group
+  belongs_to :building_type_group, optional: true
 end

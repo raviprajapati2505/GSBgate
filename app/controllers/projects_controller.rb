@@ -8,8 +8,6 @@ class ProjectsController < AuthenticatedController
       format.html {
         @page_title = t('projects.index.title_html')
         @datatable = Effective::Datatables::ProjectsCertificationPaths.new
-        @datatable.current_ability = current_ability
-        @datatable.table_html_class = 'table table-bordered table-striped table-hover'
       }
       format.json {
         if (params.has_key?(:limit))
@@ -252,7 +250,7 @@ class ProjectsController < AuthenticatedController
     begin
       send_file @project.location_plan_file.path, x_sendfile: false
     rescue ActionController::MissingFile
-      redirect_to :back, alert: 'This document is no longer available for download. This could be due to a detection of malware.'
+      redirect_back(fallback_location: root_path, alert: 'This document is no longer available for download. This could be due to a detection of malware.')
     end
   end
 
@@ -261,7 +259,7 @@ class ProjectsController < AuthenticatedController
     begin
       send_file @project.site_plan_file.path, x_sendfile: false
     rescue ActionController::MissingFile
-      redirect_to :back, alert: 'This document is no longer available for download. This could be due to a detection of malware.'
+      redirect_back(fallback_location: root_path, alert: 'This document is no longer available for download. This could be due to a detection of malware.')
     end
   end
 
@@ -270,7 +268,7 @@ class ProjectsController < AuthenticatedController
     begin
       send_file @project.design_brief_file.path, x_sendfile: false
     rescue ActionController::MissingFile
-      redirect_to :back, alert: 'This document is no longer available for download. This could be due to a detection of malware.'
+      redirect_back(fallback_location: root_path, alert: 'This document is no longer available for download. This could be due to a detection of malware.')
     end
   end
 
@@ -279,7 +277,7 @@ class ProjectsController < AuthenticatedController
     begin
       send_file @project.project_narrative_file.path, x_sendfile: false
     rescue ActionController::MissingFile
-      redirect_to :back, alert: 'This document is no longer available for download. This could be due to a detection of malware.'
+      redirect_back(fallback_location: root_path, alert: 'This document is no longer available for download. This could be due to a detection of malware.')
     end
   end
 

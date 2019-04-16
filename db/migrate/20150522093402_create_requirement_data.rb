@@ -1,4 +1,4 @@
-class CreateRequirementData < ActiveRecord::Migration
+class CreateRequirementData < ActiveRecord::Migration[4.2]
   def change
     create_table :requirement_data do |t|
       t.integer :reportable_data_id

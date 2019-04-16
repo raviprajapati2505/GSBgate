@@ -1,4 +1,4 @@
-class AddMissingRelationships < ActiveRecord::Migration
+class AddMissingRelationships < ActiveRecord::Migration[4.2]
   def change
     add_foreign_key(:certification_paths, :certificates)
     add_foreign_key(:requirement_data, :requirements)

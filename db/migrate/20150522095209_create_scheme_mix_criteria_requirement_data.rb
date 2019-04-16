@@ -1,4 +1,4 @@
-class CreateSchemeMixCriteriaRequirementData < ActiveRecord::Migration
+class CreateSchemeMixCriteriaRequirementData < ActiveRecord::Migration[4.2]
   def change
     create_table :scheme_mix_criteria_requirement_data do |t|
       t.references :scheme_mix_criterion, index: true, foreign_key: true

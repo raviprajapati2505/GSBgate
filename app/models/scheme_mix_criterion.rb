@@ -1,4 +1,4 @@
-class SchemeMixCriterion < ActiveRecord::Base
+class SchemeMixCriterion < ApplicationRecord
   include Auditable
   include Taskable
   include ScoreCalculator
@@ -8,10 +8,10 @@ class SchemeMixCriterion < ActiveRecord::Base
   has_many :requirement_data, through: :scheme_mix_criteria_requirement_data
   has_many :scheme_mix_criteria_documents, dependent: :destroy
   has_many :documents, through: :scheme_mix_criteria_documents
-  belongs_to :scheme_mix
-  belongs_to :scheme_criterion
-  belongs_to :certifier, class_name: 'User', inverse_of: :scheme_mix_criteria
-  belongs_to :main_scheme_mix_criterion, class_name: 'SchemeMixCriterion'
+  belongs_to :scheme_mix, optional: true
+  belongs_to :scheme_criterion, optional: true
+  belongs_to :certifier, class_name: 'User', inverse_of: :scheme_mix_criteria, optional: true
+  belongs_to :main_scheme_mix_criterion, class_name: 'SchemeMixCriterion', optional: true
   has_many :archives, as: :subject, dependent: :destroy
 
   enum status: {submitting: 10, submitted: 20, verifying: 30, score_awarded: 41, score_downgraded: 42, score_upgraded: 43, score_minimal:44, appealed: 50, submitting_after_appeal: 60, submitted_after_appeal: 70, verifying_after_appeal: 80, score_awarded_after_appeal: 91, score_downgraded_after_appeal: 92, score_upgraded_after_appeal: 93, score_minimal_after_appeal:94 }
@@ -361,24 +361,24 @@ class SchemeMixCriterion < ActiveRecord::Base
     # also update scheme mix criteria that inherit from this one
     if (certification_path.main_scheme_mix_id == scheme_mix.id) && scheme_criterion.scheme_category.shared?
       certification_path.scheme_mix_criteria.where(main_scheme_mix_criterion_id: id).each do |smc_inherit|
-        (smc_inherit.status = status) if status_changed?
+        (smc_inherit.status = status) if saved_change_to_status?
         SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES.each do |targeted_score|
-          (smc_inherit.send("#{targeted_score}=", self.read_attribute(targeted_score.to_sym))) if self.send("#{targeted_score}_changed?")
+          (smc_inherit.send("#{targeted_score}=", self.read_attribute(targeted_score.to_sym))) if self.send("saved_change_to_#{targeted_score}?")
         end
         SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES.each do |submitted_score|
-          (smc_inherit.send("#{submitted_score}=", self.read_attribute(submitted_score.to_sym))) if self.send("#{submitted_score}_changed?")
+          (smc_inherit.send("#{submitted_score}=", self.read_attribute(submitted_score.to_sym))) if self.send("saved_change_to_#{submitted_score}?")
         end
         SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES.each do |achieved_score|
-          (smc_inherit.send("#{achieved_score}=", self.read_attribute(achieved_score.to_sym))) if self.send("#{achieved_score}_changed?")
+          (smc_inherit.send("#{achieved_score}=", self.read_attribute(achieved_score.to_sym))) if self.send("saved_change_to_#{achieved_score}?")
         end
-        (smc_inherit.screened = screened) if screened_changed?
+        (smc_inherit.screened = screened) if saved_change_to_screened?
         smc_inherit.save!
       end
     end
   end
 
   def destroy_requirements_documents
-    RequirementDatum.joins(:scheme_mix_criteria_requirement_data).destroy_all(scheme_mix_criteria_requirement_data: {scheme_mix_criterion_id: id})
+    RequirementDatum.joins(:scheme_mix_criteria_requirement_data).where(scheme_mix_criteria_requirement_data: {scheme_mix_criterion_id: id}).destroy_all
 
     documents.each do |document|
       document.destroy! unless document.scheme_mix_criteria_documents.size > 1

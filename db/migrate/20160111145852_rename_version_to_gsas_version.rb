@@ -1,4 +1,4 @@
-class RenameVersionToGsasVersion < ActiveRecord::Migration
+class RenameVersionToGsasVersion < ActiveRecord::Migration[4.2]
   def up
     add_column :certificates, :gsas_version, :string
     add_column :schemes, :gsas_version, :string

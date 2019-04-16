@@ -1,4 +1,4 @@
-class AddCm21issue3Criteria < ActiveRecord::Migration
+class AddCm21issue3Criteria < ActiveRecord::Migration[4.2]
   def change
 
     stages_scheme = Scheme.new(name: "Construction", gsas_document: "Construction Management GSAS Assessment & Guideline v2.1_Issue3_27.html", gsas_version: "2.1", certificate_type: Certificate.certificate_types[:construction_type], renovation:false)

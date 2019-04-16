@@ -1,4 +1,4 @@
-class CertificationPathStatus < ActiveRecord::Base
+class CertificationPathStatus < ApplicationRecord
   has_many :certification_paths
 
   scope :status_scope, ->(status_scopes) {

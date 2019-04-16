@@ -1,4 +1,4 @@
-class RemovePcrStates < ActiveRecord::Migration
+class RemovePcrStates < ActiveRecord::Migration[4.2]
   def change
     CertificationPathStatus.where(name: ['Processing PCR payment', 'Submitting PCR']).delete_all
     NotificationType.where(name: ['PCR for Certificate selected', 'PCR for Certificate approved', 'PCR option was requested', 'PCR options was canceled', 'PCR option was granted', 'PCR option was rejected']).delete_all

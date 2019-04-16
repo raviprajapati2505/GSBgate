@@ -6,8 +6,6 @@ class SchemeCriteriaController < AuthenticatedController
       format.html {
         @page_title = 'Criteria'
         @datatable = Effective::Datatables::SchemeCriteria.new
-        @datatable.current_ability = current_ability
-        @datatable.table_html_class = 'table table-bordered table-striped table-hover'
       }
     end
   end

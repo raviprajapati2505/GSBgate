@@ -1,0 +1,12 @@
+Documentation:
+  Enabled: false
+Metrics/MethodLength:
+  Enabled: false
+Metrics/LineLength:
+  Enabled: false
+Style/EndOfLine:
+  EnforcedStyle: lf
+Style/StringLiterals:
+  Enabled: false
+Style/SymbolArray:
+  Enabled: false

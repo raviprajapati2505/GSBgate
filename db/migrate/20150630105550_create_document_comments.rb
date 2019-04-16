@@ -1,4 +1,4 @@
-class CreateDocumentComments < ActiveRecord::Migration
+class CreateDocumentComments < ActiveRecord::Migration[4.2]
   def change
     create_table :document_comments do |t|
       t.text :body

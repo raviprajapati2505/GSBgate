@@ -23,33 +23,30 @@ class Ability
     alias_action :create, :read, :update, :destroy, :to => :crud
 
     # Some convenience variables to work with enums in conditions
-    #   Note: there is a known issue, that complicates working with enums
-    #     https://github.com/CanCanCommunity/cancancan/pull/196
-    #   ProjectsUser Roles
-    project_user_role_cgp_project_manager = ['cgp_project_manager', ProjectsUser.roles[:cgp_project_manager]]
-    project_user_role_project_team_member = ['project_team_member', ProjectsUser.roles[:project_team_member]]
-    project_user_role_certification_manager = ['certification_manager', ProjectsUser.roles[:certification_manager]]
-    project_user_role_certifier = ['certifier', ProjectsUser.roles[:certifier]]
-    project_user_role_enterprise_client = ['enterprise_client', ProjectsUser.roles[:enterprise_client]]
+    project_user_role_cgp_project_manager = [ProjectsUser.roles[:cgp_project_manager]]
+    project_user_role_project_team_member = [ProjectsUser.roles[:project_team_member]]
+    project_user_role_certification_manager = [ProjectsUser.roles[:certification_manager]]
+    project_user_role_certifier = [ProjectsUser.roles[:certifier]]
+    project_user_role_enterprise_client = [ProjectsUser.roles[:enterprise_client]]
     project_user_project_team_roles = project_user_role_cgp_project_manager | project_user_role_project_team_member
     project_user_gsas_trust_team_roles = project_user_role_certification_manager | project_user_role_certifier
     project_user_enterprise_client_roles = project_user_role_enterprise_client
     #   Certificate.certification_types
-    certificate_certification_types_letter_of_conformance = ['letter_of_conformance', Certificate.certification_types[:letter_of_conformance]]
-    certificate_certification_types_final_design_certificate = ['final_design_certificate', Certificate.certification_types[:final_design_certificate]]
-    certificate_certification_types_construction_certificate_stage1 = ['construction_certificate_stage1', Certificate.certification_types[:construction_certificate_stage1]]
-    certificate_certification_types_construction_certificate_stage2 = ['construction_certificate_stage2', Certificate.certification_types[:construction_certificate_stage2]]
-    certificate_certification_types_construction_certificate_stage3 = ['construction_certificate_stage3', Certificate.certification_types[:construction_certificate_stage3]]
-    certificate_certification_types_operations_certificate = ['operations_certificate', Certificate.certification_types[:operations_certificate]]
+    certificate_certification_types_letter_of_conformance = [Certificate.certification_types[:letter_of_conformance]]
+    certificate_certification_types_final_design_certificate = [Certificate.certification_types[:final_design_certificate]]
+    certificate_certification_types_construction_certificate_stage1 = [Certificate.certification_types[:construction_certificate_stage1]]
+    certificate_certification_types_construction_certificate_stage2 = [Certificate.certification_types[:construction_certificate_stage2]]
+    certificate_certification_types_construction_certificate_stage3 = [Certificate.certification_types[:construction_certificate_stage3]]
+    certificate_certification_types_operations_certificate = [Certificate.certification_types[:operations_certificate]]
     #   SchemeMixCriterion.statuses
-    scheme_mix_criterion_status_submitting = ['submitting', SchemeMixCriterion.statuses[:submitting], 'submitting_after_appeal', SchemeMixCriterion.statuses[:submitting_after_appeal]]
-    scheme_mix_criterion_status_submitted = ['submitted', SchemeMixCriterion.statuses[:submitted], 'submitted_after_appeal', SchemeMixCriterion.statuses[:submitted_after_appeal]]
-    scheme_mix_criterion_status_screening = ['submitted', SchemeMixCriterion.statuses[:submitted]]
-    scheme_mix_criterion_status_verifying = ['verifying', SchemeMixCriterion.statuses[:verifying], 'verifying_after_appeal', SchemeMixCriterion.statuses[:verifying_after_appeal]]
-    scheme_mix_criterion_status_verified = ['score_awarded', SchemeMixCriterion.statuses[:score_awarded], 'score_downgraded', SchemeMixCriterion.statuses[:score_downgraded], 'score_upgraded', SchemeMixCriterion.statuses[:score_upgraded], 'score_minimal', SchemeMixCriterion.statuses[:score_minimal]]
-    scheme_mix_criterion_status_verified_after_appeal = ['score_awarded_after_appeal', SchemeMixCriterion.statuses[:score_awarded_after_appeal], 'score_downgraded_after_appeal', SchemeMixCriterion.statuses[:score_downgraded_after_appeal], 'score_upgraded_after_appeal', SchemeMixCriterion.statuses[:score_upgraded_after_appeal], 'score_minimal_after_appeal', SchemeMixCriterion.statuses[:score_minimal_after_appeal]]
+    scheme_mix_criterion_status_submitting = [SchemeMixCriterion.statuses[:submitting], SchemeMixCriterion.statuses[:submitting_after_appeal]]
+    scheme_mix_criterion_status_submitted = [SchemeMixCriterion.statuses[:submitted], SchemeMixCriterion.statuses[:submitted_after_appeal]]
+    scheme_mix_criterion_status_screening = [SchemeMixCriterion.statuses[:submitted]]
+    scheme_mix_criterion_status_verifying = [SchemeMixCriterion.statuses[:verifying], SchemeMixCriterion.statuses[:verifying_after_appeal]]
+    scheme_mix_criterion_status_verified = [SchemeMixCriterion.statuses[:score_awarded], SchemeMixCriterion.statuses[:score_downgraded], SchemeMixCriterion.statuses[:score_upgraded], SchemeMixCriterion.statuses[:score_minimal]]
+    scheme_mix_criterion_status_verified_after_appeal = [SchemeMixCriterion.statuses[:score_awarded_after_appeal], SchemeMixCriterion.statuses[:score_downgraded_after_appeal], SchemeMixCriterion.statuses[:score_upgraded_after_appeal], SchemeMixCriterion.statuses[:score_minimal_after_appeal]]
     #   SchemeMixCriteriaDocument.statuses
-    document_approved = ['approved', SchemeMixCriteriaDocument.statuses[:approved]]
+    document_approved = [SchemeMixCriteriaDocument.statuses[:approved]]
 
     # Convenience conditions, to use within abilities
     project_with_user_assigned = {projects_users: {user_id: user.id}}
@@ -132,7 +129,7 @@ class Ability
       can :update_targeted_score, SchemeMixCriterion, main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_submitting, scheme_mix: {certification_path: {project: project_with_user_as_cgp_project_manager}}
       can :update_submitted_score, SchemeMixCriterion, main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_submitting, scheme_mix: {certification_path: {project: project_with_user_as_cgp_project_manager}}
       can :update_submitted_score, SchemeMixCriterion, main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_submitting, requirement_data: {user_id: user.id}, scheme_mix: {certification_path: {project: project_with_user_in_project_team}}
-      can :request_review, SchemeMixCriterion, main_scheme_mix_criterion: nil, status: ['submitting', SchemeMixCriterion.statuses[:submitting]], scheme_mix: {certification_path: {certificate: {certification_type: [Certificate.certification_types[:letter_of_conformance], Certificate.certification_types[:final_design_certificate], Certificate.certification_types[:operations_certificate], Certificate.certification_types[:construction_certificate_stage1], Certificate.certification_types[:construction_certificate_stage2], Certificate.certification_types[:construction_certificate_stage3]]}, certification_path_status: {id: [CertificationPathStatus::SUBMITTING, CertificationPathStatus::SUBMITTING_AFTER_SCREENING]}, project: project_with_user_as_cgp_project_manager, pcr_track: true}}
+      can :request_review, SchemeMixCriterion, main_scheme_mix_criterion: nil, status: [SchemeMixCriterion.statuses[:submitting]], scheme_mix: {certification_path: {certificate: {certification_type: [Certificate.certification_types[:letter_of_conformance], Certificate.certification_types[:final_design_certificate], Certificate.certification_types[:operations_certificate], Certificate.certification_types[:construction_certificate_stage1], Certificate.certification_types[:construction_certificate_stage2], Certificate.certification_types[:construction_certificate_stage3]]}, certification_path_status: {id: [CertificationPathStatus::SUBMITTING, CertificationPathStatus::SUBMITTING_AFTER_SCREENING]}, project: project_with_user_as_cgp_project_manager, pcr_track: true}}
       # GSAS trust team
       can [:edit_status, :update_status], SchemeMixCriterion, main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_verifying, scheme_mix: {certification_path: {certification_path_status: {id: CertificationPathStatus::STATUSES_IN_VERIFICATION}, project: project_with_user_as_certification_manager}}
       can [:edit_status, :update_status], SchemeMixCriterion, main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_verifying, certifier_id: user.id, scheme_mix: {certification_path: {certification_path_status: {id: CertificationPathStatus::STATUSES_IN_VERIFICATION}, project: project_with_user_in_gsas_trust_team}}
@@ -304,7 +301,7 @@ class Ability
 
       # # Admins opt-out for specific abilities
       # cannot :apply_for_pcr, CertificationPath, pcr_track: true
-      # cannot :apply_for_pcr, CertificationPath, certificate: {certificate_type: ['construction_type', Certificate.certificate_types[:construction_type], 'operations_type', Certificate.certificate_types[:operations_type]]}
+      # cannot :apply_for_pcr, CertificationPath, certificate: {certificate_type: [Certificate.certificate_types[:construction_type], Certificate.certificate_types[:operations_type]]}
       # cannot [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::STATUSES_AT_PROJECT_TEAM_SIDE }
       # cannot [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::STATUSES_AT_MANAGEMENT_SIDE}
       # cannot [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::STATUSES_COMPLETED}

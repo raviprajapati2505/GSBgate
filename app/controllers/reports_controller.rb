@@ -7,8 +7,6 @@ class ReportsController < ApplicationController
     respond_to do |format|
       format.html {
         @datatable = Effective::Datatables::CertifiersCriteria.new
-        @datatable.current_ability = current_ability
-        @datatable.table_html_class = 'table table-bordered table-striped table-hover'
       }
     end
   end

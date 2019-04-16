@@ -1,4 +1,4 @@
-class SchemeCriteriaRequirement < ActiveRecord::Base
-  belongs_to :scheme_criterion
-  belongs_to :requirement
+class SchemeCriteriaRequirement < ApplicationRecord
+  belongs_to :scheme_criterion, optional: true
+  belongs_to :requirement, optional: true
 end

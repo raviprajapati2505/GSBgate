@@ -1,4 +1,4 @@
-class AddProjectIdToNotificationTypesUsers < ActiveRecord::Migration
+class AddProjectIdToNotificationTypesUsers < ActiveRecord::Migration[4.2]
   def change
     add_reference :notification_types_users, :project, index: true, foreign_key: true
     add_column :notification_types, :project_level, :boolean

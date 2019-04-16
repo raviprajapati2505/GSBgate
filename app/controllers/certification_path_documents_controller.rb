@@ -24,10 +24,10 @@ class CertificationPathDocumentsController < BaseDocumentController
         # Set the directory where the file will be stored, this is used by the DocumentUploader class
         @certification_path_document.store_dir = "projects/#{@project.id}/certification_paths/#{@certification_path.id}/documents"
         if @certification_path_document.save
-          format.html { redirect_to :back, notice: 'The document was successfully uploaded.' }
+          format.html { redirect_back(fallback_location: root_path, notice: 'The document was successfully uploaded.') }
           format.json { render json: @certification_path_document }
         else
-          format.html { redirect_to :back, alert: @certification_path_document.errors['document_file'].first.to_s }
+          format.html { redirect_back(fallback_location: root_path, alert: @certification_path_document.errors['document_file'].first.to_s) }
           format.json { render json: @certification_path_document['document_file'].to_s, status: :unprocessable_entity }
         end
       end

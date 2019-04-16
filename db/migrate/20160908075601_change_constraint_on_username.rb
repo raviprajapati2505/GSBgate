@@ -1,4 +1,4 @@
-class ChangeConstraintOnUsername < ActiveRecord::Migration
+class ChangeConstraintOnUsername < ActiveRecord::Migration[4.2]
   def change
     # Instead of "username" begin unique, the combination of "linkme_member_id" and "username" should now be unique.
     # This was changed because some Linkme users move their username to another account.

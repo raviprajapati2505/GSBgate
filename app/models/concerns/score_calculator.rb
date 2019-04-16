@@ -77,7 +77,7 @@ module ScoreCalculator
       group_fields.each do |group_field|
         relation = relation.group(group_field)
       end
-      results = relation.pluck((score_selects + group_selects).join(', '))
+      results = relation.pluck(Arel.sql((score_selects + group_selects).join(', ')))
       return results
     end
 

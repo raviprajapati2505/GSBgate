@@ -1,9 +1,9 @@
-class ProjectsUser < ActiveRecord::Base
+class ProjectsUser < ApplicationRecord
   include Auditable
   include Taskable
 
-  belongs_to :user
-  belongs_to :project
+  belongs_to :user, optional: true
+  belongs_to :project, optional: true
 
   enum role: { project_team_member: 5, cgp_project_manager: 1, enterprise_client: 2, certifier: 3, certification_manager: 4 }
 

@@ -1,7 +1,7 @@
 # Subclasses of this class can be found in the folder 'field_datum'
-class FieldDatum < ActiveRecord::Base
-  belongs_to :calculator_datum
-  belongs_to :field
+class FieldDatum < ApplicationRecord
+  belongs_to :calculator_datum, optional: true
+  belongs_to :field, optional: true
 
   # This method should be overloaded in the subclass
   def value

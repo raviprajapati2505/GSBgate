@@ -1,11 +1,11 @@
-class SchemeMixCriteriaDocument < ActiveRecord::Base
+class SchemeMixCriteriaDocument < ApplicationRecord
   include Auditable
   include Taskable
 
   enum status: { awaiting_approval: 3, approved: 1, rejected: 2 }
 
-  belongs_to :document
-  belongs_to :scheme_mix_criterion
+  belongs_to :document, optional: true
+  belongs_to :scheme_mix_criterion, optional: true
 
   after_initialize :init
 

@@ -1,4 +1,4 @@
-class Archive < ActiveRecord::Base
+class Archive < ApplicationRecord
   require 'zip'
   require 'csv'
 

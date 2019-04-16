@@ -13,8 +13,8 @@ Rails.application.routes.draw do
       get 'find_users_by_email/:email/:project_id(/:gord_employee)' => 'users#find_users_by_email', as: 'find_users_by_email', constraints: { email: /[^\/]+/ }
     end
     member do
-      get 'list_notifications', path: 'notifications'
-      put 'update_notifications', path: 'notifications'
+      get :list_notifications, path: :notifications
+      put :update_notifications, path: :notifications
     end
   end
 
@@ -31,82 +31,80 @@ Rails.application.routes.draw do
       get 'tools' => 'projects#show_tools'
       get 'confirm_destroy' => 'projects#confirm_destroy'
     end
-    resources :projects_users, only: [:create, :edit, :show, :update, :destroy], path: 'users', as: 'users', constraints: {id: /\d+/} do
+    resources :projects_users, only: [:create, :edit, :show, :update, :destroy], path: :users, as: 'users', constraints: {id: /\d+/} do
       collection do
         get 'available/:role' => 'projects_users#available', as: 'available', default: {role: 'all'}, constraints: {role: /all|default_role/}
       end
     end
-    resources :certification_paths, except: [:index, :edit, :update], path: 'certificates' do
+    resources :certification_paths, except: [:index, :edit, :update], path: :certificates do
       collection do
         get 'list'
       end
       member do
-        # BEGIN: PDF REPORT GENERATION IS DISABLED
-        # get 'download_certificate_report'
-        get 'download_coverletter_report'
-        # END: PDF REPORT GENERATION IS DISABLED
-        get 'edit_status'
-        get 'edit_project_team_responsibility_for_submittal', path: 'edit-project-team-responsibility-for-submittal'
-        get 'edit_certifier_team_responsibility_for_verification', path: 'edit-certifier-team-responsibility-for-verification'
-        get 'edit_certifier_team_responsibility_for_screening', path: 'edit-certifier-team-responsibility-for-screening'
-        get 'edit_main_scheme_mix', path: 'edit-main-scheme-mix'
-        get 'edit_max_review_count'
-        get 'edit_expires_at'
+        # get :download_certificate_report
+        get :download_coverletter_report
+        get :edit_status
+        get :edit_project_team_responsibility_for_submittal, path: :edit_project_team_responsibility_for_submittal
+        get :edit_certifier_team_responsibility_for_verification, path: :edit_certifier_team_responsibility_for_verification
+        get :edit_certifier_team_responsibility_for_screening, path: :edit_certifier_team_responsibility_for_screening
+        get :edit_main_scheme_mix, path: :edit_main_scheme_mix
+        get :edit_max_review_count
+        get :edit_expires_at
         get 'confirm_destroy' => 'certification_paths#confirm_destroy'
         get 'confirm_deny' => 'certification_paths#confirm_deny'
         get 'deny' => 'certification_paths#deny'
-        get 'download_signed_certificate'
-        put 'update_status'
-        put 'apply_for_pcr'
-        put 'approve_pcr_payment'
-        put 'cancel_pcr'
-        put 'allocate_project_team_responsibility_for_submittal', path: 'allocate-project-team-responsibility-for-submittal'
-        put 'allocate_certifier_team_responsibility_for_verification', path: 'allocate-certifier-team-responsibility-for-verification'
-        put 'allocate_certifier_team_responsibility_for_screening', path: 'allocate-certifier-team-responsibility-for-screening'
-        put 'update_main_scheme_mix', path: 'update-main-scheme'
-        put 'update_max_review_count'
-        put 'update_expires_at'
-        put 'update_signed_certificate'
+        get :download_signed_certificate
+        put :update_status
+        put :apply_for_pcr
+        put :approve_pcr_payment
+        put :cancel_pcr
+        put :allocate_project_team_responsibility_for_submittal, path: :allocate_project_team_responsibility_for_submittal
+        put :allocate_certifier_team_responsibility_for_verification, path: :allocate_certifier_team_responsibility_for_verification
+        put :allocate_certifier_team_responsibility_for_screening, path: :allocate_certifier_team_responsibility_for_screening
+        put :update_main_scheme_mix, path: :update_main_scheme
+        put :update_max_review_count
+        put :update_expires_at
+        put :update_signed_certificate
       end
-      resources :documents, only: [:create, :show, :destroy], path: 'document'
-      resources :certification_path_documents, only: [:create, :show, :destroy], path: 'certification_path_document'
-      resources :scheme_mixes, only: [:show, :edit, :update], path: 'schemes' do
+      resources :documents, only: [:create, :show, :destroy], path: :document
+      resources :certification_path_documents, only: [:create, :show, :destroy], path: :certification_path_document
+      resources :scheme_mixes, only: [:show, :edit, :update], path: :schemes do
         member do
-          get 'download_scores_report'
+          get :download_scores_report
         end
-        resources :scheme_mix_criteria, only: [:show], path: 'criteria', as: 'scheme_mix_criterion' do
+        resources :scheme_mix_criteria, only: [:show], path: :criteria, as: 'scheme_mix_criterion' do
           member do
-            get 'edit_status'
-            get 'request_review'
-            get 'provide_review_comment'
-            get 'provide_draft_review_comment'
-            put 'update_status'
-            put 'add_review_comment'
-            put 'add_draft_review_comment'
-            put 'screen'
-            put 'update_scores'
-            put 'assign_certifier'
+            get :edit_status
+            get :request_review
+            get :provide_review_comment
+            get :provide_draft_review_comment
+            put :update_status
+            put :add_review_comment
+            put :add_draft_review_comment
+            put :screen
+            put :update_scores
+            put :assign_certifier
           end
-          resources :requirement_data, only: [:update], path: 'requirement', as: 'requirement_data' do
+          resources :requirement_data, only: [:update], path: :requirement, as: 'requirement_data' do
             member do
-              put 'update_status'
+              put :update_status
             end
           end
-          resources :scheme_mix_criteria_documents, only: [], path: 'documentation', as: 'scheme_mix_criteria_documents' do
+          resources :scheme_mix_criteria_documents, only: [], path: :documentation, as: 'scheme_mix_criteria_documents' do
             member do
-              get 'new_link'
-              post 'create_link'
-              get 'unlink'
-              post 'destroy_link'
-              get 'edit_status'
-              put 'update_status'
+              get :new_link
+              post :create_link
+              get :unlink
+              post :destroy_link
+              get :edit_status
+              put :update_status
             end
           end
         end
       end
-      resources :scheme_mix_criteria, only: [:list], path: 'criteria' do
+      resources :scheme_mix_criteria, only: [:list], path: :criteria do
         collection do
-          get 'list'
+          get :list
         end
       end
     end
@@ -117,7 +115,7 @@ Rails.application.routes.draw do
   get 'projects/:id/site_plan' => 'projects#download_site_plan', as: 'download_project_site_plan'
   get 'projects/:id/design_brief' => 'projects#download_design_brief', as: 'download_project_design_brief'
   get 'projects/:id/narrative' => 'projects#download_project_narrative', as: 'download_project_narrative'
-  resources :audit_logs, only: [:index], path: 'audit-logs' do
+  resources :audit_logs, only: [:index], path: :audit_logs do
     collection do
       get 'export'
     end

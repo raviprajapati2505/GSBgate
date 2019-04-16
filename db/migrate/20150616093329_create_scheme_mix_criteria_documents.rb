@@ -1,4 +1,4 @@
-class CreateSchemeMixCriteriaDocuments < ActiveRecord::Migration
+class CreateSchemeMixCriteriaDocuments < ActiveRecord::Migration[4.2]
   def change
     create_table :scheme_mix_criteria_documents do |t|
       t.references :scheme_mix_criterion, index: true, foreign_key: true

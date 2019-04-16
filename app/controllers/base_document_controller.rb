@@ -27,7 +27,7 @@ class BaseDocumentController < AuthenticatedController
       end
       # delete database record
       @controller_model.destroy
-      format.html { redirect_to :back, notice: 'The document was successfully deleted.' }
+      format.html { redirect_back(fallback_location: root_path, notice: 'The document was successfully deleted.') }
     end
   end
 
@@ -35,7 +35,7 @@ class BaseDocumentController < AuthenticatedController
     begin
       send_file @controller_model.path, x_sendfile: false
     rescue ActionController::MissingFile
-      redirect_to :back, alert: 'This document is no longer available for download. This could be due to a detection of malware.'
+      redirect_back(fallback_location: root_path, alert: 'This document is no longer available for download. This could be due to a detection of malware.')
     end
   end
 end
