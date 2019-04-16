@@ -12,7 +12,8 @@ class Archive < ActiveRecord::Base
   belongs_to :user
 
   def archive_path
-    "#{ENV['SHARED_PATH']}/#{Archive::STORE_DIR}/#{archive_file}"
+    # "#{ENV['SHARED_PATH']}/#{Archive::STORE_DIR}/#{archive_file}"
+    "#{File.realpath(Archive::STORE_DIR)}/#{archive_file}"
   end
 
   def generate!

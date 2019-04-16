@@ -70,6 +70,7 @@ class SchemeMixesController < AuthenticatedController
 
   def filepath_for_report(report_name)
     filename = "#{@project.code} - #{@certification_path.certificate.full_name} - #{report_name}.pdf"
-    "#{ENV['SHARED_PATH']}/private/projects/#{@certification_path.project.id.to_s}/certification_paths/#{@certification_path.id.to_s}/reports/#{filename}"
+    # "#{ENV['SHARED_PATH']}/private/projects/#{@certification_path.project.id.to_s}/certification_paths/#{@certification_path.id.to_s}/reports/#{filename}"
+    "#{File.realpath('private/projects')}/#{@certification_path.project.id.to_s}/certification_paths/#{@certification_path.id.to_s}/reports/#{filename}"
   end
 end
