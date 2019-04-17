@@ -16,6 +16,7 @@ gem 'font-awesome-rails'
 gem 'haml-rails'
 gem 'html2haml'
 gem 'httparty'
+gem 'jbuilder'
 gem 'js-routes'
 gem 'kaminari'
 gem 'nokogiri'
@@ -32,6 +33,7 @@ gem 'sprockets'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
 gem 'uglifier'
 gem 'warden'
+gem 'warden-jwt_auth'
 
 group :development do
   gem 'better_errors'

@@ -2,7 +2,7 @@ class Api::ApiController < ActionController::Base
 
   # protect_from_forgery with: :null_session
 
-  prepend_before_filter :authenticate!
+  prepend_before_action :authenticate!
 
   before_action :set_current_user
 
