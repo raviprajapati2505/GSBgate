@@ -41,7 +41,7 @@ class SchemeCriterionTextsController < AuthenticatedController
     params[:sort_order].each do |key, value|
       SchemeCriterionText.find(value[:id]).update_attribute(:display_weight, value[:display_weight])
     end
-    render nothing: true
+    render body: nil
   end
 
   private

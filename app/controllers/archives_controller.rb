@@ -7,6 +7,6 @@ class ArchivesController < AuthenticatedController
     response.headers['Content-Length'] = '0'
     response.headers['Content-Type'] = 'application/zip'
     response.headers['Content-Disposition'] = "attachment; filename=\"#{@archive.archive_file}\""
-    render nothing: true, status: :ok
+    render body: nil, status: :ok
   end
 end

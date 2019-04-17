@@ -56,7 +56,7 @@ class SchemeMixesController < AuthenticatedController
     response.headers['X-Sendfile'] = filepath
     response.headers['Content-Length'] = '0'
     response.headers['Content-Type'] = 'application/pdf'
-    render nothing: true, status: :ok
+    render body: nil, status: :ok
   end
 
   private
