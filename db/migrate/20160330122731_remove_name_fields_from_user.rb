@@ -1,4 +1,4 @@
-class RemoveNameFieldsFromUser < ActiveRecord::Migration
+class RemoveNameFieldsFromUser < ActiveRecord::Migration[4.2]
   def change
     remove_column :users, :name_prefix, :string
     remove_column :users, :first_name, :string

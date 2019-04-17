@@ -26,9 +26,9 @@ module DatePlucker
       date_field_parts_extract = date_parts.map{|part| "extract(#{part} from #{self.table_name}.#{date_field})"}
       date_field_parts_extract_order = date_field_parts_extract.map{|part| "#{part} #{sort_order}"}
       date_field_parts_name = "#{date_field}_by_#{date_parts.join('_')}"
-      self.order(date_field_parts_extract_order.join(', '))
-          .group(date_field_parts_extract.join(', '))
-          .pluck(date_field_parts_extract.join(" || '/' || ") + " as #{date_field_parts_name}")
+      self.order(Arel.sql(date_field_parts_extract_order.join(', ')))
+          .group(Arel.sql(date_field_parts_extract.join(', ')))
+          .pluck(Arel.sql(date_field_parts_extract.join(" || '/' || ") + " as #{date_field_parts_name}"))
     end
   end
 

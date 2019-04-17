@@ -1,4 +1,4 @@
-class CreateDevelopmentTypes < ActiveRecord::Migration
+class CreateDevelopmentTypes < ActiveRecord::Migration[4.2]
 
   def up
     create_table :development_types do |t|

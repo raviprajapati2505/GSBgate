@@ -34,7 +34,7 @@ class AuditLogsController < AuthenticatedController
     max_logs_to_export = 100000
 
     if @audit_logs.count > max_logs_to_export
-      redirect_to :back, alert: "You have selected more than #{max_logs_to_export} audit logs. Please narrow your selection."
+      redirect_back(fallback_location: audit_logs_path, alert: "You have selected more than #{max_logs_to_export} audit logs. Please narrow your selection.")
     else
       # Generate CSV
       csv_string = CSV.generate(headers: true, col_sep: ';') do |csv|
@@ -90,23 +90,23 @@ class AuditLogsController < AuthenticatedController
       @auditable.touch
 
       if @auditable.audit_log_errors.blank?
-        redirect_to :back, notice: 'Your comment was successfully added to the audit log.'
+        redirect_back(fallback_location: root_path, notice: 'Your comment was successfully added to the audit log.')
       else
         @auditable.audit_log_errors.messages.each do |field, errors|
-          redirect_to :back, alert: errors.first
+          redirect_back(fallback_location: root_path, alert: errors.first)
           return
         end
       end
     else
-      redirect_to :back, alert: 'Please fill out the comment field.'
+      redirect_back(fallback_location: root_path, alert: 'Please fill out the comment field.')
     end
   end
 
   def download_attachment
     begin
-      send_file @audit_log.attachment_file.path
+      send_file @audit_log.attachment_file.path, x_sendfile: false
     rescue ActionController::MissingFile
-      redirect_to :back, alert: 'This document is no longer available for download. This could be due to a detection of malware.'
+      redirect_back(fallback_location: root_path, alert: 'This document is no longer available for download. This could be due to a detection of malware.')
     end
   end
 

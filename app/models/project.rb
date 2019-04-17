@@ -1,6 +1,6 @@
 require 'file_size_validator'
 
-class Project < ActiveRecord::Base
+class Project < ApplicationRecord
   include Auditable
   include Taskable
   include DatePlucker
@@ -13,8 +13,8 @@ class Project < ActiveRecord::Base
   has_many :certification_path_statuses, through: :certification_paths
   has_many :notification_types_users, dependent: :destroy
   has_many :project_audit_logs, class_name: 'AuditLog', foreign_key: 'project_id', dependent: :destroy
-  belongs_to :building_type_group
-  belongs_to :building_type
+  belongs_to :building_type_group, optional: true
+  belongs_to :building_type, optional: true
 
   validates :name, presence: true
   validates :owner, presence: true

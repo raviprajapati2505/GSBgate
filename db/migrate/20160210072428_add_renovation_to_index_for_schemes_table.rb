@@ -1,4 +1,4 @@
-class AddRenovationToIndexForSchemesTable < ActiveRecord::Migration
+class AddRenovationToIndexForSchemesTable < ActiveRecord::Migration[4.2]
   def up
     remove_index :schemes, [:name, :gsas_version, :certificate_id]
     # custom name, because default generated name is too long

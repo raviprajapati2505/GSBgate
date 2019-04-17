@@ -1,4 +1,4 @@
-class AlterScoreToLinkToSchemeCriterion < ActiveRecord::Migration
+class AlterScoreToLinkToSchemeCriterion < ActiveRecord::Migration[4.2]
   def change
     remove_index :scores, :criterion_id
     remove_column :scores, :criterion_id

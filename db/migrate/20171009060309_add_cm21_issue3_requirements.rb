@@ -1,4 +1,4 @@
-class AddCm21Issue3Requirements < ActiveRecord::Migration
+class AddCm21Issue3Requirements < ActiveRecord::Migration[4.2]
   def change
     requirement_1_for_scheme_criterion_id_3298 = Requirement.create!(name: "0. Domestic Water Management Plan")
     SchemeCriteriaRequirement.create!(requirement: requirement_1_for_scheme_criterion_id_3298, scheme_criterion: SchemeCriterion.find_by(id: 3298))

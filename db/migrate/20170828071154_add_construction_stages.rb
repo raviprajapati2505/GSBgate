@@ -1,4 +1,4 @@
-class AddConstructionStages < ActiveRecord::Migration
+class AddConstructionStages < ActiveRecord::Migration[4.2]
   def change
     # Rename old Construction 2.1 issue 1 certificate from 'Construction Certificate' to 'Construction Certificate (foundation stage:1)'
     Certificate.where(certification_type: 30, gsas_version: '2.1 issue 1').update_all(name: 'Construction Certificate (foundation stage:1)', display_weight: 31, certification_type: Certificate.certification_types[:construction_certificate_stage1])

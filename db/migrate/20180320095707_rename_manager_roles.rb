@@ -1,4 +1,4 @@
-class RenameManagerRoles < ActiveRecord::Migration
+class RenameManagerRoles < ActiveRecord::Migration[4.2]
   def change
     CertificationPathStatus.where(id: CertificationPathStatus::APPROVING_BY_MANAGEMENT).update_all(name: 'Approving by Head of GSAS', past_name: 'Approved by Head of GSAS', description: 'The GSAS trust team approved this certification. The Head of GSAS will now approve the certification and advance the status.')
     CertificationPathStatus.where(id: CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT).update_all(name: 'Approving by Chairman', past_name: 'Approved by Chairman', description: 'The Head of GSAS approved this certification. The Chairman will now approve the certification and advance the status.')

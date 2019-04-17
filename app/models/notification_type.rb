@@ -1,4 +1,4 @@
-class NotificationType < ActiveRecord::Base
+class NotificationType < ApplicationRecord
 
   has_many :notification_types_users, dependent: :destroy
 

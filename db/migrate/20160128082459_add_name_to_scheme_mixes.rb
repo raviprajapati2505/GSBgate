@@ -1,4 +1,4 @@
-class AddNameToSchemeMixes < ActiveRecord::Migration
+class AddNameToSchemeMixes < ActiveRecord::Migration[4.2]
   def up
     add_column :scheme_mixes, :name, :string
   end

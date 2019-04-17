@@ -1,4 +1,4 @@
-class AddTypeToCertificate < ActiveRecord::Migration
+class AddTypeToCertificate < ActiveRecord::Migration[4.2]
   def up
     add_column :certificates, :certification_type, :integer
     Certificate.where(certificate_type: Certificate.certificate_types[:design_type], assessment_stage: Certificate.assessment_stages[:design_stage]).update_all(certification_type: Certificate.certification_types[:letter_of_conformance])

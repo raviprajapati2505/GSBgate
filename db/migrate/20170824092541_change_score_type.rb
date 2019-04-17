@@ -1,4 +1,4 @@
-class ChangeScoreType < ActiveRecord::Migration
+class ChangeScoreType < ActiveRecord::Migration[4.2]
   def change
     change_column :scheme_criteria, :minimum_score, :decimal, precision: 3, scale: 1
     change_column :scheme_criteria, :maximum_score, :decimal, precision: 3, scale: 1

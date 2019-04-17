@@ -1,4 +1,4 @@
-class CopyTaskData < ActiveRecord::Migration
+class CopyTaskData < ActiveRecord::Migration[4.2]
   # class TempTask < ActiveRecord::Base
   #
   # end

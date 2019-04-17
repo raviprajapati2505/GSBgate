@@ -1,4 +1,4 @@
-class AddAssignIncentiveManuallyToSchemeCriterion < ActiveRecord::Migration
+class AddAssignIncentiveManuallyToSchemeCriterion < ActiveRecord::Migration[4.2]
   def change
     add_column :scheme_criteria, :assign_incentive_manually_b, :boolean, default: false
     add_column :scheme_criteria, :label, :string

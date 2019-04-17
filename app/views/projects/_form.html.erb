@@ -15,7 +15,11 @@
               <% end %>
               <%= f.text_field :name %>
               <%= f.select(:certificate_type, options_for_select(Certificate.certificate_types.map { |k, v| [t(k, scope: 'activerecord.attributes.certificate.certificate_types'), v]})) %>
-              <%= f.text_field :service_provider %>
+              <% if current_user.system_admin? || current_user.gsas_trust_manager? || current_user.gsas_trust_top_manager? || current_user.gsas_trust_admin? %>
+                <%= f.text_field :service_provider %>
+              <% else %>
+                <%= f.text_field :service_provider, {disabled: true} %>
+              <% end %>
               <div class="design-fields">
                 <%= f.text_field :service_provider_2 %>
               </div>
@@ -117,7 +121,7 @@
               <% if @project.new_record? %>
                 <%= f.form_group :terms_and_conditions_accepted do %>
                   <%= f.check_box :terms_and_conditions_accepted do %>
-                    <small>Tick here to indicate you have read and agreed to the <%= link_to 'terms and conditions', asset_path('GSAS_Certification_TCs.pdf'), target: '_blank' %>.</small>
+                    <small>Tick here to indicate you have read and agreed to the <%= link_to 'terms and conditions', '/GSAS_Certification_TCs.pdf', target: '_blank' %>.</small>
                   <% end %>
                 <% end %>
               <% end %>

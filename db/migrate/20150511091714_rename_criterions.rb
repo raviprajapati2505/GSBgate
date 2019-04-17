@@ -1,4 +1,4 @@
-class RenameCriterions < ActiveRecord::Migration
+class RenameCriterions < ActiveRecord::Migration[4.2]
   def change
     rename_table :criterions, :criteria
   end

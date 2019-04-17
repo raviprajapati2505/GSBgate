@@ -1,7 +1,7 @@
-class SchemeCriterion < ActiveRecord::Base
+class SchemeCriterion < ApplicationRecord
   include Auditable
 
-  belongs_to :scheme_category
+  belongs_to :scheme_category, optional: true
   has_many :scheme_criterion_texts
   has_many :scheme_mix_criteria
   has_many :scheme_criteria_requirements

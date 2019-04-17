@@ -1,4 +1,4 @@
-class AddRoleToProjectAuthorizations < ActiveRecord::Migration
+class AddRoleToProjectAuthorizations < ActiveRecord::Migration[4.2]
   def change
     add_column :project_authorizations, :role, :integer
     remove_column :projects, :certifier_id

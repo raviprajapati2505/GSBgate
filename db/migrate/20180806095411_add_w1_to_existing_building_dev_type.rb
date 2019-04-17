@@ -1,4 +1,4 @@
-class AddW1ToExistingBuildingDevType < ActiveRecord::Migration
+class AddW1ToExistingBuildingDevType < ActiveRecord::Migration[4.2]
   def change
     #  create system data
     # ####################

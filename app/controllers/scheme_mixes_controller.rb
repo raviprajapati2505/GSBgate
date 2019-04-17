@@ -52,7 +52,11 @@ class SchemeMixesController < AuthenticatedController
     filepath = filepath_for_report 'Criteria Summary for ' + @scheme_mix.name
     report = Reports::CriteriaScores.new(@scheme_mix)
     report.save_as(filepath)
-    send_file filepath, :type => 'application/pdf', :x_sendfile => true
+    # send_file filepath, :type => 'application/pdf', :x_sendfile => true
+    response.headers['X-Sendfile'] = filepath
+    response.headers['Content-Length'] = '0'
+    response.headers['Content-Type'] = 'application/pdf'
+    render body: nil, status: :ok
   end
 
   private
@@ -66,6 +70,7 @@ class SchemeMixesController < AuthenticatedController
 
   def filepath_for_report(report_name)
     filename = "#{@project.code} - #{@certification_path.certificate.full_name} - #{report_name}.pdf"
-    Rails.root.join('private', 'projects', @certification_path.project.id.to_s, 'certification_paths', @certification_path.id.to_s, 'reports', filename)
+    # "#{ENV['SHARED_PATH']}/private/projects/#{@certification_path.project.id.to_s}/certification_paths/#{@certification_path.id.to_s}/reports/#{filename}"
+    "#{File.realpath('private/projects')}/#{@certification_path.project.id.to_s}/certification_paths/#{@certification_path.id.to_s}/reports/#{filename}"
   end
 end

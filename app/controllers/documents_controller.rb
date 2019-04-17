@@ -19,10 +19,10 @@ class DocumentsController < BaseDocumentController
           scheme_mix_criteria_document.pcr_context = scheme_mix_criteria_document.scheme_mix_criterion.review_count if scheme_mix_criteria_document.scheme_mix_criterion.in_review
         end
         if @document.save
-          format.html { redirect_to :back, notice: 'The document was successfully uploaded.' }
+          format.html { redirect_back(fallback_location: root_path, notice: 'The document was successfully uploaded.') }
           format.json { render :json => @document }
         else
-          format.html { redirect_to :back, alert: @document.errors['document_file'].first.to_s }
+          format.html { redirect_back(fallback_location: root_path, alert: @document.errors['document_file'].first.to_s) }
           format.json { render json: @document.errors['document_file'].to_s, status: :unprocessable_entity }
         end
       end
@@ -54,9 +54,9 @@ class DocumentsController < BaseDocumentController
         end
         # delete database record
         @controller_model.destroy
-        format.html { redirect_to :back, notice: 'The document was successfully deleted.' }
+        format.html { redirect_back(fallback_location: root_path, notice: 'The document was successfully deleted.') }
       else
-        format.html { redirect_to :back, alert: 'The document is already approved for some criteria and can not be deleted anymore.' }
+        format.html { redirect_back(fallback_location: root_path, alert: 'The document is already approved for some criteria and can not be deleted anymore.') }
       end
     end
   end

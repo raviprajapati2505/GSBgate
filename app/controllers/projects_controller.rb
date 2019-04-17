@@ -8,8 +8,6 @@ class ProjectsController < AuthenticatedController
       format.html {
         @page_title = t('projects.index.title_html')
         @datatable = Effective::Datatables::ProjectsCertificationPaths.new
-        @datatable.current_ability = current_ability
-        @datatable.table_html_class = 'table table-bordered table-striped table-hover'
       }
       format.json {
         if (params.has_key?(:limit))
@@ -201,6 +199,7 @@ class ProjectsController < AuthenticatedController
   def new
     @page_title = 'New project'
     @project = Project.new
+    @project.service_provider = current_user.employer_name
     @certificates = Certificate.all
   end
 
@@ -211,6 +210,9 @@ class ProjectsController < AuthenticatedController
 
   def create
     @project = Project.new(project_params)
+    unless project_params.has_key?(:service_provider)
+      @project.service_provider = current_user.employer_name
+    end
 
     @project.transaction do
       if @project.save
@@ -246,36 +248,36 @@ class ProjectsController < AuthenticatedController
   def download_location_plan
     authorize! :download_location_plan, @project
     begin
-      send_file @project.location_plan_file.path
+      send_file @project.location_plan_file.path, x_sendfile: false
     rescue ActionController::MissingFile
-      redirect_to :back, alert: 'This document is no longer available for download. This could be due to a detection of malware.'
+      redirect_back(fallback_location: root_path, alert: 'This document is no longer available for download. This could be due to a detection of malware.')
     end
   end
 
   def download_site_plan
     authorize! :download_site_plan, @project
     begin
-      send_file @project.site_plan_file.path
+      send_file @project.site_plan_file.path, x_sendfile: false
     rescue ActionController::MissingFile
-      redirect_to :back, alert: 'This document is no longer available for download. This could be due to a detection of malware.'
+      redirect_back(fallback_location: root_path, alert: 'This document is no longer available for download. This could be due to a detection of malware.')
     end
   end
 
   def download_design_brief
     authorize! :download_design_brief, @project
     begin
-      send_file @project.design_brief_file.path
+      send_file @project.design_brief_file.path, x_sendfile: false
     rescue ActionController::MissingFile
-      redirect_to :back, alert: 'This document is no longer available for download. This could be due to a detection of malware.'
+      redirect_back(fallback_location: root_path, alert: 'This document is no longer available for download. This could be due to a detection of malware.')
     end
   end
 
   def download_project_narrative
     authorize! :download_project_narrative, @project
     begin
-      send_file @project.project_narrative_file.path
+      send_file @project.project_narrative_file.path, x_sendfile: false
     rescue ActionController::MissingFile
-      redirect_to :back, alert: 'This document is no longer available for download. This could be due to a detection of malware.'
+      redirect_back(fallback_location: root_path, alert: 'This document is no longer available for download. This could be due to a detection of malware.')
     end
   end
 
@@ -300,7 +302,7 @@ class ProjectsController < AuthenticatedController
     if current_user.system_admin? || current_user.gsas_trust_admin?
       params.require(:project).permit(:name, :certificate_type, :owner, :developer, :service_provider, :service_provider_2, :description, :address, :location, :country, :construction_year, :coordinates, :gross_area, :certified_area, :carpark_area, :project_site_area, :terms_and_conditions_accepted, :location_plan_file, :location_plan_file_cache, :site_plan_file, :site_plan_file_cache, :design_brief_file, :design_brief_file_cache, :project_narrative_file, :project_narrative_file_cache, :building_type_group_id, :building_type_id, :estimated_project_cost, :cost_square_meter, :estimated_building_cost, :estimated_infrastructure_cost, :code)
     else
-      params.require(:project).permit(:name, :certificate_type, :owner, :developer, :service_provider, :service_provider_2, :description, :address, :location, :country, :construction_year, :coordinates, :gross_area, :certified_area, :carpark_area, :project_site_area, :terms_and_conditions_accepted, :location_plan_file, :location_plan_file_cache, :site_plan_file, :site_plan_file_cache, :design_brief_file, :design_brief_file_cache, :project_narrative_file, :project_narrative_file_cache, :building_type_group_id, :building_type_id, :estimated_project_cost, :cost_square_meter, :estimated_building_cost, :estimated_infrastructure_cost)
+      params.require(:project).permit(:name, :certificate_type, :owner, :developer, :service_provider_2, :description, :address, :location, :country, :construction_year, :coordinates, :gross_area, :certified_area, :carpark_area, :project_site_area, :terms_and_conditions_accepted, :location_plan_file, :location_plan_file_cache, :site_plan_file, :site_plan_file_cache, :design_brief_file, :design_brief_file_cache, :project_narrative_file, :project_narrative_file_cache, :building_type_group_id, :building_type_id, :estimated_project_cost, :cost_square_meter, :estimated_building_cost, :estimated_infrastructure_cost)
     end
   end
 end

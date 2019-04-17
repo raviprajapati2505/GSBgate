@@ -1,3 +1,3 @@
-class BuildingTypeGroup < ActiveRecord::Base
+class BuildingTypeGroup < ApplicationRecord
   has_many :projects
 end

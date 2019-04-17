@@ -1,4 +1,4 @@
-class SetCertificateTypeOldProjects < ActiveRecord::Migration
+class SetCertificateTypeOldProjects < ActiveRecord::Migration[4.2]
   def change
     # Get all Design & Build projects
     projects = Project.joins(certification_paths: [:certificate]).where(certificates: {certificate_type: Certificate.certificate_types[:design_type]}).distinct

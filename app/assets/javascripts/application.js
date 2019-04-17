@@ -28,7 +28,7 @@
  *= require toastr
  *= require js-routes
  *= require ckeditor/init
- *= require html.sortable
+ *= require html5sortable/html5sortable
  *= require leaflet
  *= require leaflet-draw
  *= require proj4
@@ -234,7 +234,8 @@ $(function () {
         columnDefs: [{
             "targets": 6,
             "orderable": false
-        }]
+        }],
+        searching: false
     });
 
     $('.cert-doc-table').DataTable({
@@ -245,7 +246,8 @@ $(function () {
         columnDefs: [{
             "targets": 4,
             "orderable": false
-        }]
+        }],
+        searching: false
     })
 });
 

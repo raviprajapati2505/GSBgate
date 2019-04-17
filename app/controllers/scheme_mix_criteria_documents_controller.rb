@@ -16,9 +16,10 @@ class SchemeMixCriteriaDocumentsController < AuthenticatedController
         smcd.document_id = @scheme_mix_criteria_document.document_id
         smcd.save!
       end
-      redirect_to :back, notice: 'The document was successfully linked to the criteria.'
+
+      redirect_back(fallback_location: root_path, notice: 'The document was successfully linked to the criteria.')
     else
-      redirect_to :back, alert: 'No criteria were selected.'
+      redirect_back(fallback_location: root_path, alert: 'No criteria were selected.')
     end
   end
 
@@ -28,13 +29,13 @@ class SchemeMixCriteriaDocumentsController < AuthenticatedController
   def destroy_link
     if params[:scheme_mix_criteria_document].present?
       # delete audit logs
-      AuditLog.delete_all(auditable_type: 'SchemeMixCriteriaDocument', auditable_id: @scheme_mix_criteria_document.id)
+      AuditLog.where(auditable_type: 'SchemeMixCriteriaDocument', auditable_id: @scheme_mix_criteria_document.id).delete_all
       SchemeMixCriteriaDocument.where(document_id: @scheme_mix_criteria_document.document_id)
           .where.not(scheme_mix_criterion_id: params[:scheme_mix_criteria_document].map {|smcd| smcd[:scheme_mix_criterion_id].to_i})
           .delete_all
-      redirect_to :back, notice: 'The document was successfully unlinked from the criteria.'
+      redirect_back(fallback_location: root_path, alert:'The document was successfully unlinked from the criteria.')
     else
-      redirect_to :back, alert: 'No criteria were selected.'
+      redirect_back(fallback_location: root_path, alert: 'No criteria were selected.')
     end
   end
 
@@ -60,7 +61,7 @@ class SchemeMixCriteriaDocumentsController < AuthenticatedController
       scheme_mix_criteria_document.update(scheme_mix_criteria_document_params)
     end
 
-    redirect_to :back, notice: 'The document status was successfully updated.'
+    redirect_back(fallback_location: root_path, notice: 'The document status was successfully updated.')
   end
 
   private

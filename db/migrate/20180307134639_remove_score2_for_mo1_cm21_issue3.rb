@@ -1,4 +1,4 @@
-class RemoveScore2ForMo1Cm21Issue3 < ActiveRecord::Migration
+class RemoveScore2ForMo1Cm21Issue3 < ActiveRecord::Migration[4.2]
   def change
     SchemeCriterion.joins(scheme_category: {scheme: {development_types: :certificate}}).where(scheme_categories: {code: 'MO'}).where("certificates.certificate_type = 1 and certificates.gsas_version = 'v2.1 Issue 3.0' and certificates.certification_type in (31,32,33)").where(number: 1, name: 'Waste Management').update_all(scores_a: YAML.load("[[0, 0.0], [1, 1.0], [3, 3.0]]\n"))
 

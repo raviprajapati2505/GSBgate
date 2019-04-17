@@ -1,4 +1,4 @@
-class BackgroundExecution < ActiveRecord::Base
+class BackgroundExecution < ApplicationRecord
 
   DURATION_TASK = 'duration_task'
   OVERDUE_TASK = 'overdue_task'

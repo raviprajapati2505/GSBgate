@@ -1,4 +1,4 @@
-class AddCriteriaFields < ActiveRecord::Migration
+class AddCriteriaFields < ActiveRecord::Migration[4.2]
   def change
     add_column :criteria, :description, :string
     add_column :criteria, :measurement, :string

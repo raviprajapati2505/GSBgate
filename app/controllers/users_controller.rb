@@ -5,8 +5,6 @@ class UsersController < AuthenticatedController
   def index
     @page_title = 'Users'
     @datatable = Effective::Datatables::Users.new
-    @datatable.current_ability = current_ability
-    @datatable.table_html_class = 'table table-bordered table-striped table-hover'
   end
 
   def show
@@ -57,38 +55,36 @@ class UsersController < AuthenticatedController
       NotificationTypesUser.transaction do
         notification_types = NotificationType.all
         # project independent notification settings
-        NotificationTypesUser.delete_all(user: @user, project_id: nil)
+        NotificationTypesUser.where(user: @user, project_id: nil).delete_all
         # delete checked notification types
         # params[:notification_types].each do |notification_type_id|
         #   if @user.notification_types.for_general_level.any? {|type| type.id == notification_type_id.to_i}
-        #     NotificationTypesUser.delete_all(user: @user, project_id: nil, notification_type_id: notification_type_id)
+        #     NotificationTypesUser.where(user: @user, project_id: nil, notification_type_id: notification_type_id).delete_all
         #    end
         # end
         # add unchecked notification types
         notification_types.each do |notification_type|
-          unless notification_type.project_level
-            unless params[:notification_types].any? { |id| id.to_i == notification_type.id }
-              NotificationTypesUser.create!(user: @user, project_id: nil, notification_type_id: notification_type.id)
-            end
+          next unless params.key?(:notification_types) && params[:notification_types].present?
+          unless params[:notification_types].any? { |id| id.to_i == notification_type.id }
+            NotificationTypesUser.create!(user: @user, project_id: nil, notification_type_id: notification_type.id)
           end
         end
 
         # project dependent notification settings
         if params.has_key?(:project_id)
-          NotificationTypesUser.delete_all(user: @user, project_id: params[:project_id])
+          NotificationTypesUser.where(user: @user, project_id: params[:project_id]).delete_all
           # delete checked notification types
           # params[:project_notification_types].each do |notification_type_id|
           #   if @user.notification_types.for_project(params[:project_id]).any? {|type| type.id == notification_type_id.to_i}
-          #     NotificationTypesUser.delete_all(user: @user, project_id: params[:project_id], notification_type_id: notification_type_id)
+          #     NotificationTypesUser.where(user: @user, project_id: params[:project_id], notification_type_id: notification_type_id).delete_all
           #   end
           # end
           # add unchecked notification types
           notification_types.each do |notification_type|
-            if notification_type.project_level
-              unless params[:project_notification_types].any? { |id| id.to_i == notification_type.id }
-                # @user.notification_types_users << NotificationTypesUser.new(project_id: params[:project_id], notification_type_id: notification_type.id)
-                NotificationTypesUser.create!(user: @user, project_id: params[:project_id], notification_type_id: notification_type.id)
-              end
+            next unless notification_type.project_level && params.key?(:project_notification_types) && params[:project_notification_types].present?
+            unless params[:project_notification_types].any? { |id| id.to_i == notification_type.id }
+              # @user.notification_types_users << NotificationTypesUser.new(project_id: params[:project_id], notification_type_id: notification_type.id)
+              NotificationTypesUser.create!(user: @user, project_id: params[:project_id], notification_type_id: notification_type.id)
             end
           end
         end
@@ -97,7 +93,7 @@ class UsersController < AuthenticatedController
     rescue Exception
       flash[:alert] = 'An error occured while updating user preferences.'
     end
-    redirect_to :back
+    redirect_back(fallback_location: list_notifications_user_path)
   end
 
   def find_users_by_email
@@ -123,8 +119,11 @@ class UsersController < AuthenticatedController
             # Retrieve the user's linkme member profile
             member_profile = linkme.sa_people_profile_get(linkme_member_id)
 
+            people_profile = linkme.sa_people_profile_get(member_profile[:id])
+            master_profile = linkme.sa_people_profile_get(people_profile[:master_id]) unless people_profile[:master_id].blank?
+
             # Update or create the linkme user in the DB
-            user = User.update_or_create_linkme_user!(member_profile)
+            user = User.update_or_create_linkme_user!(member_profile, master_profile)
 
             users << user
           end

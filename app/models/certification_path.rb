@@ -1,6 +1,6 @@
 require 'file_size_validator'
 
-class CertificationPath < ActiveRecord::Base
+class CertificationPath < ApplicationRecord
   include ActionView::Helpers::TranslationHelper
   include Auditable
   include Taskable
@@ -9,11 +9,11 @@ class CertificationPath < ActiveRecord::Base
 
   MAXIMUM_DOCUMENT_FILE_SIZE = 100 # in MB
 
-  belongs_to :project
-  belongs_to :certificate
-  belongs_to :certification_path_status
-  belongs_to :development_type
-  belongs_to :main_scheme_mix, class_name: 'SchemeMix'
+  belongs_to :project, optional: true
+  belongs_to :certificate, optional: true
+  belongs_to :certification_path_status, optional: true
+  belongs_to :development_type, optional: true
+  belongs_to :main_scheme_mix, class_name: 'SchemeMix', optional: true
   has_many :scheme_mixes, dependent: :destroy
   has_many :schemes, through: :scheme_mixes
   has_many :scheme_mix_criteria, through: :scheme_mixes, autosave: true

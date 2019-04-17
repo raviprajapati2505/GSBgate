@@ -75,7 +75,7 @@ class RequirementDataController < AuthenticatedController
 
   def refuse
     @requirement_datum.update(user: nil, audit_log_user_comment: params[:audit_log_user_comment])
-    redirect_to :back, notice: 'You are now unassigned from this requirement.'
+    redirect_back(fallback_location: root_path, notice: 'You are now unassigned from this requirement.')
   end
 
   private

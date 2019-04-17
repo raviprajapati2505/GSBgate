@@ -1,0 +1,18 @@
+# A request template for testing the YourMembership/Linkme API.
+# Replace the path to the XML file at the bottom of this file
+# and point to the XML file of the API endpoint you want to test.
+POST https://api.yourmembership.com
+Host: api.yourmembership.com
+Content-Type: application/x-www-form-urlencoded
+Accept: */*
+Accept-Encoding: gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+User-Agent: Ruby
+
+--null
+
+
+< C:\source\gsasgate\ym-test\Sa.People.Profile.Get.xml
+--null--
+
+###
+
