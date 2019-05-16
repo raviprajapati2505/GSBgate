@@ -14,3 +14,6 @@ json.projects(@projects) do |project|
     json.achieved_score category_hash[1]
   end
 end
+json.total_count @total_count
+json.current_page @page
+json.page_count @page_count
