@@ -51,7 +51,7 @@ source 'http://rails-assets.org' do
   gem 'rails-assets-bootstrap-timepicker'
   gem 'rails-assets-d3', '~> 4.13'
   gem 'rails-assets-d3-tip', '~> 0.7.1'
-  gem 'rails-assets-dropzone'
+  gem 'rails-assets-dropzone', '~> 4.3.0'
   gem 'rails-assets-icheck'
   gem 'rails-assets-jquery'
   gem 'rails-assets-jquery-ujs'
