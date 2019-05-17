@@ -218,7 +218,7 @@ GEM
     rails-assets-d3 (4.13.0)
     rails-assets-d3-tip (0.7.1)
       rails-assets-d3 (>= 4.2, < 5)
-    rails-assets-dropzone (4.3.0)
+    rails-assets-dropzone (5.5.0)
     rails-assets-icheck (1.0.2)
       rails-assets-jquery (>= 1.7)
     rails-assets-jquery (2.2.4)
@@ -346,7 +346,7 @@ DEPENDENCIES
   rails-assets-bootstrap-timepicker!
   rails-assets-d3 (~> 4.13)!
   rails-assets-d3-tip (~> 0.7.1)!
-  rails-assets-dropzone (~> 4.3.0)!
+  rails-assets-dropzone!
   rails-assets-icheck!
   rails-assets-jquery!
   rails-assets-jquery-ujs!
