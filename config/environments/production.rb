@@ -101,7 +101,7 @@ Rails.application.configure do
   config.action_mailer.asset_host = 'https://www.gsas.qa'
 
   # GSAS info email addresses
-  config.x.gsas_info.email = 'GSAS-Trust-Info@gord.qa, m.osama@gord.qa, e.eliskandarani@gord.qa, alhorr@gord.qa, v.dixit@gord.qa, sas@vito.be'
+  config.x.gsas_info.email = 'GSAS-Trust-Info@gord.qa, e.eliskandarani@gord.qa, alhorr@gord.qa, v.dixit@gord.qa, sas@vito.be'
 
   # Linkme.qa API config
   config.x.linkme.api_url = 'api.yourmembership.com'
