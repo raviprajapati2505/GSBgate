@@ -6,6 +6,7 @@ class SchemeCriterion < ApplicationRecord
   has_many :scheme_mix_criteria
   has_many :scheme_criteria_requirements
   has_many :requirements, through: :scheme_criteria_requirements
+  has_many :scheme_criterion_incentives
   serialize :scores_a
   serialize :scores_b
 
@@ -46,7 +47,7 @@ class SchemeCriterion < ApplicationRecord
   end
 
   def has_incentive_weight?(index)
-    self.read_attribute(INCENTIVE_MINUS_1_ATTRIBUTES[index].to_sym) + self.read_attribute(INCENTIVE_0_ATTRIBUTES[index].to_sym) + self.read_attribute(INCENTIVE_1_ATTRIBUTES[index].to_sym) + self.read_attribute(INCENTIVE_2_ATTRIBUTES[index].to_sym) + self.read_attribute(INCENTIVE_3_ATTRIBUTES[index].to_sym) > 0
+    self.read_attribute(INCENTIVE_MINUS_1_ATTRIBUTES[index].to_sym) + self.read_attribute(INCENTIVE_0_ATTRIBUTES[index].to_sym) + self.read_attribute(INCENTIVE_1_ATTRIBUTES[index].to_sym) + self.read_attribute(INCENTIVE_2_ATTRIBUTES[index].to_sym) + self.read_attribute(INCENTIVE_3_ATTRIBUTES[index].to_sym) > 0 || self.scheme_criterion_incentives.count > 0
   end
 
   def has_manual_incentive?

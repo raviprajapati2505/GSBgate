@@ -159,6 +159,9 @@ en:
           status:
             create_html: A new document <strong>%{document}</strong> was added to criterion <strong>%{criterion}</strong>.
             update_html: The status of document <strong>%{document}</strong> in <strong>%{criterion}</strong> was changed from <strong>%{old_status}</strong> to <strong>%{new_status}</strong>.
+        scheme_mix_criterion_incentive:
+          incentive_scored:
+            update_html: The incentive <strong>%{label}</strong> in <strong>%{criterion}</strong> was changed from <strong>%{old_status}</strong> to <strong>%{new_status}</strong>.
         requirement_datum:
           status:
             update_html: The status of requirement <strong>%{requirement}</strong> was changed from <strong>%{old_status}</strong> to <strong>%{new_status}</strong>.

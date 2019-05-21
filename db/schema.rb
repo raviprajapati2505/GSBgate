@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_26_081144) do
+ActiveRecord::Schema.define(version: 2019_05_20_070556) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -338,6 +338,13 @@ ActiveRecord::Schema.define(version: 2019_03_26_081144) do
     t.index ["scheme_criterion_id"], name: "index_scheme_criteria_requirements_on_scheme_criterion_id"
   end
 
+  create_table "scheme_criterion_incentives", force: :cascade do |t|
+    t.bigint "scheme_criterion_id"
+    t.decimal "incentive_weight", precision: 5, scale: 2, default: "0.0"
+    t.string "label"
+    t.index ["scheme_criterion_id"], name: "index_incentives_to_scheme_criteria"
+  end
+
   create_table "scheme_criterion_texts", id: :serial, force: :cascade do |t|
     t.string "name"
     t.text "html_text"
@@ -396,6 +403,14 @@ ActiveRecord::Schema.define(version: 2019_03_26_081144) do
     t.datetime "updated_at", null: false
     t.index ["requirement_datum_id"], name: "by_requirement_datum"
     t.index ["scheme_mix_criterion_id"], name: "by_scheme_mix_criterion"
+  end
+
+  create_table "scheme_mix_criterion_incentives", force: :cascade do |t|
+    t.bigint "scheme_mix_criterion_id"
+    t.bigint "scheme_criterion_incentive_id"
+    t.boolean "incentive_scored", default: false
+    t.index ["scheme_criterion_incentive_id"], name: "index_incentives_to_scheme_criterion_incentives"
+    t.index ["scheme_mix_criterion_id"], name: "index_incentives_to_scheme_mix_criteria"
   end
 
   create_table "scheme_mixes", id: :serial, force: :cascade do |t|
@@ -496,6 +511,7 @@ ActiveRecord::Schema.define(version: 2019_03_26_081144) do
   add_foreign_key "scheme_criteria", "scheme_categories"
   add_foreign_key "scheme_criteria_requirements", "requirements"
   add_foreign_key "scheme_criteria_requirements", "scheme_criteria"
+  add_foreign_key "scheme_criterion_incentives", "scheme_criteria"
   add_foreign_key "scheme_criterion_texts", "scheme_criteria"
   add_foreign_key "scheme_mix_criteria", "scheme_criteria"
   add_foreign_key "scheme_mix_criteria", "scheme_mixes"
@@ -503,6 +519,8 @@ ActiveRecord::Schema.define(version: 2019_03_26_081144) do
   add_foreign_key "scheme_mix_criteria_documents", "scheme_mix_criteria"
   add_foreign_key "scheme_mix_criteria_requirement_data", "requirement_data"
   add_foreign_key "scheme_mix_criteria_requirement_data", "scheme_mix_criteria"
+  add_foreign_key "scheme_mix_criterion_incentives", "scheme_criterion_incentives"
+  add_foreign_key "scheme_mix_criterion_incentives", "scheme_mix_criteria"
   add_foreign_key "scheme_mixes", "certification_paths"
   add_foreign_key "scheme_mixes", "schemes"
   add_foreign_key "tasks", "certification_paths"

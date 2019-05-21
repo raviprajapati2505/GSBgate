@@ -301,6 +301,11 @@ module ApplicationHelper
         scheme_mix = model.scheme_mix_criterion.scheme_mix
         scheme_mix_criterion = model.scheme_mix_criterion
         scheme_mix_criterion_document = model
+      when SchemeMixCriterionIncentive.name.demodulize
+        project = model.scheme_mix_criterion.scheme_mix.certification_path.project
+        certification_path = model.scheme_mix_criterion.scheme_mix.certification_path
+        scheme_mix = model.scheme_mix_criterion.scheme_mix
+        scheme_mix_criterion = model.scheme_mix_criterion
       when RequirementDatum.name.demodulize
         project = model.scheme_mix_criteria.take.scheme_mix.certification_path.project
         certification_path = model.scheme_mix_criteria.take.scheme_mix.certification_path

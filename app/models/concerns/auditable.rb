@@ -333,6 +333,14 @@ module Auditable
             force_visibility_public = true
             system_messages << {message: t('models.concerns.auditable.certification_path_document.status.create_html', document: self.name)}
           end
+        when SchemeMixCriterionIncentive.name.demodulize
+          project = self.scheme_mix_criterion.scheme_mix.certification_path.project
+          certification_path = self.scheme_mix_criterion.scheme_mix.certification_path
+          if (action == AUDIT_LOG_UPDATE)
+            if self.saved_change_to_incentive_scored?
+              system_messages << {message: t('models.concerns.auditable.scheme_mix_criterion_incentive.incentive_scored.update_html', label: self.scheme_criterion_incentive.label, criterion: self.scheme_mix_criterion.name, old_status: self.incentive_scored_before_last_save, new_status: self.incentive_scored)}
+            end
+          end
       end
 
       # Format the user comment

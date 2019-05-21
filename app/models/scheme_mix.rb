@@ -63,6 +63,11 @@ class SchemeMix < ApplicationRecord
       end
       scheme_mix_criterion = SchemeMixCriterion.create!(parameter_list)
 
+      # Create all SchemeMixCriterionIncentive records
+      scheme_criterion.scheme_criterion_incentive_ids.each do |incentive_id|
+        scheme_mix_criterion.scheme_mix_criterion_incentives.create!(scheme_criterion_incentive_id: incentive_id, incentive_scored: false)
+      end
+
       # Don't create requirement data records for criteria that inherit their scores from the main scheme mix
       unless has_main_scheme_mix_criterion
         # Loop all requirements of the criterion
