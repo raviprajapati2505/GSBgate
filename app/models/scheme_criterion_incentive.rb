@@ -1,5 +1,5 @@
 class SchemeCriterionIncentive < ApplicationRecord
-  # TODO include Auditable
+  include Auditable
 
   belongs_to :scheme_criterion, optional: true
 

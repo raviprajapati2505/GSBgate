@@ -33,6 +33,7 @@
  *= require leaflet-draw
  *= require proj4
  *= require three.js/three.js
+ *= require cocoon
  */
 
 $(function () {

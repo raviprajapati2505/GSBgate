@@ -186,6 +186,14 @@ en:
             update_html: Criterion %{score_label} scores changed from <strong>%{old_scores}</strong> to <strong>%{new_scores}</strong>.
           incentive_weight:
             update_html: Criterion %{score_label} incentive weights changed from <strong>%{old_incentive}</strong> to <strong>%{new_incentive}</strong>.
+        scheme_criterion_incentive:
+          status:
+            create_html: Criterion Incentive <strong>%{label}</strong> in <strong>%{criterion}</strong> was created with weight <strong>%{incentive_weight}</strong>.
+            destroy_html: Criterion Incentive <strong>%{label}</strong> in <strong>%{criterion}</strong> was removed.
+          label:
+            update_html: Criterion Incentive label in <strong>%{criterion}</strong> changed from <strong>%{old_status}</strong> to <strong>%{new_status}</strong>.
+          weight:
+            update_html: Criterion Incentive <strong>%{label}</strong> weight in <strong>%{criterion}</strong> changed from <strong>%{old_status}</strong> to <strong>%{new_status}</strong>.
         scheme_category:
           name:
             update_html: Category <strong>%{old_name}</strong> was renamed to <strong>%{new_name}</strong>.

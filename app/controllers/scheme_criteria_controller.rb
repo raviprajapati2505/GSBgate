@@ -64,6 +64,7 @@ class SchemeCriteriaController < AuthenticatedController
     permitted_params += SchemeCriterion::INCENTIVE_1_ATTRIBUTES
     permitted_params += SchemeCriterion::INCENTIVE_2_ATTRIBUTES
     permitted_params += SchemeCriterion::INCENTIVE_3_ATTRIBUTES
+    permitted_params += [scheme_criterion_incentives_attributes: [:id, :incentive_weight, :label, :_destroy]]
     params.require(:scheme_criterion).permit(permitted_params)
   end
 end
