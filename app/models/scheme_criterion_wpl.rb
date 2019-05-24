@@ -1,0 +1,3 @@
+class SchemeCriterionWpl < SchemeCriterionPerformanceLabel
+
+end

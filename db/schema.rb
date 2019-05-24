@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_20_070556) do
+ActiveRecord::Schema.define(version: 2019_05_23_111053) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -345,6 +345,16 @@ ActiveRecord::Schema.define(version: 2019_05_20_070556) do
     t.index ["scheme_criterion_id"], name: "index_incentives_to_scheme_criteria"
   end
 
+  create_table "scheme_criterion_performance_labels", force: :cascade do |t|
+    t.bigint "scheme_criterion_id"
+    t.string "type", null: false
+    t.string "label"
+    t.integer "display_weight", default: 0
+    t.string "levels", default: "---\n- 0\n- 1\n- 2\n- 3\n"
+    t.string "bands", default: "---\n- A*\n- A\n- B\n- C\n- D\n- E\n- F\n- G\n"
+    t.index ["scheme_criterion_id"], name: "index_perf_labels_to_scheme_criteria"
+  end
+
   create_table "scheme_criterion_texts", id: :serial, force: :cascade do |t|
     t.string "name"
     t.text "html_text"
@@ -411,6 +421,27 @@ ActiveRecord::Schema.define(version: 2019_05_20_070556) do
     t.boolean "incentive_scored", default: false
     t.index ["scheme_criterion_incentive_id"], name: "index_incentives_to_scheme_criterion_incentives"
     t.index ["scheme_mix_criterion_id"], name: "index_incentives_to_scheme_mix_criteria"
+  end
+
+  create_table "scheme_mix_criterion_performance_labels", force: :cascade do |t|
+    t.bigint "scheme_mix_criterion_id"
+    t.bigint "scheme_criterion_performance_labels_id"
+    t.string "type", null: false
+    t.integer "level"
+    t.string "band"
+    t.decimal "epc"
+    t.decimal "wpc"
+    t.decimal "cooling"
+    t.decimal "lighting"
+    t.decimal "auxiliaries"
+    t.decimal "dhw"
+    t.decimal "others"
+    t.decimal "generation"
+    t.decimal "indoor_use"
+    t.decimal "irrigation"
+    t.decimal "cooling_tower"
+    t.index ["scheme_criterion_performance_labels_id"], name: "index_perf_labels_to_scheme_criterion_perf_labels"
+    t.index ["scheme_mix_criterion_id"], name: "index_perf_labels_to_scheme_mix_criteria"
   end
 
   create_table "scheme_mixes", id: :serial, force: :cascade do |t|
@@ -512,6 +543,7 @@ ActiveRecord::Schema.define(version: 2019_05_20_070556) do
   add_foreign_key "scheme_criteria_requirements", "requirements"
   add_foreign_key "scheme_criteria_requirements", "scheme_criteria"
   add_foreign_key "scheme_criterion_incentives", "scheme_criteria"
+  add_foreign_key "scheme_criterion_performance_labels", "scheme_criteria"
   add_foreign_key "scheme_criterion_texts", "scheme_criteria"
   add_foreign_key "scheme_mix_criteria", "scheme_criteria"
   add_foreign_key "scheme_mix_criteria", "scheme_mixes"
@@ -521,6 +553,8 @@ ActiveRecord::Schema.define(version: 2019_05_20_070556) do
   add_foreign_key "scheme_mix_criteria_requirement_data", "scheme_mix_criteria"
   add_foreign_key "scheme_mix_criterion_incentives", "scheme_criterion_incentives"
   add_foreign_key "scheme_mix_criterion_incentives", "scheme_mix_criteria"
+  add_foreign_key "scheme_mix_criterion_performance_labels", "scheme_criterion_performance_labels", column: "scheme_criterion_performance_labels_id"
+  add_foreign_key "scheme_mix_criterion_performance_labels", "scheme_mix_criteria"
   add_foreign_key "scheme_mixes", "certification_paths"
   add_foreign_key "scheme_mixes", "schemes"
   add_foreign_key "tasks", "certification_paths"

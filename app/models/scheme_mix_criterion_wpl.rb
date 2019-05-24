@@ -1,0 +1,3 @@
+class SchemeMixCriterionWpl < SchemeMixCriterionPerformanceLabel
+
+end
