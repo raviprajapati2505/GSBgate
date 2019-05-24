@@ -25,8 +25,8 @@ gem 'pg'
 gem 'prawn'
 gem 'prawn-table'
 gem 'puma'
-gem 'roo'
-gem 'rubyzip'
+gem 'roo', '2.5.1'
+gem 'rubyzip', '~> 1.1'
 gem 'sass-rails'
 gem 'select2-rails', '< 4.0.0'
 gem 'sprockets'
@@ -43,6 +43,8 @@ group :development do
   gem 'capistrano-rails'
   gem 'capistrano-rbenv'
   gem 'capistrano-systemd'
+  gem 'axlsx', '~> 2.1.0.pre'
+  gem 'axlsx_rails'
 end
 
 source 'http://rails-assets.org' do

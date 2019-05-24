@@ -135,8 +135,8 @@
                     <% end %>
                   </td>
                   <td>
-                    <div><%= @scheme_mix.scheme.weight_for_category(category) %> %</div>
-                    <% if (@scheme_mix.scheme.scheme_criteria.for_category(category).sum(SchemeCriterion::INCENTIVE_MINUS_1_ATTRIBUTES.join(' + ')) + @scheme_mix.scheme.scheme_criteria.for_category(category).sum(SchemeCriterion::INCENTIVE_0_ATTRIBUTES.join(' + ')) + @scheme_mix.scheme.scheme_criteria.for_category(category).sum(SchemeCriterion::INCENTIVE_1_ATTRIBUTES.join(' + ')) + @scheme_mix.scheme.scheme_criteria.for_category(category).sum(SchemeCriterion::INCENTIVE_2_ATTRIBUTES.join(' + ')) + @scheme_mix.scheme.scheme_criteria.for_category(category).sum(SchemeCriterion::INCENTIVE_3_ATTRIBUTES.join(' + '))) > 0  %>
+                    <div><%= @scheme_mix.scheme.weight_for_category(category) %> %
+                    <% if (@scheme_mix.scheme.scheme_criteria.for_category(category).sum(SchemeCriterion::INCENTIVE_MINUS_1_ATTRIBUTES.join(' + ')) + @scheme_mix.scheme.scheme_criteria.for_category(category).sum(SchemeCriterion::INCENTIVE_0_ATTRIBUTES.join(' + ')) + @scheme_mix.scheme.scheme_criteria.for_category(category).sum(SchemeCriterion::INCENTIVE_1_ATTRIBUTES.join(' + ')) + @scheme_mix.scheme.scheme_criteria.for_category(category).sum(SchemeCriterion::INCENTIVE_2_ATTRIBUTES.join(' + ')) + @scheme_mix.scheme.scheme_criteria.for_category(category).sum(SchemeCriterion::INCENTIVE_3_ATTRIBUTES.join(' + ')) + SchemeCriterionIncentive.for_category(@scheme_mix.scheme, category).sum(:incentive_weight)) > 0  %>
                         <span class="incentive-weight">
                           <%
                             tooltip_text = 'Incentive weights<br/>'
@@ -154,6 +154,7 @@
                           <%= tooltip(tooltip_text) %>
                         </span>
                     <% end %>
+                    </div>
                   </td>
                   <td>
                     <%=

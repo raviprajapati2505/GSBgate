@@ -77,9 +77,9 @@ class SchemeCriterion < ApplicationRecord
         yaml_scores = YAML.load(yaml_scores) if yaml_scores.is_a?(String)
         yaml_scores.each do |score|
           unless score.is_a?(Array)
-            unless score.empty?
+            # unless score.empty?
               new_scores.push([score.to_i, score.to_f])
-            end
+            # end
           else
             new_scores.push(score)
           end
