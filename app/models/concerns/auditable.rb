@@ -365,6 +365,65 @@ module Auditable
           elsif (action == AUDIT_LOG_DESTROY)
             system_messages << {message: t('models.concerns.auditable.scheme_criterion_incentive.status.destroy_html', label: self.label, criterion: self.scheme_criterion.name)}
           end
+        when SchemeMixCriterionEpl.name.demodulize
+          project = self.scheme_mix_criterion.scheme_mix.certification_path.project
+          certification_path = self.scheme_mix_criterion.scheme_mix.certification_path
+          if (action == AUDIT_LOG_UPDATE)
+            system_messages_temp = []
+            if self.saved_change_to_level?
+              system_messages_temp << {message: t('models.concerns.audittable.scheme_mix_criterion_epl.level.update_html', label: self.scheme_criterion_performance_label.label, criterion: self.scheme_mix_criterion.name, old_level: self.level_before_last_save, new_level: self.level)}
+            end
+            if self.saved_change_to_band?
+              system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion_epl.band.update_html', label: self.scheme_criterion_performance_label.label, criterion: self.scheme_mix_criterion.name, old_band: self.band_before_last_save, new_band: self.band)}
+            end
+            if self.saved_change_to_epc?
+              system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion_epl.epc.update_html', label: self.scheme_criterion_performance_label.label, criterion: self.scheme_mix_criterion.name, old_epc: self.epc_before_last_save, new_epc: self.epc)}
+            end
+            if self.saved_change_to_cooling?
+              system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion_epl.cooling.update_html', label: self.scheme_criterion_performance_label.label, criterion: self.scheme_mix_criterion.name, old_cooling: self.cooling_before_last_save, new_cooling: self.cooling)}
+            end
+            if self.saved_change_to_lighting?
+              system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion_epl.lighting.update_html', label: self.scheme_criterion_performance_label.label, criterion: self.scheme_mix_criterion.name, old_lighting: self.lighting_before_last_save, new_lighting: self.lighting)}
+            end
+            if self.saved_change_to_auxiliaries?
+              system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion_epl.auxiliaries.update_html', label: self.scheme_criterion_performance_label.label, criterion: self.scheme_mix_criterion.name, old_auxiliaries: self.auxiliaries_before_last_save, new_auxiliaries: self.auxiliaries)}
+            end
+            if self.saved_change_to_dhw?
+              system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion_epl.dhw.update_html', label: self.scheme_criterion_performance_label.label, criterion: self.scheme_mix_criterion.name, old_dhw: self.dhw_before_last_save, new_dhw: self.dhw)}
+            end
+            if self.saved_change_to_others?
+              system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion_epl.others.update_html', label: self.scheme_criterion_performance_label.label, criterion: self.scheme_mix_criterion.name, old_others: self.others_before_last_save, new_lighting: self.others)}
+            end
+            if self.saved_change_to_generation?
+              system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion_epl.generation.update_html', label: self.scheme_criterion_performance_label.label, criterion: self.scheme_mix_criterion.name, old_generation: self.generation_before_last_save, new_generation: self.generation)}
+            end
+            system_messages = system_messages + system_messages_temp
+          end
+        when SchemeMixCriterionWpl.name.demodulize
+          project = self.scheme_mix_criterion.scheme_mix.certification_path.project
+          certification_path = self.scheme_mix_criterion.scheme_mix.certification_path
+          if (action == AUDIT_LOG_UPDATE)
+            system_messages_temp = []
+            if self.saved_change_to_level?
+              system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion_wpl.level.update_html', label: self.scheme_criterion_performance_label.label, criterion: self.scheme_mix_criterion.name, old_level: self.level_before_last_save, new_level: self.level)}
+            end
+            if self.saved_change_to_band?
+              system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion_wpl.band.update_html', label: self.scheme_criterion_performance_label.label, criterion: self.scheme_mix_criterion.name, old_band: self.band_before_last_save, new_band: self.band)}
+            end
+            if self.saved_change_to_wpc?
+              system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion_wpl.wpc.update_html', label: self.scheme_criterion_performance_label.label, criterion: self.scheme_mix_criterion.name, old_wpc: self.wpc_before_last_save, new_wpc: self.wpc)}
+            end
+            if self.saved_change_to_indoor_use?
+              system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion_wpl.indoor_use.update_html', label: self.scheme_criterion_performance_label.label, criterion: self.scheme_mix_criterion.name, old_indoor_use: self.indoor_use_before_last_save, new_indoor_use: self.indoor_use)}
+            end
+            if self.saved_change_to_irrigation?
+              system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion_wpl.irrigation.update_html', label: self.scheme_criterion_performance_label.label, criterion: self.scheme_mix_criterion.name, old_irrigation: self.irrigation_before_last_save, new_irrigation: self.irrigation)}
+            end
+            if self.saved_change_to_cooling_tower?
+              system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion_wpl.cooling_tower.update_html', label: self.scheme_criterion_performance_label.label, criterion: self.scheme_mix_criterion.name, old_cooling_tower: self.cooling_tower_before_last_save, new_cooling_tower: self.cooling_tower)}
+            end
+            system_messages = system_messages + system_messages_temp
+          end
       end
 
       # Format the user comment

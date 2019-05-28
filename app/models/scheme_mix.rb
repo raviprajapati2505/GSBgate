@@ -68,6 +68,14 @@ class SchemeMix < ApplicationRecord
         scheme_mix_criterion.scheme_mix_criterion_incentives.create!(scheme_criterion_incentive_id: incentive_id, incentive_scored: false)
       end
 
+      # Create all SchemeMixCriterionEpls and SchemeMixCriterionWpls
+      scheme_criterion.scheme_criterion_epl_ids.each do |epl_id|
+        scheme_mix_criterion.scheme_mix_criterion_epls.create!(scheme_criterion_performance_labels_id: epl_id)
+      end
+      scheme_criterion.scheme_criterion_wpl_ids.each do |wpl_id|
+        scheme_mix_criterion.scheme_mix_criterion_wpls.create!(scheme_criterion_performance_labels_id: wpl_id)
+      end
+
       # Don't create requirement data records for criteria that inherit their scores from the main scheme mix
       unless has_main_scheme_mix_criterion
         # Loop all requirements of the criterion

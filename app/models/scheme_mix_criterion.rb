@@ -14,12 +14,12 @@ class SchemeMixCriterion < ApplicationRecord
   belongs_to :main_scheme_mix_criterion, class_name: 'SchemeMixCriterion', optional: true
   has_many :archives, as: :subject, dependent: :destroy
   has_many :scheme_mix_criterion_incentives, dependent: :destroy
-  has_one :scheme_mix_criterion_epl, dependent: :destroy
-  has_one :scheme_mix_criterion_wpl, dependent: :destroy
+  has_many :scheme_mix_criterion_epls, dependent: :destroy
+  has_many :scheme_mix_criterion_wpls, dependent: :destroy
 
   accepts_nested_attributes_for :scheme_mix_criterion_incentives
-  accepts_nested_attributes_for :scheme_mix_criterion_epl
-  accepts_nested_attributes_for :scheme_mix_criterion_wpl
+  accepts_nested_attributes_for :scheme_mix_criterion_epls
+  accepts_nested_attributes_for :scheme_mix_criterion_wpls
 
   enum status: {submitting: 10, submitted: 20, verifying: 30, score_awarded: 41, score_downgraded: 42, score_upgraded: 43, score_minimal:44, appealed: 50, submitting_after_appeal: 60, submitted_after_appeal: 70, verifying_after_appeal: 80, score_awarded_after_appeal: 91, score_downgraded_after_appeal: 92, score_upgraded_after_appeal: 93, score_minimal_after_appeal:94 }
 

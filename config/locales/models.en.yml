@@ -162,6 +162,36 @@ en:
         scheme_mix_criterion_incentive:
           incentive_scored:
             update_html: The incentive <strong>%{label}</strong> in <strong>%{criterion}</strong> was changed from <strong>%{old_status}</strong> to <strong>%{new_status}</strong>.
+        scheme_mix_criterion_epl:
+          level:
+            update_html: The Energy Performance <strong>%{label}</strong> level for criterion <strong>%{criterion}</strong> was changed from <strong>%{old_level}</strong> to <strong>%{new_level}</strong>.
+          band:
+            update_html: The Energy Performance <strong>%{label}</strong> band for criterion <strong>%{criterion}</strong> was changed from <strong>%{old_band}</strong> to <strong>%{new_band}</strong>.
+          epc:
+            update_html: The Energy Performance <strong>%{label}</strong> EPC for criterion <strong>%{criterion}</strong> was changed from <strong>%{old_epc}</strong> to <strong>%{new_epc}</strong>.
+          cooling:
+            update_html: The Energy Performance <strong>%{label}</strong> cooling for criterion <strong>%{criterion}</strong> was changed from <strong>%{old_cooling}</strong> to <strong>%{new_cooling}</strong>.
+          lighting:
+            update_html: The Energy Performance <strong>%{label}</strong> lighting for criterion <strong>%{criterion}</strong> was changed from <strong>%{old_lighting}</strong> to <strong>%{new_lighting}</strong>.
+          auxiliaries:
+            update_html: The Energy Performance <strong>%{label}</strong> auxiliaries for criterion <strong>%{criterion}</strong> was changed from <strong>%{old_auxiliaries}</strong> to <strong>%{new_auxiliaries}</strong>.
+          dhw:
+            update_html: The Energy Performance <strong>%{label}</strong> DHW for criterion <strong>%{criterion}</strong> was changed from <strong>%{old_dhw}</strong> to <strong>%{new_dhw}</strong>.
+          generation:
+            update_html: The Energy Performance <strong>%{label}</strong> generation for criterion <strong>%{criterion}</strong> was changed from <strong>%{old_generation}</strong> to <strong>%{new_generation}</strong>.
+        scheme_mix_criterion_wpl:
+          level:
+            update_html: The Water Consumption <strong>%{label}</strong> level for criterion <strong>%{criterion}</strong> was changed from <strong>%{old_level}</strong> to <strong>%{new_level}</strong>.
+          band:
+            update_html: The Water Consumption <strong>%{label}</strong> band for criterion <strong>%{criterion}</strong> was changed from <strong>%{old_band}</strong> to <strong>%{new_band}</strong>.
+          wpc:
+            update_html: The Water Consumption <strong>%{label}</strong> WPC for criterion <strong>%{criterion}</strong> was changed from <strong>%{old_wpc}</strong> to <strong>%{new_wpc}</strong>.
+          indoor_use:
+            update_html: The Water Consumption <strong>%{label}</strong> indoor use for criterion <strong>%{criterion}</strong> was changed from <strong>%{old_indoor_use}</strong> to <strong>%{new_indoor_use}</strong>.
+          irrigation:
+            update_html: The Water Consumption <strong>%{label}</strong> irrigation for criterion <strong>%{criterion}</strong> was changed from <strong>%{old_irrigation}</strong> to <strong>%{new_irrigation}</strong>.
+          cooling_tower:
+            update_html: The Water Consumption <strong>%{label}</strong> cooling tower for criterion <strong>%{criterion}</strong> was changed from <strong>%{old_cooling_tower}</strong> to <strong>%{new_cooling_tower}</strong>.
         requirement_datum:
           status:
             update_html: The status of requirement <strong>%{requirement}</strong> was changed from <strong>%{old_status}</strong> to <strong>%{new_status}</strong>.

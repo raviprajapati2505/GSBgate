@@ -144,11 +144,13 @@
                             SchemeCriterion::INCENTIVE_MINUS_1_ATTRIBUTES.each do |incentive_minus_1|
                               minimum_incentives << @scheme_mix.scheme.scheme_criteria.for_category(category).minimum(incentive_minus_1)
                             end
-                            minimum_incentives << SchemeCriterionIncentive.for_category(@scheme_mix.scheme, category).minimum(:incentive_weight)
+                            minimum_incentive = SchemeCriterionIncentive.for_category(@scheme_mix.scheme, category).minimum(:incentive_weight)
+                            minimum_incentives << minimum_incentive unless minimum_incentive.nil?
 
                             maximum_incentive = []
                             maximum_incentive << @scheme_mix.scheme.scheme_criteria.for_category(category).sum(SchemeCriterion::INCENTIVE_3_ATTRIBUTES.join(' + '))
-                            maximum_incentive << SchemeCriterionIncentive.for_category(@scheme_mix.scheme, category).sum(:incentive_weight)
+                            incentive_sum = SchemeCriterionIncentive.for_category(@scheme_mix.scheme, category).sum(:incentive_weight)
+                            maximum_incentive << incentive_sum unless incentive_sum.nil?
                             tooltip_text += "Between #{minimum_incentives.min}% and #{maximum_incentive.sum}%"
                           %>
                           <%= tooltip(tooltip_text) %>

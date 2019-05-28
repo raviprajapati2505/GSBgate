@@ -7,14 +7,14 @@ class SchemeCriterion < ApplicationRecord
   has_many :scheme_criteria_requirements
   has_many :requirements, through: :scheme_criteria_requirements
   has_many :scheme_criterion_incentives, inverse_of: :scheme_criterion
-  has_one :scheme_criterion_epl, inverse_of: :scheme_criterion
-  has_one :scheme_criterion_wpl, inverse_of: :scheme_criterion
+  has_many :scheme_criterion_epls, inverse_of: :scheme_criterion
+  has_many :scheme_criterion_wpls, inverse_of: :scheme_criterion
   serialize :scores_a
   serialize :scores_b
 
   accepts_nested_attributes_for :scheme_criterion_incentives, reject_if: :all_blank, allow_destroy: true
-  accepts_nested_attributes_for :scheme_criterion_epl, reject_if: :all_blank, allow_destroy: true
-  accepts_nested_attributes_for :scheme_criterion_wpl, reject_if: :all_blank, allow_destroy: true
+  accepts_nested_attributes_for :scheme_criterion_epls, reject_if: :all_blank, allow_destroy: true
+  accepts_nested_attributes_for :scheme_criterion_wpls, reject_if: :all_blank, allow_destroy: true
 
   WEIGHT_ATTRIBUTES = ['weight_a', 'weight_b'].freeze
   SCORE_ATTRIBUTES = ['scores_a', 'scores_b'].freeze

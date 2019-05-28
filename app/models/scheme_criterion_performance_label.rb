@@ -1,5 +1,5 @@
 class SchemeCriterionPerformanceLabel < ApplicationRecord
-  # TODO include Auditable
+  # self.abstract_class = true
 
   belongs_to :scheme_criterion, optional: true
   serialize :levels
