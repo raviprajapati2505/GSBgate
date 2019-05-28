@@ -211,6 +211,9 @@ class SchemeMixCriteriaController < AuthenticatedController
     permitted_params += SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES
     permitted_params += SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES
     permitted_params += SchemeMixCriterion::INCENTIVE_SCORED_ATTRIBUTES
+    permitted_params += [scheme_mix_criterion_incentives_attributes: [:id, :incentive_scored]]
+    permitted_params += [scheme_mix_criterion_epls_attributes: [:id, :epc, :level, :band, :cooling, :lighting, :auxiliaries, :dhw, :others, :generation]]
+    permitted_params += [scheme_mix_criterion_wpls_attributes: [:id, :wpc, :level, :band, :indoor_use, :irrigation, :cooling_tower]]
     params.require(:scheme_mix_criterion).permit(permitted_params)
   end
 

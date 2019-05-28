@@ -200,6 +200,7 @@ class ProjectsController < AuthenticatedController
     @page_title = 'New project'
     @project = Project.new
     @project.service_provider = current_user.employer_name
+    @project.service_provider_2 = current_user.employer_name
     @certificates = Certificate.all
   end
 

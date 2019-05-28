@@ -42,6 +42,8 @@ module Auditable
         project = self.certification_path.project
       when CertifierCertificationPathDocument.name.demodulize
         project = self.certification_path.project
+      when SchemeMixCriterionIncentive
+        project = self.scheme_mix_criterion.scheme_mix.certification_path.project
     end
     return project
   end
@@ -285,27 +287,34 @@ module Auditable
           end
         when SchemeCriterion.name.demodulize
           if (action == AUDIT_LOG_UPDATE)
+            system_messages_temp = []
             if self.saved_change_to_name?
-              system_messages << {message: t('models.concerns.auditable.scheme_criterion.name.update_html', old_name: self.name_before_last_save, new_name: self.name)}
-            else
-              SchemeCriterion::SCORE_ATTRIBUTES.each_with_index do |scores, index|
-                if self.send("saved_change_to_#{SchemeCriterion::WEIGHT_ATTRIBUTES[index]}?")
-                  system_messages << {message: t('models.concerns.auditable.scheme_criterion.weight.update_html', score_label: self.read_attribute(SchemeCriterion::LABEL_ATTRIBUTES[index].to_sym) || '', old_weight: self.send("#{SchemeCriterion::WEIGHT_ATTRIBUTES[index]}_before_last_save"), new_weight: self.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[index].to_sym))}
-                elsif self.send("saved_change_to_#{scores}?")
-                  system_messages << {message: t('models.concerns.auditable.scheme_criterion.scores.update_html', score_label: self.read_attribute(SchemeCriterion::LABEL_ATTRIBUTES[index].to_sym) || '', old_scores: self.send("#{scores}_before_last_save").to_s, new_scores: self.read_attribute(scores.to_sym).to_s)}
-                elsif self.send("saved_change_to_#{SchemeCriterion::INCENTIVE_MINUS_1_ATTRIBUTES[index]}?")
-                  system_messages << {message: t('models.concerns.auditable.scheme_criterion.incentive_weight.update_html', score_label: self.read_attribute(SchemeCriterion::LABEL_ATTRIBUTES[index].to_sym) || '', old_incentive: self.send("#{SchemeCriterion::INCENTIVE_MINUS_1_ATTRIBUTES[index]}_before_last_save"), new_incentive: self.read_attribute(SchemeCriterion::INCENTIVE_MINUS_1_ATTRIBUTES[index].to_sym))}
-                elsif self.send("saved_change_to_#{SchemeCriterion::INCENTIVE_0_ATTRIBUTES[index]}?")
-                  system_messages << {message: t('models.concerns.auditable.scheme_criterion.incentive_weight.update_html', score_label: self.read_attribute(SchemeCriterion::LABEL_ATTRIBUTES[index].to_sym) || '', old_incentive: self.send("#{SchemeCriterion::INCENTIVE_0_ATTRIBUTES[index]}_before_last_save"), new_incentive: self.read_attribute(SchemeCriterion::INCENTIVE_0_ATTRIBUTES[index].to_sym))}
-                elsif self.send("saved_change_to_#{SchemeCriterion::INCENTIVE_1_ATTRIBUTES[index]}?")
-                  system_messages << {message: t('models.concerns.auditable.scheme_criterion.incentive_weight.update_html', score_label: self.read_attribute(SchemeCriterion::LABEL_ATTRIBUTES[index].to_sym) || '', old_incentive: self.send("#{SchemeCriterion::INCENTIVE_1_ATTRIBUTES[index]}_before_last_save"), new_incentive: self.read_attribute(SchemeCriterion::INCENTIVE_1_ATTRIBUTES[index].to_sym))}
-                elsif self.send("saved_change_to_#{SchemeCriterion::INCENTIVE_2_ATTRIBUTES[index]}?")
-                  system_messages << {message: t('models.concerns.auditable.scheme_criterion.incentive_weight.update_html', score_label: self.read_attribute(SchemeCriterion::LABEL_ATTRIBUTES[index].to_sym) || '', old_incentive: self.send("#{SchemeCriterion::INCENTIVE_2_ATTRIBUTES[index]}_before_last_save"), new_incentive: self.read_attribute(SchemeCriterion::INCENTIVE_2_ATTRIBUTES[index].to_sym))}
-                elsif self.send("saved_change_to_#{SchemeCriterion::INCENTIVE_3_ATTRIBUTES[index]}?")
-                  system_messages << {message: t('models.concerns.auditable.scheme_criterion.incentive_weight.update_html', score_label: self.read_attribute(SchemeCriterion::LABEL_ATTRIBUTES[index].to_sym) || '', old_incentive: self.send("#{SchemeCriterion::INCENTIVE_3_ATTRIBUTES[index]}_before_last_save"), new_incentive: self.read_attribute(SchemeCriterion::INCENTIVE_3_ATTRIBUTES[index].to_sym))}
-                end
+              system_messages_temp << {message: t('models.concerns.auditable.scheme_criterion.name.update_html', old_name: self.name_before_last_save, new_name: self.name)}
+            end
+            SchemeCriterion::SCORE_ATTRIBUTES.each_with_index do |scores, index|
+              if self.send("saved_change_to_#{SchemeCriterion::WEIGHT_ATTRIBUTES[index]}?")
+                system_messages_temp << {message: t('models.concerns.auditable.scheme_criterion.weight.update_html', score_label: self.read_attribute(SchemeCriterion::LABEL_ATTRIBUTES[index].to_sym) || '', old_weight: self.send("#{SchemeCriterion::WEIGHT_ATTRIBUTES[index]}_before_last_save"), new_weight: self.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[index].to_sym))}
+              end
+              if self.send("saved_change_to_#{scores}?")
+                system_messages_temp << {message: t('models.concerns.auditable.scheme_criterion.scores.update_html', score_label: self.read_attribute(SchemeCriterion::LABEL_ATTRIBUTES[index].to_sym) || '', old_scores: self.send("#{scores}_before_last_save").to_s, new_scores: self.read_attribute(scores.to_sym).to_s)}
+              end
+              if self.send("saved_change_to_#{SchemeCriterion::INCENTIVE_MINUS_1_ATTRIBUTES[index]}?")
+                system_messages_temp << {message: t('models.concerns.auditable.scheme_criterion.incentive_weight.update_html', score_label: self.read_attribute(SchemeCriterion::LABEL_ATTRIBUTES[index].to_sym) || '', old_incentive: self.send("#{SchemeCriterion::INCENTIVE_MINUS_1_ATTRIBUTES[index]}_before_last_save"), new_incentive: self.read_attribute(SchemeCriterion::INCENTIVE_MINUS_1_ATTRIBUTES[index].to_sym))}
+              end
+              if self.send("saved_change_to_#{SchemeCriterion::INCENTIVE_0_ATTRIBUTES[index]}?")
+                system_messages_temp << {message: t('models.concerns.auditable.scheme_criterion.incentive_weight.update_html', score_label: self.read_attribute(SchemeCriterion::LABEL_ATTRIBUTES[index].to_sym) || '', old_incentive: self.send("#{SchemeCriterion::INCENTIVE_0_ATTRIBUTES[index]}_before_last_save"), new_incentive: self.read_attribute(SchemeCriterion::INCENTIVE_0_ATTRIBUTES[index].to_sym))}
+              end
+              if self.send("saved_change_to_#{SchemeCriterion::INCENTIVE_1_ATTRIBUTES[index]}?")
+                system_messages_temp << {message: t('models.concerns.auditable.scheme_criterion.incentive_weight.update_html', score_label: self.read_attribute(SchemeCriterion::LABEL_ATTRIBUTES[index].to_sym) || '', old_incentive: self.send("#{SchemeCriterion::INCENTIVE_1_ATTRIBUTES[index]}_before_last_save"), new_incentive: self.read_attribute(SchemeCriterion::INCENTIVE_1_ATTRIBUTES[index].to_sym))}
+              end
+              if self.send("saved_change_to_#{SchemeCriterion::INCENTIVE_2_ATTRIBUTES[index]}?")
+                system_messages_temp << {message: t('models.concerns.auditable.scheme_criterion.incentive_weight.update_html', score_label: self.read_attribute(SchemeCriterion::LABEL_ATTRIBUTES[index].to_sym) || '', old_incentive: self.send("#{SchemeCriterion::INCENTIVE_2_ATTRIBUTES[index]}_before_last_save"), new_incentive: self.read_attribute(SchemeCriterion::INCENTIVE_2_ATTRIBUTES[index].to_sym))}
+              end
+              if self.send("saved_change_to_#{SchemeCriterion::INCENTIVE_3_ATTRIBUTES[index]}?")
+                system_messages_temp << {message: t('models.concerns.auditable.scheme_criterion.incentive_weight.update_html', score_label: self.read_attribute(SchemeCriterion::LABEL_ATTRIBUTES[index].to_sym) || '', old_incentive: self.send("#{SchemeCriterion::INCENTIVE_3_ATTRIBUTES[index]}_before_last_save"), new_incentive: self.read_attribute(SchemeCriterion::INCENTIVE_3_ATTRIBUTES[index].to_sym))}
               end
             end
+            system_messages = system_messages + system_messages_temp
           end
         when SchemeCategory.name.demodulize
           if (action == AUDIT_LOG_UPDATE)
@@ -332,6 +341,88 @@ module Auditable
           if (action == AUDIT_LOG_CREATE)
             force_visibility_public = true
             system_messages << {message: t('models.concerns.auditable.certification_path_document.status.create_html', document: self.name)}
+          end
+        when SchemeMixCriterionIncentive.name.demodulize
+          project = self.scheme_mix_criterion.scheme_mix.certification_path.project
+          certification_path = self.scheme_mix_criterion.scheme_mix.certification_path
+          if (action == AUDIT_LOG_UPDATE)
+            if self.saved_change_to_incentive_scored?
+              system_messages << {message: t('models.concerns.auditable.scheme_mix_criterion_incentive.incentive_scored.update_html', label: self.scheme_criterion_incentive.label, criterion: self.scheme_mix_criterion.name, old_status: self.incentive_scored_before_last_save, new_status: self.incentive_scored)}
+            end
+          end
+        when SchemeCriterionIncentive.name.demodulize
+          if (action == AUDIT_LOG_CREATE)
+            system_messages << {message: t('models.concerns.auditable.scheme_criterion_incentive.status.create_html', label: self.label, incentive_weight: self.incentive_weight, criterion: self.scheme_criterion.name)}
+          elsif (action == AUDIT_LOG_UPDATE)
+            system_messages_temp = []
+            if self.saved_change_to_label?
+              system_messages_temp << {message: t('models.concerns.auditable.scheme_criterion_incentive.label.update_html', old_status: self.label_before_last_save, new_status: self.label, criterion: self.scheme_criterion.name)}
+            end
+            if self.saved_change_to_incentive_weight?
+              system_messages_temp << {message: t('models.concerns.auditable.scheme_criterion_incentive.weight.update_html', label: self.label, old_status: self.incentive_weight_before_last_save, new_status: self.incentive_weight, criterion: self.scheme_criterion.name)}
+            end
+            system_messages = system_messages + system_messages_temp
+          elsif (action == AUDIT_LOG_DESTROY)
+            system_messages << {message: t('models.concerns.auditable.scheme_criterion_incentive.status.destroy_html', label: self.label, criterion: self.scheme_criterion.name)}
+          end
+        when SchemeMixCriterionEpl.name.demodulize
+          project = self.scheme_mix_criterion.scheme_mix.certification_path.project
+          certification_path = self.scheme_mix_criterion.scheme_mix.certification_path
+          if (action == AUDIT_LOG_UPDATE)
+            system_messages_temp = []
+            if self.saved_change_to_level?
+              system_messages_temp << {message: t('models.concerns.audittable.scheme_mix_criterion_epl.level.update_html', label: self.scheme_criterion_performance_label.label, criterion: self.scheme_mix_criterion.name, old_level: self.level_before_last_save, new_level: self.level)}
+            end
+            if self.saved_change_to_band?
+              system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion_epl.band.update_html', label: self.scheme_criterion_performance_label.label, criterion: self.scheme_mix_criterion.name, old_band: self.band_before_last_save, new_band: self.band)}
+            end
+            if self.saved_change_to_epc?
+              system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion_epl.epc.update_html', label: self.scheme_criterion_performance_label.label, criterion: self.scheme_mix_criterion.name, old_epc: self.epc_before_last_save, new_epc: self.epc)}
+            end
+            if self.saved_change_to_cooling?
+              system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion_epl.cooling.update_html', label: self.scheme_criterion_performance_label.label, criterion: self.scheme_mix_criterion.name, old_cooling: self.cooling_before_last_save, new_cooling: self.cooling)}
+            end
+            if self.saved_change_to_lighting?
+              system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion_epl.lighting.update_html', label: self.scheme_criterion_performance_label.label, criterion: self.scheme_mix_criterion.name, old_lighting: self.lighting_before_last_save, new_lighting: self.lighting)}
+            end
+            if self.saved_change_to_auxiliaries?
+              system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion_epl.auxiliaries.update_html', label: self.scheme_criterion_performance_label.label, criterion: self.scheme_mix_criterion.name, old_auxiliaries: self.auxiliaries_before_last_save, new_auxiliaries: self.auxiliaries)}
+            end
+            if self.saved_change_to_dhw?
+              system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion_epl.dhw.update_html', label: self.scheme_criterion_performance_label.label, criterion: self.scheme_mix_criterion.name, old_dhw: self.dhw_before_last_save, new_dhw: self.dhw)}
+            end
+            if self.saved_change_to_others?
+              system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion_epl.others.update_html', label: self.scheme_criterion_performance_label.label, criterion: self.scheme_mix_criterion.name, old_others: self.others_before_last_save, new_lighting: self.others)}
+            end
+            if self.saved_change_to_generation?
+              system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion_epl.generation.update_html', label: self.scheme_criterion_performance_label.label, criterion: self.scheme_mix_criterion.name, old_generation: self.generation_before_last_save, new_generation: self.generation)}
+            end
+            system_messages = system_messages + system_messages_temp
+          end
+        when SchemeMixCriterionWpl.name.demodulize
+          project = self.scheme_mix_criterion.scheme_mix.certification_path.project
+          certification_path = self.scheme_mix_criterion.scheme_mix.certification_path
+          if (action == AUDIT_LOG_UPDATE)
+            system_messages_temp = []
+            if self.saved_change_to_level?
+              system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion_wpl.level.update_html', label: self.scheme_criterion_performance_label.label, criterion: self.scheme_mix_criterion.name, old_level: self.level_before_last_save, new_level: self.level)}
+            end
+            if self.saved_change_to_band?
+              system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion_wpl.band.update_html', label: self.scheme_criterion_performance_label.label, criterion: self.scheme_mix_criterion.name, old_band: self.band_before_last_save, new_band: self.band)}
+            end
+            if self.saved_change_to_wpc?
+              system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion_wpl.wpc.update_html', label: self.scheme_criterion_performance_label.label, criterion: self.scheme_mix_criterion.name, old_wpc: self.wpc_before_last_save, new_wpc: self.wpc)}
+            end
+            if self.saved_change_to_indoor_use?
+              system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion_wpl.indoor_use.update_html', label: self.scheme_criterion_performance_label.label, criterion: self.scheme_mix_criterion.name, old_indoor_use: self.indoor_use_before_last_save, new_indoor_use: self.indoor_use)}
+            end
+            if self.saved_change_to_irrigation?
+              system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion_wpl.irrigation.update_html', label: self.scheme_criterion_performance_label.label, criterion: self.scheme_mix_criterion.name, old_irrigation: self.irrigation_before_last_save, new_irrigation: self.irrigation)}
+            end
+            if self.saved_change_to_cooling_tower?
+              system_messages_temp << {message: t('models.concerns.auditable.scheme_mix_criterion_wpl.cooling_tower.update_html', label: self.scheme_criterion_performance_label.label, criterion: self.scheme_mix_criterion.name, old_cooling_tower: self.cooling_tower_before_last_save, new_cooling_tower: self.cooling_tower)}
+            end
+            system_messages = system_messages + system_messages_temp
           end
       end
 

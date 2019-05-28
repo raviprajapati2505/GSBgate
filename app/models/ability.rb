@@ -45,6 +45,7 @@ class Ability
     scheme_mix_criterion_status_verifying = [SchemeMixCriterion.statuses[:verifying], SchemeMixCriterion.statuses[:verifying_after_appeal]]
     scheme_mix_criterion_status_verified = [SchemeMixCriterion.statuses[:score_awarded], SchemeMixCriterion.statuses[:score_downgraded], SchemeMixCriterion.statuses[:score_upgraded], SchemeMixCriterion.statuses[:score_minimal]]
     scheme_mix_criterion_status_verified_after_appeal = [SchemeMixCriterion.statuses[:score_awarded_after_appeal], SchemeMixCriterion.statuses[:score_downgraded_after_appeal], SchemeMixCriterion.statuses[:score_upgraded_after_appeal], SchemeMixCriterion.statuses[:score_minimal_after_appeal]]
+    scheme_mix_criterion_status_verifying_or_verified = scheme_mix_criterion_status_verifying | scheme_mix_criterion_status_verified | scheme_mix_criterion_status_verified_after_appeal
     #   SchemeMixCriteriaDocument.statuses
     document_approved = [SchemeMixCriteriaDocument.statuses[:approved]]
 
@@ -97,7 +98,6 @@ class Ability
       # CertificationPath controller
       can :read, CertificationPath, project: project_with_user_assigned
       can :list, CertificationPath, project: project_with_user_assigned
-      can :download_archive, CertificationPath, project: project_with_user_assigned
       can :download_signed_certificate, CertificationPath, project: project_with_user_assigned, certification_path_status: {id: CertificationPathStatus::CERTIFIED}
       # Project team
       can :apply, CertificationPath, project: project_with_user_as_cgp_project_manager
@@ -152,6 +152,13 @@ class Ability
       can :update_incentive_scored, SchemeMixCriterion, main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_verifying, scheme_mix: {certification_path: {project: project_with_user_as_certification_manager}}
       can :update_incentive_scored, SchemeMixCriterion, main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_verifying, certifier_id: user.id, scheme_mix: {certification_path: {project: project_with_user_in_gsas_trust_team}}
       can :screen, SchemeMixCriterion, main_scheme_mix_criterion: nil, screened: false, scheme_mix: {certification_path: {certification_path_status: {id: CertificationPathStatus::SCREENING}, project: project_with_user_in_gsas_trust_team}}
+      can :update, SchemeMixCriterionEpl, scheme_mix_criterion: {main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_verifying, scheme_mix: {certification_path: {project: project_with_user_as_certification_manager}}}
+      can :update, SchemeMixCriterionWpl, scheme_mix_criterion: {main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_verifying, scheme_mix: {certification_path: {project: project_with_user_as_certification_manager}}}
+      can :read, SchemeMixCriterionEpl, scheme_mix_criterion: {status: scheme_mix_criterion_status_verifying_or_verified, scheme_mix: {certification_path: {project: project_with_user_as_certification_manager}}}
+      can :read, SchemeMixCriterionEpl, scheme_mix_criterion: {status: scheme_mix_criterion_status_verifying_or_verified, scheme_mix: {certification_path: {project: project_with_user_as_enterprise_client}}}
+      can :read, SchemeMixCriterionWpl, scheme_mix_criterion: {status: scheme_mix_criterion_status_verifying_or_verified, scheme_mix: {certification_path: {project: project_with_user_as_certification_manager}}}
+      can :read, SchemeMixCriterionWpl, scheme_mix_criterion: {status: scheme_mix_criterion_status_verifying_or_verified, scheme_mix: {certification_path: {project: project_with_user_as_enterprise_client}}}
+
 
       # RequirementDatum controller
       can :read, RequirementDatum, scheme_mix_criteria: {scheme_mix: {certification_path: {project: project_with_user_assigned, certification_path_status: {id: CertificationPathStatus::STATUSES_ACTIVATED}}}}
@@ -228,7 +235,12 @@ class Ability
       can :apply_for_pcr, CertificationPath, pcr_track: false, certificate: {certification_type: [Certificate.certification_types[:letter_of_conformance], Certificate.certification_types[:final_design_certificate], Certificate.certification_types[:operations_certificate], Certificate.certification_types[:construction_certificate_stage1], Certificate.certification_types[:construction_certificate_stage2], Certificate.certification_types[:construction_certificate_stage3]]}
       can :cancel_pcr, CertificationPath, pcr_track: true, certificate: {certification_type: [Certificate.certification_types[:letter_of_conformance], Certificate.certification_types[:final_design_certificate], Certificate.certification_types[:operations_certificate], Certificate.certification_types[:construction_certificate_stage1], Certificate.certification_types[:construction_certificate_stage2], Certificate.certification_types[:construction_certificate_stage3]]}
       can :download_coverletter_report, CertificationPath, certification_path_status: {id: CertificationPathStatus::CERTIFIED}, certificate: {certification_type: Certificate.certification_types[:letter_of_conformance]}
-      can :download_archive, CertificationPath
+
+      # User can download archive if and only if user is chairman(gsas_trust_top_manager) and project team member
+      if  user.gsas_trust_top_manager?
+        can :download_archive, CertificationPath
+      end
+      
       can :download_signed_certificate, CertificationPath, certification_path_status: {id: CertificationPathStatus::CERTIFIED}
       if user.gsas_trust_admin?
         can [:edit_main_scheme_mix, :update_main_scheme_mix], CertificationPath, certification_path_status: {id: CertificationPathStatus::ACTIVATING}, development_type: {mixable: true}

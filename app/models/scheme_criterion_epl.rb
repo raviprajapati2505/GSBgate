@@ -1,0 +1,3 @@
+class SchemeCriterionEpl < SchemeCriterionPerformanceLabel
+
+end

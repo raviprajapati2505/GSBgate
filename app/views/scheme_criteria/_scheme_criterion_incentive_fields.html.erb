@@ -1,0 +1,6 @@
+<tr class="nested-fields">
+  <%= f.hidden_field :id %>
+  <td><%= f.text_field :label, hide_label: true %></td>
+  <td><%= f.number_field :incentive_weight, in: 0.00..100.00, step: 0.01, hide_label: true, append: '%' %></td>
+  <td><%= link_to_remove_association 'Remove', f %></td>
+</tr>
