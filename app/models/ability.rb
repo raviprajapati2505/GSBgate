@@ -97,7 +97,6 @@ class Ability
       # CertificationPath controller
       can :read, CertificationPath, project: project_with_user_assigned
       can :list, CertificationPath, project: project_with_user_assigned
-      can :download_archive, CertificationPath, project: project_with_user_assigned
       can :download_signed_certificate, CertificationPath, project: project_with_user_assigned, certification_path_status: {id: CertificationPathStatus::CERTIFIED}
       # Project team
       can :apply, CertificationPath, project: project_with_user_as_cgp_project_manager
@@ -228,7 +227,12 @@ class Ability
       can :apply_for_pcr, CertificationPath, pcr_track: false, certificate: {certification_type: [Certificate.certification_types[:letter_of_conformance], Certificate.certification_types[:final_design_certificate], Certificate.certification_types[:operations_certificate], Certificate.certification_types[:construction_certificate_stage1], Certificate.certification_types[:construction_certificate_stage2], Certificate.certification_types[:construction_certificate_stage3]]}
       can :cancel_pcr, CertificationPath, pcr_track: true, certificate: {certification_type: [Certificate.certification_types[:letter_of_conformance], Certificate.certification_types[:final_design_certificate], Certificate.certification_types[:operations_certificate], Certificate.certification_types[:construction_certificate_stage1], Certificate.certification_types[:construction_certificate_stage2], Certificate.certification_types[:construction_certificate_stage3]]}
       can :download_coverletter_report, CertificationPath, certification_path_status: {id: CertificationPathStatus::CERTIFIED}, certificate: {certification_type: Certificate.certification_types[:letter_of_conformance]}
-      can :download_archive, CertificationPath
+
+      # User can download archive if and only if user is chairman(gsas_trust_top_manager) and project team member
+      if  user.gsas_trust_top_manager?
+        can :download_archive, CertificationPath
+      end
+      
       can :download_signed_certificate, CertificationPath, certification_path_status: {id: CertificationPathStatus::CERTIFIED}
       if user.gsas_trust_admin?
         can [:edit_main_scheme_mix, :update_main_scheme_mix], CertificationPath, certification_path_status: {id: CertificationPathStatus::ACTIVATING}, development_type: {mixable: true}
