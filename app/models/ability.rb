@@ -97,7 +97,6 @@ class Ability
       # CertificationPath controller
       can :read, CertificationPath, project: project_with_user_assigned
       can :list, CertificationPath, project: project_with_user_assigned
-      # can :download_archive, CertificationPath, project: project_with_user_assigned
       can :download_signed_certificate, CertificationPath, project: project_with_user_assigned, certification_path_status: {id: CertificationPathStatus::CERTIFIED}
       # Project team
       can :apply, CertificationPath, project: project_with_user_as_cgp_project_manager
@@ -232,7 +231,6 @@ class Ability
       # User can download archive if and only if user is chairman(gsas_trust_top_manager) and project team member
       if  user.gsas_trust_top_manager?
         can :download_archive, CertificationPath
-        can :download_archive, CertificationPath, project: project_with_user_assigned
       end
       
       can :download_signed_certificate, CertificationPath, certification_path_status: {id: CertificationPathStatus::CERTIFIED}
@@ -319,7 +317,6 @@ class Ability
       # cannot :refuse, RequirementDatum do |requirement_datum| requirement_datum.user_id != user.id end
     elsif user.system_admin?
       can :manage, :all
-      cannot :download_archive, CertificationPath
     else
       cannot :manage, :all
     end
