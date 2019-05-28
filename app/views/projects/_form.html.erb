@@ -17,12 +17,15 @@
               <%= f.select(:certificate_type, options_for_select(Certificate.certificate_types.map { |k, v| [t(k, scope: 'activerecord.attributes.certificate.certificate_types'), v]})) %>
               <% if current_user.system_admin? || current_user.gsas_trust_manager? || current_user.gsas_trust_top_manager? || current_user.gsas_trust_admin? %>
                 <%= f.text_field :service_provider %>
+                <div class="design-fields">
+                  <%= f.text_field :service_provider_2 %>
+                </div>
               <% else %>
                 <%= f.text_field :service_provider, {disabled: true} %>
+                <div class="design-fields">
+                  <%= f.text_field :service_provider_2, {disabled: true} %>
+                </div>
               <% end %>
-              <div class="design-fields">
-                <%= f.text_field :service_provider_2 %>
-              </div>
               <%= f.text_field :owner %>
               <%= f.form_group do %>
                 <label>Or choose a predefined property owner</label>
