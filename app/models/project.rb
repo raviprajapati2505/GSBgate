@@ -146,8 +146,14 @@ class Project < ApplicationRecord
         scheme_mix_criteria_scores_by_category = sm.scheme_mix_criteria_scores.group_by{|item| item[:scheme_category_id]}
         unless scheme_mix_criteria_scores_by_category.nil?
           sm.scheme_categories.each do |c|
-            categories[c.code] = 0 if categories[c.code].nil?
-            categories[c.code] += scheme_mix_criteria_scores_by_category[c.id].sum {|score| score[:achieved_score_in_certificate_points].nil? ? 0 : score[:achieved_score_in_certificate_points]} unless scheme_mix_criteria_scores_by_category[c.id].nil?
+            categories[c.code] = {} if categories[c.code].nil?
+            categories[c.code]['achieved_score'] = 0 if categories[c.code]['achieved_score'].nil?
+            categories[c.code]['achieved_score'] += scheme_mix_criteria_scores_by_category[c.id].sum {|score| score[:achieved_score_in_certificate_points].nil? ? 0 : score[:achieved_score_in_certificate_points]} unless scheme_mix_criteria_scores_by_category[c.id].nil?
+
+
+            scheme_mix_criterion = sm.scheme_mix_criteria.for_category(c).first
+            categories[c.code]['EPL_band'] = scheme_mix_criterion.scheme_mix_criterion_epls.map {|epl| {label: epl.scheme_criterion_performance_label.label, band: epl.band}} if c.code == 'E'
+            categories[c.code]['WPL_band'] = scheme_mix_criterion.scheme_mix_criterion_wpls.map {|wpl| {label: wpl.scheme_criterion_performance_label.label, band: wpl.band}} if c.code == 'W'
           end
         end
       end

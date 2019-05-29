@@ -30,6 +30,36 @@ json.certificates(@project.certification_paths) do |certification_path|
       json.code scheme_category.code
       json.weight_percent scheme_mix.scheme.weight_for_category(scheme_category)
       json.achieved_score sum_score_hashes(scheme_mix.scheme_mix_criteria_scores.group_by{|item| item[:scheme_category_id]}[scheme_category.id])[:achieved_score_in_scheme_points]
+
+      # Assumption : only 1 criterion linked to Operations Energy category
+      scheme_mix_criterion = scheme_mix.scheme_mix_criteria.for_category(scheme_category).first if scheme_category.code == 'E' || scheme_category.code == 'W'
+      epls = scheme_mix_criterion.scheme_mix_criterion_epls if scheme_category.code == 'E'
+      unless epls.nil?
+        json.set! 'EPL_band' do
+          epls.each do |epl|
+            json.set! epl.scheme_criterion_performance_label.label, epl.band
+          end
+        end
+        json.set! 'total_energy_consumption' do
+          epls.each do |epl|
+            json.set! epl.scheme_criterion_performance_label.label, epl.total_energy_consumption
+          end
+        end
+      end
+      # Assumption : only 1 criterion linked to Operations Water category
+      wpls = scheme_mix_criterion.scheme_mix_criterion_wpls if scheme_category.code == 'W'
+      unless wpls.nil?
+        json.set! 'WPL_band' do
+          wpls.each do |wpl|
+            json.set! wpl.scheme_criterion_performance_label.label, wpl.band
+          end
+        end
+        json.set! 'total_water_consumption' do
+          wpls.each do |wpl|
+            json.set! wpl.scheme_criterion_performance_label.label, wpl.total_water_consumption
+          end
+        end
+      end
     end
   end
 end
