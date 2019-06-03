@@ -4,11 +4,11 @@
 #
 
 # Load the seed files
-['generated', 'requirements', 'requirements_cm21issue3', 'generated_operations_2019', 'operations_2019', 'all', Rails.env].each do |seed|
+['generated', 'requirements', 'requirements_cm21issue3', 'generated_operations_2019', 'operations_requirements_2019' 'operations_2019', 'all', Rails.env].each do |seed|
   seed_file = "#{Rails.root}/db/seeds/#{seed}.rb"
   if File.exists?(seed_file)
     puts "*** Loading #{seed} seed data"
     require seed_file
   end
 end
-# require "#{Rails.root}/db/seeds/generated_operations_2019.rb"
+# require "#{Rails.root}/db/seeds/operations_requirements_2019.rb"
