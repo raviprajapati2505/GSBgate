@@ -57,8 +57,19 @@ class Api::V1::ProjectsController < Api::ApiController
       #   TODO not yet implemented
       end
     end
-    @total_energy_consumption = total_energy_consumption_query.sum('scheme_mix_criterion_performance_labels.cooling + scheme_mix_criterion_performance_labels.lighting + scheme_mix_criterion_performance_labels.auxiliaries + scheme_mix_criterion_performance_labels.dhw + scheme_mix_criterion_performance_labels.others + scheme_mix_criterion_performance_labels.generation')
-    @total_water_consumption = total_water_consumption_query.sum('scheme_mix_criterion_performance_labels.indoor_use + scheme_mix_criterion_performance_labels.irrigation + scheme_mix_criterion_performance_labels.cooling_tower')
+    # @total_energy_consumption = total_energy_consumption_query.sum('scheme_mix_criterion_performance_labels.cooling + scheme_mix_criterion_performance_labels.lighting + scheme_mix_criterion_performance_labels.auxiliaries + scheme_mix_criterion_performance_labels.dhw + scheme_mix_criterion_performance_labels.others + scheme_mix_criterion_performance_labels.generation')
+    @total_cooling_consumption = total_energy_consumption_query.sum('scheme_mix_criterion_performance_labels.cooling')
+    @total_lighting_consumption = total_energy_consumption_query.sum('scheme_mix_criterion_performance_labels.lighting')
+    @total_auxiliaries_consumption = total_energy_consumption_query.sum('scheme_mix_criterion_performance_labels.auxiliaries')
+    @total_dhw_consumption = total_energy_consumption_query.sum('scheme_mix_criterion_performance_labels.dhw')
+    @total_others_consumption = total_energy_consumption_query.sum('scheme_mix_criterion_performance_labels.others')
+    @total_generation_consumption = total_energy_consumption_query.sum('scheme_mix_criterion_performance_labels.generation')
+
+    # @total_water_consumption = total_water_consumption_query.sum('scheme_mix_criterion_performance_labels.indoor_use + scheme_mix_criterion_performance_labels.irrigation + scheme_mix_criterion_performance_labels.cooling_tower')
+    @total_indoor_use_consumption = total_water_consumption_query.sum('scheme_mix_criterion_performance_labels.indoor_use')
+    @total_irrigation_consumption = total_water_consumption_query.sum('scheme_mix_criterion_performance_labels.irrigation')
+    @total_cooling_tower_consumption = total_water_consumption_query.sum('scheme_mix_criterion_performance_labels.cooling_tower')
+
     @project_count = query.count
 
     # pagination

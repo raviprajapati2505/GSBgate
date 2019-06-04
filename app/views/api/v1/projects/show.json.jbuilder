@@ -40,9 +40,44 @@ json.certificates(@project.certification_paths) do |certification_path|
             json.set! epl.scheme_criterion_performance_label.label, epl.band
           end
         end
+        json.set! 'epc' do
+          epls.each do |epl|
+            json.set! epl.scheme_criterion_performance_label.label, epl.epc
+          end
+        end
         json.set! 'total_energy_consumption' do
           epls.each do |epl|
             json.set! epl.scheme_criterion_performance_label.label, epl.total_energy_consumption
+          end
+        end
+        json.set! 'cooling' do
+          epls.each do |epl|
+            json.set! epl.scheme_criterion_performance_label.label, epl.cooling
+          end
+        end
+        json.set! 'lighting' do
+          epls.each do |epl|
+            json.set! epl.scheme_criterion_performance_label.label, epl.lighting
+          end
+        end
+        json.set! 'auxiliaries' do
+          epls.each do |epl|
+            json.set! epl.scheme_criterion_performance_label.label, epl.auxiliaries
+          end
+        end
+        json.set! 'dhw' do
+          epls.each do |epl|
+            json.set! epl.scheme_criterion_performance_label.label, epl.dhw
+          end
+        end
+        json.set! 'others' do
+          epls.each do |epl|
+            json.set! epl.scheme_criterion_performance_label.label, epl.others
+          end
+        end
+        json.set! 'generation' do
+          epls.each do |epl|
+            json.set! epl.scheme_criterion_performance_label.label, epl.generation
           end
         end
       end
@@ -54,9 +89,29 @@ json.certificates(@project.certification_paths) do |certification_path|
             json.set! wpl.scheme_criterion_performance_label.label, wpl.band
           end
         end
+        json.set! 'wpc' do
+          wpls.each do |wpl|
+            json.set! wpl.scheme_criterion_performance_label.label, wpl.wpc
+          end
+        end
         json.set! 'total_water_consumption' do
           wpls.each do |wpl|
             json.set! wpl.scheme_criterion_performance_label.label, wpl.total_water_consumption
+          end
+        end
+        json.set! 'indoor_use' do
+          wpls.each do |wpl|
+            json.set! wpl.scheme_criterion_performance_label.label, wpl.indoor_use
+          end
+        end
+        json.set! 'irrigation' do
+          wpls.each do |wpl|
+            json.set! wpl.scheme_criterion_performance_label.label, wpl.irrigation
+          end
+        end
+        json.set! 'cooling_tower' do
+          wpls.each do |wpl|
+            json.set! wpl.scheme_criterion_performance_label.label, wpl.cooling_tower
           end
         end
       end
