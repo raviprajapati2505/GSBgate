@@ -1,4 +1,5 @@
 class Api::ApiController < ActionController::API
+  add_template_helper(ApiHelper)
 
   # protect_from_forgery with: :null_session
 
