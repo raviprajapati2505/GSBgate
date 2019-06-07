@@ -29,19 +29,19 @@ json.projects(@projects) do |project|
   end
 end
 # json.total_energy_consumption @total_energy_consumption
-json.total_energy_consumption @total_cooling_consumption + @total_lighting_consumption + @total_auxiliaries_consumption + @total_dhw_consumption + @total_others_consumption + @total_generation_consumption
-json.total_cooling_consumption @total_cooling_consumption
-json.total_lighting_consumption @total_lighting_consumption
-json.total_auxiliaries_consumption @total_auxiliaries_consumption
-json.total_dhw_consumption @total_dhw_consumption
-json.total_others_consumption @total_others_consumption
-json.total_generation_consumption @total_generation_consumption
+json.total_energy_consumption (@total_cooling_consumption + @total_lighting_consumption + @total_auxiliaries_consumption + @total_dhw_consumption + @total_others_consumption + @total_generation_consumption).to_f
+json.total_cooling_consumption @total_cooling_consumption.to_f
+json.total_lighting_consumption @total_lighting_consumption.to_f
+json.total_auxiliaries_consumption @total_auxiliaries_consumption.to_f
+json.total_dhw_consumption @total_dhw_consumption.to_f
+json.total_others_consumption @total_others_consumption.to_f
+json.total_generation_consumption @total_generation_consumption.to_f
 
 # json.total_water_consumption @total_water_consumption
-json.total_water_consumption @total_indoor_use_consumption + @total_irrigation_consumption + @total_cooling_tower_consumption
-json.total_indoor_use_consumption @total_indoor_use_consumption
-json.total_irrigation_consumption @total_irrigation_consumption
-json.total_cooling_tower_consumption @total_cooling_tower_consumption
+json.total_water_consumption (@total_indoor_use_consumption + @total_irrigation_consumption + @total_cooling_tower_consumption).to_f
+json.total_indoor_use_consumption @total_indoor_use_consumption.to_f
+json.total_irrigation_consumption @total_irrigation_consumption.to_f
+json.total_cooling_tower_consumption @total_cooling_tower_consumption.to_f
 
 json.project_count @project_count
 json.current_page @page
