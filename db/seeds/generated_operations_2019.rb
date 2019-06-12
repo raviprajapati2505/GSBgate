@@ -1,6 +1,6 @@
 # ruby encoding: utf-8
 # created from GSAS Gate html files, using GSASScraper project
-Certificate.create!(name: 'Operations Certificate', certification_type: Certificate.certification_types[:operations_certificate], certificate_type: Certificate.certificate_types[:operations_type], assessment_stage: Certificate.assessment_stages[:operations_stage], gsas_version: "2019", display_weight: 40)
+Certificate.create!(name: 'Operations Certificate, 2019', certification_type: Certificate.certification_types[:operations_certificate], certificate_type: Certificate.certificate_types[:operations_type], assessment_stage: Certificate.assessment_stages[:operations_stage], gsas_version: "2019", display_weight: 40)
 DevelopmentType.create!(display_weight: 10, certificate: Certificate.find_by(certificate_type: Certificate.certificate_types[:operations_type], assessment_stage: Certificate.assessment_stages[:operations_stage], gsas_version: "2019"), mixable: false, name: 'Single use operations')
 Scheme.create!(name: "Healthy Building Label Scheme", gsas_document: "GSAS Operations_Assessment & Guidelines_2019_04.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:operations_type], renovation:false)
 Scheme.create!(name: "Premium Scheme", gsas_document: "GSAS Operations_Assessment & Guidelines_2019_04.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:operations_type], renovation:false)
