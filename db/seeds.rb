@@ -11,4 +11,3 @@
     require seed_file
   end
 end
-# require "#{Rails.root}/db/seeds/operations_2019.rb"
