@@ -3,6 +3,8 @@ source 'http://rubygems.org'
 gem 'rails', '~> 5.2.0'
 
 gem 'addressable'
+gem 'axlsx', '~> 2.1.0.pre'
+gem 'axlsx_rails'
 gem 'bcrypt'
 gem 'bootsnap'
 gem 'bootstrap_form', '~> 2.7'
@@ -46,8 +48,6 @@ group :development do
   gem 'capistrano-rails'
   gem 'capistrano-rbenv'
   gem 'capistrano-systemd'
-  gem 'axlsx', '~> 2.1.0.pre'
-  gem 'axlsx_rails'
 end
 
 source 'http://rails-assets.org' do
