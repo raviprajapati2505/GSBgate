@@ -27,6 +27,10 @@ class Certificate < ApplicationRecord
     construction_type? && gsas_version == 'v2.1 Issue 3.0'
   end
 
+  def operations?
+    name.include?('Operations')
+  end
+
   # def letter_of_conformance?
   #   design_type? && design_stage?
   # end

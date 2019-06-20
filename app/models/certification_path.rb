@@ -264,12 +264,28 @@ class CertificationPath < ApplicationRecord
     return todos.uniq
   end
 
-  def self.star_rating_for_score(score, certificate: nil, certificate_gsas_version: nil)
+  def self.rating_for_score(score, certificate: nil, certificate_gsas_version: nil, certificate_name: nil)
     return -1 if score.nil?
 
-    if (!certificate.nil? && certificate.construction_issue_1?) || (!certificate_gsas_version.nil? && certificate_gsas_version == 'v2.1 Issue 1.0')
+    if (!certificate.nil? && certificate.operations?) || (!certificate_name.nil? && certificate_name.include?('Operations'))
+      if score < 0.5
+        return 'CERTIFICATION DENIED'
+      elsif score >= 0.5 && score < 1
+        return 'BRONZE'
+      elsif score >= 1 && score < 1.5
+        return 'SILVER'
+      elsif score >= 1.5 && score < 2
+        return 'GOLD'
+      elsif score >= 2 && score < 2.5
+        return 'PLATINUM'
+      elsif score >= 2.5
+        return 'DIAMOND'
+      else
+        return -1
+      end
+    elsif (!certificate.nil? && certificate.construction_issue_1?) || (!certificate_gsas_version.nil? && certificate_gsas_version == 'v2.1 Issue 1.0')
       if score < 35
-        return 0
+        return 'CERTIFICATION DENIED'
       elsif score >= 35 && score < 65
         return 2
       elsif score >= 65 && score < 85
@@ -281,7 +297,7 @@ class CertificationPath < ApplicationRecord
       end
     elsif (!certificate.nil? && certificate.construction_issue_3?) || (!certificate_gsas_version.nil? && certificate_gsas_version == 'v2.1 Issue 3.0')
       if score < 0.5
-        return 0
+        return 'CERTIFICATION DENIED'
       elsif score >= 0.5 && score < 1
         return 2
       elsif score >= 1 && score < 1.5
@@ -297,7 +313,7 @@ class CertificationPath < ApplicationRecord
       end
     else
       if score < 0
-        return 0
+        return 'CERTIFICATION DENIED'
       elsif score >= 0 && score <= 0.5
         return 1
       elsif score > 0.5 && score <= 1

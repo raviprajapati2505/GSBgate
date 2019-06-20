@@ -267,8 +267,8 @@ en:
             label: Certification Status
           certification_path_status_is_active:
             label: Certification Active
-          stars:
-            label: Certification Star Rating
+          rating:
+            label: Certification Rating
           total_achieved_score:
             label: Certification Achieved Score
           total_submitted_score:

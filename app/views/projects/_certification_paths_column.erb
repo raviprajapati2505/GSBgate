@@ -6,7 +6,7 @@
             <% end %>
             (<%= certification_path.status %>)
             <% if certification_path.is_completed? %>
-                <%= render partial: 'certification_paths/star_rating_item', locals: {score_label: 'Achieved', score: certification_path.scores_in_certificate_points[:achieved], achieved: true} %>
+                <%= render partial: 'certification_paths/rating_item', locals: {score_label: 'Achieved', score: certification_path.scores_in_certificate_points[:achieved], achieved: true} %>
             <% end %>
         </li>
     <% end %>
