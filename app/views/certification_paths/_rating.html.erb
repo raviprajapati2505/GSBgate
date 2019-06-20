@@ -1,0 +1,12 @@
+<% unless rec.certification_path_status_is_active %>
+  <% rating = CertificationPath.rating_for_score(rec.total_achieved_score, certificate_gsas_version: rec.certificate_gsas_version, certificate_name: rec.certificate_name) %>
+  <% if rating.is_a? String %>
+    <!-- TEXTUAL SCORE -->
+    <span class="label label-rating label-rating-<%= rating.downcase.gsub(/( )/, '-') %>"><%= rating %></span>
+  <% else %>
+    <!-- STAR SCORE -->
+    <% rating.times do %>
+      <i class="fa fa-star fa-lg"><span style="display:none;">*</span></i>
+    <% end %>
+  <% end %>
+<% end %>

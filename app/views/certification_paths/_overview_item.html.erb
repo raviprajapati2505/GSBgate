@@ -17,7 +17,7 @@
                 <%= certification_path.status.humanize %>
             </div>
             <div class="col-lg-3 col-sm-6">
-                <%= render 'certification_paths/star_ratings', certification_path: certification_path %>
+                <%= render 'certification_paths/ratings', certification_path: certification_path %>
             </div>
             <div class="col-lg-3 col-sm-6">
                 <% certification_path.scheme_mixes.each do |scheme_mix| %>

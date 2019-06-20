@@ -1,0 +1,30 @@
+<% achieved ||= false %>
+<% rating = CertificationPath.rating_for_score(score, certificate: certificate) %>
+<div style="line-height:24px; <% if achieved %>font-weight:bold;<% end %>">
+    <span class="text-right" style="width: 72px; display: inline-block;">
+        <%= score_label %>
+    </span>
+    <span class="text-right" style="width: 32px; display: inline-block;">
+      <% if certificate.construction_issue_1? %>
+          <%= number_to_percentage(score, precision: 1) %>
+      <% else %>
+        <%= number_with_precision(score, precisison: 2, significant: true) %>
+      <% end %>
+    </span>
+    <% unless certificate.construction_certificate_stage1? || certificate.construction_certificate_stage2? || certificate.construction_certificate_stage3? %>
+      <span>
+          &nbsp;&nbsp;=&nbsp;&nbsp;
+      </span>
+      <% if rating.is_a? String %>
+        <!-- TEXTUAL SCORE -->
+        <span class="label label-rating label-rating-<%= rating.downcase.gsub(/( )/, '-') %>" style="<% unless achieved %>opacity: 0.3<% end %>"><%= rating %></span>
+      <% else %>
+        <!-- STAR SCORE -->
+        <span style="white-space: nowrap;<% unless achieved %>opacity: 0.3<% end %>;">
+          <% rating.times do %>
+              <i class="fa fa-star fa-lg"></i>
+          <% end %>
+        </span>
+      <% end %>
+    <% end %>
+</div>

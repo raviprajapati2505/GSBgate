@@ -965,5 +965,38 @@
     background-color: white;
     opacity: 0.7;
   }
+
+  /* RATINGS */
+  .col-rating {
+    text-align: left!important;
+  }
+
+  .label-rating {
+    color: #FFF;
+  }
+
+  .label-rating-bronze {
+    background-color: #AD7D4D;
+  }
+
+  .label-rating-silver {
+    background-color: #B4B6B6;
+  }
+
+  .label-rating-gold {
+    background-color: #CCAA43;
+  }
+
+  .label-rating-platinum {
+    background-color: #6F7274;
+  }
+
+  .label-rating-diamond {
+    background-color: #3155A6;
+  }
+
+  .label-rating-certification-denied {
+    background-color: #EE322E;
+  }
 }
 

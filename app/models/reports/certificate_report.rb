@@ -96,8 +96,8 @@ class Reports::CertificateReport < Reports::BaseReport
   end
 
   def draw_rating
-    if @certification_path.achieved_star_rating > 0
-      image image_path("star_#{@certification_path.achieved_star_rating}.png"), :position => :center
+    if @certification_path.achieved_rating > 0
+      image image_path("star_#{@certification_path.achieved_rating}.png"), :position => :center
     end
   end
 
