@@ -280,10 +280,18 @@ class SchemeMixCriterion < ApplicationRecord
 
   def next_status
     total_weight = self.scheme_criterion.total_weight
+    used_scores_count = self.scheme_criterion.used_scores_count
     total_achieved_score = 0
     total_submitted_score = 0
     total_minimum_score = 0
-    if total_weight > 0
+
+    # If there's only an A score, use the absolute scores
+    if used_scores_count == 1
+      total_achieved_score = self.achieved_score_a
+      total_submitted_score = self.submitted_score_a
+      total_minimum_score = self.scheme_criterion.minimum_score_a
+    # If there are A, B, ... scores, calculate the weighted average scores
+    elsif total_weight > 0
       SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES.each_with_index do |achieved_score, index|
         unless self.read_attribute(achieved_score.to_sym).nil?
           total_achieved_score += self.read_attribute(achieved_score.to_sym) * self.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[index].to_sym) / total_weight
@@ -299,7 +307,10 @@ class SchemeMixCriterion < ApplicationRecord
           total_minimum_score += self.scheme_criterion.read_attribute(minimal_score.to_sym) * self.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[index].to_sym) / total_weight
         end
       end
+    else
+      # TODO: implement a solution for the situation where all weights are zero
     end
+
     if submitting?
       return :submitted
     elsif submitting_after_appeal?
@@ -391,5 +402,6 @@ class SchemeMixCriterion < ApplicationRecord
       document.destroy! unless document.scheme_mix_criteria_documents.size > 1
     end
   end
+
 
 end

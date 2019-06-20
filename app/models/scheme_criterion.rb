@@ -71,6 +71,15 @@ class SchemeCriterion < ApplicationRecord
     incentive_weight_array
   end
 
+  # Counts the "scores" columns that aren't nil
+  def used_scores_count
+    total = 0
+    SCORE_ATTRIBUTES.each do |score_attr|
+      total += 1 unless self.read_attribute(score_attr.to_sym).nil?
+    end
+    total
+  end
+
   private
 
   def handle_scores
