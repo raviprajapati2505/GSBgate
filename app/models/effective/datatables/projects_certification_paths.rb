@@ -18,6 +18,11 @@ module Effective
             rec.project_name
           end
         end
+        col :project_update, sql_column: 'projects.updated_at' do |rec|
+          link_to(project_path(rec.project_nr)) do
+            localize(rec.project_updated_at.in_time_zone)
+          end
+        end
         col :project_construction_year, sql_column: 'projects.construction_year', as: :integer, visible: false
         col :project_country, sql_column: 'projects.country', visible: false
         col :project_location, sql_column: 'projects.location', visible: false
@@ -110,6 +115,7 @@ module Effective
           .select('projects.id as project_nr')
           .select('projects.code as project_code')
           .select('projects.name as project_name')
+          .select('projects.updated_at as project_updated_at')
           .select('projects.construction_year as project_construction_year')
           .select('projects.country as project_country')
           .select('projects.location as project_location')
