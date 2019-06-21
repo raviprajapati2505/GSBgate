@@ -32,8 +32,7 @@
                     </div>
                     <div class="comment-form" style="display:none;">
                       <%= f.text_area :user_comment, rows: 4 %>
-                      <%= f.file_field :attachment_file %>
-
+                      <%= f.file_field :attachment_file if can?(:index, AuditLog.new(audit_log_visibility_id: AuditLogVisibility::INTERNAL, project: @project)) %>
                       <% if can?(:index, AuditLog.new(audit_log_visibility_id: AuditLogVisibility::INTERNAL, project: @project)) %>
                         <% disabled = @is_certifier %>
                         <%= f.form_group :audit_log_visibility do %>

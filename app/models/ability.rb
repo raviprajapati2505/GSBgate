@@ -24,6 +24,9 @@ class Ability
 
     # Some convenience variables to work with enums in conditions
     project_user_role_cgp_project_manager = [ProjectsUser.roles[:cgp_project_manager]]
+    user_with_gsas_trust_admin = [User.roles[:gsas_trust_admin]]
+    user_with_gsas_trust_manager = [User.roles[:gsas_trust_manager]]
+    user_with_gsas_trust_top_manager = [User.roles[:gsas_trust_top_manager]]
     project_user_role_project_team_member = [ProjectsUser.roles[:project_team_member]]
     project_user_role_certification_manager = [ProjectsUser.roles[:certification_manager]]
     project_user_role_certifier = [ProjectsUser.roles[:certifier]]
@@ -31,6 +34,9 @@ class Ability
     project_user_project_team_roles = project_user_role_cgp_project_manager | project_user_role_project_team_member
     project_user_gsas_trust_team_roles = project_user_role_certification_manager | project_user_role_certifier
     project_user_enterprise_client_roles = project_user_role_enterprise_client
+    user_with_gsas_trust = user_with_gsas_trust_admin | user_with_gsas_trust_manager | user_with_gsas_trust_top_manager
+    project_with_gsas_trust_team = {projects_users: {user_id: user.id, role: user_with_gsas_trust}}
+
     #   Certificate.certification_types
     certificate_certification_types_letter_of_conformance = [Certificate.certification_types[:letter_of_conformance]]
     certificate_certification_types_final_design_certificate = [Certificate.certification_types[:final_design_certificate]]
@@ -193,6 +199,7 @@ class Ability
       # AuditLog controller
       can [:index, :auditable_index, :auditable_index_comments, :download_attachment, :export], AuditLog, audit_log_visibility_id: AuditLogVisibility::PUBLIC, project: project_with_user_assigned
       can [:index, :auditable_index, :auditable_index_comments, :download_attachment, :export], AuditLog, audit_log_visibility_id: AuditLogVisibility::INTERNAL, project: project_with_user_in_gsas_trust_team
+      can [:index, :auditable_index, :auditable_index_comments, :download_attachment, :export], AuditLog, attachment_file: AuditLogVisibility::INTERNAL, project: project_with_gsas_trust_team
       can :auditable_create, AuditLog #TODO:, project: project_with_user_assigned
 
       # Tasks controller
