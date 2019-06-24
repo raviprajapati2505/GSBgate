@@ -13,6 +13,7 @@ end
 
 Warden::JWTAuth.configure do |config|
   config.secret = ENV['JWT_SECRET_KEY']
+  config.expiration_time = 43200 # 12 hours
   config.mappings = { default: UserRepository }
   config.revocation_strategies = { default: RevocationStrategy }
   config.dispatch_requests = [
