@@ -59,6 +59,13 @@ class SchemeMixCriteriaDocumentsController < AuthenticatedController
     scheme_mix_criteria_documents.each do |scheme_mix_criteria_document|
       # Update the model data
       scheme_mix_criteria_document.update(scheme_mix_criteria_document_params)
+      # update the approved_date if document approved
+      if scheme_mix_criteria_document.status == "approved" && scheme_mix_criteria_document.approved_date.present?
+      elsif scheme_mix_criteria_document.status == "approved" && scheme_mix_criteria_document.approved_date.nil?
+        scheme_mix_criteria_document.update(approved_date: Time.now) 
+      else
+        scheme_mix_criteria_document.update(approved_date: nil) 
+      end
     end
 
     redirect_back(fallback_location: root_path, notice: 'The document status was successfully updated.')

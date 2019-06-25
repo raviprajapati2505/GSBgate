@@ -49,6 +49,11 @@ class Archive < ApplicationRecord
     name
   end
 
+  #find document to be downloaded through zip according to selected from the criterion document section
+  def selected_document_download(scheme_mix_criterion)
+    self.all_criterion_document == true ? scheme_mix_criterion.scheme_mix_criteria_documents.approved : scheme_mix_criterion.scheme_mix_criteria_documents.where(id:self.criterion_document_ids).approved
+  end
+
   # Creates a file archive of all approved documents in a certification path and related audit logs
   def genereate_certification_path_archive
     certification_path = subject
@@ -131,7 +136,7 @@ class Archive < ApplicationRecord
     # Create the zipped output stream
     Zip::File.open(zip_path, Zip::File::CREATE) do |zip|
       # Loop over all approved documents in the scheme mix criterion
-      scheme_mix_criterion.scheme_mix_criteria_documents.approved.each do |smcd|
+      selected_document_download(scheme_mix_criterion).each do |smcd|
         if smcd.document.document_file.present?
           file_name = smcd.document.id.to_s + '_' + smcd.name
           file_path = smcd.path

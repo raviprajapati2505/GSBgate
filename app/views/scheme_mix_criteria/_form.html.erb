@@ -575,7 +575,7 @@
             <div class="ibox-title">
                 <h5>Criterion Documentation</h5>
                 <% if can?(:download_archive, @scheme_mix_criterion) && @scheme_mix_criterion.scheme_mix_criteria_documents.any? %>
-                  <%= btn_download(archive_project_certification_path_scheme_mix_scheme_mix_criterion_path, text: 'Download all approved documents', tooltip: 'A ZIP archive containing all approved documents of this criterion will be generated for you.', size: 'extra_small', class: 'pull-right') %>
+                  <%= btn_download("javascript:void(0);", text: 'Download all approved documents', tooltip: 'A ZIP archive containing all approved documents of this criterion will be generated for you.', size: 'extra_small', class: 'pull-right', id: "download_smcd_btn") %>
                 <% end %>
             </div>
             <div class="ibox-content">
@@ -590,3 +590,22 @@
 <%= javascript_include_tag 'select_project_certifier' %>
 <%= javascript_include_tag 'select_project_team_member' %>
 <%= javascript_include_tag 'incentive_scored' %>
+<script type="text/javascript">
+  //ajax call on click pf document download with selected documents.
+  $("#download_smcd_btn").on("click",function(){
+      var ids = new Array();
+      $('.smcd_child_checkbox:checkbox:checked').each(function(){
+          ids.push(this.value);      
+      });
+       if ($("#scheme_criterion_document").prop("checked") == true ){
+          var all = true; 
+       }else{
+          var all = false;
+       }
+      $.ajax({
+       url: '/projects/'+ <%= @project.id %> +'/certificates/'+ <%= @certification_path.id %> +'/schemes/' + <%= @scheme_mix.id %> + '/criteria/'+ <%= @scheme_mix_criterion.id %> +'/archive',
+       method: 'GET',
+       data: {documents: ids, all: all}
+      });
+    });
+</script>

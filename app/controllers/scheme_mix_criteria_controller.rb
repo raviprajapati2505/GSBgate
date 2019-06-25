@@ -188,14 +188,17 @@ class SchemeMixCriteriaController < AuthenticatedController
     last_archive = Archive.order(created_at: :desc).find_by(user_id: current_user.id, subject: @scheme_mix_criterion)
 
     if last_archive.present? && (last_archive.created_at > (Time.now - 3.minutes))
-      redirect_to project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), alert: 'You have recently requested an archive for this criterion.'
+      flash[:notice] = 'You have recently requested an archive for this criterion.'
+      render js: "window.location = '/projects/#{@project.id}/certificates/#{@certification_path.id}/schemes/#{@scheme_mix.id}/criteria/#{@scheme_mix_criterion.id}'"
     else
       archive = Archive.new
       archive.user_id = current_user.id
       archive.subject = @scheme_mix_criterion
       archive.status = :not_generated
+      params[:all] == "true" ? archive.all_criterion_document = true : archive.criterion_document_ids = params[:documents]
       archive.save!
-      redirect_to project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), notice: 'A ZIP archive is being generated. You will be notified by email when the file can be downloaded.'
+      flash[:notice] = 'A ZIP archive is being generated. You will be notified by email when the file can be downloaded.'
+      render js: "window.location = '/projects/#{@project.id}/certificates/#{@certification_path.id}/schemes/#{@scheme_mix.id}/criteria/#{@scheme_mix_criterion.id}'"
     end
   end
 

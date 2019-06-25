@@ -1,13 +1,15 @@
 <% if scheme_mix_criteria_documents.blank? %>
     No documentation was uploaded yet.
 <% else %>
-    <table class="table table-bordered document-table" cellspacing="0" width="100%">
+    <table class="table table-bordered document-table" id="smcd_table" cellspacing="0" width="100%">
         <thead>
         <tr>
+            <th><%= check_box_tag "all", "",false,id: "scheme_criterion_document", class: "smcd_checkbox_parent" %></th>
             <th class="all">File&nbsp;Name</th>
             <th class="desktop">File&nbsp;Size</th>
             <th class="desktop">Uploaded&nbsp;by</th>
             <th class="desktop">Upload&nbsp;Date</th>
+            <th class="desktop">Approved&nbsp;Date</th>
             <th class="all">PCR</th>
             <th class="all">Status</th>
             <th class="all">Actions</th>
@@ -17,14 +19,22 @@
         <% scheme_mix_criteria_documents.order(created_at: :desc).each do |smcd| %>
             <% if can?(:read, smcd) %>
                 <tr class="document-<%= smcd.status.dasherize %>">
+                    <td>
+                        <% if smcd.approved? %>
+                            <%= check_box_tag "document", smcd.id,false,id: "scheme_criterion_document_#{smcd.id}",class: "smcd_child_checkbox" %>
+                        <% else %>
+                            <%= check_box_tag "document", smcd.id,true,disabled: true %>
+                        <% end %>        
+                    </td>
                     <td data-order="<%= smcd.name %>" data-search="<%= smcd.name %>">
-                          <span title="<%= smcd.name %>">
+                          <span title="<%= smcd.name %>" style="width: 62.0104px!important;">
                             <%= image_tag(icon_for_filename(smcd.name), alt: smcd.content_type, title: smcd.content_type) + ' ' + smcd.name.truncate(50) %>
                           </span>
                     </td>
                     <td data-order="<%= smcd.size %>"><%= number_to_human_size(smcd.size) %></td>
                     <td><%= smcd.document.user.full_name %></td>
                     <td data-order="<%= smcd.document.created_at.to_i %>"><%= localize(smcd.document.created_at).gsub(' ', '&nbsp;').html_safe %></td>
+                    <td><%= localize(smcd.approved_date).gsub(' ', '&nbsp;').html_safe if smcd.approved_date.present? %></td>
                     <td><%= smcd.pcr_context %></td>
                     <td data-order="<%= smcd.status.humanize %>">
                         <% if can?(:update_status, smcd) %>
