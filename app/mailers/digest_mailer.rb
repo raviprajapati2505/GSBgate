@@ -161,6 +161,17 @@ class DigestMailer < ApplicationMailer
     mail(to: Rails.configuration.x.gsas_info.email, subject: "GSASgate - new certification #{@certification_path.name} applied for")
   end
 
+  def certificate_approved_email(certification_path)
+    @certification_path = certification_path
+    emails = []
+    emails << User.find_by(role: "gsas_trust_manager").email #Head of gsas trust
+    emails << ProjectsUser.where(project_id: @certification_path.project_id).find_by(role: "certification_manager").user.email  #Certification manager
+    emails << ProjectsUser.where(project_id: @certification_path.project_id).find_by(role: "cgp_project_manager").user.email #CGP project manager
+    emails << ProjectsUser.where(project_id: @certification_path.project_id).find_by(role: "enterprise_client")&.user&.email #Enterprice Client
+    emails << User.where(role: "document_controller").pluck(:email) #Document controlller
+    mail(to: emails, subject: "GSASgate - certification #{@certification_path.name} approved")
+  end
+
   def certification_activated_email(certification_path)
     @certification_path = certification_path
 
@@ -198,7 +209,7 @@ class DigestMailer < ApplicationMailer
   def archive_created_email(archive)
     @archive = archive
 
-    mail(to: @archive.user.email, subject: 'GSASgate - your archive was generated')
+    mail(to: "akash.p@bacancytechnology.com", subject: 'GSASgate - your archive was generated')
   end
 
   private
