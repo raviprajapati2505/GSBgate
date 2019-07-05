@@ -7,7 +7,7 @@ class Api::V1::ProjectsController < Api::ApiController
     limit = 100
 
     # restrict to Operations projects
-    query = Project.accessible_by(current_ability).joins(certification_paths: [:certificate]).where(certificates: {certificate_type: Certificate::certificate_types[:operations_type], gsas_version: '2019'})
+    query = Project.accessible_by(current_ability).joins(certification_paths: [:certificate]).where(certification_paths: {certification_path_status_id: CertificationPathStatus::CERTIFIED}, certificates: {certificate_type: Certificate::certificate_types[:operations_type], gsas_version: '2019'})
     total_energy_consumption_query = SchemeMixCriterionEpl.accessible_by(current_ability).joins(scheme_mix_criterion: [scheme_mix: [:scheme, certification_path: [:certificate, :project]]]).where(certificates: {certificate_type: Certificate::certificate_types[:operations_type]}).unscope(:order)
     total_water_consumption_query = SchemeMixCriterionWpl.accessible_by(current_ability).joins(scheme_mix_criterion: [scheme_mix: [:scheme, certification_path: [:certificate, :project]]]).where(certificates: {certificate_type: Certificate::certificate_types[:operations_type]}).unscope(:order)
     if params.has_key?(:filter)
