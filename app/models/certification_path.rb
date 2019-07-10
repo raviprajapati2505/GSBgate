@@ -131,46 +131,46 @@ class CertificationPath < ApplicationRecord
   # Returns the next CertificationPathStatus id in the status flow of the certificate
   def next_status
     case certification_path_status_id
-      when CertificationPathStatus::ACTIVATING
-        return CertificationPathStatus::SUBMITTING
-      when CertificationPathStatus::SUBMITTING
-        return CertificationPathStatus::SCREENING
-      when CertificationPathStatus::SCREENING
-        return CertificationPathStatus::SUBMITTING_AFTER_SCREENING
-      when CertificationPathStatus::SUBMITTING_AFTER_SCREENING
-        return CertificationPathStatus::VERIFYING
-      when CertificationPathStatus::VERIFYING
-        return CertificationPathStatus::ACKNOWLEDGING
-      when CertificationPathStatus::ACKNOWLEDGING
-        if appealed?
-          return CertificationPathStatus::PROCESSING_APPEAL_PAYMENT
-        elsif has_achieved_score?
-          return CertificationPathStatus::APPROVING_BY_MANAGEMENT
-        else
-          return CertificationPathStatus::NOT_CERTIFIED
-        end
-      when CertificationPathStatus::PROCESSING_APPEAL_PAYMENT
-        return CertificationPathStatus::SUBMITTING_AFTER_APPEAL
-      when CertificationPathStatus::SUBMITTING_AFTER_APPEAL
-        return CertificationPathStatus::VERIFYING_AFTER_APPEAL
-      when CertificationPathStatus::VERIFYING_AFTER_APPEAL
-        return CertificationPathStatus::ACKNOWLEDGING_AFTER_APPEAL
-      when CertificationPathStatus::ACKNOWLEDGING_AFTER_APPEAL
-        if has_achieved_score?
-          return CertificationPathStatus::APPROVING_BY_MANAGEMENT
-        else
-          return CertificationPathStatus::NOT_CERTIFIED
-        end
-      when CertificationPathStatus::APPROVING_BY_MANAGEMENT
-        if self.certificate.construction_type?
-          return CertificationPathStatus::CERTIFIED
-        else
-          return CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT
-        end
-      when CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT
+    when CertificationPathStatus::ACTIVATING
+      return CertificationPathStatus::SUBMITTING
+    when CertificationPathStatus::SUBMITTING
+      return CertificationPathStatus::SCREENING
+    when CertificationPathStatus::SCREENING
+      return CertificationPathStatus::SUBMITTING_AFTER_SCREENING
+    when CertificationPathStatus::SUBMITTING_AFTER_SCREENING
+      return CertificationPathStatus::VERIFYING
+    when CertificationPathStatus::VERIFYING
+      return CertificationPathStatus::ACKNOWLEDGING
+    when CertificationPathStatus::ACKNOWLEDGING
+      if appealed?
+        return CertificationPathStatus::PROCESSING_APPEAL_PAYMENT
+      elsif has_achieved_score?
+        return CertificationPathStatus::APPROVING_BY_MANAGEMENT
+      else
+        return CertificationPathStatus::NOT_CERTIFIED
+      end
+    when CertificationPathStatus::PROCESSING_APPEAL_PAYMENT
+      return CertificationPathStatus::SUBMITTING_AFTER_APPEAL
+    when CertificationPathStatus::SUBMITTING_AFTER_APPEAL
+      return CertificationPathStatus::VERIFYING_AFTER_APPEAL
+    when CertificationPathStatus::VERIFYING_AFTER_APPEAL
+      return CertificationPathStatus::ACKNOWLEDGING_AFTER_APPEAL
+    when CertificationPathStatus::ACKNOWLEDGING_AFTER_APPEAL
+      if has_achieved_score?
+        return CertificationPathStatus::APPROVING_BY_MANAGEMENT
+      else
+        return CertificationPathStatus::NOT_CERTIFIED
+      end
+    when CertificationPathStatus::APPROVING_BY_MANAGEMENT
+      if self.certificate.construction_type?
         return CertificationPathStatus::CERTIFIED
       else
-        return false
+        return CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT
+      end
+    when CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT
+      return CertificationPathStatus::CERTIFIED
+    else
+      return false
     end
   end
 
@@ -184,81 +184,93 @@ class CertificationPath < ApplicationRecord
     todos = []
 
     case certification_path_status_id
-      when CertificationPathStatus::ACTIVATING
-        # TODO certification path expiry date
-        unless project.certification_manager_assigned?
-          todos << 'A certification manager must be assigned to the project.'
+    when CertificationPathStatus::ACTIVATING
+      # TODO certification path expiry date
+      unless project.certification_manager_assigned?
+        todos << 'A certification manager must be assigned to the project.'
+      end
+      if development_type.mixable? && (main_scheme_mix_selected? == false)
+        todos << 'A main scheme needs to be selected.'
+      end
+    when CertificationPathStatus::SCREENING
+      scheme_mix_criteria.each do |criterion|
+        unless criterion.screened
+          todos << 'Some criteria aren\'t screened yet. Please allocate team responsibility for screening or skip screening by marking all criteria as "screened".'
         end
-        if development_type.mixable? && (main_scheme_mix_selected? == false)
-          todos << 'A main scheme needs to be selected.'
+      end
+    when CertificationPathStatus::SUBMITTING, CertificationPathStatus::SUBMITTING_AFTER_SCREENING, CertificationPathStatus::SUBMITTING_AFTER_APPEAL
+      ['location_plan_file', 'site_plan_file', 'design_brief_file', 'project_narrative_file'].each do |general_submittal|
+        if project.send(general_submittal).blank?
+          todos << "A '#{Project.human_attribute_name(general_submittal)}' must be added to the project."
         end
-      when CertificationPathStatus::SCREENING
-        scheme_mix_criteria.each do |criterion|
-          unless criterion.screened
-            todos << 'Some criteria aren\'t screened yet. Please allocate team responsibility for screening or skip screening by marking all criteria as "screened".'
-          end
+      end
+      scheme_mix_criteria.each do |criterion|
+        if criterion.has_required_requirements?
+          todos << 'All requirements should have status \'Provided\' or \'Not required\'.'
         end
-      when CertificationPathStatus::SUBMITTING, CertificationPathStatus::SUBMITTING_AFTER_SCREENING, CertificationPathStatus::SUBMITTING_AFTER_APPEAL
-        ['location_plan_file', 'site_plan_file', 'design_brief_file', 'project_narrative_file'].each do |general_submittal|
-          if project.send(general_submittal).blank?
-            todos << "A '#{Project.human_attribute_name(general_submittal)}' must be added to the project."
-          end
+        if criterion.has_documents_awaiting_approval?
+          todos << 'There are still documents awaiting approval.'
         end
-        scheme_mix_criteria.each do |criterion|
-          if criterion.has_required_requirements?
-            todos << 'All requirements should have status \'Provided\' or \'Not required\'.'
-          end
-          if criterion.has_documents_awaiting_approval?
-            todos << 'There are still documents awaiting approval.'
-          end
-          SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES.each_with_index do |targeted_score, index|
-            unless criterion.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym).nil?
-              if criterion.read_attribute(targeted_score.to_sym).blank?
-                todos << 'Every criterion should have a targeted level.'
-                break
-              end
+        SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES.each_with_index do |targeted_score, index|
+          unless criterion.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym).nil?
+            if criterion.read_attribute(targeted_score.to_sym).blank?
+              todos << 'Every criterion should have a targeted level.'
+              break
             end
           end
-          criteria_exist_blank = false
-          SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES.each_with_index do |submitted_score, index|
-            unless criterion.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym).nil?
-              if criterion.read_attribute(submitted_score.to_sym).blank?
-                criteria_exist_blank = true
-                todos << 'Every criterion should have a submitted level.'
-                break
-              end
+        end
+        criteria_exist_blank = false
+        SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES.each_with_index do |submitted_score, index|
+          unless criterion.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym).nil?
+            if criterion.read_attribute(submitted_score.to_sym).blank?
+              criteria_exist_blank = true
+              todos << 'Every criterion should have a submitted level.'
+              break
             end
-          end
-          if !criteria_exist_blank && ['E','W'].include?(criterion.scheme_criterion.scheme_category.code) && self.certificate.construction_issue_3? && (criterion.submitted_score <= 0)
-            if User.current.cannot?(:edit_status_low_score, self)
-              todos << 'All Energy and Water criteria scores must be > 0.'
-            end
-          end
-          if criterion.submitting?
-            todos << 'Some criteria still have status \'Submitting\'.'
-          end
-          if criterion.submitting_after_appeal?
-            todos << 'Some criteria still have status \'Submitting after appeal\'.'
           end
         end
-      when CertificationPathStatus::VERIFYING, CertificationPathStatus::VERIFYING_AFTER_APPEAL
-        scheme_mix_criteria.each do |criterion|
-          SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES.each_with_index do |achieved_score, index|
-            unless criterion.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym).nil?
-              if criterion.read_attribute(achieved_score.to_sym).blank?
-                todos << 'Every criterion should have an achieved level.'
-              end
+        unless User.current.can?(:edit_status_low_score, self) || criteria_exist_blank
+          if ['E','W'].include?(criterion.scheme_criterion.scheme_category.code) && self.certificate.construction_issue_3? && (criterion.submitted_score <= 0)
+            todos << 'To obtain GSAS certification for Construction the Energy and Water criteria levels must be higher than 0.'
+          end
+
+          if self.certificate.operations?
+            if (criterion.scheme_criterion.scheme_category.scheme.name == 'Healthy Building Label Scheme') && (criterion.submitted_score < 2)
+              todos << 'To obtain GSAS certification for the Healthy Building Label scheme all criteria levels must be 2 or higher.'
+            elsif ['E','W'].include?(criterion.scheme_criterion.scheme_category.code) && (criterion.submitted_score <= 0)
+              todos << 'To obtain GSAS certification for Standard or Premium scheme the Energy and Water criteria levels must be higher than 0.'
+            end
+
+            if (criterion.scheme_criterion.scheme_category.scheme.name == 'Premium Scheme') && (criterion.scheme_criterion.scheme_category.code == 'IE') && (criterion.scheme_criterion.number == 2) && (criterion.submitted_score <= 0)
+              todos << 'To obtain GSAS certification for Premium scheme the level of IE.2 Air Quality must be higher than 0.'
             end
           end
-          if criterion.verifying?
-            todos << 'Some criteria still have status \'Verifying\'.'
-          end
-          if criterion.verifying_after_appeal?
-            todos << 'Some criteria still have status \'Verifying after appeal\'.'
+        end
+        if criterion.submitting?
+          todos << 'Some criteria still have status \'Submitting\'.'
+        end
+        if criterion.submitting_after_appeal?
+          todos << 'Some criteria still have status \'Submitting after appeal\'.'
+        end
+      end
+    when CertificationPathStatus::VERIFYING, CertificationPathStatus::VERIFYING_AFTER_APPEAL
+      scheme_mix_criteria.each do |criterion|
+        SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES.each_with_index do |achieved_score, index|
+          unless criterion.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym).nil?
+            if criterion.read_attribute(achieved_score.to_sym).blank?
+              todos << 'Every criterion should have an achieved level.'
+            end
           end
         end
-      when CertificationPathStatus::CERTIFIED, CertificationPathStatus::NOT_CERTIFIED
-        todos << 'This is the final status.'
+        if criterion.verifying?
+          todos << 'Some criteria still have status \'Verifying\'.'
+        end
+        if criterion.verifying_after_appeal?
+          todos << 'Some criteria still have status \'Verifying after appeal\'.'
+        end
+      end
+    when CertificationPathStatus::CERTIFIED, CertificationPathStatus::NOT_CERTIFIED
+      todos << 'This is the final status.'
     end
 
     return todos.uniq
@@ -392,57 +404,57 @@ class CertificationPath < ApplicationRecord
       case certification_path_status_id
         # If the certificate status is advanced to 'Screening',
         # clear the responsible user & due date of the requirements
-        when CertificationPathStatus::SCREENING
-          scheme_mix_criteria.update_all(certifier_id: nil, due_date: nil)
-          scheme_mix_criteria.each do |smc|
-            smc.requirement_data.update_all(user_id: nil, due_date: nil)
-          end
+      when CertificationPathStatus::SCREENING
+        scheme_mix_criteria.update_all(certifier_id: nil, due_date: nil)
+        scheme_mix_criteria.each do |smc|
+          smc.requirement_data.update_all(user_id: nil, due_date: nil)
+        end
         # If the certificate status is advanced to 'Submitting after screening',
         # clear the responsible certifier & due date of the criteria
-        when CertificationPathStatus::SUBMITTING_AFTER_SCREENING
-          scheme_mix_criteria.update_all(certifier_id: nil, due_date: nil)
+      when CertificationPathStatus::SUBMITTING_AFTER_SCREENING
+        scheme_mix_criteria.update_all(certifier_id: nil, due_date: nil)
         # If the certificate status is advanced to 'Verifying',
         # clear the responsible user & due date of the requirements
         # and advance the status of all submitted criteria to 'Verifying'
-        when CertificationPathStatus::VERIFYING
-          scheme_mix_criteria.update_all(certifier_id: nil, due_date: nil)
-          scheme_mix_criteria.each do |smc|
-            smc.requirement_data.update_all(user_id: nil, due_date: nil)
-            if smc.submitted?
-              smc.verifying!
-            end
+      when CertificationPathStatus::VERIFYING
+        scheme_mix_criteria.update_all(certifier_id: nil, due_date: nil)
+        scheme_mix_criteria.each do |smc|
+          smc.requirement_data.update_all(user_id: nil, due_date: nil)
+          if smc.submitted?
+            smc.verifying!
           end
+        end
         # If the certificate status is advanced to 'Submitting after appeal',
         # also advance the status of all appealed criteria to 'Submitting after appeal'
-        when CertificationPathStatus::SUBMITTING_AFTER_APPEAL
-          scheme_mix_criteria.update_all(certifier_id: nil, due_date: nil)
-          scheme_mix_criteria.each do |smc|
-            if smc.appealed?
-              smc.submitting_after_appeal!
-              # Reset linked requirements to 'required' and unassign from project team member
-              smc.requirement_data.each do |requirement|
-                requirement.required!
-              end
+      when CertificationPathStatus::SUBMITTING_AFTER_APPEAL
+        scheme_mix_criteria.update_all(certifier_id: nil, due_date: nil)
+        scheme_mix_criteria.each do |smc|
+          if smc.appealed?
+            smc.submitting_after_appeal!
+            # Reset linked requirements to 'required' and unassign from project team member
+            smc.requirement_data.each do |requirement|
+              requirement.required!
             end
           end
+        end
         # If the certificate status is advanced to 'Acknowledging',
         # clear the responsible certifier & due date of the criteria
-        when CertificationPathStatus::ACKNOWLEDGING
-          scheme_mix_criteria.update_all(certifier_id: nil, due_date: nil)
+      when CertificationPathStatus::ACKNOWLEDGING
+        scheme_mix_criteria.update_all(certifier_id: nil, due_date: nil)
         # If the certificate status is advanced to 'Verifying after appeal',
         # clear the responsible user & due date of the requirements
         # and advance the status of all appealed criteria to 'Verifying after appeal'
-        when CertificationPathStatus::VERIFYING_AFTER_APPEAL
-          scheme_mix_criteria.each do |smc|
-            smc.requirement_data.update_all(user_id: nil, due_date: nil)
-            if smc.submitted_after_appeal?
-              smc.verifying_after_appeal!
-            end
+      when CertificationPathStatus::VERIFYING_AFTER_APPEAL
+        scheme_mix_criteria.each do |smc|
+          smc.requirement_data.update_all(user_id: nil, due_date: nil)
+          if smc.submitted_after_appeal?
+            smc.verifying_after_appeal!
           end
+        end
         # If the certificate status is advanced to 'Acknowledging after appeal',
         # clear the responsible certifier & due date of the criteria
-        when CertificationPathStatus::ACKNOWLEDGING_AFTER_APPEAL
-          scheme_mix_criteria.update_all(certifier_id: nil, due_date: nil)
+      when CertificationPathStatus::ACKNOWLEDGING_AFTER_APPEAL
+        scheme_mix_criteria.update_all(certifier_id: nil, due_date: nil)
       end
     end
   end
@@ -458,7 +470,7 @@ class CertificationPath < ApplicationRecord
           scheme_mixes.where.not(id: main_scheme_mix_id).each do |scheme_mix|
             scheme_mix.create_descendant_records
           end
-        # If there is no main scheme mix, order doesn't matter
+          # If there is no main scheme mix, order doesn't matter
         else
           scheme_mixes.each do |scheme_mix|
             scheme_mix.create_descendant_records
