@@ -17,10 +17,10 @@
       </span>
       <% if rating.is_a? String %>
         <!-- TEXTUAL SCORE -->
-        <span class="label label-rating label-rating-<%= rating.downcase.gsub(/( )/, '-') %>" style="<% unless achieved %>opacity: 0.3<% end %>"><%= rating %></span>
+        <span class="label label-rating label-rating-<%= rating.downcase.gsub(/( )/, '-') %>"><%= rating %></span>
       <% else %>
         <!-- STAR SCORE -->
-        <span style="white-space: nowrap;<% unless achieved %>opacity: 0.3<% end %>;">
+        <span style="white-space: nowrap;">
           <% rating.times do %>
               <i class="fa fa-star fa-lg"></i>
           <% end %>
