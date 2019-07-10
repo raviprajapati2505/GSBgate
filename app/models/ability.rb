@@ -279,15 +279,15 @@ class Ability
         # SchemeMixCriteriaDocument
         can [:update_status, :edit_status, :create_link, :new_link, :unlink, :destroy_link], SchemeMixCriteriaDocument
         # SchemeCriterion
-        can :crud, SchemeCriterion
+        can :manage, SchemeCriterion
         # SchemeCriterionText
-        can :crud, SchemeCriterionText
+        can :manage, SchemeCriterionText
         # Requirement
-        can :crud, Requirement
+        can :manage, Requirement
         # SchemeCategory
-        can :crud, SchemeCategory
+        can :manage, SchemeCategory
         # Scheme
-        can :crud, Scheme
+        can :manage, Scheme
         # CertificationPath advance status even when there are CM 2.1 Issue 3.0 criteria of categories E and W with score 0
         can :edit_status_low_score, CertificationPath
       end

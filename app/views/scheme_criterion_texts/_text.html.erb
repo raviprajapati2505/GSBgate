@@ -5,12 +5,12 @@
     <div class="panel-body">
         <div class="<%= criterion_text.name.downcase %>"><%= criterion_text.html_text.html_safe %></div>
     </div>
-    <% if can?(:edit, criterion_text) || can?(:delete, criterion_text) %>
+    <% if can?(:edit, criterion_text) || can?(:destroy, criterion_text) %>
         <div class="panel-footer">
             <% if can?(:edit, criterion_text) %>
                 <%= btn_link_to(edit_scheme_criterion_text_path(criterion_text), icon: 'edit', text: 'Edit') %>
             <% end %>
-            <% if can?(:delete, criterion_text) %>
+            <% if can?(:destroy, criterion_text) %>
                 <%= btn_link_to(scheme_criterion_text_path(criterion_text), method: :delete, data: {confirm: 'Are you sure to remove criterion text ?'}, style: 'danger', icon: 'trash', text: 'Remove') %>
             <% end %>
         </div>

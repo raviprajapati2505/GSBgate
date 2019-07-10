@@ -5,7 +5,7 @@
   <div class="panel-body">
     <div class="<%= requirement.name.downcase %>"><%= requirement.name %></div>
   </div>
-  <% if can?(:edit, requirement) || can?(:delete, requirement) %>
+  <% if can?(:edit, requirement) || can?(:destroy, requirement) %>
     <div class="panel-footer">
       <% if can?(:edit, requirement) %>
         <%= btn_link_to(requirement_path(requirement), icon: 'edit', text: 'Edit') %>

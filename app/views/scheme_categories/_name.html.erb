@@ -5,7 +5,7 @@
   <div class="panel-body">
     <div class="<%= category.name.downcase %>"><%= category.description.html_safe %></div>
   </div>
-  <% if can?(:edit, category) || can?(:delete, category) %>
+  <% if can?(:edit, category) || can?(:destroy, category) %>
       <div class="panel-footer">
         <% if can?(:edit, category) %>
             <%= btn_link_to(scheme_category_path(category), icon: 'edit', text: 'Edit') %>

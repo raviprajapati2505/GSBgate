@@ -508,7 +508,7 @@
             <h5>Criterion Information</h5>
         </div>
         <div class="ibox-content">
-            <% @scheme_mix_criterion.scheme_criterion.scheme_criterion_texts.each do |scheme_criterion_text| %>
+            <% @scheme_mix_criterion.scheme_criterion.scheme_criterion_texts.visible.each do |scheme_criterion_text| %>
                 <div class="subtitle"><%= scheme_criterion_text.name.capitalize %></div>
                 <div class="<%= scheme_criterion_text.name.downcase  %>"><%= scheme_criterion_text.html_text.html_safe %></div>
             <% end %>
