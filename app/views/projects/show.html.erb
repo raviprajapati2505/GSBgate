@@ -19,7 +19,7 @@
             <td><%= @project.name %></td>
           </tr>
           <tr>
-            <th><%= Project.human_attribute_name('certificate type') %></th>
+            <th><%= Project.human_attribute_name('certificate_type') %></th>
             <td><%= t(Certificate.certificate_types.key(@project.certificate_type), scope: 'activerecord.attributes.certificate.certificate_types') %></td>
           </tr>
           <tr>
