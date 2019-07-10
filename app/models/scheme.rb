@@ -10,7 +10,8 @@ class Scheme < ApplicationRecord
   has_many :certification_paths, through: :scheme_mixes
 
   def full_name
-    "GSAS #{name} v#{gsas_version}"
+    # "GSAS #{name} v#{gsas_version}"
+    name
   end
 
   # sums the weights for all scheme_criteria belonging to the given category
