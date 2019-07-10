@@ -12,7 +12,7 @@
                 <% unless @scheme_criterion.read_attribute(scores.to_sym).nil? %>
                   <div class="panel panel-default">
                     <div class="panel-heading">
-                      <h3 class="panel-title">Scores <%= @scheme_criterion.read_attribute(SchemeCriterion::LABEL_ATTRIBUTES[index].to_sym) %></h3>
+                      <h3 class="panel-title">Scores/Levels <%= @scheme_criterion.read_attribute(SchemeCriterion::LABEL_ATTRIBUTES[index].to_sym) %></h3>
                     </div>
                     <div class="panel-body">
                       <%= f.label SchemeCriterion::WEIGHT_ATTRIBUTES[index].to_sym, 'Weight' %>

@@ -214,7 +214,7 @@ class CertificationPath < ApplicationRecord
           SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES.each_with_index do |targeted_score, index|
             unless criterion.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym).nil?
               if criterion.read_attribute(targeted_score.to_sym).blank?
-                todos << 'Every criterion should have a targeted score.'
+                todos << 'Every criterion should have a targeted level.'
                 break
               end
             end
@@ -224,7 +224,7 @@ class CertificationPath < ApplicationRecord
             unless criterion.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym).nil?
               if criterion.read_attribute(submitted_score.to_sym).blank?
                 criteria_exist_blank = true
-                todos << 'Every criterion should have a submitted score.'
+                todos << 'Every criterion should have a submitted level.'
                 break
               end
             end
@@ -246,7 +246,7 @@ class CertificationPath < ApplicationRecord
           SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES.each_with_index do |achieved_score, index|
             unless criterion.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym).nil?
               if criterion.read_attribute(achieved_score.to_sym).blank?
-                todos << 'Every criterion should have an achieved score.'
+                todos << 'Every criterion should have an achieved level.'
               end
             end
           end

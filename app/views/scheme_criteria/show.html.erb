@@ -25,7 +25,7 @@
                   <% end %>
                   <% unless @scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym).nil? %>
                   <tr>
-                    <th>Scores <%= @scheme_criterion.read_attribute(SchemeCriterion::LABEL_ATTRIBUTES[index].to_sym) %></th>
+                    <th>Scores/Levels <%= @scheme_criterion.read_attribute(SchemeCriterion::LABEL_ATTRIBUTES[index].to_sym) %></th>
                     <td><%= @scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym).map { |score| score[0] }.join(', ') %></td>
                   </tr>
                   <% end %>

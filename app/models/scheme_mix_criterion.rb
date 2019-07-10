@@ -190,7 +190,7 @@ class SchemeMixCriterion < ApplicationRecord
       SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES.each_with_index do |targeted_score, index|
         unless self.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym).nil?
           if self.read_attribute(targeted_score.to_sym).nil?
-            todos << 'The targeted score should be set first.'
+            todos << 'The targeted level should be set first.'
           end
         end
       end
@@ -198,7 +198,7 @@ class SchemeMixCriterion < ApplicationRecord
       SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES.each_with_index do |submitted_score, index|
         unless self.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym).nil?
           if self.read_attribute(submitted_score.to_sym).nil?
-            todos << 'The submitted score should be set first.'
+            todos << 'The submitted level should be set first.'
           end
         end
       end
@@ -207,7 +207,7 @@ class SchemeMixCriterion < ApplicationRecord
       SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES.each_with_index do |achieved_score, index|
         unless self.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym).nil?
           if self.read_attribute(achieved_score.to_sym).nil?
-            todos << 'The achieved score should be set first.'
+            todos << 'The achieved level should be set first.'
           end
         end
       end

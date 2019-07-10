@@ -8,7 +8,7 @@
         </th>
         <% if certification_path.is_activated? %>
             <th class="col-md-4">
-                Score
+                Score/Level
                 <% id_list = certification_path.scheme_mixes.collect { |scheme_mix| "scheme_mix_#{scheme_mix.id}" } %>
                 <%= render 'score/score_toggle', id_list: id_list %>
             </th>

@@ -54,9 +54,9 @@ class SchemeMixCriteriaController < AuthenticatedController
   end
 
   def update_scores
-    authorize! :update_targeted_score, @scheme_mix_criterion, message: 'Not authorized to update targeted score' if scheme_mix_criterion_params.has_key?(:targeted_score_a)
-    authorize! :update_submitted_score, @scheme_mix_criterion, message: 'Not authorized to update submitted score' if scheme_mix_criterion_params.has_key?(:submitted_score_a)
-    authorize! :update_achieved_score, @scheme_mix_criterion, message: 'Not authorized to update achieved score' if scheme_mix_criterion_params.has_key?(:achieved_score_a)
+    authorize! :update_targeted_score, @scheme_mix_criterion, message: 'Not authorized to update targeted level' if scheme_mix_criterion_params.has_key?(:targeted_score_a)
+    authorize! :update_submitted_score, @scheme_mix_criterion, message: 'Not authorized to update submitted level' if scheme_mix_criterion_params.has_key?(:submitted_score_a)
+    authorize! :update_achieved_score, @scheme_mix_criterion, message: 'Not authorized to update achieved level' if scheme_mix_criterion_params.has_key?(:achieved_score_a)
 
     redirect_path = project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion)
 
@@ -75,7 +75,7 @@ class SchemeMixCriteriaController < AuthenticatedController
         # Update the scheme mix criterion
         @scheme_mix_criterion.update!(scheme_mix_criterion_params)
       end
-      redirect_to redirect_path, notice: 'Criterion scores were successfully updated.'
+      redirect_to redirect_path, notice: 'The Criterion Levels were successfully updated.'
     end
   end
 

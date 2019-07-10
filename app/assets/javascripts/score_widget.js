@@ -10,16 +10,16 @@ function score_graph($element, showLegend, showXaxis, showValues, width, height,
     }
     var data = [];
     if(maxAttainable) {
-        data.push({class: 'progress-bar-max', value: maxAttainable, name: 'Max. Attainable score'});
+        data.push({class: 'progress-bar-max', value: maxAttainable, name: 'Max. Attainable'});
     }
     if(targeted) {
-        data.push({class: 'progress-bar-targeted', value: targeted, name: 'Targeted score'});
+        data.push({class: 'progress-bar-targeted', value: targeted, name: 'Targeted'});
     }
     if(submitted) {
-        data.push({class: 'progress-bar-submitted', value: submitted, name: 'Submitted score'});
+        data.push({class: 'progress-bar-submitted', value: submitted, name: 'Submitted'});
     }
     if(achieved) {
-        data.push({class: 'progress-bar-achieved', value: achieved, name: 'Achieved score'});
+        data.push({class: 'progress-bar-achieved', value: achieved, name: 'Achieved'});
     }
     // Resize the height, to take into account that not all data rows are shown.
     //   divide by (4 possible data rows and 1 header), and multiply by (actual data rows and 1 header)

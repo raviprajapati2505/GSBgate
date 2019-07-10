@@ -21,7 +21,7 @@
             <td><%= @scheme_mix.weight %> %</td>
           </tr>
           <tr>
-            <th>Score</th>
+            <th>Score/Level</th>
             <td>
               <%= render 'score/score_toggle', id_list: ["scheme_mix_#{@scheme_mix.id}"] %>
               <%= render 'score/score_tabs', scores: @scheme_mix.scores, element_id: "scheme_mix_#{@scheme_mix.id}" %>
@@ -105,7 +105,7 @@
               <th>Name</th>
               <th>Weighting</th>
               <th>
-                Score
+                Score/Level
                 <% id_list = @scheme_mix.scheme_categories.collect { |category| "category_#{category.id}" } %>
                 <% id_list << @scheme_mix.scheme_mix_criteria.collect { |scheme_mix_criteria| "scheme_mix_criterion_#{scheme_mix_criteria.id}" } %>
                 <%= render 'score/score_toggle', id_list: id_list %>
@@ -201,7 +201,7 @@
                           <th>Name</th>
                           <th>Status</th>
                           <th>Weighting</th>
-                          <th>Score</th>
+                          <th>Score/Level</th>
                           <th>Total Requirement Progress</th>
                           <th>Approved Documents</th>
                         </tr>
@@ -225,7 +225,7 @@
                                     <%= scheme_mix_criterion.name %>
                                 <% end %>
                                 <% if scheme_mix_criterion.main_scheme_mix_criterion_id.present? %>
-                                    <%= ikoen('files-o', tooltip: 'The scores of this criterion are inherited from a criterion with the same name in the main scheme.') %>
+                                    <%= ikoen('files-o', tooltip: 'The levels of this criterion are inherited from a criterion with the same name in the main scheme.') %>
                                 <% end %>
                                 <% if @certification_path.in_screening? && scheme_mix_criterion.screened %>
                                     <%= ikoen('eye', tooltip: 'The criterion was screened.') %>

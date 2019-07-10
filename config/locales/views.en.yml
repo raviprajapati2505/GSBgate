@@ -56,7 +56,7 @@ en:
         btn_accept_achieved: Accept achieved score
         btn_accept_denied:
           text: Accept certification denied
-          confirm: There are one or more criteria that have not achieved their minimum valid score. As a result, the certification does not have an achieved score. If you proceed a GSAS certification will be denied. Are you sure?
+          confirm: There are one or more criteria that have not achieved their minimum valid level. As a result, the certification does not have an achieved score. If you proceed a GSAS certification will be denied. Are you sure?
         btn_apply_appeal: Apply for appeal
         btn_advance_status: Advance status to '%{status}'
       certification_path_reports:
@@ -153,13 +153,13 @@ en:
           undo: Revert status
           submit: Submit criterion
       scores:
-        minimum_valid_score_warning: The scores of this criterion should be at least %{minimum_valid_score} to be able to receive a certification.
+        minimum_valid_score_warning: The level of this criterion should be at least %{minimum_valid_score} to be able to receive a certification.
         targeted_score:
-          tooltip: The score the project team would like to achieve. Defaults to the maximum attainable score, but can be changed by a CGP project manager.
+          tooltip: The level the project team would like to achieve. Defaults to the maximum attainable level, but can be changed by a CGP project manager.
         submitted_score:
-          tooltip: The score the project team will submit to GSAS trust for verification. Will be provided by a CGP project manager or a project team member that has been assigned to this criterion.
+          tooltip: The level the project team will submit to GSAS trust for verification. Will be provided by a CGP project manager or a project team member that has been assigned to this criterion.
         achieved_score:
-          tooltip: The score the GSAS trust team has awarded to this criterion. Will be provided by the GSAS trust team and will be used for the final certification score.
+          tooltip: The level the GSAS trust team has awarded to this criterion. Will be provided by the GSAS trust team and will be used for the final certification score.
       certifier:
         title: Certifier
   scheme_mix_criteria_documents:
@@ -180,7 +180,7 @@ en:
         tooltip: Score in scheme points. Takes the criterion weights into account, but not the scheme weights.
       scores:
         text: Criterion
-        tooltip: Score of the criterion in absolute points. Does not take any weighting into account.
+        tooltip: Level of the criterion in absolute points. Does not take any weighting into account.
   tasks:
     index:
       filter:
@@ -190,7 +190,7 @@ en:
       description_2: Check registration and payment and advance the certification status.
       description_3: Allocate project team responsibility for submittal.
       description_4: Provide documentation and change the status of the requirements.
-      description_5: Set the submitted score and submit the criterion.
+      description_5: Set the submitted level and submit the criterion.
       description_6: Advance the certification status.
       description_7: Allocate GSAS trust team responsibility for verification.
       description_8: Allocate GSAS trust team responsibility for screening.

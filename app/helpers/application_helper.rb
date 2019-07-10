@@ -404,10 +404,10 @@ module ApplicationHelper
   end
 
   def scores_legend
-    max = content_tag(:li, ikoen_with_text('square', 'Max. Attainable score', class: 'progress-bar-max'))
-    target = content_tag(:li, ikoen_with_text('square', 'Targeted score', class: 'progress-bar-targeted'))
-    submit = content_tag(:li, ikoen_with_text('square', 'Submitted score', class: 'progress-bar-submitted'))
-    achieved = content_tag(:li, ikoen_with_text('square', 'Achieved score', class: 'progress-bar-achieved'))
+    max = content_tag(:li, ikoen_with_text('square', 'Max. Attainable', class: 'progress-bar-max'))
+    target = content_tag(:li, ikoen_with_text('square', 'Targeted', class: 'progress-bar-targeted'))
+    submit = content_tag(:li, ikoen_with_text('square', 'Submitted', class: 'progress-bar-submitted'))
+    achieved = content_tag(:li, ikoen_with_text('square', 'Achieved', class: 'progress-bar-achieved'))
     content_tag(:ul, class: 'list-unstyled list-inline') do
       max + target + submit + achieved
     end
