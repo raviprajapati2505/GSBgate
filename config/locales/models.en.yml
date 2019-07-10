@@ -121,7 +121,7 @@ en:
         scheme_mix_criterion:
           status:
             update_html: The status of criterion <strong>%{criterion}</strong> was changed from <strong>%{old_status}</strong> to <strong>%{new_status}</strong>.
-            after_verification: The achieved score for criterion <strong>%{criterion}</strong> is <strong>%{achieved_score}</strong>. The criterion status was changed to <strong>%{new_status}</strong>.
+            after_verification: The achieved level for criterion <strong>%{criterion}</strong> is <strong>%{achieved_score}</strong>. The criterion status was changed to <strong>%{new_status}</strong>.
           screened:
             update_html: The criterion <strong>%{criterion}</strong> was screened.
           certifier:
@@ -133,17 +133,17 @@ en:
             assigned_for_pcr_review_due_html: Criterion <strong>%{criterion}</strong> was assigned to GSAS trust certifier <strong>%{user}</strong> for PCR review. The due date is <strong>%{due_date}</strong>.
             assigned_for_pcr_review_html: Criterion <strong>%{criterion}</strong> was assigned to GSAS trust certifier <strong>%{user}</strong> for PCR review.
           targeted_score:
-            set_html: The %{score_label} targeted score of criterion <strong>%{criterion}</strong> was set to <strong>%{score}</strong>.
-            unset_html: The %{score_label} targeted score of criterion <strong>%{criterion}</strong> was removed.
-            update_html: The %{score_label} targeted score of criterion <strong>%{criterion}</strong> was changed from <strong>%{old_score}</strong> to <strong>%{new_score}</strong>.
+            set_html: The %{score_label} targeted level of criterion <strong>%{criterion}</strong> was set to <strong>%{score}</strong>.
+            unset_html: The %{score_label} targeted level of criterion <strong>%{criterion}</strong> was removed.
+            update_html: The %{score_label} targeted level of criterion <strong>%{criterion}</strong> was changed from <strong>%{old_score}</strong> to <strong>%{new_score}</strong>.
           submitted_score:
-            set_html: The %{score_label} submitted score of criterion <strong>%{criterion}</strong> was set to <strong>%{score}</strong>.
-            unset_html: The %{score_label} submitted score of criterion <strong>%{criterion}</strong> was removed.
-            update_html: The %{score_label} submitted score of criterion <strong>%{criterion}</strong> was changed from <strong>%{old_score}</strong> to <strong>%{new_score}</strong>.
+            set_html: The %{score_label} submitted level of criterion <strong>%{criterion}</strong> was set to <strong>%{score}</strong>.
+            unset_html: The %{score_label} submitted level of criterion <strong>%{criterion}</strong> was removed.
+            update_html: The %{score_label} submitted level of criterion <strong>%{criterion}</strong> was changed from <strong>%{old_score}</strong> to <strong>%{new_score}</strong>.
           achieved_score:
-            set_html: The %{score_label} achieved score of criterion <strong>%{criterion}</strong> was set to <strong>%{score}</strong>.
-            unset_html: The %{score_label} achieved score of criterion <strong>%{criterion}</strong> was removed.
-            update_html: The %{score_label} achieved score of criterion <strong>%{criterion}</strong> was changed from <strong>%{old_score}</strong> to <strong>%{new_score}</strong>.
+            set_html: The %{score_label} achieved level of criterion <strong>%{criterion}</strong> was set to <strong>%{score}</strong>.
+            unset_html: The %{score_label} achieved level of criterion <strong>%{criterion}</strong> was removed.
+            update_html: The %{score_label} achieved level of criterion <strong>%{criterion}</strong> was changed from <strong>%{old_score}</strong> to <strong>%{new_score}</strong>.
           incentive_scored:
             set_html: The %{score_label} incentive scored flag for criterion <strong>%{criterion}</strong> was set to <strong>%{incentive_scored}</strong>.
             unset_html: The %{score_label} incentive scored flag for criterion <strong>%{criterion}</strong> was reset.
@@ -213,7 +213,7 @@ en:
           weight:
             update_html: Criterion %{score_label} weight changed from <strong>%{old_weight}</strong> to <strong>%{new_weight}</strong>.
           scores:
-            update_html: Criterion %{score_label} scores changed from <strong>%{old_scores}</strong> to <strong>%{new_scores}</strong>.
+            update_html: Criterion %{score_label} levels changed from <strong>%{old_scores}</strong> to <strong>%{new_scores}</strong>.
           incentive_weight:
             update_html: Criterion %{score_label} incentive weights changed from <strong>%{old_incentive}</strong> to <strong>%{new_incentive}</strong>.
         scheme_criterion_incentive:
