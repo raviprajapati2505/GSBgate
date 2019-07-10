@@ -18,10 +18,6 @@ Rails.application.routes.draw do
     end
   end
 
-  # proxy all requests to the external api
-  match 'ssApi', to: 'tools#proxy', via: :all
-  match 'ssApi/*segment', to: 'tools#proxy', via: :all
-
   # Main nested resources of our application
   resources :projects do
     collection do
@@ -156,6 +152,19 @@ Rails.application.routes.draw do
   match '/404', to: 'errors#not_found', via: :all, as: 'not_found_error'
   match '/422', to: 'errors#unprocessable_entity', via: :all, as: 'unprocessable_entity_error'
   match '/500', to: 'errors#internal_server_error', via: :all, as: 'internal_server_error_error'
+
+  namespace :api do
+    resources :sessions, only: [:create] do
+      collection do
+        delete :destroy
+      end
+    end
+
+    namespace :v1 do
+      resources :projects, only: [:index, :show]
+      get 'typologies' => 'projects#typologies', as: 'typologies'
+    end
+  end
 
   # CATCH ALL ROUTE, redirecting the user to a correct page
   # BEWARE: this should be the last line, as it will match any path !!!

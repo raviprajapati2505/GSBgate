@@ -124,6 +124,43 @@ class Project < ApplicationRecord
     return false
   end
 
+  # returns the most important scheme mix which is
+  # either the main scheme mix for the oldest certification path (should be the same as following certification paths)
+  # or the scheme mix of the oldest certification path with the highest weight
+  def most_important_scheme_mix
+    oldest_cert_path = certification_paths.sort_by {|cat| cat.created_at}.first
+    unless oldest_cert_path.nil?
+      # return main scheme_mix
+      return oldest_cert_path.main_scheme_mix unless oldest_cert_path.main_scheme_mix.nil?
+      # return heaviest scheme_mix
+      return oldest_cert_path.scheme_mixes.max_by {|sm| sm.weight}
+    end
+    return nil
+  end
+
+  # returns a hash with key = category code; value = achieved score in certificate points (sum for all scheme mixes)
+  def categories
+    categories = {}
+    certification_paths.each do |cp|
+      cp.scheme_mixes.each do |sm|
+        scheme_mix_criteria_scores_by_category = sm.scheme_mix_criteria_scores.group_by{|item| item[:scheme_category_id]}
+        unless scheme_mix_criteria_scores_by_category.nil?
+          sm.scheme_categories.each do |c|
+            categories[c.code] = {} if categories[c.code].nil?
+            categories[c.code]['achieved_score'] = 0 if categories[c.code]['achieved_score'].nil?
+            categories[c.code]['achieved_score'] += scheme_mix_criteria_scores_by_category[c.id].sum {|score| score[:achieved_score_in_certificate_points].nil? ? 0 : score[:achieved_score_in_certificate_points]} unless scheme_mix_criteria_scores_by_category[c.id].nil?
+
+
+            scheme_mix_criterion = sm.scheme_mix_criteria.for_category(c).first
+            categories[c.code]['EPL_band'] = scheme_mix_criterion.scheme_mix_criterion_epls.map {|epl| {label: epl.scheme_criterion_performance_label.label, band: epl.band}} if c.code == 'E'
+            categories[c.code]['WPL_band'] = scheme_mix_criterion.scheme_mix_criterion_wpls.map {|wpl| {label: wpl.scheme_criterion_performance_label.label, band: wpl.band}} if c.code == 'W'
+          end
+        end
+      end
+    end
+    return categories
+  end
+
   # def can_create_certification_path_for_certification_type?(certification_type)
   #   # There should be only one certification path per certificate
   #   # TODO: this may be a bad assumption, perhaps extend logic to also look at the status (e.g an older rejected certification_path may be allowed)

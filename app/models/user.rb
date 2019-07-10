@@ -159,6 +159,16 @@ class User < ApplicationRecord
     user
   end
 
+  def jwt_subject
+    id
+  end
+
+  def jwt_payload
+    {
+      username: username
+    }
+  end
+
   private
   def init
     self.role ||= :default_role
