@@ -91,6 +91,12 @@ module Effective
         col :enterprise_clients_array, label: t('models.effective.datatables.projects_certification_paths.enterprise_clients_array.label'), visible: false, sql_column: "ARRAY_TO_STRING(ARRAY(SELECT enterprise_client_users.name FROM users as enterprise_client_users INNER JOIN projects_users as enterprise_client_project_users ON enterprise_client_project_users.user_id = enterprise_client_users.id  WHERE enterprise_client_project_users.role IN (#{ProjectsUser.roles[:enterprise_client]}) AND enterprise_client_project_users.project_id = projects.id), '|||')" do |rec|
           ERB::Util.html_escape(rec.enterprise_clients_array).split('|||').sort.join('<br/>') unless rec.enterprise_clients_array.nil?
         end
+        col :building_type_group_name, sql_column: 'building_type_groups.name', label: t('models.effective.datatables.projects_certification_paths.building_type_groups.label'), visible: false, search: { as: :select, collection: Proc.new { BuildingTypeGroup.select(:name).order(:name).distinct.map { |building_type_group| [building_type_group.name, building_type_group.name] } } } do |rec|
+          rec.building_type_group_name
+        end
+        col :building_type_name, sql_column: 'building_types.name', label: t('models.effective.datatables.projects_certification_paths.building_types.label'), visible: false, search: { as: :select, collection: Proc.new { BuildingType.select(:name).order(:name).distinct.map { |building_type| [building_type.name, building_type.name] } } } do |rec|
+          rec.building_type_name
+        end
       end
 
       collection do
@@ -100,6 +106,8 @@ module Effective
           .joins('LEFT JOIN certificates ON certificates.id = certification_paths.certificate_id')
           .joins('LEFT JOIN certification_path_statuses ON certification_path_statuses.id = certification_paths.certification_path_status_id')
           .joins('LEFT JOIN development_types ON development_types.id = certification_paths.development_type_id')
+          .joins('LEFT JOIN building_type_groups ON building_type_groups.id = projects.building_type_group_id')
+          .joins('LEFT JOIN building_types ON building_types.id = projects.building_type_id')
           .group('projects.id')
           .group('projects.owner')
           .group('projects.developer')
@@ -107,6 +115,8 @@ module Effective
           .group('certificates.id')
           .group('certification_path_statuses.id')
           .group('development_types.id')
+          .group('building_type_groups.id')
+          .group('building_types.id')
           .select('projects.id as project_nr')
           .select('projects.code as project_code')
           .select('projects.name as project_name')
@@ -128,6 +138,10 @@ module Effective
           .select('certification_paths.pcr_track as certification_path_pcr_track')
           .select('development_types.id as development_type_id')
           .select('development_types.name as development_type_name')
+          .select('building_type_groups.id as building_type_group_id')
+          .select('building_type_groups.name as building_type_group_name')
+          .select('building_types.id as building_type_id')
+          .select('building_types.name as building_type_name')
           .select('certification_paths.appealed as certification_path_appealed')
           .select('certification_paths.created_at as certification_path_created_at')
           .select('certification_paths.started_at as certification_path_started_at')

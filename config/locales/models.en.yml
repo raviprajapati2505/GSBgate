@@ -287,3 +287,7 @@ en:
             label: GSAS Trust Team
           enterprise_clients_array:
             label: Enterprise Clients
+          building_type_groups:
+            label: Building Type Groups
+          building_types:
+            label: Building Types
