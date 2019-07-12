@@ -1,14 +1,20 @@
-<ul class="list-group">
-    <%= render partial: 'certification_paths/overview_item', locals: { project: project, certification_type: Certificate.certification_types[:letter_of_conformance] } %>
-    <%= render partial: 'certification_paths/overview_item', locals: { project: project, certification_type: Certificate.certification_types[:final_design_certificate] } %>
-</ul>
-<ul class="list-group">
+<% if project.certificate_type.nil? || project.certificate_type == Certificate.certificate_types[:design_type] %>
+  <ul class="list-group">
+      <%= render partial: 'certification_paths/overview_item', locals: { project: project, certification_type: Certificate.certification_types[:letter_of_conformance] } %>
+      <%= render partial: 'certification_paths/overview_item', locals: { project: project, certification_type: Certificate.certification_types[:final_design_certificate] } %>
+  </ul>
+<% end %>
+<% if project.certificate_type.nil? || project.certificate_type == Certificate.certificate_types[:construction_type] %>
+  <ul class="list-group">
     <%= render partial: 'certification_paths/overview_item', locals: { project: project, certification_type: Certificate.certification_types[:construction_certificate_stage1], display_weight: 31 } %>
     <%= render partial: 'certification_paths/overview_item', locals: { project: project, certification_type: Certificate.certification_types[:construction_certificate_stage2], display_weight: 32 } %>
     <%= render partial: 'certification_paths/overview_item', locals: { project: project, certification_type: Certificate.certification_types[:construction_certificate_stage3], display_weight: 33 } %>
     <%= render partial: 'certification_paths/overview_item', locals: { project: project, certification_type: Certificate.certification_types[:construction_certificate], display_weight: 39 } %>
-</ul>
-<ul class="list-group">
+  </ul>
+<% end %>
+<% if project.certificate_type.nil? || project.certificate_type == Certificate.certificate_types[:operations_type] %>
+  <ul class="list-group">
     <%= render partial: 'certification_paths/overview_item', locals: { project: project, certification_type: Certificate.certification_types[:operations_certificate] } %>
-</ul>
+  </ul>
+<% end %>
 <div id="applyForCertificateModal" class="modal fade"></div>
