@@ -27,11 +27,7 @@ Rails.application.routes.draw do
       get 'tools' => 'projects#show_tools'
       get 'confirm_destroy' => 'projects#confirm_destroy'
     end
-    resources :projects_users, only: [:create, :edit, :show, :update, :destroy], path: :users, as: 'users', constraints: {id: /\d+/} do
-      collection do
-        get 'available/:role' => 'projects_users#available', as: 'available', default: {role: 'all'}, constraints: {role: /all|default_role/}
-      end
-    end
+    resources :projects_users, only: [:create, :edit, :show, :update, :destroy], path: :users, as: 'users', constraints: {id: /\d+/}
     resources :certification_paths, except: [:index, :edit, :update], path: :certificates do
       collection do
         get 'list'

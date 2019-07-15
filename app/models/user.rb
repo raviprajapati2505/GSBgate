@@ -30,10 +30,6 @@ class User < ApplicationRecord
     User.includes(:projects_users).where(projects_users: {id: nil})
   }
 
-  scope :default_role, -> {
-    where(role: User.roles[:default_role])
-  }
-
   scope :search_email, ->(text) {
     where('email like :search_text', search_text: "%#{text}%")
   }
