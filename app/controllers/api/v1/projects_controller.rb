@@ -47,14 +47,13 @@ class Api::V1::ProjectsController < Api::ApiController
       end
       if filter.has_key?('construction_year')
         query = query.where('construction_year = ?', filter['construction_year'])
-        total_energy_consumption_query = total_energy_consumption_query.where('projects.construction_year = ?', filter['conscruction_year'])
+        total_energy_consumption_query = total_energy_consumption_query.where('projects.construction_year = ?', filter['construction_year'])
         total_water_consumption_query = total_water_consumption_query.where('projects.construction_year = ?', filter['construction_year'])
       end
-      if filter.has_key?('rating')
-      #   TODO not yet implemented
-      end
-      if filter.has_key?('main_scheme')
-      #   TODO not yet implemented
+      if filter.has_key?('certified_at_year')
+        query = query.where('DATE_PART(\'year\', certification_paths.certified_at) = ?', filter['certified_at_year'])
+        total_energy_consumption_query = total_energy_consumption_query.where('DATE_PART(\'year\', certification_paths.certified_at) = ?', filter['certified_at_year'])
+        total_water_consumption_query = total_water_consumption_query.where('DATE_PART(\'year\', certification_paths.certified_at) = ?', filter['certified_at_year'])
       end
     end
     # @total_energy_consumption = total_energy_consumption_query.sum('scheme_mix_criterion_performance_labels.cooling + scheme_mix_criterion_performance_labels.lighting + scheme_mix_criterion_performance_labels.auxiliaries + scheme_mix_criterion_performance_labels.dhw + scheme_mix_criterion_performance_labels.others + scheme_mix_criterion_performance_labels.generation')
