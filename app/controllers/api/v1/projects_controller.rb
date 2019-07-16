@@ -18,15 +18,25 @@ class Api::V1::ProjectsController < Api::ApiController
       # provide average energy/water consumption
 
       # Filter EPL/WPL band
-      if filter.has_key?('EPL_band')
-        query = query.where("EXISTS(#{SchemeMixCriterionEpl.joins(scheme_mix_criterion: [:scheme_mix]).where('scheme_mixes.certification_path_id = certification_paths.id').where(band: filter['EPL_band']).unscope(:order).to_sql})")
-        total_energy_consumption_query = total_energy_consumption_query.where(band: filter['EPL_band'])
-        total_water_consumption_query = total_water_consumption_query.where("EXISTS(#{SchemeMixCriterionEpl.joins(scheme_mix_criterion: [:scheme_mix]).where('scheme_mixes.certification_path_id = certification_paths.id').where(band: filter['EPL_band']).unscope(:order).to_sql})")
+      if filter.has_key?('EPL_band_asbuilt')
+        query = query.where("EXISTS(#{SchemeMixCriterionEpl.joins(scheme_mix_criterion: [:scheme_mix]).where('scheme_criterion_performance_labels.label = \'As Built\' AND scheme_mixes.certification_path_id = certification_paths.id').where(band: filter['EPL_band_asbuilt']).unscope(:order).to_sql})")
+        total_energy_consumption_query = total_energy_consumption_query.where('scheme_criterion_performance_labels.label = \'As Built\' AND scheme_mix_criterion_performance_labels.band = ?', filter['EPL_band_asbuilt'])
+        total_water_consumption_query = total_water_consumption_query.where("EXISTS(#{SchemeMixCriterionEpl.joins(scheme_mix_criterion: [:scheme_mix]).where('scheme_criterion_performance_labels.label = \'As Built\' AND scheme_mixes.certification_path_id = certification_paths.id').where(band: filter['EPL_band_asbuilt']).unscope(:order).to_sql})")
       end
-      if filter.has_key?('WPL_band')
-        query = query.where("EXISTS(#{SchemeMixCriterionWpl.joins(scheme_mix_criterion: [:scheme_mix]).where('scheme_mixes.certification_path_id = certification_paths.id').where(band: filter['WPL_band']).unscope(:order).to_sql})")
-        total_energy_consumption_query = total_energy_consumption_query.where("EXISTS(#{SchemeMixCriterionWpl.joins(scheme_mix_criterion: [:scheme_mix]).where('scheme_mixes.certification_path_id = certification_paths.id').where(band: filter['WPL_band']).unscope(:order).to_sql})")
-        total_water_consumption_query = total_water_consumption_query.where(band: filter['WPL_band'])
+      if filter.has_key?('EPL_band_asoperated')
+        query = query.where("EXISTS(#{SchemeMixCriterionEpl.joins(scheme_mix_criterion: [:scheme_mix]).where('scheme_criterion_performance_labels.label = \'As Operated\' AND scheme_mixes.certification_path_id = certification_paths.id').where(band: filter['EPL_band_asoperated']).unscope(:order).to_sql})")
+        total_energy_consumption_query = total_energy_consumption_query.where('scheme_criterion_performance_labels.label = \'As Operated\' AND scheme_mix_criterion_performance_labels.band = ?', filter['EPL_band_asoperated'])
+        total_water_consumption_query = total_water_consumption_query.where("EXISTS(#{SchemeMixCriterionEpl.joins(scheme_mix_criterion: [:scheme_mix]).where('scheme_criterion_performance_labels.label = \'As Operated\' AND scheme_mixes.certification_path_id = certification_paths.id').where(band: filter['EPL_band_asoperated']).unscope(:order).to_sql})")
+      end
+      if filter.has_key?('WPL_band_asbuilt')
+        query = query.where("EXISTS(#{SchemeMixCriterionWpl.joins(scheme_mix_criterion: [:scheme_mix]).where('scheme_criterion_performance_labels.label = \'As Built\' AND scheme_mixes.certification_path_id = certification_paths.id').where(band: filter['WPL_band_asbuilt']).unscope(:order).to_sql})")
+        total_energy_consumption_query = total_energy_consumption_query.where('scheme_criterion_performance_labels.label = \'As Built\' AND scheme_mix_criterion_performance_labels.band = ?', filter['WPL_band_asbuilt'])
+        total_water_consumption_query = total_water_consumption_query.where("EXISTS(#{SchemeMixCriterionWpl.joins(scheme_mix_criterion: [:scheme_mix]).where('scheme_criterion_performance_labels.label = \'As Built\' AND scheme_mixes.certification_path_id = certification_paths.id').where(band: filter['WPL_band_asbuilt']).unscope(:order).to_sql})")
+      end
+      if filter.has_key?('WPL_band_asoperated')
+        query = query.where("EXISTS(#{SchemeMixCriterionWpl.joins(scheme_mix_criterion: [:scheme_mix]).where('scheme_criterion_performance_labels.label = \'As Operated\' AND scheme_mixes.certification_path_id = certification_paths.id').where(band: filter['WPL_band_asoperated']).unscope(:order).to_sql})")
+        total_energy_consumption_query = total_energy_consumption_query.where('scheme_criterion_performance_labels.label = \'As Operated\' AND scheme_mix_criterion_performance_labels.band = ?', filter['WPL_band_asoperated'])
+        total_water_consumption_query = total_water_consumption_query.where("EXISTS(#{SchemeMixCriterionWpl.joins(scheme_mix_criterion: [:scheme_mix]).where('scheme_criterion_performance_labels.label = \'As Operated\' AND scheme_mixes.certification_path_id = certification_paths.id').where(band: filter['WPL_band_asoperated']).unscope(:order).to_sql})")
       end
       # filter on typology (= scheme ?)
       if filter.has_key?('typology')
