@@ -238,13 +238,20 @@ module ScoreCalculator
         weighted_scores << "(#{scores[index]} / (CASE WHEN scheme_criteria_score.#{SchemeCriterion::MAX_SCORE_ATTRIBUTES[index]} IS NULL THEN 1 ELSE scheme_criteria_score.#{SchemeCriterion::MAX_SCORE_ATTRIBUTES[index]}::float END)) * ((3.0 * (scheme_criteria_score.#{SchemeCriterion::WEIGHT_ATTRIBUTES[index]})) / 100.0) + (3.0 * #{incentive_weight} / 100.0)"
         criterion_weighted_scores << "CASE (#{criterion_weights.join(' + ')}) WHEN 0 THEN 0 ELSE #{scores[index]} * scheme_criteria_score.#{SchemeCriterion::WEIGHT_ATTRIBUTES[index]} / (#{criterion_weights.join(' + ')}) END"
       end
-      extra_incentive_weight = "COALESCE((SELECT SUM(sci.incentive_weight) FROM scheme_criterion_incentives sci INNER JOIN scheme_mix_criterion_incentives smci ON smci.scheme_criterion_incentive_id = sci.id WHERE smci.scheme_mix_criterion_id = scheme_mix_criteria_score.id AND smci.incentive_scored = true), 0)"
+      if fields == SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES # add only scored incentives
+        extra_incentive_weight = "COALESCE((SELECT SUM(sci.incentive_weight) FROM scheme_criterion_incentives sci INNER JOIN scheme_mix_criterion_incentives smci ON smci.scheme_criterion_incentive_id = sci.id WHERE smci.scheme_mix_criterion_id = scheme_mix_criteria_score.id AND smci.incentive_scored = true), 0)"
+      elsif fields == SchemeCriterion::MAX_SCORE_ATTRIBUTES # add all possible incentives
+        extra_incentive_weight = "COALESCE((SELECT SUM(sci.incentive_weight) FROM scheme_criterion_incentives sci INNER JOIN scheme_mix_criterion_incentives smci ON smci.scheme_criterion_incentive_id = sci.id WHERE smci.scheme_mix_criterion_id = scheme_mix_criteria_score.id), 0)"
+      else # don't add incentives
+        extra_incentive_weight = 0
+      end
+
       if point_type == :criteria_points
         score_template = "SUM(#{criterion_weighted_scores.join(' + ')})"
       elsif point_type == :scheme_points
-        score_template = "SUM( CASE (certificates_score.gsas_version = 'v2.1 Issue 1.0') WHEN true THEN (#{criterion_weighted_scores.join(' + ')}) ELSE (#{weighted_scores.join(' + ')} + (3.0 * #{extra_incentive_weight} / 100.0)) END)"
+        score_template = "SUM( CASE (certificates_score.gsas_version = 'v2.1 Issue 1.0') WHEN true THEN (#{criterion_weighted_scores.join(' + ')}) ELSE (#{weighted_scores.join(' + ')} + (#{extra_incentive_weight} / 100.0)) END)"
       elsif point_type == :certificate_points
-        score_template = "SUM( CASE (certificates_score.gsas_version = 'v2.1 Issue 1.0') WHEN true THEN ((#{criterion_weighted_scores.join(' + ')}) * (scheme_mixes_score.weight / 100.0)) ELSE ((#{weighted_scores.join(' + ')} + (3.0 * #{extra_incentive_weight} / 100.0)) * (scheme_mixes_score.weight / 100.0) ) END)"
+        score_template = "SUM( CASE (certificates_score.gsas_version = 'v2.1 Issue 1.0') WHEN true THEN ((#{criterion_weighted_scores.join(' + ')}) * (scheme_mixes_score.weight / 100.0)) ELSE ((#{weighted_scores.join(' + ')} + (#{extra_incentive_weight} / 100.0)) * (scheme_mixes_score.weight / 100.0) ) END)"
       else
         raise('Unexpected point type: ' + point_type.to_s)
       end
