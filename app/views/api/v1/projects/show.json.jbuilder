@@ -80,6 +80,11 @@ json.certificates(@project.certification_paths) do |certification_path|
             json.set! epl.scheme_criterion_performance_label.label, epl.generation
           end
         end
+        json.set! 'co2_emission' do
+          epls.each do |epl|
+            json.set! epl.scheme_criterion_performance_label.label, epl.co2_emission
+          end
+        end
       end
       # Assumption : only 1 criterion linked to Operations Water category
       wpls = scheme_mix_criterion.scheme_mix_criterion_wpls if scheme_category.code == 'W'

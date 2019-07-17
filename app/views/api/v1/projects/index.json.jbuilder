@@ -36,6 +36,7 @@ json.total_auxiliaries_consumption @total_auxiliaries_consumption.to_f
 json.total_dhw_consumption @total_dhw_consumption.to_f
 json.total_others_consumption @total_others_consumption.to_f
 json.total_generation_consumption @total_generation_consumption.to_f
+json.total_co2_emission @total_co2_emission.to_f
 
 # json.total_water_consumption @total_water_consumption
 json.total_water_consumption (@total_indoor_use_consumption + @total_irrigation_consumption + @total_cooling_tower_consumption).to_f
