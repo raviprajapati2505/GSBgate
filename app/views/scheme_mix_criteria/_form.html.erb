@@ -365,6 +365,16 @@
                         </td>
                       <% end %>
                     </tr>
+                    <tr>
+                      <th>CO<sub>2</sub> Emission</th>
+                      <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
+                        <td>
+                          <div class="form-group">
+                            <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][co2_emission]" %>" min="0" step="1" value="<%= epl.co2_emission %>" <% if cannot?(:update, epl) %>readonly="true"<% end %>>
+                          </div>
+                        </td>
+                      <% end %>
+                    </tr>
                     <% end %>
                     <% end %>
 

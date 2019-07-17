@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_12_084205) do
+ActiveRecord::Schema.define(version: 2019_07_17_093817) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -440,6 +440,7 @@ ActiveRecord::Schema.define(version: 2019_07_12_084205) do
     t.decimal "indoor_use"
     t.decimal "irrigation"
     t.decimal "cooling_tower"
+    t.decimal "co2_emission"
     t.index ["scheme_criterion_performance_labels_id"], name: "index_perf_labels_to_scheme_criterion_perf_labels"
     t.index ["scheme_mix_criterion_id"], name: "index_perf_labels_to_scheme_mix_criteria"
   end

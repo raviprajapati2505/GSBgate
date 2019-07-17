@@ -14,6 +14,7 @@ class SchemeMixCriterionEpl < SchemeMixCriterionPerformanceLabel
     total_consumption += self.dhw unless self.dhw.nil?
     total_consumption += self.others unless self.others.nil?
     total_consumption += self.generation unless self.generation.nil?
+    total_consumption += self.co2_emission unless self.co2_emission.nil?
     return total_consumption
   end
 end

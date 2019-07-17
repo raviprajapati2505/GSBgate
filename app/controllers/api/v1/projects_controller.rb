@@ -119,7 +119,7 @@ class Api::V1::ProjectsController < Api::ApiController
 
   def typologies
     query = Scheme.joins(development_types: [:certificate]).where(certificates: {certificate_type: Certificate::certificate_types[:operations_type]}, gsas_version: '2019')
-    @typologies = query.order('id')
+    @typologies = query.distinct.order('id')
     render 'typologies', formats: :json
   end
 end
