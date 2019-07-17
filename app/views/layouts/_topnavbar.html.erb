@@ -50,6 +50,14 @@
               <% end %>
             </li>
 
+            <% if can?(:show, 'visualization_tool') %>
+            <li>
+              <%= link_to Rails.application.config.x.viewer.url, target: '_blank' do %>
+                <%= ikoen('map', size: 'lg') %><span class="nav-label"><%= t('.navbar.viewer') %></span>
+              <% end %>
+            </li>
+            <% end %>
+
             <% can_index_scheme_criteria = can?(:index, SchemeCriterion)%>
             <% can_index_users = can?(:index, User) %>
             <% can_certifiers_criteria_report = can?(:certifiers_criteria, :report) %>

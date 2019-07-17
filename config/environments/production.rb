@@ -113,4 +113,7 @@ Rails.application.configure do
   # Chart generator API config
   config.x.chart_generator.api_url = 'localhost'
   config.x.chart_generator.api_port = 8082
+
+  # Visualization Tool API
+  config.x.viewer.url = 'https://visualisation.gsas.qa'
 end
