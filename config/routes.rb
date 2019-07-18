@@ -159,6 +159,8 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :projects, only: [:index, :show]
       get 'typologies' => 'projects#typologies', as: 'typologies'
+      get 'building_type_groups' => 'projects#building_type_groups', as: 'building_type_groups'
+      get 'building_types' => 'projects#building_types', as: 'building_types'
     end
   end
 

@@ -32,4 +32,24 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
     puts response.headers
     puts response.body
   end
+
+  test 'should get building type groups' do
+    post api_sessions_path('user[username]' => 'sas@vito.be', 'user[password]' => 'Biljartisplezant456'), headers: {'Accept' => 'application/json'}
+    token_bearer = response.headers['Authorization']
+
+    get api_v1_building_type_groups_url(), headers: {'Accept' => 'application/json', 'Authorization' => token_bearer}
+
+    puts response.headers
+    puts response.body
+  end
+
+  test 'should get building types' do
+    post api_sessions_path('user[username]' => 'sas@vito.be', 'user[password]' => 'Biljartisplezant456'), headers: {'Accept' => 'application/json'}
+    token_bearer = response.headers['Authorization']
+
+    get api_v1_building_types_url(), headers: {'Accept' => 'application/json', 'Authorization' => token_bearer}
+
+    puts response.headers
+    puts response.body
+  end
 end
