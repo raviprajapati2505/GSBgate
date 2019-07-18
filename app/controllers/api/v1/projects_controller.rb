@@ -65,6 +65,13 @@ class Api::V1::ProjectsController < Api::ApiController
         total_as_built_water_consumption_query = total_as_built_water_consumption_query.where(projects: {building_type_group_id: filter['building_type_group_id']})
         total_as_operated_water_consumption_query = total_as_operated_water_consumption_query.where(projects: {building_type_group_id: filter['building_type_group_id']})
       end
+      if filter.has_key?('building_type_id')
+        query = query.where(building_type_id: filter['building_type_id'])
+        total_as_built_energy_consumption_query = total_as_built_energy_consumption_query.where(projects: {building_type_id: filter['building_type_id']})
+        total_as_operated_energy_consumption_query = total_as_operated_energy_consumption_query.where(projects: {building_type_id: filter['building_type_id']})
+        total_as_built_water_consumption_query = total_as_built_water_consumption_query.where(projects: {building_type_id: filter['building_type_id']})
+        total_as_operated_water_consumption_query = total_as_operated_water_consumption_query.where(projects: {building_type_id: filter['building_type_id']})
+      end
       if filter.has_key?('country')
         query = query.where('country like ?', "%#{filter['country']}%")
         total_as_built_energy_consumption_query = total_as_built_energy_consumption_query.where('projects.country like ?', "%#{filter['country']}%")
