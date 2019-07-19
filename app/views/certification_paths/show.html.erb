@@ -261,7 +261,11 @@
       <% end %>
       <div class="ibox" id="cgp-documentation">
         <div class="ibox-title">
-          <h5>Project Team Documentation</h5>
+          <% if @certification_path.certificate.certification_type == "final_design_certificate" %>
+            <h5>Project Team CDA Documentation</h5>
+          <% else %>
+            <h5>Project Team Documentation</h5>
+          <% end %>
         </div>
         <div class="ibox-content">
           <%= render 'certification_path_documents/index', certification_path_documents: @certification_path.cgp_certification_path_documents %>
