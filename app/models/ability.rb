@@ -325,6 +325,7 @@ class Ability
       # cannot :refuse, RequirementDatum do |requirement_datum| requirement_datum.user_id != user.id end
     elsif user.document_controller?
       can :read, :all
+      cannot :read, AuditLog
     elsif user.system_admin?
       can :manage, :all
     else

@@ -209,7 +209,7 @@ class DigestMailer < ApplicationMailer
   def archive_created_email(archive)
     @archive = archive
 
-    mail(to: "akash.p@bacancytechnology.com", subject: 'GSASgate - your archive was generated')
+    mail(to: @archive.user.email, subject: 'GSASgate - your archive was generated')
   end
 
   private

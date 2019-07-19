@@ -37,13 +37,11 @@
             <% end %>
 
             <% if can?(:index, AuditLog) %>
-                <% unless current_user.document_controller? %>
-                    <li class="<%= 'active' if (controller_name == 'audit_logs') %>">
-                        <%= link_to audit_logs_path do %>
-                            <%= ikoen('mail-reply-all', size: 'lg') %><span class="nav-label"><%= t('.navbar.audit_log') %></span>
-                        <% end %>
-                    </li>
-                <% end %>
+                <li class="<%= 'active' if (controller_name == 'audit_logs') %>">
+                    <%= link_to audit_logs_path do %>
+                        <%= ikoen('mail-reply-all', size: 'lg') %><span class="nav-label"><%= t('.navbar.audit_log') %></span>
+                    <% end %>
+                </li>
             <% end %>
 
             <li>
