@@ -171,12 +171,12 @@ class Api::V1::ProjectsController < Api::ApiController
   end
 
   def building_type_groups
-    @building_type_groups = BuildingTypeGroup.order('name')
+    @building_type_groups = BuildingTypeGroup.visible.order('name')
     render 'building_type_groups', formats: :json
   end
 
   def building_types
-    @building_types = BuildingType.order('name')
+    @building_types = BuildingType.visible.order('name')
     render 'building_types', formats: :json
   end
 end
