@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_17_093817) do
+ActiveRecord::Schema.define(version: 2019_07_31_141845) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,6 +24,8 @@ ActiveRecord::Schema.define(version: 2019_07_17_093817) do
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "criterion_document_ids", default: [], array: true
+    t.boolean "all_criterion_document", default: false
     t.index ["subject_type", "subject_id"], name: "index_archives_on_subject_type_and_subject_id"
     t.index ["user_id"], name: "index_archives_on_user_id"
   end
@@ -64,6 +66,7 @@ ActiveRecord::Schema.define(version: 2019_07_17_093817) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "visible", default: true
   end
 
   create_table "building_types", id: :serial, force: :cascade do |t|
@@ -71,6 +74,7 @@ ActiveRecord::Schema.define(version: 2019_07_17_093817) do
     t.integer "building_type_group_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "visible", default: true
     t.index ["building_type_group_id"], name: "index_building_types_on_building_type_group_id"
   end
 
@@ -401,6 +405,7 @@ ActiveRecord::Schema.define(version: 2019_07_17_093817) do
     t.datetime "updated_at", null: false
     t.integer "status"
     t.string "pcr_context"
+    t.datetime "approved_date"
     t.index ["document_id"], name: "index_scheme_mix_criteria_documents_on_document_id"
     t.index ["scheme_mix_criterion_id", "document_id"], name: "scheme_mix_criteria_documents_unique", unique: true
     t.index ["scheme_mix_criterion_id"], name: "index_scheme_mix_criteria_documents_on_scheme_mix_criterion_id"

@@ -96,10 +96,10 @@ module Effective
         col :enterprise_clients_array, label: t('models.effective.datatables.projects_certification_paths.enterprise_clients_array.label'), visible: false, sql_column: "ARRAY_TO_STRING(ARRAY(SELECT enterprise_client_users.name FROM users as enterprise_client_users INNER JOIN projects_users as enterprise_client_project_users ON enterprise_client_project_users.user_id = enterprise_client_users.id  WHERE enterprise_client_project_users.role IN (#{ProjectsUser.roles[:enterprise_client]}) AND enterprise_client_project_users.project_id = projects.id), '|||')" do |rec|
           ERB::Util.html_escape(rec.enterprise_clients_array).split('|||').sort.join('<br/>') unless rec.enterprise_clients_array.nil?
         end
-        col :building_type_group_name, sql_column: 'building_type_groups.name', label: t('models.effective.datatables.projects_certification_paths.building_type_groups.label'), visible: false, search: { as: :select, collection: Proc.new { BuildingTypeGroup.select(:name).order(:name).distinct.map { |building_type_group| [building_type_group.name, building_type_group.name] } } } do |rec|
+        col :building_type_group_name, sql_column: 'building_type_groups.name', label: t('models.effective.datatables.projects_certification_paths.building_type_groups.label'), visible: false, search: { as: :select, collection: Proc.new { BuildingTypeGroup.visible.select(:name).order(:name).distinct.map { |building_type_group| [building_type_group.name, building_type_group.name] } } } do |rec|
           rec.building_type_group_name
         end
-        col :building_type_name, sql_column: 'building_types.name', label: t('models.effective.datatables.projects_certification_paths.building_types.label'), visible: false, search: { as: :select, collection: Proc.new { BuildingType.select(:name).order(:name).distinct.map { |building_type| [building_type.name, building_type.name] } } } do |rec|
+        col :building_type_name, sql_column: 'building_types.name', label: t('models.effective.datatables.projects_certification_paths.building_types.label'), visible: false, search: { as: :select, collection: Proc.new { BuildingType.visible.select(:name).order(:name).distinct.map { |building_type| [building_type.name, building_type.name] } } } do |rec|
           rec.building_type_name
         end
       end

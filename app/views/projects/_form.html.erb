@@ -32,9 +32,9 @@
                 <input type="hidden" class="select2-ajax">
               <% end %>
               <%= f.text_field :developer %>
-              <%= f.select(:building_type_group_id, options_from_collection_for_select(BuildingTypeGroup.all.order(:name), :id, :name, @project.building_type_group_id), {include_blank: '- Select a predefined building type category -', placeholder: 'qsdf', class: 'form-control'}) %>
+              <%= f.select(:building_type_group_id, options_from_collection_for_select(BuildingTypeGroup.visible.order(:name), :id, :name, @project.building_type_group_id), {include_blank: '- Select a predefined building type category -', class: 'form-control'}) %>
               <div id="building-type-select">
-                <%= f.select(:building_type_id, options_for_select(BuildingType.all.map{ |bt| [bt.name, bt.id, {'data-building-type-group-id' => bt.building_type_group_id}]}, @project.building_type_id), {include_blank: '- Select a predefined building type -', class: 'form-control'}) %>
+                <%= f.select(:building_type_id, options_for_select(BuildingType.visible.order(:name).map{ |bt| [bt.name, bt.id, {'data-building-type-group-id' => bt.building_type_group_id}]}, @project.building_type_id), {include_blank: '- Select a predefined building type -', class: 'form-control'}) %>
               </div>
               <%= f.text_field :estimated_project_cost %>
               <%= f.text_field :cost_square_meter %>
