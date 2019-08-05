@@ -1,6 +1,6 @@
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins 'localhost:4200', 'gsasviewer.vito.be', 'www.gsas.qa'
+    origins 'localhost:4200', 'gsasviewer.vito.be', 'visualisation.gsas.qa'
 
     resource '/api/*',
              methods: [:get, :post, :options, :delete],
@@ -8,7 +8,7 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
              expose: ['Authorization']
   end
   allow do
-    origins 'localhost:4200', 'gsasviewer.vito.be', 'www.gsas.qa'
+    origins 'localhost:4200', 'gsasviewer.vito.be', 'visualisation.gsas.qa'
 
     resource '/users/*',
              methods: [:get, :post, :options, :delete],
