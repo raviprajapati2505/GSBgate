@@ -243,15 +243,6 @@
                         <% end %>
                       </tr>
                       <% end %>
-
-                      <%= f.fields_for :scheme_mix_criterion_incentives do |incentive| %>
-                      <%= incentive.hidden_field :id %>
-                        <tr>
-                          <th><%= incentive.object.scheme_criterion_incentive.label %></th>
-                          <td colspan="<%= SchemeCriterion::SCORE_ATTRIBUTES.length %>"><%= incentive.check_box :incentive_scored, label: '' %></td>
-                        </tr>
-                      <% end %>
-
                     <% end %>
                     <% end %>
 
@@ -460,6 +451,18 @@
                     </tr>
                     <% end %>
                     <% end %>
+                    <% end %>
+                    <% if @scheme_mix_criterion.scheme_mix_criterion_incentives.any? %>
+                    <tr>
+                      <td colspan="<%= SchemeCriterion::SCORE_ATTRIBUTES.length + 1 %>">Incentives</td>
+                    </tr>
+                    <% end %>
+                    <%= f.fields_for :scheme_mix_criterion_incentives do |smc_incentive| %>
+                      <%= smc_incentive.hidden_field :id %>
+                      <tr>
+                        <th><%= smc_incentive.object.scheme_criterion_incentive.label %></th>
+                        <td colspan="<%= SchemeCriterion::SCORE_ATTRIBUTES.length %>"><%= smc_incentive.check_box :incentive_scored, label: '', disabled: !can?(:update_incentive_scored, smc_incentive.object) %></td>
+                      </tr>
                     <% end %>
                     </tbody>
                 </table>
