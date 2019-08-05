@@ -215,9 +215,9 @@ class Ability
       # Archive
       can :show, Archive, user_id: user.id
 
-      # Visualization Tool
+      # Visualisation Tool
       if user.gord_employee?
-        can :show, 'visualization_tool'
+        can :show, 'visualisation_tool'
       end
     elsif user.gsas_trust_admin? || user.gsas_trust_manager? || user.gsas_trust_top_manager?
       can :read, :all

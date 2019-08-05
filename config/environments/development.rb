@@ -85,6 +85,6 @@ Rails.application.configure do
   config.x.chart_generator.api_url = 'localhost'
   config.x.chart_generator.api_port = 8082
 
-  # Visualization Tool API
+  # Visualisation Tool API
   config.x.viewer.url = 'http://localhost:4200'
 end

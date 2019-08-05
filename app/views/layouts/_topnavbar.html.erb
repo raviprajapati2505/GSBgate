@@ -50,8 +50,8 @@
               <% end %>
             </li>
 
-            <% # TODO: Remove "false" when visualization tool is launched %>
-            <% if false && can?(:show, 'visualization_tool') %>
+            <% # TODO: Remove "false" when visualisation tool is launched %>
+            <% if false && can?(:show, 'visualisation_tool') %>
             <li>
               <%= link_to Rails.application.config.x.viewer.url, target: '_blank' do %>
                 <%= ikoen('map', size: 'lg') %><span class="nav-label"><%= t('.navbar.viewer') %></span>

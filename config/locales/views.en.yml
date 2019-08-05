@@ -18,7 +18,7 @@ en:
         admin_users: Users
         certifiers_and_criteria_report: Certifiers and Criteria
         manual: User Manual
-        viewer: Visualization Tool
+        viewer: Visualisation Tool
   certification_paths:
     edit_status:
       modal_title: Update status
