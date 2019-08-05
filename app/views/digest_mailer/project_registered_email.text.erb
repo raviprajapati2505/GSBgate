@@ -17,9 +17,10 @@ Address : <%= @project.address %>
 Location : <%= @project.location %>
 Country : <%= @project.country %>
 
-Gross Area : <%= @project.gross_area %>m²
-Certified Area (area excluding car park) : <%= @project.certified_area %>m²
+Project Plot Area (A) : <%= @project.project_site_area %>m²
+Buildings Gross Built up Area (B) : <%= @project.gross_area %>m²
+Buildings Footprint (C) : <%= @project.buildings_footprint_area %>m²
+Gross Certified Area (A+B-C) : <%= @project.certified_area %>m²
 Car Park Area : <%= @project.carpark_area %>m²
-Project Plot Area : <%= @project.project_site_area %>m²
 
 With kind regards,

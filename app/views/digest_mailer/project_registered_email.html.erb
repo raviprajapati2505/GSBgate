@@ -48,20 +48,24 @@
                 <td><%= @project.country %></td>
             </tr>
             <tr>
-                <td><b>Gross Area</b></td>
+              <td><b>Project Plot Area (A)</b></td>
+              <td><%= @project.project_site_area %>m²</td>
+            </tr>
+            <tr>
+                <td><b>Buildings Gross Built up Area (B)</b></td>
                 <td><%= @project.gross_area %>m²</td>
             </tr>
             <tr>
-                <td><b>Certified Area (area excluding car parking)</b></td>
+              <td><b>Buildings Footprint (C)</b></td>
+              <td><%= @project.buildings_footprint_area %>m²</td>
+            </tr>
+            <tr>
+                <td><b>Gross Certified Area (A+B-C)</b></td>
                 <td><%= @project.certified_area %>m²</td>
             </tr>
             <tr>
                 <td><b>Car Park Area</b></td>
                 <td><%= @project.carpark_area %>m²</td>
-            </tr>
-            <tr>
-                <td><b>Project Plot Area</b></td>
-                <td><%= @project.project_site_area %>m²</td>
             </tr>
         </table>
         <br/>

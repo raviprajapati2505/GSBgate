@@ -88,10 +88,11 @@ en:
       btn_new_project: New project
     form:
       title: Project Details
-      tooltip_gross_area: Total built up area including parking areas such as underground or structured parking.
-      tooltip_certified_area: Total built up area excluding parking areas. All parking areas (whether underground, structured, or at grade) should NOT be included in this calculation. Other spaces, such as common areas, mechanical spaces, and circulation areas, should be included in the certified area of the building.
-      tooltip_carpark_area: Total built up area associated with parking (underground or structured parking). This does NOT include on-grade parking, as we are only interested in the built up area.
-      tooltip_project_site_area: Total plot area including roadways, parking, landscape, etc.
+      tooltip_gross_area: Total built up area of the buildings including conditioned and unconditioned spaces, in addition to underground and structural parking.
+      tooltip_certified_area: Total area falling under GSAS assessment calculated by adding Project Plot Area (A) and Buildings Gross Built up Area (B) and subtracting Building Footprint (C)*.<br /><br />*(C) is subtracted to avoid double counting of the areas under assessment.
+      tooltip_carpark_area: Total area allocated for parking including underground, structured and at grade spaces.
+      tooltip_project_site_area: Total project site area.
+      tooltip_buildings_footprint_area: The ground surface area above which a building is located.
       tooltip_coordinates: The latitude and longitude will automatically be updated when the Address, Location and Country fields are filled out. However, it is also possible to define a custom location by editing this field or by dragging the marker on the map.
     show:
       project_details:

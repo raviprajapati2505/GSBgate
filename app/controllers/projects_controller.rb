@@ -54,6 +54,7 @@ class ProjectsController < AuthenticatedController
                        .select('projects.coordinates as project_coordinates')
                        .select('projects.gross_area as project_gross_area')
                        .select('projects.certified_area as project_certified_area')
+                       .select('projects.buildings_footprint_area as project_buildings_footprint_area')
                        .select('projects.carpark_area as project_carpark_area')
                        .select('projects.project_site_area as project_site_area')
                        .select('certification_paths.id as certification_path_id')
@@ -110,6 +111,7 @@ class ProjectsController < AuthenticatedController
             project[:longitude] = result.coordinates.split(',')[1]
             project[:gross_area] = result.project_gross_area
             project[:certified_area] = result.project_certified_area
+            project[:buildings_footprint_area] = result.project_buildings_footprint_area
             project[:carpark_area] = result.project_carpark_area
             project[:project_site_area] = result.project_site_area
             project[:certification_paths] = []
@@ -301,9 +303,9 @@ class ProjectsController < AuthenticatedController
   # Never trust parameters from the scary internet, only allow the white list through.
   def project_params
     if current_user.system_admin? || current_user.gsas_trust_admin?
-      params.require(:project).permit(:name, :certificate_type, :owner, :developer, :service_provider, :service_provider_2, :description, :address, :location, :country, :construction_year, :coordinates, :gross_area, :certified_area, :carpark_area, :project_site_area, :terms_and_conditions_accepted, :location_plan_file, :location_plan_file_cache, :site_plan_file, :site_plan_file_cache, :design_brief_file, :design_brief_file_cache, :project_narrative_file, :project_narrative_file_cache, :building_type_group_id, :building_type_id, :estimated_project_cost, :cost_square_meter, :estimated_building_cost, :estimated_infrastructure_cost, :code)
+      params.require(:project).permit(:name, :certificate_type, :owner, :developer, :service_provider, :service_provider_2, :description, :address, :location, :country, :construction_year, :coordinates, :buildings_footprint_area, :gross_area, :certified_area, :carpark_area, :project_site_area, :terms_and_conditions_accepted, :location_plan_file, :location_plan_file_cache, :site_plan_file, :site_plan_file_cache, :design_brief_file, :design_brief_file_cache, :project_narrative_file, :project_narrative_file_cache, :building_type_group_id, :building_type_id, :estimated_project_cost, :cost_square_meter, :estimated_building_cost, :estimated_infrastructure_cost, :code)
     else
-      params.require(:project).permit(:name, :certificate_type, :owner, :developer, :service_provider_2, :description, :address, :location, :country, :construction_year, :coordinates, :gross_area, :certified_area, :carpark_area, :project_site_area, :terms_and_conditions_accepted, :location_plan_file, :location_plan_file_cache, :site_plan_file, :site_plan_file_cache, :design_brief_file, :design_brief_file_cache, :project_narrative_file, :project_narrative_file_cache, :building_type_group_id, :building_type_id, :estimated_project_cost, :cost_square_meter, :estimated_building_cost, :estimated_infrastructure_cost)
+      params.require(:project).permit(:name, :certificate_type, :owner, :developer, :service_provider_2, :description, :address, :location, :country, :construction_year, :coordinates, :buildings_footprint_area, :gross_area, :certified_area, :carpark_area, :project_site_area, :terms_and_conditions_accepted, :location_plan_file, :location_plan_file_cache, :site_plan_file, :site_plan_file_cache, :design_brief_file, :design_brief_file_cache, :project_narrative_file, :project_narrative_file_cache, :building_type_group_id, :building_type_id, :estimated_project_cost, :cost_square_meter, :estimated_building_cost, :estimated_infrastructure_cost)
     end
   end
 end

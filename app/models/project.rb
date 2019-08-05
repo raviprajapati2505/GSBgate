@@ -31,6 +31,7 @@ class Project < ApplicationRecord
   validates :certified_area, numericality: { greater_than_or_equal_to: 0 }
   validates :carpark_area, numericality: { greater_than_or_equal_to: 0 }
   validates :project_site_area, numericality: { greater_than_or_equal_to: 0 }
+  validates :buildings_footprint_area, numericality: { greater_than_or_equal_to: 0 }
   validates :construction_year, numericality: { only_integer: true, greater_than: 0 }
   validates :terms_and_conditions_accepted, acceptance: true
   validates :location_plan_file, file_size: {maximum: MAXIMUM_DOCUMENT_FILE_SIZE.megabytes.to_i }

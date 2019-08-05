@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_05_083336) do
+ActiveRecord::Schema.define(version: 2019_08_05_104820) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -246,6 +246,7 @@ ActiveRecord::Schema.define(version: 2019_08_05_083336) do
     t.string "estimated_building_cost"
     t.string "estimated_infrastructure_cost"
     t.string "coordinates"
+    t.integer "buildings_footprint_area"
     t.index ["building_type_group_id"], name: "index_projects_on_building_type_group_id"
     t.index ["building_type_id"], name: "index_projects_on_building_type_id"
   end
