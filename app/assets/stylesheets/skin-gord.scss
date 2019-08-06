@@ -747,6 +747,12 @@
     }
   }
 
+  #criterion-levels-table {
+    td {
+      min-width: 80px;
+    }
+  }
+
   .criterion-information {
     .subtitle {
       font-weight: bold;
