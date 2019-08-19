@@ -97,6 +97,7 @@ en:
           gsas_trust_manager: Head of GSAS
           gsas_trust_admin: GSAS trust admin
           default_role: Default role
+          document_controller: Document Controller
   models:
     concerns:
       auditable:
