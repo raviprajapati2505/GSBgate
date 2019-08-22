@@ -198,7 +198,6 @@ class Ability
       # AuditLog controller
       can [:index, :auditable_index, :auditable_index_comments, :download_attachment, :export], AuditLog, audit_log_visibility_id: AuditLogVisibility::PUBLIC, project: project_with_user_assigned
       can [:index, :auditable_index, :auditable_index_comments, :download_attachment, :export], AuditLog, audit_log_visibility_id: AuditLogVisibility::INTERNAL, project: project_with_user_in_gsas_trust_team
-      can [:index, :auditable_index, :auditable_index_comments, :download_attachment, :export], AuditLog, attachment_file: true, project: user_with_gsas_trust
       can :auditable_create, AuditLog #TODO:, project: project_with_user_assigned
 
       # Tasks controller
@@ -219,6 +218,7 @@ class Ability
       can :show, Archive, user_id: user.id
     elsif user.gsas_trust_admin? || user.gsas_trust_manager? || user.gsas_trust_top_manager?
       can :read, :all
+      can [:index, :auditable_index, :auditable_index_comments, :download_attachment, :export], AuditLog, attachment_file: true
       # Project
       can [:download_location_plan, :download_site_plan, :download_design_brief, :download_project_narrative], Project
       can :show_tools, Project
