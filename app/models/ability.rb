@@ -24,6 +24,9 @@ class Ability
 
     # Some convenience variables to work with enums in conditions
     project_user_role_cgp_project_manager = [ProjectsUser.roles[:cgp_project_manager]]
+    user_with_gsas_trust_admin = [User.roles[:gsas_trust_admin]]
+    user_with_gsas_trust_manager = [User.roles[:gsas_trust_manager]]
+    user_with_gsas_trust_top_manager = [User.roles[:gsas_trust_top_manager]]
     project_user_role_project_team_member = [ProjectsUser.roles[:project_team_member]]
     project_user_role_certification_manager = [ProjectsUser.roles[:certification_manager]]
     project_user_role_certifier = [ProjectsUser.roles[:certifier]]
@@ -31,6 +34,8 @@ class Ability
     project_user_project_team_roles = project_user_role_cgp_project_manager | project_user_role_project_team_member
     project_user_gsas_trust_team_roles = project_user_role_certification_manager | project_user_role_certifier
     project_user_enterprise_client_roles = project_user_role_enterprise_client
+    user_with_gsas_trust = user_with_gsas_trust_admin | user_with_gsas_trust_manager | user_with_gsas_trust_top_manager
+
     #   Certificate.certification_types
     certificate_certification_types_letter_of_conformance = [Certificate.certification_types[:letter_of_conformance]]
     certificate_certification_types_final_design_certificate = [Certificate.certification_types[:final_design_certificate]]
@@ -221,6 +226,7 @@ class Ability
       end
     elsif user.gsas_trust_admin? || user.gsas_trust_manager? || user.gsas_trust_top_manager?
       can :read, :all
+      can [:index, :auditable_index, :auditable_index_comments, :download_attachment, :export], AuditLog, attachment_file: true
       # Project
       can [:download_location_plan, :download_site_plan, :download_design_brief, :download_project_narrative], Project
       can :show_tools, Project
