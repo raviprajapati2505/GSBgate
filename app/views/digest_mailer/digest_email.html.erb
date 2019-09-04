@@ -23,8 +23,9 @@
                 <thead>
                 <tr>
                     <th style='border: none; border-bottom: solid #CCC 1pt; font-size: 9pt; font-family: "Verdana", "sans-serif";'>Description</th>
-                    <th style='border: none; border-bottom: solid #CCC 1pt; font-size: 9pt; font-family: "Verdana", "sans-serif";'>Resource</th>
-                    <th style='border: none; border-bottom: solid #CCC 1pt; font-size: 9pt; font-family: "Verdana", "sans-serif";'>Due date</th>
+                    <th style='border: none; border-bottom: solid #CCC 1pt; font-size: 9pt; font-family: "Verdana", "sans-serif";'>Task</th>
+                    <th style='border: none; border-bottom: solid #CCC 1pt; font-size: 9pt; font-family: "Verdana", "sans-serif";'>Project Name</th>
+
                 </tr>
                 </thead>
                 <tbody>
@@ -36,7 +37,9 @@
                         <tr>
                             <td style='font-size: 9pt; font-family: "Verdana", "sans-serif";'><%= t("description_#{task.task_description_id}", scope: [:tasks, :tasks]) %></td>
                             <td style='font-size: 9pt; font-family: "Verdana", "sans-serif";'><%= link_to breadcrumbs[:names].last, breadcrumbs[:paths].last %></td>
-                            <td>-</td>
+                            <td>
+                              <%= link_to task.project_name, project_url(task.project) %>
+                            </td>
                         </tr>
                     <%  when CertificationPath.name.demodulize
                           breadcrumbs = breadcrumbs(task.taskable, with_prefix: false)
@@ -44,7 +47,9 @@
                         <tr>
                             <td style='font-size: 9pt; font-family: "Verdana", "sans-serif";'><%= t("description_#{task.task_description_id}", scope: [:tasks, :tasks]) %></td>
                             <td style='font-size: 9pt; font-family: "Verdana", "sans-serif";'><%= link_to breadcrumbs[:names].last, breadcrumbs[:paths].last %></td>
-                            <td>-</td>
+                            <td>
+                              <%= link_to task.project_name, project_url(task.project) %>
+                            </td>
                         </tr>
                     <%  when SchemeMixCriterion.name.demodulize
                           breadcrumbs = breadcrumbs(task.taskable, with_prefix: false)
@@ -52,7 +57,9 @@
                         <tr>
                             <td style='font-size: 9pt; font-family: "Verdana", "sans-serif";'><%= t("description_#{task.task_description_id}", scope: [:tasks, :tasks]) %></td>
                             <td style='font-size: 9pt; font-family: "Verdana", "sans-serif";'><%= link_to breadcrumbs[:names].last, breadcrumbs[:paths].last %></td>
-                            <td style='font-size: 9pt; font-family: "Verdana", "sans-serif";'><% if task.taskable.due_date.present? %><%= l(task.taskable.due_date, format: :short) %><% if Date.today > task.taskable.due_date %>&nbsp;<i class="fa fa-clock-o due-date-expired" title="<%= t('tooltip_due_date', scope: [:tasks, :tasks]) %>" data-toggle="tooltip"></i><% end %><% else %>-<% end %></td>
+                            <td style='font-size: 9pt; font-family: "Verdana", "sans-serif";'>
+                              <%= link_to task.project_name, project_url(task.project) %>
+                            </td>
                         </tr>
                     <%  when RequirementDatum.name.demodulize
                           breadcrumbs = breadcrumbs(task.taskable, with_prefix: false)
@@ -60,7 +67,9 @@
                         <tr>
                             <td style='font-size: 9pt; font-family: "Verdana", "sans-serif";'><%= t("description_#{task.task_description_id}", scope: [:tasks, :tasks]) %></td>
                             <td style='font-size: 9pt; font-family: "Verdana", "sans-serif";'><%= link_to breadcrumbs[:names].last, breadcrumbs[:paths].last %></td>
-                            <td style='font-size: 9pt; font-family: "Verdana", "sans-serif";'><% if task.taskable.due_date.present? %><%= l(task.taskable.due_date, format: :short) %><% if Date.today > task.taskable.due_date %>&nbsp;<i class="fa fa-clock-o due-date-expired" title="<%= t('tooltip_due_date', scope: [:tasks, :tasks]) %>" data-toggle="tooltip"></i><% end %><% else %>-<% end %></td>
+                            <td style='font-size: 9pt; font-family: "Verdana", "sans-serif";'>
+                              <%= link_to task.project_name, project_url(task.project) %>
+                            </td>
                         </tr>
                     <%  when SchemeMixCriteriaDocument.name.demodulize
                           breadcrumbs = breadcrumbs(task.taskable, with_prefix: false)
@@ -68,7 +77,9 @@
                         <tr>
                             <td style='font-size: 9pt; font-family: "Verdana", "sans-serif";'><%= t("description_#{task.task_description_id}", scope: [:tasks, :tasks]) %></td>
                             <td style='font-size: 9pt; font-family: "Verdana", "sans-serif";'><%= link_to breadcrumbs[:names].last, breadcrumbs[:paths].last %></td>
-                            <td>-</td>
+                            <td>
+                              <%= link_to task.project_name, project_url(task.project) %>
+                            </td>
                         </tr>
                     <% end
                        end
