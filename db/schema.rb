@@ -10,11 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_05_104820) do
+ActiveRecord::Schema.define(version: 2019_09_04_072904) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  # enable_extension "postgis"
+  enable_extension "postgis"
 
   create_table "archives", id: :serial, force: :cascade do |t|
     t.string "archive_file"
