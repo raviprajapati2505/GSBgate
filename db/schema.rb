@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_04_072904) do
+ActiveRecord::Schema.define(version: 2019_09_10_090000) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -470,6 +470,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_072904) do
     t.boolean "renovation", default: false, null: false
     t.string "gsas_document"
     t.integer "certificate_type"
+    t.integer "certification_type"
   end
 
   create_table "spatial_ref_sys", primary_key: "srid", id: :integer, default: nil, force: :cascade do |t|
