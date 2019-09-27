@@ -166,7 +166,10 @@ class CertificationPathsController < AuthenticatedController
 
       if todos.blank?
         # Check if there's an appeal
-        @certification_path.appealed = certification_path_params.has_key?(:appealed)
+        # For construction management 2019 appeal can only be requested during stage 3
+        unless certification_path_params.has_key?(:appealed) && @certification_path.certificate.construction_2019? && !@certification_path.construction_certificate_stage3?
+          @certification_path.appealed = certification_path_params.has_key?(:appealed)
+        end
 
         # Retrieve & save the next status
         @certification_path.certification_path_status_id = @certification_path.next_status
