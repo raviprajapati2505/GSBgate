@@ -13,6 +13,8 @@ class Project < ApplicationRecord
   has_many :certification_path_statuses, through: :certification_paths
   has_many :notification_types_users, dependent: :destroy
   has_many :project_audit_logs, class_name: 'AuditLog', foreign_key: 'project_id', dependent: :destroy
+  has_many :actual_project_images, dependent: :destroy
+  has_many :project_rendering_images, dependent: :destroy
   belongs_to :building_type_group, optional: true
   belongs_to :building_type, optional: true
 

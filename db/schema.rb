@@ -16,6 +16,14 @@ ActiveRecord::Schema.define(version: 2019_10_10_111026) do
   enable_extension "plpgsql"
   enable_extension "postgis"
 
+  create_table "actual_project_images", force: :cascade do |t|
+    t.string "actual_image"
+    t.bigint "project_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_actual_project_images_on_project_id"
+  end
+
   create_table "archives", id: :serial, force: :cascade do |t|
     t.string "archive_file"
     t.integer "status"
@@ -214,6 +222,14 @@ ActiveRecord::Schema.define(version: 2019_10_10_111026) do
     t.boolean "governmental"
     t.boolean "private_developer"
     t.boolean "private_owner"
+  end
+
+  create_table "project_rendering_images", force: :cascade do |t|
+    t.string "rendering_image"
+    t.bigint "project_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_project_rendering_images_on_project_id"
   end
 
   create_table "projects", id: :serial, force: :cascade do |t|
@@ -521,6 +537,7 @@ ActiveRecord::Schema.define(version: 2019_10_10_111026) do
     t.index ["username", "linkme_member_id"], name: "index_users_on_username_and_linkme_member_id", unique: true
   end
 
+  add_foreign_key "actual_project_images", "projects"
   add_foreign_key "archives", "users"
   add_foreign_key "audit_logs", "audit_log_visibilities"
   add_foreign_key "audit_logs", "projects"
@@ -542,6 +559,7 @@ ActiveRecord::Schema.define(version: 2019_10_10_111026) do
   add_foreign_key "notification_types_users", "notification_types"
   add_foreign_key "notification_types_users", "projects"
   add_foreign_key "notification_types_users", "users"
+  add_foreign_key "project_rendering_images", "projects"
   add_foreign_key "projects", "building_type_groups"
   add_foreign_key "projects", "building_types"
   add_foreign_key "projects_users", "projects"

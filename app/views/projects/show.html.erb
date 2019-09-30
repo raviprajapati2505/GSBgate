@@ -183,6 +183,51 @@
       </div>
     </div>
 
+    <% if [Certificate.certificate_types['design_type'],  Certificate.certificate_types['operations_type']].include?(@project.certificate_type) %>
+      <% if can?(:read, ActualProjectImage.new(project_id: @project.id)) %>
+        <% if can?(:create, ActualProjectImage.new(project_id: @project.id)) %>
+          <div class="ibox float-e-margins">
+            <div class="ibox-title">
+              <h5> Upload Actual Images </h5>
+            </div>
+            <div class="ibox-content">
+              <%= render 'actual_project_images/new', actual_project_image: @project.actual_project_images.new, project: @project %>
+            </div>
+          </div>
+        <% end %>
+
+        <div class="ibox" id="certifier-documentation">
+          <div class="ibox-title">
+            <h5>Actual Project Images</h5>
+          </div>
+          <div class="ibox-content">
+            <%= render 'actual_project_images/index', actual_project_images: @project.actual_project_images.reload %>
+          </div>
+        </div>
+      <% end %>
+
+      <% if can?(:read, ProjectRenderingImage.new(project_id: @project.id)) %>
+        <% if can?(:create, ProjectRenderingImage.new(project_id: @project.id)) %>
+          <div class="ibox float-e-margins">
+            <div class="ibox-title">
+              <h5> Upload Project Rendering Images </h5>
+            </div>
+            <div class="ibox-content">
+              <%= render 'project_rendering_images/new', project_rendering_image: @project.project_rendering_images.new, project: @project %>
+            </div>
+          </div>
+        <% end %>
+
+        <div class="ibox" id="certifier-documentation">
+          <div class="ibox-title">
+            <h5>Project Rendering Images</h5>
+          </div>
+          <div class="ibox-content">
+            <%= render 'project_rendering_images/index', project_rendering_images: @project.project_rendering_images.reload %>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
     <%= render partial: 'projects_users/show_gord_contact', locals: {project: @project} %>
     <%= render partial: 'projects_users/index', locals: {project: @project, team: :project_team} %>
     <%= render partial: 'projects_users/index', locals: {project: @project, team: :gsas_trust_team} %>

@@ -602,6 +602,14 @@
       cursor: pointer;
     }
 
+    #render-dropzone-top {
+      border: 2px dashed #e7eaec;
+      background-color: #f9f9f9;
+      height: 100px;
+      padding: 20px;
+      cursor: pointer;
+    }
+
     .dz-message {
       font-size: 16px;
       text-align: center;
@@ -616,7 +624,54 @@
       border-top: 1px solid #e7eaec;
     }
 
+    #render-dropzone-previews {
+      display: table;
+      margin: 14px 0 0 0;
+      border: none;
+      border-left: 1px solid #e7eaec;
+      border-top: 1px solid #e7eaec;
+    }
+
     #dropzone-bottom {
+      .file-row {
+        display: table-row;
+      }
+
+      .file-row > div {
+        display: table-cell;
+        vertical-align: top;
+        border-right: 1px solid #e7eaec;
+        border-bottom: 1px solid #e7eaec;
+        border-collapse: collapse;
+        padding: 8px;
+      }
+
+      .file-row:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+
+      .file-row.dz-error {
+        background-color: #f2dede;
+      }
+
+      .progress {
+        border: 1px solid #e7eaec;
+        margin-bottom: 0px;
+      }
+
+      .panel-heading {
+        padding: 7px 8px;
+        color: #676a6c;
+        font-weight: 600;
+      }
+
+      .panel-body {
+        padding: 10px;
+        min-height: 76px;
+      }
+    }
+
+    #render-dropzone-bottom {
       .file-row {
         display: table-row;
       }
@@ -671,6 +726,18 @@
   #dropzone-uploading-notice {
     font-size: 14px;
     margin-top: 14px;
+  }
+
+  #render-dropzone-uploading-notice {
+    font-size: 14px;
+    margin-top: 14px;
+  }
+
+  #render-dropzone-modal {
+    .modal-header {
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px;
+    }
   }
 
   #dropzone-modal {

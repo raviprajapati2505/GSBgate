@@ -1,0 +1,37 @@
+<%= bootstrap_form_for([project, actual_project_image], url: project_actual_project_images_path(project, actual_project_image), method: 'post', html: { id: 'new_document', class: 'dropzone', data: { maxfilesize: CertificationPathDocument::MAXIMUM_DOCUMENT_FILE_SIZE, acceptedfiles: ImageUploader.new.extension_white_list_js } }) do |f| %>
+    <div class="fallback">
+      <%= f.file_field :actual_image, hide_label: true %>
+      <%= f.primary 'Upload actual image' %>
+    </div>
+    <div id="dropzone-top">
+      <div class="dz-message">
+        <%= ikoen_with_text('files-o', 'Drop files here or click to upload actual image.') %>
+      </div>
+    </div>
+    <div id="dropzone-bottom" style="display:none;">
+      <div id="dropzone-previews" class="table table-striped table-bordered">
+        <div class="file-row header">
+          <div><strong>File Name</strong></div>
+          <div><strong>File Size</strong></div>
+          <div><strong>Upload Progress</strong></div>
+          <div><strong>Actions</strong></div>
+        </div>
+      </div>
+      <br/>
+
+      <div class="hr-line-dashed"></div>
+      <%= btn_link_to('#', id: 'dropzone-upload-all', icon: 'upload', text: 'Upload actual image') %>
+    </div>
+<% end %>
+<div id="dropzone-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dropzone-modal-title">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header alert-danger">
+        <%= btn_close_modal %>
+        <h4 class="modal-title" id="dropzone-modal-title"></h4>
+      </div>
+      <div class="modal-body"></div>
+    </div>
+  </div>
+</div>
+<%= javascript_include_tag 'actual_images_uploader' %>
