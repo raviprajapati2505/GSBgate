@@ -174,18 +174,6 @@
     </div>
   </div>
   <div class="col-md-8">
-    <% # Project tools are only accessible for system admins for now %>
-    <% if can?(:show_tools, @project) && current_user.system_admin? %>
-      <div class="ibox float-e-margins">
-        <div class="ibox-title">
-          <h5><%= t('.project_tools.title') %></h5>
-        </div>
-        <div class="ibox-content">
-          <%= btn_link_to(tools_project_path(@project), icon: 'street-view', text: '3D Visualisation') %>
-        </div>
-      </div>
-    <% end %>
-
     <div class="ibox float-e-margins">
       <div class="ibox-title">
         <h5><%= t('.certificates.title') %></h5>
