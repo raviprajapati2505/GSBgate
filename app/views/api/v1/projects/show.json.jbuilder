@@ -1,5 +1,5 @@
 json.id @project.id
-json.project_id @project.code
+json.project_code @project.code
 json.name @project.name
 json.owner @project.owner
 json.description @project.description

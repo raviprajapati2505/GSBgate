@@ -80,6 +80,13 @@ class Api::V1::ProjectsController < Api::ApiController
         total_as_operated_water_consumption_query = total_as_operated_water_consumption_query.where('projects.country like ?', "%#{filter['country']}%")
       end
       # extra filters which we thought where interesting
+      if filter.has_key?('project_code')
+        query = query.where('code like ?', "%#{filter['project_code']}%")
+        total_as_built_energy_consumption_query = total_as_built_energy_consumption_query.where('projects.code like ?', "%#{filter['project_code']}%")
+        total_as_operated_energy_consumption_query = total_as_operated_energy_consumption_query.where('projects.code like ?', "%#{filter['project_code']}%")
+        total_as_built_water_consumption_query = total_as_built_water_consumption_query.where('projects.code like ?', "%#{filter['project_code']}%")
+        total_as_operated_water_consumption_query = total_as_operated_water_consumption_query.where('projects.code like ?', "%#{filter['project_code']}%")
+      end
       if filter.has_key?('owner')
         query = query.where('owner like ?', "%#{filter['owner']}%")
         total_as_built_energy_consumption_query = total_as_built_energy_consumption_query.where('projects.owner like ?', "%#{filter['owner']}%")
