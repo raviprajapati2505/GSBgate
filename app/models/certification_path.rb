@@ -323,6 +323,22 @@ class CertificationPath < ApplicationRecord
       else
         return -1
       end
+    elsif (!certificate.nil? && certificate.construction_2019?) || (!certificate_gsas_version.nil? && certificate_gsas_version == '2019')
+      if score < 0.5
+        return 'CERTIFICATION DENIED'
+      elsif score >= 0.5 && score < 1.0
+        return 'CLASS D'
+      elsif score >= 1.0 && score < 1.5
+        return 'CLASS C'
+      elsif score >= 1.5 && score < 2.0
+        return 'CLASS B'
+      elsif score >= 2.0 && score < 2.5
+        return 'CLASS A'
+      elsif score >= 2.5
+        return 'CLASS A*'
+      else
+        return -1
+      end
     else
       if score < 0
         return 'CERTIFICATION DENIED'

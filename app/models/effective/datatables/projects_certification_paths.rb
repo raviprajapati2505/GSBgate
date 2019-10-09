@@ -74,9 +74,33 @@ module Effective
         col :certification_path_status_is_active, sql_column: 'CASE WHEN certification_path_statuses.id IS NULL THEN false WHEN certification_path_statuses.id = 15 THEN false WHEN certification_path_statuses.id = 16 THEN false ELSE true END', as: :boolean, label: t('models.effective.datatables.projects_certification_paths.certification_path_status_is_active.label')
 
         col :rating, partial: '/certification_paths/rating', partial_as: 'rec', search: false, as: :decimal, label: t('models.effective.datatables.projects_certification_paths.rating.label'), sql_column: '(%s)' % ProjectsCertificationPaths.query_score_in_certificate_points(:achieved_score)
-        col :total_achieved_score, as: :decimal, label: t('models.effective.datatables.projects_certification_paths.total_achieved_score.label'), sql_column: '(%s)' % ProjectsCertificationPaths.query_score_in_certificate_points(:achieved_score), search: false
-        col :total_submitted_score, as: :decimal, label: t('models.effective.datatables.projects_certification_paths.total_submitted_score.label'), sql_column: '(%s)' % ProjectsCertificationPaths.query_score_in_certificate_points(:submitted_score), search: false
-        col :total_targeted_score, as: :decimal, label: t('models.effective.datatables.projects_certification_paths.total_targeted_score.label'), sql_column: '(%s)' % ProjectsCertificationPaths.query_score_in_certificate_points(:targeted_score), search: false
+        col :total_achieved_score, as: :decimal, label: t('models.effective.datatables.projects_certification_paths.total_achieved_score.label'), sql_column: '(%s)' % ProjectsCertificationPaths.query_score_in_certificate_points(:achieved_score), search: false do |rec|
+          if rec.certificate_gsas_version == '2019' && rec.certificate_type == Certificate.certificate_types[:construction_type]
+            if !rec.total_achieved_score.nil? && rec.total_achieved_score > 3
+              3.0
+            else
+              rec.total_achieved_score
+            end
+          end
+        end
+        col :total_submitted_score, as: :decimal, label: t('models.effective.datatables.projects_certification_paths.total_submitted_score.label'), sql_column: '(%s)' % ProjectsCertificationPaths.query_score_in_certificate_points(:submitted_score), search: false do |rec|
+          if rec.certificate_gsas_version == '2019' && rec.certificate_type == Certificate.certificate_types[:construction_type]
+            if !rec.total_submitted_score.nil? && rec.total_submitted_score > 3
+              3.0
+            else
+              rec.total_submitted_score
+            end
+          end
+        end
+        col :total_targeted_score, as: :decimal, label: t('models.effective.datatables.projects_certification_paths.total_targeted_score.label'), sql_column: '(%s)' % ProjectsCertificationPaths.query_score_in_certificate_points(:targeted_score), search: false do |rec|
+          if rec.certificate_gsas_version == '2019' && rec.certificate_type == Certificate.certificate_types[:construction_type]
+            if !rec.total_targeted_score.nil? && rec.total_targeted_score > 3
+              3.0
+            else
+              rec.total_targeted_score
+            end
+          end
+        end
 
         col :schemes_array, label: t('models.effective.datatables.projects_certification_paths.schemes_array.label'), sql_column: "ARRAY_TO_STRING(ARRAY(SELECT case when scheme_mixes.custom_name is null then concat(schemes.name, ' ', schemes.gsas_version) else CONCAT(schemes.name, ' (', scheme_mixes.custom_name, ') ', schemes.gsas_version) end from schemes INNER JOIN scheme_mixes ON schemes.id = scheme_mixes.scheme_id WHERE scheme_mixes.certification_path_id = certification_paths.id), '|||')" do |rec|
           ERB::Util.html_escape(rec.schemes_array).split('|||').sort.join('<br/>') unless rec.schemes_array.nil?
@@ -154,6 +178,7 @@ module Effective
           .select('certification_paths.certified_at as certification_path_certified_at')
           .select('certification_paths.expires_at as certification_path_expires_at')
           .select("certificates.name as certificate_name")
+          .select("certificates.certificate_type as certificate_type")
           .select('certificates.gsas_version as certificate_gsas_version')
           .select('certification_path_statuses.name as certification_path_status_name')
           .select('CASE WHEN certification_path_statuses.id IS NULL THEN false WHEN certification_path_statuses.id = 15 THEN false WHEN certification_path_statuses.id = 16 THEN false ELSE true END as certification_path_status_is_active')
