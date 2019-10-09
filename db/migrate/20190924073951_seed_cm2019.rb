@@ -1,5 +1,7 @@
 class SeedCm2019 < ActiveRecord::Migration[5.2]
   def change
+    add_column :requirements, :display_weight, :integer
+    
     # Add incentive weights
     # E.1
     SchemeCriterion.where(name: "Energy Use - Temporary Buildings", number: 1, scheme_category: SchemeCategory.find_by(code: "E", scheme: Scheme.find_by(name: "Construction", gsas_document: "GSAS CM_Assessment_2019_11.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:construction_type], renovation:false))).update_all(assign_incentive_manually_a: true, calculate_incentive_a: false, incentive_weight_minus_1_a: 0, incentive_weight_0_a: 1.5, incentive_weight_1_a: 1.5, incentive_weight_2_a: 1.5, incentive_weight_3_a: 1.5)
