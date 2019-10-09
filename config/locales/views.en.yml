@@ -88,7 +88,7 @@ en:
       btn_new_project: New project
     form:
       title: Project Details
-      tooltip_gross_area: Total built up area of the buildings including conditioned and unconditioned spaces, in addition to underground and structural parking.
+      tooltip_gross_area: Total built up area of the buildings including conditioned and unconditioned spaces, in addition to underground and structured parking.
       tooltip_certified_area: Total area falling under GSAS assessment calculated by adding Project Plot Area (A) and Buildings Gross Built up Area (B) and subtracting Building Footprint (C)*.<br /><br />*(C) is subtracted to avoid double counting of the areas under assessment.
       tooltip_carpark_area: Total area allocated for parking including underground, structured and at grade spaces.
       tooltip_project_site_area: Total project site area.
