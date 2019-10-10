@@ -233,7 +233,13 @@ module ScoreCalculator
       end
       fields.each_with_index do |field, index|
         scores << "(CASE WHEN %{field_table}.#{field} IS NULL THEN 0 ELSE GREATEST(%{field_table}.#{field}::float, scheme_criteria_score.#{SchemeCriterion::MIN_SCORE_ATTRIBUTES[index]}::float) END)"
-        score_dependent_incentive_weight = "(CASE #{scores[index]} WHEN -1 THEN scheme_criteria_score.#{SchemeCriterion::INCENTIVE_MINUS_1_ATTRIBUTES[index]} WHEN 0 THEN scheme_criteria_score.#{SchemeCriterion::INCENTIVE_0_ATTRIBUTES[index]} WHEN 1 THEN scheme_criteria_score.#{SchemeCriterion::INCENTIVE_1_ATTRIBUTES[index]} WHEN 2 THEN scheme_criteria_score.#{SchemeCriterion::INCENTIVE_2_ATTRIBUTES[index]}  WHEN 3 THEN scheme_criteria_score.#{SchemeCriterion::INCENTIVE_3_ATTRIBUTES[index]} ELSE 0 END)"
+
+        if field_name == :achieved_score || field_name == :submitted_score || field_name == :targeted_score
+          score_dependent_incentive_weight = "(CASE WHEN %{field_table}.#{field} IS NULL THEN 0 ELSE CASE #{scores[index]} WHEN -1 THEN scheme_criteria_score.#{SchemeCriterion::INCENTIVE_MINUS_1_ATTRIBUTES[index]} WHEN 0 THEN scheme_criteria_score.#{SchemeCriterion::INCENTIVE_0_ATTRIBUTES[index]} WHEN 1 THEN scheme_criteria_score.#{SchemeCriterion::INCENTIVE_1_ATTRIBUTES[index]} WHEN 2 THEN scheme_criteria_score.#{SchemeCriterion::INCENTIVE_2_ATTRIBUTES[index]}  WHEN 3 THEN scheme_criteria_score.#{SchemeCriterion::INCENTIVE_3_ATTRIBUTES[index]} ELSE 0 END END)"
+        else
+          score_dependent_incentive_weight = "(CASE #{scores[index]} WHEN -1 THEN scheme_criteria_score.#{SchemeCriterion::INCENTIVE_MINUS_1_ATTRIBUTES[index]} WHEN 0 THEN scheme_criteria_score.#{SchemeCriterion::INCENTIVE_0_ATTRIBUTES[index]} WHEN 1 THEN scheme_criteria_score.#{SchemeCriterion::INCENTIVE_1_ATTRIBUTES[index]} WHEN 2 THEN scheme_criteria_score.#{SchemeCriterion::INCENTIVE_2_ATTRIBUTES[index]}  WHEN 3 THEN scheme_criteria_score.#{SchemeCriterion::INCENTIVE_3_ATTRIBUTES[index]} ELSE 0 END)"
+        end
+
         incentive_weight = "(CASE scheme_mix_criteria_score.#{SchemeMixCriterion::INCENTIVE_SCORED_ATTRIBUTES[index]} WHEN true THEN #{score_dependent_incentive_weight} ELSE 0 END)"
         weighted_scores << "(#{scores[index]} / (CASE WHEN scheme_criteria_score.#{SchemeCriterion::MAX_SCORE_ATTRIBUTES[index]} IS NULL THEN 1 ELSE scheme_criteria_score.#{SchemeCriterion::MAX_SCORE_ATTRIBUTES[index]}::float END)) * ((3.0 * (scheme_criteria_score.#{SchemeCriterion::WEIGHT_ATTRIBUTES[index]})) / 100.0) + (3.0 * #{incentive_weight} / 100.0)"
         criterion_weighted_scores << "CASE (#{criterion_weights.join(' + ')}) WHEN 0 THEN 0 ELSE #{scores[index]} * scheme_criteria_score.#{SchemeCriterion::WEIGHT_ATTRIBUTES[index]} / (#{criterion_weights.join(' + ')}) END"
