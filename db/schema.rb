@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_08_073125) do
+ActiveRecord::Schema.define(version: 2019_10_10_111026) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -348,6 +348,7 @@ ActiveRecord::Schema.define(version: 2019_10_08_073125) do
     t.bigint "scheme_criterion_id"
     t.decimal "incentive_weight", precision: 5, scale: 2, default: "0.0"
     t.string "label"
+    t.integer "display_weight"
     t.index ["scheme_criterion_id"], name: "index_incentives_to_scheme_criteria"
   end
 
