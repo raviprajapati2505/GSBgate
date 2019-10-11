@@ -291,7 +291,7 @@ module ScoreCalculator
       elsif point_type == :scheme_points
         score_template = "SUM( CASE (certificates_score.gsas_version = 'v2.1 Issue 1.0') WHEN true THEN (#{score}) ELSE (#{weighted_score}) END)"
       elsif point_type == :certificate_points
-        score_template = "SUM( CASE (certificates_score.gsas_version = 'v2.1 Issue 1.0') WHEN true THEN (#{score} * (scheme_mixes_score.weight / 100.0)) ELSE (#{weighted_score} * (scheme_mixes_score.weight / 100.0) ) END)"
+        score_template = "SUM( CASE (certificates_score.gsas_version = 'v2.1 Issue 1.0') WHEN true THEN (#{score} * (scheme_mixes_score.weight / 100.0)) ELSE ((#{weighted_score}) * (scheme_mixes_score.weight / 100.0) ) END)"
       else
         raise('Unexpected point type: ' + point_type.to_s)
       end
