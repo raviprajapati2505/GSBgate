@@ -91,6 +91,20 @@ class Project < ApplicationRecord
     end
   end
 
+  def can_upload_project_rendering_image?
+    certificate_type == Certificate.certificate_types[:design_type]
+  end
+
+  def can_upload_actual_image?
+    if certificate_type == Certificate.certificate_types[:operations_type]
+      true
+    elsif can_upload_project_rendering_image? && completed_letter_of_conformances.any?
+      true
+    else
+      false
+    end
+  end
+
   def are_all_construction_stages_certified?
     count = CertificationPath.with_project(self)
               .with_status(CertificationPathStatus::CERTIFIED)

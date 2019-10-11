@@ -137,6 +137,8 @@ class CertificationPathsController < AuthenticatedController
       # save the certificate, as the user has clicked save
       format.html {
         if @certification_path.save
+          @project.project_rendering_images.where(certification_path_id: nil).update(certification_path_id: @certification_path.id)
+          @project.actual_project_images.where(certification_path_id: nil).update(certification_path_id: @certification_path.id)
           return redirect_to(project_certification_path_path(@project, @certification_path), notice: t('controllers.certification_paths_controller.apply.success'))
         else
           return redirect_to(project_path(@project), alert: t('controllers.certification_paths_controller.apply.error'))

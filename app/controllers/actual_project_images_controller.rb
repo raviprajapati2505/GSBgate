@@ -6,6 +6,9 @@ class ActualProjectImagesController < AuthenticatedController
     respond_to do |format|
       if params.has_key?(:image)
         @actual_project_image = @project.actual_project_images.new(actual_image_params)
+
+        @actual_project_image.certification_path = set_certificate(:final_design_certificate) || set_certificate(:operations_certificate)
+
         if @actual_project_image.save
           format.html { redirect_back(fallback_location: root_path, notice: 'The image was successfully uploaded.') }
           format.json { render json: @actual_project_image }
@@ -45,6 +48,12 @@ class ActualProjectImagesController < AuthenticatedController
   end
 
   private
+
+  def set_certificate(certification_type)
+    certification_path = CertificationPath.with_project(@project).with_certification_type(Certificate.certification_types[certification_type])
+    certification_path.last if certification_path.any?
+  end
+
   def set_image_record
     @image_record = @project.actual_project_images.find(params[:id])
   end

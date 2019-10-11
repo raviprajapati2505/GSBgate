@@ -18,9 +18,11 @@ ActiveRecord::Schema.define(version: 2019_10_10_111026) do
 
   create_table "actual_project_images", force: :cascade do |t|
     t.string "actual_image"
+    t.bigint "certification_path_id"
     t.bigint "project_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["certification_path_id"], name: "index_actual_project_images_on_certification_path_id"
     t.index ["project_id"], name: "index_actual_project_images_on_project_id"
   end
 
@@ -226,9 +228,11 @@ ActiveRecord::Schema.define(version: 2019_10_10_111026) do
 
   create_table "project_rendering_images", force: :cascade do |t|
     t.string "rendering_image"
+    t.bigint "certification_path_id"
     t.bigint "project_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["certification_path_id"], name: "index_project_rendering_images_on_certification_path_id"
     t.index ["project_id"], name: "index_project_rendering_images_on_project_id"
   end
 
@@ -537,6 +541,7 @@ ActiveRecord::Schema.define(version: 2019_10_10_111026) do
     t.index ["username", "linkme_member_id"], name: "index_users_on_username_and_linkme_member_id", unique: true
   end
 
+  add_foreign_key "actual_project_images", "certification_paths"
   add_foreign_key "actual_project_images", "projects"
   add_foreign_key "archives", "users"
   add_foreign_key "audit_logs", "audit_log_visibilities"
@@ -559,6 +564,7 @@ ActiveRecord::Schema.define(version: 2019_10_10_111026) do
   add_foreign_key "notification_types_users", "notification_types"
   add_foreign_key "notification_types_users", "projects"
   add_foreign_key "notification_types_users", "users"
+  add_foreign_key "project_rendering_images", "certification_paths"
   add_foreign_key "project_rendering_images", "projects"
   add_foreign_key "projects", "building_type_groups"
   add_foreign_key "projects", "building_types"
