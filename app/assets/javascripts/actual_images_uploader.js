@@ -84,12 +84,12 @@ $(function () {
                         });
                         modalBody += '</ul>';
 
-                        modalBody += '<div>All other actual images were uploaded successfully.</div>';
+                        modalBody += '<div>All other actual project images were uploaded successfully.</div>';
                         modalHeaderClass = 'alert-warning';
                     }
                     // There were no errors
                     else {
-                        modalBody = 'All actual images were successfully uploaded.';
+                        modalBody = 'All actual project images were successfully uploaded.';
                         modalHeaderClass = 'alert-success';
                     }
 

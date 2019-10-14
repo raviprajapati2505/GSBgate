@@ -1,11 +1,11 @@
 <%= bootstrap_form_for([project, actual_project_image], url: project_actual_project_images_path(project, actual_project_image), method: 'post', html: { id: 'new_document', class: 'dropzone', data: { maxfilesize: CertificationPathDocument::MAXIMUM_DOCUMENT_FILE_SIZE, acceptedfiles: ImageUploader.new.extension_white_list_js } }) do |f| %>
     <div class="fallback">
       <%= f.file_field :actual_image, hide_label: true %>
-      <%= f.primary 'Upload actual image' %>
+      <%= f.primary 'Upload actual project image' %>
     </div>
     <div id="dropzone-top">
       <div class="dz-message">
-        <%= ikoen_with_text('files-o', 'Drop files here or click to upload actual image.') %>
+        <%= ikoen_with_text('files-o', 'Drop files here or click to upload actual project image.') %>
       </div>
     </div>
     <div id="dropzone-bottom" style="display:none;">
@@ -20,7 +20,7 @@
       <br/>
 
       <div class="hr-line-dashed"></div>
-      <%= btn_link_to('#', id: 'dropzone-upload-all', icon: 'upload', text: 'Upload actual image') %>
+      <%= btn_link_to('#', id: 'dropzone-upload-all', icon: 'upload', text: 'Upload actual project image') %>
     </div>
 <% end %>
 <div id="dropzone-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dropzone-modal-title">

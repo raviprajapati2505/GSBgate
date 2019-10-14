@@ -188,7 +188,7 @@
           <% if can?(:create, ActualProjectImage.new(project_id: @project.id)) %>
             <div class="ibox float-e-margins">
               <div class="ibox-title">
-                <h5> Upload Actual Images </h5>
+                <h5> Upload Actual Project Images </h5>
               </div>
               <div class="ibox-content">
                 <%= render 'actual_project_images/new', actual_project_image: @project.actual_project_images.new, project: @project %>
