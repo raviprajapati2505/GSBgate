@@ -14,7 +14,9 @@ The hardware requirements depend on the amount of users. But the following minim
    * 1 CPUs
    * 40 GB HDD
 1. File server:
-   * 1 TB HDD
+   * 2 TB HDD
+   
+We use Commvault Simpana to backup the database.
 
 ### 1.2 Software requirements
 Although other solutions are possible, VITO uses the following setup:
