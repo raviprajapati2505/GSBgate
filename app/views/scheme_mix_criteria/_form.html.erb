@@ -594,7 +594,7 @@
             <div class="ibox-title">
                 <h5>Criterion Documentation</h5>
                 <% if can?(:download_archive, @scheme_mix_criterion) && @scheme_mix_criterion.scheme_mix_criteria_documents.any? %>
-                  <%= btn_download("javascript:void(0);", text: 'Download all approved documents', tooltip: 'A ZIP archive containing all approved documents of this criterion will be generated for you.', size: 'extra_small', class: 'pull-right', id: "download_smcd_btn") %>
+                  <%= btn_download("javascript:void(0);", text: 'Download all approved/selected documents', tooltip: 'A ZIP archive containing all approved documents of this criterion will be generated for you.', size: 'extra_small', class: 'pull-right', id: "download_smcd_btn") %>
                 <% end %>
             </div>
             <div class="ibox-content">
