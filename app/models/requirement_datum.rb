@@ -17,7 +17,7 @@ class RequirementDatum < ApplicationRecord
 
   default_scope {
     joins(:requirement)
-    .order('requirements.name')
+    .order('requirements.display_weight')
   }
 
   scope :completed, -> {

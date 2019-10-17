@@ -105,7 +105,15 @@ class CertificationPathsController < AuthenticatedController
     if Certificate.certification_types[@certification_type] == Certificate.certification_types[:final_design_certificate]
       # Mirror the LOC scheme mixes
       @certification_path.project.completed_letter_of_conformances.first.scheme_mixes.each do |scheme_mix|
-        new_scheme_mix = @certification_path.scheme_mixes.build({scheme_id: scheme_mix.scheme_id, weight: scheme_mix.weight, custom_name: scheme_mix.custom_name})
+        # if a scheme certification type is available
+        unless scheme_mix.scheme.certification_type.nil?
+          loc_scheme = scheme_mix.scheme
+          scheme_id = Scheme.select(:id).find_by(name: loc_scheme.name, gsas_version: loc_scheme.gsas_version, certificate_type: loc_scheme.certificate_type, certification_type: Certificate.certification_types[:final_design_certificate])
+        else
+          scheme_id = scheme_mix.scheme_id
+        end
+
+        new_scheme_mix = @certification_path.scheme_mixes.build({scheme_id: scheme_id.id, weight: scheme_mix.weight, custom_name: scheme_mix.custom_name})
         # Mirror the main scheme mix
         if @certification_path.project.completed_letter_of_conformances.first.main_scheme_mix_id.present? && (scheme_mix.id == @certification_path.project.completed_letter_of_conformances.first.main_scheme_mix_id)
           @certification_path.main_scheme_mix = new_scheme_mix
