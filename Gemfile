@@ -40,6 +40,8 @@ gem 'warden'
 gem 'warden-jwt_auth'
 
 group :development do
+  gem 'pry-rails'
+  gem 'awesome_print'
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'capistrano'

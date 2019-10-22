@@ -250,6 +250,18 @@ $(function () {
         }],
         searching: false
     })
+
+    $('.img-doc-table').DataTable({
+        buttons: [],
+        paging: false,
+        info: false,
+        order: [[3, "desc"]],
+        columnDefs: [{
+            "targets": 3,
+            "orderable": false
+        }],
+        searching: false
+    })
 });
 
 // General GSAS functions
