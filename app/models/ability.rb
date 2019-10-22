@@ -120,6 +120,10 @@ class Ability
       #can :update, SchemeMix, certification_path: {project: project_with_user_as_cgp_project_manager, certification_path_status: {id: CertificationPathStatus::ACTIVATING}, development_type: {mixable: true}}
       can :update, SchemeMix, certification_path: {project: project_with_user_as_cgp_project_manager, certification_path_status: {id: CertificationPathStatus::ACTIVATING}}
 
+      can [:create, :read], [ActualProjectImage, ProjectRenderingImage] , project: { certificate_type: [Certificate.certificate_types[:design_type], Certificate.certificate_types[:operations_type]] }, project: project_with_user_as_cgp_project_manager
+
+      can :read, [ActualProjectImage, ProjectRenderingImage] , project: { certificate_type: [Certificate.certificate_types[:design_type], Certificate.certificate_types[:operations_type]] }, project: project_with_user_as_certification_manager
+
       # SchemeMixCriterion controller
       can [:read, :list], SchemeMixCriterion, scheme_mix: {certification_path: {project: project_with_user_as_cgp_project_manager, certification_path_status: {id: CertificationPathStatus::STATUSES_ACTIVATED}}}
       can [:read, :list], SchemeMixCriterion, scheme_mix: {certification_path: {project: project_with_user_in_gsas_trust_team, certification_path_status: {id: CertificationPathStatus::STATUSES_ACTIVATED}}}
@@ -230,6 +234,7 @@ class Ability
       can [:download_location_plan, :download_site_plan, :download_design_brief, :download_project_narrative], Project
       can :show_tools, Project
       if user.gsas_trust_admin?
+        can [:create, :destroy], [ActualProjectImage, ProjectRenderingImage]
         can :update, Project
         can [:confirm_destroy, :destroy], Project # Be careful with this!
       end

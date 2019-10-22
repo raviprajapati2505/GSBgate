@@ -1,5 +1,20 @@
 <div class="modal-dialog modal-lg">
     <div class="modal-content">
+      <% if @project.project_rendering_images.empty? && ((Certificate.certification_types[@certification_type] == Certificate.certification_types[:letter_of_conformance]) or (Certificate.certification_types[@certification_type] == Certificate.certification_types[:final_design_certificate]))  %>
+        <div class="modal-header alert-danger">
+          <%= btn_close_modal %>
+          <h4 class="modal-title">
+            <%= ikoen_with_text('exclamation-circle', 'This certificate cannot be applied without project rendering images') %>
+          </h4>
+        </div>
+      <% elsif @project.actual_project_images.empty? && ((Certificate.certification_types[@certification_type] == Certificate.certification_types[:operations_certificate]) or (Certificate.certification_types[@certification_type] == Certificate.certification_types[:final_design_certificate]))%>
+        <div class="modal-header alert-danger">
+          <%= btn_close_modal %>
+          <h4 class="modal-title">
+            <%= ikoen_with_text('exclamation-circle', 'This certificate cannot be applied without actual project images') %>
+          </h4>
+        </div>
+      <% else %>
         <div class="modal-header">
             <%= btn_close_modal %>
             <h4 class="modal-title">Applying for <em><%= t(@certification_type, scope: 'activerecord.attributes.certificate.certification_types') %></em></h4>
@@ -120,6 +135,7 @@
                 <%= btn_save %>
             <% end %>
         </div>
+      <% end %>
     </div>
 </div>
 <%= javascript_include_tag 'new_certificate' %>

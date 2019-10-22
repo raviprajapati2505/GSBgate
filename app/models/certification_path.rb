@@ -25,6 +25,8 @@ class CertificationPath < ApplicationRecord
   has_many :cgp_certification_path_documents, dependent: :destroy
   has_many :certifier_certification_path_documents, dependent: :destroy
   has_many :archives, as: :subject, dependent: :destroy
+  has_many :actual_project_images, dependent: :destroy
+  has_many :project_rendering_images, dependent: :destroy
 
   accepts_nested_attributes_for :certificate
   accepts_nested_attributes_for :scheme_mixes

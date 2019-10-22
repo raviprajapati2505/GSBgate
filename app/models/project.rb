@@ -13,6 +13,8 @@ class Project < ApplicationRecord
   has_many :certification_path_statuses, through: :certification_paths
   has_many :notification_types_users, dependent: :destroy
   has_many :project_audit_logs, class_name: 'AuditLog', foreign_key: 'project_id', dependent: :destroy
+  has_many :actual_project_images, dependent: :destroy
+  has_many :project_rendering_images, dependent: :destroy
   belongs_to :building_type_group, optional: true
   belongs_to :building_type, optional: true
 
@@ -86,6 +88,20 @@ class Project < ApplicationRecord
       average_scores[:submitted_score] /= 3
       average_scores[:achieved_score] /= 3
       return average_scores
+    end
+  end
+
+  def can_upload_project_rendering_image?
+    certificate_type == Certificate.certificate_types[:design_type]
+  end
+
+  def can_upload_actual_image?
+    if certificate_type == Certificate.certificate_types[:operations_type]
+      true
+    elsif can_upload_project_rendering_image? && completed_letter_of_conformances.any?
+      true
+    else
+      false
     end
   end
 
