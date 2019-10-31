@@ -381,14 +381,14 @@ module ApplicationHelper
     end
     if criterion.present?
       breadcrumbs[:names] << criterion.full_name
-      breadcrumbs[:paths] << scheme_criterion_path(criterion)
+      breadcrumbs[:paths] << scheme_criterion_url(criterion)
     end
     if criterion_text.present?
       breadcrumbs[:names] << criterion_text.name
       if criterion_text.id.present?
-        breadcrumbs[:paths] << edit_scheme_criterion_text_path(criterion_text)
+        breadcrumbs[:paths] << edit_scheme_criterion_text_url(criterion_text)
       else
-        breadcrumbs[:paths] << new_scheme_criterion_text_path(scheme_criterion: criterion)
+        breadcrumbs[:paths] << new_scheme_criterion_text_url(scheme_criterion: criterion)
       end
     end
     if certification_path_document.present?
