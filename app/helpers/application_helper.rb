@@ -346,7 +346,7 @@ module ApplicationHelper
     if with_prefix
       if criterion.present?
         breadcrumbs[:names] << 'Criteria'
-        breadcrumbs[:paths] << scheme_criteria_path
+        breadcrumbs[:paths] << scheme_criteria_url
       else
         breadcrumbs[:names] << 'Projects'
         breadcrumbs[:paths] << projects_url
