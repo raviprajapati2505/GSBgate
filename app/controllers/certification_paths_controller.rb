@@ -51,11 +51,11 @@ class CertificationPathsController < AuthenticatedController
       #  - The gsas_version can be passed as post data, but we also provide a default based on the available data
       #  TODO: verify 'gsas_version' is valid
       # TODO remove next line when D&B2019 and CM2019 can be made available for production
-      unless Rails.env.production? && (Certificate.certification_types[@certification_type] == Certificate.certification_types[:letter_of_conformance] || Certificate.certification_types[@certification_type] == Certificate.certification_types[:construction_certificate_stage1])
+      # unless Rails.env.production? && (Certificate.certification_types[@certification_type] == Certificate.certification_types[:letter_of_conformance] || Certificate.certification_types[@certification_type] == Certificate.certification_types[:construction_certificate_stage1])
         @gsas_versions = Certificate.with_certification_type(Certificate.certification_types[@certification_type]).order(gsas_version: :desc).distinct.pluck(:gsas_version, :gsas_version)
-      else
-        @gsas_versions = Certificate.with_certification_type(Certificate.certification_types[@certification_type]).where.not(gsas_version: '2019').order(gsas_version: :desc).distinct.pluck(:gsas_version, :gsas_version)
-      end
+      # else
+      #   @gsas_versions = Certificate.with_certification_type(Certificate.certification_types[@certification_type]).where.not(gsas_version: '2019').order(gsas_version: :desc).distinct.pluck(:gsas_version, :gsas_version)
+      # end
       if params.has_key?(:gsas_version)
         @gsas_version = params[:gsas_version]
       else
