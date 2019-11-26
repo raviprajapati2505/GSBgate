@@ -118,7 +118,7 @@ class CertificationPathsController < AuthenticatedController
           scheme_id = scheme_mix.scheme_id
         end
 
-        new_scheme_mix = @certification_path.scheme_mixes.build({scheme_id: scheme_id.id, weight: scheme_mix.weight, custom_name: scheme_mix.custom_name})
+        new_scheme_mix = @certification_path.scheme_mixes.build({scheme_id: scheme_id, weight: scheme_mix.weight, custom_name: scheme_mix.custom_name})
         # Mirror the main scheme mix
         if @certification_path.project.completed_letter_of_conformances.first.main_scheme_mix_id.present? && (scheme_mix.id == @certification_path.project.completed_letter_of_conformances.first.main_scheme_mix_id)
           @certification_path.main_scheme_mix = new_scheme_mix
