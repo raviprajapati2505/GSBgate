@@ -33,7 +33,7 @@ class SchemeCriteriaController < AuthenticatedController
       removed_scores_in_use = []
       unless all_used_scores[0].nil?
         all_used_scores.each do |used_score|
-          removed_scores_in_use << used_score unless params[:scheme_criterion][SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym].include?(used_score.to_s)
+          removed_scores_in_use << used_score unless params[:scheme_criterion][SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym].present? && params[:scheme_criterion][SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym].include?(used_score.to_s)
         end
       end
 
