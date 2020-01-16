@@ -23,6 +23,12 @@ class SchemeCriteriaController < AuthenticatedController
 
       all_used_scores = used_targeted_scores | used_submitted_scores | used_achieved_scores
 
+      # Remove useless values
+      params[:scheme_criterion][SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym].delete('') if params[:scheme_criterion][SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym].present?
+      params[:scheme_criterion][SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym].delete(nil) if params[:scheme_criterion][SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym].present?
+      all_used_scores.delete('')
+      all_used_scores.delete(nil)
+
       # Check if there are removed scores that are in use
       removed_scores_in_use = []
       unless all_used_scores[0].nil?
