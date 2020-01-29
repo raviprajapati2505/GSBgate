@@ -151,8 +151,14 @@ class DigestMailer < ApplicationMailer
 
   def project_registered_email(project)
     @project = project
+    emails = Rails.configuration.x.gsas_info.all_notifications_email
 
-    mail(to: Rails.configuration.x.gsas_info.all_notifications_email, subject: "GSASgate - new project #{@project.name} registered")
+    # Check if there are "selected_notifications_email" address(es)
+    unless Rails.configuration.x.gsas_info.selected_notifications_email.nil?
+      emails += ', ' + Rails.configuration.x.gsas_info.selected_notifications_email
+    end
+
+    mail(to: emails, subject: "GSASgate - new project #{@project.name} registered")
   end
 
   def applied_for_certification(certification_path)
