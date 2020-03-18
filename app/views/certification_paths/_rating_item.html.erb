@@ -1,5 +1,5 @@
 <% achieved ||= false %>
-<% rating = CertificationPath.rating_for_score(score, certificate: certificate) %>
+<% rating = certification_path.rating_for_score(score, certificate: certificate, is_achieved_score: achieved) %>
 <div style="line-height:24px; <% if achieved %>font-weight:bold;<% end %>">
     <span class="text-right" style="width: 72px; display: inline-block;">
         <%= score_label %>

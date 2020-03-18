@@ -1,5 +1,6 @@
 <% unless rec.certification_path_status_is_active %>
-  <% rating = CertificationPath.rating_for_score(rec.total_achieved_score, certificate_gsas_version: rec.certificate_gsas_version, certificate_name: rec.certificate_name) %>
+  <% certificate_path = CertificationPath.find(rec.certification_path_id) %>
+  <% rating = certificate_path.rating_for_score(rec.total_achieved_score, certificate: certificate_path.certificate, certificate_gsas_version: rec.certificate_gsas_version, certificate_name: rec.certificate_name) %>
   <% if rating.is_a? String %>
     <!-- TEXTUAL SCORE -->
     <span class="label label-rating label-rating-<%= rating.downcase.gsub(/( )/, '-') %>"><%= rating %></span>
