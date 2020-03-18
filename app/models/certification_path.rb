@@ -423,12 +423,14 @@ class CertificationPath < ApplicationRecord
     elsif (!certificate.nil? && certificate.construction_issue_1?) || (!certificate_gsas_version.nil? && certificate_gsas_version == 'v2.1 Issue 1.0')
       if score < 35
         return 'CERTIFICATION DENIED'
-      elsif score >= 35 && score < 65
-        return 2
-      elsif score >= 65 && score < 85
-        return 4
-      elsif score >= 85 && score <= 100
-        return 6
+      elsif score >= 35 && score < 55
+        return 'CLASS C'
+      elsif score >= 55 && score < 65
+        return 'CLASS B'
+      elsif score >= 65 && score < 75
+        return 'CLASS A'
+      elsif score >= 75
+        return 'CLASS A*'
       else
         return -1
       end
@@ -436,28 +438,26 @@ class CertificationPath < ApplicationRecord
       if score < 0.5
         return 'CERTIFICATION DENIED'
       elsif score >= 0.5 && score < 1
-        return 2
+        return 'CLASS C'
       elsif score >= 1 && score < 1.5
-        return 3
+        return 'CLASS B'
       elsif score >= 1.5 && score < 2
-        return 4
-      elsif score >= 2 && score < 2.5
-        return 5
-      elsif score >= 2.5
-        return 6
+        return 'CLASS A'
+      elsif score >= 2
+        return 'CLASS A*'
       else
         return -1
       end
-    elsif (!certificate.nil? && certificate.construction_2019?) || (!certificate_gsas_version.nil? && certificate_gsas_version == '2019')
+    elsif (!certificate.nil? && certificate.construction_2019?) || (!certificate_gsas_version.nil? && certificate_gsas_version == '2019' && certificate_name.include?('Construction'))
       if score < 0.5
         return 'CERTIFICATION DENIED'
-      elsif score >= 0.5 && score < 1.0
+      elsif score >= 0.5 && score < 1
         return 'CLASS D'
-      elsif score >= 1.0 && score < 1.5
+      elsif score >= 1 && score < 1.5
         return 'CLASS C'
-      elsif score >= 1.5 && score < 2.0
+      elsif score >= 1.5 && score < 2
         return 'CLASS B'
-      elsif score >= 2.0 && score < 2.5
+      elsif score >= 2 && score < 2.5
         return 'CLASS A'
       elsif score >= 2.5
         return 'CLASS A*'

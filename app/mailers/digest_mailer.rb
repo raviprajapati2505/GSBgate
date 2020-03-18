@@ -151,14 +151,30 @@ class DigestMailer < ApplicationMailer
 
   def project_registered_email(project)
     @project = project
+    emails = Rails.configuration.x.gsas_info.all_notifications_email
 
-    mail(to: Rails.configuration.x.gsas_info.email, subject: "GSASgate - new project #{@project.name} registered")
+    # Check if there are "selected_notifications_email" address(es)
+    unless Rails.configuration.x.gsas_info.selected_notifications_email.nil?
+      emails += ', ' + Rails.configuration.x.gsas_info.selected_notifications_email
+    end
+
+    mail(to: emails, subject: "GSASgate - new project #{@project.name} registered")
   end
 
   def applied_for_certification(certification_path)
     @certification_path = certification_path
+    emails = Rails.configuration.x.gsas_info.all_notifications_email
 
-    mail(to: Rails.configuration.x.gsas_info.email, subject: "GSASgate - new certification #{@certification_path.name} applied for")
+    # Check if there are "selected_notifications_email" address(es)
+    unless Rails.configuration.x.gsas_info.selected_notifications_email.nil?
+      # Check if the certification type is Final Design
+      if Certificate.certification_types[@certification_path.certificate.certification_type] == Certificate.certification_types[:final_design_certificate]
+        # If both are true, also send the notification mail to the "selected_notifications_email" address(es)
+        emails += ', ' + Rails.configuration.x.gsas_info.selected_notifications_email
+      end
+    end
+
+    mail(to: emails, subject: "GSASgate - new certification #{@certification_path.name} applied for")
   end
 
   def certificate_approved_email(certification_path)
@@ -175,13 +191,13 @@ class DigestMailer < ApplicationMailer
   def certification_activated_email(certification_path)
     @certification_path = certification_path
 
-    mail(to: Rails.configuration.x.gsas_info.email, subject: "GSASgate - certification #{@certification_path.name} for #{@certification_path.project.name} is activated")
+    mail(to: Rails.configuration.x.gsas_info.all_notifications_email, subject: "GSASgate - certification #{@certification_path.name} for #{@certification_path.project.name} is activated")
   end
 
   def certification_expired_email(certification_path)
     @certification_path = certification_path
 
-    mail(to: Rails.configuration.x.gsas_info.email, subject: "GSASgate - certification #{@certification_path.name} for #{@certification_path.project.name} is expired")
+    mail(to: Rails.configuration.x.gsas_info.all_notifications_email, subject: "GSASgate - certification #{@certification_path.name} for #{@certification_path.project.name} is expired")
   end
 
   def certification_expires_in_near_future_email(certification_path)
@@ -196,7 +212,7 @@ class DigestMailer < ApplicationMailer
     @certification_path = certification_path
     @appealed_criteria = @certification_path.scheme_mix_criteria.where(status: [SchemeMixCriterion.statuses[:submitting_after_appeal]])
 
-    mail(to: Rails.configuration.x.gsas_info.email, subject: "GSASgate - certification #{@certification_path.name} for #{certification_path.project.name} has appealed criteria")
+    mail(to: Rails.configuration.x.gsas_info.all_notifications_email, subject: "GSASgate - certification #{@certification_path.name} for #{certification_path.project.name} has appealed criteria")
   end
 
   def linkme_invitation_email(email, user, project)

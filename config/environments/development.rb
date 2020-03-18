@@ -72,7 +72,7 @@ Rails.application.configure do
   config.log_tags = [ :uuid ]
 
   # GSAS info email addresses
-  config.x.gsas_info.email = 'sas@vito.be'
+  config.x.gsas_info.all_notifications_email = 'sas@vito.be'
 
   # Linkme.qa API config
   config.x.linkme.api_url = 'api.yourmembership.com'

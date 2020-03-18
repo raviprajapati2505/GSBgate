@@ -12,6 +12,10 @@
         <br/>
         <table style='font-size: 9pt; font-family: "Verdana", "sans-serif";'>
             <tr>
+                <td><b>Certificate Type</b></td>
+                <td><%= t(Certificate.certificate_types.key(@project.certificate_type), scope: 'activerecord.attributes.certificate.certificate_types') %></td>
+            </tr>
+            <tr>
                 <td><b>Service provider</b></td>
                 <td><%= @project.service_provider %></td>
             </tr>

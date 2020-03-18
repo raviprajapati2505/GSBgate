@@ -7,8 +7,8 @@ en:
       certificate:
         certificate_types:
           design_type: Design & Build
-          construction_type: Construction Management Certificate
-          operations_type: Operations Cerfificate
+          construction_type: Construction Management
+          operations_type: Operations
         certification_types:
           letter_of_conformance: Letter of conformance
           final_design_certificate: Final design certificate
