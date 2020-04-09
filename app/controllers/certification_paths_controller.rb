@@ -114,6 +114,7 @@ class CertificationPathsController < AuthenticatedController
         unless scheme_mix.scheme.certification_type.nil?
           loc_scheme = scheme_mix.scheme
           scheme_id = Scheme.select(:id).find_by(name: loc_scheme.name, gsas_version: loc_scheme.gsas_version, certificate_type: loc_scheme.certificate_type, certification_type: Certificate.certification_types[:final_design_certificate])
+          scheme_id = scheme_id.id
         else
           scheme_id = scheme_mix.scheme_id
         end
