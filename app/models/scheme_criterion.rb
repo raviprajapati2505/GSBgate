@@ -37,10 +37,10 @@ class SchemeCriterion < ApplicationRecord
   }
 
   def code
-    if self.scheme_category.scheme.name == "Park" && self.scheme_category.scheme.gsas_version == "2019" && !self.shared
-      "#{self.scheme_category.code}.#{self.number}P"
+    if scheme_category.scheme.name == "Parks" && scheme_category.scheme.gsas_version == "2019" && !shared
+      "#{scheme_category.code}.#{number}P"
     else
-      "#{self.scheme_category.code}.#{self.number}"
+      "#{scheme_category.code}.#{number}"
     end
   end
 
