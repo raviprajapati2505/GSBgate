@@ -4,7 +4,7 @@
   <% certificate_path = CertificationPath.find(rec.certification_path_id) %>
   <% rating = certificate_path.rating_for_score(rec.total_achieved_score, certificate: certificate_path.certificate, certificate_gsas_version: rec.certificate_gsas_version, certificate_name: rec.certificate_name) %>
   <% else %>
-  <% rating = certificate_path.rating_for_score(rec.total_achieved_score, certificate_gsas_version: rec.certificate_gsas_version, certificate_name: rec.certificate_name) %>
+  <% rating = -1 %>
   <% end %>
   <% if rating.is_a? String %>
     <!-- TEXTUAL SCORE -->
