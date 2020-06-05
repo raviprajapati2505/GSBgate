@@ -45,7 +45,7 @@ class SchemeCriterion < ApplicationRecord
   end
 
   def full_name
-    "#{self.code}: #{self.name}"
+    "#{code.last  == 'P' ?  code.delete_suffix('P') :  code}: #{name}"
   end
 
   def total_weight
