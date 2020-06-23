@@ -219,7 +219,7 @@
                         %>
                         <% criteria.each do |scheme_mix_criterion| %>
                             <tr>
-                              <td><%= scheme_mix_criterion.code.last  == 'P' ? scheme_mix_criterion.code.delete_suffix('P') : scheme_mix_criterion.code %></td>
+                                <td><%= scheme_mix_criterion.code %></td>
                               <td>
                                 <%= can_link_to(project_certification_path_scheme_mix_scheme_mix_criterion_path(@certification_path.project, @certification_path, @scheme_mix, scheme_mix_criterion), scheme_mix_criterion) do %>
                                     <%= scheme_mix_criterion.name %>

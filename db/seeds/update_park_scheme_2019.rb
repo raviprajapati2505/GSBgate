@@ -1064,3 +1064,161 @@ SchemeCriteriaRequirement.where(scheme_criterion: SchemeCriterion.find_by(scheme
   index = scheme_criteria_requirements.requirement.display_weight
   scheme_criteria_requirements.requirement.update(name: requirements__MO8_FDC[index])
 end
+
+
+#============ delete data which is no longer require =======
+scheme_mixs_loc = SchemeMix.where(scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:letter_of_conformance], renovation:false))
+scheme_mixs_loc&.each do |scheme_mix|
+  scheme_mix&.certification_path&.project.destroy
+end
+
+scheme_mixs_fdc = SchemeMix.where(scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:final_design_certificate], renovation:false))
+scheme_mixs_fdc&.each do |scheme_mix|
+  scheme_mix&.certification_path&.project.destroy
+end
+
+
+#E7 --> Delete 
+# --- requirement
+scheme_criterion_E7_loc = SchemeCriterion.find_by(name: "Carbon Sequestration", number: 7, scheme_category: SchemeCategory.find_by(code: "E", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:letter_of_conformance], renovation:false)), shared: false)
+scheme_criterion_E7_loc&.scheme_criteria_requirements&.destroy_all
+# -- scheme_criterion_incentives
+scheme_criterion_E7_loc.scheme_criterion_incentives&.destroy_all
+# -- Text
+scheme_criterion_E7_loc.scheme_criterion_texts&.destroy_all
+# -- SchemeCriterion
+scheme_criterion_E7_loc.destroy
+
+
+scheme_criterion_E7_fdc = SchemeCriterion.find_by(name: "Carbon Sequestration", number: 7, scheme_category: SchemeCategory.find_by(code: "E", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:final_design_certificate], renovation:false)), shared: false)
+scheme_criterion_E7_fdc&.scheme_criteria_requirements&.destroy_all
+# -- scheme_criterion_incentives
+scheme_criterion_E7_fdc.scheme_criterion_incentives&.destroy_all
+# -- Text
+scheme_criterion_E7_fdc.scheme_criterion_texts&.destroy_all
+# -- SchemeCriterion
+scheme_criterion_E7_fdc.destroy
+
+
+#S11 ---> Delete
+scheme_criterion_S11_fdc = SchemeCriterion.find_by(name: "Amenities", number: 11, scheme_category: SchemeCategory.find_by(code: "S", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:final_design_certificate], renovation:false)), shared: false)
+scheme_criterion_S11_fdc.scheme_criteria_requirements&.destroy_all
+scheme_criterion_S11_fdc.scheme_criterion_texts&.destroy_all
+scheme_criterion_S11_fdc.destroy
+
+
+scheme_criterion_S11_loc = SchemeCriterion.find_by(name: "Amenities", number: 11, scheme_category: SchemeCategory.find_by(code: "S", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:letter_of_conformance], renovation:false)), shared: false)
+scheme_criterion_S11_loc.scheme_criteria_requirements&.destroy_all
+scheme_criterion_S11_loc.scheme_criterion_texts&.destroy_all
+scheme_criterion_S11_loc.destroy
+
+
+#S12 ---> Delete
+scheme_criterion_S12_loc = SchemeCriterion.find_by(name: "Noise Pollution", number: 12, scheme_category: SchemeCategory.find_by(code: "S", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:letter_of_conformance], renovation:false)))
+scheme_criterion_S12_loc.scheme_criteria_requirements&.destroy_all
+scheme_criterion_S12_loc.scheme_criterion_texts&.destroy_all
+scheme_criterion_S12_loc.destroy
+
+
+scheme_criterion_S12_fdc = SchemeCriterion.find_by(name: "Noise Pollution", number: 12, scheme_category: SchemeCategory.find_by(code: "S", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:final_design_certificate], renovation:false)))
+scheme_criterion_S12_fdc.scheme_criteria_requirements&.destroy_all
+scheme_criterion_S12_fdc.scheme_criterion_texts&.destroy_all
+scheme_criterion_S12_fdc.destroy
+
+
+#MO5  ---> 
+scheme_criterion_MO5_loc = SchemeCriterion.find_by(name: "Automated Control System", number: 5, scheme_category: SchemeCategory.find_by(code: "MO", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:letter_of_conformance], renovation:false)))
+scheme_criterion_MO5_loc.scheme_criteria_requirements&.destroy_all
+scheme_criterion_MO5_loc.scheme_criterion_texts.destroy_all
+scheme_criterion_MO5_loc.destroy
+
+
+scheme_criterion_MO5_fdc = SchemeCriterion.find_by(name: "Automated Control System", number: 5, scheme_category: SchemeCategory.find_by(code: "MO", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:final_design_certificate], renovation:false)))
+scheme_criterion_MO5_fdc.scheme_criteria_requirements&.destroy_all
+scheme_criterion_MO5_fdc.scheme_criterion_texts.destroy_all
+scheme_criterion_MO5_fdc.destroy
+
+
+# CE3 --> 
+scheme_criterion_CE3_loc = SchemeCriterion.find_by(name: "Green Partnerships", number: 3, scheme_category: SchemeCategory.find_by(code: "CE", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:letter_of_conformance], renovation:false)), shared: false)
+scheme_criterion_CE3_loc.scheme_criteria_requirements&.destroy_all
+scheme_criterion_CE3_loc.scheme_criterion_texts.destroy_all
+scheme_criterion_CE3_loc.destroy
+
+
+scheme_criterion_CE3_fdc = SchemeCriterion.find_by(name: "Green Partnerships", number: 3, scheme_category: SchemeCategory.find_by(code: "CE", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:final_design_certificate], renovation:false)), shared: false)
+scheme_criterion_CE3_fdc.scheme_criteria_requirements&.destroy_all
+scheme_criterion_CE3_fdc.scheme_criterion_texts.destroy_all
+scheme_criterion_CE3_fdc.destroy
+
+
+
+# ----Weight and shared attributes update and change number of  SchemeCriterion ----
+#code: "S"
+
+SchemeCriterion.find_by(name: "Biodiversity Preservation", number: 3, scheme_category: SchemeCategory.find_by(code: "S", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:final_design_certificate], renovation:false))).update(weight_a: 2.85)
+SchemeCriterion.find_by(name: "Biodiversity Preservation", number: 3, scheme_category: SchemeCategory.find_by(code: "S", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:letter_of_conformance], renovation:false))).update(weight_a: 2.85)
+SchemeCriterion.find_by(name: "Vegetation", number: 4, scheme_category: SchemeCategory.find_by(code: "S", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:final_design_certificate], renovation:false))).update(weight_a: 2.92)
+SchemeCriterion.find_by(name: "Vegetation", number: 4, scheme_category: SchemeCategory.find_by(code: "S", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:letter_of_conformance], renovation:false))).update(weight_a: 2.92)
+SchemeCriterion.find_by(name: "Drain & Stormwater Contamination", number: 5, scheme_category: SchemeCategory.find_by(code: "S", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:final_design_certificate], renovation:false))).update(weight_a: 1.93)
+SchemeCriterion.find_by(name: "Drain & Stormwater Contamination", number: 5, scheme_category: SchemeCategory.find_by(code: "S", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:letter_of_conformance], renovation:false))).update(weight_a: 1.93)
+SchemeCriterion.find_by(name: "Desertification", number: 6, scheme_category: SchemeCategory.find_by(code: "S", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:final_design_certificate], renovation:false)), shared: false).update(weight_a: 2.48)
+SchemeCriterion.find_by(name: "Desertification", number: 6, scheme_category: SchemeCategory.find_by(code: "S", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:letter_of_conformance], renovation:false)), shared: false).update(weight_a: 2.48)
+SchemeCriterion.find_by(name: "Heat Island Effect", number: 7, scheme_category: SchemeCategory.find_by(code: "S", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:final_design_certificate], renovation:false))).update(weight_a: 1.45)
+SchemeCriterion.find_by(name: "Heat Island Effect", number: 7, scheme_category: SchemeCategory.find_by(code: "S", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:letter_of_conformance], renovation:false))).update(weight_a: 1.45)
+SchemeCriterion.find_by(name: "Shading", number: 8, scheme_category: SchemeCategory.find_by(code: "S", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:final_design_certificate], renovation:false))).update(weight_a: 1.71)
+SchemeCriterion.find_by(name: "Shading", number: 8, scheme_category: SchemeCategory.find_by(code: "S", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:letter_of_conformance], renovation:false))).update(weight_a: 1.71)
+SchemeCriterion.find_by(name: "External Lighting", number: 10, scheme_category: SchemeCategory.find_by(code: "S", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:final_design_certificate], renovation:false))).update(weight_a: 1.02)
+SchemeCriterion.find_by(name: "External Lighting", number: 10, scheme_category: SchemeCategory.find_by(code: "S", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:letter_of_conformance], renovation:false))).update(weight_a: 1.02)
+SchemeCriterion.find_by(name: "Construction Practices", number: 15, scheme_category: SchemeCategory.find_by(code: "S", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:final_design_certificate], renovation:false))).update(weight_a: 2.85)
+SchemeCriterion.find_by(name: "Construction Practices", number: 15, scheme_category: SchemeCategory.find_by(code: "S", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:letter_of_conformance], renovation:false))).update(weight_a: 2.85)
+SchemeCriterion.find_by(name: "Walkability", number: 13, scheme_category: SchemeCategory.find_by(code: "S", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:final_design_certificate], renovation:false)), shared: false).update(weight_a: 1.45, number: 11)
+SchemeCriterion.find_by(name: "Walkability", number: 13, scheme_category: SchemeCategory.find_by(code: "S", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:letter_of_conformance], renovation:false)), shared: false).update(weight_a: 1.45, number: 11)
+SchemeCriterion.find_by(name: "Bikeability", number: 14, scheme_category: SchemeCategory.find_by(code: "S", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:final_design_certificate], renovation:false)), shared: false).update(weight_a: 1.65, number: 12)
+SchemeCriterion.find_by(name: "Bikeability", number: 14, scheme_category: SchemeCategory.find_by(code: "S", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:letter_of_conformance], renovation:false)), shared: false).update(weight_a: 1.65, number: 12)
+
+#code: "E"  
+SchemeCriterion.find_by(name: "Energy Use Performance", number: 2, scheme_category: SchemeCategory.find_by(code: "E", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:final_design_certificate], renovation:false))).update(weight_a: 7.36, shared: false)
+SchemeCriterion.find_by(name: "Energy Use Performance", number: 2, scheme_category: SchemeCategory.find_by(code: "E", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:letter_of_conformance], renovation:false))).update(weight_a: 7.36, shared: false)
+SchemeCriterion.find_by(name: "Primary Energy Performance", number: 3, scheme_category: SchemeCategory.find_by(code: "E", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:final_design_certificate], renovation:false))).update(weight_a: 4.83, shared: false)
+SchemeCriterion.find_by(name: "Primary Energy Performance", number: 3, scheme_category: SchemeCategory.find_by(code: "E", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:letter_of_conformance], renovation:false))).update(weight_a: 4.83, shared: false)
+SchemeCriterion.find_by(name: "CO2 Emissions", number: 4, scheme_category: SchemeCategory.find_by(code: "E", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:final_design_certificate], renovation:false))).update(weight_a: 4.81, shared: false)
+SchemeCriterion.find_by(name: "CO2 Emissions", number: 4, scheme_category: SchemeCategory.find_by(code: "E", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:letter_of_conformance], renovation:false))).update(weight_a: 4.81, shared: false)
+SchemeCriterion.find_by(name: "Energy Sub-Metering", number: 5, scheme_category: SchemeCategory.find_by(code: "E", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:final_design_certificate], renovation:false))).update(shared: false)
+SchemeCriterion.find_by(name: "Energy Sub-Metering", number: 5, scheme_category: SchemeCategory.find_by(code: "E", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:letter_of_conformance], renovation:false))).update(shared: false)
+SchemeCriterion.find_by(name: "Renewable Energy", number: 6, scheme_category: SchemeCategory.find_by(code: "E", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:final_design_certificate], renovation:false))).update(shared: false)
+SchemeCriterion.find_by(name: "Renewable Energy", number: 6, scheme_category: SchemeCategory.find_by(code: "E", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:letter_of_conformance], renovation:false))).update(shared: false)
+
+SchemeCategory.find_by(scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:final_design_certificate], renovation:false), code: "E", name: "Energy", shared: true).update(shared: false)
+SchemeCategory.find_by(scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:letter_of_conformance], renovation:false), code: "E", name: "Energy", shared: true).update(shared: false)
+
+#code: "W"
+SchemeCriterion.find_by(name: "Water Demand Performance", number: 1, scheme_category: SchemeCategory.find_by(code: "W", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:final_design_certificate], renovation:false))).update(weight_a: 8.0, shared: false)
+SchemeCriterion.find_by(name: "Water Demand Performance", number: 1, scheme_category: SchemeCategory.find_by(code: "W", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:letter_of_conformance], renovation:false))).update(weight_a: 8.0, shared: false)
+SchemeCriterion.find_by(name: "Water Reuse Performance", number: 2, scheme_category: SchemeCategory.find_by(code: "W", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:final_design_certificate], renovation:false))).update(weight_a: 14.0, shared: false)
+SchemeCriterion.find_by(name: "Water Reuse Performance", number: 2, scheme_category: SchemeCategory.find_by(code: "W", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:letter_of_conformance], renovation:false))).update(weight_a: 14.0, shared: false)
+SchemeCriterion.find_by(name: "Water Sub-Metering", number: 3, scheme_category: SchemeCategory.find_by(code: "W", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:final_design_certificate], renovation:false))).update(shared: false)
+SchemeCriterion.find_by(name: "Water Sub-Metering", number: 3, scheme_category: SchemeCategory.find_by(code: "W", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:letter_of_conformance], renovation:false))).update(shared: false)
+
+SchemeCategory.find_by(scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:final_design_certificate], renovation:false), code: "W", name: "Water", shared: true).update(shared: false)
+SchemeCategory.find_by(scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:letter_of_conformance], renovation:false), code: "W", name: "Water", shared: true).update(shared: false)
+
+#code: "M"
+SchemeCriterion.find_by(name: "Cut & Fill Optimisation", number: 5, scheme_category: SchemeCategory.find_by(code: "M", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:final_design_certificate], renovation:false)), shared: false).update(shared: false)
+SchemeCriterion.find_by(name: "Cut & Fill Optimisation", number: 5, scheme_category: SchemeCategory.find_by(code: "M", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:letter_of_conformance], renovation:false)), shared: false).update(shared: false)
+
+#code: "CE"
+SchemeCriterion.find_by(name: "Heritage & Cultural Identity", number: 1, scheme_category: SchemeCategory.find_by(code: "CE", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:final_design_certificate], renovation:false))).update(weight_a: 1.62)
+SchemeCriterion.find_by(name: "Heritage & Cultural Identity", number: 1, scheme_category: SchemeCategory.find_by(code: "CE", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:letter_of_conformance], renovation:false))).update(weight_a: 1.62)
+SchemeCriterion.find_by(name: "Support of National Economy", number: 2, scheme_category: SchemeCategory.find_by(code: "CE", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:final_design_certificate], renovation:false))).update(weight_a: 2.38)
+SchemeCriterion.find_by(name: "Support of National Economy", number: 2, scheme_category: SchemeCategory.find_by(code: "CE", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:letter_of_conformance], renovation:false))).update(weight_a: 2.38)
+
+#code: "MO"
+SchemeCriterion.find_by(name: "Sustainability & Awareness Plan", number: 7, scheme_category: SchemeCategory.find_by(code: "MO", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:final_design_certificate], renovation:false)), shared: false).update(weight_a: 2.68)
+SchemeCriterion.find_by(name: "Sustainability & Awareness Plan", number: 7, scheme_category: SchemeCategory.find_by(code: "MO", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:letter_of_conformance], renovation:false)), shared: false).update(weight_a: 2.68)
+
+
+# M08 -> 5
+SchemeCriterion.find_by(name: "Safety & Security", number: 8, scheme_category: SchemeCategory.find_by(code: "MO", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:final_design_certificate], renovation:false)), shared: false).update(number: 5)
+
+SchemeCriterion.find_by(name: "Safety & Security", number: 8, scheme_category: SchemeCategory.find_by(code: "MO", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:letter_of_conformance], renovation:false)), shared: false).update(number: 5)
