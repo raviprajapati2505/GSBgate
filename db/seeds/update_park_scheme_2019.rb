@@ -1129,26 +1129,26 @@ scheme_criterion_S12_fdc.destroy
 #MO5  ---> 
 scheme_criterion_MO5_loc = SchemeCriterion.find_by(name: "Automated Control System", number: 5, scheme_category: SchemeCategory.find_by(code: "MO", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:letter_of_conformance], renovation:false)))
 scheme_criterion_MO5_loc.scheme_criteria_requirements&.destroy_all
-scheme_criterion_MO5_loc.scheme_criterion_texts.destroy_all
+scheme_criterion_MO5_loc.scheme_criterion_texts&.destroy_all
 scheme_criterion_MO5_loc.destroy
 
 
 scheme_criterion_MO5_fdc = SchemeCriterion.find_by(name: "Automated Control System", number: 5, scheme_category: SchemeCategory.find_by(code: "MO", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:final_design_certificate], renovation:false)))
 scheme_criterion_MO5_fdc.scheme_criteria_requirements&.destroy_all
-scheme_criterion_MO5_fdc.scheme_criterion_texts.destroy_all
+scheme_criterion_MO5_fdc.scheme_criterion_texts&.destroy_all
 scheme_criterion_MO5_fdc.destroy
 
 
 # CE3 --> 
 scheme_criterion_CE3_loc = SchemeCriterion.find_by(name: "Green Partnerships", number: 3, scheme_category: SchemeCategory.find_by(code: "CE", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:letter_of_conformance], renovation:false)), shared: false)
 scheme_criterion_CE3_loc.scheme_criteria_requirements&.destroy_all
-scheme_criterion_CE3_loc.scheme_criterion_texts.destroy_all
+scheme_criterion_CE3_loc.scheme_criterion_texts&.destroy_all
 scheme_criterion_CE3_loc.destroy
 
 
 scheme_criterion_CE3_fdc = SchemeCriterion.find_by(name: "Green Partnerships", number: 3, scheme_category: SchemeCategory.find_by(code: "CE", scheme: Scheme.find_by(name: "Parks", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:final_design_certificate], renovation:false)), shared: false)
 scheme_criterion_CE3_fdc.scheme_criteria_requirements&.destroy_all
-scheme_criterion_CE3_fdc.scheme_criterion_texts.destroy_all
+scheme_criterion_CE3_fdc.scheme_criterion_texts&.destroy_all
 scheme_criterion_CE3_fdc.destroy
 
 
