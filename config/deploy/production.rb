@@ -1,4 +1,4 @@
-role :app, %w{jenkins@web02.gord.sas.vito.local}
+role :app, %w{gordadmin@86.62.240.49}
 set :application, "gord"
 set :stages, ["production"]
 
