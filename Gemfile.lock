@@ -107,6 +107,7 @@ GEM
     concurrent-ruby (1.1.5)
     crass (1.0.4)
     debug_inspector (0.0.3)
+    dotenv (2.7.6)
     dry-auto_inject (0.6.1)
       dry-container (>= 0.3.4)
     dry-configurable (0.8.2)
@@ -365,6 +366,7 @@ DEPENDENCIES
   carrierwave
   ckeditor
   cocoon
+  dotenv
   effective_datatables (< 4.0.0)
   execjs
   font-awesome-rails
