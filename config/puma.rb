@@ -15,6 +15,8 @@ port        ENV.fetch("PORT") { 3000 }
 #
 environment ENV.fetch("RAILS_ENV") { "development" }
 
+shared_dir ENV.fetch("SHARED_PATH")
+
 bind "unix://#{shared_dir}/tmp/sockets/puma.sock"
 
 # Specifies the number of `workers` to boot in clustered mode.
@@ -28,7 +30,7 @@ bind "unix://#{shared_dir}/tmp/sockets/puma.sock"
 # Use the `preload_app!` method when specifying a `workers` number.
 # This directive tells Puma to first boot the application and load code
 # before forking the application. This takes advantage of Copy On Write
-# process behavior so workers use less memory.
+# process behavior so workers use less memory.FSHARED_PATH
 #
 # preload_app!
 
