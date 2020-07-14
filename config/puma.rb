@@ -15,7 +15,7 @@ port        ENV.fetch("PORT") { 3000 }
 #
 environment ENV.fetch("RAILS_ENV") { "development" }
 
-shared_dir ENV.fetch("SHARED_PATH")
+shared_dir = ENV.fetch("SHARED_PATH")
 
 bind "unix://#{shared_dir}/tmp/sockets/puma.sock"
 
