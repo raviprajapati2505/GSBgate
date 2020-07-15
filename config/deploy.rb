@@ -1,6 +1,7 @@
 # Git
 set :repo_url, "git@github.com:vishalgord/GSASgate.git"
-
+#set :branch, 'master'
+set :user,            'gordadmin'
 # Systemd
 set :systemd_use_sudo, true
 set :systemd_roles, %w(app)
@@ -14,7 +15,6 @@ set :assets_roles, [:app]
 
 # Linked dirs
 append :linked_dirs, "log", "private", "tmp/pids", "tmp/cache", "tmp/puma", "tmp/sockets", "public/system", "public/uploads"
-append :linked_files, %w{.env}
 
 # Rbenv
 #set :rbenv_custom_path, '/usr/local/rbenv'
