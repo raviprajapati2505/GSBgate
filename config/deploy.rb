@@ -1,6 +1,7 @@
 # Git
-set :repo_url, "ssh://git@git.vito.local:7999/sgg/gsasgate.git"
-
+set :repo_url, "git@github.com:vishalgord/GSASgate.git"
+#set :branch, 'master'
+set :user,            'gordadmin'
 # Systemd
 set :systemd_use_sudo, true
 set :systemd_roles, %w(app)
@@ -16,7 +17,7 @@ set :assets_roles, [:app]
 append :linked_dirs, "log", "private", "tmp/pids", "tmp/cache", "tmp/puma", "tmp/sockets", "public/system", "public/uploads"
 
 # Rbenv
-set :rbenv_custom_path, '/usr/local/rbenv'
+#set :rbenv_custom_path, '/usr/local/rbenv'
 
 # Chartgenerator
 set :npm_target_path, -> { release_path.join('chartgenerator') }
