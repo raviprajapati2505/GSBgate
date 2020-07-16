@@ -15,6 +15,16 @@ every 15.minutes do
 end
 
 # DumpBasedBackupSet: from Monday to Friday at 11PM (full backup)
-every [:monday, :tuesday, :wednesday, :thursday, :friday] , at: '11:00pm' do
+every [:monday, :tuesday, :wednesday, :thursday, :friday], at: '11:00pm' do
   rake "db:db_dump_production"
+end
+
+# FSBAsedBackupSet: every Friday at 11 PM (full backup)
+every :friday, at: '11:00am' do
+  # rake 'logfile_backup:logfile'
+end
+
+# From Monday to friday at 9AM, 12AM, 3PM and 11PM (log-file backup)
+every [:monday, :tuesday, :wednesday, :thursday, :friday], at: ['12:00am', '9:00am', '3:00pm', '11:00pm'] do
+  rake 'logfile_backup:logfile'
 end
