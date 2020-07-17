@@ -95,6 +95,7 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   # Mailer settings
+  config.action_mailer.delivery_method = :test
   config.action_mailer.perform_caching = false
   config.action_mailer.default_url_options = { :host => 'www.gsas.qa' }
   config.action_mailer.smtp_settings = { :address => 'smtp.vito.local' }
