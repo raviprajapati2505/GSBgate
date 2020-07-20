@@ -33,11 +33,13 @@ gem 'roo', '2.5.1'
 gem 'rubyzip', '~> 1.1'
 gem 'sass-rails'
 gem 'select2-rails', '< 4.0.0'
+gem 'sendgrid-ruby'
 gem 'sprockets'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
 gem 'uglifier'
 gem 'warden'
 gem 'warden-jwt_auth'
+gem 'whenever'
 
 group :development do
   gem 'pry-rails'
