@@ -55,7 +55,7 @@ Rails.application.configure do
 
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.
-  config.log_level = :warn
+  config.log_level = :debug
 
   # Prepend all log lines with the following tags.
   config.log_tags = [ :uuid ]
@@ -110,8 +110,8 @@ Rails.application.configure do
     :enable_starttls_auto => true
   }
 
-  # GSAS info email addresses
-  config.x.gsas_info.all_notifications_email = 'sas@vito.be'
+  # GSAS info email addresses for test env only
+  config.x.gsas_info.all_notifications_email = 'no-reply@gord.qa'
 
   # Linkme.qa API config
   config.x.linkme.api_url = 'api.yourmembership.com'
