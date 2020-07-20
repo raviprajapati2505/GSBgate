@@ -97,12 +97,23 @@ Rails.application.configure do
   # Mailer settings
   config.action_mailer.delivery_method = :test
   config.action_mailer.perform_caching = false
-  config.action_mailer.default_url_options = { :host => 'www.gsas.qa' }
-  config.action_mailer.smtp_settings = { :address => 'smtp.vito.local' }
-  config.action_mailer.asset_host = 'https://www.gsas.qa'
+  
+  config.action_mailer.default_url_options = { :host => 'http://gctprojects.qa' }
+  config.action_mailer.asset_host = 'http://gctprojects.qa'
+
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = { 
+    :user_name => ENV['SENDGRID_USERNAME'],
+    :password => ENV['SENDGRID_PASSWORD'],
+    :domain => 'gsas.qa',
+    :address => 'smtp.sendgrid.net',
+    :port =>  '587',
+    :authentication => :plain,
+    :enable_starttls_auto => true
+  }
 
   # GSAS info email addresses
-  config.x.gsas_info.all_notifications_email = 'GSAS-Trust-Info@gord.qa, e.eliskandarani@gord.qa, v.dixit@gord.qa, sas@vito.be'
+  config.x.gsas_info.all_notifications_email = 'GSAS-Trust-Info@gord.qa, e.eliskandarani@gord.qa, v.dixit@gord.qa'
   config.x.gsas_info.selected_notifications_email = 'alhorr@gord.qa'
 
   # Linkme.qa API config
