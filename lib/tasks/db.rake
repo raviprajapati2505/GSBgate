@@ -9,7 +9,7 @@ namespace :db do
   end
 
   def dump_path
-    Rails.root.join('db/production_backup').to_path
+    Rails.root.join('private/database_backup').to_path
   end
 
   def db_name(env)
@@ -19,6 +19,7 @@ namespace :db do
 
   desc 'Dump production database to local file'
   task :db_dump_production do
+    puts '--- dump in progress ---'
     config = Rails.configuration.database_configuration['production']
     if config.has_key?('url')
       cmd = "pg_dump --format=c #{config['url']} --file=#{dump_path}"
@@ -26,6 +27,7 @@ namespace :db do
       cmd = "pg_dump --format=c --host=#{config['host']} --username=#{config['username']} --dbname=#{config['database']} --file=#{dump_path}"
     end
     system cmd or raise "Error dumping database"
+    puts '--- dump created ---'
   end
 
   desc 'Load production database dump into development database'
