@@ -96,9 +96,19 @@ Rails.application.configure do
 
   # Mailer settings
   config.action_mailer.perform_caching = false
-  config.action_mailer.default_url_options = { :host => 'gord.vito.be' }
-  config.action_mailer.smtp_settings = { :address => 'smtp.vito.local' }
-  config.action_mailer.asset_host = 'https://gord.vito.be'
+  config.action_mailer.default_url_options = { :host => 'http://staging.gctprojects.qa' }
+  config.action_mailer.asset_host = 'http://staging.gctprojects.qa'
+
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = { 
+    :user_name => ENV['SENDGRID_USERNAME'],
+    :password => ENV['SENDGRID_PASSWORD'],
+    :domain => 'gsas.qa',
+    :address => 'smtp.sendgrid.net',
+    :port =>  '587',
+    :authentication => :plain,
+    :enable_starttls_auto => true
+  }
 
   # GSAS info email addresses
   config.x.gsas_info.all_notifications_email = 'sas@vito.be'
