@@ -9,8 +9,7 @@ namespace :db do
   end
 
   def dump_path
-    # Rails.root.join('/mnt/fsdata/database_backup').to_path
-    "/mnt/fsdata/database_backup/"
+    Rails.root.join('db/production_backup').to_path
   end
 
   def db_name(env)
