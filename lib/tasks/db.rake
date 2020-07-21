@@ -17,10 +17,12 @@ namespace :db do
     "#{config['adapter']}://#{config['username']}:#{config['password']}@/#{config['host']}#{config['database']}"
   end
 
-  desc 'Dump production database to local file'
+  desc 'Dump database to local file'
   task :db_dump_production do
     puts '--- dump in progress ---'
-    config = Rails.configuration.database_configuration['production']
+    config = Rails.configuration.database_configuration['production'] if Rails.env.production?
+    config = Rails.configuration.database_configuration['staging'] if Rails.env.staging?
+    config = Rails.configuration.database_configuration['development'] if  Rails.env.development? 
     if config.has_key?('url')
       cmd = "pg_dump --format=c #{config['url']} --file=#{dump_path}"
     else
