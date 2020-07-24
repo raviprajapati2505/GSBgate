@@ -2,7 +2,10 @@ role :app, %w{gordadmin@86.62.240.49}
 set :application, "gord"
 set :stages, ["production"]
 set :shared_dir, %w(/var/www/gord/shared/)
-
+# set :stages, ["production"]
+# server '', port: 22, roles: [:web, :app, :db], user: "gordadmin", primary: true
+# set :deploy_user,'gordadmin'
+# set :branch, 'master'
 # server-based syntax
 # ======================
 # Defines a single server with a list of roles and multiple properties.
