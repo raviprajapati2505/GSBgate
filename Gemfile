@@ -51,6 +51,7 @@ group :development do
   gem 'capistrano-npm'
   gem 'capistrano-rails'
   gem 'capistrano-rbenv'
+  gem 'capistrano-rvm'
   gem 'capistrano-systemd'
 end
 
