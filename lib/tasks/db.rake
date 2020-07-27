@@ -26,7 +26,7 @@ namespace :db do
     if config.has_key?('url')
       cmd = "pg_dump --format=c #{config['url']} --file=#{dump_path}"
     else
-      cmd = "pg_dump --format=c --host=#{config['host']} --username=#{config['username']} --dbname=#{config['database']} --file=#{dump_path}"
+      cmd = "PGPASSWORD=#{config['password']} pg_dump --format=c --host=#{config['host']} --username=#{config['username']} --dbname=#{config['database']} --file=#{dump_path}"      
     end
     system cmd or raise "Error dumping database"
     puts '--- dump created ---'
