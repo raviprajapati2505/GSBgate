@@ -9,7 +9,7 @@ namespace :db do
   end
 
   def dump_path
-    Rails.root.join('private/production_backup').to_path
+    Rails.root.join("private/production_backup_#{DateTime.now.strftime('%d-%m-%Y')}").to_path
   end
 
   def db_name(env)
@@ -20,9 +20,7 @@ namespace :db do
   desc 'Dump database to local file'
   task :db_dump_production do
     puts '--- dump in progress ---'
-    config = Rails.configuration.database_configuration['production'] if Rails.env.production?
-    config = Rails.configuration.database_configuration['staging'] if Rails.env.staging?
-    config = Rails.configuration.database_configuration['development'] if  Rails.env.development? 
+    config = Rails.configuration.database_configuration[Rails.env]
     if config.has_key?('url')
       cmd = "pg_dump --format=c #{config['url']} --file=#{dump_path}"
     else
