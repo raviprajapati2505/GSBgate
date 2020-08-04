@@ -129,5 +129,5 @@ Rails.application.configure do
 
   # Visualisation Tool API
    config.x.viewer.url = 'http://visualisation.gctprojects.qa'
-   #config.x.viewer.url = 'http://visualisation.gctprojects.qa'
+   #config.x.viewer.url = 'https://visualisation.gctprojects.qa'
 end
