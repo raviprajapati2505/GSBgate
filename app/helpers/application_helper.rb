@@ -254,8 +254,7 @@ module ApplicationHelper
   end
 
   def round_score(score)
-    # score.round(3) if score.present?
-    score if score.present?
+    score.round(3) if score.present?
   end
 
   def sum_score_hashes(score_hashes)
