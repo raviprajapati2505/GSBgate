@@ -128,6 +128,6 @@ Rails.application.configure do
   config.x.chart_generator.api_port = 8082
 
   # Visualisation Tool API
-   config.x.viewer.url = 'http://visualisation.gctprojects.qa'
+   config.x.viewer.url = 'https://visualisation.gctprojects.qa'
    #config.x.viewer.url = 'https://visualisation.gctprojects.qa'
 end
