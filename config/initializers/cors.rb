@@ -16,7 +16,7 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
              expose: ['Authorization']
   end
   allow do
-    origins 'localhost:3000', 'gord.vito.be', 'www.gsas.qa', 'gctprojects.qa'
+    origins 'localhost:3000', 'gord.vito.be', 'www.gsas.qa', 'https://gctprojects.qa', "http://gctprojects.qa"
 
     resource '*',
              methods: :any,
