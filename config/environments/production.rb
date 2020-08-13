@@ -51,11 +51,11 @@ Rails.application.configure do
   # config.action_cable.allowed_request_origins = [ 'http://example.com', /http:\/\/example.*/ ]
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  # config.force_ssl = true
+  #config.force_ssl = true
 
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.
-  config.log_level = :warn
+  config.log_level = :debug
 
   # Prepend all log lines with the following tags.
   config.log_tags = [ :uuid ]
@@ -95,13 +95,25 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   # Mailer settings
+  config.action_mailer.delivery_method = :test
   config.action_mailer.perform_caching = false
-  config.action_mailer.default_url_options = { :host => 'www.gsas.qa' }
-  config.action_mailer.smtp_settings = { :address => 'smtp.vito.local' }
-  config.action_mailer.asset_host = 'https://www.gsas.qa'
+  
+  config.action_mailer.default_url_options = { :host => 'https://gctprojects.qa' }
+  config.action_mailer.asset_host = 'https://gctprojects.qa'
+
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = { 
+    :user_name => ENV['SENDGRID_USERNAME'],
+    :password => ENV['SENDGRID_PASSWORD'],
+    :domain => 'gsas.qa',
+    :address => 'smtp.sendgrid.net',
+    :port =>  '587',
+    :authentication => :plain,
+    :enable_starttls_auto => true
+  }
 
   # GSAS info email addresses
-  config.x.gsas_info.all_notifications_email = 'GSAS-Trust-Info@gord.qa, e.eliskandarani@gord.qa, v.dixit@gord.qa, sas@vito.be'
+  config.x.gsas_info.all_notifications_email = 'GSAS-Trust-Info@gord.qa, e.eliskandarani@gord.qa, v.dixit@gord.qa'
   config.x.gsas_info.selected_notifications_email = 'alhorr@gord.qa'
 
   # Linkme.qa API config
@@ -116,6 +128,5 @@ Rails.application.configure do
   config.x.chart_generator.api_port = 8082
 
   # Visualisation Tool API
-  # config.x.viewer.url = 'https://visualisation.gsas.qa'
   config.x.viewer.url = 'http://visualisation.gctprojects.qa/'
 end
