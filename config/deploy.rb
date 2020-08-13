@@ -1,5 +1,5 @@
 # Git
-set :repo_url, "git@github.com:vishalgord/GSASgate.git"
+set :repo_url, "git@github.com:gsasgate/GSASgate.git"
 #set :branch, 'master'
 set :user,            'gordadmin'
 # Systemd

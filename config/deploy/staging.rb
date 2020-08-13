@@ -1,8 +1,8 @@
-role :app, %w{jenkins@web02.gord.sas.vito.local}
+role :app, %w{gordadmin@86.62.240.58}
 set :application, "gord_staging"
 set :stages, ["staging"]
 set :branch, :staging
-
+set :shared_dir, %w(/var/www/gord_staging/shared/)
 # server-based syntax
 # ======================
 # Defines a single server with a list of roles and multiple properties.
