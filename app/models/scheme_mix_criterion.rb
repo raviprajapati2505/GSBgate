@@ -139,7 +139,9 @@ class SchemeMixCriterion < ApplicationRecord
     total_weight = self.scheme_criterion.total_weight
     SUBMITTED_SCORE_ATTRIBUTES.each_with_index do |submitted_score, index|
       unless self.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym).nil?
-        total_submitted_score += self.read_attribute(submitted_score.to_sym) * self.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[index].to_sym) / total_weight
+        submitted_score_value = self.read_attribute(submitted_score.to_sym)
+        submitted_score_value ||= 0
+        total_submitted_score += submitted_score_value * self.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[index].to_sym) / total_weight
       end
     end
     return total_submitted_score
@@ -150,7 +152,9 @@ class SchemeMixCriterion < ApplicationRecord
     total_weight = self.scheme_criterion.total_weight
     ACHIEVED_SCORE_ATTRIBUTES.each_with_index do |achieved_score, index|
       unless self.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym).nil?
-        total_achieved_score += self.read_attribute(achieved_score.to_sym) * self.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[index].to_sym) / total_weight
+        achieved_score_value = self.read_attribute(achieved_score.to_sym)
+        achieved_score_value ||= 0
+        total_achieved_score += achieved_score_value * self.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[index].to_sym) / total_weight
       end
     end
     return total_achieved_score

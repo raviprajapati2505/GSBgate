@@ -28,3 +28,4 @@ end
 every [:monday, :tuesday, :wednesday, :thursday, :friday], at: ['12:00am', '9:00am', '3:00pm', '11:00pm'] do
   rake 'logfile_backup:logfile'
 end
+

@@ -17,7 +17,7 @@ json.certificates(@project.certification_paths) do |certification_path|
   json.type certification_path.certificate.certificate_type
   json.version certification_path.certificate.gsas_version
   json.certified_at certification_path.certified_at
-  json.rating CertificationPath.rating_for_score(certification_path.scores_in_certificate_points[:achieved_score_in_certificate_points], certificate: certification_path.certificate)
+  json.rating certification_path.rating_for_score(certification_path.scores_in_certificate_points[:achieved_score_in_certificate_points], certificate: certification_path.certificate)
   json.achieved_score certification_path.scores_in_certificate_points[:achieved_score_in_certificate_points]
 
   json.schemes(certification_path.scheme_mixes) do |scheme_mix|

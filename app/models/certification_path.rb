@@ -278,10 +278,133 @@ class CertificationPath < ApplicationRecord
     return todos.uniq
   end
 
-  def self.rating_for_score(score, certificate: nil, certificate_gsas_version: nil, certificate_name: nil)
+  def allow_certification?(is_achieved_score: true)
+    self.scheme_mixes.each do |scheme_mix|
+      if scheme_mix.scheme.name == 'Healthy Building Label Scheme'
+        facility_management_targeted = false
+        indoor_environment_targeted = false
+        waste_management_targeted = false
+        scheme_mix.scheme_mix_criteria.each do |smc|
+          if smc.scheme_criterion.scheme_category.code == 'FM'
+            if !facility_management_targeted && smc.targeted_score > 0
+              facility_management_targeted = true
+            end
+            if is_achieved_score && smc.achieved_score < 1
+              return false
+            end
+          elsif smc.scheme_criterion.scheme_category.code == 'IE'
+            if !indoor_environment_targeted && smc.targeted_score > 0
+              indoor_environment_targeted = true
+            end
+            if is_achieved_score && ((smc.scheme_criterion.number == 2 && smc.achieved_score < 2) || (smc.achieved_score < 1))
+              return false
+            end
+          elsif smc.scheme_criterion.scheme_category.code == 'WM'
+            if !waste_management_targeted && smc.targeted_score > 0
+              waste_management_targeted = true
+            end
+            if is_achieved_score && smc.achieved_score < 1
+              return false
+            end
+          end
+        end
+        unless facility_management_targeted && indoor_environment_targeted && waste_management_targeted
+          return false
+        end
+      elsif scheme_mix.scheme.name == 'Premium Scheme'
+        energy_targeted = false
+        water_targeted = false
+        facility_management_targeted = false
+        sustainability_awareness_targeted = false
+        indoor_environment_targeted = false
+        waste_management_targeted = false
+        scheme_mix.scheme_mix_criteria.each do |smc|
+          if smc.scheme_criterion.scheme_category.code == 'E'
+            if !energy_targeted && smc.targeted_score > 0
+              energy_targeted = true
+            end
+            if is_achieved_score && smc.achieved_score < 1
+              return false
+            end
+          elsif smc.scheme_criterion.scheme_category.code == 'W'
+            if !water_targeted && smc.targeted_score > 0
+              water_targeted = true
+            end
+            if is_achieved_score && smc.achieved_score < 1
+              return false
+            end
+          elsif smc.scheme_criterion.scheme_category.code == 'FM'
+            if !facility_management_targeted && smc.targeted_score > 0
+              facility_management_targeted = true
+            end
+          elsif smc.scheme_criterion.scheme_category.code == 'SA'
+            if !sustainability_awareness_targeted && smc.targeted_score > 0
+              sustainability_awareness_targeted = true
+            end
+          elsif smc.scheme_criterion.scheme_category.code == 'IE'
+            if !indoor_environment_targeted && smc.targeted_score > 0
+              indoor_environment_targeted = true
+            end
+            if is_achieved_score && smc.scheme_criterion.number == 2 && smc.achieved_score < 1
+              return false
+            end
+          elsif smc.scheme_criterion.scheme_category.code == 'WM'
+            if !waste_management_targeted && smc.targeted_score > 0
+              waste_management_targeted = true
+            end
+          end
+        end
+        unless energy_targeted && water_targeted && facility_management_targeted && sustainability_awareness_targeted && indoor_environment_targeted && waste_management_targeted
+          return false
+        end
+      else # Standard Scheme
+        energy_targeted = false
+        water_targeted = false
+        facility_management_targeted = false
+        sustainability_awareness_targeted = false
+        scheme_mix.scheme_mix_criteria.each do |smc|
+          if smc.scheme_criterion.scheme_category.code == 'E'
+            if !energy_targeted && smc.targeted_score > 0
+              energy_targeted = true
+            end
+            if is_achieved_score && smc.achieved_score < 1
+              return false
+            end
+          elsif smc.scheme_criterion.scheme_category.code == 'W'
+            if !water_targeted && smc.targeted_score > 0
+              water_targeted = true
+            end
+            if is_achieved_score && smc.achieved_score < 1
+              return false
+            end
+          elsif smc.scheme_criterion.scheme_category.code == 'FM'
+            if !facility_management_targeted && smc.targeted_score > 0
+              facility_management_targeted = true
+            end
+          elsif smc.scheme_criterion.scheme_category.code == 'SA'
+            if !sustainability_awareness_targeted && smc.targeted_score > 0
+              sustainability_awareness_targeted = true
+            end
+          end
+        end
+        unless energy_targeted && water_targeted && facility_management_targeted && sustainability_awareness_targeted
+          return false
+        end
+      end
+    end
+    return true
+  end
+
+  def rating_for_score(score, certificate: nil, certificate_gsas_version: nil, certificate_name: nil, is_achieved_score: true)
     return -1 if score.nil?
 
     if (!certificate.nil? && certificate.operations?) || (!certificate_name.nil? && certificate_name.include?('Operations'))
+      if (!certificate.nil? && certificate.operations_2019?)
+        unless allow_certification?(is_achieved_score: is_achieved_score)
+          return 'CERTIFICATION DENIED'
+        end
+      end
+
       if score < 0.5
         return 'CERTIFICATION DENIED'
       elsif score >= 0.5 && score < 1
