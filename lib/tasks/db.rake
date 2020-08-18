@@ -9,7 +9,16 @@ namespace :db do
   end
 
   def dump_path
-    Rails.root.join("private/production_backup_#{DateTime.now.strftime('%d-%m-%Y')}").to_path
+    backup_path = File.join(Rails.root, 'private', 'database_backup', "#{Date.today.year}-#{Date.today.month}")
+    unless File.exist?(backup_path)
+      FileUtils.mkdir_p(backup_path)
+      if Date.today.month - 1 == 0
+        FileUtils.rm_r(File.join(Rails.root, 'private', 'database_backup', "#{Date.today.year-1}-#{Date.today.month+11}"), force: true)
+      else
+        FileUtils.rm_r(File.join(Rails.root, 'private', 'database_backup', "#{Date.today.year}-#{Date.today.month-1}"), force: true)
+      end
+    end
+    backup_path
   end
 
   def db_name(env)
@@ -20,11 +29,12 @@ namespace :db do
   desc 'Dump database to local file'
   task :db_dump_production do
     puts '--- dump in progress ---'
+    filename = File.join(dump_path, "db_backup_#{Time.now.strftime("%a_%Y-%m-%d_%H:%M:%S")}")
     config = Rails.configuration.database_configuration[Rails.env]
     if config.has_key?('url')
-      cmd = "pg_dump --format=c #{config['url']} --file=#{dump_path}"
+      cmd = "pg_dump --format=c #{config['url']} --file=#{filename}"
     else
-      cmd = "PGPASSWORD=#{config['password']} pg_dump --format=c --host=#{config['host']} --username=#{config['username']} --dbname=#{config['database']} --file=#{dump_path}"      
+      cmd = "PGPASSWORD=#{config['password']} pg_dump --format=c --host=#{config['host']} --username=#{config['username']} --dbname=#{config['database']} --file=#{filename}"      
     end
     system cmd or raise "Error dumping database"
     puts '--- dump created ---'
