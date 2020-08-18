@@ -98,8 +98,8 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :test
   config.action_mailer.perform_caching = false
   
-  config.action_mailer.default_url_options = { :host => 'https://gctprojects.qa' }
-  config.action_mailer.asset_host = 'https://gctprojects.qa'
+  config.action_mailer.default_url_options = { :host => 'https://www.gsas.qa' }
+  config.action_mailer.asset_host = 'https://www.gsas.qa'
 
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = { 
@@ -128,5 +128,5 @@ Rails.application.configure do
   config.x.chart_generator.api_port = 8082
 
   # Visualisation Tool API
-   config.x.viewer.url = 'https://visualisation.gctprojects.qa'
+   config.x.viewer.url = 'https://visualisation.gsas.qa'
 end
