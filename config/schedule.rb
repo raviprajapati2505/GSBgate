@@ -28,3 +28,11 @@ end
 every [:monday, :tuesday, :wednesday, :thursday, :friday], at: ['12:00am', '9:00am', '3:00pm', '11:00pm'] do
   rake 'logfile_backup:logfile'
 end
+
+every :day, at: '12:30am' do
+  rake "backup_clean:db_backup_clean"
+end
+
+every :day, at: ['12:30am', '9:30am', '3:30pm', '11:30pm'] do
+  rake "backup_clean:log_backup_clean"
+end
