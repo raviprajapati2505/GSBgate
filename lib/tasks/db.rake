@@ -10,11 +10,10 @@ namespace :db do
 
   def dump_path
     base_path = File.join(Rails.root, 'private', 'database_backup')
-    backup_path = File.join(base_path, "#{Date.today.year}-#{Date.today.month}")
     
-    FileUtils.mkdir_p(backup_path) unless File.exist?(backup_path)
+    FileUtils.mkdir_p(base_path) unless File.exist?(base_path)
       
-    backup_path
+    base_path
   end
 
   def db_name(env)
@@ -25,7 +24,7 @@ namespace :db do
   desc 'Dump database to local file'
   task :db_dump_production do
     puts '--- dump in progress ---'
-    filename = File.join(dump_path, "db_backup_#{Time.now.strftime("%a_%Y-%m-%d")}")
+    filename = File.join(dump_path, "db_backup_#{Time.now.strftime("%Y-%m-%d")}")
     config = Rails.configuration.database_configuration[Rails.env]
     if config.has_key?('url')
       cmd = "pg_dump --format=c #{config['url']} --file=#{filename}"
