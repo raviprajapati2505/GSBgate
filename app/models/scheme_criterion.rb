@@ -37,7 +37,7 @@ class SchemeCriterion < ApplicationRecord
   }
 
   def code
-    "#{self.scheme_category.code}.#{self.number}"
+    "#{scheme_category.code}.#{number}"
   end
 
   def full_name

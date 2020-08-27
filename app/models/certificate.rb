@@ -35,6 +35,10 @@ class Certificate < ApplicationRecord
     name.include?('Operations')
   end
 
+  def operations_2019?
+    operations_type? && gsas_version == '2019'
+  end
+
   def full_name
     self.name
   end

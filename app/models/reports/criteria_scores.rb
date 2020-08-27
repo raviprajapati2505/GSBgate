@@ -19,8 +19,8 @@ class Reports::CriteriaScores < Reports::BaseReport
     @scheme_mix = scheme_mix
     @certification_path = @scheme_mix.certification_path
     @score = @scheme_mix.scores_in_scheme_points[:achieved_score_in_scheme_points]
-    @stars = CertificationPath.rating_for_score(@score, certificate: @certification_path.certificate).to_s +
-        ' ' + 'Star'.pluralize(CertificationPath.rating_for_score(@score, certificate: @certification_path.certificate))
+    @stars = @certification_path.rating_for_score(@score, certificate: @certification_path.certificate).to_s +
+        ' ' + 'Star'.pluralize(@certification_path.rating_for_score(@score, certificate: @certification_path.certificate))
     do_render
   end
 

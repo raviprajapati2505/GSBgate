@@ -55,7 +55,8 @@ Rails.application.configure do
 
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.
-  config.log_level = :warn
+  config.log_level = :debug
+  config.logger = ActiveSupport::Logger.new("log/#{Rails.env}.log")
 
   # Prepend all log lines with the following tags.
   config.log_tags = [ :uuid ]
@@ -96,12 +97,22 @@ Rails.application.configure do
 
   # Mailer settings
   config.action_mailer.perform_caching = false
-  config.action_mailer.default_url_options = { :host => 'gord.vito.be' }
-  config.action_mailer.smtp_settings = { :address => 'smtp.vito.local' }
-  config.action_mailer.asset_host = 'https://gord.vito.be'
+  config.action_mailer.default_url_options = { :host => 'http://staging.gctprojects.qa' }
+  config.action_mailer.asset_host = 'http://staging.gctprojects.qa'
 
-  # GSAS info email addresses
-  config.x.gsas_info.all_notifications_email = 'sas@vito.be'
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = { 
+    :user_name => ENV['SENDGRID_USERNAME'],
+    :password => ENV['SENDGRID_PASSWORD'],
+    :domain => 'gsas.qa',
+    :address => 'smtp.sendgrid.net',
+    :port =>  '587',
+    :authentication => :plain,
+    :enable_starttls_auto => true
+  }
+
+  # GSAS info email addresses for test env only
+  config.x.gsas_info.all_notifications_email = 'no-reply@gord.qa'
 
   # Linkme.qa API config
   config.x.linkme.api_url = 'api.yourmembership.com'

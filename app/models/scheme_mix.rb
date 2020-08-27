@@ -31,11 +31,12 @@ class SchemeMix < ApplicationRecord
     if certification_path.main_scheme_mix.present?
       certification_path.main_scheme_mix.scheme.scheme_categories.each do |main_scheme_category|
         main_scheme_category.scheme_criteria.each do |main_scheme_criterion|
-          main_scheme_mix_criteria[main_scheme_criterion.code] = main_scheme_criterion.id
+          if main_scheme_criterion.shared? 
+            main_scheme_mix_criteria[main_scheme_criterion.code] = main_scheme_criterion.id
+          end
         end
       end
     end
-
     # Loop all the criteria of the scheme
     scheme.scheme_criteria.each do |scheme_criterion|
       # Check whether the new scheme mix criterion will have a main scheme mix criterion
