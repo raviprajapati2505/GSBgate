@@ -279,7 +279,8 @@ class CertificationPath < ApplicationRecord
   end
 
   def allow_certification?(is_achieved_score: true, is_submitted_score: true)
-    self.scheme_mixes.each do |scheme_mix|
+    main_scheme_mixes = self.main_scheme_mix.present? ? self.scheme_mixes.where(id: self.main_scheme_mix.id) : self.scheme_mixes
+    main_scheme_mixes.each do |scheme_mix|
       if scheme_mix.scheme.name == 'Healthy Building Mark'
         facility_management_targeted = facility_management_submitted = facility_management_achieved = false
         indoor_environment_targeted = indoor_environment_submitted = indoor_environment_achieved = false
@@ -339,17 +340,21 @@ class CertificationPath < ApplicationRecord
         energy_targeted = energy_sumitted = energy_achieved = false
 
         scheme_mix.scheme_mix_criteria.each do |smc|
-          if smc.scheme_criterion.scheme_category.code == 'E'
-            if is_submitted_score
-              energy_sumitted = is_valid?(smc.submitted_score, 3)
-              return energy_sumitted if !energy_sumitted
-            elsif is_achieved_score
-              energy_achieved = is_valid?(smc.achieved_score, 3)
-              return energy_achieved if !energy_achieved
-            else
-              energy_targeted = is_valid?(smc.targeted_score, 3)
-              return energy_targeted if !energy_targeted
+          if smc.scheme_mix_criterion_boxs&.last&.is_checked?
+            if smc.scheme_criterion.scheme_category.code == 'E'
+              if is_submitted_score
+                energy_sumitted = is_valid?(smc.submitted_score, 3)
+                return energy_sumitted if !energy_sumitted
+              elsif is_achieved_score
+                energy_achieved = is_valid?(smc.achieved_score, 3)
+                return energy_achieved if !energy_achieved
+              else
+                energy_targeted = is_valid?(smc.targeted_score, 3)
+                return energy_targeted if !energy_targeted
+              end
             end
+          else
+            return false
           end
         end
 

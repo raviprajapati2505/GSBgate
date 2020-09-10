@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  scheme_criterion: one
+  lable: MyString
+  display_weight: 1
+  is_checked: false
+
+two:
+  scheme_criterion: two
+  lable: MyString
+  display_weight: 1
+  is_checked: false
