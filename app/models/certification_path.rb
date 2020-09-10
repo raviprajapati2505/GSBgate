@@ -370,6 +370,7 @@ class CertificationPath < ApplicationRecord
         return 'Standard Scheme'
       end
     end
+    return true
   end
 
   def is_valid?(smc_score, target)
