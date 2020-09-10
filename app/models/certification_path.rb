@@ -279,7 +279,8 @@ class CertificationPath < ApplicationRecord
   end
 
   def allow_certification?(is_achieved_score: true, is_submitted_score: true)
-    self.scheme_mixes.each do |scheme_mix|
+    main_scheme_mixes = self.main_scheme_mix.present? ? self.scheme_mixes.where(id: self.main_scheme_mix.id) : self.scheme_mixes
+    main_scheme_mixes.each do |scheme_mix|
       if scheme_mix.scheme.name == 'Healthy Building Mark'
         facility_management_targeted = facility_management_submitted = facility_management_achieved = false
         indoor_environment_targeted = indoor_environment_submitted = indoor_environment_achieved = false
@@ -369,7 +370,6 @@ class CertificationPath < ApplicationRecord
         return 'Standard Scheme'
       end
     end
-    return true
   end
 
   def is_valid?(smc_score, target)
