@@ -16,10 +16,12 @@ class SchemeMixCriterion < ApplicationRecord
   has_many :scheme_mix_criterion_incentives, dependent: :destroy
   has_many :scheme_mix_criterion_epls, dependent: :destroy
   has_many :scheme_mix_criterion_wpls, dependent: :destroy
+  has_many :scheme_mix_criterion_boxs, dependent: :destroy
 
   accepts_nested_attributes_for :scheme_mix_criterion_incentives
   accepts_nested_attributes_for :scheme_mix_criterion_epls
   accepts_nested_attributes_for :scheme_mix_criterion_wpls
+  accepts_nested_attributes_for :scheme_mix_criterion_boxs
 
   enum status: {submitting: 10, submitted: 20, verifying: 30, score_awarded: 41, score_downgraded: 42, score_upgraded: 43, score_minimal:44, appealed: 50, submitting_after_appeal: 60, submitted_after_appeal: 70, verifying_after_appeal: 80, score_awarded_after_appeal: 91, score_downgraded_after_appeal: 92, score_upgraded_after_appeal: 93, score_minimal_after_appeal:94 }
 
