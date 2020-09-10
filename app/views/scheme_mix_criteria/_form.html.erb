@@ -187,19 +187,7 @@
                         <% end %>
                         <% end %>
                     </tr>
-                    <% if @certification_path.certificate.operations_2019? && @certification_path.schemes.where(name: "Energy Neutral Mark") %>
-                      <% if @scheme_mix_criterion&.scheme_mix_criterion_boxs&.present? %>
-                        <tr>
-                        <%= f.fields_for :scheme_mix_criterion_boxs do |smc_box| %>
-                          <%= smc_box.hidden_field :id %>
-                          <tr>
-                            <th><%= smc_box.object.scheme_criterion_box.label %></th>
-                            <td><%= smc_box.check_box :is_checked, label: '' %></td>
-                          </tr>
-                        <% end %>
-                        </tr>
-                      <% end %>
-                    <% end %>
+
                     <% if !@certification_path.in_pre_verification? %>
                     <% if !@certification_path.in_verification? || (@certification_path.certification_path_status_id == CertificationPathStatus::VERIFYING_AFTER_APPEAL && SchemeMixCriterion::statuses[@scheme_mix_criterion.status] < SchemeMixCriterion::statuses[:verifying_after_appeal]) || !current_user.default_role? || @project.role_for_user(current_user) == ProjectsUser.roles.keys[ProjectsUser.roles[:certifier]] || @project.role_for_user(current_user) == ProjectsUser.roles.keys[ProjectsUser.roles[:certification_manager]] %>
                     <tr class="achieved_score_row">
@@ -471,6 +459,25 @@
                     <% end %>
                     <% end %>
                     <% end %>
+
+                    <!-- CheckBox -->
+                    <% if @certification_path.certificate.operations_2019? && @certification_path.schemes.where(name: "Energy Neutral Mark") %>
+                      <% if @scheme_mix_criterion&.scheme_mix_criterion_boxs&.present? %>
+                        <tr>
+                          <td colspan="3"></td>
+                        </tr>
+                        <%= f.fields_for :scheme_mix_criterion_boxs do |smc_box| %>
+                          <%= smc_box.hidden_field :id %>
+                          <tr>
+                            <th><%= smc_box.object.scheme_criterion_box.label %></th>
+                            <td colspan="2" style="text-align: center;"><%= smc_box.check_box :is_checked, label: '' %></td>
+                          </tr>
+                        <% end %>
+                        </tr>
+                      <% end %>
+                    <% end %>
+
+                    <!-- Incentives -->
                     <% if @scheme_mix_criterion.scheme_mix_criterion_incentives.any? %>
                     <tr>
                       <td colspan="<%= SchemeCriterion::SCORE_ATTRIBUTES.length + 1 %>">Incentives</td>
