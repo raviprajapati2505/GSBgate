@@ -340,7 +340,7 @@ class CertificationPath < ApplicationRecord
         energy_targeted = energy_sumitted = energy_achieved = false
 
         scheme_mix.scheme_mix_criteria.each do |smc|
-          if smc.scheme_mix_criterion_boxs&.last&.is_checked?
+          if smc.scheme_mix_criterion_boxes&.last&.is_checked?
             if smc.scheme_criterion.scheme_category.code == 'E'
               if is_submitted_score
                 energy_sumitted = is_valid?(smc.submitted_score, 3)

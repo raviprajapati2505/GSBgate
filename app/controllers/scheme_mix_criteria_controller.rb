@@ -226,7 +226,7 @@ class SchemeMixCriteriaController < AuthenticatedController
   end
 
   def scheme_mix_criterion_box_params
-    permitted_params = [scheme_mix_criterion_boxs_attributes: [:id, :is_checked]]
+    permitted_params = [scheme_mix_criterion_boxes_attributes: [:id, :is_checked]]
     params.require(:scheme_mix_criterion).permit(permitted_params)
   end
 

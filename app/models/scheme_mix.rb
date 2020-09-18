@@ -67,7 +67,7 @@ class SchemeMix < ApplicationRecord
       scheme_mix_criterion = SchemeMixCriterion.create!(parameter_list)
       if certification_path.certificate.operations_2019? && scheme.name == "Energy Neutral Mark"
         scheme_criterion.scheme_criterion_box_ids.each do |box_id|
-          scheme_mix_criterion.scheme_mix_criterion_boxs.create!(scheme_criterion_box_id: box_id, is_checked: false)
+          scheme_mix_criterion.scheme_mix_criterion_boxes.create!(scheme_criterion_box_id: box_id, is_checked: false)
         end
       end
 
