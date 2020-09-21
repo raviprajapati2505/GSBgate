@@ -242,7 +242,7 @@
       <% if can?(:create, CertifierCertificationPathDocument.new(:certification_path_id => @certification_path.id)) %>
           <div class="ibox">
             <div class="ibox-title">
-              <h5>Upload Certification Documentation</h5>
+              <h5>Upload Checklist Documentation</h5>
             </div>
             <div class="ibox-content">
               <%= render 'certification_path_documents/new', document: CertifierCertificationPathDocument.new, project: @project, certification_path: @certification_path %>
@@ -254,7 +254,7 @@
               <% if @certification_path.certificate.construction_type? %>
                 <h5>Upload Construction Management Plan and General Documentation</h5>
               <% else %>
-                <h5>Upload Certification Documentation</h5>
+                <h5>Upload Checklist Documentation</h5>
               <% end %>
             </div>
             <div class="ibox-content">

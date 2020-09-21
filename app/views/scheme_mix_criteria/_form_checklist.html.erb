@@ -98,7 +98,7 @@
     </div>
     <div class="ibox criterion-details">
         <div class="ibox-title">
-            <h5>Criterion Levesl</h5>
+            <h5>Checklist Status</h5>
         </div>
         <% if @scheme_mix_criterion.scheme_mix.check_list? %>
           <%= render partial: 'checklist_level', locals: { scheme_mix_criterion: @scheme_mix_criterion } %>
@@ -545,18 +545,6 @@
         </div>
       <% end %>
     <% end %>
-
-    <div class="ibox criterion-information">
-        <div class="ibox-title">
-            <h5>Criterion Information</h5>
-        </div>
-        <div class="ibox-content">
-            <% @scheme_mix_criterion.scheme_criterion.scheme_criterion_texts.visible.each do |scheme_criterion_text| %>
-                <div class="subtitle"><%= scheme_criterion_text.name.capitalize %></div>
-                <div class="<%= scheme_criterion_text.name.downcase  %>"><%= scheme_criterion_text.html_text.html_safe %></div>
-            <% end %>
-        </div>
-    </div>
 </div>
 <% unless @scheme_mix_criterion.main_scheme_mix_criterion_id.present? %>
     <div class="col-lg-8">
@@ -607,7 +595,7 @@
         <% if can?(:create, cancan_document) %>
             <div class="ibox">
                 <div class="ibox-title">
-                    <h5>Upload Criterion Documentation</h5>
+                    <h5>Upload Checklist Documentation</h5>
                 </div>
                 <div class="ibox-content">
                     <%= render 'documents/new', document: Document.new, project: @project, certification_path: @certification_path, scheme_mix: @scheme_mix,  scheme_mix_criterion_id: @scheme_mix_criterion.id %>
@@ -616,7 +604,7 @@
         <% end %>
         <div class="ibox" id="documentation">
             <div class="ibox-title">
-                <h5>Criterion Documentation</h5>
+                <h5>Checklist Documentation</h5>
                 <% if can?(:download_archive, @scheme_mix_criterion) && @scheme_mix_criterion.scheme_mix_criteria_documents.any? %>
                   <%= btn_download("javascript:void(0);", text: 'Download all approved/selected documents', tooltip: 'A ZIP archive containing all approved documents of this criterion will be generated for you.', size: 'extra_small', class: 'pull-right', id: "download_smcd_btn") %>
                 <% end %>

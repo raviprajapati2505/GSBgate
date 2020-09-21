@@ -1,19 +1,24 @@
 <div class="ibox-content">
   <%= bootstrap_form_for([@project, @certification_path, @scheme_mix, @scheme_mix_criterion], url: update_checklist_project_certification_path_scheme_mix_scheme_mix_criterion_path, method: 'put') do |f| %>
     <!-- CheckBox -->
-      <% if @scheme_mix_criterion&.scheme_mix_criterion_boxes&.present? %>
-        <tr>
-          <td colspan="3"></td>
-        </tr>
-        <%= f.fields_for :scheme_mix_criterion_boxes do |smc_box| %>
-          <%= smc_box.hidden_field :id %>
+    <% if @scheme_mix_criterion&.scheme_mix_criterion_boxes&.present? %>
+      <table class="table table-bordered table-striped">
+        <tbody>
           <tr>
-            <th><%= smc_box.object.scheme_criterion_box.label %></th>
-            <td colspan="2" style="text-align: center;"><%= smc_box.check_box :is_checked, label: '' %></td>
+            <th></th>
+            <td colspan="2" style="text-align: center;"><b>Certified ?</b></td>
           </tr>
+          <%= f.fields_for :scheme_mix_criterion_boxes do |smc_box| %>
+            <%= smc_box.hidden_field :id %>
+            <tr>
+              <th><%= smc_box.object.scheme_criterion_box.label %></th>
+              <td colspan="2" style="text-align: center;"><%= smc_box.check_box :is_checked, label: '' %></td>
+            </tr>
+          <% end %>
+          </tr>
+          </tbody>
         <% end %>
-        </tr>
-      <% end %>
+      </table>
     <%= btn_save %>
   <% end %>
 </div>
