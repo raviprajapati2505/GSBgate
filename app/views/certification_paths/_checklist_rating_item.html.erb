@@ -1,7 +1,8 @@
+<% targetted ||=false %>
 <% achieved ||= false %>
 <% submitted ||= false %>
 
-<% rating = certification_path.lable_for_level(certificate: certificate, is_achieved_score: achieved, is_submitted_score: submitted) %>
+<% rating = certification_path.lable_for_level(certificate: certificate, is_targetted_score: targetted, is_achieved_score: achieved, is_submitted_score: submitted) %>
 <div style="line-height:24px; <% if achieved %>font-weight:bold;<% end %>">
     <span class="text-right" style="width: 72px; display: inline-block;">
         <%= score_label %>

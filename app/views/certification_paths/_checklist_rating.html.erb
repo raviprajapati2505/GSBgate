@@ -2,7 +2,7 @@
 <% if certification_path.is_activating? %>
     ---
 <% else %>
-  <%= render partial: 'certification_paths/checklist_rating_item', locals: {score_label: 'Targeted', certification_path: certification_path, certificate: certification_path.certificate} %>
+  <%= render partial: 'certification_paths/checklist_rating_item', locals: {score_label: 'Targeted', certification_path: certification_path,targetted: true, certificate: certification_path.certificate} %>
   <%= render partial: 'certification_paths/checklist_rating_item', locals: {score_label: 'Submitted', certification_path: certification_path, submitted: true, certificate: certification_path.certificate} %>
 <% end %>
 <% if !certification_path.in_pre_verification? %>

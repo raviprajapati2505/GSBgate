@@ -514,10 +514,33 @@ class CertificationPath < ApplicationRecord
     end
   end
 
-  def lable_for_level(certificate: nil, certificate_gsas_version: nil, certificate_name: nil, is_achieved_score: true, is_submitted_score: true)
-    # certification_path.certification_path_method&.assessment_method == CertificationPath.assessment_methods[:check_list]
-    'CERTIFICATION DENIED'
+  def is_valid_check?(flag)
+    if flag
+      return 'CERTIFIED'
+    else
+      return 'CERTIFICATION DENIED'
+    end
   end
+
+  def lable_for_level(certificate: nil,is_targetted_score: true, is_achieved_score: true, is_submitted_score: true)
+    if certificate.design_and_build?
+      scheme_mixes.each do |sm|
+        sm.scheme_mix_criteria.each do |smc|
+          smc.scheme_mix_criterion_boxes.each do |smcb|
+            if is_submitted_score && smcb.scheme_criterion_box.label == "Submitted checklist status"
+              return is_valid_check?(smcb.is_checked)
+            elsif is_achieved_score && smcb.scheme_criterion_box.label == "Achieved checklist status"
+              return is_valid_check?(smcb.is_checked)
+            elsif is_targetted_score && smcb.scheme_criterion_box.label == "Targeted checklist status"
+              return is_valid_check?(smcb.is_checked)
+            end
+          end
+        end
+      end
+    end
+    # certification_path.certification_path_method&.assessment_method == CertificationPath.assessment_methods[:check_list]
+  end
+
   # This function is used for toggling writability of form elements in the certification path flow
   def in_submission?
     CertificationPathStatus::STATUSES_IN_SUBMISSION.include?(certification_path_status_id)
