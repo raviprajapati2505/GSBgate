@@ -100,413 +100,409 @@
         <div class="ibox-title">
             <h5>Criterion Levesl</h5>
         </div>
-        <% if @scheme_mix_criterion.scheme_mix.check_list? %>
-          <%= render partial: 'checklist_level', locals: { scheme_mix_criterion: @scheme_mix_criterion } %>
-        <% else %>
-          <div class="ibox-content">
-              <%= bootstrap_form_for([@project, @certification_path, @scheme_mix, @scheme_mix_criterion], url: update_scores_project_certification_path_scheme_mix_scheme_mix_criterion_path, method: 'put') do |f| %>
-                  <% if @scheme_mix_criterion.errors.any? %>
-                      <div id="error_explanation">
-                          <h2><%= pluralize(@scheme_mix_criterion.errors.count, "error") %> prohibited this criterion from being saved:</h2>
-                          <ul>
-                              <% @scheme_mix_criterion.errors.full_messages.each do |message| %>
-                                  <li><%= message %></li>
-                              <% end %>
-                          </ul>
-                      </div>
-                  <% end %>
-                  <% SchemeCriterion::MIN_SCORE_ATTRIBUTES.each_with_index do |min_score, index| %>
-                  <% if @scheme_mix_criterion.scheme_criterion.read_attribute(min_score.to_sym) != @scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::MIN_VALID_SCORE_ATTRIBUTES[index].to_sym) %>
-                      <p class="alert alert-warning"><%= ikoen('exclamation-circle') %>
-                        <% if @certification_path.certificate.construction_issue_1? %>
-                          <%= t('.scores.minimum_valid_score_warning', minimum_valid_score: number_to_percentage(@scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::MIN_VALID_SCORE_ATTRIBUTES[index].to_sym), precision: 1)) %>
-                        <% else %>
-                          <%= t('.scores.minimum_valid_score_warning', minimum_valid_score: number_with_precision(@scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::MIN_VALID_SCORE_ATTRIBUTES[index].to_sym), precision: 0, significant: true)) %>
-                        <% end %>
-                      </p>
-                  <% end %>
-                  <% end %>
-                  <table id="criterion-levels-table" class="table table-bordered table-striped">
-                      <thead>
-                      <tr>
-                          <th></th>
-                          <% SchemeCriterion::SCORE_ATTRIBUTES.each_with_index do |scores, index| %>
-                          <% unless @scheme_mix_criterion.scheme_criterion.read_attribute(scores.to_sym).nil? %>
-                          <% unless @scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::LABEL_ATTRIBUTES[index].to_sym).nil? %>
-                            <th><%= @scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::LABEL_ATTRIBUTES[index].to_sym) %></th>
-                          <% else %>
-                            <th>Level</th>
-                          <% end %>
-                          <% end %>
-                          <% end %>
-                      </tr>
-                      </thead>
-                      <tbody>
-                      <tr>
-                          <th>Targeted Level <%= tooltip(t('.scores.targeted_score.tooltip')) %></th>
-                          <% SchemeCriterion::SCORE_ATTRIBUTES.each_with_index do |scores, index| %>
-                          <% unless @scheme_mix_criterion.scheme_criterion.read_attribute(scores.to_sym).nil? %>
-                          <td>
-                            <% if can?(:update_targeted_score, @scheme_mix_criterion) %>
-                              <% if @certification_path.certificate.construction_issue_1? %>
-                                <%= f.number_field SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES[index].to_sym, in: 0.0..@scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[index].to_sym), step: 0.1, hide_label: true, append: '%' %>
-                              <% else %>
-                                <%= f.select SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES[index].to_sym, @scheme_mix_criterion.scheme_criterion.read_attribute(scores.to_sym), hide_label: true %>
-                              <% end %>
-                            <% else %>
-                              <%= f.static_control label: 'targeted level', hide_label: true do %>
-                                <% if @certification_path.certificate.construction_issue_1? %>
-                                  <%= number_to_percentage(@scheme_mix_criterion.read_attribute(SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES[index].to_sym), precision: 1) %>
-                                <% else %>
-                                  <%= number_with_precision(@scheme_mix_criterion.read_attribute(SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES[index].to_sym), precision: 0, significant: true) %>
-                                <% end %>
-                              <% end %>
+        <div class="ibox-content">
+            <%= bootstrap_form_for([@project, @certification_path, @scheme_mix, @scheme_mix_criterion], url: update_scores_project_certification_path_scheme_mix_scheme_mix_criterion_path, method: 'put') do |f| %>
+                <% if @scheme_mix_criterion.errors.any? %>
+                    <div id="error_explanation">
+                        <h2><%= pluralize(@scheme_mix_criterion.errors.count, "error") %> prohibited this criterion from being saved:</h2>
+                        <ul>
+                            <% @scheme_mix_criterion.errors.full_messages.each do |message| %>
+                                <li><%= message %></li>
                             <% end %>
-                          </td>
-                          <% end %>
-                          <% end %>
-                      </tr>
-                      <tr>
-                          <th>Submitted Level <%= tooltip(t('.scores.submitted_score.tooltip')) %></th>
-                          <% SchemeCriterion::SCORE_ATTRIBUTES.each_with_index do |scores, index| %>
-                          <% unless @scheme_mix_criterion.scheme_criterion.read_attribute(scores.to_sym).nil? %>
-                          <td>
-                            <% if can?(:update_submitted_score, @scheme_mix_criterion) %>
-                              <% if @certification_path.certificate.construction_issue_1? %>
-                                <%= f.number_field SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES[index].to_sym, in: 0.0..@scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[index].to_sym), step: 0.1, hide_label: true, append: '%' %>
-                              <% else %>
-                                <%= f.select SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES[index].to_sym, @scheme_mix_criterion.scheme_criterion.read_attribute(scores.to_sym), {include_blank: '-', hide_label: true} %>
-                              <% end %>
-                            <% else %>
-                              <%= f.static_control label: 'submitted level', hide_label: true do %>
-                                <% if @certification_path.certificate.construction_issue_1? %>
-                                  <%= number_to_percentage(@scheme_mix_criterion.read_attribute(SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES[index].to_sym), precision: 1) %>
-                                <% else %>
-                                  <%= number_with_precision(@scheme_mix_criterion.read_attribute(SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES[index].to_sym), precision: 0, significant: true) %>
-                                <% end %>
-                              <% end %>
-                            <% end %>
-                          </td>
-                          <% end %>
-                          <% end %>
-                      </tr>
-
-                      <% if !@certification_path.in_pre_verification? %>
-                      <% if !@certification_path.in_verification? || (@certification_path.certification_path_status_id == CertificationPathStatus::VERIFYING_AFTER_APPEAL && SchemeMixCriterion::statuses[@scheme_mix_criterion.status] < SchemeMixCriterion::statuses[:verifying_after_appeal]) || !current_user.default_role? || @project.role_for_user(current_user) == ProjectsUser.roles.keys[ProjectsUser.roles[:certifier]] || @project.role_for_user(current_user) == ProjectsUser.roles.keys[ProjectsUser.roles[:certification_manager]] %>
-                      <tr class="achieved_score_row">
-                          <th>Achieved Level <%= tooltip(t('.scores.achieved_score.tooltip')) %></th>
+                        </ul>
+                    </div>
+                <% end %>
+                <% SchemeCriterion::MIN_SCORE_ATTRIBUTES.each_with_index do |min_score, index| %>
+                <% if @scheme_mix_criterion.scheme_criterion.read_attribute(min_score.to_sym) != @scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::MIN_VALID_SCORE_ATTRIBUTES[index].to_sym) %>
+                    <p class="alert alert-warning"><%= ikoen('exclamation-circle') %>
+                      <% if @certification_path.certificate.construction_issue_1? %>
+                        <%= t('.scores.minimum_valid_score_warning', minimum_valid_score: number_to_percentage(@scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::MIN_VALID_SCORE_ATTRIBUTES[index].to_sym), precision: 1)) %>
+                      <% else %>
+                        <%= t('.scores.minimum_valid_score_warning', minimum_valid_score: number_with_precision(@scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::MIN_VALID_SCORE_ATTRIBUTES[index].to_sym), precision: 0, significant: true)) %>
+                      <% end %>
+                    </p>
+                <% end %>
+                <% end %>
+                <table id="criterion-levels-table" class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th></th>
                         <% SchemeCriterion::SCORE_ATTRIBUTES.each_with_index do |scores, index| %>
                         <% unless @scheme_mix_criterion.scheme_criterion.read_attribute(scores.to_sym).nil? %>
-                          <td>
-                            <% if can?(:update_achieved_score, @scheme_mix_criterion) %>
-                              <% if @certification_path.certificate.construction_issue_1? %>
-                                <%= f.number_field SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES[index].to_sym, in: 0.0..@scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[index].to_sym), step: 0.1, hide_label: true, append: '%' %>
-                              <% else %>
-                                <%= f.select SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES[index].to_sym, @scheme_mix_criterion.scheme_criterion.read_attribute(scores.to_sym), {include_blank: '-', hide_label: true}, data: {index: index} %>
-                              <% end %>
+                        <% unless @scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::LABEL_ATTRIBUTES[index].to_sym).nil? %>
+                          <th><%= @scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::LABEL_ATTRIBUTES[index].to_sym) %></th>
+                        <% else %>
+                          <th>Level</th>
+                        <% end %>
+                        <% end %>
+                        <% end %>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th>Targeted Level <%= tooltip(t('.scores.targeted_score.tooltip')) %></th>
+                        <% SchemeCriterion::SCORE_ATTRIBUTES.each_with_index do |scores, index| %>
+                        <% unless @scheme_mix_criterion.scheme_criterion.read_attribute(scores.to_sym).nil? %>
+                        <td>
+                          <% if can?(:update_targeted_score, @scheme_mix_criterion) %>
+                            <% if @certification_path.certificate.construction_issue_1? %>
+                              <%= f.number_field SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES[index].to_sym, in: 0.0..@scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[index].to_sym), step: 0.1, hide_label: true, append: '%' %>
                             <% else %>
-                              <%= f.static_control label: 'achieved level', hide_label: true do %>
-                                <% if @certification_path.certificate.construction_issue_1? %>
-                                  <%= number_to_percentage(@scheme_mix_criterion.read_attribute(SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES[index].to_sym), precision: 1) %>
-                                <% else %>
-                                  <%= number_with_precision(@scheme_mix_criterion.read_attribute(SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES[index].to_sym), precision: 0, significant: true) %>
-                                <% end %>
+                              <%= f.select SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES[index].to_sym, @scheme_mix_criterion.scheme_criterion.read_attribute(scores.to_sym), hide_label: true %>
+                            <% end %>
+                          <% else %>
+                            <%= f.static_control label: 'targeted level', hide_label: true do %>
+                              <% if @certification_path.certificate.construction_issue_1? %>
+                                <%= number_to_percentage(@scheme_mix_criterion.read_attribute(SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES[index].to_sym), precision: 1) %>
+                              <% else %>
+                                <%= number_with_precision(@scheme_mix_criterion.read_attribute(SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES[index].to_sym), precision: 0, significant: true) %>
                               <% end %>
                             <% end %>
-                          </td>
+                          <% end %>
+                        </td>
                         <% end %>
                         <% end %>
-                      </tr>
-                      <% if can?(:update_incentive_scored, @scheme_mix_criterion) %>
-                        <% if @scheme_mix_criterion.scheme_criterion.has_manual_incentive? %>
-                        <tr>
-                          <th>Incentive Earned ?</th>
-                          <% SchemeCriterion::SCORE_ATTRIBUTES.each_with_index do |scores, index| %>
-                          <% unless @scheme_mix_criterion.scheme_criterion.read_attribute(scores.to_sym).nil? %>
-                            <% if @scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::MANUAL_INCENTIVE_ATTRIBUTES[index].to_sym) == true %>
-                              <% if ['E','W'].include?(@scheme_mix_criterion.scheme_criterion.scheme_category.code) %>
-                                  <% if @scheme_mix_criterion.scheme_mix.certification_path.certificate.construction_issue_3? %>
-                                    <% if !@scheme_mix_criterion.read_attribute(SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES[index].to_sym).nil? && @scheme_mix_criterion.read_attribute(SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES[index].to_sym) > 0 %>
-                                      <td class="achieved_score_dependent_checkbox">
-                                        <%= f.check_box SchemeMixCriterion::INCENTIVE_SCORED_ATTRIBUTES[index].to_sym, label: '', data: {index: index} %>
-                                      </td>
-                                    <% else %>
-                                      <td class="achieved_score_dependent_checkbox">
-                                        <%= f.check_box SchemeMixCriterion::INCENTIVE_SCORED_ATTRIBUTES[index].to_sym, label: '', readonly: true, data: {index: index} %>
-                                      </td>
-                                    <% end %>
+                    </tr>
+                    <tr>
+                        <th>Submitted Level <%= tooltip(t('.scores.submitted_score.tooltip')) %></th>
+                        <% SchemeCriterion::SCORE_ATTRIBUTES.each_with_index do |scores, index| %>
+                        <% unless @scheme_mix_criterion.scheme_criterion.read_attribute(scores.to_sym).nil? %>
+                        <td>
+                          <% if can?(:update_submitted_score, @scheme_mix_criterion) %>
+                            <% if @certification_path.certificate.construction_issue_1? %>
+                              <%= f.number_field SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES[index].to_sym, in: 0.0..@scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[index].to_sym), step: 0.1, hide_label: true, append: '%' %>
+                            <% else %>
+                              <%= f.select SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES[index].to_sym, @scheme_mix_criterion.scheme_criterion.read_attribute(scores.to_sym), {include_blank: '-', hide_label: true} %>
+                            <% end %>
+                          <% else %>
+                            <%= f.static_control label: 'submitted level', hide_label: true do %>
+                              <% if @certification_path.certificate.construction_issue_1? %>
+                                <%= number_to_percentage(@scheme_mix_criterion.read_attribute(SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES[index].to_sym), precision: 1) %>
+                              <% else %>
+                                <%= number_with_precision(@scheme_mix_criterion.read_attribute(SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES[index].to_sym), precision: 0, significant: true) %>
+                              <% end %>
+                            <% end %>
+                          <% end %>
+                        </td>
+                        <% end %>
+                        <% end %>
+                    </tr>
+
+                    <% if !@certification_path.in_pre_verification? %>
+                    <% if !@certification_path.in_verification? || (@certification_path.certification_path_status_id == CertificationPathStatus::VERIFYING_AFTER_APPEAL && SchemeMixCriterion::statuses[@scheme_mix_criterion.status] < SchemeMixCriterion::statuses[:verifying_after_appeal]) || !current_user.default_role? || @project.role_for_user(current_user) == ProjectsUser.roles.keys[ProjectsUser.roles[:certifier]] || @project.role_for_user(current_user) == ProjectsUser.roles.keys[ProjectsUser.roles[:certification_manager]] %>
+                    <tr class="achieved_score_row">
+                        <th>Achieved Level <%= tooltip(t('.scores.achieved_score.tooltip')) %></th>
+                      <% SchemeCriterion::SCORE_ATTRIBUTES.each_with_index do |scores, index| %>
+                      <% unless @scheme_mix_criterion.scheme_criterion.read_attribute(scores.to_sym).nil? %>
+                        <td>
+                          <% if can?(:update_achieved_score, @scheme_mix_criterion) %>
+                            <% if @certification_path.certificate.construction_issue_1? %>
+                              <%= f.number_field SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES[index].to_sym, in: 0.0..@scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[index].to_sym), step: 0.1, hide_label: true, append: '%' %>
+                            <% else %>
+                              <%= f.select SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES[index].to_sym, @scheme_mix_criterion.scheme_criterion.read_attribute(scores.to_sym), {include_blank: '-', hide_label: true}, data: {index: index} %>
+                            <% end %>
+                          <% else %>
+                            <%= f.static_control label: 'achieved level', hide_label: true do %>
+                              <% if @certification_path.certificate.construction_issue_1? %>
+                                <%= number_to_percentage(@scheme_mix_criterion.read_attribute(SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES[index].to_sym), precision: 1) %>
+                              <% else %>
+                                <%= number_with_precision(@scheme_mix_criterion.read_attribute(SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES[index].to_sym), precision: 0, significant: true) %>
+                              <% end %>
+                            <% end %>
+                          <% end %>
+                        </td>
+                      <% end %>
+                      <% end %>
+                    </tr>
+                    <% if can?(:update_incentive_scored, @scheme_mix_criterion) %>
+                      <% if @scheme_mix_criterion.scheme_criterion.has_manual_incentive? %>
+                      <tr>
+                        <th>Incentive Earned ?</th>
+                        <% SchemeCriterion::SCORE_ATTRIBUTES.each_with_index do |scores, index| %>
+                        <% unless @scheme_mix_criterion.scheme_criterion.read_attribute(scores.to_sym).nil? %>
+                          <% if @scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::MANUAL_INCENTIVE_ATTRIBUTES[index].to_sym) == true %>
+                            <% if ['E','W'].include?(@scheme_mix_criterion.scheme_criterion.scheme_category.code) %>
+                                <% if @scheme_mix_criterion.scheme_mix.certification_path.certificate.construction_issue_3? %>
+                                  <% if !@scheme_mix_criterion.read_attribute(SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES[index].to_sym).nil? && @scheme_mix_criterion.read_attribute(SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES[index].to_sym) > 0 %>
+                                    <td class="achieved_score_dependent_checkbox">
+                                      <%= f.check_box SchemeMixCriterion::INCENTIVE_SCORED_ATTRIBUTES[index].to_sym, label: '', data: {index: index} %>
+                                    </td>
                                   <% else %>
-                                    <td>
-                                      <%= f.check_box SchemeMixCriterion::INCENTIVE_SCORED_ATTRIBUTES[index].to_sym, label: '' %>
+                                    <td class="achieved_score_dependent_checkbox">
+                                      <%= f.check_box SchemeMixCriterion::INCENTIVE_SCORED_ATTRIBUTES[index].to_sym, label: '', readonly: true, data: {index: index} %>
                                     </td>
                                   <% end %>
-                              <% else %>
+                                <% else %>
                                   <td>
                                     <%= f.check_box SchemeMixCriterion::INCENTIVE_SCORED_ATTRIBUTES[index].to_sym, label: '' %>
                                   </td>
-                              <% end %>
+                                <% end %>
                             <% else %>
-                              <td>
-                              </td>
+                                <td>
+                                  <%= f.check_box SchemeMixCriterion::INCENTIVE_SCORED_ATTRIBUTES[index].to_sym, label: '' %>
+                                </td>
                             <% end %>
+                          <% else %>
+                            <td>
+                            </td>
                           <% end %>
-                          <% end %>
-                        </tr>
                         <% end %>
+                        <% end %>
+                      </tr>
                       <% end %>
-                      <% end %>
+                    <% end %>
+                    <% end %>
 
-                      <% if can?(:read, SchemeMixCriterionEpl) %>
-                      <% num_energy_cols = f.object.scheme_mix_criterion_epls.count + 1 %>
-                      <% if num_energy_cols > 1 %>
-                      <tr>
-                        <td colspan="<%= num_energy_cols %>">Energy Performance Results</td>
-                      </tr>
-                      <tr>
-                        <th>EPC</th>
-                        <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
-                          <input type="hidden" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][id]" %>" value="<%= epl.id %>">
-                          <td>
-                            <div class="form-group">
-                              <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][epc]" %>" min="0.00" max="3.00" step="0.01" value="<%= epl.epc %>" <% if cannot?(:update, epl) %>readonly="true"<% end %>>
-                            </div>
-                          </td>
-                        <% end %>
-                      </tr>
-                      <tr>
-                        <th>LEVEL</th>
-                        <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
+                    <% if can?(:read, SchemeMixCriterionEpl) %>
+                    <% num_energy_cols = f.object.scheme_mix_criterion_epls.count + 1 %>
+                    <% if num_energy_cols > 1 %>
+                    <tr>
+                      <td colspan="<%= num_energy_cols %>">Energy Performance Results</td>
+                    </tr>
+                    <tr>
+                      <th>EPC</th>
+                      <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
+                        <input type="hidden" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][id]" %>" value="<%= epl.id %>">
                         <td>
                           <div class="form-group">
-                            <select class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][level]" %>" <% if cannot?(:update, epl) %>disabled="true"<% end %>>
+                            <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][epc]" %>" min="0.00" max="3.00" step="0.01" value="<%= epl.epc %>" <% if cannot?(:update, epl) %>readonly="true"<% end %>>
+                          </div>
+                        </td>
+                      <% end %>
+                    </tr>
+                    <tr>
+                      <th>LEVEL</th>
+                      <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
+                      <td>
+                        <div class="form-group">
+                          <select class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][level]" %>" <% if cannot?(:update, epl) %>disabled="true"<% end %>>
+                            <option>-</option>
+                            <% epl.scheme_criterion_performance_label.levels.each do |level| %>
+                            <option value="<%= level %>" <%= (level == epl.level) ? 'selected' : '' %>><%= level %></option>
+                            <% end %>
+                          </select>
+                        </div>
+                      </td>
+                      <% end %>
+                    </tr>
+                    <tr>
+                      <th>BAND</th>
+                      <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
+                      <td>
+                        <div class="form-group">
+                          <select class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][band]" %>" <% if cannot?(:update, epl) %>disabled="true"<% end %>>
+                            <option>-</option>
+                            <% epl.scheme_criterion_performance_label.bands.each do |band| %>
+                            <option value="<%= band %>" <%= (band == epl.band) ? 'selected' : '' %>><%= band %></option>
+                            <% end %>
+                          </select>
+                        </div>
+                      </td>
+                      <% end %>
+                    </tr>
+                    <tr>
+                      <td colspan="<%= num_energy_cols %>">Breakdown of estimated energy consumption [MWh]</td>
+                    </tr>
+                    <tr>
+                      <th>Cooling</th>
+                      <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
+                        <td>
+                          <div class="form-group">
+                            <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][cooling]" %>" min="0" step="1" value="<%= epl.cooling %>" <% if cannot?(:update, epl) %>readonly="true"<% end %>>
+                          </div>
+                        </td>
+                      <% end %>
+                    </tr>
+                    <tr>
+                      <th>Lighting</th>
+                      <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
+                        <td>
+                          <div class="form-group">
+                            <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][lighting]" %>" min="0" step="1" value="<%= epl.lighting %>" <% if cannot?(:update, epl) %>readonly="true"<% end %>>
+                          </div>
+                        </td>
+                      <% end %>
+                    </tr>
+                    <tr>
+                      <th>Auxiliaries</th>
+                      <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
+                        <td>
+                          <div class="form-group">
+                            <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][auxiliaries]" %>" min="0" step="1" value="<%= epl.auxiliaries %>" <% if cannot?(:update, epl) %>readonly="true"<% end %>>
+                          </div>
+                        </td>
+                      <% end %>
+                    </tr>
+                    <tr>
+                      <th>DHW</th>
+                      <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
+                        <td>
+                          <div class="form-group">
+                            <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][dhw]" %>" min="0" step="1" value="<%= epl.dhw %>" <% if cannot?(:update, epl) %>readonly="true"<% end %>>
+                          </div>
+                        </td>
+                      <% end %>
+                    </tr>
+                    <tr>
+                      <th>Others</th>
+                      <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
+                        <td>
+                          <div class="form-group">
+                            <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][others]" %>" min="0" step="1" value="<%= epl.others %>" <% if cannot?(:update, epl) %>readonly="true"<% end %>>
+                          </div>
+                        </td>
+                      <% end %>
+                    </tr>
+                    <tr>
+                      <th>Generation</th>
+                      <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
+                        <td>
+                          <div class="form-group">
+                            <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][generation]" %>" min="0" step="1" value="<%= epl.generation %>" <% if cannot?(:update, epl) %>readonly="true"<% end %>>
+                          </div>
+                        </td>
+                      <% end %>
+                    </tr>
+                    <tr>
+                      <th>CO<sub>2</sub> Emission</th>
+                      <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
+                        <td>
+                          <div class="form-group">
+                            <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][co2_emission]" %>" min="0" step="1" value="<%= epl.co2_emission %>" <% if cannot?(:update, epl) %>readonly="true"<% end %>>
+                          </div>
+                        </td>
+                      <% end %>
+                    </tr>
+                    <% end %>
+                    <% end %>
+
+                    <% if can?(:read, SchemeMixCriterionWpl) %>
+                    <% num_water_cols = f.object.scheme_mix_criterion_wpls.count + 1 %>
+                    <% if num_water_cols > 1 %>
+                    <tr>
+                      <td colspan="<%= num_water_cols %>">Water Consumption Results</td>
+                    </tr>
+                    <tr>
+                      <th>WPC</th>
+                      <% f.object.scheme_mix_criterion_wpls.each_with_index do |wpl, index| %>
+                        <input type="hidden" name="<%= "scheme_mix_criterion[scheme_mix_criterion_wpls_attributes[#{index}][id]" %>" value="<%= wpl.id %>">
+                        <td>
+                          <div class="form-group">
+                            <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_wpls_attributes[#{index}][wpc]" %>" min="0.00" max="3.00" step="0.01" value="<%= wpl.wpc %>" <% if cannot?(:update, wpl) %>readonly="true"<% end %>>
+                          </div>
+                        </td>
+                      <% end %>
+                    </tr>
+                    <tr>
+                      <th>LEVEL</th>
+                      <% f.object.scheme_mix_criterion_wpls.each_with_index do |wpl, index| %>
+                        <td>
+                          <div class="form-group">
+                            <select class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_wpls_attributes[#{index}][level]" %>" <% if cannot?(:update, wpl) %>disabled="true"<% end %>>
                               <option>-</option>
-                              <% epl.scheme_criterion_performance_label.levels.each do |level| %>
-                              <option value="<%= level %>" <%= (level == epl.level) ? 'selected' : '' %>><%= level %></option>
+                              <% wpl.scheme_criterion_performance_label.levels.each do |level| %>
+                                <option value="<%= level %>" <%= (level == wpl.level) ? 'selected' : '' %>><%= level %></option>
                               <% end %>
                             </select>
                           </div>
                         </td>
-                        <% end %>
-                      </tr>
-                      <tr>
-                        <th>BAND</th>
-                        <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
+                      <% end %>
+                    </tr>
+                    <tr>
+                      <th>BAND</th>
+                      <% f.object.scheme_mix_criterion_wpls.each_with_index do |wpl, index| %>
                         <td>
                           <div class="form-group">
-                            <select class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][band]" %>" <% if cannot?(:update, epl) %>disabled="true"<% end %>>
+                            <select class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_wpls_attributes[#{index}][band]" %>" <% if cannot?(:update, wpl) %>disabled="true"<% end %>>
                               <option>-</option>
-                              <% epl.scheme_criterion_performance_label.bands.each do |band| %>
-                              <option value="<%= band %>" <%= (band == epl.band) ? 'selected' : '' %>><%= band %></option>
+                              <% wpl.scheme_criterion_performance_label.bands.each do |band| %>
+                                <option value="<%= band %>" <%= (band == wpl.band) ? 'selected' : '' %>><%= band %></option>
                               <% end %>
                             </select>
                           </div>
                         </td>
-                        <% end %>
-                      </tr>
-                      <tr>
-                        <td colspan="<%= num_energy_cols %>">Breakdown of estimated energy consumption [MWh]</td>
-                      </tr>
-                      <tr>
-                        <th>Cooling</th>
-                        <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
-                          <td>
-                            <div class="form-group">
-                              <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][cooling]" %>" min="0" step="1" value="<%= epl.cooling %>" <% if cannot?(:update, epl) %>readonly="true"<% end %>>
-                            </div>
-                          </td>
-                        <% end %>
-                      </tr>
-                      <tr>
-                        <th>Lighting</th>
-                        <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
-                          <td>
-                            <div class="form-group">
-                              <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][lighting]" %>" min="0" step="1" value="<%= epl.lighting %>" <% if cannot?(:update, epl) %>readonly="true"<% end %>>
-                            </div>
-                          </td>
-                        <% end %>
-                      </tr>
-                      <tr>
-                        <th>Auxiliaries</th>
-                        <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
-                          <td>
-                            <div class="form-group">
-                              <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][auxiliaries]" %>" min="0" step="1" value="<%= epl.auxiliaries %>" <% if cannot?(:update, epl) %>readonly="true"<% end %>>
-                            </div>
-                          </td>
-                        <% end %>
-                      </tr>
-                      <tr>
-                        <th>DHW</th>
-                        <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
-                          <td>
-                            <div class="form-group">
-                              <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][dhw]" %>" min="0" step="1" value="<%= epl.dhw %>" <% if cannot?(:update, epl) %>readonly="true"<% end %>>
-                            </div>
-                          </td>
-                        <% end %>
-                      </tr>
-                      <tr>
-                        <th>Others</th>
-                        <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
-                          <td>
-                            <div class="form-group">
-                              <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][others]" %>" min="0" step="1" value="<%= epl.others %>" <% if cannot?(:update, epl) %>readonly="true"<% end %>>
-                            </div>
-                          </td>
-                        <% end %>
-                      </tr>
-                      <tr>
-                        <th>Generation</th>
-                        <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
-                          <td>
-                            <div class="form-group">
-                              <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][generation]" %>" min="0" step="1" value="<%= epl.generation %>" <% if cannot?(:update, epl) %>readonly="true"<% end %>>
-                            </div>
-                          </td>
-                        <% end %>
-                      </tr>
-                      <tr>
-                        <th>CO<sub>2</sub> Emission</th>
-                        <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
-                          <td>
-                            <div class="form-group">
-                              <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][co2_emission]" %>" min="0" step="1" value="<%= epl.co2_emission %>" <% if cannot?(:update, epl) %>readonly="true"<% end %>>
-                            </div>
-                          </td>
-                        <% end %>
-                      </tr>
                       <% end %>
+                    </tr>
+                    <tr>
+                      <td colspan="<%= num_water_cols %>">Breakdown of estimated water consumption [m<sup>3</sup>]</td>
+                    </tr>
+                    <tr>
+                      <th>Indoor Use</th>
+                      <% f.object.scheme_mix_criterion_wpls.each_with_index do |wpl, index| %>
+                        <td>
+                          <div class="form-group">
+                            <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_wpls_attributes[#{index}][indoor_use]" %>" min="0" step="1" value="<%= wpl.indoor_use %>" <% if cannot?(:update, wpl) %>readonly="true"<% end %>>
+                          </div>
+                        </td>
                       <% end %>
+                    </tr>
+                    <tr>
+                      <th>Irrigation</th>
+                      <% f.object.scheme_mix_criterion_wpls.each_with_index do |wpl, index| %>
+                        <td>
+                          <div class="form-group">
+                            <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_wpls_attributes[#{index}][irrigation]" %>" min="0" step="1" value="<%= wpl.irrigation %>" <% if cannot?(:update, wpl) %>readonly="true"<% end %>>
+                          </div>
+                        </td>
+                      <% end %>
+                    </tr>
+                    <tr>
+                      <th>Cooling Tower</th>
+                      <% f.object.scheme_mix_criterion_wpls.each_with_index do |wpl, index| %>
+                        <td>
+                          <div class="form-group">
+                            <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_wpls_attributes[#{index}][cooling_tower]" %>" min="0" step="1" value="<%= wpl.cooling_tower %>" <% if cannot?(:update, wpl) %>readonly="true"<% end %>>
+                          </div>
+                        </td>
+                      <% end %>
+                    </tr>
+                    <% end %>
+                    <% end %>
+                    <% end %>
 
-                      <% if can?(:read, SchemeMixCriterionWpl) %>
-                      <% num_water_cols = f.object.scheme_mix_criterion_wpls.count + 1 %>
-                      <% if num_water_cols > 1 %>
+                  <!-- CheckBox -->
+                  <% if @certification_path.certificate.operations_2019? && @certification_path.schemes.where(name: "Energy Neutral Mark") %>
+                    <% if @scheme_mix_criterion&.scheme_mix_criterion_boxes&.present? %>
                       <tr>
-                        <td colspan="<%= num_water_cols %>">Water Consumption Results</td>
+                        <td colspan="3"></td>
                       </tr>
-                      <tr>
-                        <th>WPC</th>
-                        <% f.object.scheme_mix_criterion_wpls.each_with_index do |wpl, index| %>
-                          <input type="hidden" name="<%= "scheme_mix_criterion[scheme_mix_criterion_wpls_attributes[#{index}][id]" %>" value="<%= wpl.id %>">
-                          <td>
-                            <div class="form-group">
-                              <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_wpls_attributes[#{index}][wpc]" %>" min="0.00" max="3.00" step="0.01" value="<%= wpl.wpc %>" <% if cannot?(:update, wpl) %>readonly="true"<% end %>>
-                            </div>
-                          </td>
-                        <% end %>
-                      </tr>
-                      <tr>
-                        <th>LEVEL</th>
-                        <% f.object.scheme_mix_criterion_wpls.each_with_index do |wpl, index| %>
-                          <td>
-                            <div class="form-group">
-                              <select class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_wpls_attributes[#{index}][level]" %>" <% if cannot?(:update, wpl) %>disabled="true"<% end %>>
-                                <option>-</option>
-                                <% wpl.scheme_criterion_performance_label.levels.each do |level| %>
-                                  <option value="<%= level %>" <%= (level == wpl.level) ? 'selected' : '' %>><%= level %></option>
-                                <% end %>
-                              </select>
-                            </div>
-                          </td>
-                        <% end %>
-                      </tr>
-                      <tr>
-                        <th>BAND</th>
-                        <% f.object.scheme_mix_criterion_wpls.each_with_index do |wpl, index| %>
-                          <td>
-                            <div class="form-group">
-                              <select class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_wpls_attributes[#{index}][band]" %>" <% if cannot?(:update, wpl) %>disabled="true"<% end %>>
-                                <option>-</option>
-                                <% wpl.scheme_criterion_performance_label.bands.each do |band| %>
-                                  <option value="<%= band %>" <%= (band == wpl.band) ? 'selected' : '' %>><%= band %></option>
-                                <% end %>
-                              </select>
-                            </div>
-                          </td>
-                        <% end %>
-                      </tr>
-                      <tr>
-                        <td colspan="<%= num_water_cols %>">Breakdown of estimated water consumption [m<sup>3</sup>]</td>
-                      </tr>
-                      <tr>
-                        <th>Indoor Use</th>
-                        <% f.object.scheme_mix_criterion_wpls.each_with_index do |wpl, index| %>
-                          <td>
-                            <div class="form-group">
-                              <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_wpls_attributes[#{index}][indoor_use]" %>" min="0" step="1" value="<%= wpl.indoor_use %>" <% if cannot?(:update, wpl) %>readonly="true"<% end %>>
-                            </div>
-                          </td>
-                        <% end %>
-                      </tr>
-                      <tr>
-                        <th>Irrigation</th>
-                        <% f.object.scheme_mix_criterion_wpls.each_with_index do |wpl, index| %>
-                          <td>
-                            <div class="form-group">
-                              <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_wpls_attributes[#{index}][irrigation]" %>" min="0" step="1" value="<%= wpl.irrigation %>" <% if cannot?(:update, wpl) %>readonly="true"<% end %>>
-                            </div>
-                          </td>
-                        <% end %>
-                      </tr>
-                      <tr>
-                        <th>Cooling Tower</th>
-                        <% f.object.scheme_mix_criterion_wpls.each_with_index do |wpl, index| %>
-                          <td>
-                            <div class="form-group">
-                              <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_wpls_attributes[#{index}][cooling_tower]" %>" min="0" step="1" value="<%= wpl.cooling_tower %>" <% if cannot?(:update, wpl) %>readonly="true"<% end %>>
-                            </div>
-                          </td>
-                        <% end %>
-                      </tr>
-                      <% end %>
-                      <% end %>
-                      <% end %>
-
-                    <!-- CheckBox -->
-                    <% if @certification_path.certificate.operations_2019? && @certification_path.schemes.where(name: "Energy Neutral Mark") %>
-                      <% if @scheme_mix_criterion&.scheme_mix_criterion_boxes&.present? %>
+                      <%= f.fields_for :scheme_mix_criterion_boxes do |smc_box| %>
+                        <%= smc_box.hidden_field :id %>
                         <tr>
                           <td colspan="3"></td>
                         </tr>
                         <%= f.fields_for :scheme_mix_criterion_boxes do |smc_box| %>
                           <%= smc_box.hidden_field :id %>
                           <tr>
-                            <td colspan="3"></td>
-                          </tr>
-                          <%= f.fields_for :scheme_mix_criterion_boxes do |smc_box| %>
-                            <%= smc_box.hidden_field :id %>
-                            <tr>
-                              <th><%= smc_box.object.scheme_criterion_box.label %></th>
-                              <td colspan="2" style="text-align: center;"><%= smc_box.check_box :is_checked, label: '' %></td>
-                            </tr>
-                          <% end %>
+                            <th><%= smc_box.object.scheme_criterion_box.label %></th>
+                            <td colspan="2" style="text-align: center;"><%= smc_box.check_box :is_checked, label: '' %></td>
                           </tr>
                         <% end %>
-                      <% end %>
-
-                      <!-- Incentives -->
-                      <% if @scheme_mix_criterion.scheme_mix_criterion_incentives.any? %>
-                      <tr>
-                        <td colspan="<%= SchemeCriterion::SCORE_ATTRIBUTES.length + 1 %>">Incentives</td>
-                      </tr>
-                      <% end %>
-                      <%= f.fields_for :scheme_mix_criterion_incentives do |smc_incentive| %>
-                        <%= smc_incentive.hidden_field :id %>
-                        <tr>
-                          <th><%= smc_incentive.object.scheme_criterion_incentive.label %></th>
-                          <td colspan="<%= SchemeCriterion::SCORE_ATTRIBUTES.length %>"><%= smc_incentive.check_box :incentive_scored, label: '', disabled: !can?(:update_incentive_scored, smc_incentive.object) %></td>
                         </tr>
                       <% end %>
-                      </tbody>
-                  </table>
-                  <% if can?(:update_targeted_score, @scheme_mix_criterion) || can?(:update_submitted_score, @scheme_mix_criterion) || can?(:update_achieved_score, @scheme_mix_criterion) %>
-                      <div class="hr-line-dashed"></div>
-                      <%= btn_save %>
-                  <% end %>
-              <% end %>
-          </div>
-        <% end %>
+                    <% end %>
+
+                    <!-- Incentives -->
+                    <% if @scheme_mix_criterion.scheme_mix_criterion_incentives.any? %>
+                    <tr>
+                      <td colspan="<%= SchemeCriterion::SCORE_ATTRIBUTES.length + 1 %>">Incentives</td>
+                    </tr>
+                    <% end %>
+                    <%= f.fields_for :scheme_mix_criterion_incentives do |smc_incentive| %>
+                      <%= smc_incentive.hidden_field :id %>
+                      <tr>
+                        <th><%= smc_incentive.object.scheme_criterion_incentive.label %></th>
+                        <td colspan="<%= SchemeCriterion::SCORE_ATTRIBUTES.length %>"><%= smc_incentive.check_box :incentive_scored, label: '', disabled: !can?(:update_incentive_scored, smc_incentive.object) %></td>
+                      </tr>
+                    <% end %>
+                    </tbody>
+                </table>
+                <% if can?(:update_targeted_score, @scheme_mix_criterion) || can?(:update_submitted_score, @scheme_mix_criterion) || can?(:update_achieved_score, @scheme_mix_criterion) %>
+                    <div class="hr-line-dashed"></div>
+                    <%= btn_save %>
+                <% end %>
+            <% end %>
+        </div>
     </div>
 
     <% unless @scheme_mix_criterion.main_scheme_mix_criterion_id.present? %>
