@@ -194,6 +194,10 @@ class Project < ApplicationRecord
   #   return false
   # end
 
+  def design_and_build?
+    certificate_type == Certificate.certificate_types[:design_type]
+  end
+
   private
   def init
     if self.has_attribute?('code')

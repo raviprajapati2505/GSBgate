@@ -8,6 +8,7 @@ class CertificationPath < ApplicationRecord
   include ScoreCalculator
 
   MAXIMUM_DOCUMENT_FILE_SIZE = 100 # in MB
+  enum assessment_methods: { start_rating: 1, check_list: 2 }
 
   belongs_to :project, optional: true
   belongs_to :certificate, optional: true
@@ -27,6 +28,7 @@ class CertificationPath < ApplicationRecord
   has_many :archives, as: :subject, dependent: :destroy
   has_many :actual_project_images, dependent: :destroy
   has_many :project_rendering_images, dependent: :destroy
+  has_one :certification_path_method, dependent: :destroy
 
   accepts_nested_attributes_for :certificate
   accepts_nested_attributes_for :scheme_mixes
@@ -512,6 +514,10 @@ class CertificationPath < ApplicationRecord
     end
   end
 
+  def lable_for_level(certificate: nil, certificate_gsas_version: nil, certificate_name: nil, is_achieved_score: true, is_submitted_score: true)
+    # certification_path.certification_path_method&.assessment_method == CertificationPath.assessment_methods[:check_list]
+    'CERTIFICATION DENIED'
+  end
   # This function is used for toggling writability of form elements in the certification path flow
   def in_submission?
     CertificationPathStatus::STATUSES_IN_SUBMISSION.include?(certification_path_status_id)
@@ -549,6 +555,14 @@ class CertificationPath < ApplicationRecord
 
   def is_certified?
     CertificationPathStatus::CERTIFIED == certification_path_status_id
+  end
+
+  def create_assessment_method(method)
+    build_certification_path_method(assessment_method: method.to_i).save
+  end
+
+  def is_checklist_method?
+    certification_path_method&.assessment_method == CertificationPath.assessment_methods[:check_list]
   end
 
   private

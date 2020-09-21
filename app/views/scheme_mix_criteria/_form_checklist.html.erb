@@ -463,14 +463,9 @@
                       <% end %>
                       <% end %>
 
-                    <!-- CheckBox -->
-                    <% if @certification_path.certificate.operations_2019? && @certification_path.schemes.where(name: "Energy Neutral Mark") %>
-                      <% if @scheme_mix_criterion&.scheme_mix_criterion_boxes&.present? %>
-                        <tr>
-                          <td colspan="3"></td>
-                        </tr>
-                        <%= f.fields_for :scheme_mix_criterion_boxes do |smc_box| %>
-                          <%= smc_box.hidden_field :id %>
+                      <!-- CheckBox -->
+                      <% if @certification_path.certificate.operations_2019? && @certification_path.schemes.where(name: "Energy Neutral Mark") %>
+                        <% if @scheme_mix_criterion&.scheme_mix_criterion_boxes&.present? %>
                           <tr>
                             <td colspan="3"></td>
                           </tr>

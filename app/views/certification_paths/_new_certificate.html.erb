@@ -46,6 +46,17 @@
                     <% end %>
                 <% end %>
 
+                <!-- Custom select for Assessment Method -->
+                <% if @project.design_and_build? %>
+                    <%= f.static_control label: 'Assessment Method' do %>
+                      <% if Certificate.certification_types[@certification_type] == Certificate.certification_types[:final_design_certificate] %>
+                          <%= @certification_path.certificate.gsas_version %>
+                      <% else %>
+                          <%= select_tag(:assessment_method, options_for_select(CertificationPath.assessment_methods.map { |k,v| [t(k, scope: 'activerecord.attributes.certification_path'), v] }), {:class => 'form-control'}) %>
+                      <% end %>
+                    <% end %>
+                <% end %>
+
                 <!-- Custom select for version, so we can determine the certificate -->
                 <% unless @certification_path.certificate.construction_certificate_stage2? || @certification_path.certificate.construction_certificate_stage3? %>
                   <%= f.static_control label: 'GSAS Version' do %>

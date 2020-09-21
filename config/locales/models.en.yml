@@ -27,6 +27,8 @@ en:
           operations_certificate: ""
       certification_path:
         development_type: Development Type
+        start_rating: Performance-Based (Star Rating Certificate)
+        check_list: Prescriptive Checklist (Compliance Certificate)
         development_types:
           not_applicable: Not applicable
           single_use: Single use building

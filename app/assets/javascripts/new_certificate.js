@@ -5,6 +5,10 @@ $(function () {
         placeholder: "Select the version",
         minimumResultsForSearch: -1,
     });
+    $('#assessment_method').select2({
+        placeholder: "Select the version",
+        minimumResultsForSearch: -1,
+    });
     $('#certification_path_development_type').select2({
         placeholder: "Select the development type",
         minimumResultsForSearch: -1,

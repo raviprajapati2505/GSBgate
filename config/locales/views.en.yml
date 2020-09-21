@@ -28,6 +28,9 @@ en:
       btn_save_and_continue: Save and continue
     edit_certifier_team_responsibility_for_screening:
       btn_save_and_continue: Save and continue
+    show_checklist:
+      certification_path_status:
+        btn_advance_status: Advance status to '%{status}'
     show:
       certification_path:
         title: Certification Details
@@ -60,6 +63,7 @@ en:
           confirm: There are one or more criteria that have not achieved their minimum valid level. As a result, the certification does not have an achieved score. If you proceed a GSAS certification will be denied. Are you sure?
         btn_apply_appeal: Apply for appeal
         btn_advance_status: Advance status to '%{status}'
+    
       certification_path_reports:
         title: Generated Reports
       certification_path_signed_certificate:

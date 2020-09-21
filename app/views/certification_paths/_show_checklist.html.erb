@@ -1,6 +1,4 @@
-<% if @certification_path&.certification_path_method&.assessment_method == 2 %>
-  <%= render partial: "show_checklist", locals: { certification_path: @certification_path } %>
-<% else %>
+<% @certification_path = certification_path %>
 <div class="row">
     <div class="col-md-5">
         <div class="ibox float-e-margins">
@@ -22,7 +20,7 @@
                             <td><%= localize(@certification_path.started_at) %></td>
                         </tr>
                     <% end %>
-                    <%# if @certification_path.certificate.letter_of_conformance? || @certification_path.certificate.final_design_certificate? %>
+                    <% if @certification_path.certificate.letter_of_conformance? || @certification_path.certificate.final_design_certificate? %>
                         <tr>
                             <th>Expires</th>
                             <td>
@@ -30,16 +28,16 @@
                               <%= btn_link_to(edit_expires_at_project_certification_path_path(@project, @certification_path), remote: true, text: 'Set new date', class: 'pull-right') if can?(:update_expires_at, @certification_path) %>
                             </td>
                         </tr>
-                    <%# end %>
+                    <% end %>
                     <% if @certification_path.is_activated? %>
                         <tr>
                             <th>Rating</th>
-                            <td><%= render 'certification_paths/ratings', certification_path: @certification_path %></td>
+                            <td><%#= render 'certification_paths/ratings', certification_path: @certification_path %></td>
                         </tr>
                         <tr>
                             <th>Score</th>
                             <td>
-                                <%= render 'score/score', scores: @certification_path.scores_in_certificate_points, point_type: :certificate_points %>
+                                <%#= render 'score/score', scores: @certification_path.scores_in_certificate_points, point_type: :certificate_points %>
                             </td>
                         </tr>
                     <% end %>
@@ -167,7 +165,7 @@
                         <% end %>
                     <% else %>
                         <div class="hr-line-dashed"></div>
-                        <%= btn_link_to(edit_status_project_certification_path_url(@project, @certification_path), remote: true, icon: 'forward', text: t( '.certification_path_status.btn_advance_status', status: CertificationPathStatus.find_by(id: @certification_path.next_status).name)) %>
+                        <%= btn_link_to(edit_status_project_certification_path_url(@project, @certification_path), remote: true, icon: 'forward', text: t( 'certification_paths.show_checklist.certification_path_status.btn_advance_status', status: CertificationPathStatus.find_by(id: @certification_path.next_status).name)) %>
                     <% end %>
                 <% end %>
             </div>
@@ -181,7 +179,7 @@
           <h5>Summary of Stages</h5>
         </div>
         <div class="ibox-content">
-          <%= scores_legend %>
+          <%#= scores_legend %>
           <table class="table table-bordered table-striped">
             <thead>
             <tr>
@@ -194,8 +192,8 @@
             <% @certification_path.project.certification_paths.with_certification_type([Certificate::certification_types[:construction_certificate_stage1], Certificate::certification_types[:construction_certificate_stage2], Certificate::certification_types[:construction_certificate_stage3]]).each do |certification_path| %>
               <tr>
                 <td><%= can_link_to(project_certification_path_path(@certification_path.project, certification_path), certification_path) do %><%= certification_path.name %><% end %></td>
-                <td><%= render 'certification_paths/ratings', certification_path: certification_path %></td>
-                <td><%= render 'score/score', scores: certification_path.scores_in_certificate_points, point_type: :certificate_points %></td>
+                <td><%#= render 'certification_paths/ratings', certification_path: certification_path %></td>
+                <td><%#= render 'score/score', scores: certification_path.scores_in_certificate_points, point_type: :certificate_points %></td>
               </tr>
             <% end %>
             </tbody>
@@ -215,9 +213,9 @@
                         <%= ikoen_with_text('info-circle', t('.schemes.info_activating')) %>
                     </div>
                 <% else %>
-                    <%= scores_legend %>
+                    <%#= scores_legend %>
                 <% end %>
-                <%= render 'scheme_mixes/overview', certification_path: @certification_path %>
+                <%= render 'scheme_mixes/overview_checklist', certification_path: @certification_path %>
                 <% can_edit_main_scheme_mix = can?(:edit_main_scheme_mix, @certification_path) %>
                 <% can_edit_project_team_responsibility_for_submittal = can?(:edit_project_team_responsibility_for_submittal, @certification_path) %>
                 <% can_edit_certifier_team_responsibility_for_verification = can?(:edit_certifier_team_responsibility_for_verification, @certification_path) %>
@@ -292,4 +290,3 @@
 <div id="editMaxReviewCountModal" class="modal fade"></div>
 <div id="editExpiresAtModal" class="modal fade"></div>
 <%= javascript_include_tag 'score_widget' %>
-<% end %>

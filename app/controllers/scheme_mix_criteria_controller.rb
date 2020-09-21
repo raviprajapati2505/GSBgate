@@ -84,6 +84,13 @@ class SchemeMixCriteriaController < AuthenticatedController
     end
   end
 
+  def update_checklist
+    redirect_path = project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion)
+
+    @scheme_mix_criterion.update!(scheme_mix_criterion_box_params)
+    redirect_to redirect_path, notice: 'The Criterion Levels were successfully updated.'
+  end
+
   def reset_incentive_scored
     if ['E','W'].include?(@scheme_mix_criterion.scheme_criterion.scheme_category.code)
       SchemeCriterion::SCORE_ATTRIBUTES.each_with_index do |scores, index|
