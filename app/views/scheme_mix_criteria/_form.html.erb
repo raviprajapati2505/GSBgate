@@ -98,7 +98,7 @@
     </div>
     <div class="ibox criterion-details">
         <div class="ibox-title">
-            <h5>Criterion Levesl</h5>
+           <h5>Criterion Levels</h5>
         </div>
         <div class="ibox-content">
             <%= bootstrap_form_for([@project, @certification_path, @scheme_mix, @scheme_mix_criterion], url: update_scores_project_certification_path_scheme_mix_scheme_mix_criterion_path, method: 'put') do |f| %>
@@ -460,18 +460,13 @@
                     <% end %>
                     <% end %>
 
-                  <!-- CheckBox -->
-                  <% if @certification_path.certificate.operations_2019? && @certification_path.schemes.where(name: "Energy Neutral Mark") %>
-                    <% if @scheme_mix_criterion&.scheme_mix_criterion_boxes&.present? %>
-                      <tr>
-                        <td colspan="3"></td>
-                      </tr>
-                      <%= f.fields_for :scheme_mix_criterion_boxes do |smc_box| %>
-                        <%= smc_box.hidden_field :id %>
+                    <!-- CheckBox -->
+                    <% if @certification_path.certificate.operations_2019? && @certification_path.schemes.where(name: "Energy Neutral Mark").present? %>
+                      <% if @scheme_mix_criterion&.scheme_mix_criterion_boxs&.present? %>
                         <tr>
                           <td colspan="3"></td>
                         </tr>
-                        <%= f.fields_for :scheme_mix_criterion_boxes do |smc_box| %>
+                        <%= f.fields_for :scheme_mix_criterion_boxs do |smc_box| %>
                           <%= smc_box.hidden_field :id %>
                           <tr>
                             <th><%= smc_box.object.scheme_criterion_box.label %></th>
