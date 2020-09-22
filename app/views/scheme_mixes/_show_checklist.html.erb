@@ -22,10 +22,9 @@
             <td><%= @scheme_mix.weight %> %</td>
           </tr>
           <tr>
-            <th>Score/Level</th>
+          <th>Rating</th>
             <td>
-              <%#= render 'score/score_toggle', id_list: ["scheme_mix_#{@scheme_mix.id}"] %>
-              <%#= render 'score/score_tabs', scores: @scheme_mix.scores, element_id: "scheme_mix_#{@scheme_mix.id}" %>
+              <%= render 'certification_paths/checklist_rating', certification_path: @scheme_mix.certification_path %>
             </td>
           </tr>
           <tr>

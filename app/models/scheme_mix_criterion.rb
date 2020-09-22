@@ -184,6 +184,24 @@ class SchemeMixCriterion < ApplicationRecord
     todos = []
 
     if in_submission?
+
+      # Check scheme criterion is checklist ?
+      if self.scheme_criterion.is_checklist?
+        # Check document status
+        if has_documents_awaiting_approval?
+          todos << 'There are still documents awaiting approval.'
+        end
+        # Check targeted checklist
+        scheme_mix_criterion_boxes.each do |smcb|
+          if smcb.scheme_criterion_box.label == "Targeted Checklist Status" && !smcb.is_checked?
+            todos << 'The targeted checklist must be checked.'
+          elsif smcb.scheme_criterion_box.label == "Submitted Checklist Status" && !smcb.is_checked?
+            todos << 'The submitted checklist must be checked.'
+          end
+        end
+        return todos
+      end
+
       # Check requirements statusses
       if has_required_requirements?
         todos << 'The status of all requirements should be set to \'Provided\' or \'Not required\' first.'
@@ -209,6 +227,15 @@ class SchemeMixCriterion < ApplicationRecord
         end
       end
     elsif in_verification?
+      if self.scheme_criterion.is_checklist?
+        # Check achived checklist
+        scheme_mix_criterion_boxes.each do |smcb|
+          if smcb.scheme_criterion_box.label == "Achieved Checklist Status" && !smcb.is_checked?
+            todos << 'The achieved checklist must be checked.' 
+          end
+        end
+        return todos
+      end
       # Check submitted score
       SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES.each_with_index do |achieved_score, index|
         unless self.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym).nil?

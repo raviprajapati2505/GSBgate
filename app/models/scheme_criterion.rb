@@ -42,7 +42,11 @@ class SchemeCriterion < ApplicationRecord
   end
 
   def full_name
-    "#{self.code}: #{self.name}"
+    if is_checklist?
+      "CS: #{self.name}" 
+    else
+      "#{self.code}: #{self.name}"
+    end
   end
 
   def total_weight

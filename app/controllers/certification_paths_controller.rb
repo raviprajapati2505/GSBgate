@@ -161,7 +161,7 @@ class CertificationPathsController < AuthenticatedController
       # save the certificate, as the user has clicked save
       format.html {
         if @certification_path.save
-          @certification_path.create_assessment_method(params[:assessment_method]) if @project.design_and_build?
+          @certification_path.create_assessment_method(@assessment_method) if @project.design_and_build?
           
           @project.project_rendering_images.where(certification_path_id: nil).update(certification_path_id: @certification_path.id)
           @project.actual_project_images.where(certification_path_id: nil).update(certification_path_id: @certification_path.id)
