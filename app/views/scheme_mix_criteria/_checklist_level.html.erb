@@ -9,11 +9,29 @@
             <td colspan="2" style="text-align: center;"><b>Certified ?</b></td>
           </tr>
           <%= f.fields_for :scheme_mix_criterion_boxes do |smc_box| %>
-            <%= smc_box.hidden_field :id %>
-            <tr>
-              <th><%= smc_box.object.scheme_criterion_box.label %></th>
-              <td colspan="2" style="text-align: center;"><%= smc_box.check_box :is_checked, label: '' %></td>
-            </tr>
+            <% if smc_box.object.scheme_criterion_box.label == "Targeted Checklist Status" %>
+              <%= smc_box.hidden_field :id %>
+              <tr>
+                <th><%= smc_box.object.scheme_criterion_box.label %></th>
+                <td colspan="2" style="text-align: center;"><%= smc_box.check_box :is_checked, label: '', disabled: !can?(:update_targeted_checklist, smc_box.object) %></td>
+              </tr>
+            <% elsif smc_box.object.scheme_criterion_box.label == "Submitted Checklist Status" %>
+              <%= smc_box.hidden_field :id %>
+              <tr>
+                <th><%= smc_box.object.scheme_criterion_box.label %></th>
+                <td colspan="2" style="text-align: center;"><%= smc_box.check_box :is_checked, label: '', disabled: !can?(:update_submitted_checklist, smc_box.object) %></td>
+              </tr>
+            <% elsif smc_box.object.scheme_criterion_box.label == "Achieved Checklist Status" %>
+              <% if !@certification_path.in_pre_verification? %>
+                <% if !@certification_path.in_verification? || (@certification_path.certification_path_status_id == CertificationPathStatus::VERIFYING_AFTER_APPEAL && SchemeMixCriterion::statuses[@scheme_mix_criterion.status] < SchemeMixCriterion::statuses[:verifying_after_appeal]) || !current_user.default_role? || @project.role_for_user(current_user) == ProjectsUser.roles.keys[ProjectsUser.roles[:certifier]] || @project.role_for_user(current_user) == ProjectsUser.roles.keys[ProjectsUser.roles[:certification_manager]] %>
+                  <%= smc_box.hidden_field :id %>
+                  <tr>
+                    <th><%= smc_box.object.scheme_criterion_box.label %></th>
+                    <td colspan="2" style="text-align: center;"><%= smc_box.check_box :is_checked, label: '', disabled: !can?(:update_achieved_checklist, smc_box.object) %></td>
+                  </tr>
+                <% end %>
+              <% end %>
+            <% end %>
           <% end %>
           </tr>
           </tbody>
