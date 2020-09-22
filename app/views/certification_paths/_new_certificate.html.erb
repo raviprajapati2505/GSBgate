@@ -50,9 +50,9 @@
                 <% if @project.design_and_build? %>
                     <%= f.static_control label: 'Assessment Method' do %>
                       <% if Certificate.certification_types[@certification_type] == Certificate.certification_types[:final_design_certificate] %>
-                          <%= @certification_path.certificate.gsas_version %>
+                          <%= t(CertificationPath.assessment_methods.key(@assessment_method), scope: 'activerecord.attributes.certification_path') %>
                       <% else %>
-                          <%= select_tag(:assessment_method, options_for_select(CertificationPath.assessment_methods.map { |k,v| [t(k, scope: 'activerecord.attributes.certification_path'), v] }), {:class => 'form-control'}) %>
+                          <%= select_tag(:assessment_method, options_for_select(CertificationPath.assessment_methods.map { |k,v| [t(k, scope: 'activerecord.attributes.certification_path'), v] }, @assessment_method), {:class => 'form-control'}) %>
                       <% end %>
                     <% end %>
                 <% end %>

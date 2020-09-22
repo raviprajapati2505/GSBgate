@@ -72,30 +72,8 @@
         <h5>Categories &amp; Criteria</h5>
       </div>
       <div class="ibox-content">
-        <%#
-          # fetch all score records
-          scheme_mix_criteria_scores = @scheme_mix.scheme_mix_criteria_scores
-          # check for criteria that violate their minimum_valid_score
-          invalid_criteria_ids = scheme_mix_criteria_scores
-              .select {|score| score[:achieved_score_in_criteria_points].nil? && score[:minimum_valid_score_in_criteria_points] > score[:minimum_score_in_criteria_points] }
-              .map{|score| score[:scheme_mix_criteria_id]}
-          # group by category
-          scheme_mix_criteria_scores_by_category = scheme_mix_criteria_scores.group_by{|item| item[:scheme_category_id]}
-          # calculate the max and min values for each category, and take the max min of those calculated values
-          scheme_scale = {
-              maximum_scale_in_certificate_points: scheme_mix_criteria_scores_by_category.collect{|category_id, scores| scores.collect{|score| score[:maximum_score_in_certificate_points]}.inject(:+)}.max,
-              minimum_scale_in_certificate_points: scheme_mix_criteria_scores_by_category.collect{|category_id, scores| scores.collect{|score| score[:minimum_score_in_certificate_points]}.inject(:+)}.min,
-              maximum_scale_in_scheme_points: scheme_mix_criteria_scores_by_category.collect{|category_id, scores| scores.collect{|score| score[:maximum_score_in_scheme_points]}.inject(:+)}.max,
-              minimum_scale_in_scheme_points: scheme_mix_criteria_scores_by_category.collect{|category_id, scores| scores.collect{|score| score[:minimum_score_in_scheme_points]}.inject(:+)}.min,
-              maximum_scale_in_criteria_points: scheme_mix_criteria_scores_by_category.collect{|category_id, scores| scores.collect{|score| score[:maximum_score_in_criteria_points]}.inject(:+)}.max,
-              minimum_scale_in_criteria_points: scheme_mix_criteria_scores_by_category.collect{|category_id, scores| scores.collect{|score| score[:minimum_score_in_criteria_points]}.inject(:+)}.min
-          }
-        %>
-        <% if !@scheme_mix.certification_path.in_pre_verification? && invalid_criteria_ids.size > 0 %>
-            <div class="alert alert-warning" role="alert">
-              <%= ikoen_with_text('exclamation-circle', 'There are one or more criteria that have not achieved their minimum valid score.') %>
-            </div>
-        <% end %>
+
+
         <%= scores_legend %>
         <div id="categories-accordion">
           <table class="table table-bordered" cellspacing="0" width="100%">

@@ -62,6 +62,16 @@ class CertificationPathsController < AuthenticatedController
         @gsas_version = @gsas_versions.first
       end
     end
+        
+    if Certificate.certification_types[@certification_type] == Certificate.certification_types[:final_design_certificate]
+      @assessment_method = @certification_path.project.completed_letter_of_conformances.first.certification_path_method.assessment_method
+    else
+      if params.has_key?(:assessment_method)
+        @assessment_method = params[:assessment_method].to_i
+      else
+        @assessment_method = 1
+      end
+    end
 
     #  - Determine the resulting certificate, and add it to our certification_path
     #  TODO: verify there is only 1 certificate

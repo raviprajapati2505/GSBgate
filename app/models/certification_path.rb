@@ -8,7 +8,7 @@ class CertificationPath < ApplicationRecord
   include ScoreCalculator
 
   MAXIMUM_DOCUMENT_FILE_SIZE = 100 # in MB
-  enum assessment_methods: { start_rating: 1, check_list: 2 }
+  enum assessment_methods: { star_rating: 1, check_list: 2 }
 
   belongs_to :project, optional: true
   belongs_to :certificate, optional: true

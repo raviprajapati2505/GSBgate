@@ -185,6 +185,7 @@ $(function () {
         var certification_type = $('#certification_path_certification_type').val();
         var pcr_track = $('#certification_path_pcr_track').val();
         var gsas_version = $('#gsas_version').val();
+        var assessment_method = $('#assessment_method').val();
         $.ajax({
            type: 'POST',
             url: Routes.apply_certification_path_path(project_id, certification_type),
@@ -195,15 +196,37 @@ $(function () {
                 certification_path: {
                     pcr_track: pcr_track,
                 },
+                assessment_method: assessment_method
             },
         });
     });
+
+    $('#assessment_method').change(function() {
+        var project_id = $('#certification_path_project_id').val();
+        var certification_type = $('#certification_path_certification_type').val();
+        var pcr_track = $('#certification_path_pcr_track').val();
+        var assessment_method = $('#assessment_method').val();
+        $.ajax({
+           type: 'POST',
+            url: Routes.apply_certification_path_path(project_id, certification_type),
+            dataType: 'script',
+            cache: false,
+            data: {
+                assessment_method: assessment_method,
+                certification_path: {
+                    pcr_track: pcr_track,
+                },
+            },
+        });
+    });
+    
     $('#certification_path_development_type').change(function() {
         var project_id = $('#certification_path_project_id').val();
         var certification_type = $('#certification_path_certification_type').val();
         var pcr_track = $('#certification_path_pcr_track').val();
         var gsas_version = $('#gsas_version').val();
         var development_type = $('#certification_path_development_type').val();
+        var assessment_method = $('#assessment_method').val();
         $.ajax({
             type: 'POST',
             url: Routes.apply_certification_path_path(project_id, certification_type),
@@ -215,6 +238,7 @@ $(function () {
                     pcr_track: pcr_track,
                     development_type: development_type,
                 },
+                assessment_method: assessment_method
             },
         });
     });
