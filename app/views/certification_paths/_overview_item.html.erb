@@ -14,7 +14,12 @@
                 <% end %>
             </div>
             <div class="col-lg-3 col-sm-6">
-                <%= certification_path.status.humanize %>
+                <% if certification_path.is_design_loc? %>
+                    Provisionally Certified
+                <% else %>
+                    <%= certification_path.status.humanize %>
+                <% end %>
+                
             </div>
             <div class="col-lg-3 col-sm-6">
                 <% if certification_path&.certification_path_method&.assessment_method == 2 %>

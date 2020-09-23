@@ -650,6 +650,10 @@ class CertificationPath < ApplicationRecord
     certification_path_method&.assessment_method == CertificationPath.assessment_methods[:check_list]
   end
 
+  def is_design_loc?
+    certificate.full_name.include?('Letter of Conformance') && certificate.design_and_build?
+  end
+
   private
 
   def set_started_at
