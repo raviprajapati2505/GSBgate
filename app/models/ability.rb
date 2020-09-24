@@ -147,7 +147,10 @@ class Ability
 
       can :update_targeted_checklist, SchemeMixCriterionBox, scheme_mix_criterion: {main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_submitting, certifier_id: user.id, scheme_mix: {certification_path: {project: project_with_user_in_project_team}}}
       can :update_submitted_checklist, SchemeMixCriterionBox, scheme_mix_criterion: {main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_submitting, certifier_id: user.id, scheme_mix: {certification_path: {project: project_with_user_in_project_team}}}
-
+      
+      can :update_achieved_checklist, SchemeMixCriterionBox, scheme_mix_criterion: { main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_verifying, scheme_mix: {certification_path: {project: project_with_user_as_certification_manager}}}
+      can :update_achieved_checklist, SchemeMixCriterionBox, scheme_mix_criterion: { main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_verifying, certifier_id: user.id, scheme_mix: {certification_path: {project: project_with_user_in_gsas_trust_team}}}
+      
       # GSAS trust team
       can [:edit_status, :update_status], SchemeMixCriterion, main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_verifying, scheme_mix: {certification_path: {certification_path_status: {id: CertificationPathStatus::STATUSES_IN_VERIFICATION}, project: project_with_user_as_certification_manager}}
       can [:edit_status, :update_status], SchemeMixCriterion, main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_verifying, certifier_id: user.id, scheme_mix: {certification_path: {certification_path_status: {id: CertificationPathStatus::STATUSES_IN_VERIFICATION}, project: project_with_user_in_gsas_trust_team}}
