@@ -9,7 +9,7 @@ class SchemeCriterion < ApplicationRecord
   has_many :scheme_criterion_incentives, inverse_of: :scheme_criterion
   has_many :scheme_criterion_epls, inverse_of: :scheme_criterion
   has_many :scheme_criterion_wpls, inverse_of: :scheme_criterion
-  has_many :scheme_criterion_boxs, inverse_of: :scheme_criterion
+  has_many :scheme_criterion_boxes, inverse_of: :scheme_criterion
   serialize :scores_a
   serialize :scores_b
 
@@ -42,7 +42,11 @@ class SchemeCriterion < ApplicationRecord
   end
 
   def full_name
-    "#{self.code}: #{self.name}"
+    if is_checklist?
+      "CS: #{self.name}" 
+    else
+      "#{self.code}: #{self.name}"
+    end
   end
 
   def total_weight

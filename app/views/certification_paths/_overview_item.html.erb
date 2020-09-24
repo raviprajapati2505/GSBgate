@@ -14,10 +14,19 @@
                 <% end %>
             </div>
             <div class="col-lg-3 col-sm-6">
-                <%= certification_path.status.humanize %>
+                <% if certification_path.is_design_loc? && certification_path.status.humanize == 'Certified' %>
+                    Provisionally Certified
+                <% else %>
+                    <%= certification_path.status.humanize %>
+                <% end %>
+                
             </div>
             <div class="col-lg-3 col-sm-6">
-                <%= render 'certification_paths/ratings', certification_path: certification_path %>
+                <% if certification_path&.certification_path_method&.assessment_method == 2 %>
+                    <%= render 'certification_paths/checklist_rating', certification_path: certification_path %>
+                <% else %>
+                    <%= render 'certification_paths/ratings', certification_path: certification_path %>
+                <% end %>
             </div>
             <div class="col-lg-3 col-sm-6">
                 <% certification_path.scheme_mixes.each do |scheme_mix| %>

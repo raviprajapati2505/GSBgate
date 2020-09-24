@@ -39,6 +39,10 @@ class Certificate < ApplicationRecord
     operations_type? && gsas_version == '2019'
   end
 
+  def design_and_build?
+    design_type?
+  end
+
   def full_name
     self.name
   end

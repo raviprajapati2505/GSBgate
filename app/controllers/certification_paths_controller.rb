@@ -62,6 +62,16 @@ class CertificationPathsController < AuthenticatedController
         @gsas_version = @gsas_versions.first
       end
     end
+        
+    if Certificate.certification_types[@certification_type] == Certificate.certification_types[:final_design_certificate]
+      @assessment_method = @certification_path.project.completed_letter_of_conformances.first.certification_path_method.assessment_method
+    else
+      if params.has_key?(:assessment_method)
+        @assessment_method = params[:assessment_method].to_i
+      else
+        @assessment_method = 1
+      end
+    end
 
     #  - Determine the resulting certificate, and add it to our certification_path
     #  TODO: verify there is only 1 certificate
@@ -151,6 +161,8 @@ class CertificationPathsController < AuthenticatedController
       # save the certificate, as the user has clicked save
       format.html {
         if @certification_path.save
+          @certification_path.create_assessment_method(@assessment_method) if @project.design_and_build?
+          
           @project.project_rendering_images.where(certification_path_id: nil).update(certification_path_id: @certification_path.id)
           @project.actual_project_images.where(certification_path_id: nil).update(certification_path_id: @certification_path.id)
           return redirect_to(project_certification_path_path(@project, @certification_path), notice: t('controllers.certification_paths_controller.apply.success'))

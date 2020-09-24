@@ -1,0 +1,57 @@
+<table class="table table-bordered table-hover" cellspacing="0" width="100%">
+    <thead>
+    <tr>
+        <th class="col-md-5">Scheme Name</th>
+        <th class="col-md-1">
+          <span class="hidden-md">Weighting</span>
+          <span class="visible-md">W <%= tooltip('Weighting') %></span>
+        </th>
+        <% if certification_path.is_activated? %>
+            <th class="col-md-2">
+                <span class="hidden-md">Progress</span>
+                <span class="visible-md">P <%= tooltip('Progress') %></span>
+            </th>
+        <% else %>
+            <% if can?(:edit, certification_path.scheme_mixes.first) %>
+                <th class="col-md-2">Action</th>
+            <% end %>
+        <% end %>
+    </tr>
+    </thead>
+    <tbody>
+    <% certification_path.scheme_mixes.each do |scheme_mix| %>
+        <tr>
+            <td>
+                <%= can_link_to(project_certification_path_scheme_mix_path(certification_path.project, certification_path, scheme_mix), scheme_mix) do %>
+                    <%= scheme_mix.full_name %>
+                    <% if certification_path.main_scheme_mix_id == scheme_mix.id %>
+                        <%= ikoen('certificate', tooltip: 'This is the main scheme (or main typology). Some of its criteria scores will be inherited by other schemes.', class: 'main-scheme-icon') %>
+                    <% end %>
+                <% end %>
+            </td>
+            <td><%= scheme_mix.weight %> %</td>
+          
+            <% if certification_path.is_activated? %>
+                <td>
+                    <div class="progress">
+                        <%
+                           if certification_path.requirement_data.count.nonzero?
+                             progress = certification_path.requirement_data.completed.count * 100 / certification_path.requirement_data.count
+                           else
+                             progress = 0
+                           end
+                        %>
+                        <div class="progress-bar" style="min-width: 2em; width: <%= progress %>%;"><%= progress %>%
+                        </div>
+                    </div>
+                </td>
+            <% else %>
+                <% if can?(:edit, scheme_mix) %>
+                <td><%= btn_link_to(edit_project_certification_path_scheme_mix_path(certification_path.project, certification_path, scheme_mix), icon: 'edit', size: 'small', action: :get, remote: true) %></td>
+                <% end %>
+            <% end %>
+        </tr>
+    <% end %>
+    </tbody>
+</table>
+<div id="editSchemeMixNameModal" class="modal fade"></div>

@@ -8,7 +8,7 @@ class SchemeMixCriteriaController < AuthenticatedController
   skip_load_and_authorize_resource :scheme_mix, only: [:list]
   skip_load_and_authorize_resource :scheme_mix_criterion, only: [:list]
   # skip default update_score authorization, as we have manually created authorization levels per score type
-  skip_authorize_resource :scheme_mix_criterion, only: :update_scores
+  skip_authorize_resource :scheme_mix_criterion, only: [:update_scores, :update_checklist]
   before_action :set_controller_model, except: [:new, :create, :list]
 
   def show
@@ -82,6 +82,13 @@ class SchemeMixCriteriaController < AuthenticatedController
       end
       redirect_to redirect_path, notice: 'The Criterion Levels were successfully updated.'
     end
+  end
+
+  def update_checklist
+    redirect_path = project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion)
+
+    @scheme_mix_criterion.update!(scheme_mix_criterion_box_params)
+    redirect_to redirect_path, notice: 'The Criterion Levels were successfully updated.'
   end
 
   def reset_incentive_scored
@@ -226,7 +233,7 @@ class SchemeMixCriteriaController < AuthenticatedController
   end
 
   def scheme_mix_criterion_box_params
-    permitted_params = [scheme_mix_criterion_boxs_attributes: [:id, :is_checked]]
+    permitted_params = [scheme_mix_criterion_boxes_attributes: [:id, :is_checked]]
     params.require(:scheme_mix_criterion).permit(permitted_params)
   end
 
