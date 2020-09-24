@@ -63,7 +63,13 @@ class SchemeMix < ApplicationRecord
         parameter_list[SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES[index].to_sym] = scheme_criterion.read_attribute(max_score.to_sym)
         parameter_list[SchemeMixCriterion::INCENTIVE_SCORED_ATTRIBUTES[index].to_sym] = scheme_criterion.read_attribute(SchemeCriterion::CALCULATE_INCENTIVE_ATTRIBUTES[index].to_sym)
       end
+
       scheme_mix_criterion = SchemeMixCriterion.create!(parameter_list)
+      if certification_path.certificate.operations_2019? && scheme.name == "Energy Neutral Mark"
+        scheme_criterion.scheme_criterion_box_ids.each do |box_id|
+          scheme_mix_criterion.scheme_mix_criterion_boxs.create!(scheme_criterion_box_id: box_id, is_checked: false)
+        end
+      end
 
       # Create all SchemeMixCriterionIncentive records
       scheme_criterion.scheme_criterion_incentive_ids.each do |incentive_id|

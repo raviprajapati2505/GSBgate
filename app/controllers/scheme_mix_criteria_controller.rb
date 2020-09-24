@@ -67,13 +67,18 @@ class SchemeMixCriteriaController < AuthenticatedController
       end
     end
 
+    if @certification_path.certificate.operations_2019? && @certification_path.schemes.where(name: "Energy Neutral Mark").present?
+      @params = true
+    end
+
     # The targeted & submitted scores should always be higher than or equal to the minimum valid score of the criterion
     if validate_score(redirect_path)
       # reset incentive_scored for categories E and W for achieved scores <= 0
       reset_incentive_scored
       @scheme_mix_criterion.transaction do
         # Update the scheme mix criterion
-        @scheme_mix_criterion.update!(scheme_mix_criterion_params)
+        params =  @params ? scheme_mix_criterion_params.merge(scheme_mix_criterion_box_params) : scheme_mix_criterion_params
+        @scheme_mix_criterion.update!(params)
       end
       redirect_to redirect_path, notice: 'The Criterion Levels were successfully updated.'
     end
@@ -217,6 +222,11 @@ class SchemeMixCriteriaController < AuthenticatedController
     permitted_params += [scheme_mix_criterion_incentives_attributes: [:id, :incentive_scored]]
     permitted_params += [scheme_mix_criterion_epls_attributes: [:id, :epc, :level, :band, :cooling, :lighting, :auxiliaries, :dhw, :others, :generation, :co2_emission]]
     permitted_params += [scheme_mix_criterion_wpls_attributes: [:id, :wpc, :level, :band, :indoor_use, :irrigation, :cooling_tower]]
+    params.require(:scheme_mix_criterion).permit(permitted_params)
+  end
+
+  def scheme_mix_criterion_box_params
+    permitted_params = [scheme_mix_criterion_boxs_attributes: [:id, :is_checked]]
     params.require(:scheme_mix_criterion).permit(permitted_params)
   end
 
