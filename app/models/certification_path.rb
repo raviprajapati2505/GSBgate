@@ -586,7 +586,8 @@ class CertificationPath < ApplicationRecord
 
   def label_for_level(certificate: nil,is_targetted_score: true, is_achieved_score: true, is_submitted_score: true)
     if certificate.design_and_build?
-      scheme_mixes.each do |sm|
+      main_scheme_mixes = self.main_scheme_mix.present? ? self.scheme_mixes.where(id: self.main_scheme_mix.id) : self.scheme_mixes
+      main_scheme_mixes.each do |sm|
         sm.scheme_mix_criteria.each do |smc|
           smc.scheme_mix_criterion_boxes.each do |smcb|
             if is_submitted_score && smcb.scheme_criterion_box.label == "Submitted Checklist Status"
