@@ -14,7 +14,7 @@
                 <% end %>
             </div>
             <div class="col-lg-3 col-sm-6">
-                <% if certification_path.is_design_loc? %>
+                <% if certification_path.is_design_loc? && certification_path.status.humanize == 'Certified' %>
                     Provisionally Certified
                 <% else %>
                     <%= certification_path.status.humanize %>
