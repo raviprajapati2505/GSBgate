@@ -9,7 +9,7 @@
     <div class="ibox criterion-details">
         <div class="ibox-title">
             <%= audit_log_label(@scheme_mix_criterion) %>
-            <h5>Criterion Details</h5>
+            <h5>Checklist Details</h5>
         </div>
         <div class="ibox-content">
             <% if (@certification_path.main_scheme_mix_id == @scheme_mix.id) && @scheme_mix_criterion.scheme_criterion.scheme_category.shared? %>
@@ -26,7 +26,8 @@
                 <tr>
                     <th>Status</th>
                     <td>
-                        <%= t(@scheme_mix_criterion.status, scope: 'activerecord.attributes.scheme_mix_criterion.statuses') %>
+                      <% status_data =  t(@scheme_mix_criterion.status, scope: 'activerecord.attributes.scheme_mix_criterion.statuses') %>
+                      <%= status_data.include?('Awarded level') ? status_data.remove('level') : status_data %>
                     </td>
                 </tr>
                 <% if @certification_path.in_screening? %>
@@ -530,7 +531,7 @@
                             <div class="col-md-7">
                                 <% if @scheme_mix_criterion.certifier.nil? %>
                                     <%= f.label :user_id, 'Responsibility' %>
-                                    <p>This criterion is not yet assigned.</p>
+                                    <p>This checklist is not yet assigned.</p>
                                 <% else %>
                                     <%= f.select :user_id, options_for_select([@scheme_mix_criterion.certifier].map { |k| [k.full_name, k.id]}, @scheme_mix_criterion.certifier.id), {label: 'Responsibility'}, disabled: true, class: 'select2-certifier' %>
                                 <% end %>
