@@ -213,15 +213,15 @@ class CertificationPath < ApplicationRecord
           if criterion.has_documents_awaiting_approval?
             todos << 'There are still documents awaiting approval.'
           end
-          criterion.scheme_mix_criterion_boxes.each do |smcb|
-            if smcb.scheme_criterion_box.label == "Targeted Checklist Status" && !smcb.is_checked?
-              todos << 'The targeted checklist must be checked.'
-              break
-            elsif smcb.scheme_criterion_box.label == "Submitted Checklist Status" && !smcb.is_checked?
-              todos << 'The submitted checklist must be checked.'
-              break
-            end
-          end
+          # criterion.scheme_mix_criterion_boxes.each do |smcb|
+          #   if smcb.scheme_criterion_box.label == "Targeted Checklist Status" && !smcb.is_checked?
+          #     todos << 'The targeted checklist must be checked.'
+          #     break
+          #   elsif smcb.scheme_criterion_box.label == "Submitted Checklist Status" && !smcb.is_checked?
+          #     todos << 'The submitted checklist must be checked.'
+          #     break
+          #   end
+          # end
           if criterion.submitting?
             todos << 'Some criteria still have status \'Submitting\'.'
           end
@@ -231,11 +231,11 @@ class CertificationPath < ApplicationRecord
         end
       when CertificationPathStatus::VERIFYING, CertificationPathStatus::VERIFYING_AFTER_APPEAL
         scheme_mix_criteria.each do |criterion|
-          criterion.scheme_mix_criterion_boxes.each do |smcb|
-            if smcb.scheme_criterion_box.label == "Achieved Checklist Status" && !smcb.is_checked?
-              todos << 'The achieved checklist must be checked.'
-            end
-          end
+          # criterion.scheme_mix_criterion_boxes.each do |smcb|
+          #   if smcb.scheme_criterion_box.label == "Achieved Checklist Status" && !smcb.is_checked?
+          #     todos << 'The achieved checklist must be checked.'
+          #   end
+          # end
           if criterion.verifying?
             todos << 'Some criteria still have status \'Verifying\'.'
           end
