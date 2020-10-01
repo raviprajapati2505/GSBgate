@@ -192,13 +192,13 @@ class SchemeMixCriterion < ApplicationRecord
           todos << 'There are still documents awaiting approval.'
         end
         # Check targeted checklist
-        # scheme_mix_criterion_boxes.each do |smcb|
-        #   if smcb.scheme_criterion_box.label == "Targeted Checklist Status" && !smcb.is_checked?
-        #     todos << 'The targeted checklist must be checked.'
-        #   elsif smcb.scheme_criterion_box.label == "Submitted Checklist Status" && !smcb.is_checked?
-        #     todos << 'The submitted checklist must be checked.'
-        #   end
-        # end
+        scheme_mix_criterion_boxes.each do |smcb|
+          if smcb.scheme_criterion_box.label == "Targeted Checklist Status" && !smcb.is_checked?
+            todos << 'The targeted checklist must be checked.'
+          elsif smcb.scheme_criterion_box.label == "Submitted Checklist Status" && !smcb.is_checked?
+            todos << 'The submitted checklist must be checked.'
+          end
+        end
         return todos
       end
 

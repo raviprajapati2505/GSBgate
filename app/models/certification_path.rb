@@ -213,15 +213,15 @@ class CertificationPath < ApplicationRecord
           if criterion.has_documents_awaiting_approval?
             todos << 'There are still documents awaiting approval.'
           end
-          # criterion.scheme_mix_criterion_boxes.each do |smcb|
-          #   if smcb.scheme_criterion_box.label == "Targeted Checklist Status" && !smcb.is_checked?
-          #     todos << 'The targeted checklist must be checked.'
-          #     break
-          #   elsif smcb.scheme_criterion_box.label == "Submitted Checklist Status" && !smcb.is_checked?
-          #     todos << 'The submitted checklist must be checked.'
-          #     break
-          #   end
-          # end
+          criterion.scheme_mix_criterion_boxes.each do |smcb|
+            if smcb.scheme_criterion_box.label == "Targeted Checklist Status" && !smcb.is_checked?
+              todos << 'The targeted checklist must be checked.'
+              break
+            elsif smcb.scheme_criterion_box.label == "Submitted Checklist Status" && !smcb.is_checked?
+              todos << 'The submitted checklist must be checked.'
+              break
+            end
+          end
           if criterion.submitting?
             todos << 'Some criteria still have status \'Submitting\'.'
           end
