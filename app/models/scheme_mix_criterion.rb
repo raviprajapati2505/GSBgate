@@ -229,11 +229,11 @@ class SchemeMixCriterion < ApplicationRecord
     elsif in_verification?
       if self.scheme_criterion.is_checklist?
         # Check achived checklist
-        scheme_mix_criterion_boxes.each do |smcb|
-          if smcb.scheme_criterion_box.label == "Achieved Checklist Status" && !smcb.is_checked?
-            todos << 'The achieved checklist must be checked.' 
-          end
-        end
+        # scheme_mix_criterion_boxes.each do |smcb|
+        #   if smcb.scheme_criterion_box.label == "Achieved Checklist Status" && !smcb.is_checked?
+        #     todos << 'The achieved checklist must be checked.' 
+        #   end
+        # end
         return todos
       end
       # Check submitted score

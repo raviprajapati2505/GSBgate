@@ -6,7 +6,8 @@
         <tbody>
           <tr>
             <th></th>
-            <td colspan="2" style="text-align: center;"><b>Certified ?</b></td>
+            <%# Certified ? %>
+            <td colspan="2" style="text-align: center;"><b></b></td>
           </tr>
           <%= f.fields_for :scheme_mix_criterion_boxes do |smc_box| %>
             <% if smc_box.object.scheme_criterion_box.label == "Targeted Checklist Status" %>

@@ -231,11 +231,11 @@ class CertificationPath < ApplicationRecord
         end
       when CertificationPathStatus::VERIFYING, CertificationPathStatus::VERIFYING_AFTER_APPEAL
         scheme_mix_criteria.each do |criterion|
-          criterion.scheme_mix_criterion_boxes.each do |smcb|
-            if smcb.scheme_criterion_box.label == "Achieved Checklist Status" && !smcb.is_checked?
-              todos << 'The achieved checklist must be checked.'
-            end
-          end
+          # criterion.scheme_mix_criterion_boxes.each do |smcb|
+          #   if smcb.scheme_criterion_box.label == "Achieved Checklist Status" && !smcb.is_checked?
+          #     todos << 'The achieved checklist must be checked.'
+          #   end
+          # end
           if criterion.verifying?
             todos << 'Some criteria still have status \'Verifying\'.'
           end
