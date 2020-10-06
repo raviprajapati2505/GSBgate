@@ -1,6 +1,4 @@
-<% if @scheme_mix&.check_list? %>
-  <%= render partial: 'show_checklist', locals: { scheme_mix: @scheme_mix } %>
-<% else %>
+<% @scheme_mix = scheme_mix %>
 <div class="row">
   <div class="col-lg-4">
     <div class="ibox float-e-margins">
@@ -24,10 +22,9 @@
             <td><%= @scheme_mix.weight %> %</td>
           </tr>
           <tr>
-            <th>Score/Level</th>
+          <th>Rating</th>
             <td>
-              <%= render 'score/score_toggle', id_list: ["scheme_mix_#{@scheme_mix.id}"] %>
-              <%= render 'score/score_tabs', scores: @scheme_mix.scores, element_id: "scheme_mix_#{@scheme_mix.id}" %>
+              <%= render 'certification_paths/checklist_rating', certification_path: @scheme_mix.certification_path %>
             </td>
           </tr>
           <tr>
@@ -74,30 +71,8 @@
         <h5>Categories &amp; Criteria</h5>
       </div>
       <div class="ibox-content">
-        <%
-          # fetch all score records
-          scheme_mix_criteria_scores = @scheme_mix.scheme_mix_criteria_scores
-          # check for criteria that violate their minimum_valid_score
-          invalid_criteria_ids = scheme_mix_criteria_scores
-              .select {|score| score[:achieved_score_in_criteria_points].nil? && score[:minimum_valid_score_in_criteria_points] > score[:minimum_score_in_criteria_points] }
-              .map{|score| score[:scheme_mix_criteria_id]}
-          # group by category
-          scheme_mix_criteria_scores_by_category = scheme_mix_criteria_scores.group_by{|item| item[:scheme_category_id]}
-          # calculate the max and min values for each category, and take the max min of those calculated values
-          scheme_scale = {
-              maximum_scale_in_certificate_points: scheme_mix_criteria_scores_by_category.collect{|category_id, scores| scores.collect{|score| score[:maximum_score_in_certificate_points]}.inject(:+)}.max,
-              minimum_scale_in_certificate_points: scheme_mix_criteria_scores_by_category.collect{|category_id, scores| scores.collect{|score| score[:minimum_score_in_certificate_points]}.inject(:+)}.min,
-              maximum_scale_in_scheme_points: scheme_mix_criteria_scores_by_category.collect{|category_id, scores| scores.collect{|score| score[:maximum_score_in_scheme_points]}.inject(:+)}.max,
-              minimum_scale_in_scheme_points: scheme_mix_criteria_scores_by_category.collect{|category_id, scores| scores.collect{|score| score[:minimum_score_in_scheme_points]}.inject(:+)}.min,
-              maximum_scale_in_criteria_points: scheme_mix_criteria_scores_by_category.collect{|category_id, scores| scores.collect{|score| score[:maximum_score_in_criteria_points]}.inject(:+)}.max,
-              minimum_scale_in_criteria_points: scheme_mix_criteria_scores_by_category.collect{|category_id, scores| scores.collect{|score| score[:minimum_score_in_criteria_points]}.inject(:+)}.min
-          }
-        %>
-        <% if !@scheme_mix.certification_path.in_pre_verification? && invalid_criteria_ids.size > 0 %>
-            <div class="alert alert-warning" role="alert">
-              <%= ikoen_with_text('exclamation-circle', 'There are one or more criteria that have not achieved their minimum valid score.') %>
-            </div>
-        <% end %>
+
+
         <%= scores_legend %>
         <div id="categories-accordion">
           <table class="table table-bordered" cellspacing="0" width="100%">
@@ -107,12 +82,6 @@
               <th>Code</th>
               <th>Name</th>
               <th>Weighting</th>
-              <th>
-                Score/Level
-                <% id_list = @scheme_mix.scheme_categories.collect { |category| "category_#{category.id}" } %>
-                <% id_list << @scheme_mix.scheme_mix_criteria.collect { |scheme_mix_criteria| "scheme_mix_criterion_#{scheme_mix_criteria.id}" } %>
-                <%= render 'score/score_toggle', id_list: id_list %>
-              </th>
               <th>Total Requirement Progress</th>
               <th>Approved Documents</th>
             </tr>
@@ -123,9 +92,9 @@
                   category = category_with_criteria[:category]
                   criteria = category_with_criteria[:scheme_mix_criteria]
                   # summarize the scores for this category
-                  category_scores = sum_score_hashes(scheme_mix_criteria_scores_by_category[category.id])
+                  #category_scores = sum_score_hashes(scheme_mix_criteria_scores_by_category[category.id])
                   # set the min and max scales, so all graphs use the same dimensions
-                  category_scores = category_scores.merge(scheme_scale)
+                  #category_scores = category_scores.merge(scheme_scale)
                 %>
 
                 <tr class="accordion-toggle" data-toggle="collapse" data-target="#category-panel-<%= category.id %>" data-parent="#categories-accordion">
@@ -160,11 +129,6 @@
                         </span>
                     <% end %>
                     </div>
-                  </td>
-                  <td>
-                    <%=
-                      render 'score/score_tabs', scores: category_scores, element_id: "category_#{category.id}"
-                    %>
                   </td>
                   <td>
                     <% processed_count = RequirementDatum.for_scheme_mix(@scheme_mix).for_category(category).provided.count + RequirementDatum.for_scheme_mix(@scheme_mix).for_category(category).not_required.count %>
@@ -204,13 +168,12 @@
                           <th>Name</th>
                           <th>Status</th>
                           <th>Weighting</th>
-                          <th>Score/Level</th>
                           <th>Total Requirement Progress</th>
                           <th>Approved Documents</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <%
+                        <%#
                           category_scale = {
                               maximum_scale_in_certificate_points: scheme_mix_criteria_scores_by_category[category.id].collect{|score| score[:maximum_score_in_certificate_points]}.max,
                               minimum_scale_in_certificate_points: scheme_mix_criteria_scores_by_category[category.id].collect{|score| score[:minimum_score_in_certificate_points]}.min,
@@ -222,7 +185,7 @@
                         %>
                         <% criteria.each do |scheme_mix_criterion| %>
                             <tr>
-                                <td><%= scheme_mix_criterion.code %></td>
+                                <td>CS</td>
                               <td>
                                 <%= can_link_to(project_certification_path_scheme_mix_scheme_mix_criterion_path(@certification_path.project, @certification_path, @scheme_mix, scheme_mix_criterion), scheme_mix_criterion) do %>
                                     <%= scheme_mix_criterion.name %>
@@ -236,11 +199,11 @@
                               </td>
                               <td><%= t(scheme_mix_criterion.status, scope: 'activerecord.attributes.scheme_mix_criterion.statuses') %></td>
                               <td>
-                                <% SchemeCriterion::SCORE_ATTRIBUTES.each_with_index do |scores, index| %>
-                                <% unless scheme_mix_criterion.scheme_criterion.read_attribute(scores.to_sym).nil? %>
-                                  <p><%= scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::LABEL_ATTRIBUTES[index].to_sym) %>&nbsp;<%= scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[index].to_sym) %> %
-                                  <% if scheme_mix_criterion.scheme_criterion.has_incentive_weight?(index) %>
-                                    <%
+                                <%# SchemeCriterion::SCORE_ATTRIBUTES.each_with_index do |scores, index| %>
+                                <%# unless scheme_mix_criterion.scheme_criterion.read_attribute(scores.to_sym).nil? %>
+                                  <p><%#= scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::LABEL_ATTRIBUTES[index].to_sym) %>&nbsp;<%#= scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[index].to_sym) %> %
+                                  <%# if scheme_mix_criterion.scheme_criterion.has_incentive_weight?(index) %>
+                                    <%#
                                       tooltip_text = 'Incentive weights<br/>'
                                       tooltip_text += "Level&nbsp;-1: #{scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::INCENTIVE_MINUS_1_ATTRIBUTES[index].to_sym)}%<br/>" if scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::INCENTIVE_MINUS_1_ATTRIBUTES[index]) > 0
                                       tooltip_text += "Level&nbsp;&nbsp;0: #{scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::INCENTIVE_0_ATTRIBUTES[index].to_sym)}%<br/>" if scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::INCENTIVE_0_ATTRIBUTES[index]) > 0
@@ -254,28 +217,10 @@
                                     <span class="incentive-weight">
                                       <%= tooltip(tooltip_text) %>
                                     </span>
-                                  <% end %>
+                                  <%# end %>
                                   </p>
-                                <% end %>
-                                <% end %>
-                              </td>
-                              <td>
-                                <% SchemeCriterion::SCORE_ATTRIBUTES.each_with_index do |scores, index| %>
-                                <% unless scheme_mix_criterion.scheme_criterion.read_attribute(scores.to_sym).nil? %>
-                                  <p><%= scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::LABEL_ATTRIBUTES[index].to_sym) %></p>
-                                  <%
-                                    scheme_mix_criteria_score = scheme_mix_criteria_scores.find{|item| item[:scheme_mix_criteria_id] == scheme_mix_criterion.id }
-                                    scheme_mix_criteria_score = scheme_mix_criteria_score.merge(category_scale)
-
-                                    maximum_score_attribute = SchemeCriterion::MAX_SCORE_ATTRIBUTES[index]
-                                    minimum_score_attribute = SchemeCriterion::MIN_SCORE_ATTRIBUTES[index]
-                                    targeted_score_attribute = SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES[index]
-                                    submitted_score_attribute = SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES[index]
-                                    achieved_score_attribute = SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES[index]
-                                  %>
-                                  <%= render 'score/score_tabs', scores: scheme_mix_criteria_score, maximum_score_attribute: maximum_score_attribute, minimum_score_attribute: minimum_score_attribute, targeted_score_attribute: targeted_score_attribute, submitted_score_attribute: submitted_score_attribute, achieved_score_attribute: achieved_score_attribute, element_id: "scheme_mix_criterion_#{scheme_mix_criterion.id}" %>
-                                <% end %>
-                                <% end %>
+                                <%# end %>
+                                <%# end %>
                               </td>
                               <td>
                                 <% processed_count = scheme_mix_criterion.requirement_data.provided.count + scheme_mix_criterion.requirement_data.not_required.count %>
@@ -319,5 +264,3 @@
     </div>
   </div>
 </div>
-<%= javascript_include_tag 'score_widget' %>
-<% end %>

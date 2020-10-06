@@ -77,6 +77,7 @@ Rails.application.routes.draw do
             put :add_draft_review_comment
             put :screen
             put :update_scores
+            put :update_checklist
             put :assign_certifier
           end
           resources :requirement_data, only: [:update], path: :requirement, as: 'requirement_data' do

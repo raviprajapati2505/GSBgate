@@ -1,6 +1,6 @@
 namespace :backup_clean do
 
-  LAST_DATE = Time.now - 30.days
+  LAST_DATE = Time.now - 90.days
 
   desc "Delete db backup files which are generated before 30 days."
   task db_backup_clean: :environment do

@@ -8,6 +8,7 @@ class CertificationPath < ApplicationRecord
   include ScoreCalculator
 
   MAXIMUM_DOCUMENT_FILE_SIZE = 100 # in MB
+  enum assessment_methods: { star_rating: 1, check_list: 2 }
 
   belongs_to :project, optional: true
   belongs_to :certificate, optional: true
@@ -27,6 +28,7 @@ class CertificationPath < ApplicationRecord
   has_many :archives, as: :subject, dependent: :destroy
   has_many :actual_project_images, dependent: :destroy
   has_many :project_rendering_images, dependent: :destroy
+  has_one :certification_path_method, dependent: :destroy
 
   accepts_nested_attributes_for :certificate
   accepts_nested_attributes_for :scheme_mixes
@@ -185,6 +187,68 @@ class CertificationPath < ApplicationRecord
   def todo_before_status_advance
     todos = []
 
+    if certification_path_method&.assessment_method == 2
+      case certification_path_status_id
+      when CertificationPathStatus::ACTIVATING
+        # TODO certification path expiry date
+        unless project.certification_manager_assigned?
+          todos << 'A certification manager must be assigned to the project.'
+        end
+        if development_type.mixable? && (main_scheme_mix_selected? == false)
+          todos << 'A main scheme needs to be selected.'
+        end
+      when CertificationPathStatus::SCREENING
+        scheme_mix_criteria.each do |criterion|
+          unless criterion.screened
+            todos << 'Some criteria aren\'t screened yet. Please allocate team responsibility for screening or skip screening by marking all criteria as "screened".'
+          end
+        end
+      when CertificationPathStatus::SUBMITTING, CertificationPathStatus::SUBMITTING_AFTER_SCREENING, CertificationPathStatus::SUBMITTING_AFTER_APPEAL
+        ['location_plan_file', 'site_plan_file', 'design_brief_file', 'project_narrative_file'].each do |general_submittal|
+          if project.send(general_submittal).blank?
+            todos << "A '#{Project.human_attribute_name(general_submittal)}' must be added to the project."
+          end
+        end
+        scheme_mix_criteria.each do |criterion|
+          if criterion.has_documents_awaiting_approval?
+            todos << 'There are still documents awaiting approval.'
+          end
+          criterion.scheme_mix_criterion_boxes.each do |smcb|
+            if smcb.scheme_criterion_box.label == "Targeted Checklist Status" && !smcb.is_checked?
+              todos << 'The targeted checklist must be checked.'
+              break
+            elsif smcb.scheme_criterion_box.label == "Submitted Checklist Status" && !smcb.is_checked?
+              todos << 'The submitted checklist must be checked.'
+              break
+            end
+          end
+          if criterion.submitting?
+            todos << 'Some criteria still have status \'Submitting\'.'
+          end
+          if criterion.submitting_after_appeal?
+            todos << 'Some criteria still have status \'Submitting after appeal\'.'
+          end
+        end
+      when CertificationPathStatus::VERIFYING, CertificationPathStatus::VERIFYING_AFTER_APPEAL
+        scheme_mix_criteria.each do |criterion|
+          # criterion.scheme_mix_criterion_boxes.each do |smcb|
+          #   if smcb.scheme_criterion_box.label == "Achieved Checklist Status" && !smcb.is_checked?
+          #     todos << 'The achieved checklist must be checked.'
+          #   end
+          # end
+          if criterion.verifying?
+            todos << 'Some criteria still have status \'Verifying\'.'
+          end
+          if criterion.verifying_after_appeal?
+            todos << 'Some criteria still have status \'Verifying after appeal\'.'
+          end
+        end
+      when CertificationPathStatus::CERTIFIED, CertificationPathStatus::NOT_CERTIFIED
+        todos << 'This is the final status.'
+      end
+      return todos.uniq
+    end
+
     case certification_path_status_id
     when CertificationPathStatus::ACTIVATING
       # TODO certification path expiry date
@@ -340,7 +404,7 @@ class CertificationPath < ApplicationRecord
         energy_targeted = energy_sumitted = energy_achieved = false
 
         scheme_mix.scheme_mix_criteria.each do |smc|
-          if smc.scheme_mix_criterion_boxs&.last&.is_checked?
+          if smc.scheme_mix_criterion_boxes&.last&.is_checked?
             if smc.scheme_criterion.scheme_category.code == 'E'
               if is_submitted_score
                 energy_sumitted = is_valid?(smc.submitted_score, 3)
@@ -512,6 +576,34 @@ class CertificationPath < ApplicationRecord
     end
   end
 
+  def is_valid_check?(flag)
+    if flag
+      return 'CERTIFIED'
+    else
+      return 'CERTIFICATION DENIED'
+    end
+  end
+
+  def label_for_level(certificate: nil,is_targetted_score: true, is_achieved_score: true, is_submitted_score: true)
+    if certificate.design_and_build?
+      main_scheme_mixes = self.main_scheme_mix.present? ? self.scheme_mixes.where(id: self.main_scheme_mix.id) : self.scheme_mixes
+      main_scheme_mixes.each do |sm|
+        sm.scheme_mix_criteria.each do |smc|
+          smc.scheme_mix_criterion_boxes.each do |smcb|
+            if is_submitted_score && smcb.scheme_criterion_box.label == "Submitted Checklist Status"
+              return is_valid_check?(smcb.is_checked)
+            elsif is_achieved_score && smcb.scheme_criterion_box.label == "Achieved Checklist Status"
+              return is_valid_check?(smcb.is_checked)
+            elsif is_targetted_score && smcb.scheme_criterion_box.label == "Targeted Checklist Status"
+              return is_valid_check?(smcb.is_checked)
+            end
+          end
+        end
+      end
+    end
+    # certification_path.certification_path_method&.assessment_method == CertificationPath.assessment_methods[:check_list]
+  end
+
   # This function is used for toggling writability of form elements in the certification path flow
   def in_submission?
     CertificationPathStatus::STATUSES_IN_SUBMISSION.include?(certification_path_status_id)
@@ -549,6 +641,18 @@ class CertificationPath < ApplicationRecord
 
   def is_certified?
     CertificationPathStatus::CERTIFIED == certification_path_status_id
+  end
+
+  def create_assessment_method(method)
+    build_certification_path_method(assessment_method: method.to_i).save
+  end
+
+  def is_checklist_method?
+    certification_path_method&.assessment_method == CertificationPath.assessment_methods[:check_list]
+  end
+
+  def is_design_loc?
+    certificate.full_name.include?('Letter of Conformance') && certificate.design_and_build?
   end
 
   private

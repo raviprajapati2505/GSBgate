@@ -24,6 +24,10 @@ class SchemeMix < ApplicationRecord
     name
   end
 
+  def check_list?
+    self.certification_path.is_checklist_method?
+  end
+
   # Mirrors all the descendant structural data records of the SchemeMix to user data records
   def create_descendant_records
     # Build a list of all criteria codes/ids of the main scheme mix
@@ -37,8 +41,15 @@ class SchemeMix < ApplicationRecord
         end
       end
     end
+
+    scheme_of_criteria = if self.check_list?
+      scheme.scheme_criteria.where(is_checklist: true)
+    else
+      scheme.scheme_criteria.where(is_checklist: false)
+    end
+
     # Loop all the criteria of the scheme
-    scheme.scheme_criteria.each do |scheme_criterion|
+    scheme_of_criteria.each do |scheme_criterion|
       # Check whether the new scheme mix criterion will have a main scheme mix criterion
       has_main_scheme_mix_criterion = (certification_path.development_type.mixable? && certification_path.main_scheme_mix.present? && scheme_criterion.scheme_category.shared? && (id != certification_path.main_scheme_mix_id) && main_scheme_mix_criteria.has_key?(scheme_criterion.code))
 
@@ -65,9 +76,9 @@ class SchemeMix < ApplicationRecord
       end
 
       scheme_mix_criterion = SchemeMixCriterion.create!(parameter_list)
-      if certification_path.certificate.operations_2019? && scheme.name == "Energy Neutral Mark"
+      if (certification_path.certificate.operations_2019? && scheme.name == "Energy Neutral Mark") || self.check_list?
         scheme_criterion.scheme_criterion_box_ids.each do |box_id|
-          scheme_mix_criterion.scheme_mix_criterion_boxs.create!(scheme_criterion_box_id: box_id, is_checked: false)
+          scheme_mix_criterion.scheme_mix_criterion_boxes.create!(scheme_criterion_box_id: box_id, is_checked: false)
         end
       end
 

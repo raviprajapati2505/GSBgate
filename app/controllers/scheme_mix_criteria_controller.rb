@@ -8,7 +8,7 @@ class SchemeMixCriteriaController < AuthenticatedController
   skip_load_and_authorize_resource :scheme_mix, only: [:list]
   skip_load_and_authorize_resource :scheme_mix_criterion, only: [:list]
   # skip default update_score authorization, as we have manually created authorization levels per score type
-  skip_authorize_resource :scheme_mix_criterion, only: :update_scores
+  skip_authorize_resource :scheme_mix_criterion, only: [:update_scores, :update_checklist]
   before_action :set_controller_model, except: [:new, :create, :list]
 
   def show
@@ -33,6 +33,14 @@ class SchemeMixCriteriaController < AuthenticatedController
     if todos.blank?
       status = @scheme_mix_criterion.next_status
 
+      if @scheme_mix_criterion.scheme_mix.check_list?
+        notice_message = 'The Checklist Status were successfully updated.'
+        alert_message = 'The Checklist Status cannot be updated.'
+      else
+        notice_message = 'Criterion status was sucessfully updated.'
+        alert_message = 'The criterion status cannot be updated.'
+      end
+
       if status.present?
         @scheme_mix_criterion.transaction do
           # Update the scheme mix criterion
@@ -42,9 +50,9 @@ class SchemeMixCriteriaController < AuthenticatedController
           @scheme_mix_criterion.save!
           @scheme_mix_criterion.update_column(:in_review, false)
         end
-        flash[:notice] = 'Criterion status was sucessfully updated.'
+        flash[:notice] = notice_message
       else
-        flash[:alert] = 'The criterion status cannot be updated.'
+        flash[:alert] = alert_message
       end
     else
       flash[:alert] = todos.first
@@ -82,6 +90,13 @@ class SchemeMixCriteriaController < AuthenticatedController
       end
       redirect_to redirect_path, notice: 'The Criterion Levels were successfully updated.'
     end
+  end
+
+  def update_checklist
+    redirect_path = project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion)
+
+    @scheme_mix_criterion.update!(scheme_mix_criterion_box_params)
+    redirect_to redirect_path, notice: 'The Checklist Status were successfully updated.'
   end
 
   def reset_incentive_scored
@@ -226,7 +241,7 @@ class SchemeMixCriteriaController < AuthenticatedController
   end
 
   def scheme_mix_criterion_box_params
-    permitted_params = [scheme_mix_criterion_boxs_attributes: [:id, :is_checked]]
+    permitted_params = [scheme_mix_criterion_boxes_attributes: [:id, :is_checked]]
     params.require(:scheme_mix_criterion).permit(permitted_params)
   end
 
