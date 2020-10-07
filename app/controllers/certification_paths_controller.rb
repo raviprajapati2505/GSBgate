@@ -64,7 +64,12 @@ class CertificationPathsController < AuthenticatedController
     end
         
     if Certificate.certification_types[@certification_type] == Certificate.certification_types[:final_design_certificate]
-      @assessment_method = @certification_path.project.completed_letter_of_conformances.first.certification_path_method.assessment_method
+      @certificate_method = @certification_path.project.completed_letter_of_conformances.first.certification_path_method
+      @assessment_method = if !@certificate_method.present?
+                              1
+                           else
+                              @certificate_method.assessment_method
+                           end
     else
       if params.has_key?(:assessment_method)
         @assessment_method = params[:assessment_method].to_i
