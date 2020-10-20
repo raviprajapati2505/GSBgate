@@ -9,19 +9,31 @@ module Effective
         #    rec.project_code + ', ' + rec.project_name
         # end
         col :project_code, sql_column: 'projects.code' do |rec|
-          link_to(project_path(rec.project_nr)) do
-            rec.project_code
-          end
+          link_to_if(!current_user.record_checker?,
+            rec.project_code,
+            project_path(rec.project_nr)
+          )
+          # link_to(project_path(rec.project_nr)) do
+          #   rec.project_code
+          # end
         end
         col :project_name, sql_column: 'projects.name' do |rec|
-          link_to(project_path(rec.project_nr)) do
-            rec.project_name
-          end
+          link_to_if(!current_user.record_checker?,
+            rec.project_name,
+            project_path(rec.project_nr)
+          )
+          # link_to(project_path(rec.project_nr)) do
+          #   rec.project_name
+          # end
         end
         col :project_update, sql_column: 'projects.updated_at' do |rec|
-          link_to(project_path(rec.project_nr)) do
-            localize(rec.project_updated_at.in_time_zone)
-          end
+          link_to_if(!current_user.record_checker?,
+            localize(rec.project_updated_at.in_time_zone),
+            project_path(rec.project_nr)
+          )
+          # link_to(project_path(rec.project_nr)) do
+          #   localize(rec.project_updated_at.in_time_zone)
+          # end
         end
         col :project_construction_year, sql_column: 'projects.construction_year', as: :integer, visible: false
         col :project_country, sql_column: 'projects.country', visible: false
@@ -42,9 +54,13 @@ module Effective
         #col :certification_path_id, sql_column: 'certification_paths.id', as: :integer, label: 'Certificate ID'
         col :certificate_id, sql_column: 'certificates.id', label: t('models.effective.datatables.projects_certification_paths.certificate_id.label'), search: { as: :select, collection: Proc.new { Certificate.all.order(:display_weight).map { |certificate| [certificate.full_name, certificate.id] } } } do |rec|
           if rec.certification_path_id.present?
-            link_to(project_certification_path_path(rec.project_nr, rec.certification_path_id)) do
-              rec.certificate_name
-            end
+            link_to_if(!current_user.record_checker?,
+              rec.certificate_name,
+              project_certification_path_path(rec.project_nr, rec.certification_path_id)
+            )
+            # link_to(project_certification_path_path(rec.project_nr, rec.certification_path_id)) do
+            #   rec.certificate_name
+            # end
           end
         end
 
