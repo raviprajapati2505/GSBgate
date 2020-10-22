@@ -259,24 +259,43 @@
                                 <% end %>
                                 <% end %>
                               </td>
-                              <td>
-                                <% SchemeCriterion::SCORE_ATTRIBUTES.each_with_index do |scores, index| %>
-                                <% unless scheme_mix_criterion.scheme_criterion.read_attribute(scores.to_sym).nil? %>
-                                  <p><%= scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::LABEL_ATTRIBUTES[index].to_sym) %></p>
-                                  <%
+
+                              <% if scheme_mix_criterion.scheme_criterion.code == 'W.1' %>
+                                <td>
+                                  <% 
                                     scheme_mix_criteria_score = scheme_mix_criteria_scores.find{|item| item[:scheme_mix_criteria_id] == scheme_mix_criterion.id }
                                     scheme_mix_criteria_score = scheme_mix_criteria_score.merge(category_scale)
-
-                                    maximum_score_attribute = SchemeCriterion::MAX_SCORE_ATTRIBUTES[index]
-                                    minimum_score_attribute = SchemeCriterion::MIN_SCORE_ATTRIBUTES[index]
-                                    targeted_score_attribute = SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES[index]
-                                    submitted_score_attribute = SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES[index]
-                                    achieved_score_attribute = SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES[index]
+                                    calculate_average(scheme_mix_criteria_score)
+                                  %>
+                                  <%
+                                    maximum_score_attribute = SchemeCriterion::MAX_SCORE_ATTRIBUTES[0]
+                                    minimum_score_attribute = SchemeCriterion::MIN_SCORE_ATTRIBUTES[0]
+                                    targeted_score_attribute = SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES[0]
+                                    submitted_score_attribute = SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES[0]
+                                    achieved_score_attribute = SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES[0]
                                   %>
                                   <%= render 'score/score_tabs', scores: scheme_mix_criteria_score, maximum_score_attribute: maximum_score_attribute, minimum_score_attribute: minimum_score_attribute, targeted_score_attribute: targeted_score_attribute, submitted_score_attribute: submitted_score_attribute, achieved_score_attribute: achieved_score_attribute, element_id: "scheme_mix_criterion_#{scheme_mix_criterion.id}" %>
-                                <% end %>
-                                <% end %>
-                              </td>
+                                </td>
+                              <% else %>
+                                <td>
+                                  <% SchemeCriterion::SCORE_ATTRIBUTES.each_with_index do |scores, index| %>
+                                    <% unless scheme_mix_criterion.scheme_criterion.read_attribute(scores.to_sym).nil? %>
+                                      <p><%= scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::LABEL_ATTRIBUTES[index].to_sym) %></p>
+                                      <%
+                                        scheme_mix_criteria_score = scheme_mix_criteria_scores.find{|item| item[:scheme_mix_criteria_id] == scheme_mix_criterion.id }
+                                        scheme_mix_criteria_score = scheme_mix_criteria_score.merge(category_scale)
+    
+                                        maximum_score_attribute = SchemeCriterion::MAX_SCORE_ATTRIBUTES[index]
+                                        minimum_score_attribute = SchemeCriterion::MIN_SCORE_ATTRIBUTES[index]
+                                        targeted_score_attribute = SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES[index]
+                                        submitted_score_attribute = SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES[index]
+                                        achieved_score_attribute = SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES[index]
+                                      %>
+                                      <%= render 'score/score_tabs', scores: scheme_mix_criteria_score, maximum_score_attribute: maximum_score_attribute, minimum_score_attribute: minimum_score_attribute, targeted_score_attribute: targeted_score_attribute, submitted_score_attribute: submitted_score_attribute, achieved_score_attribute: achieved_score_attribute, element_id: "scheme_mix_criterion_#{scheme_mix_criterion.id}" %>
+                                    <% end %>
+                                  <% end %>
+                                </td>
+                              <% end %>
                               <td>
                                 <% processed_count = scheme_mix_criterion.requirement_data.provided.count + scheme_mix_criterion.requirement_data.not_required.count %>
                                 <% total_count = scheme_mix_criterion.requirement_data.count %>

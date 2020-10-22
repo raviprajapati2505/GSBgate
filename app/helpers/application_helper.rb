@@ -421,4 +421,22 @@ module ApplicationHelper
     ext = file_extension.start_with?('.') ? file_extension[1..-1] : file_extension
     FILEICON_EXTENSIONS[ext.downcase] || 'fileicons/file_extension_unknown.png'
   end
+
+  def calculate_average(scheme_mix_criteria_score)
+    match_a = scheme_mix_criteria_score.select { |key, value| key.to_s.match(/score_a/) }
+    match_b = scheme_mix_criteria_score.select { |key, value| key.to_s.match(/score_b/) }
+    match_total = {}
+    
+    match_a.dup.each_with_index { |(k, v), i|
+      if((v != 0 && v != nil) && (match_b[match_b.keys[i]] != 0 && match_b[match_b.keys[i]] != nil))
+        value_b = (v + match_b[match_b.keys[i]]) / 2
+        match_total.merge!("#{k}": value_b) 
+      end
+    }
+    match_total.each_pair do |k1, v1|
+      scheme_mix_criteria_score[k1] = v1
+    end
+    
+    return scheme_mix_criteria_score
+  end
 end
