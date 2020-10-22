@@ -426,10 +426,13 @@ module ApplicationHelper
     match_a = scheme_mix_criteria_score.select { |key, value| key.to_s.match(/score_a/) }
     match_b = scheme_mix_criteria_score.select { |key, value| key.to_s.match(/score_b/) }
     match_total = {}
-    
+
     match_a.dup.each_with_index { |(k, v), i|
-      if((v != 0 && v != nil) && (match_b[match_b.keys[i]] != 0 && match_b[match_b.keys[i]] != nil))
-        value_b = (v + match_b[match_b.keys[i]]) / 2
+      if((v != nil) && (match_b[match_b.keys[i]] != nil))
+        value_b = (v + match_b[match_b.keys[i]])
+        if value_b > 0
+          value_b = value_b / 2
+        end
         match_total.merge!("#{k}": value_b) 
       end
     }
