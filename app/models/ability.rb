@@ -358,6 +358,8 @@ class Ability
       cannot :read, AuditLog
     elsif user.system_admin?
       can :manage, :all
+    elsif user.record_checker?
+      can :index, Project
     else
       cannot :manage, :all
     end

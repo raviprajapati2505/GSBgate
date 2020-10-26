@@ -14,3 +14,11 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function(){
+        if(<%= current_user.record_checker? %>) {
+            $('.btn-group').find('.buttons-copy, .buttons-csv, .buttons-print').css('display', 'none')
+        }
+    })
+</script>
