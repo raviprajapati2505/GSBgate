@@ -428,18 +428,23 @@ module ApplicationHelper
     match_total = {}
 
     match_a.dup.each_with_index { |(k, v), i|
-      if((v != nil) && (match_b[match_b.keys[i]] != nil))
-        value_b = (v + match_b[match_b.keys[i]])
-        if value_b > 0
-          value_b = value_b / 2
-        end
-        match_total.merge!("#{k}": value_b) 
+      v = (v == nil) ? 0 : v
+      match_b_value = (match_b[match_b.keys[i]] == nil) ? 0 : match_b[match_b.keys[i]]
+
+      total_value = v + match_b_value
+      if total_value > 0
+        total_value = total_value / 2
       end
+      match_total.merge!("#{k}": total_value) 
     }
     match_total.each_pair do |k1, v1|
       scheme_mix_criteria_score[k1] = v1
     end
     
     return scheme_mix_criteria_score
+  end
+
+  def merge_incentives(scheme_mix_criterion)
+    return (scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[0]) + scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[1]))
   end
 end
