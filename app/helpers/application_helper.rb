@@ -432,8 +432,8 @@ module ApplicationHelper
       match_b_value = (match_b[match_b.keys[i]] == nil) ? 0 : match_b[match_b.keys[i]]
 
       total_value = v + match_b_value
-      if total_value > 0
-        total_value = total_value / 2
+      if (k.to_s.include?('in_criteria_points') && total_value > 0)
+        total_value = (total_value / 2.0).round.to_f
       end
       match_total.merge!("#{k}": total_value) 
     }
