@@ -426,6 +426,8 @@ module ApplicationHelper
     match_a = scheme_mix_criteria_score.select { |key, value| key.to_s.match(/score_a/) }
     match_b = scheme_mix_criteria_score.select { |key, value| key.to_s.match(/score_b/) }
     match_total = {}
+    smc_weight_a = (smc_weight_a == nil || smc_weight_a == 0) ? 1 : smc_weight_a
+    smc_weight_b = (smc_weight_b == nil || smc_weight_b == 0) ? 1 : smc_weight_b
 
     match_a.dup.each_with_index { |(k, v), i|
       v = (v == nil) ? 0 : v
