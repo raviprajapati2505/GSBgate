@@ -295,7 +295,9 @@
                                   <% 
                                     scheme_mix_criteria_score = scheme_mix_criteria_scores.find{|item| item[:scheme_mix_criteria_id] == scheme_mix_criterion.id }
                                     scheme_mix_criteria_score = scheme_mix_criteria_score.merge(category_scale)
-                                    scheme_mix_criteria_score = calculate_average(scheme_mix_criteria_score)
+                                    smc_weight_a = scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[0])
+                                    smc_weight_b = scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[1])
+                                    scheme_mix_criteria_score = calculate_average(scheme_mix_criteria_score, smc_weight_a, smc_weight_b)
                                   %>
                                   <%
                                     maximum_score_attribute = SchemeCriterion::MAX_SCORE_ATTRIBUTES[0]

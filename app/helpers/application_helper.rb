@@ -422,7 +422,7 @@ module ApplicationHelper
     FILEICON_EXTENSIONS[ext.downcase] || 'fileicons/file_extension_unknown.png'
   end
 
-  def calculate_average(scheme_mix_criteria_score)
+  def calculate_average(scheme_mix_criteria_score, smc_weight_a, smc_weight_b)
     match_a = scheme_mix_criteria_score.select { |key, value| key.to_s.match(/score_a/) }
     match_b = scheme_mix_criteria_score.select { |key, value| key.to_s.match(/score_b/) }
     match_total = {}
@@ -431,9 +431,12 @@ module ApplicationHelper
       v = (v == nil) ? 0 : v
       match_b_value = (match_b[match_b.keys[i]] == nil) ? 0 : match_b[match_b.keys[i]]
 
+      total_score = (v / smc_weight_a) + (match_b_value / smc_weight_b)
       total_value = v + match_b_value
       if (k.to_s.include?('in_criteria_points') && total_value > 0)
         total_value = (total_value / 2.0).round.to_f
+      else
+        total_value = ((total_score / 2.0).round(2)) * (smc_weight_a + smc_weight_b)
       end
       match_total.merge!("#{k}": total_value) 
     }
