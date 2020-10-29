@@ -236,7 +236,7 @@
                               </td>
                               <td><%= t(scheme_mix_criterion.status, scope: 'activerecord.attributes.scheme_mix_criterion.statuses') %></td>
                               
-                              <% if scheme_mix_criterion.scheme_criterion.code == 'W.1' %>
+                              <% if scheme_mix_criterion.w1_certification_CM_2019? %>
                                 <td> 
                                   <p><%= merge_incentives(scheme_mix_criterion) %>
                                     <% if (scheme_mix_criterion.scheme_criterion.has_incentive_weight?(0) || scheme_mix_criterion.scheme_criterion.has_incentive_weight?(1)) %>
@@ -290,7 +290,7 @@
                                 </td>
                               <% end %>
                               
-                              <% if scheme_mix_criterion.scheme_criterion.code == 'W.1' %>
+                              <% if scheme_mix_criterion.w1_certification_CM_2019? %>
                                 <td>
                                   <% 
                                     scheme_mix_criteria_score = scheme_mix_criteria_scores.find{|item| item[:scheme_mix_criteria_id] == scheme_mix_criterion.id }
