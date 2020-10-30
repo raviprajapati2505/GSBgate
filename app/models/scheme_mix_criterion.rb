@@ -282,7 +282,7 @@ class SchemeMixCriterion < ApplicationRecord
   end
 
   def w1_certification_CM_2019?
-    scheme_criterion.code == 'W.1' && scheme_mix.certification_path.certificate.construction_2019?
+    scheme_criterion.code == 'W.1' && scheme_mix.CM_2019?
   end
 
   # This overrides default behaviour

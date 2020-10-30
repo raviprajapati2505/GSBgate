@@ -162,7 +162,7 @@
                     </div>
                   </td>
                   <td>
-                    <% if category.code == 'W' %>
+                    <% if category.code == 'W' &&  @scheme_mix.CM_2019? %>
                       <%
                         category_scale = {
                             maximum_scale_in_certificate_points: scheme_mix_criteria_scores_by_category[category.id].collect{|score| score[:maximum_score_in_certificate_points]}.max,

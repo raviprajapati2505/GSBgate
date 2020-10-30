@@ -28,6 +28,10 @@ class SchemeMix < ApplicationRecord
     self.certification_path.is_checklist_method?
   end
 
+  def CM_2019?
+    certification_path.certificate.construction_2019?
+  end
+
   # Mirrors all the descendant structural data records of the SchemeMix to user data records
   def create_descendant_records
     # Build a list of all criteria codes/ids of the main scheme mix
