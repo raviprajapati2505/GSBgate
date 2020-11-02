@@ -421,4 +421,44 @@ module ApplicationHelper
     ext = file_extension.start_with?('.') ? file_extension[1..-1] : file_extension
     FILEICON_EXTENSIONS[ext.downcase] || 'fileicons/file_extension_unknown.png'
   end
+
+  def calculate_average(scheme_mix_criteria_score, smc_weight_a, smc_weight_b)
+    match_a = scheme_mix_criteria_score.select { |key, value| key.to_s.match(/score_a/) }
+    match_b = scheme_mix_criteria_score.select { |key, value| key.to_s.match(/score_b/) }
+    match_total = {}
+    smc_weight_a = (smc_weight_a == nil || smc_weight_a == 0) ? 1 : smc_weight_a
+    smc_weight_b = (smc_weight_b == nil || smc_weight_b == 0) ? 1 : smc_weight_b
+
+    scheme_mix_criteria_score.each do |k, v|
+      v = (v == nil) ? 0 : v
+
+      if k.to_s.include?('_a_')
+        key = k.to_s.sub! '_a_', '_b_'
+        value = scheme_mix_criteria_score[key.to_sym]
+        value = (value == nil) ? 0 : value
+
+        total_score = (v / smc_weight_a) + (value / smc_weight_b)
+        total_value = v + value
+        if (k.to_s.include?('in_criteria_points') && total_value > 0)
+          total_value = (total_value / 2.0).round.to_f
+        else
+          total_value = ((total_score / 2.0).round(2)) * (smc_weight_a + smc_weight_b)
+        end
+        match_total.merge!("#{k}": total_value)
+        match_total.merge!("#{key.to_sym}": 0.0)
+
+        main_key = k.to_s.split('_a_').join('_')
+        match_total.merge!("#{main_key.to_sym}": total_value)
+
+        match_total.each_pair do |k1, v1|
+          scheme_mix_criteria_score[k1] = v1
+        end
+      end
+    end
+    return scheme_mix_criteria_score
+  end
+
+  def merge_incentives(scheme_mix_criterion)
+    return (scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[0]) + scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[1]))
+  end
 end
