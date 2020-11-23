@@ -226,6 +226,19 @@ $(function () {
     });
     $('.project-form #project_building_type_group_id').trigger('change', true);
 
+    // Gross Certified Area (A+B-C)
+    $('#project_project_site_area, #project_gross_area, #project_buildings_footprint_area').keyup(function(){
+        var A = $('#project_project_site_area').val();
+        var B = $('#project_gross_area').val();
+        var C = $('#project_buildings_footprint_area').val();
+
+        A = (A == "") ? 0 : Number(A)
+        B = (B == "") ? 0 : Number(B)
+        C = (C == "") ? 0 : Number(C)
+
+        $('#project_certified_area').val(A+B-C);
+    });
+
     // Turn document table in standard jQuery DataTable for sorting
     $('.document-table').DataTable({
         buttons: [],
