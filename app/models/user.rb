@@ -5,7 +5,7 @@ class User < ApplicationRecord
   include BCrypt
   include DatePlucker
 
-  enum role: { system_admin: 5, default_role: 1, gsas_trust_top_manager: 2, gsas_trust_manager: 3, gsas_trust_admin: 4,document_controller: 6 }
+  enum role: { system_admin: 5, default_role: 1, gsas_trust_top_manager: 2, gsas_trust_manager: 3, gsas_trust_admin: 4,document_controller: 6, record_checker: 7 }
 
   has_many :documents
   has_many :scheme_mix_criteria_documents

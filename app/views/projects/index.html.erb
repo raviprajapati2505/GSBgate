@@ -14,3 +14,29 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function(){
+        if(<%= current_user.record_checker? %>) {
+            $('.btn-group').find('.buttons-copy, .buttons-csv, .buttons-print').css('display', 'none')
+            $('.ibox-content').addClass('unselectable')
+            $(document).on('keydown', function(e) {
+                if((e.ctrlKey || e.metaKey) && (e.key == "p" || e.charCode == 16 || e.charCode == 112 || e.keyCode == 80) ){
+                    e.cancelBubble = true;
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                }  
+            });
+        }
+    });
+</script>
+
+<style>
+    .unselectable {
+        -webkit-user-select: none;
+        -webkit-touch-callout: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+</style>

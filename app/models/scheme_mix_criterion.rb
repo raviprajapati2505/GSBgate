@@ -281,6 +281,10 @@ class SchemeMixCriterion < ApplicationRecord
     return verifying? || score_minimal? || score_awarded? || score_downgraded? || score_upgraded? || verifying_after_appeal? || score_minimal_after_appeal? || score_awarded_after_appeal? || score_downgraded_after_appeal? || score_upgraded_after_appeal?
   end
 
+  def w1_certification_CM_2019?
+    scheme_criterion.code == 'W.1' && scheme_mix.CM_2019?
+  end
+
   # This overrides default behaviour
   # by default the 'id' is always an integer, but sometimes you want to use a string
   # if an attribute 'id_text' exists then use the value for the 'id' attribute after explicit conversion to string
