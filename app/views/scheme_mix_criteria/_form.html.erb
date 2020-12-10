@@ -219,7 +219,7 @@
                       <% end %>
                     </tr>
                     <% if can?(:update_incentive_scored, @scheme_mix_criterion) %>
-                      <% if @scheme_mix_criterion.scheme_criterion.has_manual_incentive? %>
+                      <% if @scheme_mix_criterion.scheme_criterion.has_manual_incentive? && !@scheme_mix_criterion.w1_certification_CM_2019?%>
                       <tr>
                         <th>Incentive Earned ?</th>
                         <% SchemeCriterion::SCORE_ATTRIBUTES.each_with_index do |scores, index| %>

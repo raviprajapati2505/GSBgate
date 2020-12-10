@@ -422,7 +422,7 @@ module ApplicationHelper
     FILEICON_EXTENSIONS[ext.downcase] || 'fileicons/file_extension_unknown.png'
   end
 
-  def calculate_average(scheme_mix_criteria_score, smc_weight_a, smc_weight_b)
+  def calculate_average(scheme_mix_criteria, scheme_mix_criteria_score, smc_weight_a, smc_weight_b)
     match_a = scheme_mix_criteria_score.select { |key, value| key.to_s.match(/score_a/) }
     match_b = scheme_mix_criteria_score.select { |key, value| key.to_s.match(/score_b/) }
     match_total = {}
@@ -443,12 +443,17 @@ module ApplicationHelper
           total_value = (total_value / 2.0).round.to_f
         else
           total_value = ((total_score / 2.0).round(2)) * (smc_weight_a + smc_weight_b)
+          scheme_mix_criteria.scheme_mix_criterion_incentives.where(incentive_scored: true).each do |smci|
+            incentive_weight = (smci.scheme_criterion_incentive.incentive_weight * 3.0) / 100
+            total_value += incentive_weight
+          end if ( k.to_s.include?('targeted_score_') || k.to_s.include?('submitted_score_') || k.to_s.include?('achieved_score_') || k.to_s.include?('maximum_score_'))
         end
-        match_total.merge!("#{k}": total_value)
-        match_total.merge!("#{key.to_sym}": 0.0)
 
         main_key = k.to_s.split('_a_').join('_')
         match_total.merge!("#{main_key.to_sym}": total_value)
+
+        match_total.merge!("#{k}": total_value)
+        match_total.merge!("#{key.to_sym}": 0.0)
 
         match_total.each_pair do |k1, v1|
           scheme_mix_criteria_score[k1] = v1
