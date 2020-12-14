@@ -90,30 +90,43 @@ module Effective
         col :certification_path_status_is_active, sql_column: 'CASE WHEN certification_path_statuses.id IS NULL THEN false WHEN certification_path_statuses.id = 15 THEN false WHEN certification_path_statuses.id = 16 THEN false ELSE true END', as: :boolean, label: t('models.effective.datatables.projects_certification_paths.certification_path_status_is_active.label')
 
         col :rating, partial: '/certification_paths/rating', partial_as: 'rec', search: false, as: :decimal, label: t('models.effective.datatables.projects_certification_paths.rating.label'), sql_column: '(%s)' % ProjectsCertificationPaths.query_score_in_certificate_points(:achieved_score)
+
         col :total_achieved_score, as: :decimal, label: t('models.effective.datatables.projects_certification_paths.total_achieved_score.label'), sql_column: '(%s)' % ProjectsCertificationPaths.query_score_in_certificate_points(:achieved_score), search: false do |rec|
-          if rec.certificate_gsas_version == '2019' && rec.certificate_type == Certificate.certificate_types[:construction_type]
-            if !rec.total_achieved_score.nil? && rec.total_achieved_score > 3
-              3.0
+          if !rec.total_achieved_score.nil?
+            if rec.certificate_gsas_version == 'v2.1 Issue 1.0' && rec.certificate_type == Certificate.certificate_types[:construction_type]
+              number_to_percentage(rec.total_achieved_score, precision: 1)
             else
-              rec.total_achieved_score
+              if !rec.total_achieved_score.nil? && rec.total_achieved_score > 3
+                3.0
+              else
+                rec.total_achieved_score.round(2)
+              end
             end
           end
         end
         col :total_submitted_score, as: :decimal, label: t('models.effective.datatables.projects_certification_paths.total_submitted_score.label'), sql_column: '(%s)' % ProjectsCertificationPaths.query_score_in_certificate_points(:submitted_score), search: false do |rec|
-          if rec.certificate_gsas_version == '2019' && rec.certificate_type == Certificate.certificate_types[:construction_type]
-            if !rec.total_submitted_score.nil? && rec.total_submitted_score > 3
-              3.0
+          if !rec.total_submitted_score.nil?
+            if rec.certificate_gsas_version == 'v2.1 Issue 1.0' && rec.certificate_type == Certificate.certificate_types[:construction_type]
+              number_to_percentage(rec.total_submitted_score, precision: 1)
             else
-              rec.total_submitted_score
+              if !rec.total_submitted_score.nil? && rec.total_submitted_score > 3
+                3.0
+              else
+                rec.total_submitted_score.round(2)
+              end
             end
           end
         end
         col :total_targeted_score, as: :decimal, label: t('models.effective.datatables.projects_certification_paths.total_targeted_score.label'), sql_column: '(%s)' % ProjectsCertificationPaths.query_score_in_certificate_points(:targeted_score), search: false do |rec|
-          if rec.certificate_gsas_version == '2019' && rec.certificate_type == Certificate.certificate_types[:construction_type]
-            if !rec.total_targeted_score.nil? && rec.total_targeted_score > 3
-              3.0
+          if !rec.total_targeted_score.nil?
+            if rec.certificate_gsas_version == 'v2.1 Issue 1.0' && rec.certificate_type == Certificate.certificate_types[:construction_type]
+              number_to_percentage(rec.total_targeted_score, precision: 1)
             else
-              rec.total_targeted_score
+              if !rec.total_targeted_score.nil? && rec.total_targeted_score > 3
+                3.0
+              else
+                rec.total_targeted_score.round(2)
+              end
             end
           end
         end
