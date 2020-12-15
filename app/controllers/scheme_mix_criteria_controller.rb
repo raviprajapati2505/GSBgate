@@ -27,6 +27,9 @@ class SchemeMixCriteriaController < AuthenticatedController
   def edit_status
   end
 
+  def apply_pcr
+  end
+
   def update_status
     todos = @scheme_mix_criterion.todo_before_status_advance
 

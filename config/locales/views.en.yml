@@ -195,6 +195,12 @@ en:
         undo: Revert Status
         submit: Submit Criterion
         verify: Verify Criterion
+    apply_pcr:
+      title: 
+        pcr: Apply For PCR
+      message: 'ATTENTION: By clicking this button, you confirm that a PCR is requested for this criterion'
+      btn_cancel: 'No'
+      btn_save: 'Yes'
     form:
       details:
         btn_edit_status:

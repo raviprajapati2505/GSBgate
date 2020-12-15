@@ -1,0 +1,22 @@
+<div class="modal-dialog">
+  <%= bootstrap_form_for([@project, @certification_path, @scheme_mix, @scheme_mix_criterion],method: :get, url: request_review_project_certification_path_scheme_mix_scheme_mix_criterion_path) do |f| %>
+    <div class="modal-content">
+      <div class="modal-header">
+        <%= btn_close_modal %>
+        <h4 class="modal-title">  
+          <%= t('.title.pcr') %>
+        </h4>
+      </div>
+      <div class="modal-body">
+        <%= t('.message') %>
+      </div>
+      <div class="modal-footer">
+        <% if can?(:update_status, @scheme_mix_criterion) %>
+          <%#= btn_save %>
+          <%= btn_tag(text: t('.btn_save'), class: 'okBtn') %>
+          <%= btn_tag(text: t('.btn_cancel'), style: 'white', data: {dismiss: 'modal'}) %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

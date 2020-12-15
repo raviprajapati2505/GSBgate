@@ -63,28 +63,32 @@
                         <%= btn_link_to(edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, undo: 1), remote: true, icon: 'undo', text: t('.details.btn_edit_status.undo'), style: 'danger') %>
                     <% end %>
                 <% else %>
-                    <% if @scheme_mix_criterion.in_submission? %>
-                        <% if @scheme_mix_criterion.scheme_mix_criteria_documents.count < 1 %>
+                    <% if @scheme_mix_criterion.is_submitting? %>
+                      <% if @scheme_mix_criterion.todo_before_status_advance.blank? %>
+                        <% if @scheme_mix_criterion.review_count < @certification_path.max_review_count %>
+                            <% data = {confirm: 'ATTENTION: By clicking this button, you confirm that a PCR is NOT requested for this criterion.'} %>
+                        <% elsif @scheme_mix_criterion.scheme_mix_criteria_documents.count < 1 %>
                             <% data = {confirm: 'You are submitting this criterion without documentation. Are you sure?'} %>
                         <% else %>
                             <% data = {} %>
                         <% end %>
-                        <% if @scheme_mix_criterion.in_review? %>
-                          <%= btn_link_to(edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), remote: true, icon: 'check', text: t('.details.btn_edit_status.submit'), data: data, class: 'disabled') %>
-                        <% else %>
-                          <%= btn_link_to(edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), remote: true, icon: 'check', text: t('.details.btn_edit_status.submit'), data: data) %>
-                        <% end %>
-                        <% if can?(:request_review, @scheme_mix_criterion) %>
-                          <% if @scheme_mix_criterion.review_count < @certification_path.max_review_count %>
-                            <% if @scheme_mix_criterion.in_review? %>
-                              <%= btn_link_to(request_review_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), icon: 'life-saver', text: 'PCR review in progress', class: 'disabled') %>
-                            <% else %>
-                                <%= btn_link_to(request_review_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), icon: 'life-saver', text: 'Request PCR review') %>
-                            <% end %>
+                      <% end %>
+                      <% if @scheme_mix_criterion.in_review? %>
+                        <%= btn_link_to(edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), remote: true, icon: 'check', text: t('.details.btn_edit_status.submit'), data: data, class: 'disabled') %>
+                      <% else %>
+                        <%= btn_link_to(edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), remote: true, icon: 'check', text: t('.details.btn_edit_status.submit'), data: data) %>
+                      <% end %>
+                      <% if can?(:request_review, @scheme_mix_criterion) %>
+                        <% if @scheme_mix_criterion.review_count < @certification_path.max_review_count %>
+                          <% if @scheme_mix_criterion.in_review? %>
+                            <%= btn_link_to(apply_pcr_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), icon: 'life-saver', text: 'PCR review in progress', class: 'disabled') %>
                           <% else %>
-                              <%= btn_link_to(request_review_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), icon: 'life-saver', text: 'Max. PCR reviews reached', class: 'disabled') %>
+                              <%= btn_link_to(apply_pcr_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), remote: true, icon: 'life-saver', text: 'Submit for PCR') %>
                           <% end %>
+                        <% else %>
+                            <%= btn_link_to(apply_pcr_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), icon: 'life-saver', text: 'Max. PCR reviews reached', class: 'disabled') %>
                         <% end %>
+                      <% end %>
                     <% elsif can?(:edit_status, @scheme_mix_criterion) %>
                         <%= btn_link_to(edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, undo: 1), remote: true, icon: 'undo', text: t('.details.btn_edit_status.undo'), style: 'danger') %>
                     <% end %>
@@ -623,6 +627,8 @@
 </div>
 <div id="editStatusSchemeMixCriterionModal" class="modal fade"></div>
 <div id="reviewSchemeMixCriterionModal" class="modal fade"></div>
+<div id="applyPcrSchemeMixCriterionModal" class="modal fade"></div>
+
 <%= javascript_include_tag 'select_project_certifier' %>
 <%= javascript_include_tag 'select_project_team_member' %>
 <%= javascript_include_tag 'incentive_scored' %>

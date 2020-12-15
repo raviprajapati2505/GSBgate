@@ -69,6 +69,7 @@ Rails.application.routes.draw do
         resources :scheme_mix_criteria, only: [:show], path: :criteria, as: 'scheme_mix_criterion' do
           member do
             get :edit_status
+            get :apply_pcr
             get :request_review
             get :provide_review_comment
             get :provide_draft_review_comment
