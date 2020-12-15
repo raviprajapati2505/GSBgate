@@ -270,6 +270,11 @@ class SchemeMixCriterion < ApplicationRecord
     return false
   end
 
+  def is_submitting?
+    return true if self.submitting?
+    return false
+  end
+
   def in_verification?
     if self.verifying? || self.verifying_after_appeal?
       return true
