@@ -11,11 +11,9 @@
         <%= t('.message') %>
       </div>
       <div class="modal-footer">
-        <% if can?(:update_status, @scheme_mix_criterion) %>
-          <%#= btn_save %>
-          <%= btn_tag(text: t('.btn_save'), class: 'okBtn') %>
-          <%= btn_tag(text: t('.btn_cancel'), style: 'white', data: {dismiss: 'modal'}) %>
-        <% end %>
+        <%#= btn_save %>
+        <%= btn_tag(text: t('.btn_save'), class: 'okBtn') %>
+        <%= btn_tag(text: t('.btn_cancel'), style: 'white', data: {dismiss: 'modal'}) %>
       </div>
     </div>
   <% end %>
