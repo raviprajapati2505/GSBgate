@@ -28,6 +28,10 @@ class SchemeMixCriteriaController < AuthenticatedController
   end
 
   def apply_pcr
+    @data = { }
+    
+    @data[:pcr] = 'ATTENTION: By clicking this button, you confirm that a PCR is requested for this criterion' if @scheme_mix_criterion.review_count < @certification_path.max_review_count 
+    @data[:confirm] = 'You are submitting this criterion without documentation. Are you sure?' if @scheme_mix_criterion.scheme_mix_criteria_documents.count < 1
   end
 
   def update_status
@@ -166,7 +170,7 @@ class SchemeMixCriteriaController < AuthenticatedController
 
       flash[:notice] = 'Criterion is sent for review.'
     else
-      flash[:alert] = 'Maximum number of PCR review requests reached for this criterion.'
+      flash[:alert] = 'Maximum number of PCR requests reached for this criterion.'
     end
     redirect_to project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion)
   end
@@ -181,7 +185,7 @@ class SchemeMixCriteriaController < AuthenticatedController
       @scheme_mix_criterion.pcr_review_draft = params[:scheme_mix_criterion][:pcr_review_draft]
       @scheme_mix_criterion.save!
     end
-    flash[:notice] = 'Criterion draft PCR review submitted.'
+    flash[:notice] = 'Criterion draft PCR submitted.'
     redirect_to project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion)
   end
 
