@@ -28,6 +28,10 @@ class SchemeMixCriteriaController < AuthenticatedController
   end
 
   def apply_pcr
+    @data = { }
+    
+    @data[:pcr] = 'ATTENTION: By clicking this button, you confirm that a PCR is requested for this criterion' if @scheme_mix_criterion.review_count < @certification_path.max_review_count 
+    @data[:confirm] = 'You are submitting this criterion without documentation. Are you sure?' if @scheme_mix_criterion.scheme_mix_criteria_documents.count < 1
   end
 
   def update_status

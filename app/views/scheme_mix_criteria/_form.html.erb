@@ -64,12 +64,12 @@
                 <% else %>
                     <% if @scheme_mix_criterion.is_submitting? %>
                         <% if @scheme_mix_criterion.todo_before_status_advance.blank? %>
+                          <% data = {} %>
                           <% if @scheme_mix_criterion.review_count < @certification_path.max_review_count %>
-                              <% data = {confirm: 'ATTENTION: By clicking this button, you confirm that a PCR is NOT requested for this criterion.'} %>
-                          <% elsif @scheme_mix_criterion.scheme_mix_criteria_documents.count < 1 %>
-                              <% data = {confirm: 'You are submitting this criterion without documentation. Are you sure?'} %>
-                          <% else %>
-                              <% data = {} %>
+                            <% data[:pcr] = 'ATTENTION: By clicking this button, you confirm that a PCR is NOT requested for this criterion.' %>
+                          <% end %>
+                          <% if @scheme_mix_criterion.scheme_mix_criteria_documents.count < 1 %>
+                            <% data[:confirm] = 'You are submitting this criterion without documentation. Are you sure?' %>
                           <% end %>
                         <% end %>
                         <% if @scheme_mix_criterion.in_review? %>
@@ -658,4 +658,12 @@
        data: {documents: ids, all: all}
       });
     });
+
+    $("#edit_scheme_mix_criterion_63155").on("submit", function(e) {
+      console.log("data -> clicked");
+     
+      
+    })
+  
+  
 </script>
