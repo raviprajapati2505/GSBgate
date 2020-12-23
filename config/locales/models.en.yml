@@ -134,8 +134,8 @@ en:
             assigned_for_screening_html: Criterion <strong>%{criterion}</strong> was assigned to GSAS trust certifier <strong>%{user}</strong> for screening.
             assigned_for_verification_due_html: Criterion <strong>%{criterion}</strong> was assigned to GSAS trust certifier <strong>%{user}</strong> for verification. The due date is <strong>%{due_date}</strong>.
             assigned_for_verification_html: Criterion <strong>%{criterion}</strong> was assigned to GSAS trust certifier <strong>%{user}</strong> for verification.
-            assigned_for_pcr_review_due_html: Criterion <strong>%{criterion}</strong> was assigned to GSAS trust certifier <strong>%{user}</strong> for PCR review. The due date is <strong>%{due_date}</strong>.
-            assigned_for_pcr_review_html: Criterion <strong>%{criterion}</strong> was assigned to GSAS trust certifier <strong>%{user}</strong> for PCR review.
+            assigned_for_pcr_review_due_html: Criterion <strong>%{criterion}</strong> was assigned to GSAS trust certifier <strong>%{user}</strong> for PCR. The due date is <strong>%{due_date}</strong>.
+            assigned_for_pcr_review_html: Criterion <strong>%{criterion}</strong> was assigned to GSAS trust certifier <strong>%{user}</strong> for PCR.
           targeted_score:
             set_html: The %{score_label} targeted level of criterion <strong>%{criterion}</strong> was set to <strong>%{score}</strong>.
             unset_html: The %{score_label} targeted level of criterion <strong>%{criterion}</strong> was removed.
@@ -155,10 +155,10 @@ en:
           main:
             update_html: This change was automated because the criterion inherits from <strong>%{main_criterion}</strong> in the <strong>%{main_scheme}</strong> scheme.
           pcr_review_draft:
-            update_html: A draft PCR review was provided for criterion <strong>%{criterion}</strong>.
+            update_html: A draft PCR was provided for criterion <strong>%{criterion}</strong>.
           in_review:
-            provided_html: A PCR review was provided for criterion <strong>%{criterion}</strong>.
-            requested_html: A PCR review was requested for criterion <strong>%{criterion}</strong>.
+            provided_html: A PCR was provided for criterion <strong>%{criterion}</strong>.
+            requested_html: A PCR was requested for criterion <strong>%{criterion}</strong>.
         scheme_mix_criteria_document:
           status:
             create_html: A new document <strong>%{document}</strong> was added to criterion <strong>%{criterion}</strong>.

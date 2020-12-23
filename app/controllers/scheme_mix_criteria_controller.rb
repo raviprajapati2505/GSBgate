@@ -166,7 +166,7 @@ class SchemeMixCriteriaController < AuthenticatedController
 
       flash[:notice] = 'Criterion is sent for review.'
     else
-      flash[:alert] = 'Maximum number of PCR review requests reached for this criterion.'
+      flash[:alert] = 'Maximum number of PCR requests reached for this criterion.'
     end
     redirect_to project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion)
   end
@@ -181,7 +181,7 @@ class SchemeMixCriteriaController < AuthenticatedController
       @scheme_mix_criterion.pcr_review_draft = params[:scheme_mix_criterion][:pcr_review_draft]
       @scheme_mix_criterion.save!
     end
-    flash[:notice] = 'Criterion draft PCR review submitted.'
+    flash[:notice] = 'Criterion draft PCR submitted.'
     redirect_to project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion)
   end
 

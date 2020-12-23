@@ -40,13 +40,13 @@
                 <% end %>
                 <% if @certification_path.in_pre_verification? && @certification_path.pcr_track? && @scheme_mix_criterion.main_scheme_mix_criterion.blank? %>
                 <tr>
-                  <th>PCR Reviews Requested</th>
+                  <th>PCR Requested</th>
                   <td>
                     <%= @scheme_mix_criterion.review_count %>
                   </td>
                 </tr>
                 <tr>
-                  <th>PCR Reviews Available</th>
+                  <th>PCR Available</th>
                   <td>
                     <%= @scheme_mix_criterion.reviews_available %>
                   </td>
@@ -81,12 +81,12 @@
                       <% if can?(:request_review, @scheme_mix_criterion) %>
                         <% if @scheme_mix_criterion.review_count < @certification_path.max_review_count %>
                           <% if @scheme_mix_criterion.in_review? %>
-                            <%= btn_link_to(apply_pcr_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), icon: 'life-saver', text: 'PCR review in progress', class: 'disabled') %>
+                            <%= btn_link_to(apply_pcr_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), icon: 'life-saver', text: 'PCR in progress', class: 'disabled') %>
                           <% else %>
                               <%= btn_link_to(apply_pcr_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), remote: true, icon: 'life-saver', text: 'Submit for PCR') %>
                           <% end %>
                         <% else %>
-                            <%= btn_link_to(apply_pcr_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), icon: 'life-saver', text: 'Max. PCR reviews reached', class: 'disabled') %>
+                            <%= btn_link_to(apply_pcr_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), icon: 'life-saver', text: 'Max. PCR reached', class: 'disabled') %>
                         <% end %>
                       <% end %>
                     <% elsif can?(:edit_status, @scheme_mix_criterion) %>
@@ -95,10 +95,10 @@
                 <% end %>
             <% elsif can?(:provide_draft_review_comment, @scheme_mix_criterion) %>
               <div class="hr-line-dashed"></div>
-              <%= btn_link_to(provide_draft_review_comment_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), remote: true, icon: 'life-saver', text: 'Provide Draft PCR review comment') %>
+              <%= btn_link_to(provide_draft_review_comment_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), remote: true, icon: 'life-saver', text: 'Provide Draft PCR comment') %>
             <% elsif can?(:provide_review_comment, @scheme_mix_criterion) %>
               <div class="hr-line-dashed"></div>
-              <%= btn_link_to(provide_review_comment_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), remote: true, icon: 'life-saver', text: @scheme_mix_criterion.pcr_review_draft.present? ? 'Publish PCR review comment' : 'Provide PCR review comment') %>
+              <%= btn_link_to(provide_review_comment_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), remote: true, icon: 'life-saver', text: @scheme_mix_criterion.pcr_review_draft.present? ? 'Publish PCR comment' : 'Provide PCR comment') %>
             <% elsif can?(:screen, @scheme_mix_criterion) %>
               <div class="hr-line-dashed"></div>
               <%= btn_link_to(screen_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), method: :put, icon: 'eye', text: 'Mark as screened') %>
