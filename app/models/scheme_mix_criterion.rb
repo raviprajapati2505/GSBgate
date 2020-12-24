@@ -249,6 +249,16 @@ class SchemeMixCriterion < ApplicationRecord
     return todos
   end
 
+  def pcr_todo
+    todos = []
+    if in_submission?
+      if has_documents_awaiting_approval?
+        todos << 'There are still documents awaiting approval.'
+      end
+    end
+    return todos
+  end
+
   def self::map_to_status_key(status_value)
     value = self.statuses.find { |k, v| v == status_value }
     return value[0].humanize unless value.nil?
@@ -267,6 +277,11 @@ class SchemeMixCriterion < ApplicationRecord
     if self.submitting? || self.submitting_after_appeal?
       return true
     end
+    return false
+  end
+
+  def is_submitting?
+    return true if self.submitting?
     return false
   end
 

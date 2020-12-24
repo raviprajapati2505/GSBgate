@@ -39,7 +39,7 @@
 $(function () {
     // Override the default confirm dialog by rails
     $.rails.allowAction = function(link) {
-        if (link.data("confirm") == undefined) {
+        if (link.data("confirm") == undefined && link.data("pcr") == undefined) {
             return true;
         }
         $.rails.showConfirmationDialog(link);
@@ -47,13 +47,33 @@ $(function () {
     };
 
     $.rails.showConfirmationDialog = function(link) {
-        var message = link.data("confirm");
+        var message
+        if (link.data("confirm") != undefined){
+            message = link.data("confirm");
+        }
+        else {
+            message = link.data("pcr");
+        }
         var modal = $('#confirmationModal');
         $('#confirmationModal .modal-body').html(message);
         $('#confirmationModal .okBtn').on('click', function() {
-            link.data("confirm", null);
-            link.trigger("click.rails");
-            modal.modal('hide');
+            if (link.data("confirm") != undefined){
+                link.data("confirm", null);
+                if(link.data("pcr") != undefined){
+                    message = link.data("pcr");
+                    $('#confirmationModal .modal-body').html(message);
+                }
+                else {
+                    link.data("pcr", null);
+                    link.trigger("click.rails");
+                    modal.modal('hide');
+                }
+            }
+            else {
+                link.data("pcr", null);
+                link.trigger("click.rails");
+                modal.modal('hide');
+            }
         });
         modal.modal();
     };
