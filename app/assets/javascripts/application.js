@@ -59,9 +59,15 @@ $(function () {
         $('#confirmationModal .okBtn').on('click', function() {
             if (link.data("confirm") != undefined){
                 link.data("confirm", null);
-                message = link.data("pcr");
-                $('#confirmationModal .modal-body').html(message);
-                link.data("pcr", null);
+                if(link.data("pcr") != undefined){
+                    message = link.data("pcr");
+                    $('#confirmationModal .modal-body').html(message);
+                }
+                else {
+                    link.data("pcr", null);
+                    link.trigger("click.rails");
+                    modal.modal('hide');
+                }
             }
             else {
                 link.data("pcr", null);
