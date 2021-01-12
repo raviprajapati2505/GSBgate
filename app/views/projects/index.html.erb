@@ -5,7 +5,7 @@
                 <h5><%= t('.title_html') %></h5>
             </div>
             <div class="ibox-content">
-                <%= render_datatable(@datatable, input_js: { buttons_export_columns: ':visible:not(.col-actions)' }) %>
+                <%= render_datatable(@datatable) %>
                 <% if can? :create, Project.new %>
                     <div class="hr-line-dashed"></div>
                     <%= btn_link_to(new_project_path, icon: 'building-o', text: t('.btn_new_project')) %>
