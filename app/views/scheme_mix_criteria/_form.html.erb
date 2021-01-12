@@ -62,7 +62,7 @@
                         <%= btn_link_to(edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, undo: 1), remote: true, icon: 'undo', text: t('.details.btn_edit_status.undo'), style: 'danger') %>
                     <% end %>
                 <% else %>
-                    <% if @scheme_mix_criterion.is_submitting? %>
+                    <% if @scheme_mix_criterion.in_submission? %>
                         <% if @scheme_mix_criterion.todo_before_status_advance.blank? %>
                           <% data = {} %>
                           <% if @scheme_mix_criterion.review_count < @certification_path.max_review_count %>
@@ -77,7 +77,7 @@
                         <% else %>
                           <%= btn_link_to(edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), remote: true, icon: 'check', text: t('.details.btn_edit_status.submit'), data: data) %>
                         <% end %>
-                        <% if can?(:request_review, @scheme_mix_criterion) %>
+                        <% if can?(:request_review, @scheme_mix_criterion) && @certification_path.pcr_track? && @scheme_mix_criterion.is_submitting? %>                          
                           <% if @scheme_mix_criterion.review_count < @certification_path.max_review_count %>
                             <% if @scheme_mix_criterion.in_review? %>
                               <%= btn_link_to(apply_pcr_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), remote: true, icon: 'life-saver', text: 'PCR in progress', class: 'disabled') %>
