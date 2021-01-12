@@ -442,7 +442,7 @@ module ApplicationHelper
     }
     @total_scores = @scheme_mix.scores
 
-    if @scheme_mix.CM_2019?
+    if @scheme_mix.CM_2019? && @scheme_mix.certification_path.certification_path_status.name != "Activating"
       @category_w = @scheme_mix.scheme_categories.find_by(name: "Water")
       criteria_w = @category_w&.scheme_mix_criteria
       data = @scheme_mix_criteria_scores_by_category[@category_w.id]
@@ -477,6 +477,7 @@ module ApplicationHelper
         @total_scores[k] = @total_scores[k] + modified_scores[k] - original_w_scores[k]
       end
     end
+    return @total_scores
   end
 
   def calculate_average(scheme_mix_criteria, scheme_mix_criteria_score, smc_weight_a, smc_weight_b)
