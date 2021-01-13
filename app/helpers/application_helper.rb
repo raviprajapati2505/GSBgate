@@ -422,9 +422,9 @@ module ApplicationHelper
     FILEICON_EXTENSIONS[ext.downcase] || 'fileicons/file_extension_unknown.png'
   end
 
-  def score_calculation
+  def score_calculation(scheme_mix)
     # fetch all score records
-    @scheme_mix_criteria_scores = @scheme_mix.scheme_mix_criteria_scores
+    @scheme_mix_criteria_scores = scheme_mix.scheme_mix_criteria_scores
     # check for criteria that violate their minimum_valid_score
     @invalid_criteria_ids = @scheme_mix_criteria_scores
         .select {|score| score[:achieved_score_in_criteria_points].nil? && score[:minimum_valid_score_in_criteria_points] > score[:minimum_score_in_criteria_points] }
@@ -440,10 +440,10 @@ module ApplicationHelper
         maximum_scale_in_criteria_points: @scheme_mix_criteria_scores_by_category.collect{|category_id, scores| scores.collect{|score| score[:maximum_score_in_criteria_points]}.inject(:+)}.max,
         minimum_scale_in_criteria_points: @scheme_mix_criteria_scores_by_category.collect{|category_id, scores| scores.collect{|score| score[:minimum_score_in_criteria_points]}.inject(:+)}.min
     }
-    @total_scores = @scheme_mix.scores
+    @total_scores = scheme_mix.scores
 
-    if @scheme_mix.CM_2019? && @scheme_mix.certification_path.certification_path_status.name != "Activating"
-      @category_w = @scheme_mix.scheme_categories.find_by(name: "Water")
+    if scheme_mix.CM_2019? && scheme_mix.certification_path.certification_path_status.name != "Activating"
+      @category_w = scheme_mix.scheme_categories.find_by(name: "Water")
       criteria_w = @category_w&.scheme_mix_criteria
       data = @scheme_mix_criteria_scores_by_category[@category_w.id]
       @score_data = []
