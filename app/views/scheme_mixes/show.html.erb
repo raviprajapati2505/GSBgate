@@ -2,7 +2,7 @@
   <%= render partial: 'show_checklist', locals: { scheme_mix: @scheme_mix } %>
 <% else %>
   <% 
-    @total_scores = score_calculation()
+    @total_scores = score_calculation(@scheme_mix)
   %>
 
 <div class="row">

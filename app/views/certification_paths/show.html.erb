@@ -4,8 +4,8 @@
 <% 
   @total_scores = @certification_path.scores_in_certificate_points
   if @certification_path.construction_certificate_CM_2019?
-    @scheme_mix = @certification_path&.scheme_mixes&.first
-    @total_scores = score_calculation() 
+    scheme_mix = @certification_path&.scheme_mixes&.first
+    @total_scores = score_calculation(scheme_mix) 
   end
 %>
 <div class="row">
