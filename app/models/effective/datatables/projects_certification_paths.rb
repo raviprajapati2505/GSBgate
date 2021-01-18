@@ -1,8 +1,15 @@
 module Effective
   module Datatables
     class ProjectsCertificationPaths < Effective::Datatable
+      include ApplicationHelper
       include ActionView::Helpers::TranslationHelper
       include ScoreCalculator
+
+      def fetch_scores(certification_path)
+        scheme_mix = certification_path&.scheme_mixes&.first
+        score_all = score_calculation(scheme_mix)
+        return score_all
+      end
 
       datatable do
         # col :project_id, sql_column: 'projects.id', as: :integer, search: {collection: Proc.new { Project.all.order(:name).map { |project| [project.code + ', ' + project.name, project.id] } }} do |rec|
@@ -96,10 +103,18 @@ module Effective
             if rec.certificate_gsas_version == 'v2.1 Issue 1.0' && rec.certificate_type == Certificate.certificate_types[:construction_type]
               number_to_percentage(rec.total_achieved_score, precision: 1)
             else
-              if !rec.total_achieved_score.nil? && rec.total_achieved_score > 3
+              score = rec&.total_achieved_score
+
+              certification_path = CertificationPath.find(rec&.certification_path_id)
+              if certification_path&.certificate&.construction_2019?
+                score_all = fetch_scores(certification_path)
+                score = score_all[:achieved_score_in_certificate_points]
+              end
+
+              if !score.nil? && score > 3
                 3.0
               else
-                rec.total_achieved_score.round(2)
+                score.round(2)
               end
             end
           end
@@ -109,10 +124,18 @@ module Effective
             if rec.certificate_gsas_version == 'v2.1 Issue 1.0' && rec.certificate_type == Certificate.certificate_types[:construction_type]
               number_to_percentage(rec.total_submitted_score, precision: 1)
             else
-              if !rec.total_submitted_score.nil? && rec.total_submitted_score > 3
+              score = rec&.total_submitted_score
+
+              certification_path = CertificationPath.find(rec&.certification_path_id)
+              if certification_path&.certificate&.construction_2019?
+                score_all = fetch_scores(certification_path)
+                score = score_all[:submitted_score_in_certificate_points]
+              end
+
+              if !score.nil? && score > 3
                 3.0
               else
-                rec.total_submitted_score.round(2)
+                score.round(2)
               end
             end
           end
@@ -122,10 +145,18 @@ module Effective
             if rec.certificate_gsas_version == 'v2.1 Issue 1.0' && rec.certificate_type == Certificate.certificate_types[:construction_type]
               number_to_percentage(rec.total_targeted_score, precision: 1)
             else
-              if !rec.total_targeted_score.nil? && rec.total_targeted_score > 3
+              score = rec&.total_targeted_score
+
+              certification_path = CertificationPath.find(rec&.certification_path_id)
+              if certification_path&.certificate&.construction_2019?
+                score_all = fetch_scores(certification_path)
+                score = score_all[:targeted_score_in_certificate_points]
+              end
+
+              if !score.nil? && score > 3
                 3.0
               else
-                rec.total_targeted_score.round(2)
+                score.round(2)
               end
             end
           end

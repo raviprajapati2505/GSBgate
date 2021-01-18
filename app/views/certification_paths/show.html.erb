@@ -1,6 +1,13 @@
 <% if @certification_path&.certification_path_method&.assessment_method == 2 %>
   <%= render partial: "show_checklist", locals: { certification_path: @certification_path } %>
 <% else %>
+<% 
+  @total_scores = @certification_path.scores_in_certificate_points
+  if @certification_path.construction_certificate_CM_2019?
+    scheme_mix = @certification_path&.scheme_mixes&.first
+    @total_scores = score_calculation(scheme_mix) 
+  end
+%>
 <div class="row">
     <div class="col-md-5">
         <div class="ibox float-e-margins">
@@ -39,7 +46,7 @@
                         <tr>
                             <th>Score</th>
                             <td>
-                                <%= render 'score/score', scores: @certification_path.scores_in_certificate_points, point_type: :certificate_points %>
+                                <%= render 'score/score', scores: @total_scores, point_type: :certificate_points %>
                             </td>
                         </tr>
                     <% end %>

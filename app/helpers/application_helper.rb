@@ -422,6 +422,64 @@ module ApplicationHelper
     FILEICON_EXTENSIONS[ext.downcase] || 'fileicons/file_extension_unknown.png'
   end
 
+  def score_calculation(scheme_mix)
+    # fetch all score records
+    @scheme_mix_criteria_scores = scheme_mix.scheme_mix_criteria_scores
+    # check for criteria that violate their minimum_valid_score
+    @invalid_criteria_ids = @scheme_mix_criteria_scores
+        .select {|score| score[:achieved_score_in_criteria_points].nil? && score[:minimum_valid_score_in_criteria_points] > score[:minimum_score_in_criteria_points] }
+        .map{|score| score[:scheme_mix_criteria_id]}
+    # group by category
+    @scheme_mix_criteria_scores_by_category = @scheme_mix_criteria_scores.group_by{|item| item[:scheme_category_id]}
+    # calculate the max and min values for each category, and take the max min of those calculated values
+    @scheme_scale = {
+        maximum_scale_in_certificate_points: @scheme_mix_criteria_scores_by_category.collect{|category_id, scores| scores.collect{|score| score[:maximum_score_in_certificate_points]}.inject(:+)}.max,
+        minimum_scale_in_certificate_points: @scheme_mix_criteria_scores_by_category.collect{|category_id, scores| scores.collect{|score| score[:minimum_score_in_certificate_points]}.inject(:+)}.min,
+        maximum_scale_in_scheme_points: @scheme_mix_criteria_scores_by_category.collect{|category_id, scores| scores.collect{|score| score[:maximum_score_in_scheme_points]}.inject(:+)}.max,
+        minimum_scale_in_scheme_points: @scheme_mix_criteria_scores_by_category.collect{|category_id, scores| scores.collect{|score| score[:minimum_score_in_scheme_points]}.inject(:+)}.min,
+        maximum_scale_in_criteria_points: @scheme_mix_criteria_scores_by_category.collect{|category_id, scores| scores.collect{|score| score[:maximum_score_in_criteria_points]}.inject(:+)}.max,
+        minimum_scale_in_criteria_points: @scheme_mix_criteria_scores_by_category.collect{|category_id, scores| scores.collect{|score| score[:minimum_score_in_criteria_points]}.inject(:+)}.min
+    }
+    @total_scores = scheme_mix.scores
+
+    if scheme_mix.CM_2019? && scheme_mix.certification_path.certification_path_status.name != "Activating"
+      @category_w = scheme_mix.scheme_categories.find_by(name: "Water")
+      criteria_w = @category_w&.scheme_mix_criteria
+      data = @scheme_mix_criteria_scores_by_category[@category_w.id]
+      @score_data = []
+      original_w_scores = sum_score_hashes(data)
+      data.each do |d|
+        scheme_mix_criterion = SchemeMixCriterion.find(d[:scheme_mix_criteria_id])
+        if scheme_mix_criterion.code == 'W.1'
+          scheme_mix_criteria_score_w = @scheme_mix_criteria_scores.find{|item| item[:scheme_mix_criteria_id] == scheme_mix_criterion.id }
+          # scheme_mix_criteria_score = scheme_mix_criteria_score.merge(category_scale)
+          smc_weight_a = scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[0])
+          smc_weight_b = scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[1])
+                                      
+          scheme_mix_criteria_score_for_w_1 = calculate_average(scheme_mix_criterion, scheme_mix_criteria_score_w, smc_weight_a, smc_weight_b)
+                    
+          @score_data << scheme_mix_criteria_score_for_w_1
+        else
+          @score_data << d
+        end  
+      end
+      @score_data.each do |s| 
+        s.each do |k, v|
+          s[k] = v.nil? ? 0 : v 
+        end
+      end
+      modified_scores = sum_score_hashes(@score_data)
+      @category_scores_w = modified_scores.merge(@scheme_scale)
+
+      original_w_scores.each { |k, v| original_w_scores[k] = (v == nil) ? 0 : v }
+      @total_scores.each { |k, v| @total_scores[k] = (v == nil) ? 0 : v }
+      @total_scores.each do |k, v|
+        @total_scores[k] = @total_scores[k] + modified_scores[k] - original_w_scores[k]
+      end
+    end
+    return @total_scores
+  end
+
   def calculate_average(scheme_mix_criteria, scheme_mix_criteria_score, smc_weight_a, smc_weight_b)
     match_a = scheme_mix_criteria_score.select { |key, value| key.to_s.match(/score_a/) }
     match_b = scheme_mix_criteria_score.select { |key, value| key.to_s.match(/score_b/) }
