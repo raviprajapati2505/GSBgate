@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/gordvishal/effective_datatables.git
-  revision: 6d143a09e9e24859a65ae092c7a49d450930a9c2
+  revision: 48f1dd76df4398990b8eccfd1fef11ab4bffb5dc
   branch: master
   specs:
     effective_datatables (3.5.3)
@@ -134,7 +134,7 @@ GEM
       dry-configurable (~> 0.1, >= 0.1.3)
     dry-core (0.4.7)
       concurrent-ruby (~> 1.0)
-    effective_resources (1.6.6)
+    effective_resources (1.7.1)
       rails (>= 4.0.0)
     erubi (1.8.0)
     erubis (2.7.0)
