@@ -2,7 +2,7 @@
   <%= render partial: "show_checklist", locals: { certification_path: @certification_path } %>
 <% else %>
 <% 
-  @total_scores = @certification_path.scores_in_certificate_points
+  final_score = @certification_path.scores_in_certificate_points
   if @certification_path.construction_certificate_CM_2019?
     if @certification_path.name == "Construction Certificate, 2019 - GSAS-CM Certificate"
       data_score = []
@@ -14,11 +14,11 @@
       end
       scores = total_CM_score(data_score)
     else
-      scheme_mix = certification_path&.scheme_mixes&.first
+      scheme_mix = @certification_path&.scheme_mixes&.first
       scores = score_calculation(scheme_mix)
     end
     # scheme_mix = @certification_path&.scheme_mixes&.first
-    @total_scores = scores
+    final_score = scores
   end
 %>
 <div class="row">
@@ -59,7 +59,7 @@
                         <tr>
                             <th>Score</th>
                             <td>
-                                <%= render 'score/score', scores: @total_scores, point_type: :certificate_points %>
+                                <%= render 'score/score', scores: final_score, point_type: :certificate_points %>
                             </td>
                         </tr>
                     <% end %>
@@ -215,7 +215,7 @@
               <tr>
                 <td><%= can_link_to(project_certification_path_path(@certification_path.project, certification_path), certification_path) do %><%= certification_path.name %><% end %></td>
                 <td><%= render 'certification_paths/ratings', certification_path: certification_path %></td>
-                <td><%= render 'score/score', scores: @total_scores, point_type: :certificate_points %></td>
+                <td><%= render 'score/score', scores: final_score, point_type: :certificate_points %></td>
               </tr>
             <% end %>
             </tbody>
