@@ -422,6 +422,18 @@ module ApplicationHelper
     FILEICON_EXTENSIONS[ext.downcase] || 'fileicons/file_extension_unknown.png'
   end
 
+  def total_CM_score(data)
+    final_score = {}
+    data.each do |stage|
+      final_score = final_score.merge(stage){ |k, final_value, score_value| final_value + score_value }
+    end
+    final_score.each do |k,v|
+      final_score[k] = v / 3.0
+    end
+
+    return final_score
+  end
+
   def score_calculation(scheme_mix)
     # fetch all score records
     @scheme_mix_criteria_scores = scheme_mix&.scheme_mix_criteria_scores
