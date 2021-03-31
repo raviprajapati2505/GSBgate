@@ -2,10 +2,23 @@
   <%= render partial: "show_checklist", locals: { certification_path: @certification_path } %>
 <% else %>
 <% 
-  @total_scores = @certification_path.scores_in_certificate_points
+  final_score = @certification_path.scores_in_certificate_points
   if @certification_path.construction_certificate_CM_2019?
-    scheme_mix = @certification_path&.scheme_mixes&.first
-    @total_scores = score_calculation(scheme_mix) 
+    if @certification_path.name == "Construction Certificate, 2019 - GSAS-CM Certificate"
+      data_score = []
+      certification_path_ids = @project.certification_paths.pluck(:id) - [@certification_path.id]
+      certification_path_ids.each do |cp_id|
+        scheme_mix = CertificationPath.find(cp_id)&.scheme_mixes&.first
+        scheme_mix_scores = score_calculation(scheme_mix)
+        data_score << scheme_mix_scores
+      end
+      scores = total_CM_score(data_score)
+    else
+      scheme_mix = @certification_path&.scheme_mixes&.first
+      scores = score_calculation(scheme_mix)
+    end
+    # scheme_mix = @certification_path&.scheme_mixes&.first
+    final_score = scores
   end
 %>
 <div class="row">
@@ -46,7 +59,7 @@
                         <tr>
                             <th>Score</th>
                             <td>
-                                <%= render 'score/score', scores: @total_scores, point_type: :certificate_points %>
+                                <%= render 'score/score', scores: final_score, point_type: :certificate_points %>
                             </td>
                         </tr>
                     <% end %>
@@ -198,11 +211,11 @@
             </tr>
             </thead>
             <tbody>
-            <% @certification_path.project.certification_paths.with_certification_type([Certificate::certification_types[:construction_certificate_stage1], Certificate::certification_types[:construction_certificate_stage2], Certificate::certification_types[:construction_certificate_stage3]]).each do |certification_path| %>
+            <% @certification_path.project.certification_paths.with_certification_type([Certificate::certification_types[:construction_certificate_stage1], Certificate::certification_types[:construction_certificate_stage2], Certificate::certification_types[:construction_certificate_stage3]])&.order(:created_at)&.each do |certification_path| %>
               <tr>
                 <td><%= can_link_to(project_certification_path_path(@certification_path.project, certification_path), certification_path) do %><%= certification_path.name %><% end %></td>
                 <td><%= render 'certification_paths/ratings', certification_path: certification_path %></td>
-                <td><%= render 'score/score', scores: certification_path.scores_in_certificate_points, point_type: :certificate_points %></td>
+                <td><%= render 'score/score', scores: final_score, point_type: :certificate_points %></td>
               </tr>
             <% end %>
             </tbody>
