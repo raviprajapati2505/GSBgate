@@ -212,10 +212,16 @@
             </thead>
             <tbody>
             <% @certification_path.project.certification_paths.with_certification_type([Certificate::certification_types[:construction_certificate_stage1], Certificate::certification_types[:construction_certificate_stage2], Certificate::certification_types[:construction_certificate_stage3]])&.order(:created_at)&.each do |certification_path| %>
+              <%   certification_path_scores = certification_path.scores_in_certificate_points
+                  if certification_path.construction_certificate_CM_2019?
+                    scheme_mix = certification_path&.scheme_mixes&.first
+                    certification_path_scores = score_calculation(scheme_mix) 
+                  end
+              %>
               <tr>
                 <td><%= can_link_to(project_certification_path_path(@certification_path.project, certification_path), certification_path) do %><%= certification_path.name %><% end %></td>
                 <td><%= render 'certification_paths/ratings', certification_path: certification_path %></td>
-                <td><%= render 'score/score', scores: final_score, point_type: :certificate_points %></td>
+                <td><%= render 'score/score', scores: certification_path_scores, point_type: :certificate_points %></td>
               </tr>
             <% end %>
             </tbody>
