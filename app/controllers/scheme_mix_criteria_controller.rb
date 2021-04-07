@@ -109,10 +109,14 @@ class SchemeMixCriteriaController < AuthenticatedController
   def reset_incentive_scored
     if ['E','W'].include?(@scheme_mix_criterion.scheme_criterion.scheme_category.code)
       SchemeCriterion::SCORE_ATTRIBUTES.each_with_index do |scores, index|
-        if (scheme_mix_criterion_params.has_key?(SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES[index].to_sym) && scheme_mix_criterion_params[SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES[index].to_sym].to_i <= 0) && (!scheme_mix_criterion_params.has_key?(SchemeMixCriterion::INCENTIVE_SCORED_ATTRIBUTES[index].to_sym) || (scheme_mix_criterion_params.has_key?(SchemeMixCriterion::INCENTIVE_SCORED_ATTRIBUTES[index].to_sym) && scheme_mix_criterion_params[SchemeMixCriterion::INCENTIVE_SCORED_ATTRIBUTES[index].to_sym].to_i == 1))
+
+        achieved_score_boolean = @certification_path.construction_certificate_CM_2019? ? scheme_mix_criterion_params[SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES[index].to_sym].to_s.empty? : scheme_mix_criterion_params[SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES[index].to_sym].to_i <= 0
+
+        if (scheme_mix_criterion_params.has_key?(SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES[index].to_sym) && achieved_score_boolean ) && (!scheme_mix_criterion_params.has_key?(SchemeMixCriterion::INCENTIVE_SCORED_ATTRIBUTES[index].to_sym) || (scheme_mix_criterion_params.has_key?(SchemeMixCriterion::INCENTIVE_SCORED_ATTRIBUTES[index].to_sym) && scheme_mix_criterion_params[SchemeMixCriterion::INCENTIVE_SCORED_ATTRIBUTES[index].to_sym].to_i == 1))
           params[:scheme_mix_criterion][SchemeMixCriterion::INCENTIVE_SCORED_ATTRIBUTES[index]] = false
         end
       end
+    
     end
   end
 
