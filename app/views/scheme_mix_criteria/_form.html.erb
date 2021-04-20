@@ -223,7 +223,7 @@
                       <% end %>
                       <% end %>
                     </tr>
-                    <% if can?(:update_incentive_scored, @scheme_mix_criterion) %>
+                    <%# if can?(:update_incentive_scored, @scheme_mix_criterion) %>
                       <% if @scheme_mix_criterion.scheme_criterion.has_manual_incentive? && !@scheme_mix_criterion.w1_certification_CM_2019?%>
                       <tr>
                         <th>Incentive Earned ?</th>
@@ -234,21 +234,21 @@
                                 <% if @scheme_mix_criterion.scheme_mix.certification_path.certificate.construction_issue_3? %>
                                   <% if !@scheme_mix_criterion.read_attribute(SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES[index].to_sym).nil? && @scheme_mix_criterion.read_attribute(SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES[index].to_sym) > 0 %>
                                     <td class="achieved_score_dependent_checkbox">
-                                      <%= f.check_box SchemeMixCriterion::INCENTIVE_SCORED_ATTRIBUTES[index].to_sym, label: '', data: {index: index} %>
+                                      <%= f.check_box SchemeMixCriterion::INCENTIVE_SCORED_ATTRIBUTES[index].to_sym, label: '', data: {index: index}, readonly: !can?(:update_incentive_scored, @scheme_mix_criterion)  %>
                                     </td>
                                   <% else %>
                                     <td class="achieved_score_dependent_checkbox">
-                                      <%= f.check_box SchemeMixCriterion::INCENTIVE_SCORED_ATTRIBUTES[index].to_sym, label: '', readonly: true, data: {index: index} %>
+                                      <%= f.check_box SchemeMixCriterion::INCENTIVE_SCORED_ATTRIBUTES[index].to_sym, label: '', readonly: can?(:update_incentive_scored, @scheme_mix_criterion) , data: {index: index} %>
                                     </td>
                                   <% end %>
                                 <% else %>
                                   <td>
-                                    <%= f.check_box SchemeMixCriterion::INCENTIVE_SCORED_ATTRIBUTES[index].to_sym, label: '' %>
+                                    <%= f.check_box SchemeMixCriterion::INCENTIVE_SCORED_ATTRIBUTES[index].to_sym, label: '', readonly: !can?(:update_incentive_scored, @scheme_mix_criterion) %>
                                   </td>
                                 <% end %>
                             <% else %>
                                 <td>
-                                  <%= f.check_box SchemeMixCriterion::INCENTIVE_SCORED_ATTRIBUTES[index].to_sym, label: '' %>
+                                  <%= f.check_box SchemeMixCriterion::INCENTIVE_SCORED_ATTRIBUTES[index].to_sym, label: '', readonly: !can?(:update_incentive_scored, @scheme_mix_criterion)  %>
                                 </td>
                             <% end %>
                           <% else %>
@@ -259,7 +259,7 @@
                         <% end %>
                       </tr>
                       <% end %>
-                    <% end %>
+                    <%# end %>
                     <% end %>
 
                     <% if can?(:read, SchemeMixCriterionEpl) %>
