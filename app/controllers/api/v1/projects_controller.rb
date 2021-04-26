@@ -174,7 +174,7 @@ class Api::V1::ProjectsController < Api::ApiController
         @projects = query.offset(offset).order(sort_by).limit(limit)
       end
     else
-      @projects = query.offset(offset).order('id').limit(limit)
+      @projects = query.offset(offset).order('projects.id').limit(limit)
     end
 
     render 'index', formats: :json
