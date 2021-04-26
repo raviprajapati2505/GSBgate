@@ -192,17 +192,17 @@ class Api::V1::ProjectsController < Api::ApiController
 
   def typologies
     query = Scheme.joins(development_types: [:certificate]).where(certificates: {certificate_type: Certificate::certificate_types[:operations_type]}, gsas_version: '2019')
-    @typologies = query.distinct.order('id')
+    @typologies = query.distinct.order('schemes.id')
     render 'typologies', formats: :json
   end
 
   def building_type_groups
-    @building_type_groups = BuildingTypeGroup.visible.order('name')
+    @building_type_groups = BuildingTypeGroup.visible.order('building_type_groups.name')
     render 'building_type_groups', formats: :json
   end
 
   def building_types
-    @building_types = BuildingType.visible.order('name')
+    @building_types = BuildingType.visible.order('building_types.name')
     render 'building_types', formats: :json
   end
 end
