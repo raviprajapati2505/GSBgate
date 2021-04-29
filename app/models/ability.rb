@@ -248,6 +248,7 @@ class Ability
         can [:create, :destroy], [ActualProjectImage, ProjectRenderingImage]
         can :update, Project
         can [:confirm_destroy, :destroy], Project # Be careful with this!
+        can :update_incentive_scored, SchemeMixCriterion
       end
       # Project Users
       # can :list_users_sharing_projects, ProjectsUser
