@@ -8,8 +8,8 @@ class SchemeMixCriteriaController < AuthenticatedController
   skip_load_and_authorize_resource :scheme_mix, only: [:list]
   skip_load_and_authorize_resource :scheme_mix_criterion, only: [:list]
   # skip default update_score authorization, as we have manually created authorization levels per score type
-  skip_authorize_resource :scheme_mix_criterion, only: [:update_scores, :update_checklist]
-  before_action :set_controller_model, except: [:new, :create, :list]
+  skip_authorize_resource :scheme_mix_criterion, only: [:update_scores, :update_checklist, :upload_discrepancy_document]
+  before_action :set_controller_model, except: [:new, :create, :list, :upload_discrepancy_document]
 
   def show
     respond_to do |format|
@@ -233,6 +233,10 @@ class SchemeMixCriteriaController < AuthenticatedController
     end
   end
 
+  def upload_discrepancy_document
+
+  end
+
   private
   def set_controller_model
     @controller_model = @scheme_mix_criterion
@@ -240,7 +244,7 @@ class SchemeMixCriteriaController < AuthenticatedController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def scheme_mix_criterion_params
-    permitted_params = [:status, :audit_log_user_comment, :audit_log_visibility]
+    permitted_params = [:status, :audit_log_user_comment, :audit_log_visibility, :epc_matches_energy_suite]
     permitted_params += SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES
     permitted_params += SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES
     permitted_params += SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES

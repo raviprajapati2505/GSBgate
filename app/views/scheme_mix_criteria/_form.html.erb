@@ -262,127 +262,146 @@
                     <%# end %>
                     <% end %>
 
-                    <% if can?(:read, SchemeMixCriterionEpl) %>
                     <% num_energy_cols = f.object.scheme_mix_criterion_epls.count + 1 %>
                     <% if num_energy_cols > 1 %>
-                    <tr>
-                      <td colspan="<%= num_energy_cols %>">Energy Performance Results</td>
-                    </tr>
-                    <tr>
-                      <th>EPC</th>
-                      <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
-                        <input type="hidden" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][id]" %>" value="<%= epl.id %>">
-                        <td>
-                          <div class="form-group">
-                            <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][epc]" %>" min="0.00" max="3.00" step="0.01" value="<%= epl.epc %>" <% if cannot?(:update, epl) %>readonly="true"<% end %>>
-                          </div>
-                        </td>
+                      <% if can?(:read, SchemeMixCriterionEpl) %>
+                        <tr>
+                          <td colspan="<%= num_energy_cols %>">Energy Performance Results</td>
+                        </tr>
+                        <tr>
+                          <th>EPC</th>
+                          <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
+                            <input type="hidden" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][id]" %>" value="<%= epl.id %>">
+                            <td>
+                              <div class="form-group">
+                                <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][epc]" %>" min="0.00" max="3.00" step="0.01" value="<%= epl.epc %>" <% if cannot?(:update, epl) %>readonly="true"<% end %>>
+                              </div>
+                            </td>
+                          <% end %>
+                        </tr>
+                        <tr>
+                          <th>LEVEL</th>
+                          <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
+                          <td>
+                            <div class="form-group">
+                              <select class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][level]" %>" <% if cannot?(:update, epl) %>disabled="true"<% end %>>
+                                <option>-</option>
+                                <% epl.scheme_criterion_performance_label.levels.each do |level| %>
+                                <option value="<%= level %>" <%= (level == epl.level) ? 'selected' : '' %>><%= level %></option>
+                                <% end %>
+                              </select>
+                            </div>
+                          </td>
+                          <% end %>
+                        </tr>
+                        <tr>
+                          <th>BAND</th>
+                          <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
+                          <td>
+                            <div class="form-group">
+                              <select class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][band]" %>" <% if cannot?(:update, epl) %>disabled="true"<% end %>>
+                                <option>-</option>
+                                <% epl.scheme_criterion_performance_label.bands.each do |band| %>
+                                <option value="<%= band %>" <%= (band == epl.band) ? 'selected' : '' %>><%= band %></option>
+                                <% end %>
+                              </select>
+                            </div>
+                          </td>
+                          <% end %>
+                        </tr>
                       <% end %>
-                    </tr>
-                    <tr>
-                      <th>LEVEL</th>
-                      <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
-                      <td>
-                        <div class="form-group">
-                          <select class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][level]" %>" <% if cannot?(:update, epl) %>disabled="true"<% end %>>
-                            <option>-</option>
-                            <% epl.scheme_criterion_performance_label.levels.each do |level| %>
-                            <option value="<%= level %>" <%= (level == epl.level) ? 'selected' : '' %>><%= level %></option>
-                            <% end %>
-                          </select>
-                        </div>
-                      </td>
+                      <% if is_gsas_trust?(current_user) %>
+                        <tr>
+                          <th>Does the determined EPC below matches the EPC generated by GSAS Energia Suite?</th>
+                          <td colspan="2"><%= f.check_box :epc_matches_energy_suite, label: '' %></td>
+                        </tr>
                       <% end %>
-                    </tr>
-                    <tr>
-                      <th>BAND</th>
-                      <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
-                      <td>
-                        <div class="form-group">
-                          <select class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][band]" %>" <% if cannot?(:update, epl) %>disabled="true"<% end %>>
-                            <option>-</option>
-                            <% epl.scheme_criterion_performance_label.bands.each do |band| %>
-                            <option value="<%= band %>" <%= (band == epl.band) ? 'selected' : '' %>><%= band %></option>
-                            <% end %>
-                          </select>
-                        </div>
-                      </td>
+                      <% if (is_certification_manager?(@project&.projects_users, current_user) && !f.object&.epc_matches_energy_suite? ) %>
+                        <tr>
+                          <td colspan="<%= num_energy_cols %>">Upload Discrepancy Documentation</td>
+                        </tr>
+                        <tr>
+                          <td colspan="<%= num_energy_cols %>">
+                            <%= file_field_tag "discrepancy_documentation", class: "discrepancy_documentation_field" %>
+                            <%= button_to "Upload", "", class: "discrepancy_documentation_submit" %>
+                          </td>
+                        </tr>
                       <% end %>
-                    </tr>
-                    <tr>
-                      <td colspan="<%= num_energy_cols %>">Breakdown of estimated energy consumption [MWh]</td>
-                    </tr>
-                    <tr>
-                      <th>Cooling</th>
-                      <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
-                        <td>
-                          <div class="form-group">
-                            <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][cooling]" %>" min="0" step="1" value="<%= epl.cooling %>" <% if cannot?(:update, epl) %>readonly="true"<% end %>>
-                          </div>
-                        </td>
+                      <% if can?(:read, SchemeMixCriterionEpl) %>
+                        <tr>
+                          <td colspan="<%= num_energy_cols %>">Breakdown of estimated energy consumption [MWh]</td>
+                        </tr>
+                        <tr>
+                          <th>Cooling</th>
+                          <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
+                            <td>
+                              <div class="form-group">
+                                <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][cooling]" %>" min="0" step="1" value="<%= epl.cooling %>" <% if cannot?(:update, epl) %>readonly="true"<% end %>>
+                              </div>
+                            </td>
+                          <% end %>
+                        </tr>
+                        <tr>
+                          <th>Lighting</th>
+                          <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
+                            <td>
+                              <div class="form-group">
+                                <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][lighting]" %>" min="0" step="1" value="<%= epl.lighting %>" <% if cannot?(:update, epl) %>readonly="true"<% end %>>
+                              </div>
+                            </td>
+                          <% end %>
+                        </tr>
+                        <tr>
+                          <th>Auxiliaries</th>
+                          <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
+                            <td>
+                              <div class="form-group">
+                                <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][auxiliaries]" %>" min="0" step="1" value="<%= epl.auxiliaries %>" <% if cannot?(:update, epl) %>readonly="true"<% end %>>
+                              </div>
+                            </td>
+                          <% end %>
+                        </tr>
+                        <tr>
+                          <th>DHW</th>
+                          <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
+                            <td>
+                              <div class="form-group">
+                                <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][dhw]" %>" min="0" step="1" value="<%= epl.dhw %>" <% if cannot?(:update, epl) %>readonly="true"<% end %>>
+                              </div>
+                            </td>
+                          <% end %>
+                        </tr>
+                        <tr>
+                          <th>Others</th>
+                          <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
+                            <td>
+                              <div class="form-group">
+                                <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][others]" %>" min="0" step="1" value="<%= epl.others %>" <% if cannot?(:update, epl) %>readonly="true"<% end %>>
+                              </div>
+                            </td>
+                          <% end %>
+                        </tr>
+                        <tr>
+                          <th>Generation</th>
+                          <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
+                            <td>
+                              <div class="form-group">
+                                <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][generation]" %>" min="0" step="1" value="<%= epl.generation %>" <% if cannot?(:update, epl) %>readonly="true"<% end %>>
+                              </div>
+                            </td>
+                          <% end %>
+                        </tr>
+                        <tr>
+                          <th>CO<sub>2</sub> Emission</th>
+                          <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
+                            <td>
+                              <div class="form-group">
+                                <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][co2_emission]" %>" min="0" step="1" value="<%= epl.co2_emission %>" <% if cannot?(:update, epl) %>readonly="true"<% end %>>
+                              </div>
+                            </td>
+                          <% end %>
+                        </tr>
                       <% end %>
-                    </tr>
-                    <tr>
-                      <th>Lighting</th>
-                      <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
-                        <td>
-                          <div class="form-group">
-                            <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][lighting]" %>" min="0" step="1" value="<%= epl.lighting %>" <% if cannot?(:update, epl) %>readonly="true"<% end %>>
-                          </div>
-                        </td>
-                      <% end %>
-                    </tr>
-                    <tr>
-                      <th>Auxiliaries</th>
-                      <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
-                        <td>
-                          <div class="form-group">
-                            <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][auxiliaries]" %>" min="0" step="1" value="<%= epl.auxiliaries %>" <% if cannot?(:update, epl) %>readonly="true"<% end %>>
-                          </div>
-                        </td>
-                      <% end %>
-                    </tr>
-                    <tr>
-                      <th>DHW</th>
-                      <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
-                        <td>
-                          <div class="form-group">
-                            <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][dhw]" %>" min="0" step="1" value="<%= epl.dhw %>" <% if cannot?(:update, epl) %>readonly="true"<% end %>>
-                          </div>
-                        </td>
-                      <% end %>
-                    </tr>
-                    <tr>
-                      <th>Others</th>
-                      <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
-                        <td>
-                          <div class="form-group">
-                            <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][others]" %>" min="0" step="1" value="<%= epl.others %>" <% if cannot?(:update, epl) %>readonly="true"<% end %>>
-                          </div>
-                        </td>
-                      <% end %>
-                    </tr>
-                    <tr>
-                      <th>Generation</th>
-                      <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
-                        <td>
-                          <div class="form-group">
-                            <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][generation]" %>" min="0" step="1" value="<%= epl.generation %>" <% if cannot?(:update, epl) %>readonly="true"<% end %>>
-                          </div>
-                        </td>
-                      <% end %>
-                    </tr>
-                    <tr>
-                      <th>CO<sub>2</sub> Emission</th>
-                      <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
-                        <td>
-                          <div class="form-group">
-                            <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][co2_emission]" %>" min="0" step="1" value="<%= epl.co2_emission %>" <% if cannot?(:update, epl) %>readonly="true"<% end %>>
-                          </div>
-                        </td>
-                      <% end %>
-                    </tr>
-                    <% end %>
                     <% end %>
 
                     <% if can?(:read, SchemeMixCriterionWpl) %>

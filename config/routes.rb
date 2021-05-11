@@ -80,6 +80,7 @@ Rails.application.routes.draw do
             put :update_scores
             put :update_checklist
             put :assign_certifier
+            post :upload_discrepancy_document
           end
           resources :requirement_data, only: [:update], path: :requirement, as: 'requirement_data' do
             member do

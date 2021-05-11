@@ -3,6 +3,7 @@ class SchemeMixCriteriaDocument < ApplicationRecord
   include Taskable
 
   enum status: { awaiting_approval: 3, approved: 1, rejected: 2 }
+  enum document_type: { general: 0, discrepancy: 1 }
 
   belongs_to :document, optional: true
   belongs_to :scheme_mix_criterion, optional: true
