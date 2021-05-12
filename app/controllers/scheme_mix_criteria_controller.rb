@@ -234,7 +234,14 @@ class SchemeMixCriteriaController < AuthenticatedController
   end
 
   def upload_discrepancy_document
-
+    discrepancy_document = Document.new(document_file: params[:discrepancy_document], user: current_user, certification_path_id: @certification_path&.id)
+    discrepancy_document.scheme_mix_criteria_documents.build(document_type: "epc_discrepancy_document", scheme_mix_criterion_id: @scheme_mix_criterion&.id)
+    if discrepancy_document.save
+      flash[:notice] = "Discrepancy Document has successfully uploaded."
+    else
+      flash[:alert] = "Discrepancy Document is failed upload!"
+    end
+    head :ok
   end
 
   private
