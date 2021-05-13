@@ -5,11 +5,11 @@ class SchemeMixCriteriaController < AuthenticatedController
   load_and_authorize_resource :scheme_mix, :through => :certification_path
   load_and_authorize_resource :scheme_mix_criterion, :through => :scheme_mix
   # don't load the resource for the list action, as it uses a custom query
-  skip_load_and_authorize_resource :scheme_mix, only: [:list]
-  skip_load_and_authorize_resource :scheme_mix_criterion, only: [:list]
+  skip_load_and_authorize_resource :scheme_mix, only: [:list, :delete_discrepancy_document]
+  skip_load_and_authorize_resource :scheme_mix_criterion, only: [:list, :delete_discrepancy_document]
   # skip default update_score authorization, as we have manually created authorization levels per score type
-  skip_authorize_resource :scheme_mix_criterion, only: [:update_scores, :update_checklist, :upload_discrepancy_document]
-  before_action :set_controller_model, except: [:new, :create, :list, :upload_discrepancy_document]
+  skip_authorize_resource :scheme_mix_criterion, only: [:update_scores, :update_checklist, :upload_discrepancy_document, :delete_discrepancy_document]
+  before_action :set_controller_model, except: [:new, :create, :list, :upload_discrepancy_document, :delete_discrepancy_document]
 
   def show
     respond_to do |format|
@@ -242,6 +242,14 @@ class SchemeMixCriteriaController < AuthenticatedController
       flash[:alert] = "Discrepancy Document is failed upload!"
     end
     head :ok
+  end
+
+  def delete_discrepancy_document
+    smcd = SchemeMixCriteriaDocument.find(params[:id])
+    discrepancy_document = smcd&.document
+    smcd&.destroy if smcd.present?
+    discrepancy_document&.destroy if discrepancy_document.present?
+    redirect_back(fallback_location: root_path, notice: 'Discrepancy Document has successfully deleted.')
   end
 
   private

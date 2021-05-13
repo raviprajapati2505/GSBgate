@@ -180,7 +180,8 @@ class Ability
       can :read, SchemeMixCriterionEpl, scheme_mix_criterion: {status: scheme_mix_criterion_status_verifying_or_verified, scheme_mix: {certification_path: {project: project_with_user_as_enterprise_client}}}
       can :read, SchemeMixCriterionWpl, scheme_mix_criterion: {status: scheme_mix_criterion_status_verifying_or_verified, scheme_mix: {certification_path: {project: project_with_user_as_certification_manager}}}
       can :read, SchemeMixCriterionWpl, scheme_mix_criterion: {status: scheme_mix_criterion_status_verifying_or_verified, scheme_mix: {certification_path: {project: project_with_user_as_enterprise_client}}}
-      can :epc_matches_energy_suite, SchemeMixCriterion, main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_verifying
+      can :epc_matches_energy_suite, SchemeMixCriterion, status: scheme_mix_criterion_status_verifying, scheme_mix: {certification_path: {project: project_with_user_in_gsas_trust_team}}
+      can :upload_epc_matches_document, SchemeMixCriterion, scheme_mix: {certification_path: {project: project_with_user_in_gsas_trust_team}}
 
       # RequirementDatum controller
       can :read, RequirementDatum, scheme_mix_criteria: {scheme_mix: {certification_path: {project: project_with_user_assigned, certification_path_status: {id: CertificationPathStatus::STATUSES_ACTIVATED}}}}
@@ -244,6 +245,11 @@ class Ability
       # Project
       can [:download_location_plan, :download_site_plan, :download_design_brief, :download_project_narrative], Project
       can :show_tools, Project
+      can :update, SchemeMixCriterionEpl, scheme_mix_criterion: {main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_verifying}
+      can :update, SchemeMixCriterionWpl, scheme_mix_criterion: {main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_verifying}
+      can :epc_matches_energy_suite, SchemeMixCriterion, status: scheme_mix_criterion_status_verifying
+      can :upload_epc_matches_document, SchemeMixCriterion
+
       if user.gsas_trust_admin?
         can [:create, :destroy], [ActualProjectImage, ProjectRenderingImage]
         can :update, Project

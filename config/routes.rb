@@ -82,6 +82,8 @@ Rails.application.routes.draw do
             put :assign_certifier
             post :upload_discrepancy_document
           end
+          delete "delete_discrepancy_document/:id", to: "scheme_mix_criteria#delete_discrepancy_document", as: :delete_discrepancy_document
+
           resources :requirement_data, only: [:update], path: :requirement, as: 'requirement_data' do
             member do
               put :update_status
