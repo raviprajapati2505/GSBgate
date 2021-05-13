@@ -111,6 +111,10 @@ module Effective
                 score = score_all[:achieved_score_in_certificate_points]
               end
 
+              if certification_path&.certificate&.design_and_build?
+                score = 0 if score < 0
+              end
+
               if !score.nil? && score > 3
                 3.0
               else
@@ -130,6 +134,10 @@ module Effective
               if certification_path&.certificate&.construction_2019?
                 score_all = fetch_scores(certification_path)
                 score = score_all[:submitted_score_in_certificate_points]
+              end
+
+              if certification_path&.certificate&.design_and_build?
+                score = 0 if score < 0
               end
 
               if !score.nil? && score > 3
@@ -153,6 +161,10 @@ module Effective
                 score = score_all[:targeted_score_in_certificate_points]
               end
 
+              if certification_path&.certificate&.design_and_build?
+                score = 0 if score < 0
+              end
+              
               if !score.nil? && score > 3
                 3.0
               else

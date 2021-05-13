@@ -1,6 +1,10 @@
 <% achieved ||= false %>
 <% submitted ||= false %>
 
+<% if certificate.design_and_build? %>
+  <% score = 0 if score < 0 %>
+<% end %>
+
 <% rating = certification_path.rating_for_score(score, certificate: certificate, is_achieved_score: achieved, is_submitted_score: submitted) %>
 <div style="line-height:24px; <% if achieved %>font-weight:bold;<% end %>">
     <span class="text-right" style="width: 72px; display: inline-block;">
@@ -13,7 +17,7 @@
         <%= number_with_precision(score, precisison: 2, significant: true) %>
       <% end %>
     </span>
-    <% unless certificate.construction_certificate_stage1? || certificate.construction_certificate_stage2? || certificate.construction_certificate_stage3? %>
+    <%# unless certificate.construction_certificate_stage1? || certificate.construction_certificate_stage2? || certificate.construction_certificate_stage3? %>
       <span>
           &nbsp;&nbsp;=&nbsp;&nbsp;
       </span>
@@ -28,5 +32,5 @@
           <% end %>
         </span>
       <% end %>
-    <% end %>
+    <%# end %>
 </div>
