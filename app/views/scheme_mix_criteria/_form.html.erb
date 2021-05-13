@@ -319,12 +319,12 @@
                       
                       <% epc_matches_energy_suite_status = f.object&.epc_matches_energy_suite %>
                         <%# if epc_matches_energy_suite_status == false %>
-                          <tr class="upload_status">
-                            <td colspan="<%= num_energy_cols %>"><b>Upload Discrepancy Documentation</b></td>
-                          </tr>
                           <% epc_discrepancy_document = @scheme_mix_criterion.scheme_mix_criteria_documents.find_by(document_type: "epc_discrepancy_document") %>
-                          <tr class="upload_status">
-                            <% if epc_discrepancy_document.present? %>
+                          <% if epc_discrepancy_document.present? %>
+                            <tr>
+                              <td colspan="<%= num_energy_cols %>"><b>Uploaded Discrepancy Documentation</b></td>
+                            </tr>
+                            <tr>
                               <td colspan="<%= num_energy_cols - 1 %>">
                                 <span title="<%= epc_discrepancy_document.name %>" style="width: 62.0104px!important;">
                                   <%= image_tag(icon_for_filename(epc_discrepancy_document.name), alt: epc_discrepancy_document.content_type, title: epc_discrepancy_document.content_type) + ' ' + epc_discrepancy_document.name.truncate(50) %>
@@ -334,14 +334,20 @@
                                 <%= btn_download(project_certification_path_document_path(@project, @certification_path, epc_discrepancy_document.document), size: 'small', tooltip: 'Download document') %>
                                 <%= btn_link_to(project_certification_path_scheme_mix_scheme_mix_criterion_delete_discrepancy_document_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, epc_discrepancy_document), method: :delete, data: {confirm: 'Are you sure to delete the document ?'}, style: 'danger', size: 'small', icon: 'trash', tooltip: 'Delete document') %>
                               </td>
-                            <% else %>
+                            </tr>
+                          <% else %>
+                            <tr class="upload_status">
+                              <td colspan="<%= num_energy_cols %>"><b>Upload Discrepancy Documentation</b></td>
+                            </tr>
+                            <tr class="upload_status">
                               <td colspan="<%= num_energy_cols %>">
                                 <%= f.file_field :epc_discrepancy_documentation, class: "epc_discrepancy_documentation_field", multiple: false, required: true %>
                               </td>
+                            </tr>
                               <!--<td>
                                 <%#= link_to "Upload", "javascript:void(0);", class: "discrepancy_documentation_submit btn btn-primary btn-sm" %>
                               </td>-->
-                            <% end %>
+                          <% end %>
                             </td>
                           </tr>
                         <%# end %>
