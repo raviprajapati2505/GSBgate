@@ -336,7 +336,7 @@
                               </td>
                             <% else %>
                               <td colspan="<%= num_energy_cols %>">
-                                <%= file_field_tag "discrepancy_documentation", class: "epc_discrepancy_documentation_field", multiple: false, required: true %>
+                                <%= f.file_field :epc_discrepancy_documentation, class: "epc_discrepancy_documentation_field", multiple: false, required: true %>
                               </td>
                               <!--<td>
                                 <%#= link_to "Upload", "javascript:void(0);", class: "discrepancy_documentation_submit btn btn-primary btn-sm" %>
@@ -740,25 +740,25 @@
       }
     })
 
-    $(".discrepancy_documentation_submit").click(function(e){
-      var files = $(this).parent().parent().find(".epc_discrepancy_documentation_field")[0].files;
-      if (files.length  > 0) {
-        file = files[0]
-        var fdata = new FormData();
-        fdata.append("discrepancy_document", file);
-        $.ajax({
-          url: '/projects/'+ <%= @project.id %> +'/certificates/'+ <%= @certification_path.id %> +'/schemes/' + <%= @scheme_mix.id %> + '/criteria/'+ <%= @scheme_mix_criterion.id %> +'/upload_discrepancy_document',
-          method: 'POST',
-          data: fdata,
-          contentType: false,
-          enctype: 'multipart/form-data',
-          processData: false,
-          success: function(){
-            location.reload();
-          }
-        });
-      }
-    });
+    // $(".discrepancy_documentation_submit").click(function(e){
+    //   var files = $(this).parent().parent().find(".epc_discrepancy_documentation_field")[0].files;
+    //   if (files.length  > 0) {
+    //     file = files[0]
+    //     var fdata = new FormData();
+    //     fdata.append("discrepancy_document", file);
+    //     $.ajax({
+    //       url: '/projects/'+ <%= @project.id %> +'/certificates/'+ <%= @certification_path.id %> +'/schemes/' + <%= @scheme_mix.id %> + '/criteria/'+ <%= @scheme_mix_criterion.id %> +'/upload_discrepancy_document',
+    //       method: 'POST',
+    //       data: fdata,
+    //       contentType: false,
+    //       enctype: 'multipart/form-data',
+    //       processData: false,
+    //       success: function(){
+    //         location.reload();
+    //       }
+    //     });
+    //   }
+    // });
   });
   
 </script>
