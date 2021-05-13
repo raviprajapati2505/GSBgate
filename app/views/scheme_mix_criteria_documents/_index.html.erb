@@ -33,7 +33,7 @@
                             </span>
                       </td>
                       <td data-order="<%= smcd.size %>"><%= number_to_human_size(smcd.size) %></td>
-                      <td><%= smcd.document.user.full_name %></td>
+                      <td><%= smcd.document&.user&.full_name %></td>
                       <td data-order="<%= smcd.document.created_at.to_i %>"><%= localize(smcd.document.created_at).gsub(' ', '&nbsp;').html_safe %></td>
                       <td><%= localize(smcd.approved_date).gsub(' ', '&nbsp;').html_safe if smcd.approved_date.present? %></td>
                       <td><%= smcd.pcr_context %></td>
