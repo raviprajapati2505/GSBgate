@@ -85,7 +85,8 @@ class SchemeMixCriteriaController < AuthenticatedController
     if @certification_path.certificate.operations_2019? && @certification_path.schemes.where(name: "Energy Neutral Mark").present?
       @params = true
     end
-
+    # binding.pry
+    upload_discrepancy_document if params[:scheme_mix_criterion][:epc_matches_energy_suite].to_i == 0
     # The targeted & submitted scores should always be higher than or equal to the minimum valid score of the criterion
     if validate_score(redirect_path)
       # reset incentive_scored for categories E and W for achieved scores <= 0
@@ -234,14 +235,14 @@ class SchemeMixCriteriaController < AuthenticatedController
   end
 
   def upload_discrepancy_document
-    discrepancy_document = Document.new(document_file: params[:discrepancy_document], user: current_user, certification_path_id: @certification_path&.id)
+    discrepancy_document = Document.new(document_file: params[:discrepancy_documentation], user: current_user, certification_path_id: @certification_path&.id)
     discrepancy_document.scheme_mix_criteria_documents.build(document_type: "epc_discrepancy_document", scheme_mix_criterion_id: @scheme_mix_criterion&.id)
     if discrepancy_document.save
       flash[:notice] = "Discrepancy Document has successfully uploaded."
     else
       flash[:alert] = "Discrepancy Document is failed upload!"
     end
-    head :ok
+    # head :ok
   end
 
   def delete_discrepancy_document
