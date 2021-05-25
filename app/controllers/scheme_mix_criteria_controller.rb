@@ -5,11 +5,11 @@ class SchemeMixCriteriaController < AuthenticatedController
   load_and_authorize_resource :scheme_mix, :through => :certification_path
   load_and_authorize_resource :scheme_mix_criterion, :through => :scheme_mix
   # don't load the resource for the list action, as it uses a custom query
-  skip_load_and_authorize_resource :scheme_mix, only: [:list]
-  skip_load_and_authorize_resource :scheme_mix_criterion, only: [:list]
+  skip_load_and_authorize_resource :scheme_mix, only: [:list, :delete_discrepancy_document]
+  skip_load_and_authorize_resource :scheme_mix_criterion, only: [:list, :delete_discrepancy_document]
   # skip default update_score authorization, as we have manually created authorization levels per score type
-  skip_authorize_resource :scheme_mix_criterion, only: [:update_scores, :update_checklist]
-  before_action :set_controller_model, except: [:new, :create, :list]
+  skip_authorize_resource :scheme_mix_criterion, only: [:update_scores, :update_checklist, :upload_discrepancy_document, :delete_discrepancy_document]
+  before_action :set_controller_model, except: [:new, :create, :list, :upload_discrepancy_document, :delete_discrepancy_document]
 
   def show
     respond_to do |format|
@@ -85,7 +85,7 @@ class SchemeMixCriteriaController < AuthenticatedController
     if @certification_path.certificate.operations_2019? && @certification_path.schemes.where(name: "Energy Neutral Mark").present?
       @params = true
     end
-
+    upload_discrepancy_document if params[:scheme_mix_criterion][:epc_matches_energy_suite].to_i == 0
     # The targeted & submitted scores should always be higher than or equal to the minimum valid score of the criterion
     if validate_score(redirect_path)
       # reset incentive_scored for categories E and W for achieved scores <= 0
@@ -233,6 +233,26 @@ class SchemeMixCriteriaController < AuthenticatedController
     end
   end
 
+  def upload_discrepancy_document
+    return unless params[:scheme_mix_criterion][:epc_discrepancy_documentation].present?
+    discrepancy_document = Document.new(document_file: params[:scheme_mix_criterion][:epc_discrepancy_documentation], user: current_user, certification_path_id: @certification_path&.id)
+    discrepancy_document.scheme_mix_criteria_documents.build(document_type: "epc_discrepancy_document", scheme_mix_criterion_id: @scheme_mix_criterion&.id)
+    if discrepancy_document.save
+      flash[:notice] = "Discrepancy Document has successfully uploaded."
+    else
+      flash[:alert] = "Discrepancy Document is failed upload!"
+    end
+    # head :ok
+  end
+
+  def delete_discrepancy_document
+    smcd = SchemeMixCriteriaDocument.find(params[:id])
+    discrepancy_document = smcd&.document
+    smcd&.destroy if smcd.present?
+    discrepancy_document&.destroy if discrepancy_document.present?
+    redirect_back(fallback_location: root_path, notice: 'Discrepancy Document has successfully deleted.')
+  end
+
   private
   def set_controller_model
     @controller_model = @scheme_mix_criterion
@@ -240,7 +260,7 @@ class SchemeMixCriteriaController < AuthenticatedController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def scheme_mix_criterion_params
-    permitted_params = [:status, :audit_log_user_comment, :audit_log_visibility]
+    permitted_params = [:status, :audit_log_user_comment, :audit_log_visibility, :epc_matches_energy_suite]
     permitted_params += SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES
     permitted_params += SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES
     permitted_params += SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES

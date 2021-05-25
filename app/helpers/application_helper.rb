@@ -228,6 +228,17 @@ module ApplicationHelper
     "#{ikoen(name, options)}&nbsp;&nbsp;#{text}".html_safe
   end
 
+  def is_gsas_trust?(user = nil)
+    return false unless user.present?
+    ["gsas_trust_admin", "gsas_trust_top_manager", "gsas_trust_manager", "system_admin"].include?(current_user&.role)
+  end
+
+  def is_certification_manager?(projects_users, user)
+    return false unless (user.present? || projects_users.present?)
+    certification_managers_ids = projects_users&.where(role: "certification_manager").pluck(:user_id)
+    return certification_managers_ids&.include?(user.id)
+  end
+
   def ikoen(name, options = {})
     # -- size
     options[:size] ||= 'lg'
