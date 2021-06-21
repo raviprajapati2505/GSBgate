@@ -52,11 +52,11 @@ class SchemeMixesController < AuthenticatedController
     filepath = filepath_for_report 'Criteria Summary for ' + @scheme_mix.name
     report = Reports::CriteriaScores.new(@scheme_mix)
     report.save_as(filepath)
-    # send_file filepath, :type => 'application/pdf', :x_sendfile => true
-    response.headers['X-Sendfile'] = filepath
-    response.headers['Content-Length'] = '0'
-    response.headers['Content-Type'] = 'application/pdf'
-    render body: nil, status: :ok
+    send_file filepath, :type => 'application/pdf', :x_sendfile => true
+    # response.headers['X-Sendfile'] = filepath
+    # response.headers['Content-Length'] = '0'
+    # response.headers['Content-Type'] = 'application/pdf'
+    # render body: nil, status: :ok
   end
 
   private
