@@ -76,10 +76,12 @@ Congratulations once again for partaking in this noble endeavor, and together le
       scheme_mix_criteria_scores_by_category = scheme_mix_criteria_scores.group_by { |item| item[:scheme_category_id] }
 
       scheme_mix.scheme_categories.each do |category|
-        total_category_scores[category.code] = { name: category.name, achieved_score: 0, maximum_score: 0 } unless total_category_scores.key?(category.code)
-        category_scores = sum_score_hashes(scheme_mix_criteria_scores_by_category[category.id])
-        total_category_scores[category.code][:achieved_score] += category_scores[:achieved_score_in_certificate_points]
-        total_category_scores[category.code][:maximum_score] += category_scores[:maximum_score_in_certificate_points]
+        if scheme_mix_criteria_scores_by_category[category.id]
+          total_category_scores[category.code] = { name: category.name, achieved_score: 0, maximum_score: 0 } unless total_category_scores.key?(category.code)
+          category_scores = sum_score_hashes(scheme_mix_criteria_scores_by_category[category.id])
+          total_category_scores[category.code][:achieved_score] += category_scores[:achieved_score_in_certificate_points]
+          total_category_scores[category.code][:maximum_score] += category_scores[:maximum_score_in_certificate_points]
+        end
       end
     end
 
