@@ -2,6 +2,15 @@ $("#location-select-div").html("");
 
 $("#location-select-div").html("<%= j render partial: "location_dropdown" %>")
 
-$("#location-select").select2({
-  width: "100%"
+$(function(){
+  $("#location-select").select2({
+    width: "100%"
+  });
+});
+
+$(".location-select-dropdown").on("change", function(){
+  let selected_location = $(this).find(":selected").val();
+  if (selected_location == "Other"){
+    $("#location-select-div").html("<label>Location</label><input class='form-control' type='text' name='project[location]'>")
+  }
 });

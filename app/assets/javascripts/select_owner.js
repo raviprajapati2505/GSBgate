@@ -25,6 +25,7 @@ $(function() {
     });
 
     function populate_country_location(element){
+      
       let country_name = element.find(":selected").val();
       if(country_name.length > 0){
         $.ajax({
@@ -41,7 +42,10 @@ $(function() {
       }
     }
 
-    populate_country_location($('.country-select'));
+    let is_location_predefined = $("#location-select-div").data("locationPredefied");
+    if (is_location_predefined) {
+      populate_country_location($('.country-select'));
+    }
     $('.country-select').on('change', function(){
       populate_country_location($(this));
     });
