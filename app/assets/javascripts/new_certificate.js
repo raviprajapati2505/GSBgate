@@ -183,7 +183,7 @@ $(function () {
     $('#gsas_version').change(function() {
         var project_id = $('#certification_path_project_id').val();
         var certification_type = $('#certification_path_certification_type').val();
-        var pcr_track = $('#certification_path_pcr_track').val();
+        var pcr_track = $('#certification_path_pcr_track').is(":checked");
         var gsas_version = $('#gsas_version').val();
         var assessment_method = $('#assessment_method').val();
         $.ajax({
@@ -204,7 +204,7 @@ $(function () {
     $('#assessment_method').change(function() {
         var project_id = $('#certification_path_project_id').val();
         var certification_type = $('#certification_path_certification_type').val();
-        var pcr_track = $('#certification_path_pcr_track').val();
+        var pcr_track = $('#certification_path_pcr_track').is(":checked");
         var assessment_method = $('#assessment_method').val();
         $.ajax({
            type: 'POST',
@@ -223,7 +223,7 @@ $(function () {
     $('#certification_path_development_type').change(function() {
         var project_id = $('#certification_path_project_id').val();
         var certification_type = $('#certification_path_certification_type').val();
-        var pcr_track = $('#certification_path_pcr_track').val();
+        var pcr_track = $('#certification_path_pcr_track').is(":checked");
         var gsas_version = $('#gsas_version').val();
         var development_type = $('#certification_path_development_type').val();
         var assessment_method = $('#assessment_method').val();

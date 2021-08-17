@@ -46,9 +46,9 @@
               <%= f.text_field :construction_year %>
             </div>
             <div class="col-md-3">
+              <%= f.select :country, options_for_select(CS.countries.map{ |cnt| [cnt[1], cnt[1]] }, f.object&.country), { include_blank: "Select Country" }, { required: true, class: "select2 form-control country-select" } %>
+              <%= f.select(:location, options_for_select([]), { include_blank: "Select Location" }, { class: "select2 form-control location-select-dropdown" }) %>
               <%= f.text_area :address %>
-              <%= f.text_field :location %>
-              <%= f.text_field :country %>
               <%= f.text_field :project_site_area, append: 'm²', label: (Project.human_attribute_name('project_site_area') + tooltip(t '.tooltip_project_site_area')).html_safe %>
               <%= f.text_field :gross_area, append: 'm²', label: (Project.human_attribute_name('gross_area') + tooltip(t '.tooltip_gross_area')).html_safe %>
               <%= f.text_field :buildings_footprint_area, append: 'm²', label: (Project.human_attribute_name('buildings_footprint_area') + tooltip(t '.tooltip_buildings_footprint_area')).html_safe %>

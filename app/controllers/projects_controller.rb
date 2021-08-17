@@ -295,6 +295,14 @@ class ProjectsController < AuthenticatedController
     end
   end
 
+  def country_locations
+    @location = Location.find_by_country(params["country"])
+    options = @location&.list
+    respond_to do |format|
+      format.js { render layout: false }
+    end
+  end
+
   private
   def set_controller_model
     @controller_model = @project

@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   resources :projects do
     collection do
       get 'list' => 'projects_users#list_projects'
+      get 'country_locations', to: "projects#country_locations", as: :country_locations
     end
     member do
       get 'tools' => 'projects#show_tools'

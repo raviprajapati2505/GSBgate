@@ -40,6 +40,7 @@ gem 'uglifier'
 gem 'warden'
 gem 'warden-jwt_auth'
 gem 'whenever'
+gem 'city-state'
 
 group :development do
   gem 'pry-rails'

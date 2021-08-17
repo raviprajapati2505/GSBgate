@@ -246,6 +246,11 @@ $(function () {
     });
     $('.project-form #project_building_type_group_id').trigger('change', true);
 
+    // Project country select
+    $('.country-select').select2({
+        width: "100%"
+    });
+
     // Gross Certified Area (A+B-C)
     $('#project_project_site_area, #project_gross_area, #project_buildings_footprint_area').keyup(function(){
         var A = $('#project_project_site_area').val();
