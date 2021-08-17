@@ -1,4 +1,6 @@
-$(".location-select-dropdown").html("<%= j render partial: "location_dropdown", locals: {location: @location} %>")
+$("#location-select-div").html("");
+
+$("#location-select-div").html("<%= j render partial: "location_dropdown" %>")
 
 $("#location-select").select2({
   width: "100%"

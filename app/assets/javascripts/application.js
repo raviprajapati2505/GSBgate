@@ -247,7 +247,7 @@ $(function () {
     $('.project-form #project_building_type_group_id').trigger('change', true);
 
     // Project country select
-    $('.country-select').select2({
+    $('.country-select, .location-select-dropdown').select2({
         width: "100%"
     });
 

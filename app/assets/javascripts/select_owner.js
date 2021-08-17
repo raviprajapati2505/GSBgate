@@ -24,8 +24,8 @@ $(function() {
         );
     });
 
-    $('.country-select').on('change', function(){
-      let country_name = $(this).val();
+    function populate_country_location(element){
+      let country_name = element.find(":selected").val();
       if(country_name.length > 0){
         $.ajax({
           url: "/projects/country_locations",
@@ -39,5 +39,10 @@ $(function() {
           }
         });
       }
+    }
+
+    populate_country_location($('.country-select'));
+    $('.country-select').on('change', function(){
+      populate_country_location($(this));
     });
 });
