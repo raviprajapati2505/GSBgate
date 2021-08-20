@@ -1,8 +1,5 @@
 <% use_gmaps_for(:project) %>
-<%
-  locations = Location.find_by_country(@project&.country)&.list
-  is_location_predefined = locations&.include?(@project&.location) ? true : false
-%>
+<% set_project_country_location(@project) %>
 
 <%= bootstrap_form_for(@project, html: { class: 'project-form' }) do |f| %>
   <div class="row">
@@ -51,9 +48,9 @@
             </div>
             <div class="col-md-3">
               <%= f.select :country, options_for_select(CS.countries.map{ |cnt| [cnt[1], cnt[1]] }, f.object&.country), { include_blank: "Select Country" }, { required: true, class: "select2 form-control country-select" } %>
-              <div id="location-select-div" class="form-group" data-location-predefied=<%= is_location_predefined %>>
-                <% if is_location_predefined %>
-                  <%= f.select(:location, options_for_select([]), { include_blank: "Select Location" }, { class: "select2 form-control location-select-dropdown" }) %>
+              <div id="location-select-div" class="form-group">
+                <% if @is_location_predefined %>
+                  <%= f.select(:location, options_for_select(@location_options, f.object&.location), { include_blank: "Select Location" }, { class: "select2 form-control location-select-dropdown" }) %>
                 <% else %>
                   <%= f.text_field :location %>
                 <% end %>
