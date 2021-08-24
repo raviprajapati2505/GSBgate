@@ -1,6 +1,6 @@
 class ProjectsController < AuthenticatedController
   include ActionView::Helpers::TranslationHelper
-  load_and_authorize_resource :project
+  load_and_authorize_resource :project, except: [:country_locations]
   before_action :set_controller_model, except: [:new, :create, :index]
 
   def index
