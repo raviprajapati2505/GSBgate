@@ -17,7 +17,7 @@
                 <% if certification_path.is_design_loc? && certification_path.status.humanize == 'Certified' %>
                     Provisionally Certified
                 <% else %>
-                    <%= certification_path.status.humanize %>
+                    <%= certification_path.status %>
                 <% end %>
                 
             </div>
