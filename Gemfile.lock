@@ -107,6 +107,8 @@ GEM
       activesupport (>= 4.0.0)
       mime-types (>= 1.16)
     chronic (0.10.2)
+    city-state (0.1.0)
+      rubyzip (>= 1.1)
     ckeditor (4.3.0)
       orm_adapter (~> 0.5.0)
       terrapin
@@ -380,6 +382,7 @@ DEPENDENCIES
   capistrano-rvm
   capistrano-systemd
   carrierwave
+  city-state
   ckeditor
   cocoon
   dotenv

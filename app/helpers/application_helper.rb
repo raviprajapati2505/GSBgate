@@ -549,4 +549,17 @@ module ApplicationHelper
   def merge_incentives(scheme_mix_criterion)
     return (scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[0]) + scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[1]))
   end
+
+  def set_project_country_location(project)
+    @location_options = [["Other", "Other"]]
+    @is_location_predefined = true
+    if project.persisted?
+      locations = Location.find_by_country(project&.country)&.list
+      if (locations.present? && locations&.include?(project&.location))
+        @location_options = locations.map{ |loc| [loc, loc] }.push(["Other", "Other"])
+      else
+        @is_location_predefined = false
+      end
+    end
+  end
 end

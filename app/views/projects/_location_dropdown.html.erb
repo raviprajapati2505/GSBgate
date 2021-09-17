@@ -1,0 +1,6 @@
+<label>Location</label>
+<% if @location.present? %>
+  <%= select_tag "project[location]", options_for_select(@location&.list&.map{ |loc| [loc, loc] }.push(["Other", "Other"])), { include_blank: "Select Location", required: true, id: "location-select", class: "select2 form-control location-select-dropdown"}  %>
+<% else %>
+  <%= select_tag "project[location]", options_for_select([["Other", "Other"]]), { include_blank: "Select Location", id: "location-select", required: true, class: "select2 form-control location-select-dropdown"}  %>
+<% end %>

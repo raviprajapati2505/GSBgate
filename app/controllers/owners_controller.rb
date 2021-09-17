@@ -11,16 +11,16 @@ class OwnersController < AuthenticatedController
     respond_to do |format|
       format.json {
         if params.has_key?(:q)
-          total_count = Owner.where('name like ?', '%' + params[:q] + '%')
+          total_count = Owner.where('name ILIKE ?', '%' + params[:q] + '%')
                             .count
           if params.has_key?(:page)
             owners = Owner.select('id, name as text, governmental, private_developer, private_owner')
-                        .where('name like ?', '%' + params[:q] + '%')
+                        .where('name ILIKE ?', '%' + params[:q] + '%')
                          .order('governmental', 'private_developer', 'private_owner')
                         .page(params[:page]).per(25)
           else
             owners = Owner.select('id, name as text, governmental, private_developer, private_owner')
-                          .where('name like ?', '%' + params[:q] + '%')
+                          .where('name ILIKE ?', '%' + params[:q] + '%')
                          .order('governmental', 'private_developer', 'private_owner')
                           .page(0).per(25)
           end

@@ -23,4 +23,25 @@ $(function() {
             }
         );
     });
+
+    function populate_country_location(element){
+      let country_name = element.find(":selected").val();
+      if(country_name.length > 0){
+        $.ajax({
+          url: "/projects/country_locations",
+          method: "GET",
+          dataType: "script",
+          data: {
+            country: country_name,
+          },
+          error: function(){
+            alert('Something went wrong !');
+          }
+        });
+      }
+    }
+
+    $('.country-select').on('change', function(){
+      populate_country_location($(this));
+    });
 });

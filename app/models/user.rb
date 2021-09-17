@@ -127,7 +127,7 @@ class User < ApplicationRecord
     user.email = member_profile[:email]
     user.picture = member_profile[:picture]
     user.gord_employee = (member_profile[:employer] == 'GORD')
-    user.cgp_license = !['GSAS-CGP Associate'].include?(member_profile[:membership])
+    user.cgp_license = ['GSAS-CGP Licentiate', 'GSAS-CGP Practitioner', 'GSAS-CGP Fellow', 'GSAS-CGP Associate'].include?(member_profile[:membership])
     user.employer_name = member_profile[:employer]
     # CGP license expiry logic
     # ------------------------
