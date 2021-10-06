@@ -559,24 +559,27 @@ class CertificationPath < ApplicationRecord
       end
     else
       if score < 0
-        return 'CERTIFICATION DENIED'
+        val = 'CERTIFICATION DENIED'
       elsif score >= 0 && score <= 0.5
-        return 1
+        val = 1
       elsif score > 0.5 && score <= 1
-        return 2
+        val = 2
       elsif score > 1 && score <= 1.5
-        return 3
+        val = 3
       elsif score > 1.5 && score <= 2
-        return 4
+        val = 4
       elsif score > 2 && score <= 2.5
-        return 5
+        val = 5
       elsif score > 2.5 && score <= 3
-        return 6
+        val = 6
       elsif score > 3 # due to incentive weights, you can actually score more than 3
-        return 6
+        val = 6
       else
-        return -1
+        val = -1
       end
+
+      val = revised_score(val, is_achieved_score, is_submitted_score) if (score > 2 && certificate.gsas_version == "2019" && certificate.design_and_build?)
+      return val
     end
   end
 
@@ -756,5 +759,15 @@ class CertificationPath < ApplicationRecord
 
   def send_applied_for_certification_email
     DigestMailer.applied_for_certification(self).deliver_now
+  end
+
+  def revised_score(val, is_achieved_score, is_submitted_score)
+    e6_criterion = scheme_mix_criteria&.joins(scheme_criterion: :scheme_category).find_by("scheme_categories.name = 'Energy' AND scheme_criteria.name = 'Renewable Energy'")
+    val = if (is_submitted_score && e6_criterion&.submitted_score_a < 3) || (is_achieved_score && e6_criterion&.achieved_score_a < 3) || (!is_achieved_score && !is_submitted_score && e6_criterion&.targeted_score_a < 3) 
+            4
+          else
+            val
+          end
+    return val
   end
 end
