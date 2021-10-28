@@ -107,7 +107,7 @@
                         <div class="form-group scheme-mixed-group">
                             <div class="row">
                                 <div class="col-md-9">
-                                    <%= select_tag('mixed_scheme_select', options_from_collection_for_select(@certification_path.development_type.schemes, :id, :name), {:include_blank => true, :multiple => false, :class => 'form-control mixed-scheme-select'}) %>
+                                    <%= select_tag('mixed_scheme_select', options_from_collection_for_select(manage_schemes_options(@certification_path, @assessment_method), :id, :name), {:include_blank => true, :multiple => false, :class => 'form-control mixed-scheme-select'}) %>
                                 </div>
                                 <div class="col-md-3">
                                     <%= btn_tag(icon: 'plus-circle', text: 'Add scheme', class: 'form-control add_scheme', type: 'button', style: 'white') %>
@@ -138,7 +138,7 @@
                         </div>
                     <% else %>
                         <div class="form-group scheme-single-group">
-                            <%= select_tag('single_scheme_select', options_from_collection_for_select(@certification_path.development_type.schemes, :id, :name), {:include_blank => true, :multiple => false, :class => 'form-control single-scheme-select'}) %>
+                            <%= select_tag('single_scheme_select', options_from_collection_for_select(manage_schemes_options(@certification_path, @assessment_method), :id, :name), {:include_blank => true, :multiple => false, :class => 'form-control single-scheme-select'}) %>
                         </div>
                     <% end %>
                 <% end %>

@@ -27,6 +27,17 @@ module ApplicationHelper
     end
   end
 
+  # Filter schemes which is only for checklist
+  def manage_schemes_options(certification_path, assessment_method)
+    schemes = certification_path&.development_type&.schemes
+    if assessment_method == 1
+      schemes_with_only_checklist = ["Energy Centers"]
+      schemes = schemes&.where.not(name: schemes_with_only_checklist)
+    end 
+
+    return schemes
+  end
+
   def tooltip(text, data_options = {})
     ikoen('question-circle', size: :normal, tooltip: text, data: data_options, class: 'tooltip-icon')
   end
