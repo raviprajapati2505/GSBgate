@@ -98,7 +98,7 @@ $(function () {
     $('.timepicker').timepicker({
         template: false,
         showMeridian: false,
-        defaultTime: '0:00'
+        defaultTime: '00:00'
     });
 
     // Accordion tables
