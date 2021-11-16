@@ -1,4 +1,4 @@
-Ckeditor.setup do |config|
+Ckeditor::Rails.configure do |config|
   config.assets_languages = ['en']
   config.assets_plugins = ['allyhelp.dialogs',
                            'about.dialogs',

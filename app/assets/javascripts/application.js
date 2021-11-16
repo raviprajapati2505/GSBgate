@@ -27,7 +27,7 @@
  *= require dropzone
  *= require toastr
  *= require js-routes
- *= require ckeditor/init
+ *= require ckeditor-jquery
  *= require html5sortable/html5sortable
  *= require leaflet
  *= require leaflet-draw

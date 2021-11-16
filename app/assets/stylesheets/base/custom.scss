@@ -1,4 +1,8 @@
 /* Only demo */
+.cktext-area .col-sm-offset-2 {
+  margin-left: unset !important;
+}
+
 @media (max-width: 1000px) {
   .welcome-message {
     display: none;
