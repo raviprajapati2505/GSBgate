@@ -26,6 +26,7 @@ class Project < ApplicationRecord
   validates :location_plan_file, presence: true
   validates :site_plan_file, presence: true
   validates :design_brief_file, presence: true
+  validates :sustainability_features_file, presence: true
   validates :project_narrative_file, presence: true
   validates :building_type_id, presence: true
   validates :building_type_group_id, presence: true
@@ -39,6 +40,7 @@ class Project < ApplicationRecord
   validates :location_plan_file, file_size: {maximum: MAXIMUM_DOCUMENT_FILE_SIZE.megabytes.to_i }
   validates :site_plan_file, file_size: {maximum: MAXIMUM_DOCUMENT_FILE_SIZE.megabytes.to_i }
   validates :design_brief_file, file_size: {maximum: MAXIMUM_DOCUMENT_FILE_SIZE.megabytes.to_i }
+  validates :sustainability_features_file, file_size: {maximum: MAXIMUM_DOCUMENT_FILE_SIZE.megabytes.to_i }
   validates :project_narrative_file, file_size: {maximum: MAXIMUM_DOCUMENT_FILE_SIZE.megabytes.to_i }
   validates :certificate_type, inclusion: Certificate.certificate_types.values
 
@@ -49,6 +51,7 @@ class Project < ApplicationRecord
   mount_uploader :site_plan_file, GeneralSubmittalUploader
   mount_uploader :design_brief_file, GeneralSubmittalUploader
   mount_uploader :project_narrative_file, GeneralSubmittalUploader
+  mount_uploader :sustainability_features_file, GeneralSubmittalUploader
 
   scope :for_user, ->(user) {
     joins(:projects_users).where(projects_users: {user_id: user.id})

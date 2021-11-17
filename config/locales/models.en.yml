@@ -41,24 +41,28 @@ en:
         name: Project Name
         building_type_group_id: Building Type Group
         building_type_id: Building Type
-        buildings_footprint_area: Buildings Footprint (C)
+        buildings_footprint_area: Project Footprint (C)
         certificate_type: Certificate Type
-        carpark_area: Car Park Area
-        certified_area: Gross Certified Area (A+B-C)
-        construction_year: Construction Year
+        carpark_area: Project Car Park Area
+        certified_area: Project Certified Area (A+B-C)
+        construction_year: Project Construction Year
         cost_square_meter: Cost per Square Meter
         estimated_building_cost: Estimated Building Cost
         estimated_infrastructure_cost: Estimated Infrastructure Cost
-        estimated_project_cost: Estimated Project Cost
-        gross_area: Buildings Gross Built up Area (B)
+        estimated_project_cost: Project Estimated Cost
+        gross_area: Project Gross Built up Area (B)
         project_site_area: Project Plot Area (A)
-        location_plan_file: Location Plan
-        site_plan_file: Site Plan
-        design_brief_file: Design Brief
-        project_narrative_file: Project Narrative
-        owner: Property Owner
+        location_plan_file: Project Location Plan
+        site_plan_file: Project Site Plan
+        design_brief_file: Project Design Brief
+        project_narrative_file: Project Area Statement
+        sustainability_features_file: Project Sustainability Features
+        owner: Project Owner
         service_provider: Service Provider
-        service_provider_2 : Service Provider CDA
+        service_provider_2: Service Provider CDA
+        country: Project Country
+        developer: Project Developer
+        description: Project Description
       projects_user:
         roles:
           project_team_member: Project team member

@@ -84,6 +84,17 @@
                 <%= f.hidden_field :site_plan_file_cache %>
               </div>
               <div class="form-group">
+                <label class="control-label" for="project_project_narrative_file"><%= Project.human_attribute_name('project_narrative_file') %></label>
+                <% if @project.project_narrative_file.present? %>
+                  <div class="input-group">
+                    <span class="input-group-addon"><%= ikoen('file', title: 'Currently uploaded file. Will be overridden when you select a new file.') %></span>
+                    <input type="text" class="form-control" disabled value="<%= @project.project_narrative_file.file.filename %>">
+                  </div>
+                <% end %>
+                <%= f.file_field :project_narrative_file, hide_label: true %>
+                <%= f.hidden_field :project_narrative_file_cache %>
+              </div>
+              <div class="form-group">
                 <label class="control-label" for="project_design_brief_file"><%= Project.human_attribute_name('design_brief_file') %></label>
                 <% if @project.design_brief_file.present? %>
                   <div class="input-group">
@@ -95,15 +106,15 @@
                 <%= f.hidden_field :design_brief_file_cache %>
               </div>
               <div class="form-group">
-                <label class="control-label" for="project_project_narrative_file"><%= Project.human_attribute_name('project_narrative_file') %></label>
-                <% if @project.project_narrative_file.present? %>
+                <label class="control-label" for="project_sustainability_features_file"><%= Project.human_attribute_name('sustainability_features_file') %></label>
+                <% if @project.sustainability_features_file.present? %>
                   <div class="input-group">
                     <span class="input-group-addon"><%= ikoen('file', title: 'Currently uploaded file. Will be overridden when you select a new file.') %></span>
-                    <input type="text" class="form-control" disabled value="<%= @project.project_narrative_file.file.filename %>">
+                    <input type="text" class="form-control" disabled value="<%= @project.sustainability_features_file.file.filename %>">
                   </div>
                 <% end %>
-                <%= f.file_field :project_narrative_file, hide_label: true %>
-                <%= f.hidden_field :project_narrative_file_cache %>
+                <%= f.file_field :sustainability_features_file, hide_label: true %>
+                <%= f.hidden_field :sustainability_features_file_cache %>
               </div>
             </div>
             <div class="col-md-6">

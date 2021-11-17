@@ -19,58 +19,8 @@
             <td><%= @project.name %></td>
           </tr>
           <tr>
-            <th><%= Project.human_attribute_name('certificate_type') %></th>
-            <td><%= t(Certificate.certificate_types.key(@project.certificate_type), scope: 'activerecord.attributes.certificate.certificate_types') %></td>
-          </tr>
-          <tr>
-            <th><%= Project.human_attribute_name('service_provider') %></th>
-            <td><%= @project.service_provider %></td>
-          </tr>
-
-          <% if @project.certificate_type == Certificate.certificate_types[:design_type] %>
-            <tr>
-              <th><%= Project.human_attribute_name('service_provider_2') %></th>
-              <td><%= @project.service_provider_2 %></td>
-            </tr>
-          <% end %>
-
-          <tr>
-            <th><%= Project.human_attribute_name('owner') %></th>
-            <td><%= @project.owner %></td>
-          </tr>
-          <tr>
-            <th><%= Project.human_attribute_name('developer') %></th>
-            <td><%= @project.developer %></td>
-          </tr>
-          <tr>
-            <th><%= Project.human_attribute_name('building_type_group_id') %></th>
-            <td><%= @project.building_type_group.name if @project.building_type_group.present? %></td>
-          </tr>
-          <tr>
-            <th><%= Project.human_attribute_name('building_type_id') %></th>
-            <td><%= @project.building_type.name if @project.building_type.present? %></td>
-          </tr>
-          <tr>
-            <th><%= Project.human_attribute_name('estimated_project_cost') %></th>
-            <td><%= @project.estimated_project_cost %></td>
-          </tr>
-          <tr>
-            <th><%= Project.human_attribute_name('cost_square_meter') %></th>
-            <td><%= @project.cost_square_meter %></td>
-          </tr>
-          <% if @project.building_type_group_id == 8 %>
-            <tr>
-              <th><%= Project.human_attribute_name('estimated_building_cost') %></th>
-              <td><%= @project.estimated_building_cost %></td>
-            </tr>
-            <tr>
-              <th><%= Project.human_attribute_name('estimated_infrastructure_cost') %></th>
-              <td><%= @project.estimated_infrastructure_cost %></td>
-            </tr>
-          <% end %>
-          <tr>
-            <th><%= Project.human_attribute_name('description') %></th>
-            <td><%= @project.description %></td>
+            <th><%= Project.human_attribute_name('country') %></th>
+            <td><%= @project.country %></td>
           </tr>
           <tr>
             <th><%= Project.human_attribute_name('address') %></th>
@@ -81,12 +31,24 @@
             <td><%= @project.location %></td>
           </tr>
           <tr>
-            <th><%= Project.human_attribute_name('country') %></th>
-            <td><%= @project.country %></td>
+            <th><%= Project.human_attribute_name('owner') %></th>
+            <td><%= @project.owner %></td>
+          </tr>
+          <tr>
+            <th><%= Project.human_attribute_name('developer') %></th>
+            <td><%= @project.developer %></td>
+          </tr>
+          <tr>
+            <th><%= Project.human_attribute_name('description') %></th>
+            <td><%= @project.description %></td>
           </tr>
           <tr>
             <th><%= Project.human_attribute_name('construction_year') %></th>
             <td><%= @project.construction_year %></td>
+          </tr>
+          <tr>
+            <th><%= Project.human_attribute_name('estimated_project_cost') %></th>
+            <td><%= @project.estimated_project_cost %></td>
           </tr>
           <tr>
             <th><%= Project.human_attribute_name('project_site_area') %></th>
@@ -108,6 +70,55 @@
             <th><%= Project.human_attribute_name('carpark_area') %></th>
             <td><%= @project.carpark_area %> m²</td>
           </tr>
+
+
+
+
+
+
+          <tr>
+            <th><%= Project.human_attribute_name('certificate_type') %></th>
+            <td><%= t(Certificate.certificate_types.key(@project.certificate_type), scope: 'activerecord.attributes.certificate.certificate_types') %></td>
+          </tr>
+          <tr>
+            <th><%= Project.human_attribute_name('service_provider') %></th>
+            <td><%= @project.service_provider %></td>
+          </tr>
+
+          <% if @project.certificate_type == Certificate.certificate_types[:design_type] %>
+            <tr>
+              <th><%= Project.human_attribute_name('service_provider_2') %></th>
+              <td><%= @project.service_provider_2 %></td>
+            </tr>
+          <% end %>
+
+          <tr>
+            <th><%= Project.human_attribute_name('building_type_group_id') %></th>
+            <td><%= @project.building_type_group.name if @project.building_type_group.present? %></td>
+          </tr>
+          <tr>
+            <th><%= Project.human_attribute_name('building_type_id') %></th>
+            <td><%= @project.building_type.name if @project.building_type.present? %></td>
+          </tr>
+          <tr>
+            <th><%= Project.human_attribute_name('cost_square_meter') %></th>
+            <td><%= @project.cost_square_meter %></td>
+          </tr>
+          <% if @project.building_type_group_id == 8 %>
+            <tr>
+              <th><%= Project.human_attribute_name('estimated_building_cost') %></th>
+              <td><%= @project.estimated_building_cost %></td>
+            </tr>
+            <tr>
+              <th><%= Project.human_attribute_name('estimated_infrastructure_cost') %></th>
+              <td><%= @project.estimated_infrastructure_cost %></td>
+            </tr>
+          <% end %>
+
+
+
+
+
           <tr>
             <th><%= Project.human_attribute_name('location_plan_file') %></th>
             <td>
@@ -131,6 +142,18 @@
               <% end %>
             </td>
           </tr>
+  
+          <tr>
+            <th><%= Project.human_attribute_name('project_narrative_file') %></th>
+            <td>
+              <% if @project.project_narrative_file.present? %>
+                <% if can? :download_project_narrative, @project %>
+                  <%= btn_download(download_project_narrative_path(@project), size: 'extra_small', tooltip: "Download #{Project.human_attribute_name('project_narrative_file')}") %>
+                <% end %>
+                <%= truncate(@project.project_narrative_file.file.filename, length: 35) %>
+              <% end %>
+            </td>
+          </tr>
 
           <tr>
             <th><%= Project.human_attribute_name('design_brief_file') %></th>
@@ -144,18 +167,18 @@
             </td>
           </tr>
 
-
           <tr>
-            <th><%= Project.human_attribute_name('project_narrative_file') %></th>
+            <th><%= Project.human_attribute_name('sustainability_features_file') %></th>
             <td>
-              <% if @project.project_narrative_file.present? %>
-                <% if can? :download_project_narrative, @project %>
-                  <%= btn_download(download_project_narrative_path(@project), size: 'extra_small', tooltip: "Download #{Project.human_attribute_name('project_narrative_file')}") %>
+              <% if @project.sustainability_features_file.present? %>
+                <% if can? :download_sustainability_features, @project %>
+                  <%= btn_download(download_sustainability_features_path(@project), size: 'extra_small', tooltip: "Download #{Project.human_attribute_name('sustainability_features_file')}") %>
                 <% end %>
-                <%= truncate(@project.project_narrative_file.file.filename, length: 35) %>
+                <%= truncate(@project.sustainability_features_file.file.filename, length: 35) %>
               <% end %>
             </td>
           </tr>
+
           </tbody>
         </table>
         <input type="hidden" id="project_coordinates" value="<%= @project.coordinates %>"/>

@@ -208,7 +208,7 @@ class CertificationPath < ApplicationRecord
           end
         end
       when CertificationPathStatus::SUBMITTING, CertificationPathStatus::SUBMITTING_AFTER_SCREENING, CertificationPathStatus::SUBMITTING_AFTER_APPEAL
-        ['location_plan_file', 'site_plan_file', 'design_brief_file', 'project_narrative_file'].each do |general_submittal|
+        ['location_plan_file', 'site_plan_file', 'design_brief_file', 'project_narrative_file', 'sustainability_features_file'].each do |general_submittal|
           if project.send(general_submittal).blank?
             todos << "A '#{Project.human_attribute_name(general_submittal)}' must be added to the project."
           end
@@ -269,7 +269,7 @@ class CertificationPath < ApplicationRecord
         end
       end
     when CertificationPathStatus::SUBMITTING, CertificationPathStatus::SUBMITTING_AFTER_SCREENING, CertificationPathStatus::SUBMITTING_AFTER_APPEAL
-      ['location_plan_file', 'site_plan_file', 'design_brief_file', 'project_narrative_file'].each do |general_submittal|
+      ['location_plan_file', 'site_plan_file', 'design_brief_file', 'project_narrative_file', 'sustainability_features_file'].each do |general_submittal|
         if project.send(general_submittal).blank?
           todos << "A '#{Project.human_attribute_name(general_submittal)}' must be added to the project."
         end
