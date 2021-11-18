@@ -436,7 +436,7 @@ module ApplicationHelper
   end
 
   def icon_for_filename filename
-    icon_for_ext File.extname(filename)
+    icon_for_ext File.extname(filename) rescue ""
   end
 
   def icon_for_ext file_extension

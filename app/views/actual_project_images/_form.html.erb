@@ -1,0 +1,5 @@
+<% actual_project_image = project.actual_project_images.new %>
+<%= form_with(scope: "image", url: project_actual_project_images_path(project, actual_project_image), method: 'post', html: { data: { maxfilesize: CertificationPathDocument::MAXIMUM_DOCUMENT_FILE_SIZE } }) do |f| %>
+  <%= f.file_field :actual_image, accept: ImageUploader.new.extension_white_list_js, required: true %>
+  <%= f.submit "Upload", style: "margin: 2px 0 2px 0;" %>
+<% end %>

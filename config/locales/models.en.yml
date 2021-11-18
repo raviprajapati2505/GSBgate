@@ -71,6 +71,8 @@ en:
         country: Project Country
         developer: Project Developer
         description: Project Description
+        project_actual_images: Project Actual Images
+        project_rendering_images: Project Rendering Images
       projects_user:
         roles:
           project_team_member: Project team member

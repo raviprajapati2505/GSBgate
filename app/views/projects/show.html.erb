@@ -175,6 +175,69 @@
               </td>
             </tr>
 
+            <% if [Certificate.certificate_types['design_type'],  Certificate.certificate_types['operations_type']].include?(@project.certificate_type) %>
+              <% if @project.can_upload_actual_image? %>
+                <% if can?(:read, ActualProjectImage.new(project_id: @project.id)) %>
+                  <% if can?(:create, ActualProjectImage.new(project_id: @project.id)) %>
+                    <tr>
+                      <th><%= Project.human_attribute_name('project_actual_images') %></th>
+                      <td>
+                        <% if @project.actual_project_images.present? %>
+                          <% project_actual_image = @project.actual_project_images.first %>
+                          <div class="row">
+                            <div class="col-md-8">
+                              <%= image_tag(icon_for_filename(project_actual_image['actual_image']), alt: project_actual_image.actual_image.content_type, title: project_actual_image.actual_image.content_type) + ' ' + project_actual_image['actual_image'] %>
+                            </div>
+
+                            <div class="col-md-4">
+                              <% if can?(:read, project_actual_image) %>
+                                <%= btn_download(project_actual_project_image_path(@project, project_actual_image), size: 'small', tooltip: 'Download image') %>
+                              <% end %>
+                              <% if can?(:destroy, project_actual_image) %>
+                                <%= btn_link_to(project_actual_project_image_path(@project, project_actual_image), method: :delete, data: { confirm: 'Are you sure to delete the image?'}, style: 'danger', size: 'small', icon: 'trash', tooltip: 'Delete image') %>
+                              <% end %>                            
+                            </div>
+                          </div>
+
+                        <% else %>
+                          <%= render partial: 'actual_project_images/form', locals: { project: @project } %>
+                        <% end %>
+                      </td>
+                    </tr>
+                  <% end %>
+                <% end %>
+              <% end %>
+              <% if @project.can_upload_project_rendering_image? %>
+                <% if can?(:read, ProjectRenderingImage.new(project_id: @project.id)) %>
+                  <% if can?(:create, ProjectRenderingImage.new(project_id: @project.id)) %>
+                    <tr>
+                      <th><%= Project.human_attribute_name('project_rendering_images') %></th>
+                      <td>
+                        <% if @project.project_rendering_images.present? %>
+                          <% project_rendering_image = @project.project_rendering_images.first %>
+                          <div class="row">
+                            <div class="col-md-8">
+                              <%= image_tag(icon_for_filename(project_rendering_image['rendering_image']), alt: project_rendering_image.rendering_image.content_type, title: project_rendering_image.rendering_image.content_type) + ' ' + project_rendering_image['rendering_image'] %>
+                            </div>
+
+                            <div class="col-md-4">
+                              <% if can?(:read, project_rendering_image) %>
+                                <%= btn_download(project_project_rendering_image_path(@project, project_rendering_image), size: 'small', tooltip: 'Download image') %>
+                              <% end %>
+                              <% if can?(:destroy, project_rendering_image) %>
+                                <%= btn_link_to(project_project_rendering_image_path(@project, project_rendering_image), method: :delete, data: { confirm: 'Are you sure to delete the image?'}, style: 'danger', size: 'small', icon: 'trash', tooltip: 'Delete image') %>
+                              <% end %>
+                            </div>
+                          </div>
+                        <% else %>
+                          <%= render partial: 'project_rendering_images/form', locals: { project: @project } %>
+                        <% end %>
+                      </td>
+                    </tr>
+                  <% end %>
+                <% end %>
+              <% end %>
+            <% end %>
           </tbody>
         </table>
         <input type="hidden" id="project_coordinates" value="<%= @project.coordinates %>"/>
@@ -201,55 +264,7 @@
         <%= render partial: 'certification_paths/overview', locals: {project: @project} %>
       </div>
     </div>
-    <% if [Certificate.certificate_types['design_type'],  Certificate.certificate_types['operations_type']].include?(@project.certificate_type) %>
-      <% if @project.can_upload_actual_image? %>
-        <% if can?(:read, ActualProjectImage.new(project_id: @project.id)) %>
-          <% if can?(:create, ActualProjectImage.new(project_id: @project.id)) %>
-            <div class="ibox float-e-margins">
-              <div class="ibox-title">
-                <h5> Upload Actual Project Images </h5>
-              </div>
-              <div class="ibox-content">
-                <%= render 'actual_project_images/new', actual_project_image: @project.actual_project_images.new, project: @project %>
-              </div>
-            </div>
-          <% end %>
 
-          <div class="ibox" id="certifier-documentation">
-            <div class="ibox-title">
-              <h5>Actual Project Images</h5>
-            </div>
-            <div class="ibox-content">
-              <%= render 'actual_project_images/index', actual_project_images: @project.actual_project_images.reload %>
-            </div>
-          </div>
-        <% end %>
-      <% end %>
-
-      <% if @project.can_upload_project_rendering_image? %>
-        <% if can?(:read, ProjectRenderingImage.new(project_id: @project.id)) %>
-          <% if can?(:create, ProjectRenderingImage.new(project_id: @project.id)) %>
-            <div class="ibox float-e-margins">
-              <div class="ibox-title">
-                <h5> Upload Project Rendering Images </h5>
-              </div>
-              <div class="ibox-content">
-                <%= render 'project_rendering_images/new', project_rendering_image: @project.project_rendering_images.new, project: @project %>
-              </div>
-            </div>
-          <% end %>
-
-          <div class="ibox" id="certifier-documentation">
-            <div class="ibox-title">
-              <h5>Project Rendering Images</h5>
-            </div>
-            <div class="ibox-content">
-              <%= render 'project_rendering_images/index', project_rendering_images: @project.project_rendering_images.reload %>
-            </div>
-          </div>
-        <% end %>
-      <% end %>
-    <% end %>
     <%= render partial: 'projects_users/show_gord_contact', locals: {project: @project} %>
     <%= render partial: 'projects_users/index', locals: {project: @project, team: :project_team} %>
     <%= render partial: 'projects_users/index', locals: {project: @project, team: :gsas_trust_team} %>
