@@ -113,6 +113,11 @@ class CertificationPath < ApplicationRecord
     certificate.construction_2019?
   end
 
+  def scheme_names
+    scheme_names = scheme_mixes&.joins(:scheme).pluck("schemes.name")
+    return scheme_names&.join(', ')
+  end
+
   def status_history
     audit_logs = self.audit_logs.where('new_status IS NOT NULL')
     status_history = []

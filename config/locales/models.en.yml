@@ -9,6 +9,14 @@ en:
           design_type: Design & Build
           construction_type: Construction Management
           operations_type: Operations
+          stage_titles:
+            letter_of_conformance: GSAS Design Certificate_LOC
+            final_design_certificate: GSAS Design & Build Certificate_CDA
+            construction_certificate: GSAS-CM - GSAS-CM Certificate
+            construction_certificate_stage1: GSAS-CM - Stage 1
+            construction_certificate_stage2: GSAS-CM - Stage 2
+            construction_certificate_stage3: GSAS-CM - Stage 3
+            operations_type: GSAS-CM - GSAS-CM Certificate
         certification_types:
           letter_of_conformance: Letter of conformance
           final_design_certificate: Final design certificate

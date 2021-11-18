@@ -10,6 +10,6 @@
         <% end %>
     </div>
     <div>
-        <%= render 'certification_paths/ratings', certification_path: certification_path %>
+        <%= render partial: 'certification_paths/ratings', locals: { certification_path: certification_path, display_item: 'score_and_rating' } %>
     </div>
 <% end %>
