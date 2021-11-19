@@ -383,7 +383,7 @@ module ApplicationHelper
       breadcrumbs[:paths] << project_user_url(project, projects_user)
     end
     if certification_path.present?
-      breadcrumbs[:names] << certification_path.name + ' (' + certification_path.status + ')'
+      breadcrumbs[:names] << certification_path.certificate.stage_title + ' (' + certification_path.status + ')'
       breadcrumbs[:paths] << project_certification_path_url(project, certification_path)
     end
     if scheme_mix.present?

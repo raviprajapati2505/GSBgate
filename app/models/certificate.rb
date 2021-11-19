@@ -47,6 +47,15 @@ class Certificate < ApplicationRecord
     self.name
   end
 
+  def only_certification_name
+    case only_name
+    when "Letter of Conformance", "Final Design Certificate"
+      I18n.t('activerecord.attributes.certificate.certificate_types.certificate_titles.design_and_build')
+    else
+      only_name
+    end
+  end
+
   def only_name
     name&.split(',')[0]
   end
@@ -58,11 +67,9 @@ class Certificate < ApplicationRecord
   def stage_title
     case only_name
     when "Letter of Conformance"
-      'GSAS Design Certificate_LOC'
-      # t('letter_of_conformance', scope: '.activerecord.attributes.certificate.certificate_types.stage_titles')
+      I18n.t('activerecord.attributes.certificate.certificate_types.stage_titles.letter_of_conformance')
     when "Final Design Certificate"
-      'GSAS Design & Build Certificate_CDA'
-      # t('final_design_certificate', scope: '.activerecord.attributes.certificate.certificate_types.stage_titles')
+      I18n.t('activerecord.attributes.certificate.certificate_types.stage_titles.final_design_certificate')
     else
       full_name
     end

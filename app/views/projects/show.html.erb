@@ -186,7 +186,7 @@
                           <% project_actual_image = @project.actual_project_images.first %>
                           <div class="row">
                             <div class="col-md-8">
-                              <%= image_tag(icon_for_filename(project_actual_image['actual_image']), alt: project_actual_image.actual_image.content_type, title: project_actual_image.actual_image.content_type) + ' ' + project_actual_image['actual_image'] %>
+                              <%= image_tag(icon_for_filename(project_actual_image['actual_image']), alt: project_actual_image.actual_image.content_type, title: project_actual_image.actual_image.content_type) + ' ' + truncate(project_actual_image['actual_image'], length: 25) %>
                             </div>
 
                             <div class="col-md-4">
@@ -217,7 +217,7 @@
                           <% project_rendering_image = @project.project_rendering_images.first %>
                           <div class="row">
                             <div class="col-md-8">
-                              <%= image_tag(icon_for_filename(project_rendering_image['rendering_image']), alt: project_rendering_image.rendering_image.content_type, title: project_rendering_image.rendering_image.content_type) + ' ' + project_rendering_image['rendering_image'] %>
+                              <%= image_tag(icon_for_filename(project_rendering_image['rendering_image']), alt: project_rendering_image.rendering_image.content_type, title: project_rendering_image.rendering_image.content_type) + ' ' + truncate(project_rendering_image['rendering_image'], length: 25) %>
                             </div>
 
                             <div class="col-md-4">

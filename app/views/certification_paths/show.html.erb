@@ -31,77 +31,104 @@
             <div class="ibox-content">
                 <table class="table table-bordered table-striped">
                     <tbody>
-                    <tr>
-                        <th><%= t('.certification_path.name') %></th>
-                        <td><%= @certification_path.name %></td>
-                    </tr>
+                        <tr>
+                            <th><%= t('.certification_path.name') %></th>
+                            <td><%= @certification_path.certificate.only_certification_name %></td>
+                        </tr>
 
-                    <% if not @certification_path.is_activating? %>
                         <tr>
-                            <th>Started</th>
-                            <td><%= localize(@certification_path.started_at) %></td>
-                        </tr>
-                    <% end %>
-                    <%# if @certification_path.certificate.letter_of_conformance? || @certification_path.certificate.final_design_certificate? %>
-                        <tr>
-                            <th>Expires</th>
-                            <td>
-                              <span><%= localize(@certification_path.expires_at) %></span>
-                              <%= btn_link_to(edit_expires_at_project_certification_path_path(@project, @certification_path), remote: true, text: 'Set new date', class: 'pull-right') if can?(:update_expires_at, @certification_path) %>
-                            </td>
-                        </tr>
-                    <%# end %>
-                    <% if @certification_path.is_activated? %>
-                        <tr>
-                            <th>Rating</th>
-                            <td><%= render partial: 'certification_paths/ratings', locals: { certification_path: @certification_path, display_item: 'score_and_rating' } %></td>
-                        </tr>
-                        <tr>
-                            <th>Score</th>
-                            <td>
-                                <%= render 'score/score', scores: final_score, point_type: :certificate_points %>
-                            </td>
-                        </tr>
-                    <% end %>
-                    <% unless @certification_path.certificate.construction_certificate? %>
-                    <tr>
-                        <th>
-                            Applied for PCR
-                            <%= tooltip(t('.certification_path.pcr.tooltip')) %>
-                        </th>
-                        <td>
-                            <div>
-                                <%= @certification_path.pcr_track? ? 'Yes' : 'No' %>
-                            </div>
-                        </td>
-                    </tr>
-                    <% if can?(:update_max_review_count, @certification_path) %>
-                        <tr>
-                          <th>
-                            Maximum Number of PCR
-                          </th>
+                          <th><%= t('certification_paths.show.certification_path.version') %></th>
                           <td>
-                            <span><%= pluralize(@certification_path.max_review_count, 'review') %></span>
-                            <%= btn_link_to(edit_max_review_count_project_certification_path_path(@project, @certification_path), remote: true, text: 'Set maximum', class: 'pull-right') %>
+                            <%= @certification_path.certificate.only_version %>
                           </td>
                         </tr>
-                    <% end %>
-                    <% end %>
-                    <% unless @certification_path.certificate.construction_certificate? %>
-                    <% if can?(:download_archive, @certification_path) %>
+
                         <tr>
+                          <th><%= t('certification_paths.show.certification_path.scheme') %></th>
+                          <td>
+                            <%= @certification_path.scheme_names %>
+                          </td>
+                        </tr>
+
+                        <tr>
+                          <th><%= t('certification_paths.show.certification_path.stage') %></th>
+                          <td>
+                            <%= @certification_path.certificate.stage_title %>
+                          </td>
+                        </tr>
+
+                        <% if @certification_path.is_activated? %>
+                          <tr>
+                            <th><%= t('.certification_path.rating') %></th>
+                            <td><%= render partial: 'certification_paths/ratings', locals: { certification_path: @certification_path, display_item: 'score_and_rating' } %></td>
+                          </tr>
+                          <tr>
+                            <th><%= t('.certification_path.scores') %></th>
+                            <td>
+                              <%= render 'score/score', scores: final_score, point_type: :certificate_points %>
+                            </td>
+                          </tr>
+                        <% end %>
+                        <% if not @certification_path.is_activating? %>
+                          <tr>
+                            <th><%= t('.certification_path.started_at') %></th>
+                            <td><%= localize(@certification_path.started_at) %></td>
+                          </tr>
+                        <% end %>
+                          <%# if @certification_path.certificate.letter_of_conformance? || @certification_path.certificate.final_design_certificate? %>
+                            <tr>
+                              <th><%= t('.certification_path.expired_at') %></th>
+                              <td>
+                                <span><%= localize(@certification_path.expires_at) %></span>
+                                <%= btn_link_to(edit_expires_at_project_certification_path_path(@project, @certification_path), remote: true, text: 'Set new date', class: 'pull-right') if can?(:update_expires_at, @certification_path) %>
+                              </td>
+                            </tr>
+                          <%# end %>
+                        <% if @certification_path.is_certified? %>
+                          <tr>
+                            <th><%= t('.certification_path.certified_at') %></th>
+                            <td><%= localize(@certification_path.certification_path_status.created_at) %></td>
+                          </tr>
+                        <% end %>
+                        <% unless @certification_path.certificate.construction_certificate? %>
+                          <tr>
                             <th>
-                                Documents and Audit Logs
-                                <%= tooltip('An archive of all approved documents and CSV formatted audit logs regarding the certificate can be downloaded here.') %>
+                              <%= t('.certification_path.apply_pcr.text') %>
+                              <%= tooltip(t('.certification_path.pcr.tooltip')) %>
                             </th>
                             <td>
+                              <div>
+                                <%= @certification_path.pcr_track? ? 'Yes' : 'No' %>
+                              </div>
+                            </td>
+                          </tr>
+                          <% if can?(:update_max_review_count, @certification_path) %>
+                            <tr>
+                              <th>
+                                Maximum Number of PCR
+                              </th>
+                              <td>
+                                <span><%= pluralize(@certification_path.max_review_count, 'review') %></span>
+                                <%= btn_link_to(edit_max_review_count_project_certification_path_path(@project, @certification_path), remote: true, text: 'Set maximum', class: 'pull-right') %>
+                              </td>
+                            </tr>
+                          <% end %>
+                        <% end %>
+                        <% unless @certification_path.certificate.construction_certificate? %>
+                          <% if can?(:download_archive, @certification_path) %>
+                            <tr>
+                              <th>
+                                Documents and Audit Logs
+                                <%= tooltip('An archive of all approved documents and CSV formatted audit logs regarding the certificate can be downloaded here.') %>
+                              </th>
+                              <td>
                                 <% tooltip = t('.certification_path.download_archive.tooltip', approved_count: @certification_path.scheme_mix_criteria_documents.approved.count) %>
                                 <%= btn_download(archive_project_certification_path_path, size: 'extra_small', tooltip: tooltip) %>
                                 <%= t('.certification_path.download_archive.text') %>
-                            </td>
-                        </tr>
-                    <% end %>
-                    <% end %>
+                              </td>
+                            </tr>
+                          <% end %>
+                        <% end %>
                     </tbody>
                 </table>
                 <!-- apply is only allowed if the user has the ability, AND  there has nog yet been applied for pcr -->

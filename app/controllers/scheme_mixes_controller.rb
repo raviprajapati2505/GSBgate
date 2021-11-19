@@ -5,7 +5,7 @@ class SchemeMixesController < AuthenticatedController
   before_action :set_controller_model, except: [:new, :create]
 
   def show
-    @page_title = ERB::Util.html_escape(@scheme_mix.full_name.to_s)
+    @page_title = ERB::Util.html_escape(@project.name.to_s)
     # creating hash with key = category.id and value = hash with category and its linked criteria
     @category_criterion_map = {}
     scheme_mix_criteria = @scheme_mix.scheme_mix_criteria.joins(:scheme_criterion).accessible_by(current_ability).order('scheme_criteria.number').map { |scheme_mix_criterion| scheme_mix_criterion.visible_status }

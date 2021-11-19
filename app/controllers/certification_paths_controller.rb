@@ -11,7 +11,7 @@ class CertificationPathsController < AuthenticatedController
   def show
     respond_to do |format|
       format.html {
-        @page_title = ERB::Util.html_escape(@certification_path.name.to_s)
+        @page_title = ERB::Util.html_escape(@project.name.to_s)
         @tasks = TaskService::get_tasks(page: params[:page], per_page: 25, user: current_user, project_id: @project.id, certification_path_id: @certification_path.id)
       }
       format.json { render json: {id: @certification_path.id, name: @certification_path.name}, status: :ok }
