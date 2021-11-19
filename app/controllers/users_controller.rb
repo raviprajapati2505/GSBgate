@@ -133,8 +133,8 @@ class UsersController < AuthenticatedController
         users = users + User.local_users.where(email: email)
 
         # Retrieve the ids of all users that are already linked to the project
-        if params.has_key?(:project_id)
-          existing_user_ids = ProjectsUser.where(project_id: params[:project_id]).pluck(:user_id)
+        if params.has_key?(:project_id) && params.has_key?(:certification_team_type)
+          existing_user_ids = ProjectsUser.where(project_id: params[:project_id], certification_team_type: params[:certification_team_type]&.to_i).pluck(:user_id)
         end
 
         # Add users to the json result

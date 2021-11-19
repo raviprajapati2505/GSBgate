@@ -6,10 +6,11 @@ class ProjectsUser < ApplicationRecord
   belongs_to :project, optional: true
 
   enum role: { project_team_member: 5, cgp_project_manager: 1, enterprise_client: 2, certifier: 3, certification_manager: 4 }
+  enum certification_team_type: { "Other" => 1, "Letter of Conformance" => 2, "Final design certificate" => 3 }
 
   validates :role, inclusion: ProjectsUser.roles.keys
   validates_presence_of :user
-  validates :user, uniqueness: {scope:[:project, :role]}
+  validates :user, uniqueness: {scope:[:project, :role, :certification_team_type]}
 
   scope :for_project, ->(project) {
     where(project: project)
@@ -33,6 +34,14 @@ class ProjectsUser < ApplicationRecord
 
   scope :certification_managers, -> {
     where(role: ProjectsUser.roles[:certification_manager])
+  }
+
+  scope :project_team_with_type, ->(certification_team_type) {
+    where(role: [ProjectsUser.roles[:project_team_member], ProjectsUser.roles[:cgp_project_manager]], certification_team_type: certification_team_type)
+  }
+
+  scope :gsas_trust_team_with_type, ->(certification_team_type) {
+    where(role: [ProjectsUser.roles[:certifier], ProjectsUser.roles[:certification_manager]], certification_team_type: certification_team_type)
   }
 
   scope :enterprise_clients, -> {

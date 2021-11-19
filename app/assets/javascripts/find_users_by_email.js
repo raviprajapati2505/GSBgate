@@ -8,6 +8,7 @@ $(function () {
         var users_table = modal.find('.users-table');
         var form_group = modal.find('.form-group');
         var email_field = modal.find('.email-field');
+        var certification_team_type = modal.find('.certification-team-type-field');
         var existing_user_template = modal.find('.templates .existing-user').html();
         var unknown_user_template = modal.find('.templates .unknown-user').html();
         var error_user_template = modal.find('.templates .error-user').html();
@@ -54,6 +55,9 @@ $(function () {
             $.ajax({
                 type: 'GET',
                 url: Routes.find_users_by_email_users_path({email: encodeURIComponent(email_field.val()), project_id: modal.data('project-id'), gord_employee: modal.data('gord-employee')}),
+                data: {
+                    certification_team_type: certification_team_type.val();
+                },
                 dataType: 'json',
                 cache: false
             })

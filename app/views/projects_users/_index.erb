@@ -2,11 +2,12 @@
    raise('Project must be specified') if project.nil?
    raise('Team must be specified') if team.nil?
    project_user_roles = {}
+   
    case team
      when :project_team
        title = t('.project_team.title')
        title_modal = t('.project_team.title_modal')
-       project_users = project.projects_users.project_team
+       project_users = project.projects_users.project_team_with_type(certification_team_type)
        if can?(:create, ProjectsUser.new(project_id: project.id, role: ProjectsUser.roles[:project_team_member]))
          project_user_roles[:project_team_member] = ProjectsUser.roles[:project_team_member]
        end
@@ -17,7 +18,7 @@
      when :gsas_trust_team
        title = t('.certifier_team.title')
        title_modal = t('.certifier_team.title_modal')
-       project_users = project.projects_users.gsas_trust_team
+       project_users = project.projects_users.gsas_trust_team_with_type(certification_team_type)
        if can?(:create, ProjectsUser.new(project_id: project.id, role: ProjectsUser.roles[:certifier]))
          project_user_roles[:certifier] = ProjectsUser.roles[:certifier]
        end
@@ -37,7 +38,6 @@
    can_create_new_project_user = (project_user_roles.count > 0)
 %>
 <% if can?(:read, project_users[0]) %>
-<div class="ibox float-e-margins">
     <div class="ibox-title">
         <h5><%= title %></h5>
     </div>
@@ -85,7 +85,6 @@
             <%= btn_tag(icon: 'user-plus', text: title_modal, data: {toggle: 'modal', target: "##{modal_id}"}) %>
         <% end %>
     </div>
-</div>
 
 <div class="modal fade" id="<%= modal_id %>" aria-hidden="true" >
     <div class="modal-dialog">
@@ -104,6 +103,7 @@
                                         ____user_name____
                                         <%= pu.hidden_field :user_id, { value: '____user_id____' } %>
                                     </td>
+                                    <%= pu.hidden_field :certification_team_type, { value: certification_team_type } %>
                                     <td>
                                         This user will be added to the project as<br />
                                         <%= pu.select :role, project_user_roles.keys.map { |k| [t(k, scope: 'activerecord.attributes.projects_user.roles'), k] } %>
@@ -115,6 +115,7 @@
                             </script>
                             <script class="unknown-user" type="text/x-custom-template">
                                 <tr data-user-uid="____email____">
+                                    <%= pu.hidden_field :certification_team_type, value: certification_team_type %>
                                     <td>
                                         ____email____
                                         <%= hidden_field_tag 'emails[]', '____email____' %>
@@ -149,6 +150,7 @@
                             <%= label_tag 'email' + team.to_s, 'Find Users by Email', class: 'control-label' %>
                             <div class="input-group">
                                 <%= text_field_tag 'email' + team.to_s, '', class: 'email-field form-control' %>
+                                <%= hidden_field_tag 'certification_team_type', certification_team_type, class: 'certification-team-type-field form-control' %>
                                 <span class="input-group-btn">
                                     <%= btn_tag(class: 'find-users-by-email-btn', icon: 'search', style: 'white', type: 'button') %>
                                 </span>
