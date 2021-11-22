@@ -6,7 +6,7 @@ class ProjectsUser < ApplicationRecord
   belongs_to :project, optional: true
 
   enum role: { project_team_member: 5, cgp_project_manager: 1, enterprise_client: 2, certifier: 3, certification_manager: 4 }
-  enum certification_team_type: { "Other" => 1, "Letter of Conformance" => 2, "Final design certificate" => 3 }
+  enum certification_team_type: { "Other" => 1, "Letter of Conformance" => 2, "Final Design Certificate" => 3 }
 
   validates :role, inclusion: ProjectsUser.roles.keys
   validates_presence_of :user

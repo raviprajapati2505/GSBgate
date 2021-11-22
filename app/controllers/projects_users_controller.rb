@@ -19,7 +19,7 @@ class ProjectsUsersController < AuthenticatedController
           projects_user = ProjectsUser.new
           projects_user.user_id = pu[:user_id]
           projects_user.role = pu[:role]
-          projects_user.certification_team_type = pu[:certification_team_type]
+          projects_user.certification_team_type = pu[:certification_team_type]&.to_i
           projects_user.project = @project
 
           # Check ability & gord_employee flag

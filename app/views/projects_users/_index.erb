@@ -2,7 +2,6 @@
    raise('Project must be specified') if project.nil?
    raise('Team must be specified') if team.nil?
    project_user_roles = {}
-   
    case team
      when :project_team
        title = t('.project_team.title')
@@ -14,7 +13,7 @@
        if can?(:create, ProjectsUser.new(project_id: project.id, role: ProjectsUser.roles[:cgp_project_manager]))
          project_user_roles[:cgp_project_manager] = ProjectsUser.roles[:cgp_project_manager]
        end
-       modal_id = 'addProjectTeamModal'
+       modal_id = "addProjectTeamModal#{certification_team_type}"
      when :gsas_trust_team
        title = t('.certifier_team.title')
        title_modal = t('.certifier_team.title_modal')
@@ -25,7 +24,7 @@
        if can?(:create, ProjectsUser.new(project_id: project.id, role: ProjectsUser.roles[:certification_manager]))
          project_user_roles[:certification_manager] = ProjectsUser.roles[:certification_manager]
        end
-       modal_id = 'addGsasTrustTeamModal'
+       modal_id = "addGsasTrustTeamModal#{certification_team_type}"
      when :enterprise_clients
        title = t('.enterprise_clients.title')
        title_modal = t('.enterprise_clients.title_modal')
@@ -33,7 +32,7 @@
        if can?(:create, ProjectsUser.new(project_id: project.id, role: ProjectsUser.roles[:enterprise_client]))
          project_user_roles[:enterprise_client] = ProjectsUser.roles[:enterprise_client]
        end
-       modal_id = 'addEnterpriseClientModal'
+       modal_id = "addEnterpriseClientModal#{certification_team_type}"
    end
    can_create_new_project_user = (project_user_roles.count > 0)
 %>

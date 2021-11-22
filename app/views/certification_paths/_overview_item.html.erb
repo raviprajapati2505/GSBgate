@@ -30,12 +30,10 @@
                 <% end %>
               </td>
               <td class="td-px-0">
-                <% certification_path.scheme_mixes.each do |scheme_mix| %>
-                  <% if certification_path&.certification_path_method&.assessment_method == 2 %>
-                    <%= render partial: 'certification_paths/checklist_rating', locals: { certification_path: certification_path } %>
-                  <% else %>
-                    <%= render partial: 'certification_paths/ratings', locals: { certification_path: certification_path, display_item: 'score' } %>
-                  <% end %>
+                <% if certification_path&.certification_path_method&.assessment_method == 2 %>
+                  <%= render partial: 'certification_paths/checklist_rating', locals: { certification_path: certification_path } %>
+                <% else %>
+                  <%= render partial: 'certification_paths/ratings', locals: { certification_path: certification_path, display_item: 'score' } %>
                 <% end %>
               </td>
             </tr>
