@@ -671,6 +671,10 @@ class CertificationPath < ApplicationRecord
     certificate.full_name.include?('Letter of Conformance') && certificate.design_and_build?
   end
 
+  def is_design_fdc?
+    certificate.full_name.include?('Final Design Certificate') && certificate.design_and_build?
+  end
+
   private
 
   def set_started_at

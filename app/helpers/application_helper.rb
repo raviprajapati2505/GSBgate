@@ -577,4 +577,12 @@ module ApplicationHelper
   def last_created_project_date
     Project.find(1686).created_at
   end
+
+  def projects_users_count_with_role(project_users, role)
+    project_users&.with_role(role)&.count
+  end
+
+  def find_rowspan(project_user_count = 0)
+    project_user_count += 1
+  end
 end

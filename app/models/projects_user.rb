@@ -55,4 +55,17 @@ class ProjectsUser < ApplicationRecord
   def gsas_trust_team?
     self.certifier? || self.certification_manager?
   end
+
+  def self.with_role(role)
+    where(role: role)
+  end
+
+  def self.group_by_roles
+    project_users = []
+    roles = pluck(:role).uniq
+    roles&.each do |role|
+      project_users.push(*where(role: role)&.to_a)
+    end
+    return project_users
+  end
 end
