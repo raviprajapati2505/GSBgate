@@ -573,4 +573,8 @@ module ApplicationHelper
       end
     end
   end
+
+  def last_created_project_date
+    Project.find(1686).created_at
+  end
 end
