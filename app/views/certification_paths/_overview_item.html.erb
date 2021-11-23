@@ -1,55 +1,21 @@
 <% certification_paths = CertificationPath.with_project(project).with_certification_type(Certificate.certification_types[Certificate.certification_types.key(certification_type)]) %>
 <% certification_paths.each do |certification_path| %>
-  <li class="list-group-item container">
+  <li class="list-group-item container table-my-0 table-py-0">
     <div class="row">
-      <div class="col-md-12 table-responsive">
-        <table class="table table-bordered table-mb-0">
+      <div class="col-md-12 table-responsive table-p-0">
+        <table class="table table-bordered table-mb-1">
           <tbody>
-            <tr>
-              <th><%= t('certification_paths.show.certification_path.name') %></th>
-              <td>
-                <%= can_link_to(project_certification_path_path(project, certification_path), certification_path, class: "link-mr-2") do %>
-                  <%= certification_path.certificate.only_certification_name %>
-                <% end %>
-                <% if can? :confirm_destroy, @certification_path %>
-                  <%= btn_link_to(confirm_destroy_project_certification_path_path(@project, certification_path), {icon: 'trash', style: 'danger', size: 'extra_small', tooltip: 'Destroy all certification data', method: :get, data: {confirm: 'Do you really want to delete this certification?'}}) %>
-                <% end %>
-                <% if can? :confirm_deny, certification_path %>
-                  <%= btn_link_to(confirm_deny_project_certification_path_path(@project, certification_path), {icon: 'ban', style: 'danger', size: 'extra_small', tooltip: 'Deny certificate', method: :get, data: {confirm: 'Do you really want to deny certification?'}}) %>
-                <% end %>
-              </td>
-            </tr>
-            <tr>
-              <th><%= t('certification_paths.show.certification_path.version') %></th>
-              <td>
-                <%= can_link_to(project_certification_path_path(project, certification_path), certification_path) do %>
-                  <%= certification_path.certificate.only_version %>
-                <% end %>
-              </td>
-            </tr>
-            <tr>
-              <th><%= t('certification_paths.show.certification_path.scheme') %></th>
-              <td>
-                <%= can_link_to(project_certification_path_path(project, certification_path), certification_path) do %>
-                  <%= certification_path.scheme_names %>
-                <% end %>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <table class="table table-bordered mt-0">
-          <tbody>
-            <tr>
+            <tr class="bg-header-grey">
               <th><%= t('certification_paths.show.certification_path.stage') %></th>
               <th><%= t('certification_paths.show.certification_path.status') %></th>
               <th><%= t('certification_paths.show.certification_path.rating') %></th>
               <th><%= t('certification_paths.show.certification_path.scores') %></th>
             </tr>
             <tr>
-              <td>
+              <td style="width: 425px;">
                 <%= certification_path.certificate.stage_title %>
               </td>
-              <td>
+              <td style="width: 290px;">
                 <% if certification_path.is_design_loc? && certification_path.status.humanize == 'Certified' %>
                   Provisionally Certified
                 <% else %>

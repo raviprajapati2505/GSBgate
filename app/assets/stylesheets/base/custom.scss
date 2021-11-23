@@ -12,12 +12,38 @@
   padding-inline: 0px !important;
 }
 
+.table-py-0 {
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+}
+
 .table-mb-0 {
   margin-bottom: 0px !important;
 }
 
+.table-mb-1 {
+  margin-bottom: 1px !important;
+}
+
+.table-my-0 {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+}
+
+.table-p-0 {
+  padding: 0px !important;
+}
+
 a.link-mr-2 {
   margin-right: 0.7rem !important;
+}
+
+.bg-header-grey {
+  background-color: #f9f9f9;
+}
+
+.bg-header-white {
+  background-color: #ffffff !important;
 }
 
 @media (max-width: 1000px) {
