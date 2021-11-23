@@ -80,11 +80,11 @@ en:
         project_rendering_images: Project Rendering Images
       projects_user:
         roles:
-          project_team_member: Project team member
-          cgp_project_manager: CGP project manager
-          enterprise_client: Enterprise client
-          certifier: Certifier
-          certification_manager: Certification manager
+          project_team_member: Team Members
+          cgp_project_manager: GSAS CGP
+          enterprise_client: Enterprise Clients
+          certifier: Certifiers
+          certification_manager: Certification Manager
       scheme_mix:
         custom_name: Custom Name
       scheme_mix_criterion:

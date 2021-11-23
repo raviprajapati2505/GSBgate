@@ -37,14 +37,11 @@
    can_create_new_project_user = (project_user_roles.count > 0)
 %>
 <% if can?(:read, project_users[0]) %>
-    <div class="ibox-title">
-        <h5><%= title %></h5>
-    </div>
-    <div class="ibox-content">
+    <div class="ibox-content table-responsive">
         <% if project_users.count.zero? %>
             <p>No users found.</p>
         <% else %>
-            <table class="table table-striped table-bordered table-hover datatable" cellspacing="0" width="100%">
+            <table class="table table-bordered table-hover datatable" cellspacing="0" width="100%">
                 <thead>
                 <tr>
                     <th><%= title %></th>
@@ -56,7 +53,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <% project_users.projects_user_role.each do |role| %>
+                <% project_users.projects_user_role(title).each do |role| %>
                   <% rowspan = find_rowspan(projects_users_count_with_role(project_users, role)) %>
                     <tr>
                         <td rowspan="<%= rowspan %>">

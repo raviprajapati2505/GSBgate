@@ -69,7 +69,19 @@ class ProjectsUser < ApplicationRecord
     return project_users
   end
 
-  def self.projects_user_role
-    pluck(:role).uniq
+  def self.projects_user_role(title = nil)
+    roles = pluck(:role).uniq
+    order = case title
+             when "Practitioners"
+              ["cgp_project_manager", "project_team_member"]
+            when "GSAS Trust"
+              ["certification_manager", "certifier"]
+            when "Enterprise Clients"
+              ["enterprise_client"]
+            else
+              []
+            end
+
+    return roles.sort_by { |e| order.index(e) || Float::INFINITY }
   end
 end
