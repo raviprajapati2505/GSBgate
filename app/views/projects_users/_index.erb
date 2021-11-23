@@ -56,23 +56,32 @@
                 </tr>
                 </thead>
                 <tbody>
-                <% project_users.group_by_roles.each do |projects_user| %>
+                <% project_users.projects_user_role.each do |role| %>
+                  <% rowspan = find_rowspan(projects_users_count_with_role(project_users, role)) %>
                     <tr>
-                        <td>
-                            <%= t(projects_user.role, scope: 'activerecord.attributes.projects_user.roles' ) %>
+                        <td rowspan="<%= rowspan %>">
+                            <%= t(role, scope: 'activerecord.attributes.projects_user.roles' ) %>
                         </td>
-                        <td>
-                            <%= projects_user.user.email %>
-                        </td>
-                        <td>
-                            <%= can_link_to(project_user_path(project, projects_user), projects_user) do %>
-                                <%= projects_user.user.full_name %>
+                        <% project_users.with_role(role).each_with_index do |projects_user, index| %>
+                            <% unless index == 1 %>
+                                <tr>
                             <% end %>
-                        </td>
-                        <% if team != :enterprise_clients %>
                             <td>
-                                <span class="badge fa-lg"><%= TaskService::count_tasks(user: projects_user.user, project_id: project.id) %></span>
+                                <%= projects_user.user.email %>
                             </td>
+                            <td>
+                                <%= can_link_to(project_user_path(project, projects_user), projects_user) do %>
+                                    <%= projects_user.user.full_name %>
+                                <% end %>
+                            </td>
+                            <% if team != :enterprise_clients %>
+                                <td>
+                                    <span class="badge fa-lg"><%= TaskService::count_tasks(user: projects_user.user, project_id: project.id) %></span>
+                                </td>
+                            <% end %>
+                            <% unless index == 1 %>
+                                </tr>
+                            <% end %>
                         <% end %>
                     </tr>
                 <% end %>

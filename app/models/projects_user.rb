@@ -68,4 +68,8 @@ class ProjectsUser < ApplicationRecord
     end
     return project_users
   end
+
+  def self.projects_user_role
+    pluck(:role).uniq
+  end
 end
