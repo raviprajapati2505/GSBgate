@@ -51,8 +51,10 @@ class Certificate < ApplicationRecord
     case only_name
     when "Letter of Conformance", "Final Design Certificate"
       I18n.t('activerecord.attributes.certificate.certificate_types.certificate_titles.design_and_build')
-    else
-      only_name
+    when "GSAS-CM"
+      I18n.t('activerecord.attributes.certificate.certificate_types.certificate_titles.construction_certificate')
+    when "Operations Certificate"
+      I18n.t('activerecord.attributes.certificate.certificate_types.certificate_titles.operations_certificate')
     end
   end
 

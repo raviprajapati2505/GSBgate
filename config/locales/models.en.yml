@@ -19,6 +19,8 @@ en:
             operations_type: GSAS-CM - GSAS-CM Certificate
           certificate_titles:
             design_and_build: GSAS-D&B
+            construction_certificate: GSAS-CM
+            operations_certificate: GSAS-OP
         certification_types:
           letter_of_conformance: Letter of conformance
           final_design_certificate: Final design certificate
@@ -65,8 +67,9 @@ en:
         location_plan_file: Project Location Plan
         site_plan_file: Project Site Plan
         design_brief_file: Project Design Brief
-        project_narrative_file: Project Area Statement
+        project_narrative_file: Project Narrative
         sustainability_features_file: Project Sustainability Features
+        area_statement_file: Project Area Statement
         owner: Project Owner
         service_provider: Service Provider
         service_provider_2: Service Provider CDA

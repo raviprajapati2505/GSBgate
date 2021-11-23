@@ -139,17 +139,29 @@
               </td>
             </tr>
     
-            <tr>
-              <th><%= Project.human_attribute_name('project_narrative_file') %></th>
-              <td>
-                <% if @project.project_narrative_file.present? %>
-                  <% if can? :download_project_narrative, @project %>
-                    <%= btn_download(download_project_narrative_path(@project), size: 'extra_small', tooltip: "Download #{Project.human_attribute_name('project_narrative_file')}") %>
+            <% if @project.project_narrative_file.present? %>
+              <tr>
+                <th><%= Project.human_attribute_name('project_narrative_file') %></th>
+                <td>
+                    <% if can? :download_project_narrative, @project %>
+                      <%= btn_download(download_project_narrative_path(@project), size: 'extra_small', tooltip: "Download #{Project.human_attribute_name('project_narrative_file')}") %>
+                    <% end %>
+                    <%= truncate(@project.project_narrative_file.file.filename, length: 35) %>
+                </td>
+              </tr>
+            <% else %>
+              <tr>
+                <th><%= Project.human_attribute_name('area_statement_file') %></th>
+                <td>
+                  <% if @project.area_statement_file.present? %>
+                    <% if can? :download_area_statement, @project %>
+                      <%= btn_download(download_area_statement_path(@project), size: 'extra_small', tooltip: "Download #{Project.human_attribute_name('area_statement_file')}") %>
+                    <% end %>
+                    <%= truncate(@project.area_statement_file.file.filename, length: 35) %>
                   <% end %>
-                  <%= truncate(@project.project_narrative_file.file.filename, length: 35) %>
-                <% end %>
-              </td>
-            </tr>
+                </td>
+              </tr>
+            <% end %>
 
             <tr>
               <th><%= Project.human_attribute_name('design_brief_file') %></th>

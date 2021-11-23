@@ -78,7 +78,7 @@ class Ability
     if user.default_role?
       # Project controller
       can :read, Project, projects_users: {user_id: user.id}
-      can [:download_location_plan, :download_site_plan, :download_design_brief, :download_project_narrative, :download_sustainability_features], Project, projects_users: {user_id: user.id}
+      can [:download_location_plan, :download_site_plan, :download_design_brief, :download_project_narrative, :download_area_statement, :download_sustainability_features], Project, projects_users: {user_id: user.id}
       can :show_tools, Project, projects_users: {user_id: user.id}
       can :update, Project, projects_users: {user_id: user.id, role: project_user_role_cgp_project_manager}
       cannot :update, Project, projects_users: {user_id: user.id, role: project_user_role_cgp_project_manager}, certification_paths: {certification_path_status: {id: CertificationPathStatus::STATUSES_ACTIVATED}}
@@ -243,7 +243,7 @@ class Ability
       can :read, :all
       can [:index, :auditable_index, :auditable_index_comments, :download_attachment, :export], AuditLog, attachment_file: true
       # Project
-      can [:download_location_plan, :download_site_plan, :download_design_brief, :download_project_narrative, :download_sustainability_features], Project
+      can [:download_location_plan, :download_site_plan, :download_design_brief, :download_project_narrative, :download_area_statement, :download_sustainability_features], Project
       can :show_tools, Project
       can :update, SchemeMixCriterionEpl, scheme_mix_criterion: {main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_verifying}
       can :update, SchemeMixCriterionWpl, scheme_mix_criterion: {main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_verifying}

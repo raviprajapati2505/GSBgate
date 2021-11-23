@@ -117,6 +117,7 @@ Rails.application.routes.draw do
   get 'projects/:id/design_brief' => 'projects#download_design_brief', as: 'download_project_design_brief'
   get 'projects/:id/narrative' => 'projects#download_project_narrative', as: 'download_project_narrative'
   get 'projects/:id/sustainability_features' => 'projects#download_sustainability_features', as: 'download_sustainability_features'
+  get 'projects/:id/area_statement' => 'projects#download_area_statement', as: 'download_area_statement'
   
   resources :audit_logs, only: [:index], path: :audit_logs do
     collection do

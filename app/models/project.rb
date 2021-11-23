@@ -27,7 +27,6 @@ class Project < ApplicationRecord
   validates :site_plan_file, presence: true
   validates :design_brief_file, presence: true
   validates :sustainability_features_file, presence: true
-  validates :project_narrative_file, presence: true
   validates :building_type_id, presence: true
   validates :building_type_group_id, presence: true
   validates :gross_area, numericality: { greater_than_or_equal_to: 0 }
@@ -41,8 +40,10 @@ class Project < ApplicationRecord
   validates :site_plan_file, file_size: {maximum: MAXIMUM_DOCUMENT_FILE_SIZE.megabytes.to_i }
   validates :design_brief_file, file_size: {maximum: MAXIMUM_DOCUMENT_FILE_SIZE.megabytes.to_i }
   validates :sustainability_features_file, file_size: {maximum: MAXIMUM_DOCUMENT_FILE_SIZE.megabytes.to_i }
+  validates :area_statement_file, file_size: {maximum: MAXIMUM_DOCUMENT_FILE_SIZE.megabytes.to_i }
   validates :project_narrative_file, file_size: {maximum: MAXIMUM_DOCUMENT_FILE_SIZE.megabytes.to_i }
   validates :certificate_type, inclusion: Certificate.certificate_types.values
+  validate :presence_of_files
 
   after_initialize :init
   after_create :send_project_registered_email
@@ -52,6 +53,7 @@ class Project < ApplicationRecord
   mount_uploader :design_brief_file, GeneralSubmittalUploader
   mount_uploader :project_narrative_file, GeneralSubmittalUploader
   mount_uploader :sustainability_features_file, GeneralSubmittalUploader
+  mount_uploader :area_statement_file, GeneralSubmittalUploader
 
   scope :for_user, ->(user) {
     joins(:projects_users).where(projects_users: {user_id: user.id})
@@ -60,6 +62,12 @@ class Project < ApplicationRecord
   scope :without_certification_paths, -> {
     includes(:certification_paths).where(certification_paths: {id: nil})
   }
+
+  def presence_of_files
+    unless (project_narrative_file.present? || area_statement_file.present?)
+      errors.add(:area_statement_file, "can't be blank.")
+    end
+  end
 
   def completed_letter_of_conformances
     CertificationPath.with_project(self).with_status(CertificationPathStatus::STATUSES_COMPLETED).with_certification_type(Certificate.certification_types[:letter_of_conformance])
