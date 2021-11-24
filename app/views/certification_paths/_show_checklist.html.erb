@@ -272,7 +272,7 @@
       <% if can?(:create, CertifierCertificationPathDocument.new(:certification_path_id => @certification_path.id)) %>
           <div class="ibox">
             <div class="ibox-title">
-              <h5>Upload Checklist Documentation</h5>
+              <h5>UPLOAD CHECKLIST DOCUMENTATION</h5>
             </div>
             <div class="ibox-content">
               <%= render 'certification_path_documents/new', document: CertifierCertificationPathDocument.new, project: @project, certification_path: @certification_path %>
@@ -284,7 +284,7 @@
               <% if @certification_path.certificate.construction_type? %>
                 <h5>Upload Construction Management Plan and General Documentation</h5>
               <% else %>
-                <h5>Upload Checklist Documentation</h5>
+                <h5>UPLOAD CHECKLIST DOCUMENTATION</h5>
               <% end %>
             </div>
             <div class="ibox-content">
@@ -295,9 +295,9 @@
       <div class="ibox" id="cgp-documentation">
         <div class="ibox-title">
           <% if @certification_path.certificate.certification_type == "final_design_certificate" %>
-            <h5>Project Team CDA Documentation</h5>
+            <h5>PRACTITIONERS CDA DOCUMENTATION</h5>
           <% else %>
-            <h5>Project Team Documentation</h5>
+            <h5>PRACTITIONERS DOCUMENTATION</h5>
           <% end %>
         </div>
         <div class="ibox-content">
@@ -306,7 +306,7 @@
       </div>
       <div class="ibox" id="certifier-documentation">
         <div class="ibox-title">
-          <h5>GSAS Trust Team Documentation</h5>
+          <h5>GSAS TRUST DOCUMENTATION</h5>
         </div>
         <div class="ibox-content">
           <%= render 'certification_path_documents/index', certification_path_documents: @certification_path.certifier_certification_path_documents %>

@@ -65,7 +65,7 @@ en:
         pcr:
           tooltip: Pre Certification Review. During PCR, the GSAS trust team will assist the project team in completing the certification process. The CGP project manager can enable PCR when applying for a certificate. Please contact GORD if you want to enable the PCR track in a later stage of the certification process.
       certification_path_status:
-        title: Certification Status
+        title: CERTIFICATION STATUS
         btn_accept_achieved: Accept achieved score
         btn_accept_denied:
           text: Accept certification denied
@@ -74,11 +74,11 @@ en:
         btn_advance_status: Advance status to '%{status}'
     
       certification_path_reports:
-        title: Generated Reports
+        title: GENERATED REPORTS
       certification_path_signed_certificate:
-        title: Officially Signed Certificate
+        title: OFFICIAL CERTIFICATE
       schemes:
-        title: Schemes
+        title: SCHEMES DETAILS
         info_activating: The schemes will be clickable after a GSAS trust administrator activates the certification.
         btn_edit_project_team_responsibility_for_submittal: Allocate project team responsibility for submittal
         btn_edit_certifier_team_responsibility_for_verification: Allocate GSAS trust team responsibility for verification
@@ -97,7 +97,7 @@ en:
       title: Advancing Certification Status
     show_checklist:
       certification_path:
-        title: Certification Details
+        title: CERTIFICATION DETAILS
         name: Certification Name
         download_certificate:
           text: Download Certification
@@ -120,7 +120,7 @@ en:
         pcr:
           tooltip: Pre Certification Review. During PCR, the GSAS trust team will assist the project team in completing the certification process. The CGP project manager can enable PCR when applying for a certificate. Please contact GORD if you want to enable the PCR track in a later stage of the certification process.
       certification_path_status:
-        title: Certification Status
+        title: CERTIFICATION STATUS
         btn_accept_achieved: Accept achieved score
         btn_accept_denied:
           text: Accept certification denied
@@ -129,11 +129,11 @@ en:
         btn_advance_status: Advance status to '%{status}'
     
       certification_path_reports:
-        title: Generated Reports
+        title: GENERATED REPORTS
       certification_path_signed_certificate:
-        title: Officially Signed Checklist
+        title: OFFICIAL CERTIFICATE
       schemes:
-        title: Schemes
+        title: SCHEMES DETAILS
         info_activating: The schemes will be clickable after a GSAS trust administrator activates the certification.
         btn_edit_project_team_responsibility_for_submittal: Allocate project team responsibility for submittal
         btn_edit_certifier_team_responsibility_for_verification: Allocate GSAS trust team responsibility for verification

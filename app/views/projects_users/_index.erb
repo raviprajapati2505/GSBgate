@@ -38,9 +38,6 @@
 %>
 <% if can?(:read, project_users[0]) %>
     <div class="ibox-content table-responsive">
-        <% unless team == :enterprise_clients %>
-          <%= render partial: 'projects/service_provider_info', locals: { project: project, certification_path: certification_path } %>
-        <% end %>
         <% if project_users.count.zero? %>
             <p class="margin-top-1">No users found.</p>
         <% else %>

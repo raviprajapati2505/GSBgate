@@ -256,29 +256,33 @@
     </div>
 
     <%= render partial: 'projects_users/show_gord_contact', locals: {project: @project} %>
-      <% if @project.certificate_type == Certificate.certificate_types[:design_type] %>
-        <% if @project.certification_paths.present? %>
-          <% @project.certification_paths.each do |certification_path| %>
-            <div class="ibox float-e-margins">
-              <div class="ibox-title bg-header-grey">
-                <h5><%= certification_path.certificate.stage_title %></h5>
-              </div>
-              <%= render partial: 'projects_users/index', locals: {project: @project, team: :project_team, certification_team_type: ProjectsUser.certification_team_types[certification_path.certificate.only_name], certification_path: certification_path} %>
-              <%= render partial: 'projects_users/index', locals: {project: @project, team: :gsas_trust_team, certification_team_type: ProjectsUser.certification_team_types[certification_path.certificate.only_name], certification_path: certification_path} %>
-            </div>
-          <% end %>
-        <% else %>
+    <% if @project.certificate_type == Certificate.certificate_types[:design_type] %>
+      <% if @project.certification_paths.present? %>
+        <% @project.certification_paths.each do |certification_path| %>
           <div class="ibox float-e-margins">
-            <%= render partial: 'projects_users/index', locals: {project: @project, team: :project_team, certification_team_type: 2, certification_path: @certification_path} %>
-            <%= render partial: 'projects_users/index', locals: {project: @project, team: :gsas_trust_team, certification_team_type: 2, certification_path: @certification_path} %>
+            <div class="ibox-title bg-header-grey">
+              <h5><%= certification_path.certificate.stage_title %></h5>
+            </div>
+            <%= render partial: 'projects/service_provider_info', locals: { project: @project, certification_path: certification_path } %>
+
+            <%= render partial: 'projects_users/index', locals: {project: @project, team: :project_team, certification_team_type: ProjectsUser.certification_team_types[certification_path.certificate.only_name], certification_path: certification_path} %>
+            <%= render partial: 'projects_users/index', locals: {project: @project, team: :gsas_trust_team, certification_team_type: ProjectsUser.certification_team_types[certification_path.certificate.only_name], certification_path: certification_path} %>
           </div>
         <% end %>
       <% else %>
         <div class="ibox float-e-margins">
-          <%= render partial: 'projects_users/index', locals: {project: @project, team: :project_team, certification_team_type: 1, certification_path: @certification_path} %>
-          <%= render partial: 'projects_users/index', locals: {project: @project, team: :gsas_trust_team, certification_team_type: 1, certification_path: @certification_path} %>
+          <%= render partial: 'projects/service_provider_info', locals: { project: @project, certification_path: @certification_path } %>
+          <%= render partial: 'projects_users/index', locals: {project: @project, team: :project_team, certification_team_type: 2, certification_path: @certification_path} %>
+          <%= render partial: 'projects_users/index', locals: {project: @project, team: :gsas_trust_team, certification_team_type: 2, certification_path: @certification_path} %>
         </div>
       <% end %>
+    <% else %>
+      <div class="ibox float-e-margins">
+        <%= render partial: 'projects/service_provider_info', locals: { project: @project, certification_path: @certification_path } %>
+        <%= render partial: 'projects_users/index', locals: {project: @project, team: :project_team, certification_team_type: 1, certification_path: @certification_path} %>
+        <%= render partial: 'projects_users/index', locals: {project: @project, team: :gsas_trust_team, certification_team_type: 1, certification_path: @certification_path} %>
+      </div>
+    <% end %>
     <%= render partial: 'projects_users/index', locals: {project: @project, team: :enterprise_clients, certification_team_type: 1, certification_path: @certification_path} %>
   </div>
 </div>

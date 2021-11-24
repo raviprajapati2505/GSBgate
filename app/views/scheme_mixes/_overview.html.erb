@@ -1,11 +1,12 @@
 <table class="table table-bordered table-hover" cellspacing="0" width="100%">
     <thead>
     <tr>
-        <th class="col-md-5">Scheme Name</th>
+        <th class="col-md-3">Scheme Name</th>
         <th class="col-md-1">
-          <span class="hidden-md">Weighting</span>
+          <span class="hidden-md">Weighting (%)</span>
           <span class="visible-md">W <%= tooltip('Weighting') %></span>
         </th>
+        <th class="col-md-2">Certified Area (m2)</th>
         <% if certification_path.is_activated? %>
             <th class="col-md-4">
                 Score/Level
@@ -47,6 +48,8 @@
                 <% end %>
             </td>
             <td><%= scheme_mix.weight %> %</td>
+            <td><%= scheme_mix.certified_area %></td>
+
             <% if certification_path.is_activated? %>
                 <td>
                     <%
