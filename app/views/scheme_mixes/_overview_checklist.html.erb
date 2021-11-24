@@ -1,11 +1,21 @@
+<% 
+  main_scheme = certification_path.main_scheme
+  sub_schemes = certification_path.sub_schemes
+  scheme_mixes = main_scheme + sub_schemes
+%>
+
 <table class="table table-bordered table-hover" cellspacing="0" width="100%">
     <thead>
     <tr>
-        <th class="col-md-5">Scheme Name</th>
+        <% if scheme_mixes.count > 1 %>
+          <th class="col-md-2">Scheme Typologies</th>
+        <% end %>
+        <th class="col-md-4">Scheme Name</th>
         <th class="col-md-1">
           <span class="hidden-md">Weighting</span>
           <span class="visible-md">W <%= tooltip('Weighting') %></span>
         </th>
+        <th class="col-md-1">Certified Area (m2)</th>
         <% if certification_path.is_activated? %>
             <th class="col-md-2">
                 <span class="hidden-md">Progress</span>
@@ -19,8 +29,24 @@
     </tr>
     </thead>
     <tbody>
-    <% certification_path.scheme_mixes.each do |scheme_mix| %>
+
+    <% scheme_mixes.each_with_index do |scheme_mix, index| %>
         <tr>
+            <% if scheme_mixes.count > 1 && index < 2 %>
+                <% if certification_path.main_scheme_mix_id == scheme_mix.id %>
+                    <td>
+                        Main-Typology
+                <% elsif (index == 0 || main_scheme.count > 0) %>
+                    <td rowspan="<%= sub_schemes.count %>">
+                        Sub-Typologies
+                <% end %>
+                </td>
+            <% end %>
+
+            <% if index > 2 %>
+                <tr>
+            <% end %>
+
             <td>
                 <%= can_link_to(project_certification_path_scheme_mix_path(certification_path.project, certification_path, scheme_mix), scheme_mix) do %>
                     <%= scheme_mix.full_name %>
@@ -30,7 +56,8 @@
                 <% end %>
             </td>
             <td><%= scheme_mix.weight %> %</td>
-          
+            <td><%= scheme_mix.certified_area %></td>
+
             <% if certification_path.is_activated? %>
                 <td>
                     <div class="progress">
@@ -45,6 +72,9 @@
                         </div>
                     </div>
                 </td>
+                <% if index > 2 %>
+                    </tr>
+                <% end %>
             <% else %>
                 <% if can?(:edit, scheme_mix) %>
                 <td><%= btn_link_to(edit_project_certification_path_scheme_mix_path(certification_path.project, certification_path, scheme_mix), icon: 'edit', size: 'small', action: :get, remote: true) %></td>

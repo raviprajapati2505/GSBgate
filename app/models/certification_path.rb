@@ -131,6 +131,14 @@ class CertificationPath < ApplicationRecord
     status_history
   end
 
+  def main_scheme
+    scheme_mixes&.where(id: main_scheme_mix_id)
+  end
+
+  def sub_schemes
+    scheme_mixes&.where.not(id: main_scheme_mix_id)
+  end
+
   def has_fixed_scheme?
     certificate.schemes.count == 1
   end
