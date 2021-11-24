@@ -46,6 +46,14 @@ a.link-mr-2 {
   background-color: #ffffff !important;
 }
 
+.project-details-table th {
+   width: 180px;
+}
+
+.mb-1rem {
+  margin-bottom: 1rem;
+}
+
 @media (max-width: 1000px) {
   .welcome-message {
     display: none;

@@ -114,8 +114,12 @@ class CertificationPath < ApplicationRecord
   end
 
   def scheme_names
-    scheme_names = scheme_mixes&.joins(:scheme).pluck("schemes.name")
-    return scheme_names&.join(', ')
+    if main_scheme_mix_selected?
+      main_scheme_mix.name
+    else
+      scheme_names = scheme_mixes&.joins(:scheme).pluck("schemes.name")
+      scheme_names&.join(', ')
+    end    
   end
 
   def status_history

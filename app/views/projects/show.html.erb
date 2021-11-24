@@ -8,7 +8,7 @@
         <h5><%= t('.project_details.title') %></h5>
       </div>
       <div class="ibox-content">
-        <table class="table table-bordered table-striped">
+        <table class="table table-bordered table-striped project-details-table">
           <tbody>
             <tr>
               <th><%= Project.human_attribute_name('code') %></th>
@@ -39,10 +39,6 @@
               <td><%= @project.developer %></td>
             </tr>
             <tr>
-              <th><%= Project.human_attribute_name('description') %></th>
-              <td><%= @project.description %></td>
-            </tr>
-            <tr>
               <th><%= Project.human_attribute_name('construction_year') %></th>
               <td><%= @project.construction_year %></td>
             </tr>
@@ -70,36 +66,15 @@
               <th><%= Project.human_attribute_name('carpark_area') %></th>
               <td><%= @project.carpark_area %> m²</td>
             </tr>
-
-
-
-
-
-
-            <tr>
-              <th><%= Project.human_attribute_name('service_provider') %></th>
-              <td><%= @project.service_provider %></td>
-            </tr>
-
-            <% if @project.certificate_type == Certificate.certificate_types[:design_type] %>
-              <tr>
-                <th><%= Project.human_attribute_name('service_provider_2') %></th>
-                <td><%= @project.service_provider_2 %></td>
-              </tr>
-            <% end %>
-
-            <tr>
-              <th><%= Project.human_attribute_name('building_type_group_id') %></th>
-              <td><%= @project.building_type_group.name if @project.building_type_group.present? %></td>
-            </tr>
             <tr>
               <th><%= Project.human_attribute_name('building_type_id') %></th>
               <td><%= @project.building_type.name if @project.building_type.present? %></td>
             </tr>
             <tr>
-              <th><%= Project.human_attribute_name('cost_square_meter') %></th>
-              <td><%= @project.cost_square_meter %></td>
+              <th><%= Project.human_attribute_name('building_type_group_id') %></th>
+              <td><%= @project.building_type_group.name if @project.building_type_group.present? %></td>
             </tr>
+
             <% if @project.building_type_group_id == 8 %>
               <tr>
                 <th><%= Project.human_attribute_name('estimated_building_cost') %></th>
@@ -110,10 +85,6 @@
                 <td><%= @project.estimated_infrastructure_cost %></td>
               </tr>
             <% end %>
-
-
-
-
 
             <tr>
               <th><%= Project.human_attribute_name('location_plan_file') %></th>
@@ -195,22 +166,22 @@
                       <th><%= Project.human_attribute_name('project_actual_images') %></th>
                       <td>
                         <% if @project.actual_project_images.present? %>
-                          <% project_actual_image = @project.actual_project_images.first %>
-                          <div class="row">
-                            <div class="col-md-8">
-                              <%= image_tag(icon_for_filename(project_actual_image['actual_image']), alt: project_actual_image.actual_image.content_type, title: project_actual_image.actual_image.content_type) + ' ' + truncate(project_actual_image['actual_image'], length: 25) %>
-                            </div>
+                          <% @project.actual_project_images.each do |project_actual_image| %>
+                            <div class="row mb-1rem">
+                              <div class="col-md-8">
+                                <%= image_tag(icon_for_filename(project_actual_image['actual_image']), alt: project_actual_image.actual_image.content_type, title: project_actual_image.actual_image.content_type) + ' ' + truncate(project_actual_image['actual_image'], length: 25) %>
+                              </div>
 
-                            <div class="col-md-4">
-                              <% if can?(:read, project_actual_image) %>
-                                <%= btn_download(project_actual_project_image_path(@project, project_actual_image), size: 'small', tooltip: 'Download image') %>
-                              <% end %>
-                              <% if can?(:destroy, project_actual_image) %>
-                                <%= btn_link_to(project_actual_project_image_path(@project, project_actual_image), method: :delete, data: { confirm: 'Are you sure to delete the image?'}, style: 'danger', size: 'small', icon: 'trash', tooltip: 'Delete image') %>
-                              <% end %>                            
+                              <div class="col-md-4">
+                                <% if can?(:read, project_actual_image) %>
+                                  <%= btn_download(project_actual_project_image_path(@project, project_actual_image), size: 'small', tooltip: 'Download image') %>
+                                <% end %>
+                                <% if can?(:destroy, project_actual_image) %>
+                                  <%= btn_link_to(project_actual_project_image_path(@project, project_actual_image), method: :delete, data: { confirm: 'Are you sure to delete the image?'}, style: 'danger', size: 'small', icon: 'trash', tooltip: 'Delete image') %>
+                                <% end %>                            
+                              </div>
                             </div>
-                          </div>
-
+                          <% end %>
                         <% else %>
                           <%= render partial: 'actual_project_images/form', locals: { project: @project } %>
                         <% end %>
@@ -226,21 +197,22 @@
                       <th><%= Project.human_attribute_name('project_rendering_images') %></th>
                       <td>
                         <% if @project.project_rendering_images.present? %>
-                          <% project_rendering_image = @project.project_rendering_images.first %>
-                          <div class="row">
-                            <div class="col-md-8">
-                              <%= image_tag(icon_for_filename(project_rendering_image['rendering_image']), alt: project_rendering_image.rendering_image.content_type, title: project_rendering_image.rendering_image.content_type) + ' ' + truncate(project_rendering_image['rendering_image'], length: 25) %>
-                            </div>
+                          <% @project.project_rendering_images.each do |project_rendering_image| %>
+                            <div class="row">
+                              <div class="col-md-8">
+                                <%= image_tag(icon_for_filename(project_rendering_image['rendering_image']), alt: project_rendering_image.rendering_image.content_type, title: project_rendering_image.rendering_image.content_type) + ' ' + truncate(project_rendering_image['rendering_image'], length: 25) %>
+                              </div>
 
-                            <div class="col-md-4">
-                              <% if can?(:read, project_rendering_image) %>
-                                <%= btn_download(project_project_rendering_image_path(@project, project_rendering_image), size: 'small', tooltip: 'Download image') %>
-                              <% end %>
-                              <% if can?(:destroy, project_rendering_image) %>
-                                <%= btn_link_to(project_project_rendering_image_path(@project, project_rendering_image), method: :delete, data: { confirm: 'Are you sure to delete the image?'}, style: 'danger', size: 'small', icon: 'trash', tooltip: 'Delete image') %>
-                              <% end %>
+                              <div class="col-md-4">
+                                <% if can?(:read, project_rendering_image) %>
+                                  <%= btn_download(project_project_rendering_image_path(@project, project_rendering_image), size: 'small', tooltip: 'Download image') %>
+                                <% end %>
+                                <% if can?(:destroy, project_rendering_image) %>
+                                  <%= btn_link_to(project_project_rendering_image_path(@project, project_rendering_image), method: :delete, data: { confirm: 'Are you sure to delete the image?'}, style: 'danger', size: 'small', icon: 'trash', tooltip: 'Delete image') %>
+                                <% end %>
+                              </div>
                             </div>
-                          </div>
+                          <% end %>
                         <% else %>
                           <%= render partial: 'project_rendering_images/form', locals: { project: @project } %>
                         <% end %>
