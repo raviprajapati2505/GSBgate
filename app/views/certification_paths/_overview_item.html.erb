@@ -2,7 +2,7 @@
 <% certification_paths.each do |certification_path| %>
   <li class="list-group-item container table-my-0 table-py-0">
     <div class="row">
-      <div class="col-md-12 table-responsive table-p-0">
+      <div class="col-md-12 table-p-0">
         <table class="table table-bordered table-mb-1">
           <tbody>
             <tr class="bg-header-grey">
@@ -13,7 +13,9 @@
             </tr>
             <tr>
               <td style="width: 425px;">
-                <%= certification_path.certificate.stage_title %>
+                <%= can_link_to(project_certification_path_path(project, certification_path), certification_path, class: "link-mr-2") do %>
+                  <%= certification_path.certificate.stage_title %>
+                <% end %>
               </td>
               <td style="width: 290px;">
                 <% if certification_path.is_design_loc? && certification_path.status.humanize == 'Certified' %>
