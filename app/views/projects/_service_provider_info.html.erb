@@ -5,11 +5,13 @@
                         project.service_provider
                       end
 %>
-<table class="table table-striped table-hover datatable table-mb-0" cellspacing="0" width="100%">
+<table class="table table-bordered table-mb-0" cellspacing="0" width="100%">
   <tbody>
-    <tr class="bg-header-white">
+    <tr>
+      <th style="width: 391px;">
+        <%= Project.human_attribute_name('service_provider') %>
+      </th>
       <td>
-        <span style="margin: 0 2rem 0 1rem;"><b><%= Project.human_attribute_name('service_provider') %></b></span>
         <%= service_provider %>
       </td>
     </tr>

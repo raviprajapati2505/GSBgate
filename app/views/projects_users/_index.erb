@@ -38,25 +38,28 @@
 %>
 <% if can?(:read, project_users[0]) %>
     <div class="ibox-content table-responsive">
+        <% unless team == :enterprise_clients %>
+          <%= render partial: 'projects/service_provider_info', locals: { project: project, certification_path: certification_path } %>
+        <% end %>
         <% if project_users.count.zero? %>
-            <p>No users found.</p>
+            <p class="margin-top-1">No users found.</p>
         <% else %>
             <table class="table table-bordered table-hover datatable" cellspacing="0" width="100%">
                 <thead>
-                <tr>
-                    <th><%= title %></th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <% if team != :enterprise_clients %>
-                        <th>Tasks</th>
-                    <% end %>
-                </tr>
+                    <tr>
+                        <th><%= title %></th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <% if team != :enterprise_clients %>
+                            <th>Tasks</th>
+                        <% end %>
+                    </tr>
                 </thead>
                 <tbody>
                 <% project_users.projects_user_role(title).each do |role| %>
                   <% rowspan = find_rowspan(projects_users_count_with_role(project_users, role)) %>
                     <tr>
-                        <td rowspan="<%= rowspan %>">
+                        <td rowspan="<%= rowspan %>" style="width: 391px;">
                             <%= t(role, scope: 'activerecord.attributes.projects_user.roles' ) %>
                         </td>
                         <% project_users.with_role(role).each_with_index do |projects_user, index| %>
