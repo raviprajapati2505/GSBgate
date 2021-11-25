@@ -85,6 +85,10 @@ class Project < ApplicationRecord
     CertificationPath.with_project(self).with_status(CertificationPathStatus::STATUSES_COMPLETED).with_certification_type(Certificate.certification_types[:construction_certificate_stage3])
   end
 
+  def with_final_design_certificate
+    CertificationPath.with_project(self).with_certification_type(Certificate.certification_types[:final_design_certificate])
+  end
+
   def average_scores_all_construction_stages
     certification_paths = CertificationPath.with_project(self).with_status(CertificationPathStatus::STATUSES_COMPLETED).with_certificate_type(Certificate.certificate_types[:construction_type])
     unless certification_paths.count < 3

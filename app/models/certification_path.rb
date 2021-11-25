@@ -50,6 +50,7 @@ class CertificationPath < ApplicationRecord
   before_update :advance_scheme_mix_criteria_statuses
   before_update :set_started_at
   before_update :set_certified_at
+  after_update :create_cda_cgp_user, if: -> { is_design_loc? && certification_path_status_id == CertificationPathStatus::CERTIFIED }  
 
   scope :not_expired, -> {
     where('expires_at > ?', DateTime.now)
@@ -226,7 +227,7 @@ class CertificationPath < ApplicationRecord
         end
       when CertificationPathStatus::SUBMITTING, CertificationPathStatus::SUBMITTING_AFTER_SCREENING, CertificationPathStatus::SUBMITTING_AFTER_APPEAL
         ['location_plan_file', 'site_plan_file', 'design_brief_file', 'project_narrative_file', 'sustainability_features_file', 'area_statement_file'].each do |general_submittal|
-          if project.send(general_submittal).blank?
+          if project.send(general_submittal).blank? && !required_files(project, general_submittal)
             todos << "A '#{Project.human_attribute_name(general_submittal)}' must be added to the project."
           end
         end
@@ -287,7 +288,7 @@ class CertificationPath < ApplicationRecord
       end
     when CertificationPathStatus::SUBMITTING, CertificationPathStatus::SUBMITTING_AFTER_SCREENING, CertificationPathStatus::SUBMITTING_AFTER_APPEAL
       ['location_plan_file', 'site_plan_file', 'design_brief_file', 'project_narrative_file', 'sustainability_features_file', 'area_statement_file'].each do |general_submittal|
-        if project.send(general_submittal).blank?
+        if project.send(general_submittal).blank? && !required_files(project, general_submittal)
           todos << "A '#{Project.human_attribute_name(general_submittal)}' must be added to the project."
         end
       end
@@ -363,6 +364,11 @@ class CertificationPath < ApplicationRecord
     return todos.uniq
   end
 
+
+  def required_files(project, general_submittal)
+    (['project_narrative_file', 'area_statement_file'].include?(general_submittal) && (project.send("project_narrative_file").present? || project.send("area_statement_file").present?))
+  end
+  
   def allow_certification?(is_achieved_score: true, is_submitted_score: true)
     main_scheme_mixes = self.main_scheme_mix.present? ? self.scheme_mixes.where(id: self.main_scheme_mix.id) : self.scheme_mixes
     main_scheme_mixes.each do |scheme_mix|
@@ -684,6 +690,16 @@ class CertificationPath < ApplicationRecord
   end
 
   private
+
+  def create_cda_cgp_user
+    project_cgp_managers = project.projects_users.cgp_project_managers
+    if project_cgp_managers.present?
+      first_cgp_manager = project_cgp_managers.first
+      new_cda_cgp_manager = first_cgp_manager.dup
+      new_cda_cgp_manager.certification_team_type = "Final Design Certificate"
+      new_cda_cgp_manager.save
+    end
+  end
 
   def set_started_at
     if certification_path_status_id_changed? && certification_path_status_id == CertificationPathStatus::SUBMITTING
