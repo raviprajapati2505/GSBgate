@@ -20,8 +20,7 @@ class Ability
 
     user ||= User.new # guest user (not logged in)
 
-    is_read_action = params.present? ? is_read_action?(params) : true
-    certification_team_type = get_certification_team_type(request, is_read_action)
+    certification_team_type = get_certification_team_type(request)
                      
     alias_action :create, :read, :update, :destroy, :to => :crud
 
@@ -66,6 +65,13 @@ class Ability
     project_with_user_as_certifier = {projects_users: {user_id: user.id, role: project_user_role_certifier, certification_team_type: certification_team_type}}
     project_with_user_in_gsas_trust_team = {projects_users: {user_id: user.id, role: project_user_gsas_trust_team_roles}}
     project_with_user_as_enterprise_client = {projects_users: {user_id: user.id, role: project_user_enterprise_client_roles}}
+
+    # for read permissions
+    read_project_with_user_as_cgp_project_manager = {projects_users: {user_id: user.id, role: project_user_role_cgp_project_manager}}
+    read_project_with_user_as_project_team_member = {projects_users: {user_id: user.id, role: project_user_role_project_team_member}}
+    read_project_with_user_in_project_team = {projects_users: {user_id: user.id, role: project_user_project_team_roles}}
+    read_project_with_user_as_certification_manager = {projects_users: {user_id: user.id, role: project_user_role_certification_manager}}
+    read_project_with_user_as_certifier = {projects_users: {user_id: user.id, role: project_user_role_certifier}}
 
     # ------------------------------------------------------------------------------------------------------------
     # There are 3 types of user roles:
@@ -125,14 +131,14 @@ class Ability
 
       can [:create, :read], [ActualProjectImage, ProjectRenderingImage] , project: { certificate_type: [Certificate.certificate_types[:design_type], Certificate.certificate_types[:operations_type]] }, project: project_with_user_as_cgp_project_manager
 
-      can :read, [ActualProjectImage, ProjectRenderingImage] , project: { certificate_type: [Certificate.certificate_types[:design_type], Certificate.certificate_types[:operations_type]] }, project: project_with_user_as_certification_manager
+      can :read, [ActualProjectImage, ProjectRenderingImage] , project: { certificate_type: [Certificate.certificate_types[:design_type], Certificate.certificate_types[:operations_type]] }, project: read_project_with_user_as_certification_manager
 
       # SchemeMixCriterion controller
-      can [:read, :list], SchemeMixCriterion, scheme_mix: {certification_path: {project: project_with_user_as_cgp_project_manager, certification_path_status: {id: CertificationPathStatus::STATUSES_ACTIVATED}}}
+      can [:read, :list], SchemeMixCriterion, scheme_mix: {certification_path: {project: read_project_with_user_as_cgp_project_manager, certification_path_status: {id: CertificationPathStatus::STATUSES_ACTIVATED}}}
       can [:read, :list], SchemeMixCriterion, scheme_mix: {certification_path: {project: project_with_user_in_gsas_trust_team, certification_path_status: {id: CertificationPathStatus::STATUSES_ACTIVATED}}}
       can [:read, :list], SchemeMixCriterion, scheme_mix: {certification_path: {project: project_with_user_as_enterprise_client, certification_path_status: {id: CertificationPathStatus::STATUSES_ACTIVATED}}}
-      can [:read, :list], SchemeMixCriterion, scheme_mix: {certification_path: {project: project_with_user_as_project_team_member, certification_path_status: {id: CertificationPathStatus::STATUSES_ACTIVATED}}}, requirement_data: {user_id: user.id}
-      can [:read, :list], SchemeMixCriterion, scheme_mix: {certification_path: {project: project_with_user_as_project_team_member, certification_path_status: {id: CertificationPathStatus::STATUSES_ACTIVATED}, show_all_criteria: true}}
+      can [:read, :list], SchemeMixCriterion, scheme_mix: {certification_path: {project: read_project_with_user_as_project_team_member, certification_path_status: {id: CertificationPathStatus::STATUSES_ACTIVATED}}}, requirement_data: {user_id: user.id}
+      can [:read, :list], SchemeMixCriterion, scheme_mix: {certification_path: {project: read_project_with_user_as_project_team_member, certification_path_status: {id: CertificationPathStatus::STATUSES_ACTIVATED}, show_all_criteria: true}}
       can :download_archive, SchemeMixCriterion, scheme_mix: {certification_path: {project: project_with_user_assigned, certification_path_status: {id: CertificationPathStatus::STATUSES_ACTIVATED}}}
       # Project team
       can [:edit_status, :update_status], SchemeMixCriterion, main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_submitting, scheme_mix: {certification_path: {certification_path_status: {id: CertificationPathStatus::STATUSES_IN_SUBMISSION}, project: project_with_user_as_cgp_project_manager}}
@@ -179,9 +185,9 @@ class Ability
       can :screen, SchemeMixCriterion, main_scheme_mix_criterion: nil, screened: false, scheme_mix: {certification_path: {certification_path_status: {id: CertificationPathStatus::SCREENING}, project: project_with_user_in_gsas_trust_team}}
       can :update, SchemeMixCriterionEpl, scheme_mix_criterion: {main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_verifying, scheme_mix: {certification_path: {project: project_with_user_as_certification_manager}}}
       can :update, SchemeMixCriterionWpl, scheme_mix_criterion: {main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_verifying, scheme_mix: {certification_path: {project: project_with_user_as_certification_manager}}}
-      can :read, SchemeMixCriterionEpl, scheme_mix_criterion: {status: scheme_mix_criterion_status_verifying_or_verified, scheme_mix: {certification_path: {project: project_with_user_as_certification_manager}}}
+      can :read, SchemeMixCriterionEpl, scheme_mix_criterion: {status: scheme_mix_criterion_status_verifying_or_verified, scheme_mix: {certification_path: {project: read_project_with_user_as_certification_manager}}}
       can :read, SchemeMixCriterionEpl, scheme_mix_criterion: {status: scheme_mix_criterion_status_verifying_or_verified, scheme_mix: {certification_path: {project: project_with_user_as_enterprise_client}}}
-      can :read, SchemeMixCriterionWpl, scheme_mix_criterion: {status: scheme_mix_criterion_status_verifying_or_verified, scheme_mix: {certification_path: {project: project_with_user_as_certification_manager}}}
+      can :read, SchemeMixCriterionWpl, scheme_mix_criterion: {status: scheme_mix_criterion_status_verifying_or_verified, scheme_mix: {certification_path: {project: read_project_with_user_as_certification_manager}}}
       can :read, SchemeMixCriterionWpl, scheme_mix_criterion: {status: scheme_mix_criterion_status_verifying_or_verified, scheme_mix: {certification_path: {project: project_with_user_as_enterprise_client}}}
       can :epc_matches_energy_suite, SchemeMixCriterion, status: scheme_mix_criterion_status_verifying, scheme_mix: {certification_path: {project: project_with_user_in_gsas_trust_team}}
       can :upload_epc_matches_document, SchemeMixCriterion, scheme_mix: {certification_path: {project: project_with_user_in_gsas_trust_team}}
@@ -206,7 +212,7 @@ class Ability
 
       # SchemeMixCriteriaDocument controller
       # Project team
-      can :read, SchemeMixCriteriaDocument, scheme_mix_criterion: {scheme_mix: {certification_path: {project: project_with_user_in_project_team}}}
+      can :read, SchemeMixCriteriaDocument, scheme_mix_criterion: {scheme_mix: {certification_path: {project: read_project_with_user_in_project_team}}}
       can [:update_status, :edit_status], SchemeMixCriteriaDocument, scheme_mix_criterion: {status: scheme_mix_criterion_status_submitting, scheme_mix: {certification_path: {project: project_with_user_as_cgp_project_manager}}}
       can [:create_link, :new_link], SchemeMixCriteriaDocument, scheme_mix_criterion: {status: scheme_mix_criterion_status_submitting, scheme_mix: {certification_path: {project: project_with_user_in_project_team}}}
       can [:unlink, :destroy_link], SchemeMixCriteriaDocument, scheme_mix_criterion: {status: scheme_mix_criterion_status_submitting, scheme_mix: {certification_path: {project: project_with_user_as_cgp_project_manager}}}
@@ -377,10 +383,10 @@ class Ability
 
   private
 
-  def get_certification_team_type(request = nil, is_read_action)
+  def get_certification_team_type(request = nil)
     all_certification_team_types = ProjectsUser.certification_team_types.values
 
-    return all_certification_team_types if (is_read_action || request.blank?)
+    return all_certification_team_types unless request.present?
     
     path = request.path
     path_array = path.split('/')
