@@ -1,7 +1,7 @@
 class Ability
   include CanCan::Ability
 
-  def initialize(user)
+  def initialize(user, params = nil, request = nil)
     # Define abilities for the passed in user here.
     #
     # The first argument to `can` is the action you are giving the user permission to do.
@@ -20,6 +20,9 @@ class Ability
 
     user ||= User.new # guest user (not logged in)
 
+    is_read_action = params.present? ? is_read_action?(params) : true
+    certification_team_type = get_certification_team_type(request, is_read_action)
+                     
     alias_action :create, :read, :update, :destroy, :to => :crud
 
     # Some convenience variables to work with enums in conditions
@@ -56,11 +59,11 @@ class Ability
 
     # Convenience conditions, to use within abilities
     project_with_user_assigned = {projects_users: {user_id: user.id}}
-    project_with_user_as_cgp_project_manager = {projects_users: {user_id: user.id, role: project_user_role_cgp_project_manager}}
-    project_with_user_as_project_team_member = {projects_users: {user_id: user.id, role: project_user_role_project_team_member}}
-    project_with_user_in_project_team = {projects_users: {user_id: user.id, role: project_user_project_team_roles}}
-    project_with_user_as_certification_manager = {projects_users: {user_id: user.id, role: project_user_role_certification_manager}}
-    project_with_user_as_certifier = {projects_users: {user_id: user.id, role: project_user_role_certifier}}
+    project_with_user_as_cgp_project_manager = {projects_users: {user_id: user.id, role: project_user_role_cgp_project_manager, certification_team_type: certification_team_type}}
+    project_with_user_as_project_team_member = {projects_users: {user_id: user.id, role: project_user_role_project_team_member, certification_team_type: certification_team_type}}
+    project_with_user_in_project_team = {projects_users: {user_id: user.id, role: project_user_project_team_roles, certification_team_type: certification_team_type}}
+    project_with_user_as_certification_manager = {projects_users: {user_id: user.id, role: project_user_role_certification_manager, certification_team_type: certification_team_type}}
+    project_with_user_as_certifier = {projects_users: {user_id: user.id, role: project_user_role_certifier, certification_team_type: certification_team_type}}
     project_with_user_in_gsas_trust_team = {projects_users: {user_id: user.id, role: project_user_gsas_trust_team_roles}}
     project_with_user_as_enterprise_client = {projects_users: {user_id: user.id, role: project_user_enterprise_client_roles}}
 
@@ -370,5 +373,62 @@ class Ability
     else
       cannot :manage, :all
     end
+  end
+
+  private
+
+  def get_certification_team_type(request = nil, is_read_action)
+    all_certification_team_types = ProjectsUser.certification_team_types.values
+
+    return all_certification_team_types if (is_read_action || request.blank?)
+    
+    path = request.path
+    path_array = path.split('/')
+    
+    begin
+      certificate_path_id_index = path_array.index("certificates")
+      value = if certificate_path_id_index.present?
+                certificate_path_id = path_array[certificate_path_id_index.to_i + 1]
+                if certificate_path_id.to_i.to_s
+                  certification_path = CertificationPath.find(certificate_path_id.to_i)
+                  if certification_path.is_design_loc?
+                    ProjectsUser.certification_team_types["Letter of Conformance"]
+                  elsif certification_path.is_design_fdc?
+                    ProjectsUser.certification_team_types["Final Design Certificate"]
+                  else
+                    ProjectsUser.certification_team_types["Other"]
+                  end
+                else
+                  all_certification_team_types
+                end
+              else
+                all_certification_team_types
+              end
+      return value
+
+    rescue => exception
+      project_id_index = path_array.index("projects")
+      value = if project_id_index.present?
+                project_id = path_array[project_id_index.to_i + 1]
+                if project_id.to_i.to_s
+                  project = Project.find(project_id.to_i)
+                  if project.design_and_build?
+                    [ProjectsUser.certification_team_types["Letter of Conformance"], ProjectsUser.certification_team_types["Final Design Certificate"]]
+                  else
+                    ProjectsUser.certification_team_types["Other"]
+                  end
+                else
+                  all_certification_team_types
+                end
+              else
+                all_certification_team_types
+              end
+      return value
+    end
+  end
+
+  def is_read_action?(params)
+    read_actions = ["index", "show", "show_tools", "list"]
+    read_actions.include?(params["action"]) rescue true
   end
 end

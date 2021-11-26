@@ -44,4 +44,8 @@ class ApplicationController < ActionController::Base
   def set_current_user
     User.current = current_user
   end
+
+  def current_ability
+    @current_ability ||= Ability.new(current_user, params, request)
+  end
 end
