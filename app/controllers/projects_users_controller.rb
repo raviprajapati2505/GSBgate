@@ -69,7 +69,8 @@ class ProjectsUsersController < AuthenticatedController
     @page_title = ERB::Util.html_escape(@projects_user.user.full_name)
     @user = @projects_user.user
     @project = @projects_user.project
-    @tasks = TaskService::get_tasks(page: params[:page], per_page: 25, user: @user, project_id: @project.id)
+    certification_path_id = @project&.certification_paths&.find(params["certification_path_id"])&.id rescue nil
+    @tasks = TaskService::get_tasks(page: params[:page], per_page: 25, user: @user, project_id: @project.id, certification_path_id: certification_path_id)
   end
 
   def update

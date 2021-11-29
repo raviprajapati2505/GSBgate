@@ -67,13 +67,13 @@
                                 <%= projects_user.user.email %>
                             </td>
                             <td>
-                                <%= can_link_to(project_user_path(project, projects_user), projects_user) do %>
+                                <%= can_link_to(project_user_path(project, projects_user, certification_path_id: certification_path&.id), projects_user) do %>
                                     <%= projects_user.user.full_name %>
                                 <% end %>
                             </td>
                             <% if team != :enterprise_clients %>
                                 <td>
-                                    <span class="badge fa-lg"><%= TaskService::count_tasks(user: projects_user.user, project_id: project.id) %></span>
+                                    <span class="badge fa-lg"><%= TaskService::count_tasks(user: projects_user.user, project_id: project.id, certification_path_id: certification_path&.id) %></span>
                                 </td>
                             <% end %>
                             <% unless index == 1 %>
