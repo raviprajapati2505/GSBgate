@@ -1,16 +1,40 @@
-$("#location-select-div").html("");
+$("#city-select-div").html("");
 
-$("#location-select-div").html("<%= j render partial: "location_dropdown" %>")
+$("#city-select-div").html("<%= j render partial: "location_dropdown", locals: {location: @location} %>")
 
 $(function(){
-  $("#location-select").select2({
+  $("#city-select").select2({
     width: "100%"
   });
 });
 
-$(".location-select-dropdown").on("change", function(){
+$(".city-select-dropdown").on("change", function(){
   let selected_location = $(this).find(":selected").val();
   if (selected_location == "Other"){
-    $("#location-select-div").html("<label>Location</label><input class='form-control' type='text' name='project[location]'>")
+    $("#city-select-div").html("<label>Project City</label><input class='form-control' type='text' name='project[city]'>")
   }
+});
+
+function populate_districts(element){
+  let city_name = element.find(":selected").val();
+
+  if (city_name.length > 0 && city_name !== 'Other'){
+    $.ajax({
+      url: "/projects/country_city_districts",
+      method: "GET",
+      dataType: "script",
+      data: {
+        city: "all",
+      },
+      error: function(){
+        alert('Something went wrong !');
+      }
+    });
+  } else if (city_name.length > 0 && city_name == 'Other') {
+    $("#district-select-div").html("<label>Project District</label><input class='form-control' type='text' name='project[district]'>")
+  }
+}
+
+$('#city-select').on('change', function(){
+  populate_districts($(this));
 });

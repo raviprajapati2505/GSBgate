@@ -74,6 +74,10 @@ en:
         service_provider: Service Provider
         service_provider_2: Service Provider CDA
         country: Project Country
+        address: Project Address
+        city: Project City
+        district: Project District
+        location: Project Location
         developer: Project Developer
         description: Project Description
         project_actual_images: Project Actual Images

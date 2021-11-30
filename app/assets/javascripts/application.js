@@ -247,9 +247,21 @@ $(function () {
     $('.project-form #project_building_type_group_id').trigger('change', true);
 
     // Project country select
-    $('.country-select, .location-select-dropdown').select2({
+    $('.country-select, .city-select-dropdown, .district-select-dropdown').select2({
         width: "100%"
     });
+
+    $(".city-select-dropdown, .district-select-dropdown").on('change', function(){
+        var selected_district = $(this).find(":selected").val();
+        var dom_id = $(this).attr("id");
+        if (selected_district == "Other"){
+            if (dom_id == 'city-select') {
+                $("#city-select-div").html("<label>Project city</label><input class='form-control' type='text' name='project[city]'>")
+            } else if (dom_id == 'project_district') {
+                $("#district-select-div").html("<label>Project District</label><input class='form-control' type='text' name='project[district]'>")
+            }
+        }
+    })
 
     // Gross Certified Area (A+B-C)
     $('#project_project_site_area, #project_gross_area, #project_buildings_footprint_area').keyup(function(){

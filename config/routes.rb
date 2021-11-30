@@ -23,6 +23,7 @@ Rails.application.routes.draw do
     collection do
       get 'list' => 'projects_users#list_projects'
       get 'country_locations', to: "projects#country_locations", as: :country_locations
+      get 'country_city_districts', to: "projects#country_city_districts", as: :country_city_districts
     end
     member do
       get 'tools' => 'projects#show_tools'
