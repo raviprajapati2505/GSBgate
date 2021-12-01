@@ -15,7 +15,7 @@ module Effective
         # col :project_id, sql_column: 'projects.id', as: :integer, search: {collection: Proc.new { Project.all.order(:name).map { |project| [project.code + ', ' + project.name, project.id] } }} do |rec|
         #    rec.project_code + ', ' + rec.project_name
         # end
-        col :project_code, sql_column: 'projects.code' do |rec|
+        col :project_code, label: t('models.effective.datatables.projects.lables.project_code'), sql_column: 'projects.code' do |rec|          
           link_to_if(!current_user.record_checker?,
             rec.project_code,
             project_path(rec.project_nr)
@@ -33,7 +33,7 @@ module Effective
           #   rec.project_name
           # end
         end
-        col :project_update, sql_column: 'projects.updated_at' do |rec|
+        col :project_update, label: t('models.effective.datatables.projects.lables.updated_at'), sql_column: 'projects.updated_at' do |rec|
           link_to_if(!current_user.record_checker?,
             localize(rec.project_updated_at.in_time_zone),
             project_path(rec.project_nr)
@@ -44,19 +44,23 @@ module Effective
         end
         col :project_construction_year, sql_column: 'projects.construction_year', as: :integer, visible: false
         col :project_country, sql_column: 'projects.country', visible: false
-        col :project_location, sql_column: 'projects.location', visible: false
+        col :project_city, sql_column: 'projects.city', visible: false
+        col :project_district, sql_column: 'projects.district', visible: false
         col :project_address, sql_column: 'projects.address', visible: false
-        col :project_description, sql_column: 'projects.description', visible: false
-        col :project_gross_area, sql_column: 'projects.gross_area', as: :integer, visible: false
+        col :project_description, sql_column: 'projects.description', visible: false do |rec|          
+          rec.project_description&.truncate(200)
+        end
+       
+        col :project_gross_area, label: t('models.effective.datatables.projects.lables.gross_area'), sql_column: 'projects.gross_area', as: :integer, visible: false
         col :project_certified_area, sql_column: 'projects.certified_area', as: :integer, visible: false
         col :project_carpark_area, sql_column: 'projects.carpark_area', as: :integer, visible: false
-        col :project_site_area, sql_column: 'projects.project_site_area', as: :integer, visible: false
-        col :project_created_at, sql_column: 'projects.created_at', as: :datetime, visible: false, search: { as: :select, collection: Proc.new { Project.pluck_date_field_by_year_month_day(:created_at, :desc) } } do |rec|
+        col :project_site_area, label: t('models.effective.datatables.projects.lables.project_site_area'), sql_column: 'projects.project_site_area', as: :integer, visible: false
+        col :project_created_at, label: t('models.effective.datatables.projects.lables.created_at'), sql_column: 'projects.created_at', as: :datetime, visible: false, search: { as: :select, collection: Proc.new { Project.pluck_date_field_by_year_month_day(:created_at, :desc) } } do |rec|
           localize(rec.project_created_at.in_time_zone) unless rec.project_created_at.nil?
         end
 
-        col :project_owner, sql_column: 'projects.owner', label: 'Project Owner', visible: false
-        col :project_developer, sql_column: 'projects.developer', label: 'Project Developer', visible: false
+        col :project_owner, sql_column: 'projects.owner', label: t('models.effective.datatables.projects.lables.owner'), visible: false
+        col :project_developer, sql_column: 'projects.developer', label: t('models.effective.datatables.projects.lables.developer'), visible: false
 
         #col :certification_path_id, sql_column: 'certification_paths.id', as: :integer, label: 'Certificate ID'
         col :certificate_id, sql_column: 'certificates.id', label: t('models.effective.datatables.projects_certification_paths.certificate_id.label'), search: { as: :select, collection: Proc.new { Certificate.all.order(:display_weight).map { |certificate| [certificate.full_name, certificate.id] } } } do |rec|
@@ -224,7 +228,8 @@ module Effective
           .select('projects.updated_at as project_updated_at')
           .select('projects.construction_year as project_construction_year')
           .select('projects.country as project_country')
-          .select('projects.location as project_location')
+          .select('projects.city as project_city')
+          .select('projects.district as project_district')
           .select('projects.address as project_address')
           .select('projects.description as project_description')
           .select('projects.gross_area as project_gross_area')

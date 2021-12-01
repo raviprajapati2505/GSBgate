@@ -262,6 +262,15 @@ en:
             update_html: Scheme <strong>%{old_name}</strong> was renamed to <strong>%{new_name}</strong>.
     effective:
       datatables:
+        projects:
+          lables:
+            project_code: Project ID
+            created_at: Project Created On
+            updated_at: Project Updated On
+            gross_area: Project Gross Built Up Area
+            project_site_area: Project Plot Area
+            owner: Project Owner
+            developer: Project Developer
         certification_paths:
           certification_path_status:
             label: Certification Status
@@ -280,17 +289,17 @@ en:
           certification_path_pcr_track_allowed:
             label: Certification PCR Track Allowed
           certification_path_development_type:
-            label: Certification Development Type
+            label: Project Type
           certification_path_appealed:
             label: Certification Appealed
           certification_path_created_at:
-            label: Certification Created At
+            label: Certification Created On
           certification_path_started_at:
-            label: Certification Started At
+            label: Certification Started On
           certification_path_certified_at:
-            label: Certification Certified At
+            label: Certification Certified On
           certification_path_expires_at:
-            label: Certification Expires At
+            label: Certification Expires On
           certification_path_certification_path_status_id:
             label: Certification Status
           certification_path_status_is_active:
@@ -304,18 +313,18 @@ en:
           total_targeted_score:
             label: Certification Targeted Score
           schemes_array:
-            label: Certification Typologies
+            label: Certification Scheme Sub-Typologies
           cgp_project_manager_array:
-            label: CGP Project Manager
+            label: Project CGP
           project_team_array:
-            label: Project Team
+            label: Project Team Members
           certification_manager_array:
-            label: Certification Manager
+            label: GSAS Trust Certification Manager
           gsas_trust_team_array:
-            label: GSAS Trust Team
+            label: GSAS Trust Certification Team
           enterprise_clients_array:
             label: Enterprise Clients
           building_type_groups:
-            label: Building Type Groups
+            label: Certification Scheme
           building_types:
-            label: Building Types
+            label: Project Use

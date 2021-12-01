@@ -21,7 +21,6 @@ class Project < ApplicationRecord
   validates :name, presence: true
   validates :owner, presence: true
   validates :address, presence: true
-  validates :location, presence: true
   validates :city, presence: true
   validates :district, presence: true
   validates :country, presence: true
