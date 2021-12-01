@@ -10,13 +10,13 @@ en:
           construction_type: Construction Management
           operations_type: Operations
           stage_titles:
-            letter_of_conformance: GSAS Design Certificate_LOC
-            final_design_certificate: GSAS Design & Build Certificate_CDA
-            construction_certificate: GSAS-CM - GSAS-CM Certificate
-            construction_certificate_stage1: GSAS-CM - Stage 1
-            construction_certificate_stage2: GSAS-CM - Stage 2
-            construction_certificate_stage3: GSAS-CM - Stage 3
-            operations_type: GSAS-CM - GSAS-CM Certificate
+            letter_of_conformance: "Stage 1: LOC, Design Certificate"
+            final_design_certificate: "Stage 2: CDA, Design & Build Certificate"
+            construction_certificate: "GSAS Construction Management Certificate"
+            construction_certificate_stage1: "Stage 1: Foundation"
+            construction_certificate_stage2: "Stage 2: Substructure & Superstructure"
+            construction_certificate_stage3: "Stage 3: Finishing"
+            operations_certificate: "GSAS Operations Certificate"
           certificate_titles:
             design_and_build: GSAS-D&B
             construction_certificate: GSAS-CM
@@ -82,6 +82,12 @@ en:
         description: Project Description
         project_actual_images: Project Actual Images
         project_rendering_images: Project Rendering Images
+        team_titles:
+          design_certificate: GSAS Design Certificate
+          letter_of_conformance: GSAS Design Certificate_LOC
+          final_design_certificate: GSAS Design & Build Certificate_CDA
+          construction_certificate: GSAS-CM
+          operation_certificate: GSAS-OP
       projects_user:
         roles:
           project_team_member: Team Members

@@ -214,6 +214,22 @@ class Project < ApplicationRecord
     certificate_type == Certificate.certificate_types[:design_type]
   end
 
+  def team_table_heading
+    case certificate_type
+    when 1
+      # project of CM
+      I18n.t('activerecord.attributes.project.team_titles.construction_certificate')
+    when 2
+      # project of OP
+      I18n.t('activerecord.attributes.project.team_titles.operation_certificate')
+    when 3
+      # project of D&B
+      I18n.t('activerecord.attributes.project.team_titles.design_certificate')
+    else
+      "Project Team"
+    end
+  end
+
   private
   def init
     if self.has_attribute?('code')

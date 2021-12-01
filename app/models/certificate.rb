@@ -73,7 +73,11 @@ class Certificate < ApplicationRecord
     when "Final Design Certificate"
       I18n.t('activerecord.attributes.certificate.certificate_types.stage_titles.final_design_certificate')
     else
-      full_name
+      I18n.t("activerecord.attributes.certificate.certificate_types.stage_titles.#{certification_type}")
     end
+  end
+
+  def team_title
+    I18n.t("activerecord.attributes.project.team_titles.#{certification_type}")
   end
 end

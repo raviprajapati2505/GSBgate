@@ -2,7 +2,7 @@
 
 <% if rating.is_a? String %>
   <!-- TEXTUAL SCORE -->
-  <span class="label label-rating label-rating-<%= rating.downcase.gsub(/( )/, '-') %>" style='margin-inline: 6px;' ><%= rating %></span>
+  <span class="label label-rating label-rating-<%= rating.downcase.gsub(/( )/, '-') %>" style='margin-inline: 1.5rem;' ><%= rating %></span>
 <% else %>
   <!-- STAR SCORE -->
   <span style="white-space: nowrap; margin-inline: 6px;">
