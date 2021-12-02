@@ -257,7 +257,7 @@
               %>
               <tr>
                 <td><%= can_link_to(project_certification_path_path(@certification_path.project, certification_path), certification_path) do %><%= certification_path.name %><% end %></td>
-                <td><%= render 'certification_paths/ratings', certification_path: certification_path %></td>
+                <td><%= render partial: 'certification_paths/ratings', locals: { certification_path: certification_path, display_item: 'score_and_rating' } %></td>
                 <td><%= render 'score/score', scores: certification_path_scores, point_type: :certificate_points %></td>
               </tr>
             <% end %>

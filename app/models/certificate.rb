@@ -47,11 +47,45 @@ class Certificate < ApplicationRecord
     self.name
   end
 
+  def self.get_certification_types(certificate_type)
+    case certificate_type
+    when "GSAS-D&B"
+      [Certificate.certification_types[:letter_of_conformance], Certificate.certification_types[:final_design_certificate]]
+    when "GSAS-CM"
+      [Certificate.certification_types[:construction_certificate], Certificate.certification_types[:construction_certificate_stage1], Certificate.certification_types[:construction_certificate_stage2], Certificate.certification_types[:construction_certificate_stage3]]
+    when "GSAS-OP"
+      [Certificate.certification_types[:operations_certificate]]
+    else
+      Certificate.certification_types
+    end
+  end
+
+  def self.get_certificate_by_stage(stage)
+    case stage
+    when "Stage 1: LOC, Design Certificate"
+      [Certificate.certification_types[:letter_of_conformance]]
+    when "Stage 2: CDA, Design & Build Certificate"
+      [Certificate.certification_types[:final_design_certificate]]
+    when "GSAS Construction Management Certificate"
+      [Certificate.certification_types[:construction_certificate]]
+    when "Stage 1: Foundation"
+      [Certificate.certification_types[:construction_certificate_stage1]]
+    when "Stage 2: Substructure & Superstructure"
+      [Certificate.certification_types[:construction_certificate_stage2]]
+    when "Stage 3: Finishing"
+      [Certificate.certification_types[:construction_certificate_stage3]]
+    when "GSAS Operations Certificate"
+      [Certificate.certification_types[:operations_certificate]]
+    else
+      Certificate.certification_types
+    end
+  end
+
   def only_certification_name
     case only_name
     when "Letter of Conformance", "Final Design Certificate"
       I18n.t('activerecord.attributes.certificate.certificate_types.certificate_titles.design_and_build')
-    when "GSAS-CM"
+    when "GSAS-CM", "Construction Certificate"
       I18n.t('activerecord.attributes.certificate.certificate_types.certificate_titles.construction_certificate')
     when "Operations Certificate"
       I18n.t('activerecord.attributes.certificate.certificate_types.certificate_titles.operations_certificate')

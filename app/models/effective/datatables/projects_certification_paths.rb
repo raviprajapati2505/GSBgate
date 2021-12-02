@@ -35,7 +35,7 @@ module Effective
         end
         col :project_update, label: t('models.effective.datatables.projects.lables.updated_at'), sql_column: 'projects.updated_at' do |rec|
           link_to_if(!current_user.record_checker?,
-            localize(rec.project_updated_at.in_time_zone),
+            rec.project_updated_at.strftime('%e %b, %Y'),
             project_path(rec.project_nr)
           )
           # link_to(project_path(rec.project_nr)) do
@@ -43,11 +43,12 @@ module Effective
           # end
         end
         col :project_construction_year, sql_column: 'projects.construction_year', as: :integer, visible: false
+        col :project_estimated_project_cost, label: t('models.effective.datatables.projects.lables.estimated_project_cost'), sql_column: 'projects.estimated_project_cost', as: :string, visible: false
         col :project_country, sql_column: 'projects.country', visible: false
         col :project_city, sql_column: 'projects.city', visible: false
         col :project_district, sql_column: 'projects.district', visible: false
         col :project_address, sql_column: 'projects.address', visible: false
-        col :project_description, sql_column: 'projects.description', visible: false do |rec|          
+        col :project_description, sql_column: 'projects.description', visible: false do |rec|       
           rec.project_description&.truncate(200)
         end
        
@@ -55,23 +56,60 @@ module Effective
         col :project_certified_area, sql_column: 'projects.certified_area', as: :integer, visible: false
         col :project_carpark_area, sql_column: 'projects.carpark_area', as: :integer, visible: false
         col :project_site_area, label: t('models.effective.datatables.projects.lables.project_site_area'), sql_column: 'projects.project_site_area', as: :integer, visible: false
+        col :project_buildings_footprint_area, label: t('models.effective.datatables.projects.lables.buildings_footprint_area'), sql_column: 'projects.buildings_footprint_area', as: :integer, visible: false
         col :project_created_at, label: t('models.effective.datatables.projects.lables.created_at'), sql_column: 'projects.created_at', as: :datetime, visible: false, search: { as: :select, collection: Proc.new { Project.pluck_date_field_by_year_month_day(:created_at, :desc) } } do |rec|
-          localize(rec.project_created_at.in_time_zone) unless rec.project_created_at.nil?
+          rec.project_created_at&.strftime('%e %b, %Y')
         end
 
         col :project_owner, sql_column: 'projects.owner', label: t('models.effective.datatables.projects.lables.owner'), visible: false
         col :project_developer, sql_column: 'projects.developer', label: t('models.effective.datatables.projects.lables.developer'), visible: false
 
         #col :certification_path_id, sql_column: 'certification_paths.id', as: :integer, label: 'Certificate ID'
-        col :certificate_id, sql_column: 'certificates.id', label: t('models.effective.datatables.projects_certification_paths.certificate_id.label'), search: { as: :select, collection: Proc.new { Certificate.all.order(:display_weight).map { |certificate| [certificate.full_name, certificate.id] } } } do |rec|
+        col :certificate_id, sql_column: 'certificates.id', label: t('models.effective.datatables.projects_certification_paths.certificate_id.label'), search: { as: :select, collection: Proc.new { Certificate.all.order(:display_weight).map { |certificate| [certificate.only_certification_name, certificate.only_certification_name] }.uniq } } do |rec|
           if rec.certification_path_id.present?
+            only_certification_name = Certificate.find_by_name(rec&.certificate_name)&.only_certification_name
             link_to_if(!current_user.record_checker?,
-              rec.certificate_name,
+              only_certification_name,
               project_certification_path_path(rec.project_nr, rec.certification_path_id)
             )
-            # link_to(project_certification_path_path(rec.project_nr, rec.certification_path_id)) do
-            #   rec.certificate_name
-            # end
+          end
+        end.search do |collection, term, column, index|
+          if collection.class == Array
+            collection.select! { |row| row[index] == term }
+          else
+            collection.where("certificates.certification_type IN (?)", Certificate.get_certification_types(term))
+          end
+        end
+
+        col :certificate_version, sql_column: 'certificates.id', label: t('models.effective.datatables.projects_certification_paths.certificate_version.label'), search: { as: :select, collection: Proc.new { Certificate.all.order(:display_weight).map { |certificate| [certificate.only_version, certificate.only_version] }.uniq } } do |rec|
+          if rec.certification_path_id.present?
+            only_certification_version = Certificate.find_by_name(rec&.certificate_name)&.only_version
+            link_to_if(!current_user.record_checker?,
+              only_certification_version,
+              project_certification_path_path(rec.project_nr, rec.certification_path_id)
+            )
+          end
+        end.search do |collection, term, column, index|
+          if collection.class == Array
+            collection.select! { |row| row[index] == term }
+          else
+            collection.where("certificates.gsas_version IN (?)", [term])
+          end
+        end
+
+        col :certificate_stage, sql_column: 'certificates.id', label: t('models.effective.datatables.projects_certification_paths.certificate_stage.label'), search: { as: :select, collection: Proc.new { Certificate.all.order(:display_weight).map { |certificate| [certificate.stage_title, certificate.stage_title] }.uniq } } do |rec|
+          if rec.certification_path_id.present?
+            only_certification_stage = CertificationPath.find(rec.certification_path_id).certificate&.stage_title
+            link_to_if(!current_user.record_checker?,
+              only_certification_stage,
+              project_certification_path_path(rec.project_nr, rec.certification_path_id)
+            )
+          end
+        end.search do |collection, term, column, index|
+          if collection.class == Array
+            collection.select! { |row| row[index] == term }
+          else
+            collection.where("certificates.certification_type IN (?)", Certificate.get_certificate_by_stage(term))
           end
         end
 
@@ -82,16 +120,16 @@ module Effective
 
         col :certification_path_appealed, sql_column: 'certification_paths.appealed', label: t('models.effective.datatables.projects_certification_paths.certification_path_appealed.label'), as: :boolean, visible: false
         col :certification_path_created_at, sql_column: 'certification_paths.created_at', label: t('models.effective.datatables.projects_certification_paths.certification_path_created_at.label'), as: :datetime, visible: false, search: { as: :select, collection: Proc.new { CertificationPath.pluck_date_field_by_year_month_day(:created_at, :desc) } } do |rec|
-          localize(rec.certification_path_created_at.in_time_zone) unless rec.certification_path_created_at.nil?
+          rec.certification_path_created_at&.strftime('%e %b, %Y')
         end
         col :certification_path_started_at, sql_column: 'certification_paths.started_at', label: t('models.effective.datatables.projects_certification_paths.certification_path_started_at.label'), as: :datetime, visible: false, search: { as: :select, collection: Proc.new { CertificationPath.pluck_date_field_by_year_month_day(:started_at, :desc) } } do |rec|
-          localize(rec.certification_path_started_at.in_time_zone) unless rec.certification_path_started_at.nil?
+          rec.certification_path_started_at&.strftime('%e %b, %Y')
         end
         col :certification_path_certified_at, sql_column: 'certification_paths.certified_at', label: t('models.effective.datatables.projects_certification_paths.certification_path_certified_at.label'), as: :datetime, visible: false, search: { as: :select, collection: Proc.new { CertificationPath.pluck_date_field_by_year_month_day(:certified_at, :desc) } } do |rec|
-          localize(rec.certification_path_certified_at.in_time_zone) unless rec.certification_path_certified_at.nil?
+          rec.certification_path_certified_at&.strftime('%e %b, %Y')
         end
         col :certification_path_expires_at, sql_column: 'certification_paths.expires_at', label: t('models.effective.datatables.projects_certification_paths.certification_path_expires_at.label'), as: :datetime, visible: false, search: { as: :select, collection: Proc.new { CertificationPath.pluck_date_field_by_year_month_day(:expires_at, :desc) } } do |rec|
-          localize(rec.certification_path_expires_at.in_time_zone) unless rec.certification_path_expires_at.nil?
+          rec.certification_path_expires_at&.strftime('%e %b, %Y')
         end
         # Note: internally we use the status id, so sorting is done by id and not the name !
         col :certification_path_certification_path_status_id, sql_column: 'certification_paths.certification_path_status_id', label: t('models.effective.datatables.projects_certification_paths.certification_path_certification_path_status_id.label'), search: { as: :select, collection: Proc.new { CertificationPathStatus.all.map { |status| [status.name, status.id] } } } do |rec|
@@ -181,6 +219,9 @@ module Effective
         col :schemes_array, label: t('models.effective.datatables.projects_certification_paths.schemes_array.label'), sql_column: "ARRAY_TO_STRING(ARRAY(SELECT case when scheme_mixes.custom_name is null then concat(schemes.name, ' ', schemes.gsas_version) else CONCAT(schemes.name, ' (', scheme_mixes.custom_name, ') ', schemes.gsas_version) end from schemes INNER JOIN scheme_mixes ON schemes.id = scheme_mixes.scheme_id WHERE scheme_mixes.certification_path_id = certification_paths.id), '|||')" do |rec|
           ERB::Util.html_escape(rec.schemes_array).split('|||').sort.join('<br/>') unless rec.schemes_array.nil?
         end
+
+        col :project_service_provider, sql_column: 'projects.service_provider', label: t('models.effective.datatables.projects.lables.service_provider'), visible: false
+
         col :project_team_array, label: t('models.effective.datatables.projects_certification_paths.project_team_array.label'), visible: false, sql_column: "ARRAY_TO_STRING(ARRAY(SELECT project_team_users.name FROM users as project_team_users INNER JOIN projects_users as project_team_project_users ON project_team_project_users.user_id = project_team_users.id  WHERE project_team_project_users.role IN (#{ProjectsUser.roles[:cgp_project_manager]},#{ProjectsUser.roles[:project_team_member]}) AND project_team_project_users.project_id = projects.id), '|||')" do |rec|
           ERB::Util.html_escape(rec.project_team_array).split('|||').sort.join('<br/>') unless rec.project_team_array.nil?
         end
@@ -227,6 +268,7 @@ module Effective
           .select('projects.name as project_name')
           .select('projects.updated_at as project_updated_at')
           .select('projects.construction_year as project_construction_year')
+          .select('projects.estimated_project_cost as project_estimated_project_cost')
           .select('projects.country as project_country')
           .select('projects.city as project_city')
           .select('projects.district as project_district')
@@ -236,9 +278,11 @@ module Effective
           .select('projects.certified_area as project_certified_area')
           .select('projects.carpark_area as project_carpark_area')
           .select('projects.project_site_area as project_site_area')
+          .select('projects.buildings_footprint_area as project_buildings_footprint_area')
           .select('projects.created_at as project_created_at')
           .select('projects.owner as project_owner')
           .select('projects.developer as project_developer')
+          .select('projects.service_provider as project_service_provider')
           .select('certification_paths.id as certification_path_id')
           .select('certification_paths.certificate_id as certificate_id')
           .select('certification_paths.certification_path_status_id as certification_path_certification_path_status_id')

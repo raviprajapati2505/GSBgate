@@ -277,12 +277,19 @@ en:
             project_site_area: Project Plot Area
             owner: Project Owner
             developer: Project Developer
+            estimated_building_cost: Project Estimated Cost
+            buildings_footprint_area: Project Footprint
+            service_provider: Project Service Provider
         certification_paths:
           certification_path_status:
             label: Certification Status
         certifiers_criteria:
           certificate_id:
             label: Certification Name
+          certificate_version:
+            label: Certification Version
+          certificate_stage:
+            label: Certification Stage
           certification_path_certification_path_status_id:
             label: Certification Status
           scheme_mix_criteria_status:
@@ -290,6 +297,10 @@ en:
         projects_certification_paths:
           certificate_id:
             label: Certification Name
+          certificate_version:
+            label: Certification Version
+          certificate_stage:
+            label: Certification Stage
           certification_path_pcr_track:
             label: Certification PCR Track
           certification_path_pcr_track_allowed:
