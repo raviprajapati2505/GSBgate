@@ -262,7 +262,7 @@
     <%= render partial: 'projects_users/show_gord_contact', locals: {project: @project} %>
     <% if @project.certificate_type == Certificate.certificate_types[:design_type] %>
       <% if @project.certification_paths.present? %>
-        <% @project.certification_paths.each do |certification_path| %>
+        <% @project&.certification_paths&.order(:created_at).each do |certification_path| %>
           <div class="ibox float-e-margins">
             <div class="ibox-title bg-header-grey">
               <h5><%= certification_path.certificate.team_title %></h5>
