@@ -566,7 +566,7 @@ module ApplicationHelper
     @is_city_predefined = true
     if project.persisted?
       locations = Location.find_by_country(project&.country)&.list
-      if (locations.present? && locations&.include?(project&.location))
+      if (locations.present? && locations&.include?(project&.city))
         @city_options = locations.map{ |loc| [loc, loc] }.push(["Other", "Other"])
       else
         @is_city_predefined = false
@@ -575,13 +575,16 @@ module ApplicationHelper
   end
 
   def set_project_district(project)
-    districts = District.find_by_country("all")&.list
-    @is_district_predefined = !project.persisted?
-    @district_options = if districts.present?
-                          districts.map{ |dis| [dis, dis] }.push(["Other", "Other"])
-                        else
-                          [["Other", "Other"]]
-                        end
+    @district_options = [["Other", "Other"]]
+    @is_district_predefined = true
+    if project.persisted?
+      districts = District.find_by_country(project&.country)&.list
+      if (districts.present? && districts&.include?(project&.district))
+        @district_options = districts.map{ |dis| [dis, dis] }.push(["Other", "Other"])
+      else
+        @is_district_predefined = false
+      end
+    end
   end
 
   def last_created_project_date

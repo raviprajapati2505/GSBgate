@@ -318,13 +318,14 @@ class ProjectsController < AuthenticatedController
 
   def country_locations
     @location = Location.find_by_country(params["country"])
+    @district = District.find_by_country(params["country"])
     respond_to do |format|
       format.js { render layout: false }
     end
   end
 
   def country_city_districts
-    @district = District.find_by_city(params["city"])
+    @district = District.find_by_country(params["country"])
     respond_to do |format|
       format.js { render layout: false }
     end

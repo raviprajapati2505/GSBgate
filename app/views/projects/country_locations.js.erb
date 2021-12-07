@@ -1,9 +1,10 @@
 $("#city-select-div").html("");
 
 $("#city-select-div").html("<%= j render partial: "location_dropdown", locals: {location: @location} %>")
+$("#district-select-div").html("<%= j render partial: "district_dropdown", locals: {district: @district} %>")
 
 $(function(){
-  $("#city-select").select2({
+  $("#city-select, #district-select").select2({
     width: "100%"
   });
 });
@@ -16,6 +17,7 @@ $(".city-select-dropdown").on("change", function(){
 });
 
 function populate_districts(element){
+  let country_name = $(".country-select").find(":selected").val();
   let city_name = element.find(":selected").val();
 
   if (city_name.length > 0 && city_name !== 'Other'){
@@ -24,7 +26,8 @@ function populate_districts(element){
       method: "GET",
       dataType: "script",
       data: {
-        city: "all",
+        country: country_name,
+        city: city_name
       },
       error: function(){
         alert('Something went wrong !');
