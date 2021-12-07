@@ -5,7 +5,7 @@ var gmaps = {
     // Initializes a map
     initializeMap: function (id) {
         return new google.maps.Map(document.getElementById(id), {
-            zoom: 4,
+            zoom: 15,
             streetViewControl: false,
             panControl: false,
             zoomControlOptions: { style: google.maps.ZoomControlStyle.LARGE },
