@@ -17,6 +17,12 @@
 
 <script>
     $(document).ready(function(){
+        // $('select[id^="datatable_search_"]').each(function() {
+        //    $(this).prop("multiple", true);
+        // });
+
+        // $('select[id^="datatable_search_"]').select2();
+
         if(<%= current_user.record_checker? %>) {
             $('.btn-group').find('.buttons-copy, .buttons-csv, .buttons-print').css('display', 'none')
             $('.ibox-content').addClass('unselectable')

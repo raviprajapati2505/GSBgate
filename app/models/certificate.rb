@@ -47,38 +47,52 @@ class Certificate < ApplicationRecord
     self.name
   end
 
-  def self.get_certification_types(certificate_type)
-    case certificate_type
-    when "GSAS-D&B"
-      [Certificate.certification_types[:letter_of_conformance], Certificate.certification_types[:final_design_certificate]]
-    when "GSAS-CM"
-      [Certificate.certification_types[:construction_certificate], Certificate.certification_types[:construction_certificate_stage1], Certificate.certification_types[:construction_certificate_stage2], Certificate.certification_types[:construction_certificate_stage3]]
-    when "GSAS-OP"
-      [Certificate.certification_types[:operations_certificate]]
-    else
-      Certificate.certification_types
+  def self.get_certification_types(certificate_types)
+    certificate_types_array = []
+    certificate_types.each do |certificate_type|
+      next unless certificate_type.present?
+      certificate_types_array.push(*
+                              case certificate_type
+                              when "GSAS-D&B"
+                                [Certificate.certification_types[:letter_of_conformance], Certificate.certification_types[:final_design_certificate]]
+                              when "GSAS-CM"
+                                [Certificate.certification_types[:construction_certificate], Certificate.certification_types[:construction_certificate_stage1], Certificate.certification_types[:construction_certificate_stage2], Certificate.certification_types[:construction_certificate_stage3]]
+                              when "GSAS-OP"
+                                [Certificate.certification_types[:operations_certificate]]
+                              else
+                                Certificate.certification_types
+                              end
+                            )
     end
+    return certificate_types_array
   end
 
-  def self.get_certificate_by_stage(stage)
-    case stage
-    when "Stage 1: LOC, Design Certificate"
-      [Certificate.certification_types[:letter_of_conformance]]
-    when "Stage 2: CDA, Design & Build Certificate"
-      [Certificate.certification_types[:final_design_certificate]]
-    when "GSAS Construction Management Certificate"
-      [Certificate.certification_types[:construction_certificate]]
-    when "Stage 1: Foundation"
-      [Certificate.certification_types[:construction_certificate_stage1]]
-    when "Stage 2: Substructure & Superstructure"
-      [Certificate.certification_types[:construction_certificate_stage2]]
-    when "Stage 3: Finishing"
-      [Certificate.certification_types[:construction_certificate_stage3]]
-    when "GSAS Operations Certificate"
-      [Certificate.certification_types[:operations_certificate]]
-    else
-      Certificate.certification_types
+  def self.get_certificate_by_stage(certificate_stages)
+    certificate_stages_array = []
+    certificate_stages.each do |certificate_stage|
+      next unless certificate_stage.present?
+      certificate_stages_array.push(
+                                      case certificate_stage
+                                      when "Stage 1: LOC, Design Certificate", "Stage 1: LOC Design Certificate"
+                                        Certificate.certification_types[:letter_of_conformance]
+                                      when "Stage 2: CDA, Design & Build Certificate", "Stage 2: CDA Design & Build Certificate"
+                                        Certificate.certification_types[:final_design_certificate]
+                                      when "GSAS Construction Management Certificate"
+                                        Certificate.certification_types[:construction_certificate]
+                                      when "Stage 1: Foundation"
+                                        Certificate.certification_types[:construction_certificate_stage1]
+                                      when "Stage 2: Substructure & Superstructure"
+                                        Certificate.certification_types[:construction_certificate_stage2]
+                                      when "Stage 3: Finishing"
+                                        Certificate.certification_types[:construction_certificate_stage3]
+                                      when "GSAS Operations Certificate"
+                                        Certificate.certification_types[:operations_certificate]
+                                      else
+                                        Certificate.certification_types
+                                      end
+                                   )
     end
+    return certificate_stages_array
   end
 
   def only_certification_name

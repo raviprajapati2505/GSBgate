@@ -70,15 +70,20 @@ module Effective
         col :project_carpark_area, sql_column: 'projects.carpark_area', as: :integer, visible: false
         col :project_site_area, label: t('models.effective.datatables.projects.lables.project_site_area'), sql_column: 'projects.project_site_area', as: :integer, visible: false
         col :project_buildings_footprint_area, label: t('models.effective.datatables.projects.lables.buildings_footprint_area'), sql_column: 'projects.buildings_footprint_area', as: :integer, visible: false
-        col :project_created_at, label: t('models.effective.datatables.projects.lables.created_at'), sql_column: 'projects.created_at', as: :datetime, visible: false, search: { as: :select, collection: Proc.new { Project.pluck_date_field_by_year_month_day(:created_at, :desc) } } do |rec|
+        col :project_created_at, label: t('models.effective.datatables.projects.lables.created_at'), sql_column: 'projects.created_at', as: :datetime, visible: false, search: { as: :select, collection: Proc.new { Project.all.order(created_at: :desc).map { |p| [p.created_at&.strftime('%e %b, %Y'), p.created_at&.to_date] }.uniq } } do |rec|
           rec.project_created_at&.strftime('%e %b, %Y')
+        end.search do |collection, terms, column, index|
+          terms_array = terms.split(",")
+          unless collection.class == Array
+            collection.where("DATE(projects.created_at) IN (?)", terms_array.map!{|term| term.to_date})
+          end
         end
 
         col :project_owner, sql_column: 'projects.owner', label: t('models.effective.datatables.projects.lables.owner'), visible: false
         col :project_developer, sql_column: 'projects.developer', label: t('models.effective.datatables.projects.lables.developer'), visible: false
 
         #col :certification_path_id, sql_column: 'certification_paths.id', as: :integer, label: 'Certificate ID'
-        col :certificate_id, sql_column: 'certificates.id', label: t('models.effective.datatables.projects_certification_paths.certificate_id.label'), search: { as: :select, collection: Proc.new { Certificate.all.order(:display_weight).map { |certificate| [certificate.only_certification_name, certificate.only_certification_name] }.uniq } } do |rec|
+        col :certificate_id, sql_column: 'certificates.id', label: t('models.effective.datatables.projects_certification_paths.certificate_id.label'), search: { as: :select, collection: Proc.new { Certificate.all.order(:display_weight).map { |certificate| [certificate.only_certification_name, certificate.only_certification_name] }.uniq}, multiple: true } do |rec|
           if rec.certification_path_id.present?
             only_certification_name = Certificate.find_by_name(rec&.certificate_name)&.only_certification_name
             link_to_if(!current_user.record_checker?,
@@ -86,11 +91,10 @@ module Effective
               project_certification_path_path(rec.project_nr, rec.certification_path_id)
             )
           end
-        end.search do |collection, term, column, index|
-          if collection.class == Array
-            collection.select! { |row| row[index] == term }
-          else
-            collection.where("certificates.certification_type IN (?)", Certificate.get_certification_types(term))
+        end.search do |collection, terms, column, index|
+          terms_array = terms.split(",")
+          unless collection.class == Array
+            collection.where("certificates.certification_type IN (?)", Certificate.get_certification_types(terms_array))
           end
         end
 
@@ -102,15 +106,14 @@ module Effective
               project_certification_path_path(rec.project_nr, rec.certification_path_id)
             )
           end
-        end.search do |collection, term, column, index|
-          if collection.class == Array
-            collection.select! { |row| row[index] == term }
-          else
-            collection.where("certificates.gsas_version IN (?)", [term])
+        end.search do |collection, terms, column, index|
+          terms_array = terms.split(",")
+          unless collection.class == Array
+            collection.where("certificates.gsas_version IN (?)", terms_array)
           end
         end
 
-        col :certificate_stage, sql_column: 'certificates.id', label: t('models.effective.datatables.projects_certification_paths.certificate_stage.label'), search: { as: :select, collection: Proc.new { Certificate.all.order(:display_weight).map { |certificate| [certificate.stage_title, certificate.stage_title] }.uniq } } do |rec|
+        col :certificate_stage, sql_column: 'certificates.id', label: t('models.effective.datatables.projects_certification_paths.certificate_stage.label'), search: { as: :select, collection: Proc.new { Certificate.all.order(:display_weight).map { |certificate| [certificate.stage_title, certificate.stage_title&.delete(",")] }.uniq } } do |rec|
           if rec.certification_path_id.present?
             only_certification_stage = CertificationPath.find(rec.certification_path_id).certificate&.stage_title
             link_to_if(!current_user.record_checker?,
@@ -118,35 +121,69 @@ module Effective
               project_certification_path_path(rec.project_nr, rec.certification_path_id)
             )
           end
-        end.search do |collection, term, column, index|
-          if collection.class == Array
-            collection.select! { |row| row[index] == term }
-          else
-            collection.where("certificates.certification_type IN (?)", Certificate.get_certificate_by_stage(term))
+        end.search do |collection, terms, column, index|
+          terms_array = terms.split(",")
+          unless collection.class == Array
+            collection.where("certificates.certification_type IN (?)", Certificate.get_certificate_by_stage(terms_array))
           end
         end
 
         col :certification_path_pcr_track, sql_column: 'certification_paths.pcr_track', label: t('models.effective.datatables.projects_certification_paths.certification_path_pcr_track.label'), as: :boolean, visible: false
         col :development_type_name, sql_column: 'development_types.name', label: t('models.effective.datatables.projects_certification_paths.certification_path_development_type.label'), visible: false, search: { as: :select, collection: Proc.new { DevelopmentType.select(:name, :display_weight).order(:display_weight).distinct.map { |development_type| [development_type.name, development_type.name] } } } do |rec|
           rec.development_type_name
+        end.search do |collection, terms, column, index|
+          terms_array = terms.split(",")
+          unless collection.class == Array
+            collection.where("development_types.name IN (?)", terms_array)
+          end
         end
 
         col :certification_path_appealed, sql_column: 'certification_paths.appealed', label: t('models.effective.datatables.projects_certification_paths.certification_path_appealed.label'), as: :boolean, visible: false
-        col :certification_path_created_at, sql_column: 'certification_paths.created_at', label: t('models.effective.datatables.projects_certification_paths.certification_path_created_at.label'), as: :datetime, visible: false, search: { as: :select, collection: Proc.new { CertificationPath.pluck_date_field_by_year_month_day(:created_at, :desc) } } do |rec|
+
+        col :certification_path_created_at, sql_column: 'certification_paths.created_at', label: t('models.effective.datatables.projects_certification_paths.certification_path_created_at.label'), as: :datetime, visible: false, search: { as: :select, collection: Proc.new { CertificationPath.all.order(created_at: :desc).map { |c| [c.created_at&.strftime('%e %b, %Y'), c.created_at&.to_date] }.uniq } } do |rec|
           rec.certification_path_created_at&.strftime('%e %b, %Y')
+        end.search do |collection, terms, column, index|
+          terms_array = terms.split(",")
+          unless collection.class == Array
+            collection.where("DATE(certification_paths.created_at) IN (?)", terms_array.map!{|term| term.to_date})
+          end
         end
-        col :certification_path_started_at, sql_column: 'certification_paths.started_at', label: t('models.effective.datatables.projects_certification_paths.certification_path_started_at.label'), as: :datetime, visible: false, search: { as: :select, collection: Proc.new { CertificationPath.pluck_date_field_by_year_month_day(:started_at, :desc) } } do |rec|
+
+        col :certification_path_started_at, sql_column: 'certification_paths.started_at', label: t('models.effective.datatables.projects_certification_paths.certification_path_started_at.label'), as: :datetime, visible: false, search: { as: :select, collection: Proc.new { CertificationPath.all.order(started_at: :desc).map { |c| [c.started_at&.strftime('%e %b, %Y'), c.started_at&.to_date] }.uniq } } do |rec|
           rec.certification_path_started_at&.strftime('%e %b, %Y')
+        end.search do |collection, terms, column, index|
+          terms_array = terms.split(",")
+          unless collection.class == Array
+            collection.where("DATE(certification_paths.started_at) IN (?)", terms_array.map!{|term| term.to_date})
+          end
         end
-        col :certification_path_certified_at, sql_column: 'certification_paths.certified_at', label: t('models.effective.datatables.projects_certification_paths.certification_path_certified_at.label'), as: :datetime, visible: false, search: { as: :select, collection: Proc.new { CertificationPath.pluck_date_field_by_year_month_day(:certified_at, :desc) } } do |rec|
+        
+        col :certification_path_certified_at, sql_column: 'certification_paths.certified_at', label: t('models.effective.datatables.projects_certification_paths.certification_path_certified_at.label'), as: :datetime, visible: false, search: { as: :select, collection: Proc.new { CertificationPath.all.order(certified_at: :desc).map { |c| [c.certified_at&.strftime('%e %b, %Y'), c.certified_at&.to_date] }.uniq } } do |rec|
           rec.certification_path_certified_at&.strftime('%e %b, %Y')
+        end.search do |collection, terms, column, index|
+          terms_array = terms.split(",")
+          unless collection.class == Array
+            collection.where("DATE(certification_paths.certified_at) IN (?)", terms_array.map!{|term| term.to_date})
+          end
         end
-        col :certification_path_expires_at, sql_column: 'certification_paths.expires_at', label: t('models.effective.datatables.projects_certification_paths.certification_path_expires_at.label'), as: :datetime, visible: false, search: { as: :select, collection: Proc.new { CertificationPath.pluck_date_field_by_year_month_day(:expires_at, :desc) } } do |rec|
+
+        col :certification_path_expires_at, sql_column: 'certification_paths.expires_at', label: t('models.effective.datatables.projects_certification_paths.certification_path_expires_at.label'), as: :datetime, visible: false, search: { as: :select, collection: Proc.new { CertificationPath.all.order(expires_at: :desc).map { |c| [c.expires_at&.strftime('%e %b, %Y'), c.expires_at&.to_date] }.uniq } } do |rec|
           rec.certification_path_expires_at&.strftime('%e %b, %Y')
+        end.search do |collection, terms, column, index|
+          terms_array = terms.split(",")
+          unless collection.class == Array
+            collection.where("DATE(certification_paths.expires_at) IN (?)", terms_array.map!{|term| term.to_date})
+          end
         end
+
         # Note: internally we use the status id, so sorting is done by id and not the name !
-        col :certification_path_certification_path_status_id, sql_column: 'certification_paths.certification_path_status_id', label: t('models.effective.datatables.projects_certification_paths.certification_path_certification_path_status_id.label'), search: { as: :select, collection: Proc.new { CertificationPathStatus.all.map { |status| [status.name, status.id] } } } do |rec|
+        col :certification_path_certification_path_status_id, sql_column: 'certification_paths.certification_path_status_id', label: t('models.effective.datatables.projects_certification_paths.certification_path_certification_path_status_id.label'), search: { as: :select, collection: Proc.new { CertificationPathStatus.all.map { |status| [status.name, status.id] } } }  do |rec|
           rec.certification_path_status_name
+        end.search do |collection, terms, column, index|
+          terms_array = terms.split(",")
+          unless collection.class == Array
+            collection.where("certification_paths.certification_path_status_id IN (?)", terms_array.map!{|term| term.to_i})
+          end
         end
         # col :certification_path_status_name, sql_column: 'certification_path_statuses.name', label: 'Certificate Status', search: {as: :select, collection: Proc.new{CertificationPathStatus.all.map{|status| status.name}}}
         col :certification_path_status_is_active, sql_column: 'CASE WHEN certification_path_statuses.id IS NULL THEN false WHEN certification_path_statuses.id = 15 THEN false WHEN certification_path_statuses.id = 16 THEN false ELSE true END', as: :boolean, label: t('models.effective.datatables.projects_certification_paths.certification_path_status_is_active.label')
@@ -252,9 +289,20 @@ module Effective
         end
         col :building_type_group_name, sql_column: 'building_type_groups.name', label: t('models.effective.datatables.projects_certification_paths.building_type_groups.label'), visible: false, search: { as: :select, collection: Proc.new { BuildingTypeGroup.visible.select(:name).order(:name).distinct.map { |building_type_group| [building_type_group.name, building_type_group.name] } } } do |rec|
           rec.building_type_group_name
+        end.search do |collection, terms, column, index|
+          terms_array = terms.split(",")
+          unless collection.class == Array
+            collection.where("building_type_groups.name IN (?)", terms_array)
+          end
         end
-        col :building_type_name, sql_column: 'building_types.name', label: t('models.effective.datatables.projects_certification_paths.building_types.label'), visible: false, search: { as: :select, collection: Proc.new { BuildingType.visible.select(:name).order(:name).distinct.map { |building_type| [building_type.name, building_type.name] } } } do |rec|
+
+        col :building_type_name, sql_column: 'building_types.name', label: t('models.effective.datatables.projects_certification_paths.building_types.label'), visible: true, search: { as: :select, collection: Proc.new { BuildingType.visible.select(:name).order(:name).distinct.map { |building_type| [building_type.name, building_type.name] } } } do |rec|
           rec.building_type_name
+        end.search do |collection, terms, column, index|
+          terms_array = terms.split(",")
+          unless collection.class == Array
+            collection.where("building_types.name IN (?)", terms_array)
+          end
         end
       end
 
