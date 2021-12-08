@@ -1,6 +1,6 @@
 <% 
-  main_scheme = certification_path.main_scheme
-  sub_schemes = certification_path.sub_schemes
+  main_scheme = certification_path.main_scheme rescue 0
+  sub_schemes = certification_path.sub_schemes rescue 0
   scheme_mixes = main_scheme + sub_schemes
 %>
 
@@ -52,14 +52,14 @@
                 <% if certification_path.main_scheme_mix_id == scheme_mix.id %>
                     <td>
                         Main-Typology
-                <% else %>
+                <% elsif (!certification_path.main_scheme_mix_selected && index == 0) || (certification_path.main_scheme_mix_selected && index == 1) %>
                     <td rowspan="<%= sub_schemes.count %>">
                         Sub-Typologies
                 <% end %>
                 </td>
             <% end %>
 
-            <% if index > 2 %>
+            <% if index > sub_schemes.count %>
                 <tr>
             <% end %>
 
@@ -103,7 +103,7 @@
                         </div>
                     </div>
                 </td>
-                <% if index > 2 %>
+                <% if index > sub_schemes.count %>
                     </tr>
                 <% end %>
             <% else %>

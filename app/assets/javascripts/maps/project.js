@@ -21,9 +21,9 @@ function initializeProjectMap() {
     });
 
     // Move the marker when one of the address fields is changed
-    // $('#project_address, #project_location, #project_country').change(function() {
-    //     moveMarkerToProjectAddress();
-    // });
+    $('#project_address, #project_country').change(function() {
+        moveMarkerToProjectAddress();
+    });
 
     // Move the marker when one of the lat lng fields is changed
     $('#lat, #lng').change(function() {
@@ -32,13 +32,13 @@ function initializeProjectMap() {
 }
 
 function moveMarkerToProjectAddress() {
-    var addressFields = ['#project_address', '#project_location', '#project_country'];
+    var addressFields = ['#project_address', '#project_country'];
     var address = '';
     var allFieldsFilled = true;
 
     // Format the address
     $.each(addressFields, function (index, field) {
-        var fieldValue = $.trim($(field).val());
+        let fieldValue = $.trim($(field).val());
 
         if (fieldValue == '') {
             allFieldsFilled = false;
@@ -56,6 +56,9 @@ function moveMarkerToProjectAddress() {
                 // Move the marker to the geocoded location
                 projectMarker.setPosition(latLng);
                 projectMap.panTo(latLng);
+
+                // Set the location field value in form
+                set_location_value(latLng);
 
                 // Update the latlng & coordinates fields
                 updateLatLngFields(projectMarker);
@@ -79,7 +82,7 @@ function moveMarkerToCoordinates() {
     }
 
     // Set the location field value in form
-    set_location_value(latLng)
+    set_location_value(latLng);
 
     // Update the latlng & coordinates fields
     updateLatLngFields(projectMarker);

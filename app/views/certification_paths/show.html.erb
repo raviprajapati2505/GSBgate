@@ -59,14 +59,14 @@
 
                         <% if @certification_path.is_activated? %>
                           <tr>
-                            <th><%= t('.certification_path.rating') %></th>
-                            <td><%= render partial: 'certification_paths/ratings', locals: { certification_path: @certification_path, display_item: 'score_and_rating' } %></td>
-                          </tr>
-                          <tr>
                             <th><%= t('.certification_path.scores') %></th>
                             <td>
                               <%= render 'score/score', scores: final_score, point_type: :certificate_points %>
                             </td>
+                          </tr>
+                          <tr>
+                            <th><%= t('.certification_path.rating') %></th>
+                            <td><%= render partial: 'certification_paths/ratings', locals: { certification_path: @certification_path, display_item: 'score_and_rating' } %></td>
                           </tr>
                         <% end %>
                         <% if not @certification_path.is_activating? %>
