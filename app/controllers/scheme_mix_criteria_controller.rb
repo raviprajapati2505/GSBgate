@@ -203,7 +203,15 @@ class SchemeMixCriteriaController < AuthenticatedController
       @scheme_mix_criterion.audit_log_visibility = AuditLogVisibility::PUBLIC
       @scheme_mix_criterion.in_review = false
       @scheme_mix_criterion.save!
+
+      # PCR document
+      if params[:scheme_mix_criterion][:pcr_document].present?
+        pcr_document = Document.new(document_file: params[:scheme_mix_criterion][:pcr_document], user: current_user, certification_path_id: @certification_path&.id)
+        pcr_document.scheme_mix_criteria_documents.build(document_type: "pcr_document", scheme_mix_criterion_id: @scheme_mix_criterion&.id)
+        pcr_document.save!
+      end
     end
+    
     flash[:notice] = 'Criterion review submitted.'
     redirect_to project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion)
   end

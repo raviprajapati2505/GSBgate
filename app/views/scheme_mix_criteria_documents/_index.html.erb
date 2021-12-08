@@ -22,9 +22,9 @@
                   <tr class="document-<%= smcd.status.dasherize %>">
                       <td>
                           <% if smcd.approved? %>
-                              <%= check_box_tag "document", smcd.id,false,id: "scheme_criterion_document_#{smcd.id}",class: "smcd_child_checkbox" %>
+                              <%= check_box_tag "document", smcd.id,false, id: "scheme_criterion_document_#{smcd.id}", class: "smcd_child_checkbox" %>
                           <% else %>
-                              <%= check_box_tag "document", smcd.id,true,disabled: true %>
+                              <%= check_box_tag "document", smcd.id, true, disabled: true %>
                           <% end %>
                       </td>
                       <td data-order="<%= smcd.name %>" data-search="<%= smcd.name %>">
