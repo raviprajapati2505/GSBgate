@@ -1,5 +1,8 @@
 class CertificationPathStatus < ApplicationRecord
   has_many :certification_paths
+  has_many :cgp_certification_path_documents, dependent: :destroy
+  has_many :documents, dependent: :destroy
+
 
   scope :status_scope, ->(status_scopes) {
     where(id: status_scopes)

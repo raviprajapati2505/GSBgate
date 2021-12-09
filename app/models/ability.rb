@@ -203,11 +203,13 @@ class Ability
       can :read, Document, scheme_mix_criteria_documents: { scheme_mix_criterion: {scheme_mix: {certification_path: {project: project_with_user_assigned}}}}
       # Project team
       can :create, Document, scheme_mix_criteria_documents: { scheme_mix_criterion: {main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_submitting, scheme_mix: {certification_path: {project: project_with_user_in_project_team}}}}
-      can :destroy, Document, scheme_mix_criteria_documents: { scheme_mix_criterion: {main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_submitting, scheme_mix: {certification_path: {project: project_with_user_as_cgp_project_manager}}}}
+      can :destroy, Document, scheme_mix_criteria_documents: {scheme_mix_criterion: {main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_submitting, scheme_mix: {certification_path: {project: project_with_user_as_cgp_project_manager}}}}, certification_path_status_id: @certification_path&.certification_path_status_id
 
       # CertificationPathDocument controller
       can :read, CertificationPathDocument, certification_path: {project: project_with_user_assigned}
-      can [:create, :destroy], CgpCertificationPathDocument, certification_path: {project: project_with_user_as_cgp_project_manager}
+      can :create, CgpCertificationPathDocument, certification_path: {project: project_with_user_as_cgp_project_manager}
+      can :destroy, CgpCertificationPathDocument, certification_path: {project: project_with_user_as_cgp_project_manager}, certification_path_status_id: @certification_path&.certification_path_status_id
+
       can [:create, :destroy], CertifierCertificationPathDocument, certification_path: {project: project_with_user_as_certification_manager}
 
       # SchemeMixCriteriaDocument controller
@@ -396,10 +398,10 @@ class Ability
       value = if certificate_path_id_index.present?
                 certificate_path_id = path_array[certificate_path_id_index.to_i + 1]
                 if certificate_path_id.to_i.to_s
-                  certification_path = CertificationPath.find(certificate_path_id.to_i)
-                  if certification_path.is_design_loc?
+                  @certification_path = CertificationPath.find(certificate_path_id.to_i)
+                  if @certification_path.is_design_loc?
                     ProjectsUser.certification_team_types["Letter of Conformance"]
-                  elsif certification_path.is_design_fdc?
+                  elsif @certification_path.is_design_fdc?
                     ProjectsUser.certification_team_types["Final Design Certificate"]
                   else
                     ProjectsUser.certification_team_types["Other"]
