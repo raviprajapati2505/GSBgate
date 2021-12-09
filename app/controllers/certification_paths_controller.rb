@@ -105,6 +105,9 @@ class CertificationPathsController < AuthenticatedController
       else
         @certification_path.expires_at = @durations.first.years.from_now
       end
+    elsif @certification_path.certificate[:certificate_type] == "construction_type"
+      stage1_certification_certificate = @project&.certification_paths.joins(:certificate).find_by("certificates.certification_type = ?", Certificate.certification_types["construction_certificate_stage1"])
+      @certification_path.expires_at = stage1_certification_certificate.expires_at if stage1_certification_certificate.present?
     end
 
     # Development Type
