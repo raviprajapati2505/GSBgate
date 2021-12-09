@@ -8,7 +8,7 @@ projects_with_cda.each do |project|
   projects_users.each do |project_user|
     new_project_user = project_user.dup
     new_project_user.certification_team_type = "Final Design Certificate"
-    new_project_user.save!
+    new_project_user.save
   end
 end
 
@@ -19,8 +19,8 @@ ProjectsUser.joins(:project).where(projects: {id: projects_with_loc.ids}, certif
 # Projects with only LOC certified
 projects_with_only_loc_certified = Project.joins(certification_paths: [:certification_path_status, :certificate]).where("projects.certificate_type = :type AND certificates.certification_type = :name AND certification_path_statuses.name = :status_name", type: 3, name: Certificate.certification_types["letter_of_conformance"], status_name: "Certified")
 projects_with_only_loc_certified.each do |project|
-  project_cgp_user = project.projects_users&.find_by(role: "cgp_project_manager")
-  if project_cgp_user.present?
+  project_cgp_users = project.projects_users&.where(role: "cgp_project_manager")
+  project_cgp_users.each do |project_cgp_user|
     new_project_cgp_user = project_cgp_user.dup
     new_project_cgp_user.certification_team_type = "Final Design Certificate"
     new_project_cgp_user.save
