@@ -285,19 +285,19 @@ module Effective
         col :project_service_provider, sql_column: 'projects.service_provider', label: t('models.effective.datatables.projects.lables.service_provider'), visible: false
 
         col :project_team_array, label: t('models.effective.datatables.projects_certification_paths.project_team_array.label'), visible: false, sql_column: '(%s)' % projects_users_by_type('project_team') do |rec|
-          ERB::Util.html_escape(rec.project_team_array).split('|||').sort.join('<br/>') unless rec.project_team_array.nil?
+          ERB::Util.html_escape(rec.project_team_array).split('|||').sort.join(', <br/>') unless rec.project_team_array.nil?
         end
         col :cgp_project_manager_array, label: t('models.effective.datatables.projects_certification_paths.cgp_project_manager_array.label'), visible: false, sql_column: '(%s)' % projects_users_by_type('cgp_project_manager') do |rec|
-          ERB::Util.html_escape(rec.cgp_project_manager_array).split('|||').sort.join('<br/>') unless rec.cgp_project_manager_array.nil?
+          ERB::Util.html_escape(rec.cgp_project_manager_array).split('|||').sort.join(', <br/>') unless rec.cgp_project_manager_array.nil?
         end
         col :gsas_trust_team_array, label: t('models.effective.datatables.projects_certification_paths.gsas_trust_team_array.label'), visible: false, sql_column: '(%s)' % projects_users_by_type('gsas_trust_team') do |rec|
-          ERB::Util.html_escape(rec.gsas_trust_team_array).split('|||').sort.join('<br/>') unless rec.gsas_trust_team_array.nil?
+          ERB::Util.html_escape(rec.gsas_trust_team_array).split('|||').sort.join(', <br/>') unless rec.gsas_trust_team_array.nil?
         end
         col :certification_manager_array, label: t('models.effective.datatables.projects_certification_paths.certification_manager_array.label'), visible: false, sql_column: '(%s)' % projects_users_by_type('certification_manager') do |rec|
-          ERB::Util.html_escape(rec.certification_manager_array).split('|||').sort.join('<br/>') unless rec.certification_manager_array.nil?
+          ERB::Util.html_escape(rec.certification_manager_array).split('|||').sort.join(', <br/>') unless rec.certification_manager_array.nil?
         end
         col :enterprise_clients_array, label: t('models.effective.datatables.projects_certification_paths.enterprise_clients_array.label'), visible: false, sql_column: "ARRAY_TO_STRING(ARRAY(SELECT enterprise_client_users.name FROM users as enterprise_client_users INNER JOIN projects_users as enterprise_client_project_users ON enterprise_client_project_users.user_id = enterprise_client_users.id  WHERE enterprise_client_project_users.role IN (#{ProjectsUser.roles[:enterprise_client]}) AND enterprise_client_project_users.project_id = projects.id), '|||')" do |rec|
-          ERB::Util.html_escape(rec.enterprise_clients_array).split('|||').sort.join('<br/>') unless rec.enterprise_clients_array.nil?
+          ERB::Util.html_escape(rec.enterprise_clients_array).split('|||').sort.join(', <br/>') unless rec.enterprise_clients_array.nil?
         end
 
         col :building_type_name, sql_column: 'building_types.name', label: t('models.effective.datatables.projects_certification_paths.building_types.label'), visible: false, search: { as: :select, collection: Proc.new { BuildingType.visible.select(:name).order(:name).distinct.map { |building_type| [building_type.name, building_type.name] } } } do |rec|
