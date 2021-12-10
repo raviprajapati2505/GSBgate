@@ -31,10 +31,49 @@
                         <% end %>
                     </div>
                     <div class="comment-form" style="display:none;">
-                      <%= f.text_area :user_comment, rows: 4 %>
-                      <% if can?(:index, AuditLog.new(attachment_file: true, project: @project)) %>
-                        <%= f.file_field :attachment_file %>
-                      <% end %>
+                       <%= f.text_area :user_comment, rows: 4 %>
+                        <% if can?(:index, AuditLog.new(attachment_file: true, project: @project)) %>
+                            <%= f.file_field :attachment_file %>
+                        <% end %>
+
+                      <% if @auditable.class.name == 'SchemeMixCriterion' %>
+                        <ul>
+                            <% 
+                              smcd_ids = [] 
+                              @scheme_mix = @auditable.scheme_mix
+                            %>
+
+                            <!-- <% @scheme_mix.scheme_mix_criteria.includes(scheme_criterion: :scheme_category).order('scheme_categories.display_weight, scheme_criteria.number').each do |scheme_mix_criterion| %>
+                                <% smcd_ids << scheme_mix_criterion.id %>
+                                <li><%= scheme_mix_criterion.full_name %></li>
+                            <% end %> -->
+                        </ul>
+                        <hr/>
+                        <p>If this comment also supports requirements in other criteria, select them below:</p>
+                        <ul class="criteria-checkboxes checkbox-list">
+                            <% @scheme_mix.scheme_categories.uniq.each do |category| %>
+                                <% if @scheme_mix.scheme_mix_criteria.for_category(category).exists?(main_scheme_mix_criterion_id: nil) %>
+                                    <li>
+                                        <a href="#"><i class="fa fa-caret-square-o-right"></i>&nbsp;<%= category.name %></a>
+                                        <ul style="display:none;">
+                                            <% @scheme_mix.scheme_mix_criteria.for_category(category).order('scheme_criteria.number').each do |scheme_mix_criterion| %>
+                                                <% unless scheme_mix_criterion.main_scheme_mix_criterion_id.present? %>
+                                                    <%= fields_for "scheme_mix_criteria[]", AuditLog.new do |audit_log_fields| %>
+                                                        <li>
+                                                            <%# default_checkbox_value = smcd_ids.include?(scheme_mix_criterion.id) %>
+                                                            <%= audit_log_fields.check_box :scheme_mix_criterion_id, {id: 'scheme_mix_criteria__' + scheme_mix_criterion.id.to_s, checked: false, disabled: false}, scheme_mix_criterion.id, nil %>
+                                                            <%= audit_log_fields.label scheme_mix_criterion.id.to_s, scheme_mix_criterion.full_name %>
+                                                        </li>
+                                                    <% end %>
+                                                <% end %>
+                                            <% end %>
+                                        </ul>
+                                    </li>
+                                <% end %>
+                            <% end %>
+                        </ul>
+                    <% end %>
+
                       <% if can?(:index, AuditLog.new(audit_log_visibility_id: AuditLogVisibility::INTERNAL, project: @project)) %>
                         <% disabled = @is_certifier %>
                         <%= f.form_group :audit_log_visibility do %>
@@ -54,3 +93,7 @@
         <% end %>
     </div>
 </div>
+
+<% if @auditable.class.name == 'SchemeMixCriterion' %>
+    <%= javascript_include_tag 'criteria_checkboxes' %>
+<% end %>

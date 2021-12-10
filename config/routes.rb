@@ -129,6 +129,9 @@ Rails.application.routes.draw do
   get 'audit-logs/:auditable_type/:auditable_id/comments' => 'audit_logs#auditable_index_comments', as: 'auditable_index_comments'
   get 'audit-logs/:auditable_type/:auditable_id/download-attachment/:id' => 'audit_logs#download_attachment', as: 'download_audit_log_attachment'
   post 'audit-logs/:auditable_type/:auditable_id' => 'audit_logs#auditable_create', as: 'auditable_create_audit_log'
+  get 'audit-logs/:audit_log_id' => 'audit_logs#unlink_smc_comments_form', as: 'unlink_smc_audit_log_form'
+  patch 'audit-logs/:audit_log_id' => 'audit_logs#unlink_smc_comments', as: 'unlink_smc_audit_log'
+
   get 'tasks' => 'tasks#index', as: 'tasks'
   get 'tasks/user/:user_id' => 'tasks#count', as: 'count_tasks'
   match 'projects/:project_id/certificates/apply/:certification_type' => 'certification_paths#apply', as: 'apply_certification_path', via: [:get, :post]

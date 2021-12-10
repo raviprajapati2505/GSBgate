@@ -22,6 +22,11 @@
                   <%= ikoen('lock', size: :small, title: 'GSAS trust internal') %>
                 <% end %>
                 <%= audit_log.user_comment %>
+                <% if can?(:unlink_smc_comments_form, audit_log) && can?(:unlink_smc_comments, audit_log) && @auditable.class.name == 'SchemeMixCriterion' %>
+                  <a href="/audit-logs/<%= audit_log&.id %>" class="btn btn-sm btn-default pull-right unlink-comments-button" data-remote="true" style="display:none;">
+                    <%= ikoen('chain-broken', size: :small, title: 'Unlink comment from other criteria') %>
+                  </a>
+                <% end %>
                 <a href="#" class="btn btn-sm btn-default pull-right duplicate-comment-button" data-comment="<%= audit_log.user_comment %>" style="display:none;">
                   <%= ikoen('copy', size: :small, title: 'Duplicate (and modify) this comment') %>
                 </a>

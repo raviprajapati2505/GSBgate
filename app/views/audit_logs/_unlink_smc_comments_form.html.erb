@@ -1,0 +1,38 @@
+<div class="modal-dialog">
+  <%= bootstrap_form_for(audit_log, url: unlink_smc_audit_log_path(audit_log), layout: :inline, method: 'patch') do |f| %>
+    <div class="modal-content">
+      <div class="modal-header">
+        <%= btn_close_modal %>
+        <h4 class="modal-title">Unlink Comments</h4>
+      </div>
+      <div class="modal-body">
+        <ul class="criteria-checkboxes checkbox-list">
+          <% smc_categories.each do |scheme_category| %>
+            <li>
+              <a href="#"><i class="fa fa-caret-square-o-right"></i>&nbsp;<%= scheme_category.name %></a>
+                <ul>
+                  <% scheme_mix&.scheme_mix_criteria&.for_category(scheme_category).order('scheme_criteria.number').each do |scheme_mix_criterion| %>
+                    <% audit_logs.where(auditable: scheme_mix_criterion).each do |al| %>
+                      <%= fields_for "audit_logs[]", AuditLog.new do |audit_log_fields| %>
+                        <li>
+                          <% if audit_log.auditable_id == scheme_mix_criterion.id %>
+                            <%= audit_log_fields.check_box :audit_log_id, {checked: true, disabled: true}, al.id, nil %>
+                          <% else %>
+                            <%= audit_log_fields.check_box :audit_log_id, {checked: true}, al.id, nil %>
+                          <% end %>
+                          <%= audit_log_fields.label scheme_mix_criterion.id.to_s, scheme_mix_criterion.full_name %>
+                        </li>
+                      <% end %>
+                    <% end %>
+                  <% end %>
+                </ul>
+              </li>
+          <% end %>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <%= btn_save %>
+      </div>
+    </div>
+  <% end %>
+</div>
