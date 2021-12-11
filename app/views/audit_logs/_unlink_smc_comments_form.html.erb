@@ -6,6 +6,17 @@
         <h4 class="modal-title">Unlink Comments</h4>
       </div>
       <div class="modal-body">
+        <h4>Comment</h4>
+        <p><%= audit_log.user_comment %></p>
+
+        <% if audit_log.attachment_file.present? && can?(:download_attachment, audit_log) %>
+          <div class="m-t-md">
+            <h4>Attachment</h4>
+            <%= btn_download(download_audit_log_attachment_path(audit_log.auditable.class.name, audit_log.auditable.id, audit_log.id), size: 'extra_small', tooltip: "Download #{AuditLog.human_attribute_name('attachment_file')}") %>
+            <%= truncate(audit_log.attachment_file.file.filename, length: 100) %>
+          </div>
+        <% end %>
+        <hr />
         <ul class="criteria-checkboxes checkbox-list">
           <% smc_categories.each do |scheme_category| %>
             <li>
@@ -15,8 +26,8 @@
                     <% audit_logs.where(auditable: scheme_mix_criterion).each do |al| %>
                       <%= fields_for "audit_logs[]", AuditLog.new do |audit_log_fields| %>
                         <li>
-                          <% if audit_log.auditable_id == scheme_mix_criterion.id %>
-                            <%= audit_log_fields.check_box :audit_log_id, {checked: true, disabled: true}, al.id, nil %>
+                          <% if audit_log.id == al.id %>
+                            <%= audit_log_fields.check_box :audit_log_id, {checked: true, readonly: true}, audit_log.id, audit_log.id %>
                           <% else %>
                             <%= audit_log_fields.check_box :audit_log_id, {checked: true}, al.id, nil %>
                           <% end %>
@@ -31,7 +42,9 @@
         </ul>
       </div>
       <div class="modal-footer">
-        <%= btn_save %>
+        <% if can?(:unlink_smc_comments, audit_log) %>
+          <%= btn_save %>
+        <% end %>
       </div>
     </div>
   <% end %>

@@ -120,8 +120,8 @@ class AuditLogsController < AuthenticatedController
 
     if params[:audit_logs].present?
       audit_logs_ids = @audit_logs&.ids
-      audit_logs_ids.delete(params[:audit_log_id].to_i)
       params[:audit_logs].each { |al| audit_logs_ids.delete(al[:audit_log_id].to_i) }
+      audit_logs_ids.delete(params[:audit_log_id].to_i)
 
       if AuditLog.where("id IN (?)", audit_logs_ids).destroy_all
         flash[:notice] = "Comments are successfully unlinked!"
@@ -142,6 +142,7 @@ class AuditLogsController < AuthenticatedController
   end
 
   private
+  
   def set_auditable
     auditable_class = Object.const_get params[:auditable_type]
     @auditable = auditable_class.find(params[:auditable_id])
