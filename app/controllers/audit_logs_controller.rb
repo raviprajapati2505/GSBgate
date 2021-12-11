@@ -1,8 +1,8 @@
 class AuditLogsController < AuthenticatedController
   require 'csv'
 
-  before_action :set_auditable, except: [:index, :export, :unlink_smc_comments_form, :unlink_smc_comments]
-  before_action :get_audit_log_associated_records, only: [:unlink_smc_comments_form, :unlink_smc_comments]
+  before_action :set_auditable, except: [:index, :export, :link_smc_comments_form, :link_smc_comments, :unlink_smc_comments_form, :unlink_smc_comments]
+  before_action :get_audit_log_associated_records, only: [:link_smc_comments_form, :link_smc_comments, :unlink_smc_comments_form, :unlink_smc_comments]
   load_and_authorize_resource
 
   def index
@@ -108,6 +108,38 @@ class AuditLogsController < AuthenticatedController
     end
   end
 
+  def link_smc_comments_form
+    @audit_logs_smc_ids = @audit_logs.pluck("auditable_id").uniq
+
+    respond_to do |format|
+      format.js { render layout: false }
+    end
+  end
+
+  def link_smc_comments
+    @certification_path = @scheme_mix&.certification_path
+    @project = @certification_path&.project
+
+    begin
+      if params[:scheme_mix_criteria].present? && @audit_log.present?
+        params[:scheme_mix_criteria].each do |smc_param|
+          new_smc_audit_log = @audit_log.dup
+          new_smc_audit_log.auditable_id = smc_param["scheme_mix_criterion_id"]&.to_i
+          new_smc_audit_log.user_id = current_user.id
+          new_smc_audit_log.attachment_file = @audit_log.attachment_file
+          new_smc_audit_log.save
+        end
+        flash[:notice] = "Comment is successfully linked!"
+      else
+        flash[:alert] = "Comment is failed to link!"
+      end
+    rescue StanderdError => error
+      flash[:alert] = error.message
+    end
+
+    redirect_back(fallback_location: project_certification_path_scheme_mix_scheme_mix_criterion_path(@project&.id, @certification_path&.id, @scheme_mix&.id, @auditable&.id))
+  end
+
   def unlink_smc_comments_form    
     respond_to do |format|
       format.js { render layout: false }
@@ -126,7 +158,7 @@ class AuditLogsController < AuthenticatedController
       if AuditLog.where("id IN (?)", audit_logs_ids).destroy_all
         flash[:notice] = "Comments are successfully unlinked!"
       else
-        flash[:alert] = "Comments are failed to unlink."
+        flash[:alert] = "Comments are failed to unlink!"
       end
     end
 
@@ -187,7 +219,7 @@ class AuditLogsController < AuthenticatedController
       project_id: @audit_log&.project_id,
       user_id: @audit_log&.user_id,
       certification_path_id: @audit_log&.certification_path_id
-    ).distinct
+    )
   end
 
   def set_session_filters(session_filters, new_filters)

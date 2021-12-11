@@ -1,9 +1,9 @@
 <div class="modal-dialog">
-  <%= bootstrap_form_for(audit_log, url: unlink_smc_audit_log_path(audit_log), layout: :inline, method: 'patch') do |f| %>
+  <%= bootstrap_form_for(audit_log, url: unlink_smc_audit_log_audit_logs_path(audit_log), layout: :inline, method: 'patch') do |f| %>
     <div class="modal-content">
       <div class="modal-header">
         <%= btn_close_modal %>
-        <h4 class="modal-title">Unlink Comments</h4>
+        <h4 class="modal-title">Unlink Comment</h4>
       </div>
       <div class="modal-body">
         <h4>Comment</h4>

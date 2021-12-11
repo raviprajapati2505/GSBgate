@@ -123,14 +123,16 @@ Rails.application.routes.draw do
   resources :audit_logs, only: [:index], path: :audit_logs do
     collection do
       get 'export'
+      get ':audit_log_id/link_smc_comments_form' => 'audit_logs#link_smc_comments_form', as: 'link_smc_audit_log_form'
+      post ':audit_log_id/link_smc_comments' => 'audit_logs#link_smc_comments', as: 'link_smc_audit_log'
+      get ':audit_log_id/unlink_smc_comments_form' => 'audit_logs#unlink_smc_comments_form', as: 'unlink_smc_audit_log_form'
+      patch ':audit_log_id/unlink_smc_comments' => 'audit_logs#unlink_smc_comments', as: 'unlink_smc_audit_log'
     end
   end
   get 'audit-logs/:auditable_type/:auditable_id' => 'audit_logs#auditable_index', as: 'auditable_index_logs'
   get 'audit-logs/:auditable_type/:auditable_id/comments' => 'audit_logs#auditable_index_comments', as: 'auditable_index_comments'
   get 'audit-logs/:auditable_type/:auditable_id/download-attachment/:id' => 'audit_logs#download_attachment', as: 'download_audit_log_attachment'
   post 'audit-logs/:auditable_type/:auditable_id' => 'audit_logs#auditable_create', as: 'auditable_create_audit_log'
-  get 'audit-logs/:audit_log_id' => 'audit_logs#unlink_smc_comments_form', as: 'unlink_smc_audit_log_form'
-  patch 'audit-logs/:audit_log_id' => 'audit_logs#unlink_smc_comments', as: 'unlink_smc_audit_log'
 
   get 'tasks' => 'tasks#index', as: 'tasks'
   get 'tasks/user/:user_id' => 'tasks#count', as: 'count_tasks'

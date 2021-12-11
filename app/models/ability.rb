@@ -229,6 +229,7 @@ class Ability
       can [:index, :auditable_index, :auditable_index_comments, :download_attachment, :export], AuditLog, project: project_with_user_in_gsas_trust_team
       can :auditable_create, AuditLog #TODO:, project: project_with_user_assigned
 
+      can [:link_smc_comments_form, :link_smc_comments],  AuditLog, auditable: {scheme_mix: {certification_path: {project: project_with_user_as_certification_manager}}}
       can [:unlink_smc_comments_form, :unlink_smc_comments],  AuditLog, auditable: {scheme_mix: {certification_path: {project: project_with_user_as_certification_manager}}}
 
       # Tasks controller
@@ -342,7 +343,7 @@ class Ability
       end
 
       # Audit log
-      can [:index, :auditable_index, :auditable_index_comments, :auditable_create, :unlink_smc_comments_form, :unlink_smc_comments, :download_attachment, :export], AuditLog
+      can [:index, :auditable_index, :auditable_index_comments, :auditable_create, :link_smc_comments_form, :link_smc_comments, :unlink_smc_comments_form, :unlink_smc_comments, :download_attachment, :export], AuditLog
 
       # Task
       can :read, Task

@@ -148,10 +148,12 @@ $(function () {
     // Audit log modal (toggle duplicate comment button visibility)
     $('body').on('mouseenter', '.audit-log-modal .user-comment', function() {
         $(this).find('.duplicate-comment-button').show();
+        $(this).find('.link-comments-button').show();
         $(this).find('.unlink-comments-button').show();
     });
     $('body').on('mouseleave', '.audit-log-modal .user-comment', function() {
         $(this).find('.duplicate-comment-button').hide();
+        $(this).find('.link-comments-button').hide();
         $(this).find('.unlink-comments-button').hide();
     });
 
