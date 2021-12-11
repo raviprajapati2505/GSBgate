@@ -376,6 +376,7 @@ class Ability
     elsif user.document_controller?
       can :read, :all
       can :download_signed_certificate, CertificationPath, certification_path_status: { id: CertificationPathStatus::CERTIFIED }
+      can [:download_location_plan, :download_site_plan, :download_design_brief, :download_project_narrative, :download_area_statement, :download_sustainability_features], Project
       cannot :read, AuditLog
     elsif user.system_admin?
       can :manage, :all
