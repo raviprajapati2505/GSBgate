@@ -1,5 +1,5 @@
 <%
-  if certification_path.construction_certificate_CM_2019?
+  if certification_path.construction?
     if certification_path.name == "Construction Certificate, 2019 - GSAS-CM Certificate"
       data_score = []
       certification_path_ids = @project.certification_paths.pluck(:id) - [certification_path.id]

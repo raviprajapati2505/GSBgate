@@ -513,6 +513,74 @@ module ApplicationHelper
         end
       end
     end
+
+    # to manipulate scores of  E1, W1, M1, M3 and MO1 in final cm certification.
+    if scheme_mix&.is_cm_final_certificate?
+      @total_scores = cm_revised_avg_scores
+    end
+
+    return @total_scores
+  end
+
+  def cm_revised_avg_scores
+    scheme_categories_names = ["Energy", "Water", "Materials", "Management & Operations", "Management And Operations"]
+
+    # CM Stage 3 records
+    cm_stage_1_certification_path = @project&.certification_paths.joins(:certificate).find_by("certificates.certification_type = :certification_type", certification_type: Certificate.certification_types["construction_certificate_stage1"])
+    cm_stage_2_certification_path = @project&.certification_paths.joins(:certificate).find_by("certificates.certification_type = :certification_type", certification_type: Certificate.certification_types["construction_certificate_stage2"])
+    cm_stage_3_certification_path = @project&.certification_paths.joins(:certificate).find_by("certificates.certification_type = :certification_type", certification_type: Certificate.certification_types["construction_certificate_stage3"])
+
+    scheme_categories_names.each do |scheme_category_name|
+      scheme_criteria_numbers = get_scheme_criteria_number(scheme_category_name)
+
+      scheme_criteria_numbers.each do |scheme_criteria_number|
+        cm_stage_1_required_smc_criterion = SchemeMixCriterion.joins([scheme_mix: [certification_path: :certificate]], scheme_criterion: :scheme_category).find_by("certification_paths.id = :certification_path_id AND scheme_categories.name = :category_name AND scheme_criteria.number = :scheme_criteria_number AND certificates.certification_type = :certification_type", certification_path_id: cm_stage_1_certification_path&.id, category_name: scheme_category_name, scheme_criteria_number: scheme_criteria_number, certification_type: Certificate.certification_types["construction_certificate_stage1"])
+
+        cm_stage_2_required_smc_criterion = SchemeMixCriterion.joins([scheme_mix: [certification_path: :certificate]], scheme_criterion: :scheme_category).find_by("certification_paths.id = :certification_path_id AND scheme_categories.name = :category_name AND scheme_criteria.number = :scheme_criteria_number AND certificates.certification_type = :certification_type", certification_path_id: cm_stage_2_certification_path&.id, category_name: scheme_category_name, scheme_criteria_number: scheme_criteria_number, certification_type: Certificate.certification_types["construction_certificate_stage2"])
+
+        cm_stage_3_required_smc_criterion = SchemeMixCriterion.joins([scheme_mix: [certification_path: :certificate]], scheme_criterion: :scheme_category).find_by("certification_paths.id = :certification_path_id AND scheme_categories.name = :category_name AND scheme_criteria.number = :scheme_criteria_number AND certificates.certification_type = :certification_type", certification_path_id: cm_stage_3_certification_path&.id, category_name: scheme_category_name, scheme_criteria_number: scheme_criteria_number, certification_type: Certificate.certification_types["construction_certificate_stage3"])
+
+        # stage 1 scores
+        s1_targeted_score = cm_stage_1_required_smc_criterion&.targeted_score
+        s1_submitted_score = cm_stage_1_required_smc_criterion&.submitted_score
+        s1_achieved_score = cm_stage_1_required_smc_criterion&.achieved_score
+
+        # stage 1 scores
+        s2_targeted_score = cm_stage_2_required_smc_criterion&.targeted_score
+        s2_submitted_score = cm_stage_2_required_smc_criterion&.submitted_score
+        s2_achieved_score = cm_stage_2_required_smc_criterion&.achieved_score
+
+        # stage 1 scores
+        s3_targeted_score = cm_stage_3_required_smc_criterion&.targeted_score
+        s3_submitted_score = cm_stage_3_required_smc_criterion&.submitted_score
+        s3_achieved_score = cm_stage_3_required_smc_criterion&.achieved_score
+
+
+        # get key with score key
+        keys_for_targeted_scores = @total_scores.select { |key, value| key.to_s.match(/targeted_score/) }
+        # keys_for_targeted_scores_b = keys_for_targeted_scores.select { |key, value| key.to_s.match(/targeted_score_b/) }
+        # keys_for_targeted_scores = keys_for_targeted_scores&.delete_if { |k| keys_for_targeted_scores_b&.key?(k) }
+
+        keys_for_submitted_scores = @total_scores.select { |key, value| key.to_s.match(/submitted_score/) }
+        # keys_for_submitted_scores_b = keys_for_submitted_scores.select { |key, value| key.to_s.match(/submitted_score_b/) }
+        # keys_for_submitted_scores = keys_for_submitted_scores&.delete_if { |k| keys_for_submitted_scores_b&.key?(k) }
+
+        keys_for_achieved_scores = @total_scores.select { |key, value| key.to_s.match(/achieved_score/) }
+        # keys_for_achieved_scores_b = keys_for_achieved_scores.select { |key, value| key.to_s.match(/achieved_score_b/) }
+        # keys_for_achieved_scores = keys_for_achieved_scores&.delete_if { |k| keys_for_achieved_scores_b&.key?(k) }
+
+
+        # change values
+        keys_for_targeted_scores.each { |k ,v| keys_for_targeted_scores[k] = (v.to_f + 2*s3_targeted_score.to_f - (s1_targeted_score.to_f + s2_targeted_score.to_f)) }
+        keys_for_submitted_scores.each { |k ,v| keys_for_submitted_scores[k] = (v.to_f + 2*s3_submitted_score.to_f - (s1_submitted_score.to_f + s2_submitted_score.to_f)) }
+        keys_for_achieved_scores.each { |k ,v| keys_for_achieved_scores[k] = (v.to_f + 2*s3_achieved_score.to_f - (s1_achieved_score.to_f + s2_achieved_score.to_f)) }
+
+        @total_scores.merge!(keys_for_targeted_scores)
+        @total_scores.merge!(keys_for_submitted_scores)
+        @total_scores.merge!(keys_for_achieved_scores)
+      end
+    end
+    
     return @total_scores
   end
 
@@ -593,5 +661,28 @@ module ApplicationHelper
 
   def find_rowspan(project_user_count = 0)
     project_user_count += 1
+  end
+
+  def get_scheme_criteria_number(category_name)
+    case category_name
+    when 'Energy'
+      # for E1
+      return [1]
+
+    when 'Water'
+      #for W1
+      return [1]
+
+    when 'Materials'
+      # for M1 & M3
+      return [1, 3]
+
+    when 'Management & Operations', 'Management And Operations'
+      # for MO1
+      return [1]
+      
+    else
+      return []
+    end
   end
 end

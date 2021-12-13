@@ -31,6 +31,14 @@ class Certificate < ApplicationRecord
     construction_type? && gsas_version == '2019'
   end
 
+  def final_construction?
+    construction_type? && certification_type == 'construction_certificate'
+  end
+
+  def construction?
+    certificate_type? && certificate_type == 'construction_type'
+  end
+
   def operations?
     name.include?('Operations')
   end

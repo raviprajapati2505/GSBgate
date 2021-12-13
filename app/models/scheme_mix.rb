@@ -32,6 +32,10 @@ class SchemeMix < ApplicationRecord
     certification_path.certificate.construction_2019?
   end
 
+  def is_cm_final_certificate?
+    certification_path&.certificate&.final_construction?
+  end
+
   def certified_area
     project = certification_path.project
     total_certified_area = project.certified_area

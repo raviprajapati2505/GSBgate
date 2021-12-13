@@ -3,7 +3,7 @@
 <% else %>
 <% 
   final_score = @certification_path.scores_in_certificate_points
-  if @certification_path.construction_certificate_CM_2019?
+  if @certification_path.construction?
     if @certification_path.name == "Construction Certificate, 2019 - GSAS-CM Certificate"
       data_score = []
       certification_path_ids = @project.certification_paths.pluck(:id) - [@certification_path.id]
@@ -250,7 +250,7 @@
             <tbody>
             <% @certification_path.project.certification_paths.with_certification_type([Certificate::certification_types[:construction_certificate_stage1], Certificate::certification_types[:construction_certificate_stage2], Certificate::certification_types[:construction_certificate_stage3]])&.order(:created_at)&.each do |certification_path| %>
               <%   certification_path_scores = certification_path.scores_in_certificate_points
-                  if certification_path.construction_certificate_CM_2019?
+                  if certification_path.construction?
                     scheme_mix = certification_path&.scheme_mixes&.first
                     certification_path_scores = score_calculation(scheme_mix) 
                   end

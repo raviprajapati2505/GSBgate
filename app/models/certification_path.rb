@@ -110,6 +110,10 @@ class CertificationPath < ApplicationRecord
     self.certification_path_status.name
   end
 
+  def construction?
+    certificate&.construction?
+  end
+
   def construction_certificate_CM_2019?
     certificate.construction_2019?
   end
