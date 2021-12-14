@@ -457,6 +457,8 @@ module ApplicationHelper
   end
 
   def score_calculation(scheme_mix)
+    @project ||= scheme_mix&.certification_path&.project
+
     # fetch all score records
     @scheme_mix_criteria_scores = scheme_mix&.scheme_mix_criteria_scores
     # check for criteria that violate their minimum_valid_score

@@ -207,46 +207,69 @@ module Effective
 
         col :total_achieved_score, as: :decimal, label: t('models.effective.datatables.projects_certification_paths.total_achieved_score.label'), visible: false, sql_column: '(%s)' % ProjectsCertificationPaths.query_score_in_certificate_points(:achieved_score), search: false do |rec|
           if !rec.total_achieved_score.nil?
-            if rec.certificate_gsas_version == 'v2.1 Issue 1.0' && rec.certificate_type == Certificate.certificate_types[:construction_type]
-              number_to_percentage(rec.total_achieved_score, precision: 1)
+            score = rec&.total_achieved_score
+            certification_path = CertificationPath.find(rec&.certification_path_id)
+
+            if certification_path&.certificate&.design_and_build?
+              score = 0 if score < 0
+            end
+
+            if certification_path&.construction? && !certification_path&.is_activating?
+              score_all = fetch_scores(certification_path)
+              score = score_all[:achieved_score_in_certificate_points]
+            end
+
+            if rec.certificate_gsas_version == 'v2.1 Issue 1.0' && certification_path&.construction?
+              number_to_percentage(score, precision: 1)
             else
-              score = rec&.total_achieved_score
-
-              certification_path = CertificationPath.find(rec&.certification_path_id)
-              if certification_path&.certificate&.construction_2019?
-                score_all = fetch_scores(certification_path)
-                score = score_all[:achieved_score_in_certificate_points]
-              end
-
-              if certification_path&.certificate&.design_and_build?
-                score = 0 if score < 0
-              end
-
               if !score.nil? && score > 3
                 3.0
               else
                 score.round(2)
               end
             end
+              
+            # if rec.certificate_gsas_version == 'v2.1 Issue 1.0' && rec.certificate_type == Certificate.certificate_types[:construction_type]
+            #   number_to_percentage(rec.total_achieved_score, precision: 1)
+            # else
+            #   score = rec&.total_achieved_score
+
+            #   certification_path = CertificationPath.find(rec&.certification_path_id)
+            #   if certification_path&.certificate&.construction_2019?
+            #     score_all = fetch_scores(certification_path)
+            #     score = score_all[:achieved_score_in_certificate_points]
+            #   end
+
+            #   if certification_path&.certificate&.design_and_build?
+            #     score = 0 if score < 0
+            #   end
+
+            #   if !score.nil? && score > 3
+            #     3.0
+            #   else
+            #     score.round(2)
+            #   end
+            # end
           end
         end
+
         col :total_submitted_score, as: :decimal, label: t('models.effective.datatables.projects_certification_paths.total_submitted_score.label'), visible: false, sql_column: '(%s)' % ProjectsCertificationPaths.query_score_in_certificate_points(:submitted_score), search: false do |rec|
           if !rec.total_submitted_score.nil?
-            if rec.certificate_gsas_version == 'v2.1 Issue 1.0' && rec.certificate_type == Certificate.certificate_types[:construction_type]
-              number_to_percentage(rec.total_submitted_score, precision: 1)
+            score = rec&.total_submitted_score
+            certification_path = CertificationPath.find(rec&.certification_path_id)
+
+            if certification_path&.certificate&.design_and_build?
+              score = 0 if score < 0
+            end
+
+            if certification_path&.construction? && !certification_path&.is_activating?
+              score_all = fetch_scores(certification_path)
+              score = score_all[:submitted_score_in_certificate_points]
+            end
+
+            if rec.certificate_gsas_version == 'v2.1 Issue 1.0' && certification_path&.construction?
+              number_to_percentage(score, precision: 1)
             else
-              score = rec&.total_submitted_score
-
-              certification_path = CertificationPath.find(rec&.certification_path_id)
-              if certification_path&.certificate&.construction_2019?
-                score_all = fetch_scores(certification_path)
-                score = score_all[:submitted_score_in_certificate_points]
-              end
-
-              if certification_path&.certificate&.design_and_build?
-                score = 0 if score < 0
-              end
-
               if !score.nil? && score > 3
                 3.0
               else
@@ -255,23 +278,25 @@ module Effective
             end
           end
         end
+
         col :total_targeted_score, as: :decimal, label: t('models.effective.datatables.projects_certification_paths.total_targeted_score.label'), visible: false, sql_column: '(%s)' % ProjectsCertificationPaths.query_score_in_certificate_points(:targeted_score), search: false do |rec|
           if !rec.total_targeted_score.nil?
-            if rec.certificate_gsas_version == 'v2.1 Issue 1.0' && rec.certificate_type == Certificate.certificate_types[:construction_type]
-              number_to_percentage(rec.total_targeted_score, precision: 1)
+
+            score = rec&.total_targeted_score
+            certification_path = CertificationPath.find(rec&.certification_path_id)
+
+            if certification_path&.certificate&.design_and_build?
+              score = 0 if score < 0
+            end
+
+            if certification_path&.construction? && !certification_path&.is_activating?
+              score_all = fetch_scores(certification_path)
+              score = score_all[:targeted_score_in_certificate_points]
+            end
+
+            if rec.certificate_gsas_version == 'v2.1 Issue 1.0' && certification_path&.construction?
+              number_to_percentage(score, precision: 1)
             else
-              score = rec&.total_targeted_score
-
-              certification_path = CertificationPath.find(rec&.certification_path_id)
-              if certification_path&.certificate&.construction_2019?
-                score_all = fetch_scores(certification_path)
-                score = score_all[:targeted_score_in_certificate_points]
-              end
-
-              if certification_path&.certificate&.design_and_build?
-                score = 0 if score < 0
-              end
-              
               if !score.nil? && score > 3
                 3.0
               else
