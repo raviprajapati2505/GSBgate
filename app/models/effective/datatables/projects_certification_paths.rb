@@ -8,6 +8,7 @@ module Effective
       def fetch_scores(certification_path)
         scheme_mix = certification_path&.scheme_mixes&.first
         score_all = score_calculation(scheme_mix)
+        score_all = final_cm_revised_avg_scores(certification_path, score_all)
         return score_all
       end
 

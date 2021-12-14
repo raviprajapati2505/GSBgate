@@ -86,6 +86,7 @@
                       @total_scores = scheme_mix_scores
                       if scheme_mix.CM_2019? || scheme_mix&.is_cm_final_certificate?
                         @total_scores = score_calculation(scheme_mix)
+                        @total_scores = final_cm_revised_avg_scores(certification_path, @total_scores)
                       end
                     %>
                     <%= render 'score/score_tabs', scores: @total_scores, element_id: "scheme_mix_#{scheme_mix.id}" %>

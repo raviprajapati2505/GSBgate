@@ -33,7 +33,7 @@ class SchemeMix < ApplicationRecord
   end
 
   def is_cm_final_certificate?
-    certification_path&.certificate&.final_construction?
+    certification_path&.final_construction?
   end
 
   def certified_area
