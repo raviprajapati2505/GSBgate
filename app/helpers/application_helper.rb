@@ -528,11 +528,10 @@ module ApplicationHelper
       scheme_categories_names = ["Energy", "Water", "Materials", "Management & Operations", "Management And Operations"]
       
       # CM Stage 3 records
+
       # scheme mix of all stages.
       cm_stage_1_sm = SchemeMix.joins(certification_path: [:project, :certificate]).find_by("certificates.certification_type = :certification_type AND projects.id = :project_id", certification_type: Certificate.certification_types["construction_certificate_stage1"], project_id: project&.id)
-
       cm_stage_2_sm = SchemeMix.joins(certification_path: [:project, :certificate]).find_by("certificates.certification_type = :certification_type AND projects.id = :project_id", certification_type: Certificate.certification_types["construction_certificate_stage2"], project_id: project&.id)
-
       cm_stage_3_sm = SchemeMix.joins(certification_path: [:project, :certificate]).find_by("certificates.certification_type = :certification_type AND projects.id = :project_id", certification_type: Certificate.certification_types["construction_certificate_stage3"], project_id: project&.id)
 
       # stages sm scores
@@ -551,12 +550,39 @@ module ApplicationHelper
           cm_stage_3_required_smc_criterion = SchemeMixCriterion.joins([scheme_mix: [certification_path: :certificate]], scheme_criterion: :scheme_category).find_by("scheme_mixes.id = :scheme_mix_id AND scheme_categories.name = :category_name AND scheme_criteria.number = :scheme_criteria_number AND certificates.certification_type = :certification_type", scheme_mix_id: cm_stage_3_sm&.id, category_name: scheme_category_name, scheme_criteria_number: scheme_criteria_number, certification_type: Certificate.certification_types["construction_certificate_stage3"])
 
           if (cm_stage_1_required_smc_criterion.present? && cm_stage_2_required_smc_criterion.present? && cm_stage_3_required_smc_criterion.present?)
+
             cm_stage_1_smc_scores = cm_stage_1_sm_scores.find{|item| item[:scheme_mix_criteria_id] == cm_stage_1_required_smc_criterion.id }
             cm_stage_2_smc_scores = cm_stage_2_sm_scores.find{|item| item[:scheme_mix_criteria_id] == cm_stage_2_required_smc_criterion.id }
             cm_stage_3_smc_scores = cm_stage_3_sm_scores.find{|item| item[:scheme_mix_criteria_id] == cm_stage_3_required_smc_criterion.id }
 
-            total_scores.each do |k, v|
-              total_scores[k] = v.to_f + (2*cm_stage_3_smc_scores[k].to_f - (cm_stage_2_smc_scores[k].to_f + cm_stage_3_smc_scores[k].to_f))
+            if scheme_category_name == 'Water' && scheme_criteria_number == 1 && certification_path.construction_certificate_CM_2019?
+           
+              manipulated_cm_stage_3_smc_scores = cm_2019_w1_scores_manipulation(cm_stage_3_required_smc_criterion, cm_stage_3_sm_scores)
+
+              total_scores.each do |k, v|
+                total_scores[k] = v.to_f - (cm_stage_3_smc_scores[k].to_f + cm_stage_2_smc_scores[k].to_f + cm_stage_1_smc_scores[k].to_f)
+              end
+
+              cm_stage_1_smc_scores.each do |k, v|
+                cm_stage_1_smc_scores[k] = manipulated_cm_stage_3_smc_scores[k].to_f
+              end
+
+              cm_stage_2_smc_scores.each do |k, v|
+                cm_stage_2_smc_scores[k] = manipulated_cm_stage_3_smc_scores[k].to_f
+              end
+
+              cm_stage_3_smc_scores.each do |k, v|
+                cm_stage_3_smc_scores[k] = manipulated_cm_stage_3_smc_scores[k].to_f
+              end
+
+              total_scores.each do |k, v|
+                total_scores[k] = v.to_f + (3*cm_stage_1_smc_scores[k].to_f)
+              end
+
+            else
+              total_scores.each do |k, v|
+                total_scores[k] = v.to_f + (2*cm_stage_3_smc_scores[k].to_f - (cm_stage_2_smc_scores[k].to_f + cm_stage_1_smc_scores[k].to_f))
+              end
             end
           end
         end
@@ -567,8 +593,7 @@ module ApplicationHelper
   end
 
   def calculate_average(scheme_mix_criteria, scheme_mix_criteria_score, smc_weight_a, smc_weight_b)
-    match_a = scheme_mix_criteria_score.select { |key, value| key.to_s.match(/score_a/) }
-    match_b = scheme_mix_criteria_score.select { |key, value| key.to_s.match(/score_b/) }
+
     match_total = {}
     smc_weight_a = (smc_weight_a == nil || smc_weight_a == 0) ? 1 : smc_weight_a
     smc_weight_b = (smc_weight_b == nil || smc_weight_b == 0) ? 1 : smc_weight_b
@@ -643,6 +668,17 @@ module ApplicationHelper
 
   def find_rowspan(project_user_count = 0)
     project_user_count += 1
+  end
+
+  def cm_2019_w1_scores_manipulation(scheme_mix_criterion, cm_2019_w1_scores)
+    scheme_mix_criteria_score_w = cm_2019_w1_scores.find{|item| item[:scheme_mix_criteria_id] == scheme_mix_criterion.id }
+
+    smc_weight_a = scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[0])
+    smc_weight_b = scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[1])
+
+    scheme_mix_criteria_score_for_w1 = calculate_average(scheme_mix_criterion, scheme_mix_criteria_score_w, smc_weight_a, smc_weight_b)
+
+    return scheme_mix_criteria_score_for_w1
   end
 
   def get_scheme_criteria_number(category_name)
