@@ -214,6 +214,14 @@ class Project < ApplicationRecord
     certificate_type == Certificate.certificate_types[:design_type]
   end
 
+  def loc_projects_users
+    projects_users&.where(certification_team_type: "Letter of Conformance")
+  end
+
+  def fdc_projects_users
+    projects_users&.where(certification_team_type: "Final Design Certificate")
+  end
+
   def team_table_heading
     case certificate_type
     when 1

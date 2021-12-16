@@ -114,7 +114,7 @@ module Taskable
   end
 
   def handle_created_certification_path
-    unless self.project.certification_manager_assigned?
+    unless self.certification_manager_assigned?
       # Create system admin task to assign a certification manager
       Task.create(taskable: self.project,
                  task_description_id: SYS_ADMIN_ASSIGN,
@@ -123,7 +123,7 @@ module Taskable
     end
     if (self.development_type.mixable? && (self.main_scheme_mix_selected? == false))
       # Create system admin task to select a main scheme
-      Task.create(taskable: self,
+      Task.find_or_create_by(taskable: self,
                   task_description_id: SYS_ADMIN_SELECT_MAIN_SCHEME,
                   application_role: User.roles[:gsas_trust_admin],
                   project: self.project,
@@ -131,7 +131,7 @@ module Taskable
     end
     if self.certificate.construction_certificate_stage1?
       # Create CGP project manager task to upload CMP (in case of construction stage 1)
-      Task.create(taskable: self,
+      Task.find_or_create_by(taskable: self,
                   task_description_id: PROJ_MNGR_UPLOAD_CMP,
                   project_role: ProjectsUser.roles[:cgp_project_manager],
                   project: self.project,
@@ -139,14 +139,14 @@ module Taskable
     end
     unless self.certificate.construction_certificate?
       # Create system admin task to advance the certification path status
-      Task.create(taskable: self,
+      Task.find_or_create_by(taskable: self,
                  task_description_id: SYS_ADMIN_REG_APPROVE,
                  application_role: User.roles[:gsas_trust_admin],
                  project: self.project,
                  certification_path: self)
     else
       # Create GORD top manager task to approve
-      Task.create(taskable: self,
+      Task.find_or_create_by(taskable: self,
                   task_description_id: GSAS_TRUST_TOP_MNGR_APPROVE,
                   application_role: User.roles[:gsas_trust_top_manager],
                   project: self.project,
@@ -159,7 +159,7 @@ module Taskable
   def handle_created_scheme_mix_criteria_document
     # Create project manager task to approve/reject document
     if Task.find_by(taskable: self.scheme_mix_criterion, task_description_id: PROJ_MNGR_DOC_APPROVE).nil?
-      Task.create(taskable: self.scheme_mix_criterion,
+      Task.find_or_create_by(taskable: self.scheme_mix_criterion,
                   task_description_id: PROJ_MNGR_DOC_APPROVE,
                   project_role: ProjectsUser.roles[:cgp_project_manager],
                   project: self.scheme_mix_criterion.scheme_mix.certification_path.project,

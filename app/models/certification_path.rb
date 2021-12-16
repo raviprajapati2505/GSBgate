@@ -114,6 +114,27 @@ class CertificationPath < ApplicationRecord
     certificate.construction_2019?
   end
 
+  def certification_manager_assigned?
+    projects_users =  if project.design_and_build?
+                        if is_design_loc?
+                          project&.loc_projects_users
+                        elsif is_design_fdc?
+                          project&.fdc_projects_users
+                        else
+                          project&.projects_users
+                        end
+                      else
+                        project&.projects_users
+                      end
+
+    projects_users.each do |projects_user|
+      if projects_user.certification_manager?
+        return true
+      end
+    end
+    return false
+  end
+
   def scheme_names
     if main_scheme_mix_selected?
       main_scheme_mix.name
@@ -213,7 +234,7 @@ class CertificationPath < ApplicationRecord
       case certification_path_status_id
       when CertificationPathStatus::ACTIVATING
         # TODO certification path expiry date
-        unless project.certification_manager_assigned?
+        unless certification_manager_assigned?
           todos << 'A certification manager must be assigned to the project.'
         end
         if development_type.mixable? && (main_scheme_mix_selected? == false)
@@ -274,7 +295,7 @@ class CertificationPath < ApplicationRecord
     case certification_path_status_id
     when CertificationPathStatus::ACTIVATING
       # TODO certification path expiry date
-      unless project.certification_manager_assigned?
+      unless certification_manager_assigned?
         todos << 'A certification manager must be assigned to the project.'
       end
       if development_type.mixable? && (main_scheme_mix_selected? == false)

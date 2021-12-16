@@ -58,7 +58,7 @@ namespace :gsas do
       end
       certification_paths = certification_paths.page(page).per(PAGE_SIZE)
       certification_paths.each do |certification_path|
-        Task.create(taskable: certification_path,
+        Task.find_or_create_by(taskable: certification_path,
                     task_description_id: Taskable::SYS_ADMIN_DURATION,
                     application_role: User.roles[:gsas_trust_admin],
                     project: certification_path.project,
@@ -138,7 +138,7 @@ namespace :gsas do
       end
       requirements = requirements.page(page).per(PAGE_SIZE)
       requirements.each do |requirement|
-        Task.create(taskable: requirement,
+        Task.find_or_create_by(taskable: requirement,
                     task_description_id: Taskable::PROJ_MNGR_OVERDUE,
                     project_role: ProjectsUser.roles[:cgp_project_manager],
                     project: requirement.scheme_mix_criteria.first.scheme_mix.certification_path.project,
@@ -160,7 +160,7 @@ namespace :gsas do
       end
       criteria = criteria.page(page).per(PAGE_SIZE)
       criteria.each do |criterion|
-        Task.create(taskable: criterion,
+        Task.find_or_create_by(taskable: criterion,
                     task_description_id: Taskable::CERT_MNGR_OVERDUE,
                     project_role: ProjectsUser.roles[:certification_manager],
                     project: criterion.scheme_mix.certification_path.project,
@@ -181,7 +181,7 @@ namespace :gsas do
       end
       criteria = criteria.page(page).per(PAGE_SIZE)
       criteria.each do |criterion|
-        Task.create(taskable: criterion,
+        Task.find_or_create_by(taskable: criterion,
                     task_description_id: Taskable::CERT_MNGR_OVERDUE,
                     project_role: ProjectsUser.roles[:certification_manager],
                     project: criterion.scheme_mix.certification_path.project,
@@ -204,7 +204,7 @@ namespace :gsas do
       end
       criteria = criteria.page(page).per(PAGE_SIZE)
       criteria.each do |criterion|
-        Task.create(taskable: criterion,
+        Task.find_or_create_by(taskable: criterion,
                     task_description_id: Taskable::CERT_MNGR_OVERDUE,
                     project_role: ProjectsUser.roles[:certification_manager],
                     project: criterion.scheme_mix.certification_path.project,
