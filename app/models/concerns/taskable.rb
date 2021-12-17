@@ -845,7 +845,9 @@ module Taskable
         end
       # A certification manager is unassigned from project
       when ProjectsUser.roles[:certification_manager]
-        unless self.project.certification_manager_assigned?
+        certification_manager = self.project&.projects_users&.where(certification_team_type: self.certification_team_type, role: ProjectsUser.roles[:certification_manager])
+       
+        unless certification_manager.present?
           # Create system admin task to assign a certification manager
           Task.create(taskable: self.project,
                      task_description_id: SYS_ADMIN_ASSIGN,
