@@ -135,6 +135,22 @@ class CertificationPath < ApplicationRecord
     return false
   end
 
+  def projects_users_certification_team_type
+    certification_team_type = if project.design_and_build?
+                                if is_design_loc?
+                                  ProjectsUser.certification_team_types["Letter of Conformance"]
+                                elsif is_design_fdc?
+                                  ProjectsUser.certification_team_types["Final Design Certificate"]
+                                else
+                                  ProjectsUser.certification_team_types["Other"]
+                                end
+                              else
+                                ProjectsUser.certification_team_types["Other"]
+                              end
+
+    return certification_team_type
+  end
+
   def scheme_names
     if main_scheme_mix_selected?
       main_scheme_mix.name

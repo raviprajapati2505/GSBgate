@@ -563,7 +563,7 @@
                     <% if can?(:assign_certifier, @scheme_mix_criterion) %>
                         <div class="row">
                             <div class="col-md-7">
-                                <% users = User.authorized_for_project(@project).with_gsas_trust_team_role %>
+                                <% users = User.authorized_for_project(@project, @certification_path).with_gsas_trust_team_role %>
                                 <% user_id = @scheme_mix_criterion.certifier.id if @scheme_mix_criterion.certifier.present? %>
                                 <%= f.select :user_id, options_for_select(users.map { |k| [k.full_name, k.id]}, user_id), {label: 'Responsibility', include_blank: ''}, class: 'select2-certifier' %>
                             </div>

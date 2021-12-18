@@ -50,8 +50,8 @@ class User < ApplicationRecord
   #   where(role: 1) & not_owning_project(project) & not_authorized_for_project(project)
   # }
 
-  scope :authorized_for_project, ->(project) {
-    joins(:projects_users).where(projects_users: {project_id: project.id})
+  scope :authorized_for_project, ->(project, certification_path) {
+    joins(:projects_users).where(projects_users: {project_id: project.id, certification_team_type: certification_path&.projects_users_certification_team_type})
   }
 
   scope :with_project_team_role, -> {
@@ -62,8 +62,8 @@ class User < ApplicationRecord
     joins(:projects_users).where(projects_users: {role: [ProjectsUser.roles[:certifier], ProjectsUser.roles[:certification_manager]]})
   }
 
-  scope :with_cgp_project_manager_role_for_project, ->(project) {
-    joins(:projects_users).where(projects_users: {project_id: project.id, role: ProjectsUser.roles[:cgp_project_manager]})
+  scope :with_cgp_project_manager_role_for_project, ->(project, certification_path) {
+    joins(:projects_users).where(projects_users: {project_id: project.id, certification_team_type: certification_path&.projects_users_certification_team_type, role: ProjectsUser.roles[:cgp_project_manager]})
   }
 
   def full_name

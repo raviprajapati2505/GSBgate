@@ -6,7 +6,7 @@ class LinkmeStrategy < BaseStrategy
       user_data = params.fetch('user', {})
 
       # Create a linkme.qa service object
-      linkme = LinkmeService.new
+      linkme ||= ::LinkmeService.new
 
       # Authenticate the user
       if (linkme.auth_authenticate(user_data['username'], user_data['password']))

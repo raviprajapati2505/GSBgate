@@ -203,7 +203,7 @@ class DigestMailer < ApplicationMailer
   def certification_expires_in_near_future_email(certification_path)
     @certification_path = certification_path
 
-    User.with_cgp_project_manager_role_for_project(@certification_path.project).each do |user|
+    User.with_cgp_project_manager_role_for_project(@certification_path.project, @certification_path).each do |user|
       mail(to: user.email, subject: "GSASgate - certification #{@certification_path.name} for #{@certification_path.project.name} is going to expire on #{@certification_path.expires_at.strftime(t('date.formats.short'))}")
     end
   end
