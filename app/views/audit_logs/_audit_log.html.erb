@@ -22,16 +22,21 @@
                   <%= ikoen('lock', size: :small, title: 'GSAS trust internal') %>
                 <% end %>
                 <%= audit_log.user_comment %>
-                <% if @auditable.class.name == 'SchemeMixCriterion' && can?(:link_smc_comments_form, audit_log) && can?(:link_smc_comments, audit_log) %>
-                  <%= link_to link_smc_audit_log_form_audit_logs_path(audit_log&.id), remote: true, class: "btn btn-sm btn-default pull-right link-comments-button", style: "display:none;" do %>
-                    <%= ikoen('link', size: :small, title: 'Link comment from other criteria') %>
+
+                <% if @auditable.class.name == 'SchemeMixCriterion' && audit_log&.user_id == current_user&.id %>
+                  <% if can?(:link_smc_comments_form, audit_log) && can?(:link_smc_comments, audit_log) %>
+                    <%= link_to link_smc_audit_log_form_audit_logs_path(audit_log&.id), remote: true, class: "btn btn-sm btn-default pull-right link-comments-button", style: "display:none;" do %>
+                      <%= ikoen('link', size: :small, title: 'Link comment from other criteria') %>
+                    <% end %>
+                  <% end %>
+
+                  <% if can?(:unlink_smc_comments_form, audit_log) && can?(:unlink_smc_comments, audit_log) %>
+                    <%= link_to unlink_smc_audit_log_form_audit_logs_path(audit_log&.id), remote: true, class: "btn btn-sm btn-default pull-right unlink-comments-button", style: "display:none;" do %>
+                      <%= ikoen('chain-broken', size: :small, title: 'Unlink comment from other criteria') %>
+                    <% end %>
                   <% end %>
                 <% end %>
-                <% if @auditable.class.name == 'SchemeMixCriterion' && can?(:unlink_smc_comments_form, audit_log) && can?(:unlink_smc_comments, audit_log) %>
-                  <%= link_to unlink_smc_audit_log_form_audit_logs_path(audit_log&.id), remote: true, class: "btn btn-sm btn-default pull-right unlink-comments-button", style: "display:none;" do %>
-                    <%= ikoen('chain-broken', size: :small, title: 'Unlink comment from other criteria') %>
-                  <% end %>
-                <% end %>
+
                 <a href="#" class="btn btn-sm btn-default pull-right duplicate-comment-button" data-comment="<%= audit_log.user_comment %>" style="display:none;">
                   <%= ikoen('copy', size: :small, title: 'Duplicate (and modify) this comment') %>
                 </a>
