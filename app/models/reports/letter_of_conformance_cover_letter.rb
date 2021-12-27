@@ -55,22 +55,6 @@ Congratulations once again for partaking in this noble endeavor, and together le
 
     draw_headers
 
-    # draw_page do
-    #   draw_heading_date
-    #   newline(2)
-    #   draw_heading_addressee
-    #   newline
-    #   draw_heading_addressee_copy
-    #   newline
-    #   draw_heading_subject
-    #   newline
-    #   draw_heading_project
-    #   newline(2)
-    #   draw_content
-    #   draw_signature
-    # end
-    # start_new_page
-
     total_category_scores = {}
     @certification_path.scheme_mixes.each do |scheme_mix|
       # Fetch all scheme mix criteria score records
@@ -89,12 +73,6 @@ Congratulations once again for partaking in this noble endeavor, and together le
       end
     end
 
-    # draw_page do
-    #   draw_certificate_table(total_category_scores)
-    #   newline(3)
-    #   draw_category_graph(total_category_scores)
-    # end
-
     draw_page do
       newline(2)
       draw_certificate_header
@@ -103,36 +81,28 @@ Congratulations once again for partaking in this noble endeavor, and together le
       newline(2)
       draw_paragraph1
       newline(2)
-      draw_category_graph(total_category_scores)
+      if @certification_path.certificate.only_name == 'Letter of Conformance'
+        newline(4)
+      end
+      span(@document.bounds.right - CONTENT_PADDING, :position => :center) do
+        draw_project_info
+      end
       newline(2)
       draw_scoring_summary
-    end
-
-    start_new_page
-    draw_page do
+      newline(2)
+      draw_category_graph(total_category_scores)
+      if @certification_path.certificate.only_name == 'Letter of Conformance'
+       start_new_page
+      end
       draw_score_graph
-    end
 
-    # table_models = [@certification_path] + @certification_path.scheme_mixes.to_a
-    #
-    # while table_models.any?
-    #   start_new_page
-    #   draw_page do
-    #     (1..2).each do |i|
-    #       newline(2) if i == 2
-    #       if table_models.any?
-    #         table_model = table_models.shift
-    #         table_model.is_a?(SchemeMix) ? draw_category_table(table_model) : draw_scheme_mix_table(table_model)
-    #       end
-    #     end
-    #   end
-    # end
+    end
 
     draw_footers
   end
 
   def draw_certificate_header
-    text "GSAS Design and Build Provisional Certificate \n #{certificate_name(@certification_path.certificate.only_name)}", size: 15, color: MAIN_COLOR, align: :center, font: 'Helvetica'
+    text "#{certificate_name(@certification_path)}", size: 15, color: MAIN_COLOR, align: :center, font: 'Helvetica'
   end
 
   def draw_certificate_info_table
@@ -160,11 +130,15 @@ Congratulations once again for partaking in this noble endeavor, and together le
   end
 
   def draw_paragraph1
-    text = "This is to notify that GSAS Trust has assessed the project based on the submitted information. The project is found eligible to receive the Provisional GSAS-D&B Certificate in the form of \"Letter of Conformance (LOC), achieving the following:\" \n"
+    name = @certification_path.certificate.only_name
 
-    styled_text("<div style='font-size: 10; line-height: 9; color: 000000;'>#{text}</div>")
+    if name == 'Letter of Conformance'
+      text = "This is to notify that GSAS Trust has assessed the project based on the submitted information. The project is found eligible to receive the Provisional GSAS-D&B Certificate in the form of \"Letter of Conformance (LOC), achieving the following:\" \n"
 
-    newline(2)
+      styled_text("<div style='font-size: 10; line-height: 9; color: 000000;'>#{text}</div>")
+
+      newline(2)
+    end
 
     # Prepare table data
     data = []
@@ -178,24 +152,26 @@ Congratulations once again for partaking in this noble endeavor, and together le
 
     # Output table
     draw_table(data, true, 'score_table')
-    newline(2)
 
-    text = "The summary of the obtained rating is attached herewith. \n\n This letter is only the predecessor towards achieving the final GSAS-D&B Certificate and should not be considered as the final certificate. The project should satisfy during the construction stage all the requirements of <b>Conformance to Design Audit(CDA)</b> which is the pre-requisite for the final GSAS-D&B Certificate as indicated in GSAS Technical Guide, <a>www.gord.qa</a> \n"
-    styled_text("<div style='font-size: 10; line-height: 9'>#{text}</div>")
+    if name == 'Letter of Conformance'
+      newline
+      text = "The summary of the obtained rating is attached herewith. \n\n This letter is only the predecessor towards achieving the final GSAS-D&B Certificate and should not be considered as the final certificate. The project should satisfy during the construction stage all the requirements of <b>Conformance to Design Audit(CDA)</b> which is the pre-requisite for the final GSAS-D&B Certificate as indicated in GSAS Technical Guide, <a>www.gord.qa</a> \n"
+      styled_text("<div style='font-size: 10; line-height: 9'>#{text}</div>")
 
-    text = "In the event of any future changes applied to the criteria pertaining to the issued LOC, the changes are required to be re-assessed once again."
-    styled_text("<div style='font-size: 10; line-height: 9'>#{text}</div>")
+      text = "In the event of any future changes applied to the criteria pertaining to the issued LOC, the changes are required to be re-assessed once again."
+      styled_text("<div style='font-size: 10; line-height: 9'>#{text}</div>")
 
-    text = "Finally, Congratulations for partaking in this nobel endeavor, and together let us build a healthy and a sustainable future."
-    styled_text("<div style='font-size: 10; line-height: 9;'>#{text}</div>")
+      text = "Finally, Congratulations for partaking in this nobel endeavor, and together let us build a healthy and a sustainable future."
+      styled_text("<div style='font-size: 10; line-height: 9;'>#{text}</div>")
 
-    styled_text("<div style='font-size: 10; line-height: 9;'>Yours sincerely, \n</div>")
+      styled_text("<div style='font-size: 10; line-height: 9;'>Yours sincerely, \n</div>")
 
-    image image_path('green_star.png'), width: 50
+      # image image_path('green_star.png'), width: 50
 
-    styled_text("<div style='font-size: 10; color: #{MAIN_COLOR}; font-style: bold;'>\n Dr. Yousef Alhorr</div>")
+      styled_text("<div style='font-size: 10; color: #{MAIN_COLOR}; font-style: bold;'>\n Dr. Yousef Alhorr</div>")
 
-    styled_text("<div style='font-size: 10; color: 000000; font-style: bold;'>\n Founding Chairman \n</div>")
+      styled_text("<div style='font-size: 10; color: 000000; font-style: bold;'>\n Founding Chairman \n</div>")
+    end
 
   end
 
@@ -356,9 +332,6 @@ Congratulations once again for partaking in this noble endeavor, and together le
   end
 
   def draw_category_graph(total_category_scores)
-    newline(4)
-    draw_project_info
-
     chart_generator = ChartGeneratorService.new
     barchart_config = {
       type: 'horizontalBar',
@@ -390,7 +363,7 @@ Congratulations once again for partaking in this noble endeavor, and together le
       image chart_generator.generate_chart(barchart_config, 600, 400).path, width: 450
     rescue LinkmeService::ApiError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, Errno::ECONNREFUSED,
            EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError
-      # text 'An error occurred when creating the chart.'
+      text 'An error occurred when creating the chart.'
     end
 
     newline
@@ -483,7 +456,7 @@ Congratulations once again for partaking in this noble endeavor, and together le
       }
     }
 
-    text 'Level Achieved', size: 14, color: '36A2EB', style: :bold, align: :left
+    # text 'Level Achieved', size: 14, color: '36A2EB', style: :bold, align: :left
 
     begin
       image chart_generator.generate_chart(barchart_config, 700, 450).path, width: 450
@@ -615,12 +588,7 @@ Congratulations once again for partaking in this noble endeavor, and together le
   # end
 
   def draw_table(data, has_level_achieved_footer = false, type)
-    # table(data, width: @document.bounds.right - CONTENT_PADDING) do
-    #   # Set default cell style
-    #   cells.align = :left
-    #   cells.borders = []
-    #   cells.padding = 0
-    #   cells.border_width = 0.5
+    
 
       if type == 'basic_table'
 
@@ -751,5 +719,4 @@ Congratulations once again for partaking in this noble endeavor, and together le
 
       end
     end
-  # end
 end
