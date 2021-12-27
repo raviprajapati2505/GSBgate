@@ -83,10 +83,17 @@ Congratulations once again for partaking in this noble endeavor, and together le
       newline(2)
       if @certification_path.certificate.only_name == 'Letter of Conformance'
         newline(4)
+        span(@document.bounds.right - CONTENT_PADDING, :position => :center) do
+          draw_project_info
+        end
+      else
+        start_new_page
+        newline
+        span(@document.bounds.right - CONTENT_PADDING, :position => :center) do
+          draw_project_info
+        end
       end
-      span(@document.bounds.right - CONTENT_PADDING, :position => :center) do
-        draw_project_info
-      end
+      
       newline(2)
       draw_scoring_summary
       newline(2)
@@ -209,7 +216,7 @@ Congratulations once again for partaking in this noble endeavor, and together le
     end
 
     # Add footer data to the table
-    data.append(["Rating Achieved", "3 Stars"])
+    data.append(["Rating Achieved", @stars])
 
     # Output table
     draw_table(data, true, 'scoring_summary_table')
@@ -258,9 +265,9 @@ Congratulations once again for partaking in this noble endeavor, and together le
 
         styled_text("<div style='font-size: 7; text-align: left'>#{text}#{text2}#{text3}</div>")
       end
-      bounding_box([@document.bounds.right - 50, @document.bounds.bottom + 100], width: 50, height: HEADER_HEIGHT) do
-        image image_path(GSAS_LOGO), width: 50
-      end
+      # bounding_box([@document.bounds.right - 50, @document.bounds.bottom + 100], width: 50, height: HEADER_HEIGHT) do
+      #   image image_path(GSAS_LOGO), width: 50
+      # end
     end
   end
 

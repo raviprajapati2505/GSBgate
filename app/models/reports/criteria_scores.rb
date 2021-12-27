@@ -2,7 +2,7 @@
 class Reports::CriteriaScores < Reports::BaseReport
   include ActionView::Helpers::NumberHelper
   include ActionView::Helpers::TranslationHelper
-  
+
   HEADER_HEIGHT = 70
   FOOTER_HEIGHT = 20
   CONTENT_PADDING = 20
@@ -151,9 +151,9 @@ class Reports::CriteriaScores < Reports::BaseReport
         end
 
         # GSAS LOGO
-        bounding_box([@document.bounds.right - 110, @document.bounds.bottom + 150], width: 50, height: 100) do
-          image image_path(GSAS_LOGO), width: 50
-        end
+        # bounding_box([@document.bounds.right - 110, @document.bounds.bottom + 150], width: 50, height: 100) do
+        #   image image_path(GSAS_LOGO), width: 50
+        # end
 
         # URL
         bounding_box([@document.bounds.right - 110, @document.bounds.bottom + 50], width: 70, height: HEADER_HEIGHT) do
@@ -162,8 +162,8 @@ class Reports::CriteriaScores < Reports::BaseReport
 
 
         # Thin line
-        self.line_width = 1
-        stroke_horizontal_line bounds.left, bounds.right, at: 30
+        # self.line_width = 1
+        # stroke_horizontal_line bounds.left, bounds.right, at: 30
       end
     end
   end
