@@ -95,7 +95,7 @@ Congratulations once again for partaking in this noble endeavor, and together le
       end
       
       newline(2)
-      draw_scoring_summary
+      draw_scoring_summary(total_category_scores)
       newline(2)
       draw_category_graph(total_category_scores)
       if @certification_path.certificate.only_name == 'Letter of Conformance'
@@ -195,24 +195,16 @@ Congratulations once again for partaking in this noble endeavor, and together le
     draw_table(data, true, 'project_info_table')
   end
 
-  def draw_scoring_summary
+  def draw_scoring_summary(total_category_scores)
     # Prepare table data
     data = []
 
     # Add the header rows to the table
     data.append(["Category", "Scenario 1 - Overall Score"])
 
-    @certification_path.scheme_mixes.each do |scheme_mix|
-      # Fetch all scheme mix criteria score records
-      scheme_mix_criteria_scores = scheme_mix.scheme_mix_criteria_scores
-
-      # Group the scores by category
-      scheme_mix_criteria_scores_by_category = scheme_mix_criteria_scores.group_by { |item| item[:scheme_category_id] }
-
-      scheme_mix.scheme_categories.each do |category|
-        #Add data to table
-        data.append([category.name, "0.109"])
-      end
+    # Add the category rows to the table
+    total_category_scores.each do |category_code, category|
+      data.append([category[:name], number_with_precision(category[:achieved_score], precision: 3)])
     end
 
     # Add footer data to the table
@@ -223,7 +215,6 @@ Congratulations once again for partaking in this noble endeavor, and together le
     newline(2)
     text = "Figure 1: Scoring Summary"
     styled_text("<div style='font-size: 12; line-height: 9; color: 000000; text-align: center; padding-top: 10px;'><b>#{text}</b></div>")
-    
   end
 
   def draw_headers
