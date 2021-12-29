@@ -555,12 +555,13 @@ module ApplicationHelper
             cm_stage_2_smc_scores = cm_stage_2_sm_scores.find{|item| item[:scheme_mix_criteria_id] == cm_stage_2_required_smc_criterion.id }
             cm_stage_3_smc_scores = cm_stage_3_sm_scores.find{|item| item[:scheme_mix_criteria_id] == cm_stage_3_required_smc_criterion.id }
 
+            keys_of_required_scores = total_scores&.select { |key, value| key.to_s.match(/achieved_score/) }.keys
+
             if scheme_category_name == 'Water' && scheme_criteria_number == 1 && certification_path.construction_certificate_CM_2019?
-           
               manipulated_cm_stage_3_smc_scores = cm_2019_w1_scores_manipulation(cm_stage_3_required_smc_criterion, cm_stage_3_sm_scores)
 
-              total_scores.each do |k, v|
-                total_scores[k] = v.to_f - (cm_stage_3_smc_scores[k].to_f + cm_stage_2_smc_scores[k].to_f + cm_stage_1_smc_scores[k].to_f)
+              keys_of_required_scores.each do |k|
+                total_scores[k] = total_scores[k].to_f - (cm_stage_3_smc_scores[k].to_f + cm_stage_2_smc_scores[k].to_f + cm_stage_1_smc_scores[k].to_f) / 3 if total_scores[k].present?
               end
 
               cm_stage_1_smc_scores.each do |k, v|
@@ -575,13 +576,13 @@ module ApplicationHelper
                 cm_stage_3_smc_scores[k] = manipulated_cm_stage_3_smc_scores[k].to_f
               end
 
-              total_scores.each do |k, v|
-                total_scores[k] = v.to_f + (3*cm_stage_1_smc_scores[k].to_f)
+              keys_of_required_scores.each do |k|
+                total_scores[k] = total_scores[k].to_f + cm_stage_1_smc_scores[k].to_f if total_scores[k].present?
               end
-
             else
-              total_scores.each do |k, v|
-                total_scores[k] = v.to_f + (2*cm_stage_3_smc_scores[k].to_f - (cm_stage_2_smc_scores[k].to_f + cm_stage_1_smc_scores[k].to_f))
+             
+              keys_of_required_scores.each do |k|
+                total_scores[k] = total_scores[k].to_f + (2*cm_stage_3_smc_scores[k].to_f - (cm_stage_2_smc_scores[k].to_f + cm_stage_1_smc_scores[k].to_f)) / 3 if total_scores[k].present?
               end
             end
           end
