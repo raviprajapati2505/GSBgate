@@ -587,10 +587,6 @@ module ApplicationHelper
     end
   end
 
-  def last_created_project_date
-    Project.find(1686).created_at
-  end
-
   def projects_users_count_with_role(project_users, role)
     project_users&.with_role(role)&.count
   end
