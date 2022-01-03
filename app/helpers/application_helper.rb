@@ -540,14 +540,14 @@ module ApplicationHelper
       cm_stage_3_sm_scores = cm_stage_3_sm&.scheme_mix_criteria_scores
 
       scheme_categories_names.each do |scheme_category_name|
-        scheme_criteria_numbers = get_scheme_criteria_number(scheme_category_name)
+        scheme_criteria_names = get_scheme_criteria_number(scheme_category_name)
 
-        scheme_criteria_numbers.each do |scheme_criteria_number|
-          cm_stage_1_required_smc_criterion = SchemeMixCriterion.joins([scheme_mix: [certification_path: :certificate]], scheme_criterion: :scheme_category).find_by("scheme_mixes.id = :scheme_mix_id AND scheme_categories.name = :category_name AND scheme_criteria.number = :scheme_criteria_number AND certificates.certification_type = :certification_type", scheme_mix_id: cm_stage_1_sm&.id, category_name: scheme_category_name, scheme_criteria_number: scheme_criteria_number, certification_type: Certificate.certification_types["construction_certificate_stage1"])
+        scheme_criteria_names.each do |scheme_criterion_name|
+          cm_stage_1_required_smc_criterion = SchemeMixCriterion.joins([scheme_mix: [certification_path: :certificate]], scheme_criterion: :scheme_category).find_by("scheme_mixes.id = :scheme_mix_id AND scheme_categories.name = :category_name AND scheme_criteria.name = :scheme_criterion_name AND certificates.certification_type = :certification_type", scheme_mix_id: cm_stage_1_sm&.id, category_name: scheme_category_name, scheme_criterion_name: scheme_criterion_name, certification_type: Certificate.certification_types["construction_certificate_stage1"])
 
-          cm_stage_2_required_smc_criterion = SchemeMixCriterion.joins([scheme_mix: [certification_path: :certificate]], scheme_criterion: :scheme_category).find_by("scheme_mixes.id = :scheme_mix_id AND scheme_categories.name = :category_name AND scheme_criteria.number = :scheme_criteria_number AND certificates.certification_type = :certification_type", scheme_mix_id: cm_stage_2_sm&.id, category_name: scheme_category_name, scheme_criteria_number: scheme_criteria_number, certification_type: Certificate.certification_types["construction_certificate_stage2"])
+          cm_stage_2_required_smc_criterion = SchemeMixCriterion.joins([scheme_mix: [certification_path: :certificate]], scheme_criterion: :scheme_category).find_by("scheme_mixes.id = :scheme_mix_id AND scheme_categories.name = :category_name AND scheme_criteria.name = :scheme_criterion_name AND certificates.certification_type = :certification_type", scheme_mix_id: cm_stage_2_sm&.id, category_name: scheme_category_name, scheme_criterion_name: scheme_criterion_name, certification_type: Certificate.certification_types["construction_certificate_stage2"])
 
-          cm_stage_3_required_smc_criterion = SchemeMixCriterion.joins([scheme_mix: [certification_path: :certificate]], scheme_criterion: :scheme_category).find_by("scheme_mixes.id = :scheme_mix_id AND scheme_categories.name = :category_name AND scheme_criteria.number = :scheme_criteria_number AND certificates.certification_type = :certification_type", scheme_mix_id: cm_stage_3_sm&.id, category_name: scheme_category_name, scheme_criteria_number: scheme_criteria_number, certification_type: Certificate.certification_types["construction_certificate_stage3"])
+          cm_stage_3_required_smc_criterion = SchemeMixCriterion.joins([scheme_mix: [certification_path: :certificate]], scheme_criterion: :scheme_category).find_by("scheme_mixes.id = :scheme_mix_id AND scheme_categories.name = :category_name AND scheme_criteria.name = :scheme_criterion_name AND certificates.certification_type = :certification_type", scheme_mix_id: cm_stage_3_sm&.id, category_name: scheme_category_name, scheme_criterion_name: scheme_criterion_name, certification_type: Certificate.certification_types["construction_certificate_stage3"])
 
           if (cm_stage_1_required_smc_criterion.present? && cm_stage_2_required_smc_criterion.present? && cm_stage_3_required_smc_criterion.present?)
 
@@ -557,7 +557,7 @@ module ApplicationHelper
 
             keys_of_required_scores = total_scores&.select { |key, value| key.to_s.match(/achieved_score/) }.keys
 
-            if scheme_category_name == 'Water' && scheme_criteria_number == 1 && certification_path.construction_certificate_CM_2019?
+            if scheme_category_name == 'Water' && cm_stage_3_required_smc_criterion&.scheme_criterion&.number == 1 && certification_path.construction_certificate_CM_2019?
               manipulated_cm_stage_3_smc_scores = cm_2019_w1_scores_manipulation(cm_stage_3_required_smc_criterion, cm_stage_3_sm_scores)
 
               keys_of_required_scores.each do |k|
@@ -685,20 +685,20 @@ module ApplicationHelper
   def get_scheme_criteria_number(category_name)
     case category_name
     when 'Energy'
-      # for E1
-      return [1]
+      # for Energy Use - Temporary Buildings
+      return ['Energy Use - Temporary Buildings']
 
     when 'Water'
-      #for W1
-      return [1]
+      #for Domestic Water Use 
+      return ['Domestic Water Use']
 
     when 'Materials'
-      # for M1 & M3
-      return [1, 3]
+      # for Materials Diversion from Landfill & Cut & Fill Optimization
+      return ['Materials Diversion from Landfill', 'Cut & Fill Optimization']
 
     when 'Management & Operations', 'Management And Operations'
-      # for MO1
-      return [1]
+      # for Waste Management
+      return ['Waste Management']
       
     else
       return []
