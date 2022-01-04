@@ -17,7 +17,11 @@ projects_with_loc = Project.joins(certification_paths: :certificate).where("proj
 ProjectsUser.joins(:project).where.not(role: "enterprise_client").where(projects: {id: projects_with_loc.ids}, certification_team_type: "Other").update_all(certification_team_type: "Letter of Conformance")
 
 # Projects with only LOC certified
-projects_with_only_loc_certified = Project.joins(certification_paths: [:certification_path_status, :certificate]).where("projects.certificate_type = :type AND certificates.certification_type = :name AND certification_path_statuses.name = :status_name", type: 3, name: Certificate.certification_types["letter_of_conformance"], status_name: "Certified")
+projects_with_loc_certified = Project.joins(certification_paths: [:certification_path_status, :certificate]).where("projects.certificate_type = :type AND certificates.certification_type = :name AND certification_path_statuses.name = :status_name", type: 3, name: Certificate.certification_types["letter_of_conformance"], status_name: "Certified").ids.uniq
+projects_with_cda = Project.joins(certification_paths: :certificate).where("projects.certificate_type = :type AND certificates.certification_type = :name", type: 3, name: Certificate.certification_types["final_design_certificate"]).ids.uniq
+
+projects_with_only_loc_certified_ids = projects_with_loc_certified - projects_with_cda
+projects_with_only_loc_certified = Project.find(projects_with_only_loc_certified_ids)
 projects_with_only_loc_certified.each do |project|
   project_cgp_users = project.projects_users&.where(role: "cgp_project_manager")
   project_cgp_users.each do |project_cgp_user|
