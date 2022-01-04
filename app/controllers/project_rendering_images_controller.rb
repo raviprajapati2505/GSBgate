@@ -17,6 +17,9 @@ class ProjectRenderingImagesController < AuthenticatedController
           format.html { redirect_back(fallback_location: root_path, alert: 'Image failed to upload.') }
           format.json { render json: @project_rendering_image['rendering_image'].to_s, status: :unprocessable_entity }
         end
+      else
+        format.html { redirect_back(fallback_location: project_path(@project), alert: 'Image must be present!') }
+        format.json { render json: @image_record&.to_s, status: :unprocessable_entity }
       end
     end
   end
