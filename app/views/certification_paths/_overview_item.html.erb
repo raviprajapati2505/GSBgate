@@ -1,80 +1,95 @@
-<% certification_paths = CertificationPath.with_project(project).with_certification_type(Certificate.certification_types[Certificate.certification_types.key(certification_type)]) %>
-<% certification_paths.each do |certification_path| %>
-  <li class="list-group-item container table-my-0 table-py-0">
-    <div class="row">
-      <div class="col-md-12 table-p-0">
-        <table class="table table-bordered table-mb-1">
-          <tbody>
+<% certification_paths_present = project&.certification_paths.present? %>
+<li class="list-group-item container table-my-0 table-py-0">
+  <div class="row">
+    <div class="col-md-12 table-p-0">
+      <table class="table table-bordered table-mb-1">
+        <tbody>
+          <% if certification_paths_present %>
             <tr class="bg-header-grey">
               <th><%= t('certification_paths.show.certification_path.stage') %></th>
               <th><%= t('certification_paths.show.certification_path.status') %></th>
               <th><%= t('certification_paths.show.certification_path.rating') %></th>
               <th><%= t('certification_paths.show.certification_path.scores') %></th>
             </tr>
-            <tr>
-              <td style="width: 425px;">
-                <%= can_link_to(project_certification_path_path(project, certification_path), certification_path, class: "link-mr-2") do %>
-                  <%= certification_path.certificate.stage_title %>
-                <% end %>
-              </td>
-              <td style="width: 290px;">
-                <% if certification_path.is_design_loc? && certification_path.status.humanize == 'Certified' %>
-                  Provisionally Certified
-                <% else %>
-                  <%= certification_path.status %>
-                <% end %>
-              </td>
-              <td class="td-px-0">
-                <% if certification_path&.certification_path_method&.assessment_method == 2 %>
-                  <%= render partial: 'certification_paths/checklist_rating', locals: { certification_path: certification_path } %>
-                <% else %>
-                  <%= render partial: 'certification_paths/ratings', locals: { certification_path: certification_path, display_item: 'rating' } %>
-                <% end %>
-              </td>
-              <td class="td-px-0">
-                <% if certification_path&.certification_path_method&.assessment_method == 2 %>
-                  <%= render partial: 'certification_paths/checklist_rating', locals: { certification_path: certification_path } %>
-                <% else %>
-                  <%= render partial: 'certification_paths/ratings', locals: { certification_path: certification_path, display_item: 'score' } %>
-                <% end %>
-              </td>
-            </tr>
-          <tbody>
-        </table>
-      </div>
-    </div>
-  </li>
-<% end %>
-<% if certification_paths.empty? %>
-  <% no_completed_letter_of_conformance_for_final_design = (certification_type == Certificate.certification_types[:final_design_certificate] && project.completed_letter_of_conformances.empty?) %>
-  <% no_stage1_construction_for_stage2 = (certification_type == Certificate.certification_types[:construction_certificate_stage2] && project.completed_construction_stage1.empty?) %>
-  <% no_stage2_construction_for_stage3 = (certification_type == Certificate.certification_types[:construction_certificate_stage3] && project.completed_construction_stage2.empty?) %>
-  <% no_stage3_construction_for_overall = (certification_type == Certificate.certification_types[:construction_certificate] && project.completed_construction_stage3.empty?) %>
-  <li class="list-group-item container <%= 'disabled' if (no_completed_letter_of_conformance_for_final_design || no_stage1_construction_for_stage2 || no_stage2_construction_for_stage3) %>">
-    <div class="row">
-      <span class="col-md-4">
-        <%= t(Certificate.certification_types.key(certification_type), scope: 'activerecord.attributes.certificate.certification_types') %>
-        <br />
-        <%= t(Certificate.certification_types.key(certification_type), scope: 'activerecord.attributes.certificate.certification_types_subtitles') %>
-      </span>
-      <% if no_completed_letter_of_conformance_for_final_design %>
-          <%= t('.warning_complete_loc') %>
-      <% elsif no_stage1_construction_for_stage2 %>
-        <%= t('.warning_complete_stage1') %>
-      <% elsif no_stage2_construction_for_stage3 %>
-        <%= t('.warning_complete_stage2') %>
-      <% elsif no_stage3_construction_for_overall %>
-        <%= t('.warning_complete_stage3') %>
-      <% else %>
-        <span class="col-md-4">
-          Not yet registered
-        </span>
-        <span class="col-md-4">
-          <% if can?(:apply, @certification_path, project: @project) && (project.certification_paths.empty? || ((certification_type == Certificate.certification_types[:final_design_certificate]) && project.completed_letter_of_conformances.any?) || ((certification_type == Certificate.certification_types[:construction_certificate_stage2]) && project.completed_construction_stage1.any?) || ((certification_type == Certificate.certification_types[:construction_certificate_stage3]) && project.completed_construction_stage2.any?)) %>
-            <%= btn_link_to(apply_certification_path_path(@project, certification_type), text: 'Apply', icon: 'play', action: :post, remote: true) %>
           <% end %>
-        </span>
-      <% end %>
+          <% certification_types.each do |certification_type| %>
+            <% 
+              certification_type = Certificate.certification_types[certification_type]
+              certification_paths = CertificationPath.with_project(project).with_certification_type(Certificate.certification_types[Certificate.certification_types.key(certification_type)])
+            %>
+            <% if certification_paths.present? %>
+              <% certification_paths.each do |certification_path| %>
+                <tr>
+                  <td style="width: 425px;">
+                    <%= can_link_to(project_certification_path_path(project, certification_path), certification_path, class: "link-mr-2") do %>
+                      <%= certification_path.certificate.stage_title %>
+                    <% end %>
+                  </td>
+                  <td style="width: 290px;">
+                    <% if certification_path.is_design_loc? && certification_path.status.humanize == 'Certified' %>
+                      Provisionally Certified
+                    <% else %>
+                      <%= certification_path.status %>
+                    <% end %>
+                  </td>
+                  <td class="td-px-0">
+                    <% if certification_path&.certification_path_method&.assessment_method == 2 %>
+                      <%= render partial: 'certification_paths/checklist_rating', locals: { certification_path: certification_path } %>
+                    <% else %>
+                      <%= render partial: 'certification_paths/ratings', locals: { certification_path: certification_path, display_item: 'rating' } %>
+                    <% end %>
+                  </td>
+                  <td class="td-px-0">
+                    <% if certification_path&.certification_path_method&.assessment_method == 2 %>
+                      <%= render partial: 'certification_paths/checklist_rating', locals: { certification_path: certification_path } %>
+                    <% else %>
+                      <%= render partial: 'certification_paths/ratings', locals: { certification_path: certification_path, display_item: 'score' } %>
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            <% else %>
+              <% no_completed_letter_of_conformance_for_final_design = (certification_type == Certificate.certification_types[:final_design_certificate] && project.completed_letter_of_conformances.empty?) %>
+              <% no_stage1_construction_for_stage2 = (certification_type == Certificate.certification_types[:construction_certificate_stage2] && project.completed_construction_stage1.empty?) %>
+              <% no_stage2_construction_for_stage3 = (certification_type == Certificate.certification_types[:construction_certificate_stage3] && project.completed_construction_stage2.empty?) %>
+              <% no_stage3_construction_for_overall = (certification_type == Certificate.certification_types[:construction_certificate] && project.completed_construction_stage3.empty?) %>
+              <% if certification_paths_present %>
+                <td colspan='4' style="padding: 0px;">
+              <% end %>
+              <li class="list-group-item container <%= 'disabled' if (no_completed_letter_of_conformance_for_final_design || no_stage1_construction_for_stage2 || no_stage2_construction_for_stage3) %>">
+                <div class="row">
+                  <span class="col-md-4">
+                    <%= t(Certificate.certification_types.key(certification_type), scope: 'activerecord.attributes.certificate.certification_types') %>
+                    <br />
+                    <%= t(Certificate.certification_types.key(certification_type), scope: 'activerecord.attributes.certificate.certification_types_subtitles') %>
+                  </span>
+                  <% if no_completed_letter_of_conformance_for_final_design %>
+                      <%= t('.warning_complete_loc') %>
+                  <% elsif no_stage1_construction_for_stage2 %>
+                    <%= t('.warning_complete_stage1') %>
+                  <% elsif no_stage2_construction_for_stage3 %>
+                    <%= t('.warning_complete_stage2') %>
+                  <% elsif no_stage3_construction_for_overall %>
+                    <%= t('.warning_complete_stage3') %>
+                  <% else %>
+                    <span class="col-md-4">
+                      Not yet registered
+                    </span>
+                    <span class="col-md-4">
+                      <% if can?(:apply, @certification_path, project: @project) && (project.certification_paths.empty? || ((certification_type == Certificate.certification_types[:final_design_certificate]) && project.completed_letter_of_conformances.any?) || ((certification_type == Certificate.certification_types[:construction_certificate_stage2]) && project.completed_construction_stage1.any?) || ((certification_type == Certificate.certification_types[:construction_certificate_stage3]) && project.completed_construction_stage2.any?)) %>
+                        <%= btn_link_to(apply_certification_path_path(@project, certification_type), text: 'Apply', icon: 'play', action: :post, remote: true) %>
+                      <% end %>
+                    </span>
+                  <% end %>
+                </div>
+              </li>
+              <% if certification_paths_present %>
+                </td>
+              <% end %>
+            <% end %>
+          <% end %>
+        <tbody>
+      </table>
     </div>
-  </li>
-<% end %>
+  </div>
+</li>
