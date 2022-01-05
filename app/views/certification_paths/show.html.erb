@@ -13,11 +13,11 @@
         data_score << scheme_mix_scores
       end
       scores = total_CM_score(data_score)
+      scores = final_cm_revised_avg_scores(@certification_path, scores)
     else
       scheme_mix = @certification_path&.scheme_mixes&.first
       scores = score_calculation(scheme_mix)
     end
-    scores = final_cm_revised_avg_scores(@certification_path, scores)
 
     # scheme_mix = @certification_path&.scheme_mixes&.first
     final_score = scores
@@ -252,7 +252,7 @@
             <tbody>
             <% @certification_path.project.certification_paths.with_certification_type([Certificate::certification_types[:construction_certificate_stage1], Certificate::certification_types[:construction_certificate_stage2], Certificate::certification_types[:construction_certificate_stage3]])&.order(:created_at)&.each do |certification_path| %>
               <%   certification_path_scores = certification_path.scores_in_certificate_points
-                  if certification_path.construction?
+                  if certification_path.construction_certificate_CM_2019?
                     scheme_mix = certification_path&.scheme_mixes&.first
                     certification_path_scores = score_calculation(scheme_mix) 
                     certification_path_scores = final_cm_revised_avg_scores(certification_path, certification_path_scores)
