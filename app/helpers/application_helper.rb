@@ -521,8 +521,7 @@ module ApplicationHelper
 
   # to manipulate scores of  E1, W1, M1, M3 and MO1 in final cm certification.
   def final_cm_revised_avg_scores(certification_path, total_scores)
-    
-    if certification_path.present? && certification_path&.final_construction? && !certification_path.is_activating?
+    if certification_path.present? && certification_path&.final_construction? && certification_path&.certificate&.construction_2019? && !certification_path.is_activating?
       project = certification_path&.project
 
       scheme_categories_names = ["Energy", "Water", "Materials", "Management & Operations", "Management And Operations"]
@@ -540,7 +539,7 @@ module ApplicationHelper
       cm_stage_3_sm_scores = cm_stage_3_sm&.scheme_mix_criteria_scores
 
       scheme_categories_names.each do |scheme_category_name|
-        scheme_criteria_names = get_scheme_criteria_number(scheme_category_name)
+        scheme_criteria_names = get_scheme_criteria_names(scheme_category_name)
 
         scheme_criteria_names.each do |scheme_criterion_name|
           cm_stage_1_required_smc_criterion = SchemeMixCriterion.joins([scheme_mix: [certification_path: :certificate]], scheme_criterion: :scheme_category).find_by("scheme_mixes.id = :scheme_mix_id AND scheme_categories.name = :category_name AND scheme_criteria.name = :scheme_criterion_name AND certificates.certification_type = :certification_type", scheme_mix_id: cm_stage_1_sm&.id, category_name: scheme_category_name, scheme_criterion_name: scheme_criterion_name, certification_type: Certificate.certification_types["construction_certificate_stage1"])
@@ -682,7 +681,7 @@ module ApplicationHelper
     return scheme_mix_criteria_score_for_w1
   end
 
-  def get_scheme_criteria_number(category_name)
+  def get_scheme_criteria_names(category_name)
     case category_name
     when 'Energy'
       # for Energy Use - Temporary Buildings
