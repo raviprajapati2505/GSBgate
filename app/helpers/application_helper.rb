@@ -567,13 +567,13 @@ module ApplicationHelper
                 cm_stage_1_smc_scores[k] = manipulated_cm_stage_3_smc_scores[k].to_f
               end
 
-              cm_stage_2_smc_scores.each do |k, v|
-                cm_stage_2_smc_scores[k] = manipulated_cm_stage_3_smc_scores[k].to_f
-              end
+              # cm_stage_2_smc_scores.each do |k, v|
+              #   cm_stage_2_smc_scores[k] = manipulated_cm_stage_3_smc_scores[k].to_f
+              # end
 
-              cm_stage_3_smc_scores.each do |k, v|
-                cm_stage_3_smc_scores[k] = manipulated_cm_stage_3_smc_scores[k].to_f
-              end
+              # cm_stage_3_smc_scores.each do |k, v|
+              #   cm_stage_3_smc_scores[k] = manipulated_cm_stage_3_smc_scores[k].to_f
+              # end
 
               keys_of_required_scores.each do |k|
                 total_scores[k] = total_scores[k].to_f + (2/3 * cm_stage_1_smc_scores[k].to_f) if total_scores[k].present?
