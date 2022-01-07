@@ -40,7 +40,7 @@ new_projects_ids.each do |project_id|
   project = Project.find(project_id)
   if project.present?
     if project.certificate_type == 3
-      project&.projects_users&.update_all(certification_team_type: "Letter of Conformance")
+      project&.projects_users&.where.not(role: "enterprise_client").update_all(certification_team_type: "Letter of Conformance")
     else
       project&.projects_users&.update_all(certification_team_type: "Other")
     end
