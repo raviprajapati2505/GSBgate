@@ -845,7 +845,7 @@ class CertificationPath < ApplicationRecord
 
   def revised_score(val, is_achieved_score, is_submitted_score)
     e6_criterion = scheme_mix_criteria&.joins(scheme_criterion: :scheme_category).find_by("scheme_categories.name = 'Energy' AND scheme_criteria.name = 'Renewable Energy'")
-    val = if (is_submitted_score && e6_criterion&.submitted_score_a < 3) || (is_achieved_score && e6_criterion&.achieved_score_a < 3) || (!is_achieved_score && !is_submitted_score && e6_criterion&.targeted_score_a < 3) 
+    val = if (is_submitted_score && e6_criterion&.submitted_score_a.to_f < 3) || (is_achieved_score && e6_criterion&.achieved_score_a.to_f < 3) || (!is_achieved_score && !is_submitted_score && e6_criterion&.targeted_score_a.to_f < 3) 
             4
           else
             val

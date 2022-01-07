@@ -6,7 +6,7 @@
 <% else %>
   <!-- STAR SCORE -->
   <span style="white-space: nowrap; margin-inline: 6px;">
-    <% rating.times do %>
+    <% rating.to_i.times do %>
         <i class="fa fa-star fa-lg"></i>
     <% end %>
   </span>
