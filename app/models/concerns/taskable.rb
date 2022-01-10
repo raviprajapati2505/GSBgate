@@ -81,6 +81,8 @@ module Taskable
 
   def before_destroy
     case self.class.name
+      when Project.name.demodulize
+        handle_projects_users_tasks
       when CertificationPath.name.demodulize
         Task.where(certification_path: self).delete_all
       when ProjectsUser.name.demodulize
@@ -857,4 +859,8 @@ module Taskable
     end
   end
 
+  def handle_projects_users_tasks
+    self.projects_users&.destroy_all
+    Task.where(project_id: self.id).delete_all
+  end
 end
