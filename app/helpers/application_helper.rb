@@ -576,7 +576,7 @@ module ApplicationHelper
               # end
 
               keys_of_required_scores.each do |k|
-                total_scores[k] = total_scores[k].to_f + (2/3 * cm_stage_1_smc_scores[k].to_f) if total_scores[k].present?
+                total_scores[k] = total_scores[k].to_f + cm_stage_1_smc_scores[k].to_f if total_scores[k].present?
               end
             else
              
