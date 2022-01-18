@@ -557,26 +557,28 @@ module ApplicationHelper
             keys_of_required_scores = total_scores&.select { |key, value| key.to_s.match(/achieved_score/) }.keys
 
             if scheme_category_name == 'Water' && cm_stage_3_required_smc_criterion&.scheme_criterion&.number == 1 && certification_path.construction_certificate_CM_2019?
+              manipulated_cm_stage_1_smc_scores = cm_2019_w1_scores_manipulation(cm_stage_1_required_smc_criterion, cm_stage_1_sm_scores)
+              manipulated_cm_stage_2_smc_scores = cm_2019_w1_scores_manipulation(cm_stage_2_required_smc_criterion, cm_stage_2_sm_scores)
               manipulated_cm_stage_3_smc_scores = cm_2019_w1_scores_manipulation(cm_stage_3_required_smc_criterion, cm_stage_3_sm_scores)
 
-              keys_of_required_scores.each do |k|
-                total_scores[k] = total_scores[k].to_f - (cm_stage_3_smc_scores[k].to_f + cm_stage_2_smc_scores[k].to_f + cm_stage_1_smc_scores[k].to_f) / 3 if total_scores[k].present?
-              end
+              # keys_of_required_scores.each do |k|
+              #   total_scores[k] = total_scores[k].to_f - (cm_stage_3_smc_scores[k].to_f + cm_stage_2_smc_scores[k].to_f + cm_stage_1_smc_scores[k].to_f) / 3 if total_scores[k].present?
+              # end
 
               cm_stage_1_smc_scores.each do |k, v|
-                cm_stage_1_smc_scores[k] = manipulated_cm_stage_3_smc_scores[k].to_f
+                cm_stage_1_smc_scores[k] = manipulated_cm_stage_1_smc_scores[k].to_f
               end
 
-              # cm_stage_2_smc_scores.each do |k, v|
-              #   cm_stage_2_smc_scores[k] = manipulated_cm_stage_3_smc_scores[k].to_f
-              # end
+              cm_stage_2_smc_scores.each do |k, v|
+                cm_stage_2_smc_scores[k] = manipulated_cm_stage_2_smc_scores[k].to_f
+              end
 
-              # cm_stage_3_smc_scores.each do |k, v|
-              #   cm_stage_3_smc_scores[k] = manipulated_cm_stage_3_smc_scores[k].to_f
-              # end
+              cm_stage_3_smc_scores.each do |k, v|
+                cm_stage_3_smc_scores[k] = manipulated_cm_stage_3_smc_scores[k].to_f
+              end
 
               keys_of_required_scores.each do |k|
-                total_scores[k] = total_scores[k].to_f + cm_stage_1_smc_scores[k].to_f if total_scores[k].present?
+                total_scores[k] = total_scores[k].to_f + (2*cm_stage_3_smc_scores[k].to_f - (cm_stage_2_smc_scores[k].to_f + cm_stage_1_smc_scores[k].to_f)) / 3 if total_scores[k].present?
               end
             else
              
