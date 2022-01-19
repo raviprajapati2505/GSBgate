@@ -7,10 +7,18 @@
 <table class="table table-bordered" cellspacing="0" width="100%">
     <thead>
     <tr>
-        <% if scheme_mixes.count > 1 %>
-          <th class="col-md-2">Scheme Typologies</th>
+        <% if certification_path&.scheme_mixes.count > 1 %>
+            <% if scheme_mixes.count > 1 %>
+                <th class="col-md-1">Scheme Typologies</th>
+            <% end %>
+            <th class="col-md-1">Scheme Name</th>
+            <th class="col-md-1">Scheme Custom Name</th>
+        <% else %>
+            <% if scheme_mixes.count > 1 %>
+                <th class="col-md-2">Scheme Typologies</th>
+            <% end %>
+            <th class="col-md-2">Scheme Name</th>
         <% end %>
-        <th class="col-md-2">Scheme Name</th>
         <th class="col-md-1">
           <span class="hidden-md">Weighting (%)</span>
           <span class="visible-md">W <%= tooltip('Weighting') %></span>
@@ -65,14 +73,21 @@
 
             <td>
                 <%= can_link_to(project_certification_path_scheme_mix_path(certification_path.project, certification_path, scheme_mix), scheme_mix) do %>
-                    <%= scheme_mix.full_name %>
+                    <%= scheme_mix&.scheme&.name %>
                     <% if certification_path.main_scheme_mix_id == scheme_mix.id %>
                         <%= ikoen('certificate', tooltip: 'This is the main scheme (or main typology). Some of its criteria scores will be inherited by other schemes.', class: 'main-scheme-icon') %>
                     <% end %>
                 <% end %>
             </td>
+            <% if certification_path&.scheme_mixes.count > 1 %>
+                <td>
+                    <%= can_link_to(project_certification_path_scheme_mix_path(certification_path.project, certification_path, scheme_mix), scheme_mix) do %>
+                        <%= scheme_mix.custom_name %>
+                    <% end %>
+                </td>
+            <% end %>
             <td><%= scheme_mix.weight %> %</td>
-            <td><%= scheme_mix.certified_area %></td>
+            <td><%= number_with_delimiter(scheme_mix.certified_area, delimiter: ',') %></td>
 
             <% if certification_path.is_activated? %>
                 <td>

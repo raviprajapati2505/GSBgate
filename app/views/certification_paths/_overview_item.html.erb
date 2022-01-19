@@ -35,11 +35,7 @@
                     <% end %>
                   </td>
                   <td style="width: 290px;">
-                    <% if certification_path.is_design_loc? && certification_path.status.humanize == 'Certified' %>
-                      Provisionally Certified
-                    <% else %>
-                      <%= certification_path.status %>
-                    <% end %>
+                    <%= certification_path.status %>
                   </td>
                   <td class="td-px-0">
                     <% if certification_path&.certification_path_method&.assessment_method == 2 %>
@@ -69,7 +65,7 @@
               <li class="list-group-item container <%= 'disabled' if (no_completed_letter_of_conformance_for_final_design || no_stage1_construction_for_stage2 || no_stage2_construction_for_stage3) %>">
                 <div class="row">
                   <span class="col-md-4">
-                    <%= t(Certificate.certification_types.key(certification_type), scope: 'activerecord.attributes.certificate.certification_types') %>
+                    <%= t(Certificate.certification_types.key(certification_type), scope: 'activerecord.attributes.certificate.certification_titles') %>
                     <br />
                     <%= t(Certificate.certification_types.key(certification_type), scope: 'activerecord.attributes.certificate.certification_types_subtitles') %>
                   </span>

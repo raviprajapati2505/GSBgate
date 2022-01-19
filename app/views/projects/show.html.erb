@@ -48,27 +48,27 @@
             </tr>
             <tr>
               <th><%= Project.human_attribute_name('estimated_project_cost') %></th>
-              <td><%= @project.estimated_project_cost %></td>
+              <td><%= number_with_delimiter(@project.estimated_project_cost, delimiter: ',') %></td>
             </tr>
             <tr>
               <th><%= Project.human_attribute_name('project_site_area') %></th>
-              <td><%= @project.project_site_area %> m²</td>
+              <td><%= number_with_delimiter(@project.project_site_area, delimiter: ',') %> m²</td>
             </tr>
             <tr>
               <th><%= Project.human_attribute_name('gross_area') %></th>
-              <td><%= @project.gross_area %> m²</td>
+              <td><%= number_with_delimiter(@project.gross_area, delimiter: ',') %> m²</td>
             </tr>
             <tr>
               <th><%= Project.human_attribute_name('buildings_footprint_area') %></th>
-              <td><%= @project.buildings_footprint_area %> m²</td>
+              <td><%= number_with_delimiter(@project.buildings_footprint_area, delimiter: ',') %> m²</td>
             </tr>
             <tr>
               <th><%= Project.human_attribute_name('certified_area') %></th>
-              <td><%= @project.certified_area %> m²</td>
+              <td><%= number_with_delimiter(@project.certified_area, delimiter: ',') %> m²</td>
             </tr>
             <tr>
               <th><%= Project.human_attribute_name('carpark_area') %></th>
-              <td><%= @project.carpark_area %> m²</td>
+              <td><%= number_with_delimiter(@project.carpark_area, delimiter: ',') %> m²</td>
             </tr>
             <tr>
               <th><%= Project.human_attribute_name('building_type_id') %></th>
@@ -82,11 +82,11 @@
             <% if @project.building_type_group_id == 8 %>
               <tr>
                 <th><%= Project.human_attribute_name('estimated_building_cost') %></th>
-                <td><%= @project.estimated_building_cost %></td>
+                <td><%= number_with_delimiter(@project.estimated_building_cost, delimiter: ',') %></td>
               </tr>
               <tr>
                 <th><%= Project.human_attribute_name('estimated_infrastructure_cost') %></th>
-                <td><%= @project.estimated_infrastructure_cost %></td>
+                <td><%= number_with_delimiter(@project.estimated_infrastructure_cost, delimiter: ',') %></td>
               </tr>
             <% end %>
 

@@ -30,7 +30,7 @@
           </tr>
           <tr>
             <th>Scheme Certified Area (m2)</th>
-            <td><%= @scheme_mix.certified_area %></td>
+            <td><%= number_with_delimiter(@scheme_mix.certified_area, delimiter: ',') %></td>
           </tr>
           <tr>
             <th>Scheme Score/Level</th>
