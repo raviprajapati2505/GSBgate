@@ -139,12 +139,20 @@ Congratulations once again for partaking in this noble endeavor, and together le
   def draw_paragraph1
     name = @certification_path.certificate.only_name
 
-    if name == 'Letter of Conformance'
-      text = "This is to notify that GSAS Trust has assessed the project based on the submitted information. The project is found eligible to receive the Provisional GSAS-D&B Certificate in the form of \"Letter of Conformance (LOC), achieving the following:\" \n"
+    case name
+    when 'Letter of Conformance'
+      text = "This is to notify that GSAS Trust has assessed the project based on the submitted information. The project is found eligible to receive the Provisional GSAS-D&B Certificate in the form of \"Letter of Conformance (LOC)\", achieving the following: \n"
 
       styled_text("<div style='font-size: 10; line-height: 9; color: 000000;'>#{text}</div>")
 
-      newline(2)
+      newline(1)
+    when 'GSAS-CM', 'Construction Certificate'
+      text = "This is to notify that GAS Trust has reviewed the construction submittals in accordance with the latest GSAS Construction Management assessments and has completed the Third Site Audit requirements of Construction Stage 3 (Finishing Works). The project is found eligible to receive the Third Interim Audit Advisory Notice (AAN) No.03 achieving the following: \n"
+
+      styled_text("<div style='font-size: 10; line-height: 9; color: 000000;'>#{text}</div>")
+
+      newline(1)
+    else
     end
 
     # Prepare table data
@@ -160,24 +168,56 @@ Congratulations once again for partaking in this noble endeavor, and together le
     # Output table
     draw_table(data, true, 'score_table')
 
-    if name == 'Letter of Conformance'
+    case name 
+    when 'Letter of Conformance'
       newline
       text = "The summary of the obtained rating is attached herewith. \n\n This letter is only the predecessor towards achieving the final GSAS-D&B Certificate and should not be considered as the final certificate. The project should satisfy during the construction stage all the requirements of <b>Conformance to Design Audit(CDA)</b> which is the pre-requisite for the final GSAS-D&B Certificate as indicated in GSAS Technical Guide, <a>www.gord.qa</a> \n"
       styled_text("<div style='font-size: 10; line-height: 9'>#{text}</div>")
 
+      newline(1)
+
       text = "In the event of any future changes applied to the criteria pertaining to the issued LOC, the changes are required to be re-assessed once again."
       styled_text("<div style='font-size: 10; line-height: 9'>#{text}</div>")
+
+      newline(1)
 
       text = "Finally, Congratulations for partaking in this nobel endeavor, and together let us build a healthy and a sustainable future."
       styled_text("<div style='font-size: 10; line-height: 9;'>#{text}</div>")
 
-      styled_text("<div style='font-size: 10; line-height: 9;'>Yours sincerely, \n</div>")
+      newline(1)
+
+      styled_text("<div style='font-size: 10; line-height: 9;'><b>Yours sincerely</b>, \n</div>")
+
+      newline(1)
 
       # image image_path('green_star.png'), width: 50
 
       styled_text("<div style='font-size: 10; color: #{MAIN_COLOR}; font-style: bold;'>\n Dr. Yousef Alhorr</div>")
 
       styled_text("<div style='font-size: 10; color: 000000; font-style: bold;'>\n Founding Chairman \n</div>")
+    when 'GSAS-CM', 'Construction Certificate'
+      newline
+      
+      text = "Criteria summary of the Second Inkerim Audit Advisory Notice is attached herewith. \n\n This notice is only the predecessor towards achieving the final GSAS-CM Certificate and should not be considered as the final certificate. The project/contractor shall satisfy during the rest of the construction stages all the requirements which is a pre-requisite for the GSAS-CM Certificate as stipulated in GSAS Technical Guide, <a>www.gord.qa</a> \n"
+      styled_text("<div style='font-size: 10; line-height: 9'>#{text}</div>")
+
+      newline(1)
+
+      text = "Finally, Congratulations for partaking in this nobel endeavor, and together let us build a healthy and a sustainable future."
+      styled_text("<div style='font-size: 10; line-height: 9;'>#{text}</div>")
+
+      newline(1)
+
+      styled_text("<div style='font-size: 10; line-height: 9;'><b>Yours sincerely</b>, \n</div>")
+
+      newline(1)
+
+      # image image_path('green_star.png'), width: 50
+
+      styled_text("<div style='font-size: 10; color: #{MAIN_COLOR}; font-style: bold;'>\n Dr. Yousef Alhorr</div>")
+
+      styled_text("<div style='font-size: 10; color: 000000; font-style: bold;'>\n Founding Chairman \n</div>")
+
     end
 
   end
