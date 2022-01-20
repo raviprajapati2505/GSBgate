@@ -17,7 +17,7 @@
       <% else %>
         <div class="modal-header">
             <%= btn_close_modal %>
-            <h4 class="modal-title">Applying for <em><%= t(@certification_type, scope: 'activerecord.attributes.certificate.certification_types') %></em></h4>
+            <h4 class="modal-title">Applying for <em><%= t(@certification_type, scope: 'activerecord.attributes.certificate.certification_titles') %></em></h4>
         </div>
         <div class="modal-body">
             <%= bootstrap_form_for(@certification_path, url: apply_certification_path_path(@project, Certificate.certification_types[@certification_type])) do |f| %>

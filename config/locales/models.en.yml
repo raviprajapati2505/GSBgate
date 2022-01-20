@@ -340,7 +340,7 @@ en:
           schemes_array:
             label: Certification Scheme Sub-Typologies
           schemes_custom_name_array:
-            label: Certification Scheme Sub-Typologies name
+            label: Certification Building Name
           cgp_project_manager_array:
             label: Project CGP
           project_team_array:
