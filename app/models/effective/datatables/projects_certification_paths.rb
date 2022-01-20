@@ -133,11 +133,11 @@ module Effective
         end
 
         col :schemes_array, label: t('models.effective.datatables.projects_certification_paths.schemes_array.label'), sql_column: "ARRAY_TO_STRING(ARRAY(SELECT case when scheme_mixes.custom_name is null then schemes.name else schemes.name end from schemes INNER JOIN scheme_mixes ON schemes.id = scheme_mixes.scheme_id WHERE scheme_mixes.certification_path_id = certification_paths.id), '|||')" do |rec|
-          ERB::Util.html_escape(rec.schemes_array).split('|||').uniq.sort.join('<br/>') unless rec.schemes_array.nil?
+          ERB::Util.html_escape(rec.schemes_array).split('|||').sort.join('<br/>') unless rec.schemes_array.nil?
         end
 
-        col :schemes_custom_name_array, label: t('models.effective.datatables.projects_certification_paths.schemes_custom_name_array.label'), visible: false, sql_column: "ARRAY_TO_STRING(ARRAY(SELECT case when scheme_mixes.custom_name is null then ' ' else scheme_mixes.custom_name end from schemes INNER JOIN scheme_mixes ON schemes.id = scheme_mixes.scheme_id WHERE scheme_mixes.certification_path_id = certification_paths.id), '|||')" do |rec|
-          ERB::Util.html_escape(rec.schemes_custom_name_array).split('|||').sort.join('<br/>') unless rec.schemes_custom_name_array.nil?
+        col :schemes_custom_name_array, label: t('models.effective.datatables.projects_certification_paths.schemes_custom_name_array.label'), visible: false, sql_column: "ARRAY_TO_STRING(ARRAY(SELECT case when scheme_mixes.custom_name is null then ' ' else scheme_mixes.custom_name end from schemes INNER JOIN scheme_mixes ON schemes.id = scheme_mixes.scheme_id WHERE scheme_mixes.certification_path_id = certification_paths.id ORDER BY schemes.name), '|||')" do |rec|
+          ERB::Util.html_escape(rec.schemes_custom_name_array).split('|||').join('<br/>') unless rec.schemes_custom_name_array.nil?
         end
 
         col :certificate_stage, sql_column: 'certificates.id', label: t('models.effective.datatables.projects_certification_paths.certificate_stage.label'), search: { as: :select, collection: Proc.new { Certificate.all.order(:display_weight).map { |certificate| [certificate.stage_title, certificate.stage_title&.delete(",")] }.uniq } } do |rec|
@@ -399,7 +399,7 @@ module Effective
           .select('certification_path_statuses.name as certification_path_status_name')
           .select('CASE WHEN certification_path_statuses.id IS NULL THEN false WHEN certification_path_statuses.id = 15 THEN false WHEN certification_path_statuses.id = 16 THEN false ELSE true END as certification_path_status_is_active')
           .select("ARRAY_TO_STRING(ARRAY(SELECT case when scheme_mixes.custom_name is null then schemes.name else schemes.name end from schemes INNER JOIN scheme_mixes ON schemes.id = scheme_mixes.scheme_id WHERE scheme_mixes.certification_path_id = certification_paths.id), '|||') AS schemes_array")
-          .select("ARRAY_TO_STRING(ARRAY(SELECT case when scheme_mixes.custom_name is null then ' ' else scheme_mixes.custom_name end from schemes INNER JOIN scheme_mixes ON schemes.id = scheme_mixes.scheme_id WHERE scheme_mixes.certification_path_id = certification_paths.id), '|||') AS schemes_custom_name_array")
+          .select("ARRAY_TO_STRING(ARRAY(SELECT case when scheme_mixes.custom_name is null then ' ' else scheme_mixes.custom_name end from schemes INNER JOIN scheme_mixes ON schemes.id = scheme_mixes.scheme_id WHERE scheme_mixes.certification_path_id = certification_paths.id ORDER BY schemes.name), '|||') AS schemes_custom_name_array")
           .select('(%s) AS project_team_array' % projects_users_by_type('project_team'))
           .select('(%s) AS cgp_project_manager_array' % projects_users_by_type('cgp_project_manager'))
           .select('(%s) AS gsas_trust_team_array' % projects_users_by_type('gsas_trust_team'))
