@@ -11,7 +11,6 @@ class LinkmeService
   # when an linkme member profile is requested.
   MEMBER_PROFILE_FIELDS = {
       id: 'CdbGUID',
-      member_id: 'MemberID',
       username: 'UserName',
       email: 'Email',
       picture: 'HeadshotImageURI',
@@ -44,127 +43,96 @@ class LinkmeService
   # Auth.Authenticate
   # Authenticates a linkme.qa user. On success, the user will be assigned session_id.
   # Returns TRUE if successful, FALSE if unsuccessful. Raises an AccountLockedError when the account is locked.
-  def auth_authenticate(username, password, usertype = 'Member')
-    endpoint = "/ams/authenticate"
-
-    params = {
-            usertype: usertype,
-            ClientID: Rails.application.config.x.linkme.client_id, 
-            username: username, 
-            password: password
-    }
-    
-    headers = {
-                'Accept-Encoding' => 'none',
-                'Accept' => 'application/json'
-              }
-              
-    response = execute_api_request('POST', endpoint, headers, params)
-    response = JSON.parse(response.env.response_body) 
-
-    if (response["MemberID"].present? && response["SessionId"].present?)
-      @member_id = response["MemberID"]
-      @session_id = response["SessionId"]
-      return true
-    else
-      return false
+  def auth_authenticate(username, password)
+    begin
+      new_api_url = Rails.application.config.x.linkme.new_api_url
+      url = "#{new_api_url}/ams/authenticate"
+      body = {
+              usertype: 'Member',
+              ClientID: Rails.application.config.x.linkme.client_id, 
+              username: username, 
+              password: password
+            }.to_json
+        
+      response = Faraday.post(url) do |req|
+        req.headers['Content-Type'] = 'application/json'
+        req.headers['Accept'] = 'application/json'
+        req.body = body
+      end
+                
+      return JSON.parse(response.body)
+    rescue StandardError => e
+      Rails.logger.error 'Error when executing a linkme API request: ' + e.to_s
+      raise e
     end
   end
 
   # Member.Profile.Get
   # Retrieves the member profile of the linkme.qa user that is linked to the session_id.
   # Returns a hash containing the member info.
-  def member_profile_get
+  def member_profile_get(member_id = nil, session_id = nil)
     client_id = Rails.application.config.x.linkme.client_id
-    endpoint = "/ams/#{client_id}/member/#{@member_id}/MemberProfile"
+    new_api_url = Rails.application.config.x.linkme.new_api_url
+    url = "#{new_api_url}/ams/#{client_id}/member/#{member_id}/MemberProfile"
 
-    params = {
+    body = {
       ClientID: client_id, 
-      MemberID: @member_id
-    }
+      MemberID: member_id
+     }.to_json
 
-    headers = {
-                'Accept-Encoding' => 'none',
-                'Accept' => 'application/json',
-                'X-SS-ID' => @session_id
-              }
-  
-    response = execute_api_request('GET', endpoint, headers, params)
+    response = Faraday.get(url) do |req|
+      req.headers['X-SS-ID'] = session_id        
+      req.headers['Accept'] = 'application/json'        
+      req.headers['Accept-Encoding'] = 'none'        
+      req.body = body        
+    end 
 
-    member_information = JSON.parse(response.env.response_body)
-    member_information = flatten_hash(member_information)
-
-    return Hash[ MEMBER_PROFILE_FIELDS.map{|key, value| [key, member_information[value&.to_sym]] } ]
+    response = if (response.body.blank? || response.status.blank?)
+                raise ApiError, 'Invalid response'
+              elsif (response.status != 200)
+                raise ApiError, "HTTP error #{response.status}"
+              else
+                member_information = JSON.parse(response.env.response_body)
+                member_information = flatten_hash(member_information)
+                Hash[ MEMBER_PROFILE_FIELDS.map{|key, value| [key, member_information[value&.to_sym]] } ]
+              end
   end
 
   # Sa.People.Profile.FindID
   # Retrieves a list of member profile ids of linkme.qa users by email.
   # Returns an array of member profile ids or raises a NotFoundError if no member ids were found.
-  def sa_people_profile_findid(email = nil)
+  def sa_people_profile_findid(email)
     client_id = Rails.application.config.x.linkme.client_id
-    api_key = Rails.application.config.x.linkme.api_key
-    api_password = Rails.application.config.x.linkme.api_password
-    endpoint = "/ams/#{client_id}/PeopleProfileFindID"
-    page_number = 1
-    page_size = 10
+    new_api_url = Rails.application.config.x.linkme.new_api_url
+    url = "#{new_api_url}/Ams/#{client_id}/PeopleIDs"
 
-    # To get results, first login as an Admin.
-    auth_authenticate(api_key, api_password, usertype = 'Admin')
-
-    params = {
+    body = {
       Email: email, 
-      PageNumber: page_number, 
-      PageSize: page_size
-    }
-    
-    headers = {
-                'Accept' => 'application/json',
-                'Accept-Encoding' => 'none',
-                'X-SS-ID' => @session_id
-              }
-
-    response = execute_api_request('GET', endpoint, headers, params)
-    member_ids_hash = JSON.parse(response.env.response_body)
-
-    member_ids = member_ids_hash["ID"]
-    member_profile_ids = member_ids_hash["ProfileIDs"]
-
-    member_profile_ids ||= []
-    member_ids ||= []
-    
-    return Hash[member_ids.zip member_profile_ids]
+      SaPasscode: Rails.application.config.x.linkme.sa_passcode
+     }.to_json
+     
+    response = Faraday.get(url) do |req|
+      req.headers['Accept'] = 'application/json'        
+      req.headers['Accept-Encoding'] = 'none'        
+      req.body = body        
+    end 
   end
 
   # Sa.People.Profile.Get
   def sa_people_profile_get(id)
     client_id = Rails.application.config.x.linkme.client_id
-    api_key = Rails.application.config.x.linkme.api_key
-    api_password = Rails.application.config.x.linkme.api_password
-    page_number = 1
-    page_size = 10
-    endpoint = "/ams/#{client_id}/people"
+    new_api_url = Rails.application.config.x.linkme.new_api_url
+    url = "#{new_api_url}/Ams/#{client_id}/PeopleProfileFindID"
 
-    # To get member profile, first login as an Admin.
-    auth_authenticate(api_key, api_password, usertype = 'Admin')
+    body = {
+      ID: id, 
+     }.to_json
 
-    params = {
-      ProfileID: id,
-      PageNumber: page_number, 
-      PageSize: page_size
-    }
-
-    headers = {
-                'Accept-Encoding' => 'none',
-                'Accept' => 'application/json',
-                'X-SS-ID' => @session_id
-              }
-    
-    response = execute_api_request('GET', endpoint, headers, params)
-
-    member_information = JSON.parse(response.env.response_body)
-    member_information = flatten_hash(member_information)
-
-    return  Hash[ PEOPLE_PROFILE_FIELDS.map{|key, value| [key, member_information[value&.to_sym]] } ]
+    response = Faraday.get(url) do |req|
+      req.headers['Accept'] = 'application/json'        
+      req.headers['Accept-Encoding'] = 'none'        
+      req.body = body        
+    end 
   end
 
   private
