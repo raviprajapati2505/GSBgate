@@ -22,7 +22,11 @@ gem 'httparty'
 gem 'jbuilder'
 gem 'js-routes'
 gem 'kaminari'
+
+# to make api calls
 gem 'nokogiri'
+gem 'faraday'
+
 gem 'pdf-core'
 gem 'pg'
 gem 'prawn'

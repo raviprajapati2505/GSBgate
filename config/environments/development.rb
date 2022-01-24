@@ -81,6 +81,10 @@ Rails.application.configure do
   config.x.linkme.private_api_key = '5D621211-8E39-4871-A3F3-05C5C8833A57'
   config.x.linkme.sa_passcode = 'Y05KzqB77cs6'
 
+  # LinkMe.qa new APIs config
+  config.x.linkme.new_api_url = 'https://ws.yourmembership.com'
+  config.x.linkme.client_id = 34560
+
   # Chart generator API config
   config.x.chart_generator.api_url = 'localhost'
   config.x.chart_generator.api_port = 8082

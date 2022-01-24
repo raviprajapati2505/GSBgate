@@ -2,6 +2,7 @@
 # For more info on the API, see http://www.yourmembership.com/company/api-reference/
 class LinkmeService
   require 'nokogiri'
+  require 'faraday'
 
   attr_accessor :call_id
   attr_accessor :session_id
@@ -9,33 +10,33 @@ class LinkmeService
   # Fields that will be returned by the service
   # when an linkme member profile is requested.
   MEMBER_PROFILE_FIELDS = {
-      id: 'ID',
-      username: 'Username',
-      email: 'EmailAddr',
+      id: 'CdbGUID',
+      username: 'UserName',
+      email: 'Email',
       picture: 'HeadshotImageURI',
-      employer: 'Employer',
-      name_prefix: 'NamePrefix',
+      employer: 'EmployerName',
+      name_prefix: 'Prefix',
       first_name: 'FirstName',
       middle_name: 'MiddleName',
       last_name: 'LastName',
-      name_suffix: 'NameSuffix',
+      name_suffix: 'Suffix',
       membership: 'Membership',
-      membership_expiry: 'MembershipExpiry'
+      membership_expiry: 'MembershipExpiresDate'
   }
 
   PEOPLE_PROFILE_FIELDS = {
-      id: 'ID',
-      username: 'Username',
-      email: 'EmailAddr',
+      id: 'CdbGUID',
+      username: 'UserName',
+      email: 'Email',
       picture: 'HeadshotImageURI',
-      employer: 'Employer',
-      name_prefix: 'NamePrefix',
+      employer: 'EmployerName',
+      name_prefix: 'Prefix',
       first_name: 'FirstName',
       middle_name: 'MiddleName',
       last_name: 'LastName',
-      name_suffix: 'NameSuffix',
+      name_suffix: 'Suffix',
       membership: 'Membership',
-      membership_expiry: 'MembershipExpiry',
+      membership_expiry: 'MembershipExpiresDate',
       master_id: 'MasterID'
   }
 
@@ -56,34 +57,95 @@ class LinkmeService
   # Authenticates a linkme.qa user. On success, the user will be linked to the current API session.
   # Returns TRUE if successful, FALSE if unsuccessful. Raises an AccountLockedError when the account is locked.
   def auth_authenticate(username, password)
-    request_xml = prepare_api_request('Auth.Authenticate', method_params: {Username: username, Password: password}, session_id: @session_id)
-    response_xml = execute_api_request(request_xml)
-    response_xml.at_xpath('//Auth.Authenticate//ID').present?
+    begin
+      new_api_url = Rails.application.config.x.linkme.new_api_url
+      url = "#{new_api_url}/ams/authenticate"
+      body = {
+              usertype: 'Member',
+              ClientID: Rails.application.config.x.linkme.client_id, 
+              username: username, 
+              password: password
+            }.to_json
+        
+      response = Faraday.post(url) do |req|
+        req.headers['Content-Type'] = 'application/json'
+        req.headers['Accept'] = 'application/json'
+        req.body = body
+      end
+                
+      return JSON.parse(response.body)
+    rescue StandardError => e
+      Rails.logger.error 'Error when executing a linkme API request: ' + e.to_s
+      raise e
+    end
   end
 
   # Member.Profile.Get
   # Retrieves the member profile of the linkme.qa user that is linked to the current API session.
   # Returns a hash containing the member info.
-  def member_profile_get
-    request_xml = prepare_api_request('Member.Profile.Get', session_id: @session_id)
-    response_xml = execute_api_request(request_xml)
-    Hash[ MEMBER_PROFILE_FIELDS.map{|key, value| [key, response_xml.at_xpath("//Member.Profile.Get//#{value}").text] } ]
+  def member_profile_get(member_id = nil, session_id = nil)
+    client_id = Rails.application.config.x.linkme.client_id
+    new_api_url = Rails.application.config.x.linkme.new_api_url
+    url = "#{new_api_url}/ams/#{client_id}/member/#{member_id}/MemberProfile"
+
+    body = {
+      ClientID: client_id, 
+      MemberID: member_id
+     }.to_json
+
+    response = Faraday.get(url) do |req|
+      req.headers['X-SS-ID'] = session_id        
+      req.headers['Accept'] = 'application/json'        
+      req.headers['Accept-Encoding'] = 'none'        
+      req.body = body        
+    end 
+
+    response = if (response.body.blank? || response.status.blank?)
+                raise ApiError, 'Invalid response'
+              elsif (response.status != 200)
+                raise ApiError, "HTTP error #{response.status}"
+              else
+                member_information = JSON.parse(response.env.response_body)
+                member_information = flatten_hash(member_information)
+                Hash[ MEMBER_PROFILE_FIELDS.map{|key, value| [key, member_information[value&.to_sym]] } ]
+              end
   end
 
   # Sa.People.Profile.FindID
   # Retrieves a list of member profile ids of linkme.qa users by email.
   # Returns an array of member profile ids or raises a NotFoundError if no member ids were found.
   def sa_people_profile_findid(email)
-    request_xml = prepare_api_request('Sa.People.Profile.FindID', sa_request: true, method_params: {Email: email})
-    response_xml = execute_api_request(request_xml)
-    response_xml.xpath('//Sa.People.Profile.FindID//ID').map { |xml_node| xml_node.text }
+    client_id = Rails.application.config.x.linkme.client_id
+    new_api_url = Rails.application.config.x.linkme.new_api_url
+    url = "#{new_api_url}/Ams/#{client_id}/PeopleIDs"
+
+    body = {
+      Email: email, 
+      SaPasscode: Rails.application.config.x.linkme.sa_passcode
+     }.to_json
+     
+    response = Faraday.get(url) do |req|
+      req.headers['Accept'] = 'application/json'        
+      req.headers['Accept-Encoding'] = 'none'        
+      req.body = body        
+    end 
   end
 
   # Sa.People.Profile.Get
   def sa_people_profile_get(id)
-    request_xml = prepare_api_request('Sa.People.Profile.Get', sa_request: true, method_params: {ID: id})
-    response_xml = execute_api_request(request_xml)
-    Hash[ PEOPLE_PROFILE_FIELDS.map{|key, value| [key, response_xml.at_xpath("//Sa.People.Profile.Get//#{value}").text] } ]
+    client_id = Rails.application.config.x.linkme.client_id
+    new_api_url = Rails.application.config.x.linkme.new_api_url
+    url = "#{new_api_url}/Ams/#{client_id}/PeopleProfileFindID"
+
+    body = {
+      ID: id, 
+     }.to_json
+
+    response = Faraday.get(url) do |req|
+      req.headers['Accept'] = 'application/json'        
+      req.headers['Accept-Encoding'] = 'none'        
+      req.body = body        
+    end 
   end
 
   private
@@ -173,6 +235,13 @@ class LinkmeService
     rescue StandardError => e
       Rails.logger.error 'Error when executing a linkme API request: ' + e.to_s
       raise e
+    end
+  end
+
+  # to flatten all nested hash of member profile
+  def flatten_hash(param, prefix = nil)
+    param.each_pair.reduce({}) do |a, (k, v)|
+      v.is_a?(Hash) ? a.merge(flatten_hash(v, "")) : a.merge("#{prefix}#{k}".to_sym => v)
     end
   end
 

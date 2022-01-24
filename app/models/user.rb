@@ -113,29 +113,31 @@ class User < ApplicationRecord
   # Updates or creates a linkme user in the DB.
   # - member_profile: A linkme member profile hash returned by the LinkmeService
   # - master_profile: A linkme member profile hash returned by the LinkmeService which functions as the Service Provider/Employer
-  def self.update_or_create_linkme_user!(member_profile, master_profile)
+  def self.update_or_create_linkme_user!(member_profile = nil, master_profile = nil)
     # Check if the user exists in the GSAS DB
-    user = linkme_users.find_by_linkme_member_id(member_profile[:id])
+    user = linkme_users.find_by_linkme_member_id(member_profile[:id]&.upcase)
 
     # If the user record doesn't exist, create it
     user ||= new
 
     # Update the user's data
     user.linkme_user = true
-    user.linkme_member_id = member_profile[:id]
+    user.linkme_member_id = member_profile[:id]&.upcase
     user.username = member_profile[:username]
     user.email = member_profile[:email]
     user.picture = member_profile[:picture]
     user.gord_employee = (member_profile[:employer] == 'GORD')
     user.cgp_license = ['GSAS-CGP Licentiate', 'GSAS-CGP Practitioner', 'GSAS-CGP Fellow', 'GSAS-CGP Associate'].include?(member_profile[:membership])
     user.employer_name = member_profile[:employer]
+
     # CGP license expiry logic
     # ------------------------
-    membership_expiry = (master_profile.nil? || master_profile[:membership_expiry].blank?) ? false : DateTime.strptime(master_profile[:membership_expiry], '%Y-%m-%d %H:%M:%S')
+    membership_expiry = (master_profile.nil? || master_profile[:membership_expiry].blank?) ? false : master_profile[:membership_expiry]&.to_datetime
     membership_expiry = membership_expiry < DateTime.now unless !membership_expiry
+
     # Service Provider membership expired ?
     unless membership_expiry
-      membership_expiry = member_profile[:membership_expiry].blank? ? false : DateTime.strptime(member_profile[:membership_expiry], '%Y-%m-%d %H:%M:%S')
+      membership_expiry = member_profile[:membership_expiry].blank? ? false : member_profile[:membership_expiry]&.to_datetime
       membership_expiry = membership_expiry < DateTime.now unless !membership_expiry
     end
     user.cgp_license_expired = membership_expiry
