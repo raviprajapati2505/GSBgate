@@ -12,15 +12,12 @@ class LinkmeStrategy < BaseStrategy
       # linkme.session_create
 
       # Authenticate the user
-      
-      response = linkme.auth_authenticate(user_data['username'], user_data['password'])
-      
-      if ((response["MemberID"].present? && response["SessionId"].present?))
+      if (linkme.auth_authenticate(user_data['username'], user_data['password']))
         # Get the linkme member profile
-        member_profile = linkme.member_profile_get(response["MemberID"], response["SessionId"])
+        member_profile = linkme.member_profile_get
 
-        people_profile = linkme.sa_people_profile_get(member_profile[:id])
-        master_profile = linkme.sa_people_profile_get(people_profile[:master_id]) unless people_profile[:master_id].blank?
+        # people_profile = linkme.sa_people_profile_get(member_profile[:id])
+        # master_profile = linkme.sa_people_profile_get(people_profile[:master_id]) unless people_profile[:master_id].blank?
 
         # Update or create the linkme.qa user in the GSAS DB
         user = User.update_or_create_linkme_user!(member_profile)
@@ -38,8 +35,6 @@ class LinkmeStrategy < BaseStrategy
         fail 'The username and password you entered do not match. Forgot your username or password? <a href="http://www.linkme.qa/general/email_pass.asp" target="_blank">Please click here.</a>'
       end
 
-      # Abandon the linkme API session
-      linkme.session_abandon
     rescue LinkmeService::AccountLockedError
       fail 'Too many failed authentication attempts have been made on this account. This account is now locked out for 5 minutes.'
     rescue LinkmeService::ApiError
