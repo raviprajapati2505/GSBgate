@@ -12,15 +12,12 @@ class LinkmeStrategy < BaseStrategy
       # linkme.session_create
 
       # Authenticate the user
-      
-      response = linkme.auth_authenticate(user_data['username'], user_data['password'])
-      
-      if ((response["MemberID"].present? && response["SessionId"].present?))
+      if (linkme.auth_authenticate(user_data['username'], user_data['password']))
         # Get the linkme member profile
-        member_profile = linkme.member_profile_get(response["MemberID"], response["SessionId"])
+        member_profile = linkme.member_profile_get
 
-        people_profile = linkme.sa_people_profile_get(member_profile[:member_id])
-        master_profile = linkme.sa_people_profile_get(people_profile[:master_id]) unless people_profile[:master_id].blank?
+        # people_profile = linkme.sa_people_profile_get(member_profile[:id])
+        # master_profile = linkme.sa_people_profile_get(people_profile[:master_id]) unless people_profile[:master_id].blank?
 
         # Update or create the linkme.qa user in the GSAS DB
         user = User.update_or_create_linkme_user!(member_profile)

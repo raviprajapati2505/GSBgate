@@ -44,58 +44,57 @@ class LinkmeService
   # Authenticates a linkme.qa user. On success, the user will be assigned session_id.
   # Returns TRUE if successful, FALSE if unsuccessful. Raises an AccountLockedError when the account is locked.
   def auth_authenticate(username, password)
-    begin
-      new_api_url = Rails.application.config.x.linkme.new_api_url
-      url = "#{new_api_url}/ams/authenticate"
-      body = {
-              usertype: 'Member',
-              ClientID: Rails.application.config.x.linkme.client_id, 
-              username: username, 
-              password: password
-            }.to_json
-        
-      response = Faraday.post(url) do |req|
-        req.headers['Content-Type'] = 'application/json'
-        req.headers['Accept'] = 'application/json'
-        req.body = body
-      end
-                
-      return JSON.parse(response.body)
-    rescue StandardError => e
-      Rails.logger.error 'Error when executing a linkme API request: ' + e.to_s
-      raise e
+    endpoint = "/ams/authenticate"
+
+    body = {
+            usertype: 'Member',
+            ClientID: Rails.application.config.x.linkme.client_id, 
+            username: username, 
+            password: password
+    }.to_json
+    
+    headers = {
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json'
+              }
+              
+    response = execute_api_request('POST', endpoint, headers, body)
+    response = JSON.parse(response.env.response_body) 
+
+    if (response["MemberID"].present? && response["SessionId"].present?)
+      @member_id = response["MemberID"]
+      @session_id = response["SessionId"]
+      return true
+    else
+      return false
     end
+
   end
 
   # Member.Profile.Get
   # Retrieves the member profile of the linkme.qa user that is linked to the session_id.
   # Returns a hash containing the member info.
-  def member_profile_get(member_id = nil, session_id = nil)
+  def member_profile_get
     client_id = Rails.application.config.x.linkme.client_id
-    new_api_url = Rails.application.config.x.linkme.new_api_url
-    url = "#{new_api_url}/ams/#{client_id}/member/#{member_id}/MemberProfile"
+    endpoint = "/ams/#{client_id}/member/#{@member_id}/MemberProfile"
 
     body = {
       ClientID: client_id, 
-      MemberID: member_id
+      MemberID: @member_id
      }.to_json
 
-    response = Faraday.get(url) do |req|
-      req.headers['X-SS-ID'] = session_id        
-      req.headers['Accept'] = 'application/json'        
-      req.headers['Accept-Encoding'] = 'none'        
-      req.body = body        
-    end 
+     headers = {
+      'Accept-Encoding' => 'none',
+      'Accept' => 'application/json',
+      'X-SS-ID' => @session_id
+    }
+  
+    response = execute_api_request('GET', endpoint, headers, body)
 
-    response = if (response.body.blank? || response.status.blank?)
-                raise ApiError, 'Invalid response'
-              elsif (response.status != 200)
-                raise ApiError, "HTTP error #{response.status}"
-              else
-                member_information = JSON.parse(response.env.response_body)
-                member_information = flatten_hash(member_information)
-                Hash[ MEMBER_PROFILE_FIELDS.map{|key, value| [key, member_information[value&.to_sym]] } ]
-              end
+    member_information = JSON.parse(response.env.response_body)
+    member_information = flatten_hash(member_information)
+
+    return Hash[ MEMBER_PROFILE_FIELDS.map{|key, value| [key, member_information[value&.to_sym]] } ]
   end
 
   # Sa.People.Profile.FindID
@@ -104,7 +103,7 @@ class LinkmeService
   def sa_people_profile_findid(email)
     client_id = Rails.application.config.x.linkme.client_id
     new_api_url = Rails.application.config.x.linkme.new_api_url
-    url = "#{new_api_url}/Ams/#{client_id}/PeopleIDs"
+    url = "#{new_api_url}/Ams/#{client_id}/PeopleProfileFindID"
 
     body = {
       Email: email, 
@@ -137,24 +136,24 @@ class LinkmeService
 
   private
 
-  def execute_api_request(request_type = nil, endpoint = '', headers = {}, params = {})
+  def execute_api_request(request_type = nil, endpoint = '', headers = {}, body = {})
     begin
-      api_url = Rails.application.config.x.linkme.api_url
-      url = api_url + endpoint
+      new_api_url = Rails.application.config.x.linkme.new_api_url
+      url = new_api_url + endpoint
 
       if request_type == 'POST'
         response = Faraday.post(url) do |req|
           req.headers = headers
-          req.params = params
+          req.body = body
         end
       else
         response = Faraday.get(url) do |req|
           req.headers = headers
-          req.params = params
+          req.body = body
         end
       end
 
-      if response.env.status.blank?
+      if (response.body.blank? || response.status.blank?)
         raise ApiError, 'Invalid response'
       else
         error_code = response.status
