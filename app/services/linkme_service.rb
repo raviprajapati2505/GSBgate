@@ -4,7 +4,6 @@ class LinkmeService
   require 'nokogiri'
   require 'faraday'
 
-  attr_accessor :call_id
   attr_accessor :session_id
   attr_accessor :member_id
 
@@ -44,22 +43,22 @@ class LinkmeService
   # Auth.Authenticate
   # Authenticates a linkme.qa user. On success, the user will be linked to the current API session.
   # Returns TRUE if successful, FALSE if unsuccessful. Raises an AccountLockedError when the account is locked.
-  def auth_authenticate(username, password)
+  def auth_authenticate(username, password, usertype = 'Member')
     endpoint = "/ams/authenticate"
 
-    body = {
-            usertype: 'Member',
+    params = {
+            usertype: usertype,
             ClientID: Rails.application.config.x.linkme.client_id, 
             username: username, 
             password: password
-    }.to_json
+    }
     
     headers = {
-                'Content-Type' => 'application/json',
+                'Accept-Encoding' => 'none',
                 'Accept' => 'application/json'
               }
               
-    response = execute_api_request('POST', endpoint, headers, body)
+    response = execute_api_request('POST', endpoint, headers, params)
     response = JSON.parse(response.env.response_body) 
 
     if (response["MemberID"].present? && response["SessionId"].present?)
@@ -79,18 +78,18 @@ class LinkmeService
     client_id = Rails.application.config.x.linkme.client_id
     endpoint = "/ams/#{client_id}/member/#{@member_id}/MemberProfile"
 
-    body = {
+    params = {
       ClientID: client_id, 
       MemberID: @member_id
-     }.to_json
-
-     headers = {
-      'Accept-Encoding' => 'none',
-      'Accept' => 'application/json',
-      'X-SS-ID' => @session_id
     }
+
+    headers = {
+                'Accept-Encoding' => 'none',
+                'Accept' => 'application/json',
+                'X-SS-ID' => @session_id
+              }
   
-    response = execute_api_request('GET', endpoint, headers, body)
+    response = execute_api_request('GET', endpoint, headers, params)
 
     member_information = JSON.parse(response.env.response_body)
     member_information = flatten_hash(member_information)
@@ -101,43 +100,75 @@ class LinkmeService
   # Sa.People.Profile.FindID
   # Retrieves a list of member profile ids of linkme.qa users by email.
   # Returns an array of member profile ids or raises a NotFoundError if no member ids were found.
-  def sa_people_profile_findid(email)
+  def sa_people_profile_findid(email = nil)
     client_id = Rails.application.config.x.linkme.client_id
-    new_api_url = Rails.application.config.x.linkme.new_api_url
-    url = "#{new_api_url}/Ams/#{client_id}/PeopleProfileFindID"
+    api_key = Rails.application.config.x.linkme.api_key
+    api_password = Rails.application.config.x.linkme.api_password
+    endpoint = "/ams/#{client_id}/PeopleProfileFindID"
+    page_number = 1
+    page_size = 10
 
-    body = {
+    auth_authenticate(api_key, api_password, usertype = 'Admin')
+
+    params = {
       Email: email, 
-      SaPasscode: Rails.application.config.x.linkme.sa_passcode
-     }.to_json
-     
-    response = Faraday.get(url) do |req|
-      req.headers['Accept'] = 'application/json'        
-      req.headers['Accept-Encoding'] = 'none'        
-      req.body = body        
-    end 
+      PageNumber: page_number, 
+      PageSize: page_size
+    }
+    
+    headers = {
+                'Accept' => 'application/json',
+                'Accept-Encoding' => 'none',
+                'X-SS-ID' => @session_id
+              }
+
+    response = execute_api_request('GET', endpoint, headers, params)
+    member_ids_hash = JSON.parse(response.env.response_body)
+
+    member_ids = member_ids_hash["ID"]
+    member_profile_ids = member_ids_hash["ProfileIDs"]
+
+    member_profile_ids ||= []
+    member_ids ||= []
+    
+    return Hash[member_ids.zip member_profile_ids]
   end
 
   # Sa.People.Profile.Get
   def sa_people_profile_get(id)
     client_id = Rails.application.config.x.linkme.client_id
-    new_api_url = Rails.application.config.x.linkme.new_api_url
-    url = "#{new_api_url}/Ams/#{client_id}/PeopleProfileFindID"
+    api_key = Rails.application.config.x.linkme.api_key
+    api_password = Rails.application.config.x.linkme.api_password
+    page_number = 1
+    page_size = 10
+    endpoint = "/ams/#{client_id}/people"
 
-    body = {
-      ID: id, 
-     }.to_json
+    # Login as an Admin
+    auth_authenticate(api_key, api_password, usertype = 'Admin')
 
-    response = Faraday.get(url) do |req|
-      req.headers['Accept'] = 'application/json'        
-      req.headers['Accept-Encoding'] = 'none'        
-      req.body = body        
-    end 
+    params = {
+      ProfileID: id,
+      PageNumber: page_number, 
+      PageSize: page_size
+    }
+
+    headers = {
+                'Accept-Encoding' => 'none',
+                'Accept' => 'application/json',
+                'X-SS-ID' => @session_id
+              }
+    
+    response = execute_api_request('GET', endpoint, headers, params)
+
+    member_information = JSON.parse(response.env.response_body)
+    member_information = flatten_hash(member_information)
+
+    return  Hash[ PEOPLE_PROFILE_FIELDS.map{|key, value| [key, member_information[value&.to_sym]] } ]
   end
 
   private
 
-  def execute_api_request(request_type = nil, endpoint = '', headers = {}, body = {})
+  def execute_api_request(request_type = nil, endpoint = '', headers = {}, params = {})
     begin
       new_api_url = Rails.application.config.x.linkme.new_api_url
       url = new_api_url + endpoint
@@ -145,16 +176,16 @@ class LinkmeService
       if request_type == 'POST'
         response = Faraday.post(url) do |req|
           req.headers = headers
-          req.body = body
+          req.params = params
         end
       else
         response = Faraday.get(url) do |req|
           req.headers = headers
-          req.body = body
+          req.params = params
         end
       end
 
-      if (response.body.blank? || response.status.blank?)
+      if response.env.status.blank?
         raise ApiError, 'Invalid response'
       else
         error_code = response.status
