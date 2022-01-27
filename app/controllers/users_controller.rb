@@ -120,11 +120,11 @@ class UsersController < AuthenticatedController
             member_profile = linkme.sa_people_profile_get(profile_id)
             member_profile[:id] = member_id
 
-            people_profile = linkme.sa_people_profile_get(member_profile[:member_id])
-            master_profile = linkme.sa_people_profile_get(people_profile[:master_id]) unless people_profile[:master_id].blank?
+            # people_profile = linkme.sa_people_profile_get(member_profile[:id])
+            # master_profile = linkme.sa_people_profile_get(people_profile[:master_id]) unless people_profile[:master_id].blank?
 
             # Update or create the linkme user in the DB
-            user = User.update_or_create_linkme_user!(member_profile, master_profile)
+            user = User.update_or_create_linkme_user!(member_profile)
 
             users << user
           end
