@@ -8,9 +8,6 @@ class LinkmeStrategy < BaseStrategy
       # Create a linkme.qa service object
       linkme = LinkmeService.new
 
-      # Create an API session
-      # linkme.session_create
-
       # Authenticate the user
       if (linkme.auth_authenticate(user_data['username'], user_data['password']))
         # Get the linkme member profile

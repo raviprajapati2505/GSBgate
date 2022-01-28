@@ -69,7 +69,6 @@ class LinkmeService
     else
       return false
     end
-
   end
 
   # Member.Profile.Get
@@ -109,6 +108,7 @@ class LinkmeService
     page_number = 1
     page_size = 10
 
+    # To get results, first login as an Admin.
     auth_authenticate(api_key, api_password, usertype = 'Admin')
 
     params = {
@@ -144,7 +144,7 @@ class LinkmeService
     page_size = 10
     endpoint = "/ams/#{client_id}/people"
 
-    # Login as an Admin
+    # To get member profile, first login as an Admin.
     auth_authenticate(api_key, api_password, usertype = 'Admin')
 
     params = {
