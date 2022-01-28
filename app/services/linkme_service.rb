@@ -42,7 +42,7 @@ class LinkmeService
   }
 
   # Auth.Authenticate
-  # Authenticates a linkme.qa user. On success, the user will be linked to the current API session.
+  # Authenticates a linkme.qa user. On success, the user will be assigned session_id.
   # Returns TRUE if successful, FALSE if unsuccessful. Raises an AccountLockedError when the account is locked.
   def auth_authenticate(username, password, usertype = 'Member')
     endpoint = "/ams/authenticate"
@@ -69,11 +69,10 @@ class LinkmeService
     else
       return false
     end
-
   end
 
   # Member.Profile.Get
-  # Retrieves the member profile of the linkme.qa user that is linked to the current API session.
+  # Retrieves the member profile of the linkme.qa user that is linked to the session_id.
   # Returns a hash containing the member info.
   def member_profile_get
     client_id = Rails.application.config.x.linkme.client_id
@@ -109,6 +108,7 @@ class LinkmeService
     page_number = 1
     page_size = 10
 
+    # To get results, first login as an Admin.
     auth_authenticate(api_key, api_password, usertype = 'Admin')
 
     params = {
@@ -144,7 +144,7 @@ class LinkmeService
     page_size = 10
     endpoint = "/ams/#{client_id}/people"
 
-    # Login as an Admin
+    # To get member profile, first login as an Admin.
     auth_authenticate(api_key, api_password, usertype = 'Admin')
 
     params = {
