@@ -4,16 +4,22 @@ class Reports::LetterOfConformanceCoverLetter < Reports::BaseReport
   include ReportsHelper
 
   MAIN_COLOR = '62A744'.freeze
+  COLUMN_1_COLOR = 'ecf1e5'.freeze
+  COLUMN_2_COLOR = 'dddcde'.freeze
+  TABLE_TEXT_COLOR = '465059'.freeze
+  TABLE_BORDER_COLOR = 'a8abb0'.freeze
 
-  HEADER_HEIGHT = 70
-  FOOTER_HEIGHT = 20
+  HEADER_HEIGHT = 60
+  FOOTER_HEIGHT = 70
   CONTENT_PADDING = 20
   # CONTENT_PADDING = 150
 
   SIGNATURE_CLOSING = 'Yours sincerely,'.freeze
   ISSUER_NAME = 'Dr. Yousef Al Horr'.freeze
   ISSUER_TITLE = 'Founding Chairman'.freeze
+  HEADER_IMAGE = 'report_header_image.png'.freeze
   HEADER_LOGO = 'gord_logo.jpg'.freeze
+  FOOTER_IMAGE = 'report_footer_image.png'.freeze
   GSAS_LOGO = 'gsas_logo.jpg'.freeze
   LOC_LOGO = 'gsas_logo.jpg'.freeze
 
@@ -74,15 +80,15 @@ Congratulations once again for partaking in this noble endeavor, and together le
     end
 
     draw_page do
-      newline(2)
+      newline(1)
       draw_certificate_header
-      newline(3)
+      newline(1)
       draw_certificate_info_table
-      newline(2)
+      newline(1)
       draw_paragraph1
-      newline(2)
+      newline(1)
       if @certification_path.certificate.only_name == 'Letter of Conformance'
-        newline(4)
+        newline(2)
         span(@document.bounds.right - CONTENT_PADDING, :position => :center) do
           draw_project_info
         end
@@ -114,23 +120,23 @@ Congratulations once again for partaking in this noble endeavor, and together le
 
   def draw_certificate_info_table
 
-     # Prepare table data
-     data = []
+    # Prepare table data
+    data = []
 
      # Add the category rows to the table
-       data.append(["To", @certification_path.project_id])
-      if @certification_path.certificate.certification_type == 'final_design_certificate'
-        data.append(["Service Provider", @certification_path.project.service_provider_2])
-      else
-        data.append(["Service Provider", @certification_path.project.service_provider])
-      end
-       data.append(["GSAS Certificate", @certification_path.certificate.only_certification_name])
-       data.append(["GSAS Version", @certification_path.certificate.only_version])
-       data.append(["Certification Stage", @certification_path.certificate.stage_title])
-       data.append(["Project ID", @certification_path.project.code])
-       data.append(["Project Name", @certification_path.project.name])
-       data.append(["GSAS Scheme", @certification_path.project.building_type_group.name])
-       data.append(["Location", @certification_path.project.location])
+    data.append(["To", @certification_path.project.owner])
+    data.append(["Project ID", @certification_path.project.code])
+    data.append(["Project Name", @certification_path.project.name])
+    data.append(["Location", @certification_path.project.location])
+    if @certification_path.certificate.certification_type == 'final_design_certificate'
+      data.append(["Service Provider", @certification_path.project.service_provider_2])
+    else
+      data.append(["Service Provider", @certification_path.project.service_provider])
+    end
+    data.append(["GSAS Certificate", @certification_path.certificate.only_certification_name])
+    data.append(["Certification Stage", @certification_path.certificate.stage_title])
+    data.append(["GSAS Version", @certification_path.certificate.only_version])
+    data.append(["GSAS Scheme", @certification_path.project.building_type_group.name])
     
      # Output table
      draw_table(data, true, 'basic_table')
@@ -259,42 +265,16 @@ Congratulations once again for partaking in this noble endeavor, and together le
 
   def draw_headers
     repeat(:all) do
-      bounding_box([@document.bounds.left, @document.bounds.top], width: 120, height: HEADER_HEIGHT) do
-        image image_path(HEADER_LOGO), width: 120
+      bounding_box([@document.bounds.left - 30, @document.bounds.top + 15], width: 580, height: HEADER_HEIGHT) do
+        image image_path(HEADER_IMAGE), width: 580
       end
-      bounding_box([@document.bounds.right - 50, @document.bounds.top], width: 60, height: HEADER_HEIGHT) do
-        image image_path(GSAS_LOGO), width: 60
-      end
+    
       newline
-      bounding_box([@document.bounds.right - 90, @document.bounds.top - 60], width: 100, height: HEADER_HEIGHT) do
+      bounding_box([@document.bounds.right - 105, @document.bounds.top - 45], width: 100, height: HEADER_HEIGHT) do
         text = "Issued Date: #{DateTime.current.to_date}\n"
         text2 = "Ref: LOC/QA 2532-2343-RU"
 
         styled_text("<div style='font-size: 8; text-align: right'>#{text}<br />#{text2}</div>")
-      end
-      bounding_box([@document.bounds.right - 380, @document.bounds.bottom + 20], width: 120, height: HEADER_HEIGHT) do
-        text = "Qatar Science & Technology Park | Tech 1 | Level 2 \n"
-        text2 = "Suite 203 | P.O. Box: 210162| Doha - Qatar \n"
-        text3 = "T: +974 4404 9010 F: +974 4404 9002"
-
-        styled_text("<div style='font-size: 7; text-align: right'>#{text}#{text2}#{text3}</div>")
-       
-        stroke do
-          # vertical_line 50, 100, at: [125, 125]
-          vertical_line 30, 80, at: 125
-          move_down 50
-        end
-      end
-      bounding_box([@document.bounds.right - 250, @document.bounds.bottom + 20], width: 120, height: HEADER_HEIGHT) do
-        # text = "واحة قطر للعلوم والتكنولوجيا | تك 1 | المستوي 2 \n"
-        # text2 = "جناح 203 | ص. صندوق: 210162 | الدوحة قطر \n"
-        # text3 = "هاتف: +974 4404 9010 فاكس: +974 4404 9002"
-
-        text = "Qatar Science & Technology Park | Tech 1 | Level 2 \n"
-        text2 = "Suite 203 | P.O. Box: 210162| Doha - Qatar \n"
-        text3 = "T: +974 4404 9010 F: +974 4404 9002"
-
-        styled_text("<div style='font-size: 7; text-align: left'>#{text}#{text2}#{text3}</div>")
       end
       # bounding_box([@document.bounds.right - 50, @document.bounds.bottom + 100], width: 50, height: HEADER_HEIGHT) do
       #   image image_path(GSAS_LOGO), width: 50
@@ -310,12 +290,8 @@ Congratulations once again for partaking in this noble endeavor, and together le
 
   def draw_footers
     repeat(:all) do
-      box_width = 120
-      bounding_box([@document.bounds.left, @document.bounds.bottom], width: box_width, height: FOOTER_HEIGHT) do
-        text 'Crafting a Green Legacy', size: 8, color: '555555', align: :left
-      end
-      bounding_box([@document.bounds.right - box_width, @document.bounds.bottom], width: box_width, height: FOOTER_HEIGHT) do
-        text 'www.gord.qa', size: 8, color: '555555', align: :right
+      bounding_box([@document.bounds.left - 30, @document.bounds.bottom + 30], width: 580, height: FOOTER_HEIGHT) do
+        image image_path(FOOTER_IMAGE), width: 580
       end
     end
   end
@@ -638,23 +614,27 @@ Congratulations once again for partaking in this noble endeavor, and together le
           cells.border_width = 0.5
 
           # Set column widths
-          column(0).width = width / 2
-          column(1).width = width / 2
+          column(0).width = width / 3
+          column(1).width = width * 2 / 3
 
           cells.borders = %i(top right bottom left)
+          cells.border_color = TABLE_BORDER_COLOR
+
           
           # # Header row style
           header_row = rows(0..row_length - 1)
-          header_row.column(0).background_color = MAIN_COLOR
-          header_row.column(0).text_color = 'FFFFFF'
+          header_row.column(0).background_color = COLUMN_1_COLOR
+          header_row.column(0).text_color = TABLE_TEXT_COLOR
+          header_row.column(1).background_color = COLUMN_2_COLOR
+          header_row.column(1).text_color = TABLE_TEXT_COLOR
           header_row.font = 'Helvetica'
-          header_row.font_style = :bold
-          header_row.borders = %i(top right bottom left)
+          # header_row.font_style = :bold
+          header_row.border_color = TABLE_BORDER_COLOR
 
           # Content rows style
           content_rows = rows(0..row_length - 1)
           content_rows.column(1).align = :left
-          content_rows.padding = [2, 4, 2, 4]
+          content_rows.padding = [3, 4, 3, 4]
         end
       elsif type == 'score_table'
         table(data, width: @document.bounds.right - CONTENT_PADDING) do

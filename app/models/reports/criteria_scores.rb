@@ -3,15 +3,23 @@ class Reports::CriteriaScores < Reports::BaseReport
   include ActionView::Helpers::NumberHelper
   include ActionView::Helpers::TranslationHelper
 
-  HEADER_HEIGHT = 70
-  FOOTER_HEIGHT = 20
+  MAIN_COLOR = '62A744'.freeze
+  COLUMN_1_COLOR = 'ecf1e5'.freeze
+  COLUMN_2_COLOR = 'dddcde'.freeze
+  TABLE_TEXT_COLOR = '465059'.freeze
+  TABLE_BORDER_COLOR = 'a8abb0'.freeze
+
+  HEADER_HEIGHT = 60
+  FOOTER_HEIGHT = 70
   CONTENT_PADDING = 20
   # CONTENT_PADDING = 150
 
   SIGNATURE_CLOSING = 'Yours sincerely,'.freeze
   ISSUER_NAME = 'Dr. Yousef Al Horr'.freeze
   ISSUER_TITLE = 'Founding Chairman'.freeze
+  HEADER_IMAGE = 'report_header_image.png'.freeze
   HEADER_LOGO = 'gord_logo.jpg'.freeze
+  FOOTER_IMAGE = 'report_footer_image.png'.freeze
   GSAS_LOGO = 'gsas_logo.jpg'.freeze
   LOC_LOGO = 'gsas_logo.jpg'.freeze
 
@@ -44,7 +52,6 @@ class Reports::CriteriaScores < Reports::BaseReport
     font 'Times-Roman', size: 11
 
     bounding_box([@document.bounds.left, @document.bounds.top - 80], width: @document.bounds.width) do
-      newline
       draw_certificate_header
     end
     draw_headers
@@ -74,34 +81,21 @@ class Reports::CriteriaScores < Reports::BaseReport
   end
 
   def draw_headers
-    canvas do
-      repeat(:all) do
-        # Certificate Information
-        bounding_box([@document.bounds.left + 50, @document.bounds.top - 50], width: 120, height: HEADER_HEIGHT) do
-          image image_path(HEADER_LOGO), width: 100
-        end
-
-        # Logo
-        logo_width = 50
-        bounding_box([@document.bounds.width - logo_width - PAGE_MARGIN, 800], width: logo_width) do
-          image image_path(GSAS_LOGO), height: logo_width
-        end
-
-        # Issued date and ref no.
-        newline
-        bounding_box([@document.bounds.right - 150, @document.bounds.top - 100], width: 100, height: HEADER_HEIGHT) do
-          text = "Issued Date: #{DateTime.current.to_date}\n"
-          text2 = "Ref: LOC/QA 2532-2343-RU"
-
-          styled_text("<div style='font-size: 8; text-align: right'>#{text}<br />#{text2}</div>")
-        end
-
-        # Project information
-        bounding_box([PAGE_MARGIN, 680], width: @document.bounds.width - (PAGE_MARGIN * 2)) do
-          newline
-          draw_project_info
-        end
+    repeat(:all) do
+      bounding_box([@document.bounds.left - 30, @document.bounds.top + 15], width: 580, height: HEADER_HEIGHT) do
+        image image_path(HEADER_IMAGE), width: 580
       end
+    
+      newline
+      bounding_box([@document.bounds.right - 105, @document.bounds.top - 45], width: 100, height: HEADER_HEIGHT) do
+        text = "Issued Date: #{DateTime.current.to_date}\n"
+        text2 = "Ref: LOC/QA 2532-2343-RU"
+
+        styled_text("<div style='font-size: 8; text-align: right'>#{text}<br />#{text2}</div>")
+      end
+      # bounding_box([@document.bounds.right - 50, @document.bounds.bottom + 100], width: 50, height: HEADER_HEIGHT) do
+      #   image image_path(GSAS_LOGO), width: 50
+      # end
     end
   end
 
@@ -111,59 +105,12 @@ class Reports::CriteriaScores < Reports::BaseReport
     text3 = "#{@certification_path.project.name}"
 
     styled_text("<div style='font-size: 12; text-align: center; color: #{MAIN_COLOR}'>#{text}<br />#{text2}<br />#{text3}</div>")
-    newline
   end
 
   def draw_footers
-    canvas do
-      repeat(:all) do
-        # Thick line
-        # stroke_color MAIN_COLOR
-        # self.line_width = 6
-        # stroke_horizontal_line @document.bounds.left + PAGE_MARGIN, @document.bounds.right - PAGE_MARGIN, at: 100
-
-        # Slogan
-        bounding_box([@document.bounds.left + 50, 50], width: 100, height: 10) do
-          text 'Crafting a Green Legacy', inline_format: true, size: 9
-        end
-
-        # Address
-        bounding_box([@document.bounds.right - 400, @document.bounds.bottom + 70], width: 120, height: HEADER_HEIGHT) do
-          text = "Qatar Science & Technology Park | Tech 1 | Level 2 \n"
-          text2 = "Suite 203 | P.O. Box: 210162| Doha - Qatar \n"
-          text3 = "T: +974 4404 9010 F: +974 4404 9002"
-  
-          styled_text("<div style='font-size: 7; text-align: right'>#{text}<br />#{text2}<br />#{text3}</div>")
-         
-          stroke do
-            # vertical_line 50, 100, at: [125, 125]
-            vertical_line 30, 80, at: 125
-            move_down 50
-          end
-        end
-        bounding_box([@document.bounds.right - 270, @document.bounds.bottom + 70], width: 120, height: HEADER_HEIGHT) do
-  
-          text = "Qatar Science & Technology Park | Tech 1 | Level 2 \n"
-          text2 = "Suite 203 | P.O. Box: 210162| Doha - Qatar \n"
-          text3 = "T: +974 4404 9010 F: +974 4404 9002"
-  
-          styled_text("<div style='font-size: 7; text-align: left'>#{text}<br />#{text2}<br />#{text3}</div>")
-        end
-
-        # GSAS LOGO
-        # bounding_box([@document.bounds.right - 110, @document.bounds.bottom + 150], width: 50, height: 100) do
-        #   image image_path(GSAS_LOGO), width: 50
-        # end
-
-        # URL
-        bounding_box([@document.bounds.right - 110, @document.bounds.bottom + 50], width: 70, height: HEADER_HEIGHT) do
-          text FOOTER_URL, inline_format: true, size: 9
-        end
-
-
-        # Thin line
-        # self.line_width = 1
-        # stroke_horizontal_line bounds.left, bounds.right, at: 30
+    repeat(:all) do
+      bounding_box([@document.bounds.left - 30, @document.bounds.bottom + 30], width: 580, height: FOOTER_HEIGHT) do
+        image image_path(FOOTER_IMAGE), width: 580
       end
     end
   end
@@ -260,21 +207,24 @@ class Reports::CriteriaScores < Reports::BaseReport
         # Category name column style
         name_column = column(0)
         name_column.align = :right
-        name_column.text_color = TEXT_COLOR
+        name_column.text_color = TABLE_TEXT_COLOR
         name_column.borders = [:top, :right, :bottom]
+        name_column.border_color = TABLE_BORDER_COLOR
         # name_column.border_color = MAIN_COLOR
-        name_column.font_style = :bold
-        name_column.background_color = MAIN_COLOR
+        # name_column.font_style = :bold
+        name_column.background_color = COLUMN_1_COLOR
 
         # Odd/even row style
         rows(1..-1).style do |c|
           c.background_color = 'EAEAEA' if (c.row % 2).zero?
+          c.border_color = COLUMN_2_COLOR
         end
 
         # Header row style
         header_row = row(0).columns(1..-1)
-        header_row.background_color = MAIN_COLOR
-        header_row.text_color = TEXT_COLOR
+        header_row.background_color = COLUMN_1_COLOR
+        header_row.text_color = TABLE_TEXT_COLOR
+        header_row.border_color = TABLE_BORDER_COLOR
 
         # Criteria name column style
         column(1).align = :left
