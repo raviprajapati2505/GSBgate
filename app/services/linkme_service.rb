@@ -11,6 +11,7 @@ class LinkmeService
   # when an linkme member profile is requested.
   MEMBER_PROFILE_FIELDS = {
       id: 'CdbGUID',
+      member_id: 'MemberID',
       username: 'UserName',
       email: 'Email',
       picture: 'HeadshotImageURI',
@@ -170,8 +171,8 @@ class LinkmeService
 
   def execute_api_request(request_type = nil, endpoint = '', headers = {}, params = {})
     begin
-      new_api_url = Rails.application.config.x.linkme.new_api_url
-      url = new_api_url + endpoint
+      api_url = Rails.application.config.x.linkme.api_url
+      url = api_url + endpoint
 
       if request_type == 'POST'
         response = Faraday.post(url) do |req|
