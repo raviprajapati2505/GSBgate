@@ -116,12 +116,19 @@ Rails.application.configure do
   config.x.gsas_info.all_notifications_email = 'GSAS-Trust-Info@gord.qa, e.eliskandarani@gord.qa, v.dixit@gord.qa'
   config.x.gsas_info.selected_notifications_email = 'alhorr@gord.qa'
 
-  # Linkme.qa API config
-  config.x.linkme.api_url = 'api.yourmembership.com'
+  # # Linkme.qa older API config
+  # config.x.linkme.api_url = 'api.yourmembership.com'
+  # config.x.linkme.api_verion = '2.03'
+  # config.x.linkme.public_api_key = '05BE43AB-B4FF-4E0B-89F3-9A1F3C281152'
+  # config.x.linkme.private_api_key = '5D621211-8E39-4871-A3F3-05C5C8833A57'
+  # config.x.linkme.sa_passcode = 'Y05KzqB77cs6'
+
+  # Linkme.qa newer API config
+  config.x.linkme.api_url = 'https://ws.yourmembership.com'
   config.x.linkme.api_verion = '2.03'
-  config.x.linkme.public_api_key = '05BE43AB-B4FF-4E0B-89F3-9A1F3C281152'
-  config.x.linkme.private_api_key = '5D621211-8E39-4871-A3F3-05C5C8833A57'
-  config.x.linkme.sa_passcode = 'Y05KzqB77cs6'
+  config.x.linkme.api_key = '576e28a8-4dd7-406d-ad50-e58c272bd84d'
+  config.x.linkme.api_password = '092f197c-87c7-42a3-9537-ae7fb4520362'
+  config.x.linkme.client_id = 34560
 
   # Chart generator API config
   config.x.chart_generator.api_url = 'localhost'
