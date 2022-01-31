@@ -498,6 +498,13 @@ class CertificationPathsController < AuthenticatedController
     send_file filepath, :type => 'application/pdf', :x_sendfile => false
   end
 
+  def download_detailed_certificate_report
+    filepath = filepath_for_report 'Detailed Certificate Report'
+    report = Reports::DetailedCertificateReport.new(@certification_path)
+    report.save_as(filepath)
+    send_file filepath, :type => 'application/pdf', :x_sendfile => false
+  end
+
   def confirm_destroy
   end
 

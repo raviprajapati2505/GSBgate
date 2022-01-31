@@ -150,27 +150,33 @@
         </div>
 
         <% if can?(:download_coverletter_report, @certification_path) %>
-        <div class="ibox float-e-margins">
-          <div class="ibox-title">
-            <h5><%= t('.certification_path_reports.title') %></h5>
-          </div>
-          <div class="ibox-content">
-            <% if can?(:download_coverletter_report, @certification_path) %>
+          <div class="ibox float-e-margins">
+            <div class="ibox-title">
+              <h5><%= t('.certification_path_reports.title') %></h5>
+            </div>
+            <div class="ibox-content">
+              <% if can?(:download_coverletter_report, @certification_path) %>
+                  <div>
+                    <%= btn_download(download_coverletter_report_project_certification_path_path(@project, @certification_path), size: 'extra_small') %>
+                    <%= t('.certification_path.download_coverletter.text') %>
+                  </div>
+              <% end %>
+              <% @certification_path.scheme_mixes.each do |scheme_mix| %>
+                  <% if can?(:download_scores_report, scheme_mix) %>
+                      <div>
+                        <%= btn_download(download_scores_report_project_certification_path_scheme_mix_path(@project, @certification_path, scheme_mix), size: 'extra_small') %>
+                        <%= "Download Criteria Summary report for #{scheme_mix.name}" %>
+                      </div>
+                  <% end %>
+              <% end %>
+              <% if can?(:download_coverletter_report, @certification_path) && can?(:download_scores_report, scheme_mix) %>
                 <div>
-                  <%= btn_download(download_coverletter_report_project_certification_path_path(@project, @certification_path), size: 'extra_small') %>
-                  <%= t('.certification_path.download_coverletter.text') %>
+                  <%= btn_download(download_detailed_certificate_report_project_certification_path_path(@project, @certification_path), size: 'extra_small') %>
+                  <%= t('.certification_path.download_detailed_certificate.text') %>
                 </div>
-            <% end %>
-            <% @certification_path.scheme_mixes.each do |scheme_mix| %>
-                <% if can?(:download_scores_report, scheme_mix) %>
-                    <div>
-                      <%= btn_download(download_scores_report_project_certification_path_scheme_mix_path(@project, @certification_path, scheme_mix), size: 'extra_small') %>
-                      <%= "Download Criteria Summary report for #{scheme_mix.name}" %>
-                    </div>
-                <% end %>
-            <% end %>
+              <% end %>
+            </div>
           </div>
-        </div>
         <% end %>
 
         <% if (can?(:download_signed_certificate, @certification_path) && @certification_path.signed_certificate_file.present?) || can?(:update_signed_certificate, @certification_path) %>

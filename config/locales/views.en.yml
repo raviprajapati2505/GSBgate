@@ -44,6 +44,9 @@ en:
         started_at: Certification Started On
         expired_at: Certification Expired On
         certified_at: Certification Certified On
+        download_detailed_certificate:
+          text: Download Detailed Certification Report
+          tooltip: Download Detailed Certification Report
         download_certificate:
           text: Download Certification
           tooltip: Download Certification
@@ -102,6 +105,9 @@ en:
         download_certificate:
           text: Download Certification
           tooltip: Download Certification
+        download_detailed_certificate:
+          text: Download Detailed Certification Report
+          tooltip: Download Detailed Certification Report
         download_coverletter:
           text: Download Certificate Summary
           tooltip: Download Certificate Summary

@@ -285,6 +285,7 @@ class Ability
       can :apply_for_pcr, CertificationPath, pcr_track: false, certificate: {certification_type: [Certificate.certification_types[:letter_of_conformance], Certificate.certification_types[:final_design_certificate], Certificate.certification_types[:operations_certificate], Certificate.certification_types[:construction_certificate_stage1], Certificate.certification_types[:construction_certificate_stage2], Certificate.certification_types[:construction_certificate_stage3]]}
       can :cancel_pcr, CertificationPath, pcr_track: true, certificate: {certification_type: [Certificate.certification_types[:letter_of_conformance], Certificate.certification_types[:final_design_certificate], Certificate.certification_types[:operations_certificate], Certificate.certification_types[:construction_certificate_stage1], Certificate.certification_types[:construction_certificate_stage2], Certificate.certification_types[:construction_certificate_stage3]]}
       can :download_coverletter_report, CertificationPath, certification_path_status: {id: CertificationPathStatus::CERTIFIED}, certificate: {certification_type: Certificate.certification_types[:letter_of_conformance]}
+      can :download_detailed_certificate_report, CertificationPath, certification_path_status: {id: CertificationPathStatus::CERTIFIED}, certificate: {certification_type: Certificate.certification_types[:letter_of_conformance]}
 
       # User can download archive if and only if user is chairman(gsas_trust_top_manager) and project team member
       if  user.gsas_trust_top_manager?

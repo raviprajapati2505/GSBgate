@@ -39,6 +39,7 @@ Rails.application.routes.draw do
       member do
         # get :download_certificate_report
         get :download_coverletter_report
+        get :download_detailed_certificate_report
         get :edit_status
         get :edit_project_team_responsibility_for_submittal, path: :edit_project_team_responsibility_for_submittal
         get :edit_certifier_team_responsibility_for_verification, path: :edit_certifier_team_responsibility_for_verification
