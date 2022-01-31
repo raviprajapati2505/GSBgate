@@ -151,4 +151,8 @@ class SchemeMix < ApplicationRecord
     end
   end
 
+  def category_scheme_mix_criteria(scheme_category_id)
+    self.scheme_mix_criteria.joins(:scheme_criterion).where("scheme_criteria.scheme_category_id = :scheme_category_id", scheme_category_id: scheme_category_id)
+  end
+
 end

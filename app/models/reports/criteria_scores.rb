@@ -56,7 +56,7 @@ class Reports::CriteriaScores < Reports::BaseReport
     end
     draw_headers
 
-    bounding_box([0, 560], width: @document.bounds.width) do
+    bounding_box([0, 630], width: @document.bounds.width) do
       # Draw awarded target
       # draw_awarded_target
 
@@ -67,6 +67,8 @@ class Reports::CriteriaScores < Reports::BaseReport
 
         if (rows_on_page + row_count) > MAX_ROWS_PER_PAGE
           start_new_page
+          draw_project_info
+          newline(2)
           rows_on_page = row_count
         else
           rows_on_page += row_count
@@ -235,7 +237,12 @@ class Reports::CriteriaScores < Reports::BaseReport
   def categories_with_criteria
     categories_with_criteria = []
     @scheme_mix.scheme_categories.each do |scheme_category|
-      categories_with_criteria << { category: scheme_category, criteria: @scheme_mix.scheme_mix_criteria.for_category(scheme_category).order('scheme_criteria.number').to_a }
+      
+      category_scheme_mix_criteria = @scheme_mix.category_scheme_mix_criteria(scheme_category&.id)
+
+      if category_scheme_mix_criteria.count > 0
+        categories_with_criteria << { category: scheme_category, criteria: @scheme_mix.scheme_mix_criteria.for_category(scheme_category).order('scheme_criteria.number').to_a }
+      end
     end
 
     # Order the array by criteria count
