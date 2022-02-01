@@ -111,7 +111,12 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
       # For all scheme_mixes
       @scheme_mixes.each do |scheme_mix|
         start_new_page
-        draw_scheme_mix_header(scheme_mix)
+
+        newline(2)
+        draw_project_info(scheme_mix)
+
+        newline(1)
+        draw_scheme_mix_info(scheme_mix)
 
         @certification_path = scheme_mix.certification_path
         @score = scheme_mix.scores_in_scheme_points[:achieved_score_in_scheme_points]
@@ -126,7 +131,8 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
   end
 
   def draw_certificate_header
-    text "#{certificate_name(@certification_path)}", size: 15, color: MAIN_COLOR, align: :center, font: 'Helvetica'
+    text = certificatation_type_name(@certification_path)
+    styled_text("<div style='font-size: 12; color: #{MAIN_COLOR}; line-height: 1.2'>GSAS #{text[:project_type]}</div><br /><div style='font-size: 13;'>#{text[:certificate_name]}</div>")
   end
 
   def draw_scheme_mix_header(scheme_mix)
@@ -243,17 +249,38 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
 
   end
 
-  def draw_project_info
+  def draw_project_info(scheme_mix = nil)
     # Prepare table data
     data = []
     # Add the category rows to the table
     data.append(["Project ID: #{@certification_path.project.code}", "Provisional Rating: #{@stars}", "Approval Date: 14th Nov, 2020"])
 
+    scheme_info = ''
+    if scheme_mix.present?
+      scheme_info = " - #{scheme_mix&.scheme&.name} (#{scheme_mix&.custom_name})"
+    end
+
     # Add footer to the table
-    data.append([{content: "Project Name: #{@certification_path.project.name}", colspan: 2}, "Reference: LOC-KNNAN-239409"])
+    data.append([{content: "Project Name: #{@certification_path.project.name} #{scheme_info}", colspan: 2}, "Reference: LOC-KNNAN-239409"])
 
     # Output table
     draw_table(data, true, 'project_info_table')
+  end
+
+  def draw_scheme_mix_info(scheme_mix = nil)
+    # Prepare table data
+    data = []
+    # Add the category rows to the table
+    
+    scheme_info = ''
+    if scheme_mix.present?
+      scheme_info = "#{scheme_mix&.scheme&.name} (#{scheme_mix&.custom_name})"
+    end
+    
+    data.append(["Criteria Summary for Awarded levels - \n #{scheme_info}"])
+
+    # Output table
+    draw_table(data, true, 'scheme_mix_info_table')
   end
 
   def draw_scoring_summary(total_category_scores)
@@ -553,69 +580,9 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     text 'Figure 1 Scoring Summary', align: :center
   end
 
-  # def draw_scheme_mix_table(certification_path)
-  #   # Fetch the certification path scores
-  #   certification_path_scores = certification_path.scores_in_certificate_points
-  #
-  #   achieved_certification_path_score = number_with_precision(certification_path_scores[:achieved_score_in_certificate_points], precision: 3)
-  #
-  #   # Prepare table data
-  #   data = []
-  #   data.append(%w(Weight Scheme Points))
-  #
-  #   # Add the category rows to the table
-  #   certification_path.scheme_mixes.each do |scheme_mix|
-  #     achieved_scheme_mix_score = number_with_precision(scheme_mix.scores[:achieved_score_in_certificate_points], precision: 3)
-  #     data.append(["#{scheme_mix.weight}%", scheme_mix.name, achieved_scheme_mix_score])
-  #   end
-  #
-  #   # Add footer to the table
-  #   data.append(['', 'Total points', achieved_certification_path_score])
-  #   data.append(['', 'Level achieved', @stars])
-  #
-  #   # Output table title
-  #   text "Certification: #{certification_path.name}", style: :bold, size: 15, color: '69AB87', align: :center
-  #
-  #   # Output table
-  #   draw_table(data, true)
-  # end
-  #
-  # def draw_category_table(scheme_mix)
-  #   # Fetch the scheme mix scores
-  #   scheme_mix_scores = scheme_mix.scores
-  #   achieved_scheme_mix_score = number_with_precision(scheme_mix_scores[:achieved_score_in_certificate_points], precision: 3)
-  #
-  #   # Fetch all scheme mix criteria score records
-  #   scheme_mix_criteria_scores = scheme_mix.scheme_mix_criteria_scores
-  #
-  #   # Group the scores by category
-  #   scheme_mix_criteria_scores_by_category = scheme_mix_criteria_scores.group_by { |item| item[:scheme_category_id] }
-  #
-  #   # Prepare table data
-  #   data = []
-  #   data.append(%w(No Category Points))
-  #
-  #   # Add the category rows to the table
-  #   scheme_mix.scheme_categories.each do |category|
-  #     category_scores = sum_score_hashes(scheme_mix_criteria_scores_by_category[category.id])
-  #     achieved_category_score = number_with_precision(category_scores[:achieved_score_in_certificate_points], precision: 3)
-  #     data.append([category.code, category.name, achieved_category_score])
-  #   end
-  #
-  #   # Add footer to the table
-  #   data.append(['', 'Total points', achieved_scheme_mix_score])
-  #
-  #   # Output table title
-  #   text "Scheme: #{scheme_mix.name} - #{scheme_mix.weight}%", style: :bold, size: 15, color: '69AB87', align: :center
-  #
-  #   # Output table
-  #   draw_table(data)
-  # end
-
   def draw_table(data, has_level_achieved_footer = false, type)
 
       if type == 'basic_table'
-
         table(data, width: @document.bounds.right - CONTENT_PADDING) do
           # Set default cell style
           cells.align = :left
@@ -673,7 +640,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
           # header_row.column(1).borders = %i(left)
         end
       elsif type == 'project_info_table'
-        table(data, width: @document.bounds.right - CONTENT_PADDING) do
+        table(data, width: @document.bounds.right) do
           # Set default cell style
           cells.align = :left
           cells.borders = []
@@ -796,6 +763,31 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
           # Criteria name column style
           column(1).align = :left
         end
+      elsif type == 'scheme_mix_info_table'
+        table(data, width: @document.bounds.right) do
+
+          # Set default cell style
+          cells.align = :center
+          cells.borders = [:top, :right, :bottom, :left]
+          cells.padding = 4
+          cells.border_width = 0.5
+          cells.border_color = 'BABABB'
+
+          cells.border_left_color = '000000'
+          cells.border_right_color = '000000'
+          cells.border_top_color = '000000'
+          cells.border_bottom_color = '000000'
+
+          column(0).width = width
+
+          # Category name column style
+          name_column = column(0)
+          name_column.align = :left
+          name_column.text_color = TABLE_TEXT_COLOR
+          name_column.borders = [:top, :right, :bottom, :left]
+          name_column.border_color = TABLE_BORDER_COLOR
+          name_column.background_color = COLUMN_1_COLOR
+        end
       end
     end
 
@@ -808,17 +800,19 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
   
         # Draw all category/criteria tables
         rows_on_page = 0
-        categories_with_criteria.each do |category_with_criteria|
+        categories_with_criteria.each_with_index do |category_with_criteria, index|
           row_count = category_with_criteria[:criteria].count + 2 # Add 2 extra rows for table header and margin
 
           if (rows_on_page + row_count) > MAX_ROWS_PER_PAGE
             start_new_page
             newline(2)
-            draw_project_info
-            newline(2)
+            draw_project_info(scheme_mix)
+            newline(1)
             rows_on_page = row_count
           else
-            newline(2)
+            newline(1)
+            newline(9) if index == 0
+
             rows_on_page += row_count
           end
   
