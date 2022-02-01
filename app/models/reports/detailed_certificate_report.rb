@@ -613,7 +613,6 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
   # end
 
   def draw_table(data, has_level_achieved_footer = false, type)
-    
 
       if type == 'basic_table'
 
@@ -824,7 +823,6 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
           end
   
           draw_criteria_table(category_with_criteria[:category], category_with_criteria[:criteria])
-          newline
         end
       end
     end
