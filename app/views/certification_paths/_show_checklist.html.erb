@@ -120,6 +120,24 @@
             </div>
         </div>
 
+        <% if can?(:create_detailed_certificate_report, @certification_path) %>
+          <%
+            detailed_certificate_report = @certification_path.certificatation_path_report
+            text = detailed_certificate_report.present? ? t('.certification_path.update_detaild_certificate_report.text') : t('.certification_path.create_detaild_certificate_report.text')
+          %>
+          <div class="ibox float-e-margins">
+            <div class="ibox-title">
+              <h5><%= t('.certification_path_reports.title') %></h5>
+            </div>
+            <div class="ibox-content">
+              <div>
+                <%= btn_link_to(new_detailed_certificatation_report_project_certification_path_path(@project, @certification_path), text: text, remote: :true) %>
+              </div>
+            </div>
+          </div>
+          <div id="detailedCertificatationFormModal" class="modal fade"></div>
+        <% end %>
+
         <% if can?(:download_coverletter_report, @certification_path) %>
         <div class="ibox float-e-margins">
           <div class="ibox-title">

@@ -1,0 +1,34 @@
+<div class="modal-dialog modal-lg">
+  <div class="modal-content">
+    <div class="modal-header">
+      <%= btn_close_modal %>
+      <h4 class="modal-title">
+        Certification Report Form
+      </h4>
+    </div>
+    <div class="modal-body">
+      <%= bootstrap_form_for(certificatation_path_report, url: create_detailed_certificatation_report_project_certification_path_path(project, certification_path)) do |f| %>
+
+        <%= f.text_field :to, required: false %>
+
+        <%= f.text_field :reference_number, required: false %>
+
+        <%= f.text_field :project_owner, required: false %>
+
+        <%= f.text_field :designation, required: false %>
+
+        <%= f.text_field :service_provider, required: false %>
+
+        <%= f.text_field :project_name, required: false %>
+
+        <%= f.text_field :issuance_date, prepend: ikoen('calendar'), class: 'datepicker-past', autocomplete: 'off' %>
+
+        <%= f.text_field :approval_date, prepend: ikoen('calendar'), class: 'datepicker-past', autocomplete: 'off' %>
+
+        <%= f.file_field :rendering_image, required: false %>
+
+        <%= btn_save %>
+      <% end %>
+    </div>
+  </div>
+</div>

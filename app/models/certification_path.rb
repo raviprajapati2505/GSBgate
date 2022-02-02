@@ -29,6 +29,7 @@ class CertificationPath < ApplicationRecord
   has_many :actual_project_images, dependent: :destroy
   has_many :project_rendering_images, dependent: :destroy
   has_one :certification_path_method, dependent: :destroy
+  has_one :certificatation_path_report, dependent: :destroy
 
   accepts_nested_attributes_for :certificate
   accepts_nested_attributes_for :scheme_mixes

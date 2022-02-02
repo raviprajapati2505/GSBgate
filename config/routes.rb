@@ -38,6 +38,8 @@ Rails.application.routes.draw do
       end
       member do
         # get :download_certificate_report
+        get :new_detailed_certificatation_report
+        post :create_detailed_certificatation_report
         get :download_coverletter_report
         get :download_detailed_certificate_report
         get :edit_status

@@ -269,6 +269,7 @@ class Ability
         can :update, Project
         can [:confirm_destroy, :destroy], Project # Be careful with this!
         can :update_incentive_scored, SchemeMixCriterion
+        can :new_detailed_certificatation_report, :create_detailed_certificatation_report, CertificationPath, certification_path_status: {id: CertificationPathStatus::CERTIFIED}
       end
       # Project Users
       # can :list_users_sharing_projects, ProjectsUser
@@ -379,6 +380,7 @@ class Ability
       can :download_signed_certificate, CertificationPath, certification_path_status: { id: CertificationPathStatus::CERTIFIED }
       can [:download_location_plan, :download_site_plan, :download_design_brief, :download_project_narrative, :download_area_statement, :download_sustainability_features], Project
       cannot :read, AuditLog
+      can :new_detailed_certificatation_report, :create_detailed_certificatation_report, CertificationPath, certification_path_status: {id: CertificationPathStatus::CERTIFIED}
     elsif user.system_admin?
       can :manage, :all
     elsif user.record_checker?

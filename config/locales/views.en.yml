@@ -44,6 +44,10 @@ en:
         started_at: Certification Started On
         expired_at: Certification Expired On
         certified_at: Certification Certified On
+        create_detaild_certificate_report:
+          text: Add Report Information
+        update_detaild_certificate_report:
+          text: Update Report Information
         download_detailed_certificate:
           text: Download Detailed Certification Report
           tooltip: Download Detailed Certification Report
@@ -102,6 +106,10 @@ en:
       certification_path:
         title: CERTIFICATION DETAILS
         name: Certification Name
+        create_detaild_certificate_report:
+          text: Add Report Information
+        update_detaild_certificate_report:
+          text: Update Report Information
         download_certificate:
           text: Download Certification
           tooltip: Download Certification
