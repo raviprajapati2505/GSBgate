@@ -114,6 +114,17 @@ class Certificate < ApplicationRecord
     end
   end
 
+  def report_certification_name
+    case only_name
+    when "Letter of Conformance", "Final Design Certificate"
+      "GSAS Design & Build (#{only_certification_name})"
+    when "GSAS-CM", "Construction Certificate"
+      "GSAS Construction Management (#{only_certification_name})"
+    when "Operations Certificate"
+      "GSAS Operation (#{only_certification_name})"
+    end
+  end
+
   def only_name
     name&.split(',')[0]
   end

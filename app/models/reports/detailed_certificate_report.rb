@@ -43,8 +43,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     @scheme_mixes = certification_path&.scheme_mixes
     @scheme_names = @certification_path.schemes.collect(&:name)
     @score = @certification_path.scores_in_certificate_points[:achieved_score_in_certificate_points]
-    @stars = @certification_path.rating_for_score(@score, certificate: @certification_path.certificate).to_s +
-             ' ' + 'Star'.pluralize(@certification_path.rating_for_score(@score, certificate: @certification_path.certificate))
+    @stars = @certification_path.rating_for_score(@score, certificate: @certification_path.certificate).to_s
 
     @addressee = "Mr. [FIRSTNAME] [LASTNAME]\n[FUNCTION]\n#{@certification_path.project.owner}"
     @addressee_copy = "Service Provider:   #{@certification_path.project.service_provider}"
@@ -153,10 +152,10 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     else
       data.append(["Service Provider", @certification_path.project.service_provider])
     end
-    data.append(["GSAS Certificate", @certification_path.certificate.only_certification_name])
-    data.append(["Certification Stage", @certification_path.certificate.stage_title])
-    data.append(["GSAS Version", @certification_path.certificate.only_version])
-    data.append(["GSAS Scheme", @certification_path.project.building_type_group.name])
+    data.append(["GSAS Certificate", @certification_path.certificate&.report_certification_name])
+    data.append(["Certification Stage", @certification_path.certificate&.stage_title])
+    data.append(["GSAS Version", @certification_path.certificate&.only_version])
+    data.append(["GSAS Scheme", @certification_path.project&.building_type_group&.name])
     
      # Output table
      draw_table(data, true, 'basic_table')
@@ -191,7 +190,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     # Prepare table data
     data = []
 
-    data.append(['SCORE', 'STAR RATING'])
+    data.append(['STAGE SCORE', 'STAGE RATING'])
     if @certification_path.certificate.only_certification_name == 'GSAS-D&B'
       data.append([number_with_precision(@score, precision: 3), {:image => "#{Rails.root}/app/assets/images/reports/star_#{@stars.split("").first}.png", :width => 350, :image_height => 20, :position  => :center}])
     else
