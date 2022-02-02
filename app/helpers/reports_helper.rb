@@ -19,7 +19,15 @@ module ReportsHelper
                         when "Final Design Certificate" 
                           'DESIGN CERTIFICATE _ CONFORMANCE TO DESIGN AUDIT (CDA)'
                         when "GSAS-CM", "Construction Certificate"
-                          'AUDIT ADVISORY NOTICE (AAN)'
+                          stage_number =  case certification_path&.certificate&.stage_title
+                                          when 'Stage 1: Foundation'
+                                            '01'
+                                          when 'Stage 2: Substructure & Superstructure'
+                                            '02'
+                                          when 'Stage 3: Finishing'
+                                            '03'
+                                          end
+                          "AUDIT ADVISORY NOTICE (AAN) - No.#{stage_number}"
                         else
                           certification_path&.certificate.only_name
                         end

@@ -99,9 +99,8 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
         end
       end
       
-      newline(2)
+      newline(1)
       draw_scoring_summary(total_category_scores)
-      newline(2)
       draw_category_graph(total_category_scores)
       if @certification_path.certificate.only_name == 'Letter of Conformance'
        start_new_page
@@ -174,7 +173,14 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
 
       newline(1)
     when 'GSAS-CM', 'Construction Certificate'
-      text = "This is to notify that GAS Trust has reviewed the construction submittals in accordance with the latest GSAS Construction Management assessments and has completed the Third Site Audit requirements of Construction Stage 3 (Finishing Works). The project is found eligible to receive the Third Interim Audit Advisory Notice (AAN) No.03 achieving the following: \n"
+      text =  case @certification_path&.certificate&.stage_title
+              when 'Stage 1: Foundation'
+                "This is to notify that GSAS Trust has reviewed the construction submittals in accordance with the latest GSAS Construction Management assessments and has completed the First Site Audit requirements of Construction Stage 1 (Foundation). The project is found eligible to receive the first Interim Audit Advisory Notice (AAN) No.01 achieving the following: \n"
+              when 'Stage 2: Substructure & Superstructure'
+                "This is to notify that GSAS Trust has reviewed the construction submittals in accordance with the latest GSAS Construction Management assessments and has completed the Second Site Audit requirements of Construction Stage 2 (Substructure & Superstructure). The project is found eligible to receive the Second Interim Audit Advisory Notice (AAN) No.02 achieving the following: \n"
+              when 'Stage 3: Finishing'
+                "This is to notify that GSAS Trust has reviewed the construction submittals in accordance with the latest GSAS Construction Management assessments and has completed the Third Site Audit requirements of Construction Stage 3 (Finishing Works). The project is found eligible to receive the Third Interim Audit Advisory Notice (AAN) No.03 achieving the following: \n"
+              end
 
       styled_text("<div style='font-size: 10; line-height: 9; color: 000000;'>#{text}</div>")
 
@@ -256,12 +262,12 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     data.append(["Project ID: #{@certification_path.project.code}", "Provisional Rating: #{@stars}", "Approval Date: 14th Nov, 2020"])
 
     scheme_info = ''
-    if scheme_mix.present?
-      scheme_info = " - #{scheme_mix&.scheme&.name} (#{scheme_mix&.custom_name})"
+    if scheme_mix&.custom_name.present?
+      scheme_info = "(#{scheme_mix&.custom_name})"
     end
 
     # Add footer to the table
-    data.append([{content: "Project Name: #{@certification_path.project.name} #{scheme_info}", colspan: 2}, "Reference: LOC-KNNAN-239409"])
+    data.append([{content: "Project Name: #{@certification_path.project.name} - #{scheme_mix&.scheme&.name} #{scheme_info}", colspan: 2}, "Reference: LOC-KNNAN-239409"])
 
     # Output table
     draw_table(data, true, 'project_info_table')
@@ -273,11 +279,11 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     # Add the category rows to the table
     
     scheme_info = ''
-    if scheme_mix.present?
-      scheme_info = "#{scheme_mix&.scheme&.name} (#{scheme_mix&.custom_name})"
+    if scheme_mix&.custom_name.present?
+      scheme_info = "(#{scheme_mix&.custom_name})"
     end
     
-    data.append(["Criteria Summary for Awarded levels - \n #{scheme_info}"])
+    data.append(["Criteria Summary for Awarded levels - \n #{scheme_mix&.scheme&.name} #{scheme_info}"])
 
     # Output table
     draw_table(data, true, 'scheme_mix_info_table')
@@ -735,14 +741,14 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
           # Misc table border style
           row(0).border_top_color = '000000'
           row(-1).border_bottom_color = '000000'
-          column(-1).borders = [:top, :bottom, :left]
+          column(-1).borders = [:top, :bottom, :left, :right]
           column(1).borders = [:top, :right, :bottom]
 
           # Category name column style
           name_column = column(0)
           name_column.align = :right
           name_column.text_color = TABLE_TEXT_COLOR
-          name_column.borders = [:top, :right, :bottom]
+          name_column.borders = [:top, :right, :bottom, :left]
           name_column.border_color = TABLE_BORDER_COLOR
           # name_column.border_color = MAIN_COLOR
           # name_column.font_style = :bold
@@ -805,7 +811,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
 
           if (rows_on_page + row_count) > MAX_ROWS_PER_PAGE
             start_new_page
-            newline(2)
+            newline(1)
             draw_project_info(scheme_mix)
             newline(1)
             rows_on_page = row_count
