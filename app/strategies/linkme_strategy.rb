@@ -13,8 +13,8 @@ class LinkmeStrategy < BaseStrategy
         # Get the linkme member profile
         member_profile = linkme.member_profile_get
 
-        people_profile = linkme.sa_people_profile_get(member_profile[:member_id])
-        master_profile = linkme.sa_people_profile_get(people_profile[:master_id]) unless people_profile[:master_id].blank?
+        people_profile = linkme.sa_people_profile_get(member_profile[:member_id], 'people_profile')
+        master_profile = linkme.sa_people_profile_get(people_profile[:master_id], 'master_profile') unless people_profile[:master_id].blank?
 
         # Update or create the linkme.qa user in the GSAS DB
         user = User.update_or_create_linkme_user!(member_profile, master_profile)

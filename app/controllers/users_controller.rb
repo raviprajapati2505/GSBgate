@@ -117,11 +117,10 @@ class UsersController < AuthenticatedController
           # Loop the found users
           linkme_member_ids_hash.each do |member_id, profile_id|
             # Retrieve the user's linkme member profile
-            member_profile = linkme.sa_people_profile_get(profile_id)
+            member_profile = linkme.sa_people_profile_get(profile_id, 'people_profile')
             member_profile[:id] = member_id
 
-            people_profile = linkme.sa_people_profile_get(member_profile[:member_id])
-            master_profile = linkme.sa_people_profile_get(people_profile[:master_id]) unless people_profile[:master_id].blank?
+            master_profile = linkme.sa_people_profile_get(member_profile[:master_id], 'master_profile') unless member_profile[:master_id].blank?
 
             # Update or create the linkme user in the DB
             user = User.update_or_create_linkme_user!(member_profile, master_profile)

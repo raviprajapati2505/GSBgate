@@ -136,7 +136,7 @@ class LinkmeService
   end
 
   # Sa.People.Profile.Get
-  def sa_people_profile_get(id)
+  def sa_people_profile_get(id, profile_type)
     client_id = Rails.application.config.x.linkme.client_id
     api_key = Rails.application.config.x.linkme.api_key
     api_password = Rails.application.config.x.linkme.api_password
@@ -147,11 +147,19 @@ class LinkmeService
     # To get member profile, first login as an Admin.
     auth_authenticate(api_key, api_password, usertype = 'Admin')
 
-    params = {
-      ProfileID: id,
-      PageNumber: page_number, 
-      PageSize: page_size
-    }
+    if profile_type == 'master_profile'
+      params = {
+        MasterID: id,
+        PageNumber: page_number, 
+        PageSize: page_size
+      }
+    else
+      params = {
+        ProfileID: id,
+        PageNumber: page_number,
+        PageSize: page_size
+      }
+    end
 
     headers = {
                 'Accept-Encoding' => 'none',
