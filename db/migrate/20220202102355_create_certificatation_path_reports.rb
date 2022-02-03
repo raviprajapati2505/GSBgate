@@ -5,8 +5,6 @@ class CreateCertificatationPathReports < ActiveRecord::Migration[5.2]
       t.string :reference_number
       t.string :to
       t.string :project_owner
-      t.string :designation
-      t.string :service_provider
       t.string :project_name
       t.string :project_location
       t.date :issuance_date
