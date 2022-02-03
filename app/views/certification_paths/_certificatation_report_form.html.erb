@@ -7,25 +7,25 @@
       </h4>
     </div>
     <div class="modal-body">
-      <%= bootstrap_form_for(certificatation_path_report, url: create_detailed_certificatation_report_project_certification_path_path(project, certification_path)) do |f| %>
+      <%= bootstrap_form_for(certificatation_path_report, url: create_detailed_certificatation_report_project_certification_path_path(project, certification_path), remote: :true, method: :post) do |f| %>
 
-        <%= f.text_field :to, required: false %>
+        <%= f.text_field :to, required: true %>
 
-        <%= f.text_field :reference_number, required: false %>
+        <%= f.text_field :reference_number, required: true %>
 
-        <%= f.text_field :project_owner, required: false %>
+        <%= f.text_field :project_owner, required: true %>
 
-        <%= f.text_field :designation, required: false %>
+        <%= f.text_field :designation, required: true %>
 
-        <%= f.text_field :service_provider, required: false %>
+        <%= f.text_field :service_provider, required: true %>
 
-        <%= f.text_field :project_name, required: false %>
+        <%= f.text_field :project_name, required: true %>
 
-        <%= f.text_field :issuance_date, prepend: ikoen('calendar'), class: 'datepicker-past', autocomplete: 'off' %>
+        <%= f.text_field :project_location, required: true %>
 
-        <%= f.text_field :approval_date, prepend: ikoen('calendar'), class: 'datepicker-past', autocomplete: 'off' %>
+        <%= f.text_field :issuance_date, value: f.object&.issuance_date&.strftime("%d/%m/%Y"), prepend: ikoen('calendar'), class: 'datepicker-past', autocomplete: 'off', required: true %>
 
-        <%= f.file_field :rendering_image, required: false %>
+        <%= f.text_field :approval_date, value: f.object&.approval_date&.strftime("%d/%m/%Y"), prepend: ikoen('calendar'), class: 'datepicker-past', autocomplete: 'off', required: true %>
 
         <%= btn_save %>
       <% end %>

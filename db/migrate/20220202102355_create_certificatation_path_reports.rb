@@ -9,9 +9,8 @@ class CreateCertificatationPathReports < ActiveRecord::Migration[5.2]
       t.string :service_provider
       t.string :project_name
       t.string :project_location
-      t.string :rendering_image
-      t.datetime :issuance_date
-      t.datetime :approval_date
+      t.date :issuance_date
+      t.date :approval_date
 
       t.timestamps
     end

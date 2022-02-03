@@ -206,7 +206,7 @@ class CertificationPathsController < AuthenticatedController
   def create_detailed_certificatation_report
     @certificatation_path_report = CertificatationPathReport.find_or_initialize_by(certification_path_id: @certification_path.id)
 
-    detailed_certificatation_report_params = params.require(:certificatation_path_report).permit(:to, :reference_number, :project_owner, :designation, :service_provider, :project_name, :issuance_date, :approval_date, :rendering_image)
+    detailed_certificatation_report_params = params.require(:certificatation_path_report).permit(:to, :reference_number, :project_owner, :designation, :service_provider, :project_name, :project_location, :issuance_date, :approval_date)
 
     respond_to do |format|
       if @certificatation_path_report.update(detailed_certificatation_report_params)

@@ -8,44 +8,44 @@ $('.datepicker-past').datepicker({
   todayHighlight: true
 });
 
-$(document).ready(function(){
-  $('#new_certificatation_path_report').submit(function(e){
-    e.preventDefault();
-
-    var fileElement = $("#certificatation_path_report_rendering_image");
-    var files = fileElement[0].files
-
-    if (!!files.length) {
-      var formData = new FormData()
-      formData.append("certificatation_path_report[to]", $("input[name='certificatation_path_report[to]']").val())
-      formData.append("certificatation_path_report[reference_number]", $("input[name='certificatation_path_report[reference_number]']").val())
-      formData.append("certificatation_path_report[project_owner]", $("input[name='certificatation_path_report[project_owner]']").val())
-      formData.append("certificatation_path_report[designation]", $("input[name='certificatation_path_report[designation]']").val())
-      formData.append("certificatation_path_report[service_provider]", $("input[name='certificatation_path_report[service_provider]']").val())
-      formData.append("certificatation_path_report[project_name]", $("input[name='certificatation_path_report[project_name]']").val())
-      formData.append("certificatation_path_report[issuance_date]", $("input[name='certificatation_path_report[issuance_date]']").val())
-      formData.append("certificatation_path_report[approval_date]", $("input[name='certificatation_path_report[approval_date]']").val())
-      formData.append("certificatation_path_report[project_owner]", $("input[name='certificatation_path_report[project_owner]']").val())
-
-      if (!!files.length) {
-        Array.from(files).forEach((file, index) => {
-          formData.append("certificatation_path_report[rendering_image]", file);
-        });
-      }
-      
-      $.ajax({
-        url: this.action,
-        type: "POST",
-        data: formData,
-        processData: false,
-        contentType: false,
-        enctype: "multipart/form-data",
-        headers: {
-            'X-CSRF-Token': document.querySelector("meta[name=csrf-token]").content
-        },
-        dataType: 'script'
-      });
-    }
-    return false
-  });
-});
+// $(document).ready(function(){
+//   $('#new_certificatation_path_report').submit(function(e){
+//     e.preventDefault();
+// 
+//     var fileElement = $("#certificatation_path_report_rendering_image");
+//     var files = fileElement[0].files
+// 
+//     if (!!files.length) {
+//       var formData = new FormData()
+//       formData.append("certificatation_path_report[to]", $("input[name='certificatation_path_report[to]']").val())
+//       formData.append("certificatation_path_report[reference_number]", $("input[name='certificatation_path_report[reference_number]']").val())
+//       formData.append("certificatation_path_report[project_owner]", $("input[name='certificatation_path_report[project_owner]']").val())
+//       formData.append("certificatation_path_report[designation]", $("input[name='certificatation_path_report[designation]']").val())
+//       formData.append("certificatation_path_report[service_provider]", $("input[name='certificatation_path_report[service_provider]']").val())
+//       formData.append("certificatation_path_report[project_name]", $("input[name='certificatation_path_report[project_name]']").val())
+//       formData.append("certificatation_path_report[issuance_date]", $("input[name='certificatation_path_report[issuance_date]']").val())
+//       formData.append("certificatation_path_report[approval_date]", $("input[name='certificatation_path_report[approval_date]']").val())
+//       formData.append("certificatation_path_report[project_owner]", $("input[name='certificatation_path_report[project_owner]']").val())
+// 
+//       if (!!files.length) {
+//         Array.from(files).forEach((file, index) => {
+//           formData.append("certificatation_path_report[rendering_image]", file);
+//         });
+//       }
+//       
+//       $.ajax({
+//         url: this.action,
+//         type: "POST",
+//         data: formData,
+//         processData: false,
+//         contentType: false,
+//         enctype: "multipart/form-data",
+//         headers: {
+//             'X-CSRF-Token': document.querySelector("meta[name=csrf-token]").content
+//         },
+//         dataType: 'script'
+//       });
+//     }
+//     return false
+//   });
+// });
