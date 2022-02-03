@@ -61,6 +61,10 @@ class CertificationPath < ApplicationRecord
     joins(:certification_path_status).where(certification_path_status_id: statuses)
   }
 
+  scope :with_status_not, ->(statuses) {
+    joins(:certification_path_status).where.not(certification_path_status_id: statuses)
+  }
+
   scope :with_project, ->(project) {
     where(project: project)
   }

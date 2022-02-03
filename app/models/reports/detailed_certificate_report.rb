@@ -40,6 +40,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
                                     margin: 40)
         
     @certification_path = certification_path
+    @detailed_certificate_report = @certification_path.certificatation_path_report
     @scheme_mixes = certification_path&.scheme_mixes
     @scheme_names = @certification_path.schemes.collect(&:name)
     @score = @certification_path.scores_in_certificate_points[:achieved_score_in_certificate_points]
@@ -101,9 +102,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
       newline(1)
       draw_scoring_summary(total_category_scores)
       draw_category_graph(total_category_scores)
-      if @certification_path.certificate.only_name == 'Letter of Conformance'
-       start_new_page
-      end
+    
       draw_score_graph
 
       # For all scheme_mixes
@@ -142,23 +141,33 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     # Prepare table data
     data = []
 
-     # Add the category rows to the table
-    data.append(["To", @certification_path.project.owner])
-    data.append(["Project ID", @certification_path.project.code])
-    data.append(["Project Name", @certification_path.project.name])
-    data.append(["Location", @certification_path.project.location])
+    # Add the category rows to the table
+    data.append(["To", @detailed_certificate_report&.to])
+
+    unless @certification_path.construction?
+      data.append(["Client", @detailed_certificate_report&.project_owner])
+    end
+
     if @certification_path.certificate.certification_type == 'final_design_certificate'
       data.append(["Service Provider", @certification_path.project.service_provider_2])
     else
       data.append(["Service Provider", @certification_path.project.service_provider])
     end
+
     data.append(["GSAS Certificate", @certification_path.certificate&.report_certification_name])
-    data.append(["Certification Stage", @certification_path.certificate&.stage_title])
     data.append(["GSAS Version", @certification_path.certificate&.only_version])
-    data.append(["GSAS Scheme", @certification_path.project&.building_type_group&.name])
-    
-     # Output table
-     draw_table(data, true, 'basic_table')
+    data.append(["Certification Stage", @certification_path.certificate&.stage_title])
+    data.append(["Project ID", @certification_path.project.code])
+    data.append(["Project Name", @detailed_certificate_report&.project_name])
+
+    unless @certification_path.construction?
+      data.append(["GSAS Scheme", @certification_path.project&.building_type_group&.name])
+    end
+
+    data.append(["Location", @detailed_certificate_report&.project_location])
+
+    # Output table
+    draw_table(data, true, 'basic_table')
   end
 
   def draw_paragraph1
@@ -258,7 +267,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     # Prepare table data
     data = []
     # Add the category rows to the table
-    data.append(["Project ID: #{@certification_path.project.code}", "Provisional Rating: #{@stars}", "Approval Date: 14th Nov, 2020"])
+    data.append(["Project ID: #{@certification_path.project.code}", "Provisional Rating: #{@stars}", "Approval Date: #{@detailed_certificate_report&.approval_date&.strftime('%d %B, %Y')}"])
 
     scheme_info = ''
     if scheme_mix&.custom_name.present?
@@ -266,7 +275,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     end
 
     # Add footer to the table
-    data.append([{content: "Project Name: #{@certification_path.project.name} - #{scheme_mix&.scheme&.name} #{scheme_info}", colspan: 2}, "Reference: LOC-KNNAN-239409"])
+    data.append([{content: "Project Name: #{@certification_path.project.name} - #{scheme_mix&.scheme&.name} #{scheme_info}", colspan: 2}, "Reference: #{@detailed_certificate_report&.reference_number}"])
 
     # Output table
     draw_table(data, true, 'project_info_table')
@@ -317,9 +326,9 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
       end
     
       newline
-      bounding_box([@document.bounds.right - 105, @document.bounds.top - 45], width: 100, height: HEADER_HEIGHT) do
-        text = "Issued Date: #{DateTime.current.to_date}\n"
-        text2 = "Ref: LOC/QA 2532-2343-RU"
+      bounding_box([@document.bounds.right - 125, @document.bounds.top - 45], width: 120, height: HEADER_HEIGHT) do
+        text = "Issuance Date: #{@detailed_certificate_report&.issuance_date&.strftime('%d %B, %Y')}\n"
+        text2 = "Ref: #{@detailed_certificate_report&.reference_number}"
 
         styled_text("<div style='font-size: 8; text-align: right'>#{text}<br />#{text2}</div>")
       end
@@ -345,7 +354,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
 
   def draw_heading_date
     text 'Date: ' + @certification_path.certified_at.strftime('%B %d, %Y'), size: 9 if @certification_path.certified_at.present?
-    text 'Ref: ' + @certification_path.project.code, size: 9
+    text 'Ref: ' + @detailed_certificate_report&.reference_number, size: 9
   end
 
   def draw_heading_addressee
@@ -401,13 +410,13 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
           borderColor: 'rgb(255, 99, 132)',
           borderWidth: 1
         },
-                   {
-                     label: 'Achieved',
-                     data: total_category_scores.map { |_category_code, category| category[:achieved_score] },
-                     backgroundColor: 'rgb(54, 162, 235)',
-                     borderColor: 'rgb(54, 162, 235)',
-                     borderWidth: 1
-                   }]
+        {
+          label: 'Achieved',
+          data: total_category_scores.map { |_category_code, category| category[:achieved_score] },
+          backgroundColor: 'rgb(54, 162, 235)',
+          borderColor: 'rgb(54, 162, 235)',
+          borderWidth: 1
+        }]
       },
       options: {
         indexAxis: 'y',

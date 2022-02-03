@@ -9,6 +9,7 @@ class CertificationPathsController < AuthenticatedController
   # before_action :certificate_exists_and_is_allowed, only: [:apply, :new, :create]
 
   def show
+    @detailed_certificate_report = @certification_path.certificatation_path_report
     respond_to do |format|
       format.html {
         @page_title = ERB::Util.html_escape(@project.name.to_s)
