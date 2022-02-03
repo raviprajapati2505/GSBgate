@@ -391,7 +391,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
   def draw_category_graph(total_category_scores)
     chart_generator = ChartGeneratorService.new
     barchart_config = {
-      type: 'horizontalBar',
+      type: 'bar',
       data: {
         labels: total_category_scores.map { |_category_code, category| category[:name] },
         datasets: [{
@@ -410,6 +410,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
                    }]
       },
       options: {
+        indexAxis: 'y',
         legend: {
           position: 'bottom'
         }
