@@ -101,6 +101,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
       
       newline(1)
       draw_scoring_summary(total_category_scores)
+      
       draw_category_graph(total_category_scores)
     
       draw_score_graph
@@ -317,6 +318,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     newline(2)
     text = "Figure 1: Scoring Summary"
     styled_text("<div style='font-size: 12; line-height: 9; color: 000000; text-align: center; padding-top: 10px;'><b>#{text}</b></div>")
+    newline(1)
   end
 
   def draw_headers
@@ -427,7 +429,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     }
 
     begin
-      image chart_generator.generate_chart(barchart_config, 600, 400).path, width: 450
+      image chart_generator.generate_chart(barchart_config, 550, 350).path, width: 350, position: :center
     rescue LinkmeService::ApiError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, Errno::ECONNREFUSED,
            EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError
       text 'An error occurred when creating the chart.'
@@ -441,41 +443,25 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
 
     labels = [
         '',
-        '', '', '', '',
         'Certification denied',
-        '', '', '', '',
         '*',
-        '', '', '', '',
         '**',
-        '', '', '', '',
         '***',
-        '', '', '', '',
         '****',
-        '', '', '', '',
         '*****',
-        '', '', '', '',
         '******',
-        '', '', '', '',
         ''
     ]
 
     data = [
         -1,
-        -0.9, -0.8, -0.7, -0.6,
         -0.5,
-        -0.4, -0.3, -0.2, -0.1,
         0,
-        0.1, 0.2, 0.3, 0.4,
         0.5,
-        0.6, 0.7, 0.8, 0.9,
         1,
-        1.1, 1.2, 1.3, 1.4,
         1.5,
-        1.6, 1.7, 1.8, 1.9,
         2,
-        2.1, 2.2, 2.3, 2.4,
         2.5,
-        2.6, 2.7, 2.8, 2.9,
         3.0
     ]
 
@@ -503,7 +489,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     plot_index = data.index(@score.round(1))
     point_radius[plot_index] = 12 unless plot_index.nil?
 
-    barchart_config = {
+    linechart_config = {
       type: 'line',
       data: {
         labels: labels,
@@ -524,19 +510,8 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     }
 
     # text 'Level Achieved', size: 14, color: '36A2EB', style: :bold, align: :left
-
-    begin
-      image chart_generator.generate_chart(barchart_config, 700, 450).path, width: 450
-    rescue LinkmeService::ApiError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, Errno::ECONNREFUSED,
-           EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError
-      text 'An error occurred when creating the chart.'
-    end
-
     newline
-    text 'Figure 3 Certfication Level Chart', align: :center
 
-    # Output the legend
-    newline(2)
     # text 'Legend', size: 13, style: :bold, align: :left
     data = []
     data.append(['Score', 'Rating'])
@@ -548,7 +523,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     data.append(['2.0<X<=2.5', '*****'])
     data.append(['2.5<X<=3.0', '******'])
 
-    table(data, width: 250) do
+    table(data, cell_style: { width: 90 }, position: :right) do
       # column(0).align = :center
       row(0).background_color = MAIN_COLOR
       row(0).text_color = 'FFFFFF'
@@ -556,8 +531,17 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
       rows(1..-1).borders = [:right, :left]
       row(-1).borders = [:right, :bottom, :left]
     end
+    
+    begin
+      image chart_generator.generate_chart(linechart_config, 400, 340).path, at: [0, 625], width: 250
+    rescue LinkmeService::ApiError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, Errno::ECONNREFUSED,
+      EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError
+      text 'An error occurred when creating the chart.'
+    end
+    
+    newline(3)
+    text 'Figure 2 Rating Chart', align: :center
 
-    newline(2)
     # text 'Level Achieved', size: 12, align: :left
     # data = []
     # @certification_path.scheme_mixes.each do |scheme_mix|
