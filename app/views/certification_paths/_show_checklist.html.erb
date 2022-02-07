@@ -120,7 +120,7 @@
             </div>
         </div>
 
-        <% if @detailed_certificate_report.present? %>
+        <% if @detailed_certificate_report.present? && !@certification_path.final_construction? %>
           <div class="ibox float-e-margins">
             <div class="ibox-title">
               <h5><%= t('.certification_path_reports.title') %></h5>
@@ -133,7 +133,7 @@
                 <div id="detailedCertificatationFormModal" class="modal fade"></div>
               <% end %>
               <br />
-              <% if can?(:download_detailed_certificate_report, @certification_path) %>
+              <% if can?(:download_detailed_certificate_report, @certification_path) && @detailed_certificate_report.check_values_present? %>
                 <!-- <% if can?(:download_coverletter_report, @certification_path) %>
                     <div>
                       <%= btn_download(download_coverletter_report_project_certification_path_path(@project, @certification_path), size: 'extra_small') %>

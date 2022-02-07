@@ -52,6 +52,7 @@ class CertificationPath < ApplicationRecord
   before_update :set_started_at
   before_update :set_certified_at
   after_update :create_cda_cgp_user, if: -> { is_design_loc? && certification_path_status_id == CertificationPathStatus::CERTIFIED }  
+  after_update :create_certificatation_path_report, if: -> { certification_path_status_id == CertificationPathStatus::CERTIFIED }  
 
   scope :not_expired, -> {
     where('expires_at > ?', DateTime.now)
@@ -749,6 +750,11 @@ class CertificationPath < ApplicationRecord
       new_cda_cgp_manager.certification_team_type = "Final Design Certificate"
       new_cda_cgp_manager.save
     end
+  end
+
+  def create_certificatation_path_report
+    certificatation_path_report = CertificatationPathReport.find_or_initialize_by(certification_path_id: id)
+    certificatation_path_report.save(validate: false)
   end
 
   def set_started_at

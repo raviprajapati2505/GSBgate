@@ -269,7 +269,7 @@ class Ability
         can :update, Project
         can [:confirm_destroy, :destroy], Project # Be careful with this!
         can :update_incentive_scored, SchemeMixCriterion
-        can :new_detailed_certificatation_report, :create_detailed_certificatation_report, CertificationPath, certification_path_status: {id: CertificationPathStatus::CERTIFIED}
+        can [:new_detailed_certificatation_report, :create_detailed_certificatation_report], CertificationPath, certification_path_status: {id: CertificationPathStatus::CERTIFIED}
       end
       # Project Users
       # can :list_users_sharing_projects, ProjectsUser
@@ -286,7 +286,7 @@ class Ability
       can :apply_for_pcr, CertificationPath, pcr_track: false, certificate: {certification_type: [Certificate.certification_types[:letter_of_conformance], Certificate.certification_types[:final_design_certificate], Certificate.certification_types[:operations_certificate], Certificate.certification_types[:construction_certificate_stage1], Certificate.certification_types[:construction_certificate_stage2], Certificate.certification_types[:construction_certificate_stage3]]}
       can :cancel_pcr, CertificationPath, pcr_track: true, certificate: {certification_type: [Certificate.certification_types[:letter_of_conformance], Certificate.certification_types[:final_design_certificate], Certificate.certification_types[:operations_certificate], Certificate.certification_types[:construction_certificate_stage1], Certificate.certification_types[:construction_certificate_stage2], Certificate.certification_types[:construction_certificate_stage3]]}
       can :download_coverletter_report, CertificationPath, certification_path_status: {id: CertificationPathStatus::CERTIFIED}, certificate: {certification_type: Certificate.certification_types[:letter_of_conformance]}
-      can :download_detailed_certificate_report, CertificationPath, certification_path_status: {id: CertificationPathStatus::CERTIFIED}, certificate: {certification_type: Certificate.certification_types[:letter_of_conformance]}
+      can :download_detailed_certificate_report, CertificationPath, certification_path_status: {id: CertificationPathStatus::CERTIFIED}
 
       # User can download archive if and only if user is chairman(gsas_trust_top_manager) and project team member
       if  user.gsas_trust_top_manager?
@@ -380,7 +380,7 @@ class Ability
       can :download_signed_certificate, CertificationPath, certification_path_status: { id: CertificationPathStatus::CERTIFIED }
       can [:download_location_plan, :download_site_plan, :download_design_brief, :download_project_narrative, :download_area_statement, :download_sustainability_features], Project
       cannot :read, AuditLog
-      can :new_detailed_certificatation_report, :create_detailed_certificatation_report, CertificationPath, certification_path_status: {id: CertificationPathStatus::CERTIFIED}
+      can [:new_detailed_certificatation_report, :create_detailed_certificatation_report], CertificationPath, certification_path_status: {id: CertificationPathStatus::CERTIFIED}
     elsif user.system_admin?
       can :manage, :all
     elsif user.record_checker?

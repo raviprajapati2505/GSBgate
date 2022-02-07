@@ -104,6 +104,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
       
       draw_category_graph(total_category_scores)
     
+      newline(2)
       draw_score_graph
 
       # For all scheme_mixes
@@ -315,7 +316,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
 
     # Output table
     draw_table(data, true, 'scoring_summary_table')
-    newline(2)
+    newline(3)
     text = "Figure 1: Scoring Summary"
     styled_text("<div style='font-size: 12; line-height: 9; color: 000000; text-align: center; padding-top: 10px;'><b>#{text}</b></div>")
     newline(1)
@@ -368,30 +369,6 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     text 'Cc: ' + @addressee_copy, style: :bold
   end
 
-  def draw_heading_subject
-    curline = cursor
-    size = 40
-    bounding_box([0, curline], width: size) do
-      text 'Sub: ', style: :bold
-    end
-    bounding_box([size, curline], width: (@document.bounds.right - size)) do
-      text @subject
-    end
-  end
-
-  def draw_heading_project
-    curline = cursor
-    size = 100
-    bounding_box([0, curline], width: size) do
-      text 'Project Name: ', style: :bold
-      text 'GSAS ID: ', style: :bold
-    end
-    bounding_box([size, curline], width: (@document.bounds.right - size)) do
-      text @certification_path.project.name, style: :bold
-      text @certification_path.project.code, style: :bold
-    end
-  end
-
   def draw_signature
     text SIGNATURE_CLOSING
     newline(5)
@@ -429,7 +406,19 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     }
 
     begin
-      image chart_generator.generate_chart(barchart_config, 550, 350).path, width: 350, position: :center
+      width = 490
+      height = 230
+      x = @document.bounds.left - 5
+      y = @document.bounds.bottom + 5
+
+      stroke do
+        stroke_color '000000'
+        vertical_line   y, y+height+12, :at => x
+        vertical_line   y, y+height+12, :at => x+width
+        horizontal_line x, x+width,  :at => y+height+12
+        horizontal_line x, x+width, :at => y
+        image chart_generator.generate_chart(barchart_config, 550, 350).path, width: 350, position: :center
+      end
     rescue LinkmeService::ApiError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, Errno::ECONNREFUSED,
            EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError
       text 'An error occurred when creating the chart.'
@@ -467,27 +456,20 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
 
     point_radius = [
         0,
-        0, 0, 0, 0,
         0,
-        0, 0, 0, 0,
-        4,
-        0, 0, 0, 0,
-        4,
-        0, 0, 0, 0,
-        4,
-        0, 0, 0, 0,
-        4,
-        0, 0, 0, 0,
-        4,
-        0, 0, 0, 0,
-        4,
-        0, 0, 0, 0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
         0
     ]
 
     # Mark the certificate score on the line chart
-    plot_index = data.index(@score.round(1))
-    point_radius[plot_index] = 12 unless plot_index.nil?
+    plot_index = data.index{ |e| e > @score.round(1) } - 1 
+    data[plot_index] = @score.round(1)
+    point_radius[plot_index] = 7 unless plot_index.nil?
 
     linechart_config = {
       type: 'line',
@@ -523,7 +505,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     data.append(['2.0<X<=2.5', '*****'])
     data.append(['2.5<X<=3.0', '******'])
 
-    table(data, cell_style: { width: 90 }, position: :right) do
+    table(data, cell_style: { width: 80 }, position: :right) do
       # column(0).align = :center
       row(0).background_color = MAIN_COLOR
       row(0).text_color = 'FFFFFF'
@@ -533,7 +515,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     end
     
     begin
-      image chart_generator.generate_chart(linechart_config, 400, 340).path, at: [0, 625], width: 250
+      image chart_generator.generate_chart(linechart_config, 500, 360).path, at: [0, 600], width: 280
     rescue LinkmeService::ApiError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, Errno::ECONNREFUSED,
       EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError
       text 'An error occurred when creating the chart.'
