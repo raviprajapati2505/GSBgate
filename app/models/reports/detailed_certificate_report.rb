@@ -104,7 +104,11 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
       
       draw_category_graph(total_category_scores)
     
-      newline(1)
+      start_new_page
+      newline(2)
+      draw_project_info
+      newline(2)
+
       draw_score_graph
 
       # For all scheme_mixes
@@ -216,8 +220,6 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
       newline
       text = "The summary of the obtained rating is attached herewith. \n\n This letter is only the predecessor towards achieving the final GSAS-D&B Certificate and should not be considered as the final certificate. The project should satisfy during the construction stage all the requirements of <b>Conformance to Design Audit(CDA)</b> which is the pre-requisite for the final GSAS-D&B Certificate as indicated in GSAS Technical Guide, <a>www.gord.qa</a> \n"
       styled_text("<div style='font-size: 10; line-height: 9'>#{text}</div>")
-
-      newline(1)
 
       text = "In the event of any future changes applied to the criteria pertaining to the issued LOC, the changes are required to be re-assessed once again."
       styled_text("<div style='font-size: 10; line-height: 9'>#{text}</div>")
@@ -405,26 +407,27 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
       }
     }
 
-    width = 490
-    height = 230
-    x = @document.bounds.left - 5
-    y = @document.bounds.bottom + 5
+    # width = 490
+    # height = 230
+    # x = @document.bounds.left - 5
+    # y = @document.bounds.bottom + 20
 
     begin
-      stroke do
-        image chart_generator.generate_chart(barchart_config, 550, 350).path, width: 350, position: :center
-        stroke_color '000000'
-        vertical_line   y, y+height+12, :at => x
-        vertical_line   y, y+height+12, :at => x+width
-        horizontal_line x, x+width,  :at => y+height+12
-        horizontal_line x, x+width, :at => y
-      end
+      image chart_generator.generate_chart(barchart_config, 550, 350).path, width: 350, position: :center
+
+      # stroke do
+      #   stroke_color '000000'
+      #   vertical_line   y, y+height+12, :at => x
+      #   vertical_line   y, y+height+12, :at => x+width
+      #   horizontal_line x, x+width,  :at => y+height+12
+      #   horizontal_line x, x+width, :at => y
+      # end
     rescue LinkmeService::ApiError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, Errno::ECONNREFUSED,
            EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError
 
-           bounding_box([x, y], width: x+width, height: y+height, position: :center) do
+          #  bounding_box([x, y], width: x+width, height: height, position: :center) do
              text "An error occurred when creating the chart.", align: :center
-           end
+          #  end
     end
 
     newline
@@ -518,7 +521,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     end
     
     begin
-      image chart_generator.generate_chart(linechart_config, 500, 360).path, at: [0, 600], width: 280
+      image chart_generator.generate_chart(linechart_config, 500, 360).path, at: [0, 542], width: 280
     rescue LinkmeService::ApiError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, Errno::ECONNREFUSED,
       EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError
       text 'An error occurred when creating the chart.'
