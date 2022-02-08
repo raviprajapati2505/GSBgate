@@ -104,7 +104,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
       
       draw_category_graph(total_category_scores)
     
-      newline(2)
+      newline(1)
       draw_score_graph
 
       # For all scheme_mixes
@@ -405,23 +405,26 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
       }
     }
 
-    begin
-      width = 490
-      height = 230
-      x = @document.bounds.left - 5
-      y = @document.bounds.bottom + 5
+    width = 490
+    height = 230
+    x = @document.bounds.left - 5
+    y = @document.bounds.bottom + 5
 
+    begin
       stroke do
+        image chart_generator.generate_chart(barchart_config, 550, 350).path, width: 350, position: :center
         stroke_color '000000'
         vertical_line   y, y+height+12, :at => x
         vertical_line   y, y+height+12, :at => x+width
         horizontal_line x, x+width,  :at => y+height+12
         horizontal_line x, x+width, :at => y
-        image chart_generator.generate_chart(barchart_config, 550, 350).path, width: 350, position: :center
       end
     rescue LinkmeService::ApiError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, Errno::ECONNREFUSED,
            EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError
-      text 'An error occurred when creating the chart.'
+
+           bounding_box([x, y], width: x+width, height: y+height, position: :center) do
+             text "An error occurred when creating the chart.", align: :center
+           end
     end
 
     newline
@@ -521,7 +524,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
       text 'An error occurred when creating the chart.'
     end
     
-    newline(3)
+    newline(2)
     text 'Figure 2 Rating Chart', align: :center
 
     # text 'Level Achieved', size: 12, align: :left
@@ -649,7 +652,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
       elsif type == 'scoring_summary_table'
 
         # bounding_box([@document.bounds.left, @document.bounds.top], width: @document.bounds.right, height: HEADER_HEIGHT) do
-          table(data, width: @document.bounds.right - 20) do
+          table(data, width: @document.bounds.right - 20, position: :center) do
   
             cells.left_margin = 50
             cells.right_margin = 50
