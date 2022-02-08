@@ -473,7 +473,8 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     ]
 
     # Mark the certificate score on the line chart
-    plot_index = data.index{ |e| e > @score.round(1) } - 1 
+    plot_index = data.index{ |e| e > @score.round(1) || @score.round(1) == 3 } - 1 rescue 0
+    plot_index = plot_index - 1 if @score.round(1) == 3
     data[plot_index] = @score.round(1)
     point_radius[plot_index] = 7 unless plot_index.nil?
 
