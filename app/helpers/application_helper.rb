@@ -639,12 +639,12 @@ module ApplicationHelper
   end
 
   def set_project_country_location(project)
-    @city_options = [["Other", "Other"]]
+    @city_options = [["Other, Please indicate", "Other"]]
     @is_city_predefined = true
     if project.persisted?
       locations = Location.find_by_country(project&.country)&.list
       if (locations.present? && locations&.include?(project&.city))
-        @city_options = locations.map{ |loc| [loc, loc] }.push(["Other", "Other"])
+        @city_options = locations.map{ |loc| [loc, loc] }.push(["Other, Please indicate", "Other"])
       else
         @is_city_predefined = false
       end
@@ -652,12 +652,12 @@ module ApplicationHelper
   end
 
   def set_project_district(project)
-    @district_options = [["Other", "Other"]]
+    @district_options = [["Other, Please indicate", "Other"]]
     @is_district_predefined = true
     if project.persisted?
       districts = District.find_by_country(project&.country)&.list
       if (districts.present? && districts&.include?(project&.district))
-        @district_options = districts.map{ |dis| [dis, dis] }.push(["Other", "Other"])
+        @district_options = districts.map{ |dis| [dis, dis] }.push(["Other, Please indicate", "Other"])
       else
         @is_district_predefined = false
       end

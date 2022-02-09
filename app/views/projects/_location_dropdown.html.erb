@@ -1,6 +1,6 @@
 <label>Project City</label>
 <% if location.present? %>
-  <%= select_tag "project[city]", options_for_select(location&.list&.map{ |loc| [loc, loc] }.push(["Other", "Other"])), { include_blank: "Select City", required: true, id: "city-select", class: "select2 form-control city-select-dropdown"}  %>
+  <%= select_tag "project[city]", options_for_select(location&.list&.map{ |loc| [loc, loc] }.push(["Other, Please indicate", "Other"])), { include_blank: "Select City", required: true, id: "city-select", class: "select2 form-control city-select-dropdown"}  %>
 <% else %>
-  <%= select_tag "project[city]", options_for_select([["Other", "Other"]]), { include_blank: "Select City", id: "city-select", required: true, class: "select2 form-control city-select-dropdown"}  %>
+  <%= select_tag "project[city]", options_for_select([["Other, Please indicate", "Other"]]), { include_blank: "Select City", id: "city-select", required: true, class: "select2 form-control city-select-dropdown"}  %>
 <% end %>

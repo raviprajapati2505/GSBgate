@@ -61,9 +61,13 @@ module Effective
         col :project_country, sql_column: 'projects.country', visible: false
         col :project_city, sql_column: 'projects.city', visible: false
         col :project_district, sql_column: 'projects.district', visible: false
-        col :project_address, sql_column: 'projects.address', visible: false
+
+        col :project_address, sql_column: 'projects.address', visible: false do |rec|
+          rec.project_address&.truncate(50)
+        end
+
         col :project_description, sql_column: 'projects.description', visible: false do |rec|       
-          rec.project_description&.truncate(200)
+          rec.project_description&.truncate(300)
         end
        
         col :project_gross_area, label: t('models.effective.datatables.projects.lables.gross_area'), sql_column: 'projects.gross_area', as: :integer, visible: false
@@ -71,14 +75,6 @@ module Effective
         col :project_carpark_area, sql_column: 'projects.carpark_area', as: :integer, visible: false
         col :project_site_area, label: t('models.effective.datatables.projects.lables.project_site_area'), sql_column: 'projects.project_site_area', as: :integer, visible: false
         col :project_buildings_footprint_area, label: t('models.effective.datatables.projects.lables.buildings_footprint_area'), sql_column: 'projects.buildings_footprint_area', as: :integer, visible: false
-        col :project_created_at, label: t('models.effective.datatables.projects.lables.created_at'), sql_column: 'projects.created_at', as: :datetime, visible: false, search: { as: :select, collection: Proc.new { Project.all.order(created_at: :desc).map { |p| [p.created_at&.strftime('%e %b, %Y'), p.created_at&.to_date] }.uniq } } do |rec|
-          rec.project_created_at&.strftime('%e %b, %Y')
-        end.search do |collection, terms, column, index|
-          terms_array = terms.split(",")
-          unless collection.class == Array
-            collection.where("DATE(projects.created_at) IN (?)", terms_array.map!{|term| term.to_date})
-          end
-        end
 
         col :project_owner, sql_column: 'projects.owner', label: t('models.effective.datatables.projects.lables.owner'), visible: false
         col :project_developer, sql_column: 'projects.developer', label: t('models.effective.datatables.projects.lables.developer'), visible: false
@@ -167,17 +163,6 @@ module Effective
           end
         end
 
-        col :certification_path_appealed, sql_column: 'certification_paths.appealed', label: t('models.effective.datatables.projects_certification_paths.certification_path_appealed.label'), as: :boolean, visible: false
-
-        col :certification_path_created_at, sql_column: 'certification_paths.created_at', label: t('models.effective.datatables.projects_certification_paths.certification_path_created_at.label'), as: :datetime, visible: false, search: { as: :select, collection: Proc.new { CertificationPath.all.order(created_at: :desc).map { |c| [c.created_at&.strftime('%e %b, %Y'), c.created_at&.to_date] }.uniq } } do |rec|
-          rec.certification_path_created_at&.strftime('%e %b, %Y')
-        end.search do |collection, terms, column, index|
-          terms_array = terms.split(",")
-          unless collection.class == Array
-            collection.where("DATE(certification_paths.created_at) IN (?)", terms_array.map!{|term| term.to_date})
-          end
-        end
-
         col :certification_path_started_at, sql_column: 'certification_paths.started_at', label: t('models.effective.datatables.projects_certification_paths.certification_path_started_at.label'), as: :datetime, visible: false, search: { as: :select, collection: Proc.new { CertificationPath.all.order(started_at: :desc).map { |c| [c.started_at&.strftime('%e %b, %Y'), c.started_at&.to_date] }.uniq } } do |rec|
           rec.certification_path_started_at&.strftime('%e %b, %Y')
         end.search do |collection, terms, column, index|
@@ -193,15 +178,6 @@ module Effective
           terms_array = terms.split(",")
           unless collection.class == Array
             collection.where("DATE(certification_paths.certified_at) IN (?)", terms_array.map!{|term| term.to_date})
-          end
-        end
-
-        col :certification_path_expires_at, sql_column: 'certification_paths.expires_at', label: t('models.effective.datatables.projects_certification_paths.certification_path_expires_at.label'), as: :datetime, visible: false, search: { as: :select, collection: Proc.new { CertificationPath.all.order(expires_at: :desc).map { |c| [c.expires_at&.strftime('%e %b, %Y'), c.expires_at&.to_date] }.uniq } } do |rec|
-          rec.certification_path_expires_at&.strftime('%e %b, %Y')
-        end.search do |collection, terms, column, index|
-          terms_array = terms.split(",")
-          unless collection.class == Array
-            collection.where("DATE(certification_paths.expires_at) IN (?)", terms_array.map!{|term| term.to_date})
           end
         end
 
@@ -233,84 +209,8 @@ module Effective
                 score.round(2)
               end
             end
-              
-            # if rec.certificate_gsas_version == 'v2.1 Issue 1.0' && rec.certificate_type == Certificate.certificate_types[:construction_type]
-            #   number_to_percentage(rec.total_achieved_score, precision: 1)
-            # else
-            #   score = rec&.total_achieved_score
-
-            #   certification_path = CertificationPath.find(rec&.certification_path_id)
-            #   if certification_path&.certificate&.construction_2019?
-            #     score_all = fetch_scores(certification_path)
-            #     score = score_all[:achieved_score_in_certificate_points]
-            #   end
-
-            #   if certification_path&.certificate&.design_and_build?
-            #     score = 0 if score < 0
-            #   end
-
-            #   if !score.nil? && score > 3
-            #     3.0
-            #   else
-            #     score.round(2)
-            #   end
-            # end
           end
         end
-
-        col :total_submitted_score, as: :decimal, label: t('models.effective.datatables.projects_certification_paths.total_submitted_score.label'), visible: false, sql_column: '(%s)' % ProjectsCertificationPaths.query_score_in_certificate_points(:submitted_score), search: false do |rec|
-          if !rec.total_submitted_score.nil?
-            score = rec&.total_submitted_score
-            certification_path = CertificationPath.find(rec&.certification_path_id)
-
-            if certification_path&.certificate&.design_and_build?
-              score = 0 if score < 0
-            end
-
-            if certification_path&.construction? && !certification_path&.is_activating?
-              score_all = fetch_scores(certification_path)
-              score = score_all[:submitted_score_in_certificate_points]
-            end
-
-            if rec.certificate_gsas_version == 'v2.1 Issue 1.0' && certification_path&.construction?
-              number_to_percentage(score, precision: 1)
-            else
-              if !score.nil? && score > 3
-                3.0
-              else
-                score.round(2)
-              end
-            end
-          end
-        end
-
-        col :total_targeted_score, as: :decimal, label: t('models.effective.datatables.projects_certification_paths.total_targeted_score.label'), visible: false, sql_column: '(%s)' % ProjectsCertificationPaths.query_score_in_certificate_points(:targeted_score), search: false do |rec|
-          if !rec.total_targeted_score.nil?
-
-            score = rec&.total_targeted_score
-            certification_path = CertificationPath.find(rec&.certification_path_id)
-
-            if certification_path&.certificate&.design_and_build?
-              score = 0 if score < 0
-            end
-
-            if certification_path&.construction? && !certification_path&.is_activating?
-              score_all = fetch_scores(certification_path)
-              score = score_all[:targeted_score_in_certificate_points]
-            end
-
-            if rec.certificate_gsas_version == 'v2.1 Issue 1.0' && certification_path&.construction?
-              number_to_percentage(score, precision: 1)
-            else
-              if !score.nil? && score > 3
-                3.0
-              else
-                score.round(2)
-              end
-            end
-          end
-        end
-
 
         col :project_service_provider, sql_column: 'projects.service_provider', label: t('models.effective.datatables.projects.lables.service_provider'), visible: false
 
@@ -374,7 +274,6 @@ module Effective
           .select('projects.carpark_area as project_carpark_area')
           .select('projects.project_site_area as project_site_area')
           .select('projects.buildings_footprint_area as project_buildings_footprint_area')
-          .select('projects.created_at as project_created_at')
           .select('projects.owner as project_owner')
           .select('projects.developer as project_developer')
           .select('projects.service_provider as project_service_provider')
@@ -388,11 +287,8 @@ module Effective
           .select('building_type_groups.name as building_type_group_name')
           .select('building_types.id as building_type_id')
           .select('building_types.name as building_type_name')
-          .select('certification_paths.appealed as certification_path_appealed')
-          .select('certification_paths.created_at as certification_path_created_at')
           .select('certification_paths.started_at as certification_path_started_at')
           .select('certification_paths.certified_at as certification_path_certified_at')
-          .select('certification_paths.expires_at as certification_path_expires_at')
           .select("certificates.name as certificate_name")
           .select("certificates.certificate_type as certificate_type")
           .select('certificates.gsas_version as certificate_gsas_version')
@@ -406,8 +302,6 @@ module Effective
           .select('(%s) AS certification_manager_array' % projects_users_by_type('certification_manager'))
           .select("ARRAY_TO_STRING(ARRAY(SELECT enterprise_client_users.name FROM users as enterprise_client_users INNER JOIN projects_users as enterprise_client_project_users ON enterprise_client_project_users.user_id = enterprise_client_users.id  WHERE enterprise_client_project_users.role IN (#{ProjectsUser.roles[:enterprise_client]}) AND enterprise_client_project_users.project_id = projects.id), '|||') AS enterprise_clients_array")
           .select('(%s) AS total_achieved_score' % ProjectsCertificationPaths.query_score_in_certificate_points(:achieved_score))
-          .select('(%s) AS total_submitted_score' % ProjectsCertificationPaths.query_score_in_certificate_points(:submitted_score))
-          .select('(%s) AS total_targeted_score' % ProjectsCertificationPaths.query_score_in_certificate_points(:targeted_score))
           .accessible_by(current_ability)
       end
     end

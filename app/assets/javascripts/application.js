@@ -78,6 +78,16 @@ $(function () {
         modal.modal();
     };
 
+    // Date picker only year
+    $('.datepicker-year').datepicker({
+        format: 'yyyy',
+        viewMode: 'years',
+        minViewMode: 'years',
+        changeYear: true,
+        startDate: '2000y',
+        endDate: '2100y',
+        autoclose: true
+    });
 
     // Datepicker (only today + future)
     $('.datepicker-future').datepicker({
@@ -265,10 +275,20 @@ $(function () {
                 $("#district-select-div").html("<label>Project District</label><input class='form-control' type='text' name='project[district]'>")
             }
         }
-    })
+    });
 
-    // Gross Certified Area (A+B-C)
-    $('#project_project_site_area, #project_gross_area, #project_buildings_footprint_area').keyup(function(){
+    function check_project_buildings_footprint_area(A, B, C) {
+        var area_field = $('#project_buildings_footprint_area');
+        var max_value = A < B ? A : B
+
+        if (C > A || C > B) area_field.val(0);
+
+        area_field.attr('max', max_value)
+
+        return area_field.val();
+    }
+
+    function set_certified_area() {
         var A = $('#project_project_site_area').val();
         var B = $('#project_gross_area').val();
         var C = $('#project_buildings_footprint_area').val();
@@ -277,8 +297,54 @@ $(function () {
         B = (B == "") ? 0 : Number(B)
         C = (C == "") ? 0 : Number(C)
 
-        $('#project_certified_area').val(A+B-C);
+        // C must not be A & B
+        C = check_project_buildings_footprint_area(A, B, C);
+
+        let project_type = $("#project_certificate_type").find(':selected').val();
+        value = project_type == "1" ? A : A+B-C
+
+        $('#project_certified_area').val(value);
+    }
+
+    function commify_values(element){
+        var value = element.val();
+        var chars = value.split("").reverse();
+
+        var withCommas = []
+        for( var i = 1; i <= chars.length; i++ ){
+          withCommas.push(chars[i-1])
+          if ( i%3==0 && i != chars.length ) withCommas.push(",")
+        }
+        var value = withCommas.reverse().join("");
+
+        element.val(value);
+    }
+
+    $("#project_certificate_type").change(function(){
+        set_certified_area();
     });
+
+    // Gross Certified Area (A+B-C)
+    $('#project_project_site_area, #project_gross_area, #project_buildings_footprint_area').keyup(function(){
+        set_certified_area();
+    });
+
+    $('#project_estimated_project_cost, #project_gross_area').keyup(function(){
+        var total_cost = $('#project_estimated_project_cost').val();
+        var gross_area = $('#project_gross_area').val();
+
+        total_cost = (total_cost == "") ? 0 : Number(total_cost)
+        gross_area = (gross_area == "") ? 0 : Number(gross_area)
+
+        cost_per_ms = total_cost / gross_area
+        cost_per_ms = isFinite(cost_per_ms) ? cost_per_ms : 0
+
+        $("#project_cost_square_meter").val(cost_per_ms);
+    });
+
+    // $(".commify-value").keyup(function(){
+    //     commify_values($(this));
+    // });
 
     // Turn document table in standard jQuery DataTable for sorting
     $('.document-table').DataTable({
