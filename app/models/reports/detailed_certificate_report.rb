@@ -55,12 +55,14 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
   private
 
   def set_format_colors(project)
-    if project&.certificate_type == 3
-      @@main_color = '62A744'.freeze
-      @@column_1_color = 'ecf1e5'.freeze
-    else
+    if project&.certificate_type == 1
       @@main_color = 'eb6109'.freeze
       @@column_1_color = 'fdd7bf'.freeze
+      @@stamp_image = 'cm_stamp.png'.freeze
+    else
+      @@main_color = '62A744'.freeze
+      @@column_1_color = 'ecf1e5'.freeze
+      @@stamp_image = 'loc_stamp.png'.freeze
     end
   end
 
@@ -355,9 +357,9 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
 
         styled_text("<div style='font-size: 8; text-align: right'>#{text}<br />#{text2}</div>")
       end
-      # bounding_box([@document.bounds.right - 50, @document.bounds.bottom + 100], width: 50, height: HEADER_HEIGHT) do
-      #   image image_path(GSAS_LOGO), width: 50
-      # end
+      bounding_box([@document.bounds.right - 50, @document.bounds.bottom + 100], width: 50, height: HEADER_HEIGHT) do
+        image image_path(@@stamp_image), width: 50
+      end
     end
   end
 
@@ -540,7 +542,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     end
     
     begin
-      image chart_generator.generate_chart(linechart_config, 500, 360).path, at: [0, 542], width: 280
+      image chart_generator.generate_chart(linechart_config, 500, 360).path, at: [0, 530], width: 280
     rescue LinkmeService::ApiError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, Errno::ECONNREFUSED,
       EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError
       text 'An error occurred when creating the chart.'
@@ -589,7 +591,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
   def draw_table(data, has_level_achieved_footer = false, type)
 
       if type == 'basic_table'
-        table(data, width: @document.bounds.right - CONTENT_PADDING) do
+        table(data, width: @document.bounds.right) do
           # Set default cell style
           cells.align = :left
           cells.borders = []
@@ -620,7 +622,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
           content_rows.padding = [3, 4, 3, 4]
         end
       elsif type == 'score_table'
-        table(data, width: @document.bounds.right - CONTENT_PADDING) do
+        table(data, width: @document.bounds.right) do
           # Set default cell style
           cells.align = :left
           cells.borders = []
@@ -732,11 +734,8 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
           cells.border_bottom_color = '000000'
 
           column(0).width = width * 0.20
-          column(1).width = width * 0.35
-          column(2).width = width * 0.10
-          column(3).width = width * 0.10
-          column(4).width = width * 0.25
-    
+          column(1).width = width * 0.60
+          column(2).width = width * 0.20
 
           # Misc table border style
           row(0).border_top_color = '000000'
@@ -746,7 +745,8 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
 
           # Category name column style
           name_column = column(0)
-          name_column.align = :right
+          name_column.align = :left
+          # name_column.vposition = :center
           name_column.text_color = TABLE_TEXT_COLOR
           name_column.borders = [:top, :right, :bottom, :left]
           name_column.border_color = TABLE_BORDER_COLOR
@@ -848,11 +848,11 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     def draw_criteria_table(scheme_category, scheme_mix_criteria)
       # Prepare table data
       data = []
-      data.append([{content: "#{scheme_category.name.upcase} [#{scheme_category.code}]", rowspan: scheme_mix_criteria.size + 1}, 'Criterion', 'Level', 'Achieved', 'Remarks'])
+      data.append([{content: "#{scheme_category.name.upcase} [#{scheme_category.code}]", rowspan: scheme_mix_criteria.size + 1}, 'Criterion', 'Level'])
   
       # Add the category rows to the table
       scheme_mix_criteria.each do |smc|
-        data.append([smc.full_name, number_with_precision(smc.achieved_score, precision: 0, significant: true), number_with_precision(smc.achieved_score, precision: 0, significant: true), t(smc.status, scope: 'activerecord.attributes.scheme_mix_criterion.statuses')])
+        data.append([smc.full_name, number_with_precision(smc.achieved_score, precision: 0, significant: true)])
       end
   
       # Output table
