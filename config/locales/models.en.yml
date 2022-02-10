@@ -129,7 +129,7 @@ en:
         audit_log_user_comment: Comment
       requirement_datum:
         audit_log_user_comment: Comment
-      certificatation_path_report:
+      certification_path_report:
         to: To
         reference_number: Reference Number
         project_owner: Project Owner

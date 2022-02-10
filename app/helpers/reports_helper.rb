@@ -3,7 +3,7 @@ module ReportsHelper
     text = "#{@certification_path.name} Criteria Summary \n #{@certification_path.project.name}"
   end
 
-  def certificatation_type_name(certification_path)
+  def certification_type_name(certification_path)
     project_type =  case certification_path&.project.certificate_type
                     when 1
                       'CONSTRUCTION MANAGEMENT'

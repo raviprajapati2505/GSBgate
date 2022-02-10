@@ -1,0 +1,30 @@
+<div class="modal-dialog modal-lg">
+  <div class="modal-content">
+    <div class="modal-header">
+      <%= btn_close_modal %>
+      <h4 class="modal-title">
+        Certificate Information Verification Form
+      </h4>
+    </div>
+    <div class="modal-body">
+      <%= bootstrap_form_for(certification_path_report, url: create_detailed_certification_report_project_certification_path_path(project, certification_path), remote: :true, method: :post) do |f| %>
+
+        <%= f.text_field :to, label: CertificationPathReport.human_attribute_name('to'), required: true %>
+
+        <%= f.text_field :reference_number, label: CertificationPathReport.human_attribute_name('reference_number'), required: true %>
+
+        <%= f.text_field :project_owner, label: CertificationPathReport.human_attribute_name('project_owner'), required: true %>
+
+        <%= f.text_field :project_name, label: CertificationPathReport.human_attribute_name('project_name'), required: true %>
+
+        <%= f.text_field :project_location, label: CertificationPathReport.human_attribute_name('project_location'), required: true %>
+
+        <%= f.text_field :issuance_date, value: f.object&.issuance_date&.strftime("%d/%m/%Y"), label: CertificationPathReport.human_attribute_name('issuance_date'), prepend: ikoen('calendar'), class: 'datepicker-past', autocomplete: 'off', required: true %>
+
+        <%= f.text_field :approval_date, value: f.object&.approval_date&.strftime("%d/%m/%Y"), label: CertificationPathReport.human_attribute_name('approval_date'), prepend: ikoen('calendar'), class: 'datepicker-past', autocomplete: 'off', required: true %>
+
+        <%= btn_save %>
+      <% end %>
+    </div>
+  </div>
+</div>

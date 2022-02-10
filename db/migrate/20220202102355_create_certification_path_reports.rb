@@ -1,6 +1,6 @@
-class CreateCertificatationPathReports < ActiveRecord::Migration[5.2]
+class CreateCertificationPathReports < ActiveRecord::Migration[5.2]
   def change
-    create_table :certificatation_path_reports do |t|
+    create_table :certification_path_reports do |t|
       t.references :certification_path, foreign_key: true
       t.string :reference_number
       t.string :to

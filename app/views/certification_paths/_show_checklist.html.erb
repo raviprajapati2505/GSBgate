@@ -126,11 +126,11 @@
               <h5><%= t('.certification_path_reports.title') %></h5>
             </div>
             <div class="ibox-content">
-              <% if can?(:create_detailed_certificatation_report, @certification_path) %>
+              <% if can?(:create_detailed_certification_report, @certification_path) %>
                   <div>
-                    <%= btn_link_to(new_detailed_certificatation_report_project_certification_path_path(@project, @certification_path), text: t('.certification_path.create_detaild_certificate_report.text'), remote: :true) %>
+                    <%= btn_link_to(new_detailed_certification_report_project_certification_path_path(@project, @certification_path), text: t('.certification_path.create_detaild_certificate_report.text'), remote: :true) %>
                   </div>
-                <div id="detailedCertificatationFormModal" class="modal fade"></div>
+                <div id="detailedCertificationFormModal" class="modal fade"></div>
               <% end %>
               <br />
               <% if can?(:download_detailed_certificate_report, @certification_path) && @detailed_certificate_report.check_values_present? %>

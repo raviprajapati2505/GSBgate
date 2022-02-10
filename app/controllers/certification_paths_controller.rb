@@ -9,7 +9,7 @@ class CertificationPathsController < AuthenticatedController
   # before_action :certificate_exists_and_is_allowed, only: [:apply, :new, :create]
 
   def show
-    @detailed_certificate_report = @certification_path.certificatation_path_report
+    @detailed_certificate_report = @certification_path.certification_path_report
     respond_to do |format|
       format.html {
         @page_title = ERB::Util.html_escape(@project.name.to_s)
@@ -197,23 +197,23 @@ class CertificationPathsController < AuthenticatedController
   def edit_status
   end
 
-  def new_detailed_certificatation_report
-    @certificatation_path_report = CertificatationPathReport.find_or_initialize_by(certification_path_id: @certification_path.id)
+  def new_detailed_certification_report
+    @certification_path_report = CertificationPathReport.find_or_initialize_by(certification_path_id: @certification_path.id)
     respond_to do |format|
       format.js { render layout: false }
     end
   end
 
-  def create_detailed_certificatation_report
-    @certificatation_path_report = CertificatationPathReport.find_or_initialize_by(certification_path_id: @certification_path.id)
+  def create_detailed_certification_report
+    @certification_path_report = CertificationPathReport.find_or_initialize_by(certification_path_id: @certification_path.id)
 
-    detailed_certificatation_report_params = params.require(:certificatation_path_report).permit(:to, :reference_number, :project_owner, :project_name, :project_location, :issuance_date, :approval_date)
+    detailed_certification_report_params = params.require(:certification_path_report).permit(:to, :reference_number, :project_owner, :project_name, :project_location, :issuance_date, :approval_date)
 
     respond_to do |format|
-      if @certificatation_path_report.update(detailed_certificatation_report_params)
+      if @certification_path_report.update(detailed_certification_report_params)
         format.js { render inline: "location.reload();" }
       else
-        format.js { render 'certification_paths/new_detailed_certificatation_report.js.erb', layout: false }
+        format.js { render 'certification_paths/new_detailed_certification_report.js.erb', layout: false }
       end
     end
   end

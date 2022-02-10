@@ -29,7 +29,7 @@ class CertificationPath < ApplicationRecord
   has_many :actual_project_images, dependent: :destroy
   has_many :project_rendering_images, dependent: :destroy
   has_one :certification_path_method, dependent: :destroy
-  has_one :certificatation_path_report, dependent: :destroy
+  has_one :certification_path_report, dependent: :destroy
 
   accepts_nested_attributes_for :certificate
   accepts_nested_attributes_for :scheme_mixes
@@ -52,7 +52,7 @@ class CertificationPath < ApplicationRecord
   before_update :set_started_at
   before_update :set_certified_at
   after_update :create_cda_cgp_user, if: -> { is_design_loc? && certification_path_status_id == CertificationPathStatus::CERTIFIED }  
-  after_update :create_certificatation_path_report, if: -> { certification_path_status_id == CertificationPathStatus::CERTIFIED }  
+  after_update :create_certification_path_report, if: -> { certification_path_status_id == CertificationPathStatus::CERTIFIED }  
 
   scope :not_expired, -> {
     where('expires_at > ?', DateTime.now)
@@ -752,9 +752,9 @@ class CertificationPath < ApplicationRecord
     end
   end
 
-  def create_certificatation_path_report
-    certificatation_path_report = CertificatationPathReport.find_or_initialize_by(certification_path_id: id)
-    certificatation_path_report.save(validate: false)
+  def create_certification_path_report
+    certification_path_report = CertificationPathReport.find_or_initialize_by(certification_path_id: id)
+    certification_path_report.save(validate: false)
   end
 
   def set_started_at

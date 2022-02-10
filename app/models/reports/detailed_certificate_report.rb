@@ -4,8 +4,6 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
   include ReportsHelper
   include ActionView::Helpers::TranslationHelper
 
-  MAIN_COLOR = '62A744'.freeze
-  COLUMN_1_COLOR = 'ecf1e5'.freeze
   COLUMN_2_COLOR = 'dddcde'.freeze
   TABLE_TEXT_COLOR = '465059'.freeze
   TABLE_BORDER_COLOR = 'a8abb0'.freeze
@@ -25,7 +23,6 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
   LOC_LOGO = 'gsas_logo.jpg'.freeze
 
   TEXT_COLOR = 'ffffff'.freeze
-  MAIN_COLOR = '62A744'.freeze
   BACKGROUND_COLOR = 'EEEEEE'.freeze
   FOOTER_LOGO = 'gord_logo_black.jpg'.freeze
   STAR_ICON = 'green_star.png'.freeze
@@ -38,9 +35,10 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     @document = Prawn::Document.new(page_size: 'A4',
                                     page_layout: :portrait,
                                     margin: 40)
-        
+    
     @certification_path = certification_path
-    @detailed_certificate_report = @certification_path.certificatation_path_report
+    @project = @certification_path.project
+    @detailed_certificate_report = @certification_path.certification_path_report
     @scheme_mixes = certification_path&.scheme_mixes
     @scheme_names = @certification_path.schemes.collect(&:name)
     @score = @certification_path.scores_in_certificate_points[:achieved_score_in_certificate_points]
@@ -50,10 +48,21 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     @addressee_copy = "Service Provider:   #{@certification_path.project.service_provider}"
     @subject = "#{certification_path.name}\n#{@scheme_names.join(', ')}"
  
+    set_format_colors(@project)
     do_render
   end
 
   private
+
+  def set_format_colors(project)
+    if project&.certificate_type == 3
+      @@main_color = '62A744'.freeze
+      @@column_1_color = 'ecf1e5'.freeze
+    else
+      @@main_color = 'eb6109'.freeze
+      @@column_1_color = 'fdd7bf'.freeze
+    end
+  end
 
   def do_render
     font 'Times-Roman', size: 11
@@ -134,12 +143,12 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
   end
 
   def draw_certificate_header
-    text = certificatation_type_name(@certification_path)
-    styled_text("<div style='font-size: 12; color: #{MAIN_COLOR}; line-height: 1.2'>GSAS #{text[:project_type]}</div><br /><div style='font-size: 13;'>#{text[:certificate_name]}</div>")
+    text = certification_type_name(@certification_path)
+    styled_text("<div style='font-size: 12; color: #{@@main_color}; line-height: 1.2'>GSAS #{text[:project_type]}</div><br /><div style='font-size: 13;'>#{text[:certificate_name]}</div>")
   end
 
   def draw_scheme_mix_header(scheme_mix)
-    text "#{scheme_mix&.scheme&.name} (#{scheme_mix&.custom_name})", size: 15, color: MAIN_COLOR, align: :center, font: 'Helvetica'
+    text "#{scheme_mix&.scheme&.name} (#{scheme_mix&.custom_name})", size: 15, color: @@main_color, align: :center, font: 'Helvetica'
   end
 
   def draw_certificate_info_table
@@ -181,24 +190,22 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
 
     case name
     when 'Letter of Conformance'
-      text = "This is to notify that GSAS Trust has assessed the project based on the submitted information. The project is found eligible to receive the Provisional GSAS-D&B Certificate in the form of \"Letter of Conformance (LOC)\", achieving the following: \n"
+      text = "This is to notify that GSAS Trust has reviewed the project based on the submitted information. The project is found eligible to receive the Design Certificate as a provision for final GSAS Design & Build Certificate in the form of \"Letter of Conformance (LOC)\", The project is achieving: \n"
 
-      styled_text("<div style='font-size: 10; line-height: 9; color: 000000;'>#{text}</div>")
+      styled_text("<div style='font-size: 10; line-height: 7; color: 000000;'>#{text}</div>")
 
-      newline(1)
     when 'GSAS-CM', 'Construction Certificate'
       text =  case @certification_path&.certificate&.stage_title
               when 'Stage 1: Foundation'
-                "This is to notify that GSAS Trust has reviewed the construction submittals in accordance with the latest GSAS Construction Management assessments and has completed the First Site Audit requirements of Construction Stage 1 (Foundation). The project is found eligible to receive the first Interim Audit Advisory Notice (AAN) No.01 achieving the following: \n"
+                "This is to notify that GSAS Trust has reviewed the construction submittals in accordance with the latest GSAS Construction Management assessments and has completed the Initial Site Audit requirements of Construction Stage 1 (Foundation). The project is found eligible to receive the First Interim Audit Advisory Notice (AAN) No.01 achieving the following: \n"
               when 'Stage 2: Substructure & Superstructure'
                 "This is to notify that GSAS Trust has reviewed the construction submittals in accordance with the latest GSAS Construction Management assessments and has completed the Second Site Audit requirements of Construction Stage 2 (Substructure & Superstructure). The project is found eligible to receive the Second Interim Audit Advisory Notice (AAN) No.02 achieving the following: \n"
               when 'Stage 3: Finishing'
                 "This is to notify that GSAS Trust has reviewed the construction submittals in accordance with the latest GSAS Construction Management assessments and has completed the Third Site Audit requirements of Construction Stage 3 (Finishing Works). The project is found eligible to receive the Third Interim Audit Advisory Notice (AAN) No.03 achieving the following: \n"
               end
 
-      styled_text("<div style='font-size: 10; line-height: 9; color: 000000;'>#{text}</div>")
+      styled_text("<div style='font-size: 10; line-height: 7; color: 000000;'>#{text}</div>")
 
-      newline(1)
     else
     end
 
@@ -218,48 +225,59 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     case name 
     when 'Letter of Conformance'
       newline
-      text = "The summary of the obtained rating is attached herewith. \n\n This letter is only the predecessor towards achieving the final GSAS-D&B Certificate and should not be considered as the final certificate. The project should satisfy during the construction stage all the requirements of <b>Conformance to Design Audit(CDA)</b> which is the pre-requisite for the final GSAS-D&B Certificate as indicated in GSAS Technical Guide, <a>www.gord.qa</a> \n"
-      styled_text("<div style='font-size: 10; line-height: 9'>#{text}</div>")
 
-      text = "In the event of any future changes applied to the criteria pertaining to the issued LOC, the changes are required to be re-assessed once again."
-      styled_text("<div style='font-size: 10; line-height: 9'>#{text}</div>")
+      text = "The summary of the obtained rating is attached herewith."
+      styled_text("<div style='font-size: 10; line-height: 7'>#{text}</div>")
+
+      newline(1)
+      
+      text = "This letter is only the predecessor towards achieving the final GSAS-D&B Certificate and should not be considered as the final certificate. The project should satisfy during the construction stage all the requirements of <b>Conformance to Design Audit(CDA)</b> which is a pre-requisite for the final GSAS-D&B Certificate as indicated in GSAS Technical Guide, <a>www.gord.qa</a> \n"
+      styled_text("<div style='font-size: 10; line-height: 7'>#{text}</div>")
+
+      text = "In the event of any future changes applied to the criteria pertaining to this issued certificate, the changes are required to be re-assessed once again."
+      styled_text("<div style='font-size: 10; line-height: 7'>#{text}</div>")
 
       newline(1)
 
-      text = "Finally, Congratulations for partaking in this nobel endeavor, and together let us build a healthy and a sustainable future."
-      styled_text("<div style='font-size: 10; line-height: 9;'>#{text}</div>")
+      text = "Finally, congratulations on partaking in this noble endeavor. We look forward to creating jointly a healthy and sustainable future."
+      styled_text("<div style='font-size: 10; line-height: 7;'>#{text}</div>")
 
       newline(1)
 
-      styled_text("<div style='font-size: 10; line-height: 9;'><b>Yours sincerely</b>, \n</div>")
+      styled_text("<div style='font-size: 10; line-height: 7;'><b>Yours sincerely</b>, \n</div>")
 
       newline(1)
 
       # image image_path('green_star.png'), width: 50
 
-      styled_text("<div style='font-size: 10; color: #{MAIN_COLOR}; font-style: bold;'>\n Dr. Yousef Alhorr</div>")
+      styled_text("<div style='font-size: 10; color: #{@@main_color}; font-style: bold;'>\n Dr. Yousef Alhorr</div>")
 
       styled_text("<div style='font-size: 10; color: 000000; font-style: bold;'>\n Founding Chairman \n</div>")
     when 'GSAS-CM', 'Construction Certificate'
       newline
+
+      text = "Criteria summary of the First Interim Audit Advisory Notice is attached herewith."
+      styled_text("<div style='font-size: 10; line-height: 7;'>#{text}</div>")
       
-      text = "Criteria summary of the Second Inkerim Audit Advisory Notice is attached herewith. \n\n This notice is only the predecessor towards achieving the final GSAS-CM Certificate and should not be considered as the final certificate. The project/contractor shall satisfy during the rest of the construction stages all the requirements which is a pre-requisite for the GSAS-CM Certificate as stipulated in GSAS Technical Guide, <a>www.gord.qa</a> \n"
-      styled_text("<div style='font-size: 10; line-height: 9'>#{text}</div>")
+      newline(1)
+
+      text = "This notice is only the predecessor towards achieving the final GSAS-CM Certificate and should not be considered as the final certificate. The project shall satisfy during the rest of the construction stages all the requirements which is a pre-requisite for the GSAS-CM Certificate as stipulated in GSAS Technical Guide, <a>www.gord.qa</a> \n"
+      styled_text("<div style='font-size: 10; line-height: 7'>#{text}</div>")
 
       newline(1)
 
-      text = "Finally, Congratulations for partaking in this nobel endeavor, and together let us build a healthy and a sustainable future."
-      styled_text("<div style='font-size: 10; line-height: 9;'>#{text}</div>")
+      text = "Finally, congratulations on partaking in this noble endeavor. We look forward to creating jointly a healthy and sustainable future."
+      styled_text("<div style='font-size: 10; line-height: 7;'>#{text}</div>")
 
       newline(1)
 
-      styled_text("<div style='font-size: 10; line-height: 9;'><b>Yours sincerely</b>, \n</div>")
+      styled_text("<div style='font-size: 10; line-height: 7;'><b>Yours sincerely</b>, \n</div>")
 
       newline(1)
 
       # image image_path('green_star.png'), width: 50
 
-      styled_text("<div style='font-size: 10; color: #{MAIN_COLOR}; font-style: bold;'>\n Dr. Yousef Alhorr</div>")
+      styled_text("<div style='font-size: 10; color: #{@@main_color}; font-style: bold;'>\n Dr. Yousef Alhorr</div>")
 
       styled_text("<div style='font-size: 10; color: 000000; font-style: bold;'>\n Founding Chairman \n</div>")
 
@@ -320,7 +338,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     draw_table(data, true, 'scoring_summary_table')
     newline(3)
     text = "Figure 1: Scoring Summary"
-    styled_text("<div style='font-size: 12; line-height: 9; color: 000000; text-align: center; padding-top: 10px;'><b>#{text}</b></div>")
+    styled_text("<div style='font-size: 12; line-height: 7; color: 000000; text-align: center; padding-top: 10px;'><b>#{text}</b></div>")
     newline(1)
   end
 
@@ -514,7 +532,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
 
     table(data, cell_style: { width: 80 }, position: :right) do
       # column(0).align = :center
-      row(0).background_color = MAIN_COLOR
+      row(0).background_color = @@main_color
       row(0).text_color = 'FFFFFF'
       row(1).text_color = 'FF0000'
       rows(1..-1).borders = [:right, :left]
@@ -588,7 +606,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
           
           # # Header row style
           header_row = rows(0..row_length - 1)
-          header_row.column(0).background_color = COLUMN_1_COLOR
+          header_row.column(0).background_color = @@column_1_color
           header_row.column(0).text_color = TABLE_TEXT_COLOR
           header_row.column(1).background_color = COLUMN_2_COLOR
           header_row.column(1).text_color = TABLE_TEXT_COLOR
@@ -616,7 +634,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
           cells.borders = %i(top bottom left)        
           header_row = rows(0..row_length - 1)
 
-          header_row.row(0).background_color = MAIN_COLOR
+          header_row.row(0).background_color = @@main_color
           header_row.row(0).text_color = 'FFFFFF'
           header_row.font = 'Helvetica'
           header_row.size = 12
@@ -675,10 +693,10 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
             header_row.font_style = :bold
             header_row.align = :center
             header_row.borders = %i(right bottom) 
-            header_row.border_left_color = MAIN_COLOR
-            header_row.border_right_color = MAIN_COLOR
-            header_row.border_top_color = MAIN_COLOR
-            header_row.border_bottom_color = MAIN_COLOR
+            header_row.border_left_color = '000000'
+            header_row.border_right_color = '000000'
+            header_row.border_top_color = '000000'
+            header_row.border_bottom_color = '000000'
   
             content_rows = rows(1..row_length - 1)
             content_rows.column(0).align = :right
@@ -687,8 +705,8 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
             content_rows.padding = [5, 5]
             content_rows.borders = %i(right) 
             content_rows.row(row_length - 3).borders = %i(right bottom) 
-            content_rows.border_right_color = MAIN_COLOR
-            content_rows.border_bottom_color = MAIN_COLOR
+            content_rows.border_right_color = '000000'
+            content_rows.border_bottom_color = '000000'
             content_rows.column(1).border_right_color = 'FFFFFF'
             content_rows.row(row_length - 2).font_style = :bold
             content_rows.row(row_length - 2).column(1).background_color = '0000FF'
@@ -732,9 +750,9 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
           name_column.text_color = TABLE_TEXT_COLOR
           name_column.borders = [:top, :right, :bottom, :left]
           name_column.border_color = TABLE_BORDER_COLOR
-          # name_column.border_color = MAIN_COLOR
+          # name_column.border_color = @@main_color
           # name_column.font_style = :bold
-          name_column.background_color = COLUMN_1_COLOR
+          name_column.background_color = @@column_1_color
 
           # Odd/even row style
           rows(1..-1).style do |c|
@@ -744,7 +762,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
 
           # Header row style
           header_row = row(0).columns(1..-1)
-          header_row.background_color = COLUMN_1_COLOR
+          header_row.background_color = @@column_1_color
           header_row.text_color = TABLE_TEXT_COLOR
           header_row.border_color = TABLE_BORDER_COLOR
 
@@ -774,7 +792,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
           name_column.text_color = TABLE_TEXT_COLOR
           name_column.borders = [:top, :right, :bottom, :left]
           name_column.border_color = TABLE_BORDER_COLOR
-          name_column.background_color = COLUMN_1_COLOR
+          name_column.background_color = @@column_1_color
         end
       end
     end
