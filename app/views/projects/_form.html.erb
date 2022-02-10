@@ -33,7 +33,13 @@
                 <label>Or choose a predefined property owner</label>
                 <input type="hidden" class="select2-ajax">
               <% end %>
+
               <%= f.text_field :developer %>
+              <%= f.form_group do %>
+                <label>Or choose a predefined project developer</label>
+                <%= select_tag(:select_developer, options_for_select(Owner.order(:name).pluck(:name).map{ |dev| [dev, dev] }.push(["Other, Please indicate", "Other"]), @project.developer), include_blank: '- Select a predefined project developer -', hide_label: true, id: 'project_developer_select', class: 'form-control developer-select-dropdown' ) %>
+              <% end %>
+
               <%= f.select(:building_type_group_id, options_from_collection_for_select(BuildingTypeGroup.visible.order(:name), :id, :name, @project.building_type_group_id), {include_blank: '- Select a predefined building type category -', class: 'form-control'}) %>
               <div id="building-type-select">
                 <%= f.select(:building_type_id, options_for_select(BuildingType.visible.order(:name).map{ |bt| [bt.name, bt.id, {'data-building-type-group-id' => bt.building_type_group_id}]}, @project.building_type_id), {include_blank: '- Select a predefined building type -', class: 'form-control'}) %>

@@ -261,7 +261,7 @@ $(function () {
     $('.project-form #project_building_type_group_id').trigger('change', true);
 
     // Project country select
-    $('.country-select, .city-select-dropdown, .district-select-dropdown').select2({
+    $('.country-select, .city-select-dropdown, .district-select-dropdown, .developer-select-dropdown').select2({
         width: "100%"
     });
 
@@ -273,6 +273,18 @@ $(function () {
                 $("#city-select-div").html("<label>Project city</label><input class='form-control' type='text' name='project[city]'>")
             } else if (dom_id == 'project_district') {
                 $("#district-select-div").html("<label>Project District</label><input class='form-control' type='text' name='project[district]'>")
+            }
+        }
+    });
+
+    $(".project-form .developer-select-dropdown").on('change', function() {
+        var selected_developer = $(this).find(':selected').val();
+        if (selected_developer.length > 0) {
+            var developer_field = $('.project-form #project_developer');
+            if (selected_developer == "Other") {
+                developer_field.val('');
+            } else {
+                developer_field.val(selected_developer);
             }
         }
     });
