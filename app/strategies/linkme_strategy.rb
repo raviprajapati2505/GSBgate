@@ -11,13 +11,12 @@ class LinkmeStrategy < BaseStrategy
       # Authenticate the user
       if (linkme.auth_authenticate(user_data['username'], user_data['password']))
         # Get the linkme member profile
-        member_profile = linkme.member_profile_get
-
-        people_profile = linkme.sa_people_profile_get(member_profile[:member_id], 'people_profile')
-        master_profile = linkme.sa_people_profile_get(people_profile[:master_id], 'master_profile') unless people_profile[:master_id].blank?
-
+        person_profile = linkme.member_profile_get
+        member_profile = linkme.sa_people_profile_get(profile_id: person_profile[:profile_id])
+        member_profile[:id] = person_profile[:id]
+        
         # Update or create the linkme.qa user in the GSAS DB
-        user = User.update_or_create_linkme_user!(member_profile, master_profile)
+        user = User.update_or_create_linkme_user!(member_profile)
 
         # Update user sign in statistics
         user.log_sign_in

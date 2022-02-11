@@ -113,7 +113,7 @@ class User < ApplicationRecord
   # Updates or creates a linkme user in the DB.
   # - member_profile: A linkme member profile hash returned by the LinkmeService
   # - master_profile: A linkme member profile hash returned by the LinkmeService which functions as the Service Provider/Employer
-  def self.update_or_create_linkme_user!(member_profile = nil, master_profile = nil)
+  def self.update_or_create_linkme_user!(member_profile = {})
     # Check if the user exists in the GSAS DB
     user = linkme_users.find_by_linkme_member_id(member_profile[:id]&.upcase)
 
@@ -132,7 +132,7 @@ class User < ApplicationRecord
 
     # CGP license expiry logic
     # ------------------------
-    membership_expiry = (master_profile.nil? || master_profile[:membership_expiry].blank?) ? false : master_profile[:membership_expiry]&.to_datetime
+    membership_expiry = (member_profile[:master_id].blank? || member_profile[:effective_membership_expiry].blank?) ? false : member_profile[:effective_membership_expiry]&.to_datetime
     membership_expiry = membership_expiry < DateTime.now unless !membership_expiry
 
     # Service Provider membership expired ?

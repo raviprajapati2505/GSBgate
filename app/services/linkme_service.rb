@@ -11,7 +11,7 @@ class LinkmeService
   # when an linkme member profile is requested.
   MEMBER_PROFILE_FIELDS = {
       id: 'CdbGUID',
-      member_id: 'MemberID',
+      profile_id: 'MemberID',
       username: 'UserName',
       email: 'Email',
       picture: 'HeadshotImageURI',
@@ -38,7 +38,8 @@ class LinkmeService
       name_suffix: 'Suffix',
       membership: 'Membership',
       membership_expiry: 'MembershipExpiresDate',
-      master_id: 'MasterID'
+      master_id: 'MasterID',
+      effective_membership_expiry: 'MembershipEffectiveExpiresDate'
   }
 
   # Auth.Authenticate
@@ -136,7 +137,7 @@ class LinkmeService
   end
 
   # Sa.People.Profile.Get
-  def sa_people_profile_get(id, profile_type)
+  def sa_people_profile_get(profile_id: nil)
     client_id = Rails.application.config.x.linkme.client_id
     api_key = Rails.application.config.x.linkme.api_key
     api_password = Rails.application.config.x.linkme.api_password
@@ -147,19 +148,11 @@ class LinkmeService
     # To get member profile, first login as an Admin.
     auth_authenticate(api_key, api_password, usertype = 'Admin')
 
-    if profile_type == 'master_profile'
-      params = {
-        MasterID: id,
-        PageNumber: page_number, 
-        PageSize: page_size
-      }
-    else
-      params = {
-        ProfileID: id,
-        PageNumber: page_number,
-        PageSize: page_size
-      }
-    end
+    params = {
+      ProfileID: profile_id,
+      PageNumber: page_number,
+      PageSize: page_size
+    }
 
     headers = {
                 'Accept-Encoding' => 'none',
