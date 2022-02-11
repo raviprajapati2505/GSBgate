@@ -236,7 +236,12 @@ class CertificationPathsController < AuthenticatedController
         @certification_path.save!
         # sent email if the certificate is approved
         if @certification_path.status == "Certified"
-           DigestMailer.certificate_approved_email(@certification_path).deliver_now
+          DigestMailer.certificate_approved_email(@certification_path).deliver_now
+          
+          @certification_path.certification_path_status_id = @certification_path.next_status
+          @certification_path.audit_log_user_comment = params[:certification_path][:audit_log_user_comment]
+          @certification_path.audit_log_visibility =  params[:certification_path][:audit_log_visibility]
+          @certification_path.save!
         end
         # If there was an appeal, set the status of the selected criteria to 'Appealed'
         if certification_path_params.has_key?(:appealed) && params.has_key?(:scheme_mix_criterion)

@@ -246,6 +246,8 @@ class CertificationPath < ApplicationRecord
       end
     when CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT
       return CertificationPathStatus::CERTIFIED
+    when CertificationPathStatus::CERTIFIED
+      return CertificationPathStatus::CERTIFICATE_IN_PROCESS
     else
       return false
     end
@@ -721,7 +723,7 @@ class CertificationPath < ApplicationRecord
   end
 
   def is_certified?
-    CertificationPathStatus::CERTIFIED == certification_path_status_id
+    [CertificationPathStatus::CERTIFIED, CertificationPathStatus::CERTIFICATE_IN_PROCESS].include?(certification_path_status_id)
   end
 
   def create_assessment_method(method)

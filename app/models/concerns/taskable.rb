@@ -35,6 +35,7 @@ module Taskable
   CERT_MNGR_PUBLISH_REVIEW = 41
   PROJ_MNGR_UPLOAD_CMP = 42
   CERT_MNGR_CMP_UPLOADED = 43
+  CGP_CERTIFICATION_REPORT_INFORMATION = 44
 
   included do
     has_many :tasks, as: :taskable, dependent: :destroy
@@ -356,9 +357,21 @@ module Taskable
         when CertificationPathStatus::CERTIFIED
           # Destroy GORD top manager tasks to approve
           # Task.where(taskable: self, task_description_id: GSAS_TRUST_TOP_MNGR_APPROVE).delete_all
+
           # Destroy all certification path tasks
           Task.where(certification_path: self).delete_all
+
+          # Create GORD top manager task to approve
+          Task.find_or_create_by(taskable: self,
+            task_description_id: CGP_CERTIFICATION_REPORT_INFORMATION,
+            application_role: ProjectsUser.roles[:cgp_project_manager],
+            project: self.project,
+            certification_path: self)
+
         when CertificationPathStatus::NOT_CERTIFIED
+          # Destroy all certification path tasks
+          Task.where(certification_path: self).delete_all
+        when CertificationPathStatus::CERTIFICATE_IN_PROCESS
           # Destroy all certification path tasks
           Task.where(certification_path: self).delete_all
       end

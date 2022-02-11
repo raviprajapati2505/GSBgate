@@ -123,7 +123,7 @@ class Project < ApplicationRecord
 
   def are_all_construction_stages_certified?
     count = CertificationPath.with_project(self)
-              .with_status(CertificationPathStatus::CERTIFIED)
+              .with_status([CertificationPathStatus::CERTIFIED, CertificationPathStatus::CERTIFICATE_IN_PROCESS])
               .with_certificate_type(Certificate.certificate_types[:construction_type])
               .count
     if count == 3

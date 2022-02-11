@@ -81,6 +81,7 @@ class DigestMailer < ApplicationMailer
       add_condition(user, NotificationType::CERTIFICATE_APPROVED_BY_TOP_MNGT, CertificationPath.name.demodulize, CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT)
       add_condition(user, NotificationType::CERTIFICATE_ISSUED, CertificationPath.name.demodulize, CertificationPathStatus::CERTIFIED)
       add_condition(user, NotificationType::CERTIFICATE_REJECTED, CertificationPath.name.demodulize, CertificationPathStatus::NOT_CERTIFIED)
+      add_condition(user, NotificationType::CERTIFICATE_REPORT_ISSUED, CertificationPath.name.demodulize, CertificationPathStatus::CERTIFICATE_IN_PROCESS)
       add_condition(user, NotificationType::CRITERION_SUBMITTED, SchemeMixCriterion.name.demodulize, SchemeMixCriterion::statuses[:submitted])
       add_condition(user, NotificationType::CRITERION_VERIFIED, SchemeMixCriterion.name.demodulize, [SchemeMixCriterion::statuses[:score_awarded], SchemeMixCriterion::statuses[:score_downgraded], SchemeMixCriterion::statuses[:score_upgraded], SchemeMixCriterion::statuses[:score_minimal]])
       add_condition(user, NotificationType::CRITERION_APPEALED, SchemeMixCriterion.name.demodulize, SchemeMixCriterion::statuses[:appealed])
