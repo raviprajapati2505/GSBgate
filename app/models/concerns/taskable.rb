@@ -371,9 +371,6 @@ module Taskable
         when CertificationPathStatus::NOT_CERTIFIED
           # Destroy all certification path tasks
           Task.where(certification_path: self).delete_all
-        when CertificationPathStatus::CERTIFICATE_IN_PROCESS
-          # Destroy all certification path tasks
-          Task.where(certification_path: self).delete_all
       end
     end
   end

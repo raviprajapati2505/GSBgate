@@ -3,14 +3,27 @@
     <% certification_path.status_history.each_with_index do |milestone, index| %>
         <div class="vertical-timeline-block">
             <div class="vertical-timeline-icon
-          <% if CertificationPathStatus.at_gsas_trust_team_side?(milestone[:certification_path_status].id) %>gsas-trust-team
-          <% else %>project-team
-          <% end %>">
+            <% if CertificationPathStatus.at_gsas_trust_team_side?(milestone[:certification_path_status].id) %>
+                gsas-trust-team
+            <% else %>
+                project-team
+            <% end %>">
                 <%= ikoen('user') %>
             </div>
             <div class="vertical-timeline-content">
                 <% if (index == 0) %>
-                    <% status_name = milestone[:certification_path_status].name %>
+                    <%
+                        status_name = milestone[:certification_path_status].name
+                        description = milestone[:certification_path_status].description
+                        if milestone[:certification_path_status].name == "Certificate In Process"
+                            certification_path_report = certification_path.certification_path_report
+                            if certification_path_report.present? && certification_path_report.is_released?
+                                description = nil
+                                status_name = milestone[:certification_path_status].past_name
+                                date_previous = certification_path_report.release_date
+                            end
+                        end
+                    %>
                     <% audit_log_params = {project_id: @project.id, certification_path_id: @certification_path.id, date_from: milestone[:date].strftime(t('date.formats.short')), time_from: milestone[:date].strftime(t('time.formats.short')), button: 'Apply_audit_filter'} %>
                 <% else %>
                     <% status_name = milestone[:certification_path_status].past_name %>
@@ -26,8 +39,8 @@
                         <%= ikoen_with_text('clock-o', localize(date_previous), size: 'normal') %>
                     </small>
                 <% end %>
-                <% if (index == 0) %>
-                    <p><%= milestone[:certification_path_status].description %></p>
+                <% if description.present? %>
+                    <p><%= description %></p>
                 <% end %>
             </div>
         </div>

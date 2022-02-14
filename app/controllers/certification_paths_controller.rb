@@ -214,8 +214,23 @@ class CertificationPathsController < AuthenticatedController
       detailed_certification_report_params[:release_date] = Date.today
     end
     
+    # add validation error according to user role.
+    fields =  case current_user&.role
+              when 'default_role'
+                [:to, :project_owner, :project_name, :project_location]
+              when 'system_admin', 'gsas_trust_admin', 'document_controller'
+                [:to, :reference_number, :project_owner, :project_name, :project_location, :issuance_date, :approval_date]
+              end
+
+    fields.each do |field|
+      unless detailed_certification_report_params[field].present?
+        @certification_path_report.errors.add(field, "#{field&.to_s&.titleize} can't be blank.")
+      end
+    end
+
     respond_to do |format|
-      if @certification_path_report.update(detailed_certification_report_params)
+      unless @certification_path_report.errors.present?
+        @certification_path_report.update(detailed_certification_report_params)
         format.js { render inline: "location.reload();" }
       else
         format.js { render 'certification_paths/new_detailed_certification_report.js.erb', layout: false }
