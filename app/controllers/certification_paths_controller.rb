@@ -209,6 +209,11 @@ class CertificationPathsController < AuthenticatedController
 
     detailed_certification_report_params = params.require(:certification_path_report).permit(:to, :reference_number, :project_owner, :project_name, :project_location, :issuance_date, :approval_date)
 
+    if params[:button].present? && params[:button] == 'save-and-release'
+      detailed_certification_report_params[:is_released] = true
+      detailed_certification_report_params[:release_date] = Date.today
+    end
+    
     respond_to do |format|
       if @certification_path_report.update(detailed_certification_report_params)
         format.js { render inline: "location.reload();" }
