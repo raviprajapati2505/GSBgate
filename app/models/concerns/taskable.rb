@@ -364,7 +364,7 @@ module Taskable
           # Create GORD top manager task to approve
           Task.find_or_create_by(taskable: self,
             task_description_id: CGP_CERTIFICATION_REPORT_INFORMATION,
-            application_role: ProjectsUser.roles[:cgp_project_manager],
+            project_role: ProjectsUser.roles[:cgp_project_manager],
             project: self.project,
             certification_path: self)
 
