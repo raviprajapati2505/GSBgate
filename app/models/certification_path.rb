@@ -113,7 +113,16 @@ class CertificationPath < ApplicationRecord
   end
 
   def status
-    self.certification_path_status.name
+    status = self.certification_path_status.name
+    if status == "Certificate In Process"
+      status =  if self.certification_path_report&.is_released?
+                  "Certificate Generated"
+                else
+                  "Certificate In Process"
+                end
+    end
+    
+    return status
   end
 
   def construction?

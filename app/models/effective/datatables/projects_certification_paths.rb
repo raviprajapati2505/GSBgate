@@ -156,7 +156,7 @@ module Effective
         # Note: internally we use the status id, so sorting is done by id and not the name !
         col :certification_path_certification_path_status_id, sql_column: 'certification_paths.certification_path_status_id', label: t('models.effective.datatables.projects_certification_paths.certification_path_certification_path_status_id.label'), search: { as: :select, collection: Proc.new { CertificationPathStatus.all.map { |status| status.id == CertificationPathStatus::CERTIFICATE_IN_PROCESS ? ["Certificate In Process/Generated", status.id] : [status.name, status.id]} } }  do |rec|
           if rec.certification_path_status_name == "Certificate In Process"
-            "Certificate In Process/Generated"
+            CertificationPath.find(rec&.certification_path_id)&.status
           else
             rec.certification_path_status_name
           end
