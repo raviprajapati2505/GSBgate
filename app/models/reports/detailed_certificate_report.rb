@@ -42,7 +42,12 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     @scheme_mixes = certification_path&.scheme_mixes
     @scheme_names = @certification_path.schemes.collect(&:name)
     @score = @certification_path.scores_in_certificate_points[:achieved_score_in_certificate_points]
+    
     @stars = @certification_path.rating_for_score(@score, certificate: @certification_path.certificate).to_s
+
+    if ['1', '2', '3', '4', '5', '6'].include?(@stars)
+      @stars = @stars + ' ' + 'Star'.pluralize(@stars.to_i)
+    end
 
     @addressee = "Mr. [FIRSTNAME] [LASTNAME]\n[FUNCTION]\n#{@project.owner}"
     @addressee_copy = "Service Provider:   #{@project.service_provider}"
