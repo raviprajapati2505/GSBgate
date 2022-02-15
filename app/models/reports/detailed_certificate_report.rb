@@ -44,8 +44,8 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     @score = @certification_path.scores_in_certificate_points[:achieved_score_in_certificate_points]
     @stars = @certification_path.rating_for_score(@score, certificate: @certification_path.certificate).to_s
 
-    @addressee = "Mr. [FIRSTNAME] [LASTNAME]\n[FUNCTION]\n#{@certification_path.project.owner}"
-    @addressee_copy = "Service Provider:   #{@certification_path.project.service_provider}"
+    @addressee = "Mr. [FIRSTNAME] [LASTNAME]\n[FUNCTION]\n#{@project.owner}"
+    @addressee_copy = "Service Provider:   #{@project.service_provider}"
     @subject = "#{certification_path.name}\n#{@scheme_names.join(', ')}"
  
     set_format_colors(@project)
@@ -160,28 +160,27 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
 
     # Add the category rows to the table
     data.append(["To", @detailed_certificate_report&.to])
-
-    unless @certification_path.construction?
-      data.append(["Client", @detailed_certificate_report&.project_owner])
-    end
+    data.append(["Project ID", @project.code])
+    data.append(["Project Name", @detailed_certificate_report&.project_name])
+    data.append(["Project Location", @detailed_certificate_report&.project_location])
 
     if @certification_path.certificate.certification_type == 'final_design_certificate'
-      data.append(["Service Provider", @certification_path.project.service_provider_2])
+      data.append(["Service Provider", @project.service_provider_2])
     else
-      data.append(["Service Provider", @certification_path.project.service_provider])
+      data.append(["Service Provider", @project.service_provider])
     end
 
     data.append(["GSAS Certificate", @certification_path.certificate&.report_certification_name])
+    data.append(["GSAS Certification Stage", @certification_path.certificate&.stage_title])
     data.append(["GSAS Version", @certification_path.certificate&.only_version])
-    data.append(["Certification Stage", @certification_path.certificate&.stage_title])
-    data.append(["Project ID", @certification_path.project.code])
-    data.append(["Project Name", @detailed_certificate_report&.project_name])
 
     unless @certification_path.construction?
-      data.append(["GSAS Scheme", @certification_path.project&.building_type_group&.name])
+      data.append(["GSAS Scheme", @project&.building_type_group&.name])
     end
 
-    data.append(["Location", @detailed_certificate_report&.project_location])
+    # unless @certification_path.construction?
+    #   data.append(["Client", @detailed_certificate_report&.project_owner])
+    # end
 
     # Output table
     draw_table(data, true, 'basic_table')
@@ -203,7 +202,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
               when 'Stage 2: Substructure & Superstructure'
                 "This is to notify that GSAS Trust has reviewed the construction submittals in accordance with the latest GSAS Construction Management assessments and has completed the Second Site Audit requirements of Construction Stage 2 (Substructure & Superstructure). The project is found eligible to receive the Second Interim Audit Advisory Notice (AAN) No.02 achieving the following: \n"
               when 'Stage 3: Finishing'
-                "This is to notify that GSAS Trust has reviewed the construction submittals in accordance with the latest GSAS Construction Management assessments and has completed the Third Site Audit requirements of Construction Stage 3 (Finishing Works). The project is found eligible to receive the Third Interim Audit Advisory Notice (AAN) No.03 achieving the following: \n"
+                "This is to notify that GSAS Trust has reviewed the construction submittals in accordance with the latest GSAS Construction Management assessments and has completed the Third Site Audit requirements of Construction Stage 3 (Finishing). The project is found eligible to receive the Third Interim Audit Advisory Notice (AAN) No.03 achieving the following: \n"
               end
 
       styled_text("<div style='font-size: 10; line-height: 7; color: 000000;'>#{text}</div>")
@@ -290,16 +289,16 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
   def draw_project_info(scheme_mix = nil)
     # Prepare table data
     data = []
-    # Add the category rows to the table
-    data.append(["Project ID: #{@certification_path.project.code}", "Provisional Rating: #{@stars}", "Approval Date: #{@detailed_certificate_report&.approval_date&.strftime('%d %B, %Y')}"])
 
     scheme_info = ''
     if scheme_mix&.custom_name.present?
       scheme_info = "(#{scheme_mix&.custom_name})"
     end
 
-    # Add footer to the table
-    data.append([{content: "Project Name: #{@certification_path.project.name} - #{scheme_mix&.scheme&.name} #{scheme_info}", colspan: 2}, "Reference: #{@detailed_certificate_report&.reference_number}"])
+    # Add the category rows to the table
+    data.append(["Project ID: #{@project.code}", {content: "Project Name: #{@detailed_certificate_report&.project_name} - #{scheme_mix&.scheme&.name} #{scheme_info}", colspan: 2}])
+
+    data.append(["Certification Stage: #{@certification_path.certificate&.stage_title}", "Approval Date: #{@detailed_certificate_report&.approval_date&.strftime('%d %B, %Y')}", "Reference: #{@detailed_certificate_report&.reference_number}"])
 
     # Output table
     draw_table(data, true, 'project_info_table')
@@ -423,6 +422,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
       options: {
         indexAxis: 'y',
         legend: {
+          display: true,
           position: 'bottom'
         }
       }
@@ -451,11 +451,9 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
           #  end
     end
 
-    newline(2)
+    newline(1)
     text = "Figure 2: Category Achived Scores Vs. Attainable Scores"
     styled_text("<div style='font-size: 12; line-height: 7; color: 000000; text-align: center; padding-top: 10px;'><b>#{text}</b></div>")
-    newline(1)
-
   end
 
   def draw_score_graph
