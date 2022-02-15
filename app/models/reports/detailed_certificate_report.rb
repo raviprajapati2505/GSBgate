@@ -338,10 +338,11 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
 
     # Output table
     draw_table(data, true, 'scoring_summary_table')
-    newline(3)
+    newline(1)
+
     text = "Figure 1: Scoring Summary"
     styled_text("<div style='font-size: 12; line-height: 7; color: 000000; text-align: center; padding-top: 10px;'><b>#{text}</b></div>")
-    newline(1)
+    newline(3)
   end
 
   def draw_headers
@@ -450,7 +451,11 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
           #  end
     end
 
-    newline
+    newline(2)
+    text = "Figure 2: Category Achived Scores Vs. Attainable Scores"
+    styled_text("<div style='font-size: 12; line-height: 7; color: 000000; text-align: center; padding-top: 10px;'><b>#{text}</b></div>")
+    newline(1)
+
   end
 
   def draw_score_graph
@@ -549,7 +554,8 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     end
     
     newline(2)
-    text 'Figure 2 Rating Chart', align: :center
+    text = 'Figure 3: Project Overall Scores & Rating'
+    styled_text("<div style='font-size: 12; line-height: 7; color: 000000; text-align: center; padding-top: 10px;'><b>#{text}</b></div>")
 
     # text 'Level Achieved', size: 12, align: :left
     # data = []
@@ -566,26 +572,6 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     #   cells.borders = []
     #   cells.background_color = '36A2EB'
     # end
-  end
-
-  def draw_certificate_table(total_category_scores)
-    # Prepare table data
-    data = []
-    data.append(['', 'Category', 'Point'])
-
-    # Add the category rows to the table
-    total_category_scores.each do |category_code, category|
-      data.append([category_code, category[:name], number_with_precision(category[:achieved_score], precision: 3)])
-    end
-
-    # Add footer to the table
-    data.append(['', 'Total points', number_with_precision(@score, precision: 3)])
-    data.append(['', 'Level achieved', @stars])
-
-    # Output table
-    draw_table(data, true)
-    newline
-    text 'Figure 1 Scoring Summary', align: :center
   end
 
   def draw_table(data, has_level_achieved_footer = false, type)
