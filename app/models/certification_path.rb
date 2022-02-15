@@ -755,8 +755,10 @@ class CertificationPath < ApplicationRecord
   end
 
   def create_certification_path_report
-    certification_path_report = CertificationPathReport.find_or_initialize_by(certification_path_id: id)
-    certification_path_report.save(validate: false)
+    unless self.final_construction?
+      certification_path_report = CertificationPathReport.find_or_initialize_by(certification_path_id: id)
+      certification_path_report.save(validate: false)
+    end
   end
 
   def set_started_at

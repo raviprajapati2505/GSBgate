@@ -10,20 +10,22 @@
       <%= bootstrap_form_for(certification_path_report, url: create_detailed_certification_report_project_certification_path_path(project, certification_path), remote: :true, method: :post) do |f| %>
 
         <% CertificationPathReport.attributes_for_user(current_user&.role).each do |attr| %>
-          <%= f.text_field attr, label: CertificationPathReport.human_attribute_name(attr.to_s), required: true %>
+          <%= f.text_field attr, label: CertificationPathReport.human_attribute_name(attr.to_s), required: true, disabled: f.object&.is_released? %>
         <% end %>
 
         <% if ['system_admin', 'gsas_trust_admin', 'document_controller'].include?(current_user&.role) %>
-          <%= f.text_field :issuance_date, value: f.object&.issuance_date&.strftime("%d/%m/%Y"), label: CertificationPathReport.human_attribute_name('issuance_date'), prepend: ikoen('calendar'), class: 'datepicker-past', autocomplete: 'off', required: true %>
+          <%= f.text_field :issuance_date, value: f.object&.issuance_date&.strftime("%d/%m/%Y"), label: CertificationPathReport.human_attribute_name('issuance_date'), prepend: ikoen('calendar'), class: 'datepicker-past', autocomplete: 'off', required: true, disabled: f.object&.is_released? %>
 
-          <%= f.text_field :approval_date, value: f.object&.approval_date&.strftime("%d/%m/%Y"), label: CertificationPathReport.human_attribute_name('approval_date'), prepend: ikoen('calendar'), class: 'datepicker-past', autocomplete: 'off', required: true %>
+          <%= f.text_field :approval_date, value: f.object&.approval_date&.strftime("%d/%m/%Y"), label: CertificationPathReport.human_attribute_name('approval_date'), prepend: ikoen('calendar'), class: 'datepicker-past', autocomplete: 'off', required: true, disabled: f.object&.is_released? %>
           
           <% unless f.object&.is_released? %>
             <%= btn_save(text: 'Save and Release', value: 'save-and-release') %>
           <% end %>
         <% end %>
         
-        <%= btn_save %>
+        <% unless f.object&.is_released? %>
+          <%= btn_save %>
+        <% end %>
       <% end %>
     </div>
   </div>
