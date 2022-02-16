@@ -841,7 +841,9 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
   
       # Add the category rows to the table
       scheme_mix_criteria.each do |smc|
-        data.append([smc.full_name, number_with_precision(smc.achieved_score, precision: 0, significant: true)])
+        achieved_score = smc.achieved_score
+        achieved_score = ((achieved_score.is_a?(Float) || achieved_score.is_a?(BigDecimal)) && achieved_score.nan?) ? 0 : achieved_score rescue 0
+        data.append([smc.full_name, number_with_precision(achieved_score, precision: 0, significant: true)])
       end
   
       # Output table
