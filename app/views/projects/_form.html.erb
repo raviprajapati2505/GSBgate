@@ -56,7 +56,8 @@
               <%= f.number_field :construction_year, prepend: ikoen('calendar'), class: "datepicker-year", min: 2000, max: 2100 %>
             </div>
             <div class="col-md-3">
-              <%= f.select :country, options_for_select(CS.countries.map{ |cnt| [cnt[1], cnt[1]] }, f.object&.country), { include_blank: "Select Country" }, { required: true, class: "select2 form-control country-select" } %>
+              <% countries = CS.countries.sort_by{|_key, value| value }.to_h %>
+              <%= f.select :country, options_for_select(countries.map{ |cnt| [cnt[1], cnt[1]] }, f.object&.country), { include_blank: "Select Country" }, { required: true, class: "select2 form-control country-select" } %>
               <div id="city-select-div" class="form-group">
                 <% if @is_city_predefined %>
                   <%= f.select(:city, options_for_select(@city_options, f.object&.city), { include_blank: "Select City" }, { class: "select2 form-control city-select-dropdown", id: "city-select" }) %>

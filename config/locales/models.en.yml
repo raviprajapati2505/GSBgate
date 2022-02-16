@@ -61,17 +61,17 @@ en:
         name: Project Name
         building_type_group_id: Project Use
         building_type_id: Project Type
-        buildings_footprint_area: Project Footprint
+        buildings_footprint_area: Project Footprint (C)
         certificate_type: Certificate Type
         carpark_area: Project Car Park Area
-        certified_area: Project Certified Area
+        certified_area: Project Certified Area (A+B-C)
         construction_year: Project Construction Year
         cost_square_meter: Cost per Square Meter
         estimated_building_cost: Estimated Building Cost
         estimated_infrastructure_cost: Estimated Infrastructure Cost
         estimated_project_cost: Project Estimated Cost
-        gross_area: Project Gross Built up Area
-        project_site_area: Project Plot Area
+        gross_area: Project Gross Built up Area (B)
+        project_site_area: Project Plot Area (A)
         location_plan_file: Project Location Plan
         site_plan_file: Project Site Plan
         design_brief_file: Project Design Brief
@@ -332,7 +332,7 @@ en:
           certification_path_certified_at:
             label: Certification Certified On
           certification_path_expires_at:
-            label: Certification Expired On
+            label: Certification Expiry On
           certification_path_certification_path_status_id:
             label: Certification Status
           certification_path_status_is_active:

@@ -42,7 +42,7 @@ en:
         rating: Certification Rating
         scores: Certification Scores
         started_at: Certification Started On
-        expired_at: Certification Expired On
+        expired_at: Certification Expiry On
         certified_at: Certification Certified On
         create_detaild_certificate_report:
           text: Certificate Information Verification

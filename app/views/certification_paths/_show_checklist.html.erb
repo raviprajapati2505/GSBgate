@@ -45,14 +45,14 @@
                       <% if not @certification_path.is_activating? %>
                           <tr>
                               <th><%= t('certification_paths.show.certification_path.started_at') %></th>
-                              <td><%= localize(@certification_path.started_at) %></td>
+                              <td><%= @certification_path.started_at&.strftime('%e %b, %Y') %></td>
                           </tr>
                       <% end %>
                       <% if @certification_path.certificate.letter_of_conformance? || @certification_path.certificate.final_design_certificate? %>
                           <tr>
                               <th><%= t('certification_paths.show.certification_path.expired_at') %></th>
                               <td>
-                                <span><%= localize(@certification_path.expires_at) %></span>
+                                <span><%= @certification_path.expires_at&.strftime('%e %b, %Y') %></span>
                                 <%= btn_link_to(edit_expires_at_project_certification_path_path(@project, @certification_path), remote: true, text: 'Set new date', class: 'pull-right') if can?(:update_expires_at, @certification_path) %>
                               </td>
                           </tr>
@@ -60,7 +60,7 @@
                       <% if @certification_path.is_certified? %>
                         <tr>
                           <th><%= t('certification_paths.show.certification_path.certified_at') %></th>
-                          <td><%= localize(@certification_path.certification_path_status.created_at) %></td>
+                          <td><%= @certification_path.certified_at&.strftime('%e %b, %Y') %></td>
                         </tr>
                       <% end %>
                       <% unless @certification_path.certificate.construction_certificate? %>

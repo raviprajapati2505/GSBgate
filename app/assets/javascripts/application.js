@@ -300,7 +300,7 @@ $(function () {
         return area_field.val();
     }
 
-    function set_certified_area() {
+    function setCertifiedArea() {
         var A = $('#project_project_site_area').val();
         var B = $('#project_gross_area').val();
         var C = $('#project_buildings_footprint_area').val();
@@ -313,7 +313,7 @@ $(function () {
         C = check_project_buildings_footprint_area(A, B, C);
 
         let project_type = $("#project_certificate_type").find(':selected').val();
-        value = project_type == "1" ? A : A+B-C
+        let value = project_type == "1" ? A : A+B-C
 
         $('#project_certified_area').val(value);
     }
@@ -332,13 +332,28 @@ $(function () {
         element.val(value);
     }
 
+    function setCertifiedAreaLabel() {
+        let project_type = $("#project_certificate_type").find(':selected').val();
+        let label = project_type == "1" ? 'Project Certified Area (A)' : 'Project Certified Area (A+B-C)'
+        
+        let full_label = label + "<i data-toggle='tooltip' data-html='true' class='tooltip-icon fa fa-question-circle fa-normal tooltip-processed' title='' data-original-title='Total area falling under GSAS assessment calculated by adding Project Plot Area (A) and Buildings Gross Built up Area (B) and subtracting Building Footprint (C)*.<br /><br />*(C) is subtracted to avoid double counting of the areas under assessment.'></i>"
+        html = $.parseHTML(full_label)
+
+        $("label[for='project_certified_area']").html(html);
+        $('.tooltip-processed').tooltip();
+    }
+    
+    // Set different lables on base of project certificate type.
+    setCertifiedAreaLabel();
+
     $("#project_certificate_type").change(function(){
-        set_certified_area();
+        setCertifiedArea();
+        setCertifiedAreaLabel();
     });
 
-    // Gross Certified Area (A+B-C)
+    // Gross Certified Area
     $('#project_project_site_area, #project_gross_area, #project_buildings_footprint_area').keyup(function(){
-        set_certified_area();
+        setCertifiedArea();
     });
 
     $('#project_estimated_project_cost, #project_gross_area').keyup(function(){
