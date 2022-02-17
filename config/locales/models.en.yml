@@ -307,7 +307,7 @@ en:
           certificate_stage:
             label: Certification Stage
           certification_path_certification_path_status_id:
-            label: Certification Status
+            label: Certification Submission Status
           scheme_mix_criteria_status:
             label: Criteria Status
         projects_certification_paths:
@@ -334,19 +334,19 @@ en:
           certification_path_expires_at:
             label: Certification Expiry On
           certification_path_certification_path_status_id:
-            label: Certification Status
+            label: Certification Submission Status
           certification_path_status_is_active:
             label: Certification Active
           rating:
             label: Certification Rating
           total_achieved_score:
-            label: Certification Achieved Score
+            label: Certification Score
           total_submitted_score:
             label: Certification Submitted Score
           total_targeted_score:
             label: Certification Targeted Score
           schemes_array:
-            label: Certification Scheme Sub-Typologies
+            label: Certification Sub-Typologies
           schemes_custom_name_array:
             label: Certification Building Name
           cgp_project_manager_array:
