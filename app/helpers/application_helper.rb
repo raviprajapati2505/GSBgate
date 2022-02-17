@@ -239,6 +239,11 @@ module ApplicationHelper
     "#{ikoen(name, options)}&nbsp;&nbsp;#{text}".html_safe
   end
 
+  def commify_values(value)
+    value = value.present? ? value&.to_s&.split(/(?=(?:\d{3})+$)/)&.join(",") : ""
+    return value
+  end
+
   def is_gsas_trust?(user = nil)
     return false unless user.present?
     ["gsas_trust_admin", "gsas_trust_top_manager", "gsas_trust_manager", "system_admin"].include?(current_user&.role)

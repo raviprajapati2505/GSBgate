@@ -289,21 +289,35 @@ $(function () {
         }
     });
 
+    // Remove commas from values and convert it into an integer
+    function convert_string_to_integer(value_string_wc) {
+        if (value_string_wc.length > 0) {
+            let value_string = value_string_wc.replaceAll(",", "");
+            return parseInt(value_string)
+        }
+    }
+
+    // Convert all values to an integer
+    $(".project-form").on("submit", function(){
+        var number_field_ids = ["project_project_site_area", "project_gross_area", "project_buildings_footprint_area", "project_certified_area", "project_carpark_area"]
+        number_field_ids.forEach(function (item, index) {
+            let field = $("#" + item)
+            let value_string_wc = field.val();
+            value = convert_string_to_integer(value_string_wc);
+            field.val(value);
+        });
+    });
+
     function check_project_buildings_footprint_area(A, B, C) {
         var area_field = $('#project_buildings_footprint_area');
-        var max_value = A < B ? A : B
-
         if (C > A || C > B) area_field.val(0);
-
-        area_field.attr('max', max_value)
-
-        return area_field.val();
+        return parseInt(area_field.val())
     }
 
     function setCertifiedArea() {
-        var A = $('#project_project_site_area').val();
-        var B = $('#project_gross_area').val();
-        var C = $('#project_buildings_footprint_area').val();
+        var A = convert_string_to_integer($('#project_project_site_area').val());
+        var B = convert_string_to_integer($('#project_gross_area').val())
+        var C = convert_string_to_integer($('#project_buildings_footprint_area').val())
 
         A = (A == "") ? 0 : Number(A)
         B = (B == "") ? 0 : Number(B)
@@ -315,22 +329,27 @@ $(function () {
         let project_type = $("#project_certificate_type").find(':selected').val();
         let value = project_type == "1" ? A : A+B-C
 
-        $('#project_certified_area').val(value);
+        $('#project_certified_area').val(value.toLocaleString());
     }
 
-    function commify_values(element){
-        var value = element.val();
-        var chars = value.split("").reverse();
-
-        var withCommas = []
-        for( var i = 1; i <= chars.length; i++ ){
-          withCommas.push(chars[i-1])
-          if ( i%3==0 && i != chars.length ) withCommas.push(",")
+    function updateTextView(_obj){
+        var num = getNumber(_obj.val());
+        if(num==0){
+          _obj.val('');
+        }else{
+          _obj.val(num.toLocaleString());
         }
-        var value = withCommas.reverse().join("");
-
-        element.val(value);
-    }
+      }
+    function getNumber(_str){
+        var arr = _str.split('');
+        var out = new Array();
+        for(var cnt=0;cnt<arr.length;cnt++){
+          if(isNaN(arr[cnt])==false){
+            out.push(arr[cnt]);
+          }
+        }
+        return Number(out.join(''));
+      }
 
     function setCertifiedAreaLabel() {
         let project_type = $("#project_certificate_type").find(':selected').val();
@@ -357,8 +376,8 @@ $(function () {
     });
 
     $('#project_estimated_project_cost, #project_gross_area').keyup(function(){
-        var total_cost = $('#project_estimated_project_cost').val();
-        var gross_area = $('#project_gross_area').val();
+        var total_cost = convert_string_to_integer($('#project_estimated_project_cost').val())
+        var gross_area = convert_string_to_integer($('#project_gross_area').val())
 
         total_cost = (total_cost == "") ? 0 : Number(total_cost)
         gross_area = (gross_area == "") ? 0 : Number(gross_area)
@@ -366,12 +385,13 @@ $(function () {
         cost_per_ms = total_cost / gross_area
         cost_per_ms = isFinite(cost_per_ms) ? cost_per_ms : 0
 
-        $("#project_cost_square_meter").val(cost_per_ms);
+        $("#project_cost_square_meter").val(cost_per_ms.toLocaleString());
     });
 
-    // $(".commify-value").keyup(function(){
-    //     commify_values($(this));
-    // });
+    // Commify values
+    $(".commify-value").keyup(function(){
+        updateTextView($(this));
+    });
 
     // Turn document table in standard jQuery DataTable for sorting
     $('.document-table').DataTable({
