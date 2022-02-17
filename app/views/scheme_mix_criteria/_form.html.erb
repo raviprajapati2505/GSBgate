@@ -82,8 +82,9 @@
                             <% if @scheme_mix_criterion.in_review? %>
                               <%= btn_link_to(apply_pcr_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), remote: true, icon: 'life-saver', text: 'PCR in progress', class: 'disabled') %>
                             <% else %>
-
-                              <%= btn_link_to(apply_pcr_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion),remote: true, icon: 'life-saver', text: 'Submit for PCR') %>
+                              <% if @certification_path.is_submitting? %>
+                                <%= btn_link_to(apply_pcr_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion),remote: true, icon: 'life-saver', text: 'Submit for PCR') %>
+                              <% end %>
                             <% end %>
                           <% else %>
                               <%= btn_link_to(apply_pcr_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion),remote: true, icon: 'life-saver', text: 'Max. PCR reached', class: 'disabled') %>

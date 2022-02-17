@@ -727,6 +727,10 @@ class CertificationPath < ApplicationRecord
     CertificationPathStatus::STATUSES_ACTIVATED.include?(certification_path_status_id)
   end
 
+  def is_submitting?
+    certification_path_status_id == CertificationPathStatus::SUBMITTING
+  end
+
   def is_completed?
     CertificationPathStatus::STATUSES_COMPLETED.include?(certification_path_status_id)
   end
