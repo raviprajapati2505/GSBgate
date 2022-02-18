@@ -15,11 +15,8 @@ class CreateCertificationPathReports < ActiveRecord::Migration[5.2]
       t.timestamps
     end
 
-    # Reset pk sequence
-    tables = ActiveRecord::Base.connection.tables
-    tables.each do |t|
-      ActiveRecord::Base.connection.reset_pk_sequence!("#{t}")
-    end
+    # Reset pk sequence of certification_path_statuses table
+    ActiveRecord::Base.connection.reset_pk_sequence!("certification_path_statuses")
 
     # adding certification status
     CertificationPathStatus.find_or_create_by(
