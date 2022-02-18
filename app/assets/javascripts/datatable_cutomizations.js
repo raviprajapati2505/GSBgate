@@ -26,26 +26,28 @@ $(function() {
     columnNames["Certification Rating"] = 20;
     columnNames["Project Description"] = 21;
     columnNames["Certification Started On"] = 22;
-    columnNames["Project Plot Area"] = 23;
+    columnNames["Project Updated On"] = 23;
     columnNames["Certification Certified On"] = 24;
-    columnNames["Project Gross Built Up Area"] = 25;
-    columnNames["Project Updated On"] = 26;
-    columnNames["Project Footprint"] = 27;
-    columnNames["Certification Active"] = 28;
-    columnNames["Project Certified Area"] = 29;
-    columnNames["Certification PCR Track"] = 30;
-    columnNames["Project Carpark Area"] = 31;
-    columnNames["GSAS Trust Certification Team"] = 32;
-    columnNames["Project Service Provider"] = 33;
-    columnNames["GSAS Trust Certification Manager"] = 34;
-    columnNames["Project CGP"] = 35;
-    columnNames["Enterprise Clients"] = 36;
-    columnNames["Project Team Members"] = 37;
-    columnNames["blank_1"] = 38;
-    columnNames["Project Planning Type"] = 39;
-    columnNames["blank_2"] = 40;
-    columnNames["Project Use"] = 41;
-    columnNames["blank_3"] = 42;
+    columnNames["Project Plot Area"] = 25;
+    columnNames["Certification Active"] = 26;
+    columnNames["Project Gross Built Up Area"] = 27;
+    columnNames["Certification PCR Track"] = 28;
+    columnNames["Project Footprint"] = 29;
+    columnNames["GSAS Trust Certification Team"] = 30;
+    columnNames["Project Certified Area"] = 31;
+    columnNames["GSAS Trust Certification Manager"] = 32;
+    columnNames["Project Carpark Area"] = 33;
+    columnNames["Enterprise Clients"] = 34;
+    columnNames["Project Service Provider"] = 35;
+    columnNames["blank_1"] = 36;
+    columnNames["Project CGP"] = 37;
+    columnNames["blank_2"] = 38;
+    columnNames["Project Team Members"] = 39;
+    columnNames["blank_3"] = 40;
+    columnNames["Project Planning Type"] = 41;
+    columnNames["blank_4"] = 42;
+    columnNames["Project Use"] = 43;
+    columnNames["blank_5"] = 44;
 
     $(".buttons-collection").on('click', function(){
       var fieldsCollection = $("ul.dt-button-collection");
@@ -53,7 +55,7 @@ $(function() {
         var mainList = $("ul.dt-button-collection");
         for (const item in columnNames) { 
           let tempElement
-          if (['blank_1', 'blank_2', 'blank_3'].includes(item) ) {
+          if (['blank_1', 'blank_2', 'blank_3', 'blank_4', 'blank_5'].includes(item) ) {
             $("li." + item).remove();
             tempElement = $.parseHTML("<li class='dt-button buttons-columnVisibility " + item + " hover-disabled' tabindex='0' aria-controls='effective-datatables-projects_certification_paths-389818376781'><a href='javascript:void(0)' disabled=disabled>&nbsp;</a></li>")
 
