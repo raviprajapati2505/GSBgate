@@ -60,7 +60,7 @@ en:
         code: Project ID
         name: Project Name
         building_type_group_id: Project Use
-        building_type_id: Project Type
+        building_type_id: Project Planning Type
         buildings_footprint_area: Project Footprint (C)
         certificate_type: Certificate Type
         carpark_area: Project Car Park Area
@@ -313,6 +313,8 @@ en:
         projects_certification_paths:
           certificate_id:
             label: Certification Name
+          assessment_method:
+            label: Certification Method
           certificate_version:
             label: Certification Version
           certificate_stage:
@@ -322,7 +324,7 @@ en:
           certification_path_pcr_track_allowed:
             label: Certification PCR Track Allowed
           certification_path_development_type:
-            label: Project Type
+            label: Project Planning Type
           certification_path_appealed:
             label: Certification Appealed
           certification_path_created_at:
@@ -346,7 +348,7 @@ en:
           total_targeted_score:
             label: Certification Targeted Score
           schemes_array:
-            label: Certification Sub-Typologies
+            label: Certification Sub-Schemes
           schemes_custom_name_array:
             label: Certification Building Name
           cgp_project_manager_array:

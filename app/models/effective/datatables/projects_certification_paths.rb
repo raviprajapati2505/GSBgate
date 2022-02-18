@@ -104,6 +104,22 @@ module Effective
           end
         end
 
+        col :assessment_method, sql_column: 'certification_path_methods.assessment_method', label: t('models.effective.datatables.projects_certification_paths.assessment_method.label'), search: { as: :select, collection: Proc.new { [["Star Rating Certificate", 1], ["Compliance Certificate", 2]] } } do |rec|
+          certification_assessment_type_title(rec.assessment_method)
+        end.search do |collection, terms, column, index|
+          term = terms.to_i
+          unless collection.class == Array
+            checklist_certifications = collection.where("certification_path_methods.assessment_method = ?", 2)
+            if term == 1
+              collection.where("certification_paths.id NOT IN (?)", checklist_certifications&.pluck(:certification_path_id))
+            elsif term == 2
+              checklist_certifications
+            else
+              collection
+            end
+          end
+        end
+
         col :certificate_version, sql_column: 'certificates.id', label: t('models.effective.datatables.projects_certification_paths.certificate_version.label'), search: { as: :select, collection: Proc.new { Certificate.all.order(:display_weight).map { |certificate| [certificate.only_version, certificate.only_version] }.uniq } } do |rec|
           if rec.certification_path_id.present?
             only_certification_version = Certificate.find_by_name(rec&.certificate_name)&.only_version
@@ -248,6 +264,7 @@ module Effective
         Project
           .joins('LEFT OUTER JOIN projects_users ON projects_users.project_id = projects.id')
           .joins('LEFT OUTER JOIN certification_paths ON certification_paths.project_id = projects.id')
+          .joins('LEFT OUTER JOIN certification_path_methods ON certification_path_methods.certification_path_id = certification_paths.id')
           .joins('LEFT JOIN certificates ON certificates.id = certification_paths.certificate_id')
           .joins('LEFT JOIN certification_path_statuses ON certification_path_statuses.id = certification_paths.certification_path_status_id')
           .joins('LEFT JOIN development_types ON development_types.id = certification_paths.development_type_id')
@@ -257,6 +274,7 @@ module Effective
           .group('projects.owner')
           .group('projects.developer')
           .group('certification_paths.id')
+          .group('certification_path_methods.id')
           .group('certificates.id')
           .group('certification_path_statuses.id')
           .group('development_types.id')
@@ -283,6 +301,7 @@ module Effective
           .select('projects.service_provider as project_service_provider')
           .select('certification_paths.id as certification_path_id')
           .select('certification_paths.certificate_id as certificate_id')
+          .select('certification_path_methods.assessment_method as assessment_method')
           .select('certification_paths.certification_path_status_id as certification_path_certification_path_status_id')
           .select('certification_paths.pcr_track as certification_path_pcr_track')
           .select('development_types.id as development_type_id')

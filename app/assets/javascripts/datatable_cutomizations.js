@@ -13,7 +13,7 @@ $(function() {
     columnNames["Project City"] = 7;
     columnNames["Certification Scheme"] = 8;
     columnNames["Project District"] = 9;
-    columnNames["Certification Sub-Typologies"] = 10;
+    columnNames["Certification Sub-Schemes"] = 10;
     columnNames["Project Address"] = 11;
     columnNames["Certification Building Name"] = 12;
     columnNames["Project Owner"] = 13;
@@ -41,19 +41,44 @@ $(function() {
     columnNames["Project CGP"] = 35;
     columnNames["Enterprise Clients"] = 36;
     columnNames["Project Team Members"] = 37;
-    columnNames["Project Type"] = 38;
-    columnNames["Project Use"] = 39
+    columnNames["blank_1"] = 38;
+    columnNames["Project Planning Type"] = 39;
+    columnNames["blank_2"] = 40;
+    columnNames["Project Use"] = 41;
+    columnNames["blank_3"] = 42;
 
     $(".buttons-collection").on('click', function(){
       var fieldsCollection = $("ul.dt-button-collection");
       if (fieldsCollection.length > 0) {
         var mainList = $("ul.dt-button-collection");
         for (const item in columnNames) { 
-          let listElement = $(".buttons-columnVisibility a:contains(" + item + ")").parent();
-          let tempElement = listElement
-          listElement.remove();
+          let tempElement
+          if (['blank_1', 'blank_2', 'blank_3'].includes(item) ) {
+            $("li." + item).remove();
+            tempElement = $.parseHTML("<li class='dt-button buttons-columnVisibility " + item + " hover-disabled' tabindex='0' aria-controls='effective-datatables-projects_certification_paths-389818376781'><a href='javascript:void(0)' disabled=disabled>&nbsp;</a></li>")
+
+          } else {
+            let listElement = $(".buttons-columnVisibility a:contains(" + item + ")").parent();
+          
+            if (listElement.length > 0) {
+              tempElement = listElement
+              // listElement.remove();
+              tempElement.find("a").attr("href", "javascript:void(0)")
+            }
+          }
+
           mainList.append(tempElement);
         };
+
+        // arrange show default button
+        let showDefaultButton = $(".buttons-colvisRestore");
+        showDefaultButton.find("a").attr("href", "javascript:void(0)")
+        mainList.append(showDefaultButton);
+
+        // arrange show all button
+        let showAllButton = $(".buttons-colvisGroup");
+        showAllButton.find("a").attr("href", "javascript:void(0)")
+        mainList.append(showAllButton);
       }
     });
   }

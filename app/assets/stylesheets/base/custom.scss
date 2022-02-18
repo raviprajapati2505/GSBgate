@@ -58,6 +58,25 @@ a.link-mr-2 {
   margin-top: 1rem;
 }
 
+/* projects/index datatable custom css */
+ul.dt-button-collection {
+  .buttons-colvisGroup,
+  .buttons-colvisRestore {
+    clear: unset !important;
+  }
+
+  li.hover-disabled {
+    a {
+      pointer-events: none;
+
+      &:hover, &:focus {
+        background-color: unset !important;
+        color: unset !important;
+      }
+    }
+  }
+}
+
 @media (max-width: 1000px) {
   .welcome-message {
     display: none;

@@ -37,6 +37,7 @@ en:
         name: Certification Name
         version: Certification Version
         scheme: Certification Scheme
+        assessment_type: Certification Method
         stage: Certification Stage
         status: Certification Status
         rating: Certification Rating

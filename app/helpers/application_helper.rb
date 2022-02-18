@@ -449,6 +449,14 @@ module ApplicationHelper
     FILEICON_EXTENSIONS[ext.downcase] || 'fileicons/file_extension_unknown.png'
   end
 
+  def certification_assessment_type_title(assessment_type = nil)
+    if assessment_type.present? && assessment_type == 2
+      "Compliance Certificate"
+    else
+      "Star Rating Certificate"
+    end
+  end
+
   def total_CM_score(data)
     final_score = {}
     data.each do |stage|

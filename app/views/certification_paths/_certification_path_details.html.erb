@@ -27,6 +27,14 @@
           <% end %>
         </td>
       </tr>
+      <tr>
+        <th><%= t('certification_paths.show.certification_path.assessment_type') %></th>
+        <td>
+          <%= can_link_to(project_certification_path_path(project, certification_path), certification_path) do %>
+            <%= certification_assessment_type_title(certification_path.certification_path_method&.assessment_method) %>
+          <% end %>
+        </td>
+      </tr>
     </tbody>
   </table>
 <% end %>
