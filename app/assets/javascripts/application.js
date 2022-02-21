@@ -310,9 +310,13 @@ $(function () {
     });
 
     function check_project_buildings_footprint_area(A, B, C) {
-        var area_field = $('#project_buildings_footprint_area');
+        let area_field = $('#project_buildings_footprint_area');
         if (C > A || C > B) area_field.val(0);
-        return parseInt(area_field.val())
+
+        let value = area_field.val();
+        value = (value == "" || isNaN(value)) ? 0 : Number(value)
+        
+        return parseInt(value)
     }
 
     function setCertifiedArea() {
@@ -320,9 +324,9 @@ $(function () {
         var B = convert_string_to_integer($('#project_gross_area').val())
         var C = convert_string_to_integer($('#project_buildings_footprint_area').val())
 
-        A = (A == "") ? 0 : Number(A)
-        B = (B == "") ? 0 : Number(B)
-        C = (C == "") ? 0 : Number(C)
+        A = (A == "" || isNaN(A)) ? 0 : Number(A)
+        B = (B == "" || isNaN(B)) ? 0 : Number(B)
+        C = (C == "" || isNaN(C)) ? 0 : Number(C)
 
         // C must not be A & B
         C = check_project_buildings_footprint_area(A, B, C);
@@ -380,8 +384,8 @@ $(function () {
         var total_cost = convert_string_to_integer($('#project_estimated_project_cost').val())
         var gross_area = convert_string_to_integer($('#project_gross_area').val())
 
-        total_cost = (total_cost == "") ? 0 : Number(total_cost)
-        gross_area = (gross_area == "") ? 0 : Number(gross_area)
+        total_cost = (total_cost == "" || isNaN(total_cost)) ? 0 : Number(total_cost)
+        gross_area = (gross_area == "" || isNaN(gross_area)) ? 0 : Number(gross_area)
 
         cost_per_ms = total_cost / gross_area
         cost_per_ms = isFinite(cost_per_ms) ? cost_per_ms : 0

@@ -30,13 +30,13 @@
               <% end %>
               <%= f.text_field :owner %>
               <%= f.form_group do %>
-                <label>Or choose a predefined property owner</label>
+                <label>Or Choose a Predefined Property Owner</label>
                 <input type="hidden" class="select2-ajax">
               <% end %>
 
               <%= f.text_field :developer %>
               <%= f.form_group do %>
-                <label>Or choose a predefined project developer</label>
+                <label>Or Choose a Predefined Project Developer</label>
                 <%= select_tag(:select_developer, options_for_select(Owner.order(:name).pluck(:name).map{ |dev| [dev, dev] }.push(["Other, Please indicate", "Other"]), @project.developer), include_blank: '- Select a predefined project developer -', hide_label: true, id: 'project_developer_select', class: 'form-control developer-select-dropdown' ) %>
               <% end %>
 
@@ -157,7 +157,7 @@
                 </div>
 
                 <div class="col-md-12">
-                  <label>Search location</label>
+                  <label>Search Location</label>
                   <div class="input-group form-group">
                     <%= text_field_tag :search_location, @project.location, class: "form-control", id: "search_location" %>
                     <span class="input-group-btn">

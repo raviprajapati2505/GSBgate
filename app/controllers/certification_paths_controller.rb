@@ -230,7 +230,17 @@ class CertificationPathsController < AuthenticatedController
 
     respond_to do |format|
       unless @certification_path_report.errors.present?
-        @certification_path_report.update(detailed_certification_report_params)
+        if @certification_path_report.update(detailed_certification_report_params)
+          if current_user.has_role?(["default_role"])
+            Task.where(taskable: @certification_path, task_description_id: Taskable::CGP_CERTIFICATION_REPORT_INFORMATION).delete_all
+
+            Task.find_or_create_by(taskable: @certification_path,
+              task_description_id: Taskable::DC_CERTIFICATION_REPORT_INFORMATION,
+              application_role: User.roles[:document_controller],
+              project: @certification_path.project,
+              certification_path: @certification_path)
+          end
+        end
         format.js { render inline: "location.reload();" }
       else
         format.js { render 'certification_paths/new_detailed_certification_report.js.erb', layout: false }

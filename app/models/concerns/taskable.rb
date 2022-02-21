@@ -36,6 +36,8 @@ module Taskable
   PROJ_MNGR_UPLOAD_CMP = 42
   CERT_MNGR_CMP_UPLOADED = 43
   CGP_CERTIFICATION_REPORT_INFORMATION = 44
+  DC_CERTIFICATION_REPORT_INFORMATION = 45
+
 
   included do
     has_many :tasks, as: :taskable, dependent: :destroy
@@ -77,6 +79,8 @@ module Taskable
         handle_updated_scheme_mix_criterion
       when SchemeMixCriteriaDocument.name.demodulize
         handle_updated_scheme_mix_criteria_document
+      when CertificationPathReport.name.demodulize
+        handle_updated_certification_path_report
     end
   end
 
@@ -361,7 +365,7 @@ module Taskable
           # Destroy all certification path tasks
           Task.where(certification_path: self).delete_all
 
-          # Create GORD top manager task to approve
+          # Create project CGP task to fill the report information
           Task.find_or_create_by(taskable: self,
             task_description_id: CGP_CERTIFICATION_REPORT_INFORMATION,
             project_role: ProjectsUser.roles[:cgp_project_manager],
@@ -866,6 +870,12 @@ module Taskable
                      application_role: User.roles[:gsas_trust_admin],
                      project: self.project)
         end
+    end
+  end
+
+  def handle_updated_certification_path_report
+    if self.is_released?
+      Task.where(certification_path_id: self.certification_path_id).delete_all
     end
   end
 

@@ -167,6 +167,10 @@ class User < ApplicationRecord
     }
   end
 
+  def has_role?(role = [])
+    role.include?(self.role) rescue false
+  end
+
   private
   def init
     self.role ||= :default_role

@@ -297,7 +297,8 @@ en:
       description_41: Publish the draft PCR comment provided by a certifier team member.
       description_42: Upload the GSAS Construction Management Plan (GSAS-CMP) via the certification documentation box.
       description_43: A GSAS Construction Management Plan (GSAS-CMP) was uploaded.
-      description_44: Fill report form to varify certificate information.
+      description_44: Fill the report form to varify certificate information.
+      description_45: Fill the report form to varify certificate information and release certification report.
 
       tooltip_due_date: Task is overdue.
   users:
