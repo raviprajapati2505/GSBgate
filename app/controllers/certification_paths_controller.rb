@@ -211,7 +211,7 @@ class CertificationPathsController < AuthenticatedController
 
     if params[:button].present? && params[:button] == 'save-and-release'
       detailed_certification_report_params[:is_released] = true
-      detailed_certification_report_params[:release_date] = Date.today
+      detailed_certification_report_params[:release_date] = Time.now
     end
     
     # add validation error according to user role.

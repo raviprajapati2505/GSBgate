@@ -1,5 +1,5 @@
 class CreateCertificationPathReports < ActiveRecord::Migration[5.2]
-  def change
+  def up
     create_table :certification_path_reports do |t|
       t.references :certification_path, foreign_key: true
       t.string :reference_number
@@ -9,7 +9,7 @@ class CreateCertificationPathReports < ActiveRecord::Migration[5.2]
       t.string :project_location
       t.date :issuance_date
       t.date :approval_date
-      t.date :release_date
+      t.datetime :release_date
       t.boolean :is_released, default: false
 
       t.timestamps
@@ -24,5 +24,9 @@ class CreateCertificationPathReports < ActiveRecord::Migration[5.2]
       past_name: 'Certificate Generated',
       description: 'Certificate In Process - after Chairman approval'
     )
+  end
+
+  def down
+    drop_table :certification_path_reports
   end
 end
