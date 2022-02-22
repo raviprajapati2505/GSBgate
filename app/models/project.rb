@@ -48,6 +48,7 @@ class Project < ApplicationRecord
 
   after_initialize :init
   after_create :send_project_registered_email
+  after_update :change_projects_users_certification_team_type, if: :saved_change_to_certificate_type?
 
   mount_uploader :location_plan_file, GeneralSubmittalUploader
   mount_uploader :site_plan_file, GeneralSubmittalUploader
@@ -253,5 +254,10 @@ class Project < ApplicationRecord
 
   def send_project_registered_email
     DigestMailer.project_registered_email(self).deliver_now
+  end
+
+  def change_projects_users_certification_team_type
+    certificate_team_type = certificate_type == 3 ? "Letter of Conformance" : "Other"
+    projects_users&.update_all(certification_team_type: certificate_team_type)
   end
 end
