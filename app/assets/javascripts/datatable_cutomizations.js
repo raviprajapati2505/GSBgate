@@ -1,7 +1,7 @@
 $(function() {
   let pageName = window.location.href.split('/').pop();
 
-  if (pageName == 'projects') {
+  if (pageName == 'projects' || pageName == '') {
 
     // Columns with their positions
     var columnNames = {} 
