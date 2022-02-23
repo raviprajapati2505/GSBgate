@@ -1,25 +1,67 @@
 {
-    "type": "horizontalBar",
+    "type": "bar",
     "data": {
-        "labels": ["Urban Connectivity", "Site", "Management & Operations", "Urban Connectivity", "Site", "Management & Operations"],
-        "datasets": [{
-            "label": "Points Attainable",
-            "data": [0.540, 0.300, 0.240, 0.540, 0.300, 0.240],
-            "backgroundColor": "rgb(255, 99, 132)",
-            "borderColor": "rgb(255, 99, 132)",
-            "borderWidth": 1
-        },
-        {
-            "label": "Achieved",
-            "data": [0.120, 0.220, -0.015, 0.120, 0.220, -0.015],
-            "backgroundColor": "rgb(54, 162, 235)",
-            "borderColor": "rgb(54, 162, 235)",
-            "borderWidth": 1
-        }]
+       "labels": [
+            "Urban Considerations",
+            "Site",
+            "Energy",
+            "Water",
+            "Materials",
+            "Outdoor Environment",
+            "Socio-cultural Dimensions",
+            "Management And Operations"
+        ],
+        "datasets": [
+            {
+                "label": "Points Attainable",
+                "display": true,
+                "data": [
+                            0.21000000000000002,
+                            0.44999999999999996,
+                            0.57,
+                            0.48,
+                            0.39,
+                            0.54,
+                            0.15,
+                            0.54
+                        ],
+                "backgroundColor": "rgba(195, 56, 56, 255)",
+                "borderColor": "rgba(195, 56, 56, 255)",
+                "borderWidth": 1,
+                "showDatapoints": true
+            },
+            {
+                "label": "Achieved",
+                "display": "true",
+                "data": [
+                            0.16999999999999998,
+                            0.44999999999999996,
+                            0.47,
+                            0.48,
+                            0.39,
+                            0.44,
+                            0.15,
+                            0.36
+                        ],
+                "backgroundColor": "rgba(54, 111, 178, 255)",
+                "borderColor": "rgba(54, 111, 178, 255)",
+                "borderWidth": 1,
+                "showDatapoints": true
+            }
+        ]
     },
     "options": {
+        "indexAxis": "y",
         "legend": {
+            "display": "true",
             "position": "bottom"
+        },
+        "plugins": {
+            "datalabels": {
+                "color": "black",
+                "align": "end",
+                "anchor": "start"
+            }
         }
     }
 }

@@ -362,8 +362,9 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
 
         styled_text("<div style='font-size: 8; text-align: right'>#{text}<br />#{text2}</div>")
       end
-      bounding_box([@document.bounds.right - 50, @document.bounds.bottom + 100], width: 50, height: HEADER_HEIGHT) do
-        image image_path(@@stamp_image), width: 50
+
+      bounding_box([@document.bounds.right - 100, @document.bounds.bottom + 130], width: 80, height: HEADER_HEIGHT + 30) do
+        image image_path(@@stamp_image), width: 80
       end
     end
   end
@@ -409,18 +410,22 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
       type: 'bar',
       data: {
         labels: total_category_scores.map { |_category_code, category| category[:name] },
+        font: {
+          weight: "bold",
+        },
         datasets: [{
           label: 'Points Attainable',
-          data: total_category_scores.map { |_category_code, category| category[:maximum_score] },
-          backgroundColor: 'rgb(255, 99, 132)',
-          borderColor: 'rgb(255, 99, 132)',
-          borderWidth: 1
+          data: total_category_scores.map { |_category_code, category| category[:maximum_score]&.round(2) },
+          backgroundColor: 'rgba(195, 56, 56, 255)',
+          borderColor: 'rgba(195, 56, 56, 255)',
+          borderWidth: 1,
+          fill: false
         },
         {
           label: 'Achieved',
-          data: total_category_scores.map { |_category_code, category| category[:achieved_score] },
-          backgroundColor: 'rgb(54, 162, 235)',
-          borderColor: 'rgb(54, 162, 235)',
+          data: total_category_scores.map { |_category_code, category| category[:achieved_score]&.round(2) },
+          backgroundColor: 'rgba(54,111,178,255)',
+          borderColor: 'rgba(54,111,178,255)',
           borderWidth: 1
         }]
       },
@@ -429,6 +434,13 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
         legend: {
           display: true,
           position: 'bottom'
+        },
+        plugins: {
+          datalabels: {
+            color: "black",
+            align: "end",
+            anchor: "start"
+          }
         }
       }
     }
@@ -466,13 +478,13 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
 
     labels = [
         '',
-        'Certification denied',
-        '*',
-        '**',
-        '***',
-        '****',
-        '*****',
-        '******',
+        '',
+        '★',
+        '★★',
+        '★★★',
+        '★★★★',
+        '★★★★★',
+        '★★★★★★',
         ''
     ]
 
@@ -510,18 +522,53 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
       type: 'line',
       data: {
         labels: labels,
+        font: {
+          weight: "bold",
+        },
         datasets: [{
           label: '',
           data: data,
           pointRadius: point_radius,
+          borderDash: [10],
           backgroundColor: 'rgb(54, 162, 235)',
           borderColor: 'rgb(54, 162, 235)',
           fill: false
         }]
       },
       options: {
-        legend: {
-          display: false
+        plugins: {
+          legend: {
+            display: false,
+          },
+          datalabels: {
+            color: "black",
+            align: "end",
+            anchor: "start",
+          }
+        },
+        scales: {
+          y: {
+            title: {
+              display: true,
+              text: "Overall score",
+              font: {
+                weight: "bold",
+              },
+            },
+            axis: "y",
+          },
+          x: {
+            title: {
+              display: true,
+              text: "Certification denied",
+              color: "red",
+              align: "start",
+              font: {
+                weight: "bold",
+              },
+            },
+            axis: "x",
+          }
         }
       }
     }
@@ -540,7 +587,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     data.append(['2.0<X<=2.5', '*****'])
     data.append(['2.5<X<=3.0', '******'])
 
-    table(data, cell_style: { width: 80 }, position: :right) do
+    table(data, cell_style: { width: 70 }, position: :right) do
       # column(0).align = :center
       row(0).background_color = @@main_color
       row(0).text_color = 'FFFFFF'
@@ -550,13 +597,13 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     end
     
     begin
-      image chart_generator.generate_chart(linechart_config, 500, 360).path, at: [0, 530], width: 280
+      image chart_generator.generate_chart(linechart_config, 580, 360).path, at: [0, 520], width: 320
     rescue LinkmeService::ApiError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, Errno::ECONNREFUSED,
       EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError
       text 'An error occurred when creating the chart.'
     end
     
-    newline(2)
+    newline(3)
     text = 'Figure 3: Project Overall Scores & Rating'
     styled_text("<div style='font-size: 12; line-height: 7; color: 000000; text-align: center; padding-top: 10px;'><b>#{text}</b></div>")
 
