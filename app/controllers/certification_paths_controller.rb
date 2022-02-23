@@ -118,7 +118,7 @@ class CertificationPathsController < AuthenticatedController
       development_type_name = @certification_path.project.completed_letter_of_conformances.first.development_type.name
       @certification_path.development_type = DevelopmentType.find_by(name: development_type_name, certificate: @certification_path.certificate)
     else
-      @development_types = @certification_path.certificate.development_types
+      @development_types = @certification_path.certificate.development_types.joins(:development_type_schemes)&.select("DISTINCT ON (name) *").sort_by(&:display_weight)
       if params.has_key?(:certification_path) && params[:certification_path].has_key?(:development_type)
         @certification_path.development_type = DevelopmentType.find_by_id(params[:certification_path][:development_type].to_i)
       else

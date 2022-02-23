@@ -79,7 +79,7 @@ module Effective
         col :project_owner, sql_column: 'projects.owner', label: t('models.effective.datatables.projects.lables.owner'), visible: false
         col :project_developer, sql_column: 'projects.developer', label: t('models.effective.datatables.projects.lables.developer'), visible: false
 
-        col :development_type_name, sql_column: 'development_types.name', label: t('models.effective.datatables.projects_certification_paths.certification_path_development_type.label'), search: { as: :select, collection: Proc.new { DevelopmentType.select(:name, :display_weight).order(:display_weight).distinct.map { |development_type| [development_type.name, development_type.name] } } } do |rec|
+        col :development_type_name, sql_column: 'development_types.name', label: t('models.effective.datatables.projects_certification_paths.certification_path_development_type.label'), search: { as: :select, collection: Proc.new { DevelopmentType.select(:name, :display_weight).order(:display_weight).distinct.map { |development_type| [development_type.name, development_type.name] }.uniq } } do |rec|
           rec.development_type_name
         end.search do |collection, terms, column, index|
           terms_array = terms.split(",")
