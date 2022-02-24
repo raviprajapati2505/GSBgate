@@ -77,9 +77,12 @@ DevelopmentType.where(name: 'Neighbourhood in stages (mixed development in stage
 # Certificate_ids [3, 4, 5, 6, 17, 18, 16/DW:40] with display_weight: 30 for all 
 DevelopmentType.where(name: 'Neighbourhood (mixed development)').update_all(name: 'Neighborhood')
 
-# projects building type group renaming
+# projects building type group & scheme renaming
 BuildingTypeGroup.where(name: 'Districts').update_all(name: 'District')
 BuildingTypeGroup.where(name: 'Parks').update_all(name: 'Park')
+Scheme.where(name: "Districts").update_all(name: "District")
+Scheme.where(name: "Parks").update_all(name: "Park")
+Scheme.where(name: "Construction").update_all(name: "Construction Site")
 
-# ALl D&B projects have building_type_group: 'district' but certification path development type is something else
-CertificationPath.joins(:project).where(projects: { building_type_group: BuildingTypeGroup.find_by(name: "District"), certificate_type: Certificate.certificate_types[:design_type] }, development_type_id: DevelopmentType.where(name: 'Single Use Building')).update_all(development_type_id: 28)
+# # ALl D&B projects have building_type_group: 'district' but certification path development type is something else
+# CertificationPath.joins(:project).where(projects: { building_type_group: BuildingTypeGroup.find_by(name: "District"), certificate_type: Certificate.certificate_types[:design_type] }, development_type_id: DevelopmentType.where(name: 'Single Use Building')).update_all(development_type_id: 28)

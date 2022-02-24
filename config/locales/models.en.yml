@@ -365,3 +365,6 @@ en:
             label: Certification Scheme
           building_types:
             label: Project Use
+          certification_scheme_name:
+            label: Certification Scheme
+

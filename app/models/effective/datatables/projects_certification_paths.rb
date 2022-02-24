@@ -135,12 +135,20 @@ module Effective
           end
         end
 
-        col :building_type_group_name, sql_column: 'building_type_groups.name', label: t('models.effective.datatables.projects_certification_paths.building_type_groups.label'), search: { as: :select, collection: Proc.new { BuildingTypeGroup.visible.select(:name).order(:name).distinct.map { |building_type_group| [building_type_group.name, building_type_group.name] } } } do |rec|
-          rec.building_type_group_name
-        end.search do |collection, terms, column, index|
-          terms_array = terms.split(",")
+        col :certification_scheme_name, sql_column: 'schemes.name', label: t('models.effective.datatables.projects_certification_paths.certification_scheme_name.label'), search: { as: :select, collection: Proc.new { Scheme.pluck(:name).uniq.push("Mixed Use Building").sort } } do |rec|
+          development_type_name = rec.development_type_name
+          if rec&.certificate_type == Certificate.certificate_types[:design_type] && ["Park", "Neighborhood", "Mixed Use Building"].include?(development_type_name)
+            development_type_name
+          else
+            rec.certification_scheme_name
+          end
+        end.search do |collection, term, column, index|
           unless collection.class == Array
-            collection.where("building_type_groups.name IN (?)", terms_array)
+            if ["Park", "Neighborhood", "Mixed Use Building"].include?(term)
+              collection.where("development_types.name = ?", term)
+            else
+              collection.where("schemes.name = ?", term)
+            end
           end
         end
 
@@ -265,20 +273,21 @@ module Effective
           .joins('LEFT OUTER JOIN projects_users ON projects_users.project_id = projects.id')
           .joins('LEFT OUTER JOIN certification_paths ON certification_paths.project_id = projects.id')
           .joins('LEFT OUTER JOIN certification_path_methods ON certification_path_methods.certification_path_id = certification_paths.id')
+          .joins('LEFT JOIN scheme_mixes ON scheme_mixes.certification_path_id = certification_paths.id')
+          .joins('LEFT JOIN schemes ON scheme_mixes.scheme_id = schemes.id')
           .joins('LEFT JOIN certificates ON certificates.id = certification_paths.certificate_id')
           .joins('LEFT JOIN certification_path_statuses ON certification_path_statuses.id = certification_paths.certification_path_status_id')
           .joins('LEFT JOIN development_types ON development_types.id = certification_paths.development_type_id')
-          .joins('LEFT JOIN building_type_groups ON building_type_groups.id = projects.building_type_group_id')
           .joins('LEFT JOIN building_types ON building_types.id = projects.building_type_id')
           .group('projects.id')
           .group('projects.owner')
           .group('projects.developer')
           .group('certification_paths.id')
           .group('certification_path_methods.id')
+          .group('schemes.id')
           .group('certificates.id')
           .group('certification_path_statuses.id')
           .group('development_types.id')
-          .group('building_type_groups.id')
           .group('building_types.id')
           .select('projects.id as project_nr')
           .select('projects.code as project_code')
@@ -304,10 +313,9 @@ module Effective
           .select('certification_path_methods.assessment_method as assessment_method')
           .select('certification_paths.certification_path_status_id as certification_path_certification_path_status_id')
           .select('certification_paths.pcr_track as certification_path_pcr_track')
+          .select('schemes.name as certification_scheme_name')
           .select('development_types.id as development_type_id')
           .select('development_types.name as development_type_name')
-          .select('building_type_groups.id as building_type_group_id')
-          .select('building_type_groups.name as building_type_group_name')
           .select('building_types.id as building_type_id')
           .select('building_types.name as building_type_name')
           .select('certification_paths.started_at as certification_path_started_at')
