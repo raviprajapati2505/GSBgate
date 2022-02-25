@@ -86,3 +86,5 @@ Scheme.where(name: "Construction").update_all(name: "Construction Site")
 
 # # ALl D&B projects have building_type_group: 'district' but certification path development type is something else
 # CertificationPath.joins(:project).where(projects: { building_type_group: BuildingTypeGroup.find_by(name: "District"), certificate_type: Certificate.certificate_types[:design_type] }, development_type_id: DevelopmentType.where(name: 'Single Use Building')).update_all(development_type_id: 28)
+
+# CertificationPath.joins(:project).where(certificate_id: Certificate.where(gsas_version: "v2.1", certificate_type: Certificate.certificate_types[:operations_type])&.ids)

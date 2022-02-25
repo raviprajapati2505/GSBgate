@@ -175,7 +175,11 @@ class CertificationPath < ApplicationRecord
   end
 
   def scheme_names
-    if main_scheme_mix_selected?
+    development_type_name = development_type&.name
+
+    if certificate.design_and_build? && ["Neighborhood", "Mixed Use Building"].include?(development_type_name)
+      development_type_name
+    elsif main_scheme_mix_selected?
       main_scheme_mix.name
     else
       scheme_names = scheme_mixes&.joins(:scheme).pluck("schemes.name")
