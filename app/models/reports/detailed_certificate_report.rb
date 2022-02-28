@@ -363,8 +363,10 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
         styled_text("<div style='font-size: 8; text-align: right'>#{text}<br />#{text2}</div>")
       end
 
-      bounding_box([@document.bounds.right - 100, @document.bounds.bottom + 130], width: 80, height: HEADER_HEIGHT + 30) do
-        image image_path(@@stamp_image), width: 80
+      if @certification_path.construction? || @certification_path.is_design_loc?
+        bounding_box([@document.bounds.right - 100, @document.bounds.bottom + 130], width: 80, height: HEADER_HEIGHT + 30) do
+          image image_path(@@stamp_image), width: 80
+        end
       end
     end
   end
