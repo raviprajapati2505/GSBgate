@@ -80,11 +80,24 @@ module Effective
         col :project_developer, sql_column: 'projects.developer', label: t('models.effective.datatables.projects.lables.developer'), visible: false
 
         col :development_type_name, sql_column: 'development_types.name', label: t('models.effective.datatables.projects_certification_paths.certification_path_development_type.label'), search: { as: :select, collection: Proc.new { DevelopmentType.select(:name, :display_weight).order(:display_weight).distinct.map { |development_type| [development_type.name, development_type.name] }.uniq } } do |rec|
-          rec.development_type_name
-        end.search do |collection, terms, column, index|
-          terms_array = terms.split(",")
+          case rec.certification_scheme_name
+          when 'Park'
+            'Park'
+          when 'Interiors'
+            'Single Zone, Interiors'
+          else
+            rec.development_type_name
+          end
+        end.search do |collection, term, column, index|
           unless collection.class == Array
-            collection.where("development_types.name IN (?)", terms_array)
+            case term
+            when 'Park'
+              collection.where("schemes.name = :term", term: term)
+            when 'Single Zone, Interiors'
+              collection.where("schemes.name = :term", term: 'Interiors')
+            else
+              collection.where("development_types.name = :term", term: term)
+            end
           end
         end
 
