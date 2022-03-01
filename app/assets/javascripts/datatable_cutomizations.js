@@ -1,4 +1,16 @@
 $(function() {
+  
+  function set_options_lable() {
+    var table = $("table.effective-datatable thead");
+    var options_with_null = table.find('select option[value=""]');
+    
+    options_with_null.each(function() {
+      $(this).text("Select All");
+    });
+  };
+
+  set_options_lable();
+  
   let pageName = window.location.href.split('/').pop();
 
   if (pageName == 'projects' || pageName == '') {
@@ -84,6 +96,10 @@ $(function() {
       }
     });
   }
+
+  $("table.effective-datatable").on("column-visibility.dt", function(e, settings, column, state) {
+    set_options_lable();
+  });
 });
 
 
