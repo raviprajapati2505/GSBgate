@@ -89,7 +89,7 @@ $(function () {
                     // Get all scheme rows with the same scheme name (or scheme id)
                     var identical_scheme_rows = $('table.schemes input[type="hidden"][value=' + curr_scheme_id + ']').parents('tbody tr');
                     // Check if more rows exist with an identical scheme name
-                    if (identical_scheme_rows.size() > 1) {
+                    if (identical_scheme_rows.length > 1) {
                         var curr_name_input = $(object).find('input.name');
                         // The custom name is required now
                         if (curr_name_input.val() == '') {
