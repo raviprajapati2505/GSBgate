@@ -94,7 +94,7 @@ module Effective
             when 'Park'
               collection.where("schemes.name = :term", term: term)
             when 'Single Zone, Interiors'
-              collection.where("schemes.name = :term", term: 'Interiors')
+              collection.where("schemes.name = 'Interiors' OR development_types.name = :term", term: term)
             else
               collection.where("development_types.name = :term", term: term)
             end
