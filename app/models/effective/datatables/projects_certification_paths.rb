@@ -92,11 +92,11 @@ module Effective
           unless collection.class == Array
             case term
             when 'Park'
-              collection.where("schemes.name = :term", term: term)
+              collection.joins(certification_paths: [scheme_mixes: :scheme]).where("schemes.name = :term AND (projects.certificate_type <> :certificate_type OR development_types.name NOT IN ('Neighborhood', 'Mixed Use Building'))", term: term, certificate_type: Certificate.certificate_types[:design_type])
             when 'Single Zone, Interiors'
-              collection.where("schemes.name = 'Interiors' OR development_types.name = :term", term: term)
+              collection.joins(certification_paths: [scheme_mixes: :scheme]).where("schemes.name = 'Interiors' OR development_types.name = :term", term: term)
             else
-              collection.where("development_types.name = :term", term: term)
+              collection.joins(certification_paths: [scheme_mixes: :scheme]).where("development_types.name = :term AND schemes.name <> 'Interiors'", term: term)
             end
           end
         end
@@ -148,12 +148,13 @@ module Effective
           end
         end
 
-        col :certification_scheme_name, sql_column: 'schemes.name', label: t('models.effective.datatables.projects_certification_paths.certification_scheme_name.label'), search: { as: :select, collection: Proc.new { Scheme.pluck(:name).uniq.push("Mixed Use Building").sort } } do |rec|
+        col :certification_scheme_name, label: t('models.effective.datatables.projects_certification_paths.certification_scheme_name.label'), sql_column: "ARRAY_TO_STRING(ARRAY(SELECT schemes.name FROM schemes INNER JOIN scheme_mixes ON schemes.id = scheme_mixes.scheme_id WHERE scheme_mixes.certification_path_id = certification_paths.id), '|||')" , search: { as: :select, collection: Proc.new { Scheme.pluck(:name).uniq.push("Mixed Use Building").sort } } do |rec|
           development_type_name = rec.development_type_name
           if rec.design_and_build? && ["Neighborhood", "Mixed Use Building"].include?(development_type_name)
             development_type_name
           else
-            rec.certification_scheme_name
+            # rec.certification_scheme_name
+            ERB::Util.html_escape(rec.certification_scheme_name).split('|||').sort.join('<br/>') unless rec.certification_scheme_name.nil?
           end
         end.search do |collection, term, column, index|
           unless collection.class == Array
@@ -161,7 +162,7 @@ module Effective
             when "Mixed Use Building", "Neighborhood"
               collection.where("development_types.name = :term AND projects.certificate_type = :certificate_type", term: term, certificate_type: Certificate.certificate_types[:design_type])
             else
-              collection.where("schemes.name = :term AND (projects.certificate_type <> :certificate_type OR development_types.name NOT IN ('Neighborhood', 'Mixed Use Building'))", term: term, certificate_type: Certificate.certificate_types[:design_type])
+              collection.joins(certification_paths: [scheme_mixes: :scheme]).where("schemes.name = :term AND (projects.certificate_type <> :certificate_type OR development_types.name NOT IN ('Neighborhood', 'Mixed Use Building'))", term: term, certificate_type: Certificate.certificate_types[:design_type])
             end
           end
         end
@@ -288,8 +289,6 @@ module Effective
           .joins('LEFT OUTER JOIN certification_paths ON certification_paths.project_id = projects.id')
           .joins('LEFT OUTER JOIN certification_path_methods ON certification_path_methods.certification_path_id = certification_paths.id')
           .joins('LEFT JOIN certificates ON certification_paths.certificate_id = certificates.id')
-          .joins('LEFT JOIN scheme_mixes ON scheme_mixes.certification_path_id = certification_paths.id')
-          .joins('LEFT JOIN schemes ON scheme_mixes.scheme_id = schemes.id')
           .joins('LEFT JOIN certification_path_statuses ON certification_paths.certification_path_status_id = certification_path_statuses.id')
           .joins('LEFT JOIN development_types ON certification_paths.development_type_id = development_types.id')
           .joins('LEFT JOIN building_types ON projects.building_type_id = building_types.id')
@@ -299,7 +298,6 @@ module Effective
           .group('certification_paths.id')
           .group('certification_path_methods.id')
           .group('certificates.id')
-          .group('schemes.id')
           .group('certification_path_statuses.id')
           .group('development_types.id')
           .group('building_types.id')
@@ -327,7 +325,7 @@ module Effective
           .select('certification_path_methods.assessment_method as assessment_method')
           .select('certification_paths.certification_path_status_id as certification_path_certification_path_status_id')
           .select('certification_paths.pcr_track as certification_path_pcr_track')
-          .select('schemes.name as certification_scheme_name')
+          .select("ARRAY_TO_STRING(ARRAY(SELECT schemes.name FROM schemes INNER JOIN scheme_mixes ON schemes.id = scheme_mixes.scheme_id WHERE scheme_mixes.certification_path_id = certification_paths.id), '|||') AS certification_scheme_name")
           .select('development_types.name as development_type_name')
           .select('building_types.name as building_type_name')
           .select('certification_paths.started_at as certification_path_started_at')
