@@ -345,6 +345,8 @@ module Effective
           .select('(%s) AS certification_manager_array' % projects_users_by_type('certification_manager'))
           .select("ARRAY_TO_STRING(ARRAY(SELECT enterprise_client_users.name FROM users as enterprise_client_users INNER JOIN projects_users as enterprise_client_project_users ON enterprise_client_project_users.user_id = enterprise_client_users.id  WHERE enterprise_client_project_users.role IN (#{ProjectsUser.roles[:enterprise_client]}) AND enterprise_client_project_users.project_id = projects.id), '|||') AS enterprise_clients_array")
           .select('(%s) AS total_achieved_score' % ProjectsCertificationPaths.query_score_in_certificate_points(:achieved_score))
+          .order("projects.id")
+          .order("certificates.display_weight")
           .accessible_by(current_ability)
       end
     end
