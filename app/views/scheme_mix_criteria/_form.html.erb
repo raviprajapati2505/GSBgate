@@ -608,6 +608,8 @@
     </div>
 </div>
 <% unless @scheme_mix_criterion.main_scheme_mix_criterion_id.present? %>
+  <% download_document_permitted = check_documents_permissions(user_role: current_user.role, project: @project) %>
+
     <div class="col-lg-8">
         <% if @scheme_mix_criterion.requirement_data.assigned_to_user(current_user).present? %>
             <div class="ibox">
@@ -666,12 +668,12 @@
         <div class="ibox" id="documentation">
             <div class="ibox-title">
                 <h5>Criterion Documentation</h5>
-                <% if can?(:download_archive, @scheme_mix_criterion) && @scheme_mix_criterion.scheme_mix_criteria_documents.any? %>
+                <% if can?(:download_archive, @scheme_mix_criterion) && download_document_permitted && @scheme_mix_criterion.scheme_mix_criteria_documents.any? %>
                   <%= btn_download("javascript:void(0);", text: 'Download all approved/selected documents', tooltip: 'A ZIP archive containing all approved documents of this criterion will be generated for you.', size: 'extra_small', class: 'pull-right', id: "download_smcd_btn") %>
                 <% end %>
             </div>
             <div class="ibox-content">
-                <%= render 'scheme_mix_criteria_documents/index', scheme_mix_criteria_documents: @scheme_mix_criterion.scheme_mix_criteria_documents %>
+                <%= render 'scheme_mix_criteria_documents/index', scheme_mix_criteria_documents: @scheme_mix_criterion.scheme_mix_criteria_documents, download_document_permitted: download_document_permitted %>
             </div>
         </div>
     </div>

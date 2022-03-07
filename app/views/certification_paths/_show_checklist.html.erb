@@ -1,4 +1,8 @@
-<% @certification_path = certification_path %>
+<% 
+  @certification_path = certification_path
+  download_document_permitted = check_documents_permissions(user_role: current_user.role, project: @project)
+%>
+
 <div class="row">
     <div class="col-md-5">
         <div class="ibox float-e-margins">
@@ -88,7 +92,7 @@
                           </tr>
                       <% end %>
                       <% unless @certification_path.certificate.construction_certificate? %>
-                        <% if can?(:download_archive, @certification_path) %>
+                        <% if can?(:download_archive, @certification_path) && download_document_permitted %>
                             <tr>
                                 <th>
                                     Documents and Audit Logs
@@ -316,7 +320,7 @@
           <% end %>
         </div>
         <div class="ibox-content">
-          <%= render 'certification_path_documents/index', certification_path_documents: @certification_path.cgp_certification_path_documents %>
+          <%= render 'certification_path_documents/index', certification_path_documents: @certification_path.cgp_certification_path_documents, download_document_permitted: download_document_permitted %>
         </div>
       </div>
       <div class="ibox" id="certifier-documentation">
@@ -324,7 +328,7 @@
           <h5>GSAS TRUST DOCUMENTATION</h5>
         </div>
         <div class="ibox-content">
-          <%= render 'certification_path_documents/index', certification_path_documents: @certification_path.certifier_certification_path_documents %>
+          <%= render 'certification_path_documents/index', certification_path_documents: @certification_path.certifier_certification_path_documents, download_document_permitted: download_document_permitted %>
         </div>
       </div>
     </div>

@@ -1,4 +1,5 @@
 <% use_gmaps_for(:project) %>
+<% download_document_permitted = check_documents_permissions(user_role: current_user.role, project: @project) %>
 
 <div class="row">
   <div class="col-md-4">
@@ -94,7 +95,7 @@
               <th><%= Project.human_attribute_name('location_plan_file') %></th>
               <td>
                 <% if @project.location_plan_file.present? %>
-                  <% if can? :download_location_plan, @project %>
+                  <% if can?(:download_location_plan, @project) && download_document_permitted %>
                     <%= btn_download(download_project_location_plan_path(@project), size: 'extra_small', tooltip: "Download #{Project.human_attribute_name('location_plan_file')}") %>
                   <% end %>
                   <%= truncate(@project.location_plan_file.file.filename, length: 35) %>
@@ -106,7 +107,7 @@
               <th><%= Project.human_attribute_name('site_plan_file') %></th>
               <td>
                 <% if @project.site_plan_file.present? %>
-                  <% if can? :download_site_plan, @project %>
+                  <% if can?(:download_site_plan, @project) && download_document_permitted %>
                     <%= btn_download(download_project_site_plan_path(@project), size: 'extra_small', tooltip: "Download #{Project.human_attribute_name('site_plan_file')}") %>
                   <% end %>
                   <%= truncate(@project.site_plan_file.file.filename, length: 35) %>
@@ -118,7 +119,7 @@
               <tr>
                 <th><%= Project.human_attribute_name('project_narrative_file') %></th>
                 <td>
-                    <% if can? :download_project_narrative, @project %>
+                    <% if can?(:download_project_narrative, @project) && download_document_permitted %>
                       <%= btn_download(download_project_narrative_path(@project), size: 'extra_small', tooltip: "Download #{Project.human_attribute_name('project_narrative_file')}") %>
                     <% end %>
                     <%= truncate(@project.project_narrative_file.file.filename, length: 35) %>
@@ -129,7 +130,7 @@
                 <th><%= Project.human_attribute_name('area_statement_file') %></th>
                 <td>
                   <% if @project.area_statement_file.present? %>
-                    <% if can? :download_area_statement, @project %>
+                    <% if can?(:download_area_statement, @project) && download_document_permitted %>
                       <%= btn_download(download_area_statement_path(@project), size: 'extra_small', tooltip: "Download #{Project.human_attribute_name('area_statement_file')}") %>
                     <% end %>
                     <%= truncate(@project.area_statement_file.file.filename, length: 35) %>
@@ -142,7 +143,7 @@
               <th><%= Project.human_attribute_name('design_brief_file') %></th>
               <td>
                 <% if @project.design_brief_file.present? %>
-                  <% if can? :download_design_brief, @project %>
+                  <% if can?(:download_design_brief, @project) && download_document_permitted %>
                     <%= btn_download(download_project_design_brief_path(@project), size: 'extra_small', tooltip: "Download #{Project.human_attribute_name('design_brief_file')}") %>
                   <% end %>
                   <%= truncate(@project.design_brief_file.file.filename, length: 35) %>
@@ -154,7 +155,7 @@
               <th><%= Project.human_attribute_name('sustainability_features_file') %></th>
               <td>
                 <% if @project.sustainability_features_file.present? %>
-                  <% if can? :download_sustainability_features, @project %>
+                  <% if can?(:download_sustainability_features, @project) && download_document_permitted %>
                     <%= btn_download(download_sustainability_features_path(@project), size: 'extra_small', tooltip: "Download #{Project.human_attribute_name('sustainability_features_file')}") %>
                   <% end %>
                   <%= truncate(@project.sustainability_features_file.file.filename, length: 35) %>
@@ -177,7 +178,7 @@
                               </div>
 
                               <div class="col-md-4">
-                                <% if can?(:read, project_actual_image) %>
+                                <% if can?(:read, project_actual_image) && download_document_permitted %>
                                   <%= btn_download(project_actual_project_image_path(@project, project_actual_image), size: 'small', tooltip: 'Download image') %>
                                 <% end %>
                                 <% if can?(:destroy, project_actual_image) %>
@@ -208,7 +209,7 @@
                               </div>
 
                               <div class="col-md-4">
-                                <% if can?(:read, project_rendering_image) %>
+                                <% if can?(:read, project_rendering_image) && download_document_permitted %>
                                   <%= btn_download(project_project_rendering_image_path(@project, project_rendering_image), size: 'small', tooltip: 'Download image') %>
                                 <% end %>
                                 <% if can?(:destroy, project_rendering_image) %>

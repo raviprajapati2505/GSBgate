@@ -48,7 +48,7 @@
                       </td>
                       <td>
                           <%= audit_log_label(smcd) %>
-                          <% if can?(:read, smcd) %>
+                          <% if can?(:read, smcd) && download_document_permitted %>
                               <%= btn_download(project_certification_path_document_path(@project, @certification_path, smcd.document), size: 'small', tooltip: 'Download document') %>
                           <% end %>
                           <% if can?(:create_link, smcd) %>

@@ -239,6 +239,34 @@ class Project < ApplicationRecord
     end
   end
 
+  def check_documents_permissions
+    begin
+      if certification_paths.present?
+        recent_certification_path = certification_paths.joins(:certificate).order("certificates.display_weight").last
+        recent_certificate_type = recent_certification_path&.certificate&.certification_type
+        recent_certificate_status = recent_certification_path&.certification_path_status_id
+
+        return !([
+                Certificate.certification_types[:final_design_certificate], 
+                Certificate.certification_types[:construction_certificate_stage3], 
+                Certificate.certification_types[:construction_certificate], 
+                Certificate.certification_types[:operations_certificate]
+               ].include?(Certificate.certification_types[recent_certificate_type&.to_sym]) && 
+               [
+                CertificationPathStatus::CERTIFIED, 
+                CertificationPathStatus::NOT_CERTIFIED, 
+                CertificationPathStatus::CERTIFICATE_IN_PROCESS
+               ].include?(recent_certificate_status))
+      else
+        true
+      end
+      
+    rescue StandardError => exception
+      puts exception.message
+      return false
+    end
+  end
+
   private
   def init
     if self.has_attribute?('code')
@@ -260,4 +288,5 @@ class Project < ApplicationRecord
     certificate_team_type = certificate_type == 3 ? "Letter of Conformance" : "Other"
     projects_users&.update_all(certification_team_type: certificate_team_type)
   end
+
 end

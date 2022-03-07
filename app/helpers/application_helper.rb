@@ -718,4 +718,14 @@ module ApplicationHelper
       return []
     end
   end
+
+  def check_documents_permissions(user_role: nil, project: nil)
+    if ["default_role", "record_checker"].exclude?(user_role)
+      true
+    elsif project.present?
+      project.check_documents_permissions
+    else
+      false
+    end
+  end
 end
