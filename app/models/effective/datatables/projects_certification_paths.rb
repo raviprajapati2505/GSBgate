@@ -211,8 +211,10 @@ module Effective
           end
         end.search do |collection, terms, column, index|
           terms_array = terms.split(",")
-          unless collection.class == Array
+          unless (collection.class == Array || terms_array.include?(""))
             collection.where("certificates.certification_type IN (?)", Certificate.get_certificate_by_stage(terms_array))
+          else
+            collection
           end
         end
 
@@ -227,8 +229,10 @@ module Effective
           end
         end.search do |collection, terms, column, index|
           terms_array = terms.split(",")
-          unless collection.class == Array
+          unless (collection.class == Array || terms_array.include?(""))
             collection.where("certification_paths.certification_path_status_id IN (?)", terms_array.map!{|term| term.to_i})
+          else
+            collection
           end
         end
 
