@@ -240,8 +240,10 @@ module Effective
           rec.certification_path_started_at&.strftime('%e %b, %Y')
         end.search do |collection, terms, column, index|
           terms_array = terms.split(",")
-          unless collection.class == Array
+          unless (collection.class == Array || terms_array.include?(""))
             collection.where("DATE(certification_paths.started_at) IN (?)", terms_array.map!{|term| term.to_date})
+          else
+            collection
           end
         end
         
@@ -249,8 +251,10 @@ module Effective
           rec.certification_path_certified_at&.strftime('%e %b, %Y')
         end.search do |collection, terms, column, index|
           terms_array = terms.split(",")
-          unless collection.class == Array
+          unless (collection.class == Array || terms_array.include?(""))
             collection.where("DATE(certification_paths.certified_at) IN (?)", terms_array.map!{|term| term.to_date})
+          else
+            collection
           end
         end
 
@@ -304,16 +308,18 @@ module Effective
         col :certification_manager_array, label: t('models.effective.datatables.projects_certification_paths.certification_manager_array.label'), visible: false, sql_column: '(%s)' % projects_users_by_type('certification_manager') do |rec|
           ERB::Util.html_escape(rec.certification_manager_array).split('|||').sort.join(', <br/>') unless rec.certification_manager_array.nil?
         end
-        col :enterprise_clients_array, col_class: 'multiple-select', label: t('models.effective.datatables.projects_certification_paths.enterprise_clients_array.label'), visible: false, sql_column: "ARRAY_TO_STRING(ARRAY(SELECT enterprise_client_users.name FROM users as enterprise_client_users INNER JOIN projects_users as enterprise_client_project_users ON enterprise_client_project_users.user_id = enterprise_client_users.id  WHERE enterprise_client_project_users.role IN (#{ProjectsUser.roles[:enterprise_client]}) AND enterprise_client_project_users.project_id = projects.id), '|||')" do |rec|
+        col :enterprise_clients_array, label: t('models.effective.datatables.projects_certification_paths.enterprise_clients_array.label'), visible: false, sql_column: "ARRAY_TO_STRING(ARRAY(SELECT enterprise_client_users.name FROM users as enterprise_client_users INNER JOIN projects_users as enterprise_client_project_users ON enterprise_client_project_users.user_id = enterprise_client_users.id  WHERE enterprise_client_project_users.role IN (#{ProjectsUser.roles[:enterprise_client]}) AND enterprise_client_project_users.project_id = projects.id), '|||')" do |rec|
           ERB::Util.html_escape(rec.enterprise_clients_array).split('|||').sort.join(', <br/>') unless rec.enterprise_clients_array.nil?
         end
 
-        col :building_type_name, sql_column: 'building_types.name', label: t('models.effective.datatables.projects_certification_paths.building_types.label'), visible: false, search: { as: :select, collection: Proc.new { BuildingType.visible.select(:name).order(:name).distinct.map { |building_type| [building_type.name, building_type.name] } } } do |rec|
+        col :building_type_name, col_class: 'multiple-select', sql_column: 'building_types.name', label: t('models.effective.datatables.projects_certification_paths.building_types.label'), visible: false, search: { as: :select, collection: Proc.new { BuildingType.visible.select(:name).order(:name).distinct.map { |building_type| [building_type.name, building_type.name] } } } do |rec|
           rec.building_type_name
         end.search do |collection, terms, column, index|
           terms_array = terms.split(",")
-          unless collection.class == Array
+          unless (collection.class == Array || terms_array.include?(""))
             collection.where("building_types.name IN (?)", terms_array)
+          else
+            collection
           end
         end
       end
