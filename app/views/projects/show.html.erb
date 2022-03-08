@@ -181,7 +181,7 @@
                                 <% if can?(:read, project_actual_image) && download_document_permitted %>
                                   <%= btn_download(project_actual_project_image_path(@project, project_actual_image), size: 'small', tooltip: 'Download image') %>
                                 <% end %>
-                                <% if can?(:destroy, project_actual_image) %>
+                                <% if can?(:destroy, project_actual_image) && download_document_permitted %>
                                   <%= btn_link_to(project_actual_project_image_path(@project, project_actual_image), method: :delete, data: { confirm: 'Are you sure to delete the image?'}, style: 'danger', size: 'small', icon: 'trash', tooltip: 'Delete image') %>
                                 <% end %>                            
                               </div>
@@ -212,7 +212,7 @@
                                 <% if can?(:read, project_rendering_image) && download_document_permitted %>
                                   <%= btn_download(project_project_rendering_image_path(@project, project_rendering_image), size: 'small', tooltip: 'Download image') %>
                                 <% end %>
-                                <% if can?(:destroy, project_rendering_image) %>
+                                <% if can?(:destroy, project_rendering_image) && download_document_permitted %>
                                   <%= btn_link_to(project_project_rendering_image_path(@project, project_rendering_image), method: :delete, data: { confirm: 'Are you sure to delete the image?'}, style: 'danger', size: 'small', icon: 'trash', tooltip: 'Delete image') %>
                                 <% end %>
                               </div>

@@ -51,10 +51,10 @@
                           <% if can?(:read, smcd) && download_document_permitted %>
                               <%= btn_download(project_certification_path_document_path(@project, @certification_path, smcd.document), size: 'small', tooltip: 'Download document') %>
                           <% end %>
-                          <% if can?(:create_link, smcd) %>
+                          <% if can?(:create_link, smcd) && download_document_permitted %>
                               <%= btn_link_to(new_link_project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, smcd), remote: true, size: 'small', icon: 'link', tooltip: 'Link document to other criteria') %>
                           <% end %>
-                          <% if can?(:unlink, smcd) %>
+                          <% if can?(:unlink, smcd) && download_document_permitted %>
                             <%= btn_link_to(unlink_project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, smcd), remote: true, size: 'small', icon: 'chain-broken', tooltip: 'Unlink document from other criteria') %>
                           <% end %>
                           <% if can?(:destroy, smcd.document) %>
