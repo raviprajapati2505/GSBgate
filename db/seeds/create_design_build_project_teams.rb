@@ -23,11 +23,11 @@ projects_with_cda = Project.joins(certification_paths: :certificate).where("proj
 projects_with_only_loc_certified_ids = projects_with_loc_certified - projects_with_cda
 projects_with_only_loc_certified = Project.find(projects_with_only_loc_certified_ids)
 projects_with_only_loc_certified.each do |project|
-  project_cgp_users = project.projects_users&.where(role: "cgp_project_manager")
-  project_cgp_users.each do |project_cgp_user|
-    new_project_cgp_user = project_cgp_user.dup
-    new_project_cgp_user.certification_team_type = "Final Design Certificate"
-    new_project_cgp_user.save
+  project_managers = project.projects_users&.where(role: ["cgp_project_manager", "certification_manager"])
+  project_managers.each do |project_manager|
+    new_project_manager = project_manager.dup
+    new_project_manager.certification_team_type = "Final Design Certificate"
+    new_project_manager.save
   end
 end
 

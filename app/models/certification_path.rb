@@ -51,7 +51,7 @@ class CertificationPath < ApplicationRecord
   before_update :advance_scheme_mix_criteria_statuses
   before_update :set_started_at
   before_update :set_certified_at
-  after_update :create_cda_cgp_user, if: -> { is_design_loc? && certification_path_status_id == CertificationPathStatus::CERTIFIED }  
+  after_update :create_cda_users, if: -> { is_design_loc? && certification_path_status_id == CertificationPathStatus::CERTIFIED }  
   after_update :create_certification_path_report, if: -> { certification_path_status_id == CertificationPathStatus::CERTIFIED }  
 
   scope :not_expired, -> {
@@ -761,13 +761,12 @@ class CertificationPath < ApplicationRecord
 
   private
 
-  def create_cda_cgp_user
-    project_cgp_managers = project.projects_users.cgp_project_managers
-    if project_cgp_managers.present?
-      first_cgp_manager = project_cgp_managers.first
-      new_cda_cgp_manager = first_cgp_manager.dup
-      new_cda_cgp_manager.certification_team_type = "Final Design Certificate"
-      new_cda_cgp_manager.save
+  def create_cda_users
+    project_managers = project.projects_users&.where(role: ["cgp_project_manager", "certification_manager"])
+    project_managers.each do |project_manager|
+      new_project_manager = project_manager.dup
+      new_project_manager.certification_team_type = "Final Design Certificate"
+      new_project_manager.save
     end
   end
 
