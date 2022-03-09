@@ -45,6 +45,7 @@ Location.find_by(country: "United Arab Emirates")&.update(list: ["Abu Dhabi", "A
 
 # Update country of projects.
 Project.where('code ILIKE ?', '%-QA-%').update_all(country: 'Qatar')
+Project.where("country ILIKE 'TURKEY'").update_all(country: 'Turkey')
 
 #######################################################################################################################################
 
@@ -54,7 +55,6 @@ DevelopmentType.where(name: "Single use construction").update_all(name: "Constru
 # OP document_type title changes
 DevelopmentType.where(name: "Single use operations", certificate_id: Certificate.where(certificate_type: Certificate.certificate_types[:operations_type], assessment_stage: Certificate.assessment_stages[:operations_stage]).ids).update_all(name: "Single Use Building")
 DevelopmentType.where(name: "Single Use", certificate_id: Certificate.where(certificate_type: Certificate.certificate_types[:operations_type], assessment_stage: Certificate.assessment_stages[:operations_stage]).ids).update_all(name: "Single Use Building")
-DevelopmentType.where(name: "Mixed Use", certificate_id: Certificate.where(certificate_type: Certificate.certificate_types[:operations_type], assessment_stage: Certificate.assessment_stages[:operations_stage]).ids).update_all(name: "Mixed Use Building")
 DevelopmentType.where(name: "Single Zone (Interiors)", certificate_id: Certificate.where(certificate_type: Certificate.certificate_types[:operations_type], assessment_stage: Certificate.assessment_stages[:operations_stage]).ids).update_all(name: "Single Zone, Interiors")
 DevelopmentType.where(name: "Neighbourhood (mixed development)", certificate_id: Certificate.where(certificate_type: Certificate.certificate_types[:operations_type], assessment_stage: Certificate.assessment_stages[:operations_stage]).ids).update_all(name: "Neighborhood")
 DevelopmentType.find_or_create_by!(display_weight: 50, certificate: Certificate.find_by(certificate_type: Certificate.certificate_types[:operations_type], assessment_stage: Certificate.assessment_stages[:operations_stage], gsas_version: "2019"), name: 'District', mixable: false)
@@ -67,7 +67,7 @@ DevelopmentType.where(name: 'Single use building, new').update_all(name: 'Single
 # Certificate_ids [3, 4, 5, 6, 17, 18] with display_weight: 50 for all 
 DevelopmentType.where(name: 'Single use building, existing').update_all(name: 'Single Use Building')
 # Certificate_ids [3, 4, 5, 6, 17, 18] with display_weight: 20 for all 
-DevelopmentType.where(name: 'Mixed use building').update_all(name: 'Mixed Use Building')
+DevelopmentType.where(name: 'Mixed use building').update_all(name: 'Mixed Use')
 # Certificate_ids [3, 4, 5, 6, 17, 18] with display_weight: 60 for all 
 DevelopmentType.where(name: 'Districts').update_all(name: 'District')
 # Certificate_ids [17, 70] with display_weight: 70 for all 

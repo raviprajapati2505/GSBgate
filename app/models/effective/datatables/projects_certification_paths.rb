@@ -49,7 +49,11 @@ module Effective
         end
 
         col :project_construction_year, sql_column: 'projects.construction_year', as: :integer, visible: false
-        col :project_estimated_project_cost, label: t('models.effective.datatables.projects.lables.estimated_project_cost'), sql_column: 'projects.estimated_project_cost', as: :string, visible: false
+
+        col :project_estimated_project_cost, label: t('models.effective.datatables.projects.lables.estimated_project_cost'), sql_column: 'projects.estimated_project_cost', as: :string, visible: false do |rec|
+          number_with_delimiter(rec.project_estimated_project_cost, delimiter: ',')
+        end
+
         col :project_country, sql_column: 'projects.country', visible: false
         col :project_city, sql_column: 'projects.city', visible: false
         col :project_district, sql_column: 'projects.district', visible: false
@@ -62,11 +66,25 @@ module Effective
           rec.project_description&.truncate(300)
         end
        
-        col :project_gross_area, label: t('models.effective.datatables.projects.lables.gross_area'), sql_column: 'projects.gross_area', as: :integer, visible: false
-        col :project_certified_area, sql_column: 'projects.certified_area', as: :integer, visible: false
-        col :project_carpark_area, sql_column: 'projects.carpark_area', as: :integer, visible: false
-        col :project_site_area, label: t('models.effective.datatables.projects.lables.project_site_area'), sql_column: 'projects.project_site_area', as: :integer, visible: false
-        col :project_buildings_footprint_area, label: t('models.effective.datatables.projects.lables.buildings_footprint_area'), sql_column: 'projects.buildings_footprint_area', as: :integer, visible: false
+        col :project_gross_area, label: t('models.effective.datatables.projects.lables.gross_area'), sql_column: 'projects.gross_area', as: :integer, visible: false do |rec|
+          number_with_delimiter(rec.project_gross_area, delimiter: ',')
+        end
+
+        col :project_certified_area, sql_column: 'projects.certified_area', as: :integer, visible: false do |rec|
+          number_with_delimiter(rec.project_certified_area, delimiter: ',')
+        end
+
+        col :project_carpark_area, sql_column: 'projects.carpark_area', as: :integer, visible: false do |rec|
+          number_with_delimiter(rec.project_carpark_area, delimiter: ',')
+        end
+
+        col :project_site_area, label: t('models.effective.datatables.projects.lables.project_site_area'), sql_column: 'projects.project_site_area', as: :integer, visible: false do |rec|
+          number_with_delimiter(rec.project_site_area, delimiter: ',')
+        end
+
+        col :project_buildings_footprint_area, label: t('models.effective.datatables.projects.lables.buildings_footprint_area'), sql_column: 'projects.buildings_footprint_area', as: :integer, visible: false do |rec|
+          number_with_delimiter(rec.project_buildings_footprint_area, delimiter: ',')
+        end
 
         col :project_owner, sql_column: 'projects.owner', label: t('models.effective.datatables.projects.lables.owner'), visible: false
         col :project_developer, sql_column: 'projects.developer', label: t('models.effective.datatables.projects.lables.developer'), visible: false
@@ -84,7 +102,7 @@ module Effective
           unless collection.class == Array
             case term
             when 'Park'
-              collection.joins(certification_paths: [scheme_mixes: :scheme]).where("schemes.name = :term AND (projects.certificate_type <> :certificate_type OR development_types.name NOT IN ('Neighborhood', 'Mixed Use Building'))", term: term, certificate_type: Certificate.certificate_types[:design_type])
+              collection.joins(certification_paths: [scheme_mixes: :scheme]).where("schemes.name = :term AND (projects.certificate_type <> :certificate_type OR development_types.name NOT IN ('Neighborhood', 'Mixed Use'))", term: term, certificate_type: Certificate.certificate_types[:design_type])
             when 'Single Zone, Interiors'
               collection.joins(certification_paths: [scheme_mixes: :scheme]).where("schemes.name = 'Interiors' OR development_types.name = :term", term: term)
             else
@@ -141,9 +159,9 @@ module Effective
           end
         end
 
-        col :certification_scheme_name, label: t('models.effective.datatables.projects_certification_paths.certification_scheme_name.label'), sql_column: "ARRAY_TO_STRING(ARRAY(SELECT schemes.name FROM schemes INNER JOIN scheme_mixes ON schemes.id = scheme_mixes.scheme_id WHERE scheme_mixes.certification_path_id = certification_paths.id), '|||')" , search: { as: :select, collection: Proc.new { Scheme.pluck(:name).uniq.push("Mixed Use Building").sort } } do |rec|
+        col :certification_scheme_name, label: t('models.effective.datatables.projects_certification_paths.certification_scheme_name.label'), sql_column: "ARRAY_TO_STRING(ARRAY(SELECT schemes.name FROM schemes INNER JOIN scheme_mixes ON schemes.id = scheme_mixes.scheme_id WHERE scheme_mixes.certification_path_id = certification_paths.id), '|||')" , search: { as: :select, collection: Proc.new { Scheme.pluck(:name).uniq.push("Mixed Use").sort } } do |rec|
           development_type_name = rec.development_type_name
-          if rec.design_and_build? && ["Neighborhood", "Mixed Use Building"].include?(development_type_name)
+          if rec.design_and_build? && ["Neighborhood", "Mixed Use"].include?(development_type_name)
             development_type_name
           else
             # rec.certification_scheme_name
@@ -152,10 +170,10 @@ module Effective
         end.search do |collection, term, column, index|
           unless collection.class == Array
             case term
-            when "Mixed Use Building", "Neighborhood"
+            when "Mixed Use", "Neighborhood"
               collection.where("development_types.name = :term AND projects.certificate_type = :certificate_type", term: term, certificate_type: Certificate.certificate_types[:design_type])
             else
-              collection.joins(certification_paths: [scheme_mixes: :scheme]).where("schemes.name = :term AND (projects.certificate_type <> :certificate_type OR development_types.name NOT IN ('Neighborhood', 'Mixed Use Building'))", term: term, certificate_type: Certificate.certificate_types[:design_type])
+              collection.joins(certification_paths: [scheme_mixes: :scheme]).where("schemes.name = :term AND (projects.certificate_type <> :certificate_type OR development_types.name NOT IN ('Neighborhood', 'Mixed Use'))", term: term, certificate_type: Certificate.certificate_types[:design_type])
             end
           end
         end
@@ -338,7 +356,7 @@ module Effective
           .select('(%s) AS certification_manager_array' % projects_users_by_type('certification_manager'))
           .select("ARRAY_TO_STRING(ARRAY(SELECT enterprise_client_users.name FROM users as enterprise_client_users INNER JOIN projects_users as enterprise_client_project_users ON enterprise_client_project_users.user_id = enterprise_client_users.id  WHERE enterprise_client_project_users.role IN (#{ProjectsUser.roles[:enterprise_client]}) AND enterprise_client_project_users.project_id = projects.id), '|||') AS enterprise_clients_array")
           .select('(%s) AS total_achieved_score' % ProjectsCertificationPaths.query_score_in_certificate_points(:achieved_score))
-          .order("projects.id")
+          .order("projects.code")
           .order("certificates.display_weight")
           .accessible_by(current_ability)
       end

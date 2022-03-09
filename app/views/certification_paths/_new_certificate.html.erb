@@ -73,16 +73,16 @@
 
                 <!-- Development type -->
                 <% if Certificate.certification_types[@certification_type] == Certificate.certification_types[:final_design_certificate] %>
-                    <%= f.static_control label: 'Development Type' do %>
+                    <%= f.static_control label: 'Project Planning Type' do %>
                         <%= @certification_path.development_type.name %>
                     <% end %>
                 <% else %>
                     <!-- Custom select for development type, so we can determine the linked schemes -->
-                    <%= f.select(:development_type, options_from_collection_for_select(@development_types, :id, :name, @certification_path.development_type.id), {:class => 'form-control'}) %>
+                    <%= f.select(:development_type, options_from_collection_for_select(@development_types, :id, :name, @certification_path.development_type.id), { label: 'Project Planning Type', class: 'form-control' }) %>
                 <% end %>
 
                 <!-- Schemes -->
-                <label class="control-label">Scheme(s)</label>
+                <label class="control-label">Certification Scheme</label>
                 <% if Certificate.certification_types[@certification_type] == Certificate.certification_types[:final_design_certificate] %>
                     <div class="form-group">
                         <table class="table table-bordered table-hover">
