@@ -47,15 +47,7 @@ module Effective
           #   rec.project_name
           # end
         end
-        col :project_update, label: t('models.effective.datatables.projects.lables.updated_at'), sql_column: 'projects.updated_at', visible: false do |rec|
-          link_to_if(!current_user.record_checker?,
-            rec.project_updated_at.strftime('%e %b, %Y'),
-            project_path(rec.project_nr)
-          )
-          # link_to(project_path(rec.project_nr)) do
-          #   localize(rec.project_updated_at.in_time_zone)
-          # end
-        end
+
         col :project_construction_year, sql_column: 'projects.construction_year', as: :integer, visible: false
         col :project_estimated_project_cost, label: t('models.effective.datatables.projects.lables.estimated_project_cost'), sql_column: 'projects.estimated_project_cost', as: :string, visible: false
         col :project_country, sql_column: 'projects.country', visible: false
@@ -225,7 +217,12 @@ module Effective
           end
         end
 
+        col :certification_path_updated_at, label: t('models.effective.datatables.projects_certification_paths.certification_path_updated_at.label'), sql_column: 'certification_paths.updated_at', as: :datetime, visible: false, search: { as: :select, collection: Proc.new { CertificationPath.all.order(updated_at: :desc).map { |c| [c.updated_at&.strftime('%e %b, %Y'), c.updated_at&.to_date] }.uniq } } do |rec|
+          rec.certification_path_updated_at.strftime('%e %b, %Y')
+        end
+
         # col :certification_path_status_name, sql_column: 'certification_path_statuses.name', label: 'Certificate Status', search: {as: :select, collection: Proc.new{CertificationPathStatus.all.map{|status| status.name}}}
+
         col :certification_path_status_is_active, sql_column: 'CASE WHEN certification_path_statuses.id IS NULL THEN false WHEN certification_path_statuses.id = 15 THEN false WHEN certification_path_statuses.id = 16 THEN false WHEN certification_path_statuses.id = 17 THEN false ELSE true END', visible: false, as: :boolean, label: t('models.effective.datatables.projects_certification_paths.certification_path_status_is_active.label')
 
         col :rating, partial: '/certification_paths/rating', partial_as: 'rec', search: false, as: :decimal, label: t('models.effective.datatables.projects_certification_paths.rating.label'), sql_column: '(%s)' % ProjectsCertificationPaths.query_score_in_certificate_points(:achieved_score)
@@ -303,7 +300,6 @@ module Effective
           .select('projects.id as project_nr')
           .select('projects.code as project_code')
           .select('projects.name as project_name')
-          .select('projects.updated_at as project_updated_at')
           .select('projects.construction_year as project_construction_year')
           .select('projects.estimated_project_cost as project_estimated_project_cost')
           .select('projects.country as project_country')
@@ -320,6 +316,7 @@ module Effective
           .select('projects.developer as project_developer')
           .select('projects.service_provider as project_service_provider')
           .select('certification_paths.id as certification_path_id')
+          .select('certification_paths.updated_at as certification_path_updated_at')
           .select('certification_paths.certificate_id as certificate_id')
           .select('certification_paths.certification_path_status_id as certification_path_certification_path_status_id')
           .select('certification_paths.pcr_track as certification_path_pcr_track')

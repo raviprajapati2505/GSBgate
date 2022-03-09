@@ -288,7 +288,6 @@ en:
           lables:
             project_code: Project ID
             created_at: Project Created On
-            updated_at: Project Updated On
             gross_area: Project Gross Built Up Area
             project_site_area: Project Plot Area
             owner: Project Owner
@@ -329,6 +328,8 @@ en:
             label: Certification Appealed
           certification_path_created_at:
             label: Certification Created On
+          certification_path_updated_at:
+            label: Certification Updated On
           certification_path_started_at:
             label: Certification Started On
           certification_path_certified_at:

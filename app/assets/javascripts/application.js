@@ -34,7 +34,7 @@
  *= require proj4
  *= require three.js/three.js
  *= require cocoon
- *= require datatable_cutomizations
+ *= require datatable_customizations
  */
 
 $(function () {
