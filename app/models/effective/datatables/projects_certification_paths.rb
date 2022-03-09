@@ -131,20 +131,20 @@ module Effective
           end
         end
 
-        col :certification_path_id, sql_column: 'certification_paths.id', label: t('models.effective.datatables.projects_certification_paths.assessment_method.label'), search: { as: :select, collection: Proc.new { [["Star Rating Based Certificate", 1], ["Checklist Based Certificate", 2]] } } do |rec|
+        col :certification_path_id, col_class: 'multiple-select', sql_column: 'certification_paths.id', label: t('models.effective.datatables.projects_certification_paths.assessment_method.label'), search: { as: :select, collection: Proc.new { [["Star Rating Based Certificate", 1], ["Checklist Based Certificate", 2]] } } do |rec|
           certification_assessment_type_title(CertificationPathMethod.find_by(certification_path_id: rec.certification_path_id)&.assessment_method)
         end.search do |collection, terms, column, index|
-          term = terms.to_i
+          terms_array = terms.split(",")
           
-          unless collection.class == Array
-            if term == 1
+          unless (collection.class == Array || terms_array.include?("") || terms_array == ["1", "2"])
+            if terms_array == ["1"]
               checklist_certifications = collection.joins(certification_paths: :certification_path_method).where("certification_path_methods.assessment_method = 2")
               collection.where("projects.certificate_type <> 3 OR certification_paths.id NOT IN (?)", checklist_certifications&.group("certification_path_methods.certification_path_id")&.pluck("certification_path_methods.certification_path_id"))
-            elsif term == 2
+            elsif terms_array == ["2"]
               collection.joins(certification_paths: :certification_path_method).where("certification_path_methods.assessment_method = 2")
-            else
-              collection
             end
+          else
+            collection
           end
         end
 
