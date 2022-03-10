@@ -64,7 +64,13 @@
               <td><%= number_with_delimiter(@project.buildings_footprint_area, delimiter: ',') %> m²</td>
             </tr>
             <tr>
-              <th><%= Project.human_attribute_name('certified_area') %></th>
+              <th>
+                <% if @project&.certificate_type == 1 %>
+                  Project Certified Area (A)
+                <% else %>
+                  <%= Project.human_attribute_name('certified_area') %>
+                <% end %>
+              </th>
               <td><%= number_with_delimiter(@project.certified_area, delimiter: ',') %> m²</td>
             </tr>
             <tr>

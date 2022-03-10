@@ -82,7 +82,13 @@
                 <% end %>
 
                 <!-- Schemes -->
-                <label class="control-label">Certification Scheme</label>
+                <label id="certified_area_label" class="control-label">
+                  <% if ['Mixed Use', 'Neighborhood'].include?(@certification_path&.development_type&.name) %>
+                    Certification Sub-Schemes
+                  <% else %>
+                    Certification Scheme
+                  <% end %>
+                </label>
                 <% if Certificate.certification_types[@certification_type] == Certificate.certification_types[:final_design_certificate] %>
                     <div class="form-group">
                         <table class="table table-bordered table-hover">
@@ -112,6 +118,10 @@
                                 <div class="col-md-3">
                                     <%= btn_tag(icon: 'plus-circle', text: 'Add scheme', class: 'form-control add_scheme', type: 'button', style: 'white') %>
                                 </div>
+                            </div>
+                            <br/>
+                            <div class="sub-schemes-note d-none">
+                              <p><i>Note: Add atleast 2 Certification Sub-Schemes</i></p>
                             </div>
                             <br/>
                             <div class="form-group schemes-group">
