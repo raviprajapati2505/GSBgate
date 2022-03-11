@@ -29,7 +29,8 @@ module ApplicationHelper
 
   # Filter schemes which is only for checklist
   def manage_schemes_options(certification_path, assessment_method)
-    schemes = certification_path&.development_type&.schemes
+    # exclude schemes which were renamed.
+    schemes = certification_path&.development_type&.schemes&.select("DISTINCT ON (schemes.name) schemes.*")
     if assessment_method == 1
       schemes_with_only_checklist = ["Energy Centers"]
       schemes = schemes&.where.not(name: schemes_with_only_checklist)

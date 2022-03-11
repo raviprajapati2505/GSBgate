@@ -91,8 +91,8 @@ module Effective
 
         col :development_type_name, sql_column: 'development_types.name', label: t('models.effective.datatables.projects_certification_paths.certification_path_development_type.label'), search: { as: :select, collection: Proc.new { DevelopmentType.select(:name, :display_weight).order(:display_weight).distinct.map { |development_type| [development_type.name, development_type.name] }.uniq } } do |rec|
           case rec.certification_scheme_name
-          when 'Park'
-            'Park'
+          when 'Parks'
+            'Parks'
           when 'Interiors'
             'Single Zone, Interiors'
           else
@@ -101,8 +101,10 @@ module Effective
         end.search do |collection, term, column, index|
           unless collection.class == Array
             case term
-            when 'Park'
-              collection.joins(certification_paths: [scheme_mixes: :scheme]).where("schemes.name = :term AND (projects.certificate_type <> :certificate_type OR development_types.name NOT IN ('Neighborhood', 'Mixed Use'))", term: term, certificate_type: Certificate.certificate_types[:design_type])
+            when 'Parks'
+              collection.joins(certification_paths: [scheme_mixes: :scheme]).where("schemes.name = :term AND (projects.certificate_type <> :certificate_type OR development_types.name NOT IN ('Neighborhoods', 'Mixed Use'))", term: term, certificate_type: Certificate.certificate_types[:design_type])
+            when 'Districts'
+              collection.joins(certification_paths: [scheme_mixes: :scheme]).where("schemes.name = :term OR development_types.name = :term", term: term)
             when 'Single Zone, Interiors'
               collection.joins(certification_paths: [scheme_mixes: :scheme]).where("schemes.name = 'Interiors' OR development_types.name = :term", term: term)
             else
@@ -161,8 +163,10 @@ module Effective
 
         col :certification_scheme_name, label: t('models.effective.datatables.projects_certification_paths.certification_scheme_name.label'), sql_column: "ARRAY_TO_STRING(ARRAY(SELECT schemes.name FROM schemes INNER JOIN scheme_mixes ON schemes.id = scheme_mixes.scheme_id WHERE scheme_mixes.certification_path_id = certification_paths.id), '|||')" , search: { as: :select, collection: Proc.new { Scheme.pluck(:name).uniq.push("Mixed Use").sort } } do |rec|
           development_type_name = rec.development_type_name
-          if rec.design_and_build? && ["Neighborhood", "Mixed Use"].include?(development_type_name)
+          if rec.design_and_build? && ["Neighborhoods", "Mixed Use"].include?(development_type_name)
             development_type_name
+          elsif development_type_name == "Districts"
+            "Districts"
           else
             # rec.certification_scheme_name
             ERB::Util.html_escape(rec.certification_scheme_name).split('|||').sort.join('<br/>') unless rec.certification_scheme_name.nil?
@@ -170,16 +174,23 @@ module Effective
         end.search do |collection, term, column, index|
           unless collection.class == Array
             case term
-            when "Mixed Use", "Neighborhood"
+            when "Mixed Use", "Neighborhoods"
               collection.where("development_types.name = :term AND projects.certificate_type = :certificate_type", term: term, certificate_type: Certificate.certificate_types[:design_type])
+            when "Districts"
+              collection.joins(certification_paths: [scheme_mixes: :scheme]).where("schemes.name = :term OR development_types.name = :term", term: term)
             else
-              collection.joins(certification_paths: [scheme_mixes: :scheme]).where("schemes.name = :term AND (projects.certificate_type <> :certificate_type OR development_types.name NOT IN ('Neighborhood', 'Mixed Use'))", term: term, certificate_type: Certificate.certificate_types[:design_type])
+              collection.joins(certification_paths: [scheme_mixes: :scheme]).where("schemes.name = :term AND (projects.certificate_type <> :certificate_type OR development_types.name NOT IN ('Neighborhoods', 'Mixed Use'))", term: term, certificate_type: Certificate.certificate_types[:design_type])
             end
           end
         end
 
         col :schemes_array, label: t('models.effective.datatables.projects_certification_paths.schemes_array.label'), sql_column: "ARRAY_TO_STRING(ARRAY(SELECT case when scheme_mixes.custom_name is null then schemes.name else schemes.name end from schemes INNER JOIN scheme_mixes ON schemes.id = scheme_mixes.scheme_id WHERE scheme_mixes.certification_path_id = certification_paths.id), '|||')" do |rec|
-          ERB::Util.html_escape(rec.schemes_array).split('|||').sort.join('<br/>') unless rec.schemes_array.nil?
+          unless rec.schemes_array.nil?
+            schemes_array = ERB::Util.html_escape(rec.schemes_array).split('|||').sort
+            if schemes_array.size > 1
+              schemes_array.join('<br/>')
+            end
+          end
         end
 
         col :schemes_custom_name_array, label: t('models.effective.datatables.projects_certification_paths.schemes_custom_name_array.label'), visible: false, sql_column: "ARRAY_TO_STRING(ARRAY(SELECT case when scheme_mixes.custom_name is null then ' ' else scheme_mixes.custom_name end from schemes INNER JOIN scheme_mixes ON schemes.id = scheme_mixes.scheme_id WHERE scheme_mixes.certification_path_id = certification_paths.id ORDER BY schemes.name), '|||')" do |rec|

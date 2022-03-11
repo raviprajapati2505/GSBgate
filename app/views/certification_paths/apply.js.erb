@@ -31,7 +31,7 @@ $(function () {
     $("#certification_path_development_type").on('change', function() {
       let development_type = $(this).find(":selected").text();
 
-      if (['Mixed Use', 'Neighborhood'].includes(development_type)) {
+      if (['Mixed Use', 'Neighborhoods'].includes(development_type)) {
         $("#certified_area_label").text("Certification Sub-Schemes");
       } else {
         $("#certified_area_label").text("Certification Scheme");

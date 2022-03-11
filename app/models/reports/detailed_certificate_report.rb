@@ -26,7 +26,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
   BACKGROUND_COLOR = 'EEEEEE'.freeze
   FOOTER_LOGO = 'gord_logo_black.jpg'.freeze
   STAR_ICON = 'green_star.png'.freeze
-  FOOTER_URL = "<link href='http://www.gord.qa'>www.gord.qa</link>".freeze
+  FOOTER_URL = "<link href='http://www.gsas.gord.qa'>www.gsas.gord.qa</link>".freeze
   MAX_ROWS_PER_PAGE = 24
   PAGE_MARGIN = 50
 
@@ -49,10 +49,6 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
       @stars = @stars + ' ' + 'Star'.pluralize(@stars.to_i)
     end
 
-    @addressee = "Mr. [FIRSTNAME] [LASTNAME]\n[FUNCTION]\n#{@project.owner}"
-    @addressee_copy = "Service Provider:   #{@project.service_provider}"
-    @subject = "#{certification_path.name}\n#{@scheme_names.join(', ')}"
- 
     set_format_colors(@project)
     do_render
   end
@@ -170,9 +166,9 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     data.append(["Project Location", @detailed_certificate_report&.project_location])
 
     if @certification_path.certificate.certification_type == 'final_design_certificate'
-      data.append(["Service Provider", @project.service_provider_2])
+      data.append(["GSAS Service Provider", @project.service_provider_2])
     else
-      data.append(["Service Provider", @project.service_provider])
+      data.append(["GSAS Service Provider", @project.service_provider])
     end
 
     data.append(["GSAS Certificate", @certification_path.certificate&.report_certification_name])
@@ -237,7 +233,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
 
       newline(1)
       
-      text = "This letter is only the predecessor towards achieving the final GSAS-D&B Certificate and should not be considered as the final certificate. The project should satisfy during the construction stage all the requirements of <b>Conformance to Design Audit(CDA)</b> which is a pre-requisite for the final GSAS-D&B Certificate as indicated in GSAS Technical Guide, <a>www.gord.qa</a> \n"
+      text = "This letter is only the predecessor towards achieving the final GSAS-D&B Certificate and should not be considered as the final certificate. The project should satisfy during the construction stage all the requirements of <b>Conformance to Design Audit(CDA)</b> which is a pre-requisite for the final GSAS-D&B Certificate as indicated in GSAS Technical Guide, <a>www.gsas.gord.qa</a> \n"
       styled_text("<div style='font-size: 10; line-height: 7'>#{text}</div>")
 
       text = "In the event of any future changes applied to the criteria pertaining to this issued certificate, the changes are required to be re-assessed once again."
@@ -267,7 +263,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
       
       newline(1)
 
-      text = "This notice is only the predecessor towards achieving the final GSAS-CM Certificate and should not be considered as the final certificate. The project shall satisfy during the rest of the construction stages all the requirements which is a pre-requisite for the GSAS-CM Certificate as stipulated in GSAS Technical Guide, <a>www.gord.qa</a> \n"
+      text = "This notice is only the predecessor towards achieving the final GSAS-CM Certificate and should not be considered as the final certificate. The project shall satisfy during the rest of the construction stages all the requirements which is a pre-requisite for the GSAS-CM Certificate as stipulated in GSAS Technical Guide, <a>www.gsas.gord.qa</a> \n"
       styled_text("<div style='font-size: 10; line-height: 7'>#{text}</div>")
 
       newline(1)
@@ -364,8 +360,8 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
       end
 
       if @certification_path.construction? || @certification_path.is_design_loc?
-        bounding_box([@document.bounds.right - 100, @document.bounds.bottom + 130], width: 80, height: HEADER_HEIGHT + 30) do
-          image image_path(@@stamp_image), width: 80
+        bounding_box([@document.bounds.right - 100, @document.bounds.bottom + 140], width: 110, height: HEADER_HEIGHT + 70) do
+          image image_path(@@stamp_image), width: 110
         end
       end
     end
@@ -383,20 +379,6 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
         image image_path(FOOTER_IMAGE), width: 580
       end
     end
-  end
-
-  def draw_heading_date
-    text 'Date: ' + @certification_path.certified_at.strftime('%B %d, %Y'), size: 9 if @certification_path.certified_at.present?
-    text 'Ref: ' + @detailed_certificate_report&.reference_number, size: 9
-  end
-
-  def draw_heading_addressee
-    text 'Attn,', style: :bold
-    text @addressee, style: :bold
-  end
-
-  def draw_heading_addressee_copy
-    text 'Cc: ' + @addressee_copy, style: :bold
   end
 
   def draw_signature
