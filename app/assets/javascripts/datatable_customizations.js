@@ -1,11 +1,14 @@
 $(function() {
 
   function bindSelect2() {
-    $(".multiple-select select").attr("multiple", true);
-    $(".multiple-select select").select2();
+    // Allow multi-select only to admin roles
+    // if (["system_admin", "gsas_trust_top_manager", "gsas_trust_manager", "gsas_trust_admin"].includes($("#projects-table").data("user-role"))) {
+      $(".multiple-select select").attr("multiple", true);
+      $(".multiple-select select").select2();
     
-    $(".select2-search-field input").remove();
-    $(".select2-search-choice div").html("Select All");
+      $(".select2-search-field input").remove();
+      $(".select2-search-choice div").html("Select All");
+    // }
   };
 
   function set_options_label() {
@@ -14,7 +17,7 @@ $(function() {
     
     options_with_null.text("Select All");
 
-    bindSelect2()
+    bindSelect2();
   };
 
   set_options_label();
@@ -104,7 +107,42 @@ $(function() {
     });
   }
 
-  $("table.effective-datatable").on("column-visibility.dt", function(e, settings, column, state) {
-    set_options_label();
+  $("table.effective-datatable").on("column-visibility.dt", function(e, settings, column_number, state) {
+    if (state) {
+      var column = $(".col-order-" + column_number);
+
+      if (column.hasClass("multiple-select")){
+        // Allow multi-select only to admin roles
+        // if (["system_admin", "gsas_trust_top_manager", "gsas_trust_manager", "gsas_trust_admin"].includes($("#projects-table").data("user-role"))) {
+          column.find("select").attr("multiple", true);
+          column.find("select").select2();
+          
+          column.find(".select2-search-field input").remove();
+          
+          let select_option = column.find(".select2-search-choice div").html();
+          if (Object.keys(columnNames).includes(select_option) || select_option == ""){ 
+            column.find(".select2-search-choice div").html("Select All");
+          }
+        // }
+
+        let options_with_null = column.find('select option[value=""]');
+        if (options_with_null.length > 1) {
+          options_with_null[1].remove();
+        }
+        options_with_null.text("Select All");
+
+      } else if (column.find("select").length > 0) {
+        let options_with_null = column.find('select option[value=""]');
+        if (options_with_null.length > 1) {
+          options_with_null[1].remove();
+        }
+        options_with_null.text("Select All");
+        
+        let select_option = column.find("select:selected").html();
+        if (Object.keys(columnNames).includes(select_option) || select_option == ""){ 
+          options_with_null.text("Select All");
+        }
+      }
+    }
   });
 });
