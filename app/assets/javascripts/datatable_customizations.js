@@ -137,11 +137,11 @@ $(function() {
           options_with_null[1].remove();
         }
         options_with_null.text("Select All");
-        
-        let select_option = column.find("select:selected").html();
-        if (Object.keys(columnNames).includes(select_option) || select_option == ""){ 
-          options_with_null.text("Select All");
-        }
+
+        // let select_option = column.find("select").find(":selected").html();
+        // if (Object.keys(columnNames).includes(select_option) || select_option == ""){ 
+        //   options_with_null.text("Select All");
+        // }
       }
     }
   });
