@@ -228,7 +228,7 @@ module Effective
           ERB::Util.html_escape(rec.schemes_custom_name_array).split('|||').join('<br/>') unless rec.schemes_custom_name_array.nil?
         end
 
-        col :certificate_stage, col_class: 'multiple-select col-order-23', sql_column: 'certificates.id', label: t('models.effective.datatables.projects_certification_paths.certificate_stage.label'), search: { as: :select, collection: Proc.new { Certificate.all.order(:display_weight).map { |certificate| [certificate.stage_title, certificate.stage_title&.delete(",")] }.uniq } } do |rec|
+        col :certificate_stage, col_class: 'multiple-select col-order-23', sql_column: 'certificates.id', label: t('models.effective.datatables.projects_certification_paths.certificate_stage.label'), search: { as: :select, collection: Proc.new { Certificate.all.order(:display_weight).map { |certificate| [certificate.stage_title, certificate.stage_title&.delete(",")] }.push(["Recent Certificates", "Recent Certificates"]).uniq } } do |rec|
           if rec.certification_path_id.present?
             only_certification_stage = CertificationPath.find(rec.certification_path_id).certificate&.stage_title
             link_to_if(!current_user.record_checker?,
@@ -238,8 +238,24 @@ module Effective
           end
         end.search do |collection, terms, column, index|
           terms_array = terms.split(",")
+          collection_set = collection
+          results_array = []
+          recent_certificates_ids = []
+
           unless (collection.class == Array || terms_array.include?(""))
-            collection.where("certificates.certification_type IN (?)", Certificate.get_certificate_by_stage(terms_array))
+            if (terms_array.include?("Recent Certificates"))
+              terms_array.delete("Recent Certificates")
+
+              recent_certificates_ids = CertificationPath.most_recent&.ids&.uniq
+            end
+
+            unless terms_array.blank?
+              results_array = collection_set.where("certificates.certification_type IN (?)", Certificate.get_certificate_by_stage(terms_array)).pluck("certification_paths.id")
+            end
+
+            all_cert_ids = recent_certificates_ids.push(*results_array).uniq
+
+            collection.where("certification_paths.id IN (?)", all_cert_ids)
           else
             collection
           end

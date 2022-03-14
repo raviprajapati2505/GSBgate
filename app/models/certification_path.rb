@@ -78,6 +78,23 @@ class CertificationPath < ApplicationRecord
     joins(:certificate).where(certificates: {certificate_type: certificate_type})
   }
 
+  scope :most_recent, -> do 
+    from(
+      <<~SQL 
+        (
+          SELECT id
+            FROM certification_paths JOIN (
+              SELECT project_id, MAX(created_at) AS created_at
+                FROM certification_paths
+                GROUP BY project_id
+            ) latest_by_created
+            ON certification_paths.created_at = latest_by_created.created_at
+            AND certification_paths.project_id = latest_by_created.project_id
+        ) certification_paths
+      SQL
+    )
+  end
+  
   # scope :letter_of_conformance, -> {
   #   joins(:certificate)
   #       .merge(Certificate.letter_of_conformance)
