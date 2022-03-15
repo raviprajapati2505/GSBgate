@@ -31,11 +31,20 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
   PAGE_MARGIN = 50
 
   def initialize(certification_path)
+    # Note: uncomment to use custom fonts
+    self.font_families.update(
+      "DinNextLtProLight" => {
+        normal: font_path('dinnextltpro-light.woff.ttf')
+      }
+    )
+    
+    font 'DinNextLtProLight', size: 10
+
     # A4:: => 595.28 x 841.89 pt
     @document = Prawn::Document.new(page_size: 'A4',
                                     page_layout: :portrait,
                                     margin: 40)
-    
+
     @certification_path = certification_path
     @project = @certification_path.project
     @detailed_certificate_report = @certification_path.certification_path_report
@@ -68,7 +77,6 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
   end
 
   def do_render
-    font 'Times-Roman', size: 11
 
     draw_headers
 
@@ -147,11 +155,11 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
 
   def draw_certificate_header
     text = certification_type_name(@certification_path)
-    styled_text("<div style='font-size: 12; color: #{@@main_color}; line-height: 1.2'>GSAS #{text[:project_type]}</div><br /><div style='font-size: 13;'>#{text[:certificate_name]}</div>")
+    styled_text("<div style='font-size: 10; font-weight: 900; color: #{@@main_color}; line-height: 1.2'>GSAS #{text[:project_type]}</div><br /><div style='font-size: 12; font-weight: 900;'>#{text[:certificate_name]}</div>")
   end
 
   def draw_scheme_mix_header(scheme_mix)
-    text "#{scheme_mix&.scheme&.name} (#{scheme_mix&.custom_name})", size: 15, color: @@main_color, align: :center, font: 'Helvetica'
+    text "#{scheme_mix&.scheme&.name} (#{scheme_mix&.custom_name})", size: 15, color: @@main_color, align: :center
   end
 
   def draw_certificate_info_table
@@ -341,7 +349,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     newline(1)
 
     text = "Figure 1: Scoring Summary"
-    styled_text("<div style='font-size: 12; line-height: 7; color: 000000; text-align: center; padding-top: 10px;'><b>#{text}</b></div>")
+    styled_text("<div style='font-size: 11; line-height: 7; color: 000000; text-align: center; padding-top: 10px;'><b>#{text}</b></div>")
     newline(3)
   end
 
@@ -454,7 +462,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
 
     newline(1)
     text = "Figure 2: Category Achived Scores Vs. Attainable Scores"
-    styled_text("<div style='font-size: 12; line-height: 7; color: 000000; text-align: center; padding-top: 10px;'><b>#{text}</b></div>")
+    styled_text("<div style='font-size: 11; line-height: 7; color: 000000; text-align: center; padding-top: 10px;'><b>#{text}</b></div>")
   end
 
   def draw_score_graph
@@ -589,7 +597,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     
     newline(3)
     text = 'Figure 3: Project Overall Scores & Rating'
-    styled_text("<div style='font-size: 12; line-height: 7; color: 000000; text-align: center; padding-top: 10px;'><b>#{text}</b></div>")
+    styled_text("<div style='font-size: 11; line-height: 7; color: 000000; text-align: center; padding-top: 10px;'><b>#{text}</b></div>")
 
     # text 'Level Achieved', size: 12, align: :left
     # data = []
@@ -632,8 +640,8 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
           header_row.column(0).text_color = TABLE_TEXT_COLOR
           header_row.column(1).background_color = COLUMN_2_COLOR
           header_row.column(1).text_color = TABLE_TEXT_COLOR
-          header_row.font = 'Helvetica'
-          # header_row.font_style = :bold
+          # header_row.font = 'Helvetica'
+          header_row.size = 10
           header_row.border_color = TABLE_BORDER_COLOR
 
           # Content rows style
@@ -658,8 +666,8 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
 
           header_row.row(0).background_color = @@main_color
           header_row.row(0).text_color = 'FFFFFF'
-          header_row.font = 'Helvetica'
-          header_row.size = 12
+          # header_row.font = 'Helvetica'
+          header_row.size = 10
           header_row.font_style = :bold
           header_row.align = :center
           header_row.column(0).border_left_color = 'FFFFFF'
@@ -680,6 +688,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
           data[1][0] = { content: data[1][0], colspan: 2 } 
 
           # Set column widths
+          header_row.size = 10
           header_row.row(0).column(0).width = width / 3
           header_row.row(0).column(1).width = width / 3
           header_row.row(0).column(2).width = width / 3
@@ -708,7 +717,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
             cells.border_width = 0.5
   
             header_row = rows(0)
-            
+            header_row.size = 9
             header_row.background_color = '696969'
             header_row.text_color = 'FFFFFF'
             header_row.padding = [5, 5]
@@ -721,10 +730,11 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
             header_row.border_bottom_color = '000000'
   
             content_rows = rows(1..row_length - 1)
+            content_rows.size = 8
             content_rows.column(0).align = :right
             content_rows.column(1).align = :center
   
-            content_rows.padding = [5, 5]
+            content_rows.padding = [3, 3]
             content_rows.borders = %i(right) 
             content_rows.row(row_length - 3).borders = %i(right bottom) 
             content_rows.border_right_color = '000000'
