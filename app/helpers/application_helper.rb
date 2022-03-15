@@ -697,6 +697,16 @@ module ApplicationHelper
     return scheme_mix_criteria_score_for_w1
   end
 
+  def get_certificate_types_names(user)
+    certificate_types_name = Certificate.all.order(:display_weight).map { |certificate| [certificate.stage_title, certificate.stage_title&.delete(",")] }
+    
+    if user.is_admin?
+      certificate_types_name.push(["Recent Certificates", "Recent Certificates"])
+    end
+
+    return certificate_types_name.uniq
+  end
+
   def get_scheme_criteria_names(category_name)
     case category_name
     when 'Energy'
@@ -718,6 +728,14 @@ module ApplicationHelper
     else
       return []
     end
+  end
+
+  def get_schemes_names
+    scheme_name = Scheme.pluck(:name).uniq
+    scheme_name.delete("Core + Shell")
+    scheme_name.push("Mixed Use")
+    
+    return scheme_name.sort
   end
 
   def check_documents_permissions(user_role: nil, project: nil)

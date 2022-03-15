@@ -66,6 +66,10 @@ class User < ApplicationRecord
     joins(:projects_users).where(projects_users: {project_id: project.id, certification_team_type: certification_path&.projects_users_certification_team_type, role: ProjectsUser.roles[:cgp_project_manager]})
   }
 
+  def is_admin?
+    ["system_admin", "gsas_trust_top_manager", "gsas_trust_manager", "gsas_trust_admin"].include?(role)
+  end
+
   def full_name
     name
   end

@@ -2,13 +2,13 @@ $(function() {
 
   function bindSelect2() {
     // Allow multi-select only to admin roles
-    // if (["system_admin", "gsas_trust_top_manager", "gsas_trust_manager", "gsas_trust_admin"].includes($("#projects-table").data("user-role"))) {
+    if (["system_admin", "gsas_trust_top_manager", "gsas_trust_manager", "gsas_trust_admin"].includes($("#projects-table").data("user-role"))) {
       $(".multiple-select select").attr("multiple", true);
       $(".multiple-select select").select2();
     
       $(".select2-search-field input").remove();
       $(".select2-search-choice div").html("Select All");
-    // }
+    }
   };
 
   function set_options_label() {
@@ -113,7 +113,7 @@ $(function() {
 
       if (column.hasClass("multiple-select")){
         // Allow multi-select only to admin roles
-        // if (["system_admin", "gsas_trust_top_manager", "gsas_trust_manager", "gsas_trust_admin"].includes($("#projects-table").data("user-role"))) {
+        if (["system_admin", "gsas_trust_top_manager", "gsas_trust_manager", "gsas_trust_admin"].includes($("#projects-table").data("user-role"))) {
           column.find("select").attr("multiple", true);
           column.find("select").select2();
           
@@ -123,7 +123,7 @@ $(function() {
           if (Object.keys(columnNames).includes(select_option) || select_option == ""){ 
             column.find(".select2-search-choice div").html("Select All");
           }
-        // }
+        }
 
         let options_with_null = column.find('select option[value=""]');
         if (options_with_null.length > 1) {
