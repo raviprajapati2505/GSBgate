@@ -302,7 +302,7 @@ module Effective
         end
 
         col :certification_path_updated_at, col_class: 'multiple-select col-order-28', label: t('models.effective.datatables.projects_certification_paths.certification_path_updated_at.label'), sql_column: 'certification_paths.updated_at', as: :datetime, visible: false, search: { as: :select, collection: Proc.new { CertificationPath.all.order(updated_at: :desc).map { |c| [c.updated_at&.strftime('%e %b - %Y'), c.updated_at&.to_date] }.uniq } } do |rec|
-          rec.certification_path_updated_at.strftime('%e %b - %Y')
+          rec.certification_path_updated_at&.strftime('%e %b - %Y')
         end.search do |collection, terms, column, index|
           terms_array = terms.split(",")
           unless (collection.class == Array || terms_array.include?(""))
