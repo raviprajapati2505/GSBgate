@@ -6,7 +6,24 @@
   $('#applyForCertificateModal').modal('show');
 <% end %>
 
+<% if @project.project_rendering_images.empty? && ((Certificate.certification_types[@certification_type] == Certificate.certification_types[:letter_of_conformance]) or (Certificate.certification_types[@certification_type] == Certificate.certification_types[:final_design_certificate])) %>
+    addOutline($(".project-rendering-image-div"));
+<% elsif @project.actual_project_images.empty? && ((Certificate.certification_types[@certification_type] == Certificate.certification_types[:operations_certificate]) or (Certificate.certification_types[@certification_type] == Certificate.certification_types[:final_design_certificate]))%>
+    addOutline($(".project-actual-image-div"));
+<% else %>
+    $(".project-rendering-image-div, .project-actual-image-div").removeClass("outline-danger");
+<% end %>
+
 //# sourceURL=new_certificate.js
+
+// Add outline to row of table
+function addOutline(ele) {
+    ele.addClass("outline-danger");
+    $('html, body').animate({
+       scrollTop: (ele.offset().top)
+    }, 1000);
+};
+
 $(function () {
     // Initialize the select2 boxes
     $('#gsas_version').select2({

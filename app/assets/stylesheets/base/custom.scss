@@ -77,6 +77,11 @@ ul.dt-button-collection {
   }
 }
 
+tr.outline-danger {
+  outline: 1px solid $red;
+  box-shadow: 0 0 0 1px rgba(248, 18, 10, 0.308);
+}
+
 @media (max-width: 1000px) {
   .welcome-message {
     display: none;

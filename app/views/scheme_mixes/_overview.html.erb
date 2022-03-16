@@ -87,7 +87,7 @@
                 </td>
             <% end %>
             <td><%= scheme_mix.weight %> %</td>
-            <td><%= number_with_delimiter(scheme_mix.certified_area, delimiter: ',') %></td>
+            <td><%= number_with_delimiter(scheme_mix&.certified_area, delimiter: ',') %></td>
 
             <% if certification_path.is_activated? %>
                 <td>

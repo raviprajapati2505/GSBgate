@@ -169,7 +169,7 @@
               <% if @project.can_upload_actual_image? %>
                 <% if can?(:read, ActualProjectImage.new(project_id: @project.id)) %>
                   <% if can?(:create, ActualProjectImage.new(project_id: @project.id)) %>
-                    <tr>
+                    <tr class="project-actual-image-div">
                       <th><%= Project.human_attribute_name('project_actual_images') %></th>
                       <td>
                         <% if @project.actual_project_images.present? %>
@@ -200,7 +200,7 @@
               <% if @project.can_upload_project_rendering_image? %>
                 <% if can?(:read, ProjectRenderingImage.new(project_id: @project.id)) %>
                   <% if can?(:create, ProjectRenderingImage.new(project_id: @project.id)) %>
-                    <tr>
+                    <tr class="project-rendering-image-div">
                       <th><%= Project.human_attribute_name('project_rendering_images') %></th>
                       <td>
                         <% if @project.project_rendering_images.present? %>

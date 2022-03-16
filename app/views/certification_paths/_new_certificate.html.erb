@@ -1,6 +1,6 @@
 <div class="modal-dialog modal-lg">
     <div class="modal-content">
-      <% if @project.project_rendering_images.empty? && ((Certificate.certification_types[@certification_type] == Certificate.certification_types[:letter_of_conformance]) or (Certificate.certification_types[@certification_type] == Certificate.certification_types[:final_design_certificate]))  %>
+      <% if @project.project_rendering_images.empty? && ((Certificate.certification_types[@certification_type] == Certificate.certification_types[:letter_of_conformance]) or (Certificate.certification_types[@certification_type] == Certificate.certification_types[:final_design_certificate])) %>
         <div class="modal-header alert-danger">
           <%= btn_close_modal %>
           <h4 class="modal-title">
