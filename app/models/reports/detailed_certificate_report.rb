@@ -241,7 +241,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
 
       newline(1)
       
-      text = "This letter is only the predecessor towards achieving the final GSAS-D&B Certificate and should not be considered as the final certificate. The project should satisfy during the construction stage all the requirements of <b>Conformance to Design Audit(CDA)</b> which is a pre-requisite for the final GSAS-D&B Certificate as indicated in GSAS Technical Guide, <a>www.gsas.gord.qa</a> \n"
+      text = "This letter is only the predecessor towards achieving the final GSAS-D&B Certificate and should not be considered as the final certificate. The project should satisfy during the construction stage all the requirements of <b>Conformance to Design Audit(CDA)</b> which is a pre-requisite for the final GSAS-D&B Certificate as indicated in GSAS Technical Guide, <span style='color: #337ab7'>www.gsas.gord.qa</span> \n"
       styled_text("<div style='font-size: 10; line-height: 7'>#{text}</div>")
 
       text = "In the event of any future changes applied to the criteria pertaining to this issued certificate, the changes are required to be re-assessed once again."
@@ -271,7 +271,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
       
       newline(1)
 
-      text = "This notice is only the predecessor towards achieving the final GSAS-CM Certificate and should not be considered as the final certificate. The project shall satisfy during the rest of the construction stages all the requirements which is a pre-requisite for the GSAS-CM Certificate as stipulated in GSAS Technical Guide, <a>www.gsas.gord.qa</a> \n"
+      text = "This notice is only the predecessor towards achieving the final GSAS-CM Certificate and should not be considered as the final certificate. The project shall satisfy during the rest of the construction stages all the requirements which is a pre-requisite for the GSAS-CM Certificate as stipulated in GSAS Technical Guide, <span style='color: #337ab7'>www.gsas.gord.qa</span> \n"
       styled_text("<div style='font-size: 10; line-height: 7'>#{text}</div>")
 
       newline(1)
@@ -661,10 +661,11 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
           column(0).width = width / 2
           column(1).width = width / 2
 
-          cells.borders = %i(top bottom left)        
+          cells.borders = %i(top bottom left)
           header_row = rows(0..row_length - 1)
 
           header_row.row(0).background_color = @@main_color
+          header_row.row(1).background_color = COLUMN_2_COLOR
           header_row.row(0).text_color = 'FFFFFF'
           # header_row.font = 'Helvetica'
           header_row.size = 10
@@ -688,7 +689,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
           data[1][0] = { content: data[1][0], colspan: 2 } 
 
           # Set column widths
-          header_row.size = 10
+          header_row.size = 9
           header_row.row(0).column(0).width = width / 3
           header_row.row(0).column(1).width = width / 3
           header_row.row(0).column(2).width = width / 3
@@ -696,9 +697,9 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
           # header_row.row(1).column(1).width = width / 3
 
           cells.borders = %i(top bottom left)
-
-          header_row.background_color = 'F5F5F5'
-          header_row.align = :center
+          header_row.text_color = TABLE_TEXT_COLOR
+          header_row.background_color = COLUMN_2_COLOR
+          header_row.align = :left
           header_row.column(0).border_left_color = 'FFFFFF'
           header_row.padding = [2, 2, 2]
         end
@@ -741,7 +742,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
             content_rows.border_bottom_color = '000000'
             content_rows.column(1).border_right_color = 'FFFFFF'
             content_rows.row(row_length - 2).font_style = :bold
-            content_rows.row(row_length - 2).column(1).background_color = '0000FF'
+            content_rows.row(row_length - 2).column(1).background_color = '538dd5'
             content_rows.row(row_length - 2).borders = %i(bottom) 
             content_rows.row(row_length - 2).column(0).border_bottom_color = 'FFFFFF'
   
