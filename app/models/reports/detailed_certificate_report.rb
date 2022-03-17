@@ -66,12 +66,12 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
 
   def set_format_colors(project)
     if project&.certificate_type == 1
-      @@main_color = 'eb6109'.freeze
-      @@column_1_color = 'fdd7bf'.freeze
+      @@main_color = 'fe4f00'.freeze
+      @@column_1_color = 'ffd7bd'.freeze
       @@stamp_image = 'cm_stamp.png'.freeze
     else
-      @@main_color = '62A744'.freeze
-      @@column_1_color = 'ecf1e5'.freeze
+      @@main_color = '2fb548'.freeze
+      @@column_1_color = 'cee6c6'.freeze
       @@stamp_image = 'loc_stamp.png'.freeze
     end
   end
@@ -122,12 +122,11 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
       newline(1)
       draw_scoring_summary(total_category_scores)
       
+      newline(1)
+
       draw_category_graph(total_category_scores)
     
-      start_new_page
-      newline(2)
-      draw_project_info
-      newline(2)
+      newline(3)
 
       draw_score_graph
 
@@ -323,7 +322,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
       scheme_info = "(#{scheme_mix&.custom_name})"
     end
     
-    data.append(["Criteria Summary for Awarded levels - \n #{scheme_mix&.scheme&.name} #{scheme_info}"])
+    data.append(["Criteria Summary - #{scheme_mix&.scheme&.name} #{scheme_info}"])
 
     # Output table
     draw_table(data, true, 'scheme_mix_info_table')
@@ -349,8 +348,8 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     newline(1)
 
     text = "Figure 1: Scoring Summary"
-    styled_text("<div style='font-size: 11; line-height: 7; color: 000000; text-align: center; padding-top: 10px;'><b>#{text}</b></div>")
-    newline(3)
+    styled_text("<div style='font-size: 9; line-height: 5; color: 000000; text-align: center; padding-top: 10px;'><b>#{text}</b></div>")
+    newline(1)
   end
 
   def draw_headers
@@ -443,7 +442,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     # y = @document.bounds.bottom + 20
 
     begin
-      image chart_generator.generate_chart(barchart_config, 550, 350).path, width: 350, position: :center
+      image chart_generator.generate_chart(barchart_config, 600, 230).path, width: 350, position: :center
 
       # stroke do
       #   stroke_color '000000'
@@ -462,14 +461,14 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
 
     newline(1)
     text = "Figure 2: Category Achived Scores Vs. Attainable Scores"
-    styled_text("<div style='font-size: 11; line-height: 7; color: 000000; text-align: center; padding-top: 10px;'><b>#{text}</b></div>")
+    styled_text("<div style='font-size: 9; line-height: 5; color: 000000; text-align: center; padding-top: 8px;'><b>#{text}</b></div>")
   end
 
   def draw_score_graph
     chart_generator = ChartGeneratorService.new
 
     labels = [
-        '',
+        'Certification denied',
         '',
         '★',
         '★★',
@@ -550,23 +549,20 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
             axis: "y",
           },
           x: {
-            title: {
-              display: true,
-              text: "Certification denied",
-              color: "red",
-              align: "start",
-              font: {
-                weight: "bold",
-              },
-            },
+            # title: {
+            #   display: true,
+            #   text: "Certification denied",
+            #   color: "red",
+            #   align: "start",
+            #   font: {
+            #     weight: "bold",
+            #   },
+            # },
             axis: "x",
           }
         }
       }
     }
-
-    # text 'Level Achieved', size: 14, color: '36A2EB', style: :bold, align: :left
-    newline
 
     # text 'Legend', size: 13, style: :bold, align: :left
     data = []
@@ -579,25 +575,34 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     data.append(['2.0<X<=2.5', '*****'])
     data.append(['2.5<X<=3.0', '******'])
 
-    table(data, cell_style: { width: 70 }, position: :right) do
+    newline(1)
+
+    table(data, cell_style: { width: 80 }, position: :right) do
       # column(0).align = :center
       row(0).background_color = @@main_color
       row(0).text_color = 'FFFFFF'
+      row(0).size = 9
+      row(0).font_style = :bold
+      row(0..-1).size = 8
+      row(0..-1).padding = [3, 3]
       row(1).text_color = 'FF0000'
-      rows(1..-1).borders = [:right, :left]
+      rows(1..-1).borders = [:top, :right, :bottom, :left]
       row(-1).borders = [:right, :bottom, :left]
     end
-    
+
+    newline(1)
+
     begin
-      image chart_generator.generate_chart(linechart_config, 580, 360).path, at: [0, 520], width: 320
+      image chart_generator.generate_chart(linechart_config, 450, 270).path, at: [0, 170], width: 270
     rescue LinkmeService::ApiError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, Errno::ECONNREFUSED,
       EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError
       text 'An error occurred when creating the chart.'
     end
     
-    newline(3)
+    newline(1)
+
     text = 'Figure 3: Project Overall Scores & Rating'
-    styled_text("<div style='font-size: 11; line-height: 7; color: 000000; text-align: center; padding-top: 10px;'><b>#{text}</b></div>")
+    styled_text("<div style='font-size: 9; line-height: 5; color: 000000; text-align: center; padding-top: px;'><b>#{text}</b></div>")
 
     # text 'Level Achieved', size: 12, align: :left
     # data = []
@@ -706,7 +711,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
       elsif type == 'scoring_summary_table'
 
         # bounding_box([@document.bounds.left, @document.bounds.top], width: @document.bounds.right, height: HEADER_HEIGHT) do
-          table(data, width: @document.bounds.right - 20, position: :center) do
+          table(data, width: @document.bounds.right - 180, position: :center) do
   
             cells.left_margin = 50
             cells.right_margin = 50
@@ -714,14 +719,14 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
             # Set default cell style
             cells.align = :left
             cells.borders = []
-            cells.padding = 0
+            cells.padding = 2
             cells.border_width = 0.5
   
             header_row = rows(0)
-            header_row.size = 9
+            header_row.size = 6
             header_row.background_color = '696969'
             header_row.text_color = 'FFFFFF'
-            header_row.padding = [5, 5]
+            header_row.padding = [2, 2, 2, 2]
             header_row.font_style = :bold
             header_row.align = :center
             header_row.borders = %i(right bottom) 
@@ -731,11 +736,11 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
             header_row.border_bottom_color = '000000'
   
             content_rows = rows(1..row_length - 1)
-            content_rows.size = 8
+            content_rows.size = 6
             content_rows.column(0).align = :right
             content_rows.column(1).align = :center
   
-            content_rows.padding = [3, 3]
+            content_rows.padding = [2, 2, 2, 2]
             content_rows.borders = %i(right) 
             content_rows.row(row_length - 3).borders = %i(right bottom) 
             content_rows.border_right_color = '000000'
@@ -823,7 +828,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
           name_column.text_color = TABLE_TEXT_COLOR
           name_column.borders = [:top, :right, :bottom, :left]
           name_column.border_color = TABLE_BORDER_COLOR
-          name_column.background_color = @@column_1_color
+          name_column.background_color = @@main_color
         end
       end
     end
@@ -831,7 +836,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     def category_criteria_score(scheme_mix)
       @scheme_mix = scheme_mix
 
-      bounding_box([0, 630], width: @document.bounds.width) do
+      bounding_box([0, 655], width: @document.bounds.width) do
         # Draw awarded target
         # draw_awarded_target
   
@@ -842,7 +847,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
 
           if (rows_on_page + row_count) > MAX_ROWS_PER_PAGE
             start_new_page
-            newline(1)
+            newline(3)
             draw_project_info(scheme_mix)
             newline(1)
             rows_on_page = row_count
