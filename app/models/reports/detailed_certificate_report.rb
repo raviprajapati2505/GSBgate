@@ -622,278 +622,278 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
   end
 
   def draw_table(data, has_level_achieved_footer = false, type)
+    if type == 'basic_table'
+      table(data, width: @document.bounds.right) do
+        # Set default cell style
+        cells.align = :left
+        cells.borders = []
+        cells.padding = 0
+        cells.border_width = 0.5
 
-      if type == 'basic_table'
-        table(data, width: @document.bounds.right) do
+        # Set column widths
+        column(0).width = width / 3
+        column(1).width = width * 2 / 3
+
+        cells.borders = %i(top right bottom left)
+        cells.border_color = TABLE_BORDER_COLOR
+
+        
+        # # Header row style
+        header_row = rows(0..row_length - 1)
+        header_row.column(0).background_color = @@column_1_color
+        header_row.column(0).text_color = TABLE_TEXT_COLOR
+        header_row.column(1).background_color = COLUMN_2_COLOR
+        header_row.column(1).text_color = TABLE_TEXT_COLOR
+        # header_row.font = 'Helvetica'
+        header_row.size = 10
+        header_row.border_color = TABLE_BORDER_COLOR
+
+        # Content rows style
+        content_rows = rows(0..row_length - 1)
+        content_rows.column(1).align = :left
+        content_rows.padding = [3, 4, 3, 4]
+      end
+    elsif type == 'score_table'
+      table(data, width: @document.bounds.right) do
+        # Set default cell style
+        cells.align = :left
+        cells.borders = []
+        cells.padding = 0
+        cells.border_width = 0.5
+
+        # Set column widths
+        column(0).width = width / 2
+        column(1).width = width / 2
+
+        cells.borders = %i(top bottom left)
+        header_row = rows(0..row_length - 1)
+
+        header_row.row(0).background_color = @@main_color
+        header_row.row(1).background_color = COLUMN_2_COLOR
+        header_row.row(0).text_color = 'FFFFFF'
+        # header_row.font = 'Helvetica'
+        header_row.size = 10
+        header_row.font_style = :bold
+        header_row.align = :center
+        header_row.column(0).border_left_color = 'FFFFFF'
+        header_row.row(0).padding = [2, 2]
+        header_row.row(1).padding = [5, 5]
+        # header_row.column(1).borders = %i(left)
+      end
+    elsif type == 'project_info_table'
+      table(data, width: @document.bounds.right) do
+        # Set default cell style
+        cells.align = :left
+        cells.borders = []
+        cells.padding = 0
+        cells.border_width = 0.5
+
+        header_row = rows(0..row_length - 1)
+
+        data[1][0] = { content: data[1][0], colspan: 2 } 
+
+        # Set column widths
+        header_row.size = 9
+        header_row.row(0).column(0).width = width / 3
+        header_row.row(0).column(1).width = width / 3
+        header_row.row(0).column(2).width = width / 3
+        # header_row.row(1).column(0).width = width - (width / 3)
+        # header_row.row(1).column(1).width = width / 3
+
+        cells.borders = %i(top bottom left)
+        header_row.text_color = TABLE_TEXT_COLOR
+        header_row.background_color = COLUMN_2_COLOR
+        header_row.align = :left
+        header_row.column(0).border_left_color = 'FFFFFF'
+        header_row.padding = [2, 2, 2]
+      end
+    elsif type == 'scoring_summary_table'
+
+      # bounding_box([@document.bounds.left, @document.bounds.top], width: @document.bounds.right, height: HEADER_HEIGHT) do
+        table(data, width: @document.bounds.right - 180, position: :center) do
+
+          cells.left_margin = 50
+          cells.right_margin = 50
+
           # Set default cell style
           cells.align = :left
           cells.borders = []
-          cells.padding = 0
+          cells.padding = 2
           cells.border_width = 0.5
 
-          # Set column widths
-          column(0).width = width / 3
-          column(1).width = width * 2 / 3
-
-          cells.borders = %i(top right bottom left)
-          cells.border_color = TABLE_BORDER_COLOR
-
-          
-          # # Header row style
-          header_row = rows(0..row_length - 1)
-          header_row.column(0).background_color = @@column_1_color
-          header_row.column(0).text_color = TABLE_TEXT_COLOR
-          header_row.column(1).background_color = COLUMN_2_COLOR
-          header_row.column(1).text_color = TABLE_TEXT_COLOR
-          # header_row.font = 'Helvetica'
-          header_row.size = 10
-          header_row.border_color = TABLE_BORDER_COLOR
-
-          # Content rows style
-          content_rows = rows(0..row_length - 1)
-          content_rows.column(1).align = :left
-          content_rows.padding = [3, 4, 3, 4]
-        end
-      elsif type == 'score_table'
-        table(data, width: @document.bounds.right) do
-          # Set default cell style
-          cells.align = :left
-          cells.borders = []
-          cells.padding = 0
-          cells.border_width = 0.5
-
-          # Set column widths
-          column(0).width = width / 2
-          column(1).width = width / 2
-
-          cells.borders = %i(top bottom left)
-          header_row = rows(0..row_length - 1)
-
-          header_row.row(0).background_color = @@main_color
-          header_row.row(1).background_color = COLUMN_2_COLOR
-          header_row.row(0).text_color = 'FFFFFF'
-          # header_row.font = 'Helvetica'
-          header_row.size = 10
+          header_row = rows(0)
+          header_row.size = 6
+          header_row.background_color = '696969'
+          header_row.text_color = 'FFFFFF'
+          header_row.padding = [2, 2, 2, 2]
           header_row.font_style = :bold
           header_row.align = :center
-          header_row.column(0).border_left_color = 'FFFFFF'
-          header_row.row(0).padding = [2, 2]
-          header_row.row(1).padding = [5, 5]
-          # header_row.column(1).borders = %i(left)
+          header_row.borders = %i(right bottom) 
+          header_row.border_left_color = '000000'
+          header_row.border_right_color = '000000'
+          header_row.border_top_color = '000000'
+          header_row.border_bottom_color = '000000'
+
+          content_rows = rows(1..row_length - 1)
+          content_rows.size = 6
+          content_rows.column(0).align = :right
+          content_rows.column(1).align = :center
+
+          content_rows.padding = [2, 2, 2, 2]
+          content_rows.borders = %i(right) 
+          content_rows.row(row_length - 3).borders = %i(right bottom) 
+          content_rows.border_right_color = '000000'
+          content_rows.border_bottom_color = '000000'
+          content_rows.column(1).border_right_color = 'FFFFFF'
+          content_rows.row(row_length - 2).font_style = :bold
+          content_rows.row(row_length - 2).column(1).background_color = '538dd5'
+          content_rows.row(row_length - 2).borders = %i(bottom) 
+          content_rows.row(row_length - 2).column(0).border_bottom_color = 'FFFFFF'
+
+          column(0).width = width - (width / 3)
+          column(1).width = width / 3
         end
-      elsif type == 'project_info_table'
-        table(data, width: @document.bounds.right) do
-          # Set default cell style
-          cells.align = :left
-          cells.borders = []
-          cells.padding = 0
-          cells.border_width = 0.5
+    elsif type == 'smc_scores_table'
+      table(data, width: @document.bounds.right) do
 
-          header_row = rows(0..row_length - 1)
+        # Set default cell style
+        cells.align = :center
+        cells.borders = [:top, :right, :bottom, :left]
+        cells.padding = 4
+        cells.border_width = 0.5
+        cells.border_color = 'BABABB'
 
-          data[1][0] = { content: data[1][0], colspan: 2 } 
+        cells.border_left_color = '000000'
+        cells.border_right_color = '000000'
+        cells.border_top_color = '000000'
+        cells.border_bottom_color = '000000'
 
-          # Set column widths
-          header_row.size = 9
-          header_row.row(0).column(0).width = width / 3
-          header_row.row(0).column(1).width = width / 3
-          header_row.row(0).column(2).width = width / 3
-          # header_row.row(1).column(0).width = width - (width / 3)
-          # header_row.row(1).column(1).width = width / 3
+        column(0).width = width * 0.20
+        column(1).width = width * 0.50
+        column(2).width = width * 0.15
+        column(3).width = width * 0.15
 
-          cells.borders = %i(top bottom left)
-          header_row.text_color = TABLE_TEXT_COLOR
-          header_row.background_color = COLUMN_2_COLOR
-          header_row.align = :left
-          header_row.column(0).border_left_color = 'FFFFFF'
-          header_row.padding = [2, 2, 2]
+        # Misc table border style
+        row(0).border_top_color = '000000'
+        row(-1).border_bottom_color = '000000'
+        column(-1).borders = [:top, :bottom, :left, :right]
+        column(1).borders = [:top, :right, :bottom]
+
+        # Category name column style
+        name_column = column(0)
+        name_column.align = :left
+        # name_column.vposition = :center
+        name_column.text_color = TABLE_TEXT_COLOR
+        name_column.borders = [:top, :right, :bottom, :left]
+        name_column.border_color = TABLE_BORDER_COLOR
+        # name_column.border_color = @@main_color
+        # name_column.font_style = :bold
+        name_column.background_color = @@column_1_color
+
+        # Odd/even row style
+        rows(1..-1).style do |c|
+          c.background_color = 'EAEAEA' if (c.row % 2).zero?
+          c.border_color = COLUMN_2_COLOR
         end
-      elsif type == 'scoring_summary_table'
 
-        # bounding_box([@document.bounds.left, @document.bounds.top], width: @document.bounds.right, height: HEADER_HEIGHT) do
-          table(data, width: @document.bounds.right - 180, position: :center) do
-  
-            cells.left_margin = 50
-            cells.right_margin = 50
-  
-            # Set default cell style
-            cells.align = :left
-            cells.borders = []
-            cells.padding = 2
-            cells.border_width = 0.5
-  
-            header_row = rows(0)
-            header_row.size = 6
-            header_row.background_color = '696969'
-            header_row.text_color = 'FFFFFF'
-            header_row.padding = [2, 2, 2, 2]
-            header_row.font_style = :bold
-            header_row.align = :center
-            header_row.borders = %i(right bottom) 
-            header_row.border_left_color = '000000'
-            header_row.border_right_color = '000000'
-            header_row.border_top_color = '000000'
-            header_row.border_bottom_color = '000000'
-  
-            content_rows = rows(1..row_length - 1)
-            content_rows.size = 6
-            content_rows.column(0).align = :right
-            content_rows.column(1).align = :center
-  
-            content_rows.padding = [2, 2, 2, 2]
-            content_rows.borders = %i(right) 
-            content_rows.row(row_length - 3).borders = %i(right bottom) 
-            content_rows.border_right_color = '000000'
-            content_rows.border_bottom_color = '000000'
-            content_rows.column(1).border_right_color = 'FFFFFF'
-            content_rows.row(row_length - 2).font_style = :bold
-            content_rows.row(row_length - 2).column(1).background_color = '538dd5'
-            content_rows.row(row_length - 2).borders = %i(bottom) 
-            content_rows.row(row_length - 2).column(0).border_bottom_color = 'FFFFFF'
-  
-            column(0).width = width - (width / 3)
-            column(1).width = width / 3
-          end
-      elsif type == 'smc_scores_table'
-        table(data, width: @document.bounds.right) do
+        # Header row style
+        header_row = row(0).columns(1..-1)
+        header_row.background_color = @@column_1_color
+        header_row.text_color = TABLE_TEXT_COLOR
+        header_row.border_color = TABLE_BORDER_COLOR
 
-          # Set default cell style
-          cells.align = :center
-          cells.borders = [:top, :right, :bottom, :left]
-          cells.padding = 4
-          cells.border_width = 0.5
-          cells.border_color = 'BABABB'
+        # Criteria name column style
+        column(1).align = :left
+      end
+    elsif type == 'scheme_mix_info_table'
+      table(data, width: @document.bounds.right) do
 
-          cells.border_left_color = '000000'
-          cells.border_right_color = '000000'
-          cells.border_top_color = '000000'
-          cells.border_bottom_color = '000000'
+        # Set default cell style
+        cells.align = :center
+        cells.borders = [:top, :right, :bottom, :left]
+        cells.padding = 4
+        cells.border_width = 0.5
+        cells.border_color = 'BABABB'
 
-          column(0).width = width * 0.20
-          column(1).width = width * 0.60
-          column(2).width = width * 0.20
+        cells.border_left_color = '000000'
+        cells.border_right_color = '000000'
+        cells.border_top_color = '000000'
+        cells.border_bottom_color = '000000'
 
-          # Misc table border style
-          row(0).border_top_color = '000000'
-          row(-1).border_bottom_color = '000000'
-          column(-1).borders = [:top, :bottom, :left, :right]
-          column(1).borders = [:top, :right, :bottom]
+        column(0).width = width
 
-          # Category name column style
-          name_column = column(0)
-          name_column.align = :left
-          # name_column.vposition = :center
-          name_column.text_color = TABLE_TEXT_COLOR
-          name_column.borders = [:top, :right, :bottom, :left]
-          name_column.border_color = TABLE_BORDER_COLOR
-          # name_column.border_color = @@main_color
-          # name_column.font_style = :bold
-          name_column.background_color = @@column_1_color
+        # Category name column style
+        name_column = column(0)
+        name_column.align = :left
+        name_column.text_color = TABLE_TEXT_COLOR
+        name_column.borders = [:top, :right, :bottom, :left]
+        name_column.border_color = TABLE_BORDER_COLOR
+        name_column.background_color = @@main_color
+      end
+    end
+  end
 
-          # Odd/even row style
-          rows(1..-1).style do |c|
-            c.background_color = 'EAEAEA' if (c.row % 2).zero?
-            c.border_color = COLUMN_2_COLOR
-          end
+  def category_criteria_score(scheme_mix)
+    @scheme_mix = scheme_mix
 
-          # Header row style
-          header_row = row(0).columns(1..-1)
-          header_row.background_color = @@column_1_color
-          header_row.text_color = TABLE_TEXT_COLOR
-          header_row.border_color = TABLE_BORDER_COLOR
+    bounding_box([0, 655], width: @document.bounds.width) do
+      # Draw awarded target
+      # draw_awarded_target
 
-          # Criteria name column style
-          column(1).align = :left
+      # Draw all category/criteria tables
+      rows_on_page = 0
+      categories_with_criteria.each_with_index do |category_with_criteria, index|
+        row_count = category_with_criteria[:criteria].count + 2 # Add 2 extra rows for table header and margin
+
+        if (rows_on_page + row_count) > MAX_ROWS_PER_PAGE
+          start_new_page
+          newline(3)
+          draw_project_info(scheme_mix)
+          newline(1)
+          rows_on_page = row_count
+        else
+          newline(1)
+          newline(9) if index == 0
+
+          rows_on_page += row_count
         end
-      elsif type == 'scheme_mix_info_table'
-        table(data, width: @document.bounds.right) do
 
-          # Set default cell style
-          cells.align = :center
-          cells.borders = [:top, :right, :bottom, :left]
-          cells.padding = 4
-          cells.border_width = 0.5
-          cells.border_color = 'BABABB'
+        draw_criteria_table(category_with_criteria[:category], category_with_criteria[:criteria])
+      end
+    end
+  end
 
-          cells.border_left_color = '000000'
-          cells.border_right_color = '000000'
-          cells.border_top_color = '000000'
-          cells.border_bottom_color = '000000'
+  def categories_with_criteria
+    categories_with_criteria = []
+    @scheme_mix.scheme_categories.each do |scheme_category|
+      
+      category_scheme_mix_criteria = @scheme_mix.category_scheme_mix_criteria(scheme_category&.id)
 
-          column(0).width = width
-
-          # Category name column style
-          name_column = column(0)
-          name_column.align = :left
-          name_column.text_color = TABLE_TEXT_COLOR
-          name_column.borders = [:top, :right, :bottom, :left]
-          name_column.border_color = TABLE_BORDER_COLOR
-          name_column.background_color = @@main_color
-        end
+      if category_scheme_mix_criteria.count > 0
+        categories_with_criteria << { category: scheme_category, criteria: @scheme_mix.scheme_mix_criteria.for_category(scheme_category).order('scheme_criteria.number').to_a }
       end
     end
 
-    def category_criteria_score(scheme_mix)
-      @scheme_mix = scheme_mix
+    # Order the array by criteria count
+    # categories_with_criteria.sort! {|x, y| y[:criteria].count <=> x[:criteria].count}
 
-      bounding_box([0, 655], width: @document.bounds.width) do
-        # Draw awarded target
-        # draw_awarded_target
-  
-        # Draw all category/criteria tables
-        rows_on_page = 0
-        categories_with_criteria.each_with_index do |category_with_criteria, index|
-          row_count = category_with_criteria[:criteria].count + 2 # Add 2 extra rows for table header and margin
+    # Order the array by category display weight
+    categories_with_criteria.sort_by {|value| value[:category].display_weight }
+  end
 
-          if (rows_on_page + row_count) > MAX_ROWS_PER_PAGE
-            start_new_page
-            newline(3)
-            draw_project_info(scheme_mix)
-            newline(1)
-            rows_on_page = row_count
-          else
-            newline(1)
-            newline(9) if index == 0
+  def draw_criteria_table(scheme_category, scheme_mix_criteria)
+    # Prepare table data
+    data = []
+    data.append([{content: "#{scheme_category.name.upcase} [#{scheme_category.code}]", rowspan: scheme_mix_criteria.size + 1}, 'Criterion', 'Level', 'Incentive'])
 
-            rows_on_page += row_count
-          end
-  
-          draw_criteria_table(category_with_criteria[:category], category_with_criteria[:criteria])
-        end
-      end
+    # Add the category rows to the table
+    scheme_mix_criteria.each do |smc|
+      achieved_score = smc.achieved_score
+      achieved_score = ((achieved_score.is_a?(Float) || achieved_score.is_a?(BigDecimal)) && achieved_score.nan?) ? 0 : achieved_score rescue 0
+      data.append([smc.full_name, number_with_precision(achieved_score, precision: 0, significant: true), "#{number_with_precision(smc.calculate_awarded_incentives, precision: 1)}%"])
     end
 
-    def categories_with_criteria
-      categories_with_criteria = []
-      @scheme_mix.scheme_categories.each do |scheme_category|
-        
-        category_scheme_mix_criteria = @scheme_mix.category_scheme_mix_criteria(scheme_category&.id)
-  
-        if category_scheme_mix_criteria.count > 0
-          categories_with_criteria << { category: scheme_category, criteria: @scheme_mix.scheme_mix_criteria.for_category(scheme_category).order('scheme_criteria.number').to_a }
-        end
-      end
-  
-      # Order the array by criteria count
-      # categories_with_criteria.sort! {|x, y| y[:criteria].count <=> x[:criteria].count}
-  
-      # Order the array by category display weight
-      categories_with_criteria.sort_by {|value| value[:category].display_weight }
-    end
-
-    def draw_criteria_table(scheme_category, scheme_mix_criteria)
-      # Prepare table data
-      data = []
-      data.append([{content: "#{scheme_category.name.upcase} [#{scheme_category.code}]", rowspan: scheme_mix_criteria.size + 1}, 'Criterion', 'Level'])
-  
-      # Add the category rows to the table
-      scheme_mix_criteria.each do |smc|
-        achieved_score = smc.achieved_score
-        achieved_score = ((achieved_score.is_a?(Float) || achieved_score.is_a?(BigDecimal)) && achieved_score.nan?) ? 0 : achieved_score rescue 0
-        data.append([smc.full_name, number_with_precision(achieved_score, precision: 0, significant: true)])
-      end
-  
-      # Output table
-      draw_table(data, 'smc_scores_table')
-    end
+    # Output table
+    draw_table(data, 'smc_scores_table')
+  end
 end
