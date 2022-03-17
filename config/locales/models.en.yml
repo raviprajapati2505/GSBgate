@@ -59,8 +59,8 @@ en:
       project:
         code: Project ID
         name: Project Name
-        building_type_group_id: Project Use
-        building_type_id: Project Planning Type
+        building_type_group_id: Project Planning Type
+        building_type_id: Project Use
         buildings_footprint_area: Project Footprint (C)
         certificate_type: Certificate Type
         carpark_area: Project Car Park Area
