@@ -237,29 +237,29 @@ $(function () {
     });
     $('.project-form #project_certificate_type').trigger('change', true);
 
-    // Building type group & building type dropdowns in project form
-    $('.project-form').on('change', '#project_building_type_group_id', function(event, wasTriggered) {
-        $('.project-form #building-type-select select option').hide();
+    // // Building type group & building type dropdowns in project form
+    // $('.project-form').on('change', '#project_building_type_group_id', function(event, wasTriggered) {
+    //     $('.project-form #building-type-select select option').hide();
 
-        if ($(this).val() == '') {
-            $('.project-form #building-type-select').hide();
-            $('.project-form .district-fields').hide();
-        }
-        else {
-            $(".project-form #building-type-select option[data-building-type-group-id=" + $(this).val() + "]").show();
-            $('.project-form #building-type-select').show();
-            if ($(this).val() == 8) {
-                $('.project-form .district-fields').show();
-            } else {
-                $('.project-form .district-fields').hide();
-            }
-        }
+    //     if ($(this).val() == '') {
+    //         $('.project-form #building-type-select').hide();
+    //         $('.project-form .district-fields').hide();
+    //     }
+    //     else {
+    //         $(".project-form #building-type-select option[data-building-type-group-id=" + $(this).val() + "]").show();
+    //         $('.project-form #building-type-select').show();
+    //         if ($(this).val() == 8) {
+    //             $('.project-form .district-fields').show();
+    //         } else {
+    //             $('.project-form .district-fields').hide();
+    //         }
+    //     }
 
-        if (!wasTriggered) {
-            $('.project-form #building-type-select option:first').show().prop('selected', true);
-        }
-    });
-    $('.project-form #project_building_type_group_id').trigger('change', true);
+    //     if (!wasTriggered) {
+    //         $('.project-form #building-type-select option:first').show().prop('selected', true);
+    //     }
+    // });
+    // $('.project-form #project_building_type_group_id').trigger('change', true);
 
     // Project country select
     $('.country-select, .city-select-dropdown, .district-select-dropdown, .developer-select-dropdown').select2({

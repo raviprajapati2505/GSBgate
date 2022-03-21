@@ -49,10 +49,11 @@
               <%= f.text_field :estimated_project_cost, append: 'QAR', class: "commify-value" %>
               <%= f.text_field :cost_square_meter, append: 'QAR', readonly: true, class: "commify-value" %>
 
-              <div class="district-fields">
+              <!-- <div class="district-fields">
                 <%= f.text_field :estimated_building_cost, append: 'QAR', class: "commify-value" %>
                 <%= f.text_field :estimated_infrastructure_cost, append: 'QAR', class: "commify-value" %>
-              </div>
+              </div> -->
+
               <%= f.text_field :description, maxlength: 300 %>
               <%= f.number_field :construction_year, prepend: ikoen('calendar'), class: "datepicker-year", min: 2000, max: 2100 %>
             </div>

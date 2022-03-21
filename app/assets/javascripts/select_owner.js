@@ -3,6 +3,9 @@
  */
 
 $(function() {
+
+    $('#project_building_type_id').select2();
+    
     $('.select2-ajax').each(function(idx, element) {
         $(this).on('change', function(e) {
             $('#project_owner').val($(this).select2('data').text);
