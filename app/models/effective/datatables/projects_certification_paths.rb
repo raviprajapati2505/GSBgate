@@ -48,9 +48,41 @@ module Effective
           # end
         end
 
-        col :project_country, col_class: 'col-order-2', sql_column: 'projects.country', visible: false
-        col :project_city, col_class: 'col-order-3', sql_column: 'projects.city', visible: false
-        col :project_district, col_class: 'col-order-4', sql_column: 'projects.district', visible: false
+        col :project_country, col_class: 'multiple-select col-order-2', sql_column: 'projects.country', visible: false, search: { as: :select, collection: Proc.new { Project.pluck(:country).uniq.map { |country| [country, country] } } } do |rec|
+          rec.project_country
+        end.search do |collection, terms, column, index|
+          terms_array = terms.split(",")
+
+          unless (collection.class == Array || terms_array.include?(""))
+            collection.where("projects.country IN (?)", terms_array.uniq)
+          else
+            collection
+          end
+        end
+
+        col :project_city, col_class: 'multiple-select col-order-3', sql_column: 'projects.city', visible: false, search: { as: :select, collection: Proc.new { Project.pluck(:city).uniq.map { |city| [city, city] } } } do |rec|
+          rec.project_city
+        end.search do |collection, terms, column, index|
+          terms_array = terms.split(",")
+
+          unless (collection.class == Array || terms_array.include?(""))
+            collection.where("projects.city IN (?)", terms_array.uniq)
+          else
+            collection
+          end
+        end
+
+        col :project_district, col_class: 'multiple-select col-order-4', sql_column: 'projects.district', visible: false, search: { as: :select, collection: Proc.new { Project.pluck(:district).uniq.map { |district| [district, district] } } } do |rec|
+          rec.project_district
+        end.search do |collection, terms, column, index|
+          terms_array = terms.split(",")
+
+          unless (collection.class == Array || terms_array.include?(""))
+            collection.where("projects.district IN (?)", terms_array.uniq)
+          else
+            collection
+          end
+        end
 
         col :project_address, col_class: 'col-order-5', sql_column: 'projects.address', visible: false do |rec|
           rec.project_address&.truncate(50)
