@@ -122,8 +122,6 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
       newline(1)
       draw_scoring_summary(total_category_scores)
       
-      newline(1)
-
       draw_category_graph(total_category_scores)
     
       newline(3)
@@ -333,7 +331,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     data = []
 
     # Add the header rows to the table
-    data.append(["Category", "Scenario 1 - Overall Score"])
+    data.append(["Category", "Scenario 1 - Overall Score \n #{number_with_precision(@score, precision: 3)}"])
 
     # Add the category rows to the table
     total_category_scores.each do |category_code, category|
