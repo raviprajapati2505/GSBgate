@@ -28,16 +28,17 @@ $(function() {
           format: 'DD/MM/YYYY',
           cancelLabel: 'Clear'
         }
-      }, function(start, end, label) {
-        $(searchInput).trigger('keyup');
+      }, function(start_date, end_date, label) {
+        searchInput.val(start_date.format('DD-MM-YYYY') + " - " + end_date.format('DD-MM-YYYY'))
+        searchInput.trigger('keyup');
       });
 
       searchInput.val("");
       searchInput.attr("placeholder", "Select Range");
 
       searchInput.on('cancel.daterangepicker', function(ev, picker) {
-        searchInput.val('');
-        $(searchInput).trigger('keyup');
+        searchInput.val("");
+        searchInput.trigger('keyup');
       });
     }
   }
