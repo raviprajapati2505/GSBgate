@@ -398,7 +398,7 @@ module Effective
 
         # Note: internally we use the status id, so sorting is done by id and not the name !
         
-        col :certification_path_started_at, col_class: 'date-range-filter col-order-31', sql_column: 'certification_paths.started_at', label: t('models.effective.datatables.projects_certification_paths.certification_path_started_at.label'), as: :datetime, visible: true do |rec|
+        col :certification_path_started_at, col_class: 'date-range-filter col-order-31', sql_column: 'certification_paths.started_at', label: t('models.effective.datatables.projects_certification_paths.certification_path_started_at.label'), as: :datetime, visible: false do |rec|
           rec.certification_path_started_at&.strftime('%e %b - %Y')
         end.search do |collection, term, column, index|
 
