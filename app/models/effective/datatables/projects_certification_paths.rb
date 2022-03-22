@@ -22,6 +22,8 @@ module Effective
           "ARRAY_TO_STRING(ARRAY(SELECT gsas_trust_team_users.name FROM users as gsas_trust_team_users INNER JOIN projects_users as gsas_trust_team_project_users ON gsas_trust_team_project_users.user_id = gsas_trust_team_users.id  WHERE gsas_trust_team_project_users.role IN (#{ProjectsUser.roles[:certifier]}) AND gsas_trust_team_project_users.project_id = projects.id AND (SELECT CASE WHEN certificates.certification_type IN (#{Certificate.certification_types['construction_certificate']}, #{Certificate.certification_types['operations_certificate']}, #{Certificate.certification_types['construction_certificate_stage1']}, #{Certificate.certification_types['construction_certificate_stage2']}, #{Certificate.certification_types['construction_certificate_stage3']}) THEN gsas_trust_team_project_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Other']}) WHEN certificates.certification_type IN (#{Certificate.certification_types['letter_of_conformance']}) THEN gsas_trust_team_project_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Letter of Conformance']}) WHEN certificates.certification_type IN (#{Certificate.certification_types['final_design_certificate']}) THEN gsas_trust_team_project_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Final Design Certificate']}) ELSE gsas_trust_team_project_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Other']}, #{ProjectsUser.certification_team_types['Letter of Conformance']}, #{ProjectsUser.certification_team_types['Final Design Certificate']}) END)), '|||')"
         when 'certification_manager'
           "ARRAY_TO_STRING(ARRAY(SELECT certification_managers.name FROM users as certification_managers INNER JOIN projects_users as certification_managers_project_users ON certification_managers_project_users.user_id = certification_managers.id  WHERE certification_managers_project_users.role IN (#{ProjectsUser.roles[:certification_manager]}) AND certification_managers_project_users.project_id = projects.id AND (SELECT CASE WHEN certificates.certification_type IN (#{Certificate.certification_types['construction_certificate']}, #{Certificate.certification_types['operations_certificate']}, #{Certificate.certification_types['construction_certificate_stage1']}, #{Certificate.certification_types['construction_certificate_stage2']}, #{Certificate.certification_types['construction_certificate_stage3']}) THEN certification_managers_project_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Other']}) WHEN certificates.certification_type IN (#{Certificate.certification_types['letter_of_conformance']}) THEN certification_managers_project_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Letter of Conformance']}) WHEN certificates.certification_type IN (#{Certificate.certification_types['final_design_certificate']}) THEN certification_managers_project_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Final Design Certificate']}) ELSE certification_managers_project_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Other']}, #{ProjectsUser.certification_team_types['Letter of Conformance']}, #{ProjectsUser.certification_team_types['Final Design Certificate']}) END)), '|||')"
+        when 'enterprise_clients'
+          "ARRAY_TO_STRING(ARRAY(SELECT enterprise_client_users.name FROM users as enterprise_client_users INNER JOIN projects_users as enterprise_client_project_users ON enterprise_client_project_users.user_id = enterprise_client_users.id  WHERE enterprise_client_project_users.role IN (#{ProjectsUser.roles[:enterprise_client]}) AND enterprise_client_project_users.project_id = projects.id), '|||')"
         end
       end
 
@@ -48,7 +50,7 @@ module Effective
           # end
         end
 
-        col :project_country, col_class: 'multiple-select col-order-2', sql_column: 'projects.country', visible: false, search: { as: :select, collection: Proc.new { Project.pluck(:country).uniq.map { |country| [country, country] } } } do |rec|
+        col :project_country, col_class: 'multiple-select col-order-2', sql_column: 'projects.country', visible: false, search: { as: :select, collection: Proc.new { Project.order(:country).pluck(:country).uniq.compact.map { |country| [country, country] } rescue [] } } do |rec|
           rec.project_country
         end.search do |collection, terms, column, index|
           terms_array = terms.split(",")
@@ -60,7 +62,7 @@ module Effective
           end
         end
 
-        col :project_city, col_class: 'multiple-select col-order-3', sql_column: 'projects.city', visible: false, search: { as: :select, collection: Proc.new { Project.pluck(:city).uniq.map { |city| [city, city] } } } do |rec|
+        col :project_city, col_class: 'multiple-select col-order-3', sql_column: 'projects.city', visible: false, search: { as: :select, collection: Proc.new { Project.order(:city).pluck(:city).uniq.compact.map { |city| [city, city] } rescue [] } } do |rec|
           rec.project_city
         end.search do |collection, terms, column, index|
           terms_array = terms.split(",")
@@ -72,7 +74,7 @@ module Effective
           end
         end
 
-        col :project_district, col_class: 'multiple-select col-order-4', sql_column: 'projects.district', visible: false, search: { as: :select, collection: Proc.new { Project.pluck(:district).uniq.map { |district| [district, district] } } } do |rec|
+        col :project_district, col_class: 'multiple-select col-order-4', sql_column: 'projects.district', visible: false, search: { as: :select, collection: Proc.new { Project.order(:district).pluck(:district).uniq.compact.map { |district| [district, district] } rescue [] } } do |rec|
           rec.project_district
         end.search do |collection, terms, column, index|
           terms_array = terms.split(",")
@@ -88,9 +90,29 @@ module Effective
           rec.project_address&.truncate(50)
         end
 
-        col :project_owner, col_class: 'col-order-6', sql_column: 'projects.owner', label: t('models.effective.datatables.projects.lables.owner'), visible: false
+        col :project_owner, col_class: 'multiple-select col-order-6', sql_column: 'projects.owner', label: t('models.effective.datatables.projects.lables.owner'), visible: false, search: { as: :select, collection: Proc.new { Project.order(:owner).pluck(:owner).uniq.compact.map { |owner| [owner, owner] } rescue [] } } do |rec|
+          rec.project_owner
+        end.search do |collection, terms, column, index|
+          terms_array = terms.split(",")
 
-        col :project_developer, col_class: 'col-order-7', sql_column: 'projects.developer', label: t('models.effective.datatables.projects.lables.developer'), visible: false
+          unless (collection.class == Array || terms_array.include?(""))
+            collection.where("projects.owner IN (?)", terms_array.uniq)
+          else
+            collection
+          end
+        end
+
+        col :project_developer, col_class: 'multiple-select col-order-7', sql_column: 'projects.developer', label: t('models.effective.datatables.projects.lables.developer'), visible: false, search: { as: :select, collection: Proc.new { Project.order(:developer).pluck(:developer).uniq.compact.map { |developer| [developer, developer] } rescue [] } } do |rec|
+          rec.project_developer
+        end.search do |collection, terms, column, index|
+          terms_array = terms.split(",")
+
+          unless (collection.class == Array || terms_array.include?(""))
+            collection.where("projects.developer IN (?)", terms_array.uniq)
+          else
+            collection
+          end
+        end
 
         col :project_construction_year, col_class: 'col-order-8', sql_column: 'projects.construction_year', as: :integer, visible: false
 
@@ -160,7 +182,7 @@ module Effective
           end
         end
 
-        col :building_type_name, col_class: 'multiple-select col-order-17', sql_column: 'building_types.name', label: t('models.effective.datatables.projects_certification_paths.building_types.label'), visible: false, search: { as: :select, collection: Proc.new { BuildingType.visible.select(:name).order(:name).distinct.map { |building_type| [building_type.name, building_type.name] } } } do |rec|
+        col :building_type_name, col_class: 'multiple-select col-order-17', sql_column: 'building_types.name', label: t('models.effective.datatables.projects_certification_paths.building_types.label'), visible: false, search: { as: :select, collection: Proc.new { BuildingType.visible.order(:name).pluck(:name).uniq.map { |building_type| [building_type, building_type] } rescue [] } } do |rec|
           rec.building_type_name
         end.search do |collection, terms, column, index|
           terms_array = terms.split(",")
@@ -171,10 +193,26 @@ module Effective
           end
         end
 
-        col :project_service_provider, col_class: 'col-order-18', sql_column: 'projects.service_provider', label: t('models.effective.datatables.projects.lables.service_provider'), visible: false
+        col :project_service_provider, col_class: 'multiple-select col-order-18', sql_column: 'projects.service_provider', label: t('models.effective.datatables.projects.lables.service_provider'), visible: false, search: { as: :select, collection: Proc.new { Project.order(:service_provider).pluck(:service_provider).uniq.map { |service_provider| [service_provider, service_provider] } rescue [] } } do |rec|
+          rec.project_service_provider
+        end.search do |collection, terms, column, index|
+          terms_array = terms.split(",")
+          unless (collection.class == Array || terms_array.include?(""))
+            collection.where("projects.service_provider IN (?)", terms_array)
+          else
+            collection
+          end
+        end
 
-        col :cgp_project_manager_array, col_class: 'col-order-19', label: t('models.effective.datatables.projects_certification_paths.cgp_project_manager_array.label'), visible: false, sql_column: '(%s)' % projects_users_by_type('cgp_project_manager') do |rec|
+        col :cgp_project_manager_array, col_class: 'multiple-select col-order-19', label: t('models.effective.datatables.projects_certification_paths.cgp_project_manager_array.label'), visible: false, sql_column: '(%s)' % projects_users_by_type('cgp_project_manager'), search: { as: :select, collection: Proc.new { ProjectsUser.cgp_project_managers.pluck("users.name").uniq.map { |name| [name, name] } rescue [] } } do |rec|
           ERB::Util.html_escape(rec.cgp_project_manager_array).split('|||').sort.join(', <br/>') unless rec.cgp_project_manager_array.nil?
+        end.search do |collection, terms, column, index|
+          terms_array = terms.split(",")
+          unless (collection.class == Array || terms_array.include?(""))
+            collection.where('(%s) IN (?)' % projects_users_by_type('cgp_project_manager'), terms_array)
+          else
+            collection
+          end
         end
 
         col :project_team_array, col_class: 'col-order-20', label: t('models.effective.datatables.projects_certification_paths.project_team_array.label'), visible: false, sql_column: '(%s)' % projects_users_by_type('project_team') do |rec|
@@ -399,16 +437,30 @@ module Effective
 
         col :certification_path_pcr_track, col_class: 'col-order-35', sql_column: 'certification_paths.pcr_track', label: t('models.effective.datatables.projects_certification_paths.certification_path_pcr_track.label'), as: :boolean, visible: false
 
-        col :certification_manager_array, col_class: 'col-order-36', label: t('models.effective.datatables.projects_certification_paths.certification_manager_array.label'), visible: false, sql_column: '(%s)' % projects_users_by_type('certification_manager') do |rec|
+        col :certification_manager_array, col_class: 'multiple-select col-order-36', label: t('models.effective.datatables.projects_certification_paths.certification_manager_array.label'), visible: false, sql_column: '(%s)' % projects_users_by_type('certification_manager'), search: { as: :select, collection: Proc.new { ProjectsUser.certification_managers.pluck("users.name").uniq.map { |name| [name, name] } rescue [] } } do |rec|
           ERB::Util.html_escape(rec.certification_manager_array).split('|||').sort.join(', <br/>') unless rec.certification_manager_array.nil?
+        end.search do |collection, terms, column, index|
+          terms_array = terms.split(",")
+          unless (collection.class == Array || terms_array.include?(""))
+            collection.where('(%s) IN (?)' % projects_users_by_type('certification_manager'), terms_array)
+          else
+            collection
+          end
         end
 
         col :gsas_trust_team_array, col_class: 'col-order-37', label: t('models.effective.datatables.projects_certification_paths.gsas_trust_team_array.label'), visible: false, sql_column: '(%s)' % projects_users_by_type('gsas_trust_team') do |rec|
           ERB::Util.html_escape(rec.gsas_trust_team_array).split('|||').sort.join(', <br/>') unless rec.gsas_trust_team_array.nil?
         end
 
-        col :enterprise_clients_array, col_class: 'col-order-38', label: t('models.effective.datatables.projects_certification_paths.enterprise_clients_array.label'), visible: false, sql_column: "ARRAY_TO_STRING(ARRAY(SELECT enterprise_client_users.name FROM users as enterprise_client_users INNER JOIN projects_users as enterprise_client_project_users ON enterprise_client_project_users.user_id = enterprise_client_users.id  WHERE enterprise_client_project_users.role IN (#{ProjectsUser.roles[:enterprise_client]}) AND enterprise_client_project_users.project_id = projects.id), '|||')" do |rec|
+        col :enterprise_clients_array, col_class: 'multiple-select col-order-38', label: t('models.effective.datatables.projects_certification_paths.enterprise_clients_array.label'), visible: false, sql_column: '(%s)' % projects_users_by_type('enterprise_clients'), search: { as: :select, collection: Proc.new { ProjectsUser.enterprise_clients.pluck("users.name").uniq.map { |name| [name, name] } rescue [] } } do |rec|
           ERB::Util.html_escape(rec.enterprise_clients_array).split('|||').sort.join(', <br/>') unless rec.enterprise_clients_array.nil?
+        end.search do |collection, terms, column, index|
+          terms_array = terms.split(",")
+          unless (collection.class == Array || terms_array.include?(""))
+            collection.where('(%s) IN (?)' % projects_users_by_type('enterprise_clients'), terms_array)
+          else
+            collection
+          end
         end
       end
 
@@ -467,7 +519,7 @@ module Effective
           .select('(%s) AS cgp_project_manager_array' % projects_users_by_type('cgp_project_manager'))
           .select('(%s) AS gsas_trust_team_array' % projects_users_by_type('gsas_trust_team'))
           .select('(%s) AS certification_manager_array' % projects_users_by_type('certification_manager'))
-          .select("ARRAY_TO_STRING(ARRAY(SELECT enterprise_client_users.name FROM users as enterprise_client_users INNER JOIN projects_users as enterprise_client_project_users ON enterprise_client_project_users.user_id = enterprise_client_users.id  WHERE enterprise_client_project_users.role IN (#{ProjectsUser.roles[:enterprise_client]}) AND enterprise_client_project_users.project_id = projects.id), '|||') AS enterprise_clients_array")
+          .select('(%s) AS enterprise_clients_array' % projects_users_by_type('enterprise_clients'))
           .select('(%s) AS total_achieved_score' % ProjectsCertificationPaths.query_score_in_certificate_points(:achieved_score))
           .order("projects.code")
           .order("certificates.display_weight")

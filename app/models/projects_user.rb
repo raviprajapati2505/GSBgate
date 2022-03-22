@@ -25,7 +25,7 @@ class ProjectsUser < ApplicationRecord
   }
 
   scope :cgp_project_managers, -> {
-    where(role: ProjectsUser.roles[:cgp_project_manager])
+    joins(:user).where(role: ProjectsUser.roles[:cgp_project_manager]).order("users.name")
   }
 
   scope :gsas_trust_team, -> {
@@ -33,7 +33,7 @@ class ProjectsUser < ApplicationRecord
   }
 
   scope :certification_managers, -> {
-    where(role: ProjectsUser.roles[:certification_manager])
+    joins(:user).where(role: ProjectsUser.roles[:certification_manager]).order("users.name")
   }
 
   scope :project_team_with_type, ->(certification_team_type) {
@@ -45,7 +45,7 @@ class ProjectsUser < ApplicationRecord
   }
 
   scope :enterprise_clients, -> {
-    where(role: ProjectsUser.roles[:enterprise_client])
+    joins(:user).where(role: ProjectsUser.roles[:enterprise_client]).order("users.name")
   }
 
   def project_team?
