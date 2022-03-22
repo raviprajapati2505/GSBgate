@@ -182,7 +182,7 @@ module Effective
           end
         end
 
-        col :building_type_name, col_class: 'multiple-select col-order-17', sql_column: 'building_types.name', label: t('models.effective.datatables.projects_certification_paths.building_types.label'), visible: false, search: { as: :select, collection: Proc.new { BuildingType.visible.order(:name).pluck(:name).uniq.map { |building_type| [building_type, building_type] } rescue [] } } do |rec|
+        col :building_type_name, col_class: 'multiple-select col-order-17', sql_column: 'building_types.name', label: t('models.effective.datatables.projects_certification_paths.building_types.label'), visible: false, search: { as: :select, collection: Proc.new { BuildingType.visible.order(:name).pluck(:name).uniq.compact.map { |building_type| [building_type, building_type] } rescue [] } } do |rec|
           rec.building_type_name
         end.search do |collection, terms, column, index|
           terms_array = terms.split(",")
@@ -193,7 +193,7 @@ module Effective
           end
         end
 
-        col :project_service_provider, col_class: 'multiple-select col-order-18', sql_column: 'projects.service_provider', label: t('models.effective.datatables.projects.lables.service_provider'), visible: false, search: { as: :select, collection: Proc.new { Project.order(:service_provider).pluck(:service_provider).uniq.map { |service_provider| [service_provider, service_provider] } rescue [] } } do |rec|
+        col :project_service_provider, col_class: 'multiple-select col-order-18', sql_column: 'projects.service_provider', label: t('models.effective.datatables.projects.lables.service_provider'), visible: false, search: { as: :select, collection: Proc.new { Project.order(:service_provider).pluck(:service_provider).uniq.compact.map { |service_provider| [service_provider, service_provider] } rescue [] } } do |rec|
           rec.project_service_provider
         end.search do |collection, terms, column, index|
           terms_array = terms.split(",")
@@ -204,7 +204,7 @@ module Effective
           end
         end
 
-        col :cgp_project_manager_array, col_class: 'multiple-select col-order-19', label: t('models.effective.datatables.projects_certification_paths.cgp_project_manager_array.label'), visible: false, sql_column: '(%s)' % projects_users_by_type('cgp_project_manager'), search: { as: :select, collection: Proc.new { ProjectsUser.cgp_project_managers.pluck("users.name").uniq.map { |name| [name, name] } rescue [] } } do |rec|
+        col :cgp_project_manager_array, col_class: 'multiple-select col-order-19', label: t('models.effective.datatables.projects_certification_paths.cgp_project_manager_array.label'), visible: false, sql_column: '(%s)' % projects_users_by_type('cgp_project_manager'), search: { as: :select, collection: Proc.new { ProjectsUser.cgp_project_managers.pluck("users.name").uniq.compact.map { |name| [name, name] } rescue [] } } do |rec|
           ERB::Util.html_escape(rec.cgp_project_manager_array).split('|||').sort.join(', <br/>') unless rec.cgp_project_manager_array.nil?
         end.search do |collection, terms, column, index|
           terms_array = terms.split(",")
@@ -444,7 +444,7 @@ module Effective
 
         col :certification_path_pcr_track, col_class: 'col-order-35', sql_column: 'certification_paths.pcr_track', label: t('models.effective.datatables.projects_certification_paths.certification_path_pcr_track.label'), as: :boolean, visible: false
 
-        col :certification_manager_array, col_class: 'multiple-select col-order-36', label: t('models.effective.datatables.projects_certification_paths.certification_manager_array.label'), visible: false, sql_column: '(%s)' % projects_users_by_type('certification_manager'), search: { as: :select, collection: Proc.new { ProjectsUser.certification_managers.pluck("users.name").uniq.map { |name| [name, name] } rescue [] } } do |rec|
+        col :certification_manager_array, col_class: 'multiple-select col-order-36', label: t('models.effective.datatables.projects_certification_paths.certification_manager_array.label'), visible: false, sql_column: '(%s)' % projects_users_by_type('certification_manager'), search: { as: :select, collection: Proc.new { ProjectsUser.certification_managers.pluck("users.name").uniq.compact.map { |name| [name, name] } rescue [] } } do |rec|
           ERB::Util.html_escape(rec.certification_manager_array).split('|||').sort.join(', <br/>') unless rec.certification_manager_array.nil?
         end.search do |collection, terms, column, index|
           terms_array = terms.split(",")
@@ -459,7 +459,7 @@ module Effective
           ERB::Util.html_escape(rec.gsas_trust_team_array).split('|||').sort.join(', <br/>') unless rec.gsas_trust_team_array.nil?
         end
 
-        col :enterprise_clients_array, col_class: 'multiple-select col-order-38', label: t('models.effective.datatables.projects_certification_paths.enterprise_clients_array.label'), visible: false, sql_column: '(%s)' % projects_users_by_type('enterprise_clients'), search: { as: :select, collection: Proc.new { ProjectsUser.enterprise_clients.pluck("users.name").uniq.map { |name| [name, name] } rescue [] } } do |rec|
+        col :enterprise_clients_array, col_class: 'multiple-select col-order-38', label: t('models.effective.datatables.projects_certification_paths.enterprise_clients_array.label'), visible: false, sql_column: '(%s)' % projects_users_by_type('enterprise_clients'), search: { as: :select, collection: Proc.new { ProjectsUser.enterprise_clients.pluck("users.name").uniq.compact.map { |name| [name, name] } rescue [] } } do |rec|
           ERB::Util.html_escape(rec.enterprise_clients_array).split('|||').sort.join(', <br/>') unless rec.enterprise_clients_array.nil?
         end.search do |collection, terms, column, index|
           terms_array = terms.split(",")
