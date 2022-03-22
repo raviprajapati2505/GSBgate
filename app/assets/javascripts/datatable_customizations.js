@@ -32,6 +32,9 @@ $(function() {
         $(searchInput).trigger('keyup');
       });
 
+      searchInput.val("");
+      searchInput.attr("placeholder", "Select Range");
+
       searchInput.on('cancel.daterangepicker', function(ev, picker) {
         searchInput.val('');
         $(searchInput).trigger('keyup');
