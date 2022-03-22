@@ -35,6 +35,8 @@
  *= require three.js/three.js
  *= require cocoon
  *= require datatable_customizations
+ *= require moment
+ *= require daterangepicker
  */
 
 $(function () {

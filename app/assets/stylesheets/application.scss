@@ -23,6 +23,7 @@
  *= require toastr
  *= require leaflet
  *= require leaflet-draw
+ *= require daterangepicker
  *
  * NOTE: removed 'require_tree .', as this conflicts with sass/scss @import behaviour
  *   see: https://github.com/rails/sass-rails

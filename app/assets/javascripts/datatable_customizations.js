@@ -20,7 +20,30 @@ $(function() {
     bindSelect2();
   };
 
+  function bindDateRangePicker(searchInput) {
+    if (searchInput.length > 0) {
+      searchInput.daterangepicker({
+        opens: 'left',
+        locale: {
+          format: 'DD/MM/YYYY',
+          cancelLabel: 'Clear'
+        }
+      }, function(start, end, label) {
+        $(searchInput).trigger('keyup');
+      });
+
+      searchInput.on('cancel.daterangepicker', function(ev, picker) {
+        searchInput.val('');
+        $(searchInput).trigger('keyup');
+      });
+    }
+  }
+
   set_options_label();
+
+  bindDateRangePicker($(".datatable_search_certification_path_started_at input"));
+  bindDateRangePicker($(".datatable_search_certification_path_certified_at input"));
+  bindDateRangePicker($(".datatable_search_certification_path_updated_at input"));
   
   let pageName = window.location.href.split('/').pop();
 
@@ -142,6 +165,14 @@ $(function() {
         // if (Object.keys(columnNames).includes(select_option) || select_option == ""){ 
         //   options_with_null.text("Select All");
         // }
+      } else if (column.hasClass("date-range-filter")) {
+        if (column.hasClass("col-certification_path_started_at")) {
+          bindDateRangePicker($(".datatable_search_certification_path_started_at input"));
+        } else if (column.hasClass("col-certification_path_certified_at")) {
+          bindDateRangePicker($(".datatable_search_certification_path_certified_at input"));
+        } else if  (column.hasClass("col-certification_path_updated_at")) {
+          bindDateRangePicker($(".datatable_search_certification_path_updated_at input"));
+        }
       }
     }
   });

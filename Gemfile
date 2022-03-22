@@ -46,7 +46,9 @@ gem 'warden'
 gem 'warden-jwt_auth'
 gem 'whenever'
 gem 'city-state'
+gem 'momentjs-rails'
 gem 'bootstrap-timepicker-rails'
+gem 'bootstrap-daterangepicker-rails'
 
 group :development do
   gem 'pry-rails'

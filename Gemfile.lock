@@ -81,6 +81,8 @@ GEM
       debug_inspector (>= 0.0.1)
     bootsnap (1.3.2)
       msgpack (~> 1.0)
+    bootstrap-daterangepicker-rails (3.0.4)
+      railties (>= 4.0)
     bootstrap-timepicker-rails (0.1.3)
       railties (>= 3.0)
     bootstrap_form (2.7.0)
@@ -229,6 +231,8 @@ GEM
     mini_mime (1.0.1)
     mini_portile2 (2.4.0)
     minitest (5.11.3)
+    momentjs-rails (2.29.1.1)
+      railties (>= 3.1)
     msgpack (1.2.4)
     msgpack (1.2.4-x64-mingw32)
     msgpack (1.2.4-x86-mingw32)
@@ -403,6 +407,7 @@ DEPENDENCIES
   better_errors
   binding_of_caller
   bootsnap
+  bootstrap-daterangepicker-rails
   bootstrap-timepicker-rails
   bootstrap_form (~> 2.7)
   bundler
@@ -429,6 +434,7 @@ DEPENDENCIES
   jbuilder
   js-routes
   kaminari
+  momentjs-rails
   nokogiri
   pdf-core
   pg

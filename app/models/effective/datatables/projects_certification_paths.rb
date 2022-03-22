@@ -398,34 +398,41 @@ module Effective
 
         # Note: internally we use the status id, so sorting is done by id and not the name !
         
-        col :certification_path_started_at, col_class: 'multiple-select col-order-31', sql_column: 'certification_paths.started_at', label: t('models.effective.datatables.projects_certification_paths.certification_path_started_at.label'), as: :datetime, visible: false, search: { as: :select, collection: Proc.new { CertificationPath.all.order(started_at: :desc).map { |c| [c.started_at&.strftime('%e %b - %Y'), c.started_at&.to_date] }.uniq } } do |rec|
+        col :certification_path_started_at, col_class: 'date-range-filter col-order-31', sql_column: 'certification_paths.started_at', label: t('models.effective.datatables.projects_certification_paths.certification_path_started_at.label'), as: :datetime, visible: true do |rec|
           rec.certification_path_started_at&.strftime('%e %b - %Y')
-        end.search do |collection, terms, column, index|
-          terms_array = terms.split(",")
-          unless (collection.class == Array || terms_array.include?(""))
-            collection.where("DATE(certification_paths.started_at) IN (?)", terms_array.map!{|term| term.to_date})
-          else
-            collection
-          end
-        end
-        
-        col :certification_path_certified_at, col_class: 'multiple-select col-order-32', sql_column: 'certification_paths.certified_at', label: t('models.effective.datatables.projects_certification_paths.certification_path_certified_at.label'), as: :datetime, visible: false, search: { as: :select, collection: Proc.new { CertificationPath.all.order(certified_at: :desc).map { |c| [c.certified_at&.strftime('%e %b - %Y'), c.certified_at&.to_date] }.uniq } } do |rec|
-          rec.certification_path_certified_at&.strftime('%e %b - %Y')
-        end.search do |collection, terms, column, index|
-          terms_array = terms.split(",")
-          unless (collection.class == Array || terms_array.include?(""))
-            collection.where("DATE(certification_paths.certified_at) IN (?)", terms_array.map!{|term| term.to_date})
+        end.search do |collection, term, column, index|
+
+          from_date = term.split(' - ')[0]&.to_datetime
+          to_date = term.split(' - ')[1]&.to_datetime
+
+          unless (collection.class == Array)
+            collection.where("DATE(certification_paths.started_at) BETWEEN :from_date AND :to_date", from_date: from_date, to_date: to_date)
           else
             collection
           end
         end
 
-        col :certification_path_updated_at, col_class: 'multiple-select col-order-33', label: t('models.effective.datatables.projects_certification_paths.certification_path_updated_at.label'), sql_column: 'certification_paths.updated_at', as: :datetime, visible: false, search: { as: :select, collection: Proc.new { CertificationPath.all.order(updated_at: :desc).map { |c| [c.updated_at&.strftime('%e %b - %Y'), c.updated_at&.to_date] }.uniq } } do |rec|
+        col :certification_path_certified_at, col_class: 'date-range-filter col-order-32', sql_column: 'certification_paths.certified_at', label: t('models.effective.datatables.projects_certification_paths.certification_path_certified_at.label'), as: :datetime, visible: false do |rec|
+          rec.certification_path_certified_at&.strftime('%e %b - %Y')
+        end.search do |collection, term, column, index|
+          from_date = term.split(' - ')[0]&.to_datetime
+          to_date = term.split(' - ')[1]&.to_datetime
+
+          unless (collection.class == Array)
+            collection.where("DATE(certification_paths.certified_at) BETWEEN :from_date AND :to_date", from_date: from_date, to_date: to_date)
+          else
+            collection
+          end
+        end
+
+        col :certification_path_updated_at, col_class: 'date-range-filter col-order-33', label: t('models.effective.datatables.projects_certification_paths.certification_path_updated_at.label'), sql_column: 'certification_paths.updated_at', as: :datetime, visible: false do |rec|
           rec.certification_path_updated_at&.strftime('%e %b - %Y')
-        end.search do |collection, terms, column, index|
-          terms_array = terms.split(",")
-          unless (collection.class == Array || terms_array.include?(""))
-            collection.where("DATE(certification_paths.updated_at) IN (?)", terms_array.map!{|term| term.to_date})
+        end.search do |collection, term, column, index|
+          from_date = term.split(' - ')[0]&.to_datetime
+          to_date = term.split(' - ')[1]&.to_datetime
+
+          unless (collection.class == Array)
+            collection.where("DATE(certification_paths.updated_at) BETWEEN :from_date AND :to_date", from_date: from_date, to_date: to_date)
           else
             collection
           end
