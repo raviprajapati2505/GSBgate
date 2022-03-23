@@ -209,7 +209,7 @@ module Effective
         end.search do |collection, terms, column, index|
           terms_array = terms.split(",")
           unless (collection.class == Array || terms_array.include?(""))
-            collection.where('(%s) IN (?)' % projects_users_by_type('cgp_project_manager'), terms_array)
+            collection.where('(%s) ILIKE ANY ( array[:terms_array] )' % projects_users_by_type('cgp_project_manager'), terms_array: terms_array.map! {|val| "%#{val}%" }) rescue collection
           else
             collection
           end
@@ -449,7 +449,7 @@ module Effective
         end.search do |collection, terms, column, index|
           terms_array = terms.split(",")
           unless (collection.class == Array || terms_array.include?(""))
-            collection.where('(%s) IN (?)' % projects_users_by_type('certification_manager'), terms_array)
+            collection.where('(%s) ILIKE ANY ( array[:terms_array] )' % projects_users_by_type('certification_manager'), terms_array: terms_array.map! {|val| "%#{val}%" }) rescue collection
           else
             collection
           end
@@ -464,7 +464,7 @@ module Effective
         end.search do |collection, terms, column, index|
           terms_array = terms.split(",")
           unless (collection.class == Array || terms_array.include?(""))
-            collection.where('(%s) IN (?)' % projects_users_by_type('enterprise_clients'), terms_array)
+            collection.where('(%s) ILIKE ANY ( array[:terms_array] )' % projects_users_by_type('enterprise_clients'), terms_array: terms_array.map! {|val| "%#{val}%" }) rescue collection
           else
             collection
           end
