@@ -10,6 +10,6 @@ $(function(){
 $(".district-select-dropdown").on("change", function(){
   let selected_district = $(this).find(":selected").val();
   if (selected_district == "Other"){
-    $("#district-select-div").html("<label>Project District</label><input class='form-control' type='text' name='project[district]'>")
+    $("#district-select-div").html("<label class='required'>Project District</label><input class='form-control' type='text' name='project[district]'>")
   }
 });

@@ -12,7 +12,7 @@ $(function(){
 $(".city-select-dropdown").on("change", function(){
   let selected_location = $(this).find(":selected").val();
   if (selected_location == "Other"){
-    $("#city-select-div").html("<label>Project City</label><input class='form-control' type='text' name='project[city]'>")
+    $("#city-select-div").html("<label class='required'>Project City</label><input class='form-control' type='text' name='project[city]'>")
   }
 });
 
@@ -34,7 +34,7 @@ function populate_districts(element){
       }
     });
   } else if (city_name.length > 0 && city_name == 'Other') {
-    $("#district-select-div").html("<label>Project District</label><input class='form-control' type='text' name='project[district]'>")
+    $("#district-select-div").html("<label class='required'>Project District</label><input class='form-control' type='text' name='project[district]'>")
   }
 }
 

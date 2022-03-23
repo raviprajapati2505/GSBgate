@@ -19,11 +19,14 @@ class Project < ApplicationRecord
   belongs_to :building_type, optional: true
 
   validates :name, presence: true
+  validates :certificate_type, presence: true
   validates :owner, presence: true
+  validates :developer, presence: true
   validates :address, presence: true
   validates :city, presence: true
   validates :district, presence: true
   validates :country, presence: true
+  validates :construction_year, presence: true
   validates :location_plan_file, presence: true
   validates :site_plan_file, presence: true
   validates :design_brief_file, presence: true
