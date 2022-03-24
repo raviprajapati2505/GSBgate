@@ -1,8 +1,10 @@
-require 'bcrypt'
-
 class User < ApplicationRecord
+  # Include default devise modules. Others available are:
+  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+  devise :invitable, :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :validatable, :confirmable
+  
   include ActionView::Helpers::TranslationHelper
-  include BCrypt
   include DatePlucker
 
   enum role: { system_admin: 5, default_role: 1, gsas_trust_top_manager: 2, gsas_trust_manager: 3, gsas_trust_admin: 4, document_controller: 6, record_checker: 7 }
@@ -22,6 +24,9 @@ class User < ApplicationRecord
   after_initialize :init, if: :new_record?
   before_create :before_create
 
+  validates :email, :username, presence: true
+  validates :email, uniqueness: true
+  validates :username, uniqueness: true
   validates :role, inclusion: User.roles.keys
 
   delegate :can?, :cannot?, :to => :ability
@@ -76,15 +81,6 @@ class User < ApplicationRecord
 
   def full_name
     name
-  end
-
-  def password
-    @password ||= Password.new(self.encrypted_password)
-  end
-
-  def password=(new_password)
-    @password = Password.create(new_password)
-    self.encrypted_password = @password
   end
 
   # Store the user in the current Thread (needed for our concerns, so they can access the current user model)

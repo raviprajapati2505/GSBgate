@@ -1,43 +1,89 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GSASGate &gt; <%= strip_tags @page_title %></title>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>GSASGate &gt; <%= strip_tags @page_title %></title>
 
-    <!-- Icons -->
-    <%= render 'layouts/icons' %>
-    <!-- Main css styles -->
-    <%= stylesheet_link_tag 'application', media: 'all' %>
-    <!-- Main javascript files -->
-    <%= javascript_include_tag 'application' %>
-    <%= csrf_meta_tags %>
-</head>
-<body class="top-navigation skin-gord">
-<div id="wrapper">
-    <div id="page-wrapper" class="">
-        <!-- Navbar -->
-        <%= render 'layouts/topnavbar' %>
+        <!-- Icons -->
+        <%= render 'layouts/icons' %>
+        <!-- Main css styles -->
+        <%= stylesheet_link_tag 'application', media: 'all' %>
+        <!-- Main javascript files -->
+        <%= javascript_include_tag 'application' %>
+        <%= csrf_meta_tags %>
+    </head>
 
-        <div class="wrapper wrapper-content">
-            <div class="container">
-                <% if notice %>
-                    <p class="alert alert-success"><%= notice %></p>
-                <% end %>
-                <% if alert %>
-                    <p class="alert alert-danger"><%= alert %></p>
-                <% end %>
+    <% if current_user.present? %>
+        <body class="top-navigation skin-gord">
+            <div id="wrapper">
+                <div id="page-wrapper" class="">
+                    <!-- Navbar -->
+                    <%= render 'layouts/topnavbar' %>
 
-                <!-- Main view  -->
-                <%= yield %>
+                    <div class="wrapper wrapper-content">
+                        <div class="container">
+                            <% if notice %>
+                                <p class="alert alert-success"><%= notice %></p>
+                            <% end %>
+                            <% if alert %>
+                                <p class="alert alert-danger"><%= alert %></p>
+                            <% end %>
+
+                            <!-- Main view  -->
+                            <%= yield %>
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <%= render 'layouts/footer' %>
+                </div>
             </div>
-        </div>
+            <%= yield(:js) -%>
+        </body>
 
-        <!-- Footer -->
-        <%= render 'layouts/footer' %>
-    </div>
-</div>
-<%= yield(:js) -%>
-</body>
+    <% else %>
+        <body class="skin-gord-login">
+            <div class="container login-content">
+                <div class="row">
+                    <div class="animated fadeInDown">
+                        <div>
+                            <% if notice %>
+                                <p class="alert alert-success"><%= notice.html_safe %></p>
+                            <% end %>
+                            <% if alert %>
+                                <p class="alert alert-danger"><%= alert.html_safe %></p>
+                            <% end %>
+
+                            <!-- Main view  -->
+                            <%= yield%>
+                        </div>
+                    </div>
+                    <div class="login-footer">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                &copy; <%= Time.now.year %>
+                                <br/>
+                                <% if APP_VERSION.present? %>
+                                Version: <%= APP_VERSION %>
+                                <% end %>
+                            </div>
+                            <div class="col-xs-6 text-right">
+                                <div>
+                                    <%= link_to 'Home', '/' %>
+                                    <%= link_to 'Contact', 'http://www.gord.qa/', target: '_blank' %>
+                                </div>
+                                <div>
+                                    <%= link_to 'Terms & Conditions', '/GSAS_Certification_TCs.pdf', target: '_blank' %>
+                                    <%= link_to 'Privacy Policy', 'http://www.gord.qa/privacy-policy', target: '_blank' %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                   <%= yield(:js) -%>
+                </div>
+            </div>
+        </body>
+    <% end %>
 </html>

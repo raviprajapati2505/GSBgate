@@ -5,25 +5,26 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception, prepend: true
 
   before_action :init
-  before_action :set_current_user
 
-  helper_method :warden, :user_signed_in?, :current_user
+  # before_action :set_current_user
 
-  def user_signed_in?
-    !current_user.nil?
-  end
+  # helper_method :warden, :user_signed_in?, :current_user
 
-  def current_user
-    warden.user
-  end
+  # def user_signed_in?
+  #   !current_user.nil?
+  # end
 
-  def authenticate!
-    warden.authenticate!
-  end
+  # def current_user
+  #   warden.user
+  # end
 
-  def warden
-    request.env['warden']
-  end
+  # def authenticate!
+  #   warden.authenticate!
+  # end
+
+  # def warden
+  #   request.env['warden']
+  # end
 
   rescue_from CanCan::AccessDenied do |exception|
     Rails.logger.debug "Access denied on #{exception.action} #{exception.subject.inspect}"
@@ -41,9 +42,9 @@ class ApplicationController < ActionController::Base
     @page_title = 'GSASgate'
   end
 
-  def set_current_user
-    User.current = current_user
-  end
+  # def set_current_user
+  #   User.current = current_user
+  # end
 
   def current_ability
     @current_ability ||= Ability.new(current_user, params, request)
