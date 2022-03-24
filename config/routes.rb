@@ -1,9 +1,12 @@
 Rails.application.routes.draw do
-  # The priority is based upon order of creation: first created -> highest priority.
-  # See how all your routes lay out with "rake routes", or navigate to /rails/info
-
   # You can have the root of your site routed with "root"
   root 'projects#index'
+
+  # devise_for :users
+  devise_for :users, controllers: { registrations: 'users/registrations', sessions: 'users/sessions', invitations: 'users/invitations' }
+
+  # The priority is based upon order of creation: first created -> highest priority.
+  # See how all your routes lay out with "rake routes", or navigate to /rails/info
 
   # Our own "users/*" routes
   resources :users, only: [:index, :show] do

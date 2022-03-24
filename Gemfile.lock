@@ -129,6 +129,15 @@ GEM
     concurrent-ruby (1.1.5)
     crass (1.0.4)
     debug_inspector (0.0.3)
+    devise (4.8.1)
+      bcrypt (~> 3.0)
+      orm_adapter (~> 0.1)
+      railties (>= 4.1.0)
+      responders
+      warden (~> 1.2.3)
+    devise_invitable (2.0.6)
+      actionmailer (>= 5.0)
+      devise (>= 4.6)
     dotenv (2.7.6)
     dry-auto_inject (0.7.0)
       dry-container (>= 0.3.4)
@@ -214,6 +223,10 @@ GEM
       activerecord
       kaminari-core (= 1.1.1)
     kaminari-core (1.1.1)
+    launchy (2.4.3)
+      addressable (~> 2.3)
+    letter_opener (1.8.1)
+      launchy (>= 2.2, < 3)
     loofah (2.2.3)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -252,6 +265,7 @@ GEM
     oga (2.15)
       ast
       ruby-ll (~> 2.1)
+    orm_adapter (0.5.0)
     pdf-core (0.7.0)
     pg (1.1.4)
     pg (1.1.4-x64-mingw32)
@@ -328,6 +342,9 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.10.0)
       ffi (~> 1.0)
+    responders (3.0.1)
+      actionpack (>= 5.0)
+      railties (>= 5.0)
     roo (2.5.1)
       nokogiri (~> 1)
       rubyzip (~> 1.1, < 2.0.0)
@@ -403,7 +420,6 @@ DEPENDENCIES
   awesome_print
   axlsx (~> 2.1.0.pre)
   axlsx_rails
-  bcrypt
   better_errors
   binding_of_caller
   bootsnap
@@ -423,6 +439,8 @@ DEPENDENCIES
   city-state
   ckeditor_rails
   cocoon
+  devise
+  devise_invitable
   dotenv
   effective_datatables (< 4.0.0)!
   execjs
@@ -434,6 +452,7 @@ DEPENDENCIES
   jbuilder
   js-routes
   kaminari
+  letter_opener
   momentjs-rails
   nokogiri
   pdf-core

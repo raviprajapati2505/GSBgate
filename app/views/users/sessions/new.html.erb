@@ -1,0 +1,25 @@
+
+<div class="loginColumns">
+    <span class="top-title">GSAS Projects Certifications <span class="separator">|</span> Register/Manage a Project</span>
+    <div class="row">
+        <div class="col-md-6 login-left">
+            <%= image_tag 'layout/gsas_trust_logo.png', class: 'logo' %>
+        </div>
+        <div class="col-md-6 login-right">
+            <div class="title">
+                <h2>Login to GSASgate</h2>
+            </div>
+            <div class="form">
+                <%= bootstrap_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+                    <%= f.text_field :username, prepend: image_tag('layout/username-icon.png'), autofocus: true, autocomplete: 'off', placeholder: 'Username', hide_label: true %>
+                    <%= f.password_field :password, prepend: image_tag('layout/password-icon.png'), autocomplete: 'off', placeholder: 'Password', hide_label: true %>
+                    <%= btn_tag(text: 'Login', class: 'block full-width m-b') %>
+                <% end %>
+            </div>
+            <div class="links">
+                <%= render "users/shared/links" %>
+            </div>
+        </div>
+    </div>
+</div>
+                

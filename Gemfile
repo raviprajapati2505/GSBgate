@@ -5,7 +5,6 @@ gem 'dotenv'
 gem 'addressable'
 gem 'axlsx', '~> 2.1.0.pre'
 gem 'axlsx_rails'
-gem 'bcrypt'
 gem 'bootsnap'
 gem 'bootstrap_form', '~> 2.7'
 gem 'bundler'
@@ -49,6 +48,8 @@ gem 'city-state'
 gem 'momentjs-rails'
 gem 'bootstrap-timepicker-rails'
 gem 'bootstrap-daterangepicker-rails'
+gem 'devise'
+gem 'devise_invitable'
 
 group :development do
   gem 'pry-rails'
@@ -62,6 +63,7 @@ group :development do
   gem 'capistrano-rbenv'
   gem 'capistrano-rvm'
   gem 'capistrano-systemd'
+  gem 'letter_opener'
 end
 
 source 'http://rails-assets.org' do
