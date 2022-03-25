@@ -1076,7 +1076,11 @@
     background-color: #3155A6;
   }
 
-  .label-rating-certification-denied {
+  .label-success {
+    background-color: #62A60A;
+  }
+
+  .label-rating-certification-denied, .label-danger {
     background-color: #EE322E;
   }
 }

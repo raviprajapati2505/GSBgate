@@ -9,6 +9,7 @@ class UsersController < AuthenticatedController
 
   def show
     respond_to do |format|
+      format.html
       format.json { render json: @user, status: :ok }
     end
   end

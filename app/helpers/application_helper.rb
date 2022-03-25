@@ -240,6 +240,15 @@ module ApplicationHelper
     "#{ikoen(name, options)}&nbsp;&nbsp;#{text}".html_safe
   end
 
+  def label_span(value = false, label_true = true, label_false = false)
+    label = value ? label_true : label_false
+    "<span class='label label-rating #{label_class(value)}'>#{label.to_s.titleize}</span>"
+  end
+
+  def label_class(value = false)
+    value ? 'label-success' : 'label-danger' 
+  end
+
   def commify_values(value)
     value = value.present? ? value&.to_s&.split(/(?=(?:\d{3})+$)/)&.join(",") : ""
     return value

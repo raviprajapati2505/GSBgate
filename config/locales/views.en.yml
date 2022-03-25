@@ -307,6 +307,11 @@ en:
     index:
       action_edit_title: Edit
       table_title: User Overview
+    show:
+      user_details:
+        title: Your Profile
+      user_license_details:
+        title: License Details
     form:
       form_title: User details
     list_notifications:

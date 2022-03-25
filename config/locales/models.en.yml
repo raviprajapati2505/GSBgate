@@ -138,6 +138,17 @@ en:
         issuance_date: Issuance Date
         approval_date: Approval Date
       user:
+        email: Email
+        name: Name
+        role: Role
+        linkme_member_id: LinkMe Member ID
+        username: Username
+        linkme_user: LinkMe User?
+        gord_employee: GORD Employee?
+        cgp_license: CGP License?
+        cgp_license_expired: CGP License Expired?
+        employer_name: Employer Name
+        active: Profile Status
         roles:
           system_admin: System administrator
           gsas_trust_top_manager: Chairman

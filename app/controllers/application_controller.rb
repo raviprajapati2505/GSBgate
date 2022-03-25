@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
 
   before_action :init
 
-  # before_action :set_current_user
+  before_action :set_current_user
 
   # helper_method :warden, :user_signed_in?, :current_user
 
@@ -42,9 +42,9 @@ class ApplicationController < ActionController::Base
     @page_title = 'GSASgate'
   end
 
-  # def set_current_user
-  #   User.current = current_user
-  # end
+  def set_current_user
+    User.current = current_user
+  end
 
   def current_ability
     @current_ability ||= Ability.new(current_user, params, request)

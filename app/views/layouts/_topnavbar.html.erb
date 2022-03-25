@@ -86,7 +86,7 @@
         <% if user_signed_in? %>
             <ul class="nav navbar-top-links navbar-right">
                 <li>
-                    <%= link_to 'http://www.linkme.qa/members/manage_profile.asp', target: '_blank' do %>
+                    <%= link_to user_path(current_user.id) do %>
                         <% if current_user.picture.present? %>
                             <img src="<%= current_user.picture %>" class="img-circle profile-picture">
                         <% else %>

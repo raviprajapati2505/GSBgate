@@ -84,6 +84,10 @@ class Ability
     #   - SYSTEM, can do anything, only needed for testing or emergencies!
     #     - system_admin
     # ------------------------------------------------------------------------------------------------------------
+
+    # common persmissions
+    can [:show], User, id: user.id
+
     if user.default_role?
       # Project controller
       can :read, Project, projects_users: {user_id: user.id}
@@ -452,4 +456,3 @@ class Ability
     read_actions = ["index", "show", "show_tools", "list"]
     read_actions.include?(params["action"]) rescue true
   end
-end
