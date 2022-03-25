@@ -9,6 +9,9 @@ class AddDeviseToUsers < ActiveRecord::Migration[5.2]
 
       change_column :users, :username, :string, null: true
 
+      ## Set flag for active/deactive user
+      t.boolean :active, default: true
+      
       ## Recoverable
       t.string   :reset_password_token
       t.datetime :reset_password_sent_at
@@ -57,7 +60,7 @@ class AddDeviseToUsers < ActiveRecord::Migration[5.2]
     # add_index :users, :unlock_token,         unique: true
 
     # confirm existing users.
-    User.update_all(confirmed_at: Time.now)
+    User.update_all(confirmed_at: Time.now, active: true)
   end
 
   def self.down

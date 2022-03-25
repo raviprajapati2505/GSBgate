@@ -51,6 +51,14 @@ class User < ApplicationRecord
     where(linkme_user: false)
   }
 
+  scope :confirmed_users, -> {
+    where.not(confirmed_at: nil)
+  }
+
+  scope :active, -> {
+    where(active: true)
+  }
+
   # scope :not_authorized_for_project, ->(project) {
   #   where.not('exists(select id from projects_users where user_id = users.id and project_id = ?)', project.id)
   # }
@@ -144,7 +152,7 @@ class User < ApplicationRecord
       membership_expiry = member_profile[:membership_expiry].blank? ? false : member_profile[:membership_expiry]&.to_datetime
       membership_expiry = membership_expiry < DateTime.now unless !membership_expiry
     end
-    user.cgp_license_expired = membership_expiry
+    # user.cgp_license_expired = membership_expiry
 
     # Concat the user's name
     user.name = ''
