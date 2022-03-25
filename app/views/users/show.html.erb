@@ -1,0 +1,73 @@
+<div class="row">
+  <div class="col-12">
+    <div class="ibox float-e-margins">
+      <div class="ibox-title">
+        <h5><%= t('.user_details.title') %></h5>
+      </div>
+      <div class="ibox-content">
+        <table class="table table-bordered table-striped user-details-table">
+          <tbody>
+            <tr>
+              <th><%= User.human_attribute_name('name') %></th>
+              <td><%= @user.name %></td>
+            </tr>
+            <tr>
+              <th><%= User.human_attribute_name('email') %></th>
+              <td><%= @user.email %></td>
+            </tr>
+            <tr>
+              <th><%= User.human_attribute_name('role') %></th>
+              <td><%= @user.role&.titleize %></td>
+            </tr>
+            <tr>
+              <th><%= User.human_attribute_name('linkme_member_id') %></th>
+              <td><%= @user.linkme_member_id %></td>
+            </tr>
+            <tr>
+              <th><%= User.human_attribute_name('username') %></th>
+              <td><%= @user.username %></td>
+            </tr>
+            <tr>
+              <th><%= User.human_attribute_name('linkme_user') %></th>
+              <td><%= label_span(@user.linkme_user, 'Yes', 'No').html_safe %></td>
+            </tr>
+            <tr>
+              <th><%= User.human_attribute_name('gord_employee') %></th>
+              <td><%= label_span(@user.gord_employee, 'Yes', 'No').html_safe %></td>
+            </tr>
+            <tr>
+              <th><%= User.human_attribute_name('employer_name') %></th>
+              <td><%= @user.employer_name %></td>
+            </tr>
+            <tr>
+              <th><%= User.human_attribute_name('active') %></th>
+              <td><%= label_span(@user.active, 'Active', 'Deactivate').html_safe %></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="hr-line-dashed"></div>
+        <% if can? :update, @user %>
+          <%= btn_link_to(edit_user_registration_path(@user), icon: 'edit', text: 'Edit') %>
+        <% end %>
+
+        <div class="ibox-title">
+          <h5><%= t('.user_license_details.title') %></h5>
+        </div>
+        <div class="ibox-content">
+          <table class="table table-bordered table-striped user-details-table">
+            <tbody>
+              <tr>
+                <th><%= User.human_attribute_name('cgp_license') %></th>
+                <td><%= label_span(@user.cgp_license, 'Yes', 'No').html_safe %></td>
+              </tr>
+              <tr>
+                <th><%= User.human_attribute_name('cgp_license_expired') %></th>
+                <td><%= label_span(@user.cgp_license_expired, 'Yes', 'No').html_safe %></span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
