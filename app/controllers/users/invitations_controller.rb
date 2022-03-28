@@ -1,5 +1,5 @@
 class Users::InvitationsController < Devise::InvitationsController
-  # before_action :configure_permitted_parameters
+  before_action :configure_permitted_parameters
 
   # def new
   #   super
@@ -19,7 +19,7 @@ class Users::InvitationsController < Devise::InvitationsController
 
   # protected
 
-  # def configure_permitted_parameters
-  #   devise_parameter_sanitizer.permit(:accept_invitation, keys: %i[first_name last_name email user_name password password_confirmation])
-  # end
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.permit(:accept_invitation, keys: %i[name email username employer_name password password_confirmation])
+  end
 end
