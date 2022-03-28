@@ -3,7 +3,11 @@ Rails.application.routes.draw do
   root 'projects#index'
 
   # devise_for :users
-  devise_for :users, controllers: { registrations: 'users/registrations', sessions: 'users/sessions', invitations: 'users/invitations' }
+  devise_for :users, controllers: { registrations: 'users/registrations',
+                                    sessions: 'users/sessions',
+                                    invitations: 'users/invitations',
+                                    passwords: 'users/passwords',
+                                    confirmations: 'users/confirmations' }
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes", or navigate to /rails/info
