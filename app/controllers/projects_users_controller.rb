@@ -15,17 +15,20 @@ class ProjectsUsersController < AuthenticatedController
 
       ProjectsUser.transaction do
         params[:projects_users].each do |pu|
-          # Create the model
-          projects_user = ProjectsUser.new
-          projects_user.user_id = pu[:user_id]
-          projects_user.role = pu[:role]
-          projects_user.certification_team_type = pu[:certification_team_type]&.to_i
-          projects_user.project = @project
 
-          # Check ability & gord_employee flag
-          if can?(:create, projects_user) && (!projects_user.gsas_trust_team? || projects_user.user.gord_employee?)
-            projects_user.save!
-            projects_users << projects_user
+          if pu.key?("user_id") && pu.key?("role") && pu.key?("certification_team_type") 
+            # Create the model
+            projects_user = ProjectsUser.new
+            projects_user.user_id = pu[:user_id]
+            projects_user.role = pu[:role]
+            projects_user.certification_team_type = pu[:certification_team_type]&.to_i
+            projects_user.project = @project
+
+            # Check ability & gord_employee flag
+            if can?(:create, projects_user) && (!projects_user.gsas_trust_team? || projects_user.user.gord_employee?)
+              projects_user.save!
+              projects_users << projects_user
+            end
           end
         end
       end
