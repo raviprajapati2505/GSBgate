@@ -29,6 +29,9 @@ module Gord
     # Autoload classes from STI folders
     config.autoload_paths << Rails.root.join('app', 'models', 'task')
 
+    # Autoload classes from lib
+    config.autoload_paths << Rails.root.join('lib')
+
     # Autoload classes from custom "services" folder (contains GSAS specific services)
     config.autoload_paths << Rails.root.join('services')
 

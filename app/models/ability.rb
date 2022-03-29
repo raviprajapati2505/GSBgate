@@ -85,8 +85,7 @@ class Ability
     #     - system_admin
     # ------------------------------------------------------------------------------------------------------------
 
-    # common persmissions
-    can [:show], User, id: user.id
+    can [:show, :edit, :update], User, id: user.id
 
     if user.default_role?
       # Project controller
@@ -391,10 +390,17 @@ class Ability
     elsif user.system_admin?
       can :manage, :all
     elsif user.record_checker?
+      can :index, Project
       can :read, Project
       can :read, CertificationPath
       can :read, SchemeMix
       can :read, SchemeMixCriterion
+    elsif user.users_admin?
+      # Task
+      can :read, Task
+      can :count, Task
+
+      can [:edit, :update, :index], User
     else
       cannot :manage, :all
     end

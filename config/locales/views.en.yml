@@ -301,6 +301,7 @@ en:
       description_43: A GSAS Construction Management Plan (GSAS-CMP) was uploaded.
       description_44: Fill the report form to varify certificate information.
       description_45: Fill the report form to varify certificate information and release certification report.
+      description_46: Activate user account.
 
       tooltip_due_date: Task is overdue.
   users:

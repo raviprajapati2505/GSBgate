@@ -13,6 +13,7 @@ module Effective
         col :linkme_user, label: 'Linkme.qa User'
         col :cgp_license, label: 'CGP License'
         col :gord_employee, label: 'GORD Employee'
+        col :active, label: 'Active?'
         col :last_sign_in_at, label: 'Last Sign in at', as: :datetime, search: { as: :select, collection: Proc.new { User.pluck_date_field_by_year_month_day(:last_sign_in_at, :desc).compact } } do |rec|
           localize(rec.last_sign_in_at.in_time_zone) unless rec.last_sign_in_at.nil?
         end
@@ -28,6 +29,11 @@ module Effective
             btn_link_to(masquerade_users_path(rec.id), icon: 'user-secret', size: 'small')
           end
         end
+        if can?(:edit, User)
+          col :id, label: 'Action', search: false, sort: false do |rec|
+            btn_link_to(edit_user_path(rec.id), icon: 'fa fa-edit', size: 'small')
+          end
+        end
       end
 
       collection do
@@ -37,6 +43,7 @@ module Effective
                     'users.email',
                     'users.role',
                     'users.linkme_user',
+                    'users.active',
                     'users.cgp_license',
                     'users.gord_employee',
                     'users.active',

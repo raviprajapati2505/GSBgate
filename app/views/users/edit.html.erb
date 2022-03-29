@@ -1,0 +1,40 @@
+<div class="ibox float-e-margins">
+  <div class="ibox-content">
+    <h2>Edit Profile</h2>
+
+    <%= simple_form_for(@user, as: 'user', url: user_path(@user), html: { method: :put, class: "user-form" }) do |f| %>
+      <%= f.error_notification %>
+
+      <div class="form-inputs">
+        <%= f.input :name, required: true %>
+
+        <%= f.input :email, disabled: true %>
+
+        <div class="form-group">
+          <label class="required">Role</label>
+          <div class="form-control bg-disabled">
+            <%= @user.role&.titleize %>
+          </div>
+        </div>
+
+        <%= f.input :username, required: true %>
+
+        <%= f.input :employer_name, required: true %>
+
+        <%= f.input :linkme_user, required: true %>
+
+        <%= f.input :gord_employee, required: true %>
+
+        <%= f.input :cgp_license, required: true %>
+
+        <%= f.input :active, required: true %>
+
+      </div>
+
+      <div class="form-actions">
+        <%= btn_cancel_to(users_path, style: 'danger', icon: 'times') %>
+        <%= btn_save %>
+      </div>
+    <% end %>
+  </div>
+</div>

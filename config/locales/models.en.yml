@@ -148,7 +148,7 @@ en:
         cgp_license: CGP License?
         cgp_license_expired: CGP License Expired?
         employer_name: Employer Name
-        active: Profile Status
+        active: Profile Active?
         roles:
           system_admin: System administrator
           gsas_trust_top_manager: Chairman
