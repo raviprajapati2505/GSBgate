@@ -1,6 +1,7 @@
 class UsersController < AuthenticatedController
   load_and_authorize_resource :user
   before_action :set_controller_model, except: [:index, :update_notifications]
+  before_action :set_user, only: [:edit, :update]
 
   def index
     @page_title = 'Users'
@@ -11,6 +12,22 @@ class UsersController < AuthenticatedController
     respond_to do |format|
       format.html
       format.json { render json: @user, status: :ok }
+    end
+  end
+
+  def edit
+    unless @user.present? 
+      redirect_to root_path, alert: "User is not available." and return
+    end
+  end
+
+  def update
+    user_params = params.require(:user).permit(:name, :username, :employer_name, :linkme_user, :gord_employee, :cgp_license, :active)
+
+    if @user.update(user_params)
+      redirect_to users_path, notice: "User information successfully updated."
+    else
+      render :edit
     end
   end
 
@@ -172,5 +189,9 @@ class UsersController < AuthenticatedController
   private
   def set_controller_model
     @controller_model = @user
+  end
+
+  def set_user
+    @user = User.find(params[:id])
   end
 end

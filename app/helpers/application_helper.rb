@@ -376,12 +376,17 @@ module ApplicationHelper
         certification_path = model.certification_path
         project = certification_path.project
         certification_path_document = model
+      when User.name.demodulize
+        user = model
       else
         return breadcrumbs
     end
 
     if with_prefix
-      if criterion.present?
+      if user.present?
+        breadcrumbs[:names] << 'Users'
+        breadcrumbs[:paths] << users_path
+      elsif criterion.present?
         breadcrumbs[:names] << 'Criteria'
         breadcrumbs[:paths] << scheme_criteria_url
       else
@@ -437,6 +442,11 @@ module ApplicationHelper
           breadcrumbs[:paths] << project_certification_path_url(project, certification_path) + '#certifier-documentation'
       end
     end
+    if user.present?
+      breadcrumbs[:names] << user.email
+      breadcrumbs[:paths] << edit_user_path(user)
+    end
+
     return breadcrumbs
   end
 

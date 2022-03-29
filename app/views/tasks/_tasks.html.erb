@@ -57,6 +57,15 @@
                         <td><%= render 'layouts/breadcrumb', model: task.taskable %></td>
                         <td>-</td>
                     </tr>
+                <%  when User.name.demodulize
+                        breadcrumbs = breadcrumbs(task.taskable, with_prefix: false)
+                 %>
+                    <tr>
+                        <td><%= link_to(t(".description_#{task.task_description_id}"), breadcrumbs[:paths].last) %></td>
+                        <td><%= render 'layouts/breadcrumb', model: task.taskable %></td>
+                        <td>-</td>
+                    </tr>
+
                 <% end
                    end
                  %>

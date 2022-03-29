@@ -1,13 +1,16 @@
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+  
+  include Taskable
+
   devise :invitable, :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable, :confirmable
+         :recoverable, :rememberable, :validatable, :confirmable, :trackable
   
   include ActionView::Helpers::TranslationHelper
   include DatePlucker
 
-  enum role: { system_admin: 5, default_role: 1, gsas_trust_top_manager: 2, gsas_trust_manager: 3, gsas_trust_admin: 4, document_controller: 6, record_checker: 7 }
+  enum role: { system_admin: 5, default_role: 1, gsas_trust_top_manager: 2, gsas_trust_manager: 3, gsas_trust_admin: 4, document_controller: 6, record_checker: 7, users_admin: 8 }
 
   has_many :documents
   has_many :scheme_mix_criteria_documents

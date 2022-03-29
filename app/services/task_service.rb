@@ -50,17 +50,23 @@ class TaskService
 
     # User filter
     if user.present?
-      if user.system_admin? || user.gsas_trust_manager? || user.gsas_trust_top_manager? || user.gsas_trust_admin?
-        check_project_role = ''
+      if user.users_admin?
+        tasks = tasks.where("application_role = #{User.roles[user.role]}")
       else
-        check_project_role = "or (projects_users.role = tasks.project_role and projects_users.user_id = #{user.id})"
+        if user.system_admin? || user.gsas_trust_manager? || user.gsas_trust_top_manager? || user.gsas_trust_admin? || 
+          check_project_role = ''
+        else
+          check_project_role = "or (projects_users.role = tasks.project_role and projects_users.user_id = #{user.id})"
+        end
+        tasks = tasks.joins(project: [:projects_users]).where("tasks.user_id = #{user.id} or application_role = #{User.roles[user.role]} #{check_project_role}")
       end
-      tasks = tasks.joins(project: [:projects_users]).where("tasks.user_id = #{user.id} or application_role = #{User.roles[user.role]} #{check_project_role}")
     end
 
-    # All tasks of user according to projects_user's certification_team_type
-    tasks = tasks.left_outer_joins(project: :projects_users, certification_path: :certificate).where("SELECT CASE WHEN certificates.certification_type = #{Certificate.certification_types['letter_of_conformance']} THEN projects_users.certification_team_type = #{ProjectsUser.certification_team_types['Letter of Conformance']} WHEN certificates.certification_type = #{Certificate.certification_types['final_design_certificate']} THEN projects_users.certification_team_type = #{ProjectsUser.certification_team_types['Final Design Certificate']} WHEN projects.certificate_type = 3 THEN projects_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Letter of Conformance']}, #{ProjectsUser.certification_team_types['Final Design Certificate']}, #{ProjectsUser.certification_team_types['Other']}) WHEN projects.certificate_type IN (1, 2) THEN projects_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Other']}) ELSE projects_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Letter of Conformance']}, #{ProjectsUser.certification_team_types['Final Design Certificate']}, #{ProjectsUser.certification_team_types['Other']}) END")
-   
+    unless user.users_admin?
+      # All tasks of user according to projects_user's certification_team_type
+      tasks = tasks.left_outer_joins(project: :projects_users, certification_path: :certificate).where("SELECT CASE WHEN certificates.certification_type = #{Certificate.certification_types['letter_of_conformance']} THEN projects_users.certification_team_type = #{ProjectsUser.certification_team_types['Letter of Conformance']} WHEN certificates.certification_type = #{Certificate.certification_types['final_design_certificate']} THEN projects_users.certification_team_type = #{ProjectsUser.certification_team_types['Final Design Certificate']} WHEN projects.certificate_type = 3 THEN projects_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Letter of Conformance']}, #{ProjectsUser.certification_team_types['Final Design Certificate']}, #{ProjectsUser.certification_team_types['Other']}) WHEN projects.certificate_type IN (1, 2) THEN projects_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Other']}) ELSE projects_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Letter of Conformance']}, #{ProjectsUser.certification_team_types['Final Design Certificate']}, #{ProjectsUser.certification_team_types['Other']}) END")
+    end
+
     # Project filter
     if project_id.present?
       tasks = tasks.where(project_id: project_id)

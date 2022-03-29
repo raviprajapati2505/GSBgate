@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
-  # You can have the root of your site routed with "root"
-  root 'projects#index'
+  # You can have the root of your site routed with "root", root_path will be different by user role
+  root to: 'users#index', constraints: RoleConstraint.new(:users_admin) #matches this route when the current user is an admin
+  root to: 'projects#index'
 
   # devise_for :users
   devise_for :users, controllers: { registrations: 'users/registrations',
@@ -20,6 +21,8 @@ Rails.application.routes.draw do
       get 'find_users_by_email/:email/:project_id(/:gord_employee)' => 'users#find_users_by_email', as: 'find_users_by_email', constraints: { email: /[^\/]+/ }
     end
     member do
+      get :edit, to: 'users#edit', to: :edit
+      put :update, to: 'users#update', to: :update
       get :list_notifications, path: :notifications
       put :update_notifications, path: :notifications
       patch :update_user_status, to: 'users#update_user_status', as: 'update_user_status'
