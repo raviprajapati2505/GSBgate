@@ -9,7 +9,7 @@ en:
       modal_title: Confirm
     topnavbar:
       navbar:
-        projects_html: My Projects &amp; Certifications
+        projects_html: Projects &amp; Certifications
         tasks: My Tasks
         preferences: My Preferences
         audit_log: Audit Log
