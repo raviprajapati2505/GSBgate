@@ -1,5 +1,8 @@
 $(function() {
 
+  // Change text 'csv' to 'download'
+  $('.buttons-csv span').text("Download");
+
   function bindSelect2() {
     // Allow multi-select only to admin roles
     if (["system_admin", "gsas_trust_top_manager", "gsas_trust_manager", "gsas_trust_admin"].includes($("#projects-table").data("user-role"))) {
@@ -70,7 +73,7 @@ $(function() {
     columnNames["Certification Stage"] = 14;
     columnNames["Project Developer"] = 15;
     columnNames["Certification Submission Status"] = 16;
-    columnNames["Project Construction Year"] = 17;
+    columnNames["Project Completion Year"] = 17;
     columnNames["Certification Score"] = 18;
     columnNames["Project Estimated Cost"] = 19;
     columnNames["Certification Rating"] = 20;

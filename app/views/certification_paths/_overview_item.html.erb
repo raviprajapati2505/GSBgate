@@ -11,8 +11,8 @@
             <tr class="bg-header-grey">
               <th><%= t('certification_paths.show.certification_path.stage') %></th>
               <th><%= t('certification_paths.show.certification_path.status') %></th>
-              <th><%= t('certification_paths.show.certification_path.rating') %></th>
               <th><%= t('certification_paths.show.certification_path.scores') %></th>
+              <th><%= t('certification_paths.show.certification_path.rating') %></th>
             </tr>
           <% end %>
           <% certification_types.each do |certification_type| %>
@@ -41,14 +41,14 @@
                     <% if certification_path&.certification_path_method&.assessment_method == 2 %>
                       <%= render partial: 'certification_paths/checklist_rating', locals: { certification_path: certification_path } %>
                     <% else %>
-                      <%= render partial: 'certification_paths/ratings', locals: { certification_path: certification_path, display_item: 'rating' } %>
+                      <%= render partial: 'certification_paths/ratings', locals: { certification_path: certification_path, display_item: 'score' } %>
                     <% end %>
                   </td>
                   <td class="td-px-0">
                     <% if certification_path&.certification_path_method&.assessment_method == 2 %>
                       <%= render partial: 'certification_paths/checklist_rating', locals: { certification_path: certification_path } %>
                     <% else %>
-                      <%= render partial: 'certification_paths/ratings', locals: { certification_path: certification_path, display_item: 'score' } %>
+                      <%= render partial: 'certification_paths/ratings', locals: { certification_path: certification_path, display_item: 'rating' } %>
                     <% end %>
                   </td>
                 </tr>

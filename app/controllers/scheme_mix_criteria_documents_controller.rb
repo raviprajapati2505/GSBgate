@@ -33,7 +33,7 @@ class SchemeMixCriteriaDocumentsController < AuthenticatedController
       SchemeMixCriteriaDocument.where(document_id: @scheme_mix_criteria_document.document_id)
           .where.not(scheme_mix_criterion_id: params[:scheme_mix_criteria_document].map {|smcd| smcd[:scheme_mix_criterion_id].to_i})
           .delete_all
-      redirect_back(fallback_location: root_path, alert:'The document was successfully unlinked from the criteria.')
+      redirect_back(fallback_location: root_path, notice:'The document was successfully unlinked from the criteria.')
     else
       redirect_back(fallback_location: root_path, alert: 'No criteria were selected.')
     end

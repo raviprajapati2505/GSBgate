@@ -114,7 +114,7 @@ module Effective
           end
         end
 
-        col :project_construction_year, col_class: 'col-order-8', sql_column: 'projects.construction_year', as: :integer, visible: false
+        col :project_construction_year, col_class: 'col-order-8', label: t('models.effective.datatables.projects.lables.construction_year'), sql_column: 'projects.construction_year', as: :integer, visible: false
 
         col :project_estimated_project_cost, col_class: 'col-order-9', label: t('models.effective.datatables.projects.lables.estimated_project_cost'), sql_column: 'projects.estimated_project_cost', as: :string, visible: false do |rec|
           number_with_delimiter(rec.project_estimated_project_cost, delimiter: ',')

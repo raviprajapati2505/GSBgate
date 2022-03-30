@@ -295,6 +295,7 @@ en:
             estimated_project_cost: Project Estimated Cost
             buildings_footprint_area: Project Footprint
             service_provider: Project Service Provider
+            construction_year: Project Completion Year
         certification_paths:
           certification_path_status:
             label: Certification Status
