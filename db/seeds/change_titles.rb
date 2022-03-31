@@ -89,6 +89,9 @@ Scheme.where(name: "Hotels", gsas_version: "2.1").update_all(name: "Hospitality"
 # Offices-OP (v2.1) scheme ids [3]
 Scheme.where(name: "Offices", certificate_type: 2, gsas_version: "2.1").update_all(name: "Standard Scheme")
 
+# Set mixable true to all "Mixed Use" development type.
+DevelopmentType.where(name: "Mixed Use", mixable: false).update_all(mixable: true)
+
 # Update districts for following projects
 project_codes = ["PD-QA-0247-0248", "PD-QA-0247-0248", "PD-QA-0712-0716", "PD-QA-0712-0716", "PD-QA-0940-0945", "PD-QA-0086-0086", "PD-QA-0304-0305", "PD-QA-0275-0276", "PD-QA-0275-0276"]
 Project.where(code: project_codes).update_all(district: "Lusail")
