@@ -705,7 +705,7 @@ module ApplicationHelper
     certificate_types_name = Certificate.all.order(:display_weight).map { |certificate| [certificate.stage_title, certificate.stage_title&.delete(",")] }
     
     if user.is_admin?
-      certificate_types_name.push(["Recent Certificates", "Recent Certificates"])
+      certificate_types_name.push(["Recent Stages", "Recent Stages"])
     end
 
     return certificate_types_name.uniq

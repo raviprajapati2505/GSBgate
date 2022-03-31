@@ -335,8 +335,8 @@ module Effective
           recent_certificates_ids = []
 
           unless (collection.class == Array || terms_array.include?(""))
-            if (terms_array.include?("Recent Certificates"))
-              terms_array.delete("Recent Certificates")
+            if (terms_array.include?("Recent Stages"))
+              terms_array.delete("Recent Stages")
 
               recent_certificates_ids = CertificationPath.most_recent&.ids&.uniq
             end
