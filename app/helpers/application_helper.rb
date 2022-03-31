@@ -735,11 +735,37 @@ module ApplicationHelper
   end
 
   def get_schemes_names
-    scheme_name = Scheme.pluck(:name).uniq
-    scheme_name.delete("Core + Shell")
-    scheme_name.push("Mixed Use")
-    
-    return scheme_name.sort
+    # scheme_name = Scheme.pluck(:name).uniq
+    # scheme_name.delete("Core + Shell")
+    # scheme_name.push("Mixed Use")
+
+    scheme_name = [
+      "Commercial",
+      "Education",
+      "Homes",
+      "Hospitality",
+      "Interiors",
+      "Light Industry",
+      "Mosques",
+      "Offices",
+      "Residential",
+      "Workers Accomodation",
+      "Energy Centers",
+      "Healthcare",
+      "Railways",
+      "Sports",
+      "Districts",
+      "Parks",
+      "Mixed Use",
+      "Neighborhoods",
+      "Construction Site",
+      "Energy Neutral Mark",
+      "Healthy Building Mark",
+      "Premium Scheme",
+      "Standard Scheme"
+    ]
+
+    return scheme_name
   end
 
   def check_documents_permissions(user_role: nil, project: nil)
