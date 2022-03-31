@@ -111,6 +111,7 @@
            <h5>Criterion Levels</h5>
         </div>
         <div class="ibox-content">
+            <% can_update_smc = can_update_smc_scores(@scheme_mix_criterion) %>
             <%= bootstrap_form_for([@project, @certification_path, @scheme_mix, @scheme_mix_criterion], url: update_scores_project_certification_path_scheme_mix_scheme_mix_criterion_path, method: 'put') do |f| %>
                 <% if @scheme_mix_criterion.errors.any? %>
                     <div id="error_explanation">
@@ -357,71 +358,71 @@
                           <td colspan="<%= num_energy_cols %>">Breakdown of estimated energy consumption [MWh]</td>
                         </tr>
                         <tr>
-                          <th>Cooling</th>
+                          <th><label class="required">Cooling</label></th>
                           <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
                             <td>
                               <div class="form-group">
-                                <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][cooling]" %>" min="0" step="1" value="<%= epl.cooling %>" <% if cannot?(:update, epl) %>readonly="true"<% end %>>
+                                <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][cooling]" %>" min="0" step="1" value="<%= epl.cooling %>" <% if cannot?(:update, epl) %>readonly="true"<% end %> <% if can_update_smc %>required="true"<% end %>>
                               </div>
                             </td>
                           <% end %>
                         </tr>
                         <tr>
-                          <th>Lighting</th>
+                          <th><label class="required">Lighting</label></th>
                           <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
                             <td>
                               <div class="form-group">
-                                <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][lighting]" %>" min="0" step="1" value="<%= epl.lighting %>" <% if cannot?(:update, epl) %>readonly="true"<% end %>>
+                                <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][lighting]" %>" min="0" step="1" value="<%= epl.lighting %>" <% if cannot?(:update, epl) %>readonly="true"<% end %> <% if can_update_smc %>required="true"<% end %>>
                               </div>
                             </td>
                           <% end %>
                         </tr>
                         <tr>
-                          <th>Auxiliaries</th>
+                          <th><label class="required">Auxiliaries</label></th>
                           <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
                             <td>
                               <div class="form-group">
-                                <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][auxiliaries]" %>" min="0" step="1" value="<%= epl.auxiliaries %>" <% if cannot?(:update, epl) %>readonly="true"<% end %>>
+                                <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][auxiliaries]" %>" min="0" step="1" value="<%= epl.auxiliaries %>" <% if cannot?(:update, epl) %>readonly="true"<% end %> <% if can_update_smc %>required="true"<% end %>>
                               </div>
                             </td>
                           <% end %>
                         </tr>
                         <tr>
-                          <th>DHW</th>
+                          <th><label class="required">DHW</label></th>
                           <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
                             <td>
                               <div class="form-group">
-                                <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][dhw]" %>" min="0" step="1" value="<%= epl.dhw %>" <% if cannot?(:update, epl) %>readonly="true"<% end %>>
+                                <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][dhw]" %>" min="0" step="1" value="<%= epl.dhw %>" <% if cannot?(:update, epl) %>readonly="true"<% end %> <% if can_update_smc %>required="true"<% end %>>
                               </div>
                             </td>
                           <% end %>
                         </tr>
                         <tr>
-                          <th>Others</th>
+                          <th><label class="required">Others</label></th>
                           <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
                             <td>
                               <div class="form-group">
-                                <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][others]" %>" min="0" step="1" value="<%= epl.others %>" <% if cannot?(:update, epl) %>readonly="true"<% end %>>
+                                <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][others]" %>" min="0" step="1" value="<%= epl.others %>" <% if cannot?(:update, epl) %>readonly="true"<% end %> <% if can_update_smc %>required="true"<% end %>>
                               </div>
                             </td>
                           <% end %>
                         </tr>
                         <tr>
-                          <th>Generation</th>
+                          <th><label class="required">Generation</label></th>
                           <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
                             <td>
                               <div class="form-group">
-                                <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][generation]" %>" min="0" step="1" value="<%= epl.generation %>" <% if cannot?(:update, epl) %>readonly="true"<% end %>>
+                                <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][generation]" %>" min="0" step="1" value="<%= epl.generation %>" <% if cannot?(:update, epl) %>readonly="true"<% end %> <% if can_update_smc %>required="true"<% end %>>
                               </div>
                             </td>
                           <% end %>
                         </tr>
                         <tr>
-                          <th>CO<sub>2</sub> Emission</th>
+                          <th><label class="required">CO<sub>2</sub> Emission</label></th>
                           <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
                             <td>
                               <div class="form-group">
-                                <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][co2_emission]" %>" min="0" step="1" value="<%= epl.co2_emission %>" <% if cannot?(:update, epl) %>readonly="true"<% end %>>
+                                <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][co2_emission]" %>" min="0" step="1" value="<%= epl.co2_emission %>" <% if cannot?(:update, epl) %>readonly="true"<% end %> <% if can_update_smc %>required="true"<% end %>>
                               </div>
                             </td>
                           <% end %>
@@ -436,22 +437,22 @@
                       <td colspan="<%= num_water_cols %>">Water Consumption Results</td>
                     </tr>
                     <tr>
-                      <th>WPC</th>
+                      <th><label class="required">WPC</label></th>
                       <% f.object.scheme_mix_criterion_wpls.each_with_index do |wpl, index| %>
                         <input type="hidden" name="<%= "scheme_mix_criterion[scheme_mix_criterion_wpls_attributes[#{index}][id]" %>" value="<%= wpl.id %>">
                         <td>
                           <div class="form-group">
-                            <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_wpls_attributes[#{index}][wpc]" %>" min="0.00" step="0.01" value="<%= wpl.wpc %>" <% if cannot?(:update, wpl) %>readonly="true"<% end %>>
+                            <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_wpls_attributes[#{index}][wpc]" %>" min="0.00" step="0.01" value="<%= wpl.wpc %>" <% if cannot?(:update, wpl) %>readonly="true"<% end %> <% if can_update_smc %>required="true"<% end %>>
                           </div>
                         </td>
                       <% end %>
                     </tr>
                     <tr>
-                      <th>LEVEL</th>
+                      <th><label class="required">LEVEL</label></th>
                       <% f.object.scheme_mix_criterion_wpls.each_with_index do |wpl, index| %>
                         <td>
                           <div class="form-group">
-                            <select class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_wpls_attributes[#{index}][level]" %>" <% if cannot?(:update, wpl) %>disabled="true"<% end %>>
+                            <select class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_wpls_attributes[#{index}][level]" %>" <% if cannot?(:update, wpl) %>disabled="true"<% end %> <% if can_update_smc %>required="true"<% end %>>
                               <option>-</option>
                               <% wpl.scheme_criterion_performance_label.levels.each do |level| %>
                                 <option value="<%= level %>" <%= (level == wpl.level) ? 'selected' : '' %>><%= level %></option>
@@ -462,11 +463,11 @@
                       <% end %>
                     </tr>
                     <tr>
-                      <th>BAND</th>
+                      <th><label class="required">BAND</label></th>
                       <% f.object.scheme_mix_criterion_wpls.each_with_index do |wpl, index| %>
                         <td>
                           <div class="form-group">
-                            <select class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_wpls_attributes[#{index}][band]" %>" <% if cannot?(:update, wpl) %>disabled="true"<% end %>>
+                            <select class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_wpls_attributes[#{index}][band]" %>" <% if cannot?(:update, wpl) %>disabled="true"<% end %> <% if can_update_smc %>required="true"<% end %>>
                               <option>-</option>
                               <% wpl.scheme_criterion_performance_label.bands.each do |band| %>
                                 <option value="<%= band %>" <%= (band == wpl.band) ? 'selected' : '' %>><%= band %></option>
@@ -480,31 +481,31 @@
                       <td colspan="<%= num_water_cols %>">Breakdown of estimated water consumption [m<sup>3</sup>]</td>
                     </tr>
                     <tr>
-                      <th>Indoor Use</th>
+                      <th><label class="required">Indoor Use</label></th>
                       <% f.object.scheme_mix_criterion_wpls.each_with_index do |wpl, index| %>
                         <td>
                           <div class="form-group">
-                            <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_wpls_attributes[#{index}][indoor_use]" %>" min="0" step="1" value="<%= wpl.indoor_use %>" <% if cannot?(:update, wpl) %>readonly="true"<% end %>>
+                            <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_wpls_attributes[#{index}][indoor_use]" %>" min="0" step="1" value="<%= wpl.indoor_use %>" <% if cannot?(:update, wpl) %>readonly="true"<% end %> <% if can_update_smc %>required="true"<% end %>>
                           </div>
                         </td>
                       <% end %>
                     </tr>
                     <tr>
-                      <th>Irrigation</th>
+                      <th><label class="required">Irrigation</label></th>
                       <% f.object.scheme_mix_criterion_wpls.each_with_index do |wpl, index| %>
                         <td>
                           <div class="form-group">
-                            <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_wpls_attributes[#{index}][irrigation]" %>" min="0" step="1" value="<%= wpl.irrigation %>" <% if cannot?(:update, wpl) %>readonly="true"<% end %>>
+                            <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_wpls_attributes[#{index}][irrigation]" %>" min="0" step="1" value="<%= wpl.irrigation %>" <% if cannot?(:update, wpl) %>readonly="true"<% end %> <% if can_update_smc %>required="true"<% end %>>
                           </div>
                         </td>
                       <% end %>
                     </tr>
                     <tr>
-                      <th>Cooling Tower</th>
+                      <th><label class="required">Cooling Tower</label></th>
                       <% f.object.scheme_mix_criterion_wpls.each_with_index do |wpl, index| %>
                         <td>
                           <div class="form-group">
-                            <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_wpls_attributes[#{index}][cooling_tower]" %>" min="0" step="1" value="<%= wpl.cooling_tower %>" <% if cannot?(:update, wpl) %>readonly="true"<% end %>>
+                            <input type="number" class="form-control" name="<%= "scheme_mix_criterion[scheme_mix_criterion_wpls_attributes[#{index}][cooling_tower]" %>" min="0" step="1" value="<%= wpl.cooling_tower %>" <% if cannot?(:update, wpl) %>readonly="true"<% end %> <% if can_update_smc %>required="true"<% end %>>
                           </div>
                         </td>
                       <% end %>
@@ -545,7 +546,7 @@
                     <% end %>
                     </tbody>
                 </table>
-                <% if can?(:update_targeted_score, @scheme_mix_criterion) || can?(:update_submitted_score, @scheme_mix_criterion) || can?(:update_achieved_score, @scheme_mix_criterion) %>
+                <% if can_update_smc %>
                     <div class="hr-line-dashed"></div>
                     <%= btn_save %>
                 <% end %>

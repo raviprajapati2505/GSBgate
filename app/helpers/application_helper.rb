@@ -450,6 +450,10 @@ module ApplicationHelper
     FILEICON_EXTENSIONS[ext.downcase] || 'fileicons/file_extension_unknown.png'
   end
 
+  def can_update_smc_scores(scheme_mix_criterion)
+    can?(:update_targeted_score, @scheme_mix_criterion) || can?(:update_submitted_score, @scheme_mix_criterion) || can?(:update_achieved_score, @scheme_mix_criterion) rescue false
+  end
+
   def certification_assessment_type_title(assessment_type = nil)
     if assessment_type.present? && assessment_type == 2
       "Checklist Based Certificate"

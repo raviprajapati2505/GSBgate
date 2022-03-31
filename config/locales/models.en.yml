@@ -65,7 +65,7 @@ en:
         certificate_type: Certificate Type
         carpark_area: Project Car Park Area
         certified_area: Project Certified Area (A+B-C)
-        construction_year: Project Construction Year
+        construction_year: Project Completion Year
         cost_square_meter: Cost per Square Meter
         estimated_building_cost: Estimated Building Cost
         estimated_infrastructure_cost: Estimated Infrastructure Cost
