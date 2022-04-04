@@ -10,8 +10,9 @@ class User < ApplicationRecord
   include ActionView::Helpers::TranslationHelper
   include DatePlucker
 
-  enum role: { system_admin: 5, default_role: 1, gsas_trust_top_manager: 2, gsas_trust_manager: 3, gsas_trust_admin: 4, document_controller: 6, record_checker: 7, users_admin: 8 }
+  enum role: { system_admin: 5, default_role: 1, gsas_trust_top_manager: 2, gsas_trust_manager: 3, gsas_trust_admin: 4, document_controller: 6, record_checker: 7, users_admin: 8, service_provider: 9 }
 
+  belongs_to :service_provider, class_name: 'ServiceProvider', foreign_key: 'service_provider_id', optional: true
   has_many :documents
   has_many :scheme_mix_criteria_documents
   has_many :projects_users, dependent: :destroy

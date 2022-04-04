@@ -86,8 +86,9 @@ class Ability
     # ------------------------------------------------------------------------------------------------------------
 
     can [:show, :edit, :update], User, id: user.id
+    can [:edit_service_provider, :update_service_provider], ServiceProvider, id: user.id
 
-    if user.default_role?
+    if user.default_role? || user.service_provider?
       # Project controller
       can :read, Project, projects_users: {user_id: user.id}
       can [:download_location_plan, :download_site_plan, :download_design_brief, :download_project_narrative, :download_area_statement, :download_sustainability_features], Project, projects_users: {user_id: user.id}

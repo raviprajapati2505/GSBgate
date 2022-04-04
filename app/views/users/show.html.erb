@@ -49,7 +49,11 @@
         </table>
         <div class="hr-line-dashed"></div>
         <% if can? :update, @user %>
-          <%= btn_link_to(edit_user_registration_path(@user), icon: 'edit', text: 'Edit') %>
+          <% if @user.service_provider? %>
+            <%= btn_link_to(edit_service_provider_path(@user), icon: 'edit', text: 'Edit') %>
+          <% else %>
+             <%= btn_link_to(edit_user_registration_path(@user), icon: 'edit', text: 'Edit') %>
+          <% end %>
         <% end %>
       </div>
       <div class="ibox float-e-margins">

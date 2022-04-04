@@ -16,8 +16,10 @@
                     <%= btn_tag(text: 'Login', class: 'block full-width m-b') %>
                 <% end %>
             </div>
+
             <div class="links">
                 <%= render "users/shared/links" %>
+                <%= link_to 'SignUp As a Service Provider', new_service_provider_path %>
             </div>
         </div>
     </div>

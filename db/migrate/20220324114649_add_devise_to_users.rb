@@ -9,6 +9,9 @@ class AddDeviseToUsers < ActiveRecord::Migration[5.2]
 
       change_column :users, :username, :string, null: true
 
+      ## For single table inheritance
+      t.string   :type, default: 'User'
+
       ## Set flag for active/deactive user
       t.boolean :active, default: false
       
