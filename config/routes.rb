@@ -13,8 +13,8 @@ Rails.application.routes.draw do
   devise_scope :user do
     get '/users/registrations/new_service_provider', to: 'users/registrations#new_service_provider', as: :new_service_provider
     post '/users/registrations/create_service_provider', to: 'users/registrations#create_service_provider', as: :create_service_provider
-    get '/users/registrations/edit_service_provider', to: 'users/registrations#edit_service_provider', as: :edit_service_provider
-    put '/users/registrations/update_service_provider', to: 'users/registrations#update_service_provider', as: :update_service_provider
+    get '/users/registrations/:id/edit_service_provider', to: 'users/registrations#edit_service_provider', as: :edit_service_provider
+    put '/users/registrations/:id/update_service_provider', to: 'users/registrations#update_service_provider', as: :update_service_provider
   end
 
   # The priority is based upon order of creation: first created -> highest priority.

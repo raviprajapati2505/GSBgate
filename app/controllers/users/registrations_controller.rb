@@ -3,6 +3,7 @@
 class Users::RegistrationsController < Devise::RegistrationsController
   before_action :configure_sign_up_params, only: [:create]
   before_action :configure_account_update_params, only: [:update]
+  before_action :set_service_provider, only: [:edit_service_provider, :update_service_provider]
 
   # GET /resource/sign_up
   # def new
@@ -18,18 +19,15 @@ class Users::RegistrationsController < Devise::RegistrationsController
   #   super
   # end
 
+  # POST /service_provider
   def create_service_provider
-    build_resource(sp_sign_up_params)
-    @service_provider = resource
-    resource.type = "ServiceProvider"
-    resource.role = :service_provider
+    @service_provider = ServiceProvider.new(sp_sign_up_params)
+    @service_provider.role = :service_provider
 
-    resource.save
-    yield resource if block_given?
-    if resource.persisted?
-      sign_out(resource)
+    if @service_provider.save
+      redirect_to new_user_session_path, notice: "Confirmation mail has been sent to your registered email address, Please verify your account."
     else
-      clean_up_passwords resource
+      clean_up_passwords @service_provider
       set_minimum_password_length
       render :new_service_provider
     end
@@ -40,9 +38,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
   #   super
   # end
 
-  # GET /resource/edit
+  # GET /edit_service_provider
   def edit_service_provider
-    @service_provider = ServiceProvider.find(params[:format])
     render :edit_service_provider
   end
 
@@ -53,16 +50,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # PUT /resource
   def update_service_provider
-    self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
-    prev_unconfirmed_email = resource.unconfirmed_email if resource.respond_to?(:unconfirmed_email)
-
-    resource_updated = update_resource(resource, sp_update_params)
-    yield resource if block_given?
-    if resource_updated
-      set_flash_message_for_update(resource, prev_unconfirmed_email)
-      bypass_sign_in resource, scope: resource_name if sign_in_after_change_password?
-
-      render :edit_service_provider
+    sp_updated = update_resource(@service_provider, sp_update_params)
+    if sp_updated
+      redirect_to user_path(@service_provider), notice: "Confirmation mail sent to you registered email address, Please confirm your account."
     else
       clean_up_passwords resource
       set_minimum_password_length
@@ -102,6 +92,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def sp_update_params
     params.require(:service_provider).permit(%i[name email username linkme_user gord_employee cgp_license cgp_license_expired employer_name active password password_confirmation current_password])
+  end
+
+  def set_service_provider
+    @service_provider = ServiceProvider.find(params[:id])
   end
 
   # The path used after sign up.
