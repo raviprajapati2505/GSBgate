@@ -2,6 +2,7 @@ class UsersController < AuthenticatedController
   load_and_authorize_resource :user
   before_action :set_controller_model, except: [:index, :update_notifications]
   before_action :set_user, only: [:edit, :update]
+  before_action :set_service_provider, only: [:edit_service_provider, :update_service_provider]
 
   def index
     @page_title = 'Users'
@@ -21,6 +22,12 @@ class UsersController < AuthenticatedController
     end
   end
 
+  def edit_service_provider
+    unless @service_provider.present? 
+      redirect_to root_path, alert: "Service Provider is not available." and return
+    end
+  end
+
   def update
     user_params = params.require(:user).permit(:name, :username, :employer_name, :linkme_user, :gord_employee, :cgp_license, :active)
 
@@ -28,6 +35,16 @@ class UsersController < AuthenticatedController
       redirect_to users_path, notice: "User information successfully updated."
     else
       render :edit
+    end
+  end
+
+  def update_service_provider
+    service_provider_params = params.require(:service_provider).permit(:name, :username, :employer_name, :linkme_user, :gord_employee, :cgp_license, :active)
+
+    if @service_provider.update(service_provider_params)
+      redirect_to users_path, notice: "Service Provider information successfully updated."
+    else
+      render :edit_service_provider
     end
   end
 
@@ -187,11 +204,16 @@ class UsersController < AuthenticatedController
   end
 
   private
+
   def set_controller_model
     @controller_model = @user
   end
 
   def set_user
     @user = User.find(params[:id])
+  end
+
+  def set_service_provider
+    @service_provider = ServiceProvider.find(params[:id])
   end
 end

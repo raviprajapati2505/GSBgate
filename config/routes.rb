@@ -10,6 +10,13 @@ Rails.application.routes.draw do
                                     passwords: 'users/passwords',
                                     confirmations: 'users/confirmations' }
 
+  devise_scope :user do
+    get '/users/registrations/new_service_provider', to: 'users/registrations#new_service_provider', as: :new_service_provider
+    post '/users/registrations/create_service_provider', to: 'users/registrations#create_service_provider', as: :create_service_provider
+    get '/users/registrations/edit_service_provider', to: 'users/registrations#edit_service_provider', as: :edit_service_provider
+    put '/users/registrations/update_service_provider', to: 'users/registrations#update_service_provider', as: :update_service_provider
+  end
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes", or navigate to /rails/info
 
@@ -21,8 +28,10 @@ Rails.application.routes.draw do
       get 'find_users_by_email/:email/:project_id(/:gord_employee)' => 'users#find_users_by_email', as: 'find_users_by_email', constraints: { email: /[^\/]+/ }
     end
     member do
-      get :edit, to: 'users#edit', to: :edit
-      put :update, to: 'users#update', to: :update
+      get :edit, to: 'users#edit', as: :edit
+      put :update, to: 'users#update', as: :update
+      get :edit_service_provider, to: 'users#edit_service_provider', as: :edit_service_provider
+      put :update_service_provider, to: 'users#update_service_provider', as: :update_service_provider
       get :list_notifications, path: :notifications
       put :update_notifications, path: :notifications
       patch :update_user_status, to: 'users#update_user_status', as: 'update_user_status'

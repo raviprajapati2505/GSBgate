@@ -1,0 +1,49 @@
+<div class="ibox float-e-margins">
+  <div class="ibox-content">
+    <h2>Edit Service Provider Profile</h2>
+
+    <%= simple_form_for(@service_provider, url: update_service_provider_user_path(@service_provider), html: { method: :put, class: "user-form" }) do |f| %>
+      <%= f.error_notification %>
+
+      <div class="form-inputs">
+        <%= f.input :name, required: true %>
+
+        <%= f.input :email, required: true %>
+
+        <div class="form-group">
+          <label class="required">Role</label>
+          <div class="form-control bg-disabled">
+            <%= @service_provider.role&.titleize %>
+          </div>
+        </div>
+
+        <%= f.input :username, required: true %>
+
+        <%= f.input :employer_name, required: true %>
+
+        <%= f.input :linkme_user, required: true %>
+
+        <%= f.input :gord_employee, required: true %>
+
+        <%= f.input :cgp_license, required: true %>
+
+        <%= f.input :password,
+                    hint: "leave it blank if you don't want to change it",
+                    required: false,
+                    input_html: { autocomplete: "new-password" } %>
+        <%= f.input :password_confirmation,
+                    required: false,
+                    input_html: { autocomplete: "new-password" } %>
+        <%= f.input :current_password,
+                    hint: "we need your current password to confirm your changes",
+                    required: true,
+                    input_html: { autocomplete: "current-password" } %>
+      </div>
+
+      <div class="form-actions">
+        <%= btn_cancel_to(:back, style: 'danger', icon: 'times') %>
+        <%= btn_save %>
+      </div>
+    <% end %>
+  </div>
+</div>
