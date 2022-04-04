@@ -29,10 +29,10 @@ class UsersController < AuthenticatedController
   end
 
   def update
-    user_params = params.require(:user).permit(:name, :username, :employer_name, :linkme_user, :gord_employee, :cgp_license, :active)
+    user_params = params.require(:user).permit(:name, :username, :employer_name, :linkme_user, :gord_employee, :cgp_license, :service_provider_id, :active)
 
     if @user.update(user_params)
-      redirect_to users_path, notice: "User information successfully updated."
+      redirect_to user_path(@user), notice: "User information successfully updated."
     else
       render :edit
     end
@@ -42,7 +42,7 @@ class UsersController < AuthenticatedController
     service_provider_params = params.require(:service_provider).permit(:name, :username, :employer_name, :linkme_user, :gord_employee, :cgp_license, :active)
 
     if @service_provider.update(service_provider_params)
-      redirect_to users_path, notice: "Service Provider information successfully updated."
+      redirect_to user_path(@user), notice: "Service Provider information successfully updated."
     else
       render :edit_service_provider
     end

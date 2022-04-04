@@ -21,6 +21,8 @@
 
         <%= f.input :employer_name, required: true %>
 
+        <%= f.association :service_provider, collection: ServiceProvider.order(:name).pluck(:name, :id), prompt: "Choose a Service Provider", input_html: { class: "select-service-provider" } %>
+
         <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
           <p>Currently waiting confirmation for: <%= resource.unconfirmed_email %></p>
         <% end %>
