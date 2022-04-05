@@ -132,7 +132,7 @@ module Auditable
               if self.signed_certificate_file.present?
                 system_messages << {message: t('models.concerns.auditable.certification_path.signed_certificate.update_html', document: self.signed_certificate_file.file.filename)}
               else
-                system_messages << {message: t('models.concerns.auditable.certification_path.signed_certificate.delete_html')}
+                system_messages << {message: t('models.concerns.auditable.certification_path.signed_certificate.delete_html', certification_path: self.name, project: self.project.name)}
               end
             end
           end
