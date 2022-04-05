@@ -287,7 +287,7 @@ class Ability
         can [:edit_expires_at, :update_expires_at], CertificationPath
         can [:confirm_destroy, :destroy], CertificationPath # Be careful with this!
         can [:confirm_deny, :deny], CertificationPath, certification_path_status: {id: CertificationPathStatus::STATUSES_IN_PROGRESS}
-        can :update_signed_certificate, CertificationPath, certification_path_status: {id: CertificationPathStatus::CERTIFIED}
+        can [:update_signed_certificate, :remove_signed_certificate], CertificationPath, certification_path_status: {id: CertificationPathStatus::CERTIFIED}
       elsif user.gsas_trust_top_manager?
         can [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT}
       elsif user.gsas_trust_manager?

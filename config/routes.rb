@@ -60,6 +60,7 @@ Rails.application.routes.draw do
         put :update_max_review_count
         put :update_expires_at
         put :update_signed_certificate
+        delete :remove_signed_certificate
       end
       resources :documents, only: [:create, :show, :destroy], path: :document
       resources :certification_path_documents, only: [:create, :show, :destroy], path: :certification_path_document

@@ -119,6 +119,7 @@ en:
             cancelled_html: The PCR track request was canceled for the certification <strong>%{certification_path}</strong> in project <strong>%{project}</strong>.
           signed_certificate:
             update_html: The officially signed certificate <strong>%{document}</strong> was uploaded.
+            delete_html: The officially signed certificate was deleted.
         certification_path_document:
           status:
             create_html: A new document <strong>%{document}</strong> was added.

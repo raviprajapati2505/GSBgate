@@ -516,7 +516,7 @@ class CertificationPathsController < AuthenticatedController
   end
 
   def update_signed_certificate
-    if params[:certification_path][:signed_certificate_file].present?
+    if params[:certification_path].present? && params[:certification_path][:signed_certificate_file].present?
       @certification_path.signed_certificate_file = params[:certification_path][:signed_certificate_file]
 
       if @certification_path.save
@@ -538,6 +538,19 @@ class CertificationPathsController < AuthenticatedController
     rescue ActionController::MissingFile
       redirect_back(fallback_location: root_path, alert: 'This document is no longer available for download. This could be due to a detection of malware.')
     end
+  end
+
+  def remove_signed_certificate
+    begin
+      @certification_path.remove_signed_certificate_file!
+      @certification_path.save!
+
+      flash[:notice] = "Certificate successfully deleted."
+    rescue ActionController::MissingFile
+      flash[:alert] = 'This document is failed to delete. This could be due to a detection of malware.'
+    end
+
+    redirect_back(fallback_location: root_path)
   end
 
   private

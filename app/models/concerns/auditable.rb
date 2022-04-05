@@ -128,7 +128,12 @@ module Auditable
               system_messages << {message: t('models.concerns.auditable.certification_path.status.update_html', certification_path: self.name, project: self.project.name, old_status: old_status_model.name, new_status: new_status_model.name), old_status: self.certification_path_status_id_before_last_save, new_status: self.certification_path_status_id}
             elsif self.saved_change_to_signed_certificate_file?
               force_visibility_public = true
-              system_messages << {message: t('models.concerns.auditable.certification_path.signed_certificate.update_html', document: self.signed_certificate_file.file.filename)}
+
+              if self.signed_certificate_file.present?
+                system_messages << {message: t('models.concerns.auditable.certification_path.signed_certificate.update_html', document: self.signed_certificate_file.file.filename)}
+              else
+                system_messages << {message: t('models.concerns.auditable.certification_path.signed_certificate.delete_html', certification_path: self.name, project: self.project.name)}
+              end
             end
           end
           if action == AUDIT_LOG_UPDATE
