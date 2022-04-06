@@ -270,6 +270,8 @@ class Ability
       can :epc_matches_energy_suite, SchemeMixCriterion, status: scheme_mix_criterion_status_verifying
       can :upload_epc_matches_document, SchemeMixCriterion
 
+      can :select_service_provider, User
+
       if user.gsas_trust_admin?
         can [:create, :destroy], [ActualProjectImage, ProjectRenderingImage]
         can :update, Project
@@ -401,7 +403,8 @@ class Ability
       can :read, Task
       can :count, Task
 
-      can [:edit, :update, :index], User
+      can [:show, :edit, :update, :index], User
+      can [:edit_service_provider, :update_service_provider], ServiceProvider
     else
       cannot :manage, :all
     end

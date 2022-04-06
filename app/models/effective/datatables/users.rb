@@ -26,12 +26,12 @@ module Effective
           end
 
           col :id, label: 'Masquerade', search: false, sort: false do |rec|
-            btn_link_to(masquerade_users_path(rec.id), icon: 'user-secret', size: 'small')
+            btn_link_to(masquerade_users_path(rec.id), icon: 'user-secret', size: 'small', tooltip: 'Masquerade')
           end
         end
-        if can?(:edit, User)
-          col :id, label: 'Action', search: false, sort: false do |rec|
-            btn_link_to(edit_user_path(rec.id), icon: 'fa fa-edit', size: 'small')
+        if User.current.can?(:edit, current_user)
+          col :user_id, sql_column: 'users.id', label: 'Action', search: false, sort: false do |rec|
+            btn_link_to(user_path(rec.id), icon: 'edit', size: 'small', tooltip: 'Edit')
           end
         end
       end

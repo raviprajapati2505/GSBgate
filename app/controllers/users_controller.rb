@@ -1,7 +1,7 @@
 class UsersController < AuthenticatedController
   load_and_authorize_resource :user
   before_action :set_controller_model, except: [:index, :update_notifications]
-  before_action :set_user, only: [:edit, :update]
+  before_action :set_user, only: [:show, :edit, :update]
   before_action :set_service_provider, only: [:edit_service_provider, :update_service_provider]
 
   def index
@@ -29,7 +29,7 @@ class UsersController < AuthenticatedController
   end
 
   def update
-    user_params = params.require(:user).permit(:name, :username, :employer_name, :linkme_user, :gord_employee, :cgp_license, :service_provider_id, :active)
+    user_params = params.require(:user).permit(:name, :username, :employer_name, :linkme_user, :gord_employee, :cgp_license, :service_provider_id, :cgp_license_expiry_date, :cep_license, :cep_license_expired, :cep_license_expiry_date, :active)
 
     if @user.update(user_params)
       redirect_to user_path(@user), notice: "User information successfully updated."
@@ -39,7 +39,7 @@ class UsersController < AuthenticatedController
   end
 
   def update_service_provider
-    service_provider_params = params.require(:service_provider).permit(:name, :username, :employer_name, :linkme_user, :gord_employee, :cgp_license, :active)
+    service_provider_params = params.require(:service_provider).permit(:name, :username, :employer_name, :linkme_user, :gord_employee, :cgp_license, :cgp_license_expiry_date, :cep_license, :cep_license_expired, :cep_license_expiry_date, :active)
 
     if @service_provider.update(service_provider_params)
       redirect_to user_path(@user), notice: "Service Provider information successfully updated."

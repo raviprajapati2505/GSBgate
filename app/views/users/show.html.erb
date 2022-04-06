@@ -47,15 +47,24 @@
             </tr>
           </tbody>
         </table>
+
         <div class="hr-line-dashed"></div>
-        <% if can? :update, @user %>
-          <% if @user.service_provider? %>
-            <%= btn_link_to(edit_service_provider_path(@user), icon: 'edit', text: 'Edit') %>
-          <% else %>
-             <%= btn_link_to(edit_user_registration_path(@user), icon: 'edit', text: 'Edit') %>
-          <% end %>
+
+        <% if @user == current_user %>
+          <%
+            url = if @user.service_provider?
+                    edit_service_provider_path(current_user)
+                  else
+                    edit_user_registration_path(current_user)
+                  end
+          %>
+          <%= btn_link_to(url, icon: 'edit', text: 'Edit') %>
+
+        <% else %>
+          <%= btn_link_to_if(permission: can?(:update, @user), target: edit_user_path(@user), icon: 'edit', text: 'Edit') %>
         <% end %>
       </div>
+
       <div class="ibox float-e-margins">
         <div class="ibox-title">
           <h5><%= t('.user_license_details.title') %></h5>
@@ -70,6 +79,22 @@
               <tr>
                 <th><%= User.human_attribute_name('cgp_license_expired') %></th>
                 <td><%= label_span(@user.cgp_license_expired, 'Yes', 'No').html_safe %></span></td>
+              </tr>
+              <tr>
+                <th><%= User.human_attribute_name('cgp_license_expiry_date') %></th>
+                <td><%= @user.cgp_license_expiry_date&.strftime('%d %B, %Y') %></td>
+              </tr>
+              <tr>
+                <th><%= User.human_attribute_name('cep_license') %></th>
+                <td><%= label_span(@user.cep_license, 'Yes', 'No').html_safe %></td>
+              </tr>
+              <tr>
+                <th><%= User.human_attribute_name('cep_license_expired') %></th>
+                <td><%= label_span(@user.cep_license_expired, 'Yes', 'No').html_safe %></span></td>
+              </tr>
+              <tr>
+                <th><%= User.human_attribute_name('cep_license_expiry_date') %></th>
+                <td><%= @user.cep_license_expiry_date&.strftime('%d %B, %Y') %></td>
               </tr>
             </tbody>
           </table>
