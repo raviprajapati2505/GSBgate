@@ -123,6 +123,12 @@ module ApplicationHelper
     btn_component(:link, {target: target}.merge(options), &block)
   end
 
+  def btn_link_to_if(permission: false, target: '', icon: '', text: '')
+    if permission
+      btn_link_to(target, icon: icon, text: text)
+    end
+  end
+
   # generates a component with bootstrap button classes added to it
   # - receives a disabled-with attribute, to avoid double click issues
   # - uses default values for style and size

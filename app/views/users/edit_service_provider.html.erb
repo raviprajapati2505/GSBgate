@@ -10,22 +10,9 @@
 
         <%= f.input :email, required: true %>
 
-        <div class="form-group">
-          <label class="required">Role</label>
-          <div class="form-control bg-disabled">
-            <%= @service_provider.role&.titleize %>
-          </div>
-        </div>
-
         <%= f.input :username, required: true %>
 
         <%= f.input :employer_name, required: true %>
-
-        <%= f.input :linkme_user, required: true %>
-
-        <%= f.input :gord_employee, required: true %>
-
-        <%= f.input :cgp_license, required: true %>
 
         <%= f.input :password,
                     hint: "leave it blank if you don't want to change it",

@@ -147,6 +147,10 @@ en:
         gord_employee: GORD Employee?
         cgp_license: CGP License?
         cgp_license_expired: CGP License Expired?
+        cgp_license_expiry_date: CGP License Expiry Date
+        cep_license: CEP License?
+        cep_license_expired: CEP License Expired?
+        cep_license_expiry_date: CEP License Expiry Date
         employer_name: Employer Name
         active: Profile Active?
         roles:

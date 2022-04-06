@@ -91,7 +91,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def sp_update_params
-    params.require(:service_provider).permit(%i[name email username linkme_user gord_employee cgp_license cgp_license_expired employer_name active password password_confirmation current_password])
+    params.require(:service_provider).permit(%i[name email username employer_name password password_confirmation current_password])
   end
 
   def set_service_provider
