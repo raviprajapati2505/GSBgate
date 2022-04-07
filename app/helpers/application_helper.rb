@@ -487,6 +487,12 @@ module ApplicationHelper
     end
   end
 
+  def licence_options(user = nil)
+    return [] unless user.present?
+  
+    user.remaining_licences.pluck(:display_name, :id)
+  end
+
   def total_CM_score(data)
     final_score = {}
     data.each do |stage|

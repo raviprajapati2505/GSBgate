@@ -25,7 +25,9 @@ class User < ApplicationRecord
   has_many :notification_types, through: :notification_types_users
   has_many :archives
   has_many :access_licences, as: :userable, dependent: :destroy
-  has_many :cp_licences, through: :access_licences, source: :licensable, source_type: 'CpLicence'
+  has_many :cp_licences, -> { where(licence_type: 'CpLicence') }, class_name: 'Licence', through: :access_licences, source: :licensable
+
+  accepts_nested_attributes_for :access_licences, reject_if: :all_blank, allow_destroy: true
 
   after_initialize :init, if: :new_record?
   before_create :before_create
@@ -88,6 +90,16 @@ class User < ApplicationRecord
   scope :with_cgp_project_manager_role_for_project, ->(project, certification_path) {
     joins(:projects_users).where(projects_users: {project_id: project.id, certification_team_type: certification_path&.projects_users_certification_team_type, role: ProjectsUser.roles[:cgp_project_manager]})
   }
+
+  def remaining_licences
+    userable_access_licence_ids = AccessLicence.userable_access_licences(id)&.pluck(:licence_id)&.uniq
+
+    if type == 'ServiceProvider'
+      Licence.with_service_provider_licences.where.not(id: userable_access_licence_ids)
+    else
+      Licence.with_cp_licences.where.not(id: userable_access_licence_ids)
+    end
+  end
 
   def is_admin?
     ["system_admin", "gsas_trust_top_manager", "gsas_trust_manager", "gsas_trust_admin"].include?(role)

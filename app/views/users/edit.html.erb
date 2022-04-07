@@ -41,10 +41,24 @@
 
       </div>
 
+      <h3>Licences</h3>
+
+      <div id="licences">
+        <%= f.simple_fields_for :access_licences do |access_licence| %>
+          <%= render partial: 'access_licence_fields', locals: { f: access_licence } %>
+        <% end %>
+        <div class="links">
+          <%= link_to_add_association 'add licences', f, :access_licences %>
+        </div>
+      </div>
+      
+
       <div class="form-actions">
         <%= btn_cancel_to(users_path, style: 'danger', icon: 'times') %>
         <%= btn_save %>
       </div>
     <% end %>
+
+    <hr />
   </div>
 </div>
