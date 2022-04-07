@@ -1,0 +1,2 @@
+class ServiceProviderLicence < Licence
+end

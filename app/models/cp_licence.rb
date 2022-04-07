@@ -1,0 +1,2 @@
+class CpLicence < Licence
+end
