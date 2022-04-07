@@ -24,6 +24,8 @@ class User < ApplicationRecord
   has_many :notification_types_users, dependent: :destroy
   has_many :notification_types, through: :notification_types_users
   has_many :archives
+  has_many :access_licences, as: :userable, dependent: :destroy
+  has_many :cp_licences, through: :access_licences, source: :licensable, source_type: 'CpLicence'
 
   after_initialize :init, if: :new_record?
   before_create :before_create
