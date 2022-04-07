@@ -1,7 +1,8 @@
 class CreateLicences < ActiveRecord::Migration[5.2]
   def change
     create_table :licences do |t|
-      t.string  :type
+      t.string  :licence_type
+      t.integer :display_weight, default: 0
       t.string  :display_name
       t.string  :title
       t.string  :description
