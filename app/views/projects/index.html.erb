@@ -4,7 +4,7 @@
             <div class="ibox-title">
                 <h5><%= t('.title_html') %></h5>
             </div>
-            <div class="ibox-content">
+            <div class="ibox-content" id="projects-table" data-user-role="<%= current_user.role %>">
                 <%= render_datatable(@datatable) %>
                 <% if can? :create, Project.new %>
                     <div class="hr-line-dashed"></div>

@@ -3,13 +3,14 @@
 <% else %>
   <% 
     @total_scores = score_calculation(@scheme_mix)
+    @total_scores = final_cm_revised_avg_scores(@scheme_mix&.certification_path, @total_scores)
   %>
 
 <div class="row">
   <div class="col-lg-4">
     <div class="ibox float-e-margins">
       <div class="ibox-title">
-        <h5>Scheme Details</h5>
+        <h5>SCHEME DETAILS</h5>
       </div>
       <div class="ibox-content">
         <table class="table table-bordered table-striped" cellspacing="0" width="100%">
@@ -24,11 +25,15 @@
             </td>
           </tr>
           <tr>
-            <th>Weighting</th>
+            <th>Scheme Weighting</th>
             <td><%= @scheme_mix.weight %> %</td>
           </tr>
           <tr>
-            <th>Score/Level</th>
+            <th>Scheme Certified Area (m2)</th>
+            <td><%= number_with_delimiter(@scheme_mix.certified_area, delimiter: ',') %></td>
+          </tr>
+          <tr>
+            <th>Scheme Score/Level</th>
             <td>
               <%= render 'score/score_toggle', id_list: ["scheme_mix_#{@scheme_mix.id}"] %>
               <%= render 'score/score_tabs', scores: @total_scores, element_id: "scheme_mix_#{@scheme_mix.id}" %>
@@ -75,7 +80,7 @@
   <div class="col-lg-8">
     <div class="ibox float-e-margins">
       <div class="ibox-title">
-        <h5>Categories &amp; Criteria</h5>
+        <h5>CATEGORIES &amp; CRITERIA DETAILS</h5>
       </div>
       <div class="ibox-content">
         <% if !@scheme_mix.certification_path.in_pre_verification? && @invalid_criteria_ids.size > 0 %>

@@ -414,6 +414,27 @@ class SchemeMixCriterion < ApplicationRecord
     (count < 0) ? 0 : count
   end
 
+  def calculate_awarded_incentives
+    total_incentives = 0.0
+
+    begin
+      if incentive_scored_a?
+        total_incentives += scheme_criterion&.read_attribute("incentive_weight_#{achieved_score_a.to_i}_a").to_f
+      end
+
+      if incentive_scored_b?
+        total_incentives += scheme_criterion&.read_attribute("incentive_weight_#{achieved_score_b.to_i}_b").to_f
+      end
+      
+    rescue StandardError => e
+      puts "--------------------#{e.message}--------------------"
+
+      total_incentives = 0.0
+    end
+
+    return total_incentives
+  end
+
   private
 
   def init

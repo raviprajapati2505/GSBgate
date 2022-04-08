@@ -2,9 +2,10 @@
   "name": "gsas-chart-generator",
   "private": true,
   "dependencies": {
-    "body-parser": "1.17.2",
-    "chart.js": "2.6.0",
-    "chartjs-node": "1.5.0",
-    "express": "4.15.4"
+    "body-parser": "^1.19.1",
+    "chart.js": "^3.7.0",
+    "chartjs-node-canvas": "^4.1.6",
+    "chartjs-plugin-datalabels": "^2.0.0",
+    "express": "^4.17.2"
   }
 }

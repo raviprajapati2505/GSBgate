@@ -1,0 +1,19 @@
+<%
+  service_provider = if certification_path.present? && certification_path.persisted? && certification_path&.is_design_fdc? 
+                        project.service_provider_2
+                      else
+                        project.service_provider
+                      end
+%>
+<table class="table table-bordered table-mb-0" cellspacing="0" width="100%">
+  <tbody>
+    <tr class="bg-header-white">
+      <th style="width: 410px; padding-left: 2rem;">
+        <%= Project.human_attribute_name('service_provider') %>
+      </th>
+      <td>
+        <%= service_provider %>
+      </td>
+    </tr>
+  </tbody>
+</table>

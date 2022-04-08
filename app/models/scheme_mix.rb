@@ -32,6 +32,17 @@ class SchemeMix < ApplicationRecord
     certification_path.certificate.construction_2019?
   end
 
+  def is_cm_final_certificate?
+    certification_path&.final_construction?
+  end
+
+  def certified_area
+    project = certification_path.project
+    total_certified_area = project.certified_area
+    scheme_mix_certified_area = (total_certified_area * weight) / 100 rescue 0.0
+    return scheme_mix_certified_area
+  end
+
   # Mirrors all the descendant structural data records of the SchemeMix to user data records
   def create_descendant_records
     # Build a list of all criteria codes/ids of the main scheme mix
@@ -138,6 +149,10 @@ class SchemeMix < ApplicationRecord
         end
       end
     end
+  end
+
+  def category_scheme_mix_criteria(scheme_category_id)
+    self.scheme_mix_criteria.joins(:scheme_criterion).where("scheme_criteria.scheme_category_id = :scheme_category_id", scheme_category_id: scheme_category_id)
   end
 
 end

@@ -10,7 +10,7 @@
             </div>
             <div class="form">
                 <%= bootstrap_form_for(User.new, url: sessions_path) do |f| %>
-                    <%= f.text_field :username, prepend: image_tag('layout/username-icon.png'), autofocus: true, placeholder: 'Username', hide_label: true %>
+                    <%= f.text_field :username, prepend: image_tag('layout/username-icon.png'), autofocus: true, autocomplete: 'off', placeholder: 'Username', hide_label: true %>
                     <%= f.password_field :password, prepend: image_tag('layout/password-icon.png'), autocomplete: 'off', placeholder: 'Password', hide_label: true %>
                     <%= btn_tag(text: 'Login', class: 'block full-width m-b') %>
                 <% end %>

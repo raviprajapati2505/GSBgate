@@ -19,16 +19,20 @@ class Project < ApplicationRecord
   belongs_to :building_type, optional: true
 
   validates :name, presence: true
+  validates :certificate_type, presence: true
   validates :owner, presence: true
+  validates :developer, presence: true
   validates :address, presence: true
-  validates :location, presence: true
+  validates :city, presence: true
+  validates :district, presence: true
   validates :country, presence: true
+  validates :construction_year, presence: true
   validates :location_plan_file, presence: true
   validates :site_plan_file, presence: true
   validates :design_brief_file, presence: true
-  validates :project_narrative_file, presence: true
+  validates :sustainability_features_file, presence: true
   validates :building_type_id, presence: true
-  validates :building_type_group_id, presence: true
+  # validates :building_type_group_id, presence: true
   validates :gross_area, numericality: { greater_than_or_equal_to: 0 }
   validates :certified_area, numericality: { greater_than_or_equal_to: 0 }
   validates :carpark_area, numericality: { greater_than_or_equal_to: 0 }
@@ -39,16 +43,22 @@ class Project < ApplicationRecord
   validates :location_plan_file, file_size: {maximum: MAXIMUM_DOCUMENT_FILE_SIZE.megabytes.to_i }
   validates :site_plan_file, file_size: {maximum: MAXIMUM_DOCUMENT_FILE_SIZE.megabytes.to_i }
   validates :design_brief_file, file_size: {maximum: MAXIMUM_DOCUMENT_FILE_SIZE.megabytes.to_i }
+  validates :sustainability_features_file, file_size: {maximum: MAXIMUM_DOCUMENT_FILE_SIZE.megabytes.to_i }
+  validates :area_statement_file, file_size: {maximum: MAXIMUM_DOCUMENT_FILE_SIZE.megabytes.to_i }
   validates :project_narrative_file, file_size: {maximum: MAXIMUM_DOCUMENT_FILE_SIZE.megabytes.to_i }
   validates :certificate_type, inclusion: Certificate.certificate_types.values
+  validate :presence_of_files
 
   after_initialize :init
   after_create :send_project_registered_email
+  after_update :change_projects_users_certification_team_type, if: :saved_change_to_certificate_type?
 
   mount_uploader :location_plan_file, GeneralSubmittalUploader
   mount_uploader :site_plan_file, GeneralSubmittalUploader
   mount_uploader :design_brief_file, GeneralSubmittalUploader
   mount_uploader :project_narrative_file, GeneralSubmittalUploader
+  mount_uploader :sustainability_features_file, GeneralSubmittalUploader
+  mount_uploader :area_statement_file, GeneralSubmittalUploader
 
   scope :for_user, ->(user) {
     joins(:projects_users).where(projects_users: {user_id: user.id})
@@ -57,6 +67,12 @@ class Project < ApplicationRecord
   scope :without_certification_paths, -> {
     includes(:certification_paths).where(certification_paths: {id: nil})
   }
+
+  def presence_of_files
+    unless (project_narrative_file.present? || area_statement_file.present?)
+      errors.add(:area_statement_file, "can't be blank.")
+    end
+  end
 
   def completed_letter_of_conformances
     CertificationPath.with_project(self).with_status(CertificationPathStatus::STATUSES_COMPLETED).with_certification_type(Certificate.certification_types[:letter_of_conformance])
@@ -72,6 +88,10 @@ class Project < ApplicationRecord
 
   def completed_construction_stage3
     CertificationPath.with_project(self).with_status(CertificationPathStatus::STATUSES_COMPLETED).with_certification_type(Certificate.certification_types[:construction_certificate_stage3])
+  end
+
+  def with_final_design_certificate
+    CertificationPath.with_project(self).with_certification_type(Certificate.certification_types[:final_design_certificate])
   end
 
   def average_scores_all_construction_stages
@@ -107,7 +127,7 @@ class Project < ApplicationRecord
 
   def are_all_construction_stages_certified?
     count = CertificationPath.with_project(self)
-              .with_status(CertificationPathStatus::CERTIFIED)
+              .with_status([CertificationPathStatus::CERTIFIED, CertificationPathStatus::CERTIFICATE_IN_PROCESS])
               .with_certificate_type(Certificate.certificate_types[:construction_type])
               .count
     if count == 3
@@ -198,6 +218,58 @@ class Project < ApplicationRecord
     certificate_type == Certificate.certificate_types[:design_type]
   end
 
+  def loc_projects_users
+    projects_users&.where(certification_team_type: "Letter of Conformance")
+  end
+
+  def fdc_projects_users
+    projects_users&.where(certification_team_type: "Final Design Certificate")
+  end
+
+  def team_table_heading
+    case certificate_type
+    when 1
+      # project of CM
+      I18n.t('activerecord.attributes.project.team_titles.construction_certificate')
+    when 2
+      # project of OP
+      I18n.t('activerecord.attributes.project.team_titles.operation_certificate')
+    when 3
+      # project of D&B
+      I18n.t('activerecord.attributes.project.team_titles.design_certificate')
+    else
+      "Project Team"
+    end
+  end
+
+  def check_documents_permissions
+    begin
+      if certification_paths.present?
+        recent_certification_path = certification_paths.joins(:certificate).order("certificates.display_weight").last
+        recent_certificate_type = recent_certification_path&.certificate&.certification_type
+        recent_certificate_status = recent_certification_path&.certification_path_status_id
+
+        return !([
+                Certificate.certification_types[:final_design_certificate], 
+                Certificate.certification_types[:construction_certificate_stage3], 
+                Certificate.certification_types[:construction_certificate], 
+                Certificate.certification_types[:operations_certificate]
+               ].include?(Certificate.certification_types[recent_certificate_type&.to_sym]) && 
+               [
+                CertificationPathStatus::CERTIFIED, 
+                CertificationPathStatus::NOT_CERTIFIED, 
+                CertificationPathStatus::CERTIFICATE_IN_PROCESS
+               ].include?(recent_certificate_status))
+      else
+        true
+      end
+      
+    rescue StandardError => exception
+      puts exception.message
+      return false
+    end
+  end
+
   private
   def init
     if self.has_attribute?('code')
@@ -214,4 +286,10 @@ class Project < ApplicationRecord
   def send_project_registered_email
     DigestMailer.project_registered_email(self).deliver_now
   end
+
+  def change_projects_users_certification_team_type
+    certificate_team_type = certificate_type == 3 ? "Letter of Conformance" : "Other"
+    projects_users&.update_all(certification_team_type: certificate_team_type)
+  end
+
 end

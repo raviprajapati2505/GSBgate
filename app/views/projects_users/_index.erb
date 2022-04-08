@@ -6,25 +6,25 @@
      when :project_team
        title = t('.project_team.title')
        title_modal = t('.project_team.title_modal')
-       project_users = project.projects_users.project_team
+       project_users = project.projects_users.project_team_with_type(certification_team_type)
        if can?(:create, ProjectsUser.new(project_id: project.id, role: ProjectsUser.roles[:project_team_member]))
          project_user_roles[:project_team_member] = ProjectsUser.roles[:project_team_member]
        end
        if can?(:create, ProjectsUser.new(project_id: project.id, role: ProjectsUser.roles[:cgp_project_manager]))
          project_user_roles[:cgp_project_manager] = ProjectsUser.roles[:cgp_project_manager]
        end
-       modal_id = 'addProjectTeamModal'
+       modal_id = "addProjectTeamModal#{certification_team_type}"
      when :gsas_trust_team
        title = t('.certifier_team.title')
        title_modal = t('.certifier_team.title_modal')
-       project_users = project.projects_users.gsas_trust_team
+       project_users = project.projects_users.gsas_trust_team_with_type(certification_team_type)
        if can?(:create, ProjectsUser.new(project_id: project.id, role: ProjectsUser.roles[:certifier]))
          project_user_roles[:certifier] = ProjectsUser.roles[:certifier]
        end
        if can?(:create, ProjectsUser.new(project_id: project.id, role: ProjectsUser.roles[:certification_manager]))
          project_user_roles[:certification_manager] = ProjectsUser.roles[:certification_manager]
        end
-       modal_id = 'addGsasTrustTeamModal'
+       modal_id = "addGsasTrustTeamModal#{certification_team_type}"
      when :enterprise_clients
        title = t('.enterprise_clients.title')
        title_modal = t('.enterprise_clients.title_modal')
@@ -32,48 +32,53 @@
        if can?(:create, ProjectsUser.new(project_id: project.id, role: ProjectsUser.roles[:enterprise_client]))
          project_user_roles[:enterprise_client] = ProjectsUser.roles[:enterprise_client]
        end
-       modal_id = 'addEnterpriseClientModal'
+       modal_id = "addEnterpriseClientModal#{certification_team_type}"
    end
    can_create_new_project_user = (project_user_roles.count > 0)
 %>
 <% if can?(:read, project_users[0]) %>
-<div class="ibox float-e-margins">
-    <div class="ibox-title">
-        <h5><%= title %></h5>
-    </div>
-    <div class="ibox-content">
+    <div class="ibox-content table-responsive">
         <% if project_users.count.zero? %>
-            <p>No users found.</p>
+            <p class="margin-top-1">No users found.</p>
         <% else %>
-            <table class="table table-striped table-bordered table-hover datatable" cellspacing="0" width="100%">
+            <table class="table table-bordered table-hover datatable" cellspacing="0" width="100%">
                 <thead>
-                <tr>
-                    <th>Member Name</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <% if team != :enterprise_clients %>
-                        <th>Tasks</th>
-                    <% end %>
-                </tr>
+                    <tr>
+                        <th><%= title %></th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <% if team != :enterprise_clients %>
+                            <th>Tasks</th>
+                        <% end %>
+                    </tr>
                 </thead>
                 <tbody>
-                <% project_users.distinct.each do |projects_user| %>
+                <% project_users.projects_user_role(title).each do |role| %>
+                  <% rowspan = find_rowspan(projects_users_count_with_role(project_users, role)) %>
                     <tr>
-                        <td>
-                            <%= can_link_to(project_user_path(project, projects_user), projects_user) do %>
-                                <%= projects_user.user.full_name %>
+                        <td rowspan="<%= rowspan %>" style="width: 391px;">
+                            <%= t(role, scope: 'activerecord.attributes.projects_user.roles' ) %>
+                        </td>
+                        <% project_users.with_role(role).each_with_index do |projects_user, index| %>
+                            <% unless index == 1 %>
+                                <tr>
                             <% end %>
-                        </td>
-                        <td>
-                            <%= projects_user.user.email %>
-                        </td>
-                        <td>
-                            <%= t(projects_user.role, scope: 'activerecord.attributes.projects_user.roles' ) %>
-                        </td>
-                        <% if team != :enterprise_clients %>
                             <td>
-                                <span class="badge fa-lg"><%= TaskService::count_tasks(user: projects_user.user, project_id: project.id) %></span>
+                                <%= can_link_to(project_user_path(project, projects_user, certification_path_id: certification_path&.id), projects_user) do %>
+                                    <%= projects_user.user.full_name %>
+                                <% end %>
                             </td>
+                            <td>
+                                <%= projects_user.user.email %>
+                            </td>
+                            <% if team != :enterprise_clients %>
+                                <td>
+                                    <span class="badge fa-lg"><%= TaskService::count_tasks(user: projects_user.user, project_id: project.id, certification_path_id: certification_path&.id) %></span>
+                                </td>
+                            <% end %>
+                            <% unless index == 1 %>
+                                </tr>
+                            <% end %>
                         <% end %>
                     </tr>
                 <% end %>
@@ -85,7 +90,6 @@
             <%= btn_tag(icon: 'user-plus', text: title_modal, data: {toggle: 'modal', target: "##{modal_id}"}) %>
         <% end %>
     </div>
-</div>
 
 <div class="modal fade" id="<%= modal_id %>" aria-hidden="true" >
     <div class="modal-dialog">
@@ -104,6 +108,7 @@
                                         ____user_name____
                                         <%= pu.hidden_field :user_id, { value: '____user_id____' } %>
                                     </td>
+                                    <%= pu.hidden_field :certification_team_type, { value: certification_team_type } %>
                                     <td>
                                         This user will be added to the project as<br />
                                         <%= pu.select :role, project_user_roles.keys.map { |k| [t(k, scope: 'activerecord.attributes.projects_user.roles'), k] } %>
@@ -115,6 +120,7 @@
                             </script>
                             <script class="unknown-user" type="text/x-custom-template">
                                 <tr data-user-uid="____email____">
+                                    <%= pu.hidden_field :certification_team_type, value: certification_team_type %>
                                     <td>
                                         ____email____
                                         <%= hidden_field_tag 'emails[]', '____email____' %>
@@ -149,6 +155,7 @@
                             <%= label_tag 'email' + team.to_s, 'Find Users by Email', class: 'control-label' %>
                             <div class="input-group">
                                 <%= text_field_tag 'email' + team.to_s, '', class: 'email-field form-control' %>
+                                <%= hidden_field_tag 'certification_team_type', certification_team_type, class: 'certification-team-type-field form-control' %>
                                 <span class="input-group-btn">
                                     <%= btn_tag(class: 'find-users-by-email-btn', icon: 'search', style: 'white', type: 'button') %>
                                 </span>

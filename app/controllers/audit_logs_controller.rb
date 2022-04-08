@@ -1,7 +1,8 @@
 class AuditLogsController < AuthenticatedController
   require 'csv'
 
-  before_action :set_auditable, except: [:index, :export]
+  before_action :set_auditable, except: [:index, :export, :link_smc_comments_form, :link_smc_comments, :unlink_smc_comments_form, :unlink_smc_comments]
+  before_action :get_audit_log_associated_records, only: [:link_smc_comments_form, :link_smc_comments, :unlink_smc_comments_form, :unlink_smc_comments]
   load_and_authorize_resource
 
   def index
@@ -84,10 +85,15 @@ class AuditLogsController < AuthenticatedController
 
   def auditable_create
     if params[:audit_log][:user_comment].present?
-      @auditable.audit_log_user_comment = params[:audit_log][:user_comment]
-      @auditable.audit_log_attachment_file = params[:audit_log][:attachment_file]
-      @auditable.audit_log_visibility = params[:audit_log][:audit_log_visibility]
-      @auditable.touch
+      @auditable = create_audit_logs(@auditable)
+
+      if params[:scheme_mix_criteria].present?
+        params[:scheme_mix_criteria].each do |smc_param|
+          smc_id = smc_param[:scheme_mix_criterion_id].to_i rescue nil
+          smc = SchemeMixCriterion.find(smc_id)
+          create_audit_logs(smc)
+        end
+      end
 
       if @auditable.audit_log_errors.blank?
         redirect_back(fallback_location: root_path, notice: 'Your comment was successfully added to the audit log.')
@@ -102,6 +108,63 @@ class AuditLogsController < AuthenticatedController
     end
   end
 
+  def link_smc_comments_form
+    @audit_logs_smc_ids = @audit_logs.pluck("auditable_id").uniq
+
+    respond_to do |format|
+      format.js { render layout: false }
+    end
+  end
+
+  def link_smc_comments
+    @certification_path = @scheme_mix&.certification_path
+    @project = @certification_path&.project
+
+    begin
+      if params[:scheme_mix_criteria].present? && @audit_log.present?
+        params[:scheme_mix_criteria].each do |smc_param|
+          new_smc_audit_log = @audit_log.dup
+          new_smc_audit_log.auditable_id = smc_param["scheme_mix_criterion_id"]&.to_i
+          new_smc_audit_log.user_id = current_user.id
+          new_smc_audit_log.attachment_file = @audit_log.attachment_file
+          new_smc_audit_log.save
+        end
+        flash[:notice] = "Comment is successfully linked!"
+      else
+        flash[:alert] = "Comment is failed to link!"
+      end
+    rescue StanderdError => error
+      flash[:alert] = error.message
+    end
+
+    redirect_back(fallback_location: project_certification_path_scheme_mix_scheme_mix_criterion_path(@project&.id, @certification_path&.id, @scheme_mix&.id, @auditable&.id))
+  end
+
+  def unlink_smc_comments_form    
+    respond_to do |format|
+      format.js { render layout: false }
+    end
+  end
+
+  def unlink_smc_comments
+    @certification_path = @scheme_mix&.certification_path
+    @project = @certification_path&.project
+
+    if params[:audit_logs].present?
+      audit_logs_ids = @audit_logs&.ids
+      params[:audit_logs].each { |al| audit_logs_ids.delete(al[:audit_log_id].to_i) }
+      audit_logs_ids.delete(params[:audit_log_id].to_i)
+
+      if AuditLog.where("id IN (?)", audit_logs_ids).destroy_all
+        flash[:notice] = "Comments are successfully unlinked!"
+      else
+        flash[:alert] = "Comments are failed to unlink!"
+      end
+    end
+
+    redirect_back(fallback_location: project_certification_path_scheme_mix_scheme_mix_criterion_path(@project&.id, @certification_path&.id, @scheme_mix&.id, @auditable&.id))
+  end
+
   def download_attachment
     begin
       send_file @audit_log.attachment_file.path, x_sendfile: false
@@ -111,6 +174,7 @@ class AuditLogsController < AuthenticatedController
   end
 
   private
+  
   def set_auditable
     auditable_class = Object.const_get params[:auditable_type]
     @auditable = auditable_class.find(params[:auditable_id])
@@ -123,6 +187,39 @@ class AuditLogsController < AuthenticatedController
     unless can?(:read, @auditable)
       raise CanCan::AccessDenied.new('Not Authorized to read audit logs for this model.', :read, AuditLog)
     end
+  end
+
+  def create_audit_logs(auditable)
+    return unless auditable.present?
+    # auditable.audit_log.find_or_create_by(user_comment: params[:audit_log][:user_comment], attachment_file: params[:audit_log][:attachment_file], visibility: params[:audit_log][:audit_log_visibility])
+    auditable.audit_log_user_comment = params[:audit_log][:user_comment]
+    auditable.audit_log_attachment_file = params[:audit_log][:attachment_file]
+    auditable.audit_log_visibility = params[:audit_log][:audit_log_visibility]
+    auditable.touch
+
+    return auditable
+  end
+
+  def get_audit_log_associated_records
+    @audit_log = AuditLog.find(params[:audit_log_id])
+    @auditable = @audit_log&.auditable
+    @scheme_mix = @auditable&.scheme_mix
+
+    @smc_categories = SchemeCategory.joins(scheme_criteria: [scheme_mix_criteria: :audit_logs]).where(audit_logs: {
+      auditable_type: "SchemeMixCriterion",
+      user_comment: @audit_log&.user_comment,
+      project_id: @audit_log&.project_id,
+      user_id: @audit_log&.user_id,
+      certification_path_id: @audit_log&.certification_path_id}
+    ).distinct
+
+    @audit_logs = AuditLog.where(
+      auditable_type: "SchemeMixCriterion",
+      user_comment: @audit_log&.user_comment,
+      project_id: @audit_log&.project_id,
+      user_id: @audit_log&.user_id,
+      certification_path_id: @audit_log&.certification_path_id
+    )
   end
 
   def set_session_filters(session_filters, new_filters)

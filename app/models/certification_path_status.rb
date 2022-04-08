@@ -1,5 +1,8 @@
 class CertificationPathStatus < ApplicationRecord
   has_many :certification_paths
+  has_many :cgp_certification_path_documents, dependent: :destroy
+  has_many :documents, dependent: :destroy
+
 
   scope :status_scope, ->(status_scopes) {
     where(id: status_scopes)
@@ -20,7 +23,7 @@ class CertificationPathStatus < ApplicationRecord
   APPROVING_BY_TOP_MANAGEMENT = 14
   CERTIFIED = 15
   NOT_CERTIFIED = 16
-
+  CERTIFICATE_IN_PROCESS = 17
   # ------------------------------------------------------------------------
   # STATUSES GROUPED BY 'PROGRESS'
   # ------------------------------------------------------------------------
@@ -37,7 +40,8 @@ class CertificationPathStatus < ApplicationRecord
       CertificationPathStatus::VERIFYING_AFTER_APPEAL,
       CertificationPathStatus::ACKNOWLEDGING_AFTER_APPEAL,
       CertificationPathStatus::APPROVING_BY_MANAGEMENT,
-      CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT
+      CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT,
+      CertificationPathStatus::CERTIFICATE_IN_PROCESS
   ]
 
   STATUSES_ACTIVATED = [
@@ -53,12 +57,14 @@ class CertificationPathStatus < ApplicationRecord
       CertificationPathStatus::APPROVING_BY_MANAGEMENT,
       CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT,
       CertificationPathStatus::CERTIFIED,
-      CertificationPathStatus::NOT_CERTIFIED
+      CertificationPathStatus::NOT_CERTIFIED,
+      CertificationPathStatus::CERTIFICATE_IN_PROCESS
   ]
 
   STATUSES_COMPLETED = [
       CertificationPathStatus::CERTIFIED,
-      CertificationPathStatus::NOT_CERTIFIED
+      CertificationPathStatus::NOT_CERTIFIED,
+      CertificationPathStatus::CERTIFICATE_IN_PROCESS
   ]
 
   # ------------------------------------------------------------------------
@@ -85,7 +91,8 @@ class CertificationPathStatus < ApplicationRecord
 
   STATUSES_AT_MANAGEMENT_SIDE = [
       CertificationPathStatus::APPROVING_BY_MANAGEMENT,
-      CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT
+      CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT,
+      CertificationPathStatus::CERTIFICATE_IN_PROCESS
   ]
 
   STATUSES_AT_GSAS_TRUST_TEAM_SIDE = STATUSES_AT_CERTIFIER_SIDE + STATUSES_AT_ADMIN_SIDE + STATUSES_AT_MANAGEMENT_SIDE

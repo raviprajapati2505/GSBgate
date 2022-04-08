@@ -345,8 +345,8 @@
   }
 
   .progress-bar-targeted {
-    color: #6fa428;
-    fill: #6fa428;
+    color: #ffaf00;
+    fill: #ffaf00;
   }
 
   .progress-bar-submitted {
@@ -355,8 +355,8 @@
   }
 
   .progress-bar-achieved {
-    color: #ffaf00;
-    fill: #ffaf00;
+    color: #6fa428;
+    fill: #6fa428;
   }
 
   .progress-bar-tip {
@@ -884,6 +884,18 @@
       position: absolute;
       bottom: 3px;
       right: 5px;
+    }
+
+    .link-comments-button {
+      position: absolute;
+      bottom: 3px;
+      right: 85px;
+    }
+
+    .unlink-comments-button {
+      position: absolute;
+      bottom: 3px;
+      right: 45px;
     }
   }
 

@@ -18,10 +18,12 @@
  *= require select2
  *= require select2-bootstrap
  *= require bootstrap-datepicker
+ *= require bootstrap-timepicker
  *= require dropzone
  *= require toastr
  *= require leaflet
  *= require leaflet-draw
+ *= require daterangepicker
  *
  * NOTE: removed 'require_tree .', as this conflicts with sass/scss @import behaviour
  *   see: https://github.com/rails/sass-rails

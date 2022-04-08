@@ -9,9 +9,10 @@ class CertificationPathsController < AuthenticatedController
   # before_action :certificate_exists_and_is_allowed, only: [:apply, :new, :create]
 
   def show
+    @detailed_certificate_report = @certification_path.certification_path_report
     respond_to do |format|
       format.html {
-        @page_title = ERB::Util.html_escape(@certification_path.name.to_s)
+        @page_title = ERB::Util.html_escape(@project.name.to_s)
         @tasks = TaskService::get_tasks(page: params[:page], per_page: 25, user: current_user, project_id: @project.id, certification_path_id: @certification_path.id)
       }
       format.json { render json: {id: @certification_path.id, name: @certification_path.name}, status: :ok }
@@ -105,6 +106,9 @@ class CertificationPathsController < AuthenticatedController
       else
         @certification_path.expires_at = @durations.first.years.from_now
       end
+    elsif @certification_path.certificate[:certificate_type] == "construction_type"
+      stage1_certification_certificate = @project&.certification_paths.joins(:certificate).find_by("certificates.certification_type = ?", Certificate.certification_types["construction_certificate_stage1"])
+      @certification_path.expires_at = stage1_certification_certificate.expires_at if stage1_certification_certificate.present?
     end
 
     # Development Type
@@ -114,7 +118,7 @@ class CertificationPathsController < AuthenticatedController
       development_type_name = @certification_path.project.completed_letter_of_conformances.first.development_type.name
       @certification_path.development_type = DevelopmentType.find_by(name: development_type_name, certificate: @certification_path.certificate)
     else
-      @development_types = @certification_path.certificate.development_types
+      @development_types = @certification_path.certificate.development_types.joins(:development_type_schemes)&.select("DISTINCT ON (development_types.name) development_types.*").sort_by(&:display_weight)
       if params.has_key?(:certification_path) && params[:certification_path].has_key?(:development_type)
         @certification_path.development_type = DevelopmentType.find_by_id(params[:certification_path][:development_type].to_i)
       else
@@ -193,6 +197,57 @@ class CertificationPathsController < AuthenticatedController
   def edit_status
   end
 
+  def new_detailed_certification_report
+    @certification_path_report = CertificationPathReport.find_or_initialize_by(certification_path_id: @certification_path.id)
+    respond_to do |format|
+      format.js { render layout: false }
+    end
+  end
+
+  def create_detailed_certification_report
+    @certification_path_report = CertificationPathReport.find_or_initialize_by(certification_path_id: @certification_path.id)
+
+    detailed_certification_report_params = params.require(:certification_path_report).permit(:to, :reference_number, :project_owner, :project_name, :project_location, :issuance_date, :approval_date)
+
+    if params[:button].present? && params[:button] == 'save-and-release'
+      detailed_certification_report_params[:is_released] = true
+      detailed_certification_report_params[:release_date] = Time.now
+    end
+    
+    # add validation error according to user role.
+    fields =  case current_user&.role
+              when 'default_role'
+                [:to, :project_owner, :project_name, :project_location]
+              when 'system_admin', 'gsas_trust_admin', 'document_controller'
+                [:to, :reference_number, :project_owner, :project_name, :project_location, :issuance_date, :approval_date]
+              end
+
+    fields.each do |field|
+      unless detailed_certification_report_params[field].present?
+        @certification_path_report.errors.add(field, "#{field&.to_s&.titleize} can't be blank.")
+      end
+    end
+
+    respond_to do |format|
+      unless @certification_path_report.errors.present?
+        if @certification_path_report.update(detailed_certification_report_params)
+          if current_user.has_role?(["default_role"])
+            Task.where(taskable: @certification_path, task_description_id: Taskable::CGP_CERTIFICATION_REPORT_INFORMATION).delete_all
+
+            Task.find_or_create_by(taskable: @certification_path,
+              task_description_id: Taskable::DC_CERTIFICATION_REPORT_INFORMATION,
+              application_role: User.roles[:document_controller],
+              project: @certification_path.project,
+              certification_path: @certification_path)
+          end
+        end
+        format.js { render inline: "location.reload();" }
+      else
+        format.js { render 'certification_paths/new_detailed_certification_report.js.erb', layout: false }
+      end
+    end
+  end
+
   def update_status
     CertificationPath.transaction do
       todos = @certification_path.todo_before_status_advance
@@ -211,7 +266,12 @@ class CertificationPathsController < AuthenticatedController
         @certification_path.save!
         # sent email if the certificate is approved
         if @certification_path.status == "Certified"
-           DigestMailer.certificate_approved_email(@certification_path).deliver_now
+          DigestMailer.certificate_approved_email(@certification_path).deliver_now
+          
+          unless @certification_path.final_construction?
+            @certification_path.certification_path_status_id = @certification_path.next_status
+            @certification_path.save!
+          end
         end
         # If there was an appeal, set the status of the selected criteria to 'Appealed'
         if certification_path_params.has_key?(:appealed) && params.has_key?(:scheme_mix_criterion)
@@ -491,6 +551,13 @@ class CertificationPathsController < AuthenticatedController
   def download_coverletter_report
     filepath = filepath_for_report 'Cover Letter'
     report = Reports::LetterOfConformanceCoverLetter.new(@certification_path)
+    report.save_as(filepath)
+    send_file filepath, :type => 'application/pdf', :x_sendfile => false
+  end
+
+  def download_detailed_certificate_report
+    filepath = filepath_for_report 'Detailed Certificate Report'
+    report = Reports::DetailedCertificateReport.new(@certification_path)
     report.save_as(filepath)
     send_file filepath, :type => 'application/pdf', :x_sendfile => false
   end

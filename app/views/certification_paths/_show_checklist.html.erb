@@ -1,4 +1,8 @@
-<% @certification_path = certification_path %>
+<% 
+  @certification_path = certification_path
+  download_document_permitted = check_documents_permissions(user_role: current_user.role, project: @project)
+%>
+
 <div class="row">
     <div class="col-md-5">
         <div class="ibox float-e-margins">
@@ -9,71 +13,99 @@
             <div class="ibox-content">
                 <table class="table table-bordered table-striped">
                     <tbody>
-                    <tr>
-                        <th><%= t('.certification_path.name') %></th>
-                        <td><%= @certification_path.name %></td>
-                    </tr>
+                      <tr>
+                          <th><%= t('.certification_path.name') %></th>
+                          <td><%= @certification_path.certificate.only_certification_name %></td>
+                      </tr>
 
-                    <% if not @certification_path.is_activating? %>
-                        <tr>
-                            <th>Started</th>
-                            <td><%= localize(@certification_path.started_at) %></td>
-                        </tr>
-                    <% end %>
-                    <% if @certification_path.certificate.letter_of_conformance? || @certification_path.certificate.final_design_certificate? %>
-                        <tr>
-                            <th>Expires</th>
-                            <td>
-                              <span><%= localize(@certification_path.expires_at) %></span>
-                              <%= btn_link_to(edit_expires_at_project_certification_path_path(@project, @certification_path), remote: true, text: 'Set new date', class: 'pull-right') if can?(:update_expires_at, @certification_path) %>
-                            </td>
-                        </tr>
-                    <% end %>
-                    <% if @certification_path.is_activated? %>
-                        <tr>
-                            <th>Rating</th>
-                            <td><%= render 'certification_paths/checklist_rating', certification_path: certification_path %></td>
-                        </tr>
-                    <% end %>
-                    <% unless @certification_path.certificate.construction_certificate? %>
-                    <tr>
-                        <th>
-                            Applied for PCR
-                            <%= tooltip(t('.certification_path.pcr.tooltip')) %>
-                        </th>
+                      <tr>
+                        <th><%= t('certification_paths.show.certification_path.version') %></th>
                         <td>
-                            <div>
-                                <%= @certification_path.pcr_track? ? 'Yes' : 'No' %>
-                            </div>
+                          <%= @certification_path.certificate.only_version %>
                         </td>
-                    </tr>
-                    <% if can?(:update_max_review_count, @certification_path) %>
+                      </tr>
+
+                      <tr>
+                        <th><%= t('certification_paths.show.certification_path.scheme') %></th>
+                        <td>
+                          <%= @certification_path.scheme_names %>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <th><%= t('certification_paths.show.certification_path.stage') %></th>
+                        <td>
+                          <%= @certification_path.certificate.stage_title %>
+                        </td>
+                      </tr>
+
+                      <% if @certification_path.is_activated? %>
+                          <tr>
+                              <th><%= t('certification_paths.show.certification_path.rating') %></th>
+                              <td><%= render 'certification_paths/checklist_rating', certification_path: certification_path %></td>
+                          </tr>
+                      <% end %>
+
+                      <% if not @certification_path.is_activating? %>
+                          <tr>
+                              <th><%= t('certification_paths.show.certification_path.started_at') %></th>
+                              <td><%= @certification_path.started_at&.strftime('%e %b, %Y') %></td>
+                          </tr>
+                      <% end %>
+                      <% if @certification_path.certificate.letter_of_conformance? || @certification_path.certificate.final_design_certificate? %>
+                          <tr>
+                              <th><%= t('certification_paths.show.certification_path.expired_at') %></th>
+                              <td>
+                                <span><%= @certification_path.expires_at&.strftime('%e %b, %Y') %></span>
+                                <%= btn_link_to(edit_expires_at_project_certification_path_path(@project, @certification_path), remote: true, text: 'Set new date', class: 'pull-right') if can?(:update_expires_at, @certification_path) %>
+                              </td>
+                          </tr>
+                      <% end %>
+                      <% if @certification_path.is_certified? %>
                         <tr>
-                          <th>
-                            Maximum Number of PCR Reviews
-                          </th>
-                          <td>
-                            <span><%= pluralize(@certification_path.max_review_count, 'review') %></span>
-                            <%= btn_link_to(edit_max_review_count_project_certification_path_path(@project, @certification_path), remote: true, text: 'Set maximum', class: 'pull-right') %>
-                          </td>
+                          <th><%= t('certification_paths.show.certification_path.certified_at') %></th>
+                          <td><%= @certification_path.certified_at&.strftime('%e %b, %Y') %></td>
                         </tr>
-                    <% end %>
-                    <% end %>
-                    <% unless @certification_path.certificate.construction_certificate? %>
-                    <% if can?(:download_archive, @certification_path) %>
+                      <% end %>
+                      <% unless @certification_path.certificate.construction_certificate? %>
                         <tr>
                             <th>
-                                Documents and Audit Logs
-                                <%= tooltip('An archive of all approved documents and CSV formatted audit logs regarding the certificate can be downloaded here.') %>
+                                <%= t('certification_paths.show.certification_path.apply_pcr.text') %>
+                                <%= tooltip(t('.certification_path.pcr.tooltip')) %>
                             </th>
                             <td>
-                                <% tooltip = t('.certification_path.download_archive.tooltip', approved_count: @certification_path.scheme_mix_criteria_documents.approved.count) %>
-                                <%= btn_download(archive_project_certification_path_path, size: 'extra_small', tooltip: tooltip) %>
-                                <%= t('.certification_path.download_archive.text') %>
+                                <div>
+                                    <%= @certification_path.pcr_track? ? 'Yes' : 'No' %>
+                                </div>
                             </td>
                         </tr>
-                    <% end %>
-                    <% end %>
+                      <% end %>
+                      <% if can?(:update_max_review_count, @certification_path) %>
+                          <tr>
+                            <th>
+                              Maximum Number of PCR Reviews
+                            </th>
+                            <td>
+                              <span><%= pluralize(@certification_path.max_review_count, 'review') %></span>
+                              <%= btn_link_to(edit_max_review_count_project_certification_path_path(@project, @certification_path), remote: true, text: 'Set maximum', class: 'pull-right') %>
+                            </td>
+                          </tr>
+                      <% end %>
+                      <% unless @certification_path.certificate.construction_certificate? %>
+                        <% if can?(:download_archive, @certification_path) && download_document_permitted %>
+                            <tr>
+                                <th>
+                                    Documents and Audit Logs
+                                    <%= tooltip('An archive of all approved documents and CSV formatted audit logs regarding the certificate can be downloaded here.') %>
+                                </th>
+                                <td>
+                                    <% tooltip = t('.certification_path.download_archive.tooltip', approved_count: @certification_path.scheme_mix_criteria_documents.approved.count) %>
+                                    <%= btn_download(archive_project_certification_path_path, size: 'extra_small', tooltip: tooltip) %>
+                                    <%= t('.certification_path.download_archive.text') %>
+                                </td>
+                            </tr>
+                        <% end %>
+                      <% end %>
                     </tbody>
                 </table>
                 <!-- apply is only allowed if the user has the ability, AND  there has nog yet been applied for pcr -->
@@ -92,28 +124,41 @@
             </div>
         </div>
 
-        <% if can?(:download_coverletter_report, @certification_path) %>
-        <div class="ibox float-e-margins">
-          <div class="ibox-title">
-            <h5><%= t('.certification_path_reports.title') %></h5>
-          </div>
-          <div class="ibox-content">
-            <% if can?(:download_coverletter_report, @certification_path) %>
-                <div>
-                  <%= btn_download(download_coverletter_report_project_certification_path_path(@project, @certification_path), size: 'extra_small') %>
-                  <%= t('.certification_path.download_coverletter.text') %>
-                </div>
-            <% end %>
-            <% @certification_path.scheme_mixes.each do |scheme_mix| %>
-                <% if can?(:download_scores_report, scheme_mix) %>
+        <% if @detailed_certificate_report.present? && !@certification_path.final_construction? %>
+          <div class="ibox float-e-margins">
+            <div class="ibox-title">
+              <h5><%= t('.certification_path_reports.title') %></h5>
+            </div>
+            <div class="ibox-content">
+              <% if can?(:create_detailed_certification_report, @certification_path) %>
+                  <div>
+                    <%= btn_link_to(new_detailed_certification_report_project_certification_path_path(@project, @certification_path), text: t('.certification_path.create_detaild_certificate_report.text'), remote: :true) %>
+                  </div>
+                <div id="detailedCertificationFormModal" class="modal fade"></div>
+              <% end %>
+              <br />
+              <% if can?(:download_detailed_certificate_report, @certification_path) %>
+                <!-- <% if can?(:download_coverletter_report, @certification_path) %>
                     <div>
-                      <%= btn_download(download_scores_report_project_certification_path_scheme_mix_path(@project, @certification_path, scheme_mix), size: 'extra_small') %>
-                      <%= "Download Criteria Summary report for #{scheme_mix.name}" %>
+                      <%= btn_download(download_coverletter_report_project_certification_path_path(@project, @certification_path), size: 'extra_small') %>
+                      <%= t('.certification_path.download_coverletter.text') %>
                     </div>
                 <% end %>
-            <% end %>
+                <% @certification_path.scheme_mixes.each do |scheme_mix| %>
+                    <% if can?(:download_scores_report, scheme_mix) %>
+                        <div>
+                          <%= btn_download(download_scores_report_project_certification_path_scheme_mix_path(@project, @certification_path, scheme_mix), size: 'extra_small') %>
+                          <%= "Download Criteria Summary report for #{scheme_mix.name}" %>
+                        </div>
+                    <% end %>
+                <% end %> -->
+                <div>
+                  <%= btn_download(download_detailed_certificate_report_project_certification_path_path(@project, @certification_path), size: 'extra_small') %>
+                  <%= t('.certification_path.download_detailed_certificate.text') %>
+                </div>
+              <% end %>
+            </div>
           </div>
-        </div>
         <% end %>
 
         <% if (can?(:download_signed_certificate, @certification_path) && @certification_path.signed_certificate_file.present?) || can?(:update_signed_certificate, @certification_path) %>
@@ -168,8 +213,10 @@
                           <% end %>
                         <% end %>
                     <% else %>
+                      <% unless @certification_path.next_status == CertificationPathStatus::CERTIFICATE_IN_PROCESS %>
                         <div class="hr-line-dashed"></div>
                         <%= btn_link_to(edit_status_project_certification_path_url(@project, @certification_path), remote: true, icon: 'forward', text: t( 'certification_paths.show_checklist.certification_path_status.btn_advance_status', status: CertificationPathStatus.find_by(id: @certification_path.next_status).name)) %>
+                      <% end %>
                     <% end %>
                 <% end %>
             </div>
@@ -244,7 +291,7 @@
       <% if can?(:create, CertifierCertificationPathDocument.new(:certification_path_id => @certification_path.id)) %>
           <div class="ibox">
             <div class="ibox-title">
-              <h5>Upload Checklist Documentation</h5>
+              <h5>UPLOAD CHECKLIST DOCUMENTATION</h5>
             </div>
             <div class="ibox-content">
               <%= render 'certification_path_documents/new', document: CertifierCertificationPathDocument.new, project: @project, certification_path: @certification_path %>
@@ -256,7 +303,7 @@
               <% if @certification_path.certificate.construction_type? %>
                 <h5>Upload Construction Management Plan and General Documentation</h5>
               <% else %>
-                <h5>Upload Checklist Documentation</h5>
+                <h5>UPLOAD CHECKLIST DOCUMENTATION</h5>
               <% end %>
             </div>
             <div class="ibox-content">
@@ -267,21 +314,21 @@
       <div class="ibox" id="cgp-documentation">
         <div class="ibox-title">
           <% if @certification_path.certificate.certification_type == "final_design_certificate" %>
-            <h5>Project Team CDA Documentation</h5>
+            <h5>PRACTITIONERS CDA DOCUMENTATION</h5>
           <% else %>
-            <h5>Project Team Documentation</h5>
+            <h5>PRACTITIONERS DOCUMENTATION</h5>
           <% end %>
         </div>
         <div class="ibox-content">
-          <%= render 'certification_path_documents/index', certification_path_documents: @certification_path.cgp_certification_path_documents %>
+          <%= render 'certification_path_documents/index', certification_path_documents: @certification_path.cgp_certification_path_documents, download_document_permitted: download_document_permitted %>
         </div>
       </div>
       <div class="ibox" id="certifier-documentation">
         <div class="ibox-title">
-          <h5>GSAS Trust Team Documentation</h5>
+          <h5>GSAS TRUST DOCUMENTATION</h5>
         </div>
         <div class="ibox-content">
-          <%= render 'certification_path_documents/index', certification_path_documents: @certification_path.certifier_certification_path_documents %>
+          <%= render 'certification_path_documents/index', certification_path_documents: @certification_path.certifier_certification_path_documents, download_document_permitted: download_document_permitted %>
         </div>
       </div>
     </div>

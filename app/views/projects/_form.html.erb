@@ -1,5 +1,6 @@
 <% use_gmaps_for(:project) %>
 <% set_project_country_location(@project) %>
+<% set_project_district(@project) %>
 
 <%= bootstrap_form_for(@project, html: { class: 'project-form' }) do |f| %>
   <div class="row">
@@ -29,40 +30,60 @@
               <% end %>
               <%= f.text_field :owner %>
               <%= f.form_group do %>
-                <label>Or choose a predefined property owner</label>
+                <label>Or Choose a Predefined Project Owner</label>
                 <input type="hidden" class="select2-ajax">
               <% end %>
+
               <%= f.text_field :developer %>
-              <%= f.select(:building_type_group_id, options_from_collection_for_select(BuildingTypeGroup.visible.order(:name), :id, :name, @project.building_type_group_id), {include_blank: '- Select a predefined building type category -', class: 'form-control'}) %>
+              <%= f.form_group do %>
+                <label>Or Choose a Predefined Project Developer</label>
+                <%= select_tag(:select_developer, options_for_select(Owner.order(:name).pluck(:name).map{ |dev| [dev, dev] }.push(["Other, Please indicate", "Other"]), @project.developer), include_blank: '- Select a predefined project developer -', hide_label: true, id: 'project_developer_select', class: 'form-control developer-select-dropdown' ) %>
+              <% end %>
+
+              <%#= f.select(:building_type_group_id, options_from_collection_for_select(BuildingTypeGroup.visible.order(:name), :id, :name, @project.building_type_group_id), {include_blank: '- Select a predefined building type category -', class: 'form-control'}) %>
+              
               <div id="building-type-select">
-                <%= f.select(:building_type_id, options_for_select(BuildingType.visible.order(:name).map{ |bt| [bt.name, bt.id, {'data-building-type-group-id' => bt.building_type_group_id}]}, @project.building_type_id), {include_blank: '- Select a predefined building type -', class: 'form-control'}) %>
+                <%= f.select(:building_type_id, options_for_select(BuildingType.select("DISTINCT ON (name) building_types.*").visible.order(:name).map{ |bt| [bt.name, bt.id, {'data-building-type-group-id' => bt.building_type_group_id}]}, @project.building_type_id), {include_blank: '- Select a predefined building type -', class: 'form-control'}) %>
               </div>
-              <%= f.text_field :estimated_project_cost %>
-              <%= f.text_field :cost_square_meter %>
-              <div class="district-fields">
-                <%= f.text_field :estimated_building_cost %>
-                <%= f.text_field :estimated_infrastructure_cost %>
-              </div>
-              <%= f.text_area :description %>
-              <%= f.text_field :construction_year %>
+
+              <%= f.text_field :estimated_project_cost, append: 'QAR', class: "commify-value" %>
+              <%= f.text_field :cost_square_meter, append: 'QAR', readonly: true, class: "commify-value" %>
+
+              <!-- <div class="district-fields">
+                <%= f.text_field :estimated_building_cost, append: 'QAR', class: "commify-value" %>
+                <%= f.text_field :estimated_infrastructure_cost, append: 'QAR', class: "commify-value" %>
+              </div> -->
+
+              <%= f.text_field :description, maxlength: 300 %>
+              <%= f.number_field :construction_year, prepend: ikoen('calendar'), class: "datepicker-year", min: 2000, max: 2100 %>
             </div>
             <div class="col-md-3">
-              <%= f.select :country, options_for_select(CS.countries.map{ |cnt| [cnt[1], cnt[1]] }, f.object&.country), { include_blank: "Select Country" }, { required: true, class: "select2 form-control country-select" } %>
-              <div id="location-select-div" class="form-group">
-                <% if @is_location_predefined %>
-                  <%= f.select(:location, options_for_select(@location_options, f.object&.location), { include_blank: "Select Location" }, { class: "select2 form-control location-select-dropdown" }) %>
+              <% countries = CS.countries.sort_by{|_key, value| value }.to_h %>
+              <%= f.select :country, options_for_select(countries.map{ |cnt| [cnt[1], cnt[1]] }, f.object&.country), { include_blank: "Select Country" }, { required: true, class: "select2 form-control country-select" } %>
+              <div id="city-select-div" class="form-group">
+                <% if @is_city_predefined %>
+                  <%= f.select(:city, options_for_select(@city_options, f.object&.city), { include_blank: "Select City" }, { class: "select2 form-control city-select-dropdown", id: "city-select" }) %>
                 <% else %>
-                  <%= f.text_field :location %>
+                  <%= f.text_field :city %>
                 <% end %>
               </div>
-              <%= f.text_area :address %>
-              <%= f.text_field :project_site_area, append: 'm²', label: (Project.human_attribute_name('project_site_area') + tooltip(t '.tooltip_project_site_area')).html_safe %>
-              <%= f.text_field :gross_area, append: 'm²', label: (Project.human_attribute_name('gross_area') + tooltip(t '.tooltip_gross_area')).html_safe %>
-              <%= f.text_field :buildings_footprint_area, append: 'm²', label: (Project.human_attribute_name('buildings_footprint_area') + tooltip(t '.tooltip_buildings_footprint_area')).html_safe %>
-              <%= f.text_field :certified_area, append: 'm²', readonly: true, label: (Project.human_attribute_name('certified_area') + tooltip(t '.tooltip_certified_area')).html_safe %>
-              <%= f.text_field :carpark_area, append: 'm²', label: (Project.human_attribute_name('carpark_area') + tooltip(t '.tooltip_carpark_area')).html_safe %>
+              <div id="district-select-div" class="form-group">
+                <% if @is_district_predefined %>
+                  <%= f.select(:district, options_for_select(@district_options, f.object&.district), { include_blank: "Select District" }, { class: "select2 form-control district-select-dropdown" }) %>
+                <% else %>
+                  <%= f.text_field :district %>
+                <% end %>
+              </div>
+
+              <%= f.text_field :address, maxlength: 50 %>
+              <%= f.text_field :project_site_area, value: commify_values(f.object.project_site_area), append: 'm²', label: (Project.human_attribute_name('project_site_area') + tooltip(t '.tooltip_project_site_area')).html_safe, class: "commify-value", label_class: "required" %>
+              <%= f.text_field :gross_area, value: commify_values(f.object.gross_area), append: 'm²', label: (Project.human_attribute_name('gross_area') + tooltip(t '.tooltip_gross_area')).html_safe, class: "commify-value", label_class: "required" %>
+              <%= f.text_field :buildings_footprint_area, value: commify_values(f.object.buildings_footprint_area), append: 'm²', label: (Project.human_attribute_name('buildings_footprint_area') + tooltip(t '.tooltip_buildings_footprint_area')).html_safe, class: "commify-value", label_class: "required" %>
+              <%= f.text_field :certified_area, append: 'm²', readonly: true, label: (Project.human_attribute_name('certified_area') + tooltip(t '.tooltip_certified_area')).html_safe, value: commify_values(f.object.certified_area), class: "commify-value", label_class: "required" %>
+              <%= f.text_field :carpark_area, value: commify_values(f.object.carpark_area), append: 'm²', label: (Project.human_attribute_name('carpark_area') + tooltip(t '.tooltip_carpark_area')).html_safe, class: "commify-value", label_class: "required" %>
+              
               <div class="form-group">
-                <label class="control-label" for="project_location_plan_file"><%= Project.human_attribute_name('location_plan_file') %></label>
+                <label class="control-label required" for="project_location_plan_file"><%= Project.human_attribute_name('location_plan_file') %></label>
                 <% if @project.location_plan_file.present? %>
                   <div class="input-group">
                     <span class="input-group-addon"><%= ikoen('file', title: 'Currently uploaded file. Will be overridden when you select a new file.') %></span>
@@ -73,7 +94,7 @@
                 <%= f.hidden_field :location_plan_file_cache %>
               </div>
               <div class="form-group">
-                <label class="control-label" for="project_site_plan_file"><%= Project.human_attribute_name('site_plan_file') %></label>
+                <label class="control-label required" for="project_site_plan_file"><%= Project.human_attribute_name('site_plan_file') %></label>
                 <% if @project.site_plan_file.present? %>
                   <div class="input-group">
                     <span class="input-group-addon"><%= ikoen('file', title: 'Currently uploaded file. Will be overridden when you select a new file.') %></span>
@@ -83,8 +104,33 @@
                 <%= f.file_field :site_plan_file, hide_label: true %>
                 <%= f.hidden_field :site_plan_file_cache %>
               </div>
+
+              <% if @project.project_narrative_file.present? %>
+                <div class="form-group">
+                  <label class="control-label required" for="project_project_narrative_file"><%= Project.human_attribute_name('project_narrative_file') %></label>
+                    <div class="input-group">
+                      <span class="input-group-addon"><%= ikoen('file', title: 'Currently uploaded file. Will be overridden when you select a new file.') %></span>
+                      <input type="text" class="form-control" disabled value="<%= @project.project_narrative_file.file.filename %>">
+                    </div>
+                  <%= f.file_field :project_narrative_file, hide_label: true %>
+                  <%= f.hidden_field :project_narrative_file_cache %>
+                </div>
+              <% else %>
+                <div class="form-group">
+                  <label class="control-label required" for="project_area_statement_file"><%= Project.human_attribute_name('area_statement_file') %></label>
+                    <% if @project.area_statement_file.present? %>
+                      <div class="input-group">
+                        <span class="input-group-addon"><%= ikoen('file', title: 'Currently uploaded file. Will be overridden when you select a new file.') %></span>
+                        <input type="text" class="form-control" disabled value="<%= @project.area_statement_file.file.filename %>">
+                      </div>
+                    <% end %>
+                  <%= f.file_field :area_statement_file, hide_label: true %>
+                  <%= f.hidden_field :area_statement_file_cache %>
+                </div>
+              <% end %>
+
               <div class="form-group">
-                <label class="control-label" for="project_design_brief_file"><%= Project.human_attribute_name('design_brief_file') %></label>
+                <label class="control-label required" for="project_design_brief_file"><%= Project.human_attribute_name('design_brief_file') %></label>
                 <% if @project.design_brief_file.present? %>
                   <div class="input-group">
                     <span class="input-group-addon"><%= ikoen('file', title: 'Currently uploaded file. Will be overridden when you select a new file.') %></span>
@@ -95,19 +141,33 @@
                 <%= f.hidden_field :design_brief_file_cache %>
               </div>
               <div class="form-group">
-                <label class="control-label" for="project_project_narrative_file"><%= Project.human_attribute_name('project_narrative_file') %></label>
-                <% if @project.project_narrative_file.present? %>
+                <label class="control-label required" for="project_sustainability_features_file"><%= Project.human_attribute_name('sustainability_features_file') %></label>
+                <% if @project.sustainability_features_file.present? %>
                   <div class="input-group">
                     <span class="input-group-addon"><%= ikoen('file', title: 'Currently uploaded file. Will be overridden when you select a new file.') %></span>
-                    <input type="text" class="form-control" disabled value="<%= @project.project_narrative_file.file.filename %>">
+                    <input type="text" class="form-control" disabled value="<%= @project.sustainability_features_file.file.filename %>">
                   </div>
                 <% end %>
-                <%= f.file_field :project_narrative_file, hide_label: true %>
-                <%= f.hidden_field :project_narrative_file_cache %>
+                <%= f.file_field :sustainability_features_file, hide_label: true %>
+                <%= f.hidden_field :sustainability_features_file_cache %>
               </div>
             </div>
             <div class="col-md-6">
               <div class="row">
+                <div class="col-md-12">
+                  <%= f.hidden_field :location %>
+                </div>
+
+                <div class="col-md-12">
+                  <label>Search Location</label>
+                  <div class="input-group form-group">
+                    <%= text_field_tag :search_location, @project.location, class: "form-control", id: "search_location" %>
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" id="submit-location-btn" type="button">Search</button>
+                    </span>
+                  </div>
+                </div>
+
                 <div class="col-md-6">
                   <div class="form-group">
                     <%= label_tag :lat, ('Latitude' + tooltip(t '.tooltip_coordinates')).html_safe %>

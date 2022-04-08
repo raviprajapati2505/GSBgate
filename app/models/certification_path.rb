@@ -29,6 +29,7 @@ class CertificationPath < ApplicationRecord
   has_many :actual_project_images, dependent: :destroy
   has_many :project_rendering_images, dependent: :destroy
   has_one :certification_path_method, dependent: :destroy
+  has_one :certification_path_report, dependent: :destroy
 
   accepts_nested_attributes_for :certificate
   accepts_nested_attributes_for :scheme_mixes
@@ -50,6 +51,8 @@ class CertificationPath < ApplicationRecord
   before_update :advance_scheme_mix_criteria_statuses
   before_update :set_started_at
   before_update :set_certified_at
+  after_update :create_cda_users, if: -> { is_design_loc? && certification_path_status_id == CertificationPathStatus::CERTIFIED }  
+  after_update :create_certification_path_report, if: -> { certification_path_status_id == CertificationPathStatus::CERTIFIED }  
 
   scope :not_expired, -> {
     where('expires_at > ?', DateTime.now)
@@ -57,6 +60,10 @@ class CertificationPath < ApplicationRecord
 
   scope :with_status, ->(statuses) {
     joins(:certification_path_status).where(certification_path_status_id: statuses)
+  }
+
+  scope :with_status_not, ->(statuses) {
+    joins(:certification_path_status).where.not(certification_path_status_id: statuses)
   }
 
   scope :with_project, ->(project) {
@@ -71,6 +78,23 @@ class CertificationPath < ApplicationRecord
     joins(:certificate).where(certificates: {certificate_type: certificate_type})
   }
 
+  scope :most_recent, -> do 
+    from(
+      <<~SQL 
+        (
+          SELECT id
+            FROM certification_paths JOIN (
+              SELECT project_id, MAX(created_at) AS created_at
+                FROM certification_paths
+                GROUP BY project_id
+            ) latest_by_created
+            ON certification_paths.created_at = latest_by_created.created_at
+            AND certification_paths.project_id = latest_by_created.project_id
+        ) certification_paths
+      SQL
+    )
+  end
+  
   # scope :letter_of_conformance, -> {
   #   joins(:certificate)
   #       .merge(Certificate.letter_of_conformance)
@@ -106,11 +130,80 @@ class CertificationPath < ApplicationRecord
   end
 
   def status
-    self.certification_path_status.name
+    status = self.certification_path_status.name
+    if status == "Certificate In Process"
+      status =  if self.certification_path_report&.is_released?
+                  "Certificate Generated"
+                else
+                  "Certificate In Process"
+                end
+    end
+    
+    return status
+  end
+
+  def construction?
+    certificate&.construction?
+  end
+
+  def final_construction?
+    certificate&.final_construction?
   end
 
   def construction_certificate_CM_2019?
     certificate.construction_2019?
+  end
+
+  def certification_manager_assigned?
+    projects_users =  if project.design_and_build?
+                        if is_design_loc?
+                          project&.loc_projects_users
+                        elsif is_design_fdc?
+                          project&.fdc_projects_users
+                        else
+                          project&.projects_users
+                        end
+                      else
+                        project&.projects_users
+                      end
+
+    projects_users.each do |projects_user|
+      if projects_user.certification_manager?
+        return true
+      end
+    end
+    return false
+  end
+
+  def projects_users_certification_team_type
+    certification_team_type = if project.design_and_build?
+                                if is_design_loc?
+                                  ProjectsUser.certification_team_types["Letter of Conformance"]
+                                elsif is_design_fdc?
+                                  ProjectsUser.certification_team_types["Final Design Certificate"]
+                                else
+                                  ProjectsUser.certification_team_types["Other"]
+                                end
+                              else
+                                ProjectsUser.certification_team_types["Other"]
+                              end
+
+    return certification_team_type
+  end
+
+  def scheme_names
+    development_type_name = development_type&.name
+
+    if certificate.design_and_build? && ["Neighborhoods", "Mixed Use"].include?(development_type_name)
+      development_type_name
+    elsif ["Districts"].include?(development_type_name)
+      "Districts"
+    elsif main_scheme_mix_selected?
+      main_scheme_mix.name
+    else
+      scheme_names = scheme_mixes&.joins(:scheme).pluck("schemes.name")
+      scheme_names&.join(', ')
+    end    
   end
 
   def status_history
@@ -120,6 +213,14 @@ class CertificationPath < ApplicationRecord
       status_history << {date: audit_log.created_at, certification_path_status: CertificationPathStatus.find_by_id(audit_log.new_status)}
     end
     status_history
+  end
+
+  def main_scheme
+    scheme_mixes&.where(id: main_scheme_mix_id)
+  end
+
+  def sub_schemes
+    scheme_mixes&.where.not(id: main_scheme_mix_id)
   end
 
   def has_fixed_scheme?
@@ -177,6 +278,8 @@ class CertificationPath < ApplicationRecord
       end
     when CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT
       return CertificationPathStatus::CERTIFIED
+    when CertificationPathStatus::CERTIFIED
+      return CertificationPathStatus::CERTIFICATE_IN_PROCESS
     else
       return false
     end
@@ -195,7 +298,7 @@ class CertificationPath < ApplicationRecord
       case certification_path_status_id
       when CertificationPathStatus::ACTIVATING
         # TODO certification path expiry date
-        unless project.certification_manager_assigned?
+        unless certification_manager_assigned?
           todos << 'A certification manager must be assigned to the project.'
         end
         if development_type.mixable? && (main_scheme_mix_selected? == false)
@@ -208,8 +311,8 @@ class CertificationPath < ApplicationRecord
           end
         end
       when CertificationPathStatus::SUBMITTING, CertificationPathStatus::SUBMITTING_AFTER_SCREENING, CertificationPathStatus::SUBMITTING_AFTER_APPEAL
-        ['location_plan_file', 'site_plan_file', 'design_brief_file', 'project_narrative_file'].each do |general_submittal|
-          if project.send(general_submittal).blank?
+        ['location_plan_file', 'site_plan_file', 'design_brief_file', 'project_narrative_file', 'sustainability_features_file', 'area_statement_file'].each do |general_submittal|
+          if project.send(general_submittal).blank? && !required_files(project, general_submittal)
             todos << "A '#{Project.human_attribute_name(general_submittal)}' must be added to the project."
           end
         end
@@ -256,7 +359,7 @@ class CertificationPath < ApplicationRecord
     case certification_path_status_id
     when CertificationPathStatus::ACTIVATING
       # TODO certification path expiry date
-      unless project.certification_manager_assigned?
+      unless certification_manager_assigned?
         todos << 'A certification manager must be assigned to the project.'
       end
       if development_type.mixable? && (main_scheme_mix_selected? == false)
@@ -269,8 +372,8 @@ class CertificationPath < ApplicationRecord
         end
       end
     when CertificationPathStatus::SUBMITTING, CertificationPathStatus::SUBMITTING_AFTER_SCREENING, CertificationPathStatus::SUBMITTING_AFTER_APPEAL
-      ['location_plan_file', 'site_plan_file', 'design_brief_file', 'project_narrative_file'].each do |general_submittal|
-        if project.send(general_submittal).blank?
+      ['location_plan_file', 'site_plan_file', 'design_brief_file', 'project_narrative_file', 'sustainability_features_file', 'area_statement_file'].each do |general_submittal|
+        if project.send(general_submittal).blank? && !required_files(project, general_submittal)
           todos << "A '#{Project.human_attribute_name(general_submittal)}' must be added to the project."
         end
       end
@@ -346,6 +449,11 @@ class CertificationPath < ApplicationRecord
     return todos.uniq
   end
 
+
+  def required_files(project, general_submittal)
+    (['project_narrative_file', 'area_statement_file'].include?(general_submittal) && (project.send("project_narrative_file").present? || project.send("area_statement_file").present?))
+  end
+  
   def allow_certification?(is_achieved_score: true, is_submitted_score: true)
     main_scheme_mixes = self.main_scheme_mix.present? ? self.scheme_mixes.where(id: self.main_scheme_mix.id) : self.scheme_mixes
     main_scheme_mixes.each do |scheme_mix|
@@ -642,12 +750,16 @@ class CertificationPath < ApplicationRecord
     CertificationPathStatus::STATUSES_ACTIVATED.include?(certification_path_status_id)
   end
 
+  def is_submitting?
+    certification_path_status_id == CertificationPathStatus::SUBMITTING
+  end
+
   def is_completed?
     CertificationPathStatus::STATUSES_COMPLETED.include?(certification_path_status_id)
   end
 
   def is_certified?
-    CertificationPathStatus::CERTIFIED == certification_path_status_id
+    [CertificationPathStatus::CERTIFIED, CertificationPathStatus::CERTIFICATE_IN_PROCESS].include?(certification_path_status_id)
   end
 
   def create_assessment_method(method)
@@ -662,7 +774,27 @@ class CertificationPath < ApplicationRecord
     certificate.full_name.include?('Letter of Conformance') && certificate.design_and_build?
   end
 
+  def is_design_fdc?
+    certificate.full_name.include?('Final Design Certificate') && certificate.design_and_build?
+  end
+
   private
+
+  def create_cda_users
+    project_managers = project.projects_users&.where(role: ["cgp_project_manager", "certification_manager"])
+    project_managers.each do |project_manager|
+      new_project_manager = project_manager.dup
+      new_project_manager.certification_team_type = "Final Design Certificate"
+      new_project_manager.save
+    end
+  end
+
+  def create_certification_path_report
+    unless self.final_construction?
+      certification_path_report = CertificationPathReport.find_or_initialize_by(certification_path_id: id)
+      certification_path_report.save(validate: false)
+    end
+  end
 
   def set_started_at
     if certification_path_status_id_changed? && certification_path_status_id == CertificationPathStatus::SUBMITTING
@@ -763,7 +895,7 @@ class CertificationPath < ApplicationRecord
 
   def revised_score(val, is_achieved_score, is_submitted_score)
     e6_criterion = scheme_mix_criteria&.joins(scheme_criterion: :scheme_category).find_by("scheme_categories.name = 'Energy' AND scheme_criteria.name = 'Renewable Energy'")
-    val = if (is_submitted_score && e6_criterion&.submitted_score_a < 3) || (is_achieved_score && e6_criterion&.achieved_score_a < 3) || (!is_achieved_score && !is_submitted_score && e6_criterion&.targeted_score_a < 3) 
+    val = if e6_criterion.present? && ((is_submitted_score && e6_criterion&.submitted_score_a.to_f < 3) || (is_achieved_score && e6_criterion&.achieved_score_a.to_f < 3) || (!is_achieved_score && !is_submitted_score && e6_criterion&.targeted_score_a.to_f < 3))
             4
           else
             val

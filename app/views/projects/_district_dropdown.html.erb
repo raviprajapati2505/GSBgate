@@ -1,0 +1,6 @@
+<label class='required'>Project District</label>
+<% if district.present? %>
+  <%= select_tag "project[district]", options_for_select(district&.list&.map{ |loc| [loc, loc] }.push(["Other, Please indicate", "Other"])), { include_blank: "Select District", required: true, id: "district-select", class: "select2 form-control district-select-dropdown"}  %>
+<% else %>
+  <%= select_tag "project[district]", options_for_select([["Other, Please indicate", "Other"]]), { include_blank: "Select District", id: "district-select", required: true, class: "select2 form-control district-select-dropdown"}  %>
+<% end %>

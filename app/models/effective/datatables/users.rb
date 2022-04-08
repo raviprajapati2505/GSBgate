@@ -13,7 +13,7 @@ module Effective
         col :linkme_user, label: 'Linkme.qa User'
         col :cgp_license, label: 'CGP License'
         col :gord_employee, label: 'GORD Employee'
-        col :last_sign_in_at, label: 'Last Sign in at', as: :datetime, search: { as: :select, collection: Proc.new { User.pluck_date_field_by_year_month_day(:last_sign_in_at, :desc) } } do |rec|
+        col :last_sign_in_at, label: 'Last Sign in at', as: :datetime, search: { as: :select, collection: Proc.new { User.pluck_date_field_by_year_month_day(:last_sign_in_at, :desc).compact } } do |rec|
           localize(rec.last_sign_in_at.in_time_zone) unless rec.last_sign_in_at.nil?
         end
         col :sign_in_count, label: 'Sign in Count', as: :integer, search: :string

@@ -1,0 +1,13 @@
+<% rating = certification_path.rating_for_score(score, certificate: certificate, is_achieved_score: achieved, is_submitted_score: submitted) %>
+
+<% if rating.is_a? String %>
+  <!-- TEXTUAL SCORE -->
+  <span class="label label-rating label-rating-<%= rating.downcase.gsub(/( )/, '-') %>" style='margin-inline: 1.5rem;' ><%= rating %></span>
+<% else %>
+  <!-- STAR SCORE -->
+  <span style="white-space: nowrap; margin-inline: 6px;">
+    <% rating.to_i.times do %>
+        <i class="fa fa-star fa-lg"></i>
+    <% end %>
+  </span>
+<% end %>

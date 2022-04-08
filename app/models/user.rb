@@ -5,7 +5,7 @@ class User < ApplicationRecord
   include BCrypt
   include DatePlucker
 
-  enum role: { system_admin: 5, default_role: 1, gsas_trust_top_manager: 2, gsas_trust_manager: 3, gsas_trust_admin: 4,document_controller: 6, record_checker: 7 }
+  enum role: { system_admin: 5, default_role: 1, gsas_trust_top_manager: 2, gsas_trust_manager: 3, gsas_trust_admin: 4, document_controller: 6, record_checker: 7 }
 
   has_many :documents
   has_many :scheme_mix_criteria_documents
@@ -50,8 +50,8 @@ class User < ApplicationRecord
   #   where(role: 1) & not_owning_project(project) & not_authorized_for_project(project)
   # }
 
-  scope :authorized_for_project, ->(project) {
-    joins(:projects_users).where(projects_users: {project_id: project.id})
+  scope :authorized_for_project, ->(project, certification_path) {
+    joins(:projects_users).where(projects_users: {project_id: project.id, certification_team_type: certification_path&.projects_users_certification_team_type})
   }
 
   scope :with_project_team_role, -> {
@@ -62,9 +62,13 @@ class User < ApplicationRecord
     joins(:projects_users).where(projects_users: {role: [ProjectsUser.roles[:certifier], ProjectsUser.roles[:certification_manager]]})
   }
 
-  scope :with_cgp_project_manager_role_for_project, ->(project) {
-    joins(:projects_users).where(projects_users: {project_id: project.id, role: ProjectsUser.roles[:cgp_project_manager]})
+  scope :with_cgp_project_manager_role_for_project, ->(project, certification_path) {
+    joins(:projects_users).where(projects_users: {project_id: project.id, certification_team_type: certification_path&.projects_users_certification_team_type, role: ProjectsUser.roles[:cgp_project_manager]})
   }
+
+  def is_admin?
+    ["system_admin", "gsas_trust_top_manager", "gsas_trust_manager", "gsas_trust_admin"].include?(role)
+  end
 
   def full_name
     name
@@ -100,7 +104,7 @@ class User < ApplicationRecord
   end
 
   def ability
-    @ability ||= Ability.new(self)
+    @current_ability ||= Ability.new(self)
   end
 
   def log_sign_in
@@ -165,6 +169,10 @@ class User < ApplicationRecord
     {
       username: username
     }
+  end
+
+  def has_role?(role = [])
+    role.include?(self.role) rescue false
   end
 
   private

@@ -1,0 +1,40 @@
+<% certification_path = project&.certification_paths&.last %>
+
+<% if certification_path.present? %>
+  <table class="table table-bordered table-mb-0">
+    <tbody>
+      <tr>
+        <th><%= t('certification_paths.show.certification_path.name') %></th>
+        <td>
+          <%= can_link_to(project_certification_path_path(project, certification_path), certification_path, class: "link-mr-2") do %>
+            <%= certification_path.certificate.only_certification_name %>
+          <% end %>
+        </td>
+      </tr>
+      <tr>
+        <th><%= t('certification_paths.show.certification_path.version') %></th>
+        <td>
+          <%= can_link_to(project_certification_path_path(project, certification_path), certification_path) do %>
+            <%= certification_path.certificate.only_version %>
+          <% end %>
+        </td>
+      </tr>
+      <tr>
+        <th><%= t('certification_paths.show.certification_path.scheme') %></th>
+        <td>
+          <%= can_link_to(project_certification_path_path(project, certification_path), certification_path) do %>
+            <%= certification_path.scheme_names %>
+          <% end %>
+        </td>
+      </tr>
+      <tr>
+        <th><%= t('certification_paths.show.certification_path.assessment_type') %></th>
+        <td>
+          <%= can_link_to(project_certification_path_path(project, certification_path), certification_path) do %>
+            <%= certification_assessment_type_title(certification_path.certification_path_method&.assessment_method) %>
+          <% end %>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+<% end %>

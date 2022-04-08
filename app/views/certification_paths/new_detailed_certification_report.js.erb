@@ -1,0 +1,51 @@
+$('#detailedCertificationFormModal').html("<%= escape_javascript(render partial: 'certification_paths/certification_report_form', locals: { project: @project, certification_path: @certification_path, certification_path_report: @certification_path_report }) %>");
+$('#detailedCertificationFormModal').modal('show');
+
+$('.datepicker-past').datepicker({
+  format: 'dd/mm/yyyy',
+  endDate: '0d',
+  todayBtn: true,
+  todayHighlight: true
+});
+
+// $(document).ready(function(){
+//   $('#new_certification_path_report').submit(function(e){
+//     e.preventDefault();
+// 
+//     var fileElement = $("#certification_path_report_rendering_image");
+//     var files = fileElement[0].files
+// 
+//     if (!!files.length) {
+//       var formData = new FormData()
+//       formData.append("certification_path_report[to]", $("input[name='certification_path_report[to]']").val())
+//       formData.append("certification_path_report[reference_number]", $("input[name='certification_path_report[reference_number]']").val())
+//       formData.append("certification_path_report[project_owner]", $("input[name='certification_path_report[project_owner]']").val())
+//       formData.append("certification_path_report[designation]", $("input[name='certification_path_report[designation]']").val())
+//       formData.append("certification_path_report[service_provider]", $("input[name='certification_path_report[service_provider]']").val())
+//       formData.append("certification_path_report[project_name]", $("input[name='certification_path_report[project_name]']").val())
+//       formData.append("certification_path_report[issuance_date]", $("input[name='certification_path_report[issuance_date]']").val())
+//       formData.append("certification_path_report[approval_date]", $("input[name='certification_path_report[approval_date]']").val())
+//       formData.append("certification_path_report[project_owner]", $("input[name='certification_path_report[project_owner]']").val())
+// 
+//       if (!!files.length) {
+//         Array.from(files).forEach((file, index) => {
+//           formData.append("certification_path_report[rendering_image]", file);
+//         });
+//       }
+//       
+//       $.ajax({
+//         url: this.action,
+//         type: "POST",
+//         data: formData,
+//         processData: false,
+//         contentType: false,
+//         enctype: "multipart/form-data",
+//         headers: {
+//             'X-CSRF-Token': document.querySelector("meta[name=csrf-token]").content
+//         },
+//         dataType: 'script'
+//       });
+//     }
+//     return false
+//   });
+// });

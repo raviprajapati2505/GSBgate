@@ -9,7 +9,7 @@ en:
       modal_title: Confirm
     topnavbar:
       navbar:
-        projects_html: My Projects &amp; Certifications
+        projects_html: Projects &amp; Certifications
         tasks: My Tasks
         preferences: My Preferences
         audit_log: Audit Log
@@ -35,6 +35,21 @@ en:
       certification_path:
         title: Certification Details
         name: Certification Name
+        version: Certification Version
+        scheme: Certification Scheme
+        assessment_type: Certification Method
+        stage: Certification Stage
+        status: Certification Status
+        rating: Certification Rating
+        scores: Certification Scores
+        started_at: Certification Started On
+        expired_at: Certification Expiry On
+        certified_at: Certification Certified On
+        create_detaild_certificate_report:
+          text: Certificate Information Verification
+        download_detailed_certificate:
+          text: Download Detailed Certification Report
+          tooltip: Download Detailed Certification Report
         download_certificate:
           text: Download Certification
           tooltip: Download Certification
@@ -49,14 +64,14 @@ en:
           tooltip: A ZIP archive containing all approved documents in this certification and related audit logs will be generated for you. (Currently containing %{approved_count} approved document(s))
         apply_pcr:
           confirm: You are now applying for the PCR track. This will require an extra fee. Please confirm your choice.
-          text: Apply for PCR
+          text: Certification PCR Track
         cancel_pcr:
           confirm: This will cancel the PCR for this certification. Please confirm your choice.
           text: Cancel PCR
         pcr:
           tooltip: Pre Certification Review. During PCR, the GSAS trust team will assist the project team in completing the certification process. The CGP project manager can enable PCR when applying for a certificate. Please contact GORD if you want to enable the PCR track in a later stage of the certification process.
       certification_path_status:
-        title: Certification Status
+        title: CERTIFICATION STATUS
         btn_accept_achieved: Accept achieved score
         btn_accept_denied:
           text: Accept certification denied
@@ -65,11 +80,11 @@ en:
         btn_advance_status: Advance status to '%{status}'
     
       certification_path_reports:
-        title: Generated Reports
+        title: GENERATED REPORTS
       certification_path_signed_certificate:
-        title: Officially Signed Certificate
+        title: OFFICIAL CERTIFICATE
       schemes:
-        title: Schemes
+        title: SCHEMES DETAILS
         info_activating: The schemes will be clickable after a GSAS trust administrator activates the certification.
         btn_edit_project_team_responsibility_for_submittal: Allocate project team responsibility for submittal
         btn_edit_certifier_team_responsibility_for_verification: Allocate GSAS trust team responsibility for verification
@@ -88,11 +103,16 @@ en:
       title: Advancing Certification Status
     show_checklist:
       certification_path:
-        title: Certification Details
+        title: CERTIFICATION DETAILS
         name: Certification Name
+        create_detaild_certificate_report:
+          text: Certificate Information Verification
         download_certificate:
           text: Download Certification
           tooltip: Download Certification
+        download_detailed_certificate:
+          text: Download Detailed Certification Report
+          tooltip: Download Detailed Certification Report
         download_coverletter:
           text: Download Certificate Summary
           tooltip: Download Certificate Summary
@@ -104,14 +124,14 @@ en:
           tooltip: A ZIP archive containing all approved documents in this certification and related audit logs will be generated for you. (Currently containing %{approved_count} approved document(s))
         apply_pcr:
           confirm: You are now applying for the PCR track. This will require an extra fee. Please confirm your choice.
-          text: Apply for PCR
+          text: Certification PCR Track
         cancel_pcr:
           confirm: This will cancel the PCR for this certification. Please confirm your choice.
           text: Cancel PCR
         pcr:
           tooltip: Pre Certification Review. During PCR, the GSAS trust team will assist the project team in completing the certification process. The CGP project manager can enable PCR when applying for a certificate. Please contact GORD if you want to enable the PCR track in a later stage of the certification process.
       certification_path_status:
-        title: Certification Status
+        title: CERTIFICATION STATUS
         btn_accept_achieved: Accept achieved score
         btn_accept_denied:
           text: Accept certification denied
@@ -120,11 +140,11 @@ en:
         btn_advance_status: Advance status to '%{status}'
     
       certification_path_reports:
-        title: Generated Reports
+        title: GENERATED REPORTS
       certification_path_signed_certificate:
-        title: Officially Signed Checklist
+        title: OFFICIAL CERTIFICATE
       schemes:
-        title: Schemes
+        title: SCHEMES DETAILS
         info_activating: The schemes will be clickable after a GSAS trust administrator activates the certification.
         btn_edit_project_team_responsibility_for_submittal: Allocate project team responsibility for submittal
         btn_edit_certifier_team_responsibility_for_verification: Allocate GSAS trust team responsibility for verification
@@ -143,11 +163,11 @@ en:
       tooltip_coordinates: The latitude and longitude will automatically be updated when the Address, Location and Country fields are filled out. However, it is also possible to define a custom location by editing this field or by dragging the marker on the map.
     show:
       project_details:
-        title: Project Details
+        title: PROJECT DETAILS
       project_tools:
         title: Project Tools
       certificates:
-        title: Certifications
+        title: CERTIFICATION DETAILS
   projects_users:
     edit:
       btn_cancel: Back
@@ -155,10 +175,10 @@ en:
       form_title: Edit Team Member Authorization
     index:
       project_team:
-        title: Project Team
+        title: Practitioners
         title_modal: Add Project Team Member
       certifier_team:
-        title: GSAS Trust Team
+        title: GSAS Trust
         title_modal: Add GSAS Trust Team Member
       enterprise_clients:
         title: Enterprise Clients
@@ -197,7 +217,7 @@ en:
         verify: Verify Criterion
     apply_pcr:
       title: 
-        pcr: Apply For PCR
+        pcr: Certification PCR Track
       message: 'ATTENTION: By clicking this button, you confirm that a PCR is requested for this criterion'
       btn_cancel: 'No'
       btn_save: 'Yes'
@@ -277,6 +297,9 @@ en:
       description_41: Publish the draft PCR comment provided by a certifier team member.
       description_42: Upload the GSAS Construction Management Plan (GSAS-CMP) via the certification documentation box.
       description_43: A GSAS Construction Management Plan (GSAS-CMP) was uploaded.
+      description_44: Fill the report form to varify certificate information.
+      description_45: Fill the report form to varify certificate information and release certification report.
+
       tooltip_due_date: Task is overdue.
   users:
     index:

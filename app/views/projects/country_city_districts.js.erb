@@ -1,0 +1,15 @@
+$("#district-select-div").html("");
+$("#district-select-div").html("<%= j render partial: "district_dropdown", locals: {district: @district} %>")
+
+$(function(){
+  $("#district-select").select2({
+    width: "100%"
+  });
+});
+
+$(".district-select-dropdown").on("change", function(){
+  let selected_district = $(this).find(":selected").val();
+  if (selected_district == "Other"){
+    $("#district-select-div").html("<label class='required'>Project District</label><input class='form-control' type='text' name='project[district]'>")
+  }
+});

@@ -27,6 +27,18 @@ module ApplicationHelper
     end
   end
 
+  # Filter schemes which is only for checklist
+  def manage_schemes_options(certification_path, assessment_method)
+    # exclude schemes which were renamed.
+    schemes = certification_path&.development_type&.schemes&.select("DISTINCT ON (schemes.name) schemes.*")
+    if assessment_method == 1
+      schemes_with_only_checklist = ["Energy Centers"]
+      schemes = schemes&.where.not(name: schemes_with_only_checklist)
+    end 
+
+    return schemes
+  end
+
   def tooltip(text, data_options = {})
     ikoen('question-circle', size: :normal, tooltip: text, data: data_options, class: 'tooltip-icon')
   end
@@ -228,6 +240,11 @@ module ApplicationHelper
     "#{ikoen(name, options)}&nbsp;&nbsp;#{text}".html_safe
   end
 
+  def commify_values(value)
+    value = value.present? ? value&.to_s&.split(/(?=(?:\d{3})+$)/)&.join(",") : ""
+    return value
+  end
+
   def is_gsas_trust?(user = nil)
     return false unless user.present?
     ["gsas_trust_admin", "gsas_trust_top_manager", "gsas_trust_manager", "system_admin"].include?(current_user&.role)
@@ -372,7 +389,7 @@ module ApplicationHelper
       breadcrumbs[:paths] << project_user_url(project, projects_user)
     end
     if certification_path.present?
-      breadcrumbs[:names] << certification_path.name + ' (' + certification_path.status + ')'
+      breadcrumbs[:names] << certification_path.certificate.stage_title + ' (' + certification_path.status + ')'
       breadcrumbs[:paths] << project_certification_path_url(project, certification_path)
     end
     if scheme_mix.present?
@@ -425,12 +442,24 @@ module ApplicationHelper
   end
 
   def icon_for_filename filename
-    icon_for_ext File.extname(filename)
+    icon_for_ext File.extname(filename) rescue ""
   end
 
   def icon_for_ext file_extension
     ext = file_extension.start_with?('.') ? file_extension[1..-1] : file_extension
     FILEICON_EXTENSIONS[ext.downcase] || 'fileicons/file_extension_unknown.png'
+  end
+
+  def can_update_smc_scores(scheme_mix_criterion)
+    can?(:update_targeted_score, @scheme_mix_criterion) || can?(:update_submitted_score, @scheme_mix_criterion) || can?(:update_achieved_score, @scheme_mix_criterion) rescue false
+  end
+
+  def certification_assessment_type_title(assessment_type = nil)
+    if assessment_type.present? && assessment_type == 2
+      "Checklist Based Certificate"
+    else
+      "Star Rating Based Certificate"
+    end
   end
 
   def total_CM_score(data)
@@ -446,6 +475,8 @@ module ApplicationHelper
   end
 
   def score_calculation(scheme_mix)
+    @project ||= scheme_mix&.certification_path&.project
+
     # fetch all score records
     @scheme_mix_criteria_scores = scheme_mix&.scheme_mix_criteria_scores
     # check for criteria that violate their minimum_valid_score
@@ -502,12 +533,87 @@ module ApplicationHelper
         end
       end
     end
+
     return @total_scores
   end
 
+  # to manipulate scores of  E1, W1, M1, M3 and MO1 in final cm certification.
+  def final_cm_revised_avg_scores(certification_path, total_scores)
+    if certification_path.present? && certification_path&.final_construction? && certification_path&.certificate&.construction_2019? && !certification_path.is_activating?
+      project = certification_path&.project
+
+      scheme_categories_names = ["Energy", "Water", "Materials", "Management & Operations", "Management And Operations"]
+      
+      # CM Stage 3 records
+
+      # scheme mix of all stages.
+      cm_stage_1_sm = SchemeMix.joins(certification_path: [:project, :certificate]).find_by("certificates.certification_type = :certification_type AND projects.id = :project_id", certification_type: Certificate.certification_types["construction_certificate_stage1"], project_id: project&.id)
+      cm_stage_2_sm = SchemeMix.joins(certification_path: [:project, :certificate]).find_by("certificates.certification_type = :certification_type AND projects.id = :project_id", certification_type: Certificate.certification_types["construction_certificate_stage2"], project_id: project&.id)
+      cm_stage_3_sm = SchemeMix.joins(certification_path: [:project, :certificate]).find_by("certificates.certification_type = :certification_type AND projects.id = :project_id", certification_type: Certificate.certification_types["construction_certificate_stage3"], project_id: project&.id)
+
+      # stages sm scores
+      cm_stage_1_sm_scores = cm_stage_1_sm&.scheme_mix_criteria_scores
+      cm_stage_2_sm_scores = cm_stage_2_sm&.scheme_mix_criteria_scores
+      cm_stage_3_sm_scores = cm_stage_3_sm&.scheme_mix_criteria_scores
+
+      scheme_categories_names.each do |scheme_category_name|
+        scheme_criteria_names = get_scheme_criteria_names(scheme_category_name)
+
+        scheme_criteria_names.each do |scheme_criterion_name|
+          cm_stage_1_required_smc_criterion = SchemeMixCriterion.joins([scheme_mix: [certification_path: :certificate]], scheme_criterion: :scheme_category).find_by("scheme_mixes.id = :scheme_mix_id AND scheme_categories.name = :category_name AND scheme_criteria.name = :scheme_criterion_name AND certificates.certification_type = :certification_type", scheme_mix_id: cm_stage_1_sm&.id, category_name: scheme_category_name, scheme_criterion_name: scheme_criterion_name, certification_type: Certificate.certification_types["construction_certificate_stage1"])
+
+          cm_stage_2_required_smc_criterion = SchemeMixCriterion.joins([scheme_mix: [certification_path: :certificate]], scheme_criterion: :scheme_category).find_by("scheme_mixes.id = :scheme_mix_id AND scheme_categories.name = :category_name AND scheme_criteria.name = :scheme_criterion_name AND certificates.certification_type = :certification_type", scheme_mix_id: cm_stage_2_sm&.id, category_name: scheme_category_name, scheme_criterion_name: scheme_criterion_name, certification_type: Certificate.certification_types["construction_certificate_stage2"])
+
+          cm_stage_3_required_smc_criterion = SchemeMixCriterion.joins([scheme_mix: [certification_path: :certificate]], scheme_criterion: :scheme_category).find_by("scheme_mixes.id = :scheme_mix_id AND scheme_categories.name = :category_name AND scheme_criteria.name = :scheme_criterion_name AND certificates.certification_type = :certification_type", scheme_mix_id: cm_stage_3_sm&.id, category_name: scheme_category_name, scheme_criterion_name: scheme_criterion_name, certification_type: Certificate.certification_types["construction_certificate_stage3"])
+
+          if (cm_stage_1_required_smc_criterion.present? && cm_stage_2_required_smc_criterion.present? && cm_stage_3_required_smc_criterion.present?)
+
+            cm_stage_1_smc_scores = cm_stage_1_sm_scores.find{|item| item[:scheme_mix_criteria_id] == cm_stage_1_required_smc_criterion.id }
+            cm_stage_2_smc_scores = cm_stage_2_sm_scores.find{|item| item[:scheme_mix_criteria_id] == cm_stage_2_required_smc_criterion.id }
+            cm_stage_3_smc_scores = cm_stage_3_sm_scores.find{|item| item[:scheme_mix_criteria_id] == cm_stage_3_required_smc_criterion.id }
+
+            keys_of_required_scores = total_scores&.select { |key, value| key.to_s.match(/achieved_score/) }.keys
+
+            if scheme_category_name == 'Water' && cm_stage_3_required_smc_criterion&.scheme_criterion&.number == 1 && certification_path.construction_certificate_CM_2019?
+              manipulated_cm_stage_1_smc_scores = cm_2019_w1_scores_manipulation(cm_stage_1_required_smc_criterion, cm_stage_1_sm_scores)
+              manipulated_cm_stage_2_smc_scores = cm_2019_w1_scores_manipulation(cm_stage_2_required_smc_criterion, cm_stage_2_sm_scores)
+              manipulated_cm_stage_3_smc_scores = cm_2019_w1_scores_manipulation(cm_stage_3_required_smc_criterion, cm_stage_3_sm_scores)
+
+              # keys_of_required_scores.each do |k|
+              #   total_scores[k] = total_scores[k].to_f - (cm_stage_3_smc_scores[k].to_f + cm_stage_2_smc_scores[k].to_f + cm_stage_1_smc_scores[k].to_f) / 3 if total_scores[k].present?
+              # end
+
+              cm_stage_1_smc_scores.each do |k, v|
+                cm_stage_1_smc_scores[k] = manipulated_cm_stage_1_smc_scores[k].to_f
+              end
+
+              cm_stage_2_smc_scores.each do |k, v|
+                cm_stage_2_smc_scores[k] = manipulated_cm_stage_2_smc_scores[k].to_f
+              end
+
+              cm_stage_3_smc_scores.each do |k, v|
+                cm_stage_3_smc_scores[k] = manipulated_cm_stage_3_smc_scores[k].to_f
+              end
+
+              keys_of_required_scores.each do |k|
+                total_scores[k] = total_scores[k].to_f + (2*cm_stage_3_smc_scores[k].to_f - (cm_stage_2_smc_scores[k].to_f + cm_stage_1_smc_scores[k].to_f)) / 3 if total_scores[k].present?
+              end
+            else
+             
+              keys_of_required_scores.each do |k|
+                total_scores[k] = total_scores[k].to_f + (2*cm_stage_3_smc_scores[k].to_f - (cm_stage_2_smc_scores[k].to_f + cm_stage_1_smc_scores[k].to_f)) / 3 if total_scores[k].present?
+              end
+            end
+          end
+        end
+      end
+    end
+    
+    return total_scores
+  end
+
   def calculate_average(scheme_mix_criteria, scheme_mix_criteria_score, smc_weight_a, smc_weight_b)
-    match_a = scheme_mix_criteria_score.select { |key, value| key.to_s.match(/score_a/) }
-    match_b = scheme_mix_criteria_score.select { |key, value| key.to_s.match(/score_b/) }
+
     match_total = {}
     smc_weight_a = (smc_weight_a == nil || smc_weight_a == 0) ? 1 : smc_weight_a
     smc_weight_b = (smc_weight_b == nil || smc_weight_b == 0) ? 1 : smc_weight_b
@@ -551,15 +657,124 @@ module ApplicationHelper
   end
 
   def set_project_country_location(project)
-    @location_options = [["Other", "Other"]]
-    @is_location_predefined = true
+    @city_options = [["Other, Please indicate", "Other"]]
+    @is_city_predefined = true
     if project.persisted?
       locations = Location.find_by_country(project&.country)&.list
-      if (locations.present? && locations&.include?(project&.location))
-        @location_options = locations.map{ |loc| [loc, loc] }.push(["Other", "Other"])
+      if (locations.present? && locations&.include?(project&.city))
+        @city_options = locations.map{ |loc| [loc, loc] }.push(["Other, Please indicate", "Other"])
       else
-        @is_location_predefined = false
+        @is_city_predefined = false
       end
+    end
+  end
+
+  def set_project_district(project)
+    @district_options = [["Other, Please indicate", "Other"]]
+    @is_district_predefined = true
+    if project.persisted?
+      districts = District.find_by_country(project&.country)&.list
+      if (districts.present? && districts&.include?(project&.district))
+        @district_options = districts.map{ |dis| [dis, dis] }.push(["Other, Please indicate", "Other"])
+      else
+        @is_district_predefined = false
+      end
+    end
+  end
+
+  def projects_users_count_with_role(project_users, role)
+    project_users&.with_role(role)&.count
+  end
+
+  def find_rowspan(project_user_count = 0)
+    project_user_count += 1
+  end
+
+  def cm_2019_w1_scores_manipulation(scheme_mix_criterion, cm_2019_w1_scores)
+    scheme_mix_criteria_score_w = cm_2019_w1_scores.find{|item| item[:scheme_mix_criteria_id] == scheme_mix_criterion.id }
+
+    smc_weight_a = scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[0])
+    smc_weight_b = scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[1])
+
+    scheme_mix_criteria_score_for_w1 = calculate_average(scheme_mix_criterion, scheme_mix_criteria_score_w, smc_weight_a, smc_weight_b)
+
+    return scheme_mix_criteria_score_for_w1
+  end
+
+  def get_certificate_types_names(user)
+    certificate_types_name = Certificate.all.order(:display_weight).map { |certificate| [certificate.stage_title, certificate.stage_title&.delete(",")] }
+    
+    if user.is_admin?
+      certificate_types_name.push(["Recent Stages", "Recent Stages"])
+    end
+
+    return certificate_types_name.uniq
+  end
+
+  def get_scheme_criteria_names(category_name)
+    case category_name
+    when 'Energy'
+      # for Energy Use - Temporary Buildings
+      return ['Energy Use - Temporary Buildings']
+
+    when 'Water'
+      #for Domestic Water Use 
+      return ['Domestic Water Use']
+
+    when 'Materials'
+      # for Materials Diversion from Landfill & Cut & Fill Optimization
+      return ['Materials Diversion from Landfill', 'Cut & Fill Optimization']
+
+    when 'Management & Operations', 'Management And Operations'
+      # for Waste Management
+      return ['Waste Management']
+      
+    else
+      return []
+    end
+  end
+
+  def get_schemes_names
+    # scheme_name = Scheme.pluck(:name).uniq
+    # scheme_name.delete("Core + Shell")
+    # scheme_name.push("Mixed Use")
+
+    scheme_name = [
+      "Commercial",
+      "Education",
+      "Homes",
+      "Hospitality",
+      "Interiors",
+      "Light Industry",
+      "Mosques",
+      "Offices",
+      "Residential",
+      "Workers Accomodation",
+      "Energy Centers",
+      "Healthcare",
+      "Railways",
+      "Sports",
+      "Districts",
+      "Parks",
+      "Mixed Use",
+      "Neighborhoods",
+      "Construction Site",
+      "Energy Neutral Mark",
+      "Healthy Building Mark",
+      "Premium Scheme",
+      "Standard Scheme"
+    ]
+
+    return scheme_name
+  end
+
+  def check_documents_permissions(user_role: nil, project: nil)
+    if ["default_role", "record_checker"].exclude?(user_role)
+      true
+    elsif project.present?
+      project.check_documents_permissions
+    else
+      false
     end
   end
 end

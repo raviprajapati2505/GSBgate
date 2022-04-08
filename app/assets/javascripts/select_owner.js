@@ -3,13 +3,16 @@
  */
 
 $(function() {
+
+    $('#project_building_type_id').select2();
+    
     $('.select2-ajax').each(function(idx, element) {
         $(this).on('change', function(e) {
             $('#project_owner').val($(this).select2('data').text);
         });
         const select_element = $(element);
         const url = Routes.owners_path();
-        GSAS.load_list_ajax(select_element, '- Select a predefined property owner -', url,
+        GSAS.load_list_ajax(select_element, '- Select a predefined project owner -', url,
             function(el, callback) {
                 return $.ajax({
                     type: 'GET',

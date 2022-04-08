@@ -9,9 +9,29 @@ en:
           design_type: Design & Build
           construction_type: Construction Management
           operations_type: Operations
+          stage_titles:
+            letter_of_conformance: "Stage 1: LOC, Design Certificate"
+            final_design_certificate: "Stage 2: CDA, Design & Build Certificate"
+            construction_certificate: "GSAS Construction Management Certificate"
+            construction_certificate_stage1: "Stage 1: Foundation"
+            construction_certificate_stage2: "Stage 2: Substructure & Superstructure"
+            construction_certificate_stage3: "Stage 3: Finishing"
+            operations_certificate: "GSAS Operations Certificate"
+          certificate_titles:
+            design_and_build: GSAS-D&B
+            construction_certificate: GSAS-CM
+            operations_certificate: GSAS-OP
         certification_types:
           letter_of_conformance: Letter of conformance
           final_design_certificate: Final design certificate
+          construction_certificate: GSAS-CM - GSAS-CM Certificate
+          construction_certificate_stage1: GSAS-CM - Stage 1
+          construction_certificate_stage2: GSAS-CM - Stage 2
+          construction_certificate_stage3: GSAS-CM - Stage 3
+          operations_certificate: Operations certificate
+        certification_titles:
+          letter_of_conformance: "Stage 1: LOC, Design Certificate"
+          final_design_certificate: "Stage 2: CDA, Design & Build Certificate"
           construction_certificate: GSAS-CM - GSAS-CM Certificate
           construction_certificate_stage1: GSAS-CM - Stage 1
           construction_certificate_stage2: GSAS-CM - Stage 2
@@ -21,7 +41,7 @@ en:
           letter_of_conformance: ""
           final_design_certificate: ""
           construction_certificate_stage1: (foundation stage)
-          construction_certificate_stage2: (sub- and superstructure stage)
+          construction_certificate_stage2: (substructure & superstructure stage)
           construction_certificate_stage3: (finishing stage)
           construction_certificate: ""
           operations_certificate: ""
@@ -32,40 +52,57 @@ en:
         development_types:
           not_applicable: Not applicable
           single_use: Single use building
-          mixed_use: Mixed use building
+          mixed_use: Mixed use
           mixed_development: Neighbourhood (mixed development)
           mixed_development_in_stages: Neighbourhood in stages (mixed development in stages)
         max_review_count: Maximum Review Count
       project:
         code: Project ID
         name: Project Name
-        building_type_group_id: Building Type Group
-        building_type_id: Building Type
-        buildings_footprint_area: Buildings Footprint (C)
+        building_type_group_id: Project Planning Type
+        building_type_id: Project Use
+        buildings_footprint_area: Project Footprint (C)
         certificate_type: Certificate Type
-        carpark_area: Car Park Area
-        certified_area: Gross Certified Area (A+B-C)
-        construction_year: Construction Year
+        carpark_area: Project Car Park Area
+        certified_area: Project Certified Area (A+B-C)
+        construction_year: Project Completion Year
         cost_square_meter: Cost per Square Meter
         estimated_building_cost: Estimated Building Cost
         estimated_infrastructure_cost: Estimated Infrastructure Cost
-        estimated_project_cost: Estimated Project Cost
-        gross_area: Buildings Gross Built up Area (B)
+        estimated_project_cost: Project Estimated Cost
+        gross_area: Project Gross Built up Area (B)
         project_site_area: Project Plot Area (A)
-        location_plan_file: Location Plan
-        site_plan_file: Site Plan
-        design_brief_file: Design Brief
+        location_plan_file: Project Location Plan
+        site_plan_file: Project Site Plan
+        design_brief_file: Project Design Brief
         project_narrative_file: Project Narrative
-        owner: Property Owner
+        sustainability_features_file: Project Sustainability Features
+        area_statement_file: Project Area Statement
+        owner: Project Owner
         service_provider: Service Provider
-        service_provider_2 : Service Provider CDA
+        service_provider_2: Service Provider CDA
+        country: Project Country
+        address: Project Address
+        city: Project City
+        district: Project District
+        location: Project Location
+        developer: Project Developer
+        description: Project Description
+        project_actual_images: Project Actual Images
+        project_rendering_images: Project Rendering Images
+        team_titles:
+          design_certificate: GSAS Design Certificate
+          letter_of_conformance: GSAS Design Certificate_LOC
+          final_design_certificate: GSAS Design & Build Certificate_CDA
+          construction_certificate: GSAS-CM
+          operation_certificate: GSAS-OP
       projects_user:
         roles:
-          project_team_member: Project team member
-          cgp_project_manager: CGP project manager
-          enterprise_client: Enterprise client
-          certifier: Certifier
-          certification_manager: Certification manager
+          project_team_member: Team Members
+          cgp_project_manager: GSAS CGP
+          enterprise_client: Enterprise Clients
+          certifier: Certifiers
+          certification_manager: Certification Manager
       scheme_mix:
         custom_name: Custom Name
       scheme_mix_criterion:
@@ -92,6 +129,14 @@ en:
         audit_log_user_comment: Comment
       requirement_datum:
         audit_log_user_comment: Comment
+      certification_path_report:
+        to: To
+        reference_number: Reference Number
+        project_owner: Project Owner
+        project_name: Project Name
+        project_location: Project Location
+        issuance_date: Issuance Date
+        approval_date: Approval Date
       user:
         roles:
           system_admin: System administrator
@@ -239,60 +284,89 @@ en:
             update_html: Scheme <strong>%{old_name}</strong> was renamed to <strong>%{new_name}</strong>.
     effective:
       datatables:
+        projects:
+          lables:
+            project_code: Project ID
+            created_at: Project Created On
+            gross_area: Project Gross Built Up Area
+            project_site_area: Project Plot Area
+            owner: Project Owner
+            developer: Project Developer
+            estimated_project_cost: Project Estimated Cost
+            buildings_footprint_area: Project Footprint
+            service_provider: Project Service Provider
+            construction_year: Project Completion Year
         certification_paths:
           certification_path_status:
             label: Certification Status
         certifiers_criteria:
           certificate_id:
             label: Certification Name
+          certificate_version:
+            label: Certification Version
+          certificate_stage:
+            label: Certification Stage
           certification_path_certification_path_status_id:
-            label: Certification Status
+            label: Certification Submission Status
           scheme_mix_criteria_status:
             label: Criteria Status
         projects_certification_paths:
           certificate_id:
             label: Certification Name
+          assessment_method:
+            label: Certification Method
+          certificate_version:
+            label: Certification Version
+          certificate_stage:
+            label: Certification Stage
           certification_path_pcr_track:
             label: Certification PCR Track
           certification_path_pcr_track_allowed:
             label: Certification PCR Track Allowed
           certification_path_development_type:
-            label: Certification Development Type
+            label: Project Planning Type
           certification_path_appealed:
             label: Certification Appealed
           certification_path_created_at:
-            label: Certification Created At
+            label: Certification Created On
+          certification_path_updated_at:
+            label: Certification Updated On
           certification_path_started_at:
-            label: Certification Started At
+            label: Certification Started On
           certification_path_certified_at:
-            label: Certification Certified At
+            label: Certification Certified On
           certification_path_expires_at:
-            label: Certification Expires At
+            label: Certification Expiry On
           certification_path_certification_path_status_id:
-            label: Certification Status
+            label: Certification Submission Status
           certification_path_status_is_active:
             label: Certification Active
           rating:
             label: Certification Rating
           total_achieved_score:
-            label: Certification Achieved Score
+            label: Certification Score
           total_submitted_score:
             label: Certification Submitted Score
           total_targeted_score:
             label: Certification Targeted Score
           schemes_array:
-            label: Certification Typologies
+            label: Certification Sub-Schemes
+          schemes_custom_name_array:
+            label: Certification Building Name
           cgp_project_manager_array:
-            label: CGP Project Manager
+            label: Project CGP
           project_team_array:
-            label: Project Team
+            label: Project Team Members
           certification_manager_array:
-            label: Certification Manager
+            label: GSAS Trust Certification Manager
           gsas_trust_team_array:
-            label: GSAS Trust Team
+            label: GSAS Trust Certification Team
           enterprise_clients_array:
             label: Enterprise Clients
           building_type_groups:
-            label: Building Type Groups
+            label: Certification Scheme
           building_types:
-            label: Building Types
+            label: Project Use
+          certification_scheme_name:
+            label: Certification Scheme
+

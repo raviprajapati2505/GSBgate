@@ -23,6 +23,7 @@ Rails.application.routes.draw do
     collection do
       get 'list' => 'projects_users#list_projects'
       get 'country_locations', to: "projects#country_locations", as: :country_locations
+      get 'country_city_districts', to: "projects#country_city_districts", as: :country_city_districts
     end
     member do
       get 'tools' => 'projects#show_tools'
@@ -37,7 +38,10 @@ Rails.application.routes.draw do
       end
       member do
         # get :download_certificate_report
+        get :new_detailed_certification_report
+        post :create_detailed_certification_report
         get :download_coverletter_report
+        get :download_detailed_certificate_report
         get :edit_status
         get :edit_project_team_responsibility_for_submittal, path: :edit_project_team_responsibility_for_submittal
         get :edit_certifier_team_responsibility_for_verification, path: :edit_certifier_team_responsibility_for_verification
@@ -116,15 +120,23 @@ Rails.application.routes.draw do
   get 'projects/:id/site_plan' => 'projects#download_site_plan', as: 'download_project_site_plan'
   get 'projects/:id/design_brief' => 'projects#download_design_brief', as: 'download_project_design_brief'
   get 'projects/:id/narrative' => 'projects#download_project_narrative', as: 'download_project_narrative'
+  get 'projects/:id/sustainability_features' => 'projects#download_sustainability_features', as: 'download_sustainability_features'
+  get 'projects/:id/area_statement' => 'projects#download_area_statement', as: 'download_area_statement'
+  
   resources :audit_logs, only: [:index], path: :audit_logs do
     collection do
       get 'export'
+      get ':audit_log_id/link_smc_comments_form' => 'audit_logs#link_smc_comments_form', as: 'link_smc_audit_log_form'
+      post ':audit_log_id/link_smc_comments' => 'audit_logs#link_smc_comments', as: 'link_smc_audit_log'
+      get ':audit_log_id/unlink_smc_comments_form' => 'audit_logs#unlink_smc_comments_form', as: 'unlink_smc_audit_log_form'
+      patch ':audit_log_id/unlink_smc_comments' => 'audit_logs#unlink_smc_comments', as: 'unlink_smc_audit_log'
     end
   end
   get 'audit-logs/:auditable_type/:auditable_id' => 'audit_logs#auditable_index', as: 'auditable_index_logs'
   get 'audit-logs/:auditable_type/:auditable_id/comments' => 'audit_logs#auditable_index_comments', as: 'auditable_index_comments'
   get 'audit-logs/:auditable_type/:auditable_id/download-attachment/:id' => 'audit_logs#download_attachment', as: 'download_audit_log_attachment'
   post 'audit-logs/:auditable_type/:auditable_id' => 'audit_logs#auditable_create', as: 'auditable_create_audit_log'
+
   get 'tasks' => 'tasks#index', as: 'tasks'
   get 'tasks/user/:user_id' => 'tasks#count', as: 'count_tasks'
   match 'projects/:project_id/certificates/apply/:certification_type' => 'certification_paths#apply', as: 'apply_certification_path', via: [:get, :post]

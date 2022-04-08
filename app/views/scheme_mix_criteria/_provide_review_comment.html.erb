@@ -8,6 +8,8 @@
         <div class="modal-body">
           <%= f.text_area :audit_log_user_comment, rows: 4 %>
 
+          <%= f.file_field :pcr_document %>
+
           <% if can?(:index, AuditLog.new(audit_log_visibility_id: AuditLogVisibility::INTERNAL, project: @project)) %>
               <%= f.form_group :audit_log_visibility do %>
                   <%= f.radio_button :audit_log_visibility, AuditLogVisibility::PUBLIC, label: 'Public Comment', checked: true, disabled: false %>

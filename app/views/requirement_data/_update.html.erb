@@ -37,7 +37,7 @@
             <%= bootstrap_form_tag url: form_path_requirement_datum, method: 'put', remote: true, :html => { :multipart => true } do |f| %>
                 <div class="row">
                     <div class="col-md-6">
-                        <% users = User.authorized_for_project(@project).with_project_team_role %>
+                        <% users = User.authorized_for_project(@project, @certification_path).with_project_team_role %>
                         <% user_id = requirement_datum.user.id if requirement_datum.user.present? %>
                         <%= f.select :user_id, options_for_select(users.map { |k| [k.full_name, k.id]}, user_id), {include_blank: true, label: 'Responsibility'}, class: 'select2-project-team-member', disabled: !can_update_requirement_datum %>
                     </div>

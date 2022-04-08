@@ -3,7 +3,7 @@
   <div class="col-lg-4">
     <div class="ibox float-e-margins">
       <div class="ibox-title">
-        <h5>Scheme Details</h5>
+        <h5>SCHEME DETAILS</h5>
       </div>
       <div class="ibox-content">
         <table class="table table-bordered table-striped" cellspacing="0" width="100%">
@@ -18,11 +18,15 @@
             </td>
           </tr>
           <tr>
-            <th>Weighting</th>
+            <th>Scheme Weighting</th>
             <td><%= @scheme_mix.weight %> %</td>
           </tr>
           <tr>
-          <th>Rating</th>
+            <th>Scheme Certified Area (m2)</th>
+            <td><%= @scheme_mix.certified_area %></td>
+          </tr>
+          <tr>
+          <th>Scheme Rating</th>
             <td>
               <%= render 'certification_paths/checklist_rating', certification_path: @scheme_mix.certification_path %>
             </td>
@@ -68,7 +72,7 @@
   <div class="col-lg-8">
     <div class="ibox float-e-margins">
       <div class="ibox-title">
-        <h5>Categories &amp; Criteria</h5>
+        <h5>CATEGORIES &amp; CRITERIA DETAILS</h5>
       </div>
       <div class="ibox-content">
 

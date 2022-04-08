@@ -1,11 +1,29 @@
-<table class="table table-bordered table-hover" cellspacing="0" width="100%">
+<% 
+  main_scheme = certification_path.main_scheme rescue 0
+  sub_schemes = certification_path.sub_schemes rescue 0
+  scheme_mixes = main_scheme + sub_schemes
+%>
+
+<table class="table table-bordered" cellspacing="0" width="100%">
     <thead>
     <tr>
-        <th class="col-md-5">Scheme Name</th>
+        <% if certification_path&.scheme_mixes.count > 1 %>
+            <% if scheme_mixes.count > 1 %>
+                <th class="col-md-1">Scheme Typologies</th>
+            <% end %>
+            <th class="col-md-1">Scheme Name</th>
+            <th class="col-md-1">Building Name</th>
+        <% else %>
+            <% if scheme_mixes.count > 1 %>
+                <th class="col-md-2">Scheme Typologies</th>
+            <% end %>
+            <th class="col-md-2">Scheme Name</th>
+        <% end %>
         <th class="col-md-1">
-          <span class="hidden-md">Weighting</span>
+          <span class="hidden-md">Weighting (%)</span>
           <span class="visible-md">W <%= tooltip('Weighting') %></span>
         </th>
+        <th class="col-md-1">Certified Area (m2)</th>
         <% if certification_path.is_activated? %>
             <th class="col-md-4">
                 Score/Level
@@ -36,17 +54,41 @@
            minimum_scale_in_criteria_points: scheme_mix_criteria_scores_by_scheme_mix.collect{|scheme_mix_id, scores| scores.collect{|score| score[:minimum_score_in_criteria_points]}.inject(:+)}.min
        }
     %>
-    <% certification_path.scheme_mixes.each do |scheme_mix| %>
+    <% scheme_mixes.each_with_index do |scheme_mix, index| %>
         <tr>
+            <% if scheme_mixes.count > 1 && index < 2 %>
+                <% if certification_path.main_scheme_mix_id == scheme_mix.id %>
+                    <td>
+                        Main-Typology
+                <% elsif (!certification_path.main_scheme_mix_selected && index == 0) || (certification_path.main_scheme_mix_selected && index == 1) %>
+                    <td rowspan="<%= sub_schemes.count %>">
+                        Sub-Typologies
+                <% end %>
+                </td>
+            <% end %>
+
+            <% if index > sub_schemes.count %>
+                <tr>
+            <% end %>
+
             <td>
                 <%= can_link_to(project_certification_path_scheme_mix_path(certification_path.project, certification_path, scheme_mix), scheme_mix) do %>
-                    <%= scheme_mix.full_name %>
+                    <%= scheme_mix&.scheme&.name %>
                     <% if certification_path.main_scheme_mix_id == scheme_mix.id %>
                         <%= ikoen('certificate', tooltip: 'This is the main scheme (or main typology). Some of its criteria scores will be inherited by other schemes.', class: 'main-scheme-icon') %>
                     <% end %>
                 <% end %>
             </td>
+            <% if certification_path&.scheme_mixes.count > 1 %>
+                <td>
+                    <%= can_link_to(project_certification_path_scheme_mix_path(certification_path.project, certification_path, scheme_mix), scheme_mix) do %>
+                        <%= scheme_mix.custom_name %>
+                    <% end %>
+                </td>
+            <% end %>
             <td><%= scheme_mix.weight %> %</td>
+            <td><%= number_with_delimiter(scheme_mix&.certified_area, delimiter: ',') %></td>
+
             <% if certification_path.is_activated? %>
                 <td>
                     <%
@@ -58,8 +100,13 @@
                     <% 
                       @total_scores = scheme_mix_scores
                       if scheme_mix.CM_2019?
-                        @total_scores = score_calculation(scheme_mix) 
+                        @total_scores = score_calculation(scheme_mix)
                       end
+
+                      if scheme_mix&.is_cm_final_certificate?
+                        @total_scores = final_cm_revised_avg_scores(certification_path, @total_scores)
+                      end
+
                     %>
                     <%= render 'score/score_tabs', scores: @total_scores, element_id: "scheme_mix_#{scheme_mix.id}" %>
                 </td>
@@ -76,6 +123,9 @@
                         </div>
                     </div>
                 </td>
+                <% if index > sub_schemes.count %>
+                    </tr>
+                <% end %>
             <% else %>
                 <% if can?(:edit, scheme_mix) %>
                 <td><%= btn_link_to(edit_project_certification_path_scheme_mix_path(certification_path.project, certification_path, scheme_mix), icon: 'edit', size: 'small', action: :get, remote: true) %></td>
