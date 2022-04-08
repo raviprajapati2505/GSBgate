@@ -281,6 +281,13 @@ $(function () {
         width: "100%"
     });
 
+    // Licence select field in nested forms.
+    $(document).on("cocoon:after-insert", function() {
+        $("select[id$=licence_id]").select2({
+            width: "100%"
+        });
+    });
+
     $(".city-select-dropdown, .district-select-dropdown").on('change', function(){
         var selected_district = $(this).find(":selected").val();
         var dom_id = $(this).attr("id");

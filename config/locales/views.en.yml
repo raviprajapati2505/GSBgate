@@ -313,6 +313,7 @@ en:
         title: Your Profile
       user_license_details:
         title: License Details
+        licences: Issued Licences
     form:
       form_title: User details
     list_notifications:

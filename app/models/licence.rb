@@ -5,7 +5,7 @@ class Licence < ApplicationRecord
   has_many :users, through: :access_licences, source: :userable, source_type: 'User'
   has_many :service_providers, class_name: 'ServiceProvider', through: :access_licences, source: :userable, source_type: 'ServiceProvider'
 
-  validates :licence_type, :display_name, :title, :description, :certificate_type, :applicability, presence: true
+  validates :licence_type, :display_name, :title, :description, :certificate_type, :time_period, :applicability, presence: true
   validates :licence_type, inclusion: ['ServiceProviderLicence', 'CpLicence']
   validates :certificate_type, inclusion: Certificate.certificate_types.values
 

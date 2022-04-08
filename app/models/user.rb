@@ -92,12 +92,12 @@ class User < ApplicationRecord
   }
 
   def remaining_licences
-    userable_access_licence_ids = AccessLicence.userable_access_licences(id)&.pluck(:licence_id)&.uniq
+    # userable_access_licence_ids = AccessLicence.userable_access_licences(id)&.pluck(:licence_id)&.uniq
 
     if type == 'ServiceProvider'
-      Licence.with_service_provider_licences.where.not(id: userable_access_licence_ids)
+      Licence.with_service_provider_licences
     else
-      Licence.with_cp_licences.where.not(id: userable_access_licence_ids)
+      Licence.with_cp_licences
     end
   end
 
