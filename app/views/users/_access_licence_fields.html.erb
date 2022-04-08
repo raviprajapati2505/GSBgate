@@ -1,9 +1,9 @@
-<div class="nested-fields">
+<div class="nested-fields m-t-lg">
   <%= f.input :userable_type, as: :hidden, input_html: { value: @user.type } %>
   <%= f.input :userable_id, as: :hidden, input_html: { value: @user.id } %>
 
-  <%= f.association :licence, collection: licence_options(@user), prompt: "Choose a Service Provider", input_html: { class: "select-licence" } %>
+  <%= f.association :licence, collection: licence_options(@user), prompt: "Choose a Licence", input_html: { class: "select-licence" } %>
   
   <%= f.input :expiry_date %>
-  <%= link_to_remove_association "remove licence", f %>
+  <%= link_to_remove_association "remove licence", f, class: "btn btn-danger btn-sm" %>
 </div>

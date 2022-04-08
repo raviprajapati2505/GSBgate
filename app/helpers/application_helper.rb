@@ -490,7 +490,7 @@ module ApplicationHelper
   def licence_options(user = nil)
     return [] unless user.present?
   
-    user.remaining_licences.pluck(:display_name, :id)
+    user.remaining_licences.select(:display_name, :time_period, :id).map{ |license| ["#{license.display_name} (will expired in #{license.time_period} months)", license.id] }
   end
 
   def total_CM_score(data)

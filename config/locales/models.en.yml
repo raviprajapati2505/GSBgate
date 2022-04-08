@@ -160,6 +160,16 @@ en:
           gsas_trust_admin: GSAS trust admin
           default_role: Default role
           document_controller: Document Controller
+      licence:
+        licence_type: Licence Type
+        display_name: Name
+        title: Title
+        description: Description
+        applicability: Applicability
+        schemes: Schemes
+      access_licence:
+        expiry_date: Licence Expiry Date
+        
   models:
     concerns:
       auditable:
