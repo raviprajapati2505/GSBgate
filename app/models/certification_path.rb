@@ -312,8 +312,12 @@ class CertificationPath < ApplicationRecord
         end
       when CertificationPathStatus::SUBMITTING, CertificationPathStatus::SUBMITTING_AFTER_SCREENING, CertificationPathStatus::SUBMITTING_AFTER_APPEAL
         ['location_plan_file', 'site_plan_file', 'design_brief_file', 'project_narrative_file', 'sustainability_features_file', 'area_statement_file'].each do |general_submittal|
-          if project.send(general_submittal).blank? && !required_files(project, general_submittal)
-            todos << "A '#{Project.human_attribute_name(general_submittal)}' must be added to the project."
+          if project.send(general_submittal).blank?
+            if general_submittal == 'sustainability_features_file' && is_project_after_sf_file(project)
+              todos << "A '#{Project.human_attribute_name('sustainability_features_file')}' must be added to the project."
+            elsif !required_files(project, general_submittal)
+              todos << "A '#{Project.human_attribute_name(general_submittal)}' must be added to the project."
+            end
           end
         end
         scheme_mix_criteria.each do |criterion|
@@ -373,8 +377,12 @@ class CertificationPath < ApplicationRecord
       end
     when CertificationPathStatus::SUBMITTING, CertificationPathStatus::SUBMITTING_AFTER_SCREENING, CertificationPathStatus::SUBMITTING_AFTER_APPEAL
       ['location_plan_file', 'site_plan_file', 'design_brief_file', 'project_narrative_file', 'sustainability_features_file', 'area_statement_file'].each do |general_submittal|
-        if project.send(general_submittal).blank? && !required_files(project, general_submittal)
-          todos << "A '#{Project.human_attribute_name(general_submittal)}' must be added to the project."
+        if project.send(general_submittal).blank?
+          if general_submittal == 'sustainability_features_file' && is_project_after_sf_file(project)
+            todos << "A '#{Project.human_attribute_name('sustainability_features_file')}' must be added to the project."
+          elsif !required_files(project, general_submittal)
+            todos << "A '#{Project.human_attribute_name(general_submittal)}' must be added to the project."
+          end
         end
       end
       scheme_mix_criteria.each do |criterion|
@@ -449,6 +457,13 @@ class CertificationPath < ApplicationRecord
     return todos.uniq
   end
 
+  def is_project_after_sf_file(project = nil)
+    begin
+      "12-04-2022".to_date < project&.created_at&.to_date      
+    rescue => exception
+      false
+    end
+  end
 
   def required_files(project, general_submittal)
     (['project_narrative_file', 'area_statement_file'].include?(general_submittal) && (project.send("project_narrative_file").present? || project.send("area_statement_file").present?))

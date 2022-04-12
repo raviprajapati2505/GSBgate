@@ -165,7 +165,7 @@
                   <% if can?(:download_sustainability_features, @project) && download_document_permitted %>
                     <%= btn_download(download_sustainability_features_path(@project), size: 'extra_small', tooltip: "Download #{Project.human_attribute_name('sustainability_features_file')}") %>
                   <% end %>
-                  <%= truncate(@project.sustainability_features_file.file.filename, length: 35) %>
+                  <%= truncate(@project.sustainability_features_file&.file&.filename, length: 35) %>
                 <% end %>
               </td>
             </tr>
