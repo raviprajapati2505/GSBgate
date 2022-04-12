@@ -313,8 +313,10 @@ class CertificationPath < ApplicationRecord
       when CertificationPathStatus::SUBMITTING, CertificationPathStatus::SUBMITTING_AFTER_SCREENING, CertificationPathStatus::SUBMITTING_AFTER_APPEAL
         ['location_plan_file', 'site_plan_file', 'design_brief_file', 'project_narrative_file', 'sustainability_features_file', 'area_statement_file'].each do |general_submittal|
           if project.send(general_submittal).blank?
-            if general_submittal == 'sustainability_features_file' && is_project_after_sf_file(project)
-              todos << "A '#{Project.human_attribute_name('sustainability_features_file')}' must be added to the project."
+            if general_submittal == 'sustainability_features_file' 
+              if is_project_after_sf_file(project)
+                todos << "A '#{Project.human_attribute_name('sustainability_features_file')}' must be added to the project."
+              end
             elsif !required_files(project, general_submittal)
               todos << "A '#{Project.human_attribute_name(general_submittal)}' must be added to the project."
             end
@@ -378,8 +380,10 @@ class CertificationPath < ApplicationRecord
     when CertificationPathStatus::SUBMITTING, CertificationPathStatus::SUBMITTING_AFTER_SCREENING, CertificationPathStatus::SUBMITTING_AFTER_APPEAL
       ['location_plan_file', 'site_plan_file', 'design_brief_file', 'project_narrative_file', 'sustainability_features_file', 'area_statement_file'].each do |general_submittal|
         if project.send(general_submittal).blank?
-          if general_submittal == 'sustainability_features_file' && is_project_after_sf_file(project)
-            todos << "A '#{Project.human_attribute_name('sustainability_features_file')}' must be added to the project."
+          if general_submittal == 'sustainability_features_file'
+            if is_project_after_sf_file(project)
+              todos << "A '#{Project.human_attribute_name('sustainability_features_file')}' must be added to the project."
+            end
           elsif !required_files(project, general_submittal)
             todos << "A '#{Project.human_attribute_name(general_submittal)}' must be added to the project."
           end
