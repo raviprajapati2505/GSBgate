@@ -152,6 +152,7 @@ en:
         cep_license_expired: CEP License Expired?
         cep_license_expiry_date: CEP License Expiry Date
         employer_name: Employer Name
+        service_provider: Service Provider
         active: Profile Active?
         roles:
           system_admin: System administrator

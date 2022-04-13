@@ -472,7 +472,7 @@ module Effective
       end
 
       collection do
-        Project
+        all_projects = Project
           .joins('LEFT OUTER JOIN projects_users ON projects_users.project_id = projects.id')
           .joins('LEFT OUTER JOIN certification_paths ON certification_paths.project_id = projects.id')
           .joins('LEFT JOIN certificates ON certification_paths.certificate_id = certificates.id')
@@ -530,7 +530,13 @@ module Effective
           .select('(%s) AS total_achieved_score' % ProjectsCertificationPaths.query_score_in_certificate_points(:achieved_score))
           .order("projects.code")
           .order("certificates.display_weight")
-          .accessible_by(current_ability)
+
+          if current_user.service_provider?
+            project_ids = Project.accessible_by(current_ability).pluck(:id)
+            all_projects.where(id: project_ids.uniq)
+          else
+            all_projects.accessible_by(current_ability)
+          end
       end
     end
   end
