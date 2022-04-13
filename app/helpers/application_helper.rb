@@ -382,7 +382,7 @@ module ApplicationHelper
         certification_path = model.certification_path
         project = certification_path.project
         certification_path_document = model
-      when User.name.demodulize
+      when User.name.demodulize, ServiceProvider.name.demodulize
         user = model
       else
         return breadcrumbs
@@ -490,7 +490,7 @@ module ApplicationHelper
   def licence_options(user = nil)
     return [] unless user.present?
   
-    user.remaining_licences.select(:display_name, :time_period, :id).map{ |license| ["#{license.display_name} (will expired in #{license.time_period} months)", license.id] }
+    user.remaining_licences.pluck(:display_name, :id)
   end
 
   def total_CM_score(data)

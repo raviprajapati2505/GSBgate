@@ -82,7 +82,7 @@ module Taskable
         handle_updated_scheme_mix_criteria_document
       when CertificationPathReport.name.demodulize
         handle_updated_certification_path_report
-      when User.name.demodulize
+      when User.name.demodulize, ServiceProvider.name.demodulize
         if saved_change_to_confirmed_at?
           handle_confirmed_user_account
         end
