@@ -1,6 +1,5 @@
 <div class="nested-fields m-t-lg">
-  <%= f.input :userable_type, as: :hidden, input_html: { value: @user.type } %>
-  <%= f.input :userable_id, as: :hidden, input_html: { value: @user.id } %>
+  <%= f.input :user_id, as: :hidden, input_html: { value: @user.id } %>
 
   <%= f.association :licence, collection: licence_options(@user), prompt: "Choose a Licence", input_html: { class: "select-licence" } %>
   

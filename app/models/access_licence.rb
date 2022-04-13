@@ -1,14 +1,15 @@
 class AccessLicence < ApplicationRecord
   belongs_to :licence
-  belongs_to :userable, polymorphic: true
+  belongs_to :user
 
   # Validation
   validates :expiry_date, presence: true
-  validates :licence_id, uniqueness: { scope: [:userable_id] }
+  validates :licence_id, uniqueness: { scope: :user_id }
 
-  scope :userable_access_licences, -> (user_id) {
-    where(userable_id: user_id)
+  scope :user_access_licences, -> (user_id) {
+    where(user_id: user_id)
   }
+
 
   def licence_display_name
     licence&.display_name

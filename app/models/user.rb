@@ -24,8 +24,11 @@ class User < ApplicationRecord
   has_many :notification_types_users, dependent: :destroy
   has_many :notification_types, through: :notification_types_users
   has_many :archives
-  has_many :access_licences, as: :userable, dependent: :destroy
-  has_many :cp_licences, -> { where(licence_type: 'CpLicence') }, class_name: 'Licence', through: :access_licences, source: :licensable
+  has_many :access_licences, dependent: :destroy
+  has_many :licences, through: :access_licences
+  has_many :cgp_licences, -> { where(licence_type: 'CgpLicence') }, class_name: 'Licence', through: :access_licences, source: :licence
+  has_many :cep_licences, -> { where(licence_type: 'CepLicence') }, class_name: 'Licence', through: :access_licences, source: :licence
+  has_many :service_provider_licences, -> { where(licence_type: 'ServiceProviderLicence') }, class_name: 'Licence', through: :access_licences, source: :licence
 
   accepts_nested_attributes_for :access_licences, reject_if: :all_blank, allow_destroy: true
 
@@ -36,7 +39,8 @@ class User < ApplicationRecord
   validates :email, uniqueness: true
   validates :username, uniqueness: true
   validates :role, inclusion: User.roles.keys
-
+  # after_validation :unique_licence
+  
   delegate :can?, :cannot?, :to => :ability
 
   scope :active, -> {
@@ -91,13 +95,24 @@ class User < ApplicationRecord
     joins(:projects_users).where(projects_users: {project_id: project.id, certification_team_type: certification_path&.projects_users_certification_team_type, role: ProjectsUser.roles[:cgp_project_manager]})
   }
 
+  def unique_licence
+    all_licence_ids = access_licences.pluck(:licence_id)
+    
+    unless all_licence_ids == all_licence_ids.uniq
+      self.errors[:base] << "Licence Duplication Error"
+      return false
+    end
+
+    return true
+  end
+
   def remaining_licences
     # userable_access_licence_ids = AccessLicence.userable_access_licences(id)&.pluck(:licence_id)&.uniq
 
     if type == 'ServiceProvider'
       Licence.with_service_provider_licences
     else
-      Licence.with_cp_licences
+      Licence.with_cgp_licences + Licence.with_cep_licences
     end
   end
 
