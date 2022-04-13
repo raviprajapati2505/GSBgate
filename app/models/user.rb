@@ -216,7 +216,12 @@ class User < ApplicationRecord
     role.include?(self.role) rescue false
   end
 
+  def service_provider_name
+    service_provider&.name
+  end
+
   private
+
   def init
     self.role ||= :default_role
     if self.linkme_user.nil?

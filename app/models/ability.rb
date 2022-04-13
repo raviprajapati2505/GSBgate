@@ -65,7 +65,8 @@ class Ability
     project_with_user_as_certifier = {projects_users: {user_id: user.id, role: project_user_role_certifier, certification_team_type: certification_team_type}}
     project_with_user_in_gsas_trust_team = {projects_users: {user_id: user.id, role: project_user_gsas_trust_team_roles}}
     project_with_user_as_enterprise_client = {projects_users: {user_id: user.id, role: project_user_enterprise_client_roles}}
-
+    users_with_service_provider = { user: { service_provider_id: user.id } }
+    projects_users_with_service_provider = { projects_users: users_with_service_provider }
     # for read permissions
     read_project_with_user_as_cgp_project_manager = {projects_users: {user_id: user.id, role: project_user_role_cgp_project_manager}}
     read_project_with_user_as_project_team_member = {projects_users: {user_id: user.id, role: project_user_role_project_team_member}}
@@ -88,7 +89,7 @@ class Ability
     can [:show, :edit, :update], User, id: user.id
     can [:edit_service_provider, :update_service_provider], ServiceProvider, id: user.id
 
-    if user.default_role? || user.service_provider?
+    if user.default_role?
       # Project controller
       can :read, Project, projects_users: {user_id: user.id}
       can [:download_location_plan, :download_site_plan, :download_design_brief, :download_project_narrative, :download_area_statement, :download_sustainability_features], Project, projects_users: {user_id: user.id}
@@ -405,6 +406,17 @@ class Ability
 
       can [:show, :edit, :update, :index], User
       can [:edit_service_provider, :update_service_provider], ServiceProvider
+    elsif user.service_provider?
+      can :read, Project, projects_users: users_with_service_provider
+      can :read, ProjectsUser, project: projects_users_with_service_provider
+      can :read, CertificationPath, project: projects_users_with_service_provider
+      can :read, [SchemeMix, CertificationPathDocument], certification_path: { project: projects_users_with_service_provider }
+      can :read, [ActualProjectImage, ProjectRenderingImage] , project: projects_users_with_service_provider
+      can :read, SchemeMixCriterion, scheme_mix: {certification_path: {project: projects_users_with_service_provider}}
+      can :read, [SchemeMixCriterionEpl, SchemeMixCriterionWpl, SchemeMixCriteriaDocument], scheme_mix_criterion: { scheme_mix: {certification_path: {project: projects_users_with_service_provider}}}
+      can :read, RequirementDatum, scheme_mix_criteria: { scheme_mix: {certification_path: {project: projects_users_with_service_provider}}}
+      can :read, Document, scheme_mix_criteria_documents: { scheme_mix_criterion: {scheme_mix: {certification_path: {project: projects_users_with_service_provider}}}}
+      can :read, User, service_provider_id: user.id
     else
       cannot :manage, :all
     end

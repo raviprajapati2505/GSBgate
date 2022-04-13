@@ -33,6 +33,14 @@
               <th><%= User.human_attribute_name('employer_name') %></th>
               <td><%= @user.employer_name %></td>
             </tr>
+
+            <% if @user.default_role? %>
+              <tr>
+                <th><%= User.human_attribute_name('service_provider') %></th>
+                <td><%= @user.service_provider_name %></td>
+              </tr>
+            <% end %>
+
             <tr>
               <th><%= User.human_attribute_name('linkme_user') %></th>
               <td><%= label_span(@user.linkme_user, 'Yes', 'No').html_safe %></td>
