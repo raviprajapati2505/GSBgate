@@ -16,7 +16,7 @@
                 <%= f.text_field :code %>
               <% end %>
               <%= f.text_field :name %>
-              <%= f.select(:certificate_type, options_for_select(Certificate.certificate_types.map { |k, v| [t(k, scope: 'activerecord.attributes.certificate.certificate_types'), v]}, @project.certificate_type)) %>
+              <%= f.select(:certificate_type, options_for_select(allowed_certification_types.map { |k, v| [t(k, scope: 'activerecord.attributes.certificate.certificate_types'), v]}, @project.certificate_type)) %>
               <% if current_user.system_admin? || current_user.gsas_trust_manager? || current_user.gsas_trust_top_manager? || current_user.gsas_trust_admin? %>
                 <%= f.text_field :service_provider %>
                 <div class="design-fields">

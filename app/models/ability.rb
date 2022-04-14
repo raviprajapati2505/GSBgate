@@ -53,7 +53,7 @@ class Ability
     scheme_mix_criterion_status_verified = [SchemeMixCriterion.statuses[:score_awarded], SchemeMixCriterion.statuses[:score_downgraded], SchemeMixCriterion.statuses[:score_upgraded], SchemeMixCriterion.statuses[:score_minimal]]
     scheme_mix_criterion_status_verified_after_appeal = [SchemeMixCriterion.statuses[:score_awarded_after_appeal], SchemeMixCriterion.statuses[:score_downgraded_after_appeal], SchemeMixCriterion.statuses[:score_upgraded_after_appeal], SchemeMixCriterion.statuses[:score_minimal_after_appeal]]
     scheme_mix_criterion_status_verifying_or_verified = scheme_mix_criterion_status_verifying | scheme_mix_criterion_status_verified | scheme_mix_criterion_status_verified_after_appeal
-    #   SchemeMixCriteriaDocument.statuses
+    # SchemeMixCriteriaDocument.statuses
     document_approved = [SchemeMixCriteriaDocument.statuses[:approved]]
 
     # Convenience conditions, to use within abilities
@@ -96,7 +96,8 @@ class Ability
       can :show_tools, Project, projects_users: {user_id: user.id}
       can :update, Project, projects_users: {user_id: user.id, role: project_user_role_cgp_project_manager}
       cannot :update, Project, projects_users: {user_id: user.id, role: project_user_role_cgp_project_manager}, certification_paths: {certification_path_status: {id: CertificationPathStatus::STATUSES_ACTIVATED}}
-      if user.cgp_license? && !user.cgp_license_expired?
+
+      if valid_user_associates?(user)
         can :create, Project
       end
 
@@ -478,3 +479,11 @@ class Ability
     read_actions = ["index", "show", "show_tools", "list"]
     read_actions.include?(params["action"]) rescue true
   end
+
+  def valid_user_associates?(user)
+    # User and Service Provider of user must have atleast one valid licence, Service Provider must have atleast one valid CGP & CEP.
+    user.valid_user_licences.present? &&
+    user.valid_cp_available? && 
+    user.valid_user_sp_licences.present?
+  end
+end
