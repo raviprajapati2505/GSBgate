@@ -29,8 +29,11 @@ module ApplicationHelper
 
   # Filter schemes which is only for checklist
   def manage_schemes_options(certification_path, assessment_method)
+    allowed_schemes = current_user.valid_user_sp_licences.pluck(:schemes).flatten.uniq
+    
     # exclude schemes which were renamed.
-    schemes = certification_path&.development_type&.schemes&.select("DISTINCT ON (schemes.name) schemes.*")
+    schemes = certification_path&.development_type&.schemes&.select("DISTINCT ON (schemes.name) schemes.*").where("schemes.name IN (:allowed_schemes)", allowed_schemes: allowed_schemes)
+
     if assessment_method == 1
       schemes_with_only_checklist = ["Energy Centers"]
       schemes = schemes&.where.not(name: schemes_with_only_checklist)
@@ -488,9 +491,10 @@ module ApplicationHelper
   end
 
   def allowed_certification_types
-    allowed_types = current_user.valid_user_sp_licences.pluck(:certificate_type)
+    sp_allowed_types = current_user.valid_user_sp_licences.pluck(:certificate_type).uniq
+    cp_allowed_types = current_user.valid_user_licences.pluck(:certificate_type).uniq
 
-    Certificate.certificate_types.select { |k, v| allowed_types.include?(v) }   
+    Certificate.certificate_types.select { |k, v| (sp_allowed_types & cp_allowed_types).include?(v) }   
   end
 
   def licence_options(user = nil)
