@@ -487,6 +487,12 @@ module ApplicationHelper
     end
   end
 
+  def allowed_certification_types
+    allowed_types = current_user.valid_user_sp_licences.pluck(:certificate_type)
+
+    Certificate.certificate_types.select { |k, v| allowed_types.include?(v) }   
+  end
+
   def licence_options(user = nil)
     return [] unless user.present?
   
