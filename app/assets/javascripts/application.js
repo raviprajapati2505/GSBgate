@@ -340,23 +340,26 @@ $(function () {
     }
 
     function updateTextView(_obj){
-        var num = getNumber(_obj.val());
-        if(num==0){
-          _obj.val('');
-        }else{
-          _obj.val(num.toLocaleString());
+        let obj_value = _obj.val();
+        let num = getNumber(obj_value);
+
+        if (obj_value == '0' || num !== 0) {
+            _obj.val(num.toLocaleString());
+        } else {
+            _obj.val('');
         }
-      }
+    }
+
     function getNumber(_str){
         var arr = _str.split('');
         var out = new Array();
-        for(var cnt=0;cnt<arr.length;cnt++){
+        for(var cnt = 0; cnt < arr.length; cnt++){
           if(isNaN(arr[cnt])==false){
             out.push(arr[cnt]);
           }
         }
         return Number(out.join(''));
-      }
+    }
 
     function setCertifiedAreaLabel() {
         let project_type = $("#project_certificate_type").find(':selected').val();
