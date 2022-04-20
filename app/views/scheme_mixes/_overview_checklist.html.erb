@@ -15,7 +15,7 @@
           <span class="hidden-md">Weighting</span>
           <span class="visible-md">W <%= tooltip('Weighting') %></span>
         </th>
-        <th class="col-md-1">Certified Area (m2)</th>
+        <th class="col-md-1">Gross Area (m2)</th>
         <% if certification_path.is_activated? %>
             <th class="col-md-2">
                 <span class="hidden-md">Progress</span>
@@ -56,7 +56,7 @@
                 <% end %>
             </td>
             <td><%= scheme_mix.weight %> %</td>
-            <td><%= number_with_delimiter(scheme_mix&.certified_area, delimiter: ',') %></td>
+            <td><%= number_with_delimiter(scheme_mix&.gross_area, delimiter: ',') %></td>
 
             <% if certification_path.is_activated? %>
                 <td>

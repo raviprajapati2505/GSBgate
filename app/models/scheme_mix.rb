@@ -36,11 +36,11 @@ class SchemeMix < ApplicationRecord
     certification_path&.final_construction?
   end
 
-  def certified_area
+  def gross_area
     project = certification_path.project
-    total_certified_area = project.certified_area
-    scheme_mix_certified_area = (total_certified_area * weight) / 100 rescue 0.0
-    return scheme_mix_certified_area
+    total_gross_area = project.gross_area
+    scheme_mix_gross_area = (total_gross_area * weight) / 100 rescue 0.0
+    return scheme_mix_gross_area
   end
 
   # Mirrors all the descendant structural data records of the SchemeMix to user data records
