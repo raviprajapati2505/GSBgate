@@ -134,8 +134,7 @@ Licence.find_or_create_by!(
   display_weight: 14,
   title: 'TYPE 1 - CEP',
   description: 'GSAS Design & Build Certified Energy Professional',
-  certificate_type: Certificate.certificate_types[:design_type],
-  applicability: Licence.applicabilities[:check_list]
+  certificate_type: Certificate.certificate_types[:design_type]
 )
 
 # CM - CGP
