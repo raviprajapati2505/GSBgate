@@ -29,10 +29,14 @@ module ApplicationHelper
 
   # Filter schemes which is only for checklist
   def manage_schemes_options(certification_path, assessment_method)
-    allowed_schemes = current_user.valid_user_sp_licences.pluck(:schemes).flatten.uniq
-    
-    # exclude schemes which were renamed.
-    schemes = certification_path&.development_type&.schemes&.select("DISTINCT ON (schemes.name) schemes.*").where("schemes.name IN (:allowed_schemes)", allowed_schemes: allowed_schemes)
+    schemes = certification_path&.development_type&.schemes&.select("DISTINCT ON (schemes.name) schemes.*")
+
+    unless current_user.system_admin?
+      allowed_schemes = current_user.valid_user_sp_licences.pluck(:schemes).flatten.uniq
+
+      # exclude schemes which were renamed.
+      schemes = schemes.where("schemes.name IN (:allowed_schemes)", allowed_schemes: allowed_schemes)
+    end
 
     if assessment_method == 1
       schemes_with_only_checklist = ["Energy Centers"]
@@ -40,6 +44,27 @@ module ApplicationHelper
     end 
 
     return schemes
+  end
+
+  # Filter schemes which is only for assessment method
+  def manage_assessment_methods_options
+    assessment_methods = CertificationPath.assessment_methods
+
+    unless current_user.system_admin?
+      allowed_assessment_methods = current_user.valid_user_design_build_licences.pluck("licences.applicability").flatten.uniq
+
+      if allowed_assessment_methods.size == 1
+        assessment_methods =  if allowed_assessment_methods.include?(Licence.applicabilities[:star_rating]) 
+                                assessment_methods.select { |k, v| v == Licence.applicabilities[:star_rating] }
+                              elsif allowed_assessment_methods.include?(Licence.applicabilities[:check_list])
+                                assessment_methods.select { |k, v| v == Licence.applicabilities[:check_list] }
+                              else
+                                assessment_methods
+                              end
+      end
+    end
+
+    return assessment_methods
   end
 
   def tooltip(text, data_options = {})
@@ -491,6 +516,8 @@ module ApplicationHelper
   end
 
   def allowed_certification_types
+    return Certificate.certificate_types if current_user.system_admin?
+
     sp_allowed_types = current_user.valid_user_sp_licences.pluck(:certificate_type).uniq
     cp_allowed_types = current_user.valid_user_licences.pluck(:certificate_type).uniq
 

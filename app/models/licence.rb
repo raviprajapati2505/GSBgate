@@ -1,5 +1,5 @@
 class Licence < ApplicationRecord
-  enum applicability: { both: 1, star_rating: 2, check_list: 3 }
+  enum applicability: { both: 3, star_rating: 1, check_list: 2 }
 
   has_many :access_licences, dependent: :destroy
   has_many :users, through: :access_licences
