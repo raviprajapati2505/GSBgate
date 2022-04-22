@@ -221,11 +221,11 @@ class User < ApplicationRecord
   end
 
   def valid_user_sp_licences
-    service_provider.valid_service_provider_licences
+    service_provider&.valid_service_provider_licences
   end
 
   def valid_cp_available?
-    service_provider.valid_cgps.present? && service_provider.valid_ceps.present?
+    service_provider&.valid_cgps.present? && service_provider&.valid_ceps.present?
   end
 
   def valid_user_licences
