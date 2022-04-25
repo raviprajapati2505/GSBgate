@@ -243,12 +243,7 @@ module Effective
           terms_array = terms.split(",")
           
           unless (collection.class == Array || terms_array.include?("") || terms_array == ["1", "2"])
-            if terms_array == ["1"]
-              checklist_certifications = collection.joins(certification_paths: :certification_path_method).where("certification_path_methods.assessment_method = 2")
-              collection.where("projects.certificate_type <> 3 OR certification_paths.id NOT IN (?)", checklist_certifications&.group("certification_path_methods.certification_path_id")&.pluck("certification_path_methods.certification_path_id"))
-            elsif terms_array == ["2"]
-              collection.joins(certification_paths: :certification_path_method).where("certification_path_methods.assessment_method = 2")
-            end
+            collection.joins(certification_paths: :certification_path_method).where("certification_path_methods.assessment_method = (:terms_array)", terms_array: terms_array)
           else
             collection
           end

@@ -46,27 +46,6 @@ module ApplicationHelper
     return schemes
   end
 
-  # Filter schemes which is only for assessment method
-  def manage_assessment_methods_options
-    assessment_methods = CertificationPath.assessment_methods
-
-    unless current_user.system_admin?
-      allowed_assessment_methods = current_user.valid_user_design_build_licences.pluck("licences.applicability").flatten.uniq
-
-      if allowed_assessment_methods.size == 1
-        assessment_methods =  if allowed_assessment_methods.include?(Licence.applicabilities[:star_rating]) 
-                                assessment_methods.select { |k, v| v == Licence.applicabilities[:star_rating] }
-                              elsif allowed_assessment_methods.include?(Licence.applicabilities[:check_list])
-                                assessment_methods.select { |k, v| v == Licence.applicabilities[:check_list] }
-                              else
-                                assessment_methods
-                              end
-      end
-    end
-
-    return assessment_methods
-  end
-
   def tooltip(text, data_options = {})
     ikoen('question-circle', size: :normal, tooltip: text, data: data_options, class: 'tooltip-icon')
   end
@@ -508,10 +487,10 @@ module ApplicationHelper
   end
 
   def certification_assessment_type_title(assessment_type = nil)
-    if assessment_type.present? && assessment_type == 2
-      "Checklist Based Certificate"
-    else
+    if assessment_type == 1
       "Star Rating Based Certificate"
+    elsif assessment_type == 2
+      "Checklist Based Certificate"
     end
   end
 
