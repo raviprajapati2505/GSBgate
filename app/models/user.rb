@@ -4,8 +4,9 @@ class User < ApplicationRecord
   
   include Taskable
 
-  devise :invitable, :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable, :confirmable, :trackable
+  devise :database_authenticatable, :registerable,
+  :recoverable,  :trackable, :validatable,
+  :confirmable, :invitable
   
   include ActionView::Helpers::TranslationHelper
   include DatePlucker
@@ -333,6 +334,10 @@ class User < ApplicationRecord
     end
 
     return certificate_types
+  end
+
+  def generate_jwt
+    JWT.encode({ id: id, exp: 10.minute.from_now.to_i }, Rails.application.config.devise_jwt_secret_key)
   end
 
   private
