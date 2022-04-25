@@ -1,3 +1,7 @@
+<% 
+  @certification_path = @scheme_mix.certification_path
+  development_type_name = @certification_path&.development_type&.name
+%>
 <% if @scheme_mix&.check_list? %>
   <%= render partial: 'show_checklist', locals: { scheme_mix: @scheme_mix } %>
 <% else %>
@@ -19,7 +23,7 @@
             <th>Scheme Name</th>
             <td>
               <%= @scheme_mix.full_name %>
-              <% if @scheme_mix.certification_path.main_scheme_mix_id == @scheme_mix.id %>
+              <% if @certification_path&.main_scheme_mix_id == @scheme_mix.id %>
                   <%= ikoen('certificate', tooltip: 'This is the main scheme (or main typology). Some of its criteria scores will be inherited by other schemes.', class: 'main-scheme-icon') %>
               <% end %>
             </td>
@@ -28,10 +32,19 @@
             <th>Scheme Weighting</th>
             <td><%= @scheme_mix.weight %> %</td>
           </tr>
-          <tr>
-            <th>Scheme Gross Area (m2)</th>
-            <td><%= number_with_delimiter(@scheme_mix.gross_area, delimiter: ',') %></td>
-          </tr>
+
+          <% if development_type_name == 'Neighborhoods' %>
+            <tr>
+              <th>Scheme Gross Area (m2)</th>
+              <td><%= number_with_delimiter(@scheme_mix&.gross_area, delimiter: ',') %></td>
+            </tr>
+          <% elsif development_type_name == 'Mixed Use' %>
+            <tr>
+              <th>Scheme Certified Area (m2)</th>
+              <td><%= number_with_delimiter(@scheme_mix&.certified_area, delimiter: ',') %></td>
+            </tr>
+          <% end %>
+
           <tr>
             <th>Scheme Score/Level</th>
             <td>
@@ -83,7 +96,7 @@
         <h5>CATEGORIES &amp; CRITERIA DETAILS</h5>
       </div>
       <div class="ibox-content">
-        <% if !@scheme_mix.certification_path.in_pre_verification? && @invalid_criteria_ids.size > 0 %>
+        <% if !@certification_path&.in_pre_verification? && @invalid_criteria_ids.size > 0 %>
             <div class="alert alert-warning" role="alert">
               <%= ikoen_with_text('exclamation-circle', 'There are one or more criteria that have not achieved their minimum valid score.') %>
             </div>
@@ -123,7 +136,7 @@
                   <td><%= category.code %></td>
                   <td>
                     <%= category.name %>
-                    <% if (@scheme_mix.certification_path.main_scheme_mix_id == @scheme_mix.id) && category.shared? %>
+                    <% if (@certification_path&.main_scheme_mix_id == @scheme_mix.id) && category.shared? %>
                         <%= ikoen('certificate', tooltip: 'The criteria scores of this category will be inherited by criteria with the same name in other schemes.', class: 'main-scheme-icon') %>
                     <% end %>
                   </td>

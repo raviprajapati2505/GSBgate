@@ -2,6 +2,7 @@
   main_scheme = certification_path.main_scheme
   sub_schemes = certification_path.sub_schemes
   scheme_mixes = main_scheme + sub_schemes
+  development_type_name = certification_path&.development_type&.name
 %>
 
 <table class="table table-bordered table-hover" cellspacing="0" width="100%">
@@ -15,7 +16,13 @@
           <span class="hidden-md">Weighting</span>
           <span class="visible-md">W <%= tooltip('Weighting') %></span>
         </th>
-        <th class="col-md-1">Gross Area (m2)</th>
+
+        <% if development_type_name == 'Neighborhoods' %>
+            <th class="col-md-1">Gross Area (m2)</th>
+        <% elsif development_type_name == 'Mixed Use' %>
+            <th class="col-md-1">Certified Area (m2)</th>
+        <% end %>
+
         <% if certification_path.is_activated? %>
             <th class="col-md-2">
                 <span class="hidden-md">Progress</span>
@@ -56,7 +63,12 @@
                 <% end %>
             </td>
             <td><%= scheme_mix.weight %> %</td>
-            <td><%= number_with_delimiter(scheme_mix&.gross_area, delimiter: ',') %></td>
+
+            <% if development_type_name == 'Neighborhoods' %>
+                <td><%= number_with_delimiter(scheme_mix&.gross_area, delimiter: ',') %></td>
+            <% elsif development_type_name == 'Mixed Use' %>
+                <td><%= number_with_delimiter(scheme_mix&.certified_area, delimiter: ',') %></td>
+            <% end %>
 
             <% if certification_path.is_activated? %>
                 <td>

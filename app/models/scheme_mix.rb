@@ -43,6 +43,13 @@ class SchemeMix < ApplicationRecord
     return scheme_mix_gross_area
   end
 
+  def certified_area
+    project = certification_path.project
+    total_certified_area = project.certified_area
+    scheme_mix_certified_area = (total_certified_area * weight) / 100 rescue 0.0
+    return scheme_mix_certified_area
+  end
+
   # Mirrors all the descendant structural data records of the SchemeMix to user data records
   def create_descendant_records
     # Build a list of all criteria codes/ids of the main scheme mix

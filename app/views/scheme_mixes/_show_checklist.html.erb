@@ -1,4 +1,8 @@
-<% @scheme_mix = scheme_mix %>
+<% 
+  @scheme_mix = scheme_mix 
+  @certification_path = @scheme_mix.certification_path
+  development_type_name = @certification_path&.development_type&.name
+%>
 <div class="row">
   <div class="col-lg-4">
     <div class="ibox float-e-margins">
@@ -12,7 +16,7 @@
             <th>Scheme Name</th>
             <td>
               <%= @scheme_mix.full_name %>
-              <% if @scheme_mix.certification_path.main_scheme_mix_id == @scheme_mix.id %>
+              <% if @certification_path&.main_scheme_mix_id == @scheme_mix.id %>
                   <%= ikoen('certificate', tooltip: 'This is the main scheme (or main typology). Some of its criteria scores will be inherited by other schemes.', class: 'main-scheme-icon') %>
               <% end %>
             </td>
@@ -21,14 +25,23 @@
             <th>Scheme Weighting</th>
             <td><%= @scheme_mix.weight %> %</td>
           </tr>
-          <tr>
-            <th>Scheme Gross Area (m2)</th>
-            <td><%= number_with_delimiter(@scheme_mix.gross_area, delimiter: ',') %></td>
-          </tr>
+          
+          <% if development_type_name == 'Neighborhoods' %>
+            <tr>
+              <th>Scheme Gross Area (m2)</th>
+              <td><%= number_with_delimiter(@scheme_mix&.gross_area, delimiter: ',') %></td>
+            </tr>
+          <% elsif development_type_name == 'Mixed Use' %>
+            <tr>
+              <th>Scheme Certified Area (m2)</th>
+              <td><%= number_with_delimiter(@scheme_mix&.certified_area, delimiter: ',') %></td>
+            </tr>
+          <% end %>
+
           <tr>
           <th>Scheme Rating</th>
             <td>
-              <%= render 'certification_paths/checklist_rating', certification_path: @scheme_mix.certification_path %>
+              <%= render 'certification_paths/checklist_rating', certification_path: @certification_path %>
             </td>
           </tr>
           <tr>
@@ -106,7 +119,7 @@
                   <td><%= category.code %></td>
                   <td>
                     <%= category.name %>
-                    <% if (@scheme_mix.certification_path.main_scheme_mix_id == @scheme_mix.id) && category.shared? %>
+                    <% if (@certification_path&.main_scheme_mix_id == @scheme_mix.id) && category.shared? %>
                         <%= ikoen('certificate', tooltip: 'The criteria scores of this category will be inherited by criteria with the same name in other schemes.', class: 'main-scheme-icon') %>
                     <% end %>
                   </td>
