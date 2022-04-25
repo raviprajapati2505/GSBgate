@@ -190,11 +190,10 @@ Rails.application.routes.draw do
   match '/422', to: 'errors#unprocessable_entity', via: :all, as: 'unprocessable_entity_error'
   match '/500', to: 'errors#internal_server_error', via: :all, as: 'internal_server_error_error'
 
-  namespace :api do
-    resources :sessions, only: [:create] do
-      collection do
-        delete :destroy
-      end
+  namespace :api, defaults: {format: 'json'} do
+    devise_scope :user do
+      post   'users/sign_in'  => '/api/sessions#create'
+      delete 'users/sign_out' => '/api/sessions#destroy'
     end
 
     namespace :v1 do

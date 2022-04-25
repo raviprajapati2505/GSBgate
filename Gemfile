@@ -50,6 +50,8 @@ gem 'bootstrap-timepicker-rails'
 gem 'bootstrap-daterangepicker-rails'
 gem 'devise'
 gem 'devise_invitable'
+gem 'devise-jwt'
+gem 'rack-cors'
 
 group :development do
   gem 'pry-rails'
