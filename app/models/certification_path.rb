@@ -47,6 +47,7 @@ class CertificationPath < ApplicationRecord
 
   after_initialize :init
   after_create :send_applied_for_certification_email
+  after_create :create_certification_path_method, unless: -> { design_and_build? }
   before_update :create_descendant_records
   before_update :advance_scheme_mix_criteria_statuses
   before_update :set_started_at
@@ -140,6 +141,10 @@ class CertificationPath < ApplicationRecord
     end
     
     return status
+  end
+
+  def design_and_build?
+    project.design_and_build?
   end
 
   def construction?
@@ -941,6 +946,10 @@ class CertificationPath < ApplicationRecord
 
   def send_applied_for_certification_email
     DigestMailer.applied_for_certification(self).deliver_now
+  end
+
+  def create_certification_path_method
+    create_certification_path_method!(assessment_method: CertificationPath.assessment_methods["star_rating"])
   end
 
   def revised_score(val, is_achieved_score, is_submitted_score)
