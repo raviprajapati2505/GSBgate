@@ -30,6 +30,8 @@ class Ability
       @cp_valid_licences = AccessLicence.none
     end
 
+    @valid_checklist_licences = user.valid_checklist_licences
+
     alias_action :create, :read, :update, :destroy, :to => :crud
 
     # Some convenience variables to work with enums in conditions
@@ -453,14 +455,31 @@ class Ability
                                               ]
                                             end
 
+    # assessment methods / Applicabilities under valid licences.
     service_provider_valid_licences_certificate_types = @service_provider_valid_licences.where("licences.applicability IN (:applicability)", applicability: certification_path_assessment_method).pluck("licences.certificate_type")
     cp_valid_licences_certificate_types = @cp_valid_licences.where("licences.applicability IN (:applicability)", applicability: certification_path_assessment_method).pluck("licences.certificate_type")
 
-    return (service_provider_valid_licences_certificate_types & cp_valid_licences_certificate_types).uniq
+    allowed_certificate_types = service_provider_valid_licences_certificate_types & cp_valid_licences_certificate_types
+
+    # for checklist licences, service provider licences verification not needed.
+    valid_checklist_licences_certificate_type = @valid_checklist_licences.pluck("licences.certificate_type")
+
+    if (@certification_path.present? && @certification_path.is_checklist_method?) || valid_checklist_licences_certificate_type.present?
+      allowed_certificate_types.push(*valid_checklist_licences_certificate_type)
+    end
+
+    return (allowed_certificate_types).uniq
   end
 
   def schemes_of_valid_user_licences
-    @service_provider_valid_licences.pluck("licences.schemes").flatten.uniq
+    schemes = @service_provider_valid_licences.pluck("licences.schemes").flatten.uniq
+
+    # for checklist licences, service provider licences verification not needed.
+    if @certification_path.present? && @certification_path.is_checklist_method? && @valid_checklist_licences.present?
+      schemes = @certification_path&.development_type&.schemes&.pluck(:name).uniq
+    end
+
+    return schemes
   end
 
   def get_certification_team_type(request = nil)
@@ -520,8 +539,11 @@ class Ability
 
   def valid_user_associates?(user)
     # User and Service Provider of user must have atleast one valid licence, Service Provider must have atleast one valid CGP & CEP.
-    user.valid_user_licences.present? &&
+    # for checklist licences, service provider licences verification not needed.
+
+    user.valid_checklist_licences.present? || 
+    (user.valid_user_licences.present? &&
     user.valid_cp_available? && 
-    user.valid_user_sp_licences.present?
+    user.valid_user_sp_licences.present?)
   end
 end
