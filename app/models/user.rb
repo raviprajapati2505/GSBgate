@@ -236,12 +236,18 @@ class User < ApplicationRecord
     valid_user_licences.where("licences.certificate_type = ?", Certificate.certificate_types[:design_type])
   end
 
+  def valid_checklist_licences
+    licence_ids = Licence.where(applicability: Licence.applicabilities[:check_list]).ids
+
+    valid_user_licences.where(licence_id: licence_ids)
+  end
+
   # Filter schemes which is only for assessment method
   def manage_assessment_methods_options
     assessment_methods = CertificationPath.assessment_methods
 
     unless system_admin?
-      allowed_assessment_methods = valid_user_design_build_licences.pluck("licences.applicability").flatten.uniq
+      allowed_assessment_methods = valid_user_design_build_licences.pluck("licences.applicability").uniq
 
       if allowed_assessment_methods.size == 1
         assessment_methods =  if allowed_assessment_methods.include?(Licence.applicabilities[:star_rating]) 

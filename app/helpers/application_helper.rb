@@ -35,13 +35,15 @@ module ApplicationHelper
       allowed_schemes = current_user.valid_user_sp_licences.pluck(:schemes).flatten.uniq
 
       # exclude schemes which were renamed.
-      schemes = schemes.where("schemes.name IN (:allowed_schemes)", allowed_schemes: allowed_schemes)
+      if assessment_method == 1
+        schemes = schemes.where("schemes.name IN (:allowed_schemes)", allowed_schemes: allowed_schemes)
+      end
     end
 
     if assessment_method == 1
       schemes_with_only_checklist = ["Energy Centers"]
       schemes = schemes&.where.not(name: schemes_with_only_checklist)
-    end 
+    end
 
     return schemes
   end
@@ -497,10 +499,18 @@ module ApplicationHelper
   def allowed_certification_types
     return Certificate.certificate_types if current_user.system_admin?
 
-    sp_allowed_types = current_user.valid_user_sp_licences.pluck(:certificate_type).uniq
-    cp_allowed_types = current_user.valid_user_licences.pluck(:certificate_type).uniq
+    sp_allowed_certificate_types = current_user.valid_user_sp_licences.pluck(:certificate_type).uniq
+    cp_allowed_certificate_types = current_user.valid_user_licences.pluck(:certificate_type).uniq
 
-    Certificate.certificate_types.select { |k, v| (sp_allowed_types & cp_allowed_types).include?(v) }   
+    allowed_certificate_types = sp_allowed_certificate_types & cp_allowed_certificate_types
+    
+    # for checklist licences, service provider licences verification not needed.
+    valid_checklist_licences_certificate_type = current_user.valid_checklist_licences.pluck("licences.certificate_type")
+    if valid_checklist_licences_certificate_type.present?
+      allowed_certificate_types.push(*valid_checklist_licences_certificate_type)
+    end
+
+    Certificate.certificate_types.select { |k, v| (allowed_certificate_types.uniq).include?(v) }   
   end
 
   def licence_options(user = nil)
