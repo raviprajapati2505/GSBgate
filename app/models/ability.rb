@@ -65,10 +65,12 @@ class Ability
     document_approved = [SchemeMixCriteriaDocument.statuses[:approved]]
 
     # Convenience conditions, to use within abilities
+    @certficate_types_of_valid_user_licences = certficate_types_of_valid_user_licences
+    
     project_with_user_assigned = {projects_users: {user_id: user.id}}
-    project_with_user_as_cgp_project_manager = {projects_users: {user_id: user.id, role: project_user_role_cgp_project_manager, certification_team_type: certification_team_type}, certificate_type: certficate_types_of_valid_user_licences }
-    project_with_user_as_project_team_member = {projects_users: {user_id: user.id, role: project_user_role_project_team_member, certification_team_type: certification_team_type}, certificate_type: certficate_types_of_valid_user_licences }
-    project_with_user_in_project_team = {projects_users: {user_id: user.id, role: project_user_project_team_roles, certification_team_type: certification_team_type}, certificate_type: certficate_types_of_valid_user_licences }
+    project_with_user_as_cgp_project_manager = { projects_users: {user_id: user.id, role: project_user_role_cgp_project_manager, certification_team_type: certification_team_type}, certificate_type: @certficate_types_of_valid_user_licences }
+    project_with_user_as_project_team_member = {projects_users: {user_id: user.id, role: project_user_role_project_team_member, certification_team_type: certification_team_type}, certificate_type: @certficate_types_of_valid_user_licences }
+    project_with_user_in_project_team = {projects_users: {user_id: user.id, role: project_user_project_team_roles, certification_team_type: certification_team_type}, certificate_type: @certficate_types_of_valid_user_licences }
     project_with_user_as_certification_manager = {projects_users: {user_id: user.id, role: project_user_role_certification_manager, certification_team_type: certification_team_type}}
     project_with_user_as_certifier = {projects_users: {user_id: user.id, role: project_user_role_certifier, certification_team_type: certification_team_type}}
     project_with_user_in_gsas_trust_team = {projects_users: {user_id: user.id, role: project_user_gsas_trust_team_roles}}
@@ -149,7 +151,8 @@ class Ability
       can :read, SchemeMix, certification_path: {project: project_with_user_assigned, certification_path_status: {id: CertificationPathStatus::STATUSES_ACTIVATED}}
       # TODO ????????????
       #can :update, SchemeMix, certification_path: {project: project_with_user_as_cgp_project_manager, certification_path_status: {id: CertificationPathStatus::ACTIVATING}, development_type: {mixable: true}}
-      can :update, SchemeMix, certification_path: {project: project_with_user_as_cgp_project_manager, certification_path_status: {id: CertificationPathStatus::ACTIVATING}}, scheme: schemes_array
+
+      can :update, SchemeMix, certification_path: { project: project_with_user_as_cgp_project_manager, certification_path_status: {id: CertificationPathStatus::ACTIVATING} }, scheme: schemes_array
 
       can [:create, :read], [ActualProjectImage, ProjectRenderingImage] , project: { certificate_type: [Certificate.certificate_types[:design_type], Certificate.certificate_types[:operations_type]] }, project: project_with_user_as_cgp_project_manager
 
@@ -176,8 +179,8 @@ class Ability
       can :update_targeted_checklist, SchemeMixCriterionBox, scheme_mix_criterion: {main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_submitting, scheme_mix: {certification_path: {project: project_with_user_as_cgp_project_manager}, scheme: schemes_array}}
       can :update_submitted_checklist, SchemeMixCriterionBox, scheme_mix_criterion: {main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_submitting, scheme_mix: {certification_path: {project: project_with_user_as_cgp_project_manager}, scheme: schemes_array}}
 
-      can :update_targeted_checklist, SchemeMixCriterionBox, scheme_mix_criterion: {main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_submitting, certifier_id: user.id, scheme_mix: {certification_path: {project: project_with_user_in_project_team}}}
-      can :update_submitted_checklist, SchemeMixCriterionBox, scheme_mix_criterion: {main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_submitting, certifier_id: user.id, scheme_mix: {certification_path: {project: project_with_user_in_project_team}}}
+      can :update_targeted_checklist, SchemeMixCriterionBox, scheme_mix_criterion: {main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_submitting, certifier_id: user.id, scheme_mix: {certification_path: {project: project_with_user_in_project_team}, scheme: schemes_array}}
+      can :update_submitted_checklist, SchemeMixCriterionBox, scheme_mix_criterion: {main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_submitting, certifier_id: user.id, scheme_mix: {certification_path: {project: project_with_user_in_project_team}, scheme: schemes_array}}
       
       can :update_achieved_checklist, SchemeMixCriterionBox, scheme_mix_criterion: { main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_verifying, scheme_mix: {certification_path: {project: project_with_user_as_certification_manager}}}
       can :update_achieved_checklist, SchemeMixCriterionBox, scheme_mix_criterion: { main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_verifying, certifier_id: user.id, scheme_mix: {certification_path: {project: project_with_user_in_gsas_trust_team}}}
@@ -219,7 +222,7 @@ class Ability
       # Project team
       can :update, RequirementDatum, scheme_mix_criteria: {status: scheme_mix_criterion_status_submitting, scheme_mix: {certification_path: {project: project_with_user_as_cgp_project_manager}, scheme: schemes_array}}
       can :update_status, RequirementDatum, user_id: user.id, scheme_mix_criteria: {status: scheme_mix_criterion_status_submitting, scheme_mix: {certification_path: {project: project_with_user_in_project_team}, scheme: schemes_array}}
-      can :refuse, RequirementDatum, user_id: user.id, scheme_mix_criteria: {status: scheme_mix_criterion_status_submitting, scheme_mix: {certification_path: {project: project_with_user_in_project_team}}}
+      can :refuse, RequirementDatum, user_id: user.id, scheme_mix_criteria: {status: scheme_mix_criterion_status_submitting, scheme_mix: {certification_path: {project: project_with_user_in_project_team}, scheme: schemes_array}}
 
       # Document controller
       can :read, Document, scheme_mix_criteria_documents: { scheme_mix_criterion: {scheme_mix: {certification_path: {project: project_with_user_assigned}}}}
@@ -238,7 +241,7 @@ class Ability
       # Project team
       can :read, SchemeMixCriteriaDocument, scheme_mix_criterion: {scheme_mix: {certification_path: {project: read_project_with_user_in_project_team}}}
       can [:update_status, :edit_status], SchemeMixCriteriaDocument, scheme_mix_criterion: {status: scheme_mix_criterion_status_submitting, scheme_mix: {certification_path: {project: project_with_user_as_cgp_project_manager}, scheme: schemes_array}}
-      can [:create_link, :new_link], SchemeMixCriteriaDocument, scheme_mix_criterion: {status: scheme_mix_criterion_status_submitting, scheme_mix: {certification_path: {project: project_with_user_in_project_team}}}, document: { certification_path_status_id: @certification_path&.certification_path_status_id }
+      can [:create_link, :new_link], SchemeMixCriteriaDocument, scheme_mix_criterion: {status: scheme_mix_criterion_status_submitting, scheme_mix: {certification_path: {project: project_with_user_in_project_team}, scheme: schemes_array}}, document: { certification_path_status_id: @certification_path&.certification_path_status_id }
       can [:unlink, :destroy_link], SchemeMixCriteriaDocument, scheme_mix_criterion: {status: scheme_mix_criterion_status_submitting, scheme_mix: {certification_path: {project: project_with_user_as_cgp_project_manager}, scheme: schemes_array}}, document: { certification_path_status_id: @certification_path&.certification_path_status_id }
       # GSAS trust team
       can :read, SchemeMixCriteriaDocument, status: document_approved, scheme_mix_criterion: {scheme_mix: {certification_path: {project: project_with_user_in_gsas_trust_team}}}
@@ -440,8 +443,19 @@ class Ability
   private
 
   def certficate_types_of_valid_user_licences
-    service_provider_valid_licences_certificate_types = @service_provider_valid_licences.pluck("licences.certificate_type")
-    cp_valid_licences_certificate_types = @cp_valid_licences.pluck("licences.certificate_type")
+    certification_path_assessment_method =  if @certification_path.present?
+                                              [@certification_path&.certification_path_method&.assessment_method, 3]
+                                            else
+                                              [
+                                                Licence.applicabilities[:star_rating],
+                                                Licence.applicabilities[:check_list],
+                                                Licence.applicabilities[:both]
+                                              ]
+                                            end
+
+    service_provider_valid_licences_certificate_types = @service_provider_valid_licences.where("licences.applicability IN (:applicability)", applicability: certification_path_assessment_method).pluck("licences.certificate_type")
+    cp_valid_licences_certificate_types = @cp_valid_licences.where("licences.applicability IN (:applicability)", applicability: certification_path_assessment_method).pluck("licences.certificate_type")
+
     return (service_provider_valid_licences_certificate_types & cp_valid_licences_certificate_types).uniq
   end
 
