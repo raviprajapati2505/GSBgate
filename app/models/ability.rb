@@ -35,6 +35,10 @@ class Ability
       elsif @project.operation?
         @service_provider_valid_licences = user&.valid_user_sp_operation_licences
         @cp_valid_licences = user&.valid_user_operation_licences
+
+      else
+        @service_provider_valid_licences = AccessLicence.none
+        @cp_valid_licences = AccessLicence.none
       end
 
     else
@@ -483,7 +487,7 @@ class Ability
     # for checklist licences, service provider licences verification not needed.
     valid_checklist_licences_certificate_type = @valid_checklist_licences.pluck("licences.certificate_type")
 
-    if (@certification_path.present? && @certification_path.is_checklist_method?) || valid_checklist_licences_certificate_type.present?
+    if (@certification_path.present? && @certification_path.is_checklist_method?) || !@certification_path.present?
       allowed_certificate_types.push(*valid_checklist_licences_certificate_type)
     end
 
