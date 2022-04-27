@@ -20,14 +20,33 @@ class Ability
 
     user ||= User.new # guest user (not logged in)
 
+    @project = get_project(request)
     certification_team_type = get_certification_team_type(request)
-                     
-    if user.valid_cp_available?
-      @service_provider_valid_licences = user&.valid_user_sp_licences
-      @cp_valid_licences = user&.valid_user_licences
+
+    if @project.present?
+      if @project.design_and_build? && user.valid_design_build_cp_available?
+        @service_provider_valid_licences = user&.valid_user_sp_design_build_licences
+        @cp_valid_licences = user&.valid_user_design_build_licences
+
+      elsif @project.construction_management? && user.valid_construction_management_cp_available?
+        @service_provider_valid_licences = user&.valid_user_sp_construction_management_licences
+        @cp_valid_licences = user&.valid_user_construction_management_licences
+
+      elsif @project.operation?
+        @service_provider_valid_licences = user&.valid_user_sp_operation_licences
+        @cp_valid_licences = user&.valid_user_operation_licences
+      end
+
     else
-      @service_provider_valid_licences = AccessLicence.none
-      @cp_valid_licences = AccessLicence.none
+      if user.valid_cp_available?
+        @service_provider_valid_licences = user&.valid_user_sp_licences
+        @cp_valid_licences = user&.valid_user_licences
+
+      else
+        @service_provider_valid_licences = AccessLicence.none
+        @cp_valid_licences = AccessLicence.none
+      end
+
     end
 
     @valid_checklist_licences = user.valid_checklist_licences
@@ -482,6 +501,28 @@ class Ability
     return schemes
   end
 
+  def get_project(request = nil)
+    return nil unless request.present?
+    
+    path = request.path
+    path_array = path.split('/')
+    project = nil
+
+    begin
+      project_id_index = path_array.index("projects")
+      if project_id_index.present?
+        project_id = path_array[project_id_index.to_i + 1]
+        if project_id.present?
+          project = Project.find(project_id.to_i)
+        end
+      end
+    rescue => exception
+      project = nil
+    end
+
+    return project
+  end
+
   def get_certification_team_type(request = nil)
     all_certification_team_types = ProjectsUser.certification_team_types.values
 
@@ -512,18 +553,11 @@ class Ability
       return value
 
     rescue => exception
-      project_id_index = path_array.index("projects")
-      value = if project_id_index.present?
-                project_id = path_array[project_id_index.to_i + 1]
-                if project_id.to_i.to_s
-                  project = Project.find(project_id.to_i)
-                  if project.design_and_build?
-                    [ProjectsUser.certification_team_types["Letter of Conformance"], ProjectsUser.certification_team_types["Final Design Certificate"]]
-                  else
-                    ProjectsUser.certification_team_types["Other"]
-                  end
+      value = if @project.present?
+                if @project.design_and_build?
+                  [ProjectsUser.certification_team_types["Letter of Conformance"], ProjectsUser.certification_team_types["Final Design Certificate"]]
                 else
-                  all_certification_team_types
+                  ProjectsUser.certification_team_types["Other"]
                 end
               else
                 all_certification_team_types

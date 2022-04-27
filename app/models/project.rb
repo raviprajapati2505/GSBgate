@@ -217,6 +217,14 @@ class Project < ApplicationRecord
     certificate_type == Certificate.certificate_types[:design_type]
   end
 
+  def construction_management?
+    certificate_type == Certificate.certificate_types[:construction_type]
+  end
+
+  def operation?
+    certificate_type == Certificate.certificate_types[:operations_type]
+  end
+
   def loc_projects_users
     projects_users&.where(certification_team_type: "Letter of Conformance")
   end

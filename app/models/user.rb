@@ -224,8 +224,28 @@ class User < ApplicationRecord
     service_provider&.valid_service_provider_licences
   end
 
+  def valid_user_sp_design_build_licences
+    service_provider&.valid_service_provider_design_build_licences
+  end
+
+  def valid_user_sp_construction_management_licences
+    service_provider&.valid_service_provider_construction_management_licences
+  end
+
+  def valid_user_sp_operation_licences
+    service_provider&.valid_service_provider_operation_licences
+  end
+
   def valid_cp_available?
     service_provider&.valid_cgps.present? && service_provider&.valid_ceps.present?
+  end
+
+  def valid_design_build_cp_available?
+    service_provider&.valid_design_build_cgps.present? && service_provider&.valid_design_build_ceps.present?
+  end
+
+  def valid_construction_management_cp_available?
+    service_provider&.valid_construction_management_cgps.present? && service_provider&.valid_construction_management_ceps.present?
   end
 
   def valid_user_licences
@@ -234,6 +254,14 @@ class User < ApplicationRecord
 
   def valid_user_design_build_licences
     valid_user_licences.where("licences.certificate_type = ?", Certificate.certificate_types[:design_type])
+  end
+
+  def valid_user_construction_management_licences
+    valid_user_licences.where("licences.certificate_type = ?", Certificate.certificate_types[:construction_type])
+  end
+
+  def valid_user_operation_licences
+    valid_user_licences.where("licences.certificate_type = ?", Certificate.certificate_types[:operations_type])
   end
 
   def valid_checklist_licences
