@@ -35,23 +35,18 @@ class Ability
       elsif @project.operation?
         @service_provider_valid_licences = user&.valid_user_sp_operation_licences
         @cp_valid_licences = user&.valid_user_operation_licences
-
-      else
-        @service_provider_valid_licences = AccessLicence.none
-        @cp_valid_licences = AccessLicence.none
       end
 
     else
       if user.valid_cp_available?
         @service_provider_valid_licences = user&.valid_user_sp_licences
         @cp_valid_licences = user&.valid_user_licences
-
-      else
-        @service_provider_valid_licences = AccessLicence.none
-        @cp_valid_licences = AccessLicence.none
       end
 
     end
+
+    @service_provider_valid_licences ||= AccessLicence.none
+    @cp_valid_licences ||= AccessLicence.none
 
     @valid_checklist_licences = user.valid_checklist_licences
 
