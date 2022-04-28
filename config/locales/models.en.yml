@@ -141,9 +141,9 @@ en:
         email: Email
         name: Name
         role: Role
-        linkme_member_id: LinkMe Member ID
+        #linkme_member_id: LinkMe Member ID
         username: Username
-        linkme_user: LinkMe User?
+        #linkme_user: LinkMe User?
         gord_employee: GORD Employee?
         cgp_license: CGP License?
         cgp_license_expired: CGP License Expired?

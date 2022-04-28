@@ -452,7 +452,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
       #   horizontal_line x, x+width,  :at => y+height+12
       #   horizontal_line x, x+width, :at => y
       # end
-    rescue LinkmeService::ApiError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, Errno::ECONNREFUSED,
+    rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, Errno::ECONNREFUSED,
            EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError
 
           #  bounding_box([x, y], width: x+width, height: height, position: :center) do
@@ -595,7 +595,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
 
     begin
       image chart_generator.generate_chart(linechart_config, 450, 270).path, at: [0, 170], width: 270
-    rescue LinkmeService::ApiError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, Errno::ECONNREFUSED,
+    rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, Errno::ECONNREFUSED,
       EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError
       text 'An error occurred when creating the chart.'
     end

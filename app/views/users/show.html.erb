@@ -25,10 +25,10 @@
               <th><%= User.human_attribute_name('role') %></th>
               <td><%= @user.role&.titleize %></td>
             </tr>
-            <tr>
+            <!--<tr>
               <th><%= User.human_attribute_name('linkme_member_id') %></th>
               <td><%= @user.linkme_member_id %></td>
-            </tr>
+            </tr>-->
             <tr>
               <th><%= User.human_attribute_name('username') %></th>
               <td><%= @user.username %></td>
@@ -45,10 +45,10 @@
               </tr>
             <% end %>
 
-            <tr>
+            <!--<tr>
               <th><%= User.human_attribute_name('linkme_user') %></th>
               <td><%= label_span(@user.linkme_user, 'Yes', 'No').html_safe %></td>
-            </tr>
+            </tr>-->
             <tr>
               <th><%= User.human_attribute_name('gord_employee') %></th>
               <td><%= label_span(@user.gord_employee, 'Yes', 'No').html_safe %></td>
