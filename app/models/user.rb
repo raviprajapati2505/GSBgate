@@ -249,19 +249,19 @@ class User < ApplicationRecord
   end
 
   def valid_user_licences
-    access_licences.joins(:licence).where("DATE(access_licences.expiry_date) > :current_date AND licences.licence_type IN ('CgpLicence', 'CepLicence')", current_date: Date.today)
+    access_licences.joins(:licence).where("DATE(access_licences.expiry_date) > :current_date AND licences.licence_type IN ('CgpLicence', 'CepLicence')", current_date: Date.today) || AccessLicence.none
   end
 
   def valid_user_design_build_licences
-    valid_user_licences.where("licences.certificate_type = ?", Certificate.certificate_types[:design_type])
+    valid_user_licences.where("licences.certificate_type = ?", Certificate.certificate_types[:design_type]) || AccessLicence.none
   end
 
   def valid_user_construction_management_licences
-    valid_user_licences.where("licences.certificate_type = ?", Certificate.certificate_types[:construction_type])
+    valid_user_licences.where("licences.certificate_type = ?", Certificate.certificate_types[:construction_type]) || AccessLicence.none
   end
 
   def valid_user_operation_licences
-    valid_user_licences.where("licences.certificate_type = ?", Certificate.certificate_types[:operations_type])
+    valid_user_licences.where("licences.certificate_type = ?", Certificate.certificate_types[:operations_type]) || AccessLicence.none
   end
 
   def valid_checklist_licences
