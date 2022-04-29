@@ -152,8 +152,9 @@ class UsersController < AuthenticatedController
             users = User.where("email ILIKE ALL ( array[:email_components] )", email_components: email_components.map! {|val| "%#{val}%" })
           end
         else
-          User.invite!(email: email)
-          users = User.none
+          User.invite!(email: email, gord_employee: check_gord_employee, name: email) do |u|
+            u.skip_invitation = true
+          end
         end
 
         # Retrieve the ids of all users that are already linked to the project
@@ -169,6 +170,8 @@ class UsersController < AuthenticatedController
           # Check if the user is already linked to the project
           if (existing_user_ids.include?(u.id))
             result[:items][u.id][:error] = 'This user is already linked to the project.'
+          elsif u.created_by_invite?
+            result[:items][u.id][:error] = 'An invitation has already been sent.'
           elsif !u.confirmed?
             result[:items][u.id][:error] = 'This user has not confirmed account yet.'
           elsif !u.active?
