@@ -46,11 +46,12 @@ class ProjectsUsersController < AuthenticatedController
     # Invite new users to linkme.qa by email
     if params.has_key?(:emails)
       params[:emails].each do |email|
-        DigestMailer.linkme_invitation_email(email, current_user, @project).deliver_now
+        user = User.find_by_email(email)
+        user.deliver_invitation if user.created_by_invite?
       end
 
       if (params[:emails].count > 0)
-        notices << pluralize(params[:emails].count, 'user was', 'users were') + ' invited to linkme.qa.'
+        notices << pluralize(params[:emails].count, 'user was', 'users were') + ' invited to gsas.qa.'
       end
     end
 
