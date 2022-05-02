@@ -32,15 +32,14 @@ module ApplicationHelper
     schemes = certification_path&.development_type&.schemes&.select("DISTINCT ON (schemes.name) schemes.*")
 
     unless current_user.system_admin?
-      allowed_schemes = current_user.valid_user_sp_licences.pluck(:schemes).flatten.uniq
-
       # exclude schemes which were renamed.
-      if assessment_method == 1
+      if assessment_method == 1 && current_user.service_provider.present?
+        allowed_schemes = current_user.valid_user_sp_licences.pluck(:schemes).flatten.uniq
         schemes = schemes.where("schemes.name IN (:allowed_schemes)", allowed_schemes: allowed_schemes)
       end
     end
 
-    if assessment_method == 1
+    if assessment_method == 1 && current_user.service_provider.present?
       schemes_with_only_checklist = ["Energy Centers"]
       schemes = schemes&.where.not(name: schemes_with_only_checklist)
     end
