@@ -14,6 +14,10 @@ class Licence < ApplicationRecord
     where(licence_type: 'ServiceProviderLicence')
   }
 
+  scope :with_cp_licences, -> {
+    where.not(licence_type: 'ServiceProviderLicence')
+  }
+
   scope :with_cgp_licences, -> {
     where(licence_type: 'CgpLicence')
   }

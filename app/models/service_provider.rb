@@ -40,4 +40,12 @@ class ServiceProvider < User
   def valid_construction_management_ceps
     users.joins(access_licences: :licence).where("DATE(access_licences.expiry_date) > :current_date AND licences.licence_type = 'CepLicence' AND licences.certificate_type = :certificate_type", current_date: Date.today, certificate_type: Certificate.certificate_types[:construction_type]) || AccessLicence.none
   end
+
+  def valid_operation_cgps
+    users.joins(access_licences: :licence).where("DATE(access_licences.expiry_date) > :current_date AND licences.licence_type = 'CgpLicence' AND licences.certificate_type = :certificate_type", current_date: Date.today, certificate_type: Certificate.certificate_types[:operations_type]) || AccessLicence.none
+  end
+
+  def valid_operation_ceps
+    users.joins(access_licences: :licence).where("DATE(access_licences.expiry_date) > :current_date AND licences.licence_type = 'CepLicence' AND licences.certificate_type = :certificate_type", current_date: Date.today, certificate_type: Certificate.certificate_types[:operations_type]) || AccessLicence.none
+  end
 end

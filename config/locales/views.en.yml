@@ -314,6 +314,8 @@ en:
       user_license_details:
         title: License Details
         licences: Issued Licences
+      user_licence_summary:
+        title: Licence Summary
     form:
       form_title: User details
     list_notifications:

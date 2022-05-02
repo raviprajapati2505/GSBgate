@@ -248,6 +248,10 @@ class User < ApplicationRecord
     service_provider&.valid_construction_management_cgps.present? && service_provider&.valid_construction_management_ceps.present?
   end
 
+  def valid_construction_management_cp_available?
+    service_provider&.valid_operation_cgps.present? && service_provider&.valid_operation_ceps.present?
+  end
+
   def valid_user_licences
     access_licences.joins(:licence).where("DATE(access_licences.expiry_date) > :current_date AND licences.licence_type IN ('CgpLicence', 'CepLicence')", current_date: Date.today) || AccessLicence.none
   end
@@ -262,6 +266,10 @@ class User < ApplicationRecord
 
   def valid_user_operation_licences
     valid_user_licences.where("licences.certificate_type = ?", Certificate.certificate_types[:operations_type]) || AccessLicence.none
+  end
+
+  def user_with_licence(licence_id)
+    access_licences.find_by(licence_id: licence_id)
   end
 
   def valid_checklist_licences

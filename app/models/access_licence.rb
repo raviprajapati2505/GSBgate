@@ -10,7 +10,6 @@ class AccessLicence < ApplicationRecord
     where(user_id: user_id)
   }
 
-
   def licence_display_name
     licence&.display_name
   end
