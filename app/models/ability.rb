@@ -96,7 +96,12 @@ class Ability
     project_with_user_in_gsas_trust_team = {projects_users: {user_id: user.id, role: project_user_gsas_trust_team_roles}}
     project_with_user_as_enterprise_client = {projects_users: {user_id: user.id, role: project_user_enterprise_client_roles}}
 
-    users_with_service_provider = { user: { service_provider_id: user.id } }
+    if user.type == 'ServiceProvider'
+      users_with_service_provider = { user: { service_provider_id: user.id } }
+    else
+      users_with_service_provider = { user: { id: user.id } }
+    end
+   
     projects_users_with_service_provider = { projects_users: users_with_service_provider }
 
     schemes_array = { name: schemes_of_valid_user_licences }
