@@ -220,6 +220,10 @@ class User < ApplicationRecord
     service_provider&.name
   end
 
+  def access_licences_with_certificate_type(certificate_type)
+    access_licences.with_certificate_type(certificate_type.to_i) || AccessLicence.none
+  end
+
   def valid_user_sp_licences
     service_provider&.valid_service_provider_licences
   end
@@ -268,8 +272,8 @@ class User < ApplicationRecord
     valid_user_licences.where("licences.certificate_type = ?", Certificate.certificate_types[:operations_type]) || AccessLicence.none
   end
 
-  def user_with_licence(licence_id)
-    access_licences.find_by(licence_id: licence_id)
+  def user_with_licences(licence_ids = [])
+    access_licences.joins(:licence).where(licence_id: licence_ids)
   end
 
   def valid_checklist_licences

@@ -1,3 +1,7 @@
+<%
+  service_provider = @user.service_provider? ? @user : @user.service_provider
+%>
+
 <div class="row">
   <div class="col-12">
     <div class="ibox float-e-margins">
@@ -57,7 +61,7 @@
         </table>
 
         <div class="hr-line-dashed"></div>
-
+ 
         <% if @user == current_user %>
           <%
             url = if @user.service_provider?
@@ -112,120 +116,18 @@
           <h5><%= t('.user_license_details.licences') %></h5>
         </div>
         <div class="ibox-content">
-          <% @user.access_licences.each.with_index(1) do |access_licence, index| %>
-            <h5><b>Licence - <%= index %></b></h5>
-            <table class="table table-bordered table-striped user-details-table">
-              <tbody>
-                <tr>
-                  <th><%= Licence.human_attribute_name('display_name') %></th>
-                  <td><%= access_licence.licence_display_name %></td>
-                </tr>
-                <tr>
-                  <th><%= Licence.human_attribute_name('applicability') %></th>
-                  <td><%= access_licence.licence_applicable_for %></span></td>
-                </tr>
-                <tr>
-                  <th><%= Licence.human_attribute_name('description') %></th>
-                  <td><%= access_licence.licence_description %></td>
-                </tr>
-                <tr>
-                  <th><%= Licence.human_attribute_name('schemes') %></th>
-                  <td>
-                    <% access_licence.licence_schemes&.each do |scheme| %>
-                      <%= scheme %><br>
-                    <% end %>
-                  </td>
-                </tr>
-                <tr>
-                  <th><%= AccessLicence.human_attribute_name('expiry_date') %></th>
-                  <td><%= access_licence.formatted_expiry_date %></td>
-                </tr>
-              </tbody>
-            </table>
-          <% end %>
+          <%= render partial: "licence_detail", locals: { label: 'Design & Build Licences', access_licences: @user.access_licences_with_certificate_type(Certificate.certificate_types[:design_type]) } %>
+          <%= render partial: "licence_detail", locals: { label: 'Construction Management Licences', access_licences: @user.access_licences_with_certificate_type(Certificate.certificate_types[:construction_type]) } %>
+          <%= render partial: "licence_detail", locals: { label: 'Operation Licences', access_licences: @user.access_licences_with_certificate_type(Certificate.certificate_types[:operations_type]) } %>
         </div>
 
         <div class="ibox-title m-t">
           <h5><%= t('.user_licence_summary.title') %></h5>
         </div>
         <div class="ibox-content">
-          <h5><b>My Licences</b></h5>
-          <table class="table table-bordered table-striped user-details-table">
-            <thead>
-              <tr>
-                <th><%= Licence.human_attribute_name('display_name') %></th>
-                <th><%= AccessLicence.human_attribute_name('expiry_date') %></th>
-              </tr>
-            </thead>
-            <tbody>
-              <% Licence.with_cp_licences.order(:display_weight).each do |licence| %>
-                <tr>
-                  <% 
-                    access_licence = @user&.user_with_licence(licence.id)
-                    expiry_date = access_licence&.expiry_date
-                    formatted_expiry_date = access_licence&.formatted_expiry_date
-                  %>
-
-                  <td><%= licence.display_name %></td>
-                  <td><%= label_span(expiry_date > Date.today, formatted_expiry_date, formatted_expiry_date).html_safe rescue "-" %></td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
-
-          <h5><b>Service Provider Licences</b></h5>
-          <table class="table table-bordered table-striped user-details-table">
-            <thead>
-              <tr>
-                <th><%= Licence.human_attribute_name('display_name') %></th>
-                <th><%= AccessLicence.human_attribute_name('expiry_date') %></th>
-              </tr>
-            </thead>
-            <tbody>
-              <% Licence.with_service_provider_licences.order(:display_weight).each do |licence| %>
-                <tr>
-                  <% 
-                    access_licence = @user&.service_provider&.user_with_licence(licence.id)
-                    expiry_date = access_licence&.expiry_date
-                    formatted_expiry_date = access_licence&.formatted_expiry_date
-                  %>
-
-                  <td><%= licence.display_name %></td>
-                  <td><%= label_span(expiry_date > Date.today, formatted_expiry_date, formatted_expiry_date).html_safe rescue "-" %></td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
-
-          <h5><b>Service Provider CGPs & CEPs</b></h5>
-          <table class="table table-bordered table-striped user-details-table">
-            <tbody>
-              <tr>
-                <th>Has valid CM CGPs ?</th>
-                <td><%= label_span(@user.service_provider&.valid_design_build_cgps.present?, 'Yes', 'No').html_safe %></td>
-              </tr>
-              <tr>
-                <th>Has valid CM CEPs ?</th>
-                <td><%= label_span(@user.service_provider&.valid_design_build_ceps.present?, 'Yes', 'No').html_safe %></td>
-              </tr>
-              <tr>
-                <th>Has valid D&B CGPs ?</th>
-                <td><%= label_span(@user.service_provider&.valid_construction_management_cgps.present?, 'Yes', 'No').html_safe %></td>
-              </tr>
-              <tr>
-                <th>Has valid D&B CEPs ?</th>
-                <td><%= label_span(@user.service_provider&.valid_construction_management_ceps.present?, 'Yes', 'No').html_safe %></td>
-              </tr>
-              <tr>
-                <th>Has valid OP CGPs ?</th>
-                <td><%= label_span(@user.service_provider&.valid_operation_cgps.present?, 'Yes', 'No').html_safe %></td>
-              </tr>
-              <tr>
-                <th>Has valid OP CEPs ?</th>
-                <td><%= label_span(@user.service_provider&.valid_operation_ceps.present?, 'Yes', 'No').html_safe %></td>
-              </tr>
-            </tbody>
-          </table>
+          <%= render partial: "licences_list", locals: { label: 'My Licences', licences: Licence.with_cp_licences, licences_of: @user } %>
+          <%= render partial: "licences_list", locals: { label: 'Service Provider Licences', licences: Licence.with_service_provider_licences, licences_of: service_provider } %>
+          <%= render partial: "sp_licence_summary", locals: { label: 'Service Provider CGPs & CEPs', service_provider: service_provider } %>
         </div>
       </div>
     </div>
