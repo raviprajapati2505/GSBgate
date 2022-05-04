@@ -6,8 +6,14 @@ class AccessLicence < ApplicationRecord
   validates :expiry_date, presence: true
   validates :licence_id, uniqueness: { scope: :user_id }
 
+  default_scope { joins(:licence).order("licences.display_weight") }
+
   scope :user_access_licences, -> (user_id) {
     where(user_id: user_id)
+  }
+
+  scope :with_certificate_type, -> (certificate_type) {
+    joins(:licence).where("licences.certificate_type = :certificate_type", certificate_type: certificate_type)
   }
 
   def licence_display_name

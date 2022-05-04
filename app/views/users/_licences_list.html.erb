@@ -1,0 +1,25 @@
+<h5><b><%= label %></b></h5>
+<table class="table table-bordered table-striped user-details-table">
+  <thead>
+    <tr>
+      <th><%= Licence.human_attribute_name('display_name') %></th>
+      <th><%= AccessLicence.human_attribute_name('expiry_date') %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% access_licences = licences_of&.user_with_licences(licences.ids) %>
+
+    <% licences.each do |licence| %>
+      <tr>
+        <% 
+          access_licence = access_licences.to_a.find { |access_licence| access_licence.licence_id == licence.id } rescue nil
+          expiry_date = access_licence&.expiry_date
+          formatted_expiry_date = access_licence&.formatted_expiry_date
+        %>
+
+        <td><%= licence.display_name %></td>
+        <td><%= label_span(expiry_date > Date.today, formatted_expiry_date, formatted_expiry_date).html_safe rescue "-" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
