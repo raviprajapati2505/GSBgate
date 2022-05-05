@@ -241,7 +241,7 @@ class User < ApplicationRecord
   end
 
   def valid_cp_available?
-    service_provider&.valid_cgps.present? && service_provider&.valid_ceps.present?
+    service_provider&.valid_cgps.present? || service_provider&.valid_ceps.present?
   end
 
   def valid_design_build_cp_available?
