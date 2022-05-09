@@ -307,10 +307,10 @@ class User < ApplicationRecord
   def allowed_certification_types
     return Certificate.certificate_types if system_admin?
 
-    sp_allowed_certificate_types = valid_user_sp_licences.pluck(:certificate_type).uniq
-    cp_allowed_certificate_types = valid_user_licences.pluck(:certificate_type).uniq
+    sp_allowed_certificate_types = valid_user_sp_licences&.pluck(:certificate_type)&.uniq || []
+    cp_allowed_certificate_types = valid_user_licences&.pluck(:certificate_type)&.uniq || []
 
-    sp_cp_allowed_certificate_types = sp_allowed_certificate_types | cp_allowed_certificate_types
+    sp_cp_allowed_certificate_types = sp_allowed_certificate_types & cp_allowed_certificate_types
     
     # for checklist licences, service provider licences verification not needed.
     valid_checklist_licences_certificate_type = valid_checklist_licences.pluck("licences.certificate_type")
@@ -322,10 +322,14 @@ class User < ApplicationRecord
       when 'construction_type'
         certificate_types[k] = v if valid_construction_management_cp_available?
       when 'design_type'
-        certificate_types[k] = v if (valid_design_build_cp_available? || valid_checklist_licences_certificate_type.present?)
+        certificate_types[k] = v if valid_design_build_cp_available?
       when 'operations_type'
         certificate_types[k] = v if valid_cgp_or_cep_available?
       end
+    end
+
+    if valid_checklist_licences_certificate_type.present?
+      certificate_types['design_type'] = 3
     end
 
     return certificate_types
