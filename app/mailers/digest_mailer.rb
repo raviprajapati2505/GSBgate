@@ -216,13 +216,6 @@ class DigestMailer < ApplicationMailer
     mail(to: Rails.configuration.x.gsas_info.all_notifications_email, subject: "GSASgate - certification #{@certification_path.name} for #{certification_path.project.name} has appealed criteria")
   end
 
-  # def linkme_invitation_email(email, user, project)
-  #   @user = user
-  #   @project = project
-
-  #   mail(to: email, subject: 'GSASgate - linkme.qa invitation')
-  # end
-
   def archive_created_email(archive)
     @archive = archive
 

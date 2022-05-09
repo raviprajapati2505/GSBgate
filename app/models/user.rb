@@ -4,9 +4,8 @@ class User < ApplicationRecord
   
   include Taskable
 
-  devise :database_authenticatable, :registerable,
-  :recoverable,  :trackable, :validatable,
-  :confirmable, :invitable
+  devise  :invitable, :database_authenticatable, :registerable, :recoverable,
+          :rememberable, :trackable, :validatable, :confirmable
   
   include ActionView::Helpers::TranslationHelper
   include DatePlucker

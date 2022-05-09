@@ -43,17 +43,6 @@ class ProjectsUsersController < AuthenticatedController
       end
     end
 
-    # Invite new users to linkme.qa by email
-    # if params.has_key?(:emails)
-    #   params[:emails].each do |email|
-    #     DigestMailer.linkme_invitation_email(email, current_user, @project).deliver_now
-    #   end
-
-    #   if (params[:emails].count > 0)
-    #     notices << pluralize(params[:emails].count, 'user was', 'users were') + ' invited to linkme.qa.'
-    #   end
-    # end
-
     # Set flash message
     if (notices.count > 0)
       flash[:notice] = notices.join('<br />')
