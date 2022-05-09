@@ -135,6 +135,9 @@ GEM
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
+    devise-jwt (0.8.1)
+      devise (~> 4.0)
+      warden-jwt_auth (~> 0.5)
     devise_invitable (2.0.6)
       actionmailer (>= 5.0)
       devise (>= 4.6)
@@ -440,6 +443,7 @@ DEPENDENCIES
   ckeditor_rails
   cocoon
   devise
+  devise-jwt
   devise_invitable
   dotenv
   effective_datatables (< 4.0.0)!

@@ -9,24 +9,6 @@ class ApplicationController < ActionController::Base
 
   before_action :set_current_user
 
-  # helper_method :warden, :user_signed_in?, :current_user
-
-  # def user_signed_in?
-  #   !current_user.nil?
-  # end
-
-  # def current_user
-  #   warden.user
-  # end
-
-  # def authenticate!
-  #   warden.authenticate!
-  # end
-
-  # def warden
-  #   request.env['warden']
-  # end
-
   rescue_from CanCan::AccessDenied do |exception|
     Rails.logger.debug "Access denied on #{exception.action} #{exception.subject.inspect}"
     redirect_to forbidden_error_path
