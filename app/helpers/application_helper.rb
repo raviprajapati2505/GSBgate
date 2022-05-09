@@ -495,23 +495,6 @@ module ApplicationHelper
     end
   end
 
-  def allowed_certification_types
-    return Certificate.certificate_types if current_user.system_admin?
-
-    sp_allowed_certificate_types = current_user.valid_user_sp_licences.pluck(:certificate_type).uniq
-    cp_allowed_certificate_types = current_user.valid_user_licences.pluck(:certificate_type).uniq
-
-    allowed_certificate_types = sp_allowed_certificate_types & cp_allowed_certificate_types
-    
-    # for checklist licences, service provider licences verification not needed.
-    valid_checklist_licences_certificate_type = current_user.valid_checklist_licences.pluck("licences.certificate_type")
-    if valid_checklist_licences_certificate_type.present?
-      allowed_certificate_types.push(*valid_checklist_licences_certificate_type)
-    end
-
-    Certificate.certificate_types.select { |k, v| (allowed_certificate_types.uniq).include?(v) }   
-  end
-
   def licence_options(user = nil)
     return [] unless user.present?
   

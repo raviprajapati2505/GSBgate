@@ -38,7 +38,7 @@ class Ability
       end
 
     else
-      if user.valid_cp_available?
+      if user.valid_cgp_or_cep_available?
         @service_provider_valid_licences = user&.valid_user_sp_licences
         @cp_valid_licences = user&.valid_user_licences
       end
@@ -575,8 +575,6 @@ class Ability
     # for checklist licences, service provider licences verification not needed.
 
     user.valid_checklist_licences.present? || 
-    (user.valid_user_licences.present? &&
-    user.valid_cp_available? && 
-    user.valid_user_sp_licences.present?)
+    user.allowed_certification_types.present?
   end
 end

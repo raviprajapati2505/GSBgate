@@ -241,7 +241,7 @@ class User < ApplicationRecord
     service_provider&.valid_service_provider_operation_licences
   end
 
-  def valid_cp_available?
+  def valid_cgp_or_cep_available?
     service_provider&.valid_cgps.present? || service_provider&.valid_ceps.present?
   end
 
@@ -253,7 +253,7 @@ class User < ApplicationRecord
     service_provider&.valid_construction_management_cgps.present? && service_provider&.valid_construction_management_ceps.present?
   end
 
-  def valid_construction_management_cp_available?
+  def valid_operation_cp_available?
     service_provider&.valid_operation_cgps.present? && service_provider&.valid_operation_ceps.present?
   end
 
@@ -302,6 +302,33 @@ class User < ApplicationRecord
     end
 
     return assessment_methods
+  end
+
+  def allowed_certification_types
+    return Certificate.certificate_types if system_admin?
+
+    sp_allowed_certificate_types = valid_user_sp_licences.pluck(:certificate_type).uniq
+    cp_allowed_certificate_types = valid_user_licences.pluck(:certificate_type).uniq
+
+    sp_cp_allowed_certificate_types = sp_allowed_certificate_types | cp_allowed_certificate_types
+    
+    # for checklist licences, service provider licences verification not needed.
+    valid_checklist_licences_certificate_type = valid_checklist_licences.pluck("licences.certificate_type")
+    allowed_certificate_types = Certificate.certificate_types.select { |k, v| (sp_cp_allowed_certificate_types.uniq).include?(v) }
+
+    certificate_types = {}
+    allowed_certificate_types.each do |k, v|
+      case k
+      when 'construction_type'
+        certificate_types[k] = v if valid_construction_management_cp_available?
+      when 'design_type'
+        certificate_types[k] = v if (valid_design_build_cp_available? || valid_checklist_licences_certificate_type.present?)
+      when 'operations_type'
+        certificate_types[k] = v if valid_cgp_or_cep_available?
+      end
+    end
+
+    return certificate_types
   end
 
   private
