@@ -229,6 +229,17 @@ class DigestMailer < ApplicationMailer
     mail(to: @archive.user.email, subject: 'GSASgate - your archive was generated')
   end
 
+  def user_licences_update_email(user)
+    @user = user
+    @licences = if @user.service_provider?
+                  Licence.with_service_provider_licences
+                else
+                  Licence.with_cp_licences
+                end
+
+    mail(to: @user.email, subject: 'GSASgate - your licences summary')
+  end
+
   private
 
   def add_condition(user, notification_type, auditable_type, new_status)

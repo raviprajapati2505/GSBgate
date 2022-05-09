@@ -34,6 +34,7 @@ class User < ApplicationRecord
 
   after_initialize :init, if: :new_record?
   before_create :before_create
+  after_save :send_user_licences_update_email
 
   validates :email, :username, presence: true
   validates :email, uniqueness: true
@@ -320,5 +321,9 @@ class User < ApplicationRecord
 
   def before_create
     self.last_notified_at = Time.current
+  end
+
+  def send_user_licences_update_email
+    DigestMailer.user_licences_update_email(self).deliver_now if access_licences.any?(&:saved_changes?)
   end
 end

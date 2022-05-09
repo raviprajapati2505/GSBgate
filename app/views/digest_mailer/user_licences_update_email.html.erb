@@ -1,0 +1,16 @@
+<tr>
+    <td style="padding: .75pt .75pt;">
+        <p><span style='font-size: 18pt; font-family: "Verdana", "sans-serif"; color: #0B9ADC;'>User Licences Summary</span></p>
+    </td>
+</tr>
+<tr>
+    <td style="width: 650pt; border: solid #CCC 1pt; background: white; padding: 15pt 15pt;">
+        <p>
+            <span style='font-size: 9pt; font-family: "Verdana", "sans-serif";'>Dear Ms/Mr</span>
+        </p>
+        <br/>
+            <%= render partial: "users/licences_list", locals: { label: '', licences: @licences, licences_of: @user } %>
+        <br/>
+        <p><span style='font-size: 9pt; font-family: "Verdana", "sans-serif";'>With kind regards,</span></p>
+    </td>
+</tr>
