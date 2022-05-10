@@ -32,6 +32,7 @@ xlsx.each_with_pagename do |name, sheet|
         puts "Error Count #{sp_errors.size}"
         puts sp_errors.join("\n")
     end
+
     if(name == 'Service Provider-CGPs')
         cp_errors = []
         header_for_cgp = user_cgp_sheet.row(2)
@@ -63,6 +64,9 @@ xlsx.each_with_pagename do |name, sheet|
                 end
             end
         end
+
+        # delete all the tasks of activate user as we are importing and activating automaically
+        Task.where(task_description_id: Taskable::ACTIVATE_USER).destroy_alls
 
         puts "\n\n\n"
         puts "--------------------------CP users Errors----------------------------"
