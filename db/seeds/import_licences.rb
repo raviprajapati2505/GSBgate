@@ -1,4 +1,4 @@
-equire 'roo'
+require 'roo'
 
 xlsx = Roo::Excelx.new("#{Rails.root}/db/imports/licence_allocation_sample.xlsx")
 header = xlsx.row(2)
