@@ -32,6 +32,7 @@ xlsx.each_with_pagename do |name, sheet|
         puts "Error Count #{sp_errors.size}"
         puts sp_errors.join("\n")
     end
+
     if(name == 'Service Provider-CGPs')
         cp_errors = []
         header_for_cgp = user_cgp_sheet.row(2)
@@ -63,7 +64,6 @@ xlsx.each_with_pagename do |name, sheet|
                 end
             end
         end
-
         
         puts "\n\n\n"
         puts "--------------------------CP users Errors----------------------------"
