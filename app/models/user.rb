@@ -278,7 +278,11 @@ class User < ApplicationRecord
   end
 
   def valid_checklist_licences
-    licence_ids = Licence.where(applicability: Licence.applicabilities[:check_list]).ids
+    licence_ids =  Licence.where(
+                                  applicability: [Licence.applicabilities[:both], Licence.applicabilities[:check_list]], 
+                                  certificate_type: Certificate.certificate_types[:design_type],
+                                  licence_type: ["CgpLicence", "CepLicence"]
+                                ).ids
 
     valid_user_licences.where(licence_id: licence_ids)
   end
@@ -296,7 +300,11 @@ class User < ApplicationRecord
                               elsif allowed_assessment_methods.include?(Licence.applicabilities[:check_list])
                                 assessment_methods.select { |k, v| v == Licence.applicabilities[:check_list] }
                               else
-                                assessment_methods
+                                if valid_user_sp_design_build_licences.present? && valid_design_build_cp_available?
+                                  assessment_methods
+                                else
+                                  assessment_methods.select { |k, v| v == Licence.applicabilities[:check_list] }
+                                end
                               end
       end
     end

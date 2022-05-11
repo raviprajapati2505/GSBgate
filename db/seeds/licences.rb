@@ -114,7 +114,8 @@ Licence.find_or_create_by!(
   display_weight: 12,
   title: 'GSAS CONSTRUCTION MANAGEMENT - CGP',
   description: 'GSAS Construction Management Certified Green Professional',
-  certificate_type: Certificate.certificate_types[:construction_type]
+  certificate_type: Certificate.certificate_types[:construction_type],
+  applicability: Licence.applicabilities[:star_rating]
 )
 
 # OP - CGP
@@ -124,7 +125,8 @@ Licence.find_or_create_by!(
   display_weight: 13,
   title: 'GSAS OPERATIONS - CGP',
   description: 'GSAS Operation Certified Green Professional',
-  certificate_type: Certificate.certificate_types[:operations_type]
+  certificate_type: Certificate.certificate_types[:operations_type],
+  applicability: Licence.applicabilities[:star_rating]
 )
 
 # D&B - CEP
@@ -144,7 +146,8 @@ Licence.find_or_create_by!(
   display_weight: 15,
   title: 'GSAS CONSTRUCTION MANAGEMENT - CEP',
   description: 'GSAS Construction Management Certified Energy Professional',
-  certificate_type: Certificate.certificate_types[:construction_type]
+  certificate_type: Certificate.certificate_types[:construction_type],
+  applicability: Licence.applicabilities[:star_rating]
 )
 
 # OP - CGP
@@ -154,5 +157,6 @@ Licence.find_or_create_by!(
   display_weight: 16,
   title: 'GSAS OPERATIONS - CEP',
   description: 'GSAS Operation Certified Energy Professional',
-  certificate_type: Certificate.certificate_types[:operations_type]
+  certificate_type: Certificate.certificate_types[:operations_type],
+  applicability: Licence.applicabilities[:star_rating]
 )
