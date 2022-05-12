@@ -197,27 +197,8 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
 
   def draw_paragraph1
     name = @certification_path.certificate.only_name
-
-    case name
-    when 'Letter of Conformance'
-      text = "This is to notify that GSAS Trust has reviewed the project based on the submitted information. The project is found eligible to receive the Design Certificate as a provision for final GSAS Design & Build Certificate in the form of \"Letter of Conformance (LOC)\", The project is achieving: \n"
-
-      styled_text("<div style='font-size: 10; line-height: 7; color: 000000;'>#{text}</div>")
-
-    when 'GSAS-CM', 'Construction Certificate'
-      text =  case @certification_path&.certificate&.stage_title
-              when 'Stage 1: Foundation'
-                "This is to notify that GSAS Trust has reviewed the construction submittals in accordance with the latest GSAS Construction Management assessments and has completed the Initial Site Audit requirements of Construction Stage 1 (Foundation). The project is found eligible to receive the First Interim Audit Advisory Notice (AAN) No.01 achieving the following: \n"
-              when 'Stage 2: Substructure & Superstructure'
-                "This is to notify that GSAS Trust has reviewed the construction submittals in accordance with the latest GSAS Construction Management assessments and has completed the Second Site Audit requirements of Construction Stage 2 (Substructure & Superstructure). The project is found eligible to receive the Second Interim Audit Advisory Notice (AAN) No.02 achieving the following: \n"
-              when 'Stage 3: Finishing'
-                "This is to notify that GSAS Trust has reviewed the construction submittals in accordance with the latest GSAS Construction Management assessments and has completed the Third Site Audit requirements of Construction Stage 3 (Finishing). The project is found eligible to receive the Third Interim Audit Advisory Notice (AAN) No.03 achieving the following: \n"
-              end
-
-      styled_text("<div style='font-size: 10; line-height: 7; color: 000000;'>#{text}</div>")
-
-    else
-    end
+    text = certificate_intro_text(name, @certification_path&.certificate&.stage_title)
+    styled_text("<div style='font-size: 10; line-height: 7; color: 000000;'>#{text}</div>")
 
     # Prepare table data
     data = []
@@ -232,27 +213,15 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     # Output table
     draw_table(data, true, 'score_table')
 
-    case name 
-    when 'Letter of Conformance'
-      newline
+    newline
 
-      text = "The summary of the obtained rating is attached herewith."
-      styled_text("<div style='font-size: 10; line-height: 7'>#{text}</div>")
+    text = certificate_summary_text(name, @certification_path&.certificate&.stage_title)
 
-      newline(1)
-      
-      text = "This letter is only the predecessor towards achieving the final GSAS-D&B Certificate and should not be considered as the final certificate. The project should satisfy during the construction stage all the requirements of <b>Conformance to Design Audit(CDA)</b> which is a pre-requisite for the final GSAS-D&B Certificate as indicated in GSAS Technical Guide, <span style='color: #337ab7'>www.gsas.gord.qa</span> \n"
-      styled_text("<div style='font-size: 10; line-height: 7'>#{text}</div>")
-
-      text = "In the event of any future changes applied to the criteria pertaining to this issued certificate, the changes are required to be re-assessed once again."
-      styled_text("<div style='font-size: 10; line-height: 7'>#{text}</div>")
-
-      newline(1)
-
-      text = "Finally, congratulations on partaking in this noble endeavor. We look forward to creating jointly a healthy and sustainable future."
-      styled_text("<div style='font-size: 10; line-height: 7;'>#{text}</div>")
-
-      newline(1)
+    if text.present?
+      text.each do |line, txt|
+          styled_text("<div style='font-size: 10; line-height: 7'>#{txt}</div>")
+          newline(1)
+      end
 
       styled_text("<div style='font-size: 10; line-height: 7;'><b>Yours sincerely</b>, \n</div>")
 
@@ -263,36 +232,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
       styled_text("<div style='font-size: 10; color: #{@@main_color}; font-style: bold;'>\n Dr. Yousef Alhorr</div>")
 
       styled_text("<div style='font-size: 10; color: 000000; font-style: bold;'>\n Founding Chairman \n</div>")
-    when 'GSAS-CM', 'Construction Certificate'
-      newline
-
-      text = "Criteria summary of the First Interim Audit Advisory Notice is attached herewith."
-      styled_text("<div style='font-size: 10; line-height: 7;'>#{text}</div>")
-      
-      newline(1)
-
-      text = "This notice is only the predecessor towards achieving the final GSAS-CM Certificate and should not be considered as the final certificate. The project shall satisfy during the rest of the construction stages all the requirements which is a pre-requisite for the GSAS-CM Certificate as stipulated in GSAS Technical Guide, <span style='color: #337ab7'>www.gsas.gord.qa</span> \n"
-      styled_text("<div style='font-size: 10; line-height: 7'>#{text}</div>")
-
-      newline(1)
-
-      text = "Finally, congratulations on partaking in this noble endeavor. We look forward to creating jointly a healthy and sustainable future."
-      styled_text("<div style='font-size: 10; line-height: 7;'>#{text}</div>")
-
-      newline(1)
-
-      styled_text("<div style='font-size: 10; line-height: 7;'><b>Yours sincerely</b>, \n</div>")
-
-      newline(1)
-
-      # image image_path('green_star.png'), width: 50
-
-      styled_text("<div style='font-size: 10; color: #{@@main_color}; font-style: bold;'>\n Dr. Yousef Alhorr</div>")
-
-      styled_text("<div style='font-size: 10; color: 000000; font-style: bold;'>\n Founding Chairman \n</div>")
-
     end
-
   end
 
   def draw_project_info(scheme_mix = nil)
