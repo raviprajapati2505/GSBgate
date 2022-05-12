@@ -226,35 +226,35 @@ class User < ApplicationRecord
   end
 
   def valid_user_sp_licences
-    service_provider&.valid_service_provider_licences
+    service_provider&.active? ? service_provider&.valid_service_provider_licences : AccessLicence.none
   end
 
   def valid_user_sp_design_build_licences
-    service_provider&.valid_service_provider_design_build_licences
+    service_provider&.active? ? service_provider&.valid_service_provider_design_build_licences : AccessLicence.none
   end
 
   def valid_user_sp_construction_management_licences
-    service_provider&.valid_service_provider_construction_management_licences
+    service_provider&.active? ? service_provider&.valid_service_provider_construction_management_licences : AccessLicence.none
   end
 
   def valid_user_sp_operation_licences
-    service_provider&.valid_service_provider_operation_licences
+    service_provider&.active? ? service_provider&.valid_service_provider_operation_licences : AccessLicence.none
   end
 
   def valid_cgp_or_cep_available?
-    service_provider&.valid_cgps.present? || service_provider&.valid_ceps.present?
+    service_provider&.active? && (service_provider&.valid_cgps.present? || service_provider&.valid_ceps.present?)
   end
 
   def valid_design_build_cp_available?
-    service_provider&.valid_design_build_cgps.present? && service_provider&.valid_design_build_ceps.present?
+    service_provider&.active? && (service_provider&.valid_design_build_cgps.present? && service_provider&.valid_design_build_ceps.present?)
   end
 
   def valid_construction_management_cp_available?
-    service_provider&.valid_construction_management_cgps.present? && service_provider&.valid_construction_management_ceps.present?
+    service_provider&.active? && (service_provider&.valid_construction_management_cgps.present? && service_provider&.valid_construction_management_ceps.present?)
   end
 
   def valid_operation_cp_available?
-    service_provider&.valid_operation_cgps.present? && service_provider&.valid_operation_ceps.present?
+    service_provider&.active? && (service_provider&.valid_operation_cgps.present? && service_provider&.valid_operation_ceps.present?)
   end
 
   def valid_user_licences

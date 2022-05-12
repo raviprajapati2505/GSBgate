@@ -66,7 +66,7 @@ xlsx.each_with_pagename do |name, sheet|
         end
 
         # delete all the tasks of activate user as we are importing and activating automaically
-        Task.where(task_description_id: Taskable::ACTIVATE_USER).destroy_alls
+        Task.where(task_description_id: Taskable::ACTIVATE_USER).destroy_all
 
         puts "\n\n\n"
         puts "--------------------------CP users Errors----------------------------"
