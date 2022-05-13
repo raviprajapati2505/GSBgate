@@ -36,10 +36,14 @@ class User < ApplicationRecord
   before_create :before_create
   after_save :send_user_licences_update_email
 
-  validates :email, :username, presence: true
   validates :email, uniqueness: true
   validates :username, uniqueness: true
   validates :role, inclusion: User.roles.keys
+
+  validates :email, :username, :last_name, :name, :gender, :dob, :country , :city, :mobile_area_code, :mobile , :designation, :organization_name, :organization_address, :organization_country, :qid_or_passport_number, presence: true
+
+  validates :mobile_area_code, :mobile, :organization_phone_area_code, :organization_phone, :organization_fax_area_code, :organization_fax, format: { with: /\A[+-]?\d+\z/, message: "Integer only. No sign allowed." }
+
   # after_validation :unique_licence
   
   delegate :can?, :cannot?, :to => :ability
@@ -55,10 +59,6 @@ class User < ApplicationRecord
   scope :search_email, ->(text) {
     where('email like :search_text', search_text: "%#{text}%")
   }
-
-  # scope :linkme_users, -> {
-  #   where(linkme_user: true)
-  # }
 
   scope :local_users, -> {
     where(linkme_user: false)
@@ -154,54 +154,6 @@ class User < ApplicationRecord
     self.sign_in_count ||= 0
     self.sign_in_count += 1
   end
-
-
-  # Updates or creates a linkme user in the DB.
-  # - member_profile: A linkme member profile hash returned by the LinkmeService
-  # - master_profile: A linkme member profile hash returned by the LinkmeService which functions as the Service Provider/Employer
-  # def self.update_or_create_linkme_user!(member_profile = {})
-  #   # Check if the user exists in the GSAS DB
-  #   user = linkme_users.find_by_linkme_member_id(member_profile[:id]&.upcase)
-
-  #   # If the user record doesn't exist, create it
-  #   user ||= new
-
-  #   # Update the user's data
-  #   user.linkme_user = true
-  #   user.linkme_member_id = member_profile[:id]&.upcase
-  #   user.username = member_profile[:username]
-  #   user.email = member_profile[:email]
-  #   # user.picture = member_profile[:picture]
-  #   user.gord_employee = (member_profile[:employer] == 'GORD')
-  #   user.cgp_license = ['GSAS-CGP Licentiate', 'GSAS-CGP Practitioner', 'GSAS-CGP Fellow', 'GSAS-CGP Associate'].include?(member_profile[:membership])
-  #   user.employer_name = member_profile[:employer]
-
-  #   # CGP license expiry logic
-  #   # ------------------------
-  #   membership_expiry = (member_profile[:master_id].blank? || member_profile[:effective_membership_expiry].blank?) ? false : member_profile[:effective_membership_expiry]&.to_datetime
-  #   membership_expiry = membership_expiry < DateTime.now unless !membership_expiry
-
-  #   # Service Provider membership expired ?
-  #   unless membership_expiry
-  #     membership_expiry = member_profile[:membership_expiry].blank? ? false : member_profile[:membership_expiry]&.to_datetime
-  #     membership_expiry = membership_expiry < DateTime.now unless !membership_expiry
-  #   end
-  #   # user.cgp_license_expired = membership_expiry
-
-  #   # Concat the user's name
-  #   user.name = ''
-  #   name_fields = [member_profile[:name_prefix], member_profile[:first_name], member_profile[:middle_name], member_profile[:last_name], member_profile[:name_suffix]]
-  #   name_fields = name_fields.reject { |n| n.blank? }
-  #   user.name = name_fields.join(' ')
-  #   if user.name.blank?
-  #     user.name = self.username
-  #   end
-
-  #   # Save the user
-  #   user.save!
-
-  #   user
-  # end
 
   def jwt_subject
     id
@@ -351,14 +303,8 @@ class User < ApplicationRecord
 
   def init
     self.role ||= :default_role
-    # if self.linkme_user.nil?
-    #   self.linkme_user = true
-    # end
     if self.gord_employee.nil?
       self.gord_employee = false
-    end
-    if self.cgp_license.nil?
-      self.cgp_license = false
     end
   end
 

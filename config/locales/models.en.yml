@@ -139,19 +139,31 @@ en:
         approval_date: Approval Date
       user:
         email: Email
-        name: Name
+        name: First Name
+        middle_name: Middle Name
+        last_name: Last Name
+        dob: Date Of Birth
+        email_alternate: Email Address Alternate
+        country: Country
+        city: City
+        mobile_area_code: Mobile Area Code
+        mobile: Mobile
+        designation: Designation
+        work_experience: Work Experience In Years
+        organization_address: Organization Address
+        organization_country: Organization Country
+        organization_city: Organization City
+        organization_website: Organization Website
+        organization_phone_area_code: Organization Phone Area Code
+        organization_phone: Organization Phone
+        organization_fax_area_code: Organization Fax Area Code
+        organization_fax: Organization Fax
+        gsas_id: GSAS_ID
+        qid_or_passport_number: QID / Passport number
         role: Role
-        #linkme_member_id: LinkMe Member ID
         username: Username
-        #linkme_user: LinkMe User?
         gord_employee: GORD Employee?
-        cgp_license: CGP License?
-        cgp_license_expired: CGP License Expired?
-        cgp_license_expiry_date: CGP License Expiry Date
-        cep_license: CEP License?
-        cep_license_expired: CEP License Expired?
-        cep_license_expiry_date: CEP License Expiry Date
-        employer_name: Employer Name
+        organization_name: Organization Name
         service_provider: Service Provider
         active: Profile Active?
         roles:

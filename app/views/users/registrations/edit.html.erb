@@ -19,15 +19,11 @@
 
         <%= f.input :username, required: true %>
 
-        <%= f.input :employer_name, required: true %>
+        <%= f.input :organization_name, required: true %>
 
         <%= f.association :service_provider, collection: ServiceProvider.order(:name).pluck(:name, :id), prompt: "Choose a Service Provider", input_html: { class: "select-service-provider" } %>
 
-        <!--<%= f.input :linkme_user, required: true %>-->
-
         <%= f.input :gord_employee, required: true %>
-
-        <%= f.input :cgp_license, required: true %>
 
         <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
           <p>Currently waiting confirmation for: <%= resource.unconfirmed_email %></p>

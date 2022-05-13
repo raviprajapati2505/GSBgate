@@ -20,6 +20,6 @@ class Users::InvitationsController < Devise::InvitationsController
   # protected
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:accept_invitation, keys: %i[name email username employer_name password password_confirmation])
+    devise_parameter_sanitizer.permit(:accept_invitation, keys: %i[name email username organization_name password password_confirmation])
   end
 end

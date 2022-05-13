@@ -16,10 +16,6 @@
                         <td><%= @user.email %></td>
                     </tr>
                     <tr>
-                        <th>CGP License</th>
-                        <td><%= @user.cgp_license? ? 'Yes' : 'No' %></td>
-                    </tr>
-                    <tr>
                         <th>Role</th>
                         <td><%= t(@projects_user.role, scope: 'activerecord.attributes.projects_user.roles' ) %></td>
                     </tr>

@@ -172,7 +172,7 @@ class CertificationPathsController < AuthenticatedController
       format.html {
         if @certification_path.save
           @certification_path.create_assessment_method(@assessment_method) if @project.design_and_build?
-          @project.update_column(:service_provider_2, current_user&.employer_name) if @certification_path&.certificate&.certification_type == "final_design_certificate"
+          @project.update_column(:service_provider_2, current_user&.organization_name) if @certification_path&.certificate&.certification_type == "final_design_certificate"
           @project.project_rendering_images.where(certification_path_id: nil).update(certification_path_id: @certification_path.id)
           @project.actual_project_images.where(certification_path_id: nil).update(certification_path_id: @certification_path.id)
           return redirect_to(project_certification_path_path(@project, @certification_path), notice: t('controllers.certification_paths_controller.apply.success'))
