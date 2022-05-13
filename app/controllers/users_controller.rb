@@ -29,7 +29,7 @@ class UsersController < AuthenticatedController
   end
 
   def update
-    user_params = params.require(:user).permit(:name, :username, :employer_name, :gord_employee, :cgp_license, :service_provider_id, :cgp_license_expired, :cgp_license_expiry_date, :cep_license, :cep_license_expired, :cep_license_expiry_date, :active, access_licences_attributes: [ :id, :user_id, :licence_id, :expiry_date, :_destroy ] )
+    user_params = params.require(:user).permit(:name, :username, :organization_name, :gord_employee, :service_provider_id, :active, access_licences_attributes: [ :id, :user_id, :licence_id, :expiry_date, :_destroy ] )
 
     if @user.update(user_params)
       redirect_to user_path(@user), notice: "User information successfully updated."
@@ -39,7 +39,7 @@ class UsersController < AuthenticatedController
   end
 
   def update_service_provider
-    service_provider_params = params.require(:service_provider).permit(:name, :username, :employer_name, :gord_employee, :cgp_license, :cgp_license_expiry_date, :cep_license, :cep_license_expired, :cep_license_expiry_date, :active)
+    service_provider_params = params.require(:service_provider).permit(:name, :username, :organization_name, :gord_employee, :active)
 
     if @service_provider.update(service_provider_params)
       redirect_to user_path(@user), notice: "Service Provider information successfully updated."

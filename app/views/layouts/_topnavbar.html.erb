@@ -87,11 +87,7 @@
             <ul class="nav navbar-top-links navbar-right">
                 <li>
                     <%= link_to user_path(current_user.id) do %>
-                        <% if current_user.picture.present? %>
-                            <img src="<%= current_user.picture %>" class="img-circle profile-picture">
-                        <% else %>
-                            <%= ikoen('user', size: 'lg') %>
-                        <% end %>
+                        <%= ikoen('user', size: 'lg') %>
                         <span class="nav-label"><%= current_user.full_name %></span>
                     <% end %>
                 </li>

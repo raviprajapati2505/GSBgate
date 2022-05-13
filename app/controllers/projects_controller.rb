@@ -201,8 +201,8 @@ class ProjectsController < AuthenticatedController
   def new
     @page_title = 'New project'
     @project = Project.new
-    @project.service_provider = current_user.employer_name
-    @project.service_provider_2 = current_user.employer_name
+    @project.service_provider = current_user.organization_name
+    @project.service_provider_2 = current_user.organization_name
     @certificates = Certificate.all
   end
 
@@ -214,7 +214,7 @@ class ProjectsController < AuthenticatedController
   def create
     @project = Project.new(project_params)
     unless project_params.has_key?(:service_provider)
-      @project.service_provider = current_user.employer_name
+      @project.service_provider = current_user.organization_name
     end
 
     @project.transaction do

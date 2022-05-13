@@ -78,20 +78,20 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_sign_up_params
-    devise_parameter_sanitizer.permit(:sign_up, keys: %i[name email username employer_name service_provider_id password password_confirmation])
+    devise_parameter_sanitizer.permit(:sign_up, keys: %i[name email username organization_name service_provider_id password password_confirmation gender name_suffix middle_name last_name dob email_alternate country city mobile_area_code mobile designation work_experience organization_address organization_country organization_city organization_website organization_phone_area_code organization_phone organization_fax_area_code organization_fax gsas_id qid_or_passport_number])
   end
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_account_update_params
-    devise_parameter_sanitizer.permit(:account_update, keys: %i[name email username gord_employee cgp_license cgp_license_expired employer_name service_provider_id active password password_confirmation current_password])
+    devise_parameter_sanitizer.permit(:account_update, keys: %i[name email username gord_employee organization_name service_provider_id active password password_confirmation current_password])
   end
 
   def sp_sign_up_params
-    params.require(:service_provider).permit(%i[name email username employer_name password password_confirmation])
+    params.require(:service_provider).permit(%i[name email username organization_name password password_confirmation])
   end
 
   def sp_update_params
-    params.require(:service_provider).permit(%i[name email username employer_name password password_confirmation current_password])
+    params.require(:service_provider).permit(%i[name email username organization_name password password_confirmation current_password])
   end
 
   def set_service_provider

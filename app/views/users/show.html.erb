@@ -25,17 +25,13 @@
               <th><%= User.human_attribute_name('role') %></th>
               <td><%= @user.role&.titleize %></td>
             </tr>
-            <!--<tr>
-              <th><%= User.human_attribute_name('linkme_member_id') %></th>
-              <td><%= @user.linkme_member_id %></td>
-            </tr>-->
             <tr>
               <th><%= User.human_attribute_name('username') %></th>
               <td><%= @user.username %></td>
             </tr>
             <tr>
-              <th><%= User.human_attribute_name('employer_name') %></th>
-              <td><%= @user.employer_name %></td>
+              <th><%= User.human_attribute_name('organization_name') %></th>
+              <td><%= @user.organization_name %></td>
             </tr>
 
             <% if @user.default_role? %>
@@ -44,11 +40,6 @@
                 <td><%= @user.service_provider_name %></td>
               </tr>
             <% end %>
-
-            <!--<tr>
-              <th><%= User.human_attribute_name('linkme_user') %></th>
-              <td><%= label_span(@user.linkme_user, 'Yes', 'No').html_safe %></td>
-            </tr>-->
             <tr>
               <th><%= User.human_attribute_name('gord_employee') %></th>
               <td><%= label_span(@user.gord_employee, 'Yes', 'No').html_safe %></td>
@@ -78,40 +69,6 @@
       </div>
 
       <div class="ibox float-e-margins">
-        <div class="ibox-title">
-          <h5><%= t('.user_license_details.title') %></h5>
-        </div>
-        <div class="ibox-content">
-          <table class="table table-bordered table-striped user-details-table">
-            <tbody>
-              <tr>
-                <th><%= User.human_attribute_name('cgp_license') %></th>
-                <td><%= label_span(@user.cgp_license, 'Yes', 'No').html_safe %></td>
-              </tr>
-              <tr>
-                <th><%= User.human_attribute_name('cgp_license_expired') %></th>
-                <td><%= label_span(@user.cgp_license_expired, 'Yes', 'No').html_safe %></span></td>
-              </tr>
-              <tr>
-                <th><%= User.human_attribute_name('cgp_license_expiry_date') %></th>
-                <td><%= @user.cgp_license_expiry_date&.strftime('%d %B, %Y') %></td>
-              </tr>
-              <tr>
-                <th><%= User.human_attribute_name('cep_license') %></th>
-                <td><%= label_span(@user.cep_license, 'Yes', 'No').html_safe %></td>
-              </tr>
-              <tr>
-                <th><%= User.human_attribute_name('cep_license_expired') %></th>
-                <td><%= label_span(@user.cep_license_expired, 'Yes', 'No').html_safe %></span></td>
-              </tr>
-              <tr>
-                <th><%= User.human_attribute_name('cep_license_expiry_date') %></th>
-                <td><%= @user.cep_license_expiry_date&.strftime('%d %B, %Y') %></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
         <div class="ibox-title m-t">
           <h5><%= t('.user_license_details.licences') %></h5>
         </div>
