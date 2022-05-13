@@ -1,3 +1,6 @@
+# Development type for scheme "Energy Centers" under D&B 2019 checklist based projects.
+DevelopmentTypeScheme.find_or_create_by!(scheme: Scheme.find_by(name: "Energy Centers", gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", gsas_version: "2019", certificate_type: Certificate.certificate_types[:design_type], certification_type: Certificate.certification_types[:final_design_certificate], renovation: false), development_type: DevelopmentType.find_by(name: "Single Use Building", certificate: Certificate.find_by(certificate_type: Certificate.certificate_types[:design_type], assessment_stage: Certificate.assessment_stages[:construction_stage], gsas_version: "2019")))
+
 # Licences for Service Providers
 # D&B
 Licence.find_or_create_by!(
