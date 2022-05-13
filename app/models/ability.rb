@@ -87,14 +87,15 @@ class Ability
     # Convenience conditions, to use within abilities
     @certficate_types_of_valid_user_licences = certficate_types_of_valid_user_licences
     
+    active_user = { id: user.id, active: true }
     project_with_user_assigned = {projects_users: {user_id: user.id}}
-    project_with_user_as_cgp_project_manager = { projects_users: {user_id: user.id, role: project_user_role_cgp_project_manager, certification_team_type: certification_team_type}, certificate_type: @certficate_types_of_valid_user_licences }
-    project_with_user_as_project_team_member = {projects_users: {user_id: user.id, role: project_user_role_project_team_member, certification_team_type: certification_team_type}, certificate_type: @certficate_types_of_valid_user_licences }
-    project_with_user_in_project_team = {projects_users: {user_id: user.id, role: project_user_project_team_roles, certification_team_type: certification_team_type}, certificate_type: @certficate_types_of_valid_user_licences }
-    project_with_user_as_certification_manager = {projects_users: {user_id: user.id, role: project_user_role_certification_manager, certification_team_type: certification_team_type}}
-    project_with_user_as_certifier = {projects_users: {user_id: user.id, role: project_user_role_certifier, certification_team_type: certification_team_type}}
-    project_with_user_in_gsas_trust_team = {projects_users: {user_id: user.id, role: project_user_gsas_trust_team_roles}}
-    project_with_user_as_enterprise_client = {projects_users: {user_id: user.id, role: project_user_enterprise_client_roles}}
+    project_with_user_as_cgp_project_manager = { projects_users: {user: active_user, role: project_user_role_cgp_project_manager, certification_team_type: certification_team_type}, certificate_type: @certficate_types_of_valid_user_licences }
+    project_with_user_as_project_team_member = {projects_users: {user: active_user, role: project_user_role_project_team_member, certification_team_type: certification_team_type}, certificate_type: @certficate_types_of_valid_user_licences }
+    project_with_user_in_project_team = {projects_users: {user: active_user, role: project_user_project_team_roles, certification_team_type: certification_team_type}, certificate_type: @certficate_types_of_valid_user_licences }
+    project_with_user_as_certification_manager = {projects_users: {user: active_user, role: project_user_role_certification_manager, certification_team_type: certification_team_type}}
+    project_with_user_as_certifier = {projects_users: {user: active_user, role: project_user_role_certifier, certification_team_type: certification_team_type}}
+    project_with_user_in_gsas_trust_team = {projects_users: {user: active_user, role: project_user_gsas_trust_team_roles}}
+    project_with_user_as_enterprise_client = {projects_users: {user: active_user, role: project_user_enterprise_client_roles}}
 
     if user.type == 'ServiceProvider'
       users_with_service_provider = { user: { service_provider_id: user.id } }
@@ -134,10 +135,10 @@ class Ability
       can :read, Project, projects_users: {user_id: user.id}
       can [:download_location_plan, :download_site_plan, :download_design_brief, :download_project_narrative, :download_area_statement, :download_sustainability_features], Project, projects_users: {user_id: user.id}
       can :show_tools, Project, projects_users: {user_id: user.id}
-      can :update, Project, projects_users: {user_id: user.id, role: project_user_role_cgp_project_manager}
+      can :update, Project, projects_users: {user: active_user, role: project_user_role_cgp_project_manager}
       cannot :update, Project, projects_users: {user_id: user.id, role: project_user_role_cgp_project_manager}, certification_paths: {certification_path_status: {id: CertificationPathStatus::STATUSES_ACTIVATED}}
 
-      if valid_user_associates?(user)
+      if valid_user_associates?(user) && user.active?
         can :create, Project
       end
 
@@ -165,7 +166,7 @@ class Ability
       can :apply, CertificationPath, project: project_with_user_as_cgp_project_manager
 
       can :edit_status, CertificationPath.not_expired, certification_path_status: {id: CertificationPathStatus::STATUSES_AT_PROJECT_TEAM_SIDE}, project: project_with_user_as_cgp_project_manager, scheme_mixes: schemes_under_valid_licences
-      can :update_status, CertificationPath.not_expired, certification_path_status: {id: CertificationPathStatus::STATUSES_AT_PROJECT_TEAM_SIDE}, project: project_with_user_as_cgp_project_manager, scheme_mixes: schemes_under_valid_licences unless user.cgp_license_expired?
+      can :update_status, CertificationPath.not_expired, certification_path_status: {id: CertificationPathStatus::STATUSES_AT_PROJECT_TEAM_SIDE}, project: project_with_user_as_cgp_project_manager, scheme_mixes: schemes_under_valid_licences
       can [:edit_project_team_responsibility_for_submittal, :allocate_project_team_responsibility_for_submittal], CertificationPath, project: project_with_user_as_cgp_project_manager, certification_path_status: {id: CertificationPathStatus::STATUSES_IN_SUBMISSION}, scheme_mixes: schemes_under_valid_licences
       # GSAS trust team
       can [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::STATUSES_AT_CERTIFIER_SIDE}, project: project_with_user_as_certification_manager
