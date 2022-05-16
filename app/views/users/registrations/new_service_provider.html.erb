@@ -22,18 +22,23 @@
 
         <%= f.input :email %>
         <%= f.input :email_alternate %>
-        <%= f.input :dob %>
+
+        <%= f.input :dob do %>
+          <span><%= ikoen('calendar') %></span>
+          <%= f.input_field :dob, value: f.object&.dob&.strftime("%d/%m/%Y"), as: :string, class: "datepicker-past form-control" %>
+        <% end %>
 
         <%= f.input :username %>
 
         <%= f.label 'Country', required: true %>
         <% countries = CS.countries.sort_by{|_key, value| value }.to_h %>
-        <%= f.select :country, options_for_select(countries.map{ |cnt| [cnt[1], cnt[1]] }, f.object&.country), { include_blank: "Select Country" }, { required: true, class: "select2 form-control country-select" } %>
+        <%= f.select :country, options_for_select(countries.map{ |cnt| [cnt[1], cnt[1]] }, f.object&.country), { include_blank: "Select Country" }, { required: true, class: "select2 form-control user-country-select" } %>
         <br><br>
 
         <%= f.label 'City', required: true %>
-        <%= f.select :city, options_for_select(countries.map{ |cnt| [cnt[1], cnt[1]] }, f.object&.country), { include_blank: "Select City" }, { required: true, class: "select2 form-control" } %>
-        <br>
+        <div id="user-city-select-div" class="form-group">
+          <%= f.select :city, options_for_select(countries.map{ |cnt| [cnt[1], cnt[1]] }), { include_blank: "Select City" }, { required: true, class: "select2 form-control user-city-select" } %>
+        </div>
 
         <%= f.input :mobile_area_code%>
         <%= f.input :mobile %>
@@ -44,13 +49,14 @@
 
         <%= f.input :organization_address %>
 
-        <%= f.label 'Organization Country', required: true %>
-        <%= f.select :organization_country, options_for_select(countries.map{ |cnt| [cnt[1], cnt[1]] }, f.object&.country), { include_blank: "Select Country" }, { required: true, class: "select2 form-control country-select" } %>
+         <%= f.label 'Organization Country', required: true %>
+        <%= f.select :organization_country, options_for_select(countries.map{ |cnt| [cnt[1], cnt[1]] }), { include_blank: "Select Country" }, { required: true, class: "select2 form-control user-country-select", data: {"for_organization": true}} %>
         <br><br>
 
         <%= f.label 'Organization City' %>
-        <%= f.select :organization_city, options_for_select(countries.map{ |cnt| [cnt[1], cnt[1]] }, f.object&.country), { include_blank: "Select Country" }, { class: "select2 form-control" } %>
-        <br>
+        <div id="organization-city-select-div" class="form-group">
+          <%= f.select :organization_city, options_for_select(countries.map{ |cnt| [cnt[1], cnt[1]] }), { include_blank: "Select City" }, { class: "select2 form-control user-city-select" } %>
+        </div>
         
         <%= f.input :organization_website %>
         <%= f.input :organization_phone_area_code %>

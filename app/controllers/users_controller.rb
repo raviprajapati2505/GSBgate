@@ -1,5 +1,5 @@
 class UsersController < AuthenticatedController
-  load_and_authorize_resource :user
+  load_and_authorize_resource :user, except: [:country_cities, :get_organization_details]
   before_action :set_controller_model, except: [:index, :update_notifications]
   before_action :set_user, only: [:show, :edit, :update]
   before_action :set_service_provider, only: [:edit_service_provider, :update_service_provider]
@@ -29,7 +29,7 @@ class UsersController < AuthenticatedController
   end
 
   def update
-    user_params = params.require(:user).permit(:name, :username, :organization_name, :gord_employee, :service_provider_id, :active, access_licences_attributes: [ :id, :user_id, :licence_id, :expiry_date, :_destroy ] )
+    user_params = params.require(:user).permit(:name, :username, :organization_name, :gord_employee, :service_provider_id, :active, :gender, :name_suffix ,:middle_name, :last_name, :dob, :email_alternate, :country, :city, :mobile_area_code, :mobile, :designation, :work_experience, :organization_address, :organization_country, :organization_city, :organization_website, :organization_phone_area_code, :organization_phone, :organization_fax_area_code, :organization_fax, :gsas_id, :qid_or_passport_number, access_licences_attributes: [ :id, :user_id, :licence_id, :expiry_date, :_destroy ] )
 
     if @user.update(user_params)
       redirect_to user_path(@user), notice: "User information successfully updated."
@@ -39,7 +39,7 @@ class UsersController < AuthenticatedController
   end
 
   def update_service_provider
-    service_provider_params = params.require(:service_provider).permit(:name, :username, :organization_name, :gord_employee, :active)
+    service_provider_params = params.require(:service_provider).permit(:name, :username, :organization_name, :gord_employee, :active, :gender, :name_suffix ,:middle_name, :last_name, :dob, :email_alternate, :country, :city, :mobile_area_code, :mobile, :designation, :work_experience, :organization_address, :organization_country, :organization_city, :organization_website, :organization_phone_area_code, :organization_phone, :organization_fax_area_code, :organization_fax, :gsas_id, :qid_or_passport_number)
 
     if @service_provider.update(service_provider_params)
       redirect_to user_path(@user), notice: "Service Provider information successfully updated."
@@ -192,18 +192,24 @@ class UsersController < AuthenticatedController
     render json: result
   end
 
-  def update_user_status
-    status = @user.active?
-  
-    if @user.update_column(:active, !status)
-      css_class = "success"
-      message = "User status successfully updated!"
-    else
-      css_class = "error"
-      message = "User status failed to update!"
+  def country_cities
+    country_code = CS.countries.key(params["country"])
+    country_states = CS.states(country_code)
+    cities = []
+    country_states.each { |k, v| cities << CS.cities(k) }
+    @cities = cities.flatten.sort
+    @check_cities_for = params["check_cities_for"]
+    respond_to do |format|
+      format.js { render layout: false }
     end
+  end
 
-    render json: { css_class: css_class, message: message }
+  def get_organization_details
+    service_provider_id = params["service_provider_id"]
+    @user_details = User.find_by_id(service_provider_id);
+    respond_to do |format|
+      format.js { render layout: false }
+    end
   end
 
   private

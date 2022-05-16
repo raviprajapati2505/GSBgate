@@ -1,0 +1,13 @@
+$(function(){
+    $('#org_name').val('<%= @user_details.organization_name %>')
+    $('#org_address').val('<%= @user_details.organization_address %>')
+    $('#org_website').val('<%= @user_details.organization_website %>')
+    $('#org_phone_area_code').val('<%= @user_details.organization_phone_area_code %>')
+    $('#org_phone').val('<%= @user_details.organization_phone %>')
+    $('#org_fax_area_code').val('<%= @user_details.organization_fax_area_code %>')
+    $('#org_fax').val('<%= @user_details.organization_fax %>')
+    $('#org_country').val('<%= @user_details.organization_country %>')
+    $('#org_country').trigger('change.select2');
+    $('#organization-city-select').val('<%= @user_details.organization_city %>')
+    $('#organization-city-select').trigger('change.select2');
+});
