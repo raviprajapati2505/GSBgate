@@ -14,12 +14,12 @@ Licence.find_or_create_by!(
 )
 Licence.find_or_create_by!(
   licence_type: 'ServiceProviderLicence',
-  display_name: 'GSAS DESIGN & BUILD, TYPE 2 - DISTRICTS',
+  display_name: 'GSAS DESIGN & BUILD, TYPE 2 - SPORTS',
   display_weight: 2,
   title: 'TYPE 2',
   description: 'GSAS Design & Build Service Provider',
   certificate_type: Certificate.certificate_types[:design_type],
-  schemes: ['Commercial']
+  schemes: ['Sports']
 )
 Licence.find_or_create_by!(
   licence_type: 'ServiceProviderLicence',
@@ -50,12 +50,12 @@ Licence.find_or_create_by!(
 )
 Licence.find_or_create_by!(
   licence_type: 'ServiceProviderLicence',
-  display_name: 'GSAS DESIGN & BUILD, TYPE 6 - SPORTS',
+  display_name: 'GSAS DESIGN & BUILD, TYPE 6 - DISTRICTS',
   display_weight: 6,
   title: 'TYPE 6',
   description: 'GSAS Design & Build Service Provider',
   certificate_type: Certificate.certificate_types[:design_type],
-  schemes: ['Sports']
+  schemes: ['Districts']
 )
 
 # CM
