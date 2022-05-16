@@ -1,0 +1,14 @@
+
+<% if !@check_cities_for %>
+$("#user-city-select-div").html("");
+$("#user-city-select-div").html("<%= j render partial: "city_dropdown", locals: {cities: @cities, check_cities_for: @check_cities_for} %>")
+<% else %>
+$("#organization-city-select-div").html("");
+$("#organization-city-select-div").html("<%= j render partial: "city_dropdown", locals: {cities: @cities, check_cities_for: @check_cities_for} %>")
+<% end %>
+
+$(function(){
+  $("#city-select,#organization-city-select").select2({
+    width: "100%"
+  });
+});

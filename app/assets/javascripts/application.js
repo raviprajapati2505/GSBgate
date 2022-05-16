@@ -277,7 +277,7 @@ $(function () {
     // $('.project-form #project_building_type_group_id').trigger('change', true);
 
     // Project country select
-    $('.country-select, .city-select-dropdown, .district-select-dropdown, .developer-select-dropdown, .select-service-provider, .select-licence').select2({
+    $('.country-select, .city-select-dropdown, .district-select-dropdown, .developer-select-dropdown, .select-service-provider, .select-licence, .user-country-select, .user-city-select').select2({
         width: "100%"
     });
 
@@ -466,6 +466,49 @@ $(function () {
         }],
         searching: false
     })
+
+    function populate_cities_by_country(element){
+        let country_name = element.find(":selected").val();
+        let check_cities_for = element.data('for-organization')
+        if(country_name.length > 0){
+            $.ajax({
+            url: "/users/country_cities",
+            method: "GET",
+            dataType: "script",
+            data: {
+                country: country_name,
+                check_cities_for: check_cities_for
+            },
+            error: function(){
+                alert('Something went wrong !');
+            }
+            });
+        }
+    }
+
+    function auto_populate_organization_details(element){
+        let service_provider_id = element.val();
+        if(service_provider_id.length > 0){
+            $.ajax({
+            url: "/users/get_organization_details",
+            method: "GET",
+            dataType: "script",
+            data: {
+                service_provider_id: service_provider_id
+            },
+            error: function(){
+                alert('Something went wrong !');
+            }
+            });
+        }
+    }
+
+    $('.user-country-select').on('change', function(){
+        populate_cities_by_country($(this));
+    });
+    $('.select-service-provider').on('change', function(){
+        auto_populate_organization_details($(this));
+    });
 });
 
 // General GSAS functions
