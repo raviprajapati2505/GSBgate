@@ -286,6 +286,13 @@ $(function () {
         $("select[id$=licence_id]").select2({
             width: "100%"
         });
+
+        $('.datepicker-future').datepicker({
+            format: 'dd/mm/yyyy',
+            startDate: '0d',
+            todayBtn: true,
+            todayHighlight: true
+        });
     });
 
     $(".city-select-dropdown, .district-select-dropdown").on('change', function(){

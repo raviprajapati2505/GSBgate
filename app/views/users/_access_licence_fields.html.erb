@@ -3,6 +3,10 @@
 
   <%= f.association :licence, collection: licence_options(@user), prompt: "Choose a Licence", input_html: { class: "select-licence" } %>
   
-  <%= f.input :expiry_date %>
+  <%= f.input :expiry_date do %>
+    <span><%= ikoen('calendar') %></span>
+    <%= f.input_field :expiry_date, value: f.object&.expiry_date&.strftime("%d/%m/%Y"), as: :string, class: "datepicker-future form-control" %>
+  <% end %>
+
   <%= link_to_remove_association "remove licence", f, class: "btn btn-danger btn-sm" %>
 </div>
