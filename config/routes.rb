@@ -26,6 +26,8 @@ Rails.application.routes.draw do
       resource :sessions, only: [:new, :create, :destroy]
       get 'masquerade/:user_id' => 'users#masquerade', as: 'masquerade', constraints: { user_id: /\d+/ }
       get 'find_users_by_email/:email/:project_id(/:gord_employee)' => 'users#find_users_by_email', as: 'find_users_by_email', constraints: { email: /[^\/]+/ }
+      get "country_cities", to: "users#country_cities", as: :country_cities
+      get "get_organization_details", to: "users#get_organization_details", as: :get_organization_details
     end
     member do
       get :edit, to: 'users#edit', as: :edit

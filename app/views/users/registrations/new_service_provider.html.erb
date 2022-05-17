@@ -7,9 +7,7 @@
 
       <div class="form-inputs">
 
-        <%= f.label 'Gender', required: true %>
-        <%= f.select :gender, options_for_select(["Male", "Female"]), { include_blank: "Choose Gender" }, { class: "select2 form-control" } %>
-        <br>
+       
         <%= f.label 'Name Suffix' %>
         <%= f.select :name_suffix, options_for_select(["Mr.", "Ms.", "Mrs." , "Dr."]), { include_blank: "Choose Name Suffix" }, { class: "select2 form-control" } %>
         <br>
@@ -20,15 +18,18 @@
 
         <%= f.input :last_name %>
 
-        <%= f.input :email %>
-        <%= f.input :email_alternate %>
+         <%= f.label 'Gender', required: true %>
+        <%= f.select :gender, options_for_select(["Male", "Female"]), { include_blank: "Choose Gender" }, { class: "select2 form-control" } %>
+        <br>
 
         <%= f.input :dob do %>
           <span><%= ikoen('calendar') %></span>
           <%= f.input_field :dob, value: f.object&.dob&.strftime("%d/%m/%Y"), as: :string, class: "datepicker-past form-control" %>
         <% end %>
-
         <%= f.input :username %>
+
+        <%= f.input :email %>
+        <%= f.input :email_alternate %>
 
         <%= f.label 'Country', required: true %>
         <% countries = CS.countries.sort_by{|_key, value| value }.to_h %>

@@ -7,9 +7,6 @@
 
       <div class="form-inputs">
 
-        <%= f.label 'Gender', required: true %>
-        <%= f.select :gender, options_for_select(["Male", "Female"]), { include_blank: "Choose Gender" }, { class: "select2 form-control" } %>
-        <br>
         <%= f.label 'Name Suffix' %>
         <%= f.select :name_suffix, options_for_select(["Mr.", "Ms.", "Mrs." , "Dr."]), { include_blank: "Choose Name Suffix" }, { class: "select2 form-control" } %>
         <br>
@@ -19,8 +16,9 @@
 
         <%= f.input :last_name %>
 
-        <%= f.input :email %>
-        <%= f.input :email_alternate %>
+         <%= f.label 'Gender', required: true %>
+        <%= f.select :gender, options_for_select(["Male", "Female"]), { include_blank: "Choose Gender" }, { class: "select2 form-control" } %>
+        <br>
 
         <%= f.input :dob do %>
           <span><%= ikoen('calendar') %></span>
@@ -28,6 +26,9 @@
         <% end %>
 
         <%= f.input :username %>
+
+        <%= f.input :email %>
+        <%= f.input :email_alternate %>
 
         <%= f.label 'Country', required: true %>
         <% countries = CS.countries.sort_by{|_key, value| value }.to_h %>
@@ -41,15 +42,14 @@
 
         <%= f.input :mobile_area_code%>
         <%= f.input :mobile %>
-        <%= f.input :designation %>
-        <%= f.input :work_experience %>
-        
-        <div class="form-group">
+         <div class="form-group">
           <label class="required">Role</label>
           <div class="form-control bg-disabled">
             <%= resource.role&.titleize %>
           </div>
         </div>
+        <%= f.input :designation %>
+        <%= f.input :work_experience %>
 
         <%= f.association :service_provider, collection: ServiceProvider.order(:name).pluck(:name, :id), prompt: "Choose a Service Provider", input_html: { class: "select-service-provider" } %>
 
