@@ -11,18 +11,18 @@ class Licence < ApplicationRecord
   validates :certificate_type, inclusion: Certificate.certificate_types.values
 
   scope :with_service_provider_licences, -> {
-    where(licence_type: 'ServiceProviderLicence')
+    where(licence_type: 'ServiceProviderLicence').order(:display_weight)
   }
 
   scope :with_cp_licences, -> {
-    where.not(licence_type: 'ServiceProviderLicence')
+    where.not(licence_type: 'ServiceProviderLicence').order(:display_weight)
   }
 
   scope :with_cgp_licences, -> {
-    where(licence_type: 'CgpLicence')
+    where(licence_type: 'CgpLicence').order(:display_weight)
   }
 
   scope :with_cep_licences, -> {
-    where(licence_type: 'CepLicence')
+    where(licence_type: 'CepLicence').order(:display_weight)
   }
 end
