@@ -18,14 +18,16 @@
         <th><%= Licence.human_attribute_name('description') %></th>
         <td><%= access_licence.licence_description %></td>
       </tr>
-      <tr>
-        <th><%= Licence.human_attribute_name('schemes') %></th>
-        <td>
-          <% access_licence.licence_schemes&.each do |scheme| %>
-            <%= scheme %><br>
-          <% end %>
-        </td>
-      </tr>
+      <% if access_licence.licence_schemes.present? %>
+        <tr>
+          <th><%= Licence.human_attribute_name('schemes') %></th>
+          <td>
+            <% access_licence.licence_schemes&.each do |scheme| %>
+              <%= scheme %><br>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
       <tr>
         <th><%= AccessLicence.human_attribute_name('expiry_date') %></th>
         <td><%= access_licence.formatted_expiry_date %></td>
