@@ -4,6 +4,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   before_action :configure_sign_up_params, only: [:create]
   before_action :configure_account_update_params, only: [:update]
   before_action :set_service_provider, only: [:edit_service_provider, :update_service_provider]
+  before_action :set_user, only: [:edit]
 
   # GET /resource/sign_up
   # def new
@@ -34,19 +35,22 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   # GET /resource/edit
-  # def edit
-  #   super
-  # end
+  def edit
+    get_cities_of_current_user(@user)
+    super
+  end
 
   # GET /edit_service_provider
   def edit_service_provider
+    get_cities_of_current_user(@service_provider)
     render :edit_service_provider
   end
 
   # PUT /resource
-  # def update
-  #   super
-  # end
+  def update
+    get_cities_of_current_user(@user)
+    super
+  end
 
   # PUT /resource
   def update_service_provider
@@ -54,6 +58,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     if sp_updated
       redirect_to user_path(@service_provider), notice: "Confirmation mail sent to you registered email address, Please confirm your account."
     else
+      get_cities_of_current_user(@service_provider)
       clean_up_passwords resource
       set_minimum_password_length
       render :edit_service_provider
@@ -106,5 +111,23 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # The path used after sign up for inactive accounts.
   def after_inactive_sign_up_path_for(_resource)
     new_user_session_path
+  end
+
+  def set_user
+    @user = User.find(params[:format])
+  end
+
+  def get_cities_of_current_user(resource)
+    country_code = CS.countries.key(resource.country)
+    country_states = CS.states(country_code)
+    cities = []
+    country_states.each { |k, v| cities << CS.cities(k) }
+    @cities = cities.flatten.sort
+
+    org_country_code = CS.countries.key(resource.organization_country)
+    org_country_states = CS.states(org_country_code)
+    org_cities = []
+    org_country_states.each { |k, v| org_cities << CS.cities(k) }
+    @org_cities = org_cities.flatten.sort
   end
 end

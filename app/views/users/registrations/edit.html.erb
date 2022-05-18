@@ -35,7 +35,7 @@
 
         <%= f.label 'City', required: true %>
         <div id="user-city-select-div" class="form-group">
-          <%= f.select :city, options_for_select(countries.map{ |cnt| [cnt[1], cnt[1]] }, resource.city), { include_blank: "Select City" }, { required: true, class: "select2 form-control user-city-select" } %>
+          <%= f.select :city, options_for_select(@cities, resource.city), { include_blank: "Select City" }, { required: true, class: "select2 form-control user-city-select" } %>
         </div>
 
         <%= f.input :mobile_area_code%>
@@ -62,8 +62,8 @@
 
         <%= f.label 'Organization City' %>
         <div id="organization-city-select-div" class="form-group">
-        <%= f.select :organization_city, options_for_select(countries.map{ |cnt| [cnt[1], cnt[1]] }, resource.organization_city), { include_blank: "Select Country" }, { class: "select2 form-control user-city-select", id: "organization-city-select" } %>
-         </div>
+        <%= f.select :organization_city, options_for_select(@org_cities, resource.organization_city), { include_blank: "Select City" }, { class: "select2 form-control user-city-select", id: "organization-city-select" } %>
+        </div>
         
         <%= f.input :organization_website, input_html: { id: 'org_website'} %>
         <%= f.input :organization_phone_area_code, input_html: { id: 'org_phone_area_code'} %>
@@ -92,6 +92,7 @@
                     input_html: { autocomplete: "current-password" } %>
 
         <%= f.input :gord_employee, required: true %>
+        <%= f.hidden_field 'resource_for', { class: 'resource_for', value: 'user' } %>
       </div>
 
       <div class="form-actions">

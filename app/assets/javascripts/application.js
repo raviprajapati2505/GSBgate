@@ -477,7 +477,8 @@ $(function () {
             dataType: "script",
             data: {
                 country: country_name,
-                check_cities_for: check_cities_for
+                check_cities_for: check_cities_for,
+                resource_for: $('.resource_for').val()
             },
             error: function(){
                 alert('Something went wrong !');
