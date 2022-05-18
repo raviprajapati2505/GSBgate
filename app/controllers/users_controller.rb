@@ -225,7 +225,7 @@ class UsersController < AuthenticatedController
     service_provider_id = params["service_provider_id"]
     @user_details = User.find_by_id(service_provider_id);
     respond_to do |format|
-      format.js { render layout: false }
+      format.json { render json: @user_details }
     end
   end
 
