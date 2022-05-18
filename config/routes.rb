@@ -28,6 +28,7 @@ Rails.application.routes.draw do
       get 'find_users_by_email/:email/:project_id(/:gord_employee)' => 'users#find_users_by_email', as: 'find_users_by_email', constraints: { email: /[^\/]+/ }
       get "country_cities", to: "users#country_cities", as: :country_cities
       get "get_organization_details", to: "users#get_organization_details", as: :get_organization_details
+      get "get_service_provider_by_domain", to: "users#get_service_provider_by_domain", as: :get_service_provider_by_domain
     end
     member do
       get :edit, to: 'users#edit', as: :edit

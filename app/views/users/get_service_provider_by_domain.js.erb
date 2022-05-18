@@ -1,0 +1,8 @@
+$("#user-service-provider-div").html("");
+$("#user-service-provider-div").html("<%= j render partial: "service_provider_dropdown", locals: { service_providers: @service_providers } %>")
+
+$(function(){
+  $("#select-service-provider").select2({
+    width: "100%"
+  });
+});

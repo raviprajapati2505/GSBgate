@@ -10,7 +10,7 @@
         <%= f.select :name_suffix, options_for_select(["Mr.", "Ms.", "Mrs." , "Dr."], @user.name_suffix), { include_blank: "Choose Name Suffix" }, { class: "select2 form-control" } %>
         <br>
 
-        <%= f.input :name%>
+        <%= f.input :name %>
         <%= f.input :middle_name %>
 
         <%= f.input :last_name %>
@@ -24,7 +24,7 @@
         <% end %>
         <%= f.input :username %>
 
-        <%= f.input :email %>
+        <%= f.input :email, input_html: { id: 'user_email'} %>
         <%= f.input :email_alternate %>
 
         <%= f.label 'Country', required: true %>
@@ -33,24 +33,28 @@
         <br><br>
 
         <%= f.label 'City', required: true %>
-         <div id="user-city-select-div" class="form-group">
-        <%= f.select :city, options_for_select(@cities, @user.city), { include_blank: "Select City" }, { required: true, class: "select2 form-control user-city-select" } %>
+        <div id="user-city-select-div" class="form-group">
+          <%= f.select :city, options_for_select(@cities, @user.city), { include_blank: "Select City" }, { required: true, class: "select2 form-control user-city-select" } %>
         </div>
 
-        <%= f.input :mobile_area_code%>
+        <%= f.input :mobile_area_code %>
         <%= f.input :mobile %>
-         <div class="form-group">
+
+        <div class="form-group">
           <label class="required">Role</label>
           <div class="form-control bg-disabled">
             <%= @user.role&.titleize %>
           </div>
         </div>
+
         <%= f.input :designation %>
         <%= f.input :work_experience %>
 
-        <% unless @user.service_provider? %>
-          <%= f.association :service_provider, collection: ServiceProvider.order(:name).pluck(:name, :id), prompt: "Choose a Service Provider", input_html: { class: "select-service-provider" } %>
-        <% end %>
+        <div id="user-service-provider-div" class="form-group">
+          <% unless @user.service_provider? %>
+            <%= f.association :service_provider, collection: [[@user.service_provider&.name, @user.service_provider&.id]], prompt: "Choose a Service Provider", input_html: { class: "select-service-provider" } %>
+          <% end %>
+        </div>
 
         <%= f.input :organization_name, input_html: { id: 'org_name'}  %>
 
