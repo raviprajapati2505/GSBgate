@@ -504,11 +504,33 @@ $(function () {
         }
     }
 
+    function auto_populate_service_providers(element){
+        let email = element.val();
+        let domain_name = email.split('@')[1];
+
+        if(domain_name.length > 0){
+            $.ajax({
+                url: "/users/get_service_provider_by_domain",
+                method: "GET",
+                dataType: "script",
+                data: {
+                    domain_name: domain_name
+                },
+                error: function() {
+                    alert('Something went wrong !');
+                }
+            });
+        }
+    }
+
     $('.user-country-select').on('change', function(){
         populate_cities_by_country($(this));
     });
     $('.select-service-provider').on('change', function(){
         auto_populate_organization_details($(this));
+    });
+    $('#user_email').on('keyup', function(){
+        auto_populate_service_providers($(this));
     });
 });
 

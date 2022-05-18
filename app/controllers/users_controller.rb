@@ -1,5 +1,5 @@
 class UsersController < AuthenticatedController
-  load_and_authorize_resource :user, except: [:country_cities, :get_organization_details]
+  load_and_authorize_resource :user, except: [:country_cities, :get_organization_details, :get_service_provider_by_domain]
   before_action :set_controller_model, except: [:index, :update_notifications]
   before_action :set_user, only: [:show, :edit, :update]
   before_action :set_service_provider, only: [:edit_service_provider, :update_service_provider]
@@ -224,6 +224,14 @@ class UsersController < AuthenticatedController
   def get_organization_details
     service_provider_id = params["service_provider_id"]
     @user_details = User.find_by_id(service_provider_id);
+    respond_to do |format|
+      format.js { render layout: false }
+    end
+  end
+
+  def get_service_provider_by_domain
+    @service_providers = ServiceProvider.where("email ILIKE :organization_domain", organization_domain: "%#{params['domain_name']}%").pluck(:name, :id)
+    
     respond_to do |format|
       format.js { render layout: false }
     end

@@ -127,6 +127,8 @@ class Ability
     #     - system_admin
     # ------------------------------------------------------------------------------------------------------------
 
+    can :index, User
+    can :masquerade, User
     can [:show, :edit, :update], User, id: user.id
     can [:edit_service_provider, :update_service_provider], ServiceProvider, id: user.id
 
