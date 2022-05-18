@@ -493,9 +493,22 @@ $(function () {
             $.ajax({
             url: "/users/get_organization_details",
             method: "GET",
-            dataType: "script",
+            dataType: "json",
             data: {
                 service_provider_id: service_provider_id
+            },
+            success: function(data) {
+                $('#org_name').val(data.organization_name);
+                $('#org_address').val(data.organization_address);
+                $('#org_website').val(data.organization_website);
+                $('#org_phone_area_code').val(data.organization_phone_area_code);
+                $('#org_phone').val(data.organization_phone);
+                $('#org_fax_area_code').val(data.organization_fax_area_code);
+                $('#org_fax').val(data.organization_fax);
+                $('#org_country').val(data.organization_country);
+                $('#org_country').trigger('change.select2');
+                $('#org_city').val(data.organization_city);
+                $('#org_city').trigger('change.select2');
             },
             error: function(){
                 alert('Something went wrong !');
@@ -526,7 +539,10 @@ $(function () {
     $('.user-country-select').on('change', function(){
         populate_cities_by_country($(this));
     });
-    $('.select-service-provider').on('change', function(){
+    // $('#select-service-provider').on('change', function(){
+    //     auto_populate_organization_details($(this));
+    // });
+    $(document).on('change', '#select-service-provider', function() {
         auto_populate_organization_details($(this));
     });
     $('#user_email').on('keyup', function(){

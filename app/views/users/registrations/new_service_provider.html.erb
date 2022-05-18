@@ -7,71 +7,7 @@
 
       <div class="form-inputs">
 
-       
-        <%= f.label 'Name Suffix' %>
-        <%= f.select :name_suffix, options_for_select(["Mr.", "Ms.", "Mrs." , "Dr."]), { include_blank: "Choose Name Suffix" }, { class: "select2 form-control" } %>
-        <br>
-        
-        <%= f.input :name %>
-
-        <%= f.input :middle_name %>
-
-        <%= f.input :last_name %>
-
-         <%= f.label 'Gender', required: true %>
-        <%= f.select :gender, options_for_select(["Male", "Female"]), { include_blank: "Choose Gender" }, { class: "select2 form-control" } %>
-        <br>
-
-        <%= f.input :dob do %>
-          <span><%= ikoen('calendar') %></span>
-          <%= f.input_field :dob, value: f.object&.dob&.strftime("%d/%m/%Y"), as: :string, class: "datepicker-past form-control" %>
-        <% end %>
-        <%= f.input :username %>
-
-        <%= f.input :email %>
-        <%= f.input :email_alternate %>
-
-        <%= f.label 'Country', required: true %>
-        <% countries = CS.countries.sort_by{|_key, value| value }.to_h %>
-        <%= f.select :country, options_for_select(countries.map{ |cnt| [cnt[1], cnt[1]] }, f.object&.country), { include_blank: "Select Country" }, { required: true, class: "select2 form-control user-country-select" } %>
-        <br><br>
-
-        <%= f.label 'City', required: true %>
-        <div id="user-city-select-div" class="form-group">
-          <%= f.select :city, options_for_select([]), { include_blank: "Select City" }, { required: true, class: "select2 form-control user-city-select" } %>
-        </div>
-
-        <%= f.input :mobile_area_code%>
-        <%= f.input :mobile %>
-        <%= f.input :designation %>
-        <%= f.input :work_experience %>
-
-        <%= f.input :organization_name %>
-
-        <%= f.input :organization_address %>
-
-         <%= f.label 'Organization Country', required: true %>
-        <%= f.select :organization_country, options_for_select(countries.map{ |cnt| [cnt[1], cnt[1]] }), { include_blank: "Select Country" }, { required: true, class: "select2 form-control user-country-select", data: {"for_organization": true}} %>
-        <br><br>
-
-        <%= f.label 'Organization City' %>
-        <div id="organization-city-select-div" class="form-group">
-          <%= f.select :organization_city, options_for_select([]), { include_blank: "Select City" }, { class: "select2 form-control user-city-select" } %>
-        </div>
-        
-        <%= f.input :organization_website %>
-        <%= f.input :organization_phone_area_code %>
-        <%= f.input :organization_phone %>
-        <%= f.input :organization_fax_area_code  %>
-        <%= f.input :organization_fax %>
-
-        <%= f.input :gsas_id %>
-
-        <%= f.input :qid_or_passport_number %>
-
-        <% if devise_mapping.confirmable? && @service_provider.pending_reconfirmation? %>
-          <p>Currently waiting confirmation for: <%= @service_provider.unconfirmed_email %></p>
-        <% end %>
+        <%= render partial: "form", locals: { f: f, resource_for: 'service_provider', resource: @service_provider, action: 'add' } %>
 
         <%= f.input :password,
                     hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length),
@@ -80,8 +16,6 @@
         <%= f.input :password_confirmation,
                     required: true,
                     input_html: { autocomplete: "new-password" } %>
-
-        <%= f.hidden_field 'resource_for', { class: 'resource_for', value: 'service_provider' } %>
       </div>
 
       <div class="form-actions">
