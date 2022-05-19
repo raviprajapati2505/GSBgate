@@ -321,5 +321,10 @@ en:
         title: Licence Summary
     form:
       form_title: User details
+      user_details:
+        title: Your Profile
+        otherinfo: Other Info
+        organizationinfo: Organization Info
+        contactinfo: Contact Info
     list_notifications:
       btn_save: Update preferences
