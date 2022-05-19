@@ -105,45 +105,48 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
       draw_certificate_info_table
       newline(1)
       draw_paragraph1
-      newline(1)
-      if @certification_path.certificate.only_name == 'Letter of Conformance'
-        newline(2)
-        span(@document.bounds.right, :position => :center) do
-          draw_project_info
+
+      unless @certification_path.is_checklist_method?
+        newline(1)
+        if @certification_path.certificate.only_name == 'Letter of Conformance'
+          newline(2)
+          span(@document.bounds.right, :position => :center) do
+            draw_project_info
+          end
+        else
+          start_new_page
+          newline
+          span(@document.bounds.right, :position => :center) do
+            draw_project_info
+          end
         end
-      else
-        start_new_page
-        newline
-        span(@document.bounds.right, :position => :center) do
-          draw_project_info
-        end
-      end
-      
-      newline(1)
-      draw_scoring_summary(total_category_scores)
-      
-      draw_category_graph(total_category_scores)
-    
-      newline(3)
-
-      draw_score_graph
-
-      # For all scheme_mixes
-      @scheme_mixes.each do |scheme_mix|
-        start_new_page
-
-        newline(2)
-        draw_project_info(scheme_mix)
 
         newline(1)
-        draw_scheme_mix_info(scheme_mix)
+        draw_scoring_summary(total_category_scores)
+        
+        draw_category_graph(total_category_scores)
+      
+        newline(3)
 
-        @certification_path = scheme_mix.certification_path
-        @score = scheme_mix.scores_in_scheme_points[:achieved_score_in_scheme_points]
-        # @stars = @certification_path.rating_for_score(@score, certificate: @certification_path.certificate).to_s +
-        #     ' ' + 'Star'.pluralize(@certification_path.rating_for_score(@score, certificate: @certification_path.certificate))
+        draw_score_graph
 
-        category_criteria_score(scheme_mix)
+        # For all scheme_mixes
+        @scheme_mixes.each do |scheme_mix|
+          start_new_page
+
+          newline(2)
+          draw_project_info(scheme_mix)
+
+          newline(1)
+          draw_scheme_mix_info(scheme_mix)
+
+          @certification_path = scheme_mix.certification_path
+          @score = scheme_mix.scores_in_scheme_points[:achieved_score_in_scheme_points]
+          # @stars = @certification_path.rating_for_score(@score, certificate: @certification_path.certificate).to_s +
+          #     ' ' + 'Star'.pluralize(@certification_path.rating_for_score(@score, certificate: @certification_path.certificate))
+
+          category_criteria_score(scheme_mix)
+        end
       end
     end
 
