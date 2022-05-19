@@ -17,7 +17,6 @@ class UsersController < AuthenticatedController
   end
 
   def edit
-    get_cities_of_current_user()
     unless @user.present? 
       redirect_to root_path, alert: "User is not available." and return
     end
@@ -35,7 +34,6 @@ class UsersController < AuthenticatedController
     if @user.update(user_params)
       redirect_to user_path(@user), notice: "User information successfully updated."
     else
-      get_cities_of_current_user()
       render :edit
     end
   end
@@ -194,30 +192,18 @@ class UsersController < AuthenticatedController
     render json: result
   end
 
-  def get_cities_of_current_user
-    country_code = CS.countries.key(@user.country)
-    country_states = CS.states(country_code)
-    cities = []
-    country_states.each { |k, v| cities << CS.cities(k) }
-    @cities = cities.flatten.sort
-
-    org_country_code = CS.countries.key(@user.organization_country)
-    org_country_states = CS.states(org_country_code)
-    org_cities = []
-    org_country_states.each { |k, v| org_cities << CS.cities(k) }
-    @org_cities = org_cities.flatten.sort
-  end
-
   def country_cities
     country_code = CS.countries.key(params["country"])
     country_states = CS.states(country_code)
+
     cities = []
     country_states.each { |k, v| cities << CS.cities(k) }
-    @cities = cities.flatten.sort
-    @check_cities_for = params["check_cities_for"]
-    @resource_for = params["resource_for"]
+
+    cities = cities.flatten.sort
+    cities_for = params["cities_for"]
+
     respond_to do |format|
-      format.js { render layout: false }
+      format.json { render json: {cities: cities, cities_for: cities_for} }
     end
   end
 
@@ -233,7 +219,7 @@ class UsersController < AuthenticatedController
     @service_providers = ServiceProvider.where("email ILIKE :organization_domain", organization_domain: "%#{params['domain_name']}%").pluck(:name, :id)
     
     respond_to do |format|
-      format.js { render layout: false }
+      format.json { render json: @service_providers }
     end
   end
 

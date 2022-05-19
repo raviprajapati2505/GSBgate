@@ -116,18 +116,4 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def set_user
     @user = User.find(params[:format])
   end
-
-  def get_cities_of_current_user(resource)
-    country_code = CS.countries.key(resource.country)
-    country_states = CS.states(country_code)
-    cities = []
-    country_states.each { |k, v| cities << CS.cities(k) }
-    @cities = cities.flatten.sort
-
-    org_country_code = CS.countries.key(resource.organization_country)
-    org_country_states = CS.states(org_country_code)
-    org_cities = []
-    org_country_states.each { |k, v| org_cities << CS.cities(k) }
-    @org_cities = org_cities.flatten.sort
-  end
 end

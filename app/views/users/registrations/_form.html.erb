@@ -4,7 +4,7 @@
         <div class="row">
             <div class="col-md-4">
                 <%= f.label 'Name Suffix' %>
-                <%= f.select :name_suffix, options_for_select(["Mr.", "Ms.", "Mrs." , "Dr."], resource.name_suffix), { include_blank: "Choose Name Suffix" }, { class: "select2 form-control" } %>
+                <%= f.select :name_suffix, options_for_select(["Mr.", "Ms.", "Mrs.", "Dr."], resource.name_suffix), { include_blank: "Choose Name Suffix" }, { class: "select2 form-control" } %>
             </div>
         </div>
         <br>
@@ -40,19 +40,13 @@
             <div class="col-md-4">
                 <%= f.label 'Country', required: true %>
                 <% countries = CS.countries.sort_by{|_key, value| value }.to_h %>
-                <%= f.select :country, options_for_select(countries.map{ |cnt| [cnt[1], cnt[1]] }, resource.country), { include_blank: "Select Country" }, { required: true, class: "select2 form-control user-country-select" } %>
+                <%= f.select :country, options_for_select(countries.map{ |cnt| [cnt[1], cnt[1]] }, resource.country), { include_blank: "Select Country" }, { required: true, class: "select2 form-control country-select", id: "user-country-select", data: {"for": "user"} } %>
             </div>
         </div>
         <div class="row">
             <div class="col-md-4">
             <%= f.label 'City', required: true %>
-                <div id="user-city-select-div" class="form-group">
-                    <% if action == 'add' %>
-                        <%= f.select :city, options_for_select([]), { include_blank: "Select City" }, { required: true, class: "select2 form-control user-city-select" } %>
-                    <% else %>
-                        <%= f.select :city, options_for_select(@cities, resource.city), { include_blank: "Select City" }, { required: true, class: "select2 form-control user-city-select" } %>
-                    <% end %>
-                </div>
+            <%= f.select :city, options_for_select([[resource.city]], resource.city), { include_blank: "Select City" }, { required: true, class: "select2 form-control city-select", id: "user-city-select" } %>
             </div>
             <div class="col-md-4">
                 <%= f.input :mobile_area_code%>
@@ -102,15 +96,8 @@
         <div class="row">
             <div class="col-md-12">
                 <% if resource_for == 'user' %>
-                    <div id="user-service-provider-div" class="form-group">
-                        <% if action == 'add' %>
-                            <%= f.association :service_provider, collection: [], prompt: "Choose a Service Provider", input_html: { id: "user_service_provider", class: "select-service-provider" } %>
-                        <% else %>
-                            <% unless resource.service_provider? %>
-                                <%= f.association :service_provider, collection: [[resource.service_provider&.name, resource.service_provider&.id]], prompt: "Choose a Service Provider", input_html: { class: "select-service-provider" } %>
-                            <% end %>
-                        <% end %>
-                    </div>
+                    <label class="required">Service Provider</label>
+                    <%= f.select :service_provider_id, options_for_select([[resource.service_provider&.name, resource.service_provider&.id]], resource.service_provider&.id), { include_blank: "Choose a Service Provider" }, { class: "select2 form-control select-service-provider" } %>
                 <% end %>
             </div>
         </div>
@@ -123,19 +110,13 @@
             </div>
             <div class="col-md-4">
                 <%= f.label 'Organization Country', required: true %>
-                <%= f.select :organization_country, options_for_select(countries.map{ |cnt| [cnt[1], cnt[1]] },resource.organization_country), { include_blank: "Select Country" }, { required: true, class: "select2 form-control user-country-select", id: "org_country", data: {"for_organization": true}} %>
+                <%= f.select :organization_country, options_for_select(countries.map{ |cnt| [cnt[1], cnt[1]] },resource.organization_country), { include_blank: "Select Country" }, { required: true, class: "select2 form-control country-select", id: "organization-country-select", data: {"for": "organization"} } %>
             </div>
         </div>
         <div class="row">
             <div class="col-md-4">
                 <%= f.label 'Organization City' %>
-                <div id="organization-city-select-div" class="form-group">
-                    <% if action == 'add' %>
-                        <%= f.select :organization_city, options_for_select([]), { include_blank: "Select City" }, { class: "select2 form-control user-city-select", id: "organization-city-select" } %>
-                    <% else %>
-                        <%= f.select :organization_city, options_for_select(@org_cities, resource.organization_city), { include_blank: "Select City" }, { class: "select2 form-control user-city-select", id: "org_city" } %>
-                    <% end %>
-                </div>
+                <%= f.select :organization_city, options_for_select([[resource.organization_city]], resource.organization_city), { include_blank: "Select City" }, { class: "select2 form-control city-select", id: "organization-city-select" } %>
             </div>
             <div class="col-md-4">
                 <%= f.input :organization_website, input_html: { id: 'org_website'} %>
@@ -157,3 +138,4 @@
         </div>
     </div>
 </fieldset>
+

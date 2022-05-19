@@ -7,7 +7,7 @@
 
       <div class="form-inputs m-t">
 
-        <%= render partial: "users/registrations/form", locals: { f: f, resource_for: 'user', resource: @user, action: 'edit', cities: @cities, org_cities: @org_cities } %>
+        <%= render partial: "users/registrations/form", locals: { f: f, resource_for: 'user', resource: @user } %>
 
         <%= f.input :gord_employee, required: true %>
 

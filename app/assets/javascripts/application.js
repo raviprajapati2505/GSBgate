@@ -277,7 +277,7 @@ $(function () {
     // $('.project-form #project_building_type_group_id').trigger('change', true);
 
     // Project country select
-    $('.country-select, .city-select-dropdown, .district-select-dropdown, .developer-select-dropdown, .select-service-provider, .select-licence, .user-country-select, .user-city-select').select2({
+    $('.country-select, .city-select-dropdown, .district-select-dropdown, .developer-select-dropdown, .select-service-provider, .select-licence, .user-country-select, country-select, .city-select').select2({
         width: "100%"
     });
 
@@ -467,28 +467,39 @@ $(function () {
         searching: false
     })
 
-    function populate_cities_by_country(element){
-        let country_name = element.find(":selected").val();
-        let check_cities_for = element.data('for-organization')
-        if(country_name.length > 0){
+    function populate_cities_by_country(element) {
+        let country_name = element.find("option:selected").val();
+        let cities_for = element.data('for');
+
+        if(country_name.length > 0) {
             $.ajax({
             url: "/users/country_cities",
-            method: "GET",
-            dataType: "script",
-            data: {
-                country: country_name,
-                check_cities_for: check_cities_for,
-                resource_for: $('.resource_for').val()
-            },
-            error: function(){
-                alert('Something went wrong !');
-            }
+                method: "GET",
+                dataType: "json",
+                data: {
+                    country: country_name,
+                    cities_for: cities_for
+                },
+                success: function(result) {
+                    let cities_for = result["cities_for"];
+                    var select_field = $("select#" + cities_for + "-city-select");
+
+                    select_field.find('option').remove().end();
+
+                    $.each(result['cities'], function(index, item) {
+                        select_field.append(new Option(item, item), false, false);
+                    });
+                },
+                error: function() {
+                    alert('Something went wrong !');
+                }
             });
         }
     }
 
-    function auto_populate_organization_details(element){
+    function auto_fill_organization_details(element){
         let service_provider_id = element.val();
+
         if(service_provider_id.length > 0){
             $.ajax({
             url: "/users/get_organization_details",
@@ -505,8 +516,8 @@ $(function () {
                 $('#org_phone').val(data.organization_phone);
                 $('#org_fax_area_code').val(data.organization_fax_area_code);
                 $('#org_fax').val(data.organization_fax);
-                $('#org_country').val(data.organization_country);
-                $('#org_country').trigger('change.select2');
+                $('#organization-country-select').val(data.organization_country);
+                $('#organization-country-select').trigger('change.select2');
                 $('#org_city').val(data.organization_city);
                 $('#org_city').trigger('change.select2');
             },
@@ -521,13 +532,21 @@ $(function () {
         let email = element.val();
         let domain_name = email.split('@')[1];
 
-        if(domain_name.length > 0){
+        if(domain_name == undefined || domain_name.length > 0){
             $.ajax({
                 url: "/users/get_service_provider_by_domain",
                 method: "GET",
-                dataType: "script",
+                dataType: "json",
                 data: {
                     domain_name: domain_name
+                },
+                success: function(result) {
+                    var select_field = $("select.select-service-provider");
+                    select_field.find('option').remove().end();
+
+                    $.each(result, function(index, item) {
+                        select_field.append(new Option(item[0], item[1]), false, false);
+                    });
                 },
                 error: function() {
                     alert('Something went wrong !');
@@ -536,18 +555,20 @@ $(function () {
         }
     }
 
-    $('.user-country-select').on('change', function(){
+    // to populate cities in city dropdown
+    $('#user-country-select, #organization-country-select').on('change', function(){
         populate_cities_by_country($(this));
+    }).trigger('change');
+
+    // to auto fill information of organization
+    $('#select-service-provider').on('change', function() {
+        auto_fill_organization_details($(this));
     });
-    // $('#select-service-provider').on('change', function(){
-    //     auto_populate_organization_details($(this));
-    // });
-    $(document).on('change', '#select-service-provider', function() {
-        auto_populate_organization_details($(this));
-    });
-    $('#user_email').on('keyup', function(){
+
+    // to populate options of service providers
+    $('#user_email').on('blur', function(){
         auto_populate_service_providers($(this));
-    });
+    }).trigger('blur');
 });
 
 // General GSAS functions
