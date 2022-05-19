@@ -277,7 +277,7 @@ $(function () {
     // $('.project-form #project_building_type_group_id').trigger('change', true);
 
     // Project country select
-    $('.country-select, .city-select-dropdown, .district-select-dropdown, .developer-select-dropdown, .select-service-provider, .select-licence, .user-country-select, country-select, .city-select').select2({
+    $('.country-select, .city-select-dropdown, .district-select-dropdown, .developer-select-dropdown, #select-service-provider, .select-licence, .user-country-select, country-select, .city-select').select2({
         width: "100%"
     });
 
@@ -498,9 +498,9 @@ $(function () {
     }
 
     function auto_fill_organization_details(element){
-        let service_provider_id = element.val();
+        let service_provider_id = element.find("option:selected").val();
 
-        if(service_provider_id.length > 0){
+        if(service_provider_id.length > 0) {
             $.ajax({
             url: "/users/get_organization_details",
             method: "GET",
@@ -541,7 +541,7 @@ $(function () {
                     domain_name: domain_name
                 },
                 success: function(result) {
-                    var select_field = $("select.select-service-provider");
+                    var select_field = $("select#select-service-provider");
                     select_field.find('option').remove().end();
 
                     $.each(result, function(index, item) {

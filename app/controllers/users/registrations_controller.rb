@@ -35,22 +35,19 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   # GET /resource/edit
-  def edit
-    get_cities_of_current_user(@user)
-    super
-  end
+  # def edit
+  #   super
+  # end
 
   # GET /edit_service_provider
   def edit_service_provider
-    get_cities_of_current_user(@service_provider)
     render :edit_service_provider
   end
 
   # PUT /resource
-  def update
-    get_cities_of_current_user(@user)
-    super
-  end
+  # def update
+  #   super
+  # end
 
   # PUT /resource
   def update_service_provider
@@ -58,7 +55,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
     if sp_updated
       redirect_to user_path(@service_provider), notice: "Confirmation mail sent to you registered email address, Please confirm your account."
     else
-      get_cities_of_current_user(@service_provider)
       clean_up_passwords resource
       set_minimum_password_length
       render :edit_service_provider
