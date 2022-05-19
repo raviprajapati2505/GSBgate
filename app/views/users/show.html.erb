@@ -15,7 +15,7 @@
           <tbody>
             <tr>
               <th><%= User.human_attribute_name('name') %></th>
-              <td><%= @user.name+' '+@user.middle_name+' '+@user.last_name %></td>
+              <td><%= @user.full_name %></td>
             </tr>
             <tr>
               <th><%= User.human_attribute_name('dob') %></th>

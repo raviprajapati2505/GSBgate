@@ -1,7 +1,5 @@
 class RefactorUserRegistration < ActiveRecord::Migration[5.2]
   def change
-    #remove_index :users, [:username, :linkme_member_id]
-    
     add_column :users, :name_suffix, :string
     add_column :users, :gender, :string
     add_column :users, :middle_name, :string

@@ -532,7 +532,7 @@ $(function () {
         let email = element.val();
         let domain_name = email.split('@')[1];
 
-        if(domain_name == undefined || domain_name.length > 0){
+        if(domain_name !== undefined && domain_name.length > 0){
             $.ajax({
                 url: "/users/get_service_provider_by_domain",
                 method: "GET",

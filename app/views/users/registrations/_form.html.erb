@@ -19,13 +19,13 @@
                 <%= f.select :gender, options_for_select(["Male", "Female"], resource.gender), { include_blank: "Choose Gender" }, { class: "select2 form-control" } %>
             </div>
             <div class="col-md-4">
+                <%= f.input :username %>
+            </div>
+            <div class="col-md-4">
                 <%= f.input :dob do %>
                     <span><%= ikoen('calendar') %></span>
                     <%= f.input_field :dob, value: f.object&.dob&.strftime("%d/%m/%Y"), as: :string, class: "datepicker-past form-control" %>
                 <% end %>
-            </div>
-            <div class="col-md-4">
-                <%= f.input :username %>
             </div>
         </div>
     </div>
@@ -63,27 +63,15 @@
     <div class="control-group">
         <div class="row">
             <div class="col-md-4">
-                <% if resource_for == 'user' %>
-                <div class="form-group">
-                    <label class="required">Role</label>
-                    <div class="form-control bg-disabled">
-                    <%= resource.role&.titleize %>
-                    </div>
-                </div>
-            <% end %>
-            </div>
-            <div class="col-md-4">
                 <%= f.input :designation %>
             </div>
             <div class="col-md-4">
                 <%= f.input :work_experience %>
             </div>
-        </div>
-        <div class="row">
             <div class="col-md-4">
                 <%= f.input :gsas_id %>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4" style="float: revert;">
                 <%= f.input :qid_or_passport_number %>
             </div>
         </div>
@@ -94,13 +82,14 @@
     <legend class="scheduler-border"><%= t('.user_details.organizationinfo') %></legend>
     <div class="control-group">
         <div class="row">
-            <div class="col-md-12">
-                <% if resource_for == 'user' %>
+            <% if resource_for == 'user' %>
+                <div class="col-md-12">
                     <label class="required">Service Provider</label>
                     <%= f.select :service_provider_id, options_for_select([[resource.service_provider&.name, resource.service_provider&.id]], resource.service_provider&.id), { include_blank: "Choose a Service Provider" }, { class: "select2 form-control select-service-provider" } %>
-                <% end %>
-            </div>
+                </div>
+            <% end %>
         </div>
+        <br />
         <div class="row">
             <div class="col-md-4">
                 <%= f.input :organization_name, input_html: { id: 'org_name'} %>
