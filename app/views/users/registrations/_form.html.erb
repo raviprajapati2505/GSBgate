@@ -1,89 +1,159 @@
-<%= f.label 'Name Suffix' %>
-<%= f.select :name_suffix, options_for_select(["Mr.", "Ms.", "Mrs." , "Dr."], resource.name_suffix), { include_blank: "Choose Name Suffix" }, { class: "select2 form-control" } %>
-<br>
-<%= f.input :name %>
-
-<%= f.input :middle_name %>
-
-<%= f.input :last_name %>
-
-<%= f.label 'Gender', required: true %>
-<%= f.select :gender, options_for_select(["Male", "Female"], resource.gender), { include_blank: "Choose Gender" }, { class: "select2 form-control" } %>
-<br>
-
-<%= f.input :dob do %>
-    <span><%= ikoen('calendar') %></span>
-    <%= f.input_field :dob, value: f.object&.dob&.strftime("%d/%m/%Y"), as: :string, class: "datepicker-past form-control" %>
-<% end %>
-
-<%= f.input :username %>
-
-<%= f.input :email, input_html: { id: 'user_email'} %>
-<%= f.input :email_alternate %>
-
-<%= f.label 'Country', required: true %>
-<% countries = CS.countries.sort_by{|_key, value| value }.to_h %>
-<%= f.select :country, options_for_select(countries.map{ |cnt| [cnt[1], cnt[1]] }, resource.country), { include_blank: "Select Country" }, { required: true, class: "select2 form-control user-country-select" } %>
-<br><br>
-
-<%= f.label 'City', required: true %>
-<div id="user-city-select-div" class="form-group">
-    <% if action == 'add' %>
-        <%= f.select :city, options_for_select([]), { include_blank: "Select City" }, { required: true, class: "select2 form-control user-city-select" } %>
-    <% else %>
-        <%= f.select :city, options_for_select(@cities, resource.city), { include_blank: "Select City" }, { required: true, class: "select2 form-control user-city-select" } %>
-    <% end %>
-</div>
-
-<%= f.input :mobile_area_code%>
-<%= f.input :mobile %>
-<% if resource_for == 'user' %>
-    <div class="form-group">
-        <label class="required">Role</label>
-        <div class="form-control bg-disabled">
-        <%= resource.role&.titleize %>
+<fieldset class="scheduler-border">
+    <legend class="scheduler-border">Basic Info</legend>
+    <div class="control-group">
+        <div class="row">
+            <div class="col-md-4">
+                <%= f.label 'Name Suffix' %>
+                <%= f.select :name_suffix, options_for_select(["Mr.", "Ms.", "Mrs." , "Dr."], resource.name_suffix), { include_blank: "Choose Name Suffix" }, { class: "select2 form-control" } %>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-4"><%= f.input :name %></div>
+            <div class="col-md-4"><%= f.input :middle_name %></div>
+            <div class="col-md-4"><%= f.input :last_name %></div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <%= f.label 'Gender', required: true %>
+                <%= f.select :gender, options_for_select(["Male", "Female"], resource.gender), { include_blank: "Choose Gender" }, { class: "select2 form-control" } %>
+            </div>
+            <div class="col-md-4">
+                <%= f.input :dob do %>
+                    <span><%= ikoen('calendar') %></span>
+                    <%= f.input_field :dob, value: f.object&.dob&.strftime("%d/%m/%Y"), as: :string, class: "datepicker-past form-control" %>
+                <% end %>
+            </div>
+            <div class="col-md-4">
+                <%= f.input :username %>
+            </div>
         </div>
     </div>
-<% end %>
-<%= f.input :designation %>
-<%= f.input :work_experience %>
+</fieldset>
 
-<% if resource_for == 'user' %>
-    <div id="user-service-provider-div" class="form-group">
-        <% if action == 'add' %>
-            <%= f.association :service_provider, collection: [], prompt: "Choose a Service Provider", input_html: { id: "user_service_provider", class: "select-service-provider" } %>
-        <% else %>
-            <% unless resource.service_provider? %>
-                <%= f.association :service_provider, collection: [[resource.service_provider&.name, resource.service_provider&.id]], prompt: "Choose a Service Provider", input_html: { class: "select-service-provider" } %>
-            <% end %>
-        <% end %>
+<fieldset class="scheduler-border">
+    <legend class="scheduler-border"><%= t('.user_details.contactinfo') %></legend>
+    <div class="control-group">
+        <div class="row">
+            <div class="col-md-4"><%= f.input :email, input_html: { id: 'user_email'} %></div>
+            <div class="col-md-4"><%= f.input :email_alternate %></div>
+            <div class="col-md-4">
+                <%= f.label 'Country', required: true %>
+                <% countries = CS.countries.sort_by{|_key, value| value }.to_h %>
+                <%= f.select :country, options_for_select(countries.map{ |cnt| [cnt[1], cnt[1]] }, resource.country), { include_blank: "Select Country" }, { required: true, class: "select2 form-control user-country-select" } %>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+            <%= f.label 'City', required: true %>
+                <div id="user-city-select-div" class="form-group">
+                    <% if action == 'add' %>
+                        <%= f.select :city, options_for_select([]), { include_blank: "Select City" }, { required: true, class: "select2 form-control user-city-select" } %>
+                    <% else %>
+                        <%= f.select :city, options_for_select(@cities, resource.city), { include_blank: "Select City" }, { required: true, class: "select2 form-control user-city-select" } %>
+                    <% end %>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <%= f.input :mobile_area_code%>
+            </div>
+            <div class="col-md-4">
+                <%= f.input :mobile %>
+            </div>
+        </div>
     </div>
-<% end %>
+</fieldset>
 
-<%= f.input :organization_name, input_html: { id: 'org_name'} %>
+<fieldset class="scheduler-border">
+    <legend class="scheduler-border"><%= t('.user_details.otherinfo') %></legend>
+    <div class="control-group">
+        <div class="row">
+            <div class="col-md-4">
+                <% if resource_for == 'user' %>
+                <div class="form-group">
+                    <label class="required">Role</label>
+                    <div class="form-control bg-disabled">
+                    <%= resource.role&.titleize %>
+                    </div>
+                </div>
+            <% end %>
+            </div>
+            <div class="col-md-4">
+                <%= f.input :designation %>
+            </div>
+            <div class="col-md-4">
+                <%= f.input :work_experience %>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <%= f.input :gsas_id %>
+            </div>
+            <div class="col-md-4">
+                <%= f.input :qid_or_passport_number %>
+            </div>
+        </div>
+    </div>
+</fieldset>
 
-<%= f.input :organization_address, input_html: { id: 'org_address'} %>
-
-<%= f.label 'Organization Country', required: true %>
-<%= f.select :organization_country, options_for_select(countries.map{ |cnt| [cnt[1], cnt[1]] },resource.organization_country), { include_blank: "Select Country" }, { required: true, class: "select2 form-control user-country-select", id: "org_country", data: {"for_organization": true}} %>
-<br><br>
-
-<%= f.label 'Organization City' %>
-<div id="organization-city-select-div" class="form-group">
-    <% if action == 'add' %>
-        <%= f.select :organization_city, options_for_select([]), { include_blank: "Select City" }, { class: "select2 form-control user-city-select", id: "organization-city-select" } %>
-    <% else %>
-        <%= f.select :organization_city, options_for_select(@org_cities, resource.organization_city), { include_blank: "Select City" }, { class: "select2 form-control user-city-select", id: "org_city" } %>
-    <% end %>
-</div>
-
-<%= f.input :organization_website, input_html: { id: 'org_website'} %>
-<%= f.input :organization_phone_area_code, input_html: { id: 'org_phone_area_code'} %>
-<%= f.input :organization_phone, input_html: { id: 'org_phone'} %>
-<%= f.input :organization_fax_area_code, input_html: { id: 'org_fax_area_code'}  %>
-<%= f.input :organization_fax, input_html: { id: 'org_fax'} %>
-
-<%= f.input :gsas_id %>
-
-<%= f.input :qid_or_passport_number %>
-<%= f.hidden_field 'resource_for', { class: 'resource_for', value: resource_for } %>
+<fieldset class="scheduler-border">
+    <legend class="scheduler-border"><%= t('.user_details.organizationinfo') %></legend>
+    <div class="control-group">
+        <div class="row">
+            <div class="col-md-12">
+                <% if resource_for == 'user' %>
+                    <div id="user-service-provider-div" class="form-group">
+                        <% if action == 'add' %>
+                            <%= f.association :service_provider, collection: [], prompt: "Choose a Service Provider", input_html: { id: "user_service_provider", class: "select-service-provider" } %>
+                        <% else %>
+                            <% unless resource.service_provider? %>
+                                <%= f.association :service_provider, collection: [[resource.service_provider&.name, resource.service_provider&.id]], prompt: "Choose a Service Provider", input_html: { class: "select-service-provider" } %>
+                            <% end %>
+                        <% end %>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <%= f.input :organization_name, input_html: { id: 'org_name'} %>
+            </div>
+            <div class="col-md-4">
+                <%= f.input :organization_address, input_html: { id: 'org_address'} %>
+            </div>
+            <div class="col-md-4">
+                <%= f.label 'Organization Country', required: true %>
+                <%= f.select :organization_country, options_for_select(countries.map{ |cnt| [cnt[1], cnt[1]] },resource.organization_country), { include_blank: "Select Country" }, { required: true, class: "select2 form-control user-country-select", id: "org_country", data: {"for_organization": true}} %>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <%= f.label 'Organization City' %>
+                <div id="organization-city-select-div" class="form-group">
+                    <% if action == 'add' %>
+                        <%= f.select :organization_city, options_for_select([]), { include_blank: "Select City" }, { class: "select2 form-control user-city-select", id: "organization-city-select" } %>
+                    <% else %>
+                        <%= f.select :organization_city, options_for_select(@org_cities, resource.organization_city), { include_blank: "Select City" }, { class: "select2 form-control user-city-select", id: "org_city" } %>
+                    <% end %>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <%= f.input :organization_website, input_html: { id: 'org_website'} %>
+            </div>
+            <div class="col-md-4">
+                <%= f.input :organization_phone_area_code, input_html: { id: 'org_phone_area_code'} %>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <%= f.input :organization_phone, input_html: { id: 'org_phone'} %>
+            </div>
+            <div class="col-md-4">
+                <%= f.input :organization_fax_area_code, input_html: { id: 'org_fax_area_code'}  %>
+            </div>
+            <div class="col-md-4">
+                <%= f.input :organization_fax, input_html: { id: 'org_fax'} %>
+            </div>
+        </div>
+    </div>
+</fieldset>
