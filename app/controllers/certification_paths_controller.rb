@@ -250,9 +250,9 @@ class CertificationPathsController < AuthenticatedController
 
   def update_status
     CertificationPath.transaction do
-      todos = @certification_path.todo_before_status_advance
+      todos_array = @certification_path.todo_before_status_advance
 
-      if todos.blank?
+      if todos_array[0].blank? || todos_array[1].blank?
         # Check if there's an appeal
         # For construction management 2019 appeal can only be requested during stage 3
         unless certification_path_params.has_key?(:appealed) && @certification_path.certificate.construction_2019? && !@certification_path.certificate.construction_certificate_stage3?
@@ -305,7 +305,7 @@ class CertificationPathsController < AuthenticatedController
 
         redirect_to project_certification_path_path(@project, @certification_path), notice: t('controllers.certification_paths_controller.update_status.notice_success')
       else
-        redirect_to project_certification_path_path(@project, @certification_path), alert: todos.first
+        redirect_to project_certification_path_path(@project, @certification_path), alert: "#{todos_array[0].first}. \n Please check criteria #{todos_array[1].join(', ')}."
       end
     end
   end

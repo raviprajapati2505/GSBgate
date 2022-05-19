@@ -1,6 +1,6 @@
 <div class="modal-dialog">
     <div class="modal-content">
-        <% if todos.blank? %>
+        <% if todos_errors.blank? %>
             <% if params.has_key?(:appeal) %>
                 <%= render 'update_status_appeal' %>
             <% else %>
@@ -15,8 +15,11 @@
             </div>
             <div class="modal-body">
                 <ul>
-                    <% todos.each do |todo| %>
-                        <li><%= todo %></li>
+                    <% todos_errors.each do |todos_error| %>
+                        <li><%= todos_error %></li>
+                    <% end %>
+                    <% if todos_error_schemes.present? %>
+                      <li><%= todos_error_schemes %></li>
                     <% end %>
                 </ul>
             </div>
