@@ -96,6 +96,10 @@ class User < ApplicationRecord
     joins(:projects_users).where(projects_users: {project_id: project.id, certification_team_type: certification_path&.projects_users_certification_team_type, role: ProjectsUser.roles[:cgp_project_manager]})
   }
 
+  def full_name
+    "#{name} #{middle_name} #{last_name}".strip
+  end
+
   def unique_licence
     all_licence_ids = access_licences.pluck(:licence_id)
     
@@ -119,10 +123,6 @@ class User < ApplicationRecord
 
   def is_admin?
     ["system_admin", "gsas_trust_top_manager", "gsas_trust_manager", "gsas_trust_admin"].include?(role)
-  end
-
-  def full_name
-    name
   end
 
   # Store the user in the current Thread (needed for our concerns, so they can access the current user model)

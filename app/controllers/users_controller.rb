@@ -199,7 +199,7 @@ class UsersController < AuthenticatedController
     cities = []
     country_states.each { |k, v| cities << CS.cities(k) }
 
-    cities = cities.flatten.sort
+    cities = cities.flatten.uniq.sort
     cities_for = params["cities_for"]
 
     respond_to do |format|
@@ -216,7 +216,7 @@ class UsersController < AuthenticatedController
   end
 
   def get_service_provider_by_domain
-    @service_providers = ServiceProvider.where("email ILIKE :organization_domain", organization_domain: "%#{params['domain_name']}%").pluck(:name, :id)
+    @service_providers = ServiceProvider.where("email ILIKE :organization_domain", organization_domain: "%#{params['domain_name']}%").pluck("CONCAT(name, middle_name, last_name)", :id)
     
     respond_to do |format|
       format.json { render json: @service_providers }
