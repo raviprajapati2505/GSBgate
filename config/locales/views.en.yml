@@ -311,6 +311,9 @@ en:
     show:
       user_details:
         title: Your Profile
+        otherinfo: Other Info
+        organizationinfo: Organization Info
+        contactinfo: Contact Info
       user_license_details:
         title: License Details
         licences: Issued Licences

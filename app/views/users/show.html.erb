@@ -15,38 +15,19 @@
           <tbody>
             <tr>
               <th><%= User.human_attribute_name('name') %></th>
-              <td><%= @user.name %></td>
+              <td><%= @user.name+' '+@user.middle_name+' '+@user.last_name %></td>
             </tr>
             <tr>
-              <th><%= User.human_attribute_name('email') %></th>
-              <td><%= @user.email %></td>
+              <th><%= User.human_attribute_name('dob') %></th>
+              <td><%= @user.dob %></td>
             </tr>
             <tr>
-              <th><%= User.human_attribute_name('role') %></th>
-              <td><%= @user.role&.titleize %></td>
+              <th><%= User.human_attribute_name('gender') %></th>
+              <td><%= @user.gender %></td>
             </tr>
             <tr>
               <th><%= User.human_attribute_name('username') %></th>
               <td><%= @user.username %></td>
-            </tr>
-            <tr>
-              <th><%= User.human_attribute_name('organization_name') %></th>
-              <td><%= @user.organization_name %></td>
-            </tr>
-
-            <% if @user.default_role? %>
-              <tr>
-                <th><%= User.human_attribute_name('service_provider') %></th>
-                <td><%= @user.service_provider_name %></td>
-              </tr>
-            <% end %>
-            <tr>
-              <th><%= User.human_attribute_name('gord_employee') %></th>
-              <td><%= label_span(@user.gord_employee, 'Yes', 'No').html_safe %></td>
-            </tr>
-            <tr>
-              <th><%= User.human_attribute_name('active') %></th>
-              <td><%= label_span(@user.active, 'Active', 'Deactivate').html_safe %></td>
             </tr>
           </tbody>
         </table>
@@ -66,6 +47,136 @@
         <% else %>
           <%= btn_link_to_if(permission: can?(:update, @user), target: edit_user_path(@user), icon: 'edit', text: 'Edit') %>
         <% end %>
+      </div>
+
+      <div class="ibox-title">
+        <div class='d-flex justify-content-between align-items-center'>
+          <h5><%= t('.user_details.contactinfo') %></h5>
+        </div>
+      </div>
+
+      <div class="ibox-content">
+        <table class="table table-bordered table-striped user-details-table">
+          <tbody>
+            <tr>
+              <th><%= User.human_attribute_name('email') %></th>
+              <td><%= @user.email %></td>
+            </tr>
+            <tr>
+              <th><%= User.human_attribute_name('email_alternate') %></th>
+              <td><%= @user.email_alternate %></td>
+            </tr>
+            <tr>
+              <th><%= User.human_attribute_name('country') %></th>
+              <td><%= @user.country %></td>
+            </tr>
+            <tr>
+              <th><%= User.human_attribute_name('city') %></th>
+              <td><%= @user.city %></td>
+            </tr>
+            <tr>
+              <th><%= User.human_attribute_name('mobile_area_code') %></th>
+              <td><%= @user.mobile_area_code %></td>
+            </tr>
+            <tr>
+              <th><%= User.human_attribute_name('mobile') %></th>
+              <td><%= @user.mobile %></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="ibox-title">
+        <div class='d-flex justify-content-between align-items-center'>
+          <h5><%= t('.user_details.organizationinfo') %></h5>
+        </div>
+      </div>
+
+      <div class="ibox-content">
+        <table class="table table-bordered table-striped user-details-table">
+          <tbody>
+            
+            <tr>
+              <th><%= User.human_attribute_name('organization_name') %></th>
+              <td><%= @user.organization_name %></td>
+            </tr>
+            <tr>
+              <th><%= User.human_attribute_name('organization_country') %></th>
+              <td><%= @user.organization_country %></td>
+            </tr>
+            <tr>
+              <th><%= User.human_attribute_name('organization_city') %></th>
+              <td><%= @user.organization_city %></td>
+            </tr>
+            <tr>
+              <th><%= User.human_attribute_name('organization_website') %></th>
+              <td><%= @user.organization_website %></td>
+            </tr>
+            <tr>
+              <th><%= User.human_attribute_name('organization_phone_area_code') %></th>
+              <td><%= @user.organization_phone_area_code %></td>
+            </tr>
+            <tr>
+              <th><%= User.human_attribute_name('organization_phone') %></th>
+              <td><%= @user.organization_phone %></td>
+            </tr>
+            <tr>
+              <th><%= User.human_attribute_name('organization_fax_area_code') %></th>
+              <td><%= @user.organization_fax_area_code %></td>
+            </tr>
+            <tr>
+              <th><%= User.human_attribute_name('organization_fax') %></th>
+              <td><%= @user.organization_phone %></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="ibox-title">
+        <div class='d-flex justify-content-between align-items-center'>
+          <h5><%= t('.user_details.otherinfo') %></h5>
+        </div>
+      </div>
+
+      <div class="ibox-content">
+        <table class="table table-bordered table-striped user-details-table">
+          <tbody>
+           <tr>
+              <th><%= User.human_attribute_name('role') %></th>
+              <td><%= @user.role&.titleize %></td>
+            </tr>
+            <tr>
+              <th><%= User.human_attribute_name('designation') %></th>
+              <td><%= @user.designation %></td>
+            </tr>
+            <tr>
+              <th><%= User.human_attribute_name('work_experience') %></th>
+              <td><%= @user.work_experience %></td>
+            </tr>
+            <% if @user.default_role? %>
+              <tr>
+                <th><%= User.human_attribute_name('service_provider') %></th>
+                <td><%= @user.service_provider_name %></td>
+              </tr>
+            <% end %>
+            <tr>
+              <th><%= User.human_attribute_name('gord_employee') %></th>
+              <td><%= label_span(@user.gord_employee, 'Yes', 'No').html_safe %></td>
+            </tr>
+            <tr>
+              <th><%= User.human_attribute_name('active') %></th>
+              <td><%= label_span(@user.active, 'Active', 'Deactivate').html_safe %></td>
+            </tr>
+            <tr>
+              <th><%= User.human_attribute_name('gsas_id') %></th>
+              <td><%= @user.gsas_id %></td>
+            </tr>
+            <tr>
+              <th><%= User.human_attribute_name('qid_or_passport_number') %></th>
+              <td><%= @user.qid_or_passport_number %></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
       <div class="ibox float-e-margins">
