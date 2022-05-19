@@ -85,7 +85,7 @@
             <% if resource_for == 'user' %>
                 <div class="col-md-12">
                     <label class="required">Service Provider</label>
-                    <%= f.select :service_provider_id, options_for_select([[resource.service_provider&.name, resource.service_provider&.id]], resource.service_provider&.id), { include_blank: "Choose a Service Provider" }, { class: "select2 form-control select-service-provider" } %>
+                    <%= f.select :service_provider_id, options_for_select([[resource.service_provider&.name, resource.service_provider&.id]], resource.service_provider&.id), { include_blank: "Choose a Service Provider" }, { class: "select2 form-control", id: "select-service-provider" } %>
                 </div>
             <% end %>
         </div>
