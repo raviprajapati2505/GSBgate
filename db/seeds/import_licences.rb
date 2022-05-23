@@ -44,11 +44,16 @@ xlsx.each_with_pagename do |name, sheet|
 
             if service_provider.present?
                 new_users = row_new["user_email"].split(',').map(&:squish).map(&:strip)
+                new_user_usernames = row_new["user_name"].split(',').map(&:squish).map(&:strip)
 
-                new_users.each do |email|
-                    user = User.find_or_initialize_by(email: email.downcase)
-                    user.name ||= email
-                    user.username ||= email
+                new_users.each_with_index  do |email, index|
+                    #user = User.find_or_initialize_by(email: email.downcase)
+                    user = User.where('lower(email) = ? OR lower(username) = ?', email.downcase, new_user_usernames[index].downcase).first_or_initialize
+                    if user.new_record?
+                        user.name = email.downcase
+                        user.email = email.downcase
+                        user.username = new_user_usernames[index].downcase
+                    end     
                     user.password = 'test#1234'
                     user.service_provider_id = service_provider.id
                     user.active = true
