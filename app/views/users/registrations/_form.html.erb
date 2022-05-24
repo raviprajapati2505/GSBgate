@@ -1,10 +1,10 @@
 <fieldset class="scheduler-border">
-    <legend class="scheduler-border">Basic Info</legend>
+    <legend class="scheduler-border">Basic Information</legend>
     <div class="control-group">
         <div class="row">
             <div class="col-md-4">
-                <%= f.label 'Name Suffix' %>
-                <%= f.select :name_suffix, options_for_select(["Mr.", "Ms.", "Mrs.", "Dr."], resource.name_suffix), { include_blank: "Choose Name Suffix" }, { class: "select2 form-control" } %>
+                <%= f.label 'Appellation' %>
+                <%= f.select :name_suffix, options_for_select(["Mr.", "Ms.", "Mrs.", "Dr."], resource.name_suffix), { include_blank: "Choose Appellations" }, { class: "select2 form-control" } %>
             </div>
         </div>
         <br>
@@ -15,8 +15,7 @@
         </div>
         <div class="row">
             <div class="col-md-4">
-                <%= f.label 'Gender', required: true %>
-                <%= f.select :gender, options_for_select(["Male", "Female"], resource.gender), { include_blank: "Choose Gender" }, { class: "select2 form-control" } %>
+                <%= f.input :gender, collection: ["Male", "Female"], include_blank: "Choose Gender", input_html: { class: "form-control" } %>
             </div>
             <div class="col-md-4">
                 <%= f.input :username %>
@@ -71,7 +70,7 @@
             <div class="col-md-4">
                 <%= f.input :gsas_id %>
             </div>
-            <div class="col-md-4" style="float: revert;">
+            <div class="col-md-4">
                 <%= f.input :qid_or_passport_number %>
             </div>
         </div>
@@ -84,7 +83,7 @@
         <div class="row">
             <% if resource_for == 'user' %>
                 <div class="col-md-12">
-                    <label class="required">Service Provider</label>
+                    <label>Service Provider</label>
                     <%= f.select :service_provider_id, options_for_select([[resource.service_provider&.name, resource.service_provider&.id]], resource.service_provider&.id), { include_blank: "Choose a Service Provider" }, { class: "select2 form-control", id: "select-service-provider" } %>
                 </div>
             <% end %>

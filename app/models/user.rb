@@ -34,18 +34,16 @@ class User < ApplicationRecord
 
   after_initialize :init, if: :new_record?
   before_create :before_create
+  after_update :set_approval_date, if: :saved_change_to_active?
   after_save :send_user_licences_update_email
 
   validates :email, uniqueness: true
   validates :username, uniqueness: true
   validates :role, inclusion: User.roles.keys
-
   validates :email, :username, :last_name, :name, :gender, :dob, :country , :city, :mobile_area_code, :mobile , :designation, :organization_name, :organization_address, :organization_country, :qid_or_passport_number, presence: true
+  validates :organization_phone_area_code, :organization_phone, :organization_fax_area_code, :organization_fax,  numericality: { allow_blank: true }
+  validates_numericality_of :mobile_area_code, :mobile, only_integer: true
 
-  validates :mobile_area_code, :mobile, :organization_phone_area_code, :organization_phone, :organization_fax_area_code, :organization_fax, format: { with: /\A[+-]?\d+\z/, message: "Integer only. No sign allowed." }
-
-  # after_validation :unique_licence
-  
   delegate :can?, :cannot?, :to => :ability
 
   scope :active, -> {
@@ -97,7 +95,7 @@ class User < ApplicationRecord
   }
 
   def full_name
-    "#{name} #{middle_name} #{last_name}".strip
+    "#{name_suffix} #{name} #{middle_name} #{last_name}".strip
   end
 
   def unique_licence
@@ -314,5 +312,10 @@ class User < ApplicationRecord
 
   def send_user_licences_update_email
     DigestMailer.user_licences_update_email(self).deliver_now if access_licences.any?(&:saved_changes?)
+  end
+
+  def set_approval_date
+    value = active? ? Time.now : nil
+    self.update_column(:approved_at, value)
   end
 end

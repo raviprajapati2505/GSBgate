@@ -53,7 +53,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def update_service_provider
     sp_updated = update_resource(@service_provider, sp_update_params)
     if sp_updated
-      redirect_to user_path(@service_provider), notice: "Confirmation mail sent to you registered email address, Please confirm your account."
+      redirect_to user_path(@service_provider), notice: "Profile has successfully updated."
     else
       clean_up_passwords resource
       set_minimum_password_length

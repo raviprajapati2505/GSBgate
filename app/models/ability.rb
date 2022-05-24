@@ -127,8 +127,6 @@ class Ability
     #     - system_admin
     # ------------------------------------------------------------------------------------------------------------
 
-    can :index, User
-    can :masquerade, User
     can [:show, :edit, :update], User, id: user.id
     can [:edit_service_provider, :update_service_provider], ServiceProvider, id: user.id
 
@@ -452,6 +450,7 @@ class Ability
 
       can [:show, :edit, :update, :index], User
       can [:edit_service_provider, :update_service_provider], ServiceProvider
+      can :activity_info, User
     elsif user.service_provider?
       can :read, Project, projects_users: users_with_service_provider
       can :read, ProjectsUser, project: projects_users_with_service_provider
@@ -463,6 +462,7 @@ class Ability
       can :read, RequirementDatum, scheme_mix_criteria: { scheme_mix: {certification_path: {project: projects_users_with_service_provider}}}
       can :read, Document, scheme_mix_criteria_documents: { scheme_mix_criterion: {scheme_mix: {certification_path: {project: projects_users_with_service_provider}}}}
       can :read, User, service_provider_id: user.id
+      can :activity_info, User
     else
       cannot :manage, :all
     end
