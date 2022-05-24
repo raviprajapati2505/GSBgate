@@ -127,6 +127,10 @@ $(function () {
         defaultTime: '00:00'
     });
 
+    $("#proxy-add-licences-button").on('click', function(){
+        $("#add-licences-button").click();
+    });
+
     // Accordion tables
     $('.accordion-body').on('show.bs.collapse hidden.bs.collapse', function() {
         $(this).prev().find('.category-accordion-icon i.fa').toggleClass('fa-caret-square-o-right').toggleClass('fa-caret-square-o-down');
