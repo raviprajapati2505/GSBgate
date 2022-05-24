@@ -311,9 +311,9 @@ en:
     show:
       user_details:
         title: Your Profile
-        otherinfo: Other Info
-        organizationinfo: Organization Info
-        contactinfo: Contact Info
+        other_info: Other Info
+        organization_info: Organization Info
+        contact_info: Contact Info
       user_license_details:
         title: License Details
         licences: Issued Licences
@@ -323,8 +323,8 @@ en:
       form_title: User details
       user_details:
         title: Your Profile
-        otherinfo: Other Info
-        organizationinfo: Organization Info
-        contactinfo: Contact Info
+        other_info: Other Info
+        organization_info: Organization Info
+        contact_info: Contact Info
     list_notifications:
       btn_save: Update preferences
