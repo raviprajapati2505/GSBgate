@@ -245,13 +245,19 @@
         <h5><b><%= t('.user_license_details.licences') %></b></h5>
       </div>
       <div class="ibox-content">
-        <%= render partial: "licence_detail", locals: { label: 'Design & Build Licences', access_licences: @user.access_licences_with_certificate_type(Certificate.certificate_types[:design_type]) } %>
+        <div class="row">
+          <%= render partial: "licence_detail", locals: { label: 'Design & Build Licences', access_licences: @user.access_licences_with_certificate_type(Certificate.certificate_types[:design_type]) } %>
+        </div>
 
-        <div class="hr-line-dashed m-t"></div>
-        <%= render partial: "licence_detail", locals: { label: 'Construction Management Licences', access_licences: @user.access_licences_with_certificate_type(Certificate.certificate_types[:construction_type]) } %>
+        <div class="row">
+          <div class="hr-line-dashed m-t"></div>
+          <%= render partial: "licence_detail", locals: { label: 'Construction Management Licences', access_licences: @user.access_licences_with_certificate_type(Certificate.certificate_types[:construction_type]) } %>
+        </div>
 
-        <div class="hr-line-dashed m-t"></div>
-        <%= render partial: "licence_detail", locals: { label: 'Operation Licences', access_licences: @user.access_licences_with_certificate_type(Certificate.certificate_types[:operations_type]) } %>
+        <div class="row">
+          <div class="hr-line-dashed m-t"></div>
+          <%= render partial: "licence_detail", locals: { label: 'Operation Licences', access_licences: @user.access_licences_with_certificate_type(Certificate.certificate_types[:operations_type]) } %>
+        </div>
       </div>
 
       <div class="ibox-title m-t">

@@ -18,19 +18,21 @@
 
   <div class="ibox float-e-margins">
     <div class="ibox-content">
+
       <% if @user.default_role? || @user.service_provider? %>
         <h2>Licences</h2>
         <hr />
 
-        <div class="form-inputs access-licence-forms m-t">
+        <div class="form-inputs access-licence-forms row">
           <%= f.simple_fields_for :access_licences do |access_licence| %>
             <%= render partial: 'access_licence_fields', locals: { f: access_licence } %>
           <% end %>
-          <div class="links">
-            <%= link_to_add_association 'Add Licences', f, :access_licences, class: "btn btn-primary btn-sm" %>
+          <div class="links d-none">
+            <%= link_to_add_association 'Add Licences', f, :access_licences, class: "btn btn-primary btn-sm", id: "add-licences-button" %>
           </div>
         </div>
 
+        <button type="button" class="btn btn-primary btn-sm m-t-md" id="proxy-add-licences-button">Add Licences</button>
         <hr />
       <% end %>
 
