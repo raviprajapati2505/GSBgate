@@ -458,7 +458,7 @@ module ApplicationHelper
     end
     if user.present?
       breadcrumbs[:names] << user.email
-      breadcrumbs[:paths] << edit_user_path(user)
+      breadcrumbs[:paths] << user_path(user)
     end
 
     return breadcrumbs

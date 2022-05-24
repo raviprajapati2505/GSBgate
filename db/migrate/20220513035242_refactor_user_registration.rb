@@ -22,6 +22,7 @@ class RefactorUserRegistration < ActiveRecord::Migration[5.2]
     add_column :users, :organization_fax, :string
     add_column :users, :gsas_id, :string
     add_column :users, :qid_or_passport_number, :string
+    add_column :users, :approved_at, :datetime
 
     remove_column :users, :linkme_member_id
     remove_column :users, :linkme_user

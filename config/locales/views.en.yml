@@ -310,21 +310,30 @@ en:
       table_title: User Overview
     show:
       user_details:
-        title: Your Profile
-        other_info: Other Info
-        organization_info: Organization Info
-        contact_info: Contact Info
+        title: Personal Information
+        other_info: Other Information
+        organization_info: Organization Information
+        contact_info: Contact Information
+        activity_info:
+          title: Activity Information
+          created_at: Registration Date
+          confirmed_at: Confirmation Date
+          approved_at: Approval Date
+          updated_at: Last Updated At
+          last_sign_in_at: Last Login At
       user_license_details:
         title: License Details
         licences: Issued Licences
       user_licence_summary:
         title: Licence Summary
+      sp_cp_licence_summary:
+        title: Service Provider CGPs & CEPs Summary
     form:
       form_title: User details
       user_details:
-        title: Your Profile
-        other_info: Other Info
-        organization_info: Organization Info
-        contact_info: Contact Info
+        title: Personal Information
+        other_info: Other Information
+        organization_info: Organization Information
+        contact_info: Contact Information
     list_notifications:
       btn_save: Update preferences
