@@ -131,6 +131,10 @@ legend.scheduler-border {
   height: 274px;
 }
 
+.border-box-shadow {
+  box-shadow: 10px 10px 5px #62a60a2b;
+}
+
 @media (max-width: 1000px) {
   .welcome-message {
     display: none;
