@@ -1,5 +1,9 @@
 <div class="nested-fields col-md-3">
-  <div class="table-bordered p-m m-t-md">
+  <div class="table-bordered p-m m-t-md border-box-shadow">
+    <div class="text-right">
+      <%= link_to_remove_association "X", f, class: "btn btn-danger btn-sm m-t" %>
+    </div>
+
     <%= f.input :user_id, as: :hidden, input_html: { value: @user.id } %>
 
     <%= f.association :licence, collection: licence_options(@user), prompt: "Choose a Licence", input_html: { class: "select-licence" } %>
@@ -8,7 +12,5 @@
       <span><%= ikoen('calendar') %></span>
       <%= f.input_field :expiry_date, value: f.object&.expiry_date&.strftime("%d/%m/%Y"), as: :string, class: "datepicker-future form-control" %>
     <% end %>
-
-    <%= link_to_remove_association "remove licence", f, class: "btn btn-danger btn-sm m-t" %>
   </div>
 </div>
