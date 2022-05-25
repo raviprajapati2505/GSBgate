@@ -4,7 +4,6 @@ class AccessLicence < ApplicationRecord
 
   # Validation
   validates :expiry_date, presence: true
-  validates :licence_id, uniqueness: { scope: :user_id }
 
   default_scope { joins(:licence).order("licences.display_weight") }
 

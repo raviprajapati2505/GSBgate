@@ -43,7 +43,9 @@ class User < ApplicationRecord
   validates :email, :username, :last_name, :name, :gender, :dob, :country , :city, :mobile_area_code, :mobile , :designation, :organization_name, :organization_address, :organization_country, :qid_or_passport_number, presence: true
   validates :organization_phone_area_code, :organization_phone, :organization_fax_area_code, :organization_fax,  numericality: { allow_blank: true }
   validates_numericality_of :mobile_area_code, :mobile, only_integer: true
-
+  
+  validate :validate_org_webiste
+  validates :access_licences, :nested_attributes_uniqueness => {:field => :licence_id}
   delegate :can?, :cannot?, :to => :ability
 
   scope :active, -> {
@@ -317,5 +319,11 @@ class User < ApplicationRecord
   def set_approval_date
     value = active? ? Time.now : nil
     self.update_column(:approved_at, value)
+  end
+
+  def validate_org_webiste
+    return if organization_website.present? && URI.regexp.match(organization_website)
+  
+    errors.add(:organization_website, 'Please enter a valid website url')
   end
 end

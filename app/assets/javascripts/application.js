@@ -522,8 +522,11 @@ $(function () {
                 $('#org_fax').val(data.organization_fax);
                 $('#organization-country-select').val(data.organization_country);
                 $('#organization-country-select').trigger('change.select2');
-                $('#org_city').val(data.organization_city);
-                $('#org_city').trigger('change.select2');
+                populate_cities_by_country($('#organization-country-select'));
+                setTimeout(function(){
+                    $('#organization-city-select').val(data.organization_city)
+                    $('#organization-city-select').trigger('change.select2')
+                }, 1000);
             },
             error: function(){
                 alert('Something went wrong !');

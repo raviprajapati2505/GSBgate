@@ -1,5 +1,0 @@
-<% if !@check_cities_for %>
-<%= select_tag "#{resource_for}[city]", options_for_select(cities), { include_blank: "Select City", required: true, id: "city-select", class: "select2 form-control"}  %>
-<% else %>
-<%= select_tag "#{resource_for}[organization_city]", options_for_select(cities), { include_blank: "Select City", required: true, id: "organization-city-select", class: "select2 form-control"}  %>
-<% end %>
