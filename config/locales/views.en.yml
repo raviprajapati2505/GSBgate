@@ -101,6 +101,8 @@ en:
       certifier_team: GSAS Trust Team
     update_status_advance:
       title: Advancing Certification Status
+    update_status_to_certified:
+      title: Advancing Certification Status
     show_checklist:
       certification_path:
         title: CERTIFICATION DETAILS

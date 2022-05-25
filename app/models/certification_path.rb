@@ -285,6 +285,13 @@ class CertificationPath < ApplicationRecord
     end
   end
 
+  # add more status names according to requirement.
+  ["certified"].each do |status_name|
+    define_method "is_next_status_#{status_name}?" do
+      next_status == "CertificationPathStatus::#{status_name.upcase}".constantize
+    end
+  end
+
   def previous_status
     # only system_admin can use this function
     # TODO provide code for previous_status

@@ -3,6 +3,8 @@
         <% if todos_errors.blank? %>
             <% if params.has_key?(:appeal) %>
                 <%= render 'update_status_appeal' %>
+            <% elsif @certification_path.is_next_status_certified? %>
+                <%= render 'update_status_to_certified' %>
             <% else %>
                 <%= render 'update_status_advance' %>
             <% end %>

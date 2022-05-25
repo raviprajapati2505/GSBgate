@@ -1,0 +1,16 @@
+<%= bootstrap_form_for([@project, @certification_path], url: update_status_project_certification_path_url, method: 'put') do |f| %>
+  <%= f.hidden_field :audit_log_user_comment %>
+
+  <div class="modal-header">
+    <%= btn_close_modal %>
+    <h4 class="modal-title"><%= t('.title') %></h4>
+  </div>
+  <div class="modal-body">
+    <h4>Are you sure ? </h4>
+    <span class="help-block">Certification status will change to 'Certified' with action.</span>
+  </div>
+  <div class="modal-footer">
+    <%= btn_tag(icon: 'forward', text: 'Advance status') %>
+    <%= btn_close_modal({icon: 'times', text: 'Cancel', style: 'white', size: 'medium', class: 'align-right'}) %>
+  </div>
+<% end %>
