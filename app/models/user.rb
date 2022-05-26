@@ -40,12 +40,12 @@ class User < ApplicationRecord
   validates :email, uniqueness: true
   validates :username, uniqueness: true
   validates :role, inclusion: User.roles.keys
-  validates :email, :username, :last_name, :name, :gender, :dob, :country , :city, :mobile_area_code, :mobile , :designation, :organization_name, :organization_address, :organization_country, :qid_or_passport_number, presence: true
-  validates :organization_phone_area_code, :organization_phone, :organization_fax_area_code, :organization_fax,  numericality: { allow_blank: true }
-  validates_numericality_of :mobile_area_code, :mobile, only_integer: true
+  validates :email, :username, :last_name, :name, :gender, :dob, :country , :city, :mobile_area_code, :mobile , :designation, :organization_name, :organization_address, :organization_country, :qid_or_passport_number, presence: true, unless: -> { encrypted_password_changed? } 
+  validates :organization_phone_area_code, :organization_phone, :organization_fax_area_code, :organization_fax,  numericality: { allow_blank: true }, unless: -> { encrypted_password_changed? } 
+  validates_numericality_of :mobile_area_code, :mobile, only_integer: true, unless: -> { encrypted_password_changed? } 
   
-  validate :validate_org_webiste
-  validates :access_licences, :nested_attributes_uniqueness => {:field => :licence_id}
+  validate :validate_org_webiste, unless: -> { encrypted_password_changed? } 
+  validates :access_licences, :nested_attributes_uniqueness => {field: :licence_id}
   delegate :can?, :cannot?, :to => :ability
 
   scope :active, -> {
