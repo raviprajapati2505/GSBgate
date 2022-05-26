@@ -9,19 +9,19 @@
         </div>
         <br>
         <div class="row">
-            <div class="col-md-4"><%= f.input :name %></div>
+            <div class="col-md-4"><%= f.input :name, required: true %></div>
             <div class="col-md-4"><%= f.input :middle_name %></div>
-            <div class="col-md-4"><%= f.input :last_name %></div>
+            <div class="col-md-4"><%= f.input :last_name, required: true %></div>
         </div>
         <div class="row">
             <div class="col-md-4">
-                <%= f.input :gender, collection: ["Male", "Female"], include_blank: "Choose Gender", input_html: { class: "form-control" } %>
+                <%= f.input :gender, collection: ["Male", "Female"], include_blank: "Choose Gender", input_html: { class: "form-control" }, required: true %>
             </div>
             <div class="col-md-4">
-                <%= f.input :username %>
+                <%= f.input :username, required: true %>
             </div>
             <div class="col-md-4">
-                <%= f.input :dob do %>
+                <%= f.input :dob, required: true do %>
                     <span><%= ikoen('calendar') %></span>
                     <%= f.input_field :dob, value: f.object&.dob&.strftime("%d/%m/%Y"), as: :string, class: "datepicker-past form-control" %>
                 <% end %>
@@ -34,22 +34,22 @@
     <legend class="scheduler-border"><%= t('.user_details.contact_info') %></legend>
     <div class="control-group">
         <div class="row">
-            <div class="col-md-4"><%= f.input :email, input_html: { id: 'user_email'} %></div>
+            <div class="col-md-4"><%= f.input :email, input_html: { id: 'user_email'}, required: true %></div>
             <div class="col-md-4"><%= f.input :email_alternate %></div>
             <div class="col-md-4">
                 <% countries = CS.countries.sort_by{|_key, value| value }.to_h %>
-                <%= f.input :country, collection: countries.map{ |cnt| [cnt[1], cnt[1]] }, include_blank: "Select Country", selected: resource.country, input_html: { required: true, class: "select2 form-control country-select", id: "user-country-select", data: {"for": "user"} } %>
+                <%= f.input :country, collection: countries.map{ |cnt| [cnt[1], cnt[1]] }, include_blank: "Select Country", selected: resource.country, input_html: { class: "select2 form-control country-select", id: "user-country-select", data: {"for": "user"} }, required: true %>
             </div>
         </div>
         <div class="row">
             <div class="col-md-4">
-                <%= f.input :city, collection: [resource.city], include_blank: "Select City", selected: resource.city, input_html: { required: true, class: "select2 form-control city-select", id: "user-city-select" } %>
+                <%= f.input :city, collection: [resource.city], include_blank: "Select City", selected: resource.city, input_html: { class: "select2 form-control city-select", id: "user-city-select" }, required: true %>
             </div>
             <div class="col-md-4">
-                <%= f.input :mobile_area_code%>
+                <%= f.input :mobile_area_code, required: true %>
             </div>
             <div class="col-md-4">
-                <%= f.input :mobile %>
+                <%= f.input :mobile, required: true %>
             </div>
         </div>
     </div>
@@ -60,7 +60,7 @@
     <div class="control-group">
         <div class="row">
             <div class="col-md-4">
-                <%= f.input :designation %>
+                <%= f.input :designation, required: true %>
             </div>
             <div class="col-md-4">
                 <%= f.input :work_experience %>
@@ -71,7 +71,7 @@
         </div>
         <div class="row">
             <div class="col-md-4">
-                <%= f.input :qid_or_passport_number %>
+                <%= f.input :qid_or_passport_number, required: true %>
             </div>
         </div>
     </div>
@@ -91,13 +91,13 @@
         <br />
         <div class="row">
             <div class="col-md-4">
-                <%= f.input :organization_name, input_html: { id: 'org_name'} %>
+                <%= f.input :organization_name, input_html: { id: 'org_name'}, required: true %>
             </div>
             <div class="col-md-4">
-                <%= f.input :organization_address, input_html: { id: 'org_address'} %>
+                <%= f.input :organization_address, input_html: { id: 'org_address'}, required: true %>
             </div>
             <div class="col-md-4">
-                <%= f.input :organization_country, collection: countries.map{ |cnt| [cnt[1], cnt[1]] }, include_blank: "Select Country", selected: resource.organization_country, input_html: { required: true, class: "select2 form-control country-select", id: "organization-country-select", data: {"for": "organization"} } %>
+                <%= f.input :organization_country, collection: countries.map{ |cnt| [cnt[1], cnt[1]] }, include_blank: "Select Country", selected: resource.organization_country, input_html: { class: "select2 form-control country-select", id: "organization-country-select", data: {"for": "organization"} }, required: true %>
             </div>
         </div>
         <div class="row">
@@ -105,7 +105,7 @@
                 <%= f.input :organization_city, collection: [resource.organization_city], include_blank: "Select City", selected: resource.organization_city, input_html: { class: "select2 form-control city-select", id: "organization-city-select" } %>
             </div>
             <div class="col-md-4">
-                <%= f.input :organization_website, input_html: { id: 'org_website', placeholder: 'http://mywebsite.com'} %>
+                <%= f.input :organization_website, input_html: { id: 'org_website', placeholder: 'http://mywebsite.com'}, required: true %>
             </div>
             <div class="col-md-4">
                 <%= f.input :organization_phone_area_code, input_html: { id: 'org_phone_area_code'} %>
