@@ -23,7 +23,7 @@ xlsx.each_with_pagename do |name, sheet|
             service_provider.type = 'ServiceProvider'
             service_provider.skip_confirmation!
 
-            unless service_provider.save
+            unless service_provider.save(validate: false)
                 sp_errors << "Row: #{i}, Email: #{service_provider.email}, Message: #{service_provider.errors.full_messages}"
             end
         end
@@ -59,7 +59,7 @@ xlsx.each_with_pagename do |name, sheet|
                     user.active = true
                     user.skip_confirmation!
 
-                    unless user.save
+                    unless user.save(validate: false)
                         # enable this if the case case of username already exists in database 
                         # user = User.find_by(username: email.downcase)
                         # user.service_provider_id = service_provider.id
@@ -98,7 +98,9 @@ xlsx.each_with_pagename do |name, sheet|
                     end
                 end
 
-                unless user.save
+                user.skip_confirmation!
+
+                unless user.save(validate: false)
                     cp_licences_errors << "Row: #{i}, Email: #{user.email}, Message: #{user.errors.full_messages}"
                 end
             end
