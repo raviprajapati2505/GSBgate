@@ -1,6 +1,8 @@
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+
+  attr_accessor :skip_send_user_licences_update_email
   
   include Taskable
 
@@ -316,7 +318,8 @@ class User < ApplicationRecord
   end
 
   def send_user_licences_update_email
-    DigestMailer.user_licences_update_email(self).deliver_now if access_licences.any?(&:saved_changes?)
+    return if skip_send_user_licences_update_email && !access_licences.any?(&:saved_changes?) # we dont need to send licence emails if user is imported through seed
+    DigestMailer.user_licences_update_email(self).deliver_now
   end
 
   def set_approval_date

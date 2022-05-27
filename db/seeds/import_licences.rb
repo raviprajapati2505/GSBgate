@@ -48,16 +48,21 @@ xlsx.each_with_pagename do |name, sheet|
 
                 new_users.each_with_index  do |email, index|
                     #user = User.find_or_initialize_by(email: email.downcase)
-                    user = User.where('lower(email) = ? OR lower(username) = ?', email.downcase, new_user_usernames[index].downcase).first_or_initialize
+                    
+                    useremail = email&.gsub('_x000d_ ', '')&.downcase
+                    username = new_user_usernames[index]&.gsub('_x000d_ ', '')&.downcase
+                    user = User.where('lower(email) = ? OR lower(username) = ?', useremail, username).first_or_initialize
+                    
                     if user.new_record?
-                        user.name = email.downcase
-                        user.email = email.downcase
-                        user.username = new_user_usernames[index].downcase
+                        user.name = useremail
+                        user.email = useremail
+                        user.username = username
                     end     
                     user.password = 'test#1234'
                     user.service_provider_id = service_provider.id
                     user.active = true
                     user.skip_confirmation!
+                    user.skip_send_user_licences_update_email = true
 
                     unless user.save(validate: false)
                         # enable this if the case case of username already exists in database 
@@ -84,7 +89,11 @@ xlsx.each_with_pagename do |name, sheet|
         header_for_licences = user_licences_sheet.row(5)
         (7..user_licences_sheet.last_row).each do |i|
             row_licence = Hash[[header_for_licences, user_licences_sheet.row(i)].transpose]
-            user = User.find_by(email: row_licence["Email"]&.squish&.strip&.downcase)
+            #user = User.find_by(email: row_licence["Email"]&.squish&.strip&.downcase)
+
+            user_email = row_licence["Email"]&.gsub('_x000d_ ', '')&.squish&.strip&.downcase
+            user_name = row_licence["Username"]&.gsub('_x000d_ ', '')&.squish&.strip&.downcase
+            user = User.where('lower(email) = ? OR lower(username) = ?', user_email, user_name).first_or_initialize
 
             if user.present?
                 type_of_licences.each do |type|
@@ -99,7 +108,8 @@ xlsx.each_with_pagename do |name, sheet|
                 end
 
                 user.skip_confirmation!
-
+                user.skip_send_user_licences_update_email = true
+                
                 unless user.save(validate: false)
                     cp_licences_errors << "Row: #{i}, Email: #{user.email}, Message: #{user.errors.full_messages}"
                 end
