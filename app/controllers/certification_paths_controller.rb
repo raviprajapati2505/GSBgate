@@ -75,7 +75,7 @@ class CertificationPathsController < AuthenticatedController
       if params.has_key?(:assessment_method)
         @assessment_method = params[:assessment_method].to_i
       else
-        @assessment_method = 1
+        @assessment_method = current_user.manage_assessment_methods_options&.values&.first || 1
       end
     end
 

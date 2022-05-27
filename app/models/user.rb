@@ -258,6 +258,9 @@ class User < ApplicationRecord
                                   assessment_methods.select { |k, v| v == Licence.applicabilities[:check_list] }
                                 end
                               end
+
+      elsif allowed_assessment_methods.blank?
+        assessment_methods = {}
       end
     end
 
