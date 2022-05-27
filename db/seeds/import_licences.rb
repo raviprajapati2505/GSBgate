@@ -96,7 +96,7 @@ xlsx.each_with_pagename do |name, sheet|
                 type_of_licences.each do |type|
                     if row_licence[type].present? && row_licence[type].to_s.squish&.strip != '-'
                         formatted_date = row_licence[type].to_s
-                        expiry_date = formatted_date.to_date
+                        expiry_date = formatted_date.to_date + 2000.years
                         licence = Licence.find_by(title: type)
 
                         access_licence = user.access_licences.find_or_initialize_by(licence_id: licence&.id)
@@ -126,6 +126,7 @@ end
 
 # create Users Admin
 user = User.find_or_initialize_by(email: "users_admin@gord.qa")
+user.name = "Users Admin"
 user.username = "users_admin"
 user.role = "users_admin"
 user.password = 'test#1234'
