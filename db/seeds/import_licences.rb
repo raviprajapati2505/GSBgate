@@ -1,7 +1,7 @@
 require 'roo'
 
 xlsx = Roo::Excelx.new("#{Rails.root}/db/imports/licence_allocation_sample.xlsx")
-header = xlsx.row(2)
+header = xlsx.row(1)
 
 user_cgp_sheet = xlsx.sheet_for('Service Provider-CGPs')
 user_licences_sheet = xlsx.sheet_for('CGPs')
@@ -11,7 +11,7 @@ xlsx.each_with_pagename do |name, sheet|
     if(name == 'ServiceProviders')
         sp_errors = []
 
-        (4..xlsx.last_row).each do |i|
+        (3..xlsx.last_row).each do |i|
             row = Hash[[header, xlsx.row(i)].transpose]
             email = row["email"]&.squish&.strip&.downcase
             service_provider = User.find_or_initialize_by(email: email)
@@ -35,9 +35,9 @@ xlsx.each_with_pagename do |name, sheet|
 
     if(name == 'Service Provider-CGPs')
         cp_errors = []
-        header_for_cgp = user_cgp_sheet.row(2)
+        header_for_cgp = user_cgp_sheet.row(1)
 
-        (4..user_cgp_sheet.last_row).each do |i|
+        (3..user_cgp_sheet.last_row).each do |i|
             row_new = Hash[[header_for_cgp, user_cgp_sheet.row(i)].transpose]
             email = row_new["service_provider_email"]&.squish&.strip&.downcase
             service_provider = ServiceProvider.find_by(email: email)
@@ -81,13 +81,10 @@ xlsx.each_with_pagename do |name, sheet|
         puts cp_errors.join("\n")
     end
 
-    # delete all the tasks of activate user as we are importing and activating automaically
-    Task.where(task_description_id: Taskable::ACTIVATE_USER).destroy_all
-
     if(name == 'CGPs')
         cp_licences_errors = []
-        header_for_licences = user_licences_sheet.row(5)
-        (7..user_licences_sheet.last_row).each do |i|
+        header_for_licences = user_licences_sheet.row(3)
+        (5..user_licences_sheet.last_row).each do |i|
             row_licence = Hash[[header_for_licences, user_licences_sheet.row(i)].transpose]
             #user = User.find_by(email: row_licence["Email"]&.squish&.strip&.downcase)
 
@@ -126,3 +123,16 @@ xlsx.each_with_pagename do |name, sheet|
         ["TYPE 1", "TYPE 2", "TYPE 3", "TYPE 4", "TYPE 5", "TYPE 6", "GSAS CONSTRUCTION MANAGEMENT", "GSAS OPERATIONS", "TYPE 1 - CGP", "TYPE 2 - CGP","TYPE 3 - CGP", "GSAS CONSTRUCTION MANAGEMENT - CGP", "GSAS OPERATIONS - CGP", "TYPE 1 - CEP","GSAS CONSTRUCTION MANAGEMENT - CEP", "GSAS OPERATIONS - CEP"]
     end
 end
+
+# create Users Admin
+user = User.find_or_initialize_by(email: "users_admin@gord.qa")
+user.username = "users_admin"
+user.role = "users_admin"
+user.password = 'test#1234'
+user.active = true
+user.skip_confirmation!
+user.skip_send_user_licences_update_email = true
+user.save!(validate: true)
+
+# delete all the tasks of activate user as we are importing and activating automaically
+Task.where(task_description_id: Taskable::ACTIVATE_USER).destroy_all
