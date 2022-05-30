@@ -135,5 +135,14 @@ user.skip_confirmation!
 user.skip_send_user_licences_update_email = true
 user.save!(validate: true)
 
+# Exceptional cases for users who were service providers.
+emails = ["mmoustafa27@hotmail.com",
+"aalhajri@qf.org.qa",
+"lamya@trustmgm.com",
+"sonny@montrealco.com",
+"venkat@galfarqatar.com.qa",
+"farah.othmani@arcadis.com"]
+User.where(email: emails).update_all(role: "default_role", type: "User")
+
 # delete all the tasks of activate user as we are importing and activating automaically
 Task.where(task_description_id: Taskable::ACTIVATE_USER).destroy_all

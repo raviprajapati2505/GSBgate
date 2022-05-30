@@ -109,6 +109,10 @@
                   <th><%= User.human_attribute_name('service_provider') %></th>
                   <td><%= @user.service_provider_name %></td>
                 </tr>
+                <tr>
+                  <th>Service Provider Email</th>
+                  <td><%= @user.service_provider&.email %></td>
+                </tr>
               <% end %>
               <tr>
                 <th><%= User.human_attribute_name('organization_name') %></th>
