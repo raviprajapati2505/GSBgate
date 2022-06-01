@@ -29,7 +29,7 @@ class UsersController < AuthenticatedController
   end
 
   def update
-    user_params = params.require(:user).permit(:name, :username, :organization_name, :gord_employee, :service_provider_id, :active, :gender, :name_suffix ,:middle_name, :last_name, :dob, :email_alternate, :country, :city, :mobile_area_code, :mobile, :designation, :work_experience, :organization_address, :organization_country, :organization_city, :organization_website, :organization_phone_area_code, :organization_phone, :organization_fax_area_code, :organization_fax, :gsas_id, :qid_or_passport_number, access_licences_attributes: [ :id, :user_id, :licence_id, :expiry_date, :_destroy ] )
+    user_params = params.require(:user).permit(:name, :username, :organization_name, :gord_employee, :service_provider_id, :active, :gender, :name_suffix ,:middle_name, :last_name, :dob, :email_alternate, :role, :country, :city, :mobile_area_code, :mobile, :designation, :work_experience, :organization_address, :organization_country, :organization_city, :organization_website, :organization_phone_area_code, :organization_phone, :organization_fax_area_code, :organization_fax, :gsas_id, :qid_or_passport_number, access_licences_attributes: [ :id, :user_id, :licence_id, :expiry_date, :_destroy ] )
 
     if @user.update(user_params)
       redirect_to user_path(@user), notice: "User information successfully updated."
