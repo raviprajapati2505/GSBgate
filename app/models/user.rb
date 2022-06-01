@@ -318,7 +318,7 @@ class User < ApplicationRecord
   end
 
   def send_user_licences_update_email
-    return if skip_send_user_licences_update_email && !access_licences.any?(&:saved_changes?) # we dont need to send licence emails if user is imported through seed
+    return if skip_send_user_licences_update_email || !access_licences.any?(&:saved_changes?) # we dont need to send licence emails if user is imported through seed
     DigestMailer.user_licences_update_email(self).deliver_now
   end
 
