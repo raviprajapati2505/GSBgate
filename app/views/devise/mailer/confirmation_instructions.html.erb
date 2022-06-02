@@ -1,26 +1,24 @@
-<%= render partial: 'devise/mailer/mail_header', locals: {} %>
+<%= render partial: 'devise/mailer/mail_header' %>
 <tr>
     <td style="width: 650pt; border: solid #CCC 1pt; background: white; padding: 15pt 15pt;">
-    <p>
-    <span style='font-size: 9pt; font-family: "Verdana", "sans-serif";'>Welcome <%= @email %>!</span>
-    </p>
-    <table class="table table-bordered table-striped user-details-table">
-        <tbody>
-            <tr>
-                <td>
+        <p>
+            <span style='font-size: 9pt; font-family: "Verdana", "sans-serif";'>Welcome <%= @email %>!</span>
+        </p>
+        <table class="table table-bordered table-striped user-details-table">
+            <tbody>
+                <tr>
                     <p>
                         <span style='font-size: 9pt; font-family: "Verdana", "sans-serif";'>You can confirm your account email through the link below:</span>
                     </p>
-                </td>
-                <td>
-                <p>
-                    <span style='font-size: 9pt; font-family: "Verdana", "sans-serif";'><%= link_to 'Confirm my account', confirmation_url(@resource, confirmation_token: @token) %></span>
-                </p>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <p><span style='font-size: 9pt; font-family: "Verdana", "sans-serif";'>With kind regards,</span></p>
+                    <p>
+                        <span style='font-size: 9pt; font-family: "Verdana", "sans-serif";'><%= link_to 'Confirm my account', confirmation_url(@resource, confirmation_token: @token) %></span>
+                    </p>
+                </tr>
+            </tbody>
+        </table>
+        <p>
+            <span style='font-size: 9pt; font-family: "Verdana", "sans-serif";'>With kind regards,</span>
+        </p>
     </td>
 </tr>
-<%= render partial: 'devise/mailer/mail_footer', locals: {} %>
+<%= render partial: 'devise/mailer/mail_footer' %>
