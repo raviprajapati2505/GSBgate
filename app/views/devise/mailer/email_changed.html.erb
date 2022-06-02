@@ -1,20 +1,20 @@
-<%= render partial: 'devise/mailer/mail_header', locals: {} %>
+<%= render partial: 'devise/mailer/mail_header' %>
 <tr>
-<td style="width: 650pt; border: solid #CCC 1pt; background: white; padding: 15pt 15pt;">
-<table class="table table-bordered table-striped user-details-table">
-  <tbody>
-      <tr>
-          <td>
-            <% if @resource.try(:unconfirmed_email?) %>
-              <p><span style='font-size: 9pt; font-family: "Verdana", "sans-serif";'>We're contacting you to notify you that your email is being changed to <%= @resource.unconfirmed_email %>.</span></p>
-            <% else %>
-              <p><span style='font-size: 9pt; font-family: "Verdana", "sans-serif";'>We're contacting you to notify you that your email has been changed to <%= @resource.email %>.</span></p>
-            <% end %>
-          </td>
-      </tr>
-  </tbody>
-</table>
-<p><span style='font-size: 9pt; font-family: "Verdana", "sans-serif";'>With kind regards,</span></p>
-</td>
+  <td style="width: 650pt; border: solid #CCC 1pt; background: white; padding: 15pt 15pt;">
+    <table class="table table-bordered table-striped user-details-table">
+      <tbody>
+          <tr>
+              <% if @resource.try(:unconfirmed_email?) %>
+                <p><span style='font-size: 9pt; font-family: "Verdana", "sans-serif";'>We're contacting you to notify you that your email is being changed to <%= @resource.unconfirmed_email %>.</span></p>
+              <% else %>
+                <p><span style='font-size: 9pt; font-family: "Verdana", "sans-serif";'>We're contacting you to notify you that your email has been changed to <%= @resource.email %>.</span></p>
+              <% end %>
+          </tr>
+      </tbody>
+    </table>
+    <p>
+      <span style='font-size: 9pt; font-family: "Verdana", "sans-serif";'>With kind regards,</span>
+    </p>
+  </td>
 </tr>
-<%= render partial: 'devise/mailer/mail_footer', locals: {} %>
+<%= render partial: 'devise/mailer/mail_footer' %>
