@@ -267,13 +267,24 @@
       <div class="ibox-title m-t">
         <h5><b><%= t('.user_licence_summary.title') %></b></h5>
       </div>
+      <% if current_user.role == 'system_admin' || current_user.role == 'users_admin' %>
+        <% 
+          label = "Licences of "+ @user.name 
+          labelsp = "Licences of "+ @user.name+"'s Service Provider"
+        %>
+      <% else %>
+        <%
+          label = "My Licences"
+          labelsp = "My Service Provider's Licences"  
+        %>
+      <% end %>
       <div class="ibox-content">
         <div class="row">
           <div class="col-md-6">
-            <%= render partial: "licences_list", locals: { label: 'Service Provider Licences', licences: Licence.with_service_provider_licences, licences_of: service_provider } %>
+            <%= render partial: "licences_list", locals: { label: labelsp, licences: Licence.with_service_provider_licences, licences_of: service_provider } %>
           </div>
-          <div class="col-md-6">
-            <%= render partial: "licences_list", locals: { label: 'My Licences', licences: Licence.with_cp_licences, licences_of: @user } %>
+          <div class="col-md-6">  
+            <%= render partial: "licences_list", locals: { label: label, licences: Licence.with_cp_licences, licences_of: @user } %>
           </div>
         </div>
       </div>
