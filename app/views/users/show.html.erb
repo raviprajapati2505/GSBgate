@@ -8,7 +8,7 @@
     <div class="ibox float-e-margins">
       <div class="ibox-title">
         <div class='d-flex justify-content-between align-items-center'>
-          <h2><b><%= @user.full_name %></b></h2> 
+          <h2><b><%= @user.full_name %></b> (<%= @user&.role&.titleize %>)</h2> 
           <h3><%= @user.email %></h3>        
         </div>
       </div>
@@ -267,25 +267,27 @@
       <div class="ibox-title m-t">
         <h5><b><%= t('.user_licence_summary.title') %></b></h5>
       </div>
-      <% if current_user.role == 'system_admin' || current_user.role == 'users_admin' %>
-        <% 
-          label = "Licences of "+ @user.name 
-          labelsp = "Licences of "+ @user.name+"'s Service Provider"
-        %>
-      <% else %>
-        <%
+
+      <%
+        if current_user == @user
           label = "My Licences"
-          labelsp = "My Service Provider's Licences"  
-        %>
-      <% end %>
+          labelsp = @user.service_provider? ? label : "My Service Provider's Licences"  
+        else
+          label = "Licences of #{@user.name}"
+          labelsp = @user.service_provider? ? label : "#{label}'s Service Provider"
+        end
+      %>
+
       <div class="ibox-content">
         <div class="row">
           <div class="col-md-6">
             <%= render partial: "licences_list", locals: { label: labelsp, licences: Licence.with_service_provider_licences, licences_of: service_provider } %>
           </div>
-          <div class="col-md-6">  
-            <%= render partial: "licences_list", locals: { label: label, licences: Licence.with_cp_licences, licences_of: @user } %>
-          </div>
+          <% unless @user.service_provider? %>
+            <div class="col-md-6">
+              <%= render partial: "licences_list", locals: { label: label, licences: Licence.with_cp_licences, licences_of: @user } %>
+            </div>
+          <% end %>
         </div>
       </div>
 
