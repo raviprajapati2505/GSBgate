@@ -17,7 +17,13 @@ module Effective
           localize(rec.last_sign_in_at.in_time_zone) unless rec.last_sign_in_at.nil?
         end
         col :sign_in_count, label: 'Sign in Count', as: :integer, search: :string
-        if User.current.can?(:masquerade, User)
+
+        if User.current.can?(:masquerade, current_user)
+          col :active, label: 'Active?', search: { as: :boolean } do |rec|
+            value = rec.active? ? 'checked' : ''
+            "<input class='user-status' type='checkbox' #{value} data-user-id=#{rec.id}>".html_safe
+          end
+
           col :id, label: 'Masquerade', search: false, sort: false do |rec|
             btn_link_to(masquerade_users_path(rec.id), icon: 'user-secret', size: 'small')
           end
@@ -33,6 +39,7 @@ module Effective
                     'users.linkme_user',
                     'users.cgp_license',
                     'users.gord_employee',
+                    'users.active',
                     'users.last_sign_in_at',
                     'users.sign_in_count').accessible_by(current_ability)
       end
