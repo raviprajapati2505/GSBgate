@@ -223,6 +223,20 @@ class UsersController < AuthenticatedController
     end
   end
 
+  def update_user_status
+    status = @user.active?
+  
+    if @user.update_column(:active, !status)
+      css_class = "success"
+      message = "User status successfully updated!"
+    else
+      css_class = "error"
+      message = "User status failed to update!"
+    end
+
+    render json: { css_class: css_class, message: message }
+  end
+
   private
 
   def set_controller_model
