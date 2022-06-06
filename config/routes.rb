@@ -15,6 +15,7 @@ Rails.application.routes.draw do
     member do
       get :list_notifications, path: :notifications
       put :update_notifications, path: :notifications
+      patch :update_user_status, to: 'users#update_user_status', as: 'update_user_status'
     end
   end
 

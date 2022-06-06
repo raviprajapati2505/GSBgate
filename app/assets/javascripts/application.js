@@ -40,6 +40,19 @@
  */
 
 $(function () {
+    // toast message
+    $.rails.toast_message = function(css, message) {
+        let toast_container_dom = `
+            <div id='toast-container' class='toast-bottom-right' aria-live='polite' role='alert'>
+                <div class='toast toast-${css}'>
+                    <div class='toast-message'>${message}</div>
+                </div>
+            </div>
+        `
+
+        return toast_container_dom;
+    };
+
     // Override the default confirm dialog by rails
     $.rails.allowAction = function(link) {
         if (link.data("confirm") == undefined && link.data("pcr") == undefined) {

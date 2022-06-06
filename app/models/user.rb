@@ -26,6 +26,10 @@ class User < ApplicationRecord
 
   delegate :can?, :cannot?, :to => :ability
 
+  scope :active, -> {
+    where(active: true)
+  }
+
   scope :unassigned, -> {
     User.includes(:projects_users).where(projects_users: {id: nil})
   }
