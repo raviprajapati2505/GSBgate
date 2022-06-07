@@ -13,7 +13,7 @@ class AddDeviseToUsers < ActiveRecord::Migration[5.2]
       t.string   :type, default: 'User'
 
       ## Set flag for active/deactive user
-      t.boolean :active, default: false
+      # t.boolean :active, default: false
       
       ## Recoverable
       t.string   :reset_password_token
