@@ -358,7 +358,9 @@ Devise.setup do |config|
   # changed. Defaults to true, so a user is signed in automatically after changing a password.
   # config.sign_in_after_change_password = true
   config.jwt do |jwt|
-    jwt.secret = Rails.application.config.devise_jwt_secret_key
+    # jwt.secret = Rails.application.config.devise_jwt_secret_key
+    jwt.secret = "a311b69f11b4b84b5b5b214f2965dfa46f8e54374c08042ab58dbdaa93aed8eff4d775625ffeb2ed8bf0093f0628a0618feded6cb8898092bc9f6698bd60bfc6"
+
     jwt.dispatch_requests = [
        ['POST', %r{^/api/users/sign_in$}]
       ]
