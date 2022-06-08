@@ -4,7 +4,9 @@
     </div>
     <div class="ibox-content">
         <p class="alert alert-info"><%= ikoen('info-circle') %> This is an overview of all users using the GSASgate system.</p>
-        <%= render_datatable(@datatable) %>
+        <div class="ibox-content" id="users-table" data-user-role="<%= current_user.role %>">
+            <%= render_datatable(@datatable) %>
+        </div>
     </div>
 </div>
 <div id="toast-message"></div>
