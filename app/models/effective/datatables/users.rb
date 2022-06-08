@@ -11,11 +11,25 @@ module Effective
           t(rec.role, scope: 'activerecord.attributes.user.roles') unless rec.role.nil?
         end
         col :gord_employee, label: 'GORD Employee'
-        col :active, label: 'Active?'
-        col :last_sign_in_at, label: 'Last Sign in at', as: :datetime, search: { as: :select, collection: Proc.new { User.pluck_date_field_by_year_month_day(:last_sign_in_at, :desc).compact } } do |rec|
+
+        col :licences_name, col_class: 'multiple-select', sql_column: "ARRAY_TO_STRING(ARRAY(SELECT licences.title FROM licences INNER JOIN access_licences ON access_licences.user_id = users.id WHERE access_licences.licence_id = licences.id), '|||')", label: 'Licences', search: { as: :select, collection: Proc.new { Licence.select(:display_name, :display_weight).order(:display_weight).distinct.map { |licence| [licence.display_name, licence.display_name.sub(',', '+')] }.uniq } } do |rec|
+          ERB::Util.html_escape(rec.licences_name).split('|||').sort.join(', <br/>') unless rec.licences_name.nil?
+
+        end.search do |collection, terms, column, index|
+          terms_array = terms.split(',').map { |ele| ele.gsub('+', ',') || ele }
+
+          unless (collection.class == Array || terms_array.include?(nil))
+            collection.where("ARRAY_TO_STRING(ARRAY(SELECT licences.display_name FROM licences INNER JOIN access_licences ON access_licences.user_id = users.id WHERE access_licences.licence_id = licences.id), '|||') ILIKE ANY ( array[:terms_array] )", terms_array: terms_array.map! {|val| "%#{val}%" }) rescue collection
+          else
+            collection
+          end
+        end
+
+        col :last_sign_in_at, label: 'Last Sign in at', as: :datetime, visible: false, search: { as: :select, collection: Proc.new { User.pluck_date_field_by_year_month_day(:last_sign_in_at, :desc).compact } } do |rec|
           localize(rec.last_sign_in_at.in_time_zone) unless rec.last_sign_in_at.nil?
         end
-        col :sign_in_count, label: 'Sign in Count', as: :integer, search: :string
+
+        col :sign_in_count, label: 'Sign in Count', as: :integer, visible: false, search: :string
 
         if User.current.can?(:masquerade, current_user)
           col :active, label: 'Active?', search: { as: :boolean } do |rec|
@@ -35,16 +49,19 @@ module Effective
       end
 
       collection do
-        User.select('users.id',
-                    'users.username',
-                    'users.name',
-                    'users.email',
-                    'users.role',
-                    'users.active',
-                    'users.gord_employee',
-                    'users.active',
-                    'users.last_sign_in_at',
-                    'users.sign_in_count').accessible_by(current_ability)
+        User
+          .select('users.id',
+                  'users.username',
+                  'users.name',
+                  'users.email',
+                  'users.role',
+                  'users.active',
+                  'users.gord_employee',
+                  'users.active',
+                  "ARRAY_TO_STRING(ARRAY(SELECT licences.display_name FROM licences INNER JOIN access_licences ON access_licences.user_id = users.id WHERE access_licences.licence_id = licences.id ORDER BY licences.display_weight), '|||') AS licences_name",
+                  'users.last_sign_in_at',
+                  'users.sign_in_count')
+          .accessible_by(current_ability)
       end
     end
   end
