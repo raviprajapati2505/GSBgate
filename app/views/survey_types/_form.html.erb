@@ -1,0 +1,7 @@
+<%= bootstrap_form_for(@survey_type, html: { class: 'survey-type-form' }) do |f| %>
+  <div class="form-inputs">
+      <%= f.text_field :title %>
+      <%= f.text_area :description %>
+      <%= btn_save %>
+  </div>
+<% end %>
