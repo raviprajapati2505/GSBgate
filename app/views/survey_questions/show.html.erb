@@ -1,0 +1,30 @@
+<p id="notice">
+  <%= notice %>
+</p>
+<p>
+  <b>Question text:</b>
+  <%= @survey_question.question_text %>
+</p>
+<p>
+  <b>Description:</b>
+  <%= @survey_question.description %>
+</p>
+<p>
+  <b>Mandatory:</b>
+  <%= @survey_question.mandatory %>
+</p>
+<p>
+  <b>Position:</b>
+  <%= @survey_question.position %>
+</p>
+<p>
+  <b>Question type:</b>
+  <%= @survey_question.question_type %>
+</p>
+<p>
+  <b>Survey questionnaire version:</b>
+  <%= @survey_question.survey_questionnaire_version %>
+</p>
+<%= link_to 'Edit', edit_survey_question_path(@survey_question) %>
+\|
+<%= link_to 'Back', survey_questions_path %>

@@ -17,7 +17,7 @@
                     <% @survey_types.each do |survey_type| %>
                       <tr>
                         <td>
-                          <%= survey_type.title %>
+                          <%= link_to survey_type.title, survey_type_path(survey_type) %>
                         </td>
                         <td>
                           <%= btn_link_to(edit_survey_type_path(survey_type), icon: 'edit', size: 'small', tooltip: 'Edit') %>
@@ -35,7 +35,4 @@
         </div>
       </div>
 </div>
-<div id="toast-message"></div>
-
-<br/>
 

@@ -146,13 +146,7 @@ Rails.application.routes.draw do
   # survey related modules
   resources :survey_dashboard, only: [:index]
   resources :survey_types
-  # resources :survey_responses, only: [:new, :create] do 
-  #   collection do
-  #     get 'survey_responses/:survey_id' => 'survey_responses#new', as: 'survey_reponses_form'
-  #     post 'survey_responses_submit/:survey_id' => 'survey_responses#create', as: 'survey_reponses_submit'
-  #     get 'survey_responses_thankyou' => 'survey_responses#thankyou', as: 'survey_responses_thankyou'
-  #   end
-  # end
+  resources :survey_questions
   resources :survey_responses, only: [] do 
     collection do
       get ':project_survey_id/new', to: 'survey_responses#new', as: 'form'
