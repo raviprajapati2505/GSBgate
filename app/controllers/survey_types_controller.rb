@@ -21,32 +21,26 @@ class SurveyTypesController < AuthenticatedController
   def create
     @survey_type = SurveyType.new(survey_type_params)
 
-    respond_to do |format|
-      if @survey_type.save
-        redirect_to survey_types_path, notice: 'Survey type was successfully created.'
-      else
-        render :new
-      end
+    if @survey_type.save
+      redirect_to survey_types_path, notice: 'Survey type was successfully created.'
+    else
+      render :new
     end
   end
 
   # PATCH/PUT /survey_types/1
   def update
-    respond_to do |format|
-      if @survey_type.update(survey_type_params)
-        redirect_to survey_types_path, notice: 'Survey type was successfully updated.'
-      else
-        render :edit
-      end
+    if @survey_type.update(survey_type_params)
+      redirect_to survey_types_path, notice: 'Survey type was successfully updated.'
+    else
+      render :edit
     end
   end
 
   # DELETE /survey_types/1
   def destroy
     @survey_type.destroy
-    respond_to do |format|
-      redirect_to survey_types_url, notice: 'Survey type was successfully destroyed.'
-    end
+    redirect_to survey_types_url, notice: 'Survey type was successfully destroyed.'
   end
 
   private

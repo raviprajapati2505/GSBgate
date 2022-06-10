@@ -143,6 +143,7 @@ Rails.application.routes.draw do
   end
 
   # survey related modules
+  resources :survey_dashboard, only: [:index]
   resources :survey_types
 
   # Custom routes
