@@ -8,7 +8,9 @@ class SurveyTypesController < AuthenticatedController
   end
 
   # GET /survey_types/1
-  def show; end
+  def show
+    @latest_questions = @survey_type.latest_survey_questions
+  end
 
   # GET /survey_types/new
   def new

@@ -18,6 +18,19 @@
 
         <%= btn_link_to(survey_types_path, icon: 'list', text: 'All Survey Types') %>
       </div>
+
+      <div class="ibox-content m-t">
+        <table class="table table-bordered table-striped">
+          <tbody>
+            <tr>
+              <th><%= t('.survey_types.total_count') %></th>
+              <td><%= @survey_types&.count %></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <%= btn_link_to(survey_questions_path, icon: 'list', text: 'All Question') %>
+      </div>
     </div>
   </div>
 </div>

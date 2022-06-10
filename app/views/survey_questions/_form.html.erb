@@ -1,0 +1,43 @@
+<%= form_for @survey_question do |f| %>
+  <% if @survey_question.errors.any? %>
+    <div id="error_explanation">
+      <h2>
+        <%= "#{pluralize(@survey_question.errors.count, "error")} prohibited this survey_question from being saved:" %>
+      </h2>
+      <ul>
+        <% @survey_question.errors.full_messages.each do |message| %>
+          <li>
+            <%= message %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="field">
+    <%= f.label :question_text %>
+    <%= f.text_field :question_text %>
+  </div>
+  <div class="field">
+    <%= f.label :description %>
+    <%= f.text_area :description %>
+  </div>
+  <div class="field">
+    <%= f.label :mandatory %>
+    <%= f.check_box :mandatory %>
+  </div>
+  <div class="field">
+    <%= f.label :position %>
+    <%= f.number_field :position %>
+  </div>
+  <div class="field">
+    <%= f.label :question_type %>
+    <%= f.number_field :question_type %>
+  </div>
+  <div class="field">
+    <%= f.label :survey_questionnaire_version %>
+    <%= f.text_field :survey_questionnaire_version %>
+  </div>
+  <div class="actions">
+    <%= f.submit 'Save' %>
+  </div>
+<% end %>
