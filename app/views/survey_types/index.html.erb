@@ -24,7 +24,7 @@
                         </td>
                         <td>
                           <%= 
-                            btn_link_to(survey_type_path(survey_type), method: :delete, data: {confirm: 'Are you sure to remove criterion text ?'}, style: 'danger', icon: 'trash',size: 'small', text: 'Remove') %>
+                            btn_link_to(survey_type_path(survey_type), method: :delete, data: {confirm: "Are you sure to remove '#{survey_type&.title}' survey type ?"}, style: 'danger', icon: 'trash', size: 'small') %>
                         </td>
                       </tr>
                     <% end %>

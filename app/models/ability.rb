@@ -450,6 +450,8 @@ class Ability
 
       can [:show, :edit, :update, :index, :activity_info, :download_user_files], User
       can [:edit_service_provider, :update_service_provider], ServiceProvider
+      can :activity_info, User
+      can :index, :survey_dashboard
     elsif user.service_provider?
       can :read, Project, projects_users: users_with_service_provider
       can :read, ProjectsUser, project: projects_users_with_service_provider
