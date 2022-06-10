@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  resources :survey_types
   # You can have the root of your site routed with "root", root_path will be different by user role
   root to: 'users#index', constraints: RoleConstraint.new(:users_admin) #matches this route when the current user is an admin
   root to: 'projects#index'
@@ -142,6 +141,9 @@ Rails.application.routes.draw do
       end
     end
   end
+
+  # survey related modules
+  resources :survey_types
 
   # Custom routes
   get 'projects/:id/location_plan' => 'projects#download_location_plan', as: 'download_project_location_plan'
