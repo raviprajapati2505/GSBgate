@@ -135,6 +135,15 @@ legend.scheduler-border {
   box-shadow: 10px 10px 5px #62a60a2b;
 }
 
+@media (max-width: 1440px) {
+  .skin-gord-login {
+    .login-footer {
+      position: relative !important;
+      width: 100%  !important;
+    }
+  }
+}
+
 @media (max-width: 1000px) {
   .welcome-message {
     display: none;
