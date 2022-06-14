@@ -3,34 +3,68 @@
   <div class="col-md-12 m-t">
     <div class="ibox float-e-margins">
       <div class="ibox-title">
-        <div class='d-flex justify-content-between align-items-center'>
-          <h2><b>Questions</b>
-          <%= btn_link_to(form_survey_type_survey_questionnaire_versions_path(@survey_type), icon: 'edit', text: 'Edit Questions') %></h2>
+        <div class='row'>
+          <div class="col-md-10">
+            <h2><b><%= "Questions of #{@survey_type.title}" %></b></h2>
+            <h3>Total Questions: <%= @latest_questions.count rescue 0 %></h3>
+          </div>
+          <div class="col-md-2">
+            <div class="m-t">
+              <%= btn_link_to(form_survey_type_survey_questionnaire_versions_path(@survey_type), icon: 'edit', text: 'Edit Questions') %>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="col-md-12 m-t">
+  <div class="col-md-12">
     <div class="ibox float-e-margins">
-      <table class="table table-bordered table-striped user-details-table">
-        <thead>
-          <tr>
-            <th><%=SurveyQuestion.human_attribute_name('question_text') %></th>
-            <th><%=SurveyQuestion.human_attribute_name('question_type') %></th>
-            <th><%=SurveyQuestion.human_attribute_name('mandatory') %></th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @latest_questions.each do |question| %>
-            <tr>
-              <td><%= question.question_text %></td>
-              <td><%= question.question_type %></td>
-              <td><%= label_span(question.mandatory?, "Yes", "No").html_safe rescue "-" %></td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
+      <% @latest_questions.each.with_index(1) do |question, i| %>
+        <div class="ibox-title m-t">
+          <h3 class="m"><%= "Que-#{i}:" %>
+          <h4 class="p-m"><%= question.question_text %></h4>
+        </div>
+
+        <div class="ibox-content">
+          <table class="table table-bordered table-striped">
+            <tbody>
+              <tr>
+                <th class="col-md-4"><%=SurveyQuestion.human_attribute_name('description') %></th>
+                <td><%= question.description %></td>
+              </tr>
+              <tr>
+                <th class="col-md-4"><%=SurveyQuestion.human_attribute_name('question_type') %></th>
+                <td><%= SurveyQuestion.question_types[question.question_type] %></td>
+              </tr>
+              <tr>
+                <th class="col-md-4"><%=SurveyQuestion.human_attribute_name('mandatory') %></th>
+                <td><%= label_span(question.mandatory?, "Yes", "No").html_safe rescue "-" %></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table class="table table-bordered table-striped user-details-table">
+            <thead>
+              <tr>
+                <th>Oprions</th>
+                <th>Results</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="p-md">
+                  <% question.question_options.each.with_index(1) do |option, i| %>
+                    <h4><%= "#{i}) #{option.option_text}" %><h4>
+                  <% end %>
+                </td>
+                <th>Graphical Representation</th>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+      <% end %>
     </div>
   </div>
 </div>

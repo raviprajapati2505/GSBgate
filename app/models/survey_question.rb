@@ -1,9 +1,4 @@
 class SurveyQuestion < ApplicationRecord
-  # associations
-  belongs_to :survey_questionnaire_version
-
-  # validations
-  validates :question_text, :question_type, presence: true
   
   enum question_type: 
     {
@@ -11,4 +6,14 @@ class SurveyQuestion < ApplicationRecord
       multi_select: "Multi-Select (i.e. checkboxes)",
       fill_in_the_blank: "Fill-in-the-Blank"
     }
+
+  # associations
+  belongs_to :survey_questionnaire_version
+  has_many :question_options, dependent: :destroy
+
+  # validations
+  validates :question_text, :question_type, presence: true
+
+  # nested attributes
+  accepts_nested_attributes_for :question_options, reject_if: :all_blank, allow_destroy: true
 end
