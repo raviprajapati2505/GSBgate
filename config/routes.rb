@@ -58,6 +58,7 @@ Rails.application.routes.draw do
     resources :project_rendering_images, only: [:create, :show, :destroy], path: :project_rendering_image
     resources :actual_project_images, only: [:create, :show, :destroy], path: :actual_project_image
     resources :projects_users, only: [:create, :edit, :show, :update, :destroy], path: :users, as: 'users', constraints: {id: /\d+/}
+    resources :projects_surveys, only: [:new, :create, :edit, :show, :update, :destroy], path: :surveys, as: 'surveys', constraints: {id: /\d+/}
     resources :certification_paths, except: [:index, :edit, :update], path: :certificates do
       collection do
         get 'list'
@@ -145,6 +146,9 @@ Rails.application.routes.draw do
   # survey related modules
   resources :survey_dashboard, only: [:index]
   resources :survey_types
+  
+  get 'survey_reponses/:survey_id' => 'survey_responses#new', as: 'survey_reponses_form'
+  post 'survey_reponses_submit/:survey_id' => 'survey_responses#create', as: 'survey_reponses_submit'
 
   # Custom routes
   get 'projects/:id/location_plan' => 'projects#download_location_plan', as: 'download_project_location_plan'

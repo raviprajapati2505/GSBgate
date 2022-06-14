@@ -8,6 +8,7 @@ class Project < ApplicationRecord
   MAXIMUM_DOCUMENT_FILE_SIZE = 25 # in MB
 
   has_many :projects_users, dependent: :destroy
+  has_many :projects_surveys, dependent: :destroy
   has_many :certification_paths, dependent: :destroy
   has_many :certificates, through: :certification_paths
   has_many :certification_path_statuses, through: :certification_paths
@@ -269,6 +270,31 @@ class Project < ApplicationRecord
                ].include?(recent_certificate_status))
       else
         true
+      end
+      
+    rescue StandardError => exception
+      puts exception.message
+      return false
+    end
+  end
+
+  def is_project_certified?
+    begin
+      if certification_paths.present?
+        recent_certification_path = certification_paths.joins(:certificate).order("certificates.display_weight").last
+        recent_certificate_type = recent_certification_path&.certificate&.certification_type
+        recent_certificate_status = recent_certification_path&.certification_path_status_id
+
+        return ([
+                Certificate.certification_types[:final_design_certificate], 
+                Certificate.certification_types[:construction_certificate], 
+                Certificate.certification_types[:operations_certificate]
+               ].include?(Certificate.certification_types[recent_certificate_type&.to_sym]) && 
+               [
+                CertificationPathStatus::CERTIFIED
+               ].include?(recent_certificate_status))
+      else
+        false
       end
       
     rescue StandardError => exception

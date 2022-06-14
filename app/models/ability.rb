@@ -136,6 +136,9 @@ class Ability
       can [:download_location_plan, :download_site_plan, :download_design_brief, :download_project_narrative, :download_area_statement, :download_sustainability_features], Project, projects_users: {user_id: user.id}
       can :show_tools, Project, projects_users: {user_id: user.id}
       can :update, Project, projects_users: {user: active_user, role: project_user_role_cgp_project_manager}
+
+      can [:create, :update], ProjectsSurvey, project: {
+         projects_users: {user: active_user, role: project_user_role_cgp_project_manager} }
       cannot :update, Project, projects_users: {user_id: user.id, role: project_user_role_cgp_project_manager}, certification_paths: {certification_path_status: {id: CertificationPathStatus::STATUSES_ACTIVATED}}
 
       if valid_user_associates?(user) && user.active?
@@ -452,6 +455,7 @@ class Ability
       can [:edit_service_provider, :update_service_provider], ServiceProvider
       can :activity_info, User
       can :index, :survey_dashboard
+      can [:index, :show, :edit, :update, :create, :destroy], SurveyType
     elsif user.service_provider?
       can :read, Project, projects_users: users_with_service_provider
       can :read, ProjectsUser, project: projects_users_with_service_provider

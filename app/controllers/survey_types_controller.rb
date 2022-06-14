@@ -1,4 +1,5 @@
 class SurveyTypesController < AuthenticatedController
+  load_and_authorize_resource param_method: :event_params
   before_action :set_survey_type, only: [:show, :edit, :update, :destroy]
 
   # GET /survey_types
@@ -20,7 +21,6 @@ class SurveyTypesController < AuthenticatedController
   # POST /survey_types
   def create
     @survey_type = SurveyType.new(survey_type_params)
-
     if @survey_type.save
       redirect_to survey_types_path, notice: 'Survey type was successfully created.'
     else
