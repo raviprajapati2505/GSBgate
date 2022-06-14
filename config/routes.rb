@@ -145,7 +145,15 @@ Rails.application.routes.draw do
 
   # survey related modules
   resources :survey_dashboard, only: [:index]
-  resources :survey_types
+  resources :survey_types do
+    resources :survey_questionnaire_versions, only: [] do
+      collection do
+        get :form
+        post :create
+        patch :update
+      end
+    end
+  end
   resources :survey_questions
   resources :survey_responses, only: [] do 
     collection do

@@ -1,7 +1,7 @@
 <%= bootstrap_form_for(@survey_type, html: { class: 'survey-type-form' }) do |f| %>
   <div class="form-inputs">
       <%= f.text_field :title %>
-      <%= f.text_area :description %>
+      <%= f.text_area :description, skip_label: true, class: 'ckeditor' %>
       <%= btn_save %>
   </div>
 <% end %>

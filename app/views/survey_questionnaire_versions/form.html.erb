@@ -1,0 +1,20 @@
+<%= bootstrap_form_for(@latest_survey_questionnaire_version, url: survey_type_survey_questionnaire_versions_path(@survey_type), method: @submit_method ) do |f| %>
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+      <div class="form-inputs row">
+
+        <%= f.fields_for :survey_questions do |survey_question| %>
+          <%= render partial: 'survey_question_fields', locals: { f: survey_question } %>
+        <% end %>
+
+        <div class="links">
+          <%= link_to_add_association 'Add Question', f, :survey_questions, class: "btn btn-primary btn-sm" %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <%= btn_save %>
+  </div>
+<% end %>

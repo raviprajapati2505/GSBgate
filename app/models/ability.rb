@@ -309,6 +309,11 @@ class Ability
       end
     elsif user.gsas_trust_admin? || user.gsas_trust_manager? || user.gsas_trust_top_manager?
       can :read, :all
+
+      cannot :manage, :survey_dashboard
+      cannot :manage, SurveyType
+      cannot :manage, :survey_questionnaire_version
+
       can [:index, :auditable_index, :auditable_index_comments, :download_attachment, :export], AuditLog, attachment_file: true
       # Project
       can [:download_location_plan, :download_site_plan, :download_design_brief, :download_project_narrative, :download_area_statement, :download_sustainability_features], Project
@@ -433,6 +438,11 @@ class Ability
       # cannot :refuse, RequirementDatum do |requirement_datum| requirement_datum.user_id != user.id end
     elsif user.document_controller?
       can :read, :all
+
+      cannot :manage, :survey_dashboard
+      cannot :manage, SurveyType
+      cannot :manage, :survey_questionnaire_version
+
       can :download_signed_certificate, CertificationPath, certification_path_status: { id: [CertificationPathStatus::CERTIFIED, CertificationPathStatus::CERTIFICATE_IN_PROCESS] }
       can [:download_location_plan, :download_site_plan, :download_design_brief, :download_project_narrative, :download_area_statement, :download_sustainability_features], Project
       can :download_detailed_certificate_report, CertificationPath, certification_path_status: {id: [CertificationPathStatus::CERTIFIED, CertificationPathStatus::CERTIFICATE_IN_PROCESS]}, certification_path_report: { is_released: true }
@@ -454,8 +464,11 @@ class Ability
       can [:show, :edit, :update, :index, :activity_info, :download_user_files], User
       can [:edit_service_provider, :update_service_provider], ServiceProvider
       can :activity_info, User
+
       can :index, :survey_dashboard
-      can [:index, :show, :edit, :update, :create, :destroy], SurveyType
+      can :manage, SurveyType
+      can :manage, :survey_questionnaire_version
+
     elsif user.service_provider?
       can :read, Project, projects_users: users_with_service_provider
       can :read, ProjectsUser, project: projects_users_with_service_provider
