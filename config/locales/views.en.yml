@@ -197,6 +197,14 @@ en:
       survey_types:
         title: Survey Types
         total_count: Total Survey Types
+  project_surveys:
+    new: 
+      title: Create Survey
+    edit: 
+      title: Edit Survey
+  survey_response:
+    new:
+      title: Survey Form
   schemes:
     show:
       tooltip_sortable: You can drag and drop the panels below to re-order their appearance.

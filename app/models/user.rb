@@ -18,6 +18,7 @@ class User < ApplicationRecord
   has_many :documents
   has_many :scheme_mix_criteria_documents
   has_many :projects_users, dependent: :destroy
+  has_many :projects_surveys, dependent: :destroy
   has_many :projects, through: :projects_users
   has_many :requirement_data, dependent: :nullify
   has_many :scheme_mix_criteria, inverse_of: :certifier, foreign_key: 'certifier_id'

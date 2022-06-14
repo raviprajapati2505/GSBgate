@@ -1,0 +1,37 @@
+<div class="form-inputs">
+    <div class="row">
+        <div class="col-lg-12">
+            <%= f.text_field :title %>
+        </div>
+        <div class="col-lg-12">
+            <%= f.text_area :description %>
+        </div>
+        <div class="col-lg-12">
+            <%= f.select :survey_type_id, options_for_select(survey_types.map { |k| [k.title, k.id]}, project_survey.survey_type_id), {label: 'Survey Type', include_blank: 'Choose Survey Type'}, class: 'select2-certifier' %>
+        </div>
+        <div class="col-lg-12">
+            <div class="form-group">
+                <%= label_tag 'end_date', '', class: 'control-label' %>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    <%= f.text_field 'end_date', {class: 'datepicker-future form-control', autocomplete: 'off'} %>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <%= f.text_area :submission_statement %>
+        </div>
+        <div class="col-lg-12">
+            <%= f.select :status, options_for_select(ProjectsSurvey.statuses.map {|key, value| [key.titleize, ProjectsSurvey.statuses.key(value)]}, project_survey.status), {include_blank: 'Choose Status'} %>
+        </div>
+        <div class="col-lg-12">
+            <%= f.select :user_access, options_for_select(ProjectsSurvey.user_accesses.map {|key, value| [key.titleize, ProjectsSurvey.user_accesses.key(value)]}, project_survey.user_access), {include_blank: 'Choose User Access'} %>
+        </div>
+        <div class="col-lg-12">
+            <%= f.check_box :is_released, label: 'Released Now ?' %>
+            </div>
+        <div class="col-lg-12">
+            <%= btn_save %>
+        </div>
+    </div>
+</div>
