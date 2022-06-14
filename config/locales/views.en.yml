@@ -208,6 +208,16 @@ en:
       title: Survey Form
     thankyou:
       title: Thank you !!!
+  survey_type:
+    index:
+      title_html: All Surveys
+    new:
+      title_html: New Survey
+    edit:
+      title_html: Edit Survey %{title}
+  survey_questionnaire_version:
+    form:
+      title_html: Questions of %{title}
   schemes:
     show:
       tooltip_sortable: You can drag and drop the panels below to re-order their appearance.

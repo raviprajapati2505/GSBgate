@@ -3,10 +3,12 @@ class SurveyTypesController < AuthenticatedController
   before_action :set_survey_type, only: [:show, :edit, :update, :destroy]
 
   def index
+    @page_title = t('survey_type.index.title_html')
     @survey_types = SurveyType.all
   end
 
   def show
+    @page_title = @survey_type.title
     @latest_questions = @survey_type.latest_survey_questions
   end
 
