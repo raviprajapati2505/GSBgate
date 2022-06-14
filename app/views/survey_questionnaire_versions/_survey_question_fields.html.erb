@@ -1,0 +1,13 @@
+<div class="nested-fields">
+  <div class="p-m">
+    <%= f.text_field :question_text %>
+
+    <%= f.text_area :description %>
+
+    <%= f.select :question_type, options_for_select(SurveyQuestion.question_types.map {|k ,v| [v, k]}, f.object.question_type), { label: 'Choose Format', include_blank: '- There is no format selected -' } %>
+
+    <%= f.check_box :mandatory, require: true %>
+  </div>
+
+  <%= link_to_remove_association "Remove Question", f, class: "btn btn-danger btn-sm m-t" %>
+</div>
