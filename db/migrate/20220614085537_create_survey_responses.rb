@@ -1,4 +1,4 @@
-class CreateVolunteersWithSurveyResponses < ActiveRecord::Migration[5.2]
+class CreateSurveyResponses < ActiveRecord::Migration[5.2]
   def change 
     create_table :survey_responses do |t|
       t.string :name

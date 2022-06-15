@@ -53,6 +53,7 @@ gem 'devise_invitable'
 gem 'devise-jwt'
 gem 'rack-cors'
 gem 'countries', require: 'countries/global'
+gem 'friendly_id', '~> 5.4.0'
 
 group :development do
   gem 'pry-rails'

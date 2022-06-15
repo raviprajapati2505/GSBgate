@@ -601,6 +601,20 @@ $(function () {
     $('#user_email').on('blur', function(){
         auto_populate_service_providers($(this));
     }).trigger('blur');
+
+    $('.link-survey').on('click', function(){
+        let temp = document.createElement('textarea');
+        temp.value = $(this).data('base_url')+$(this).data('survey_link');
+        document.body.appendChild(temp);
+        temp.select();
+        document.execCommand('copy');
+        document.body.removeChild(temp);
+        $("#toast-message").html($.rails.toast_message('success', 'link are copied'));
+
+        setInterval(function() {
+            $("#toast-message").html('');
+        }, 4000);
+    });
 });
 
 // General GSAS functions

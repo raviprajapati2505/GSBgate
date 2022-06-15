@@ -200,11 +200,14 @@ en:
   project_surveys:
     new: 
       title: Create Survey
+      title_is_released: Released Now ?
     edit: 
       title: Edit Survey
   survey_response:
     new:
       title: Survey Form
+    thankyou:
+      title: Thank you !!!
   schemes:
     show:
       tooltip_sortable: You can drag and drop the panels below to re-order their appearance.

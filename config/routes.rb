@@ -146,9 +146,20 @@ Rails.application.routes.draw do
   # survey related modules
   resources :survey_dashboard, only: [:index]
   resources :survey_types
-  
-  get 'survey_reponses/:survey_id' => 'survey_responses#new', as: 'survey_reponses_form'
-  post 'survey_reponses_submit/:survey_id' => 'survey_responses#create', as: 'survey_reponses_submit'
+  # resources :survey_responses, only: [:new, :create] do 
+  #   collection do
+  #     get 'survey_responses/:survey_id' => 'survey_responses#new', as: 'survey_reponses_form'
+  #     post 'survey_responses_submit/:survey_id' => 'survey_responses#create', as: 'survey_reponses_submit'
+  #     get 'survey_responses_thankyou' => 'survey_responses#thankyou', as: 'survey_responses_thankyou'
+  #   end
+  # end
+  resources :survey_responses, only: [] do 
+    collection do
+      get ':project_survey_id/new', to: 'survey_responses#new', as: 'form'
+      post ':project_survey_id/create', to: 'survey_responses#create', as: 'submit'
+      get ':project_survey_id/thank_you', to: 'survey_responses#thank_you', as: 'thank_you'
+    end
+  end
 
   # Custom routes
   get 'projects/:id/location_plan' => 'projects#download_location_plan', as: 'download_project_location_plan'
