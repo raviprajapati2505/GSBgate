@@ -1,9 +1,13 @@
-<div class="nested-fields">
-  <div class="p-m">
-    <%= f.text_field :option_text %>
+<div class="nested-fields col-md-3">
+  <div class="table-bordered p-m m-t-md border-box-shadow">
+    <div class="text-right">
+      <%= link_to_remove_association "X", f, class: "btn btn-danger btn-sm m-t" %>
+    </div>
 
-    <%= f.number_field :score %>
+    <div class="p-m">
+      <%= f.text_field :option_text %>
+
+      <%= f.number_field :score %>
+    </div>
   </div>
-
-  <%= link_to_remove_association "Remove Option", f, class: "btn btn-danger btn-sm m-t" %>
 </div>

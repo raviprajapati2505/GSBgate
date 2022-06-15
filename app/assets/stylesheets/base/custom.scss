@@ -135,6 +135,16 @@ legend.scheduler-border {
   box-shadow: 10px 10px 5px #62a60a2b;
 }
 
+.survey-questions-fields {
+  position: relative;
+  
+  .nested-fields-links {
+    position: absolute;
+    left: 2rem;
+    bottom: 0rem;
+  }
+}
+
 @media (max-width: 1440px) {
   .skin-gord-login {
     .login-footer {
