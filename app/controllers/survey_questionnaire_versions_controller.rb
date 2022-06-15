@@ -46,6 +46,7 @@ class SurveyQuestionnaireVersionsController < AuthenticatedController
       if @latest_survey_questionnaire_version.update(survey_questionnaire_version_params)
         redirect_to survey_type_path(@survey_type), notice: 'Survey questions are successfully stored.'
       else
+        @latest_survey_questionnaire_version.released = false
         set_sumbit_method_type
 
         render :form
@@ -64,46 +65,46 @@ class SurveyQuestionnaireVersionsController < AuthenticatedController
       if params[:action] == 'create'
         params.
           require(:survey_questionnaire_version).
-            permit(
-              survey_questions_attributes: 
-                [ 
-                  :question_text,
-                  :description, 
-                  :mandatory, 
-                  :position, 
-                  :question_type, 
-                  :_destroy, 
-                    question_options_attributes:
-                      [ 
-                        :option_text, 
-                        :score, 
-                        :_destroy
-                      ]
-                ]
-            )
+          permit(
+            survey_questions_attributes: 
+              [ 
+                :question_text,
+                :description, 
+                :mandatory, 
+                :position, 
+                :question_type, 
+                :_destroy,
+                  question_options_attributes:
+                    [ 
+                      :option_text, 
+                      :score, 
+                      :_destroy
+                    ]
+              ]
+          )
 
       else
         params.
           require(:survey_questionnaire_version).
-            permit(
-              survey_questions_attributes: 
-                [ 
-                  :id,
-                  :question_text,
-                  :description, 
-                  :mandatory, 
-                  :position, 
-                  :question_type, 
-                  :_destroy, 
-                    question_options_attributes:
-                      [ 
-                        :id,
-                        :option_text, 
-                        :score, 
-                        :_destroy
-                      ]
-                ]
-            )
+          permit(
+            survey_questions_attributes: 
+              [ 
+                :id,
+                :question_text,
+                :description, 
+                :mandatory, 
+                :position, 
+                :question_type, 
+                :_destroy, 
+                  question_options_attributes:
+                    [ 
+                      :id,
+                      :option_text, 
+                      :score, 
+                      :_destroy
+                    ]
+              ]
+          )
       end
     end
 end
