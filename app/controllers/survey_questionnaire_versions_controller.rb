@@ -4,10 +4,6 @@ class SurveyQuestionnaireVersionsController < AuthenticatedController
   before_action :set_latest_survey_questionnaire_version, only: [:form, :update]
   before_action :set_latest_survey_questions, only: [:form]
 
-  def show
-    @page_title = t('survey_type.index.title_html')
-  end
-
   def form
     @page_title = t('survey_questionnaire_version.form.title_html', title: @survey_type.title)
 
