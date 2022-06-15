@@ -12,6 +12,10 @@ class ProjectsSurveysController < AuthenticatedController
     @projects_survey = @project.projects_surveys.new(survey_params)
     @projects_survey.created_by_id = current_user.id
 
+    if params[:button].present? && params[:button] == 'save-and-release'
+      @projects_survey.is_released = true
+    end
+
     if @projects_survey.save
       redirect_to project_path(@project), notice: 'Survey created successfully.'
     else
@@ -23,6 +27,10 @@ class ProjectsSurveysController < AuthenticatedController
   end
 
   def update
+    if params[:button].present? && params[:button] == 'save-and-release'
+      @projects_survey.is_released = true
+    end
+
     if @projects_survey.update(survey_params)
       redirect_to project_path(@project), notice: 'Survey was successfully updated.'
     else
@@ -44,7 +52,7 @@ class ProjectsSurveysController < AuthenticatedController
   private 
 
   def survey_params
-    params.require(:projects_survey).permit(:title, :description, :end_date, :submission_statement, :status, :user_access, :survey_type_id, :is_released)
+    params.require(:projects_survey).permit(:title, :description, :end_date, :submission_statement, :status, :user_access, :survey_type_id)
   end
 
   def set_project_survey

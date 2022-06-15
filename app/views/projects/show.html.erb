@@ -324,22 +324,24 @@
                   <tr>
                       <th>Title</th>
                       <th>End Date</th>
+                      <th>Survey Link</th>
                       <th>Actions</th>
                   </tr>
             </thead>
             <tbody>
               <% @projects_surveys.each do |survey| %>
                 <tr>
-                  <td><%= link_to(survey.title, project_survey_path(@project,survey) ) %></td>
+                  <td><%= link_to(survey.title, project_survey_path(@project,survey.id) ) %></td>
                   <td><%= survey.end_date %></td>
+                  <td><span style="cursor:pointer" class="link-survey" data-base_url="<%= root_url %>" data-survey_link="<%= form_survey_responses_path(survey) %>">Click here to copy survey link</span></td>
                   <td>
                     <%=
                     if !survey.is_released 
-                      btn_link_to(edit_project_survey_path(@project, survey), icon: 'edit', size: 'small', tooltip: 'Edit') 
+                      btn_link_to(edit_project_survey_path(@project,survey.id), icon: 'edit', size: 'small', tooltip: 'Edit') 
                      end
                      %>
                     <%= 
-                      btn_link_to(project_survey_path(@project, survey), method: :delete, data: {confirm: "Are you sure to remove this survey ?"}, style: 'danger', icon: 'trash', size: 'small')
+                      btn_link_to(project_survey_path(@project, survey.id), method: :delete, data: {confirm: "Are you sure to remove this survey ?"}, style: 'danger', icon: 'trash', size: 'small')
                     %>
                   </td>
                 </tr>
@@ -351,5 +353,6 @@
     </div>
     <% end %>
   </div>
+  <div id="toast-message"></div>
 </div>
 <%= javascript_include_tag 'find_users_by_email' %>
