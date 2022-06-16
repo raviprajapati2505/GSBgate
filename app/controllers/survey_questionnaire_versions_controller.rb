@@ -46,6 +46,7 @@ class SurveyQuestionnaireVersionsController < AuthenticatedController
       if @latest_survey_questionnaire_version.update(survey_questionnaire_version_params)
         redirect_to survey_type_path(@survey_type), notice: 'Survey questions are successfully stored.'
       else
+        @latest_survey_questionnaire_version.released_at = nil
         set_sumbit_method_type
 
         render :form
