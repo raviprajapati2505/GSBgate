@@ -328,6 +328,8 @@ en:
         title: Licence Summary
       sp_cp_licence_summary:
         title: Service Provider CGPs & CEPs Summary
+      cp_users:
+        title: Users of %{service_provider}
     form:
       form_title: User details
       user_details:
