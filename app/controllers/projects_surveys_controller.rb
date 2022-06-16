@@ -3,6 +3,10 @@ class ProjectsSurveysController < AuthenticatedController
   before_action :set_project_with_survey_type, only: [:new, :create, :edit, :update, :destroy]
   before_action :set_project_survey, only: [:show, :edit, :update, :destroy]
 
+  def index; end
+
+  def show; end
+
   def new
     @page_title = 'Surveys'
     @projects_survey = ProjectsSurvey.new
@@ -13,7 +17,7 @@ class ProjectsSurveysController < AuthenticatedController
     @projects_survey.created_by_id = current_user.id
 
     if params[:button].present? && params[:button] == 'save-and-release'
-      @projects_survey.is_released = true
+      @projects_survey.released_at = Time.now
     end
 
     if @projects_survey.save
@@ -23,12 +27,11 @@ class ProjectsSurveysController < AuthenticatedController
     end
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
     if params[:button].present? && params[:button] == 'save-and-release'
-      @projects_survey.is_released = true
+      @projects_survey.released_at = Time.now
     end
 
     if @projects_survey.update(survey_params)
@@ -41,12 +44,6 @@ class ProjectsSurveysController < AuthenticatedController
   def destroy
     @projects_survey.destroy
     redirect_to project_path(@project), notice: 'Survey was successfully destroyed.'
-  end
-
-  def index
-  end
-
-  def show
   end
 
   private 
