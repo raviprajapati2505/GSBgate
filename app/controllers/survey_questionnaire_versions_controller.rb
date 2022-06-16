@@ -40,13 +40,12 @@ class SurveyQuestionnaireVersionsController < AuthenticatedController
     
     def save_survey_questions!
       if params[:button].present? && params[:button] == 'save-and-release'
-        @latest_survey_questionnaire_version.released = true
+        @latest_survey_questionnaire_version.released_at = Time.now
       end
 
       if @latest_survey_questionnaire_version.update(survey_questionnaire_version_params)
         redirect_to survey_type_path(@survey_type), notice: 'Survey questions are successfully stored.'
       else
-        @latest_survey_questionnaire_version.released = false
         set_sumbit_method_type
 
         render :form

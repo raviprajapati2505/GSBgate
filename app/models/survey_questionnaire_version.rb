@@ -9,4 +9,8 @@ class SurveyQuestionnaireVersion < ApplicationRecord
 
   # nested attributes
   accepts_nested_attributes_for :survey_questions, reject_if: :all_blank, allow_destroy: true
+
+  def released?
+    released_at.present?
+  end
 end

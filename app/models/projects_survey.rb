@@ -11,6 +11,9 @@ class ProjectsSurvey < ApplicationRecord
     enum user_access: { access_publicly: 1, access_privately: 2 }
 
     validates :title, :survey_type_id, :status, :user_access, presence: true
-    #validates :project, uniqueness: {scope:[:survey_type]}
     validates_uniqueness_of :survey_type_id, scope: :project
+
+    def released?
+      released_at.present?
+    end
 end

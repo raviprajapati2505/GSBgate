@@ -336,9 +336,9 @@
                   <td><span style="cursor:pointer" class="link-survey" data-base_url="<%= root_url %>" data-survey_link="<%= form_survey_responses_path(survey) %>">Click here to copy survey link</span></td>
                   <td>
                     <%=
-                    if !survey.is_released 
-                      btn_link_to(edit_project_survey_path(@project,survey.id), icon: 'edit', size: 'small', tooltip: 'Edit') 
-                     end
+                      unless survey.released?
+                        btn_link_to(edit_project_survey_path(@project,survey.id), icon: 'edit', size: 'small', tooltip: 'Edit') 
+                      end
                      %>
                     <%= 
                       btn_link_to(project_survey_path(@project, survey.id), method: :delete, data: {confirm: "Are you sure to remove this survey ?"}, style: 'danger', icon: 'trash', size: 'small')
