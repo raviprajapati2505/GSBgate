@@ -107,7 +107,11 @@
               <% if @user.default_role? %>
                 <tr>
                   <th><%= User.human_attribute_name('service_provider') %></th>
-                  <td><%= @user.service_provider_name %></td>
+                  <td>
+                    <% if @user.service_provider.present? %>
+                      <%= link_to(@user.service_provider_name, user_path(@user.service_provider_id)) %>
+                    <% end %>
+                  </td>
                 </tr>
                 <tr>
                   <th>Service Provider Email</th>
@@ -297,6 +301,16 @@
       <div class="ibox-content">
         <%= render partial: "sp_licence_summary", locals: { service_provider: service_provider } %>
       </div>
+
+      <% if @user.service_provider? %>
+        <div class="ibox-title m-t">
+          <h5><b><%= t('.cp_users.title', service_provider: service_provider.full_name) %></b></h5>
+        </div>
+        <div class="ibox-content">
+          <%= render partial: "users_list", locals: { service_provider: service_provider } %>
+        </div>
+      <% end %>
+
     </div>
   </div>
 

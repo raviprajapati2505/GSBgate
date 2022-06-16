@@ -1,0 +1,18 @@
+<table class="table table-striped table-bordered">
+  <thead>
+    <tr class="bg-header-grey">
+      <th>Full Name</th>
+      <th>Email</th>
+      <th>Status</th>
+    </tr>
+  </head>
+  <tbody>
+    <% service_provider.users.each do |user| %>
+      <tr>
+        <td><%= link_to(user.full_name, user_path(user)) %></td>
+        <td><%= user.email %></td>
+        <td><%= label_span(user.active?, 'Active', 'Deactivated').html_safe %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
