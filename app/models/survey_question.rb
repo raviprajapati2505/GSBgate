@@ -4,9 +4,9 @@ class SurveyQuestion < ApplicationRecord
 
   enum question_type: 
     {
-      fill_in_the_blank: "Fill-in-the-Blank",
       single_select: "Single-Select (i.e. radio buttons)",
-      multi_select: "Multi-Select (i.e. checkboxes)"
+      multi_select: "Multi-Select (i.e. checkboxes)",
+      fill_in_the_blank: "Fill-in-the-Blank"
     }
 
   # associations

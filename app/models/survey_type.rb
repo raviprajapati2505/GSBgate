@@ -1,6 +1,6 @@
 class SurveyType < ApplicationRecord
   # associations
-  has_many :survey_questionnaire_versions, dependent: :destroy
+  has_many :survey_questionnaire_versions, -> { by_version }, dependent: :destroy
   has_many :projects_surveys, dependent: :destroy
 
   # validations
@@ -12,7 +12,6 @@ class SurveyType < ApplicationRecord
   # as many versions of questions sets are exist for this survey type
   def latest_survey_questionnaire_version
     survey_questionnaire_versions
-      &.by_version
       &.last
   end
 
@@ -25,8 +24,7 @@ class SurveyType < ApplicationRecord
 
   def latest_survey_questions
     latest_survey_questionnaire_version
-      &.survey_questions
-      &.by_position ||
+      &.survey_questions ||
       SurveyQuestion.none
   end
 
