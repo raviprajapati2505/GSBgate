@@ -7,4 +7,7 @@ class QuestionOption < ApplicationRecord
 
   # validations
   validates :option_text, presence: true
+
+  # scopes
+  scope :by_position, -> { order(:position) }
 end

@@ -15,9 +15,9 @@
 
           <%= f.check_box :mandatory, require: true %>
 
-          <div class="form-inputs access-licence-forms row m-b-xl">
-            <div class="question-options-form-div">
-              <%= f.fields_for :question_options do |question_option| %>
+          <div class="form-inputs row m-b-xl">
+            <div class="sortable-question-options">
+              <%= f.fields_for :question_options, f.object.question_options.by_position do |question_option| %>
                 <%= render partial: 'question_option_fields', locals: { f: question_option } %>
               <% end %>
             </div>

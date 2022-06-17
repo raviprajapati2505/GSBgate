@@ -4,9 +4,9 @@ class SurveyQuestion < ApplicationRecord
 
   enum question_type: 
     {
+      fill_in_the_blank: "Fill-in-the-Blank",
       single_select: "Single-Select (i.e. radio buttons)",
-      multi_select: "Multi-Select (i.e. checkboxes)",
-      fill_in_the_blank: "Fill-in-the-Blank"
+      multi_select: "Multi-Select (i.e. checkboxes)"
     }
 
   # associations
@@ -20,6 +20,6 @@ class SurveyQuestion < ApplicationRecord
   # nested attributes
   accepts_nested_attributes_for :question_options, reject_if: :all_blank, allow_destroy: true
 
-  # scope
+  # scopes
   scope :by_position, -> { order(:position) }
 end

@@ -20,62 +20,8 @@
 
   <div class="col-md-12">
     <div id="accordion" class="panel-group">
-      <div class="survey-questions-div" data-survey-type-id="<%= @survey_type.id %>" data-model="SurveyQuestion">
-        <% @latest_questions.each.with_index(1) do |question, i| %>
-          <div id="survey-question-<%= question.id %>" class="panel panel-default" data-sortable-id='<%= question.id %>'>
-            <div class="ibox float-e-margins table-mb-0">
-              <a href="#survey-question-<%= question.id %>-collapsable" data-parent="#accordion" data-toggle="collapse" class="collapsed" aria-expanded="false">
-                <div class="panel-heading">
-                  <h3 class="m-l">
-                    <b>
-                      <%= "Que: #{question.question_text}" %>
-                    </b>
-                  </h3>
-                </div>
-              </a>
-
-              <div class="panel-collapse collapse" id="survey-question-<%= question.id %>-collapsable" aria-expanded="false" style="height: 0px;">
-                <div class="ibox-content">
-                  <table class="table table-bordered table-striped">
-                    <tbody>
-                      <tr>
-                        <th class="col-md-4"><%=SurveyQuestion.human_attribute_name('description') %></th>
-                        <td><%= question.description %></td>
-                      </tr>
-                      <tr>
-                        <th class="col-md-4"><%=SurveyQuestion.human_attribute_name('question_type') %></th>
-                        <td><%= SurveyQuestion.question_types[question.question_type] %></td>
-                      </tr>
-                      <tr>
-                        <th class="col-md-4"><%=SurveyQuestion.human_attribute_name('mandatory') %></th>
-                        <td><%= label_span(question.mandatory?, "Yes", "No").html_safe rescue "-" %></td>
-                      </tr>
-                    </tbody>
-                  </table>
-
-                  <table class="table table-bordered table-striped">
-                    <thead>
-                      <tr>
-                        <th>Options</th>
-                        <th>Results</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td class="p-md">
-                          <% question.question_options.each.with_index(1) do |option, i| %>
-                            <h4><%= "#{i}) #{option.option_text}" %><h4>
-                          <% end %>
-                        </td>
-                        <th>Graphical Representation</th>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-        <% end %>
+      <div class="sortable-survey-questions" data-survey-type-id="<%= @survey_type.id %>" data-model="SurveyQuestion">
+        <%= render partial: 'survey_questions_list', locals: { latest_questions: @latest_questions } %>
       </div>
     </div>
   </div>

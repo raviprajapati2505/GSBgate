@@ -97,7 +97,8 @@ class SurveyQuestionnaireVersionsController < AuthenticatedController
                   question_options_attributes:
                     [ 
                       :option_text, 
-                      :score, 
+                      :score,
+                      :position,
                       :_destroy
                     ]
               ]
@@ -120,7 +121,8 @@ class SurveyQuestionnaireVersionsController < AuthenticatedController
                     [ 
                       :id,
                       :option_text, 
-                      :score, 
+                      :score,
+                      :position,
                       :_destroy
                     ]
               ]

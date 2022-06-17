@@ -9,7 +9,7 @@ class SurveyTypesController < AuthenticatedController
 
   def show
     @page_title = @survey_type.title
-    @latest_questions = @survey_type.latest_survey_questions.by_position
+    @latest_questions = @survey_type.latest_survey_questions
   end
 
   def new

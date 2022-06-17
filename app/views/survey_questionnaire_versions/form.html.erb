@@ -9,7 +9,7 @@
           </h4>
         </div>
 
-        <%= f.fields_for :survey_questions do |survey_question| %>
+        <%= f.fields_for :survey_questions, @survey_questions do |survey_question| %>
           <%= render partial: 'survey_question_fields', locals: { f: survey_question } %>
         <% end %>
 
@@ -38,7 +38,7 @@
             </tr>
           </thead>
           <tbody>
-            <% @survey_type.survey_questionnaire_versions.order(:version).each.with_index(1) do |version, i| %>
+            <% @survey_type.survey_questionnaire_versions.by_version.each.with_index(1) do |version, i| %>
               <tr>
                 <td><%= i %></td>
                 <td><%= "v#{version.version}" %>

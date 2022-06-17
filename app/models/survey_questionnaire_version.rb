@@ -10,6 +10,9 @@ class SurveyQuestionnaireVersion < ApplicationRecord
 
   # nested attributes
   accepts_nested_attributes_for :survey_questions, reject_if: :all_blank, allow_destroy: true
+  
+  # scopes
+  scope :by_version, -> { order(:version) }
 
   scope :released, -> {
     where.not(released_at: nil)
