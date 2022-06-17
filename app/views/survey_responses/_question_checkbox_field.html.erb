@@ -1,0 +1,5 @@
+<div class="col-lg-12">
+  <% question.question_options.each do |option| %>
+    <%= question_response.check_box :value, { label: option.option_text, class: 'survey-checkboxes', required: question.mandatory ? true : false, data: { checkbox_value: option.option_text}}, option.option_text, false %>
+  <% end %>
+</div>

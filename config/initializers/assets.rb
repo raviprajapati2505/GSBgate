@@ -37,3 +37,4 @@ Rails.application.config.assets.precompile += %w( select_project_notifications.j
 Rails.application.config.assets.precompile += %w( select_owner.js )
 Rails.application.config.assets.precompile += %w( incentive_scored.js )
 Rails.application.config.assets.precompile += %w( datatable_customizations.js )
+Rails.application.config.assets.precompile += %w( survey_checkbox_single_value.js )

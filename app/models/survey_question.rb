@@ -10,6 +10,7 @@ class SurveyQuestion < ApplicationRecord
   # associations
   belongs_to :survey_questionnaire_version
   has_many :question_options, dependent: :destroy
+  has_many :question_responses, dependent: :destroy
 
   # validations
   validates :question_text, :question_type, presence: true

@@ -6,6 +6,7 @@ class SurveyResponsesController < ApplicationController
   end
 
   def create
+
     @survey_response = @project_survey.survey_responses.new(survey_response_params)
     if @survey_response.save
       redirect_to thank_you_survey_responses_path(@project_survey), notice: 'Response saved successfully !!'
@@ -21,10 +22,11 @@ class SurveyResponsesController < ApplicationController
 
   def set_project_survey
     @project_survey = ProjectsSurvey.friendly.find(params[:project_survey_id])
+    @survey_questions = @project_survey.survey_questionnaire_version&.survey_questions
   end
 
   def survey_response_params
-    params.require(:survey_response).permit(:name, :email)
+    params.require(:survey_response).permit(:name, :email, question_responses_attributes: [:value, :survey_question_id])
   end
 
 end

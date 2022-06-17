@@ -16,8 +16,21 @@ class SurveyType < ApplicationRecord
       &.last
   end
 
+  def latest_released_survey_questionnaire_version
+    survey_questionnaire_versions
+      &.released
+      &.order(:version)
+      &.last
+  end
+
   def latest_survey_questions
     latest_survey_questionnaire_version
+      &.survey_questions ||
+      SurveyQuestion.none
+  end
+
+  def latest_released_survey_questions
+    latest_released_survey_questionnaire_version
       &.survey_questions ||
       SurveyQuestion.none
   end

@@ -14,8 +14,8 @@ class ProjectsSurveysController < AuthenticatedController
 
   def create
     @projects_survey = @project.projects_surveys.new(survey_params)
-    @projects_survey.created_by_id = current_user.id
-
+    @projects_survey.created_by = current_user
+  
     if params[:button].present? && params[:button] == 'save-and-release'
       @projects_survey.released_at = Time.now
     end

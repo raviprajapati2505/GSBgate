@@ -1,14 +1,24 @@
 class SurveyResponse < ApplicationRecord
-    belongs_to :projects_survey
-    
-    validates :name, presence: true
-    #validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
-    validate :email_based_on_survey_access_type
+	belongs_to :projects_survey
+	has_many :question_responses, dependent: :destroy
 
-    private
+	validates :name, presence: true
+	validate :email_based_on_survey_access_type
 
-    def email_based_on_survey_access_type
-        puts projects_survey.user_access
-        binding.pry    
-    end
+	# nested attributes
+	accepts_nested_attributes_for :question_responses, reject_if: :all_blank, allow_destroy: true
+
+	private
+
+	def email_based_on_survey_access_type
+		if projects_survey.is_private?
+				if email.blank?
+						errors.add(:email, 'email id cant be blank')
+				end
+				user_exist = projects_survey.is_user_exist(email)
+				if !user_exist
+					errors.add(:email, 'email is not associate with any of account !! try different one')
+				end
+		end
+	end
 end
