@@ -28,6 +28,48 @@ $(function() {
     }, 2000);
   }
 
+  // change the visibility of options and set their destroy parameter values
+  function manageExistingOptionsVisibility(element, visibility) {
+    var options_nested_fields = element.find(".survey-question-options .nested-fields");
+    var remove_options_fields = options_nested_fields.find("input[id*='__destroy']");
+
+    if (visibility == "hide") {
+      // track already removed options
+      remove_options_fields.find("[value='1']").addClass("to_be_removed");
+
+      options_nested_fields.hide();
+      remove_options_fields.val("1");
+
+    } else {
+      options_nested_fields.show();
+      remove_options_fields.val("false");
+
+      // set value for already removed options
+      remove_options_fields.find(".to_be_removed").val("1");
+      remove_options_fields.removeClass("to_be_removed");
+    }
+  }
+
+  // change visibility of add options button according to question type
+  function changeVisibilityOfOptionsButton() {
+    $(".select-question-type").on("change", function() {
+      let question_types_with_no_options = ["fill_in_the_blank"]
+      let survey_questions_fields = $(this).parent().parent();
+      let selected_question_type = $(this).find(":selected").val();
+      let add_options_button = survey_questions_fields.find("#add-option-button");
+
+      if ( question_types_with_no_options.includes(selected_question_type) ) {
+        add_options_button.addClass("d-none");
+
+        manageExistingOptionsVisibility(survey_questions_fields, 'hide');
+
+      } else {
+        add_options_button.removeClass("d-none");
+        manageExistingOptionsVisibility(survey_questions_fields, 'show');
+      }
+    });
+  }
+
   $('.sortable-survey-questions').sortable({
     axis: 'y',
 
@@ -53,4 +95,9 @@ $(function() {
       });
     }
   });
+
+  // for nested forms
+  $(document).on("cocoon:after-insert", function() {
+    changeVisibilityOfOptionsButton();
+  }).trigger('cocoon:after-insert');
 });

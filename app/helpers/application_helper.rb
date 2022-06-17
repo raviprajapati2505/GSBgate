@@ -816,6 +816,8 @@ module ApplicationHelper
       false
     end
   end
+  
+  # survey module
 
   def survey_question_options_report(projects_survey, question)
     option_with_counts = Hash.new
@@ -828,5 +830,9 @@ module ApplicationHelper
       option_with_counts[option.option_text] = option_wise_counts
     end
     return option_with_counts
+  end
+
+  def set_visibility(question_type = '')
+    ["fill_in_the_blank"].include?(question_type) ? 'd-none' : ''
   end
 end

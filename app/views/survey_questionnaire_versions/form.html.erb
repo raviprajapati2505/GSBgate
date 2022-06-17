@@ -38,7 +38,7 @@
             </tr>
           </thead>
           <tbody>
-            <% @survey_type.survey_questionnaire_versions.by_version.each.with_index(1) do |version, i| %>
+            <% @survey_type.survey_questionnaire_versions.each.with_index(1) do |version, i| %>
               <tr>
                 <td><%= i %></td>
                 <td><%= "v#{version.version}" %>
