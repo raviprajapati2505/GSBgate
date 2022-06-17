@@ -52,8 +52,12 @@ gem 'devise'
 gem 'devise_invitable'
 gem 'devise-jwt'
 gem 'rack-cors'
+gem 'friendly_id'
 gem 'countries', require: 'countries/global'
-gem 'friendly_id', '~> 5.4.0'
+
+# drag and drop functionality
+gem 'acts_as_list'
+gem 'jquery-ui-rails'
 
 group :development do
   gem 'pry-rails'

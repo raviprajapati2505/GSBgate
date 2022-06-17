@@ -16,9 +16,11 @@
           <%= f.check_box :mandatory, require: true %>
 
           <div class="form-inputs access-licence-forms row m-b-xl">
-            <%= f.fields_for :question_options do |question_option| %>
-              <%= render partial: 'question_option_fields', locals: { f: question_option } %>
-            <% end %>
+            <div class="question-options-form-div">
+              <%= f.fields_for :question_options do |question_option| %>
+                <%= render partial: 'question_option_fields', locals: { f: question_option } %>
+              <% end %>
+            </div>
 
             <div class="links">
               <%= link_to_add_association 'Add Option', f, :question_options, class: "btn btn-primary btn-sm nested-fields-links", id: "add-option-button" %>
@@ -26,7 +28,6 @@
           </div>
         </div>
       </div>
-
     </div>
   </div>
 </div>

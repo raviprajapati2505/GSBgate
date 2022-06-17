@@ -27,6 +27,7 @@
  *= require dropzone
  *= require toastr
  *= require js-routes
+ *= require jquery-ui/widgets/sortable
  *= require ckeditor-jquery
  *= require html5sortable/html5sortable
  *= require leaflet
@@ -37,6 +38,7 @@
  *= require datatable_customizations
  *= require moment
  *= require daterangepicker
+ *= require drag_and_drop
  */
 
 $(function () {

@@ -24,6 +24,26 @@ class SurveyQuestionnaireVersionsController < AuthenticatedController
     save_survey_questions!
   end
 
+  def update_position
+    begin
+      model = params['model']
+      new_sequence = params['new_sequence']
+    
+      new_sequence.compact.each.with_index(1) do |record, position|
+        model.constantize.find(record).update_column(:position, position)
+      end
+
+      css_class = "success"
+      message = "Positions are successfully updated!"
+
+    rescue => e
+      css_class = "error"
+      message = "Positions are failed to update!"
+    end
+
+    render json: { css_class: css_class, message: message }
+  end
+
   private
 
     def set_survey_type

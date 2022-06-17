@@ -1,5 +1,7 @@
 class SurveyQuestion < ApplicationRecord
-  
+  # to set the position
+  acts_as_list
+
   enum question_type: 
     {
       single_select: "Single-Select (i.e. radio buttons)",
@@ -17,4 +19,7 @@ class SurveyQuestion < ApplicationRecord
 
   # nested attributes
   accepts_nested_attributes_for :question_options, reject_if: :all_blank, allow_destroy: true
+
+  # scope
+  scope :by_position, -> { order(:position) }
 end
