@@ -1,0 +1,3 @@
+<% question.question_options.each do |option| %>
+  <%= question_response.radio_button :value, option.option_text, required: question.mandatory ? true : false, label: option.option_text %>
+<% end %>

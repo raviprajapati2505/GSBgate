@@ -1,0 +1,15 @@
+<div class="col-lg-12">
+	<h3>Questions</h3>
+	<hr>
+</div>
+<%= question_response.hidden_field :survey_question_id, { value: q.id } %>
+<div class="col-lg-12">
+	<label><%= q.question_text %></label>
+	<p><%= q.description  %></p>
+</div>
+
+<% case q.question_type 
+		when 'fill_in_the_blank' %><%= render partial: 'question_text_field', locals: { question_response: question_response, question: q } %>
+<% when 'multi_select' %><%= render partial: 'question_checkbox_field', locals: { question_response: question_response, question: q } %>
+<% when 'single_select' %><%= render partial: 'question_radio_field', locals: { question_response: question_response, question: q } %>
+<% end %>
