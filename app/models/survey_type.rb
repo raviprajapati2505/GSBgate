@@ -12,7 +12,7 @@ class SurveyType < ApplicationRecord
   # as many versions of questions sets are exist for this survey type
   def latest_survey_questionnaire_version
     survey_questionnaire_versions
-      &.order(:version)
+      &.by_version
       &.last
   end
 
@@ -25,7 +25,8 @@ class SurveyType < ApplicationRecord
 
   def latest_survey_questions
     latest_survey_questionnaire_version
-      &.survey_questions ||
+      &.survey_questions
+      &.by_position ||
       SurveyQuestion.none
   end
 

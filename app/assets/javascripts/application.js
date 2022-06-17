@@ -38,7 +38,7 @@
  *= require datatable_customizations
  *= require moment
  *= require daterangepicker
- *= require drag_and_drop
+ *= require surveys
  */
 
 $(function () {
