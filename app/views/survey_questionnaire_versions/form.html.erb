@@ -2,7 +2,7 @@
   <div class="col-lg-8">
     <%= bootstrap_form_for(@latest_survey_questionnaire_version, url: survey_type_survey_questionnaire_versions_path(@survey_type), method: @submit_method ) do |f| %>
       <div class="ibox">
-        <div class="ibox-title">
+        <div class="ibox-title m-b">
           <h4><b>Edit Questions</b></h4>
           <h4>Current Version: 
             <%= "v#{@latest_survey_questionnaire_version.version}" %>

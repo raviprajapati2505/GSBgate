@@ -151,6 +151,7 @@ Rails.application.routes.draw do
         get :form
         post :create
         patch :update
+        patch :update_position
       end
     end
   end

@@ -55,6 +55,8 @@ GEM
       i18n (>= 0.7, < 2)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
+    acts_as_list (1.0.4)
+      activerecord (>= 4.2)
     addressable (2.6.0)
       public_suffix (>= 2.0.2, < 4.0)
     airbrussh (1.3.1)
@@ -217,6 +219,8 @@ GEM
     jbuilder (2.8.0)
       activesupport (>= 4.2.0)
       multi_json (>= 1.2)
+    jquery-ui-rails (6.0.1)
+      railties (>= 3.2.16)
     js-routes (1.4.4)
       railties (>= 3.2)
       sprockets-rails
@@ -428,6 +432,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  acts_as_list
   addressable
   awesome_print
   axlsx (~> 2.1.0.pre)
@@ -460,11 +465,12 @@ DEPENDENCIES
   execjs
   faraday
   font-awesome-rails
-  friendly_id (~> 5.4.0)
+  friendly_id
   haml-rails
   html2haml
   httparty
   jbuilder
+  jquery-ui-rails
   js-routes
   kaminari
   letter_opener
