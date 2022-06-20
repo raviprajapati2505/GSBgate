@@ -12,9 +12,11 @@
                   </div>
 
                   <% @survey_questions.each do |question| %>
+                    <div class="nested-fields">
                       <%= f.fields_for :question_responses, QuestionResponse.new do |response_field| %>
                         <%= render partial: 'survey_questions', locals: { question_response: response_field, q: question } %>
                       <% end %>
+                      </div>
                   <% end %>
 
                   <div class="col-lg-12">
