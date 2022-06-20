@@ -5,7 +5,9 @@ class ProjectsSurveysController < AuthenticatedController
 
   def index; end
 
-  def show; end
+  def show
+    @latest_questions = @projects_survey.survey_questionnaire_version&.survey_questions
+  end
 
   def new
     @page_title = 'Surveys'

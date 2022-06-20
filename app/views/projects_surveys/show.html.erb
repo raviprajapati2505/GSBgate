@@ -1,2 +1,72 @@
-%h1 ProjectSurveys#show
-%p Find me in app/views/project_surveys/show.html.haml
+<div class="row">
+
+  <div class="col-md-12 m-t">
+    <div class="ibox float-e-margins">
+      <div class="ibox-title">
+        <div class='row'>
+          <div class="col-md-10">
+            <h2><b><%= "Questions of #{@projects_survey.survey_type.title}" %></b></h2>
+            <h3>Total Questions: <%= @latest_questions.count rescue 0 %></h3>
+          </div>
+          <div class="col-md-2">
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-12">
+    <div class="ibox float-e-margins">
+      <% @latest_questions.each.with_index(1) do |question, i| %>
+        <div class="ibox-title m-t">
+          <h3 class="m"><%= "Que-#{i}:" %>
+          <h4 class="p-m"><%= question.question_text %></h4>
+        </div>
+
+        <div class="ibox-content">
+          <table class="table table-bordered table-striped">
+            <tbody>
+              <tr>
+                <th class="col-md-4"><%=SurveyQuestion.human_attribute_name('description') %></th>
+                <td><%= question.description %></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table class="table table-bordered table-striped user-details-table">
+            <thead>
+              <tr>
+                <th>Results</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="p-md">
+                  <% if question.question_type == 'single_select' || question.question_type == 'multi_select' %>
+                    <% 
+                      option_with_counts = survey_question_options_report(@projects_survey, question)
+                      total_responses = @projects_survey.survey_responses.count
+                      option_counter = 1
+                    %>
+                    <% option_with_counts.each do |key, value| %>
+                      <p><%= "#{option_counter}) #{key} (#{value} Out of #{total_responses})" %></p>
+                      <% option_counter = option_counter + 1 %>
+                    <% end %>
+                  <% else %>
+                    <% question.question_responses.each do |text| %>
+                      <p class="content"><b><%= text.survey_response.name %></b><p><%= text.value %></p>
+                    <% end %>
+                  <% end %>
+                </td>
+                <th>Graphical Representation</th>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
