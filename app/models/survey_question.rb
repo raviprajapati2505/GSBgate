@@ -15,11 +15,19 @@ class SurveyQuestion < ApplicationRecord
   has_many :question_responses, dependent: :destroy
 
   # validations
+  validates :question_options, presence: true, unless: :fill_in_the_blank?
   validates :question_text, :question_type, presence: true
 
   # nested attributes
   accepts_nested_attributes_for :question_options, reject_if: :all_blank, allow_destroy: true
 
   # scopes
-  scope :by_position, -> { order(:position) }
+  default_scope { order(:position) }
+
+  # add more question type names according to requirement.
+  question_types.keys.each do |status_name|
+    define_method "#{status_name}?" do
+      question_type == status_name
+    end
+  end
 end

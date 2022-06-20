@@ -9,7 +9,8 @@ class SurveyTypesController < AuthenticatedController
 
   def show
     @page_title = @survey_type.title
-    @latest_questions = @survey_type.latest_survey_questions
+    @survey_questions = @survey_type.latest_survey_questions
+    @is_latest = true
   end
 
   def new

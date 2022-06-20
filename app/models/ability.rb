@@ -311,8 +311,8 @@ class Ability
       can :read, :all
 
       cannot :manage, :survey_dashboard
-      cannot :manage, SurveyType
-      cannot :manage, :survey_questionnaire_version
+      cannot [:index, :show, :new, :edit, :create, :update, :destroy], SurveyType
+      cannot [:show, :form, :create, :update, :update_position], SurveyQuestionnaireVersion
 
       can [:index, :auditable_index, :auditable_index_comments, :download_attachment, :export], AuditLog, attachment_file: true
       # Project
@@ -440,8 +440,8 @@ class Ability
       can :read, :all
 
       cannot :manage, :survey_dashboard
-      cannot :manage, SurveyType
-      cannot :manage, :survey_questionnaire_version
+      cannot [:index, :show, :new, :edit, :create, :update, :destroy], SurveyType
+      cannot [:show, :form, :create, :update, :update_position], SurveyQuestionnaireVersion
 
       can :download_signed_certificate, CertificationPath, certification_path_status: { id: [CertificationPathStatus::CERTIFIED, CertificationPathStatus::CERTIFICATE_IN_PROCESS] }
       can [:download_location_plan, :download_site_plan, :download_design_brief, :download_project_narrative, :download_area_statement, :download_sustainability_features], Project
@@ -466,8 +466,8 @@ class Ability
       can :activity_info, User
 
       can :index, :survey_dashboard
-      can :manage, SurveyType
-      can :manage, :survey_questionnaire_version
+      can [:index, :show, :new, :edit, :create, :update, :destroy], SurveyType
+      can [:show, :form, :create, :update, :update_position], SurveyQuestionnaireVersion
 
     elsif user.service_provider?
       can :read, Project, projects_users: users_with_service_provider

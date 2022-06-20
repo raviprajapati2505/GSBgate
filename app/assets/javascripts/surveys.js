@@ -35,7 +35,7 @@ $(function() {
 
     if (visibility == "hide") {
       // track already removed options
-      remove_options_fields.find("[value='1']").addClass("to_be_removed");
+      // remove_options_fields.find("[value='1']").addClass("to_be_removed");
 
       options_nested_fields.hide();
       remove_options_fields.val("1");
@@ -45,8 +45,8 @@ $(function() {
       remove_options_fields.val("false");
 
       // set value for already removed options
-      remove_options_fields.find(".to_be_removed").val("1");
-      remove_options_fields.removeClass("to_be_removed");
+      // remove_options_fields.find(".to_be_removed").val("1");
+      // remove_options_fields.removeClass("to_be_removed");
     }
   }
 

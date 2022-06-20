@@ -1,13 +1,24 @@
 class SurveyQuestionnaireVersionsController < AuthenticatedController
-  load_and_authorize_resource class: false, except: [:create]
+  load_and_authorize_resource
   before_action :set_survey_type
-  before_action :set_latest_survey_questionnaire_version, only: [:form, :update]
+  before_action :set_latest_survey_questionnaire_version, only: [:show, :form, :update]
   before_action :set_latest_survey_questions, only: [:form]
+
+  def show
+    @page_title = @survey_type.title
+    latest_survey_questionnaire_version = @survey_questionnaire_version
+    @survey_questionnaire_version = @survey_type.survey_questionnaire_versions.find(params[:id])
+    @survey_questions = @survey_questionnaire_version.survey_questions
+
+    @is_latest = latest_survey_questionnaire_version == @survey_questionnaire_version
+
+    render "survey_types/show"
+  end
 
   def form
     @page_title = t('survey_questionnaire_version.form.title_html', title: @survey_type.title)
 
-    @survey_questions = @latest_survey_questionnaire_version.survey_questions.new unless @survey_questions.present?
+    @survey_questions = @survey_questionnaire_version.survey_questions.new unless @survey_questions.present?
 
     # post or patch
     set_sumbit_method_type
@@ -15,13 +26,21 @@ class SurveyQuestionnaireVersionsController < AuthenticatedController
 
   def create
     # create new survey questionnaire version as previous one is released
-    @latest_survey_questionnaire_version = @survey_type.create_survey_questionnaire_version
+    @survey_questionnaire_version = @survey_type.create_survey_questionnaire_version
 
-    save_survey_questions!
+    if save_survey_questions!
+      redirect_to survey_type_path(@survey_type), notice: 'Survey questions are successfully stored.'
+    else
+      render :form
+    end
   end
 
   def update
-    save_survey_questions!
+    if save_survey_questions!
+      redirect_to survey_type_path(@survey_type), notice: 'Survey questions are successfully stored.'
+    else
+      render :form
+    end
   end
 
   def update_position
@@ -51,7 +70,7 @@ class SurveyQuestionnaireVersionsController < AuthenticatedController
     end
 
     def set_latest_survey_questionnaire_version
-      @latest_survey_questionnaire_version = @survey_type.latest_survey_questionnaire_version
+      @survey_questionnaire_version = @survey_type.latest_survey_questionnaire_version
     end
 
     def set_latest_survey_questions
@@ -60,21 +79,21 @@ class SurveyQuestionnaireVersionsController < AuthenticatedController
     
     def save_survey_questions!
       if params[:button].present? && params[:button] == 'save-and-release'
-        @latest_survey_questionnaire_version.released_at = Time.now
+        @survey_questionnaire_version.released_at = Time.now
       end
 
-      if @latest_survey_questionnaire_version.update(survey_questionnaire_version_params)
-        redirect_to survey_type_path(@survey_type), notice: 'Survey questions are successfully stored.'
+      if @survey_questionnaire_version.update(survey_questionnaire_version_params)
+        return true
       else
-        @latest_survey_questionnaire_version.released_at = nil
+        @survey_questionnaire_version.released_at = nil
         set_sumbit_method_type
 
-        render :form
+        return false
       end
     end
 
     def set_sumbit_method_type
-      if @latest_survey_questionnaire_version.released?
+      if @survey_questionnaire_version.released?
         @submit_method = 'POST'
       else
         @submit_method = 'PATCH'
@@ -90,7 +109,7 @@ class SurveyQuestionnaireVersionsController < AuthenticatedController
               [ 
                 :question_text,
                 :description, 
-                :mandatory, 
+                :mandatory,
                 :position, 
                 :question_type, 
                 :_destroy,
@@ -114,7 +133,7 @@ class SurveyQuestionnaireVersionsController < AuthenticatedController
                 :question_text,
                 :description, 
                 :mandatory, 
-                :position, 
+                :position,
                 :question_type, 
                 :_destroy, 
                   question_options_attributes:
