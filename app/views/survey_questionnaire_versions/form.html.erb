@@ -1,11 +1,11 @@
 <div class="row">
   <div class="col-lg-8">
-    <%= bootstrap_form_for(@latest_survey_questionnaire_version, url: survey_type_survey_questionnaire_versions_path(@survey_type), method: @submit_method ) do |f| %>
+    <%= bootstrap_form_for(@survey_questionnaire_version, url: survey_type_survey_questionnaire_versions_path(@survey_type), method: @submit_method ) do |f| %>
       <div class="ibox">
         <div class="ibox-title m-b">
           <h4><b>Edit Questions</b></h4>
           <h4>Current Version: 
-            <%= "v#{@latest_survey_questionnaire_version.version}" %>
+            <%= "v#{@survey_questionnaire_version.version}" %>
           </h4>
         </div>
 
@@ -16,7 +16,7 @@
         <div class="form-actions">
           <%= link_to_add_association 'Add Question', f, :survey_questions, class: "btn btn-primary" %>
           <%= btn_save %>
-          <%= btn_save(text: 'Save and Release', value: 'save-and-release') %>
+          <%= btn_save(text: 'Save and Release', value: 'save-and-release', data: { confirm: "Are you sure about release this questionnaire ?" }) %>
           <%= btn_cancel_to(form_survey_type_survey_questionnaire_versions_path(@survey_type), text: 'Reset', style: 'white', icon: 'refresh') %>
         </div>
       </div>
@@ -41,7 +41,7 @@
             <% @survey_type.survey_questionnaire_versions.each.with_index(1) do |version, i| %>
               <tr>
                 <td><%= i %></td>
-                <td><%= "v#{version.version}" %>
+                <td><%= link_to("v#{version.version}", survey_type_survey_questionnaire_version_path(@survey_type, version)) %>
                 <td><%= label_span(version.released?, version&.released_at&.strftime("%d %B, %Y %H:%M"), "Not released").html_safe rescue "-" %>
               </tr>
             <% end %>

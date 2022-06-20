@@ -1,4 +1,4 @@
-<% latest_questions.each.with_index(1) do |question, i| %>
+<% survey_questions.each.with_index(1) do |question, i| %>
   <div id="survey-question-<%= question.id %>" class="panel panel-default" data-sortable-id='<%= question.id %>'>
     <div class="ibox float-e-margins table-mb-0">
       <a href="#survey-question-<%= question.id %>-collapsable" data-parent="#accordion" data-toggle="collapse" class="collapsed" aria-expanded="false">

@@ -1,6 +1,6 @@
 class SurveyType < ApplicationRecord
   # associations
-  has_many :survey_questionnaire_versions, -> { by_version }, dependent: :destroy
+  has_many :survey_questionnaire_versions, dependent: :destroy
   has_many :projects_surveys, dependent: :destroy
 
   # validations
