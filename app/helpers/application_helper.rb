@@ -392,6 +392,11 @@ module ApplicationHelper
         certification_path_document = model
       when User.name.demodulize, ServiceProvider.name.demodulize
         user = model
+      when SurveyType.name.demodulize
+        survey_type = model
+      when SurveyQuestionnaireVersion.name.demodulize
+        survey_type = model.survey_type
+        survey_questionnaire_version = model
       else
         return breadcrumbs
     end
@@ -403,11 +408,15 @@ module ApplicationHelper
       elsif criterion.present?
         breadcrumbs[:names] << 'Criteria'
         breadcrumbs[:paths] << scheme_criteria_url
+      elsif survey_type.present?
+        breadcrumbs[:names] << 'Survey Types'
+        breadcrumbs[:paths] << survey_types_path
       else
         breadcrumbs[:names] << 'Projects'
         breadcrumbs[:paths] << projects_url
       end
     end
+
     if project.present?
       breadcrumbs[:names] << project.name
       breadcrumbs[:paths] << project_url(project)
@@ -459,6 +468,14 @@ module ApplicationHelper
     if user.present?
       breadcrumbs[:names] << user.email
       breadcrumbs[:paths] << user_path(user)
+    end
+    if survey_type.present?
+      breadcrumbs[:names] << survey_type.title
+      breadcrumbs[:paths] << survey_type_path(survey_type)
+    end
+    if survey_questionnaire_version.present?
+      breadcrumbs[:names] << "v#{survey_questionnaire_version.version}"
+      breadcrumbs[:paths] << survey_type_survey_questionnaire_version_path(survey_type, survey_questionnaire_version)
     end
 
     return breadcrumbs

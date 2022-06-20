@@ -9,9 +9,9 @@ class SurveyQuestionnaireVersionsController < AuthenticatedController
     latest_survey_questionnaire_version = @survey_questionnaire_version
     @survey_questionnaire_version = @survey_type.survey_questionnaire_versions.find(params[:id])
     @survey_questions = @survey_questionnaire_version.survey_questions
-
+    @controller_model = @survey_questionnaire_version
     @is_latest = latest_survey_questionnaire_version == @survey_questionnaire_version
-
+  
     render "survey_types/show"
   end
 
@@ -71,6 +71,7 @@ class SurveyQuestionnaireVersionsController < AuthenticatedController
 
     def set_latest_survey_questionnaire_version
       @survey_questionnaire_version = @survey_type.latest_survey_questionnaire_version
+      @controller_model = @survey_questionnaire_version
     end
 
     def set_latest_survey_questions

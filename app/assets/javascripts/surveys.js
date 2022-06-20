@@ -18,10 +18,10 @@ $(function() {
             $("#toast-message").html($.rails.toast_message("error", "Something went wrong!"));
         }
       });
+    } else {
+      $("#toast-message").html($.rails.toast_message("error", "Something went wrong!"));
     }
 
-    $("#toast-message").html($.rails.toast_message("error", "Something went wrong!"));
-    
     // hide container after 2 seconds
       setInterval(function() {
         $("#toast-message").html('');
