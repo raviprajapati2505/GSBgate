@@ -9,6 +9,7 @@ class SurveyTypesController < AuthenticatedController
 
   def show
     @page_title = @survey_type.title
+    @survey_questionnaire_version = @survey_type.latest_survey_questionnaire_version
     @survey_questions = @survey_type.latest_survey_questions
     @is_latest = true
   end
@@ -45,6 +46,7 @@ class SurveyTypesController < AuthenticatedController
 
     def set_survey_type
       @survey_type = SurveyType.find(params[:id])
+      @controller_model = @survey_type
     end
 
     def survey_type_params

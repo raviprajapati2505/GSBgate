@@ -1,7 +1,8 @@
 <%= bootstrap_form_for(@survey_type, html: { class: 'survey-type-form' }) do |f| %>
   <div class="form-inputs">
-      <%= f.text_field :title %>
-      <%= f.text_area :description, class: 'ckeditor' %>
-      <%= btn_save %>
+    <%= f.text_field :title %>
+    <%= f.text_area :description, class: 'ckeditor' %>
+    <%= btn_link_to(:back, icon: 'backward', text: 'Back') %>
+    <%= btn_save %>
   </div>
 <% end %>

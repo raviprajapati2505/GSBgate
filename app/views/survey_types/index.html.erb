@@ -1,38 +1,40 @@
 <div class="row">
-    <div class="col-md-12">
-      <div class="ibox float-e-margins">
-          <div class="ibox-title">
-              <h5>List of Surverys</h5>
-          </div>
-          <div class="ibox-content">
-                <table class="table table-bordered table-striped">
-                  <thead>
-                    <tr>
-                      <th>Title</th>
-                      <th></th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <% @survey_types.each do |survey_type| %>
-                      <tr>
-                        <td>
-                          <%= link_to survey_type.title, survey_type_path(survey_type) %>
-                        </td>
-                        <td>
-                          <%= btn_link_to(edit_survey_type_path(survey_type), icon: 'edit', size: 'small', tooltip: 'Edit') %>
-                        </td>
-                        <td>
-                          <%= 
-                            btn_link_to(survey_type_path(survey_type), method: :delete, data: {confirm: "Are you sure to remove '#{survey_type&.title}' survey type ?"}, style: 'danger', icon: 'trash', size: 'small') %>
-                        </td>
-                      </tr>
-                    <% end %>
-                  </tbody>
-                </table>
-                <%= btn_link_to(new_survey_type_path, icon: 'building-o', text: 'New Survey type') %>
-          </div>
-        </div>
+  <div class="col-md-12">
+    <div class="ibox float-e-margins">
+      <div class="ibox-title">
+        <h5>List of Surverys</h5>
       </div>
+      <div class="ibox-content">
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @survey_types.each do |survey_type| %>
+              <tr>
+                <td>
+                  <%= link_to survey_type.title, survey_type_path(survey_type) %>
+                </td>
+                <td>
+                  <%= btn_link_to(edit_survey_type_path(survey_type), icon: 'edit', size: 'small', tooltip: 'Edit') %>
+                </td>
+                <td>
+                  <%= 
+                    btn_link_to(survey_type_path(survey_type), method: :delete, data: {confirm: "Are you sure to remove '#{survey_type&.title}' survey type ?"}, style: 'danger', icon: 'trash', size: 'small') %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+
+        <%= btn_link_to(survey_dashboard_index_path, icon: 'backward', text: 'DashBoard') %>
+        <%= btn_link_to(new_survey_type_path, icon: 'building-o', text: 'New Survey type') %>
+      </div>
+    </div>
+  </div>
 </div>
 
