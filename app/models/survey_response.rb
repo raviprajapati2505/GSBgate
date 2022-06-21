@@ -1,24 +1,30 @@
 class SurveyResponse < ApplicationRecord
-	belongs_to :projects_survey
-	has_many :question_responses, dependent: :destroy
+  # associations
+  belongs_to :projects_survey
+  has_many :question_responses, dependent: :destroy
 
-	validates :name, presence: true
-	validate :email_based_on_survey_access_type
+  # validations
+  validates :name, presence: true
+  validate :email_based_on_survey_access_type
 
-	# nested attributes
-	accepts_nested_attributes_for :question_responses, reject_if: :all_blank, allow_destroy: true
+  # nested attributes
+  accepts_nested_attributes_for :question_responses, reject_if: :all_blank, allow_destroy: true
 
-	private
+  private
 
-	def email_based_on_survey_access_type
-		if projects_survey.is_private?
-				if email.blank?
-						errors.add(:email, 'email id cant be blank')
-				end
-				user_exist = projects_survey.is_user_exist(email)
-				if !user_exist
-					errors.add(:email, 'email is not associate with any of account !! try different one')
-				end
-		end
-	end
+  def email_based_on_survey_access_type
+    if projects_survey.is_private?
+      if email.blank?
+        errors.add(:email, 'email id cant be blank')
+      else
+        if is_user_in_system?
+          errors.add(:email, 'this survey is for GSAS users only')
+        end
+      end
+    end
+  end
+
+  def is_user_in_system?
+    User.find_by_email(email).present?
+  end
 end
