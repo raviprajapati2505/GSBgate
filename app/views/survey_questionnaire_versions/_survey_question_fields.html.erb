@@ -7,11 +7,13 @@
 
       <div class="form-inputs">
         <div class="p-m survey-questions-fields">
-          <% if f.object.errors[:question_options].present? %>
-            <h4 class="error text-danger">
-              Options can't be blank.
-            </h4>
-          <% end %>
+          <div class="error text-danger">
+            <% if f.object.errors[:question_options].present? %>
+              <h4>
+                Options can't be blank.
+              </h4>
+            <% end %>
+          </div>
 
           <%= f.text_field :question_text %>
 

@@ -839,15 +839,18 @@ module ApplicationHelper
   # survey module
 
   def survey_question_options_report(projects_survey, question)
-    option_with_counts = Hash.new
+    option_with_counts = {}
+
     question.question_options.each.with_index(1) do |option, i|
-      if question.question_type == 'single_select'
+      if question.single_select?
         option_wise_counts = QuestionResponse.where(value: option.option_text).count || 0
       else
-        option_wise_counts = QuestionResponse.where('value ILIKE ?', '%'+option.option_text+'%').count || 0
+        option_wise_counts = QuestionResponse.where("value ILIKE ?", "%#{option&.option_text}%").count || 0
       end
+  
       option_with_counts[option.option_text] = option_wise_counts
     end
+
     return option_with_counts
   end
 
