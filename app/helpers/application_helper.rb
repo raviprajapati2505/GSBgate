@@ -397,6 +397,9 @@ module ApplicationHelper
       when SurveyQuestionnaireVersion.name.demodulize
         survey_type = model.survey_type
         survey_questionnaire_version = model
+      when ProjectsSurvey.name.demodulize
+        project = model.project
+        projects_survey = model
       else
         return breadcrumbs
     end
@@ -477,7 +480,6 @@ module ApplicationHelper
       breadcrumbs[:names] << "v#{survey_questionnaire_version.version}"
       breadcrumbs[:paths] << survey_type_survey_questionnaire_version_path(survey_type, survey_questionnaire_version)
     end
-
     return breadcrumbs
   end
 

@@ -55,9 +55,10 @@
                       <% option_counter = option_counter + 1 %>
                     <% end %>
                   <% else %>
-                    <% question.question_responses.each do |text| %>
-                      <p class="content"><b><%= text.survey_response.name %></b><p><%= text.value %></p>
-                    <% end %>
+                    <span class="show_text_responses" data-survey_question_id="<%= question.id %>">Click Here To Show the Text responses</span>
+                    <%# question.question_responses.each do |text| %>
+                     
+                    <%# end %>
                   <% end %>
                 </td>
                 <th>Graphical Representation</th>
@@ -69,4 +70,26 @@
       <% end %>
     </div>
   </div>
+
+  <div class="col-md-12">
+    <%= btn_link_to(:back, icon: 'backward', text: 'Back') %>
+  </div>
+</div>
+
+<div class="modal fade" id="survey_text_response_model">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <%= btn_close_modal %>
+                <h4 class="modal-title">Text Responses</h4>
+            </div>
+            <div class="modal-body">
+              <div class="content">
+              </div>
+            </div>
+            <div class="modal-footer">
+                <%= btn_tag(text: t('.btn_cancel'), style: 'white', data: {dismiss: 'modal'}) %>
+            </div>
+        </div>
+    </div>
 </div>

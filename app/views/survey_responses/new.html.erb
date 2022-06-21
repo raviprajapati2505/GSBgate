@@ -16,7 +16,7 @@
                       <%= f.fields_for :question_responses, QuestionResponse.new do |response_field| %>
                         <%= render partial: 'survey_questions', locals: { question_response: response_field, q: question } %>
                       <% end %>
-                      </div>
+                    </div>
                   <% end %>
 
                   <div class="col-lg-12">
