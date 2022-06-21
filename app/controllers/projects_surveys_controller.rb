@@ -6,6 +6,7 @@ class ProjectsSurveysController < AuthenticatedController
   def index; end
 
   def show
+    @page_title = @projects_survey.title
     @latest_questions = @projects_survey.survey_questionnaire_version&.survey_questions
   end
 
@@ -56,6 +57,7 @@ class ProjectsSurveysController < AuthenticatedController
 
   def set_project_survey
     @projects_survey = ProjectsSurvey.find(params[:id])
+    @controller_model = @projects_survey
   end
 
   def set_project_with_survey_type

@@ -161,6 +161,7 @@ Rails.application.routes.draw do
       get ':project_survey_id/new', to: 'survey_responses#new', as: 'form'
       post ':project_survey_id/create', to: 'survey_responses#create', as: 'submit'
       get ':project_survey_id/thank_you', to: 'survey_responses#thank_you', as: 'thank_you'
+      get 'all_text_responses_of_survey_question', to: 'survey_responses#all_text_responses_of_survey_question', as: 'all_text_responses_of_survey_question'
     end
   end
 
