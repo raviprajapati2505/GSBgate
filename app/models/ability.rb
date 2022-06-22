@@ -129,7 +129,9 @@ class Ability
 
     can [:show, :edit, :update, :download_user_files], User, id: user.id
     can [:edit_service_provider, :update_service_provider], ServiceProvider, id: user.id
-    can [:new, :create], ProjectsSurvey, { status: 'active' }
+    can [:new, :create], ProjectsSurvey do |project_survey|
+      project_survey.status =='inactive' && project_survey.end_date > Date.today
+    end
 
     if user.default_role?
       # Project controller

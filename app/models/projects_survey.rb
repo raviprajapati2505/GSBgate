@@ -13,7 +13,7 @@ class ProjectsSurvey < ApplicationRecord
   enum status: 
     { 
       active: 1,
-      deactive: 2 
+      inactive: 2 
     }
 
   enum user_access: 

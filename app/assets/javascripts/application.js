@@ -603,42 +603,6 @@ $(function () {
     $('#user_email').on('blur', function(){
         auto_populate_service_providers($(this));
     }).trigger('blur');
-
-    $('.link-survey').on('click', function(){
-        let temp = document.createElement('textarea');
-        temp.value = $(this).data('base_url')+$(this).data('survey_link');
-        document.body.appendChild(temp);
-        temp.select();
-        document.execCommand('copy');
-        document.body.removeChild(temp);
-        $("#toast-message").html($.rails.toast_message('success', 'link are copied'));
-
-        setInterval(function() {
-            $("#toast-message").html('');
-        }, 4000);
-    });
-
-    $('.show_text_responses').click(function(){
-        var modal = $('#survey_text_response_model');
-        modal.modal('show');
-        $.ajax({
-            url: "/survey_responses/all_text_responses_of_survey_question",
-            method: "GET",
-            dataType: "json",
-            data: {
-                question_id: $(this).data('survey_question_id')
-            },
-            success: function(result) {
-                $('.content').html(''); 
-                for (data of result) {
-                    $('.content').append('<p>'+data.value+'</p>')
-                }
-            },
-            error: function() {
-                alert('Something went wrong !');
-            }
-        });
-    })
 });
 
 // General GSAS functions

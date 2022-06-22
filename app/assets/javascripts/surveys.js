@@ -1,4 +1,11 @@
 $(function() {
+  // close toast-message
+  function closeToastMessage() {
+    setInterval(function() {
+      $("#toast-message").html('');
+    }, 2000);
+  }
+
   // ajax call to update position
   function updatePositions(survey_version_id, model, new_sequence) {
     if (!!survey_version_id && !!model && !!new_sequence) {
@@ -22,10 +29,7 @@ $(function() {
       $("#toast-message").html($.rails.toast_message("error", "Something went wrong!"));
     }
 
-    // hide container after 2 seconds
-      setInterval(function() {
-        $("#toast-message").html('');
-    }, 2000);
+    closeToastMessage();
   }
 
   // change the visibility of options and set their destroy parameter values
@@ -130,5 +134,42 @@ $(function() {
         }
       }
     }
+  });
+
+  // model to show all text responses of projects survey
+  $('.show_text_responses').click(function() {
+    var modal = $('#survey_text_response_model');
+    modal.modal('show');
+
+    $.ajax({
+      url: "/survey_responses/all_text_responses_of_survey_question",
+      method: "GET",
+      dataType: "json",
+      data: {
+        question_id: $(this).data('survey_question_id')
+      },
+      success: function(result) {
+        $('.content').html('');
+        for (data of result) {
+          $('.content').append('<p>' + data.value + '</p>');
+        }
+      },
+      error: function() {
+        alert('Something went wrong !');
+      }
+    });
+  });
+
+  // to copy the projects survey link.
+  $('.link-survey').on('click', function() {
+    let temp = document.createElement('textarea');
+    temp.value = $(this).data('base_url') + $(this).data('survey_link');
+    document.body.appendChild(temp);
+    temp.select();
+    document.execCommand('copy');
+    document.body.removeChild(temp);
+    $("#toast-message").html($.rails.toast_message('success', 'link are copied'));
+
+    closeToastMessage();
   });
 });
