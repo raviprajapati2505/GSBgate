@@ -1,8 +1,11 @@
 class AddActiveToUser < ActiveRecord::Migration[5.2]
   def up
     unless column_exists? :users, :active
-      add_column :users, :active, :boolean, default: true
+      add_column :users, :active, :boolean, default: false
     end
+
+    # confirm existing users.
+    User.update_all(confirmed_at: Time.now, active: true)
   end
 
   def down

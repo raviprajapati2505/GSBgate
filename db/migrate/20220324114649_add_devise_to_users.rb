@@ -12,9 +12,6 @@ class AddDeviseToUsers < ActiveRecord::Migration[5.2]
       ## For single table inheritance
       t.string   :type, default: 'User'
 
-      ## Set flag for active/deactive user
-      # t.boolean :active, default: false
-      
       ## Recoverable
       t.string   :reset_password_token
       t.datetime :reset_password_sent_at
@@ -49,7 +46,6 @@ class AddDeviseToUsers < ActiveRecord::Migration[5.2]
       t.references :invited_by, polymorphic: true
       t.integer    :invitations_count, default: 0
 
-
       # Uncomment below if timestamps were not included in your original model.
       # t.timestamps null: false
     end
@@ -62,8 +58,6 @@ class AddDeviseToUsers < ActiveRecord::Migration[5.2]
     # add_index :users, :confirmation_token,   unique: true
     # add_index :users, :unlock_token,         unique: true
 
-    # confirm existing users.
-    User.update_all(confirmed_at: Time.now, active: true)
   end
 
   def self.down
