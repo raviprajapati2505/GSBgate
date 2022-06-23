@@ -54,6 +54,7 @@ gem 'devise-jwt'
 gem 'rack-cors'
 gem 'friendly_id'
 gem 'countries', require: 'countries/global'
+gem 'chartkick'
 
 # drag and drop functionality
 gem 'acts_as_list'

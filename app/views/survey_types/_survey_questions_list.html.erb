@@ -16,39 +16,25 @@
         <div class="ibox-content">
           <table class="table table-bordered table-striped">
             <tbody>
-              <tr>
-                <th class="col-md-4"><%=SurveyQuestion.human_attribute_name('description') %></th>
-                <td><%= question.description %></td>
-              </tr>
-              <tr>
-                <th class="col-md-4"><%=SurveyQuestion.human_attribute_name('question_type') %></th>
-                <td><%= SurveyQuestion.question_types[question.question_type] %></td>
-              </tr>
-              <tr>
-                <th class="col-md-4"><%=SurveyQuestion.human_attribute_name('mandatory') %></th>
-                <td><%= label_span(question.mandatory?, "Yes", "No").html_safe rescue "-" %></td>
-              </tr>
+              <%= render partial: "survey_types/question_detail", locals: { question: question } %>
             </tbody>
           </table>
 
-          <table class="table table-bordered table-striped">
-            <thead>
-              <tr>
-                <th>Options</th>
-                <th>Results</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="p-md">
-                  <% question.question_options.each.with_index(1) do |option, i| %>
-                    <h4><%= "#{i}) #{option.option_text}" %><h4>
-                  <% end %>
-                </td>
-                <th>Graphical Representation</th>
-              </tr>
-            </tbody>
-          </table>
+          <% unless question.fill_in_the_blank? %>
+            <table class="table table-bordered table-striped">
+              <tbody>
+                <tr>
+                  <th class="col-md-4">Options</th>
+                  <td class="p-md">
+                    <% question.question_options.each.with_index(1) do |option, i| %>
+                      <h4><%= "#{i}) #{option.option_text}" %><h4>
+                    <% end %>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          <% end %>
+
         </div>
       </div>
     </div>

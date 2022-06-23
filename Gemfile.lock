@@ -114,6 +114,7 @@ GEM
       activemodel (>= 4.0.0)
       activesupport (>= 4.0.0)
       mime-types (>= 1.16)
+    chartkick (3.4.2)
     chronic (0.10.2)
     city-state (0.1.0)
       rubyzip (>= 1.1)
@@ -453,6 +454,7 @@ DEPENDENCIES
   capistrano-rvm
   capistrano-systemd
   carrierwave
+  chartkick
   city-state
   ckeditor_rails
   cocoon

@@ -20,17 +20,13 @@
     <div class="ibox float-e-margins">
       <% @latest_questions.each.with_index(1) do |question, i| %>
         <div class="ibox-title m-t">
-          <h3 class="m"><%= "Que-#{i}:" %>
           <h4 class="p-m"><%= question.question_text %></h4>
         </div>
 
         <div class="ibox-content">
           <table class="table table-bordered table-striped">
             <tbody>
-              <tr>
-                <th class="col-md-4"><%=SurveyQuestion.human_attribute_name('description') %></th>
-                <td><%= question.description %></td>
-              </tr>
+              <%= render partial: "survey_types/question_detail", locals: { question: question } %>
             </tbody>
           </table>
 
@@ -38,30 +34,42 @@
             <thead>
               <tr>
                 <th>Results</th>
-                <th></th>
+                <% unless question.fill_in_the_blank? %>
+                  <th></th>
+                <% end %>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td class="p-md">
-                  <% if question.question_type == 'single_select' || question.question_type == 'multi_select' %>
+                <% unless question.fill_in_the_blank? %>
+                  <td class="p-md">
                     <% 
-                      option_with_counts = survey_question_options_report(@projects_survey, question)
-                      total_responses = @projects_survey.survey_responses.count
-                      option_counter = 1
+                      option_with_counts = survey_question_options_report(@projects_survey, question) rescue {}
+                      total_responses = @projects_survey.survey_responses.count rescue 0
                     %>
-                    <% option_with_counts.each do |key, value| %>
-                      <p><%= "#{option_counter}) #{key} (#{value} Out of #{total_responses})" %></p>
-                      <% option_counter = option_counter + 1 %>
+                    <% option_with_counts.each.with_index(1) do |(key, value), index| %>
+                      <p><%= "#{index}) #{key} (#{value} Out of #{total_responses})" %></p>
                     <% end %>
-                  <% else %>
-                    <span class="show_text_responses" data-survey_question_id="<%= question.id %>">Click Here To Show the Text responses</span>
-                    <%# question.question_responses.each do |text| %>
-                     
-                    <%# end %>
-                  <% end %>
-                </td>
-                <th>Graphical Representation</th>
+                  </td>
+                  <td>
+                    <%= column_chart option_with_counts, 
+                      loading: "Loading...", 
+                      empty: "No data", 
+                      legend: false,
+                      width: "50%",
+                      height: "100px", 
+                      dataset: 
+                        { 
+                          barPercentage: 0.2
+                        }
+                    %>
+                  </td>
+
+                <% else %>
+                  <td class="p-md">
+                    <a href="javascript:void(0);" class="show_text_responses" data-survey_question_id="<%= question.id %>">Click here to see responses.</a>
+                  </td>
+                <% end %>
               </tr>
             </tbody>
           </table>
@@ -82,13 +90,14 @@
             <div class="modal-header">
                 <%= btn_close_modal %>
                 <h4 class="modal-title">Text Responses</h4>
+                <p class="reaction-count m-t">Reactions: 0<p>
             </div>
             <div class="modal-body">
               <div class="content">
               </div>
             </div>
             <div class="modal-footer">
-                <%= btn_tag(text: t('.btn_cancel'), style: 'white', data: {dismiss: 'modal'}) %>
+                <%= btn_tag(type: :button, size: 'small', text: 'Cancel', style: 'white', icon: 'times', data: { dismiss: 'modal' }) %>
             </div>
         </div>
     </div>

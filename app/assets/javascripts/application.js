@@ -39,6 +39,8 @@
  *= require moment
  *= require daterangepicker
  *= require surveys
+ *= require chartkick
+ *= require Chart.bundle
  */
 
 $(function () {
