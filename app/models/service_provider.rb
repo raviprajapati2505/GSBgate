@@ -1,5 +1,9 @@
 class ServiceProvider < User
+
+  has_one :service_provider_detail, dependent: :destroy, inverse_of: :service_provider
   has_many :users, class_name: 'User', foreign_key: 'service_provider_id', dependent: :destroy
+
+  accepts_nested_attributes_for :service_provider_detail
 
   def valid_service_provider_licences
     access_licences.joins(:licence).where("DATE(access_licences.expiry_date) > :current_date AND licences.licence_type = 'ServiceProviderLicence'", current_date: Date.today) || AccessLicence.none

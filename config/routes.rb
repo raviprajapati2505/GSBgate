@@ -29,6 +29,7 @@ Rails.application.routes.draw do
       get "country_cities", to: "users#country_cities", as: :country_cities
       get "get_organization_details", to: "users#get_organization_details", as: :get_organization_details
       get "get_service_provider_by_domain", to: "users#get_service_provider_by_domain", as: :get_service_provider_by_domain
+      get "country_code_from_name", to: "users#country_code_from_name", as: :country_code_from_name
     end
     member do
       get :edit, to: 'users#edit', as: :edit
@@ -38,6 +39,7 @@ Rails.application.routes.draw do
       get :list_notifications, path: :notifications
       put :update_notifications, path: :notifications
       patch :update_user_status, to: 'users#update_user_status', as: 'update_user_status'
+      get "download_user_files"
     end
   end
 

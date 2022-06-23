@@ -501,6 +501,30 @@ $(function () {
         }
     }
 
+    function populate_country_code_by_country(element){
+        let country_name = element.find("option:selected").val();
+        let cities_for = element.data('for');
+
+        $.ajax({
+            url: "/users/country_code_from_name",
+            method: "GET",
+            dataType: "json",
+            data: {
+                country: country_name
+            },
+            success: function(result) {
+                if(cities_for == 'organization'){
+                    $('#org_phone_area_code').val(result.code)
+                }else {
+                    $('#mobile_area_code').val(result.code)
+                }
+            },
+            error: function() {
+                alert('Something went wrong !');
+            }
+        });
+    }
+
     function auto_fill_organization_details(element){
         let service_provider_id = element.find("option:selected").val();
 
@@ -565,6 +589,7 @@ $(function () {
     // to populate cities in city dropdown
     $('#user-country-select, #organization-country-select').on('change', function(){
         populate_cities_by_country($(this));
+        populate_country_code_by_country($(this));
     }).trigger('change');
 
     // to auto fill information of organization

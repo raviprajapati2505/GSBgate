@@ -1,7 +1,7 @@
 class UsersController < AuthenticatedController
-  load_and_authorize_resource :user, except: [:country_cities, :get_organization_details, :get_service_provider_by_domain]
+  load_and_authorize_resource :user, except: [:country_cities, :get_organization_details, :get_service_provider_by_domain, :country_code_from_name]
   before_action :set_controller_model, except: [:index, :update_notifications]
-  before_action :set_user, only: [:show, :edit, :update]
+  before_action :set_user, only: [:show, :edit, :update, :download_user_files]
   before_action :set_service_provider, only: [:edit_service_provider, :update_service_provider]
 
   def index
@@ -17,6 +17,9 @@ class UsersController < AuthenticatedController
   end
 
   def edit
+    if @user.role != 'default_role'
+      @service_provider_detail = @user.service_provider_detail 
+    end
     unless @user.present? 
       redirect_to root_path, alert: "User is not available." and return
     end
@@ -29,7 +32,63 @@ class UsersController < AuthenticatedController
   end
 
   def update
-    user_params = params.require(:user).permit(:name, :username, :organization_name, :gord_employee, :service_provider_id, :active, :gender, :name_suffix ,:middle_name, :last_name, :dob, :email_alternate, :role, :country, :city, :mobile_area_code, :mobile, :designation, :work_experience, :organization_address, :organization_country, :organization_city, :organization_website, :organization_phone_area_code, :organization_phone, :organization_fax_area_code, :organization_fax, :gsas_id, :qid_or_passport_number, access_licences_attributes: [ :id, :user_id, :licence_id, :expiry_date, :_destroy ] )
+    user_params = params.require(:user).permit(
+      :name, 
+      :username, 
+      :organization_name, 
+      :gord_employee, 
+      :service_provider_id, 
+      :active,
+      :name_suffix,
+      :middle_name, 
+      :last_name, 
+      :email_alternate, 
+      :role, 
+      :country, 
+      :city, 
+      :mobile_area_code, 
+      :mobile, 
+      :organization_address, 
+      :organization_country, 
+      :organization_city, 
+      :organization_website, 
+      :organization_phone_area_code, 
+      :organization_phone, 
+      :organization_fax_area_code, 
+      :organization_fax, 
+      :gsas_id, 
+      user_detail_attributes: [
+        :gender, 
+        :dob,
+        :designation, 
+        :work_experience, 
+        :qid_or_passport_number, 
+        :qid_file,
+        :qid_file_cache,
+        :university_credentials_file, 
+        :work_experience_file, 
+        :cgp_licence_file, 
+        :qid_work_permit_file, 
+        :energy_assessor_name, 
+        :gsas_energey_assessment_licence_file,
+      ],
+      service_provider_detail_attributes: [
+        :id,
+        :business_field,
+        :portfolio,
+        :commercial_licence_no,
+        :commercial_licence_expiry_date,
+        :commercial_licence_file,
+        :accredited_service_provider_licence_file,
+        :demerit_acknowledgement_file
+      ],
+      access_licences_attributes: [
+        :id, 
+        :user_id, 
+        :licence_id, 
+        :expiry_date, 
+        :_destroy 
+      ])
 
     if @user.update(user_params)
       redirect_to user_path(@user), notice: "User information successfully updated."
@@ -39,7 +98,40 @@ class UsersController < AuthenticatedController
   end
 
   def update_service_provider
-    service_provider_params = params.require(:service_provider).permit(:name, :username, :organization_name, :gord_employee, :active, :gender, :name_suffix ,:middle_name, :last_name, :dob, :email_alternate, :country, :city, :mobile_area_code, :mobile, :designation, :work_experience, :organization_address, :organization_country, :organization_city, :organization_website, :organization_phone_area_code, :organization_phone, :organization_fax_area_code, :organization_fax, :gsas_id, :qid_or_passport_number)
+    service_provider_params = params.require(:service_provider).permit(
+      :name, 
+      :username, 
+      :organization_name, 
+      :gord_employee, 
+      :active,
+      :name_suffix ,
+      :middle_name, 
+      :last_name, 
+      :email_alternate, 
+      :country, 
+      :city, 
+      :mobile_area_code, 
+      :mobile, 
+      :organization_address,
+      :organization_country, 
+      :organization_city, 
+      :organization_website, 
+      :organization_phone_area_code, 
+      :organization_phone, 
+      :organization_fax_area_code, 
+      :organization_fax, 
+      :gsas_id,
+      service_provider_detail_attributes: [
+            :id,
+            :business_field,
+            :portfolio,
+            :commercial_licence_no,
+            :commercial_licence_expiry_date,
+            :commercial_licence_file,
+            :accredited_service_provider_licence_file,
+            :demerit_acknowledgement_file
+        ]
+      )
 
     if @service_provider.update(service_provider_params)
       redirect_to user_path(@user), notice: "Service Provider information successfully updated."
@@ -207,6 +299,14 @@ class UsersController < AuthenticatedController
     end
   end
 
+  def country_code_from_name
+    country = ISO3166::Country[CS.countries.key(params["country"])]
+    code = country ? country.country_code : 0
+    respond_to do |format|
+      format.json { render json: {code: code} }
+    end
+  end
+
   def get_organization_details
     service_provider_id = params["service_provider_id"]
     @user_details = User.find_by_id(service_provider_id);
@@ -235,6 +335,33 @@ class UsersController < AuthenticatedController
     end
 
     render json: { css_class: css_class, message: message }
+  end
+
+  def download_user_files
+    
+    case params[:file]
+      when "qid_file"
+        file = @user.user_detail.qid_file.path
+      when "university_credentials_file"
+        file = @user.user_detail.university_credentials_file.path
+      when "work_experience_file"
+        file = @user.user_detail.work_experience_file.path
+      when "cgp_licence_file"
+        file = @user.user_detail.cgp_licence_file.path
+      when "qid_work_permit_file"
+        file = @user.user_detail.qid_work_permit_file.path
+      when "gsas_energey_assessment_licence_file"
+        file = @user.user_detail.gsas_energey_assessment_licence_file.path
+      when "accredited_service_provider_licence_file"
+        file = @user.service_provider_detail.accredited_service_provider_licence_file.path
+      when "commercial_licence_file"
+        file = @user.service_provider_detail.commercial_licence_file.path
+      when "demerit_acknowledgement_file"
+        file = @user.service_provider_detail.demerit_acknowledgement_file.path
+      else
+        file = ''
+      end
+    send_file file, x_sendfile: false
   end
 
   private
