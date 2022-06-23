@@ -7,12 +7,15 @@ class Users::RegistrationsController < Devise::RegistrationsController
   before_action :set_user, only: [:edit]
 
   # GET /resource/sign_up
-  # def new
-  #   super
-  # end
+  def new
+    super do |user|
+      user.build_user_detail
+    end
+  end
 
   def new_service_provider
     @service_provider = ServiceProvider.new
+    @service_provider_detail = @service_provider.build_service_provider_detail
   end
   
   # POST /resource
@@ -41,16 +44,19 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # GET /edit_service_provider
   def edit_service_provider
+    @service_provider_detail = @service_provider.service_provider_detail
     render :edit_service_provider
   end
 
   # PUT /resource
-  # def update
-  #   super
-  # end
+  def update
+    params[:user][:user_detail_attributes][:qid_file] = @user.user_detail.qid_file unless params[:user][:user_detail_attributes].has_key?(:qid_file) && params[:user][:user_detail_attributes][:qid_file].present?
+    super
+  end
 
   # PUT /resource
   def update_service_provider
+    #sp_update_params[:service_provider_detail_attributes][:commercial_licence_file] = @service_provider.service_provider_detail.commercial_licence_file unless sp_update_params[:service_provider_detail_attributes].has_key?(:commercial_licence_file) && sp_update_params[:service_provider_detail_attributes][:commercial_licence_file].present?
     sp_updated = update_resource(@service_provider, sp_update_params)
     if sp_updated
       redirect_to user_path(@service_provider), notice: "Profile has successfully updated."
@@ -79,20 +85,171 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_sign_up_params
-    devise_parameter_sanitizer.permit(:sign_up, keys: %i[name email username organization_name service_provider_id password password_confirmation gender name_suffix middle_name last_name dob email_alternate country city mobile_area_code mobile designation work_experience organization_address organization_country organization_city organization_website organization_phone_area_code organization_phone organization_fax_area_code organization_fax gsas_id qid_or_passport_number])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [
+        :name, 
+        :email, 
+        :username, 
+        :organization_name, 
+        :service_provider_id, 
+        :password, 
+        :password_confirmation, 
+        :name_suffix, 
+        :middle_name, 
+        :last_name, 
+        :email_alternate,
+        :country, 
+        :city, 
+        :mobile_area_code, 
+        :mobile, 
+        :organization_address, 
+        :organization_country, 
+        :organization_city, 
+        :organization_website, 
+        :organization_phone_area_code, 
+        :organization_phone, 
+        :organization_fax_area_code, 
+        :organization_fax, 
+        :gsas_id, 
+        user_detail_attributes: [ 
+            :gender, 
+            :dob,
+            :designation, 
+            :work_experience, 
+            :qid_or_passport_number, 
+            :qid_file,
+            :qid_file_cache,
+            :university_credentials_file, 
+            :work_experience_file, 
+            :cgp_licence_file, 
+            :qid_work_permit_file, 
+            :energy_assessor_name, 
+            :gsas_energey_assessment_licence_file,
+          ]
+    ])
   end
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_account_update_params
-    devise_parameter_sanitizer.permit(:account_update, keys: %i[name email username gord_employee organization_name service_provider_id active password password_confirmation current_password gender name_suffix middle_name last_name dob email_alternate country city mobile_area_code mobile designation work_experience organization_address organization_country organization_city organization_website organization_phone_area_code organization_phone organization_fax_area_code organization_fax gsas_id qid_or_passport_number])
+    devise_parameter_sanitizer.permit(:account_update, keys: [
+        :name, 
+        :email, 
+        :username, 
+        :organization_name, 
+        :service_provider_id, 
+        :password,
+        :current_password,
+        :password_confirmation, 
+        :name_suffix, 
+        :middle_name, 
+        :last_name, 
+        :email_alternate,
+        :country, 
+        :city, 
+        :mobile_area_code, 
+        :mobile, 
+        :organization_address, 
+        :organization_country, 
+        :organization_city, 
+        :organization_website, 
+        :organization_phone_area_code, 
+        :organization_phone, 
+        :organization_fax_area_code, 
+        :organization_fax, 
+        :gsas_id, 
+        user_detail_attributes: [ 
+            :gender, 
+            :dob,
+            :designation, 
+            :work_experience, 
+            :qid_or_passport_number, 
+            :qid_file,
+            :qid_file_cache,
+            :university_credentials_file, 
+            :work_experience_file, 
+            :cgp_licence_file, 
+            :qid_work_permit_file, 
+            :energy_assessor_name, 
+            :gsas_energey_assessment_licence_file,
+          ]
+    ])
+    #devise_parameter_sanitizer.permit(:account_update, keys: %i[name email username gord_employee organization_name service_provider_id active password password_confirmation current_password gender name_suffix middle_name last_name dob email_alternate country city mobile_area_code mobile designation work_experience organization_address organization_country organization_city organization_website organization_phone_area_code organization_phone organization_fax_area_code organization_fax gsas_id qid_or_passport_number])
   end
 
   def sp_sign_up_params
-    params.require(:service_provider).permit(%i[name email username organization_name password password_confirmation gender name_suffix middle_name last_name dob email_alternate country city mobile_area_code mobile designation work_experience organization_address organization_country organization_city organization_website organization_phone_area_code organization_phone organization_fax_area_code organization_fax gsas_id qid_or_passport_number])
+      params.require(:service_provider).permit([
+        :name, 
+        :email, 
+        :username, 
+        :organization_name, 
+        :password, 
+        :password_confirmation, 
+        :name_suffix, 
+        :middle_name, 
+        :last_name, 
+        :email_alternate,
+        :country, 
+        :city, 
+        :mobile_area_code, 
+        :mobile, 
+        :organization_address, 
+        :organization_country, 
+        :organization_city, 
+        :organization_website, 
+        :organization_phone_area_code, 
+        :organization_phone, 
+        :organization_fax_area_code, 
+        :organization_fax, 
+        :gsas_id, 
+        service_provider_detail_attributes: [
+            :id,
+            :business_field,
+            :portfolio,
+            :commercial_licence_no,
+            :commercial_licence_expiry_date,
+            :commercial_licence_file,
+            :accredited_service_provider_licence_file,
+            :demerit_acknowledgement_file
+        ]
+    ])
   end
 
   def sp_update_params
-    params.require(:service_provider).permit(%i[name email username organization_name password password_confirmation current_password gender name_suffix middle_name last_name dob email_alternate country city mobile_area_code mobile designation work_experience organization_address organization_country organization_city organization_website organization_phone_area_code organization_phone organization_fax_area_code organization_fax gsas_id qid_or_passport_number])
+    params.require(:service_provider).permit([
+            :name, 
+            :email, 
+            :username, 
+            :organization_name, 
+            :password,
+            :current_password,
+            :password_confirmation, 
+            :name_suffix, 
+            :middle_name, 
+            :last_name, 
+            :email_alternate,
+            :country, 
+            :city, 
+            :mobile_area_code, 
+            :mobile, 
+            :organization_address, 
+            :organization_country, 
+            :organization_city, 
+            :organization_website, 
+            :organization_phone_area_code, 
+            :organization_phone, 
+            :organization_fax_area_code, 
+            :organization_fax, 
+            :gsas_id, 
+            service_provider_detail_attributes: [
+                :id,
+                :business_field,
+                :portfolio,
+                :commercial_licence_no,
+                :commercial_licence_expiry_date,
+                :commercial_licence_file,
+                :accredited_service_provider_licence_file,
+                :demerit_acknowledgement_file
+            ]
+      ])
   end
 
   def set_service_provider

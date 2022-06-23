@@ -143,7 +143,9 @@ legend.scheduler-border {
     }
   }
 }
-
+.file{
+  border: none !important
+}
 @media (max-width: 1000px) {
   .welcome-message {
     display: none;

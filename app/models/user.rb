@@ -3,7 +3,6 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
 
   attr_accessor :skip_send_user_licences_update_email
-  
   include Taskable
 
   devise  :invitable, :database_authenticatable, :registerable, :recoverable,
@@ -15,6 +14,7 @@ class User < ApplicationRecord
   enum role: { system_admin: 5, default_role: 1, gsas_trust_top_manager: 2, gsas_trust_manager: 3, gsas_trust_admin: 4, document_controller: 6, record_checker: 7, users_admin: 8, service_provider: 9 }
 
   belongs_to :service_provider, class_name: 'ServiceProvider', foreign_key: 'service_provider_id', optional: true
+  has_one :user_detail, dependent: :destroy
   has_many :documents
   has_many :scheme_mix_criteria_documents
   has_many :projects_users, dependent: :destroy
@@ -33,6 +33,7 @@ class User < ApplicationRecord
   has_many :service_provider_licences, -> { where(licence_type: 'ServiceProviderLicence') }, class_name: 'Licence', through: :access_licences, source: :licence
 
   accepts_nested_attributes_for :access_licences, reject_if: :all_blank, allow_destroy: true
+  accepts_nested_attributes_for :user_detail
 
   after_initialize :init, if: :new_record?
   before_create :before_create
@@ -42,7 +43,7 @@ class User < ApplicationRecord
   validates :email, uniqueness: true
   validates :username, uniqueness: true
   validates :role, inclusion: User.roles.keys
-  validates :email, :username, :last_name, :name, :gender, :dob, :country , :city, :mobile_area_code, :mobile , :designation, :organization_name, :organization_address, :organization_country, :qid_or_passport_number, presence: true, unless: -> { encrypted_password_changed? } 
+  validates :email, :username, :last_name, :name, :country , :city, :mobile_area_code, :mobile, :organization_name, :organization_address, :organization_country, presence: true, unless: -> { encrypted_password_changed? } 
   validates :organization_phone_area_code, :organization_phone, :organization_fax_area_code, :organization_fax,  numericality: { allow_blank: true }, unless: -> { encrypted_password_changed? } 
   validates_numericality_of :mobile_area_code, :mobile, only_integer: true, unless: -> { encrypted_password_changed? } 
   

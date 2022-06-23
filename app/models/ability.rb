@@ -293,6 +293,7 @@ class Ability
       # User controller
       can [:list_notifications,:update_notifications], User, id: user.id
       can :find_users_by_email, User
+      can [:download_user_files], User, id: user.id
 
       # Owner
       can [:index, :show], Owner
@@ -462,6 +463,7 @@ class Ability
       can :read, RequirementDatum, scheme_mix_criteria: { scheme_mix: {certification_path: {project: projects_users_with_service_provider}}}
       can :read, Document, scheme_mix_criteria_documents: { scheme_mix_criterion: {scheme_mix: {certification_path: {project: projects_users_with_service_provider}}}}
       can :read, User, service_provider_id: user.id
+      can [:download_user_files], User, id: user.id
       can :activity_info, User
     else
       cannot :manage, :all

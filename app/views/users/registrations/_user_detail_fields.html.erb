@@ -1,0 +1,84 @@
+<div class="row">
+    <div class="col-md-4">
+        <%= f.input :gender, collection: ["Male", "Female"], include_blank: "Choose Gender", input_html: { class: "form-control" }, reqired: true %>
+    </div>
+    <div class="col-md-4">
+        <%= f.input :dob do %>
+            <span><%= ikoen('calendar') %></span>
+            <%= f.input_field :dob, value: f.object&.dob&.strftime("%d/%m/%Y"), as: :string, class: "datepicker-past form-control" %>
+        <% end %>
+    </div>
+    <div class="col-md-4">
+        <%= f.input :designation %>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <%= f.input :work_experience %>
+    </div>
+    <div class="col-md-4">
+        <%= f.input :qid_or_passport_number, required: true %>
+    </div>
+    <div class="col-md-4">
+        <%= f.input :qid_file, as: :file, label: 'Copy of the QID/passport', required: true %>
+        <%= f.hidden_field :qid_file_cache %>
+        <% if user.user_detail.qid_file.present? %>
+					<% if can?(:download_user_files, user) %>
+							<%= btn_download(download_user_files_user_path(user, :file => "qid_file"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('qid_file')}") %>
+					<% end %>
+					<%= truncate(user.user_detail.qid_file.file.filename, length: 35) %>
+        <% end %>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <%= f.input :university_credentials_file, as: :file, label: 'University Credentials', required: true %>
+        <% if user.user_detail.university_credentials_file.present? %>
+					<% if can?(:download_user_files, user) %>
+							<%= btn_download(download_user_files_user_path(user, :file => "university_credentials_file"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('university_credentials_file')}") %>
+					<% end %>
+					<%= truncate(user.user_detail.university_credentials_file.file.filename, length: 35) %>
+        <% end %>
+    </div>
+    <div class="col-md-4">
+        <%= f.input :work_experience_file, as: :file, label: 'Work Experience', required: true %>
+        <% if user.user_detail.work_experience_file.present? %>
+					<% if can?(:download_user_files, user) %>
+						<%= btn_download(download_user_files_user_path(user, :file => "work_experience_file"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('work_experience_file')}") %>
+					<% end %>
+					<%= truncate(user.user_detail.work_experience_file.file.filename, length: 35) %>
+        <% end %>
+    </div>
+    <div class="col-md-4">
+        <%= f.input :cgp_licence_file, as: :file, label: 'GSAS-CGP Licence', required: true %>
+        <% if user.user_detail.cgp_licence_file.present? %>
+          <% if can?(:download_user_files, user) %>
+            <%= btn_download(download_user_files_user_path(user, :file => "cgp_licence_file"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('cgp_licence_file')}") %>
+          <% end %>
+          <%= truncate(user.user_detail.cgp_licence_file.file.filename, length: 35) %>
+        <% end %>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <%= f.input :qid_work_permit_file, as: :file, label: 'QID/Work Permit', required: true %>
+        <% if user.user_detail.qid_work_permit_file.present? %>
+					<% if can?(:download_user_files, user) %>
+          	<%= btn_download(download_user_files_user_path(user, :file => "qid_work_permit_file"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('qid_work_permit_file')}") %>
+          <% end %>
+					<%= truncate(user.user_detail.qid_work_permit_file.file.filename, length: 35) %>
+        <% end %>
+    </div>
+    <div class="col-md-4">
+        <%= f.input :energy_assessor_name %>
+    </div>
+    <div class="col-md-4">
+        <%= f.input :gsas_energey_assessment_licence_file, as: :file, label: 'GSAS Energey Assessment Licence', required: true %>
+        <% if user.user_detail.gsas_energey_assessment_licence_file.present? %>
+					<% if can?(:download_user_files, user) %>
+          	<%= btn_download(download_user_files_user_path(user, :file => "gsas_energey_assessment_licence_file"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('gsas_energey_assessment_licence_file')}") %>
+          <% end %>
+					<%= truncate(user.user_detail.gsas_energey_assessment_licence_file.file.filename, length: 35) %>
+        <% end %>
+    </div>
+</div>

@@ -37,14 +37,16 @@
               <th><%= User.human_attribute_name('last_name') %></th>
               <td><%= @user.last_name %></td>
             </tr>
-            <tr>
-              <th><%= User.human_attribute_name('dob') %></th>
-              <td><%= @user.dob&.strftime('%e %b, %Y') %></td>
-            </tr>
-            <tr>
-              <th><%= User.human_attribute_name('gender') %></th>
-              <td><%= @user.gender %></td>
-            </tr>
+            <% if @user.default_role? %>
+              <tr>
+                <th><%= User.human_attribute_name('dob') %></th>
+                <td><%= @user.user_detail.dob&.strftime('%e %b, %Y') %></td>
+              </tr>
+              <tr>
+                <th><%= User.human_attribute_name('gender') %></th>
+                <td><%= @user.user_detail.gender %></td>
+              </tr>
+            <% end %>
             <tr>
               <th><%= User.human_attribute_name('username') %></th>
               <td><%= @user.username %></td>
@@ -168,14 +170,25 @@
                 <th><%= User.human_attribute_name('role') %></th>
                 <td><%= @user.role&.titleize %></td>
               </tr>
-              <tr>
-                <th><%= User.human_attribute_name('designation') %></th>
-                <td><%= @user.designation %></td>
-              </tr>
-              <tr>
-                <th><%= User.human_attribute_name('work_experience') %></th>
-                <td><%= @user.work_experience %></td>
-              </tr>
+              <% if @user.default_role? %>
+                <tr>
+                  <th><%= User.human_attribute_name('designation') %></th>
+                  <td><%= @user.user_detail.designation %></td>
+                </tr>
+                <tr>
+                  <th><%= User.human_attribute_name('work_experience') %></th>
+                  <td><%= @user.user_detail.work_experience %></td>
+                </tr>
+              <% else %>
+                <tr>
+                  <th><%= User.human_attribute_name('business_field') %></th>
+                  <td><%= @user.service_provider_detail.business_field %></td>
+                </tr>
+                <tr>
+                  <th><%= User.human_attribute_name('portfolio') %></th>
+                  <td><%= @user.service_provider_detail.portfolio %></td>
+                </tr>
+              <% end %>
               <tr>
                 <th><%= User.human_attribute_name('gord_employee') %></th>
                 <td><%= label_span(@user.gord_employee, 'Yes', 'No').html_safe %></td>
@@ -184,10 +197,17 @@
                 <th><%= User.human_attribute_name('gsas_id') %></th>
                 <td><%= @user.gsas_id %></td>
               </tr>
-              <tr>
-                <th><%= User.human_attribute_name('qid_or_passport_number') %></th>
-                <td><%= @user.qid_or_passport_number %></td>
-              </tr>
+              <% if @user.default_role? %>
+                <tr>
+                  <th><%= User.human_attribute_name('qid_or_passport_number') %></th>
+                  <td><%= @user.user_detail.qid_or_passport_number %></td>
+                </tr>
+              <% else %>
+                <tr>
+                  <th><%= User.human_attribute_name('commercial_licence_no') %></th>
+                  <td><%= @user.service_provider_detail.commercial_licence_no %></td>
+                </tr>
+              <% end %>
             </tbody>
           </table>
         </div>
