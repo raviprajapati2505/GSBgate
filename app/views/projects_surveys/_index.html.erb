@@ -17,7 +17,15 @@
         <tbody>
           <% projects_surveys.each do |survey| %>
             <tr>
-              <td><%= link_to(survey.title, project_survey_path(project,survey.id) ) %></td>
+            
+              <td>
+                <%= 
+                  link_to_if(survey.released?,
+                    survey.title,
+                    project_survey_path(project, survey.id)
+                  )
+                %>
+              </td>
               <td><%= survey.end_date&.strftime('%e %b, %Y') %></td>
               <td>
                 <% if survey.released? %>

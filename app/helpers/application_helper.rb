@@ -842,13 +842,16 @@ module ApplicationHelper
     option_with_counts = {}
 
     question.question_options.each.with_index(1) do |option, i|
-      if question.single_select?
-        option_wise_counts = QuestionResponse.where(value: option.option_text).count || 0
-      else
-        option_wise_counts = QuestionResponse.where("value ILIKE ?", "%#{option&.option_text}%").count || 0
-      end
-  
-      option_with_counts[option.option_text] = option_wise_counts
+      option_text = option.option_text
+
+      option_wise_counts = 
+        question.
+        question_responses.
+        joins(:survey_response).
+        where("survey_responses.projects_survey_id = :projects_survey_id AND question_responses.value LIKE :value", projects_survey_id: projects_survey.id, value: "%#{option_text}%").
+        count || 0
+
+      option_with_counts[option_text] = option_wise_counts
     end
 
     return option_with_counts
