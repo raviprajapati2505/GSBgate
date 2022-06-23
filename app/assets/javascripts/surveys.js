@@ -108,7 +108,7 @@ $(function() {
   var checked_values = new Array();
 
   $('.iCheck-helper').click(function() {
-    if($(this).parent().hasClass('icheckbox_square-green')){
+    if($(this).parent().hasClass('icheckbox_square-green')) {
 
       /* get selected checkbox values and make a string to save in a database */
       var selector = $(this).parent().find("input[name^='survey_response[question_responses_attributes]']").attr('name');
@@ -121,16 +121,16 @@ $(function() {
         if (index !== -1) {
           checked_values.splice(index, 1);
         }
-      };
+      }
 
       $('input[name="' + selector + '"]').val(checked_values.join('|||'));
 
       /* if at lease one checkbox checked then remove required validation*/
-      if ($('input[name="'+selector+'"]').attr('required')) {
+      if ($('input[name="' + selector + '"]').attr('required')) {
         if (checked_values.length > 0) {
-          $('input[name="'+selector+'"]').attr('required',false);
+          $('input[name="' + selector + '"]').attr('required', false);
         } else {
-          $('input[name="'+selector+'"]').attr('required',true);
+          $('input[name="' + selector + '"]').attr('required', true);
         }
       }
     }
@@ -148,10 +148,13 @@ $(function() {
       data: {
         question_id: $(this).data('survey_question_id')
       },
-      success: function(result) {
-        $('.content').html('');
-        for (data of result) {
-          $('.content').append('<p>' + data.value + '</p>');
+      success: function(data) {
+        modal.find('.content').html('');
+        modal.find('.modal-title').html(data.question_text);
+        modal.find('.reaction-count').html("Reactions: " + data.question_responses.length);
+
+        for (response of data.question_responses) {
+          $('.content').append("<div class='alert alert-info'>" + response.value + '</div>');
         }
       },
       error: function() {

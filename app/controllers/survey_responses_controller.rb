@@ -1,4 +1,5 @@
 class SurveyResponsesController < ApplicationController
+  before_action :authenticate_user!, only: [:all_text_responses_of_survey_question]
   before_action :set_project_survey, only: [:new, :create, :thank_you]
 
   def new
@@ -23,9 +24,14 @@ class SurveyResponsesController < ApplicationController
 
   def all_text_responses_of_survey_question
     question = SurveyQuestion.find_by(id: params[:question_id])
-   
+  
     respond_to do |format|
-      format.json { render json: question.question_responses }
+      format.json { 
+        render json: { 
+          question_text: question.question_text, 
+          question_responses: question.question_responses
+        } 
+      }
     end
   end
 
