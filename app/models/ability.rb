@@ -140,8 +140,6 @@ class Ability
       can :show_tools, Project, projects_users: {user_id: user.id}
       can :update, Project, projects_users: {user: active_user, role: project_user_role_cgp_project_manager}
 
-      can [:create, :update, :destroy], ProjectsSurvey, project: {
-         projects_users: {user: active_user, role: project_user_role_cgp_project_manager} }
       cannot :update, Project, projects_users: {user_id: user.id, role: project_user_role_cgp_project_manager}, certification_paths: {certification_path_status: {id: CertificationPathStatus::STATUSES_ACTIVATED}}
 
       if valid_user_associates?(user) && user.active?
