@@ -17,9 +17,6 @@ class UsersController < AuthenticatedController
   end
 
   def edit
-    if @user.role != 'default_role'
-      @service_provider_detail = @user.service_provider_detail 
-    end
     unless @user.present? 
       redirect_to root_path, alert: "User is not available." and return
     end
@@ -58,6 +55,7 @@ class UsersController < AuthenticatedController
       :organization_fax, 
       :gsas_id, 
       user_detail_attributes: [
+        :id,
         :gender, 
         :dob,
         :designation, 
