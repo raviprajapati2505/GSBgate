@@ -44,15 +44,13 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # GET /edit_service_provider
   def edit_service_provider
-    @service_provider_detail = @service_provider.service_provider_detail
     render :edit_service_provider
   end
 
   # PUT /resource
-  def update
-    params[:user][:user_detail_attributes][:qid_file] = @user.user_detail.qid_file unless params[:user][:user_detail_attributes].has_key?(:qid_file) && params[:user][:user_detail_attributes][:qid_file].present?
-    super
-  end
+  # def update
+  #  super
+  # end
 
   # PUT /resource
   def update_service_provider
@@ -156,7 +154,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
         :organization_fax_area_code, 
         :organization_fax, 
         :gsas_id, 
-        user_detail_attributes: [ 
+        user_detail_attributes: [
+            :id, 
             :gender, 
             :dob,
             :designation, 
@@ -172,7 +171,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
             :gsas_energey_assessment_licence_file,
           ]
     ])
-    #devise_parameter_sanitizer.permit(:account_update, keys: %i[name email username gord_employee organization_name service_provider_id active password password_confirmation current_password gender name_suffix middle_name last_name dob email_alternate country city mobile_area_code mobile designation work_experience organization_address organization_country organization_city organization_website organization_phone_area_code organization_phone organization_fax_area_code organization_fax gsas_id qid_or_passport_number])
   end
 
   def sp_sign_up_params
@@ -201,7 +199,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
         :organization_fax, 
         :gsas_id, 
         service_provider_detail_attributes: [
-            :id,
             :business_field,
             :portfolio,
             :commercial_licence_no,

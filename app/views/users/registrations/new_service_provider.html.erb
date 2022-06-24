@@ -7,7 +7,7 @@
 
       <div class="form-inputs">
 
-        <%= render partial: "form", locals: { f: f, resource_for: 'service_provider', resource: @service_provider, action: 'add', service_provider_detail: @service_provider_detail } %>
+        <%= render partial: "form", locals: { f: f, resource_for: 'service_provider', resource: @service_provider, action: 'add' } %>
 
         <%= f.input :password,
                     hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length),
