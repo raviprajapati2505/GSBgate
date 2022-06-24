@@ -61,7 +61,7 @@ class ProjectsSurveysController < AuthenticatedController
   end
 
   def set_project_with_survey_type
-    @survey_types = SurveyType.all
+    @survey_types = SurveyType.released_survey_types
     @project = Project.find(params[:project_id])
   end
 end

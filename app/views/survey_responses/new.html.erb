@@ -1,6 +1,11 @@
 <div class="ibox float-e-margins">
   <div class="ibox-content">
-    <h2><%= t('survey_response.new.title' ) %></h2>
+    <h2><%= @project_survey&.title %></h2>
+    <hr>
+    <div class="alert alert-info">
+      <h4>Destription: </h4>
+      <%= sanitize(@project_survey.description) %>
+    </div>
 
     <%= bootstrap_form_for(@survey_response, url: submit_survey_responses_path(@project_survey), method: 'post', html: { multipart: true }) do |f| %>
       <div class="form-inputs">
@@ -28,3 +33,34 @@
     <% end %>
   </div>
 </div>
+
+<script>
+  $(function() {
+    var checked_values = new Array();
+
+    $('.iCheck-helper').on('click', function() {
+      let icheckbox_square_green = $(this).parent();
+      let input_field = icheckbox_square_green.find("input");
+
+      if (icheckbox_square_green.hasClass('icheckbox_square-green')) {
+        let survey_question_id = input_field.data("survey-question-id");
+        let checkbox_value = input_field.val();
+
+        /* get selected checkbox values */
+        if (icheckbox_square_green.hasClass('checked')) {
+          checked_values.push(checkbox_value);
+
+        } else {
+          let index = checked_values.indexOf(checkbox_value);
+
+          if (index !== -1) {
+            checked_values.splice(index, 1);
+          }
+        }
+
+        /* make a string to save in a database */
+        $('input[id="checkbox-survey-question-' + survey_question_id + '"]').val(checked_values.join('|||'));
+      }
+    });
+  });
+</script>

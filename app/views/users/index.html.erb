@@ -21,7 +21,7 @@
 
         function userUpdateStatusAjax(){
            setTimeout(function(){
-                $('.iCheck-helper').click(function() {
+                $('.iCheck-helper').on('click', function() {
                     let user_id = $(this).parent().find(".user-status").data("user-id");
 
                     // Remove all existing toast container
