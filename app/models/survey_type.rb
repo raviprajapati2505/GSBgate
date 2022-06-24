@@ -9,6 +9,13 @@ class SurveyType < ApplicationRecord
   # callback functions
   after_create_commit :create_survey_questionnaire_version
 
+  # scopes
+  scope :released_survey_types, -> {
+    joins(:survey_questionnaire_versions).
+      where("survey_questionnaire_versions.released_at IS NOT null").
+      distinct
+  }
+
   # as many versions of questions sets are exist for this survey type
   def latest_survey_questionnaire_version
     survey_questionnaire_versions

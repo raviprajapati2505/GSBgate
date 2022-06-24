@@ -1,5 +1,6 @@
-<div class="col-lg-12">
-  <% survey_question.question_options.each do |option| %>
-    <%= question_response.radio_button :value, option.option_text,class: 'custom-radio', required: survey_question.mandatory ? true : false, label: option.option_text %>
-  <% end %>
-</div>
+<% survey_question.question_options.each do |option| %>
+  <p class="m-l">
+    <%= radio_button_tag "#{question_response.object_name}[value]", option.option_text %>
+    <%= option.option_text %>
+  </p>
+<% end %>

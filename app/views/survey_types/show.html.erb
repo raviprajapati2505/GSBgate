@@ -4,21 +4,23 @@
     <div class="ibox float-e-margins">
       <div class="ibox-title">
         <div class='row'>
+          <div class="col-md-12">
+            <h2><b><%= @survey_type.title %></b></h2>
+            <div class="alert alert-info">
+              <h4>Destription: </h4>
+              <%= sanitize(@survey_type.description) %>
+            </div>
 
-          <div class="col-md-10">
-            <h2><b><%= "Questions of #{@survey_type.title}" %></b></h2>
             <h3>Total Questions: <%= @survey_questions.count rescue 0 %></h3>
             <h5>Version: 
               <%= "v#{@survey_questionnaire_version&.version}" %>
             </h5>
             <%= label_span(@survey_questionnaire_version.released?, @survey_questionnaire_version&.released_at&.strftime("%d %B, %Y %H:%M"), "Not released").html_safe rescue "-" %>
-          </div>
 
+          </div>
           <% if @is_latest %>
-            <div class="col-md-2">
-              <div class="m-t">
-                <%= btn_link_to(form_survey_type_survey_questionnaire_versions_path(@survey_type), icon: 'edit', text: 'Edit Questions') %>
-              </div>
+            <div class="col-md-12 m-t">
+              <%= btn_link_to(form_survey_type_survey_questionnaire_versions_path(@survey_type), icon: 'edit', text: 'Edit Questions') %>
             </div>
           <% end %>
         </div>

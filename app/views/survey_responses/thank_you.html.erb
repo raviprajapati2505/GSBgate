@@ -1,6 +1,6 @@
 <div class="ibox float-e-margins">
     <div class="ibox-content">
       <h2><%= t('survey_response.thankyou.title' ) %></h2>
-      <p><%= @project_survey.submission_statement %></p> 
+      <p><%= sanitize(@project_survey.submission_statement) %></p> 
   </div>
 </div>
