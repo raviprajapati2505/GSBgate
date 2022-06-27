@@ -102,12 +102,15 @@ $(function() {
 
   // for nested forms
   $(document).on("cocoon:after-insert", function() {
+    GSAS.processiCheck();
     changeVisibilityOfOptionsButton();
   }).trigger('cocoon:after-insert');
 
   // model to show all text responses of projects survey
   $('.show_text_responses').click(function() {
     var modal = $('#survey_text_response_model');
+    var project_survey_id = modal.data('projects-survey-id');
+
     modal.modal('show');
 
     $.ajax({
@@ -115,6 +118,7 @@ $(function() {
       method: "GET",
       dataType: "json",
       data: {
+        project_survey_id: project_survey_id,
         question_id: $(this).data('survey_question_id')
       },
       success: function(data) {

@@ -6,6 +6,15 @@ class QuestionResponse < ApplicationRecord
   # validations
   validates :value, presence: true, if: :mandatory_question?
 
+  # scopes
+  scope :with_project_survey, -> (project_survey_id) {
+    joins(:survey_response).
+      where(
+        "survey_responses.projects_survey_id = :projects_survey_id", 
+        projects_survey_id: project_survey_id
+      )
+  }
+
   private
 
   def mandatory_question?
