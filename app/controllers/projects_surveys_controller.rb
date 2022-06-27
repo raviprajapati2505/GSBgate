@@ -1,7 +1,7 @@
 class ProjectsSurveysController < AuthenticatedController
   load_and_authorize_resource param_method: :survey_params
-  before_action :set_project_with_survey_type, only: [:new, :create, :edit, :update, :destroy]
-  before_action :set_project_survey, only: [:show, :edit, :update, :destroy]
+  before_action :set_project_with_survey_type, except: [:index, :show]
+  before_action :set_project_survey, except: [:index, :new, :create]
 
   def index; end
 
@@ -13,6 +13,23 @@ class ProjectsSurveysController < AuthenticatedController
   def new
     @page_title = 'Surveys'
     @projects_survey = ProjectsSurvey.new
+  end
+
+  def copy_project_survey
+    @page_title = 'Surveys'
+
+    projects_survey = 
+      ProjectsSurvey.new(
+        title: @projects_survey.title,
+        end_date: @projects_survey.end_date,
+        user_access: @projects_survey.user_access,
+        description: @projects_survey.description,
+        submission_statement: @projects_survey.submission_statement
+      )
+
+      @projects_survey = projects_survey
+
+      render :new
   end
 
   def create
@@ -52,7 +69,17 @@ class ProjectsSurveysController < AuthenticatedController
   private 
 
   def survey_params
-    params.require(:projects_survey).permit(:title, :description, :end_date, :submission_statement, :status, :user_access, :survey_type_id)
+    params.
+      require(:projects_survey).
+      permit(
+        :title, 
+        :description, 
+        :end_date, 
+        :submission_statement, 
+        :status, 
+        :user_access, 
+        :survey_type_id
+      )
   end
 
   def set_project_survey

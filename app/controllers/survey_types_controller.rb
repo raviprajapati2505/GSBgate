@@ -50,6 +50,11 @@ class SurveyTypesController < AuthenticatedController
     end
 
     def survey_type_params
-      params.require(:survey_type).permit(:title, :description)
+      params.
+        require(:survey_type).
+        permit(
+          :title, 
+          :description
+        )
     end
 end
