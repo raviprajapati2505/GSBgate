@@ -38,7 +38,10 @@
                   unless survey.released?
                     btn_link_to(edit_project_survey_path(project,survey.id), icon: 'edit', size: 'small', tooltip: 'Edit')
                   end
-                  %>
+                %>
+                <%= 
+                  btn_link_to(copy_project_survey_project_survey_path(project, survey.id), icon: 'copy', size: 'small', tooltip: 'Copy Survey')
+                %>
                 <%= 
                   btn_link_to(project_survey_path(project, survey.id), method: :delete, data: {confirm: "Are you sure to remove this survey ?"}, style: 'danger', icon: 'trash', size: 'small')
                 %>
@@ -51,4 +54,5 @@
     </div>
   </div>
 <% end %>
+
 <div id="toast-message"></div>

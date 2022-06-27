@@ -24,6 +24,7 @@ class ProjectsSurvey < ApplicationRecord
 
   # validations
   validates :title, :survey_type_id, :status, :user_access, presence: true
+  validates_uniqueness_of :title
   validates_uniqueness_of :survey_type_id, scope: :project
 
   # callbacks
