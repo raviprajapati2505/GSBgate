@@ -1,6 +1,6 @@
 class SurveyResponsesController < ApplicationController
   before_action :authenticate_user!, only: [:all_text_responses_of_survey_question]
-  before_action :set_project_survey, only: [:new, :create, :thank_you]
+  before_action :set_project_survey, only: [:new, :create, :thank_you, :all_text_responses_of_survey_question]
 
   def new
     authorize!(:new, @project_survey)
@@ -24,13 +24,19 @@ class SurveyResponsesController < ApplicationController
 
   def all_text_responses_of_survey_question
     question = SurveyQuestion.find_by(id: params[:question_id])
-  
+
+    question_responses = 
+      question.
+      question_responses.
+      with_project_survey(@project_survey.id).
+      where.not("question_responses.value = ''")
+
     respond_to do |format|
-      format.json { 
+      format.json {
         render json: { 
           question_text: question.question_text, 
-          question_responses: question.question_responses
-        } 
+          question_responses: question_responses
+        }
       }
     end
   end
@@ -43,6 +49,15 @@ class SurveyResponsesController < ApplicationController
   end
 
   def survey_response_params
-    params.require(:survey_response).permit(:name, :email, question_responses_attributes: [:value, :survey_question_id])
+    params.
+      require(:survey_response).
+      permit(
+        :name, 
+        :email, 
+        question_responses_attributes: [
+          :value, 
+          :survey_question_id
+        ]
+      )
   end
 end

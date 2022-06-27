@@ -847,8 +847,8 @@ module ApplicationHelper
       option_wise_counts = 
         question.
         question_responses.
-        joins(:survey_response).
-        where("survey_responses.projects_survey_id = :projects_survey_id AND question_responses.value LIKE :value", projects_survey_id: projects_survey.id, value: "%#{option_text}%").
+        with_project_survey(projects_survey.id).
+        where("question_responses.value LIKE :value", value: "%#{option_text}%").
         count || 0
 
       option_with_counts[option_text] = option_wise_counts
