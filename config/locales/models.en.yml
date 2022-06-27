@@ -143,14 +143,11 @@ en:
         name: First Name
         middle_name: Middle Name
         last_name: Last Name
-        dob: Date Of Birth
         email_alternate: Alternate Email Address
         country: Country
         city: City
         mobile_area_code: Mobile Area Code
         mobile: Mobile
-        designation: Designation
-        work_experience: Work Experience In Years
         organization_address: Organization Address
         organization_country: Organization Country
         organization_city: Organization City
@@ -160,7 +157,6 @@ en:
         organization_fax_area_code: Organization Fax Area Code
         organization_fax: Organization Fax
         gsas_id: GSAS ID
-        qid_or_passport_number: QID / Passport number
         role: Role
         username: Username
         gord_employee: GORD Employee?
@@ -174,6 +170,17 @@ en:
           gsas_trust_admin: GSAS trust admin
           default_role: Default role
           document_controller: Document Controller
+      user_detail:
+        gender: Gender
+        dob: Date Of Birth
+        designation: Designation
+        work_experience: Work Experience In Years
+        qid_or_passport_number: QID / Passport number
+      service_provider_detail:
+        commercial_licence_no: Commercial Licence No.
+        commercial_licence_expiry_date: Commercial Licence Expiry Date
+        business_field: Business Field
+        portfolio: Portfolio
       licence:
         licence_type: Licence Type
         display_name: Name
