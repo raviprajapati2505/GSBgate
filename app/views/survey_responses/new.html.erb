@@ -36,7 +36,7 @@
 
 <script>
   $(function() {
-    var checked_values = new Array();
+    var checked_values = {};
 
     $('.iCheck-helper').on('click', function() {
       let icheckbox_square_green = $(this).parent();
@@ -46,20 +46,25 @@
         let survey_question_id = input_field.data("survey-question-id");
         let checkbox_value = input_field.val();
 
+        // initialize array first time on question option select
+        if (!Array.isArray(checked_values[survey_question_id])) {
+          checked_values[survey_question_id] = [];
+        }
+
         /* get selected checkbox values */
         if (icheckbox_square_green.hasClass('checked')) {
-          checked_values.push(checkbox_value);
+          checked_values[survey_question_id].push(checkbox_value);
 
         } else {
-          let index = checked_values.indexOf(checkbox_value);
+          let index = checked_values[survey_question_id].indexOf(checkbox_value);
 
           if (index !== -1) {
-            checked_values.splice(index, 1);
+            checked_values[survey_question_id].splice(index, 1);
           }
         }
 
         /* make a string to save in a database */
-        $('input[id="checkbox-survey-question-' + survey_question_id + '"]').val(checked_values.join('|||'));
+        $('input[id="checkbox-survey-question-' + survey_question_id + '"]').val(checked_values[survey_question_id].join('|||'));
       }
     });
   });
