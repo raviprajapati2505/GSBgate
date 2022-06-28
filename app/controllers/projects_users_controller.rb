@@ -134,9 +134,9 @@ class ProjectsUsersController < AuthenticatedController
   def list_projects
     if params.has_key?(:q) && params.has_key?(:page)
       if current_user.system_admin? || current_user.gsas_trust_top_manager? || current_user.gsas_trust_manager? || current_user.gsas_trust_admin?
-        total_count = Project.where('name like ?', '%' + params[:q] + '%').count
+        total_count = Project.where('name ILIKE ?', '%' + params[:q] + '%').count
         items = Project.select('id, name as text, projects.code as code, projects.coordinates as coordinates')
-                  .where('name like ?', '%' + params[:q] + '%')
+                  .where('name ILIKE ?', '%' + params[:q] + '%')
                   .page(params[:page]).per(25)
       else
         project = Project.arel_table
@@ -146,13 +146,13 @@ class ProjectsUsersController < AuthenticatedController
 
         total_count = Project.distinct
                         .joins(outer_join)
-                        .where('name like ?', '%' + params[:q] + '%')
+                        .where('name ILIKE ?', '%' + params[:q] + '%')
                         .where('projects_users.user_id = ?', current_user.id)
                         .count
         items = Project.select('projects.id as id, projects.name as text, projects.code as code, projects.coordinates as coordinates')
                   .distinct
                   .joins(outer_join)
-                  .where('name like ?', '%' + params[:q] + '%')
+                  .where('name ILIKE ?', '%' + params[:q] + '%')
                   .where('projects_users.user_id = ?', current_user.id)
                   .page(params[:page]).per(25)
       end
