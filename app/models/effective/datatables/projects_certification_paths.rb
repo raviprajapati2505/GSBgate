@@ -420,7 +420,20 @@ module Effective
           end
         end
 
-        col :certification_path_updated_at, col_class: 'date-range-filter col-order-33', label: t('models.effective.datatables.projects_certification_paths.certification_path_updated_at.label'), sql_column: 'certification_paths.updated_at', as: :datetime, visible: false do |rec|
+        col :certification_path_expires_at, col_class: 'date-range-filter col-order-33', sql_column: 'certification_paths.expires_at', label: t('models.effective.datatables.projects_certification_paths.certification_path_expires_at.label'), as: :datetime, visible: false do |rec|
+          rec.certification_path_expires_at&.strftime('%e %b, %Y')
+        end.search do |collection, term, column, index|
+          from_date = term.split(' - ')[0]&.to_datetime
+          to_date = term.split(' - ')[1]&.to_datetime
+
+          unless (collection.class == Array)
+            collection.where("DATE(certification_paths.expires_at) BETWEEN :from_date AND :to_date", from_date: from_date, to_date: to_date)
+          else
+            collection
+          end
+        end
+
+        col :certification_path_updated_at, col_class: 'date-range-filter col-order-34', label: t('models.effective.datatables.projects_certification_paths.certification_path_updated_at.label'), sql_column: 'certification_paths.updated_at', as: :datetime, visible: false do |rec|
           rec.certification_path_updated_at&.strftime('%e %b - %Y')
         end.search do |collection, term, column, index|
           from_date = term.split(' - ')[0]&.to_datetime
@@ -435,11 +448,11 @@ module Effective
 
         # col :certification_path_status_name, sql_column: 'certification_path_statuses.name', label: 'Certificate Status', search: {as: :select, collection: Proc.new{CertificationPathStatus.all.map{|status| status.name}}}
 
-        col :certification_path_status_is_active, col_class: 'col-order-34', sql_column: 'CASE WHEN certification_path_statuses.id IS NULL THEN false WHEN certification_path_statuses.id = 15 THEN false WHEN certification_path_statuses.id = 16 THEN false WHEN certification_path_statuses.id = 17 THEN false ELSE true END', visible: false, as: :boolean, label: t('models.effective.datatables.projects_certification_paths.certification_path_status_is_active.label')
+        col :certification_path_status_is_active, col_class: 'col-order-35', sql_column: 'CASE WHEN certification_path_statuses.id IS NULL THEN false WHEN certification_path_statuses.id = 15 THEN false WHEN certification_path_statuses.id = 16 THEN false WHEN certification_path_statuses.id = 17 THEN false ELSE true END', visible: false, as: :boolean, label: t('models.effective.datatables.projects_certification_paths.certification_path_status_is_active.label')
 
-        col :certification_path_pcr_track, col_class: 'col-order-35', sql_column: 'certification_paths.pcr_track', label: t('models.effective.datatables.projects_certification_paths.certification_path_pcr_track.label'), as: :boolean, visible: false
+        col :certification_path_pcr_track, col_class: 'col-order-36', sql_column: 'certification_paths.pcr_track', label: t('models.effective.datatables.projects_certification_paths.certification_path_pcr_track.label'), as: :boolean, visible: false
 
-        col :certification_manager_array, col_class: 'multiple-select col-order-36', label: t('models.effective.datatables.projects_certification_paths.certification_manager_array.label'), visible: false, sql_column: '(%s)' % projects_users_by_type('certification_manager'), search: { as: :select, collection: Proc.new { ProjectsUser.certification_managers.pluck("users.name").uniq.compact.map { |name| [name, name] } rescue [] } } do |rec|
+        col :certification_manager_array, col_class: 'multiple-select col-order-37', label: t('models.effective.datatables.projects_certification_paths.certification_manager_array.label'), visible: false, sql_column: '(%s)' % projects_users_by_type('certification_manager'), search: { as: :select, collection: Proc.new { ProjectsUser.certification_managers.pluck("users.name").uniq.compact.map { |name| [name, name] } rescue [] } } do |rec|
           ERB::Util.html_escape(rec.certification_manager_array).split('|||').sort.join(', <br/>') unless rec.certification_manager_array.nil?
         end.search do |collection, terms, column, index|
           terms_array = terms.split(",")
@@ -450,11 +463,11 @@ module Effective
           end
         end
 
-        col :gsas_trust_team_array, col_class: 'col-order-37', label: t('models.effective.datatables.projects_certification_paths.gsas_trust_team_array.label'), visible: false, sql_column: '(%s)' % projects_users_by_type('gsas_trust_team') do |rec|
+        col :gsas_trust_team_array, col_class: 'col-order-38', label: t('models.effective.datatables.projects_certification_paths.gsas_trust_team_array.label'), visible: false, sql_column: '(%s)' % projects_users_by_type('gsas_trust_team') do |rec|
           ERB::Util.html_escape(rec.gsas_trust_team_array).split('|||').sort.join(', <br/>') unless rec.gsas_trust_team_array.nil?
         end
 
-        col :enterprise_clients_array, col_class: 'multiple-select col-order-38', label: t('models.effective.datatables.projects_certification_paths.enterprise_clients_array.label'), visible: false, sql_column: '(%s)' % projects_users_by_type('enterprise_clients'), search: { as: :select, collection: Proc.new { ProjectsUser.enterprise_clients.pluck("users.name").uniq.compact.map { |name| [name, name] } rescue [] } } do |rec|
+        col :enterprise_clients_array, col_class: 'multiple-select col-order-39', label: t('models.effective.datatables.projects_certification_paths.enterprise_clients_array.label'), visible: false, sql_column: '(%s)' % projects_users_by_type('enterprise_clients'), search: { as: :select, collection: Proc.new { ProjectsUser.enterprise_clients.pluck("users.name").uniq.compact.map { |name| [name, name] } rescue [] } } do |rec|
           ERB::Util.html_escape(rec.enterprise_clients_array).split('|||').sort.join(', <br/>') unless rec.enterprise_clients_array.nil?
         end.search do |collection, terms, column, index|
           terms_array = terms.split(",")
@@ -510,6 +523,7 @@ module Effective
           .select('building_types.name as building_type_name')
           .select('certification_paths.started_at as certification_path_started_at')
           .select('certification_paths.certified_at as certification_path_certified_at')
+          .select('certification_paths.expires_at as certification_path_expires_at')
           .select("certificates.name as certificate_name")
           .select("certificates.certificate_type as certificate_type")
           .select('certificates.gsas_version as certificate_gsas_version')

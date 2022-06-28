@@ -48,10 +48,10 @@ $(function() {
 
   set_options_label();
 
-  bindDateRangePicker($(".datatable_search_certification_path_started_at input"));
-  bindDateRangePicker($(".datatable_search_certification_path_certified_at input"));
-  bindDateRangePicker($(".datatable_search_certification_path_updated_at input"));
-  
+  ['started_at', 'certified_at', 'updated_at', 'expires_at'].forEach(function(date_for) {
+    bindDateRangePicker($(".datatable_search_certification_path_" + date_for + " input"));
+  });
+
   let pageName = window.location.href.split('/').pop();
 
   if (pageName == 'projects' || pageName == '') {
@@ -82,32 +82,32 @@ $(function() {
     columnNames["Project Plot Area"] = 23;
     columnNames["Certification Certified On"] = 24;
     columnNames["Project Gross Built Up Area"] = 25;
-    columnNames["Certification Updated On"] = 26;
+    columnNames["Certification Expiry On"] = 26;
     columnNames["Project Footprint"] = 27;
-    columnNames["Certification Active"] = 28;
+    columnNames["Certification Updated On"] = 28;
     columnNames["Project Certified Area"] = 29;
-    columnNames["Certification PCR Track"] = 30;
+    columnNames["Certification Active"] = 30;
     columnNames["Project Carpark Area"] = 31;
-    columnNames["GSAS Trust Certification Manager"] = 32;
+    columnNames["Certification PCR Track"] = 32;
     columnNames["Project Planning Type"] = 33;
-    columnNames["GSAS Trust Certification Team"] = 34; 
+    columnNames["GSAS Trust Certification Manager"] = 34;
     columnNames["Project Use"] = 35;
-    columnNames["Enterprise Clients"] = 36;
+    columnNames["GSAS Trust Certification Team"] = 36;
     columnNames["Project Service Provider"] = 37;
-    columnNames["blank_1"] = 38;
+    columnNames["Enterprise Clients"] = 38;
     columnNames["Project CGP"] = 39;
-    columnNames["blank_2"] = 40;
+    columnNames["blank_1"] = 40;
     columnNames["Project Team Members"] = 41;
-    columnNames["blank_3"] = 42;
+    columnNames["blank_2"] = 42;
     columnNames["Project Service Provider"] = 43;
 
-    $(".buttons-collection").on('click', function(){
+    $(".buttons-collection").on('click', function() {
       var fieldsCollection = $("ul.dt-button-collection");
       if (fieldsCollection.length > 0) {
         var mainList = $("ul.dt-button-collection");
         for (const item in columnNames) { 
           let tempElement
-          if (['blank_1', 'blank_2', 'blank_3'].includes(item) ) {
+          if (['blank_1', 'blank_2'].includes(item) ) {
             $("li." + item).remove();
             tempElement = $.parseHTML("<li class='dt-button buttons-columnVisibility " + item + " hover-disabled' tabindex='0' aria-controls='effective-datatables-projects_certification_paths-389818376781'><a href='javascript:void(0)' disabled=disabled>&nbsp;</a></li>")
 
@@ -177,8 +177,10 @@ $(function() {
           bindDateRangePicker($(".datatable_search_certification_path_started_at input"));
         } else if (column.hasClass("col-certification_path_certified_at")) {
           bindDateRangePicker($(".datatable_search_certification_path_certified_at input"));
-        } else if  (column.hasClass("col-certification_path_updated_at")) {
+        } else if (column.hasClass("col-certification_path_updated_at")) {
           bindDateRangePicker($(".datatable_search_certification_path_updated_at input"));
+        } else if (column.hasClass("col-certification_path_expires_at")) {
+          bindDateRangePicker($(".datatable_search_certification_path_expires_at input"));
         }
       }
     }
