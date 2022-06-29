@@ -45,6 +45,7 @@ en:
         started_at: Certification Started On
         expired_at: Certification Expiry On
         certified_at: Certification Certified On
+        buildings_number: Number of Buildings
         create_detaild_certificate_report:
           text: Certificate Information Verification
         download_detailed_certificate:
@@ -107,6 +108,7 @@ en:
       certification_path:
         title: CERTIFICATION DETAILS
         name: Certification Name
+        buildings_number: Number of Buildings
         create_detaild_certificate_report:
           text: Certificate Information Verification
         download_certificate:

@@ -63,7 +63,7 @@ class CertificationPathsController < AuthenticatedController
         @gsas_version = @gsas_versions.first
       end
     end
-        
+
     if Certificate.certification_types[@certification_type] == Certificate.certification_types[:final_design_certificate]
       @certificate_method = @certification_path.project.completed_letter_of_conformances.first.certification_path_method
       @assessment_method = if !@certificate_method.present?
@@ -160,6 +160,15 @@ class CertificationPathsController < AuthenticatedController
         if params.has_key?(:single_scheme_select)
           @certification_path.scheme_mixes.build({scheme_id: params[:single_scheme_select], weight: 100})
         end
+      end
+    end
+
+    # set number of buildings
+    if Certificate.certification_types[@certification_type] == Certificate.certification_types[:final_design_certificate]
+      @certification_path.buildings_number = @certification_path.project.completed_letter_of_conformances.first.buildings_number rescue 0
+    else
+      if params.has_key?(:certification_path) && params[:certification_path].has_key?(:buildings_number)
+        @certification_path.buildings_number = params.dig(:certification_path, :buildings_number) rescue 0
       end
     end
 

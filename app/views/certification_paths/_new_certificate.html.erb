@@ -67,6 +67,7 @@
                       <% end %>
                   <% end %>
                 <% end %>
+
                 <!-- For debugging, to visualise the resulting certificate -->
                 <!--%= f.collection_check_boxes :certificate_id, @certificates, :id, :name %-->
                 <!--%= f.hidden_field :certificate_id, value: @certification_path.certificate_id %-->
@@ -81,6 +82,11 @@
                     <%= f.select(:development_type, options_from_collection_for_select(@development_types, :id, :name, @certification_path.development_type.id), { label: 'Project Planning Type', class: 'form-control' }) %>
                 <% end %>
 
+                <!-- set buildings number -->
+                <% if ['Neighborhoods'].include?(@certification_path&.development_type&.name) %>
+                    <%= f.number_field :buildings_number, label: t('activerecord.attributes.certification_path.buildings_number') %>
+                <% end %>
+
                 <!-- Schemes -->
                 <label id="certified_area_label" class="control-label">
                   <% if ['Mixed Use', 'Neighborhoods'].include?(@certification_path&.development_type&.name) %>
@@ -89,6 +95,7 @@
                     Certification Scheme
                   <% end %>
                 </label>
+
                 <% if Certificate.certification_types[@certification_type] == Certificate.certification_types[:final_design_certificate] %>
                     <div class="form-group">
                         <table class="table table-bordered table-hover">
@@ -113,7 +120,7 @@
                         <div class="form-group scheme-mixed-group">
                             <div class="row">
                                 <div class="col-md-9">
-                                    <%= select_tag('mixed_scheme_select', options_from_collection_for_select(manage_schemes_options(@certification_path, @assessment_method), :id, :name), {:include_blank => true, :multiple => false, :class => 'form-control mixed-scheme-select'}) %>
+                                    <%= select_tag('mixed_scheme_select', options_from_collection_for_select(manage_schemes_options(@certification_path, @assessment_method), :id, :name), { include_blank: true, multiple: false, class: 'form-control mixed-scheme-select', data: { planning_type: @certification_path&.development_type&.name } }) %>
                                 </div>
                                 <div class="col-md-3">
                                     <%= btn_tag(icon: 'plus-circle', text: 'Add scheme', class: 'form-control add_scheme', type: 'button', style: 'white') %>

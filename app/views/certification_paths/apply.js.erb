@@ -92,7 +92,7 @@ $(function () {
             if(!valid){
                 $('div.duration-group').addClass('has-error');
             }
-        }else {
+        } else {
             // Determine the selected development type
             if ($('select.single-scheme-select').length) {
                 valid = ("" != $('select.single-scheme-select').val());
@@ -100,7 +100,20 @@ $(function () {
                     $('div.scheme-single-group').addClass('has-error');
                 }
             } else if ($('select.mixed-scheme-select').length) {
+                // validate buildings number
+                var planning_type = $("select.mixed-scheme-select").data('planning-type');
+                if (['Neighborhoods'].includes(planning_type)) {
+                    var buildings_number_field = $('#certification_path_buildings_number');
+                    if (buildings_number_field.val() < 1) {
+                        valid = false 
+                        buildings_number_field.parent().addClass('has-error');
+                    } else {
+                        buildings_number_field.parent().removeClass('has-error');
+                    }
+                }
+
                 $(".sub-schemes-note").show();
+
                 var total = calculate_total_weight();
                 if (total != 100) {
                     valid = false;
@@ -172,6 +185,10 @@ $(function () {
     });
 
     $('#certification_path_expires_at').on("change", function (e) {
+        validate();
+    });
+
+    $('#certification_path_buildings_number').on("keyup", function (e) {
         validate();
     });
 
