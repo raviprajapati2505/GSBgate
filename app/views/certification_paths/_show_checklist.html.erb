@@ -39,6 +39,15 @@
                         </td>
                       </tr>
 
+                      <% if ['Neighborhoods'].include?(@certification_path&.development_type&.name) %>
+                        <tr>
+                          <th><%= t('certification_paths.show.certification_path.buildings_number') %></th>
+                          <td>
+                            <%= @certification_path.buildings_number %>
+                          </td>
+                        </tr>
+                      <% end %>
+
                       <% if @certification_path.is_activated? %>
                           <tr>
                               <th><%= t('certification_paths.show.certification_path.rating') %></th>

@@ -52,6 +52,7 @@ Rails.application.routes.draw do
       get 'tools' => 'projects#show_tools'
       get 'confirm_destroy' => 'projects#confirm_destroy'
     end
+
     resources :project_rendering_images, only: [:create, :show, :destroy], path: :project_rendering_image
     resources :actual_project_images, only: [:create, :show, :destroy], path: :actual_project_image
     resources :projects_users, only: [:create, :edit, :show, :update, :destroy], path: :users, as: 'users', constraints: {id: /\d+/}
@@ -59,6 +60,7 @@ Rails.application.routes.draw do
       collection do
         get 'list'
       end
+
       member do
         # get :download_certificate_report
         get :new_detailed_certification_report

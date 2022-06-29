@@ -49,6 +49,7 @@ en:
         development_type: Development Type
         star_rating: Performance-Based (Star Rating Certificate)
         check_list: Prescriptive Checklist (Compliance Certificate)
+        buildings_number: Number of Buildings
         development_types:
           not_applicable: Not applicable
           single_use: Single use building
