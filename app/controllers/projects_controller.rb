@@ -189,7 +189,7 @@ class ProjectsController < AuthenticatedController
         @page_title = ERB::Util.html_escape(@project.name.to_s)
         @certification_path = CertificationPath.new(project: @project)
         @projects_user = ProjectsUser.new(project: @project)
-        @projects_surveys = ProjectsSurvey.where(project_id: @project.id)
+        @projects_surveys = @project.projects_surveys
       }
       format.json { render json: @project, status: :ok }
     end

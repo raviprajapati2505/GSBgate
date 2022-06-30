@@ -6,7 +6,6 @@ class ProjectsSurvey < ApplicationRecord
   belongs_to :project
   belongs_to :survey_type
   belongs_to :survey_questionnaire_version, optional: true
-  belongs_to :created_by, class_name: 'User'
   has_many :survey_responses, dependent: :destroy
 
   # enums

@@ -1,9 +1,7 @@
 class ProjectsSurveysController < AuthenticatedController
   load_and_authorize_resource param_method: :survey_params
   before_action :set_project_with_survey_type
-  before_action :set_project_survey, except: [:index, :new, :create]
-
-  def index; end
+  before_action :set_project_survey, except: [:new, :create]
 
   def show
     @page_title = @projects_survey.title
@@ -34,7 +32,6 @@ class ProjectsSurveysController < AuthenticatedController
 
   def create
     @projects_survey = @project.projects_surveys.new(survey_params)
-    @projects_survey.created_by = current_user
   
     if params[:button].present? && params[:button] == 'save-and-release'
       @projects_survey.released_at = Time.now
