@@ -29,4 +29,5 @@
 /private
 
 # Ignore public uploaded files
+/public/assets/*
 /public/uploads

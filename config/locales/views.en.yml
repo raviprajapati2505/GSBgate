@@ -194,6 +194,9 @@ en:
   survey_dashboard:
     index:
       title_html: Survey Dashboard
+      linkme_survey:
+        title: Linkme Surveys
+        total_count: Total Linkme Surveys
       survey_types:
         title: Survey Types
         total_count: Total Survey Types
@@ -334,6 +337,9 @@ en:
       description_46: Activate user account.
 
       tooltip_due_date: Task is overdue.
+  linkme_surveys:
+    index:
+      table_title: All Linkme Surveys
   users:
     index:
       action_edit_title: Edit

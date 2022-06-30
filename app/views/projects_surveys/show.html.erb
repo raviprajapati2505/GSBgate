@@ -9,7 +9,13 @@
             <h3>Total Questions: <%= @latest_questions.count rescue 0 %></h3>
           </div>
           <div class="col-md-2">
-            
+              <%= 
+                if @latest_questions[0].question_responses.count > 0
+                  link_to export_survey_results_project_survey_path(@project), class: "btn btn-primary" do
+                      ikoen('download', size: :small, title: 'Export These Results')
+                  end
+                end 
+              %>
           </div>
         </div>
       </div>

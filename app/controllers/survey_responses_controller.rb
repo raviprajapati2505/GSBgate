@@ -3,14 +3,14 @@ class SurveyResponsesController < ApplicationController
   before_action :set_project_survey, only: [:new, :create, :thank_you, :all_text_responses_of_survey_question]
 
   def new
-    authorize!(:new, @project_survey)
+    authorize!(:new_survey_response, @project_survey)
 
     @survey_response = SurveyResponse.new
     @survey_questions.each { |question| @survey_response.question_responses.build(survey_question_id: question.id) }
   end
 
   def create
-    authorize!(:create, @project_survey)
+    authorize!(:create_survey_response, @project_survey)
 
     @survey_response = @project_survey.survey_responses.new(survey_response_params)
     if @survey_response.save

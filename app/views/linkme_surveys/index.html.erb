@@ -1,0 +1,11 @@
+<div class="ibox float-e-margins">
+    <div class="ibox-title">
+        <h5><%=t '.table_title' %></h5>
+    </div>
+    <div class="ibox-content">
+        <div class="ibox-content" id="linkme-surveys-table">
+            <%= render_datatable(@datatable) %>
+        </div>
+    </div>
+</div>
+<div id="toast-message"></div>
