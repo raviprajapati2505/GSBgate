@@ -129,7 +129,7 @@ class Ability
 
     can [:show, :edit, :update, :download_user_files], User, id: user.id
     can [:edit_service_provider, :update_service_provider], ServiceProvider, id: user.id
-    can [:new, :create], ProjectsSurvey do |project_survey|
+    can [:new_survey_response, :create_survey_response], ProjectsSurvey do |project_survey|
       project_survey.status == 'active' && project_survey.end_date > Date.today
     end
 

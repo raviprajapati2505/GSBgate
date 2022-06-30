@@ -323,8 +323,9 @@
 
     <%= render partial: 'projects_users/index', locals: {project: @project, team: :enterprise_clients, certification_team_type: 1, certification_path: @certification_path} %>
     <br/>
-
-    <%= render partial: 'projects_surveys/index', locals: {project: @project, projects_surveys:  @projects_surveys} %>
+    <% if can?(:index, ProjectsSurvey) %>
+      <%= render partial: 'projects_surveys/index', locals: {project: @project, projects_surveys:  @projects_surveys} %>
+    <% end %>
   </div>
 </div>
 

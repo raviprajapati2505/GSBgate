@@ -58,7 +58,12 @@ Rails.application.routes.draw do
     resources :project_rendering_images, only: [:create, :show, :destroy], path: :project_rendering_image
     resources :actual_project_images, only: [:create, :show, :destroy], path: :actual_project_image
     resources :projects_users, only: [:create, :edit, :show, :update, :destroy], path: :users, as: 'users', constraints: {id: /\d+/}
-    resources :projects_surveys, only: [:new, :create, :edit, :show, :update, :destroy], path: :surveys, as: 'surveys', constraints: {id: /\d+/}
+    resources :projects_surveys, only: [:new, :create, :edit, :show, :update, :destroy], path: :surveys, as: 'surveys', constraints: {id: /\d+/} do
+      member do
+        get :copy_project_survey
+        get :export_survey_results
+      end
+    end
     resources :certification_paths, except: [:index, :edit, :update], path: :certificates do
       collection do
         get 'list'
@@ -164,6 +169,8 @@ Rails.application.routes.draw do
       get 'all_text_responses_of_survey_question', to: 'survey_responses#all_text_responses_of_survey_question', as: 'all_text_responses_of_survey_question'
     end
   end
+  get 'linkme_surveys', to: 'linkme_surveys#index', as: 'linkme_surveys'
+  get 'linkme_surveys/:id/download_linkme_survey_data' => 'linkme_surveys#download_linkme_survey_data', as: 'download_linkme_survey_data'
 
   # Custom routes
   get 'projects/:id/location_plan' => 'projects#download_location_plan', as: 'download_project_location_plan'

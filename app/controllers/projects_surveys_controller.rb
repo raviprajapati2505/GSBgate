@@ -1,6 +1,6 @@
 class ProjectsSurveysController < AuthenticatedController
   load_and_authorize_resource param_method: :survey_params
-  before_action :set_project_with_survey_type, except: [:index, :show]
+  before_action :set_project_with_survey_type
   before_action :set_project_survey, except: [:index, :new, :create]
 
   def index; end
@@ -66,6 +66,13 @@ class ProjectsSurveysController < AuthenticatedController
     redirect_to project_path(@project), notice: 'Survey was successfully destroyed.'
   end
 
+  def export_survey_results
+    filepath = filepath_for_report 'Survey Response Report'
+    report = Reports::SurveyResponseReport.new(@projects_survey, @project)
+    report.save_as(filepath)
+    send_file filepath, :type => 'application/pdf', :x_sendfile => false
+  end
+
   private 
 
   def survey_params
@@ -90,5 +97,10 @@ class ProjectsSurveysController < AuthenticatedController
   def set_project_with_survey_type
     @survey_types = SurveyType.released_survey_types
     @project = Project.find(params[:project_id])
+  end
+
+  def filepath_for_report(report_name)
+    filename = "#{@project.code} - #{@projects_survey.title} - #{report_name}.pdf"
+    Rails.root.join('private', 'projects', @project.id.to_s, 'survey_responses', @projects_survey.id.to_s, 'reports', filename)
   end
 end

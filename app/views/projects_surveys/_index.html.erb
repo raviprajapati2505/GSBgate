@@ -45,6 +45,15 @@
                 <%= 
                   btn_link_to(project_survey_path(project, survey.id), method: :delete, data: {confirm: "Are you sure to remove this survey ?"}, style: 'danger', icon: 'trash', size: 'small')
                 %>
+                <%= 
+                   # show export survey response button if there is at least one response present
+                   question = survey.survey_questionnaire_version&.survey_questions
+                   if question[0].question_responses.count > 0
+                    link_to export_survey_results_project_survey_path(project, survey.id), class: "btn btn-sm btn-btn btn-sm btn-primary" do
+                      ikoen('download', size: :small, title: 'Link comment from other criteria')
+                    end
+                   end
+                %>
               </td>
             </tr>
           <% end %>
