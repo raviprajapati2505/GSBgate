@@ -35,9 +35,7 @@
               <td><%= survey.released_at&.strftime('%e %b, %Y AT %H:%M') %></td>
               <td>
                 <%=
-                  unless survey.released?
-                    btn_link_to(edit_project_survey_path(project,survey.id), icon: 'edit', size: 'small', tooltip: 'Edit')
-                  end
+                  btn_link_to(edit_project_survey_path(project,survey.id), icon: 'edit', size: 'small', tooltip: 'Edit')
                 %>
                 <%= 
                   btn_link_to(copy_project_survey_project_survey_path(project, survey.id), icon: 'copy', size: 'small', tooltip: 'Copy Survey')
@@ -48,7 +46,7 @@
                 <%= 
                    # show export survey response button if there is at least one response present
                    question = survey.survey_questionnaire_version&.survey_questions
-                   if question[0].question_responses.count > 0
+                   if question.present? && question[0].question_responses.count > 0
                     link_to export_survey_results_project_survey_path(project, survey.id), class: "btn btn-sm btn-btn btn-sm btn-primary" do
                       ikoen('download', size: :small, title: 'Link comment from other criteria')
                     end
