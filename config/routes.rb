@@ -58,7 +58,7 @@ Rails.application.routes.draw do
     resources :project_rendering_images, only: [:create, :show, :destroy], path: :project_rendering_image
     resources :actual_project_images, only: [:create, :show, :destroy], path: :actual_project_image
     resources :projects_users, only: [:create, :edit, :show, :update, :destroy], path: :users, as: 'users', constraints: {id: /\d+/}
-    resources :projects_surveys, only: [:new, :create, :edit, :show, :update, :destroy], path: :surveys, as: 'surveys', constraints: {id: /\d+/} do
+    resources :projects_surveys, except: [:index], path: :surveys, as: 'surveys', constraints: {id: /\d+/} do
       member do
         get :copy_project_survey
         get :export_survey_results
@@ -179,7 +179,8 @@ Rails.application.routes.draw do
   get 'projects/:id/narrative' => 'projects#download_project_narrative', as: 'download_project_narrative'
   get 'projects/:id/sustainability_features' => 'projects#download_sustainability_features', as: 'download_sustainability_features'
   get 'projects/:id/area_statement' => 'projects#download_area_statement', as: 'download_area_statement'
-  
+  get 'projects_surveys/index' => 'projects_surveys#index', as: 'projects_surveys'
+
   resources :audit_logs, only: [:index], path: :audit_logs do
     collection do
       get 'export'

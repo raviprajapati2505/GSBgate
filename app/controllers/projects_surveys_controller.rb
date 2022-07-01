@@ -1,7 +1,12 @@
 class ProjectsSurveysController < AuthenticatedController
   load_and_authorize_resource param_method: :survey_params
-  before_action :set_project_with_survey_type
-  before_action :set_project_survey, except: [:new, :create]
+  before_action :set_project_with_survey_type, except: [:index]
+  before_action :set_project_survey, except: [:index, :new, :create]
+
+  def index
+    @page_title = t('project_surveys.index.title_html')
+    @projects_surveys_datatable = Effective::Datatables::ProjectsSurveys.new
+  end
 
   def show
     @page_title = @projects_survey.title

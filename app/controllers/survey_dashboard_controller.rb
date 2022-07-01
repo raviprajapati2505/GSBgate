@@ -3,7 +3,8 @@ class SurveyDashboardController < AuthenticatedController
 
   def index
     @page_title = t('survey_dashboard.index.title_html')
-    @survey_types = SurveyType.all
-    @linkme_survey_count =  LinkmeSurvey.all.count
+    @survey_types_count = SurveyType.count
+    @linkme_survey_count =  LinkmeSurvey.count
+    @projects_surveys_count =  ProjectsSurvey.count
   end
 end

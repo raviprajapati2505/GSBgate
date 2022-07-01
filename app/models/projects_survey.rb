@@ -33,6 +33,10 @@ class ProjectsSurvey < ApplicationRecord
     released_at.present?
   end
 
+  def expired?
+    end_date < Date.today rescue false
+  end
+
   def is_public?
     user_access == 'access_publicly'
   end

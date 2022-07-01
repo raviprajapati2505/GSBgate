@@ -48,7 +48,14 @@ $(function() {
 
   set_options_label();
 
-  ['started_at', 'certified_at', 'updated_at', 'expires_at'].forEach(function(date_for) {
+  [
+    'certification_path_started_at', 
+    'certification_path_certified_at', 
+    'certification_path_updated_at', 
+    'certification_path_expires_at',
+    'released_at',
+    'end_date'
+  ].forEach(function(date_for) {
     bindDateRangePicker($(".datatable_search_certification_path_" + date_for + " input"));
   });
 
@@ -172,6 +179,7 @@ $(function() {
         // if (Object.keys(columnNames).includes(select_option) || select_option == ""){ 
         //   options_with_null.text("Select All");
         // }
+
       } else if (column.hasClass("date-range-filter")) {
         if (column.hasClass("col-certification_path_started_at")) {
           bindDateRangePicker($(".datatable_search_certification_path_started_at input"));
@@ -181,6 +189,10 @@ $(function() {
           bindDateRangePicker($(".datatable_search_certification_path_updated_at input"));
         } else if (column.hasClass("col-certification_path_expires_at")) {
           bindDateRangePicker($(".datatable_search_certification_path_expires_at input"));
+        } else if (column.hasClass("col-survey_released_at date-range-filter")) {
+          bindDateRangePicker($(".datatable_search_survey_released_at input"));
+        } else if (column.hasClass("col-end_date date-range-filter")) {
+          bindDateRangePicker($(".datatable_search_end_date input"));
         }
       }
     }

@@ -142,6 +142,9 @@ class Ability
       can [:index, :show, :copy_project_survey, :create, :edit, :update, :destroy, :export_survey_results], ProjectsSurvey, project: { projects_users: { user: active_user, role: project_user_role_certification_manager } }
 
       cannot :update, Project, projects_users: {user_id: user.id, role: project_user_role_cgp_project_manager}, certification_paths: {certification_path_status: {id: CertificationPathStatus::STATUSES_ACTIVATED}}
+      cannot :manage, :survey_dashboard
+      cannot [:index, :show, :new, :edit, :create, :update, :destroy], SurveyType
+      cannot [:show, :form, :create, :update, :update_position], SurveyQuestionnaireVersion
 
       if valid_user_associates?(user) && user.active?
         can :create, Project
@@ -315,6 +318,7 @@ class Ability
       cannot :manage, :survey_dashboard
       cannot [:index, :show, :new, :edit, :create, :update, :destroy], SurveyType
       cannot [:show, :form, :create, :update, :update_position], SurveyQuestionnaireVersion
+      cannot [:index, :show, :copy_project_survey, :create, :edit, :update, :destroy, :export_survey_results], ProjectsSurvey
 
       can [:index, :auditable_index, :auditable_index_comments, :download_attachment, :export], AuditLog, attachment_file: true
       # Project
@@ -441,23 +445,29 @@ class Ability
     elsif user.document_controller?
       can :read, :all
 
-      cannot :manage, :survey_dashboard
-      cannot [:index, :show, :new, :edit, :create, :update, :destroy], SurveyType
-      cannot [:show, :form, :create, :update, :update_position], SurveyQuestionnaireVersion
-
       can :download_signed_certificate, CertificationPath, certification_path_status: { id: [CertificationPathStatus::CERTIFIED, CertificationPathStatus::CERTIFICATE_IN_PROCESS] }
       can [:download_location_plan, :download_site_plan, :download_design_brief, :download_project_narrative, :download_area_statement, :download_sustainability_features], Project
       can :download_detailed_certificate_report, CertificationPath, certification_path_status: {id: [CertificationPathStatus::CERTIFIED, CertificationPathStatus::CERTIFICATE_IN_PROCESS]}, certification_path_report: { is_released: true }
       cannot :read, AuditLog
       can [:new_detailed_certification_report, :create_detailed_certification_report], CertificationPath, certification_path_status: {id: [CertificationPathStatus::CERTIFIED, CertificationPathStatus::CERTIFICATE_IN_PROCESS]}
+
+      cannot :manage, :survey_dashboard
+      cannot [:index, :show, :new, :edit, :create, :update, :destroy], SurveyType
+      cannot [:show, :form, :create, :update, :update_position], SurveyQuestionnaireVersion
+      cannot [:index, :show, :copy_project_survey, :create, :edit, :update, :destroy, :export_survey_results], ProjectsSurvey
+
     elsif user.system_admin?
       can :manage, :all
     elsif user.record_checker?
-      can :index, Project
       can :read, Project
       can :read, CertificationPath
       can :read, SchemeMix
       can :read, SchemeMixCriterion
+      cannot :manage, :survey_dashboard
+      cannot [:index, :show, :new, :edit, :create, :update, :destroy], SurveyType
+      cannot [:show, :form, :create, :update, :update_position], SurveyQuestionnaireVersion
+      cannot [:index, :show, :copy_project_survey, :create, :edit, :update, :destroy, :export_survey_results], ProjectsSurvey
+
     elsif user.users_admin?
       # Task
       can :read, Task
@@ -470,6 +480,7 @@ class Ability
       can :index, :survey_dashboard
       can [:index, :show, :new, :edit, :create, :update, :destroy], SurveyType
       can [:show, :form, :create, :update, :update_position], SurveyQuestionnaireVersion
+      can [:index, :show, :copy_project_survey, :create, :edit, :update, :destroy, :export_survey_results], ProjectsSurvey
 
     elsif user.service_provider?
       can :read, Project, projects_users: users_with_service_provider
@@ -483,6 +494,11 @@ class Ability
       can :read, Document, scheme_mix_criteria_documents: { scheme_mix_criterion: {scheme_mix: {certification_path: {project: projects_users_with_service_provider}}}}
       can :read, User, service_provider_id: user.id
       can :activity_info, User
+
+      cannot :manage, :survey_dashboard
+      cannot [:index, :show, :new, :edit, :create, :update, :destroy], SurveyType
+      cannot [:show, :form, :create, :update, :update_position], SurveyQuestionnaireVersion
+      cannot [:index, :show, :copy_project_survey, :create, :edit, :update, :destroy, :export_survey_results], ProjectsSurvey
     else
       cannot :manage, :all
     end
