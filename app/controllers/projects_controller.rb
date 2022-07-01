@@ -191,6 +191,7 @@ class ProjectsController < AuthenticatedController
         @projects_user = ProjectsUser.new(project: @project)
         @projects_surveys = @project.projects_surveys
       }
+
       format.json { render json: @project, status: :ok }
     end
   end
