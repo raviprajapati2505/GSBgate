@@ -5,7 +5,7 @@ module Effective
 
       datatable do
         col :project_code, label: t('models.effective.datatables.projects.lables.project_code'), sql_column: 'projects.code' do |rec|          
-          link_to_if(!current_user.record_checker?,
+          link_to_if(!current_user.users_admin?,
             rec.project_code,
             project_path(rec.project_id)
           )
