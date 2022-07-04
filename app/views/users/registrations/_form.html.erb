@@ -104,11 +104,11 @@
     <legend class="scheduler-border"><%= t('.user_details.other_info') %></legend>
     <div class="control-group">
      <% if resource_for == 'user' &&  resource.role&.titleize != 'Service Provider' %>
-      	<%= f.simple_fields_for :user_detail, resource.user_detail do |user_detail| %>
+      	<%= f.simple_fields_for :user_detail, user_detail do |user_detail| %>
             <%= render partial: 'users/registrations/user_detail_fields', locals: { f: user_detail, user: resource } %>
         <% end %>
      <% else %>
-		 		<%= f.simple_fields_for :service_provider_detail, resource.service_provider_detail do |service_provider_detail| %>
+		 		<%= f.simple_fields_for :service_provider_detail, service_provider_detail do |service_provider_detail| %>
             <%= render partial: 'users/registrations/service_provider_detail_fields', locals: { f: service_provider_detail, user: resource } %>
         <% end %>
      <% end %>

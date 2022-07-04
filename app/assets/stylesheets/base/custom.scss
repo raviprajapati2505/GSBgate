@@ -178,9 +178,17 @@ legend.scheduler-border {
 }
 
 .top-navigation .wrapper.wrapper-content{
-    margin-top: 126px !important;
+    margin-top: 144px !important;
 }
 
 .skin-gord .gord-transparent-green {
   background-color: #61c810ed !important;
+}
+
+.skin-gord .navbar-nav .dropdown-menu{
+  background-color: #61c810ed !important;
+}
+
+.top-navigation .nav > li > a{
+  padding: 15px 18px !important;
 }

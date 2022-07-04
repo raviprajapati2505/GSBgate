@@ -38,12 +38,14 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   # GET /resource/edit
-  # def edit
-  #   super
-  # end
+  def edit
+    @user_detail = UserDetail.find_or_initialize_by(id: @user.user_detail&.id)
+    super
+  end
 
   # GET /edit_service_provider
   def edit_service_provider
+    @service_provider_detail = ServiceProviderDetail.find_or_initialize_by(id: @service_provider.service_provider_detail&.id)
     render :edit_service_provider
   end
 

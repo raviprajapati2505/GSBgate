@@ -17,6 +17,12 @@ class UsersController < AuthenticatedController
   end
 
   def edit
+    if @user.role == 'default_role'
+      @user_detail = UserDetail.find_or_initialize_by(id: @user.user_detail&.id)
+    else
+      @user_detail = ServiceProviderDetail.find_or_initialize_by(id: @user.service_provider_detail&.id)
+    end
+  
     unless @user.present? 
       redirect_to root_path, alert: "User is not available." and return
     end
@@ -307,7 +313,7 @@ class UsersController < AuthenticatedController
 
   def get_organization_details
     service_provider_id = params["service_provider_id"]
-    @user_details = User.find_by_id(service_provider_id);
+    @user_details = User.find_by_id(service_provider_id)
     respond_to do |format|
       format.json { render json: @user_details }
     end
@@ -339,23 +345,23 @@ class UsersController < AuthenticatedController
     
     case params[:file]
       when "qid_file"
-        file = @user.user_detail.qid_file.path
+        file = @user.user_detail&.qid_file&.path
       when "university_credentials_file"
-        file = @user.user_detail.university_credentials_file.path
+        file = @user.user_detail&.university_credentials_file&.path
       when "work_experience_file"
-        file = @user.user_detail.work_experience_file.path
+        file = @user.user_detail&.work_experience_file&.path
       when "cgp_licence_file"
-        file = @user.user_detail.cgp_licence_file.path
+        file = @user.user_detail&.cgp_licence_file&.path
       when "qid_work_permit_file"
-        file = @user.user_detail.qid_work_permit_file.path
+        file = @user.user_detail&.qid_work_permit_file&.path
       when "gsas_energey_assessment_licence_file"
-        file = @user.user_detail.gsas_energey_assessment_licence_file.path
+        file = @user.user_detail&.gsas_energey_assessment_licence_file&.path
       when "accredited_service_provider_licence_file"
-        file = @user.service_provider_detail.accredited_service_provider_licence_file.path
+        file = @user.service_provider_detail&.accredited_service_provider_licence_file&.path
       when "commercial_licence_file"
-        file = @user.service_provider_detail.commercial_licence_file.path
+        file = @user.service_provider_detail&.commercial_licence_file&.path
       when "demerit_acknowledgement_file"
-        file = @user.service_provider_detail.demerit_acknowledgement_file.path
+        file = @user.service_provider_detail&.demerit_acknowledgement_file&.path
       else
         file = ''
       end
