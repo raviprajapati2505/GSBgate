@@ -7,7 +7,7 @@
 
       <div class="form-inputs">
 
-        <%= render partial: "form", locals: { f: f, resource_for: 'user', resource: resource, action: 'add' } %>
+        <%= render partial: "form", locals: { f: f, resource_for: 'user', resource: resource, action: 'add', user_detail: resource.user_detail } %>
 
         <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
           <p>Currently waiting confirmation for: <%= resource.unconfirmed_email %></p>

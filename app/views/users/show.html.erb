@@ -40,11 +40,11 @@
             <% if @user.default_role? %>
               <tr>
                 <th><%= User.human_attribute_name('dob') %></th>
-                <td><%= @user.user_detail.dob&.strftime('%e %b, %Y') %></td>
+                <td><%= @user.user_detail&.dob&.strftime('%e %b, %Y') %></td>
               </tr>
               <tr>
                 <th><%= User.human_attribute_name('gender') %></th>
-                <td><%= @user.user_detail.gender %></td>
+                <td><%= @user.user_detail&.gender %></td>
               </tr>
             <% end %>
             <tr>
@@ -173,21 +173,23 @@
               <% if @user.default_role? %>
                 <tr>
                   <th><%= User.human_attribute_name('designation') %></th>
-                  <td><%= @user.user_detail.designation %></td>
+                  <td><%= @user.user_detail&.designation %></td>
                 </tr>
                 <tr>
                   <th><%= User.human_attribute_name('work_experience') %></th>
-                  <td><%= @user.user_detail.work_experience %></td>
+                  <td><%= @user.user_detail&.work_experience %></td>
                 </tr>
               <% else %>
-                <tr>
-                  <th><%= User.human_attribute_name('business_field') %></th>
-                  <td><%= @user.service_provider_detail.business_field %></td>
-                </tr>
-                <tr>
-                  <th><%= User.human_attribute_name('portfolio') %></th>
-                  <td><%= @user.service_provider_detail.portfolio %></td>
-                </tr>
+                <% if !@user.system_admin? %>
+                  <tr>
+                    <th><%= User.human_attribute_name('business_field') %></th>
+                    <td><%= @user.service_provider_detail&.business_field %></td>
+                  </tr>
+                  <tr>
+                    <th><%= User.human_attribute_name('portfolio') %></th>
+                    <td><%= @user.service_provider_detail&.portfolio %></td>
+                  </tr>
+                <% end %>
               <% end %>
               <tr>
                 <th><%= User.human_attribute_name('gord_employee') %></th>
@@ -200,13 +202,15 @@
               <% if @user.default_role? %>
                 <tr>
                   <th><%= User.human_attribute_name('qid_or_passport_number') %></th>
-                  <td><%= @user.user_detail.qid_or_passport_number %></td>
+                  <td><%= @user.user_detail&.qid_or_passport_number %></td>
                 </tr>
               <% else %>
-                <tr>
-                  <th><%= User.human_attribute_name('commercial_licence_no') %></th>
-                  <td><%= @user.service_provider_detail.commercial_licence_no %></td>
-                </tr>
+                <% if !@user.system_admin? %>
+                  <tr>
+                    <th><%= User.human_attribute_name('commercial_licence_no') %></th>
+                    <td><%= @user.service_provider_detail&.commercial_licence_no %></td>
+                  </tr>
+                <% end %>
               <% end %>
             </tbody>
           </table>

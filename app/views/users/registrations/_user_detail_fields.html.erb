@@ -21,8 +21,7 @@
     </div>
     <div class="col-md-4">
         <%= f.input :qid_file, as: :file, label: t('users.form.qid_file_title'), required: true %>
-        <%= f.hidden_field :qid_file_cache %>
-        <% if user.user_detail.qid_file.present? %>
+        <% if user.user_detail&.qid_file&.present? %>
             <% if can?(:download_user_files, user) %>
               <%= btn_download(download_user_files_user_path(user, :file => "qid_file"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('qid_file')}") %>
             <% end %>
@@ -33,7 +32,7 @@
 <div class="row">
     <div class="col-md-4">
         <%= f.input :university_credentials_file, as: :file, label: t('users.form.university_credential_file_title'), required: true %>
-        <% if user.user_detail.university_credentials_file.present? %>
+        <% if user.user_detail&.university_credentials_file&.present? %>
 					<% if can?(:download_user_files, user) %>
 						<%= btn_download(download_user_files_user_path(user, :file => "university_credentials_file"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('university_credentials_file')}") %>
 					<% end %>
@@ -42,7 +41,7 @@
     </div>
     <div class="col-md-4">
         <%= f.input :work_experience_file, as: :file, label: t('users.form.work_experience_file_title'), required: true %>
-        <% if user.user_detail.work_experience_file.present? %>
+        <% if user.user_detail&.work_experience_file&.present? %>
 					<% if can?(:download_user_files, user) %>
 						<%= btn_download(download_user_files_user_path(user, :file => "work_experience_file"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('work_experience_file')}") %>
 					<% end %>
@@ -51,7 +50,7 @@
     </div>
     <div class="col-md-4">
         <%= f.input :cgp_licence_file, as: :file, label: t('users.form.gsas_cgp_licence_file_title'), required: true %>
-        <% if user.user_detail.cgp_licence_file.present? %>
+        <% if user.user_detail&.cgp_licence_file&.present? %>
           <% if can?(:download_user_files, user) %>
             <%= btn_download(download_user_files_user_path(user, :file => "cgp_licence_file"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('cgp_licence_file')}") %>
           <% end %>
@@ -63,7 +62,7 @@
 <div class="row">
     <div class="col-md-4">
         <%= f.input :qid_work_permit_file, as: :file, label: t('users.form.qid_work_permit_file_title'), required: true %>
-        <% if user.user_detail.qid_work_permit_file.present? %>
+        <% if user.user_detail&.qid_work_permit_file&.present? %>
 					<% if can?(:download_user_files, user) %>
           	<%= btn_download(download_user_files_user_path(user, :file => "qid_work_permit_file"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('qid_work_permit_file')}") %>
           <% end %>
@@ -75,7 +74,7 @@
     </div>
     <div class="col-md-4">
         <%= f.input :gsas_energey_assessment_licence_file, as: :file, label: t('users.form.gsas_energy_assessment_file_licence_title'), required: true %>
-        <% if user.user_detail.gsas_energey_assessment_licence_file.present? %>
+        <% if user.user_detail&.gsas_energey_assessment_licence_file&.present? %>
 					<% if can?(:download_user_files, user) %>
           	<%= btn_download(download_user_files_user_path(user, :file => "gsas_energey_assessment_licence_file"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('gsas_energey_assessment_licence_file')}") %>
           <% end %>
