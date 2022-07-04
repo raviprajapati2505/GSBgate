@@ -161,3 +161,26 @@ legend.scheduler-border {
     display: none;
   }
 }
+
+.menu-div  {
+  position: fixed !important;
+  top: 0 !important;
+  width: 100% !important;
+  z-index: 999 !important ;
+}
+
+.page-title-div{
+  position: fixed !important;
+  top: 50px !important;
+  width: 100% !important;
+  z-index: 99 !important;
+  background: image-url('layout/gsas_trust_background.jpg') no-repeat center center fixed;
+}
+
+.top-navigation .wrapper.wrapper-content{
+    margin-top: 126px !important;
+}
+
+.skin-gord .gord-transparent-green {
+  background-color: #61c810ed !important;
+}
