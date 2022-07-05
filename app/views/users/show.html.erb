@@ -166,11 +166,21 @@
         <div class="ibox-content">
           <table class="table table-bordered table-striped user-details-table">
             <tbody>
-            <tr>
+              <tr>
                 <th><%= User.human_attribute_name('role') %></th>
                 <td><%= @user.role&.titleize %></td>
               </tr>
-              <% if @user.default_role? %>
+
+              <% if @user.service_provider? %>
+                <tr>
+                  <th><%= User.human_attribute_name('business_field') %></th>
+                  <td><%= @user.service_provider_detail&.business_field %></td>
+                </tr>
+                <tr>
+                  <th><%= User.human_attribute_name('portfolio') %></th>
+                  <td><%= @user.service_provider_detail&.portfolio %></td>
+                </tr>
+              <% else %>
                 <tr>
                   <th><%= User.human_attribute_name('designation') %></th>
                   <td><%= @user.user_detail&.designation %></td>
@@ -179,18 +189,8 @@
                   <th><%= User.human_attribute_name('work_experience') %></th>
                   <td><%= @user.user_detail&.work_experience %></td>
                 </tr>
-              <% else %>
-                <% if !@user.system_admin? %>
-                  <tr>
-                    <th><%= User.human_attribute_name('business_field') %></th>
-                    <td><%= @user.service_provider_detail&.business_field %></td>
-                  </tr>
-                  <tr>
-                    <th><%= User.human_attribute_name('portfolio') %></th>
-                    <td><%= @user.service_provider_detail&.portfolio %></td>
-                  </tr>
-                <% end %>
               <% end %>
+
               <tr>
                 <th><%= User.human_attribute_name('gord_employee') %></th>
                 <td><%= label_span(@user.gord_employee, 'Yes', 'No').html_safe %></td>
@@ -199,19 +199,19 @@
                 <th><%= User.human_attribute_name('gsas_id') %></th>
                 <td><%= @user.gsas_id %></td>
               </tr>
-              <% if @user.default_role? %>
+
+              <% if @user.service_provider? %>
+                <tr>
+                  <th><%= User.human_attribute_name('commercial_licence_no') %></th>
+                  <td><%= @user.service_provider_detail&.commercial_licence_no %></td>
+                </tr>
+              <% else %>
                 <tr>
                   <th><%= User.human_attribute_name('qid_or_passport_number') %></th>
                   <td><%= @user.user_detail&.qid_or_passport_number %></td>
                 </tr>
-              <% else %>
-                <% if !@user.system_admin? %>
-                  <tr>
-                    <th><%= User.human_attribute_name('commercial_licence_no') %></th>
-                    <td><%= @user.service_provider_detail&.commercial_licence_no %></td>
-                  </tr>
-                <% end %>
               <% end %>
+
             </tbody>
           </table>
         </div>
