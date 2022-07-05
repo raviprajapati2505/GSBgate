@@ -181,12 +181,11 @@ legend.scheduler-border {
     margin-top: 144px !important;
 }
 
-.skin-gord .gord-transparent-green {
-  background-color: #61c810ed !important;
-}
-
-.skin-gord .navbar-nav .dropdown-menu{
-  background-color: #61c810ed !important;
+.skin-gord {
+ .gord-transparent-green,
+ .navbar-nav .dropdown-menu {
+    background-color: #62A60A !important;
+  }
 }
 
 .top-navigation .nav > li > a{

@@ -1,89 +1,93 @@
 <div class="row">
-	<div class="col-md-4">
-		<%= f.input :business_field, required: true %>
-	</div>
-	<div class="col-md-4">
-		<%= f.input :portfolio %>
-	</div>
-	<div class="col-md-4">
-		<%= f.input :commercial_licence_no %>
-	</div>
+  <div class="col-md-4">
+    <%= f.input :business_field, required: true %>
+  </div>
+  <div class="col-md-4">
+    <%= f.input :portfolio %>
+  </div>
+  <div class="col-md-4">
+    <%= f.input :commercial_licence_no %>
+  </div>
 </div>
-<div class="row">
-	<div class="col-md-4">
-		<%= f.input :commercial_licence_expiry_date do %>
-			<span><%= ikoen('calendar') %></span>
-			<%= f.input_field :commercial_licence_expiry_date, value: f.object&.commercial_licence_expiry_date&.strftime("%d/%m/%Y"), as: :string, class: "datepicker-past form-control" %>
-		<% end %>
-	</div>
-	<div class="col-md-4">
-		<%= f.input :commercial_licence_file, as: :file, label: t('users.form.commercial_licence_file_title'), required: true %>
-		<% if user.service_provider_detail&.commercial_licence_file.present? %>
-			<% if can?(:download_user_files, user) %>
-				<%= btn_download(download_user_files_user_path(user, :file => "commercial_licence_file"), size: 'extra_small', tooltip: "Download #{ServiceProviderDetail.human_attribute_name('commercial_licence_file')}") %>
-			<% end %>
-			<%= truncate(user.service_provider_detail.commercial_licence_file.file.filename, length: 35) %>
-		<% end %>
-	</div>
-	<div class="col-md-4">
-		<%= f.input :accredited_service_provider_licence_file, as: :file, label: t('users.form.accredited_provider_licence_file_title'), required: true %>
-		<% if user.service_provider_detail&.accredited_service_provider_licence_file.present? %>
-			<% if can?(:download_user_files, user) %>
-				<%= btn_download(download_user_files_user_path(user, :file => "accredited_service_provider_licence_file"), size: 'extra_small', tooltip: "Download #{ServiceProviderDetail.human_attribute_name('accredited_service_provider_licence_file')}") %>
-			<% end %>
-		<%= truncate(user.service_provider_detail.accredited_service_provider_licence_file.file.filename, length: 35) %>
-		<% end %>
-	</div>
-</div>
-	<br><br>
-<div class="row">
-	<div class="col-md-12">
-		<label>Acknowledgements</label>
-		<p>
-			<%= check_box_tag "acknowledgement", 1, false, id: "acknowledgement", class: "acknowledgement" %>
-			<%= label_tag 'document_scheme_mix_criterion', t('users.form.acknowledgement') %>
-			<span id="help-block-ack" class="help-block"></span>	
-		</p>
-		
-		<div class="demerit">
-			<p>DEMERIT System <a target="_blank" href="https://gsas.gord.qa/wp-content/uploads/2021/10/GSAS-Demerit-System.pdf">( Download Here )</a></a>
 
-			<%= f.input :demerit_acknowledgement_file, as: :file, label: t('users.form.demerit_file_title'), required: true %>
-			<% if user.service_provider_detail&.demerit_acknowledgement_file.present? %>
-				<% if can?(:download_user_files, user) %>
-					<%= btn_download(download_user_files_user_path(user, :file => "demerit_acknowledgement_file"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('demerit_acknowledgement_file')}") %>
-				<% end %>
-				<%= truncate(user.service_provider_detail.demerit_acknowledgement_file.file.filename, length: 35) %>
-			<% end %>
-		</div>
-	</div>
+<div class="row">
+  <div class="col-md-4">
+    <%= f.input :commercial_licence_expiry_date do %>
+      <span><%= ikoen('calendar') %></span>
+      <%= f.input_field :commercial_licence_expiry_date, value: f.object&.commercial_licence_expiry_date&.strftime("%d/%m/%Y"), as: :string, class: "datepicker-past form-control" %>
+    <% end %>
+  </div>
+  <div class="col-md-4">
+    <%= f.input :commercial_licence_file, as: :file, label: t('users.form.commercial_licence_file_title'), required: true %>
+    <% if user.service_provider_detail&.commercial_licence_file.present? %>
+      <% if can?(:download_user_files, user) %>
+        <%= btn_download(download_user_files_user_path(user, :file => "commercial_licence_file"), size: 'extra_small', tooltip: "Download #{ServiceProviderDetail.human_attribute_name('commercial_licence_file')}") %>
+      <% end %>
+      <%= truncate(user.service_provider_detail&.commercial_licence_file&.file&.filename, length: 35) %>
+    <% end %>
+  </div>
+  <div class="col-md-4">
+    <%= f.input :accredited_service_provider_licence_file, as: :file, label: t('users.form.accredited_provider_licence_file_title'), required: true %>
+    <% if user.service_provider_detail&.accredited_service_provider_licence_file.present? %>
+      <% if can?(:download_user_files, user) %>
+        <%= btn_download(download_user_files_user_path(user, :file => "accredited_service_provider_licence_file"), size: 'extra_small', tooltip: "Download #{ServiceProviderDetail.human_attribute_name('accredited_service_provider_licence_file')}") %>
+      <% end %>
+    <%= truncate(user.service_provider_detail&.accredited_service_provider_licence_file.file.filename, length: 35) %>
+    <% end %>
+  </div>
 </div>
+
+<br><br>
+
+<div class="row">
+  <div class="col-md-12">
+    <label>Acknowledgements</label>
+    <p>
+      <%= check_box_tag "acknowledgement", 1, false, id: "acknowledgement", class: "acknowledgement" %>
+      <%= label_tag 'document_scheme_mix_criterion', t('users.form.acknowledgement') %>
+      <span id="help-block-ack" class="help-block"></span>
+    </p>
+    
+    <div class="demerit">
+      <p>DEMERIT System <a target="_blank" href="https://gsas.gord.qa/wp-content/uploads/2021/10/GSAS-Demerit-System.pdf">( Download Here )</a></a>
+
+      <%= f.input :demerit_acknowledgement_file, as: :file, label: t('users.form.demerit_file_title'), required: true %>
+      <% if user.service_provider_detail&.demerit_acknowledgement_file.present? %>
+        <% if can?(:download_user_files, user) %>
+          <%= btn_download(download_user_files_user_path(user, :file => "demerit_acknowledgement_file"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('demerit_acknowledgement_file')}") %>
+        <% end %>
+        <%= truncate(user.service_provider_detail&.demerit_acknowledgement_file&.file&.filename, length: 35) %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
 <script>
-	$(function() {
-		$('.demerit').hide();
-		$('.iCheck-helper').click(function() {
-			let isChecked = $('#acknowledgement').prop('checked');
-			isChecked ? $('.demerit').show() : $('.demerit').hide()
-			isChecked ? $('#help-block-ack').hide() : $('#help-block-ack').show()
-		});
+  $(function() {
+    $('.demerit').hide();
+    $('.iCheck-helper').click(function() {
+      let isChecked = $('#acknowledgement').prop('checked');
+      isChecked ? $('.demerit').show() : $('.demerit').hide()
+      isChecked ? $('#help-block-ack').hide() : $('#help-block-ack').show()
+    });
 
-		function validate(){
-			var valid = true;
-			let isChecked = $('#acknowledgement').prop('checked');
-			if(!isChecked){
-					valid = false;
-					 $('#acknowledgement').parent().parent().addClass('has-error');
-					 $('#help-block-ack').html('you must need to accpet policy in order to registered');
-			}
-			return valid;
-		}
+    function validate(){
+      var valid = true;
+      let isChecked = $('#acknowledgement').prop('checked');
+      if(!isChecked){
+          valid = false;
+           $('#acknowledgement').parent().parent().addClass('has-error');
+           $('#help-block-ack').html('you must need to accpet policy in order to registered');
+      }
+      return valid;
+    }
 
-		$('form#new_service_provider').submit(function (event) {
-				var valid = validate();
-				if (!valid) {
-						event.preventDefault();
-						return false;
-				}
-		});
-	});
+    $('form#new_service_provider').submit(function (event) {
+        var valid = validate();
+        if (!valid) {
+            event.preventDefault();
+            return false;
+        }
+    });
+  });
 </script>

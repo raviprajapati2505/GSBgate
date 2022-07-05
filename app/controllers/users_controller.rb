@@ -342,7 +342,7 @@ class UsersController < AuthenticatedController
   end
 
   def download_user_files
-    
+
     case params[:file]
       when "qid_file"
         file = @user.user_detail&.qid_file&.path

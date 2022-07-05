@@ -1,6 +1,6 @@
 class LinkmeSurveysController < AuthenticatedController
   load_and_authorize_resource
-  
+
   def index
     @page_title = 'Linkme Surveys'
     @datatable = Effective::Datatables::LinkmeSurveys.new

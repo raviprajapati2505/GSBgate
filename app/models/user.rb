@@ -7,7 +7,7 @@ class User < ApplicationRecord
 
   devise  :invitable, :database_authenticatable, :registerable, :recoverable,
           :rememberable, :trackable, :validatable, :confirmable
-  
+
   include ActionView::Helpers::TranslationHelper
   include DatePlucker
 
