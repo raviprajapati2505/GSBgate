@@ -285,7 +285,7 @@ $(function () {
     // $('.project-form #project_building_type_group_id').trigger('change', true);
 
     // Project country select
-    $('.country-select, .city-select-dropdown, .district-select-dropdown, .developer-select-dropdown, #select-service-provider, .select-licence, .user-country-select, country-select, .city-select').select2({
+    $('.country-select, .city-select-dropdown, .district-select-dropdown, .developer-select-dropdown, #select-service-provider, .select-licence, .user-country-select, country-select, .city-select, .offline-certificate').select2({
         width: "100%"
     });
 

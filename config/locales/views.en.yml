@@ -392,3 +392,22 @@ en:
         contact_info: Contact Information
     list_notifications:
       btn_save: Update preferences
+  offline:
+    projects:
+      index:
+        title_html: Offline Projects &amp; Certifications
+        btn_new_project: New Offline Project
+        btn_edit_project: Edit Offline Project
+      form:
+        title: Offline Project Details
+        tooltip_certified_area: Total area falling under GSAS assessment calculated by adding Project Plot Area (A) and Buildings Gross Built up Area (B) and subtracting Building Footprint (C)*.<br /><br />*(C) is subtracted to avoid double counting of the areas under assessment.
+        tooltip_project_site_area: Total project site area.
+      show:
+        project_details:
+          title: Offline Project Details
+          documents_title: Upload Documents
+        certificates:
+          title: Offline Project Certification Details
+    certificate_paths:
+      form:
+        title: Add Certificate

@@ -242,6 +242,17 @@ Rails.application.routes.draw do
     end
   end
 
+  # routes.rb
+  namespace :offline do
+    resources :projects do
+      member do
+        get 'confirm_destroy' => 'projects#confirm_destroy'
+        post 'upload_documents' => 'projects#upload_documents'
+      end
+      resources :certificate_paths, path: :certificate, as: 'certificate'
+    end
+  end
+
   # CATCH ALL ROUTE, redirecting the user to a correct page
   # BEWARE: this should be the last line, as it will match any path !!!
   # -- to avoid unknown routes to pollute the logs, use this:
