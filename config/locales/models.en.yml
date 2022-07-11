@@ -97,6 +97,25 @@ en:
           final_design_certificate: GSAS Design & Build Certificate_CDA
           construction_certificate: GSAS-CM
           operation_certificate: GSAS-OP
+      offline/project:
+        code: Project ID
+        name: Project Name
+        certificate_type: Certificate Type
+        site_area: Project Plot Area (A)
+        certified_area: Project Certified Area (A+B-C)
+        developer: Project Developer
+        construction_year: Project Completion Year
+        description: Description
+      offline/certificate_path:
+        name: Certification Name
+        version: Certification Version
+        rating: Certification Ratings
+        development_type: Certification Development Type
+        status: Certification Status
+        score: Certification Score
+        certified_at: Certification Certified At
+      offline/scheme_mix:
+        name: Certificate Scheme Name
       projects_user:
         roles:
           project_team_member: Team Members
@@ -330,6 +349,16 @@ en:
             update_html: Scheme <strong>%{old_name}</strong> was renamed to <strong>%{new_name}</strong>.
     effective:
       datatables:
+        offline:
+          project:
+            code: Project ID
+            name: Project Name
+            certificate_type: Certificate Type
+            site_area: Project Plot Area (A)
+            certified_area: Project Certified Area (A+B-C)
+            developer: Project Developer
+            construction_year: Project Completion Year
+            description: Description
         projects:
           lables:
             project_code: Project ID

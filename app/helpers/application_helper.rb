@@ -327,10 +327,14 @@ module ApplicationHelper
 
   def breadcrumbs(model, with_prefix: true)
     breadcrumbs = {names: [], paths: []}
-
     case model.class.name
       when Project.name.demodulize
         project = model
+      when 'Offline::Project'
+        offline_project = model
+      when 'Offline::CertificatePath'
+        offline_project = model.offline_project
+        offline_project_certificate_path = model
       when ProjectsUser.name.demodulize
         project = model.project
         projects_user = model
@@ -414,6 +418,9 @@ module ApplicationHelper
       elsif survey_type.present?
         breadcrumbs[:names] << 'Survey Types'
         breadcrumbs[:paths] << survey_types_path
+      elsif offline_project.present?
+        breadcrumbs[:names] << 'Offline Projects'
+        breadcrumbs[:paths] << offline_projects_path
       else
         breadcrumbs[:names] << 'Projects'
         breadcrumbs[:paths] << projects_url
@@ -423,6 +430,14 @@ module ApplicationHelper
     if project.present?
       breadcrumbs[:names] << project.name
       breadcrumbs[:paths] << project_url(project)
+    end
+    if offline_project.present?
+      breadcrumbs[:names] << offline_project.name
+      breadcrumbs[:paths] << offline_project_path(offline_project)
+    end
+    if offline_project_certificate_path.present?
+      breadcrumbs[:names] << offline_project_certificate_path.name
+      breadcrumbs[:paths] << offline_project_certificate_path(offline_project)
     end
     if projects_user.present?
       breadcrumbs[:names] << projects_user.user.full_name
