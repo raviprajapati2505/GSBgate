@@ -5,7 +5,7 @@
           <h5><%= t('offline.scheme_mixes.form.title') %></h5>
         </div>
         <div class="ibox-content">
-          <%= simple_form_for(@scheme_mix, url: offline_project_certificate_schemes_path(@project, @certificate_path, @scheme_mix), html: { method: :post }) do |f| %>
+          <%= simple_form_for(@scheme_mix, url: offline_project_certification_schemes_path(@project, @certification_path, @scheme_mix), html: { method: :post }) do |f| %>
           <%= f.error_notification %>
             <%= render partial: "form", locals: { f: f } %>
           <% end %>

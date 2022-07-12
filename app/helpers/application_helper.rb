@@ -332,12 +332,12 @@ module ApplicationHelper
         project = model
       when 'Offline::Project'
         offline_project = model
-      when 'Offline::CertificatePath'
+      when 'Offline::CertificationPath'
         offline_project = model.offline_project
         offline_certification_path = model
       when 'Offline::SchemeMix'
-        offline_project = model.offline_certificate_path.offline_project
-        offline_certification_path = model.offline_certificate_path
+        offline_project = model.offline_certification_path.offline_project
+        offline_certification_path = model.offline_certification_path
         offline_scheme_mix = model
       when ProjectsUser.name.demodulize
         project = model.project
@@ -441,7 +441,7 @@ module ApplicationHelper
     end
     if offline_certification_path.present?
       breadcrumbs[:names] << offline_certification_path.name
-      breadcrumbs[:paths] << offline_project_certificate_path(offline_project, offline_certification_path)
+      breadcrumbs[:paths] << offline_project_certification_path(offline_project, offline_certification_path)
     end
     if projects_user.present?
       breadcrumbs[:names] << projects_user.user.full_name
@@ -457,7 +457,7 @@ module ApplicationHelper
     end
     if offline_scheme_mix.present?
       breadcrumbs[:names] << offline_scheme_mix.name
-      breadcrumbs[:paths] << offline_project_certificate_scheme_path(offline_project, offline_certification_path, offline_scheme_mix)
+      breadcrumbs[:paths] << offline_project_certification_scheme_path(offline_project, offline_certification_path, offline_scheme_mix)
     end
     if requirement_datum.present?
       breadcrumbs[:names] << scheme_mix_criterion.full_name

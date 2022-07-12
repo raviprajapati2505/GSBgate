@@ -1,6 +1,6 @@
 module Offline
   class SchemeMixesController < AuthenticatedController
-    before_action :set_project_certificate
+    before_action :set_project_certification_path
     before_action :set_scheme_mix, only: [:show]
     before_action :set_controller_model, only: [:show]
 
@@ -23,14 +23,13 @@ module Offline
       @controller_model = @scheme_mix
     end
     
-    def set_project_certificate
+    def set_project_certification_path
       @project = Offline::Project.find(params[:project_id])
-      @certificate_path = Offline::CertificatePath.find(params[:certificate_id])
+      @certification_path = Offline::CertificationPath.find(params[:certification_id])
     end
 
     def set_scheme_mix
       @scheme_mix = Offline::SchemeMix.find(params[:id])
     end
-
   end
 end

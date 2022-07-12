@@ -57,10 +57,10 @@
               <th>Certification Scores</th>
               <th>Certification Rating</th>
             </tr>
-            <% unless @project.offline_certificate_paths.nil? %>
-              <% @project.offline_certificate_paths.each do |certificate| %>
+            <% unless @project.offline_certification_paths.nil? %>
+              <% @project.offline_certification_paths.each do |certificate| %>
                 <tr>
-                  <td><%= link_to certificate.name, offline_project_certificate_path(@project, certificate) %></td>
+                  <td><%= link_to certificate.name, offline_project_certification_path(@project, certificate) %></td>
                   <td><%= certificate.status %></td>
                   <td><%= certificate.score %></td>
                   <td><%= certificate.rating %></td>
@@ -75,7 +75,7 @@
                               Add Another Certificate
                             </span>
                             <span class="col-md-4">
-                              <%= btn_link_to(new_offline_project_certificate_path(@project), icon: 'plus', text: 'Add Certifcate') %>
+                              <%= btn_link_to(new_offline_project_certification_path(@project), icon: 'plus', text: 'Add Certifcate') %>
                             </span>
                         </div>
                       </li>
@@ -91,7 +91,7 @@
                             Not yet registered
                           </span>
                           <span class="col-md-4">
-                            <%= btn_link_to(new_offline_project_certificate_path(@project), icon: 'plus', text: 'Add Certifcate') %>
+                            <%= btn_link_to(new_offline_project_certification_path(@project), icon: 'plus', text: 'Add Certifcate') %>
                           </span>
                       </div>
                     </li>
@@ -101,32 +101,26 @@
           </tbody>
         </table>
       </div>
-      <br>
-      <%= bootstrap_form_for([@project], url: upload_documents_offline_project_path(@project), method: 'post', html: {id: 'new_documents', class: 'dropzone', data: {maxfilesize: CertificationPathDocument::MAXIMUM_DOCUMENT_FILE_SIZE, acceptedfiles: DocumentUploader.new.extension_white_list_js}}) do |f| %>
-        <div class="fallback">
-          <%= f.file_field :documents, hide_label: true %>
-          <%= f.primary 'Upload documentation' %>
-        </div>
-        <div id="dropzone-top">
-          <div class="dz-message">
-            <%= ikoen_with_text('files-o', 'Drop files here or click to upload documentation.') %>
-          </div>
-        </div>
-        <div id="dropzone-bottom" style="display:none;">
-          <div id="dropzone-previews" class="table table-striped table-bordered">
-            <div class="file-row header">
-              <div><strong>File Name</strong></div>
-              <div><strong>File Size</strong></div>
-              <div><strong>Upload Progress</strong></div>
-              <div><strong>Actions</strong></div>
-            </div>
-          </div>
-          <br/>
+    </div>
+  </div>
 
-          <div class="hr-line-dashed"></div>
-          <%= btn_link_to('#', id: 'dropzone-upload-all', icon: 'upload', text: 'Upload documentation') %>
-        </div>
-     <% end %>
+  <div class="col-md-8">
+    <div class="ibox float-e-margins">
+      <div class="ibox-title">
+        <h5><%= t('.project_documents.upload_document') %></h5>
+      </div>
+      <div class="ibox-content">
+        <%= render partial: 'documents_form', locals: { project: @project } %>
+      </div>
+    </div>
+
+    <div class="ibox float-e-margins">
+      <div class="ibox-title">
+        <h5><%= t('.project_documents.uploaded_documents') %></h5>
+      </div>
+      <div class="ibox-content">
+        <%= render partial: 'documents_index', locals: { project: @project } %>
+      </div>
     </div>
   </div>
 </div>
@@ -143,117 +137,4 @@
   </div>
 </div>
 
-<script type="text/javascript">
-  var dropzoneUploading = false;
-
-  Dropzone.options.newDocuments = {
-      autoProcessQueue: false, // Prevents Dropzone from uploading dropped files immediately
-      paramName: 'offline_project[documents]',
-      parallelUploads: 5,
-      previewsContainer: '#dropzone-previews',
-      clickable: '#dropzone-top',
-      previewTemplate: '<div class="file-row"> <div><p class="name" data-dz-name></p><strong class="error text-danger" data-dz-errormessage></strong></div> <div><p class="size" data-dz-size></p></div> <div> <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"> <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div> </div> </div> <div> <a href="#" data-dz-remove> <i title="Remove upload" data-toggle="tooltip" class="fa fa-lg fa-trash" style="padding-right: 10px;"></i></a> </div> </div>',
-      maxFilesize: $('form.dropzone').data('maxfilesize'), // in MB
-      acceptedFiles: $('form.dropzone').data('acceptedfiles'),
-      timeout: 0,
-
-      init: function () {
-          var documentsDropzone = this;
-          var dropzoneTop = $("#dropzone-top");
-          var dropzoneBottom = $("#dropzone-bottom");
-          var dropzoneModal = $("#dropzone-modal");
-          var uploadButton = $("#dropzone-upload-all");
-          var previewsContainer = $("#dropzone-previews");
-          var uploadErrors = [];
-
-          // Process all queued files when the upload button is clicked
-          uploadButton.click(function (e) {
-              console.log('dfd');
-              if (!dropzoneUploading) {
-                  // All rejected files should first be removed from the queue list
-                  if (documentsDropzone.getRejectedFiles().length > 0) {
-                      // Show a modal box
-                      dropzoneModal.find('.modal-title').html('<i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;Validation error');
-                      dropzoneModal.find('.modal-body').html('Please remove all invalid files before uploading.');
-                      dropzoneModal.find('.modal-header').attr('class', 'modal-header alert-danger');
-                      dropzoneModal.modal('show');
-                  }
-                  else {
-                      dropzoneUploading = true;
-                      documentsDropzone.processQueue();
-                  }
-              }
-              e.preventDefault();
-          });
-
-          // Show the previews container and upload button when one or more files are added
-          this.on("addedfile", function (file) {
-              dropzoneBottom.slideDown();
-          });
-          // Hide the previews container and upload button when all files are removed
-          this.on("removedfile", function () {
-              if (previewsContainer.children().length == 1) {
-                  dropzoneBottom.slideUp();
-              }
-          });
-          // Once the upload button is clicked, the full queue can be processed
-          this.on("processing", function () {
-              this.options.autoProcessQueue = true;
-              uploadButton.html('<i class="fa fa-lg fa-cog fa-spin"></i>&nbsp;&nbsp;Please wait...');
-              uploadButton.prop('disabled', true);
-              dropzoneTop.hide();
-          });
-          // Catch all server errors
-          this.on("error", function (file, errorMessage, XMLHttpRequest) {
-              // Errors returned by the server
-              if (XMLHttpRequest !== undefined) {
-                  uploadErrors.push('<strong>' + file.name + '</strong>: ' + errorMessage);
-              }
-              // Errors on the client side
-              else {
-                  // These errors are shown in the file row
-              }
-          });
-          // Notify the user when all uploads are completed
-          this.on("queuecomplete", function () {
-              if (dropzoneUploading) {
-                  var modalBody = '';
-                  var modalHeaderClass = '';
-
-                  // There were server errors during the upload
-                  if (uploadErrors.length > 0) {
-                      modalBody = '<div>Some documents weren\'t successfully uploaded because of the following errors:</div>';
-
-                      modalBody += '<ul>';
-                      $.each(uploadErrors, function (index, uploadError) {
-                          modalBody += '<li>' + uploadError + '</li>';
-                      });
-                      modalBody += '</ul>';
-
-                      modalBody += '<div>All other documentation was uploaded successfully.</div>';
-                      modalHeaderClass = 'alert-warning';
-                  }
-                  // There were no errors
-                  else {
-                      modalBody = 'All documentation was successfully uploaded.';
-                      modalHeaderClass = 'alert-success';
-                  }
-
-                  // Show a modal box
-                  dropzoneModal.find('.modal-title').html('<i class="fa fa-check-circle"></i>&nbsp;&nbsp;Uploading completed');
-                  dropzoneModal.find('.modal-body').html(modalBody);
-                  dropzoneModal.find('.modal-header').attr('class', 'modal-header ' + modalHeaderClass);
-                  dropzoneModal.modal('show');
-              }
-          });
-      }
-  };
-
-  // Handle closing of modal box
-  $('#dropzone-modal').on('hide.bs.modal', function (e) {
-      // Reload the page when the upload notification is closed by the user
-      if (dropzoneUploading) {
-          //location.reload();
-      }
-  });
-</script>
+<%= javascript_include_tag 'offline_projects_documents_uploader' %>

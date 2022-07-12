@@ -1,0 +1,34 @@
+<% if project.offline_project_documents.blank? %>
+  No documentation was uploaded yet.
+
+<% else %>
+  <table class="table table-bordered datatable cert-doc-table" cellspacing="0" width="100%">
+    <thead>
+    <tr>
+      <th>File&nbsp;Name</th>
+      <th>File&nbsp;Size</th>
+      <th>Uploaded&nbsp;At</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+      <% project.offline_project_documents.where.not(id: nil).each do |doc| %>
+        <tr class="document-approved">
+          <td>
+            <%= image_tag(icon_for_filename(doc&.file_name), alt: doc&.content_type, title: doc&.content_type) + ' ' + doc&.file_name %>
+          </td>
+          <td>
+            <%= number_to_human_size(doc&.file_size) %>
+          </td>
+          <td>
+            <%= doc&.created_at&.strftime("%d %B, %Y %H:%M") %>
+          </td>
+          <td>
+            <%= btn_download(download_document_offline_projects_path(doc&.id), size: 'small', tooltip: 'Download document') %>
+            <%= btn_download(destroy_document_offline_projects_path(doc&.id), method: :delete, data: { confirm: 'Are you sure to delete the document ?'}, style: 'danger', size: 'small', icon: 'trash', tooltip: 'Delete document') %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

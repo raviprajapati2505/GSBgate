@@ -407,8 +407,11 @@ en:
           title: Offline Project Details
           documents_title: Upload Documents
         certificates:
-          title: Offline Certification Details
-    certificate_paths:
+          title: Offline Project Certification Details
+        project_documents:
+          upload_document: Upload Project Documents
+          uploaded_documents: Uploaded Project Documents
+    certification_paths:
       form:
         title: Add Certificate
         edit_title: Edit Certificate

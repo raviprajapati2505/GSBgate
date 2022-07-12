@@ -104,7 +104,7 @@ $(function () {
         viewMode: 'years',
         minViewMode: 'years',
         changeYear: true,
-        startDate: '2000y',
+        startDate: '1900y',
         endDate: '2100y',
         autoclose: true
     });

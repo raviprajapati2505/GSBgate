@@ -1,0 +1,71 @@
+<div class="row">
+  <div class="col-md-4">
+    <div class="ibox float-e-margins">
+      <div class="ibox-title">
+        <h5><%= t('.certificates.title') %></h5>
+      </div>
+      <div class="ibox-content">
+        <table class="table table-bordered table-striped project-details-table">
+          <tbody>
+            <tr>
+              <th><%= Offline::CertificationPath.human_attribute_name('name') %></th>
+              <td><%= @certification_path.name %></td>
+            </tr>
+             <tr>
+              <th><%= Offline::CertificationPath.human_attribute_name('version') %></th>
+              <td><%= @certification_path.version %></td>
+            </tr>
+             <tr>
+              <th><%= Offline::CertificationPath.human_attribute_name('rating') %></th>
+              <td><%= @certification_path.rating %></td>
+            </tr>
+             <tr>
+              <th><%= Offline::CertificationPath.human_attribute_name('development_type') %></th>
+              <td><%= @certification_path.development_type %></td>
+            </tr>
+             <tr>
+              <th><%= Offline::CertificationPath.human_attribute_name('status') %></th>
+              <td><%= @certification_path.status %></td>
+            </tr>
+             <tr>
+              <th><%= Offline::CertificationPath.human_attribute_name('score') %></th>
+              <td><%= @certification_path.score %></td>
+            </tr>
+             <tr>
+              <th><%= Offline::CertificationPath.human_attribute_name('certified_at') %></th>
+              <td><%= @certification_path.certified_at %></td>
+            </tr>
+          </tbody>
+        </table>
+        <%= btn_link_to(:back, icon: 'backward', text: 'Back') %>
+        <%= btn_link_to(edit_offline_project_certification_path(@project), icon: 'edit', text: 'Edit') %>
+        <%= btn_link_to(confirm_destroy_offline_project_certification_path(@project, @certification_path), {icon: 'trash', text: 'Delete', style: 'danger', method: :get, data: {confirm: 'Do you really want to delete this project?'}}) %>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-8">
+    <div class="ibox float-e-margins">
+      <div class="ibox-title">
+        <h5><%= t('.schemes.title') %></h5>
+      </div>
+      <div class="ibox-content">
+      <table class="table table-bordered table-mb-1">
+        <tbody>
+            <tr class="bg-header-grey">
+              <th>Scheme Name</th>
+              <th>Weighting (%)</th>
+            </tr>
+            <% unless @certification_path.offline_scheme_mixes.nil? %>
+              <% @certification_path.offline_scheme_mixes.each do |scheme_mix| %>
+                <tr>
+                  <td><%= link_to scheme_mix.name, offline_project_certification_scheme_path(@project, @certification_path, scheme_mix) %></td>
+                  <td><%= scheme_mix.weight %></td>
+                </tr>
+              <% end %>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
