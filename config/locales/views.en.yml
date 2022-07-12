@@ -20,6 +20,7 @@ en:
         manual: User Manual
         viewer: Visualisation Tool
         survey_dashboard: Survey Dashboard
+        offline_projects: Offline Projects
   certification_paths:
     edit_status:
       modal_title: Update status

@@ -58,18 +58,24 @@
             </li>
             <% end %>
 
-            <% can_index_scheme_criteria = can?(:index, SchemeCriterion)%>
-            <% can_index_users = can?(:index, User) %>
-            <% can_certifiers_criteria_report = can?(:certifiers_criteria, :report) %>
-            <% can_dashboard_survey = can?(:index, :survey_dashboard) %>
+            <% 
+                can_index_scheme_criteria = can?(:index, SchemeCriterion)
+                can_index_users = can?(:index, User)
+                can_certifiers_criteria_report = can?(:certifiers_criteria, :report)
+                can_dashboard_survey = can?(:index, :survey_dashboard)
+                can_offline_projects = can?(:index, Offline::ProjectsController)
+            %>
 
             <% unless current_user.document_controller? %>
-                <% if can_index_users || can_index_scheme_criteria || can_certifiers_criteria_report || can_dashboard_survey %>
+                <% if can_index_users || can_index_scheme_criteria || can_certifiers_criteria_report || can_dashboard_survey || can_offline_projects %>
                     <li class="dropdown<%= ' active' if ['scheme_criteria', 'users'].include?(controller_name) && action_name != 'list_notifications' %>">
                         <a aria-expanded="false" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <%= ikoen('cogs', size: 'lg') %><%= t('.navbar.admin') %><span class="caret"></span>
                         </a>
                         <ul role="menu" class="dropdown-menu">
+                            <% if can_offline_projects %>
+                                <li><%= link_to t('.navbar.offline_projects'), offline_projects_path %></li>
+                            <% end %>
                             <% if can_index_scheme_criteria %>
                                 <li><%= link_to t('.navbar.admin_system_data'), scheme_criteria_path %></li>
                             <% end %>

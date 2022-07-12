@@ -1,15 +1,15 @@
 <div class="row">
-    <div class="col-lg-12">
-      <div class="ibox">
-        <div class="ibox-title">
-          <h5><%= t('offline.scheme_mixes.form.title') %></h5>
-        </div>
-        <div class="ibox-content">
-          <%= simple_form_for(@scheme_mix, url: offline_project_certification_schemes_path(@project, @certification_path, @scheme_mix), html: { method: :post }) do |f| %>
-          <%= f.error_notification %>
-            <%= render partial: "form", locals: { f: f } %>
-          <% end %>
-        </div>
+  <div class="col-lg-12">
+    <div class="ibox">
+      <div class="ibox-title">
+        <h5><%= t('offline.scheme_mixes.form.title') %></h5>
+      </div>
+      <div class="ibox-content">
+        <%= simple_form_for(@scheme_mix, url: offline_project_certification_schemes_path(@project, @certification_path, @scheme_mix), html: { method: :post }) do |f| %>
+        <%= f.error_notification %>
+          <%= render partial: "form", locals: { f: f } %>
+        <% end %>
       </div>
     </div>
+  </div>
 </div>
