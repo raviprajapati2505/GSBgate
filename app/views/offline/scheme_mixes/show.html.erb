@@ -11,7 +11,7 @@
               <th><%= Offline::SchemeMix.human_attribute_name('name') %></th>
               <td><%= @scheme_mix.name %></td>
             </tr>
-             <tr>
+            <tr>
               <th><%= Offline::SchemeMix.human_attribute_name('weight') %></th>
               <td><%= @scheme_mix.weight %></td>
             </tr>
@@ -30,20 +30,20 @@
         <table class="table table-bordered table-mb-1">
           <tbody>
             <tr>
-                <td colspan="4" style="padding: 0px;">
-                      <li class="list-group-item container ">
-                        <div class="row">
-                          </span>
-                            <span class="col-md-4">
-                              Add Scheme Mix Criterions
-                            </span>
-                            <span class="col-md-4">
-                              <%= btn_link_to(new_offline_project_certification_scheme_path(@project, @certification_path), icon: 'plus', text: 'Add Criterion') %>
-                            </span>
-                        </div>
-                      </li>
-                </td>
-              </tr>
+              <td colspan="4" style="padding: 0px;">
+                <li class="list-group-item container ">
+                  <div class="row">
+                    </span>
+                      <span class="col-md-4">
+                        Add Scheme Mix Criterions
+                      </span>
+                      <span class="col-md-4">
+                        <%= btn_link_to(new_offline_project_certification_scheme_path(@project, @certification_path), icon: 'plus', text: 'Add Criterion') %>
+                      </span>
+                  </div>
+                </li>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>

@@ -145,6 +145,7 @@ class Ability
       cannot :manage, :survey_dashboard
       cannot [:index, :show, :new, :edit, :create, :update, :destroy], SurveyType
       cannot [:show, :form, :create, :update, :update_position], SurveyQuestionnaireVersion
+      cannot :manage, Offline::ProjectsController
 
       if valid_user_associates?(user) && user.active?
         can :create, Project
@@ -329,7 +330,6 @@ class Ability
       can :update, SchemeMixCriterionWpl, scheme_mix_criterion: {main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_verifying}
       can :epc_matches_energy_suite, SchemeMixCriterion, status: scheme_mix_criterion_status_verifying
       can :upload_epc_matches_document, SchemeMixCriterion
-
       can :select_service_provider, User
 
       if user.gsas_trust_admin?
@@ -457,9 +457,11 @@ class Ability
       cannot [:show, :form, :create, :update, :update_position], SurveyQuestionnaireVersion
       cannot [:index, :show, :copy_project_survey, :new, :create, :edit, :update, :destroy, :export_survey_results], ProjectsSurvey
       cannot [:index, :download_linkme_survey_data], LinkmeSurvey
+      cannot :manage, Offline::ProjectsController
 
     elsif user.system_admin?
       can :manage, :all
+
     elsif user.record_checker?
       can :read, Project
       can :read, CertificationPath
@@ -470,6 +472,7 @@ class Ability
       cannot [:show, :form, :create, :update, :update_position], SurveyQuestionnaireVersion
       cannot [:index, :show, :copy_project_survey, :new, :create, :edit, :update, :destroy, :export_survey_results], ProjectsSurvey
       cannot [:index, :download_linkme_survey_data], LinkmeSurvey
+      cannot :manage, Offline::ProjectsController
 
     elsif user.users_admin?
       # Task
@@ -485,6 +488,7 @@ class Ability
       can [:show, :form, :create, :update, :update_position], SurveyQuestionnaireVersion
       can [:index, :show, :copy_project_survey, :new, :create, :edit, :update, :destroy, :export_survey_results], ProjectsSurvey
       can [:index, :download_linkme_survey_data], LinkmeSurvey
+      cannot :manage, Offline::ProjectsController
 
     elsif user.service_provider?
       can :read, Project, projects_users: users_with_service_provider
@@ -504,6 +508,8 @@ class Ability
       cannot [:show, :form, :create, :update, :update_position], SurveyQuestionnaireVersion
       cannot [:index, :show, :copy_project_survey, :new, :create, :edit, :update, :destroy, :export_survey_results], ProjectsSurvey
       cannot [:index, :download_linkme_survey_data], LinkmeSurvey
+      cannot :manage, Offline::ProjectsController
+
     else
       cannot :manage, :all
     end
