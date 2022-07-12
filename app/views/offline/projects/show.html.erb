@@ -60,7 +60,7 @@
             <% unless @project.offline_certificate_paths.nil? %>
               <% @project.offline_certificate_paths.each do |certificate| %>
                 <tr>
-                  <td><%= certificate.name %></td>
+                  <td><%= link_to certificate.name, offline_project_certificate_path(@project, certificate) %></td>
                   <td><%= certificate.status %></td>
                   <td><%= certificate.score %></td>
                   <td><%= certificate.rating %></td>
@@ -99,11 +99,6 @@
             </tr>
             <% end %>
           </tbody>
-        </table>
-        <table class="table table-bordered table-mb-1">
-          <tr>
-            
-          </tr>
         </table>
       </div>
       <br>

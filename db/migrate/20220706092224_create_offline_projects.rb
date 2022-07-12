@@ -32,7 +32,7 @@ class CreateOfflineProjects < ActiveRecord::Migration[5.2]
       t.timestamps
     end
 
-    create_table :offline_scheme_mix_criterion do |t|
+    create_table :offline_scheme_mix_criteria do |t|
       t.references :offline_scheme_mix, foreign_key: true
       t.string :name
       t.string :code
@@ -46,6 +46,6 @@ class CreateOfflineProjects < ActiveRecord::Migration[5.2]
     drop_table :offline_projects, force: :cascade
     drop_table :offline_certificate_paths, force: :cascade 
     drop_table :offline_scheme_mixes, force: :cascade 
-    drop_table :offline_scheme_mix_criterion, force: :cascade 
+    drop_table :offline_scheme_mix_criteria, force: :cascade 
   end
 end

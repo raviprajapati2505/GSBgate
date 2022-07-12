@@ -115,7 +115,8 @@ en:
         score: Certification Score
         certified_at: Certification Certified At
       offline/scheme_mix:
-        name: Certificate Scheme Name
+        name: Scheme Name
+        weight: Scheme Weighting
       projects_user:
         roles:
           project_team_member: Team Members
