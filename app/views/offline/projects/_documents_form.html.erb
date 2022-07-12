@@ -1,0 +1,28 @@
+<%= bootstrap_form_for([project.offline_project_documents.build], url: upload_documents_offline_project_path(project), method: 'post', html: { id: 'new_document', class: 'dropzone', data: { maxfilesize: Offline::ProjectDocument::MAXIMUM_DOCUMENT_FILE_SIZE, acceptedfiles: OfflineProjectsDocumentUploader.new.extension_white_list_js } }) do |f| %>
+  <div class="fallback">
+    <%= f.file_field :document_file, hide_label: true %>
+    <%= f.primary 'Upload Documentation' %>
+  </div>
+
+  <div id="dropzone-top">
+    <div class="dz-message">
+      <%= ikoen_with_text('files-o', 'Drop files here or click to upload Documentation.') %>
+    </div>
+  </div>
+
+  <div id="dropzone-bottom" style="display:none;">
+    <div id="dropzone-previews" class="table table-striped table-bordered">
+      <div class="file-row header">
+        <div><strong>File Name</strong></div>
+        <div><strong>File Size</strong></div>
+        <div><strong>Upload Progress</strong></div>
+        <div><strong>Actions</strong></div>
+      </div>
+    </div>
+    <br/>
+
+    <div class="hr-line-dashed"></div>
+
+    <%= btn_link_to('#', id: 'dropzone-upload-all', icon: 'upload', text: 'Upload Documentation') %>
+  </div>
+<% end %>

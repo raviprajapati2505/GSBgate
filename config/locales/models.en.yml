@@ -106,7 +106,7 @@ en:
         developer: Project Developer
         construction_year: Project Completion Year
         description: Description
-      offline/certificate_path:
+      offline/certification_path:
         name: Certification Name
         version: Certification Version
         rating: Certification Ratings

@@ -4,6 +4,7 @@ module Offline
     load_and_authorize_resource param_method: :project_params
     before_action :set_controller_model, only: [:edit, :update, :show, :destroy]
     before_action :set_project, only: [:edit, :update, :show, :destroy, :upload_documents]
+    before_action :set_project_document, only: [:download_document, :destroy_document]
 
     def index
       @page_title = t('offline.projects.index.title_html')
@@ -57,23 +58,39 @@ module Offline
     end
 
     def upload_documents
-     
       respond_to do |format|
         if params.has_key?(:offline_project)
-          binding.pry
-          @project.documents = params[:offline_project][:documents]
-          if @project.save
-            format.html { redirect_back(fallback_location: @project, notice: 'The document was successfully uploaded.') }
+          @project_document = @project.offline_project_documents.new(params.require(:offline_project).permit(:document_file))
+
+          if @project_document.save
+            format.html { redirect_back(fallback_location: root_path, notice: 'The document was successfully uploaded.') }
             format.json { render json: @project }
           else
-            format.html { redirect_back(fallback_location: @project, alert: @project.errors['documents'].first.to_s) }
-            format.json { render json: @project['documents'].to_s, status: :unprocessable_entity }
+            format.html { redirect_back(fallback_location: root_path, alert: @certification_path_document.errors['document_file'].first.to_s) }
+            format.json { render json: @project['document_file'].to_s, status: :unprocessable_entity }
           end
         end
       end
     end
 
+    def download_document
+      begin
+        send_file @document.document_file.path, x_sendfile: false
+      rescue ActionController::MissingFile
+        redirect_back(fallback_location: root_path, alert: 'This file is no longer available for download. This could be due to a detection of malware.')
+      end
+    end
+
+    def destroy_document
+      if @document.destroy
+        redirect_back(fallback_location: root_path, notice: 'Document successfully deleted.')
+      else
+        redirect_back(fallback_location: root_path, alert: 'Document failed to delete.')
+      end
+    end
+
     private
+
     def set_controller_model
       @controller_model = @project
     end
@@ -82,9 +99,12 @@ module Offline
       @project = Offline::Project.find(params[:id])
     end
 
-    def project_params
-      params.require(:offline_project).permit(:name, :certificate_type, :code, :certified_area, :site_area, :developer, :description, :construction_year, documents: [])
+    def set_project_document
+      @document = Offline::ProjectDocument.find(params[:document_id])
     end
 
+    def project_params
+      params.require(:offline_project).permit(:name, :certificate_type, :code, :certified_area, :site_area, :developer, :description, :construction_year)
+    end
   end
 end

@@ -7,13 +7,18 @@ class CreateOfflineProjects < ActiveRecord::Migration[5.2]
       t.string :site_area
       t.integer :certificate_type
       t.string :developer
-      t.text :documents, default: [], array: true
       t.string :construction_year
       t.text :description
       t.timestamps
     end
 
-    create_table :offline_certificate_paths do |t|
+    create_table :offline_project_documents do |t|
+      t.references :offline_project, foreign_key: true
+      t.string :document_file
+      t.timestamps
+    end
+
+    create_table :offline_certification_paths do |t|
       t.references :offline_project, foreign_key: true
       t.string :name
       t.integer :version
@@ -26,7 +31,7 @@ class CreateOfflineProjects < ActiveRecord::Migration[5.2]
     end
 
     create_table :offline_scheme_mixes do |t|
-      t.references :offline_certificate_path, foreign_key: true
+      t.references :offline_certification_path, foreign_key: true
       t.string :name
       t.decimal :weight
       t.timestamps
@@ -44,7 +49,8 @@ class CreateOfflineProjects < ActiveRecord::Migration[5.2]
 
   def down
     drop_table :offline_projects, force: :cascade
-    drop_table :offline_certificate_paths, force: :cascade 
+    drop_table :offline_project_documents, force: :cascade 
+    drop_table :offline_certification_paths, force: :cascade 
     drop_table :offline_scheme_mixes, force: :cascade 
     drop_table :offline_scheme_mix_criteria, force: :cascade 
   end
