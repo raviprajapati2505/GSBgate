@@ -1,79 +1,52 @@
 
-<% @certificate_path.tap do |character| %>
-	<% if character.errors.any? %>
-	<div class="errors">
-	<h2><%= pluralize(character.errors.count, "error") %> prohibited this character from being saved:</h2>
-	<ul>
-	<% character.errors.full_messages.each do |msg| %>
-		<li><%= msg %></li>
-	<% end %>
-	</ul>
-	</div>
-	<% end %>
-<% end %>
 <div class="row">
-    <div class="col-lg-12">
-      <div class="ibox">
-        <div class="ibox-title">
-          <h5><%= t('.title') %></h5>
+  <div class="col-md-12">
+    <div class="form-inputs">
+      <div class="row">
+        <div class="col-md-6">
+          <%= f.input :name, collection: get_certificate_types_names(current_user), include_blank: "Select Certificate Name", selected: @certificate_path.name, input_html: { class: "select2 form-control certificate-name-select offline-certificate", id: "certificate-name-select"}, required: true %>
         </div>
-        <div class="ibox-content">
-          <%= simple_form_for(@certificate_path, url: offline_project_certificate_index_path(@project, @certificate_path), html: { method: :post }) do |f| %>
-          <%= f.error_notification %>
+        <div class="col-md-6">
+          <%= f.input :version, collection: Offline::CertificatePath.versions.map{ |k, v| [k.titleize, k]}, include_blank: "Select Certificate Version", input_html: { class: "select2 form-control certificate-version-select offline-certificate", id: "certificate-version-select"}, required: true %>
+        </div>
+      </div>
 
-          <div class="row">
-            <div class="col-md-12">
-              <div class="form-inputs">
-                <div class="row">
-                  <div class="col-md-6">
-                    <%= f.input :name, collection: get_certificate_types_names(current_user), include_blank: "Select Certificate Name", selected: @certificate_path.name, input_html: { class: "select2 form-control certificate-name-select offline-certificate", id: "certificate-name-select"}, required: true %>
-                  </div>
-                  <div class="col-md-6">
-                    <%= f.input :version, collection: Offline::CertificatePath.versions {|key, value| [key.titleize, Offline::CertificatePath.version.key(value)]}, include_blank: "Select Certificate Version", selected: @certificate_path.version, input_html: { class: "select2 form-control certificate-version-select offline-certificate", id: "certificate-version-select"}, required: true %>
-                  </div>
-                </div>
+      <div class="row">
+        <div class="col-md-6">
+          <%= f.input :development_type, collection: DevelopmentType.select(:name, :display_weight).order(:display_weight).distinct.map { |development_type| [development_type.name, development_type.name] }.uniq, include_blank: "Select Certification Development Type", selected: @certificate_path.development_type, input_html: { class: "select2 form-control certificate-developmenttype-select offline-certificate", id: "certificate-developmenttype-select" }, required: true %>
+        </div>
+        <div class="col-md-6">
+          <%= f.input :rating, collection: Offline::CertificatePath.ratings.map{ |k, v| [k.titleize, k]}, include_blank: "Select Certification Rating", input_html: { class: "select2 form-control certificate-rating-select offline-certificate", id: "certificate-rating-select"}, required: true %>
+        </div>
+      </div>
 
-                <div class="row">
-                  <div class="col-md-6">
-                    <%= f.input :development_type, collection: DevelopmentType.select(:name, :display_weight).order(:display_weight).distinct.map { |development_type| [development_type.name, development_type.name] }.uniq, include_blank: "Select Certification Development Type", selected: @certificate_path.development_type, input_html: { class: "select2 form-control certificate-developmenttype-select offline-certificate", id: "certificate-developmenttype-select" }, required: true %>
-                  </div>
-                  <div class="col-md-6">
-                    <%= f.input :rating, collection: Offline::CertificatePath.ratings {|key, value| [key.titleize, Offline::CertificatePath.rating.key(value)]}, include_blank: "Select Certification Rating", selected: @certificate_path.rating, input_html: { class: "select2 form-control certificate-rating-select offline-certificate", id: "certificate-rating-select"}, required: true %>
-                  </div>
-                </div>
+      <div class="row">
+        <div class="col-md-6">
+          <%= f.input :status, collection: CertificationPathStatus.all.map { |status| [status.name, status.name] }, include_blank: "Select Certification Status", selected: @certificate_path.status, input_html: { class: "select2 form-control certificate-status-select offline-certificate", id: "certificate-status-select"}, required: true %>
+        </div>
+        <div class="col-md-6">
+          <%= f.input :score, required: true %>
+        </div>
+      </div>
 
-                <div class="row">
-                  <div class="col-md-6">
-                    <%= f.input :status, collection: CertificationPathStatus.all.map { |status| [status.name, status.name] }, include_blank: "Select Certification Status", selected: @certificate_path.status, input_html: { class: "select2 form-control certificate-status-select offline-certificate", id: "certificate-status-select"}, required: true %>
-                  </div>
-                  <div class="col-md-6">
-                    <%= f.input :score, required: true %>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-md-6">
-                    <%= f.input :certified_at,input_html: { type: 'number' }, prepend: ikoen('calendar'), class: "datepicker-year", min: 2000, max: 2100 %>
-                  </div>
-                  <div class="col-md-6">
-                    <%= f.simple_fields_for :offline_scheme_mixes, @offline_scheme_mixes do |offline_scheme_mix| %>
-                      <%= offline_scheme_mix.input :name, collection: get_schemes_names, include_blank: "Select Certification Scheme", selected: @certificate_path.offline_scheme_mixes.name, input_html: { class: "select2 form-control offline-certificate"}, required: true %>
-                    <% end %>
-                  </div>
-                </div>
-              </div>
-              
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12">
-              <%= btn_link_to(:back, icon: 'backward', text: 'Back') %>
-              <%= btn_save %>
-              <%= btn_cancel_to(offline_project_path(@project)) %>
-            </div>
-          </div>
+      <div class="row">
+        <div class="col-md-6">
+          <%= f.input :certified_at,input_html: { type: 'number' }, prepend: ikoen('calendar'), class: "datepicker-year", min: 2000, max: 2100 %>
+        </div>
+        <div class="col-md-6">
+          <%= f.simple_fields_for :offline_scheme_mixes, @offline_scheme_mixes do |offline_scheme_mix| %>
+            <%= offline_scheme_mix.input :name, collection: get_schemes_names, include_blank: "Select Certification Scheme", input_html: { class: "select2 form-control offline-certificate"}, required: true %>
           <% end %>
         </div>
       </div>
     </div>
+    
   </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <%= btn_link_to(:back, icon: 'backward', text: 'Back') %>
+    <%= btn_save %>
+    <%= btn_cancel_to(offline_project_path(@project)) %>
+  </div>
+</div>

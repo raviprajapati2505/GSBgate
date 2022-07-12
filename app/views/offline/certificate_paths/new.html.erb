@@ -1,1 +1,15 @@
-<%= render 'form' %>
+<div class="row">
+    <div class="col-lg-12">
+      <div class="ibox">
+        <div class="ibox-title">
+          <h5><%= t('offline.certificate_paths.form.title') %></h5>
+        </div>
+        <div class="ibox-content">
+          <%= simple_form_for(@certificate_path, url: offline_project_certificate_index_path(@project, @certificate_path), html: { method: :post }) do |f| %>
+          <%= f.error_notification %>
+            <%= render partial: "form", locals: { f: f,resource: @certificate_path } %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+</div>

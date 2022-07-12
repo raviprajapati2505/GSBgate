@@ -249,7 +249,12 @@ Rails.application.routes.draw do
         get 'confirm_destroy' => 'projects#confirm_destroy'
         post 'upload_documents' => 'projects#upload_documents'
       end
-      resources :certificate_paths, path: :certificate, as: 'certificate'
+      resources :certificate_paths, path: :certificate, as: 'certificate' do
+        member do
+          get 'confirm_destroy' => 'certificate_paths#confirm_destroy'
+        end
+        resources :scheme_mixes, path: :scheme_mix, as: 'schemes'
+      end
     end
   end
 

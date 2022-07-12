@@ -1,0 +1,52 @@
+<div class="row">
+  <div class="col-md-4">
+    <div class="ibox float-e-margins">
+      <div class="ibox-title">
+        <h5><%= t('.schemes.title') %></h5>
+      </div>
+      <div class="ibox-content">
+        <table class="table table-bordered table-striped project-details-table">
+          <tbody>
+            <tr>
+              <th><%= Offline::SchemeMix.human_attribute_name('name') %></th>
+              <td><%= @scheme_mix.name %></td>
+            </tr>
+             <tr>
+              <th><%= Offline::SchemeMix.human_attribute_name('weight') %></th>
+              <td><%= @scheme_mix.weight %></td>
+            </tr>
+          </tbody>
+        </table>
+        <%= btn_link_to(:back, icon: 'backward', text: 'Back') %>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-8">
+    <div class="ibox float-e-margins">
+      <div class="ibox-title">
+        <h5><%= t('.scheme_mix_criteria.title') %></h5>
+      </div>
+      <div class="ibox-content">
+        <table class="table table-bordered table-mb-1">
+          <tbody>
+            <tr>
+                <td colspan="4" style="padding: 0px;">
+                      <li class="list-group-item container ">
+                        <div class="row">
+                          </span>
+                            <span class="col-md-4">
+                              Add Scheme Mix Criterions
+                            </span>
+                            <span class="col-md-4">
+                              <%= btn_link_to(new_offline_project_certificate_scheme_path(@project,@certificate_path), icon: 'plus', text: 'Add Criterion') %>
+                            </span>
+                        </div>
+                      </li>
+                </td>
+              </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

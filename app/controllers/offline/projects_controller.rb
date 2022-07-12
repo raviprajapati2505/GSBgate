@@ -16,18 +16,6 @@ module Offline
     end
 
     def create
-      # respond_to do |format|
-      #   @project = Offline::Project.new(project_params)
-      #   if params.has_key?(:offline_project)
-      #     if @project.save
-      #       format.html { redirect_back(fallback_location: offline_projects_path, notice: 'The Project was successfully created.') }
-      #       format.json { render json: @project }
-      #     else
-      #       format.html { render :new }
-      #       format.json { render json: @project['documents'].to_s }
-      #     end
-      #   end
-      # end
       @project = Offline::Project.new(project_params)
       if @project.save
         redirect_to @project, notice: 'Project was successfully created.'
@@ -57,6 +45,7 @@ module Offline
     end
 
     def confirm_destroy
+      @page_title = ERB::Util.html_escape(@project.name.to_s)
     end
 
     def destroy
