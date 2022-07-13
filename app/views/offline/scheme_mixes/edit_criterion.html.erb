@@ -1,0 +1,27 @@
+<% @scheme_mix.tap do |character| %>
+	<% if character.errors.any? %>
+	<div class="errors">
+	<h2><%= pluralize(character.errors.count, "error") %> prohibited this character from being saved:</h2>
+	<ul>
+	<% character.errors.full_messages.each do |msg| %>
+		<li><%= msg %></li>
+	<% end %>
+	</ul>
+	</div>
+	<% end %>
+<% end %>
+<div class="row">
+    <div class="col-lg-12">
+      <div class="ibox">
+        <div class="ibox-title">
+          <h5><%= t('offline.scheme_mixes.form.edit_title') %></h5>
+        </div>
+        <div class="ibox-content">
+          <%= simple_form_for(@scheme_mix, url: update_criterion_offline_project_certification_scheme_path(@project, @certification_path, @scheme_mix), html: { method: :put }) do |f| %>
+          <%= f.error_notification %>
+            <%= render partial: "form", locals: { f: f } %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+</div>

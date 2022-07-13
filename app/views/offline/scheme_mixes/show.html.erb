@@ -27,23 +27,35 @@
         <h5><%= t('.scheme_mix_criteria.title') %></h5>
       </div>
       <div class="ibox-content">
+
         <table class="table table-bordered table-mb-1">
           <tbody>
-            <tr>
-              <td colspan="4" style="padding: 0px;">
-                <li class="list-group-item container ">
-                  <div class="row">
-                    </span>
-                      <span class="col-md-4">
-                        Add Scheme Mix Criterions
-                      </span>
-                      <span class="col-md-4">
-                        <%= btn_link_to(new_offline_project_certification_scheme_path(@project, @certification_path), icon: 'plus', text: 'Add Criterion') %>
-                      </span>
-                  </div>
-                </li>
-              </td>
+          <% unless @scheme_mix.offline_scheme_mix_criteria.nil? %>
+            <tr class="bg-header-grey">
+              <th>Name</th>
+              <th>Score</th>
+              <th>Code</th>
             </tr>
+              <% @scheme_mix.offline_scheme_mix_criteria.each do |scheme_mix_criterion| %>
+                <tr>
+                  <td><%= scheme_mix_criterion.name %></td>
+                  <td><%= scheme_mix_criterion.score %></td>
+                  <td><%= scheme_mix_criterion.code %></td>
+                </tr>
+              <% end %>
+            <% end %>
+            <tr>
+                <td colspan="3" style="padding: 0px;">
+                      <li class="list-group-item container ">
+                        <div class="row">
+                            <span class="col-md-4">
+                              <% #btn_link_to(new_criterion_offline_project_certification_scheme_path(@project, @certification_path), icon: 'plus', text: 'Add Criterion') %>
+                              <%= btn_link_to(edit_criterion_offline_project_certification_scheme_path(@project, @certification_path), icon: 'pencil', text: 'Add / Edit Criterion') %>
+                            </span>
+                        </div>
+                      </li>
+                </td>
+              </tr>
           </tbody>
         </table>
       </div>

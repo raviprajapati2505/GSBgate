@@ -12,18 +12,18 @@ module Offline
 
     enum version:
       { 
-        "v2.0" => "1", 
-        "v1.0" => "2" 
+        "v1.0" => 1,
+        "v2.0" => 2
       }
 
     enum rating: 
       { 
-        "1 Stars" => "1", 
-        "2 Stars" => "2", 
-        "3 Stars" => "3", 
-        "4 Stars" => "4", 
-        "5 Stars" => "5", 
-        "6 Stars" => "6" 
+        "1 Stars" => 1, 
+        "2 Stars" => 2, 
+        "3 Stars" => 3, 
+        "4 Stars" => 4, 
+        "5 Stars" => 5, 
+        "6 Stars" => 6
       }
   end
 end
