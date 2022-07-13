@@ -9,10 +9,11 @@ module Effective
             offline_project_path(rec.id)
           )
         end
+
         col :name, label: t('models.effective.datatables.offline.project.name')
 
-        col :certificate_type, col_class: 'multiple-select', sql_column: 'offline_projects.certificate_type', label: t('models.effective.datatables.offline.project.certificate_type'), search: { as: :select, collection: Proc.new { Certificate.certificate_types.map { |k, v| [t(k, scope: 'activerecord.attributes.certificate.certificate_types'), v] }.uniq } } do |rec|
-          Certificate.certificate_types.keys[rec.certificate_type]
+        col :certificate_type, col_class: 'multiple-select', label: t('models.effective.datatables.offline.project.certificate_type'), search: { as: :select, collection: Proc.new { Offline::Project.certificate_types.map { |k, v| [k, v] } } } do |rec|
+          rec.certificate_type
         end
 
         col :certified_area, label: t('models.effective.datatables.offline.project.site_area')
@@ -25,7 +26,7 @@ module Effective
 
         col :certification_name, col_class: 'multiple-select', sql_column: 'offline_certification_paths.name', label: t('models.effective.datatables.offline.certification_path.name'), search: { as: :select, collection: Proc.new { get_certificate_types_names(current_user) } }
 
-        col :certification_version, col_class: 'multiple-select', label: t('models.effective.datatables.offline.certification_path.version'), search: { as: :select, collection: Proc.new { Offline::CertificationPath.versions { |k, v| [k, k] }.uniq } } do |rec|
+        col :certification_version, col_class: 'multiple-select', label: t('models.effective.datatables.offline.certification_path.version'), search: { as: :select, collection: Proc.new { Offline::CertificationPath.versions.map { |k, v| [k, k] } } } do |rec|
           Offline::CertificationPath.versions.keys[rec.certification_version]
         end
 

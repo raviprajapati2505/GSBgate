@@ -11,7 +11,7 @@
             <div class="col-md-6"><%= f.text_field :name %></div>
           </div>
           <div class="row">
-            <div class="col-md-6"><%= f.select(:certificate_type, options_for_select(Certificate.certificate_types.map { |k, v| [t(k, scope: 'activerecord.attributes.certificate.certificate_types'), v]}, @project.certificate_type)) %></div>
+            <div class="col-md-6"><%= f.select(:certificate_type, options_for_select(Offline::Project.certificate_types.map { |k, v| [k, k] }, @project.certificate_type)) %></div>
             <div class="col-md-6"><%= f.text_field :certified_area, append: 'm²', label: (Project.human_attribute_name('certified_area') + tooltip(t '.tooltip_certified_area')).html_safe, value: commify_values(f.object.certified_area), class: "commify-value", label_class: "required" %></div>
           </div>
            <div class="row">
