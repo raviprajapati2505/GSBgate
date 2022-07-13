@@ -1,0 +1,12 @@
+ <div class="nested-fields col-md-3" >
+  <div class="table-bordered p-m m-t-md border-box-shadow">
+    <div class="text-right">
+      <%= link_to_remove_association "X", f, class: "btn btn-danger btn-sm m-t" %>
+    </div>
+     <%= f.input :name, collection: get_schemes_names, include_blank: "Select Certification Scheme", input_html: { class: "select2 form-control offline-certificate"}, required: true %>
+     <%= f.input :weight, required: true %>
+  </div>
+</div>
+<script type="text/javascript">
+  $('select.offline-certificate').select2()
+</script>

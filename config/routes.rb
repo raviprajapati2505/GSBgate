@@ -260,7 +260,12 @@ Rails.application.routes.draw do
           get 'confirm_destroy', to: 'certification_paths#confirm_destroy'
         end
 
-        resources :scheme_mixes, path: :scheme_mix, as: 'schemes'
+        resources :scheme_mixes, only: [:show, :create, :new], path: :scheme_mix, as: 'schemes' do
+          member do
+            get 'edit_criterion', to: 'scheme_mixes#edit_criterion'
+            put 'update_criterion', to: 'scheme_mixes#update_criterion'
+          end
+        end
       end
     end
   end

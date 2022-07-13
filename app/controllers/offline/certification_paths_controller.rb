@@ -75,7 +75,8 @@ module Offline
         :certified_at,
         offline_scheme_mixes_attributes: [
           :id,
-          :name
+          :name,
+          :weight
         ]
       )
     end

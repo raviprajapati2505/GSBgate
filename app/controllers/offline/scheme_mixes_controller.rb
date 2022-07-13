@@ -1,16 +1,21 @@
 module Offline
   class SchemeMixesController < AuthenticatedController
+    load_and_authorize_resource param_method: :scheme_mix_params
     before_action :set_project_certification_path
-    before_action :set_scheme_mix, only: [:show]
-    before_action :set_controller_model, only: [:show]
+    before_action :set_scheme_mix
+    before_action :set_controller_model, only: [:show,:edit_criterion]
 
-    def new
-      @page_title = t('offline.scheme_mixes.form.title')
-      @scheme_mix = Offline::SchemeMix.new
-      @offline_scheme_mix_criterion = @scheme_mix.offline_scheme_mix_criteria.build
+    def edit_criterion
+      @page_title = t('offline.scheme_mixes.form.edit_title')
+      @offline_scheme_mix_criteria = @scheme_mix.offline_scheme_mix_criteria
     end
 
-    def create
+    def update_criterion
+      if @scheme_mix.update(scheme_mix_params)
+        redirect_to offline_project_certification_scheme_path(@project, @certification_path, @scheme_mix), notice: 'Criteria updated successfully.'
+      else
+        render :edit_criterion
+      end
     end
 
     def show
@@ -30,6 +35,18 @@ module Offline
 
     def set_scheme_mix
       @scheme_mix = Offline::SchemeMix.find(params[:id])
+    end
+
+    def scheme_mix_params
+      params.require(:offline_scheme_mix).permit(
+        offline_scheme_mix_criteria_attributes: [
+          :id,
+          :name,
+          :score,
+          :code,
+          :_destroy
+        ]
+      )
     end
   end
 end

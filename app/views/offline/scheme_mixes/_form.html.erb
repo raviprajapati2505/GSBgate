@@ -1,11 +1,11 @@
 <div class="row">
   <div class="col-md-12">
     <div class="form-inputs">
-      <%= f.simple_fields_for :offline_scheme_mix_criteria do |criterion| %>
+      <%= f.simple_fields_for :offline_scheme_mix_criteria, @offline_scheme_mix_criteria do |criterion| %>
         <%= render partial: 'offline_scheme_mix_criterion_fields', locals: { f: criterion } %>
       <% end %>
       <div class="links">
-        <%= link_to_add_association 'Add More Criterion', f, :offline_scheme_mix_criteria, class: "btn btn-primary btn-sm", id: "add-licences-button" %>
+        <%= link_to_add_association 'Add More Criterion', f, :offline_scheme_mix_criteria, class: "btn btn-primary btn-sm", id: "add-criterion-button" %>
       </div>
     </div>
   </div>
@@ -15,6 +15,6 @@
   <div class="col-md-12">
     <%= btn_link_to(:back, icon: 'backward', text: 'Back') %>
     <%= btn_save %>
-    <%= btn_cancel_to(offline_project_certification_path(@project,@certification_path)) %>
+    <%= btn_cancel_to(offline_project_certification_scheme_path(@project,@certification_path, @scheme_mix)) %>
   </div>
 </div>
