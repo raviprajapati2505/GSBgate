@@ -14,7 +14,7 @@ def create_project(i, row)
       name: row["Project Name"]&.to_s
     )
 
-  project.certificate_type = Certificate.certificate_types[:design_type]
+  project.certificate_type = Offline::Project.certificate_types["GSAS-D&B"]
   project.certified_area = row["Project Certified Area"]&.to_s
   project.site_area = row["Project Site Area"]&.to_s
   project.developer = row["Project Developer"]&.to_s
