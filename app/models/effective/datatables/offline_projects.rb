@@ -11,7 +11,7 @@ module Effective
         end
         col :name, label: t('models.effective.datatables.offline.project.name')
 
-        col :certificate_type, col_class: 'multiple-select col-order-8', sql_column: 'offline_projects.certificate_type', label: t('models.effective.datatables.offline.project.certificate_type'), search: { as: :select, collection: Proc.new { Certificate.certificate_types.map { |k, v| [t(k, scope: 'activerecord.attributes.certificate.certificate_types'), v] }.uniq } } do |rec|
+        col :certificate_type, col_class: 'multiple-select', sql_column: 'offline_projects.certificate_type', label: t('models.effective.datatables.offline.project.certificate_type'), search: { as: :select, collection: Proc.new { Certificate.certificate_types.map { |k, v| [t(k, scope: 'activerecord.attributes.certificate.certificate_types'), v] }.uniq } } do |rec|
           Certificate.certificate_types.keys[rec.certificate_type]
         end
 
@@ -23,19 +23,19 @@ module Effective
 
         col :construction_year, label: t('models.effective.datatables.offline.project.construction_year')
 
-        col :certification_name, col_class: 'multiple-select col-order-7', sql_column: 'offline_certification_paths.name', label: t('models.effective.datatables.offline.certification_path.name'), search: { as: :select, collection: Proc.new { get_certificate_types_names(current_user) } }
+        col :certification_name, col_class: 'multiple-select', sql_column: 'offline_certification_paths.name', label: t('models.effective.datatables.offline.certification_path.name'), search: { as: :select, collection: Proc.new { get_certificate_types_names(current_user) } }
 
-        col :certification_version, col_class: 'multiple-select col-order-8', label: t('models.effective.datatables.offline.certification_path.version'), search: { as: :select, collection: Proc.new { Offline::CertificationPath.versions { |k, v| [k, v] }.uniq } } do |rec|
+        col :certification_version, col_class: 'multiple-select', label: t('models.effective.datatables.offline.certification_path.version'), search: { as: :select, collection: Proc.new { Offline::CertificationPath.versions { |k, v| [k, k] }.uniq } } do |rec|
           Offline::CertificationPath.versions.keys[rec.certification_version]
         end
 
-        col :certification_development_type, col_class: 'multiple-select col-order-9', sql_column: 'offline_certification_paths.development_type', label: t('models.effective.datatables.offline.certification_path.development_type'), search: { as: :select, collection: Proc.new { DevelopmentType.select(:name, :display_weight).order(:display_weight).distinct.map { |development_type| [development_type.name, development_type.name] }.uniq } }
+        col :certification_development_type, col_class: 'multiple-select', sql_column: 'offline_certification_paths.development_type', label: t('models.effective.datatables.offline.certification_path.development_type'), search: { as: :select, collection: Proc.new { DevelopmentType.select(:name, :display_weight).order(:display_weight).distinct.map { |development_type| [development_type.name, development_type.name] }.uniq } }
 
-        col :certification_rating, col_class: 'multiple-select col-order-10', label: t('models.effective.datatables.offline.certification_path.rating'), search: { as: :select, collection: Proc.new { Offline::CertificationPath.ratings.map { |k, v| [k.titleize, v] }.uniq } } do |rec|
+        col :certification_rating, col_class: 'multiple-select', label: t('models.effective.datatables.offline.certification_path.rating'), search: { as: :select, collection: Proc.new { Offline::CertificationPath.ratings.map { |k, v| [k.titleize, k] }.uniq } } do |rec|
           Offline::CertificationPath.ratings.keys[rec.certification_rating]
         end
 
-        col :certification_status, col_class: 'multiple-select col-order-11', sql_column: 'offline_certification_paths.status', label: t('models.effective.datatables.offline.certification_path.status'), search: { as: :select, collection: Proc.new { CertificationPathStatus.all.map { |status| [status.name, status.name] }.uniq } }
+        col :certification_status, col_class: 'multiple-select', sql_column: 'offline_certification_paths.status', label: t('models.effective.datatables.offline.certification_path.status'), search: { as: :select, collection: Proc.new { CertificationPathStatus.all.map { |status| [status.name, status.name] }.uniq } }
 
         col :certification_certified_at, label: t('models.effective.datatables.offline.certification_path.certified_at')
 
