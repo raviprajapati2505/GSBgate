@@ -30,7 +30,7 @@ module Offline
       if @certification_path.update(certification_path_params)
         redirect_to offline_project_certification_path(@project,@certification_path), notice: 'Certification was successfully updated.'
       else
-        render :new
+        render :edit
       end
     end
 
