@@ -5,7 +5,7 @@ $(function() {
 
   function bindSelect2() {
     // Allow multi-select only to admin roles
-    if (["system_admin", "gsas_trust_top_manager", "gsas_trust_manager", "gsas_trust_admin", "users_admin"].includes($("#projects-table, #users-table").data("user-role"))) {
+    if (["system_admin", "gsas_trust_top_manager", "gsas_trust_manager", "gsas_trust_admin", "users_admin"].includes($("#projects-table, #users-table, #offline-projects-table").data("user-role"))) {
       $(".multiple-select select").attr("multiple", true);
       $(".multiple-select select").select2();
     

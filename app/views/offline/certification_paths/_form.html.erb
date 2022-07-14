@@ -35,6 +35,7 @@
       </div>
       <br>
       <p><i>Select schemes for the certification below</i></p>
+      <p><i>Note: if your certification development type belogs to Mixed Use or Neighborhoods, then you can add multiple schemes</i></p>
       <%= f.simple_fields_for :offline_scheme_mixes, @offline_scheme_mixes do |offline_scheme_mix| %>
         <%= render partial: 'offline_scheme_mix_fields', locals: { f: offline_scheme_mix } %>
       <% end %>
@@ -52,3 +53,21 @@
     <%= btn_cancel_to(offline_project_path(@project)) %>
   </div>
 </div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+  $('#add-scheme-button').hide();
+  var selected_development_type = $('#certificate-developmenttype-select').val();
+  if(selected_development_type == 'Mixed Use' || selected_development_type == 'Neighborhoods'){
+    $('#add-scheme-button').show();
+  }
+  $('#certificate-developmenttype-select').change(function(){ 
+    var development_type = $(this).val();
+    if(development_type == 'Mixed Use' || development_type == 'Neighborhoods'){
+      $('#add-scheme-button').show();
+    }else{
+      $('#add-scheme-button').hide();
+    }
+  })
+})
+</script>
