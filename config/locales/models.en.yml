@@ -101,8 +101,10 @@ en:
         code: Project ID
         name: Project Name
         certificate_type: Certificate Type
-        site_area: Project Plot Area (A)
-        certified_area: Project Certified Area (A+B-C)
+        plot_area: Project Plot Area
+        certified_area: Project Certified Area
+        assessment_type: Certification Method
+        owner: Project Owner
         developer: Project Developer
         construction_year: Project Completion Year
         description: Description
@@ -356,8 +358,10 @@ en:
             code: Project ID
             name: Project Name
             certificate_type: Certificate Type
-            site_area: Project Plot Area (A)
-            certified_area: Project Certified Area (A+B-C)
+            assessment_type: Certification Method
+            plot_area: Project Plot Area
+            certified_area: Project Certified Area
+            owner: Project Owner
             developer: Project Developer
             construction_year: Project Completion Year
             description: Description

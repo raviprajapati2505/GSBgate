@@ -401,8 +401,8 @@ en:
         btn_edit_project: Edit Offline Project
       form:
         title: Offline Project Details
-        tooltip_certified_area: Total area falling under GSAS assessment calculated by adding Project Plot Area (A) and Buildings Gross Built up Area (B) and subtracting Building Footprint (C)*.<br /><br />*(C) is subtracted to avoid double counting of the areas under assessment.
-        tooltip_project_site_area: Total project site area.
+        tooltip_certified_area: Total area falling under GSAS assessment calculated by adding Project Plot Area.
+        tooltip_project_plot_area: Total project plot area.
       show:
         project_details:
           title: Offline Project Details

@@ -11,5 +11,12 @@ module Offline
         "GSAS-CM",
         "GSAS-OP"
       ]
+
+    
+    enum assessment_type: 
+      [
+        "Star Rating Based Certificate",
+        "Checklist Based Certificate"
+      ]
   end
 end

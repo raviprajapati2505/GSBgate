@@ -81,7 +81,7 @@ $(function() {
     'released_at',
     'end_date'
   ].forEach(function(date_for) {
-    bindDateRangePicker($(".datatable_search_certification_path_" + date_for + " input"));
+    bindDateRangePicker($(".datatable_search_" + date_for + " input"));
   });
 
   let pageName = window.location.href.split('/').pop();

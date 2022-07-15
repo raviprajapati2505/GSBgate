@@ -32,15 +32,15 @@
           <tbody>
           <% unless @scheme_mix.offline_scheme_mix_criteria.nil? %>
             <tr class="bg-header-grey">
+              <th>Code</th>
               <th>Name</th>
               <th>Score</th>
-              <th>Code</th>
             </tr>
               <% @scheme_mix.offline_scheme_mix_criteria.each do |scheme_mix_criterion| %>
                 <tr>
+                  <td style><%= scheme_mix_criterion.code %></td>
                   <td><%= scheme_mix_criterion.name %></td>
                   <td><%= scheme_mix_criterion.score %></td>
-                  <td><%= scheme_mix_criterion.code %></td>
                 </tr>
               <% end %>
             <% end %>

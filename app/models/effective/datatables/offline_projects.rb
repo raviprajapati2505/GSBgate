@@ -33,9 +33,24 @@ module Effective
 
         col :certified_area, label: t('models.effective.datatables.offline.project.certified_area'), visible: false
 
-        col :site_area, label: t('models.effective.datatables.offline.project.site_area'), visible: false
+        col :plot_area, label: t('models.effective.datatables.offline.project.plot_area'), visible: false
+
+        col :owner, label: t('models.effective.datatables.offline.project.owner')
 
         col :developer, label: t('models.effective.datatables.offline.project.developer')
+
+        col :assessment_type, col_class: 'multiple-select', sql_column: 'offline_projects.assessment_type', label: t('models.effective.datatables.offline.project.assessment_type'), search: { as: :select, collection: Proc.new { Offline::Project.assessment_types.map { |k, v| [k, v] } } } do |rec|
+          rec.assessment_type
+
+        end.search do |collection, terms, column, index|
+          terms_array = terms.split(",")
+
+          unless (collection.class == Array || terms_array.include?(""))
+            collection.where("offline_projects.assessment_type IN (?)", terms_array)
+          else
+            collection
+          end
+        end
 
         col :construction_year, col_class: 'custom-year-picker col-order-6', label: t('models.effective.datatables.offline.project.construction_year'), as: :datetime, visible: false
 
@@ -125,9 +140,11 @@ module Effective
                   'offline_projects.name',
                   'offline_projects.certificate_type',
                   'offline_projects.certified_area',
-                  'offline_projects.site_area',
+                  'offline_projects.plot_area',
+                  'offline_projects.owner',
                   'offline_projects.developer',
                   'offline_projects.description',
+                  'offline_projects.assessment_type',
                   'offline_projects.construction_year',
                   'offline_certification_paths.id as certification_id',
                   'offline_certification_paths.name as certification_name',
