@@ -5,13 +5,14 @@ module Offline
     
     accepts_nested_attributes_for :offline_scheme_mixes
 
-    validates :name, :version, :development_type, :status, :rating, presence: true
+    validates :name, :version, :development_type, :status, presence: true
 
     enum version:
       [
         "v1.0",
         "v2.0",
-        "v2.1"
+        "v2.1",
+        "v2.1 Issue 1.0"
       ]
 
     enum rating:

@@ -7,28 +7,56 @@
         </div>
         <div class="ibox-content">
           <div class="row">
-            <div class="col-md-6"> <%= f.text_field :code %></div>
-            <div class="col-md-6"><%= f.text_field :name %></div>
+            <div class="col-md-6">
+              <%= f.text_field :code %>
+            </div>
+            <div class="col-md-6">
+              <%= f.text_field :name %>
+            </div>
           </div>
+
           <div class="row">
-            <div class="col-md-6"><%= f.select(:certificate_type, options_for_select(Offline::Project.certificate_types.map { |k, v| [k, k] }, @project.certificate_type)) %></div>
-            <div class="col-md-6"><%= f.text_field :certified_area, append: 'm²', label: (Project.human_attribute_name('certified_area') + tooltip(t '.tooltip_certified_area')).html_safe, value: commify_values(f.object.certified_area), class: "commify-value", label_class: "required" %></div>
+            <div class="col-md-6">
+              <%= f.select(:certificate_type, options_for_select(Offline::Project.certificate_types.map { |k, v| [k, k] }, @project.certificate_type)) %>
+            </div>
+            <div class="col-md-6">
+              <%= f.select(:assessment_type, options_for_select(Offline::Project.assessment_types.map { |k, v| [k, k] }, @project.assessment_type)) %>
+            </div>
           </div>
+
            <div class="row">
-            <div class="col-md-6"><%= f.text_field :site_area, value: commify_values(f.object.site_area), append: 'm²', label: (Offline::Project.human_attribute_name('site_area') + tooltip(t '.tooltip_project_site_area')).html_safe, class: "commify-value", label_class: "required" %></div>
-            <div class="col-md-6"><%= f.text_field :developer %></div>
+            <div class="col-md-6">
+              <%= f.text_field :certified_area, append: 'm²', label: (Project.human_attribute_name('certified_area') + tooltip(t '.tooltip_certified_area')).html_safe, value: commify_values(f.object.certified_area), class: "commify-value", label_class: "required" %>
+            </div>
+            <div class="col-md-6">
+              <%= f.text_field :plot_area, value: commify_values(f.object.plot_area), append: 'm²', label: (Offline::Project.human_attribute_name('plot_area') + tooltip(t '.tooltip_project_plot_area')).html_safe, class: "commify-value", label_class: "required" %>
+            </div>
           </div>
+
           <div class="row">
-            <div class="col-md-6"><%= f.number_field :construction_year, prepend: ikoen('calendar'), class: "datepicker-year", min: 2000, max: 2100 %></div>
+            <div class="col-md-6">
+              <%= f.text_field :owner %>
+            </div>
+            <div class="col-md-6">
+              <%= f.text_field :developer %>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <%= f.number_field :construction_year, prepend: ikoen('calendar'), class: "datepicker-year", min: 2000, max: 2100 %>
+            </div>
             <div class="col-md-6">
               <%= f.select(:loc_as_per_directory, options_for_select(['Yes', 'No'], @project.loc_as_per_directory)) %>
             </div>
           </div>
+
           <div class="row">
             <div class="col-md-12">
               <%= f.text_area :description, maxlength: 300 %>
             </div>
           </div>
+
           <div class="row">
             <div class="col-md-12">
               <%= btn_link_to(:back, icon: 'backward', text: 'Back') %>

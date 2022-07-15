@@ -4,12 +4,14 @@ class CreateOfflineProjects < ActiveRecord::Migration[5.2]
       t.string :code
       t.string :name
       t.string :certified_area
-      t.string :site_area
+      t.string :plot_area
       t.integer :certificate_type
       t.string :developer
       t.string :construction_year
       t.text :description
       t.string :loc_as_per_directory
+      t.string :owner
+      t.integer :assessment_type, default: 0
       t.timestamps
     end
 
