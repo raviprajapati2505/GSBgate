@@ -19,7 +19,10 @@
             <div class="col-md-6"><%= f.text_field :developer %></div>
           </div>
           <div class="row">
-            <div class="col-md-12"><%= f.number_field :construction_year, prepend: ikoen('calendar'), class: "datepicker-year", min: 2000, max: 2100 %></div>
+            <div class="col-md-6"><%= f.number_field :construction_year, prepend: ikoen('calendar'), class: "datepicker-year", min: 2000, max: 2100 %></div>
+            <div class="col-md-6">
+              <%= f.select(:loc_as_per_directory, options_for_select(['Yes', 'No'], @project.loc_as_per_directory)) %>
+            </div>
           </div>
           <div class="row">
             <div class="col-md-12">

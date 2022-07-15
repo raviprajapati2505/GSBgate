@@ -46,6 +46,31 @@ $(function() {
     }
   }
 
+  function bindYearPicker(searchInput){
+    console.log(searchInput);
+    if (searchInput.length > 0) {
+      console.log('dfd');
+      searchInput.datepicker({
+          opens: 'bottom',
+          format: 'yyyy',
+          viewMode: 'years',
+          minViewMode: 'years',
+          changeYear: true,
+          startDate: '1900y',
+          endDate: '2100y',
+          autoclose: true
+      }, function(start_date, end_date, label) {
+        searchInput.val(start_date.format('DD-MM-YYYY'))
+        searchInput.trigger('keyup');
+      });
+    }
+  }
+
+  $('.custom-year-picker input').change(function(){
+    $(this).trigger('keyup');
+    console.log($(this).val());
+  })
+
   set_options_label();
 
   [
@@ -145,9 +170,11 @@ $(function() {
   }
 
   $("table.effective-datatable").on("column-visibility.dt", function(e, settings, column_number, state) {
+    console.log('dfdf',state);
     if (state) {
+      console.log('dfdf',state);
       var column = $(".col-order-" + column_number);
-
+      console.log('column',column_number);
       if (column.hasClass("multiple-select")){
         // Allow multi-select only to admin roles
         if (["system_admin", "gsas_trust_top_manager", "gsas_trust_manager", "gsas_trust_admin"].includes($("#projects-table").data("user-role"))) {
@@ -193,6 +220,12 @@ $(function() {
           bindDateRangePicker($(".datatable_search_survey_released_at input"));
         } else if (column.hasClass("col-end_date date-range-filter")) {
           bindDateRangePicker($(".datatable_search_end_date input"));
+        } 
+      } else if (column.hasClass("custom-year-picker")){
+        if (column.hasClass("col-construction_year")) {
+          bindYearPicker($(".datatable_search_construction_year input"));
+        } else if(column.hasClass("col-certification_certified_at")){
+          bindYearPicker($(".datatable_search_certification_certified_at input"));
         }
       }
     }

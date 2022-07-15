@@ -31,9 +31,13 @@
               <th><%= Offline::Project.human_attribute_name('construction_year') %></th>
               <td><%= @project.construction_year %></td>
             </tr>
-             <tr>
+            <tr>
               <th><%= Offline::Project.human_attribute_name('description') %></th>
               <td><%= @project.description %></td>
+            </tr>
+            <tr>
+              <th><%= Offline::Project.human_attribute_name('loc_as_per_directory') %></th>
+              <td><%= @project.loc_as_per_directory %></td>
             </tr>
           </tbody>
         </table>

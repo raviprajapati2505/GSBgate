@@ -9,6 +9,7 @@ class CreateOfflineProjects < ActiveRecord::Migration[5.2]
       t.string :developer
       t.string :construction_year
       t.text :description
+      t.string :loc_as_per_directory
       t.timestamps
     end
 

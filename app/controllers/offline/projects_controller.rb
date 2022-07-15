@@ -104,7 +104,7 @@ module Offline
     end
 
     def project_params
-      params.require(:offline_project).permit(:name, :certificate_type, :code, :certified_area, :site_area, :developer, :description, :construction_year)
+      params.require(:offline_project).permit(:name, :certificate_type, :code, :certified_area, :site_area, :developer, :description, :construction_year, :loc_as_per_directory)
     end
   end
 end
