@@ -41,9 +41,9 @@ def create_certfication_path(i, row, project)
         )
 
       certification_path.version = certificate_verison&.strip
-      certification_path.development_type = row["Certification Development Type"]&.titleize
-      certification_path.status = row["Certification Status"]&.titleize
-      certification_path.rating = row["Certification Rating"]&.titleize
+      certification_path.development_type = row["Certification Development Type"]&.strip&.titleize
+      certification_path.status = row["Certification Status"]&.strip&.titleize
+      certification_path.rating = row["Certification Rating"]&.strip&.titleize
 
     unless certification_path.save
       @errors << "Row: #{i}, Project Error: #{certification_path.errors.full_messages}"

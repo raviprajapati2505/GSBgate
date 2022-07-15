@@ -31,13 +31,13 @@ module Effective
           end
         end
 
-        col :certified_area, label: t('models.effective.datatables.offline.project.certified_area')
+        col :certified_area, label: t('models.effective.datatables.offline.project.certified_area'), visible: false
 
-        col :site_area, label: t('models.effective.datatables.offline.project.site_area')
+        col :site_area, label: t('models.effective.datatables.offline.project.site_area'), visible: false
 
         col :developer, label: t('models.effective.datatables.offline.project.developer')
 
-        col :construction_year, label: t('models.effective.datatables.offline.project.construction_year')
+        col :construction_year, col_class: 'custom-year-picker col-order-6', label: t('models.effective.datatables.offline.project.construction_year'), as: :datetime, visible: false
 
         col :certification_name, col_class: 'multiple-select', sql_column: 'offline_certification_paths.name', label: t('models.effective.datatables.offline.certification_path.name'), search: { as: :select, collection: Certificate.all.order(:display_weight).map { |certificate| [certificate.stage_title, certificate.stage_title.sub(',', '+')] }.uniq } do |rec| 
           link_to_if(!current_user.record_checker?,
@@ -108,7 +108,7 @@ module Effective
           end
         end
 
-        col :certification_certified_at, label: t('models.effective.datatables.offline.certification_path.certified_at')
+        col :certification_certified_at, col_class: 'custom-year-picker col-order-12', label: t('models.effective.datatables.offline.certification_path.certified_at'), search: { as: :datetime }, visible: false
 
         col :id, sql_column: 'offline_projects.id', label: 'Action', search: false, sort: false do |rec|
           btn_link_to(edit_offline_project_path(rec.id), icon: 'edit', size: 'small', tooltip: 'Edit Project')

@@ -145,7 +145,6 @@ class Ability
       cannot :manage, :survey_dashboard
       cannot [:index, :show, :new, :edit, :create, :update, :destroy], SurveyType
       cannot [:show, :form, :create, :update, :update_position], SurveyQuestionnaireVersion
-      cannot :manage, Offline::ProjectsController
 
       if valid_user_associates?(user) && user.active?
         can :create, Project
@@ -432,6 +431,13 @@ class Ability
       # Archive
       can :show, Archive, user_id: user.id
 
+      # offline project module
+      can :manage, Offline::Project
+      can :manage, Offline::CertificationPath
+      can :manage, Offline::SchemeMix
+      can :manage, Offline::SchemeMixCriterion
+      can :manage, Offline::ProjectDocument
+
       # # Admins opt-out for specific abilities
       # cannot :apply_for_pcr, CertificationPath, pcr_track: true
       # cannot :apply_for_pcr, CertificationPath, certificate: {certificate_type: [Certificate.certificate_types[:construction_type], Certificate.certificate_types[:operations_type]]}
@@ -457,7 +463,13 @@ class Ability
       cannot [:show, :form, :create, :update, :update_position], SurveyQuestionnaireVersion
       cannot [:index, :show, :copy_project_survey, :new, :create, :edit, :update, :destroy, :export_survey_results], ProjectsSurvey
       cannot [:index, :download_linkme_survey_data], LinkmeSurvey
-      cannot :manage, Offline::ProjectsController
+
+      # offline project module
+      can :manage, Offline::Project
+      can :manage, Offline::CertificationPath
+      can :manage, Offline::SchemeMix
+      can :manage, Offline::SchemeMixCriterion
+      can :manage, Offline::ProjectDocument
 
     elsif user.system_admin?
       can :manage, :all
@@ -472,7 +484,6 @@ class Ability
       cannot [:show, :form, :create, :update, :update_position], SurveyQuestionnaireVersion
       cannot [:index, :show, :copy_project_survey, :new, :create, :edit, :update, :destroy, :export_survey_results], ProjectsSurvey
       cannot [:index, :download_linkme_survey_data], LinkmeSurvey
-      cannot :manage, Offline::ProjectsController
 
     elsif user.users_admin?
       # Task
@@ -488,7 +499,6 @@ class Ability
       can [:show, :form, :create, :update, :update_position], SurveyQuestionnaireVersion
       can [:index, :show, :copy_project_survey, :new, :create, :edit, :update, :destroy, :export_survey_results], ProjectsSurvey
       can [:index, :download_linkme_survey_data], LinkmeSurvey
-      cannot :manage, Offline::ProjectsController
 
     elsif user.service_provider?
       can :read, Project, projects_users: users_with_service_provider
@@ -508,7 +518,6 @@ class Ability
       cannot [:show, :form, :create, :update, :update_position], SurveyQuestionnaireVersion
       cannot [:index, :show, :copy_project_survey, :new, :create, :edit, :update, :destroy, :export_survey_results], ProjectsSurvey
       cannot [:index, :download_linkme_survey_data], LinkmeSurvey
-      cannot :manage, Offline::ProjectsController
 
     else
       cannot :manage, :all

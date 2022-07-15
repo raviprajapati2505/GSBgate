@@ -3,7 +3,7 @@
     <div class="form-inputs">
       <div class="row">
         <div class="col-md-6">
-          <%= f.input :name, collection: Certificate.all.order(:display_weight).map { |certificate| [certificate.stage_title] }.uniq, include_blank: "Select Certificate Name", selected: @certification_path.name, input_html: { class: "select2 form-control certificate-name-select offline-certificate", id: "certificate-name-select"}, required: true %>
+          <%= f.input :name, collection: Certificate.all.order(:display_weight).map { |certificate| [certificate.stage_title, certificate.stage_title ] }.uniq, include_blank: "Select Certificate Name", selected: @certification_path.name, input_html: { class: "select2 form-control certificate-name-select offline-certificate", id: "certificate-name-select"}, required: true %>
         </div>
         <div class="col-md-6">
           <%= f.input :version, collection: Offline::CertificationPath.versions.map{ |k, v| [k, k]}, include_blank: "Select Certificate Version", input_html: { class: "select2 form-control certificate-version-select offline-certificate", id: "certificate-version-select"}, required: true %>
