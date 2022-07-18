@@ -5,7 +5,15 @@ $(function() {
 
   function bindSelect2() {
     // Allow multi-select only to admin roles
-    if (["system_admin", "gsas_trust_top_manager", "gsas_trust_manager", "gsas_trust_admin", "users_admin"].includes($("#projects-table, #users-table, #offline-projects-table").data("user-role"))) {
+    if (["system_admin", "gsas_trust_top_manager", "gsas_trust_manager", "gsas_trust_admin", "users_admin"].includes($("#projects-table, #users-table").data("user-role"))) {
+      $(".multiple-select select").attr("multiple", true);
+      $(".multiple-select select").select2();
+    
+      $(".select2-search-field input").remove();
+      $(".select2-search-choice div").html("Select All");
+    }
+
+    if (["system_admin", "gsas_trust_top_manager", "gsas_trust_manager", "gsas_trust_admin", "document_controller"].includes($("#offline-projects-table").data("user-role"))) {
       $(".multiple-select select").attr("multiple", true);
       $(".multiple-select select").select2();
     
@@ -47,9 +55,7 @@ $(function() {
   }
 
   function bindYearPicker(searchInput){
-    console.log(searchInput);
     if (searchInput.length > 0) {
-      console.log('dfd');
       searchInput.datepicker({
           opens: 'bottom',
           format: 'yyyy',
@@ -59,16 +65,12 @@ $(function() {
           startDate: '1900y',
           endDate: '2100y',
           autoclose: true
-      }, function(start_date, end_date, label) {
-        searchInput.val(start_date.format('DD-MM-YYYY'))
-        searchInput.trigger('keyup');
       });
     }
   }
 
   $('.custom-year-picker input').change(function(){
     $(this).trigger('keyup');
-    console.log($(this).val());
   })
 
   set_options_label();
@@ -170,14 +172,23 @@ $(function() {
   }
 
   $("table.effective-datatable").on("column-visibility.dt", function(e, settings, column_number, state) {
-    console.log('dfdf',state);
     if (state) {
-      console.log('dfdf',state);
       var column = $(".col-order-" + column_number);
-      console.log('column',column_number);
       if (column.hasClass("multiple-select")){
         // Allow multi-select only to admin roles
         if (["system_admin", "gsas_trust_top_manager", "gsas_trust_manager", "gsas_trust_admin"].includes($("#projects-table").data("user-role"))) {
+          column.find("select").attr("multiple", true);
+          column.find("select").select2();
+          
+          column.find(".select2-search-field input").remove();
+          
+          let select_option = column.find(".select2-search-choice div").html();
+          if (Object.keys(columnNames).includes(select_option) || select_option == ""){ 
+            column.find(".select2-search-choice div").html("Select All");
+          }
+        }
+
+        if (["system_admin", "gsas_trust_top_manager", "gsas_trust_manager", "gsas_trust_admin","document_controller"].includes($("#offline-projects-table").data("user-role"))) {
           column.find("select").attr("multiple", true);
           column.find("select").select2();
           
