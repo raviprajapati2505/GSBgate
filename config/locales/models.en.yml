@@ -374,6 +374,7 @@ en:
             status: Certification Status
             score: Certification Score
             certified_at: Certification Certified At
+            schemes: Certification Schemes
         projects:
           lables:
             project_code: Project ID
