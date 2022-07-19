@@ -15,7 +15,7 @@
           <%= f.input :development_type, collection: DevelopmentType.select(:name, :display_weight).order(:display_weight).distinct.map { |development_type| [development_type.name, development_type.name] }.uniq, include_blank: "Select Certification Development Type", selected: @certification_path.development_type, input_html: { class: "select2 form-control certificate-developmenttype-select offline-certificate", id: "certificate-developmenttype-select" }, required: true %>
         </div>
         <div class="col-md-6">
-          <%= f.input :rating, collection: Offline::CertificationPath.ratings.map { |k, v| [k.titleize, k]}, include_blank: "Select Certification Rating", input_html: { class: "select2 form-control certificate-rating-select offline-certificate", id: "certificate-rating-select"}, required: true %>
+          <%= f.input :rating, collection: Offline::CertificationPath.ratings.map { |k, v| [k.titleize, k]}, include_blank: "Select Certification Rating", input_html: { class: "select2 form-control certificate-rating-select offline-certificate", id: "certificate-rating-select"} %>
         </div>
       </div>
 
@@ -24,7 +24,7 @@
           <%= f.input :status, collection: CertificationPathStatus.all.map { |status| [status.name, status.name] }, include_blank: "Select Certification Status", selected: @certification_path.status, input_html: { class: "select2 form-control certificate-status-select offline-certificate", id: "certificate-status-select"}, required: true %>
         </div>
         <div class="col-md-6">
-          <%= f.input :score, required: true, input_html: { step: 0.0 } %>
+          <%= f.input :score, input_html: { step: 0.0 } %>
         </div>
       </div>
 

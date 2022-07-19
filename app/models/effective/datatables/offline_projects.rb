@@ -3,6 +3,17 @@ module Effective
     class OfflineProjects < Effective::Datatable
       include ActionView::Helpers::TranslationHelper
 
+      def offline_projects_by_scheme_names
+        "ARRAY_TO_STRING(
+          ARRAY(
+            SELECT offline_scheme_mixes.name
+            FROM offline_scheme_mixes
+            WHERE offline_scheme_mixes.offline_certification_path_id = offline_certification_paths.id
+          ), 
+          '|||'
+        )"
+      end
+
       datatable do
         col :code, 
             label: t('models.effective.datatables.projects.lables.project_code') do |rec| 
@@ -60,7 +71,7 @@ module Effective
           end
         end
 
-        col :construction_year, col_class: 'custom-year-picker col-order-6', label: t('models.effective.datatables.offline.project.construction_year'), as: :datetime, visible: false
+        col :construction_year, col_class: 'custom-year-picker col-order-8', label: t('models.effective.datatables.offline.project.construction_year'), as: :datetime, visible: false
 
         col :certification_name, 
             col_class: 'multiple-select', 
@@ -163,33 +174,28 @@ module Effective
         end
 
         col :certification_certified_at, 
-          col_class: 'custom-year-picker col-order-12', 
+          col_class: 'custom-year-picker col-order-14', 
           label: t('models.effective.datatables.offline.certification_path.certified_at'), 
           search: { as: :datetime }, 
           visible: false
 
-        col :certification_scheme_name, 
+          col :certification_scheme_name, 
             col_class: 'multiple-select',
-            sql_column: "ARRAY_TO_STRING(
-              ARRAY(
-                SELECT offline_scheme_mixes.name 
-                FROM offline_scheme_mixes
-                WHERE offline_scheme_mixes.offline_certification_path_id = offline_certification_paths.id
-              ), '|||')",
+            sql_column: '(%s)' % offline_projects_by_scheme_names,
             label: t('models.effective.datatables.offline.certification_path.schemes'),
             search: { 
               as: :select, collection: Proc.new { get_schemes_names } 
             } do |rec|
             unless rec.certification_scheme_name.nil?
               schemes_array = ERB::Util.html_escape(rec.certification_scheme_name).split('|||').sort
-              if schemes_array.size > 1
+              if schemes_array.size > 0
                 schemes_array.join('<br/>')
               end
-            end
+            end 
           end.search do |collection, terms, column, index|
             terms_array = terms.split(",")
             unless (collection.class == Array || terms_array.include?(""))
-              collection.where("offline_scheme_mixes.name IN (?)", terms_array)
+              collection.where('(%s) ILIKE ANY ( array[:terms_array] )' % offline_projects_by_scheme_names, terms_array: terms_array.map! {|val| "%#{val}%" }) rescue collection
             else
               collection
             end
@@ -227,13 +233,7 @@ module Effective
                   'offline_certification_paths.status as certification_status',
                   'offline_certification_paths.certified_at as certification_certified_at',
                   'offline_certification_paths.rating as certification_rating')
-          .select("ARRAY_TO_STRING(
-            ARRAY(
-              SELECT offline_scheme_mixes.name 
-              FROM offline_scheme_mixes
-              WHERE offline_scheme_mixes.offline_certification_path_id = offline_certification_paths.id
-            ), '|||'
-          )  AS certification_scheme_name")
+          .select('(%s) AS certification_scheme_name' % offline_projects_by_scheme_names)
       end
     end
   end

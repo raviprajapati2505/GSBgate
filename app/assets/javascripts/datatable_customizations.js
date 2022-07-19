@@ -69,7 +69,7 @@ $(function() {
     }
   }
 
-  $('.custom-year-picker input').change(function(){
+  $('body').on('change','.custom-year-picker input',function(){
     $(this).trigger('keyup');
   })
 
