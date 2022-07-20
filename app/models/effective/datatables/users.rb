@@ -3,6 +3,12 @@ module Effective
     class Users < Effective::Datatable
       include ActionView::Helpers::TranslationHelper
 
+      def get_access_licences
+        access_licences = Licence.select(:display_name, :display_weight).order(:display_weight).distinct.map { |licence| [licence.display_name, licence.display_name.sub(',', '+')] }.uniq
+        access_licences.push(["No licences","No licences"])
+        return access_licences
+      end
+
       datatable do
         col :name
         col :username
@@ -12,14 +18,31 @@ module Effective
         end
         col :gord_employee, label: 'GORD Employee'
 
-        col :licences_name, col_class: 'multiple-select', sql_column: "ARRAY_TO_STRING(ARRAY(SELECT licences.title FROM licences INNER JOIN access_licences ON access_licences.user_id = users.id WHERE access_licences.licence_id = licences.id), '|||')", label: 'Licences', search: { as: :select, collection: Proc.new { Licence.select(:display_name, :display_weight).order(:display_weight).distinct.map { |licence| [licence.display_name, licence.display_name.sub(',', '+')] }.uniq } } do |rec|
+        col :licences_name, col_class: 'multiple-select', sql_column: "ARRAY_TO_STRING(ARRAY(SELECT licences.title FROM licences INNER JOIN access_licences ON access_licences.user_id = users.id WHERE access_licences.licence_id = licences.id), '|||')", label: 'Licences', search: { as: :select, collection: Proc.new { get_access_licences } } do |rec|
           ERB::Util.html_escape(rec.licences_name).split('|||').sort.join(', <br/>') unless rec.licences_name.nil?
 
         end.search do |collection, terms, column, index|
           terms_array = terms.split(',').map { |ele| ele.gsub('+', ',') || ele }
+          collection_set = collection
+          results_array = []
+          recent_certificates_ids = []
+          users_id_with_no_licences = []
 
           unless (collection.class == Array || terms_array.include?(nil))
-            collection.where("ARRAY_TO_STRING(ARRAY(SELECT licences.display_name FROM licences INNER JOIN access_licences ON access_licences.user_id = users.id WHERE access_licences.licence_id = licences.id), '|||') ILIKE ANY ( array[:terms_array] )", terms_array: terms_array.map! {|val| "%#{val}%" }) rescue collection
+            if (terms_array.include?("No licences"))
+              terms_array.delete("No licences")
+
+              users_id_with_licences = User.joins(:access_licences).ids.uniq
+              users_id_with_no_licences = User.where('id NOT IN (?)', users_id_with_licences).ids.uniq
+            end
+
+            unless terms_array.blank?
+              results_array = collection_set.where("ARRAY_TO_STRING(ARRAY(SELECT licences.display_name FROM licences INNER JOIN access_licences ON access_licences.user_id = users.id WHERE access_licences.licence_id = licences.id), '|||') ILIKE ANY ( array[:terms_array] )", terms_array: terms_array.map! {|val| "%#{val}%" }).pluck("users.id")
+            end
+
+            all_user_ids = users_id_with_no_licences.push(*results_array).uniq
+          
+            collection.where("users.id IN (?)", all_user_ids) rescue collection
           else
             collection
           end

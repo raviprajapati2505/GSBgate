@@ -186,7 +186,7 @@ en:
         title: GSAS Trust
         title_modal: Add GSAS Trust Team Member
       enterprise_clients:
-        title: Enterprise Clients
+        title: Enterprise Licensee
         title_modal: Add Enterprise Client
   reports:
     certifiers_criteria:

@@ -237,7 +237,7 @@ module Effective
           end
         end
 
-        col :certification_assessment_method, col_class: 'multiple-select col-order-22', sql_column: 'certification_paths.id', label: t('models.effective.datatables.projects_certification_paths.assessment_method.label'), search: { as: :select, collection: Proc.new { [["Star Rating Based Certificate", 1], ["Checklist Based Certificate", 2]] } } do |rec|
+        col :certification_assessment_method, col_class: 'multiple-select col-order-22', sql_column: 'certification_paths.id', label: t('models.effective.datatables.projects_certification_paths.assessment_method.label'), search: { as: :select, collection: Proc.new { [["Star Rating", 1], ["Checklist Compliance", 2]] } } do |rec|
           certification_assessment_type_title(CertificationPathMethod.find_by(certification_path_id: rec.certification_path_id)&.assessment_method)
         end.search do |collection, terms, column, index|
           terms_array = terms.split(",")

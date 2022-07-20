@@ -39,7 +39,9 @@
 <% if can?(:read, project_users[0]) %>
     <div class="ibox-content table-responsive">
         <% if project_users.count.zero? %>
-            <p class="margin-top-1">No users found.</p>
+            <% if team != :enterprise_clients %>
+                <p class="margin-top-1">No users found.</p>
+            <% end %>
         <% else %>
             <table class="table table-bordered table-hover datatable" cellspacing="0" width="100%">
                 <thead>
@@ -57,7 +59,11 @@
                   <% rowspan = find_rowspan(projects_users_count_with_role(project_users, role)) %>
                     <tr>
                         <td rowspan="<%= rowspan %>" style="width: 391px;">
-                            <%= t(role, scope: 'activerecord.attributes.projects_user.roles' ) %>
+                            <% if (role == 'enterprise_client') %>
+                                <%= 'Stakeholders' %>
+                            <% else %>
+                                <%= t(role, scope: 'activerecord.attributes.projects_user.roles' ) %>
+                            <% end %>
                         </td>
                         <% project_users.with_role(role).each_with_index do |projects_user, index| %>
                             <% unless index == 1 %>
