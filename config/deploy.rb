@@ -49,6 +49,9 @@ namespace :deploy do
   end
 end
 
+set :rvm_map_bins, %w{gem rake ruby rails bundle}
+set :rvm_ruby_version, 'ruby-2.5.5'
+
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
 
