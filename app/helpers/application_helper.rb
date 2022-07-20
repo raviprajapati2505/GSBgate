@@ -508,9 +508,9 @@ module ApplicationHelper
 
   def certification_assessment_type_title(assessment_type = nil)
     if assessment_type == 1
-      "Star Rating Based Certificate"
+      "Star Rating"
     elsif assessment_type == 2
-      "Checklist Based Certificate"
+      "Checklist Compliance"
     end
   end
 

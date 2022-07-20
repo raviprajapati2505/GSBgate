@@ -22,11 +22,11 @@ class AccessLicence < ApplicationRecord
   def licence_applicable_for
     case licence.applicability
     when 'both'
-      "Star Rating Based Certificate & Checklist Based Certificate"
+      "Star Rating & Checklist Compliance"
     when 'star_rating'
-      "Star Rating Based Certificate"
+      "Star Rating"
     when 'check_list'
-      "Checklist Based Certificate"
+      "Checklist Compliance"
     else
       ""
     end
