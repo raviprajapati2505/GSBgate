@@ -57,7 +57,9 @@
           <% end %>
         </tbody>
       </table>
-      <%= btn_link_to(new_project_survey_path(project), icon: 'bar-chart', text: 'Create Project Surveys') %>
+      <% if can?(:create, @project.projects_surveys.new) %>
+        <%= btn_link_to(new_project_survey_path(project), icon: 'bar-chart', text: 'Create Project Surveys') %>
+      <% end %>
     </div>
   </div>
 <% end %>

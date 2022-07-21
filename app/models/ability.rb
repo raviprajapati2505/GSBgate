@@ -139,7 +139,7 @@ class Ability
       can [:download_location_plan, :download_site_plan, :download_design_brief, :download_project_narrative, :download_area_statement, :download_sustainability_features], Project, projects_users: {user_id: user.id}
       can :show_tools, Project, projects_users: {user_id: user.id}
       can :update, Project, projects_users: {user: active_user, role: project_user_role_cgp_project_manager}
-      can [:index, :show, :copy_project_survey, :create, :edit, :update, :destroy, :export_survey_results], ProjectsSurvey, project: { projects_users: { user: active_user, role: project_user_role_certification_manager } }
+      can [:index, :show, :copy_project_survey, :new, :create, :edit, :update, :destroy, :export_survey_results], ProjectsSurvey, project: { projects_users: { user: active_user, role: project_user_role_certification_manager } }
 
       cannot :update, Project, projects_users: {user_id: user.id, role: project_user_role_cgp_project_manager}, certification_paths: {certification_path_status: {id: CertificationPathStatus::STATUSES_ACTIVATED}}
       cannot :manage, :survey_dashboard
@@ -318,7 +318,7 @@ class Ability
       cannot :manage, :survey_dashboard
       cannot [:index, :show, :new, :edit, :create, :update, :destroy], SurveyType
       cannot [:show, :form, :create, :update, :update_position], SurveyQuestionnaireVersion
-      cannot [:index, :show, :copy_project_survey, :create, :edit, :update, :destroy, :export_survey_results], ProjectsSurvey
+      cannot [:index, :show, :copy_project_survey, :new, :create, :edit, :update, :destroy, :export_survey_results], ProjectsSurvey
       cannot [:index, :download_linkme_survey_data], LinkmeSurvey
 
       can [:index, :auditable_index, :auditable_index_comments, :download_attachment, :export], AuditLog, attachment_file: true
@@ -455,7 +455,7 @@ class Ability
       cannot :manage, :survey_dashboard
       cannot [:index, :show, :new, :edit, :create, :update, :destroy], SurveyType
       cannot [:show, :form, :create, :update, :update_position], SurveyQuestionnaireVersion
-      cannot [:index, :show, :copy_project_survey, :create, :edit, :update, :destroy, :export_survey_results], ProjectsSurvey
+      cannot [:index, :show, :copy_project_survey, :new, :create, :edit, :update, :destroy, :export_survey_results], ProjectsSurvey
       cannot [:index, :download_linkme_survey_data], LinkmeSurvey
 
     elsif user.system_admin?
@@ -468,7 +468,7 @@ class Ability
       cannot :manage, :survey_dashboard
       cannot [:index, :show, :new, :edit, :create, :update, :destroy], SurveyType
       cannot [:show, :form, :create, :update, :update_position], SurveyQuestionnaireVersion
-      cannot [:index, :show, :copy_project_survey, :create, :edit, :update, :destroy, :export_survey_results], ProjectsSurvey
+      cannot [:index, :show, :copy_project_survey, :new, :create, :edit, :update, :destroy, :export_survey_results], ProjectsSurvey
       cannot [:index, :download_linkme_survey_data], LinkmeSurvey
 
     elsif user.users_admin?
@@ -483,7 +483,7 @@ class Ability
       can :index, :survey_dashboard
       can [:index, :show, :new, :edit, :create, :update, :destroy], SurveyType
       can [:show, :form, :create, :update, :update_position], SurveyQuestionnaireVersion
-      can [:index, :show, :copy_project_survey, :create, :edit, :update, :destroy, :export_survey_results], ProjectsSurvey
+      can [:index, :show, :copy_project_survey, :new, :create, :edit, :update, :destroy, :export_survey_results], ProjectsSurvey
       can [:index, :download_linkme_survey_data], LinkmeSurvey
 
     elsif user.service_provider?
@@ -502,7 +502,7 @@ class Ability
       cannot :manage, :survey_dashboard
       cannot [:index, :show, :new, :edit, :create, :update, :destroy], SurveyType
       cannot [:show, :form, :create, :update, :update_position], SurveyQuestionnaireVersion
-      cannot [:index, :show, :copy_project_survey, :create, :edit, :update, :destroy, :export_survey_results], ProjectsSurvey
+      cannot [:index, :show, :copy_project_survey, :new, :create, :edit, :update, :destroy, :export_survey_results], ProjectsSurvey
       cannot [:index, :download_linkme_survey_data], LinkmeSurvey
     else
       cannot :manage, :all
