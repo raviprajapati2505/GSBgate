@@ -1,5 +1,5 @@
 class ProjectsSurveysController < AuthenticatedController
-  load_and_authorize_resource param_method: :survey_params
+  load_and_authorize_resource :project, param_method: :survey_params
   before_action :set_project_with_survey_type, except: [:index]
   before_action :set_project_survey, except: [:index, :new, :create]
 

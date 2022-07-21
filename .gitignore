@@ -26,9 +26,7 @@
 /chartgenerator/node_modules
 
 # Ignore private uploaded files
-/private/audit_logs
-/private/projects
-/private/users
+/private
 
 # Ignore public uploaded files
 /public/assets/*
