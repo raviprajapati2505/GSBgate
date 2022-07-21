@@ -1,5 +1,6 @@
 class ProjectsSurveysController < AuthenticatedController
-  load_and_authorize_resource :project, param_method: :survey_params
+  load_and_authorize_resource :project
+  load_and_authorize_resource :projects_survey, through: :project, param_method: :projects_survey_params
   before_action :set_project_with_survey_type, except: [:index]
   before_action :set_project_survey, except: [:index, :new, :create]
 
@@ -15,7 +16,7 @@ class ProjectsSurveysController < AuthenticatedController
 
   def new
     @page_title = 'Surveys'
-    @projects_survey = ProjectsSurvey.new
+    @projects_survey = @project.projects_surveys.new
   end
 
   def copy_project_survey
@@ -36,7 +37,7 @@ class ProjectsSurveysController < AuthenticatedController
   end
 
   def create
-    @projects_survey = @project.projects_surveys.new(survey_params)
+    @projects_survey = @project.projects_surveys.new(projects_survey_params)
   
     if params[:button].present? && params[:button] == 'save-and-release'
       @projects_survey.released_at = Time.now
@@ -56,7 +57,7 @@ class ProjectsSurveysController < AuthenticatedController
       @projects_survey.released_at = Time.now
     end
 
-    if @projects_survey.update(survey_params)
+    if @projects_survey.update(projects_survey_params)
       redirect_to project_path(@project), notice: 'Survey was successfully updated.'
     else
       render :edit
@@ -77,7 +78,7 @@ class ProjectsSurveysController < AuthenticatedController
 
   private 
 
-  def survey_params
+  def projects_survey_params
     params.
       require(:projects_survey).
       permit(
