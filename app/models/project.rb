@@ -30,7 +30,6 @@ class Project < ApplicationRecord
   validates :location_plan_file, presence: true
   validates :site_plan_file, presence: true
   validates :design_brief_file, presence: true
-  validates :sustainability_features_file, presence: true
   validates :building_type_id, presence: true
   # validates :building_type_group_id, presence: true
   validates :gross_area, numericality: { greater_than_or_equal_to: 0 }
