@@ -26,10 +26,10 @@
 
            <div class="row">
             <div class="col-md-6">
-              <%= f.text_field :certified_area, append: 'm²', label: (Project.human_attribute_name('certified_area') + tooltip(t '.tooltip_certified_area')).html_safe, value: commify_values(f.object.certified_area), class: "commify-value", label_class: "required" %>
+              <%= f.text_field :certified_area, append: 'm²', label: (Project.human_attribute_name('certified_area') + tooltip(t '.tooltip_certified_area')).html_safe, value: commify_values(f.object.certified_area), class: "commify-value" %>
             </div>
             <div class="col-md-6">
-              <%= f.text_field :plot_area, value: commify_values(f.object.plot_area), append: 'm²', label: (Offline::Project.human_attribute_name('plot_area') + tooltip(t '.tooltip_project_plot_area')).html_safe, class: "commify-value", label_class: "required" %>
+              <%= f.text_field :plot_area, value: commify_values(f.object.plot_area), append: 'm²', label: (Offline::Project.human_attribute_name('plot_area') + tooltip(t '.tooltip_project_plot_area')).html_safe, class: "commify-value" %>
             </div>
           </div>
 
