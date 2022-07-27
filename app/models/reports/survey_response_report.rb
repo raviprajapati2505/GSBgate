@@ -107,21 +107,33 @@ class Reports::SurveyResponseReport < Reports::BaseReport
       styled_text("<div style='font-size: 13; line-height: 7; color: 000000;'>Que. #{i}: #{question.question_text}</div>")
       styled_text("<div style='font-size: 10; line-height: 7; color: 000000;'>Desc. : #{question.description}</div>")
       newline(1)
-      unless question.fill_in_the_blank?
 
+      unless question.fill_in_the_blank?
         # all options with there report count of questions
         option_with_counts = survey_question_options_report(@projects_survey, question) rescue {}
         total_responses = @projects_survey.survey_responses.count rescue 0
-        option_with_counts.each.with_index(1) do |(key, value), index|
-          styled_text("<div style='font-size: 10; line-height: 7; color: 000000;'>#{index}) #{key} (#{value} Out of #{total_responses})</div>")
+
+        y_position = cursor
+
+        bounding_box([0, y_position], width: 235) do
+          newline(1)
+          option_with_counts.each.with_index(1) do |(key, value), index|
+            styled_text("<div style='font-size: 10; line-height: 7; color: 000000;'>#{index}) #{key} (#{value} Out of #{total_responses})</div>")
+          end
         end
+
+        bounding_box([300, y_position], width: 235) do
+          draw_options_graph(option_with_counts)
+        end
+
       else
         question.question_responses.each.with_index(1) do |text_response, i|
           styled_text("<div style='font-size: 10; line-height: 7; color: 000000;'>Text Response #{i}: #{text_response.value}</div>")
           newline(1)
         end
       end
-      newline(1)
+
+      newline(2)
     end
   end
 
@@ -166,5 +178,55 @@ class Reports::SurveyResponseReport < Reports::BaseReport
         content_rows.padding = [3, 4, 3, 4]
       end
     end
+  end
+
+  def draw_options_graph(option_with_counts)
+    chart_generator = ChartGeneratorService.new
+
+    columnchart_config = {
+      type: 'bar',
+      data: {
+        labels: option_with_counts.keys,
+        font: {
+          weight: "bold",
+        },
+        datasets: [
+          {
+            label: 'Count',
+            data: option_with_counts.values,
+            backgroundColor: 'rgba(54,111,178,255)',
+            borderColor: 'rgba(54,111,178,255)',
+            borderWidth: 1
+          }
+        ]
+      },
+      options: {
+        indexAxis: 'x',
+        legend: {
+          display: true,
+          position: 'bottom'
+        },
+        plugins: {
+          datalabels: {
+            color: "black",
+            align: "end",
+            anchor: "start"
+          }
+        }
+      }
+    }
+
+    begin
+      image chart_generator.generate_chart(columnchart_config, 300, 150).path, width: 150, position: :left
+
+    rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, Errno::ECONNREFUSED,
+           EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError
+
+      #  bounding_box([x, y], width: x+width, height: height, position: :center) do
+          text "An error occurred when creating the chart.", align: :center
+      #  end
+    end
+
+    newline(1)
   end
 end
