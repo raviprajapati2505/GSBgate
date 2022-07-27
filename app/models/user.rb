@@ -11,7 +11,7 @@ class User < ApplicationRecord
   include ActionView::Helpers::TranslationHelper
   include DatePlucker
 
-  enum role: { system_admin: 5, default_role: 1, gsas_trust_top_manager: 2, gsas_trust_manager: 3, gsas_trust_admin: 4, document_controller: 6, record_checker: 7, users_admin: 8, service_provider: 9, credentials_admin: 10, certification_manager: 11 }
+  enum role: { system_admin: 5, default_role: 1, gsas_trust_top_manager: 2, gsas_trust_manager: 3, gsas_trust_admin: 4, document_controller: 6, record_checker: 7, users_admin: 8, service_provider: 9, credentials_admin: 10, certification_manager: 11 }, _prefix: :is
 
   enum practitioner_accreditation_type: { licentiate: 1, advocate: 2, fellow: 3, associate: 4 }
 
@@ -256,7 +256,7 @@ class User < ApplicationRecord
   def manage_assessment_methods_options
     assessment_methods = CertificationPath.assessment_methods
 
-    unless system_admin?
+    unless is_system_admin?
       allowed_assessment_methods = valid_user_design_build_licences.pluck("licences.applicability").uniq
 
       if allowed_assessment_methods.size == 1
@@ -281,7 +281,7 @@ class User < ApplicationRecord
   end
 
   def allowed_certification_types
-    return Certificate.certificate_types if system_admin?
+    return Certificate.certificate_types if is_system_admin?
 
     sp_allowed_certificate_types = valid_user_sp_licences&.pluck(:certificate_type)&.uniq || []
     cp_allowed_certificate_types = valid_user_licences&.pluck(:certificate_type)&.uniq || []

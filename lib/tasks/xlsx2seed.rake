@@ -5,7 +5,7 @@ namespace :xlsx2seed do
 
   desc "Creates xlsx file for operations v2019 criteria which can be completed with requirements"
   task :generate, [:output_filename] => :environment do |t, args|
-    Rails.logger = Logger.new(STDOUT)
+    Rails.logger = ActiveSupport::Logger.new(STDOUT)
 
     if args.output_filename.blank?
       Rails.logger.error 'usage : rake xlsx2seed:generate[<output_filename>]'
@@ -49,7 +49,7 @@ namespace :xlsx2seed do
 
   desc "Converts xlsx file to seeds file"
   task :convert, [:input_filename, :output_filename] => :environment do |t, args|
-    Rails.logger = Logger.new(STDOUT)
+    Rails.logger = ActiveSupport::Logger.new(STDOUT)
 
     if args.input_filename.blank? || args.output_filename.blank?
       Rails.logger.error 'usage : rake xlsx2seed:convert[<input_filename>,<output_filename>]'

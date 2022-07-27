@@ -133,7 +133,7 @@ class Ability
       project_survey.status == 'active' && project_survey.end_date > Date.today
     end
 
-    if user.default_role? || user.certification_manager?
+    if user.is_default_role? || user.is_certification_manager?
       # Project controller
       can :read, Project, projects_users: {user_id: user.id}
       can [:download_location_plan, :download_site_plan, :download_design_brief, :download_project_narrative, :download_area_statement, :download_sustainability_features], Project, projects_users: {user_id: user.id}
@@ -314,7 +314,7 @@ class Ability
         can :show, 'visualisation_tool'
       end
       can [:index, :upload_document], :dashboard
-    elsif user.gsas_trust_admin? || user.gsas_trust_manager? || user.gsas_trust_top_manager?
+    elsif user.is_gsas_trust_admin? || user.is_gsas_trust_manager? || user.is_gsas_trust_top_manager?
       can :read, :all
 
       cannot :manage, :survey_dashboard
@@ -333,7 +333,7 @@ class Ability
       can :upload_epc_matches_document, SchemeMixCriterion
       can :select_service_provider, User
 
-      if user.gsas_trust_admin?
+      if user.is_gsas_trust_admin?
         can [:create, :destroy], [ActualProjectImage, ProjectRenderingImage]
         can :update, Project
         can [:confirm_destroy, :destroy], Project # Be careful with this!
@@ -343,7 +343,7 @@ class Ability
       # Project Users
       # can :list_users_sharing_projects, ProjectsUser
       # can :list_projects, ProjectsUser
-      if user.gsas_trust_admin?
+      if user.is_gsas_trust_admin?
         can :crud, ProjectsUser, role: project_user_project_team_roles
         can :crud, ProjectsUser, role: project_user_gsas_trust_team_roles
         can :crud, ProjectsUser, role: project_user_enterprise_client_roles
@@ -358,13 +358,13 @@ class Ability
       can :download_detailed_certificate_report, CertificationPath, certification_path_status: {id: [CertificationPathStatus::CERTIFIED, CertificationPathStatus::CERTIFICATE_IN_PROCESS]}, certification_path_report: { is_released: true }
 
       # User can download archive if and only if user is chairman(gsas_trust_top_manager) and project team member
-      if  user.gsas_trust_top_manager?
+      if  user.is_gsas_trust_top_manager?
         can :download_archive, CertificationPath
       end
       
       can :download_signed_certificate, CertificationPath, certification_path_status: {id: [CertificationPathStatus::CERTIFIED, CertificationPathStatus::CERTIFICATE_IN_PROCESS]}
       can :download_signed_certificate, Offline::CertificationPath
-      if user.gsas_trust_admin?
+      if user.is_gsas_trust_admin?
         can [:edit_main_scheme_mix, :update_main_scheme_mix], CertificationPath, certification_path_status: {id: CertificationPathStatus::ACTIVATING}, development_type: {mixable: true}
         can [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::STATUSES_AT_ADMIN_SIDE}
         can [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::STATUSES_AT_PROJECT_TEAM_SIDE}
@@ -375,9 +375,9 @@ class Ability
         can [:confirm_deny, :deny], CertificationPath, certification_path_status: {id: CertificationPathStatus::STATUSES_IN_PROGRESS}
         can [:update_signed_certificate, :remove_signed_certificate], CertificationPath, certification_path_status: {id: [CertificationPathStatus::CERTIFIED, CertificationPathStatus::CERTIFICATE_IN_PROCESS]}
         can [:update_signed_certificate, :remove_signed_certificate], Offline::CertificationPath
-      elsif user.gsas_trust_top_manager?
+      elsif user.is_gsas_trust_top_manager?
         can [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT}
-      elsif user.gsas_trust_manager?
+      elsif user.is_gsas_trust_manager?
         can [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::APPROVING_BY_MANAGEMENT}
       end
       # SchemeMix
@@ -388,7 +388,7 @@ class Ability
       can [:read, :list], SchemeMixCriterion
       cannot :read, SchemeMixCriterion, scheme_mix: {certification_path: {certification_path_status: {id: CertificationPathStatus::ACTIVATING}}}
       cannot :list, SchemeMixCriterion, scheme_mix: {certification_path: {certification_path_status: {id: CertificationPathStatus::ACTIVATING}}}
-      if user.gsas_trust_admin?
+      if user.is_gsas_trust_admin?
         can :update_targeted_score, SchemeMixCriterion
         can :update_submitted_score, SchemeMixCriterion
         can :update_achieved_score, SchemeMixCriterion
@@ -396,7 +396,7 @@ class Ability
       can :download_archive, SchemeMixCriterion, scheme_mix: {certification_path: {certification_path_status: {id: CertificationPathStatus::STATUSES_ACTIVATED}}}
       # RequirementDatum
       cannot :read, RequirementDatum, scheme_mix_criteria: {scheme_mix: {certification_path: {certification_path_status: {id: CertificationPathStatus::ACTIVATING}}}}
-      if user.gsas_trust_admin?
+      if user.is_gsas_trust_admin?
         # Document
         can [:create, :destroy], Document
         # SchemeMixCriteriaDocument
@@ -454,7 +454,7 @@ class Ability
       # cannot :update_achieved_score, SchemeMixCriterion do |scheme_mix_criterion| ![SchemeMixCriterion.statuses[:submitting], SchemeMixCriterion.statuses[:submitting_after_appeal]].include?(scheme_mix_criterion.status) end
       # cannot :update_achieved_score, SchemeMixCriterion do |scheme_mix_criterion| ![SchemeMixCriterion.statuses[:verifying], SchemeMixCriterion.statuses[:verifying_after_appeal]].include?(scheme_mix_criterion.status) end
       # cannot :refuse, RequirementDatum do |requirement_datum| requirement_datum.user_id != user.id end
-    elsif user.document_controller?
+    elsif user.is_document_controller?
       can :read, :all
       can :list, CertificationPath
       can :download_signed_certificate, CertificationPath, certification_path_status: { id: [CertificationPathStatus::CERTIFIED, CertificationPathStatus::CERTIFICATE_IN_PROCESS] }
@@ -478,11 +478,11 @@ class Ability
       can :manage, Offline::ProjectDocument
       cannot :index, :dashboard
 
-    elsif user.system_admin?
+    elsif user.is_system_admin?
       can :manage, :all
       cannot :index, :dashboard
 
-    elsif user.record_checker?
+    elsif user.is_record_checker?
       can :read, Project
       can :read, CertificationPath
       can :read, SchemeMix
@@ -494,7 +494,7 @@ class Ability
       cannot [:index, :download_linkme_survey_data], LinkmeSurvey
       cannot :index, :dashboard
 
-    elsif user.users_admin?
+    elsif user.is_users_admin?
       # Task
       can :read, Task
       can :count, Task
@@ -509,7 +509,7 @@ class Ability
       can [:index], ProjectsSurvey
       can [:index, :download_linkme_survey_data], LinkmeSurvey
 
-    elsif user.service_provider?
+    elsif user.is_service_provider?
       can :read, Project, projects_users: users_with_service_provider
       can :read, ProjectsUser, project: projects_users_with_service_provider
       can :read, CertificationPath, project: projects_users_with_service_provider

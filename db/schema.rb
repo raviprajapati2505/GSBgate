@@ -2,16 +2,15 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# Note that this schema.rb definition is the authoritative source for your
-# database schema. If you need to create the application database on another
-# system, you should be using db:schema:load, not running all the migrations
-# from scratch. The latter is a flawed and unsustainable approach (the more migrations
-# you'll amass, the slower it'll run and the greater likelihood for issues).
+# This file is the source Rails uses to define your schema when running `bin/rails
+# db:schema:load`. When creating a new database, `bin/rails db:schema:load` tends to
+# be faster and is potentially less error prone than running all of your
+# migrations from scratch. Old migrations may fail to apply correctly if those
+# migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_06_092224) do
-
+ActiveRecord::Schema[7.0].define(version: 2022_07_25_085024) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -19,8 +18,8 @@ ActiveRecord::Schema.define(version: 2022_07_06_092224) do
     t.bigint "user_id"
     t.bigint "licence_id"
     t.date "expiry_date"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["licence_id"], name: "index_access_licences_on_licence_id"
     t.index ["user_id", "licence_id"], name: "index_access_licences_on_user_id_and_licence_id"
     t.index ["user_id"], name: "index_access_licences_on_user_id"
@@ -30,8 +29,8 @@ ActiveRecord::Schema.define(version: 2022_07_06_092224) do
     t.string "actual_image"
     t.bigint "certification_path_id"
     t.bigint "project_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["certification_path_id"], name: "index_actual_project_images_on_certification_path_id"
     t.index ["project_id"], name: "index_actual_project_images_on_project_id"
   end
@@ -42,8 +41,8 @@ ActiveRecord::Schema.define(version: 2022_07_06_092224) do
     t.integer "subject_id"
     t.string "subject_type"
     t.integer "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.text "criterion_document_ids", default: [], array: true
     t.boolean "all_criterion_document", default: false
     t.index ["subject_type", "subject_id"], name: "index_archives_on_subject_type_and_subject_id"
@@ -61,8 +60,8 @@ ActiveRecord::Schema.define(version: 2022_07_06_092224) do
     t.string "auditable_type"
     t.integer "project_id"
     t.integer "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.integer "new_status"
     t.integer "old_status"
     t.integer "certification_path_id"
@@ -78,45 +77,45 @@ ActiveRecord::Schema.define(version: 2022_07_06_092224) do
 
   create_table "background_executions", id: :serial, force: :cascade do |t|
     t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "building_type_groups", id: :serial, force: :cascade do |t|
     t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.boolean "visible", default: true
   end
 
   create_table "building_types", id: :serial, force: :cascade do |t|
     t.string "name"
     t.integer "building_type_group_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.boolean "visible", default: true
     t.index ["building_type_group_id"], name: "index_building_types_on_building_type_group_id"
   end
 
   create_table "calculator_data", id: :serial, force: :cascade do |t|
     t.integer "calculator_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["calculator_id"], name: "index_calculator_data_on_calculator_id"
   end
 
   create_table "calculators", id: :serial, force: :cascade do |t|
     t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "certificates", id: :serial, force: :cascade do |t|
     t.string "name"
     t.integer "certificate_type"
     t.integer "assessment_stage"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.integer "display_weight"
     t.string "gsas_version"
     t.integer "certification_type"
@@ -125,8 +124,8 @@ ActiveRecord::Schema.define(version: 2022_07_06_092224) do
   create_table "certification_path_methods", force: :cascade do |t|
     t.bigint "certification_path_id"
     t.integer "assessment_method"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["certification_path_id"], name: "index_certification_path_methods_on_certification_path_id"
   end
 
@@ -139,10 +138,10 @@ ActiveRecord::Schema.define(version: 2022_07_06_092224) do
     t.string "project_location"
     t.date "issuance_date"
     t.date "approval_date"
-    t.datetime "release_date"
+    t.datetime "release_date", precision: nil
     t.boolean "is_released", default: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["certification_path_id"], name: "index_certification_path_reports_on_certification_path_id"
   end
 
@@ -150,27 +149,27 @@ ActiveRecord::Schema.define(version: 2022_07_06_092224) do
     t.string "name"
     t.string "past_name"
     t.text "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "certification_paths", id: :serial, force: :cascade do |t|
     t.integer "project_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.integer "certificate_id"
     t.boolean "pcr_track", default: false
-    t.datetime "started_at"
+    t.datetime "started_at", precision: nil
     t.integer "certification_path_status_id"
     t.boolean "appealed", default: false
-    t.datetime "certified_at"
+    t.datetime "certified_at", precision: nil
     t.integer "main_scheme_mix_id"
     t.boolean "main_scheme_mix_selected", default: false, null: false
     t.integer "max_review_count", default: 2
     t.integer "development_type_id"
     t.string "signed_certificate_file"
     t.boolean "show_all_criteria", default: true
-    t.datetime "expires_at"
+    t.datetime "expires_at", precision: nil
     t.integer "buildings_number", default: 0
     t.index ["certification_path_status_id"], name: "index_certification_paths_on_certification_path_status_id"
     t.index ["development_type_id"], name: "index_certification_paths_on_development_type_id"
@@ -181,8 +180,8 @@ ActiveRecord::Schema.define(version: 2022_07_06_092224) do
   create_table "development_type_schemes", id: :serial, force: :cascade do |t|
     t.integer "development_type_id"
     t.integer "scheme_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["development_type_id"], name: "index_development_type_schemes_on_development_type_id"
     t.index ["scheme_id"], name: "index_development_type_schemes_on_scheme_id"
   end
@@ -192,8 +191,8 @@ ActiveRecord::Schema.define(version: 2022_07_06_092224) do
     t.string "name"
     t.integer "display_weight"
     t.boolean "mixable"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["certificate_id"], name: "index_development_types_on_certificate_id"
   end
 
@@ -201,15 +200,15 @@ ActiveRecord::Schema.define(version: 2022_07_06_092224) do
     t.text "list", default: [], array: true
     t.string "country"
     t.string "city"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "documents", id: :serial, force: :cascade do |t|
     t.string "document_file"
     t.integer "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.text "store_dir"
     t.string "type"
     t.integer "certification_path_id"
@@ -224,8 +223,8 @@ ActiveRecord::Schema.define(version: 2022_07_06_092224) do
     t.integer "field_id"
     t.string "string_value"
     t.integer "integer_value"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.integer "calculator_datum_id"
     t.string "type"
     t.index ["field_id"], name: "index_field_data_on_field_id"
@@ -237,8 +236,8 @@ ActiveRecord::Schema.define(version: 2022_07_06_092224) do
     t.string "machine_name"
     t.string "datum_type"
     t.string "validation"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.boolean "required"
     t.text "help_text"
     t.string "prefix"
@@ -259,7 +258,7 @@ ActiveRecord::Schema.define(version: 2022_07_06_092224) do
 
   create_table "jwt_denylist", force: :cascade do |t|
     t.string "jti", null: false
-    t.datetime "exp", null: false
+    t.datetime "exp", precision: nil, null: false
     t.index ["jti"], name: "index_jwt_denylist_on_jti"
   end
 
@@ -273,8 +272,8 @@ ActiveRecord::Schema.define(version: 2022_07_06_092224) do
     t.integer "time_period"
     t.integer "applicability", default: 3
     t.text "schemes", default: [], array: true
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "linkme_surveys", force: :cascade do |t|
@@ -282,29 +281,29 @@ ActiveRecord::Schema.define(version: 2022_07_06_092224) do
     t.string "status"
     t.string "link"
     t.string "user_access"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "locations", force: :cascade do |t|
     t.string "country"
     t.text "list", default: [], array: true
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "notification_types", id: :serial, force: :cascade do |t|
     t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.boolean "project_level"
   end
 
   create_table "notification_types_users", id: :serial, force: :cascade do |t|
     t.integer "notification_type_id"
     t.integer "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.integer "project_id"
     t.index ["notification_type_id"], name: "index_notification_types_users_on_notification_type_id"
     t.index ["project_id"], name: "index_notification_types_users_on_project_id"
@@ -376,16 +375,16 @@ ActiveRecord::Schema.define(version: 2022_07_06_092224) do
     t.string "rendering_image"
     t.bigint "certification_path_id"
     t.bigint "project_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["certification_path_id"], name: "index_project_rendering_images_on_certification_path_id"
     t.index ["project_id"], name: "index_project_rendering_images_on_project_id"
   end
 
   create_table "projects", id: :serial, force: :cascade do |t|
     t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.text "description"
     t.text "address"
     t.string "location"
@@ -430,7 +429,7 @@ ActiveRecord::Schema.define(version: 2022_07_06_092224) do
     t.integer "user_access"
     t.string "description"
     t.string "submission_statement"
-    t.datetime "released_at"
+    t.datetime "released_at", precision: nil
     t.string "slug"
     t.bigint "survey_questionnaire_version_id"
     t.index ["project_id"], name: "index_projects_surveys_on_project_id"
@@ -442,8 +441,8 @@ ActiveRecord::Schema.define(version: 2022_07_06_092224) do
   create_table "projects_users", id: :serial, force: :cascade do |t|
     t.integer "user_id"
     t.integer "project_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.integer "role"
     t.integer "certification_team_type", default: 0
     t.index ["project_id"], name: "index_projects_users_on_project_id"
@@ -455,8 +454,8 @@ ActiveRecord::Schema.define(version: 2022_07_06_092224) do
     t.text "option_text"
     t.float "score", default: 0.0
     t.bigint "survey_question_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["survey_question_id"], name: "index_question_options_on_survey_question_id"
   end
 
@@ -464,16 +463,16 @@ ActiveRecord::Schema.define(version: 2022_07_06_092224) do
     t.string "value"
     t.bigint "survey_question_id"
     t.bigint "survey_response_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["survey_question_id"], name: "index_question_responses_on_survey_question_id"
     t.index ["survey_response_id"], name: "index_question_responses_on_survey_response_id"
   end
 
   create_table "requirement_data", id: :serial, force: :cascade do |t|
     t.integer "calculator_datum_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.integer "requirement_id"
     t.integer "status"
     t.integer "user_id"
@@ -483,8 +482,8 @@ ActiveRecord::Schema.define(version: 2022_07_06_092224) do
 
   create_table "requirements", id: :serial, force: :cascade do |t|
     t.integer "calculator_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "name"
     t.integer "display_weight"
   end
@@ -496,8 +495,8 @@ ActiveRecord::Schema.define(version: 2022_07_06_092224) do
     t.text "impacts"
     t.text "mitigate_impact"
     t.integer "scheme_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.integer "display_weight"
     t.boolean "shared", default: false, null: false
     t.boolean "is_checklist", default: false, null: false
@@ -507,8 +506,8 @@ ActiveRecord::Schema.define(version: 2022_07_06_092224) do
   end
 
   create_table "scheme_criteria", id: :serial, force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.decimal "weight_a", precision: 5, scale: 2
     t.string "name"
     t.integer "number"
@@ -549,8 +548,8 @@ ActiveRecord::Schema.define(version: 2022_07_06_092224) do
   create_table "scheme_criteria_requirements", id: :serial, force: :cascade do |t|
     t.integer "scheme_criterion_id"
     t.integer "requirement_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["requirement_id"], name: "index_scheme_criteria_requirements_on_requirement_id"
     t.index ["scheme_criterion_id"], name: "index_scheme_criteria_requirements_on_scheme_criterion_id"
   end
@@ -560,8 +559,8 @@ ActiveRecord::Schema.define(version: 2022_07_06_092224) do
     t.string "label"
     t.integer "display_weight"
     t.boolean "is_checked"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["scheme_criterion_id"], name: "index_scheme_criterion_boxes_on_scheme_criterion_id"
   end
 
@@ -589,8 +588,8 @@ ActiveRecord::Schema.define(version: 2022_07_06_092224) do
     t.integer "display_weight"
     t.boolean "visible"
     t.integer "scheme_criterion_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["name", "scheme_criterion_id"], name: "index_scheme_criterion_texts_on_name_and_scheme_criterion_id", unique: true
     t.index ["scheme_criterion_id"], name: "index_scheme_criterion_texts_on_scheme_criterion_id"
   end
@@ -598,8 +597,8 @@ ActiveRecord::Schema.define(version: 2022_07_06_092224) do
   create_table "scheme_mix_criteria", id: :serial, force: :cascade do |t|
     t.integer "scheme_mix_id"
     t.integer "scheme_criterion_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.integer "status"
     t.integer "certifier_id"
     t.date "due_date"
@@ -626,11 +625,11 @@ ActiveRecord::Schema.define(version: 2022_07_06_092224) do
   create_table "scheme_mix_criteria_documents", id: :serial, force: :cascade do |t|
     t.integer "scheme_mix_criterion_id"
     t.integer "document_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.integer "status"
     t.string "pcr_context"
-    t.datetime "approved_date"
+    t.datetime "approved_date", precision: nil
     t.integer "document_type", default: 0
     t.index ["document_id"], name: "index_scheme_mix_criteria_documents_on_document_id"
     t.index ["scheme_mix_criterion_id", "document_id"], name: "scheme_mix_criteria_documents_unique", unique: true
@@ -640,8 +639,8 @@ ActiveRecord::Schema.define(version: 2022_07_06_092224) do
   create_table "scheme_mix_criteria_requirement_data", id: :serial, force: :cascade do |t|
     t.integer "scheme_mix_criterion_id"
     t.integer "requirement_datum_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["requirement_datum_id"], name: "by_requirement_datum"
     t.index ["scheme_mix_criterion_id"], name: "by_scheme_mix_criterion"
   end
@@ -650,8 +649,8 @@ ActiveRecord::Schema.define(version: 2022_07_06_092224) do
     t.bigint "scheme_mix_criterion_id"
     t.bigint "scheme_criterion_box_id"
     t.boolean "is_checked"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["scheme_criterion_box_id"], name: "index_scheme_mix_criterion_boxes_on_scheme_criterion_box_id"
     t.index ["scheme_mix_criterion_id"], name: "index_scheme_mix_criterion_boxes_on_scheme_mix_criterion_id"
   end
@@ -689,8 +688,8 @@ ActiveRecord::Schema.define(version: 2022_07_06_092224) do
   create_table "scheme_mixes", id: :serial, force: :cascade do |t|
     t.integer "certification_path_id"
     t.integer "weight"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.integer "scheme_id"
     t.string "custom_name"
     t.index ["certification_path_id", "scheme_id", "custom_name"], name: "ui_custom_name_scheme", unique: true
@@ -699,8 +698,8 @@ ActiveRecord::Schema.define(version: 2022_07_06_092224) do
 
   create_table "schemes", id: :serial, force: :cascade do |t|
     t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "gsas_version"
     t.boolean "renovation", default: false, null: false
     t.string "gsas_document"
@@ -717,17 +716,17 @@ ActiveRecord::Schema.define(version: 2022_07_06_092224) do
     t.date "commercial_licence_expiry_date"
     t.string "accredited_service_provider_licence_file"
     t.string "demerit_acknowledgement_file"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["service_provider_id"], name: "index_service_provider_details_on_service_provider_id"
   end
 
   create_table "survey_questionnaire_versions", force: :cascade do |t|
     t.integer "version", default: 0, null: false
-    t.datetime "released_at"
+    t.datetime "released_at", precision: nil
     t.bigint "survey_type_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["survey_type_id"], name: "index_survey_questionnaire_versions_on_survey_type_id"
   end
 
@@ -738,8 +737,8 @@ ActiveRecord::Schema.define(version: 2022_07_06_092224) do
     t.integer "position", default: 0
     t.string "question_type"
     t.bigint "survey_questionnaire_version_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["survey_questionnaire_version_id"], name: "index_survey_questions_on_survey_questionnaire_version_id"
   end
 
@@ -747,16 +746,16 @@ ActiveRecord::Schema.define(version: 2022_07_06_092224) do
     t.string "name"
     t.string "email"
     t.bigint "projects_survey_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["projects_survey_id"], name: "index_survey_responses_on_projects_survey_id"
   end
 
   create_table "survey_types", force: :cascade do |t|
     t.string "title"
     t.string "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "tasks", id: :serial, force: :cascade do |t|
@@ -764,8 +763,8 @@ ActiveRecord::Schema.define(version: 2022_07_06_092224) do
     t.integer "application_role"
     t.integer "project_role"
     t.integer "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.integer "taskable_id"
     t.string "taskable_type"
     t.integer "project_id"
@@ -790,8 +789,8 @@ ActiveRecord::Schema.define(version: 2022_07_06_092224) do
     t.string "qid_work_permit_file"
     t.string "gsas_energey_assessment_licence_file"
     t.string "energy_assessor_name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["user_id"], name: "index_user_details_on_user_id"
   end
 
@@ -799,31 +798,30 @@ ActiveRecord::Schema.define(version: 2022_07_06_092224) do
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: ""
     t.integer "sign_in_count", default: 0, null: false
-    t.datetime "last_sign_in_at"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "last_sign_in_at", precision: nil
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.integer "role"
     t.string "username"
     t.boolean "gord_employee", default: false, null: false
     t.string "name"
-    t.datetime "last_notified_at"
+    t.datetime "last_notified_at", precision: nil
     t.string "organization_name"
     t.string "type", default: "User"
-    t.boolean "active", default: false
     t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
-    t.datetime "current_sign_in_at"
+    t.datetime "reset_password_sent_at", precision: nil
+    t.datetime "remember_created_at", precision: nil
+    t.datetime "current_sign_in_at", precision: nil
     t.inet "current_sign_in_ip"
     t.inet "last_sign_in_ip"
     t.string "confirmation_token"
-    t.datetime "confirmed_at"
-    t.datetime "confirmation_sent_at"
+    t.datetime "confirmed_at", precision: nil
+    t.datetime "confirmation_sent_at", precision: nil
     t.string "unconfirmed_email"
     t.string "invitation_token"
-    t.datetime "invitation_created_at"
-    t.datetime "invitation_sent_at"
-    t.datetime "invitation_accepted_at"
+    t.datetime "invitation_created_at", precision: nil
+    t.datetime "invitation_sent_at", precision: nil
+    t.datetime "invitation_accepted_at", precision: nil
     t.integer "invitation_limit"
     t.string "invited_by_type"
     t.bigint "invited_by_id"
@@ -851,7 +849,8 @@ ActiveRecord::Schema.define(version: 2022_07_06_092224) do
     t.string "organization_fax"
     t.string "gsas_id"
     t.string "qid_or_passport_number"
-    t.datetime "approved_at"
+    t.datetime "approved_at", precision: nil
+    t.boolean "active", default: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true
     t.index ["invited_by_id"], name: "index_users_on_invited_by_id"

@@ -561,7 +561,7 @@ module Effective
           .select('(%s) AS enterprise_clients_array' % projects_users_by_type('enterprise_clients'))
           .select('(%s) AS total_achieved_score' % ProjectsCertificationPaths.query_score_in_certificate_points(:achieved_score))
 
-          if current_user.service_provider?
+          if current_user.is_service_provider?
             project_ids = Project.accessible_by(current_ability).pluck(:id)
             all_projects.where(id: project_ids.uniq)
           else

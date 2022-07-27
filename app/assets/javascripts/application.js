@@ -26,24 +26,27 @@
  *= require bootstrap-timepicker
  *= require dropzone
  *= require toastr
- *= require js-routes
  *= require jquery-ui/widgets/sortable
  *= require ckeditor-jquery
  *= require html5sortable/html5sortable
- *= require leaflet
- *= require leaflet-draw
  *= require proj4
  *= require three.js/three.js
  *= require cocoon
  *= require datatable_customizations
- *= require moment
  *= require daterangepicker
  *= require surveys
  *= require chartkick
  *= require Chart.bundle
- */
+*/
 
 $(function () {
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
     // toast message
     $.rails.toast_message = function(css, message) {
         let toast_container_dom = `
@@ -389,9 +392,9 @@ $(function () {
         var arr = _str.split('');
         var out = new Array();
         for(var cnt = 0; cnt < arr.length; cnt++){
-          if(isNaN(arr[cnt])==false){
-            out.push(arr[cnt]);
-          }
+            if(isNaN(arr[cnt])==false){
+                out.push(arr[cnt]);
+            }
         }
         return Number(out.join(''));
     }
@@ -406,7 +409,7 @@ $(function () {
         $("label[for='project_certified_area']").html(html);
         $('.tooltip-processed').tooltip();
     }
-    
+
     // Set different lables on base of project certificate type.
     setCertifiedAreaLabel();
 

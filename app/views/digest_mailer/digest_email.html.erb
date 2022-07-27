@@ -8,7 +8,7 @@
         <p>
             <span style='font-size: 9pt; font-family: "Verdana", "sans-serif";'>Dear Ms/Mr<br/><br/>
     <% if @include_new_tasks %>
-    <% if @user.gsas_trust_manager? || @user.gsas_trust_top_manager? %>
+    <% if @user.is_gsas_trust_manager? || @user.is_gsas_trust_top_manager? %>
             Hereby we send you an overview of your unfinished tasks since <%= @user.last_notified_at %>.</span>
         </p>
     <% else %>
@@ -95,7 +95,7 @@
                 Hereby we send you an overview of recent project changes since <%= @user.last_notified_at %>.</span>
             </p>
         <% end %>
-        <% unless @user.gsas_trust_manager? || @user.gsas_trust_top_manager? %>
+        <% unless @user.is_gsas_trust_manager? || @user.is_gsas_trust_top_manager? %>
             <p><%= link_to 'Audit log', audit_logs_url, {style: 'color: #000; font-size: 14pt; font-family: "Verdana", "sans-serif";'} %></p>
             <% if @audit_logs.empty? %>
                 <p><span style='font-size: 9pt; font-family: "Verdana", "sans-serif";'>No new audit logs found.</span></p>

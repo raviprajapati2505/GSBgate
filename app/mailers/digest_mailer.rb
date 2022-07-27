@@ -8,12 +8,12 @@ class DigestMailer < ApplicationMailer
     @user = user
     user.last_notified_at ||= DateTime.new
 
-    if user.gsas_trust_manager? || user.gsas_trust_top_manager?
+    if user.is_gsas_trust_manager? || user.is_gsas_trust_top_manager?
       # NO AUDIT LOG
       @audit_logs = []
       @more_audit_logs = 0
     else
-      if user.system_admin? || user.gsas_trust_admin?
+      if user.is_system_admin? || user.is_gsas_trust_admin?
         @audit_logs = AuditLog.where('updated_at > ?', user.last_notified_at)
       else
         audit_log = AuditLog.arel_table
@@ -113,9 +113,9 @@ class DigestMailer < ApplicationMailer
       @more_tasks = 0
     end
 
-    if @user.gsas_trust_top_manager?
+    if @user.is_gsas_trust_top_manager?
       subject = 'Tasks for approval for Chairman (Dr. Yousef)'
-    elsif @user.gsas_trust_manager?
+    elsif @user.is_gsas_trust_manager?
       subject = 'Tasks for approval for Head of GSAS'
     else
       subject = 'GSASgate - progress report'
@@ -224,7 +224,7 @@ class DigestMailer < ApplicationMailer
 
   def user_licences_update_email(user)
     @user = user
-    @licences = if @user.service_provider?
+    @licences = if @user.is_service_provider?
                   Licence.with_service_provider_licences
                 else
                   Licence.with_cp_licences

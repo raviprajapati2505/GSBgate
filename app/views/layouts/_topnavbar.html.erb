@@ -104,7 +104,7 @@
                 can_offline_projects = can?(:index, Offline::ProjectsController)
             %>
 
-            <% unless current_user.document_controller? %>
+            <% unless current_user.is_document_controller? %>
                 <% if can_index_users || can_index_scheme_criteria || can_certifiers_criteria_report || can_dashboard_survey %>
                     <li class="dropdown<%= ' active' if ['scheme_criteria', 'users'].include?(controller_name) && action_name != 'list_notifications' %>">
                         <a aria-expanded="false" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown">

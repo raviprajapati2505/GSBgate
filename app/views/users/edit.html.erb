@@ -20,7 +20,7 @@
   <div class="ibox new_form">
     <div class="ibox-content">
 
-      <% if @user.default_role? || @user.service_provider? %>
+      <% if @user.is_default_role? || @user.is_service_provider? %>
         <h2 class="text-green">Licences</h2>
         <div class="form-inputs access-licence-forms row">
           <%= f.simple_fields_for :access_licences do |access_licence| %>

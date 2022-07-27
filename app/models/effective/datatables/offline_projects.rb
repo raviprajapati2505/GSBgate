@@ -18,7 +18,7 @@ module Effective
       datatable do
         col :code, 
             label: t('models.effective.datatables.projects.lables.project_code') do |rec| 
-              link_to_if(!current_user.record_checker?,
+              link_to_if(!current_user.is_record_checker?,
                 rec.code,
                 offline_project_path(rec.id)
               )
@@ -26,7 +26,7 @@ module Effective
 
         col :name, 
             label: t('models.effective.datatables.offline.project.name') do |rec| 
-              link_to_if(!current_user.record_checker?,
+              link_to_if(!current_user.is_record_checker?,
                 rec.name,
                 offline_project_path(rec.id)
               )
@@ -82,7 +82,7 @@ module Effective
               as: :select, 
               collection: Certificate.all.order(:display_weight).map { |certificate| [certificate.stage_title, certificate.stage_title.sub(',', '+')] }.uniq 
             } do |rec| 
-            link_to_if(!current_user.record_checker?,
+            link_to_if(!current_user.is_record_checker?,
               rec.certification_name,
               offline_project_certification_path(rec.id, rec.certification_id)
             )
@@ -104,7 +104,7 @@ module Effective
               as: :select, 
               collection: Proc.new { Offline::CertificationPath.versions.map { |k, v| [k, v] } } 
             } do |rec|
-            link_to_if(!current_user.record_checker?,
+            link_to_if(!current_user.is_record_checker?,
               Offline::CertificationPath.versions.keys[rec.certification_version],
               offline_project_certification_path(rec.id, rec.certification_id)
             )

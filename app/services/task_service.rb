@@ -50,10 +50,10 @@ class TaskService
 
     # User filter
     if user.present?
-      if user.users_admin? || user.credentials_admin?
+      if user.is_users_admin? || user.is_credentials_admin?
         tasks = tasks.where("application_role = #{User.roles[user.role]}")
       else
-        if user.system_admin? || user.gsas_trust_manager? || user.gsas_trust_top_manager? || user.gsas_trust_admin?
+        if user.is_system_admin? || user.is_gsas_trust_manager? || user.is_gsas_trust_top_manager? || user.is_gsas_trust_admin?
           check_project_role = ''
         else
           check_project_role = "or (projects_users.role = tasks.project_role and projects_users.user_id = #{user.id})"
@@ -62,7 +62,11 @@ class TaskService
       end
     end
 
+<<<<<<< HEAD
     unless user.users_admin? || user.credentials_admin?
+=======
+    unless user.is_users_admin?
+>>>>>>> Upgrade ruby version to 2.7.0 & rails version to 7.0.3.
       # All tasks of user according to projects_user's certification_team_type
       tasks = tasks.left_outer_joins(project: :projects_users, certification_path: :certificate).where("SELECT CASE WHEN certificates.certification_type = #{Certificate.certification_types['letter_of_conformance']} THEN projects_users.certification_team_type = #{ProjectsUser.certification_team_types['Letter of Conformance']} WHEN certificates.certification_type = #{Certificate.certification_types['final_design_certificate']} THEN projects_users.certification_team_type = #{ProjectsUser.certification_team_types['Final Design Certificate']} WHEN projects.certificate_type = 3 THEN projects_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Letter of Conformance']}, #{ProjectsUser.certification_team_types['Final Design Certificate']}, #{ProjectsUser.certification_team_types['Other']}) WHEN projects.certificate_type IN (1, 2) THEN projects_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Other']}) ELSE projects_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Letter of Conformance']}, #{ProjectsUser.certification_team_types['Final Design Certificate']}, #{ProjectsUser.certification_team_types['Other']}) END")
     end

@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '~> 5.2.0'
+gem 'rails', '~> 7.0'
 gem 'dotenv'
 gem 'addressable'
 gem 'axlsx', '~> 2.1.0.pre'
@@ -38,7 +38,7 @@ gem 'rubyzip', '~> 1.1'
 gem 'sass-rails'
 gem 'select2-rails', '< 4.0.0'
 gem 'sendgrid-ruby'
-gem 'sprockets'
+gem 'sprockets-rails'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
 gem 'uglifier'
 gem 'warden'
@@ -77,14 +77,14 @@ end
 
 source 'http://rails-assets.org' do
   gem 'rails-assets-animate.css'
+  gem 'rails-assets-jquery', "3.6.0"
+  gem 'rails-assets-jquery-ujs'
   gem 'rails-assets-bootstrap', '~> 3.0'
   gem 'rails-assets-bootstrap-datepicker'
   gem 'rails-assets-d3', '~> 4.13'
   gem 'rails-assets-d3-tip', '~> 0.7.1'
   gem 'rails-assets-dropzone'
   gem 'rails-assets-icheck'
-  gem 'rails-assets-jquery', "3.6.0"
-  gem 'rails-assets-jquery-ujs'
   gem 'rails-assets-leaflet'
   gem 'rails-assets-leaflet-draw'
   gem 'rails-assets-metisMenu'
@@ -95,3 +95,8 @@ source 'http://rails-assets.org' do
   gem 'rails-assets-toastr'
   gem 'rails-assets-voidberg--html5sortable'
 end
+
+gem 'importmap-rails', '~> 1.1'
+gem 'turbo-rails'
+# Use Redis for Action Cable
+gem 'redis', '~> 4.0'

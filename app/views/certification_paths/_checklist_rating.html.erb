@@ -5,7 +5,7 @@
   <%= render partial: 'certification_paths/checklist_rating_item', locals: {score_label: 'Submitted', certification_path: certification_path, submitted: true, certificate: certification_path.certificate} %>
 <% end %>
 <% if !certification_path.in_pre_verification? %>
-  <% if !certification_path.in_verification? || !current_user.default_role? || certification_path.project.role_for_user(current_user) == ProjectsUser.roles.keys[ProjectsUser.roles[:certifier]] || certification_path.project.role_for_user(current_user) == ProjectsUser.roles.keys[ProjectsUser.roles[:certification_manager]] %>
+  <% if !certification_path.in_verification? || !current_user.is_default_role? || certification_path.project.role_for_user(current_user) == ProjectsUser.roles.keys[ProjectsUser.roles[:certifier]] || certification_path.project.role_for_user(current_user) == ProjectsUser.roles.keys[ProjectsUser.roles[:certification_manager]] %>
     <%= render partial: 'certification_paths/checklist_rating_item', locals: {score_label: 'Achieved', certification_path: certification_path, achieved: true, certificate: certification_path.certificate} %>
   <% end %>
 <% end %>

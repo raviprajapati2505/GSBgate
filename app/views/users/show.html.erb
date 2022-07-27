@@ -1,5 +1,5 @@
 <%
-  service_provider = @user.service_provider? ? @user : @user.service_provider
+  service_provider = @user.is_service_provider? ? @user : @user.service_provider
 %>
 
 <div class="row">
@@ -37,7 +37,7 @@
               <th><%= User.human_attribute_name('last_name') %></th>
               <td><%= @user.last_name %></td>
             </tr>
-            <% if @user.default_role? %>
+            <% if @user.is_default_role? %>
               <tr>
                 <th><%= UserDetail.human_attribute_name('dob') %></th>
                 <td><%= @user.user_detail&.dob&.strftime('%e %b, %Y') %></td>
@@ -106,7 +106,7 @@
         <div class="ibox-content table-responsive">
           <table class="table table-bordered table-striped user-details-table">
             <tbody>
-              <% if @user.default_role? %>
+              <% if @user.is_default_role? %>
                 <tr>
                   <th><%= User.human_attribute_name('service_provider') %></th>
                   <td>
@@ -171,7 +171,7 @@
                 <td><%= @user.role&.titleize %></td>
               </tr>
 
-              <% if @user.service_provider? %>
+              <% if @user.is_service_provider? %>
                 <tr>
                   <th><%= ServiceProviderDetail.human_attribute_name('business_field') %></th>
                   <td><%= @user.service_provider_detail&.business_field %></td>
@@ -215,7 +215,7 @@
                 </td>
               </tr>
 
-              <% if @user.service_provider? %>
+              <% if @user.is_service_provider? %>
                 <tr>
                   <th><%= ServiceProviderDetail.human_attribute_name('commercial_licence_no') %></th>
                   <td><%= @user.service_provider_detail&.commercial_licence_no %></td>
@@ -235,7 +235,7 @@
       <div class="ibox-content m-t">
         <% if @user == current_user %>
           <%
-            url = if @user.service_provider?
+            url = if @user.is_service_provider?
                     edit_service_provider_path(current_user)
                   else
                     edit_user_registration_path(current_user)
@@ -277,10 +277,10 @@
       <%
         if current_user == @user
           label = "My Licences"
-          labelsp = @user.service_provider? ? label : "My Service Provider's Licences"  
+          labelsp = @user.is_service_provider? ? label : "My Service Provider's Licences"  
         else
           label = "Licences of #{@user.name}"
-          labelsp = @user.service_provider? ? label : "#{label}'s Service Provider"
+          labelsp = @user.is_service_provider? ? label : "#{label}'s Service Provider"
         end
       %>
 
@@ -289,7 +289,7 @@
           <div class="col-md-6">
             <%= render partial: "licences_list", locals: { label: labelsp, licences: Licence.with_service_provider_licences, licences_of: service_provider } %>
           </div>
-          <% unless @user.service_provider? %>
+          <% unless @user.is_service_provider? %>
             <div class="col-md-6">
               <%= render partial: "licences_list", locals: { label: label, licences: Licence.with_cp_licences, licences_of: @user } %>
             </div>
@@ -304,7 +304,7 @@
         <%= render partial: "sp_licence_summary", locals: { service_provider: service_provider } %>
       </div>
 
-      <% if @user.service_provider? %>
+      <% if @user.is_service_provider? %>
         <div class="ibox-title m-t">
           <h5><b><%= t('.cp_users.title', service_provider: service_provider.full_name) %></b></h5>
         </div>

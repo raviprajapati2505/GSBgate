@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GSASGate &gt; <%= strip_tags @page_title %></title>
 
     <!-- Icons -->
@@ -60,27 +61,27 @@
         <!-- Footer -->
         <%= render 'layouts/footer' %>
     </div>
-</div>
-<div id="auditLogModal" class="modal fade audit-log-modal"></div>
-<div class="modal fade" id="confirmationModal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <%= btn_close_modal %>
-                <h4 class="modal-title"><%= t('.modal_title') %></h4>
-            </div>
-            <div class="modal-body">
-            </div>
-            <div class="modal-footer">
-                <%= btn_tag(text: t('.btn_save'), class: 'okBtn') %>
-                <%= btn_tag(text: t('.btn_cancel'), style: 'white', data: {dismiss: 'modal'}) %>
+    <div id="auditLogModal" class="modal fade audit-log-modal"></div>
+    <div class="modal fade" id="confirmationModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <%= btn_close_modal %>
+                    <h4 class="modal-title"><%= t('.modal_title') %></h4>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <%= btn_tag(text: t('.btn_save'), class: 'okBtn') %>
+                    <%= btn_tag(text: t('.btn_cancel'), style: 'white', data: {dismiss: 'modal'}) %>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<%= yield(:js) -%>
+    <%= yield(:js) -%>
 
-<%= javascript_include_tag 'task' %>
+    <%= javascript_include_tag 'task' %>
 
 </body>
+
 </html>
