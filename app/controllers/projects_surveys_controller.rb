@@ -4,11 +4,6 @@ class ProjectsSurveysController < AuthenticatedController
   before_action :set_project_with_survey_type, except: [:index]
   before_action :set_project_survey, except: [:index, :new, :create]
 
-  def index
-    @page_title = t('project_surveys.index.title_html')
-    @projects_surveys_datatable = Effective::Datatables::ProjectsSurveys.new
-  end
-
   def show
     @page_title = @projects_survey.title
     @latest_questions = @projects_survey.survey_questionnaire_version&.survey_questions

@@ -494,10 +494,10 @@ class Ability
       can [:edit_service_provider, :update_service_provider], ServiceProvider
       can :activity_info, User
 
-      can :index, :survey_dashboard
+      can [:index, :total_project_surveys], :survey_dashboard
       can [:index, :show, :new, :edit, :create, :update, :destroy], SurveyType
       can [:show, :form, :create, :update, :update_position], SurveyQuestionnaireVersion
-      can [:index, :show, :copy_project_survey, :new, :create, :edit, :update, :destroy, :export_survey_results], ProjectsSurvey
+      can [:index], ProjectsSurvey
       can [:index, :download_linkme_survey_data], LinkmeSurvey
 
     elsif user.service_provider?

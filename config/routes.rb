@@ -149,7 +149,11 @@ Rails.application.routes.draw do
   end
 
   # survey related modules
-  resources :survey_dashboard, only: [:index]
+  resources :survey_dashboard, only: [:index] do
+    collection do
+      get 'total_project_surveys', to: 'survey_dashboard#total_project_surveys', as: 'total_project_surveys'
+    end
+  end
   resources :survey_types do
     resources :survey_questionnaire_versions, only: [:show] do
       collection do
