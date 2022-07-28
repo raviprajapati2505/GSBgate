@@ -387,6 +387,20 @@
                             </td>
                           <% end %>
                         </tr>
+                        <% unless @certification_path.is_project_after_sf_file(@project) %>
+                          <tr>
+                            <th><label></label></th>
+                            <td>
+                              <input type="hidden" value="1" name="is_existing_project" id="is_existing_project">
+                              <label>For Fans</label>
+                              <input type="number" class="form-control" readonly id="aux_for_fan">
+                            </td>
+                            <td>
+                              <label>For Pumps</label>
+                              <input type="number"class="form-control"  readonly id="aux_for_pumps">
+                            </td>
+                          </tr>
+                        <% end %>
                         <tr>
                           <th><label class="required">DHW</label></th>
                           <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
@@ -771,6 +785,29 @@
     //     });
     //   }
     // });
+    var is_existing_project = $('#is_existing_project').val();
+    if(is_existing_project == 1){
+        $("input[name='scheme_mix_criterion[scheme_mix_criterion_epls_attributes[1][auxiliaries]']").hide();
+    }
+    
+    var auxiliaries = $("input[name='scheme_mix_criterion[scheme_mix_criterion_epls_attributes[0][auxiliaries]']").val();
+    calculate_auxiliary(auxiliaries);
+
+    $("input[name='scheme_mix_criterion[scheme_mix_criterion_epls_attributes[0][auxiliaries]").change(function(){
+      calculate_auxiliary($(this).val());
+    })
+
+    function calculate_auxiliary(auxiliaries = 0.00){
+      let auxiliary_for_fans = 0.00;    
+      let auxiliary_for_pumps = 0.00;
+      if(auxiliaries){
+        auxiliary_for_fans = (auxiliaries * 65)/100;
+        auxiliary_for_pumps = (auxiliaries * 35)/100;
+      }
+      $('#aux_for_fan').val(auxiliary_for_fans);
+      $('#aux_for_pumps').val(auxiliary_for_pumps);
+    }
+    
   });
   
 </script>
