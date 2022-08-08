@@ -1,7 +1,7 @@
 class UsersController < AuthenticatedController
-  load_and_authorize_resource :user, except: [:country_cities, :get_organization_details, :get_service_provider_by_domain, :country_code_from_name]
+  load_and_authorize_resource :user, except: [:country_cities, :get_organization_details, :get_service_provider_by_domain, :country_code_from_name, :increase_demerit_flag]
   before_action :set_controller_model, except: [:index, :update_notifications]
-  before_action :set_user, only: [:show, :edit, :update, :download_user_files]
+  before_action :set_user, only: [:show, :edit, :update, :download_user_files, :increase_demerit_flag]
   before_action :set_service_provider, only: [:edit_service_provider, :update_service_provider]
 
   def index
@@ -17,10 +17,10 @@ class UsersController < AuthenticatedController
   end
 
   def edit
-    if @user.role == 'default_role'
-      @user_detail = UserDetail.find_or_initialize_by(id: @user.user_detail&.id)
-    else
+    if @user.role == 'service_provider'
       @user_detail = ServiceProviderDetail.find_or_initialize_by(id: @user.service_provider_detail&.id)
+    else
+      @user_detail = UserDetail.find_or_initialize_by(id: @user.user_detail&.id)
     end
   
     unless @user.present? 
@@ -366,6 +366,14 @@ class UsersController < AuthenticatedController
         file = ''
       end
     send_file file, x_sendfile: false
+  end
+
+  def increase_demerit_flag
+    @user.demerit_flag = @user.demerit_flag + 1
+    @user.demerit_flag_updated_at = Date.today
+    @user.save(validate: false)
+
+    redirect_to user_path(@user), notice: "Warning send to user successfully" and return
   end
 
   private

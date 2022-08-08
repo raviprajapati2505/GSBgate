@@ -1,4 +1,4 @@
-<% if project.is_project_certified? %>
+<% if project.is_project_certified? && project.certificates.pluck(:certificate_type).include?('operations_type') %>
   <div class="ibox float-e-margins">
     <div class="ibox-title bg-header-grey">
       <h5>Surveys</h5>
