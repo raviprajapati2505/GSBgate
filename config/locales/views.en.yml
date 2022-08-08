@@ -430,3 +430,8 @@ en:
           title: Offline Scheme Details
         scheme_mix_criteria:
           title: Offline Criteria Details
+  dashboard:
+    index:
+      title_service_provider: Dashboard for Service Provider
+      title_cgp: Dashboard for CGP
+

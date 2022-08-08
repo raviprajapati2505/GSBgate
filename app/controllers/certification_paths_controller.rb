@@ -274,6 +274,7 @@ class CertificationPathsController < AuthenticatedController
         @certification_path.audit_log_user_comment = params[:certification_path][:audit_log_user_comment]
         @certification_path.audit_log_visibility =  params[:certification_path][:audit_log_visibility]
         @certification_path.save!
+
         # sent email if the certificate is approved
         if @certification_path.status == "Certified"
           DigestMailer.certificate_approved_email(@certification_path).deliver_now

@@ -180,6 +180,7 @@ en:
         organization_fax_area_code: Organization Fax Area Code
         organization_fax: Organization Fax
         gsas_id: GSAS ID
+        demerit_flag: Demerit Flags
         role: Role
         username: Username
         gord_employee: GORD Employee?

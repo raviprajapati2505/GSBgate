@@ -40,6 +40,7 @@ Rails.application.routes.draw do
       put :update_notifications, path: :notifications
       patch :update_user_status, to: 'users#update_user_status', as: 'update_user_status'
       get "download_user_files"
+      get "increase_demerit_flag", to: 'users#increase_demerit_flag'
     end
   end
 
