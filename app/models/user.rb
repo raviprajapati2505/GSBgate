@@ -127,6 +127,10 @@ class User < ApplicationRecord
   def is_admin?
     ["system_admin", "gsas_trust_top_manager", "gsas_trust_manager", "gsas_trust_admin"].include?(role)
   end
+  
+  def self.is_service_provider(current_user)
+    ["service_provider"].include?(current_user.role)
+  end
 
   # Store the user in the current Thread (needed for our concerns, so they can access the current user model)
   def self.current

@@ -275,6 +275,8 @@ Rails.application.routes.draw do
     end
   end
 
+  get 'dashboard' => 'dashboard#index', as: 'dashboard'
+
   # CATCH ALL ROUTE, redirecting the user to a correct page
   # BEWARE: this should be the last line, as it will match any path !!!
   # -- to avoid unknown routes to pollute the logs, use this:
