@@ -1,0 +1,298 @@
+
+<div class="row">
+<div class="col-md-3 m-t">
+    <div class="ibox float-e-margins">
+      <div class="ibox-title" style="text-align: center">
+        <div class='d-flex justify-content-between align-items-center'>
+          <h3 class="align-items-center" style="line-height:25px"><b>Hello,<br> <%= current_user.name %></b></h3> 
+          <h3><%= current_user.email %></h3>
+          <%= link_to 'View Profile', user_path(current_user.id) %>
+          <div>
+            <img src="https://icon-library.com/images/placeholder-image-icon/placeholder-image-icon-12.jpg" style="border-radius: 100%;width: 38%;padding: 18px;">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-9 m-t">
+    <div class="col-md-6">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <div class='d-flex justify-content-between align-items-center'>
+            <h3><b>Welcome to your dashboard</b></h3> 
+            <p>Today is <%= DateTime.now.strftime('%A, %d %B %Y') %></p>        
+          </div>
+        </div>
+      </div>
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5><b>GSAS Credentials</b></h5>
+          </div>
+        </div>
+        <div class="ibox-content">
+          <table class="table table-bordered table-striped user-details-table">
+            <tbody>
+              <tr>
+                <th>Type</th>
+                <th>Practitioner Accreditation</th>
+              </tr>
+              <tr>
+                <th>Territory</th>
+                <td>Qatar</td>
+              </tr>
+              <tr>
+                <th>Joined Since</th>
+                <td><%= current_user.confirmed_at&.strftime('%e %b, %Y AT %H:%M') %></td>
+              </tr>
+              <tr>
+                <th>GSAS ID</th>
+                <td><%= current_user.gsas_id %></td>
+              </tr>
+              <tr>
+                <th>Affiliated Service Provider</th>
+                <td>XXXX</td>
+              </tr>
+              <tr>
+                <th>Practitioner Accreditation</th>
+                <td>Advocate/ Associate/Licentiate/Fellow</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5><b>Practitioner Accreditation</b></h5>
+          </div>
+        </div>
+        <div class="ibox-content">
+          <table class="table table-bordered table-striped user-details-table">
+            <tbody>
+              <tr>
+                <th>Type</th>
+                <th>Expiry Date</th>
+              </tr>
+              <% user_licences_design&.each.with_index(1) do |ac, index| %>
+                <tr>
+                  <% if index == 1 %>
+                    <td rowspan="<%= user_licences_design.count %>">GSAS-D&B</td>
+                  <% end %>
+                  <td><%= ac.formatted_expiry_date %></td>
+                </tr>
+              <% end %>
+              <% user_licences_construction&.each.with_index(1) do |ac, index| %>
+                <tr>
+                  <% if index == 1 %>
+                    <td rowspan="<%= user_licences_construction.count %>">GSAS-CM</td>
+                  <% end %>
+                  <td><%= ac.formatted_expiry_date %></td>
+                </tr>
+              <% end %>
+              <% user_licences_operation&.each.with_index(1) do |ac, index| %>
+                <tr>
+                  <% if index == 1 %>
+                    <td rowspan="<%= user_licences_operation.count %>">GSAS-OP</td>
+                  <% end %>
+                  <td><%= ac.formatted_expiry_date %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5><b>Overdue Tasks</b></h5>
+          </div>
+        </div>
+        <div class="ibox-content">
+          <table class="table table-bordered table-striped user-details-table">
+            <tbody>
+              <tr>
+                <th>Overdue</th>
+                <th>Task</th>
+              </tr>
+              <% overdue_licences.each do |ac| %>
+              <tr>
+                <td><%= (ac.expiry_date.to_date - Date.today.to_date).to_i %> Days</td>
+                <td>Update <b><%= ac.licence.display_name %></b></td>
+              </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5><b>Demerit Notices</b></h5>
+          </div>
+        </div>
+        <div class="ibox-content">
+          <table class="table table-bordered table-striped user-details-table">
+            <tbody>
+              <tr>
+                <th>Type</th>
+                <th>Quantity</th>
+                <th>Date</th>
+              </tr>
+              <tr>
+                <th>Flags</th>
+                <td>
+                  <% current_user.demerit_flag.to_i.times do %>
+                    <i class="fa fa-flag fa-lg" style="color:red;"></i>
+                  <% end %>
+                </td>
+                <td><%= current_user&.demerit_flag_updated_at&.strftime('%d %B, %Y') %></td>
+              </tr>
+              <tr>
+                <th>Points</th>
+                <td>4</td>
+                <td><%= current_user&.demerit_flag_updated_at&.strftime('%d %B, %Y') %></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5><b>Projects Status</b></h5>
+          </div>
+        </div>
+        <div class="ibox-content">
+          <table class="table table-bordered table-striped user-details-table">
+            <tbody>
+              <%
+              counter_cgp_for_completed_projects = 0
+              total_cgp_for_completed_projects.each do |project|
+                  @project = Project.find(project)
+                  if @project.is_project_certified?
+                    counter_cgp_for_completed_projects = counter_cgp_for_completed_projects + 1
+                  end
+              end
+
+              counter_team_member_for_completed_projects = 0
+              total_team_member_for_completed_projects.each do |project|
+                  @project = Project.find(project)
+                  if @project.is_project_certified?
+                    counter_team_member_for_completed_projects = counter_team_member_for_completed_projects + 1
+                  end
+              end
+              %>
+              <tr>
+                <th>Status</th>
+                <th>Quantity</th>
+                <th>Role</td>
+                <th>Quantity</th>
+              </tr>
+              <tr>
+                <th rowspan="2">Completed</th>
+                <td rowspan="2"><%= counter_cgp_for_completed_projects + counter_team_member_for_completed_projects %></td>
+                <td>Project Manager (CGP)</td>
+                <td><%= counter_cgp_for_completed_projects %></td>
+              </tr>
+              <tr>
+                <td>Team Member</td>
+                <td><%= counter_team_member_for_completed_projects %></td>
+              </tr>
+              <tr>
+                <th rowspan="2">In-Progress</th>
+                <td rowspan="2"><%= total_cgp_for_inprogress_projects + total_team_member_for_inprogress_projects %></td>
+                <td>Project Manager (CGP)</td>
+                <td><%= total_cgp_for_inprogress_projects %></td>
+              </tr>
+              <tr>
+                <td>Team Member</td>
+                <td><%= total_team_member_for_inprogress_projects %></td>
+              </tr>
+              <tr>
+                <th>Total</th>
+                <td colspan="4"><%= counter_cgp_for_completed_projects + counter_team_member_for_completed_projects + total_cgp_for_inprogress_projects + total_team_member_for_inprogress_projects %></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5><b>Tasks Status</b></h5>
+          </div>
+        </div>
+        <div class="ibox-content">
+          <table class="table table-bordered table-striped user-details-table">
+            <tbody>
+              <tr>
+                <th>Status</th>
+                <th>Quantity</th>
+                <th>Role</th>
+                <th>Quantity</th>
+              </tr>
+              <tr>
+                <th rowspan="2">Completed</th>
+                <td rowspan="2">5</td>
+                <td>Project Manager (CGP)</td>
+                <td>2</td>
+              </tr>
+              <tr>
+                <td>Team Member</td>
+                <td>2</td>
+              </tr>
+              <tr>
+                <th rowspan="2">In-Progress</th>
+                <td rowspan="2">5</td>
+                <td>Project Manager (CGP)</td>
+                <td>1</td>
+              </tr>
+              <tr>
+                <td>Team Member</td>
+                <td>2</td>
+              </tr>
+              <tr>
+                <th>Total</th>
+                <td colspan="4">8</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5><b>Overdue Projects Tasks</b></h5>
+          </div>
+        </div>
+        <div class="ibox-content">
+          <table class="table table-bordered table-striped user-details-table">
+            <tbody>
+              <tr>
+                <th>Overdue</th>
+                <th>Project ID</th>
+                <th>Task</th>
+                <th>Deadline</th>
+              </tr>
+              <tr>
+                <td>1 Day</td>
+                <td>PD-QD-001-001</td>
+                <td>Review S.1 criterion</td>
+                <td>27/07/2022</td>
+              </tr>
+              <tr>
+                <td>1 Day</td>
+                <td>PD-QD-001-001</td>
+                <td>Review S.1 criterion</td>
+                <td>27/07/2022</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

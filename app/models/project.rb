@@ -64,6 +64,14 @@ class Project < ApplicationRecord
     joins(:projects_users).where(projects_users: {user_id: user.id})
   }
 
+  scope :total_completed_project_by_role, ->(user, project_role, project_stage) {
+    joins(:projects_users).where(projects_users: {user_id: user.id, role: project_role}).includes(:certification_paths).where(certification_paths: {certification_path_status_id: project_stage}).map(&:id).uniq
+  }
+
+  scope :total_inprogress_project_by_role, ->(user, project_role, project_stage) {
+    joins(:projects_users).where(projects_users: {user_id: user.id, role: project_role}).includes(:certification_paths).where.not(certification_paths: {certification_path_status_id: project_stage}).map(&:id).uniq
+  }
+
   scope :without_certification_paths, -> {
     includes(:certification_paths).where(certification_paths: {id: nil})
   }

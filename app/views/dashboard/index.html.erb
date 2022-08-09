@@ -1,0 +1,19 @@
+<% if User.is_service_provider(current_user) %>
+  <%= render partial: 'for_service_provider', locals: { 
+      overdue_licences: @overdue_licences, 
+      service_provider_user_licences_design: @service_provider_user_licences_design,service_provider_user_licences_construction: @service_provider_user_licences_construction,service_provider_user_licences_operation: @service_provider_user_licences_operation, 
+      user_licences_design: @user_licences_design, 
+      user_licences_construction: @user_licences_construction, 
+      user_licences_operation: @user_licences_operation 
+    } %>
+<% else %>
+  <%= render partial: 'for_cgp_user', locals: { 
+    overdue_licences: @overdue_licences, 
+    user_licences_design: @user_licences_design, 
+    user_licences_construction: @user_licences_construction, 
+    user_licences_operation: @user_licences_operation, 
+    total_cgp_for_completed_projects: @total_cgp_for_completed_projects,
+    total_team_member_for_completed_projects: @total_team_member_for_completed_projects, total_cgp_for_inprogress_projects: @total_cgp_for_inprogress_projects,
+    total_team_member_for_inprogress_projects: @total_team_member_for_inprogress_projects 
+    } %>
+<% end %>
