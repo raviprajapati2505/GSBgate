@@ -32,7 +32,7 @@ module Effective
         #    rec.project_code + ', ' + rec.project_name
         # end
         col :project_code, col_class: 'col-order-0', label: t('models.effective.datatables.projects.lables.project_code'), sql_column: 'projects.code' do |rec|          
-          link_to_if(!current_user.record_checker?,
+          link_to(
             rec.project_code,
             project_path(rec.project_nr)
           )
@@ -41,7 +41,7 @@ module Effective
           # end
         end
         col :project_name, col_class: 'col-order-1', sql_column: 'projects.name' do |rec|
-          link_to_if(!current_user.record_checker?,
+          link_to(
             rec.project_name,
             project_path(rec.project_nr)
           )
@@ -223,7 +223,7 @@ module Effective
         col :certificate_id, col_class: 'multiple-select col-order-21', sql_column: 'certificates.id', label: t('models.effective.datatables.projects_certification_paths.certificate_id.label'), search: { as: :select, collection: Proc.new { Certificate.all.order(:display_weight).map { |certificate| [certificate.only_certification_name, certificate.only_certification_name] }.uniq}, multiple: true } do |rec|
           if rec.certification_path_id.present?
             only_certification_name = Certificate.find_by_name(rec&.certificate_name)&.only_certification_name
-            link_to_if(!current_user.record_checker?,
+            link_to(
               only_certification_name,
               project_certification_path_path(rec.project_nr, rec.certification_path_id)
             )
@@ -257,7 +257,7 @@ module Effective
         col :certificate_version, col_class: 'multiple-select col-order-23', sql_column: 'certificates.id', label: t('models.effective.datatables.projects_certification_paths.certificate_version.label'), search: { as: :select, collection: Proc.new { Certificate.all.order(:display_weight).map { |certificate| [certificate.only_version, certificate.only_version] }.uniq } } do |rec|
           if rec.certification_path_id.present?
             only_certification_version = Certificate.find_by_name(rec&.certificate_name)&.only_version
-            link_to_if(!current_user.record_checker?,
+            link_to(
               only_certification_version,
               project_certification_path_path(rec.project_nr, rec.certification_path_id)
             )
@@ -323,7 +323,7 @@ module Effective
         col :certificate_stage, col_class: 'multiple-select col-order-27', sql_column: 'certificates.id', label: t('models.effective.datatables.projects_certification_paths.certificate_stage.label'), search: { as: :select, collection: Proc.new { get_certificate_types_names(current_user) } } do |rec|
           if rec.certification_path_id.present?
             only_certification_stage = CertificationPath.find(rec.certification_path_id).certificate&.stage_title
-            link_to_if(!current_user.record_checker?,
+            link_to(
               only_certification_stage,
               project_certification_path_path(rec.project_nr, rec.certification_path_id)
             )

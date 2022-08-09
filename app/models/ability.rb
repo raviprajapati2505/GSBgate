@@ -387,7 +387,10 @@ class Ability
     elsif user.system_admin?
       can :manage, :all
     elsif user.record_checker?
-      can :index, Project
+      can :read, Project
+      can :read, CertificationPath
+      can :read, SchemeMix
+      can :read, SchemeMixCriterion
     else
       cannot :manage, :all
     end
