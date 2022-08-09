@@ -1,3 +1,4 @@
+<% use_gmaps_for(:project) %>
 <% download_document_permitted = check_documents_permissions(user_role: current_user.role, project: @project) %>
 
   <div class="col-md-4 col-sm-12 col-xs-12">
@@ -326,3 +327,4 @@
     <% end %>
   </div>
 
+<%= javascript_include_tag 'find_users_by_email' %>

@@ -37,6 +37,10 @@
  *= require surveys
  *= require chartkick
  *= require Chart.bundle
+ *= require leaflet
+ *= require leaflet-draw
+ *= require moment
+ *= require js-routes
 */
 
 $(function () {
@@ -583,7 +587,7 @@ $(function () {
                     select_field.find('option').remove().end();
 
                     $.each(result, function(index, item) {
-                        select_field.append(new Option(item[0], item[1]), false, false);
+                        select_field.append(new Option(item[0], item[3]), false, false);
                     });
                 },
                 error: function() {

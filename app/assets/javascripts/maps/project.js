@@ -3,9 +3,9 @@ var projectMarker;
 var projectButton;
 var geocoder;
 
-$(function () {
-    google.maps.event.addDomListener(window, 'load', initializeProjectMap);
-});
+window.addEventListener('load', (evt => {
+    initializeProjectMap()
+}));
 
 function initializeProjectMap() {
     // Create the map

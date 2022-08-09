@@ -14,7 +14,7 @@ module Effective
         col :project_name
 
         col :survey_title, sql_column: 'projects_surveys.title' do |rec|          
-          link_to_if(!current_user.users_admin? && rec&.released_at.present?,
+          link_to_if(!current_user.is_users_admin? && rec&.released_at.present?,
             rec.survey_title,
             project_survey_path(rec.project_id, rec.projects_survey_id)
           )

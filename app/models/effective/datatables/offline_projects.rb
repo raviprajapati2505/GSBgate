@@ -82,10 +82,12 @@ module Effective
               as: :select, 
               collection: Certificate.all.order(:display_weight).map { |certificate| [certificate.stage_title, certificate.stage_title.sub(',', '+')] }.uniq 
             } do |rec| 
-            link_to_if(!current_user.is_record_checker?,
-              rec.certification_name,
-              offline_project_certification_path(rec.id, rec.certification_id)
-            )
+            unless !rec.certification_id
+              link_to_if(!current_user.is_record_checker?,
+                rec.certification_name,
+                offline_project_certification_path(rec.id, rec.certification_id)
+              )
+            end
         end.search do |collection, terms, column, index|
           terms_array = terms.split(',').map { |ele| ele.gsub('+', ',') || ele }
 
@@ -104,10 +106,12 @@ module Effective
               as: :select, 
               collection: Proc.new { Offline::CertificationPath.versions.map { |k, v| [k, v] } } 
             } do |rec|
-            link_to_if(!current_user.is_record_checker?,
-              Offline::CertificationPath.versions.keys[rec.certification_version],
-              offline_project_certification_path(rec.id, rec.certification_id)
-            )
+              unless !rec.certification_id
+                link_to_if(!current_user.is_record_checker?,
+                  Offline::CertificationPath.versions.keys[rec.certification_version],
+                  offline_project_certification_path(rec.id, rec.certification_id)
+                )
+              end
 
         end.search do |collection, terms, column, index|
           terms_array = terms.split(",")
@@ -145,10 +149,9 @@ module Effective
             search: { 
               as: :select, collection: Proc.new { Offline::CertificationPath.ratings.map { |k, v| [k.titleize, v] } } 
             } do |rec|
-            render partial: "/offline/certification_paths/rating.html.erb", locals: { ratings: rec.certification_rating + 1, certification_type: rec.certificate_type }
+            render partial: "/offline/certification_paths/rating", locals: { ratings: rec.certification_rating + 1, certification_type: rec.certificate_type }
         end.search do |collection, terms, column, index|
           terms_array = terms.split(",")
-
           unless (collection.class == Array || terms_array.include?(""))
             collection.where("offline_certification_paths.rating IN (?)", terms_array.map(&:to_i))
           else
