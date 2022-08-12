@@ -1,0 +1,38 @@
+<div class="ibox-content">
+  <table class="table table-bordered table-striped user-details-table">
+    <tbody>
+      <tr>
+        <th>Type</th>
+        <th>GSAS ID</th>
+        <th>Expiry Date</th>
+      </tr>
+      <% user_licences_design&.each.with_index(1) do |ac, index| %>
+        <tr>
+          <% if index == 1 %>
+            <td rowspan="<%= user_licences_design.count %>">GSAS-D&B</td>
+          <% end %>
+          <td><%= ac.user.gsas_id %></td>
+          <td><%= ac.formatted_expiry_date %></td>
+        </tr>
+      <% end %>
+      <% user_licences_construction&.each.with_index(1) do |ac, index| %>
+        <tr>
+          <% if index == 1 %>
+            <td rowspan="<%= user_licences_construction.count %>">GSAS-CM</td>
+          <% end %>
+          <td><%= ac.user.gsas_id %></td>
+          <td><%= ac.formatted_expiry_date %></td>
+        </tr>
+      <% end %>
+      <% user_licences_operation&.each.with_index(1) do |ac, index| %>
+        <tr>
+          <% if index == 1 %>
+            <td rowspan="<%= user_licences_operation.count %>">GSAS-OP</td>
+          <% end %>
+          <td><%= ac.user.gsas_id %></td>
+          <td><%= ac.formatted_expiry_date %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

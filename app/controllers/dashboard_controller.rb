@@ -1,7 +1,8 @@
 class DashboardController < AuthenticatedController
-
+  load_and_authorize_resource class: false
+  
   def index
-    @page_title = t('dashboard.index.title_service_provider')
+    @page_title = t('dashboard.index.title')
 
     #Credentials Overdue Tasks or Credentials Overdue Tasks
     @overdue_licences = AccessLicence.user_overdue_access_licences(current_user.id)

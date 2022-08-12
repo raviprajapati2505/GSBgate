@@ -162,7 +162,16 @@ class UsersController < AuthenticatedController
       flash[:alert] = 'No user id specified.'
     end
 
-    redirect_to :root
+    case user.role
+      when 'default_role'
+        redirect_path = dashboard_path
+      when 'service_provider'
+        redirect_path = dashboard_path
+      else
+        redirect_path = :root
+    end
+
+    redirect_to redirect_path
   end
 
   def list_notifications

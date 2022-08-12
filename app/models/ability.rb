@@ -312,6 +312,7 @@ class Ability
       if user.gord_employee?
         can :show, 'visualisation_tool'
       end
+      can :index, :dashboard
     elsif user.gsas_trust_admin? || user.gsas_trust_manager? || user.gsas_trust_top_manager?
       can :read, :all
 
@@ -473,6 +474,7 @@ class Ability
 
     elsif user.system_admin?
       can :manage, :all
+      cannot :index, :dashboard
 
     elsif user.record_checker?
       can :read, Project
@@ -518,6 +520,7 @@ class Ability
       cannot [:show, :form, :create, :update, :update_position], SurveyQuestionnaireVersion
       cannot [:index, :show, :copy_project_survey, :new, :create, :edit, :update, :destroy, :export_survey_results], ProjectsSurvey
       cannot [:index, :download_linkme_survey_data], LinkmeSurvey
+      can :index, :dashboard
 
     else
       cannot :manage, :all
