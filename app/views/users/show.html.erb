@@ -189,14 +189,6 @@
                   <th><%= UserDetail.human_attribute_name('work_experience') %></th>
                   <td><%= @user.user_detail&.work_experience %></td>
                 </tr>
-                <tr>
-                  <th><%= User.human_attribute_name('demerit_flag') %></th>
-                  <td>
-                    <% @user.demerit_flag.to_i.times do %>
-                      <i class="fa fa-flag fa-lg" style="color:red;"></i>
-                    <% end %>
-                  </td>
-                </tr>
               <% end %>
 
               <tr>
@@ -209,7 +201,11 @@
               </tr>
               <tr>
                 <th><%= User.human_attribute_name('demerit_flag') %></th>
-                <td></td>
+                <td>
+                  <% @user.demerit_flag.to_i.times do %>
+                    <i class="fa fa-flag fa-lg" style="color:red;"></i>
+                  <% end %>
+                </td>
               </tr>
 
               <% if @user.service_provider? %>
