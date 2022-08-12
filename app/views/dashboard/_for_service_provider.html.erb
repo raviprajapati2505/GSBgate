@@ -1,0 +1,131 @@
+<div class="row">
+<div class="col-md-3 m-t">
+    <div class="ibox float-e-margins">
+      <div class="ibox-title" style="text-align: center">
+        <div class='d-flex justify-content-between align-items-center'>
+          <h3 class="align-items-center" style="line-height:25px"><b>Hello,<br> <%= current_user.name %></b></h3> 
+          <h3><%= current_user.email %></h3>
+          <%= link_to 'View Profile', user_path(current_user.id) %>
+          <div>
+            <img src="https://icon-library.com/images/placeholder-image-icon/placeholder-image-icon-12.jpg" style="border-radius: 100%;width: 38%;padding: 18px;">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-9 m-t">
+    <div class="col-md-6">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <div class='d-flex justify-content-between align-items-center'>
+            <h3><b>Welcome to your dashboard</b></h3> 
+            <p>Today is Thursday, 28 July 2022</p>        
+          </div>
+        </div>
+      </div>
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5><b>GSAS Credentials</b></h5>
+          </div>
+        </div>
+        <div class="ibox-content">
+          <table class="table table-bordered table-striped user-details-table">
+            <tbody>
+              <tr>
+                <th>Type</th>
+                <td>Corporate License</td>
+              </tr>
+              <tr>
+                <th>Territory</th>
+                <td>Qatar</td>
+              </tr>
+              <tr>
+                <th>Joined Since</th>
+                <td><%= current_user.confirmed_at&.strftime('%e %b, %Y AT %H:%M') %></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5><b>Credentials Overdue Tasks</b></h5>
+          </div>
+        </div>
+        <%= render partial: 'overdue_licences' %>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <%= render partial: 'demerit_notices' %>
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5><b>Corporate License</b></h5>
+          </div>
+        </div>
+        <%= render partial: 'licence_overview', locals: { user_licences_design: @user_licences_design, 
+          user_licences_construction: @user_licences_construction, 
+          user_licences_operation: @user_licences_operation  
+        } %>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5><b>Affiliated Practitioner Accreditation</b></h5>
+          </div>
+        </div>
+        <div class="ibox-content">
+          <table class="table table-bordered table-striped user-details-table">
+            <tbody>
+              <tr>
+                <th>Type</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>GSAS ID</th>
+                <th>Expiry Date</th>
+              </tr>
+              <% @service_provider_user_licences_design&.each.with_index(1) do |ac, index| %>
+                <tr>
+                  <% if index == 1 %>
+                    <td rowspan="<%= @service_provider_user_licences_design.count %>">GSAS-D&B</td>
+                  <% end %>
+                  <td><%= link_to(ac.user.full_name, user_path(ac.user)) %></td>
+                  <td><%= ac.user.email %></td>
+                  <td><%= ac.user.gsas_id %></td>
+                  <td><%= ac.formatted_expiry_date %></td>
+                </tr>
+              <% end %>
+              <% @service_provider_user_licences_construction&.each.with_index(1) do |ac, index| %>
+                <tr>
+                  <% if index == 1 %>
+                    <td rowspan="<%= @service_provider_user_licences_construction.count %>">GSAS-CM</td>
+                  <% end %>
+                  <td><%= link_to(ac.user.full_name, user_path(ac.user)) %></td>
+                  <td><%= ac.user.email %></td>
+                  <td><%= ac.user.gsas_id %></td>
+                  <td><%= ac.formatted_expiry_date %></td>
+                </tr>
+              <% end %>
+              <% @service_provider_user_licences_operation&.each.with_index(1) do |ac, index| %>
+                <tr>
+                  <% if index == 1 %>
+                    <td rowspan="<%= @service_provider_user_licences_operation.count %>">GSAS-OP</td>
+                  <% end %>
+                  <td><%= link_to(ac.user.full_name, user_path(ac.user)) %></td>
+                  <td><%= ac.user.email %></td>
+                  <td><%= ac.user.gsas_id %></td>
+                  <td><%= ac.formatted_expiry_date %></td>
+                </tr>
+              <% end %>
+                  
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

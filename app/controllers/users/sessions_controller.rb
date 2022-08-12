@@ -15,7 +15,15 @@ class Users::SessionsController < Devise::SessionsController
       set_flash_message!(:notice, :signed_in)
       sign_in(resource_name, resource)
       yield resource if block_given?
-      respond_with resource, location: after_sign_in_path_for(resource)
+      case resource.role
+        when 'default_role'
+          redirect_path = dashboard_path
+        when 'service_provider'
+          redirect_path = dashboard_path
+        else
+          redirect_path = after_sign_in_path_for(resource)
+      end
+      respond_with resource, location: redirect_path
     else
       sign_out(resource)
       redirect_to new_user_session_path, alert: "Account is not yet activated!"

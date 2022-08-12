@@ -11,6 +11,14 @@
     <div class="navbar-collapse collapse" id="navbar">
         <ul class="nav navbar-nav">
 
+            <% if can?(:index, :dashboard) %>
+                <li class="<%= 'active' if ['dashboard'].include?(controller_name) %>">
+                    <%= link_to dashboard_path do %>
+                        <%= ikoen('dashboard', size: 'lg') %><span class="nav-label">Dashboard</span>
+                    <% end %>
+                </li>
+            <% end %>
+
             <% if can?(:index, Project) %>
                 <li class="<%= 'active' if ['projects', 'projects_users', 'certification_paths', 'scheme_mixes', 'scheme_mix_criteria'].include?(controller_name) %>">
                     <%= link_to projects_path do %>
