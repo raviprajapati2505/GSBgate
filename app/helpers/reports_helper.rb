@@ -56,7 +56,7 @@ module ReportsHelper
     case certificate_name 
       when 'Letter of Conformance'
         text = { "1" => "The summary of the obtained rating is attached herewith.", 
-          "2" => "This letter is only the predecessor towards achieving the final GSAS-D&B Certificate and should not be considered as the final certificate. The project should satisfy during the construction stage all the requirements of <b>Conformance to Design Audit(CDA)</b> which is a pre-requisite for the final GSAS-D&B Certificate as indicated in GSAS Technical Guide, <span style='color: #337ab7'>www.gsas.gord.qa</span> \n", 
+          "2" => "This letter is only the predecessor towards achieving the final GSAS-D&B Certificate and should not be considered as the final certificate. The project should satisfy during the construction stage all the requirements of <b>Conformance to Design Audit (CDA)</b> which is a pre-requisite for the final GSAS-D&B Certificate as indicated in GSAS Technical Guide, <span style='color: #337ab7'>www.gsas.gord.qa</span> \n\n", 
           "3" => "In the event of any future changes applied to the criteria pertaining to this issued certificate, the changes are required to be re-assessed once again.", 
           "4" => "Finally, congratulations on partaking in this noble endeavor. We look forward to creating jointly a healthy and sustainable future." 
         }

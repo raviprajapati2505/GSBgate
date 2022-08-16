@@ -1,0 +1,26 @@
+wb = xlsx_package.workbook
+
+wb.add_worksheet(name: "Users") do |sheet|
+  # this is the head row of your spreadsheet
+  sheet.add_row %w(Question Type Options Answers )
+  
+  # each user is a row on your spreadsheet
+  @latest_questions.each.with_index(1) do |question, i|
+    unless question.fill_in_the_blank?
+      option_with_counts = survey_question_options_report(@projects_survey, question) rescue {}
+      total_responses = @projects_survey.survey_responses.count rescue 0
+
+      option_with_counts.each.with_index(1) do |(key, value), index|
+        question_text = index == 1 ? question.question_text : ''
+        question_type = index == 1 ? 'Single/Multiple choice' : ''
+        sheet.add_row [question_text, question_type, key, "#{value} Out of #{total_responses}"]
+      end
+    else
+      question.question_responses.each.with_index(1) do |text_response, i|
+        question_text = i == 1 ? question.question_text : ''
+        question_type = i == 1 ? 'Fill in the blank' : ''
+        sheet.add_row [question_text, question_type, '', text_response.value]
+      end
+    end
+  end
+end

@@ -155,7 +155,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
 
   def draw_certificate_header
     text = certification_type_name(@certification_path)
-    styled_text("<div style='font-size: 10; font-weight: 900; color: #{@@main_color}; line-height: 1.2'>GSAS #{text[:project_type]}</div><br /><div style='font-size: 12; font-weight: 900;'>#{text[:certificate_name]}</div>")
+    styled_text("<div style='font-size: 12; font-weight: 900; color: #{@@main_color}; line-height: 1.2'>GSAS #{text[:project_type]}</div><br /><div style='font-size: 14; font-weight: 900;'>#{text[:certificate_name]}</div>")
   end
 
   def draw_scheme_mix_header(scheme_mix)
@@ -327,6 +327,14 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
         image image_path(FOOTER_IMAGE), width: 580
       end
     end
+    # Paging
+    string = "Page <page> of <total>"
+    options = { :at => [@document.bounds.left - 30, @document.bounds.bottom - 20],
+                    :width => 580,
+                    :align => :center,
+                    :size => 10,
+                    :start_count_at => 1}
+    number_pages string, options
   end
 
   def draw_signature
@@ -583,6 +591,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
         header_row = rows(0..row_length - 1)
         header_row.column(0).background_color = @@column_1_color
         header_row.column(0).text_color = TABLE_TEXT_COLOR
+        header_row.column(0).font_style = :bold
         header_row.column(1).background_color = COLUMN_2_COLOR
         header_row.column(1).text_color = TABLE_TEXT_COLOR
         # header_row.font = 'Helvetica'
@@ -728,7 +737,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
         name_column.borders = [:top, :right, :bottom, :left]
         name_column.border_color = TABLE_BORDER_COLOR
         # name_column.border_color = @@main_color
-        # name_column.font_style = :bold
+        name_column.font_style = :bold
         name_column.background_color = @@column_1_color
 
         # Odd/even row style
@@ -770,6 +779,9 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
         name_column.borders = [:top, :right, :bottom, :left]
         name_column.border_color = TABLE_BORDER_COLOR
         name_column.background_color = @@main_color
+
+        header_row = rows(0)
+        header_row.text_color = 'FFFFFF'
       end
     end
   end
@@ -825,7 +837,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
   def draw_criteria_table(scheme_category, scheme_mix_criteria)
     # Prepare table data
     data = []
-    data.append([{content: "#{scheme_category.name.upcase} [#{scheme_category.code}]", rowspan: scheme_mix_criteria.size + 1}, 'Criterion', 'Level', 'Incentive'])
+    data.append([{content: "#{scheme_category.name.upcase} \n [#{scheme_category.code}]", rowspan: scheme_mix_criteria.size + 1}, 'Criterion', 'Awarded Level', 'Awarded Incentive'])
 
     # Add the category rows to the table
     scheme_mix_criteria.each do |smc|

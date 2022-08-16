@@ -11,7 +11,7 @@ class ProjectsSurveysController < AuthenticatedController
 
   def new
     @page_title = 'Surveys'
-    @projects_survey = @project.projects_surveys.new
+    @projects_survey = @project.projects_surveys.new(title: @project.name)
   end
 
   def copy_project_survey
@@ -69,6 +69,15 @@ class ProjectsSurveysController < AuthenticatedController
     report = Reports::SurveyResponseReport.new(@projects_survey, @project)
     report.save_as(filepath)
     send_file filepath, :type => 'application/pdf', :x_sendfile => false
+  end
+
+  def export_excel_survey_results
+    @latest_questions = @projects_survey.survey_questionnaire_version&.survey_questions
+
+    respond_to do |format|
+      format.html
+      format.xlsx
+    end
   end
 
   private 
