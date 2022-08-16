@@ -164,7 +164,7 @@ class Reports::SurveyResponseReport < Reports::BaseReport
         
         # # Header row style
         header_row = rows(0..row_length - 1)
-        header_row.column(0).background_color = 'ffd7bd'
+        header_row.column(0).background_color = '71B5DD'
         header_row.column(0).text_color = TABLE_TEXT_COLOR
         header_row.column(1).background_color = COLUMN_2_COLOR
         header_row.column(1).text_color = TABLE_TEXT_COLOR

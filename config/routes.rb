@@ -63,6 +63,7 @@ Rails.application.routes.draw do
       member do
         get :copy_project_survey
         get :export_survey_results
+        get :export_excel_survey_results
       end
     end
     resources :certification_paths, except: [:index, :edit, :update], path: :certificates do

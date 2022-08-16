@@ -311,6 +311,29 @@ class Project < ApplicationRecord
     end
   end
 
+  def is_op_certificate_submitted?
+    begin
+      if certification_paths.present?
+        recent_certification_path = certification_paths.joins(:certificate).order("certificates.display_weight").last
+        recent_certificate_type = recent_certification_path&.certificate&.certification_type
+        recent_certificate_status = recent_certification_path&.certification_path_status_id
+
+        return ([
+                Certificate.certification_types[:operations_certificate]
+               ].include?(Certificate.certification_types[recent_certificate_type&.to_sym]) && 
+               [
+                CertificationPathStatus::ACTIVATING
+               ].exclude?(recent_certificate_status))
+      else
+        false
+      end
+      
+    rescue StandardError => exception
+      puts exception.message
+      return false
+    end
+  end
+
   private
   def init
     if self.has_attribute?('code')
