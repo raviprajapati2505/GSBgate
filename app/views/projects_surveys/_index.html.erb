@@ -1,4 +1,4 @@
-<% if project.is_project_certified? && project.certificates.pluck(:certificate_type).include?('operations_type') %>
+<% if project.is_op_certificate_submitted? && project.certificates.pluck(:certificate_type).include?('operations_type') %>
   <div class="ibox float-e-margins">
     <div class="ibox-title bg-header-grey">
       <h5>Surveys</h5>
@@ -43,14 +43,23 @@
                 <%= 
                   btn_link_to(project_survey_path(project, survey.id), method: :delete, data: {confirm: "Are you sure to remove this survey ?"}, style: 'danger', icon: 'trash', size: 'small')
                 %>
+                <% 
+                  # show export survey response button if there is at least one response present
+                  question = survey.survey_questionnaire_version&.survey_questions
+                %>
                 <%= 
-                   # show export survey response button if there is at least one response present
-                   question = survey.survey_questionnaire_version&.survey_questions
                    if question.present? && question[0].question_responses.count > 0
                     link_to export_survey_results_project_survey_path(project, survey.id), class: "btn btn-sm btn-btn btn-sm btn-primary" do
-                      ikoen('download', size: :small, title: 'Link comment from other criteria')
+                      ikoen('file-pdf-o', size: :small, title: 'Export results to PDF')
                     end
                    end
+                %>
+                <%= 
+                  if question.present? && question[0].question_responses.count > 0
+                    link_to export_excel_survey_results_project_survey_path(project, survey.id, format: "xlsx"), class: "btn btn-sm btn-btn btn-sm btn-primary" do
+                      ikoen('file-excel-o', size: :small, title: 'Export results to Excel')
+                    end
+                  end
                 %>
               </td>
             </tr>

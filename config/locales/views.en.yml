@@ -432,6 +432,5 @@ en:
           title: Offline Criteria Details
   dashboard:
     index:
-      title_service_provider: Dashboard for Service Provider
-      title_cgp: Dashboard for CGP
+      title: Dashboard
 
