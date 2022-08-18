@@ -75,7 +75,7 @@ class Reports::SurveyResponseReport < Reports::BaseReport
         text = "Released Date: #{@projects_survey&.released_at&.strftime('%d %B, %Y')}\n" 
         text2 = "Title: #{@projects_survey.title}"
 
-        styled_text("<div style='font-size: 8; text-align: right'>#{text}<br />#{text2}</div>")
+        styled_text("<div style='font-size: 8; text-align: right'>#{text}</div>")
       end
     end
   end
@@ -91,7 +91,7 @@ class Reports::SurveyResponseReport < Reports::BaseReport
     latest_questions = @projects_survey.survey_questionnaire_version&.survey_questions
 
     data = []
-
+    newline(1)
     data.append(["Project", @project.code])
     data.append(["Survey Type", @projects_survey.survey_type.title])
     data.append(["Survey Title", @projects_survey.title])
@@ -106,7 +106,6 @@ class Reports::SurveyResponseReport < Reports::BaseReport
     latest_questions.each.with_index(1) do |question, i|
       styled_text("<div style='font-size: 13; line-height: 7; color: 000000;'>Que. #{i}: #{question.question_text}</div>")
       styled_text("<div style='font-size: 10; line-height: 7; color: 000000;'>Desc. : #{question.description}</div>")
-      newline(1)
 
       unless question.fill_in_the_blank?
         # all options with there report count of questions
@@ -116,7 +115,6 @@ class Reports::SurveyResponseReport < Reports::BaseReport
         y_position = cursor
 
         bounding_box([0, y_position], width: 235) do
-          newline(1)
           option_with_counts.each.with_index(1) do |(key, value), index|
             styled_text("<div style='font-size: 10; line-height: 7; color: 000000;'>#{index}) #{key} (#{value} Out of #{total_responses})</div>")
           end
@@ -133,7 +131,10 @@ class Reports::SurveyResponseReport < Reports::BaseReport
         end
       end
 
-      newline(2)
+      newline(1)
+      if i == 3 || i == 6 || i == 9 || i == 11
+        start_new_page
+      end
     end
   end
 
@@ -164,7 +165,7 @@ class Reports::SurveyResponseReport < Reports::BaseReport
         
         # # Header row style
         header_row = rows(0..row_length - 1)
-        header_row.column(0).background_color = '71B5DD'
+        header_row.column(0).background_color = 'a0cde8'
         header_row.column(0).text_color = TABLE_TEXT_COLOR
         header_row.column(1).background_color = COLUMN_2_COLOR
         header_row.column(1).text_color = TABLE_TEXT_COLOR
@@ -184,7 +185,7 @@ class Reports::SurveyResponseReport < Reports::BaseReport
     chart_generator = ChartGeneratorService.new
 
     columnchart_config = {
-      type: 'bar',
+      type: 'doughnut',
       data: {
         labels: option_with_counts.keys,
         font: {
@@ -194,7 +195,12 @@ class Reports::SurveyResponseReport < Reports::BaseReport
           {
             label: 'Count',
             data: option_with_counts.values,
-            backgroundColor: 'rgba(54,111,178,255)',
+            backgroundColor: [
+              'rgb(255, 99, 132)',
+              'rgb(54, 162, 235)',
+              'rgb(255, 205, 86)',
+              'rgba(54,111,178,255)'
+            ],
             borderColor: 'rgba(54,111,178,255)',
             borderWidth: 1
           }
