@@ -101,27 +101,96 @@ class Reports::SurveyResponseReport < Reports::BaseReport
     draw_table(data, true, 'basic_table')
 
     newline(1)
+    overall_satisfaction = 0.00
+
+    data = []
+    # Add the header rows to the table
+    data.append(["Question Label", "Total Number of Responses", "Overall Level of Satisfaction"])
 
     # all question of the survey
     latest_questions.each.with_index(1) do |question, i|
-      styled_text("<div style='font-size: 13; line-height: 7; color: 000000;'>Que. #{i}: #{question.question_text}</div>")
-      styled_text("<div style='font-size: 10; line-height: 7; color: 000000;'>Desc. : #{question.description}</div>")
+      styled_text("<div style='font-size: 13; line-height: 7; color: 000000;'>Q#{i} - #{question.question_text}</div>")
 
       unless question.fill_in_the_blank?
         # all options with there report count of questions
         option_with_counts = survey_question_options_report(@projects_survey, question) rescue {}
-        total_responses = @projects_survey.survey_responses.count rescue 0
+        #total_responses = @projects_survey.survey_responses.count rescue 0
+        total_responses = question.question_responses.with_project_survey(@projects_survey.id).where.not(value: nil).count rescue 0
+        
+        option_satisfied = option_with_counts['Satisfied'] || 0
+        option_neutral = option_with_counts['Neutral'] || 0
+
+        satisfaction_level = ((option_satisfied + 0.75 * option_neutral) / total_responses) * 100 || 0
+
+        overall_satisfaction += satisfaction_level
 
         y_position = cursor
 
         bounding_box([0, y_position], width: 235) do
+          if question.description.present?
+            styled_text("<div style='font-size: 10; line-height: 7; color: 000000;'>Criterion - #{question.description}</div>")
+          end
           option_with_counts.each.with_index(1) do |(key, value), index|
-            styled_text("<div style='font-size: 10; line-height: 7; color: 000000;'>#{index}) #{key} (#{value} Out of #{total_responses})</div>")
+            styled_text("<div style='font-size: 10; line-height: 7; color: 000000;'>#{index} - #{key} (#{value} Out of #{total_responses})</div>")
           end
         end
 
-        bounding_box([300, y_position], width: 235) do
+        bounding_box([300, y_position], width: 235, position: :top) do
+          styled_text("<div style='font-weight: bold; font-size: 10; line-height: 7; color: 2fb548;'><b>Satisfaction Level : #{satisfaction_level}%</b></div>")
           draw_options_graph(option_with_counts)
+        end
+
+        if @projects_survey.survey_type.title == 'INDOOR ENVIRONMENT'
+            total_average_statisfaction = ''
+            # Prepare table data
+            if i == 5
+              total_average_statisfaction =  overall_satisfaction / 5
+              overall_satisfaction = 0.00
+              data.append([question.question_text, total_responses, number_with_precision(total_average_statisfaction, precision: 2)])
+              draw_table(data, true, 'summary_table')
+              start_new_page
+              data = []
+              data.append(["Question Label", "Total Number of Responses", "Overall Level of Satisfaction"])
+            elsif i == 10
+              total_average_statisfaction =  overall_satisfaction / 5
+              overall_satisfaction = 0.00
+              data.append([question.question_text, total_responses, number_with_precision(total_average_statisfaction, precision: 2)])
+              draw_table(data, true, 'summary_table')
+              start_new_page
+              data = []
+              data.append(["Question Label", "Total Number of Responses", "Overall Level of Satisfaction"])
+            elsif i == 14
+              total_average_statisfaction =  overall_satisfaction / 4
+              overall_satisfaction = 0.00
+              data.append([question.question_text, total_responses, number_with_precision(total_average_statisfaction, precision: 2)])
+              draw_table(data, true, 'summary_table')
+              start_new_page
+              data = []
+              data.append(["Question Label", "Total Number of Responses", "Overall Level of Satisfaction"])
+            elsif i == 20
+              total_average_statisfaction =  overall_satisfaction / 6
+              overall_satisfaction = 0.00
+              data.append([question.question_text, total_responses, number_with_precision(total_average_statisfaction, precision: 2)])
+              draw_table(data, true, 'summary_table')
+              start_new_page
+              data = []
+              data.append(["Question Label", "Total Number of Responses", "Overall Level of Satisfaction"])
+            elsif i == 24
+              total_average_statisfaction =  overall_satisfaction / 4
+              overall_satisfaction = 0.00
+              data.append([question.question_text, total_responses, number_with_precision(total_average_statisfaction, precision: 2)])
+              draw_table(data, true, 'summary_table')
+              start_new_page
+              data = []
+              data.append(["Question Label", "Total Number of Responses", "Overall Level of Satisfaction"])
+            else
+              data.append([question.question_text, total_responses, ''])
+            end
+            
+
+            if i == 3 || i == 8 || i == 13 || i == 17 || i == 23
+              start_new_page
+            end
         end
 
       else
@@ -131,9 +200,10 @@ class Reports::SurveyResponseReport < Reports::BaseReport
         end
       end
 
-      newline(1)
-      if i == 3 || i == 6 || i == 9 || i == 11
-        start_new_page
+      if @projects_survey.survey_type.title != 'INDOOR ENVIRONMENT'
+        if i%3 == 0
+          start_new_page
+        end
       end
     end
   end
@@ -178,6 +248,24 @@ class Reports::SurveyResponseReport < Reports::BaseReport
         content_rows.column(1).align = :left
         content_rows.padding = [3, 4, 3, 4]
       end
+    elsif type == 'summary_table'
+      table(data, width: @document.bounds.right) do
+        cells.align = :left
+        cells.borders = []
+        cells.padding = 0
+        cells.border_width = 0.5
+
+        cells.borders = %i(top right bottom left)
+        cells.border_color = TABLE_BORDER_COLOR
+
+        row(0).background_color = 'a0cde8'
+        row(0).text_color = TABLE_TEXT_COLOR
+
+        # Content rows style
+        content_rows = rows(0..row_length - 1)
+        content_rows.column(1).align = :left
+        content_rows.padding = [3, 4, 3, 4]
+      end
     end
   end
 
@@ -209,7 +297,7 @@ class Reports::SurveyResponseReport < Reports::BaseReport
       options: {
         indexAxis: 'x',
         legend: {
-          display: true,
+          display: false,
           position: 'bottom'
         },
         plugins: {
@@ -217,7 +305,14 @@ class Reports::SurveyResponseReport < Reports::BaseReport
             color: "black",
             align: "end",
             anchor: "start"
-          }
+          },
+          legend: {
+            position: 'bottom',
+            align: 'center',
+            title: {
+              position: 'start'
+            }
+          },
         }
       }
     }
