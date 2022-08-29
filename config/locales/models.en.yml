@@ -187,6 +187,7 @@ en:
         organization_name: Organization Name
         service_provider: Service Provider
         active: Profile Active?
+        practitioner_accreditation_type: Practitioner Accreditation Type
         roles:
           system_admin: System administrator
           gsas_trust_top_manager: Chairman

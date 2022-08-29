@@ -15,21 +15,21 @@
         <tr>
           <th>Flags</th>
           <td>
-            <% current_user.demerit_flag.to_i.times do %>
+            <% @user.demerit_flag.to_i.times do %>
               <i class="fa fa-flag fa-lg" style="color:red;"></i>
             <% end %>
           </td>
-          <td><%= current_user&.demerit_flag_updated_at&.strftime('%d %B, %Y') %></td>
+          <td><%= @user&.demerit_flag_updated_at&.strftime('%d %B, %Y') %></td>
         </tr>
         <tr>
           <th>Points</th>
           <td>
             <% points = 0 %>
-            <% current_user.demerit_flag.to_i.times do %>
+            <% @user.demerit_flag.to_i.times do %>
               <%= points = points + 2 %>
             <% end %>
           </td>
-          <td><%= current_user&.demerit_flag_updated_at&.strftime('%d %B, %Y') %></td>
+          <td><%= @user&.demerit_flag_updated_at&.strftime('%d %B, %Y') %></td>
         </tr>
       </tbody>
     </table>

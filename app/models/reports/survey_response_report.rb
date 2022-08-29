@@ -105,7 +105,7 @@ class Reports::SurveyResponseReport < Reports::BaseReport
 
     data = []
     # Add the header rows to the table
-    data.append(["Question Label", "Total Number of Responses", "Overall Level of Satisfaction"])
+    data.append(["Question Label", "Total Number of Responses"])
 
     # all question of the survey
     latest_questions.each.with_index(1) do |question, i|
@@ -120,9 +120,11 @@ class Reports::SurveyResponseReport < Reports::BaseReport
         option_satisfied = option_with_counts['Satisfied'] || 0
         option_neutral = option_with_counts['Neutral'] || 0
 
-        satisfaction_level = ((option_satisfied + 0.75 * option_neutral) / total_responses) * 100 || 0
+        satisfaction_level = ((option_satisfied + 0.75 * option_neutral) / total_responses) * 100
 
-        overall_satisfaction += satisfaction_level
+        if !satisfaction_level.nan?
+          overall_satisfaction += satisfaction_level
+        end
 
         y_position = cursor
 
@@ -146,47 +148,56 @@ class Reports::SurveyResponseReport < Reports::BaseReport
             if i == 5
               total_average_statisfaction =  overall_satisfaction / 5
               overall_satisfaction = 0.00
-              data.append([question.question_text, total_responses, number_with_precision(total_average_statisfaction, precision: 2)])
+              data.append([question.question_text, total_responses])
+              styled_text("<div style='font-size: 13; line-height: 7; color: 000000;'><b>Summary</b></div>")
+              styled_text("<div style='font-weight: bold; font-size: 10; line-height: 7; color: 2fb548;'><b>Overall Satisfaction Level : #{number_with_precision(total_average_statisfaction, precision: 2)}%</b></div>")
               draw_table(data, true, 'summary_table')
               start_new_page
               data = []
-              data.append(["Question Label", "Total Number of Responses", "Overall Level of Satisfaction"])
+              data.append(["Question Label", "Total Number of Responses"])
             elsif i == 10
               total_average_statisfaction =  overall_satisfaction / 5
               overall_satisfaction = 0.00
-              data.append([question.question_text, total_responses, number_with_precision(total_average_statisfaction, precision: 2)])
+              data.append([question.question_text, total_responses])
+              styled_text("<div style='font-size: 13; line-height: 7; color: 000000;'><b>Summary</b></div>")
+              styled_text("<div style='font-weight: bold; font-size: 10; line-height: 7; color: 2fb548;'><b>Overall Satisfaction Level : #{number_with_precision(total_average_statisfaction, precision: 2)}%</b></div>")
               draw_table(data, true, 'summary_table')
               start_new_page
               data = []
-              data.append(["Question Label", "Total Number of Responses", "Overall Level of Satisfaction"])
+              data.append(["Question Label", "Total Number of Responses"])
             elsif i == 14
               total_average_statisfaction =  overall_satisfaction / 4
               overall_satisfaction = 0.00
-              data.append([question.question_text, total_responses, number_with_precision(total_average_statisfaction, precision: 2)])
+              data.append([question.question_text, total_responses])
+              styled_text("<div style='font-size: 13; line-height: 7; color: 000000;'><b>Summary</b></div>")
+              styled_text("<div style='font-weight: bold; font-size: 10; line-height: 7; color: 2fb548;'><b>Overall Satisfaction Level : #{number_with_precision(total_average_statisfaction, precision: 2)}%</b></div>")
               draw_table(data, true, 'summary_table')
               start_new_page
               data = []
-              data.append(["Question Label", "Total Number of Responses", "Overall Level of Satisfaction"])
+              data.append(["Question Label", "Total Number of Responses"])
             elsif i == 20
               total_average_statisfaction =  overall_satisfaction / 6
               overall_satisfaction = 0.00
-              data.append([question.question_text, total_responses, number_with_precision(total_average_statisfaction, precision: 2)])
+              data.append([question.question_text, total_responses])
+              styled_text("<div style='font-size: 13; line-height: 7; color: 000000;'><b>Summary</b></div>")
+              styled_text("<div style='font-weight: bold; font-size: 10; line-height: 7; color: 2fb548;'><b>Overall Satisfaction Level : #{number_with_precision(total_average_statisfaction, precision: 2)}%</b></div>")
               draw_table(data, true, 'summary_table')
               start_new_page
               data = []
-              data.append(["Question Label", "Total Number of Responses", "Overall Level of Satisfaction"])
+              data.append(["Question Label", "Total Number of Responses"])
             elsif i == 24
               total_average_statisfaction =  overall_satisfaction / 4
               overall_satisfaction = 0.00
-              data.append([question.question_text, total_responses, number_with_precision(total_average_statisfaction, precision: 2)])
+              data.append([question.question_text, total_responses])
+              styled_text("<div style='font-size: 13; line-height: 7; color: 000000;'><b>Summary</b></div>")
+              styled_text("<div style='font-weight: bold; font-size: 10; line-height: 7; color: 2fb548;'><b>Overall Satisfaction Level : #{number_with_precision(total_average_statisfaction, precision: 2)}%</b></div>")
               draw_table(data, true, 'summary_table')
               start_new_page
               data = []
-              data.append(["Question Label", "Total Number of Responses", "Overall Level of Satisfaction"])
+              data.append(["Question Label", "Total Number of Responses"])
             else
-              data.append([question.question_text, total_responses, ''])
+              data.append([question.question_text, total_responses])
             end
-            
 
             if i == 3 || i == 8 || i == 13 || i == 17 || i == 23
               start_new_page

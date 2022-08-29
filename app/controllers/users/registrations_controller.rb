@@ -109,22 +109,26 @@ class Users::RegistrationsController < Devise::RegistrationsController
         :organization_phone, 
         :organization_fax_area_code, 
         :organization_fax, 
-        :gsas_id, 
+        :gsas_id,
+        :practitioner_accreditation_type,
         user_detail_attributes: [ 
-            :gender, 
-            :dob,
-            :designation, 
-            :work_experience, 
-            :qid_or_passport_number, 
-            :qid_file,
-            :qid_file_cache,
-            :university_credentials_file, 
-            :work_experience_file, 
-            :cgp_licence_file, 
-            :qid_work_permit_file, 
-            :energy_assessor_name, 
-            :gsas_energey_assessment_licence_file,
-          ]
+          :gender, 
+          :dob,
+          :designation, 
+          :work_experience, 
+          :qid_or_passport_number, 
+          :qid_file,
+          :qid_file_cache,
+          :university_credentials_file, 
+          :work_experience_file, 
+          :cgp_licence_file, 
+          :qid_work_permit_file, 
+          :energy_assessor_name, 
+          :gsas_energey_assessment_licence_file,
+          :education,
+          :education_certificate,
+          :other_documents
+        ]
     ])
   end
 
@@ -155,23 +159,27 @@ class Users::RegistrationsController < Devise::RegistrationsController
         :organization_phone, 
         :organization_fax_area_code, 
         :organization_fax, 
-        :gsas_id, 
+        :gsas_id,
+        :practitioner_accreditation_type,
         user_detail_attributes: [
-            :id, 
-            :gender, 
-            :dob,
-            :designation, 
-            :work_experience, 
-            :qid_or_passport_number, 
-            :qid_file,
-            :qid_file_cache,
-            :university_credentials_file, 
-            :work_experience_file, 
-            :cgp_licence_file, 
-            :qid_work_permit_file, 
-            :energy_assessor_name, 
-            :gsas_energey_assessment_licence_file,
-          ]
+          :id, 
+          :gender, 
+          :dob,
+          :designation, 
+          :work_experience, 
+          :qid_or_passport_number, 
+          :qid_file,
+          :qid_file_cache,
+          :university_credentials_file, 
+          :work_experience_file, 
+          :cgp_licence_file, 
+          :qid_work_permit_file, 
+          :energy_assessor_name, 
+          :gsas_energey_assessment_licence_file,
+          :education,
+          :education_certificate,
+          :other_documents
+        ]
     ])
   end
 
@@ -199,15 +207,17 @@ class Users::RegistrationsController < Devise::RegistrationsController
         :organization_phone, 
         :organization_fax_area_code, 
         :organization_fax, 
-        :gsas_id, 
+        :gsas_id,
+        :practitioner_accreditation_type,
         service_provider_detail_attributes: [
-            :business_field,
-            :portfolio,
-            :commercial_licence_no,
-            :commercial_licence_expiry_date,
-            :commercial_licence_file,
-            :accredited_service_provider_licence_file,
-            :demerit_acknowledgement_file
+          :business_field,
+          :portfolio,
+          :commercial_licence_no,
+          :commercial_licence_expiry_date,
+          :commercial_licence_file,
+          :accredited_service_provider_licence_file,
+          :demerit_acknowledgement_file,
+          :application_form
         ]
     ])
   end
@@ -237,16 +247,18 @@ class Users::RegistrationsController < Devise::RegistrationsController
             :organization_phone, 
             :organization_fax_area_code, 
             :organization_fax, 
-            :gsas_id, 
+            :gsas_id,
+            :practitioner_accreditation_type, 
             service_provider_detail_attributes: [
-                :id,
-                :business_field,
-                :portfolio,
-                :commercial_licence_no,
-                :commercial_licence_expiry_date,
-                :commercial_licence_file,
-                :accredited_service_provider_licence_file,
-                :demerit_acknowledgement_file
+              :id,
+              :business_field,
+              :portfolio,
+              :commercial_licence_no,
+              :commercial_licence_expiry_date,
+              :commercial_licence_file,
+              :accredited_service_provider_licence_file,
+              :demerit_acknowledgement_file,
+              :application_form
             ]
       ])
   end

@@ -60,6 +60,7 @@ class UsersController < AuthenticatedController
       :organization_fax_area_code, 
       :organization_fax, 
       :gsas_id, 
+      :practitioner_accreditation_type,
       user_detail_attributes: [
         :id,
         :gender, 
@@ -75,6 +76,9 @@ class UsersController < AuthenticatedController
         :qid_work_permit_file, 
         :energy_assessor_name, 
         :gsas_energey_assessment_licence_file,
+        :education,
+        :education_certificate,
+        :other_documents
       ],
       service_provider_detail_attributes: [
         :id,
@@ -84,7 +88,8 @@ class UsersController < AuthenticatedController
         :commercial_licence_expiry_date,
         :commercial_licence_file,
         :accredited_service_provider_licence_file,
-        :demerit_acknowledgement_file
+        :demerit_acknowledgement_file,
+        :application_form
       ],
       access_licences_attributes: [
         :id, 
@@ -365,12 +370,18 @@ class UsersController < AuthenticatedController
         file = @user.user_detail&.qid_work_permit_file&.path
       when "gsas_energey_assessment_licence_file"
         file = @user.user_detail&.gsas_energey_assessment_licence_file&.path
+      when "education_certificate"
+        file = @user.user_detail&.education_certificate&.path
+      when "other_documents"
+        file = @user.user_detail&.other_documents&.path
       when "accredited_service_provider_licence_file"
         file = @user.service_provider_detail&.accredited_service_provider_licence_file&.path
       when "commercial_licence_file"
         file = @user.service_provider_detail&.commercial_licence_file&.path
       when "demerit_acknowledgement_file"
         file = @user.service_provider_detail&.demerit_acknowledgement_file&.path
+      when "application_form"
+        file = @user.service_provider_detail&.application_form&.path
       else
         file = ''
       end

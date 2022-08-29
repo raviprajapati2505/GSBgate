@@ -1,0 +1,14 @@
+<%= simple_form_for(@user, url: upload_document_path, html: { method: :post, class: "dashboard-form" }) do |f| %>
+  <%= f.input :file, as: :file, input_html: { class: "dashboard_file_label"} %>
+  <%= f.input :file_name, as: :hidden, input_html: { value: file_name} %>
+  <div class="form-actions hide">
+    <button name="button" type="submit" class="btn btn-primary btn-xs tooltip-processed" data-disable-with="<i class=&quot;fa fa-spinner fa-spin fa-lg&quot;></i>&amp;nbsp;&amp;nbsp;<i class=&quot;fa fa-save fa-lg&quot;></i>&amp;nbsp;&amp;nbsp;Save"><i class="fa fa-save fa-lg"></i></button>
+  </div>
+<% end %>
+<script>
+$(document).ready(function(){
+  $('.dashboard_file_label').change(function(){
+    $(this).parent().parent().find('.form-actions').removeClass('hide')
+  })
+});
+</script>

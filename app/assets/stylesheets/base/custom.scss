@@ -204,3 +204,28 @@ legend.scheduler-border {
 .top-navigation .nav > li > a{
   padding: 15px 13px !important;
 }
+
+.ibox-title.ibox-dashboard-title {
+  background: rgba(97, 166, 14, 0.5);
+  color: #fff;
+  float: none;
+  min-height: 28px !important;
+  padding: 6px;
+  text-align: center;
+}
+.ibox-title.ibox-dashboard-title h5 {
+  float: none;
+  height: 10px;
+}
+
+.dashboard-form .control-label {
+  display: none;
+}
+
+.f-left{
+  float: left
+}
+.f-right{
+  float: right;
+  width: 50%
+}
