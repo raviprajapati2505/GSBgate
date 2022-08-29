@@ -277,6 +277,7 @@ Rails.application.routes.draw do
   end
 
   get 'dashboard' => 'dashboard#index', as: 'dashboard'
+  post 'upload_document' => 'dashboard#upload_document'
 
   # CATCH ALL ROUTE, redirecting the user to a correct page
   # BEWARE: this should be the last line, as it will match any path !!!

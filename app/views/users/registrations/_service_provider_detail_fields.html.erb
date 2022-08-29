@@ -40,6 +40,18 @@
 <br><br>
 
 <div class="row">
+  <div class="col-md-4">
+    <%= f.input :application_form, as: :file, label: t('users.form.application_form') %>
+    <% if user.persisted? && user.service_provider_detail&.application_form.present? %>
+      <% if can?(:download_user_files, user) %>
+        <%= btn_download(download_user_files_user_path(user, :file => "application_form"), size: 'extra_small', tooltip: "Download #{ServiceProviderDetail.human_attribute_name('application_form')}") %>
+      <% end %>
+    <%= truncate(user.service_provider_detail&.application_form.file.filename, length: 35) %>
+    <% end %>
+  </div>
+</div>
+
+<div class="row">
   <div class="col-md-12">
     <label>Acknowledgements</label>
     <p>

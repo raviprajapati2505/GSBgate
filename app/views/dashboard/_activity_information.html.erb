@@ -1,0 +1,26 @@
+<div class="ibox-content">
+  <table class="table table-bordered table-striped user-details-table">
+    <tbody>
+      <tr>
+        <th><%= t('.user_details.activity_info.created_at') %></th>
+        <td><%= @user.created_at&.strftime('%e %b, %Y AT %H:%M') %></td>
+      </tr>
+      <tr>
+        <th><%= t('.user_details.activity_info.confirmed_at') %></th>
+        <td><%= @user.confirmed_at&.strftime('%e %b, %Y AT %H:%M') %></td>
+      </tr>
+      <tr>
+        <th><%= t('.user_details.activity_info.approved_at') %></th>
+        <td><%= @user.approved_at&.strftime('%e %b, %Y AT %H:%M') %></td>
+      </tr>
+      <tr>
+        <th><%= t('.user_details.activity_info.last_sign_in_at') %></th>
+        <td><%= @user.last_sign_in_at&.strftime('%e %b, %Y AT %H:%M') %></td>
+      </tr>
+      <tr>
+        <th><%= t('.user_details.activity_info.updated_at') %></th>
+        <td><%= @user.updated_at&.strftime('%e %b, %Y AT %H:%M') %></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

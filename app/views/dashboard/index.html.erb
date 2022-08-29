@@ -1,4 +1,4 @@
-<% if User.is_service_provider(current_user) %>
+<% if User.is_service_provider(@user) %>
   <%= render partial: 'for_service_provider' %>
 <% else %>
   <%= render partial: 'for_cgp_user' %>

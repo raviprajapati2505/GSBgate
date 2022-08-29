@@ -18,6 +18,9 @@
 			<div class="col-md-4">
 					<%= f.input :username, required: true %>
 			</div>
+			<div class="col-md-4">
+				<%= f.input :practitioner_accreditation_type, collection: User.practitioner_accreditation_types.map{ |k, v| [k.titleize, k]}, include_blank: "Select Education", input_html: {class: "form-control"} %>
+			</div>
 		</div>
 	</div>
 </fieldset>
@@ -114,4 +117,3 @@
      <% end %>
     </div>
 </fieldset>
-
