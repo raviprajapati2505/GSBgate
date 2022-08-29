@@ -21,14 +21,7 @@
     <%= f.input :qid_or_passport_number, required: true %>
   </div>
   <div class="col-md-4">
-    <%= f.input :qid_file, as: :file, label: t('users.form.qid_file_title'), required: true %>
-    <% if user.persisted? && user&.user_detail&.qid_file.present? %>
-      <% if can?(:download_user_files, user) %>
-        <%= btn_download(download_user_files_user_path(user, file: "qid_file"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('qid_file')}") %>
-      <% end %>
-
-      <%= truncate(user.user_detail&.qid_file&.file&.filename, length: 35) %>
-    <% end %>
+    <%= f.input :energy_assessor_name %>
   </div>
 </div>
 
@@ -74,7 +67,14 @@
     <% end %>
   </div>
   <div class="col-md-4">
-    <%= f.input :energy_assessor_name %>
+    <%= f.input :qid_file, as: :file, label: t('users.form.qid_file_title'), required: true %>
+    <% if user.persisted? && user&.user_detail&.qid_file.present? %>
+      <% if can?(:download_user_files, user) %>
+        <%= btn_download(download_user_files_user_path(user, file: "qid_file"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('qid_file')}") %>
+      <% end %>
+
+      <%= truncate(user.user_detail&.qid_file&.file&.filename, length: 35) %>
+    <% end %>
   </div>
   <div class="col-md-4">
     <%= f.input :gsas_energey_assessment_licence_file, as: :file, label: t('users.form.gsas_energy_assessment_file_licence_title'), required: true %>
@@ -84,5 +84,30 @@
       <% end %>
       <%= truncate(user.user_detail&.gsas_energey_assessment_licence_file&.file&.filename, length: 35) %>
     <% end %>
+  </div>
+</div>
+<br>
+<div class="row">
+  <div class="col-md-4">
+    <%= f.input :education_certificate, as: :file, label: t('users.form.education_certificate') %>
+    <% if user.persisted? && user.user_detail&.education_certificate.present? %>
+        <% if can?(:download_user_files, user) %>
+          <%= btn_download(download_user_files_user_path(user, file: "education_certificate"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('education_certificate')}") %>
+        <% end %>
+        <%= truncate(user.user_detail&.education_certificate&.file&.filename, length: 35) %>
+    <% end %>
+  </div>
+  <div class="col-md-4">
+    <%= f.input :other_documents, as: :file, label: t('users.form.other_documents') %>
+    <% if user.persisted? && user&.user_detail&.other_documents.present? %>
+      <% if can?(:download_user_files, user) %>
+        <%= btn_download(download_user_files_user_path(user, file: "other_documents"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('other_documents')}") %>
+      <% end %>
+
+      <%= truncate(user.user_detail&.other_documents&.file&.filename, length: 35) %>
+    <% end %>
+  </div>
+  <div class="col-md-4">
+    <%= f.input :education, collection: UserDetail.educations.map{ |k, v| [k.titleize, k]}, include_blank: "Select Education", input_html: {class: "form-control"} %>
   </div>
 </div>

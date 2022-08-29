@@ -9,4 +9,5 @@ class ServiceProviderDetail < ApplicationRecord
   mount_uploader :commercial_licence_file, UserSubmittalUploader
   mount_uploader :accredited_service_provider_licence_file, UserSubmittalUploader
   mount_uploader :demerit_acknowledgement_file, UserSubmittalUploader
+  mount_uploader :application_form, UserSubmittalUploader
 end
