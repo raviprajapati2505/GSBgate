@@ -70,12 +70,8 @@
                 <td><%= @user.city %></td>
               </tr>
               <tr>
-                <th>Business Field</th>
-                <td><%= @user.gsas_id %></td>
-              </tr>
-              <tr>
                 <th>Education</th>
-                <td><%= @user.gsas_id %></td>
+                <td><%= @user.user_detail&.education&.titleize %></td>
               </tr>
               <tr>
                 <th>ID Number</th>
@@ -84,7 +80,7 @@
               <tr>
                 <th>Education Certificates</th>
                 <td>
-                  <div style="float: left">
+                  <div class="f-left">
                     <% if @user.user_detail&.education_certificate.present? %>
                       <% if can?(:download_user_files, @user) %>
                         <%= btn_download(download_user_files_user_path(@user, file: "education_certificate"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('education_certificate')}") %>
@@ -92,15 +88,17 @@
                       <%= truncate(@user.user_detail&.education_certificate&.file&.filename, length: 35) %>
                     <% end %>
                   </div>
-                  <div style="float:right; width: 50%">
-                    <%= render partial: 'file_upload', locals: { file_name: 'education_certificate'} %>
-                  </div>
+                  <% if ['default_role'].include?(current_user.role) %>
+                    <div class="f-right">
+                      <%= render partial: 'file_upload', locals: { file_name: 'education_certificate', demerit_flag: '', access_licence_id: ''} %>
+                    </div>
+                  <% end %>
                 </td>
               </tr>
               <tr>
                 <th>Experience Certificates</th>
                 <td>
-                  <div style="float: left">
+                  <div style="f-left">
                     <% if @user.user_detail&.work_experience_file.present? %>
                       <% if can?(:download_user_files, @user) %>
                         <%= btn_download(download_user_files_user_path(@user, file: "work_experience_file"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('work_experience_file')}") %>
@@ -108,9 +106,11 @@
                       <%= truncate(@user.user_detail&.work_experience_file&.file&.filename, length: 35) %>
                     <% end %>
                   </div>
-                  <div style="float:right; width: 50%">
-                    <%= render partial: 'file_upload', locals: { file_name: 'work_experience_file'} %>
-                  </div>
+                  <% if ['default_role'].include?(current_user.role) %>
+                    <div class="f-right">
+                      <%= render partial: 'file_upload', locals: { file_name: 'work_experience_file', demerit_flag: '', access_licence_id: ''} %>
+                    </div>
+                   <% end %>
                 </td>
               </tr>
             </tbody>
@@ -180,10 +180,10 @@
               </tr>
               <tr>
                 <th>Practitioner Accreditation</th>
-                <td>Advocate/ Associate/Licentiate/Fellow</td>
+                <td><%= @user&.practitioner_accreditation_type %></td>
               </tr>
                <tr>
-                <th>Working Permit</th>
+                <th>Work Permit</th>
                 <td>
                   <div class="f-left">
                     <% if @user.user_detail&.qid_work_permit_file.present? %>
@@ -193,9 +193,11 @@
                       <%= truncate(@user.user_detail&.qid_work_permit_file&.file&.filename, length: 35) %>
                     <% end %>
                   </div>
-                  <div class="f-right">
-                    <%= render partial: 'file_upload', locals: { file_name: 'qid_work_permit_file'} %>
-                  </div>
+                  <% if ['default_role'].include?(current_user.role) %>
+                    <div class="f-right">
+                      <%= render partial: 'file_upload', locals: { file_name: 'qid_work_permit_file', demerit_flag: '', access_licence_id: ''} %>
+                    </div>
+                  <% end %>
                 </td>
               </tr>
                <tr>
@@ -209,9 +211,11 @@
                       <%= truncate(@user.user_detail&.other_documents&.file&.filename, length: 35) %>
                     <% end %>
                   </div>
-                  <div class="f-right">
-                    <%= render partial: 'file_upload', locals: { file_name: 'other_documents'} %>
-                  </div>
+                  <% if ['default_role'].include?(current_user.role) %>
+                    <div class="f-right">
+                      <%= render partial: 'file_upload', locals: { file_name: 'other_documents', demerit_flag: '', access_licence_id: ''} %>
+                    </div>
+                  <% end %>
                 </td>
               </tr>
             </tbody>

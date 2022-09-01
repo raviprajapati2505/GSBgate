@@ -172,6 +172,8 @@ class UsersController < AuthenticatedController
         redirect_path = dashboard_path
       when 'service_provider'
         redirect_path = dashboard_path
+      when 'credentials_admin'
+        redirect_path = users_path
       else
         redirect_path = :root
     end
@@ -382,6 +384,17 @@ class UsersController < AuthenticatedController
         file = @user.service_provider_detail&.demerit_acknowledgement_file&.path
       when "application_form"
         file = @user.service_provider_detail&.application_form&.path
+      when "portfolio"
+        file = @user.service_provider_detail&.portfolio&.path
+      when "gsas_trust_notification"
+        demerit_flag = DemeritFlag.find(params[:demerit_flag])
+        file = demerit_flag&.gsas_trust_notification&.path
+      when "practitioner_acknowledge"
+        demerit_flag = DemeritFlag.find(params[:demerit_flag])
+        file = demerit_flag&.practitioner_acknowledge&.path
+      when "licence_file"
+        access_licence = AccessLicence.find(params[:access_licence_id])
+        file = access_licence&.licence_file&.path
       else
         file = ''
       end
@@ -389,8 +402,7 @@ class UsersController < AuthenticatedController
   end
 
   def increase_demerit_flag
-    @user.demerit_flag = @user.demerit_flag + 1
-    @user.demerit_flag_updated_at = Date.today
+    demerit_flag = @user.demerit_flags.new
     @user.save(validate: false)
 
     redirect_to user_path(@user), notice: "Warning send to user successfully" and return

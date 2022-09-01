@@ -524,7 +524,10 @@ class Ability
       cannot [:index, :show, :copy_project_survey, :new, :create, :edit, :update, :destroy, :export_survey_results, :export_excel_survey_results], ProjectsSurvey
       cannot [:index, :download_linkme_survey_data], LinkmeSurvey
       can [:index, :upload_document], :dashboard
-
+    elsif user.credentials_admin?
+      can [:show, :edit, :update, :index, :activity_info, :download_user_files], User
+      can [:edit_service_provider, :update_service_provider], ServiceProvider
+      can [:index, :upload_document], :dashboard
     else
       cannot :manage, :all
     end
