@@ -6,6 +6,8 @@ class AccessLicence < ApplicationRecord
   # Validation
   validates :expiry_date, presence: true
 
+  mount_uploader :licence_file
+
   default_scope { joins(:licence).order("licences.display_weight") }
 
   scope :user_access_licences, -> (user_id) {

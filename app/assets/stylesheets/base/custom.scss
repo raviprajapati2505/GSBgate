@@ -222,10 +222,16 @@ legend.scheduler-border {
   display: none;
 }
 
-.f-left{
+.f-left {
   float: left
 }
-.f-right{
+.f-right {
   float: right;
   width: 50%
+}
+.dashboard_file_label {
+  width: 130px;
+}
+.b-word{
+  word-break: break-word !important;
 }

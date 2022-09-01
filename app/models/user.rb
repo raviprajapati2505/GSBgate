@@ -33,6 +33,7 @@ class User < ApplicationRecord
   has_many :cgp_licences, -> { where(licence_type: 'CgpLicence') }, class_name: 'Licence', through: :access_licences, source: :licence
   has_many :cep_licences, -> { where(licence_type: 'CepLicence') }, class_name: 'Licence', through: :access_licences, source: :licence
   has_many :service_provider_licences, -> { where(licence_type: 'ServiceProviderLicence') }, class_name: 'Licence', through: :access_licences, source: :licence
+  has_many :demerit_flags, dependent: :destroy
 
   accepts_nested_attributes_for :access_licences, reject_if: :all_blank, allow_destroy: true
   accepts_nested_attributes_for :user_detail

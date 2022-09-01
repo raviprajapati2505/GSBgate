@@ -38,7 +38,7 @@
           </div>
         </div>
         <div class="ibox-content">
-          <table class="table table-bordered table-striped user-details-table">
+          <table class="table table-bordered table-striped user-details-table table-responsive">
             <tbody>
               <tr>
                 <th>Name</th>
@@ -78,7 +78,21 @@
               </tr>
               <tr>
                 <th>Portfolio</th>
-                <td><%= @user.service_provider_detail&.portfolio %></td>
+                <td>
+                  <div class="f-left">
+                    <% if @user.service_provider_detail&.portfolio.present? %>
+                      <% if can?(:download_user_files, @user) %>
+                        <%= btn_download(download_user_files_user_path(@user, file: "portfolio"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('portfolio')}") %>
+                      <% end %>
+                      <%= truncate(@user.service_provider_detail&.portfolio&.file&.filename, length: 35) %>
+                    <% end %>
+                  </div>
+                  <% if ['service_provider'].include?(current_user.role) %>
+                    <div class="f-right">
+                      <%= render partial: 'file_upload', locals: { file_name: 'portfolio', demerit_flag: '', access_licence_id: ''} %>
+                    </div>
+                  <% end %>
+                </td>
               </tr>
               <tr>
                 <th>Commercial Licence No.</th>
@@ -101,7 +115,7 @@
           </div>
         </div>
         <div class="ibox-content">
-          <table class="table table-bordered table-striped user-details-table">
+          <table class="table table-bordered table-striped user-details-table table-responsive">
             <tbody>
               <tr>
                 <th>Name</th>
@@ -134,9 +148,11 @@
                       <%= truncate(@user.service_provider_detail&.application_form&.file&.filename, length: 35) %>
                     <% end %>
                   </div>
-                  <div class="f-right">
-                    <%= render partial: 'file_upload', locals: { file_name: 'application_form'} %>
-                  </div>
+                  <% if ['service_provider'].include?(current_user.role) %>
+                    <div class="f-right">
+                      <%= render partial: 'file_upload', locals: { file_name: 'application_form', demerit_flag: '', access_licence_id: ''} %>
+                    </div>
+                  <% end %>
                 </td>
               </tr>
             </tbody>
@@ -187,10 +203,10 @@
           </div>
         </div>
         <div class="ibox-content">
-          <table class="table table-bordered table-striped user-details-table">
+          <table class="table table-bordered table-striped user-details-table table-responsive">
             <tbody>
               <tr>
-                <th>Type</th>
+                <th>License Type</th>
                 <th>Name</th>
                 <th>Email</th>
                 <th>GSAS ID</th>
@@ -201,8 +217,8 @@
                   <% if index == 1 %>
                     <td rowspan="<%= @service_provider_user_licences_design.count %>">GSAS-D&B</td>
                   <% end %>
-                  <td><%= link_to(ac.user.full_name, user_path(ac.user)) %></td>
-                  <td><%= ac.user.email %></td>
+                  <td class="b-word"><%= link_to(ac.user.full_name, user_path(ac.user)) %></td>
+                  <td class="b-word"><%= ac.user.email %></td>
                   <td><%= ac.user.gsas_id %></td>
                   <td><%= ac.formatted_expiry_date %></td>
                 </tr>
@@ -218,7 +234,7 @@
           </div>
         </div>
         <div class="ibox-content">
-          <table class="table table-bordered table-striped user-details-table">
+          <table class="table table-bordered table-striped user-details-table table-responsive">
             <tbody>
               <tr>
                 <th>Type</th>
@@ -232,8 +248,8 @@
                   <% if index == 1 %>
                     <td rowspan="<%= @service_provider_user_licences_construction.count %>">GSAS-CM</td>
                   <% end %>
-                  <td><%= link_to(ac.user.full_name, user_path(ac.user)) %></td>
-                  <td><%= ac.user.email %></td>
+                  <td class="b-word"><%= link_to(ac.user.full_name, user_path(ac.user)) %></td>
+                  <td class="b-word"><%= ac.user.email %></td>
                   <td><%= ac.user.gsas_id %></td>
                   <td><%= ac.formatted_expiry_date %></td>
                 </tr>
@@ -249,7 +265,7 @@
           </div>
         </div>
         <div class="ibox-content">
-          <table class="table table-bordered table-striped user-details-table">
+          <table class="table table-bordered table-striped user-details-table table-responsive">
             <tbody>
               <tr>
                 <th>Type</th>
@@ -263,12 +279,72 @@
                   <% if index == 1 %>
                     <td rowspan="<%= @service_provider_user_licences_operation.count %>">GSAS-OP</td>
                   <% end %>
-                  <td><%= link_to(ac.user.full_name, user_path(ac.user)) %></td>
-                  <td><%= ac.user.email %></td>
+                  <td class="b-word"><%= link_to(ac.user.full_name, user_path(ac.user)) %></td>
+                  <td class="b-word"><%= ac.user.email %></td>
                   <td><%= ac.user.gsas_id %></td>
                   <td><%= ac.formatted_expiry_date %></td>
                 </tr>
               <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5><b>Facility Management</b></h5>
+          </div>
+        </div>
+        <div class="ibox-content">
+          <table class="table table-bordered table-striped user-details-table table-responsive">
+            <tbody>
+              <tr>
+                <th>Type</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>GSAS ID</th>
+                <th>Expiry Date</th>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5><b>Waste Management</b></h5>
+          </div>
+        </div>
+        <div class="ibox-content">
+          <table class="table table-bordered table-striped user-details-table table-responsive">
+            <tbody>
+              <tr>
+                <th>Type</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>GSAS ID</th>
+                <th>Expiry Date</th>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5><b>Building Commissioning</b></h5>
+          </div>
+        </div>
+        <div class="ibox-content">
+          <table class="table table-bordered table-striped user-details-table table-responsive">
+            <tbody>
+              <tr>
+                <th>Type</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>GSAS ID</th>
+                <th>Expiry Date</th>
+              </tr>
             </tbody>
           </table>
         </div>

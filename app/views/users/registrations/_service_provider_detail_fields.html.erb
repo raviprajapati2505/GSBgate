@@ -3,7 +3,13 @@
     <%= f.input :business_field, required: true %>
   </div>
   <div class="col-md-4">
-    <%= f.input :portfolio %>
+    <%= f.input :portfolio, as: :file %>
+    <% if user.persisted? && user.service_provider_detail&.portfolio.present? %>
+      <% if can?(:download_user_files, user) %>
+        <%= btn_download(download_user_files_user_path(user, :file => "portfolio"), size: 'extra_small', tooltip: "Download #{ServiceProviderDetail.human_attribute_name('portfolio')}") %>
+      <% end %>
+    <%= truncate(user.service_provider_detail&.portfolio.file.filename, length: 35) %>
+    <% end %>
   </div>
   <div class="col-md-4">
     <%= f.input :commercial_licence_no %>

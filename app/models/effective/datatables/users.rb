@@ -10,7 +10,12 @@ module Effective
       end
 
       datatable do
-        col :name
+        col :name do |rec|          
+          link_to_if(current_user.credentials_admin?,
+            rec.name,
+            dashboard_user_path(rec.id)
+          )
+        end
         col :username
         col :email
         col :role, as: :integer, search: { as: :select, collection: Proc.new { User.roles.map { |k| [t(k[0], scope: 'activerecord.attributes.user.roles'), k[1]] } } } do |rec|
