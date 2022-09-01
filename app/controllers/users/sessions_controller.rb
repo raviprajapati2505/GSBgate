@@ -20,6 +20,8 @@ class Users::SessionsController < Devise::SessionsController
           redirect_path = dashboard_path
         when 'service_provider'
           redirect_path = dashboard_path
+        when 'credentials_admin'
+          redirect_path = users_path
         else
           redirect_path = after_sign_in_path_for(resource)
       end

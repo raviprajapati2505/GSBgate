@@ -178,7 +178,14 @@
                 </tr>
                 <tr>
                   <th><%= ServiceProviderDetail.human_attribute_name('portfolio') %></th>
-                  <td><%= @user.service_provider_detail&.portfolio %></td>
+                  <td>
+                  <% if @user.service_provider_detail&.portfolio.present? %>
+                    <% if can?(:download_user_files, @user) %>
+                      <%= btn_download(download_user_files_user_path(@user, :file => "portfolio"), size: 'extra_small', tooltip: "Download #{ServiceProviderDetail.human_attribute_name('portfolio')}") %>
+                    <% end %>
+                  <%= truncate(@user.service_provider_detail&.portfolio.file.filename, length: 35) %>
+                  <% end %>
+                </td>
                 </tr>
               <% else %>
                 <tr>
@@ -202,7 +209,7 @@
               <tr>
                 <th><%= User.human_attribute_name('demerit_flag') %></th>
                 <td>
-                  <% @user.demerit_flag.to_i.times do %>
+                  <% @user&.demerit_flags.each do %>
                     <i class="fa fa-flag fa-lg" style="color:red;"></i>
                   <% end %>
                 </td>
@@ -238,9 +245,6 @@
 
         <% else %>
           <%= btn_link_to_if(permission: can?(:update, @user), target: edit_user_path(@user), icon: 'edit', text: 'Edit') %>
-          <% if can?(:update, @user) %>
-            <%= btn_link_to(increase_demerit_flag_user_path(@user), {icon: 'exclamation-triangle', text: 'Set Demerti Flag', style: 'danger', method: :get, data: {confirm: 'Are you sure want to send demerit warning to this user?'}}) %>
-          <% end %>
         <% end %>
       </div>
     </div>

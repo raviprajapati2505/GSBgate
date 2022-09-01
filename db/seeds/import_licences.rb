@@ -92,37 +92,37 @@ xlsx.each_with_pagename do |name, sheet|
         print_errors("CP users", cp_errors)
     end
 
-    if(name == 'CGPs')
-        cp_licences_errors = []
-        user_licences_sheet = xlsx.sheet_for('CGPs')
-        header_for_licences = user_licences_sheet.row(3)
+    # if(name == 'CGPs')
+    #     cp_licences_errors = []
+    #     user_licences_sheet = xlsx.sheet_for('CGPs')
+    #     header_for_licences = user_licences_sheet.row(3)
 
-        (5..user_licences_sheet.last_row).each do |i|
-            row_licence = Hash[[header_for_licences, user_licences_sheet.row(i)].transpose]
-            #user = User.find_by(email: row_licence["Email"]&.squish&.strip&.downcase)
+    #     (5..user_licences_sheet.last_row).each do |i|
+    #         row_licence = Hash[[header_for_licences, user_licences_sheet.row(i)].transpose]
+    #         #user = User.find_by(email: row_licence["Email"]&.squish&.strip&.downcase)
 
-            user_email = row_licence["Email"]&.gsub('_x000d_ ', '')&.squish&.strip&.downcase
-            user_name = row_licence["Username"]&.gsub('_x000d_ ', '')&.squish&.strip&.downcase
-            user = User.where('lower(email) = ? OR lower(username) = ?', user_email, user_name).first_or_initialize
+    #         user_email = row_licence["Email"]&.gsub('_x000d_ ', '')&.squish&.strip&.downcase
+    #         user_name = row_licence["Username"]&.gsub('_x000d_ ', '')&.squish&.strip&.downcase
+    #         user = User.where('lower(email) = ? OR lower(username) = ?', user_email, user_name).first_or_initialize
 
-            if user.present?
-                type_of_licences.each do |type|
-                    if row_licence[type].present? && row_licence[type].to_s.squish&.strip != '-'
-                        formatted_date = row_licence[type].to_s
-                        expiry_date = formatted_date.to_date + 2000.years
-                        licence = Licence.find_by(title: type)
-                        access_licence = user.access_licences.find_or_initialize_by(licence_id: licence&.id)
-                        access_licence.expiry_date = expiry_date
-                    end
-                end
-                # save record
-                cp_licences_errors << save_member(i, user)
-            end
-        end
+    #         if user.present?
+    #             type_of_licences.each do |type|
+    #                 if row_licence[type].present? && row_licence[type].to_s.squish&.strip != '-'
+    #                     formatted_date = row_licence[type].to_s
+    #                     expiry_date = formatted_date.to_date + 2000.years
+    #                     licence = Licence.find_by(title: type)
+    #                     access_licence = user.access_licences.find_or_initialize_by(licence_id: licence&.id)
+    #                     access_licence.expiry_date = expiry_date
+    #                 end
+    #             end
+    #             # save record
+    #             cp_licences_errors << save_member(i, user)
+    #         end
+    #     end
 
-        puts "\n\n\n"
-        print_errors("Licences", cp_licences_errors)
-    end
+    #     puts "\n\n\n"
+    #     print_errors("Licences", cp_licences_errors)
+    # end
 end
 
 # create Users Admin
