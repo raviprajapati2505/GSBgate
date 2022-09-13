@@ -57,10 +57,10 @@ xlsx.each_with_pagename do |name, sheet|
         if row[type].present?
             if row[type] == 'YES'
               formatted_date = row['GSAS-D&B License Expiry'].to_s
-              expiry_date = formatted_date.to_date + 2000.years
+              expiry_date = formatted_date.to_date
             else
               formatted_date = row[type].to_s
-              expiry_date = formatted_date.to_date + 2000.years
+              expiry_date = formatted_date.to_date
             end
             licence = Licence.find_by(title: type)
             access_licence = service_provider.access_licences.find_or_initialize_by(licence_id: licence&.id)
@@ -143,7 +143,7 @@ xlsx.each_with_pagename do |name, sheet|
         type_of_licences.each do |type|
           if row[type].present?
             formatted_date = row[type].to_s
-            expiry_date = formatted_date.to_date + 2000.years
+            expiry_date = formatted_date.to_date
             licence = Licence.find_by(title: type)
             access_licence = user.access_licences.find_or_initialize_by(licence_id: licence&.id)
             access_licence.expiry_date = expiry_date
