@@ -13,7 +13,7 @@ class User < ApplicationRecord
 
   enum role: { system_admin: 5, default_role: 1, gsas_trust_top_manager: 2, gsas_trust_manager: 3, gsas_trust_admin: 4, document_controller: 6, record_checker: 7, users_admin: 8, service_provider: 9, credentials_admin: 10, certification_manager: 11 }
 
-  enum practitioner_accreditation_type: { licentiate: 1, advocate: 2, fellow: 3 }
+  enum practitioner_accreditation_type: { licentiate: 1, advocate: 2, fellow: 3, associate: 4 }
 
   belongs_to :service_provider, class_name: 'ServiceProvider', foreign_key: 'service_provider_id', optional: true
   has_one :user_detail, dependent: :destroy

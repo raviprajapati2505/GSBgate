@@ -133,7 +133,7 @@ class Ability
       project_survey.status == 'active' && project_survey.end_date > Date.today
     end
 
-    if user.default_role?
+    if user.default_role? || user.certification_manager?
       # Project controller
       can :read, Project, projects_users: {user_id: user.id}
       can [:download_location_plan, :download_site_plan, :download_design_brief, :download_project_narrative, :download_area_statement, :download_sustainability_features], Project, projects_users: {user_id: user.id}
