@@ -268,9 +268,11 @@ class CertificationPathsController < AuthenticatedController
         if @certification_path.status == "Certified"
           DigestMailer.certificate_approved_email(@certification_path).deliver_now
           
-          unless @certification_path.final_construction?
-            @certification_path.certification_path_status_id = @certification_path.next_status
-            @certification_path.save!
+          if @certification_path.certificate.stage_title != 'Stage 2: CDA, Design & Build Certificate'
+            unless @certification_path.final_construction?
+              @certification_path.certification_path_status_id = @certification_path.next_status
+              @certification_path.save!
+            end
           end
         end
         # If there was an appeal, set the status of the selected criteria to 'Appealed'
