@@ -1,26 +1,43 @@
 
 <div class="loginColumns">
-    <span class="top-title">GSAS Projects Certifications <span class="separator">|</span> Register/Manage a Project</span>
-    <div class="row ibox float-e-margins new-user-content-box">
-        <div class="col-md-6 login-left">
-            <%= image_tag 'layout/gsas_trust_logo.png', class: 'logo' %>
+    
+    <div class="row ibox float-e-margins new-user-content-box justify-content-center align-items-center">
+        <div class="col-md-6 col-sm-12 login-left text-md-center text-sm-center text-lg-left">
+            <%= image_tag 'layout/Logo 2.png', class: 'logo' %>
+            <h1>YOUR GATE FOR A
+            BETTER TOMORROW</h1>
         </div>
-        <div class="col-md-6 login-right">
-            <div class="title">
-                <h2>Login to GSASgate</h2>
-            </div>
-            <div class="form">
-                <%= bootstrap_form_for(User.new, url: users_sessions_check_authentication_path) do |f| %>
-                    <%= f.text_field :username, prepend: image_tag('layout/username-icon.png'), autofocus: true, autocomplete: 'off', placeholder: 'Username', hide_label: true %>
-                    <%= f.password_field :password, prepend: image_tag('layout/password-icon.png'), autocomplete: 'off', placeholder: 'Password', hide_label: true %>
-                    <%= btn_tag(text: 'Login', class: 'block full-width m-b') %>
-                <% end %>
+       
+        <div class="col-md-6 col-sm-12 text-left">
+            <div class="right-part">
+                <%= link_to "GSAS Projects Certifications", "" ,class: 'text-white mb-4 d-inline-block' %> |  <%= link_to "Register/Manage a Project", "" ,class: 'text-white mb-4 d-inline-block' %>
+                <div class="login-right">
+                    <div class="title">
+                        <h2 class="text-green">Login</h2>
+                    </div>
+                    <div class="form">
+                        <%= bootstrap_form_for(User.new, url: users_sessions_check_authentication_path) do |f| %>
+                            <%= f.text_field :username, prepend: image_tag('layout/username-icon.png'), autofocus: true, autocomplete: 'off', placeholder: 'Username', hide_label: true %>
+                            <%= f.password_field :password, prepend: image_tag('layout/password-icon.png'), autocomplete: 'off', placeholder: 'Password', hide_label: true %>
+                            <div class="checkbox my-5">
+                                <input type="checkbox" id="optinosCheckbox1" value="">
+                                <label for="optinosCheckbox1" class="pl-2">
+                                    Remember me
+                                </label>
+                            </div>
+                            <%= btn_tag(text: 'Login', class: 'block full-width mt-4 mb-2') %>
+                        <% end %>
+                    </div>
+                    <%= link_to "Forgot LinkMe username or password?", "" ,class: 'text-white my-3 d-inline-block' %>
+                    <%= image_tag 'layout/Logo.png', class: 'img-responsive d-block login-banner-img mt-5 mb-3' %>
+                
+                </div>
             </div>
 
-            <div class="links">
+           <!-- <div class="links">
                 <%= render "users/shared/links" %>
                 <%= link_to 'SignUp As a Service Provider', new_service_provider_path %>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>

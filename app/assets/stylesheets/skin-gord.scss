@@ -34,7 +34,8 @@
   background: image-url('layout/gsas_trust_background.jpg') no-repeat center center fixed;
   background-size: cover;
   .login-content{
-    margin-bottom: $login-height;
+    // margin-bottom: $login-height;
+    height: 100vh;
     .loginColumns {
       text-align: center;
       .top-title {
@@ -48,24 +49,30 @@
       .row {
         margin-top: 16px;
         .login-left {
-          text-align: center;
-          height: 400px;
-          padding: 32px;
-          padding-top: 155px;
-          background-color: rgba(243, 243, 243, 0.5);
+          text-align: left;
+          background-color: transparent;
           color: $skin-gord-logo-blue;
-          .logo {
-            width: 90%;
-            min-width: 192px;
+          h1{
+            color:#91bd83;
+            font-weight: 500;
           }
+          .logo {
+            width: 80%;
+            min-width: 192px;
+            max-width: 350px;
+          }
+        }
+        .right-part{
+          max-width:500px;
+          margin:auto;
         }
         .login-right {
           text-align: left;
-          height: 400px;
+          // height: 400px;
           padding: 32px;
           //background-color: rgba(97, 166, 14, 0.5);
-          background: rgba(116,159,74,1);
-          background: linear-gradient(to bottom, rgba(116,159,74,1) 0%, rgba(87,118,62,1) 100%);
+          // background: rgba(116,159,74,1);
+          // background: linear-gradient(to bottom, rgba(116,159,74,1) 0%, rgba(87,118,62,1) 100%);
           color: white;
           .title {
             font-family: pf_din_text_universalbold;
@@ -75,16 +82,24 @@
           .form {
             margin-top: 32px;
             button {
-              background-color: #79A44A;
-              font-size: 24px;
+              background-color: #60AD45;
+              font-size: min(max(20px,1.250vw),24px);
               box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.75);
+              box-shadow: none;
+              border-radius: 0;
             }
             input {
               color: $text-color;
-              border-radius: 0 4px 4px 0;
+              border:0px;
+              border-bottom:1px solid #61A60E;
+              background: transparent;
             }
             .input-group-addon {
-              border-radius: 4px 0 0 4px;
+              border-radius: 0;
+              background: transparent;
+              border:0px;
+              border-bottom:1px solid #61A60E;
+              padding-left:0;
             }
           }
           .links {
@@ -99,19 +114,12 @@
     }
   }
   .login-footer {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    overflow: hidden;
-    border: none;
-    padding: 0;
-    background-color:rgba(48,62,72,0.8);
+    background-color:transparent;
     color: white;
-    padding: 32px;
+    padding: 0 3rem;
     a {
       color: white;
-      border-left: 1px solid white;
+      // border-left: 1px solid white;
       padding-left: 4px;
       padding-right: 4px;
     }
