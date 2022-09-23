@@ -1,5 +1,6 @@
-<div class="ibox float-e-margins">
-  <h2><b>Sign-Up For Service Provider</b></h2>
+<div class="ibox float-e-margins sign_up p-3 m-4 new_form">
+<h2 class="text-green m-4"><b>Sign Up For Service Provider</b></h2>
+
   <div class="ibox-content new-user-content-box">
 
     <%= simple_form_for(@service_provider, url: create_service_provider_path(@service_provider), html: { method: :post, class: "user-form" }) do |f| %>

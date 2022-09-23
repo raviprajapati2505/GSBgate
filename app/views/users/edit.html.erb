@@ -11,7 +11,7 @@
 
         <%= f.input :role, collection: User.roles.map{ |k, v| [k.titleize, k]}, include_blank: "Select Role", input_html: {class: "form-control"}, required: true %>
 
-        <%= f.input :gord_employee, required: true %>
+        <%= f.input :gord_employee, required: true , class="text-white" %>
 
         <%= f.input :active, required: true %>
       </div>

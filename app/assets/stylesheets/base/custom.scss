@@ -3375,6 +3375,11 @@ a.text-danger:hover {
     background-color:rgba(15,44,23,67%);
   }
 }
+.text-sm-center {
+  @media (max-width:992px){
+    text-align: center !important;
+  }
+}
 .text-green{
   color:#61A60E !important;
 }
@@ -3392,4 +3397,287 @@ a.text-danger:hover {
 }
 .login-banner-img{
   max-width: 50%;
+}
+
+// 22-9-2022
+.text-sm-center {
+  @media (max-width:992px){
+    text-align: center !important;
+  }
+}
+.justify-content-sm-center{
+  @media (max-width:992px){
+    justify-content: center !important;
+  }
+}
+.dots{
+  display: flex;
+  div{
+    margin:5px;
+    width:1rem;
+    height:1rem;
+    border-radius: 1rem;
+    background-color: #91bd83;
+  }
+}
+// signup 22-9-2022
+.sign_up{
+  background-color: rgba(15, 44, 23, 0.67);
+  .ibox-content{
+    border:0px;
+  }
+}
+fieldset.scheduler-border{
+  border: 1px groove #ebebeb5c !important;
+}
+.new_form {
+
+  .form-control.select2-container {
+    height: 38px !important;
+    padding: 0;
+  }
+  .form-control.datepicker-past{
+    width:calc(100% - 20px)
+  }
+
+  legend {
+    color: #c1c1c1;
+    background: #3c6e00;
+    border-radius: 1rem;
+
+
+  }
+
+  .form-control,
+  .single-line {
+    background-color: transparent;
+    border: 0px;
+    border-bottom: 1px solid #61A60E;
+    font-size: 1.2rem;
+    padding: 1rem 0;
+    height: auto;
+    color: #fff;
+  }
+
+  label {
+    font-size: 1.2rem;
+    color: #61A60E;
+    font-weight: 600;
+  }
+
+  label.required:after {
+    line-height: 14px;
+  }
+
+  select option {
+    background-color: #000;
+    color:#fff;
+  }
+
+  .file {
+    background-color: transparent;
+    color: #fff;
+  }
+
+
+
+}
+
+// alert
+.alert-danger,
+.skin-gord .document-table .document-rejected {
+  color: #ebccd1;
+  background-color: #68191787;
+  border-color: #ebccd1;
+}
+.alert-success, .skin-gord .document-table .document-approved {
+  color: #d6e9c6;
+  background-color: #218123;
+  border-color: #d6e9c6;
+}
+
+a.btn {
+  text-decoration: none !important;
+}
+.btn{
+  border-radius: 0px !important;
+}
+// datepicker
+.datepicker.dropdown-menu {
+  background-color: #000;
+}
+
+.datepicker table tr td.today {
+  background-color: #61A60E !important;
+  border-color: #61A60E !important;
+  color: #fff !important;
+}
+
+.datepicker table tr td.day:hover,
+.datepicker table tr td.focused {
+  background: #225a2a !important;
+  cursor: pointer !important;
+}
+
+.datepicker .datepicker-switch:hover,
+.datepicker .prev:hover,
+.datepicker .next:hover,
+.datepicker tfoot tr th:hover {
+  background: #225a2a !important;
+  cursor: pointer !important;
+}
+
+// 23-9-2022
+.bg-dark-green{
+  background-color: rgba(15, 44, 23, 0.67);
+}
+hr{
+  border:0;
+  border-top: 1px solid #666;
+}
+.datepicker table tr td, .datepicker table tr th{
+  color:#fff;
+}
+.bg-dark-green-solid{
+  background-color: rgb(15,44,23);
+}
+
+.skin-gord {
+  .select2-results .select2-no-results,
+  .select2-results .select2-searching,
+  .select2-results .select2-ajax-error,
+  .select2-results .select2-selection-limit {
+    background: #000;
+    color: #fff;
+  }
+
+  .select2-container .select2-choice .select2-arrow {
+    border-left: 0;
+    background: transparent
+  }
+
+  .select2-drop {
+    background: #000;
+    color: #fff;
+  }
+
+  .select2-drop.select2-drop-above.select2-drop-active {
+    border-top: 0px;
+  }
+
+  .select2-drop-active {
+    border: 0px solid #5897fb;
+    border-top: none;
+  }
+
+  .select2-results .select2-highlighted {
+    background: #61A60E;
+    color: #fff;
+  }
+
+  .select2-search input {
+    background: url('/assets/select2-d6b5d8d….png') no-repeat 100% -22px, linear-gradient(to bottom, #000 85%, #000000 99%) 0 0;
+
+  }
+
+  .select2-dropdown-open.select2-drop-above .select2-choice,
+  .select2-dropdown-open.select2-drop-above .select2-choices {
+    background-image: none !important;
+    border: 0 !important;
+    border-radius: 0;
+    border-bottom: 1px solid #61A60E !important;
+    padding-left: 0;
+  }
+
+  .form-control.select2-container.select2-dropdown-open {
+    border: 0 !important;
+
+  }
+
+  .form-control .select2-choice {
+    border: 0;
+    border-radius: 0px;
+    text-decoration: none !important;
+    background: transparent;
+    height: 36px;
+    line-height: 36px;
+    padding-left: 0;
+    color: #fff;
+    box-shadow: none;
+
+    .select2-arrow b {
+      background-position: 0 5px !important;
+
+    }
+  }
+
+  .select2-results .select2-no-results,
+  .select2-results .select2-searching,
+  .select2-results .select2-ajax-error,
+  .select2-results .select2-selection-limit {
+    background: #000;
+    color: #fff;
+  }
+
+  .select2-container .select2-choice .select2-arrow {
+    border-left: 0;
+    background: transparent
+  }
+
+  .new_form {
+    .select2-drop {
+      background: #000;
+      color: #fff;
+    }
+
+    .select2-drop.select2-drop-above.select2-drop-active {
+      border-top: 0px;
+    }
+
+    .select2-drop-active {
+      border: 0px solid #5897fb;
+      border-top: none;
+    }
+
+    .select2-results .select2-highlighted {
+      background: #61A60E;
+      color: #fff;
+    }
+
+    .select2-search input {
+      background: url('/assets/select2-d6b5d8d….png') no-repeat 100% -22px, linear-gradient(to bottom, #000 85%, #000000 99%) 0 0;
+
+    }
+
+    .select2-dropdown-open.select2-drop-above .select2-choice,
+    .select2-dropdown-open.select2-drop-above .select2-choices {
+      background-image: none !important;
+      border: 0 !important;
+      border-radius: 0;
+      border-bottom: 1px solid #61A60E !important;
+      padding-left: 0;
+    }
+
+    .form-control.select2-container.select2-dropdown-open {
+      border: 0 !important;
+
+    }
+
+    .form-control .select2-choice {
+      border: 0;
+      border-radius: 0px;
+      text-decoration: none !important;
+      background: transparent;
+      height: 36px;
+      line-height: 36px;
+      padding-left: 0;
+      color: #fff;
+      box-shadow: none;
+
+      .select2-arrow b {
+        background-position: 0 5px !important;
+
+      }
+    }
+  }
 }
