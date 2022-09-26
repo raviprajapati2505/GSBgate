@@ -1,0 +1,24 @@
+
+<div class="loginColumns">
+    <span class="top-title">GSAS Projects Certifications <span class="separator">|</span> Register/Manage a Project</span>
+    <div class="row ibox float-e-margins new-user-content-box">
+        <div class="col-md-6 login-left">
+            <%= image_tag 'layout/gsas_trust_logo.png', class: 'logo' %>
+        </div>
+        <div class="col-md-6 login-right">
+            <div class="title">
+                <h2>Login to GSASgate</h2>
+            </div>
+            <p><b>we have just send you an OTP in email, please check your inbox</b></p>
+            <div class="form">
+                <%= bootstrap_form_for(@user, url: validate_otp_path(@user.id), method: "POST") do |f| %>
+                    <%= f.number_field :username, prepend: image_tag('layout/username-icon.png'), autofocus: true, autocomplete: 'off', placeholder: 'Enter OTP', hide_label: true %>
+                    <%= btn_tag(text: 'Submit', class: 'block full-width m-b') %>
+                <% end %>
+                <br>
+                <p>Your OTP for login is : <%= @user.otp %></p>
+            </div>
+        </div>
+    </div>
+</div>
+                

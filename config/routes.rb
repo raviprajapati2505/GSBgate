@@ -15,6 +15,9 @@ Rails.application.routes.draw do
     post '/users/registrations/create_service_provider', to: 'users/registrations#create_service_provider', as: :create_service_provider
     get '/users/registrations/:id/edit_service_provider', to: 'users/registrations#edit_service_provider', as: :edit_service_provider
     put '/users/registrations/:id/update_service_provider', to: 'users/registrations#update_service_provider', as: :update_service_provider
+    post '/users/sessions/check_authentication', to: 'users/sessions#check_authentication'
+    post '/users/sessions/validate_otp/:id', to: 'users/sessions#validate_otp', as: :validate_otp
+    get '/users/sessions/otp/:id', to: 'users/sessions#otp', as: :send_otp
   end
 
   # The priority is based upon order of creation: first created -> highest priority.

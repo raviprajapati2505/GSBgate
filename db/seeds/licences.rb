@@ -84,7 +84,7 @@ Licence.find_or_create_by!(
 # D&B - CGP
 Licence.find_or_create_by!(
   licence_type: 'CgpLicence',
-  display_name: 'GSAS CGP DESIGN & BUILD, TYPE 1 - MEMBERSHIP',
+  display_name: 'GSAS CGP DESIGN & BUILD, ADVOCATE',
   display_weight: 9,
   title: 'TYPE 1 - CGP',
   description: 'GSAS Design & Build Certified Green Professional',
@@ -93,7 +93,7 @@ Licence.find_or_create_by!(
 
 Licence.find_or_create_by!(
   licence_type: 'CgpLicence',
-  display_name: 'GSAS CGP DESIGN & BUILD, TYPE 2 - MEMBERSHIP',
+  display_name: 'GSAS CGP DESIGN & BUILD, LICENTIATE',
   display_weight: 10,
   title: 'TYPE 2 - CGP',
   description: 'GSAS Design & Build Certified Green Professional',
@@ -102,7 +102,7 @@ Licence.find_or_create_by!(
 
 Licence.find_or_create_by!(
   licence_type: 'CgpLicence',
-  display_name: 'GSAS CGP DESIGN & BUILD, TYPE 3 - MEMBERSHIP',
+  display_name: 'GSAS CGP DESIGN & BUILD, ASSOCIATE',
   display_weight: 11,
   title: 'TYPE 3 - CGP',
   description: 'GSAS Design & Build Certified Green Professional',
@@ -135,7 +135,7 @@ Licence.find_or_create_by!(
 # D&B - CEP
 Licence.find_or_create_by!(
   licence_type: 'CepLicence',
-  display_name: 'GSAS CEP DESIGN & BUILD, TYPE 1 - MEMBERSHIP',
+  display_name: 'GSAS CEP DESIGN & BUILD',
   display_weight: 14,
   title: 'TYPE 1 - CEP',
   description: 'GSAS Design & Build Certified Energy Professional',

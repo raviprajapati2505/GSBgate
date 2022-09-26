@@ -5,6 +5,9 @@ class Project < ApplicationRecord
   include Taskable
   include DatePlucker
 
+  enum project_owner_business_sector: { individual: 1, corporate: 2, government: 3 }
+  enum project_developer_business_sector: { individual: 1, corporate: 2, government: 3 }, _prefix: :developer
+
   MAXIMUM_DOCUMENT_FILE_SIZE = 25 # in MB
 
   has_many :projects_users, dependent: :destroy
