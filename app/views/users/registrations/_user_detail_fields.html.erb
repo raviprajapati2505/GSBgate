@@ -2,7 +2,7 @@
   <div class="col-md-4 col-sm-6 col-xs-12">
       <%= f.input :gender, collection: ["Male", "Female"], include_blank: "Choose Gender", input_html: { class: "form-control" }, reqired: true %>
   </div>
-  <div class="col-md-4 col-sm-6 col-xs-12">
+  <div class="col-md-4 col-sm-6 col-xs-12 date-input">
     <%= f.input :dob do %>
       <span><%= ikoen('calendar') %></span>
       <%= f.input_field :dob, value: f.object&.dob&.strftime("%d/%m/%Y"), as: :string, class: "datepicker-past form-control" %>

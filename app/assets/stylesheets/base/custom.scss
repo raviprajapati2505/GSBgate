@@ -3637,6 +3637,13 @@ hr{
   }
 
   .new_form {
+    .date-input{
+      .form-inline{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
     .select2-drop {
       background: #000;
       color: #fff;
