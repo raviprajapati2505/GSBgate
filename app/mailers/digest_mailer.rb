@@ -233,6 +233,11 @@ class DigestMailer < ApplicationMailer
     mail(to: @user.email, subject: 'GSASgate - your licences summary')
   end
 
+  def send_otp_code_to_user(user)
+    @user = user
+    mail(to: @user.email, subject: "GSASgate - OTP for login")
+  end
+
   private
 
   def add_condition(user, notification_type, auditable_type, new_status)

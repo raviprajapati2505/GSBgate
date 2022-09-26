@@ -10,7 +10,7 @@
                 <h2>Login to GSASgate</h2>
             </div>
             <div class="form">
-                <%= bootstrap_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+                <%= bootstrap_form_for(User.new, url: users_sessions_check_authentication_path) do |f| %>
                     <%= f.text_field :username, prepend: image_tag('layout/username-icon.png'), autofocus: true, autocomplete: 'off', placeholder: 'Username', hide_label: true %>
                     <%= f.password_field :password, prepend: image_tag('layout/password-icon.png'), autocomplete: 'off', placeholder: 'Password', hide_label: true %>
                     <%= btn_tag(text: 'Login', class: 'block full-width m-b') %>
