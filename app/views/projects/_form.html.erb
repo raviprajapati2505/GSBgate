@@ -35,6 +35,11 @@
               <% end %>
 
               <%= f.text_field :developer %>
+
+              <%= f.select :project_owner_business_sector, options_for_select(Project.project_owner_business_sectors.map{ |k, v| [k.titleize, k]}, f.object&.project_owner_business_sector), { include_blank: "Select Project Owner Business Sector" }, { class: "form-control" } %>
+
+              <%= f.select :project_developer_business_sector,options_for_select(Project.project_owner_business_sectors.map{ |k, v| [k.titleize, k]}, f.object&.project_developer_business_sector), { include_blank: "Select Project Developer Business Sector" }, { class: "form-control" } %>
+
               <%= f.form_group do %>
                 <label>Or Choose a Predefined Project Developer</label>
                 <%= select_tag(:select_developer, options_for_select(Owner.order(:name).pluck(:name).map{ |dev| [dev, dev] }.push(["Other, Please indicate", "Other"]), @project.developer), include_blank: '- Select a predefined project developer -', hide_label: true, id: 'project_developer_select', class: 'form-control developer-select-dropdown' ) %>

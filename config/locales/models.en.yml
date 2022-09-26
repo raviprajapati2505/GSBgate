@@ -91,6 +91,8 @@ en:
         description: Project Description
         project_actual_images: Project Actual Images
         project_rendering_images: Project Rendering Images
+        project_developer_business_sector: Project Developer Business Sector
+        project_owner_business_sector: Project Owner Business Sector
         team_titles:
           design_certificate: GSAS Design Certificate
           letter_of_conformance: GSAS Design Certificate_LOC
