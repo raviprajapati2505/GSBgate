@@ -3477,6 +3477,16 @@ fieldset.scheduler-border{
   .file {
     background-color: transparent;
     color: #fff;
+    label{
+      color:#61A60E;
+    }
+  }
+  .form-inline{
+    span{
+      .fa{
+        color:#fff;
+      }
+    }
   }
 
 
@@ -3541,7 +3551,9 @@ hr{
 .bg-dark-green-solid{
   background-color: rgb(15,44,23);
 }
-
+.bg-black-light{
+  background-color: #000000bd;
+}
 .skin-gord {
   .select2-results .select2-no-results,
   .select2-results .select2-searching,
