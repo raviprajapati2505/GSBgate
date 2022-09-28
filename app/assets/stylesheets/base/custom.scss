@@ -174,7 +174,7 @@ legend.scheduler-border {
   top: 50px !important;
   width: 100% !important;
   z-index: 99 !important;
-  background: image-url('layout/gsas_trust_background.jpg') no-repeat center center fixed;
+  // background: image-url('layout/gsas_trust_background.jpg') no-repeat center center fixed;
 }
 
 .top-navigation .wrapper.wrapper-content{
@@ -3363,16 +3363,17 @@ a.text-danger:hover {
   margin-right: auto;
   margin-left: auto;
 }
-.container{
-  @media (min-width:1200px){
-    max-width:75%;
-  }
-}
+
 .skin-gord-login{
   background-image:url('/assets/layout/Cover Page_bg.jpg') !important;
   color:#fff;
   .login-content .loginColumns .row .login-right{
     background-color:rgba(15,44,23,67%);
+  }
+  .container{
+    @media (min-width:1200px){
+      max-width:75%;
+    }
   }
 }
 .text-sm-center {
@@ -3698,5 +3699,93 @@ hr{
 
       }
     }
+  }
+}
+
+// 28-9-2022
+// my task menu
+.mw-100{
+  max-width: 100%;
+}
+.skin-gord.after-login{
+  .container{
+    @media (min-width:1200px){
+      max-width:95%;
+    }
+  }
+  .card{
+    .ibox{
+      border-radius: 8px;
+      background: #fff;
+      overflow: hidden;
+      box-shadow: 5px 7px 10px #00000054;
+      padding: 1rem;
+      .ibox-title{
+        background: #61A60E;
+      color: #fff;
+      border: 0px;
+      font-size: min(max(18px,1.367vw),21px);
+        h5{
+          font-size: inherit;
+        }
+      }
+      .ibox-content{
+        padding:0px;
+        margin-top: 1rem;
+        border:0px;
+        label{
+          font-size: min(max(16px,1.302vw),20px);
+          color: #344C54;
+          font-weight: 600;
+        }
+        // form{
+        //   margin-top: 1rem;
+        // }
+      }
+      button,a.btn{
+        border-radius: 5px !important;
+      font-size: min(max(16px,1.302vw),20px);
+      margin:min(max(3px,0.326vw),5px);
+  
+      }
+      .btn-white{
+        background-color: #ED5565;
+    border-color: #ED5565;
+    color: #FFFFFF;
+      }
+     
+    }
+  }
+   // select2
+   .select2-container .select2-choice{
+    height:min(max(30px,2.930vw),45px);;
+    background-image: none;
+    background-color: #fff;
+    border-color: #323e48;
+    font-size: min(max(14px,1.172vw),18px);
+    display: flex;
+    align-items: center;
+    width: 100%;
+
+  }
+  .select2-container{
+display: flex;
+align-items: center;
+  }
+  .select2-search input{
+    background:url("/assets/select2.png") no-repeat 100% -22px, linear-gradient(to bottom, #fff 85%, #eee 99%) 0 0;
+  }
+  .select2-drop {
+    background: #fff;
+    color: #000;
+    font-size: min(max(14px,1.172vw),18px);
+  }
+  .select2-dropdown-open.select2-drop-above .select2-choice, .select2-dropdown-open.select2-drop-above .select2-choices{
+    border:1px solid #323e48;
+    border-radius: 4px;
+  }
+   .select2-results .select2-no-results,  .select2-results .select2-searching,  .select2-results .select2-ajax-error,  .select2-results .select2-selection-limit{
+    color: #000;
+    background-color: #fff;
   }
 }

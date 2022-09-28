@@ -12,39 +12,56 @@
             </div>
 
             <%= image_tag 'layout/Logo 2.png', class: 'logo' %>
-            <h1>YOUR GATE FOR A
-            BETTER TOMORROW</h1>
+            <h1>Your Gateway<br/>
+            to Sustainable <br/>
+            Built Environment
+            </h1>
         </div>
        
         <div class="col-md-6 col-sm-12 text-left my-4">
-            <div class="right-part">
-                <%= link_to "GSAS Projects Certifications", "" ,class: 'text-white mb-4 d-inline-block' %> |  <%= link_to "Register/Manage a Project", "" ,class: 'text-white mb-4 d-inline-block' %>
-                <div class="login-right">
-                    <div class="title">
-                        <h2 class="text-green">Login</h2>
-                    </div>
-                    <div class="form">
+            <div class="d-flex justify-content-center">
+                <div class="right-part">
+                    <!-- <%= link_to "GSAS Projects Certifications", "" ,class: 'text-white mb-4 d-inline-block' %> |  <%= link_to "Register/Manage a Project", "" ,class: 'text-white mb-4 d-inline-block' %> -->
+                    <div class="login-right">
+                        <div class="title">
+                            <h2 class="text-green">Login</h2>
+                        </div>
+                        <div class="form">
 
-                        <%= bootstrap_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-                            <%= f.text_field :username, prepend:content_tag(:i, '',:class=> "fa fa-envelope text-green") , autofocus: true, autocomplete: 'off', placeholder: 'Username', hide_label: true %>
-                            <%= f.password_field :password, prepend: image_tag('layout/password-icon.png'), autocomplete: 'off', placeholder: 'Password', hide_label: true %>
-                            <div class="checkbox my-5">
-                                <input type="checkbox" id="optinosCheckbox1" value="">
-                                <label for="optinosCheckbox1" class="pl-2">
-                                    Remember me
-                                </label>
-                            </div>
-                            <%= btn_tag(text: 'Login', class: 'block full-width mt-4 mb-2') %>
-                        <% end %>
-                    </div>
-                    <%= render "users/shared/links" %>
-                    <%= link_to 'SignUp As a Service Provider', new_service_provider_path ,class: 'text-white my-2 d-inline-block' %>
-            <p class="mt-5 mb-3">Powered by: </p>
+                            <%= bootstrap_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+                                <%= f.text_field :username, prepend:content_tag(:i, '',:class=> "fa fa-envelope text-green") , autofocus: true, autocomplete: 'off', placeholder: 'Username', hide_label: true %>
+                                <%= f.password_field :password, prepend: image_tag('layout/password-icon.png'), autocomplete: 'off', placeholder: 'Password', hide_label: true %>
+                                <div class="checkbox my-5">
+                                    <input type="checkbox" id="optinosCheckbox1" value="">
+                                    <label for="optinosCheckbox1" class="pl-2">
+                                        Remember me
+                                    </label>
+                                </div>
+                                <%= btn_tag(text: 'LOGIN', class: 'block full-width mt-4 mb-2') %>
+                            <% end %>
+                        </div>
+                        <%= render "users/shared/links" %>
+                        <%= link_to 'SignUp As a Service Provider', new_service_provider_path ,class: 'text-white my-2 d-inline-block' %>
+                    <p class="mt-5 mb-3">Powered by: </p>
+                        
+                        <%= image_tag 'layout/GORD & GSAS Trust.svg', class: 'img-responsive d-block login-banner-img mt-5 mb-3' %>
                     
-                    <%= image_tag 'layout/GORD & GSAS Trust.svg', class: 'img-responsive d-block login-banner-img mt-5 mb-3' %>
-                
+                    </div>
                 </div>
+                <div class="right-signup bg-green p-5 d-none d-md-block">
+                    <div class="d-flex flex-column h-100">
+                        <div class="title">
+                                    <b><h2>New <br/>Here?</h2></b>
+                        </div> 
+                        <br/>  
+                        <h3>Sign up <br/>and<br/> discover <br/>more</h3>  
+                        <br/>  
+
+                        <button class="btn bg-white text-green">SIGN UP</button>   
+                        </div> 
+                    </div>
             </div>
+            
 
            <!-- <div class="links">
                 <%= render "users/shared/links" %>
