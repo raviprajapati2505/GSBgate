@@ -1,3 +1,13 @@
+// Various colors
+$text-color: #000;   // Body text
+$gray: #f3f3f4;         // Background wrapper color
+$light-gray: #D1DADE;   // Default label, badget
+$label-badget-color: #5E5E5E;
+$light-blue:#f3f6fb;
+$dark-gray: #c2c2c2;  // Default color
+$yellow: #f8ac59;     // Warrning color
+$red: #ED5565;        // Danger color
+
 // Main colors
 $skin-gord-logo-green: #61A60E;
 $skin-gord-logo-blue: #303E48;
@@ -14,26 +24,14 @@ $skin-gord-color-gsas-trust-team-light: #f8ebac;
 // Basic Colors
 // $navy: #1ab394;       // Primary color
 $navy: $skin-gord-color;       // Primary color
-$dark-gray: #c2c2c2;  // Default color
 // $blue: #1c84c6;       // Success color
 $blue: $skin-gord-a-color;       // Success color
 // $lazur: #23c6c8;      // Info color
 $lazur: $skin-gord-nav-bg;      // Info color
-$yellow: #f8ac59;     // Warrning color
-$red: #ED5565;        // Danger color
-
-
-// Various colors
-$text-color: #000;   // Body text
-$gray: #f3f3f4;         // Background wrapper color
-$light-gray: #D1DADE;   // Default label, badget
-$label-badget-color: #5E5E5E;
-$light-blue:#f3f6fb;
 
 // Spiner color and margin
 $spin-color: $navy;
 $spin-margin: 0 auto;
-
 
 // IBOX colors ( default panel colors)
 $border-color: #e7eaec;     // IBox border
