@@ -112,7 +112,7 @@ en:
         description: Description
         loc_as_per_directory: LOC as per directory
       offline/certification_path:
-        name: Certification Name
+        name: Certification Type
         version: Certification Version
         rating: Certification Ratings
         development_type: Certification Development Type
@@ -120,7 +120,7 @@ en:
         score: Certification Score
         certified_at: Certification Certified At
       offline/scheme_mix:
-        name: Scheme Name
+        name: Typology Name
         weight: Scheme Weighting
       projects_user:
         roles:
@@ -371,7 +371,7 @@ en:
             description: Description
             loc_as_per_directory: LOC as per directory
           certification_path:
-            name: Certification Name
+            name: Certification Type
             version: Certification Version
             rating: Certification Ratings
             development_type: Certification Development Type
@@ -396,7 +396,7 @@ en:
             label: Certification Status
         certifiers_criteria:
           certificate_id:
-            label: Certification Name
+            label: Certification Type
           certificate_version:
             label: Certification Version
           certificate_stage:
@@ -407,7 +407,7 @@ en:
             label: Criteria Status
         projects_certification_paths:
           certificate_id:
-            label: Certification Name
+            label: Certification Type
           assessment_method:
             label: Certification Method
           certificate_version:
@@ -429,9 +429,9 @@ en:
           certification_path_started_at:
             label: Certification Started On
           certification_path_certified_at:
-            label: Certification Certified On
+            label: Certification Awarded On
           certification_path_expires_at:
-            label: Certification Expiry On
+            label: GSASgate Registration Expiry 
           certification_path_certification_path_status_id:
             label: Certification Submission Status
           certification_path_status_is_active:
