@@ -123,8 +123,14 @@
             max-width: 350px;
             margin:2rem 0;
           }
+          
         }
         .right-part{
+          a.btn{
+            border-radius: 3px !important;
+            border:1px solid #61A60E;
+            font-weight: 600;
+          }
           // max-width:500px;
           // margin:auto;
         }
@@ -143,7 +149,7 @@
             line-height: 23px;
             font-weight: 100;
           }
-          button{
+          a.btn{
             border-radius: 3px !important;
             border:1px solid #61A60E;
             font-weight: 600;
