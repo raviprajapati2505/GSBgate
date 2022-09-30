@@ -42,7 +42,7 @@
   border-top: 0px;
 }
 .select2-drop-active {
-  border: 0px solid #5897fb;
+  border: 0px solid $skyblue;
   border-top: none;
 }
 .select2-results .select2-highlighted {
@@ -739,7 +739,7 @@
 
   .dropzone {
     #dropzone-top {
-      border: 2px dashed #e7eaec;
+      border: 2px dashed $border-color;
       background-color: #f9f9f9;
       height: 100px;
       padding: 20px;
@@ -747,7 +747,7 @@
     }
 
     #render-dropzone-top {
-      border: 2px dashed #e7eaec;
+      border: 2px dashed $border-color;
       background-color: #f9f9f9;
       height: 100px;
       padding: 20px;
@@ -764,16 +764,16 @@
       display: table;
       margin: 14px 0 0 0;
       border: none;
-      border-left: 1px solid #e7eaec;
-      border-top: 1px solid #e7eaec;
+      border-left: 1px solid $border-color;
+      border-top: 1px solid $border-color;
     }
 
     #render-dropzone-previews {
       display: table;
       margin: 14px 0 0 0;
       border: none;
-      border-left: 1px solid #e7eaec;
-      border-top: 1px solid #e7eaec;
+      border-left: 1px solid $border-color;
+      border-top: 1px solid $border-color;
     }
 
     #dropzone-bottom {
@@ -784,8 +784,8 @@
       .file-row > div {
         display: table-cell;
         vertical-align: top;
-        border-right: 1px solid #e7eaec;
-        border-bottom: 1px solid #e7eaec;
+        border-right: 1px solid $border-color;
+        border-bottom: 1px solid $border-color;
         border-collapse: collapse;
         padding: 8px;
       }
@@ -799,7 +799,7 @@
       }
 
       .progress {
-        border: 1px solid #e7eaec;
+        border: 1px solid $border-color;
         margin-bottom: 0px;
       }
 
@@ -823,8 +823,8 @@
       .file-row > div {
         display: table-cell;
         vertical-align: top;
-        border-right: 1px solid #e7eaec;
-        border-bottom: 1px solid #e7eaec;
+        border-right: 1px solid $border-color;
+        border-bottom: 1px solid $border-color;
         border-collapse: collapse;
         padding: 8px;
       }
@@ -838,7 +838,7 @@
       }
 
       .progress {
-        border: 1px solid #e7eaec;
+        border: 1px solid $border-color;
         margin-bottom: 0px;
       }
 
@@ -864,7 +864,7 @@
   }
 
   .dropzone.dz-drag-hover #dropzone-top {
-    border: 2px solid #e7eaec;
+    border: 2px solid $border-color;
   }
 
   #dropzone-uploading-notice {

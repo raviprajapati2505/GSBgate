@@ -46,7 +46,7 @@ a.link-mr-2 {
 }
 
 .bg-header-white {
-  background-color: #ffffff !important;
+  background-color: $white !important;
 }
 
 .project-details-table th {
@@ -87,7 +87,7 @@ ul.dt-button-collection {
 
 tr.outline-danger {
   outline: 1px solid $red;
-  box-shadow: 0 0 0 1px rgba(248, 18, 10, 0.308);
+  box-shadow: 0 0 0 1px #f8120a4f;
 }
 
 .bg-disabled {
@@ -109,8 +109,8 @@ fieldset.scheduler-border {
   border: 1px groove #ddd !important;
   padding: 0 1.4em 1.4em 1.4em !important;
   margin: 0 0 1.5em 0 !important;
-  -webkit-box-shadow: 0px 0px 0px 0px #000;
-  box-shadow: 0px 0px 0px 0px #000;
+  -webkit-box-shadow: 0px 0px 0px 0px $black;
+  box-shadow: 0px 0px 0px 0px $black;
 }
 
 legend.scheduler-border {
@@ -127,7 +127,7 @@ legend.scheduler-border {
 }
 
 .border-box-shadow {
-  box-shadow: 10px 10px 5px #62a60a2b;
+  box-shadow: 10px 10px 5px rgba($skin-gord-color, 0.17);
 }
 
 .survey-questions-fields {
@@ -179,7 +179,7 @@ legend.scheduler-border {
 .skin-gord {
   .gord-transparent-green,
   .navbar-nav .dropdown-menu {
-    background-color: #62a60a !important;
+    background-color: $skin-gord-color !important;
   }
 }
 
@@ -203,7 +203,7 @@ legend.scheduler-border {
 
 .ibox-title.ibox-dashboard-title {
   background: rgba(97, 166, 14, 0.5);
-  color: #fff;
+  color: $white;
   float: none;
   min-height: 28px !important;
   padding: 6px;
@@ -235,9 +235,9 @@ legend.scheduler-border {
 // 20-9-2022
 .skin-gord-login {
   background-image: url("/assets/layout/Cover Page_bg.jpg") !important;
-  color: #fff;
+  color: $white;
   .login-content .loginColumns .row .login-right {
-    background-color: rgba(15, 44, 23, 80%);
+    background-color: rgba(15, 44, 23, 0.8);
   }
   .container {
     @media (min-width: 1200px) {
@@ -246,10 +246,10 @@ legend.scheduler-border {
   }
 }
 .text-green {
-  color: #61a60e !important;
+  color: $skin-gord-logo-green !important;
 }
 .text-white {
-  color: #fff !important;
+  color: $white !important;
 }
 .bg-transparent {
   background: transparent !important;
@@ -304,16 +304,16 @@ fieldset.scheduler-border {
   .single-line {
     background-color: transparent;
     border: 0px;
-    border-bottom: 1px solid #61a60e;
+    border-bottom: 1px solid $skin-gord-logo-green;
     font-size: 1.2rem;
     padding: 1rem 0;
     height: auto;
-    color: #fff;
+    color: $white;
   }
 
   label {
     font-size: 1.2rem;
-    color: #61a60e;
+    color: $skin-gord-logo-green;
     font-weight: 600;
   }
 
@@ -322,21 +322,21 @@ fieldset.scheduler-border {
   }
 
   select option {
-    background-color: #000;
-    color: #fff;
+    background-color: $black;
+    color: $white;
   }
 
   .file {
     background-color: transparent;
-    color: #fff;
+    color: $white;
     label {
-      color: #61a60e;
+      color: $skin-gord-logo-green;
     }
   }
   .form-inline {
     span {
       .fa {
-        color: #fff;
+        color: $white;
       }
     }
   }
@@ -344,13 +344,13 @@ fieldset.scheduler-border {
 
 // datepicker
 .datepicker.dropdown-menu {
-  background-color: #000;
+  background-color: $black;
 }
 
 .datepicker table tr td.today {
-  background-color: #61a60e !important;
-  border-color: #61a60e !important;
-  color: #fff !important;
+  background-color: $skin-gord-logo-green !important;
+  border-color: $skin-gord-logo-green !important;
+  color: $white !important;
 }
 
 .datepicker table tr td.day:hover,
@@ -377,21 +377,21 @@ hr {
 }
 .datepicker table tr td,
 .datepicker table tr th {
-  color: #fff;
+  color: $white;
 }
 .bg-dark-green-solid {
   background-color: rgb(15, 44, 23);
 }
 .bg-black-light {
-  background-color: #000000bd;
+  background-color: rgba($black, 0.74);
 }
 .skin-gord {
   .select2-results .select2-no-results,
   .select2-results .select2-searching,
   .select2-results .select2-ajax-error,
   .select2-results .select2-selection-limit {
-    background: #000;
-    color: #fff;
+    background: $black;
+    color: $white;
   }
 
   .select2-container .select2-choice .select2-arrow {
@@ -400,8 +400,8 @@ hr {
   }
 
   .select2-drop {
-    background: #000;
-    color: #fff;
+    background: $black;
+    color: $white;
   }
 
   .select2-drop.select2-drop-above.select2-drop-active {
@@ -409,18 +409,18 @@ hr {
   }
 
   .select2-drop-active {
-    border: 0px solid #5897fb;
+    border: 0px solid $skyblue;
     border-top: none;
   }
 
   .select2-results .select2-highlighted {
-    background: #61a60e;
-    color: #fff;
+    background: $skin-gord-logo-green;
+    color: $white;
   }
 
   .select2-search input {
     background: url("/assets/select2-d6b5d8d….png") no-repeat 100% -22px,
-      linear-gradient(to bottom, #000 85%, #000000 99%) 0 0;
+      linear-gradient(to bottom, $black 85%, $black 99%) 0 0;
   }
 
   .select2-dropdown-open.select2-drop-above .select2-choice,
@@ -428,7 +428,7 @@ hr {
     background-image: none !important;
     border: 0 !important;
     border-radius: 0;
-    border-bottom: 1px solid #61a60e !important;
+    border-bottom: 1px solid $skin-gord-logo-green !important;
     padding-left: 0;
   }
 
@@ -444,7 +444,7 @@ hr {
     height: 36px;
     line-height: 36px;
     padding-left: 0;
-    color: #fff;
+    color: $white;
     box-shadow: none;
 
     .select2-arrow b {
@@ -456,8 +456,8 @@ hr {
   .select2-results .select2-searching,
   .select2-results .select2-ajax-error,
   .select2-results .select2-selection-limit {
-    background: #000;
-    color: #fff;
+    background: $black;
+    color: $white;
   }
 
   .select2-container .select2-choice .select2-arrow {
@@ -474,8 +474,8 @@ hr {
       }
     }
     .select2-drop {
-      background: #000;
-      color: #fff;
+      background: $black;
+      color: $white;
     }
 
     .select2-drop.select2-drop-above.select2-drop-active {
@@ -483,18 +483,18 @@ hr {
     }
 
     .select2-drop-active {
-      border: 0px solid #5897fb;
+      border: 0px solid $skyblue;
       border-top: none;
     }
 
     .select2-results .select2-highlighted {
-      background: #61a60e;
-      color: #fff;
+      background: $skin-gord-logo-green;
+      color: $white;
     }
 
     .select2-search input {
       background: url("/assets/select2-d6b5d8d….png") no-repeat 100% -22px,
-        linear-gradient(to bottom, #000 85%, #000000 99%) 0 0;
+        linear-gradient(to bottom, $black 85%, $black 99%) 0 0;
     }
 
     .select2-dropdown-open.select2-drop-above .select2-choice,
@@ -502,7 +502,7 @@ hr {
       background-image: none !important;
       border: 0 !important;
       border-radius: 0;
-      border-bottom: 1px solid #61a60e !important;
+      border-bottom: 1px solid $skin-gord-logo-green !important;
       padding-left: 0;
     }
 
@@ -518,7 +518,7 @@ hr {
       height: 36px;
       line-height: 36px;
       padding-left: 0;
-      color: #fff;
+      color: $white;
       box-shadow: none;
 
       .select2-arrow b {
@@ -542,13 +542,13 @@ hr {
   .card {
     .ibox {
       border-radius: 8px;
-      background: #fff;
+      background: $white;
       overflow: hidden;
-      box-shadow: 5px 7px 10px #00000054;
+      box-shadow: 5px 7px 10px rgba($black, 0.33));
       padding: 1rem;
       .ibox-title {
-        background: #61a60e;
-        color: #fff;
+        background: $skin-gord-logo-green;
+        color: $white;
         border: 0px;
         font-size: min(max(18px, 1.367vw), 21px);
         h5 {
@@ -561,7 +561,7 @@ hr {
         border: 0px;
         label {
           font-size: min(max(16px, 1.302vw), 20px);
-          color: #344c54;
+          color: $skin-gord-logo-blue;
           font-weight: 600;
         }
         // form{
@@ -575,9 +575,9 @@ hr {
         margin: min(max(3px, 0.326vw), 5px);
       }
       .btn-white {
-        background-color: #ed5565;
-        border-color: #ed5565;
-        color: #ffffff;
+        background-color: $red;
+        border-color: $red;
+        color: $white;
       }
     }
   }
@@ -585,8 +585,8 @@ hr {
   .select2-container .select2-choice {
     height: min(max(30px, 2.93vw), 45px);
     background-image: none;
-    background-color: #fff;
-    border-color: #323e48;
+    background-color: $white;
+    border-color: $skin-gord-logo-blue;
     font-size: min(max(14px, 1.172vw), 18px);
     display: flex;
     align-items: center;
@@ -597,23 +597,23 @@ hr {
     align-items: center;
   }
   .select2-search input {
-    background: url("/assets/select2.png") no-repeat 100% -22px, linear-gradient(to bottom, #fff 85%, #eee 99%) 0 0;
+    background: url("/assets/select2.png") no-repeat 100% -22px, linear-gradient(to bottom, $white 85%, #eee 99%) 0 0;
   }
   .select2-drop {
-    background: #fff;
-    color: #000;
+    background: $white;
+    color: $black;
     font-size: min(max(14px, 1.172vw), 18px);
   }
   .select2-dropdown-open.select2-drop-above .select2-choice,
   .select2-dropdown-open.select2-drop-above .select2-choices {
-    border: 1px solid #323e48;
+    border: 1px solid $skin-gord-logo-blue;
     border-radius: 4px;
   }
   .select2-results .select2-no-results,
   .select2-results .select2-searching,
   .select2-results .select2-ajax-error,
   .select2-results .select2-selection-limit {
-    color: #000;
-    background-color: #fff;
+    color: $black;
+    background-color: $white;
   }
 }

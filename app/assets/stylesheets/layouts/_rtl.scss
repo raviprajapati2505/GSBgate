@@ -58,7 +58,7 @@ body.rtls {
   }
 
   .timeline-item .content {
-    border-right: 1px solid #e7eaec;
+    border-right: 1px solid $border-color;
     border-left: none;
   }
 
@@ -113,7 +113,7 @@ body.rtls {
   }
 
   .b-r {
-    border-left: 1px solid #e7eaec;
+    border-left: 1px solid $border-color;
     border-right: none;
   }
 

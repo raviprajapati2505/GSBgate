@@ -1,18 +1,31 @@
-// Various colors
-$text-color: #000;   // Body text
-$gray: #f3f3f4;         // Background wrapper color
-$light-gray: #D1DADE;   // Default label, badget
-$label-badget-color: #5E5E5E;
-$light-blue:#f3f6fb;
-$dark-gray: #c2c2c2;  // Default color
-$yellow: #f8ac59;     // Warrning color
-$red: #ED5565;        // Danger color
+// color system
+$white:    #ffffff !default;
+$gray: #f3f3f4;
+$gray-100: #f8f9fa !default;
+$gray-200: #e9ecef !default;
+$gray-300: #dee2e6 !default;
+$gray-400: #ced4da !default;
+$gray-500: #adb5bd !default;
+$gray-600: #6c757d !default;
+$gray-700: #495057 !default;
+$gray-800: #343a40 !default;
+$gray-900: #212529 !default;
+$black:    #000000 !default;
+
+
+ // Default label, badget
+$label-badget-color: #5e5e5e;
+$light-blue: #f3f6fb;
+$dark-gray: #c2c2c2; // Default color
+$yellow: #f8ac59; // Warrning color
+$red: #ed5565; // Danger color
+$skyblue: #5897fb;
 
 // Main colors
-$skin-gord-logo-green: #61A60E;
-$skin-gord-logo-blue: #303E48;
-$skin-gord-color: #62A60A;
-$skin-gord-color-light: #E5FACF;
+$skin-gord-logo-green: #61a60e;
+$skin-gord-logo-blue: #303e48;
+$skin-gord-color: #62a60a;
+$skin-gord-color-light: #e5facf;
 $skin-gord-nav-bg: #6fa428;
 $skin-gord-a-color: #3b5c15;
 $skin-gord-page-bg: #f4f6fa;
@@ -23,32 +36,33 @@ $skin-gord-color-gsas-trust-team-light: #f8ebac;
 
 // Basic Colors
 // $navy: #1ab394;       // Primary color
-$navy: $skin-gord-color;       // Primary color
+$navy: $skin-gord-color; // Primary color
 // $blue: #1c84c6;       // Success color
-$blue: $skin-gord-a-color;       // Success color
+$blue: $skin-gord-a-color; // Success color
 // $lazur: #23c6c8;      // Info color
-$lazur: $skin-gord-nav-bg;      // Info color
+$lazur: $skin-gord-nav-bg; // Info color
+$text-color: $black; // Body text
 
 // Spiner color and margin
 $spin-color: $navy;
 $spin-margin: 0 auto;
 
 // IBOX colors ( default panel colors)
-$border-color: #e7eaec;     // IBox border
-$ibox-title-bg:#ffffff;     // IBox Background header
-$ibox-content-bg:#ffffff;   // IBox Background content
+$border-color: #e7eaec; // IBox border
+$ibox-title-bg: $white; // IBox Background header
+$ibox-content-bg: $white; // IBox Background content
 
 //Sidebar width
 $sidebar-width: 220px;
 
 // Boxed layout width
 $boxed-width: 1200px;
-$boxed-backgound: image-url('patterns/shattered.png');
+$boxed-backgound: image-url("patterns/shattered.png");
 
 //Border radius for buttons
 $btn-border-radius: 3px;
 
 //Navigation
-$nav-bg: #2F4050;
+$nav-bg: #2f4050;
 $nav-profil-pattern: image-url("patterns/header-profile.png") no-repeat;
 $nav-text-color: #a7b1c2;
