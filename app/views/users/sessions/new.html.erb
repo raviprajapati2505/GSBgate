@@ -37,7 +37,11 @@
                                         Remember me
                                     </label>
                                 </div>
-                                <%= btn_tag(text: 'LOGIN', class: 'block full-width mt-4 mb-2') %>
+                                <%= btn_tag(text: 'LOGIN', class: 'block login full-width mt-4 mb-2') %>
+                                <div class="d-md-none d-sm-block d-xs-block">
+                                    <p class="my-3">New Here? Sign up and discover more</p>
+                                    <%= btn_tag(text: 'SIGN UP', class: 'block full-width  mb-2 btn bg-white text-green') %>
+                                </div>
                             <% end %>
                         </div>
                         <%= render "users/shared/links" %>

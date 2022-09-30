@@ -3,7 +3,7 @@
 }
 
 .bg-white {
-    background-color: white;
+    background-color: white !important;
 }
 
 .bg-offwhite {
@@ -24,6 +24,9 @@
 
 .d-block {
     display: block !important;
+}
+.d-none{
+    display: none !important;
 }
 
 .d-table {
