@@ -11,7 +11,9 @@
   height: 32px;
 }
 
-.sidebard-panel .feed-element, .media-body, .sidebard-panel p {
+.sidebard-panel .feed-element,
+.media-body,
+.sidebard-panel p {
   font-size: 12px;
 }
 
@@ -30,18 +32,20 @@
   border: 0;
 }
 
-.sidebar-content .wrapper, .wrapper.sidebar-content {
+.sidebar-content .wrapper,
+.wrapper.sidebar-content {
   padding-right: 230px !important;
 }
 
-.body-small .sidebar-content .wrapper, .body-small .wrapper.sidebar-content {
+.body-small .sidebar-content .wrapper,
+.body-small .wrapper.sidebar-content {
   padding-right: 20px !important;
 }
 
 // Right sidebar
 
 #right-sidebar {
-  background-color: #fff;
+  background-color: $white;
   border-left: 1px solid $border-color;
   border-top: 1px solid $border-color;
   overflow: hidden;
@@ -63,7 +67,6 @@
 }
 
 .sidebar-container {
-
   ul.nav-tabs {
     border: none;
   }
@@ -88,7 +91,7 @@
     margin: 0;
     border-radius: 0;
     background: $nav-bg;
-    color: #fff;
+    color: $white;
     text-align: center;
 
     border-right: 1px solid lighten($nav-bg, 2%);
@@ -96,17 +99,14 @@
 
   ul.nav-tabs li.active a {
     border: none;
-    background: #f9f9f9;
+    background: $gray-100;
     color: $text-color;
     font-weight: bold;
-
   }
 
   .nav-tabs > li.active > a:hover,
   .nav-tabs > li.active > a:focus {
-
     border: none;
-
   }
 
   ul.sidebar-list {
@@ -122,12 +122,12 @@
     font-size: 12px;
   }
 
-  ul.sidebar-list li:nth-child(2n+2) {
-    //    background: #f9f9f9;
-  }
+  // ul.sidebar-list li:nth-child(2n+2) {
+  //      background: $gray-100;
+  // }
 
-  .sidebar-message:nth-child(2n+2) {
-    background: #f9f9f9;
+  .sidebar-message:nth-child(2n + 2) {
+    background: $gray-100;
   }
 
   ul.sidebar-list li a {
@@ -140,12 +140,8 @@
     font-size: 12px;
   }
 
-  .date-item {
-
-  }
-
   .sidebar-title {
-    background: #f9f9f9;
+    background: $gray-100;
     padding: 20px;
     border-bottom: 1px solid $border-color;
 
@@ -156,11 +152,9 @@
   }
 
   .tab-content {
-
     h4 {
       margin-bottom: 5px;
     }
-
   }
 
   .sidebar-message > a > .pull-left {
@@ -176,9 +170,9 @@
     padding: 15px 20px;
   }
 
-  .sidebar-message:hover {
-    //    background: #f9f9f9;
-  }
+  // .sidebar-message:hover {
+  //      background: $gray-100;
+  // }
 
   .sidebar-message .message-avatar {
     height: 38px;
@@ -190,6 +184,4 @@
     padding: 15px 20px;
     border-bottom: 1px solid $border-color;
   }
-
 }
-

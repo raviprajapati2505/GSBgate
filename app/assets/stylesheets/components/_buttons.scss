@@ -36,19 +36,19 @@
 .btn-info.btn-outline:hover,
 .btn-warning.btn-outline:hover,
 .btn-danger.btn-outline:hover {
-  color: #fff;
+  color: $white;
 }
 
 .btn-primary {
   background-color: $navy;
   border-color: $navy;
-  color: #FFFFFF;
+  color: $white;
 }
 
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary, .btn-primary:active:focus, .btn-primary:active:hover, .btn-primary.active:hover, .btn-primary.active:focus {
   background-color: darken($navy, 3%);
   border-color: darken($navy, 3%);
-  color: #FFFFFF;
+  color: $white;
 }
 
 .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary {
@@ -63,13 +63,13 @@
 .btn-success {
   background-color: $blue;
   border-color: $blue;
-  color: #FFFFFF;
+  color: $white;
 }
 
 .btn-success:hover, .btn-success:focus, .btn-success:active, .btn-success.active, .open .dropdown-toggle.btn-success, .btn-success:active:focus, .btn-success:active:hover, .btn-success.active:hover, .btn-success.active:focus {
   background-color: darken($blue, 3%);
   border-color: darken($blue, 3%);
-  color: #FFFFFF;
+  color: $white;
 }
 
 .btn-success:active, .btn-success.active, .open .dropdown-toggle.btn-success {
@@ -84,13 +84,13 @@
 .btn-info {
   background-color: $lazur;
   border-color: $lazur;
-  color: #FFFFFF;
+  color: $white;
 }
 
 .btn-info:hover, .btn-info:focus, .btn-info:active, .btn-info.active, .open .dropdown-toggle.btn-info, .btn-info:active:focus, .btn-info:active:hover, .btn-info.active:hover, .btn-info.active:focus {
   background-color: darken($lazur, 3%);
   border-color: darken($lazur, 3%);
-  color: #FFFFFF;
+  color: $white;
 }
 
 .btn-info:active, .btn-info.active, .open .dropdown-toggle.btn-info {
@@ -104,7 +104,7 @@
 
 .btn-default {
   color: inherit;
-  background: white;
+  background: $white;
   border: 1px solid $border-color;
 }
 
@@ -124,13 +124,13 @@
 .btn-warning {
   background-color: $yellow;
   border-color: $yellow;
-  color: #FFFFFF;
+  color: $white;
 }
 
 .btn-warning:hover, .btn-warning:focus, .btn-warning:active, .btn-warning.active, .open .dropdown-toggle.btn-warning, .btn-warning:active:focus, .btn-warning:active:hover, .btn-warning.active:hover, .btn-warning.active:focus {
   background-color: darken($yellow, 3%);
   border-color: darken($yellow, 3%);
-  color: #FFFFFF;
+  color: $white;
 }
 
 .btn-warning:active, .btn-warning.active, .open .dropdown-toggle.btn-warning {
@@ -145,13 +145,13 @@
 .btn-danger {
   background-color: $red;
   border-color: $red;
-  color: #FFFFFF;
+  color: $white;
 }
 
 .btn-danger:hover, .btn-danger:focus, .btn-danger:active, .btn-danger.active, .open .dropdown-toggle.btn-danger, .btn-danger:active:focus, .btn-danger:active:hover, .btn-danger.active:hover, .btn-danger.active:focus {
   background-color: darken($red, 3%);
   border-color: darken($red, 3%);
-  color: #FFFFFF;
+  color: $white;
 }
 
 .btn-danger:active, .btn-danger.active, .open .dropdown-toggle.btn-danger {
@@ -182,7 +182,7 @@
 
 .btn-white {
   color: inherit;
-  background: white;
+  background: $white;
   border: 1px solid $border-color;
 }
 
@@ -293,7 +293,7 @@ button.dim:before {
   font-size: 50px;
   line-height: 1em;
   font-weight: normal;
-  color: #fff;
+  color: $white;
   display: block;
   padding-top: 10px;
 

@@ -42,7 +42,7 @@ a.link-mr-2 {
 }
 
 .bg-header-grey {
-  background-color: #f9f9f9;
+  background-color: $gray-100;
 }
 
 .bg-header-white {
@@ -91,7 +91,7 @@ tr.outline-danger {
 }
 
 .bg-disabled {
-  background-color: #eeeeee;
+  background-color: $border-color;
   opacity: 1;
 }
 
@@ -106,7 +106,7 @@ form.user-form .icheckbox_square-green {
 }
 
 fieldset.scheduler-border {
-  border: 1px groove #ddd !important;
+  border: 1px groove $gray-200 !important;
   padding: 0 1.4em 1.4em 1.4em !important;
   margin: 0 0 1.5em 0 !important;
   -webkit-box-shadow: 0px 0px 0px 0px $black;
@@ -127,7 +127,7 @@ legend.scheduler-border {
 }
 
 .border-box-shadow {
-  box-shadow: 10px 10px 5px rgba($skin-gord-color, 0.17);
+  box-shadow: 10px 10px 5px rgba(var($skin-gord-color), 0.17);
 }
 
 .survey-questions-fields {
@@ -355,7 +355,7 @@ fieldset.scheduler-border {
 
 .datepicker table tr td.day:hover,
 .datepicker table tr td.focused {
-  background: #225a2a !important;
+  background: $skin-gord-a-color !important;
   cursor: pointer !important;
 }
 
@@ -363,7 +363,7 @@ fieldset.scheduler-border {
 .datepicker .prev:hover,
 .datepicker .next:hover,
 .datepicker tfoot tr th:hover {
-  background: #225a2a !important;
+  background: $skin-gord-a-color !important;
   cursor: pointer !important;
 }
 
@@ -373,7 +373,7 @@ fieldset.scheduler-border {
 }
 hr {
   border: 0;
-  border-top: 1px solid #666;
+  border-top: 1px solid $gray-600;
 }
 .datepicker table tr td,
 .datepicker table tr th {
@@ -383,7 +383,7 @@ hr {
   background-color: rgb(15, 44, 23);
 }
 .bg-black-light {
-  background-color: rgba($black, 0.74);
+  background-color: rgba(var($black), 0.74);
 }
 .skin-gord {
   .select2-results .select2-no-results,
@@ -544,7 +544,7 @@ hr {
       border-radius: 8px;
       background: $white;
       overflow: hidden;
-      box-shadow: 5px 7px 10px rgba($black, 0.33));
+      box-shadow: 5px 7px 10px rgba(var($black), 0.33);
       padding: 1rem;
       .ibox-title {
         background: $skin-gord-logo-green;
@@ -597,7 +597,7 @@ hr {
     align-items: center;
   }
   .select2-search input {
-    background: url("/assets/select2.png") no-repeat 100% -22px, linear-gradient(to bottom, $white 85%, #eee 99%) 0 0;
+    background: url("/assets/select2.png") no-repeat 100% -22px, linear-gradient(to bottom, $white 85%, $border-color 99%) 0 0;
   }
   .select2-drop {
     background: $white;

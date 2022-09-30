@@ -48,13 +48,13 @@
   content: "ON";
   padding-left: 10px;
   background-color: $navy;
-  color: #FFFFFF;
+  color: $white;
 }
 
 .onoffswitch-inner:after {
   content: "OFF";
   padding-right: 10px;
-  background-color: #FFFFFF;
+  background-color: $white;
   color: #999999;
   text-align: right;
 }
@@ -62,7 +62,7 @@
 .onoffswitch-switch {
   width: 20px;
   margin: 0;
-  background: #FFFFFF;
+  background: $white;
   border: 2px solid $navy;
   border-radius: 2px;
   position: absolute;
@@ -86,10 +86,10 @@
 /* CHOSEN PLUGIN */
 
 .chosen-container-single .chosen-single {
-  background: #ffffff;
+  background: $white;
   box-shadow: none;
   -moz-box-sizing: border-box;
-  background-color: #FFFFFF;
+  background-color: $white;
   border: 1px solid #CBD5DD;
   border-radius: 2px;
   cursor: text;
@@ -119,15 +119,15 @@
 
 .pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus {
   background-color: #f4f4f4;
-  border-color: #DDDDDD;
+  border-color: $gray-200;
   color: inherit;
   cursor: default;
   z-index: 2;
 }
 
 .pagination > li > a, .pagination > li > span {
-  background-color: #FFFFFF;
-  border: 1px solid #DDDDDD;
+  background-color: $white;
+  border: 1px solid $gray-200;
   color: inherit;
   float: left;
   line-height: 1.42857;
@@ -140,23 +140,23 @@
 /* TOOLTIPS */
 
 .tooltip-inner {
-  background-color: #2F4050;
+  background-color: $nav-bg;
 }
 
 .tooltip.top .tooltip-arrow {
-  border-top-color: #2F4050;
+  border-top-color: $nav-bg;
 }
 
 .tooltip.right .tooltip-arrow {
-  border-right-color: #2F4050;
+  border-right-color: $nav-bg;
 }
 
 .tooltip.bottom .tooltip-arrow {
-  border-bottom-color: #2F4050;
+  border-bottom-color: $nav-bg;
 }
 
 .tooltip.left .tooltip-arrow {
-  border-left-color: #2F4050;
+  border-left-color: $nav-bg;
 }
 
 /* EASY PIE CHART*/
@@ -198,7 +198,7 @@
 /* FULLCALENDAR */
 
 .fc-state-default {
-  background-color: #ffffff;
+  background-color: $white;
   background-image: none;
   background-repeat: repeat-x;
   box-shadow: none;
@@ -226,7 +226,7 @@
 .fc-state-active {
   background-color: $navy;
   border-color: $navy;
-  color: #ffffff;
+  color: $white;
 }
 
 .fc-header-title h2 {
@@ -273,7 +273,7 @@
 }
 
 .ui-calendar .fc-event-time, .ui-calendar .fc-event-title {
-  color: #fff;
+  color: $white;
 }
 
 /* Chat */
@@ -382,7 +382,7 @@
 a.list-group-item.active, a.list-group-item.active:hover, a.list-group-item.active:focus {
   background-color: $navy;
   border-color: $navy;
-  color: #FFFFFF;
+  color: $white;
   z-index: 2;
 }
 
@@ -446,7 +446,7 @@ a.list-group-item.active, a.list-group-item.active:hover, a.list-group-item.acti
 
 .elements-list .list-group-item.active,
 .elements-list .list-group-item:hover {
-  background: #f3f3f4;
+  background: $gray;
   color: inherit;
   border-color: $border-color;
   /*border-bottom: 1px solid $border-color;*/
@@ -500,7 +500,7 @@ a.list-group-item.active, a.list-group-item.active:hover, a.list-group-item.acti
   visibility: hidden;
   background: rgb(43, 48, 58);
   background-color: rgba(43, 48, 58, 0.8);
-  color: white;
+  color: $white;
   text-align: left;
   white-space: nowrap;
   z-index: 10000;
@@ -510,7 +510,7 @@ a.list-group-item.active, a.list-group-item.active:hover, a.list-group-item.acti
 }
 
 .jqsfield {
-  color: white;
+  color: $white;
   text-align: left;
 }
 
@@ -581,14 +581,14 @@ table.dataTable thead .sorting_desc_disabled {
 
 .html5buttons a {
   border: 1px solid $border-color;
-  background: #fff;
-  color: #676a6c;
+  background: $white;
+  color: $gray-600;
   box-shadow: none;
   padding: 6px 8px;
   font-size: 12px;
 
   &:hover, &:focus:active {
-    background-color: #eee;
+    background-color: $border-color;
     color: inherit;
     border-color: #d2d2d2;
   }
@@ -646,8 +646,8 @@ div.dt-button-info {
 .show-grid [class^="col-"] {
   padding-top: 10px;
   padding-bottom: 10px;
-  border: 1px solid #ddd;
-  background-color: #eee !important;
+  border: 1px solid $gray-200;
+  background-color: $border-color !important;
 }
 
 .show-grid {
@@ -751,7 +751,7 @@ div.dt-button-info {
 .widget-text-box {
   padding: 20px;
   border: 1px solid $border-color;
-  background: #ffffff;
+  background: $white;
 }
 
 .widget-head-color-box {
@@ -862,9 +862,9 @@ div.dt-button-info {
 }
 
 .form-control, .single-line {
-  background-color: #FFFFFF;
+  background-color: $white;
   background-image: none;
-  border: 1px solid #e5e6e7;
+  border: 1px solid $light-gray;
   border-radius: 1px;
   color: inherit;
   display: block;
@@ -903,8 +903,8 @@ div.dt-button-info {
 }
 
 .input-group-addon {
-  background-color: #fff;
-  border: 1px solid #E5E6E7;
+  background-color: $white;
+  border: 1px solid $light-gray;
   border-radius: 1px;
   color: inherit;
   font-size: 14px;
@@ -999,13 +999,13 @@ div.dt-button-info {
   content: "ON";
   padding-left: 7px;
   background-color: #1AB394;
-  color: #FFFFFF;
+  color: $white;
 }
 
 .onoffswitch-inner:after {
   content: "OFF";
   padding-right: 7px;
-  background-color: #FFFFFF;
+  background-color: $white;
   color: #919191;
   text-align: right;
 }
@@ -1014,7 +1014,7 @@ div.dt-button-info {
   display: block;
   width: 18px;
   margin: 0;
-  background: #FFFFFF;
+  background: $white;
   border: 2px solid #1AB394;
   border-radius: 3px;
   position: absolute;
@@ -1052,8 +1052,8 @@ div.dt-button-info {
 .ui-jqgrid-titlebar {
   height: 40px;
   line-height: 15px;
-  color: #676a6c;
-  background-color: #F9F9F9;
+  color: $gray-600;
+  background-color: $gray-100;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
 }
 
@@ -1072,7 +1072,7 @@ div.dt-button-info {
 .ui-widget-header {
   background: none;
   background-image: none;
-  background-color: #f5f5f6;
+  background-color: $skin-gord-page-bg;
   text-transform: uppercase;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
@@ -1083,7 +1083,7 @@ div.dt-button-info {
   border-right-style: solid;
   border-right-width: 1px;
   text-align: left;
-  border-color: #DDDDDD;
+  border-color: $gray-200;
   background-color: inherit;
 }
 
@@ -1095,11 +1095,11 @@ div.dt-button-info {
 }
 
 .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
-  background: #F9F9F9;
-  border: 1px solid #DDDDDD;
+  background: $gray-100;
+  border: 1px solid $gray-200;
   line-height: 15px;
   font-weight: bold;
-  color: #676a6c;
+  color: $gray-600;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
 }
 
@@ -1127,8 +1127,8 @@ div.dt-button-info {
 }
 
 .ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active {
-  border: 1px solid #dddddd;
-  background: #ffffff;
+  border: 1px solid $gray-200;
+  background: $white;
   font-weight: normal;
   color: #212121;
 }
@@ -1211,7 +1211,7 @@ div.dt-button-info {
 }
 
 .ui-widget-content {
-  border: 1px solid #ddd;
+  border: 1px solid $gray-200;
 }
 
 .ui-jqgrid .ui-jqgrid-titlebar {
@@ -1219,7 +1219,7 @@ div.dt-button-info {
 }
 
 .ui-jqgrid .ui-jqgrid-titlebar {
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid $gray-200;
 }
 
 .ui-jqgrid tr.jqgrow td {
@@ -1367,9 +1367,9 @@ div.dt-button-info {
   border: 1px dashed #bbb;
   min-height: 100px;
   background-color: #e5e5e5;
-  background-image: -webkit-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff), -webkit-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff);
-  background-image: -moz-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff), -moz-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff);
-  background-image: linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff), linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff);
+  background-image: -webkit-linear-gradient(45deg, $white 25%, transparent 25%, transparent 75%, $white 75%, $white), -webkit-linear-gradient(45deg, $white 25%, transparent 25%, transparent 75%, $white 75%, $white);
+  background-image: -moz-linear-gradient(45deg, $white 25%, transparent 25%, transparent 75%, $white 75%, $white), -moz-linear-gradient(45deg, $white 25%, transparent 25%, transparent 75%, $white 75%, $white);
+  background-image: linear-gradient(45deg, $white 25%, transparent 25%, transparent 75%, $white 75%, $white), linear-gradient(45deg, $white 25%, transparent 25%, transparent 75%, $white 75%, $white);
   background-size: 60px 60px;
   background-position: 0 0, 30px 30px;
 }
@@ -1398,8 +1398,8 @@ div.dt-button-info {
   padding: 30px 0;
   width: 100%;
   border: 0;
-  border-top: 2px solid #ddd;
-  border-bottom: 2px solid #ddd;
+  border-top: 2px solid $gray-200;
+  border-bottom: 2px solid $gray-200;
 }
 
 #nestable-menu {
@@ -1421,13 +1421,13 @@ div.dt-button-info {
 #nestable2 .dd-handle {
   color: inherit;
   border: 1px dashed $border-color;
-  background: #f3f3f4;
+  background: $gray;
   padding: 10px;
 }
 
-#nestable2 .dd-handle:hover {
-  /*background: #bbb;*/
-}
+// #nestable2 .dd-handle:hover {
+//   background: $gray-200;
+// }
 
 #nestable2 span.label {
   margin-right: 10px;
@@ -1443,7 +1443,7 @@ div.dt-button-info {
 
 /* CodeMirror */
 .CodeMirror {
-  border: 1px solid #eee;
+  border: 1px solid $border-color;
   height: auto;
 }
 
@@ -1491,11 +1491,11 @@ label.error {
 }
 
 .ngTopPanel {
-  background: #F5F5F6;
+  background: $skin-gord-page-bg;
 }
 
 .ngRow.even {
-  background: #f9f9f9;
+  background: $gray-100;
 }
 
 .ngRow.selected {
@@ -1545,7 +1545,7 @@ label.error {
 
 /* Notifie */
 .cg-notify-message.inspinia-notify {
-  background: #fff;
+  background: $white;
   padding: 0;
   box-shadow: 0 0 1px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.2);
   -webkit-box-shadow: 0 0 1px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -1603,7 +1603,7 @@ label.error {
 }
 
 .author-info {
-  color: #676a6c;
+  color: $gray-600;
   font-size: 11px;
   margin-top: 5px;
   text-align: center;
@@ -1611,12 +1611,12 @@ label.error {
 
 .forum-post-info {
   padding: 9px 12px 6px 12px;
-  background: #f9f9f9;
+  background: $gray-100;
   border: 1px solid #f1f1f1;
 }
 
 .media-body > .media {
-  background: #f9f9f9;
+  background: $gray-100;
   border-radius: 3px;
   border: 1px solid #f1f1f1;
 }
@@ -1887,7 +1887,7 @@ a.forum-item-title:hover {
 .vertical-timeline-content {
   position: relative;
   margin-left: 60px;
-  background: white;
+  background: $white;
   border-radius: 0.25em;
   padding: 1em;
 }
@@ -1926,7 +1926,7 @@ a.forum-item-title:hover {
   height: 0;
   width: 0;
   border: 7px solid transparent;
-  border-right: 7px solid white;
+  border-right: 7px solid $white;
 }
 
 @media only screen and (min-width: 768px) {
@@ -1951,7 +1951,7 @@ a.forum-item-title:hover {
     top: 24px;
     left: 100%;
     border-color: transparent;
-    border-left-color: white;
+    border-left-color: $white;
   }
 
   .center-orientation .vertical-timeline-content .btn {
@@ -1975,7 +1975,7 @@ a.forum-item-title:hover {
     left: auto;
     right: 100%;
     border-color: transparent;
-    border-right-color: white;
+    border-right-color: $white;
   }
 
   .center-orientation .vertical-timeline-block:nth-child(even) .vertical-timeline-content .btn {
@@ -1998,7 +1998,7 @@ a.forum-item-title:hover {
 .tabs-container {
 
   .panel-body {
-    background: #fff;
+    background: $white;
     border: 1px solid $border-color;
     border-radius: 2px;
     padding: 20px;
@@ -2010,7 +2010,7 @@ a.forum-item-title:hover {
   .nav-tabs > li.active > a:focus {
     border: 1px solid $border-color;
     border-bottom-color: transparent;
-    background-color: #fff;
+    background-color: $white;
   }
 
   .nav-tabs > li {
@@ -2127,7 +2127,7 @@ a.forum-item-title:hover {
   .tabs-left > .nav-tabs .active > a:hover,
   .tabs-left > .nav-tabs .active > a:focus {
     border-color: $border-color transparent $border-color $border-color;
-    *border-right-color: #ffffff;
+    *border-right-color: $white;
   }
 
   .tabs-right > .nav-tabs {
@@ -2146,7 +2146,7 @@ a.forum-item-title:hover {
   .tabs-right > .nav-tabs .active > a:hover,
   .tabs-right > .nav-tabs .active > a:focus {
     border-color: $border-color $border-color $border-color transparent;
-    *border-left-color: #ffffff;
+    *border-left-color: $white;
     z-index: 1;
   }
 
@@ -2177,7 +2177,7 @@ a.forum-item-title:hover {
   border: solid 1px #CDCDCD;
   border-radius: 3px;
   background: #292929;
-  color: white;
+  color: $white;
   font-family: sans-serif, Verdana;
   font-size: smaller;
   padding: 5px;
@@ -2189,7 +2189,7 @@ a.forum-item-title:hover {
   border-radius: 3px;
   background: $navy;
   padding: 3px;
-  color: white;
+  color: $white;
   cursor: pointer;
   line-height: 10px;
   text-align: center;
@@ -2245,8 +2245,8 @@ a.forum-item-title:hover {
 }
 
 .jvectormap-legend {
-  background: black;
-  color: white;
+  background: $black;
+  color: $white;
   border-radius: 3px;
 }
 
@@ -2305,7 +2305,7 @@ a.forum-item-title:hover {
 /* Payments */
 
 .payment-card {
-  background: #ffffff;
+  background: $white;
   padding: 20px;
   margin-bottom: 25px;
   border: 1px solid $border-color;
@@ -2346,7 +2346,7 @@ a.forum-item-title:hover {
 /* Tour */
 
 .tour-tour .btn.btn-default {
-  background-color: #ffffff;
+  background-color: $white;
   border: 1px solid #d2d2d2;
   color: inherit;
 }

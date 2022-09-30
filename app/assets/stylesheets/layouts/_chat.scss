@@ -18,12 +18,12 @@
   background: #1ab394;
   padding: 9px 8px;
   text-align: center;
-  color: #fff;
+  color: $white;
   border-radius: 50%;
 }
 
 .open-small-chat:hover {
-  color: white;
+  color: $white;
   background: #1ab394;
 }
 
@@ -32,7 +32,7 @@
   position: fixed;
   bottom: 20px;
   right: 75px;
-  background: #fff;
+  background: $white;
   border: 1px solid $border-color;
   width: 230px;
   height: 320px;
@@ -60,7 +60,7 @@
     background: $nav-bg;
     padding: 8px 15px;
     font-weight: bold;
-    color: #fff;
+    color: $white;
   }
 
   .chat-date {
@@ -94,7 +94,7 @@
 
     .chat-message.active {
       background: #1ab394;
-      color: #fff;
+      color: $white;
     }
 
     .left {

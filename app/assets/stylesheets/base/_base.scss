@@ -1,16 +1,15 @@
 body {
   // font-family: "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-family: adrianna, sans-serif; 
-  background-color: #2f4050;
+  font-family: adrianna, sans-serif;
+  background-color: $nav-bg;
   font-size: 13px;
   color: $text-color;
   overflow-x: hidden;
-
 }
 
-html, body {
+html,
+body {
   height: 100%;
-
 }
 
 body.full-height-layout #wrapper,
@@ -27,7 +26,7 @@ body.boxed-layout {
 }
 
 body.boxed-layout #wrapper {
-  background-color: #2f4050;
+  background-color: $nav-bg;
   max-width: $boxed-width;
   margin: 0 auto;
   -webkit-box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.75);
@@ -53,7 +52,8 @@ a {
   cursor: pointer;
 }
 
-a:hover, a:focus {
+a:hover,
+a:focus {
   text-decoration: none;
 }
 
@@ -79,8 +79,8 @@ a:hover, a:focus {
 
 .hr-line-dashed {
   border-top: 1px dashed $border-color;
-  color: #ffffff;
-  background-color: #ffffff;
+  color: $white;
+  background-color: $white;
   height: 1px;
   margin: 20px 0;
 }
@@ -122,7 +122,7 @@ video {
 /* MODAL */
 .modal-content {
   background-clip: padding-box;
-  background-color: #FFFFFF;
+  background-color: $white;
   border: 1px solid rgba(0, 0, 0, 0);
   border-radius: 4px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
@@ -139,7 +139,7 @@ video {
 }
 
 .inmodal .modal-body {
-  background: #f8fafb;
+  background: $gray-100;
 }
 
 .inmodal .modal-header {
@@ -160,7 +160,7 @@ video {
 
 .inmodal .modal-icon {
   font-size: 84px;
-  color: #e2e3e3;
+  color: $gray-100;
 }
 
 .modal-footer {
@@ -201,25 +201,33 @@ video {
   padding-top: 30px;
 }
 
-.ibox-content h1, .ibox-content h2, .ibox-content h3, .ibox-content h4, .ibox-content h5,
-.ibox-title h1, .ibox-title h2, .ibox-title h3, .ibox-title h4, .ibox-title h5 {
+.ibox-content h1,
+.ibox-content h2,
+.ibox-content h3,
+.ibox-content h4,
+.ibox-content h5,
+.ibox-title h1,
+.ibox-title h2,
+.ibox-title h3,
+.ibox-title h4,
+.ibox-title h5 {
   margin-top: 5px;
 }
 
-ul.unstyled, ol.unstyled {
+ul.unstyled,
+ol.unstyled {
   list-style: none outside none;
   margin-left: 0;
 }
 
 .big-icon {
   font-size: 160px !important;
-  color: #e5e6e7;
+  color: $light-gray;
 }
 
 /* FOOTER */
 
 .footer {
-
   background: none repeat scroll 0 0 white;
   border-top: 1px solid $border-color;
   bottom: 0;
@@ -277,31 +285,43 @@ body.body-small .footer.fixed {
   padding: 0 10px 20px 10px;
 }
 
-.panel-heading h1, .panel-heading h2 {
+.panel-heading h1,
+.panel-heading h2 {
   margin-bottom: 5px;
 }
 
 /* TABLES */
 
 .table-bordered {
-  border: 1px solid #EBEBEB;
+  border: 1px solid #ebebeb;
 }
 
-.table-bordered > thead > tr > th, .table-bordered > thead > tr > td {
-  background-color: #F5F5F6;
+.table-bordered > thead > tr > th,
+.table-bordered > thead > tr > td {
+  background-color: $skin-gord-page-bg;
   border-bottom-width: 1px;
 }
 
-.table-bordered > thead > tr > th, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > tbody > tr > td, .table-bordered > tfoot > tr > td {
+.table-bordered > thead > tr > th,
+.table-bordered > tbody > tr > th,
+.table-bordered > tfoot > tr > th,
+.table-bordered > thead > tr > td,
+.table-bordered > tbody > tr > td,
+.table-bordered > tfoot > tr > td {
   border: 1px solid #e7e7e7;
 }
 
 .table > thead > tr > th {
-  border-bottom: 1px solid #DDDDDD;
+  border-bottom: 1px solid $gray-200;
   vertical-align: bottom;
 }
 
-.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+.table > thead > tr > th,
+.table > tbody > tr > th,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > td,
+.table > tfoot > tr > td {
   border-top: 1px solid $border-color;
   line-height: 1.42857;
   padding: 8px;
@@ -319,13 +339,15 @@ body.body-small .footer.fixed {
   padding-bottom: 0;
 }
 
-.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus {
   -moz-border-bottom-colors: none;
   -moz-border-left-colors: none;
   -moz-border-right-colors: none;
   -moz-border-top-colors: none;
   background: none;
-  border-color: #DDDDDD #DDDDDD rgba(0, 0, 0, 0);
+  border-color: $gray-200 $gray-200 rgba(var($black), 0);
   border-bottom: $gray;
   border-image: none;
   border-style: solid;
@@ -340,12 +362,13 @@ body.body-small .footer.fixed {
 }
 
 .nav-tabs > li > a {
-  color: #A7B1C2;
+  color: $nav-text-color;
   font-weight: 600;
   padding: 10px 20px 10px 25px;
 }
 
-.nav-tabs > li > a:hover, .nav-tabs > li > a:focus {
+.nav-tabs > li > a:hover,
+.nav-tabs > li > a:focus {
   background-color: #e6e6e6;
   color: $text-color;
 }
@@ -414,7 +437,6 @@ body.body-small .footer.fixed {
 .link-block a {
   font-size: 10px;
   color: inherit;
-
 }
 
 body.mini-navbar .branding {
@@ -422,13 +444,13 @@ body.mini-navbar .branding {
 }
 
 img.circle-border {
-  border: 6px solid #FFFFFF;
+  border: 6px solid $white;
   border-radius: 50%;
 }
 
 .branding {
   float: left;
-  color: #FFFFFF;
+  color: $white;
   font-size: 18px;
   font-weight: 600;
   padding: 17px 20px;
@@ -467,7 +489,7 @@ img.circle-border {
 }
 
 .breadcrumb {
-  background-color: #ffffff;
+  background-color: $white;
   padding: 0;
   margin-bottom: 0;
 }
@@ -481,7 +503,7 @@ img.circle-border {
 }
 
 code {
-  background-color: #F9F2F4;
+  background-color: #f9f2f4;
   border-radius: 4px;
   color: #ca4440;
   font-size: 90%;
@@ -508,7 +530,8 @@ code {
   content: "\f077";
 }
 
-.ibox:after, .ibox:before {
+.ibox:after,
+.ibox:before {
   display: table;
 }
 
@@ -543,7 +566,7 @@ code {
   color: inherit;
   border-top: 1px solid $border-color;
   font-size: 90%;
-  background: #ffffff;
+  background: $white;
   padding: 10px 15px;
 }
 
@@ -559,16 +582,19 @@ table.table-mail tr td {
   padding-right: 20px;
 }
 
-.star-mail, .check-mail {
+.star-mail,
+.check-mail {
   width: 40px;
 }
 
-.unread td a, .unread td {
+.unread td a,
+.unread td {
   font-weight: 600;
   color: inherit;
 }
 
-.read td a, .read td {
+.read td a,
+.read td {
   font-weight: normal;
   color: inherit;
 }
@@ -621,7 +647,7 @@ table.table-mail tr td {
 }
 
 .ibox-tools a.btn-primary {
-  color: #fff;
+  color: $white;
 }
 
 .ibox-tools .dropdown-menu > li > a {
@@ -641,36 +667,36 @@ table.table-mail tr td {
 }
 
 .white-bg {
-  background-color: #ffffff;
+  background-color: $white;
 }
 
 .navy-bg {
   background-color: $navy;
-  color: #ffffff;
+  color: $white;
 }
 
 .blue-bg {
   background-color: $blue;
-  color: #ffffff;
+  color: $white;
 }
 
 .lazur-bg {
   background-color: $lazur;
-  color: #ffffff;
+  color: $white;
 }
 
 .yellow-bg {
   background-color: $yellow;
-  color: #ffffff;
+  color: $white;
 }
 
 .red-bg {
   background-color: $red;
-  color: #ffffff;
+  color: $white;
 }
 
 .black-bg {
-  background-color: #262626;
+  background-color: $gray-900;
 }
 
 .panel-primary {
@@ -689,7 +715,7 @@ table.table-mail tr td {
 .panel-success > .panel-heading {
   background-color: $blue;
   border-color: $blue;
-  color: #ffffff;
+  color: $white;
 }
 
 .panel-info {
@@ -699,7 +725,7 @@ table.table-mail tr td {
 .panel-info > .panel-heading {
   background-color: $lazur;
   border-color: $lazur;
-  color: #ffffff;
+  color: $white;
 }
 
 .panel-warning {
@@ -709,7 +735,7 @@ table.table-mail tr td {
 .panel-warning > .panel-heading {
   background-color: $yellow;
   border-color: $yellow;
-  color: #ffffff;
+  color: $white;
 }
 
 .panel-danger {
@@ -719,28 +745,31 @@ table.table-mail tr td {
 .panel-danger > .panel-heading {
   background-color: $red;
   border-color: $red;
-  color: #ffffff;
+  color: $white;
 }
 
 .progress-bar {
   background-color: $navy;
 }
 
-.progress-small, .progress-small .progress-bar {
+.progress-small,
+.progress-small .progress-bar {
   height: 10px;
 }
 
-.progress-small, .progress-mini {
+.progress-small,
+.progress-mini {
   margin-top: 5px;
 }
 
-.progress-mini, .progress-mini .progress-bar {
+.progress-mini,
+.progress-mini .progress-bar {
   height: 5px;
   margin-bottom: 0;
 }
 
 .progress-bar-navy-light {
-  background-color: #3dc7ab;
+  background-color: $skin-gord-nav-bg;
 }
 
 .progress-bar-success {
@@ -799,15 +828,15 @@ table.table-mail tr td {
 }
 
 .text-muted {
-  color: #888888;
+  color: $label-badget-color;
 }
 
 .text-white {
-  color: #ffffff;
+  color: $white;
 }
 
 .simple_tag {
-  background-color: #f3f3f4;
+  background-color: $gray;
   border: 1px solid $border-color;
   border-radius: 2px;
   color: inherit;
@@ -831,9 +860,10 @@ table.table-mail tr td {
 .mailbox\.email_view nav.navbar,
 .mailbox\.email_compose nav.navbar,
 .dashboards\.dashboard_4_1 nav.navbar,
-.metrics nav.navbar, .metrics\.index nav.navbar,
+.metrics nav.navbar,
+.metrics\.index nav.navbar,
 .dashboards\.dashboard_5 nav.navbar {
-  background: #fff;
+  background: $white;
 }
 
 /* For handle diferent bg color in MVC version */
@@ -845,7 +875,7 @@ table.table-mail tr td {
 .Inbox .navbar.navbar-static-top,
 .Metrics .navbar.navbar-static-top,
 .Dashboard_5 .navbar.navbar-static-top {
-  background: #fff;
+  background: $white;
 }
 
 a.close-canvas-menu {
@@ -853,11 +883,11 @@ a.close-canvas-menu {
   top: 10px;
   right: 15px;
   z-index: 1011;
-  color: #a7b1c2;
+  color: $nav-text-color;
 }
 
 a.close-canvas-menu:hover {
-  color: #fff;
+  color: $white;
 }
 
 .close-canvas-menu {
@@ -865,11 +895,11 @@ a.close-canvas-menu:hover {
 }
 
 .canvas-menu .close-canvas-menu {
-  display: block
+  display: block;
 }
 
 .light-navbar .navbar.navbar-static-top {
-  background-color: #fff
+  background-color: $white;
 }
 
 /* FULL HEIGHT */
@@ -881,20 +911,20 @@ a.close-canvas-menu:hover {
 .fh-breadcrumb {
   height: calc(100% - 196px);
   margin: 0 -15px;
-  position: relative
+  position: relative;
 }
 
 .fh-no-breadcrumb {
   height: calc(100% - 99px);
   margin: 0 -15px;
-  position: relative
+  position: relative;
 }
 
 .fh-column {
-  background: #fff;
+  background: $white;
   height: 100%;
   width: 240px;
-  float: left
+  float: left;
 }
 
 .modal-backdrop {
@@ -946,27 +976,22 @@ a.close-canvas-menu:hover {
 
 .p-w-sm {
   padding: 0 15px;
-
 }
 
 .p-w-m {
   padding: 0 20px;
-
 }
 
 .p-w-md {
   padding: 0 25px;
-
 }
 
 .p-w-lg {
   padding: 0 30px;
-
 }
 
 .p-w-xl {
   padding: 0 40px;
-
 }
 
 .m-xxs {
@@ -1291,11 +1316,12 @@ body.modal-open {
 // Fix for modal backdrop with animate.css
 body.modal-open .animated {
   animation-fill-mode: initial;
-  z-index: inherit
+  z-index: inherit;
 }
 
 /* Show profile dropdown on fixed sidebar */
-body.mini-navbar.fixed-sidebar .profile-element, .block {
+body.mini-navbar.fixed-sidebar .profile-element,
+.block {
   display: block !important;
 }
 

@@ -23,45 +23,45 @@
 
 .label-primary, .badge-primary {
   background-color: $navy;
-  color: #FFFFFF;
+  color: $white;
 }
 
 .label-success, .badge-success {
   background-color: $blue;
-  color: #FFFFFF;
+  color: $white;
 }
 
 .label-warning, .badge-warning {
   background-color: $yellow;
-  color: #FFFFFF;
+  color: $white;
 }
 
 .label-warning-light, .badge-warning-light {
   background-color: $yellow;
-  color: #ffffff;
+  color: $white;
 }
 
 .label-danger, .badge-danger {
   background-color: $red;
-  color: #FFFFFF;
+  color: $white;
 }
 
 .label-info, .badge-info {
   background-color: $lazur;
-  color: #FFFFFF;
+  color: $white;
 }
 
 .label-inverse, .badge-inverse {
-  background-color: #262626;
-  color: #FFFFFF;
+  background-color: $gray-900;
+  color: $white;
 }
 
 .label-white, .badge-white {
-  background-color: #FFFFFF;
-  color: #5E5E5E;
+  background-color: $white;
+  color: $label-badget-color;
 }
 
 .label-white, .badge-disable {
-  background-color: #2A2E36;
-  color: #8B91A0;
+  background-color: $gray-800;
+  color: $nav-text-color;
 }

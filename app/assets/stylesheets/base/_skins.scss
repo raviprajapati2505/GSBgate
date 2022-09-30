@@ -54,7 +54,7 @@ $skin-1-page-bg: #f4f6fa;
 }
 
 .skin-1 .nav > li.active > a {
-  color: #fff;
+  color: $white;
 }
 
 .skin-1 .navbar-minimalize {
@@ -67,7 +67,7 @@ body.skin-1 {
 }
 
 .skin-1 .navbar-static-top {
-  background: #ffffff;
+  background: $white;
 }
 
 .skin-1 .dashboard-header {
@@ -78,7 +78,7 @@ body.skin-1 {
 }
 
 .fixed-nav.skin-1 .navbar-fixed-top {
-  background: #fff;
+  background: $white;
 }
 
 .skin-1 .wrapper-content {
@@ -106,12 +106,12 @@ body.skin-1 {
 }
 
 .skin-1 .nav-header a.dropdown-toggle {
-  color: #fff;
+  color: $white;
   margin-top: 10px;
 }
 
 .skin-1 .nav-header a.dropdown-toggle .text-muted {
-  color: #fff;
+  color: $white;
   opacity: 0.8;
 }
 
@@ -125,7 +125,7 @@ body.skin-1 {
 
 .skin-1 .navbar-default .nav > li > a:hover, .skin-1 .navbar-default .nav > li > a:focus {
   background: darken($skin-1-nav-bg, 2%);
-  color: #fff;
+  color: $white;
 }
 
 .skin-1 .nav.nav-tabs > li.active > a {
@@ -227,7 +227,7 @@ body.skin-2 {
 }
 
 .skin-2 #top-search {
-  color: #fff;
+  color: $white;
 }
 
 body.skin-2 #wrapper {
@@ -381,7 +381,7 @@ body.boxed-layout.skin-3 #wrapper {
 }
 
 .fixed-nav.skin-3 .navbar-fixed-top {
-  background: #fff;
+  background: $white;
 }
 
 .skin-3 .nav > li > a {
@@ -389,7 +389,7 @@ body.boxed-layout.skin-3 #wrapper {
 }
 
 .skin-3 .nav > li.active > a {
-  color: #fff;
+  color: $white;
 }
 
 .skin-3 .navbar-minimalize {
@@ -402,7 +402,7 @@ body.skin-3 {
 }
 
 .skin-3 .navbar-static-top {
-  background: #ffffff;
+  background: $white;
 }
 
 .skin-3 .dashboard-header {
@@ -437,12 +437,12 @@ body.skin-3 {
 }
 
 .skin-3 .nav-header a.dropdown-toggle {
-  color: #fff;
+  color: $white;
   margin-top: 10px;
 }
 
 .skin-3 .nav-header a.dropdown-toggle .text-muted {
-  color: #fff;
+  color: $white;
   opacity: 0.8;
 }
 
@@ -456,7 +456,7 @@ body.skin-3 {
 
 .skin-3 .navbar-default .nav > li > a:hover, .skin-3 .navbar-default .nav > li > a:focus {
   background: darken($skin-3-nav-bg, 2%);
-  color: #fff;
+  color: $white;
 }
 
 .skin-3 .nav.nav-tabs > li.active > a {
