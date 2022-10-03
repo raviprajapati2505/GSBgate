@@ -40,14 +40,14 @@
                                 <%= btn_tag(text: 'LOGIN', class: 'block login full-width mt-4 mb-2') %>
                                 <div class="d-md-none d-sm-block d-xs-block">
                                     <p class="my-3">New Here? Sign up and discover more</p>
-                                    <%= link_to "Sign up as cap", new_registration_path(resource_name),class: 'block full-width  mb-2 btn bg-white text-green'  %>
+                                    <%= link_to "Sign up as CGP", new_registration_path(resource_name),class: 'block full-width  mb-2 btn bg-white text-green'  %>
                                     <br/>
-                                    <%= link_to "Sign up as Service Provider",new_registration_path(resource_name),class: 'block full-width  mb-2 btn bg-white text-green'  %>
+                                    <%= link_to "Sign up as Service Provider",new_service_provider_path,class: 'block full-width  mb-2 btn bg-white text-green'  %>
                                 </div>
                             <% end %>
                         </div>
                         <%= render "users/shared/links" %>
-                        <%= link_to 'SignUp As a Service Provider', new_service_provider_path ,class: 'text-white my-2 d-inline-block' %>
+                        
                     <p class="mt-5 mb-3">Powered by: </p>
                         
                         <%= image_tag 'layout/GORD & GSAS Trust.svg', class: 'img-responsive d-block login-banner-img mt-5 mb-3' %>
@@ -62,9 +62,9 @@
                         <br/>  
                         <h3>Sign up <br/>and<br/> discover <br/>more</h3>  
                         <br/>  
-                        <%= link_to "Sign up as cap", new_registration_path(resource_name),class: 'btn bg-white text-green'  %>   
+                        <%= link_to "Sign up as CGP", new_registration_path(resource_name),class: 'btn bg-white text-green'  %>   
                         <br/>
-                        <%= link_to "Sign up as Service Provider", new_registration_path(resource_name),class: 'block full-width  mb-2 btn bg-white text-green'  %>
+                        <%= link_to "Sign up as Service Provider", new_service_provider_path,class: 'block full-width  mb-2 btn bg-white text-green'  %>
 
 
                         </div> 
