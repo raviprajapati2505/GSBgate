@@ -4,7 +4,7 @@ $md-color-primary: #1AB394;
 $md-shadow-main: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);
 
 body.md-skin {
-  font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  // font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
   background-color: $white;
 }
 
@@ -15,9 +15,9 @@ body.md-skin {
 
   }
 
-  .label, .badge {
-    font-family: 'Roboto';
-  }
+  // .label, .badge {
+  //   font-family: 'Roboto';
+  // }
 
   .font-bold {
     font-weight: 500;
@@ -82,14 +82,14 @@ body.md-skin {
     color: $white;
   }
 
-  #nestable-output,
-  #nestable2-output {
-    font-family: 'Roboto', lucida grande, lucida sans unicode, helvetica, arial, sans-serif;
-  }
+  // #nestable-output,
+  // #nestable2-output {
+  //   font-family: 'Roboto', lucida grande, lucida sans unicode, helvetica, arial, sans-serif;
+  // }
 
-  .landing-page {
-    font-family: 'Roboto', helvetica, arial, sans-serif;
-  }
+  // .landing-page {
+  //   font-family: 'Roboto', helvetica, arial, sans-serif;
+  // }
 
   .landing-page.navbar-default.navbar-scroll {
     background-color: $white !important;
@@ -98,9 +98,9 @@ body.md-skin {
     background-color: transparent !important;
     box-shadow: none;
   }
-  .landing-page.navbar-default .nav li a {
-    font-family: 'Roboto', helvetica, arial, sans-serif;
-  }
+  // .landing-page.navbar-default .nav li a {
+  //   font-family: 'Roboto', helvetica, arial, sans-serif;
+  // }
 
   .nav > li > a {
     color: $text-color;
@@ -299,9 +299,9 @@ body.md-skin {
     padding: 20px 10px;
   }
 
-  &.landing-page .navbar-default .nav li a {
-    font-family: 'Roboto', helvetica, arial, sans-serif;
-  }
+  // &.landing-page .navbar-default .nav li a {
+  //   font-family: 'Roboto', helvetica, arial, sans-serif;
+  // }
 
   &.landing-page .nav > li > a {
     padding: 25px 10px 15px 10px;
