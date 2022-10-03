@@ -127,7 +127,7 @@ legend.scheduler-border {
 }
 
 .border-box-shadow {
-  box-shadow: 10px 10px 5px rgba(var($skin-gord-color), 0.17);
+  box-shadow: 10px 10px 5px rgba($skin-gord-color, 0.17);
 }
 
 .survey-questions-fields {
@@ -383,7 +383,7 @@ hr {
   background-color: rgb(15, 44, 23);
 }
 .bg-black-light {
-  background-color: rgba(var($black), 0.74);
+  background-color: rgba($black, 0.74);
 }
 .skin-gord {
   .select2-results .select2-no-results,
@@ -544,7 +544,7 @@ hr {
       border-radius: 8px;
       background: $white;
       overflow: hidden;
-      box-shadow: 5px 7px 10px rgba(var($black), 0.33);
+      box-shadow: 5px 7px 10px rgba($black, 0.33);
       padding: 1rem;
       .ibox-title {
         background: $skin-gord-logo-green;

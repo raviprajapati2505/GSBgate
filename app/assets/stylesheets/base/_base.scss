@@ -1,6 +1,8 @@
 body {
   // font-family: "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-family: adrianna, sans-serif;
+  // font-family: adrianna, sans-serif;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 300;
   background-color: $nav-bg;
   font-size: 13px;
   color: $text-color;
@@ -347,7 +349,7 @@ body.body-small .footer.fixed {
   -moz-border-right-colors: none;
   -moz-border-top-colors: none;
   background: none;
-  border-color: $gray-200 $gray-200 rgba(var($black), 0);
+  border-color: $gray-200 $gray-200 rgba($black, 0);
   border-bottom: $gray;
   border-image: none;
   border-style: solid;
