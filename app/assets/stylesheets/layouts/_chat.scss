@@ -59,21 +59,21 @@
   .heading {
     background: $nav-bg;
     padding: 8px 15px;
-    font-weight: bold;
+    font-weight: 600;
     color: $white;
   }
 
   .chat-date {
     opacity: 0.6;
     font-size: 10px;
-    font-weight: normal;
+    font-weight: 300;
   }
 
   .content {
     padding: 15px 15px;
 
     .author-name {
-      font-weight: bold;
+      font-weight: 600;
       margin-bottom: 3px;
       font-size: 11px;
     }

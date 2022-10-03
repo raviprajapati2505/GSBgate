@@ -37,8 +37,8 @@
   line-height: 20px;
   font-size: 12px;
   color: white;
-  font-family: Trebuchet, Arial, sans-serif;
-  font-weight: bold;
+  // font-family: Trebuchet, Arial, sans-serif;
+  font-weight: 600;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -237,7 +237,7 @@
 
 .fc-content .fc-widget-header, .fc-content .fc-widget-content {
   border-color: $border-color;
-  font-weight: normal;
+  font-weight: 300;
 }
 
 .fc-border-separate tbody {
@@ -908,7 +908,7 @@ div.dt-button-info {
   border-radius: 1px;
   color: inherit;
   font-size: 14px;
-  font-weight: 400;
+  font-weight: 300;
   line-height: 1;
   padding: 6px 12px;
   text-align: center;
@@ -988,8 +988,8 @@ div.dt-button-info {
   line-height: 16px;
   font-size: 10px;
   color: white;
-  font-family: Trebuchet, Arial, sans-serif;
-  font-weight: bold;
+  // font-family: Trebuchet, Arial, sans-serif;
+  font-weight: 600;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -1098,7 +1098,7 @@ div.dt-button-info {
   background: $gray-100;
   border: 1px solid $gray-200;
   line-height: 15px;
-  font-weight: bold;
+  font-weight: 600;
   color: $gray-600;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
 }
@@ -1129,7 +1129,7 @@ div.dt-button-info {
 .ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active {
   border: 1px solid $gray-200;
   background: $white;
-  font-weight: normal;
+  font-weight: 300;
   color: #212121;
 }
 
@@ -1177,7 +1177,7 @@ div.dt-button-info {
   padding: 6px;
   margin: 5px;
   text-align: center;
-  font-weight: bold;
+  font-weight: 600;
   display: none;
   border-width: 2px !important;
   font-size: 11px;
@@ -1294,13 +1294,13 @@ div.dt-button-info {
 }
 
 .dd-handle span {
-  font-weight: bold;
+  font-weight: 600;
 }
 
 .dd-handle:hover {
   background: #f0f0f0;
   cursor: pointer;
-  font-weight: bold;
+  font-weight: 600;
 }
 
 .dd-item > button {
@@ -1320,7 +1320,7 @@ div.dt-button-info {
   font-size: 12px;
   line-height: 1;
   text-align: center;
-  font-weight: bold;
+  font-weight: 600;
 }
 
 .dd-item > button:before {
@@ -1654,7 +1654,7 @@ label.error {
 .views-number {
   font-size: 24px;
   line-height: 18px;
-  font-weight: 400;
+  font-weight: 300;
 }
 
 .forum-container, .forum-post-container {
@@ -1899,7 +1899,7 @@ a.forum-item-title:hover {
 }
 
 .vertical-timeline-content h2 {
-  font-weight: 400;
+  font-weight: 300;
   margin-top: 4px;
 }
 
@@ -1915,7 +1915,7 @@ a.forum-item-title:hover {
 
 .vertical-date small {
   color: $navy;
-  font-weight: 400;
+  font-weight: 300;
 }
 
 .vertical-timeline-content::before {
@@ -2225,7 +2225,7 @@ a.forum-item-title:hover {
 }
 
 .jvectormap-legend-title {
-  font-weight: bold;
+  font-weight: 600;
   font-size: 14px;
   text-align: center;
 }

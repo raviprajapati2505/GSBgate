@@ -925,7 +925,7 @@
     }
 
     li label {
-      font-weight: normal;
+      font-weight: 300;
       display: inline;
     }
   }
@@ -974,7 +974,7 @@
 
   .criterion-information {
     .subtitle {
-      font-weight: bold;
+      font-weight: 600;
       margin: 8px 0;
     }
 
@@ -988,7 +988,7 @@
     }
 
     table tr:first-child {
-      font-weight: bold;
+      font-weight: 600;
       background-color: $gray-100;
     }
 
@@ -1140,7 +1140,7 @@
 
       h2 {
         font-size: 13px;
-        font-weight: bold;
+        font-weight: 600;
       }
 
       .text-muted {
@@ -1178,7 +1178,7 @@
   .score-graph {
     min-width: 200px;
     max-width: 300px;
-  }
+  }0
 
   .incentive-weight {
     font-size: smaller;
@@ -1187,7 +1187,7 @@
 
   #environment {
     font-size: 15px;
-    font-weight: bold;
+    font-weight: 60;
     text-transform: uppercase;
     color: red;
     position: absolute;
