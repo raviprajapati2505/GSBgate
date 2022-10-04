@@ -1,119 +1,126 @@
-<div class="gord-transparent-green menu-div">
-    <div class="navbar-header navbar navbar-static-top gord-transparent" role="navigation">
-        <% unless Rails.env == 'production' %>
-          <div id="environment"><%= Rails.env %></div>
-        <% end %>
-        <%= image_tag('layout/gsas_trust_logo.png') %>
-        <button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
-            <%= ikoen('reorder') %>
-        </button>
-    </div>
-    <div class="navbar-collapse collapse" id="navbar">
-        <ul class="nav navbar-nav">
-
-            <% if can?(:index, :dashboard) %>
-                <li class="<%= 'active' if ['dashboard'].include?(controller_name) %>">
-                    <%= link_to dashboard_path do %>
-                        <%= ikoen('dashboard', size: 'lg') %><span class="nav-label">Dashboard</span>
-                    <% end %>
-                </li>
+<div class="row menu-div flex-column">
+    <div class="top-navbar">
+        <div class="navbar-header navbar navbar-static-top gord-transparent" role="navigation">
+            <% unless Rails.env == 'production' %>
+            <div id="environment"><%= Rails.env %></div>
             <% end %>
+            <%= image_tag('layout/GSAS-Gate-after-login.svg',class:"img-responsive after-login-img bg-transparent")%>
+            <button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
+                <%= ikoen('reorder') %>
+            </button>
+        </div>
+        <div class="navbar-collapse collapse w-100" id="navbar">
+        <div class="d-flex justify-content-between align-item-center w-100 h-100">
+            <ul class="nav navbar-nav text-center">
 
-            <% if can?(:index, Project) %>
-                <li class="<%= 'active' if ['projects', 'projects_users', 'certification_paths', 'scheme_mixes', 'scheme_mix_criteria'].include?(controller_name) %>">
-                    <%= link_to projects_path do %>
-                        <%= ikoen('building-o', size: 'lg') %><span class="nav-label"><%= t('.navbar.projects_html') %></span>
-                    <% end %>
-                </li>
-            <% end %>
-
-            <% if can?(:index, Task) %>
-                <li class="<%= 'active' if (controller_name == 'tasks') %>">
-                    <% task_count = TaskService::count_tasks(user: current_user) %>
-                    <%= link_to tasks_path do %>
-                        <%= ikoen('tasks', size: 'lg') %><span class="nav-label"><%= t('.navbar.tasks') %><span class="badge task-counter <% if task_count == 0 %>hidden<% end %>" data-user="<%= current_user.id %>"><%= task_count %></span></span>
-                    <% end %>
-                </li>
-            <% end %>
-
-            <% if can?(:list_notifications, User) %>
-                <li class="<%= 'active' if (controller_name == 'users' and action_name == 'list_notifications') %>">
-                    <%= link_to list_notifications_user_path id: current_user.id do %>
-                        <%= ikoen('cog', size: 'lg') %><span class="nav-label"><%= t('.navbar.preferences') %></span>
-                    <% end %>
-                </li>
-            <% end %>
-
-            <% if can?(:index, AuditLog) %>
-                <li class="<%= 'active' if (controller_name == 'audit_logs') %>">
-                    <%= link_to audit_logs_path do %>
-                        <%= ikoen('mail-reply-all', size: 'lg') %><span class="nav-label"><%= t('.navbar.audit_log') %></span>
-                    <% end %>
-                </li>
-            <% end %>
-
-            <li>
-              <%= link_to '/GSASgate_Manual.pdf', target: '_blank' do %>
-                  <%= ikoen('book', size: 'lg') %><span class="nav-label"><%= t('.navbar.manual') %></span>
-              <% end %>
-            </li>
-
-            <% if can?(:show, 'visualisation_tool') %>
-            <li>
-              <%= link_to Rails.application.config.x.viewer.url, target: '_blank' do %>
-                <%= ikoen('map', size: 'lg') %><span class="nav-label"><%= t('.navbar.viewer') %></span>
-              <% end %>
-            </li>
-            <% end %>
-
-            <% 
-                can_index_scheme_criteria = can?(:index, SchemeCriterion)
-                can_index_users = can?(:index, User)
-                can_certifiers_criteria_report = can?(:certifiers_criteria, :report)
-                can_dashboard_survey = can?(:index, :survey_dashboard)
-                can_offline_projects = can?(:index, Offline::ProjectsController)
-            %>
-
-            <% unless current_user.document_controller? %>
-                <% if can_index_users || can_index_scheme_criteria || can_certifiers_criteria_report || can_dashboard_survey %>
-                    <li class="dropdown<%= ' active' if ['scheme_criteria', 'users'].include?(controller_name) && action_name != 'list_notifications' %>">
-                        <a aria-expanded="false" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <%= ikoen('cogs', size: 'lg') %><%= t('.navbar.admin') %><span class="caret"></span>
-                        </a>
-                        <ul role="menu" class="dropdown-menu">
-                            <% if can_offline_projects %>
-                                <li><%= link_to t('.navbar.offline_projects'), offline_projects_path %></li>
-                            <% end %>
-                            <% if can_index_scheme_criteria %>
-                                <li><%= link_to t('.navbar.admin_system_data'), scheme_criteria_path %></li>
-                            <% end %>
-                            <% if can_index_users %>
-                                <li><%= link_to t('.navbar.admin_users'), users_path %></li>
-                            <% end %>
-                            <% if can_certifiers_criteria_report %>
-                                <li><%= link_to t('.navbar.certifiers_and_criteria_report'), reports_certifiers_criteria_path %></li>
-                            <% end %>
-                            <% if can_dashboard_survey %>
-                                <li><%= link_to t('.navbar.survey_dashboard'), survey_dashboard_index_path %></li>
-                            <% end %>
-                        </ul>
+                <% if can?(:index, :dashboard) %>
+                    <li class="<%= 'active' if ['dashboard'].include?(controller_name) %>">
+                        <%= link_to dashboard_path do %>
+                            <%= ikoen('dashboard', size: 'lg') %><span class="nav-label">Dashboard</span>
+                        <% end %>
                     </li>
                 <% end %>
-            <% else %>
-                 <li class="dropdown<%= ' active' if ['scheme_criteria', 'users'].include?(controller_name) && action_name != 'list_notifications' %>">
-                        <a aria-expanded="false" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <%= ikoen('cogs', size: 'lg') %><%= t('.navbar.admin') %><span class="caret"></span>
-                        </a>
-                        <ul role="menu" class="dropdown-menu">
-                            <% if can_offline_projects %>
-                                <li><%= link_to t('.navbar.offline_projects'), offline_projects_path %></li>
-                            <% end %>
-                        </ul>
-                    </li>
-            <% end %>
-        </ul>
 
-        <% if user_signed_in? %>
+                <% if can?(:index, Project) %>
+                    <li class="<%= 'active' if ['projects', 'projects_users', 'certification_paths', 'scheme_mixes', 'scheme_mix_criteria'].include?(controller_name) %>">
+                        <%= link_to projects_path do %>
+                            <%= ikoen('building-o', size: 'lg') %><span class="nav-label"><%= t('.navbar.projects_html') %></span>
+                        <% end %>
+                    </li>
+                <% end %>
+
+                <% if can?(:index, Task) %>
+                    <li class="<%= 'active' if (controller_name == 'tasks') %>">
+                        <% task_count = TaskService::count_tasks(user: current_user) %>
+                        <%= link_to tasks_path do %>
+                            <%= ikoen('tasks', size: 'lg') %><span class="nav-label"><%= t('.navbar.tasks') %><span class="badge task-counter <% if task_count == 0 %>hidden<% end %>" data-user="<%= current_user.id %>"><%= task_count %></span></span>
+                        <% end %>
+                    </li>
+                <% end %>
+
+                <% if can?(:list_notifications, User) %>
+                    <li class="<%= 'active' if (controller_name == 'users' and action_name == 'list_notifications') %>">
+                        <%= link_to list_notifications_user_path id: current_user.id do %>
+                            <%= ikoen('cog', size: 'lg') %><span class="nav-label"><%= t('.navbar.preferences') %></span>
+                        <% end %>
+                    </li>
+                <% end %>
+
+                <% if can?(:index, AuditLog) %>
+                    <li class="<%= 'active' if (controller_name == 'audit_logs') %>">
+                        <%= link_to audit_logs_path do %>
+                            <%= ikoen('mail-reply-all', size: 'lg') %><span class="nav-label"><%= t('.navbar.audit_log') %></span>
+                        <% end %>
+                    </li>
+                <% end %>
+
+                <li>
+                <%= link_to '/GSASgate_Manual.pdf', target: '_blank' do %>
+                    <%= ikoen('book', size: 'lg') %><span class="nav-label"><%= t('.navbar.manual') %></span>
+                <% end %>
+                </li>
+
+                <% if can?(:show, 'visualisation_tool') %>
+                <li>
+                <%= link_to Rails.application.config.x.viewer.url, target: '_blank' do %>
+                    <%= ikoen('map', size: 'lg') %><span class="nav-label"><%= t('.navbar.viewer') %></span>
+                <% end %>
+                </li>
+                <% end %>
+
+                <% 
+                    can_index_scheme_criteria = can?(:index, SchemeCriterion)
+                    can_index_users = can?(:index, User)
+                    can_certifiers_criteria_report = can?(:certifiers_criteria, :report)
+                    can_dashboard_survey = can?(:index, :survey_dashboard)
+                    can_offline_projects = can?(:index, Offline::ProjectsController)
+                %>
+
+                <% unless current_user.document_controller? %>
+                    <% if can_index_users || can_index_scheme_criteria || can_certifiers_criteria_report || can_dashboard_survey %>
+                        <li class="dropdown<%= ' active' if ['scheme_criteria', 'users'].include?(controller_name) && action_name != 'list_notifications' %>">
+                            <a aria-expanded="false" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <%= ikoen('cogs', size: 'lg') %><%= t('.navbar.admin') %><span class="caret"></span>
+                            </a>
+                            <ul role="menu" class="dropdown-menu">
+                                <% if can_offline_projects %>
+                                    <li><%= link_to t('.navbar.offline_projects'), offline_projects_path %></li>
+                                <% end %>
+                                <% if can_index_scheme_criteria %>
+                                    <li><%= link_to t('.navbar.admin_system_data'), scheme_criteria_path %></li>
+                                <% end %>
+                                <% if can_index_users %>
+                                    <li><%= link_to t('.navbar.admin_users'), users_path %></li>
+                                <% end %>
+                                <% if can_certifiers_criteria_report %>
+                                    <li><%= link_to t('.navbar.certifiers_and_criteria_report'), reports_certifiers_criteria_path %></li>
+                                <% end %>
+                                <% if can_dashboard_survey %>
+                                    <li><%= link_to t('.navbar.survey_dashboard'), survey_dashboard_index_path %></li>
+                                <% end %>
+                            </ul>
+                        </li>
+                    <% end %>
+                <% else %>
+                    <li class="dropdown<%= ' active' if ['scheme_criteria', 'users'].include?(controller_name) && action_name != 'list_notifications' %>">
+                            <a aria-expanded="false" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <%= ikoen('cogs', size: 'lg') %><%= t('.navbar.admin') %><span class="caret"></span>
+                            </a>
+                            <ul role="menu" class="dropdown-menu">
+                                <% if can_offline_projects %>
+                                    <li><%= link_to t('.navbar.offline_projects'), offline_projects_path %></li>
+                                <% end %>
+                            </ul>
+                        </li>
+                <% end %>
+            </ul>
+            <div class="d-none d-lg-block"></div>
+            <%= image_tag('layout/GSAS Trust.svg',class:"img-responsive bg-transparent after-login-right-img")%>
+        </div>
+            
+        </div>
+    </div>
+    <% if user_signed_in? %>
             <ul class="nav navbar-top-links navbar-right">
                 <li>
                     <%= link_to user_path(current_user.id) do %>
@@ -128,5 +135,4 @@
                 </li>
             </ul>
         <% end %>
-    </div>
 </div>
