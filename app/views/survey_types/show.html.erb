@@ -1,5 +1,4 @@
-<div class="row">
-
+<%# <div class="row"> %>
   <div class="col-md-12 m-t">
     <div class="ibox float-e-margins">
       <div class="ibox-title">
@@ -27,7 +26,6 @@
       </div>
     </div>
   </div>
-
   <div class="col-md-12">
     <div id="accordion" class="panel-group">
       <div class=<%= @is_latest ? "sortable-survey-questions" : '' %> data-survey-type-id="<%= @survey_type.id %>" data-model="SurveyQuestion">
@@ -36,6 +34,6 @@
     </div>
     <%= btn_link_to(:back, icon: 'backward', text: 'Back') %>
   </div>
-</div>
+<%# </div> %>
 
 <div id="toast-message"></div>

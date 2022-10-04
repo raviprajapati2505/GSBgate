@@ -19,10 +19,6 @@ body.full-height-layout #page-wrapper {
   height: 100%;
 }
 
-#page-wrapper {
-  min-height: auto;
-}
-
 body.boxed-layout {
   background: $boxed-backgound;
 }
@@ -181,11 +177,12 @@ video {
 }
 
 .wrapper-content {
-  padding: 20px 10px 40px;
+  // padding: 20px 10px 40px;
+  padding: 20px 0 40px;
 }
 
 #page-wrapper {
-  padding: 0 15px;
+  // padding: 0 15px;
   min-height: 568px;
   position: relative !important;
 }
@@ -284,7 +281,7 @@ body.body-small .footer.fixed {
 
 .page-heading {
   border-top: 0;
-  padding: 0 10px 20px 10px;
+  padding: 60px 10px 20px 10px;
 }
 
 .panel-heading h1,
@@ -688,7 +685,7 @@ table.table-mail tr td {
 }
 
 .yellow-bg {
-  background-color: $yellow;
+  background-color: $warning;
   color: $white;
 }
 
@@ -731,12 +728,12 @@ table.table-mail tr td {
 }
 
 .panel-warning {
-  border-color: $yellow;
+  border-color: $warning;
 }
 
 .panel-warning > .panel-heading {
-  background-color: $yellow;
-  border-color: $yellow;
+  background-color: $warning;
+  border-color: $warning;
   color: $white;
 }
 
@@ -783,7 +780,7 @@ table.table-mail tr td {
 }
 
 .progress-bar-warning {
-  background-color: $yellow;
+  background-color: $warning;
 }
 
 .progress-bar-danger {
@@ -822,7 +819,7 @@ table.table-mail tr td {
 }
 
 .text-warning {
-  color: $yellow;
+  color: $warning;
 }
 
 .text-danger {
@@ -831,10 +828,6 @@ table.table-mail tr td {
 
 .text-muted {
   color: $label-badget-color;
-}
-
-.text-white {
-  color: $white;
 }
 
 .simple_tag {

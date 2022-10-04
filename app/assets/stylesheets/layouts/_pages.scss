@@ -6,7 +6,7 @@
 
 .search-result h3 {
   margin-bottom: 0;
-  color: $skyblue;
+  color: $info;
 }
 
 .search-result .search-link {
@@ -1029,10 +1029,10 @@ table.issue-tracker tbody tr td {
     background: $white;
   }
   &.warning-element {
-    border-left: 3px solid $yellow;
+    border-left: 3px solid $warning;
   }
   &.danger-element {
-    border-left: 3px solid $red;
+    border-left: 3px solid $danger;
   }
   &.info-element {
     border-left: 3px solid $blue;
@@ -1106,7 +1106,7 @@ del {
 }
 
 .ecommerce .fa-star.active {
-  color: $yellow;
+  color: $warning;
 }
 
 .ecommerce .note-editor {

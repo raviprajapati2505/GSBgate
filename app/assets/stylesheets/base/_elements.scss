@@ -555,14 +555,20 @@ a.list-group-item.active, a.list-group-item.active:hover, a.list-group-item.acti
 
 /* DATATABLES */
 
-table.dataTable thead .sorting,
-table.dataTable thead .sorting_asc:after,
-table.dataTable thead .sorting_desc,
-table.dataTable thead .sorting_asc_disabled,
-table.dataTable thead .sorting_desc_disabled {
-  background: transparent;
-}
+// table.dataTable thead .sorting,
+// table.dataTable thead .sorting_asc:after,
+// table.dataTable thead .sorting_desc,
+// table.dataTable thead .sorting_asc_disabled,
+// table.dataTable thead .sorting_desc_disabled {
+//   background: transparent;
+// }
 
+.table {
+  background: $white;
+}
+table.dataTable thead tr th {
+  background: $skin-gord-color;
+}
 .dataTables_wrapper {
   padding-bottom: 30px;
 }
@@ -883,11 +889,11 @@ div.dt-button-info {
 }
 
 .has-warning .form-control {
-  border-color: $yellow;
+  border-color: $warning;
 }
 
 .has-error .form-control {
-  border-color: $red;
+  border-color: $danger;
 }
 
 .has-success .control-label {
@@ -895,11 +901,11 @@ div.dt-button-info {
 }
 
 .has-warning .control-label {
-  color: $yellow;
+  color: $warning;
 }
 
 .has-error .control-label {
-  color: $red;
+  color: $danger;
 }
 
 .input-group-addon {
@@ -928,7 +934,7 @@ div.dt-button-info {
 }
 
 .slider_red .noUi-connect {
-  background: none repeat scroll 0 0 $red;
+  background: none repeat scroll 0 0 $danger;
   box-shadow: none;
 }
 
@@ -1524,7 +1530,7 @@ label.error {
 }
 
 .toast-error {
-  background-color: $red
+  background-color: $danger
 }
 
 .toast-info {
@@ -1532,7 +1538,7 @@ label.error {
 }
 
 .toast-warning {
-  background-color: $yellow
+  background-color: $warning
 }
 
 .toast-top-full-width {
@@ -1556,7 +1562,7 @@ label.error {
 }
 
 .inspinia-notify.alert-warning {
-  border-left: 6px solid $yellow;
+  border-left: 6px solid $warning;
 }
 
 .inspinia-notify.alert-success {
@@ -1564,7 +1570,7 @@ label.error {
 }
 
 .inspinia-notify.alert-danger {
-  border-left: 6px solid $red;
+  border-left: 6px solid $danger;
 }
 
 .inspinia-notify.alert-info {

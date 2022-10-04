@@ -1,7 +1,7 @@
 <% use_gmaps_for(:project) %>
 <% download_document_permitted = check_documents_permissions(user_role: current_user.role, project: @project) %>
 
-<div class="row">
+<%# <div class="row"> %>
   <div class="col-md-4">
     <div class="ibox float-e-margins">
       <div class="ibox-title">
@@ -327,6 +327,6 @@
       <%= render partial: 'projects_surveys/index', locals: {project: @project, projects_surveys:  @projects_surveys} %>
     <% end %>
   </div>
-</div>
+<%# </div> %>
 
 <%= javascript_include_tag 'find_users_by_email' %>

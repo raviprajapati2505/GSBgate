@@ -4,7 +4,6 @@
       <div class="text-right">
         <%= link_to_remove_association "X", f, class: "btn btn-danger m-r-md m-t" %>
       </div>
-
       <div class="form-inputs">
         <div class="p-m survey-questions-fields">
           <div class="error text-danger">
@@ -14,7 +13,6 @@
               </h4>
             <% end %>
           </div>
-
           <%= f.text_field :question_text %>
 
           <%= f.text_area :description %>
@@ -29,7 +27,6 @@
                 <%= render partial: 'question_option_fields', locals: { f: question_option } %>
               <% end %>
             </div>
-
             <div class="links">
               <%= link_to_add_association 'Add Option', f, :question_options, class: "btn btn-primary btn-sm nested-fields-links #{set_visibility(f.object.question_type)}", id: "add-option-button" %>
             </div>

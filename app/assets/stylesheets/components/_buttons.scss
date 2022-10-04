@@ -24,11 +24,11 @@
 }
 
 .btn-warning.btn-outline {
-  color: $yellow;
+  color: $warning;
 }
 
 .btn-danger.btn-outline {
-  color: $red;
+  color: $danger;
 }
 
 .btn-primary.btn-outline:hover,
@@ -122,14 +122,14 @@
 }
 
 .btn-warning {
-  background-color: $yellow;
-  border-color: $yellow;
+  background-color: $warning;
+  border-color: $warning;
   color: $white;
 }
 
 .btn-warning:hover, .btn-warning:focus, .btn-warning:active, .btn-warning.active, .open .dropdown-toggle.btn-warning, .btn-warning:active:focus, .btn-warning:active:hover, .btn-warning.active:hover, .btn-warning.active:focus {
-  background-color: darken($yellow, 3%);
-  border-color: darken($yellow, 3%);
+  background-color: darken($warning, 3%);
+  border-color: darken($warning, 3%);
   color: $white;
 }
 
@@ -138,19 +138,19 @@
 }
 
 .btn-warning.disabled, .btn-warning.disabled:hover, .btn-warning.disabled:focus, .btn-warning.disabled:active, .btn-warning.disabled.active, .btn-warning[disabled], .btn-warning[disabled]:hover, .btn-warning[disabled]:focus, .btn-warning[disabled]:active, .btn-warning.active[disabled], fieldset[disabled] .btn-warning, fieldset[disabled] .btn-warning:hover, fieldset[disabled] .btn-warning:focus, fieldset[disabled] .btn-warning:active, fieldset[disabled] .btn-warning.active {
-  background-color: lighten($yellow, 4%);
-  border-color: lighten($yellow, 4%);
+  background-color: lighten($warning, 4%);
+  border-color: lighten($warning, 4%);
 }
 
 .btn-danger {
-  background-color: $red;
-  border-color: $red;
+  background-color: $danger;
+  border-color: $danger;
   color: $white;
 }
 
 .btn-danger:hover, .btn-danger:focus, .btn-danger:active, .btn-danger.active, .open .dropdown-toggle.btn-danger, .btn-danger:active:focus, .btn-danger:active:hover, .btn-danger.active:hover, .btn-danger.active:focus {
-  background-color: darken($red, 3%);
-  border-color: darken($red, 3%);
+  background-color: darken($danger, 3%);
+  border-color: darken($danger, 3%);
   color: $white;
 }
 
@@ -159,8 +159,8 @@
 }
 
 .btn-danger.disabled, .btn-danger.disabled:hover, .btn-danger.disabled:focus, .btn-danger.disabled:active, .btn-danger.disabled.active, .btn-danger[disabled], .btn-danger[disabled]:hover, .btn-danger[disabled]:focus, .btn-danger[disabled]:active, .btn-danger.active[disabled], fieldset[disabled] .btn-danger, fieldset[disabled] .btn-danger:hover, fieldset[disabled] .btn-danger:focus, fieldset[disabled] .btn-danger:active, fieldset[disabled] .btn-danger.active {
-  background-color: lighten($red, 4%);
-  border-color: lighten($red, 4%);
+  background-color: lighten($danger, 4%);
+  border-color: lighten($danger, 4%);
 }
 
 .btn-link {
@@ -258,11 +258,11 @@ button.btn-default.dim:active {
 }
 
 button.btn-warning.dim {
-  box-shadow: inset 0 0 0 darken($yellow, 6%), 0 5px 0 0 darken($yellow, 6%), 0 10px 5px #999;
+  box-shadow: inset 0 0 0 darken($warning, 6%), 0 5px 0 0 darken($warning, 6%), 0 10px 5px #999;
 }
 
 button.btn-warning.dim:active {
-  box-shadow: inset 0 0 0 darken($yellow, 6%), 0 2px 0 0 darken($yellow, 6%), 0 5px 3px #999;
+  box-shadow: inset 0 0 0 darken($warning, 6%), 0 2px 0 0 darken($warning, 6%), 0 5px 3px #999;
 }
 
 button.btn-info.dim {
@@ -282,11 +282,11 @@ button.btn-success.dim:active {
 }
 
 button.btn-danger.dim {
-  box-shadow: inset 0 0 0 darken($red, 6%), 0 5px 0 0 darken($red, 6%), 0 10px 5px #999;
+  box-shadow: inset 0 0 0 darken($danger, 6%), 0 5px 0 0 darken($danger, 6%), 0 10px 5px #999;
 }
 
 button.btn-danger.dim:active {
-  box-shadow: inset 0 0 0 darken($red, 6%), 0 2px 0 0 darken($red, 6%), 0 5px 3px #999;
+  box-shadow: inset 0 0 0 darken($danger, 6%), 0 2px 0 0 darken($danger, 6%), 0 5px 3px #999;
 }
 
 button.dim:before {

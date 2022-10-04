@@ -16,11 +16,11 @@
 </head>
 <body class="top-navigation skin-gord after-login">
 <div id="wrapper">
-    <div id="page-wrapper" class="container-fluid gord-transparent">
+    <div id="page-wrapper">
         <!-- Navbar -->
         <%= render 'layouts/topnavbar' %>
 
-        <div class="row wrapper gord-transparent page-heading page-title-div">
+        <div class="row gord-transparent page-heading">
             <div class="col-md-10">
                 <div class="row">
                     <h2>
@@ -34,11 +34,12 @@
                 </div>
             </div>
             <div class="col-md-2 back-button-wrapper">
-                    <%= btn_link_to('javascript:history.back();', icon: 'caret-left', text: 'Return to previous page', style: 'white', size: 'extra_small') %>
+                <%= btn_link_to('javascript:history.back();', icon: 'caret-left', text: 'Return to previous page', style: 'link', size: 'extra_small') %>
             </div>
         </div>
-        <div class="row wrapper wrapper-content gray-bg">
-            <div class="container">
+        <div class="container-fluid wrapper gord-transparent">
+        <div class="row wrapper-content">
+            <%# <div class="container"> %>
                 <% if notice %>
                     <p class="flash flash-success hidden"><%= notice.html_safe %></p>
                 <% end %>
@@ -48,7 +49,8 @@
 
                 <!-- Main view  -->
                 <%= yield %>
-            </div>
+            <%# </div> %>
+        </div>
         </div>
 
         <!-- Footer -->

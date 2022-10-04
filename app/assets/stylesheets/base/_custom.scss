@@ -86,7 +86,7 @@ ul.dt-button-collection {
 }
 
 tr.outline-danger {
-  outline: 1px solid $red;
+  outline: 1px solid $danger;
   box-shadow: 0 0 0 1px #f8120a4f;
 }
 
@@ -172,10 +172,6 @@ legend.scheduler-border {
   // background: image-url('layout/gsas_trust_background.jpg') no-repeat center center fixed;
 }
 
-.top-navigation .wrapper.wrapper-content {
-  margin-top: 144px !important;
-}
-
 .skin-gord {
   .gord-transparent-green,
   .navbar-nav .dropdown-menu {
@@ -248,9 +244,7 @@ legend.scheduler-border {
 .text-green {
   color: $skin-gord-logo-green !important;
 }
-.text-white {
-  color: $white !important;
-}
+
 .bg-transparent {
   background: transparent !important;
 }
@@ -409,7 +403,7 @@ hr {
   }
 
   .select2-drop-active {
-    border: 0px solid $skyblue;
+    border: 0px solid $info;
     border-top: none;
   }
 
@@ -483,7 +477,7 @@ hr {
     }
 
     .select2-drop-active {
-      border: 0px solid $skyblue;
+      border: 0px solid $info;
       border-top: none;
     }
 
@@ -575,8 +569,8 @@ hr {
         margin: min(max(3px, 0.326vw), 5px);
       }
       .btn-white {
-        background-color: $red;
-        border-color: $red;
+        background-color: $danger;
+        border-color: $danger;
         color: $white;
       }
     }
