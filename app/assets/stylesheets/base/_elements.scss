@@ -140,23 +140,23 @@
 /* TOOLTIPS */
 
 .tooltip-inner {
-  background-color: $nav-bg;
+  background-color: $gray-700;
 }
 
 .tooltip.top .tooltip-arrow {
-  border-top-color: $nav-bg;
+  border-top-color: $gray-700;
 }
 
 .tooltip.right .tooltip-arrow {
-  border-right-color: $nav-bg;
+  border-right-color: $gray-700;
 }
 
 .tooltip.bottom .tooltip-arrow {
-  border-bottom-color: $nav-bg;
+  border-bottom-color: $gray-700;
 }
 
 .tooltip.left .tooltip-arrow {
-  border-left-color: $nav-bg;
+  border-left-color: $gray-700;
 }
 
 /* EASY PIE CHART*/
@@ -1346,7 +1346,7 @@ div.dt-button-info {
   font-family: FontAwesome;
   height: 34px;
   width: 33px;
-  color: #c1c1c1;
+  color: $gray-400;
 
 }
 

@@ -5,17 +5,17 @@ $light-gray: #d1dade;
 $gray-100: #f9f9f9 !default;
 $gray-200: #dddddd !default;
 $gray-300: #D8F5CD !default;
+$gray-400: #f1f1f2 !default;
 $gray-600: #676a6c !default;
 $gray-800: #2A2E36 !default;
 $gray-900: #262626 !default;
-
-$gray-400: #ced4da !default;
-$gray-500: #adb5bd !default;
-$gray-700: #495057 !default;
+$gray-700: #3a4f57 !default;
 $black:    #000000 !default;
 
+$gray-500: #adb5bd !default;
 
  // Default label, badget
+$page-bg: $gray-400;
 $label-badget-color: #5e5e5e;
 $light-blue: #f3f6fb;
 $dark-gray: #c2c2c2; // Default color
@@ -64,6 +64,6 @@ $boxed-backgound: image-url("patterns/shattered.png");
 $btn-border-radius: 3px;
 
 //Navigation
-$nav-bg: #3a4f57;
+$nav-bg: $gray-700;
 $nav-profil-pattern: image-url("patterns/header-profile.png") no-repeat;
 $nav-text-color: #a7b1c2;

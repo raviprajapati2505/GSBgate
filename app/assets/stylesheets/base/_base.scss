@@ -1,19 +1,17 @@
-body {
-  // font-family: "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  // font-family: adrianna, sans-serif;
-  font-family: 'Outfit', sans-serif;
-  font-weight: 300;
-  background-color: $nav-bg;
-  font-size: 13px;
-  color: $text-color;
-  overflow-x: hidden;
-}
-
 html,
 body {
   height: 100%;
 }
-
+body {
+  // font-family: "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  // font-family: adrianna, sans-serif;
+  font-family: "Outfit", sans-serif;
+  font-weight: 300;
+  background-color: $gray-700;
+  font-size: 13px;
+  color: $text-color;
+  overflow-x: hidden;
+}
 body.full-height-layout #wrapper,
 body.full-height-layout #page-wrapper {
   height: 100%;
@@ -24,7 +22,7 @@ body.boxed-layout {
 }
 
 body.boxed-layout #wrapper {
-  background-color: $nav-bg;
+  background-color: $gray-700;
   max-width: $boxed-width;
   margin: 0 auto;
   -webkit-box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.75);
@@ -535,15 +533,15 @@ code {
 }
 
 .ibox-title {
-  -moz-border-bottom-colors: none;
-  -moz-border-left-colors: none;
-  -moz-border-right-colors: none;
-  -moz-border-top-colors: none;
-  background-color: $ibox-title-bg;
-  border-color: $border-color;
-  border-image: none;
-  border-style: solid solid none;
-  border-width: 3px 0 0;
+  // -moz-border-bottom-colors: none;
+  // -moz-border-left-colors: none;
+  // -moz-border-right-colors: none;
+  // -moz-border-top-colors: none;
+  // background-color: $ibox-title-bg;
+  // border-color: $border-color;
+  // border-image: none;
+  // border-style: solid solid none;
+  // border-width: 3px 0 0;
   color: inherit;
   margin-bottom: 0;
   padding: 14px 15px 7px;
@@ -554,11 +552,10 @@ code {
   background-color: transparent;
   color: inherit;
   padding: 15px 20px 20px 20px;
-
-  border-color: $border-color;
-  border-image: none;
-  border-style: solid solid none;
-  border-width: 1px 0;
+  // border-color: $border-color;
+  // border-image: none;
+  // border-style: solid solid none;
+  // border-width: 1px 0;
 }
 
 .ibox-footer {

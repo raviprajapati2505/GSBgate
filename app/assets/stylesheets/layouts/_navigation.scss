@@ -35,7 +35,7 @@
 
 .navbar-default {
   background-color: transparent;
-  border-color: $nav-bg;
+  border-color: $gray-700;
 }
 
 .navbar-top-links li {
@@ -153,7 +153,7 @@
 
 .nav > li.active {
   border-left: 4px solid darken($navy, 2%);
-  background: darken($nav-bg, 3%);
+  background: darken($gray-700, 3%);
 }
 
 .nav.nav-second-level > li.active {
@@ -267,13 +267,13 @@ body.mini-navbar .navbar-default .nav > li > .nav-second-level li a {
   position: absolute;
   left: 70px;
   top: 0;
-  background-color: $nav-bg;
+  background-color: $gray-700;
   padding: 10px 10px 10px 10px;
   font-size: 12px;
 }
 
 .canvas-menu.mini-navbar .nav-second-level {
-  background: darken($nav-bg, 3%);
+  background: darken($gray-700, 3%);
 }
 
 .mini-navbar li.active .nav-second-level {
@@ -518,7 +518,7 @@ body.canvas-menu.mini-navbar .navbar-default .nav li .profile-element a span {
 
 body.canvas-menu nav.navbar-static-side {
   z-index: 2001;
-  background: $nav-bg;
+  background: $gray-700;
   height: 100%;
   position: fixed;
   display: none;
