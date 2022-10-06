@@ -23,10 +23,10 @@ project_errors = []
     row = Hash[[header, xlsx.row(i)].transpose]
 		
     id = row["Project ID"]&.squish&.strip
-    city = row["Project City (amended)"]&.squish&.strip
-    district = row["Project District (amended)"]&.squish&.strip
-    owner = row["Project Owner (amended)"]&.squish&.strip
-    developer = row["Project Developer (amended)"]&.squish&.strip
+    city = row["Project City"]&.squish&.strip
+    district = row["Project District"]&.squish&.strip
+    owner = row["Project Owner"]&.squish&.strip
+    developer = row["Project Developer"]&.squish&.strip
     owner_business_sector = row["Project Owner Business Sector"]&.squish&.strip&.downcase
     developer_business_sector = row["Project Developer Business Sector"]&.squish&.strip&.downcase
     project = Project.find_by(code: id)
