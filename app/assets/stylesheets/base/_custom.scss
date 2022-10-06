@@ -230,7 +230,8 @@ legend.scheduler-border {
 
 // 20-9-2022
 .skin-gord-login {
-  background-image: url("/assets/layout/Cover Page_bg.jpg") !important;
+  background-image: none !important;
+  background: #3a4f57;
   color: $white;
   .login-content .loginColumns .row .login-right {
     background-color: rgba(15, 44, 23, 0.8);
@@ -271,7 +272,7 @@ legend.scheduler-border {
 }
 // signup 22-9-2022
 .sign_up {
-  background-color: rgba(15, 44, 23, 0.80);
+  background-color: #fff;
   .ibox-content {
     border: 0px;
   }
