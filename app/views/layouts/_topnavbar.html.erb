@@ -1,4 +1,4 @@
-<div class="row menu-div flex-column">
+<div class="menu-div flex-column">
     <div class="top-navbar">
         <div class="navbar-header navbar navbar-static-top gord-transparent" role="navigation">
             <% unless Rails.env == 'production' %>
@@ -121,18 +121,18 @@
         </div>
     </div>
     <% if user_signed_in? %>
-            <ul class="nav navbar-top-links navbar-right">
-                <li>
-                    <%= link_to user_path(current_user.id) do %>
-                        <%= ikoen('user', size: 'lg') %>
-                        <span class="nav-label"><%= current_user.full_name %></span>
-                    <% end %>
-                </li>
-                <li>
-                    <%= link_to destroy_user_session_path, method: :delete do %>
-                        <%= ikoen('sign-out', size: 'lg') %><span class="nav-label">Log out</span>
-                    <% end %>
-                </li>
-            </ul>
-        <% end %>
+        <ul class="nav navbar-top-links navbar-right">
+            <li>
+                <%= link_to user_path(current_user.id) do %>
+                    <%= ikoen('user', size: 'lg') %>
+                    <span class="nav-label"><%= current_user.full_name %></span>
+                <% end %>
+            </li>
+            <li>
+                <%= link_to destroy_user_session_path, method: :delete do %>
+                    <%= ikoen('sign-out', size: 'lg') %><span class="nav-label">Log out</span>
+                <% end %>
+            </li>
+        </ul>
+    <% end %>
 </div>

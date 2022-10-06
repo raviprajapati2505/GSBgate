@@ -175,12 +175,10 @@ video {
 }
 
 .wrapper-content {
-  // padding: 20px 10px 40px;
   padding: 20px 0 40px;
 }
 
 #page-wrapper {
-  // padding: 0 15px;
   min-height: 568px;
   position: relative !important;
 }
@@ -278,8 +276,7 @@ body.body-small .footer.fixed {
 /* PANELS */
 
 .page-heading {
-  border-top: 0;
-  padding: 170px 10px 20px 10px;
+  padding-top: 170px;
 }
 
 .panel-heading h1,
