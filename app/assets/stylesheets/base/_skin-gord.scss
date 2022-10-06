@@ -71,7 +71,7 @@
     height: 36px;
     line-height: 36px;
     padding-left: 0;
-    color: $white;
+    color: $gray-700;
     box-shadow: none;
     .select2-arrow b {
       background-position: 0 5px !important;
@@ -651,10 +651,6 @@
   .dataTables_filter {
     width: 250px;
     float: right;
-  }
-
-  .dataTables_wrapper {
-    padding-bottom: 0;
   }
 
   // Show/Hide columns for effective datatables

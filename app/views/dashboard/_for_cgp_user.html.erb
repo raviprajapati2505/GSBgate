@@ -1,7 +1,7 @@
 
 <%# <div class="row"> %>
   <div class="col-md-2 m-t">
-    <div class="ibox float-e-margins">
+    <div class="ibox">
       <div class="ibox-title" style="text-align: center">
         <div class='d-flex justify-content-between align-items-center'>
           <h3 class="align-items-center" style="line-height:25px"><b>Hello,<br> <%= @user.name %></b></h3> 
@@ -17,7 +17,7 @@
   <div class="col-md-10 m-t">
     <div class="row">
       <div class="col-md-12">
-        <div class="ibox float-e-margins">
+        <div class="ibox">
           <div class="ibox-title">
             <div class='d-flex justify-content-between align-items-center'>
               <h3><b>Welcome to your dashboard</b></h3> 
@@ -33,7 +33,7 @@
           </div>
         </div>
         <br>
-        <div class="ibox float-e-margins">
+        <div class="ibox">
           <div class="ibox-title">
             <div class="d-flex justify-content-between align-items-center">
               <h5><b>Personal Information</b></h5>
@@ -124,13 +124,13 @@
           </div>
         </div>
         <br>
-        <div class="ibox float-e-margins">
+        <div class="ibox">
           <%= render partial: 'licence_overview', locals: { user_licences_design: @user_licences_design, 
             user_licences_construction: @user_licences_construction, 
             user_licences_operation: @user_licences_operation  
           } %>
         </div>
-        <div class="ibox float-e-margins">
+        <div class="ibox">
           <div class="ibox-title">
             <div class="d-flex justify-content-between align-items-center">
               <h5><b>Overdue Licences</b></h5>
@@ -146,7 +146,7 @@
           </div>
         </div>
         <br>
-        <div class="ibox float-e-margins">
+        <div class="ibox">
           <div class="ibox-title">
             <div class="d-flex justify-content-between align-items-center">
               <h5><b>Practitioner Information</b></h5>
@@ -223,7 +223,7 @@
             </table>
           </div>
         </div>  
-        <div class="ibox float-e-margins">
+        <div class="ibox">
           <div class="ibox-title">
             <div class="d-flex justify-content-between align-items-center">
               <h5><b>Projects Status</b></h5>
@@ -283,7 +283,7 @@
             </table>
           </div>
         </div>
-        <div class="ibox float-e-margins">
+        <div class="ibox">
           <div class="ibox-title">
             <div class="d-flex justify-content-between align-items-center">
               <h5><b>Activity Information</b></h5>
@@ -292,7 +292,7 @@
           <%= render partial: 'activity_information'%>
         </div>
         <%= render partial: 'demerit_notices'%>
-        <!--<div class="ibox float-e-margins">
+        <!--<div class="ibox">
           <div class="ibox-title">
             <div class="d-flex justify-content-between align-items-center">
               <h5><b>Tasks Status</b></h5>
@@ -335,7 +335,7 @@
             </table>
           </div>
         </div>
-        <div class="ibox float-e-margins">
+        <div class="ibox">
           <div class="ibox-title">
             <div class="d-flex justify-content-between align-items-center">
               <h5><b>Overdue Projects Tasks</b></h5>

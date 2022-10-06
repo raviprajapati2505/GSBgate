@@ -509,10 +509,8 @@ code {
 }
 
 .ibox {
-  clear: both;
+  display: block;
   margin-bottom: 25px;
-  margin-top: 0;
-  padding: 0;
 }
 
 .ibox.collapsed .ibox-content {

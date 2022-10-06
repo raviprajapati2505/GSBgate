@@ -570,9 +570,13 @@ table.dataTable thead tr th {
   background: $skin-gord-color;
 }
 .dataTables_wrapper {
-  padding-bottom: 30px;
+  .dt-buttons {
+    .btn {
+      background: none;
+      color: $white;
+    }
+  }
 }
-
 .dataTables_length {
   float: left;
 }

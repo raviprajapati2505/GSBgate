@@ -5,7 +5,7 @@
 
 <%# <div class="row"> %>
     <div class="col-md-5">
-        <div class="ibox float-e-margins">
+        <div class="ibox">
             <div class="ibox-title">
                 <%= audit_log_label(@certification_path) %>
                 <h5><%= t('.certification_path.title') %></h5>
@@ -134,7 +134,7 @@
         </div>
 
         <% if @detailed_certificate_report.present? && !@certification_path.final_construction? %>
-          <div class="ibox float-e-margins">
+          <div class="ibox">
             <div class="ibox-title">
               <h5><%= t('.certification_path_reports.title') %></h5>
             </div>
@@ -171,7 +171,7 @@
         <% end %>
 
         <% if (can?(:download_signed_certificate, @certification_path) && @certification_path.signed_certificate_file.present?) || can?(:update_signed_certificate, @certification_path) %>
-        <div class="ibox float-e-margins">
+        <div class="ibox">
           <div class="ibox-title">
             <h5><%= t('.certification_path_signed_certificate.title') %></h5>
           </div>
@@ -201,7 +201,7 @@
         </div>
         <% end %>
 
-        <div class="ibox float-e-margins">
+        <div class="ibox">
             <div class="ibox-title">
                 <%= render 'timeline_legend' %>
                 <h5><%= t('.certification_path_status.title') %></h5>
@@ -234,7 +234,7 @@
 
   <% if @certification_path.certificate.construction_certificate? %>
     <div class="col-md-7">
-      <div class="ibox float-e-margins">
+      <div class="ibox">
         <div class="ibox-title">
           <h5>Summary of Stages</h5>
         </div>
@@ -261,7 +261,7 @@
     </div>
   <% else %>
     <div class="col-md-7">
-        <div class="ibox float-e-margins">
+        <div class="ibox">
             <div class="ibox-title">
                 <h5><%= t('.schemes.title') %></h5>
             </div>

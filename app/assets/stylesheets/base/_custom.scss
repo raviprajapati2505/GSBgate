@@ -302,7 +302,7 @@ fieldset.scheduler-border {
     font-size: 1.2rem;
     padding: 1rem 0;
     height: auto;
-    color: $white;
+    color: $gray-700;
   }
 
   label {
@@ -316,8 +316,8 @@ fieldset.scheduler-border {
   }
 
   select option {
-    background-color: $black;
-    color: $white;
+    background-color: $white;
+    color: $gray-700;
   }
 
   .file {
@@ -437,7 +437,7 @@ hr {
     height: 36px;
     line-height: 36px;
     padding-left: 0;
-    color: $white;
+    color: $gray-700;
     box-shadow: none;
 
     .select2-arrow b {
@@ -510,7 +510,7 @@ hr {
       height: 36px;
       line-height: 36px;
       padding-left: 0;
-      color: $white;
+      color: $gray-700;
       box-shadow: none;
 
       .select2-arrow b {

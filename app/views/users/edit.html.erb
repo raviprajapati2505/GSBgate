@@ -1,5 +1,5 @@
 <%= simple_form_for(@user, as: 'user', url: user_path(@user), html: { method: :put, class: "user-form" }) do |f| %>
-  <div class="ibox float-e-margins">
+  <div class="ibox">
     <div class="ibox-content">
       <h2>Edit Profile</h2>
       <hr />
@@ -18,7 +18,7 @@
     </div>
   </div>
 
-  <div class="ibox float-e-margins">
+  <div class="ibox">
     <div class="ibox-content">
 
       <% if @user.default_role? || @user.service_provider? %>
