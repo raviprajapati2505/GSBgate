@@ -230,8 +230,8 @@
     vertical-align: middle;
     margin: 0;
     padding: 0;
-    width: 22px;
-    height: 22px;
+    width: 16px;
+    height: 16px;
     background: image_url("check.png") no-repeat;
     border: 1px solid;
     cursor: pointer;
@@ -241,13 +241,15 @@
     background-position: 0 0;
   }
   .icheckbox_square-green.hover {
-    background-position: -24px 0;
+    // background-position: -19px 0;
+    border: 1px solid;
   }
   .icheckbox_square-green.checked {
-    background-position: -1px;
-    background-size: 22px;
+    // background-position: -1px;
+    background-size: 18px;
     border-color: $black;
-    background-color: $white;
+    border: 0px;
+    // background-color: $white;
   }
   .icheckbox_square-green.disabled {
     background-position: 0;
@@ -296,11 +298,17 @@
     }
   }
   .navbar-right {
+    background: #61a60e;
+    color: white;
+    display: flex;
+    margin-left: auto;
+    width: 100%;
+    justify-content: end;
     margin-right: 0;
     border: none;
     li {
       a {
-        color: $white;
+        color: $white !important;
       }
     }
   }
