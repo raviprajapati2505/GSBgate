@@ -7,9 +7,9 @@ body {
   // font-family: adrianna, sans-serif;
   font-family: "Outfit", sans-serif;
   font-weight: 300;
-  background-color: $gray-700;
-  font-size: 13px;
-  color: $text-color;
+  background-color: $page-bg;
+  font-size: 14px;
+  color: $gray-700;
   overflow-x: hidden;
 }
 body.full-height-layout #wrapper,
@@ -20,7 +20,17 @@ body.full-height-layout #page-wrapper {
 body.boxed-layout {
   background: $boxed-backgound;
 }
-
+.page-bg-dark {
+  background: $gray-700;
+  color: $text-color;
+  .page-heading {
+    padding-bottom: 0;
+  }
+  .ibox {
+    padding: 0;
+    background: none;
+  }
+}
 body.boxed-layout #wrapper {
   background-color: $gray-700;
   max-width: $boxed-width;
@@ -276,7 +286,7 @@ body.body-small .footer.fixed {
 /* PANELS */
 
 .page-heading {
-  padding-top: 170px;
+  padding: 170px 0 20px;
 }
 
 .panel-heading h1,
@@ -508,6 +518,43 @@ code {
 .ibox {
   display: block;
   margin-bottom: 25px;
+  background: $white;
+  border-radius: 5px;
+  padding: 10px;
+  &::after,
+  &::before {
+    display: table;
+  }
+  .ibox-title {
+    padding: 8px 20px;
+    background: $skin-gord-logo-green;
+    color: $text-color;
+    h5 {
+      display: inline-block;
+      font-size: 14px;
+      margin: 0;
+      text-overflow: ellipsis;
+    }
+    
+    .label {
+      float: left;
+      margin-left: 4px;
+    }
+  }
+
+  .ibox-content {
+    background-color: transparent;
+    color: inherit;
+    padding: 15px 0 10px;
+  }
+
+  .ibox-footer {
+    color: inherit;
+    border-top: 1px solid $border-color;
+    font-size: 90%;
+    background: $white;
+    padding: 10px 15px;
+  }
 }
 
 .ibox.collapsed .ibox-content {
@@ -520,45 +567,6 @@ code {
 
 .ibox.collapsed .fa.fa-chevron-down:before {
   content: "\f077";
-}
-
-.ibox:after,
-.ibox:before {
-  display: table;
-}
-
-.ibox-title {
-  // -moz-border-bottom-colors: none;
-  // -moz-border-left-colors: none;
-  // -moz-border-right-colors: none;
-  // -moz-border-top-colors: none;
-  // background-color: $ibox-title-bg;
-  // border-color: $border-color;
-  // border-image: none;
-  // border-style: solid solid none;
-  // border-width: 3px 0 0;
-  color: inherit;
-  margin-bottom: 0;
-  padding: 14px 15px 7px;
-  min-height: 48px;
-}
-
-.ibox-content {
-  background-color: transparent;
-  color: inherit;
-  padding: 15px 20px 20px 20px;
-  // border-color: $border-color;
-  // border-image: none;
-  // border-style: solid solid none;
-  // border-width: 1px 0;
-}
-
-.ibox-footer {
-  color: inherit;
-  border-top: 1px solid $border-color;
-  font-size: 90%;
-  background: $white;
-  padding: 10px 15px;
 }
 
 table.table-mail tr td {
@@ -594,32 +602,13 @@ table.table-mail tr td {
   background-color: #f9f8f8;
 }
 
-.ibox-content {
-  clear: both;
-}
-
 .ibox-heading {
   background-color: #f3f6fb;
   border-bottom: none;
-}
-
-.ibox-heading h3 {
-  font-weight: 200;
-  font-size: 24px;
-}
-
-.ibox-title h5 {
-  display: inline-block;
-  font-size: 14px;
-  margin: 0 0 7px;
-  padding: 0;
-  text-overflow: ellipsis;
-  float: left;
-}
-
-.ibox-title .label {
-  float: left;
-  margin-left: 4px;
+  h3 {
+    font-weight: 200;
+    font-size: 24px;
+  }
 }
 
 .ibox-tools {

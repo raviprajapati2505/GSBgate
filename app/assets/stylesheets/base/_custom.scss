@@ -49,8 +49,15 @@ a.link-mr-2 {
   background-color: $white !important;
 }
 
-.project-details-table th {
-  width: 180px;
+.project-details-table {
+  th {
+    width: 180px;
+    border-right: solid 1px $gray-700;
+    border-top: none !important;
+  }
+  td {
+    border-top: none !important;
+  }
 }
 
 .user-details-table th {
@@ -66,20 +73,31 @@ a.link-mr-2 {
 }
 
 /* projects/index datatable custom css */
-ul.dt-button-collection {
+.dt-button-collection {
   .buttons-colvisGroup,
   .buttons-colvisRestore {
     clear: unset !important;
   }
 
-  li.hover-disabled {
-    a {
-      pointer-events: none;
-
-      &:hover,
-      &:focus {
-        background-color: unset !important;
-        color: unset !important;
+  li {
+    &.buttons-columnVisibility {
+      a {
+        color: $gray-700;
+      }
+    }
+    &.active {
+      a {
+        color: $white;
+      }
+    }
+    &.hover-disabled {
+      a {
+        pointer-events: none;
+        &:hover,
+        &:focus {
+          background-color: unset !important;
+          color: unset !important;
+        }
       }
     }
   }
@@ -230,7 +248,7 @@ legend.scheduler-border {
 
 // 20-9-2022
 .skin-gord-login {
-  background-image:url("layout/Cover Page_bg.jpg") !important;
+  background-image: url("layout/Cover Page_bg.jpg") !important;
   color: $white;
   .login-content .loginColumns .row .login-right {
     background-color: rgba(15, 44, 23, 0.8);
@@ -298,17 +316,15 @@ fieldset.scheduler-border {
   .single-line {
     background-color: transparent;
     border: 0px;
-    border-bottom: 1px solid $skin-gord-logo-green;
-    font-size: 1.2rem;
+    border-bottom: 1px solid rgba($gray-700, 0.8);
     padding: 1rem 0;
     height: auto;
     color: $white;
   }
 
   label {
-    font-size: 1.2rem;
-    color: $skin-gord-logo-green;
-    font-weight: 600;
+    color: $gray-700;
+    font-weight: 400;
   }
 
   label.required:after {
@@ -363,7 +379,7 @@ fieldset.scheduler-border {
 
 // 23-9-2022
 .bg-dark-green {
-  background-color: rgba(15, 44, 23, 0.80);
+  background-color: rgba(15, 44, 23, 0.8);
 }
 hr {
   border: 0;
@@ -586,10 +602,6 @@ hr {
     align-items: center;
     width: 100%;
   }
-  .select2-container {
-    display: flex;
-    align-items: center;
-  }
   .select2-search input {
     background: url("/assets/select2.png") no-repeat 100% -22px, linear-gradient(to bottom, $white 85%, $border-color 99%) 0 0;
   }
@@ -611,46 +623,42 @@ hr {
     background-color: $white;
   }
 }
-.text-gray{
-  color:#ddd;
+.text-gray {
+  color: #ddd;
 }
 
 // new header 4-10-2022
-.top-navbar{
+.top-navbar {
   background-color: $skin-gord-logo-blue !important;
   display: flex;
   // justify-content: space-between;
   align-items: center;
   flex-wrap: nowrap;
-@media (max-width:767px){
-  flex-direction: column;
-}
-
-  .after-login-img{
-    width:min(max(200px,19.685vw),377px);
-    height:auto;
+  .after-login-img {
+    width: min(max(200px, 19.685vw), 377px);
+    height: auto;
     min-width: 130px;
   }
-  .navbar-header{
+  .navbar-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     min-height: auto;
     padding: 1rem;
-    height: min(max(60px,5.208vw),100px);
-    @media (max-width:992px){
+    height: min(max(60px, 5.208vw), 100px);
+    @media (max-width: 992px) {
       width: 100%;
     }
-    &::after,&::before{
+    &::after,
+    &::before {
       display: none;
     }
-    .navbar-toggle{
-      margin:0;
+    .navbar-toggle {
+      margin: 0;
     }
   }
-  .navbar-collapse{
-    @media(min-width:768px){
-
+  .navbar-collapse {
+    @media (min-width: 768px) {
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -663,83 +671,60 @@ hr {
       display: flex;
       height: 100%;
       align-items: stretch;
-      @media (max-width:768px){
-        flex-direction: column;
-        & li {
-          max-width: unset !important;
-          border-right: 0 !important;
-          &:first-child{
-            border-left: 0 !important;
-          }
-          &.active{
-            border-radius: 1rem !important;
-            margin-bottom: 0 !important;
-          }
-          & a {
-            padding: 10px 15px !important;
-            flex-direction: row !important;
-            justify-content: start !important;
-            & i{
-              margin: 0.5rem 1rem !important;
+      li:first-child {
+        border-left: 1px solid $skin-gord-logo-green;
+      }
+      li {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        max-width: 150px;
+        border-right: 1px solid $skin-gord-logo-green;
+        // min-width: 100px;
+        .dropdown-open {
+          background-color: $skin-gord-logo-green;
+        }
+        a {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          height: 100%;
+          justify-content: center;
+          color: $white;
+          font-size: min(max(14px, 1.172vw), 18px);
+          font-weight: 100;
+          width: 100%;
+          &:focus {
+            background-color: $skin-gord-logo-green;
+            i {
+              color: $white;
             }
+          }
+          &:hover {
+            background-color: $skin-gord-logo-green;
+            i {
+              color: $white;
+            }
+          }
+
+          i {
+            margin: 1.5rem 0;
+            color: $skin-gord-logo-green;
+          }
+        }
+        &.active {
+          background-color: $skin-gord-logo-green;
+          margin-bottom: -2rem;
+          border-radius: 0 0 1rem;
+          overflow: hidden;
+          i {
+            color: $white;
           }
         }
       }
-      li:first-child{
-        border-left: 1px solid #61a60e;
-            
-        }
-        li {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          max-width: 150px;
-          border-right: 1px solid #61a60e;
-          // min-width: 100px;
-          .dropdown-open{
-            background-color: $skin-gord-logo-green;
-          }
-          a{
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            height:100%;
-            justify-content: center;
-            color:#fff;
-            font-size:min(max(14px, 1.172vw), 18px);
-            font-weight:100;
-            width:100%;
-            &:focus{
-              background-color: $skin-gord-logo-green;
-              i{
-                color: #fff;
-              }
-            }
-            &:hover{
-              background-color: $skin-gord-logo-green;
-              i{
-                color:#fff;
-              }
-            }
-            
-            i{
-              margin: 1.5rem 0;
-              color:$skin-gord-logo-green;
-            }
-          }
-          &.active{
-            background-color: $skin-gord-logo-green;
-            margin-bottom: -2rem;
-            border-radius: 0 0 1rem;
-            overflow: hidden;
-            i{
-              color: #fff;
-            }
-          }
-        }
     }
-    .after-login-right-img{
-      padding:1rem;
+    .after-login-right-img {
+      padding: 1rem;
       max-width: 200px;
     }
   }
