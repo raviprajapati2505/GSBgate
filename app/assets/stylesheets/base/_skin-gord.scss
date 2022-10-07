@@ -310,6 +310,13 @@
     li {
       a {
         color: $white !important;
+        &:hover{
+          color: #61a60e !important;
+        }
+        & i{
+          color: #97dd44;
+
+        }
       }
     }
   }
