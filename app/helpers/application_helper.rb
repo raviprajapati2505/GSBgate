@@ -883,4 +883,32 @@ module ApplicationHelper
   def set_visibility(question_type = '')
     ["fill_in_the_blank"].include?(question_type) ? 'd-none' : ''
   end
+
+  def certification_name_datatable_render(rec,only_certification_name)
+    case only_certification_name
+      when 'GSAS-D&B'
+        '<span class="badge-db"></span><a href='+Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>'+only_certification_name+'</a>'
+      when 'GSAS-CM'
+        '<span class="badge-cm"></span><a href='+Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>'+only_certification_name+'</a>'
+      when 'GSAS-OP'
+        '<span class="badge-op"></span><a href='+Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>'+only_certification_name+'</a>'
+    end
+  end
+
+  def submission_status_datatable_render(rec)
+    only_certification_name = Certificate.find_by_name(rec&.certificate_name)&.only_certification_name
+    if rec.certification_path_status_name == "Certificate In Process"
+      status = CertificationPath.find(rec&.certification_path_id)&.status
+    else
+      status = rec.certification_path_status_name
+    end
+    case only_certification_name
+      when 'GSAS-D&B'
+        '<span class="status-badge-db"></span>'+status
+      when 'GSAS-CM'
+        '<span class="status-badge-cm"></span>'+status
+      when 'GSAS-OP'
+        '<span class="status-badge-op"></span>'+status
+    end
+  end
 end

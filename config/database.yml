@@ -15,10 +15,10 @@
 # gem 'pg'
 #
 default: &default
-  host:     <%= ENV['DATABASE_SERVER'] %>
-  database: <%= ENV['DATABASE_NAME'] %>
-  username: <%= ENV['DATABASE_USERNAME'] %>
-  password: <%= ENV['DATABASE_PASSWORD'] %>
+  host: localhost 
+  database: gsasgate_development_device_test
+  username: postgres
+  password: Test@123
   adapter: postgresql
   encoding: unicode
   # For details on connection pooling, see rails configuration guide

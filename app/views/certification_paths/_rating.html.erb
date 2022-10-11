@@ -12,7 +12,18 @@
   <% end %>
   <% if rating.is_a? String %>
     <!-- TEXTUAL SCORE -->
-    <span class="label label-rating label-rating-<%= rating.downcase.gsub(/( )/, '-') %>"><%= rating %></span>
+    <% 
+      only_certification_name = Certificate.find_by_name(rec&.certificate_name)&.only_certification_name
+      case only_certification_name
+        when 'GSAS-D&B'
+          badge_class = 'rating-badge-db'
+        when 'GSAS-CM'
+          badge_class = 'rating-badge-cm'
+        when 'GSAS-OP'
+          badge_class = 'rating-badge-op'
+      end
+    %>
+    <span class="<%= badge_class %> label label-rating label-rating-<%= rating.downcase.gsub(/( )/, '-') %>"><%= rating %></span>
   <% else %>
     <!-- STAR SCORE -->
     <% rating.times do %>
