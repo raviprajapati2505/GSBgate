@@ -235,7 +235,7 @@ ol.unstyled {
 .footer {
   background: none repeat scroll 0 0 white;
   border-top: 1px solid $border-color;
-  bottom: 0;
+  bottom: -25px;
   left: 0;
   padding: 10px 20px;
   position: absolute;
@@ -287,6 +287,10 @@ body.body-small .footer.fixed {
 
 .page-heading {
   padding: 170px 0 20px;
+  @media (max-width:767px) {
+    padding: 120px 0 20px;
+
+  }
 }
 
 .panel-heading h1,
