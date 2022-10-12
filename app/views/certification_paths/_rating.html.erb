@@ -10,24 +10,43 @@
   <% else %>
   <% rating = -1 %>
   <% end %>
+  <% only_certification_name = Certificate.find_by_name(rec&.certificate_name)&.only_certification_name %>
   <% if rating.is_a? String %>
     <!-- TEXTUAL SCORE -->
     <% 
-      only_certification_name = Certificate.find_by_name(rec&.certificate_name)&.only_certification_name
       case only_certification_name
         when 'GSAS-D&B'
           badge_class = 'rating-badge-db'
+          image_tag = image_tag('/assets/layout/certi-status-db.png')
         when 'GSAS-CM'
           badge_class = 'rating-badge-cm'
+          image_tag = image_tag('/assets/layout/certi-status-cm.png')
         when 'GSAS-OP'
           badge_class = 'rating-badge-op'
+          image_tag = image_tag('/assets/layout/certi-status-op.png')
       end
     %>
-    <span class="<%= badge_class %> label label-rating label-rating-<%= rating.downcase.gsub(/( )/, '-') %>"><%= rating %></span>
+    <span class="certi-status-badge <%= badge_class %> label-rating-<%= rating.downcase.gsub(/( )/, '-') %>"><%= image_tag %><%= rating %></span>
   <% else %>
     <!-- STAR SCORE -->
-    <% rating.times do %>
-      <i class="fa fa-star fa-lg"><span style="display:none;">*</span></i>
-    <% end %>
+    <% 
+      case only_certification_name
+        when 'GSAS-D&B'
+          star_badge_class = 'certi-status-badge star-rating-badge-db'
+          image_tag = image_tag('/assets/layout/certi-status-db.png')
+        when 'GSAS-CM'
+          star_badge_class = 'certi-status-badge star-rating-badge-cm'
+          image_tag = image_tag('/assets/layout/certi-status-cm.png')
+        when 'GSAS-OP'
+          star_badge_class = 'certi-status-badge star-rating-badge-op'
+          image_tag = image_tag('/assets/layout/certi-status-op.png')
+      end
+    %>
+    <span class="certi-status-badge <%= star_badge_class %>">
+      <%= image_tag %>
+      <% rating.times do %>
+        <i class="fa fa-star"><span style="display:none;">*</span></i>
+      <% end %>
+    </span>
   <% end %>
 <% end %>

@@ -6,6 +6,7 @@
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
+  user-select: none;
 }
 
 .onoffswitch-checkbox {
@@ -16,7 +17,7 @@
   display: block;
   overflow: hidden;
   cursor: pointer;
-  border: 2px solid $navy;
+  border: 2px solid $primary;
   border-radius: 2px;
 }
 
@@ -48,7 +49,7 @@
 .onoffswitch-inner:before {
   content: "ON";
   padding-left: 10px;
-  background-color: $navy;
+  background-color: $primary;
   color: $white;
 }
 
@@ -64,7 +65,7 @@
   width: 20px;
   margin: 0;
   background: $white;
-  border: 2px solid $navy;
+  border: 2px solid $primary;
   border-radius: 2px;
   position: absolute;
   top: 0;
@@ -90,6 +91,7 @@
   background: $white;
   box-shadow: none;
   -moz-box-sizing: border-box;
+  box-sizing: border-box;
   background-color: $white;
   border: 1px solid #cbd5dd;
   border-radius: 2px;
@@ -231,8 +233,8 @@
 }
 
 .fc-state-active {
-  background-color: $navy;
-  border-color: $navy;
+  background-color: $primary;
+  border-color: $primary;
   color: $white;
 }
 
@@ -272,8 +274,8 @@
 .fc-agenda .fc-event-time,
 .fc-event a {
   padding: 4px 6px;
-  background-color: $navy; /* background color */
-  border-color: $navy; /* border color */
+  background-color: $primary; /* background color */
+  border-color: $primary; /* border color */
 }
 
 .fc-event-time,
@@ -395,8 +397,8 @@
 a.list-group-item.active,
 a.list-group-item.active:hover,
 a.list-group-item.active:focus {
-  background-color: $navy;
-  border-color: $navy;
+  background-color: $primary;
+  border-color: $primary;
   color: $white;
   z-index: 2;
 }
@@ -577,7 +579,7 @@ table {
     thead {
       tr {
         th {
-          background: $skin-gord-color;
+          background: $primary;
           color: $text-color;
           span {
             display: inline-block;
@@ -600,9 +602,6 @@ table {
 }
 .dataTables_wrapper {
   color: $gray-700;
-  .table-bordered {
-    border: none;
-  }
   .dt-buttons {
     .btn,
     a,
@@ -611,11 +610,15 @@ table {
       color: $white;
       padding-left: 0;
       padding-right: 0;
+      margin-right: 25px;
       &:hover,
       &:focus {
         background: none !important;
         color: $white;
         text-decoration: underline !important;
+      }
+      &:last-child {
+        margin-right: 0;
       }
     }
   }
@@ -773,7 +776,7 @@ div.dt-button-info {
 }
 
 .pace .pace-progress {
-  background: $navy;
+  background: $primary;
   position: fixed;
   z-index: 2040;
   top: 0;
@@ -935,11 +938,11 @@ div.dt-button-info {
 
 .form-control:focus,
 .single-line:focus {
-  border-color: $navy !important;
+  border-color: $primary !important;
 }
 
 .has-success .form-control {
-  border-color: $navy;
+  border-color: $primary;
 }
 
 .has-warning .form-control {
@@ -951,7 +954,7 @@ div.dt-button-info {
 }
 
 .has-success .control-label {
-  color: $navy;
+  color: $primary;
 }
 
 .has-warning .control-label {
@@ -983,7 +986,7 @@ div.dt-button-info {
 }
 
 .noUi-connect {
-  background: none repeat scroll 0 0 $navy;
+  background: none repeat scroll 0 0 $primary;
   box-shadow: none;
 }
 
@@ -1015,6 +1018,7 @@ div.dt-button-info {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
+  user-select: none;
 }
 
 .onoffswitch-checkbox {
@@ -1100,6 +1104,7 @@ div.dt-button-info {
 
 .ui-jqgrid {
   -moz-box-sizing: content-box;
+  box-sizing: content-box;
 }
 
 .ui-jqgrid-btable {
@@ -1600,11 +1605,11 @@ label.error {
 
 /* Toastr custom style */
 .toast {
-  background-color: $navy;
+  background-color: $primary;
 }
 
 .toast-success {
-  background-color: $navy;
+  background-color: $primary;
 }
 
 .toast-error {
@@ -1612,7 +1617,7 @@ label.error {
 }
 
 .toast-info {
-  background-color: $lazur;
+  background-color: $info;
 }
 
 .toast-warning {
@@ -1644,7 +1649,7 @@ label.error {
 }
 
 .inspinia-notify.alert-success {
-  border-left: 6px solid $blue;
+  border-left: 6px solid $secondary;
 }
 
 .inspinia-notify.alert-danger {
@@ -1652,7 +1657,7 @@ label.error {
 }
 
 .inspinia-notify.alert-info {
-  border-left: 6px solid $navy;
+  border-left: 6px solid $primary;
 }
 
 /* Image cropper style */
@@ -1792,11 +1797,11 @@ a.forum-item-title:hover {
 }
 
 .forum-item.active .fa {
-  color: $navy;
+  color: $primary;
 }
 
 .forum-item.active a.forum-item-title {
-  color: $navy;
+  color: $primary;
 }
 
 @media (max-width: 992px) {
@@ -1952,7 +1957,9 @@ a.forum-item-title:hover {
     left: 50%;
     margin-left: -25px;
     -webkit-transform: translateZ(0);
+    transform: translateZ(0);
     -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
     font-size: 19px;
   }
 
@@ -1996,7 +2003,7 @@ a.forum-item-title:hover {
 }
 
 .vertical-date small {
-  color: $navy;
+  color: $primary;
   font-weight: 300;
 }
 
@@ -2272,7 +2279,7 @@ a.forum-item-title:hover {
   position: absolute;
   left: 10px;
   border-radius: 3px;
-  background: $navy;
+  background: $primary;
   padding: 3px;
   color: $white;
   cursor: pointer;
@@ -2386,7 +2393,7 @@ a.forum-item-title:hover {
 
 .slick-prev:before,
 .slick-next:before {
-  color: $navy !important;
+  color: $primary !important;
 }
 
 /* Payments */

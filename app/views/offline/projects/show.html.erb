@@ -4,7 +4,7 @@
       <div class="ibox-title">
         <h5><%= t('.project_details.title') %></h5>
       </div>
-      <div class="ibox-content">
+      <div class="ibox-content pt-0">
         <table class="table table-striped project-details-table">
           <tbody>
             <tr>
@@ -64,7 +64,7 @@
       <div class="ibox-title">
         <h5><%= t('.certificates.title') %></h5>
       </div>
-      <div class="ibox-content">
+      <div class="ibox-content pt-0">
       <table class="table table-bordered table-mb-1">
         <tbody>
             <tr class="bg-header-grey">
@@ -99,17 +99,17 @@
             <% else %>
             <tr>
               <td colspan="4" style="padding: 0px;">
-                    <li class="list-group-item container ">
-                      <div class="row">
+                  <li class="list-group-item container ">
+                    <div class="row">
+                      </span>
+                        <span class="col-md-4">
+                          Not yet registered
                         </span>
-                          <span class="col-md-4">
-                            Not yet registered
-                          </span>
-                          <span class="col-md-4">
-                            <%= btn_link_to(new_offline_project_certification_path(@project), icon: 'plus', text: 'Add Certifcate') %>
-                          </span>
-                      </div>
-                    </li>
+                        <span class="col-md-4">
+                          <%= btn_link_to(new_offline_project_certification_path(@project), icon: 'plus', text: 'Add Certifcate') %>
+                        </span>
+                    </div>
+                  </li>
               </td>
             </tr>
             <% end %>
@@ -124,7 +124,7 @@
       <div class="ibox-title">
         <h5><%= t('.project_documents.upload_document') %></h5>
       </div>
-      <div class="ibox-content">
+      <div class="ibox-content pt-0">
         <%= render partial: 'documents_form', locals: { project: @project } %>
       </div>
     </div>
@@ -133,7 +133,7 @@
       <div class="ibox-title">
         <h5><%= t('.project_documents.uploaded_documents') %></h5>
       </div>
-      <div class="ibox-content">
+      <div class="ibox-content pt-0">
         <%= render partial: 'documents_index', locals: { project: @project } %>
       </div>
     </div>

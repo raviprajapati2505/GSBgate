@@ -6,45 +6,39 @@ $gray-100: #f9f9f9 !default;
 $gray-200: #dddddd !default;
 $gray-300: #D8F5CD !default;
 $gray-400: #f1f1f2 !default;
-$gray-500: #f4f4f4 !default;
-$gray-600: #676a6c !default;
+$gray-500: #efeff0 !default;
+$gray-600: #606a73 !default;
+$gray-700: #3a4f57 !default;
 $gray-800: #2A2E36 !default;
 $gray-900: #262626 !default;
-$gray-700: #3a4f57 !default;
 $black:    #000000 !default;
 
  // Default label, badget
 $page-bg: $gray-400;
 $label-badget-color: #5e5e5e;
 $light-blue: #f3f6fb;
+$primary: #62a60a;
+$secondary: $gray-700; // Danger color
 $dark-gray: #c2c2c2; // Default color
-$info: #3155a6; // Info color
-$success: #008000; // Success color
-$warning: #f8ac59; // Warrning color
-$danger: #ed5565; // Danger color
-$red: #ff3333; // Danger color
+$info: #65c9d0; // Info color
+$success: #3ebc8e; // Success color
+$warning: #fec55b; // Warrning color
+$danger: #f48176; // Danger color
 
 // Main colors
-$skin-gord-logo-green: #61a730;
-$skin-gord-logo-blue: #303e48;
-$skin-gord-color: #62a60a;
-$skin-gord-color-light: #e5facf;
-$skin-gord-nav-bg: #6fa428;
+$skin-gord-color-light: #edf5e4;
 $skin-gord-a-color: #3b5c15;
 $skin-gord-page-bg: #f4f6fa;
-$skin-gord-color-project-team: $skin-gord-color;
+$skin-gord-color-project-team: $primary;
 $skin-gord-color-gsas-trust-team: $warning;
 $skin-gord-color-project-team-light: $skin-gord-color-light;
 $skin-gord-color-gsas-trust-team-light: #f8ebac;
 
 // Basic Colors
-$navy: $skin-gord-color; // Primary color
-$blue: $skin-gord-a-color; // Success color
-$lazur: $skin-gord-nav-bg; // Info color
 $text-color: $white; // Body text
 
 // Spiner color and margin
-$spin-color: $navy;
+$spin-color: $primary;
 $spin-margin: 0 auto;
 
 // IBOX colors ( default panel colors)

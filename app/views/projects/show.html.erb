@@ -8,7 +8,7 @@
         <%= audit_log_label(@project) %>
         <h5><%= t('.project_details.title') %></h5>
       </div>
-      <div class="ibox-content">
+      <div class="ibox-content pt-0">
         <table class="table table-striped project-details-table">
           <tbody>
             <tr>
@@ -262,17 +262,15 @@
       <div class="ibox-title">
         <h5><%= t('.certificates.title') %></h5>
       </div>
-      <div class="ibox-content">
+      <div class="ibox-content pt-0">
         <%= render partial: 'certification_paths/overview', locals: {project: @project} %>
       </div>
     </div>
-
     <div class="ibox">
       <div class="ibox-title">
         <h5>TEAMS</h5>
       </div>
     </div>
-
     <%= render partial: 'projects_users/show_gord_contact', locals: {project: @project} %>
 
     <% if @project.certificate_type == Certificate.certificate_types[:design_type] %>

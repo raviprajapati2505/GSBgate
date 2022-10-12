@@ -30,6 +30,12 @@ body.boxed-layout {
     padding: 0;
     background: none;
   }
+  .dataTables_info {
+    color: rgba($white, 0.5);
+  }
+  .dataTables_length {
+    color: rgba($white, 0.5);
+  }
 }
 body.boxed-layout #wrapper {
   background-color: $gray-700;
@@ -287,9 +293,8 @@ body.body-small .footer.fixed {
 
 .page-heading {
   padding: 170px 0 20px;
-  @media (max-width:767px) {
+  @media (max-width: 767px) {
     padding: 120px 0 20px;
-
   }
 }
 
@@ -299,29 +304,30 @@ body.body-small .footer.fixed {
 }
 
 /* TABLES */
-
+table,
+th,
+td {
+  border-collapse: collapse;
+}
 .table-bordered {
-  border: 1px solid #ebebeb;
+  border-color: $gray-600;
 }
 
 .table-bordered > thead > tr > th,
 .table-bordered > thead > tr > td {
   background-color: $skin-gord-page-bg;
-  border-bottom-width: 1px;
 }
-
 .table-bordered > thead > tr > th,
 .table-bordered > tbody > tr > th,
 .table-bordered > tfoot > tr > th,
 .table-bordered > thead > tr > td,
 .table-bordered > tbody > tr > td,
 .table-bordered > tfoot > tr > td {
-  border: 1px solid #e7e7e7;
+  border-color: $gray-600;
 }
 
 .table > thead > tr > th {
-  border-bottom: 1px solid $gray-200;
-  vertical-align: bottom;
+  border-bottom-color: $gray-600;
 }
 
 .table > thead > tr > th,
@@ -330,10 +336,7 @@ body.body-small .footer.fixed {
 .table > thead > tr > td,
 .table > tbody > tr > td,
 .table > tfoot > tr > td {
-  border-top: 1px solid $border-color;
-  line-height: 1.42857;
-  padding: 8px;
-  vertical-align: top;
+  border-top-color: $gray-600;
 }
 
 /* PANELS */
@@ -463,7 +466,7 @@ img.circle-border {
   font-weight: 600;
   padding: 17px 20px;
   text-align: center;
-  background-color: $navy;
+  background-color: $primary;
 }
 
 .login-panel {
@@ -531,7 +534,7 @@ code {
   }
   .ibox-title {
     padding: 8px 20px;
-    background: $skin-gord-logo-green;
+    background: $primary;
     color: $text-color;
     h5 {
       display: inline-block;
@@ -539,7 +542,7 @@ code {
       margin: 0;
       text-overflow: ellipsis;
     }
-    
+
     .label {
       float: left;
       margin-left: 4px;
@@ -655,17 +658,17 @@ table.table-mail tr td {
 }
 
 .navy-bg {
-  background-color: $navy;
+  background-color: $primary;
   color: $white;
 }
 
 .blue-bg {
-  background-color: $blue;
+  background-color: $secondary;
   color: $white;
 }
 
 .lazur-bg {
-  background-color: $lazur;
+  background-color: $primary;
   color: $white;
 }
 
@@ -675,7 +678,7 @@ table.table-mail tr td {
 }
 
 .red-bg {
-  background-color: $red;
+  background-color: $danger;
   color: $white;
 }
 
@@ -684,31 +687,31 @@ table.table-mail tr td {
 }
 
 .panel-primary {
-  border-color: $navy;
+  border-color: $primary;
 }
 
 .panel-primary > .panel-heading {
-  background-color: $navy;
-  border-color: $navy;
+  background-color: $primary;
+  border-color: $primary;
 }
 
 .panel-success {
-  border-color: $blue;
+  border-color: $secondary;
 }
 
 .panel-success > .panel-heading {
-  background-color: $blue;
-  border-color: $blue;
+  background-color: $secondary;
+  border-color: $secondary;
   color: $white;
 }
 
 .panel-info {
-  border-color: $lazur;
+  border-color: $info;
 }
 
 .panel-info > .panel-heading {
-  background-color: $lazur;
-  border-color: $lazur;
+  background-color: $info;
+  border-color: $info;
   color: $white;
 }
 
@@ -723,17 +726,17 @@ table.table-mail tr td {
 }
 
 .panel-danger {
-  border-color: $red;
+  border-color: $danger;
 }
 
 .panel-danger > .panel-heading {
-  background-color: $red;
-  border-color: $red;
+  background-color: $danger;
+  border-color: $danger;
   color: $white;
 }
 
 .progress-bar {
-  background-color: $navy;
+  background-color: $primary;
 }
 
 .progress-small,
@@ -753,15 +756,15 @@ table.table-mail tr td {
 }
 
 .progress-bar-navy-light {
-  background-color: $skin-gord-nav-bg;
+  background-color: $primary;
 }
 
 .progress-bar-success {
-  background-color: $blue;
+  background-color: $secondary;
 }
 
 .progress-bar-info {
-  background-color: $lazur;
+  background-color: $info;
 }
 
 .progress-bar-warning {
@@ -769,7 +772,7 @@ table.table-mail tr td {
 }
 
 .progress-bar-danger {
-  background-color: $red;
+  background-color: $danger;
 }
 
 .panel-title {
@@ -788,7 +791,7 @@ table.table-mail tr td {
 /* COLORS */
 
 .text-navy {
-  color: $navy;
+  color: $primary;
 }
 
 .text-primary {
@@ -796,11 +799,11 @@ table.table-mail tr td {
 }
 
 .text-success {
-  color: $blue;
+  color: $secondary;
 }
 
 .text-info {
-  color: $lazur;
+  color: $info;
 }
 
 .text-warning {
@@ -808,7 +811,7 @@ table.table-mail tr td {
 }
 
 .text-danger {
-  color: $red;
+  color: $danger;
 }
 
 .text-muted {

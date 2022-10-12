@@ -52,7 +52,7 @@ a.link-mr-2 {
 .project-details-table {
   th {
     width: 180px;
-    border-right: solid 1px $gray-700;
+    border-right: solid 0.5px $gray-600;
     border-top: none !important;
   }
   td {
@@ -145,7 +145,7 @@ legend.scheduler-border {
 }
 
 .border-box-shadow {
-  box-shadow: 10px 10px 5px rgba($skin-gord-color, 0.17);
+  box-shadow: 10px 10px 5px rgba($primary, 0.17);
 }
 
 .survey-questions-fields {
@@ -193,7 +193,7 @@ legend.scheduler-border {
 .skin-gord {
   .gord-transparent-green,
   .navbar-nav .dropdown-menu {
-    background-color: $skin-gord-color !important;
+    background-color: $primary !important;
   }
 }
 
@@ -246,7 +246,6 @@ legend.scheduler-border {
   word-break: break-word !important;
 }
 
-// 20-9-2022
 .skin-gord-login {
   background-image: url("layout/Cover Page_bg.jpg") !important;
   color: $white;
@@ -260,7 +259,7 @@ legend.scheduler-border {
   }
 }
 .text-green {
-  color: $skin-gord-logo-green !important;
+  color: $primary !important;
 }
 
 .bg-transparent {
@@ -276,7 +275,6 @@ legend.scheduler-border {
   max-width: 50%;
 }
 
-// 22-9-2022
 .dots {
   display: flex;
   div {
@@ -287,7 +285,7 @@ legend.scheduler-border {
     background-color: #91bd83;
   }
 }
-// signup 22-9-2022
+
 .sign_up {
   background-color: #fff;
   .ibox-content {
@@ -340,7 +338,7 @@ fieldset.scheduler-border {
     background-color: transparent;
     color: $white;
     label {
-      color: $skin-gord-logo-green;
+      color: $primary;
     }
   }
   .form-inline {
@@ -358,14 +356,14 @@ fieldset.scheduler-border {
 }
 
 .datepicker table tr td.today {
-  background-color: $skin-gord-logo-green !important;
-  border-color: $skin-gord-logo-green !important;
+  background-color: $primary !important;
+  border-color: $primary !important;
   color: $white !important;
 }
 
 .datepicker table tr td.day:hover,
 .datepicker table tr td.focused {
-  background: $skin-gord-a-color !important;
+  background: $secondary !important;
   cursor: pointer !important;
 }
 
@@ -373,11 +371,10 @@ fieldset.scheduler-border {
 .datepicker .prev:hover,
 .datepicker .next:hover,
 .datepicker tfoot tr th:hover {
-  background: $skin-gord-a-color !important;
+  background: $secondary !important;
   cursor: pointer !important;
 }
 
-// 23-9-2022
 .bg-dark-green {
   background-color: rgba(15, 44, 23, 0.8);
 }
@@ -424,7 +421,7 @@ hr {
   }
 
   .select2-results .select2-highlighted {
-    background: $skin-gord-logo-green;
+    background: $primary;
     color: $white;
   }
 
@@ -438,7 +435,7 @@ hr {
     background-image: none !important;
     border: 0 !important;
     border-radius: 0;
-    border-bottom: 1px solid $skin-gord-logo-green !important;
+    border-bottom: 1px solid $primary !important;
     padding-left: 0;
   }
 
@@ -498,7 +495,7 @@ hr {
     }
 
     .select2-results .select2-highlighted {
-      background: $skin-gord-logo-green;
+      background: $primary;
       color: $white;
     }
 
@@ -512,7 +509,7 @@ hr {
       background-image: none !important;
       border: 0 !important;
       border-radius: 0;
-      border-bottom: 1px solid $skin-gord-logo-green !important;
+      border-bottom: 1px solid $primary !important;
       padding-left: 0;
     }
 
@@ -538,8 +535,6 @@ hr {
   }
 }
 
-// 28-9-2022
-// my task menu
 .mw-100 {
   max-width: 100%;
 }
@@ -549,61 +544,20 @@ hr {
       max-width: 95%;
     }
   }
-  .card {
-    // .ibox {
-    //   border-radius: 8px;
-    //   background: $white;
-    //   overflow: hidden;
-    //   box-shadow: 5px 7px 10px rgba($black, 0.33);
-    //   padding: 1rem;
-    //   .ibox-title {
-    //     background: $skin-gord-logo-green;
-    //     color: $white;
-    //     border: 0px;
-    //     font-size: min(max(18px, 1.367vw), 21px);
-    //     h5 {
-    //       font-size: inherit;
-    //     }
-    //   }
-    //   .ibox-content {
-    //     padding: 0px;
-    //     margin-top: 1rem;
-    //     border: 0px;
-    //     label {
-    //       font-size: min(max(16px, 1.302vw), 20px);
-    //       color: $skin-gord-logo-blue;
-    //       font-weight: 600;
-    //     }
-    //     // form{
-    //     //   margin-top: 1rem;
-    //     // }
-    //   }
-    //   button,
-    //   a.btn {
-    //     border-radius: 5px !important;
-    //     font-size: min(max(16px, 1.302vw), 20px);
-    //     margin: min(max(3px, 0.326vw), 5px);
-    //   }
-    //   .btn-white {
-    //     background-color: $danger;
-    //     border-color: $danger;
-    //     color: $white;
-    //   }
-    // }
-  }
-  // select2
+
   .select2-container .select2-choice {
     height: min(max(30px, 2.93vw), 45px);
     background-image: none;
     background-color: $white;
-    border-color: $skin-gord-logo-blue;
+    border-color: $secondary;
     font-size: min(max(14px, 1.172vw), 18px);
     display: flex;
     align-items: center;
     width: 100%;
   }
   .select2-search input {
-    background: url("/assets/select2.png") no-repeat 100% -22px, linear-gradient(to bottom, $white 85%, $border-color 99%) 0 0;
+    background: url("/assets/select2.png") no-repeat 100% -22px,
+      linear-gradient(to bottom, $white 85%, $border-color 99%) 0 0;
   }
   .select2-drop {
     background: $white;
@@ -612,7 +566,7 @@ hr {
   }
   .select2-dropdown-open.select2-drop-above .select2-choice,
   .select2-dropdown-open.select2-drop-above .select2-choices {
-    border: 1px solid $skin-gord-logo-blue;
+    border: 1px solid $secondary;
     border-radius: 4px;
   }
   .select2-results .select2-no-results,
@@ -627,11 +581,9 @@ hr {
   color: #ddd;
 }
 
-// new header 4-10-2022
 .top-navbar {
-  background-color: $skin-gord-logo-blue !important;
+  background-color: $secondary;
   display: flex;
-  // justify-content: space-between;
   align-items: center;
   flex-wrap: nowrap;
   .after-login-img {
@@ -663,7 +615,6 @@ hr {
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      // height: min(max(70px, 6.771vw), 130px) !important;
     }
     ul.nav {
       margin: 0;
@@ -691,26 +642,25 @@ hr {
               margin: 0.5rem 1rem !important;
             }
           }
-          &.dropdown.open{
-            a{
+          &.dropdown.open {
+            a {
               border-radius: 1rem !important;
-            margin-bottom: 0 !important;
+              margin-bottom: 0 !important;
             }
           }
         }
       }
       li:first-child {
-        border-left: 1px solid $skin-gord-logo-green;
+        border-left: 1px solid $primary;
       }
       li {
         display: flex;
         align-items: center;
         justify-content: center;
         max-width: 150px;
-        border-right: 1px solid $skin-gord-logo-green;
-        // min-width: 100px;
+        border-right: 1px solid $primary;
         .dropdown-open {
-          background-color: $skin-gord-logo-green;
+          background-color: $primary;
         }
         a {
           display: flex;
@@ -724,14 +674,14 @@ hr {
           width: 100%;
           text-transform: uppercase;
           &:focus {
-            background-color: $skin-gord-logo-green;
+            background-color: $primary;
             i {
               color: $white;
             }
           }
           &:hover {
-            background-color:#61a73026;
-            
+            background-color: #61a73026;
+
             i {
               color: $white;
             }
@@ -739,75 +689,167 @@ hr {
 
           i {
             margin: 1.5rem 0;
-            color: $skin-gord-logo-green;
+            color: $primary;
           }
         }
         &.active {
-          background-color: $skin-gord-logo-green;
+          background-color: $primary;
           margin-bottom: -2rem;
           border-radius: 0 0 1rem;
           overflow: hidden;
-          .normal-li{
+          .normal-li {
             display: none;
-            width:50px;
-            
+            width: 50px;
           }
-          .active-li{
+          .active-li {
             display: block;
-            width:50px;
-            
+            width: 50px;
           }
           i {
             color: $white;
           }
         }
-        .active-li{
+        .active-li {
           display: none;
-          width:50px;
-          
+          width: 50px;
         }
-        .normal-li{
+        .normal-li {
           display: block;
-          width:50px;
-          
+          width: 50px;
         }
       }
     }
     .after-login-right-img {
       padding: 1rem;
       max-width: 170px;
-      @media (max-width:992px) {
+      @media (max-width: 992px) {
         display: none;
       }
     }
   }
 }
-// end 4-10-2022
-// 10-10-2022
-.dt-buttons a{
-  margin-right:3rem !important;
-}
-// end 10-10-2022
-// 11-10-2022
-table.dataTable.dtr-inline.collapsed > tbody > tr[role="row"] > td:first-child:before, table.dataTable.dtr-inline.collapsed > tbody > tr[role="row"] > th:first-child:before{
-  background-color: $skin-gord-logo-green !important;
-}
-.top-navigation .navbar-nav .dropdown-menu{
+
+.top-navigation .navbar-nav .dropdown-menu {
   right: 0;
-    position: absolute;
-    left: auto;
-    box-shadow: 1px 2px 15px #000 !important;
-    li{
-      max-width: 100% !important;
-      margin-right: 0 !important;
-    }
-    @media (max-width:767px) {
-      left:0;
-      top: 110%;
+  position: absolute;
+  left: auto;
+  box-shadow: 1px 2px 15px #000 !important;
+  li {
+    max-width: 100% !important;
+    margin-right: 0 !important;
+  }
+  @media (max-width: 767px) {
+    left: 0;
+    top: 110%;
     border-radius: 1rem !important;
-      
-    }
+  }
 }
-.nav .open > a{
-  background-color: $skin-gord-logo-green !important;
+.nav .open > a {
+  background-color: $primary !important;
+}
+.dataTable-pagination {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  align-items: center;
+  .col-sm-6 {
+    &:first-child {
+      -ms-flex-preferred-size: 0;
+      flex-basis: 0;
+      -ms-flex-positive: 1;
+      flex-grow: 1;
+      max-width: 100%;
+    }
+    &:last-child {
+      -ms-flex: 0 0 auto;
+      flex: 0 0 auto;
+      width: auto;
+      max-width: 100%;
+    }
+  }
+  .dataTables_entries {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: space-between;
+    .dataTables_length {
+      display: flex;
+      align-items: center;
+      select.input-sm {
+        color: $gray-700;
+        line-height: 1;
+        border-radius: 4px;
+        background: #fff
+          url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e")
+          right 0.75rem center/8px 10px no-repeat;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        margin: 0 5px;
+      }
+    }
+  }
+  .dataTables_paginate {
+    .pagination {
+      margin: 0;
+      .previous {
+        a {
+          background: $skin-gord-color-light;
+          border-color: $skin-gord-color-light;
+          color: $secondary;
+        }
+      }
+      .next {
+        a {
+          background: $primary;
+          border-color: $primary;
+          color: $white;
+        }
+      }
+    }
+  }
+}
+.certi-name-badge {
+  display: inline-block;
+  width: 15px;
+  margin-right: 10px;
+  img {
+    max-width: 100%;
+  }
+}
+.certi-sub-status-badge {
+  display: inline-block;
+  width: 20px;
+  margin-right: 10px;
+  img {
+    max-width: 100%;
+  }
+}
+.certi-status-badge {
+  display: inline-block;
+  position: relative;
+  width: 96px;
+  padding: 3px 15px 3px 35px;
+  border-radius: 2rem;
+  white-space: nowrap;
+  color: $white;
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 12px;
+  line-height: 12px;
+  background: $secondary;
+  img {
+    position: absolute;
+    top: -3px;
+    left: -1px;
+    width: 28px;
+  }
+  .fa-star {
+    color: $white;
+    font-size: 13px;
+  }
+}
+.table-striped > tbody > tr:nth-of-type(odd) {
+  background: $gray-500;
 }

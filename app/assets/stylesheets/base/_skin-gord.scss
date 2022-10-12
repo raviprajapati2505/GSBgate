@@ -46,7 +46,7 @@
     border-top: none;
   }
   .select2-results .select2-highlighted {
-    background: $skin-gord-logo-green;
+    background: $primary;
     color: $white;
   }
   .select2-search input {
@@ -57,7 +57,7 @@
     background-image: none !important;
     border: 0 !important;
     border-radius: 0;
-    border-bottom: 1px solid $skin-gord-logo-green !important;
+    border-bottom: 1px solid $primary !important;
     padding-left: 0;
   }
   .form-control.select2-container.select2-dropdown-open {
@@ -106,7 +106,7 @@
     .loginColumns {
       text-align: center;
       .top-title {
-        color: $skin-gord-logo-blue;
+        color: $secondary;
         font-family: pf_din_text_universalregular;
         font-size: 16px;
         .separator {
@@ -118,9 +118,9 @@
         .login-left {
           text-align: left;
           background-color: transparent;
-          color: $skin-gord-logo-blue;
+          color: $secondary;
           h1 {
-            color: #98BF82;
+            color: #98bf82;
             font-weight: 300;
             line-height: 120%;
             font-size: 43px;
@@ -183,14 +183,14 @@
             input {
               color: $white;
               border: 0px;
-              border-bottom: 1px solid $skin-gord-logo-green;
+              border-bottom: 1px solid $primary;
               background: transparent;
             }
             .input-group-addon {
               border-radius: 0;
               background: transparent;
               border: 0px;
-              border-bottom: 1px solid $skin-gord-logo-green;
+              border-bottom: 1px solid $primary;
               padding-left: 0;
             }
           }
@@ -283,7 +283,7 @@
   }
 
   .gord-transparent-green {
-    background-color: rgba($skin-gord-logo-green, 0.5);
+    background-color: rgba($primary, 0.5);
     color: $white;
   }
 
@@ -294,7 +294,7 @@
     }
   }
   .navbar-right {
-    background: #426F20;
+    background: #426f20;
     color: white;
     display: flex;
     margin-left: auto;
@@ -305,12 +305,11 @@
     li {
       a {
         color: $white !important;
-        &:hover{
+        &:hover {
           color: #61a60e !important;
         }
-        & i{
+        & i {
           color: #97dd44;
-
         }
       }
     }
@@ -327,7 +326,7 @@
       }
     }
     .dropdown-menu {
-      background-color: rgba($skin-gord-logo-green, 0.5);
+      background-color: rgba($primary, 0.5);
       border: none;
       li {
         border: none;
@@ -342,7 +341,7 @@
   }
   .footer {
     border-top: none;
-    background-color: rgba($skin-gord-logo-blue, 0.8);
+    background-color: rgba($secondary, 0.8);
     color: $white;
   }
   .breadcrumb {
@@ -356,7 +355,7 @@
 
   .navbar-nav {
     .badge {
-      background-color: $skin-gord-color;
+      background-color: $primary;
       color: $white;
       position: absolute;
       top: 8px;
@@ -378,7 +377,7 @@
 
   .highlight {
     background-color: $skin-gord-color-light;
-    color: $skin-gord-a-color;
+    color: $secondary;
   }
 
   .hr-line-dashed {
@@ -462,7 +461,6 @@
     color: $danger;
   }
 
-  .fa-star,
   .main-scheme-icon {
     color: $warning;
   }
@@ -473,7 +471,7 @@
 
   // Toastr
   .toast-success {
-    background-color: $skin-gord-color;
+    background-color: $primary;
   }
 
   // Accordion table
@@ -497,9 +495,13 @@
   }
 
   // Progress bars
+  .fa-square {
+    border-radius: 50%;
+    overflow: hidden;
+  }
   .progress-bar-max {
-    color: $red;
-    fill: $red;
+    color: $danger;
+    fill: $danger;
   }
 
   .progress-bar-targeted {
@@ -513,8 +515,8 @@
   }
 
   .progress-bar-achieved {
-    color: $info;
-    fill: $info;
+    color: $success;
+    fill: $success;
   }
 
   .progress-bar-tip {
@@ -577,40 +579,46 @@
   }
 
   .btn.audit-log {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 23px;
+    height: 23px;
+    border-radius: 2px;
     background-color: $light-gray;
     color: $label-badget-color;
     border: 0;
     margin-left: 8px;
-    padding: 3px 8px;
+    padding: 2px;
   }
 
   // Tooltips
   .tooltip-inner {
-    background-color: $skin-gord-color;
+    background-color: $primary;
     text-align: left;
     max-width: 350px;
   }
 
   .tooltip.top .tooltip-arrow {
-    border-top-color: $skin-gord-color;
+    border-top-color: $primary;
   }
 
   .tooltip.right .tooltip-arrow {
-    border-right-color: $skin-gord-color;
+    border-right-color: $primary;
   }
 
   .tooltip.bottom .tooltip-arrow {
-    border-bottom-color: $skin-gord-color;
+    border-bottom-color: $primary;
   }
 
   .tooltip.left .tooltip-arrow {
-    border-left-color: $skin-gord-color;
+    border-left-color: $primary;
   }
 
   .tooltip-icon {
     cursor: pointer;
     margin-left: 2px;
-    color: $skin-gord-color;
+    color: $primary;
   }
 
   // Maps
@@ -629,8 +637,10 @@
 
   // Datatable
   table.dataTable.dtr-inline.collapsed > tbody > tr > td:first-child:before,
-  table.dataTable.dtr-inline.collapsed > tbody > tr > th:first-child:before {
-    background-color: $skin-gord-color;
+  table.dataTable.dtr-inline.collapsed > tbody > tr > th:first-child:before,
+  table.dataTable.dtr-inline.collapsed > tbody > tr[role="row"] > td:first-child:before,
+  table.dataTable.dtr-inline.collapsed > tbody > tr[role="row"] > th:first-child:before {
+    background-color: $primary;
   }
 
   // Effective Datatables, Collapsed responsive view
@@ -651,7 +661,7 @@
 
   // Show/Hide columns for effective datatables
   .dropdown-menu > .active > a {
-    background-color: $skin-gord-color;
+    background-color: $primary;
   }
 
   // icheck
@@ -723,7 +733,7 @@
 
   .chosen-container-active {
     .chosen-single {
-      border-color: $navy !important;
+      border-color: $primary !important;
     }
   }
 
@@ -1195,12 +1205,12 @@
     font-size: 15px;
     font-weight: 60;
     text-transform: uppercase;
-    color: $red;
+    color: $danger;
     position: absolute;
     top: 12px;
     left: 35px;
     transform: rotate(-10deg);
-    border: 2px solid $red;
+    border: 2px solid $danger;
     background-color: $white;
     opacity: 0.7;
   }
@@ -1235,11 +1245,11 @@
   }
 
   .label-success {
-    background-color: $skin-gord-color;
+    background-color: $primary;
   }
 
   .label-rating-certification-denied,
   .label-danger {
-    background-color: $red;
+    background-color: $danger;
   }
 }
