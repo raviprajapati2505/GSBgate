@@ -352,13 +352,14 @@ fieldset.scheduler-border {
 
 // datepicker
 .datepicker.dropdown-menu {
-  background-color: $black;
+  background-color: $white;
 }
 
 .datepicker table tr td.today {
   background-color: $primary !important;
   border-color: $primary !important;
   color: $white !important;
+  font-weight: 600;
 }
 
 .datepicker table tr td.day:hover,
@@ -371,7 +372,8 @@ fieldset.scheduler-border {
 .datepicker .prev:hover,
 .datepicker .next:hover,
 .datepicker tfoot tr th:hover {
-  background: $secondary !important;
+  background: $skin-gord-a-color !important;
+  color: $white;
   cursor: pointer !important;
 }
 
@@ -384,7 +386,7 @@ hr {
 }
 .datepicker table tr td,
 .datepicker table tr th {
-  color: $white;
+  color: $black;
 }
 .bg-dark-green-solid {
   background-color: rgb(15, 44, 23);
