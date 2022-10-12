@@ -213,6 +213,9 @@ legend.scheduler-border {
 }
 .top-navigation .nav > li > a {
   padding: 15px 13px !important;
+  @media (max-width:992px){
+    padding: 15px 8px !important;
+  }
 }
 
 .ibox-title.ibox-dashboard-title {
@@ -548,7 +551,7 @@ hr {
   }
 
   .select2-container .select2-choice {
-    height: min(max(30px, 2.93vw), 45px);
+    height: min(max(25px, 1.93vw), 35px);
     background-image: none;
     background-color: $white;
     border-color: $secondary;
@@ -600,7 +603,7 @@ hr {
     min-height: auto;
     padding: 1rem;
     height: min(max(60px, 5.208vw), 100px);
-    @media (max-width: 992px) {
+    @media (max-width: 768px) {
       width: 100%;
     }
     &::after,
@@ -637,7 +640,7 @@ hr {
             margin-bottom: 0 !important;
           }
           & a {
-            padding: 10px 15px !important;
+            padding: 8px 15px !important;
             flex-direction: row !important;
             justify-content: start !important;
             & i {
