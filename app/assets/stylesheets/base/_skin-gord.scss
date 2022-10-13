@@ -293,7 +293,7 @@
       background-color: $gray;
     }
   }
-  .navbar-right {
+  ul.navbar-right {
     background: #426f20;
     color: white;
     display: flex;
@@ -302,11 +302,30 @@
     justify-content: end;
     margin-right: 0;
     border: none;
-    li {
+    .nav-user-icon{
+      width: 35px;
+      height: 35px;
+      // background: transparent;
+      border-radius: 50%;
+      border: 2px solid $white;
+      margin-right: 8px;
+      & img{
+        width: 100%;
+        border-radius: 50%;
+      }
+    }
+     li > {
       a {
         color: $white !important;
+        margin-block: auto;
+        display: flex;
+        align-items: center;
+        padding: 5px 13px !important ;
         &:hover {
           color: #61a60e !important;
+          & .nav-user-icon{
+            border-color: #61a60e;
+          }
         }
         & i {
           color: #97dd44;

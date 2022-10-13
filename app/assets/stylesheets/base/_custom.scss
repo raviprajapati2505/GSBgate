@@ -595,6 +595,7 @@ hr {
     width: min(max(200px, 19.685vw), 377px);
     height: auto;
     min-width: 130px;
+    max-width: 230px;
   }
   .navbar-header {
     display: flex;
@@ -662,7 +663,7 @@ hr {
         display: flex;
         align-items: center;
         justify-content: center;
-        max-width: 150px;
+        // max-width: 150px;
         border-right: 1px solid $primary;
         .dropdown-open {
           background-color: $primary;
@@ -702,6 +703,7 @@ hr {
           margin-bottom: -2rem;
           border-radius: 0 0 1rem;
           overflow: hidden;
+          max-width: 150px;
           .normal-li {
             display: none;
             width: 50px;
@@ -751,6 +753,9 @@ hr {
 }
 .nav .open > a {
   background-color: $primary !important;
+  & img{
+    filter: brightness(10);
+  }
 }
 .dataTable-pagination {
   display: -ms-flexbox;

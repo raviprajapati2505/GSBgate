@@ -113,7 +113,7 @@
                         <% else %>
                             <%= image_tag('layout/admin-g.png',class:"img-responsive normal-li bg-transparent after-login-right-img")%>
                         <% end %>
-                        <span class="nav-label"><%= t('.navbar.admin') %></span>
+                        <span class="nav-label"><%= t('.navbar.admin') %> <i class="fa fa-caret-down m-0 ml-1"></i></span>
                         </a>
                         <ul role="menu" class="dropdown-menu">
                             <% if can_offline_projects %>
@@ -156,12 +156,12 @@
     <% if user_signed_in? %>
         <ul class="nav navbar-top-links navbar-right">
             <li>
-                <%= link_to user_path(current_user.id) do %>
-                    <%= ikoen('user', size: 'lg') %>
-                    <span class="nav-label"><%= current_user.full_name %></span>
-                <% end %>
+                <a href="<%= user_path(current_user.id) %>" class="d-flex align-items-center p-0">
+                <span class="nav-user-icon"> <img src="https://wallpapers.com/images/hd/cool-neon-blue-profile-picture-u9y9ydo971k9mdcf.jpg"></span>
+                        <span class="nav-label"><%= current_user.full_name %></span>
+                    </a>
             </li>
-            <li>
+            <li class="d-flex">
                 <%= link_to destroy_user_session_path, method: :delete do %>
                     <%= ikoen('sign-out', size: 'lg') %><span class="nav-label">Log out</span>
                 <% end %>
