@@ -35,9 +35,9 @@
                     <%= btn_audit_log_comments_filtered(status_name, audit_log_params) %>
                 </h2>
                 <% unless date_previous.nil? %>
-                    <small class="text-muted">
+                    <p>
                         <%= ikoen_with_text('clock-o', localize(date_previous), size: 'normal') %>
-                    </small>
+                    </p>
                 <% end %>
                 <% if description.present? %>
                     <p><%= description %></p>

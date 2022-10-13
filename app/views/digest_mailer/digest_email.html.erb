@@ -114,12 +114,12 @@
                                 <% end %>
                             </small>
                             <% if audit_log.system_message.present? %>
-                                <div style='background-color: #f5f5f5; border: 1pt solid #e7eaec; margin-bottom: 5pt; margin-top: 10pt; padding: 10pt 10pt;'>
+                                <div style='background-color: #f3f2f1; border: 1pt solid #e7eaec; margin-bottom: 5pt; margin-top: 10pt; padding: 10pt 10pt;'>
                                     <span style='color: #676a6c; font-size: 9pt; font-family: "Verdana", "sans-serif";'><%= audit_log.system_message.html_safe %></span>
                                 </div>
                             <% end %>
                             <% if audit_log.user_comment.present? %>
-                                <div style='background-color: #f5f5f5; border: 1pt solid #e7eaec; margin-bottom: 5pt; margin-top: 10pt; padding: 10pt 20pt;'>
+                                <div style='background-color: #f3f2f1; border: 1pt solid #e7eaec; margin-bottom: 5pt; margin-top: 10pt; padding: 10pt 20pt;'>
                                     <img src="<%= image_url('fa/comment_888888_16.png') %>">&nbsp;<span style='color: #676a6c; font-size: 9pt; font-family: "Verdana", "sans-serif"; font-style: italic;'><%= audit_log.user_comment %></span>
                                 </div>
                             <% end %>

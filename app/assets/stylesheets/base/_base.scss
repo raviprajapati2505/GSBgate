@@ -717,6 +717,9 @@ table.table-mail tr td {
 
 .text-primary {
   color: $primary;
+  a {
+    color: $primary;
+  }
 }
 
 .text-success {

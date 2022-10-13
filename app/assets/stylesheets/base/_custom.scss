@@ -555,7 +555,6 @@ hr {
     background-image: none;
     background-color: $white;
     border-color: $secondary;
-    font-size: min(max(14px, 1.172vw), 18px);
     display: flex;
     align-items: center;
     width: 100%;
@@ -567,7 +566,6 @@ hr {
   .select2-drop {
     background: $white;
     color: $black;
-    font-size: min(max(14px, 1.172vw), 18px);
   }
   .select2-dropdown-open.select2-drop-above .select2-choice,
   .select2-dropdown-open.select2-drop-above .select2-choices {
@@ -595,7 +593,7 @@ hr {
     width: min(max(200px, 19.685vw), 377px);
     height: auto;
     min-width: 130px;
-    max-width: 230px;
+    max-width: 200px;
   }
   .navbar-header {
     display: flex;
@@ -675,7 +673,6 @@ hr {
           height: 100%;
           justify-content: center;
           color: $white;
-          font-size: min(max(12px, 0.833vw), 16px);
           font-weight: 400;
           width: 100%;
           text-transform: uppercase;
@@ -686,7 +683,7 @@ hr {
             }
           }
           &:hover {
-            background-color: #61a73026;
+            background-color: rgba($primary, 0.17);
 
             i {
               color: $white;
@@ -820,10 +817,14 @@ hr {
     }
   }
 }
+.col-certificate_id, .col-certification_path_certification_path_status_id {
+  white-space: nowrap;
+}
 .certi-name-badge {
   display: inline-block;
   width: 15px;
   margin-right: 10px;
+  white-space: nowrap;
   img {
     max-width: 100%;
   }
@@ -832,6 +833,7 @@ hr {
   display: inline-block;
   width: 20px;
   margin-right: 10px;
+  white-space: nowrap;
   img {
     max-width: 100%;
   }
@@ -849,6 +851,7 @@ hr {
   font-size: 12px;
   line-height: 12px;
   background: $secondary;
+  white-space: nowrap;
   img {
     position: absolute;
     top: -3px;

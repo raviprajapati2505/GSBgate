@@ -135,12 +135,12 @@
         .right-part {
           a.btn {
             border-radius: 4px !important;
-            border: 3px solid #61a730;
+            border: 3px solid $primary;
             font-weight: 500;
           }
         }
         .right-signup {
-          background: #6c9327c4;
+          background: rgba($primary, 0.7);
           min-width: 200px;
           > .d-flex {
             margin-top: min(max(40px, 3.125vw), 60px);
@@ -154,7 +154,7 @@
           }
           a.btn {
             border-radius: 4px !important;
-            border: 3px solid #61a730;
+            border: 3px solid $primary;
             font-weight: 500;
             white-space: pre-wrap;
           }
@@ -174,8 +174,7 @@
           .form {
             margin-top: 32px;
             button {
-              background-color: #60ad45;
-              font-size: min(max(16px, 1.25vw), 24px);
+              background-color: $primary;
               box-shadow: 5px 5px 5px 0px rgba($black, 0.75);
               box-shadow: none;
               border-radius: 3px !important;
@@ -429,12 +428,12 @@
 
   .feed-element .user-comment-gsas-trust-team {
     font-style: italic;
-    background-color: $skin-gord-color-gsas-trust-team-light;
+    background-color: $gray-700;
   }
 
   .feed-element .user-comment-project-team {
     font-style: italic;
-    background-color: $skin-gord-color-project-team-light;
+    background-color: $skin-gord-color-light;
   }
 
   .feed-element .text-muted {
@@ -460,7 +459,10 @@
 
   .project-team {
     color: $white;
-    background-color: $skin-gord-color-project-team;
+    background-color: $primary;
+    & + .vertical-timeline-content {
+      background: $primary-light;
+    }
   }
 
   .project-certification-progress {
@@ -790,37 +792,20 @@
   }
 
   .dropzone {
-    #dropzone-top {
-      border: 2px dashed $border-color;
-      background-color: $gray-100;
+    #dropzone-top, #render-dropzone-top {
+      background-color: rgba($primary, 0.2);
       height: 100px;
       padding: 20px;
       cursor: pointer;
-    }
-
-    #render-dropzone-top {
-      border: 2px dashed $border-color;
-      background-color: $gray-100;
-      height: 100px;
-      padding: 20px;
-      cursor: pointer;
+      border-radius: 10px;
     }
 
     .dz-message {
-      font-size: 16px;
-      text-align: center;
+      color: $secondary;
       margin: 18px 0;
     }
 
-    #dropzone-previews {
-      display: table;
-      margin: 14px 0 0 0;
-      border: none;
-      border-left: 1px solid $border-color;
-      border-top: 1px solid $border-color;
-    }
-
-    #render-dropzone-previews {
+    #dropzone-previews, #render-dropzone-previews {
       display: table;
       margin: 14px 0 0 0;
       border: none;
@@ -998,7 +983,7 @@
     }
 
     .document-approved:hover {
-      background-color: $gray-300;
+      background-color: $skin-gord-color-light;
     }
 
     .document-rejected {
@@ -1135,20 +1120,15 @@
     }
 
     .vertical-timeline-icon {
-      display: inline;
       top: auto;
       left: auto;
       height: 24px;
       width: 24px;
       font-size: 10px;
       margin-left: -28px;
-    }
-
-    .vertical-timeline-icon i {
-      height: 12px;
-      width: 12px;
-      margin-left: -6px;
-      margin-top: -6px;
+      .fa {
+        font-size: 12px;
+      }
     }
   }
 
@@ -1180,18 +1160,15 @@
     .vertical-timeline-content {
       p {
         font-size: 12px;
-        margin: 0.5em 0 0 0;
+        margin: 0;
+        color: $secondary;
       }
 
       h2 {
         font-size: 13px;
         font-weight: 600;
-      }
-
-      .text-muted {
-        font-size: 10px;
-        display: block;
-        margin-top: -8px;
+        margin: 0;
+        color: $secondary;
       }
     }
   }
