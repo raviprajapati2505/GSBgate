@@ -5,9 +5,9 @@
   <span class="label label-rating label-rating-<%= rating.downcase.gsub(/( )/, '-') %>" style='margin-inline: 1.5rem;' ><%= rating %></span>
 <% else %>
   <!-- STAR SCORE -->
-  <span style="white-space: nowrap; margin-inline: 6px;">
+  <span class="certification-rating px-3">
     <% rating.to_i.times do %>
-        <i class="fa fa-star fa-lg"></i>
+        <i class="fa fa-star"></i>
     <% end %>
   </span>
 <% end %>

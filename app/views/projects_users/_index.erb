@@ -79,7 +79,7 @@
                             </td>
                             <% if team != :enterprise_clients %>
                                 <td>
-                                    <span class="badge fa-lg"><%= TaskService::count_tasks(user: projects_user.user, project_id: project.id, certification_path_id: certification_path&.id) %></span>
+                                    <span class="badge badge-primary"><%= TaskService::count_tasks(user: projects_user.user, project_id: project.id, certification_path_id: certification_path&.id) %></span>
                                 </td>
                             <% end %>
                             <% unless index == 1 %>

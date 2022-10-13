@@ -34,20 +34,13 @@ body.landing-page {
 }
 
 .landing-page {
-
   span.navy {
     color: $primary;
   }
   p.text-color {
     color: $text-color;
   }
-  a.navy-link {
-    color: $primary;
-    text-decoration: none;
-  }
-  a.navy-link:hover {
-    color: darken($primary, 5%);
-  }
+
   section p {
     color: #aeaeae;
     font-size: 13px;

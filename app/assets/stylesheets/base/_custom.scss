@@ -858,3 +858,12 @@ hr {
 .table-striped > tbody > tr:nth-of-type(odd) {
   background: $gray-500;
 }
+.certification-rating {
+  display: inline-block;
+  white-space: nowrap;
+  margin: 0 -1px;
+  .fa-star {
+    color: $warning;
+    padding: 0 1px;
+  }
+}

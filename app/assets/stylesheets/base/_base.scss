@@ -3,8 +3,6 @@ body {
   height: 100%;
 }
 body {
-  // font-family: "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  // font-family: adrianna, sans-serif;
   font-family: "Outfit", sans-serif;
   font-weight: 300;
   background-color: $page-bg;
@@ -61,6 +59,7 @@ body.boxed-layout #wrapper {
 }
 
 a {
+  color: $info-dark;
   cursor: pointer;
 }
 
@@ -657,84 +656,6 @@ table.table-mail tr td {
   background-color: $white;
 }
 
-.navy-bg {
-  background-color: $primary;
-  color: $white;
-}
-
-.blue-bg {
-  background-color: $secondary;
-  color: $white;
-}
-
-.lazur-bg {
-  background-color: $primary;
-  color: $white;
-}
-
-.yellow-bg {
-  background-color: $warning;
-  color: $white;
-}
-
-.red-bg {
-  background-color: $danger;
-  color: $white;
-}
-
-.black-bg {
-  background-color: $gray-900;
-}
-
-.panel-primary {
-  border-color: $primary;
-}
-
-.panel-primary > .panel-heading {
-  background-color: $primary;
-  border-color: $primary;
-}
-
-.panel-success {
-  border-color: $secondary;
-}
-
-.panel-success > .panel-heading {
-  background-color: $secondary;
-  border-color: $secondary;
-  color: $white;
-}
-
-.panel-info {
-  border-color: $info;
-}
-
-.panel-info > .panel-heading {
-  background-color: $info;
-  border-color: $info;
-  color: $white;
-}
-
-.panel-warning {
-  border-color: $warning;
-}
-
-.panel-warning > .panel-heading {
-  background-color: $warning;
-  border-color: $warning;
-  color: $white;
-}
-
-.panel-danger {
-  border-color: $danger;
-}
-
-.panel-danger > .panel-heading {
-  background-color: $danger;
-  border-color: $danger;
-  color: $white;
-}
-
 .progress-bar {
   background-color: $primary;
 }
@@ -755,7 +676,7 @@ table.table-mail tr td {
   margin-bottom: 0;
 }
 
-.progress-bar-navy-light {
+.progress-bar-primary {
   background-color: $primary;
 }
 
@@ -795,7 +716,7 @@ table.table-mail tr td {
 }
 
 .text-primary {
-  color: inherit;
+  color: $primary;
 }
 
 .text-success {

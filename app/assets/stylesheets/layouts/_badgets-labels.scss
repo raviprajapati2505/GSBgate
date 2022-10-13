@@ -1,8 +1,6 @@
-
 .label {
   background-color: $light-gray;
   color: $label-badget-color;
-  // font-family: 'Open Sans';
   font-size: 10px;
   font-weight: 600;
   padding: 3px 8px;
@@ -10,58 +8,68 @@
 }
 
 .badge {
-  background-color: $light-gray;
-  color: $label-badget-color;
-  // font-family: 'Open Sans';
-  font-size: 11px;
-  font-weight: 600;
+  font-weight: 400;
   padding-bottom: 4px;
   padding-left: 6px;
   padding-right: 6px;
   text-shadow: none;
 }
 
-.label-primary, .badge-primary {
-  background-color: $primary;
-  color: $white;
+.label-primary,
+.badge-primary {
+  background-color: rgba($primary, 0.45);
+  color: $secondary;
 }
-
-.label-success, .badge-success {
+.label-secondary,
+.badge-secondary {
   background-color: $secondary;
   color: $white;
 }
 
-.label-warning, .badge-warning {
+.label-success,
+.badge-success {
+  background-color: $success;
+  color: $white;
+}
+
+.label-warning,
+.badge-warning {
   background-color: $warning;
   color: $white;
 }
 
-.label-warning-light, .badge-warning-light {
+.label-warning-light,
+.badge-warning-light {
   background-color: $warning;
   color: $white;
 }
 
-.label-danger, .badge-danger {
+.label-danger,
+.badge-danger {
   background-color: $danger;
   color: $white;
 }
 
-.label-info, .badge-info {
+.label-info,
+.badge-info {
   background-color: $info;
   color: $white;
 }
 
-.label-inverse, .badge-inverse {
+.label-inverse,
+.badge-inverse {
   background-color: $gray-900;
   color: $white;
 }
 
-.label-white, .badge-white {
+.label-white,
+.badge-white {
   background-color: $white;
   color: $label-badget-color;
 }
 
-.label-white, .badge-disable {
+.label-white,
+.badge-disable {
   background-color: $gray-800;
   color: $nav-text-color;
 }
