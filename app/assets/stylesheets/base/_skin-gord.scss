@@ -227,32 +227,31 @@
     padding: 0;
     width: 12px;
     height: 12px;
-    background: image_url("check.png") no-repeat;
-    background-color: rgba($black, 0.8);
+    // background: image_url("check.png") no-repeat;
+    // background-color: rgba($black, 0.8);
+    border: solid 2px $secondary;
     cursor: pointer;
     margin-top: -1px;
+    &.checked {
+      background-position: -1px;
+      background: image_url("check.png") no-repeat;
+      background-size: 15px;
+      border-color: rgba($black, 0.8);
+      border: 0px;
+      background-color: $white;
+      &.disabled {
+        background-position: -96px 0;
+      }
+    }
   }
 
   .icheckbox_square-green {
     background-position: 0 0;
   }
-  // .icheckbox_square-green.hover {
-  //   background-position: -19px 0;
-  //   border: 1px solid;
-  // }
-  .icheckbox_square-green.checked {
-    background-position: -1px;
-    background-size: 15px;
-    border-color: rgba($black, 0.8);
-    border: 0px;
-    background-color: $white;
-  }
+  .icheckbox_square-green
   .icheckbox_square-green.disabled {
     background-position: 0;
     cursor: default;
-  }
-  .icheckbox_square-green.checked.disabled {
-    background-position: -96px 0;
   }
   .iradio_square-green {
     background-position: -120px 0;
@@ -548,8 +547,8 @@
   }
 
   .progress-bar-achieved {
-    color: $success;
-    fill: $success;
+    color: $primary;
+    fill: $primary;
   }
 
   .progress-bar-tip {
@@ -980,7 +979,8 @@
     }
 
     .document-approved {
-      @extend .alert-success;
+      background: $table-bg-color;
+      color: $secondary;
     }
 
     .document-approved:hover {
@@ -1150,12 +1150,7 @@
     }
 
     .vertical-timeline-block .vertical-timeline-content {
-      padding: 0.6em 1em;
-      opacity: 0.8;
-    }
-
-    .vertical-timeline-block:first-child .vertical-timeline-content {
-      opacity: 1;
+      padding: 10px 30px;
     }
 
     .vertical-timeline-content {
@@ -1184,17 +1179,18 @@
       padding-left: 0px;
       padding-right: 0px;
       a {
-        @extend .btn, .btn-xs;
+        display: flex;
+        align-items: center;
+        background: $secondary;
+        padding: 1px 10px 2px;
+        border-radius: 2rem;
+        color: $white;
+        font-weight: 300;
       }
-    }
-    li:not(.active) {
-      a {
-        @extend .btn-white;
-      }
-    }
-    li.active {
-      a {
-        @extend .btn-primary;
+      &.active {
+        a {
+          background: $primary;
+        }
       }
     }
   }

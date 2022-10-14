@@ -327,6 +327,7 @@ td {
 
 .table > thead > tr > th {
   border-bottom-color: $gray-600;
+  vertical-align: top;
 }
 
 .table > thead > tr > th,
@@ -655,9 +656,20 @@ table.table-mail tr td {
 .white-bg {
   background-color: $white;
 }
-
+.progress {
+  background: none;
+  &.progress-dark {
+    .progress-bar {
+      background: $primary;
+      color: $white;
+    }
+  }
+}
 .progress-bar {
-  background-color: $primary;
+  background-color: rgba($primary, 0.1);
+  color: $secondary;
+  border-radius: 2rem;
+  font-weight: 500;
 }
 
 .progress-small,

@@ -320,7 +320,7 @@ fieldset.scheduler-border {
     border-bottom: 1px solid rgba($gray-700, 0.8);
     padding: 1rem 0;
     height: auto;
-    color: $white;
+    color: $secondary;
   }
 
   label {
@@ -332,14 +332,9 @@ fieldset.scheduler-border {
     line-height: 14px;
   }
 
-  select option {
-    background-color: $black;
-    color: $white;
-  }
-
   .file {
     background-color: transparent;
-    color: $white;
+    color: $secondary;
     label {
       color: $primary;
     }
@@ -347,7 +342,7 @@ fieldset.scheduler-border {
   .form-inline {
     span {
       .fa {
-        color: $white;
+        color: $secondary;
       }
     }
   }

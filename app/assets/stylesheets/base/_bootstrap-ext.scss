@@ -3149,8 +3149,7 @@ a.text-danger:hover {
     background-color: #68191787;
     border-color: #ebccd1;
 }
-.alert-success,
-.skin-gord .document-table .document-approved {
+.alert-success {
     color: #d6e9c6;
     background-color: #218123;
     border-color: #d6e9c6;
@@ -3158,4 +3157,17 @@ a.text-danger:hover {
 
 a.btn {
     text-decoration: none !important;
+}
+.col-auto {
+    -ms-flex: 0 0 auto;
+    flex: 0 0 auto;
+    width: auto;
+    max-width: 100%;
+}
+.col {
+    -ms-flex-preferred-size: 0;
+    flex-basis: 0;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+    max-width: 100%;
 }

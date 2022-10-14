@@ -29,19 +29,23 @@
                     <% status_name = milestone[:certification_path_status].past_name %>
                     <% audit_log_params = {project_id: @project.id, certification_path_id: @certification_path.id, date_from: milestone[:date].strftime(t('date.formats.short')), time_from: milestone[:date].strftime(t('time.formats.short')), date_to: date_previous.strftime(t('date.formats.short')), time_to: date_previous.strftime(t('time.formats.short')), button: 'Apply_audit_filter'} %>
                 <% end %>
-                <h2>
-                    <%= status_name %>
-                    <%= btn_audit_log_filtered(status_name, audit_log_params) %>
-                    <%= btn_audit_log_comments_filtered(status_name, audit_log_params) %>
-                </h2>
-                <% unless date_previous.nil? %>
-                    <p>
-                        <%= ikoen_with_text('clock-o', localize(date_previous), size: 'normal') %>
-                    </p>
-                <% end %>
-                <% if description.present? %>
-                    <p><%= description %></p>
-                <% end %>
+                <div class="row d-flex align-items-center">
+                    <div class="col">
+                        <h2><%= status_name %></h2>
+                        <% unless date_previous.nil? %>
+                            <small class="text-muted">
+                                <%= ikoen_with_text('clock-o', localize(date_previous), size: 'normal') %>
+                            </small>
+                        <% end %>
+                        <% if description.present? %>
+                            <p><%= description %></p>
+                        <% end %>
+                    </div>
+                    <div class="col-auto">
+                         <%= btn_audit_log_filtered(status_name, audit_log_params) %>
+                        <%= btn_audit_log_comments_filtered(status_name, audit_log_params) %>
+                    </div>
+                </div>
             </div>
         </div>
         <% date_previous = milestone[:date] %>

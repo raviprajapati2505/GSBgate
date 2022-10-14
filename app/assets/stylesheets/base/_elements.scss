@@ -607,20 +607,27 @@ table {
     .btn,
     a,
     button {
-      background: none;
+      background: $primary;
       color: $white;
-      padding-left: 0;
-      padding-right: 0;
-      margin-right: 25px;
+      padding: 0.5rem 1rem;
       &:hover,
       &:focus {
-        background: none !important;
-        color: $white;
-        text-decoration: underline !important;
+        background: darken($primary, 10%) !important;
       }
-      &:last-child {
-        margin-right: 0;
-      }
+      // background: none;
+      // color: $white;
+      // padding-left: 0;
+      // padding-right: 0;
+      // margin-right: 25px;
+      // &:hover,
+      // &:focus {
+      //   background: none !important;
+      //   color: $white;
+      //   text-decoration: underline !important;
+      // }
+      // &:last-child {
+      //   margin-right: 0;
+      // }
     }
   }
 }

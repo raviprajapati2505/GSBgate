@@ -124,7 +124,7 @@
                     <%= render 'score/score_tabs', scores: @total_scores, element_id: "scheme_mix_#{scheme_mix.id}" %>
                 </td>
                 <td>
-                    <div class="progress">
+                    <div class="progress progress-dark">
                         <%
                            if certification_path.requirement_data.count.nonzero?
                              progress = certification_path.requirement_data.completed.count * 100 / certification_path.requirement_data.count
