@@ -525,6 +525,10 @@ class Ability
       cannot [:index, :download_linkme_survey_data], LinkmeSurvey
       can [:index, :upload_document], :dashboard
     elsif user.credentials_admin?
+      # Task
+      can :read, Task
+      can :count, Task
+      
       can [:show, :edit, :update, :index, :activity_info, :download_user_files], User
       can [:edit_service_provider, :update_service_provider], ServiceProvider
       can [:index, :upload_document], :dashboard

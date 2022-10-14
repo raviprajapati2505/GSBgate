@@ -7,7 +7,7 @@
 
       <div class="form-inputs m-t">
 
-        <%= render partial: "users/registrations/form", locals: { f: f, resource_for: 'user', resource: @user, user_detail: @user_detail, service_provider_detail: @user_detail } %>
+        <%= render partial: "users/registrations/form", locals: { f: f, resource_for: 'user', resource: @user, user_detail: @user_detail, service_provider_detail: @user_detail, action: 'edit' } %>
 
         <%= f.input :role, collection: User.roles.map{ |k, v| [k.titleize, k]}, include_blank: "Select Role", input_html: {class: "form-control"}, required: true %>
 

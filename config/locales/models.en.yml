@@ -173,20 +173,21 @@ en:
         city: City
         mobile_area_code: Mobile Area Code
         mobile: Mobile
-        organization_address: Organization Address
-        organization_country: Organization Country
-        organization_city: Organization City
-        organization_website: Organization Website
-        organization_phone_area_code: Organization Phone Area Code
-        organization_phone: Organization Phone
-        organization_fax_area_code: Organization Fax Area Code
-        organization_fax: Organization Fax
+        organization_email: Email
+        organization_address: Address
+        organization_country: Country of Incorporation
+        organization_city: City
+        organization_website: Website
+        organization_phone_area_code: Phone Area Code
+        organization_phone: Phone
+        organization_fax_area_code: Fax Area Code
+        organization_fax: Fax
         gsas_id: GSAS ID
         demerit_flag: Demerit Flags
         role: Role
         username: Username
         gord_employee: GORD Employee?
-        organization_name: Organization Name
+        organization_name: Name
         service_provider: Service Provider
         active: Profile Active?
         practitioner_accreditation_type: Practitioner Accreditation Type
@@ -199,10 +200,10 @@ en:
           document_controller: Document Controller
       user_detail:
         gender: Gender
-        dob: Date Of Birth
+        dob: Date of Birth
         designation: Designation
         work_experience: Work Experience In Years
-        qid_or_passport_number: QID / Passport number
+        qid_or_passport_number: QID / Passport Number
       service_provider_detail:
         commercial_licence_no: Commercial Licence No.
         commercial_licence_expiry_date: Commercial Licence Expiry Date

@@ -51,6 +51,7 @@ class UsersController < AuthenticatedController
       :city, 
       :mobile_area_code, 
       :mobile, 
+      :organization_email,
       :organization_address, 
       :organization_country, 
       :organization_city, 
@@ -89,7 +90,10 @@ class UsersController < AuthenticatedController
         :commercial_licence_file,
         :accredited_service_provider_licence_file,
         :demerit_acknowledgement_file,
-        :application_form
+        :application_form,
+        :cgp_licence_file,
+        :energy_assessor_name, 
+        :gsas_energey_assessment_licence_file,
       ],
       access_licences_attributes: [
         :id, 
@@ -121,6 +125,7 @@ class UsersController < AuthenticatedController
       :city, 
       :mobile_area_code, 
       :mobile, 
+      :organization_email,
       :organization_address,
       :organization_country, 
       :organization_city, 
@@ -138,7 +143,10 @@ class UsersController < AuthenticatedController
             :commercial_licence_expiry_date,
             :commercial_licence_file,
             :accredited_service_provider_licence_file,
-            :demerit_acknowledgement_file
+            :demerit_acknowledgement_file,
+            :cgp_licence_file,
+            :energy_assessor_name, 
+            :gsas_energey_assessment_licence_file
         ]
       )
 
@@ -367,11 +375,11 @@ class UsersController < AuthenticatedController
       when "work_experience_file"
         file = @user.user_detail&.work_experience_file&.path
       when "cgp_licence_file"
-        file = @user.user_detail&.cgp_licence_file&.path
+        file = @user.service_provider_detail&.cgp_licence_file&.path
       when "qid_work_permit_file"
         file = @user.user_detail&.qid_work_permit_file&.path
       when "gsas_energey_assessment_licence_file"
-        file = @user.user_detail&.gsas_energey_assessment_licence_file&.path
+        file = @user.service_provider_detail&.gsas_energey_assessment_licence_file&.path
       when "education_certificate"
         file = @user.user_detail&.education_certificate&.path
       when "other_documents"

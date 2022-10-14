@@ -1,44 +1,64 @@
+<% countries = CS.countries.sort_by{|_key, value| value }.to_h %>
+<% resource.tap do |character| %>
+	<% if character.errors.any? %>
+	<div class="errors">
+	<h2><%= pluralize(character.errors.count, "error") %> prohibited this character from being saved:</h2>
+	<ul>
+	<% character.errors.full_messages.each do |msg| %>
+		<li><%= msg %></li>
+	<% end %>
+	</ul>
+	</div>
+	<% end %>
+<% end %>
 <fieldset class="scheduler-border">
-	<legend class="scheduler-border">Basic Information</legend>
+	<legend class="scheduler-border">Personal Information</legend>
 		<div class="control-group">
-			<div class="row">
-			 	<div class="col-md-4">
-				<%= f.label 'Appellation' %>
-				<%= f.select :name_suffix, options_for_select(["Mr.", "Ms.", "Mrs.", "Dr."], resource.name_suffix), { include_blank: "Choose Appellations" }, { class: "select2 form-control" } %>
+			<% if resource_for == 'user' %>
+				<div class="row">
+					<div class="col-md-4">
+					<%= f.label 'Appellation' %>
+					<%= f.select :name_suffix, options_for_select(["Mr.", "Ms.", "Mrs.", "Dr."], resource.name_suffix), { include_blank: "Choose Appellations" }, { class: "select2 form-control" } %>
+				</div>
 			</div>
-		</div>
+			<% end %>
 		<br>
 		<div class="row">
-			<div class="col-md-4"><%= f.input :name, required: true %></div>
-			<div class="col-md-4"><%= f.input :middle_name %></div>
-			<div class="col-md-4"><%= f.input :last_name, required: true %></div>
+			<% if resource_for == 'user' %>
+				<div class="col-md-4"><%= f.input :name, required: true %></div>
+				<div class="col-md-4"><%= f.input :middle_name %></div>
+				<div class="col-md-4"><%= f.input :last_name %></div>
+			<% else %>
+				<div class="col-md-4"><%= f.label 'Name' %><%= f.input :name, required: true, label: false %></div>
+			<% end %>
 		</div>
 		<div class="row">
 			
 			<div class="col-md-4">
 					<%= f.input :username, required: true %>
 			</div>
-			<div class="col-md-4">
-				<%= f.input :practitioner_accreditation_type, collection: User.practitioner_accreditation_types.map{ |k, v| [k.titleize, k]}, include_blank: "Select Practitioner Accreditation Type", input_html: {class: "form-control"} %>
-			</div>
+			<% if action != 'add' %>
+				<div class="col-md-4">
+					<%= f.input :practitioner_accreditation_type, collection: User.practitioner_accreditation_types.map{ |k, v| [k.titleize, k]}, include_blank: "Select Practitioner Accreditation Type", input_html: {class: "form-control"} %>
+				</div>
+			<% end %>
 		</div>
 	</div>
 </fieldset>
 
 <fieldset class="scheduler-border">
-	<legend class="scheduler-border"><%= t('.user_details.contact_info') %></legend>
+	<legend class="scheduler-border"><%= t('.user_details.contact_information') %></legend>
 		<div class="control-group">
 			<div class="row">
 					<div class="col-md-4"><%= f.input :email, input_html: { id: 'user_email'}, required: true %></div>
 					<div class="col-md-4"><%= f.input :email_alternate %></div>
 					<div class="col-md-4">
-							<% countries = CS.countries.sort_by{|_key, value| value }.to_h %>
 							<%= f.input :country, collection: countries.map{ |cnt| [cnt[1], cnt[1]] }, include_blank: "Select Country", selected: resource.country, input_html: { class: "select2 form-control country-select", id: "user-country-select", data: {"for": "user"} }, required: true %>
 					</div>
 			</div>
 			<div class="row">
 					<div class="col-md-4">
-							<%= f.input :city, collection: [resource.city], include_blank: "Select City", selected: resource.city, input_html: { class: "select2 form-control city-select", id: "user-city-select" }, required: true %>
+							<%= f.input :city, collection: [resource.city], include_blank: "Select City", selected: resource.city, input_html: { class: "select2 form-control city-select", id: "user-city-select" }%>
 					</div>
 					<div class="col-md-4">
 							<%= f.input :mobile_area_code, input_html: { id: 'mobile_area_code'}, required: true %>
@@ -47,16 +67,18 @@
 							<%= f.input :mobile, required: true %>
 					</div>
 			</div>
-			<div class="row">
+			<% if action != 'add' %>
+				<div class="row">
 					<div class="col-md-4">
 							<%= f.input :gsas_id %>
 					</div>
-			</div>
+				</div>
+			<% end %>
 		</div>
 </fieldset>
 
 <fieldset class="scheduler-border">
-	<legend class="scheduler-border"><%= t('.user_details.organization_info') %></legend>
+	<legend class="scheduler-border"><%= t('.user_details.company_information') %></legend>
 	<div class="control-group">
 		<div class="row">
 				<% if resource_for == 'user' &&  resource.role&.titleize != 'Service Provider' %>
@@ -75,36 +97,42 @@
 						<%= f.input :organization_address, input_html: { id: 'org_address'}, required: true %>
 				</div>
 				<div class="col-md-4">
-						<%= f.input :organization_country, collection: countries.map{ |cnt| [cnt[1], cnt[1]] }, include_blank: "Select Country", selected: resource.organization_country, input_html: { class: "select2 form-control country-select", id: "organization-country-select", data: {"for": "organization"} }, required: true %>
+						<%= f.input :organization_email, input_html: { id: 'org_email'}, required: true %>
 				</div>
 		</div>
 		<div class="row">
+				<div class="col-md-4">
+						<%= f.input :organization_country, collection: countries.map{ |cnt| [cnt[1], cnt[1]] }, include_blank: "Select Country", selected: resource.organization_country, input_html: { class: "select2 form-control country-select", id: "organization-country-select", data: {"for": "organization"} }, required: true %>
+				</div>
 				<div class="col-md-4">
 						<%= f.input :organization_city, collection: [resource.organization_city], include_blank: "Select City", selected: resource.organization_city, input_html: { class: "select2 form-control city-select", id: "organization-city-select" } %>
 				</div>
 				<div class="col-md-4">
 						<%= f.input :organization_website, input_html: { id: 'org_website', placeholder: 'http://mywebsite.com'}, required: true %>
 				</div>
+				
+		</div>
+		<div class="row">
 				<div class="col-md-4">
 						<%= f.input :organization_phone_area_code, input_html: { id: 'org_phone_area_code'} %>
 				</div>
-		</div>
-		<div class="row">
 				<div class="col-md-4">
 						<%= f.input :organization_phone, input_html: { id: 'org_phone'} %>
 				</div>
 				<div class="col-md-4">
 						<%= f.input :organization_fax_area_code, input_html: { id: 'org_fax_area_code'}  %>
 				</div>
-				<div class="col-md-4">
-						<%= f.input :organization_fax, input_html: { id: 'org_fax'} %>
-				</div>
+		</div>
+		<div class="row">
+			<div class="col-md-4">
+					<%= f.input :organization_fax, input_html: { id: 'org_fax'} %>
+			</div>
 		</div>
 	</div>
 </fieldset>
 
 <fieldset class="scheduler-border">
-    <legend class="scheduler-border"><%= t('.user_details.other_info') %></legend>
+    <legend class="scheduler-border"><%= t('.user_details.additional_information') %></legend>
     <div class="control-group">
      <% if resource_for == 'user' &&  resource.role&.titleize != 'Service Provider' %>
       	<%= f.simple_fields_for :user_detail, user_detail do |user_detail| %>

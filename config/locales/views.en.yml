@@ -353,9 +353,9 @@ en:
     show:
       user_details:
         title: Personal Information
-        other_info: Other Information
-        organization_info: Organization Information
-        contact_info: Contact Information
+        additional_information: Additional Information
+        company_information: Company Information
+        contact_information: Contact Information
         activity_info:
           title: Activity Information
           created_at: Registration Date
@@ -376,7 +376,7 @@ en:
         test: 'TEst'
     form:
       form_title: User details
-      qid_file_title: Copy of the QID/passport
+      qid_file_title: Copy of the QID/Passport
       university_credential_file_title: University Credentials
       work_experience_file_title: Work Experience
       gsas_cgp_licence_file_title: GSAS-CGP Licence
@@ -391,9 +391,9 @@ en:
       education_certificate: Education Certificate
       user_details:
         title: Personal Information
-        other_info: Other Information
-        organization_info: Organization Information
-        contact_info: Contact Information
+        additional_information: Additional Information
+        company_information: Company Information
+        contact_information: Contact Information
     list_notifications:
       btn_save: Update preferences
   offline:
