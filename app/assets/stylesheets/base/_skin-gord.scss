@@ -227,31 +227,32 @@
     padding: 0;
     width: 12px;
     height: 12px;
-    // background: image_url("check.png") no-repeat;
-    // background-color: rgba($black, 0.8);
-    border: solid 2px $secondary;
+    background: image_url("check.png") no-repeat;
+    background-color: rgba($black, 0.8);
     cursor: pointer;
     margin-top: -1px;
-    &.checked {
-      background-position: -1px;
-      background: image_url("check.png") no-repeat;
-      background-size: 15px;
-      border-color: rgba($black, 0.8);
-      border: 0px;
-      background-color: $white;
-      &.disabled {
-        background-position: -96px 0;
-      }
-    }
   }
 
   .icheckbox_square-green {
     background-position: 0 0;
   }
-  .icheckbox_square-green
+  // .icheckbox_square-green.hover {
+  //   background-position: -19px 0;
+  //   border: 1px solid;
+  // }
+  .icheckbox_square-green.checked {
+    background-position: -1px;
+    background-size: 15px;
+    border-color: rgba($black, 0.8);
+    border: 0px;
+    background-color: $white;
+  }
   .icheckbox_square-green.disabled {
     background-position: 0;
     cursor: default;
+  }
+  .icheckbox_square-green.checked.disabled {
+    background-position: -96px 0;
   }
   .iradio_square-green {
     background-position: -120px 0;
