@@ -1,5 +1,5 @@
 <div class="menu-div flex-column">
-    <div class="top-navbar">
+    <div class="top-navbar container-fluid">
         <div class="navbar-header navbar navbar-static-top gord-transparent" role="navigation">
             <% unless Rails.env == 'production' %>
             <div id="environment"><%= Rails.env %></div>
@@ -154,7 +154,7 @@
         </div>
     </div>
     <% if user_signed_in? %>
-        <ul class="nav navbar-top-links navbar-right">
+        <ul class="nav navbar-top-links navbar-right container-fluid">
             <li>
                 <a href="<%= user_path(current_user.id) %>" class="d-flex align-items-center p-0">
                 <span class="nav-user-icon"> <img src="https://wallpapers.com/images/hd/cool-neon-blue-profile-picture-u9y9ydo971k9mdcf.jpg"></span>

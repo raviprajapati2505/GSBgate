@@ -604,6 +604,7 @@ hr {
     height: min(max(60px, 5.208vw), 100px);
     @media (max-width: 768px) {
       width: 100%;
+      padding: 1rem 0;
     }
     &::after,
     &::before {
