@@ -40,11 +40,11 @@ class AccessLicence < ApplicationRecord
   def licence_applicable_for
     case licence.applicability
     when 'both'
-      "Star Rating & Checklist Compliance"
+      "Star Rating Assessment & Checklist Assessment"
     when 'star_rating'
-      "Star Rating"
+      "Star Rating Assessment"
     when 'check_list'
-      "Checklist Compliance"
+      "Checklist Assessment"
     else
       ""
     end

@@ -197,11 +197,11 @@ module Taskable
   end
 
   def handle_confirmed_user_account
-    # Create task form users_admin to activate user profile.
+    # Create task form credentials_admin to activate user profile.
     Task.find_or_create_by(
       taskable: self,
       task_description_id: ACTIVATE_USER,
-      application_role: User.roles[:users_admin]
+      application_role: User.roles[:credentials_admin]
     )
   end
 
@@ -210,7 +210,7 @@ module Taskable
     Task.where(
       taskable: self,
       task_description_id: ACTIVATE_USER,
-      application_role: User.roles[:users_admin]
+      application_role: User.roles[:credentials_admin]
     ).destroy_all if active?
   end
 

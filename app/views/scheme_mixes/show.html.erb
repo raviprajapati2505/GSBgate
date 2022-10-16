@@ -14,13 +14,13 @@
   <div class="col-lg-4">
     <div class="ibox float-e-margins">
       <div class="ibox-title">
-        <h5>SCHEME DETAILS</h5>
+        <h5>TYPOLOGY DETAILS</h5>
       </div>
       <div class="ibox-content">
         <table class="table table-bordered table-striped" cellspacing="0" width="100%">
           <tbody>
           <tr>
-            <th>Scheme Name</th>
+            <th>Typology Name</th>
             <td>
               <%= @scheme_mix.full_name %>
               <% if @certification_path&.main_scheme_mix_id == @scheme_mix.id %>
@@ -35,7 +35,7 @@
 
           <% if development_type_name == 'Neighborhoods' %>
             <tr>
-              <th>Scheme Gross Area (m2)</th>
+              <th>Typology Gross Built up Area (m2)</th>
               <td><%= number_with_delimiter(@scheme_mix&.gross_area, delimiter: ',') %></td>
             </tr>
           <% elsif development_type_name == 'Mixed Use' %>

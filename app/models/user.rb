@@ -46,7 +46,7 @@ class User < ApplicationRecord
   validates :email, uniqueness: true
   validates :username, uniqueness: true
   validates :role, inclusion: User.roles.keys
-  validates :email, :username, :last_name, :name, :country , :city, :mobile_area_code, :mobile, :organization_name, :organization_address, :organization_country, presence: true, unless: -> { encrypted_password_changed? } 
+  validates :email, :username, :name, :country, :mobile_area_code, :mobile, :organization_name, :organization_address, :organization_email, :organization_country, presence: true, unless: -> { encrypted_password_changed? } 
   validates :organization_phone_area_code, :organization_phone, :organization_fax_area_code, :organization_fax,  numericality: { allow_blank: true }, unless: -> { encrypted_password_changed? } 
   validates_numericality_of :mobile_area_code, :mobile, only_integer: true, unless: -> { encrypted_password_changed? } 
   

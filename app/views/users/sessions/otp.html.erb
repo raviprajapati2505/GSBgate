@@ -9,7 +9,7 @@
             <div class="title">
                 <h2>Login to GSASgate</h2>
             </div>
-            <p><b>we have just send you an OTP in email, please check your inbox</b></p>
+            <p><b>Please check your inbox; an OTP was just sent to you via email.</b></p>
             <div class="form">
                 <%= bootstrap_form_for(@user, url: validate_otp_path(@user.id), method: "POST") do |f| %>
                     <%= f.number_field :username, prepend: image_tag('layout/username-icon.png'), autofocus: true, autocomplete: 'off', placeholder: 'Enter OTP', hide_label: true %>

@@ -15,8 +15,8 @@ module Offline
     
     enum assessment_type: 
       [
-        "Star Rating Based Certificate",
-        "Checklist Based Certificate"
+        "Star Rating Assessment",
+        "Checklist Assessment"
       ]
   end
 end

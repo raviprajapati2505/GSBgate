@@ -36,7 +36,7 @@ en:
     show:
       certification_path:
         title: Certification Details
-        name: Certification Name
+        name: Certification Type
         version: Certification Version
         scheme: Certification Scheme
         assessment_type: Certification Method
@@ -45,8 +45,8 @@ en:
         rating: Certification Rating
         scores: Certification Scores
         started_at: Certification Started On
-        expired_at: Certification Expiry On
-        certified_at: Certification Certified On
+        expired_at: GSASgate Registration Expiry
+        certified_at: Certification Awarded On
         buildings_number: Number of Buildings
         create_detaild_certificate_report:
           text: Certificate Information Verification
@@ -87,7 +87,7 @@ en:
       certification_path_signed_certificate:
         title: OFFICIAL CERTIFICATE
       schemes:
-        title: SCHEMES DETAILS
+        title: TYPOLOGIES DETAILS
         info_activating: The schemes will be clickable after a GSAS trust administrator activates the certification.
         btn_edit_project_team_responsibility_for_submittal: Allocate project team responsibility for submittal
         btn_edit_certifier_team_responsibility_for_verification: Allocate GSAS trust team responsibility for verification
@@ -109,7 +109,7 @@ en:
     show_checklist:
       certification_path:
         title: CERTIFICATION DETAILS
-        name: Certification Name
+        name: Certification Type
         buildings_number: Number of Buildings
         create_detaild_certificate_report:
           text: Certificate Information Verification
@@ -150,7 +150,7 @@ en:
       certification_path_signed_certificate:
         title: OFFICIAL CERTIFICATE
       schemes:
-        title: SCHEMES DETAILS
+        title: TYPOLOGIES DETAILS
         info_activating: The schemes will be clickable after a GSAS trust administrator activates the certification.
         btn_edit_project_team_responsibility_for_submittal: Allocate project team responsibility for submittal
         btn_edit_certifier_team_responsibility_for_verification: Allocate GSAS trust team responsibility for verification
@@ -353,9 +353,9 @@ en:
     show:
       user_details:
         title: Personal Information
-        other_info: Other Information
-        organization_info: Organization Information
-        contact_info: Contact Information
+        additional_information: Additional Information
+        company_information: Company Information
+        contact_information: Contact Information
         activity_info:
           title: Activity Information
           created_at: Registration Date
@@ -376,7 +376,7 @@ en:
         test: 'TEst'
     form:
       form_title: User details
-      qid_file_title: Copy of the QID/passport
+      qid_file_title: Copy of the QID/Passport
       university_credential_file_title: University Credentials
       work_experience_file_title: Work Experience
       gsas_cgp_licence_file_title: GSAS-CGP Licence
@@ -391,9 +391,9 @@ en:
       education_certificate: Education Certificate
       user_details:
         title: Personal Information
-        other_info: Other Information
-        organization_info: Organization Information
-        contact_info: Contact Information
+        additional_information: Additional Information
+        company_information: Company Information
+        contact_information: Contact Information
     list_notifications:
       btn_save: Update preferences
   offline:
@@ -423,14 +423,14 @@ en:
         certificates:
           title: Offline Certification Details
         schemes:
-          title: Offline Scheme Details
+          title: Offline Typology Details
     scheme_mixes:
       form:
         title: Add Criterion
         edit_title: Edit Criterion
       show:
         schemes:
-          title: Offline Scheme Details
+          title: Offline Typology Details
         scheme_mix_criteria:
           title: Offline Criteria Details
   dashboard:

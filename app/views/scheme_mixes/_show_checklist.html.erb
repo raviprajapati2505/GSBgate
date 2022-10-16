@@ -7,13 +7,13 @@
   <div class="col-lg-4">
     <div class="ibox float-e-margins">
       <div class="ibox-title">
-        <h5>SCHEME DETAILS</h5>
+        <h5>TYPOLOGY DETAILS</h5>
       </div>
       <div class="ibox-content">
         <table class="table table-bordered table-striped" cellspacing="0" width="100%">
           <tbody>
           <tr>
-            <th>Scheme Name</th>
+            <th>Typology Name</th>
             <td>
               <%= @scheme_mix.full_name %>
               <% if @certification_path&.main_scheme_mix_id == @scheme_mix.id %>
@@ -28,7 +28,7 @@
           
           <% if development_type_name == 'Neighborhoods' %>
             <tr>
-              <th>Scheme Gross Area (m2)</th>
+              <th>Scheme Gross Built up Area (m2)</th>
               <td><%= number_with_delimiter(@scheme_mix&.gross_area, delimiter: ',') %></td>
             </tr>
           <% elsif development_type_name == 'Mixed Use' %>
@@ -124,7 +124,13 @@
                     <% end %>
                   </td>
                   <td>
-                    <div><%= @scheme_mix.scheme.weight_for_category(category) %> %
+                    <div>
+                    <% if @scheme_mix&.check_list? %>
+                      100
+                    <% else %>
+                      <%= @scheme_mix.scheme.weight_for_category(category) %>
+                    <% end %>
+                     %
                     <% if (@scheme_mix.scheme.scheme_criteria.for_category(category).sum(SchemeCriterion::INCENTIVE_MINUS_1_ATTRIBUTES.join(' + ')) + @scheme_mix.scheme.scheme_criteria.for_category(category).sum(SchemeCriterion::INCENTIVE_0_ATTRIBUTES.join(' + ')) + @scheme_mix.scheme.scheme_criteria.for_category(category).sum(SchemeCriterion::INCENTIVE_1_ATTRIBUTES.join(' + ')) + @scheme_mix.scheme.scheme_criteria.for_category(category).sum(SchemeCriterion::INCENTIVE_2_ATTRIBUTES.join(' + ')) + @scheme_mix.scheme.scheme_criteria.for_category(category).sum(SchemeCriterion::INCENTIVE_3_ATTRIBUTES.join(' + ')) + SchemeCriterionIncentive.for_category(@scheme_mix.scheme, category).sum(:incentive_weight)) > 0  %>
                         <span class="incentive-weight">
                           <%

@@ -100,7 +100,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
         :country, 
         :city, 
         :mobile_area_code, 
-        :mobile, 
+        :mobile,
+        :organization_email,
         :organization_address, 
         :organization_country, 
         :organization_city, 
@@ -150,7 +151,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
         :country, 
         :city, 
         :mobile_area_code, 
-        :mobile, 
+        :mobile,
+        :organization_email,
         :organization_address, 
         :organization_country, 
         :organization_city, 
@@ -198,7 +200,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
         :country, 
         :city, 
         :mobile_area_code, 
-        :mobile, 
+        :mobile,
+        :organization_email,
         :organization_address, 
         :organization_country, 
         :organization_city, 
@@ -217,7 +220,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
           :commercial_licence_file,
           :accredited_service_provider_licence_file,
           :demerit_acknowledgement_file,
-          :application_form
+          :application_form,
+          :cgp_licence_file,
+          :energy_assessor_name, 
+          :gsas_energey_assessment_licence_file
         ]
     ])
   end
@@ -238,7 +244,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
             :country, 
             :city, 
             :mobile_area_code, 
-            :mobile, 
+            :mobile,
+            :organization_email,
             :organization_address, 
             :organization_country, 
             :organization_city, 
@@ -258,7 +265,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
               :commercial_licence_file,
               :accredited_service_provider_licence_file,
               :demerit_acknowledgement_file,
-              :application_form
+              :application_form,
+              :cgp_licence_file,
+              :energy_assessor_name, 
+              :gsas_energey_assessment_licence_file
             ]
       ])
   end
