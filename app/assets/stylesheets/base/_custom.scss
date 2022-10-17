@@ -585,9 +585,9 @@ hr {
   align-items: center;
   flex-wrap: nowrap;
   .after-login-img {
-    width: min(max(200px, 19.685vw), 377px);
+    width: min(max(100px, 19.685vw), 377px);
     height: auto;
-    min-width: 130px;
+    min-width: 100px;
     max-width: 200px;
   }
   .navbar-header {
@@ -868,5 +868,98 @@ hr {
   .fa-star {
     color: $warning;
     padding: 0 1px;
+  }
+}
+
+// 17-10-2022
+span.nav-label{
+  display: flex;
+  align-items: center;
+  font-size: min(max(12px,0.833vw),16px);
+}
+.card{
+  .ibox{
+    box-shadow:5px 6px 3px #00000026;
+  }
+  .ibox-title{
+    text-transform: uppercase;
+    padding:min(max(8px,0.833vw),16px) 20px;
+    border-top: 1px solid #657078;
+    border-bottom: 1px solid #657078;
+    a.btn{
+      background-color: $primary;
+      border:1px solid $white;
+      border-radius: 5px;
+      i{
+        color: $white;
+      }
+    }
+  }
+  a.btn-danger,a.btn-primary,button.btn,table > .btn{
+    border-radius: 5px;
+  }
+}
+.table-striped tbody tr{
+  th{
+    padding:min(max(8px,0.833vw),16px) min(max(8px,0.833vw),16px) min(max(8px,0.833vw),16px) 20px;
+    font-size:min(max(12px,0.729vw),14px);
+  }
+  td{
+    vertical-align: middle;
+    font-size:min(max(12px,0.729vw),14px);
+
+  }
+}
+.table-bordered {
+  border: 0px;
+  tbody tr {
+    th {
+      font-size: min(max(12px, 0.729vw), 14px);
+      padding: min(max(8px, 0.729vw), 14px) min(max(8px, 0.729vw), 14px) min(max(8px, 0.729vw), 14px) 20px;
+    }
+    th:first-child {
+      border-left: 0px;
+    }
+    td {
+      font-size: min(max(12px, 0.729vw), 14px);
+      padding-left: 20px;
+    }
+    td:last-child {
+      border-right: 0px;
+    }
+  }
+}
+.table.one-common-table{
+  tr{
+    th:last-child{
+      border-right: 0px !important;
+    }
+    th{
+      font-size: min(max(12px, 0.729vw), 14px);
+      padding-left: 20px;
+    }
+  }
+}
+.border-top-1{
+  border-top: 1px solid #606a73 !important;
+}
+.list-group-item{
+  border: 1px solid #e7eaec00;
+}
+.border-bottom-table{
+  border:0px;
+  border-bottom:1px solid #606a73;
+  tr{
+    th{
+      // border-top:0px !important;
+      font-size: min(max(12px, 0.729vw), 14px);
+      padding-left: 20px;
+    }
+    th:last-child{
+      border-right:0px;
+    }
+    td:first-child{
+      border-left:0px;
+    }
   }
 }

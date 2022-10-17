@@ -157,7 +157,9 @@
         <ul class="nav navbar-top-links navbar-right container-fluid">
             <li>
                 <a href="<%= user_path(current_user.id) %>" class="d-flex align-items-center p-0">
-                <span class="nav-user-icon"> <img src="https://wallpapers.com/images/hd/cool-neon-blue-profile-picture-u9y9ydo971k9mdcf.jpg"></span>
+                <span class="nav-user-icon"> 
+                <%= image_tag('layout/user.png')%>
+                </span>
                         <span class="nav-label"><%= current_user.full_name %></span>
                     </a>
             </li>

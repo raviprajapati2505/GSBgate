@@ -1,10 +1,10 @@
 <% certification_path = project&.certification_paths&.last %>
 
 <% if certification_path.present? %>
-  <table class="table table-bordered table-mb-0">
+  <table class="table table-bordered table-mb-0 ">
     <tbody>
       <tr>
-        <th><%= t('certification_paths.show.certification_path.name') %></th>
+        <th class="w-50"><%= t('certification_paths.show.certification_path.name') %></th>
         <td>
           <%= can_link_to(project_certification_path_path(project, certification_path), certification_path, class: "link-mr-2") do %>
             <%= certification_path.certificate.only_certification_name %>
@@ -28,8 +28,8 @@
         </td>
       </tr>
       <tr>
-        <th><%= t('certification_paths.show.certification_path.assessment_type') %></th>
-        <td>
+        <th class="border-bottom-0"><%= t('certification_paths.show.certification_path.assessment_type') %></th>
+        <td class="border-bottom-0">
           <%= can_link_to(project_certification_path_path(project, certification_path), certification_path) do %>
             <%= certification_assessment_type_title(certification_path.certification_path_method&.assessment_method) %>
           <% end %>

@@ -37,20 +37,20 @@
    can_create_new_project_user = (project_user_roles.count > 0)
 %>
 <% if can?(:read, project_users[0]) %>
-    <div class="ibox-content table-responsive">
+    <div class="ibox-content table-responsive p-0 mt-1">
         <% if project_users.count.zero? %>
             <% if team != :enterprise_clients %>
                 <p class="margin-top-1">No users found.</p>
             <% end %>
         <% else %>
-            <table class="table table-bordered table-hover datatable" cellspacing="0" width="100%">
+            <table class="table table-bordered table-hover datatable one-common-table" cellspacing="0" width="100%">
                 <thead>
                     <tr>
-                        <th><%= title %></th>
-                        <th>Name</th>
-                        <th>Email</th>
+                        <th class="w-50 border-left-0 border-bottom-0"><%= title %></th>
+                        <th class="border-bottom-0">Name</th>
+                        <th class="border-bottom-0">Email</th>
                         <% if team != :enterprise_clients %>
-                            <th>Tasks</th>
+                            <th class="border-right-0 border-bottom-0">Tasks</th>
                         <% end %>
                     </tr>
                 </thead>
@@ -58,7 +58,7 @@
                 <% project_users.projects_user_role(title).each do |role| %>
                   <% rowspan = find_rowspan(projects_users_count_with_role(project_users, role)) %>
                     <tr>
-                        <td rowspan="<%= rowspan %>" style="width: 391px;">
+                        <td rowspan="<%= rowspan %>" style="width: 391px;border-left:0px">
                             <% if (role == 'enterprise_client') %>
                                 <%= 'Stakeholders' %>
                             <% else %>

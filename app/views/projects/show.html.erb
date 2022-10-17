@@ -2,7 +2,7 @@
 <% download_document_permitted = check_documents_permissions(user_role: current_user.role, project: @project) %>
 
 <%# <div class="row"> %>
-  <div class="col-md-4">
+  <div class="col-md-4 col-sm-12 col-xs-12 card">
     <div class="ibox">
       <div class="ibox-title">
         <%= audit_log_label(@project) %>
@@ -257,7 +257,7 @@
       </div>
     </div>
   </div>
-  <div class="col-md-8">
+  <div class="col-md-8 col-sm-12 col-xs-12 card">
     <div class="ibox">
       <div class="ibox-title">
         <h5><%= t('.certificates.title') %></h5>

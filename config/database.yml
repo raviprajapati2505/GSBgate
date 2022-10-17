@@ -15,7 +15,7 @@
 # gem 'pg'
 #
 default: &default
-  host: localhost 
+  host: localhost
   database: gsasgate_development_device_test
   username: postgres
   password: Test@123

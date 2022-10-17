@@ -6,14 +6,14 @@
 <li class="list-group-item table-my-0 table-py-0">
   <div class="row">
     <div class="col-md-12 table-p-0">
-      <table class="table table-bordered table-mb-1">
+      <table class="table table-bordered table-mb-1 border-bottom-table">
         <tbody>
           <% if is_certification_paths_present %>
             <tr class="bg-header-grey">
-              <th><%= t('certification_paths.show.certification_path.stage') %></th>
-              <th><%= t('certification_paths.show.certification_path.status') %></th>
-              <th><%= t('certification_paths.show.certification_path.scores') %></th>
-              <th><%= t('certification_paths.show.certification_path.rating') %></th>
+              <th class="w-50 border-top-0"><%= t('certification_paths.show.certification_path.stage') %></th>
+              <th class="border-top-0"><%= t('certification_paths.show.certification_path.status') %></th>
+              <th class="border-top-0"><%= t('certification_paths.show.certification_path.scores') %></th>
+              <th class="border-top-0"><%= t('certification_paths.show.certification_path.rating') %></th>
             </tr>
           <% end %>
           <% certification_types.each do |certification_type| %>
