@@ -549,7 +549,7 @@ hr {
     height: min(max(25px, 1.93vw), 35px);
     background-image: none;
     background-color: $white;
-    border-color: $secondary;
+    border-color: $light-gray;
     display: flex;
     align-items: center;
     width: 100%;
@@ -564,7 +564,7 @@ hr {
   }
   .select2-dropdown-open.select2-drop-above .select2-choice,
   .select2-dropdown-open.select2-drop-above .select2-choices {
-    border: 1px solid $secondary;
+    border: 1px solid $light-gray;
     border-radius: 4px;
   }
   .select2-results .select2-no-results,
@@ -657,7 +657,6 @@ hr {
         display: flex;
         align-items: center;
         justify-content: center;
-        // max-width: 150px;
         border-right: 1px solid $primary;
         .dropdown-open {
           background-color: $primary;
