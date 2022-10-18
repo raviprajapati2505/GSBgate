@@ -1,10 +1,8 @@
-<%# <div class="row"> %>
-    <div class="col-md-12">
-        <div class="ibox">
-            <div class="ibox-content">
-                <%= render_datatable(@projects_surveys_datatable) %>
-            </div>
+<div class="col-md-12">
+    <div class="ibox">
+        <div class="ibox-content">
+            <%= render_datatable(@projects_surveys_datatable) %>
         </div>
-        <%= btn_link_to(survey_dashboard_index_path, icon: 'backward', text: 'DashBoard') %>
     </div>
-<%# </div> %>
+    <%= btn_link_to(survey_dashboard_index_path, icon: 'backward', text: 'DashBoard') %>
+</div>

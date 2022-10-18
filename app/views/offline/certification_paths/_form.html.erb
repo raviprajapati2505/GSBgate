@@ -1,57 +1,52 @@
-<div class="row">
-  <div class="col-md-12">
-    <div class="form-inputs">
-      <div class="row">
-        <div class="col-md-6 col-sm-12 col-xs-12">
-          <%= f.input :name, collection: Certificate.all.order(:display_weight).map { |certificate| [certificate.stage_title, certificate.stage_title ] }.uniq, include_blank: "Select Certificate Name", selected: @certification_path.name, input_html: { class: "select2 form-control certificate-name-select offline-certificate", id: "certificate-name-select"}, required: true %>
-        </div>
-        <div class="col-md-6 col-sm-12 col-xs-12">
-          <%= f.input :version, collection: Offline::CertificationPath.versions.map{ |k, v| [k, k]}, include_blank: "Select Certificate Version", input_html: { class: "select2 form-control certificate-version-select offline-certificate", id: "certificate-version-select"}, required: true %>
-        </div>
+<div class="col-md-12">
+  <div class="form-inputs">
+    <div class="row">
+      <div class="col-md-6 col-sm-12 col-xs-12">
+        <%= f.input :name, collection: Certificate.all.order(:display_weight).map { |certificate| [certificate.stage_title, certificate.stage_title ] }.uniq, include_blank: "Select Certificate Name", selected: @certification_path.name, input_html: { class: "select2 form-control certificate-name-select offline-certificate", id: "certificate-name-select"}, required: true %>
       </div>
+      <div class="col-md-6 col-sm-12 col-xs-12">
+        <%= f.input :version, collection: Offline::CertificationPath.versions.map{ |k, v| [k, k]}, include_blank: "Select Certificate Version", input_html: { class: "select2 form-control certificate-version-select offline-certificate", id: "certificate-version-select"}, required: true %>
+      </div>
+    </div>
 
-      <div class="row">
-        <div class="col-md-6 col-sm-12 col-xs-12">
-          <%= f.input :development_type, collection: DevelopmentType.select(:name, :display_weight).order(:display_weight).distinct.map { |development_type| [development_type.name, development_type.name] }.uniq, include_blank: "Select Certification Development Type", selected: @certification_path.development_type, input_html: { class: "select2 form-control certificate-developmenttype-select offline-certificate", id: "certificate-developmenttype-select" }, required: true %>
-        </div>
-        <div class="col-md-6 col-sm-12 col-xs-12">
-          <%= f.input :rating, collection: Offline::CertificationPath.ratings.map { |k, v| [k.titleize, k]}, include_blank: "Select Certification Rating", input_html: { class: "select2 form-control certificate-rating-select offline-certificate", id: "certificate-rating-select"} %>
-        </div>
+    <div class="row">
+      <div class="col-md-6 col-sm-12 col-xs-12">
+        <%= f.input :development_type, collection: DevelopmentType.select(:name, :display_weight).order(:display_weight).distinct.map { |development_type| [development_type.name, development_type.name] }.uniq, include_blank: "Select Certification Development Type", selected: @certification_path.development_type, input_html: { class: "select2 form-control certificate-developmenttype-select offline-certificate", id: "certificate-developmenttype-select" }, required: true %>
       </div>
+      <div class="col-md-6 col-sm-12 col-xs-12">
+        <%= f.input :rating, collection: Offline::CertificationPath.ratings.map { |k, v| [k.titleize, k]}, include_blank: "Select Certification Rating", input_html: { class: "select2 form-control certificate-rating-select offline-certificate", id: "certificate-rating-select"} %>
+      </div>
+    </div>
 
-      <div class="row">
-        <div class="col-md-6 col-sm-12 col-xs-12">
-          <%= f.input :status, collection: CertificationPathStatus.all.map { |status| [status.name, status.name] }, include_blank: "Select Certification Status", selected: @certification_path.status, input_html: { class: "select2 form-control certificate-status-select offline-certificate", id: "certificate-status-select"}, required: true %>
-        </div>
-        <div class="col-md-6 col-sm-12 col-xs-12">
-          <%= f.input :score, input_html: { step: 0.0 } %>
-        </div>
+    <div class="row">
+      <div class="col-md-6 col-sm-12 col-xs-12">
+        <%= f.input :status, collection: CertificationPathStatus.all.map { |status| [status.name, status.name] }, include_blank: "Select Certification Status", selected: @certification_path.status, input_html: { class: "select2 form-control certificate-status-select offline-certificate", id: "certificate-status-select"}, required: true %>
       </div>
+      <div class="col-md-6 col-sm-12 col-xs-12">
+        <%= f.input :score, input_html: { step: 0.0 } %>
+      </div>
+    </div>
 
-      <div class="row">
-        <div class="col-md-6 col-sm-12 col-xs-12">
-          <%= f.input :certified_at, input_html: { class: "datepicker-year" }, prepend: ikoen('calendar'), min: 2000, max: 2100 %>
-        </div>
+    <div class="row">
+      <div class="col-md-6 col-sm-12 col-xs-12">
+        <%= f.input :certified_at, input_html: { class: "datepicker-year" }, prepend: ikoen('calendar'), min: 2000, max: 2100 %>
       </div>
-      <br>
-      <p><i>Select schemes for the certification below</i></p>
-      <p><i>Note: if your certification development type belogs to Mixed Use or Neighborhoods, then you can add multiple schemes</i></p>
-      <%= f.simple_fields_for :offline_scheme_mixes, @offline_scheme_mixes do |offline_scheme_mix| %>
-        <%= render partial: 'offline_scheme_mix_fields', locals: { f: offline_scheme_mix } %>
-      <% end %>
-      <div class="links">
-        <%= link_to_add_association 'Add More Schemes', f, :offline_scheme_mixes, class: "btn btn-primary btn-sm", id: "add-scheme-button" %>
-      </div>
+    </div>
+    <br>
+    <p><i>Select schemes for the certification below</i></p>
+    <p><i>Note: if your certification development type belogs to Mixed Use or Neighborhoods, then you can add multiple schemes</i></p>
+    <%= f.simple_fields_for :offline_scheme_mixes, @offline_scheme_mixes do |offline_scheme_mix| %>
+      <%= render partial: 'offline_scheme_mix_fields', locals: { f: offline_scheme_mix } %>
+    <% end %>
+    <div class="links">
+      <%= link_to_add_association 'Add More Schemes', f, :offline_scheme_mixes, class: "btn btn-primary btn-sm", id: "add-scheme-button" %>
     </div>
   </div>
 </div>
-<br><br>
-<div class="row">
-  <div class="col-md-12">
-    <%= btn_link_to(:back, icon: 'backward', text: 'Back') %>
-    <%= btn_save %>
-    <%= btn_cancel_to(offline_project_path(@project)) %>
-  </div>
+<div class="col-md-12">
+  <%= btn_link_to(:back, icon: 'backward', text: 'Back') %>
+  <%= btn_save %>
+  <%= btn_cancel_to(offline_project_path(@project)) %>
 </div>
 
 <script type="text/javascript">

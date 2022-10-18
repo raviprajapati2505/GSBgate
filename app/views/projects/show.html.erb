@@ -1,8 +1,7 @@
 <% use_gmaps_for(:project) %>
 <% download_document_permitted = check_documents_permissions(user_role: current_user.role, project: @project) %>
 
-<%# <div class="row"> %>
-  <div class="col-md-4 col-sm-12 col-xs-12 card">
+  <div class="col-md-4 col-sm-12 col-xs-12">
     <div class="ibox">
       <div class="ibox-title">
         <%= audit_log_label(@project) %>
@@ -257,7 +256,7 @@
       </div>
     </div>
   </div>
-  <div class="col-md-8 col-sm-12 col-xs-12 card">
+  <div class="col-md-8 col-sm-12 col-xs-12">
     <div class="ibox">
       <div class="ibox-title">
         <h5><%= t('.certificates.title') %></h5>
@@ -325,6 +324,5 @@
       <%= render partial: 'projects_surveys/index', locals: {project: @project, projects_surveys:  @projects_surveys} %>
     <% end %>
   </div>
-<%# </div> %>
 
 <%= javascript_include_tag 'find_users_by_email' %>

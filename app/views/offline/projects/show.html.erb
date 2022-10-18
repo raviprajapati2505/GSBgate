@@ -1,144 +1,142 @@
-<%# <div class="row"> %>
-  <div class="col-md-4 col-sm-12 col-xs-12 card">
-    <div class="ibox">
-      <div class="ibox-title">
-        <h5><%= t('.project_details.title') %></h5>
-      </div>
-      <div class="ibox-content pt-0">
-        <table class="table table-striped project-details-table">
-          <tbody>
-            <tr>
-              <th><%= Offline::Project.human_attribute_name('code') %></th>
-              <td><%= @project.code %></td>
-            </tr>
-            <tr>
-              <th><%= Offline::Project.human_attribute_name('name') %></th>
-              <td><%= @project.name %></td>
-            </tr>
-            <tr>
-              <th><%= Offline::Project.human_attribute_name('certificate_type') %></th>
-              <td><%= @project.certificate_type %></td>
-            </tr>
-            <tr>
-              <th><%= Offline::Project.human_attribute_name('assessment_type') %></th>
-              <td><%= @project.assessment_type %></td>
-            </tr>
-            <tr>
-              <th><%= Offline::Project.human_attribute_name('plot_area') %></th>
-              <td><%= number_with_delimiter(@project.plot_area, delimiter: ',') %></td>
-            </tr>
-            <tr>
-              <th><%= Offline::Project.human_attribute_name('certified_area') %></th>
-              <td><%= number_with_delimiter(@project.certified_area, delimiter: ',') %></td>
-            </tr>
-            <tr>
-              <th><%= Offline::Project.human_attribute_name('owner') %></th>
-              <td><%= @project.owner %></td>
-            </tr>
-            <tr>
-              <th><%= Offline::Project.human_attribute_name('developer') %></th>
-              <td><%= @project.developer %></td>
-            </tr>
-            <tr>
-              <th><%= Offline::Project.human_attribute_name('construction_year') %></th>
-              <td><%= @project.construction_year %></td>
-            </tr>
-            <tr>
-              <th><%= Offline::Project.human_attribute_name('description') %></th>
-              <td><%= @project.description %></td>
-            </tr>
-            <tr>
-              <th><%= Offline::Project.human_attribute_name('loc_as_per_directory') %></th>
-              <td><%= @project.loc_as_per_directory %></td>
-            </tr>
-          </tbody>
-        </table>
-        <%= btn_link_to(:back, icon: 'backward', text: 'Back') %>
-        <%= btn_link_to(edit_offline_project_path(@project), icon: 'edit', text: 'Edit') %>
-        <%= btn_link_to(confirm_destroy_offline_project_path(@project), {icon: 'trash', text: 'Delete', style: 'danger', method: :get, data: {confirm: 'Do you really want to delete this project?'}}) %>
-      </div>
+<div class="col-md-4 col-sm-12 col-xs-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5><%= t('.project_details.title') %></h5>
+    </div>
+    <div class="ibox-content pt-0">
+      <table class="table table-striped project-details-table">
+        <tbody>
+          <tr>
+            <th><%= Offline::Project.human_attribute_name('code') %></th>
+            <td><%= @project.code %></td>
+          </tr>
+          <tr>
+            <th><%= Offline::Project.human_attribute_name('name') %></th>
+            <td><%= @project.name %></td>
+          </tr>
+          <tr>
+            <th><%= Offline::Project.human_attribute_name('certificate_type') %></th>
+            <td><%= @project.certificate_type %></td>
+          </tr>
+          <tr>
+            <th><%= Offline::Project.human_attribute_name('assessment_type') %></th>
+            <td><%= @project.assessment_type %></td>
+          </tr>
+          <tr>
+            <th><%= Offline::Project.human_attribute_name('plot_area') %></th>
+            <td><%= @project.plot_area %></td>
+          </tr>
+          <tr>
+            <th><%= Offline::Project.human_attribute_name('certified_area') %></th>
+            <td><%= @project.certified_area %></td>
+          </tr>
+          <tr>
+            <th><%= Offline::Project.human_attribute_name('owner') %></th>
+            <td><%= @project.owner %></td>
+          </tr>
+          <tr>
+            <th><%= Offline::Project.human_attribute_name('developer') %></th>
+            <td><%= @project.developer %></td>
+          </tr>
+          <tr>
+            <th><%= Offline::Project.human_attribute_name('construction_year') %></th>
+            <td><%= @project.construction_year %></td>
+          </tr>
+          <tr>
+            <th><%= Offline::Project.human_attribute_name('description') %></th>
+            <td><%= @project.description %></td>
+          </tr>
+          <tr>
+            <th><%= Offline::Project.human_attribute_name('loc_as_per_directory') %></th>
+            <td><%= @project.loc_as_per_directory %></td>
+          </tr>
+        </tbody>
+      </table>
+      <%= btn_link_to(:back, icon: 'backward', text: 'Back') %>
+      <%= btn_link_to(edit_offline_project_path(@project), icon: 'edit', text: 'Edit') %>
+      <%= btn_link_to(confirm_destroy_offline_project_path(@project), {icon: 'trash', text: 'Delete', style: 'danger', method: :get, data: {confirm: 'Do you really want to delete this project?'}}) %>
     </div>
   </div>
-  <div class="col-md-8 col-sm-12 col-xs-12 card">
-    <div class="ibox">
-      <div class="ibox-title">
-        <h5><%= t('.certificates.title') %></h5>
-      </div>
-      <div class="ibox-content pt-0">
-      <table class="table table-bordered table-mb-1">
-        <tbody>
-            <tr class="bg-header-grey">
-              <th>Certification Stage</th>
-              <th>Certification Status</th>
-              <th>Certification Scores</th>
-              <th>Certification Rating</th>
-            </tr>
-            <% unless @project.offline_certification_paths.nil? %>
-              <% @project.offline_certification_paths.each do |certificate| %>
-                <tr>
-                  <td><%= link_to certificate.name, offline_project_certification_path(@project, certificate) %></td>
-                  <td><%= certificate.status %></td>
-                  <td><%= certificate.score %></td>
-                  <td><%= certificate.rating %></td>
-                </tr>
-              <% end %>
+</div>
+<div class="col-md-8 col-sm-12 col-xs-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5><%= t('.certificates.title') %></h5>
+    </div>
+    <div class="ibox-content pt-0">
+    <table class="table table-bordered table-mb-1">
+      <tbody>
+          <tr class="bg-header-grey">
+            <th>Certification Stage</th>
+            <th>Certification Status</th>
+            <th>Certification Scores</th>
+            <th>Certification Rating</th>
+          </tr>
+          <% unless @project.offline_certification_paths.nil? %>
+            <% @project.offline_certification_paths.each do |certificate| %>
               <tr>
-                <td colspan="4" style="padding: 0px;">
-                      <li class="list-group-item container ">
-                        <div class="row">
-                            <span class="col-md-4">
-                              Add Another Certificate
-                            </span>
-                            <span class="col-md-4">
-                              <%= btn_link_to(new_offline_project_certification_path(@project), icon: 'plus', text: 'Add Certifcate') %>
-                            </span>
-                        </div>
-                      </li>
-                </td>
+                <td><%= link_to certificate.name, offline_project_certification_path(@project, certificate) %></td>
+                <td><%= certificate.status %></td>
+                <td><%= certificate.score %></td>
+                <td><%= certificate.rating %></td>
               </tr>
-            <% else %>
+            <% end %>
             <tr>
               <td colspan="4" style="padding: 0px;">
-                  <li class="list-group-item container ">
-                    <div class="row">
-                      </span>
-                        <span class="col-md-4">
-                          Not yet registered
-                        </span>
-                        <span class="col-md-4">
-                          <%= btn_link_to(new_offline_project_certification_path(@project), icon: 'plus', text: 'Add Certifcate') %>
-                        </span>
-                    </div>
-                  </li>
+                    <li class="list-group-item container ">
+                      <div class="row">
+                          <span class="col-md-4">
+                            Add Another Certificate
+                          </span>
+                          <span class="col-md-4">
+                            <%= btn_link_to(new_offline_project_certification_path(@project), icon: 'plus', text: 'Add Certifcate') %>
+                          </span>
+                      </div>
+                    </li>
               </td>
             </tr>
-            <% end %>
-          </tbody>
-        </table>
-      </div>
+          <% else %>
+          <tr>
+            <td colspan="4" style="padding: 0px;">
+                <li class="list-group-item container ">
+                  <div class="row">
+                    </span>
+                      <span class="col-md-4">
+                        Not yet registered
+                      </span>
+                      <span class="col-md-4">
+                        <%= btn_link_to(new_offline_project_certification_path(@project), icon: 'plus', text: 'Add Certifcate') %>
+                      </span>
+                  </div>
+                </li>
+            </td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="col-md-8 col-sm-12 col-xs-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5><%= t('.project_documents.upload_document') %></h5>
+    </div>
+    <div class="ibox-content pt-0">
+      <%= render partial: 'documents_form', locals: { project: @project } %>
     </div>
   </div>
 
-  <div class="col-md-8 col-sm-12 col-xs-12 card">
-    <div class="ibox">
-      <div class="ibox-title">
-        <h5><%= t('.project_documents.upload_document') %></h5>
-      </div>
-      <div class="ibox-content pt-0">
-        <%= render partial: 'documents_form', locals: { project: @project } %>
-      </div>
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5><%= t('.project_documents.uploaded_documents') %></h5>
     </div>
-
-    <div class="ibox">
-      <div class="ibox-title">
-        <h5><%= t('.project_documents.uploaded_documents') %></h5>
-      </div>
-      <div class="ibox-content pt-0">
-        <%= render partial: 'documents_index', locals: { project: @project } %>
-      </div>
+    <div class="ibox-content pt-0">
+      <%= render partial: 'documents_index', locals: { project: @project } %>
     </div>
   </div>
-<%# </div> %>
+</div>
 
 <div id="dropzone-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dropzone-modal-title">
   <div class="modal-dialog modal-md">

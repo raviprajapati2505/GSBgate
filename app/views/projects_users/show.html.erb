@@ -1,43 +1,41 @@
-<%# <div class="row"> %>
-    <div class="col-md-4 col-sm-12 col-xs-12 card">
-        <div class="ibox">
-            <div class="ibox-title">
-                <h5>User Details</h5>
-            </div>
-            <div class="ibox-content">
-                <table class="table table-bordered table-striped" cellspacing="0" width="100%">
-                    <tbody>
-                    <tr>
-                        <th>Name</th>
-                        <td><%= @user.full_name %></td>
-                    </tr>
-                    <tr>
-                        <th>Email</th>
-                        <td><%= @user.email %></td>
-                    </tr>
-                    <tr>
-                        <th>Role</th>
-                        <td><%= t(@projects_user.role, scope: 'activerecord.attributes.projects_user.roles' ) %></td>
-                    </tr>
-                    </tbody>
-                </table>
-                <% if can?(:edit, @projects_user) || can?(:destroy, @projects_user) %>
-                    <div class="hr-line-dashed"></div>
+<div class="col-md-4 col-sm-12 col-xs-12">
+    <div class="ibox">
+        <div class="ibox-title">
+            <h5>User Details</h5>
+        </div>
+        <div class="ibox-content">
+            <table class="table table-bordered table-striped" cellspacing="0" width="100%">
+                <tbody>
+                <tr>
+                    <th>Name</th>
+                    <td><%= @user.full_name %></td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td><%= @user.email %></td>
+                </tr>
+                <tr>
+                    <th>Role</th>
+                    <td><%= t(@projects_user.role, scope: 'activerecord.attributes.projects_user.roles' ) %></td>
+                </tr>
+                </tbody>
+            </table>
+            <% if can?(:edit, @projects_user) || can?(:destroy, @projects_user) %>
+                <div class="hr-line-dashed"></div>
+            <% end %>
+            <% if can?(:edit, @projects_user) %>
+                <% if @projects_user.certification_manager? || @projects_user.certifier? %>
+                    <%= btn_link_to(edit_project_user_path(@project, @projects_user, query: 'certifiers'), icon: 'edit', text: 'Edit role') %>
+                <% else %>
+                    <%= btn_link_to(edit_project_user_path(@project, @projects_user), icon: 'edit', text: 'Edit role') %>
                 <% end %>
-                <% if can?(:edit, @projects_user) %>
-                    <% if @projects_user.certification_manager? || @projects_user.certifier? %>
-                        <%= btn_link_to(edit_project_user_path(@project, @projects_user, query: 'certifiers'), icon: 'edit', text: 'Edit role') %>
-                    <% else %>
-                        <%= btn_link_to(edit_project_user_path(@project, @projects_user), icon: 'edit', text: 'Edit role') %>
-                    <% end %>
-                <% end %>
-                <% if can?(:destroy, @projects_user) %>
-                    <%= btn_link_to(project_user_path(@project, @projects_user), icon: 'user-times', text: 'Remove from team', style: 'white', method: :delete, data: {confirm: 'Are you sure to remove team member ?'}) %>
-                <% end %>
-            </div>
+            <% end %>
+            <% if can?(:destroy, @projects_user) %>
+                <%= btn_link_to(project_user_path(@project, @projects_user), icon: 'user-times', text: 'Remove from team', style: 'white', method: :delete, data: {confirm: 'Are you sure to remove team member ?'}) %>
+            <% end %>
         </div>
     </div>
-    <div class="col-md-8 col-sm-12 col-xs-12 card">
-        <%= render 'tasks/tasks' %>
-    </div>
-<%# </div> %>
+</div>
+<div class="col-md-8 col-sm-12 col-xs-12">
+    <%= render 'tasks/tasks' %>
+</div>

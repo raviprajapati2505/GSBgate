@@ -599,11 +599,6 @@
   }
 
   // Panels
-  .panel {
-    border-radius: 0px;
-    margin-bottom: 0px;
-  }
-
   .panel-title {
     line-height: 18px;
   }
@@ -619,11 +614,10 @@
     align-items: center;
     width: 23px;
     height: 23px;
-    background-color: $light-gray;
-    color: $label-badget-color;
-    border: 0;
     margin-left: 8px;
     padding: 2px;
+    border-radius: 3px;
+    color: $white;
   }
 
   // Tooltips
@@ -701,12 +695,11 @@
   // icheck
   .icheckbox_square-green {
     display: inline-block;
-    *display: inline;
     vertical-align: middle;
     margin: 0;
     padding: 0;
-    width: 22px;
-    height: 22px;
+    width: 15px;
+    height: 15px;
     background: image_url("green.png") no-repeat;
     background-position: 0 0;
     border: none;
@@ -797,16 +790,13 @@
     min-height: 0px;
     background: none;
     padding: 0;
-  }
-
-  .dropzone {
     #dropzone-top,
     #render-dropzone-top {
       background-color: rgba($primary, 0.2);
       height: 100px;
       padding: 20px;
       cursor: pointer;
-      border-radius: 10px;
+      border-radius: 5px;
     }
 
     .dz-message {
@@ -900,18 +890,16 @@
         min-height: 76px;
       }
     }
-  }
-
-  .dropzone.dz-drag-hover {
-    border: none;
+    &.dz-drag-hover {
+      border: none;
+      #dropzone-top {
+        border: 2px solid $border-color;
+      }
+    }
   }
 
   .dz-browser-not-supported #dropzone-top {
     display: none;
-  }
-
-  .dropzone.dz-drag-hover #dropzone-top {
-    border: 2px solid $border-color;
   }
 
   #dropzone-uploading-notice {

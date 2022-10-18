@@ -211,19 +211,6 @@ video {
   padding-top: 30px;
 }
 
-.ibox-content h1,
-.ibox-content h2,
-.ibox-content h3,
-.ibox-content h4,
-.ibox-content h5,
-.ibox-title h1,
-.ibox-title h2,
-.ibox-title h3,
-.ibox-title h4,
-.ibox-title h5 {
-  margin-top: 5px;
-}
-
 ul.unstyled,
 ol.unstyled {
   list-style: none outside none;
@@ -526,54 +513,146 @@ code {
   display: block;
   margin-bottom: 25px;
   background: $white;
-  border-radius: 5px;
+  border-radius: 4px;
   padding: 10px;
+  box-shadow: 5px 6px 3px rgba($black, 0.14);
+  &.ui-sortable-placeholder {
+    margin: 0 0 23px !important;
+  }
   &::after,
   &::before {
     display: table;
   }
-  .ibox-title {
-    padding: 8px 20px;
+  &-title {
+    padding: 8px 15px;
     background: $primary;
     color: $text-color;
+    text-transform: uppercase;
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      margin: 0;
+    }
     h5 {
       display: inline-block;
       font-size: 14px;
-      margin: 0;
       text-overflow: ellipsis;
     }
-
     .label {
       float: left;
       margin-left: 4px;
     }
+    a.btn {
+      background-color: $primary;
+      border: 1px solid $white;
+      border-radius: 3px;
+      i {
+        color: $white;
+      }
+    }
+    &.ibox-dashboard-title {
+      background: rgba(97, 166, 14, 0.5);
+      color: $white;
+      float: none;
+      min-height: 28px !important;
+      padding: 6px;
+      text-align: center;
+      h5 {
+        float: none;
+        height: 10px;
+      }
+    }
   }
-
-  .ibox-content {
+  &-content {
     background-color: transparent;
     color: inherit;
     padding: 15px 0 10px;
+    position: relative;
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      margin-top: 0;
+    }
   }
-
-  .ibox-footer {
+  &-footer {
     color: inherit;
     border-top: 1px solid $border-color;
     font-size: 90%;
     background: $white;
     padding: 10px 15px;
   }
-}
+  &-heading {
+    background-color: #f3f6fb;
+    border-bottom: none;
+    h3 {
+      font-weight: 200;
+      font-size: 24px;
+    }
+  }
 
-.ibox.collapsed .ibox-content {
-  display: none;
-}
-
-.ibox.collapsed .fa.fa-chevron-up:before {
-  content: "\f078";
-}
-
-.ibox.collapsed .fa.fa-chevron-down:before {
-  content: "\f077";
+  &-tools {
+    display: block;
+    float: none;
+    margin-top: 0;
+    position: relative;
+    padding: 0;
+    text-align: right;
+    a {
+      cursor: pointer;
+      margin-left: 5px;
+      color: #c4c4c4;
+      &.btn-primary {
+        color: $white;
+      }
+    }
+    .dropdown-menu {
+      & > li {
+        & > a {
+          padding: 4px 10px;
+          font-size: 12px;
+        }
+      }
+    }
+    &.open {
+      & > .dropdown-menu {
+        left: auto;
+        right: 0;
+      }
+    }
+  }
+  &.fullscreen {
+    z-index: 2030;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: auto;
+    margin-bottom: 0;
+    .collapse-link {
+      display: none;
+    }
+    .ibox-content {
+      min-height: calc(100% - 48px);
+    }
+  }
+  &.collapsed {
+    .ibox-content {
+      display: none;
+    }
+    .fa.fa-chevron-up:before {
+      content: "\f078";
+    }
+    .fa.fa-chevron-down:before {
+      content: "\f077";
+    }
+  }
 }
 
 table.table-mail tr td {
@@ -609,46 +688,7 @@ table.table-mail tr td {
   background-color: #f9f8f8;
 }
 
-.ibox-heading {
-  background-color: #f3f6fb;
-  border-bottom: none;
-  h3 {
-    font-weight: 200;
-    font-size: 24px;
-  }
-}
-
-.ibox-tools {
-  display: block;
-  float: none;
-  margin-top: 0;
-  position: relative;
-  padding: 0;
-  text-align: right;
-}
-
-.ibox-tools a {
-  cursor: pointer;
-  margin-left: 5px;
-  color: #c4c4c4;
-}
-
-.ibox-tools a.btn-primary {
-  color: $white;
-}
-
-.ibox-tools .dropdown-menu > li > a {
-  padding: 4px 10px;
-  font-size: 12px;
-}
-
-.ibox .ibox-tools.open > .dropdown-menu {
-  left: auto;
-  right: 0;
-}
-
 /* BACKGROUNDS */
-
 .gray-bg {
   background-color: $gray;
 }
@@ -713,7 +753,7 @@ table.table-mail tr td {
 }
 
 .jumbotron {
-  border-radius: 6px;
+  border-radius: 4px;
   padding: 40px;
 }
 
@@ -1205,25 +1245,6 @@ a.close-canvas-menu:hover {
 
 body.fullscreen-ibox-mode {
   overflow-y: hidden;
-}
-
-.ibox.fullscreen {
-  z-index: 2030;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  overflow: auto;
-  margin-bottom: 0;
-}
-
-.ibox.fullscreen .collapse-link {
-  display: none;
-}
-
-.ibox.fullscreen .ibox-content {
-  min-height: calc(100% - 48px);
 }
 
 // Bootstrap issue in 3.3.0 with modal https://github.com/twbs/bootstrap/issues/9855

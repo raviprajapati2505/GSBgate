@@ -522,7 +522,7 @@ a.list-group-item.active:focus {
   z-index: 10000;
   padding: 5px 5px 5px 5px;
   min-height: 22px;
-  border-radius: 3px;
+  border-radius: 4px;
 }
 
 .jqsfield {
@@ -596,7 +596,7 @@ table {
       .form-group {
         color: $gray-700;
         height: 29px;
-        border-radius: 3px;
+        border-radius: 4px;
       }
     }
   }
@@ -800,7 +800,7 @@ div.dt-button-info {
 /* WIDGETS */
 
 .widget {
-  border-radius: 5px;
+  border-radius: 4px;
   padding: 15px 20px;
   margin-bottom: 10px;
   margin-top: 10px;
@@ -864,7 +864,7 @@ div.dt-button-info {
 
 .todo-list.small-list .btn-xs,
 .todo-list.small-list .btn-group-xs > .btn {
-  border-radius: 5px;
+  border-radius: 4px;
   font-size: 10px;
   line-height: 1.5;
   padding: 1px 2px 1px 5px;
@@ -934,55 +934,60 @@ div.dt-button-info {
 .single-line {
   background-color: $white;
   background-image: none;
-  border: 1px solid $light-gray;
-  border-radius: 1px;
+  border: 1px solid $secondary;
+  border-radius: 4px;
   color: inherit;
   display: block;
   padding: 6px 12px;
   transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
   width: 100%;
   font-size: 14px;
+  &:focus {
+    border-color: $primary !important;
+  }
 }
 
-.form-control:focus,
-.single-line:focus {
-  border-color: $primary !important;
-}
-
-.has-success .form-control {
-  border-color: $primary;
-}
-
-.has-warning .form-control {
-  border-color: $warning;
-}
-
-.has-error .form-control {
-  border-color: $danger;
-}
-
-.has-success .control-label {
-  color: $primary;
-}
-
-.has-warning .control-label {
-  color: $warning;
-}
-
-.has-error .control-label {
-  color: $danger;
+.has {
+  &-success {
+    .form-control {
+      border-color: $primary;
+    }
+    .control-label {
+      color: $primary;
+    }
+  }
+  &-warning {
+    .form-control {
+      border-color: $warning;
+    }
+    .control-label {
+      color: $warning;
+    }
+  }
+  &-error {
+    .form-control {
+      border-color: $danger;
+    }
+    .control-label {
+      color: $danger;
+    }
+  }
 }
 
 .input-group-addon {
   background-color: $white;
-  border: 1px solid $light-gray;
-  border-radius: 1px;
-  color: inherit;
-  font-size: 14px;
+  border-color: $secondary;
+  border-radius: 0;
+  color: $secondary;
   font-weight: 300;
-  line-height: 1;
-  padding: 6px 12px;
-  text-align: center;
+  &:last-child {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
+  &:first-child {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+  }
 }
 
 .spinner-buttons.input-group-btn .btn-xs {
@@ -1013,10 +1018,6 @@ div.dt-button-info {
   border: 1px dashed #cecece !important;
   visibility: visible !important;
   background: $border-color;
-}
-
-.ibox.ui-sortable-placeholder {
-  margin: 0 0 23px !important;
 }
 
 /* SWITCHES */

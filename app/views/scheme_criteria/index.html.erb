@@ -1,18 +1,23 @@
-<div class="row">
-    <div class="col-md-12 card">
-        <div class="ibox">
-            <div class="ibox-title">
-                <h5>System Data</h5>
-            </div>
-            <div class="ibox-content">
-                <p class="alert alert-info"><%= ikoen('info-circle') %> This is an overview of all GSAS criteria, categories, schemes, development types and certificates.<br/>
-                  On this page you can select a scheme to change its category display order and the category names and the scheme name, <br/>
-                  you can select a category to change its name, <br/>
-                  you can select a criterion to manage its texts, to change the criterion name and its requirement descriptions. <br/>
-                  Furthermore it is possible by selecting a criterion to change its weight, scores and incentive weights.
-                </p>
-                <%= render_datatable(@datatable) %>
-            </div>
+<div class="col-md-12">
+    <div class="ibox">
+        <div class="ibox-title">
+            <h5>System Data</h5>
+        </div>
+        <div class="ibox-content">
+            <p class="alert alert-info"><%= ikoen('info-circle') %> This is an overview of all GSAS criteria, categories, schemes, development types and certificates.<br/>
+                On this page you can select a scheme to change its category display order and the category names and the scheme name, <br/>
+                you can select a category to change its name, <br/>
+                you can select a criterion to manage its texts, to change the criterion name and its requirement descriptions. <br/>
+                Furthermore it is possible by selecting a criterion to change its weight, scores and incentive weights.
+            </p>
+            <%= render_datatable(@datatable) %>
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function(){
+        // $('body').addClass('page-bg-dark');
+        $('.dataTables_entries').parent().closest('div').addClass('dataTable-pagination');
+    });
+</script>
