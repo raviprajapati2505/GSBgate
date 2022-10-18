@@ -694,7 +694,6 @@ hr {
           background-color: $primary;
           margin-bottom: -2rem;
           border-radius: 0 0 1rem;
-          overflow: hidden;
           max-width: 150px;
           .normal-li {
             display: none;
@@ -895,9 +894,12 @@ span.nav-label{
       }
     }
   }
-  a.btn-danger,a.btn-primary,button.btn,table > .btn{
+  a.btn-danger,a.btn-primary,button.btn,table > .btn,a.btn-white{
     border-radius: 5px;
   }
+}
+.btn-white{
+  border-radius: 5px;
 }
 .table-striped tbody tr{
   th{
@@ -962,4 +964,72 @@ span.nav-label{
       border-left:0px;
     }
   }
+}
+// 18-10-2022
+.ibox{
+  box-shadow:5px 6px 3px #00000026;
+}
+.ibox-title{
+  text-transform: uppercase;
+  padding:min(max(8px,0.833vw),16px) 20px;
+  border-top: 1px solid #657078;
+  border-bottom: 1px solid #657078;
+  a.btn{
+    background-color: $primary !important;
+    border:1px solid $white !important;
+    border-radius: 5px !important;
+    i{
+      color: $white;
+    }
+  }
+}
+a.btn-danger,a.btn-primary,button.btn,table > .btn{
+  border-radius: 5px;
+}
+.ibox-content{
+  position:relative;
+}
+.question-box{
+  .ibox-content{
+    background-color: #0000000a;
+    color: inherit;
+    padding: 0;
+    border-radius: 15px;
+    margin-bottom: 2rem;
+  }
+  .text-right .btn-danger{
+    position: absolute;
+    right: 0rem;
+    top: -1rem;
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+    padding: 4px;
+  }
+}
+.form-control, .single-line{
+  border-color: #323E48;
+  border-radius: 7px;
+}
+.input-group-addon:last-child{
+  border-top-right-radius: 7px;
+    border-bottom-right-radius: 7px;
+  border-color: #323E48;
+
+}
+.input-group-addon:first-child{
+  border-top-left-radius: 7px;
+    border-bottom-left-radius: 7px;
+  border-color: #323E48;
+}
+.skin-gord.after-login .select2-container .select2-choice{
+  border-color: #323E48;
+min-height: 34px;
+border-radius: 7px;
+}
+label.required:after{
+  position: absolute;
+}
+.panel-group .panel-heading{
+  padding:0;
 }

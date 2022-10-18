@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-lg-8">
+  <div class="col-lg-8 col-sm-12 col-xs-12">
     <%= bootstrap_form_for(@survey_questionnaire_version, url: survey_type_survey_questionnaire_versions_path(@survey_type), method: @submit_method ) do |f| %>
       <div class="ibox">
         <div class="ibox-title m-b">
@@ -24,16 +24,16 @@
     <% end %>
   </div>
 
-  <div class="col-lg-4">
+  <div class="col-lg-4 col-sm-12 col-xs-12">
     <div class="ibox">
       <div class="ibox-title">
         <h5>Versions of questions set for this survey</h5>
       </div>
       <div class="ibox-content">
-        <table class="table table-bordered table-striped ">
+        <table class="table table-bordered table-striped border-bottom-table">
           <thead>
             <tr>
-              <th>Sr.no</th>
+              <th class="border-left-0">Sr.no</th>
               <th>Version</th>
               <th>Release Date</th>
             </tr>

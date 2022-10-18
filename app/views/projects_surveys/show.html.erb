@@ -1,13 +1,12 @@
 <%# <div class="row"> %>
   <div class="col-md-12 m-t">
     <div class="ibox">
-      <div class="ibox-title">
-        <div class='row'>
-          <div class="col-md-10">
+        <div class='row align-items-center'>
+          <div class="col-md-11">
             <h2><b><%= "Questions of #{@projects_survey.survey_type.title}" %></b></h2>
             <h3>Total Questions: <%= @latest_questions.count rescue 0 %></h3>
           </div>
-          <div class="col-md-2">
+          <div class="col-md-1 text-right">
               <%= 
                 if @latest_questions[0].question_responses.count > 0
                   link_to export_survey_results_project_survey_path(@project), class: "btn btn-primary" do
@@ -17,14 +16,13 @@
               %>
           </div>
         </div>
-      </div>
     </div>
   </div>
   <div class="col-md-12">
     <div class="ibox">
       <% @latest_questions.each.with_index(1) do |question, i| %>
         <div class="ibox-title m-t">
-          <h4 class="p-m"><%= question.question_text %></h4>
+          <h4 class=""><%= question.question_text %></h4>
         </div>
 
         <div class="ibox-content">
@@ -34,10 +32,10 @@
             </tbody>
           </table>
 
-          <table class="table table-bordered table-striped user-details-table">
+          <table class="table table-bordered table-striped user-details-table border-bottom-table">
             <thead>
               <tr>
-                <th>Results</th>
+                <th class="border-left-0">Results</th>
                 <% unless question.fill_in_the_blank? %>
                   <th></th>
                 <% end %>

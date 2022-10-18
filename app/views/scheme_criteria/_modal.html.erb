@@ -7,7 +7,7 @@
         <%= bootstrap_form_for(@scheme_criterion, url: scheme_criterion_path(@scheme_criterion), method: 'put') do |f| %>
             <div class="modal-body">
                 <%= f.text_field :name %>
-              <div class="container">
+              <div class="">
               <% SchemeCriterion::SCORE_ATTRIBUTES.each_with_index do |scores, index| %>
                 <% unless @scheme_criterion.read_attribute(scores.to_sym).nil? %>
                   <div class="panel panel-default">
