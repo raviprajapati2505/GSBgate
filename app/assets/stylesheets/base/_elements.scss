@@ -53,11 +53,12 @@
   color: $white;
 }
 
+
 .onoffswitch-inner:after {
   content: "OFF";
   padding-right: 10px;
   background-color: $white;
-  color: #999999;
+  color: $dark-gray;
   text-align: right;
 }
 
@@ -93,7 +94,7 @@
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   background-color: $white;
-  border: 1px solid #cbd5dd;
+  border: 1px solid $gray-200;
   border-radius: 2px;
   cursor: text;
   height: auto !important;
@@ -106,11 +107,11 @@
 }
 
 .chosen-container-multi .chosen-choices li.search-choice {
-  background: #f1f1f1;
-  border: 1px solid #ededed;
+  background: $gray-100;
+  border: 1px solid $gray-200;
   border-radius: 2px;
   box-shadow: none;
-  color: #333333;
+  color: $gray-900;
   cursor: default;
   line-height: 13px;
   margin: 3px 0 3px 5px;
@@ -211,7 +212,7 @@
   background-image: none;
   background-repeat: repeat-x;
   box-shadow: none;
-  color: #333333;
+  color: $gray-900;
   text-shadow: none;
 }
 
@@ -251,11 +252,11 @@
 }
 
 .fc-border-separate tbody {
-  background-color: #f8f8f8;
+  background-color: $gray;
 }
 
 .fc-state-highlight {
-  background: none repeat scroll 0 0 #fcf8e3;
+  background: none repeat scroll 0 0 $skin-gord-color-light;
 }
 
 .external-event {
@@ -280,7 +281,7 @@
 
 .fc-event-time,
 .fc-event-title {
-  color: #717171;
+  color: $gray-300;
   padding: 0 1px;
 }
 
@@ -366,7 +367,7 @@
 .chat li {
   margin-bottom: 10px;
   padding-bottom: 5px;
-  border-bottom: 1px dotted #b3a9a9;
+  border-bottom: 1px dotted $border-color;
 }
 
 .chat li.left .chat-body {
@@ -379,7 +380,7 @@
 
 .chat li .chat-body p {
   margin: 0;
-  color: #777777;
+  color: $gray-300;
 }
 
 .panel .slidedown .glyphicon,
@@ -656,7 +657,7 @@ table {
   &:focus:active {
     background-color: $border-color;
     color: inherit;
-    border-color: #d2d2d2;
+    border-color: $light-gray;
   }
 }
 
@@ -733,7 +734,7 @@ div.dt-button-info {
 }
 
 #animation_box {
-  background-color: #f9f8f8;
+  background-color: $gray-400;
   border-radius: 16px;
   width: 80%;
   margin: 0 auto;
@@ -1483,8 +1484,8 @@ div.dt-button-info {
 }
 
 .dd-dragel .dd-handle {
-  -webkit-box-shadow: 2px 4px 6px 0 rgba(0, 0, 0, 0.1);
-  box-shadow: 2px 4px 6px 0 rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 2px 4px 6px 0 rgba($black, 0.1);
+  box-shadow: 2px 4px 6px 0 rgba($black, 0.1);
 }
 
 /**
@@ -1645,9 +1646,9 @@ label.error {
 .cg-notify-message.inspinia-notify {
   background: $white;
   padding: 0;
-  box-shadow: 0 0 1px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.2);
-  -webkit-box-shadow: 0 0 1px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.2);
-  -moz-box-shadow: 0 0 1px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 1px rgba($black, 0.1), 0 2px 4px rgba($black, 0.2);
+  -webkit-box-shadow: 0 0 1px rgba($black, 0.1), 0 2px 4px rgba($black, 0.2);
+  -moz-box-shadow: 0 0 1px rgba($black, 0.1), 0 2px 4px rgba($black, 0.2);
   border: none;
   margin-top: 30px;
   color: inherit;
@@ -1686,7 +1687,7 @@ label.error {
 .forum-post-container .media {
   margin: 10px 10px 10px 10px;
   padding: 20px 10px 20px 10px;
-  border-bottom: 1px solid #f1f1f1;
+  border-bottom: 1px solid $gray-100;
 }
 
 .forum-avatar {
@@ -1711,13 +1712,13 @@ label.error {
 .forum-post-info {
   padding: 9px 12px 6px 12px;
   background: $gray-100;
-  border: 1px solid #f1f1f1;
+  border: 1px solid $gray-100;
 }
 
 .media-body > .media {
   background: $gray-100;
   border-radius: 3px;
-  border: 1px solid #f1f1f1;
+  border: 1px solid $gray-100;
 }
 
 .forum-post-container .media-body .photos {
@@ -1746,7 +1747,7 @@ label.error {
 .forum-item {
   margin: 10px 0;
   padding: 10px 0 20px;
-  border-bottom: 1px solid #f1f1f1;
+  border-bottom: 1px solid $gray-100;
 }
 
 .views-number {
@@ -1761,11 +1762,11 @@ label.error {
 }
 
 .forum-item small {
-  color: #999;
+  color: $dark-gray;
 }
 
 .forum-item .forum-sub-title {
-  color: #999;
+  color: $dark-gray;
   margin-left: 50px;
 }
 
@@ -1778,7 +1779,7 @@ label.error {
 }
 
 .forum-desc {
-  color: #999;
+  color: $dark-gray;
 }
 
 .forum-icon {
@@ -1856,7 +1857,7 @@ a.forum-item-title:hover {
   left: 18px;
   height: 100%;
   width: 4px;
-  background: #f1f1f1;
+  background: $gray-100;
 }
 
 .vertical-timeline-content .btn {
@@ -2233,9 +2234,9 @@ a.forum-item-title:hover {
 .jvectormap-tip {
   position: absolute;
   display: none;
-  border: solid 1px #cdcdcd;
+  border: solid 1px $gray-200;
   border-radius: 3px;
-  background: #292929;
+  background: $gray-900;
   color: $white;
   // font-family: sans-serif, Verdana;
   font-size: smaller;
@@ -2410,7 +2411,7 @@ a.forum-item-title:hover {
 
 .tour-tour .btn.btn-default {
   background-color: $white;
-  border: 1px solid #d2d2d2;
+  border: 1px solid $light-gray;
   color: inherit;
 }
 

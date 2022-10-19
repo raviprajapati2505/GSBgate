@@ -39,7 +39,7 @@
                       <td><%= smcd.pcr_context %></td>
                       <td data-order="<%= smcd.status.humanize %>">
                           <% if can?(:update_status, smcd) %>
-                          <div class="text-nowrap">
+                          <div class="approved-badge">
                           <span class="certi-name-badge mr-1"><%= image_tag('/assets/layout/approved-check.png') %></span>
                               <%= link_to(edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, smcd), remote: true) do %>
                                   <%= smcd.status.humanize.gsub(' ', '&nbsp;').html_safe %>

@@ -5,7 +5,7 @@
 }
 
 .nav.navbar-right > li > a {
-  color: #999c9e;
+  color: $dark-gray;
 }
 
 .nav > li.active > a {
@@ -196,7 +196,7 @@
 }
 
 .navbar-form-custom .form-control {
-  background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+  background: none repeat scroll 0 0 rgba($black, 0);
   border: medium none;
   font-size: 14px;
   height: 60px;

@@ -3,11 +3,11 @@
 }
 
 .bg-white {
-    background-color: white !important;
+    background-color: $white !important;
 }
 
 .bg-offwhite {
-    background-color: #f2f5f9;
+    background-color: $gray-500;
 }
 
 .d-none {
@@ -976,15 +976,15 @@
 }
 
 .shadow-sm {
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+    box-shadow: 0 0.125rem 0.25rem rgba($black, 0.075) !important;
 }
 
 .shadow {
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+    box-shadow: 0 0.5rem 1rem rgba($black, 0.15) !important;
 }
 
 .shadow-lg {
-    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
+    box-shadow: 0 1rem 3rem rgba($black, 0.175) !important;
 }
 
 .shadow-none {
@@ -1068,7 +1068,7 @@
     z-index: 1;
     pointer-events: auto;
     content: "";
-    background-color: rgba(0, 0, 0, 0);
+    background-color: rgba($black, 0);
 }
 
 .m-0 {

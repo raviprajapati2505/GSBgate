@@ -234,13 +234,14 @@ fieldset[disabled] .btn-info.active {
 .btn-default.active:hover,
 .btn-default.active:focus {
   color: inherit;
-  border: 1px solid #d2d2d2;
+  border: 1px solid $light-gray;
 }
+
 
 .btn-default:active,
 .btn-default.active,
 .open .dropdown-toggle.btn-default {
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15) inset;
+  box-shadow: 0 2px 5px rgba($black, 0.15) inset;
 }
 
 .btn-default.disabled,
@@ -258,7 +259,7 @@ fieldset[disabled] .btn-default:hover,
 fieldset[disabled] .btn-default:focus,
 fieldset[disabled] .btn-default:active,
 fieldset[disabled] .btn-default.active {
-  color: #cacaca;
+  color: $dark-gray;
 }
 
 .btn-warning {
@@ -385,7 +386,7 @@ fieldset[disabled] .btn-link:hover,
 fieldset[disabled] .btn-link:focus,
 fieldset[disabled] .btn-link:active,
 fieldset[disabled] .btn-link.active {
-  color: #cacaca;
+  color: $dark-gray;
 }
 
 .btn-white {
@@ -404,12 +405,12 @@ fieldset[disabled] .btn-link.active {
 .btn-white.active:hover,
 .btn-white.active:focus {
   color: inherit;
-  border: 1px solid #d2d2d2;
+  border: 1px solid $light-gray;
 }
 
 .btn-white:active,
 .btn-white.active {
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15) inset;
+  box-shadow: 0 2px 5px rgba($black, 0.15) inset;
 }
 
 .btn-white:active,
@@ -433,7 +434,7 @@ fieldset[disabled] .btn-white:hover,
 fieldset[disabled] .btn-white:focus,
 fieldset[disabled] .btn-white:active,
 fieldset[disabled] .btn-white.active {
-  color: #cacaca;
+  color: $dark-gray;
 }
 
 .form-control,
@@ -488,51 +489,51 @@ button.dim:active {
 }
 
 button.btn-primary.dim {
-  box-shadow: inset 0 0 0 darken($primary, 6%), 0 5px 0 0 darken($primary, 6%), 0 10px 5px #999;
+  box-shadow: inset 0 0 0 darken($primary, 6%), 0 5px 0 0 darken($primary, 6%), 0 10px 5px $dark-gray;
 }
 
 button.btn-primary.dim:active {
-  box-shadow: inset 0 0 0 darken($primary, 6%), 0 2px 0 0 darken($primary, 6%), 0 5px 3px #999;
+  box-shadow: inset 0 0 0 darken($primary, 6%), 0 2px 0 0 darken($primary, 6%), 0 5px 3px $dark-gray;
 }
 
 button.btn-default.dim {
-  box-shadow: inset 0 0 0 darken($dark-gray, 6%), 0 5px 0 0 darken($dark-gray, 6%), 0 10px 5px #999;
+  box-shadow: inset 0 0 0 darken($dark-gray, 6%), 0 5px 0 0 darken($dark-gray, 6%), 0 10px 5px $dark-gray;
 }
 
 button.btn-default.dim:active {
-  box-shadow: inset 0 0 0 darken($dark-gray, 6%), 0 2px 0 0 darken($dark-gray, 6%), 0 5px 3px #999;
+  box-shadow: inset 0 0 0 darken($dark-gray, 6%), 0 2px 0 0 darken($dark-gray, 6%), 0 5px 3px $dark-gray;
 }
 
 button.btn-warning.dim {
-  box-shadow: inset 0 0 0 darken($warning, 6%), 0 5px 0 0 darken($warning, 6%), 0 10px 5px #999;
+  box-shadow: inset 0 0 0 darken($warning, 6%), 0 5px 0 0 darken($warning, 6%), 0 10px 5px $dark-gray;
 }
 
 button.btn-warning.dim:active {
-  box-shadow: inset 0 0 0 darken($warning, 6%), 0 2px 0 0 darken($warning, 6%), 0 5px 3px #999;
+  box-shadow: inset 0 0 0 darken($warning, 6%), 0 2px 0 0 darken($warning, 6%), 0 5px 3px $dark-gray;
 }
 
 button.btn-info.dim {
-  box-shadow: inset 0 0 0 darken($info, 6%), 0 5px 0 0 darken($info, 6%), 0 10px 5px #999;
+  box-shadow: inset 0 0 0 darken($info, 6%), 0 5px 0 0 darken($info, 6%), 0 10px 5px $dark-gray;
 }
 
 button.btn-info.dim:active {
-  box-shadow: inset 0 0 0 darken($info, 6%), 0 2px 0 0 darken($info, 6%), 0 5px 3px #999;
+  box-shadow: inset 0 0 0 darken($info, 6%), 0 2px 0 0 darken($info, 6%), 0 5px 3px $dark-gray;
 }
 
 button.btn-success.dim {
-  box-shadow: inset 0 0 0 darken($success, 6%), 0 5px 0 0 darken($success, 6%), 0 10px 5px #999;
+  box-shadow: inset 0 0 0 darken($success, 6%), 0 5px 0 0 darken($success, 6%), 0 10px 5px $dark-gray;
 }
 
 button.btn-success.dim:active {
-  box-shadow: inset 0 0 0 darken($success, 6%), 0 2px 0 0 darken($success, 6%), 0 5px 3px #999;
+  box-shadow: inset 0 0 0 darken($success, 6%), 0 2px 0 0 darken($success, 6%), 0 5px 3px $dark-gray;
 }
 
 button.btn-danger.dim {
-  box-shadow: inset 0 0 0 darken($danger, 6%), 0 5px 0 0 darken($danger, 6%), 0 10px 5px #999;
+  box-shadow: inset 0 0 0 darken($danger, 6%), 0 5px 0 0 darken($danger, 6%), 0 10px 5px $dark-gray;
 }
 
 button.btn-danger.dim:active {
-  box-shadow: inset 0 0 0 darken($danger, 6%), 0 2px 0 0 darken($danger, 6%), 0 5px 3px #999;
+  box-shadow: inset 0 0 0 darken($danger, 6%), 0 2px 0 0 darken($danger, 6%), 0 5px 3px $dark-gray;
 }
 
 button.dim:before {

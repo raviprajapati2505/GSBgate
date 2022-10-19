@@ -120,7 +120,7 @@
 }
 
 .logo-name {
-  color: #e6e6e6;
+  color: $gray-500;
   font-size: 180px;
   font-weight: 800;
   letter-spacing: -10px;
@@ -201,7 +201,7 @@ ul.clear-list:first-child {
   border-top: 1px solid $border-color;
   border-bottom: 1px solid $border-color;
   border-left: 1px solid $border-color;
-  background: #f8f8f8;
+  background: $gray;
 }
 
 .timeline-item .date {
@@ -470,7 +470,7 @@ ul.notes li div {
 
 .file .file-name {
   padding: 10px;
-  background-color: #f8f8f8;
+  background-color: $gray;
   border-top: 1px solid $border-color;
 }
 
@@ -485,8 +485,8 @@ ul.notes li div {
   height: 0;
   line-height: 0;
   border: 0.6em solid transparent;
-  border-right: 0.6em solid #f1f1f1;
-  border-bottom: 0.6em solid #f1f1f1;
+  border-right: 0.6em solid $gray-100;
+  border-bottom: 0.6em solid $gray-100;
   right: 0em;
   bottom: 0em;
 }
@@ -647,7 +647,7 @@ a.compose-mail {
 }
 
 .mail-text .note-editor .note-toolbar {
-  background-color: #f9f8f8;
+  background-color: $gray-400;
 }
 
 .mail-attachment {

@@ -39,9 +39,9 @@ body.boxed-layout #wrapper {
   background-color: $gray-700;
   max-width: $boxed-width;
   margin: 0 auto;
-  -webkit-box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.75);
-  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: 0 0 5px 0 rgba($black, 0.75);
+  -moz-box-shadow: 0 0 5px 0 rgba($black, 0.75);
+  box-shadow: 0 0 5px 0 rgba($black, 0.75);
 }
 
 .top-navigation.boxed-layout #wrapper,
@@ -98,7 +98,7 @@ a:focus {
 
 .hr-line-solid {
   border-bottom: 1px solid $border-color;
-  background-color: rgba(0, 0, 0, 0);
+  background-color: rgba($black, 0);
   border-style: solid !important;
   margin-top: 15px;
   margin-bottom: 15px;
@@ -134,9 +134,9 @@ video {
 .modal-content {
   background-clip: padding-box;
   background-color: $white;
-  border: 1px solid rgba(0, 0, 0, 0);
+  border: 1px solid rgba($black, 0);
   border-radius: 4px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1px 3px rgba($black, 0.3);
   outline: 0 none;
   position: relative;
 }
@@ -350,7 +350,7 @@ td {
   border-image: none;
   border-style: solid;
   border-width: 1px;
-  color: #555555;
+  color: $label-badget-color;
   cursor: default;
 }
 
@@ -367,7 +367,7 @@ td {
 
 .nav-tabs > li > a:hover,
 .nav-tabs > li > a:focus {
-  background-color: #e6e6e6;
+  background-color: $gray-500;
   color: $text-color;
 }
 
@@ -472,7 +472,7 @@ img.circle-border {
 }
 
 .icons-box .infont a {
-  color: #a6a8a9;
+  color: $gray-400;
 }
 
 .icons-box .infont a {
@@ -501,9 +501,9 @@ img.circle-border {
 }
 
 code {
-  background-color: #f9f2f4;
+  background-color: $gray-400;
   border-radius: 4px;
-  color: #ca4440;
+  color: $danger;
   font-size: 90%;
   padding: 2px 4px;
   white-space: nowrap;
@@ -588,7 +588,7 @@ code {
     padding: 10px 15px;
   }
   &-heading {
-    background-color: #f3f6fb;
+    background-color: $light-blue;
     border-bottom: none;
     h3 {
       font-weight: 200;
@@ -606,7 +606,7 @@ code {
     a {
       cursor: pointer;
       margin-left: 5px;
-      color: #c4c4c4;
+      color: $light-gray;
       &.btn-primary {
         color: $white;
       }
@@ -685,7 +685,7 @@ table.table-mail tr td {
 }
 
 .unread td {
-  background-color: #f9f8f8;
+  background-color: $gray-400;
 }
 
 /* BACKGROUNDS */

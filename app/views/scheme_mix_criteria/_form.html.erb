@@ -583,7 +583,7 @@
                                 <% user_id = @scheme_mix_criterion.certifier.id if @scheme_mix_criterion.certifier.present? %>
                                 <%= f.select :user_id, options_for_select(users.map { |k| [k.full_name, k.id]}, user_id), {label: 'Responsibility', include_blank: ''}, class: 'select2-certifier' %>
                             </div>
-                            <div class="col-md-5">
+                            <div class="col-md-5 certifier-due-date">
                                 <%= f.text_field :due_date, value: ((l @scheme_mix_criterion.due_date, format: :short) if !@scheme_mix_criterion.due_date.nil?), prepend: '<i class="fa fa-calendar"></i>'.html_safe, class: 'datepicker-future', autocomplete: 'off' %>
                             </div>
                         </div>
@@ -616,7 +616,7 @@
         </div>
         <div class="ibox-content">
             <% @scheme_mix_criterion.scheme_criterion.scheme_criterion_texts.visible.each do |scheme_criterion_text| %>
-                <div class="subtitle"><%= scheme_criterion_text.name.capitalize %></div>
+                <div class="subtitle"><i class="fa fa-caret-right text-primary mr-2"></i><%= scheme_criterion_text.name.capitalize %></div>
                 <div class="<%= scheme_criterion_text.name.downcase  %>"><%= scheme_criterion_text.html_text.html_safe %></div>
             <% end %>
         </div>
