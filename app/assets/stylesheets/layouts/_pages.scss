@@ -523,54 +523,42 @@ a.compose-mail {
   margin-left: 120px;
 }
 
-.feed-activity-list .feed-element {
-  border-bottom: 1px solid $border-color;
-}
-
-.feed-element:first-child {
-  margin-top: 0;
-}
-
-.feed-element {
-  padding-bottom: 15px;
-}
-
-.feed-element,
-.feed-element .media {
-  margin-top: 15px;
-}
-
-.feed-element,
-.media-body {
-  overflow: hidden;
-}
-
-.feed-element > .pull-left {
-  margin-right: 10px;
+.feed-activity-list {
+  .feed-element {
+    border-bottom: 1px solid $secondary;
+    padding-bottom: 15px;
+    overflow: hidden;
+    .media {
+      margin-top: 15px;
+    }
+    .media-body {
+      overflow: hidden;
+    }
+    & > .pull-left {
+      margin-right: 10px;
+    }
+    .well {
+      border: 1px solid $secondary;
+      box-shadow: none;
+      margin-top: 10px;
+      margin-bottom: 5px;
+      padding: 10px 20px;
+      font-size: 13px;
+      background: transparent;
+    }
+    .actions {
+      margin-top: 10px;
+    }
+    .photos {
+      margin: 10px 0;
+    }
+  }
 }
 
 .feed-element img.img-circle,
 .dropdown-messages-box img.img-circle {
   width: 38px;
   height: 38px;
-}
-
-.feed-element .well {
-  border: 1px solid $border-color;
-  box-shadow: none;
-  margin-top: 10px;
-  margin-bottom: 5px;
-  padding: 10px 20px;
-  font-size: 11px;
-  line-height: 16px;
-}
-
-.feed-element .actions {
-  margin-top: 10px;
-}
-
-.feed-element .photos {
-  margin: 10px 0;
 }
 
 .feed-photo {
@@ -587,14 +575,12 @@ a.compose-mail {
   border-radius: 2px;
   border: 1px solid $border-color;
   margin-bottom: 5px;
-}
-
-.file-list li a {
-  color: inherit;
-}
-
-.file-list li a:hover {
-  color: $primary;
+  a {
+    color: inherit;
+    &:hover {
+      color: $primary;
+    }
+  }
 }
 
 .user-friends img {
@@ -605,7 +591,6 @@ a.compose-mail {
 }
 
 /* MAILBOX */
-
 .mail-box {
   background-color: $white;
   border: 1px solid $border-color;
@@ -619,10 +604,9 @@ a.compose-mail {
   border: 1px solid $border-color;
   border-bottom: 0;
   padding: 30px 20px 20px 20px;
-}
-
-.mail-box-header h2 {
-  margin-top: 0;
+  h2 {
+    margin-top: 0;
+  }
 }
 
 .mailbox-content .tag-list li a {
@@ -632,22 +616,21 @@ a.compose-mail {
 .mail-body {
   border-top: 1px solid $border-color;
   padding: 20px;
+  .form-group {
+    margin-bottom: 5px;
+  }
 }
 
 .mail-text {
   border-top: 1px solid $border-color;
-}
-
-.mail-text .note-toolbar {
-  padding: 10px 15px;
-}
-
-.mail-body .form-group {
-  margin-bottom: 5px;
-}
-
-.mail-text .note-editor .note-toolbar {
-  background-color: $gray-400;
+  .note-toolbar {
+    padding: 10px 15px;
+  }
+  .note-editor {
+    .note-toolbar {
+      background-color: $gray-400;
+    }
+  }
 }
 
 .mail-attachment {

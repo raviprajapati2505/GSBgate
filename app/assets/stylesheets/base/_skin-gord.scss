@@ -103,7 +103,7 @@
         flex-direction: column;
       }
     }
-    
+
     .loginColumns {
       text-align: center;
       .top-title {
@@ -426,10 +426,6 @@
     padding-top: 0;
   }
 
-  .feed-element .well {
-    font-size: 12px;
-  }
-
   .feed-element .user-comment-gsas-trust-team {
     font-style: italic;
     background-color: $gray-700;
@@ -438,18 +434,6 @@
   .feed-element .user-comment-project-team {
     font-style: italic;
     background-color: $skin-gord-color-light;
-  }
-
-  .feed-element .text-muted {
-    color: $text-color;
-  }
-
-  .feed-element .text-muted a {
-    color: inherit;
-  }
-
-  .feed-element .text-muted a:hover {
-    text-decoration: underline;
   }
 
   .input-group + .form-group {
@@ -1149,7 +1133,7 @@
     }
 
     .vertical-timeline-block .vertical-timeline-content {
-      padding: 10px 30px;
+      padding: 7px 30px 5px;
     }
 
     .vertical-timeline-content {

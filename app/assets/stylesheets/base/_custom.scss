@@ -281,6 +281,12 @@ legend.scheduler-border {
 label {
   font-weight: 500;
 }
+.panel-default {
+  border-color: $secondary;
+  & > .panel-heading {
+    border-color: $secondary;
+  }
+}
 .sign_up {
   background-color: $white;
   .ibox-content {
