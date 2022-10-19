@@ -4,6 +4,8 @@
       <h5><%= t('.project_details.title') %></h5>
     </div>
     <div class="ibox-content pt-0">
+    <div class="table-responsive">
+
       <table class="table table-striped project-details-table">
         <tbody>
           <tr>
@@ -52,6 +54,7 @@
           </tr>
         </tbody>
       </table>
+      </div>
       <%= btn_link_to(:back, icon: 'backward', text: 'Back') %>
       <%= btn_link_to(edit_offline_project_path(@project), icon: 'edit', text: 'Edit') %>
       <%= btn_link_to(confirm_destroy_offline_project_path(@project), {icon: 'trash', text: 'Delete', style: 'danger', method: :get, data: {confirm: 'Do you really want to delete this project?'}}) %>
@@ -64,7 +67,7 @@
       <h5><%= t('.certificates.title') %></h5>
     </div>
     <div class="ibox-content pt-0">
-    <table class="table table-bordered table-mb-1">
+    <table class="table table-bordered table-mb-1 border-bottom-table">
       <tbody>
           <tr class="bg-header-grey">
             <th>Certification Stage</th>
@@ -83,12 +86,12 @@
             <% end %>
             <tr>
               <td colspan="4" style="padding: 0px;">
-                    <li class="list-group-item container ">
-                      <div class="row">
-                          <span class="col-md-4">
+                    <li class="list-group-item ">
+                      <div class="row align-items-center">
+                          <span class="col-md-4  col-sm-12 col-xs-12 pl-0">
                             Add Another Certificate
                           </span>
-                          <span class="col-md-4">
+                          <span class="col-md-4 col-sm-12 col-xs-12 ">
                             <%= btn_link_to(new_offline_project_certification_path(@project), icon: 'plus', text: 'Add Certifcate') %>
                           </span>
                       </div>
@@ -98,13 +101,13 @@
           <% else %>
           <tr>
             <td colspan="4" style="padding: 0px;">
-                <li class="list-group-item container ">
+                <li class="list-group-item ">
                   <div class="row">
                     </span>
-                      <span class="col-md-4">
+                      <span class="col-md-4  col-sm-12 col-xs-12 pl-0">
                         Not yet registered
                       </span>
-                      <span class="col-md-4">
+                      <span class="col-md-4  col-sm-12 col-xs-12 pl-0">
                         <%= btn_link_to(new_offline_project_certification_path(@project), icon: 'plus', text: 'Add Certifcate') %>
                       </span>
                   </div>

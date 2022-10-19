@@ -1,10 +1,12 @@
 <%# <div class="row"> %>
-  <div class="col-md-4">
+  <div class="col-md-4 col-sm-12 col-xs-12">
     <div class="ibox">
       <div class="ibox-title">
         <h5><%= t('.schemes.title') %></h5>
       </div>
       <div class="ibox-content pt-0">
+      <div class="table-responsive">
+
         <table class="table table-striped project-details-table">
           <tbody>
             <tr>
@@ -17,17 +19,18 @@
             </tr>
           </tbody>
         </table>
+        </div>
         <%= btn_link_to(:back, icon: 'backward', text: 'Back') %>
       </div>
     </div>
   </div>
-  <div class="col-md-8">
+  <div class="col-md-8 col-sm-12 col-xs-12">
     <div class="ibox">
       <div class="ibox-title">
         <h5><%= t('.scheme_mix_criteria.title') %></h5>
       </div>
       <div class="ibox-content pt-0">
-        <table class="table table-bordered table-mb-1">
+        <table class="table table-bordered table-mb-1 border-bottom-table">
           <tbody>
           <% unless @scheme_mix.offline_scheme_mix_criteria.nil? %>
             <tr class="bg-header-grey">
@@ -43,9 +46,9 @@
             <% end %>
             <tr>
                 <td colspan="3" style="padding: 0px;">
-                      <li class="list-group-item container ">
+                      <li class="list-group-item ">
                         <div class="row">
-                            <span class="col-md-4">
+                            <span class="col-md-4 pl-0">
                               <% #btn_link_to(new_criterion_offline_project_certification_scheme_path(@project, @certification_path), icon: 'plus', text: 'Add Criterion') %>
                               <%= btn_link_to(edit_criterion_offline_project_certification_scheme_path(@project, @certification_path), icon: 'pencil', text: 'Add / Edit Criterion') %>
                             </span>

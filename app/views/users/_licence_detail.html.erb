@@ -4,7 +4,7 @@
 
 <% access_licences&.each.with_index(1) do |access_licence, index| %>
   <div class="col-md-6">
-    <table class="table table-bordered table-striped user-details-table">
+    <table class="table table-bordered table-striped user-details-table border-bottom-table">
       <tbody>
         <tr>
           <th><%= Licence.human_attribute_name('display_name') %></th>

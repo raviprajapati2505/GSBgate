@@ -8,6 +8,8 @@
         <h5><%= t('.project_details.title') %></h5>
       </div>
       <div class="ibox-content pt-0">
+      <div class="table-responsive">
+
         <table class="table table-striped project-details-table">
           <tbody>
             <tr>
@@ -236,7 +238,7 @@
             <% end %>
           </tbody>
         </table>
-
+</div>
         <input type="hidden" id="project_coordinates" value="<%= @project.coordinates %>"/>
 
         <div id="project-map" class="map" style="height: 300px;"></div>
@@ -276,7 +278,7 @@
       <% if @project.certification_paths.present? %>
         <% @project&.certification_paths&.order(:created_at).each do |certification_path| %>
           <div class="ibox">
-            <div class="ibox-title bg-header-grey">
+            <div class="ibox-title ">
               <h5><%= certification_path.certificate.team_title %></h5>
             </div>
 

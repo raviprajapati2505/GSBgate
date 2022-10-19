@@ -16,6 +16,8 @@
       <div class="col-md-6 col-sm-12 col-xs-12">
         <%= f.input :rating, collection: Offline::CertificationPath.ratings.map { |k, v| [k.titleize, k]}, include_blank: "Select Certification Rating", input_html: { class: "select2 form-control certificate-rating-select offline-certificate", id: "certificate-rating-select"} %>
       </div>
+<div class="clearfix"></div>
+      
     </div>
 
     <div class="row">
@@ -25,16 +27,21 @@
       <div class="col-md-6 col-sm-12 col-xs-12">
         <%= f.input :score, input_html: { step: 0.0 } %>
       </div>
+<div class="clearfix"></div>
+
     </div>
 
     <div class="row">
       <div class="col-md-6 col-sm-12 col-xs-12">
         <%= f.input :certified_at, input_html: { class: "datepicker-year" }, prepend: ikoen('calendar'), min: 2000, max: 2100 %>
       </div>
+<div class="clearfix"></div>
+
     </div>
     <br>
     <p><i>Select schemes for the certification below</i></p>
     <p><i>Note: if your certification development type belogs to Mixed Use or Neighborhoods, then you can add multiple schemes</i></p>
+    <br/>
     <%= f.simple_fields_for :offline_scheme_mixes, @offline_scheme_mixes do |offline_scheme_mix| %>
       <%= render partial: 'offline_scheme_mix_fields', locals: { f: offline_scheme_mix } %>
     <% end %>
@@ -42,12 +49,17 @@
       <%= link_to_add_association 'Add More Schemes', f, :offline_scheme_mixes, class: "btn btn-primary btn-sm", id: "add-scheme-button" %>
     </div>
   </div>
+<div class="clearfix"></div>
+
 </div>
 <div class="col-md-12">
   <%= btn_link_to(:back, icon: 'backward', text: 'Back') %>
   <%= btn_save %>
   <%= btn_cancel_to(offline_project_path(@project)) %>
+<div class="clearfix"></div>
+
 </div>
+<div class="clearfix"></div>
 
 <script type="text/javascript">
 $(document).ready(function(){
