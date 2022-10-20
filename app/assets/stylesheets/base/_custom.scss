@@ -612,6 +612,9 @@ hr {
       justify-content: center;
       align-items: center;
     }
+    .in{
+      padding:0;
+    }
     ul.nav {
       margin: 0;
       padding: 0;
@@ -620,6 +623,7 @@ hr {
       align-items: stretch;
       @media (max-width: 767px) {
         flex-direction: column;
+        height:auto;
         & li {
           max-width: unset !important;
           border-right: 0 !important;
@@ -627,7 +631,7 @@ hr {
             border-left: 0 !important;
           }
           &.active {
-            border-radius: 1rem !important;
+            border-radius: .5rem !important;
             margin-bottom: 0 !important;
           }
           & a {
@@ -639,8 +643,11 @@ hr {
             }
           }
           &.dropdown.open {
+            ul li a{
+              padding:.5rem 1rem !important;
+            }
             a {
-              border-radius: 1rem !important;
+              border-radius: .5rem !important;
               margin-bottom: 0 !important;
             }
           }
@@ -668,6 +675,9 @@ hr {
           font-weight: 400;
           width: 100%;
           text-transform: uppercase;
+          @media (max-width:767px) {
+           padding:0 !important;
+          }
           &:focus {
             background-color: $primary;
             i {
@@ -695,10 +705,16 @@ hr {
           .normal-li {
             display: none;
             width: 50px;
+            @media (max-width:767px) {
+              width:40px;
+            }
           }
           .active-li {
             display: block;
             width: 50px;
+            @media (max-width:767px) {
+              width:40px;
+            }
           }
           i {
             color: $white;
@@ -707,10 +723,16 @@ hr {
         .active-li {
           display: none;
           width: 50px;
+          @media (max-width:767px) {
+            width:40px;
+          }
         }
         .normal-li {
           display: block;
           width: 50px;
+          @media (max-width:767px) {
+            width:40px;
+          }
         }
       }
     }
@@ -979,5 +1001,20 @@ label.required:after {
   }
   .datepicker-future {
     margin-left: 1px;
+  }
+}
+// 20-10-2022
+.navbar-collapse.in{
+  overflow:initial;
+  padding:0;
+}
+.score{
+  table{
+    width:100% !important;
+    tr{
+      td:first-child{
+        border-left:0;
+      }
+    }
   }
 }

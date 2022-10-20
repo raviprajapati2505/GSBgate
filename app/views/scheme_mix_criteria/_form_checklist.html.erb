@@ -21,7 +21,7 @@
                     The status &amp; scores of this criterion are inherited from "<%= link_to(@scheme_mix_criterion.main_scheme_mix_criterion.full_name, project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @certification_path.main_scheme_mix, @scheme_mix_criterion.main_scheme_mix_criterion)) %>" in the "<%= link_to(@certification_path.main_scheme_mix.name, project_certification_path_scheme_mix_path(@project, @certification_path, @certification_path.main_scheme_mix)) %>" scheme.
                 </p>
             <% end %>
-            <table class="table table-bordered table-striped">
+            <table class="table table-bordered table-striped border-bottom-table">
               <tbody>
                 <tr>
                     <th>Status</th>
@@ -137,7 +137,7 @@
                       </p>
                   <% end %>
                   <% end %>
-                  <table id="criterion-levels-table" class="table table-bordered table-striped">
+                  <table id="criterion-levels-table" class="table table-bordered table-striped border-bottom-table">
                       <thead>
                       <tr>
                           <th></th>
