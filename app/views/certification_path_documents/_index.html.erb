@@ -8,7 +8,7 @@
       <th class="desktop">File&nbsp;Size</th>
       <th class="desktop">Uploaded&nbsp;By</th>
       <th class="desktop">Upload&nbsp;Date</th>
-      <th class="all">Actions</th>
+      <th class="all" style="min-width:190px">Actions</th>
     </tr>
     </thead>
     <tbody>
@@ -24,8 +24,10 @@
           <td>
             <%= audit_log_label(cpd) %>
             <% if can?(:read, cpd) && download_document_permitted %>
+            <div class="d-inline-block download-btn">
               <%= btn_download(project_certification_path_certification_path_document_path(@project, @certification_path, cpd), size: 'small', tooltip: 'Download document') %>
-            <% end %>
+            </div>
+              <% end %>
             <% if can?(:destroy, cpd) && download_document_permitted %>
               <%= btn_link_to(project_certification_path_certification_path_document_path(@project, @certification_path, cpd), method: :delete, data: {confirm: 'Are you sure to delete the document ?'}, style: 'danger', size: 'small', icon: 'trash', tooltip: 'Delete document') %>
             <% end %>

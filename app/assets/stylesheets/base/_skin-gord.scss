@@ -118,6 +118,9 @@
       .row {
         margin-top: 16px;
         display:flex;
+        @media (max-width:767px) {
+          flex-wrap: wrap;
+        }
         .login-left {
           text-align: left;
           background-color: transparent;
