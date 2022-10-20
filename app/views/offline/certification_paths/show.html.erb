@@ -18,7 +18,7 @@
               </tr>
               <tr>
                 <th><%= Offline::CertificationPath.human_attribute_name('rating') %></th>
-                <td><%= render partial: "/offline/certification_paths/rating", locals: { ratings:  @certification_path.rating  } %></td>
+                <td><%= render partial: "/offline/certification_paths/rating", locals: { ratings:  @certification_path.rating, certification_type: 'GSAS-D&B'  } %></td>
               </tr>
               <tr>
                 <th><%= Offline::CertificationPath.human_attribute_name('development_type') %></th>

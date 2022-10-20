@@ -105,10 +105,9 @@ th {
   }
 }
 
-
 tr.outline-danger {
   outline: 1px solid $danger;
-  box-shadow: 0 0 0 1px #f8120a4f;
+  box-shadow: 0 0 0 1px rgba($danger, 0.5);
 }
 
 .bg-disabled {
@@ -118,7 +117,7 @@ tr.outline-danger {
 
 label.required:after {
   content: " *";
-  color: #c34848;
+  color: $danger;
   font-size: 16px;
 }
 
@@ -136,10 +135,8 @@ fieldset.scheduler-border {
 
 legend.scheduler-border {
   font-size: 1.2em !important;
-  font-weight: 600 !important;
-  text-align: left !important;
   width: auto;
-  padding: 0 10px;
+  padding: 2px 15px;
   border-bottom: none;
 }
 
@@ -205,7 +202,7 @@ legend.scheduler-border {
 }
 
 .skin-gord .navbar-nav .badge {
-  background-color: #3b6506 !important;
+  background-color: $primary !important;
 }
 
 #add-criterion-button,
@@ -275,7 +272,7 @@ legend.scheduler-border {
     width: 1rem;
     height: 1rem;
     border-radius: 1rem;
-    background-color: #91bd83;
+    background-color: $skin-gord-color-light;
   }
 }
 label {
@@ -294,7 +291,7 @@ label {
   }
 }
 fieldset.scheduler-border {
-  border: 1px groove #ebebeb5c !important;
+  border: 1px groove rgba($gray-500, 0.36) !important;
 }
 .new_form {
   .form-control.select2-container {
@@ -306,9 +303,9 @@ fieldset.scheduler-border {
   }
 
   legend {
-    color: #c1c1c1;
+    color: $white;
     background: $primary;
-    border-radius: 1rem;
+    border-radius: 2rem;
   }
 
   .form-control,
@@ -812,7 +809,9 @@ hr {
   }
 }
 .col-certificate_id,
-.col-certification_path_certification_path_status_id {
+.col-certification_path_certification_path_status_id,
+.col-certificate_type,
+.col-certification_status {
   white-space: nowrap;
 }
 .certi-name-badge {

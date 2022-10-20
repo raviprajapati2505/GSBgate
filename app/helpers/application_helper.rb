@@ -11,6 +11,8 @@ module ApplicationHelper
     fileicon_extensions
   end
   include ActionView::Helpers::AssetTagHelper
+  include ActionView::Helpers::UrlHelper
+  include ActionView::Context
 
   def is_active_controller(controller_name)
     params[:controller] == controller_name ? "active" : nil
@@ -910,6 +912,29 @@ module ApplicationHelper
         '<span class="certi-sub-status-badge status-badge-cm">'+ image_tag('/assets/layout/certi-sub-status-cm.png') +'</span>'+status
       when 'GSAS-OP'
         '<span class="certi-sub-status-badge status-badge-op">'+ image_tag('/assets/layout/certi-sub-status-op.png') +'</span>'+status
+    end
+  end
+
+  def certification_name_offline_datatable_render(certification_type)
+    case certification_type
+      when 'GSAS-D&B'
+        '<span class="certi-name-badge badge-db">'+ image_tag('/assets/layout/certi-name-db.png') +'</span>'+certification_type
+      when 'GSAS-CM'
+        '<span class="certi-name-badge badge-cm">'+ image_tag('/assets/layout/certi-name-cm.png') +'</span>'+certification_type
+      when 'GSAS-OP'
+        '<span class="certi-name-badge badge-op">'+ image_tag('/assets/layout/certi-name-op.png') +'</span>'+certification_type
+    end
+  end
+
+  def submission_status_offline_datatable_render(rec)
+    only_certification_name = rec.certificate_type
+    case only_certification_name
+      when 'GSAS-D&B'
+        '<span class="certi-sub-status-badge status-badge-db">'+ image_tag('/assets/layout/certi-sub-status-db.png') +'</span>'+rec.certification_status
+      when 'GSAS-CM'
+        '<span class="certi-sub-status-badge status-badge-cm">'+ image_tag('/assets/layout/certi-sub-status-cm.png') +'</span>'+rec.certification_status
+      when 'GSAS-OP'
+        '<span class="certi-sub-status-badge status-badge-op"'+ image_tag('/assets/layout/certi-sub-status-op.png') +'</span>'+rec.certification_status
     end
   end
 end
