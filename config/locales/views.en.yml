@@ -424,6 +424,8 @@ en:
           title: Offline Certification Details
         schemes:
           title: Offline Typology Details
+        certification_path_signed_certificate:
+          title: OFFICIAL CERTIFICATE 
     scheme_mixes:
       form:
         title: Add Criterion

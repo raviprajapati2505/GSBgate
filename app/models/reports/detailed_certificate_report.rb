@@ -27,7 +27,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
   FOOTER_LOGO = 'gord_logo_black.jpg'.freeze
   STAR_ICON = 'green_star.png'.freeze
   FOOTER_URL = "<link href='http://www.gsas.gord.qa'>www.gsas.gord.qa</link>".freeze
-  MAX_ROWS_PER_PAGE = 24
+  MAX_ROWS_PER_PAGE = 22
   PAGE_MARGIN = 50
 
   def initialize(certification_path)
@@ -220,11 +220,14 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     if text.present?
       text.each do |line, txt|
           styled_text("<div style='font-size: 10; line-height: 7'>#{txt}</div>")
-          newline(1)
+          if line != '2'
+            newline(1)
+          end
       end
 
       styled_text("<div style='font-size: 10; line-height: 7;'><b>Yours sincerely</b>, \n</div>")
 
+      newline(1)
       newline(1)
 
       # image image_path('green_star.png'), width: 50
@@ -547,11 +550,9 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
       EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError
       text 'An error occurred when creating the chart.'
     end
-    
-    newline(1)
 
     text = 'Figure 3: Project Overall Scores & Rating'
-    styled_text("<div style='font-size: 9; line-height: 5; color: 000000; text-align: center; padding-top: px;'><b>#{text}</b></div>")
+    styled_text("<div style='font-size: 9; line-height: 5; color: 000000; text-align: center; padding-top: 10px;'><b>#{text}</b></div>")
 
     # text 'Level Achieved', size: 12, align: :left
     # data = []

@@ -80,6 +80,7 @@ en:
         sustainability_features_file: Project Sustainability Features
         area_statement_file: Project Area Statement
         owner: Project Owner
+        project_owner_email: Project Owner Email
         service_provider: Service Provider
         service_provider_2: Service Provider CDA
         country: Project Country
@@ -118,7 +119,7 @@ en:
         development_type: Certification Development Type
         status: Certification Status
         score: Certification Score
-        certified_at: Certification Certified At
+        certified_at: Certification Certified
       offline/scheme_mix:
         name: Typology Name
         weight: Scheme Weighting

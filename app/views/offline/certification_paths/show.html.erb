@@ -42,6 +42,35 @@
         <%= btn_link_to(confirm_destroy_offline_project_certification_path(@project, @certification_path), {icon: 'trash', text: 'Delete', style: 'danger', method: :get, data: {confirm: 'Do you really want to delete this project?'}}) %>
       </div>
     </div>
+        <% if (can?(:download_signed_certificate, @certification_path) && @certification_path.signed_certificate_file.present?) || can?(:update_signed_certificate, @certification_path) %>
+            <div class="ibox float-e-margins">
+              <div class="ibox-title">
+                <h5><%= t('.certification_path_signed_certificate.title') %></h5>
+              </div>
+              <div class="ibox-content">
+                <% if @certification_path.signed_certificate_file.present? %>
+                  <h4><%= truncate(@certification_path.signed_certificate_file.file.filename, length: 100) %></h4>
+
+                  <% if can?(:download_signed_certificate, @certification_path) %>
+                    <%= btn_download(download_signed_certificate_offline_project_certification_path(@project, @certification_path), size: 'small', tooltip: "Download the officially signed certificate") %>
+                  <% end %>
+                  <% if can?(:remove_signed_certificate, @certification_path) %>
+                    <%= btn_link_to(remove_signed_certificate_offline_project_certification_path(@project, @certification_path), method: :delete, data: { confirm: 'Are you sure to delete the certificate?'}, style: 'danger', size: 'small', icon: 'trash', tooltip: 'Remove the officially signed certificate') %>
+                  <% end %>
+                <% end %>
+
+                <br />
+
+                <% if can?(:update_signed_certificate, @certification_path) %>
+                  <%= bootstrap_form_for(@certification_path, url: update_signed_certificate_offline_project_certification_path(@project, @certification_path), method: 'put') do |f| %>
+                      <%= f.file_field :signed_certificate_file, label: 'Upload New Signed Certificate' %>
+                      <div class="hr-line-dashed"></div>
+                      <%= btn_save %>
+                  <% end %>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
   </div>
   <div class="col-md-8">
     <div class="ibox float-e-margins">

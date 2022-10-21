@@ -50,6 +50,44 @@ module Offline
       end
     end
 
+    def update_signed_certificate
+      if params[:offline_certification_path].present? && params[:offline_certification_path][:signed_certificate_file].present?
+        @certification_path.signed_certificate_file = params[:offline_certification_path][:signed_certificate_file]
+  
+        if @certification_path.save
+          redirect_back(fallback_location: offline_project_path(@project), notice: 'The signed certificate was uploaded successfully.')
+        else
+          @certification_path.errors.messages.each do |field, errors|
+            redirect_back(fallback_location: offline_project_path(@project), alert: errors.first)
+            return
+          end
+        end
+      else
+        redirect_back(fallback_location: offline_project_path(@project), alert: 'Please select a file to upload.')
+      end
+    end
+  
+    def download_signed_certificate
+      begin
+        send_file @certification_path.signed_certificate_file.path, x_sendfile: false
+      rescue ActionController::MissingFile
+        redirect_back(fallback_location: offline_project_path(@project), alert: 'This document is no longer available for download. This could be due to a detection of malware.')
+      end
+    end
+  
+    def remove_signed_certificate
+      begin
+        @certification_path.remove_signed_certificate_file!
+        @certification_path.save!
+  
+        flash[:notice] = "Certificate successfully deleted."
+      rescue ActionController::MissingFile
+        flash[:alert] = 'This document is failed to delete. This could be due to a detection of malware.'
+      end
+  
+      redirect_back(fallback_location: offline_project_path(@project))
+    end
+
     private
 
     def set_controller_model

@@ -1,16 +1,4 @@
 <% countries = CS.countries.sort_by{|_key, value| value }.to_h %>
-<% resource.tap do |character| %>
-	<% if character.errors.any? %>
-	<div class="errors">
-	<h2><%= pluralize(character.errors.count, "error") %> prohibited this character from being saved:</h2>
-	<ul>
-	<% character.errors.full_messages.each do |msg| %>
-		<li><%= msg %></li>
-	<% end %>
-	</ul>
-	</div>
-	<% end %>
-<% end %>
 <fieldset class="scheduler-border">
 	<legend class="scheduler-border">Personal Information</legend>
 		<div class="control-group">

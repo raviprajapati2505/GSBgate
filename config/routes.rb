@@ -267,6 +267,9 @@ Rails.application.routes.draw do
       resources :certification_paths, path: :certification, as: 'certification' do
         member do
           get 'confirm_destroy', to: 'certification_paths#confirm_destroy'
+          get :download_signed_certificate
+          put :update_signed_certificate
+          delete :remove_signed_certificate
         end
 
         resources :scheme_mixes, only: [:show, :create, :new], path: :scheme_mix, as: 'schemes' do
