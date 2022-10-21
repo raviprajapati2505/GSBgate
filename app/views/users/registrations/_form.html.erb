@@ -93,29 +93,26 @@
 				</div>
 		</div>
 		<div class="row">
-				<div class="col-md-4 col-sm-6 col-xs-12">
-						<%= f.input :organization_country, collection: countries.map{ |cnt| [cnt[1], cnt[1]] }, include_blank: "Select Country", selected: resource.organization_country, input_html: { class: "select2 form-control country-select", id: "organization-country-select", data: {"for": "organization"} }, required: true %>
-				</div>
-				<div class="clearfix"></div>
-				<div class="col-md-4 col-sm-6 col-xs-12">
-						<%= f.input :organization_city, collection: [resource.organization_city], include_blank: "Select City", selected: resource.organization_city, input_html: { class: "select2 form-control city-select", id: "organization-city-select" } %>
-				</div>
-				<div class="col-md-4 col-sm-6 col-xs-12">
-						<%= f.input :organization_website, input_html: { id: 'org_website', placeholder: 'http://mywebsite.com'}, required: true %>
-				</div>
-				
+			<div class="col-md-4 col-sm-6 col-xs-12">
+					<%= f.input :organization_country, collection: countries.map{ |cnt| [cnt[1], cnt[1]] }, include_blank: "Select Country", selected: resource.organization_country, input_html: { class: "select2 form-control country-select", id: "organization-country-select", data: {"for": "organization"} }, required: true %>
+			</div>
+			<div class="col-md-4 col-sm-6 col-xs-12">
+					<%= f.input :organization_city, collection: [resource.organization_city], include_blank: "Select City", selected: resource.organization_city, input_html: { class: "select2 form-control city-select", id: "organization-city-select" } %>
+			</div>
+			<div class="col-md-4 col-sm-6 col-xs-12">
+					<%= f.input :organization_website, input_html: { id: 'org_website', placeholder: 'http://mywebsite.com'}, required: true %>
+			</div>
 		</div>
 		<div class="row">
-				<div class="col-md-4 col-sm-6 col-xs-12">
-						<%= f.input :organization_phone_area_code, input_html: { id: 'org_phone_area_code'} %>
-				</div>
-				<div class="clearfix"></div>
-				<div class="col-md-4 col-sm-6 col-xs-12">
-						<%= f.input :organization_phone, input_html: { id: 'org_phone'} %>
-				</div>
-				<div class="col-md-4 col-sm-6 col-xs-12">
-						<%= f.input :organization_fax_area_code, input_html: { id: 'org_fax_area_code'}  %>
-				</div>
+			<div class="col-md-4 col-sm-6 col-xs-12">
+					<%= f.input :organization_phone_area_code, input_html: { id: 'org_phone_area_code'} %>
+			</div>
+			<div class="col-md-4 col-sm-6 col-xs-12">
+					<%= f.input :organization_phone, input_html: { id: 'org_phone'} %>
+			</div>
+			<div class="col-md-4 col-sm-6 col-xs-12">
+					<%= f.input :organization_fax_area_code, input_html: { id: 'org_fax_area_code'}  %>
+			</div>
 		</div>
 		<div class="row">
 			<div class="col-md-4 col-sm-6 col-xs-12">

@@ -1,3 +1,4 @@
+<div class="row">
   <div class="col-md-4 col-sm-6 col-xs-12">
     <%= f.input :business_field, required: true %>
   </div>
@@ -10,7 +11,6 @@
       <%= f.input_field :commercial_licence_expiry_date, value: f.object&.commercial_licence_expiry_date&.strftime("%d/%m/%Y"), as: :string, class: "datepicker-future form-control" %>
     <% end %>
   </div>
- 
 </div>
 
 <div class="row">

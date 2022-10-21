@@ -11,6 +11,8 @@
   <div class="col-md-4 col-sm-6 col-xs-12">
       <%= f.input :designation %>
   </div>
+</div>
+<div class="row">
   <div class="clearfix"></div>
   <div class="col-md-4 col-sm-6 col-xs-12">
       <%= f.input :work_experience %>
@@ -25,7 +27,7 @@
     <%# f.input :energy_assessor_name %>
   <%# </div> %>
 </div>
-
+<div class="row">
   <div class="col-md-4 col-sm-6 col-xs-12">
     <%= f.input :university_credentials_file, as: :file, label: t('users.form.university_credential_file_title'), required: true %>
     <% if user.persisted? && user.user_detail&.university_credentials_file.present? %>

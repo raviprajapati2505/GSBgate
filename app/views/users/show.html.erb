@@ -2,8 +2,9 @@
   service_provider = @user.service_provider? ? @user : @user.service_provider
 %>
 
-<%# <div class="row"> %>
-  <div class="col-md-12  col-sm-12 col-xs-12 card m-t">
+<div class="row">
+
+  <div class="col-md-12 col-sm-12 col-xs-12 m-t">
     <div class="ibox">
       <div class="ibox-title">
         <div class='d-flex justify-content-between align-items-center'>
@@ -13,148 +14,50 @@
       </div>
     </div>
   </div>
-</div>
-<div class="col-md-4 col-sm-12 col-xs-12">
-  <div class="ibox">
-    <div class="ibox-title">
-      <div class='d-flex justify-content-between align-items-center'>
-        <h5><b><%= t('.user_details.title') %></b></h5>
-      </div>
-    </div>
-    <div class="ibox-content">
-      <table class="table table-bordered table-striped user-details-table">
-        <tbody>
-          <tr>
-            <th><%= User.human_attribute_name('name') %></th>
-            <td><%= @user.name %></td>
-          </tr>
-          <tr>
-            <th><%= User.human_attribute_name('middle_name') %></th>
-            <td><%= @user.middle_name %></td>
-          </tr>
-          <tr>
-            <th><%= User.human_attribute_name('last_name') %></th>
-            <td><%= @user.last_name %></td>
-          </tr>
-          <% if @user.default_role? %>
-            <tr>
-              <th><%= UserDetail.human_attribute_name('dob') %></th>
-              <td><%= @user.user_detail&.dob&.strftime('%e %b, %Y') %></td>
-            </tr>
-            <tr>
-              <th><%= UserDetail.human_attribute_name('gender') %></th>
-              <td><%= @user.user_detail&.gender %></td>
-            </tr>
-          <% end %>
-          <tr>
-            <th><%= User.human_attribute_name('username') %></th>
-            <td><%= @user.username %></td>
-          </tr>
-          <tr>
-            <th><%= User.human_attribute_name('active') %></th>
-            <td><%= label_span(@user.active, 'Active', 'Deactivate').html_safe %></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
 
-    <div class="m-t">
+  <div class="col-md-4 col-sm-12 col-xs-12">
+    <div class="ibox">
       <div class="ibox-title">
         <div class='d-flex justify-content-between align-items-center'>
-          <h5><b><%= t('.user_details.contact_info') %></b></h5>
+          <h5><b><%= t('.user_details.title') %></b></h5>
         </div>
       </div>
       <div class="ibox-content">
         <table class="table table-bordered table-striped user-details-table">
           <tbody>
             <tr>
-              <th><%= User.human_attribute_name('email') %></th>
-              <td><%= @user.email %></td>
+              <th><%= User.human_attribute_name('name') %></th>
+              <td><%= @user.name %></td>
             </tr>
             <tr>
-              <th><%= User.human_attribute_name('email_alternate') %></th>
-              <td><%= @user.email_alternate %></td>
+              <th><%= User.human_attribute_name('middle_name') %></th>
+              <td><%= @user.middle_name %></td>
             </tr>
             <tr>
-              <th><%= User.human_attribute_name('country') %></th>
-              <td><%= @user.country %></td>
+              <th><%= User.human_attribute_name('last_name') %></th>
+              <td><%= @user.last_name %></td>
             </tr>
-            <tr>
-              <th><%= User.human_attribute_name('city') %></th>
-              <td><%= @user.city %></td>
-            </tr>
-            <tr>
-              <th><%= User.human_attribute_name('mobile_area_code') %></th>
-              <td><%= @user.mobile_area_code %></td>
-            </tr>
-            <tr>
-              <th><%= User.human_attribute_name('mobile') %></th>
-              <td><%= @user.mobile %></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="m-t">
-      <div class="ibox-title">
-        <div class='d-flex justify-content-between align-items-center'>
-          <h5><b><%= t('.user_details.organization_info') %></b></h5>
-        </div>
-      </div>
-      <div class="ibox-content">
-        <table class="table table-bordered table-striped user-details-table">
-          <tbody>
             <% if @user.default_role? %>
               <tr>
-                <th><%= User.human_attribute_name('service_provider') %></th>
-                <td>
-                  <% if @user.service_provider.present? %>
-                    <%= link_to(@user.service_provider_name, user_path(@user.service_provider_id)) %>
-                  <% end %>
-                </td>
+                <th><%= UserDetail.human_attribute_name('dob') %></th>
+                <td><%= @user.user_detail&.dob&.strftime('%e %b, %Y') %></td>
               </tr>
               <tr>
-                <th>Service Provider Email</th>
-                <td><%= @user.service_provider&.email %></td>
+                <th><%= UserDetail.human_attribute_name('gender') %></th>
+                <td><%= @user.user_detail&.gender %></td>
               </tr>
             <% end %>
             <tr>
-              <th><%= User.human_attribute_name('organization_name') %></th>
-              <td><%= @user.organization_name %></td>
+              <th><%= User.human_attribute_name('username') %></th>
+              <td><%= @user.username %></td>
             </tr>
             <tr>
-              <th><%= User.human_attribute_name('organization_country') %></th>
-              <td><%= @user.organization_country %></td>
-            </tr>
-            <tr>
-              <th><%= User.human_attribute_name('organization_city') %></th>
-              <td><%= @user.organization_city %></td>
-            </tr>
-            <tr>
-              <th><%= User.human_attribute_name('organization_website') %></th>
-              <td><%= @user.organization_website %></td>
-            </tr>
-            <tr>
-              <th><%= User.human_attribute_name('organization_phone_area_code') %></th>
-              <td><%= @user.organization_phone_area_code %></td>
-            </tr>
-            <tr>
-              <th><%= User.human_attribute_name('organization_phone') %></th>
-              <td><%= @user.organization_phone %></td>
-            </tr>
-            <tr>
-              <th><%= User.human_attribute_name('organization_fax_area_code') %></th>
-              <td><%= @user.organization_fax_area_code %></td>
-            </tr>
-            <tr>
-              <th><%= User.human_attribute_name('organization_fax') %></th>
-              <td><%= @user.organization_phone %></td>
+              <th><%= User.human_attribute_name('active') %></th>
+              <td><%= label_span(@user.active, 'Active', 'Deactivate').html_safe %></td>
             </tr>
           </tbody>
         </table>
       </div>
-    </div>
 
       <div class="m-t">
         <div class="ibox-title">
@@ -193,13 +96,6 @@
           </table>
         </div>
       </div>
-      <div class="ibox-content">
-        <table class="table table-bordered table-striped user-details-table">
-          <tbody>
-            <tr>
-              <th><%= User.human_attribute_name('role') %></th>
-              <td><%= @user.role&.titleize %></td>
-            </tr>
 
       <div class="m-t">
         <div class="ibox-title">
@@ -225,24 +121,36 @@
                 </tr>
               <% end %>
               <tr>
-                <th><%= ServiceProviderDetail.human_attribute_name('business_field') %></th>
-                <td><%= @user.service_provider_detail&.business_field %></td>
+                <th><%= User.human_attribute_name('organization_name') %></th>
+                <td><%= @user.organization_name %></td>
               </tr>
               <tr>
-                <th><%= ServiceProviderDetail.human_attribute_name('portfolio') %></th>
-                <td>
-                <% if @user.service_provider_detail&.portfolio.present? %>
-                  <% if can?(:download_user_files, @user) %>
-                    <%= btn_download(download_user_files_user_path(@user, :file => "portfolio"), size: 'extra_small', tooltip: "Download #{ServiceProviderDetail.human_attribute_name('portfolio')}") %>
-                  <% end %>
-                <%= truncate(@user.service_provider_detail&.portfolio.file.filename, length: 35) %>
-                <% end %>
-              </td>
+                <th><%= User.human_attribute_name('organization_country') %></th>
+                <td><%= @user.organization_country %></td>
               </tr>
-            <% else %>
               <tr>
-                <th><%= UserDetail.human_attribute_name('designation') %></th>
-                <td><%= @user.user_detail&.designation %></td>
+                <th><%= User.human_attribute_name('organization_city') %></th>
+                <td><%= @user.organization_city %></td>
+              </tr>
+              <tr>
+                <th><%= User.human_attribute_name('organization_website') %></th>
+                <td><%= @user.organization_website %></td>
+              </tr>
+              <tr>
+                <th><%= User.human_attribute_name('organization_phone_area_code') %></th>
+                <td><%= @user.organization_phone_area_code %></td>
+              </tr>
+              <tr>
+                <th><%= User.human_attribute_name('organization_phone') %></th>
+                <td><%= @user.organization_phone %></td>
+              </tr>
+              <tr>
+                <th><%= User.human_attribute_name('organization_fax_area_code') %></th>
+                <td><%= @user.organization_fax_area_code %></td>
+              </tr>
+              <tr>
+                <th><%= User.human_attribute_name('organization_fax') %></th>
+                <td><%= @user.organization_phone %></td>
               </tr>
             </tbody>
           </table>
@@ -259,125 +167,153 @@
           <table class="table table-bordered table-striped user-details-table">
             <tbody>
               <tr>
-                <th><%= UserDetail.human_attribute_name('work_experience') %></th>
-                <td><%= @user.user_detail&.work_experience %></td>
+                <th><%= User.human_attribute_name('role') %></th>
+                <td><%= @user.role&.titleize %></td>
               </tr>
-            <% end %>
 
-            <tr>
-              <th><%= User.human_attribute_name('gord_employee') %></th>
-              <td><%= label_span(@user.gord_employee, 'Yes', 'No').html_safe %></td>
-            </tr>
-            <tr>
-              <th><%= User.human_attribute_name('gsas_id') %></th>
-              <td><%= @user.gsas_id %></td>
-            </tr>
-            <tr>
-              <th><%= User.human_attribute_name('demerit_flag') %></th>
-              <td>
-                <% @user&.demerit_flags.each do %>
-                  <i class="fa fa-flag fa-lg" style="color:red;"></i>
-                <% end %>
-              </td>
-            </tr>
+              <% if @user.service_provider? %>
+                <tr>
+                  <th><%= ServiceProviderDetail.human_attribute_name('business_field') %></th>
+                  <td><%= @user.service_provider_detail&.business_field %></td>
+                </tr>
+                <tr>
+                  <th><%= ServiceProviderDetail.human_attribute_name('portfolio') %></th>
+                  <td>
+                  <% if @user.service_provider_detail&.portfolio.present? %>
+                    <% if can?(:download_user_files, @user) %>
+                      <%= btn_download(download_user_files_user_path(@user, :file => "portfolio"), size: 'extra_small', tooltip: "Download #{ServiceProviderDetail.human_attribute_name('portfolio')}") %>
+                    <% end %>
+                  <%= truncate(@user.service_provider_detail&.portfolio.file.filename, length: 35) %>
+                  <% end %>
+                </td>
+                </tr>
+              <% else %>
+                <tr>
+                  <th><%= UserDetail.human_attribute_name('designation') %></th>
+                  <td><%= @user.user_detail&.designation %></td>
+                </tr>
+                <tr>
+                  <th><%= UserDetail.human_attribute_name('work_experience') %></th>
+                  <td><%= @user.user_detail&.work_experience %></td>
+                </tr>
+              <% end %>
 
-            <% if @user.service_provider? %>
               <tr>
-                <th><%= ServiceProviderDetail.human_attribute_name('commercial_licence_no') %></th>
-                <td><%= @user.service_provider_detail&.commercial_licence_no %></td>
+                <th><%= User.human_attribute_name('gord_employee') %></th>
+                <td><%= label_span(@user.gord_employee, 'Yes', 'No').html_safe %></td>
               </tr>
-            <% else %>
               <tr>
-                <th><%= UserDetail.human_attribute_name('qid_or_passport_number') %></th>
-                <td><%= @user.user_detail&.qid_or_passport_number %></td>
+                <th><%= User.human_attribute_name('gsas_id') %></th>
+                <td><%= @user.gsas_id %></td>
               </tr>
-            <% end %>
+              <tr>
+                <th><%= User.human_attribute_name('demerit_flag') %></th>
+                <td>
+                  <% @user&.demerit_flags.each do %>
+                    <i class="fa fa-flag fa-lg" style="color:red;"></i>
+                  <% end %>
+                </td>
+              </tr>
 
-          </tbody>
-        </table>
-      </div>
-    </div>
-    
-    <div class="ibox-content m-t">
-      <% if @user == current_user %>
-        <%
-          url = if @user.service_provider?
-                  edit_service_provider_path(current_user)
-                else
-                  edit_user_registration_path(current_user)
-                end
-        %>
-        <%= btn_link_to(url, icon: 'edit', text: 'Edit') %>
+              <% if @user.service_provider? %>
+                <tr>
+                  <th><%= ServiceProviderDetail.human_attribute_name('commercial_licence_no') %></th>
+                  <td><%= @user.service_provider_detail&.commercial_licence_no %></td>
+                </tr>
+              <% else %>
+                <tr>
+                  <th><%= UserDetail.human_attribute_name('qid_or_passport_number') %></th>
+                  <td><%= @user.user_detail&.qid_or_passport_number %></td>
+                </tr>
+              <% end %>
 
-      <% else %>
-        <%= btn_link_to_if(permission: can?(:update, @user), target: edit_user_path(@user), icon: 'edit', text: 'Edit') %>
-      <% end %>
-    </div>
-  </div>
-</div>
-<div class="col-md-8 col-sm-12 col-xs-12 ">
-  <div class="ibox">
-    <div class="ibox-title">
-      <h5><b><%= t('.user_license_details.licences') %></b></h5>
-    </div>
-    <div class="ibox-content">
-      <div class="row">
-        <%= render partial: "licence_detail", locals: { label: 'Design & Build Licences', access_licences: @user.access_licences_with_certificate_type(Certificate.certificate_types[:design_type]) } %>
-      </div>
-
-      <div class="row">
-        <div class="hr-line-dashed m-t"></div>
-        <%= render partial: "licence_detail", locals: { label: 'Construction Management Licences', access_licences: @user.access_licences_with_certificate_type(Certificate.certificate_types[:construction_type]) } %>
-      </div>
-
-      <div class="row">
-        <div class="hr-line-dashed m-t"></div>
-        <%= render partial: "licence_detail", locals: { label: 'Operation Licences', access_licences: @user.access_licences_with_certificate_type(Certificate.certificate_types[:operations_type]) } %>
-      </div>
-    </div>
-
-    <div class="ibox-title m-t">
-      <h5><b><%= t('.user_licence_summary.title') %></b></h5>
-    </div>
-
-    <%
-      if current_user == @user
-        label = "My Licences"
-        labelsp = @user.service_provider? ? label : "My Service Provider's Licences"  
-      else
-        label = "Licences of #{@user.name}"
-        labelsp = @user.service_provider? ? label : "#{label}'s Service Provider"
-      end
-    %>
-
-    <div class="ibox-content">
-      <div class="row">
-        <div class="col-md-6">
-          <%= render partial: "licences_list", locals: { label: labelsp, licences: Licence.with_service_provider_licences, licences_of: service_provider } %>
+            </tbody>
+          </table>
         </div>
-        <% unless @user.service_provider? %>
-          <div class="col-md-6">
-            <%= render partial: "licences_list", locals: { label: label, licences: Licence.with_cp_licences, licences_of: @user } %>
-          </div>
+      </div>
+      
+      <div class="ibox-content m-t">
+        <% if @user == current_user %>
+          <%
+            url = if @user.service_provider?
+                    edit_service_provider_path(current_user)
+                  else
+                    edit_user_registration_path(current_user)
+                  end
+          %>
+          <%= btn_link_to(url, icon: 'edit', text: 'Edit') %>
+        <% else %>
+          <%= btn_link_to_if(permission: can?(:update, @user), target: edit_user_path(@user), icon: 'edit', text: 'Edit') %>
         <% end %>
       </div>
     </div>
+  </div>
 
-    <div class="ibox-title m-t">
-      <h5><b><%= t('.sp_cp_licence_summary.title') %></b></h5>
-    </div>
-    <div class="ibox-content">
-      <%= render partial: "sp_licence_summary", locals: { service_provider: service_provider } %>
-    </div>
-
-    <% if @user.service_provider? %>
-      <div class="ibox-title m-t">
-        <h5><b><%= t('.cp_users.title', service_provider: service_provider.full_name) %></b></h5>
+  <div class="col-md-8">
+    <div class="ibox float-e-margins">
+      <div class="ibox-title">
+        <h5><b><%= t('.user_license_details.licences') %></b></h5>
       </div>
       <div class="ibox-content">
-        <%= render partial: "users_list", locals: { service_provider: service_provider } %>
-      </div>
-    <% end %>
+        <div class="row">
+          <%= render partial: "licence_detail", locals: { label: 'Design & Build Licences', access_licences: @user.access_licences_with_certificate_type(Certificate.certificate_types[:design_type]) } %>
+        </div>
 
+        <div class="row">
+          <div class="hr-line-dashed m-t"></div>
+          <%= render partial: "licence_detail", locals: { label: 'Construction Management Licences', access_licences: @user.access_licences_with_certificate_type(Certificate.certificate_types[:construction_type]) } %>
+        </div>
+
+        <div class="row">
+          <div class="hr-line-dashed m-t"></div>
+          <%= render partial: "licence_detail", locals: { label: 'Operation Licences', access_licences: @user.access_licences_with_certificate_type(Certificate.certificate_types[:operations_type]) } %>
+        </div>
+      </div>
+
+      <div class="ibox-title m-t">
+        <h5><b><%= t('.user_licence_summary.title') %></b></h5>
+      </div>
+
+      <%
+        if current_user == @user
+          label = "My Licences"
+          labelsp = @user.service_provider? ? label : "My Service Provider's Licences"  
+        else
+          label = "Licences of #{@user.name}"
+          labelsp = @user.service_provider? ? label : "#{label}'s Service Provider"
+        end
+      %>
+
+      <div class="ibox-content">
+        <div class="row">
+          <div class="col-md-6">
+            <%= render partial: "licences_list", locals: { label: labelsp, licences: Licence.with_service_provider_licences, licences_of: service_provider } %>
+          </div>
+          <% unless @user.service_provider? %>
+            <div class="col-md-6">
+              <%= render partial: "licences_list", locals: { label: label, licences: Licence.with_cp_licences, licences_of: @user } %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="ibox-title m-t">
+        <h5><b><%= t('.sp_cp_licence_summary.title') %></b></h5>
+      </div>
+      <div class="ibox-content">
+        <%= render partial: "sp_licence_summary", locals: { service_provider: service_provider } %>
+      </div>
+
+      <% if @user.service_provider? %>
+        <div class="ibox-title m-t">
+          <h5><b><%= t('.cp_users.title', service_provider: service_provider.full_name) %></b></h5>
+        </div>
+        <div class="ibox-content">
+          <%= render partial: "users_list", locals: { service_provider: service_provider } %>
+        </div>
+      <% end %>
+
+    </div>
   </div>
+
 </div>
