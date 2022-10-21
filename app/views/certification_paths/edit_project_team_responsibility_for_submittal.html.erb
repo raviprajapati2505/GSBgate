@@ -4,7 +4,7 @@
         <div class="ibox-title">
             <h5>Select Requirements to Allocate for Submittal</h5>
         </div>
-        <div class="ibox-content">
+        <div class="ibox-content table-responsive">
             <p class="alert alert-info"><%= ikoen('info-circle') %> Use the checkboxes and the form to update the status of requirements or to assign requirements to project team members. Submitted criteria or criteria without requirements will not be listed here.</p>
             <table class="table table-bordered allocate-responsibility-table">
                 <% @certification_path.scheme_mixes.uniq.each do |scheme_mix| %>

@@ -1,6 +1,7 @@
 <% certification_path = project&.certification_paths&.last %>
 
 <% if certification_path.present? %>
+<div class="table-responsive">
   <table class="table table-bordered table-mb-0 ">
     <tbody>
       <tr>
@@ -37,4 +38,5 @@
       </tr>
     </tbody>
   </table>
+  </div>
 <% end %>

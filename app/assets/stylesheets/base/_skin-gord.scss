@@ -1093,14 +1093,13 @@
 
   // Timeline
   #vertical-timeline-legend {
-    margin-right: 12px;
-    float: right;
   }
 
   #vertical-timeline-legend {
     .vertical-timeline-legend-item {
-      float: left;
       margin-left: 36px;
+      display: inline-block;
+      height: 25px;
     }
 
     .description {

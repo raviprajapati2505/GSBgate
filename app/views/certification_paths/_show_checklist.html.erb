@@ -4,13 +4,13 @@
 %>
 
 <%# <div class="row"> %>
-    <div class="col-md-5">
+    <div class="col-md-5 col-sm-12 col-xs-12">
         <div class="ibox">
             <div class="ibox-title">
                 <%= audit_log_label(@certification_path) %>
                 <h5><%= t('.certification_path.title') %></h5>
             </div>
-            <div class="ibox-content">
+            <div class="ibox-content table-responsive">
                 <table class="table table-bordered table-striped">
                     <tbody>
                       <tr>
@@ -202,9 +202,9 @@
         <% end %>
 
         <div class="ibox">
-            <div class="ibox-title">
-                <%= render 'timeline_legend' %>
-                <h5><%= t('.certification_path_status.title') %></h5>
+            <div class="ibox-title d-flex align-items-center justify-content-between">
+            <h5><%= t('.certification_path_status.title') %></h5>
+            <%= render 'timeline_legend' %>
             </div>
             <div class="ibox-content">
                 <%= render 'timeline', certification_path: @certification_path %>
@@ -233,12 +233,12 @@
     </div>
 
   <% if @certification_path.certificate.construction_certificate? %>
-    <div class="col-md-7">
+    <div class="col-md-7 col-sm-12 col-xs-12">
       <div class="ibox">
         <div class="ibox-title">
           <h5>Summary of Stages</h5>
         </div>
-        <div class="ibox-content">
+        <div class="ibox-content table-responsive">
           <%#= scores_legend %>
           <table class="table table-bordered table-striped">
             <thead>
@@ -260,7 +260,7 @@
       </div>
     </div>
   <% else %>
-    <div class="col-md-7">
+    <div class="col-md-7 col-sm-12 col-xs-12">
         <div class="ibox">
             <div class="ibox-title">
                 <h5><%= t('.schemes.title') %></h5>

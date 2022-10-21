@@ -1,6 +1,7 @@
 <% if project.offline_project_documents.blank? %>
   N/A
 <% else %>
+<div class="table-responsive">
   <table class="table table-bordered datatable cert-doc-table" cellspacing="0" width="100%">
     <thead>
     <tr>
@@ -30,4 +31,5 @@
       <% end %>
     </tbody>
   </table>
+  </div>
 <% end %>

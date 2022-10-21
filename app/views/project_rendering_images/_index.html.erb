@@ -1,6 +1,7 @@
 <% if project_rendering_images.blank? %>
   No project rendering images were uploaded yet.
 <% else %>
+<div class="table-responsive">
   <table class="table table-bordered datatable img-doc-table" cellspacing="0" width="100%">
     <thead>
     <tr>
@@ -30,4 +31,5 @@
     <% end %>
     </tbody>
   </table>
+  </div>
 <% end %>

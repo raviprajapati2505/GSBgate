@@ -22,7 +22,7 @@
           <h5><b><%= t('.user_details.title') %></b></h5>
         </div>
       </div>
-      <div class="ibox-content">
+      <div class="ibox-content table-responsive">
         <table class="table table-bordered table-striped user-details-table">
           <tbody>
             <tr>
@@ -65,7 +65,7 @@
             <h5><b><%= t('.user_details.contact_information') %></b></h5>
           </div>
         </div>
-        <div class="ibox-content">
+        <div class="ibox-content table-responsive">
           <table class="table table-bordered table-striped user-details-table">
             <tbody>
               <tr>
@@ -103,7 +103,7 @@
             <h5><b><%= t('.user_details.company_information') %></b></h5>
           </div>
         </div>
-        <div class="ibox-content">
+        <div class="ibox-content table-responsive">
           <table class="table table-bordered table-striped user-details-table">
             <tbody>
               <% if @user.default_role? %>
@@ -163,7 +163,7 @@
             <h5><b><%= t('.user_details.additional_information') %></b></h5>
           </div>
         </div>
-        <div class="ibox-content">
+        <div class="ibox-content table-responsive">
           <table class="table table-bordered table-striped user-details-table">
             <tbody>
               <tr>
@@ -254,7 +254,7 @@
       <div class="ibox-title">
         <h5><b><%= t('.user_license_details.licences') %></b></h5>
       </div>
-      <div class="ibox-content">
+      <div class="ibox-content table-responsive">
         <div class="row">
           <%= render partial: "licence_detail", locals: { label: 'Design & Build Licences', access_licences: @user.access_licences_with_certificate_type(Certificate.certificate_types[:design_type]) } %>
         </div>
@@ -284,7 +284,7 @@
         end
       %>
 
-      <div class="ibox-content">
+      <div class="ibox-content table-responsive">
         <div class="row">
           <div class="col-md-6">
             <%= render partial: "licences_list", locals: { label: labelsp, licences: Licence.with_service_provider_licences, licences_of: service_provider } %>
@@ -300,7 +300,7 @@
       <div class="ibox-title m-t">
         <h5><b><%= t('.sp_cp_licence_summary.title') %></b></h5>
       </div>
-      <div class="ibox-content">
+      <div class="ibox-content table-responsive">
         <%= render partial: "sp_licence_summary", locals: { service_provider: service_provider } %>
       </div>
 
@@ -308,7 +308,7 @@
         <div class="ibox-title m-t">
           <h5><b><%= t('.cp_users.title', service_provider: service_provider.full_name) %></b></h5>
         </div>
-        <div class="ibox-content">
+        <div class="ibox-content table-responsive">
           <%= render partial: "users_list", locals: { service_provider: service_provider } %>
         </div>
       <% end %>

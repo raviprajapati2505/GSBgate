@@ -12,7 +12,7 @@
         </div>
       </a>
       <div class="panel-collapse collapse" id="survey-question-<%= question.id %>-collapsable" aria-expanded="false" style="height: 0px;">
-        <div class="ibox-content">
+        <div class="ibox-content table-responsive">
           <table class="table table-bordered table-striped">
             <tbody>
               <%= render partial: "survey_types/question_detail", locals: { question: question } %>

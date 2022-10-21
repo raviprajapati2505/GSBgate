@@ -1026,6 +1026,88 @@ label.required:after {
     padding: 2px;
     border: 0px;
 }
-.light-green table.dataTable thead tr th{
-  background: #ebf4e9;
+table.dataTable.light-green  thead tr th,.table-bordered.light-green > thead > tr > th{ 
+  background: #ebf4e9 !important;
+  color:#606a73 !important;
+}
+// 21-10-2022
+table.dataTable thead .sorting:after{
+  content:"\f0dc" !important;
+  opacity:1 !important;
+
+}
+table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, table.dataTable thead .sorting_desc:after, table.dataTable thead .sorting_asc_disabled:after, table.dataTable thead .sorting_desc_disabled:after {
+  font:normal normal normal 14px/1 FontAwesome !important;
+  bottom: 16px !important;
+    right: 5px !important;
+    
+}
+.cert-doc-table thead tr th:after{
+  color: #606a73 !important;
+  bottom: 12px !important;
+  opacity:1 !important;
+}
+table.dataTable thead .sorting_asc:after{
+  content:"\f0de" !important;
+  opacity:1 !important;
+}
+table.dataTable thead > tr > th.sorting_asc, table.dataTable thead > tr > th.sorting_desc, table.dataTable thead > tr > th.sorting{
+  background-image: none;
+    padding-right: 18px !important;
+}
+.select2-container-multi .select2-choices .select2-search-choice{
+  box-shadow: none !important;
+  background-image: none !important;
+  border: 0px !important;
+  background-color: transparent !important;
+  color: #ababab !important;
+  font-weight: 100;
+}
+.select2-search-choice-close{
+  top:3px !important;
+}
+.form-control.select2-container .select2-choices{
+  padding-right: 15px;
+
+}
+.form-control.select2-container .select2-choices:after{
+  content: "\f107";
+  position: absolute;
+  right: 4px;
+  top: 7px;
+  color:#61a60e;
+  font:normal normal normal 14px/1 FontAwesome !important;
+
+  
+}
+.skin-gord .vertical-timeline-content .btn.audit-log:first-child{
+border-left:1px solid #a5a5a5;
+}
+.skin-gord .vertical-timeline-content .btn.audit-log{
+  background: transparent;
+    border: 0px;
+    color: #61a60e;
+    font-size: 16px;
+    padding: 0;
+    border-radius: 0;
+    padding-left: 5px;
+}
+.fa-toggle-right:before, .fa-caret-square-o-right:before{
+content: "\f144";
+color:#c2d9a4;
+}
+.fa-toggle-down:before, .fa-caret-square-o-down:before{
+  content: "\f144";
+color:#c2d9a4;
+transform: rotate(90deg);
+display: inline-block;
+}
+.submittal{
+  ul{
+    li{
+      span{
+        display: none;
+      }
+    }
+  }
 }
