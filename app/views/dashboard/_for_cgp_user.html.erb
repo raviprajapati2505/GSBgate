@@ -1,369 +1,392 @@
-<div class="col-md-2 col-sm-12 col-xs-12 m-t">
-  <div class="ibox">
-    <div class="ibox-title" style="text-align: center">
-      <div class='d-flex justify-content-between align-items-center'>
-        <h3 class="align-items-center" style="line-height:25px"><b>Hello,<br> <%= @user.name %></b></h3> 
-        <h3><%= @user.email %></h3>
-        <%= link_to 'View Profile', user_path(@user.id) %>
-        <div>
-          <img src="https://icon-library.com/images/placeholder-image-icon/placeholder-image-icon-12.jpg" style="border-radius: 100%;width: 38%;padding: 18px;">
+<div class="d-flex flex-wrap">
+  <div class="col-auto">
+    <div class="db-sidebar db-cgp">
+      <div class="user-block">
+        <div class="user-image">
+          <img src="https://icon-library.com/images/placeholder-image-icon/placeholder-image-icon-12.jpg" alt="image">
         </div>
+        <p class="h3 font-weight-bold"><%= @user.name %></p>
+        <a class="user-email" href="mailto:<%= @user.email %>"><%= @user.email %></a>
+      </div>
+      <div class="menu-block">
+        <ul>
+          <li class="active"><a href="javascript:;"><span><%= image_tag('/assets/layout/certi-sub-status-op.png') %></span>DashBoard</a></li>
+          <li><a href="javascript:;"><span><%= image_tag('/assets/layout/certi-sub-status-op.png') %></span>Profile</a></li>
+          <li><a href="javascript:;"><span><%= image_tag('/assets/layout/certi-sub-status-op.png') %></span>Messages</a></li>
+          <li><a href="javascript:;"><span><%= image_tag('/assets/layout/certi-sub-status-op.png') %></span>Settings</a></li>
+        </ul>
+        <!-- <%= link_to 'View Profile', user_path(@user.id) %> -->
+      </div>
+      <div class="logout-menu">
+        <div class="menu-block">
+        <ul>
+          <li><a href="javascript:;"><span><%= image_tag('/assets/layout/certi-sub-status-op.png') %></span>Logout</a></li>
+        </ul>
+      </div>
       </div>
     </div>
   </div>
-</div>
-<div class="col-md-10 col-sm-12 col-xs-12 m-t">
-  <div class="row">
-    <div class="col-md-12">
-      <div class="ibox">
-        <div class="ibox-title">
-          <div class='d-flex justify-content-between align-items-center'>
-            <h3><b>Welcome to your dashboard</b></h3> 
-            <p>Today is <%= DateTime.now.strftime('%A, %d %B %Y') %></p>        
+  <div class="col">
+    <div class="db-content">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="ibox">
+            <div class="ibox-title">
+              <div class='d-flex justify-content-between align-items-center'>
+                <h3><b>Welcome to your dashboard</b></h3> 
+                <p>Today is <%= DateTime.now.strftime('%A, %d %B %Y') %></p>        
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-    <div class="col-md-6 col-sm-12 col-xs-12">
-      <div class="ibox-title ibox-dashboard-title">
-        <div class="d-flex justify-content-between align-items-center">
-          <h5><b>Practitioner Profile</b></h5>
-        </div>
-      </div>
-      <br>
-      <div class="ibox">
-        <div class="ibox-title">
-          <div class="d-flex justify-content-between align-items-center">
-            <h5><b>Personal Information</b></h5>
+        <div class="col-md-6 col-sm-12 col-xs-12">
+          <div class="ibox-title ibox-dashboard-title">
+            <div class="d-flex justify-content-between align-items-center">
+              <h5><b>Practitioner Profile</b></h5>
+            </div>
           </div>
-        </div>
-        <div class="ibox-content table-responsive">
-          <table class="table table-bordered table-striped user-details-table">
-            <tbody>
-              <tr>
-                <th>First Name</th>
-                <td><%= @user.name %></td>
-              </tr>
-              <tr>
-                <th>Middle Name</th>
-                <td><%= @user.middle_name %></td>
-              </tr>
-              <tr>
-                <th>Last Name</th>
-                <td><%= @user.last_name %></td>
-              </tr>
-              <tr>
-                <th>Date of Birth</th>
-                <td><%= @user.user_detail&.dob&.strftime('%e %b, %Y') %></td>
-              </tr>
-              <tr>
-                <th>Gender</th>
-                <td><%= @user.user_detail&.gender %></td>
-              </tr>
-              <tr>
-                <th>Country of Residence</th>
-                <td><%= @user.country %></td>
-              </tr>
-              <tr>
-                <th>Address of Residence</th>
-                <td><%= @user.city %></td>
-              </tr>
-              <tr>
-                <th>Education</th>
-                <td><%= @user.user_detail&.education&.titleize %></td>
-              </tr>
-              <tr>
-                <th>ID Number</th>
-                <td><%= @user.gsas_id %></td>
-              </tr>
-              <tr>
-                <th>Education Certificates</th>
-                <td>
-                  <div class="f-left">
-                    <% if @user.user_detail&.education_certificate.present? %>
-                      <% if can?(:download_user_files, @user) %>
-                        <%= btn_download(download_user_files_user_path(@user, file: "education_certificate"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('education_certificate')}") %>
+          <br>
+          <div class="ibox">
+            <div class="ibox-title">
+              <div class="d-flex justify-content-between align-items-center">
+                <h5><b>Personal Information</b></h5>
+              </div>
+            </div>
+            <div class="ibox-content table-responsive">
+              <table class="table table-bordered table-striped user-details-table">
+                <tbody>
+                  <tr>
+                    <th>First Name</th>
+                    <td><%= @user.name %></td>
+                  </tr>
+                  <tr>
+                    <th>Middle Name</th>
+                    <td><%= @user.middle_name %></td>
+                  </tr>
+                  <tr>
+                    <th>Last Name</th>
+                    <td><%= @user.last_name %></td>
+                  </tr>
+                  <tr>
+                    <th>Date of Birth</th>
+                    <td><%= @user.user_detail&.dob&.strftime('%e %b, %Y') %></td>
+                  </tr>
+                  <tr>
+                    <th>Gender</th>
+                    <td><%= @user.user_detail&.gender %></td>
+                  </tr>
+                  <tr>
+                    <th>Country of Residence</th>
+                    <td><%= @user.country %></td>
+                  </tr>
+                  <tr>
+                    <th>Address of Residence</th>
+                    <td><%= @user.city %></td>
+                  </tr>
+                  <tr>
+                    <th>Education</th>
+                    <td><%= @user.user_detail&.education&.titleize %></td>
+                  </tr>
+                  <tr>
+                    <th>ID Number</th>
+                    <td><%= @user.gsas_id %></td>
+                  </tr>
+                  <tr>
+                    <th>Education Certificates</th>
+                    <td>
+                      <div class="f-left">
+                        <% if @user.user_detail&.education_certificate.present? %>
+                          <% if can?(:download_user_files, @user) %>
+                            <%= btn_download(download_user_files_user_path(@user, file: "education_certificate"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('education_certificate')}") %>
+                          <% end %>
+                          <%= truncate(@user.user_detail&.education_certificate&.file&.filename, length: 35) %>
+                        <% end %>
+                      </div>
+                      <% if ['default_role'].include?(current_user.role) %>
+                        <div class="f-right">
+                          <%= render partial: 'file_upload', locals: { file_name: 'education_certificate', demerit_flag: '', access_licence_id: ''} %>
+                        </div>
                       <% end %>
-                      <%= truncate(@user.user_detail&.education_certificate&.file&.filename, length: 35) %>
-                    <% end %>
-                  </div>
-                  <% if ['default_role'].include?(current_user.role) %>
-                    <div class="f-right">
-                      <%= render partial: 'file_upload', locals: { file_name: 'education_certificate', demerit_flag: '', access_licence_id: ''} %>
-                    </div>
-                  <% end %>
-                </td>
-              </tr>
-              <tr>
-                <th>Experience Certificates</th>
-                <td>
-                  <div style="f-left">
-                    <% if @user.user_detail&.work_experience_file.present? %>
-                      <% if can?(:download_user_files, @user) %>
-                        <%= btn_download(download_user_files_user_path(@user, file: "work_experience_file"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('work_experience_file')}") %>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Experience Certificates</th>
+                    <td>
+                      <div style="f-left">
+                        <% if @user.user_detail&.work_experience_file.present? %>
+                          <% if can?(:download_user_files, @user) %>
+                            <%= btn_download(download_user_files_user_path(@user, file: "work_experience_file"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('work_experience_file')}") %>
+                          <% end %>
+                          <%= truncate(@user.user_detail&.work_experience_file&.file&.filename, length: 35) %>
+                        <% end %>
+                      </div>
+                      <% if ['default_role'].include?(current_user.role) %>
+                        <div class="f-right">
+                          <%= render partial: 'file_upload', locals: { file_name: 'work_experience_file', demerit_flag: '', access_licence_id: ''} %>
+                        </div>
                       <% end %>
-                      <%= truncate(@user.user_detail&.work_experience_file&.file&.filename, length: 35) %>
-                    <% end %>
-                  </div>
-                  <% if ['default_role'].include?(current_user.role) %>
-                    <div class="f-right">
-                      <%= render partial: 'file_upload', locals: { file_name: 'work_experience_file', demerit_flag: '', access_licence_id: ''} %>
-                    </div>
-                  <% end %>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div class="ibox-title ibox-dashboard-title">
-        <div class="d-flex justify-content-between align-items-center">
-          <h5><b>Practitioner Accreditation</b></h5>
-        </div>
-      </div>
-      <br>
-      <div class="ibox">
-        <%= render partial: 'licence_overview', locals: { user_licences_design: @user_licences_design, 
-          user_licences_construction: @user_licences_construction, 
-          user_licences_operation: @user_licences_operation  
-        } %>
-      </div>
-      <div class="ibox">
-        <div class="ibox-title">
-          <div class="d-flex justify-content-between align-items-center">
-            <h5><b>Overdue Licences</b></h5>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="ibox-title ibox-dashboard-title">
+            <div class="d-flex justify-content-between align-items-center">
+              <h5><b>Practitioner Accreditation</b></h5>
+            </div>
+          </div>
+          <br>
+          <div class="ibox">
+            <%= render partial: 'licence_overview', locals: { user_licences_design: @user_licences_design, 
+              user_licences_construction: @user_licences_construction, 
+              user_licences_operation: @user_licences_operation  
+            } %>
+          </div>
+          <div class="ibox">
+            <div class="ibox-title">
+              <div class="d-flex justify-content-between align-items-center">
+                <h5><b>Overdue Licences</b></h5>
+              </div>
+            </div>
+            <%= render partial: 'overdue_licences' %>
           </div>
         </div>
-        <%= render partial: 'overdue_licences' %>
-      </div>
-    </div>
-    <div class="col-md-6 col-sm-12 col-xs-12">
-      <div class="ibox-title ibox-dashboard-title">
-        <div class="d-flex justify-content-between align-items-center">
-          <h5><b>GSAS Credentials</b></h5>
-        </div>
-      </div>
-      <br>
-      <div class="ibox">
-        <div class="ibox-title">
-          <div class="d-flex justify-content-between align-items-center">
-            <h5><b>Practitioner Information</b></h5>
+        <div class="col-md-6 col-sm-12 col-xs-12">
+          <div class="ibox-title ibox-dashboard-title">
+            <div class="d-flex justify-content-between align-items-center">
+              <h5><b>GSAS Credentials</b></h5>
+            </div>
           </div>
-        </div>
-        <div class="ibox-content table-responsive">
-          <table class="table table-bordered table-striped user-details-table">
-            <tbody>
-              <tr>
-                <th>Name</th>
-                <td><%= @user.full_name %></td>
-              </tr>
-              <tr>
-                <th>Username</th>
-                <td><%= @user.username %></td>
-              </tr>
-              <tr>
-                <th>Email</th>
-                <td><%= @user.email %></td>
-              </tr>
-              <tr>
-                <th>Phone Number</th>
-                <td><%= @user.mobile %></td>
-              </tr>
-              <tr>
-                <th>GSAS ID</th>
-                <td><%= @user.gsas_id %></td>
-              </tr>
-              <tr>
-                <th>Affiliated Service Provider</th>
-                <td><%= @user&.service_provider&.name %></td>
-              </tr>
-              <tr>
-                <th>Practitioner Accreditation</th>
-                <td><%= @user&.practitioner_accreditation_type %></td>
-              </tr>
-              <tr>
-                <th>Work Permit</th>
-                <td>
-                  <div class="f-left">
-                    <% if @user.user_detail&.qid_work_permit_file.present? %>
-                      <% if can?(:download_user_files, @user) %>
-                        <%= btn_download(download_user_files_user_path(@user, file: "qid_work_permit_file"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('qid_work_permit_file')}") %>
+          <br>
+          <div class="ibox">
+            <div class="ibox-title">
+              <div class="d-flex justify-content-between align-items-center">
+                <h5><b>Practitioner Information</b></h5>
+              </div>
+            </div>
+            <div class="ibox-content table-responsive">
+              <table class="table table-bordered table-striped user-details-table">
+                <tbody>
+                  <tr>
+                    <th>Name</th>
+                    <td><%= @user.full_name %></td>
+                  </tr>
+                  <tr>
+                    <th>Username</th>
+                    <td><%= @user.username %></td>
+                  </tr>
+                  <tr>
+                    <th>Email</th>
+                    <td><%= @user.email %></td>
+                  </tr>
+                  <tr>
+                    <th>Phone Number</th>
+                    <td><%= @user.mobile %></td>
+                  </tr>
+                  <tr>
+                    <th>GSAS ID</th>
+                    <td><%= @user.gsas_id %></td>
+                  </tr>
+                  <tr>
+                    <th>Affiliated Service Provider</th>
+                    <td><%= @user&.service_provider&.name %></td>
+                  </tr>
+                  <tr>
+                    <th>Practitioner Accreditation</th>
+                    <td><%= @user&.practitioner_accreditation_type %></td>
+                  </tr>
+                  <tr>
+                    <th>Work Permit</th>
+                    <td>
+                      <div class="f-left">
+                        <% if @user.user_detail&.qid_work_permit_file.present? %>
+                          <% if can?(:download_user_files, @user) %>
+                            <%= btn_download(download_user_files_user_path(@user, file: "qid_work_permit_file"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('qid_work_permit_file')}") %>
+                          <% end %>
+                          <%= truncate(@user.user_detail&.qid_work_permit_file&.file&.filename, length: 35) %>
+                        <% end %>
+                      </div>
+                      <% if ['default_role'].include?(current_user.role) %>
+                        <div class="f-right">
+                          <%= render partial: 'file_upload', locals: { file_name: 'qid_work_permit_file', demerit_flag: '', access_licence_id: ''} %>
+                        </div>
                       <% end %>
-                      <%= truncate(@user.user_detail&.qid_work_permit_file&.file&.filename, length: 35) %>
-                    <% end %>
-                  </div>
-                  <% if ['default_role'].include?(current_user.role) %>
-                    <div class="f-right">
-                      <%= render partial: 'file_upload', locals: { file_name: 'qid_work_permit_file', demerit_flag: '', access_licence_id: ''} %>
-                    </div>
-                  <% end %>
-                </td>
-              </tr>
-              <tr>
-                <th>Other Documents</th>
-                <td>
-                  <div class="f-left">
-                    <% if @user.user_detail&.other_documents.present? %>
-                      <% if can?(:download_user_files, @user) %>
-                        <%= btn_download(download_user_files_user_path(@user, file: "other_documents"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('other_documents')}") %>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Other Documents</th>
+                    <td>
+                      <div class="f-left">
+                        <% if @user.user_detail&.other_documents.present? %>
+                          <% if can?(:download_user_files, @user) %>
+                            <%= btn_download(download_user_files_user_path(@user, file: "other_documents"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('other_documents')}") %>
+                          <% end %>
+                          <%= truncate(@user.user_detail&.other_documents&.file&.filename, length: 35) %>
+                        <% end %>
+                      </div>
+                      <% if ['default_role'].include?(current_user.role) %>
+                        <div class="f-right">
+                          <%= render partial: 'file_upload', locals: { file_name: 'other_documents', demerit_flag: '', access_licence_id: ''} %>
+                        </div>
                       <% end %>
-                      <%= truncate(@user.user_detail&.other_documents&.file&.filename, length: 35) %>
-                    <% end %>
-                  </div>
-                  <% if ['default_role'].include?(current_user.role) %>
-                    <div class="f-right">
-                      <%= render partial: 'file_upload', locals: { file_name: 'other_documents', demerit_flag: '', access_licence_id: ''} %>
-                    </div>
-                  <% end %>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>  
-      <div class="ibox">
-        <div class="ibox-title">
-          <div class="d-flex justify-content-between align-items-center">
-            <h5><b>Projects Status</b></h5>
-          </div>
-        </div>
-        <div class="ibox-content table-responsive">
-          <table class="table table-bordered table-striped user-details-table">
-            <tbody>
-              <%
-              counter_cgp_for_completed_projects = 0
-              @total_cgp_for_completed_projects.each do |project|
-                  @project = Project.find(project)
-                  if @project.is_project_certified?
-                    counter_cgp_for_completed_projects = counter_cgp_for_completed_projects + 1
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>  
+          <div class="ibox">
+            <div class="ibox-title">
+              <div class="d-flex justify-content-between align-items-center">
+                <h5><b>Projects Status</b></h5>
+              </div>
+            </div>
+            <div class="ibox-content table-responsive">
+              <table class="table table-bordered table-striped user-details-table">
+                <tbody>
+                  <%
+                  counter_cgp_for_completed_projects = 0
+                  @total_cgp_for_completed_projects.each do |project|
+                      @project = Project.find(project)
+                      if @project.is_project_certified?
+                        counter_cgp_for_completed_projects = counter_cgp_for_completed_projects + 1
+                      end
                   end
-              end
 
-              counter_team_member_for_completed_projects = 0
-              @total_team_member_for_completed_projects.each do |project|
-                  @project = Project.find(project)
-                  if @project.is_project_certified?
-                    counter_team_member_for_completed_projects = counter_team_member_for_completed_projects + 1
+                  counter_team_member_for_completed_projects = 0
+                  @total_team_member_for_completed_projects.each do |project|
+                      @project = Project.find(project)
+                      if @project.is_project_certified?
+                        counter_team_member_for_completed_projects = counter_team_member_for_completed_projects + 1
+                      end
                   end
-              end
-              %>
-              <tr>
-                <th>Status</th>
-                <th>Quantity</th>
-                <th>Role</td>
-                <th>Quantity</th>
-              </tr>
-              <tr>
-                <th rowspan="2">Completed</th>
-                <td rowspan="2"><%= counter_cgp_for_completed_projects + counter_team_member_for_completed_projects %></td>
-                <td>Project Manager (CGP)</td>
-                <td><%= counter_cgp_for_completed_projects %></td>
-              </tr>
-              <tr>
-                <td>Team Member</td>
-                <td><%= counter_team_member_for_completed_projects %></td>
-              </tr>
-              <tr>
-                <th rowspan="2">In-Progress</th>
-                <td rowspan="2"><%= @total_cgp_for_inprogress_projects + @total_team_member_for_inprogress_projects %></td>
-                <td>Project Manager (CGP)</td>
-                <td><%= @total_cgp_for_inprogress_projects %></td>
-              </tr>
-              <tr>
-                <td>Team Member</td>
-                <td><%= @total_team_member_for_inprogress_projects %></td>
-              </tr>
-              <tr>
-                <th>Total</th>
-                <td colspan="4"><%= counter_cgp_for_completed_projects + counter_team_member_for_completed_projects + @total_cgp_for_inprogress_projects + @total_team_member_for_inprogress_projects %></td>
-              </tr>
-            </tbody>
-          </table>
+                  %>
+                  <tr>
+                    <th>Status</th>
+                    <th>Quantity</th>
+                    <th>Role</td>
+                    <th>Quantity</th>
+                  </tr>
+                  <tr>
+                    <th rowspan="2">Completed</th>
+                    <td rowspan="2"><%= counter_cgp_for_completed_projects + counter_team_member_for_completed_projects %></td>
+                    <td>Project Manager (CGP)</td>
+                    <td><%= counter_cgp_for_completed_projects %></td>
+                  </tr>
+                  <tr>
+                    <td>Team Member</td>
+                    <td><%= counter_team_member_for_completed_projects %></td>
+                  </tr>
+                  <tr>
+                    <th rowspan="2">In-Progress</th>
+                    <td rowspan="2"><%= @total_cgp_for_inprogress_projects + @total_team_member_for_inprogress_projects %></td>
+                    <td>Project Manager (CGP)</td>
+                    <td><%= @total_cgp_for_inprogress_projects %></td>
+                  </tr>
+                  <tr>
+                    <td>Team Member</td>
+                    <td><%= @total_team_member_for_inprogress_projects %></td>
+                  </tr>
+                  <tr>
+                    <th>Total</th>
+                    <td colspan="4"><%= counter_cgp_for_completed_projects + counter_team_member_for_completed_projects + @total_cgp_for_inprogress_projects + @total_team_member_for_inprogress_projects %></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="ibox">
+            <div class="ibox-title">
+              <div class="d-flex justify-content-between align-items-center">
+                <h5><b>Activity Information</b></h5>
+              </div>
+            </div>
+            <%= render partial: 'activity_information'%>
+          </div>
+          <%= render partial: 'demerit_notices'%>
+          <!--<div class="ibox">
+            <div class="ibox-title">
+              <div class="d-flex justify-content-between align-items-center">
+                <h5><b>Tasks Status</b></h5>
+              </div>
+            </div>
+            <div class="ibox-content table-responsive">
+              <table class="table table-bordered table-striped user-details-table">
+                <tbody>
+                  <tr>
+                    <th>Status</th>
+                    <th>Quantity</th>
+                    <th>Role</th>
+                    <th>Quantity</th>
+                  </tr>
+                  <tr>
+                    <th rowspan="2">Completed</th>
+                    <td rowspan="2">5</td>
+                    <td>Project Manager (CGP)</td>
+                    <td>2</td>
+                  </tr>
+                  <tr>
+                    <td>Team Member</td>
+                    <td>2</td>
+                  </tr>
+                  <tr>
+                    <th rowspan="2">In-Progress</th>
+                    <td rowspan="2">5</td>
+                    <td>Project Manager (CGP)</td>
+                    <td>1</td>
+                  </tr>
+                  <tr>
+                    <td>Team Member</td>
+                    <td>2</td>
+                  </tr>
+                  <tr>
+                    <th>Total</th>
+                    <td colspan="4">8</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="ibox">
+            <div class="ibox-title">
+              <div class="d-flex justify-content-between align-items-center">
+                <h5><b>Overdue Projects Tasks</b></h5>
+              </div>
+            </div>
+            <div class="ibox-content table-responsive">
+              <table class="table table-bordered table-striped user-details-table">
+                <tbody>
+                  <tr>
+                    <th>Overdue</th>
+                    <th>Project ID</th>
+                    <th>Task</th>
+                    <th>Deadline</th>
+                  </tr>
+                  <tr>
+                    <td>1 Day</td>
+                    <td>PD-QD-001-001</td>
+                    <td>Review S.1 criterion</td>
+                    <td>27/07/2022</td>
+                  </tr>
+                  <tr>
+                    <td>1 Day</td>
+                    <td>PD-QD-001-001</td>
+                    <td>Review S.1 criterion</td>
+                    <td>27/07/2022</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>-->
         </div>
       </div>
-      <div class="ibox">
-        <div class="ibox-title">
-          <div class="d-flex justify-content-between align-items-center">
-            <h5><b>Activity Information</b></h5>
-          </div>
-        </div>
-        <%= render partial: 'activity_information'%>
-      </div>
-      <%= render partial: 'demerit_notices'%>
-      <!--<div class="ibox">
-        <div class="ibox-title">
-          <div class="d-flex justify-content-between align-items-center">
-            <h5><b>Tasks Status</b></h5>
-          </div>
-        </div>
-        <div class="ibox-content table-responsive">
-          <table class="table table-bordered table-striped user-details-table">
-            <tbody>
-              <tr>
-                <th>Status</th>
-                <th>Quantity</th>
-                <th>Role</th>
-                <th>Quantity</th>
-              </tr>
-              <tr>
-                <th rowspan="2">Completed</th>
-                <td rowspan="2">5</td>
-                <td>Project Manager (CGP)</td>
-                <td>2</td>
-              </tr>
-              <tr>
-                <td>Team Member</td>
-                <td>2</td>
-              </tr>
-              <tr>
-                <th rowspan="2">In-Progress</th>
-                <td rowspan="2">5</td>
-                <td>Project Manager (CGP)</td>
-                <td>1</td>
-              </tr>
-              <tr>
-                <td>Team Member</td>
-                <td>2</td>
-              </tr>
-              <tr>
-                <th>Total</th>
-                <td colspan="4">8</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div class="ibox">
-        <div class="ibox-title">
-          <div class="d-flex justify-content-between align-items-center">
-            <h5><b>Overdue Projects Tasks</b></h5>
-          </div>
-        </div>
-        <div class="ibox-content table-responsive">
-          <table class="table table-bordered table-striped user-details-table">
-            <tbody>
-              <tr>
-                <th>Overdue</th>
-                <th>Project ID</th>
-                <th>Task</th>
-                <th>Deadline</th>
-              </tr>
-              <tr>
-                <td>1 Day</td>
-                <td>PD-QD-001-001</td>
-                <td>Review S.1 criterion</td>
-                <td>27/07/2022</td>
-              </tr>
-              <tr>
-                <td>1 Day</td>
-                <td>PD-QD-001-001</td>
-                <td>Review S.1 criterion</td>
-                <td>27/07/2022</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>-->
     </div>
   </div>
 </div>
+
+<script>
+    $(document).ready(function(){
+        $('body').addClass('page-bg-dark');
+    });
+</script>
