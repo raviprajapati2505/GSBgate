@@ -1,6 +1,6 @@
-<div class="ibox new_form">
+<div class="ibox  bg-white p-5 m-4 new_form">
   <div class="ibox-content">
-    <h2 class="text-green">Edit Service Provider Profile</h2>
+    <h2 class="text-green mb-5"><b>Edit Service Provider Profile</b></h2>
 
     <%= simple_form_for(@service_provider, url: update_service_provider_user_path(@service_provider), html: { method: :put, class: "user-form" }) do |f| %>
       <%= f.error_notification %>

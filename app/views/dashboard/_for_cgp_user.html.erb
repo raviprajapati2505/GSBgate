@@ -10,10 +10,10 @@
       </div>
       <div class="menu-block">
         <ul>
-          <li class="active"><a href="javascript:;"><span><%= image_tag('/assets/layout/certi-sub-status-op.png') %></span>DashBoard</a></li>
-          <li><a href="javascript:;"><span><%= image_tag('/assets/layout/certi-sub-status-op.png') %></span>Profile</a></li>
-          <li><a href="javascript:;"><span><%= image_tag('/assets/layout/certi-sub-status-op.png') %></span>Messages</a></li>
-          <li><a href="javascript:;"><span><%= image_tag('/assets/layout/certi-sub-status-op.png') %></span>Settings</a></li>
+        <li class="active"><a href="javascript:;"><span><%= image_tag('/assets/layout/grid.png') %></span>DashBoard</a></li>
+        <li><a href="javascript:;"><span><%= image_tag('/assets/layout/user-menu.png') %></span>Profile</a></li>
+        <li><a href="javascript:;"><span><%= image_tag('/assets/layout/comment.png') %></span>Messages</a></li>
+        <li><a href="javascript:;"><span><%= image_tag('/assets/layout/settings.png') %></span>Settings</a></li>
         </ul>
         <!-- <%= link_to 'View Profile', user_path(@user.id) %> -->
       </div>
@@ -27,14 +27,14 @@
     </div>
   </div>
   <div class="col">
-    <div class="db-content">
+    <div class="db-content cgp-dashboard">
       <div class="row">
         <div class="col-md-12">
-          <div class="ibox">
-            <div class="ibox-title">
+          <div class="ibox bs-none">
+            <div class="ibox-title main">
               <div class='d-flex justify-content-between align-items-center'>
-                <h3><b>Welcome to your dashboard</b></h3> 
-                <p>Today is <%= DateTime.now.strftime('%A, %d %B %Y') %></p>        
+                <h3>Welcome to your dashboard</h3> 
+                <p class="text-capitalize m-0">Today is <%= DateTime.now.strftime('%A, %d %B %Y') %></p>        
               </div>
             </div>
           </div>
@@ -42,14 +42,14 @@
         <div class="col-md-6 col-sm-12 col-xs-12">
           <div class="ibox-title ibox-dashboard-title">
             <div class="d-flex justify-content-between align-items-center">
-              <h5><b>Practitioner Profile</b></h5>
+              <h5>Practitioner Profile</h5>
             </div>
           </div>
           <br>
           <div class="ibox">
             <div class="ibox-title">
               <div class="d-flex justify-content-between align-items-center">
-                <h5><b>Personal Information</b></h5>
+                <h5>Personal Information</h5>
               </div>
             </div>
             <div class="ibox-content table-responsive">
@@ -133,7 +133,7 @@
           </div>
           <div class="ibox-title ibox-dashboard-title">
             <div class="d-flex justify-content-between align-items-center">
-              <h5><b>Practitioner Accreditation</b></h5>
+              <h5>Practitioner Accreditation</h5>
             </div>
           </div>
           <br>
@@ -146,7 +146,7 @@
           <div class="ibox">
             <div class="ibox-title">
               <div class="d-flex justify-content-between align-items-center">
-                <h5><b>Overdue Licences</b></h5>
+                <h5>Overdue Licences</h5>
               </div>
             </div>
             <%= render partial: 'overdue_licences' %>
@@ -155,14 +155,14 @@
         <div class="col-md-6 col-sm-12 col-xs-12">
           <div class="ibox-title ibox-dashboard-title">
             <div class="d-flex justify-content-between align-items-center">
-              <h5><b>GSAS Credentials</b></h5>
+              <h5>GSAS Credentials</h5>
             </div>
           </div>
           <br>
           <div class="ibox">
             <div class="ibox-title">
               <div class="d-flex justify-content-between align-items-center">
-                <h5><b>Practitioner Information</b></h5>
+                <h5>Practitioner Information</h5>
               </div>
             </div>
             <div class="ibox-content table-responsive">
@@ -239,7 +239,7 @@
           <div class="ibox">
             <div class="ibox-title">
               <div class="d-flex justify-content-between align-items-center">
-                <h5><b>Projects Status</b></h5>
+                <h5>Projects Status</h5>
               </div>
             </div>
             <div class="ibox-content table-responsive">
@@ -299,7 +299,7 @@
           <div class="ibox">
             <div class="ibox-title">
               <div class="d-flex justify-content-between align-items-center">
-                <h5><b>Activity Information</b></h5>
+                <h5>Activity Information</h5>
               </div>
             </div>
             <%= render partial: 'activity_information'%>
@@ -308,7 +308,7 @@
           <!--<div class="ibox">
             <div class="ibox-title">
               <div class="d-flex justify-content-between align-items-center">
-                <h5><b>Tasks Status</b></h5>
+                <h5>Tasks Status</h5>
               </div>
             </div>
             <div class="ibox-content table-responsive">
@@ -351,7 +351,7 @@
           <div class="ibox">
             <div class="ibox-title">
               <div class="d-flex justify-content-between align-items-center">
-                <h5><b>Overdue Projects Tasks</b></h5>
+                <h5>Overdue Projects Tasks</h5>
               </div>
             </div>
             <div class="ibox-content table-responsive">

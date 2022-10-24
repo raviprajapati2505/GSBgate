@@ -10,10 +10,10 @@
       </div>
       <div class="menu-block">
         <ul>
-          <li class="active"><a href="javascript:;"><span><%= image_tag('/assets/layout/certi-sub-status-db.png') %></span>DashBoard</a></li>
-          <li><a href="javascript:;"><span><%= image_tag('/assets/layout/certi-sub-status-db.png') %></span>Profile</a></li>
-          <li><a href="javascript:;"><span><%= image_tag('/assets/layout/certi-sub-status-db.png') %></span>Messages</a></li>
-          <li><a href="javascript:;"><span><%= image_tag('/assets/layout/certi-sub-status-db.png') %></span>Settings</a></li>
+          <li class="active"><a href="javascript:;"><span><%= image_tag('/assets/layout/grid.png') %></span>DashBoard</a></li>
+          <li><a href="javascript:;"><span><%= image_tag('/assets/layout/user-menu.png') %></span>Profile</a></li>
+          <li><a href="javascript:;"><span><%= image_tag('/assets/layout/comment.png') %></span>Messages</a></li>
+          <li><a href="javascript:;"><span><%= image_tag('/assets/layout/settings.png') %></span>Settings</a></li>
         </ul>
         <!-- <%= link_to 'View Profile', user_path(@user.id) %> -->
       </div>
@@ -27,14 +27,14 @@
     </div>
   </div>
   <div class="col">
-    <div class="db-content">
+    <div class="db-content sp-dashboard">
       <div class="row">
         <div class="col-md-12">
-          <div class="ibox">
-            <div class="ibox-title">
+          <div class="ibox bs-none">
+            <div class="ibox-title main">
               <div class='d-flex justify-content-between align-items-center'>
-                <h3><b>Welcome to your dashboard</b></h3> 
-                <p>Today is <%= DateTime.now.strftime('%A, %d %B %Y') %></p>        
+                <h3>Welcome to your dashboard</h3> 
+                <p class="text-capitalize m-0">Today is <%= DateTime.now.strftime('%A, %d %B %Y') %></p>        
               </div>
             </div>
           </div>
@@ -42,14 +42,14 @@
         <div class="col-md-6">
           <div class="ibox-title ibox-dashboard-title">
             <div class="d-flex justify-content-between align-items-center">
-              <h5><b>Company Profile</b></h5>
+              <h5>Company Profile</h5>
             </div>
           </div>
           <br>
           <div class="ibox">
             <div class="ibox-title">
               <div class="d-flex justify-content-between align-items-center">
-                <h5><b>Company Information</b></h5>
+                <h5>Company Information</h5>
               </div>
             </div>
             <div class="ibox-content table-responsive">
@@ -119,14 +119,14 @@
           </div>
           <div class="ibox-title ibox-dashboard-title">
             <div class="d-flex justify-content-between align-items-center">
-              <h5><b>GSAS Credentials</b></h5>
+              <h5>GSAS Credentials</h5>
             </div>
           </div>
           <br>
           <div class="ibox">
             <div class="ibox-title">
               <div class="d-flex justify-content-between align-items-center">
-                <h5><b>Service Provider Information</b></h5>
+                <h5>Service Provider Information</h5>
               </div>
             </div>
             <div class="ibox-content table-responsive">
@@ -177,7 +177,7 @@
           <div class="ibox">
             <div class="ibox-title">
               <div class="d-flex justify-content-between align-items-center">
-                <h5><b>Activity Information</b></h5>
+                <h5>Activity Information</h5>
               </div>
             </div>
             <%= render partial: 'activity_information'%>
@@ -185,7 +185,7 @@
           <div class="ibox">
             <div class="ibox-title">
               <div class="d-flex justify-content-between align-items-center">
-                <h5><b>Credentials Overdue Licences</b></h5>
+                <h5>Credentials Overdue Licences</h5>
               </div>
             </div>
             <%= render partial: 'overdue_licences' %>
@@ -195,7 +195,7 @@
         <div class="col-md-6">
           <div class="ibox-title ibox-dashboard-title">
             <div class="d-flex justify-content-between align-items-center">
-              <h5><b>Corporate Licences</b></h5>
+              <h5>Corporate Licences</h5>
             </div>
           </div>
           <br>
@@ -207,14 +207,14 @@
           </div>
           <div class="ibox-title ibox-dashboard-title">
             <div class="d-flex justify-content-between align-items-center">
-              <h5><b>Service Provider Practitioners Accreditations*</b></h5>
+              <h5>Service Provider Practitioners Accreditations*</h5>
             </div>
           </div>
           <br>
           <div class="ibox">
             <div class="ibox-title">
               <div class="d-flex justify-content-between align-items-center">
-                <h5><b>GSAS Design & Build</b></h5>
+                <h5>GSAS Design & Build</h5>
               </div>
             </div>
             <div class="ibox-content table-responsive">
@@ -245,7 +245,7 @@
           <div class="ibox">
             <div class="ibox-title">
               <div class="d-flex justify-content-between align-items-center">
-                <h5><b>GSAS Construction Management</b></h5>
+                <h5>GSAS Construction Management</h5>
               </div>
             </div>
             <div class="ibox-content table-responsive">
@@ -276,7 +276,7 @@
           <div class="ibox">
             <div class="ibox-title">
               <div class="d-flex justify-content-between align-items-center">
-                <h5><b>GSAS Operations</b></h5>
+                <h5>GSAS Operations</h5>
               </div>
             </div>
             <div class="ibox-content table-responsive">
@@ -307,7 +307,7 @@
           <div class="ibox">
             <div class="ibox-title">
               <div class="d-flex justify-content-between align-items-center">
-                <h5><b>Facility Management</b></h5>
+                <h5>Facility Management</h5>
               </div>
             </div>
             <div class="ibox-content table-responsive">
@@ -327,7 +327,7 @@
           <div class="ibox">
             <div class="ibox-title">
               <div class="d-flex justify-content-between align-items-center">
-                <h5><b>Waste Management</b></h5>
+                <h5>Waste Management</h5>
               </div>
             </div>
             <div class="ibox-content table-responsive">
@@ -347,7 +347,7 @@
           <div class="ibox">
             <div class="ibox-title">
               <div class="d-flex justify-content-between align-items-center">
-                <h5><b>Building Commissioning</b></h5>
+                <h5>Building Commissioning</h5>
               </div>
             </div>
             <div class="ibox-content table-responsive">

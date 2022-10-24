@@ -388,6 +388,9 @@ hr {
 .bg-black-light {
   background-color: rgba($black, 0.74);
 }
+.bg-white{
+  background-color: #fff !important;
+}
 .skin-gord {
   .select2-results .select2-no-results,
   .select2-results .select2-searching,
@@ -540,7 +543,9 @@ hr {
       max-width: 95%;
     }
   }
-
+  .select2-container.select2-allowclear .select2-choice abbr{
+    top: 12px !important;
+  }
   .select2-container .select2-choice {
     height: min(max(25px, 1.93vw), 35px);
     background-image: none;
@@ -549,6 +554,7 @@ hr {
     display: flex;
     align-items: center;
     width: 100%;
+    color:#000;
   }
   .select2-search input {
     background: url("/assets/select2.png") no-repeat 100% -22px,
@@ -662,6 +668,8 @@ hr {
         align-items: center;
         justify-content: center;
         border-right: 1px solid $primary;
+        max-width: 150px;
+
         .dropdown-open {
           background-color: $primary;
         }
@@ -857,7 +865,7 @@ hr {
 .certi-status-badge {
   display: inline-block;
   position: relative;
-  width: 96px;
+  width: 109px !important;
   padding: 3px 15px 3px 35px;
   border-radius: 2rem;
   white-space: nowrap;
@@ -1122,6 +1130,9 @@ table.dataTable thead > tr > th.sorting {
   position: relative;
   border-radius: 20px 0 0 20px;
   padding-bottom: 75px;
+  .user-email{
+    text-decoration: underline;
+  }
   .logout-menu {
     position: absolute;
     bottom: 30px;
@@ -1234,4 +1245,93 @@ table.dataTable thead > tr > th.sorting {
   width: 100%;
   padding: 30px 0 20px;
   background: $white;
+}
+// 24-10-2022
+.skin-gord .score-tabs li a{ 
+  background: transparent;
+  border: 1px solid #3a4f57;
+color:#3a4f57;
+img{
+  display: none;
+}
+}
+.skin-gord .score-tabs li.active a{
+  background: transparent;
+  border: 1px solid #3a4f57;
+  color: #61a60e;
+  
+}
+.bs-none{
+  box-shadow: none !important;
+}
+.db-content {
+  border-radius: 0 20px 20px 0;
+  .ibox{
+    
+  }
+  .ibox-title {
+    background: $gray-700;
+
+    h3 {
+      font-weight: 400;
+
+    }
+  }
+  .ibox-dashboard-title{
+    padding: 1rem;
+  color: #3a4f57;
+  border-radius: 5px 0 0 5px;
+  h5{
+    font-weight: 400 !important;
+
+  }
+}
+  &.sp-dashboard {
+    .ibox-title.main {
+      border-left: 10px solid #2584c4;
+      padding: 1.5rem;
+
+      p {
+        font-weight: 100;
+      }
+    }
+    .ibox-dashboard-title{
+      background-color: #ecf0fa;
+    }
+  }
+  &.cgp-dashboard {
+    .ibox-title.main {
+      border-left: 10px solid #61a60e;
+      padding: 1.5rem;
+
+      p {
+        font-weight: 100;
+      }
+    }
+    .ibox-dashboard-title{
+      background-color: #e8efde;
+    }
+  }
+  table tr th,table tr td{
+    border-left: 0px;
+    border-right: 0px;
+  color: #3a4f57;
+
+  }
+}
+.daterangepicker .calendar-table th, .daterangepicker .calendar-table td{
+  color: #606a73;
+}
+.daterangepicker td.available:hover, .daterangepicker th.available:hover {
+  background-color: #eee;
+  border-color: transparent;
+  color: #000 !important;
+}
+.daterangepicker .drp-buttons .cancelBtn{
+  color: #000;
+}
+.daterangepicker td.active, .daterangepicker td.active:hover {
+  background-color: #3a4f57;
+  border-color: transparent;
+  color: #fff;
 }
