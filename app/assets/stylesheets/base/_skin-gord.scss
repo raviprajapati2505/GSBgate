@@ -99,7 +99,7 @@
     }
     > .row {
       min-height: 100vh;
-      display:flex;
+      display: flex;
       @media (max-width: 992px) {
         flex-direction: column;
       }
@@ -112,13 +112,13 @@
         font-family: pf_din_text_universalregular;
         font-size: 16px;
         .separator {
-          color: #79a44a;
+          color: $primary;
         }
       }
       .row {
         margin-top: 16px;
-        display:flex;
-        @media (max-width:767px) {
+        display: flex;
+        @media (max-width: 767px) {
           flex-wrap: wrap;
         }
         .login-left {
@@ -281,10 +281,6 @@
 }
 
 .skin-gord {
-  // General
-  // background: image-url('layout/gsas_trust_background.jpg') no-repeat center center fixed;
-  // background-size: cover;
-
   .gord-transparent {
     background-color: transparent;
   }
@@ -301,7 +297,7 @@
     }
   }
   ul.navbar-right {
-    background: #426f20;
+    background: $skin-gord-a-color;
     color: white;
     display: flex;
     margin-left: auto;
@@ -330,13 +326,13 @@
         align-items: center;
         padding: 5px 13px !important ;
         &:hover {
-          color: #61a60e !important;
+          color: $primary !important;
           & .nav-user-icon {
-            border-color: #61a60e;
+            border-color: $primary;
           }
         }
         & i {
-          color: #97dd44;
+          color: $primary;
         }
       }
     }
@@ -367,12 +363,12 @@
       margin-left: auto;
       & .btn-link {
         padding: 6px 18px;
-        background: #3a4f57;
+        background: $secondary;
         color: $gray-400;
         border-radius: 16px;
         & i {
           font-size: 15px;
-          color: #62a60a;
+          color: $primary;
         }
       }
     }
@@ -1086,15 +1082,12 @@
 
   .sortable-placeholder {
     background-color: $gray-100;
-    border: 1px dashed #ccc;
+    border: 1px dashed $dark-gray;
     height: 75px;
     margin-bottom: 10px;
   }
 
   // Timeline
-  #vertical-timeline-legend {
-  }
-
   #vertical-timeline-legend {
     .vertical-timeline-legend-item {
       margin-left: 36px;

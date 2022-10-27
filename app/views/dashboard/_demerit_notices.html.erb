@@ -1,58 +1,49 @@
-<div class="ibox">
-  <div class="ibox-title">
-    <div class="d-flex justify-content-between align-items-center">
-      <h5><b>Demerit Notices</b></h5>
-    </div>
-  </div>
-  <div class="ibox-content table-responsive">
-    <table class="table table-bordered table-striped user-details-table table-responsive">
-      <tbody>
-        <tr>
-          <th>Flags</th>
-          <th>GSAS Trust Notification</th>
-          <th>Practitioner Acknowledge</th>
-        </tr>
-        <% @user&.demerit_flags.each.with_index(1) do |flag, index| %>
-          <tr>
-            <td>Flag 0<%= index%></td>
-            <td>
-              <div class="">
-                <% if flag&.gsas_trust_notification.present? %>
-                  <% if can?(:download_user_files, @user) %>
-                    <%= btn_download(download_user_files_user_path(@user, file: "gsas_trust_notification", demerit_flag: flag), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('gsas_trust_notification')}") %>
-                  <% end %>
-                  <%= truncate(flag&.gsas_trust_notification&.file&.filename, length: 35) %>
-                <% end %>
-              </div>
-              <br>
-              <% if ['credentials_admin'].include?(current_user.role) %>
-                <div class="">
-                  <%= render partial: 'file_upload', locals: { file_name: 'gsas_trust_notification', demerit_flag: flag.id, access_licence_id: ''} %>
-                </div>
+<table class="table mb-0">
+  <tbody>
+    <tr>
+      <th>Flags</th>
+      <th>GSAS Trust Notification</th>
+      <th>Practitioner Acknowledge</th>
+    </tr>
+    <% @user&.demerit_flags.each.with_index(1) do |flag, index| %>
+      <tr>
+        <td>Flag 0<%= index%></td>
+        <td>
+          <div class="">
+            <% if flag&.gsas_trust_notification.present? %>
+              <% if can?(:download_user_files, @user) %>
+                <%= btn_download(download_user_files_user_path(@user, file: "gsas_trust_notification", demerit_flag: flag), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('gsas_trust_notification')}") %>
               <% end %>
-            </td>
-            <td>
-              <div class="">
-                <% if flag&.practitioner_acknowledge.present? %>
-                  <% if can?(:download_user_files, @user) %>
-                    <%= btn_download(download_user_files_user_path(@user, file: "practitioner_acknowledge", demerit_flag: flag), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('practitioner_acknowledge')}") %>
-                  <% end %>
-                  <%= truncate(flag&.practitioner_acknowledge&.file&.filename, length: 35) %>
-                <% end %>
-              </div>
-              <br>
-              <% if ['default_role', 'service_provider'].include?(current_user.role) %>
-                <div class="">
-                  <%= render partial: 'file_upload', locals: { file_name: 'practitioner_acknowledge', demerit_flag: flag.id, access_licence_id: '' } %>
-                </div>
+              <%= truncate(flag&.gsas_trust_notification&.file&.filename, length: 35) %>
+            <% end %>
+          </div>
+          <br>
+          <% if ['credentials_admin'].include?(current_user.role) %>
+            <div class="">
+              <%= render partial: 'file_upload', locals: { file_name: 'gsas_trust_notification', demerit_flag: flag.id, access_licence_id: ''} %>
+            </div>
+          <% end %>
+        </td>
+        <td>
+          <div class="">
+            <% if flag&.practitioner_acknowledge.present? %>
+              <% if can?(:download_user_files, @user) %>
+                <%= btn_download(download_user_files_user_path(@user, file: "practitioner_acknowledge", demerit_flag: flag), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('practitioner_acknowledge')}") %>
               <% end %>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-    <% if ['credentials_admin'].include?(current_user.role) %>
-      <%= btn_link_to(increase_demerit_flag_user_path(@user), {icon: 'exclamation-triangle', text: 'Add More', style: 'danger', method: :get, data: {confirm: 'Are you sure want to send demerit warning to this user?'}}) %>
+              <%= truncate(flag&.practitioner_acknowledge&.file&.filename, length: 35) %>
+            <% end %>
+          </div>
+          <br>
+          <% if ['default_role', 'service_provider'].include?(current_user.role) %>
+            <div class="">
+              <%= render partial: 'file_upload', locals: { file_name: 'practitioner_acknowledge', demerit_flag: flag.id, access_licence_id: '' } %>
+            </div>
+          <% end %>
+        </td>
+      </tr>
     <% end %>
-  </div>
-</div>
+  </tbody>
+</table>
+<% if ['credentials_admin'].include?(current_user.role) %>
+  <%= btn_link_to(increase_demerit_flag_user_path(@user), {icon: 'exclamation-triangle', text: 'Add More', style: 'danger', method: :get, data: {confirm: 'Are you sure want to send demerit warning to this user?'}}) %>
+<% end %>

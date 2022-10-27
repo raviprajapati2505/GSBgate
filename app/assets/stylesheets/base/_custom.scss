@@ -388,7 +388,7 @@ hr {
 .bg-black-light {
   background-color: rgba($black, 0.74);
 }
-.bg-white{
+.bg-white {
   background-color: #fff !important;
 }
 .skin-gord {
@@ -543,7 +543,7 @@ hr {
       max-width: 95%;
     }
   }
-  .select2-container.select2-allowclear .select2-choice abbr{
+  .select2-container.select2-allowclear .select2-choice abbr {
     top: 12px !important;
   }
   .select2-container .select2-choice {
@@ -554,7 +554,7 @@ hr {
     display: flex;
     align-items: center;
     width: 100%;
-    color:#000;
+    color: #000;
   }
   .select2-search input {
     background: url("/assets/select2.png") no-repeat 100% -22px,
@@ -1027,7 +1027,7 @@ label.required:after {
   }
 }
 .download-btn a.btn {
-  background: #3a4f57;
+  background: $secondary;
   border-radius: 50%;
   width: 24px;
   height: 24px;
@@ -1036,8 +1036,8 @@ label.required:after {
 }
 table.dataTable.light-green thead tr th,
 .table-bordered.light-green > thead > tr > th {
-  background: #ebf4e9 !important;
-  color: #606a73 !important;
+  background: $skin-gord-color-light !important;
+  color: $gray-600 !important;
 }
 // 21-10-2022
 table.dataTable thead .sorting:after {
@@ -1054,7 +1054,7 @@ table.dataTable thead .sorting_desc_disabled:after {
   right: 5px !important;
 }
 .cert-doc-table thead tr th:after {
-  color: #606a73 !important;
+  color: $gray-600 !important;
   bottom: 12px !important;
   opacity: 1 !important;
 }
@@ -1087,7 +1087,7 @@ table.dataTable thead > tr > th.sorting {
   position: absolute;
   right: 4px;
   top: 7px;
-  color: #61a60e;
+  color: $primary;
   font: normal normal normal 14px/1 FontAwesome !important;
 }
 .skin-gord .vertical-timeline-content .btn.audit-log:first-child {
@@ -1096,7 +1096,7 @@ table.dataTable thead > tr > th.sorting {
 .skin-gord .vertical-timeline-content .btn.audit-log {
   background: transparent;
   border: 0px;
-  color: #61a60e;
+  color: $primary;
   font-size: 16px;
   padding: 0;
   border-radius: 0;
@@ -1130,7 +1130,7 @@ table.dataTable thead > tr > th.sorting {
   position: relative;
   border-radius: 20px 0 0 20px;
   padding-bottom: 75px;
-  .user-email{
+  .user-email {
     text-decoration: underline;
   }
   .logout-menu {
@@ -1245,93 +1245,153 @@ table.dataTable thead > tr > th.sorting {
   width: 100%;
   padding: 30px 0 20px;
   background: $white;
-}
-// 24-10-2022
-.skin-gord .score-tabs li a{ 
-  background: transparent;
-  border: 1px solid #3a4f57;
-color:#3a4f57;
-img{
-  display: none;
-}
-}
-.skin-gord .score-tabs li.active a{
-  background: transparent;
-  border: 1px solid #3a4f57;
-  color: #61a60e;
-  
-}
-.bs-none{
-  box-shadow: none !important;
-}
-.db-content {
   border-radius: 0 20px 20px 0;
-  .ibox{
-    
-  }
   .ibox-title {
     background: $gray-700;
-
     h3 {
       font-weight: 400;
-
+    }
+    &.main {
+      border-left: 10px solid $white;
+      border-right: solid 1px $white;
+      padding: 1.5rem;
     }
   }
-  .ibox-dashboard-title{
-    padding: 1rem;
-  color: #3a4f57;
-  border-radius: 5px 0 0 5px;
-  h5{
-    font-weight: 400 !important;
-
-  }
-}
   &.sp-dashboard {
-    .ibox-title.main {
-      border-left: 10px solid #2584c4;
-      padding: 1.5rem;
-
-      p {
-        font-weight: 100;
+    .ibox-title {
+      &.main {
+        border-left-color: $info-dark;
       }
     }
-    .ibox-dashboard-title{
-      background-color: #ecf0fa;
+    .block-heading {
+      background: rgba($info-dark, 0.1);
     }
   }
   &.cgp-dashboard {
-    .ibox-title.main {
-      border-left: 10px solid #61a60e;
-      padding: 1.5rem;
-
-      p {
-        font-weight: 100;
+    .ibox-title {
+      &.main {
+        border-left-color: $primary;
       }
     }
-    .ibox-dashboard-title{
-      background-color: #e8efde;
+  }
+  table tr th,
+  table tr td {
+    color: $secondary;
+  }
+}
+.db-box {
+  box-shadow: 0 0 10px rgba($black, 0.2);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 30px;
+  &.with-side-header {
+    .table {
+      th {
+        padding-top: 0;
+        border-top: none;
+      }
+      tr {
+        &:last-child {
+          td, th {
+            border-bottom: solid 1px $secondary;
+          }
+        }
+      }
     }
   }
-  table tr th,table tr td{
-    border-left: 0px;
-    border-right: 0px;
-  color: #3a4f57;
-
+}
+.type-block {
+  &-outer {
+    display: inline-block;
+    width: 150px;
+    height: 150px;
+    background: $secondary;
+    border-radius: 0 10rem 10rem 10rem;
+    padding: 10px;
+    position: relative;
+  }
+  &-inner {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    background: $white;
+    border-radius: 50%;
+    overflow: hidden;
+    .inner {
+      &-top {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 5px 0;
+        height: 50%;
+        background: $primary;
+      }
+      &-bottom {
+        display: flex;
+        justify-content: center;
+        padding: 5px 5px 0;
+        height: 50%;
+        background: rgba($primary, 0.4);
+        span {
+          text-align: center;
+          font-weight: 500;
+        }
+      }
+    }
   }
 }
-.daterangepicker .calendar-table th, .daterangepicker .calendar-table td{
-  color: #606a73;
+.block-heading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 150px;
+  height: 100%;
+  padding: 10px;
+  background: $skin-gord-color-light;
+  .heading {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    img {
+      width: 30px;
+    }
+  }
 }
-.daterangepicker td.available:hover, .daterangepicker th.available:hover {
+// 24-10-2022
+// .skin-gord .score-tabs li a {
+//   background: transparent;
+//   border: 1px solid $secondary;
+//   color: $secondary;
+//   img {
+//     display: none;
+//   }
+// }
+// .skin-gord .score-tabs li.active a {
+//   background: transparent;
+//   border: 1px solid $secondary;
+//   color: $primary;
+// }
+.bs-none {
+  box-shadow: none !important;
+}
+
+.daterangepicker .calendar-table th,
+.daterangepicker .calendar-table td {
+  color: $gray-600;
+}
+.daterangepicker td.available:hover,
+.daterangepicker th.available:hover {
   background-color: #eee;
   border-color: transparent;
-  color: #000 !important;
+  color: $black !important;
 }
-.daterangepicker .drp-buttons .cancelBtn{
-  color: #000;
+.daterangepicker .drp-buttons .cancelBtn {
+  color: $black;
 }
-.daterangepicker td.active, .daterangepicker td.active:hover {
-  background-color: #3a4f57;
+.daterangepicker td.active,
+.daterangepicker td.active:hover {
+  background-color: $secondary;
   border-color: transparent;
-  color: #fff;
+  color: $white;
 }

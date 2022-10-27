@@ -1,7 +1,7 @@
-html,
-body {
-  height: 100%;
-}
+// html,
+// body {
+//   height: 100%;
+// }
 body {
   font-family: "Outfit", sans-serif;
   font-weight: 300;
@@ -9,6 +9,7 @@ body {
   font-size: 14px;
   color: $gray-700;
   overflow-x: hidden;
+  position: relative;
 }
 body.full-height-layout #wrapper,
 body.full-height-layout #page-wrapper {
@@ -774,6 +775,10 @@ table.table-mail tr td {
   a {
     color: $primary;
   }
+}
+
+.text-secondary {
+  color: $secondary;
 }
 
 .text-success {

@@ -1,111 +1,109 @@
-<div class="ibox-content table-responsive">
-  <table class="table table-bordered table-striped user-details-table table-responsive">
-    <tbody>
+<table class="table mb-0">
+  <tbody>
+    <tr>
+      <th>License Type</th>
+      <th>GSAS ID</th>
+      <th>Expiry Date</th>
+      <th>Licence</th>
+    </tr>
+    <tr>
+      <td>GSAS Districts</td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <% user_licences_design&.each.with_index(1) do |ac, index| %>
       <tr>
-        <th>License Type</th>
-        <th>GSAS ID</th>
-        <th>Expiry Date</th>
-        <th>Licence</th>
-      </tr>
-      <tr>
-        <td>GSAS Districts</td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      <% user_licences_design&.each.with_index(1) do |ac, index| %>
-        <tr>
-          <% if index == 1 %>
-            <td rowspan="<%= user_licences_design.count %>">GSAS-D&B</td>
-          <% end %>
-          <td><%= ac.user.gsas_id %></td>
-          <td><%= ac.formatted_expiry_date %></td>
-          <td>
-            <div class="">
-              <% if ac&.licence_file.present? %>
-                <% if can?(:download_user_files, @user) %>
-                  <%= btn_download(download_user_files_user_path(@user, file: "licence_file", access_licence_id: ac.id), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('licence_file')}") %>
-                <% end %>
-                <%= truncate(ac&.licence_file&.file&.filename, length: 35) %>
+        <% if index == 1 %>
+          <td rowspan="<%= user_licences_design.count %>">GSAS-D&B</td>
+        <% end %>
+        <td><%= ac.user.gsas_id %></td>
+        <td><%= ac.formatted_expiry_date %></td>
+        <td>
+          <div class="">
+            <% if ac&.licence_file.present? %>
+              <% if can?(:download_user_files, @user) %>
+                <%= btn_download(download_user_files_user_path(@user, file: "licence_file", access_licence_id: ac.id), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('licence_file')}") %>
               <% end %>
-            </div>
-            <br>
-            <% if ['credentials_admin'].include?(current_user.role) %>
-              <div class="">
-                <%= render partial: 'file_upload', locals: { file_name: 'licence_file', demerit_flag: '', access_licence_id: ac.id } %>
-              </div>
+              <%= truncate(ac&.licence_file&.file&.filename, length: 35) %>
             <% end %>
-          </td>
-        </tr>
-      <% end %>
-      <% user_licences_construction&.each.with_index(1) do |ac, index| %>
-        <tr>
-          <% if index == 1 %>
-            <td rowspan="<%= user_licences_construction.count %>">GSAS-CM</td>
-          <% end %>
-          <td><%= ac.user.gsas_id %></td>
-          <td><%= ac.formatted_expiry_date %></td>
-          <td>
+          </div>
+          <br>
+          <% if ['credentials_admin'].include?(current_user.role) %>
             <div class="">
-              <% if ac&.licence_file.present? %>
-                <% if can?(:download_user_files, @user) %>
-                  <%= btn_download(download_user_files_user_path(@user, file: "licence_file", access_licence_id: ac.id), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('licence_file')}") %>
-                <% end %>
-                <%= truncate(ac&.licence_file&.file&.filename, length: 35) %>
-              <% end %>
+              <%= render partial: 'file_upload', locals: { file_name: 'licence_file', demerit_flag: '', access_licence_id: ac.id } %>
             </div>
-            <br>
-            <% if ['credentials_admin'].include?(current_user.role) %>
-              <div class="">
-                <%= render partial: 'file_upload', locals: { file_name: 'licence_file', demerit_flag: '', access_licence_id: ac.id } %>
-              </div>
-            <% end %>
-          </td>
-        </tr>
-      <% end %>
-      <% user_licences_operation&.each.with_index(1) do |ac, index| %>
-        <tr>
-          <% if index == 1 %>
-            <td rowspan="<%= user_licences_operation.count %>">GSAS-OP</td>
           <% end %>
-          <td><%= ac.user.gsas_id %></td>
-          <td><%= ac.formatted_expiry_date %></td>
-          <td>
-            <div class="">
-              <% if ac&.licence_file.present? %>
-                <% if can?(:download_user_files, @user) %>
-                  <%= btn_download(download_user_files_user_path(@user, file: "licence_file", access_licence_id: ac.id), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('licence_file')}") %>
-                <% end %>
-                <%= truncate(ac&.licence_file&.file&.filename, length: 35) %>
+        </td>
+      </tr>
+    <% end %>
+    <% user_licences_construction&.each.with_index(1) do |ac, index| %>
+      <tr>
+        <% if index == 1 %>
+          <td rowspan="<%= user_licences_construction.count %>">GSAS-CM</td>
+        <% end %>
+        <td><%= ac.user.gsas_id %></td>
+        <td><%= ac.formatted_expiry_date %></td>
+        <td>
+          <div class="">
+            <% if ac&.licence_file.present? %>
+              <% if can?(:download_user_files, @user) %>
+                <%= btn_download(download_user_files_user_path(@user, file: "licence_file", access_licence_id: ac.id), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('licence_file')}") %>
               <% end %>
-            </div>
-            <br>
-            <% if ['credentials_admin'].include?(current_user.role) %>
-              <div class="">
-                <%= render partial: 'file_upload', locals: { file_name: 'licence_file', demerit_flag: '', access_licence_id: ac.id } %>
-              </div>
+              <%= truncate(ac&.licence_file&.file&.filename, length: 35) %>
             <% end %>
-          </td>
-        </tr>
-      <% end %>
-      <tr>
-        <td>Facility Management</td>
-        <td></td>
-        <td></td>
-        <td></td>
+          </div>
+          <br>
+          <% if ['credentials_admin'].include?(current_user.role) %>
+            <div class="">
+              <%= render partial: 'file_upload', locals: { file_name: 'licence_file', demerit_flag: '', access_licence_id: ac.id } %>
+            </div>
+          <% end %>
+        </td>
       </tr>
+    <% end %>
+    <% user_licences_operation&.each.with_index(1) do |ac, index| %>
       <tr>
-        <td>Waste Management</td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <% if index == 1 %>
+          <td rowspan="<%= user_licences_operation.count %>">GSAS-OP</td>
+        <% end %>
+        <td><%= ac.user.gsas_id %></td>
+        <td><%= ac.formatted_expiry_date %></td>
+        <td>
+          <div class="">
+            <% if ac&.licence_file.present? %>
+              <% if can?(:download_user_files, @user) %>
+                <%= btn_download(download_user_files_user_path(@user, file: "licence_file", access_licence_id: ac.id), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('licence_file')}") %>
+              <% end %>
+              <%= truncate(ac&.licence_file&.file&.filename, length: 35) %>
+            <% end %>
+          </div>
+          <br>
+          <% if ['credentials_admin'].include?(current_user.role) %>
+            <div class="">
+              <%= render partial: 'file_upload', locals: { file_name: 'licence_file', demerit_flag: '', access_licence_id: ac.id } %>
+            </div>
+          <% end %>
+        </td>
       </tr>
-      <tr>
-        <td>Building Commissioning</td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+    <% end %>
+    <tr>
+      <td>Facility Management</td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Waste Management</td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Building Commissioning</td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>

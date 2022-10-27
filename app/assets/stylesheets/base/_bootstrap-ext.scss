@@ -3000,6 +3000,10 @@
     font-weight: 400 !important;
 }
 
+.font-weight-500 {
+    font-weight: 500 !important;
+}
+
 .font-weight-bold {
     font-weight: 700 !important;
 }
@@ -3097,12 +3101,12 @@
 }
 
 .text-dark {
-    color: #343a40 !important;
+    color: $secondary !important;
 }
 
 a.text-dark:focus,
 a.text-dark:hover {
-    color: #121416 !important;
+    color: darken($secondary, 0.5) !important;
 }
 
 .text-danger {
@@ -3112,6 +3116,12 @@ a.text-dark:hover {
 a.text-danger:focus,
 a.text-danger:hover {
     color: #a71d2a !important;
+}
+.bg-primary {
+    background: $primary;
+}
+.bg-primary-light {
+    background: $skin-gord-color-light;
 }
 .container,
 .container-fluid,

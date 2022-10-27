@@ -380,33 +380,14 @@ ul.notes li div {
   padding: 5px 0;
 }
 
-.category-list li {
-  display: block;
-}
-
-.category-list li i {
-  margin-right: 8px;
-  color: #3d4d5d;
-}
-
-.category-list li a .text-navy {
-  color: $primary;
-}
-
-.category-list li a .text-primary {
-  color: $primary;
-}
-
-.category-list li a .text-info {
-  color: $info;
-}
-
-.category-list li a .text-danger {
-  color: #ef5352;
-}
-
-.category-list li a .text-warning {
-  color: #f8ac59;
+.category-list {
+  li {
+    display: block;
+    i {
+      margin-right: 8px;
+      color: #3d4d5d;
+    }
+  }
 }
 
 .file-manager h5.tag-title {
