@@ -187,7 +187,6 @@ legend.scheduler-border {
   top: 50px !important;
   width: 100% !important;
   z-index: 99 !important;
-  // background: image-url('layout/gsas_trust_background.jpg') no-repeat center center fixed;
 }
 
 .skin-gord {
@@ -222,12 +221,11 @@ legend.scheduler-border {
   display: none;
 }
 
-.f-left {
+.float-left {
   float: left;
 }
-.f-right {
+.float-right {
   float: right;
-  width: 50%;
 }
 .dashboard_file_label {
   width: 130px;
@@ -865,7 +863,7 @@ hr {
 .certi-status-badge {
   display: inline-block;
   position: relative;
-  width: 109px !important;
+  width: auto;
   padding: 3px 15px 3px 35px;
   border-radius: 2rem;
   white-space: nowrap;
@@ -1011,7 +1009,7 @@ label.required:after {
     margin-left: 1px;
   }
 }
-// 20-10-2022
+
 .navbar-collapse.in {
   overflow: initial;
   padding: 0;
@@ -1039,7 +1037,7 @@ table.dataTable.light-green thead tr th,
   background: $skin-gord-color-light !important;
   color: $gray-600 !important;
 }
-// 21-10-2022
+
 table.dataTable thead .sorting:after {
   content: "\f0dc" !important;
   opacity: 1 !important;
@@ -1132,18 +1130,6 @@ table.dataTable thead > tr > th.sorting {
   padding-bottom: 75px;
   .user-email {
     text-decoration: underline;
-  }
-  .logout-menu {
-    position: absolute;
-    bottom: 30px;
-    left: 0;
-    right: 0;
-    .menu-block {
-      border: none;
-      li {
-        border: none;
-      }
-    }
   }
   &.db-servicer {
     background: #2584c4;
@@ -1266,6 +1252,9 @@ table.dataTable thead > tr > th.sorting {
     .block-heading {
       background: rgba($info-dark, 0.1);
     }
+    .type-block-outer {
+      background: $info-dark;
+    }
   }
   &.cgp-dashboard {
     .ibox-title {
@@ -1286,13 +1275,20 @@ table.dataTable thead > tr > th.sorting {
   margin-bottom: 30px;
   &.with-side-header {
     .table {
-      th {
-        padding-top: 0;
-        border-top: none;
-      }
       tr {
+        &:first-child {
+          th {
+            padding-top: 0;
+            border-top: none;
+            & + td {
+              padding-top: 0;
+              border-top: none;
+            }
+          }
+        }
         &:last-child {
-          td, th {
+          td,
+          th {
             border-bottom: solid 1px $secondary;
           }
         }
@@ -1309,6 +1305,28 @@ table.dataTable thead > tr > th.sorting {
     border-radius: 0 10rem 10rem 10rem;
     padding: 10px;
     position: relative;
+    .chart-icon {
+      display: flex;
+      align-items: flex-end;
+      width: 17px;
+      height: 17px;
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      span {
+        display: inline-block;
+        width: 4px;
+        height: 100%;
+        background: $white;
+        margin-right: 1px;
+        &:first-child {
+          height: 50%;
+        }
+        &:last-child {
+          height: 70%;
+        }
+      }
+    }
   }
   &-inner {
     display: inline-block;
@@ -1354,24 +1372,38 @@ table.dataTable thead > tr > th.sorting {
     align-items: center;
     text-align: center;
     img {
-      width: 30px;
+      width: 42px;
     }
   }
 }
-// 24-10-2022
-// .skin-gord .score-tabs li a {
-//   background: transparent;
-//   border: 1px solid $secondary;
-//   color: $secondary;
-//   img {
-//     display: none;
-//   }
-// }
-// .skin-gord .score-tabs li.active a {
-//   background: transparent;
-//   border: 1px solid $secondary;
-//   color: $primary;
-// }
+.db-servicre-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 200px;
+  height: 150px;
+  padding: 20px;
+  border-radius: 7px;
+  background: #2584c4;
+  background: -moz-linear-gradient(-98deg, #2584c4 0%, #407d31 100%);
+  background: -webkit-linear-gradient(-98deg, #2584c4 0%, #407d31 100%);
+  background: linear-gradient(196deg, #2584c4 0%, #407d31 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2584c4', endColorstr='#407d31',GradientType=1);
+  .img-icon {
+    display: inline-block;
+    width: auto;
+    margin-right: 15px;
+    img {
+      height: 40px;
+    }
+  }
+}
+.box-separater {
+  width: 1px;
+  height: 150px;
+  background: $secondary;
+}
 .bs-none {
   box-shadow: none !important;
 }

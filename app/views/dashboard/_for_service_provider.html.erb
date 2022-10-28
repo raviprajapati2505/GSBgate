@@ -17,13 +17,6 @@
         </ul>
         <!-- <%= link_to 'View Profile', user_path(@user.id) %> -->
       </div>
-      <div class="logout-menu">
-        <div class="menu-block">
-        <ul>
-          <li><a href="javascript:;"><span><%= image_tag('/assets/layout/certi-sub-status-db.png') %></span>Logout</a></li>
-        </ul>
-      </div>
-      </div>
     </div>
   </div>
   <div class="col">
@@ -43,29 +36,91 @@
       <div class="row mx-0">
         <div class="col-md-12">
           <div class="db-box p-4">
-            <div class="row d-flex flex-wrap">
-              <div class="col-md-7 col-sm-12 col-xs-12">
-                <div class="row">
-                  <div class="col-sm-12">
+            <div class="row d-flex flex-wrap align-items-end justify-content-between">
+              <div class="col-auto">
+                <div class="row d-flex flex-wrap flex-column">
+                  <div class="col">
                     <p class="font-weight-normal text-secondary text-uppercase">GSAS CREDENTIALS</p>
                   </div>
-                  <div class="col-auto">
+                  <div class="col-auto mb-1 mb-sm-0">
                     <div class="type-block-outer">
+                      <div class="chart-icon">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                      </div>
                       <div class="type-block-inner">
                         <div class="inner-top">
                           <span class="text-white text-uppercase">TYPE</span>
                         </div>
                         <div class="inner-bottom">
-                          <span class="text-secondary">Practitioner Accreditation</span>
+                          <span class="text-secondary text-uppercase">Corporate<br>License</span>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="col-md-5 col-sm-12 col-xs-12">
-                <div class="row">
-                  <div class="col"></div>
+              <div class="col">
+                <div class="row d-flex flex-wrap align-items-end justify-content-between">
+                  <div class="col">
+                    <div class="row d-flex flex-wrap align-items-end justify-content-between">
+                      <div class="col-auto mb-1 mb-sm-0">
+                        <div class="db-servicre-box">
+                          <div class="img-icon">
+                            <%= image_tag('/assets/layout/territory.png') %>
+                          </div>
+                          <div class="box-data">
+                            <p class="text-uppercase mb-0">Territory</p>
+                            <span class="text-uppercase font-weight-bold">Qatar</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-auto mb-1 mb-sm-0">
+                        <div class="db-servicre-box">
+                          <div class="img-icon">
+                            <%= image_tag('/assets/layout/join-date.png') %>
+                          </div>
+                          <div class="box-data">
+                            <p class="text-uppercase mb-0">Joined Since</p>
+                            <span class="text-uppercase font-weight-bold">Jan 2020</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-auto">
+                    <div class="box-separater"></div>
+                  </div>
+                  <div class="col">
+                    <div class="row d-flex flex-wrap align-items-end justify-content-between">
+                      <div class="col-sm-12">
+                        <p class="font-weight-normal text-secondary text-uppercase">Deremit Notices</p>
+                      </div>
+                      <div class="col-auto mb-1 mb-sm-0">
+                        <div class="db-servicre-box">
+                          <div class="img-icon">
+                            <%= image_tag('/assets/layout/flags.png') %>
+                          </div>
+                          <div class="box-data">
+                            <p class="text-uppercase mb-0">Flags</p>
+                            <span class="text-uppercase font-weight-bold">01</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-auto mb-1 mb-sm-0">
+                        <div class="db-servicre-box">
+                          <div class="img-icon">
+                            <%= image_tag('/assets/layout/points.png') %>
+                          </div>
+                          <div class="box-data">
+                            <p class="text-uppercase mb-0">Points</p>
+                            <span class="text-uppercase font-weight-bold">03</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -77,22 +132,7 @@
               <div class="col-auto">
                 <div class="block-heading">
                   <div class="heading">
-                    <%= image_tag('/assets/layout/certi-sub-status-op.png') %>
-                    <span class="text-secondary text-uppercase font-weight-500 mt-3">Credentials<br>Overdue Tasks</span>
-                  </div>
-                </div>
-              </div>
-              <div class="col table-responsive py-4 pl-0">
-                <%= render partial: 'overdue_licences' %>
-              </div>
-            </div>
-          </div>
-          <div class="db-box with-side-header">
-            <div class="row d-flex">
-              <div class="col-auto">
-                <div class="block-heading">
-                  <div class="heading">
-                    <%= image_tag('/assets/layout/certi-sub-status-op.png') %>
+                    <%= image_tag('/assets/layout/corporate-license.png') %>
                     <span class="text-secondary text-uppercase font-weight-500 mt-3">Company<br>Information</span>
                   </div>
                 </div>
@@ -139,19 +179,21 @@
                     <tr>
                       <th>Portfolio</th>
                       <td>
-                        <div class="f-left">
-                          <% if @user.service_provider_detail&.portfolio.present? %>
-                            <% if can?(:download_user_files, @user) %>
-                              <%= btn_download(download_user_files_user_path(@user, file: "portfolio"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('portfolio')}") %>
+                        <div class="row d-flex justify-content-end">
+                          <div class="col-auto">
+                            <% if @user.service_provider_detail&.portfolio.present? %>
+                              <% if can?(:download_user_files, @user) %>
+                                <%= btn_download(download_user_files_user_path(@user, file: "portfolio"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('portfolio')}") %>
+                              <% end %>
+                              <%= truncate(@user.service_provider_detail&.portfolio&.file&.filename, length: 35) %>
                             <% end %>
-                            <%= truncate(@user.service_provider_detail&.portfolio&.file&.filename, length: 35) %>
+                          </div>
+                          <% if ['service_provider'].include?(current_user.role) %>
+                            <div class="col-auto">
+                              <%= render partial: 'file_upload', locals: { file_name: 'portfolio', demerit_flag: '', access_licence_id: ''} %>
+                            </div>
                           <% end %>
                         </div>
-                        <% if ['service_provider'].include?(current_user.role) %>
-                          <div class="f-right">
-                            <%= render partial: 'file_upload', locals: { file_name: 'portfolio', demerit_flag: '', access_licence_id: ''} %>
-                          </div>
-                        <% end %>
                       </td>
                     </tr>
                     <tr>
@@ -168,7 +210,7 @@
               <div class="col-auto">
                 <div class="block-heading">
                   <div class="heading">
-                    <%= image_tag('/assets/layout/certi-sub-status-op.png') %>
+                    <%= image_tag('/assets/layout/affiliated-practitioner-accredition.png') %>
                     <span class="text-secondary text-uppercase font-weight-500 mt-3">Service<br>Provider Information</span>
                   </div>
                 </div>
@@ -199,32 +241,64 @@
                     <tr>
                       <th>Application Form</th>
                       <td>
-                        <div class="f-left">
-                          <% if @user.service_provider_detail&.application_form.present? %>
-                            <% if can?(:download_user_files, @user) %>
-                              <%= btn_download(download_user_files_user_path(@user, file: "application_form"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('application_form')}") %>
+                        <div class="row d-flex justify-content-end">
+                          <div class="col-auto">
+                            <% if @user.service_provider_detail&.application_form.present? %>
+                              <% if can?(:download_user_files, @user) %>
+                                <%= btn_download(download_user_files_user_path(@user, file: "application_form"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('application_form')}") %>
+                              <% end %>
+                              <%= truncate(@user.service_provider_detail&.application_form&.file&.filename, length: 35) %>
                             <% end %>
-                            <%= truncate(@user.service_provider_detail&.application_form&.file&.filename, length: 35) %>
-                          <% end %>
-                        </div>
-                        <% if ['service_provider'].include?(current_user.role) %>
-                          <div class="f-right">
-                            <%= render partial: 'file_upload', locals: { file_name: 'application_form', demerit_flag: '', access_licence_id: ''} %>
                           </div>
-                        <% end %>
+                          <% if ['service_provider'].include?(current_user.role) %>
+                            <div class="col-auto">
+                              <%= render partial: 'file_upload', locals: { file_name: 'application_form', demerit_flag: '', access_licence_id: ''} %>
+                            </div>
+                          <% end %>
+                        </div>                      
                       </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
             </div>
-          </div>          
-          <!-- <div class="db-box with-side-header">
+          </div>
+          <div class="db-box with-side-header">
             <div class="row d-flex">
               <div class="col-auto">
                 <div class="block-heading">
                   <div class="heading">
-                    <%= image_tag('/assets/layout/certi-sub-status-op.png') %>
+                    <%= image_tag('/assets/layout/activity-information.png') %>
+                    <span class="text-secondary text-uppercase font-weight-500 mt-3">Activity<br>Information</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col table-responsive py-4 pl-0">
+                <%= render partial: 'activity_information'%>
+              </div>
+            </div>
+          </div>
+          <div class="db-box with-side-header">
+            <div class="row d-flex">
+              <div class="col-auto">
+                <div class="block-heading">
+                  <div class="heading">
+                    <%= image_tag('/assets/layout/credentials-overdue-tasks.png') %>
+                    <span class="text-secondary text-uppercase font-weight-500 mt-3">Credentials<br>Overdue Tasks</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col table-responsive py-4 pl-0">
+                <%= render partial: 'overdue_licences' %>
+              </div>
+            </div>
+          </div>
+          <div class="db-box with-side-header">
+            <div class="row d-flex">
+              <div class="col-auto">
+                <div class="block-heading">
+                  <div class="heading">
+                    <%= image_tag('/assets/layout/deremit-notices-servicer.png') %>
                     <span class="text-secondary text-uppercase font-weight-500 mt-3">Deremit<br>Notices</span>
                   </div>
                 </div>
@@ -233,13 +307,33 @@
                 <%= render partial: 'demerit_notices' %>
               </div>
             </div>
-          </div> -->
+          </div>
+        </div>
+        <div class="col-md-6 col-sm-12 col-xs-12">
           <div class="db-box with-side-header">
             <div class="row d-flex">
               <div class="col-auto">
                 <div class="block-heading">
                   <div class="heading">
-                    <%= image_tag('/assets/layout/certi-sub-status-op.png') %>
+                    <%= image_tag('/assets/layout/corporate-license.png') %>
+                    <span class="text-secondary text-uppercase font-weight-500 mt-3">Corporate<br>License</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col table-responsive py-4 pl-0">
+                <%= render partial: 'licence_overview', locals: { user_licences_design: @user_licences_design, 
+                  user_licences_construction: @user_licences_construction, 
+                  user_licences_operation: @user_licences_operation  
+                } %>
+              </div>
+            </div>
+          </div>
+          <div class="db-box with-side-header">
+            <div class="row d-flex">
+              <div class="col-auto">
+                <div class="block-heading">
+                  <div class="heading">
+                    <%= image_tag('/assets/layout/corporate-license.png') %>
                     <span class="text-secondary text-uppercase font-weight-500 mt-3">GSAS<br>Design &amp; Build</span>
                   </div>
                 </div>
@@ -275,7 +369,7 @@
               <div class="col-auto">
                 <div class="block-heading">
                   <div class="heading">
-                    <%= image_tag('/assets/layout/certi-sub-status-op.png') %>
+                    <%= image_tag('/assets/layout/corporate-license.png') %>
                     <span class="text-secondary text-uppercase font-weight-500 mt-3">GSAS<br>Construction Management</span>
                   </div>
                 </div>
@@ -306,47 +400,12 @@
               </div>
             </div>
           </div>
-        </div>
-        <div class="col-md-6 col-sm-12 col-xs-12">
           <div class="db-box with-side-header">
             <div class="row d-flex">
               <div class="col-auto">
                 <div class="block-heading">
                   <div class="heading">
-                    <%= image_tag('/assets/layout/certi-sub-status-op.png') %>
-                    <span class="text-secondary text-uppercase font-weight-500 mt-3">Corporate<br>License</span>
-                  </div>
-                </div>
-              </div>
-              <div class="col table-responsive py-4 pl-0">
-                <%= render partial: 'licence_overview', locals: { user_licences_design: @user_licences_design, 
-                  user_licences_construction: @user_licences_construction, 
-                  user_licences_operation: @user_licences_operation  
-                } %>
-              </div>
-            </div>
-          </div>
-          <div class="db-box with-side-header">
-            <div class="row d-flex">
-              <div class="col-auto">
-                <div class="block-heading">
-                  <div class="heading">
-                    <%= image_tag('/assets/layout/certi-sub-status-op.png') %>
-                    <span class="text-secondary text-uppercase font-weight-500 mt-3">Activity<br>Information</span>
-                  </div>
-                </div>
-              </div>
-              <div class="col table-responsive py-4 pl-0">
-                <%= render partial: 'activity_information'%>
-              </div>
-            </div>
-          </div>
-          <div class="db-box with-side-header">
-            <div class="row d-flex">
-              <div class="col-auto">
-                <div class="block-heading">
-                  <div class="heading">
-                    <%= image_tag('/assets/layout/certi-sub-status-op.png') %>
+                    <%= image_tag('/assets/layout/activity-information.png') %>
                     <span class="text-secondary text-uppercase font-weight-500 mt-3">GSAS<br>Operations</span>
                   </div>
                 </div>
@@ -382,7 +441,7 @@
               <div class="col-auto">
                 <div class="block-heading">
                   <div class="heading">
-                    <%= image_tag('/assets/layout/certi-sub-status-op.png') %>
+                    <%= image_tag('/assets/layout/activity-information.png') %>
                     <span class="text-secondary text-uppercase font-weight-500 mt-3">Facility<br>Management</span>
                   </div>
                 </div>
@@ -407,7 +466,7 @@
               <div class="col-auto">
                 <div class="block-heading">
                   <div class="heading">
-                    <%= image_tag('/assets/layout/certi-sub-status-op.png') %>
+                    <%= image_tag('/assets/layout/activity-information.png') %>
                     <span class="text-secondary text-uppercase font-weight-500 mt-3">Waste<br>Management</span>
                   </div>
                 </div>
@@ -432,7 +491,7 @@
               <div class="col-auto">
                 <div class="block-heading">
                   <div class="heading">
-                    <%= image_tag('/assets/layout/certi-sub-status-op.png') %>
+                    <%= image_tag('/assets/layout/activity-information.png') %>
                     <span class="text-secondary text-uppercase font-weight-500 mt-3">Building<br>Commissioning</span>
                   </div>
                 </div>
@@ -459,13 +518,34 @@
               <div class="col-auto">
                 <div class="block-heading">
                   <div class="heading">
-                    <%= image_tag('/assets/layout/certi-sub-status-op.png') %>
+                    <%= image_tag('/assets/layout/affiliated-practitioner-accredition.png') %>
                     <span class="text-secondary text-uppercase font-weight-500 mt-3">Affiliated<br>Practitioner<br>Accreditation</span>
                   </div>
                 </div>
               </div>
               <div class="col table-responsive py-4 pl-0">
-
+                <table class="table mb-0">
+                  <tbody>
+                    <tr>
+                      <th>Type</th>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>GSAS ID</th>
+                      <th>Expiry Date</th>
+                    </tr>
+                    <% @service_provider_user_licences_construction&.each.with_index(1) do |ac, index| %>
+                      <tr>
+                        <% if index == 1 %>
+                          <td rowspan="<%= @service_provider_user_licences_construction.count %>">GSAS-CM</td>
+                        <% end %>
+                        <td class="b-word"><%= link_to(ac.user.full_name, user_path(ac.user)) %></td>
+                        <td class="b-word"><%= ac.user.email %></td>
+                        <td><%= ac.user.gsas_id %></td>
+                        <td><%= ac.formatted_expiry_date %></td>
+                      </tr>
+                    <% end %>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>

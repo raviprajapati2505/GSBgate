@@ -17,13 +17,6 @@
         </ul>
         <!-- <%= link_to 'View Profile', user_path(@user.id) %> -->
       </div>
-      <div class="logout-menu">
-        <div class="menu-block">
-        <ul>
-          <li><a href="javascript:;"><span><%= image_tag('/assets/layout/certi-sub-status-op.png') %></span>Logout</a></li>
-        </ul>
-      </div>
-      </div>
     </div>
   </div>
   <div class="col">
@@ -49,6 +42,11 @@
               </div>
               <div class="col-auto">
                 <div class="type-block-outer">
+                  <div class="chart-icon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
                   <div class="type-block-inner">
                     <div class="inner-top">
                       <span class="text-white">TYPE</span>
@@ -90,7 +88,7 @@
               <div class="col-auto">
                 <div class="block-heading">
                   <div class="heading">
-                    <%= image_tag('/assets/layout/certi-sub-status-op.png') %>
+                    <%= image_tag('/assets/layout/practitioner-accredition.png') %>
                     <span class="text-secondary text-uppercase font-weight-500 mt-3">Practitioner<br>Accreditation</span>
                   </div>
                 </div>
@@ -108,7 +106,7 @@
               <div class="col-auto">
                 <div class="block-heading">
                   <div class="heading">
-                    <%= image_tag('/assets/layout/certi-sub-status-op.png') %>
+                    <%= image_tag('/assets/layout/overdue-tasks.png') %>
                     <span class="text-secondary text-uppercase font-weight-500 mt-3">Overdue<br>Tasks</span>
                   </div>
                 </div>
@@ -123,7 +121,7 @@
               <div class="col-auto">
                 <div class="block-heading">
                   <div class="heading">
-                    <%= image_tag('/assets/layout/certi-sub-status-op.png') %>
+                    <%= image_tag('/assets/layout/deremit-notices.png') %>
                     <span class="text-secondary text-uppercase font-weight-500 mt-3">Demerit<br>Notices</span>
                   </div>
                 </div>
@@ -138,7 +136,7 @@
               <div class="col-auto">
                 <div class="block-heading">
                   <div class="heading">
-                    <%= image_tag('/assets/layout/certi-sub-status-op.png') %>
+                    <%= image_tag('/assets/layout/practitioner-accredition.png') %>
                     <span class="text-secondary text-uppercase font-weight-500 mt-3">Practitioner<br>Information</span>
                   </div>
                 </div>
@@ -166,37 +164,41 @@
                     <tr>
                       <th>Work Permit</th>
                       <td>
-                        <div class="f-left">
-                          <% if @user.user_detail&.qid_work_permit_file.present? %>
-                            <% if can?(:download_user_files, @user) %>
-                              <%= btn_download(download_user_files_user_path(@user, file: "qid_work_permit_file"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('qid_work_permit_file')}") %>
+                        <div class="row d-flex justify-content-end">
+                          <div class="col-auto">
+                            <% if @user.user_detail&.qid_work_permit_file.present? %>
+                              <% if can?(:download_user_files, @user) %>
+                                <%= btn_download(download_user_files_user_path(@user, file: "qid_work_permit_file"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('qid_work_permit_file')}") %>
+                              <% end %>
+                              <%= truncate(@user.user_detail&.qid_work_permit_file&.file&.filename, length: 35) %>
                             <% end %>
-                            <%= truncate(@user.user_detail&.qid_work_permit_file&.file&.filename, length: 35) %>
+                          </div>
+                          <% if ['default_role'].include?(current_user.role) %>
+                            <div class="col-auto">
+                              <%= render partial: 'file_upload', locals: { file_name: 'qid_work_permit_file', demerit_flag: '', access_licence_id: ''} %>
+                            </div>
                           <% end %>
                         </div>
-                        <% if ['default_role'].include?(current_user.role) %>
-                          <div class="f-right">
-                            <%= render partial: 'file_upload', locals: { file_name: 'qid_work_permit_file', demerit_flag: '', access_licence_id: ''} %>
-                          </div>
-                        <% end %>
                       </td>
                     </tr>
                     <tr>
                       <th>Other Documents</th>
                       <td>
-                        <div class="f-left">
-                          <% if @user.user_detail&.other_documents.present? %>
-                            <% if can?(:download_user_files, @user) %>
-                              <%= btn_download(download_user_files_user_path(@user, file: "other_documents"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('other_documents')}") %>
+                        <div class="row d-flex justify-content-end">
+                          <div class="col-auto">
+                            <% if @user.user_detail&.other_documents.present? %>
+                              <% if can?(:download_user_files, @user) %>
+                                <%= btn_download(download_user_files_user_path(@user, file: "other_documents"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('other_documents')}") %>
+                              <% end %>
+                              <%= truncate(@user.user_detail&.other_documents&.file&.filename, length: 35) %>
                             <% end %>
-                            <%= truncate(@user.user_detail&.other_documents&.file&.filename, length: 35) %>
+                          </div>
+                          <% if ['default_role'].include?(current_user.role) %>
+                            <div class="col-auto">
+                              <%= render partial: 'file_upload', locals: { file_name: 'other_documents', demerit_flag: '', access_licence_id: ''} %>
+                            </div>
                           <% end %>
                         </div>
-                        <% if ['default_role'].include?(current_user.role) %>
-                          <div class="f-right">
-                            <%= render partial: 'file_upload', locals: { file_name: 'other_documents', demerit_flag: '', access_licence_id: ''} %>
-                          </div>
-                        <% end %>
                       </td>
                     </tr>
                   </tbody>
@@ -211,7 +213,7 @@
               <div class="col-auto">
                 <div class="block-heading">
                   <div class="heading">
-                    <%= image_tag('/assets/layout/certi-sub-status-op.png') %>
+                    <%= image_tag('/assets/layout/project-status.png') %>
                     <span class="text-secondary text-uppercase font-weight-500 mt-3">Projects<br>Status</span>
                   </div>
                 </div>
@@ -280,7 +282,7 @@
               <div class="col-auto">
                 <div class="block-heading">
                   <div class="heading">
-                    <%= image_tag('/assets/layout/certi-sub-status-op.png') %>
+                    <%= image_tag('/assets/layout/tasks-status.png') %>
                     <span class="text-secondary text-uppercase font-weight-500 mt-3">Tasks<br>Status</span>
                   </div>
                 </div>
@@ -328,7 +330,7 @@
               <div class="col-auto">
                 <div class="block-heading">
                   <div class="heading">
-                    <%= image_tag('/assets/layout/certi-sub-status-op.png') %>
+                    <%= image_tag('/assets/layout/overdue-projects-tasks.png') %>
                     <span class="text-secondary text-uppercase font-weight-500 mt-3">Overdue<br>Projects Tasks</span>
                   </div>
                 </div>
@@ -364,7 +366,7 @@
               <div class="col-auto">
                 <div class="block-heading">
                   <div class="heading">
-                    <%= image_tag('/assets/layout/certi-sub-status-op.png') %>
+                    <%= image_tag('/assets/layout/tasks-status.png') %>
                     <span class="text-secondary text-uppercase font-weight-500 mt-3">Personal<br>Information</span>
                   </div>
                 </div>
@@ -411,37 +413,41 @@
                     <tr>
                       <th>Education Certificates</th>
                       <td>
-                        <div class="f-left">
-                          <% if @user.user_detail&.education_certificate.present? %>
-                            <% if can?(:download_user_files, @user) %>
-                              <%= btn_download(download_user_files_user_path(@user, file: "education_certificate"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('education_certificate')}") %>
+                        <div class="row d-flex justify-content-end">
+                          <div class="col-auto">
+                            <% if @user.user_detail&.education_certificate.present? %>
+                              <% if can?(:download_user_files, @user) %>
+                                <%= btn_download(download_user_files_user_path(@user, file: "education_certificate"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('education_certificate')}") %>
+                              <% end %>
+                              <%= truncate(@user.user_detail&.education_certificate&.file&.filename, length: 35) %>
                             <% end %>
-                            <%= truncate(@user.user_detail&.education_certificate&.file&.filename, length: 35) %>
+                          </div>
+                          <% if ['default_role'].include?(current_user.role) %>
+                            <div class="col-auto">
+                              <%= render partial: 'file_upload', locals: { file_name: 'education_certificate', demerit_flag: '', access_licence_id: ''} %>
+                            </div>
                           <% end %>
                         </div>
-                        <% if ['default_role'].include?(current_user.role) %>
-                          <div class="f-right">
-                            <%= render partial: 'file_upload', locals: { file_name: 'education_certificate', demerit_flag: '', access_licence_id: ''} %>
-                          </div>
-                        <% end %>
                       </td>
                     </tr>
                     <tr>
                       <th>Experience Certificates</th>
                       <td>
-                        <div style="f-left">
-                          <% if @user.user_detail&.work_experience_file.present? %>
-                            <% if can?(:download_user_files, @user) %>
-                              <%= btn_download(download_user_files_user_path(@user, file: "work_experience_file"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('work_experience_file')}") %>
+                        <div class="row d-flex justify-content-end">
+                          <div class="col-auto">
+                            <% if @user.user_detail&.work_experience_file.present? %>
+                              <% if can?(:download_user_files, @user) %>
+                                <%= btn_download(download_user_files_user_path(@user, file: "work_experience_file"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('work_experience_file')}") %>
+                              <% end %>
+                              <%= truncate(@user.user_detail&.work_experience_file&.file&.filename, length: 35) %>
                             <% end %>
-                            <%= truncate(@user.user_detail&.work_experience_file&.file&.filename, length: 35) %>
+                          </div>
+                          <% if ['default_role'].include?(current_user.role) %>
+                            <div class="col-auto">
+                              <%= render partial: 'file_upload', locals: { file_name: 'work_experience_file', demerit_flag: '', access_licence_id: ''} %>
+                            </div>
                           <% end %>
                         </div>
-                        <% if ['default_role'].include?(current_user.role) %>
-                          <div class="f-right">
-                            <%= render partial: 'file_upload', locals: { file_name: 'work_experience_file', demerit_flag: '', access_licence_id: ''} %>
-                          </div>
-                        <% end %>
                       </td>
                     </tr>
                   </tbody>
@@ -454,7 +460,7 @@
               <div class="col-auto">
                 <div class="block-heading">
                   <div class="heading">
-                    <%= image_tag('/assets/layout/certi-sub-status-op.png') %>
+                    <%= image_tag('/assets/layout/project-status.png') %>
                     <span class="text-secondary text-uppercase font-weight-500 mt-3">Activity<br>Information</span>
                   </div>
                 </div>

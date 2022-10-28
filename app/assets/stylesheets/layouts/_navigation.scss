@@ -282,12 +282,12 @@ body.mini-navbar .navbar-default .nav > li > .nav-second-level li a {
 
 .navbar-default .special_link a {
   background: $primary;
-  color: white;
+  color:$white;
 }
 
 .navbar-default .special_link a:hover {
   background: #17987e !important;
-  color: white;
+  color:$white;
 }
 
 .navbar-default .special_link a span.label {
@@ -297,12 +297,12 @@ body.mini-navbar .navbar-default .nav > li > .nav-second-level li a {
 
 .navbar-default .landing_link a {
   background: lighten($primary, 3%);
-  color: white;
+  color:$white;
 }
 
 .navbar-default .landing_link a:hover {
   background: $primary !important;
-  color: white;
+  color:$white;
 }
 
 .navbar-default .landing_link a span.label {
@@ -314,7 +314,7 @@ body.mini-navbar .navbar-default .nav > li > .nav-second-level li a {
   text-align: center;
   font-size: 18px;
   font-weight: 600;
-  color: white;
+  color:$white;
   display: none;
   padding: 18px 0;
 }
