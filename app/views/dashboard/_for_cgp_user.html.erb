@@ -61,7 +61,7 @@
                 <table class="table mb-0">
                   <tr>
                     <td class="border-top-0 pt-0">Territory</td>
-                    <td class="font-weight-bold border-top-0 pt-0"></td>
+                    <td class="font-weight-bold border-top-0 pt-0">Qatar</td>
                   </tr>
                   <tr>
                     <td>Practitioner Accreditation</td>
@@ -79,284 +79,6 @@
                     <td class="border-bottom-0 pb-0">Affiliated Service Provider</td>
                     <td class="font-weight-bold border-bottom-0 pb-0"><%= @user&.service_provider&.name %></td>
                   </tr>
-                </table>
-              </div>
-            </div>
-          </div>
-          <div class="db-box with-side-header">
-            <div class="row d-flex">
-              <div class="col-auto">
-                <div class="block-heading">
-                  <div class="heading">
-                    <%= image_tag('/assets/layout/practitioner-accredition.png') %>
-                    <span class="text-secondary text-uppercase font-weight-500 mt-3">Practitioner<br>Accreditation</span>
-                  </div>
-                </div>
-              </div>
-              <div class="col table-responsive py-4 pl-0">
-                <%= render partial: 'licence_overview', locals: { user_licences_design: @user_licences_design, 
-                  user_licences_construction: @user_licences_construction, 
-                  user_licences_operation: @user_licences_operation  
-                } %>
-              </div>
-            </div>
-          </div>
-          <div class="db-box with-side-header">
-            <div class="row d-flex">
-              <div class="col-auto">
-                <div class="block-heading">
-                  <div class="heading">
-                    <%= image_tag('/assets/layout/overdue-tasks.png') %>
-                    <span class="text-secondary text-uppercase font-weight-500 mt-3">Overdue<br>Tasks</span>
-                  </div>
-                </div>
-              </div>
-              <div class="col table-responsive py-4 pl-0">
-                <%= render partial: 'overdue_licences' %>
-              </div>
-            </div>
-          </div>
-          <div class="db-box with-side-header">
-            <div class="row d-flex">
-              <div class="col-auto">
-                <div class="block-heading">
-                  <div class="heading">
-                    <%= image_tag('/assets/layout/deremit-notices.png') %>
-                    <span class="text-secondary text-uppercase font-weight-500 mt-3">Demerit<br>Notices</span>
-                  </div>
-                </div>
-              </div>
-              <div class="col table-responsive py-4 pl-0">
-                <%= render partial: 'demerit_notices'%>
-              </div>
-            </div>
-          </div>
-          <div class="db-box with-side-header">
-            <div class="row d-flex">
-              <div class="col-auto">
-                <div class="block-heading">
-                  <div class="heading">
-                    <%= image_tag('/assets/layout/practitioner-accredition.png') %>
-                    <span class="text-secondary text-uppercase font-weight-500 mt-3">Practitioner<br>Information</span>
-                  </div>
-                </div>
-              </div>
-              <div class="col table-responsive py-4 pl-0">
-                <table class="table mb-0">
-                  <tbody>
-                    <tr>
-                      <th>Name</th>
-                      <td><%= @user.full_name %></td>
-                    </tr>
-                    <tr>
-                      <th>Username</th>
-                      <td><%= @user.username %></td>
-                    </tr>
-                    <tr>
-                      <th>Email</th>
-                      <td><%= @user.email %></td>
-                    </tr>
-                    <tr>
-                      <th>Phone Number</th>
-                      <td><%= @user.mobile %></td>
-                    </tr>
-                    
-                    <tr>
-                      <th>Work Permit</th>
-                      <td>
-                        <div class="row d-flex justify-content-end">
-                          <div class="col-auto">
-                            <% if @user.user_detail&.qid_work_permit_file.present? %>
-                              <% if can?(:download_user_files, @user) %>
-                                <%= btn_download(download_user_files_user_path(@user, file: "qid_work_permit_file"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('qid_work_permit_file')}") %>
-                              <% end %>
-                              <%= truncate(@user.user_detail&.qid_work_permit_file&.file&.filename, length: 35) %>
-                            <% end %>
-                          </div>
-                          <% if ['default_role'].include?(current_user.role) %>
-                            <div class="col-auto">
-                              <%= render partial: 'file_upload', locals: { file_name: 'qid_work_permit_file', demerit_flag: '', access_licence_id: ''} %>
-                            </div>
-                          <% end %>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th>Other Documents</th>
-                      <td>
-                        <div class="row d-flex justify-content-end">
-                          <div class="col-auto">
-                            <% if @user.user_detail&.other_documents.present? %>
-                              <% if can?(:download_user_files, @user) %>
-                                <%= btn_download(download_user_files_user_path(@user, file: "other_documents"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('other_documents')}") %>
-                              <% end %>
-                              <%= truncate(@user.user_detail&.other_documents&.file&.filename, length: 35) %>
-                            <% end %>
-                          </div>
-                          <% if ['default_role'].include?(current_user.role) %>
-                            <div class="col-auto">
-                              <%= render partial: 'file_upload', locals: { file_name: 'other_documents', demerit_flag: '', access_licence_id: ''} %>
-                            </div>
-                          <% end %>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 col-sm-12 col-xs-12">
-          <div class="db-box with-side-header">
-            <div class="row d-flex">
-              <div class="col-auto">
-                <div class="block-heading">
-                  <div class="heading">
-                    <%= image_tag('/assets/layout/project-status.png') %>
-                    <span class="text-secondary text-uppercase font-weight-500 mt-3">Projects<br>Status</span>
-                  </div>
-                </div>
-              </div>
-              <div class="col table-responsive py-4 pl-0">
-                <table class="table mb-0">
-                  <tbody>
-                    <%
-                      counter_cgp_for_completed_projects = 0
-                      @total_cgp_for_completed_projects.each do |project|
-                          @project = Project.find(project)
-                          if @project.is_project_certified?
-                            counter_cgp_for_completed_projects = counter_cgp_for_completed_projects + 1
-                          end
-                      end
-                      counter_team_member_for_completed_projects = 0
-                      @total_team_member_for_completed_projects.each do |project|
-                          @project = Project.find(project)
-                          if @project.is_project_certified?
-                            counter_team_member_for_completed_projects = counter_team_member_for_completed_projects + 1
-                          end
-                      end
-                    %>
-                    <tr>
-                      <th>Status</th>
-                      <th>Quantity</th>
-                      <th>Role</th>
-                      <th>Quantity</th>
-                    </tr>
-                    <tr>
-                      <td rowspan="2">Completed</td>
-                      <td rowspan="2"><%= counter_cgp_for_completed_projects + counter_team_member_for_completed_projects %></td>
-                      <td class="bg-primary-light py-1">Project Manager (CGP)</td>
-                      <td class="bg-primary-light py-1"><%= counter_cgp_for_completed_projects %></td>
-                    </tr>
-                    <tr>
-                      <td class="bg-primary-light py-1">Team Member</td>
-                      <td class="bg-primary-light py-1"><%= counter_team_member_for_completed_projects %></td>
-                    </tr>
-                    <tr>
-                      <td rowspan="2">In-Progress</td>
-                      <td rowspan="2"><%= @total_cgp_for_inprogress_projects + @total_team_member_for_inprogress_projects %></td>
-                      <td class="bg-primary-light py-1">Project Manager (CGP)</td>
-                      <td class="bg-primary-light py-1"><%= @total_cgp_for_inprogress_projects %></td>
-                    </tr>
-                    <tr>
-                      <td class="bg-primary-light py-1">Team Member</td>
-                      <td class="bg-primary-light py-1"><%= @total_team_member_for_inprogress_projects %></td>
-                    </tr>
-                    <tr>
-                      <td colspan="2">Total</td>
-                      <td colspan="2"><%= counter_cgp_for_completed_projects + counter_team_member_for_completed_projects + @total_cgp_for_inprogress_projects + @total_team_member_for_inprogress_projects %></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-          <div class="db-box with-side-header">
-            <div class="row d-flex">
-              
-            </div>
-          </div>
-          <div class="db-box with-side-header">
-            <div class="row d-flex">
-              <div class="col-auto">
-                <div class="block-heading">
-                  <div class="heading">
-                    <%= image_tag('/assets/layout/tasks-status.png') %>
-                    <span class="text-secondary text-uppercase font-weight-500 mt-3">Tasks<br>Status</span>
-                  </div>
-                </div>
-              </div>
-              <div class="col table-responsive py-4 pl-0">
-                <table class="table mb-0">
-                  <tbody>
-                    <tr>
-                      <th>Status</th>
-                      <th>Quantity</th>
-                      <th>Role</th>
-                      <th>Quantity</th>
-                    </tr>
-                    <tr>
-                      <td rowspan="2">Finished</td>
-                      <td rowspan="2"></td>
-                      <td class="bg-primary-light py-1">Project Manager (CGP)</td>
-                      <td class="bg-primary-light py-1"></td>
-                    </tr>
-                    <tr>
-                      <td class="bg-primary-light py-1">Team Member</td>
-                      <td class="bg-primary-light py-1"></td>
-                    </tr>
-                    <tr>
-                      <td rowspan="2">Pending</td>
-                      <td rowspan="2"></td>
-                      <td class="bg-primary-light py-1">Project Manager (CGP)</td>
-                      <td class="bg-primary-light py-1"></td>
-                    </tr>
-                    <tr>
-                      <td class="bg-primary-light py-1">Team Member</td>
-                      <td class="bg-primary-light py-1"></td>
-                    </tr>
-                    <tr>
-                      <td colspan="2">Total</td>
-                      <td colspan="2"></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-          <div class="db-box with-side-header">
-            <div class="row d-flex">
-              <div class="col-auto">
-                <div class="block-heading">
-                  <div class="heading">
-                    <%= image_tag('/assets/layout/overdue-projects-tasks.png') %>
-                    <span class="text-secondary text-uppercase font-weight-500 mt-3">Overdue<br>Projects Tasks</span>
-                  </div>
-                </div>
-              </div>
-              <div class="col table-responsive py-4 pl-0">
-                <table class="table mb-0">
-                  <tbody>
-                    <tr>
-                      <th>Overdue</th>
-                      <th>Project ID</th>
-                      <th>Task</th>
-                      <th>Dedline</th>
-                    </tr>
-                    <tr>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                  </tbody>
                 </table>
               </div>
             </div>
@@ -460,6 +182,180 @@
               <div class="col-auto">
                 <div class="block-heading">
                   <div class="heading">
+                    <%= image_tag('/assets/layout/practitioner-accredition.png') %>
+                    <span class="text-secondary text-uppercase font-weight-500 mt-3">Practitioner<br>Accreditation</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col table-responsive py-4 pl-0">
+                <%= render partial: 'licence_overview', locals: { user_licences_design: @user_licences_design, 
+                  user_licences_construction: @user_licences_construction, 
+                  user_licences_operation: @user_licences_operation  
+                } %>
+              </div>
+            </div>
+          </div>
+          <div class="db-box with-side-header">
+            <div class="row d-flex">
+              <div class="col-auto">
+                <div class="block-heading">
+                  <div class="heading">
+                    <%= image_tag('/assets/layout/overdue-tasks.png') %>
+                    <span class="text-secondary text-uppercase font-weight-500 mt-3">Overdue<br>Licences</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col table-responsive py-4 pl-0">
+                <%= render partial: 'overdue_licences' %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-sm-12 col-xs-12">
+          <div class="db-box with-side-header">
+            <div class="row d-flex">
+              <div class="col-auto">
+                <div class="block-heading">
+                  <div class="heading">
+                    <%= image_tag('/assets/layout/practitioner-accredition.png') %>
+                    <span class="text-secondary text-uppercase font-weight-500 mt-3">Practitioner<br>Information</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col table-responsive py-4 pl-0">
+                <table class="table mb-0">
+                  <tbody>
+                    <tr>
+                      <th>Name</th>
+                      <td><%= @user.full_name %></td>
+                    </tr>
+                    <tr>
+                      <th>Username</th>
+                      <td><%= @user.username %></td>
+                    </tr>
+                    <tr>
+                      <th>Email</th>
+                      <td><%= @user.email %></td>
+                    </tr>
+                    <tr>
+                      <th>Phone Number</th>
+                      <td><%= @user.mobile %></td>
+                    </tr>
+                    
+                    <tr>
+                      <th>Work Permit</th>
+                      <td>
+                        <div class="row d-flex justify-content-end">
+                          <div class="col-auto">
+                            <% if @user.user_detail&.qid_work_permit_file.present? %>
+                              <% if can?(:download_user_files, @user) %>
+                                <%= btn_download(download_user_files_user_path(@user, file: "qid_work_permit_file"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('qid_work_permit_file')}") %>
+                              <% end %>
+                              <%= truncate(@user.user_detail&.qid_work_permit_file&.file&.filename, length: 35) %>
+                            <% end %>
+                          </div>
+                          <% if ['default_role'].include?(current_user.role) %>
+                            <div class="col-auto">
+                              <%= render partial: 'file_upload', locals: { file_name: 'qid_work_permit_file', demerit_flag: '', access_licence_id: ''} %>
+                            </div>
+                          <% end %>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Other Documents</th>
+                      <td>
+                        <div class="row d-flex justify-content-end">
+                          <div class="col-auto">
+                            <% if @user.user_detail&.other_documents.present? %>
+                              <% if can?(:download_user_files, @user) %>
+                                <%= btn_download(download_user_files_user_path(@user, file: "other_documents"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('other_documents')}") %>
+                              <% end %>
+                              <%= truncate(@user.user_detail&.other_documents&.file&.filename, length: 35) %>
+                            <% end %>
+                          </div>
+                          <% if ['default_role'].include?(current_user.role) %>
+                            <div class="col-auto">
+                              <%= render partial: 'file_upload', locals: { file_name: 'other_documents', demerit_flag: '', access_licence_id: ''} %>
+                            </div>
+                          <% end %>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="db-box with-side-header">
+            <div class="row d-flex">
+              <div class="col-auto">
+                <div class="block-heading">
+                  <div class="heading">
+                    <%= image_tag('/assets/layout/project-status.png') %>
+                    <span class="text-secondary text-uppercase font-weight-500 mt-3">Projects<br>Status</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col table-responsive py-4 pl-0">
+                <table class="table mb-0">
+                  <tbody>
+                    <%
+                      counter_cgp_for_completed_projects = 0
+                      @total_cgp_for_completed_projects.each do |project|
+                          @project = Project.find(project)
+                          if @project.is_project_certified?
+                            counter_cgp_for_completed_projects = counter_cgp_for_completed_projects + 1
+                          end
+                      end
+                      counter_team_member_for_completed_projects = 0
+                      @total_team_member_for_completed_projects.each do |project|
+                          @project = Project.find(project)
+                          if @project.is_project_certified?
+                            counter_team_member_for_completed_projects = counter_team_member_for_completed_projects + 1
+                          end
+                      end
+                    %>
+                    <tr>
+                      <th>Status</th>
+                      <th>Quantity</th>
+                      <th>Role</th>
+                      <th>Quantity</th>
+                    </tr>
+                    <tr>
+                      <td rowspan="2">Completed</td>
+                      <td rowspan="2"><%= counter_cgp_for_completed_projects + counter_team_member_for_completed_projects %></td>
+                      <td class="bg-primary-light py-1">Project Manager (CGP)</td>
+                      <td class="bg-primary-light py-1"><%= counter_cgp_for_completed_projects %></td>
+                    </tr>
+                    <tr>
+                      <td class="bg-primary-light py-1">Team Member</td>
+                      <td class="bg-primary-light py-1"><%= counter_team_member_for_completed_projects %></td>
+                    </tr>
+                    <tr>
+                      <td rowspan="2">In-Progress</td>
+                      <td rowspan="2"><%= @total_cgp_for_inprogress_projects + @total_team_member_for_inprogress_projects %></td>
+                      <td class="bg-primary-light py-1">Project Manager (CGP)</td>
+                      <td class="bg-primary-light py-1"><%= @total_cgp_for_inprogress_projects %></td>
+                    </tr>
+                    <tr>
+                      <td class="bg-primary-light py-1">Team Member</td>
+                      <td class="bg-primary-light py-1"><%= @total_team_member_for_inprogress_projects %></td>
+                    </tr>
+                    <tr>
+                      <td colspan="2">Total</td>
+                      <td colspan="2"><%= counter_cgp_for_completed_projects + counter_team_member_for_completed_projects + @total_cgp_for_inprogress_projects + @total_team_member_for_inprogress_projects %></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="db-box with-side-header">
+            <div class="row d-flex">
+              <div class="col-auto">
+                <div class="block-heading">
+                  <div class="heading">
                     <%= image_tag('/assets/layout/project-status.png') %>
                     <span class="text-secondary text-uppercase font-weight-500 mt-3">Activity<br>Information</span>
                   </div>
@@ -467,6 +363,93 @@
               </div>
               <div class="col table-responsive py-4 pl-0">
                 <%= render partial: 'activity_information'%>
+              </div>
+            </div>
+          </div>
+          <div class="db-box with-side-header">
+            <div class="row d-flex">
+              <div class="col-auto">
+                <div class="block-heading">
+                  <div class="heading">
+                    <%= image_tag('/assets/layout/deremit-notices.png') %>
+                    <span class="text-secondary text-uppercase font-weight-500 mt-3">Demerit<br>Notices</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col table-responsive py-4 pl-0">
+                <%= render partial: 'demerit_notices'%>
+              </div>
+            </div>
+          </div>
+          <div class="db-box with-side-header">
+            <div class="row d-flex">
+              <div class="col-auto">
+                <div class="block-heading">
+                  <div class="heading">
+                    <%= image_tag('/assets/layout/tasks-status.png') %>
+                    <span class="text-secondary text-uppercase font-weight-500 mt-3">Tasks<br>Status</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col table-responsive py-4 pl-0">
+                <table class="table mb-0">
+                  <tbody>
+                    <tr>
+                      <th>Status</th>
+                      <th>Quantity</th>
+                      <th>Role</th>
+                      <th>Quantity</th>
+                    </tr>
+                    <tr>
+                      <td rowspan="2">Finished</td>
+                      <td rowspan="2"></td>
+                      <td class="bg-primary-light py-1">Project Manager (CGP)</td>
+                      <td class="bg-primary-light py-1"></td>
+                    </tr>
+                    <tr>
+                      <td class="bg-primary-light py-1">Team Member</td>
+                      <td class="bg-primary-light py-1"></td>
+                    </tr>
+                    <tr>
+                      <td rowspan="2">Pending</td>
+                      <td rowspan="2"></td>
+                      <td class="bg-primary-light py-1">Project Manager (CGP)</td>
+                      <td class="bg-primary-light py-1"></td>
+                    </tr>
+                    <tr>
+                      <td class="bg-primary-light py-1">Team Member</td>
+                      <td class="bg-primary-light py-1"></td>
+                    </tr>
+                    <tr>
+                      <td colspan="2">Total</td>
+                      <td colspan="2"></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="db-box with-side-header">
+            <div class="row d-flex">
+              <div class="col-auto">
+                <div class="block-heading">
+                  <div class="heading">
+                    <%= image_tag('/assets/layout/overdue-projects-tasks.png') %>
+                    <span class="text-secondary text-uppercase font-weight-500 mt-3">Overdue<br>Projects Tasks</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col table-responsive py-4 pl-0">
+                <table class="table mb-0">
+                  <tbody>
+                    <tr>
+                      <th>Overdue</th>
+                      <th>Project ID</th>
+                      <th>Task</th>
+                      <th>Dedline</th>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
