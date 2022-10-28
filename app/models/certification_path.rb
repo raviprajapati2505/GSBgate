@@ -277,11 +277,13 @@ class CertificationPath < ApplicationRecord
       end
     when CertificationPathStatus::APPROVING_BY_MANAGEMENT
       if self.certificate.construction_type?
+        DigestMailer.send_project_certified_email_to_project_owner(self).deliver_now
         return CertificationPathStatus::CERTIFIED
       else
         return CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT
       end
     when CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT
+      DigestMailer.send_project_certified_email_to_project_owner(self).deliver_now
       return CertificationPathStatus::CERTIFIED
     when CertificationPathStatus::CERTIFIED
       return CertificationPathStatus::CERTIFICATE_IN_PROCESS
@@ -927,6 +929,7 @@ class CertificationPath < ApplicationRecord
   def create_descendant_records
     # Only trigger when the certification path is being activated
     if certification_path_status_id_changed? && (certification_path_status_id_was == CertificationPathStatus::ACTIVATING)
+      DigestMailer.send_project_activated_email_to_project_owner(self).deliver_now
       CertificationPath.transaction do
         # If there is a main scheme mix, it should be handled first
         if (development_type.mixable? && main_scheme_mix.present?)

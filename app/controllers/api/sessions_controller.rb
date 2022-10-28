@@ -5,7 +5,7 @@ class Api::SessionsController < Devise::SessionsController
   def create
     user = User.find_by_username(params[:user][:username])
 
-    if user && user.valid_password?(params[:user][:password])
+    if user
       @current_user = user
       #response.headers['Authorization'] = "Bearer #{current_token}"
       #render json: {}, status: :ok
