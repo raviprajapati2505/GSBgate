@@ -11,9 +11,9 @@
       <div class="menu-block">
         <ul>
           <li class="active"><a href="javascript:;"><span><%= image_tag('/assets/layout/grid.png') %></span>DashBoard</a></li>
-          <li><a href="javascript:;"><span><%= image_tag('/assets/layout/user-menu.png') %></span>Profile</a></li>
-          <li><a href="javascript:;"><span><%= image_tag('/assets/layout/comment.png') %></span>Messages</a></li>
-          <li><a href="javascript:;"><span><%= image_tag('/assets/layout/settings.png') %></span>Settings</a></li>
+          <li><a href="<%= user_path(current_user.id) %>"><span><%= image_tag('/assets/layout/user-menu.png') %></span>Profile</a></li>
+          <!--<li><a href="javascript:;"><span><%= image_tag('/assets/layout/comment.png') %></span>Messages</a></li>
+          <li><a href="javascript:;"><span><%= image_tag('/assets/layout/settings.png') %></span>Settings</a></li>-->
         </ul>
         <!-- <%= link_to 'View Profile', user_path(@user.id) %> -->
       </div>
@@ -87,7 +87,7 @@
                           </div>
                           <div class="box-data">
                             <p class="text-uppercase mb-0">Joined Since</p>
-                            <span class="text-uppercase font-weight-bold">Jan 2020</span>
+                            <span class="text-uppercase font-weight-bold"><%= @user.confirmed_at&.strftime('%b, %Y') %></span>
                           </div>
                         </div>
                       </div>
@@ -109,7 +109,7 @@
                           </div>
                           <div class="box-data">
                             <p class="text-uppercase mb-0">Flags</p>
-                            <span class="text-uppercase font-weight-bold">01</span>
+                            <span class="text-uppercase font-weight-bold"><%= @user&.demerit_flags.count %></span>
                           </div>
                         </div>
                       </div>
@@ -120,7 +120,7 @@
                           </div>
                           <div class="box-data">
                             <p class="text-uppercase mb-0">Points</p>
-                            <span class="text-uppercase font-weight-bold">03</span>
+                            <span class="text-uppercase font-weight-bold"><%= @user&.demerit_flags.count * 3 %></span>
                           </div>
                         </div>
                       </div>
@@ -131,7 +131,7 @@
             </div>
           </div>
         </div>
-        <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="col-md-6 col-sm-6 col-xs-6">
           <div class="db-box with-side-header">
             <div class="row d-flex">
               <div class="col-auto">
@@ -184,21 +184,15 @@
                     <tr>
                       <th>Portfolio</th>
                       <td>
-                        <div class="row d-flex justify-content-end">
-                          <div class="col-auto">
                             <% if @user.service_provider_detail&.portfolio.present? %>
                               <% if can?(:download_user_files, @user) %>
                                 <%= btn_download(download_user_files_user_path(@user, file: "portfolio"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('portfolio')}") %>
                               <% end %>
                               <%= truncate(@user.service_provider_detail&.portfolio&.file&.filename, length: 35) %>
                             <% end %>
-                          </div>
                           <% if ['service_provider'].include?(current_user.role) %>
-                            <div class="col-auto">
                               <%= render partial: 'file_upload', locals: { file_name: 'portfolio', demerit_flag: '', access_licence_id: ''} %>
-                            </div>
                           <% end %>
-                        </div>
                       </td>
                     </tr>
                     <tr>
@@ -210,6 +204,23 @@
               </div>
             </div>
           </div>
+          <div class="db-box with-side-header">
+            <div class="row d-flex">
+              <div class="col-auto">
+                <div class="block-heading">
+                  <div class="heading">
+                    <%= image_tag('/assets/layout/activity-information.png') %>
+                    <span class="text-secondary text-uppercase font-weight-500 mt-3">Activity<br>Information</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col table-responsive py-4 pl-0">
+                <%= render partial: 'activity_information'%>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-6">
           <div class="db-box with-side-header">
             <div class="row d-flex">
               <div class="col-auto">
@@ -246,40 +257,19 @@
                     <tr>
                       <th>Application Form</th>
                       <td>
-                        <div class="row d-flex justify-content-end">
-                          <div class="col-auto">
-                            <% if @user.service_provider_detail&.application_form.present? %>
-                              <% if can?(:download_user_files, @user) %>
-                                <%= btn_download(download_user_files_user_path(@user, file: "application_form"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('application_form')}") %>
-                              <% end %>
-                              <%= truncate(@user.service_provider_detail&.application_form&.file&.filename, length: 35) %>
+                        <% if @user.service_provider_detail&.application_form.present? %>
+                            <% if can?(:download_user_files, @user) %>
+                              <%= btn_download(download_user_files_user_path(@user, file: "application_form"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('application_form')}") %>
                             <% end %>
-                          </div>
-                          <% if ['service_provider'].include?(current_user.role) %>
-                            <div class="col-auto">
-                              <%= render partial: 'file_upload', locals: { file_name: 'application_form', demerit_flag: '', access_licence_id: ''} %>
-                            </div>
+                            <%= truncate(@user.service_provider_detail&.application_form&.file&.filename, length: 35) %>
                           <% end %>
-                        </div>                      
+                        <% if ['service_provider'].include?(current_user.role) %>
+                            <%= render partial: 'file_upload', locals: { file_name: 'application_form', demerit_flag: '', access_licence_id: ''} %>
+                        <% end %>                  
                       </td>
                     </tr>
                   </tbody>
                 </table>
-              </div>
-            </div>
-          </div>
-          <div class="db-box with-side-header">
-            <div class="row d-flex">
-              <div class="col-auto">
-                <div class="block-heading">
-                  <div class="heading">
-                    <%= image_tag('/assets/layout/activity-information.png') %>
-                    <span class="text-secondary text-uppercase font-weight-500 mt-3">Activity<br>Information</span>
-                  </div>
-                </div>
-              </div>
-              <div class="col table-responsive py-4 pl-0">
-                <%= render partial: 'activity_information'%>
               </div>
             </div>
           </div>
@@ -338,6 +328,18 @@
               <div class="col-auto">
                 <div class="block-heading">
                   <div class="heading">
+                    <%= image_tag('/assets/layout/affiliated-practitioner-accredition.png') %>
+                    <span class="text-secondary text-uppercase font-weight-500 mt-3">Affiliated<br>Practitioner<br>Accreditation</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="db-box with-side-header">
+            <div class="row d-flex">
+              <div class="col-auto">
+                <div class="block-heading">
+                  <div class="heading">
                     <%= image_tag('/assets/layout/corporate-license.png') %>
                     <span class="text-secondary text-uppercase font-weight-500 mt-3">GSAS<br>Design &amp; Build</span>
                   </div>
@@ -348,6 +350,7 @@
                   <tbody>
                     <tr>
                       <th>License Type</th>
+                      <th>License Name</th>
                       <th>Name</th>
                       <th>Email</th>
                       <th>GSAS ID</th>
@@ -358,6 +361,7 @@
                         <% if index == 1 %>
                           <td rowspan="<%= @service_provider_user_licences_design.count %>">GSAS-D&B</td>
                         <% end %>
+                        <td><%= ac.licence.display_name %></td>
                         <td class="b-word"><%= link_to(ac.user.full_name, user_path(ac.user)) %></td>
                         <td class="b-word"><%= ac.user.email %></td>
                         <td><%= ac.user.gsas_id %></td>
@@ -383,7 +387,8 @@
                 <table class="table mb-0">
                   <tbody>
                     <tr>
-                      <th>Type</th>
+                      <th>License Type</th>
+                      <th>License Name</th>
                       <th>Name</th>
                       <th>Email</th>
                       <th>GSAS ID</th>
@@ -394,6 +399,7 @@
                         <% if index == 1 %>
                           <td rowspan="<%= @service_provider_user_licences_construction.count %>">GSAS-CM</td>
                         <% end %>
+                        <td><%= ac.licence.display_name %></td>
                         <td class="b-word"><%= link_to(ac.user.full_name, user_path(ac.user)) %></td>
                         <td class="b-word"><%= ac.user.email %></td>
                         <td><%= ac.user.gsas_id %></td>
@@ -419,7 +425,8 @@
                 <table class="table mb-0">
                   <tbody>
                     <tr>
-                      <th>Type</th>
+                      <th>License Type</th>
+                      <th>License Name</th>
                       <th>Name</th>
                       <th>Email</th>
                       <th>GSAS ID</th>
@@ -430,6 +437,7 @@
                         <% if index == 1 %>
                           <td rowspan="<%= @service_provider_user_licences_operation.count %>">GSAS-OP</td>
                         <% end %>
+                        <td><%= ac.licence.display_name %></td>
                         <td class="b-word"><%= link_to(ac.user.full_name, user_path(ac.user)) %></td>
                         <td class="b-word"><%= ac.user.email %></td>
                         <td><%= ac.user.gsas_id %></td>
@@ -455,7 +463,8 @@
                 <table class="table mb-0">
                   <tbody>
                     <tr>
-                      <th>Type</th>
+                      <th>License Type</th>
+                      <th>License Name</th>
                       <th>Name</th>
                       <th>Email</th>
                       <th>GSAS ID</th>
@@ -480,7 +489,8 @@
                 <table class="table mb-0">
                   <tbody>
                     <tr>
-                      <th>Type</th>
+                      <th>License Type</th>
+                      <th>License Name</th>
                       <th>Name</th>
                       <th>Email</th>
                       <th>GSAS ID</th>
@@ -505,50 +515,13 @@
                 <table class="table mb-0">
                   <tbody>
                     <tr>
-                      <th>Type</th>
+                     <th>License Type</th>
+                      <th>License Name</th>
                       <th>Name</th>
                       <th>Email</th>
                       <th>GSAS ID</th>
                       <th>Expiry Date</th>
                     </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-12">
-          <div class="db-box with-side-header">
-            <div class="row d-flex">
-              <div class="col-auto">
-                <div class="block-heading">
-                  <div class="heading">
-                    <%= image_tag('/assets/layout/affiliated-practitioner-accredition.png') %>
-                    <span class="text-secondary text-uppercase font-weight-500 mt-3">Affiliated<br>Practitioner<br>Accreditation</span>
-                  </div>
-                </div>
-              </div>
-              <div class="col table-responsive py-4 pl-0">
-                <table class="table mb-0">
-                  <tbody>
-                    <tr>
-                      <th>Type</th>
-                      <th>Name</th>
-                      <th>Email</th>
-                      <th>GSAS ID</th>
-                      <th>Expiry Date</th>
-                    </tr>
-                    <% @service_provider_user_licences_construction&.each.with_index(1) do |ac, index| %>
-                      <tr>
-                        <% if index == 1 %>
-                          <td rowspan="<%= @service_provider_user_licences_construction.count %>">GSAS-CM</td>
-                        <% end %>
-                        <td class="b-word"><%= link_to(ac.user.full_name, user_path(ac.user)) %></td>
-                        <td class="b-word"><%= ac.user.email %></td>
-                        <td><%= ac.user.gsas_id %></td>
-                        <td><%= ac.formatted_expiry_date %></td>
-                      </tr>
-                    <% end %>
                   </tbody>
                 </table>
               </div>

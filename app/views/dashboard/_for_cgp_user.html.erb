@@ -11,9 +11,9 @@
       <div class="menu-block">
         <ul>
         <li class="active"><a href="javascript:;"><span><%= image_tag('/assets/layout/grid.png') %></span>DashBoard</a></li>
-        <li><a href="javascript:;"><span><%= image_tag('/assets/layout/user-menu.png') %></span>Profile</a></li>
-        <li><a href="javascript:;"><span><%= image_tag('/assets/layout/comment.png') %></span>Messages</a></li>
-        <li><a href="javascript:;"><span><%= image_tag('/assets/layout/settings.png') %></span>Settings</a></li>
+        <li><a href="<%= user_path(current_user.id) %>"><span><%= image_tag('/assets/layout/user-menu.png') %></span>Profile</a></li>
+        <!--<li><a href="javascript:;"><span><%= image_tag('/assets/layout/comment.png') %></span>Messages</a></li>
+        <li><a href="javascript:;"><span><%= image_tag('/assets/layout/settings.png') %></span>Settings</a></li>-->
         </ul>
         <!-- <%= link_to 'View Profile', user_path(@user.id) %> -->
       </div>
@@ -135,63 +135,35 @@
                     <tr>
                       <th>Education Certificates</th>
                       <td>
-                        <div class="row d-flex justify-content-end">
-                          <div class="col-auto">
-                            <% if @user.user_detail&.education_certificate.present? %>
-                              <% if can?(:download_user_files, @user) %>
-                                <%= btn_download(download_user_files_user_path(@user, file: "education_certificate"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('education_certificate')}") %>
-                              <% end %>
-                              <%= truncate(@user.user_detail&.education_certificate&.file&.filename, length: 35) %>
+                          <% if @user.user_detail&.education_certificate.present? %>
+                            <% if can?(:download_user_files, @user) %>
+                              <%= btn_download(download_user_files_user_path(@user, file: "education_certificate"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('education_certificate')}") %>
                             <% end %>
-                          </div>
-                          <% if ['default_role'].include?(current_user.role) %>
-                            <div class="col-auto">
-                              <%= render partial: 'file_upload', locals: { file_name: 'education_certificate', demerit_flag: '', access_licence_id: ''} %>
-                            </div>
+                            <%= truncate(@user.user_detail&.education_certificate&.file&.filename, length: 35) %>
                           <% end %>
-                        </div>
+                          <br><br>
+                          <% if ['default_role'].include?(current_user.role) %>
+                              <%= render partial: 'file_upload', locals: { file_name: 'education_certificate', demerit_flag: '', access_licence_id: ''} %>
+                          <% end %>
                       </td>
                     </tr>
                     <tr>
                       <th>Experience Certificates</th>
                       <td>
-                        <div class="row d-flex justify-content-end">
-                          <div class="col-auto">
-                            <% if @user.user_detail&.work_experience_file.present? %>
-                              <% if can?(:download_user_files, @user) %>
-                                <%= btn_download(download_user_files_user_path(@user, file: "work_experience_file"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('work_experience_file')}") %>
-                              <% end %>
-                              <%= truncate(@user.user_detail&.work_experience_file&.file&.filename, length: 35) %>
+                          <% if @user.user_detail&.work_experience_file.present? %>
+                            <% if can?(:download_user_files, @user) %>
+                              <%= btn_download(download_user_files_user_path(@user, file: "work_experience_file"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('work_experience_file')}") %>
                             <% end %>
-                          </div>
-                          <% if ['default_role'].include?(current_user.role) %>
-                            <div class="col-auto">
-                              <%= render partial: 'file_upload', locals: { file_name: 'work_experience_file', demerit_flag: '', access_licence_id: ''} %>
-                            </div>
+                            <%= truncate(@user.user_detail&.work_experience_file&.file&.filename, length: 35) %>
                           <% end %>
-                        </div>
+                          <br><br>
+                          <% if ['default_role'].include?(current_user.role) %>
+                              <%= render partial: 'file_upload', locals: { file_name: 'work_experience_file', demerit_flag: '', access_licence_id: ''} %>
+                          <% end %>
                       </td>
                     </tr>
                   </tbody>
                 </table>
-              </div>
-            </div>
-          </div>
-          <div class="db-box with-side-header">
-            <div class="row d-flex">
-              <div class="col-auto">
-                <div class="block-heading">
-                  <div class="heading">
-                    <%= image_tag('/assets/layout/practitioner-accredition.png') %>
-                    <span class="text-secondary text-uppercase font-weight-500 mt-3">Practitioner<br>Accreditation</span>
-                  </div>
-                </div>
-              </div>
-              <div class="col table-responsive py-4 pl-0">
-                <%= render partial: 'licence_overview', locals: { user_licences_design: @user_licences_design, 
-                  user_licences_construction: @user_licences_construction, 
-                  user_licences_operation: @user_licences_operation  
-                } %>
               </div>
             </div>
           </div>
@@ -245,41 +217,31 @@
                     <tr>
                       <th>Work Permit</th>
                       <td>
-                        <div class="row d-flex justify-content-end">
-                          <div class="col-auto">
-                            <% if @user.user_detail&.qid_work_permit_file.present? %>
-                              <% if can?(:download_user_files, @user) %>
-                                <%= btn_download(download_user_files_user_path(@user, file: "qid_work_permit_file"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('qid_work_permit_file')}") %>
-                              <% end %>
-                              <%= truncate(@user.user_detail&.qid_work_permit_file&.file&.filename, length: 35) %>
+                          <% if @user.user_detail&.qid_work_permit_file.present? %>
+                            <% if can?(:download_user_files, @user) %>
+                              <%= btn_download(download_user_files_user_path(@user, file: "qid_work_permit_file"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('qid_work_permit_file')}") %>
                             <% end %>
-                          </div>
-                          <% if ['default_role'].include?(current_user.role) %>
-                            <div class="col-auto">
-                              <%= render partial: 'file_upload', locals: { file_name: 'qid_work_permit_file', demerit_flag: '', access_licence_id: ''} %>
-                            </div>
+                            <%= truncate(@user.user_detail&.qid_work_permit_file&.file&.filename, length: 35) %>
                           <% end %>
-                        </div>
+                          <br><br>
+                        <% if ['default_role'].include?(current_user.role) %>
+                            <%= render partial: 'file_upload', locals: { file_name: 'qid_work_permit_file', demerit_flag: '', access_licence_id: ''} %>
+                        <% end %>
                       </td>
                     </tr>
                     <tr>
                       <th>Other Documents</th>
                       <td>
-                        <div class="row d-flex justify-content-end">
-                          <div class="col-auto">
-                            <% if @user.user_detail&.other_documents.present? %>
-                              <% if can?(:download_user_files, @user) %>
-                                <%= btn_download(download_user_files_user_path(@user, file: "other_documents"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('other_documents')}") %>
-                              <% end %>
-                              <%= truncate(@user.user_detail&.other_documents&.file&.filename, length: 35) %>
-                            <% end %>
-                          </div>
-                          <% if ['default_role'].include?(current_user.role) %>
-                            <div class="col-auto">
-                              <%= render partial: 'file_upload', locals: { file_name: 'other_documents', demerit_flag: '', access_licence_id: ''} %>
-                            </div>
+                        <% if @user.user_detail&.other_documents.present? %>
+                          <% if can?(:download_user_files, @user) %>
+                            <%= btn_download(download_user_files_user_path(@user, file: "other_documents"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('other_documents')}") %>
                           <% end %>
-                        </div>
+                          <%= truncate(@user.user_detail&.other_documents&.file&.filename, length: 35) %>
+                        <% end %>
+                        <br><br>
+                        <% if ['default_role'].include?(current_user.role) %>
+                            <%= render partial: 'file_upload', locals: { file_name: 'other_documents', demerit_flag: '', access_licence_id: ''} %>
+                        <% end %>
                       </td>
                     </tr>
                   </tbody>
@@ -381,7 +343,7 @@
               </div>
             </div>
           </div>
-          <div class="db-box with-side-header">
+          <!--<div class="db-box with-side-header">
             <div class="row d-flex">
               <div class="col-auto">
                 <div class="block-heading">
@@ -450,6 +412,26 @@
                     </tr>
                   </tbody>
                 </table>
+              </div>
+            </div>
+          </div>-->
+        </div>
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="db-box with-side-header">
+            <div class="row d-flex">
+              <div class="col-auto">
+                <div class="block-heading">
+                  <div class="heading">
+                    <%= image_tag('/assets/layout/practitioner-accredition.png') %>
+                    <span class="text-secondary text-uppercase font-weight-500 mt-3">Practitioner<br>Accreditation</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col table-responsive py-4 pl-0">
+                <%= render partial: 'licence_overview', locals: { user_licences_design: @user_licences_design, 
+                  user_licences_construction: @user_licences_construction, 
+                  user_licences_operation: @user_licences_operation  
+                } %>
               </div>
             </div>
           </div>

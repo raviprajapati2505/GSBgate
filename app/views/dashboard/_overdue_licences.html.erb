@@ -6,7 +6,7 @@
     </tr>
     <% @overdue_licences.each do |ac| %>
     <tr>
-      <td><%= (ac.expiry_date.to_date - Date.today.to_date).to_i %> Days</td>
+      <td><%= (ac.expiry_date.to_date - Date.today.to_date).to_i.abs %> Days</td>
       <td>Update <b><%= ac.licence.display_name %></b></td>
     </tr>
     <% end %>

@@ -2,6 +2,7 @@
   <tbody>
     <tr>
       <th>License Type</th>
+      <th>License Name</th>
       <th>GSAS ID</th>
       <th>Expiry Date</th>
       <th>Licence</th>
@@ -11,12 +12,14 @@
       <td></td>
       <td></td>
       <td></td>
+      <td></td>
     </tr>
     <% user_licences_design&.each.with_index(1) do |ac, index| %>
       <tr>
         <% if index == 1 %>
           <td rowspan="<%= user_licences_design.count %>">GSAS-D&B</td>
         <% end %>
+        <td><%= ac.licence.display_name %></td>
         <td><%= ac.user.gsas_id %></td>
         <td><%= ac.formatted_expiry_date %></td>
         <td>
@@ -42,6 +45,7 @@
         <% if index == 1 %>
           <td rowspan="<%= user_licences_construction.count %>">GSAS-CM</td>
         <% end %>
+        <td><%= ac.licence.display_name %></td>
         <td><%= ac.user.gsas_id %></td>
         <td><%= ac.formatted_expiry_date %></td>
         <td>
@@ -67,6 +71,7 @@
         <% if index == 1 %>
           <td rowspan="<%= user_licences_operation.count %>">GSAS-OP</td>
         <% end %>
+        <td><%= ac.licence.display_name %></td>
         <td><%= ac.user.gsas_id %></td>
         <td><%= ac.formatted_expiry_date %></td>
         <td>
@@ -92,15 +97,18 @@
       <td></td>
       <td></td>
       <td></td>
+      <td></td>
     </tr>
     <tr>
       <td>Waste Management</td>
       <td></td>
       <td></td>
       <td></td>
+      <td></td>
     </tr>
     <tr>
       <td>Building Commissioning</td>
+      <td></td>
       <td></td>
       <td></td>
       <td></td>
