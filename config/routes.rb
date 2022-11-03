@@ -242,12 +242,12 @@ Rails.application.routes.draw do
       post   'users/sign_in'  => '/api/sessions#create'
       delete 'users/sign_out' => '/api/sessions#destroy'
     end
-
     namespace :v1 do
       resources :projects, only: [:index, :show]
       get 'typologies' => 'projects#typologies', as: 'typologies'
       get 'building_type_groups' => 'projects#building_type_groups', as: 'building_type_groups'
       get 'building_types' => 'projects#building_types', as: 'building_types'
+      resources :countries
     end
   end
 
