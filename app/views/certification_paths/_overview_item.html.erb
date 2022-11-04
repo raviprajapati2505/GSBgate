@@ -25,15 +25,20 @@
               <% certification_paths.each do |certification_path| %>
                 <tr>
                   <td style="width: 425px;">
+                    <div class="d-flex justify-content-between">
                     <%= can_link_to(project_certification_path_path(project, certification_path), certification_path, class: "text-primary link-mr-2") do %>
                       <%= certification_path.certificate.stage_title %>
                     <% end %>
+                    <div>
                     <% if can? :confirm_destroy, certification_path %>
-                      <%= btn_link_to(confirm_destroy_project_certification_path_path(project, certification_path), {icon: 'trash', style: 'danger', size: 'extra_small', tooltip: 'Destroy all certification data', method: :get, data: {confirm: 'Do you really want to delete this certification?'}}) %>
-                    <% end %>
-                    <% if can? :confirm_deny, certification_path %>
-                      <%= btn_link_to(confirm_deny_project_certification_path_path(project, certification_path), {icon: 'ban', style: 'danger', size: 'extra_small', tooltip: 'Deny certificate', method: :get, data: {confirm: 'Do you really want to deny certification?'}}) %>
-                    <% end %>
+                    <%= btn_link_to(confirm_destroy_project_certification_path_path(project, certification_path), {icon: 'trash', style: 'danger', size: 'extra_small', tooltip: 'Destroy all certification data', method: :get, data: {confirm: 'Do you really want to delete this certification?'}}) %>
+                  <% end %>
+                  <% if can? :confirm_deny, certification_path %>
+                    <%= btn_link_to(confirm_deny_project_certification_path_path(project, certification_path), {icon: 'ban', style: 'danger', size: 'extra_small', tooltip: 'Deny certificate', method: :get, data: {confirm: 'Do you really want to deny certification?'}}) %>
+                  <% end %>
+                    </div>
+                  </div>
+
                   </td>
                   <td style="width: 290px;">
                     <%= certification_path.status %>

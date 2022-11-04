@@ -277,7 +277,7 @@ label {
   font-weight: 500;
 }
 .panel-default {
-  border-color: $secondary;
+  border-color: $border-color;
   & > .panel-heading {
     border-color: $secondary;
   }
@@ -862,6 +862,7 @@ hr {
 }
 .certi-status-badge {
   display: inline-block;
+  margin-left: 5px;
   position: relative;
   width: auto;
   padding: 3px 15px 3px 35px;
@@ -871,12 +872,12 @@ hr {
   font-weight: 500;
   text-transform: uppercase;
   font-size: 12px;
-  line-height: 12px;
+  line-height: 18px;
   background: $secondary;
   white-space: nowrap;
   img {
     position: absolute;
-    top: -3px;
+    top: 0px;
     left: -1px;
     width: 28px;
   }
@@ -1072,7 +1073,7 @@ table.dataTable thead > tr > th.sorting {
   border: 0px !important;
   background-color: transparent !important;
   color: #ababab !important;
-  font-weight: 100;
+  font-weight: 400;
 }
 .select2-search-choice-close {
   top: 3px !important;
@@ -1374,6 +1375,13 @@ table.dataTable thead > tr > th.sorting {
     img {
       width: 42px;
     }
+  }
+}
+.block-heading.affiliated-heading{
+  width: 100%;
+  background: linear-gradient(196deg, #2584c4 0%, #407d31 100%) !important;
+  & img{
+    filter: brightness(10) !important;
   }
 }
 .db-servicre-box {

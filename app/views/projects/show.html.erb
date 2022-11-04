@@ -268,7 +268,7 @@
       </div>
     </div>
     <div class="ibox">
-      <div class="ibox-title">
+      <div class="ibox-title bg-header-grey text-green">
         <h5>TEAMS</h5>
       </div>
     </div>
@@ -311,7 +311,7 @@
 
     <% else %>
       <div class="ibox">
-        <div class="ibox-title bg-header-grey">
+        <div class="ibox-title bg-header-grey  text-green">
           <h5><%= @project.team_table_heading %></h5>
         </div>
         <%= render partial: 'projects/service_provider_info', locals: { project: @project, certification_path: @certification_path } %>
