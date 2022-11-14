@@ -7,7 +7,6 @@ body.skin-gord-login{
 <div class="ibox p-5 m-4 new_form confirm-inst">
 <div class="ibox-content new-user-content-box border-0 pt-0">
 <h2 class="text-green my-4"><b>Resend confirmation instructions</b></h2>
-<hr/>
 
     <%= simple_form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
       <%= f.error_notification %>

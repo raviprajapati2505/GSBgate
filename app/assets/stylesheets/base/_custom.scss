@@ -6,11 +6,6 @@
   margin-left: unset !important;
 }
 
-.t-hr {
-  margin: 2px 0 2px 0;
-  padding: 0px;
-}
-
 .td-px-0 {
   padding-inline: 0px !important;
 }
@@ -282,12 +277,7 @@ label {
     border-color: $secondary;
   }
 }
-.sign_up {
-  background-color: $white;
-  .ibox-content {
-    border: 0px;
-  }
-}
+
 fieldset.scheduler-border {
   border: 1px groove rgba($gray-500, 0.36) !important;
 }
@@ -404,8 +394,8 @@ hr {
   }
 
   .select2-drop {
-    background: $black;
-    color: $white;
+    background: $white;
+    color: $gray-700;
   }
 
   .select2-drop.select2-drop-above.select2-drop-active {
@@ -423,8 +413,7 @@ hr {
   }
 
   .select2-search input {
-    background: url("/assets/select2-d6b5d8d….png") no-repeat 100% -22px,
-      linear-gradient(to bottom, $black 85%, $black 99%) 0 0;
+    background: url("/assets/select2-d6b5d8d….png") no-repeat 100% -22px;
   }
 
   .select2-dropdown-open.select2-drop-above .select2-choice,
@@ -448,25 +437,12 @@ hr {
     height: 36px;
     line-height: 36px;
     padding-left: 0;
-    color: $white;
+    color: $gray-700;
     box-shadow: none;
 
     .select2-arrow b {
       background-position: 0 5px !important;
     }
-  }
-
-  .select2-results .select2-no-results,
-  .select2-results .select2-searching,
-  .select2-results .select2-ajax-error,
-  .select2-results .select2-selection-limit {
-    background: $black;
-    color: $white;
-  }
-
-  .select2-container .select2-choice .select2-arrow {
-    border-left: 0;
-    background: transparent;
   }
 
   .new_form {
@@ -478,8 +454,8 @@ hr {
       }
     }
     .select2-drop {
-      background: $black;
-      color: $white;
+      background: $white;
+      color: $gray-700;
     }
 
     .select2-drop.select2-drop-above.select2-drop-active {
@@ -497,8 +473,7 @@ hr {
     }
 
     .select2-search input {
-      background: url("/assets/select2-d6b5d8d….png") no-repeat 100% -22px,
-        linear-gradient(to bottom, $black 85%, $black 99%) 0 0;
+      background: url("/assets/select2-d6b5d8d….png") no-repeat 100% -22px;
     }
 
     .select2-dropdown-open.select2-drop-above .select2-choice,
@@ -522,7 +497,7 @@ hr {
       height: 36px;
       line-height: 36px;
       padding-left: 0;
-      color: $white;
+      color: $gray-700;
       box-shadow: none;
 
       .select2-arrow b {
@@ -862,7 +837,6 @@ hr {
 }
 .certi-status-badge {
   display: inline-block;
-  margin-left: 5px;
   position: relative;
   width: auto;
   padding: 3px 15px 3px 35px;
@@ -872,12 +846,12 @@ hr {
   font-weight: 500;
   text-transform: uppercase;
   font-size: 12px;
-  line-height: 18px;
+  line-height: 13px;
   background: $secondary;
   white-space: nowrap;
   img {
     position: absolute;
-    top: 0px;
+    top: -3px;
     left: -1px;
     width: 28px;
   }
@@ -1113,7 +1087,8 @@ table.dataTable thead > tr > th.sorting {
   transform: rotate(90deg);
   display: inline-block;
 }
-.submittal {
+.submittal,
+.measurement {
   ul {
     li {
       span {
@@ -1377,10 +1352,10 @@ table.dataTable thead > tr > th.sorting {
     }
   }
 }
-.block-heading.affiliated-heading{
+.block-heading.affiliated-heading {
   width: 100%;
   background: linear-gradient(196deg, #2584c4 0%, #407d31 100%) !important;
-  & img{
+  & img {
     filter: brightness(10) !important;
   }
 }
@@ -1455,8 +1430,11 @@ table.dataTable thead > tr > th.sorting {
   border-color: transparent;
   color: $white;
 }
-.service_provide , .confirm-inst , .forget-pass , .sign-cgp {
-  & .text-inner-green{
-    color: $primary  !important;
+.service_provide,
+.confirm-inst,
+.forget-pass,
+.sign-cgp {
+  & .text-inner-green {
+    color: $primary !important;
   }
 }

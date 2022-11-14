@@ -298,7 +298,7 @@
   }
   ul.navbar-right {
     background: $skin-gord-a-color;
-    color:$white;
+    color: $white;
     display: flex;
     margin-left: auto;
     width: 100%;
@@ -325,7 +325,8 @@
         display: flex;
         align-items: center;
         padding: 5px 13px !important ;
-        &:hover {
+        &:hover,
+        &:focus {
           color: $primary !important;
           & .nav-user-icon {
             border-color: $primary;

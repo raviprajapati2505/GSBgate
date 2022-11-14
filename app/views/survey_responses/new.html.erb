@@ -1,7 +1,12 @@
-<div class="ibox">
+<style>
+  body.skin-gord-login{
+    background-color: #3a4f57 !important; 
+    background-image:none !important;
+  }
+</style>
+<div class="ibox p-5 m-4 new_form">
   <div class="ibox-content new-user-content-box">
-    <h2><%= @project_survey&.title %></h2>
-    <hr>
+    <h2 class="text-green my-4"><b><%= @project_survey&.title %></b></h2>
     <div class="alert alert-info">
       <h4>Description: </h4>
       <p>This online survey is part of the procedure to obtain <b>GSAS Operations Certification.</b></p>
@@ -10,7 +15,7 @@
       <p>2. Surveys are conducted online anonymously, and no party will have access to individual completed surveys
       </p>
     </div>
-
+    <div class="ibox-content new-user-content-box">
     <%= bootstrap_form_for(@survey_response, url: submit_survey_responses_path(@project_survey), method: 'post', html: { multipart: true }) do |f| %>
       <div class="form-inputs">
         <div class="row">
@@ -36,6 +41,7 @@
         </div>
       </div>
     <% end %>
+    </div>
   </div>
 </div>
 
