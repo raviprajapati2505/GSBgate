@@ -2,15 +2,13 @@
 <fieldset class="scheduler-border">
 	<legend class="scheduler-border">Personal Information</legend>
 		<div class="control-group">
-			<% if resource_for == 'user' %>
-				<div class="row">
-					<div class="col-md-4">
-					<%= f.label 'Appellation' %>
-					<%= f.select :name_suffix, options_for_select(["Mr.", "Ms.", "Mrs.", "Dr."], resource.name_suffix), { include_blank: "Choose Appellations" }, { class: "select2 form-control" } %>
-				</div>
+		<% if resource_for == 'user' %>
+			<div class="row">
+				<div class="col-md-4">
+				<%= f.input :name_suffix, collection: ["Mr.", "Ms.", "Mrs.", "Dr."], include_blank: "Choose Appellations", selected: resource.name_suffix, input_html: { class: "form-control" }, required: true %>
 			</div>
-			<% end %>
-		<br>
+		</div>
+		<% end %>
 		<div class="row">
 			<% if resource_for == 'user' %>
 				<div class="col-md-4"><%= f.input :name, required: true %></div>
@@ -21,7 +19,6 @@
 			<% end %>
 		</div>
 		<div class="row">
-			
 			<div class="col-md-4">
 					<%= f.input :username, required: true %>
 			</div>
@@ -29,6 +26,15 @@
 				<div class="col-md-4">
 					<%= f.input :practitioner_accreditation_type, collection: User.practitioner_accreditation_types.map{ |k, v| [k.titleize, k]}, include_blank: "Select Practitioner Accreditation Type", input_html: {class: "form-control"} %>
 				</div>
+				<div class="col-md-4">
+						<%= f.input :profile_pic, as: :file, label: t('users.form.profile_pic_title') %>
+						<% if resource.persisted? && resource&.profile_pic.present? %>
+							<% if can?(:download_user_files, resource) %>
+								<%= btn_download(download_user_files_user_path(resource, file: "profile_pic"), size: 'extra_small', tooltip: "Download #{User.human_attribute_name('profile_pic_title')}") %>
+							<% end %>
+							<%= truncate(resource.profile_pic&.file&.filename, length: 35) %>
+						<% end %>
+					</div>
 			<% end %>
 		</div>
 	</div>

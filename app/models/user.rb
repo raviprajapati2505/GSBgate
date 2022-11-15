@@ -51,8 +51,11 @@ class User < ApplicationRecord
   validates_numericality_of :mobile_area_code, :mobile, only_integer: true, unless: -> { encrypted_password_changed? } 
   
   validate :validate_org_webiste, unless: -> { encrypted_password_changed? } 
+  validate :validate_name_suffix
   validates :access_licences, :nested_attributes_uniqueness => {field: :licence_id}
   delegate :can?, :cannot?, :to => :ability
+
+  mount_uploader :profile_pic, ProfilePicUploader
 
   scope :active, -> {
     where(active: true)
@@ -339,5 +342,11 @@ class User < ApplicationRecord
     return if organization_website.present? && URI.regexp.match(organization_website)
   
     errors.add(:organization_website, 'Please enter a valid website url')
+  end
+
+  def validate_name_suffix
+    if !name_suffix.present? && self.role == 'default_role'
+      errors.add(:name_suffix, 'cant be blank')
+    end
   end
 end

@@ -376,6 +376,7 @@ en:
         test: 'TEst'
     form:
       form_title: User details
+      profile_pic_title: Profile Picture
       qid_file_title: Copy of the QID/Passport
       university_credential_file_title: University Credentials
       work_experience_file_title: Work Experience

@@ -25,11 +25,11 @@
             </tr>
             <tr>
               <th><%= Offline::Project.human_attribute_name('plot_area') %></th>
-              <td><%= @project.plot_area %></td>
+              <td><%= number_with_delimiter(@project.plot_area, delimiter: ',') %></td>
             </tr>
             <tr>
               <th><%= Offline::Project.human_attribute_name('certified_area') %></th>
-              <td><%= @project.certified_area %></td>
+              <td><%= number_with_delimiter(@project.certified_area, delimiter: ',') %></td>
             </tr>
             <tr>
               <th><%= Offline::Project.human_attribute_name('owner') %></th>

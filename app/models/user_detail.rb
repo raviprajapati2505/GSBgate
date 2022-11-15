@@ -1,7 +1,7 @@
 class UserDetail < ApplicationRecord
   MAXIMUM_DOCUMENT_FILE_SIZE = 25 # in MB
 
-  enum education: { university_engineering: 1, science_degree: 2, environmental_studies: 3, other: 4 }
+  enum education: { doctorate_degree: 4, masters_degree: 5, bachelors_degree: 6, diploma: 7, other: 8 }
 
   belongs_to :user
 

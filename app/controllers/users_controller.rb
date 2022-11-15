@@ -37,7 +37,8 @@ class UsersController < AuthenticatedController
   def update
     user_params = params.require(:user).permit(
       :name, 
-      :username, 
+      :username,
+      :profile_pic, 
       :organization_name, 
       :gord_employee, 
       :service_provider_id, 
@@ -113,7 +114,8 @@ class UsersController < AuthenticatedController
   def update_service_provider
     service_provider_params = params.require(:service_provider).permit(
       :name, 
-      :username, 
+      :username,
+      :profile_pic,
       :organization_name, 
       :gord_employee, 
       :active,
@@ -368,6 +370,8 @@ class UsersController < AuthenticatedController
   def download_user_files
 
     case params[:file]
+      when "profile_pic"
+        file = @user&.profile_pic&.path
       when "qid_file"
         file = @user.user_detail&.qid_file&.path
       when "university_credentials_file"
