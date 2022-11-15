@@ -3,7 +3,12 @@
     <div class="db-sidebar db-servicer">
       <div class="user-block">
         <div class="user-image">
-          <img src="https://icon-library.com/images/placeholder-image-icon/placeholder-image-icon-12.jpg" alt="image">
+          <% if @user.profile_pic.url %>
+            <% img_src = @user&.profile_pic.url %>
+          <% else %>
+            <% img_src = 'https://icon-library.com/images/placeholder-image-icon/placeholder-image-icon-12.jpg' %>
+          <% end %>
+          <img src="<%= img_src %>" alt="image">
         </div>
         <p class="h3 font-weight-bold"><%= @user.name %></p>
         <a class="user-email" href="mailto:<%= @user.email %>"><%= @user.email %></a>
