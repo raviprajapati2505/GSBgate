@@ -1,13 +1,41 @@
 <% rating = certification_path.rating_for_score(score, certificate: certificate, is_achieved_score: achieved, is_submitted_score: submitted) %>
 
+<% only_certification_name = certificate.only_certification_name %>
 <% if rating.is_a? String %>
-  <!-- TEXTUAL SCORE -->
-  <span class="label label-rating label-rating-<%= rating.downcase.gsub(/( )/, '-') %>" style='margin-inline: 1.5rem;' ><%= rating %></span>
-<% else %>
-  <!-- STAR SCORE -->
-  <span style="white-space: nowrap; margin-inline: 6px;">
-    <% rating.to_i.times do %>
-        <i class="fa fa-star fa-lg"></i>
-    <% end %>
-  </span>
-<% end %>
+    <!-- TEXTUAL SCORE -->
+    <% 
+      case only_certification_name
+        when 'GSAS-D&B'
+          badge_class = 'rating-badge-db'
+          image_tag = image_tag('/assets/layout/certi-status-db.png')
+        when 'GSAS-CM'
+          badge_class = 'rating-badge-cm'
+          image_tag = image_tag('/assets/layout/certi-status-cm.png')
+        when 'GSAS-OP'
+          badge_class = 'rating-badge-op'
+          image_tag = image_tag('/assets/layout/certi-status-op.png')
+      end
+    %>
+    <span class="certi-status-badge <%= badge_class %> label-rating-<%= rating.downcase.gsub(/( )/, '-') %>"><%= image_tag %><%= rating %></span>
+  <% else %>
+    <!-- STAR SCORE -->
+    <% 
+      case only_certification_name
+        when 'GSAS-D&B'
+          star_badge_class = 'certi-status-badge star-rating-badge-db'
+          image_tag = image_tag('/assets/layout/certi-status-db.png')
+        when 'GSAS-CM'
+          star_badge_class = 'certi-status-badge star-rating-badge-cm'
+          image_tag = image_tag('/assets/layout/certi-status-cm.png')
+        when 'GSAS-OP'
+          star_badge_class = 'certi-status-badge star-rating-badge-op'
+          image_tag = image_tag('/assets/layout/certi-status-op.png')
+      end
+    %>
+    <span class="certi-status-badge <%= star_badge_class %>">
+      <%= image_tag %>
+      <% rating.times do %>
+        <i class="fa fa-star"><span style="display:none;">*</span></i>
+      <% end %>
+    </span>
+  <% end %>

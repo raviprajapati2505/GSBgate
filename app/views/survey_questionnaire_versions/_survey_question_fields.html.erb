@@ -1,10 +1,9 @@
-<div class="nested-fields">
-  <div class="ibox float-e-margins">
+<div class="nested-fields question-box">
+  <div class="">
     <div class="ibox-content">
       <div class="text-right">
-        <%= link_to_remove_association "X", f, class: "btn btn-danger m-r-md m-t" %>
+        <%= link_to_remove_association "X", f, class: "btn btn-danger" %>
       </div>
-
       <div class="form-inputs">
         <div class="p-m survey-questions-fields">
           <div class="error text-danger">
@@ -14,7 +13,6 @@
               </h4>
             <% end %>
           </div>
-
           <%= f.text_field :question_text %>
 
           <%= f.text_area :description %>
@@ -22,16 +20,15 @@
           <%= f.select :question_type, options_for_select(SurveyQuestion.question_types.map {|k ,v| [v, k]}, f.object.question_type), { label: 'Choose Format', include_blank: '- There is no format selected -' }, { class: "select-question-type" } %>
 
           <%= f.check_box :mandatory, require: true %>
-
+<br/>
           <div class="form-inputs row m-b-xl survey-question-options">
             <div class="sortable-question-options">
               <%= f.fields_for :question_options do |question_option| %>
                 <%= render partial: 'question_option_fields', locals: { f: question_option } %>
               <% end %>
             </div>
-
             <div class="links">
-              <%= link_to_add_association 'Add Option', f, :question_options, class: "btn btn-primary btn-sm nested-fields-links #{set_visibility(f.object.question_type)}", id: "add-option-button" %>
+              <%= link_to_add_association 'Add Option', f, :question_options, class: "btn btn-primary btn-sm mb-4 nested-fields-links #{set_visibility(f.object.question_type)}", id: "add-option-button" %>
             </div>
           </div>
         </div>

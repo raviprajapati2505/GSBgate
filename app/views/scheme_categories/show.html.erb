@@ -1,62 +1,59 @@
-<div class="row">
-  <div class="col-lg-6">
-    <div class="ibox">
-      <div class="ibox-title">
-        <%= audit_log_label(@scheme_category) %>
-        <h5>Category</h5>
-      </div>
-      <div class="ibox-content">
-        <table class="table table-bordered table-striped">
-          <tbody>
-          <tr>
-            <th><%= SchemeCategory.human_attribute_name('name') %></th>
-            <td><%= @scheme_category.name %></td>
-          </tr>
-          <tr>
-            <th><%= SchemeCategory.human_attribute_name('code') %></th>
-            <td><%= @scheme_category.code %></td>
-          </tr>
-          </tbody>
-        </table>
-        <% if can? :update, @scheme_category %>
-          <div class="hr-line-dashed"></div>
-            <%= btn_link_to(edit_scheme_category_path(@scheme_category), icon: 'edit', text: 'Edit', action: :get, remote: true) %>
-        <% end %>
-      </div>
+<div class="col-lg-6">
+  <div class="ibox">
+    <div class="ibox-title">
+      <%= audit_log_label(@scheme_category) %>
+      <h5>Category</h5>
+    </div>
+    <div class="ibox-content table-responsive">
+      <table class="table table-bordered table-striped">
+        <tbody>
+        <tr>
+          <th><%= SchemeCategory.human_attribute_name('name') %></th>
+          <td><%= @scheme_category.name %></td>
+        </tr>
+        <tr>
+          <th><%= SchemeCategory.human_attribute_name('code') %></th>
+          <td><%= @scheme_category.code %></td>
+        </tr>
+        </tbody>
+      </table>
+      <% if can? :update, @scheme_category %>
+        <div class="hr-line-dashed"></div>
+          <%= btn_link_to(edit_scheme_category_path(@scheme_category), icon: 'edit', text: 'Edit', action: :get, remote: true) %>
+      <% end %>
     </div>
   </div>
 </div>
-<!--<div class="row">-->
-  <!--<div class="col-lg-6">-->
-    <!--<div class="ibox criterion-information">-->
-      <!--<div class="ibox-title">-->
-        <!--<h5>Category texts</h5>-->
-      <!--</div>-->
-      <!--<div class="ibox-content">-->
-        <!--<div class="non-sortable">-->
-          <!--<div class="panel panel-default">-->
-            <!--<div class="panel-heading">-->
-              <!--<div class="subtitle">Description</div>-->
-            <!--</div>-->
-            <!--<div class="panel-body">-->
-              <!--<div class="<%= @scheme_category.name.downcase %>"><%= @scheme_category.description.html_safe %></div>-->
-            <!--</div>-->
+
+<!--<div class="col-lg-6">-->
+  <!--<div class="ibox criterion-information">-->
+    <!--<div class="ibox-title">-->
+      <!--<h5>Category texts</h5>-->
+    <!--</div>-->
+    <!--<div class="ibox-content">-->
+      <!--<div class="non-sortable">-->
+        <!--<div class="panel panel-default">-->
+          <!--<div class="panel-heading">-->
+            <!--<div class="subtitle">Description</div>-->
           <!--</div>-->
-          <!--<div class="panel panel-default">-->
-            <!--<div class="panel-heading">-->
-              <!--<div class="subtitle">Impacts</div>-->
-            <!--</div>-->
-            <!--<div class="panel-body">-->
-              <!--<div class="<%= @scheme_category.name.downcase %>"><%= @scheme_category.impacts.html_safe %></div>-->
-            <!--</div>-->
+          <!--<div class="panel-body">-->
+            <!--<div class="<%= @scheme_category.name.downcase %>"><%= @scheme_category.description.html_safe %></div>-->
           <!--</div>-->
-          <!--<div class="panel panel-default">-->
-            <!--<div class="panel-heading">-->
-              <!--<div class="subtitle">Mitigate impacts</div>-->
-            <!--</div>-->
-            <!--<div class="panel-body">-->
-              <!--<div class="<%= @scheme_category.name.downcase %>"><%= @scheme_category.mitigate_impact.html_safe %></div>-->
-            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="panel panel-default">-->
+          <!--<div class="panel-heading">-->
+            <!--<div class="subtitle">Impacts</div>-->
+          <!--</div>-->
+          <!--<div class="panel-body">-->
+            <!--<div class="<%= @scheme_category.name.downcase %>"><%= @scheme_category.impacts.html_safe %></div>-->
+          <!--</div>-->
+        <!--</div>-->
+        <!--<div class="panel panel-default">-->
+          <!--<div class="panel-heading">-->
+            <!--<div class="subtitle">Mitigate impacts</div>-->
+          <!--</div>-->
+          <!--<div class="panel-body">-->
+            <!--<div class="<%= @scheme_category.name.downcase %>"><%= @scheme_category.mitigate_impact.html_safe %></div>-->
           <!--</div>-->
         <!--</div>-->
       <!--</div>-->

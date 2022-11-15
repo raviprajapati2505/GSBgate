@@ -1,8 +1,7 @@
 <%= simple_form_for(@user, as: 'user', url: user_path(@user), html: { method: :put, class: "user-form" }) do |f| %>
-  <div class="ibox float-e-margins">
+  <div class="ibox new_form">
     <div class="ibox-content">
-      <h2>Edit Profile</h2>
-      <hr />
+      <h2 class="text-green">Edit Profile</h2>
       <%= f.error_notification %>
 
       <div class="form-inputs m-t">
@@ -11,20 +10,18 @@
 
         <%= f.input :role, collection: User.roles.map{ |k, v| [k.titleize, k]}, include_blank: "Select Role", input_html: {class: "form-control"}, required: true %>
 
-        <%= f.input :gord_employee, required: true %>
+        <%= f.input :gord_employee, required: true  %>
 
         <%= f.input :active, required: true %>
       </div>
     </div>
   </div>
 
-  <div class="ibox float-e-margins">
+  <div class="ibox new_form">
     <div class="ibox-content">
 
       <% if @user.default_role? || @user.service_provider? %>
-        <h2>Licences</h2>
-        <hr />
-
+        <h2 class="text-green">Licences</h2>
         <div class="form-inputs access-licence-forms row">
           <%= f.simple_fields_for :access_licences do |access_licence| %>
             <%= render partial: 'access_licence_fields', locals: { f: access_licence } %>
@@ -35,15 +32,19 @@
         </div>
 
         <button type="button" class="btn btn-primary btn-sm m-t-md" id="proxy-add-licences-button">Add Licences</button>
-        <hr />
       <% end %>
 
-      <div class="form-actions m-t-lg">
+      
+
+      </div>
+    </div>
+    <div class="ibox new_form">
+      <div class="ibox-content">
+        <div class="form-actions">
         <%= btn_cancel_to(user_path(@user), style: 'danger', icon: 'times') %>
         <%= btn_cancel_to(edit_user_path(@user), text: 'Reset', style: 'white', icon: 'refresh') %>
         <%= btn_save %>
-      </div>
-
+        </div>
       </div>
     </div>
 <% end %>

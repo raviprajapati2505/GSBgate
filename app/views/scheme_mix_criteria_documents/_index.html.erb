@@ -2,7 +2,7 @@
     N/A
 <% else %>
     <div class="table-responsive">
-      <table class="table table-bordered document-table" id="smcd_table" cellspacing="0" width="100%">
+      <table class="table table-bordered document-table light-green" id="smcd_table" cellspacing="0" width="100%">
           <thead>
           <tr>
               <th><%= check_box_tag "all", "", false, id: "scheme_criterion_document", class: "smcd_checkbox_parent" %></th>
@@ -13,7 +13,7 @@
               <th class="desktop">Approved&nbsp;Date</th>
               <th class="all">PCR</th>
               <th class="all">Status</th>
-              <th class="all">Actions</th>
+              <th class="all" style="min-width:190px">Actions</th>
           </tr>
           </thead>
           <tbody>
@@ -39,9 +39,12 @@
                       <td><%= smcd.pcr_context %></td>
                       <td data-order="<%= smcd.status.humanize %>">
                           <% if can?(:update_status, smcd) %>
+                          <div class="approved-badge">
+                          <span class="certi-name-badge mr-1"><%= image_tag('/assets/layout/approved-check.png') %></span>
                               <%= link_to(edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, smcd), remote: true) do %>
                                   <%= smcd.status.humanize.gsub(' ', '&nbsp;').html_safe %>
                               <% end %>
+                              </div>
                           <% else %>
                               <%= smcd.status.humanize.gsub(' ', '&nbsp;').html_safe %>
                           <% end %>
@@ -49,8 +52,10 @@
                       <td>
                           <%= audit_log_label(smcd) %>
                           <% if can?(:read, smcd) && download_document_permitted %>
+                            <div class="d-inline-block download-btn">
                               <%= btn_download(project_certification_path_document_path(@project, @certification_path, smcd.document), size: 'small', tooltip: 'Download document') %>
-                          <% end %>
+                            </div>
+                              <% end %>
                           <% if can?(:create_link, smcd) && download_document_permitted %>
                               <%= btn_link_to(new_link_project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, smcd), remote: true, size: 'small', icon: 'link', tooltip: 'Link document to other criteria') %>
                           <% end %>

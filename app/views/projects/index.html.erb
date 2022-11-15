@@ -1,16 +1,14 @@
-<div class="row">
-    <div class="col-md-12">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <h5><%= t('.title_html') %></h5>
-            </div>
-            <div class="ibox-content" id="projects-table" data-user-role="<%= current_user.role %>">
-                <%= render_datatable(@datatable) %>
-                <% if can? :create, Project.new %>
-                    <div class="hr-line-dashed"></div>
-                    <%= btn_link_to(new_project_path, icon: 'building-o', text: t('.btn_new_project')) %>
-                <% end %>
-            </div>
+<div class="col-md-12">
+    <div class="ibox">
+        <!-- <div class="ibox-title">
+            <h5><%= t('.title_html') %></h5>
+        </div> -->
+        <div class="ibox-content px-0 pt-0" id="projects-table" data-user-role="<%= current_user.role %>">
+            <%= render_datatable(@datatable) %>
+            <% if can? :create, Project.new %>
+                <div class="hr-line-dashed"></div>
+                <%= btn_link_to(new_project_path, icon: 'building-o', text: t('.btn_new_project')) %>
+            <% end %>
         </div>
     </div>
 </div>
@@ -28,6 +26,8 @@
                 }  
             });
         }
+        $('body').addClass('page-bg-dark');
+        $('.dataTables_entries').parent().closest('div').addClass('dataTable-pagination');
     });
 </script>
 

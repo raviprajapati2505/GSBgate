@@ -95,6 +95,7 @@ class UsersController < AuthenticatedController
         :cgp_licence_file,
         :energy_assessor_name, 
         :gsas_energey_assessment_licence_file,
+        :nominated_cgp
       ],
       access_licences_attributes: [
         :id, 
@@ -148,7 +149,8 @@ class UsersController < AuthenticatedController
             :demerit_acknowledgement_file,
             :cgp_licence_file,
             :energy_assessor_name, 
-            :gsas_energey_assessment_licence_file
+            :gsas_energey_assessment_licence_file,
+            :nominated_cgp
         ]
       )
 

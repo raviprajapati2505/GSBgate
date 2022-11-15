@@ -213,6 +213,7 @@ en:
         business_field: Business Field
         portfolio: Portfolio
         energy_assessor_name: Energy Assessor Name
+        nominated_cgp: Nominated CGP Representative
       licence:
         licence_type: Licence Type
         display_name: Name

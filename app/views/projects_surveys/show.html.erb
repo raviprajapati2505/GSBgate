@@ -1,93 +1,86 @@
-<div class="row">
-
-  <div class="col-md-12 m-t">
-    <div class="ibox float-e-margins">
-      <div class="ibox-title">
-        <div class='row'>
-          <div class="col-md-10">
-            <h2><b><%= "Questions of #{@projects_survey.survey_type.title}" %></b></h2>
-            <h3>Total Questions: <%= @latest_questions.count rescue 0 %></h3>
-          </div>
-          <div class="col-md-2">
-              <%= 
-                if @latest_questions[0].question_responses.count > 0
-                  link_to export_survey_results_project_survey_path(@project), class: "btn btn-primary" do
-                      ikoen('download', size: :small, title: 'Export These Results')
-                  end
-                end 
-              %>
-          </div>
+<div class="col-md-12 m-t">
+  <div class="ibox">
+      <div class='row align-items-center'>
+        <div class="col-md-11">
+          <h2><b><%= "Questions of #{@projects_survey.survey_type.title}" %></b></h2>
+          <h3>Total Questions: <%= @latest_questions.count rescue 0 %></h3>
+        </div>
+        <div class="col-md-1 text-right">
+            <%= 
+              if @latest_questions[0].question_responses.count > 0
+                link_to export_survey_results_project_survey_path(@project), class: "btn btn-primary" do
+                    ikoen('download', size: :small, title: 'Export These Results')
+                end
+              end 
+            %>
         </div>
       </div>
-    </div>
   </div>
+</div>
+<div class="col-md-12">
+  <div class="ibox">
+    <% @latest_questions.each.with_index(1) do |question, i| %>
+      <div class="ibox-title m-t">
+        <h4 class=""><%= question.question_text %></h4>
+      </div>
 
-  <div class="col-md-12">
-    <div class="ibox float-e-margins">
-      <% @latest_questions.each.with_index(1) do |question, i| %>
-        <div class="ibox-title m-t">
-          <h4 class="p-m"><%= question.question_text %></h4>
-        </div>
+      <div class="ibox-content table-responsive">
+        <table class="table table-bordered table-striped">
+          <tbody>
+            <%= render partial: "survey_types/question_detail", locals: { question: question } %>
+          </tbody>
+        </table>
 
-        <div class="ibox-content">
-          <table class="table table-bordered table-striped">
-            <tbody>
-              <%= render partial: "survey_types/question_detail", locals: { question: question } %>
-            </tbody>
-          </table>
+        <table class="table table-bordered table-striped user-details-table border-bottom-table">
+          <thead>
+            <tr>
+              <th class="border-left-0">Results</th>
+              <% unless question.fill_in_the_blank? %>
+                <th></th>
+              <% end %>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <% unless question.fill_in_the_blank? %>
+                <td class="p-md">
+                  <% 
+                    option_with_counts = survey_question_options_report(@projects_survey, question) rescue {}
+                    total_responses = @projects_survey.survey_responses.count rescue 0
+                  %>
+                  <% option_with_counts.each.with_index(1) do |(key, value), index| %>
+                    <p><%= "#{index}) #{key} (#{value} Out of #{total_responses})" %></p>
+                  <% end %>
+                </td>
+                <td>
+                  <%= column_chart option_with_counts, 
+                    loading: "Loading...", 
+                    empty: "No data", 
+                    legend: false,
+                    width: "50%",
+                    height: "100px", 
+                    dataset: 
+                      { 
+                        barPercentage: 0.2
+                      }
+                  %>
+                </td>
 
-          <table class="table table-bordered table-striped user-details-table">
-            <thead>
-              <tr>
-                <th>Results</th>
-                <% unless question.fill_in_the_blank? %>
-                  <th></th>
-                <% end %>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <% unless question.fill_in_the_blank? %>
-                  <td class="p-md">
-                    <% 
-                      option_with_counts = survey_question_options_report(@projects_survey, question) rescue {}
-                      total_responses = @projects_survey.survey_responses.count rescue 0
-                    %>
-                    <% option_with_counts.each.with_index(1) do |(key, value), index| %>
-                      <p><%= "#{index}) #{key} (#{value} Out of #{total_responses})" %></p>
-                    <% end %>
-                  </td>
-                  <td>
-                    <%= column_chart option_with_counts, 
-                      loading: "Loading...", 
-                      empty: "No data", 
-                      legend: false,
-                      width: "50%",
-                      height: "100px", 
-                      dataset: 
-                        { 
-                          barPercentage: 0.2
-                        }
-                    %>
-                  </td>
+              <% else %>
+                <td class="p-md">
+                  <a href="javascript:void(0);" class="show_text_responses" data-survey_question_id="<%= question.id %>">Click here to see responses.</a>
+                </td>
+              <% end %>
+            </tr>
+          </tbody>
+        </table>
 
-                <% else %>
-                  <td class="p-md">
-                    <a href="javascript:void(0);" class="show_text_responses" data-survey_question_id="<%= question.id %>">Click here to see responses.</a>
-                  </td>
-                <% end %>
-              </tr>
-            </tbody>
-          </table>
-
-        </div>
-      <% end %>
-    </div>
+      </div>
+    <% end %>
   </div>
-
-  <div class="col-md-12">
-    <%= btn_link_to(:back, icon: 'backward', text: 'Back') %>
-  </div>
+</div>
+<div class="col-md-12">
+  <%= btn_link_to(:back, icon: 'backward', text: 'Back') %>
 </div>
 
 <div class="modal fade" id="survey_text_response_model" data-projects-survey-id="<%= @projects_survey.id %>">

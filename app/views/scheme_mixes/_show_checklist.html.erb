@@ -3,13 +3,13 @@
   @certification_path = @scheme_mix.certification_path
   development_type_name = @certification_path&.development_type&.name
 %>
-<div class="row">
+<%# <div class="row"> %>
   <div class="col-lg-4">
-    <div class="ibox float-e-margins">
+    <div class="ibox">
       <div class="ibox-title">
         <h5>TYPOLOGY DETAILS</h5>
       </div>
-      <div class="ibox-content">
+      <div class="ibox-content table-responsive">
         <table class="table table-bordered table-striped" cellspacing="0" width="100%">
           <tbody>
           <tr>
@@ -83,16 +83,17 @@
     </div>
   </div>
   <div class="col-lg-8">
-    <div class="ibox float-e-margins">
+    <div class="ibox">
       <div class="ibox-title">
         <h5>CATEGORIES &amp; CRITERIA DETAILS</h5>
       </div>
-      <div class="ibox-content">
+      <div class="ibox-content table-responsive">
 
 
         <%= scores_legend %>
         <div id="categories-accordion">
-          <table class="table table-bordered" cellspacing="0" width="100%">
+        <div class="table-responsive">
+          <table class="table table-bordered border-bottom-table " cellspacing="0" width="100%">
             <thead>
             <tr>
               <th>&nbsp;</th>
@@ -282,8 +283,9 @@
             <% end %>
             </tbody>
           </table>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+<%# </div> %>

@@ -98,6 +98,7 @@
 
                 <% if Certificate.certification_types[@certification_type] == Certificate.certification_types[:final_design_certificate] %>
                     <div class="form-group">
+                    <div class="table-responsive">
                         <table class="table table-bordered table-hover">
                             <thead>
                             <tr>
@@ -114,6 +115,7 @@
                             <% end %>
                             </tbody>
                         </table>
+                        </div>
                     </div>
                 <% else %>
                     <% if @certification_path.development_type.mixable? %>

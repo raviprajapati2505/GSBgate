@@ -1,44 +1,42 @@
-<div class="row">
-    <div class="col-md-4">
-        <div class="ibox">
-            <div class="ibox-title">
-                <h5>User E-mail Notifications</h5>
-            </div>
-            <div class="ibox-content">
-                <p class="alert alert-info"><%= ikoen('info-circle') %> Below you can select for which types of audit log and task events a notification must be included in the digest e-mail.
-                Some event types can be specified on a per project basis. These event types will be visible after first selecting a project. Changes will only be saved for the currently selected project.</p>
-                <% excluded_notification_types = @user.notification_types.where(project_level: false).to_a %>
-                <% notification_types = NotificationType.all %>
-                <%= bootstrap_form_for(@user, url: update_notifications_user_path, method: 'put') do |f| %>
-                    <%= f.hidden_field :id, value: @user.id, disabled: 'disabled' %>
-                    <div class="form-group">
-                        <label>Project independent notification preferences</label>
+<div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="ibox">
+        <div class="ibox-title">
+            <h5>User E-mail Notifications</h5>
+        </div>
+        <div class="ibox-content">
+            <p class="alert alert-info"><%= ikoen('info-circle') %> Below you can select for which types of audit log and task events a notification must be included in the digest e-mail.
+            Some event types can be specified on a per project basis. These event types will be visible after first selecting a project. Changes will only be saved for the currently selected project.</p>
+            <% excluded_notification_types = @user.notification_types.where(project_level: false).to_a %>
+            <% notification_types = NotificationType.all %>
+            <%= bootstrap_form_for(@user, url: update_notifications_user_path, method: 'put') do |f| %>
+                <%= f.hidden_field :id, value: @user.id, disabled: 'disabled' %>
+                <div class="form-group">
+                    <label>Project independent notification preferences</label>
+                    <% notification_types.each do |notification_type| %>
+                        <% unless notification_type.project_level %>
+                        <div class="checkbox">
+                            <%= check_box_tag 'notification_types[]', notification_type.id, !excluded_notification_types.any? {|type| type.id == notification_type.id}, class: 'checkbox_parent' %>
+                            <%= label_tag notification_type.name %>
+                        </div>
+                        <% end %>
+                    <% end %>
+                </div>
+                <div class="form-group">
+                    <label for="project_id">Project dependent notification preferences</label>
+                    <input class="select2-project-ajax" type="hidden" name="[project_id]" id="project_id" title="Project">
+                    <div id="checkbox-list-notification-types">
                         <% notification_types.each do |notification_type| %>
-                            <% unless notification_type.project_level %>
+                            <% if notification_type.project_level %>
                             <div class="checkbox">
-                                <%= check_box_tag 'notification_types[]', notification_type.id, !excluded_notification_types.any? {|type| type.id == notification_type.id}, class: 'checkbox_parent' %>
+                                <%= check_box_tag 'project_notification_types[]', notification_type.id, false, class: 'checkbox_parent' %>
                                 <%= label_tag notification_type.name %>
                             </div>
                             <% end %>
                         <% end %>
                     </div>
-                    <div class="form-group">
-                        <label for="project_id">Project dependent notification preferences</label>
-                        <input class="select2-project-ajax" type="hidden" name="[project_id]" id="project_id" title="Project">
-                        <div id="checkbox-list-notification-types">
-                            <% notification_types.each do |notification_type| %>
-                                <% if notification_type.project_level %>
-                                <div class="checkbox">
-                                    <%= check_box_tag 'project_notification_types[]', notification_type.id, false, class: 'checkbox_parent' %>
-                                    <%= label_tag notification_type.name %>
-                                </div>
-                                <% end %>
-                            <% end %>
-                        </div>
-                    </div>
-                    <%= btn_save(text: t('.btn_save')) %>
-                <% end %>
-            </div>
+                </div>
+                <%= btn_save(text: t('.btn_save')) %>
+            <% end %>
         </div>
     </div>
 </div>

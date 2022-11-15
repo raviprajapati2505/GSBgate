@@ -1,6 +1,12 @@
-<div class="ibox float-e-margins">
-  <h2><b>Resend confirmation instructions</b></h2>
-  <div class="ibox-content new-user-content-box">
+<style>
+body.skin-gord-login{
+  background-color: #3a4f57 !important; 
+  background-image:none !important;
+}
+</style>
+<div class="ibox p-5 m-4 new_form confirm-inst">
+<div class="ibox-content new-user-content-box border-0 pt-0">
+<h2 class="text-green my-4"><b>Resend confirmation instructions</b></h2>
 
     <%= simple_form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
       <%= f.error_notification %>

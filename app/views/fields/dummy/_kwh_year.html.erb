@@ -1,9 +1,7 @@
-<div class="row">
-    <div class="col-md-12">
-        <% if field_datum.errors.count > 0 %>
-            <%= f.text_field "field-datum-#{field_datum.id}", wrapper: { class: 'has-error' }, help: field_datum.errors.messages.first[1][0], append: 'kWh/year', value: field_datum.value, label: field_datum.field.label, disabled: !(can? :update, requirement_datum) %>
-        <% else %>
-            <%= f.text_field "field-datum-#{field_datum.id}", append: 'kWh/year', value: field_datum.value, label: field_datum.field.label, disabled: !(can? :update, requirement_datum) %>
-        <% end %>
-    </div>
+<div class="col-md-12">
+    <% if field_datum.errors.count > 0 %>
+        <%= f.text_field "field-datum-#{field_datum.id}", wrapper: { class: 'has-error' }, help: field_datum.errors.messages.first[1][0], append: 'kWh/year', value: field_datum.value, label: field_datum.field.label, disabled: !(can? :update, requirement_datum) %>
+    <% else %>
+        <%= f.text_field "field-datum-#{field_datum.id}", append: 'kWh/year', value: field_datum.value, label: field_datum.field.label, disabled: !(can? :update, requirement_datum) %>
+    <% end %>
 </div>

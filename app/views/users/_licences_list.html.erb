@@ -1,5 +1,6 @@
 <h4><b><%= label %></b></h4>
-<table class="table table-bordered table-striped user-details-table">
+<div class="table-responsive">
+<table class="table table-bordered table-striped user-details-table border-bottom-table">
   <thead>
     <tr>
       <th><%= Licence.human_attribute_name('display_name') %></th>
@@ -23,3 +24,4 @@
     <% end %>
   </tbody>
 </table>
+</div>
