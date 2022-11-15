@@ -890,11 +890,11 @@ module ApplicationHelper
   def certification_name_datatable_render(rec,only_certification_name)
     case only_certification_name
       when 'GSAS-D&B'
-        '<span class="certi-name-badge badge-db">'+ image_tag('/assets/layout/certi-name-db.png') +'</span><a href='+Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>'+only_certification_name+'</a>'
+        '<span class="certi-name-badge badge-db">'+ image_tag('layout/certi-name-db.png') +'</span><a href='+Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>'+only_certification_name+'</a>'
       when 'GSAS-CM'
-        '<span class="certi-name-badge badge-cm">'+ image_tag('/assets/layout/certi-name-cm.png') +'</span><a href='+Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>'+only_certification_name+'</a>'
+        '<span class="certi-name-badge badge-cm">'+ image_tag('layout/certi-name-cm.png') +'</span><a href='+Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>'+only_certification_name+'</a>'
       when 'GSAS-OP'
-        '<span class="certi-name-badge badge-op">'+ image_tag('/assets/layout/certi-name-op.png') +'</span><a href='+Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>'+only_certification_name+'</a>'
+        '<span class="certi-name-badge badge-op">'+ image_tag('layout/certi-name-op.png') +'</span><a href='+Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>'+only_certification_name+'</a>'
     end
   end
 
@@ -907,22 +907,22 @@ module ApplicationHelper
     end
     case only_certification_name
       when 'GSAS-D&B'
-        '<span class="certi-sub-status-badge status-badge-db">'+ image_tag('/assets/layout/certi-sub-status-db.png') +'</span>'+status
+        '<span class="certi-sub-status-badge status-badge-db">'+ image_tag('layout/certi-sub-status-db.png') +'</span>'+status
       when 'GSAS-CM'
-        '<span class="certi-sub-status-badge status-badge-cm">'+ image_tag('/assets/layout/certi-sub-status-cm.png') +'</span>'+status
+        '<span class="certi-sub-status-badge status-badge-cm">'+ image_tag('layout/certi-sub-status-cm.png') +'</span>'+status
       when 'GSAS-OP'
-        '<span class="certi-sub-status-badge status-badge-op">'+ image_tag('/assets/layout/certi-sub-status-op.png') +'</span>'+status
+        '<span class="certi-sub-status-badge status-badge-op">'+ image_tag('layout/certi-sub-status-op.png') +'</span>'+status
     end
   end
 
   def certification_name_offline_datatable_render(certification_type)
     case certification_type
       when 'GSAS-D&B'
-        '<span class="certi-name-badge badge-db">'+ image_tag('/assets/layout/certi-name-db.png') +'</span>'+certification_type
+        '<span class="certi-name-badge badge-db">'+ image_tag('layout/certi-name-db.png') +'</span>'+certification_type
       when 'GSAS-CM'
-        '<span class="certi-name-badge badge-cm">'+ image_tag('/assets/layout/certi-name-cm.png') +'</span>'+certification_type
+        '<span class="certi-name-badge badge-cm">'+ image_tag('layout/certi-name-cm.png') +'</span>'+certification_type
       when 'GSAS-OP'
-        '<span class="certi-name-badge badge-op">'+ image_tag('/assets/layout/certi-name-op.png') +'</span>'+certification_type
+        '<span class="certi-name-badge badge-op">'+ image_tag('layout/certi-name-op.png') +'</span>'+certification_type
     end
   end
 
@@ -930,11 +930,11 @@ module ApplicationHelper
     only_certification_name = rec.certificate_type
     case only_certification_name
       when 'GSAS-D&B'
-        '<span class="certi-sub-status-badge status-badge-db">'+ image_tag('/assets/layout/certi-sub-status-db.png') +'</span>'+rec.certification_status
+        '<span class="certi-sub-status-badge status-badge-db">'+ image_tag('layout/certi-sub-status-db.png') +'</span>'+rec.certification_status
       when 'GSAS-CM'
-        '<span class="certi-sub-status-badge status-badge-cm">'+ image_tag('/assets/layout/certi-sub-status-cm.png') +'</span>'+rec.certification_status
+        '<span class="certi-sub-status-badge status-badge-cm">'+ image_tag('layout/certi-sub-status-cm.png') +'</span>'+rec.certification_status
       when 'GSAS-OP'
-        '<span class="certi-sub-status-badge status-badge-op"'+ image_tag('/assets/layout/certi-sub-status-op.png') +'</span>'+rec.certification_status
+        '<span class="certi-sub-status-badge status-badge-op"'+ image_tag('layout/certi-sub-status-op.png') +'</span>'+rec.certification_status
     end
   end
 end

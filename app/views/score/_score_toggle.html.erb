@@ -2,19 +2,19 @@
 <ul class="score-tabs list-inline pull-right" role="tablist">
     <li role="presentation" class="active">
         <a to data-target="#scores_in_certificate_points_<%= id_list.join(', #scores_in_certificate_points_') %>" aria-controls="<%= id_list.join(', scores_in_certificate_points_') %>" role="tab" data-toggle="tab">
-            <%= image_tag('/assets/layout/certification.png', width:12) %>
+            <%= image_tag('layout/certification.png', width:12) %>
             <span class="ml-1" data-toggle="tooltip" title="<%= t('.scores_in_certificate_points.tooltip') %>"><%= t('.scores_in_certificate_points.text') %></span>
         </a>
     </li>
     <li role="presentation">
         <a data-target="#scores_in_scheme_points_<%= id_list.join(', #scores_in_scheme_points_') %>" aria-controls="<%= id_list.join(', scores_in_scheme_points_') %>" role="tab" data-toggle="tab">
-            <%= image_tag('/assets/layout/scheme.png', width:15) %>
+            <%= image_tag('layout/scheme.png', width:15) %>
             <span class="ml-1" data-toggle="tooltip" title="<%= t('.scores_in_scheme_points.tooltip') %>"><%= t('.scores_in_scheme_points.text') %></span>
         </a>
     </li>
     <li role="presentation">
         <a data-target="#scores_<%= id_list.join(', #scores_') %>" aria-controls="<%= id_list.join(', scores_') %>" role="tab" data-toggle="tab">
-            <%= image_tag('/assets/layout/criterion.png', width:11) %>
+            <%= image_tag('layout/criterion.png', width:11) %>
             <span class="ml-1" data-toggle="tooltip" title="<%= t('.scores.tooltip') %>"><%= t('.scores.text') %></span>
         </a>
     </li>
