@@ -1,6 +1,7 @@
 <% certification_path = project&.certification_paths&.last %>
 
 <% if certification_path.present? %>
+<li class="list-group-item table-my-0 table-py-0 px-0">
 <div class="table-responsive">
   <table class="table table-bordered table-mb-0 ">
     <tbody>
@@ -39,4 +40,5 @@
     </tbody>
   </table>
   </div>
+</li>
 <% end %>
