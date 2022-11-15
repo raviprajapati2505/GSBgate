@@ -11,7 +11,7 @@
       <div class="menu-block">
         <ul>
           <li class="active"><a href="javascript:;"><span><%= image_tag('/assets/layout/grid.png') %></span>DashBoard</a></li>
-          <li><a href="<%= user_path(current_user.id) %>"><span><%= image_tag('/assets/layout/user-menu.png') %></span>Profile</a></li>
+          <li><a href="<%= user_path(@user.id) %>"><span><%= image_tag('/assets/layout/user-menu.png') %></span>Profile</a></li>
           <!--<li><a href="javascript:;"><span><%= image_tag('/assets/layout/comment.png') %></span>Messages</a></li>
           <li><a href="javascript:;"><span><%= image_tag('/assets/layout/settings.png') %></span>Settings</a></li>-->
         </ul>
@@ -76,7 +76,7 @@
                           </div>
                           <div class="box-data">
                             <p class="text-uppercase mb-0">Territory</p>
-                            <span class="text-uppercase font-weight-bold">Qatar</span>
+                            <span class="text-uppercase font-weight-bold"><%= @user&.country %></span>
                           </div>
                         </div>
                       </div>
@@ -190,6 +190,7 @@
                               <% end %>
                               <%= truncate(@user.service_provider_detail&.portfolio&.file&.filename, length: 35) %>
                             <% end %>
+                            <br><br>
                           <% if ['service_provider'].include?(current_user.role) %>
                               <%= render partial: 'file_upload', locals: { file_name: 'portfolio', demerit_flag: '', access_licence_id: ''} %>
                           <% end %>
@@ -252,7 +253,7 @@
                     </tr>
                     <tr>
                       <th>Territory</th>
-                      <td>Qatar</td>
+                      <td><%= @user&.country %></td>
                     </tr>
                     <tr>
                       <th>Application Form</th>
@@ -263,6 +264,7 @@
                             <% end %>
                             <%= truncate(@user.service_provider_detail&.application_form&.file&.filename, length: 35) %>
                           <% end %>
+                          <br><br>
                         <% if ['service_provider'].include?(current_user.role) %>
                             <%= render partial: 'file_upload', locals: { file_name: 'application_form', demerit_flag: '', access_licence_id: ''} %>
                         <% end %>                  

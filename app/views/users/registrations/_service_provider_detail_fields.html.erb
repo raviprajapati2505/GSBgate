@@ -18,6 +18,9 @@
     <%= f.input :energy_assessor_name %>
     <small style="bottom: 13px;position: relative; color:#3a4f57;">Please enter full name of person attended Energy Assessment Workshop</small>
   </div>
+  <div class="col-md-4 col-sm-6 col-xs-12">
+    <%= f.input :nominated_cgp, required: true %>
+  </div>
   <div class="col-md-4">
     <%= f.input :gsas_energey_assessment_licence_file, as: :file, label: t('users.form.gsas_energy_assessment_file_licence_title'), required: true %>
     <% if user.persisted? && user.service_provider_detail&.gsas_energey_assessment_licence_file.present? %>
@@ -27,8 +30,11 @@
       <%= truncate(user.service_provider_detail&.gsas_energey_assessment_licence_file&.file&.filename, length: 35) %>
     <% end %>
   </div>
+  
+</div>
+<div class="row">
   <div class="col-md-4 col-sm-6 col-xs-12">
-    <%= f.input :cgp_licence_file, as: :file, label: t('users.form.gsas_cgp_licence_file_title') %>
+    <%= f.input :cgp_licence_file, as: :file, label: t('users.form.gsas_cgp_licence_file_title'), required: true %>
     <% if user.persisted? && user.service_provider_detail&.cgp_licence_file.present? %>
       <% if can?(:download_user_files, user) %>
         <%= btn_download(download_user_files_user_path(user, file: "cgp_licence_file"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('cgp_licence_file')}") %>
@@ -36,8 +42,6 @@
       <%= truncate(user.service_provider_detail&.cgp_licence_file&.file&.filename, length: 35) %>
     <% end %>
   </div>
-</div>
-<div class="row">
   <div class="col-md-4 col-sm-6 col-xs-12">
     <%= f.input :portfolio, as: :file %>
     <% if user.persisted? && user.service_provider_detail&.portfolio.present? %>
@@ -56,15 +60,7 @@
       <%= truncate(user.service_provider_detail&.commercial_licence_file&.file&.filename, length: 35) %>
     <% end %>
   </div>
-  <div class="col-md-4 col-sm-6 col-xs-12">
-    <%= f.input :accredited_service_provider_licence_file, as: :file, label: t('users.form.accredited_provider_licence_file_title'), required: true %>
-    <% if user.persisted? && user.service_provider_detail&.accredited_service_provider_licence_file.present? %>
-      <% if can?(:download_user_files, user) %>
-        <%= btn_download(download_user_files_user_path(user, :file => "accredited_service_provider_licence_file"), size: 'extra_small', tooltip: "Download #{ServiceProviderDetail.human_attribute_name('accredited_service_provider_licence_file')}") %>
-      <% end %>
-    <%= truncate(user.service_provider_detail&.accredited_service_provider_licence_file.file.filename, length: 35) %>
-    <% end %>
-  </div>
+  
 </div>
 <div class="row">
   <div class="col-md-4 col-sm-6 col-xs-12">

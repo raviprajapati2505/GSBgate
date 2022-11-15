@@ -94,15 +94,15 @@
 </div>
 
 <div class="row">
-  <div class="col-md-4 col-sm-6 col-xs-12">
-    <%= f.input :education_certificate, as: :file, label: t('users.form.education_certificate') %>
-    <% if user.persisted? && user.user_detail&.education_certificate.present? %>
-        <% if can?(:download_user_files, user) %>
-          <%= btn_download(download_user_files_user_path(user, file: "education_certificate"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('education_certificate')}") %>
-        <% end %>
-        <%= truncate(user.user_detail&.education_certificate&.file&.filename, length: 35) %>
-    <% end %>
-  </div>
+  <%# <div class="col-md-4 col-sm-6 col-xs-12"> %>
+    <%# f.input :education_certificate, as: :file, label: t('users.form.education_certificate') %>
+    <%# if user.persisted? && user.user_detail&.education_certificate.present? %>
+        <%# if can?(:download_user_files, user) %>
+          <%# btn_download(download_user_files_user_path(user, file: "education_certificate"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('education_certificate')}") %>
+        <%# end %>
+        <%# truncate(user.user_detail&.education_certificate&.file&.filename, length: 35) %>
+    <%# end %>
+  <%# </div> %>
   <div class="col-md-4 col-sm-6 col-xs-12">
     <%= f.input :other_documents, as: :file, label: t('users.form.other_documents') %>
     <% if user.persisted? && user&.user_detail&.other_documents.present? %>

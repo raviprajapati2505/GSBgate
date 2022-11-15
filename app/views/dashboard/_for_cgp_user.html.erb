@@ -11,7 +11,7 @@
       <div class="menu-block">
         <ul>
         <li class="active"><a href="javascript:;"><span><%= image_tag('/assets/layout/grid.png') %></span>DashBoard</a></li>
-        <li><a href="<%= user_path(current_user.id) %>"><span><%= image_tag('/assets/layout/user-menu.png') %></span>Profile</a></li>
+        <li><a href="<%= user_path(@user.id) %>"><span><%= image_tag('/assets/layout/user-menu.png') %></span>Profile</a></li>
         <!--<li><a href="javascript:;"><span><%= image_tag('/assets/layout/comment.png') %></span>Messages</a></li>
         <li><a href="javascript:;"><span><%= image_tag('/assets/layout/settings.png') %></span>Settings</a></li>-->
         </ul>
@@ -61,7 +61,7 @@
                 <table class="table mb-0">
                   <tr>
                     <td class="border-top-0 pt-0">Territory</td>
-                    <td class="font-weight-bold border-top-0 pt-0">Qatar</td>
+                    <td class="font-weight-bold border-top-0 pt-0"><%= @user&.country %></td>
                   </tr>
                   <tr>
                     <td>Practitioner Accreditation</td>
@@ -135,15 +135,15 @@
                     <tr>
                       <th>Education Certificates</th>
                       <td>
-                          <% if @user.user_detail&.education_certificate.present? %>
+                          <% if @user.user_detail&.university_credentials_file.present? %>
                             <% if can?(:download_user_files, @user) %>
-                              <%= btn_download(download_user_files_user_path(@user, file: "education_certificate"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('education_certificate')}") %>
+                              <%= btn_download(download_user_files_user_path(@user, file: "university_credentials_file"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('university_credentials_file')}") %>
                             <% end %>
-                            <%= truncate(@user.user_detail&.education_certificate&.file&.filename, length: 35) %>
+                            <%= truncate(@user.user_detail&.university_credentials_file&.file&.filename, length: 35) %>
                           <% end %>
                           <br><br>
                           <% if ['default_role'].include?(current_user.role) %>
-                              <%= render partial: 'file_upload', locals: { file_name: 'education_certificate', demerit_flag: '', access_licence_id: ''} %>
+                              <%= render partial: 'file_upload', locals: { file_name: 'university_credentials_file', demerit_flag: '', access_licence_id: ''} %>
                           <% end %>
                       </td>
                     </tr>
