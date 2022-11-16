@@ -205,7 +205,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
 
     data.append(['STAGE SCORE', 'STAGE RATING'])
     if @certification_path.certificate.only_certification_name == 'GSAS-D&B'
-      data.append([number_with_precision(@score, precision: 3), {:image => "#{Rails.root}/app/assets/images/reports/star_#{@stars.split("").first}.png", :width => 350, :image_height => 20, :position  => :center}])
+      data.append([number_with_precision(@score, precision: 3), {:image => "#{Rails.root}/app/assets/images/reports/star_#{@stars.split("").first}.png", :width => 350, :image_height => 30, :position  => :center}])
     else
       data.append([number_with_precision(@score, precision: 3), @stars])
     end
@@ -219,7 +219,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
 
     if text.present?
       text.each do |line, txt|
-          styled_text("<div style='font-size: 10; line-height: 7'>#{txt}</div>")
+          styled_text("<div style='font-size: 10;text-align: justify; line-height: 7'>#{txt}</div>")
           if line != '2'
             newline(1)
           end
@@ -312,7 +312,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
 
       if @certification_path.construction? || @certification_path.is_design_loc?
         bounding_box([@document.bounds.right - 100, @document.bounds.bottom + 140], width: 110, height: HEADER_HEIGHT + 70) do
-          image image_path(@@stamp_image), width: 110
+          image image_path(@@stamp_image), width: 80
         end
       end
     end
@@ -358,7 +358,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
         },
         datasets: [{
           label: 'Points Attainable',
-          data: total_category_scores.map { |_category_code, category| category[:maximum_score]&.round(2) },
+          data: total_category_scores.map { |_category_code, category| category[:maximum_score]&.round(3) },
           backgroundColor: 'rgba(195, 56, 56, 255)',
           borderColor: 'rgba(195, 56, 56, 255)',
           borderWidth: 1,
@@ -366,7 +366,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
         },
         {
           label: 'Achieved',
-          data: total_category_scores.map { |_category_code, category| category[:achieved_score]&.round(2) },
+          data: total_category_scores.map { |_category_code, category| category[:achieved_score]&.round(3) },
           backgroundColor: 'rgba(54,111,178,255)',
           borderColor: 'rgba(54,111,178,255)',
           borderWidth: 1
@@ -706,7 +706,6 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
         end
     elsif type == 'smc_scores_table'
       table(data, width: @document.bounds.right) do
-
         # Set default cell style
         cells.align = :center
         cells.borders = [:top, :right, :bottom, :left]
@@ -740,6 +739,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
         # name_column.border_color = @@main_color
         name_column.font_style = :bold
         name_column.background_color = @@column_1_color
+        name_column.size = 10
 
         # Odd/even row style
         rows(1..-1).style do |c|
@@ -844,7 +844,12 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     scheme_mix_criteria.each do |smc|
       achieved_score = smc.achieved_score
       achieved_score = ((achieved_score.is_a?(Float) || achieved_score.is_a?(BigDecimal)) && achieved_score.nan?) ? 0 : achieved_score rescue 0
-      data.append([smc.full_name, number_with_precision(achieved_score, precision: 0, significant: true), "#{number_with_precision(smc.calculate_awarded_incentives, precision: 1)}%"])
+      if smc.calculate_awarded_incentives == 0 || smc.calculate_awarded_incentives == 0.0 || smc.calculate_awarded_incentives == 0.00
+        awr_ince = '-'
+      else
+        awr_ince = "#{number_with_precision(smc.calculate_awarded_incentives, precision: 1)}%"
+      end
+      data.append([smc.full_name, number_with_precision(achieved_score, precision: 0, significant: true), awr_ince])
     end
 
     # Output table

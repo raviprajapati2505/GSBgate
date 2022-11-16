@@ -211,16 +211,18 @@ class Reports::SurveyResponseReport < Reports::BaseReport
             end
         end
 
-        if @projects_survey.survey_type.title == 'PM'
+        if @projects_survey.survey_type.title == 'FACILITY MANAGEMENT'
           total_average_statisfaction =  overall_satisfaction / latest_questions.count
           overall_satisfaction = 0.00
           data.append([question.question_text, total_responses])
           styled_text("<div style='font-size: 13; line-height: 7; color: 000000;'><b>Summary</b></div>")
           styled_text("<div style='font-weight: bold; font-size: 10; line-height: 7; color: 2fb548;'><b>Overall Satisfaction Level : #{number_with_precision(total_average_statisfaction, precision: 2)}%</b></div>")
-          draw_table(data, true, 'summary_table')
-          start_new_page
-          data = []
-          data.append(["Question Label", "Total Number of Responses"])
+          if latest_questions.last
+            draw_table(data, true, 'summary_table')
+            start_new_page
+            data = []
+            data.append(["Question Label", "Total Number of Responses"])
+          end
         end
 
       else
