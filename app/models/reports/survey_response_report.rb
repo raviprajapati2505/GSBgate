@@ -123,6 +123,7 @@ class Reports::SurveyResponseReport < Reports::BaseReport
         option_neutral = option_with_counts['Neutral'] || 0
 
         satisfaction_level = ((option_satisfied + 0.75 * option_neutral) / total_responses) * 100
+        satisfaction_level = satisfaction_level.round(2)
 
         if !satisfaction_level.nan?
           overall_satisfaction += satisfaction_level
