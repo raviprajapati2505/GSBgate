@@ -1,23 +1,25 @@
 <div class="row">
-  <div class="col-md-4">
+  <div class="col-md-4 col-sm-6 col-xs-12">
     <%= f.input :business_field, required: true %>
   </div>
-  <div class="col-md-4">
+  <div class="col-md-4 col-sm-6 col-xs-12">
     <%= f.input :commercial_licence_no %>
   </div>
-   <div class="col-md-4">
-    <%= f.input :commercial_licence_expiry_date do %>
-      <span><%= ikoen('calendar') %></span>
+   <div class="col-md-4 col-sm-6 col-xs-12">
+    <%= f.input :commercial_licence_expiry_date  do  %>
+      <span class="cal-icon"><%= ikoen('calendar') %></span>
       <%= f.input_field :commercial_licence_expiry_date, value: f.object&.commercial_licence_expiry_date&.strftime("%d/%m/%Y"), as: :string, class: "datepicker-past form-control" %>
     <% end %>
   </div>
- 
 </div>
 
 <div class="row">
   <div class="col-md-4">
     <%= f.input :energy_assessor_name %>
-    <small style="bottom: 13px;position: relative;">Please enter full name of person attended Energy Assessment Workshop</small>
+    <small style="bottom: 13px;position: relative; color:#3a4f57;">Please enter full name of person attended Energy Assessment Workshop</small>
+  </div>
+  <div class="col-md-4 col-sm-6 col-xs-12">
+    <%= f.input :nominated_cgp, required: true %>
   </div>
   <div class="col-md-4">
     <%= f.input :gsas_energey_assessment_licence_file, as: :file, label: t('users.form.gsas_energy_assessment_file_licence_title'), required: true %>
@@ -28,8 +30,11 @@
       <%= truncate(user.service_provider_detail&.gsas_energey_assessment_licence_file&.file&.filename, length: 35) %>
     <% end %>
   </div>
-  <div class="col-md-4">
-    <%= f.input :cgp_licence_file, as: :file, label: t('users.form.gsas_cgp_licence_file_title') %>
+  
+</div>
+<div class="row">
+  <div class="col-md-4 col-sm-6 col-xs-12">
+    <%= f.input :cgp_licence_file, as: :file, label: t('users.form.gsas_cgp_licence_file_title'), required: true %>
     <% if user.persisted? && user.service_provider_detail&.cgp_licence_file.present? %>
       <% if can?(:download_user_files, user) %>
         <%= btn_download(download_user_files_user_path(user, file: "cgp_licence_file"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('cgp_licence_file')}") %>
@@ -37,9 +42,7 @@
       <%= truncate(user.service_provider_detail&.cgp_licence_file&.file&.filename, length: 35) %>
     <% end %>
   </div>
-</div>
-<div class="row">
-  <div class="col-md-4">
+  <div class="col-md-4 col-sm-6 col-xs-12">
     <%= f.input :portfolio, as: :file %>
     <% if user.persisted? && user.service_provider_detail&.portfolio.present? %>
       <% if can?(:download_user_files, user) %>
@@ -48,7 +51,7 @@
     <%= truncate(user.service_provider_detail&.portfolio.file.filename, length: 35) %>
     <% end %>
   </div>
-  <div class="col-md-4">
+  <div class="col-md-4 col-sm-6 col-xs-12">
     <%= f.input :commercial_licence_file, as: :file, label: t('users.form.commercial_licence_file_title'), required: true %>
     <% if user.persisted? && user.service_provider_detail&.commercial_licence_file.present? %>
       <% if can?(:download_user_files, user) %>
@@ -57,18 +60,10 @@
       <%= truncate(user.service_provider_detail&.commercial_licence_file&.file&.filename, length: 35) %>
     <% end %>
   </div>
-  <div class="col-md-4">
-    <%= f.input :accredited_service_provider_licence_file, as: :file, label: t('users.form.accredited_provider_licence_file_title'), required: true %>
-    <% if user.persisted? && user.service_provider_detail&.accredited_service_provider_licence_file.present? %>
-      <% if can?(:download_user_files, user) %>
-        <%= btn_download(download_user_files_user_path(user, :file => "accredited_service_provider_licence_file"), size: 'extra_small', tooltip: "Download #{ServiceProviderDetail.human_attribute_name('accredited_service_provider_licence_file')}") %>
-      <% end %>
-    <%= truncate(user.service_provider_detail&.accredited_service_provider_licence_file.file.filename, length: 35) %>
-    <% end %>
-  </div>
+  
 </div>
 <div class="row">
-  <div class="col-md-4">
+  <div class="col-md-4 col-sm-6 col-xs-12">
     <%= f.input :application_form, as: :file, label: t('users.form.application_form') %>
     <% if user.persisted? && user.service_provider_detail&.application_form.present? %>
       <% if can?(:download_user_files, user) %>
@@ -96,7 +91,7 @@
       <%= label_tag 'document_scheme_mix_criterion', t('users.form.acknowledgement') %>
       <span id="help-block-ack" class="help-block"></span>
     </p>
-    <p>DEMERIT System <a target="_blank" href="https://gsas.gord.qa/wp-content/uploads/2021/10/GSAS-Demerit-System.pdf">( Download Here )</a></a>
+    <p style="color:#3a4f57;">DEMERIT System <a target="_blank" href="https://gsas.gord.qa/wp-content/uploads/2021/10/GSAS-Demerit-System.pdf">( Download Here )</a></a>
   </div>
 </div>
 

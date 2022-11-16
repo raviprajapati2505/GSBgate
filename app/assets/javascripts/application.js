@@ -605,6 +605,7 @@ $(function () {
     $('#user_email').on('blur', function(){
         auto_populate_service_providers($(this));
     }).trigger('blur');
+    $('.dataTables_processing').removeClass('panel panel-default');
 });
 
 // General GSAS functions

@@ -1,6 +1,7 @@
 module Effective
   module Datatables
     class OfflineProjects < Effective::Datatable
+      include ApplicationHelper
       include ActionView::Helpers::TranslationHelper
 
       def offline_projects_by_scheme_names
@@ -39,7 +40,7 @@ module Effective
               as: :select, 
               collection: Proc.new { Offline::Project.certificate_types.map { |k, v| [k, v] } } 
             } do |rec|
-          rec.certificate_type
+              certification_name_offline_datatable_render(rec.certificate_type)
         end.search do |collection, terms, column, index|
           terms_array = terms.split(",")
 
@@ -144,7 +145,7 @@ module Effective
             search: { 
               as: :select, collection: Proc.new { Offline::CertificationPath.ratings.map { |k, v| [k.titleize, k] } } 
             } do |rec|
-          render partial: "/offline/certification_paths/rating.html.erb", locals: { ratings: rec.certification_rating }
+            render partial: "/offline/certification_paths/rating.html.erb", locals: { ratings: rec.certification_rating, certification_type: rec.certificate_type }
         end.search do |collection, terms, column, index|
           terms_array = terms.split(",")
 
@@ -162,7 +163,7 @@ module Effective
           search: { 
             as: :select, collection: Proc.new { CertificationPathStatus.all.map { |status| [status.name, status.name] }.uniq } 
           } do |rec|
-          rec.certification_status
+            submission_status_offline_datatable_render(rec)
         end.search do |collection, terms, column, index|
           terms_array = terms.split(",")
 

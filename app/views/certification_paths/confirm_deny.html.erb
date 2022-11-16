@@ -1,7 +1,7 @@
 <% if can?(:deny, @certification_path) %>
-  <div class="row">
+  <%# <div class="row"> %>
     <div class="col-md-3">
-      <div class="ibox float-e-margins">
+      <div class="ibox">
         <div class="ibox-title">
           <h5>Confirm Denying Certification for <%= @certification_path.name %></h5>
         </div>
@@ -19,5 +19,5 @@
         </div>
       </div>
     </div>
-  </div>
+  <%# </div> %>
 <% end %>

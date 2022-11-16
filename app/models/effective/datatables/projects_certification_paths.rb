@@ -223,10 +223,7 @@ module Effective
         col :certificate_id, col_class: 'multiple-select col-order-21', sql_column: 'certificates.id', label: t('models.effective.datatables.projects_certification_paths.certificate_id.label'), search: { as: :select, collection: Proc.new { Certificate.all.order(:display_weight).map { |certificate| [certificate.only_certification_name, certificate.only_certification_name] }.uniq}, multiple: true } do |rec|
           if rec.certification_path_id.present?
             only_certification_name = Certificate.find_by_name(rec&.certificate_name)&.only_certification_name
-            link_to(
-              only_certification_name,
-              project_certification_path_path(rec.project_nr, rec.certification_path_id)
-            )
+            certification_name_datatable_render(rec,only_certification_name)
           end
         end.search do |collection, terms, column, index|
           terms_array = terms.split(",")
@@ -375,11 +372,7 @@ module Effective
         end
 
         col :certification_path_certification_path_status_id, col_class: 'multiple-select col-order-29', sql_column: 'certification_paths.certification_path_status_id', label: t('models.effective.datatables.projects_certification_paths.certification_path_certification_path_status_id.label'), search: { as: :select, collection: Proc.new { CertificationPathStatus.all.map { |status| status.id == CertificationPathStatus::CERTIFICATE_IN_PROCESS ? ["Certificate In Process/Generated", status.id] : [status.name, status.id]} } }  do |rec|
-          if rec.certification_path_status_name == "Certificate In Process"
-            CertificationPath.find(rec&.certification_path_id)&.status
-          else
-            rec.certification_path_status_name
-          end
+          submission_status_datatable_render(rec)
         end.search do |collection, terms, column, index|
           terms_array = terms.split(",")
           unless (collection.class == Array || terms_array.include?(""))
@@ -537,8 +530,6 @@ module Effective
           .select('(%s) AS certification_manager_array' % projects_users_by_type('certification_manager'))
           .select('(%s) AS enterprise_clients_array' % projects_users_by_type('enterprise_clients'))
           .select('(%s) AS total_achieved_score' % ProjectsCertificationPaths.query_score_in_certificate_points(:achieved_score))
-          .order("projects.code")
-          .order("certificates.display_weight")
 
           if current_user.service_provider?
             project_ids = Project.accessible_by(current_ability).pluck(:id)

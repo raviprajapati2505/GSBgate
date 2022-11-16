@@ -108,8 +108,10 @@ class Reports::SurveyResponseReport < Reports::BaseReport
     data.append(["Question Label", "Total Number of Responses"])
 
     # all question of the survey
+    new_question_index = 0
     latest_questions.each.with_index(1) do |question, i|
-      styled_text("<div style='font-size: 13; line-height: 7; color: 000000;'>Q#{i} - #{question.question_text}</div>")
+      new_question_index = new_question_index + 1
+      styled_text("<div style='font-size: 13; line-height: 7; color: 000000;'>Q#{new_question_index} - #{question.question_text}</div>")
 
       unless question.fill_in_the_blank?
         # all options with there report count of questions
@@ -142,10 +144,11 @@ class Reports::SurveyResponseReport < Reports::BaseReport
           draw_options_graph(option_with_counts)
         end
 
+        total_average_statisfaction = ''
         if @projects_survey.survey_type.title == 'INDOOR ENVIRONMENT'
-            total_average_statisfaction = ''
             # Prepare table data
             if i == 5
+              new_question_index = 0
               total_average_statisfaction =  overall_satisfaction / 5
               overall_satisfaction = 0.00
               data.append([question.question_text, total_responses])
@@ -156,6 +159,7 @@ class Reports::SurveyResponseReport < Reports::BaseReport
               data = []
               data.append(["Question Label", "Total Number of Responses"])
             elsif i == 10
+              new_question_index = 0
               total_average_statisfaction =  overall_satisfaction / 5
               overall_satisfaction = 0.00
               data.append([question.question_text, total_responses])
@@ -166,6 +170,7 @@ class Reports::SurveyResponseReport < Reports::BaseReport
               data = []
               data.append(["Question Label", "Total Number of Responses"])
             elsif i == 14
+              new_question_index = 0
               total_average_statisfaction =  overall_satisfaction / 4
               overall_satisfaction = 0.00
               data.append([question.question_text, total_responses])
@@ -176,6 +181,7 @@ class Reports::SurveyResponseReport < Reports::BaseReport
               data = []
               data.append(["Question Label", "Total Number of Responses"])
             elsif i == 20
+              new_question_index = 0
               total_average_statisfaction =  overall_satisfaction / 6
               overall_satisfaction = 0.00
               data.append([question.question_text, total_responses])
@@ -186,6 +192,7 @@ class Reports::SurveyResponseReport < Reports::BaseReport
               data = []
               data.append(["Question Label", "Total Number of Responses"])
             elsif i == 24
+              new_question_index = 0
               total_average_statisfaction =  overall_satisfaction / 4
               overall_satisfaction = 0.00
               data.append([question.question_text, total_responses])
@@ -203,7 +210,6 @@ class Reports::SurveyResponseReport < Reports::BaseReport
               start_new_page
             end
         end
-
       else
         question.question_responses.each.with_index(1) do |text_response, i|
           styled_text("<div style='font-size: 10; line-height: 7; color: 000000;'>Text Response #{i}: #{text_response.value}</div>")

@@ -238,6 +238,27 @@ class DigestMailer < ApplicationMailer
     mail(to: @user.email, subject: "GSASgate - OTP for login")
   end
 
+  def send_project_activated_email_to_project_owner(certification_path)
+    @certification_path = certification_path
+    if certification_path.project.project_owner_email.present?
+      mail(to: certification_path.project.project_owner_email, subject: "GSASgate - Certificate Activated")
+    end
+  end
+
+  def send_project_certified_email_to_project_owner(certification_path)
+    @certification_path = certification_path
+    if certification_path.project.project_owner_email.present?
+      mail(to: certification_path.project.project_owner_email, subject: "GSASgate - Certificate Certified")
+    end
+  end
+
+  def op_certification_expire_in_near_future(certification_path)
+    @certification_path = certification_path
+    if certification_path.project.project_owner_email.present?
+      mail(to: certification_path.project.project_owner_email, subject: "GSASgate - certification #{@certification_path.name} for #{@certification_path.project.name} is going to expire on #{@certification_path.expires_at.strftime(t('date.formats.short'))}")
+    end
+  end
+
   private
 
   def add_condition(user, notification_type, auditable_type, new_status)

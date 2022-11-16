@@ -633,6 +633,19 @@ class CertificationPathsController < AuthenticatedController
     redirect_back(fallback_location: root_path)
   end
 
+  def send_op_certification_expiration_notification
+    cp_op = CertificationPath.joins(:certificate)
+            .where(certificates: {certificate_type: Certificate.certificate_types[:operations_type]})
+            .where(certification_path_status_id: [CertificationPathStatus::CERTIFIED])
+
+    cp_op.each do |certification_path|
+      duration_in_days = (Date.today..certification_path.expires_at).count
+        if duration_in_days == 90 || duration_in_days == 60 || duration_in_days == 30
+          DigestMailer.op_certification_expire_in_near_future(certification_path).deliver_now
+        end
+    end
+  end
+
   private
 
   def set_controller_model

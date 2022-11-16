@@ -58,8 +58,8 @@ class DashboardController < AuthenticatedController
       else
         if @user.user_detail.present?
           case user_params[:file_name]
-            when "education_certificate"
-              @user.user_detail.education_certificate = user_params[:file]
+            when "university_credentials_file"
+              @user.user_detail.university_credentials_file = user_params[:file]
             when "work_experience_file"
               @user.user_detail.work_experience_file = user_params[:file]
             when "other_documents"

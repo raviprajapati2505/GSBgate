@@ -1,67 +1,62 @@
-<div class="row">
-  <div class="col-md-4">
-    <div class="ibox float-e-margins">
-      <div class="ibox-title">
-        <div class='d-flex justify-content-between align-items-center'>
-          <h5><b><%= t('.survey_types.title') %></b></h5>
-        </div>
-      </div>
-      <div class="ibox-content">
-        <table class="table table-bordered table-striped">
-          <tbody>
-            <tr>
-              <th><%= t('.survey_types.total_count') %></th>
-              <td><%= @survey_types_count %></td>
-            </tr>
-          </tbody>
-        </table>
-
-        <%= btn_link_to(survey_types_path, icon: 'list', text: 'All Survey Types') %>
+<div class="col-md-4 col-sm-12 col-xs-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <div class='d-flex justify-content-between align-items-center'>
+        <h5><b><%= t('.survey_types.title') %></b></h5>
       </div>
     </div>
-  </div>
+    <div class="ibox-content table-responsive">
+      <table class="table table-bordered table-striped">
+        <tbody>
+          <tr>
+            <th><%= t('.survey_types.total_count') %></th>
+            <td><%= @survey_types_count %></td>
+          </tr>
+        </tbody>
+      </table>
 
-  <div class="col-md-4">
-    <div class="ibox float-e-margins">
-      <div class="ibox-title">
-        <div class='d-flex justify-content-between align-items-center'>
-          <h5><b><%= t('.linkme_survey.title') %></b></h5>
-        </div>
-      </div>
-      <div class="ibox-content">
-        <table class="table table-bordered table-striped">
-          <tbody>
-            <tr>
-              <th><%= t('.linkme_survey.total_count') %></th>
-              <td><%= @linkme_survey_count %></td>
-            </tr>
-          </tbody>
-        </table>
-
-        <%= btn_link_to(linkme_surveys_path, icon: 'list', text: 'All Linkme Surveys') %>
-      </div>
+      <%= btn_link_to(survey_types_path, icon: 'list', text: 'All Survey Types') %>
     </div>
   </div>
-
-    <div class="col-md-4">
-    <div class="ibox float-e-margins">
-      <div class="ibox-title">
-        <div class='d-flex justify-content-between align-items-center'>
-          <h5><b><%= t('.projects_surveys.title') %></b></h5>
-        </div>
+</div>
+<div class="col-md-4 col-sm-12 col-xs-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <div class='d-flex justify-content-between align-items-center'>
+        <h5><b><%= t('.linkme_survey.title') %></b></h5>
       </div>
-      <div class="ibox-content">
-        <table class="table table-bordered table-striped">
-          <tbody>
-            <tr>
-              <th><%= t('.projects_surveys.total_count') %></th>
-              <td><%= @projects_surveys_count %></td>
-            </tr>
-          </tbody>
-        </table>
+    </div>
+    <div class="ibox-content table-responsive">
+      <table class="table table-bordered table-striped">
+        <tbody>
+          <tr>
+            <th><%= t('.linkme_survey.total_count') %></th>
+            <td><%= @linkme_survey_count %></td>
+          </tr>
+        </tbody>
+      </table>
 
-        <%= btn_link_to(total_project_surveys_survey_dashboard_index_path, icon: 'list', text: 'All Projects Surveys') %>
+      <%= btn_link_to(linkme_surveys_path, icon: 'list', text: 'All Linkme Surveys') %>
+    </div>
+  </div>
+</div>
+<div class="col-md-4 col-sm-12 col-xs-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <div class='d-flex justify-content-between align-items-center'>
+        <h5><b><%= t('.projects_surveys.title') %></b></h5>
       </div>
+    </div>
+    <div class="ibox-content table-responsive">
+      <table class="table table-bordered table-striped">
+        <tbody>
+          <tr>
+            <th><%= t('.projects_surveys.total_count') %></th>
+            <td><%= @projects_surveys_count %></td>
+          </tr>
+        </tbody>
+      </table>
+      <%= btn_link_to(total_project_surveys_survey_dashboard_index_path, icon: 'list', text: 'All Projects Surveys') %>
     </div>
   </div>
 </div>

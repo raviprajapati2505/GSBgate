@@ -35,6 +35,7 @@ $(function() {
     if (searchInput.length > 0) {
       searchInput.daterangepicker({
         opens: 'left',
+        showDropdowns: true,
         locale: {
           format: 'DD/MM/YYYY',
           cancelLabel: 'Clear'

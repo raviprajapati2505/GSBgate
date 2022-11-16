@@ -5,7 +5,7 @@
   <% score = 0 if score < 0 %>
 <% end %>
 
-<div style="line-height:24px; <% if achieved %> font-weight:bold;<% end %>">
+<div class="d-flex justify-content-between align-items-center <% if achieved %>font-weight-bold<% end %>">
 
   <% if ['score', 'score_and_rating'].include?(display_item) %>
     <%= render partial: 'certification_paths/scores', locals: { score_label: score_label, certificate: certificate, score: score } %>

@@ -1,7 +1,6 @@
-<span class="text-right" style="width: 72px; display: inline-block;">
+<span class="text-nowrap px-3">
     <%= score_label %>
-</span>
-<span class="text-right" style="margin-left: 0.5rem; width: 32px; display: inline-block;">
+    &nbsp;
   <% if certificate.construction_issue_1? %>
       <%= number_to_percentage(score, precision: 1) %>
   <% else %>

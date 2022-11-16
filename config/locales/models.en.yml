@@ -58,7 +58,7 @@ en:
           mixed_development_in_stages: Neighbourhood in stages (mixed development in stages)
         max_review_count: Maximum Review Count
       project:
-        code: Project ID
+        code: GSAS Project ID
         name: Project Name
         building_type_group_id: Project Planning Type
         building_type_id: Project Use
@@ -80,6 +80,7 @@ en:
         sustainability_features_file: Project Sustainability Features
         area_statement_file: Project Area Statement
         owner: Project Owner
+        project_owner_email: Project Owner Email
         service_provider: Service Provider
         service_provider_2: Service Provider CDA
         country: Project Country
@@ -118,7 +119,7 @@ en:
         development_type: Certification Development Type
         status: Certification Status
         score: Certification Score
-        certified_at: Certification Certified At
+        certified_at: Certification Certified
       offline/scheme_mix:
         name: Typology Name
         weight: Scheme Weighting
@@ -164,6 +165,8 @@ en:
         issuance_date: Issuance Date
         approval_date: Approval Date
       user:
+        name_suffix: Appellation
+        profile_pic: Profile Picture
         email: Email
         name: First Name
         middle_name: Middle Name
@@ -209,6 +212,8 @@ en:
         commercial_licence_expiry_date: Commercial Licence Expiry Date
         business_field: Business Field
         portfolio: Portfolio
+        energy_assessor_name: Energy Assessor Name
+        nominated_cgp: Nominated CGP Representative
       licence:
         licence_type: Licence Type
         display_name: Name

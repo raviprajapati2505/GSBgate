@@ -10,6 +10,9 @@ module ApplicationHelper
     fileicon_extensions[ext] = "fileicons/file_extension_#{ext}.png"
     fileicon_extensions
   end
+  include ActionView::Helpers::AssetTagHelper
+  include ActionView::Helpers::UrlHelper
+  include ActionView::Context
 
   def is_active_controller(controller_name)
     params[:controller] == controller_name ? "active" : nil
@@ -73,20 +76,20 @@ module ApplicationHelper
   end
 
   def btn_audit_log(auditable)
-    btn_link_to(auditable_index_logs_path(auditable.class.name, auditable.id), disabling: false, remote: true, tooltip: 'View the complete audit log of this resource.', icon: 'mail-reply', size: 'extra_small', style: 'default', class: 'pull-right audit-log')
+    btn_link_to(auditable_index_logs_path(auditable.class.name, auditable.id), disabling: false, remote: true, tooltip: 'View the complete audit log of this resource.', icon: 'mail-reply', size: 'extra_small', style: 'primary', class: 'pull-right audit-log')
   end
 
   def btn_audit_log_comment(auditable)
-    btn_link_to(auditable_index_comments_path(auditable.class.name, auditable.id), disabling: false, remote: true, tooltip: 'View or add comments to the audit log of this resource.', icon: 'comment', size: 'extra_small', style: 'default', class: 'audit-log pull-right')
+    btn_link_to(auditable_index_comments_path(auditable.class.name, auditable.id), disabling: false, remote: true, tooltip: 'View or add comments to the audit log of this resource.', icon: 'comment', size: 'extra_small', style: 'primary', class: 'audit-log pull-right')
   end
 
   def btn_audit_log_filtered(status_name, audit_log_params)
-    btn_link_to(audit_logs_path(audit_log_params), tooltip: "Click to view the audit logs for all resources that were created during the '#{status_name}' phase.", icon: 'mail-reply-all', size: 'extra_small', style: 'default', class: 'pull-right audit-log')
+    btn_link_to(audit_logs_path(audit_log_params), tooltip: "Click to view the audit logs for all resources that were created during the '#{status_name}' phase.", icon: 'mail-reply-all', size: 'extra_small', style: 'primary', class: 'pull-right audit-log')
   end
 
   def btn_audit_log_comments_filtered(status_name, audit_log_params)
     audit_log_params[:only_user_comments] = true
-    btn_link_to(audit_logs_path(audit_log_params), tooltip: "Click to view the audit logs for all resources that were created during the '#{status_name}' phase.", icon: 'comments', size: 'extra_small', style: 'default', class: 'pull-right audit-log')
+    btn_link_to(audit_logs_path(audit_log_params), tooltip: "Click to view the audit logs for all resources that were created during the '#{status_name}' phase.", icon: 'comments', size: 'extra_small', style: 'primary', class: 'pull-right audit-log')
   end
 
   # generates a button_tag with save icon and save text, that can be used within forms
@@ -882,5 +885,76 @@ module ApplicationHelper
 
   def set_visibility(question_type = '')
     ["fill_in_the_blank"].include?(question_type) ? 'd-none' : ''
+  end
+
+  def certification_name_datatable_render(rec,only_certification_name)
+    case only_certification_name
+      when 'GSAS-D&B'
+        '<span class="certi-name-badge badge-db">'+ image_tag('/icons/certi-name-db.png') +'</span><a href='+Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>'+only_certification_name+'</a>'
+      when 'GSAS-CM'
+        '<span class="certi-name-badge badge-cm">'+ image_tag('/icons/certi-name-cm.png') +'</span><a href='+Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>'+only_certification_name+'</a>'
+      when 'GSAS-OP'
+        '<span class="certi-name-badge badge-op">'+ image_tag('/icons/certi-name-op.png') +'</span><a href='+Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>'+only_certification_name+'</a>'
+    end
+  end
+
+  def submission_status_datatable_render(rec)
+    only_certification_name = Certificate.find_by_name(rec&.certificate_name)&.only_certification_name
+    if rec.certification_path_status_name == "Certificate In Process"
+      status = CertificationPath.find(rec&.certification_path_id)&.status
+    else
+      status = rec.certification_path_status_name
+    end
+    case only_certification_name
+      when 'GSAS-D&B'
+        '<span class="certi-sub-status-badge status-badge-db">'+ image_tag('/icons/certi-sub-status-db.png') +'</span>'+status
+      when 'GSAS-CM'
+        '<span class="certi-sub-status-badge status-badge-cm">'+ image_tag('/icons/certi-sub-status-cm.png') +'</span>'+status
+      when 'GSAS-OP'
+        '<span class="certi-sub-status-badge status-badge-op">'+ image_tag('/icons/certi-sub-status-op.png') +'</span>'+status
+    end
+  end
+
+  def certification_name_offline_datatable_render(certification_type)
+    case certification_type
+      when 'GSAS-D&B'
+        '<span class="certi-name-badge badge-db">'+ image_tag('/icons/certi-name-db.png') +'</span>'+certification_type
+      when 'GSAS-CM'
+        '<span class="certi-name-badge badge-cm">'+ image_tag('/icons/certi-name-cm.png') +'</span>'+certification_type
+      when 'GSAS-OP'
+        '<span class="certi-name-badge badge-op">'+ image_tag('/icons/certi-name-op.png') +'</span>'+certification_type
+    end
+  end
+
+  def submission_status_offline_datatable_render(rec)
+    only_certification_name = rec.certificate_type
+    case only_certification_name
+      when 'GSAS-D&B'
+        '<span class="certi-sub-status-badge status-badge-db">'+ image_tag('/icons/certi-sub-status-db.png') +'</span>'+rec.certification_status
+      when 'GSAS-CM'
+        '<span class="certi-sub-status-badge status-badge-cm">'+ image_tag('/icons/certi-sub-status-cm.png') +'</span>'+rec.certification_status
+      when 'GSAS-OP'
+        '<span class="certi-sub-status-badge status-badge-op"'+ image_tag('/icons/certi-sub-status-op.png') +'</span>'+rec.certification_status
+    end
+  end
+
+  FONTS_DIR = '/app/assets/fonts/reports'
+  IMAGES_DIR = '/app/assets/images/reports/'
+
+  def newline(amount = 1)
+    text "\n" * amount
+  end
+
+  def font_path(filename)
+    "#{Rails.root}#{FONTS_DIR}/#{filename}"
+  end
+
+  def image_path(filename)
+    "#{Rails.root}#{IMAGES_DIR}/#{filename}"
+  end
+
+  def save_as(file_name)
+    FileUtils.mkdir_p(File.dirname(file_name))
+    document.render_file(file_name)
   end
 end

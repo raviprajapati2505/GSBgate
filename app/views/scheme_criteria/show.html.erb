@@ -1,77 +1,74 @@
-<div class="row">
-    <div class="col-lg-6">
-        <div class="ibox">
-            <div class="ibox-title">
-                <%= audit_log_label(@scheme_criterion) %>
-                <h5>Criterion</h5>
-            </div>
-            <div class="ibox-content">
-              <table class="table table-bordered table-striped">
-                <tbody>
-                <tr>
-                  <th><%= SchemeCriterion.human_attribute_name('name') %></th>
-                  <td><%= @scheme_criterion.name %></td>
-                </tr>
-                <tr>
-                  <th><%= SchemeCriterion.human_attribute_name('code') %></th>
-                  <td><%= @scheme_criterion.code %></td>
-                </tr>
-                <% SchemeCriterion::WEIGHT_ATTRIBUTES.each_with_index do |weight, index| %>
-                  <% unless @scheme_criterion.read_attribute(weight.to_sym).nil? || @scheme_criterion.read_attribute(weight.to_sym) == 0 %>
-                  <tr>
-                    <th>Weight <%= @scheme_criterion.read_attribute(SchemeCriterion::LABEL_ATTRIBUTES[index].to_sym) %></th>
-                    <td><%= @scheme_criterion.read_attribute(weight.to_sym) %>%</td>
-                  </tr>
-                  <% end %>
-                  <% unless @scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym).nil? %>
-                  <tr>
-                    <th>Scores/Levels <%= @scheme_criterion.read_attribute(SchemeCriterion::LABEL_ATTRIBUTES[index].to_sym) %></th>
-                    <td><%= @scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym).map { |score| score[0] }.join(', ') %></td>
-                  </tr>
-                  <% end %>
-                <% end %>
-                </tbody>
-              </table>
-                <% if can? :update, @scheme_criterion %>
-                    <div class="hr-line-dashed"></div>
-                    <%= btn_link_to(edit_scheme_criterion_path(@scheme_criterion), icon: 'edit', text: 'Edit', action: :get, remote: true) %>
-                <% end %>
-            </div>
+<div class="col-lg-6">
+    <div class="ibox">
+        <div class="ibox-title">
+            <%= audit_log_label(@scheme_criterion) %>
+            <h5>Criterion</h5>
+        </div>
+        <div class="ibox-content table-responsive">
+          <table class="table table-bordered table-striped">
+            <tbody>
+            <tr>
+              <th><%= SchemeCriterion.human_attribute_name('name') %></th>
+              <td><%= @scheme_criterion.name %></td>
+            </tr>
+            <tr>
+              <th><%= SchemeCriterion.human_attribute_name('code') %></th>
+              <td><%= @scheme_criterion.code %></td>
+            </tr>
+            <% SchemeCriterion::WEIGHT_ATTRIBUTES.each_with_index do |weight, index| %>
+              <% unless @scheme_criterion.read_attribute(weight.to_sym).nil? || @scheme_criterion.read_attribute(weight.to_sym) == 0 %>
+              <tr>
+                <th>Weight <%= @scheme_criterion.read_attribute(SchemeCriterion::LABEL_ATTRIBUTES[index].to_sym) %></th>
+                <td><%= @scheme_criterion.read_attribute(weight.to_sym) %>%</td>
+              </tr>
+              <% end %>
+              <% unless @scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym).nil? %>
+              <tr>
+                <th>Scores/Levels <%= @scheme_criterion.read_attribute(SchemeCriterion::LABEL_ATTRIBUTES[index].to_sym) %></th>
+                <td><%= @scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym).map { |score| score[0] }.join(', ') %></td>
+              </tr>
+              <% end %>
+            <% end %>
+            </tbody>
+          </table>
+            <% if can? :update, @scheme_criterion %>
+                <div class="hr-line-dashed"></div>
+                <%= btn_link_to(edit_scheme_criterion_path(@scheme_criterion), icon: 'edit', text: 'Edit', action: :get, remote: true) %>
+            <% end %>
         </div>
     </div>
 </div>
-<div class="row">
-    <div class="col-lg-6">
-        <div class="ibox criterion-information">
-            <div class="ibox-title">
-                <h5>Criterion Texts <%= tooltip(t '.tooltip_sortable') %></h5>
-            </div>
-            <div class="ibox-content sortable" data-url="<%= sort_scheme_criterion_texts_path() %>">
-                <div class="sortable">
-                    <% @scheme_criterion.scheme_criterion_texts.each do |criterion_text| %>
-                        <%= render 'scheme_criterion_texts/text', criterion_text: criterion_text %>
-                    <% end %>
-                </div>
-                <% if can?(:create, SchemeCriterionText.new(scheme_criterion_id: @scheme_criterion.id)) %>
-                    <div class="hr-line-dashed"></div>
-                    <%= btn_link_to(new_scheme_criterion_text_path(scheme_criterion_id: @scheme_criterion.id), icon: 'plus', text: 'Add text') %>
+<div class="clearfix"></div>
+<div class="col-lg-6">
+    <div class="ibox criterion-information">
+        <div class="ibox-title">
+            <h5>Criterion Texts <%= tooltip(t '.tooltip_sortable') %></h5>
+        </div>
+        <div class="ibox-content sortable" data-url="<%= sort_scheme_criterion_texts_path() %>">
+            <div class="sortable">
+                <% @scheme_criterion.scheme_criterion_texts.each do |criterion_text| %>
+                    <%= render 'scheme_criterion_texts/text', criterion_text: criterion_text %>
                 <% end %>
             </div>
+            <% if can?(:create, SchemeCriterionText.new(scheme_criterion_id: @scheme_criterion.id)) %>
+                <div class="hr-line-dashed"></div>
+                <%= btn_link_to(new_scheme_criterion_text_path(scheme_criterion_id: @scheme_criterion.id), icon: 'plus', text: 'Add text') %>
+            <% end %>
         </div>
     </div>
-    <div class="col-lg-6">
-      <div class="ibox">
-        <div class="ibox-title">
-          <h5>Criterion Requirements</h5>
-        </div>
-        <div class="ibox-content">
-          <div class="non-sortable">
-            <% @scheme_criterion.requirements.each do |requirement| %>
-              <%= render 'requirements/name', requirement: requirement %>
-            <% end %>
-          </div>
-        </div>
+</div>
+<div class="col-lg-6">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Criterion Requirements</h5>
+    </div>
+    <div class="ibox-content">
+      <div class="non-sortable">
+        <% @scheme_criterion.requirements.each do |requirement| %>
+          <%= render 'requirements/name', requirement: requirement %>
+        <% end %>
       </div>
     </div>
+  </div>
 </div>
 <div id="editSchemeCriteriaModal" class="modal fade"></div>

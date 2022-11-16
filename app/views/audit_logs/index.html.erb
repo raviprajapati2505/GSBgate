@@ -1,31 +1,29 @@
-<div class="row">
-    <div class="col-md-4 pull-right">
-        <div class="ibox">
-            <div class="ibox-title">
-                <h5>Audit Log Filter</h5>
-            </div>
-            <div class="ibox-content">
-                <%= render 'audit_log_filter' %>
-            </div>
+<div class="col-md-4 col-sm-12 col-xs-12">
+    <div class="ibox">
+        <div class="ibox-title">
+            <h5>Audit Log Filter</h5>
+        </div>
+        <div class="ibox-content">
+            <%= render 'audit_log_filter' %>
         </div>
     </div>
-    <div class="col-md-8">
-        <div class="ibox">
-            <div class="ibox-title">
-                <h5>Audit Log <%= tooltip('This page contains audit logs for all projects you have access to.') %></h5>
-                <%= btn_download(export_audit_logs_path, text: 'Export all selected audit logs', size: 'extra_small', class: 'pull-right') %>
-            </div>
-            <div class="ibox-content">
-                <div class="feed-activity-list">
-                    <% if @audit_logs.blank? %>
-                        No audit logs were found.
-                    <% else %>
-                        <% @audit_logs.each do |audit_log| %>
-                            <%= render 'audit_log', audit_log: audit_log, with_breadcrumbs: true %>
-                        <% end %>
-                        <%= paginate @audit_logs %>
+</div>
+<div class="col-md-8 col-sm-12 col-xs-12">
+    <div class="ibox">
+        <div class="ibox-title">
+            <h5>Audit Log <%= tooltip('This page contains audit logs for all projects you have access to.') %></h5>
+            <%= btn_download(export_audit_logs_path, text: 'Export all selected audit logs', size: 'extra_small', class: 'pull-right m-0 py-0 px-2') %>
+        </div>
+        <div class="ibox-content">
+            <div class="feed-activity-list">
+                <% if @audit_logs.blank? %>
+                    No audit logs were found.
+                <% else %>
+                    <% @audit_logs.each do |audit_log| %>
+                        <%= render 'audit_log', audit_log: audit_log, with_breadcrumbs: true %>
                     <% end %>
-                </div>
+                    <%= paginate @audit_logs %>
+                <% end %>
             </div>
         </div>
     </div>

@@ -87,7 +87,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def configure_sign_up_params
     devise_parameter_sanitizer.permit(:sign_up, keys: [
         :name, 
-        :email, 
+        :email,
+        :profile_pic,
         :username, 
         :organization_name, 
         :service_provider_id, 
@@ -138,6 +139,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     devise_parameter_sanitizer.permit(:account_update, keys: [
         :name, 
         :email, 
+        :profile_pic,
         :username, 
         :organization_name, 
         :service_provider_id, 
@@ -188,7 +190,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def sp_sign_up_params
       params.require(:service_provider).permit([
         :name, 
-        :email, 
+        :email,
+        :profile_pic, 
         :username, 
         :organization_name, 
         :password, 
@@ -223,7 +226,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
           :application_form,
           :cgp_licence_file,
           :energy_assessor_name, 
-          :gsas_energey_assessment_licence_file
+          :gsas_energey_assessment_licence_file,
+          :nominated_cgp
         ]
     ])
   end
@@ -231,7 +235,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def sp_update_params
     params.require(:service_provider).permit([
             :name, 
-            :email, 
+            :email,
+            :profile_pic, 
             :username, 
             :organization_name, 
             :password,
@@ -268,7 +273,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
               :application_form,
               :cgp_licence_file,
               :energy_assessor_name, 
-              :gsas_energey_assessment_licence_file
+              :gsas_energey_assessment_licence_file,
+              :nominated_cgp
             ]
       ])
   end

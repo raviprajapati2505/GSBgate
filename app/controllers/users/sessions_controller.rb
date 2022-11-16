@@ -64,7 +64,12 @@ class Users::SessionsController < Devise::SessionsController
 
   def validate_otp
     user = User.find(params[:id])
-    if user.otp == params[:user][:username].to_i
+    if User.is_service_provider(user)
+      otp_field = params[:service_provider][:username].to_i
+    else
+      otp_field = params[:user][:username].to_i
+    end
+    if user.otp == otp_field
       warden.set_user(user)
       case user.role
         when 'default_role'
