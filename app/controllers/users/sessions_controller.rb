@@ -34,15 +34,15 @@ class Users::SessionsController < Devise::SessionsController
 
    # custom functions for authentication as we introduced the OTP
   def check_authentication
-    user = User.find_by(username: params[:user][:username])
+    user = User.where('lower(email) = ? OR lower(username) = ?', params[:user][:username], params[:user][:username])
     if user.present?
-      if user.active?
-        if user.valid_password?(params[:user][:password])
+      if user[0].active? 
+        if user[0].valid_password?(params[:user][:password])
           # send OTP in email here and redirect to otp screen
-          user.otp = 3.times.map{rand(10)}.join
-          user.save(validate: false)
-          DigestMailer.send_otp_code_to_user(user).deliver_now
-          redirect_to send_otp_path(user.id)
+          user[0].otp = 3.times.map{rand(10)}.join
+          user[0].save(validate: false)
+          DigestMailer.send_otp_code_to_user(user[0]).deliver_now
+          redirect_to send_otp_path(user[0].id)
         else
           sign_out(resource)
           redirect_to new_user_session_path, alert: "Incorrect Username or password"
