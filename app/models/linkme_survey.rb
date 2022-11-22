@@ -1,0 +1,2 @@
+class LinkmeSurvey < ApplicationRecord
+end

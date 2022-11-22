@@ -1,0 +1,8 @@
+<div class="ibox">
+    <div class="ibox-content">
+      <h2><%= t('project_surveys.new.title' ) %></h2>
+       <%= bootstrap_form_for(@projects_survey, url: project_surveys_path(@project, @projects_survey), method: 'post') do |f| %>
+           <%= render partial: 'form', locals: {survey_types: @survey_types, f: f, project_survey: @projects_survey} %>
+        <% end %>
+  </div>
+</div>

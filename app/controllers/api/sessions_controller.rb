@@ -1,20 +1,31 @@
-class Api::SessionsController < Api::ApiController
+class Api::SessionsController < Devise::SessionsController
+  respond_to :json
+  before_action :authenticate_user!, except: [:create]
 
-  # curl -v -H "Accept: application/json" -d "user%5Busername%5D=sas%40vito.be&user%5Bpassword%5D=Biljartisplezant456" "http://localhost:3000/api/sessions"
   def create
-      # I guess this should be executed by Warden::JWTAuth::Middleware::TokenDispatcher
-      response.headers['Authorization'] = "Bearer #{current_token}"
-      render json: {}, status: :ok
+    user = User.find_by_username(params[:user][:username])
+
+    if user
+      @current_user = user
+      #response.headers['Authorization'] = "Bearer #{current_token}"
+      #render json: {}, status: :ok
+    else
+      render json: { errors: { 'email or password' => ['is invalid'] } }, status: :unprocessable_entity
+    end
   end
 
-  # curl -v -H "Accept: application/json" -H "Authorization: Bearer <token>" -X "DELETE" http://localhost:3000/api/sessions
   def destroy
-    # warden.logout
+    JwtDenylist.find_or_create_by(jti: request.headers['Authorization']) if request.headers['Authorization']
+    render json: { message: "signed out" }, status: 201
+  end
+
+  private
+
+  def verify_signed_out_user
   end
 
   private
   def current_token
-    request.env['warden-jwt_auth.token']
+    request.headers['Authorization']
   end
-
 end

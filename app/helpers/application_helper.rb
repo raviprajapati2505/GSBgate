@@ -10,6 +10,9 @@ module ApplicationHelper
     fileicon_extensions[ext] = "fileicons/file_extension_#{ext}.png"
     fileicon_extensions
   end
+  include ActionView::Helpers::AssetTagHelper
+  include ActionView::Helpers::UrlHelper
+  include ActionView::Context
 
   def is_active_controller(controller_name)
     params[:controller] == controller_name ? "active" : nil
@@ -29,12 +32,20 @@ module ApplicationHelper
 
   # Filter schemes which is only for checklist
   def manage_schemes_options(certification_path, assessment_method)
-    # exclude schemes which were renamed.
     schemes = certification_path&.development_type&.schemes&.select("DISTINCT ON (schemes.name) schemes.*")
-    if assessment_method == 1
+
+    unless current_user.system_admin?
+      # exclude schemes which were renamed.
+      if assessment_method == 1 && current_user.service_provider.present?
+        allowed_schemes = current_user.valid_user_sp_licences.pluck(:schemes).flatten.uniq
+        schemes = schemes.where("schemes.name IN (:allowed_schemes)", allowed_schemes: allowed_schemes)
+      end
+    end
+
+    if assessment_method == 1 && current_user.service_provider.present?
       schemes_with_only_checklist = ["Energy Centers"]
       schemes = schemes&.where.not(name: schemes_with_only_checklist)
-    end 
+    end
 
     return schemes
   end
@@ -65,20 +76,20 @@ module ApplicationHelper
   end
 
   def btn_audit_log(auditable)
-    btn_link_to(auditable_index_logs_path(auditable.class.name, auditable.id), disabling: false, remote: true, tooltip: 'View the complete audit log of this resource.', icon: 'mail-reply', size: 'extra_small', style: 'default', class: 'pull-right audit-log')
+    btn_link_to(auditable_index_logs_path(auditable.class.name, auditable.id), disabling: false, remote: true, tooltip: 'View the complete audit log of this resource.', icon: 'mail-reply', size: 'extra_small', style: 'primary', class: 'pull-right audit-log')
   end
 
   def btn_audit_log_comment(auditable)
-    btn_link_to(auditable_index_comments_path(auditable.class.name, auditable.id), disabling: false, remote: true, tooltip: 'View or add comments to the audit log of this resource.', icon: 'comment', size: 'extra_small', style: 'default', class: 'audit-log pull-right')
+    btn_link_to(auditable_index_comments_path(auditable.class.name, auditable.id), disabling: false, remote: true, tooltip: 'View or add comments to the audit log of this resource.', icon: 'comment', size: 'extra_small', style: 'primary', class: 'audit-log pull-right')
   end
 
   def btn_audit_log_filtered(status_name, audit_log_params)
-    btn_link_to(audit_logs_path(audit_log_params), tooltip: "Click to view the audit logs for all resources that were created during the '#{status_name}' phase.", icon: 'mail-reply-all', size: 'extra_small', style: 'default', class: 'pull-right audit-log')
+    btn_link_to(audit_logs_path(audit_log_params), tooltip: "Click to view the audit logs for all resources that were created during the '#{status_name}' phase.", icon: 'mail-reply-all', size: 'extra_small', style: 'primary', class: 'pull-right audit-log')
   end
 
   def btn_audit_log_comments_filtered(status_name, audit_log_params)
     audit_log_params[:only_user_comments] = true
-    btn_link_to(audit_logs_path(audit_log_params), tooltip: "Click to view the audit logs for all resources that were created during the '#{status_name}' phase.", icon: 'comments', size: 'extra_small', style: 'default', class: 'pull-right audit-log')
+    btn_link_to(audit_logs_path(audit_log_params), tooltip: "Click to view the audit logs for all resources that were created during the '#{status_name}' phase.", icon: 'comments', size: 'extra_small', style: 'primary', class: 'pull-right audit-log')
   end
 
   # generates a button_tag with save icon and save text, that can be used within forms
@@ -121,6 +132,12 @@ module ApplicationHelper
   # :options: are documented at ApplicationHelper#btn_component
   def btn_link_to(target, options = {}, &block)
     btn_component(:link, {target: target}.merge(options), &block)
+  end
+
+  def btn_link_to_if(permission: false, target: '', icon: '', text: '')
+    if permission
+      btn_link_to(target, icon: icon, text: text)
+    end
   end
 
   # generates a component with bootstrap button classes added to it
@@ -240,6 +257,15 @@ module ApplicationHelper
     "#{ikoen(name, options)}&nbsp;&nbsp;#{text}".html_safe
   end
 
+  def label_span(value = false, label_true = true, label_false = false)
+    label = value ? label_true : label_false
+    "<span class='label label-rating #{label_class(value)}'>#{label.to_s.titleize}</span>"
+  end
+
+  def label_class(value = false)
+    value ? 'label-success' : 'label-danger' 
+  end
+
   def commify_values(value)
     value = value.present? ? value&.to_s&.split(/(?=(?:\d{3})+$)/)&.join(",") : ""
     return value
@@ -304,10 +330,18 @@ module ApplicationHelper
 
   def breadcrumbs(model, with_prefix: true)
     breadcrumbs = {names: [], paths: []}
-
     case model.class.name
       when Project.name.demodulize
         project = model
+      when 'Offline::Project'
+        offline_project = model
+      when 'Offline::CertificationPath'
+        offline_project = model.offline_project
+        offline_certification_path = model
+      when 'Offline::SchemeMix'
+        offline_project = model.offline_certification_path.offline_project
+        offline_certification_path = model.offline_certification_path
+        offline_scheme_mix = model
       when ProjectsUser.name.demodulize
         project = model.project
         projects_user = model
@@ -367,22 +401,50 @@ module ApplicationHelper
         certification_path = model.certification_path
         project = certification_path.project
         certification_path_document = model
+      when User.name.demodulize, ServiceProvider.name.demodulize
+        user = model
+      when SurveyType.name.demodulize
+        survey_type = model
+      when SurveyQuestionnaireVersion.name.demodulize
+        survey_type = model.survey_type
+        survey_questionnaire_version = model
+      when ProjectsSurvey.name.demodulize
+        project = model.project
+        projects_survey = model
       else
         return breadcrumbs
     end
 
     if with_prefix
-      if criterion.present?
+      if user.present?
+        breadcrumbs[:names] << 'Users'
+        breadcrumbs[:paths] << users_path
+      elsif criterion.present?
         breadcrumbs[:names] << 'Criteria'
         breadcrumbs[:paths] << scheme_criteria_url
+      elsif survey_type.present?
+        breadcrumbs[:names] << 'Survey Types'
+        breadcrumbs[:paths] << survey_types_path
+      elsif offline_project.present?
+        breadcrumbs[:names] << 'Offline Projects'
+        breadcrumbs[:paths] << offline_projects_path
       else
         breadcrumbs[:names] << 'Projects'
         breadcrumbs[:paths] << projects_url
       end
     end
+
     if project.present?
       breadcrumbs[:names] << project.name
       breadcrumbs[:paths] << project_url(project)
+    end
+    if offline_project.present?
+      breadcrumbs[:names] << offline_project.name
+      breadcrumbs[:paths] << offline_project_path(offline_project)
+    end
+    if offline_certification_path.present?
+      breadcrumbs[:names] << offline_certification_path.name
+      breadcrumbs[:paths] << offline_project_certification_path(offline_project, offline_certification_path)
     end
     if projects_user.present?
       breadcrumbs[:names] << projects_user.user.full_name
@@ -395,6 +457,10 @@ module ApplicationHelper
     if scheme_mix.present?
       breadcrumbs[:names] << scheme_mix.full_name
       breadcrumbs[:paths] << project_certification_path_scheme_mix_url(project, certification_path, scheme_mix)
+    end
+    if offline_scheme_mix.present?
+      breadcrumbs[:names] << offline_scheme_mix.name
+      breadcrumbs[:paths] << offline_project_certification_scheme_path(offline_project, offline_certification_path, offline_scheme_mix)
     end
     if requirement_datum.present?
       breadcrumbs[:names] << scheme_mix_criterion.full_name
@@ -428,6 +494,18 @@ module ApplicationHelper
           breadcrumbs[:paths] << project_certification_path_url(project, certification_path) + '#certifier-documentation'
       end
     end
+    if user.present?
+      breadcrumbs[:names] << user.email
+      breadcrumbs[:paths] << user_path(user)
+    end
+    if survey_type.present?
+      breadcrumbs[:names] << survey_type.title
+      breadcrumbs[:paths] << survey_type_path(survey_type)
+    end
+    if survey_questionnaire_version.present?
+      breadcrumbs[:names] << "v#{survey_questionnaire_version.version}"
+      breadcrumbs[:paths] << survey_type_survey_questionnaire_version_path(survey_type, survey_questionnaire_version)
+    end
     return breadcrumbs
   end
 
@@ -455,11 +533,17 @@ module ApplicationHelper
   end
 
   def certification_assessment_type_title(assessment_type = nil)
-    if assessment_type.present? && assessment_type == 2
-      "Checklist Based Certificate"
-    else
-      "Star Rating Based Certificate"
+    if assessment_type == 1
+      "Star Rating Assessment"
+    elsif assessment_type == 2
+      "Checklist Assessment"
     end
+  end
+
+  def licence_options(user = nil)
+    return [] unless user.present?
+  
+    user.remaining_licences.pluck(:display_name, :id)
   end
 
   def total_CM_score(data)
@@ -776,5 +860,101 @@ module ApplicationHelper
     else
       false
     end
+  end
+  
+  # survey module
+
+  def survey_question_options_report(projects_survey, question)
+    option_with_counts = {}
+
+    question.question_options.each.with_index(1) do |option, i|
+      option_text = option.option_text
+
+      option_wise_counts = 
+        question.
+        question_responses.
+        with_project_survey(projects_survey.id).
+        where("question_responses.value LIKE :value", value: "%#{option_text}%").
+        count || 0
+
+      option_with_counts[option_text] = option_wise_counts
+    end
+
+    return option_with_counts
+  end
+
+  def set_visibility(question_type = '')
+    ["fill_in_the_blank"].include?(question_type) ? 'd-none' : ''
+  end
+
+  def certification_name_datatable_render(rec,only_certification_name)
+    case only_certification_name
+      when 'GSAS-D&B'
+        '<span class="certi-name-badge badge-db">'+ image_tag('/icons/certi-name-db.png') +'</span><a href='+Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>'+only_certification_name+'</a>'
+      when 'GSAS-CM'
+        '<span class="certi-name-badge badge-cm">'+ image_tag('/icons/certi-name-cm.png') +'</span><a href='+Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>'+only_certification_name+'</a>'
+      when 'GSAS-OP'
+        '<span class="certi-name-badge badge-op">'+ image_tag('/icons/certi-name-op.png') +'</span><a href='+Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>'+only_certification_name+'</a>'
+    end
+  end
+
+  def submission_status_datatable_render(rec)
+    only_certification_name = Certificate.find_by_name(rec&.certificate_name)&.only_certification_name
+    if rec.certification_path_status_name == "Certificate In Process"
+      status = CertificationPath.find(rec&.certification_path_id)&.status
+    else
+      status = rec.certification_path_status_name
+    end
+    case only_certification_name
+      when 'GSAS-D&B'
+        '<span class="certi-sub-status-badge status-badge-db">'+ image_tag('/icons/certi-sub-status-db.png') +'</span>'+status
+      when 'GSAS-CM'
+        '<span class="certi-sub-status-badge status-badge-cm">'+ image_tag('/icons/certi-sub-status-cm.png') +'</span>'+status
+      when 'GSAS-OP'
+        '<span class="certi-sub-status-badge status-badge-op">'+ image_tag('/icons/certi-sub-status-op.png') +'</span>'+status
+    end
+  end
+
+  def certification_name_offline_datatable_render(certification_type)
+    case certification_type
+      when 'GSAS-D&B'
+        '<span class="certi-name-badge badge-db">'+ image_tag('/icons/certi-name-db.png') +'</span>'+certification_type
+      when 'GSAS-CM'
+        '<span class="certi-name-badge badge-cm">'+ image_tag('/icons/certi-name-cm.png') +'</span>'+certification_type
+      when 'GSAS-OP'
+        '<span class="certi-name-badge badge-op">'+ image_tag('/icons/certi-name-op.png') +'</span>'+certification_type
+    end
+  end
+
+  def submission_status_offline_datatable_render(rec)
+    only_certification_name = rec.certificate_type
+    case only_certification_name
+      when 'GSAS-D&B'
+        '<span class="certi-sub-status-badge status-badge-db">'+ image_tag('/icons/certi-sub-status-db.png') +'</span>'+rec.certification_status
+      when 'GSAS-CM'
+        '<span class="certi-sub-status-badge status-badge-cm">'+ image_tag('/icons/certi-sub-status-cm.png') +'</span>'+rec.certification_status
+      when 'GSAS-OP'
+        '<span class="certi-sub-status-badge status-badge-op"'+ image_tag('/icons/certi-sub-status-op.png') +'</span>'+rec.certification_status
+    end
+  end
+
+  FONTS_DIR = '/app/assets/fonts/reports'
+  IMAGES_DIR = '/app/assets/images/reports/'
+
+  def newline(amount = 1)
+    text "\n" * amount
+  end
+
+  def font_path(filename)
+    "#{Rails.root}#{FONTS_DIR}/#{filename}"
+  end
+
+  def image_path(filename)
+    "#{Rails.root}#{IMAGES_DIR}/#{filename}"
+  end
+
+  def save_as(file_name)
+    FileUtils.mkdir_p(File.dirname(file_name))
+    document.render_file(file_name)
   end
 end

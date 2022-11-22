@@ -15,17 +15,20 @@ class ProjectsUsersController < AuthenticatedController
 
       ProjectsUser.transaction do
         params[:projects_users].each do |pu|
-          # Create the model
-          projects_user = ProjectsUser.new
-          projects_user.user_id = pu[:user_id]
-          projects_user.role = pu[:role]
-          projects_user.certification_team_type = pu[:certification_team_type]&.to_i
-          projects_user.project = @project
 
-          # Check ability & gord_employee flag
-          if can?(:create, projects_user) && (!projects_user.gsas_trust_team? || projects_user.user.gord_employee?)
-            projects_user.save!
-            projects_users << projects_user
+          if pu.key?("user_id") && pu.key?("role") && pu.key?("certification_team_type") 
+            # Create the model
+            projects_user = ProjectsUser.new
+            projects_user.user_id = pu[:user_id]
+            projects_user.role = pu[:role]
+            projects_user.certification_team_type = pu[:certification_team_type]&.to_i
+            projects_user.project = @project
+
+            # Check ability & gord_employee flag
+            if can?(:create, projects_user) && (!projects_user.gsas_trust_team? || projects_user.user.gord_employee?)
+              projects_user.save!
+              projects_users << projects_user
+            end
           end
         end
       end
@@ -37,17 +40,6 @@ class ProjectsUsersController < AuthenticatedController
 
       if (projects_users.count > 0)
         notices << pluralize(projects_users.count, 'user was', 'users were') + ' added to the team.'
-      end
-    end
-
-    # Invite new users to linkme.qa by email
-    if params.has_key?(:emails)
-      params[:emails].each do |email|
-        DigestMailer.linkme_invitation_email(email, current_user, @project).deliver_now
-      end
-
-      if (params[:emails].count > 0)
-        notices << pluralize(params[:emails].count, 'user was', 'users were') + ' invited to linkme.qa.'
       end
     end
 
@@ -142,9 +134,9 @@ class ProjectsUsersController < AuthenticatedController
   def list_projects
     if params.has_key?(:q) && params.has_key?(:page)
       if current_user.system_admin? || current_user.gsas_trust_top_manager? || current_user.gsas_trust_manager? || current_user.gsas_trust_admin?
-        total_count = Project.where('name like ?', '%' + params[:q] + '%').count
+        total_count = Project.where('name ILIKE ?', '%' + params[:q] + '%').count
         items = Project.select('id, name as text, projects.code as code, projects.coordinates as coordinates')
-                  .where('name like ?', '%' + params[:q] + '%')
+                  .where('name ILIKE ?', '%' + params[:q] + '%')
                   .page(params[:page]).per(25)
       else
         project = Project.arel_table
@@ -154,13 +146,13 @@ class ProjectsUsersController < AuthenticatedController
 
         total_count = Project.distinct
                         .joins(outer_join)
-                        .where('name like ?', '%' + params[:q] + '%')
+                        .where('name ILIKE ?', '%' + params[:q] + '%')
                         .where('projects_users.user_id = ?', current_user.id)
                         .count
         items = Project.select('projects.id as id, projects.name as text, projects.code as code, projects.coordinates as coordinates')
                   .distinct
                   .joins(outer_join)
-                  .where('name like ?', '%' + params[:q] + '%')
+                  .where('name ILIKE ?', '%' + params[:q] + '%')
                   .where('projects_users.user_id = ?', current_user.id)
                   .page(params[:page]).per(25)
       end

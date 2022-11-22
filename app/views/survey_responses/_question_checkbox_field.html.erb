@@ -1,0 +1,10 @@
+<div class="col-lg-12">
+  <%= question_response.hidden_field :value, id: "checkbox-survey-question-#{survey_question.id}" %>
+
+  <% survey_question.question_options.each do |option| %>
+    <p>
+      <%= check_box_tag "value", option.option_text, false, data: { survey_question_id: survey_question.id } %>
+      <%= option.option_text %>
+    </p>
+  <% end %>
+</div>

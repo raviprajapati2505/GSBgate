@@ -216,17 +216,47 @@ class DigestMailer < ApplicationMailer
     mail(to: Rails.configuration.x.gsas_info.all_notifications_email, subject: "GSASgate - certification #{@certification_path.name} for #{certification_path.project.name} has appealed criteria")
   end
 
-  def linkme_invitation_email(email, user, project)
-    @user = user
-    @project = project
-
-    mail(to: email, subject: 'GSASgate - linkme.qa invitation')
-  end
-
   def archive_created_email(archive)
     @archive = archive
 
     mail(to: @archive.user.email, subject: 'GSASgate - your archive was generated')
+  end
+
+  def user_licences_update_email(user)
+    @user = user
+    @licences = if @user.service_provider?
+                  Licence.with_service_provider_licences
+                else
+                  Licence.with_cp_licences
+                end
+
+    mail(to: @user.email, subject: 'GSASgate - your licences summary')
+  end
+
+  def send_otp_code_to_user(user)
+    @user = user
+    mail(to: @user.email, subject: "GSASgate - OTP for login")
+  end
+
+  def send_project_activated_email_to_project_owner(certification_path)
+    @certification_path = certification_path
+    if certification_path.project.project_owner_email.present?
+      mail(to: certification_path.project.project_owner_email, subject: "GSASgate - Certificate Activated")
+    end
+  end
+
+  def send_project_certified_email_to_project_owner(certification_path)
+    @certification_path = certification_path
+    if certification_path.project.project_owner_email.present?
+      mail(to: certification_path.project.project_owner_email, subject: "GSASgate - Certificate Certified")
+    end
+  end
+
+  def op_certification_expire_in_near_future(certification_path)
+    @certification_path = certification_path
+    if certification_path.project.project_owner_email.present?
+      mail(to: certification_path.project.project_owner_email, subject: "GSASgate - certification #{@certification_path.name} for #{@certification_path.project.name} is going to expire on #{@certification_path.expires_at.strftime(t('date.formats.short'))}")
+    end
   end
 
   private

@@ -47,6 +47,7 @@ class CertificationPath < ApplicationRecord
 
   after_initialize :init
   after_create :send_applied_for_certification_email
+  after_create :create_certification_path_method, unless: -> { design_and_build? }
   before_update :create_descendant_records
   before_update :advance_scheme_mix_criteria_statuses
   before_update :set_started_at
@@ -140,6 +141,10 @@ class CertificationPath < ApplicationRecord
     end
     
     return status
+  end
+
+  def design_and_build?
+    project.design_and_build?
   end
 
   def construction?
@@ -272,11 +277,13 @@ class CertificationPath < ApplicationRecord
       end
     when CertificationPathStatus::APPROVING_BY_MANAGEMENT
       if self.certificate.construction_type?
+        DigestMailer.send_project_certified_email_to_project_owner(self).deliver_now
         return CertificationPathStatus::CERTIFIED
       else
         return CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT
       end
     when CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT
+      DigestMailer.send_project_certified_email_to_project_owner(self).deliver_now
       return CertificationPathStatus::CERTIFIED
     when CertificationPathStatus::CERTIFIED
       return CertificationPathStatus::CERTIFICATE_IN_PROCESS
@@ -922,6 +929,7 @@ class CertificationPath < ApplicationRecord
   def create_descendant_records
     # Only trigger when the certification path is being activated
     if certification_path_status_id_changed? && (certification_path_status_id_was == CertificationPathStatus::ACTIVATING)
+      DigestMailer.send_project_activated_email_to_project_owner(self).deliver_now
       CertificationPath.transaction do
         # If there is a main scheme mix, it should be handled first
         if (development_type.mixable? && main_scheme_mix.present?)
@@ -941,6 +949,10 @@ class CertificationPath < ApplicationRecord
 
   def send_applied_for_certification_email
     DigestMailer.applied_for_certification(self).deliver_now
+  end
+
+  def create_certification_path_method
+    create_certification_path_method!(assessment_method: CertificationPath.assessment_methods["star_rating"])
   end
 
   def revised_score(val, is_achieved_score, is_submitted_score)

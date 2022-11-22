@@ -37,6 +37,7 @@ module Taskable
   CERT_MNGR_CMP_UPLOADED = 43
   CGP_CERTIFICATION_REPORT_INFORMATION = 44
   DC_CERTIFICATION_REPORT_INFORMATION = 45
+  ACTIVATE_USER = 46
 
 
   included do
@@ -81,6 +82,13 @@ module Taskable
         handle_updated_scheme_mix_criteria_document
       when CertificationPathReport.name.demodulize
         handle_updated_certification_path_report
+      when User.name.demodulize, ServiceProvider.name.demodulize
+        if saved_change_to_confirmed_at?
+          handle_confirmed_user_account
+        end
+        if saved_change_to_active?
+          handle_activated_user_account
+        end
     end
   end
 
@@ -186,6 +194,24 @@ module Taskable
                   certification_path: self.certification_path
                   )
     end
+  end
+
+  def handle_confirmed_user_account
+    # Create task form credentials_admin to activate user profile.
+    Task.find_or_create_by(
+      taskable: self,
+      task_description_id: ACTIVATE_USER,
+      application_role: User.roles[:credentials_admin]
+    )
+  end
+
+  def handle_activated_user_account
+    # Delete task of activate user profile.
+    Task.where(
+      taskable: self,
+      task_description_id: ACTIVATE_USER,
+      application_role: User.roles[:credentials_admin]
+    ).destroy_all if active?
   end
 
   def handle_updated_project

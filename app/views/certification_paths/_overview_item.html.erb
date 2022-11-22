@@ -2,17 +2,18 @@
   is_certification_paths_present = project&.certification_paths.present? 
   is_td_present = false
 %>
-<li class="list-group-item container table-my-0 table-py-0">
+
+<li class="list-group-item table-my-0 table-py-0">
   <div class="row">
-    <div class="col-md-12 table-p-0">
-      <table class="table table-bordered table-mb-1">
+    <div class="col-md-12 table-p-0 table-responsive">
+      <table class="table table-bordered table-mb-1 border-bottom-table overflow-hidden">
         <tbody>
           <% if is_certification_paths_present %>
             <tr class="bg-header-grey">
-              <th><%= t('certification_paths.show.certification_path.stage') %></th>
-              <th><%= t('certification_paths.show.certification_path.status') %></th>
-              <th><%= t('certification_paths.show.certification_path.scores') %></th>
-              <th><%= t('certification_paths.show.certification_path.rating') %></th>
+              <th class="w-50 border-top-0"><%= t('certification_paths.show.certification_path.stage') %></th>
+              <th class="border-top-0"><%= t('certification_paths.show.certification_path.status') %></th>
+              <th class="border-top-0"><%= t('certification_paths.show.certification_path.scores') %></th>
+              <th class="border-top-0"><%= t('certification_paths.show.certification_path.rating') %></th>
             </tr>
           <% end %>
           <% certification_types.each do |certification_type| %>
@@ -24,15 +25,20 @@
               <% certification_paths.each do |certification_path| %>
                 <tr>
                   <td style="width: 425px;">
-                    <%= can_link_to(project_certification_path_path(project, certification_path), certification_path, class: "link-mr-2") do %>
+                    <div class="d-flex justify-content-between">
+                    <%= can_link_to(project_certification_path_path(project, certification_path), certification_path, class: "text-primary link-mr-2") do %>
                       <%= certification_path.certificate.stage_title %>
                     <% end %>
+                    <div>
                     <% if can? :confirm_destroy, certification_path %>
-                      <%= btn_link_to(confirm_destroy_project_certification_path_path(project, certification_path), {icon: 'trash', style: 'danger', size: 'extra_small', tooltip: 'Destroy all certification data', method: :get, data: {confirm: 'Do you really want to delete this certification?'}}) %>
-                    <% end %>
-                    <% if can? :confirm_deny, certification_path %>
-                      <%= btn_link_to(confirm_deny_project_certification_path_path(project, certification_path), {icon: 'ban', style: 'danger', size: 'extra_small', tooltip: 'Deny certificate', method: :get, data: {confirm: 'Do you really want to deny certification?'}}) %>
-                    <% end %>
+                    <%= btn_link_to(confirm_destroy_project_certification_path_path(project, certification_path), {icon: 'trash', style: 'danger', size: 'extra_small', tooltip: 'Destroy all certification data', method: :get, data: {confirm: 'Do you really want to delete this certification?'}}) %>
+                  <% end %>
+                  <% if can? :confirm_deny, certification_path %>
+                    <%= btn_link_to(confirm_deny_project_certification_path_path(project, certification_path), {icon: 'ban', style: 'danger', size: 'extra_small', tooltip: 'Deny certificate', method: :get, data: {confirm: 'Do you really want to deny certification?'}}) %>
+                  <% end %>
+                    </div>
+                  </div>
+
                   </td>
                   <td style="width: 290px;">
                     <%= certification_path.status %>
@@ -62,7 +68,7 @@
                 <td colspan='4' style="padding: 0px;">
                 <% is_td_present = true %>
               <% end %>
-              <li class="list-group-item container <%= 'disabled' if (no_completed_letter_of_conformance_for_final_design || no_stage1_construction_for_stage2 || no_stage2_construction_for_stage3) %>">
+              <li class="list-group-item <%= 'disabled' if (no_completed_letter_of_conformance_for_final_design || no_stage1_construction_for_stage2 || no_stage2_construction_for_stage3) %>">
                 <div class="row">
                   <span class="col-md-4">
                     <%= t(Certificate.certification_types.key(certification_type), scope: 'activerecord.attributes.certificate.certification_titles') %>

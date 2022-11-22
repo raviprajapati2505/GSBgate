@@ -1,58 +1,16 @@
-/*
- *
- *   INSPINIA - Responsive Admin Theme
- *   version 2.3
- *
-*/
+@charset 'utf-8';
 
-// Google Fonts
-@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&lang=en");
+//Vendor
+@import "vendor/__vendor-dir";
 
-// Fontawesome Fonts
-@import "font-awesome";
+//Abstracts
+@import "abstracts/__abstracts-dir";
 
-// Bootstrap
-//@import "bootstrap-sprockets";
-@import "bootstrap";
+//Base Styles
+@import "base/__base-dir";
 
-// Variables, Mixins
-@import "base/variables";
-@import "variable-overrides";
-@import "base/mixins";
+//Components
+@import "components/__components-dir";
 
-// INSPINIA Theme Elements
-@import "base/typography";
-@import "base/navigation";
-@import "base/top_navigation";
-@import "base/buttons";
-@import "base/badgets_labels";
-@import "base/elements";
-@import "base/sidebar";
-@import "base/base";
-@import "base/pages";
-@import "base/chat";
-@import "base/metismenu";
-@import "base/spinners";
-
-// Landing page
-@import "base/landing";
-
-// RTL Support
-@import "base/rtl";
-
-// For demo only - config box style
-@import "base/theme-config";
-
-// INSPINIA Skins
-//@import "base/skins";
-//@import "base/md-skin";
-
-// Media query style
-@import "base/media";
-
-// Custom style
-// Your custom style to override base style
-@import "base/custom";
-
-// GORD Skin
-@import "skin-gord";
+//Layout
+@import "layouts/__layouts-dir";

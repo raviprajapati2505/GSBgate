@@ -1,0 +1,27 @@
+<% 
+  survey_question = question_response.object.survey_question
+  partial = 
+    case survey_question.question_type
+    when 'single_select'
+      'question_radio_field'
+    when 'multi_select'
+      'question_checkbox_field'
+    when 'fill_in_the_blank'
+      'question_text_field'
+    end
+%>
+
+<%= question_response.hidden_field :survey_question_id %>
+
+<div class="col-lg-12">
+  <label><%= survey_question.question_text %></label>
+  <p><%= survey_question.description  %></p>
+</div>
+
+<div class="error text-danger">
+  <% question_response.object.errors.full_messages.each do |message| %>
+    <h4 class='m-l'><%= message %></h4>
+  <% end %>
+</div>
+
+<%= render partial: partial, locals: { question_response: question_response, survey_question: survey_question } %>

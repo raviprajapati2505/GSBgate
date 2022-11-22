@@ -21,7 +21,8 @@
                     The status &amp; scores of this criterion are inherited from "<%= link_to(@scheme_mix_criterion.main_scheme_mix_criterion.full_name, project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @certification_path.main_scheme_mix, @scheme_mix_criterion.main_scheme_mix_criterion)) %>" in the "<%= link_to(@certification_path.main_scheme_mix.name, project_certification_path_scheme_mix_path(@project, @certification_path, @certification_path.main_scheme_mix)) %>" scheme.
                 </p>
             <% end %>
-            <table class="table table-bordered table-striped">
+            <div class="table-responsive">
+            <table class="table table-bordered table-striped border-bottom-table">
               <tbody>
                 <tr>
                     <th>Status</th>
@@ -53,6 +54,7 @@
                 <% end %>
               </tbody>
             </table>
+            </div>
             <% if can?(:update_status, @scheme_mix_criterion) %>
                 <div class="hr-line-dashed"></div>
                 <% if @scheme_mix_criterion.at_certifier_side? %>
@@ -134,7 +136,8 @@
                     </p>
                 <% end %>
                 <% end %>
-                <table id="criterion-levels-table" class="table table-bordered table-striped">
+                <div class="table-responsive">
+                <table id="criterion-levels-table" class="table table-bordered table-striped border-bottom-table">
                     <thead>
                     <tr>
                         <th></th>
@@ -387,6 +390,20 @@
                             </td>
                           <% end %>
                         </tr>
+                        <% unless @certification_path.is_project_after_sf_file(@project) %>
+                          <tr>
+                            <th><label></label></th>
+                            <td>
+                              <input type="hidden" value="1" name="is_existing_project" id="is_existing_project">
+                              <label>For Fans</label>
+                              <input type="number" class="form-control" readonly id="aux_for_fan">
+                            </td>
+                            <td>
+                              <label>For Pumps</label>
+                              <input type="number"class="form-control"  readonly id="aux_for_pumps">
+                            </td>
+                          </tr>
+                        <% end %>
                         <tr>
                           <th><label class="required">DHW</label></th>
                           <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
@@ -546,6 +563,7 @@
                     <% end %>
                     </tbody>
                 </table>
+                </div>
                 <% if can_update_smc %>
                     <div class="hr-line-dashed"></div>
                     <%= btn_save %>
@@ -564,12 +582,12 @@
                 <%= bootstrap_form_tag url: assign_certifier_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), method: 'put' do |f| %>
                     <% if can?(:assign_certifier, @scheme_mix_criterion) %>
                         <div class="row">
-                            <div class="col-md-7">
+                            <div class="col-md-7 col-sm-12 col-xs-12">
                                 <% users = User.authorized_for_project(@project, @certification_path).with_gsas_trust_team_role %>
                                 <% user_id = @scheme_mix_criterion.certifier.id if @scheme_mix_criterion.certifier.present? %>
                                 <%= f.select :user_id, options_for_select(users.map { |k| [k.full_name, k.id]}, user_id), {label: 'Responsibility', include_blank: ''}, class: 'select2-certifier' %>
                             </div>
-                            <div class="col-md-5">
+                            <div class="col-md-5 certifier-due-date">
                                 <%= f.text_field :due_date, value: ((l @scheme_mix_criterion.due_date, format: :short) if !@scheme_mix_criterion.due_date.nil?), prepend: '<i class="fa fa-calendar"></i>'.html_safe, class: 'datepicker-future', autocomplete: 'off' %>
                             </div>
                         </div>
@@ -577,7 +595,7 @@
                         <%= btn_save %>
                     <% else %>
                         <div class="row">
-                            <div class="col-md-7">
+                            <div class="col-md-7 col-sm-12 col-xs-12">
                                 <% if @scheme_mix_criterion.certifier.nil? %>
                                     <%= f.label :user_id, 'Responsibility' %>
                                     <p>This criterion is not yet assigned.</p>
@@ -585,7 +603,7 @@
                                     <%= f.select :user_id, options_for_select([@scheme_mix_criterion.certifier].map { |k| [k.full_name, k.id]}, @scheme_mix_criterion.certifier.id), {label: 'Responsibility'}, disabled: true, class: 'select2-certifier' %>
                                 <% end %>
                             </div>
-                            <div class="col-md-5">
+                            <div class="col-md-5 col-sm-12 col-xs-12">
                                 <%= f.text_field :due_date, value: ((l @scheme_mix_criterion.due_date, format: :short) if !@scheme_mix_criterion.due_date.nil?), prepend: '<i class="fa fa-calendar"></i>'.html_safe, class: 'datepicker-future', autocomplete: 'off', disabled: true %>
                             </div>
                         </div>
@@ -602,7 +620,7 @@
         </div>
         <div class="ibox-content">
             <% @scheme_mix_criterion.scheme_criterion.scheme_criterion_texts.visible.each do |scheme_criterion_text| %>
-                <div class="subtitle"><%= scheme_criterion_text.name.capitalize %></div>
+                <div class="subtitle"><i class="fa fa-caret-right text-primary mr-2"></i><%= scheme_criterion_text.name.capitalize %></div>
                 <div class="<%= scheme_criterion_text.name.downcase  %>"><%= scheme_criterion_text.html_text.html_safe %></div>
             <% end %>
         </div>
@@ -667,10 +685,10 @@
             </div>
         <% end %>
         <div class="ibox" id="documentation">
-            <div class="ibox-title">
+            <div class="ibox-title d-flex justify-content-between">
                 <h5>Criterion Documentation</h5>
                 <% if can?(:download_archive, @scheme_mix_criterion) && download_document_permitted && @scheme_mix_criterion.scheme_mix_criteria_documents.any? %>
-                  <%= btn_download("javascript:void(0);", text: 'Download all approved/selected documents', tooltip: 'A ZIP archive containing all approved documents of this criterion will be generated for you.', size: 'extra_small', class: 'pull-right', id: "download_smcd_btn") %>
+                  <%= btn_download("javascript:void(0);", text: 'Download all approved/selected documents', tooltip: 'A ZIP archive containing all approved documents of this criterion will be generated for you.', size: 'extra_small', class: 'pull-right text-wrap ml-4', id: "download_smcd_btn") %>
                 <% end %>
             </div>
             <div class="ibox-content">
@@ -771,6 +789,29 @@
     //     });
     //   }
     // });
+    var is_existing_project = $('#is_existing_project').val();
+    if(is_existing_project == 1){
+        $("input[name='scheme_mix_criterion[scheme_mix_criterion_epls_attributes[1][auxiliaries]']").hide();
+    }
+    
+    var auxiliaries = $("input[name='scheme_mix_criterion[scheme_mix_criterion_epls_attributes[0][auxiliaries]']").val();
+    calculate_auxiliary(auxiliaries);
+
+    $("input[name='scheme_mix_criterion[scheme_mix_criterion_epls_attributes[0][auxiliaries]").change(function(){
+      calculate_auxiliary($(this).val());
+    })
+
+    function calculate_auxiliary(auxiliaries = 0.00){
+      let auxiliary_for_fans = 0.00;    
+      let auxiliary_for_pumps = 0.00;
+      if(auxiliaries){
+        auxiliary_for_fans = (auxiliaries * 65)/100;
+        auxiliary_for_pumps = (auxiliaries * 35)/100;
+      }
+      $('#aux_for_fan').val(auxiliary_for_fans);
+      $('#aux_for_pumps').val(auxiliary_for_pumps);
+    }
+    
   });
   
 </script>

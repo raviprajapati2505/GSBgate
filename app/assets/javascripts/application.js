@@ -27,6 +27,7 @@
  *= require dropzone
  *= require toastr
  *= require js-routes
+ *= require jquery-ui/widgets/sortable
  *= require ckeditor-jquery
  *= require html5sortable/html5sortable
  *= require leaflet
@@ -37,9 +38,25 @@
  *= require datatable_customizations
  *= require moment
  *= require daterangepicker
+ *= require surveys
+ *= require chartkick
+ *= require Chart.bundle
  */
 
 $(function () {
+    // toast message
+    $.rails.toast_message = function(css, message) {
+        let toast_container_dom = `
+            <div id='toast-container' class='toast-bottom-right' aria-live='polite' role='alert'>
+                <div class='toast toast-${css}'>
+                    <div class='toast-message'>${message}</div>
+                </div>
+            </div>
+        `
+
+        return toast_container_dom;
+    };
+
     // Override the default confirm dialog by rails
     $.rails.allowAction = function(link) {
         if (link.data("confirm") == undefined && link.data("pcr") == undefined) {
@@ -87,7 +104,7 @@ $(function () {
         viewMode: 'years',
         minViewMode: 'years',
         changeYear: true,
-        startDate: '2000y',
+        startDate: '1900y',
         endDate: '2100y',
         autoclose: true
     });
@@ -112,6 +129,10 @@ $(function () {
         template: false,
         showMeridian: false,
         defaultTime: '00:00'
+    });
+
+    $("#proxy-add-licences-button").on('click', function(){
+        $("#add-licences-button").click();
     });
 
     // Accordion tables
@@ -264,8 +285,22 @@ $(function () {
     // $('.project-form #project_building_type_group_id').trigger('change', true);
 
     // Project country select
-    $('.country-select, .city-select-dropdown, .district-select-dropdown, .developer-select-dropdown').select2({
+    $('.country-select, .city-select-dropdown, .district-select-dropdown, .developer-select-dropdown, #select-service-provider, .select-licence, .user-country-select, country-select, .city-select, .offline-certificate').select2({
         width: "100%"
+    });
+
+    // Licence select field in nested forms.
+    $(document).on("cocoon:after-insert", function() {
+        $("select[id$=licence_id]").select2({
+            width: "100%"
+        });
+
+        $('.datepicker-future').datepicker({
+            format: 'dd/mm/yyyy',
+            startDate: '0d',
+            todayBtn: true,
+            todayHighlight: true
+        });
     });
 
     $(".city-select-dropdown, .district-select-dropdown").on('change', function(){
@@ -439,6 +474,138 @@ $(function () {
         }],
         searching: false
     })
+
+    function populate_cities_by_country(element) {
+        let country_name = element.find("option:selected").val();
+        let cities_for = element.data('for');
+
+        if(country_name.length > 0) {
+            $.ajax({
+            url: "/users/country_cities",
+                method: "GET",
+                dataType: "json",
+                data: {
+                    country: country_name,
+                    cities_for: cities_for
+                },
+                success: function(result) {
+                    let cities_for = result["cities_for"];
+                    var select_field = $("select#" + cities_for + "-city-select");
+
+                    select_field.find('option').remove().end();
+
+                    $.each(result['cities'], function(index, item) {
+                        select_field.append(new Option(item, item), false, false);
+                    });
+                },
+                error: function() {
+                    alert('Something went wrong !');
+                }
+            });
+        }
+    }
+
+    function populate_country_code_by_country(element){
+        let country_name = element.find("option:selected").val();
+        let cities_for = element.data('for');
+
+        $.ajax({
+            url: "/users/country_code_from_name",
+            method: "GET",
+            dataType: "json",
+            data: {
+                country: country_name
+            },
+            success: function(result) {
+                if(cities_for == 'organization'){
+                    $('#org_phone_area_code').val(result.code)
+                }else {
+                    $('#mobile_area_code').val(result.code)
+                }
+            },
+            error: function() {
+                alert('Something went wrong !');
+            }
+        });
+    }
+
+    function auto_fill_organization_details(element){
+        let service_provider_id = element.find("option:selected").val();
+
+        if(service_provider_id.length > 0) {
+            $.ajax({
+            url: "/users/get_organization_details",
+            method: "GET",
+            dataType: "json",
+            data: {
+                service_provider_id: service_provider_id
+            },
+            success: function(data) {
+                $('#org_name').val(data.organization_name);
+                $('#org_address').val(data.organization_address);
+                $('#org_website').val(data.organization_website);
+                $('#org_phone_area_code').val(data.organization_phone_area_code);
+                $('#org_phone').val(data.organization_phone);
+                $('#org_fax_area_code').val(data.organization_fax_area_code);
+                $('#org_fax').val(data.organization_fax);
+                $('#organization-country-select').val(data.organization_country);
+                $('#organization-country-select').trigger('change.select2');
+                populate_cities_by_country($('#organization-country-select'));
+                setTimeout(function(){
+                    $('#organization-city-select').val(data.organization_city)
+                    $('#organization-city-select').trigger('change.select2')
+                }, 1000);
+            },
+            error: function(){
+                alert('Something went wrong !');
+            }
+            });
+        }
+    }
+
+    function auto_populate_service_providers(element){
+        let email = element.val();
+        let domain_name = email.split('@')[1];
+
+        if(domain_name !== undefined && domain_name.length > 0){
+            $.ajax({
+                url: "/users/get_service_provider_by_domain",
+                method: "GET",
+                dataType: "json",
+                data: {
+                    domain_name: domain_name
+                },
+                success: function(result) {
+                    var select_field = $("select#select-service-provider");
+                    select_field.find('option').remove().end();
+
+                    $.each(result, function(index, item) {
+                        select_field.append(new Option(item[0], item[1]), false, false);
+                    });
+                },
+                error: function() {
+                    alert('Something went wrong !');
+                }
+            });
+        }
+    }
+
+    // to populate cities in city dropdown
+    $('#user-country-select, #organization-country-select').on('change', function(){
+        populate_cities_by_country($(this));
+        populate_country_code_by_country($(this));
+    }).trigger('change');
+
+    // to auto fill information of organization
+    $('#select-service-provider').on('change', function() {
+        auto_fill_organization_details($(this));
+    });
+
+    // to populate options of service providers
+    $('#user_email').on('blur', function(){
+        auto_populate_service_providers($(this));
+    }).trigger('blur');
+    $('.dataTables_processing').removeClass('panel panel-default');
 });
 
 // General GSAS functions

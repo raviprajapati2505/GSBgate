@@ -1,17 +1,15 @@
-<div class="row">
-  <div class="col-lg-6">
-    <div class="ibox">
-      <div class="ibox-title">
-        <%= audit_log_label(@requirement) %>
-        <h5>Requirement</h5>
-      </div>
-      <div class="ibox-content">
-        <%= @requirement.name %>
-        <% if can? :update, @requirement %>
-            <div class="hr-line-dashed"></div>
-            <%= btn_link_to(edit_requirement_path(@requirement), icon: 'edit', text: 'Edit', action: :get, remote: true) %>
-        <% end %>
-      </div>
+<div class="col-lg-6">
+  <div class="ibox">
+    <div class="ibox-title">
+      <%= audit_log_label(@requirement) %>
+      <h5>Requirement</h5>
+    </div>
+    <div class="ibox-content">
+      <%= @requirement.name %>
+      <% if can? :update, @requirement %>
+          <div class="hr-line-dashed"></div>
+          <%= btn_link_to(edit_requirement_path(@requirement), icon: 'edit', text: 'Edit', action: :get, remote: true) %>
+      <% end %>
     </div>
   </div>
 </div>

@@ -1,0 +1,12 @@
+<tr>
+  <th class="col-md-4"><%= SurveyQuestion.human_attribute_name('description') %></th>
+  <td><%= question.description %></td>
+</tr>
+<tr>
+  <th class="col-md-4"><%= SurveyQuestion.human_attribute_name('question_type') %></th>
+  <td><%= SurveyQuestion.question_types[question.question_type] %></td>
+</tr>
+<tr>
+  <th class="col-md-4"><%= SurveyQuestion.human_attribute_name('mandatory') %></th>
+  <td><%= label_span(question.mandatory?, "Yes", "No").html_safe rescue "-" %></td>
+</tr>

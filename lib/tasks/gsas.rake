@@ -19,7 +19,7 @@ namespace :gsas do
       page = 0
       begin
         page += 1
-        users = User.all.page(page).per(PAGE_SIZE)
+        users = User.active.page(page).per(PAGE_SIZE)
         users.each do |user|
           DigestMailer.digest_email(user).deliver_now
         end

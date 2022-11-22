@@ -70,7 +70,8 @@ Rails.application.configure do
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
-  # config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.perform_deliveries = false
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
@@ -102,8 +103,8 @@ Rails.application.configure do
 
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = { 
-    :user_name => ENV['SENDGRID_USERNAME'],
-    :password => ENV['SENDGRID_PASSWORD'],
+    :user_name => '',
+    :password => '',
     :domain => 'gsas.qa',
     :address => 'smtp.sendgrid.net',
     :port =>  '587',
@@ -114,17 +115,12 @@ Rails.application.configure do
   # GSAS info email addresses for test env only
   config.x.gsas_info.all_notifications_email = 'no-reply@gord.qa'
 
-  # Linkme.qa newer API config
-  config.x.linkme.api_url = 'https://ws.yourmembership.com'
-  config.x.linkme.api_verion = '2.03'
-  config.x.linkme.api_key = '576e28a8-4dd7-406d-ad50-e58c272bd84d'
-  config.x.linkme.api_password = '092f197c-87c7-42a3-9537-ae7fb4520362'
-  config.x.linkme.client_id = 34560
-
   # Chart generator API config
   config.x.chart_generator.api_url = 'localhost'
   config.x.chart_generator.api_port = 8082
 
   # Visualisation Tool API
   config.x.viewer.url = ENV['VIEWER_URL']
+  config.devise_jwt_secret_key = 'a311b69f11b4b84b5b5b214f2965dfa46f8e54374c08042ab58dbdaa93aed8eff4d775625ffeb2ed8bf0093f0628a0618feded6cb8898092bc9f6698bd60bfc6'
+
 end

@@ -1,0 +1,15 @@
+<div class="row">
+    <div class="col-lg-12">
+      <div class="ibox">
+        <div class="ibox-title">
+          <h5><%= t('offline.certification_paths.form.edit_title') %></h5>
+        </div>
+        <div class="ibox-content">
+          <%= simple_form_for(@certification_path, url: offline_project_certification_path(@project, @certification_path), html: { method: :put }) do |f| %>
+          <%= f.error_notification %>
+            <%= render partial: "form", locals: { f: f } %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+</div>

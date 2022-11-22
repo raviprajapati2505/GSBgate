@@ -20,9 +20,9 @@ const mkChart = async (configs, width, height) => {
   const canvasRenderService = new ChartJSNodeCanvas({
     width: Number(width),
     height: Number(height),
-    chartCallback: (ChartJS) => {
-      ChartJS.register(require("chartjs-plugin-datalabels"));
-    },
+    plugins: {
+        requireLegacy: ['chartjs-plugin-datalabels']
+    }
   });
   return await canvasRenderService.renderToBuffer(configs);
 };

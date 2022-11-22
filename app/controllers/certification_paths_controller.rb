@@ -63,7 +63,7 @@ class CertificationPathsController < AuthenticatedController
         @gsas_version = @gsas_versions.first
       end
     end
-        
+
     if Certificate.certification_types[@certification_type] == Certificate.certification_types[:final_design_certificate]
       @certificate_method = @certification_path.project.completed_letter_of_conformances.first.certification_path_method
       @assessment_method = if !@certificate_method.present?
@@ -75,7 +75,7 @@ class CertificationPathsController < AuthenticatedController
       if params.has_key?(:assessment_method)
         @assessment_method = params[:assessment_method].to_i
       else
-        @assessment_method = 1
+        @assessment_method = current_user.manage_assessment_methods_options&.values&.first || 1
       end
     end
 
@@ -119,6 +119,7 @@ class CertificationPathsController < AuthenticatedController
       @certification_path.development_type = DevelopmentType.find_by(name: development_type_name, certificate: @certification_path.certificate)
     else
       @development_types = @certification_path.certificate.development_types.joins(:development_type_schemes)&.select("DISTINCT ON (development_types.name) development_types.*").sort_by(&:display_weight)
+
       if params.has_key?(:certification_path) && params[:certification_path].has_key?(:development_type)
         @certification_path.development_type = DevelopmentType.find_by_id(params[:certification_path][:development_type].to_i)
       else
@@ -162,6 +163,15 @@ class CertificationPathsController < AuthenticatedController
       end
     end
 
+    # set number of buildings
+    if Certificate.certification_types[@certification_type] == Certificate.certification_types[:final_design_certificate]
+      @certification_path.buildings_number = @certification_path.project.completed_letter_of_conformances.first.buildings_number rescue 0
+    else
+      if params.has_key?(:certification_path) && params[:certification_path].has_key?(:buildings_number)
+        @certification_path.buildings_number = params.dig(:certification_path, :buildings_number) rescue 0
+      end
+    end
+
     respond_to do |format|
       # refresh modal using js, to show updated values, based on the received post data
       format.js {
@@ -171,7 +181,7 @@ class CertificationPathsController < AuthenticatedController
       format.html {
         if @certification_path.save
           @certification_path.create_assessment_method(@assessment_method) if @project.design_and_build?
-          @project.update_column(:service_provider_2, current_user&.employer_name) if @certification_path&.certificate&.certification_type == "final_design_certificate"
+          @project.update_column(:service_provider_2, current_user&.organization_name) if @certification_path&.certificate&.certification_type == "final_design_certificate"
           @project.project_rendering_images.where(certification_path_id: nil).update(certification_path_id: @certification_path.id)
           @project.actual_project_images.where(certification_path_id: nil).update(certification_path_id: @certification_path.id)
           return redirect_to(project_certification_path_path(@project, @certification_path), notice: t('controllers.certification_paths_controller.apply.success'))
@@ -264,6 +274,7 @@ class CertificationPathsController < AuthenticatedController
         @certification_path.audit_log_user_comment = params[:certification_path][:audit_log_user_comment]
         @certification_path.audit_log_visibility =  params[:certification_path][:audit_log_visibility]
         @certification_path.save!
+
         # sent email if the certificate is approved
         if @certification_path.status == "Certified"
           DigestMailer.certificate_approved_email(@certification_path).deliver_now
@@ -620,6 +631,19 @@ class CertificationPathsController < AuthenticatedController
     end
 
     redirect_back(fallback_location: root_path)
+  end
+
+  def send_op_certification_expiration_notification
+    cp_op = CertificationPath.joins(:certificate)
+            .where(certificates: {certificate_type: Certificate.certificate_types[:operations_type]})
+            .where(certification_path_status_id: [CertificationPathStatus::CERTIFIED])
+
+    cp_op.each do |certification_path|
+      duration_in_days = (Date.today..certification_path.expires_at).count
+        if duration_in_days == 90 || duration_in_days == 60 || duration_in_days == 30
+          DigestMailer.op_certification_expire_in_near_future(certification_path).deliver_now
+        end
+    end
   end
 
   private

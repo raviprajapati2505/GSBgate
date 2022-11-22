@@ -1,0 +1,10 @@
+ <div class="nested-fields col-md-3 col-sm-12 col-xs-12 question-box mb-4" >
+  <div class="border p-m br-5">
+    <div class="text-right">
+      <%= link_to_remove_association "X", f, class: "btn btn-danger btn-sm" %>
+    </div>
+    <%= f.input :name, required: true %>
+    <%= f.input :code, required: true %>
+    <%= f.input :score, required: true %>
+  </div>
+</div>

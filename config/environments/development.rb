@@ -33,6 +33,7 @@ Rails.application.configure do
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
 
+  config.action_mailer.perform_deliveries = true
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
@@ -64,8 +65,10 @@ Rails.application.configure do
 
   # Mailer settings
   config.action_mailer.perform_caching = false
-  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+  config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
   config.action_mailer.smtp_settings = { :address => 'smtp.vito.local' }
+  config.action_mailer.delivery_method = :letter_opener
+
   config.action_mailer.asset_host = 'http://localhost:3000'
 
   # Prepend all log lines with the following tags.
@@ -74,17 +77,11 @@ Rails.application.configure do
   # GSAS info email addresses
   config.x.gsas_info.all_notifications_email = 'sas@vito.be'
 
-  # Linkme.qa API config
-  config.x.linkme.api_url = 'https://ws.yourmembership.com'
-  config.x.linkme.api_verion = '2.03'
-  config.x.linkme.api_key = '576e28a8-4dd7-406d-ad50-e58c272bd84d'
-  config.x.linkme.api_password = '092f197c-87c7-42a3-9537-ae7fb4520362'
-  config.x.linkme.client_id = 34560
-
   # Chart generator API config
   config.x.chart_generator.api_url = 'localhost'
   config.x.chart_generator.api_port = 8082
 
   # Visualisation Tool API
   config.x.viewer.url = 'http://localhost:4200'
+  config.devise_jwt_secret_key = 'a311b69f11b4b84b5b5b214f2965dfa46f8e54374c08042ab58dbdaa93aed8eff4d775625ffeb2ed8bf0093f0628a0618feded6cb8898092bc9f6698bd60bfc6'
 end

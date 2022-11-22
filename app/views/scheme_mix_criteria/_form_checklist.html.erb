@@ -21,7 +21,8 @@
                     The status &amp; scores of this criterion are inherited from "<%= link_to(@scheme_mix_criterion.main_scheme_mix_criterion.full_name, project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @certification_path.main_scheme_mix, @scheme_mix_criterion.main_scheme_mix_criterion)) %>" in the "<%= link_to(@certification_path.main_scheme_mix.name, project_certification_path_scheme_mix_path(@project, @certification_path, @certification_path.main_scheme_mix)) %>" scheme.
                 </p>
             <% end %>
-            <table class="table table-bordered table-striped">
+            <div class="table-responsive">
+            <table class="table table-bordered table-striped border-bottom-table">
               <tbody>
                 <tr>
                     <th>Status</th>
@@ -54,6 +55,7 @@
                 <% end %>
               </tbody>
             </table>
+            </div>
             <% if can?(:update_status, @scheme_mix_criterion) %>
                 <div class="hr-line-dashed"></div>
                 <% if @scheme_mix_criterion.at_certifier_side? %>
@@ -108,12 +110,12 @@
         </div>
     </div>
     <div class="ibox criterion-details">
-        <div class="ibox-title">
-            <h5>Checklist Status</h5>
-        </div>
         <% if @scheme_mix_criterion.scheme_mix.check_list? %>
-          <%= render partial: 'checklist_level', locals: { scheme_mix_criterion: @scheme_mix_criterion } %>
+          <%# <%= render partial: 'checklist_level', locals: { scheme_mix_criterion: @scheme_mix_criterion } %>
         <% else %>
+          <div class="ibox-title">
+              <h5>Checklist Status</h5>
+          </div>
           <div class="ibox-content">
               <%= bootstrap_form_for([@project, @certification_path, @scheme_mix, @scheme_mix_criterion], url: update_scores_project_certification_path_scheme_mix_scheme_mix_criterion_path, method: 'put') do |f| %>
                   <% if @scheme_mix_criterion.errors.any? %>
@@ -137,7 +139,8 @@
                       </p>
                   <% end %>
                   <% end %>
-                  <table id="criterion-levels-table" class="table table-bordered table-striped">
+                  <div class="table-responsive">
+                  <table id="criterion-levels-table" class="table table-bordered table-striped border-bottom-table">
                       <thead>
                       <tr>
                           <th></th>
@@ -506,6 +509,7 @@
                       <% end %>
                       </tbody>
                   </table>
+                  </div>
                   <% if can?(:update_targeted_score, @scheme_mix_criterion) || can?(:update_submitted_score, @scheme_mix_criterion) || can?(:update_achieved_score, @scheme_mix_criterion) %>
                       <div class="hr-line-dashed"></div>
                       <%= btn_save %>
@@ -525,12 +529,12 @@
                 <%= bootstrap_form_tag url: assign_certifier_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), method: 'put' do |f| %>
                     <% if can?(:assign_certifier, @scheme_mix_criterion) %>
                         <div class="row">
-                            <div class="col-md-7">
+                            <div class="col-md-7 col-sm-12 col-xs-12">
                                 <% users = User.authorized_for_project(@project, @certification_path).with_gsas_trust_team_role %>
                                 <% user_id = @scheme_mix_criterion.certifier.id if @scheme_mix_criterion.certifier.present? %>
                                 <%= f.select :user_id, options_for_select(users.map { |k| [k.full_name, k.id]}, user_id), {label: 'Responsibility', include_blank: ''}, class: 'select2-certifier' %>
                             </div>
-                            <div class="col-md-5">
+                            <div class="col-md-5 col-sm-12 col-xs-12">
                                 <%= f.text_field :due_date, value: ((l @scheme_mix_criterion.due_date, format: :short) if !@scheme_mix_criterion.due_date.nil?), prepend: '<i class="fa fa-calendar"></i>'.html_safe, class: 'datepicker-future', autocomplete: 'off' %>
                             </div>
                         </div>
@@ -538,7 +542,7 @@
                         <%= btn_save %>
                     <% else %>
                         <div class="row">
-                            <div class="col-md-7">
+                            <div class="col-md-7 col-sm-12 col-xs-12">
                                 <% if @scheme_mix_criterion.certifier.nil? %>
                                     <%= f.label :user_id, 'Responsibility' %>
                                     <p>This checklist is not yet assigned.</p>
@@ -546,7 +550,7 @@
                                     <%= f.select :user_id, options_for_select([@scheme_mix_criterion.certifier].map { |k| [k.full_name, k.id]}, @scheme_mix_criterion.certifier.id), {label: 'Responsibility'}, disabled: true, class: 'select2-certifier' %>
                                 <% end %>
                             </div>
-                            <div class="col-md-5">
+                            <div class="col-md-5 col-sm-12 col-xs-12">
                                 <%= f.text_field :due_date, value: ((l @scheme_mix_criterion.due_date, format: :short) if !@scheme_mix_criterion.due_date.nil?), prepend: '<i class="fa fa-calendar"></i>'.html_safe, class: 'datepicker-future', autocomplete: 'off', disabled: true %>
                             </div>
                         </div>

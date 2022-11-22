@@ -3,7 +3,7 @@
     <div class="subtitle"><%= category.name %></div>
   </div>
   <div class="panel-body">
-    <div class="<%= category.name.downcase %>"><%= category.description.html_safe %></div>
+    <div class="<%= category.name.downcase %>"><%= category.description.html_safe? %></div>
   </div>
   <% if can?(:edit, category) || can?(:destroy, category) %>
       <div class="panel-footer">

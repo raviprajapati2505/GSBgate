@@ -5,9 +5,13 @@ class Project < ApplicationRecord
   include Taskable
   include DatePlucker
 
+  enum project_owner_business_sector: { individual: 1, corporate: 2, government: 3 }
+  enum project_developer_business_sector: { individual: 1, corporate: 2, government: 3 }, _prefix: :developer
+
   MAXIMUM_DOCUMENT_FILE_SIZE = 25 # in MB
 
   has_many :projects_users, dependent: :destroy
+  has_many :projects_surveys, dependent: :destroy
   has_many :certification_paths, dependent: :destroy
   has_many :certificates, through: :certification_paths
   has_many :certification_path_statuses, through: :certification_paths
@@ -61,6 +65,14 @@ class Project < ApplicationRecord
 
   scope :for_user, ->(user) {
     joins(:projects_users).where(projects_users: {user_id: user.id})
+  }
+
+  scope :total_completed_project_by_role, ->(user, project_role, project_stage) {
+    joins(:projects_users).where(projects_users: {user_id: user.id, role: project_role}).includes(:certification_paths).where(certification_paths: {certification_path_status_id: project_stage}).map(&:id).uniq
+  }
+
+  scope :total_inprogress_project_by_role, ->(user, project_role, project_stage) {
+    joins(:projects_users).where(projects_users: {user_id: user.id, role: project_role}).includes(:certification_paths).where.not(certification_paths: {certification_path_status_id: project_stage}).map(&:id).uniq
   }
 
   scope :without_certification_paths, -> {
@@ -217,6 +229,14 @@ class Project < ApplicationRecord
     certificate_type == Certificate.certificate_types[:design_type]
   end
 
+  def construction_management?
+    certificate_type == Certificate.certificate_types[:construction_type]
+  end
+
+  def operation?
+    certificate_type == Certificate.certificate_types[:operations_type]
+  end
+
   def loc_projects_users
     projects_users&.where(certification_team_type: "Letter of Conformance")
   end
@@ -261,6 +281,54 @@ class Project < ApplicationRecord
                ].include?(recent_certificate_status))
       else
         true
+      end
+      
+    rescue StandardError => exception
+      puts exception.message
+      return false
+    end
+  end
+
+  def is_project_certified?
+    begin
+      if certification_paths.present?
+        recent_certification_path = certification_paths.joins(:certificate).order("certificates.display_weight").last
+        recent_certificate_type = recent_certification_path&.certificate&.certification_type
+        recent_certificate_status = recent_certification_path&.certification_path_status_id
+
+        return ([
+                Certificate.certification_types[:final_design_certificate], 
+                Certificate.certification_types[:construction_certificate], 
+                Certificate.certification_types[:operations_certificate]
+               ].include?(Certificate.certification_types[recent_certificate_type&.to_sym]) && 
+               [
+                CertificationPathStatus::CERTIFIED
+               ].include?(recent_certificate_status))
+      else
+        false
+      end
+      
+    rescue StandardError => exception
+      puts exception.message
+      return false
+    end
+  end
+
+  def is_op_certificate_submitted?
+    begin
+      if certification_paths.present?
+        recent_certification_path = certification_paths.joins(:certificate).order("certificates.display_weight").last
+        recent_certificate_type = recent_certification_path&.certificate&.certification_type
+        recent_certificate_status = recent_certification_path&.certification_path_status_id
+
+        return ([
+                Certificate.certification_types[:operations_certificate]
+               ].include?(Certificate.certification_types[recent_certificate_type&.to_sym]) && 
+               [
+                CertificationPathStatus::ACTIVATING
+               ].exclude?(recent_certificate_status))
+      else
+        false
       end
       
     rescue StandardError => exception

@@ -71,7 +71,7 @@ class AuditLogsController < AuthenticatedController
   def auditable_index_comments
     @project = @auditable.get_project
     @is_certifier = false
-    projects_user = ProjectsUser.for_project(@project).for_user(current_user).first
+    projects_user = ProjectsUser.for_project(@project).for_user(current_user).last
     if projects_user.nil?
       @audit_logs = AuditLog.for_auditable(@auditable).with_user_comment.page(params[:page]).per(6)
     elsif projects_user.gsas_trust_team?

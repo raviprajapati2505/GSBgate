@@ -26,14 +26,14 @@
       final_score = scores
     end
   %>
-  <div class="row">
-      <div class="col-md-5">
-          <div class="ibox float-e-margins">
+  <%# <div class="row"> %>
+      <div class="col-md-5 col-sm-12 col-xs-12">
+          <div class="ibox">
               <div class="ibox-title">
                   <%= audit_log_label(@certification_path) %>
                   <h5><%= t('projects.show.certificates.title') %></h5>
               </div>
-              <div class="ibox-content">
+              <div class="ibox-content table-responsive">
                   <table class="table table-bordered table-striped">
                       <tbody>
                           <tr>
@@ -62,6 +62,15 @@
                             </td>
                           </tr>
 
+                          <% if ['Neighborhoods'].include?(@certification_path&.development_type&.name) %>
+                            <tr>
+                              <th><%= t('certification_paths.show.certification_path.buildings_number') %></th>
+                              <td>
+                                <%= @certification_path.buildings_number %>
+                              </td>
+                            </tr>
+                          <% end %>
+
                           <% if @certification_path.is_activated? %>
                             <tr>
                               <th><%= t('.certification_path.scores') %></th>
@@ -82,7 +91,11 @@
                           <% end %>
                             <%# if @certification_path.certificate.letter_of_conformance? || @certification_path.certificate.final_design_certificate? %>
                               <tr>
-                                <th><%= t('.certification_path.expired_at') %></th>
+                                <% if @certification_path.certificate.only_certification_name == 'GSAS-CM' || @certification_path.certificate.only_certification_name == 'GSAS-D&B' %>
+                                  <th><%= t('.certification_path.expired_at') %></th>
+                                <% else %>
+                                  <th><%= 'Certification Expiry' %></th>
+                                <% end %>
                                 <td>
                                   <span><%= @certification_path.expires_at&.strftime('%e %b, %Y') %></span>
                                   <%= btn_link_to(edit_expires_at_project_certification_path_path(@project, @certification_path), remote: true, text: 'Set new date', class: 'pull-right') if can?(:update_expires_at, @certification_path) %>
@@ -153,7 +166,7 @@
           </div>
 
           <% if @detailed_certificate_report.present? && !@certification_path.final_construction? && (can?(:create_detailed_certification_report, @certification_path) || can?(:download_detailed_certificate_report, @certification_path) && @detailed_certificate_report.is_released?) %>
-            <div class="ibox float-e-margins">
+            <div class="ibox">
               <div class="ibox-title">
                 <h5><%= t('.certification_path_reports.title') %></h5>
               </div>
@@ -189,7 +202,7 @@
             </div>
           <% end %>
           <% if (can?(:download_signed_certificate, @certification_path) && @certification_path.signed_certificate_file.present?) || can?(:update_signed_certificate, @certification_path) %>
-            <div class="ibox float-e-margins">
+            <div class="ibox">
               <div class="ibox-title">
                 <h5><%= t('.certification_path_signed_certificate.title') %></h5>
               </div>
@@ -218,10 +231,10 @@
             </div>
           <% end %>
 
-          <div class="ibox float-e-margins">
-              <div class="ibox-title">
-                  <%= render 'timeline_legend' %>
-                  <h5><%= t('.certification_path_status.title') %></h5>
+          <div class="ibox">
+              <div class="ibox-title d-flex align-items-center justify-content-between">
+              <h5><%= t('.certification_path_status.title') %></h5>
+              <%= render 'timeline_legend' %>
               </div>
               <div class="ibox-content">
                   <%= render 'timeline', certification_path: @certification_path %>
@@ -250,14 +263,14 @@
       </div>
 
     <% if @certification_path.certificate.construction_certificate? %>
-      <div class="col-md-7">
-        <div class="ibox float-e-margins">
+      <div class="col-md-7 col-sm-12 col-xs-12">
+        <div class="ibox">
           <div class="ibox-title">
             <h5>Summary of Stages</h5>
           </div>
-          <div class="ibox-content">
+          <div class="ibox-content table-responsive">
             <%= scores_legend %>
-            <table class="table table-bordered table-striped">
+            <table class="table table-bordered table-striped border-bottom-table">
               <thead>
               <tr>
                 <th></th>
@@ -286,8 +299,8 @@
         </div>
       </div>
     <% else %>
-      <div class="col-md-7">
-          <div class="ibox float-e-margins">
+      <div class="col-md-7 col-sm-12 col-xs-12">
+          <div class="ibox">
               <div class="ibox-title">
                   <h5><%= t('.schemes.title') %></h5>
               </div>
@@ -348,7 +361,7 @@
         <div class="ibox" id="cgp-documentation">
           <div class="ibox-title">
             <% if @certification_path.certificate.certification_type == "final_design_certificate" %>
-              <h5>PRACTITIONERS CDA DOCUMENTATION</h5>
+              <h5>PROJECT DOCUMENTATION</h5>
             <% else %>
               <h5>PRACTITIONERS DOCUMENTATION</h5>
             <% end %>
@@ -367,7 +380,7 @@
         </div>
       </div>
     <% end %>
-  </div>
+  <%# </div> %>
   <div id="editStatusCertificationPathModal" class="modal fade"></div>
   <div id="editMainSchemeMixModal" class="modal fade"></div>
   <div id="editMaxReviewCountModal" class="modal fade"></div>

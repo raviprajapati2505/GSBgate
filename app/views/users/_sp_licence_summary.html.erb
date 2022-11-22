@@ -1,0 +1,30 @@
+<div class="table-responsive">
+<table class="table table-bordered table-striped user-details-table">
+  <tbody>
+    <tr>
+      <th>Has valid D&B CGPs ?</th>
+      <td><%= label_span(service_provider&.valid_design_build_cgps.present?, 'Yes', 'No').html_safe %></td>
+    </tr>
+    <tr>
+      <th>Has valid D&B CEPs ?</th>
+      <td><%= label_span(service_provider&.valid_design_build_ceps.present?, 'Yes', 'No').html_safe %></td>
+    </tr>
+    <tr>
+      <th>Has valid CM CGPs ?</th>
+      <td><%= label_span(service_provider&.valid_construction_management_cgps.present?, 'Yes', 'No').html_safe %></td>
+    </tr>
+    <tr>
+      <th>Has valid CM CEPs ?</th>
+      <td><%= label_span(service_provider&.valid_construction_management_ceps.present?, 'Yes', 'No').html_safe %></td>
+    </tr>
+    <tr>
+      <th>Has valid OP CGPs ?</th>
+      <td><%= label_span(service_provider&.valid_operation_cgps.present?, 'Yes', 'No').html_safe %></td>
+    </tr>
+    <tr>
+      <th>Has valid OP CEPs ?</th>
+      <td><%= label_span(service_provider&.valid_operation_ceps.present?, 'Yes', 'No').html_safe %></td>
+    </tr>
+  </tbody>
+</table>
+</div>

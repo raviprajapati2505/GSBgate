@@ -1,0 +1,18 @@
+<div class="nested-fields col-md-3 col-sm-12 col-xs-12 question-box mb-4">
+  <div class="border br-5 p-m">
+    <div class="text-right">
+      <%= link_to_remove_association "X", f, class: "btn btn-danger btn-sm" %>
+    </div>
+
+    <%= f.input :user_id, as: :hidden, input_html: { value: @user.id } %>
+
+    <%= f.association :licence, collection: licence_options(@user), prompt: "Choose a Licence", input_html: { class: "select-licence" } %>
+    
+    <div class="date-input">
+      <%= f.input :expiry_date do %>
+        <span><%= ikoen('calendar') %></span>
+        <%= f.input_field :expiry_date, value: f.object&.expiry_date&.strftime("%d/%m/%Y"), as: :string, class: "datepicker-future form-control" %>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -1,9 +1,55 @@
-<div class="ibox float-e-margins">
+<div class="ibox">
     <div class="ibox-title">
         <h5><%=t '.table_title' %></h5>
     </div>
     <div class="ibox-content">
-        <p class="alert alert-info"><%= ikoen('info-circle') %> This is an overview of all users using the GSASgate system. User management should be done through the linkme.qa system.</p>
-        <%= render_datatable(@datatable) %>
+        <p class="alert alert-info"><%= ikoen('info-circle') %> This is an overview of all users using the GSASgate system.</p>
+        <div class="ibox-content" id="users-table" data-user-role="<%= current_user.role %>">
+            <%= render_datatable(@datatable) %>
+        </div>
     </div>
 </div>
+<div id="toast-message"></div>
+
+<script>
+    $(function() {
+        var table = $("table.effective-datatable").DataTable();
+
+        table.on('draw.dt', function ( e, settings, len ) {
+            userUpdateStatusAjax();
+        });
+
+        function userUpdateStatusAjax(){
+           setTimeout(function(){
+                $('.iCheck-helper').on('click', function() {
+                    let user_id = $(this).parent().find(".user-status").data("user-id");
+
+                    // Remove all existing toast container
+                    $("#toast-container").remove();
+
+                    if (!!user_id) {
+                        $.ajax({
+                            type: 'PATCH',
+                            url: Routes.update_user_status_user_path(user_id),
+                            dataType: 'json',
+                            cache: false,
+                            success: function(data) {
+                                $("#toast-message").html($.rails.toast_message(data["css_class"], data["message"]));
+                            },
+                            error: function() {
+                                $("#toast-message").html($.rails.toast_message("error", "Something went wrong!"));
+                            }
+                        });
+
+                        // hide container after 4 seconds
+                        setInterval(function() {
+                            $("#toast-message").html('');
+                        }, 4000);
+                    }
+                });
+            }, 1000); 
+        }
+
+        userUpdateStatusAjax();
+    });
+</script>

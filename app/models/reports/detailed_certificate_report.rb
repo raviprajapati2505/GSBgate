@@ -27,7 +27,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
   FOOTER_LOGO = 'gord_logo_black.jpg'.freeze
   STAR_ICON = 'green_star.png'.freeze
   FOOTER_URL = "<link href='http://www.gsas.gord.qa'>www.gsas.gord.qa</link>".freeze
-  MAX_ROWS_PER_PAGE = 24
+  MAX_ROWS_PER_PAGE = 22
   PAGE_MARGIN = 50
 
   def initialize(certification_path)
@@ -155,7 +155,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
 
   def draw_certificate_header
     text = certification_type_name(@certification_path)
-    styled_text("<div style='font-size: 10; font-weight: 900; color: #{@@main_color}; line-height: 1.2'>GSAS #{text[:project_type]}</div><br /><div style='font-size: 12; font-weight: 900;'>#{text[:certificate_name]}</div>")
+    styled_text("<div style='font-size: 12; font-weight: 900; color: #{@@main_color}; line-height: 1.2'>GSAS #{text[:project_type]}</div><br /><div style='font-size: 14; font-weight: 900;'>#{text[:certificate_name]}</div>")
   end
 
   def draw_scheme_mix_header(scheme_mix)
@@ -197,34 +197,15 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
 
   def draw_paragraph1
     name = @certification_path.certificate.only_name
-
-    case name
-    when 'Letter of Conformance'
-      text = "This is to notify that GSAS Trust has reviewed the project based on the submitted information. The project is found eligible to receive the Design Certificate as a provision for final GSAS Design & Build Certificate in the form of \"Letter of Conformance (LOC)\", The project is achieving: \n"
-
-      styled_text("<div style='font-size: 10; line-height: 7; color: 000000;'>#{text}</div>")
-
-    when 'GSAS-CM', 'Construction Certificate'
-      text =  case @certification_path&.certificate&.stage_title
-              when 'Stage 1: Foundation'
-                "This is to notify that GSAS Trust has reviewed the construction submittals in accordance with the latest GSAS Construction Management assessments and has completed the Initial Site Audit requirements of Construction Stage 1 (Foundation). The project is found eligible to receive the First Interim Audit Advisory Notice (AAN) No.01 achieving the following: \n"
-              when 'Stage 2: Substructure & Superstructure'
-                "This is to notify that GSAS Trust has reviewed the construction submittals in accordance with the latest GSAS Construction Management assessments and has completed the Second Site Audit requirements of Construction Stage 2 (Substructure & Superstructure). The project is found eligible to receive the Second Interim Audit Advisory Notice (AAN) No.02 achieving the following: \n"
-              when 'Stage 3: Finishing'
-                "This is to notify that GSAS Trust has reviewed the construction submittals in accordance with the latest GSAS Construction Management assessments and has completed the Third Site Audit requirements of Construction Stage 3 (Finishing). The project is found eligible to receive the Third Interim Audit Advisory Notice (AAN) No.03 achieving the following: \n"
-              end
-
-      styled_text("<div style='font-size: 10; line-height: 7; color: 000000;'>#{text}</div>")
-
-    else
-    end
+    text = certificate_intro_text(name, @certification_path&.certificate&.stage_title)
+    styled_text("<div style='font-size: 10; line-height: 7; color: 000000;'>#{text}</div>")
 
     # Prepare table data
     data = []
 
     data.append(['STAGE SCORE', 'STAGE RATING'])
     if @certification_path.certificate.only_certification_name == 'GSAS-D&B'
-      data.append([number_with_precision(@score, precision: 3), {:image => "#{Rails.root}/app/assets/images/reports/star_#{@stars.split("").first}.png", :width => 350, :image_height => 20, :position  => :center}])
+      data.append([number_with_precision(@score, precision: 3), {:image => "#{Rails.root}/app/assets/images/reports/star_#{@stars.split("").first}.png", :width => 350, :image_height => 30, :position  => :center}])
     else
       data.append([number_with_precision(@score, precision: 3), @stars])
     end
@@ -232,30 +213,21 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     # Output table
     draw_table(data, true, 'score_table')
 
-    case name 
-    when 'Letter of Conformance'
-      newline
+    newline
 
-      text = "The summary of the obtained rating is attached herewith."
-      styled_text("<div style='font-size: 10; line-height: 7'>#{text}</div>")
+    text = certificate_summary_text(name, @certification_path&.certificate&.stage_title)
 
-      newline(1)
-      
-      text = "This letter is only the predecessor towards achieving the final GSAS-D&B Certificate and should not be considered as the final certificate. The project should satisfy during the construction stage all the requirements of <b>Conformance to Design Audit(CDA)</b> which is a pre-requisite for the final GSAS-D&B Certificate as indicated in GSAS Technical Guide, <span style='color: #337ab7'>www.gsas.gord.qa</span> \n"
-      styled_text("<div style='font-size: 10; line-height: 7'>#{text}</div>")
-
-      text = "In the event of any future changes applied to the criteria pertaining to this issued certificate, the changes are required to be re-assessed once again."
-      styled_text("<div style='font-size: 10; line-height: 7'>#{text}</div>")
-
-      newline(1)
-
-      text = "Finally, congratulations on partaking in this noble endeavor. We look forward to creating jointly a healthy and sustainable future."
-      styled_text("<div style='font-size: 10; line-height: 7;'>#{text}</div>")
-
-      newline(1)
+    if text.present?
+      text.each do |line, txt|
+          styled_text("<div style='font-size: 10;text-align: justify; line-height: 7'>#{txt}</div>")
+          if line != '2'
+            newline(1)
+          end
+      end
 
       styled_text("<div style='font-size: 10; line-height: 7;'><b>Yours sincerely</b>, \n</div>")
 
+      newline(1)
       newline(1)
 
       # image image_path('green_star.png'), width: 50
@@ -263,36 +235,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
       styled_text("<div style='font-size: 10; color: #{@@main_color}; font-style: bold;'>\n Dr. Yousef Alhorr</div>")
 
       styled_text("<div style='font-size: 10; color: 000000; font-style: bold;'>\n Founding Chairman \n</div>")
-    when 'GSAS-CM', 'Construction Certificate'
-      newline
-
-      text = "Criteria summary of the First Interim Audit Advisory Notice is attached herewith."
-      styled_text("<div style='font-size: 10; line-height: 7;'>#{text}</div>")
-      
-      newline(1)
-
-      text = "This notice is only the predecessor towards achieving the final GSAS-CM Certificate and should not be considered as the final certificate. The project shall satisfy during the rest of the construction stages all the requirements which is a pre-requisite for the GSAS-CM Certificate as stipulated in GSAS Technical Guide, <span style='color: #337ab7'>www.gsas.gord.qa</span> \n"
-      styled_text("<div style='font-size: 10; line-height: 7'>#{text}</div>")
-
-      newline(1)
-
-      text = "Finally, congratulations on partaking in this noble endeavor. We look forward to creating jointly a healthy and sustainable future."
-      styled_text("<div style='font-size: 10; line-height: 7;'>#{text}</div>")
-
-      newline(1)
-
-      styled_text("<div style='font-size: 10; line-height: 7;'><b>Yours sincerely</b>, \n</div>")
-
-      newline(1)
-
-      # image image_path('green_star.png'), width: 50
-
-      styled_text("<div style='font-size: 10; color: #{@@main_color}; font-style: bold;'>\n Dr. Yousef Alhorr</div>")
-
-      styled_text("<div style='font-size: 10; color: 000000; font-style: bold;'>\n Founding Chairman \n</div>")
-
     end
-
   end
 
   def draw_project_info(scheme_mix = nil)
@@ -369,7 +312,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
 
       if @certification_path.construction? || @certification_path.is_design_loc?
         bounding_box([@document.bounds.right - 100, @document.bounds.bottom + 140], width: 110, height: HEADER_HEIGHT + 70) do
-          image image_path(@@stamp_image), width: 110
+          image image_path(@@stamp_image), width: 80
         end
       end
     end
@@ -387,6 +330,14 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
         image image_path(FOOTER_IMAGE), width: 580
       end
     end
+    # Paging
+    string = "Page <page> of <total>"
+    options = { :at => [@document.bounds.left - 30, @document.bounds.bottom - 20],
+                    :width => 580,
+                    :align => :center,
+                    :size => 10,
+                    :start_count_at => 1}
+    number_pages string, options
   end
 
   def draw_signature
@@ -407,7 +358,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
         },
         datasets: [{
           label: 'Points Attainable',
-          data: total_category_scores.map { |_category_code, category| category[:maximum_score]&.round(2) },
+          data: total_category_scores.map { |_category_code, category| category[:maximum_score]&.round(3) },
           backgroundColor: 'rgba(195, 56, 56, 255)',
           borderColor: 'rgba(195, 56, 56, 255)',
           borderWidth: 1,
@@ -415,7 +366,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
         },
         {
           label: 'Achieved',
-          data: total_category_scores.map { |_category_code, category| category[:achieved_score]&.round(2) },
+          data: total_category_scores.map { |_category_code, category| category[:achieved_score]&.round(3) },
           backgroundColor: 'rgba(54,111,178,255)',
           borderColor: 'rgba(54,111,178,255)',
           borderWidth: 1
@@ -452,7 +403,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
       #   horizontal_line x, x+width,  :at => y+height+12
       #   horizontal_line x, x+width, :at => y
       # end
-    rescue LinkmeService::ApiError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, Errno::ECONNREFUSED,
+    rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, Errno::ECONNREFUSED,
            EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError
 
           #  bounding_box([x, y], width: x+width, height: height, position: :center) do
@@ -595,15 +546,13 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
 
     begin
       image chart_generator.generate_chart(linechart_config, 450, 270).path, at: [0, 170], width: 270
-    rescue LinkmeService::ApiError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, Errno::ECONNREFUSED,
+    rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, Errno::ECONNREFUSED,
       EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError
       text 'An error occurred when creating the chart.'
     end
-    
-    newline(1)
 
     text = 'Figure 3: Project Overall Scores & Rating'
-    styled_text("<div style='font-size: 9; line-height: 5; color: 000000; text-align: center; padding-top: px;'><b>#{text}</b></div>")
+    styled_text("<div style='font-size: 9; line-height: 5; color: 000000; text-align: center; padding-top: 10px;'><b>#{text}</b></div>")
 
     # text 'Level Achieved', size: 12, align: :left
     # data = []
@@ -643,6 +592,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
         header_row = rows(0..row_length - 1)
         header_row.column(0).background_color = @@column_1_color
         header_row.column(0).text_color = TABLE_TEXT_COLOR
+        header_row.column(0).font_style = :bold
         header_row.column(1).background_color = COLUMN_2_COLOR
         header_row.column(1).text_color = TABLE_TEXT_COLOR
         # header_row.font = 'Helvetica'
@@ -756,7 +706,6 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
         end
     elsif type == 'smc_scores_table'
       table(data, width: @document.bounds.right) do
-
         # Set default cell style
         cells.align = :center
         cells.borders = [:top, :right, :bottom, :left]
@@ -788,8 +737,9 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
         name_column.borders = [:top, :right, :bottom, :left]
         name_column.border_color = TABLE_BORDER_COLOR
         # name_column.border_color = @@main_color
-        # name_column.font_style = :bold
+        name_column.font_style = :bold
         name_column.background_color = @@column_1_color
+        name_column.size = 10
 
         # Odd/even row style
         rows(1..-1).style do |c|
@@ -830,6 +780,9 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
         name_column.borders = [:top, :right, :bottom, :left]
         name_column.border_color = TABLE_BORDER_COLOR
         name_column.background_color = @@main_color
+
+        header_row = rows(0)
+        header_row.text_color = 'FFFFFF'
       end
     end
   end
@@ -885,13 +838,18 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
   def draw_criteria_table(scheme_category, scheme_mix_criteria)
     # Prepare table data
     data = []
-    data.append([{content: "#{scheme_category.name.upcase} [#{scheme_category.code}]", rowspan: scheme_mix_criteria.size + 1}, 'Criterion', 'Level', 'Incentive'])
+    data.append([{content: "#{scheme_category.name.upcase} \n [#{scheme_category.code}]", rowspan: scheme_mix_criteria.size + 1}, 'Criterion', 'Awarded Level', 'Awarded Incentive'])
 
     # Add the category rows to the table
     scheme_mix_criteria.each do |smc|
       achieved_score = smc.achieved_score
       achieved_score = ((achieved_score.is_a?(Float) || achieved_score.is_a?(BigDecimal)) && achieved_score.nan?) ? 0 : achieved_score rescue 0
-      data.append([smc.full_name, number_with_precision(achieved_score, precision: 0, significant: true), "#{number_with_precision(smc.calculate_awarded_incentives, precision: 1)}%"])
+      if smc.calculate_awarded_incentives == 0 || smc.calculate_awarded_incentives == 0.0 || smc.calculate_awarded_incentives == 0.00
+        awr_ince = '-'
+      else
+        awr_ince = "#{number_with_precision(smc.calculate_awarded_incentives, precision: 1)}%"
+      end
+      data.append([smc.full_name, number_with_precision(achieved_score, precision: 0, significant: true), awr_ince])
     end
 
     # Output table

@@ -1,15 +1,16 @@
 <% use_gmaps_for(:project) %>
 <% download_document_permitted = check_documents_permissions(user_role: current_user.role, project: @project) %>
 
-<div class="row">
-  <div class="col-md-4">
-    <div class="ibox float-e-margins">
+  <div class="col-md-4 col-sm-12 col-xs-12">
+    <div class="ibox">
       <div class="ibox-title">
         <%= audit_log_label(@project) %>
         <h5><%= t('.project_details.title') %></h5>
       </div>
-      <div class="ibox-content">
-        <table class="table table-bordered table-striped project-details-table">
+      <div class="ibox-content pt-0">
+      <div class="table-responsive">
+
+        <table class="table table-striped project-details-table">
           <tbody>
             <tr>
               <th><%= Project.human_attribute_name('code') %></th>
@@ -132,6 +133,7 @@
                     <%= truncate(@project.project_narrative_file.file.filename, length: 35) %>
                 </td>
               </tr>
+
             <% else %>
               <tr>
                 <th><%= Project.human_attribute_name('area_statement_file') %></th>
@@ -236,54 +238,58 @@
             <% end %>
           </tbody>
         </table>
+</div>
         <input type="hidden" id="project_coordinates" value="<%= @project.coordinates %>"/>
 
         <div id="project-map" class="map" style="height: 300px;"></div>
+
         <% if can?(:update, @project) || can?(:destroy, @project) %>
           <div class="hr-line-dashed"></div>
+
           <% if can? :update, @project %>
             <%= btn_link_to(edit_project_path(@project), icon: 'edit', text: 'Edit') %>
           <% end %>
+          
           <% if can? :confirm_destroy, @project %>
             <%= btn_link_to(confirm_destroy_project_path(@project), {icon: 'trash', text: 'Delete', style: 'danger', method: :get, data: {confirm: 'Do you really want to delete this project?'}}) %>
           <% end %>
         <% end %>
+
       </div>
     </div>
   </div>
-  <div class="col-md-8">
-    <div class="ibox float-e-margins">
+  <div class="col-md-8 col-sm-12 col-xs-12">
+    <div class="ibox">
       <div class="ibox-title">
         <h5><%= t('.certificates.title') %></h5>
       </div>
-      <div class="ibox-content">
+      <div class="ibox-content pt-0">
         <%= render partial: 'certification_paths/overview', locals: {project: @project} %>
       </div>
     </div>
-
-    <div class="ibox float-e-margins">
-      <div class="ibox-title">
+    <div class="ibox">
+      <div class="ibox-title bg-header-grey text-green">
         <h5>TEAMS</h5>
       </div>
     </div>
-
     <%= render partial: 'projects_users/show_gord_contact', locals: {project: @project} %>
+
     <% if @project.certificate_type == Certificate.certificate_types[:design_type] %>
       <% if @project.certification_paths.present? %>
         <% @project&.certification_paths&.order(:created_at).each do |certification_path| %>
-          <div class="ibox float-e-margins">
-            <div class="ibox-title bg-header-grey">
+          <div class="ibox">
+            <div class="ibox-title ">
               <h5><%= certification_path.certificate.team_title %></h5>
             </div>
-            <%= render partial: 'projects/service_provider_info', locals: { project: @project, certification_path: certification_path } %>
 
+            <%= render partial: 'projects/service_provider_info', locals: { project: @project, certification_path: certification_path } %>
             <%= render partial: 'projects_users/index', locals: {project: @project, team: :project_team, certification_team_type: ProjectsUser.certification_team_types[certification_path.certificate.only_name], certification_path: certification_path} %>
             <%= render partial: 'projects_users/index', locals: {project: @project, team: :gsas_trust_team, certification_team_type: ProjectsUser.certification_team_types[certification_path.certificate.only_name], certification_path: certification_path} %>
           </div>
 
           <% if @project.completed_letter_of_conformances.present? && !@project.with_final_design_certificate.present? %>
-            <div class="ibox float-e-margins">
-              <div class="ibox-title bg-header-grey">
+            <div class="ibox">
+              <div class="ibox-title bg-header-grey text-green">
                 <h5><%= I18n.t('activerecord.attributes.project.team_titles.final_design_certificate') %></h5>
               </div>
               <%= render partial: 'projects_users/index', locals: {project: @project, team: :project_team, certification_team_type: 3, certification_path: certification_path} %>
@@ -291,9 +297,10 @@
             </div>
           <% end %>
         <% end %>
+
       <% else %>
-        <div class="ibox float-e-margins">
-          <div class="ibox-title bg-header-grey">
+        <div class="ibox">
+          <div class="ibox-title bg-header-grey text-green">
             <h5><%= I18n.t('activerecord.attributes.project.team_titles.letter_of_conformance') %></h5>
           </div>
           <%= render partial: 'projects/service_provider_info', locals: { project: @project, certification_path: @certification_path } %>
@@ -301,9 +308,10 @@
           <%= render partial: 'projects_users/index', locals: {project: @project, team: :gsas_trust_team, certification_team_type: 2, certification_path: @certification_path} %>
         </div>
       <% end %>
+
     <% else %>
-      <div class="ibox float-e-margins">
-        <div class="ibox-title bg-header-grey">
+      <div class="ibox">
+        <div class="ibox-title bg-header-grey text-green">
           <h5><%= @project.team_table_heading %></h5>
         </div>
         <%= render partial: 'projects/service_provider_info', locals: { project: @project, certification_path: @certification_path } %>
@@ -311,7 +319,12 @@
         <%= render partial: 'projects_users/index', locals: {project: @project, team: :gsas_trust_team, certification_team_type: 1, certification_path: @certification_path} %>
       </div>
     <% end %>
+
     <%= render partial: 'projects_users/index', locals: {project: @project, team: :enterprise_clients, certification_team_type: 1, certification_path: @certification_path} %>
+    <br/>
+    <% if can?(:index, ProjectsSurvey) %>
+      <%= render partial: 'projects_surveys/index', locals: {project: @project, projects_surveys:  @projects_surveys} %>
+    <% end %>
   </div>
-</div>
+
 <%= javascript_include_tag 'find_users_by_email' %>

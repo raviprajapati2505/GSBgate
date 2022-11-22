@@ -10,17 +10,17 @@
     @total_scores = final_cm_revised_avg_scores(@scheme_mix&.certification_path, @total_scores)
   %>
 
-<div class="row">
+<%# <div class="row"> %>
   <div class="col-lg-4">
-    <div class="ibox float-e-margins">
+    <div class="ibox">
       <div class="ibox-title">
-        <h5>SCHEME DETAILS</h5>
+        <h5>TYPOLOGY DETAILS</h5>
       </div>
-      <div class="ibox-content">
+      <div class="ibox-content table-responsive">
         <table class="table table-bordered table-striped" cellspacing="0" width="100%">
           <tbody>
           <tr>
-            <th>Scheme Name</th>
+            <th>Typology Name</th>
             <td>
               <%= @scheme_mix.full_name %>
               <% if @certification_path&.main_scheme_mix_id == @scheme_mix.id %>
@@ -35,7 +35,7 @@
 
           <% if development_type_name == 'Neighborhoods' %>
             <tr>
-              <th>Scheme Gross Area (m2)</th>
+              <th>Typology Gross Built up Area (m2)</th>
               <td><%= number_with_delimiter(@scheme_mix&.gross_area, delimiter: ',') %></td>
             </tr>
           <% elsif development_type_name == 'Mixed Use' %>
@@ -91,11 +91,11 @@
     </div>
   </div>
   <div class="col-lg-8">
-    <div class="ibox float-e-margins">
+    <div class="ibox">
       <div class="ibox-title">
         <h5>CATEGORIES &amp; CRITERIA DETAILS</h5>
       </div>
-      <div class="ibox-content">
+      <div class="ibox-content table-responsive">
         <% if !@certification_path&.in_pre_verification? && @invalid_criteria_ids.size > 0 %>
             <div class="alert alert-warning" role="alert">
               <%= ikoen_with_text('exclamation-circle', 'There are one or more criteria that have not achieved their minimum valid score.') %>
@@ -103,13 +103,14 @@
         <% end %>
         <%= scores_legend %>
         <div id="categories-accordion">
-          <table class="table table-bordered" cellspacing="0" width="100%">
+        <div class="table-responsive">
+          <table class="table table-bordered border-bottom-table " cellspacing="0" width="100%">
             <thead>
             <tr>
               <th>&nbsp;</th>
               <th>Code</th>
               <th>Name</th>
-              <th>Weighting</th>
+              <th>Weighting (%)</th>
               <th>
                 Score/Level
                 <% id_list = @scheme_mix.scheme_categories.collect { |category| "category_#{category.id}" } %>
@@ -206,6 +207,7 @@
                 <tr id="category-panel-<%= category.id %>" class="accordion-body collapse">
                   <td colspan="7">
                     <div>
+                    
                       <table class="table table-hover">
                         <thead>
                         <tr>
@@ -384,10 +386,11 @@
             <% end %>
             </tbody>
           </table>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+<%# </div> %>
 <%= javascript_include_tag 'score_widget' %>
 <% end %>

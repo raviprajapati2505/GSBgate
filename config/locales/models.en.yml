@@ -49,6 +49,7 @@ en:
         development_type: Development Type
         star_rating: Performance-Based (Star Rating Certificate)
         check_list: Prescriptive Checklist (Compliance Certificate)
+        buildings_number: Number of Buildings
         development_types:
           not_applicable: Not applicable
           single_use: Single use building
@@ -57,7 +58,7 @@ en:
           mixed_development_in_stages: Neighbourhood in stages (mixed development in stages)
         max_review_count: Maximum Review Count
       project:
-        code: Project ID
+        code: GSAS Project ID
         name: Project Name
         building_type_group_id: Project Planning Type
         building_type_id: Project Use
@@ -79,6 +80,7 @@ en:
         sustainability_features_file: Project Sustainability Features
         area_statement_file: Project Area Statement
         owner: Project Owner
+        project_owner_email: Project Owner Email
         service_provider: Service Provider
         service_provider_2: Service Provider CDA
         country: Project Country
@@ -90,12 +92,37 @@ en:
         description: Project Description
         project_actual_images: Project Actual Images
         project_rendering_images: Project Rendering Images
+        project_developer_business_sector: Project Developer Business Sector
+        project_owner_business_sector: Project Owner Business Sector
         team_titles:
           design_certificate: GSAS Design Certificate
           letter_of_conformance: GSAS Design Certificate_LOC
           final_design_certificate: GSAS Design & Build Certificate_CDA
           construction_certificate: GSAS-CM
           operation_certificate: GSAS-OP
+      offline/project:
+        code: Project ID
+        name: Project Name
+        certificate_type: Certificate Type
+        plot_area: Project Plot Area
+        certified_area: Project Certified Area
+        assessment_type: Certification Method
+        owner: Project Owner
+        developer: Project Developer
+        construction_year: Project Completion Year
+        description: Description
+        loc_as_per_directory: LOC as per directory
+      offline/certification_path:
+        name: Certification Type
+        version: Certification Version
+        rating: Certification Ratings
+        development_type: Certification Development Type
+        status: Certification Status
+        score: Certification Score
+        certified_at: Certification Certified
+      offline/scheme_mix:
+        name: Typology Name
+        weight: Scheme Weighting
       projects_user:
         roles:
           project_team_member: Team Members
@@ -138,6 +165,35 @@ en:
         issuance_date: Issuance Date
         approval_date: Approval Date
       user:
+        name_suffix: Appellation
+        profile_pic: Profile Picture
+        email: Email
+        name: First Name
+        middle_name: Middle Name
+        last_name: Last Name
+        email_alternate: Alternate Email Address
+        country: Country
+        city: City
+        mobile_area_code: Mobile Area Code
+        mobile: Mobile
+        organization_email: Email
+        organization_address: Address
+        organization_country: Country of Incorporation
+        organization_city: City
+        organization_website: Website
+        organization_phone_area_code: Phone Area Code
+        organization_phone: Phone
+        organization_fax_area_code: Fax Area Code
+        organization_fax: Fax
+        gsas_id: GSAS ID
+        demerit_flag: Demerit Flags
+        role: Role
+        username: Username
+        gord_employee: GORD Employee?
+        organization_name: Name
+        service_provider: Service Provider
+        active: Profile Active?
+        practitioner_accreditation_type: Practitioner Accreditation Type
         roles:
           system_admin: System administrator
           gsas_trust_top_manager: Chairman
@@ -145,6 +201,29 @@ en:
           gsas_trust_admin: GSAS trust admin
           default_role: Default role
           document_controller: Document Controller
+      user_detail:
+        gender: Gender
+        dob: Date of Birth
+        designation: Designation
+        work_experience: Work Experience In Years
+        qid_or_passport_number: QID / Passport Number
+      service_provider_detail:
+        commercial_licence_no: Commercial Licence No.
+        commercial_licence_expiry_date: Commercial Licence Expiry Date
+        business_field: Business Field
+        portfolio: Portfolio
+        energy_assessor_name: Energy Assessor Name
+        nominated_cgp: Nominated CGP Representative
+      licence:
+        licence_type: Licence Type
+        display_name: Name
+        title: Title
+        description: Description
+        applicability: Applicability
+        schemes: Schemes
+      access_licence:
+        expiry_date: Licence Expiry Date
+        
   models:
     concerns:
       auditable:
@@ -284,6 +363,28 @@ en:
             update_html: Scheme <strong>%{old_name}</strong> was renamed to <strong>%{new_name}</strong>.
     effective:
       datatables:
+        offline:
+          project:
+            code: Project ID
+            name: Project Name
+            certificate_type: Certificate Type
+            assessment_type: Certification Method
+            plot_area: Project Plot Area
+            certified_area: Project Certified Area
+            owner: Project Owner
+            developer: Project Developer
+            construction_year: Project Completion Year
+            description: Description
+            loc_as_per_directory: LOC as per directory
+          certification_path:
+            name: Certification Type
+            version: Certification Version
+            rating: Certification Ratings
+            development_type: Certification Development Type
+            status: Certification Status
+            score: Certification Score
+            certified_at: Certification Certified At
+            schemes: Certification Schemes
         projects:
           lables:
             project_code: Project ID
@@ -301,7 +402,7 @@ en:
             label: Certification Status
         certifiers_criteria:
           certificate_id:
-            label: Certification Name
+            label: Certification Type
           certificate_version:
             label: Certification Version
           certificate_stage:
@@ -312,7 +413,7 @@ en:
             label: Criteria Status
         projects_certification_paths:
           certificate_id:
-            label: Certification Name
+            label: Certification Type
           assessment_method:
             label: Certification Method
           certificate_version:
@@ -334,9 +435,9 @@ en:
           certification_path_started_at:
             label: Certification Started On
           certification_path_certified_at:
-            label: Certification Certified On
+            label: Certification Awarded On
           certification_path_expires_at:
-            label: Certification Expiry On
+            label: GSASgate Registration Expiry 
           certification_path_certification_path_status_id:
             label: Certification Submission Status
           certification_path_status_is_active:

@@ -19,6 +19,8 @@ en:
         certifiers_and_criteria_report: Certifiers and Criteria
         manual: User Manual
         viewer: Visualisation Tool
+        survey_dashboard: Survey Dashboard
+        offline_projects: Offline Projects
   certification_paths:
     edit_status:
       modal_title: Update status
@@ -34,7 +36,7 @@ en:
     show:
       certification_path:
         title: Certification Details
-        name: Certification Name
+        name: Certification Type
         version: Certification Version
         scheme: Certification Scheme
         assessment_type: Certification Method
@@ -43,8 +45,9 @@ en:
         rating: Certification Rating
         scores: Certification Scores
         started_at: Certification Started On
-        expired_at: Certification Expiry On
-        certified_at: Certification Certified On
+        expired_at: GSASgate Registration Expiry
+        certified_at: Certification Awarded On
+        buildings_number: Number of Buildings
         create_detaild_certificate_report:
           text: Certificate Information Verification
         download_detailed_certificate:
@@ -84,7 +87,7 @@ en:
       certification_path_signed_certificate:
         title: OFFICIAL CERTIFICATE
       schemes:
-        title: SCHEMES DETAILS
+        title: TYPOLOGIES DETAILS
         info_activating: The schemes will be clickable after a GSAS trust administrator activates the certification.
         btn_edit_project_team_responsibility_for_submittal: Allocate project team responsibility for submittal
         btn_edit_certifier_team_responsibility_for_verification: Allocate GSAS trust team responsibility for verification
@@ -106,7 +109,8 @@ en:
     show_checklist:
       certification_path:
         title: CERTIFICATION DETAILS
-        name: Certification Name
+        name: Certification Type
+        buildings_number: Number of Buildings
         create_detaild_certificate_report:
           text: Certificate Information Verification
         download_certificate:
@@ -146,7 +150,7 @@ en:
       certification_path_signed_certificate:
         title: OFFICIAL CERTIFICATE
       schemes:
-        title: SCHEMES DETAILS
+        title: TYPOLOGIES DETAILS
         info_activating: The schemes will be clickable after a GSAS trust administrator activates the certification.
         btn_edit_project_team_responsibility_for_submittal: Allocate project team responsibility for submittal
         btn_edit_certifier_team_responsibility_for_verification: Allocate GSAS trust team responsibility for verification
@@ -183,11 +187,46 @@ en:
         title: GSAS Trust
         title_modal: Add GSAS Trust Team Member
       enterprise_clients:
-        title: Enterprise Clients
+        title: Enterprise Licensee
         title_modal: Add Enterprise Client
   reports:
     certifiers_criteria:
       title_html: Certifiers & Criteria
+  survey_dashboard:
+    index:
+      title_html: Survey Dashboard
+      linkme_survey:
+        title: Linkme Surveys
+        total_count: Total Linkme Surveys
+      survey_types:
+        title: Survey Types
+        total_count: Total Survey Types
+      projects_surveys:
+        title: Projects Surveys
+        total_count: Total Projects Surveys
+  project_surveys:
+    index:
+      title_html: Projects Survey
+    new: 
+      title: Create Survey
+      title_is_released: Released Now ?
+    edit: 
+      title: Edit Survey
+  survey_response:
+    new:
+      title: Survey Form
+    thankyou:
+      title: Thank you !!!
+  survey_type:
+    index:
+      title_html: All Surveys
+    new:
+      title_html: New Survey
+    edit:
+      title_html: Edit Survey %{title}
+  survey_questionnaire_version:
+    form:
+      title_html: Questions of %{title}
   schemes:
     show:
       tooltip_sortable: You can drag and drop the panels below to re-order their appearance.
@@ -301,13 +340,103 @@ en:
       description_43: A GSAS Construction Management Plan (GSAS-CMP) was uploaded.
       description_44: Fill the report form to varify certificate information.
       description_45: Fill the report form to varify certificate information and release certification report.
+      description_46: Activate user account.
 
       tooltip_due_date: Task is overdue.
+  linkme_surveys:
+    index:
+      table_title: All Linkme Surveys
   users:
     index:
       action_edit_title: Edit
       table_title: User Overview
+    show:
+      user_details:
+        title: Personal Information
+        additional_information: Additional Information
+        company_information: Company Information
+        contact_information: Contact Information
+        activity_info:
+          title: Activity Information
+          created_at: Registration Date
+          confirmed_at: Confirmation Date
+          approved_at: Approval Date
+          updated_at: Last Updated At
+          last_sign_in_at: Last Login At
+      user_license_details:
+        title: License Details
+        licences: Issued Licences
+      user_licence_summary:
+        title: Licence Summary
+      sp_cp_licence_summary:
+        title: Service Provider CGPs & CEPs Summary
+      cp_users:
+        title: Users of %{service_provider}
+    registrations:
+        test: 'TEst'
     form:
       form_title: User details
+      profile_pic_title: Profile Picture
+      qid_file_title: Copy of the QID/Passport
+      university_credential_file_title: Highest Educational Certificate
+      work_experience_file_title: Work Experience
+      gsas_cgp_licence_file_title: GSAS-CGP Licence
+      qid_work_permit_file_title: Work Permit
+      gsas_energy_assessment_file_licence_title: GSAS Energy Assessment Licence
+      commercial_licence_file_title: Commercial Licence
+      accredited_provider_licence_file_title: Accredited Service Provider Licenses
+      demerit_file_title: Upload Duly Filled Demerit File
+      acknowledgement: I acknowledge that i have read and understood and i agree to abide by the policy
+      application_form: Application Form
+      other_documents: Other Document
+      education_certificate: Education Certificate
+      user_details:
+        title: Personal Information
+        additional_information: Additional Information
+        company_information: Company Information
+        contact_information: Contact Information
     list_notifications:
       btn_save: Update preferences
+  offline:
+    projects:
+      index:
+        title_html: Offline Projects &amp; Certifications
+        btn_new_project: New Offline Project
+        btn_edit_project: Edit Offline Project
+      form:
+        title: Offline Project Details
+        tooltip_certified_area: Total area falling under GSAS assessment calculated by adding Project Plot Area.
+        tooltip_project_plot_area: Total project plot area.
+      show:
+        project_details:
+          title: Offline Project Details
+          documents_title: Upload Documents
+        certificates:
+          title: Offline Project Certification Details
+        project_documents:
+          upload_document: Upload Project Documents
+          uploaded_documents: Uploaded Project Documents
+    certification_paths:
+      form:
+        title: Add Certificate
+        edit_title: Edit Certificate
+      show:
+        certificates:
+          title: Offline Certification Details
+        schemes:
+          title: Offline Typology Details
+        certification_path_signed_certificate:
+          title: OFFICIAL CERTIFICATE 
+    scheme_mixes:
+      form:
+        title: Add Criterion
+        edit_title: Edit Criterion
+      show:
+        schemes:
+          title: Offline Typology Details
+        scheme_mix_criteria:
+          title: Offline Criteria Details
+  dashboard:
+    index:
+      title: Dashboard
+

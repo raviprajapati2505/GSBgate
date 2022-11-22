@@ -5,7 +5,15 @@ $(function() {
 
   function bindSelect2() {
     // Allow multi-select only to admin roles
-    if (["system_admin", "gsas_trust_top_manager", "gsas_trust_manager", "gsas_trust_admin"].includes($("#projects-table").data("user-role"))) {
+    if (["system_admin", "gsas_trust_top_manager", "gsas_trust_manager", "gsas_trust_admin", "users_admin"].includes($("#projects-table, #users-table").data("user-role"))) {
+      $(".multiple-select select").attr("multiple", true);
+      $(".multiple-select select").select2();
+    
+      $(".select2-search-field input").remove();
+      $(".select2-search-choice div").html("Select All");
+    }
+
+    if (["system_admin", "gsas_trust_top_manager", "gsas_trust_manager", "gsas_trust_admin", "document_controller"].includes($("#offline-projects-table").data("user-role"))) {
       $(".multiple-select select").attr("multiple", true);
       $(".multiple-select select").select2();
     
@@ -27,6 +35,7 @@ $(function() {
     if (searchInput.length > 0) {
       searchInput.daterangepicker({
         opens: 'left',
+        showDropdowns: true,
         locale: {
           format: 'DD/MM/YYYY',
           cancelLabel: 'Clear'
@@ -46,12 +55,38 @@ $(function() {
     }
   }
 
+  function bindYearPicker(searchInput){
+    if (searchInput.length > 0) {
+      searchInput.datepicker({
+          opens: 'bottom',
+          format: 'yyyy',
+          viewMode: 'years',
+          minViewMode: 'years',
+          changeYear: true,
+          startDate: '1900y',
+          endDate: '2100y',
+          autoclose: true
+      });
+    }
+  }
+
+  $('body').on('change','.custom-year-picker input',function(){
+    $(this).trigger('keyup');
+  })
+
   set_options_label();
 
-  bindDateRangePicker($(".datatable_search_certification_path_started_at input"));
-  bindDateRangePicker($(".datatable_search_certification_path_certified_at input"));
-  bindDateRangePicker($(".datatable_search_certification_path_updated_at input"));
-  
+  [
+    'certification_path_started_at', 
+    'certification_path_certified_at', 
+    'certification_path_updated_at', 
+    'certification_path_expires_at',
+    'released_at',
+    'end_date'
+  ].forEach(function(date_for) {
+    bindDateRangePicker($(".datatable_search_" + date_for + " input"));
+  });
+
   let pageName = window.location.href.split('/').pop();
 
   if (pageName == 'projects' || pageName == '') {
@@ -82,32 +117,32 @@ $(function() {
     columnNames["Project Plot Area"] = 23;
     columnNames["Certification Certified On"] = 24;
     columnNames["Project Gross Built Up Area"] = 25;
-    columnNames["Certification Updated On"] = 26;
+    columnNames["Certification Expiry On"] = 26;
     columnNames["Project Footprint"] = 27;
-    columnNames["Certification Active"] = 28;
+    columnNames["Certification Updated On"] = 28;
     columnNames["Project Certified Area"] = 29;
-    columnNames["Certification PCR Track"] = 30;
+    columnNames["Certification Active"] = 30;
     columnNames["Project Carpark Area"] = 31;
-    columnNames["GSAS Trust Certification Manager"] = 32;
+    columnNames["Certification PCR Track"] = 32;
     columnNames["Project Planning Type"] = 33;
-    columnNames["GSAS Trust Certification Team"] = 34; 
+    columnNames["GSAS Trust Certification Manager"] = 34;
     columnNames["Project Use"] = 35;
-    columnNames["Enterprise Clients"] = 36;
+    columnNames["GSAS Trust Certification Team"] = 36;
     columnNames["Project Service Provider"] = 37;
-    columnNames["blank_1"] = 38;
+    columnNames["Enterprise Clients"] = 38;
     columnNames["Project CGP"] = 39;
-    columnNames["blank_2"] = 40;
+    columnNames["blank_1"] = 40;
     columnNames["Project Team Members"] = 41;
-    columnNames["blank_3"] = 42;
+    columnNames["blank_2"] = 42;
     columnNames["Project Service Provider"] = 43;
 
-    $(".buttons-collection").on('click', function(){
+    $(".buttons-collection").on('click', function() {
       var fieldsCollection = $("ul.dt-button-collection");
       if (fieldsCollection.length > 0) {
         var mainList = $("ul.dt-button-collection");
         for (const item in columnNames) { 
           let tempElement
-          if (['blank_1', 'blank_2', 'blank_3'].includes(item) ) {
+          if (['blank_1', 'blank_2'].includes(item) ) {
             $("li." + item).remove();
             tempElement = $.parseHTML("<li class='dt-button buttons-columnVisibility " + item + " hover-disabled' tabindex='0' aria-controls='effective-datatables-projects_certification_paths-389818376781'><a href='javascript:void(0)' disabled=disabled>&nbsp;</a></li>")
 
@@ -140,10 +175,21 @@ $(function() {
   $("table.effective-datatable").on("column-visibility.dt", function(e, settings, column_number, state) {
     if (state) {
       var column = $(".col-order-" + column_number);
-
       if (column.hasClass("multiple-select")){
         // Allow multi-select only to admin roles
         if (["system_admin", "gsas_trust_top_manager", "gsas_trust_manager", "gsas_trust_admin"].includes($("#projects-table").data("user-role"))) {
+          column.find("select").attr("multiple", true);
+          column.find("select").select2();
+          
+          column.find(".select2-search-field input").remove();
+          
+          let select_option = column.find(".select2-search-choice div").html();
+          if (Object.keys(columnNames).includes(select_option) || select_option == ""){ 
+            column.find(".select2-search-choice div").html("Select All");
+          }
+        }
+
+        if (["system_admin", "gsas_trust_top_manager", "gsas_trust_manager", "gsas_trust_admin","document_controller"].includes($("#offline-projects-table").data("user-role"))) {
           column.find("select").attr("multiple", true);
           column.find("select").select2();
           
@@ -172,13 +218,26 @@ $(function() {
         // if (Object.keys(columnNames).includes(select_option) || select_option == ""){ 
         //   options_with_null.text("Select All");
         // }
+
       } else if (column.hasClass("date-range-filter")) {
         if (column.hasClass("col-certification_path_started_at")) {
           bindDateRangePicker($(".datatable_search_certification_path_started_at input"));
         } else if (column.hasClass("col-certification_path_certified_at")) {
           bindDateRangePicker($(".datatable_search_certification_path_certified_at input"));
-        } else if  (column.hasClass("col-certification_path_updated_at")) {
+        } else if (column.hasClass("col-certification_path_updated_at")) {
           bindDateRangePicker($(".datatable_search_certification_path_updated_at input"));
+        } else if (column.hasClass("col-certification_path_expires_at")) {
+          bindDateRangePicker($(".datatable_search_certification_path_expires_at input"));
+        } else if (column.hasClass("col-survey_released_at date-range-filter")) {
+          bindDateRangePicker($(".datatable_search_survey_released_at input"));
+        } else if (column.hasClass("col-end_date date-range-filter")) {
+          bindDateRangePicker($(".datatable_search_end_date input"));
+        } 
+      } else if (column.hasClass("custom-year-picker")){
+        if (column.hasClass("col-construction_year")) {
+          bindYearPicker($(".datatable_search_construction_year input"));
+        } else if(column.hasClass("col-certification_certified_at")){
+          bindYearPicker($(".datatable_search_certification_certified_at input"));
         }
       }
     }
