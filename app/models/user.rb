@@ -51,7 +51,7 @@ class User < ApplicationRecord
   validates_numericality_of :mobile_area_code, :mobile, only_integer: true, unless: -> { encrypted_password_changed? } 
   
   validate :validate_org_webiste, unless: -> { encrypted_password_changed? } 
-  validate :validate_name_suffix
+  validate :validate_name_suffix, unless: -> { encrypted_password_changed? } 
   validates :access_licences, :nested_attributes_uniqueness => {field: :licence_id}
   delegate :can?, :cannot?, :to => :ability
 
