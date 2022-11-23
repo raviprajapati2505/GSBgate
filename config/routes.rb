@@ -44,6 +44,7 @@ Rails.application.routes.draw do
       patch :update_user_status, to: 'users#update_user_status', as: 'update_user_status'
       get "download_user_files"
       get "increase_demerit_flag", to: 'users#increase_demerit_flag'
+      get 'confirm_destroy', to: 'users#confirm_destroy_cgp_user'
     end
   end
 

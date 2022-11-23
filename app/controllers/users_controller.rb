@@ -1,7 +1,7 @@
 class UsersController < AuthenticatedController
-  load_and_authorize_resource :user, except: [:country_cities, :get_organization_details, :get_service_provider_by_domain, :country_code_from_name, :increase_demerit_flag]
+  load_and_authorize_resource :user, except: [:country_cities, :get_organization_details, :get_service_provider_by_domain, :country_code_from_name, :increase_demerit_flag, :confirm_destroy_cgp_user]
   before_action :set_controller_model, except: [:index, :update_notifications]
-  before_action :set_user, only: [:show, :edit, :update, :download_user_files, :increase_demerit_flag]
+  before_action :set_user, only: [:show, :edit, :update, :download_user_files, :increase_demerit_flag, :confirm_destroy_cgp_user]
   before_action :set_service_provider, only: [:edit_service_provider, :update_service_provider]
 
   def index
@@ -420,6 +420,12 @@ class UsersController < AuthenticatedController
     @user.save(validate: false)
 
     redirect_to user_path(@user), notice: "Warning send to user successfully" and return
+  end
+
+  def confirm_destroy_cgp_user
+    @user.service_provider_id = nil
+    @user.save(validate: false)
+    redirect_to users_path, notice: "CGP removed from list successfully" and return
   end
 
   private
