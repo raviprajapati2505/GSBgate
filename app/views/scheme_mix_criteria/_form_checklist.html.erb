@@ -110,12 +110,12 @@
         </div>
     </div>
     <div class="ibox criterion-details">
+        <div class="ibox-title">
+            <h5>Checklist Status</h5>
+        </div>
         <% if @scheme_mix_criterion.scheme_mix.check_list? %>
-          <%# <%= render partial: 'checklist_level', locals: { scheme_mix_criterion: @scheme_mix_criterion } %>
+          <%= render partial: 'checklist_level', locals: { scheme_mix_criterion: @scheme_mix_criterion } %>
         <% else %>
-          <div class="ibox-title">
-              <h5>Checklist Status</h5>
-          </div>
           <div class="ibox-content">
               <%= bootstrap_form_for([@project, @certification_path, @scheme_mix, @scheme_mix_criterion], url: update_scores_project_certification_path_scheme_mix_scheme_mix_criterion_path, method: 'put') do |f| %>
                   <% if @scheme_mix_criterion.errors.any? %>
