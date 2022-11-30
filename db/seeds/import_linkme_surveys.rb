@@ -838,3 +838,99 @@ LinkmeSurvey.find_or_create_by!(
 	title: "xxx",
 	link: "https://www.linkme.qa/surveys/?id=xxx"
 )
+LinkmeSurvey.find_or_create_by!(
+	status: "Active",
+	user_access: "Public",
+	title: "ALSAYER-FM",
+	link: "https://www.linkme.qa/surveys/?id=Alshayer-fm"
+)
+LinkmeSurvey.find_or_create_by!(
+	status: "Active",
+	user_access: "Public",
+	title: "ALSAYER-IE",
+	link: "https://www.linkme.qa/surveys/?id=Alshayer-ie"
+)
+LinkmeSurvey.find_or_create_by!(
+	status: "Active",
+	user_access: "Public",
+	title: "UDCTOWER_PEARL-IE",
+	link: "https://www.linkme.qa/surveys/?id=Udtower-ie"
+)
+LinkmeSurvey.find_or_create_by!(
+	status: "Active",
+	user_access: "Public",
+	title: "UDCTOWER_PEARL-FM",
+	link: "https://www.linkme.qa/surveys/?id=Udtower-fm"
+)
+LinkmeSurvey.find_or_create_by!(
+	status: "Active",
+	user_access: "Public",
+	title: "LULU- FM",
+	link: "https://www.linkme.qa/surveys/?id=lulu-fm"
+)
+LinkmeSurvey.find_or_create_by!(
+	status: "Active",
+	user_access: "Public",
+	title: "LULU- IE",
+	link: "https://www.linkme.qa/surveys/?id=lulu-ie"
+)
+LinkmeSurvey.find_or_create_by!(
+	status: "Active",
+	user_access: "Public",
+	title: "IE - QF-Headquarter (QFHQ) 2015 Building (RC-1)",
+	link: "https://www.linkme.qa/surveys/?id=Qf-headqiarter-ie"
+)
+LinkmeSurvey.find_or_create_by!(
+	status: "Active",
+	user_access: "Public",
+	title: "FM-QF-Headquarter (QFHQ) 2015 Building (RC-1)",
+	link: "https://www.linkme.qa/surveys/?id=Qf-headqiarter-fm"
+)
+LinkmeSurvey.find_or_create_by!(
+	status: "Active",
+	user_access: "Public",
+	title: "QAE -FM",
+	link: "https://www.linkme.qa/surveys/?id=Qae-fm"
+)
+LinkmeSurvey.find_or_create_by!(
+	status: "Active",
+	user_access: "Public",
+	title: "QF-Headquarter- FM",
+	link: "https://www.linkme.qa/surveys/?id=Qf-hea-fm"
+)
+LinkmeSurvey.find_or_create_by!(
+	status: "Active",
+	user_access: "Public",
+	title: "QF-Headquarter-IE",
+	link: "https://www.linkme.qa/surveys/?id=Qf-hea-ie"
+)
+LinkmeSurvey.find_or_create_by!(
+	status: "Active",
+	user_access: "Public",
+	title: "QAE-IE",
+	link: "https://www.linkme.qa/surveys/?id=Qae-ie"
+)
+LinkmeSurvey.find_or_create_by!(
+	status: "Active",
+	user_access: "Public",
+	title: "LULU-Lusail IE",
+	link: "https://www.linkme.qa/surveys/?id=Lulu-lusail-ie"
+)
+LinkmeSurvey.find_or_create_by!(
+	status: "Active",
+	user_access: "Public",
+	title: "LULU-Lusail FM",
+	link: "https://www.linkme.qa/surveys/?id=Lulu-lusail-fm"
+)
+LinkmeSurvey.find_or_create_by!(
+	status: "Active",
+	user_access: "Public",
+	title: "Lulu Hypermarket – Al Hilal FM",
+	link: "https://www.linkme.qa/surveys/?id=Lulu-hypermarket-fm"
+)
+LinkmeSurvey.find_or_create_by!(
+	status: "Active",
+	user_access: "Public",
+	title: "Lulu Hypermarket – Al Hilal IE",
+	link: "https://www.linkme.qa/surveys/?id=Lulu-hypermarket-ie"
+)

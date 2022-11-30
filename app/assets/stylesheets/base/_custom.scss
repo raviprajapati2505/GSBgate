@@ -1444,3 +1444,13 @@ table.dataTable thead > tr > th.sorting {
     bottom: 27%;
     right: 8%;
 }
+.modal-content {
+  color: #3A4F58 !important;
+}
+table.dataTable thead .sorting_asc:after {
+  content: '\f0dd' !important;
+}
+table.dataTable thead .sorting_desc:after {
+  content: '\f0de' !important;
+  opacity: 1 !important;
+}

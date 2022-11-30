@@ -23,10 +23,12 @@
 					<%= f.input :username, required: true %>
 			</div>
 			<% if action != 'add' %>
-				<%# <div class="col-md-4 col-sm-6 col-xs-12"> %>
-					<%# f.input :practitioner_accreditation_type, collection: User.practitioner_accreditation_types.map{ |k, v| [k.titleize, k]}, include_blank: "Select Practitioner Accreditation Type", input_html: {class: "form-control"} %>
-				<%# </div> %>
-				<div class="col-md-4">
+				<% if resource_for == 'user' && current_user.role == 'credentials_admin' %>
+					<div class="col-md-4 col-sm-6 col-xs-12">
+						<%= f.input :practitioner_accreditation_type, collection: User.practitioner_accreditation_types.map{ |k, v| [k.titleize, k]}, include_blank: "Select Practitioner Accreditation Type", input_html: {class: "form-control"} %>
+					</div>
+				<% end %>
+				<div class="col-md-4 col-sm-6 col-xs-12">
 						<%= f.input :profile_pic, as: :file, label: t('users.form.profile_pic_title') %>
 						<% if resource.persisted? && resource&.profile_pic.present? %>
 							<% if can?(:download_user_files, resource) %>

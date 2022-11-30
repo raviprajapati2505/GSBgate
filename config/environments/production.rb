@@ -123,4 +123,5 @@ Rails.application.configure do
   # Visualisation Tool API
   #config.x.viewer.url = 'http://visualisation.gctprojects.qa/'
   config.x.viewer.url = ENV['VIEWER_URL']
+  config.devise_jwt_secret_key = 'a311b69f11b4b84b5b5b214f2965dfa46f8e54374c08042ab58dbdaa93aed8eff4d775625ffeb2ed8bf0093f0628a0618feded6cb8898092bc9f6698bd60bfc6'
 end

@@ -397,6 +397,8 @@ en:
             buildings_footprint_area: Project Footprint
             service_provider: Project Service Provider
             construction_year: Project Completion Year
+            project_developer_business_sector: Project Developer Business Sector
+            project_owner_business_sector: Project Owner Business Sector
         certification_paths:
           certification_path_status:
             label: Certification Status

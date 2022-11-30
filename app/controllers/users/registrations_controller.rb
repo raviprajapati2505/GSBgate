@@ -296,4 +296,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def set_user
     @user = User.find(params[:format])
   end
+
+  protected
+
+  def after_update_path_for(resource)
+    user_path(resource)
+  end
 end
