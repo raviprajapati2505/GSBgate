@@ -262,7 +262,7 @@ class Ability
       # Document controller
       can :read, Document, scheme_mix_criteria_documents: { scheme_mix_criterion: {scheme_mix: {certification_path: {project: project_with_user_assigned}}}}
       # Project team
-      can :create, Document, scheme_mix_criteria_documents: { scheme_mix_criterion: {main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_submitting, scheme_mix: {certification_path: {project: project_with_user_in_project_team}, scheme: schemes_array}}}
+      can :create, Document, scheme_mix_criteria_documents: { scheme_mix_criterion: {main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_submitting}}
       can :destroy, Document, scheme_mix_criteria_documents: {scheme_mix_criterion: {main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_submitting, scheme_mix: {certification_path: {project: project_with_user_as_cgp_project_manager}, scheme: schemes_array}}}, certification_path_status_id: @certification_path&.certification_path_status_id
 
       # CertificationPathDocument controller

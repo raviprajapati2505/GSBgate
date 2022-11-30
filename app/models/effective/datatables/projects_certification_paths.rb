@@ -86,8 +86,23 @@ module Effective
           end
         end
 
-        col :project_address, col_class: 'col-order-5', sql_column: 'projects.address', visible: false do |rec|
-          rec.project_address&.truncate(50)
+        col :project_developer_business_sector, 
+          col_class: 'multiple-select', 
+          sql_column: 'projects.project_developer_business_sector', 
+          label: t('models.effective.datatables.projects.lables.project_developer_business_sector'), 
+          search: { 
+            as: :select, 
+            collection: Proc.new { Project.project_owner_business_sectors.map { |k, v| [k.titleize, v] } } 
+            } do |rec|
+          rec.project_developer_business_sector&.titleize
+
+        end.search do |collection, terms, column, index|
+          terms_array = terms.split(",")
+          unless (collection.class == Array || terms_array.include?(""))
+            collection.where("projects.project_developer_business_sector IN (?)", terms_array)
+          else
+            collection
+          end
         end
 
         col :project_owner, col_class: 'multiple-select col-order-6', sql_column: 'projects.owner', label: t('models.effective.datatables.projects.lables.owner'), visible: false, search: { as: :select, collection: Proc.new { Project.order(:owner).pluck(:owner).uniq.compact.map { |owner| [owner, owner] } rescue [] } } do |rec|
@@ -114,7 +129,26 @@ module Effective
           end
         end
 
-        col :project_construction_year, col_class: 'col-order-8', label: t('models.effective.datatables.projects.lables.construction_year'), sql_column: 'projects.construction_year', as: :integer, visible: false
+        col :project_construction_year, col_class: 'col-order-9', label: t('models.effective.datatables.projects.lables.construction_year'), sql_column: 'projects.construction_year', as: :integer, visible: false
+
+        col :project_owner_business_sector, 
+          col_class: 'multiple-select', 
+          sql_column: 'projects.project_owner_business_sector', 
+          label: t('models.effective.datatables.projects.lables.project_owner_business_sector'), 
+          search: { 
+            as: :select, 
+            collection: Proc.new { Project.project_owner_business_sectors.map { |k, v| [k.titleize, v] } } 
+            } do |rec|
+          rec.project_owner_business_sector&.titleize
+
+        end.search do |collection, terms, column, index|
+          terms_array = terms.split(",")
+          unless (collection.class == Array || terms_array.include?(""))
+            collection.where("projects.project_owner_business_sector IN (?)", terms_array)
+          else
+            collection
+          end
+        end
 
         col :project_estimated_project_cost, col_class: 'col-order-9', label: t('models.effective.datatables.projects.lables.estimated_project_cost'), sql_column: 'projects.estimated_project_cost', as: :string, visible: false do |rec|
           number_with_delimiter(rec.project_estimated_project_cost, delimiter: ',')
@@ -492,11 +526,11 @@ module Effective
           .select('projects.code as project_code')
           .select('projects.name as project_name')
           .select('projects.construction_year as project_construction_year')
-          .select('projects.estimated_project_cost as project_estimated_project_cost')
+          .select('projects.project_owner_business_sector as project_owner_business_sector')
           .select('projects.country as project_country')
           .select('projects.city as project_city')
           .select('projects.district as project_district')
-          .select('projects.address as project_address')
+          .select('projects.project_developer_business_sector as project_developer_business_sector')
           .select('projects.description as project_description')
           .select('projects.gross_area as project_gross_area')
           .select('projects.certified_area as project_certified_area')

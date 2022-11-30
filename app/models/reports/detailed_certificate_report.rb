@@ -220,11 +220,11 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     if text.present?
       text.each do |line, txt|
           styled_text("<div style='font-size: 10;text-align: justify; line-height: 7'>#{txt}</div>")
-          if line != '2'
-            newline(1)
-          end
+          # if line != '2'
+          #   newline(1)
+          # end
       end
-
+      newline(1)
       styled_text("<div style='font-size: 10; line-height: 7;'><b>Yours sincerely</b>, \n</div>")
 
       newline(1)
