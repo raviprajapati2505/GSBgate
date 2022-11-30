@@ -4,7 +4,7 @@ class SurveyResponse < ApplicationRecord
   has_many :question_responses, dependent: :destroy
 
   # validations
-  validates :name, presence: true
+  validates :name, presence: false
   validate :email_based_on_survey_access_type
 
   # nested attributes

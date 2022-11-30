@@ -210,6 +210,19 @@ class Reports::SurveyResponseReport < Reports::BaseReport
             if i == 3 || i == 8 || i == 13 || i == 17 || i == 23
               start_new_page
             end
+        elsif @projects_survey.survey_type.title == 'FACILITY MANAGEMENT'
+            new_question_index = 0
+            total_average_statisfaction =  overall_satisfaction / latest_questions.count
+            overall_satisfaction = 0.00
+            data.append([question.question_text, total_responses])
+            styled_text("<div style='font-size: 13; line-height: 7; color: 000000;'><b>Summary</b></div>")
+            styled_text("<div style='font-weight: bold; font-size: 10; line-height: 7; color: 2fb548;'><b>Overall Satisfaction Level : #{number_with_precision(total_average_statisfaction, precision: 2)}%</b></div>")
+            if question.equal?(latest_questions.last)
+              draw_table(data, true, 'summary_table')
+              start_new_page
+              data = []
+              data.append(["Question Label", "Total Number of Responses"])
+            end
         end
       else
         question.question_responses.each.with_index(1) do |text_response, i|
