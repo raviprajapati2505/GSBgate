@@ -2,7 +2,7 @@
 <fieldset class="scheduler-border">
 	<legend class="scheduler-border">Personal Information</legend>
 		<div class="control-group">
-		<% if resource_for == 'user' %>
+		<% if resource_for == 'user' && resource.role&.titleize != 'Service Provider' %>
 			<div class="row">
 				<div class="col-md-4">
 				<%= f.input :name_suffix, collection: ["Mr.", "Ms.", "Mrs.", "Dr."], include_blank: "Choose Appellations", selected: resource.name_suffix, input_html: { class: "form-control" }, required: true %>
@@ -10,7 +10,7 @@
 		</div>
 		<% end %>
 		<div class="row">
-			<% if resource_for == 'user' %>
+			<% if resource_for == 'user' && resource.role&.titleize != 'Service Provider' %>
 				<div class="col-md-4 col-sm-6 col-xs-12"><%= f.input :name, required: true %></div>
 				<div class="col-md-4 col-sm-6 col-xs-12"><%= f.input :middle_name %></div>
 				<div class="col-md-4 col-sm-6 col-xs-12"><%= f.input :last_name %></div>

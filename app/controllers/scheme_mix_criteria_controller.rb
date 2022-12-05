@@ -12,6 +12,22 @@ class SchemeMixCriteriaController < AuthenticatedController
   before_action :set_controller_model, except: [:new, :create, :list, :upload_discrepancy_document, :delete_discrepancy_document]
 
   def show
+    
+    check_epl_exist = SchemeMixCriterionEpl.find_by(scheme_mix_criterion_id: @scheme_mix_criterion.id)
+    if @certification_path.certificate.certificate_type == 'design_type'
+      if @scheme_mix_criterion.code == 'W.1' || @scheme_mix_criterion.code == 'W.2' || @scheme_mix_criterion.code == 'E.1' || @scheme_mix_criterion.code == 'E.2' || @scheme_mix_criterion.code == 'E.3' || @scheme_mix_criterion.code == 'E.4'
+        if !check_epl_exist.present?
+          epls_as_built = @scheme_mix_criterion.scheme_mix_criterion_epls.create
+          epls_as_built.scheme_criterion_performance_labels_id = 2
+          epls_as_built.save
+          
+          epls_as_operated = @scheme_mix_criterion.scheme_mix_criterion_epls.create
+          epls_as_operated.scheme_criterion_performance_labels_id = 2
+          epls_as_operated.save
+        end
+      end
+    end
+
     respond_to do |format|
       format.html {
         @page_title = ERB::Util.html_escape(@scheme_mix_criterion.scheme_criterion.full_name.to_s)
