@@ -274,7 +274,12 @@
                           <td colspan="<%= num_energy_cols %>">Energy Performance Results</td>
                         </tr>
                         <tr>
-                          <th>EPC</th>
+                          <% if @scheme_mix_criterion.code == 'W.1' || @scheme_mix_criterion.code == 'W.2' %>
+                            <th>WPC</th>
+                          <% else %>
+                            <th>EPC</th>
+                          <% end %>
+                          
                           <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
                             <input type="hidden" name="<%= "scheme_mix_criterion[scheme_mix_criterion_epls_attributes[#{index}][id]" %>" value="<%= epl.id %>">
                             <td>
@@ -299,7 +304,7 @@
                           </td>
                           <% end %>
                         </tr>
-                        <tr>
+                        <tr class="hide_for_db">
                           <th>BAND</th>
                           <% f.object.scheme_mix_criterion_epls.each_with_index do |epl, index| %>
                           <td>
@@ -811,7 +816,18 @@
       $('#aux_for_fan').val(auxiliary_for_fans);
       $('#aux_for_pumps').val(auxiliary_for_pumps);
     }
-    
+    console.log('test',$("select[name^='scheme_mix_criterion[achieved_score_a]'").val());
+    $("select[name^='scheme_mix_criterion[scheme_mix_criterion_epls_attributes[0][level]'").val(Math.round($("select[name^='scheme_mix_criterion[achieved_score_a]'").val()));
+    $("select[name^='scheme_mix_criterion[scheme_mix_criterion_epls_attributes[1][level]'").val(Math.round($("select[name^='scheme_mix_criterion[achieved_score_b]'").val()));
+    $("select[name^='scheme_mix_criterion[scheme_mix_criterion_epls_attributes[0][level]'").attr('readonly','true').css('pointer-events','none')
+    $("select[name^='scheme_mix_criterion[scheme_mix_criterion_epls_attributes[1][level]'").attr('readonly','true').css('pointer-events','none')
+    $("select[name^='scheme_mix_criterion[achieved_score_a]'").change(function(){
+        console.log(Math.round($(this).val()));
+        $("select[name^='scheme_mix_criterion[scheme_mix_criterion_epls_attributes[0][level]'").val(Math.round($(this).val()));
+    })
+    $("select[name^='scheme_mix_criterion[achieved_score_b]'").change(function(){
+        $("select[name^='scheme_mix_criterion[scheme_mix_criterion_epls_attributes[1][level]'").val(Math.round($(this).val()));
+    })
   });
   
 </script>

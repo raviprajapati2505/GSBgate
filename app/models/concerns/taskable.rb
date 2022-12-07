@@ -83,7 +83,7 @@ module Taskable
       when CertificationPathReport.name.demodulize
         handle_updated_certification_path_report
       when User.name.demodulize, ServiceProvider.name.demodulize
-        if saved_change_to_confirmed_at?
+        if saved_change_to_confirmed_at? || saved_change_to_username? || saved_change_to_email?
           handle_confirmed_user_account
         end
         if saved_change_to_active?
@@ -207,6 +207,7 @@ module Taskable
 
   def handle_activated_user_account
     # Delete task of activate user profile.
+    binding.pry
     Task.where(
       taskable: self,
       task_description_id: ACTIVATE_USER,
