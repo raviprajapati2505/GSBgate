@@ -60,16 +60,15 @@ module Effective
         col :sign_in_count, label: 'Sign in Count', as: :integer, visible: false, search: :string
 
         if User.current.can?(:masquerade, current_user)
-          col :active, label: 'Active?', search: { as: :boolean } do |rec|
-            value = rec.active? ? 'checked' : ''
-            "<input class='user-status' type='checkbox' #{value} data-user-id=#{rec.id}>".html_safe
-          end
-
           col :id, label: 'Masquerade', search: false, sort: false do |rec|
             btn_link_to(masquerade_users_path(rec.id), icon: 'user-secret', size: 'small', tooltip: 'Masquerade')
           end
         end
         if User.current.can?(:edit, current_user)
+          col :active, label: 'Active?', search: { as: :boolean } do |rec|
+            value = rec.active? ? 'checked' : ''
+            "<input class='user-status' type='checkbox' #{value} data-user-id=#{rec.id}>".html_safe
+          end
           col :user_id, sql_column: 'users.id', label: 'Action', search: false, sort: false do |rec|
             btn_link_to(user_path(rec.id), icon: 'edit', size: 'small', tooltip: 'Edit')
           end

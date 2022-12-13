@@ -533,7 +533,7 @@ class Ability
       can :read, Task
       can :count, Task
       
-      can [:show, :edit, :update, :index, :activity_info, :download_user_files], User
+      can [:show, :edit, :update, :index, :activity_info, :download_user_files, :update_user_status], User
       can [:edit_service_provider, :update_service_provider], ServiceProvider
       can [:index, :upload_document], :dashboard
     else

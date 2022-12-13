@@ -150,10 +150,6 @@ module Effective
           end
         end
 
-        col :project_estimated_project_cost, col_class: 'col-order-9', label: t('models.effective.datatables.projects.lables.estimated_project_cost'), sql_column: 'projects.estimated_project_cost', as: :string, visible: false do |rec|
-          number_with_delimiter(rec.project_estimated_project_cost, delimiter: ',')
-        end
-
         col :project_description, col_class: 'col-order-10', sql_column: 'projects.description', visible: false do |rec|       
           rec.project_description&.truncate(300)
         end

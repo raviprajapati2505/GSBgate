@@ -212,7 +212,6 @@ class Reports::SurveyResponseReport < Reports::BaseReport
             end
         elsif @projects_survey.survey_type.title == 'FACILITY MANAGEMENT'
             total_average_statisfaction =  overall_satisfaction / latest_questions.count
-            overall_satisfaction = 0.00
             data.append([question.question_text, total_responses])
             if question.equal?(latest_questions.last)
               styled_text("<div style='font-size: 13; line-height: 7; color: 000000;'><b>Summary</b></div>")
