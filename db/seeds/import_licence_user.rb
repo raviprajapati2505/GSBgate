@@ -107,8 +107,13 @@ xlsx.each_with_pagename do |name, sheet|
       elsif row["User Role"] == 'Record Checker'
         user.role = 'record_checker'
       end
+
+      if row['Account Status'] == 'Suspended' || row['Account Status'] == 'X' || row['Account Status'] == ''
+        user.active = false
+      else
+        user.active = true
+      end
       
-      user.active = true
       user.gord_employee = true
       user.practitioner_accreditation_type = row["Practitioner Accreditation Type"]&.squish&.strip&.downcase
 

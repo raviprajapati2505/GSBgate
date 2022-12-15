@@ -341,6 +341,7 @@ en:
       description_44: Fill the report form to varify certificate information.
       description_45: Fill the report form to varify certificate information and release certification report.
       description_46: Activate user account.
+      description_47: Service provider details changed.
 
       tooltip_due_date: Task is overdue.
   linkme_surveys:

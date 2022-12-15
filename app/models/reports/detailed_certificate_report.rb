@@ -125,8 +125,6 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
         draw_scoring_summary(total_category_scores)
         
         draw_category_graph(total_category_scores)
-      
-        newline(3)
 
         draw_score_graph
 
@@ -155,7 +153,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
 
   def draw_certificate_header
     text = certification_type_name(@certification_path)
-    styled_text("<div style='font-size: 12; font-weight: 900; color: #{@@main_color}; line-height: 1.2'>GSAS #{text[:project_type]}</div><br /><div style='font-size: 14; font-weight: 900;'>#{text[:certificate_name]}</div>")
+    styled_text("<div style='font-size: 12; font-style: bold; color: #{@@main_color}; line-height: 1.2'>GSAS #{text[:project_type]}</div><br /><div style='font-size: 14; font-style: bold;'>#{text[:certificate_name]}</div>")
   end
 
   def draw_scheme_mix_header(scheme_mix)
@@ -196,45 +194,64 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
   end
 
   def draw_paragraph1
-    name = @certification_path.certificate.only_name
-    text = certificate_intro_text(name, @certification_path&.certificate&.stage_title)
-    styled_text("<div style='font-size: 10; line-height: 7; color: 000000;'>#{text}</div>")
+      if @certification_path.is_checklist_method?
+        newline(1)
+        styled_text("<div style='font-size: 10;text-align: justify; line-height: 7; font-style: bold'>Dear Sir/Madam,</div>")
+        newline(1)
+        styled_text("<div style='font-size: 10;text-align: justify; line-height: 7'>This is to notify that GSAS Trust has assessed the project based on the submitted information. The project is found eligible to receive the provisional compliance. <span style='font-style: bold'>Final compliance is subject to successful site audit.</span></div>")
+        newline(1)
+        styled_text("<div style='font-size: 10;text-align: justify; line-height: 7'>In the event of any future changes applied to the information pertaining to the checklist, the changes are required to be re-assessed once again.</div>")
+        newline(1)
+        styled_text("<div style='font-size: 10;text-align: justify; line-height: 7'>Finally, Congratulations for partaking in this noble endeavor, and together let us build a healthy and sustainable future.</div>")
 
-    # Prepare table data
-    data = []
+        newline(4)
+        styled_text("<div style='font-size: 10; line-height: 7;'><b>Yours sincerely</b>, \n</div>")
 
-    data.append(['STAGE SCORE', 'STAGE RATING'])
-    if @certification_path.certificate.only_certification_name == 'GSAS-D&B'
-      data.append([number_with_precision(@score, precision: 3), {:image => "#{Rails.root}/app/assets/images/reports/star_#{@stars.split("").first}.png", :width => 350, :image_height => 30, :position  => :center}])
-    else
-      data.append([number_with_precision(@score, precision: 3), @stars])
-    end
+        newline(3)
+        styled_text("<div style='font-size: 10; color: #{@@main_color}; font-style: bold;'>\n Dr. Eiman M. El-Iskandarani</div>")
 
-    # Output table
-    draw_table(data, true, 'score_table')
+        styled_text("<div style='font-size: 10; color: 000000; font-style: bold;'>\n Director, GSAS Trust \n</div>")
+      else
+        name = @certification_path.certificate.only_name
+        text = certificate_intro_text(name, @certification_path&.certificate&.stage_title)
+        styled_text("<div style='font-size: 10; line-height: 7; color: 000000;'>#{text}</div>")
 
-    newline
+        # Prepare table data
+        data = []
 
-    text = certificate_summary_text(name, @certification_path&.certificate&.stage_title)
+        data.append(['STAGE SCORE', 'STAGE RATING'])
+        if @certification_path.certificate.only_certification_name == 'GSAS-D&B'
+          data.append([number_with_precision(@score, precision: 3), {:image => "#{Rails.root}/app/assets/images/reports/star_#{@stars.split("").first}.png", :width => 100, :image_height => 20, :position  => :center}])
+        else
+          data.append([number_with_precision(@score, precision: 3), @stars])
+        end
 
-    if text.present?
-      text.each do |line, txt|
-          styled_text("<div style='font-size: 10;text-align: justify; line-height: 7'>#{txt}</div>")
-          # if line != '2'
-          #   newline(1)
-          # end
+        # Output table
+        draw_table(data, true, 'score_table')
+
+        newline
+
+        text = certificate_summary_text(name, @certification_path&.certificate&.stage_title)
+
+        if text.present?
+          text.each do |line, txt|
+              styled_text("<div style='font-size: 10;text-align: justify; line-height: 7'>#{txt}</div>")
+              # if line != '2'
+              #   newline(1)
+              # end
+          end
+          newline(1)
+          styled_text("<div style='font-size: 10; line-height: 7;'><b>Yours sincerely</b>, \n</div>")
+
+          newline(1)
+          newline(1)
+
+          # image image_path('green_star.png'), width: 50
+
+          styled_text("<div style='font-size: 10; color: #{@@main_color}; font-style: bold;'>\n Dr. Yousef Alhorr</div>")
+
+          styled_text("<div style='font-size: 10; color: 000000; font-style: bold;'>\n Founding Chairman \n</div>")
       end
-      newline(1)
-      styled_text("<div style='font-size: 10; line-height: 7;'><b>Yours sincerely</b>, \n</div>")
-
-      newline(1)
-      newline(1)
-
-      # image image_path('green_star.png'), width: 50
-
-      styled_text("<div style='font-size: 10; color: #{@@main_color}; font-style: bold;'>\n Dr. Yousef Alhorr</div>")
-
-      styled_text("<div style='font-size: 10; color: 000000; font-style: bold;'>\n Founding Chairman \n</div>")
     end
   end
 
@@ -382,7 +399,8 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
           datalabels: {
             color: "black",
             align: "end",
-            anchor: "start"
+            anchor: "start",
+            display: false
           }
         }
       }
@@ -413,7 +431,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
 
     newline(1)
     text = "Figure 2: Category Achived Scores Vs. Attainable Scores"
-    styled_text("<div style='font-size: 9; line-height: 5; color: 000000; text-align: center; padding-top: 8px;'><b>#{text}</b></div>")
+    styled_text("<div style='font-size: 9; line-height: 5; color: 000000; text-align: center;'><b>#{text}</b></div>")
   end
 
   def draw_score_graph
@@ -545,14 +563,16 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     newline(1)
 
     begin
-      image chart_generator.generate_chart(linechart_config, 450, 270).path, at: [0, 170], width: 270
+      image chart_generator.generate_chart(linechart_config, 450, 270).path, at: [0, 230], width: 250
     rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, Errno::ECONNREFUSED,
       EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError
       text 'An error occurred when creating the chart.'
     end
 
+    newline(3)
+
     text = 'Figure 3: Project Overall Scores & Rating'
-    styled_text("<div style='font-size: 9; line-height: 5; color: 000000; text-align: center; padding-top: 10px;'><b>#{text}</b></div>")
+    styled_text("<div style='font-size: 9; line-height: 5; color: 000000; text-align: center;'><b>#{text}</b></div>")
 
     # text 'Level Achieved', size: 12, align: :left
     # data = []
@@ -739,7 +759,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
         # name_column.border_color = @@main_color
         name_column.font_style = :bold
         name_column.background_color = @@column_1_color
-        name_column.size = 10
+        name_column.size = 8
 
         # Odd/even row style
         rows(1..-1).style do |c|

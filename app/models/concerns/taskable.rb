@@ -38,6 +38,7 @@ module Taskable
   CGP_CERTIFICATION_REPORT_INFORMATION = 44
   DC_CERTIFICATION_REPORT_INFORMATION = 45
   ACTIVATE_USER = 46
+  SERVICE_PROVIDER_NAME_CHANGE = 47
 
 
   included do
@@ -85,6 +86,9 @@ module Taskable
       when User.name.demodulize, ServiceProvider.name.demodulize
         if saved_change_to_confirmed_at? || saved_change_to_username? || saved_change_to_email?
           handle_confirmed_user_account
+        end
+        if saved_change_to_organization_name?
+          handle_change_org_name
         end
         if saved_change_to_active?
           handle_activated_user_account
@@ -207,12 +211,19 @@ module Taskable
 
   def handle_activated_user_account
     # Delete task of activate user profile.
-    binding.pry
     Task.where(
       taskable: self,
       task_description_id: ACTIVATE_USER,
       application_role: User.roles[:credentials_admin]
     ).destroy_all if active?
+  end
+
+  def handle_change_org_name
+    Task.find_or_create_by(
+      taskable: self,
+      task_description_id: SERVICE_PROVIDER_NAME_CHANGE,
+      application_role: User.roles[:credentials_admin]
+    )
   end
 
   def handle_updated_project

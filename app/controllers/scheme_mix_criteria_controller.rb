@@ -17,18 +17,28 @@ class SchemeMixCriteriaController < AuthenticatedController
     if @certification_path.certificate.certificate_type == 'design_type'
       if @scheme_mix_criterion.code == 'W.1' || @scheme_mix_criterion.code == 'W.2' || @scheme_mix_criterion.code == 'E.1' || @scheme_mix_criterion.code == 'E.2' || @scheme_mix_criterion.code == 'E.3' || @scheme_mix_criterion.code == 'E.4'
         if !check_epl_exist.present?
-          sc = SchemeCriterion.find(@scheme_mix_criterion.scheme_criterion_id)
-          sc.scores_b = sc.scores_a
-          sc.save
-
           epls_as_built = @scheme_mix_criterion.scheme_mix_criterion_epls.create
           epls_as_built.scheme_criterion_performance_labels_id = 2
           epls_as_built.save
+
+          #enable if have as built & as operated two column
+          #sc = SchemeCriterion.find(@scheme_mix_criterion.scheme_criterion_id)
+          #sc.scores_b = sc.scores_a
+          #sc.save
           
-          epls_as_operated = @scheme_mix_criterion.scheme_mix_criterion_epls.create
-          epls_as_operated.scheme_criterion_performance_labels_id = 2
-          epls_as_operated.save
+          #epls_as_operated = @scheme_mix_criterion.scheme_mix_criterion_epls.create
+          #epls_as_operated.scheme_criterion_performance_labels_id = 2
+          #epls_as_operated.save
         end
+
+        total_smc_epl = SchemeMixCriterionEpl.where(scheme_mix_criterion_id: @scheme_mix_criterion.id)
+        if total_smc_epl.count >= 2
+          total_smc_epl[1].delete
+          sc_score = SchemeCriterion.find(@scheme_mix_criterion.scheme_criterion_id)
+          sc_score.scores_b = nil
+          sc_score.save
+        end
+
       end
     end
 

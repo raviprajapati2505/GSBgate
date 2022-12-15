@@ -1,5 +1,5 @@
 class TasksController < AuthenticatedController
-  load_and_authorize_resource
+  load_and_authorize_resource except: [:confirm_destroy]
 
   def index
     @page_title = 'Tasks'
@@ -33,6 +33,11 @@ class TasksController < AuthenticatedController
     @tasks = TaskService::get_tasks(page: params[:page], per_page: 25, user: current_user,
                                     project_id: session[:task]['project_id'],
                                     certification_path_id: session[:task]['certification_path_id'])
+  end
+
+  def confirm_destroy
+    Task.find(params[:task_id]).destroy
+    redirect_to tasks_path, notice: "Task removed successfully" and return
   end
 
   def count

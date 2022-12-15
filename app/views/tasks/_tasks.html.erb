@@ -12,6 +12,9 @@
                 <th>Required Action</th>
                 <th>Resource</th>
                 <th>Due Date</th>
+                <% if current_user.role == 'credentials_admin' %>
+                    <th>Actions</th>
+                <% end %>
             </tr>
             </thead>
             <tbody>
@@ -64,6 +67,9 @@
                         <td><%= link_to(t(".description_#{task.task_description_id}"), breadcrumbs[:paths].last) %></td>
                         <td><%= render 'layouts/breadcrumb', model: task.taskable %></td>
                         <td>-</td>
+                        <% if current_user.role == 'credentials_admin' %>
+                            <td><%= btn_link_to(destroy_task_path(task.id), {icon: 'trash', text: 'Delete', style: 'danger', method: :get, data: {confirm: 'Do you really want to delete this Task?'}}) %></td>
+                        <% end %>
                     </tr>
 
                 <% end
