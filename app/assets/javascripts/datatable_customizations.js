@@ -93,7 +93,8 @@ $(function() {
 
     // Columns with their positions
     var columnNames = {} 
-    columnNames["Certification Name"] = 2;
+    columnNames["Project ID"] = 1;
+    columnNames["Certification Type"] = 2;
     columnNames["Project Name"] = 3;
     columnNames["Certification Method"] = 4;
     columnNames["Project Country"] = 5;
@@ -101,40 +102,42 @@ $(function() {
     columnNames["Project City"] = 7;
     columnNames["Certification Scheme"] = 8;
     columnNames["Project District"] = 9;
-    columnNames["Certification Sub-Schemes"] = 10;
-    columnNames["Project Address"] = 11;
-    columnNames["Certification Building Name"] = 12;
+    columnNames["Certification Stage"] = 10;
     columnNames["Project Owner"] = 13;
-    columnNames["Certification Stage"] = 14;
-    columnNames["Project Developer"] = 15;
+    columnNames["Certification Rating"] = 12;
+    columnNames["Project Owner Business Sector"] = 11;
     columnNames["Certification Submission Status"] = 16;
-    columnNames["Project Completion Year"] = 17;
-    columnNames["Certification Score"] = 18;
-    columnNames["Project Estimated Cost"] = 19;
-    columnNames["Certification Rating"] = 20;
-    columnNames["Project Description"] = 21;
-    columnNames["Certification Started On"] = 22;
-    columnNames["Project Plot Area"] = 23;
-    columnNames["Certification Certified On"] = 24;
-    columnNames["Project Gross Built Up Area"] = 25;
-    columnNames["Certification Expiry On"] = 26;
-    columnNames["Project Footprint"] = 27;
+    columnNames["Project Developer"] = 15;
+    columnNames["Certification Sub-Schemes"] = 20;
+    columnNames["Project Developer Business Sector"] = 17;
+    columnNames["Certification Score"] = 22;
+    columnNames["Project Description"] = 19;
+    columnNames["Certification Started On"] = 24;
+    columnNames["Project Plot Area"] = 21;
+    columnNames["Certification Building Name"] = 26;
+    columnNames["Project Gross Built Up Area"] = 23;
     columnNames["Certification Updated On"] = 28;
-    columnNames["Project Certified Area"] = 29;
+    columnNames["Project Footprint"] = 25;
     columnNames["Certification Active"] = 30;
-    columnNames["Project Carpark Area"] = 31;
+    columnNames["Project Certified Area"] = 27;
     columnNames["Certification PCR Track"] = 32;
-    columnNames["Project Planning Type"] = 33;
-    columnNames["GSAS Trust Certification Manager"] = 34;
-    columnNames["Project Use"] = 35;
-    columnNames["GSAS Trust Certification Team"] = 36;
-    columnNames["Project Service Provider"] = 37;
-    columnNames["Enterprise Clients"] = 38;
-    columnNames["Project CGP"] = 39;
-    columnNames["blank_1"] = 40;
-    columnNames["Project Team Members"] = 41;
-    columnNames["blank_2"] = 42;
-    columnNames["Project Service Provider"] = 43;
+    columnNames["Project Carpark Area"] = 29;
+    columnNames["Certification Awarded On"] = 34;
+    columnNames["Project Planning Type"] = 31;
+    columnNames["GSASgate Registration Expiry"] = 36;
+    columnNames["Project Use"] = 33;
+    columnNames["GSAS Trust Certification Manager"] = 38;
+    columnNames["Project Completion Year"] = 35;
+    columnNames["GSAS Trust Certification Team"] = 40;
+    columnNames["Project Team Members"] = 37;
+    columnNames["blank_1"] = 42;
+    columnNames["Project Service Provider"] = 39;
+    columnNames["blank_2"] = 44;
+    columnNames["Project CGP"] = 41;
+    columnNames["Enterprise Clients"] = 43;
+
+
+
 
     $(".buttons-collection").on('click', function() {
       var fieldsCollection = $("ul.dt-button-collection");

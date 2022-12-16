@@ -113,7 +113,7 @@ Rails.application.configure do
   }
 
   # GSAS info email addresses
-  config.x.gsas_info.all_notifications_email = 'GSAS-Trust-Info@gord.qa, e.eliskandarani@gord.qa, v.dixit@gord.qa'
+  config.x.gsas_info.all_notifications_email = 'GSAS-Trust-Info@gord.qa, e.eliskandarani@gord.qa, a.arshad@gord.qa'
   config.x.gsas_info.selected_notifications_email = 'alhorr@gord.qa'
 
   # Chart generator API config

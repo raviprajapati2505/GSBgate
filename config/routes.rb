@@ -207,6 +207,7 @@ Rails.application.routes.draw do
 
   get 'tasks' => 'tasks#index', as: 'tasks'
   get 'tasks/user/:user_id' => 'tasks#count', as: 'count_tasks'
+  get 'confirm_destroy/:task_id' => 'tasks#confirm_destroy', as: 'destroy_task'
   match 'projects/:project_id/certificates/apply/:certification_type' => 'certification_paths#apply', as: 'apply_certification_path', via: [:get, :post]
   get 'projects/:project_id/certificates/:id/archive' => 'certification_paths#download_archive', as: 'archive_project_certification_path'
   get 'projects/:project_id/certificates/:certification_path_id/schemes/:scheme_mix_id/criteria/:id/archive' => 'scheme_mix_criteria#download_archive', as: 'archive_project_certification_path_scheme_mix_scheme_mix_criterion'

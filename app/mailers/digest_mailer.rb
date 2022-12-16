@@ -123,7 +123,7 @@ class DigestMailer < ApplicationMailer
     mail(to: @user.email, subject: subject) unless (@tasks.empty? && @audit_logs.empty?)
 
     user.last_notified_at = DateTime.current
-    user.save!
+    user.save(validate: false)
   end
 
   def added_to_project_email(projectsuser, invited_by)

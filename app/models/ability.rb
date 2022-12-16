@@ -456,7 +456,7 @@ class Ability
       # cannot :refuse, RequirementDatum do |requirement_datum| requirement_datum.user_id != user.id end
     elsif user.document_controller?
       can :read, :all
-
+      can :list, CertificationPath
       can :download_signed_certificate, CertificationPath, certification_path_status: { id: [CertificationPathStatus::CERTIFIED, CertificationPathStatus::CERTIFICATE_IN_PROCESS] }
       can [:update_signed_certificate, :remove_signed_certificate], CertificationPath, certification_path_status: {id: [CertificationPathStatus::CERTIFIED, CertificationPathStatus::CERTIFICATE_IN_PROCESS]}
       can [:download_location_plan, :download_site_plan, :download_design_brief, :download_project_narrative, :download_area_statement, :download_sustainability_features], Project
@@ -533,7 +533,7 @@ class Ability
       can :read, Task
       can :count, Task
       
-      can [:show, :edit, :update, :index, :activity_info, :download_user_files], User
+      can [:show, :edit, :update, :index, :activity_info, :download_user_files, :update_user_status], User
       can [:edit_service_provider, :update_service_provider], ServiceProvider
       can [:index, :upload_document], :dashboard
     else
