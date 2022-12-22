@@ -123,10 +123,11 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
 
         newline(1)
         draw_scoring_summary(total_category_scores)
-        
-        draw_category_graph(total_category_scores)
+        if !@certification_path.construction?
+          draw_category_graph(total_category_scores)
 
-        draw_score_graph
+          draw_score_graph
+        end
 
         # For all scheme_mixes
         @scheme_mixes.each do |scheme_mix|
@@ -178,11 +179,27 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     end
 
     data.append(["GSAS Certificate", @certification_path.certificate&.report_certification_name])
-    data.append(["GSAS Certification Stage", @certification_path.certificate&.stage_title])
-    data.append(["GSAS Version", @certification_path.certificate&.only_version])
+
+    case @certification_path.certificate&.stage_title
+      when 'Stage 1: Foundation'
+        data.append(["GSAS Certification Stage", 'Enabling Foundation Works'])
+      when 'Stage 2: Substructure & Superstructure'
+        data.append(["GSAS Certification Stage", 'Stage 2: Substructure & Superstructure Works'])
+      when 'Stage 3: Finishing'
+        data.append(["GSAS Certification Stage", 'Stage 3: Finishing Works'])
+      else
+        data.append(["GSAS Certification Stage", @certification_path.certificate&.stage_title])
+    end
+    
+    data.append(["GSAS Version", "GSAS #{@certification_path.certificate&.only_version}"])
 
     unless @certification_path.construction?
-      data.append(["GSAS Scheme", @certification_path&.scheme_names])
+      if @certification_path&.scheme_names == 'Interiors'
+        data.append(["GSAS Scheme", 'GSAS Interiors'])
+      else
+        data.append(["GSAS Scheme", @certification_path&.scheme_names])
+      end
+      
     end
 
     # unless @certification_path.construction?
@@ -205,16 +222,16 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
         styled_text("<div style='font-size: 10;text-align: justify; line-height: 7'>Finally, Congratulations for partaking in this noble endeavor, and together let us build a healthy and sustainable future.</div>")
 
         newline(4)
-        styled_text("<div style='font-size: 10; line-height: 7;'><b>Yours sincerely</b>, \n</div>")
+        styled_text("<div style='font-size: 10; line-height: 7;'>Yours sincerely, \n</div>")
 
         newline(3)
-        styled_text("<div style='font-size: 10; color: #{@@main_color}; font-style: bold;'>\n Dr. Eiman M. El-Iskandarani</div>")
+        styled_text("<div style='font-size: 10; color: 000000; font-style: bold;'>\n Dr. Eiman M. El-Iskandarani</div>")
 
         styled_text("<div style='font-size: 10; color: 000000; font-style: bold;'>\n Director, GSAS Trust \n</div>")
       else
         name = @certification_path.certificate.only_name
         text = certificate_intro_text(name, @certification_path&.certificate&.stage_title)
-        styled_text("<div style='font-size: 10; line-height: 7; color: 000000;'>#{text}</div>")
+        styled_text("<div style='text-align: justify; font-size: 10; line-height: 7; color: 000000;'>#{text}</div>")
 
         # Prepare table data
         data = []
@@ -236,19 +253,25 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
         if text.present?
           text.each do |line, txt|
               styled_text("<div style='font-size: 10;text-align: justify; line-height: 7'>#{txt}</div>")
-              # if line != '2'
-              #   newline(1)
-              # end
+              case @certification_path.certificate&.stage_title
+                when 'Stage 1: Foundation'
+                  newline(1)
+                when 'Stage 2: Substructure & Superstructure'
+                  newline(1)
+                when 'Stage 3: Finishing'
+                  newline(1)
+                else
+              end
           end
           newline(1)
-          styled_text("<div style='font-size: 10; line-height: 7;'><b>Yours sincerely</b>, \n</div>")
+          styled_text("<div style='font-size: 10; line-height: 7;'>Yours sincerely, \n</div>")
 
           newline(1)
-          newline(1)
+          newline(2)
 
           # image image_path('green_star.png'), width: 50
 
-          styled_text("<div style='font-size: 10; color: #{@@main_color}; font-style: bold;'>\n Dr. Yousef Alhorr</div>")
+          styled_text("<div style='font-size: 10; color: 000000; font-style: bold;'>\n Dr. Yousef Alhorr</div>")
 
           styled_text("<div style='font-size: 10; color: 000000; font-style: bold;'>\n Founding Chairman \n</div>")
       end
@@ -267,7 +290,18 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     # Add the category rows to the table
     data.append(["Project ID: #{@project.code}", {content: "Project Name: #{@detailed_certificate_report&.project_name} - #{scheme_mix&.scheme&.name} #{scheme_info}", colspan: 2}])
 
-    data.append(["Certification Stage: #{@certification_path.certificate&.stage_title}", "Approval Date: #{@detailed_certificate_report&.approval_date&.strftime('%d %B, %Y')}", "Reference: #{@detailed_certificate_report&.reference_number}"])
+    case @certification_path.certificate&.stage_title
+      when 'Stage 1: Foundation'
+        stg_title = 'Enabling Foundation Works'
+      when 'Stage 2: Substructure & Superstructure'
+        stg_title = 'Stage 2: Substructure & Superstructure Works'
+      when 'Stage 3: Finishing'
+        stg_title = 'Stage 3: Finishing Works'
+      else
+        stg_title = @certification_path.certificate&.stage_title
+    end
+
+    data.append(["Certification Stage: #{stg_title}", "Approval Date: #{@detailed_certificate_report&.approval_date&.strftime('%d %B, %Y')}", "Reference: #{@detailed_certificate_report&.reference_number}"])
 
     # Output table
     draw_table(data, true, 'project_info_table')
@@ -321,7 +355,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     
       newline
       bounding_box([@document.bounds.right - 125, @document.bounds.top - 45], width: 120, height: HEADER_HEIGHT) do
-        text = "Issuance Date: #{@detailed_certificate_report&.issuance_date&.strftime('%d %B, %Y')}\n"
+        text = "Issuance Date: #{@detailed_certificate_report&.issuance_date&.strftime('%d %B, %Y')}\nx"
         text2 = "Ref: #{@detailed_certificate_report&.reference_number}"
 
         styled_text("<div style='font-size: 8; text-align: right'>#{text}<br />#{text2}</div>")
@@ -329,7 +363,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
 
       if @certification_path.construction? || @certification_path.is_design_loc?
         bounding_box([@document.bounds.right - 100, @document.bounds.bottom + 140], width: 110, height: HEADER_HEIGHT + 70) do
-          image image_path(@@stamp_image), width: 80
+          image image_path(@@stamp_image), width: 90
         end
       end
     end

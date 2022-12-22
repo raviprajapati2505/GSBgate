@@ -42,11 +42,11 @@ module ReportsHelper
     when 'GSAS-CM', 'Construction Certificate'
       case certificate_stage
         when 'Stage 1: Foundation'
-          text = "This is to notify that GSAS Trust has reviewed the construction submittals in accordance with the latest GSAS Construction Management assessments and has completed the Initial Site Audit requirements of Construction Stage 1 (Foundation). The project is found eligible to receive the First Interim Audit Advisory Notice (AAN) No.01 achieving the following: \n"
+          text = "This is to notify that GSAS Trust has reviewed the construction submittals in accordance with the latest GSAS Construction Management assessments and has completed the Initial Site Audit requirements of Construction Stage 1 (Enabing Works). The project is found eligible to receive the First Interim Audit Advisory Notice (AAN) No.01 achieving the following: \n"
         when 'Stage 2: Substructure & Superstructure'
-          text = "This is to notify that GSAS Trust has reviewed the construction submittals in accordance with the latest GSAS Construction Management assessments and has completed the Second Site Audit requirements of Construction Stage 2 (Substructure & Superstructure). The project is found eligible to receive the Second Interim Audit Advisory Notice (AAN) No.02 achieving the following: \n"
+          text = "This is to notify that GSAS Trust has reviewed the construction submittals in accordance with the latest GSAS Construction Management assessments and has completed the Second Site Audit requirements of Construction Stage 2 (Substructure & Superstructure Works). The project is found eligible to receive the Second Interim Audit Advisory Notice (AAN) No.02 achieving the following: \n"
         when 'Stage 3: Finishing'
-          text = "This is to notify that GSAS Trust has reviewed the construction submittals in accordance with the latest GSAS Construction Management assessments and has completed the Third Site Audit requirements of Construction Stage 3 (Finishing). The project is found eligible to receive the Third Interim Audit Advisory Notice (AAN) No.03 achieving the following: \n"
+          text = "This is to notify that GSAS Trust has reviewed the construction submittals in accordance with the latest GSAS Construction Management assessments and has completed the Third Site Audit requirements of Construction Stage 3 (Finishing Works). The project is found eligible to receive the Third Interim Audit Advisory Notice (AAN) No.03 achieving the following: \n"
       end
     else
     end
@@ -72,8 +72,8 @@ module ReportsHelper
             interim_count = 'First'
         end
         text = { "1" => "Criteria summary of the #{interim_count} Interim Audit Advisory Notice is attached herewith.", 
-          "2" => "This notice is only the predecessor towards achieving the final GSAS-CM Certificate and should not be considered as the final certificate. The project shall satisfy during the rest of the construction stages all the requirements which is a pre-requisite for the GSAS-CM Certificate as stipulated in GSAS Technical Guide, <span style='color: #337ab7'>www.gsas.gord.qa</span> \n", 
-          "3" => "Finally, congratulations on partaking in this noble endeavor. We look forward to creating jointly a healthy and sustainable future."
+          "2" => "This notice is only the predecessor towards achieving the final GSAS-CM Certificate and should not be considered as the final certificate. For further information please refer to GSAS Technical Guide, <span style='color: #337ab7'>www.gsas.gord.qa</span> \n", 
+          "3" => "Finally, congratulations on partaking in this noble endeavor, and together let us build healthy and sustainable future."
         }
       else
       end
