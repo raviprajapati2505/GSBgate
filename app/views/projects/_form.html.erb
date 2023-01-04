@@ -23,6 +23,7 @@
                 <div class="design-fields">
                   <%= f.text_field :service_provider_2 %>
                 </div>
+                <button name="button" type="button" data-toggle="modal" data-target="#searchServiceProvider" ><i class="fa fa-search fa-lg"></i></button>
               <% else %>
                 <%= f.text_field :service_provider, {disabled: true} %>
                 <div class="design-fields">
@@ -217,4 +218,54 @@
   </div>
 </div>
 <% end %>
+<div class="modal fade" id="searchServiceProvider" aria-hidden="true" >
+    <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <%= btn_close_modal %>
+              <h4 class="modal-title">Find Service Provider</h4>
+          </div>
+          <div class="modal-body find-users-modal">
+            <div class="form-group">
+              <%= label_tag 'email', 'Find by Email', class: 'control-label' %>
+              <div class="input-group">
+                  <%= text_field_tag 'email', '', class: 'email-field form-control' %>
+                  <span class="input-group-btn">
+                      <%= btn_tag(class: 'find-sp-by-email-btn', icon: 'search', style: 'white', type: 'button') %>
+                  </span>
+              </div>
+              <p class="error-block" style="color:red"></p>
+            </div>
+          </div>
+          <div class="modal-footer" style="display:none;">
+          </div>
+      </div>
+    </div>
+</div>
 <%= javascript_include_tag 'select_owner' %>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('.find-sp-by-email-btn').click(function(){
+      $('.error-block').text('')
+      $.ajax({
+          url: "/users/get_service_provider_by_email",
+          method: "GET",
+          dataType: "json",
+          data: {
+              email: $('#email').val()
+          },
+          success: function(result) {
+              if(result.length > 0){
+                 $('#searchServiceProvider').modal('toggle')
+                 $('#project_service_provider').val(result[0][0])
+              }else{
+                 $('.error-block').text('email you entered is not associate with any service provider !!')
+              }
+          },
+          error: function() {
+              alert('Something went wrong !');
+          }
+      });
+    })
+  })
+</script>

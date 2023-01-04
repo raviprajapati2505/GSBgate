@@ -1,5 +1,5 @@
 class UsersController < AuthenticatedController
-  load_and_authorize_resource :user, except: [:country_cities, :get_organization_details, :get_service_provider_by_domain, :country_code_from_name, :increase_demerit_flag, :confirm_destroy_cgp_user]
+  load_and_authorize_resource :user, except: [:country_cities, :get_organization_details, :get_service_provider_by_domain, :country_code_from_name, :increase_demerit_flag, :confirm_destroy_cgp_user, :get_service_provider_by_email]
   before_action :set_controller_model, except: [:index, :update_notifications]
   before_action :set_user, only: [:show, :edit, :update, :download_user_files, :increase_demerit_flag, :confirm_destroy_cgp_user]
   before_action :set_service_provider, only: [:edit_service_provider, :update_service_provider]
@@ -426,6 +426,14 @@ class UsersController < AuthenticatedController
     @user.service_provider_id = nil
     @user.save(validate: false)
     redirect_to users_path, notice: "CGP removed from list successfully" and return
+  end
+
+  def get_service_provider_by_email
+    @service_providers = ServiceProvider.where(email: params['email']).pluck("CONCAT(name, middle_name, last_name)", :id)
+    
+    respond_to do |format|
+      format.json { render json: @service_providers }
+    end
   end
 
   private

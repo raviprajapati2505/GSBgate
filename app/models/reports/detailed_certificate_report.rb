@@ -355,7 +355,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     
       newline
       bounding_box([@document.bounds.right - 125, @document.bounds.top - 45], width: 120, height: HEADER_HEIGHT) do
-        text = "Issuance Date: #{@detailed_certificate_report&.issuance_date&.strftime('%d %B, %Y')}\nx"
+        text = "Issuance Date: #{@detailed_certificate_report&.issuance_date&.strftime('%d %B, %Y')}\n"
         text2 = "Ref: #{@detailed_certificate_report&.reference_number}"
 
         styled_text("<div style='font-size: 8; text-align: right'>#{text}<br />#{text2}</div>")
@@ -597,7 +597,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     newline(1)
 
     begin
-      image chart_generator.generate_chart(linechart_config, 450, 270).path, at: [0, 230], width: 250
+      image chart_generator.generate_chart(linechart_config, 450, 270).path, at: [0, 200], width: 250
     rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, Errno::ECONNREFUSED,
       EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError
       text 'An error occurred when creating the chart.'

@@ -32,6 +32,7 @@ Rails.application.routes.draw do
       get "country_cities", to: "users#country_cities", as: :country_cities
       get "get_organization_details", to: "users#get_organization_details", as: :get_organization_details
       get "get_service_provider_by_domain", to: "users#get_service_provider_by_domain", as: :get_service_provider_by_domain
+      get "get_service_provider_by_email", to: "users#get_service_provider_by_email", as: :get_service_provider_by_email
       get "country_code_from_name", to: "users#country_code_from_name", as: :country_code_from_name
     end
     member do
