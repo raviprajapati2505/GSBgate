@@ -342,6 +342,7 @@ en:
       description_45: Fill the report form to varify certificate information and release certification report.
       description_46: Activate user account.
       description_47: Service provider details changed.
+      description_48: Please note that the GSAS LOC has been issued on GSASgate , Kindly download it.
 
       tooltip_due_date: Task is overdue.
   linkme_surveys:
