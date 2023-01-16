@@ -1,5 +1,5 @@
 class DashboardController < AuthenticatedController
-  load_and_authorize_resource class: false
+  load_and_authorize_resource class: false, except: [:confirm_destroy_demerit]
   before_action :set_user
   
   def index
@@ -74,6 +74,11 @@ class DashboardController < AuthenticatedController
         end
       end
     end
+  end
+
+  def confirm_destroy_demerit
+    DemeritFlag.find(params[:demerit_id]).destroy
+    redirect_to dashboard_user_path(@user.id), notice: "Demerit flag removed successfully" and return
   end
 
   private

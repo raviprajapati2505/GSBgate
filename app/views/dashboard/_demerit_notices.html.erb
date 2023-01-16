@@ -4,6 +4,9 @@
       <th>Flags</th>
       <th>GSAS Trust Notification</th>
       <th>Practitioner Acknowledge</th>
+      <% if ['credentials_admin'].include?(current_user.role) %>
+        <th>Action</th>
+      <% end %>
     </tr>
     <% @user&.demerit_flags.each.with_index(1) do |flag, index| %>
       <tr>
@@ -40,6 +43,11 @@
             </div>
           <% end %>
         </td>
+        <% if ['credentials_admin'].include?(current_user.role) %>
+          <td>
+            <%= btn_link_to(demerits_path(flag.id), {icon: 'trash', class: 'btn btn-xs', style: 'danger', method: :get, data: {confirm: 'Do you really want to delete demerit flag?'}}) %>
+          </td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>

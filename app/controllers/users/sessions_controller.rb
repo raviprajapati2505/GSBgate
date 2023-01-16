@@ -39,7 +39,7 @@ class Users::SessionsController < Devise::SessionsController
       if user[0].active? 
         if user[0].valid_password?(params[:user][:password])
           # send OTP in email here and redirect to otp screen
-          user[0].otp = 3.times.map{rand(10)}.join
+          user[0].otp = rand 100..999
           user[0].save(validate: false)
           DigestMailer.send_otp_code_to_user(user[0]).deliver_now
           redirect_to send_otp_path(user[0].id)

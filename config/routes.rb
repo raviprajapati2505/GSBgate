@@ -288,6 +288,7 @@ Rails.application.routes.draw do
   get 'dashboard' => 'dashboard#index', as: 'dashboard'
   get 'dashboard/:user_id' => 'dashboard#index', as: 'dashboard_user'
   post 'upload_document' => 'dashboard#upload_document'
+  get 'confirm_destroy_demerit/:demerit_id' => 'dashboard#confirm_destroy_demerit', as: 'demerits'
 
   # CATCH ALL ROUTE, redirecting the user to a correct page
   # BEWARE: this should be the last line, as it will match any path !!!
