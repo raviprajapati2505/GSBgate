@@ -211,15 +211,15 @@ class User < ApplicationRecord
   end
 
   def valid_design_build_cp_available?
-    service_provider&.active? && (service_provider&.valid_design_build_cgps.present? && service_provider&.valid_design_build_ceps.present?)
+    service_provider&.active? && (service_provider&.valid_design_build_cgps.present? || service_provider&.valid_design_build_ceps.present?)
   end
 
   def valid_construction_management_cp_available?
-    service_provider&.active? && (service_provider&.valid_construction_management_cgps.present? && service_provider&.valid_construction_management_ceps.present?)
+    service_provider&.active? && (service_provider&.valid_construction_management_cgps.present? || service_provider&.valid_construction_management_ceps.present?)
   end
 
   def valid_operation_cp_available?
-    service_provider&.active? && (service_provider&.valid_operation_cgps.present? && service_provider&.valid_operation_ceps.present?)
+    service_provider&.active? && (service_provider&.valid_operation_cgps.present? || service_provider&.valid_operation_ceps.present?)
   end
 
   def valid_user_licences

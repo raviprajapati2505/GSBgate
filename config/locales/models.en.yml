@@ -197,9 +197,9 @@ en:
         roles:
           system_admin: System administrator
           gsas_trust_top_manager: Chairman
-          gsas_trust_manager: Head of GSAS
+          gsas_trust_manager: Director of GSAS
           gsas_trust_admin: GSAS trust admin
-          default_role: Default role
+          default_role: CGP
           document_controller: Document Controller
       user_detail:
         gender: Gender

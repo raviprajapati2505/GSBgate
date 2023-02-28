@@ -105,24 +105,30 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
       draw_certificate_info_table
       newline(1)
       draw_paragraph1
-
+      
       unless @certification_path.is_checklist_method?
-        newline(1)
-        if @certification_path.certificate.only_name == 'Letter of Conformance'
-          newline(2)
-          span(@document.bounds.right, :position => :center) do
-            draw_project_info
-          end
-        else
-          start_new_page
-          newline
-          span(@document.bounds.right, :position => :center) do
-            draw_project_info
-          end
+        case @certification_path.certificate&.stage_title
+          when 'Stage 1: Foundation'
+          when 'Stage 2: Substructure & Superstructure'
+          when 'Stage 3: Finishing'
+          else
+            newline(1)
+            if @certification_path.certificate.only_name == 'Letter of Conformance'
+              newline(2)
+              span(@document.bounds.right, :position => :center) do
+                draw_project_info
+              end
+            else
+              start_new_page
+              newline
+              span(@document.bounds.right, :position => :center) do
+                draw_project_info
+              end
+            end
+            newline(1)
+            draw_scoring_summary(total_category_scores)
         end
-
-        newline(1)
-        draw_scoring_summary(total_category_scores)
+        
         if !@certification_path.construction?
           draw_category_graph(total_category_scores)
 
@@ -355,7 +361,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     
       newline
       bounding_box([@document.bounds.right - 125, @document.bounds.top - 45], width: 120, height: HEADER_HEIGHT) do
-        text = "Issuance Date: #{@detailed_certificate_report&.issuance_date&.strftime('%d %B, %Y')}\n"
+        text = "Issuance Date: #{@detailed_certificate_report&.issuance_date&.strftime('%d-%m-%Y')}\n"
         text2 = "Ref: #{@detailed_certificate_report&.reference_number}"
 
         styled_text("<div style='font-size: 8; text-align: right'>#{text}<br />#{text2}</div>")

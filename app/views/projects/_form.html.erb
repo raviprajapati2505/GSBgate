@@ -26,9 +26,9 @@
                 </div>
                 <button name="button" type="button" data-toggle="modal" data-target="#searchServiceProvider" style="bottom: 13px;position: relative;" class="design-fields"><i class="fa fa-search fa-lg open-modal" data-service_provider="for_service_provider_2" ></i></button>
               <% else %>
-                <%= f.text_field :service_provider, {disabled: true} %>
+                <%= f.text_field :service_provider %>
                 <div class="design-fields">
-                  <%= f.text_field :service_provider_2, {disabled: true} %>
+                  <%= f.text_field :service_provider_2 %>
                 </div>
               <% end %>
               <%= f.text_field :owner %>

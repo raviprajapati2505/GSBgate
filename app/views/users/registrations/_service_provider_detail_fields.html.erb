@@ -8,7 +8,7 @@
    <div class="col-md-4 col-sm-6 col-xs-12">
     <%= f.input :commercial_licence_expiry_date  do  %>
       <span class="cal-icon"><%= ikoen('calendar') %></span>
-      <%= f.input_field :commercial_licence_expiry_date, value: f.object&.commercial_licence_expiry_date&.strftime("%d/%m/%Y"), as: :string, class: "datepicker-past form-control" %>
+      <%= f.input_field :commercial_licence_expiry_date, value: f.object&.commercial_licence_expiry_date&.strftime("%d/%m/%Y"), as: :string, class: "datepicker-future form-control" %>
     <% end %>
   </div>
 </div>
