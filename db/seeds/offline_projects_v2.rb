@@ -7,6 +7,7 @@ def create_project(i, row)
       code: row["Project ID"]&.to_s || "TBC"
     )
 
+  project.name = row["Project Name"]&.to_s
   project.certificate_type = Offline::Project.certificate_types[row["Certification Type"]&.strip]
   project.assessment_type = Offline::Project.assessment_types[row["Certification Method"]&.strip]
   project.certified_area = row["Project Certified Area"]&.to_s

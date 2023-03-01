@@ -376,8 +376,14 @@ en:
             construction_year: Project Completion Year
             description: Description
             loc_as_per_directory: LOC as per directory
+            project_country: Project Country
+            project_city: Project City
+            project_district: Project District
+            project_owner_business_sector: Project Owner Business Sector
+            project_developer_business_sector: Project Developer Business Sector
+            project_gross_built_up_area: Gross Builtup Area
           certification_path:
-            name: Certification Type
+            name: Certification Name
             version: Certification Version
             rating: Certification Ratings
             development_type: Certification Development Type

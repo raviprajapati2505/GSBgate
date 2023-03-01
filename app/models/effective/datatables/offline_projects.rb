@@ -15,6 +15,12 @@ module Effective
         )"
       end
 
+      def offline_projects_by_sub_scheme_names
+        "SELECT offline_scheme_mixes.name
+        FROM offline_scheme_mixes
+        WHERE offline_scheme_mixes.offline_certification_path_id = offline_certification_paths.id"
+      end
+
       datatable do
         col :code, 
             label: t('models.effective.datatables.projects.lables.project_code') do |rec| 
@@ -31,6 +37,41 @@ module Effective
                 offline_project_path(rec.id)
               )
         end
+
+
+        col :certified_area, label: t('models.effective.datatables.offline.project.certified_area'), visible: false
+
+        col :plot_area, label: t('models.effective.datatables.offline.project.plot_area'), visible: false
+
+        col :owner, label: t('models.effective.datatables.offline.project.owner')
+
+        col :developer, label: t('models.effective.datatables.offline.project.developer')
+
+        col :project_gross_built_up_area, label: t('models.effective.datatables.offline.project.project_gross_built_up_area')
+
+        col :project_country, label: t('models.effective.datatables.offline.project.project_country')
+
+        col :project_city, label: t('models.effective.datatables.offline.project.project_city')
+
+        col :project_district, label: t('models.effective.datatables.offline.project.project_district')
+
+        col :project_owner_business_sector, label: t('models.effective.datatables.offline.project.project_owner_business_sector')
+        col :project_developer_business_sector, label: t('models.effective.datatables.offline.project.project_developer_business_sector')
+
+        col :assessment_type, col_class: 'multiple-select', sql_column: 'offline_projects.assessment_type', label: t('models.effective.datatables.offline.project.assessment_type'), search: { as: :select, collection: Proc.new { Offline::Project.assessment_types.map { |k, v| [k, v] } } } do |rec|
+          rec.assessment_type
+
+        end.search do |collection, terms, column, index|
+          terms_array = terms.split(",")
+
+          unless (collection.class == Array || terms_array.include?(""))
+            collection.where("offline_projects.assessment_type IN (?)", terms_array)
+          else
+            collection
+          end
+        end
+
+        col :construction_year, col_class: 'custom-year-picker col-order-8', label: t('models.effective.datatables.offline.project.construction_year'), as: :datetime, visible: false
 
         col :certificate_type, 
             col_class: 'multiple-select', 
@@ -50,29 +91,6 @@ module Effective
             collection
           end
         end
-
-        col :certified_area, label: t('models.effective.datatables.offline.project.certified_area'), visible: false
-
-        col :plot_area, label: t('models.effective.datatables.offline.project.plot_area'), visible: false
-
-        col :owner, label: t('models.effective.datatables.offline.project.owner')
-
-        col :developer, label: t('models.effective.datatables.offline.project.developer')
-
-        col :assessment_type, col_class: 'multiple-select', sql_column: 'offline_projects.assessment_type', label: t('models.effective.datatables.offline.project.assessment_type'), search: { as: :select, collection: Proc.new { Offline::Project.assessment_types.map { |k, v| [k, v] } } } do |rec|
-          rec.assessment_type
-
-        end.search do |collection, terms, column, index|
-          terms_array = terms.split(",")
-
-          unless (collection.class == Array || terms_array.include?(""))
-            collection.where("offline_projects.assessment_type IN (?)", terms_array)
-          else
-            collection
-          end
-        end
-
-        col :construction_year, col_class: 'custom-year-picker col-order-8', label: t('models.effective.datatables.offline.project.construction_year'), as: :datetime, visible: false
 
         col :certification_name, 
             col_class: 'multiple-select', 
@@ -205,6 +223,8 @@ module Effective
             end
         end
 
+        col :subschemes, label: t('models.effective.datatables.offline.certification_path.subscheme')
+
         col :id, 
             sql_column: 'offline_projects.id', 
             label: 'Action', 
@@ -230,6 +250,12 @@ module Effective
                   'offline_projects.description',
                   'offline_projects.assessment_type',
                   'offline_projects.construction_year',
+                  'offline_projects.project_country',
+                  'offline_projects.project_city',
+                  'offline_projects.project_district',
+                  'offline_projects.project_owner_business_sector',
+                  'offline_projects.project_developer_business_sector',
+                  'offline_projects.project_gross_built_up_area',
                   'offline_certification_paths.id as certification_id',
                   'offline_certification_paths.name as certification_name',
                   'offline_certification_paths.version as certification_version',
