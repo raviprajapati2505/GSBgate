@@ -93,29 +93,30 @@ $(function() {
     if(pageName == 'offline'){
       var columnNames = {} 
       columnNames["Project ID"] = 1;
-      columnNames["Certificate Type"] = 2;
+      columnNames["Certification Type"] = 2;
       columnNames["Project Name"] = 3;
       columnNames["Certification Method"] = 4;
       columnNames["Project Country"] = 5;
       columnNames["Certification Version"] = 6;
       columnNames["Project City"] = 7;
-      columnNames["Certification Schemes"] = 8;
+      columnNames["Certification Scheme"] = 8;
       columnNames["Project District"] = 9;
       columnNames["Certification Status"] = 10;
       columnNames["Project Owner"] = 11;
-      columnNames["Certification Ratings"] = 12;
+      columnNames["Certification Rating"] = 12;
       columnNames["Project Owner Business Sector"] = 13;
       columnNames["Certification Status"] = 14;
       columnNames["Project Developer"] = 15;
-      columnNames["Certification Certified At"] = 16;
+      columnNames["Certification Awarded On"] = 16;
       columnNames["Project Developer Business Sector"] = 17;
       columnNames["Certification Name"] = 18;
       columnNames["Project Plot Area"] = 19;
-      columnNames["Certification Developement Type"] = 20;
-      columnNames["Gross BuiltUp Area"] = 21;
+      columnNames["Certification Sub-Schemes"] = 20;
+      columnNames["Project Planning Type"] = 21;
       columnNames["Action"] = 22;
-      columnNames["Project Certified Area"] = 23;
-      columnNames["Project Completion Year"] = 23;
+      columnNames["Project Gross Built Up Area"] = 23;
+      columnNames["Project Certified Area"] = 24;
+      columnNames["Project Completion Year"] = 25;
     }else{
       // Columns with their positions
       var columnNames = {} 

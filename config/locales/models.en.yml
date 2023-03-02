@@ -367,7 +367,7 @@ en:
           project:
             code: Project ID
             name: Project Name
-            certificate_type: Certificate Type
+            certificate_type: Certification Type
             assessment_type: Certification Method
             plot_area: Project Plot Area
             certified_area: Project Certified Area
@@ -381,16 +381,17 @@ en:
             project_district: Project District
             project_owner_business_sector: Project Owner Business Sector
             project_developer_business_sector: Project Developer Business Sector
-            project_gross_built_up_area: Gross Builtup Area
+            project_gross_built_up_area: Project Gross Built Up Area
           certification_path:
             name: Certification Name
             version: Certification Version
-            rating: Certification Ratings
-            development_type: Certification Development Type
+            rating: Certification Rating
+            development_type: Project Planning Type
             status: Certification Status
             score: Certification Score
-            certified_at: Certification Certified At
-            schemes: Certification Schemes
+            certified_at: Certification Awarded On
+            schemes: Certification Scheme
+            subscheme: Certification Sub-Schemes
         projects:
           lables:
             project_code: Project ID
