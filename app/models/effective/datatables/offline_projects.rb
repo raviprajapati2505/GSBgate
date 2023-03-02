@@ -16,7 +16,7 @@ module Effective
       end
 
       def offline_projects_by_sub_scheme_names
-        "SELECT offline_scheme_mixes.name
+        "SELECT offline_scheme_mixes.subschemes
         FROM offline_scheme_mixes
         WHERE offline_scheme_mixes.offline_certification_path_id = offline_certification_paths.id"
       end
@@ -264,6 +264,7 @@ module Effective
                   'offline_certification_paths.certified_at as certification_certified_at',
                   'offline_certification_paths.rating as certification_rating')
           .select('(%s) AS certification_scheme_name' % offline_projects_by_scheme_names)
+          .select('(%s) AS subschemes' % offline_projects_by_sub_scheme_names)
       end
     end
   end

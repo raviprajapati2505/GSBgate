@@ -117,7 +117,13 @@ module Offline
           :plot_area,
           :description,
           :construction_year,
-          :loc_as_per_director
+          :loc_as_per_director,
+          :project_country,
+          :project_city,
+          :project_district,
+          :project_owner_business_sector,
+          :project_developer_business_sector,
+          :project_gross_built_up_area
         )
     end
   end

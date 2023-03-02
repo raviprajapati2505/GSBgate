@@ -41,6 +41,30 @@
             <td><%= @project.developer %></td>
           </tr>
           <tr>
+            <th><%= Offline::Project.human_attribute_name('project_country') %></th>
+            <td><%= @project.project_country %></td>
+          </tr>
+          <tr>
+            <th><%= Offline::Project.human_attribute_name('project_city') %></th>
+            <td><%= @project.project_city %></td>
+          </tr>
+          <tr>
+            <th><%= Offline::Project.human_attribute_name('project_district') %></th>
+            <td><%= @project.project_district %></td>
+          </tr>
+          <tr>
+            <th><%= Offline::Project.human_attribute_name('project_owner_business_sector') %></th>
+            <td><%= @project.project_owner_business_sector %></td>
+          </tr>
+          <tr>
+            <th><%= Offline::Project.human_attribute_name('project_developer_business_sector') %></th>
+            <td><%= @project.project_developer_business_sector %></td>
+          </tr>
+          <tr>
+            <th><%= Offline::Project.human_attribute_name('project_gross_built_up_area') %></th>
+            <td><%= @project.project_gross_built_up_area %></td>
+          </tr>
+          <tr>
             <th><%= Offline::Project.human_attribute_name('construction_year') %></th>
             <td><%= @project.construction_year %></td>
           </tr>
