@@ -95,17 +95,41 @@
       <tbody>
           <tr class="bg-header-grey">
             <th>Certification Stage</th>
-            <th>Certification Status</th>
+            <th>Certification Submission Status</th>
             <th>Certification Scores</th>
             <th>Certification Rating</th>
           </tr>
           <% unless @project.offline_certification_paths.nil? %>
             <% @project.offline_certification_paths.each do |certificate| %>
+              <% 
+                case @project.certificate_type
+                  when 'GSAS-D&B'
+                    star_badge_class = 'certi-status-badge star-rating-badge-db'
+                    image_tag = image_tag('layout/certi-status-db.png')
+                  when 'GSAS-CM'
+                    star_badge_class = 'certi-status-badge star-rating-badge-cm'
+                    image_tag = image_tag('layout/certi-status-cm.png')
+                  when 'GSAS-OP'
+                    star_badge_class = 'certi-status-badge star-rating-badge-op'
+                    image_tag = image_tag('layout/certi-status-op.png')
+                end
+              %>
               <tr>
                 <td><%= link_to certificate.name, offline_project_certification_path(@project, certificate) %></td>
                 <td><%= certificate.status %></td>
                 <td><%= certificate.score %></td>
-                <td><%= certificate.rating %></td>
+                <td>
+                  <% if certificate.rating == 'Certified' || certificate.rating == 'Class B' %>
+                    <span class="certi-status-badge <%= star_badge_class %> label-rating-<%= certificate.rating.downcase.gsub(/( )/, '-') %>"><%= image_tag %><%= certificate.rating %></span>
+                  <% else %>
+                  <span class="certi-status-badge <%= star_badge_class %>">
+                      <%= image_tag %>
+                      <% certificate.rating.to_i.times do %>
+                          <i class="fa fa-star"><span style="display:none;">*</span></i>
+                        <% end %>
+                    </span>
+                  <% end %>
+                </td>
               </tr>
             <% end %>
             <tr>

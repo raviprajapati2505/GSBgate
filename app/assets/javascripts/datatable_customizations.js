@@ -101,7 +101,7 @@ $(function() {
       columnNames["Project City"] = 7;
       columnNames["Certification Scheme"] = 8;
       columnNames["Project District"] = 9;
-      columnNames["Certification Status"] = 10;
+      columnNames["Certification Submission Status"] = 10;
       columnNames["Project Owner"] = 11;
       columnNames["Certification Rating"] = 12;
       columnNames["Project Owner Business Sector"] = 13;
@@ -109,7 +109,7 @@ $(function() {
       columnNames["Project Developer"] = 15;
       columnNames["Certification Awarded On"] = 16;
       columnNames["Project Developer Business Sector"] = 17;
-      columnNames["Certification Name"] = 18;
+      columnNames["Certification Stage"] = 18;
       columnNames["Project Plot Area"] = 19;
       columnNames["Certification Sub-Schemes"] = 20;
       columnNames["Project Planning Type"] = 21;

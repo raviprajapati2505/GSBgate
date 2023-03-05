@@ -112,14 +112,20 @@ en:
         construction_year: Project Completion Year
         description: Description
         loc_as_per_directory: LOC as per directory
+        project_country: Project Country
+        project_city: Project City
+        project_district: Project District
+        project_owner_business_sector: Project Owner Business Sector
+        project_developer_business_sector: Project Developer Business Sector
+        project_gross_built_up_area: LOC as per directory
       offline/certification_path:
-        name: Certification Type
+        name: Certification Stage
         version: Certification Version
-        rating: Certification Ratings
-        development_type: Certification Development Type
-        status: Certification Status
+        rating: Certification Rating
+        development_type: Project Planning Type
+        status: Certification Submission Status
         score: Certification Score
-        certified_at: Certification Certified
+        certified_at: Certification Awarded On
       offline/scheme_mix:
         name: Typology Name
         weight: Scheme Weighting
@@ -383,11 +389,11 @@ en:
             project_developer_business_sector: Project Developer Business Sector
             project_gross_built_up_area: Project Gross Built Up Area
           certification_path:
-            name: Certification Name
+            name: Certification Stage
             version: Certification Version
             rating: Certification Rating
             development_type: Project Planning Type
-            status: Certification Status
+            status: Certification Submission Status
             score: Certification Score
             certified_at: Certification Awarded On
             schemes: Certification Scheme
