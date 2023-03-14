@@ -119,7 +119,7 @@
                 <td><%= certificate.status %></td>
                 <td><%= certificate.score %></td>
                 <td>
-                  <% if certificate.rating == 'Certified' || certificate.rating == 'Class B' %>
+                  <% if certificate.rating == 'CERTIFIED' || certificate.rating == 'CLASS B' %>
                     <span class="certi-status-badge <%= star_badge_class %> label-rating-<%= certificate.rating.downcase.gsub(/( )/, '-') %>"><%= image_tag %><%= certificate.rating %></span>
                   <% else %>
                   <span class="certi-status-badge <%= star_badge_class %>">

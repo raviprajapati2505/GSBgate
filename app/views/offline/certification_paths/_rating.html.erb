@@ -11,7 +11,7 @@
       image_tag = image_tag('layout/certi-status-op.png')
   end
 %>
- <% if ratings == 'Certified' || ratings == 'Class B' %>
+ <% if ratings == 'CERTIFIED' || ratings == 'CLASS B' %>
   <span class="certi-status-badge <%= star_badge_class %> label-rating-<%= ratings.downcase.gsub(/( )/, '-') %>"><%= image_tag %><%= ratings %></span>
 <% else %>
 <span class="certi-status-badge <%= star_badge_class %>">

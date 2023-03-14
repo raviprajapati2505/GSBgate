@@ -28,8 +28,8 @@ module Offline
         "4 Stars",
         "5 Stars",
         "6 Stars",
-        "Certified",
-        "Class B"
+        "CERTIFIED",
+        "CLASS B"
       ]
   end
 end

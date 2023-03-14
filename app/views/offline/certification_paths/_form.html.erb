@@ -14,7 +14,7 @@
         <%= f.input :development_type, collection: DevelopmentType.select(:name, :display_weight).order(:display_weight).distinct.map { |development_type| [development_type.name, development_type.name] }.uniq, include_blank: "Select Certification Development Type", selected: @certification_path.development_type, input_html: { class: "select2 form-control certificate-developmenttype-select offline-certificate", id: "certificate-developmenttype-select" }, required: true %>
       </div>
       <div class="col-md-6 col-sm-12 col-xs-12">
-        <%= f.input :rating, collection: Offline::CertificationPath.ratings.map { |k, v| [k.titleize, k]}, include_blank: "Select Certification Rating", input_html: { class: "select2 form-control certificate-rating-select offline-certificate", id: "certificate-rating-select"} %>
+        <%= f.input :rating, collection: Offline::CertificationPath.ratings.map { |k, v| [k, k]}, include_blank: "Select Certification Rating", input_html: { class: "select2 form-control certificate-rating-select offline-certificate", id: "certificate-rating-select"} %>
       </div>
 <div class="clearfix"></div>
       
