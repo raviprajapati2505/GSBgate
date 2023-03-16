@@ -40,7 +40,7 @@ def create_certfication_path(i, row, project)
 
     certification_path.development_type = row["Project Planning Type"]&.strip&.titleize
     certification_path.status = "Certified"
-    certification_path.rating = row["Certification Rating"]&.strip&.titleize
+    certification_path.rating = row["Certification Rating"]&.strip
     certification_path.score = row["Certification Score"]
     certification_path.certified_at = row["Certification Awarded On"]
 
@@ -97,7 +97,7 @@ def create_scheme_mix_criteria(i, row, scheme_mix)
 end
 
 # import projects
-@xlsx = Roo::Excelx.new("#{Rails.root}/db/imports/certified_offline_projects_v2.xlsx", extension: :xlsx)
+@xlsx = Roo::Excelx.new("#{Rails.root}/db/imports/certified_offline_projects_v3.xlsx", extension: :xlsx)
 
 @xlsx.each_with_pagename do |name, sheet|
   if(name == '22022023')
