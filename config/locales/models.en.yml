@@ -117,7 +117,7 @@ en:
         project_district: Project District
         project_owner_business_sector: Project Owner Business Sector
         project_developer_business_sector: Project Developer Business Sector
-        project_gross_built_up_area: LOC as per directory
+        project_gross_built_up_area: Project Gross Built Up Area
       offline/certification_path:
         name: Certification Stage
         version: Certification Version

@@ -24,15 +24,10 @@ sp_errors = []
 
     find_service_provider = row["Project Service Provider Old"]&.squish&.strip
     new_service_provider_name = row["Project Service Provider"]&.squish&.strip
-
-    project = Project.find_by(service_provider: find_service_provider)
-
-    if project.present?
-		project.service_provider = new_service_provider_name
-		puts project.id
-
-		# save record
-		sp_errors << save_service_provider(i, project)
-    end
+    project = Project.where(service_provider: find_service_provider)
+	project.each do |prj|
+		prj.service_provider = new_service_provider_name
+		sp_errors << save_service_provider(i, prj)
+	end
 end
 print_errors("Service Provider", sp_errors)
