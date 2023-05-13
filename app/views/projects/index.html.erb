@@ -9,9 +9,15 @@
                 <div class="hr-line-dashed"></div>
                 <%= btn_link_to(new_project_path, icon: 'building-o', text: t('.btn_new_project')) %>
             <% end %>
+            <button type="button" class="btn btn-primary" id="projects-chart-button" data-toggle="modal" data-target="#projects-chart-modal">
+              Projects Chart
+            </button>
         </div>
     </div>
 </div>
+
+<!-- Display projects chart -->
+<%= render partial: 'projects_chart', locals: { projects: @datatable.collection.records } %>
 
 <script>
     $(document).ready(function(){

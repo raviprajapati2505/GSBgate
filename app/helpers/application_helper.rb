@@ -887,7 +887,7 @@ module ApplicationHelper
     ["fill_in_the_blank"].include?(question_type) ? 'd-none' : ''
   end
 
-  def certification_name_datatable_render(rec,only_certification_name)
+  def certification_name_datatable_render(rec, only_certification_name)
     case only_certification_name
       when 'GSAS-D&B'
         '<span class="certi-name-badge badge-db">'+ image_tag('/icons/certi-name-db.png') +'</span><a href='+Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>'+only_certification_name+'</a>'
@@ -936,6 +936,84 @@ module ApplicationHelper
       when 'GSAS-OP'
         '<span class="certi-sub-status-badge status-badge-op"'+ image_tag('/icons/certi-sub-status-op.png') +'</span>'+rec.certification_status
     end
+  end
+
+  def form_object(data)
+    {
+      t('models.effective.datatables.projects.lables.project_code') => data['project_code'],
+      t('models.effective.datatables.projects.lables.project_name') => data['project_name'],
+      t('models.effective.datatables.projects.lables.project_certified_area') => data['project_certified_area'],
+      t('models.effective.datatables.projects.lables.project_site_area') => data['project_site_area'],
+      t('models.effective.datatables.projects.lables.owner') => data['project_owner'],
+      t('models.effective.datatables.projects.lables.developer') => data['project_developer'],
+      "Country" => data['project_country'],
+      "City" => data['project_city'],
+      "District" => data['project_district'],
+      t('models.effective.datatables.projects.lables.project_owner_business_sector') => data['project_owner_business_sector'],
+      t('models.effective.datatables.projects.lables.project_developer_business_sector') => data['project_developer_business_sector'],
+      t('models.effective.datatables.projects.lables.project_gross_area') => data['project_gross_area'],
+      t('models.effective.datatables.projects_certification_paths.assessment_method.label') => certification_assessment_type_title(CertificationPathMethod.find_by(certification_path_id: data['certification_path_id'])&.assessment_method),
+      t('models.effective.datatables.projects_certification_paths.certification_path_development_type.label') => "#{
+                                                                                                                      case data['certification_scheme_name']
+                                                                                                                      when 'Parks'
+                                                                                                                        'Parks'
+                                                                                                                      when 'Interiors'
+                                                                                                                        'Single Zone, Interiors'
+                                                                                                                      else
+                                                                                                                        data['development_type_name']
+                                                                                                                      end
+                                                                                                                    }",
+
+      t('models.effective.datatables.projects_certification_paths.certificate_id.label') => "#{
+                                                                                              if data['certification_path_id'].present?
+                                                                                                Certificate.find_by_name(data['certificate_name'])&.only_certification_name
+                                                                                              end
+                                                                                            }",
+
+      t('models.effective.datatables.projects_certification_paths.certificate_version.label') => "#{
+                                                                                                    if data['certification_path_id'].present?
+                                                                                                      Certificate.find_by_name(data['certificate_name'])&.only_version
+                                                                                                    end
+                                                                                                  }",
+
+      t('models.effective.datatables.projects_certification_paths.certificate_stage.label') =>  "#{
+                                                                                                    if data['certification_path_id'].present?
+                                                                                                      CertificationPath.find(data['certification_path_id']).certificate&.stage_title
+                                                                                                    end
+                                                                                                  }",
+
+      t('models.effective.datatables.projects_certification_paths.certification_path_certification_path_status_id.label') =>  "#{ 
+                                                                                                                                  if data['certification_path_status_name'] == "Certificate In Process"
+                                                                                                                                    CertificationPath.find(data['certification_path_id'])&.status
+                                                                                                                                  else
+                                                                                                                                    data['certification_path_status_name']
+                                                                                                                                  end
+                                                                                                                                }",
+                                                                                                                              
+      t('models.effective.datatables.projects_certification_paths.certification_path_certified_at.label') => data['certification_path_certified_at']&.strftime('%e %b - %Y'),
+      
+      t('models.effective.datatables.projects_certification_paths.certification_scheme_name.label') => "#{
+                                                                                                          if Project.find_by(code: data['project_code']).design_and_build? && ["Neighborhoods", "Mixed Use"].include?(data['development_type_name'])
+                                                                                                            data['development_type_name']
+                                                                                                          elsif data['development_type_name'] == "Districts"
+                                                                                                            "Districts"
+                                                                                                          else
+                                                                                                            # rec.certification_scheme_name
+                                                                                                            ERB::Util.html_escape(data['certification_scheme_name']).split('|||').sort.join('<br/>') unless data['certification_scheme_name'].nil?
+                                                                                                          end
+                                                                                                        }",
+                                                                                                        
+      t('models.effective.datatables.projects_certification_paths.schemes_array.label') =>  "#{
+                                                                                              unless data['schemes_array'].nil?
+                                                                                                schemes_array = ERB::Util.html_escape(data['schemes_array']).split('|||').sort
+                                                                                                if schemes_array.size > 1
+                                                                                                  schemes_array.join('<br/>')
+                                                                                                end
+                                                                                              end
+                                                                                            }",
+
+      t('models.effective.datatables.projects_certification_paths.certification_path_started_at.label') => data['certification_path_started_at']&.strftime('%e %b - %Y')
+    }
   end
 
   FONTS_DIR = '/app/assets/fonts/reports'
