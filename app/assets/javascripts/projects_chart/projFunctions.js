@@ -1,4 +1,4 @@
-const BLDGS = /Commercial|Offices|Parks|Healthcare|Homes|Hospitality|Education|Residential|Light Industry|Sports|Mosques|Core \+ Shell|Workers Accomodation/g
+const BLDGS = /Core \+ Shell|Districts|Education|Entertainment|Healthcare|Hotels|Industrial|Light Industry|Mosques|Parks|Railways|Residential - Single|Construction Site|Offices|Commercial|Residential|Hospitality|Sports|Transportation|Workers Accomodation|Operations|Premium Scheme|Standard Scheme|Homes|Healthy Building Mark|Energy Neutral Mark|Interiors|Energy Centers|Neighborhoods/g
 
 const certfictionStage = (project)=>{
     let certifiedDescriptions = ["Certified","Certificate Generated","Certificate In Process"]
@@ -50,7 +50,6 @@ const getStageDescription = (project)=>{
 const getRating = (proj)=>proj["Certification Rating"].match(new RegExp("*","g")).length;
 
 const trimNonValid  = (arr, year)=> {
-  debugger
   arr.forEach(p=>{
         let awarded = p["Certification Awarded On"];
         if (awarded!==undefined && awarded !== null && awarded.length>4 ) {

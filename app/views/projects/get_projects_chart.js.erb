@@ -1,0 +1,100 @@
+$('#projects-chart-div').html("<%= escape_javascript(render partial: 'projects_chart', locals: { projects: @projects }) %>");
+$('#projects-chart-div').modal('show');
+
+
+  $(function(){
+    // call the function
+    filtered = {
+      "GSAS-CM": {
+          "CM Certified": {
+              "Construction Site": [
+                  {
+                      "Project ID": "PC-QA-0001-0001",
+                      "Project Name": "Naufar Treatment & Rehabilitation Center",
+                      "Project Certified Area": "",
+                      "Project Plot Area": "50146",
+                      "Project Owner": "Hamad Medical Corporation (HMC)",
+                      "Project Developer": "Public Works Authority (ASHGHAL)",
+                      "Project Gross Built Up Area": "",
+                      "Project Country": "Qatar",
+                      "Project City": "Al Rayyan",
+                      "Project District": "Al Rayyan",
+                      "Project Owner Business Sector": "Government",
+                      "Project Developer Business Sector": "Government",
+                      "Certification Method": "Star Rating Assessment",
+                      "Project Completion Year": "",
+                      "Certification Type": "GSAS-CM",
+                      "Certification Stage": "GSAS Construction Management Certificate",
+                      "Certification Version": "v2.0",
+                      "Project Planning Type": "Construction Site",
+                      "Certification Rating": "CLASS B",
+                      "Certification Submission Status": "Certified",
+                      "Certification Awarded On": "2017-10-24T18:30:00.000Z",
+                      "Certification Scheme": "Construction Site",
+                      "Certification Sub-Schemes": "",
+                      "Action\n": "\n",
+                      "Certification Year": "2017",
+                      "Certification Started On": "2009-12-31T18:30:00.000Z",
+                      "Certification Status": "CM Certified",
+                      "pArea": 539771,
+                      "cArea": 0,
+                      "cNumber": false,
+                      "pNumber": true,
+                      "combinedArea": 539771
+                  }
+              ]
+          }
+      },
+      "GSAS-D&B": {
+          "Design Certified": {
+              "Residential": [
+                  {
+                      "Project ID": "PD-QA-0009-0009",
+                      "Project Name": "Fox Hills-Res-A-20",
+                      "Project Certified Area": "5890",
+                      "Project Plot Area": "",
+                      "Project Owner": "Private Sector",
+                      "Project Developer": "Private Sector",
+                      "Project Gross Built Up Area": "",
+                      "Project Country": "Qatar",
+                      "Project City": "Al Daayen",
+                      "Project District": "Al Daayen",
+                      "Project Owner Business Sector": "Individual",
+                      "Project Developer Business Sector": "Individual",
+                      "Certification Method": "Star Rating Assessment",
+                      "Project Completion Year": "",
+                      "Certification Type": "GSAS-D&B",
+                      "Certification Stage": "Stage 1: LOC, Design Certificate",
+                      "Certification Version": "v2.0",
+                      "Project Planning Type": "Single Use Building",
+                      "Certification Rating": "* *",
+                      "Certification Submission Status": "Certified",
+                      "Certification Awarded On": "2015-01-11T18:30:00.000Z",
+                      "Certification Scheme": "Residential",
+                      "Certification Sub-Schemes": "",
+                      "Action\n": "\n",
+                      "Certification Year": "2015",
+                      "Certification Started On": "2009-12-31T18:30:00.000Z",
+                      "Certification Status": "Design Certified",
+                      "pArea": 0,
+                      "cArea": 63399,
+                      "cNumber": true,
+                      "pNumber": false,
+                      "combinedArea": 63399
+                  },
+              ]
+          }
+      }
+    }
+    
+
+    projects_data = <%= @projects.to_json.html_safe %>
+    
+    debugger
+    
+    function loadFile() {
+      return trimNonValid(projects_data, "2023-01-01")
+    }
+
+    loadFile();
+});

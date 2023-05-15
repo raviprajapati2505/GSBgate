@@ -1,7 +1,8 @@
 class ProjectsController < AuthenticatedController
+  include ApplicationHelper
   include ActionView::Helpers::TranslationHelper
-  load_and_authorize_resource :project, except: [:country_locations, :country_city_districts]
-  before_action :set_controller_model, except: [:new, :create, :index]
+  load_and_authorize_resource :project, except: [:country_locations, :country_city_districts, :get_projects_chart]
+  before_action :set_controller_model, except: [:new, :create, :index, :get_projects_chart]
 
   def index
     respond_to do |format|
@@ -180,6 +181,110 @@ class ProjectsController < AuthenticatedController
 
         render json: projects, status: :ok
       }
+    end
+  end
+
+  def get_projects_chart
+    projects = JSON.parse(File.read("tmp/projects_data/project_data.json"))
+
+    @projects = []
+    
+    projects.each do |data|
+
+      formatted_data = 
+
+        {
+          t('models.effective.datatables.projects.lables.project_code') => data.dig('project_code'),
+          t('models.effective.datatables.projects.lables.project_name') => data.dig('project_name'),
+          t('models.effective.datatables.projects.lables.project_certified_area') => data.dig('project_certified_area'),
+          t('models.effective.datatables.projects.lables.project_site_area') => data.dig('project_site_area'),
+          t('models.effective.datatables.projects.lables.owner') => data.dig('project_owner'),
+          t('models.effective.datatables.projects.lables.developer') => data.dig('project_developer'),
+          t('models.effective.datatables.projects.lables.project_gross_area') => data.dig('project_gross_area'),
+          "Country" => data.dig('project_country'),
+          "City" => data.dig('project_city'),
+          "District" => data.dig('project_district'),
+          t('models.effective.datatables.projects.lables.project_owner_business_sector') => data.dig('project_owner_business_sector'),
+          t('models.effective.datatables.projects.lables.project_developer_business_sector') => data.dig('project_developer_business_sector'),
+
+          t('models.effective.datatables.projects_certification_paths.assessment_method.label') => certification_assessment_type_title(CertificationPathMethod.find_by(certification_path_id: data.dig('certification_path_id'))&.assessment_method),
+
+          t('models.effective.datatables.projects.lables.construction_year') => data.dig('project_construction_year'),
+          
+          t('models.effective.datatables.projects_certification_paths.certificate_id.label') => "#{
+                                                                                                  if data.dig('certification_path_id').present?
+                                                                                                    Certificate.find_by_name(data.dig('certificate_name'))&.only_certification_name
+                                                                                                  end
+                                                                                                }",
+                                                                                                
+          t('models.effective.datatables.projects_certification_paths.certificate_stage.label') =>  "#{
+                                                                                                        if data.dig('certification_path_id').present?
+                                                                                                          CertificationPath.find(data.dig('certification_path_id')).certificate&.stage_title
+                                                                                                        end
+                                                                                                      }",
+                                                                                                      
+          t('models.effective.datatables.projects_certification_paths.certificate_version.label') => "#{
+                                                                                                        if data.dig('certification_path_id').present?
+                                                                                                          Certificate.find_by_name(data.dig('certificate_name'))&.only_version
+                                                                                                        end
+                                                                                                      }",
+
+          t('models.effective.datatables.projects_certification_paths.certification_path_development_type.label') => "#{
+                                                                                                                          case data.dig('certification_scheme_name')
+                                                                                                                          when 'Parks'
+                                                                                                                            'Parks'
+                                                                                                                          when 'Interiors'
+                                                                                                                            'Single Zone, Interiors'
+                                                                                                                          else
+                                                                                                                            data.dig('development_type_name')
+                                                                                                                          end
+                                                                                                                        }",
+
+          t('models.effective.datatables.projects_certification_paths.certification_path_certification_path_status_id.label') =>  "#{ 
+                                                                                                                                      if data.dig('certification_path_status_name') == "Certificate In Process"
+                                                                                                                                        CertificationPath.find(data.dig('certification_path_id'))&.status
+                                                                                                                                      else
+                                                                                                                                        data.dig('certification_path_status_name')
+                                                                                                                                      end
+                                                                                                                                    }",
+                                                                                                                                  
+          t('models.effective.datatables.projects_certification_paths.certification_path_certified_at.label') => data.dig('certification_path_certified_at')&.to_date&.strftime('%e %b - %Y'),
+          
+          
+          t('models.effective.datatables.projects_certification_paths.certification_scheme_name.label') => "#{
+                                                                                                              if Project.find_by(code: data.dig('project_code')).design_and_build? && ["Neighborhoods", "Mixed Use"].include?(data.dig('development_type_name'))
+                                                                                                                data.dig('development_type_name')
+                                                                                                              elsif data.dig('development_type_name') == "Districts"
+                                                                                                                "Districts"
+                                                                                                              else
+                                                                                                                # rec.certification_scheme_name
+                                                                                                                ERB::Util.html_escape(data.dig('certification_scheme_name')).split('|||').sort.join('<br/>') unless data.dig('certification_scheme_name').nil?
+                                                                                                              end
+                                                                                                            }",
+                                                                                                            
+          t('models.effective.datatables.projects_certification_paths.schemes_array.label') =>  "#{
+                                                                                                  unless data.dig('schemes_array').nil?
+                                                                                                    schemes_array = ERB::Util.html_escape(data.dig('schemes_array')).split('|||').sort
+                                                                                                    if schemes_array.size > 1
+                                                                                                      schemes_array.join('<br/>')
+                                                                                                    end
+                                                                                                  end
+                                                                                                }",
+
+          t('models.effective.datatables.projects_certification_paths.certification_path_started_at.label') => data.dig('certification_path_started_at')&.to_date&.strftime('%e %b - %Y'),
+
+          "pArea": 539771,
+          "cArea": 0,
+          "cNumber": false,
+          "pNumber": true,
+          "combinedArea": 539771
+        }
+
+      @projects.push(formatted_data)
+    end
+    
+    respond_to do |format|
+      format.js { render layout: false }
     end
   end
 
