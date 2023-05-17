@@ -1,5 +1,5 @@
 const parseNumber = (numberString)=>{   
-    return Math.floor( parseInt(numberString.replaceAll(",",""))*10.764)
+  return Math.floor( parseInt(numberString)*10.764 )
 }
 
 const groupByKey = (arr, key)=>{

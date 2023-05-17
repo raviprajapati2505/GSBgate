@@ -1,4 +1,4 @@
-let projects = []
+// let projects = []
 let filtered = {}
 
 let dataElement = document.getElementById("certData")
@@ -186,7 +186,6 @@ function flashFilter (lvl){
 }
 
 function drawTables (){
-
     if (projects.length===0) {
         showError("No file is loaded. Please browse CSV from the button above")
         return;
@@ -336,24 +335,37 @@ function sortKeys(a, b, k) {
     switch (k){
         case "Certification Scheme":
             let schemes = [
-                "Districts",
-                "Neighborhoods",
-                "Parks",
-                "Commercial",
-                "Education",
-                "Healthcare",
-                "Homes",
-                "Hospitality",
-                "Interiors",
-                "Light Industry",
-                "Mixed Use",
-                "Mosques",
-                "Offices",
-                "Railways",
-                "Residential",
-                "Sports",
-                "Workers Accomodation",
+              "Core + Shell",
+              "Districts",
+              "Education",
+              "Entertainment",
+              "Healthcare",
+              "Hotels",
+              "Industrial",
+              "Light Industry",
+              "Mosques",
+              "Parks",
+              "Railways",
+              "Residential - Single",
+              "Construction Site",
+              "Offices",
+              "Commercial",
+              "Residential",
+              "Hospitality",
+              "Sports",
+              "Transportation",
+              "Workers Accomodation",
+              "Operations",
+              "Premium Scheme",
+              "Standard Scheme",
+              "Homes",
+              "Healthy Building Mark",
+              "Energy Neutral Mark",
+              "Interiors",
+              "Energy Centers",
+              "Neighborhoods"
             ]
+           
             return schemes.indexOf(a)<schemes.indexOf(b)?-1:1;
             break;
         case "Certification Status":

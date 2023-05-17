@@ -207,24 +207,81 @@ class ProjectsController < AuthenticatedController
           t('models.effective.datatables.projects.lables.project_owner_business_sector') => data.dig('project_owner_business_sector'),
           t('models.effective.datatables.projects.lables.project_developer_business_sector') => data.dig('project_developer_business_sector'),
 
-          t('models.effective.datatables.projects_certification_paths.assessment_method.label') => certification_assessment_type_title(CertificationPathMethod.find_by(certification_path_id: data.dig('certification_path_id'))&.assessment_method),
+          t('models.effective.datatables.projects_certification_paths.rating.label') => "#{
+                                                                                            certification_path = CertificationPath.find_by(id: data.dig('certification_path_id'))
+
+                                                                                            if certification_path.present?
+                                                                                              score = data.dig('total_achieved_score')
+
+                                                                                              unless score == "" || score.nil?
+                                                                                                if certification_path&.certificate&.design_and_build?
+                                                                                                  score = 0 if score < 0
+                                                                                                end
+                                                                                    
+                                                                                                if certification_path&.construction? && !certification_path&.is_activating?
+
+                                                                                                  scheme_mix = certification_path&.scheme_mixes&.first
+                                                                                                  score_all = score_calculation(scheme_mix)
+                                                                                                  score_all = final_cm_revised_avg_scores(certification_path, score_all)
+                                                                                                
+                                                                                                  score = score_all[:achieved_score_in_certificate_points]
+                                                                                                end
+                                                                                    
+                                                                                                if data.dig('certificate_gsas_version') == 'v2.1 Issue 1.0' 
+                                                                                                  score = ActionController::Base.helpers.number_to_percentage(score, precision: 1)
+                                                                                                else
+                                                                                                  score = 
+                                                                                                    if score > 3
+                                                                                                      3.0
+                                                                                                    else
+                                                                                                      score.round(2)
+                                                                                                    end
+                                                                                                end
+                                                                                                
+                                                                                              else
+                                                                                                score = nil
+                                                                                              end
+                                                                                              
+                                                                                              ratings = certification_path&.rating_for_score(score.to_f, certificate: certification_path&.certificate, is_achieved_score: true)
+
+                                                                                              ratings = 
+                                                                                                if ['1', '2', '3', '4', '5', '6'].include?(ratings&.to_s)
+                                                                                                  rating_string = []
+                                                                                                  ratings.to_i.times do
+                                                                                                    rating_string.push('*')
+                                                                                                  end
+
+                                                                                                  rating_string.join(' ')
+                                                                                                else
+                                                                                                  ratings&.to_s
+                                                                                                end
+
+                                                                                              ratings&.strip
+                                                                                            end
+                                                                                          }",
+
+          t('models.effective.datatables.projects_certification_paths.assessment_method.label') => "#{
+                                                                                                      if certification_path.present?
+                                                                                                        certification_assessment_type_title(certification_path.certification_path_method&.assessment_method)
+                                                                                                      end
+                                                                                                    }",
 
           t('models.effective.datatables.projects.lables.construction_year') => data.dig('project_construction_year'),
           
           t('models.effective.datatables.projects_certification_paths.certificate_id.label') => "#{
-                                                                                                  if data.dig('certification_path_id').present?
+                                                                                                  if certification_path.present?
                                                                                                     Certificate.find_by_name(data.dig('certificate_name'))&.only_certification_name
                                                                                                   end
                                                                                                 }",
                                                                                                 
           t('models.effective.datatables.projects_certification_paths.certificate_stage.label') =>  "#{
-                                                                                                        if data.dig('certification_path_id').present?
-                                                                                                          CertificationPath.find(data.dig('certification_path_id')).certificate&.stage_title
+                                                                                                        if certification_path.present?
+                                                                                                          certification_path.certificate&.stage_title
                                                                                                         end
                                                                                                       }",
                                                                                                       
           t('models.effective.datatables.projects_certification_paths.certificate_version.label') => "#{
-                                                                                                        if data.dig('certification_path_id').present?
+                                                                                                        if certification_path.present?
                                                                                                           Certificate.find_by_name(data.dig('certificate_name'))&.only_version
                                                                                                         end
                                                                                                       }",
@@ -242,13 +299,13 @@ class ProjectsController < AuthenticatedController
 
           t('models.effective.datatables.projects_certification_paths.certification_path_certification_path_status_id.label') =>  "#{ 
                                                                                                                                       if data.dig('certification_path_status_name') == "Certificate In Process"
-                                                                                                                                        CertificationPath.find(data.dig('certification_path_id'))&.status
+                                                                                                                                        certification_path&.status
                                                                                                                                       else
                                                                                                                                         data.dig('certification_path_status_name')
                                                                                                                                       end
                                                                                                                                     }",
                                                                                                                                   
-          t('models.effective.datatables.projects_certification_paths.certification_path_certified_at.label') => data.dig('certification_path_certified_at')&.to_date&.strftime('%e %b - %Y'),
+          t('models.effective.datatables.projects_certification_paths.certification_path_certified_at.label') => data.dig('certification_path_certified_at')&.to_date&.strftime('%e-%b-%y'),
           
           
           t('models.effective.datatables.projects_certification_paths.certification_scheme_name.label') => "#{
@@ -271,13 +328,9 @@ class ProjectsController < AuthenticatedController
                                                                                                   end
                                                                                                 }",
 
-          t('models.effective.datatables.projects_certification_paths.certification_path_started_at.label') => data.dig('certification_path_started_at')&.to_date&.strftime('%e %b - %Y'),
+          t('models.effective.datatables.projects_certification_paths.certification_path_started_at.label') => data.dig('certification_path_started_at')&.to_date&.strftime('%e-%b-%y'),
 
-          "pArea": 539771,
-          "cArea": 0,
-          "cNumber": false,
-          "pNumber": true,
-          "combinedArea": 539771
+          t('models.effective.datatables.projects_certification_paths.certification_path_pcr_track.label') => certification_path.pcr_track
         }
 
       @projects.push(formatted_data)
