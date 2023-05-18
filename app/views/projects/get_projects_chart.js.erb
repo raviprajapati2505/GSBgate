@@ -5,10 +5,16 @@ $('#projects-chart-div').modal('show');
 $(function(){
   // call the function
   projects = <%= @projects.to_json.html_safe %>
+
   function loadFile() {
     return trimNonValid(projects, "2023-01-01")
   }
 
-  loadFile();
+  function addProjects(){
+    projects = loadFile();
+    prepareInputBox();
+  }
+
+  addProjects()
   drawTables();
 });

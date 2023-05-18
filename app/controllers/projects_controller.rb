@@ -330,7 +330,11 @@ class ProjectsController < AuthenticatedController
 
           t('models.effective.datatables.projects_certification_paths.certification_path_started_at.label') => data.dig('certification_path_started_at')&.to_date&.strftime('%e-%b-%y'),
 
-          t('models.effective.datatables.projects_certification_paths.certification_path_pcr_track.label') => certification_path.pcr_track
+          t('models.effective.datatables.projects_certification_paths.certification_path_pcr_track.label') => certification_path.pcr_track,
+
+          t('models.effective.datatables.projects_certification_paths.building_types.label') => data.dig('building_type_name'),
+
+          t('models.effective.datatables.projects.lables.service_provider') => data.dig('project_service_provider')
         }
 
       @projects.push(formatted_data)

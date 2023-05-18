@@ -61,8 +61,7 @@ const trimNonValid  = (arr, year)=> {
         }
         
         let started = p["Certification Started On"];
-        p["Certification Started On"] = new Date((started!==undefined && started.length>4)?started:"1-Jan-2010")
-
+        p["Certification Started On"] = new Date((started!==undefined && started !== null && started.length>4) ? started : "1-Jan-2010")
     })
 
     let res = arr.filter((p)=>{
@@ -159,28 +158,29 @@ const trimNonValid  = (arr, year)=> {
 
 const addBuildings = (projArr)=>{
     
-    projArr.filter(p=>p["Certification Scheme"].substring(0,3)==="Mix" || p["Certification Scheme"].substring(0,3)==="Nei").forEach(p=>{
+    projArr.filter(p=>p["Certification Scheme"].substring(0,3) === "Mix" || p["Certification Scheme"].substring(0,3)==="Nei").forEach(p=>{
         
         if (p["Certification Sub-Schemes"] === "") {
             //report weird projects
-            console.log(p);
+            // console.log(p);
             return false;
         }
 
+        
         let bldgs = [];
         bldgs = p["Certification Sub-Schemes"].match(BLDGS);
         
         if (bldgs && bldgs.length>0){
 
-            let modified = bldgs.indexOf("Core + Shell")
-            if (modified>-1) bldgs[modified]="Commercial"
-                
+          let modified = bldgs.indexOf("Core + Shell")
+          if (modified>-1) bldgs[modified] = "Commercial"
+          
             if (bldgs.length===1){
                 p["Certification Scheme"] = bldgs[0];
                 p["Certification Sub-Schemes"] = ""
             } else {
                 bldgs.forEach(b=>{
-                    let projBldg = {...p};
+                    let projBldg = {...p}
                     projBldg["Certification Scheme"] = b;
                     projBldg["Certification Sub-Schemes"] = ""
                     projBldg["Project Certified Area"] = "0";
@@ -199,21 +199,20 @@ const addBuildings = (projArr)=>{
 
 const prepareAreaAttr = (projArr)=>{
     return projArr.map(p=>{
+        scheme = p["Certification Scheme"].substring(0,3)
+        type = p["Certification Type"]
         
-        let scheme = p["Certification Scheme"].substring(0,3);
-        let type = p["Certification Type"];
+        pArea = ["Dis", "Par", "Nei", "GSAS-CM"].includes(scheme) ? p["Project Plot Area"] : 0;
         
-        let pArea = (scheme==="Dis" || scheme==="Par"||scheme==="Nei" || type==="GSAS-CM")?parseNumber(p["Project Plot Area"]):0;
-        
-        let cArea = 0;
-        if (scheme==="Nei"){ 
-            cArea = parseNumber(p["Project Gross Built Up Area"]);
+        cArea = 0
+        if (scheme === "Nei"){ 
+            cArea = p["Project Gross Built Up Area"];
         } else if (scheme!=="Dis" && scheme!=="Par" && type!=="GSAS-CM") {
-            cArea=parseNumber(p["Project Certified Area"]);
+            cArea = p["Project Certified Area"];
         }
  
-        let pNumber = (scheme==="Dis" || scheme==="Par" || scheme==="Nei" || type==="GSAS-CM")
-        let cNumber =  !pNumber
+        pNumber = ["Dis", "Par", "Nei", "GSAS-CM"].includes(scheme)
+        cNumber =  !pNumber
         
         return {...p, pArea, cArea, cNumber, pNumber, combinedArea: pArea+cArea}
 

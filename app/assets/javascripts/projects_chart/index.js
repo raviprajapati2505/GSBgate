@@ -15,7 +15,7 @@ let modalElement = document.getElementById("modal")
 
 let graphSelectElement = document.getElementById("graphSelect")
 
-let browser = document.getElementById('csvFile');
+// let browser = document.getElementById('csvFile');
 
 let advancedFiltering = false;
 
@@ -138,21 +138,6 @@ function showAdvancedFilters  (keys, data, excluded){
     }).join("")
 }
 
-function toggleSidebar(){
-    let btn = document.getElementById('sidebarBtn')
-    let sidebar = document.getElementById('sidebar')
-    
-    if (sidebar.style.display==='none'){
-        sidebar.style.display='unset'
-        btn.innerHTML = 'GSASgate Tabulation Tool <i class="fa fa-chevron-left" aria-hidden="true"></i>'
-        
-    } else {
-        sidebar.style.display='none'
-        sidebar.style.width="0px!important"
-        btn.innerHTML = '<i class="fa fa-chevron-right" aria-hidden="true"></i>'
-    }
-}
-
 function flashFilter (lvl){
     
     let included = []
@@ -190,7 +175,7 @@ function drawTables (){
         showError("No file is loaded. Please browse CSV from the button above")
         return;
     }
-
+    
     keys = [filter1Element.value,filter2Element.value,filter3Element.value,filter4Element.value,filter5Element.value,filter6Element.value];
     keys = keys.filter(i=>i!=="");
     
@@ -208,7 +193,7 @@ function drawTables (){
     }
 
     filtered = groupByMultipleKeys(projects, keys, excluded)
-    console.log(filtered);
+    // console.log(filtered);
     dataElement.innerHTML=""
     prepareTable(filtered, keys)
 
@@ -251,7 +236,6 @@ function prepareTable (projObject, propKeys){
     let i=0;
 
     const getLevel = (obj, lvl)=>{    
-        
         return Object.keys(obj).sort((a,b)=>sortKeys(a,b,propKeys[lvl])).map((k,id)=>{   
            
             if (Array.isArray(obj[k])){
@@ -331,7 +315,7 @@ function prepareTable (projObject, propKeys){
 }
 
 function sortKeys(a, b, k) {
-    console.log(k)
+    // console.log(k)
     switch (k){
         case "Certification Scheme":
             let schemes = [
@@ -436,17 +420,3 @@ function showProjects(el, i){
     }
 }
 
-window.addEventListener("click", function(event) {
-    let div = document.getElementById("sidebar");
-    let btn = document.getElementById("sidebarBtn");
-
-    if (div.style.display!=="none" && !div.contains(event.target) && !btn.contains(event.target)) {
-        toggleSidebar()
-    } 
-    
-    /*
-    else if (modalElement.style.display!=='none' && !modalElement.contains(event.target)) {
-        modalElement.style.display="none";
-    }
-    */
-});
