@@ -1,23 +1,23 @@
 // let projects = []
-let filtered = {}
+filtered = {}
 
-let dataElement = document.getElementById("certData")
-let yearElement = document.getElementById("cutoff-year")
+dataElement = document.getElementById("certData")
+yearElement = document.getElementById("cutoff-year")
 
-let filter1Element = document.getElementById("filter1")
-let filter2Element = document.getElementById("filter2")
-let filter3Element = document.getElementById("filter3")
-let filter4Element = document.getElementById("filter4")
-let filter5Element = document.getElementById("filter5")
-let filter6Element = document.getElementById("filter6")
+filter1Element = document.getElementById("filter1")
+filter2Element = document.getElementById("filter2")
+filter3Element = document.getElementById("filter3")
+filter4Element = document.getElementById("filter4")
+filter5Element = document.getElementById("filter5")
+filter6Element = document.getElementById("filter6")
 
-let modalElement = document.getElementById("modal")
+modalElement = document.getElementById("modal")
 
-let graphSelectElement = document.getElementById("graphSelect")
+graphSelectElement = document.getElementById("graphSelect")
 
-// let browser = document.getElementById('csvFile');
+// browser = document.getElementById('csvFile');
 
-let advancedFiltering = false;
+advancedFiltering = false;
 
 // function addProjects (cb){
 //     let csvfile = browser.files[0]||""
@@ -30,7 +30,7 @@ let advancedFiltering = false;
 //     browser.click()
 // }
 /*
-const browseData = ()=>{
+var browseData = ()=>{
     let csvfile = browser.files[0]||""
     browser.onchange = async()=>{
         if (browser.files[0]!==csvfile){
@@ -42,7 +42,7 @@ const browseData = ()=>{
     browser.click()
 }
 
-const appendData = async()=>{
+var appendData = async()=>{
     let csvfile = browser.files[0]||""
     browser.onchange = async()=>{
         if (browser.files[0]!==csvfile){
@@ -213,7 +213,7 @@ function prepareTable (projObject, propKeys){
 
     let prop = propKeys[propKeys.length-1]
     
-    const detailsTable = document.createElement('table')
+    var detailsTable = document.createElement('table')
     detailsTable.id = "detailsTable"
     detailsTable.classList.add("details")
 
@@ -235,7 +235,7 @@ function prepareTable (projObject, propKeys){
 
     let i=0;
 
-    const getLevel = (obj, lvl)=>{    
+    var getLevel = (obj, lvl)=>{    
         return Object.keys(obj).sort((a,b)=>sortKeys(a,b,propKeys[lvl])).map((k,id)=>{   
            
             if (Array.isArray(obj[k])){

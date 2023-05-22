@@ -1,10 +1,10 @@
-const width = 500;
-const height = 680;
-const radius = width/6;
+var width = 500;
+var height = 680;
+var radius = width/6;
 
-const chart = (projData, propName)=>{
+var chart = (projData, propName)=>{
 
-    const formatting = (name, d)=>{
+    var formatting = (name, d)=>{
         if (Array.isArray(d)){
             return ({name, value: propName===""?d.length:d.reduce((a,b)=>a+b[propName],0)})  //children: d.map(p=>{return {name:p["Project ID"], value:p.cArea, children:[]}})})
         } else {
@@ -15,20 +15,20 @@ const chart = (projData, propName)=>{
 
     let formattedData = formatting("GSAS", projData)
 
-    const root = partition(formattedData);
+    var root = partition(formattedData);
     root.each(d => d.current = d);
 
     //console.log(root.descendants().slice(1))
 
-    const svg = d3.select("#chartDiv")
+    var svg = d3.select("#chartDiv")
         .append("svg")
         .attr("viewBox", [0, 0, width, width])
         .style("font", "10px sans-serif");
 
-    const g = svg.append("g")
+    var g = svg.append("g")
         .attr("transform", `translate(${width / 2},${width / 2})`);
 
-    const path = g.append("g")
+    var path = g.append("g")
         .selectAll("path")
         .data(root.descendants().slice(1))
         .join("path")
@@ -44,7 +44,7 @@ const chart = (projData, propName)=>{
     path.append("title")
         .text(d => `${d.ancestors().map(d => d.data.name).reverse().join("/")}\n${d.value.toString()}`);
 
-    const label = g.append("g")
+    var label = g.append("g")
             .attr("pointer-events", "none")
             .attr("text-anchor", "middle")
             .style("user-select", "none")
@@ -56,7 +56,7 @@ const chart = (projData, propName)=>{
             .attr("transform", d => labelTransform(d.current))
             .text(d => d.data.name.length>20?d.data.name.substring(0,18)+"...":d.data.name);
 
-    const parent = g.append("circle")
+    var parent = g.append("circle")
         .datum(root)
         .attr("r", radius)
         .attr("fill", "none")
@@ -73,14 +73,14 @@ const chart = (projData, propName)=>{
             y1: Math.max(0, d.y1 - p.depth)
         });
 
-        const t = g.transition().duration(750);
+        var t = g.transition().duration(750);
 
         // Transition the data on all arcs, even the ones that aren’t visible,
         // so that if this transition is interrupted, entering arcs will start
         // the next transition from the desired position.
         path.transition(t)
             .tween("data", d => {
-                const i = d3.interpolate(d.current, d.target);
+                var i = d3.interpolate(d.current, d.target);
                 return t => d.current = i(t);
             })
             .filter(function(d) {
@@ -107,15 +107,15 @@ const chart = (projData, propName)=>{
     }
 
     function labelTransform(d) {
-        const x = (d.x0 + d.x1) / 2 * 180 / Math.PI;
-        const y = (d.y0 + d.y1) / 2 * radius;
+        var x = (d.x0 + d.x1) / 2 * 180 / Math.PI;
+        var y = (d.y0 + d.y1) / 2 * radius;
         return `rotate(${x - 90}) translate(${y},0) rotate(${x < 180 ? 0 : 180})`;
     }
 
 }
 
-const partition = data => {
-    const root = d3.hierarchy(data)
+var partition = data => {
+    var root = d3.hierarchy(data)
         .sum(d => d.value);
         //.sort((a, b) => b.value - a.value);
     return d3.partition()
@@ -123,7 +123,7 @@ const partition = data => {
       (root);
 }
 
-const color = (name, mainEl)=> {
+var color = (name, mainEl)=> {
     let hue = 360*(mainEl.children.findIndex(c=>c.name===name)+1)/mainEl.children.length
     //console.log(hue)
     return `hsl(${hue},50%,50%)`
@@ -131,7 +131,7 @@ const color = (name, mainEl)=> {
     //return d3.scaleOrdinal(d3.quantize(d3.interpolateRainbow, data.children.length + 1))
 }
 
-const arc = d3.arc()
+var arc = d3.arc()
     .startAngle(d => d.x0)
     .endAngle(d => d.x1)
     .padAngle(d => Math.min((d.x1 - d.x0) / 2, 0.005))
@@ -139,122 +139,11 @@ const arc = d3.arc()
     .innerRadius(d => d.y0 * radius)
     .outerRadius(d => Math.max(d.y0 * radius, d.y1 * radius - 1))
 
-/*
-const chart2 = (projData, propName)=>{
-
-    const formatting = (name, d)=>{
-        if (Array.isArray(d)){
-            return ({name, value: propName===""?d.length:d.reduce((a,b)=>a+b[propName],0) })  
-        } else {
-            let sorted =Object.keys(d).sort();
-            return ({name, children:sorted.map(k=>formatting(k, d[k]))})
-        } 
-    }
-
-    let formattedData = formatting("main", projData)
-
-    const svg = d3.select("#chartDiv")
-        .append("svg")
-            .attr("viewBox", [0.5, -30.5, width, height + 30])
-            .style("font", "10px sans-serif");
-    
-    const x = d3.scaleLinear().rangeRound([0, width]);
-    const y = d3.scaleLinear().rangeRound([0, height]);
-    
-    let group = svg.append("g")
-        .call(render, treemap(formattedData));
-    
-    function render(group, root) {
-        const node = group
-        .selectAll("g")
-        .data(root.children.concat(root))
-        .join("g");
-    
-        node.filter(d => d === root ? d.parent : d.children)
-            .attr("cursor", "pointer")
-            .on("click", (event, d) => d === root ? zoomout(root) : zoomin(d));
-    
-        node.append("title")
-            .text(d => `${name(d)}\n${format(d.value)}`);
-    
-        node.append("rect")
-            .attr("id", d => (d.leafUid = "leaf")) //DOM.uid("leaf")).id)
-            .attr("fill", d => d === root ? "#fff" : d.children ? "#ccc" : "#ddd")
-            .attr("stroke", "#fff");
-    
-        node.append("clipPath")
-            .attr("id",  d => (d.clipUid = "clip")) // DOM.uid("clip")).id)
-            .append("use")
-            .attr("xlink:href", d => d.leafUid.href);
-    
-        node.append("text")
-            .attr("clip-path", d => d.clipUid)
-            .attr("font-weight", d => d === root ? "bold" : null)
-        .selectAll("tspan")
-        .data(d => (d === root ? name(d) : d.data.name).split(/(?=[A-Z][^A-Z])/g).concat(format(d.value)))
-        .join("tspan")
-            .attr("x", 3)
-            .attr("y", (d, i, nodes) => `${(i === nodes.length - 1) * 0.3 + 1.1 + i * 0.9}em`)
-            .attr("fill-opacity", (d, i, nodes) => i === nodes.length - 1 ? 0.7 : null)
-            .attr("font-weight", (d, i, nodes) => i === nodes.length - 1 ? "normal" : null)
-            .text(d => d);
-    
-        group.call(position, root);
-    }
-    
-    function position(group, root) {
-        group.selectAll("g")
-            .attr("transform", d => d === root ? `translate(0,-30)` : `translate(${x(d.x0)/width},${y(d.y0/height)})`)
-        .select("rect")
-            .attr("width", d => d === root ? width : (x(d.x1) - x(d.x0))/width)
-            .attr("height", d => d === root ? 30 : (y(d.y1) - y(d.y0)))/height;
-    }
-    
-    // When zooming in, draw the new nodes on top, and fade them in.
-    function zoomin(d) {
-        const group0 = group.attr("pointer-events", "none");
-        const group1 = group = svg.append("g").call(render, d);
-    
-        x.domain([d.x0/width, d.x1/width]);
-        y.domain([d.y0/height, d.y1/height]);
-    
-        svg.transition()
-            .duration(750)
-            .call(t => group0.transition(t).remove()
-            .call(position, d.parent))
-            .call(t => group1.transition(t)
-            .attrTween("opacity", () => d3.interpolate(0, 1))
-            .call(position, d));
-    }
-    
-    // When zooming out, draw the old nodes on top, and fade them out.
-    function zoomout(d) {
-        const group0 = group.attr("pointer-events", "none");
-        const group1 = group = svg.insert("g", "*").call(render, d.parent);
-    
-        x.domain([d.parent.x0/width, d.parent.x1/width]);
-        y.domain([d.parent.y0/height, d.parent.y1/height]);
-    
-        svg.transition()
-            .duration(750)
-            .call(t => group0.transition(t).remove()
-            .attrTween("opacity", () => d3.interpolate(1, 0))
-            .call(position, d))
-            .call(t => group1.transition(t)
-            .call(position, d.parent));
-    }
-    
-    return svg.node();
-
-}
-*/
-
-
-const chart2 = (projData, propName)=>{
+var chart2 = (projData, propName)=>{
 
     let total = 0;
 
-    const formatting = (name, d)=>{
+    var formatting = (name, d)=>{
         if (Array.isArray(d)){
             let sum = propName===""?d.length:d.reduce((a,b)=>a+b[propName],0);
             total +=sum
@@ -267,14 +156,14 @@ const chart2 = (projData, propName)=>{
 
     let formattedData = formatting("GSAS", projData)
 
-    const root = treemap(formattedData);
+    var root = treemap(formattedData);
   
-    const svg = d3.select("#chartDiv")
+    var svg = d3.select("#chartDiv")
         .append("svg")
             .attr("viewBox", [0, 0, width, height])
             .style("font", "10px sans-serif");
   
-    const shadow = "idk" //DOM.uid("shadow");
+    var shadow = "idk" //DOM.uid("shadow");
   
     svg.append("filter")
         .attr("id", shadow.id)
@@ -283,7 +172,7 @@ const chart2 = (projData, propName)=>{
         .attr("dx", 0)
         .attr("stdDeviation", 3);
   
-    const node = svg.selectAll("g")
+    var node = svg.selectAll("g")
       .data(d3.group(root, d => d.height))
       .join("g")
         .attr("filter", shadow)
@@ -325,9 +214,9 @@ const chart2 = (projData, propName)=>{
     //return svg.node();
 }
 
-const name = d => d.ancestors().reverse().map(d => d.data.name).join("/")
-const format = d3.format(",d")
-const treemap = data => d3.treemap()
+var name = d => d.ancestors().reverse().map(d => d.data.name).join("/")
+var format = d3.format(",d")
+var treemap = data => d3.treemap()
         .size([width, height])
         .paddingOuter(3)
         .paddingTop(19)
@@ -337,4 +226,4 @@ const treemap = data => d3.treemap()
         .sum(d => d.value)
         .sort((a, b) => b.value - a.value))
 
-const color2 = d3.scaleSequential([5, 0], t=>`hsl(173,43%,${100*(0.21+0.65*t)}%)`)
+var color2 = d3.scaleSequential([5, 0], t=>`hsl(173,43%,${100*(0.21+0.65*t)}%)`)

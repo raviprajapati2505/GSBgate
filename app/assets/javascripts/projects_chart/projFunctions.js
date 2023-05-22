@@ -1,6 +1,6 @@
-const BLDGS = /Core \+ Shell|Districts|Education|Entertainment|Healthcare|Hotels|Industrial|Light Industry|Mosques|Parks|Railways|Residential - Single|Construction Site|Offices|Commercial|Residential|Hospitality|Sports|Transportation|Workers Accomodation|Operations|Premium Scheme|Standard Scheme|Homes|Healthy Building Mark|Energy Neutral Mark|Interiors|Energy Centers|Neighborhoods/g
+var BLDGS = /Core \+ Shell|Districts|Education|Entertainment|Healthcare|Hotels|Industrial|Light Industry|Mosques|Parks|Railways|Residential - Single|Construction Site|Offices|Commercial|Residential|Hospitality|Sports|Transportation|Workers Accomodation|Operations|Premium Scheme|Standard Scheme|Homes|Healthy Building Mark|Energy Neutral Mark|Interiors|Energy Centers|Neighborhoods/g
 
-const certfictionStage = (project)=>{
+var certfictionStage = (project)=>{
     let certifiedDescriptions = ["Certified","Certificate Generated","Certificate In Process"]
 
     switch (project["Certification Type"]){
@@ -27,7 +27,7 @@ const certfictionStage = (project)=>{
     }
 }
 
-const getStageDescription = (project)=>{
+var getStageDescription = (project)=>{
     switch (project["Certification Type"]){
         case "GSAS-CM":
             return (certfictionStage(project)==4)?"CM Certified":"Registered"
@@ -47,9 +47,9 @@ const getStageDescription = (project)=>{
     }
 }
 
-const getRating = (proj)=>proj["Certification Rating"].match(new RegExp("*","g")).length;
+var getRating = (proj)=>proj["Certification Rating"].match(new RegExp("*","g")).length;
 
-const trimNonValid  = (arr, year)=> {
+var trimNonValid  = (arr, year)=> {
   arr.forEach(p=>{
         let awarded = p["Certification Awarded On"];
         if (awarded!==undefined && awarded !== null && awarded.length>4 ) {
@@ -156,7 +156,7 @@ const trimNonValid  = (arr, year)=> {
     return res;
 }
 
-const addBuildings = (projArr)=>{
+var addBuildings = (projArr)=>{
     
     projArr.filter(p=>p["Certification Scheme"].substring(0,3) === "Mix" || p["Certification Scheme"].substring(0,3)==="Nei").forEach(p=>{
         
@@ -197,7 +197,7 @@ const addBuildings = (projArr)=>{
     return projArr;
 }
 
-const prepareAreaAttr = (projArr)=>{
+var prepareAreaAttr = (projArr)=>{
     return projArr.map(p=>{
         scheme = p["Certification Scheme"].substring(0,3)
         type = p["Certification Type"]
