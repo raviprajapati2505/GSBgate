@@ -53,3 +53,76 @@ EffectiveDatatables.setup do |config|
   # String size. Final byte size is about 1.5 times bigger, after rails signs it
   config.max_cookie_size = 2000
 end
+
+# Overrides Methods
+Effective::EffectiveDatatable::Compute.module_eval do
+  BLANK = ''.freeze
+
+  private
+
+  def compute
+    col = collection
+
+    # Assign total records
+    @total_records = (active_record_collection? ? column_tool.size(col) : value_tool.size(col))
+
+    # Apply scope
+    col = column_tool.scope(col)
+
+    # Apply column searching
+    col = column_tool.search(col)
+    @display_records = column_tool.size(col) unless value_tool.searched.present?
+
+    # Apply column ordering
+    col = column_tool.order(col)
+
+    # Arrayize if we have value tool work to do
+    col = arrayize(col) if value_tool.searched.present? || value_tool.ordered.present?
+
+    # Apply value searching
+    col = value_tool.search(col)
+    @display_records = value_tool.size(col) if value_tool.searched.present?
+
+    # Apply value ordering
+    col = value_tool.order(col)
+
+    # Write filtered & ordered data in tmp file for further use
+    store_json_in_file(col)
+    
+    # Apply pagination
+    col = col.kind_of?(Array) ? value_tool.paginate(col) : column_tool.paginate(col)
+
+    # Arrayize the searched, ordered, paginated results
+    col = arrayize(col) unless col.kind_of?(Array)
+
+    # Assign display records
+    @display_records ||= @total_records
+
+    # Compute aggregate data
+    @aggregates_data = aggregate(col) if _aggregates.present?
+
+    # Charts too
+    @charts_data = chart(col) if _charts.present?
+
+    # Format all results
+    format(col)
+
+    # Finalize hook
+    finalize(col)
+  end
+
+  def store_json_in_file(projects)
+    begin
+      base_path = File.join(Rails.root, 'tmp', 'projects_data')
+      FileUtils.mkdir_p(base_path) unless File.exist?(base_path)
+      filename = File.join(base_path, "project_data.json")
+
+      File.open(filename, "w") do |f|
+        f.write(projects.to_json)
+      end
+
+    rescue StandardError => e
+      puts "-------------------- #{e.message} --------------------"
+    end
+  end
+end

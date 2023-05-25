@@ -190,6 +190,8 @@ class ProjectsController < AuthenticatedController
     @projects = []
     
     projects.each do |data|
+      certification_path = CertificationPath.find_by(id: data.dig('certification_path_id'))
+      certificate = Certificate.find_by_name(data.dig('certificate_name'))
 
       formatted_data = 
 
@@ -208,23 +210,24 @@ class ProjectsController < AuthenticatedController
           t('models.effective.datatables.projects.lables.project_developer_business_sector') => data.dig('project_developer_business_sector'),
 
           t('models.effective.datatables.projects_certification_paths.rating.label') => "#{
-                                                                                            certification_path = CertificationPath.find_by(id: data.dig('certification_path_id'))
 
                                                                                             if certification_path.present?
                                                                                               score = data.dig('total_achieved_score')
 
                                                                                               unless score == "" || score.nil?
-                                                                                                if certification_path&.certificate&.design_and_build?
+                                                                                                if certificate&.design_and_build?
                                                                                                   score = 0 if score < 0
                                                                                                 end
                                                                                     
                                                                                                 if certification_path&.construction? && !certification_path&.is_activating?
 
-                                                                                                  scheme_mix = certification_path&.scheme_mixes&.first
-                                                                                                  score_all = score_calculation(scheme_mix)
-                                                                                                  score_all = final_cm_revised_avg_scores(certification_path, score_all)
+                                                                                                  # scheme_mix = certification_path&.scheme_mixes&.first
+                                                                                                  # score_all = score_calculation(scheme_mix)
+                                                                                                  # score_all = final_cm_revised_avg_scores(certification_path, score_all)
                                                                                                 
-                                                                                                  score = score_all[:achieved_score_in_certificate_points]
+                                                                                                  # score = score_all[:achieved_score_in_certificate_points]
+
+                                                                                                  score
                                                                                                 end
                                                                                     
                                                                                                 if data.dig('certificate_gsas_version') == 'v2.1 Issue 1.0' 
@@ -242,7 +245,7 @@ class ProjectsController < AuthenticatedController
                                                                                                 score = nil
                                                                                               end
                                                                                               
-                                                                                              ratings = certification_path&.rating_for_score(score.to_f, certificate: certification_path&.certificate, is_achieved_score: true)
+                                                                                              ratings = certification_path&.rating_for_score(score.to_f, certificate: certificate, is_achieved_score: true)
 
                                                                                               ratings = 
                                                                                                 if ['1', '2', '3', '4', '5', '6'].include?(ratings&.to_s)
@@ -269,20 +272,20 @@ class ProjectsController < AuthenticatedController
           t('models.effective.datatables.projects.lables.construction_year') => data.dig('project_construction_year'),
           
           t('models.effective.datatables.projects_certification_paths.certificate_id.label') => "#{
-                                                                                                  if certification_path.present?
-                                                                                                    Certificate.find_by_name(data.dig('certificate_name'))&.only_certification_name
+                                                                                                  if certificate.present?
+                                                                                                    certificate&.only_certification_name
                                                                                                   end
                                                                                                 }",
                                                                                                 
           t('models.effective.datatables.projects_certification_paths.certificate_stage.label') =>  "#{
-                                                                                                        if certification_path.present?
-                                                                                                          certification_path.certificate&.stage_title
+                                                                                                        if certificate.present?
+                                                                                                          certificate&.stage_title
                                                                                                         end
                                                                                                       }",
                                                                                                       
           t('models.effective.datatables.projects_certification_paths.certificate_version.label') => "#{
-                                                                                                        if certification_path.present?
-                                                                                                          Certificate.find_by_name(data.dig('certificate_name'))&.only_version
+                                                                                                        if certificate.present?
+                                                                                                          certificate&.only_version
                                                                                                         end
                                                                                                       }",
 

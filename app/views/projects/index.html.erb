@@ -12,12 +12,10 @@
                 <%= btn_link_to(new_project_path, icon: 'building-o', text: t('.btn_new_project')) %>
             <% end %>
 
-            <%= btn_tag({id: 'projects-chart-button', icon: 'pie-chart', text: 'Projects Chart', disabling: true, data: { disable_with: true }}) %>
+            <%= btn_tag({id: 'projects-chart-button', icon: 'pie-chart', text: 'Projects Statistics', disabling: true, data: { disable_with: true }}) %>
         </div>
     </div>
 </div>
-
-<% store_json_in_file(@datatable.collection.records.to_json) %>
 
 <!-- Display projects chart -->
 <div id='projects-chart-div' class="modal fade"></div>

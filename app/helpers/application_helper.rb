@@ -938,12 +938,6 @@ module ApplicationHelper
     end
   end
 
-  def store_json_in_file(projects)
-    File.open("tmp/projects_data/project_data.json", "w") do |f|
-      f.write(projects)
-    end
-  end
-
   FONTS_DIR = '/app/assets/fonts/reports'
   IMAGES_DIR = '/app/assets/images/reports/'
 
