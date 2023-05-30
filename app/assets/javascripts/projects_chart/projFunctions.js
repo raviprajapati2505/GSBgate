@@ -213,6 +213,9 @@ var prepareAreaAttr = (projArr)=>{
  
         pNumber = ["Dis", "Par", "Nei", "GSAS-CM"].includes(scheme)
         cNumber =  !pNumber
+
+        pArea = parseInt(pArea)
+        cArea = parseInt(cArea)
         
         return {...p, pArea, cArea, cNumber, pNumber, combinedArea: pArea+cArea}
 

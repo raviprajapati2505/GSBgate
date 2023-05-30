@@ -4,6 +4,23 @@
 <%= javascript_include_tag 'projects_chart/helpers' %>
 <%= javascript_include_tag 'projects_chart/graph' %>
 
+<style>
+  .modal-lg {
+    width: 1300px;
+  }
+  .filterBoxDiv .filterItemDiv {
+      display: inline-block;
+      padding-left: 19px;
+  }
+  table.details{
+    background: linear-gradient(90deg, #61a60e, #3b5c15)
+  }
+  .modal-lg button {
+      background: linear-gradient(90deg, #61a60e, #3b5c15);
+      color: #fff;
+  }
+</style>
+
 <div class="modal-dialog modal-lg" role="document">
   <div class="modal-content">
     <div class="modal-header">
@@ -14,73 +31,87 @@
     </div>
     <div class="modal-body">
       <div class="row">
-        <div class="col-md-12">
-          <div class="row">
-            <div class="col-md-4">
-              <label for="cutoff-year">
-                Cut-off Date
-              </label>
-              <br />
-              <input type="date" placeholder="Cut-off Date" id="cutoff-year" name="cutoff-year" value="2023-01-01" >
+        <div class="col-md-3">
+            <label for="cutoff-year">
+              Cut-off Date
+            </label>
+            <br />
+            <input type="date" placeholder="Cut-off Date" id="cutoff-year" name="cutoff-year" value="2023-01-01" >
+        </div>
+        <div class="col-md-3">
+          <div>
+            <label for="filter1">Group By</label>
+            <select id="filter1" name="filter1">
+            </select>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div><label for="filter2">Then Group By</label><select id="filter2" name="filter2"></select></div>
+        </div>
+        <div class="col-md-3">
+          <div><label for="filter3">Then Group By</label><select id="filter3" name="filter3"></select></div>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-md-3">
+            <div><label for="filter4">Then Group By</label><select id="filter4" name="filter4"></select></div>
+        </div>
+        <div class="col-md-3">
+          <div><label for="filter5">Then Group By</label><select id="filter5" name="filter5"></select></div>
+        </div>
+        <div class="col-md-3">
+          <div><label for="filter6">Then Group By</label><select id="filter6" name="filter6"></select></div>
+        </div>
+        <div class="col-md-3">
+          <div>
+              <label for="graphSelect">Chart By</label>
+              <select id="graphSelect" name="graphSelect">
+              </select>
             </div>
-            <div class="col-md-4">
-              <div><label for="filter1">Group By</label><select id="filter1" name="filter1"></select></div>
-              <div><label for="filter2">Then Group By</label><select id="filter2" name="filter2"></select></div>
-              <div><label for="filter3">Then Group By</label><select id="filter3" name="filter3"></select></div>
-              <div><label for="filter4">Then Group By</label><select id="filter4" name="filter4"></select></div>
-              <div><label for="filter5">Then Group By</label><select id="filter5" name="filter5"></select></div>
-              <div><label for="filter6">Then Group By</label><select id="filter6" name="filter6"></select></div>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-md-3">
+          <div>
+            <label for="graphChart">Chart Type</label>
+            <select id="graphChart" name="graphChart">
+              <option value="1">Sunburst</option>
+              <option value="2">Treemap</option>
+            </select>
+            <div id="errorBox" hidden></div>
+          </div>
+        </div>
+        <div class="col-md-9">
+          <button onclick="drawTables()">Refine Data</button>
+          <button class="m-2" onclick="exportToExcel()">Download Data</button>
+          <button class="m-2" onclick="copyTable()">Copy to Clipboard</button>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-md-12">
+            <div id="advancedFilters" class="horizontal">
               <hr>
-              <div>
-                <label for="graphSelect">Chart By</label>
-                <select id="graphSelect" name="graphSelect">
-                </select>
-              </div>
-              <div>
-                <label for="graphChart">Chart Type</label>
-                <select id="graphChart" name="graphChart">
-                  <option value="1">Sunburst</option>
-                  <option value="2">Treemap</option>
-                </select>
-                <div id="errorBox" hidden></div>
-              </div>
             </div>
-            <div class="col-md-4">
-              <button onclick="drawTables()">Refine Data</button>
-              <br />
-              <button class="m-2" onclick="exportToExcel()">Download Data</button>
-              <br />
-              <button class="m-2" onclick="copyTable()">Copy to Clipboard</button>
-            </div>
-          </div>
         </div>
-
-        <div class="col-md-12">
-          <div class="row">
-            <div class="col-md-12">
-              <div id="advancedFilters" class="horizontal">
-                <hr>
-              </div>
-
-              <div>
-                <h1 class="primaryColor">Project Data Summary</h1>
-                <div id="certData" class="noScrollbar"></div>
-              </div>
-
-              <div>
-                <h1 class="primaryColor">Projects Chart</h1>
-                <div id="chartDiv"></div>
-              </div>
-
-              <div>
-                <a hidden id="downloadAnchorElem"></a>
-              </div>
-
-              <div id="loader" class="loader"></div>
-              <div id="modal" class="project-info-modal"></div>
-            </div>
-          </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-md-6">
+            <h2 class="primaryColor">Project Data Summary</h1>
+            <div id="certData" class="noScrollbar"></div>
         </div>
+        <div class="col-md-6">
+          <h2 class="primaryColor">Projects Chart</h1>
+          <div id="chartDiv"></div>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div id="loader" class="loader"></div>
+        <div id="modal" class="project-info-modal"></div>
       </div>
     </div>
 
@@ -89,5 +120,4 @@
     </div>
   </div>
 </div>
-
 
