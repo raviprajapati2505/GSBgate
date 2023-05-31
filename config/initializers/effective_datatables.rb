@@ -121,6 +121,9 @@ Effective::EffectiveDatatable::Compute.module_eval do
         f.write(projects.to_json)
       end
 
+    rescue IOError => e
+      puts "-------------------- #{e.message} --------------------"
+
     rescue StandardError => e
       puts "-------------------- #{e.message} --------------------"
     end

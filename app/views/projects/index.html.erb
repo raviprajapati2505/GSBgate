@@ -12,7 +12,9 @@
                 <%= btn_link_to(new_project_path, icon: 'building-o', text: t('.btn_new_project')) %>
             <% end %>
 
-            <%= btn_tag({id: 'projects-chart-button', icon: 'pie-chart', text: 'Projects Statistics', disabling: true, data: { disable_with: true }}) %>
+            <% if can? :get_projects_chart, Project %>
+              <%= btn_tag({id: 'projects-chart-button', icon: 'pie-chart', text: 'Projects Statistics', disabling: true, data: { disable_with: true }}) %>
+            <% end %>
         </div>
     </div>
 </div>
