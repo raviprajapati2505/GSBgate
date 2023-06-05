@@ -55,8 +55,8 @@ function listKeysByLevel(obj) {
 }
 
 
-var copyTableNode = ()=>{
-  var textToCopy = document.getElementById("detailsTable")?.cloneNode(true);
+var copyTableNode = () => {
+  var textToCopy = document.getElementById("detailsTable").cloneNode(true);
 
   if (textToCopy===null || textToCopy===undefined) {
       showError("No table is shown. Press Refine Data Button")
