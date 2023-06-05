@@ -24,7 +24,7 @@
 
 <script>
     $(document).ready(function(){
-        if(<%= current_user.record_checker? %>) {
+        if(<%= current_user.is_record_checker? %>) {
             $('.btn-group').find('.buttons-copy, .buttons-csv, .buttons-print').css('display', 'none')
             $('.ibox-content').addClass('unselectable')
             $(document).on('keydown', function(e) {

@@ -530,7 +530,7 @@ class Ability
       cannot [:index, :show, :copy_project_survey, :new, :create, :edit, :update, :destroy, :export_survey_results, :export_excel_survey_results], ProjectsSurvey
       cannot [:index, :download_linkme_survey_data], LinkmeSurvey
       can [:index, :upload_document], :dashboard
-    elsif user.credentials_admin?
+    elsif user.is_credentials_admin?
       # Task
       can :read, Task
       can :count, Task

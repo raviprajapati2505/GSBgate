@@ -149,7 +149,7 @@
           background: rgba($primary, 0.7);
           min-width: 200px;
           > .d-flex {
-            margin-top: min(max(40px, 3.125vw), 60px);
+            margin-top: calc(min(max(40px, 3.125vw), 60px));
           }
           h2 {
             font-weight: 600 !important;

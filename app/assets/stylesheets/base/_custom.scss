@@ -520,7 +520,7 @@ hr {
     top: 12px !important;
   }
   .select2-container .select2-choice {
-    height: min(max(25px, 1.93vw), 35px);
+    height: calc(min(max(25px, 1.93vw), 35px));
     background-image: none;
     background-color: $white;
     border-color: $light-gray;
@@ -560,7 +560,7 @@ hr {
   align-items: center;
   flex-wrap: nowrap;
   .after-login-img {
-    width: min(max(100px, 19.685vw), 377px);
+    width: calc(min(max(100px, 19.685vw), 377px));
     height: auto;
     min-width: 100px;
     max-width: 200px;
@@ -571,7 +571,7 @@ hr {
     justify-content: space-between;
     min-height: auto;
     padding: 1rem;
-    height: min(max(60px, 5.208vw), 100px);
+    height: calc(min(max(60px, 5.208vw), 100px));
     @media (max-width: 768px) {
       width: 100%;
       padding: 1rem 0;

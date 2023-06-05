@@ -377,16 +377,17 @@ class ProjectsController < AuthenticatedController
     unless project_params.has_key?(:service_provider)
       @project.service_provider = current_user.organization_name
     end
-
-    @project.transaction do
+    @project.transaction(joinable:false) do
       if @project.save
-        certification_team_type = @project.certificate_type == 3 ? ProjectsUser.certification_team_types["Letter of Conformance"] : ProjectsUser.certification_team_types["Other"]
-        projects_user = ProjectsUser.new(project: @project, user: current_user, role: ProjectsUser.roles[:cgp_project_manager], certification_team_type: certification_team_type)
-        if projects_user.save
-          redirect_to @project, notice: 'Project was successfully created.'
-          return
+        @project.transaction(requires_new: true, joinable: false) do
+          certification_team_type = @project.certificate_type == 3 ? ProjectsUser.certification_team_types["Letter of Conformance"] : ProjectsUser.certification_team_types["Other"]
+          projects_user = ProjectsUser.new(project: @project, user: current_user, role: ProjectsUser.roles[:cgp_project_manager], certification_team_type: certification_team_type)
+          if projects_user.save
+            redirect_to @project, notice: 'Project was successfully created.'
+            return
+          end
+          render :new
         end
-        render :new
       else
         render :new
       end

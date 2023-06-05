@@ -11,7 +11,7 @@ module Effective
 
       datatable do
         col :name do |rec|          
-          link_to_if(current_user.credentials_admin?,
+          link_to_if(current_user.is_credentials_admin?,
             rec.name,
             dashboard_user_path(rec.id)
           )

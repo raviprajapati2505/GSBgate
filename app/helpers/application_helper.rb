@@ -34,7 +34,7 @@ module ApplicationHelper
   def manage_schemes_options(certification_path, assessment_method)
     schemes = certification_path&.development_type&.schemes&.select("DISTINCT ON (schemes.name) schemes.*")
 
-    unless current_user.is_system_admin?
+#    unless current_user.is_system_admin?
       # exclude schemes which were renamed.
 #      if assessment_method == 1 && current_user.service_provider.present?
 #        allowed_schemes = current_user.valid_user_sp_licences.pluck(:schemes).flatten.uniq
@@ -938,9 +938,9 @@ module ApplicationHelper
     end
   end
 
-  FONTS_DIR = '/app/assets/fonts/reports'
-  IMAGES_DIR = '/app/assets/images/reports/'
-
+  FONTS_DIR = "/app/assets/fonts/reports"
+  IMAGES_DIR = "/app/assets/images/reports/"
+ 
   def newline(amount = 1)
     text "\n" * amount
   end
