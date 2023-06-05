@@ -12,7 +12,7 @@
                 <%= btn_link_to(new_project_path, icon: 'building-o', text: t('.btn_new_project')) %>
             <% end %>
 
-            <% if can? :get_projects_chart, Project %>
+            <% if can? :get_projects_statistics, Project %>
               <%= btn_tag({id: 'projects-chart-button', icon: 'pie-chart', text: 'Projects Statistics', disabling: true, data: { disable_with: true }}) %>
             <% end %>
         </div>
@@ -40,7 +40,7 @@
 
         $("#projects-chart-button").on('click', function(){
           $.ajax({
-              url: "/projects/get_projects_chart",
+              url: "/projects/get_projects_statistics",
               method: "GET",
               error: function() {
                   alert('Something went wrong !');

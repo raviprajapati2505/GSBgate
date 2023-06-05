@@ -1,4 +1,4 @@
-$('#projects-chart-div').html("<%= escape_javascript(render partial: 'projects_chart', locals: { projects: @projects }) %>");
+$('#projects-chart-div').html("<%= escape_javascript(render partial: 'projects_statistics', locals: { projects: @projects }) %>");
 $('#projects-chart-div').modal('show');
 
 

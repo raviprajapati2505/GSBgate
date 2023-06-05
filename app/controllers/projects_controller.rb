@@ -1,8 +1,8 @@
 class ProjectsController < AuthenticatedController
   include ApplicationHelper
   include ActionView::Helpers::TranslationHelper
-  load_and_authorize_resource :project, except: [:country_locations, :country_city_districts, :get_projects_chart]
-  before_action :set_controller_model, except: [:new, :create, :index, :get_projects_chart]
+  load_and_authorize_resource :project, except: [:country_locations, :country_city_districts, :get_projects_statistics]
+  before_action :set_controller_model, except: [:new, :create, :index, :get_projects_statistics]
 
   def index
     respond_to do |format|
@@ -184,14 +184,16 @@ class ProjectsController < AuthenticatedController
     end
   end
 
-  def get_projects_chart
+  def get_projects_statistics
     projects = JSON.parse(File.read("tmp/projects_data/project_data.json"))
 
     @projects = []
     
+    certification_paths = CertificationPath.eager_load(:certificate).where(id: projects.pluck('certification_path_id'))
+
     projects.each do |data|
-      certification_path = CertificationPath.find_by(id: data.dig('certification_path_id'))
-      certificate = Certificate.find_by_name(data.dig('certificate_name'))
+      certification_path = certification_paths.find { |cp| cp.id == data.dig('certification_path_id')}
+      certificate = certification_path&.certificate
 
       formatted_data = 
 
@@ -203,23 +205,22 @@ class ProjectsController < AuthenticatedController
           t('models.effective.datatables.projects.lables.owner') => data.dig('project_owner'),
           t('models.effective.datatables.projects.lables.developer') => data.dig('project_developer'),
           t('models.effective.datatables.projects.lables.project_gross_area') => data.dig('project_gross_area'),
-          "Country" => data.dig('project_country'),
-          "City" => data.dig('project_city'),
-          "District" => data.dig('project_district'),
+          t('models.effective.datatables.projects.lables.project_country') => data.dig('project_country'),
+          t('models.effective.datatables.projects.lables.project_city') => data.dig('project_city'),
+          t('models.effective.datatables.projects.lables.project_district') => data.dig('project_district'),
           t('models.effective.datatables.projects.lables.project_owner_business_sector') => data.dig('project_owner_business_sector'),
           t('models.effective.datatables.projects.lables.project_developer_business_sector') => data.dig('project_developer_business_sector'),
 
           t('models.effective.datatables.projects_certification_paths.rating.label') => "#{
-
                                                                                             if certification_path.present?
                                                                                               score = data.dig('total_achieved_score')
 
                                                                                               unless score == "" || score.nil?
-                                                                                                if certificate&.design_and_build?
+                                                                                                if data.dig('certificate_type')&.to_i == 3
                                                                                                   score = 0 if score < 0
                                                                                                 end
                                                                                     
-                                                                                                if certification_path&.construction? && !certification_path&.is_activating?
+                                                                                                if data.dig('certificate_type')&.to_i == 1 && data.dig('certification_path_certification_path_status_id')&.to_i != CertificationPathStatus::ACTIVATING
 
                                                                                                   # scheme_mix = certification_path&.scheme_mixes&.first
                                                                                                   # score_all = score_calculation(scheme_mix)
@@ -263,19 +264,13 @@ class ProjectsController < AuthenticatedController
                                                                                             end
                                                                                           }",
 
-          t('models.effective.datatables.projects_certification_paths.assessment_method.label') => "#{
-                                                                                                      if certification_path.present?
-                                                                                                        certification_assessment_type_title(certification_path.certification_path_method&.assessment_method)
-                                                                                                      end
-                                                                                                    }",
-
           t('models.effective.datatables.projects.lables.construction_year') => data.dig('project_construction_year'),
           
           t('models.effective.datatables.projects_certification_paths.certificate_id.label') => "#{
-                                                                                                  if certificate.present?
-                                                                                                    certificate&.only_certification_name
-                                                                                                  end
-                                                                                                }",
+                                                                                                    if certificate.present?
+                                                                                                      certificate&.only_certification_name
+                                                                                                    end
+                                                                                                  }",
                                                                                                 
           t('models.effective.datatables.projects_certification_paths.certificate_stage.label') =>  "#{
                                                                                                         if certificate.present?
@@ -284,10 +279,10 @@ class ProjectsController < AuthenticatedController
                                                                                                       }",
                                                                                                       
           t('models.effective.datatables.projects_certification_paths.certificate_version.label') => "#{
-                                                                                                        if certificate.present?
-                                                                                                          certificate&.only_version
-                                                                                                        end
-                                                                                                      }",
+                                                                                                          if certificate.present?
+                                                                                                            certificate&.only_version
+                                                                                                          end
+                                                                                                        }",
 
           t('models.effective.datatables.projects_certification_paths.certification_path_development_type.label') => "#{
                                                                                                                           case data.dig('certification_scheme_name')
@@ -302,7 +297,7 @@ class ProjectsController < AuthenticatedController
 
           t('models.effective.datatables.projects_certification_paths.certification_path_certification_path_status_id.label') =>  "#{ 
                                                                                                                                       if data.dig('certification_path_status_name') == "Certificate In Process"
-                                                                                                                                        certification_path&.status
+                                                                                                                                        "Certificate Generated"
                                                                                                                                       else
                                                                                                                                         data.dig('certification_path_status_name')
                                                                                                                                       end
@@ -310,9 +305,8 @@ class ProjectsController < AuthenticatedController
                                                                                                                                   
           t('models.effective.datatables.projects_certification_paths.certification_path_certified_at.label') => data.dig('certification_path_certified_at')&.to_date&.strftime('%e-%b-%y'),
           
-          
           t('models.effective.datatables.projects_certification_paths.certification_scheme_name.label') => "#{
-                                                                                                              if Project.find_by(code: data.dig('project_code')).design_and_build? && ["Neighborhoods", "Mixed Use"].include?(data.dig('development_type_name'))
+                                                                                                              if data.dig('certificate_type')&.to_i == 3 && ["Neighborhoods", "Mixed Use"].include?(data.dig('development_type_name'))
                                                                                                                 data.dig('development_type_name')
                                                                                                               elsif data.dig('development_type_name') == "Districts"
                                                                                                                 "Districts"
@@ -333,7 +327,7 @@ class ProjectsController < AuthenticatedController
 
           t('models.effective.datatables.projects_certification_paths.certification_path_started_at.label') => data.dig('certification_path_started_at')&.to_date&.strftime('%e-%b-%y'),
 
-          t('models.effective.datatables.projects_certification_paths.certification_path_pcr_track.label') => certification_path&.pcr_track,
+          t('models.effective.datatables.projects_certification_paths.certification_path_pcr_track.label') => data.dig('certification_path_pcr_track'),
 
           t('models.effective.datatables.projects_certification_paths.building_types.label') => data.dig('building_type_name'),
 
