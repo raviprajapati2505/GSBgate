@@ -1,42 +1,15 @@
-<%= javascript_include_tag 'projects_chart/parser' %>
-<%= javascript_include_tag 'projects_chart/index' %>
-<%= javascript_include_tag 'projects_chart/projFunctions' %>
-<%= javascript_include_tag 'projects_chart/helpers' %>
-<%= javascript_include_tag 'projects_chart/graph' %>
+<script src="https://d3js.org/d3.v7.min.js"></script>
 
-<style>
-  .modal-lg {
-    width: 1300px;
-  }
-  .filterBoxDiv .filterItemDiv {
-      display: inline-block;
-      padding-left: 19px;
-  }
-  table.details{
-    background: linear-gradient(90deg, #61a60e, #3b5c15)
-  }
-  .modal-lg button {
-      background: linear-gradient(90deg, #61a60e, #3b5c15);
-      color: #fff;
-  }
-</style>
-
-<div class="modal-dialog modal-lg" role="document">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <div class="row">
+<div class="col-md-12 ps-main">
+  <div class="ibox">
+    <div class="ibox-content px-0 pt-0">
+      <div class="row mt-3">
         <div class="col-md-3">
-            <label for="cutoff-year">
-              Cut-off Date
-            </label>
-            <br />
-            <input type="date" placeholder="Cut-off Date" id="cutoff-year" name="cutoff-year" value="2023-01-01" >
+          <label for="cutoff-year">
+            Cut-off Date
+          </label>
+          <br />
+          <input type="date" placeholder="Cut-off Date" id="cutoff-year" name="cutoff-year" value="2023-01-01">
         </div>
         <div class="col-md-3">
           <div>
@@ -53,9 +26,9 @@
         </div>
       </div>
       <br>
-      <div class="row">
+      <div class="row mt-3">
         <div class="col-md-3">
-            <div><label for="filter4">Then Group By</label><select id="filter4" name="filter4"></select></div>
+          <div><label for="filter4">Then Group By</label><select id="filter4" name="filter4"></select></div>
         </div>
         <div class="col-md-3">
           <div><label for="filter5">Then Group By</label><select id="filter5" name="filter5"></select></div>
@@ -65,14 +38,14 @@
         </div>
         <div class="col-md-3">
           <div>
-              <label for="graphSelect">Chart By</label>
-              <select id="graphSelect" name="graphSelect">
-              </select>
-            </div>
+            <label for="graphSelect">Chart By</label>
+            <select id="graphSelect" name="graphSelect">
+            </select>
+          </div>
         </div>
       </div>
       <br>
-      <div class="row">
+      <div class="row mt-3">
         <div class="col-md-3">
           <div>
             <label for="graphChart">Chart Type</label>
@@ -89,34 +62,54 @@
         </div>
       </div>
       <br>
-      <div class="row">
+      <div class="row mt-3">
         <div class="col-md-12">
-            <div id="advancedFilters" class="horizontal">
-              <hr>
-            </div>
+          <div id="advancedFilters" class="horizontal">
+            <hr>
+          </div>
         </div>
       </div>
       <br>
-      <div class="row">
+      <div class="row mt-3">
         <div class="col-md-6">
-            <h2 class="primaryColor">Project Data Summary</h1>
+          <h2 class="primaryColor">Project Data Summary</h1>
             <div id="certData" class="noScrollbar"></div>
         </div>
         <div class="col-md-6">
           <h2 class="primaryColor">Projects Chart</h1>
-          <div id="chartDiv"></div>
+            <div id="chartDiv"></div>
         </div>
       </div>
       <br>
-      <div class="row">
+      <div class="row mt-3">
         <div id="loader" class="loader"></div>
         <div id="modal" class="project-info-modal"></div>
       </div>
     </div>
-
-    <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-    </div>
   </div>
 </div>
 
+<%= javascript_include_tag 'projects_chart/parser' %>
+<%= javascript_include_tag 'projects_chart/index' %>
+<%= javascript_include_tag 'projects_chart/projFunctions' %>
+<%= javascript_include_tag 'projects_chart/helpers' %>
+<%= javascript_include_tag 'projects_chart/graph' %>
+
+<script>
+  $(function () {
+    // call the function
+    projects = <%= @projects.to_json.html_safe %>
+
+      function loadFile() {
+        return trimNonValid(projects, "2023-01-01")
+      }
+
+    function addProjects() {
+      projects = loadFile(projects);
+      prepareInputBox();
+    }
+
+    addProjects();
+    drawTables();
+  });
+</script>

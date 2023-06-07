@@ -1,8 +1,8 @@
-var parseNumber = (numberString)=>{   
+const parseNumber = (numberString)=>{   
   return Math.floor( parseInt(numberString)*10.764 )
 }
 
-var groupByKey = (arr, key)=>{
+const groupByKey = (arr, key)=>{
     let res = {};
     
     arr.forEach(p=>{
@@ -16,7 +16,7 @@ var groupByKey = (arr, key)=>{
     return res;
 }
 
-var groupByMultipleKeys = (projObj, keyArray, excluded, id)=>{
+const groupByMultipleKeys = (projObj, keyArray, excluded, id)=>{
     if (id===undefined) id=0;
     if (id === keyArray.length) return projObj;
     
@@ -55,7 +55,7 @@ function listKeysByLevel(obj) {
 }
 
 
-var copyTableNode = () => {
+const copyTableNode = () => {
   var textToCopy = document.getElementById("detailsTable").cloneNode(true);
 
   if (textToCopy===null || textToCopy===undefined) {

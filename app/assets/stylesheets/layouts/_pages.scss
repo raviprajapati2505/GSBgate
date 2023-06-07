@@ -1486,3 +1486,17 @@ th {
 .projectHidden {
   display: none;
 }
+
+.filterBoxDiv .filterItemDiv {
+  display: inline-block;
+  padding-left: 19px;
+}
+
+.ps-main table.details {
+  background: linear-gradient(90deg, #61a60e, #3b5c15)
+}
+
+.ps-main button {
+  background: linear-gradient(90deg, #61a60e, #3b5c15);
+  color: #fff;
+}

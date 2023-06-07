@@ -1,6 +1,6 @@
 var BLDGS = /Core \+ Shell|Districts|Education|Entertainment|Healthcare|Hotels|Industrial|Light Industry|Mosques|Parks|Railways|Residential - Single|Construction Site|Offices|Commercial|Residential|Hospitality|Sports|Transportation|Workers Accomodation|Operations|Premium Scheme|Standard Scheme|Homes|Healthy Building Mark|Energy Neutral Mark|Interiors|Energy Centers|Neighborhoods/g
 
-var certfictionStage = (project)=>{
+const certfictionStage = (project)=>{
     let certifiedDescriptions = ["Certified","Certificate Generated","Certificate In Process"]
 
     switch (project["Certification Type"]){
@@ -27,7 +27,7 @@ var certfictionStage = (project)=>{
     }
 }
 
-var getStageDescription = (project)=>{
+const getStageDescription = (project)=>{
     switch (project["Certification Type"]){
         case "GSAS-CM":
             return (certfictionStage(project)==4)?"CM Certified":"Registered"
@@ -49,7 +49,7 @@ var getStageDescription = (project)=>{
 
 var getRating = (proj)=>proj["Certification Rating"].match(new RegExp("*","g")).length;
 
-var trimNonValid  = (arr, year)=> {
+const trimNonValid  = (arr, year)=> {
   arr.forEach(p=>{
         let awarded = p["Certification Awarded On"];
         if (awarded!==undefined && awarded !== null && awarded.length>4 ) {
@@ -156,7 +156,7 @@ var trimNonValid  = (arr, year)=> {
     return res;
 }
 
-var addBuildings = (projArr)=>{
+const addBuildings = (projArr)=>{
     
     projArr.filter(p=>p["Certification Scheme"].substring(0,3) === "Mix" || p["Certification Scheme"].substring(0,3)==="Nei").forEach(p=>{
         
@@ -197,7 +197,7 @@ var addBuildings = (projArr)=>{
     return projArr;
 }
 
-var prepareAreaAttr = (projArr)=>{
+const prepareAreaAttr = (projArr)=>{
     return projArr.map(p=>{
         scheme = p["Certification Scheme"].substring(0,3)
         type = p["Certification Type"]

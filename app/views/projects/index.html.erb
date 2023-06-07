@@ -1,5 +1,3 @@
-<script src="https://d3js.org/d3.v7.min.js"></script>
-
 <div class="col-md-12">
     <div class="ibox">
         <!-- <div class="ibox-title">
@@ -12,15 +10,12 @@
                 <%= btn_link_to(new_project_path, icon: 'building-o', text: t('.btn_new_project')) %>
             <% end %>
 
-            <% if can? :get_projects_statistics, Project %>
-              <%= btn_tag({id: 'projects-chart-button', icon: 'pie-chart', text: 'Projects Statistics', disabling: true, data: { disable_with: true }}) %>
+            <% if can? :projects_statistics, Project %>
+              <%= btn_link_to(projects_statistics_projects_path,  icon: 'pie-chart', text: 'Projects Statistics') %>
             <% end %>
         </div>
     </div>
 </div>
-
-<!-- Display projects chart -->
-<div id='projects-chart-div' class="modal fade"></div>
 
 <script>
     $(document).ready(function(){
@@ -37,16 +32,6 @@
         }
         $('body').addClass('page-bg-dark');
         $('.dataTables_entries').parent().closest('div').addClass('dataTable-pagination');
-
-        $("#projects-chart-button").on('click', function(){
-          $.ajax({
-              url: "/projects/get_projects_statistics",
-              method: "GET",
-              error: function() {
-                  alert('Something went wrong !');
-              }
-          });
-        });
     });
 </script>
 

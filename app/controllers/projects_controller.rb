@@ -1,8 +1,8 @@
 class ProjectsController < AuthenticatedController
   include ApplicationHelper
   include ActionView::Helpers::TranslationHelper
-  load_and_authorize_resource :project, except: [:country_locations, :country_city_districts, :get_projects_statistics]
-  before_action :set_controller_model, except: [:new, :create, :index, :get_projects_statistics]
+  load_and_authorize_resource :project, except: [:country_locations, :country_city_districts, :projects_statistics]
+  before_action :set_controller_model, except: [:new, :create, :index, :projects_statistics]
 
   def index
     respond_to do |format|
@@ -184,7 +184,8 @@ class ProjectsController < AuthenticatedController
     end
   end
 
-  def get_projects_statistics
+  def projects_statistics
+    @page_title = t('projects.projects_statistics.title_html')
     projects = JSON.parse(File.read("tmp/projects_data/project_data.json"))
 
     @projects = []
@@ -335,10 +336,6 @@ class ProjectsController < AuthenticatedController
         }
 
       @projects.push(formatted_data)
-    end
-    
-    respond_to do |format|
-      format.js { render layout: false }
     end
   end
 

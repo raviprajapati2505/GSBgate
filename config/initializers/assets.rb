@@ -14,8 +14,8 @@ Rails.application.config.assets.paths << Rails.root.join('node_modules')
 # folder are already added.
 # Rails.application.config.assets.precompile += %w( admin.js admin.css )
 Rails.application.config.assets.precompile += %w( projects_chart/parser.js )
-Rails.application.config.assets.precompile += %w( projects_chart/index.js )
 Rails.application.config.assets.precompile += %w( projects_chart/projFunctions.js )
+Rails.application.config.assets.precompile += %w( projects_chart/index.js )
 Rails.application.config.assets.precompile += %w( projects_chart/helpers.js )
 Rails.application.config.assets.precompile += %w( projects_chart/graph )
 

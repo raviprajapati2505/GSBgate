@@ -54,9 +54,8 @@ var appendData = async()=>{
 }
 */
 
-// async function loadFile(file) {
-//     let text = await file.text();  
-//     return trimNonValid(CSVToArray (text), new Date(yearElement.value))
+// function loadFile(projects) {
+//   return trimNonValid(projects, "2023-01-01");
 // }
 
 function prepareInputBox() {

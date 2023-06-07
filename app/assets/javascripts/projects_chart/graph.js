@@ -2,9 +2,9 @@ var width = 500;
 var height = 680;
 var radius = width/6;
 
-var chart = (projData, propName)=>{
+const chart = (projData, propName)=>{
 
-    var formatting = (name, d)=>{
+  const formatting = (name, d)=>{
         if (Array.isArray(d)){
             return ({name, value: propName===""?d.length:d.reduce((a,b)=>a+b[propName],0)})  //children: d.map(p=>{return {name:p["Project ID"], value:p.cArea, children:[]}})})
         } else {
@@ -114,7 +114,7 @@ var chart = (projData, propName)=>{
 
 }
 
-var partition = data => {
+const partition = data => {
     var root = d3.hierarchy(data)
         .sum(d => d.value);
         //.sort((a, b) => b.value - a.value);
@@ -123,7 +123,7 @@ var partition = data => {
       (root);
 }
 
-var color = (name, mainEl)=> {
+const color = (name, mainEl)=> {
     let hue = 360*(mainEl.children.findIndex(c=>c.name===name)+1)/mainEl.children.length
     //console.log(hue)
     return `hsl(${hue},50%,50%)`
@@ -131,7 +131,7 @@ var color = (name, mainEl)=> {
     //return d3.scaleOrdinal(d3.quantize(d3.interpolateRainbow, data.children.length + 1))
 }
 
-var arc = d3.arc()
+const arc = d3.arc()
     .startAngle(d => d.x0)
     .endAngle(d => d.x1)
     .padAngle(d => Math.min((d.x1 - d.x0) / 2, 0.005))
@@ -139,7 +139,7 @@ var arc = d3.arc()
     .innerRadius(d => d.y0 * radius)
     .outerRadius(d => Math.max(d.y0 * radius, d.y1 * radius - 1))
 
-var chart2 = (projData, propName)=>{
+    const chart2 = (projData, propName)=>{
 
     let total = 0;
 
