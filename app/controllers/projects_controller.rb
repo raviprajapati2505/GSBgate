@@ -190,7 +190,7 @@ class ProjectsController < AuthenticatedController
 
     @projects = []
     
-    certification_paths = CertificationPath.eager_load(:certificate).where(id: projects.pluck('certification_path_id'))
+    certification_paths = CertificationPath.eager_load(:certification_path_method, :certificate).where(id: projects.pluck('certification_path_id'))
 
     projects.each do |data|
       certification_path = certification_paths.find { |cp| cp.id == data.dig('certification_path_id')}
@@ -265,6 +265,12 @@ class ProjectsController < AuthenticatedController
                                                                                             end
                                                                                           }",
 
+          t('models.effective.datatables.projects_certification_paths.assessment_method.label') => "#{
+                                                                                                      if certification_path.present?
+                                                                                                        certification_assessment_type_title(certification_path.certification_path_method&.assessment_method)
+                                                                                                      end
+                                                                                                    }",
+
           t('models.effective.datatables.projects.lables.construction_year') => data.dig('project_construction_year'),
           
           t('models.effective.datatables.projects_certification_paths.certificate_id.label') => "#{
@@ -327,6 +333,8 @@ class ProjectsController < AuthenticatedController
                                                                                                 }",
 
           t('models.effective.datatables.projects_certification_paths.certification_path_started_at.label') => data.dig('certification_path_started_at')&.to_date&.strftime('%e-%b-%y'),
+
+          t('models.effective.datatables.projects_certification_paths.certification_path_status_is_active.label') => data.dig('certification_path_status_is_active'),
 
           t('models.effective.datatables.projects_certification_paths.certification_path_pcr_track.label') => data.dig('certification_path_pcr_track'),
 
