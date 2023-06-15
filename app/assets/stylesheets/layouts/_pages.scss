@@ -1337,20 +1337,34 @@ body.body-small .vote-icon {
 
 .project-info-modal {
   display: none;
-  position: absolute;
+  position: fixed;
   width: 50%;
-  height: 25%;
+  height: 50%;
+  top: 50%;
+  left: 50%;
   margin-left: auto;
   margin-right: auto;
   margin-top: auto;
   margin-bottom: auto;
-  overflow-y: auto;
-  flex-direction: column;
   padding: 20px;
-  background: rgba(216, 140, 140, 0.9);
+  flex-direction: column;
+  overflow-y: auto;
+  transform: translate(-50%, -50%);
+  background: rgba(255,255,255,0.9);
   backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
   box-shadow: 5px 5px 100px grey;
+}
+
+.project-details-table {
+  border-collapse: separate;
+  box-sizing: border-box;
+  text-indent: initial;
+  font-weight: normal;
+  font-size: medium;
+  font-style: normal;
+  text-align: start;
+  font-variant: normal;
+  font-size: small;
 }
 
 button {
@@ -1449,19 +1463,19 @@ th {
 }
 
 .GSAS-DB {
-  background: white;
+  background: #efeeee;
   color: black;
   /*background: linear-gradient(45deg, olive,green)!important*/
 }
 
 .GSAS-OP {
-  background: white;
+  background: #efeeee;
   color: black;
   /*background: linear-gradient(25deg,slateblue,cornflowerblue)!important*/
 }
 
 .GSAS-mixed {
-  background: white;
+  background: #efeeee;
   color: black;
   /*background: #AAA!important;*/
 }
@@ -1479,7 +1493,7 @@ th {
 }
 
 .projectRow {
-  background: var(--secondary-color);
+  background: white;
   color: black;
 }
 
@@ -1499,4 +1513,10 @@ th {
 .ps-main button {
   background: linear-gradient(90deg, #61a60e, #3b5c15);
   color: #fff;
+}
+
+.filterBoxDiv .filterItemDiv {
+  height: 14px;
+  width: calc(15% - 25px);
+  margin: 8px 25px 0 0;
 }

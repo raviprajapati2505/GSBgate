@@ -119,9 +119,9 @@ function showAdvancedFilters(keys, data, excluded) {
   list = list.map(lvl => [...new Set(lvl)])
 
   return list.map((keyOptions, lvl) => {
-    return `<div class="filterBoxDiv">
+    return `
+            <div class="filterBoxDiv m-3">
             <p><b>${keys[lvl]}</b></p>
-            <button onclick="toggleSelectAll(${lvl})">Select/Deselect</button>
             ` + keyOptions.sort().map(k => `
                 <div class="filterItemDiv">
                     <input 
@@ -132,7 +132,11 @@ function showAdvancedFilters(keys, data, excluded) {
                         value="${k}">
                     <label for="${k}">${k.length>18?k.substring(0,15)+"...":k}</label>
                 </div>
-            `).join("") + '</div>'
+            `).join("") + `
+              </div>
+              <button class="mx-3" onclick="toggleSelectAll(${lvl})">Select/Deselect</button>
+              <hr>
+            `
   }).join("")
 }
 
@@ -408,10 +412,12 @@ function showProjectData(pID) {
   if (!proj) return;
 
   modalElement.innerHTML = `
-        <table>
+        <p class="text-right"><i class="fa fa-times" aria-hidden="true" onclick="modalElement.style.display='none'"></i></p>
+        <table class="project-details-table">
             ${Object.keys(proj).map((k)=>'<tr><td>'+k+'</td><td>'+proj[k]+'</td></tr>').join("")}
         </table>
         <button 
+            class="mt-3"
             onclick="modalElement.style.display='none'">
             Close
         </button>`;
