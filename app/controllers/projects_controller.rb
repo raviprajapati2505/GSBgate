@@ -190,7 +190,14 @@ class ProjectsController < AuthenticatedController
 
     @projects = []
     
-    certification_paths = CertificationPath.eager_load(:certification_path_method, :certificate).where(id: projects.pluck('certification_path_id'))
+    certification_paths = 
+      CertificationPath.eager_load(
+        :certification_path_method, 
+        :certificate, 
+        scheme_mixes: :scheme
+      ).where(
+        id: projects.pluck('certification_path_id')
+      )
 
     projects.each do |data|
       certification_path = certification_paths.find { |cp| cp.id == data.dig('certification_path_id')}

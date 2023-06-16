@@ -120,21 +120,21 @@ function showAdvancedFilters(keys, data, excluded) {
 
   return list.map((keyOptions, lvl) => {
     return `
-            <div class="filterBoxDiv m-3">
+            <div class="filterBoxDiv m-3 row">
             <p><b>${keys[lvl]}</b></p>
             ` + keyOptions.sort().map(k => `
-                <div class="filterItemDiv">
-                    <input 
-                        type="checkbox" 
-                        onchange="flashFilter(${lvl})" 
-                        class="filterItem" ${(excluded[lvl].indexOf(k)>-1)?'':'checked'} 
-                        name="level-${lvl}" 
-                        value="${k}">
-                    <label for="${k}">${k.length>18?k.substring(0,15)+"...":k}</label>
-                </div>
+                  <div class="filterItemDiv col-md-2">
+                      <input 
+                          type="checkbox" 
+                          onchange="flashFilter(${lvl})" 
+                          class="filterItem mr-2" ${(excluded[lvl].indexOf(k)>-1)?'':'checked'} 
+                          name="level-${lvl}" 
+                          value="${k}">
+                      <label class="m-2" for="${k}">${k.length>18?k.substring(0,15)+"...":k}</label>
+                  </div>
             `).join("") + `
               </div>
-              <button class="mx-3" onclick="toggleSelectAll(${lvl})">Select/Deselect</button>
+              <button class="m-3" onclick="toggleSelectAll(${lvl})">Select/Deselect</button>
               <hr>
             `
   }).join("")

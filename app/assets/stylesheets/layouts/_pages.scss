@@ -1501,11 +1501,6 @@ th {
   display: none;
 }
 
-.filterBoxDiv .filterItemDiv {
-  display: inline-block;
-  padding-left: 19px;
-}
-
 .ps-main table.details {
   background: linear-gradient(90deg, #61a60e, #3b5c15)
 }
@@ -1515,8 +1510,3 @@ th {
   color: #fff;
 }
 
-.filterBoxDiv .filterItemDiv {
-  height: 14px;
-  width: calc(15% - 25px);
-  margin: 8px 25px 0 0;
-}
