@@ -79,6 +79,69 @@ class Project < ApplicationRecord
     includes(:certification_paths).where(certification_paths: {id: nil})
   }
 
+  def self.datatable_projects_records
+    all_projects = 
+      self
+        .joins('LEFT OUTER JOIN projects_users ON projects_users.project_id = projects.id')
+        .joins('LEFT OUTER JOIN certification_paths ON certification_paths.project_id = projects.id')
+        .joins('LEFT JOIN certificates ON certification_paths.certificate_id = certificates.id')
+        .joins('LEFT JOIN certification_path_statuses ON certification_paths.certification_path_status_id = certification_path_statuses.id')
+        .joins('LEFT JOIN development_types ON certification_paths.development_type_id = development_types.id')
+        .joins('LEFT JOIN building_types ON projects.building_type_id = building_types.id')
+        .group('projects.id')
+        .group('projects.owner')
+        .group('projects.developer')
+        .group('certification_paths.id')
+        .group('certificates.id')
+        .group('certification_path_statuses.id')
+        .group('development_types.id')
+        .group('building_types.id')
+        .select('projects.id AS project_nr')
+        .select('projects.code AS project_code')
+        .select('projects.name AS project_name')
+        .select('projects.construction_year AS project_construction_year')
+        .select('projects.project_owner_business_sector AS project_owner_business_sector')
+        .select('projects.country AS project_country')
+        .select('projects.city AS project_city')
+        .select('projects.district AS project_district')
+        .select('projects.project_developer_business_sector AS project_developer_business_sector')
+        .select('projects.description AS project_description')
+        .select('projects.gross_area AS project_gross_area')
+        .select('projects.certified_area AS project_certified_area')
+        .select('projects.carpark_area AS project_carpark_area')
+        .select('projects.project_site_area AS project_site_area')
+        .select('projects.buildings_footprint_area AS project_buildings_footprint_area')
+        .select('projects.owner AS project_owner')
+        .select('projects.developer AS project_developer')
+        .select('projects.service_provider AS project_service_provider')
+        .select('certification_paths.id AS certification_path_id')
+        .select('certification_paths.updated_at AS certification_path_updated_at')
+        .select('certification_paths.certificate_id AS certificate_id')
+        .select('certification_paths.certification_path_status_id AS certification_path_certification_path_status_id')
+        .select('certification_paths.pcr_track AS certification_path_pcr_track')
+        .select("ARRAY_TO_STRING(ARRAY(SELECT schemes.name FROM schemes INNER JOIN scheme_mixes ON schemes.id = scheme_mixes.scheme_id WHERE scheme_mixes.certification_path_id = certification_paths.id), '|||') AS certification_scheme_name")
+        .select('development_types.name AS development_type_name')
+        .select('building_types.name AS building_type_name')
+        .select('certification_paths.started_at AS certification_path_started_at')
+        .select('certification_paths.certified_at AS certification_path_certified_at')
+        .select('certification_paths.expires_at AS certification_path_expires_at')
+        .select("certificates.name AS certificate_name")
+        .select("certificates.certificate_type AS certificate_type")
+        .select('certificates.gsas_version AS certificate_gsas_version')
+        .select('certification_path_statuses.name AS certification_path_status_name')
+        .select('CASE WHEN certification_path_statuses.id IS NULL THEN false WHEN certification_path_statuses.id = 15 THEN false WHEN certification_path_statuses.id = 16 THEN false WHEN certification_path_statuses.id = 17 THEN false ELSE true END AS certification_path_status_is_active')
+        .select("ARRAY_TO_STRING(ARRAY(SELECT case when scheme_mixes.custom_name is null then schemes.name else schemes.name end from schemes INNER JOIN scheme_mixes ON schemes.id = scheme_mixes.scheme_id WHERE scheme_mixes.certification_path_id = certification_paths.id), '|||') AS schemes_array")
+        .select("ARRAY_TO_STRING(ARRAY(SELECT case when scheme_mixes.custom_name is null then ' ' else scheme_mixes.custom_name end from schemes INNER JOIN scheme_mixes ON schemes.id = scheme_mixes.scheme_id WHERE scheme_mixes.certification_path_id = certification_paths.id ORDER BY schemes.name), '|||') AS schemes_custom_name_array")
+        .select('(%s) AS project_team_array' % ApplicationController.helpers.projects_users_by_type('project_team'))
+        .select('(%s) AS cgp_project_manager_array' % ApplicationController.helpers.projects_users_by_type('cgp_project_manager'))
+        .select('(%s) AS gsas_trust_team_array' % ApplicationController.helpers.projects_users_by_type('gsas_trust_team'))
+        .select('(%s) AS certification_manager_array' % ApplicationController.helpers.projects_users_by_type('certification_manager'))
+        .select('(%s) AS enterprise_clients_array' % ApplicationController.helpers.projects_users_by_type('enterprise_clients'))
+        .select('(%s) AS total_achieved_score' % Effective::Datatables::ProjectsCertificationPaths.query_score_in_certificate_points(:targeted_score))
+
+        return all_projects
+  end
+
   def presence_of_files
     unless (project_narrative_file.present? || area_statement_file.present?)
       errors.add(:area_statement_file, "can't be blank.")
@@ -338,6 +401,7 @@ class Project < ApplicationRecord
   end
 
   private
+
   def init
     if self.has_attribute?('code')
       # Set default code

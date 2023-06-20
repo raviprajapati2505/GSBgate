@@ -12,21 +12,6 @@ module Effective
         return score_all
       end
 
-      def projects_users_by_type(team_type)
-        case team_type
-        when 'project_team'
-          "ARRAY_TO_STRING(ARRAY(SELECT project_team_users.name FROM users as project_team_users INNER JOIN projects_users as project_team_project_users ON project_team_project_users.user_id = project_team_users.id  WHERE project_team_project_users.role IN (#{ProjectsUser.roles[:project_team_member]}) AND project_team_project_users.project_id = projects.id AND (SELECT CASE WHEN certificates.certification_type IN (#{Certificate.certification_types['construction_certificate']}, #{Certificate.certification_types['operations_certificate']}, #{Certificate.certification_types['construction_certificate_stage1']}, #{Certificate.certification_types['construction_certificate_stage2']}, #{Certificate.certification_types['construction_certificate_stage3']}) THEN project_team_project_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Other']}) WHEN certificates.certification_type IN (#{Certificate.certification_types['letter_of_conformance']}) THEN project_team_project_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Letter of Conformance']}) WHEN certificates.certification_type IN (#{Certificate.certification_types['final_design_certificate']}) THEN project_team_project_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Final Design Certificate']}) ELSE project_team_project_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Other']}, #{ProjectsUser.certification_team_types['Letter of Conformance']}, #{ProjectsUser.certification_team_types['Final Design Certificate']}) END)), '|||')"
-        when 'cgp_project_manager'
-          "ARRAY_TO_STRING(ARRAY(SELECT cgp_project_managers.name FROM users as cgp_project_managers INNER JOIN projects_users as cgp_project_managers_project_users ON cgp_project_managers_project_users.user_id = cgp_project_managers.id  WHERE cgp_project_managers_project_users.role IN (#{ProjectsUser.roles[:cgp_project_manager]}) AND cgp_project_managers_project_users.project_id = projects.id AND (SELECT CASE WHEN certificates.certification_type IN (#{Certificate.certification_types['construction_certificate']}, #{Certificate.certification_types['operations_certificate']}, #{Certificate.certification_types['construction_certificate_stage1']}, #{Certificate.certification_types['construction_certificate_stage2']}, #{Certificate.certification_types['construction_certificate_stage3']}) THEN cgp_project_managers_project_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Other']}) WHEN certificates.certification_type IN (#{Certificate.certification_types['letter_of_conformance']}) THEN cgp_project_managers_project_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Letter of Conformance']}) WHEN certificates.certification_type IN (#{Certificate.certification_types['final_design_certificate']}) THEN cgp_project_managers_project_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Final Design Certificate']}) ELSE cgp_project_managers_project_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Other']}, #{ProjectsUser.certification_team_types['Letter of Conformance']}, #{ProjectsUser.certification_team_types['Final Design Certificate']}) END)), '|||')"
-        when 'gsas_trust_team'
-          "ARRAY_TO_STRING(ARRAY(SELECT gsas_trust_team_users.name FROM users as gsas_trust_team_users INNER JOIN projects_users as gsas_trust_team_project_users ON gsas_trust_team_project_users.user_id = gsas_trust_team_users.id  WHERE gsas_trust_team_project_users.role IN (#{ProjectsUser.roles[:certifier]}) AND gsas_trust_team_project_users.project_id = projects.id AND (SELECT CASE WHEN certificates.certification_type IN (#{Certificate.certification_types['construction_certificate']}, #{Certificate.certification_types['operations_certificate']}, #{Certificate.certification_types['construction_certificate_stage1']}, #{Certificate.certification_types['construction_certificate_stage2']}, #{Certificate.certification_types['construction_certificate_stage3']}) THEN gsas_trust_team_project_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Other']}) WHEN certificates.certification_type IN (#{Certificate.certification_types['letter_of_conformance']}) THEN gsas_trust_team_project_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Letter of Conformance']}) WHEN certificates.certification_type IN (#{Certificate.certification_types['final_design_certificate']}) THEN gsas_trust_team_project_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Final Design Certificate']}) ELSE gsas_trust_team_project_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Other']}, #{ProjectsUser.certification_team_types['Letter of Conformance']}, #{ProjectsUser.certification_team_types['Final Design Certificate']}) END)), '|||')"
-        when 'certification_manager'
-          "ARRAY_TO_STRING(ARRAY(SELECT certification_managers.name FROM users as certification_managers INNER JOIN projects_users as certification_managers_project_users ON certification_managers_project_users.user_id = certification_managers.id  WHERE certification_managers_project_users.role IN (#{ProjectsUser.roles[:certification_manager]}) AND certification_managers_project_users.project_id = projects.id AND (SELECT CASE WHEN certificates.certification_type IN (#{Certificate.certification_types['construction_certificate']}, #{Certificate.certification_types['operations_certificate']}, #{Certificate.certification_types['construction_certificate_stage1']}, #{Certificate.certification_types['construction_certificate_stage2']}, #{Certificate.certification_types['construction_certificate_stage3']}) THEN certification_managers_project_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Other']}) WHEN certificates.certification_type IN (#{Certificate.certification_types['letter_of_conformance']}) THEN certification_managers_project_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Letter of Conformance']}) WHEN certificates.certification_type IN (#{Certificate.certification_types['final_design_certificate']}) THEN certification_managers_project_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Final Design Certificate']}) ELSE certification_managers_project_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Other']}, #{ProjectsUser.certification_team_types['Letter of Conformance']}, #{ProjectsUser.certification_team_types['Final Design Certificate']}) END)), '|||')"
-        when 'enterprise_clients'
-          "ARRAY_TO_STRING(ARRAY(SELECT enterprise_client_users.name FROM users as enterprise_client_users INNER JOIN projects_users as enterprise_client_project_users ON enterprise_client_project_users.user_id = enterprise_client_users.id  WHERE enterprise_client_project_users.role IN (#{ProjectsUser.roles[:enterprise_client]}) AND enterprise_client_project_users.project_id = projects.id), '|||')"
-        end
-      end
-
       datatable do
         # col :project_id, sql_column: 'projects.id', as: :integer, search: {collection: Proc.new { Project.all.order(:name).map { |project| [project.code + ', ' + project.name, project.id] } }} do |rec|
         #    rec.project_code + ', ' + rec.project_name
@@ -503,70 +488,14 @@ module Effective
       end
 
       collection do
-        all_projects = Project
-          .joins('LEFT OUTER JOIN projects_users ON projects_users.project_id = projects.id')
-          .joins('LEFT OUTER JOIN certification_paths ON certification_paths.project_id = projects.id')
-          .joins('LEFT JOIN certificates ON certification_paths.certificate_id = certificates.id')
-          .joins('LEFT JOIN certification_path_statuses ON certification_paths.certification_path_status_id = certification_path_statuses.id')
-          .joins('LEFT JOIN development_types ON certification_paths.development_type_id = development_types.id')
-          .joins('LEFT JOIN building_types ON projects.building_type_id = building_types.id')
-          .group('projects.id')
-          .group('projects.owner')
-          .group('projects.developer')
-          .group('certification_paths.id')
-          .group('certificates.id')
-          .group('certification_path_statuses.id')
-          .group('development_types.id')
-          .group('building_types.id')
-          .select('projects.id as project_nr')
-          .select('projects.code as project_code')
-          .select('projects.name as project_name')
-          .select('projects.construction_year as project_construction_year')
-          .select('projects.project_owner_business_sector as project_owner_business_sector')
-          .select('projects.country as project_country')
-          .select('projects.city as project_city')
-          .select('projects.district as project_district')
-          .select('projects.project_developer_business_sector as project_developer_business_sector')
-          .select('projects.description as project_description')
-          .select('projects.gross_area as project_gross_area')
-          .select('projects.certified_area as project_certified_area')
-          .select('projects.carpark_area as project_carpark_area')
-          .select('projects.project_site_area as project_site_area')
-          .select('projects.buildings_footprint_area as project_buildings_footprint_area')
-          .select('projects.owner as project_owner')
-          .select('projects.developer as project_developer')
-          .select('projects.service_provider as project_service_provider')
-          .select('certification_paths.id as certification_path_id')
-          .select('certification_paths.updated_at as certification_path_updated_at')
-          .select('certification_paths.certificate_id as certificate_id')
-          .select('certification_paths.certification_path_status_id as certification_path_certification_path_status_id')
-          .select('certification_paths.pcr_track as certification_path_pcr_track')
-          .select("ARRAY_TO_STRING(ARRAY(SELECT schemes.name FROM schemes INNER JOIN scheme_mixes ON schemes.id = scheme_mixes.scheme_id WHERE scheme_mixes.certification_path_id = certification_paths.id), '|||') AS certification_scheme_name")
-          .select('development_types.name as development_type_name')
-          .select('building_types.name as building_type_name')
-          .select('certification_paths.started_at as certification_path_started_at')
-          .select('certification_paths.certified_at as certification_path_certified_at')
-          .select('certification_paths.expires_at as certification_path_expires_at')
-          .select("certificates.name as certificate_name")
-          .select("certificates.certificate_type as certificate_type")
-          .select('certificates.gsas_version as certificate_gsas_version')
-          .select('certification_path_statuses.name as certification_path_status_name')
-          .select('CASE WHEN certification_path_statuses.id IS NULL THEN false WHEN certification_path_statuses.id = 15 THEN false WHEN certification_path_statuses.id = 16 THEN false WHEN certification_path_statuses.id = 17 THEN false ELSE true END as certification_path_status_is_active')
-          .select("ARRAY_TO_STRING(ARRAY(SELECT case when scheme_mixes.custom_name is null then schemes.name else schemes.name end from schemes INNER JOIN scheme_mixes ON schemes.id = scheme_mixes.scheme_id WHERE scheme_mixes.certification_path_id = certification_paths.id), '|||') AS schemes_array")
-          .select("ARRAY_TO_STRING(ARRAY(SELECT case when scheme_mixes.custom_name is null then ' ' else scheme_mixes.custom_name end from schemes INNER JOIN scheme_mixes ON schemes.id = scheme_mixes.scheme_id WHERE scheme_mixes.certification_path_id = certification_paths.id ORDER BY schemes.name), '|||') AS schemes_custom_name_array")
-          .select('(%s) AS project_team_array' % projects_users_by_type('project_team'))
-          .select('(%s) AS cgp_project_manager_array' % projects_users_by_type('cgp_project_manager'))
-          .select('(%s) AS gsas_trust_team_array' % projects_users_by_type('gsas_trust_team'))
-          .select('(%s) AS certification_manager_array' % projects_users_by_type('certification_manager'))
-          .select('(%s) AS enterprise_clients_array' % projects_users_by_type('enterprise_clients'))
-          .select('(%s) AS total_achieved_score' % ProjectsCertificationPaths.query_score_in_certificate_points(:achieved_score))
-
-          if current_user.is_service_provider?
-            project_ids = Project.accessible_by(current_ability).pluck(:id)
-            all_projects.where(id: project_ids.uniq)
-          else
-            all_projects.accessible_by(current_ability)
-          end
+        projects = Project.datatable_projects_records
+        
+        if current_user.service_provider?
+          project_ids = Project.accessible_by(current_ability).pluck(:id)
+          projects.where(id: project_ids.uniq)
+        else
+          projects.accessible_by(current_ability)
+        end
       end
     end
   end
