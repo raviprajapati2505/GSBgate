@@ -4,23 +4,6 @@ module Effective
       include ApplicationHelper
       include ActionView::Helpers::TranslationHelper
 
-      def offline_projects_by_scheme_names
-        "ARRAY_TO_STRING(
-          ARRAY(
-            SELECT offline_scheme_mixes.name
-            FROM offline_scheme_mixes
-            WHERE offline_scheme_mixes.offline_certification_path_id = offline_certification_paths.id
-          ), 
-          '|||'
-        )"
-      end
-
-      def offline_projects_by_sub_scheme_names
-        "SELECT offline_scheme_mixes.subschemes
-        FROM offline_scheme_mixes
-        WHERE offline_scheme_mixes.offline_certification_path_id = offline_certification_paths.id"
-      end
-
       datatable do
         col :code, 
             label: t('models.effective.datatables.projects.lables.project_code') do |rec| 
@@ -235,36 +218,7 @@ module Effective
       end
 
       collection do
-        Offline::Project
-          .joins('LEFT OUTER JOIN offline_certification_paths ON offline_certification_paths.offline_project_id = offline_projects.id')
-          .group('offline_projects.id')
-          .group('offline_certification_paths.id')
-          .select('offline_projects.code',
-                  'offline_projects.id',
-                  'offline_projects.name',
-                  'offline_projects.certificate_type',
-                  'offline_projects.certified_area',
-                  'offline_projects.plot_area',
-                  'offline_projects.owner',
-                  'offline_projects.developer',
-                  'offline_projects.description',
-                  'offline_projects.assessment_type',
-                  'offline_projects.construction_year',
-                  'offline_projects.project_country',
-                  'offline_projects.project_city',
-                  'offline_projects.project_district',
-                  'offline_projects.project_owner_business_sector',
-                  'offline_projects.project_developer_business_sector',
-                  'offline_projects.project_gross_built_up_area',
-                  'offline_certification_paths.id as certification_id',
-                  'offline_certification_paths.name as certification_name',
-                  'offline_certification_paths.version as certification_version',
-                  'offline_certification_paths.development_type as certification_development_type',
-                  'offline_certification_paths.status as certification_status',
-                  'offline_certification_paths.certified_at as certification_certified_at',
-                  'offline_certification_paths.rating as certification_rating')
-          .select('(%s) AS certification_scheme_name' % offline_projects_by_scheme_names)
-          .select('(%s) AS subschemes' % offline_projects_by_sub_scheme_names)
+        Offline::Project.datatable_projects_records
       end
     end
   end

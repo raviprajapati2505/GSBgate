@@ -972,4 +972,21 @@ module ApplicationHelper
       "ARRAY_TO_STRING(ARRAY(SELECT enterprise_client_users.name FROM users as enterprise_client_users INNER JOIN projects_users as enterprise_client_project_users ON enterprise_client_project_users.user_id = enterprise_client_users.id  WHERE enterprise_client_project_users.role IN (#{ProjectsUser.roles[:enterprise_client]}) AND enterprise_client_project_users.project_id = projects.id), '|||')"
     end
   end
+  
+  def offline_projects_by_scheme_names
+    "ARRAY_TO_STRING(
+      ARRAY(
+        SELECT offline_scheme_mixes.name
+        FROM offline_scheme_mixes
+        WHERE offline_scheme_mixes.offline_certification_path_id = offline_certification_paths.id
+      ), 
+      '|||'
+    )"
+  end
+
+  def offline_projects_by_sub_scheme_names
+    "SELECT offline_scheme_mixes.subschemes
+    FROM offline_scheme_mixes
+    WHERE offline_scheme_mixes.offline_certification_path_id = offline_certification_paths.id"
+  end
 end
