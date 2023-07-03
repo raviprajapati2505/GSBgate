@@ -205,20 +205,17 @@ const prepareAreaAttr = (projArr) => {
     let scheme = p["Certification Scheme"].substring(0, 3);
     let type = p["Certification Type"];
 
-    pArea = ["Dis", "Par", "Nei", "GSAS-CM"].includes(scheme) ? p["Project Plot Area"] : 0;
-        
-    cArea = 0
-    if (scheme === "Nei"){ 
-        cArea = p["Project Gross Built Up Area"];
-    } else if (scheme!=="Dis" && scheme!=="Par" && type!=="GSAS-CM") {
-        cArea = p["Project Certified Area"];
+    let pArea = (scheme === "Dis" || scheme === "Par" || scheme === "Nei" || type === "GSAS-CM") ? parseNumber(p["Project Plot Area"]) : 0;
+
+    let cArea = 0;
+    if (scheme === "Nei") {
+      cArea = parseNumber(p["Project Gross Built Up Area"]);
+    } else if (scheme !== "Dis" && scheme !== "Par" && type !== "GSAS-CM") {
+      cArea = parseNumber(p["Project Certified Area"]);
     }
 
-    pNumber = ["Dis", "Par", "Nei", "GSAS-CM"].includes(scheme)
-    cNumber =  !pNumber
-
-    pArea = parseInt(pArea)
-    cArea = parseInt(cArea)
+    let pNumber = (scheme === "Dis" || scheme === "Par" || scheme === "Nei" || type === "GSAS-CM")
+    let cNumber = !pNumber
 
     return {
       ...p,
