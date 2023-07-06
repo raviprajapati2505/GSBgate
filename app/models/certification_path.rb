@@ -756,7 +756,7 @@ class CertificationPath < ApplicationRecord
     end
   end
 
-  def label_for_level(certificate: nil,is_targetted_score: true, is_achieved_score: true, is_submitted_score: true)
+  def label_for_level(certificate: nil, is_targetted_score: true, is_achieved_score: true, is_submitted_score: true)
     if certificate.design_and_build?
       main_scheme_mixes = self.main_scheme_mix.present? ? self.scheme_mixes.where(id: self.main_scheme_mix.id) : self.scheme_mixes
       main_scheme_mixes.each do |sm|

@@ -231,14 +231,20 @@ class ProjectsController < AuthenticatedController
 
           t('models.effective.datatables.projects_certification_paths.rating.label') => "#{
                                                                                             unless data.certification_path_status_is_active 
-                                                                                              unless certification_path.present?
-                                                                                                if certification_path.is_checklist_method? 
-                                                                                                  rating = 
-                                                                                                    certification_path
-                                                                                                      .label_for_level(
-                                                                                                        certificate: certificate
-                                                                                                      )
-                                                                                                  
+                                                                                              if certification_path.present?
+                                                                                                if certification_path.is_checklist_method?
+
+                                                                                                  if data.certificate_type&.to_i == 3
+                                                                                                    rating = 
+                                                                                                      if data.certification_path_status_name == "Certified"
+                                                                                                        'CERTIFIED'
+                                                                                                      elsif data.certification_path_status_name == "Not certified"
+                                                                                                        'CERTIFICATION DENIED'
+                                                                                                      else
+                                                                                                        ""
+                                                                                                      end
+                                                                                                  end
+
                                                                                                 else 
                                                                                                   scores = data.total_achieved_score 
                                                                                                   
@@ -254,6 +260,7 @@ class ProjectsController < AuthenticatedController
                                                                                               else 
                                                                                                 rating = -1 
                                                                                               end 
+                                                                                            end
 
                                                                                               rating = 
                                                                                                 if ['1', '2', '3', '4', '5', '6'].include?(rating&.to_s)
@@ -266,9 +273,6 @@ class ProjectsController < AuthenticatedController
                                                                                                 else
                                                                                                   rating
                                                                                                 end
-
-                                                                                                rating
-                                                                                            end
                                                                                           }",
 
           t('models.effective.datatables.projects_certification_paths.assessment_method.label') => "#{
@@ -353,36 +357,36 @@ class ProjectsController < AuthenticatedController
     end
 
     # for offiline projects
-    # offline_projects.each do |data|
-    #   formatted_data = 
-    #     {
-    #       t('models.effective.datatables.projects.lables.project_code') => data.code,
-    #       t('models.effective.datatables.projects.lables.project_name') => data.name,
-    #       t('models.effective.datatables.offline.project.certificate_type') => data.certificate_type,
-    #       t('models.effective.datatables.projects.lables.project_certified_area') => data.certified_area,
-    #       t('models.effective.datatables.offline.project.owner') => data.owner,
-    #       t('models.effective.datatables.offline.project.developer') => data.developer,
-    #       t('models.effective.datatables.offline.project.assessment_type') => data.assessment_type,
-    #       t('models.effective.datatables.offline.project.construction_year') => data.construction_year,
-    #       t('models.effective.datatables.offline.project.project_country') => data.project_country,
-    #       t('models.effective.datatables.offline.project.project_city') => data.project_city,
-    #       t('models.effective.datatables.offline.project.project_district') => data.project_district,
-    #       t('models.effective.datatables.offline.project.project_owner_business_sector') => data.project_owner_business_sector,
-    #       t('models.effective.datatables.offline.project.project_developer_business_sector') => data.project_developer_business_sector,
-    #       t('models.effective.datatables.offline.project.project_gross_built_up_area') => data.project_gross_built_up_area,
-    #       t('models.effective.datatables.offline.certification_path.name') => data.certification_name,
-    #       t('models.effective.datatables.offline.certification_path.version') => Offline::CertificationPath.versions.key(data.certification_version),
-    #       t('models.effective.datatables.offline.certification_path.development_type') => data.certification_development_type,
-    #       t('models.effective.datatables.offline.certification_path.status') => data.certification_status,
-    #       t('models.effective.datatables.offline.certification_path.certified_at') => data.certification_certified_at,
-    #       t('models.effective.datatables.offline.certification_path.rating') => Offline::CertificationPath.ratings.key(data.certification_rating),
-    #       t('models.effective.datatables.offline.certification_path.schemes') => data.certification_scheme_name,
-    #       t('models.effective.datatables.offline.certification_path.subscheme') => data.subschemes || "",
-    #       t('models.effective.datatables.offline.project.plot_area') => data.plot_area
-    #     }
+    offline_projects.each do |data|
+      formatted_data = 
+        {
+          t('models.effective.datatables.projects.lables.project_code') => data.code,
+          t('models.effective.datatables.projects.lables.project_name') => data.name,
+          t('models.effective.datatables.offline.project.certificate_type') => data.certificate_type,
+          t('models.effective.datatables.projects.lables.project_certified_area') => data.certified_area,
+          t('models.effective.datatables.offline.project.owner') => data.owner,
+          t('models.effective.datatables.offline.project.developer') => data.developer,
+          t('models.effective.datatables.offline.project.assessment_type') => data.assessment_type,
+          t('models.effective.datatables.offline.project.construction_year') => data.construction_year,
+          t('models.effective.datatables.offline.project.project_country') => data.project_country,
+          t('models.effective.datatables.offline.project.project_city') => data.project_city,
+          t('models.effective.datatables.offline.project.project_district') => data.project_district,
+          t('models.effective.datatables.offline.project.project_owner_business_sector') => data.project_owner_business_sector,
+          t('models.effective.datatables.offline.project.project_developer_business_sector') => data.project_developer_business_sector,
+          t('models.effective.datatables.offline.project.project_gross_built_up_area') => data.project_gross_built_up_area,
+          t('models.effective.datatables.offline.certification_path.name') => data.certification_name,
+          t('models.effective.datatables.offline.certification_path.version') => Offline::CertificationPath.versions.key(data.certification_version),
+          t('models.effective.datatables.offline.certification_path.development_type') => data.certification_development_type,
+          t('models.effective.datatables.offline.certification_path.status') => data.certification_status,
+          t('models.effective.datatables.offline.certification_path.certified_at') => data.certification_certified_at,
+          t('models.effective.datatables.offline.certification_path.rating') => Offline::CertificationPath.ratings.key(data.certification_rating),
+          t('models.effective.datatables.offline.certification_path.schemes') => data.certification_scheme_name,
+          t('models.effective.datatables.offline.certification_path.subscheme') => data.subschemes || "",
+          t('models.effective.datatables.offline.project.plot_area') => data.plot_area
+        }
 
-    #   @projects.push(formatted_data)
-    # end
+      @projects.push(formatted_data)
+    end
   end
 
   def show
