@@ -210,182 +210,240 @@ class ProjectsController < AuthenticatedController
         id: projects.pluck('certification_paths.id')
       )
 
+    # for general projects
+    general_projects_lables = 
+      [
+        t('models.effective.datatables.projects.lables.project_code'),
+        t('models.effective.datatables.projects.lables.project_name'),
+        t('models.effective.datatables.projects.lables.project_certified_area'),
+        t('models.effective.datatables.projects.lables.project_site_area'),
+        t('models.effective.datatables.projects.lables.owner'),
+        t('models.effective.datatables.projects.lables.developer'),
+        t('models.effective.datatables.projects.lables.project_gross_area'),
+        t('models.effective.datatables.projects.lables.project_country'),
+        t('models.effective.datatables.projects.lables.project_city'),
+        t('models.effective.datatables.projects.lables.project_district'),
+        t('models.effective.datatables.projects.lables.project_owner_business_sector'),
+        t('models.effective.datatables.projects.lables.project_developer_business_sector'),
+        t('models.effective.datatables.projects_certification_paths.rating.label'),
+        t('models.effective.datatables.projects_certification_paths.assessment_method.label'),
+        t('models.effective.datatables.projects.lables.construction_year'),
+        t('models.effective.datatables.projects_certification_paths.certificate_id.label'),
+        t('models.effective.datatables.projects_certification_paths.certificate_stage.label'),
+        t('models.effective.datatables.projects_certification_paths.certificate_version.label'),
+        t('models.effective.datatables.projects_certification_paths.certification_path_development_type.label'),
+        t('models.effective.datatables.projects_certification_paths.certification_path_certification_path_status_id.label'),
+        t('models.effective.datatables.projects_certification_paths.certification_path_certified_at.label'),
+        t('models.effective.datatables.projects_certification_paths.certification_scheme_name.label'),
+        t('models.effective.datatables.projects_certification_paths.schemes_array.label'),
+        t('models.effective.datatables.projects_certification_paths.certification_path_started_at.label'),
+        t('models.effective.datatables.projects_certification_paths.certification_path_status_is_active.label'),
+        t('models.effective.datatables.projects_certification_paths.certification_path_pcr_track.label'),
+        t('models.effective.datatables.projects_certification_paths.building_types.label'),
+        t('models.effective.datatables.projects.lables.service_provider')
+      ]
     projects.each do |data|
       certification_path = certification_paths.find { |cp| cp.id == data.certification_path_id }
       certificate = certification_path&.certificate
 
       formatted_data = 
-        {
-          t('models.effective.datatables.projects.lables.project_code') => data.project_code,
-          t('models.effective.datatables.projects.lables.project_name') => data.project_name,
-          t('models.effective.datatables.projects.lables.project_certified_area') => data.project_certified_area,
-          t('models.effective.datatables.projects.lables.project_site_area') => data.project_site_area,
-          t('models.effective.datatables.projects.lables.owner') => data.project_owner,
-          t('models.effective.datatables.projects.lables.developer') => data.project_developer,
-          t('models.effective.datatables.projects.lables.project_gross_area') => data.project_gross_area,
-          t('models.effective.datatables.projects.lables.project_country') => data.project_country,
-          t('models.effective.datatables.projects.lables.project_city') => data.project_city,
-          t('models.effective.datatables.projects.lables.project_district') => data.project_district,
-          t('models.effective.datatables.projects.lables.project_owner_business_sector') => data.project_owner_business_sector,
-          t('models.effective.datatables.projects.lables.project_developer_business_sector') => data.project_developer_business_sector,
+        [
+          data.project_code,
+          data.project_name,
+          data.project_certified_area,
+          data.project_site_area,
+          data.project_owner,
+          data.project_developer,
+          data.project_gross_area,
+          data.project_country,
+          data.project_city,
+          data.project_district,
+          data.project_owner_business_sector,
+          data.project_developer_business_sector,
 
-          t('models.effective.datatables.projects_certification_paths.rating.label') => "#{
-                                                                                            unless data.certification_path_status_is_active 
-                                                                                              if certification_path.present?
-                                                                                                if certification_path.is_checklist_method?
+          "#{
+              unless data.certification_path_status_is_active 
+                if certification_path.present?
+                  if certification_path.is_checklist_method?
 
-                                                                                                  if data.certificate_type&.to_i == 3
-                                                                                                    rating = 
-                                                                                                      if data.certification_path_status_name == "Certified"
-                                                                                                        'CERTIFIED'
-                                                                                                      elsif data.certification_path_status_name == "Not certified"
-                                                                                                        'CERTIFICATION DENIED'
-                                                                                                      else
-                                                                                                        ""
-                                                                                                      end
-                                                                                                  end
+                    if data.certificate_type&.to_i == 3
+                      rating = 
+                        if data.certification_path_status_name == "Certified"
+                          'CERTIFIED'
+                        elsif data.certification_path_status_name == "Not certified"
+                          'CERTIFICATION DENIED'
+                        else
+                          ""
+                        end
+                    end
 
-                                                                                                else 
-                                                                                                  scores = data.total_achieved_score 
-                                                                                                  
-                                                                                                  rating = 
-                                                                                                    certification_path
-                                                                                                      .rating_for_score(
-                                                                                                        scores, 
-                                                                                                        certificate: certificate, 
-                                                                                                        certificate_gsas_version: data.certificate_gsas_version, certificate_name: data.certificate_name
-                                                                                                      ) 
-                                                                                                end
-                                                                                                
-                                                                                              else 
-                                                                                                rating = -1 
-                                                                                              end 
-                                                                                            end
+                  else 
+                    scores = data.total_achieved_score 
+                    
+                    rating = 
+                      certification_path
+                        .rating_for_score(
+                          scores, 
+                          certificate: certificate, 
+                          certificate_gsas_version: data.certificate_gsas_version, certificate_name: data.certificate_name
+                        ) 
+                  end
+                  
+                else 
+                  rating = -1 
+                end 
+              end
 
-                                                                                              rating = 
-                                                                                                if ['1', '2', '3', '4', '5', '6'].include?(rating&.to_s)
-                                                                                                  rating_string = []
-                                                                                                  rating.to_i.times do
-                                                                                                    rating_string.push('*')
-                                                                                                  end
+              rating = 
+                if ['1', '2', '3', '4', '5', '6'].include?(rating&.to_s)
+                  rating_string = []
+                  rating.to_i.times do
+                    rating_string.push('*')
+                  end
 
-                                                                                                  rating_string.join(' ')
-                                                                                                else
-                                                                                                  rating
-                                                                                                end
-                                                                                          }",
+                  rating_string.join(' ')
+                else
+                  rating
+                end
+          }",
 
-          t('models.effective.datatables.projects_certification_paths.assessment_method.label') => "#{
-                                                                                                      if certification_path.present?
-                                                                                                        certification_assessment_type_title(certification_path.certification_path_method&.assessment_method)
-                                                                                                      end
-                                                                                                    }",
+          "#{
+              if certification_path.present?
+                certification_assessment_type_title(certification_path.certification_path_method&.assessment_method)
+              end
+          }",
 
-          t('models.effective.datatables.projects.lables.construction_year') => data.project_construction_year,
+          data.project_construction_year,
           
-          t('models.effective.datatables.projects_certification_paths.certificate_id.label') => "#{
-                                                                                                    if certificate.present?
-                                                                                                      certificate&.only_certification_name
-                                                                                                    end
-                                                                                                  }",
+          "#{
+              if certificate.present?
+                certificate&.only_certification_name
+              end
+          }",
                                                                                                 
-          t('models.effective.datatables.projects_certification_paths.certificate_stage.label') =>  "#{
-                                                                                                        if certificate.present?
-                                                                                                          certificate&.stage_title
-                                                                                                        end
-                                                                                                      }",
+          "#{
+              if certificate.present?
+                certificate&.stage_title
+              end
+          }",
                                                                                                       
-          t('models.effective.datatables.projects_certification_paths.certificate_version.label') => "#{
-                                                                                                          if certificate.present?
-                                                                                                            certificate&.only_version
-                                                                                                          end
-                                                                                                        }",
+          "#{
+              if certificate.present?
+                certificate&.only_version
+              end
+          }",
 
-          t('models.effective.datatables.projects_certification_paths.certification_path_development_type.label') => "#{
-                                                                                                                          case data.certification_scheme_name
-                                                                                                                          when 'Parks'
-                                                                                                                            'Parks'
-                                                                                                                          when 'Interiors'
-                                                                                                                            'Single Zone, Interiors'
-                                                                                                                          else
-                                                                                                                            data.development_type_name
-                                                                                                                          end
-                                                                                                                        }",
+          "#{
+              case data.certification_scheme_name
+              when 'Parks'
+                'Parks'
+              when 'Interiors'
+                'Single Zone, Interiors'
+              else
+                data.development_type_name
+              end
+          }",
 
-          t('models.effective.datatables.projects_certification_paths.certification_path_certification_path_status_id.label') =>  "#{ 
-                                                                                                                                      if data.certification_path_status_name == "Certificate In Process"
-                                                                                                                                        "Certificate Generated"
-                                                                                                                                      else
-                                                                                                                                        data.certification_path_status_name
-                                                                                                                                      end
-                                                                                                                                    }",
+          "#{ 
+              if data.certification_path_status_name == "Certificate In Process"
+                "Certificate Generated"
+              else
+                data.certification_path_status_name
+              end
+          }",
                                                                                                                                   
-          t('models.effective.datatables.projects_certification_paths.certification_path_certified_at.label') => data.certification_path_certified_at&.to_date&.strftime('%e-%b-%y'),
+          data.certification_path_certified_at&.to_date&.strftime('%e-%b-%y'),
           
-          t('models.effective.datatables.projects_certification_paths.certification_scheme_name.label') => "#{
-                                                                                                              if data.certificate_type&.to_i == 3 && ["Neighborhoods", "Mixed Use"].include?(data.development_type_name)
-                                                                                                                data.development_type_name
-                                                                                                              elsif data.development_type_name == "Districts"
-                                                                                                                "Districts"
-                                                                                                              else
-                                                                                                                # rec.certification_scheme_name
-                                                                                                                ERB::Util.html_escape(data.certification_scheme_name).split('|||').sort.join('<br/>') unless data.certification_scheme_name.nil?
-                                                                                                              end
-                                                                                                            }",
+          "#{
+              if data.certificate_type&.to_i == 3 && ["Neighborhoods", "Mixed Use"].include?(data.development_type_name)
+                data.development_type_name
+              elsif data.development_type_name == "Districts"
+                "Districts"
+              else
+                # rec.certification_scheme_name
+                ERB::Util.html_escape(data.certification_scheme_name).split('|||').sort.join('<br/>') unless data.certification_scheme_name.nil?
+              end
+          }",
                                                                                                             
-          t('models.effective.datatables.projects_certification_paths.schemes_array.label') =>  "#{
-                                                                                                  unless data.schemes_array.nil?
-                                                                                                    schemes_array = ERB::Util.html_escape(data.schemes_array).split('|||').sort
-                                                                                                    if schemes_array.size > 1
-                                                                                                      schemes_array.join('<br/>')
-                                                                                                    end
-                                                                                                  end
-                                                                                                }",
+          "#{
+              unless data.schemes_array.nil?
+                schemes_array = ERB::Util.html_escape(data.schemes_array).split('|||').sort
+                if schemes_array.size > 1
+                  schemes_array.join('<br/>')
+                end
+              end
+          }",
 
-          t('models.effective.datatables.projects_certification_paths.certification_path_started_at.label') => data.certification_path_started_at&.to_date&.strftime('%e-%b-%y'),
+          data.certification_path_started_at&.to_date&.strftime('%e-%b-%y'),
 
-          t('models.effective.datatables.projects_certification_paths.certification_path_status_is_active.label') => data.certification_path_status_is_active,
+          data.certification_path_status_is_active,
 
-          t('models.effective.datatables.projects_certification_paths.certification_path_pcr_track.label') => data.certification_path_pcr_track,
+          data.certification_path_pcr_track,
 
-          t('models.effective.datatables.projects_certification_paths.building_types.label') => data.building_type_name,
+          data.building_type_name,
 
-          t('models.effective.datatables.projects.lables.service_provider') => data.project_service_provider
-        }
+          data.project_service_provider
+        ]
 
-      @projects.push(formatted_data)
+      @projects.push(general_projects_lables.zip(formatted_data).to_h)
     end
 
     # for offiline projects
+    offline_projects_lables = 
+      [
+        t('models.effective.datatables.projects.lables.project_code'), 
+        t('models.effective.datatables.projects.lables.project_name'), 
+        t('models.effective.datatables.offline.project.certificate_type'),
+        t('models.effective.datatables.projects.lables.project_certified_area'),
+        t('models.effective.datatables.offline.project.owner'),
+        t('models.effective.datatables.offline.project.developer'),
+        t('models.effective.datatables.offline.project.assessment_type'),
+        t('models.effective.datatables.offline.project.construction_year'),
+        t('models.effective.datatables.offline.project.project_country'),
+        t('models.effective.datatables.offline.project.project_city'),
+        t('models.effective.datatables.offline.project.project_district'),
+        t('models.effective.datatables.offline.project.project_owner_business_sector'),
+        t('models.effective.datatables.offline.project.project_developer_business_sector'),
+        t('models.effective.datatables.offline.project.project_gross_built_up_area'),
+        t('models.effective.datatables.offline.certification_path.name'),
+        t('models.effective.datatables.offline.certification_path.version'),
+        t('models.effective.datatables.offline.certification_path.development_type'),
+        t('models.effective.datatables.offline.certification_path.status'),
+        t('models.effective.datatables.offline.certification_path.certified_at'),
+        t('models.effective.datatables.offline.certification_path.rating'),
+        t('models.effective.datatables.offline.certification_path.schemes'),
+        t('models.effective.datatables.offline.certification_path.subscheme'),
+        t('models.effective.datatables.offline.project.plot_area')
+      ]
+
     offline_projects.each do |data|
       formatted_data = 
-        {
-          t('models.effective.datatables.projects.lables.project_code') => data.code,
-          t('models.effective.datatables.projects.lables.project_name') => data.name,
-          t('models.effective.datatables.offline.project.certificate_type') => data.certificate_type,
-          t('models.effective.datatables.projects.lables.project_certified_area') => data.certified_area,
-          t('models.effective.datatables.offline.project.owner') => data.owner,
-          t('models.effective.datatables.offline.project.developer') => data.developer,
-          t('models.effective.datatables.offline.project.assessment_type') => data.assessment_type,
-          t('models.effective.datatables.offline.project.construction_year') => data.construction_year,
-          t('models.effective.datatables.offline.project.project_country') => data.project_country,
-          t('models.effective.datatables.offline.project.project_city') => data.project_city,
-          t('models.effective.datatables.offline.project.project_district') => data.project_district,
-          t('models.effective.datatables.offline.project.project_owner_business_sector') => data.project_owner_business_sector,
-          t('models.effective.datatables.offline.project.project_developer_business_sector') => data.project_developer_business_sector,
-          t('models.effective.datatables.offline.project.project_gross_built_up_area') => data.project_gross_built_up_area,
-          t('models.effective.datatables.offline.certification_path.name') => data.certification_name,
-          t('models.effective.datatables.offline.certification_path.version') => Offline::CertificationPath.versions.key(data.certification_version),
-          t('models.effective.datatables.offline.certification_path.development_type') => data.certification_development_type,
-          t('models.effective.datatables.offline.certification_path.status') => data.certification_status,
-          t('models.effective.datatables.offline.certification_path.certified_at') => data.certification_certified_at,
-          t('models.effective.datatables.offline.certification_path.rating') => Offline::CertificationPath.ratings.key(data.certification_rating),
-          t('models.effective.datatables.offline.certification_path.schemes') => data.certification_scheme_name,
-          t('models.effective.datatables.offline.certification_path.subscheme') => data.subschemes || "",
-          t('models.effective.datatables.offline.project.plot_area') => data.plot_area
-        }
-
-      @projects.push(formatted_data)
+        [
+          data.code,
+          data.name,
+          data.certificate_type,
+          data.certified_area,
+          data.owner,
+          data.developer,
+          data.assessment_type,
+          data.construction_year,
+          data.project_country,
+          data.project_city,
+          data.project_district,
+          data.project_owner_business_sector,
+          data.project_developer_business_sector,
+          data.project_gross_built_up_area,
+          data.certification_name,
+          Offline::CertificationPath.versions.key(data.certification_version),
+          data.certification_development_type,
+          data.certification_status,
+          data.certification_certified_at,
+          Offline::CertificationPath.ratings.key(data.certification_rating),
+          data.certification_scheme_name,
+          data.subschemes || "",
+          data.plot_area
+        ]
+      @projects.push(offline_projects_lables.zip(formatted_data).to_h)
     end
   end
 
