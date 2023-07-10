@@ -490,7 +490,7 @@ module Effective
       collection do
         projects = Project.datatable_projects_records
         
-        if current_user.service_provider?
+        if current_user.is_service_provider?
           project_ids = Project.accessible_by(current_ability).pluck(:id)
           projects.where(id: project_ids.uniq)
         else
