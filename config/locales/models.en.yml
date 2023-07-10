@@ -17,10 +17,13 @@ en:
             construction_certificate_stage2: "Stage 2: Substructure & Superstructure"
             construction_certificate_stage3: "Stage 3: Finishing"
             operations_certificate: "GSAS Operations Certificate"
+            provisional_certificate: "Stage 1: Provisional Certificate"
+            ecoleafe_certificate: "Stage 2: EcoLeaf Certificate"
           certificate_titles:
             design_and_build: GSAS-D&B
             construction_certificate: GSAS-CM
             operations_certificate: GSAS-OP
+            gsas_ecoleaf: GSAS-Ecoleaf
         certification_types:
           letter_of_conformance: Letter of conformance
           final_design_certificate: Final design certificate
@@ -29,6 +32,8 @@ en:
           construction_certificate_stage2: GSAS-CM - Stage 2
           construction_certificate_stage3: GSAS-CM - Stage 3
           operations_certificate: Operations certificate
+          provisional_certificate: "Stage 1: Provisional Certificate"
+          ecoleafe_certificate: "Stage 2: EcoLeaf Certificate"
         certification_titles:
           letter_of_conformance: "Stage 1: LOC, Design Certificate"
           final_design_certificate: "Stage 2: CDA, Design & Build Certificate"
@@ -37,6 +42,8 @@ en:
           construction_certificate_stage2: GSAS-CM - Stage 2
           construction_certificate_stage3: GSAS-CM - Stage 3
           operations_certificate: Operations certificate
+          provisional_certificate: "Stage 1: Provisional Certificate"
+          ecoleafe_certificate: "Stage 2: EcoLeaf Certificate"
         certification_types_subtitles:
           letter_of_conformance: ""
           final_design_certificate: ""
@@ -45,6 +52,8 @@ en:
           construction_certificate_stage3: (finishing stage)
           construction_certificate: ""
           operations_certificate: ""
+          provisional_certificate: (provisional stage)
+          ecoleafe_certificate: ""
       certification_path:
         development_type: Development Type
         star_rating: Performance-Based (Star Rating Certificate)
@@ -62,6 +71,7 @@ en:
         name: Project Name
         building_type_group_id: Project Planning Type
         building_type_id: Project Use
+        specify_other_project_use: Specify Other Project Use
         buildings_footprint_area: Project Footprint (C)
         certificate_type: Certificate Type
         carpark_area: Project Car Park Area
