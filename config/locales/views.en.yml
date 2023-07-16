@@ -21,6 +21,8 @@ en:
         viewer: Visualisation Tool
         survey_dashboard: Survey Dashboard
         offline_projects: Offline Projects
+        btn_new_project: New project
+        btn_project_statistics: Project Statistics
   certification_paths:
     edit_status:
       modal_title: Update status
@@ -159,6 +161,7 @@ en:
     index:
       title_html: Projects &amp; Certifications
       btn_new_project: New project
+      btn_project_statistics: Project Statistics
     form:
       title: Project Details
       tooltip_gross_area: Total built up area of the buildings including conditioned and unconditioned spaces, in addition to underground and structured parking.

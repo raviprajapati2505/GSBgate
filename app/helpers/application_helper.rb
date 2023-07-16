@@ -13,7 +13,7 @@ module ApplicationHelper
   include ActionView::Helpers::AssetTagHelper
   #include ActionView::Helpers::UrlHelper
   include ActionView::Context
-
+  
   def is_active_controller(controller_name)
     params[:controller] == controller_name ? "active" : nil
   end
@@ -242,7 +242,7 @@ module ApplicationHelper
     # component_type
     if component_type == :link
       # raise ('test')
-      return link_to options[:target], _options.except(:target) do
+      return ActionController::Base.helpers.link_to options[:target], _options.except(:target) do
         _content.html_safe
       end
     end
@@ -987,6 +987,7 @@ module ApplicationHelper
         SELECT offline_scheme_mixes.name
         FROM offline_scheme_mixes
         WHERE offline_scheme_mixes.offline_certification_path_id = offline_certification_paths.id
+        LIMIT 1
       ), 
       '|||'
     )"
@@ -995,6 +996,6 @@ module ApplicationHelper
   def offline_projects_by_sub_scheme_names
     "SELECT offline_scheme_mixes.subschemes
     FROM offline_scheme_mixes
-    WHERE offline_scheme_mixes.offline_certification_path_id = offline_certification_paths.id"
+    WHERE offline_scheme_mixes.offline_certification_path_id = offline_certification_paths.id LIMIT 1"
   end
 end
