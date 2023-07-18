@@ -169,7 +169,7 @@ class Project < ApplicationRecord
   end
 
   def completed_ecoleaf_provisional_stage
-    CertificationPath.with_project(self).with_status(CertificationPathStatus::STATUSES_COMPLETED).with_certification_type(Certificate.certification_types[:provisional_certificate])
+    CertificationPath.with_project(self).with_status(CertificationPathStatus::STATUSES_COMPLETED).with_certification_type(Certificate.certification_types[:ecoleaf_provisional_certificate])
   end
 
   def average_scores_all_construction_stages
@@ -302,6 +302,10 @@ class Project < ApplicationRecord
 
   def operation?
     certificate_type == Certificate.certificate_types[:operations_type]
+  end
+
+  def ecoleaf?
+    certificate_type == Certificate.certificate_types[:ecoleaf]
   end
 
   def loc_projects_users

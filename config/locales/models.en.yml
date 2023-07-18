@@ -17,8 +17,8 @@ en:
             construction_certificate_stage2: "Stage 2: Substructure & Superstructure"
             construction_certificate_stage3: "Stage 3: Finishing"
             operations_certificate: "GSAS Operations Certificate"
-            provisional_certificate: "Stage 1: Provisional Certificate"
-            ecoleafe_certificate: "Stage 2: EcoLeaf Certificate"
+            ecoleaf_provisional_certificate: "Stage 1: Provisional Certificate"
+            ecoleaf_certificate: "Stage 2: EcoLeaf Certificate"
           certificate_titles:
             design_and_build: GSAS-D&B
             construction_certificate: GSAS-CM
@@ -32,8 +32,8 @@ en:
           construction_certificate_stage2: GSAS-CM - Stage 2
           construction_certificate_stage3: GSAS-CM - Stage 3
           operations_certificate: Operations certificate
-          provisional_certificate: "Stage 1: Provisional Certificate"
-          ecoleafe_certificate: "Stage 2: EcoLeaf Certificate"
+          ecoleaf_provisional_certificate: "Stage 1: Provisional Certificate"
+          ecoleaf_certificate: "Stage 2: EcoLeaf Certificate"
         certification_titles:
           letter_of_conformance: "Stage 1: LOC, Design Certificate"
           final_design_certificate: "Stage 2: CDA, Design & Build Certificate"
@@ -42,8 +42,8 @@ en:
           construction_certificate_stage2: GSAS-CM - Stage 2
           construction_certificate_stage3: GSAS-CM - Stage 3
           operations_certificate: Operations certificate
-          provisional_certificate: "Stage 1: Provisional Certificate"
-          ecoleafe_certificate: "Stage 2: EcoLeaf Certificate"
+          ecoleaf_provisional_certificate: "Stage 1: Provisional Certificate"
+          ecoleaf_certificate: "Stage 2: EcoLeaf Certificate"
         certification_types_subtitles:
           letter_of_conformance: ""
           final_design_certificate: ""
@@ -52,8 +52,8 @@ en:
           construction_certificate_stage3: (finishing stage)
           construction_certificate: ""
           operations_certificate: ""
-          provisional_certificate: (provisional stage)
-          ecoleafe_certificate: ""
+          ecoleaf_provisional_certificate: (provisional stage)
+          ecoleaf_certificate: ""
       certification_path:
         development_type: Development Type
         star_rating: Performance-Based (Star Rating Certificate)

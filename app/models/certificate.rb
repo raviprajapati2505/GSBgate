@@ -2,7 +2,7 @@ class Certificate < ApplicationRecord
   enum certificate_type: { design_type: 3, construction_type: 1, operations_type: 2, ecoleaf: 4 }
   enum assessment_stage: { design_stage: 3, construction_stage: 1, operations_stage: 2, ecoleaf_stage: 4  }
 
-  enum certification_type: { letter_of_conformance: 10, final_design_certificate: 20, construction_certificate: 30, construction_certificate_stage1: 31, construction_certificate_stage2: 32, construction_certificate_stage3: 33, operations_certificate: 40, provisional_certificate: 45, ecoleafe_certificate: 50 }
+  enum certification_type: { letter_of_conformance: 10, final_design_certificate: 20, construction_certificate: 30, construction_certificate_stage1: 31, construction_certificate_stage2: 32, construction_certificate_stage3: 33, operations_certificate: 40, ecoleaf_provisional_certificate: 45, ecoleaf_certificate: 50 }
 
   has_many :certification_paths
   has_many :development_types
@@ -51,6 +51,10 @@ class Certificate < ApplicationRecord
     design_type?
   end
 
+  def ecoleaf?
+    ecoleaf?
+  end
+
   def full_name
     self.name
   end
@@ -68,7 +72,7 @@ class Certificate < ApplicationRecord
                               when "GSAS-OP"
                                 [Certificate.certification_types[:operations_certificate]]
                               when "GSAS-Ecoleaf"
-                                [Certificate.certification_types[:provisional_certificate], Certificate.certification_types[:ecoleafe_certificate]]
+                                [Certificate.certification_types[:ecoleaf_provisional_certificate], Certificate.certification_types[:ecoleaf_certificate]]
                               else
                                 Certificate.certification_types
                               end
@@ -77,7 +81,7 @@ class Certificate < ApplicationRecord
     return certificate_types_array
   end
 
-  def self.get_certificate_by_stageificate_by_stage(certificate_stages)
+  def self.get_certificate_by_stage(certificate_stages)
     certificate_stages_array = []
     certificate_stages.each do |certificate_stage|
       next unless certificate_stage.present?

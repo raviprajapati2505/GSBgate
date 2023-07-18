@@ -71,6 +71,10 @@ class CertificationPathsController < AuthenticatedController
                            else
                               @certificate_method.assessment_method
                            end
+
+    elsif [Certificate.certification_types[:ecoleaf_provisional_certificate], Certificate.certification_types[:ecoleaf_certificate]].include?(Certificate.certification_types[@certification_type])
+      @assessment_method = 1
+
     else
       if params.has_key?(:assessment_method)
         @assessment_method = params[:assessment_method].to_i

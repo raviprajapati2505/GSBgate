@@ -64,7 +64,7 @@
               <% no_stage1_construction_for_stage2 = (certification_type == Certificate.certification_types[:construction_certificate_stage2] && project.completed_construction_stage1.empty?) %>
               <% no_stage2_construction_for_stage3 = (certification_type == Certificate.certification_types[:construction_certificate_stage3] && project.completed_construction_stage2.empty?) %>
               <% no_stage3_construction_for_overall = (certification_type == Certificate.certification_types[:construction_certificate] && project.completed_construction_stage3.empty?) %>
-              <% no_provisional_for_ecoleaf_certificate = (certification_type == Certificate.certification_types[:ecoleafe_certificate] && project.completed_ecoleaf_provisional_stage.empty?) %>
+              <% no_provisional_for_ecoleaf_certificate = (certification_type == Certificate.certification_types[:ecoleaf_certificate] && project.completed_ecoleaf_provisional_stage.empty?) %>
               <% if is_certification_paths_present && !is_td_present %>
                 <td colspan='4' style="padding: 0px;">
                 <% is_td_present = true %>
@@ -96,7 +96,7 @@
                         ((certification_type == Certificate.certification_types[:final_design_certificate]) && project.completed_letter_of_conformances.any?) || 
                         ((certification_type == Certificate.certification_types[:construction_certificate_stage2]) && project.completed_construction_stage1.any?) || 
                         ((certification_type == Certificate.certification_types[:construction_certificate_stage3]) && project.completed_construction_stage2.any?) ||
-                        ((certification_type == Certificate.certification_types[:ecoleafe_certificate]) && project.completed_ecoleaf_provisional_stage.any?)) 
+                        ((certification_type == Certificate.certification_types[:ecoleaf_certificate]) && project.completed_ecoleaf_provisional_stage.any?)) 
                         
                         %>
                         <%= btn_link_to(apply_certification_path_path(@project, certification_type), text: 'Apply', icon: 'play', action: :post, remote: true) %>

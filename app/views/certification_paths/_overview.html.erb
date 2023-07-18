@@ -22,7 +22,7 @@
 <% if project.certificate_type.nil? || project.certificate_type == Certificate.certificate_types[:ecoleaf] %>
   <ul class="list-group">
     <%= render partial: 'certification_paths/certification_path_details', locals: { project: project } %>
-    <%= render partial: 'certification_paths/overview_item', locals: { project: project, certification_types: [:provisional_certificate, :ecoleafe_certificate] } %>
+    <%= render partial: 'certification_paths/overview_item', locals: { project: project, certification_types: [:ecoleaf_provisional_certificate, :ecoleaf_certificate] } %>
   </ul>
 <% end %>
 
