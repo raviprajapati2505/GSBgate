@@ -73,7 +73,7 @@ class CertificationPathsController < AuthenticatedController
                            end
 
     elsif [Certificate.certification_types[:ecoleaf_provisional_certificate], Certificate.certification_types[:ecoleaf_certificate]].include?(Certificate.certification_types[@certification_type])
-      @assessment_method = 1
+      @assessment_method = 2
 
     else
       if params.has_key?(:assessment_method)
@@ -184,7 +184,7 @@ class CertificationPathsController < AuthenticatedController
       # save the certificate, as the user has clicked save
       format.html {
         if @certification_path.save
-          @certification_path.create_assessment_method(@assessment_method) if @project.design_and_build?
+          @certification_path.create_assessment_method(@assessment_method) if (@project.design_and_build? || @project.ecoleaf?)
           @project.update_column(:service_provider_2, current_user&.organization_name) if @certification_path&.certificate&.certification_type == "final_design_certificate"
           @project.project_rendering_images.where(certification_path_id: nil).update(certification_path_id: @certification_path.id)
           @project.actual_project_images.where(certification_path_id: nil).update(certification_path_id: @certification_path.id)

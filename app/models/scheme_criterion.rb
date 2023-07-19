@@ -42,7 +42,7 @@ class SchemeCriterion < ApplicationRecord
   end
 
   def full_name
-    if is_checklist?
+    if is_checklist? && scheme_category.code != "EL"
       "CS: #{self.name}" 
     else
       "#{self.code}: #{self.name}"
