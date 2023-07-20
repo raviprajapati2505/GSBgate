@@ -372,8 +372,12 @@
 <% unless @scheme_mix_criterion.main_scheme_mix_criterion_id.present? %>
   <% download_document_permitted = check_documents_permissions(user_role: current_user.role, project: @project) %>
 
+    <%
+      get_scheme_mix_criteria_requiments_assigned_to_user = get_scheme_mix_criteria_requiments_assigned_to_user(@scheme_mix_criterion, current_user)
+      get_scheme_mix_criteria_requiments_not_assigned_to_user = get_scheme_mix_criteria_requiments_not_assigned_to_user(@scheme_mix_criterion, current_user)
+    %>
     <div class="col-lg-8">
-        <% if @scheme_mix_criterion.requirement_data.assigned_to_user(current_user).present? %>
+        <% if get_scheme_mix_criteria_requiments_assigned_to_user.present? %>
             <div class="ibox">
                 <div class="ibox-title">
                     <h5>Your Requirements <%= tooltip('These requirements were assigned to you. It is your responsibility to provide documentation for these requirements.') %></h5>
@@ -382,8 +386,13 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div id="accordion" class="panel-group">
-                                <% @scheme_mix_criterion.requirement_data.assigned_to_user(current_user).each do |requirement_datum| %>
+                                <% get_scheme_mix_criteria_requiments_assigned_to_user.each do |title, requirement_data| %>
+                                  <% if title.present? %>
+                                    <h2 class="tag"><%= title %></h2>
+                                  <% end %>
+                                  <% requirement_data.each do |requirement_datum| %>
                                     <%= render 'requirement_data/update', requirement_datum: requirement_datum %>
+                                  <% end %>
                                 <% end %>
                             </div>
                         </div>
@@ -391,7 +400,7 @@
                 </div>
             </div>
         <% end %>
-        <% if @scheme_mix_criterion.requirement_data.not_assigned_to_user(current_user).present? %>
+        <% if get_scheme_mix_criteria_requiments_not_assigned_to_user.present? %>
             <div class="ibox">
                 <div class="ibox-title">
                     <% if @scheme_mix_criterion.requirement_data.assigned_to_user(current_user).present? %>
@@ -404,8 +413,13 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div id="accordion" class="panel-group">
-                                <% @scheme_mix_criterion.requirement_data.not_assigned_to_user(current_user).each do |requirement_datum| %>
+                                <% get_scheme_mix_criteria_requiments_not_assigned_to_user.each do |title, requirement_data| %>
+                                  <% if title.present? %>
+                                    <h2 class="tag"><%= title %></h2>
+                                  <% end %>
+                                  <% requirement_data.each do |requirement_datum| %>
                                     <%= render 'requirement_data/update', requirement_datum: requirement_datum %>
+                                  <% end %>
                                 <% end %>
                             </div>
                         </div>

@@ -5,5 +5,6 @@ class Requirement < ApplicationRecord
   has_many :scheme_criteria, through: :scheme_criteria_requirements
   has_many :requirement_data
   belongs_to :calculator, optional: true
+  belongs_to :requirement_category, optional: true
   default_scope { order(display_weight: :asc) }
 end

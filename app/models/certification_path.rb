@@ -159,6 +159,10 @@ class CertificationPath < ApplicationRecord
     certificate.construction_2019?
   end
 
+  def ecoleaf?
+    certificate.ecoleaf_2019?
+  end
+
   def certification_manager_assigned?
     projects_users =  if project.design_and_build?
                         if is_design_loc?

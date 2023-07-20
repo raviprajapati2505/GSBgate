@@ -51,7 +51,7 @@ class Certificate < ApplicationRecord
     design_type?
   end
 
-  def ecoleaf?
+  def ecoleaf_2019?
     ecoleaf?
   end
 

@@ -998,4 +998,20 @@ module ApplicationHelper
     FROM offline_scheme_mixes
     WHERE offline_scheme_mixes.offline_certification_path_id = offline_certification_paths.id LIMIT 1"
   end
+
+  def get_scheme_mix_criteria_requiments_assigned_to_user(scheme_mix_criterion, user)
+    scheme_mix_criterion
+      .requirement_data
+      .joins(requirement: :requirement_category)
+      .assigned_to_user(user)
+      .group_by { |c| c.requirement&.requirement_category&.title }
+  end
+
+  def get_scheme_mix_criteria_requiments_not_assigned_to_user(scheme_mix_criterion, user)
+    scheme_mix_criterion
+      .requirement_data
+      .joins(requirement: :requirement_category)
+      .not_assigned_to_user(user)
+      .group_by { |c| c.requirement&.requirement_category&.title }
+  end
 end
