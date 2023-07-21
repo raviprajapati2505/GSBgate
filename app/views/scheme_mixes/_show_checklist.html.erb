@@ -212,6 +212,7 @@
                                 <% end %>
                               </td>
                               <td><%= t(scheme_mix_criterion.status, scope: 'activerecord.attributes.scheme_mix_criterion.statuses') %></td>
+                              <td></td>
                               <td>
                                 <% processed_count = scheme_mix_criterion.requirement_data.provided.count + scheme_mix_criterion.requirement_data.not_required.count %>
                                 <% total_count = scheme_mix_criterion.requirement_data.count %>

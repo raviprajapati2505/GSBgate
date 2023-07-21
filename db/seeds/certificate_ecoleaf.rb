@@ -1,8 +1,19 @@
 # Create bulding type group for ecoleaf
-BuildingTypeGroup.find_or_create_by(name: 'EcoLeaf', visible: true)
+
+# Reset primary key sequence
+tables = ["building_type_groups", "building_types"]
+tables.each do |t|
+	ActiveRecord::Base.connection.reset_pk_sequence!("#{t}")
+end
+
+building_type_group = 
+  BuildingTypeGroup.find_or_create_by(
+    name: 'EcoLeaf', 
+    visible: true
+)
 BuildingType.find_or_create_by(
   name: 'Expo Site', 
-  building_type_group: BuildingTypeGroup.find_by(name: 'EcoLeaf')
+  building_type_group: building_type_group
 )
 
 # Create requirement category
@@ -205,7 +216,7 @@ el_1_criteria_information =
 el_1_criteria_information.each.with_index(1) do |ci, i|
   SchemeCriterionText.find_or_create_by(
     scheme_criterion: el_1_provisional_scheme_criteria,
-    display_weight: 1, 
+    display_weight: i, 
     visible: true,
     name: "1.#{i}",
     html_text: 
@@ -240,16 +251,16 @@ el_1_design_requirements =
   ]
 
 el_1_design_requirements.each.with_index(1) do |ci, i|
-  rt_for_EL_provisional_certification_criterion_1 = nil
+  rt_for_el_1_provisional_certification_criterion = nil
 
-  rt_for_EL_provisional_certification_criterion_1 = 
+  rt_for_el_1_provisional_certification_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_design
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_EL_provisional_certification_criterion_1, 
+    requirement: rt_for_el_1_provisional_certification_criterion, 
     scheme_criterion: el_1_provisional_scheme_criteria
   )
 end
@@ -285,15 +296,15 @@ el_1_construction_requirements =
   ]
 
 el_1_construction_requirements.each.with_index(1) do |ci, i|
-  rt_for_EL_provisional_certification_criterion_1 = nil
-  rt_for_EL_provisional_certification_criterion_1 = 
+  rt_for_el_1_provisional_certification_criterion = nil
+  rt_for_el_1_provisional_certification_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_construction
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_EL_provisional_certification_criterion_1, 
+    requirement: rt_for_el_1_provisional_certification_criterion, 
     scheme_criterion: el_1_provisional_scheme_criteria
   )
 end
@@ -315,15 +326,15 @@ el_1_operation_requirements =
   ]
 
 el_1_operation_requirements.each.with_index(1) do |ci, i|
-  rt_for_EL_provisional_certification_criterion_1 = nil
-  rt_for_EL_provisional_certification_criterion_1 = 
+  rt_for_el_1_provisional_certification_criterion = nil
+  rt_for_el_1_provisional_certification_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_operation
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_EL_provisional_certification_criterion_1, 
+    requirement: rt_for_el_1_provisional_certification_criterion, 
     scheme_criterion: el_1_provisional_scheme_criteria
   )
 end
@@ -340,15 +351,1671 @@ el_1_dismantling_requirements =
   ]
 
 el_1_dismantling_requirements.each.with_index(1) do |ci, i|
-  rt_for_EL_provisional_certification_criterion_1 = nil
-  rt_for_EL_provisional_certification_criterion_1 = 
+  rt_for_el_1_provisional_certification_criterion = nil
+  rt_for_el_1_provisional_certification_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_dismantling
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_EL_provisional_certification_criterion_1, 
+    requirement: rt_for_el_1_provisional_certification_criterion, 
     scheme_criterion: el_1_provisional_scheme_criteria
+  )
+end
+
+# --------------------------------- EL.2 ----------------------------------
+el_2_provisional_scheme_criteria = 
+  SchemeCriterion.find_or_create_by(
+    name: "Renewable Energy", 
+    number: 2, 
+    scores_a: YAML.load("[[1, 1.0]]\n"), 
+    minimum_score_a: 0, 
+    maximum_score_a: 1, 
+    minimum_valid_score_a: 0, 
+    weight_a: 1, 
+    is_checklist: true, 
+    scheme_category: el_provisional_scheme_category
+  )
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_2_provisional_scheme_criteria, 
+  label: 'Targeted Checklist Status', 
+  display_weight: 1
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_2_provisional_scheme_criteria, 
+  label: 'Submitted Checklist Status', 
+  display_weight: 2
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_2_provisional_scheme_criteria, 
+  label: 'Achieved Checklist Status', 
+  display_weight: 3
+)
+
+el_2_final_scheme_criteria = 
+  SchemeCriterion.find_or_create_by(
+    name: "Renewable Energy", 
+    number: 2, 
+    scores_a: YAML.load("[[1, 1.0]]\n"), 
+    minimum_score_a: 0, 
+    maximum_score_a: 1, 
+    minimum_valid_score_a: 0, 
+    weight_a: 1, 
+    is_checklist: true, 
+    scheme_category: el_final_scheme_category
+  )
+
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_2_final_scheme_criteria, 
+  label: 'Targeted Checklist Status', 
+  display_weight: 1
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_2_final_scheme_criteria, 
+  label: 'Submitted Checklist Status', 
+  display_weight: 2
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_2_final_scheme_criteria, 
+  label: 'Achieved Checklist Status', 
+  display_weight: 3
+)
+
+el_2_criteria_information = 
+  [
+    "Use renewable energy where appropriate. Compliance is achieved when the percentage of the onsite renewable energy contribution to the total energy need of the development meets or exceeds the 10% limit."
+  ]
+
+el_2_criteria_information.each.with_index(1) do |ci, i|
+  SchemeCriterionText.find_or_create_by(
+    scheme_criterion: el_2_provisional_scheme_criteria,
+    display_weight: i, 
+    visible: true,
+    name: "1.#{i}",
+    html_text: 
+      "
+        <p>
+          #{ci}
+        </p>\n
+        <p>&nbsp;</p>
+      "
+  )
+end
+
+# Create Requirements
+el_2_design_requirements = 
+  [
+    "Layouts showing the location, orientation, and size of renewables onsite",
+    "Tentative Renewables Selection",
+    "Renewable systems power calculations",
+    "Peak Demand calculations"
+  ]
+
+el_2_design_requirements.each.with_index(1) do |ci, i|
+  rt_for_el_2_provisional_certification_criterion = nil
+
+  rt_for_el_2_provisional_certification_criterion = 
+    Requirement.find_or_create_by(
+      name: ci, 
+      display_weight: i,
+      requirement_category: requirement_category_for_design
+    )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_2_provisional_certification_criterion, 
+    scheme_criterion: el_2_provisional_scheme_criteria
+  )
+end
+
+el_2_construction_requirements = 
+  [
+    "Photos of Renewables and Meters",
+    "Updated Layouts (if any)",
+    "Equipment Nameplates"
+  ]
+
+el_2_construction_requirements.each.with_index(1) do |ci, i|
+  rt_for_el_2_provisional_certification_criterion = nil
+  rt_for_el_2_provisional_certification_criterion = 
+    Requirement.find_or_create_by(
+      name: ci, 
+      display_weight: i,
+      requirement_category: requirement_category_for_construction
+    )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_2_provisional_certification_criterion, 
+    scheme_criterion: el_2_provisional_scheme_criteria
+  )
+end
+
+el_2_operation_requirements = 
+  [
+    "Logs for Renewable meters and Overall Electricity Meters for the whole event duration (Weekly)",
+    "Calculations showing compliance"
+  ]
+
+el_2_operation_requirements.each.with_index(1) do |ci, i|
+  rt_for_el_2_provisional_certification_criterion = nil
+  rt_for_el_2_provisional_certification_criterion = 
+    Requirement.find_or_create_by(
+      name: ci, 
+      display_weight: i,
+      requirement_category: requirement_category_for_operation
+    )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_2_provisional_certification_criterion, 
+    scheme_criterion: el_2_provisional_scheme_criteria
+  )
+end
+
+# --------------------------------- EL.3 ----------------------------------
+el_3_provisional_scheme_criteria = 
+  SchemeCriterion.find_or_create_by(
+    name: "Water Management", 
+    number: 3, 
+    scores_a: YAML.load("[[1, 1.0]]\n"), 
+    minimum_score_a: 0, 
+    maximum_score_a: 1, 
+    minimum_valid_score_a: 0, 
+    weight_a: 1, 
+    is_checklist: true, 
+    scheme_category: el_provisional_scheme_category
+  )
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_3_provisional_scheme_criteria, 
+  label: 'Targeted Checklist Status', 
+  display_weight: 1
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_3_provisional_scheme_criteria, 
+  label: 'Submitted Checklist Status', 
+  display_weight: 2
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_3_provisional_scheme_criteria, 
+  label: 'Achieved Checklist Status', 
+  display_weight: 3
+)
+
+el_3_final_scheme_criteria = 
+  SchemeCriterion.find_or_create_by(
+    name: "Water Management", 
+    number: 3, 
+    scores_a: YAML.load("[[1, 1.0]]\n"), 
+    minimum_score_a: 0, 
+    maximum_score_a: 1, 
+    minimum_valid_score_a: 0, 
+    weight_a: 1, 
+    is_checklist: true, 
+    scheme_category: el_final_scheme_category
+  )
+
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_3_final_scheme_criteria, 
+  label: 'Targeted Checklist Status', 
+  display_weight: 1
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_3_final_scheme_criteria, 
+  label: 'Submitted Checklist Status', 
+  display_weight: 2
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_3_final_scheme_criteria, 
+  label: 'Achieved Checklist Status', 
+  display_weight: 3
+)
+
+el_3_criteria_information = 
+  [
+    "Use water-efficient fixtures, for example, low flush toilets, vacuum toilet flush systems, dual flush toilets, flow- controllers, water-saving valves and fixtures on faucets and showerheads, and low flush urinals.",
+    "Install water-efficient equipment and appliances including dishwashers, washing machines, or similar appliances, if applicable.",
+    "Install an efficient irrigation system.",
+    "Use a water-efficient landscape by specifying native plants that are more tolerant to local soil and rainfall conditions.",
+    "Use TSE water for toilet flushing or landscape irrigation, where feasible.",
+    "Collect, store, and reuse rainwater that falls on roofs, hardscapes, or any other above-ground catchment surfaces, and condensate water from HVAC equipment.",
+    "Monitor water consumption and leak detection.",
+    "Install, where possible, a mobile water treatment and purification system."
+  ]
+
+el_3_criteria_information.each.with_index(1) do |ci, i|
+  SchemeCriterionText.find_or_create_by(
+    scheme_criterion: el_3_provisional_scheme_criteria,
+    display_weight: i, 
+    visible: true,
+    name: "1.#{i}",
+    html_text: 
+      "
+        <p>
+          #{ci}
+        </p>\n
+        <p>&nbsp;</p>
+      "
+  )
+end
+
+# Create Requirements
+el_3_design_requirements = 
+  [
+    "Fit-out Layouts showing fixtures locations",
+    "Tentative Fixture Selection",
+    "Comparison sheet showing compliance",
+    "Fit-out Layouts showing appliance locations",
+    "Irrigation Layouts showing the irrigation network",
+    "Landscape schedule",
+    "Landscape Layouts",
+    "Correspondence with Utility Provider requesting connections",
+    "Plumbing Layouts showing the drainage of Rainwater and Condensate water",
+    "Layouts showing water storage and reuse",
+    "Water treatment (if any)",
+    "Riser diagram highlighting the proposed meter locations",
+    "Tentative Equipment Selection",
+    "Layout showing the connections to the equipment"
+  ]
+
+el_3_design_requirements.each.with_index(1) do |ci, i|
+  rt_for_el_3_provisional_certification_criterion = nil
+
+  rt_for_el_3_provisional_certification_criterion = 
+    Requirement.find_or_create_by(
+      name: ci, 
+      display_weight: i,
+      requirement_category: requirement_category_for_design
+    )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_3_provisional_certification_criterion, 
+    scheme_criterion: el_3_provisional_scheme_criteria
+  )
+end
+
+el_3_construction_requirements = 
+  [
+    "Product Specifications or catalogs",
+    "Comparison sheet showing compliance",
+    "Photos of fixtures",
+    "Product Specifications or catalogs",
+    "Comparison sheet showing compliance, or Water Labels",
+    "Photos of appliances",
+    "Photos of the irrigation network",
+    "Photos of planted species",
+    "Approval from the Utility Provider",
+    "Photos for Tie-in point and Utility meter",
+    "Photos of the Rainwater collection network",
+    "Photos of Water Storage",
+    "Photos of the installed meters (for temporary construction activities and Expo buildings)",
+    "Logs of water consumption of construction activities (weekly)",
+    "Photos of the Equipment",
+    "Equipment nameplates"
+  ]
+
+el_3_construction_requirements.each.with_index(1) do |ci, i|
+  rt_for_el_3_provisional_certification_criterion = nil
+  rt_for_el_3_provisional_certification_criterion = 
+    Requirement.find_or_create_by(
+      name: ci, 
+      display_weight: i,
+      requirement_category: requirement_category_for_construction
+    )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_3_provisional_certification_criterion, 
+    scheme_criterion: el_3_provisional_scheme_criteria
+  )
+end
+
+el_3_operation_requirements = 
+  [
+    "Product Specifications or catalogs",
+    "Comparison sheet showing compliance, or Water Labels",
+    "Photos of appliances",
+    "Logs of water consumption (weekly)",
+    "Photos of the Equipment",
+    "Equipment nameplates"
+  ]
+
+el_3_operation_requirements.each.with_index(1) do |ci, i|
+  rt_for_el_3_provisional_certification_criterion = nil
+  rt_for_el_3_provisional_certification_criterion = 
+    Requirement.find_or_create_by(
+      name: ci, 
+      display_weight: i,
+      requirement_category: requirement_category_for_operation
+    )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_3_provisional_certification_criterion, 
+    scheme_criterion: el_3_provisional_scheme_criteria
+  )
+end
+
+el_3_dismantling_requirements = 
+  [
+    "Photos of the installed meters (for temporary dismantling activities)",
+    "Logs of water consumption of dismantling activities (weekly)"
+  ]
+
+el_3_dismantling_requirements.each.with_index(1) do |ci, i|
+  rt_for_el_3_provisional_certification_criterion = nil
+  rt_for_el_3_provisional_certification_criterion = 
+    Requirement.find_or_create_by(
+      name: ci, 
+      display_weight: i,
+      requirement_category: requirement_category_for_dismantling
+    )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_3_provisional_certification_criterion, 
+    scheme_criterion: el_3_provisional_scheme_criteria
+  )
+end
+
+# --------------------------------- EL.4 ----------------------------------
+el_4_provisional_scheme_criteria = 
+  SchemeCriterion.find_or_create_by(
+    name: "Land & Biodiversity Preservation", 
+    number: 4, 
+    scores_a: YAML.load("[[1, 1.0]]\n"), 
+    minimum_score_a: 0, 
+    maximum_score_a: 1, 
+    minimum_valid_score_a: 0, 
+    weight_a: 1, 
+    is_checklist: true, 
+    scheme_category: el_provisional_scheme_category
+  )
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_4_provisional_scheme_criteria, 
+  label: 'Targeted Checklist Status', 
+  display_weight: 1
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_4_provisional_scheme_criteria, 
+  label: 'Submitted Checklist Status', 
+  display_weight: 2
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_4_provisional_scheme_criteria, 
+  label: 'Achieved Checklist Status', 
+  display_weight: 3
+)
+
+el_4_final_scheme_criteria = 
+  SchemeCriterion.find_or_create_by(
+    name: "Land & Biodiversity Preservation", 
+    number: 4, 
+    scores_a: YAML.load("[[1, 1.0]]\n"), 
+    minimum_score_a: 0, 
+    maximum_score_a: 1, 
+    minimum_valid_score_a: 0, 
+    weight_a: 1, 
+    is_checklist: true, 
+    scheme_category: el_final_scheme_category
+  )
+
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_4_final_scheme_criteria, 
+  label: 'Targeted Checklist Status', 
+  display_weight: 1
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_4_final_scheme_criteria, 
+  label: 'Submitted Checklist Status', 
+  display_weight: 2
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_4_final_scheme_criteria, 
+  label: 'Achieved Checklist Status', 
+  display_weight: 3
+)
+
+el_4_criteria_information = 
+  [
+    "Ensure ecological conservation, site restoration, and soil contamination including the procedures and  guidelines for soil management during excavation, soil sampling, and backfilling works",
+    "Enhance the existing ecological value of the event site.",
+    "Restore the native ecology by replanting the disturbed vegetation and reintroducing the same species and habitats after the event is concluded.",
+    "Protect and enhance the existing biodiversity including flora and fauna species."
+  ]
+
+el_4_criteria_information.each.with_index(1) do |ci, i|
+  SchemeCriterionText.find_or_create_by(
+    scheme_criterion: el_4_provisional_scheme_criteria,
+    display_weight: i, 
+    visible: true,
+    name: "1.#{i}",
+    html_text: 
+      "
+        <p>
+          #{ci}
+        </p>\n
+        <p>&nbsp;</p>
+      "
+  )
+end
+
+# Create Requirements
+el_4_design_requirements = 
+  [
+    "Environmental Soil Test",
+    "Environmental Impact Assessment or Environmental Report showing land ecological value"
+  ]
+
+el_4_design_requirements.each.with_index(1) do |ci, i|
+  rt_for_el_4_provisional_certification_criterion = nil
+
+  rt_for_el_4_provisional_certification_criterion = 
+    Requirement.find_or_create_by(
+      name: ci, 
+      display_weight: i,
+      requirement_category: requirement_category_for_design
+    )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_4_provisional_certification_criterion, 
+    scheme_criterion: el_4_provisional_scheme_criteria
+  )
+end
+
+el_4_construction_requirements = 
+  [
+    "Environmental Soil Test",
+    "Geotechnical Report",
+    "CEMP",
+    "Photos of Land enhancements",
+    "Environmental Soil Test",
+    "Landscape Layouts",
+    "Terrestrial Survey",
+    "Photos of protection measures implemented"
+  ]
+
+el_4_construction_requirements.each.with_index(1) do |ci, i|
+  rt_for_el_4_provisional_certification_criterion = nil
+  rt_for_el_4_provisional_certification_criterion = 
+    Requirement.find_or_create_by(
+      name: ci, 
+      display_weight: i,
+      requirement_category: requirement_category_for_construction
+    )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_4_provisional_certification_criterion, 
+    scheme_criterion: el_4_provisional_scheme_criteria
+  )
+end
+
+el_4_operation_requirements = 
+  [
+    "Photos of protection measures implemented"
+  ]
+
+el_4_operation_requirements.each.with_index(1) do |ci, i|
+  rt_for_el_4_provisional_certification_criterion = nil
+  rt_for_el_4_provisional_certification_criterion = 
+    Requirement.find_or_create_by(
+      name: ci, 
+      display_weight: i,
+      requirement_category: requirement_category_for_operation
+    )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_4_provisional_certification_criterion, 
+    scheme_criterion: el_4_provisional_scheme_criteria
+  )
+end
+
+el_4_dismantling_requirements = 
+  [
+    "Environmental Soil Test, upon Dismantling",
+    "Photos of Land enhancements",
+    "Environmental Soil Test, upon Dismantling",
+    "Photos of Land enhancements",
+    "List of removed plants",
+    "List of plants used for restoration",
+    "Terrestrial Survey",
+    "Photos of protection measures implemented "
+  ]
+
+el_4_dismantling_requirements.each.with_index(1) do |ci, i|
+  rt_for_el_4_provisional_certification_criterion = nil
+  rt_for_el_4_provisional_certification_criterion = 
+    Requirement.find_or_create_by(
+      name: ci, 
+      display_weight: i,
+      requirement_category: requirement_category_for_dismantling
+    )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_4_provisional_certification_criterion, 
+    scheme_criterion: el_4_provisional_scheme_criteria
+  )
+end
+
+# --------------------------------- EL.5 ----------------------------------
+el_5_provisional_scheme_criteria = 
+  SchemeCriterion.find_or_create_by(
+    name: "Waterbody Preservation", 
+    number: 5, 
+    scores_a: YAML.load("[[1, 1.0]]\n"), 
+    minimum_score_a: 0, 
+    maximum_score_a: 1, 
+    minimum_valid_score_a: 0, 
+    weight_a: 1, 
+    is_checklist: true, 
+    scheme_category: el_provisional_scheme_category
+  )
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_5_provisional_scheme_criteria, 
+  label: 'Targeted Checklist Status', 
+  display_weight: 1
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_5_provisional_scheme_criteria, 
+  label: 'Submitted Checklist Status', 
+  display_weight: 2
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_5_provisional_scheme_criteria, 
+  label: 'Achieved Checklist Status', 
+  display_weight: 3
+)
+
+el_5_final_scheme_criteria = 
+  SchemeCriterion.find_or_create_by(
+    name: "Waterbody Preservation", 
+    number: 5, 
+    scores_a: YAML.load("[[1, 1.0]]\n"), 
+    minimum_score_a: 0, 
+    maximum_score_a: 1, 
+    minimum_valid_score_a: 0, 
+    weight_a: 1, 
+    is_checklist: true, 
+    scheme_category: el_final_scheme_category
+  )
+
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_5_final_scheme_criteria, 
+  label: 'Targeted Checklist Status', 
+  display_weight: 1
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_5_final_scheme_criteria, 
+  label: 'Submitted Checklist Status', 
+  display_weight: 2
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_5_final_scheme_criteria, 
+  label: 'Achieved Checklist Status', 
+  display_weight: 3
+)
+
+el_5_criteria_information = 
+  [
+    "Implement conservation, restoration, and/or enhancement strategies and guidelines for natural waterbodies on or near the development site.",
+    "Restore and enhance water quality and livable conditions of the adjacent or nearby waterbodies.",
+    "Adhere to the coastal protection regulations which mandate the provision of a buffer between the boundaries of a development site and the waterbody."
+  ]
+
+el_5_criteria_information.each.with_index(1) do |ci, i|
+  SchemeCriterionText.find_or_create_by(
+    scheme_criterion: el_5_provisional_scheme_criteria,
+    display_weight: i, 
+    visible: true,
+    name: "1.#{i}",
+    html_text: 
+      "
+        <p>
+          #{ci}
+        </p>\n
+        <p>&nbsp;</p>
+      "
+  )
+end
+
+# Create Requirements
+el_5_design_requirements = 
+  [
+    "Environmental Impact Assessment",
+    "Geotechnical Report",
+    "Environmental Permit"
+  ]
+
+el_5_design_requirements.each.with_index(1) do |ci, i|
+  rt_for_el_5_provisional_certification_criterion = nil
+
+  rt_for_el_5_provisional_certification_criterion = 
+    Requirement.find_or_create_by(
+      name: ci, 
+      display_weight: i,
+      requirement_category: requirement_category_for_design
+    )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_5_provisional_certification_criterion, 
+    scheme_criterion: el_5_provisional_scheme_criteria
+  )
+end
+
+el_5_construction_requirements = 
+  [
+    "Photos of protection measures implemented",
+    "CEMP",
+    "Pre-construction Hydrological test",
+    "Post-construction Hydrological test",
+    "Photos of protection measures implemented"
+  ]
+
+el_5_construction_requirements.each.with_index(1) do |ci, i|
+  rt_for_el_5_provisional_certification_criterion = nil
+  rt_for_el_5_provisional_certification_criterion = 
+    Requirement.find_or_create_by(
+      name: ci, 
+      display_weight: i,
+      requirement_category: requirement_category_for_construction
+    )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_5_provisional_certification_criterion, 
+    scheme_criterion: el_5_provisional_scheme_criteria
+  )
+end
+
+el_5_dismantling_requirements = 
+  [
+    "Post-dismantling Hydrological test"
+  ]
+
+el_5_dismantling_requirements.each.with_index(1) do |ci, i|
+  rt_for_el_5_provisional_certification_criterion = nil
+  rt_for_el_5_provisional_certification_criterion = 
+    Requirement.find_or_create_by(
+      name: ci, 
+      display_weight: i,
+      requirement_category: requirement_category_for_dismantling
+    )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_5_provisional_certification_criterion, 
+    scheme_criterion: el_5_provisional_scheme_criteria
+  )
+end
+
+# --------------------------------- EL.6 ----------------------------------
+el_6_provisional_scheme_criteria = 
+  SchemeCriterion.find_or_create_by(
+    name: "Accessibility", 
+    number: 6, 
+    scores_a: YAML.load("[[1, 1.0]]\n"), 
+    minimum_score_a: 0, 
+    maximum_score_a: 1, 
+    minimum_valid_score_a: 0, 
+    weight_a: 1, 
+    is_checklist: true, 
+    scheme_category: el_provisional_scheme_category
+  )
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_6_provisional_scheme_criteria, 
+  label: 'Targeted Checklist Status', 
+  display_weight: 1
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_6_provisional_scheme_criteria, 
+  label: 'Submitted Checklist Status', 
+  display_weight: 2
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_6_provisional_scheme_criteria, 
+  label: 'Achieved Checklist Status', 
+  display_weight: 3
+)
+
+el_6_final_scheme_criteria = 
+  SchemeCriterion.find_or_create_by(
+    name: "Accessibility", 
+    number: 6, 
+    scores_a: YAML.load("[[1, 1.0]]\n"), 
+    minimum_score_a: 0, 
+    maximum_score_a: 1, 
+    minimum_valid_score_a: 0, 
+    weight_a: 1, 
+    is_checklist: true, 
+    scheme_category: el_final_scheme_category
+  )
+
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_6_final_scheme_criteria, 
+  label: 'Targeted Checklist Status', 
+  display_weight: 1
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_6_final_scheme_criteria, 
+  label: 'Submitted Checklist Status', 
+  display_weight: 2
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_6_final_scheme_criteria, 
+  label: 'Achieved Checklist Status', 
+  display_weight: 3
+)
+
+el_6_criteria_information = 
+  [
+    "Apply specifications for accessible trails, picnic, and camping areas, viewing areas, beach access routes,  and other components of outdoor developed areas that meet the Architectural Barriers Act (ABA) for  Outdoor Spaces or other international standards.",
+    "Implement signage strategies including but not limited to street signage, pathway labels, trash, and recycling receptacles, and directional signs leading to major attractions, parking, entrances, and exits.",
+    "Install safety and advisory warning signs in hazardous and potentially hazardous areas, signs indicating all public, administrative, and maintenance facilities, and interpretative signs for any historical,  artistic, and cultural attractions.",
+    "Ensure safe connection between the facilities and public areas including parking spaces, leisure areas and recreational spaces, etc.",
+    "Ensure connectivity to the existing or planned transportation hubs, such as bus stops, rail or metro stations, and shuttle bus parking areas.",
+    "Facilitate pedestrian pathways on the event site while encouraging visitors to walk for a healthy and sustainable lifestyle."
+  ]
+
+el_6_criteria_information.each.with_index(1) do |ci, i|
+  SchemeCriterionText.find_or_create_by(
+    scheme_criterion: el_6_provisional_scheme_criteria,
+    display_weight: i, 
+    visible: true,
+    name: "1.#{i}",
+    html_text: 
+      "
+        <p>
+          #{ci}
+        </p>\n
+        <p>&nbsp;</p>
+      "
+  )
+end
+
+# Create Requirements
+el_6_design_requirements = 
+  [
+    "Site layouts showing pedestrian pathways sized for two-way circulation",
+    "Ramp details (showing inclination), if any",
+    "Signage Layouts showing the locations of signs",
+    "Signage schedule showing the content of the signs",
+    "Signage Layouts showing the locations of signs",
+    "Signage schedule showing the content of the signs",
+    "Site layouts showing pedestrian pathways sized for two-way circulation",
+    "Ramp details (showing inclination), if any",
+    "Site layouts showing pedestrian pathways sized for two-way circulation",
+    "Ramp details (showing inclination), if any",
+    "Walkability awareness program"
+  ]
+
+el_6_design_requirements.each.with_index(1) do |ci, i|
+  rt_for_el_6_provisional_certification_criterion = nil
+
+  rt_for_el_6_provisional_certification_criterion = 
+    Requirement.find_or_create_by(
+      name: ci, 
+      display_weight: i,
+      requirement_category: requirement_category_for_design
+    )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_6_provisional_certification_criterion, 
+    scheme_criterion: el_6_provisional_scheme_criteria
+  )
+end
+
+el_6_construction_requirements = 
+  [
+    "Photos of Pathways",
+    "Updated Layouts (if applicable)",
+    "Photos of signs",
+    "Updated Layouts (if applicable)",
+    "Photos of Signage, brochures, or posters",
+    "Proposed digital content for Walkability"
+  ]
+
+el_6_construction_requirements.each.with_index(1) do |ci, i|
+  rt_for_el_6_provisional_certification_criterion = nil
+  rt_for_el_6_provisional_certification_criterion = 
+    Requirement.find_or_create_by(
+      name: ci, 
+      display_weight: i,
+      requirement_category: requirement_category_for_construction
+    )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_6_provisional_certification_criterion, 
+    scheme_criterion: el_6_provisional_scheme_criteria
+  )
+end
+
+el_6_operation_requirements = 
+  [
+    "Photos of additional signs",
+    "Updated Layouts (if applicable)"
+  ]
+
+el_6_operation_requirements.each.with_index(1) do |ci, i|
+  rt_for_el_6_provisional_certification_criterion = nil
+  rt_for_el_6_provisional_certification_criterion = 
+    Requirement.find_or_create_by(
+      name: ci, 
+      display_weight: i,
+      requirement_category: requirement_category_for_operation
+    )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_6_provisional_certification_criterion, 
+    scheme_criterion: el_6_provisional_scheme_criteria
+  )
+end
+
+# --------------------------------- EL.7 ----------------------------------
+el_1_provisional_scheme_criteria = 
+  SchemeCriterion.find_or_create_by(
+    name: "Sustainable Architecture", 
+    number: 7, 
+    scores_a: YAML.load("[[1, 1.0]]\n"), 
+    minimum_score_a: 0, 
+    maximum_score_a: 1, 
+    minimum_valid_score_a: 0, 
+    weight_a: 1, 
+    is_checklist: true, 
+    scheme_category: el_provisional_scheme_category
+  )
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_1_provisional_scheme_criteria, 
+  label: 'Targeted Checklist Status', 
+  display_weight: 1
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_1_provisional_scheme_criteria, 
+  label: 'Submitted Checklist Status', 
+  display_weight: 2
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_1_provisional_scheme_criteria, 
+  label: 'Achieved Checklist Status', 
+  display_weight: 3
+)
+
+el_1_final_scheme_criteria = 
+  SchemeCriterion.find_or_create_by(
+    name: "Sustainable Architecture", 
+    number: 7, 
+    scores_a: YAML.load("[[1, 1.0]]\n"), 
+    minimum_score_a: 0, 
+    maximum_score_a: 1, 
+    minimum_valid_score_a: 0, 
+    weight_a: 1, 
+    is_checklist: true, 
+    scheme_category: el_final_scheme_category
+  )
+
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_1_final_scheme_criteria, 
+  label: 'Targeted Checklist Status', 
+  display_weight: 1
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_1_final_scheme_criteria, 
+  label: 'Submitted Checklist Status', 
+  display_weight: 2
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_1_final_scheme_criteria, 
+  label: 'Achieved Checklist Status', 
+  display_weight: 3
+)
+
+el_1_criteria_information = 
+  [
+    "Provide shading on outdoor areas including queuing  corridors, pathways, public areas, etc.",
+    "Include biophilic features and techniques in the design of buildings and structures including green roofs, green walls, green shading, rammed earth, mycelium, etc.",
+    "Maximize landscape areas including native and adaptive species to reduce water consumption.",
+    "Minimize the heat island effect by providing large landscape areas, and high reflectance materials on façades, roofs, structures, and hardscape areas."
+  ]
+
+el_1_criteria_information.each.with_index(1) do |ci, i|
+  SchemeCriterionText.find_or_create_by(
+    scheme_criterion: el_1_provisional_scheme_criteria,
+    display_weight: i, 
+    visible: true,
+    name: "1.#{i}",
+    html_text: 
+      "
+        <p>
+          #{ci}
+        </p>\n
+        <p>&nbsp;</p>
+      "
+  )
+end
+
+# Create Requirements
+el_1_design_requirements = 
+  [
+    "Site Layouts showing shades at public gatherings and queuing areas",
+    "Architectural typical details for Green Roofs and Walls",
+    "Landscape schedule",
+    "Architectural Layouts",
+    "Tentative Material Selection"
+  ]
+
+el_1_design_requirements.each.with_index(1) do |ci, i|
+  rt_for_el_1_provisional_certification_criterion = nil
+
+  rt_for_el_1_provisional_certification_criterion = 
+    Requirement.find_or_create_by(
+      name: ci, 
+      display_weight: i,
+      requirement_category: requirement_category_for_design
+    )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_1_provisional_certification_criterion, 
+    scheme_criterion: el_1_provisional_scheme_criteria
+  )
+end
+
+el_1_construction_requirements = 
+  [
+    "Photos of Shades",
+    "Update Layouts (if applicable)",
+    "Photos of the Green roofs, green walls, and green architectural features",
+    "Photos of planted species",
+    "Material Approval Requests",
+    "Photos of the hardscape and vegetation"
+  ]
+
+el_1_construction_requirements.each.with_index(1) do |ci, i|
+  rt_for_el_1_provisional_certification_criterion = nil
+  rt_for_el_1_provisional_certification_criterion = 
+    Requirement.find_or_create_by(
+      name: ci, 
+      display_weight: i,
+      requirement_category: requirement_category_for_construction
+    )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_1_provisional_certification_criterion, 
+    scheme_criterion: el_1_provisional_scheme_criteria
+  )
+end
+
+# --------------------------------- EL.8 ----------------------------------
+el_8_provisional_scheme_criteria = 
+  SchemeCriterion.find_or_create_by(
+    name: "Heritage & Cultural Identity", 
+    number: 8, 
+    scores_a: YAML.load("[[1, 1.0]]\n"), 
+    minimum_score_a: 0, 
+    maximum_score_a: 1, 
+    minimum_valid_score_a: 0, 
+    weight_a: 1, 
+    is_checklist: true, 
+    scheme_category: el_provisional_scheme_category
+  )
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_8_provisional_scheme_criteria, 
+  label: 'Targeted Checklist Status', 
+  display_weight: 1
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_8_provisional_scheme_criteria, 
+  label: 'Submitted Checklist Status', 
+  display_weight: 2
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_8_provisional_scheme_criteria, 
+  label: 'Achieved Checklist Status', 
+  display_weight: 3
+)
+
+el_8_final_scheme_criteria = 
+  SchemeCriterion.find_or_create_by(
+    name: "Heritage & Cultural Identity", 
+    number: 8, 
+    scores_a: YAML.load("[[1, 1.0]]\n"), 
+    minimum_score_a: 0, 
+    maximum_score_a: 1, 
+    minimum_valid_score_a: 0, 
+    weight_a: 1, 
+    is_checklist: true, 
+    scheme_category: el_final_scheme_category
+  )
+
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_8_final_scheme_criteria, 
+  label: 'Targeted Checklist Status', 
+  display_weight: 1
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_8_final_scheme_criteria, 
+  label: 'Submitted Checklist Status', 
+  display_weight: 2
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_8_final_scheme_criteria, 
+  label: 'Achieved Checklist Status', 
+  display_weight: 3
+)
+
+el_8_criteria_information = 
+  [
+    "Consider design strategies that enhance, strengthen, and reflect the heritage and cultural identity of the region.",
+    "Consider architectural design expressions that harmonize with the cultural values and traditions of the people.",
+    "Design landscape and plant-based ornamental features that harmonize with cultural values."
+  ]
+
+el_8_criteria_information.each.with_index(1) do |ci, i|
+  SchemeCriterionText.find_or_create_by(
+    scheme_criterion: el_8_provisional_scheme_criteria,
+    display_weight: i, 
+    visible: true,
+    name: "1.#{i}",
+    html_text: 
+      "
+        <p>
+          #{ci}
+        </p>\n
+        <p>&nbsp;</p>
+      "
+  )
+end
+
+# Create Requirements
+el_8_design_requirements = 
+  [
+    "Heritage and Cultural Identity Plan that stipulates guidelines for architectural and branding design",
+    "Architectural Details and Elevations showing the cultural features of the Design",
+    "Landscape Layouts",
+    "Landscape Details"
+  ]
+
+el_8_design_requirements.each.with_index(1) do |ci, i|
+  rt_for_el_8_provisional_certification_criterion = nil
+
+  rt_for_el_8_provisional_certification_criterion = 
+    Requirement.find_or_create_by(
+      name: ci, 
+      display_weight: i,
+      requirement_category: requirement_category_for_design
+    )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_8_provisional_certification_criterion, 
+    scheme_criterion: el_8_provisional_scheme_criteria
+  )
+end
+
+el_8_construction_requirements = 
+  [
+    "Photos of Building elevations",
+    "Photos of Landscape features"
+  ]
+
+el_8_construction_requirements.each.with_index(1) do |ci, i|
+  rt_for_el_8_provisional_certification_criterion = nil
+  rt_for_el_8_provisional_certification_criterion = 
+    Requirement.find_or_create_by(
+      name: ci, 
+      display_weight: i,
+      requirement_category: requirement_category_for_construction
+    )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_8_provisional_certification_criterion, 
+    scheme_criterion: el_8_provisional_scheme_criteria
+  )
+end
+
+# --------------------------------- EL.9 ----------------------------------
+el_9_provisional_scheme_criteria = 
+  SchemeCriterion.find_or_create_by(
+    name: "Sustainable Materials", 
+    number: 9, 
+    scores_a: YAML.load("[[1, 1.0]]\n"), 
+    minimum_score_a: 0, 
+    maximum_score_a: 1, 
+    minimum_valid_score_a: 0, 
+    weight_a: 1, 
+    is_checklist: true, 
+    scheme_category: el_provisional_scheme_category
+  )
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_9_provisional_scheme_criteria, 
+  label: 'Targeted Checklist Status', 
+  display_weight: 1
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_9_provisional_scheme_criteria, 
+  label: 'Submitted Checklist Status', 
+  display_weight: 2
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_9_provisional_scheme_criteria, 
+  label: 'Achieved Checklist Status', 
+  display_weight: 3
+)
+
+el_9_final_scheme_criteria = 
+  SchemeCriterion.find_or_create_by(
+    name: "Sustainable Materials", 
+    number: 9, 
+    scores_a: YAML.load("[[1, 1.0]]\n"), 
+    minimum_score_a: 0, 
+    maximum_score_a: 1, 
+    minimum_valid_score_a: 0, 
+    weight_a: 1, 
+    is_checklist: true, 
+    scheme_category: el_final_scheme_category
+  )
+
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_9_final_scheme_criteria, 
+  label: 'Targeted Checklist Status', 
+  display_weight: 1
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_9_final_scheme_criteria, 
+  label: 'Submitted Checklist Status', 
+  display_weight: 2
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_9_final_scheme_criteria, 
+  label: 'Achieved Checklist Status', 
+  display_weight: 3
+)
+
+el_9_criteria_information = 
+  [
+    "Procure locally sourced materials to reduce the transportation distance which will mitigate the environmental impacts of transportation.",
+    "Construct using reused materials for temporary buildings.",
+    "Use construction materials with recycled content.",
+    "Consider utilizing reused materials for fit-out, wayfinding, or safety signage.",
+    "Use fit-out materials with recycled content."
+  ]
+
+el_9_criteria_information.each.with_index(1) do |ci, i|
+  SchemeCriterionText.find_or_create_by(
+    scheme_criterion: el_9_provisional_scheme_criteria,
+    display_weight: i, 
+    visible: true,
+    name: "1.#{i}",
+    html_text: 
+      "
+        <p>
+          #{ci}
+        </p>\n
+        <p>&nbsp;</p>
+      "
+  )
+end
+
+# Create Requirements
+el_9_design_requirements = 
+  [
+    "Tentative Material Schedule, showing the origin",
+    "Tentative Material Schedule of the salvaged materials",
+    "Photos of the salvaged materials",
+    "Tentative Material Schedule, showing the recycled content percentage",
+    "Tentative Material Schedule of the salvaged materials",
+    "Photos of the salvaged materials",
+    "Tentative Material Schedule, showing the recycled content percentage"
+  ]
+
+el_9_design_requirements.each.with_index(1) do |ci, i|
+  rt_for_el_9_provisional_certification_criterion = nil
+
+  rt_for_el_9_provisional_certification_criterion = 
+    Requirement.find_or_create_by(
+      name: ci, 
+      display_weight: i,
+      requirement_category: requirement_category_for_design
+    )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_9_provisional_certification_criterion, 
+    scheme_criterion: el_9_provisional_scheme_criteria
+  )
+end
+
+el_9_construction_requirements = 
+  [
+    "Material Approval Requests",
+    "Photos of the installed material on the construction site",
+    "Manufacturer Specification showing the recycled percentage",
+  ]
+
+el_9_construction_requirements.each.with_index(1) do |ci, i|
+  rt_for_el_9_provisional_certification_criterion = nil
+  rt_for_el_9_provisional_certification_criterion = 
+    Requirement.find_or_create_by(
+      name: ci, 
+      display_weight: i,
+      requirement_category: requirement_category_for_construction
+    )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_9_provisional_certification_criterion, 
+    scheme_criterion: el_9_provisional_scheme_criteria
+  )
+end
+
+# --------------------------------- EL.10 ----------------------------------
+el_10_provisional_scheme_criteria = 
+  SchemeCriterion.find_or_create_by(
+    name: "Materials Eco-Labelling", 
+    number: 10, 
+    scores_a: YAML.load("[[1, 1.0]]\n"), 
+    minimum_score_a: 0, 
+    maximum_score_a: 1, 
+    minimum_valid_score_a: 0, 
+    weight_a: 1, 
+    is_checklist: true, 
+    scheme_category: el_provisional_scheme_category
+  )
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_10_provisional_scheme_criteria, 
+  label: 'Targeted Checklist Status', 
+  display_weight: 1
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_10_provisional_scheme_criteria, 
+  label: 'Submitted Checklist Status', 
+  display_weight: 2
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_10_provisional_scheme_criteria, 
+  label: 'Achieved Checklist Status', 
+  display_weight: 3
+)
+
+el_10_final_scheme_criteria = 
+  SchemeCriterion.find_or_create_by(
+    name: "Materials Eco-Labelling", 
+    number: 10, 
+    scores_a: YAML.load("[[1, 1.0]]\n"), 
+    minimum_score_a: 0, 
+    maximum_score_a: 1, 
+    minimum_valid_score_a: 0, 
+    weight_a: 1, 
+    is_checklist: true, 
+    scheme_category: el_final_scheme_category
+  )
+
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_10_final_scheme_criteria, 
+  label: 'Targeted Checklist Status', 
+  display_weight: 1
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_10_final_scheme_criteria, 
+  label: 'Submitted Checklist Status', 
+  display_weight: 2
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_10_final_scheme_criteria, 
+  label: 'Achieved Checklist Status', 
+  display_weight: 3
+)
+
+el_10_criteria_information = 
+  [
+    "Procure materials with GSAS-approved certification for eco-labeling demonstrating sustainable features of the material.",
+    "Procure materials with GSAS-approved certification for environmental product declarations.",
+    "Procure materials with GSAS-approved certification  for responsible sourcing.",
+    "Procure materials with GSAS-approved certification  for low volatile organic compounds content."
+  ]
+
+el_10_criteria_information.each.with_index(1) do |ci, i|
+  SchemeCriterionText.find_or_create_by(
+    scheme_criterion: el_10_provisional_scheme_criteria,
+    display_weight: i, 
+    visible: true,
+    name: "1.#{i}",
+    html_text: 
+      "
+        <p>
+          #{ci}
+        </p>\n
+        <p>&nbsp;</p>
+      "
+  )
+end
+
+# Create Requirements
+el_10_design_requirements = 
+  [
+    "Tentative Material Schedule, showing Eco-labeled materials",
+    "Tentative Material Schedule, showing EPD Eco-labeled materials",
+    "Tentative Material Schedule, showing RS Eco-labeled materials",
+    "Tentative Material Schedule, showing Low-VOC Eco-labeled materials"
+  ]
+
+el_10_design_requirements.each.with_index(1) do |ci, i|
+  rt_for_el_10_provisional_certification_criterion = nil
+
+  rt_for_el_10_provisional_certification_criterion = 
+    Requirement.find_or_create_by(
+      name: ci, 
+      display_weight: i,
+      requirement_category: requirement_category_for_design
+    )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_10_provisional_certification_criterion, 
+    scheme_criterion: el_10_provisional_scheme_criteria
+  )
+end
+
+el_10_construction_requirements = 
+  [
+    "Material Approval Requests",
+    "Eco-Label certificates of the materials",
+    "Material Approval Requests",
+    "EPD Eco-Label certificates of the materials",
+    "Material Approval Requests",
+    "RS Eco-Label certificates of the materials",
+    "Material Approval Requests",
+    "Low VOC Eco-Label certificates of the materials"
+  ]
+
+el_10_construction_requirements.each.with_index(1) do |ci, i|
+  rt_for_el_10_provisional_certification_criterion = nil
+  rt_for_el_10_provisional_certification_criterion = 
+    Requirement.find_or_create_by(
+      name: ci, 
+      display_weight: i,
+      requirement_category: requirement_category_for_construction
+    )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_10_provisional_certification_criterion, 
+    scheme_criterion: el_10_provisional_scheme_criteria
+  )
+end
+
+# --------------------------------- EL.11 ----------------------------------
+el_11_provisional_scheme_criteria = 
+  SchemeCriterion.find_or_create_by(
+    name: "Supply Chain & Exhibitors Management", 
+    number: 11, 
+    scores_a: YAML.load("[[1, 1.0]]\n"), 
+    minimum_score_a: 0, 
+    maximum_score_a: 1, 
+    minimum_valid_score_a: 0, 
+    weight_a: 1, 
+    is_checklist: true, 
+    scheme_category: el_provisional_scheme_category
+  )
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_11_provisional_scheme_criteria, 
+  label: 'Targeted Checklist Status', 
+  display_weight: 1
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_11_provisional_scheme_criteria, 
+  label: 'Submitted Checklist Status', 
+  display_weight: 2
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_11_provisional_scheme_criteria, 
+  label: 'Achieved Checklist Status', 
+  display_weight: 3
+)
+
+el_11_final_scheme_criteria = 
+  SchemeCriterion.find_or_create_by(
+    name: "Supply Chain & Exhibitors Management", 
+    number: 11, 
+    scores_a: YAML.load("[[1, 1.0]]\n"), 
+    minimum_score_a: 0, 
+    maximum_score_a: 1, 
+    minimum_valid_score_a: 0, 
+    weight_a: 1, 
+    is_checklist: true, 
+    scheme_category: el_final_scheme_category
+  )
+
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_11_final_scheme_criteria, 
+  label: 'Targeted Checklist Status', 
+  display_weight: 1
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_11_final_scheme_criteria, 
+  label: 'Submitted Checklist Status', 
+  display_weight: 2
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_11_final_scheme_criteria, 
+  label: 'Achieved Checklist Status', 
+  display_weight: 3
+)
+
+el_11_criteria_information = 
+  [
+    "Develop and implement a sustainable procurement program for materials and products."
+  ]
+
+el_11_criteria_information.each.with_index(1) do |ci, i|
+  SchemeCriterionText.find_or_create_by(
+    scheme_criterion: el_11_provisional_scheme_criteria,
+    display_weight: i, 
+    visible: true,
+    name: "1.#{i}",
+    html_text: 
+      "
+        <p>
+          #{ci}
+        </p>\n
+        <p>&nbsp;</p>
+      "
+  )
+end
+
+# Create Requirements
+el_11_design_requirements = 
+  [
+    "Sustainable Procurement Program"
+  ]
+
+el_11_design_requirements.each.with_index(1) do |ci, i|
+  rt_for_el_11_provisional_certification_criterion = nil
+
+  rt_for_el_11_provisional_certification_criterion = 
+    Requirement.find_or_create_by(
+      name: ci, 
+      display_weight: i,
+      requirement_category: requirement_category_for_design
+    )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_11_provisional_certification_criterion, 
+    scheme_criterion: el_11_provisional_scheme_criteria
+  )
+end
+
+el_11_operation_requirements = 
+  [
+    "Sustainable Procurement Program for Operations activities"
+  ]
+
+el_11_operation_requirements.each.with_index(1) do |ci, i|
+  rt_for_el_11_provisional_certification_criterion = nil
+  rt_for_el_11_provisional_certification_criterion = 
+    Requirement.find_or_create_by(
+      name: ci, 
+      display_weight: i,
+      requirement_category: requirement_category_for_operation
+    )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_11_provisional_certification_criterion, 
+    scheme_criterion: el_11_provisional_scheme_criteria
+  )
+end
+
+# --------------------------------- EL.12 ----------------------------------
+el_12_provisional_scheme_criteria = 
+  SchemeCriterion.find_or_create_by(
+    name: "Waste Management", 
+    number: 12, 
+    scores_a: YAML.load("[[1, 1.0]]\n"), 
+    minimum_score_a: 0, 
+    maximum_score_a: 1, 
+    minimum_valid_score_a: 0, 
+    weight_a: 1, 
+    is_checklist: true, 
+    scheme_category: el_provisional_scheme_category
+  )
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_12_provisional_scheme_criteria, 
+  label: 'Targeted Checklist Status', 
+  display_weight: 1
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_12_provisional_scheme_criteria, 
+  label: 'Submitted Checklist Status', 
+  display_weight: 2
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_12_provisional_scheme_criteria, 
+  label: 'Achieved Checklist Status', 
+  display_weight: 3
+)
+
+el_12_final_scheme_criteria = 
+  SchemeCriterion.find_or_create_by(
+    name: "Waste Management", 
+    number: 12, 
+    scores_a: YAML.load("[[1, 1.0]]\n"), 
+    minimum_score_a: 0, 
+    maximum_score_a: 1, 
+    minimum_valid_score_a: 0, 
+    weight_a: 1, 
+    is_checklist: true, 
+    scheme_category: el_final_scheme_category
+  )
+
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_12_final_scheme_criteria, 
+  label: 'Targeted Checklist Status', 
+  display_weight: 1
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_12_final_scheme_criteria, 
+  label: 'Submitted Checklist Status', 
+  display_weight: 2
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: el_12_final_scheme_criteria, 
+  label: 'Achieved Checklist Status', 
+  display_weight: 3
+)
+
+el_12_criteria_information = 
+  [
+    "Reuse waste generated during construction on site. Surplus concrete, worn-out wood, and steel scrap have many possibilities for reuse on-site.",
+    "Segregate construction and demolition waste generated at source to enable at least 75% of recycling rate (by weight or volume).",
+    "Consider collecting mixed construction waste and transferring it to an onsite waste segregation area for a specialized crew of workers to segregate it into different streams (concrete, steel scrap, plastic, paper & cardboard, wood, food, and general waste).",
+    "Order materials in bulk, where possible, to reduce packaging. Alternatively, purchase materials with minimum packaging.",
+    "Establish and maintain proper material storage  facilities and practices to avoid overordering and  thus reduce waste.",
+    "Minimize the use of single-use plastics. Consider implementing returnable schemes with rewards that encourage the use of alternative materials like eco-bags and refillable bottles.",
+    "Place adequate numbers and sizes of containers  (skips, bins, or similar).",
+    "Segregate waste generated during the event at source to enable at least 65% of the recycling rate (by weight or volume).",
+    "Consider collecting at least food waste, recyclables, and general waste into different containers and transferring it to an on-site waste segregation area for a specialized crew of workers to segregate it into different streams (metals, plastic, paper &  cardboard, food, and general waste).",
+    "Ensure segregation efficiency at the source. A crew of volunteers could be utilized to inform visitors at the collection points on the correct bin for their waste.",
+    "Set up a reward system to encourage waste segregation. Install collection points of cans and bottles to reward visitors with discounts at food &  beverage or retail shops on site.",
+    "Collect and segregate hazardous waste such as oil and clinic disposal separately from other waste streams.",
+    "Arrange transportation of waste with licensed  Waste Management Contractors (WMCs).",
+    "Segregate organic waste (food and green waste) for  composting at on-site or off-site composting  facilities.",
+    "Arrange recycling of different waste streams with licensed recycling facilities.",
+    "Ensure safe removal/disposal at an authorized  landfill for non-recyclable waste.",
+    "Implement a robust waste tracking system to ensure the waste generated ends up at the designated recycling or disposal facility. Records of quantities per waste stream must be kept.",
+    "Send bulky waste items to organizations that are willing to repair and/or reuse them. Find further reuse for furniture and equipment within other projects, either by selling, donating, or reusing within the same organization in a different project.",
+  ]
+
+el_12_criteria_information.each.with_index(1) do |ci, i|
+  SchemeCriterionText.find_or_create_by(
+    scheme_criterion: el_12_provisional_scheme_criteria,
+    display_weight: i, 
+    visible: true,
+    name: "1.#{i}",
+    html_text: 
+      "
+        <p>
+          #{ci}
+        </p>\n
+        <p>&nbsp;</p>
+      "
+  )
+end
+
+# Create Requirements
+el_12_construction_requirements = 
+  [
+    "Photos of reused material on site",
+    "Waste tracking table and submittals included under the waste tracking system assessment principle",
+    "Photos of the waste collection area",
+    "Photos of materials in bulk and low-packaged materials on site",
+    "Photos of laydown areas and warehouses",
+    "Photos of the waste collection area",
+    "Photos of hazardous waste containers",
+    "Permits of specialized waste subcontractors",
+    "Photos of organic waste collection containers",
+    "All monthly disposal logs/invoices indicating the type of waste",
+    "Disposal WTNs",
+    "One collection WTN per type of waste and month",
+    "All monthly collection logs/invoices indicating the quantities per type of waste",
+    "One disposal WTN per type of waste and month",
+    "All monthly disposal logs/invoices indicating the quantities per type of waste"
+  ]
+
+el_12_construction_requirements.each.with_index(1) do |ci, i|
+  rt_for_el_12_provisional_certification_criterion = nil
+  rt_for_el_12_provisional_certification_criterion = 
+    Requirement.find_or_create_by(
+      name: ci, 
+      display_weight: i,
+      requirement_category: requirement_category_for_construction
+    )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_12_provisional_certification_criterion, 
+    scheme_criterion: el_12_provisional_scheme_criteria
+  )
+end
+
+el_12_operation_requirements = 
+  [
+    "Photos of materials in bulk and low-packaged materials on site",
+    "Photos of storage facilities",
+    "Photos of alternative materials used on site",
+    "Photos of returnable schemes",
+    "Photos of the waste collection area",
+    "Waste tracking table and submittals included under the waste tracking systm assessment principle",
+    "Photos of the waste collection area",
+    "Photos of waste collection bins",
+    "Photos of volunteers at waste collection points",
+    "Photos of collection points",
+    "Photos of hazardous waste containers",
+    "Permits of specialized waste subcontractors",
+    "Photos of organic waste collection containers",
+    "All monthly disposal logs/invoices indicating the type of waste",
+    "Disposal WTNs",
+    "One collection WTN per type of waste and month",
+    "All monthly collection logs/invoices indicating the quantities per type of waste",
+    "One disposal WTN per type of waste and month",
+    "All monthly disposal logs/invoices indicating the quantities per type of waste"
+  ]
+
+el_12_operation_requirements.each.with_index(1) do |ci, i|
+  rt_for_el_12_provisional_certification_criterion = nil
+  rt_for_el_12_provisional_certification_criterion = 
+    Requirement.find_or_create_by(
+      name: ci, 
+      display_weight: i,
+      requirement_category: requirement_category_for_operation
+    )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_12_provisional_certification_criterion, 
+    scheme_criterion: el_12_provisional_scheme_criteria
+  )
+end
+
+el_12_dismantling_requirements = 
+  [
+    "Waste tracking table and submittals included under the waste tracking system assessment principle",
+    "Photos of the waste collection area",
+    "Permits of specialized waste subcontractors",
+    "Photos of organic waste collection containers",
+    "All monthly disposal logs/invoices indicating the type of waste",
+    "Disposal WTNs",
+    "One collection WTN per type of waste and month",
+    "All monthly collection logs/invoices indicating the quantities per type of waste",
+    "One disposal WTN per type of waste and month",
+    "All monthly disposal logs/invoices indicating the quantities per type of waste",
+    "Disposal WTNs"
+  ]
+
+el_12_dismantling_requirements.each.with_index(1) do |ci, i|
+  rt_for_el_12_provisional_certification_criterion = nil
+  rt_for_el_12_provisional_certification_criterion = 
+    Requirement.find_or_create_by(
+      name: ci, 
+      display_weight: i,
+      requirement_category: requirement_category_for_dismantling
+    )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_12_provisional_certification_criterion, 
+    scheme_criterion: el_12_provisional_scheme_criteria
   )
 end
