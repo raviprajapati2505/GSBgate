@@ -388,7 +388,7 @@
                             <div id="accordion" class="panel-group">
                                 <% get_scheme_mix_criteria_requiments_assigned_to_user.each do |title, requirement_data| %>
                                   <% if title.present? %>
-                                    <h2 class="tag"><%= title %></h2>
+                                    <h3 class="tag"><%= title %></h2>
                                   <% end %>
                                   <% requirement_data.each do |requirement_datum| %>
                                     <%= render 'requirement_data/update', requirement_datum: requirement_datum %>
@@ -415,7 +415,7 @@
                             <div id="accordion" class="panel-group">
                                 <% get_scheme_mix_criteria_requiments_not_assigned_to_user.each do |title, requirement_data| %>
                                   <% if title.present? %>
-                                    <h2 class="tag"><%= title %></h2>
+                                    <h3 class="tag"><%= title %></h2>
                                   <% end %>
                                   <% requirement_data.each do |requirement_datum| %>
                                     <%= render 'requirement_data/update', requirement_datum: requirement_datum %>
