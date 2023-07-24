@@ -96,6 +96,31 @@
             </li>
             <% end %>
 
+            <% if can? :create, Project.new %>
+            <li class="<%= 'active' if (controller_name == 'projects' and action_name == 'new') %>">
+                    <%= link_to new_project_path do %>
+                        <% if (controller_name == 'projects' and action_name == 'new') %>
+                            <%= image_tag('layout/new-project.png',class:"img-responsive active-li bg-transparent after-login-right-img")%>
+                        <% else %>
+                            <%= image_tag('layout/new-project-g.png',class:"img-responsive normal-li bg-transparent after-login-right-img")%>
+                        <% end %>
+                        <span class="nav-label"><%= t('.navbar.btn_new_project') %></span>
+                    <% end %>
+                </li>
+            <% end %>
+            <% if can? :projects_statistics, Project %>
+            <li class="<%= 'active' if (controller_name == 'projects' and action_name == 'projects_statistics') %>">
+                    <%= link_to projects_statistics_projects_path do %>
+                        <% if (controller_name == 'projects' and action_name == 'projects_statistics') %>
+                            <%= image_tag('layout/statistic.png',class:"img-responsive active-li bg-transparent after-login-right-img")%>
+                        <% else %>
+                            <%= image_tag('layout/statistic-g.png',class:"img-responsive normal-li bg-transparent after-login-right-img")%>
+                        <% end %>
+                        <span class="nav-label"><%= t('.navbar.btn_project_statistics') %></span>
+                    <% end %>
+                </li>
+            <% end %>
+
             <% 
                 can_index_scheme_criteria = can?(:index, SchemeCriterion)
                 can_index_users = can?(:index, User)
@@ -145,31 +170,6 @@
                             <% end %>
                         </ul>
                     </li>
-            <% end %>
-
-            <% if can? :create, Project.new %>
-            <li class="<%= 'active' if (controller_name == 'projects' and action_name == 'new') %>">
-                    <%= link_to new_project_path do %>
-                        <% if (controller_name == 'projects' and action_name == 'new') %>
-                            <%= image_tag('layout/new-project.png',class:"img-responsive active-li bg-transparent after-login-right-img")%>
-                        <% else %>
-                            <%= image_tag('layout/new-project-g.png',class:"img-responsive normal-li bg-transparent after-login-right-img")%>
-                        <% end %>
-                        <span class="nav-label"><%= t('.navbar.btn_new_project') %></span>
-                    <% end %>
-                </li>
-            <% end %>
-            <% if can? :projects_statistics, Project %>
-            <li class="<%= 'active' if (controller_name == 'projects' and action_name == 'projects_statistics') %>">
-                    <%= link_to projects_statistics_projects_path do %>
-                        <% if (controller_name == 'projects' and action_name == 'projects_statistics') %>
-                            <%= image_tag('layout/statistic.png',class:"img-responsive active-li bg-transparent after-login-right-img")%>
-                        <% else %>
-                            <%= image_tag('layout/statistic-g.png',class:"img-responsive normal-li bg-transparent after-login-right-img")%>
-                        <% end %>
-                        <span class="nav-label"><%= t('.navbar.btn_project_statistics') %></span>
-                    <% end %>
-                </li>
             <% end %>
             </ul>
             <div class="d-none d-lg-block"></div>

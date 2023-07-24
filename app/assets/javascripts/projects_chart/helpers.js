@@ -1,4 +1,5 @@
 const parseNumber = (numberString) => {
+  numberString = numberString.toString().replace(/[,]/g, '');
   return Math.floor(parseInt(numberString) * 10.764)
 }
 

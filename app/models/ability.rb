@@ -379,6 +379,7 @@ class Ability
         can [:update_signed_certificate, :remove_signed_certificate], Offline::CertificationPath
       elsif user.is_gsas_trust_top_manager?
         can [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT}
+        can [:create], Project
       elsif user.is_gsas_trust_manager?
         can [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::APPROVING_BY_MANAGEMENT}
       end
