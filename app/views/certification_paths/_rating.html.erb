@@ -70,7 +70,7 @@
     %>
     <span class="certi-status-badge <%= star_badge_class %>">
       <%= image_tag %>
-      <% rating.times do %>
+      <% rating&.times do %>
         <i class="fa fa-star"><span style="display:none;">*</span></i>
       <% end %>
     </span>

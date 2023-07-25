@@ -32,12 +32,12 @@
                 <% end %>
 
                 <!-- Duration (if applicable)-->
-                <% if ((Certificate.certification_types[@certification_type] == Certificate.certification_types[:letter_of_conformance]) or (Certificate.certification_types[@certification_type] == Certificate.certification_types[:final_design_certificate])) %>
-                    <% if Certificate.certification_types[@certification_type] == Certificate.certification_types[:letter_of_conformance] %>
+                <% if design_or_ecoleaf_certification_type?(@certification_type) %>
+                    <% if design_or_ecoleaf_provisional_certification?(@certification_type) %>
                         <%= f.static_control label: 'Expires' do %>
                             <%= localize(@certification_path.expires_at) %>
                         <% end %>
-                    <% elsif Certificate.certification_types[@certification_type] == Certificate.certification_types[:final_design_certificate] %>
+                    <% elsif design_or_ecoleaf_final_certification?(@certification_type) %>
                         <%= f.form_group :expires_at, label: {text: 'Duration'} do %>
                           <%= f.radio_button :expires_at, 2, label: '2 years from now', checked: true %>
                           <%= f.radio_button :expires_at, 3, label: '3 years from now' %>
@@ -47,9 +47,9 @@
                 <% end %>
 
                 <!-- Custom select for Assessment Method -->
-                <% if @project.design_and_build? %>
+                <% if @project.design_and_build? || @project.ecoleaf? %>
                     <%= f.static_control label: 'Assessment Method' do %>
-                      <% if Certificate.certification_types[@certification_type] == Certificate.certification_types[:final_design_certificate] %>
+                      <% if design_or_ecoleaf_final_certification?(@certification_type) %>
                           <%= t(CertificationPath.assessment_methods.key(@assessment_method), scope: 'activerecord.attributes.certification_path') %>
                       <% else %>
                           <%= select_tag(:assessment_method, options_for_select(current_user.manage_assessment_methods_options.map { |k,v| [t(k, scope: 'activerecord.attributes.certification_path'), v] }, @assessment_method), {:class => 'form-control'}) %>
@@ -60,7 +60,7 @@
                 <!-- Custom select for version, so we can determine the certificate -->
                 <% unless @certification_path.certificate.construction_certificate_stage2? || @certification_path.certificate.construction_certificate_stage3? %>
                   <%= f.static_control label: 'GSAS Version' do %>
-                      <% if Certificate.certification_types[@certification_type] == Certificate.certification_types[:final_design_certificate] %>
+                      <% if design_or_ecoleaf_final_certification?(@certification_type) %>
                           <%= @certification_path.certificate.gsas_version %>
                       <% else %>
                           <%= select_tag(:gsas_version, options_for_select(@gsas_versions, @gsas_version), {:class => 'form-control'}) %>
@@ -73,7 +73,7 @@
                 <!--%= f.hidden_field :certificate_id, value: @certification_path.certificate_id %-->
 
                 <!-- Development type -->
-                <% if Certificate.certification_types[@certification_type] == Certificate.certification_types[:final_design_certificate] %>
+                <% if design_or_ecoleaf_final_certification?(@certification_type) %>
                     <%= f.static_control label: 'Project Planning Type' do %>
                         <%= @certification_path.development_type.name %>
                     <% end %>
@@ -96,25 +96,25 @@
                   <% end %>
                 </label>
 
-                <% if Certificate.certification_types[@certification_type] == Certificate.certification_types[:final_design_certificate] %>
+                <% if design_or_ecoleaf_final_certification?(@certification_type) %>
                     <div class="form-group">
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-hover">
-                            <thead>
-                            <tr>
-                                <th class="col-md-8">Typology Name</th>
-                                <th class="col-md-4">Weight</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <% @certification_path.scheme_mixes.each do |scheme_mix| %>
-                                <tr>
-                                    <td><%= scheme_mix.name %></td>
-                                    <td><%= scheme_mix.weight %> %</td>
-                                </tr>
-                            <% end %>
-                            </tbody>
-                        </table>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                  <tr>
+                                      <th class="col-md-8">Typology Name</th>
+                                      <th class="col-md-4">Weight</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <% @certification_path.scheme_mixes.each do |scheme_mix| %>
+                                      <tr>
+                                          <td><%= scheme_mix.name %></td>
+                                          <td><%= scheme_mix.weight %> %</td>
+                                      </tr>
+                                  <% end %>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 <% else %>

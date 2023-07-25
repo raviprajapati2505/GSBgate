@@ -101,9 +101,9 @@ class CertificationPathsController < AuthenticatedController
     end
 
     # Expiry
-    if @certification_path.certificate.letter_of_conformance?
+    if @certification_path.certificate.letter_of_conformance? || @certification_path.certificate.ecoleaf_provisional_certificate?
       @certification_path.expires_at = 1.year.from_now
-    elsif @certification_path.certificate.final_design_certificate?
+    elsif @certification_path.certificate.final_design_certificate? || @certification_path.certificate.ecoleaf_certificate?
       @durations = [2, 3, 4]
       if params.has_key?(:certification_path) && params[:certification_path].has_key?(:expires_at)
         @certification_path.expires_at = params[:certification_path][:expires_at].to_i.years.from_now
@@ -120,6 +120,10 @@ class CertificationPathsController < AuthenticatedController
     if Certificate.certification_types[@certification_type] == Certificate.certification_types[:final_design_certificate]
       # Note: we currently use the name to match, this could be done cleaner
       development_type_name = @certification_path.project.completed_letter_of_conformances.first.development_type.name
+      @certification_path.development_type = DevelopmentType.find_by(name: development_type_name, certificate: @certification_path.certificate)
+    elsif Certificate.certification_types[@certification_type] == Certificate.certification_types[:ecoleaf_certificate]
+      # Note: we currently use the name to match, this could be done cleaner
+      development_type_name = @certification_path.project.completed_ecoleaf_provisional_stage.first.development_type.name
       @certification_path.development_type = DevelopmentType.find_by(name: development_type_name, certificate: @certification_path.certificate)
     else
       @development_types = @certification_path.certificate.development_types.joins(:development_type_schemes)&.select("DISTINCT ON (development_types.name) development_types.*").sort_by(&:display_weight)
@@ -150,6 +154,27 @@ class CertificationPathsController < AuthenticatedController
           @certification_path.main_scheme_mix_selected = true
         end
       end
+
+    elsif Certificate.certification_types[@certification_type] == Certificate.certification_types[:ecoleaf_certificate]
+      # Mirror the LOC scheme mixes
+      @certification_path.project.completed_ecoleaf_provisional_stage.first.scheme_mixes.each do |scheme_mix|
+        # if a scheme certification type is available
+        unless scheme_mix.scheme.certification_type.nil?
+          el_provisional_scheme = scheme_mix.scheme
+          scheme = Scheme.select(:id).find_by(name: el_provisional_scheme.name, gsas_version: el_provisional_scheme.gsas_version, certificate_type: el_provisional_scheme.certificate_type, certification_type: Certificate.certification_types[:ecoleaf_certificate])
+          scheme_id = scheme.id
+        else
+          scheme_id = scheme_mix.scheme_id
+        end
+
+        new_scheme_mix = @certification_path.scheme_mixes.build({scheme_id: scheme_id, weight: scheme_mix.weight, custom_name: scheme_mix.custom_name})
+        # Mirror the main scheme mix
+        if @certification_path.project.completed_ecoleaf_provisional_stage.first.main_scheme_mix_id.present? && (scheme_mix.id == @certification_path.project.completed_ecoleaf_provisional_stage.first.main_scheme_mix_id)
+          @certification_path.main_scheme_mix = new_scheme_mix
+          @certification_path.main_scheme_mix_selected = true
+        end
+      end
+  
     else
       if @certification_path.development_type.mixable?
         if params[:certification_path].has_key?(:schemes)

@@ -1014,4 +1014,26 @@ module ApplicationHelper
       .not_assigned_to_user(user)
       .group_by { |c| c.requirement&.requirement_category&.title }
   end
+
+  def design_or_ecoleaf_provisional_certification?(certification_type)
+    [
+      Certificate.certification_types[:letter_of_conformance],
+      Certificate.certification_types[:ecoleaf_provisional_certificate]
+    ].include?(
+      Certificate.certification_types[certification_type]
+    )
+  end
+
+  def design_or_ecoleaf_final_certification?(certification_type)
+    [
+      Certificate.certification_types[:final_design_certificate],
+      Certificate.certification_types[:ecoleaf_certificate]
+    ].include?(
+      Certificate.certification_types[certification_type]
+    )
+  end
+
+  def design_or_ecoleaf_certification_type?(certification_type)
+    design_or_ecoleaf_provisional_certification?(certification_type) || design_or_ecoleaf_final_certification?(certification_type)
+  end
 end

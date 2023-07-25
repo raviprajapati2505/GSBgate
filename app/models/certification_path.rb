@@ -160,7 +160,7 @@ class CertificationPath < ApplicationRecord
   end
 
   def ecoleaf?
-    certificate.ecoleaf_2019?
+    certificate.ecoleaf?
   end
 
   def certification_manager_assigned?
@@ -761,7 +761,7 @@ class CertificationPath < ApplicationRecord
   end
 
   def label_for_level(certificate: nil, is_targetted_score: true, is_achieved_score: true, is_submitted_score: true)
-    if certificate.design_and_build?
+    if certificate.design_and_build? || certificate.ecoleaf?
       main_scheme_mixes = self.main_scheme_mix.present? ? self.scheme_mixes.where(id: self.main_scheme_mix.id) : self.scheme_mixes
       main_scheme_mixes.each do |sm|
         sm.scheme_mix_criteria.each do |smc|
