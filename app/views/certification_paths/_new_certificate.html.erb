@@ -49,7 +49,7 @@
                 <!-- Custom select for Assessment Method -->
                 <% if @project.design_and_build? || @project.ecoleaf? %>
                     <%= f.static_control label: 'Assessment Method' do %>
-                      <% if design_or_ecoleaf_final_certification?(@certification_type) %>
+                      <% if Certificate.certification_types[@certification_type] == Certificate.certification_types[:final_design_certificate] || @project.ecoleaf? %>
                           <%= t(CertificationPath.assessment_methods.key(@assessment_method), scope: 'activerecord.attributes.certification_path') %>
                       <% else %>
                           <%= select_tag(:assessment_method, options_for_select(current_user.manage_assessment_methods_options.map { |k,v| [t(k, scope: 'activerecord.attributes.certification_path'), v] }, @assessment_method), {:class => 'form-control'}) %>

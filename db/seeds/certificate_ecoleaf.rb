@@ -137,7 +137,7 @@ el_final_scheme_category =
 
 # Create Scheme Criteria & scheme criteria boxes
 # --------------------------------- EL.1 ----------------------------------
-el_1_provisional_scheme_criteria = 
+el_1_provisional_scheme_criterion = 
   SchemeCriterion.find_or_create_by(
     name: "Energy Management", 
     number: 1, 
@@ -150,22 +150,22 @@ el_1_provisional_scheme_criteria =
     scheme_category: el_provisional_scheme_category
   )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_1_provisional_scheme_criteria, 
+  scheme_criterion: el_1_provisional_scheme_criterion, 
   label: 'Targeted Checklist Status', 
   display_weight: 1
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_1_provisional_scheme_criteria, 
+  scheme_criterion: el_1_provisional_scheme_criterion, 
   label: 'Submitted Checklist Status', 
   display_weight: 2
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_1_provisional_scheme_criteria, 
+  scheme_criterion: el_1_provisional_scheme_criterion, 
   label: 'Achieved Checklist Status', 
   display_weight: 3
 )
 
-el_1_final_scheme_criteria = 
+el_1_final_scheme_criterion = 
   SchemeCriterion.find_or_create_by(
     name: "Energy Management", 
     number: 1, 
@@ -179,17 +179,17 @@ el_1_final_scheme_criteria =
   )
 
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_1_final_scheme_criteria, 
+  scheme_criterion: el_1_final_scheme_criterion, 
   label: 'Targeted Checklist Status', 
   display_weight: 1
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_1_final_scheme_criteria, 
+  scheme_criterion: el_1_final_scheme_criterion, 
   label: 'Submitted Checklist Status', 
   display_weight: 2
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_1_final_scheme_criteria, 
+  scheme_criterion: el_1_final_scheme_criterion, 
   label: 'Achieved Checklist Status', 
   display_weight: 3
 )
@@ -213,20 +213,22 @@ el_1_criteria_information =
     "Connect to the grid wherever possible, if renewables are not available."
   ]
 
-el_1_criteria_information.each.with_index(1) do |ci, i|
-  SchemeCriterionText.find_or_create_by(
-    scheme_criterion: el_1_provisional_scheme_criteria,
-    display_weight: i, 
-    visible: true,
-    name: "1.#{i}",
-    html_text: 
-      "
-        <p>
-          #{ci}
-        </p>\n
-        <p>&nbsp;</p>
-      "
-  )
+[el_1_provisional_scheme_criterion, el_1_final_scheme_criterion].each do |criterion|
+  el_1_criteria_information.each.with_index(1) do |ci, i|
+    SchemeCriterionText.find_or_create_by(
+      scheme_criterion: criterion,
+      display_weight: i, 
+      visible: true,
+      name: "1.#{i}",
+      html_text: 
+        "
+          <p>
+            #{ci}
+          </p>\n
+          <p>&nbsp;</p>
+        "
+    )
+  end
 end
 
 # Create Requirements
@@ -261,7 +263,7 @@ el_1_design_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_1_provisional_certification_criterion, 
-    scheme_criterion: el_1_provisional_scheme_criteria
+    scheme_criterion: el_1_provisional_scheme_criterion
   )
 end
 
@@ -305,7 +307,7 @@ el_1_construction_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_1_provisional_certification_criterion, 
-    scheme_criterion: el_1_provisional_scheme_criteria
+    scheme_criterion: el_1_provisional_scheme_criterion
   )
 end
 
@@ -335,7 +337,7 @@ el_1_operation_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_1_provisional_certification_criterion, 
-    scheme_criterion: el_1_provisional_scheme_criteria
+    scheme_criterion: el_1_provisional_scheme_criterion
   )
 end
 
@@ -360,12 +362,12 @@ el_1_dismantling_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_1_provisional_certification_criterion, 
-    scheme_criterion: el_1_provisional_scheme_criteria
+    scheme_criterion: el_1_provisional_scheme_criterion
   )
 end
 
 # --------------------------------- EL.2 ----------------------------------
-el_2_provisional_scheme_criteria = 
+el_2_provisional_scheme_criterion = 
   SchemeCriterion.find_or_create_by(
     name: "Renewable Energy", 
     number: 2, 
@@ -378,22 +380,22 @@ el_2_provisional_scheme_criteria =
     scheme_category: el_provisional_scheme_category
   )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_2_provisional_scheme_criteria, 
+  scheme_criterion: el_2_provisional_scheme_criterion, 
   label: 'Targeted Checklist Status', 
   display_weight: 1
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_2_provisional_scheme_criteria, 
+  scheme_criterion: el_2_provisional_scheme_criterion, 
   label: 'Submitted Checklist Status', 
   display_weight: 2
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_2_provisional_scheme_criteria, 
+  scheme_criterion: el_2_provisional_scheme_criterion, 
   label: 'Achieved Checklist Status', 
   display_weight: 3
 )
 
-el_2_final_scheme_criteria = 
+el_2_final_scheme_criterion = 
   SchemeCriterion.find_or_create_by(
     name: "Renewable Energy", 
     number: 2, 
@@ -407,17 +409,17 @@ el_2_final_scheme_criteria =
   )
 
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_2_final_scheme_criteria, 
+  scheme_criterion: el_2_final_scheme_criterion, 
   label: 'Targeted Checklist Status', 
   display_weight: 1
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_2_final_scheme_criteria, 
+  scheme_criterion: el_2_final_scheme_criterion, 
   label: 'Submitted Checklist Status', 
   display_weight: 2
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_2_final_scheme_criteria, 
+  scheme_criterion: el_2_final_scheme_criterion, 
   label: 'Achieved Checklist Status', 
   display_weight: 3
 )
@@ -427,20 +429,22 @@ el_2_criteria_information =
     "Use renewable energy where appropriate. Compliance is achieved when the percentage of the onsite renewable energy contribution to the total energy need of the development meets or exceeds the 10% limit."
   ]
 
-el_2_criteria_information.each.with_index(1) do |ci, i|
-  SchemeCriterionText.find_or_create_by(
-    scheme_criterion: el_2_provisional_scheme_criteria,
-    display_weight: i, 
-    visible: true,
-    name: "1.#{i}",
-    html_text: 
-      "
-        <p>
-          #{ci}
-        </p>\n
-        <p>&nbsp;</p>
-      "
-  )
+[el_2_provisional_scheme_criterion, el_2_final_scheme_criterion].each do |criterion|
+  el_2_criteria_information.each.with_index(1) do |ci, i|
+    SchemeCriterionText.find_or_create_by(
+      scheme_criterion: criterion,
+      display_weight: i, 
+      visible: true,
+      name: "1.#{i}",
+      html_text: 
+        "
+          <p>
+            #{ci}
+          </p>\n
+          <p>&nbsp;</p>
+        "
+    )
+  end
 end
 
 # Create Requirements
@@ -463,7 +467,7 @@ el_2_design_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_2_provisional_certification_criterion, 
-    scheme_criterion: el_2_provisional_scheme_criteria
+    scheme_criterion: el_2_provisional_scheme_criterion
   )
 end
 
@@ -484,7 +488,7 @@ el_2_construction_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_2_provisional_certification_criterion, 
-    scheme_criterion: el_2_provisional_scheme_criteria
+    scheme_criterion: el_2_provisional_scheme_criterion
   )
 end
 
@@ -504,12 +508,12 @@ el_2_operation_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_2_provisional_certification_criterion, 
-    scheme_criterion: el_2_provisional_scheme_criteria
+    scheme_criterion: el_2_provisional_scheme_criterion
   )
 end
 
 # --------------------------------- EL.3 ----------------------------------
-el_3_provisional_scheme_criteria = 
+el_3_provisional_scheme_criterion = 
   SchemeCriterion.find_or_create_by(
     name: "Water Management", 
     number: 3, 
@@ -522,22 +526,22 @@ el_3_provisional_scheme_criteria =
     scheme_category: el_provisional_scheme_category
   )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_3_provisional_scheme_criteria, 
+  scheme_criterion: el_3_provisional_scheme_criterion, 
   label: 'Targeted Checklist Status', 
   display_weight: 1
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_3_provisional_scheme_criteria, 
+  scheme_criterion: el_3_provisional_scheme_criterion, 
   label: 'Submitted Checklist Status', 
   display_weight: 2
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_3_provisional_scheme_criteria, 
+  scheme_criterion: el_3_provisional_scheme_criterion, 
   label: 'Achieved Checklist Status', 
   display_weight: 3
 )
 
-el_3_final_scheme_criteria = 
+el_3_final_scheme_criterion = 
   SchemeCriterion.find_or_create_by(
     name: "Water Management", 
     number: 3, 
@@ -551,17 +555,17 @@ el_3_final_scheme_criteria =
   )
 
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_3_final_scheme_criteria, 
+  scheme_criterion: el_3_final_scheme_criterion, 
   label: 'Targeted Checklist Status', 
   display_weight: 1
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_3_final_scheme_criteria, 
+  scheme_criterion: el_3_final_scheme_criterion, 
   label: 'Submitted Checklist Status', 
   display_weight: 2
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_3_final_scheme_criteria, 
+  scheme_criterion: el_3_final_scheme_criterion, 
   label: 'Achieved Checklist Status', 
   display_weight: 3
 )
@@ -578,20 +582,22 @@ el_3_criteria_information =
     "Install, where possible, a mobile water treatment and purification system."
   ]
 
-el_3_criteria_information.each.with_index(1) do |ci, i|
-  SchemeCriterionText.find_or_create_by(
-    scheme_criterion: el_3_provisional_scheme_criteria,
-    display_weight: i, 
-    visible: true,
-    name: "1.#{i}",
-    html_text: 
-      "
-        <p>
-          #{ci}
-        </p>\n
-        <p>&nbsp;</p>
-      "
-  )
+[el_3_provisional_scheme_criterion, el_3_final_scheme_criterion].each do |criterion|
+  el_3_criteria_information.each.with_index(1) do |ci, i|
+    SchemeCriterionText.find_or_create_by(
+      scheme_criterion: criterion,
+      display_weight: i, 
+      visible: true,
+      name: "1.#{i}",
+      html_text: 
+        "
+          <p>
+            #{ci}
+          </p>\n
+          <p>&nbsp;</p>
+        "
+    )
+  end
 end
 
 # Create Requirements
@@ -624,7 +630,7 @@ el_3_design_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_3_provisional_certification_criterion, 
-    scheme_criterion: el_3_provisional_scheme_criteria
+    scheme_criterion: el_3_provisional_scheme_criterion
   )
 end
 
@@ -658,7 +664,7 @@ el_3_construction_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_3_provisional_certification_criterion, 
-    scheme_criterion: el_3_provisional_scheme_criteria
+    scheme_criterion: el_3_provisional_scheme_criterion
   )
 end
 
@@ -682,7 +688,7 @@ el_3_operation_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_3_provisional_certification_criterion, 
-    scheme_criterion: el_3_provisional_scheme_criteria
+    scheme_criterion: el_3_provisional_scheme_criterion
   )
 end
 
@@ -702,12 +708,12 @@ el_3_dismantling_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_3_provisional_certification_criterion, 
-    scheme_criterion: el_3_provisional_scheme_criteria
+    scheme_criterion: el_3_provisional_scheme_criterion
   )
 end
 
 # --------------------------------- EL.4 ----------------------------------
-el_4_provisional_scheme_criteria = 
+el_4_provisional_scheme_criterion = 
   SchemeCriterion.find_or_create_by(
     name: "Land & Biodiversity Preservation", 
     number: 4, 
@@ -720,22 +726,22 @@ el_4_provisional_scheme_criteria =
     scheme_category: el_provisional_scheme_category
   )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_4_provisional_scheme_criteria, 
+  scheme_criterion: el_4_provisional_scheme_criterion, 
   label: 'Targeted Checklist Status', 
   display_weight: 1
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_4_provisional_scheme_criteria, 
+  scheme_criterion: el_4_provisional_scheme_criterion, 
   label: 'Submitted Checklist Status', 
   display_weight: 2
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_4_provisional_scheme_criteria, 
+  scheme_criterion: el_4_provisional_scheme_criterion, 
   label: 'Achieved Checklist Status', 
   display_weight: 3
 )
 
-el_4_final_scheme_criteria = 
+el_4_final_scheme_criterion = 
   SchemeCriterion.find_or_create_by(
     name: "Land & Biodiversity Preservation", 
     number: 4, 
@@ -749,17 +755,17 @@ el_4_final_scheme_criteria =
   )
 
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_4_final_scheme_criteria, 
+  scheme_criterion: el_4_final_scheme_criterion, 
   label: 'Targeted Checklist Status', 
   display_weight: 1
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_4_final_scheme_criteria, 
+  scheme_criterion: el_4_final_scheme_criterion, 
   label: 'Submitted Checklist Status', 
   display_weight: 2
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_4_final_scheme_criteria, 
+  scheme_criterion: el_4_final_scheme_criterion, 
   label: 'Achieved Checklist Status', 
   display_weight: 3
 )
@@ -772,20 +778,22 @@ el_4_criteria_information =
     "Protect and enhance the existing biodiversity including flora and fauna species."
   ]
 
-el_4_criteria_information.each.with_index(1) do |ci, i|
-  SchemeCriterionText.find_or_create_by(
-    scheme_criterion: el_4_provisional_scheme_criteria,
-    display_weight: i, 
-    visible: true,
-    name: "1.#{i}",
-    html_text: 
-      "
-        <p>
-          #{ci}
-        </p>\n
-        <p>&nbsp;</p>
-      "
-  )
+[el_4_provisional_scheme_criterion, el_4_final_scheme_criterion].each do |criterion|
+  el_4_criteria_information.each.with_index(1) do |ci, i|
+    SchemeCriterionText.find_or_create_by(
+      scheme_criterion: criterion,
+      display_weight: i, 
+      visible: true,
+      name: "1.#{i}",
+      html_text: 
+        "
+          <p>
+            #{ci}
+          </p>\n
+          <p>&nbsp;</p>
+        "
+    )
+  end
 end
 
 # Create Requirements
@@ -806,7 +814,7 @@ el_4_design_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_4_provisional_certification_criterion, 
-    scheme_criterion: el_4_provisional_scheme_criteria
+    scheme_criterion: el_4_provisional_scheme_criterion
   )
 end
 
@@ -832,7 +840,7 @@ el_4_construction_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_4_provisional_certification_criterion, 
-    scheme_criterion: el_4_provisional_scheme_criteria
+    scheme_criterion: el_4_provisional_scheme_criterion
   )
 end
 
@@ -851,7 +859,7 @@ el_4_operation_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_4_provisional_certification_criterion, 
-    scheme_criterion: el_4_provisional_scheme_criteria
+    scheme_criterion: el_4_provisional_scheme_criterion
   )
 end
 
@@ -877,12 +885,12 @@ el_4_dismantling_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_4_provisional_certification_criterion, 
-    scheme_criterion: el_4_provisional_scheme_criteria
+    scheme_criterion: el_4_provisional_scheme_criterion
   )
 end
 
 # --------------------------------- EL.5 ----------------------------------
-el_5_provisional_scheme_criteria = 
+el_5_provisional_scheme_criterion = 
   SchemeCriterion.find_or_create_by(
     name: "Waterbody Preservation", 
     number: 5, 
@@ -895,22 +903,22 @@ el_5_provisional_scheme_criteria =
     scheme_category: el_provisional_scheme_category
   )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_5_provisional_scheme_criteria, 
+  scheme_criterion: el_5_provisional_scheme_criterion, 
   label: 'Targeted Checklist Status', 
   display_weight: 1
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_5_provisional_scheme_criteria, 
+  scheme_criterion: el_5_provisional_scheme_criterion, 
   label: 'Submitted Checklist Status', 
   display_weight: 2
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_5_provisional_scheme_criteria, 
+  scheme_criterion: el_5_provisional_scheme_criterion, 
   label: 'Achieved Checklist Status', 
   display_weight: 3
 )
 
-el_5_final_scheme_criteria = 
+el_5_final_scheme_criterion = 
   SchemeCriterion.find_or_create_by(
     name: "Waterbody Preservation", 
     number: 5, 
@@ -924,17 +932,17 @@ el_5_final_scheme_criteria =
   )
 
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_5_final_scheme_criteria, 
+  scheme_criterion: el_5_final_scheme_criterion, 
   label: 'Targeted Checklist Status', 
   display_weight: 1
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_5_final_scheme_criteria, 
+  scheme_criterion: el_5_final_scheme_criterion, 
   label: 'Submitted Checklist Status', 
   display_weight: 2
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_5_final_scheme_criteria, 
+  scheme_criterion: el_5_final_scheme_criterion, 
   label: 'Achieved Checklist Status', 
   display_weight: 3
 )
@@ -946,20 +954,22 @@ el_5_criteria_information =
     "Adhere to the coastal protection regulations which mandate the provision of a buffer between the boundaries of a development site and the waterbody."
   ]
 
-el_5_criteria_information.each.with_index(1) do |ci, i|
-  SchemeCriterionText.find_or_create_by(
-    scheme_criterion: el_5_provisional_scheme_criteria,
-    display_weight: i, 
-    visible: true,
-    name: "1.#{i}",
-    html_text: 
-      "
-        <p>
-          #{ci}
-        </p>\n
-        <p>&nbsp;</p>
-      "
-  )
+[el_5_provisional_scheme_criterion, el_5_final_scheme_criterion].each do |criterion|
+  el_5_criteria_information.each.with_index(1) do |ci, i|
+    SchemeCriterionText.find_or_create_by(
+      scheme_criterion: criterion,
+      display_weight: i, 
+      visible: true,
+      name: "1.#{i}",
+      html_text: 
+        "
+          <p>
+            #{ci}
+          </p>\n
+          <p>&nbsp;</p>
+        "
+    )
+  end
 end
 
 # Create Requirements
@@ -981,7 +991,7 @@ el_5_design_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_5_provisional_certification_criterion, 
-    scheme_criterion: el_5_provisional_scheme_criteria
+    scheme_criterion: el_5_provisional_scheme_criterion
   )
 end
 
@@ -1004,7 +1014,7 @@ el_5_construction_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_5_provisional_certification_criterion, 
-    scheme_criterion: el_5_provisional_scheme_criteria
+    scheme_criterion: el_5_provisional_scheme_criterion
   )
 end
 
@@ -1023,12 +1033,12 @@ el_5_dismantling_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_5_provisional_certification_criterion, 
-    scheme_criterion: el_5_provisional_scheme_criteria
+    scheme_criterion: el_5_provisional_scheme_criterion
   )
 end
 
 # --------------------------------- EL.6 ----------------------------------
-el_6_provisional_scheme_criteria = 
+el_6_provisional_scheme_criterion = 
   SchemeCriterion.find_or_create_by(
     name: "Accessibility", 
     number: 6, 
@@ -1041,22 +1051,22 @@ el_6_provisional_scheme_criteria =
     scheme_category: el_provisional_scheme_category
   )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_6_provisional_scheme_criteria, 
+  scheme_criterion: el_6_provisional_scheme_criterion, 
   label: 'Targeted Checklist Status', 
   display_weight: 1
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_6_provisional_scheme_criteria, 
+  scheme_criterion: el_6_provisional_scheme_criterion, 
   label: 'Submitted Checklist Status', 
   display_weight: 2
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_6_provisional_scheme_criteria, 
+  scheme_criterion: el_6_provisional_scheme_criterion, 
   label: 'Achieved Checklist Status', 
   display_weight: 3
 )
 
-el_6_final_scheme_criteria = 
+el_6_final_scheme_criterion = 
   SchemeCriterion.find_or_create_by(
     name: "Accessibility", 
     number: 6, 
@@ -1070,17 +1080,17 @@ el_6_final_scheme_criteria =
   )
 
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_6_final_scheme_criteria, 
+  scheme_criterion: el_6_final_scheme_criterion, 
   label: 'Targeted Checklist Status', 
   display_weight: 1
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_6_final_scheme_criteria, 
+  scheme_criterion: el_6_final_scheme_criterion, 
   label: 'Submitted Checklist Status', 
   display_weight: 2
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_6_final_scheme_criteria, 
+  scheme_criterion: el_6_final_scheme_criterion, 
   label: 'Achieved Checklist Status', 
   display_weight: 3
 )
@@ -1095,20 +1105,22 @@ el_6_criteria_information =
     "Facilitate pedestrian pathways on the event site while encouraging visitors to walk for a healthy and sustainable lifestyle."
   ]
 
-el_6_criteria_information.each.with_index(1) do |ci, i|
-  SchemeCriterionText.find_or_create_by(
-    scheme_criterion: el_6_provisional_scheme_criteria,
-    display_weight: i, 
-    visible: true,
-    name: "1.#{i}",
-    html_text: 
-      "
-        <p>
-          #{ci}
-        </p>\n
-        <p>&nbsp;</p>
-      "
-  )
+[el_6_provisional_scheme_criterion, el_6_final_scheme_criterion].each do |criterion|
+  el_6_criteria_information.each.with_index(1) do |ci, i|
+    SchemeCriterionText.find_or_create_by(
+      scheme_criterion: criterion,
+      display_weight: i, 
+      visible: true,
+      name: "1.#{i}",
+      html_text: 
+        "
+          <p>
+            #{ci}
+          </p>\n
+          <p>&nbsp;</p>
+        "
+    )
+  end
 end
 
 # Create Requirements
@@ -1138,7 +1150,7 @@ el_6_design_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_6_provisional_certification_criterion, 
-    scheme_criterion: el_6_provisional_scheme_criteria
+    scheme_criterion: el_6_provisional_scheme_criterion
   )
 end
 
@@ -1162,7 +1174,7 @@ el_6_construction_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_6_provisional_certification_criterion, 
-    scheme_criterion: el_6_provisional_scheme_criteria
+    scheme_criterion: el_6_provisional_scheme_criterion
   )
 end
 
@@ -1182,12 +1194,12 @@ el_6_operation_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_6_provisional_certification_criterion, 
-    scheme_criterion: el_6_provisional_scheme_criteria
+    scheme_criterion: el_6_provisional_scheme_criterion
   )
 end
 
 # --------------------------------- EL.7 ----------------------------------
-el_1_provisional_scheme_criteria = 
+el_7_provisional_scheme_criterion = 
   SchemeCriterion.find_or_create_by(
     name: "Sustainable Architecture", 
     number: 7, 
@@ -1200,22 +1212,22 @@ el_1_provisional_scheme_criteria =
     scheme_category: el_provisional_scheme_category
   )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_1_provisional_scheme_criteria, 
+  scheme_criterion: el_7_provisional_scheme_criterion, 
   label: 'Targeted Checklist Status', 
   display_weight: 1
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_1_provisional_scheme_criteria, 
+  scheme_criterion: el_7_provisional_scheme_criterion, 
   label: 'Submitted Checklist Status', 
   display_weight: 2
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_1_provisional_scheme_criteria, 
+  scheme_criterion: el_7_provisional_scheme_criterion, 
   label: 'Achieved Checklist Status', 
   display_weight: 3
 )
 
-el_1_final_scheme_criteria = 
+el_7_final_scheme_criterion = 
   SchemeCriterion.find_or_create_by(
     name: "Sustainable Architecture", 
     number: 7, 
@@ -1229,22 +1241,22 @@ el_1_final_scheme_criteria =
   )
 
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_1_final_scheme_criteria, 
+  scheme_criterion: el_7_final_scheme_criterion, 
   label: 'Targeted Checklist Status', 
   display_weight: 1
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_1_final_scheme_criteria, 
+  scheme_criterion: el_7_final_scheme_criterion, 
   label: 'Submitted Checklist Status', 
   display_weight: 2
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_1_final_scheme_criteria, 
+  scheme_criterion: el_7_final_scheme_criterion, 
   label: 'Achieved Checklist Status', 
   display_weight: 3
 )
 
-el_1_criteria_information = 
+el_7_criteria_information = 
   [
     "Provide shading on outdoor areas including queuing  corridors, pathways, public areas, etc.",
     "Include biophilic features and techniques in the design of buildings and structures including green roofs, green walls, green shading, rammed earth, mycelium, etc.",
@@ -1252,24 +1264,26 @@ el_1_criteria_information =
     "Minimize the heat island effect by providing large landscape areas, and high reflectance materials on façades, roofs, structures, and hardscape areas."
   ]
 
-el_1_criteria_information.each.with_index(1) do |ci, i|
-  SchemeCriterionText.find_or_create_by(
-    scheme_criterion: el_1_provisional_scheme_criteria,
-    display_weight: i, 
-    visible: true,
-    name: "1.#{i}",
-    html_text: 
-      "
-        <p>
-          #{ci}
-        </p>\n
-        <p>&nbsp;</p>
-      "
-  )
+[el_7_provisional_scheme_criterion, el_7_final_scheme_criterion].each do |criterion|
+  el_7_criteria_information.each.with_index(1) do |ci, i|
+    SchemeCriterionText.find_or_create_by(
+      scheme_criterion: criterion,
+      display_weight: i, 
+      visible: true,
+      name: "1.#{i}",
+      html_text: 
+        "
+          <p>
+            #{ci}
+          </p>\n
+          <p>&nbsp;</p>
+        "
+    )
+  end
 end
 
 # Create Requirements
-el_1_design_requirements = 
+el_7_design_requirements = 
   [
     "Site Layouts showing shades at public gatherings and queuing areas",
     "Architectural typical details for Green Roofs and Walls",
@@ -1278,22 +1292,22 @@ el_1_design_requirements =
     "Tentative Material Selection"
   ]
 
-el_1_design_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_1_provisional_certification_criterion = nil
+el_7_design_requirements.each.with_index(1) do |ci, i|
+  rt_for_el_7_provisional_certification_criterion = nil
 
-  rt_for_el_1_provisional_certification_criterion = 
+  rt_for_el_7_provisional_certification_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_design
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_1_provisional_certification_criterion, 
-    scheme_criterion: el_1_provisional_scheme_criteria
+    requirement: rt_for_el_7_provisional_certification_criterion, 
+    scheme_criterion: el_7_provisional_scheme_criterion
   )
 end
 
-el_1_construction_requirements = 
+el_7_construction_requirements = 
   [
     "Photos of Shades",
     "Update Layouts (if applicable)",
@@ -1303,22 +1317,22 @@ el_1_construction_requirements =
     "Photos of the hardscape and vegetation"
   ]
 
-el_1_construction_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_1_provisional_certification_criterion = nil
-  rt_for_el_1_provisional_certification_criterion = 
+el_7_construction_requirements.each.with_index(1) do |ci, i|
+  rt_for_el_7_provisional_certification_criterion = nil
+  rt_for_el_7_provisional_certification_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_construction
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_1_provisional_certification_criterion, 
-    scheme_criterion: el_1_provisional_scheme_criteria
+    requirement: rt_for_el_7_provisional_certification_criterion, 
+    scheme_criterion: el_7_provisional_scheme_criterion
   )
 end
 
 # --------------------------------- EL.8 ----------------------------------
-el_8_provisional_scheme_criteria = 
+el_8_provisional_scheme_criterion = 
   SchemeCriterion.find_or_create_by(
     name: "Heritage & Cultural Identity", 
     number: 8, 
@@ -1331,22 +1345,22 @@ el_8_provisional_scheme_criteria =
     scheme_category: el_provisional_scheme_category
   )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_8_provisional_scheme_criteria, 
+  scheme_criterion: el_8_provisional_scheme_criterion, 
   label: 'Targeted Checklist Status', 
   display_weight: 1
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_8_provisional_scheme_criteria, 
+  scheme_criterion: el_8_provisional_scheme_criterion, 
   label: 'Submitted Checklist Status', 
   display_weight: 2
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_8_provisional_scheme_criteria, 
+  scheme_criterion: el_8_provisional_scheme_criterion, 
   label: 'Achieved Checklist Status', 
   display_weight: 3
 )
 
-el_8_final_scheme_criteria = 
+el_8_final_scheme_criterion = 
   SchemeCriterion.find_or_create_by(
     name: "Heritage & Cultural Identity", 
     number: 8, 
@@ -1360,17 +1374,17 @@ el_8_final_scheme_criteria =
   )
 
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_8_final_scheme_criteria, 
+  scheme_criterion: el_8_final_scheme_criterion, 
   label: 'Targeted Checklist Status', 
   display_weight: 1
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_8_final_scheme_criteria, 
+  scheme_criterion: el_8_final_scheme_criterion, 
   label: 'Submitted Checklist Status', 
   display_weight: 2
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_8_final_scheme_criteria, 
+  scheme_criterion: el_8_final_scheme_criterion, 
   label: 'Achieved Checklist Status', 
   display_weight: 3
 )
@@ -1382,20 +1396,22 @@ el_8_criteria_information =
     "Design landscape and plant-based ornamental features that harmonize with cultural values."
   ]
 
-el_8_criteria_information.each.with_index(1) do |ci, i|
-  SchemeCriterionText.find_or_create_by(
-    scheme_criterion: el_8_provisional_scheme_criteria,
-    display_weight: i, 
-    visible: true,
-    name: "1.#{i}",
-    html_text: 
-      "
-        <p>
-          #{ci}
-        </p>\n
-        <p>&nbsp;</p>
-      "
-  )
+[el_8_provisional_scheme_criterion, el_8_final_scheme_criterion].each do |criterion|
+  el_8_criteria_information.each.with_index(1) do |ci, i|
+    SchemeCriterionText.find_or_create_by(
+      scheme_criterion: criterion,
+      display_weight: i, 
+      visible: true,
+      name: "1.#{i}",
+      html_text: 
+        "
+          <p>
+            #{ci}
+          </p>\n
+          <p>&nbsp;</p>
+        "
+    )
+  end
 end
 
 # Create Requirements
@@ -1418,7 +1434,7 @@ el_8_design_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_8_provisional_certification_criterion, 
-    scheme_criterion: el_8_provisional_scheme_criteria
+    scheme_criterion: el_8_provisional_scheme_criterion
   )
 end
 
@@ -1438,12 +1454,12 @@ el_8_construction_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_8_provisional_certification_criterion, 
-    scheme_criterion: el_8_provisional_scheme_criteria
+    scheme_criterion: el_8_provisional_scheme_criterion
   )
 end
 
 # --------------------------------- EL.9 ----------------------------------
-el_9_provisional_scheme_criteria = 
+el_9_provisional_scheme_criterion = 
   SchemeCriterion.find_or_create_by(
     name: "Sustainable Materials", 
     number: 9, 
@@ -1456,22 +1472,22 @@ el_9_provisional_scheme_criteria =
     scheme_category: el_provisional_scheme_category
   )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_9_provisional_scheme_criteria, 
+  scheme_criterion: el_9_provisional_scheme_criterion, 
   label: 'Targeted Checklist Status', 
   display_weight: 1
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_9_provisional_scheme_criteria, 
+  scheme_criterion: el_9_provisional_scheme_criterion, 
   label: 'Submitted Checklist Status', 
   display_weight: 2
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_9_provisional_scheme_criteria, 
+  scheme_criterion: el_9_provisional_scheme_criterion, 
   label: 'Achieved Checklist Status', 
   display_weight: 3
 )
 
-el_9_final_scheme_criteria = 
+el_9_final_scheme_criterion = 
   SchemeCriterion.find_or_create_by(
     name: "Sustainable Materials", 
     number: 9, 
@@ -1485,17 +1501,17 @@ el_9_final_scheme_criteria =
   )
 
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_9_final_scheme_criteria, 
+  scheme_criterion: el_9_final_scheme_criterion, 
   label: 'Targeted Checklist Status', 
   display_weight: 1
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_9_final_scheme_criteria, 
+  scheme_criterion: el_9_final_scheme_criterion, 
   label: 'Submitted Checklist Status', 
   display_weight: 2
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_9_final_scheme_criteria, 
+  scheme_criterion: el_9_final_scheme_criterion, 
   label: 'Achieved Checklist Status', 
   display_weight: 3
 )
@@ -1509,20 +1525,22 @@ el_9_criteria_information =
     "Use fit-out materials with recycled content."
   ]
 
-el_9_criteria_information.each.with_index(1) do |ci, i|
-  SchemeCriterionText.find_or_create_by(
-    scheme_criterion: el_9_provisional_scheme_criteria,
-    display_weight: i, 
-    visible: true,
-    name: "1.#{i}",
-    html_text: 
-      "
-        <p>
-          #{ci}
-        </p>\n
-        <p>&nbsp;</p>
-      "
-  )
+[el_9_provisional_scheme_criterion, el_9_final_scheme_criterion].each do |criterion|
+  el_9_criteria_information.each.with_index(1) do |ci, i|
+    SchemeCriterionText.find_or_create_by(
+      scheme_criterion: criterion,
+      display_weight: i, 
+      visible: true,
+      name: "1.#{i}",
+      html_text: 
+        "
+          <p>
+            #{ci}
+          </p>\n
+          <p>&nbsp;</p>
+        "
+    )
+  end
 end
 
 # Create Requirements
@@ -1548,7 +1566,7 @@ el_9_design_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_9_provisional_certification_criterion, 
-    scheme_criterion: el_9_provisional_scheme_criteria
+    scheme_criterion: el_9_provisional_scheme_criterion
   )
 end
 
@@ -1569,12 +1587,12 @@ el_9_construction_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_9_provisional_certification_criterion, 
-    scheme_criterion: el_9_provisional_scheme_criteria
+    scheme_criterion: el_9_provisional_scheme_criterion
   )
 end
 
 # --------------------------------- EL.10 ----------------------------------
-el_10_provisional_scheme_criteria = 
+el_10_provisional_scheme_criterion = 
   SchemeCriterion.find_or_create_by(
     name: "Materials Eco-Labelling", 
     number: 10, 
@@ -1587,22 +1605,22 @@ el_10_provisional_scheme_criteria =
     scheme_category: el_provisional_scheme_category
   )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_10_provisional_scheme_criteria, 
+  scheme_criterion: el_10_provisional_scheme_criterion, 
   label: 'Targeted Checklist Status', 
   display_weight: 1
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_10_provisional_scheme_criteria, 
+  scheme_criterion: el_10_provisional_scheme_criterion, 
   label: 'Submitted Checklist Status', 
   display_weight: 2
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_10_provisional_scheme_criteria, 
+  scheme_criterion: el_10_provisional_scheme_criterion, 
   label: 'Achieved Checklist Status', 
   display_weight: 3
 )
 
-el_10_final_scheme_criteria = 
+el_10_final_scheme_criterion = 
   SchemeCriterion.find_or_create_by(
     name: "Materials Eco-Labelling", 
     number: 10, 
@@ -1616,17 +1634,17 @@ el_10_final_scheme_criteria =
   )
 
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_10_final_scheme_criteria, 
+  scheme_criterion: el_10_final_scheme_criterion, 
   label: 'Targeted Checklist Status', 
   display_weight: 1
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_10_final_scheme_criteria, 
+  scheme_criterion: el_10_final_scheme_criterion, 
   label: 'Submitted Checklist Status', 
   display_weight: 2
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_10_final_scheme_criteria, 
+  scheme_criterion: el_10_final_scheme_criterion, 
   label: 'Achieved Checklist Status', 
   display_weight: 3
 )
@@ -1639,20 +1657,22 @@ el_10_criteria_information =
     "Procure materials with GSAS-approved certification  for low volatile organic compounds content."
   ]
 
-el_10_criteria_information.each.with_index(1) do |ci, i|
-  SchemeCriterionText.find_or_create_by(
-    scheme_criterion: el_10_provisional_scheme_criteria,
-    display_weight: i, 
-    visible: true,
-    name: "1.#{i}",
-    html_text: 
-      "
-        <p>
-          #{ci}
-        </p>\n
-        <p>&nbsp;</p>
-      "
-  )
+[el_10_provisional_scheme_criterion, el_10_final_scheme_criterion].each do |criterion|
+  el_10_criteria_information.each.with_index(1) do |ci, i|
+    SchemeCriterionText.find_or_create_by(
+      scheme_criterion: criterion,
+      display_weight: i, 
+      visible: true,
+      name: "1.#{i}",
+      html_text: 
+        "
+          <p>
+            #{ci}
+          </p>\n
+          <p>&nbsp;</p>
+        "
+    )
+  end
 end
 
 # Create Requirements
@@ -1675,7 +1695,7 @@ el_10_design_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_10_provisional_certification_criterion, 
-    scheme_criterion: el_10_provisional_scheme_criteria
+    scheme_criterion: el_10_provisional_scheme_criterion
   )
 end
 
@@ -1701,12 +1721,12 @@ el_10_construction_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_10_provisional_certification_criterion, 
-    scheme_criterion: el_10_provisional_scheme_criteria
+    scheme_criterion: el_10_provisional_scheme_criterion
   )
 end
 
 # --------------------------------- EL.11 ----------------------------------
-el_11_provisional_scheme_criteria = 
+el_11_provisional_scheme_criterion = 
   SchemeCriterion.find_or_create_by(
     name: "Supply Chain & Exhibitors Management", 
     number: 11, 
@@ -1719,22 +1739,22 @@ el_11_provisional_scheme_criteria =
     scheme_category: el_provisional_scheme_category
   )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_11_provisional_scheme_criteria, 
+  scheme_criterion: el_11_provisional_scheme_criterion, 
   label: 'Targeted Checklist Status', 
   display_weight: 1
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_11_provisional_scheme_criteria, 
+  scheme_criterion: el_11_provisional_scheme_criterion, 
   label: 'Submitted Checklist Status', 
   display_weight: 2
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_11_provisional_scheme_criteria, 
+  scheme_criterion: el_11_provisional_scheme_criterion, 
   label: 'Achieved Checklist Status', 
   display_weight: 3
 )
 
-el_11_final_scheme_criteria = 
+el_11_final_scheme_criterion = 
   SchemeCriterion.find_or_create_by(
     name: "Supply Chain & Exhibitors Management", 
     number: 11, 
@@ -1748,17 +1768,17 @@ el_11_final_scheme_criteria =
   )
 
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_11_final_scheme_criteria, 
+  scheme_criterion: el_11_final_scheme_criterion, 
   label: 'Targeted Checklist Status', 
   display_weight: 1
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_11_final_scheme_criteria, 
+  scheme_criterion: el_11_final_scheme_criterion, 
   label: 'Submitted Checklist Status', 
   display_weight: 2
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_11_final_scheme_criteria, 
+  scheme_criterion: el_11_final_scheme_criterion, 
   label: 'Achieved Checklist Status', 
   display_weight: 3
 )
@@ -1768,20 +1788,22 @@ el_11_criteria_information =
     "Develop and implement a sustainable procurement program for materials and products."
   ]
 
-el_11_criteria_information.each.with_index(1) do |ci, i|
-  SchemeCriterionText.find_or_create_by(
-    scheme_criterion: el_11_provisional_scheme_criteria,
-    display_weight: i, 
-    visible: true,
-    name: "1.#{i}",
-    html_text: 
-      "
-        <p>
-          #{ci}
-        </p>\n
-        <p>&nbsp;</p>
-      "
-  )
+[el_11_provisional_scheme_criterion, el_11_final_scheme_criterion].each do |criterion|
+  el_11_criteria_information.each.with_index(1) do |ci, i|
+    SchemeCriterionText.find_or_create_by(
+      scheme_criterion: criterion,
+      display_weight: i, 
+      visible: true,
+      name: "1.#{i}",
+      html_text: 
+        "
+          <p>
+            #{ci}
+          </p>\n
+          <p>&nbsp;</p>
+        "
+    )
+  end
 end
 
 # Create Requirements
@@ -1801,7 +1823,7 @@ el_11_design_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_11_provisional_certification_criterion, 
-    scheme_criterion: el_11_provisional_scheme_criteria
+    scheme_criterion: el_11_provisional_scheme_criterion
   )
 end
 
@@ -1820,12 +1842,12 @@ el_11_operation_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_11_provisional_certification_criterion, 
-    scheme_criterion: el_11_provisional_scheme_criteria
+    scheme_criterion: el_11_provisional_scheme_criterion
   )
 end
 
 # --------------------------------- EL.12 ----------------------------------
-el_12_provisional_scheme_criteria = 
+el_12_provisional_scheme_criterion = 
   SchemeCriterion.find_or_create_by(
     name: "Waste Management", 
     number: 12, 
@@ -1838,22 +1860,22 @@ el_12_provisional_scheme_criteria =
     scheme_category: el_provisional_scheme_category
   )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_12_provisional_scheme_criteria, 
+  scheme_criterion: el_12_provisional_scheme_criterion, 
   label: 'Targeted Checklist Status', 
   display_weight: 1
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_12_provisional_scheme_criteria, 
+  scheme_criterion: el_12_provisional_scheme_criterion, 
   label: 'Submitted Checklist Status', 
   display_weight: 2
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_12_provisional_scheme_criteria, 
+  scheme_criterion: el_12_provisional_scheme_criterion, 
   label: 'Achieved Checklist Status', 
   display_weight: 3
 )
 
-el_12_final_scheme_criteria = 
+el_12_final_scheme_criterion = 
   SchemeCriterion.find_or_create_by(
     name: "Waste Management", 
     number: 12, 
@@ -1867,17 +1889,17 @@ el_12_final_scheme_criteria =
   )
 
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_12_final_scheme_criteria, 
+  scheme_criterion: el_12_final_scheme_criterion, 
   label: 'Targeted Checklist Status', 
   display_weight: 1
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_12_final_scheme_criteria, 
+  scheme_criterion: el_12_final_scheme_criterion, 
   label: 'Submitted Checklist Status', 
   display_weight: 2
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_12_final_scheme_criteria, 
+  scheme_criterion: el_12_final_scheme_criterion, 
   label: 'Achieved Checklist Status', 
   display_weight: 3
 )
@@ -1904,20 +1926,22 @@ el_12_criteria_information =
     "Send bulky waste items to organizations that are willing to repair and/or reuse them. Find further reuse for furniture and equipment within other projects, either by selling, donating, or reusing within the same organization in a different project.",
   ]
 
-el_12_criteria_information.each.with_index(1) do |ci, i|
-  SchemeCriterionText.find_or_create_by(
-    scheme_criterion: el_12_provisional_scheme_criteria,
-    display_weight: i, 
-    visible: true,
-    name: "1.#{i}",
-    html_text: 
-      "
-        <p>
-          #{ci}
-        </p>\n
-        <p>&nbsp;</p>
-      "
-  )
+[el_12_provisional_scheme_criterion, el_12_final_scheme_criterion].each do |criterion|
+  el_12_criteria_information.each.with_index(1) do |ci, i|
+    SchemeCriterionText.find_or_create_by(
+      scheme_criterion: criterion,
+      display_weight: i, 
+      visible: true,
+      name: "1.#{i}",
+      html_text: 
+        "
+          <p>
+            #{ci}
+          </p>\n
+          <p>&nbsp;</p>
+        "
+    )
+  end
 end
 
 # Create Requirements
@@ -1950,7 +1974,7 @@ el_12_construction_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_12_provisional_certification_criterion, 
-    scheme_criterion: el_12_provisional_scheme_criteria
+    scheme_criterion: el_12_provisional_scheme_criterion
   )
 end
 
@@ -1987,7 +2011,7 @@ el_12_operation_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_12_provisional_certification_criterion, 
-    scheme_criterion: el_12_provisional_scheme_criteria
+    scheme_criterion: el_12_provisional_scheme_criterion
   )
 end
 
@@ -2016,12 +2040,12 @@ el_12_dismantling_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_12_provisional_certification_criterion, 
-    scheme_criterion: el_12_provisional_scheme_criteria
+    scheme_criterion: el_12_provisional_scheme_criterion
   )
 end
 
 # --------------------------------- EL.13 ----------------------------------
-el_13_provisional_scheme_criteria = 
+el_13_provisional_scheme_criterion = 
   SchemeCriterion.find_or_create_by(
     name: "Facility Management", 
     number: 13, 
@@ -2034,22 +2058,22 @@ el_13_provisional_scheme_criteria =
     scheme_category: el_provisional_scheme_category
   )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_13_provisional_scheme_criteria, 
+  scheme_criterion: el_13_provisional_scheme_criterion, 
   label: 'Targeted Checklist Status', 
   display_weight: 1
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_13_provisional_scheme_criteria, 
+  scheme_criterion: el_13_provisional_scheme_criterion, 
   label: 'Submitted Checklist Status', 
   display_weight: 2
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_13_provisional_scheme_criteria, 
+  scheme_criterion: el_13_provisional_scheme_criterion, 
   label: 'Achieved Checklist Status', 
   display_weight: 3
 )
 
-el_13_final_scheme_criteria = 
+el_13_final_scheme_criterion = 
   SchemeCriterion.find_or_create_by(
     name: "Facility Management", 
     number: 13, 
@@ -2063,17 +2087,17 @@ el_13_final_scheme_criteria =
   )
 
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_13_final_scheme_criteria, 
+  scheme_criterion: el_13_final_scheme_criterion, 
   label: 'Targeted Checklist Status', 
   display_weight: 1
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_13_final_scheme_criteria, 
+  scheme_criterion: el_13_final_scheme_criterion, 
   label: 'Submitted Checklist Status', 
   display_weight: 2
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_13_final_scheme_criteria, 
+  scheme_criterion: el_13_final_scheme_criterion, 
   label: 'Achieved Checklist Status', 
   display_weight: 3
 )
@@ -2086,20 +2110,22 @@ el_13_criteria_information =
     "Ensure data collection for energy and water consumption, chemicals use, and waste production."
   ]
 
-el_13_criteria_information.each.with_index(1) do |ci, i|
-  SchemeCriterionText.find_or_create_by(
-    scheme_criterion: el_13_provisional_scheme_criteria,
-    display_weight: i, 
-    visible: true,
-    name: "1.#{i}",
-    html_text: 
-      "
-        <p>
-          #{ci}
-        </p>\n
-        <p>&nbsp;</p>
-      "
-  )
+[el_13_provisional_scheme_criterion, el_13_final_scheme_criterion].each do |criterion|
+  el_13_criteria_information.each.with_index(1) do |ci, i|
+    SchemeCriterionText.find_or_create_by(
+      scheme_criterion: criterion,
+      display_weight: i, 
+      visible: true,
+      name: "1.#{i}",
+      html_text: 
+        "
+          <p>
+            #{ci}
+          </p>\n
+          <p>&nbsp;</p>
+        "
+    )
+  end
 end
 
 # Create Requirements
@@ -2127,12 +2153,12 @@ el_13_construction_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_13_provisional_certification_criterion, 
-    scheme_criterion: el_13_provisional_scheme_criteria
+    scheme_criterion: el_13_provisional_scheme_criterion
   )
 end
 
 # --------------------------------- EL.14 ----------------------------------
-el_14_provisional_scheme_criteria = 
+el_14_provisional_scheme_criterion = 
   SchemeCriterion.find_or_create_by(
     name: "Health & safety Management", 
     number: 14, 
@@ -2145,22 +2171,22 @@ el_14_provisional_scheme_criteria =
     scheme_category: el_provisional_scheme_category
   )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_14_provisional_scheme_criteria, 
+  scheme_criterion: el_14_provisional_scheme_criterion, 
   label: 'Targeted Checklist Status', 
   display_weight: 1
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_14_provisional_scheme_criteria, 
+  scheme_criterion: el_14_provisional_scheme_criterion, 
   label: 'Submitted Checklist Status', 
   display_weight: 2
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_14_provisional_scheme_criteria, 
+  scheme_criterion: el_14_provisional_scheme_criterion, 
   label: 'Achieved Checklist Status', 
   display_weight: 3
 )
 
-el_14_final_scheme_criteria = 
+el_14_final_scheme_criterion = 
   SchemeCriterion.find_or_create_by(
     name: "Health & safety Management", 
     number: 14, 
@@ -2174,17 +2200,17 @@ el_14_final_scheme_criteria =
   )
 
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_14_final_scheme_criteria, 
+  scheme_criterion: el_14_final_scheme_criterion, 
   label: 'Targeted Checklist Status', 
   display_weight: 1
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_14_final_scheme_criteria, 
+  scheme_criterion: el_14_final_scheme_criterion, 
   label: 'Submitted Checklist Status', 
   display_weight: 2
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_14_final_scheme_criteria, 
+  scheme_criterion: el_14_final_scheme_criterion, 
   label: 'Achieved Checklist Status', 
   display_weight: 3
 )
@@ -2197,20 +2223,22 @@ el_14_criteria_information =
     "Develop and implement a heat stress program including monitoring of the humidity index every thirty minutes. Also, implement different degrees of hydration and rest measures depending on the heat and humidity index."
   ]
 
-el_14_criteria_information.each.with_index(1) do |ci, i|
-  SchemeCriterionText.find_or_create_by(
-    scheme_criterion: el_14_provisional_scheme_criteria,
-    display_weight: i, 
-    visible: true,
-    name: "1.#{i}",
-    html_text: 
-      "
-        <p>
-          #{ci}
-        </p>\n
-        <p>&nbsp;</p>
-      "
-  )
+[el_14_provisional_scheme_criterion, el_14_final_scheme_criterion].each do |criterion|
+  el_14_criteria_information.each.with_index(1) do |ci, i|
+    SchemeCriterionText.find_or_create_by(
+      scheme_criterion: criterion,
+      display_weight: i, 
+      visible: true,
+      name: "1.#{i}",
+      html_text: 
+        "
+          <p>
+            #{ci}
+          </p>\n
+          <p>&nbsp;</p>
+        "
+    )
+  end
 end
 
 # Create Requirements
@@ -2234,7 +2262,7 @@ el_14_construction_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_14_provisional_certification_criterion, 
-    scheme_criterion: el_14_provisional_scheme_criteria
+    scheme_criterion: el_14_provisional_scheme_criterion
   )
 end
 
@@ -2258,7 +2286,7 @@ el_14_operation_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_14_provisional_certification_criterion, 
-    scheme_criterion: el_14_provisional_scheme_criteria
+    scheme_criterion: el_14_provisional_scheme_criterion
   )
 end
 
@@ -2282,12 +2310,12 @@ el_14_dismantling_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_14_provisional_certification_criterion, 
-    scheme_criterion: el_14_provisional_scheme_criteria
+    scheme_criterion: el_14_provisional_scheme_criterion
   )
 end
 
 # --------------------------------- EL.15 ----------------------------------
-el_15_provisional_scheme_criteria = 
+el_15_provisional_scheme_criterion = 
   SchemeCriterion.find_or_create_by(
     name: "Transportation Management", 
     number: 15, 
@@ -2300,22 +2328,22 @@ el_15_provisional_scheme_criteria =
     scheme_category: el_provisional_scheme_category
   )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_15_provisional_scheme_criteria, 
+  scheme_criterion: el_15_provisional_scheme_criterion, 
   label: 'Targeted Checklist Status', 
   display_weight: 1
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_15_provisional_scheme_criteria, 
+  scheme_criterion: el_15_provisional_scheme_criterion, 
   label: 'Submitted Checklist Status', 
   display_weight: 2
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_15_provisional_scheme_criteria, 
+  scheme_criterion: el_15_provisional_scheme_criterion, 
   label: 'Achieved Checklist Status', 
   display_weight: 3
 )
 
-el_15_final_scheme_criteria = 
+el_15_final_scheme_criterion = 
   SchemeCriterion.find_or_create_by(
     name: "Transportation Management", 
     number: 15, 
@@ -2329,17 +2357,17 @@ el_15_final_scheme_criteria =
   )
 
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_15_final_scheme_criteria, 
+  scheme_criterion: el_15_final_scheme_criterion, 
   label: 'Targeted Checklist Status', 
   display_weight: 1
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_15_final_scheme_criteria, 
+  scheme_criterion: el_15_final_scheme_criterion, 
   label: 'Submitted Checklist Status', 
   display_weight: 2
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_15_final_scheme_criteria, 
+  scheme_criterion: el_15_final_scheme_criterion, 
   label: 'Achieved Checklist Status', 
   display_weight: 3
 )
@@ -2355,20 +2383,22 @@ el_15_criteria_information =
     "Provide, where possible, separate lanes for both pedestrian and bicycle riders."
   ]
 
-el_15_criteria_information.each.with_index(1) do |ci, i|
-  SchemeCriterionText.find_or_create_by(
-    scheme_criterion: el_15_provisional_scheme_criteria,
-    display_weight: i, 
-    visible: true,
-    name: "1.#{i}",
-    html_text: 
-      "
-        <p>
-          #{ci}
-        </p>\n
-        <p>&nbsp;</p>
-      "
-  )
+[el_15_provisional_scheme_criterion, el_15_final_scheme_criterion].each do |criterion|
+  el_15_criteria_information.each.with_index(1) do |ci, i|
+    SchemeCriterionText.find_or_create_by(
+      scheme_criterion: criterion,
+      display_weight: i, 
+      visible: true,
+      name: "1.#{i}",
+      html_text: 
+        "
+          <p>
+            #{ci}
+          </p>\n
+          <p>&nbsp;</p>
+        "
+    )
+  end
 end
 
 # Create Requirements
@@ -2388,7 +2418,7 @@ el_15_design_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_15_provisional_certification_criterion, 
-    scheme_criterion: el_15_provisional_scheme_criteria
+    scheme_criterion: el_15_provisional_scheme_criterion
   )
 end
 
@@ -2408,7 +2438,7 @@ el_15_construction_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_15_provisional_certification_criterion, 
-    scheme_criterion: el_15_provisional_scheme_criteria
+    scheme_criterion: el_15_provisional_scheme_criterion
   )
 end
 
@@ -2440,12 +2470,12 @@ el_15_operation_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_15_provisional_certification_criterion, 
-    scheme_criterion: el_15_provisional_scheme_criteria
+    scheme_criterion: el_15_provisional_scheme_criterion
   )
 end
 
 # --------------------------------- EL.16 ----------------------------------
-el_16_provisional_scheme_criteria = 
+el_16_provisional_scheme_criterion = 
   SchemeCriterion.find_or_create_by(
     name: "Landscape Maintenance", 
     number: 16, 
@@ -2458,22 +2488,22 @@ el_16_provisional_scheme_criteria =
     scheme_category: el_provisional_scheme_category
   )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_16_provisional_scheme_criteria, 
+  scheme_criterion: el_16_provisional_scheme_criterion, 
   label: 'Targeted Checklist Status', 
   display_weight: 1
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_16_provisional_scheme_criteria, 
+  scheme_criterion: el_16_provisional_scheme_criterion, 
   label: 'Submitted Checklist Status', 
   display_weight: 2
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_16_provisional_scheme_criteria, 
+  scheme_criterion: el_16_provisional_scheme_criterion, 
   label: 'Achieved Checklist Status', 
   display_weight: 3
 )
 
-el_16_final_scheme_criteria = 
+el_16_final_scheme_criterion = 
   SchemeCriterion.find_or_create_by(
     name: "Landscape Maintenance", 
     number: 16, 
@@ -2487,17 +2517,17 @@ el_16_final_scheme_criteria =
   )
 
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_16_final_scheme_criteria, 
+  scheme_criterion: el_16_final_scheme_criterion, 
   label: 'Targeted Checklist Status', 
   display_weight: 1
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_16_final_scheme_criteria, 
+  scheme_criterion: el_16_final_scheme_criterion, 
   label: 'Submitted Checklist Status', 
   display_weight: 2
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_16_final_scheme_criteria, 
+  scheme_criterion: el_16_final_scheme_criterion, 
   label: 'Achieved Checklist Status', 
   display_weight: 3
 )
@@ -2510,20 +2540,22 @@ el_16_criteria_information =
     "Minimize the use of pesticides, especially those containing toxic chemicals, and consider utilization of non-toxic nature-based pesticides."
   ]
 
-el_16_criteria_information.each.with_index(1) do |ci, i|
-  SchemeCriterionText.find_or_create_by(
-    scheme_criterion: el_16_provisional_scheme_criteria,
-    display_weight: i, 
-    visible: true,
-    name: "1.#{i}",
-    html_text: 
-      "
-        <p>
-          #{ci}
-        </p>\n
-        <p>&nbsp;</p>
-      "
-  )
+[el_16_provisional_scheme_criterion, el_16_final_scheme_criterion].each do |criterion|
+  el_16_criteria_information.each.with_index(1) do |ci, i|
+    SchemeCriterionText.find_or_create_by(
+      scheme_criterion: criterion,
+      display_weight: i, 
+      visible: true,
+      name: "1.#{i}",
+      html_text: 
+        "
+          <p>
+            #{ci}
+          </p>\n
+          <p>&nbsp;</p>
+        "
+    )
+  end
 end
 
 # Create Requirements
@@ -2543,7 +2575,7 @@ el_16_design_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_16_provisional_certification_criterion, 
-    scheme_criterion: el_16_provisional_scheme_criteria
+    scheme_criterion: el_16_provisional_scheme_criterion
   )
 end
 
@@ -2566,12 +2598,12 @@ el_16_operation_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_16_provisional_certification_criterion, 
-    scheme_criterion: el_16_provisional_scheme_criteria
+    scheme_criterion: el_16_provisional_scheme_criterion
   )
 end
 
 # --------------------------------- EL.17 ----------------------------------
-el_17_provisional_scheme_criteria = 
+el_17_provisional_scheme_criterion = 
   SchemeCriterion.find_or_create_by(
     name: "Catering", 
     number: 17, 
@@ -2584,22 +2616,22 @@ el_17_provisional_scheme_criteria =
     scheme_category: el_provisional_scheme_category
   )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_17_provisional_scheme_criteria, 
+  scheme_criterion: el_17_provisional_scheme_criterion, 
   label: 'Targeted Checklist Status', 
   display_weight: 1
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_17_provisional_scheme_criteria, 
+  scheme_criterion: el_17_provisional_scheme_criterion, 
   label: 'Submitted Checklist Status', 
   display_weight: 2
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_17_provisional_scheme_criteria, 
+  scheme_criterion: el_17_provisional_scheme_criterion, 
   label: 'Achieved Checklist Status', 
   display_weight: 3
 )
 
-el_17_final_scheme_criteria = 
+el_17_final_scheme_criterion = 
   SchemeCriterion.find_or_create_by(
     name: "Catering", 
     number: 17, 
@@ -2613,17 +2645,17 @@ el_17_final_scheme_criteria =
   )
 
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_17_final_scheme_criteria, 
+  scheme_criterion: el_17_final_scheme_criterion, 
   label: 'Targeted Checklist Status', 
   display_weight: 1
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_17_final_scheme_criteria, 
+  scheme_criterion: el_17_final_scheme_criterion, 
   label: 'Submitted Checklist Status', 
   display_weight: 2
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_17_final_scheme_criteria, 
+  scheme_criterion: el_17_final_scheme_criterion, 
   label: 'Achieved Checklist Status', 
   display_weight: 3
 )
@@ -2644,20 +2676,22 @@ el_17_criteria_information =
     "Keep the food offerings within specific designated areas to avoid waste spreading and facilitate an easier waste collection procedure."
   ]
 
-el_17_criteria_information.each.with_index(1) do |ci, i|
-  SchemeCriterionText.find_or_create_by(
-    scheme_criterion: el_17_provisional_scheme_criteria,
-    display_weight: i, 
-    visible: true,
-    name: "1.#{i}",
-    html_text: 
-      "
-        <p>
-          #{ci}
-        </p>\n
-        <p>&nbsp;</p>
-      "
-  )
+[el_17_provisional_scheme_criterion, el_17_final_scheme_criterion].each do |criterion|
+  el_17_criteria_information.each.with_index(1) do |ci, i|
+    SchemeCriterionText.find_or_create_by(
+      scheme_criterion: criterion,
+      display_weight: i, 
+      visible: true,
+      name: "1.#{i}",
+      html_text: 
+        "
+          <p>
+            #{ci}
+          </p>\n
+          <p>&nbsp;</p>
+        "
+    )
+  end
 end
 
 # Create Requirements
@@ -2677,7 +2711,7 @@ el_17_design_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_17_provisional_certification_criterion, 
-    scheme_criterion: el_17_provisional_scheme_criteria
+    scheme_criterion: el_17_provisional_scheme_criterion
   )
 end
 
@@ -2696,7 +2730,7 @@ el_17_construction_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_17_provisional_certification_criterion, 
-    scheme_criterion: el_17_provisional_scheme_criteria
+    scheme_criterion: el_17_provisional_scheme_criterion
   )
 end
 
@@ -2744,12 +2778,12 @@ el_17_operation_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_17_provisional_certification_criterion, 
-    scheme_criterion: el_17_provisional_scheme_criteria
+    scheme_criterion: el_17_provisional_scheme_criterion
   )
 end
 
 # --------------------------------- EL.18 ----------------------------------
-el_18_provisional_scheme_criteria = 
+el_18_provisional_scheme_criterion = 
   SchemeCriterion.find_or_create_by(
     name: "Pollution", 
     number: 18, 
@@ -2762,22 +2796,22 @@ el_18_provisional_scheme_criteria =
     scheme_category: el_provisional_scheme_category
   )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_18_provisional_scheme_criteria, 
+  scheme_criterion: el_18_provisional_scheme_criterion, 
   label: 'Targeted Checklist Status', 
   display_weight: 1
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_18_provisional_scheme_criteria, 
+  scheme_criterion: el_18_provisional_scheme_criterion, 
   label: 'Submitted Checklist Status', 
   display_weight: 2
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_18_provisional_scheme_criteria, 
+  scheme_criterion: el_18_provisional_scheme_criterion, 
   label: 'Achieved Checklist Status', 
   display_weight: 3
 )
 
-el_18_final_scheme_criteria = 
+el_18_final_scheme_criterion = 
   SchemeCriterion.find_or_create_by(
     name: "Pollution", 
     number: 18, 
@@ -2791,17 +2825,17 @@ el_18_final_scheme_criteria =
   )
 
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_18_final_scheme_criteria, 
+  scheme_criterion: el_18_final_scheme_criterion, 
   label: 'Targeted Checklist Status', 
   display_weight: 1
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_18_final_scheme_criteria, 
+  scheme_criterion: el_18_final_scheme_criterion, 
   label: 'Submitted Checklist Status', 
   display_weight: 2
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_18_final_scheme_criteria, 
+  scheme_criterion: el_18_final_scheme_criterion, 
   label: 'Achieved Checklist Status', 
   display_weight: 3
 )
@@ -2815,20 +2849,22 @@ el_18_criteria_information =
     "Implement measures to reduce ground pollution by installing proper concrete washout facilities for the trucks to be cleaned before exiting the site."
   ]
 
-el_18_criteria_information.each.with_index(1) do |ci, i|
-  SchemeCriterionText.find_or_create_by(
-    scheme_criterion: el_18_provisional_scheme_criteria,
-    display_weight: i, 
-    visible: true,
-    name: "1.#{i}",
-    html_text: 
-      "
-        <p>
-          #{ci}
-        </p>\n
-        <p>&nbsp;</p>
-      "
-  )
+[el_18_provisional_scheme_criterion, el_18_final_scheme_criterion].each do |criterion|
+  el_18_criteria_information.each.with_index(1) do |ci, i|
+    SchemeCriterionText.find_or_create_by(
+      scheme_criterion: criterion,
+      display_weight: i, 
+      visible: true,
+      name: "1.#{i}",
+      html_text: 
+        "
+          <p>
+            #{ci}
+          </p>\n
+          <p>&nbsp;</p>
+        "
+    )
+  end
 end
 
 # Create Requirements
@@ -2854,7 +2890,7 @@ el_18_design_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_18_provisional_certification_criterion, 
-    scheme_criterion: el_18_provisional_scheme_criteria
+    scheme_criterion: el_18_provisional_scheme_criterion
   )
 end
 
@@ -2882,7 +2918,7 @@ el_18_construction_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_18_provisional_certification_criterion, 
-    scheme_criterion: el_18_provisional_scheme_criteria
+    scheme_criterion: el_18_provisional_scheme_criterion
   )
 end
 
@@ -2904,7 +2940,7 @@ el_18_operation_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_18_provisional_certification_criterion, 
-    scheme_criterion: el_18_provisional_scheme_criteria
+    scheme_criterion: el_18_provisional_scheme_criterion
   )
 end
 
@@ -2927,12 +2963,12 @@ el_18_dismantling_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_18_provisional_certification_criterion, 
-    scheme_criterion: el_18_provisional_scheme_criteria
+    scheme_criterion: el_18_provisional_scheme_criterion
   )
 end
 
 # --------------------------------- EL.19 ----------------------------------
-el_19_provisional_scheme_criteria = 
+el_19_provisional_scheme_criterion = 
   SchemeCriterion.find_or_create_by(
     name: "Carbon Footprint", 
     number: 19, 
@@ -2945,22 +2981,22 @@ el_19_provisional_scheme_criteria =
     scheme_category: el_provisional_scheme_category
   )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_19_provisional_scheme_criteria, 
+  scheme_criterion: el_19_provisional_scheme_criterion, 
   label: 'Targeted Checklist Status', 
   display_weight: 1
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_19_provisional_scheme_criteria, 
+  scheme_criterion: el_19_provisional_scheme_criterion, 
   label: 'Submitted Checklist Status', 
   display_weight: 2
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_19_provisional_scheme_criteria, 
+  scheme_criterion: el_19_provisional_scheme_criterion, 
   label: 'Achieved Checklist Status', 
   display_weight: 3
 )
 
-el_19_final_scheme_criteria = 
+el_19_final_scheme_criterion = 
   SchemeCriterion.find_or_create_by(
     name: "Carbon Footprint", 
     number: 19, 
@@ -2974,17 +3010,17 @@ el_19_final_scheme_criteria =
   )
 
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_19_final_scheme_criteria, 
+  scheme_criterion: el_19_final_scheme_criterion, 
   label: 'Targeted Checklist Status', 
   display_weight: 1
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_19_final_scheme_criteria, 
+  scheme_criterion: el_19_final_scheme_criterion, 
   label: 'Submitted Checklist Status', 
   display_weight: 2
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_19_final_scheme_criteria, 
+  scheme_criterion: el_19_final_scheme_criterion, 
   label: 'Achieved Checklist Status', 
   display_weight: 3
 )
@@ -2994,20 +3030,22 @@ el_19_criteria_information =
     "Calculate Scope 1 and Scope 2 emissions across all the phases of the event. Develop and implement a  GHG emissions mitigation plan."
   ]
 
-el_19_criteria_information.each.with_index(1) do |ci, i|
-  SchemeCriterionText.find_or_create_by(
-    scheme_criterion: el_19_provisional_scheme_criteria,
-    display_weight: i, 
-    visible: true,
-    name: "1.#{i}",
-    html_text: 
-      "
-        <p>
-          #{ci}
-        </p>\n
-        <p>&nbsp;</p>
-      "
-  )
+[el_19_provisional_scheme_criterion, el_19_final_scheme_criterion].each do |criterion|
+  el_19_criteria_information.each.with_index(1) do |ci, i|
+    SchemeCriterionText.find_or_create_by(
+      scheme_criterion: criterion,
+      display_weight: i, 
+      visible: true,
+      name: "1.#{i}",
+      html_text: 
+        "
+          <p>
+            #{ci}
+          </p>\n
+          <p>&nbsp;</p>
+        "
+    )
+  end
 end
 
 # Create Requirements
@@ -3028,7 +3066,7 @@ el_19_construction_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_19_provisional_certification_criterion, 
-    scheme_criterion: el_19_provisional_scheme_criteria
+    scheme_criterion: el_19_provisional_scheme_criterion
   )
 end
 
@@ -3049,7 +3087,7 @@ el_19_operation_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_19_provisional_certification_criterion, 
-    scheme_criterion: el_19_provisional_scheme_criteria
+    scheme_criterion: el_19_provisional_scheme_criterion
   )
 end
 
@@ -3070,12 +3108,12 @@ el_19_dismantling_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_19_provisional_certification_criterion, 
-    scheme_criterion: el_19_provisional_scheme_criteria
+    scheme_criterion: el_19_provisional_scheme_criterion
   )
 end
 
 # --------------------------------- EL.20 ----------------------------------
-el_20_provisional_scheme_criteria = 
+el_20_provisional_scheme_criterion = 
   SchemeCriterion.find_or_create_by(
     name: "Sustainability Awareness", 
     number: 20, 
@@ -3088,22 +3126,22 @@ el_20_provisional_scheme_criteria =
     scheme_category: el_provisional_scheme_category
   )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_20_provisional_scheme_criteria, 
+  scheme_criterion: el_20_provisional_scheme_criterion, 
   label: 'Targeted Checklist Status', 
   display_weight: 1
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_20_provisional_scheme_criteria, 
+  scheme_criterion: el_20_provisional_scheme_criterion, 
   label: 'Submitted Checklist Status', 
   display_weight: 2
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_20_provisional_scheme_criteria, 
+  scheme_criterion: el_20_provisional_scheme_criterion, 
   label: 'Achieved Checklist Status', 
   display_weight: 3
 )
 
-el_20_final_scheme_criteria = 
+el_20_final_scheme_criterion = 
   SchemeCriterion.find_or_create_by(
     name: "Sustainability Awareness", 
     number: 20, 
@@ -3117,17 +3155,17 @@ el_20_final_scheme_criteria =
   )
 
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_20_final_scheme_criteria, 
+  scheme_criterion: el_20_final_scheme_criterion, 
   label: 'Targeted Checklist Status', 
   display_weight: 1
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_20_final_scheme_criteria, 
+  scheme_criterion: el_20_final_scheme_criterion, 
   label: 'Submitted Checklist Status', 
   display_weight: 2
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_20_final_scheme_criteria, 
+  scheme_criterion: el_20_final_scheme_criterion, 
   label: 'Achieved Checklist Status', 
   display_weight: 3
 )
@@ -3142,20 +3180,22 @@ el_20_criteria_information =
     "Arrange knowledge-sharing activities to build capacity in the local community on the theme of the event."
   ]
 
-el_20_criteria_information.each.with_index(1) do |ci, i|
-  SchemeCriterionText.find_or_create_by(
-    scheme_criterion: el_20_provisional_scheme_criteria,
-    display_weight: i, 
-    visible: true,
-    name: "1.#{i}",
-    html_text: 
-      "
-        <p>
-          #{ci}
-        </p>\n
-        <p>&nbsp;</p>
-      "
-  )
+[el_20_provisional_scheme_criterion, el_20_final_scheme_criterion].each do |criterion|
+  el_20_criteria_information.each.with_index(1) do |ci, i|
+    SchemeCriterionText.find_or_create_by(
+      scheme_criterion: criterion,
+      display_weight: i, 
+      visible: true,
+      name: "1.#{i}",
+      html_text: 
+        "
+          <p>
+            #{ci}
+          </p>\n
+          <p>&nbsp;</p>
+        "
+    )
+  end
 end
 
 # Create Requirements
@@ -3176,7 +3216,7 @@ el_20_design_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_20_provisional_certification_criterion, 
-    scheme_criterion: el_20_provisional_scheme_criteria
+    scheme_criterion: el_20_provisional_scheme_criterion
   )
 end
 
@@ -3202,12 +3242,12 @@ el_20_operation_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_20_provisional_certification_criterion, 
-    scheme_criterion: el_20_provisional_scheme_criteria
+    scheme_criterion: el_20_provisional_scheme_criterion
   )
 end
 
 # --------------------------------- EL.21 ----------------------------------
-el_21_provisional_scheme_criteria = 
+el_21_provisional_scheme_criterion = 
   SchemeCriterion.find_or_create_by(
     name: "Legacy", 
     number: 21, 
@@ -3220,22 +3260,22 @@ el_21_provisional_scheme_criteria =
     scheme_category: el_provisional_scheme_category
   )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_21_provisional_scheme_criteria, 
+  scheme_criterion: el_21_provisional_scheme_criterion, 
   label: 'Targeted Checklist Status', 
   display_weight: 1
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_21_provisional_scheme_criteria, 
+  scheme_criterion: el_21_provisional_scheme_criterion, 
   label: 'Submitted Checklist Status', 
   display_weight: 2
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_21_provisional_scheme_criteria, 
+  scheme_criterion: el_21_provisional_scheme_criterion, 
   label: 'Achieved Checklist Status', 
   display_weight: 3
 )
 
-el_21_final_scheme_criteria = 
+el_21_final_scheme_criterion = 
   SchemeCriterion.find_or_create_by(
     name: "Legacy", 
     number: 21, 
@@ -3249,17 +3289,17 @@ el_21_final_scheme_criteria =
   )
 
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_21_final_scheme_criteria, 
+  scheme_criterion: el_21_final_scheme_criterion, 
   label: 'Targeted Checklist Status', 
   display_weight: 1
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_21_final_scheme_criteria, 
+  scheme_criterion: el_21_final_scheme_criterion, 
   label: 'Submitted Checklist Status', 
   display_weight: 2
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: el_21_final_scheme_criteria, 
+  scheme_criterion: el_21_final_scheme_criterion, 
   label: 'Achieved Checklist Status', 
   display_weight: 3
 )
@@ -3270,20 +3310,22 @@ el_21_criteria_information =
     "Design temporary buildings to include standard components and assemblies to enhance the possibilities for future reuse."
   ]
 
-el_21_criteria_information.each.with_index(1) do |ci, i|
-  SchemeCriterionText.find_or_create_by(
-    scheme_criterion: el_21_provisional_scheme_criteria,
-    display_weight: i, 
-    visible: true,
-    name: "1.#{i}",
-    html_text: 
-      "
-        <p>
-          #{ci}
-        </p>\n
-        <p>&nbsp;</p>
-      "
-  )
+[el_21_provisional_scheme_criterion, el_21_final_scheme_criterion].each do |criterion|
+  el_21_criteria_information.each.with_index(1) do |ci, i|
+    SchemeCriterionText.find_or_create_by(
+      scheme_criterion: criterion,
+      display_weight: i, 
+      visible: true,
+      name: "1.#{i}",
+      html_text: 
+        "
+          <p>
+            #{ci}
+          </p>\n
+          <p>&nbsp;</p>
+        "
+    )
+  end
 end
 
 # Create Requirements
@@ -3305,7 +3347,7 @@ el_21_design_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_21_provisional_certification_criterion, 
-    scheme_criterion: el_21_provisional_scheme_criteria
+    scheme_criterion: el_21_provisional_scheme_criterion
   )
 end
 
@@ -3324,7 +3366,7 @@ el_21_construction_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_21_provisional_certification_criterion, 
-    scheme_criterion: el_21_provisional_scheme_criteria
+    scheme_criterion: el_21_provisional_scheme_criterion
   )
 end
 
@@ -3347,6 +3389,6 @@ el_21_dismantling_requirements.each.with_index(1) do |ci, i|
     )
   SchemeCriteriaRequirement.find_or_create_by(
     requirement: rt_for_el_21_provisional_certification_criterion, 
-    scheme_criterion: el_21_provisional_scheme_criteria
+    scheme_criterion: el_21_provisional_scheme_criterion
   )
 end
