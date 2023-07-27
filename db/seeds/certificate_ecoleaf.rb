@@ -253,17 +253,22 @@ el_1_design_requirements =
   ]
 
 el_1_design_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_1_provisional_certification_criterion = nil
+  rt_for_el_1_scheme_criterion = nil
 
-  rt_for_el_1_provisional_certification_criterion = 
+  rt_for_el_1_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_design
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_1_provisional_certification_criterion, 
+    requirement: rt_for_el_1_scheme_criterion, 
     scheme_criterion: el_1_provisional_scheme_criterion
+  )
+
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_1_scheme_criterion, 
+    scheme_criterion: el_1_final_scheme_criterion
   )
 end
 
@@ -298,16 +303,20 @@ el_1_construction_requirements =
   ]
 
 el_1_construction_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_1_provisional_certification_criterion = nil
-  rt_for_el_1_provisional_certification_criterion = 
+  rt_for_el_1_scheme_criterion = nil
+  rt_for_el_1_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_construction
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_1_provisional_certification_criterion, 
+    requirement: rt_for_el_1_scheme_criterion, 
     scheme_criterion: el_1_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_1_scheme_criterion, 
+    scheme_criterion: el_1_final_scheme_criterion
   )
 end
 
@@ -328,16 +337,20 @@ el_1_operation_requirements =
   ]
 
 el_1_operation_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_1_provisional_certification_criterion = nil
-  rt_for_el_1_provisional_certification_criterion = 
+  rt_for_el_1_scheme_criterion = nil
+  rt_for_el_1_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_operation
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_1_provisional_certification_criterion, 
+    requirement: rt_for_el_1_scheme_criterion, 
     scheme_criterion: el_1_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_1_scheme_criterion, 
+    scheme_criterion: el_1_final_scheme_criterion
   )
 end
 
@@ -353,16 +366,20 @@ el_1_dismantling_requirements =
   ]
 
 el_1_dismantling_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_1_provisional_certification_criterion = nil
-  rt_for_el_1_provisional_certification_criterion = 
+  rt_for_el_1_scheme_criterion = nil
+  rt_for_el_1_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_dismantling
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_1_provisional_certification_criterion, 
+    requirement: rt_for_el_1_scheme_criterion, 
     scheme_criterion: el_1_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_1_scheme_criterion, 
+    scheme_criterion: el_1_final_scheme_criterion
   )
 end
 
@@ -457,17 +474,21 @@ el_2_design_requirements =
   ]
 
 el_2_design_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_2_provisional_certification_criterion = nil
+  rt_for_el_2_scheme_criterion = nil
 
-  rt_for_el_2_provisional_certification_criterion = 
+  rt_for_el_2_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_design
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_2_provisional_certification_criterion, 
+    requirement: rt_for_el_2_scheme_criterion, 
     scheme_criterion: el_2_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_2_scheme_criterion, 
+    scheme_criterion: el_2_final_scheme_criterion
   )
 end
 
@@ -479,16 +500,20 @@ el_2_construction_requirements =
   ]
 
 el_2_construction_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_2_provisional_certification_criterion = nil
-  rt_for_el_2_provisional_certification_criterion = 
+  rt_for_el_2_scheme_criterion = nil
+  rt_for_el_2_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_construction
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_2_provisional_certification_criterion, 
+    requirement: rt_for_el_2_scheme_criterion, 
     scheme_criterion: el_2_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_2_scheme_criterion, 
+    scheme_criterion: el_2_final_scheme_criterion
   )
 end
 
@@ -499,16 +524,20 @@ el_2_operation_requirements =
   ]
 
 el_2_operation_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_2_provisional_certification_criterion = nil
-  rt_for_el_2_provisional_certification_criterion = 
+  rt_for_el_2_scheme_criterion = nil
+  rt_for_el_2_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_operation
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_2_provisional_certification_criterion, 
+    requirement: rt_for_el_2_scheme_criterion, 
     scheme_criterion: el_2_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_2_scheme_criterion, 
+    scheme_criterion: el_2_final_scheme_criterion
   )
 end
 
@@ -620,17 +649,21 @@ el_3_design_requirements =
   ]
 
 el_3_design_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_3_provisional_certification_criterion = nil
+  rt_for_el_3_scheme_criterion = nil
 
-  rt_for_el_3_provisional_certification_criterion = 
+  rt_for_el_3_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_design
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_3_provisional_certification_criterion, 
+    requirement: rt_for_el_3_scheme_criterion, 
     scheme_criterion: el_3_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_3_scheme_criterion, 
+    scheme_criterion: el_3_final_scheme_criterion
   )
 end
 
@@ -655,16 +688,20 @@ el_3_construction_requirements =
   ]
 
 el_3_construction_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_3_provisional_certification_criterion = nil
-  rt_for_el_3_provisional_certification_criterion = 
+  rt_for_el_3_scheme_criterion = nil
+  rt_for_el_3_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_construction
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_3_provisional_certification_criterion, 
+    requirement: rt_for_el_3_scheme_criterion, 
     scheme_criterion: el_3_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_3_scheme_criterion, 
+    scheme_criterion: el_3_final_scheme_criterion
   )
 end
 
@@ -679,16 +716,20 @@ el_3_operation_requirements =
   ]
 
 el_3_operation_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_3_provisional_certification_criterion = nil
-  rt_for_el_3_provisional_certification_criterion = 
+  rt_for_el_3_scheme_criterion = nil
+  rt_for_el_3_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_operation
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_3_provisional_certification_criterion, 
+    requirement: rt_for_el_3_scheme_criterion, 
     scheme_criterion: el_3_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_3_scheme_criterion, 
+    scheme_criterion: el_3_final_scheme_criterion
   )
 end
 
@@ -699,16 +740,20 @@ el_3_dismantling_requirements =
   ]
 
 el_3_dismantling_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_3_provisional_certification_criterion = nil
-  rt_for_el_3_provisional_certification_criterion = 
+  rt_for_el_3_scheme_criterion = nil
+  rt_for_el_3_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_dismantling
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_3_provisional_certification_criterion, 
+    requirement: rt_for_el_3_scheme_criterion, 
     scheme_criterion: el_3_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_3_scheme_criterion, 
+    scheme_criterion: el_3_final_scheme_criterion
   )
 end
 
@@ -804,17 +849,21 @@ el_4_design_requirements =
   ]
 
 el_4_design_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_4_provisional_certification_criterion = nil
+  rt_for_el_4_scheme_criterion = nil
 
-  rt_for_el_4_provisional_certification_criterion = 
+  rt_for_el_4_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_design
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_4_provisional_certification_criterion, 
+    requirement: rt_for_el_4_scheme_criterion, 
     scheme_criterion: el_4_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_4_scheme_criterion, 
+    scheme_criterion: el_4_final_scheme_criterion
   )
 end
 
@@ -831,16 +880,20 @@ el_4_construction_requirements =
   ]
 
 el_4_construction_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_4_provisional_certification_criterion = nil
-  rt_for_el_4_provisional_certification_criterion = 
+  rt_for_el_4_scheme_criterion = nil
+  rt_for_el_4_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_construction
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_4_provisional_certification_criterion, 
+    requirement: rt_for_el_4_scheme_criterion, 
     scheme_criterion: el_4_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_4_scheme_criterion, 
+    scheme_criterion: el_4_final_scheme_criterion
   )
 end
 
@@ -850,16 +903,20 @@ el_4_operation_requirements =
   ]
 
 el_4_operation_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_4_provisional_certification_criterion = nil
-  rt_for_el_4_provisional_certification_criterion = 
+  rt_for_el_4_scheme_criterion = nil
+  rt_for_el_4_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_operation
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_4_provisional_certification_criterion, 
+    requirement: rt_for_el_4_scheme_criterion, 
     scheme_criterion: el_4_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_4_scheme_criterion, 
+    scheme_criterion: el_4_final_scheme_criterion
   )
 end
 
@@ -876,16 +933,20 @@ el_4_dismantling_requirements =
   ]
 
 el_4_dismantling_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_4_provisional_certification_criterion = nil
-  rt_for_el_4_provisional_certification_criterion = 
+  rt_for_el_4_scheme_criterion = nil
+  rt_for_el_4_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_dismantling
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_4_provisional_certification_criterion, 
+    requirement: rt_for_el_4_scheme_criterion, 
     scheme_criterion: el_4_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_4_scheme_criterion, 
+    scheme_criterion: el_4_final_scheme_criterion
   )
 end
 
@@ -981,17 +1042,21 @@ el_5_design_requirements =
   ]
 
 el_5_design_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_5_provisional_certification_criterion = nil
+  rt_for_el_5_scheme_criterion = nil
 
-  rt_for_el_5_provisional_certification_criterion = 
+  rt_for_el_5_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_design
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_5_provisional_certification_criterion, 
+    requirement: rt_for_el_5_scheme_criterion, 
     scheme_criterion: el_5_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_5_scheme_criterion, 
+    scheme_criterion: el_5_final_scheme_criterion
   )
 end
 
@@ -1005,16 +1070,20 @@ el_5_construction_requirements =
   ]
 
 el_5_construction_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_5_provisional_certification_criterion = nil
-  rt_for_el_5_provisional_certification_criterion = 
+  rt_for_el_5_scheme_criterion = nil
+  rt_for_el_5_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_construction
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_5_provisional_certification_criterion, 
+    requirement: rt_for_el_5_scheme_criterion, 
     scheme_criterion: el_5_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_5_scheme_criterion, 
+    scheme_criterion: el_5_final_scheme_criterion
   )
 end
 
@@ -1024,16 +1093,20 @@ el_5_dismantling_requirements =
   ]
 
 el_5_dismantling_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_5_provisional_certification_criterion = nil
-  rt_for_el_5_provisional_certification_criterion = 
+  rt_for_el_5_scheme_criterion = nil
+  rt_for_el_5_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_dismantling
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_5_provisional_certification_criterion, 
+    requirement: rt_for_el_5_scheme_criterion, 
     scheme_criterion: el_5_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_5_scheme_criterion, 
+    scheme_criterion: el_5_final_scheme_criterion
   )
 end
 
@@ -1140,17 +1213,21 @@ el_6_design_requirements =
   ]
 
 el_6_design_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_6_provisional_certification_criterion = nil
+  rt_for_el_6_scheme_criterion = nil
 
-  rt_for_el_6_provisional_certification_criterion = 
+  rt_for_el_6_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_design
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_6_provisional_certification_criterion, 
+    requirement: rt_for_el_6_scheme_criterion, 
     scheme_criterion: el_6_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_6_scheme_criterion, 
+    scheme_criterion: el_6_final_scheme_criterion
   )
 end
 
@@ -1165,16 +1242,20 @@ el_6_construction_requirements =
   ]
 
 el_6_construction_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_6_provisional_certification_criterion = nil
-  rt_for_el_6_provisional_certification_criterion = 
+  rt_for_el_6_scheme_criterion = nil
+  rt_for_el_6_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_construction
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_6_provisional_certification_criterion, 
+    requirement: rt_for_el_6_scheme_criterion, 
     scheme_criterion: el_6_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_6_scheme_criterion, 
+    scheme_criterion: el_6_final_scheme_criterion
   )
 end
 
@@ -1185,16 +1266,20 @@ el_6_operation_requirements =
   ]
 
 el_6_operation_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_6_provisional_certification_criterion = nil
-  rt_for_el_6_provisional_certification_criterion = 
+  rt_for_el_6_scheme_criterion = nil
+  rt_for_el_6_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_operation
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_6_provisional_certification_criterion, 
+    requirement: rt_for_el_6_scheme_criterion, 
     scheme_criterion: el_6_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_6_scheme_criterion, 
+    scheme_criterion: el_6_final_scheme_criterion
   )
 end
 
@@ -1293,17 +1378,21 @@ el_7_design_requirements =
   ]
 
 el_7_design_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_7_provisional_certification_criterion = nil
+  rt_for_el_7_scheme_criterion = nil
 
-  rt_for_el_7_provisional_certification_criterion = 
+  rt_for_el_7_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_design
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_7_provisional_certification_criterion, 
+    requirement: rt_for_el_7_scheme_criterion, 
     scheme_criterion: el_7_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_7_scheme_criterion, 
+    scheme_criterion: el_7_final_scheme_criterion
   )
 end
 
@@ -1318,16 +1407,20 @@ el_7_construction_requirements =
   ]
 
 el_7_construction_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_7_provisional_certification_criterion = nil
-  rt_for_el_7_provisional_certification_criterion = 
+  rt_for_el_7_scheme_criterion = nil
+  rt_for_el_7_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_construction
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_7_provisional_certification_criterion, 
+    requirement: rt_for_el_7_scheme_criterion, 
     scheme_criterion: el_7_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_7_scheme_criterion, 
+    scheme_criterion: el_7_final_scheme_criterion
   )
 end
 
@@ -1424,17 +1517,21 @@ el_8_design_requirements =
   ]
 
 el_8_design_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_8_provisional_certification_criterion = nil
+  rt_for_el_8_scheme_criterion = nil
 
-  rt_for_el_8_provisional_certification_criterion = 
+  rt_for_el_8_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_design
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_8_provisional_certification_criterion, 
+    requirement: rt_for_el_8_scheme_criterion, 
     scheme_criterion: el_8_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_8_scheme_criterion, 
+    scheme_criterion: el_8_final_scheme_criterion
   )
 end
 
@@ -1445,16 +1542,20 @@ el_8_construction_requirements =
   ]
 
 el_8_construction_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_8_provisional_certification_criterion = nil
-  rt_for_el_8_provisional_certification_criterion = 
+  rt_for_el_8_scheme_criterion = nil
+  rt_for_el_8_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_construction
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_8_provisional_certification_criterion, 
+    requirement: rt_for_el_8_scheme_criterion, 
     scheme_criterion: el_8_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_8_scheme_criterion, 
+    scheme_criterion: el_8_final_scheme_criterion
   )
 end
 
@@ -1556,17 +1657,21 @@ el_9_design_requirements =
   ]
 
 el_9_design_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_9_provisional_certification_criterion = nil
+  rt_for_el_9_scheme_criterion = nil
 
-  rt_for_el_9_provisional_certification_criterion = 
+  rt_for_el_9_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_design
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_9_provisional_certification_criterion, 
+    requirement: rt_for_el_9_scheme_criterion, 
     scheme_criterion: el_9_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_9_scheme_criterion, 
+    scheme_criterion: el_9_final_scheme_criterion
   )
 end
 
@@ -1578,16 +1683,20 @@ el_9_construction_requirements =
   ]
 
 el_9_construction_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_9_provisional_certification_criterion = nil
-  rt_for_el_9_provisional_certification_criterion = 
+  rt_for_el_9_scheme_criterion = nil
+  rt_for_el_9_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_construction
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_9_provisional_certification_criterion, 
+    requirement: rt_for_el_9_scheme_criterion, 
     scheme_criterion: el_9_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_9_scheme_criterion, 
+    scheme_criterion: el_9_final_scheme_criterion
   )
 end
 
@@ -1685,17 +1794,21 @@ el_10_design_requirements =
   ]
 
 el_10_design_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_10_provisional_certification_criterion = nil
+  rt_for_el_10_scheme_criterion = nil
 
-  rt_for_el_10_provisional_certification_criterion = 
+  rt_for_el_10_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_design
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_10_provisional_certification_criterion, 
+    requirement: rt_for_el_10_scheme_criterion, 
     scheme_criterion: el_10_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_10_scheme_criterion, 
+    scheme_criterion: el_10_final_scheme_criterion
   )
 end
 
@@ -1712,16 +1825,20 @@ el_10_construction_requirements =
   ]
 
 el_10_construction_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_10_provisional_certification_criterion = nil
-  rt_for_el_10_provisional_certification_criterion = 
+  rt_for_el_10_scheme_criterion = nil
+  rt_for_el_10_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_construction
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_10_provisional_certification_criterion, 
+    requirement: rt_for_el_10_scheme_criterion, 
     scheme_criterion: el_10_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_10_scheme_criterion, 
+    scheme_criterion: el_10_final_scheme_criterion
   )
 end
 
@@ -1813,17 +1930,21 @@ el_11_design_requirements =
   ]
 
 el_11_design_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_11_provisional_certification_criterion = nil
+  rt_for_el_11_scheme_criterion = nil
 
-  rt_for_el_11_provisional_certification_criterion = 
+  rt_for_el_11_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_design
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_11_provisional_certification_criterion, 
+    requirement: rt_for_el_11_scheme_criterion, 
     scheme_criterion: el_11_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_11_scheme_criterion, 
+    scheme_criterion: el_11_final_scheme_criterion
   )
 end
 
@@ -1833,16 +1954,20 @@ el_11_operation_requirements =
   ]
 
 el_11_operation_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_11_provisional_certification_criterion = nil
-  rt_for_el_11_provisional_certification_criterion = 
+  rt_for_el_11_scheme_criterion = nil
+  rt_for_el_11_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_operation
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_11_provisional_certification_criterion, 
+    requirement: rt_for_el_11_scheme_criterion, 
     scheme_criterion: el_11_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_11_scheme_criterion, 
+    scheme_criterion: el_11_final_scheme_criterion
   )
 end
 
@@ -1965,16 +2090,20 @@ el_12_construction_requirements =
   ]
 
 el_12_construction_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_12_provisional_certification_criterion = nil
-  rt_for_el_12_provisional_certification_criterion = 
+  rt_for_el_12_scheme_criterion = nil
+  rt_for_el_12_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_construction
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_12_provisional_certification_criterion, 
+    requirement: rt_for_el_12_scheme_criterion, 
     scheme_criterion: el_12_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_12_scheme_criterion, 
+    scheme_criterion: el_12_final_scheme_criterion
   )
 end
 
@@ -2002,16 +2131,20 @@ el_12_operation_requirements =
   ]
 
 el_12_operation_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_12_provisional_certification_criterion = nil
-  rt_for_el_12_provisional_certification_criterion = 
+  rt_for_el_12_scheme_criterion = nil
+  rt_for_el_12_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_operation
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_12_provisional_certification_criterion, 
+    requirement: rt_for_el_12_scheme_criterion, 
     scheme_criterion: el_12_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_12_scheme_criterion, 
+    scheme_criterion: el_12_final_scheme_criterion
   )
 end
 
@@ -2031,16 +2164,20 @@ el_12_dismantling_requirements =
   ]
 
 el_12_dismantling_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_12_provisional_certification_criterion = nil
-  rt_for_el_12_provisional_certification_criterion = 
+  rt_for_el_12_scheme_criterion = nil
+  rt_for_el_12_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_dismantling
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_12_provisional_certification_criterion, 
+    requirement: rt_for_el_12_scheme_criterion, 
     scheme_criterion: el_12_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_12_scheme_criterion, 
+    scheme_criterion: el_12_final_scheme_criterion
   )
 end
 
@@ -2144,16 +2281,20 @@ el_13_construction_requirements =
   ]
 
 el_13_construction_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_13_provisional_certification_criterion = nil
-  rt_for_el_13_provisional_certification_criterion = 
+  rt_for_el_13_scheme_criterion = nil
+  rt_for_el_13_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_construction
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_13_provisional_certification_criterion, 
+    requirement: rt_for_el_13_scheme_criterion, 
     scheme_criterion: el_13_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_13_scheme_criterion, 
+    scheme_criterion: el_13_final_scheme_criterion
   )
 end
 
@@ -2253,16 +2394,20 @@ el_14_construction_requirements =
   ]
 
 el_14_construction_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_14_provisional_certification_criterion = nil
-  rt_for_el_14_provisional_certification_criterion = 
+  rt_for_el_14_scheme_criterion = nil
+  rt_for_el_14_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_construction
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_14_provisional_certification_criterion, 
+    requirement: rt_for_el_14_scheme_criterion, 
     scheme_criterion: el_14_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_14_scheme_criterion, 
+    scheme_criterion: el_14_final_scheme_criterion
   )
 end
 
@@ -2277,16 +2422,20 @@ el_14_operation_requirements =
   ]
 
 el_14_operation_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_14_provisional_certification_criterion = nil
-  rt_for_el_14_provisional_certification_criterion = 
+  rt_for_el_14_scheme_criterion = nil
+  rt_for_el_14_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_operation
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_14_provisional_certification_criterion, 
+    requirement: rt_for_el_14_scheme_criterion, 
     scheme_criterion: el_14_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_14_scheme_criterion, 
+    scheme_criterion: el_14_final_scheme_criterion
   )
 end
 
@@ -2301,16 +2450,20 @@ el_14_dismantling_requirements =
   ]
 
 el_14_dismantling_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_14_provisional_certification_criterion = nil
-  rt_for_el_14_provisional_certification_criterion = 
+  rt_for_el_14_scheme_criterion = nil
+  rt_for_el_14_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_dismantling
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_14_provisional_certification_criterion, 
+    requirement: rt_for_el_14_scheme_criterion, 
     scheme_criterion: el_14_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_14_scheme_criterion, 
+    scheme_criterion: el_14_final_scheme_criterion
   )
 end
 
@@ -2408,17 +2561,21 @@ el_15_design_requirements =
   ]
 
 el_15_design_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_15_provisional_certification_criterion = nil
+  rt_for_el_15_scheme_criterion = nil
 
-  rt_for_el_15_provisional_certification_criterion = 
+  rt_for_el_15_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_design
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_15_provisional_certification_criterion, 
+    requirement: rt_for_el_15_scheme_criterion, 
     scheme_criterion: el_15_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_15_scheme_criterion, 
+    scheme_criterion: el_15_final_scheme_criterion
   )
 end
 
@@ -2429,16 +2586,20 @@ el_15_construction_requirements =
   ]
 
 el_15_construction_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_15_provisional_certification_criterion = nil
-  rt_for_el_15_provisional_certification_criterion = 
+  rt_for_el_15_scheme_criterion = nil
+  rt_for_el_15_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_construction
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_15_provisional_certification_criterion, 
+    requirement: rt_for_el_15_scheme_criterion, 
     scheme_criterion: el_15_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_15_scheme_criterion, 
+    scheme_criterion: el_15_final_scheme_criterion
   )
 end
 
@@ -2461,16 +2622,20 @@ el_15_operation_requirements =
   ]
 
 el_15_operation_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_15_provisional_certification_criterion = nil
-  rt_for_el_15_provisional_certification_criterion = 
+  rt_for_el_15_scheme_criterion = nil
+  rt_for_el_15_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_operation
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_15_provisional_certification_criterion, 
+    requirement: rt_for_el_15_scheme_criterion, 
     scheme_criterion: el_15_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_15_scheme_criterion, 
+    scheme_criterion: el_15_final_scheme_criterion
   )
 end
 
@@ -2565,17 +2730,21 @@ el_16_design_requirements =
   ]
 
 el_16_design_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_16_provisional_certification_criterion = nil
+  rt_for_el_16_scheme_criterion = nil
 
-  rt_for_el_16_provisional_certification_criterion = 
+  rt_for_el_16_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_design
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_16_provisional_certification_criterion, 
+    requirement: rt_for_el_16_scheme_criterion, 
     scheme_criterion: el_16_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_16_scheme_criterion, 
+    scheme_criterion: el_16_final_scheme_criterion
   )
 end
 
@@ -2589,16 +2758,20 @@ el_16_operation_requirements =
   ]
 
 el_16_operation_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_16_provisional_certification_criterion = nil
-  rt_for_el_16_provisional_certification_criterion = 
+  rt_for_el_16_scheme_criterion = nil
+  rt_for_el_16_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_operation
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_16_provisional_certification_criterion, 
+    requirement: rt_for_el_16_scheme_criterion, 
     scheme_criterion: el_16_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_16_scheme_criterion, 
+    scheme_criterion: el_16_final_scheme_criterion
   )
 end
 
@@ -2701,17 +2874,21 @@ el_17_design_requirements =
   ]
 
 el_17_design_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_17_provisional_certification_criterion = nil
+  rt_for_el_17_scheme_criterion = nil
 
-  rt_for_el_17_provisional_certification_criterion = 
+  rt_for_el_17_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_design
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_17_provisional_certification_criterion, 
+    requirement: rt_for_el_17_scheme_criterion, 
     scheme_criterion: el_17_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_17_scheme_criterion, 
+    scheme_criterion: el_17_final_scheme_criterion
   )
 end
 
@@ -2721,16 +2898,20 @@ el_17_construction_requirements =
   ]
 
 el_17_construction_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_17_provisional_certification_criterion = nil
-  rt_for_el_17_provisional_certification_criterion = 
+  rt_for_el_17_scheme_criterion = nil
+  rt_for_el_17_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_construction
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_17_provisional_certification_criterion, 
+    requirement: rt_for_el_17_scheme_criterion, 
     scheme_criterion: el_17_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_17_scheme_criterion, 
+    scheme_criterion: el_17_final_scheme_criterion
   )
 end
 
@@ -2769,16 +2950,20 @@ el_17_operation_requirements =
   ]
 
 el_17_operation_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_17_provisional_certification_criterion = nil
-  rt_for_el_17_provisional_certification_criterion = 
+  rt_for_el_17_scheme_criterion = nil
+  rt_for_el_17_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_operation
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_17_provisional_certification_criterion, 
+    requirement: rt_for_el_17_scheme_criterion, 
     scheme_criterion: el_17_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_17_scheme_criterion, 
+    scheme_criterion: el_17_final_scheme_criterion
   )
 end
 
@@ -2880,17 +3065,21 @@ el_18_design_requirements =
   ]
 
 el_18_design_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_18_provisional_certification_criterion = nil
+  rt_for_el_18_scheme_criterion = nil
 
-  rt_for_el_18_provisional_certification_criterion = 
+  rt_for_el_18_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_design
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_18_provisional_certification_criterion, 
+    requirement: rt_for_el_18_scheme_criterion, 
     scheme_criterion: el_18_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_18_scheme_criterion, 
+    scheme_criterion: el_18_final_scheme_criterion
   )
 end
 
@@ -2909,16 +3098,20 @@ el_18_construction_requirements =
   ]
 
 el_18_construction_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_18_provisional_certification_criterion = nil
-  rt_for_el_18_provisional_certification_criterion = 
+  rt_for_el_18_scheme_criterion = nil
+  rt_for_el_18_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_construction
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_18_provisional_certification_criterion, 
+    requirement: rt_for_el_18_scheme_criterion, 
     scheme_criterion: el_18_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_18_scheme_criterion, 
+    scheme_criterion: el_18_final_scheme_criterion
   )
 end
 
@@ -2931,16 +3124,20 @@ el_18_operation_requirements =
   ]
 
 el_18_operation_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_18_provisional_certification_criterion = nil
-  rt_for_el_18_provisional_certification_criterion = 
+  rt_for_el_18_scheme_criterion = nil
+  rt_for_el_18_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_operation
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_18_provisional_certification_criterion, 
+    requirement: rt_for_el_18_scheme_criterion, 
     scheme_criterion: el_18_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_18_scheme_criterion, 
+    scheme_criterion: el_18_final_scheme_criterion
   )
 end
 
@@ -2954,16 +3151,20 @@ el_18_dismantling_requirements =
   ]
 
 el_18_dismantling_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_18_provisional_certification_criterion = nil
-  rt_for_el_18_provisional_certification_criterion = 
+  rt_for_el_18_scheme_criterion = nil
+  rt_for_el_18_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_dismantling
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_18_provisional_certification_criterion, 
+    requirement: rt_for_el_18_scheme_criterion, 
     scheme_criterion: el_18_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_18_scheme_criterion, 
+    scheme_criterion: el_18_final_scheme_criterion
   )
 end
 
@@ -3057,16 +3258,20 @@ el_19_construction_requirements =
   ]
 
 el_19_construction_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_19_provisional_certification_criterion = nil
-  rt_for_el_19_provisional_certification_criterion = 
+  rt_for_el_19_scheme_criterion = nil
+  rt_for_el_19_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_construction
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_19_provisional_certification_criterion, 
+    requirement: rt_for_el_19_scheme_criterion, 
     scheme_criterion: el_19_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_19_scheme_criterion, 
+    scheme_criterion: el_19_final_scheme_criterion
   )
 end
 
@@ -3078,16 +3283,20 @@ el_19_operation_requirements =
   ]
 
 el_19_operation_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_19_provisional_certification_criterion = nil
-  rt_for_el_19_provisional_certification_criterion = 
+  rt_for_el_19_scheme_criterion = nil
+  rt_for_el_19_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_operation
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_19_provisional_certification_criterion, 
+    requirement: rt_for_el_19_scheme_criterion, 
     scheme_criterion: el_19_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_19_scheme_criterion, 
+    scheme_criterion: el_19_final_scheme_criterion
   )
 end
 
@@ -3099,16 +3308,20 @@ el_19_dismantling_requirements =
   ]
 
 el_19_dismantling_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_19_provisional_certification_criterion = nil
-  rt_for_el_19_provisional_certification_criterion = 
+  rt_for_el_19_scheme_criterion = nil
+  rt_for_el_19_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_dismantling
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_19_provisional_certification_criterion, 
+    requirement: rt_for_el_19_scheme_criterion, 
     scheme_criterion: el_19_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_19_scheme_criterion, 
+    scheme_criterion: el_19_final_scheme_criterion
   )
 end
 
@@ -3206,17 +3419,21 @@ el_20_design_requirements =
   ]
 
 el_20_design_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_20_provisional_certification_criterion = nil
+  rt_for_el_20_scheme_criterion = nil
 
-  rt_for_el_20_provisional_certification_criterion = 
+  rt_for_el_20_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_design
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_20_provisional_certification_criterion, 
+    requirement: rt_for_el_20_scheme_criterion, 
     scheme_criterion: el_20_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_20_scheme_criterion, 
+    scheme_criterion: el_20_final_scheme_criterion
   )
 end
 
@@ -3233,16 +3450,20 @@ el_20_operation_requirements =
   ]
 
 el_20_operation_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_20_provisional_certification_criterion = nil
-  rt_for_el_20_provisional_certification_criterion = 
+  rt_for_el_20_scheme_criterion = nil
+  rt_for_el_20_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_operation
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_20_provisional_certification_criterion, 
+    requirement: rt_for_el_20_scheme_criterion, 
     scheme_criterion: el_20_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_20_scheme_criterion, 
+    scheme_criterion: el_20_final_scheme_criterion
   )
 end
 
@@ -3337,17 +3558,21 @@ el_21_design_requirements =
   ]
 
 el_21_design_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_21_provisional_certification_criterion = nil
+  rt_for_el_21_scheme_criterion = nil
 
-  rt_for_el_21_provisional_certification_criterion = 
+  rt_for_el_21_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_design
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_21_provisional_certification_criterion, 
+    requirement: rt_for_el_21_scheme_criterion, 
     scheme_criterion: el_21_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_21_scheme_criterion, 
+    scheme_criterion: el_21_final_scheme_criterion
   )
 end
 
@@ -3357,16 +3582,20 @@ el_21_construction_requirements =
   ]
 
 el_21_construction_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_21_provisional_certification_criterion = nil
-  rt_for_el_21_provisional_certification_criterion = 
+  rt_for_el_21_scheme_criterion = nil
+  rt_for_el_21_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_construction
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_21_provisional_certification_criterion, 
+    requirement: rt_for_el_21_scheme_criterion, 
     scheme_criterion: el_21_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_21_scheme_criterion, 
+    scheme_criterion: el_21_final_scheme_criterion
   )
 end
 
@@ -3380,15 +3609,19 @@ el_21_dismantling_requirements =
   ]
 
 el_21_dismantling_requirements.each.with_index(1) do |ci, i|
-  rt_for_el_21_provisional_certification_criterion = nil
-  rt_for_el_21_provisional_certification_criterion = 
+  rt_for_el_21_scheme_criterion = nil
+  rt_for_el_21_scheme_criterion = 
     Requirement.find_or_create_by(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_dismantling
     )
   SchemeCriteriaRequirement.find_or_create_by(
-    requirement: rt_for_el_21_provisional_certification_criterion, 
+    requirement: rt_for_el_21_scheme_criterion, 
     scheme_criterion: el_21_provisional_scheme_criterion
+  )
+  SchemeCriteriaRequirement.find_or_create_by(
+    requirement: rt_for_el_21_scheme_criterion, 
+    scheme_criterion: el_21_final_scheme_criterion
   )
 end
