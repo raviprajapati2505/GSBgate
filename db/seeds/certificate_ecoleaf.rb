@@ -76,6 +76,22 @@ el_final_developement_type =
     mixable: false
   )
 
+el_neighborhoods_provisional_developement_type = 
+  DevelopmentType.find_or_create_by(
+    name: 'Neighborhoods',
+    display_weight: 20, 
+    certificate: el_provisional_certificate,
+    mixable: true
+  )
+
+el_neighborhoods_final_developement_type = 
+  DevelopmentType.find_or_create_by(
+    name: 'Neighborhoods',
+    display_weight: 20, 
+    certificate: el_final_certificate,
+    mixable: true
+  )
+
 # Create Schemes
 el_provisional_exposite_scheme = 
   Scheme.find_or_create_by(
@@ -108,6 +124,18 @@ el_final_developement_type_scheme =
   DevelopmentTypeScheme.find_or_create_by(
     scheme: el_final_exposite_scheme, 
     development_type: el_final_developement_type
+  )
+
+el_provisional_developement_type_neighbourhoods_scheme = 
+  DevelopmentTypeScheme.find_or_create_by(
+    scheme: el_provisional_exposite_scheme, 
+    development_type: el_neighborhoods_provisional_developement_type
+  )
+
+el_provisional_developement_type_neighbourhoods_scheme = 
+  DevelopmentTypeScheme.find_or_create_by(
+    scheme: el_final_exposite_scheme, 
+    development_type: el_neighborhoods_final_developement_type
   )
 
 # Create Scheme Categories
@@ -147,6 +175,7 @@ el_1_provisional_scheme_criterion =
     minimum_valid_score_a: 0, 
     weight_a: 1, 
     is_checklist: true, 
+    shared: false, 
     scheme_category: el_provisional_scheme_category
   )
 SchemeCriterionBox.find_or_create_by(
@@ -175,6 +204,7 @@ el_1_final_scheme_criterion =
     minimum_valid_score_a: 0, 
     weight_a: 1, 
     is_checklist: true, 
+    shared: false, 
     scheme_category: el_final_scheme_category
   )
 
@@ -394,6 +424,7 @@ el_2_provisional_scheme_criterion =
     minimum_valid_score_a: 0, 
     weight_a: 1, 
     is_checklist: true, 
+    shared: false, 
     scheme_category: el_provisional_scheme_category
   )
 SchemeCriterionBox.find_or_create_by(
@@ -422,6 +453,7 @@ el_2_final_scheme_criterion =
     minimum_valid_score_a: 0, 
     weight_a: 1, 
     is_checklist: true, 
+    shared: false, 
     scheme_category: el_final_scheme_category
   )
 
@@ -552,6 +584,7 @@ el_3_provisional_scheme_criterion =
     minimum_valid_score_a: 0, 
     weight_a: 1, 
     is_checklist: true, 
+    shared: false, 
     scheme_category: el_provisional_scheme_category
   )
 SchemeCriterionBox.find_or_create_by(
@@ -580,6 +613,7 @@ el_3_final_scheme_criterion =
     minimum_valid_score_a: 0, 
     weight_a: 1, 
     is_checklist: true, 
+    shared: false, 
     scheme_category: el_final_scheme_category
   )
 
@@ -768,6 +802,7 @@ el_4_provisional_scheme_criterion =
     minimum_valid_score_a: 0, 
     weight_a: 1, 
     is_checklist: true, 
+    shared: false, 
     scheme_category: el_provisional_scheme_category
   )
 SchemeCriterionBox.find_or_create_by(
@@ -796,6 +831,7 @@ el_4_final_scheme_criterion =
     minimum_valid_score_a: 0, 
     weight_a: 1, 
     is_checklist: true, 
+    shared: false, 
     scheme_category: el_final_scheme_category
   )
 
@@ -961,6 +997,7 @@ el_5_provisional_scheme_criterion =
     minimum_valid_score_a: 0, 
     weight_a: 1, 
     is_checklist: true, 
+    shared: false, 
     scheme_category: el_provisional_scheme_category
   )
 SchemeCriterionBox.find_or_create_by(
@@ -989,6 +1026,7 @@ el_5_final_scheme_criterion =
     minimum_valid_score_a: 0, 
     weight_a: 1, 
     is_checklist: true, 
+    shared: false, 
     scheme_category: el_final_scheme_category
   )
 
@@ -1121,6 +1159,7 @@ el_6_provisional_scheme_criterion =
     minimum_valid_score_a: 0, 
     weight_a: 1, 
     is_checklist: true, 
+    shared: false, 
     scheme_category: el_provisional_scheme_category
   )
 SchemeCriterionBox.find_or_create_by(
@@ -1149,6 +1188,7 @@ el_6_final_scheme_criterion =
     minimum_valid_score_a: 0, 
     weight_a: 1, 
     is_checklist: true, 
+    shared: false, 
     scheme_category: el_final_scheme_category
   )
 
@@ -1294,6 +1334,7 @@ el_7_provisional_scheme_criterion =
     minimum_valid_score_a: 0, 
     weight_a: 1, 
     is_checklist: true, 
+    shared: false, 
     scheme_category: el_provisional_scheme_category
   )
 SchemeCriterionBox.find_or_create_by(
@@ -1322,6 +1363,7 @@ el_7_final_scheme_criterion =
     minimum_valid_score_a: 0, 
     weight_a: 1, 
     is_checklist: true, 
+    shared: false, 
     scheme_category: el_final_scheme_category
   )
 
@@ -1435,6 +1477,7 @@ el_8_provisional_scheme_criterion =
     minimum_valid_score_a: 0, 
     weight_a: 1, 
     is_checklist: true, 
+    shared: false, 
     scheme_category: el_provisional_scheme_category
   )
 SchemeCriterionBox.find_or_create_by(
@@ -1463,6 +1506,7 @@ el_8_final_scheme_criterion =
     minimum_valid_score_a: 0, 
     weight_a: 1, 
     is_checklist: true, 
+    shared: false, 
     scheme_category: el_final_scheme_category
   )
 
@@ -1570,6 +1614,7 @@ el_9_provisional_scheme_criterion =
     minimum_valid_score_a: 0, 
     weight_a: 1, 
     is_checklist: true, 
+    shared: false, 
     scheme_category: el_provisional_scheme_category
   )
 SchemeCriterionBox.find_or_create_by(
@@ -1598,6 +1643,7 @@ el_9_final_scheme_criterion =
     minimum_valid_score_a: 0, 
     weight_a: 1, 
     is_checklist: true, 
+    shared: false, 
     scheme_category: el_final_scheme_category
   )
 
@@ -1711,6 +1757,7 @@ el_10_provisional_scheme_criterion =
     minimum_valid_score_a: 0, 
     weight_a: 1, 
     is_checklist: true, 
+    shared: false, 
     scheme_category: el_provisional_scheme_category
   )
 SchemeCriterionBox.find_or_create_by(
@@ -1739,6 +1786,7 @@ el_10_final_scheme_criterion =
     minimum_valid_score_a: 0, 
     weight_a: 1, 
     is_checklist: true, 
+    shared: false, 
     scheme_category: el_final_scheme_category
   )
 
@@ -1853,6 +1901,7 @@ el_11_provisional_scheme_criterion =
     minimum_valid_score_a: 0, 
     weight_a: 1, 
     is_checklist: true, 
+    shared: false, 
     scheme_category: el_provisional_scheme_category
   )
 SchemeCriterionBox.find_or_create_by(
@@ -1881,6 +1930,7 @@ el_11_final_scheme_criterion =
     minimum_valid_score_a: 0, 
     weight_a: 1, 
     is_checklist: true, 
+    shared: false, 
     scheme_category: el_final_scheme_category
   )
 
@@ -1982,6 +2032,7 @@ el_12_provisional_scheme_criterion =
     minimum_valid_score_a: 0, 
     weight_a: 1, 
     is_checklist: true, 
+    shared: false, 
     scheme_category: el_provisional_scheme_category
   )
 SchemeCriterionBox.find_or_create_by(
@@ -2010,6 +2061,7 @@ el_12_final_scheme_criterion =
     minimum_valid_score_a: 0, 
     weight_a: 1, 
     is_checklist: true, 
+    shared: false, 
     scheme_category: el_final_scheme_category
   )
 
@@ -2192,6 +2244,7 @@ el_13_provisional_scheme_criterion =
     minimum_valid_score_a: 0, 
     weight_a: 1, 
     is_checklist: true, 
+    shared: false, 
     scheme_category: el_provisional_scheme_category
   )
 SchemeCriterionBox.find_or_create_by(
@@ -2220,6 +2273,7 @@ el_13_final_scheme_criterion =
     minimum_valid_score_a: 0, 
     weight_a: 1, 
     is_checklist: true, 
+    shared: false, 
     scheme_category: el_final_scheme_category
   )
 
@@ -2309,6 +2363,7 @@ el_14_provisional_scheme_criterion =
     minimum_valid_score_a: 0, 
     weight_a: 1, 
     is_checklist: true, 
+    shared: false, 
     scheme_category: el_provisional_scheme_category
   )
 SchemeCriterionBox.find_or_create_by(
@@ -2337,6 +2392,7 @@ el_14_final_scheme_criterion =
     minimum_valid_score_a: 0, 
     weight_a: 1, 
     is_checklist: true, 
+    shared: false, 
     scheme_category: el_final_scheme_category
   )
 
@@ -2478,6 +2534,7 @@ el_15_provisional_scheme_criterion =
     minimum_valid_score_a: 0, 
     weight_a: 1, 
     is_checklist: true, 
+    shared: false, 
     scheme_category: el_provisional_scheme_category
   )
 SchemeCriterionBox.find_or_create_by(
@@ -2506,6 +2563,7 @@ el_15_final_scheme_criterion =
     minimum_valid_score_a: 0, 
     weight_a: 1, 
     is_checklist: true, 
+    shared: false, 
     scheme_category: el_final_scheme_category
   )
 
@@ -2650,6 +2708,7 @@ el_16_provisional_scheme_criterion =
     minimum_valid_score_a: 0, 
     weight_a: 1, 
     is_checklist: true, 
+    shared: false, 
     scheme_category: el_provisional_scheme_category
   )
 SchemeCriterionBox.find_or_create_by(
@@ -2678,6 +2737,7 @@ el_16_final_scheme_criterion =
     minimum_valid_score_a: 0, 
     weight_a: 1, 
     is_checklist: true, 
+    shared: false, 
     scheme_category: el_final_scheme_category
   )
 
@@ -2786,6 +2846,7 @@ el_17_provisional_scheme_criterion =
     minimum_valid_score_a: 0, 
     weight_a: 1, 
     is_checklist: true, 
+    shared: false, 
     scheme_category: el_provisional_scheme_category
   )
 SchemeCriterionBox.find_or_create_by(
@@ -2814,6 +2875,7 @@ el_17_final_scheme_criterion =
     minimum_valid_score_a: 0, 
     weight_a: 1, 
     is_checklist: true, 
+    shared: false, 
     scheme_category: el_final_scheme_category
   )
 
@@ -2978,6 +3040,7 @@ el_18_provisional_scheme_criterion =
     minimum_valid_score_a: 0, 
     weight_a: 1, 
     is_checklist: true, 
+    shared: false, 
     scheme_category: el_provisional_scheme_category
   )
 SchemeCriterionBox.find_or_create_by(
@@ -3006,6 +3069,7 @@ el_18_final_scheme_criterion =
     minimum_valid_score_a: 0, 
     weight_a: 1, 
     is_checklist: true, 
+    shared: false, 
     scheme_category: el_final_scheme_category
   )
 
@@ -3179,6 +3243,7 @@ el_19_provisional_scheme_criterion =
     minimum_valid_score_a: 0, 
     weight_a: 1, 
     is_checklist: true, 
+    shared: false, 
     scheme_category: el_provisional_scheme_category
   )
 SchemeCriterionBox.find_or_create_by(
@@ -3207,6 +3272,7 @@ el_19_final_scheme_criterion =
     minimum_valid_score_a: 0, 
     weight_a: 1, 
     is_checklist: true, 
+    shared: false, 
     scheme_category: el_final_scheme_category
   )
 
@@ -3336,6 +3402,7 @@ el_20_provisional_scheme_criterion =
     minimum_valid_score_a: 0, 
     weight_a: 1, 
     is_checklist: true, 
+    shared: false, 
     scheme_category: el_provisional_scheme_category
   )
 SchemeCriterionBox.find_or_create_by(
@@ -3364,6 +3431,7 @@ el_20_final_scheme_criterion =
     minimum_valid_score_a: 0, 
     weight_a: 1, 
     is_checklist: true, 
+    shared: false, 
     scheme_category: el_final_scheme_category
   )
 
@@ -3478,6 +3546,7 @@ el_21_provisional_scheme_criterion =
     minimum_valid_score_a: 0, 
     weight_a: 1, 
     is_checklist: true, 
+    shared: false, 
     scheme_category: el_provisional_scheme_category
   )
 SchemeCriterionBox.find_or_create_by(
@@ -3506,6 +3575,7 @@ el_21_final_scheme_criterion =
     minimum_valid_score_a: 0, 
     weight_a: 1, 
     is_checklist: true, 
+    shared: false, 
     scheme_category: el_final_scheme_category
   )
 
