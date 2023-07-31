@@ -826,6 +826,7 @@ module ApplicationHelper
     scheme_name = [
       "Commercial",
       "Education",
+      "Expo Site",
       "Homes",
       "Hospitality",
       "Interiors",
