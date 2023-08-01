@@ -1457,7 +1457,7 @@ th {
 }
 
 .GSAS-CM {
-  background: white;
+  background: efeeee;
   color: black;
   /*background: linear-gradient(25deg, lightsalmon, firebrick)!important*/
 }
@@ -1480,6 +1480,11 @@ th {
   /*background: #AAA!important;*/
 }
 
+.GSAS-Ecoleaf {
+  background: #efeeee;
+  color: black;
+}
+
 .DB-Title {
   background: linear-gradient(45deg, olive, transparent)!important;
 }
@@ -1490,6 +1495,10 @@ th {
   
 .OP-Title {
   background: linear-gradient(45deg, slateblue, transparent)!important;
+}
+
+.Ecoleaf-Title {
+  background: linear-gradient(45deg, rgb(144, 226, 112), transparent)!important;
 }
 
 .projectRow {
