@@ -355,7 +355,7 @@ class ProjectsController < AuthenticatedController
           data.certification_path_certified_at&.to_date&.strftime('%e-%b-%y'),
           
           "#{
-              if data.certificate_type&.to_i == 3 && ["Neighborhoods", "Mixed Use"].include?(data.development_type_name)
+              if [3, 4].include?(data.certificate_type&.to_i) && ["Neighborhoods", "Mixed Use"].include?(data.development_type_name)
                 data.development_type_name
               elsif data.development_type_name == "Districts"
                 "Districts"

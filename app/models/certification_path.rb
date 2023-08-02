@@ -203,7 +203,7 @@ class CertificationPath < ApplicationRecord
   def scheme_names
     development_type_name = development_type&.name
 
-    if certificate.design_and_build? && ["Neighborhoods", "Mixed Use"].include?(development_type_name)
+    if (certificate.design_and_build? || certificate.ecoleaf?) && ["Neighborhoods", "Mixed Use"].include?(development_type_name)
       development_type_name
     elsif ["Districts"].include?(development_type_name)
       "Districts"
