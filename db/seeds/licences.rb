@@ -142,7 +142,7 @@ Licence.find_or_create_by!(
   certificate_type: Certificate.certificate_types[:design_type]
 )
 
-# CM - CGP
+# CM - CEP
 Licence.find_or_create_by!(
   licence_type: 'CepLicence',
   display_name: 'GSAS CEP CONSTRUCTION MANAGEMENT',
@@ -153,7 +153,7 @@ Licence.find_or_create_by!(
   applicability: Licence.applicabilities[:star_rating]
 )
 
-# OP - CGP
+# OP - CEP
 Licence.find_or_create_by!(
   licence_type: 'CepLicence',
   display_name: 'GSAS CEP OPERATIONS',

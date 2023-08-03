@@ -3695,3 +3695,39 @@ el_21_dismantling_requirements.each.with_index(1) do |ci, i|
     scheme_criterion: el_21_final_scheme_criterion
   )
 end
+
+# Licences for Service Providers
+# Ecoleaf
+Licence.find_or_create_by(
+  licence_type: 'ServiceProviderLicence',
+  display_name: 'GSAS ECOLEAF',
+  display_weight: 17,
+  title: 'GSAS ECOLEAF',
+  description: 'GSAS Ecoleaf Service Provider',
+  certificate_type: Certificate.certificate_types[:ecoleaf],
+  schemes: ['Expo Site']
+)
+
+# Licences for Certified Professional
+# Ecoleaf - CGP
+Licence.find_or_create_by(
+  licence_type: 'CgpLicence',
+  display_name: 'GSAS CGP ECOLEAF, ASSOCIATE',
+  display_weight: 18,
+  title: 'GSAS ECOLEAF - CGP',
+  description: 'GSAS Ecoleaf Certified Green Professional',
+  certificate_type: Certificate.certificate_types[:ecoleaf],
+  applicability: Licence.applicabilities[:check_list]
+)
+
+# Ecoleaf - CEP
+Licence.find_or_create_by(
+  licence_type: 'CepLicence',
+  display_name: 'GSAS CEP ECOLEAF',
+  display_weight: 19,
+  title: 'GSAS ECOLEAF - CEP',
+  description: 'GSAS Ecoleaf Certified Energy Professional',
+  certificate_type: Certificate.certificate_types[:ecoleaf],
+  applicability: Licence.applicabilities[:check_list]
+)
+
