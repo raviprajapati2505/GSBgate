@@ -305,7 +305,7 @@ class Project < ApplicationRecord
   end
 
   def ecoleaf?
-    certificate_type == Certificate.certificate_types[:ecoleaf]
+    certificate_type == Certificate.certificate_types[:ecoleaf_type]
   end
 
   def loc_projects_users

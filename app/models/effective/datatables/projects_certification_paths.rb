@@ -299,7 +299,7 @@ module Effective
 
               case term
               when "Mixed Use", "Neighborhoods"
-                results_array = collection_set.where("development_types.name = :term AND projects.certificate_type IN (:certificate_type)", term: term, certificate_type: [Certificate.certificate_types[:design_type], Certificate.certificate_types[:ecoleaf]]).pluck("certification_paths.id")
+                results_array = collection_set.where("development_types.name = :term AND projects.certificate_type IN (:certificate_type)", term: term, certificate_type: [Certificate.certificate_types[:design_type], Certificate.certificate_types[:ecoleaf_type]]).pluck("certification_paths.id")
               when "Districts"
                 results_array = collection_set.joins(certification_paths: [scheme_mixes: :scheme]).where("schemes.name = :term OR development_types.name = :term", term: term).pluck("certification_paths.id")
               else

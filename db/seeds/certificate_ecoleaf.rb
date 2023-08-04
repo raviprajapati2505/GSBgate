@@ -43,7 +43,7 @@ el_provisional_certificate =
   Certificate.find_or_create_by(
       name: 'GSAS-EcoLeaf, Stage 1: Provisional Certificate', 
       certification_type: Certificate.certification_types[:ecoleaf_provisional_certificate], 
-      certificate_type: Certificate.certificate_types[:ecoleaf], 
+      certificate_type: Certificate.certificate_types[:ecoleaf_type], 
       assessment_stage: Certificate.assessment_stages[:ecoleaf_stage], 
       gsas_version: "2019", 
       display_weight: 45
@@ -53,7 +53,7 @@ el_final_certificate =
   Certificate.find_or_create_by(
     name: 'GSAS-EcoLeaf, Stage 2: Ecoleaf Certificate', 
     certification_type: Certificate.certification_types[:ecoleaf_certificate], 
-    certificate_type: Certificate.certificate_types[:ecoleaf], 
+    certificate_type: Certificate.certificate_types[:ecoleaf_type], 
     assessment_stage: Certificate.assessment_stages[:ecoleaf_stage], 
     gsas_version: "2019", 
     display_weight: 50
@@ -99,7 +99,7 @@ el_provisional_exposite_scheme =
     gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", 
     gsas_version: "2019", 
     certification_type: Certificate.certification_types[:ecoleaf_provisional_certificate],
-    certificate_type: Certificate.certificate_types[:ecoleaf], 
+    certificate_type: Certificate.certificate_types[:ecoleaf_type], 
     renovation: false
   )
 
@@ -109,7 +109,7 @@ el_final_exposite_scheme =
     gsas_document: "GSAS Building Typologies_Assessment_2019_14.html", 
     gsas_version: "2019", 
     certification_type: Certificate.certification_types[:ecoleaf_certificate],
-    certificate_type: Certificate.certificate_types[:ecoleaf],  
+    certificate_type: Certificate.certificate_types[:ecoleaf_type],  
     renovation: false
   )
 
@@ -3704,7 +3704,7 @@ Licence.find_or_create_by(
   display_weight: 17,
   title: 'GSAS ECOLEAF',
   description: 'GSAS Ecoleaf Service Provider',
-  certificate_type: Certificate.certificate_types[:ecoleaf],
+  certificate_type: Certificate.certificate_types[:ecoleaf_type],
   schemes: ['Expo Site']
 )
 
@@ -3716,8 +3716,9 @@ Licence.find_or_create_by(
   display_weight: 18,
   title: 'GSAS ECOLEAF - CGP',
   description: 'GSAS Ecoleaf Certified Green Professional',
-  certificate_type: Certificate.certificate_types[:ecoleaf],
-  applicability: Licence.applicabilities[:check_list]
+  certificate_type: Certificate.certificate_types[:ecoleaf_type],
+  applicability: Licence.applicabilities[:check_list],
+  schemes: ['Expo Site']
 )
 
 # Ecoleaf - CEP
@@ -3727,7 +3728,8 @@ Licence.find_or_create_by(
   display_weight: 19,
   title: 'GSAS ECOLEAF - CEP',
   description: 'GSAS Ecoleaf Certified Energy Professional',
-  certificate_type: Certificate.certificate_types[:ecoleaf],
-  applicability: Licence.applicabilities[:check_list]
+  certificate_type: Certificate.certificate_types[:ecoleaf_type],
+  applicability: Licence.applicabilities[:check_list],
+  schemes: ['Expo Site']
 )
 

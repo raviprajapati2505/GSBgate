@@ -1,5 +1,5 @@
 class Certificate < ApplicationRecord
-  enum certificate_type: { design_type: 3, construction_type: 1, operations_type: 2, ecoleaf: 4 }
+  enum certificate_type: { design_type: 3, construction_type: 1, operations_type: 2, ecoleaf_type: 4 }
   enum assessment_stage: { design_stage: 3, construction_stage: 1, operations_stage: 2, ecoleaf_stage: 4  }
 
   enum certification_type: { letter_of_conformance: 10, final_design_certificate: 20, construction_certificate: 30, construction_certificate_stage1: 31, construction_certificate_stage2: 32, construction_certificate_stage3: 33, operations_certificate: 40, ecoleaf_provisional_certificate: 45, ecoleaf_certificate: 50 }

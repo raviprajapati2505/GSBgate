@@ -238,6 +238,10 @@ class User < ApplicationRecord
     valid_user_licences.where("licences.certificate_type = ?", Certificate.certificate_types[:operations_type]) || AccessLicence.none
   end
 
+  def valid_user_ecoleaf_licences
+    valid_user_licences.where("licences.certificate_type = ?", Certificate.certificate_types[:ecoleaf_type]) || AccessLicence.none
+  end
+
   def user_with_licences(licence_ids = [])
     access_licences.joins(:licence).where(licence_id: licence_ids)
   end
@@ -245,7 +249,7 @@ class User < ApplicationRecord
   def valid_checklist_licences
     licence_ids =  Licence.where(
                                   applicability: [Licence.applicabilities[:both], Licence.applicabilities[:check_list]], 
-                                  certificate_type: Certificate.certificate_types[:design_type],
+                                  certificate_type: [Certificate.certificate_types[:design_type], Certificate.certificate_types[:ecoleaf_type]],
                                   licence_type: ["CgpLicence", "CepLicence"]
                                 ).ids
 
@@ -300,6 +304,8 @@ class User < ApplicationRecord
       when 'design_type'
         certificate_types[k] = v if valid_design_build_cp_available?
       when 'operations_type'
+        certificate_types[k] = v if valid_cgp_or_cep_available?
+      when 'ecoleaf_type'
         certificate_types[k] = v if valid_cgp_or_cep_available?
       end
     end
