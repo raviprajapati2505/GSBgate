@@ -35,6 +35,10 @@ class Ability
       elsif @project.operation?
         @service_provider_valid_licences = user&.valid_user_sp_operation_licences
         @cp_valid_licences = user&.valid_user_operation_licences
+      
+      elsif @project.ecoleaf? && user.valid_ecoleaf_cp_available?
+        @service_provider_valid_licences = user&.valid_user_sp_ecoleaf_licences
+        @cp_valid_licences = user&.valid_user_ecoleaf_licences
       end
 
     else

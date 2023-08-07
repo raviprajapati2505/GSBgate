@@ -206,6 +206,10 @@ class User < ApplicationRecord
     service_provider&.active? ? service_provider&.valid_service_provider_operation_licences : AccessLicence.none
   end
 
+  def valid_user_sp_ecoleaf_licences
+    service_provider&.active? ? service_provider&.valid_service_provider_ecoleaf_licences : AccessLicence.none
+  end
+
   def valid_cgp_or_cep_available?
     service_provider&.active? && (service_provider&.valid_cgps.present? || service_provider&.valid_ceps.present?)
   end
@@ -220,6 +224,10 @@ class User < ApplicationRecord
 
   def valid_operation_cp_available?
     service_provider&.active? && (service_provider&.valid_operation_cgps.present? || service_provider&.valid_operation_ceps.present?)
+  end
+
+  def valid_ecoleaf_cp_available?
+    service_provider&.active? && (service_provider&.valid_ecoleaf_cgps.present? || service_provider&.valid_ecoleaf_ceps.present?)
   end
 
   def valid_user_licences
@@ -309,9 +317,15 @@ class User < ApplicationRecord
         certificate_types[k] = v if valid_cgp_or_cep_available?
       end
     end
-
+    
     if valid_checklist_licences_certificate_type.present?
-      certificate_types['design_type'] = 3
+      valid_checklist_licences_certificate_type.each do |certificate_type|
+        if certificate_type == 3
+          certificate_types['design_type'] = 3
+        elsif certificate_type == 4
+          certificate_types['ecoleaf_type'] = 4
+        end
+      end
     end
 
     return certificate_types

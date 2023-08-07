@@ -51,6 +51,10 @@ class Certificate < ApplicationRecord
     design_type?
   end
 
+  def ecoleaf?
+    ecoleaf_type?
+  end
+
   def full_name
     self.name
   end
