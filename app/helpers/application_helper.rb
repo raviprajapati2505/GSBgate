@@ -969,16 +969,297 @@ module ApplicationHelper
 
   def projects_users_by_type(team_type)
     case team_type
-    when 'project_team'
-      "ARRAY_TO_STRING(ARRAY(SELECT project_team_users.name FROM users as project_team_users INNER JOIN projects_users as project_team_project_users ON project_team_project_users.user_id = project_team_users.id  WHERE project_team_project_users.role IN (#{ProjectsUser.roles[:project_team_member]}) AND project_team_project_users.project_id = projects.id AND (SELECT CASE WHEN certificates.certification_type IN (#{Certificate.certification_types['construction_certificate']}, #{Certificate.certification_types['operations_certificate']}, #{Certificate.certification_types['construction_certificate_stage1']}, #{Certificate.certification_types['construction_certificate_stage2']}, #{Certificate.certification_types['construction_certificate_stage3']}) THEN project_team_project_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Other']}) WHEN certificates.certification_type IN (#{Certificate.certification_types['letter_of_conformance']}) THEN project_team_project_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Letter of Conformance']}) WHEN certificates.certification_type IN (#{Certificate.certification_types['final_design_certificate']}) THEN project_team_project_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Final Design Certificate']}) ELSE project_team_project_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Other']}, #{ProjectsUser.certification_team_types['Letter of Conformance']}, #{ProjectsUser.certification_team_types['Final Design Certificate']}) END)), '|||')"
-    when 'cgp_project_manager'
-      "ARRAY_TO_STRING(ARRAY(SELECT cgp_project_managers.name FROM users as cgp_project_managers INNER JOIN projects_users as cgp_project_managers_project_users ON cgp_project_managers_project_users.user_id = cgp_project_managers.id  WHERE cgp_project_managers_project_users.role IN (#{ProjectsUser.roles[:cgp_project_manager]}) AND cgp_project_managers_project_users.project_id = projects.id AND (SELECT CASE WHEN certificates.certification_type IN (#{Certificate.certification_types['construction_certificate']}, #{Certificate.certification_types['operations_certificate']}, #{Certificate.certification_types['construction_certificate_stage1']}, #{Certificate.certification_types['construction_certificate_stage2']}, #{Certificate.certification_types['construction_certificate_stage3']}) THEN cgp_project_managers_project_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Other']}) WHEN certificates.certification_type IN (#{Certificate.certification_types['letter_of_conformance']}) THEN cgp_project_managers_project_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Letter of Conformance']}) WHEN certificates.certification_type IN (#{Certificate.certification_types['final_design_certificate']}) THEN cgp_project_managers_project_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Final Design Certificate']}) ELSE cgp_project_managers_project_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Other']}, #{ProjectsUser.certification_team_types['Letter of Conformance']}, #{ProjectsUser.certification_team_types['Final Design Certificate']}) END)), '|||')"
-    when 'gsas_trust_team'
-      "ARRAY_TO_STRING(ARRAY(SELECT gsas_trust_team_users.name FROM users as gsas_trust_team_users INNER JOIN projects_users as gsas_trust_team_project_users ON gsas_trust_team_project_users.user_id = gsas_trust_team_users.id  WHERE gsas_trust_team_project_users.role IN (#{ProjectsUser.roles[:certifier]}) AND gsas_trust_team_project_users.project_id = projects.id AND (SELECT CASE WHEN certificates.certification_type IN (#{Certificate.certification_types['construction_certificate']}, #{Certificate.certification_types['operations_certificate']}, #{Certificate.certification_types['construction_certificate_stage1']}, #{Certificate.certification_types['construction_certificate_stage2']}, #{Certificate.certification_types['construction_certificate_stage3']}) THEN gsas_trust_team_project_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Other']}) WHEN certificates.certification_type IN (#{Certificate.certification_types['letter_of_conformance']}) THEN gsas_trust_team_project_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Letter of Conformance']}) WHEN certificates.certification_type IN (#{Certificate.certification_types['final_design_certificate']}) THEN gsas_trust_team_project_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Final Design Certificate']}) ELSE gsas_trust_team_project_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Other']}, #{ProjectsUser.certification_team_types['Letter of Conformance']}, #{ProjectsUser.certification_team_types['Final Design Certificate']}) END)), '|||')"
-    when 'certification_manager'
-      "ARRAY_TO_STRING(ARRAY(SELECT certification_managers.name FROM users as certification_managers INNER JOIN projects_users as certification_managers_project_users ON certification_managers_project_users.user_id = certification_managers.id  WHERE certification_managers_project_users.role IN (#{ProjectsUser.roles[:certification_manager]}) AND certification_managers_project_users.project_id = projects.id AND (SELECT CASE WHEN certificates.certification_type IN (#{Certificate.certification_types['construction_certificate']}, #{Certificate.certification_types['operations_certificate']}, #{Certificate.certification_types['construction_certificate_stage1']}, #{Certificate.certification_types['construction_certificate_stage2']}, #{Certificate.certification_types['construction_certificate_stage3']}) THEN certification_managers_project_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Other']}) WHEN certificates.certification_type IN (#{Certificate.certification_types['letter_of_conformance']}) THEN certification_managers_project_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Letter of Conformance']}) WHEN certificates.certification_type IN (#{Certificate.certification_types['final_design_certificate']}) THEN certification_managers_project_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Final Design Certificate']}) ELSE certification_managers_project_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Other']}, #{ProjectsUser.certification_team_types['Letter of Conformance']}, #{ProjectsUser.certification_team_types['Final Design Certificate']}) END)), '|||')"
-    when 'enterprise_clients'
-      "ARRAY_TO_STRING(ARRAY(SELECT enterprise_client_users.name FROM users as enterprise_client_users INNER JOIN projects_users as enterprise_client_project_users ON enterprise_client_project_users.user_id = enterprise_client_users.id  WHERE enterprise_client_project_users.role IN (#{ProjectsUser.roles[:enterprise_client]}) AND enterprise_client_project_users.project_id = projects.id), '|||')"
+      when 'project_team'
+        "
+          ARRAY_TO_STRING(
+            ARRAY(
+              SELECT 
+                project_team_users.name 
+              FROM 
+                users as project_team_users 
+              INNER JOIN 
+                projects_users as project_team_project_users 
+              ON 
+                project_team_project_users.user_id = project_team_users.id 
+              WHERE 
+                project_team_project_users.role IN (
+                  #{ProjectsUser.roles[:project_team_member]}
+                ) 
+                AND 
+                  project_team_project_users.project_id = projects.id 
+                AND 
+                  (
+                    SELECT 
+                      CASE 
+                        WHEN 
+                          certificates.certification_type IN (
+                            #{Certificate.certification_types['construction_certificate']}, 
+                            #{Certificate.certification_types['operations_certificate']}, 
+                            #{Certificate.certification_types['construction_certificate_stage1']}, 
+                            #{Certificate.certification_types['construction_certificate_stage2']}, 
+                            #{Certificate.certification_types['construction_certificate_stage3']},
+                            #{Certificate.certification_types['ecoleaf_provisional_certificate']},
+                            #{Certificate.certification_types['ecoleaf_certificate']}
+                          ) 
+                          THEN 
+                            project_team_project_users.certification_team_type IN (
+                              #{ProjectsUser.certification_team_types['Other']}
+                            ) 
+
+                        WHEN 
+                          certificates.certification_type IN (
+                            #{Certificate.certification_types['letter_of_conformance']}
+                          ) 
+                          THEN 
+                            project_team_project_users.certification_team_type IN (
+                              #{ProjectsUser.certification_team_types['Letter of Conformance']}
+                            ) 
+
+                        WHEN certificates.certification_type IN (
+                          #{Certificate.certification_types['final_design_certificate']}
+                        ) 
+                          THEN 
+                            project_team_project_users.certification_team_type IN (
+                              #{ProjectsUser.certification_team_types['Final Design Certificate']}
+                            ) 
+
+                        ELSE 
+                          project_team_project_users.certification_team_type IN (
+                            #{ProjectsUser.certification_team_types['Other']}, 
+                            #{ProjectsUser.certification_team_types['Letter of Conformance']}, 
+                            #{ProjectsUser.certification_team_types['Final Design Certificate']}
+                          ) 
+                      END
+                  )
+            ), 
+            '|||'
+          )
+        "
+
+      when 'cgp_project_manager'
+        "
+          ARRAY_TO_STRING(
+            ARRAY(
+              SELECT 
+                cgp_project_managers.name 
+              FROM 
+                users as cgp_project_managers 
+              INNER JOIN 
+                projects_users as cgp_project_managers_project_users 
+              ON 
+                cgp_project_managers_project_users.user_id = cgp_project_managers.id 
+              WHERE 
+                cgp_project_managers_project_users.role IN (
+                  #{ProjectsUser.roles[:cgp_project_manager]}
+                ) 
+                AND 
+                  cgp_project_managers_project_users.project_id = projects.id 
+                AND 
+                  (
+                    SELECT 
+                      CASE 
+                        WHEN 
+                          certificates.certification_type IN (
+                            #{Certificate.certification_types['construction_certificate']}, 
+                            #{Certificate.certification_types['operations_certificate']}, 
+                            #{Certificate.certification_types['construction_certificate_stage1']}, 
+                            #{Certificate.certification_types['construction_certificate_stage2']}, 
+                            #{Certificate.certification_types['construction_certificate_stage3']},
+                            #{Certificate.certification_types['ecoleaf_provisional_certificate']},
+                            #{Certificate.certification_types['ecoleaf_certificate']}
+                          ) 
+                          THEN 
+                            cgp_project_managers_project_users.certification_team_type IN (
+                              #{ProjectsUser.certification_team_types['Other']}
+                            ) 
+
+                        WHEN 
+                          certificates.certification_type IN (
+                            #{Certificate.certification_types['letter_of_conformance']}
+                          ) 
+                          THEN 
+                            cgp_project_managers_project_users.certification_team_type IN (
+                              #{ProjectsUser.certification_team_types['Letter of Conformance']}
+                            ) 
+
+                        WHEN 
+                          certificates.certification_type IN (
+                            #{Certificate.certification_types['final_design_certificate']}
+                          ) 
+                          THEN 
+                            cgp_project_managers_project_users.certification_team_type IN (
+                              #{ProjectsUser.certification_team_types['Final Design Certificate']}
+                            ) 
+
+                        ELSE 
+                          cgp_project_managers_project_users.certification_team_type IN (
+                            #{ProjectsUser.certification_team_types['Other']}, 
+                            #{ProjectsUser.certification_team_types['Letter of Conformance']}, 
+                            #{ProjectsUser.certification_team_types['Final Design Certificate']}
+                          ) 
+                      END
+                  )
+            ),
+            '|||'
+          )
+        "
+
+      when 'gsas_trust_team'
+        "
+          ARRAY_TO_STRING(
+            ARRAY(
+              SELECT 
+                gsas_trust_team_users.name 
+              FROM 
+                users as gsas_trust_team_users 
+              INNER JOIN 
+                projects_users as gsas_trust_team_project_users 
+              ON 
+                gsas_trust_team_project_users.user_id = gsas_trust_team_users.id 
+              WHERE 
+                gsas_trust_team_project_users.role IN (
+                  #{ProjectsUser.roles[:certifier]}
+                ) 
+                AND 
+                  gsas_trust_team_project_users.project_id = projects.id 
+                AND 
+                  (
+                    SELECT 
+                      CASE 
+                        WHEN 
+                          certificates.certification_type IN (
+                            #{Certificate.certification_types['construction_certificate']}, 
+                            #{Certificate.certification_types['operations_certificate']}, 
+                            #{Certificate.certification_types['construction_certificate_stage1']}, 
+                            #{Certificate.certification_types['construction_certificate_stage2']}, 
+                            #{Certificate.certification_types['construction_certificate_stage3']},
+                            #{Certificate.certification_types['ecoleaf_provisional_certificate']},
+                            #{Certificate.certification_types['ecoleaf_certificate']}
+                          ) 
+                          THEN 
+                            gsas_trust_team_project_users.certification_team_type IN (
+                              #{ProjectsUser.certification_team_types['Other']}
+                            ) 
+
+                        WHEN 
+                          certificates.certification_type IN (
+                            #{Certificate.certification_types['letter_of_conformance']}
+                          ) 
+                          THEN 
+                            gsas_trust_team_project_users.certification_team_type IN (
+                              #{ProjectsUser.certification_team_types['Letter of Conformance']}
+                            ) 
+
+                        WHEN 
+                          certificates.certification_type IN (
+                            #{Certificate.certification_types['final_design_certificate']}
+                          ) 
+                          THEN gsas_trust_team_project_users.certification_team_type IN (
+                            #{ProjectsUser.certification_team_types['Final Design Certificate']}
+                          ) 
+
+                        ELSE gsas_trust_team_project_users.certification_team_type IN (
+                          #{ProjectsUser.certification_team_types['Other']}, 
+                          #{ProjectsUser.certification_team_types['Letter of Conformance']}, 
+                          #{ProjectsUser.certification_team_types['Final Design Certificate']}
+                        ) 
+                    END
+                )
+            ), 
+            '|||'
+          )
+        "
+
+      when 'certification_manager'
+        "
+          ARRAY_TO_STRING(
+            ARRAY(
+              SELECT 
+                certification_managers.name 
+              FROM 
+                users as certification_managers 
+              INNER JOIN 
+                projects_users as certification_managers_project_users 
+              ON 
+                certification_managers_project_users.user_id = certification_managers.id 
+              WHERE 
+                certification_managers_project_users.role IN (
+                  #{ProjectsUser.roles[:certification_manager]}
+                ) 
+                AND 
+                  certification_managers_project_users.project_id = projects.id 
+                AND 
+                  (
+                    SELECT 
+                      CASE 
+                        WHEN 
+                          certificates.certification_type IN (
+                            #{Certificate.certification_types['construction_certificate']}, 
+                            #{Certificate.certification_types['operations_certificate']}, 
+                            #{Certificate.certification_types['construction_certificate_stage1']}, 
+                            #{Certificate.certification_types['construction_certificate_stage2']}, 
+                            #{Certificate.certification_types['construction_certificate_stage3']},
+                            #{Certificate.certification_types['ecoleaf_provisional_certificate']},
+                            #{Certificate.certification_types['ecoleaf_certificate']}
+                          ) 
+                          THEN 
+                            certification_managers_project_users.certification_team_type IN (
+                              #{ProjectsUser.certification_team_types['Other']}
+                            ) 
+
+                        WHEN 
+                          certificates.certification_type IN (
+                            #{Certificate.certification_types['letter_of_conformance']}
+                          ) 
+                          THEN 
+                            certification_managers_project_users.certification_team_type IN (
+                              #{ProjectsUser.certification_team_types['Letter of Conformance']}
+                            ) 
+
+                        WHEN 
+                          certificates.certification_type IN (
+                            #{Certificate.certification_types['final_design_certificate']}
+                          ) 
+                          THEN 
+                            certification_managers_project_users.certification_team_type IN (
+                              #{ProjectsUser.certification_team_types['Final Design Certificate']}
+                            ) 
+
+                        ELSE 
+                          certification_managers_project_users.certification_team_type IN (
+                            #{ProjectsUser.certification_team_types['Other']}, 
+                            #{ProjectsUser.certification_team_types['Letter of Conformance']}, 
+                            #{ProjectsUser.certification_team_types['Final Design Certificate']}
+                          ) 
+                      END
+                  )
+            ), 
+            '|||'
+          )
+        "
+
+      when 'enterprise_clients'
+        "
+          ARRAY_TO_STRING(
+            ARRAY(
+              SELECT 
+                enterprise_client_users.name 
+              FROM 
+                users as enterprise_client_users 
+              INNER JOIN 
+                projects_users as enterprise_client_project_users 
+              ON 
+                enterprise_client_project_users.user_id = enterprise_client_users.id 
+              WHERE 
+                enterprise_client_project_users.role IN (
+                  #{ProjectsUser.roles[:enterprise_client]}
+                ) 
+                AND 
+                  enterprise_client_project_users.project_id = projects.id
+            ), 
+            '|||'
+          )
+        "
     end
   end
   
