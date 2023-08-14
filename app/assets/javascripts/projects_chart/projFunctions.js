@@ -92,7 +92,7 @@ const trimNonValid = (arr, year) => {
     //the ID length is variable and it cannot be used
     //if (pId.length!==15) return false
 
-    if (pId.trim().slice(-4) === "IVED" || pId.trim().slice(-4) === "IVE)") return false
+    if (pId === "TBC" || pId.trim().slice(-4) === "IVED" || pId.trim().slice(-4) === "IVE)") return false
 
     //if (p["Project Country"]!=="Qatar") return false;
 

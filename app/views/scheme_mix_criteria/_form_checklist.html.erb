@@ -378,11 +378,13 @@
                             <div id="accordion" class="panel-group">
                                 <% get_scheme_mix_criteria_requiments_not_assigned_to_user.each do |title, requirement_data| %>
                                   <% if title.present? %>
-                                    <h3 class="tag"><%= title %></h2>
+                                    <h3 class="tag collapsed" href="#requirement-category-<%= title %>-collapsable" data-parent="#accordion" data-toggle="collapse" aria-expanded="false"><%= title %></h2>
                                   <% end %>
-                                  <% requirement_data.each do |requirement_datum| %>
-                                    <%= render 'requirement_data/update', requirement_datum: requirement_datum %>
-                                  <% end %>
+                                  <div class="collapse" id="requirement-category-<%= title %>-collapsable" aria-expanded="false">
+                                    <% requirement_data.each do |requirement_datum| %>
+                                      <%= render 'requirement_data/update', requirement_datum: requirement_datum %>
+                                    <% end %>
+                                  </div>
                                 <% end %>
                             </div>
                         </div>
