@@ -101,7 +101,7 @@ en:
       warning_complete_stage1: Please complete the GSAS-CM - Stage 1 first.
       warning_complete_stage2: Please complete the GSAS-CM - Stage 2 first.
       warning_complete_stage3: Please complete all GSAS-CM stages first.
-      warning_complete_provisional: Please complete all GSAS-Ecoleaf stages first.
+      warning_complete_provisional: Please complete all GSAS-EcoLeaf stages first.
     timeline_legend:
       project_team: Project Team
       certifier_team: GSAS Trust Team

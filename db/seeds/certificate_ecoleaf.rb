@@ -51,7 +51,7 @@ el_provisional_certificate =
 
 el_final_certificate = 
   Certificate.find_or_create_by(
-    name: 'GSAS-EcoLeaf, Stage 2: Ecoleaf Certificate', 
+    name: 'GSAS-EcoLeaf, Stage 2: EcoLeaf Certificate', 
     certification_type: Certificate.certification_types[:ecoleaf_certificate], 
     certificate_type: Certificate.certificate_types[:ecoleaf_type], 
     assessment_stage: Certificate.assessment_stages[:ecoleaf_stage], 
@@ -143,7 +143,7 @@ el_provisional_scheme_category =
   SchemeCategory.find_or_create_by(
     scheme: el_provisional_exposite_scheme, 
     code: "EL", 
-    name: "Generic", 
+    name: "EcoLeaf", 
     impacts: "", 
     mitigate_impact: "", 
     shared: false, 
@@ -155,7 +155,7 @@ el_final_scheme_category =
   SchemeCategory.find_or_create_by(
     scheme: el_final_exposite_scheme, 
     code: "EL", 
-    name: "Generic", 
+    name: "EcoLeaf", 
     impacts: "", 
     mitigate_impact: "", 
     shared: false, 
@@ -3697,37 +3697,37 @@ el_21_dismantling_requirements.each.with_index(1) do |ci, i|
 end
 
 # Licences for Service Providers
-# Ecoleaf
+# EcoLeaf
 Licence.find_or_create_by(
   licence_type: 'ServiceProviderLicence',
   display_name: 'GSAS ECOLEAF',
   display_weight: 17,
   title: 'GSAS ECOLEAF',
-  description: 'GSAS Ecoleaf Service Provider',
+  description: 'GSAS EcoLeaf Service Provider',
   certificate_type: Certificate.certificate_types[:ecoleaf_type],
   schemes: ['Expo Site']
 )
 
 # Licences for Certified Professional
-# Ecoleaf - CGP
+# EcoLeaf - CGP
 Licence.find_or_create_by(
   licence_type: 'CgpLicence',
   display_name: 'GSAS CGP ECOLEAF, ASSOCIATE',
   display_weight: 18,
   title: 'GSAS ECOLEAF - CGP',
-  description: 'GSAS Ecoleaf Certified Green Professional',
+  description: 'GSAS EcoLeaf Certified Green Professional',
   certificate_type: Certificate.certificate_types[:ecoleaf_type],
   applicability: Licence.applicabilities[:check_list],
   schemes: ['Expo Site']
 )
 
-# Ecoleaf - CEP
+# EcoLeaf - CEP
 Licence.find_or_create_by(
   licence_type: 'CepLicence',
   display_name: 'GSAS CEP ECOLEAF',
   display_weight: 19,
   title: 'GSAS ECOLEAF - CEP',
-  description: 'GSAS Ecoleaf Certified Energy Professional',
+  description: 'GSAS EcoLeaf Certified Energy Professional',
   certificate_type: Certificate.certificate_types[:ecoleaf_type],
   applicability: Licence.applicabilities[:check_list],
   schemes: ['Expo Site']

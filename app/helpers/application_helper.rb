@@ -896,8 +896,8 @@ module ApplicationHelper
         '<span class="certi-name-badge badge-cm">'+ image_tag('/icons/certi-name-cm.png') +'</span><a href='+Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>'+only_certification_name+'</a>'
       when 'GSAS-OP'
         '<span class="certi-name-badge badge-op">'+ image_tag('/icons/certi-name-op.png') +'</span><a href='+Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>'+only_certification_name+'</a>'
-      when 'GSAS-Ecoleaf'
-        '<span class="certi-name-badge badge-op">'+ image_tag('/icons/certi-name-op.png') +'</span><a href='+Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>'+only_certification_name+'</a>'
+      when 'GSAS-EcoLeaf'
+        '<span class="certi-name-badge badge-db">'+ image_tag('/icons/certi-name-db.png') +'</span><a href='+Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>'+only_certification_name+'</a>'
     end
   end
 
@@ -915,8 +915,8 @@ module ApplicationHelper
         '<span class="certi-sub-status-badge status-badge-cm">'+ image_tag('/icons/certi-sub-status-cm.png') +'</span>'+status
       when 'GSAS-OP'
         '<span class="certi-sub-status-badge status-badge-op">'+ image_tag('/icons/certi-sub-status-op.png') +'</span>'+status
-      when 'GSAS-Ecoleaf'
-        '<span class="certi-sub-status-badge status-badge-op">'+ image_tag('/icons/certi-sub-status-op.png') +'</span>'+status
+      when 'GSAS-EcoLeaf'
+        '<span class="certi-sub-status-badge status-badge-db">'+ image_tag('/icons/certi-sub-status-db.png') +'</span>'+status
     end
   end
 
@@ -928,8 +928,8 @@ module ApplicationHelper
         '<span class="certi-name-badge badge-cm">'+ image_tag('/icons/certi-name-cm.png') +'</span>'+certification_type
       when 'GSAS-OP'
         '<span class="certi-name-badge badge-op">'+ image_tag('/icons/certi-name-op.png') +'</span>'+certification_type
-      when 'GSAS-Ecoleaf'
-        '<span class="certi-name-badge badge-op">'+ image_tag('/icons/certi-name-op.png') +'</span>'+certification_type
+      when 'GSAS-EcoLeaf'
+        '<span class="certi-name-badge badge-db">'+ image_tag('/icons/certi-name-db.png') +'</span>'+certification_type
     end
   end
 
@@ -937,13 +937,13 @@ module ApplicationHelper
     only_certification_name = rec.certificate_type
     case only_certification_name
       when 'GSAS-D&B'
-        '<span class="certi-sub-status-badge status-badge-db">'+ image_tag('/icons/certi-sub-status-db.png') +'</span>'+rec.certification_status
+        '<span class="certi-sub-status-badge status-badge-db">' + image_tag('/icons/certi-sub-status-db.png') + '</span>'+rec.certification_status
       when 'GSAS-CM'
-        '<span class="certi-sub-status-badge status-badge-cm">'+ image_tag('/icons/certi-sub-status-cm.png') +'</span>'+rec.certification_status
+        '<span class="certi-sub-status-badge status-badge-cm">' + image_tag('/icons/certi-sub-status-cm.png') + '</span>'+rec.certification_status
       when 'GSAS-OP'
-        '<span class="certi-sub-status-badge status-badge-op"'+ image_tag('/icons/certi-sub-status-op.png') +'</span>'+rec.certification_status
-      when 'GSAS-Ecoleaf'
-        '<span class="certi-sub-status-badge status-badge-op"'+ image_tag('/icons/certi-sub-status-op.png') +'</span>'+rec.certification_status
+        '<span class="certi-sub-status-badge status-badge-op">' + image_tag('/icons/certi-sub-status-op.png') + '</span>'+rec.certification_status
+      when 'GSAS-EcoLeaf'
+        '<span class="certi-sub-status-badge status-badge-db">' + image_tag('/icons/certi-sub-status-db.png') + '</span>'+rec.certification_status
     end
   end
 

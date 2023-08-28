@@ -23,7 +23,7 @@ en:
             design_and_build: GSAS-D&B
             construction_certificate: GSAS-CM
             operations_certificate: GSAS-OP
-            gsas_ecoleaf: GSAS-Ecoleaf
+            gsas_ecoleaf: GSAS-EcoLeaf
         certification_types:
           letter_of_conformance: Letter of conformance
           final_design_certificate: Final design certificate

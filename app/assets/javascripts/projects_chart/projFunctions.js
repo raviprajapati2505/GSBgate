@@ -24,7 +24,7 @@ const certfictionStage = (project) => {
     case "GSAS-OP":
       return (certifiedDescriptions.indexOf(project["Certification Submission Status"]) > -1) ? 3 : 0;
       break;
-    case "GSAS-Ecoleaf":
+    case "GSAS-EcoLeaf":
       switch (project["Certification Stage"]) {
         case "Stage 2: EcoLeaf Certificate":
           return (certifiedDescriptions.indexOf(project["Certification Submission Status"]) > -1) ? 4 : 2;
@@ -54,14 +54,14 @@ const getStageDescription = (project) => {
     case "GSAS-OP":
       return (certfictionStage(project) == 3) ? "OP Certified" : "Registered"
       break;
-    case "GSAS-Ecoleaf":
+    case "GSAS-EcoLeaf":
       var stage = certfictionStage(project);
       if (stage == 4)
-        return "Ecoleaf Certified";
+        return "EcoLeaf Certified";
       else if (stage < 2)
         return "Registered"
       else
-        return "Provisional Ecoleaf Certified"
+        return "Provisional EcoLeaf Certified"
       break;
   }
 }
@@ -121,7 +121,7 @@ const trimNonValid = (arr, year) => {
     let awarded = p["Certification Awarded On"];
     let stage = certfictionStage(p);
 
-    //revert recently awarded LOCs & Ecoleaf Provisional Certificates to Submitting stage;
+    //revert recently awarded LOCs & EcoLeaf Provisional Certificates to Submitting stage;
     if (awarded >= year && stage == 3) {
       p["Certification Submission Status"] = "Submitting"
       p["Certification Year"] = ""

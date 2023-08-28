@@ -316,7 +316,7 @@ function prepareTable(projObject, propKeys) {
         if (k == "GSAS-D&B") specialClass = "DB-Title"
         if (k == "GSAS-CM") specialClass = "CM-Title"
         if (k == "GSAS-OP") specialClass = "OP-Title"
-        if (k == "GSAS-Ecoleaf") specialClass = "Ecoleaf-Title"
+        if (k == "GSAS-EcoLeaf") specialClass = "EcoLeaf-Title"
 
         return `
                     <tr></tr>
@@ -373,11 +373,11 @@ function sortKeys(a, b, k) {
       return schemes.indexOf(a) < schemes.indexOf(b) ? -1 : 1;
       break;
     case "Certification Status":
-      let stat = ["Registered", "Design Certified", "Design & Build Certified", "CM Certified", "OP Certified", "Ecoleaf Certified", "Provisional Ecoleaf Certified"]
+      let stat = ["Registered", "Design Certified", "Design & Build Certified", "CM Certified", "OP Certified", "EcoLeaf Certified", "Provisional EcoLeaf Certified"]
       return stat.indexOf(a) < stat.indexOf(b) ? -1 : 1;
       break;
     case "Certification Type":
-      let ctype = ["GSAS-D&B", "GSAS-CM", "GSAS-OP", "GSAS-Ecoleaf"]
+      let ctype = ["GSAS-D&B", "GSAS-CM", "GSAS-OP", "GSAS-EcoLeaf"]
       return ctype.indexOf(a) < ctype.indexOf(b) ? -1 : 1;
       break;
     case "Certification Rating":
