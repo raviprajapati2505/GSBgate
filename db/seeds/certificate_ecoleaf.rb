@@ -286,7 +286,7 @@ el_1_design_requirements.each.with_index(1) do |ci, i|
   rt_for_el_1_scheme_criterion = nil
 
   rt_for_el_1_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_design
@@ -335,7 +335,7 @@ el_1_construction_requirements =
 el_1_construction_requirements.each.with_index(1) do |ci, i|
   rt_for_el_1_scheme_criterion = nil
   rt_for_el_1_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_construction
@@ -369,7 +369,7 @@ el_1_operation_requirements =
 el_1_operation_requirements.each.with_index(1) do |ci, i|
   rt_for_el_1_scheme_criterion = nil
   rt_for_el_1_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_operation
@@ -398,7 +398,7 @@ el_1_dismantling_requirements =
 el_1_dismantling_requirements.each.with_index(1) do |ci, i|
   rt_for_el_1_scheme_criterion = nil
   rt_for_el_1_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_dismantling
@@ -509,7 +509,7 @@ el_2_design_requirements.each.with_index(1) do |ci, i|
   rt_for_el_2_scheme_criterion = nil
 
   rt_for_el_2_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_design
@@ -534,7 +534,7 @@ el_2_construction_requirements =
 el_2_construction_requirements.each.with_index(1) do |ci, i|
   rt_for_el_2_scheme_criterion = nil
   rt_for_el_2_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_construction
@@ -558,7 +558,7 @@ el_2_operation_requirements =
 el_2_operation_requirements.each.with_index(1) do |ci, i|
   rt_for_el_2_scheme_criterion = nil
   rt_for_el_2_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_operation
@@ -686,7 +686,7 @@ el_3_design_requirements.each.with_index(1) do |ci, i|
   rt_for_el_3_scheme_criterion = nil
 
   rt_for_el_3_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_design
@@ -724,7 +724,7 @@ el_3_construction_requirements =
 el_3_construction_requirements.each.with_index(1) do |ci, i|
   rt_for_el_3_scheme_criterion = nil
   rt_for_el_3_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_construction
@@ -752,7 +752,7 @@ el_3_operation_requirements =
 el_3_operation_requirements.each.with_index(1) do |ci, i|
   rt_for_el_3_scheme_criterion = nil
   rt_for_el_3_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_operation
@@ -776,7 +776,7 @@ el_3_dismantling_requirements =
 el_3_dismantling_requirements.each.with_index(1) do |ci, i|
   rt_for_el_3_scheme_criterion = nil
   rt_for_el_3_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_dismantling
@@ -888,7 +888,7 @@ el_4_design_requirements.each.with_index(1) do |ci, i|
   rt_for_el_4_scheme_criterion = nil
 
   rt_for_el_4_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_design
@@ -918,7 +918,7 @@ el_4_construction_requirements =
 el_4_construction_requirements.each.with_index(1) do |ci, i|
   rt_for_el_4_scheme_criterion = nil
   rt_for_el_4_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_construction
@@ -941,7 +941,7 @@ el_4_operation_requirements =
 el_4_operation_requirements.each.with_index(1) do |ci, i|
   rt_for_el_4_scheme_criterion = nil
   rt_for_el_4_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_operation
@@ -971,7 +971,7 @@ el_4_dismantling_requirements =
 el_4_dismantling_requirements.each.with_index(1) do |ci, i|
   rt_for_el_4_scheme_criterion = nil
   rt_for_el_4_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_dismantling
@@ -1083,7 +1083,7 @@ el_5_design_requirements.each.with_index(1) do |ci, i|
   rt_for_el_5_scheme_criterion = nil
 
   rt_for_el_5_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_design
@@ -1110,7 +1110,7 @@ el_5_construction_requirements =
 el_5_construction_requirements.each.with_index(1) do |ci, i|
   rt_for_el_5_scheme_criterion = nil
   rt_for_el_5_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_construction
@@ -1133,7 +1133,7 @@ el_5_dismantling_requirements =
 el_5_dismantling_requirements.each.with_index(1) do |ci, i|
   rt_for_el_5_scheme_criterion = nil
   rt_for_el_5_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_dismantling
@@ -1256,7 +1256,7 @@ el_6_design_requirements.each.with_index(1) do |ci, i|
   rt_for_el_6_scheme_criterion = nil
 
   rt_for_el_6_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_design
@@ -1284,7 +1284,7 @@ el_6_construction_requirements =
 el_6_construction_requirements.each.with_index(1) do |ci, i|
   rt_for_el_6_scheme_criterion = nil
   rt_for_el_6_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_construction
@@ -1308,7 +1308,7 @@ el_6_operation_requirements =
 el_6_operation_requirements.each.with_index(1) do |ci, i|
   rt_for_el_6_scheme_criterion = nil
   rt_for_el_6_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_operation
@@ -1423,7 +1423,7 @@ el_7_design_requirements.each.with_index(1) do |ci, i|
   rt_for_el_7_scheme_criterion = nil
 
   rt_for_el_7_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_design
@@ -1451,7 +1451,7 @@ el_7_construction_requirements =
 el_7_construction_requirements.each.with_index(1) do |ci, i|
   rt_for_el_7_scheme_criterion = nil
   rt_for_el_7_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_construction
@@ -1564,7 +1564,7 @@ el_8_design_requirements.each.with_index(1) do |ci, i|
   rt_for_el_8_scheme_criterion = nil
 
   rt_for_el_8_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_design
@@ -1588,7 +1588,7 @@ el_8_construction_requirements =
 el_8_construction_requirements.each.with_index(1) do |ci, i|
   rt_for_el_8_scheme_criterion = nil
   rt_for_el_8_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_construction
@@ -1706,7 +1706,7 @@ el_9_design_requirements.each.with_index(1) do |ci, i|
   rt_for_el_9_scheme_criterion = nil
 
   rt_for_el_9_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_design
@@ -1731,7 +1731,7 @@ el_9_construction_requirements =
 el_9_construction_requirements.each.with_index(1) do |ci, i|
   rt_for_el_9_scheme_criterion = nil
   rt_for_el_9_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_construction
@@ -1845,7 +1845,7 @@ el_10_design_requirements.each.with_index(1) do |ci, i|
   rt_for_el_10_scheme_criterion = nil
 
   rt_for_el_10_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_design
@@ -1875,7 +1875,7 @@ el_10_construction_requirements =
 el_10_construction_requirements.each.with_index(1) do |ci, i|
   rt_for_el_10_scheme_criterion = nil
   rt_for_el_10_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_construction
@@ -1983,7 +1983,7 @@ el_11_design_requirements.each.with_index(1) do |ci, i|
   rt_for_el_11_scheme_criterion = nil
 
   rt_for_el_11_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_design
@@ -2006,7 +2006,7 @@ el_11_operation_requirements =
 el_11_operation_requirements.each.with_index(1) do |ci, i|
   rt_for_el_11_scheme_criterion = nil
   rt_for_el_11_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_operation
@@ -2144,7 +2144,7 @@ el_12_construction_requirements =
 el_12_construction_requirements.each.with_index(1) do |ci, i|
   rt_for_el_12_scheme_criterion = nil
   rt_for_el_12_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_construction
@@ -2185,7 +2185,7 @@ el_12_operation_requirements =
 el_12_operation_requirements.each.with_index(1) do |ci, i|
   rt_for_el_12_scheme_criterion = nil
   rt_for_el_12_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_operation
@@ -2218,7 +2218,7 @@ el_12_dismantling_requirements =
 el_12_dismantling_requirements.each.with_index(1) do |ci, i|
   rt_for_el_12_scheme_criterion = nil
   rt_for_el_12_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_dismantling
@@ -2337,7 +2337,7 @@ el_13_construction_requirements =
 el_13_construction_requirements.each.with_index(1) do |ci, i|
   rt_for_el_13_scheme_criterion = nil
   rt_for_el_13_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_construction
@@ -2452,7 +2452,7 @@ el_14_construction_requirements =
 el_14_construction_requirements.each.with_index(1) do |ci, i|
   rt_for_el_14_scheme_criterion = nil
   rt_for_el_14_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_construction
@@ -2480,7 +2480,7 @@ el_14_operation_requirements =
 el_14_operation_requirements.each.with_index(1) do |ci, i|
   rt_for_el_14_scheme_criterion = nil
   rt_for_el_14_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_operation
@@ -2508,7 +2508,7 @@ el_14_dismantling_requirements =
 el_14_dismantling_requirements.each.with_index(1) do |ci, i|
   rt_for_el_14_scheme_criterion = nil
   rt_for_el_14_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_dismantling
@@ -2622,7 +2622,7 @@ el_15_design_requirements.each.with_index(1) do |ci, i|
   rt_for_el_15_scheme_criterion = nil
 
   rt_for_el_15_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_design
@@ -2646,7 +2646,7 @@ el_15_construction_requirements =
 el_15_construction_requirements.each.with_index(1) do |ci, i|
   rt_for_el_15_scheme_criterion = nil
   rt_for_el_15_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_construction
@@ -2682,7 +2682,7 @@ el_15_operation_requirements =
 el_15_operation_requirements.each.with_index(1) do |ci, i|
   rt_for_el_15_scheme_criterion = nil
   rt_for_el_15_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_operation
@@ -2793,7 +2793,7 @@ el_16_design_requirements.each.with_index(1) do |ci, i|
   rt_for_el_16_scheme_criterion = nil
 
   rt_for_el_16_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_design
@@ -2820,7 +2820,7 @@ el_16_operation_requirements =
 el_16_operation_requirements.each.with_index(1) do |ci, i|
   rt_for_el_16_scheme_criterion = nil
   rt_for_el_16_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_operation
@@ -2939,7 +2939,7 @@ el_17_design_requirements.each.with_index(1) do |ci, i|
   rt_for_el_17_scheme_criterion = nil
 
   rt_for_el_17_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_design
@@ -2962,7 +2962,7 @@ el_17_construction_requirements =
 el_17_construction_requirements.each.with_index(1) do |ci, i|
   rt_for_el_17_scheme_criterion = nil
   rt_for_el_17_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_construction
@@ -3014,7 +3014,7 @@ el_17_operation_requirements =
 el_17_operation_requirements.each.with_index(1) do |ci, i|
   rt_for_el_17_scheme_criterion = nil
   rt_for_el_17_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_operation
@@ -3132,7 +3132,7 @@ el_18_design_requirements.each.with_index(1) do |ci, i|
   rt_for_el_18_scheme_criterion = nil
 
   rt_for_el_18_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_design
@@ -3164,7 +3164,7 @@ el_18_construction_requirements =
 el_18_construction_requirements.each.with_index(1) do |ci, i|
   rt_for_el_18_scheme_criterion = nil
   rt_for_el_18_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_construction
@@ -3190,7 +3190,7 @@ el_18_operation_requirements =
 el_18_operation_requirements.each.with_index(1) do |ci, i|
   rt_for_el_18_scheme_criterion = nil
   rt_for_el_18_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_operation
@@ -3217,7 +3217,7 @@ el_18_dismantling_requirements =
 el_18_dismantling_requirements.each.with_index(1) do |ci, i|
   rt_for_el_18_scheme_criterion = nil
   rt_for_el_18_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_dismantling
@@ -3326,7 +3326,7 @@ el_19_construction_requirements =
 el_19_construction_requirements.each.with_index(1) do |ci, i|
   rt_for_el_19_scheme_criterion = nil
   rt_for_el_19_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_construction
@@ -3351,7 +3351,7 @@ el_19_operation_requirements =
 el_19_operation_requirements.each.with_index(1) do |ci, i|
   rt_for_el_19_scheme_criterion = nil
   rt_for_el_19_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_operation
@@ -3376,7 +3376,7 @@ el_19_dismantling_requirements =
 el_19_dismantling_requirements.each.with_index(1) do |ci, i|
   rt_for_el_19_scheme_criterion = nil
   rt_for_el_19_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_dismantling
@@ -3490,7 +3490,7 @@ el_20_design_requirements.each.with_index(1) do |ci, i|
   rt_for_el_20_scheme_criterion = nil
 
   rt_for_el_20_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_design
@@ -3520,7 +3520,7 @@ el_20_operation_requirements =
 el_20_operation_requirements.each.with_index(1) do |ci, i|
   rt_for_el_20_scheme_criterion = nil
   rt_for_el_20_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_operation
@@ -3631,7 +3631,7 @@ el_21_design_requirements.each.with_index(1) do |ci, i|
   rt_for_el_21_scheme_criterion = nil
 
   rt_for_el_21_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_design
@@ -3654,7 +3654,7 @@ el_21_construction_requirements =
 el_21_construction_requirements.each.with_index(1) do |ci, i|
   rt_for_el_21_scheme_criterion = nil
   rt_for_el_21_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_construction
@@ -3681,7 +3681,7 @@ el_21_dismantling_requirements =
 el_21_dismantling_requirements.each.with_index(1) do |ci, i|
   rt_for_el_21_scheme_criterion = nil
   rt_for_el_21_scheme_criterion = 
-    Requirement.find_or_create_by(
+    Requirement.create(
       name: ci, 
       display_weight: i,
       requirement_category: requirement_category_for_dismantling
