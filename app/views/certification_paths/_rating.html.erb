@@ -7,7 +7,10 @@
       rating = certificate_path.label_for_level(certificate: certificate_path.certificate)
       %>
     <% else %>
-      <% scores = rec.total_achieved_score %>
+      <% 
+        scores = certificate_path.scores_in_certificate_points 
+        scores = scores[:achieved_score_in_certificate_points]
+      %>
       <%
         if certificate_path.construction?
           if certificate_path.name == "Construction Certificate, 2019 - GSAS-CM Certificate"
