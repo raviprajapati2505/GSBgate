@@ -50,8 +50,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     @detailed_certificate_report = @certification_path.certification_path_report
     @scheme_mixes = certification_path&.scheme_mixes
     @scheme_names = @certification_path.schemes.collect(&:name)
-    @score = @certification_path.scores_in_certificate_points[:achieved_score_in_certificate_points]
-    
+    @score = get_certification_achieved_score(@project, @certification_path)[:achieved_score_in_certificate_points] rescue 0.0
     @stars = @certification_path.rating_for_score(@score, certificate: @certification_path.certificate).to_s
 
     if ['1', '2', '3', '4', '5', '6'].include?(@stars)

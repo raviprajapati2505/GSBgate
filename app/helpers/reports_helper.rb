@@ -78,4 +78,26 @@ module ReportsHelper
       else
       end
   end
+
+  def get_certification_achieved_score(project, certification_path)
+    if certification_path.construction?
+      if certification_path.name == "Construction Certificate, 2019 - GSAS-CM Certificate"
+        data_score = []
+        certification_path_ids = project.certification_paths.pluck(:id) - [certification_path.id]
+        certification_path_ids.each do |cp_id|
+          scheme_mix = CertificationPath.find(cp_id)&.scheme_mixes&.first
+          scheme_mix_scores = score_calculation(scheme_mix)
+          data_score << scheme_mix_scores
+        end
+        scores = total_CM_score(data_score)
+        scores = final_cm_revised_avg_scores(certification_path, scores)
+      else
+        scheme_mix = certification_path&.scheme_mixes&.first
+        scores = score_calculation(scheme_mix)
+      end
+
+    else
+      scores = certification_path.scores_in_certificate_points
+    end
+  end
 end
