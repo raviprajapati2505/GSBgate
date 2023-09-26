@@ -163,8 +163,8 @@ module Effective
           case rec.certification_scheme_name
           when 'Parks'
             'Parks'
-          when 'Interiors'
-            'Single Zone, Interiors'
+          when 'Fitout'
+            'Single Zone, Fitout'
           else
             rec.development_type_name
           end
@@ -183,9 +183,9 @@ module Effective
               when 'Districts'
                 results_array = collection_set.joins(certification_paths: [scheme_mixes: :scheme]).where("schemes.name = :term OR development_types.name = :term", term: term).pluck("certification_paths.id")
               when 'Single Zone'
-                results_array = collection_set.joins(certification_paths: [scheme_mixes: :scheme]).where("schemes.name = 'Interiors' OR development_types.name = :term", term: term).pluck("certification_paths.id")
+                results_array = collection_set.joins(certification_paths: [scheme_mixes: :scheme]).where("schemes.name = 'Fitout' OR development_types.name = :term", term: term).pluck("certification_paths.id")
               else
-                results_array = collection_set.joins(certification_paths: [scheme_mixes: :scheme]).where("development_types.name = :term AND schemes.name <> 'Interiors'", term: term).pluck("certification_paths.id")
+                results_array = collection_set.joins(certification_paths: [scheme_mixes: :scheme]).where("development_types.name = :term AND schemes.name <> 'Fitout'", term: term).pluck("certification_paths.id")
               end
             
               results.push(*results_array)

@@ -829,7 +829,7 @@ module ApplicationHelper
       "Expo Site",
       "Homes",
       "Hospitality",
-      "Interiors",
+      "Fitout",
       "Light Industry",
       "Mosques",
       "Offices",

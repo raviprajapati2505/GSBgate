@@ -365,7 +365,7 @@ function sortKeys(a, b, k) {
         "Homes",
         "Healthy Building Mark",
         "Energy Neutral Mark",
-        "Interiors",
+        "Fitout",
         "Energy Centers",
         "Neighborhoods"
       ]

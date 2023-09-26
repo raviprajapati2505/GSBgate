@@ -199,8 +199,8 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     data.append(["GSAS Version", "GSAS #{@certification_path.certificate&.only_version}"])
 
     unless @certification_path.construction?
-      if @certification_path&.scheme_names == 'Interiors'
-        data.append(["GSAS Scheme", 'GSAS Interiors'])
+      if @certification_path&.scheme_names == 'Fitout'
+        data.append(["GSAS Scheme", 'Fitout'])
       else
         data.append(["GSAS Scheme", @certification_path&.scheme_names])
       end

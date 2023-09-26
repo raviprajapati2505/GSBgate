@@ -337,8 +337,8 @@ class ProjectsController < AuthenticatedController
               case data.certification_scheme_name
               when 'Parks'
                 'Parks'
-              when 'Interiors'
-                'Single Zone, Interiors'
+              when 'Fitout'
+                'Single Zone, Fitout'
               else
                 data.development_type_name
               end

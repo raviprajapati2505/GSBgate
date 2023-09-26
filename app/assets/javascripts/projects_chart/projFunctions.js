@@ -1,4 +1,4 @@
-var BLDGS = /Core \+ Shell|Districts|Education|Entertainment|Expo Site|Healthcare|Hotels|Industrial|Light Industry|Mosques|Parks|Railways|Residential - Single|Construction Site|Offices|Commercial|Residential|Hospitality|Sports|Transportation|Workers Accomodation|Operations|Premium Scheme|Standard Scheme|Homes|Healthy Building Mark|Energy Neutral Mark|Interiors|Energy Centers|Neighborhoods/g
+var BLDGS = /Core \+ Shell|Districts|Education|Entertainment|Expo Site|Healthcare|Hotels|Industrial|Light Industry|Mosques|Parks|Railways|Residential - Single|Construction Site|Offices|Commercial|Residential|Hospitality|Sports|Transportation|Workers Accomodation|Operations|Premium Scheme|Standard Scheme|Homes|Healthy Building Mark|Energy Neutral Mark|Fitout|Energy Centers|Neighborhoods/g
 
 const certfictionStage = (project) => {
   let certifiedDescriptions = ["Certified", "Certificate Generated", "Certificate In Process"]
