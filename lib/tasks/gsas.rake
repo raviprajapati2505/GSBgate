@@ -227,7 +227,7 @@ namespace :gsas do
       page += 1
       # Destroy projects older than X without activated certificates
       old_empty_projects = Project
-                              .where('created_at < ?', DateTime.now - 30.days)
+                              .where('created_at < ?', DateTime.now - 60.days)
                               .where.not('EXISTS(SELECT id FROM certification_paths WHERE project_id = projects.id AND certification_path_status_id <> ?)', CertificationPathStatus::ACTIVATING)
                               .page(page).per(PAGE_SIZE)
       old_empty_projects.each do |old_empty_project|

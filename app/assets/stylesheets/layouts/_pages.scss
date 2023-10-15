@@ -1514,8 +1514,13 @@ th {
   background: linear-gradient(90deg, #61a60e, #3b5c15)
 }
 
+.ps-main .filter-btn {
+  background: linear-gradient(90deg, #30b5af, #375c5b) !important;
+  color: #fff;
+}
+
 .ps-main button {
-  background: linear-gradient(90deg, #61a60e, #3b5c15);
+  background: linear-gradient(90deg, #61a60e, #3b5c15) !important;
   color: #fff;
 }
 
