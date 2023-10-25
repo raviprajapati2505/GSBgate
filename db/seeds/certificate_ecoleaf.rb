@@ -41,7 +41,7 @@ requirement_category_for_dismantling =
 # Create certificates for certification type gsas EcoLeaf
 el_provisional_certificate = 
   Certificate.find_or_create_by(
-      name: 'GSAS-EcoLeaf, Stage 1: Provisional Certificate', 
+      name: 'GSAS-EcoLeaf, EcoLeaf Provisional Certificate', 
       certification_type: Certificate.certification_types[:ecoleaf_provisional_certificate], 
       certificate_type: Certificate.certificate_types[:ecoleaf_type], 
       assessment_stage: Certificate.assessment_stages[:ecoleaf_stage], 

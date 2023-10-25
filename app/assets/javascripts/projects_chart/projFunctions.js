@@ -28,7 +28,7 @@ const certfictionStage = (project) => {
       switch (project["Certification Stage"]) {
         case "Stage 2: EcoLeaf Certificate":
           return (certifiedDescriptions.indexOf(project["Certification Submission Status"]) > -1) ? 4 : 2;
-        case "Stage 1: Provisional Certificate":
+        case "EcoLeaf Provisional Certificate":
           return (certifiedDescriptions.indexOf(project["Certification Submission Status"]) > -1) ? 3 : 1;
         default:
           return 0;

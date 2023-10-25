@@ -101,7 +101,7 @@ class Certificate < ApplicationRecord
                                         Certificate.certification_types[:construction_certificate_stage3]
                                       when "GSAS Operations Certificate"
                                         Certificate.certification_types[:operations_certificate]
-                                      when "Stage 1: Provisional Certificate"
+                                      when "EcoLeaf Provisional Certificate"
                                         Certificate.certification_types[:ecoleaf_provisional_certificate]
                                       when "Stage 2: EcoLeaf Certificate"
                                         Certificate.certification_types[:ecoleaf_certificate]

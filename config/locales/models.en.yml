@@ -17,7 +17,7 @@ en:
             construction_certificate_stage2: "Stage 2: Substructure & Superstructure"
             construction_certificate_stage3: "Stage 3: Finishing"
             operations_certificate: "GSAS Operations Certificate"
-            ecoleaf_provisional_certificate: "Stage 1: Provisional Certificate"
+            ecoleaf_provisional_certificate: "EcoLeaf Provisional Certificate"
             ecoleaf_certificate: "Stage 2: EcoLeaf Certificate"
           certificate_titles:
             design_and_build: GSAS-D&B
@@ -32,7 +32,7 @@ en:
           construction_certificate_stage2: GSAS-CM - Stage 2
           construction_certificate_stage3: GSAS-CM - Stage 3
           operations_certificate: Operations certificate
-          ecoleaf_provisional_certificate: "Stage 1: Provisional Certificate"
+          ecoleaf_provisional_certificate: "EcoLeaf Provisional Certificate"
           ecoleaf_certificate: "Stage 2: EcoLeaf Certificate"
         certification_titles:
           letter_of_conformance: "Stage 1: LOC, Design Certificate"
@@ -42,7 +42,7 @@ en:
           construction_certificate_stage2: GSAS-CM - Stage 2
           construction_certificate_stage3: GSAS-CM - Stage 3
           operations_certificate: Operations certificate
-          ecoleaf_provisional_certificate: "Stage 1: Provisional Certificate"
+          ecoleaf_provisional_certificate: "EcoLeaf Provisional Certificate"
           ecoleaf_certificate: "Stage 2: EcoLeaf Certificate"
         certification_types_subtitles:
           letter_of_conformance: ""
