@@ -35,13 +35,13 @@ def create_certfication_path(i, row, project)
       offline_certification_paths.
       find_or_initialize_by(
         name: row["Certification Stage"]&.strip,
-        version: row["Certification Version"]&.strip
       )
 
     certification_path.development_type = row["Project Planning Type"]&.strip&.titleize
     certification_path.status = "Certified"
     certification_path.rating = row["Certification Rating"]&.strip
     certification_path.score = row["Certification Score"]
+    certification_path.version = row["Certification Version"]&.to_s
     certification_path.certified_at = row["Certification Awarded On"]
 
   unless certification_path.save
@@ -62,6 +62,7 @@ def create_scheme_mix(i, row, certification_path)
       )
 
     scheme_mix.weight = '100'
+    scheme_mix.subschemes = row["Certification Sub-Schemes"]&.strip&.titleize
 
     unless scheme_mix.save
       errors << "Row: #{i}, Scheme Mix Error: #{scheme_mix.errors.full_messages}"
@@ -97,13 +98,13 @@ def create_scheme_mix_criteria(i, row, scheme_mix)
 end
 
 # import projects
-@xlsx = Roo::Excelx.new("#{Rails.root}/db/imports/certified_offline_projects_v3.xlsx", extension: :xlsx)
+@xlsx = Roo::Excelx.new("#{Rails.root}/db/imports/certified_offline_projects_v4.xlsx", extension: :xlsx)
 
 @xlsx.each_with_pagename do |name, sheet|
   if(name == '22022023')
     @errors = []
     @header = @xlsx.row(1)
-
+    
     (2..@xlsx.last_row).each do |i|
       row = Hash[[@header, @xlsx.row(i)].transpose]
 
@@ -111,7 +112,7 @@ end
         project = create_project(i, row)
         certification_path = create_certfication_path(i, row, project) if project.persisted?
         scheme_mix = create_scheme_mix(i, row, certification_path) if certification_path.persisted?
-
+        
       rescue => e
         @errors << "Row: #{i}, General Error: #{e.message}"
       end
