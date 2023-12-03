@@ -34,13 +34,13 @@ module ApplicationHelper
   def manage_schemes_options(certification_path, assessment_method)
     schemes = certification_path&.development_type&.schemes&.select("DISTINCT ON (schemes.name) schemes.*")
 
-#    unless current_user.is_system_admin?
+   unless current_user.is_system_admin?
       # exclude schemes which were renamed.
-#      if assessment_method == 1 && current_user.service_provider.present?
-#        allowed_schemes = current_user.valid_user_sp_licences.pluck(:schemes).flatten.uniq
-#        schemes = schemes.where("schemes.name IN (:allowed_schemes)", allowed_schemes: allowed_schemes)
-#      end
-#    end
+     if assessment_method == 1 && current_user.service_provider.present?
+       allowed_schemes = current_user.valid_user_sp_licences.pluck(:schemes).flatten.uniq
+       schemes = schemes.where("schemes.name IN (:allowed_schemes)", allowed_schemes: allowed_schemes)
+     end
+   end
 
     if assessment_method == 1 && current_user.service_provider.present?
       schemes_with_only_checklist = ["Energy Centers"]

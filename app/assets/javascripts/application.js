@@ -37,7 +37,6 @@
  *= require surveys
  *= require chartkick
  *= require Chart.bundle
- *= require leaflet
  *= require leaflet-draw
  *= require moment
  *= require js-routes
