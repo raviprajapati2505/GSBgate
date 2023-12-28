@@ -1,0 +1,83 @@
+<div id="requirement-<%= requirement_datum.id %>" class="panel panel-default">
+    <div class="panel-heading">
+        <h4 class="panel-title">
+            <%= audit_log_label(requirement_datum) %>
+            <a href="#requirement-<%= requirement_datum.id %>-collapsable" data-parent="#accordion" data-toggle="collapse" class="collapsed" aria-expanded="false">
+                <% if requirement_datum.required? %>
+                    <%= ikoen('square-o', tooltip: t('.tooltip_requirement_required')) %>
+                <% elsif requirement_datum.provided? %>
+                    <%= ikoen('check-square-o', tooltip: t('.tooltip_requirement_provided')) %>
+                <% else %>
+                    <%= ikoen('square', tooltip: t('.tooltip_requirement_not_required')) %>
+                <% end %>
+                &nbsp;&nbsp;<%= requirement_datum.name %>
+                <% if requirement_datum.required? && !requirement_datum.due_date.nil? && Date.today > requirement_datum.due_date %>
+                    &nbsp;<%= ikoen('clock-o', class: 'due-date-expired', tooltip: t('.tooltip_due_date')) %>
+                <% end %>
+            </a>
+        </h4>
+    </div>
+    <div class="panel-collapse collapse" id="requirement-<%= requirement_datum.id %>-collapsable" aria-expanded="false" style="height: 0px;">
+        <div class="panel-body">
+            <% can_update_requirement_datum = can?(:update, requirement_datum) %>
+            <% can_update_status_requirement_datum = can?(:update_status, requirement_datum) %>
+            <% can_refuse_requirement_datum = can?(:refuse, requirement_datum) %>
+
+            <!-- Determine the form path, and by extension, the controller action -->
+            <% if can_update_requirement_datum %>
+                <% form_path_requirement_datum = project_certification_path_scheme_mix_scheme_mix_criterion_requirement_datum_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, requirement_datum) %>
+            <% else %>
+                <% if can_update_status_requirement_datum %>
+                    <% form_path_requirement_datum = update_status_project_certification_path_scheme_mix_scheme_mix_criterion_requirement_datum_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, requirement_datum) %>
+                <% else %>
+                    <% form_path_requirement_datum = '#' %>
+                <% end %>
+            <% end %>
+
+            <%= bootstrap_form_tag url: form_path_requirement_datum, method: 'put', remote: true, :html => { :multipart => true } do |f| %>
+                <div class="row">
+                    <div class="col-md-6">
+                        <% users = User.authorized_for_project(@project, @certification_path).with_project_team_role %>
+                        <% user_id = requirement_datum.user.id if requirement_datum.user.present? %>
+                        <%= f.select :user_id, options_for_select(users.map { |k| [k.full_name, k.id]}, user_id), {include_blank: true, label: 'Responsibility'}, class: 'select2-project-team-member', disabled: !can_update_requirement_datum %>
+                    </div>
+                    <div class="col-md-3">
+                        <% due_date = ((l requirement_datum.due_date, format: :short) if !requirement_datum.due_date.nil?) %>
+                        <%= f.text_field :due_date, value: due_date, prepend: ikoen('calendar'), class: 'datepicker-future', autocomplete: 'off', disabled: !can_update_requirement_datum %>
+                    </div>
+                    <div class="col-md-3">
+                        <%= f.select :status, options_for_select(RequirementDatum.statuses.keys.map { |k| [k.humanize, k]}, requirement_datum.status), {}, disabled: !(can_update_requirement_datum || can_update_status_requirement_datum) %>
+                    </div>
+                </div>
+                <%-# START COMMENT -%>
+                <% if false %>
+                    <% if requirement_datum.calculator_datum.present? %>
+                        <div class="hr-line-dashed"></div>
+                        <% calculator_template = requirement_datum.calculator_datum.calculator.name.constantize.name.demodulize.downcase %>
+                        <div>
+                            <% if File.exist?("app/views/calculators/_#{calculator_template}.html.erb") %>
+                                <%= render "calculators/#{calculator_template}", requirement_datum: requirement_datum, calculator_template: calculator_template, f: f %>
+                            <% else %>
+                                <%= render "calculators/general", requirement_datum: requirement_datum, calculator_template: calculator_template, f: f %>
+                            <% end %>
+                        </div>
+                    <% end %>
+                <% end %>
+                <%-# END COMMENT -%>
+
+                <% if can_update_requirement_datum || can_update_status_requirement_datum || can_refuse_requirement_datum %>
+                    <div class="hr-line-dashed"></div>
+                    <% if can_update_requirement_datum || can_update_status_requirement_datum %>
+                        <%= btn_save %>
+                    <% end %>
+                    <% if can_refuse_requirement_datum %>
+                        <%= btn_tag(type: :button, icon: 'ban', style: 'danger', text: 'Refuse this requirement', data: {toggle: 'modal', target: "#refuseRequirementModal#{requirement_datum.id}"}) %>
+                    <% end %>
+                <% end %>
+            <% end %>
+        </div>
+    </div>
+</div>
+<% if can?(:refuse, requirement_datum) %>
+    <%= render 'requirement_data/refuse_requirement', requirement_datum: requirement_datum %>
+<% end %>

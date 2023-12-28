@@ -1,0 +1,9 @@
+// Fill & open modal
+<% 
+  todos = @certification_path.todo_before_status_advance 
+  todos_errors = todos[0]
+  todos_error_schemes = todos[1].present? ? "Please check criteria #{todos[1]&.sort&.join(', ')}." : ''
+%>
+
+$('#editStatusCertificationPathModal').html("<%= escape_javascript(render 'edit_status', todos_errors: todos_errors, todos_error_schemes: todos_error_schemes) %>");
+$('#editStatusCertificationPathModal').modal('show');

@@ -1,0 +1,37 @@
+<% if actual_project_images.blank? %>
+  No actual project images were uploaded yet.
+<% else %>
+<div class="table-responsive">
+  <table class="table table-bordered datatable img-doc-table" cellspacing="0" width="100%">
+    <thead>
+    <tr>
+      <th class="all">File&nbsp;Name</th>
+      <th class="desktop">File&nbsp;Size</th>
+      <th class="desktop">Upload&nbsp;Date</th>
+      <th class="all">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% actual_project_images.each do |api| %>
+      <% if true %>
+        <tr class="document-approved">
+          <td data-order="<%= api['actual_image'] %>" data-search="<%= api['actual_image'] %>">
+            <%= image_tag(icon_for_filename(api['actual_image']), alt: api.actual_image.content_type, title: api.actual_image.content_type) + ' ' + api['actual_image'] %>
+          </td>
+          <td><%= number_to_human_size(api.actual_image.size) %></td>
+          <td data-order="<%= localize(api.created_at) %>" data-search="<%= localize(api.created_at) %>"><%= localize(api.created_at).gsub(' ', '&nbsp;').html_safe %></td>
+          <td>
+            <% if can?(:read, api) %>
+              <%= btn_download(project_actual_project_image_path(@project, api), size: 'small', tooltip: 'Download image') %>
+            <% end %>
+            <% if can?(:destroy, api) %>
+              <%= btn_link_to(project_actual_project_image_path(@project, api), method: :delete, data: { confirm: 'Are you sure to delete the image?'}, style: 'danger', size: 'small', icon: 'trash', tooltip: 'Delete image') %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    <% end %>
+    </tbody>
+  </table>
+  </div>
+<% end %>

@@ -1,0 +1,78 @@
+<% if scheme_mix_criteria_documents.blank? %>
+    N/A
+<% else %>
+    <div class="table-responsive">
+      <table class="table table-bordered document-table light-green" id="smcd_table" cellspacing="0" width="100%">
+          <thead>
+          <tr>
+              <th><%= check_box_tag "all", "", false, id: "scheme_criterion_document", class: "smcd_checkbox_parent" %></th>
+              <th class="all">File&nbsp;Name</th>
+              <th class="desktop">File&nbsp;Size</th>
+              <th class="desktop">Uploaded&nbsp;by</th>
+              <th class="desktop">Upload&nbsp;Date</th>
+              <th class="desktop">Approved&nbsp;Date</th>
+              <th class="all">PCR</th>
+              <th class="all">Status</th>
+              <th class="all" style="min-width:190px">Actions</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% scheme_mix_criteria_documents.order(created_at: :desc).each do |smcd| %>
+              <% if can?(:read, smcd) %>
+                  <tr class="document-<%= smcd.status.dasherize %>">
+                      <td>
+                          <% if smcd.approved? %>
+                              <%= check_box_tag "document", smcd.id,false, id: "scheme_criterion_document_#{smcd.id}", class: "smcd_child_checkbox" %>
+                          <% else %>
+                              <%= check_box_tag "document", smcd.id, true, disabled: true %>
+                          <% end %>
+                      </td>
+                      <td data-order="<%= smcd.name %>" data-search="<%= smcd.name %>">
+                            <span title="<%= smcd.name %>" style="width: 62.0104px!important;">
+                              <%= image_tag(icon_for_filename(smcd.name), alt: smcd.content_type, title: smcd.content_type) + ' ' + smcd.name.truncate(50) %>
+                            </span>
+                      </td>
+                      <td data-order="<%= smcd.size %>"><%= number_to_human_size(smcd.size) %></td>
+                      <td><%= smcd.document&.user&.full_name %></td>
+                      <td data-order="<%= smcd.document.created_at.to_i %>"><%= localize(smcd.document.created_at).gsub(' ', '&nbsp;').html_safe %></td>
+                      <td><%= localize(smcd.approved_date).gsub(' ', '&nbsp;').html_safe if smcd.approved_date.present? %></td>
+                      <td><%= smcd.pcr_context %></td>
+                      <td data-order="<%= smcd.status.humanize %>">
+                          <% if can?(:update_status, smcd) %>
+                          <div class="approved-badge">
+                          <span class="certi-name-badge mr-1"><%= image_tag('layout/approved-check.png') %></span>
+                              <%= link_to(edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, smcd), remote: true) do %>
+                                  <%= smcd.status.humanize.gsub(' ', '&nbsp;').html_safe %>
+                              <% end %>
+                              </div>
+                          <% else %>
+                              <%= smcd.status.humanize.gsub(' ', '&nbsp;').html_safe %>
+                          <% end %>
+                      </td>
+                      <td>
+                          <%= audit_log_label(smcd) %>
+                          <% if can?(:read, smcd) && download_document_permitted %>
+                            <div class="d-inline-block download-btn">
+                              <%= btn_download(project_certification_path_document_path(@project, @certification_path, smcd.document), size: 'small', tooltip: 'Download document') %>
+                            </div>
+                              <% end %>
+                          <% if can?(:create_link, smcd) && download_document_permitted %>
+                              <%= btn_link_to(new_link_project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, smcd), remote: true, size: 'small', icon: 'link', tooltip: 'Link document to other criteria') %>
+                          <% end %>
+                          <% if can?(:unlink, smcd) && download_document_permitted %>
+                            <%= btn_link_to(unlink_project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, smcd), remote: true, size: 'small', icon: 'chain-broken', tooltip: 'Unlink document from other criteria') %>
+                          <% end %>
+                          <% if can?(:destroy, smcd.document) %>
+                            <%= btn_link_to(project_certification_path_document_path(@project, @certification_path, smcd.document), method: :delete, data: {confirm: 'Are you sure to delete the document and unlink it from all criteria ?'}, style: 'danger', size: 'small', icon: 'trash', tooltip: 'Delete document') %>
+                          <% end %>
+                      </td>
+                  </tr>
+              <% end %>
+          <% end %>
+          </tbody>
+      </table>
+    </div>
+    <div id="editStatusSchemeMixCriteriaDocumentModal" class="modal fade"></div>
+    <div id="newLinkSchemeMixCriteriaDocumentModal" class="modal fade"></div>
+    <div id="destroyLinkSchemeMixCriteriaDocumentModal" class="modal fade"></div>
+<% end %>

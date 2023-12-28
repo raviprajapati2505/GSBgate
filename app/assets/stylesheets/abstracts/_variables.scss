@@ -1,0 +1,63 @@
+// color system
+$white:    #ffffff !default;
+$gray: #f3f3f4;
+$light-gray: #d1dade;
+$gray-100: #f3f3f3 !default;
+$gray-200: #dddddd !default;
+$gray-300: #7c8081 !default;
+$gray-400: #f3f2f1 !default;
+$gray-500: #efeff0 !default;
+$gray-600: #606a73 !default;
+$gray-700: #3a4f57 !default;
+$gray-800: #2A2E36 !default;
+$gray-900: #262626 !default;
+$black:    #000000 !default;
+
+
+ // Default label, badget
+$page-bg: #f0f2f3;
+$label-badget-color: #5e5e5e;
+$light-blue: #f3f6fb;
+$primary: #0070b3;
+$primary-light: #e3f2e4;
+$secondary: $gray-700; // Secondary color
+$dark-gray: #c2c2c2; // Default color
+$info: #65c9d0; // Info color
+$info-dark: #1e85c7; // Info dark color
+$success: #3ebc8e; // Success color
+$warning: #fec55b; // Warrning color
+$danger: #f48176; // Danger color
+
+// Main colors
+$skin-gord-color-light: #edf5e4;
+$skin-gord-a-color: #05507d;
+$skin-gord-page-bg: #f4f6fa;
+$skin-gord-color-gsas-trust-team: $gray-300;
+
+// Basic Colors
+$text-color: $white; // Body text
+
+// Spiner color and margin
+$spin-color: $primary;
+$spin-margin: 0 auto;
+
+// IBOX colors ( default panel colors)
+$border-color: #e7eaec; // IBox border
+$table-bg-color: #e6e7e8; // IBox border
+$ibox-title-bg: $white; // IBox Background header
+$ibox-content-bg: $white; // IBox Background content
+
+//Sidebar width
+$sidebar-width: 220px;
+
+// Boxed layout width
+$boxed-width: 1200px;
+$boxed-backgound: image-url("patterns/shattered.png");
+
+//Border radius for buttons
+$btn-border-radius: 4px;
+
+//Navigation
+$nav-bg: $gray-700;
+$nav-profil-pattern: image-url("patterns/header-profile.png") no-repeat;
+$nav-text-color: #a7b1c2;

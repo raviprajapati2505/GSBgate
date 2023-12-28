@@ -1,0 +1,6 @@
+<% survey_question.question_options.each do |option| %>
+  <p class="m-l">
+    <%= radio_button_tag "#{question_response.object_name}[value]", option.option_text %>
+    <%= option.option_text %>
+  </p>
+<% end %>

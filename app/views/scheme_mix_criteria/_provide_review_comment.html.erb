@@ -1,0 +1,29 @@
+<div class="modal-dialog">
+  <%= bootstrap_form_for([@project, @certification_path, @scheme_mix, @scheme_mix_criterion], url: add_review_comment_project_certification_path_scheme_mix_scheme_mix_criterion_path, method: 'put') do |f| %>
+      <div class="modal-content">
+        <div class="modal-header">
+          <%= btn_close_modal %>
+          <h4 class="modal-title">Provide PCR Comment</h4>
+        </div>
+        <div class="modal-body">
+          <%= f.text_area :audit_log_user_comment, rows: 4 %>
+
+          <%= f.file_field :pcr_document %>
+
+          <% if can?(:index, AuditLog.new(audit_log_visibility_id: AuditLogVisibility::INTERNAL, project: @project)) %>
+              <%= f.form_group :audit_log_visibility do %>
+                  <%= f.radio_button :audit_log_visibility, AuditLogVisibility::PUBLIC, label: 'Public Comment', checked: true, disabled: false %>
+                  <span class="help-block">Everyone assigned to this project will be able to view this comment</span>
+                  <%= f.radio_button :audit_log_visibility, AuditLogVisibility::INTERNAL, label: 'GSAS Trust Internal Comment', disabled: false %>
+                  <span class="help-block">Only the GSAS trust team can view this comment</span>
+              <% end %>
+          <% end %>
+        </div>
+        <div class="modal-footer">
+          <% if can?(:provide_review_comment, @scheme_mix_criterion) %>
+              <%= btn_save %>
+          <% end %>
+        </div>
+      </div>
+  <% end %>
+</div>

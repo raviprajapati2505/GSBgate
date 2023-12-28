@@ -1,0 +1,39 @@
+<%= render partial: 'devise/mailer/mail_header' %>
+<tr>
+  <td style="width: 650pt; border: solid #CCC 1pt; background: white; padding: 15pt 15pt;">
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped user-details-table">
+      <tbody>
+        <tr>
+          <p>
+            <span style='font-size: 9pt; font-family: "Verdana", "sans-serif";'><%= t("devise.mailer.invitation_instructions.hello", email: @resource.email) %></span>
+          </p>
+
+          <p>
+            <span style='font-size: 9pt; font-family: "Verdana", "sans-serif";'><%= t("devise.mailer.invitation_instructions.someone_invited_you", url: root_url) %></span>
+          </p>
+          <p>
+            <span style='font-size: 9pt; font-family: "Verdana", "sans-serif";'><%= link_to t("devise.mailer.invitation_instructions.accept"), accept_invitation_url(@resource, invitation_token: @token) %></span>
+          </p>
+      
+          <p>
+            <span style='font-size: 9pt; font-family: "Verdana", "sans-serif";'>
+              <% if @resource.invitation_due_at %>
+                <%= t("devise.mailer.invitation_instructions.accept_until", due_date: l(@resource.invitation_due_at, format: :'devise.mailer.invitation_instructions.accept_until_format')) %>
+              <% end %>
+            </span>
+          </p>
+        
+          <p>
+            <span style='font-size: 9pt; font-family: "Verdana", "sans-serif";'><%= t("devise.mailer.invitation_instructions.ignore") %></span>
+          </p>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p>
+      <span style='font-size: 9pt; font-family: "Verdana", "sans-serif";'>With kind regards,</span>
+    </p>
+  </td>
+</tr>
+<%= render partial: 'devise/mailer/mail_footer' %>

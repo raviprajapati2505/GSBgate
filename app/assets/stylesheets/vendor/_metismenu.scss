@@ -1,0 +1,61 @@
+.metismenu {
+  .plus-minus,
+  .plus-times {
+    float: right;
+  }
+  .arrow {
+    float: right;
+    line-height: 1.42857;
+  }
+  .glyphicon.arrow:before {
+    content: "\e079";
+  }
+  .active {
+    & > a {
+      & > .glyphicon.arrow:before {
+        content: "\e114";
+      }
+      & > .fa.arrow:before {
+        content: "\f107";
+      }
+      & > .ion.arrow:before {
+        content: "\f3d0";
+      }
+      & > .fa.plus-times {
+        -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg);
+      }
+      & > .fa.plus-minus:before {
+        content: "\f068";
+      }
+    }
+  }
+  .fa.arrow:before {
+    content: "\f104";
+  }
+  .ion.arrow:before {
+    content: "\f3d2";
+  }
+  .fa.plus-minus:before,
+  .fa.plus-times:before {
+    content: "\f067";
+  }
+  .collapse {
+    display: none;
+  }
+  .collapse.in {
+    display: block;
+  }
+  .collapsing {
+    position: relative;
+    height: 0;
+    overflow: hidden;
+    -webkit-transition-timing-function: ease;
+    transition-timing-function: ease;
+    -webkit-transition-duration: 0.35s;
+    transition-duration: 0.35s;
+    -webkit-transition-property: height, visibility;
+    transition-property: height, visibility;
+  }
+}

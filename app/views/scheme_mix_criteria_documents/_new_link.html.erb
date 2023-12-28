@@ -1,0 +1,67 @@
+<div class="modal-dialog">
+    <%= bootstrap_form_for([@project, @certification_path, @scheme_mix, @scheme_mix_criterion, @scheme_mix_criteria_document], url: create_link_project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_path, layout: :inline, method: 'post') do |f| %>
+        <div class="modal-content">
+            <div class="modal-header">
+                <%= btn_close_modal %>
+                <h4 class="modal-title"><%= t('.modal_title') %></h4>
+            </div>
+            <div class="modal-body">
+                <p>Document <strong><%= @scheme_mix_criteria_document.name %></strong> is currently linked to the following criteria:</p>
+                <ul>
+                    <% smcd_ids = [] %>
+                    <% @scheme_mix_criteria_document.document.scheme_mix_criteria.includes(scheme_criterion: :scheme_category).order('scheme_categories.display_weight, scheme_criteria.number').each do |scheme_mix_criterion| %>
+                        <% smcd_ids << scheme_mix_criterion.id %>
+                        <li><%= scheme_mix_criterion.full_name %></li>
+                    <% end %>
+                </ul>
+                <hr/>
+                <p>If this document also supports requirements in other criteria, select them below:</p>
+                <ul class="criteria-checkboxes checkbox-list">
+                    <% @scheme_mix.scheme_categories.uniq.each do |category| %>
+                        <% if @scheme_mix.scheme_mix_criteria.for_category(category).exists?(main_scheme_mix_criterion_id: nil) %>
+                            <li>
+                                <a href="#"><i class="fa fa-caret-square-o-right"></i>&nbsp;<%= category.name %></a>
+                                <ul style="display:none;">
+                                    <% @scheme_mix.scheme_mix_criteria.for_category(category).order('scheme_criteria.number').each do |scheme_mix_criterion| %>
+                                        <% unless scheme_mix_criterion.main_scheme_mix_criterion_id.present? %>
+                                            <%= fields_for "scheme_mix_criteria_document[]", SchemeMixCriteriaDocument.new do |smcd_fields| %>
+                                                <li>
+                                                    <% default_checkbox_value = smcd_ids.include?(scheme_mix_criterion.id) %>
+                                                    <%= smcd_fields.check_box :scheme_mix_criterion_id, {id: 'scheme_mix_criteria_document__' + scheme_mix_criterion.id.to_s, checked: default_checkbox_value, disabled: default_checkbox_value}, scheme_mix_criterion.id, nil %>
+                                                    <%= smcd_fields.label scheme_mix_criterion.id.to_s, scheme_mix_criterion.full_name %>
+                                                </li>
+                                            <% end %>
+                                        <% end %>
+                                    <% end %>
+                                </ul>
+                            </li>
+                        <% end %>
+                    <% end %>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <% if can?(:create_link, @scheme_mix_criteria_document) %>
+                    <%= btn_save %>
+                <% end %>
+            </div>
+        </div>
+    <% end %>
+</div>
+
+<script>
+    $(function() {
+        // Handle select criteria button click
+        $('.show-criteria-checkboxes').off("click").click(function(e) {
+            $(this).siblings('.criteria-checkboxes').show();
+            $(this).hide();
+            e.preventDefault();
+        });
+
+        // Handle scheme mix criteria lists toggle
+        $('ul.criteria-checkboxes li a').off("click").click(function (e) {
+            $(this).siblings('ul').slideToggle();
+            $(this).children('i').toggleClass('fa-caret-square-o-right').toggleClass('fa-caret-square-o-down');
+            e.preventDefault();
+        });
+    });
+</script>

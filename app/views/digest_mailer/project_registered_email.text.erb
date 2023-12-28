@@ -1,0 +1,27 @@
+Project Registered
+==================
+
+Dear Ms/Mr
+
+A new project with name <%= @project.name %> is registered.
+
+Certificate Type : <%= t(Certificate.certificate_types.key(@project.certificate_type), scope: 'activerecord.attributes.certificate.certificate_types') %>
+Service provider : <%= @project.service_provider %>
+Project owner : <%= @project.owner %>
+Developer : <%= @project.developer %>
+
+Building Type Group: <%= @project.building_type_group&.name %>
+Description : <%= @project.description %>
+Completion Year : <%= @project.construction_year %>
+
+Address : <%= @project.address %>
+Location : <%= @project.location %>
+Country : <%= @project.country %>
+
+Project Plot Area (A) : <%= @project.project_site_area %>m²
+Buildings Gross Built up Area (B) : <%= @project.gross_area %>m²
+Buildings Footprint (C) : <%= @project.buildings_footprint_area %>m²
+Gross Certified Area (A+B-C) : <%= @project.certified_area %>m²
+Car Park Area : <%= @project.carpark_area %>m²
+
+With kind regards,

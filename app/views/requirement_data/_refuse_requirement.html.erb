@@ -1,0 +1,23 @@
+<div class="modal fade" id="refuseRequirementModal<%= requirement_datum.id %>">
+    <div class="modal-dialog">
+        <%= bootstrap_form_tag url: refuse_requirement_datum_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, requirement_datum.id), method: 'put' do |f| %>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <%= btn_close_modal %>
+                    <h4 class="modal-title"><%= t('.modal_title') %></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-info" role="alert">
+                        <%= ikoen_with_text('info-circle', t('.info_refuse_requirement')) %>
+                    </div>
+                    <%= f.text_area :audit_log_user_comment, label: 'Comment', rows: 4 %>
+                </div>
+                <div class="modal-footer">
+                    <% if can?(:refuse, requirement_datum) %>
+                        <%= btn_save %>
+                    <% end %>
+                </div>
+            </div>
+        <% end %>
+    </div>
+</div>

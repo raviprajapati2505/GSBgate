@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>GSBgate &gt; <%= strip_tags @page_title %></title>
+
+    <!-- Icons -->
+    <%= render 'layouts/icons' %>
+    <!-- Main css styles -->
+    <%= stylesheet_link_tag 'application', media: 'all' %>
+    <!-- Main javascript files -->
+    <%= javascript_include_tag 'application' %>
+    <%= csrf_meta_tags %>
+</head>
+<body class="top-navigation skin-gord after-login">
+<div id="wrapper">
+    <div id="page-wrapper">
+        <!-- Navbar -->
+        <%= render 'layouts/topnavbar' %>
+
+        <div class="container-fluid px-sm-4 px-md-5">
+            <div class="gord-transparent page-heading">
+                <div class="row">
+                    <div class="col-md-10">
+                        <div class="row">
+                            <div class="col-sm-12 col-xs-12">
+                                <h2>
+                                    <%= @page_title_prefix if @page_title_prefix.present? %>
+                                    <%= @page_title.html_safe %>
+                                    <%= @page_title_suffix if @page_title_suffix.present? %>
+                                </h2>
+                            </div>
+                            <div class="col-sm-12 col-xs-12">
+                                <div class="breadcrumb-wrapper">
+                                    <%= render 'layouts/breadcrumb', model: @controller_model %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2 back-button-wrapper">
+                        <%= btn_link_to('javascript:history.back();', icon: 'caret-left', text: 'Return to previous page', style: 'link', size: 'extra_small') %>
+                    </div>
+                </div>
+            </div>
+            <div class="gord-transparent">
+                <div class="row">
+                    <% if notice %>
+                        <p class="flash flash-success hidden"><%= notice.html_safe %></p>
+                    <% end %>
+                    <% if alert %>
+                        <p class="flash flash-danger hidden"><%= alert.html_safe %></p>
+                    <% end %>
+                    <!-- Main view  -->
+                    <%= yield %>
+                </div>
+            </div>
+        </div>
+        <!-- Footer -->
+        <%= render 'layouts/footer' %>
+    </div>
+</div>
+<div id="auditLogModal" class="modal fade audit-log-modal"></div>
+<div class="modal fade" id="confirmationModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <%= btn_close_modal %>
+                <h4 class="modal-title"><%= t('.modal_title') %></h4>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <%= btn_tag(text: t('.btn_save'), class: 'okBtn') %>
+                <%= btn_tag(text: t('.btn_cancel'), style: 'white', data: {dismiss: 'modal'}) %>
+            </div>
+        </div>
+    </div>
+</div>
+<%= yield(:js) -%>
+
+<%= javascript_include_tag 'task' %>
+
+</body>
+</html>

@@ -1,0 +1,15 @@
+<div class="col-md-12">
+    <div class="ibox">
+        <div class="ibox-content">
+            <%= render_datatable(@projects_surveys_datatable) %>
+        </div>
+    </div>
+    <%= btn_link_to(survey_dashboard_index_path, icon: 'backward', text: 'DashBoard') %>
+</div>
+
+<script>
+    $(document).ready(function(){
+        $('body').addClass('page-bg-dark');
+        $('.dataTables_entries').parent().closest('div').addClass('dataTable-pagination');
+    });
+</script>

@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  id: 1
+  name: MyProject
+  owner_id: 2
+
+two:
+  id: 2
+  name: MySecondProject
+  owner_id: 7

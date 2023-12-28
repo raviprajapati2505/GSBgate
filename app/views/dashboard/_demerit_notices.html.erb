@@ -1,0 +1,57 @@
+<table class="table mb-0">
+  <tbody>
+    <tr>
+      <th>Flags</th>
+      <th>GSAS Trust Notification</th>
+      <th>Practitioner Acknowledge</th>
+      <% if ['credentials_admin'].include?(current_user.role) %>
+        <th>Action</th>
+      <% end %>
+    </tr>
+    <% @user&.demerit_flags.each.with_index(1) do |flag, index| %>
+      <tr>
+        <td>Flag 0<%= index%></td>
+        <td>
+          <div class="">
+            <% if flag&.gsas_trust_notification.present? %>
+              <% if can?(:download_user_files, @user) %>
+                <%= btn_download(download_user_files_user_path(@user, file: "gsas_trust_notification", demerit_flag: flag), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('gsas_trust_notification')}") %>
+              <% end %>
+              <%= truncate(flag&.gsas_trust_notification&.file&.filename, length: 35) %>
+            <% end %>
+          </div>
+          <br>
+          <% if ['credentials_admin'].include?(current_user.role) %>
+            <div class="">
+              <%= render partial: 'file_upload', locals: { file_name: 'gsas_trust_notification', demerit_flag: flag.id, access_licence_id: ''} %>
+            </div>
+          <% end %>
+        </td>
+        <td>
+          <div class="">
+            <% if flag&.practitioner_acknowledge.present? %>
+              <% if can?(:download_user_files, @user) %>
+                <%= btn_download(download_user_files_user_path(@user, file: "practitioner_acknowledge", demerit_flag: flag), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('practitioner_acknowledge')}") %>
+              <% end %>
+              <%= truncate(flag&.practitioner_acknowledge&.file&.filename, length: 35) %>
+            <% end %>
+          </div>
+          <br>
+          <% if ['default_role', 'service_provider'].include?(current_user.role) %>
+            <div class="">
+              <%= render partial: 'file_upload', locals: { file_name: 'practitioner_acknowledge', demerit_flag: flag.id, access_licence_id: '' } %>
+            </div>
+          <% end %>
+        </td>
+        <% if ['credentials_admin'].include?(current_user.role) %>
+          <td>
+            <%= btn_link_to(demerits_path(flag.id), {icon: 'trash', class: 'btn btn-xs', style: 'danger', method: :get, data: {confirm: 'Do you really want to delete demerit flag?'}}) %>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<% if ['credentials_admin'].include?(current_user.role) %>
+  <%= btn_link_to(increase_demerit_flag_user_path(@user), {icon: 'exclamation-triangle', text: 'Add More', style: 'danger', method: :get, data: {confirm: 'Are you sure want to send demerit warning to this user?'}}) %>
+<% end %>

@@ -1,0 +1,24 @@
+<% achieved ||= false %>
+<% submitted ||= false %>
+
+<% if certificate.design_and_build? %>
+  <% score = 0 if score < 0 %>
+<% end %>
+
+<div class="d-flex justify-content-between align-items-center <% if achieved %>font-weight-bold<% end %>">
+
+  <% if ['score', 'score_and_rating'].include?(display_item) %>
+    <%= render partial: 'certification_paths/scores', locals: { score_label: score_label, certificate: certificate, score: score } %>
+  <% end %>
+    <%# unless certificate.construction_certificate_stage1? || certificate.construction_certificate_stage2? || certificate.construction_certificate_stage3? %>
+      <% if display_item == 'both' %>
+        <span>
+            &nbsp;&nbsp;=&nbsp;&nbsp;
+        </span>
+      <% end %>
+
+      <% if ['rating', 'score_and_rating'].include?(display_item) %>
+        <%= render partial: 'certification_paths/rating_labels', locals: { certification_path: certification_path, score: score, certificate: certificate, achieved: achieved, submitted: submitted } %>
+      <% end %>
+    <%# end %>
+</div>

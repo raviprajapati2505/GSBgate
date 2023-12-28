@@ -1,0 +1,6 @@
+<ol class="breadcrumb">
+    <% breadcrumbs = breadcrumbs(model) %>
+    <% breadcrumbs[:names].each_with_index do |breadcrumb_name, index| %>
+        <li><%= link_to(breadcrumb_name, breadcrumbs[:paths][index]) %></li>
+    <% end %>
+</ol>

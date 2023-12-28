@@ -1,0 +1,2 @@
+# System admins
+User.create!(username: 'sas@vito.be', encrypted_password: '$2a$10$6fAZYtOmCG/.pBV5pYg7puIPFZJT4zOSP7XNCwuAtdFSACH9oZyO6', email: 'sas@vito.be', linkme_user: false, role: :system_admin, name: 'System admin')

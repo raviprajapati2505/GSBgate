@@ -1,0 +1,189 @@
+<%
+   raise('Project must be specified') if project.nil?
+   raise('Team must be specified') if team.nil?
+   project_user_roles = {}
+   case team
+     when :project_team
+       title = t('.project_team.title')
+       title_modal = t('.project_team.title_modal')
+       project_users = project.projects_users.project_team_with_type(certification_team_type)
+       if can?(:create, ProjectsUser.new(project_id: project.id, role: ProjectsUser.roles[:project_team_member]))
+         project_user_roles[:project_team_member] = ProjectsUser.roles[:project_team_member]
+       end
+       if can?(:create, ProjectsUser.new(project_id: project.id, role: ProjectsUser.roles[:cgp_project_manager]))
+         project_user_roles[:cgp_project_manager] = ProjectsUser.roles[:cgp_project_manager]
+       end
+       modal_id = "addProjectTeamModal#{certification_team_type}"
+     when :gsas_trust_team
+       title = t('.certifier_team.title')
+       title_modal = t('.certifier_team.title_modal')
+       project_users = project.projects_users.gsas_trust_team_with_type(certification_team_type)
+       if can?(:create, ProjectsUser.new(project_id: project.id, role: ProjectsUser.roles[:certifier]))
+         project_user_roles[:certifier] = ProjectsUser.roles[:certifier]
+       end
+       if can?(:create, ProjectsUser.new(project_id: project.id, role: ProjectsUser.roles[:certification_manager]))
+         project_user_roles[:certification_manager] = ProjectsUser.roles[:certification_manager]
+       end
+       modal_id = "addGsasTrustTeamModal#{certification_team_type}"
+     when :enterprise_clients
+       title = t('.enterprise_clients.title')
+       title_modal = t('.enterprise_clients.title_modal')
+       project_users = project.projects_users.enterprise_clients
+       if can?(:create, ProjectsUser.new(project_id: project.id, role: ProjectsUser.roles[:enterprise_client]))
+         project_user_roles[:enterprise_client] = ProjectsUser.roles[:enterprise_client]
+       end
+       modal_id = "addEnterpriseClientModal#{certification_team_type}"
+   end
+   can_create_new_project_user = (project_user_roles.count > 0)
+%>
+<% if can?(:read, project_users[0]) %>
+    <div class="ibox-content table-responsive p-0 mt-1">
+        <% if project_users.count.zero? %>
+            <% if team != :enterprise_clients %>
+                <p class="margin-top-1">No users found.</p>
+            <% end %>
+        <% else %>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover datatable one-common-table" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th class="w-50 border-left-0 border-bottom-0"><%= title %></th>
+                        <th class="border-bottom-0">Name</th>
+                        <th class="border-bottom-0">Email</th>
+                        <% if team != :enterprise_clients %>
+                            <th class="border-right-0 border-bottom-0">Tasks</th>
+                        <% end %>
+                    </tr>
+                </thead>
+                <tbody>
+                <% project_users.projects_user_role(title).each do |role| %>
+                  <% rowspan = find_rowspan(projects_users_count_with_role(project_users, role)) %>
+                    <tr>
+                        <td rowspan="<%= rowspan %>" style="width: 391px;border-left:0px">
+                            <% if (role == 'enterprise_client') %>
+                                <%= 'Stakeholders' %>
+                            <% else %>
+                                <%= t(role, scope: 'activerecord.attributes.projects_user.roles' ) %>
+                            <% end %>
+                        </td>
+                        <% project_users.with_role(role).each_with_index do |projects_user, index| %>
+                            <% unless index == 1 %>
+                                <tr>
+                            <% end %>
+                            <td>
+                                <%= can_link_to(project_user_path(project, projects_user, certification_path_id: certification_path&.id), projects_user) do %>
+                                    <%= projects_user.user.full_name %>
+                                <% end %>
+                            </td>
+                            <td>
+                                <%= projects_user.user.email %>
+                            </td>
+                            <% if team != :enterprise_clients %>
+                                <td>
+                                    <span class="badge badge-primary"><%= TaskService::count_tasks(user: projects_user.user, project_id: project.id, certification_path_id: certification_path&.id) %></span>
+                                </td>
+                            <% end %>
+                            <% unless index == 1 %>
+                                </tr>
+                            <% end %>
+                        <% end %>
+                    </tr>
+                <% end %>
+                </tbody>
+            </table>
+            </div>
+        <% end %>
+        <% if can_create_new_project_user %>
+            <div class="hr-line-dashed"></div>
+            <%= btn_tag(icon: 'user-plus', text: title_modal, data: {toggle: 'modal', target: "##{modal_id}"}) %>
+        <% end %>
+    </div>
+
+<div class="modal fade" id="<%= modal_id %>" aria-hidden="true" >
+    <div class="modal-dialog">
+        <%= bootstrap_form_for([project, @projects_user], as: :authorization, method: 'post', url: project_users_path(project, @projects_user)) do |f| %>
+            <%= fields_for 'projects_users[]', ProjectsUser.new do |pu| %>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <%= btn_close_modal %>
+                        <h4 class="modal-title"><%= title_modal %></h4>
+                    </div>
+                    <div class="modal-body find-users-modal" data-project-id="<%= @project.id %>" data-gord-employee="<%= (team == :gsas_trust_team) ? '1' : '0' %>">
+                        <div class="templates" style="display:none;">
+                            <script class="existing-user" type="text/x-custom-template">
+                                <tr data-user-uid="____user_id____">
+                                    <td>
+                                        ____user_name____
+                                        <%= pu.hidden_field :user_id, { value: '____user_id____' } %>
+                                    </td>
+                                    <%= pu.hidden_field :certification_team_type, { value: certification_team_type } %>
+                                    <td>
+                                        This user will be added to the project as<br />
+                                        <%= pu.select :role, project_user_roles.keys.map { |k| [t(k, scope: 'activerecord.attributes.projects_user.roles'), k] } %>
+                                    </td>
+                                    <td>
+                                        <%= btn_tag(style: 'danger', size: 'small', icon: 'trash', class: 'remove', type: 'button') %>
+                                    </td>
+                                </tr>
+                            </script>
+                            <script class="unknown-user" type="text/x-custom-template">
+                                <tr data-user-uid="____email____">
+                                    <%= pu.hidden_field :certification_team_type, value: certification_team_type %>
+                                    <td>
+                                        ____email____
+                                        <%= hidden_field_tag 'emails[]', '____email____' %>
+                                    </td>
+                                    <td>
+                                        This user will be invited to gsas.qa by email.
+                                    </td>
+                                    <td>
+                                        <%= btn_tag(style: 'danger', size: 'small', icon: 'trash', class: 'remove', type: 'button') %>
+                                    </td>
+                                </tr>
+                            </script>
+                            <script class="error-user" type="text/x-custom-template">
+                                <tr data-user-uid="____user_id____">
+                                    <td>
+                                        ____user_name____
+                                    </td>
+                                    <td>
+                                        ____error____
+                                    </td>
+                                    <td>
+                                        <%= btn_tag(style: 'danger', size: 'small', icon: 'trash', class: 'remove', type: 'button') %>
+                                    </td>
+                                </tr>
+                            </script>
+                        </div>
+                        <div class="form-group">
+                            <%= label_tag 'email' + team.to_s, 'Find Users by Email', class: 'control-label' %>
+                            <div class="input-group">
+                                <%= text_field_tag 'email' + team.to_s, '', class: 'email-field form-control' %>
+                                <%= hidden_field_tag 'certification_team_type', certification_team_type, class: 'certification-team-type-field form-control' %>
+                                <span class="input-group-btn">
+                                    <%= btn_tag(class: 'find-users-by-email-btn', icon: 'search', style: 'white', type: 'button') %>
+                                </span>
+                            </div>
+                            <p class="help-block"></p>
+                        </div>
+                        <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover datatable users-table" style="display:none;">
+                            <tbody>
+                                <tr>
+                                    <th>User</th>
+                                    <th>Action</th>
+                                    <th>&nbsp;</th>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer" style="display:none;">
+                        <%= btn_save %>
+                    </div>
+                </div>
+            <% end %>
+        <% end %>
+    </div>
+</div>
+<% end %>

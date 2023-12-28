@@ -1,0 +1,40 @@
+<% survey_questions.each.with_index(1) do |question, i| %>
+  <div id="survey-question-<%= question.id %>" class="panel panel-default border-0 br-5" data-sortable-id='<%= question.id %>'>
+    <div class="ibox table-mb-0">
+      <a href="#survey-question-<%= question.id %>-collapsable" data-parent="#accordion" data-toggle="collapse" class="collapsed" aria-expanded="false">
+        <div class="panel-heading">
+          <h3 class="m-l">
+            <i class="fa fa-bars m-r"></i>
+            <b>
+              <%= "Que: #{question.question_text}" %>
+            </b>
+          </h3>
+        </div>
+      </a>
+      <div class="panel-collapse collapse" id="survey-question-<%= question.id %>-collapsable" aria-expanded="false" style="height: 0px;">
+        <div class="ibox-content table-responsive">
+          <table class="table table-bordered table-striped">
+            <tbody>
+              <%= render partial: "survey_types/question_detail", locals: { question: question } %>
+            </tbody>
+          </table>
+          <% unless question.fill_in_the_blank? %>
+            <table class="table table-bordered table-striped">
+              <tbody>
+                <tr>
+                  <th class="col-md-4">Options</th>
+                  <td class="p-md">
+                    <% question.question_options.each.with_index(1) do |option, i| %>
+                      <h4><%= "#{i}) #{option.option_text}" %><h4>
+                    <% end %>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          <% end %>
+
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<YourMembership>
+    <Version>2.03</Version>
+    <ApiKey>5D621211-8E39-4871-A3F3-05C5C8833A57</ApiKey>
+    <CallID>111</CallID>
+    <SessionID>F8EA67DE-E3AB-411E-9507-413D3A9F8AF3</SessionID>
+    <Call Method="Session.Abandon"></Call>
+</YourMembership>

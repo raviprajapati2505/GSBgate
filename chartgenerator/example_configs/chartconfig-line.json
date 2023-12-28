@@ -1,0 +1,87 @@
+{
+    "type": "line",
+    "data": {
+      "labels": [
+            "",
+            "",
+            "★",
+            "★★",
+            "★★★",
+            "★★★★",
+            "★★★★★",
+            "★★★★★★",
+            ""
+        ],
+      "font": {
+        "weight": "bold"
+        },
+      "datasets": [{
+            "label": "",
+            "data": [
+                    -1,
+                    -0.5,
+                    0,
+                    0.5,
+                    1,
+                    1.5,
+                    2,
+                    2.5,
+                    3.0
+                ],
+            "pointRadius": [
+                0,
+                0,
+                0,
+                7,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
+           "borderDash": [
+                    10
+            ],
+            "backgroundColor": "rgb(54, 162, 235)",
+            "borderColor": "rgb(54, 162, 235)",
+            "fill": false
+        }]
+    },
+    "options": {
+        "plugins": {
+            "legend": {
+                "display": false
+            },
+            "datalabels": {
+            "color": "black",
+            "align": "end",
+            "anchor": "start"
+            }
+        },
+        "scales": {
+            "y": {
+                "title": {
+                    "display": true,
+                    "text": "Overall score",
+                    "font": {
+                            "weight": "bold"
+                        }
+                    },
+                "axis": "y"
+                },
+        "x": {
+            "title": {
+                "display": true,
+                "text": "Certification denied",
+                "color": "red",
+                "align": "start",
+                "font": {
+                    "weight": "bold"
+                    }
+                },
+          "axis": "x"
+            }
+        }
+    }
+}
+  

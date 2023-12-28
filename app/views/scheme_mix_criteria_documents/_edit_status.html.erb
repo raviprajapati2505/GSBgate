@@ -1,0 +1,33 @@
+<div class="modal-dialog">
+    <%= bootstrap_form_for([@project, @certification_path, @scheme_mix, @scheme_mix_criterion, @scheme_mix_criteria_document], url: update_status_project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_path, method: 'put') do |f| %>
+        <div class="modal-content">
+            <div class="modal-header">
+                <%= btn_close_modal %>
+                <h4 class="modal-title"><%= t('.modal_title') %></h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-info" role="alert">
+                    <%= ikoen_with_text('info-circle', t('.info_text_review')) %>
+                </div>
+                <%= f.hidden_field :approved_date, value: f&.object&.approved_date %>
+                <%= f.select :status, SchemeMixCriteriaDocument.statuses.keys.map { |k| [k.humanize, k] } %>
+                <%= label_tag nil, 'Apply to the following criteria' %>
+                <ul class="checkbox-list">
+                    <% @scheme_mix_criteria_document.document.scheme_mix_criteria.includes(scheme_criterion: :scheme_category).order('scheme_categories.display_weight, scheme_criteria.number').each do |smc| %>
+                        <li>
+                            <% default_checkbox_value = (@scheme_mix_criterion.id == smc.id) %>
+                            <%= check_box_tag 'scheme_mix_criteria[]', smc.id, default_checkbox_value, disabled: default_checkbox_value, id: 'scheme_mix_criterion_' + smc.id.to_s %>
+                            <%= label_tag 'scheme_mix_criterion_' + smc.id.to_s, smc.full_name %>
+                        </li>
+                    <% end %>
+                </ul>
+                <%= f.text_area :audit_log_user_comment, rows: 4 %>
+            </div>
+            <div class="modal-footer">
+                <% if can?(:update_status, @scheme_mix_criteria_document) %>
+                    <%= btn_save %>
+                <% end %>
+            </div>
+        </div>
+    <% end %>
+</div>

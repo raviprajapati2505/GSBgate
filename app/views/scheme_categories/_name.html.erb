@@ -1,0 +1,15 @@
+<div class="panel panel-default" data-id="<%= category.id %>">
+  <div class="panel-heading">
+    <div class="subtitle"><%= category.name %></div>
+  </div>
+  <div class="panel-body">
+    <div class="<%= category.name.downcase %>"><%= category.description.html_safe? %></div>
+  </div>
+  <% if can?(:edit, category) || can?(:destroy, category) %>
+      <div class="panel-footer">
+        <% if can?(:edit, category) %>
+            <%= btn_link_to(scheme_category_path(category), icon: 'edit', text: 'Edit') %>
+        <% end %>
+      </div>
+  <% end %>
+</div>

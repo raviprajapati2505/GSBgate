@@ -1,0 +1,31 @@
+
+<style>
+body.skin-gord-login{
+  background-color: #3a4f57 !important; 
+  background-image:none !important;
+}
+</style>
+<div class="loginColumns new_form">
+    <div class="row ibox float-e-margins new-user-content-box text-left">
+       
+        <div class="px-4">
+            <div class="title text-green mb-4">
+                <h2><b>Login to GSBgate</b></h2>
+                </div>
+            <h5 class="text-dark">Please check your inbox; an OTP was just sent to you via email.</h5>
+            <hr/>
+            <div class="form">
+            <label class="control-label email required" for="u"><abbr title="required"></abbr> Enter OTP</label>
+                <%= bootstrap_form_for(@user, url: validate_otp_path(@user.id), method: "POST") do |f| %>
+                    <%= f.number_field :username, autofocus: true, autocomplete: 'off', hide_label: true %>
+                    <%= btn_tag(text: 'Submit', class: 'block full-width m-b') %>
+                <% end %>
+                <input type="hidden" value="<%= @user.otp %>">
+                <% if Rails.env.development? %>
+                    <p class="text-green mt-3">Your OTP for login is : <%= @user.otp %></p>
+                <% end %>
+            </div>
+        </div>
+    </div>
+</div>
+                

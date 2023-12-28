@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<YourMembership>
+    <Version>2.03</Version>
+    <ApiKey>5D621211-8E39-4871-A3F3-05C5C8833A57</ApiKey>
+    <CallID>011</CallID>
+    <SaPasscode>Y05KzqB77cs6</SaPasscode>
+    <Call Method="Sa.People.Profile.FindID">
+        <Email>farahothmani@gmail.com</Email>
+    </Call>
+</YourMembership>

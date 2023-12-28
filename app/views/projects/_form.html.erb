@@ -1,0 +1,298 @@
+<% use_gmaps_for(:project) %>
+<% set_project_country_location(@project) %>
+<% set_project_district(@project) %>
+
+<%= bootstrap_form_for(@project, html: { class: 'project-form' }) do |f| %>
+<div class="col-sm-12">
+  <div class="row map-form">
+    <div class="col-lg-12">
+      <div class="ibox">
+        <div class="ibox-title">
+          <h5><%= t('.title') %></h5>
+        </div>
+        <div class="ibox-content">
+          <div class="row">
+            <div class="col-md-3">
+              <% if current_user.system_admin? || current_user.gsas_trust_manager? || current_user.gsas_trust_top_manager? || current_user.gsas_trust_admin? %>
+                <%= f.text_field :code %>
+              <% end %>
+              <%= f.text_field :name %>
+              <%= f.select(:certificate_type, options_for_select(current_user.allowed_certification_types.map { |k, v| [t(k, scope: 'activerecord.attributes.certificate.certificate_types'), v]}, @project.certificate_type)) %>
+              <% if current_user.system_admin? || current_user.gsas_trust_manager? || current_user.gsas_trust_top_manager? || current_user.gsas_trust_admin? %>
+                <%= f.text_field :service_provider %>
+                <button name="button" type="button" data-toggle="modal" data-target="#searchServiceProvider" style="bottom: 13px;position: relative;"><i class="fa fa-search fa-lg open-modal" data-service_provider="for_service_provider" ></i></button>
+                <div class="design-fields">
+                  <%= f.text_field :service_provider_2 %>
+                </div>
+                <button name="button" type="button" data-toggle="modal" data-target="#searchServiceProvider" style="bottom: 13px;position: relative;" class="design-fields"><i class="fa fa-search fa-lg open-modal" data-service_provider="for_service_provider_2" ></i></button>
+              <% else %>
+                <%= f.text_field :service_provider %>
+                <div class="design-fields">
+                  <%= f.text_field :service_provider_2 %>
+                </div>
+              <% end %>
+              <%= f.text_field :owner %>
+
+              <%= f.text_field :project_owner_email %>
+              <%= f.form_group do %>
+                <label>Or Choose a Predefined Project Owner</label>
+                <input type="hidden" class="select2-ajax">
+              <% end %>
+
+              <%= f.text_field :developer %>
+
+              <%= f.form_group do %>
+                <label>Or Choose a Predefined Project Developer</label>
+                <%= select_tag(:select_developer, options_for_select(Owner.order(:name).pluck(:name).map{ |dev| [dev, dev] }.push(["Other, Please indicate", "Other"]), @project.developer), include_blank: '- Select a predefined project developer -', hide_label: true, id: 'project_developer_select', class: 'form-control developer-select-dropdown' ) %>
+              <% end %>
+
+              <%#= f.select(:building_type_group_id, options_from_collection_for_select(BuildingTypeGroup.visible.order(:name), :id, :name, @project.building_type_group_id), {include_blank: '- Select a predefined building type category -', class: 'form-control'}) %>
+              
+              <div id="building-type-select">
+                <%= f.select(:building_type_id, options_for_select(BuildingType.select("DISTINCT ON (name) building_types.*").visible.order(:name).map{ |bt| [bt.name, bt.id, {'data-building-type-group-id' => bt.building_type_group_id}]}, @project.building_type_id), {include_blank: '- Select a predefined building type -', class: 'form-control'}) %>
+              </div>
+
+              <%= f.text_field :specify_other_project_use %>
+
+              <%= f.text_field :estimated_project_cost, append: 'QAR', class: "commify-value" %>
+              <%= f.text_field :cost_square_meter, append: 'QAR', readonly: true, class: "commify-value" %>
+
+              <!-- <div class="district-fields">
+                <%= f.text_field :estimated_building_cost, append: 'QAR', class: "commify-value" %>
+                <%= f.text_field :estimated_infrastructure_cost, append: 'QAR', class: "commify-value" %>
+              </div> -->
+
+              <%= f.text_field :description, maxlength: 300 %>
+              <%= f.number_field :construction_year, prepend: ikoen('calendar'), class: "datepicker-year", min: 2000, max: 2100 %>
+            </div>
+            <div class="col-md-3">
+              <% countries = CS.countries.sort_by{|_key, value| value }.to_h %>
+              <%= f.select :country, options_for_select(countries.map{ |cnt| [cnt[1], cnt[1]] }, f.object&.country), { include_blank: "Select Country" }, { required: true, class: "select2 form-control country-select" } %>
+              <div id="city-select-div" class="form-group">
+                <% if @is_city_predefined %>
+                  <%= f.select(:city, options_for_select(@city_options, f.object&.city), { include_blank: "Select City" }, { class: "select2 form-control city-select-dropdown", id: "city-select" }) %>
+                <% else %>
+                  <%= f.text_field :city %>
+                <% end %>
+              </div>
+              <div id="district-select-div" class="form-group">
+                <% if @is_district_predefined %>
+                  <%= f.select(:district, options_for_select(@district_options, f.object&.district), { include_blank: "Select District" }, { class: "select2 form-control district-select-dropdown" }) %>
+                <% else %>
+                  <%= f.text_field :district %>
+                <% end %>
+              </div>
+
+              <%= f.text_field :address, maxlength: 50 %>
+              <%= f.text_field :project_site_area, value: commify_values(f.object.project_site_area), append: 'm²', label: (Project.human_attribute_name('project_site_area') + tooltip(t '.tooltip_project_site_area')).html_safe, class: "commify-value", label_class: "required" %>
+              <%= f.text_field :gross_area, value: commify_values(f.object.gross_area), append: 'm²', label: (Project.human_attribute_name('gross_area') + tooltip(t '.tooltip_gross_area')).html_safe, class: "commify-value", label_class: "required" %>
+              <%= f.text_field :buildings_footprint_area, value: commify_values(f.object.buildings_footprint_area), append: 'm²', label: (Project.human_attribute_name('buildings_footprint_area') + tooltip(t '.tooltip_buildings_footprint_area')).html_safe, class: "commify-value", label_class: "required" %>
+              <%= f.text_field :certified_area, append: 'm²', readonly: true, label: (Project.human_attribute_name('certified_area') + tooltip(t '.tooltip_certified_area')).html_safe, value: commify_values(f.object.certified_area), class: "commify-value", label_class: "required" %>
+              <%= f.text_field :carpark_area, value: commify_values(f.object.carpark_area), append: 'm²', label: (Project.human_attribute_name('carpark_area') + tooltip(t '.tooltip_carpark_area')).html_safe, class: "commify-value", label_class: "required" %>
+
+              <%= f.select :project_owner_business_sector, options_for_select(Project.project_owner_business_sectors.map{ |k, v| [k.titleize, k]}, f.object&.project_owner_business_sector), { include_blank: "Select Project Owner Business Sector" }, { class: "form-control" } %>
+
+              <%= f.select :project_developer_business_sector,options_for_select(Project.project_owner_business_sectors.map{ |k, v| [k.titleize, k]}, f.object&.project_developer_business_sector), { include_blank: "Select Project Developer Business Sector" }, { class: "form-control" } %>
+              
+              <div class="form-group">
+                <label class="control-label required" for="project_location_plan_file"><%= Project.human_attribute_name('location_plan_file') %></label>
+                <% if @project.location_plan_file.present? %>
+                  <div class="input-group">
+                    <span class="input-group-addon"><%= ikoen('file', title: 'Currently uploaded file. Will be overridden when you select a new file.') %></span>
+                    <input type="text" class="form-control" disabled value="<%= @project.location_plan_file.file.filename %>">
+                  </div>
+                <% end %>
+                <%= f.file_field :location_plan_file, hide_label: true %>
+                <%= f.hidden_field :location_plan_file_cache %>
+              </div>
+              <div class="form-group">
+                <label class="control-label required" for="project_site_plan_file"><%= Project.human_attribute_name('site_plan_file') %></label>
+                <% if @project.site_plan_file.present? %>
+                  <div class="input-group">
+                    <span class="input-group-addon"><%= ikoen('file', title: 'Currently uploaded file. Will be overridden when you select a new file.') %></span>
+                    <input type="text" class="form-control" disabled value="<%= @project.site_plan_file.file.filename %>">
+                  </div>
+                <% end %>
+                <%= f.file_field :site_plan_file, hide_label: true %>
+                <%= f.hidden_field :site_plan_file_cache %>
+              </div>
+
+              <% if @project.project_narrative_file.present? %>
+                <div class="form-group">
+                  <label class="control-label required" for="project_project_narrative_file"><%= Project.human_attribute_name('project_narrative_file') %></label>
+                    <div class="input-group">
+                      <span class="input-group-addon"><%= ikoen('file', title: 'Currently uploaded file. Will be overridden when you select a new file.') %></span>
+                      <input type="text" class="form-control" disabled value="<%= @project.project_narrative_file.file.filename %>">
+                    </div>
+                  <%= f.file_field :project_narrative_file, hide_label: true %>
+                  <%= f.hidden_field :project_narrative_file_cache %>
+                </div>
+              <% else %>
+                <div class="form-group">
+                  <label class="control-label required" for="project_area_statement_file"><%= Project.human_attribute_name('area_statement_file') %></label>
+                    <% if @project.area_statement_file.present? %>
+                      <div class="input-group">
+                        <span class="input-group-addon"><%= ikoen('file', title: 'Currently uploaded file. Will be overridden when you select a new file.') %></span>
+                        <input type="text" class="form-control" disabled value="<%= @project.area_statement_file.file.filename %>">
+                      </div>
+                    <% end %>
+                  <%= f.file_field :area_statement_file, hide_label: true %>
+                  <%= f.hidden_field :area_statement_file_cache %>
+                </div>
+              <% end %>
+
+              <div class="form-group">
+                <label class="control-label required" for="project_design_brief_file"><%= Project.human_attribute_name('design_brief_file') %></label>
+                <% if @project.design_brief_file.present? %>
+                  <div class="input-group">
+                    <span class="input-group-addon"><%= ikoen('file', title: 'Currently uploaded file. Will be overridden when you select a new file.') %></span>
+                    <input type="text" class="form-control" disabled value="<%= @project.design_brief_file.file.filename %>">
+                  </div>
+                <% end %>
+                <%= f.file_field :design_brief_file, hide_label: true %>
+                <%= f.hidden_field :design_brief_file_cache %>
+              </div>
+              <div class="form-group">
+                <label class="control-label" for="project_sustainability_features_file"><%= Project.human_attribute_name('sustainability_features_file') %></label>
+                <% if @project.sustainability_features_file.present? %>
+                  <div class="input-group">
+                    <span class="input-group-addon"><%= ikoen('file', title: 'Currently uploaded file. Will be overridden when you select a new file.') %></span>
+                    <input type="text" class="form-control" disabled value="<%= @project.sustainability_features_file.file.filename %>">
+                  </div>
+                <% end %>
+                <%= f.file_field :sustainability_features_file, hide_label: true %>
+                <%= f.hidden_field :sustainability_features_file_cache %>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="row">
+                <div class="col-md-12">
+                  <%= f.hidden_field :location %>
+                </div>
+
+                <div class="col-md-12">
+                  <label>Search Location</label>
+                  <div class="input-group form-group">
+                    <%= text_field_tag :search_location, @project.location, class: "form-control", id: "search_location" %>
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" id="submit-location-btn" type="button">Search</button>
+                    </span>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <%= label_tag :lat, ('Latitude' + tooltip(t '.tooltip_coordinates')).html_safe %>
+                    <%= text_field_tag :lat, @project.coordinates.split(',')[0], class: 'form-control' %>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <%= label_tag :lng, ('Longitude' + tooltip(t '.tooltip_coordinates')).html_safe %>
+                    <%= text_field_tag :lng, @project.coordinates.split(',')[1], class: 'form-control' %>
+                  </div>
+                </div>
+              </div>
+              <div style="display:none;">
+                <%= f.text_field :coordinates %>
+              </div>
+              <div id="project-map" class="map" style="height: 450px;"></div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <% if @project.new_record? %>
+                <%= f.form_group :terms_and_conditions_accepted do %>
+                  <%= f.check_box :terms_and_conditions_accepted do %>
+                    <small>Tick here to indicate you have read and agreed to the <%= link_to 'terms and conditions', '/GSAS_Certification_TCs.pdf', target: '_blank' %>.</small>
+                  <% end %>
+                <% end %>
+              <% end %>
+              <div class="hr-line-dashed"></div>
+              <% if can?(:create, @project) || can?(:update, @project) %>
+                <%= btn_save %>
+              <% end %>
+              <%= btn_cancel_to(projects_path) %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<% end %>
+<div class="modal fade" id="searchServiceProvider" aria-hidden="true" >
+    <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <%= btn_close_modal %>
+              <h4 class="modal-title">Find Service Provider</h4>
+          </div>
+          <div class="modal-body find-users-modal">
+            <div class="form-group">
+              <%= label_tag 'email', 'Find by Email', class: 'control-label' %>
+              <div class="input-group">
+                  <%= text_field_tag 'email', '', class: 'email-field form-control' %>
+                  <span class="input-group-btn">
+                      <%= btn_tag(class: 'find-sp-by-email-btn', icon: 'search', style: 'white', type: 'button') %>
+                  </span>
+              </div>
+              <input type="hidden" name="set_name_for" id="set_name_for">
+              <p class="error-block" style="color:red"></p>
+            </div>
+          </div>
+          <div class="modal-footer" style="display:none;">
+          </div>
+      </div>
+    </div>
+</div>
+<%= javascript_include_tag 'select_owner' %>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('.open-modal').click(function(){
+      $('#set_name_for').val($(this).data('service_provider'));
+    })
+    $('.find-sp-by-email-btn').click(function(){
+      $('.error-block').text('')
+      $.ajax({
+          url: "/users/get_service_provider_by_email",
+          method: "GET",
+          dataType: "json",
+          data: {
+              email: $('#email').val()
+          },
+          success: function(result) {
+              if(result.length > 0){
+                 $('#searchServiceProvider').modal('toggle')
+                
+                 if($('#set_name_for').val() == 'for_service_provider'){
+                    $('#project_service_provider').val(result[0][0])
+                 }else{
+                    $('#project_service_provider_2').val(result[0][0])
+                 }
+              }else{
+                 $('.error-block').text('email you entered is not associate with any service provider !!')
+              }
+          },
+          error: function() {
+              alert('Something went wrong !');
+          }
+      });
+    })
+
+    var check_building_id = $('#project_building_type_id').val();
+    if(check_building_id && check_building_id == 96){
+      $('#project_specify_other_project_use').parent().show();
+    } else{
+      $('#project_specify_other_project_use').parent().hide();
+    }
+
+    $('#project_building_type_id').change(function(){
+      if($(this).val() == 96){
+        $('#project_specify_other_project_use').parent().show();
+      } else {
+        $('#project_specify_other_project_use').parent().hide();
+      }
+    });
+  })
+</script>

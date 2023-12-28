@@ -1,0 +1,30 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+        <% if todos_errors.blank? %>
+            <% if params.has_key?(:appeal) %>
+                <%= render 'update_status_appeal' %>
+            <% elsif @certification_path.is_next_status_certified? %>
+                <%= render 'update_status_to_certified' %>
+            <% else %>
+                <%= render 'update_status_advance' %>
+            <% end %>
+        <% else %>
+            <div class="modal-header alert-danger">
+                <%= btn_close_modal %>
+                <h4 class="modal-title">
+                    <%= ikoen_with_text('exclamation-circle', 'The status cannot be advanced yet because of the following issues:') %>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <ul>
+                    <% todos_errors.each do |todos_error| %>
+                        <li><%= todos_error %></li>
+                    <% end %>
+                    <% if todos_error_schemes.present? %>
+                      <li><%= todos_error_schemes %></li>
+                    <% end %>
+                </ul>
+            </div>
+        <% end %>
+    </div>
+</div>

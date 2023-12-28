@@ -1,0 +1,39 @@
+<div class="col-lg-6">
+  <div class="ibox">
+    <div class="ibox-title">
+      <%= audit_log_label(@scheme) %>
+      <h5>Scheme</h5>
+    </div>
+    <div class="ibox-content table-responsive">
+      <table class="table table-bordered table-striped">
+        <tbody>
+        <tr>
+          <th><%= Scheme.human_attribute_name('name') %></th>
+          <td><%= @scheme.name %></td>
+        </tr>
+        </tbody>
+      </table>
+      <% if can? :update, @scheme %>
+        <div class="hr-line-dashed"></div>
+          <%= btn_link_to(edit_scheme_path(@scheme), icon: 'edit', text: 'Edit', action: :get, remote: true) %>
+      <% end %>
+    </div>
+  </div>
+</div>
+<div class="clearfix"></div>
+<div class="col-lg-6">
+  <div class="ibox criterion-information">
+    <div class="ibox-title">
+      <h5>Scheme Categories <%= tooltip(t '.tooltip_sortable') %></h5>
+    </div>
+    <div class="ibox-content sortable" data-url="<%= sort_scheme_categories_path() %>">
+      <div class="sortable">
+        <% @scheme.scheme_categories.each do |category| %>
+          <%= render 'scheme_categories/name', category: category %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="editSchemeModal" class="modal fade"></div>

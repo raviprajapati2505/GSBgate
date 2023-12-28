@@ -1,0 +1,23 @@
+<%= bootstrap_form_for([@project, @projects_user], url: project_user_path(@project, @projects_user)) do |f| %>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5><%=t '.form_title' %></h5>
+                </div>
+                <div class="ibox-content">
+                    <%= f.select :user_id, [[@projects_user.user.full_name, @projects_user.user.id]], {}, { disabled: true} %>
+                    <% if @projects_user.project_team? %>
+                        <%= f.select :role, ProjectsUser.roles.keys[0..1].map { |k| [t(k, scope: 'activerecord.attributes.projects_user.roles'), k]} %>
+                    <% elsif @projects_user.gsas_trust_team? %>
+                        <%= f.select :role, ProjectsUser.roles.keys[3..4].map { |k| [t(k, scope: 'activerecord.attributes.projects_user.roles'), k]} %>
+                    <% else %>
+                        <%= f.select :role, ProjectsUser.roles.keys[2].map { |k| [t(k, scope: 'activerecord.attributes.projects_user.roles'), k]} %>
+                    <% end %>
+                    <%= btn_save %>
+                    <%= btn_cancel_to(project_user_path(@project, @projects_user)) %>
+                </div>
+            </div>
+        </div>
+    </div>
+<% end %>

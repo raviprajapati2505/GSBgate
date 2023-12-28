@@ -1,0 +1,18 @@
+<div class="modal-dialog">
+  <%= bootstrap_form_for([@project, @certification_path], url: update_max_review_count_project_certification_path_path, method: 'put') do |f| %>
+      <div class="modal-content">
+        <div class="modal-header">
+          <%= btn_close_modal %>
+          <h4 class="modal-title">Maximum Number of PCR</h4>
+        </div>
+        <div class="modal-body">
+          <%= f.number_field :max_review_count, min: 0, step: 1 %>
+        </div>
+        <div class="modal-footer">
+          <% if can?(:update_max_review_count, @certification_path) %>
+              <%= btn_save %>
+          <% end %>
+        </div>
+      </div>
+  <% end %>
+</div>

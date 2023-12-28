@@ -1,0 +1,11 @@
+// Fill & open modal
+$('#editExpiresAtModal').html("<%= escape_javascript(render 'edit_expires_at') %>");
+$('#editExpiresAtModal').modal('show');
+
+// Datepicker (only today + future)
+$('.datepicker-future').datepicker({
+    format: 'dd/mm/yyyy',
+    startDate: '0d',
+    todayBtn: true,
+    todayHighlight: true
+});

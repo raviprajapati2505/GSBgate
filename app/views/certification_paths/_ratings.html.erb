@@ -1,0 +1,34 @@
+<%
+  if certification_path.construction?
+    if certification_path.name == "Construction Certificate, 2019 - GSAS-CM Certificate"
+      data_score = []
+      certification_path_ids = @project.certification_paths.pluck(:id) - [certification_path.id]
+      certification_path_ids.each do |cp_id|
+        scheme_mix = CertificationPath.find(cp_id)&.scheme_mixes&.first
+        scheme_mix_scores = score_calculation(scheme_mix)
+        data_score << scheme_mix_scores
+      end
+      scores = total_CM_score(data_score)
+      scores = final_cm_revised_avg_scores(certification_path, scores)
+    else
+      scheme_mix = certification_path&.scheme_mixes&.first
+      scores = score_calculation(scheme_mix)
+    end
+  else
+    scores = certification_path.scores_in_certificate_points
+  end
+%>
+
+<% if certification_path.is_activating? %>
+    ---
+<% else %>
+  <%= render partial: 'certification_paths/rating_item', locals: {score_label: 'Targeted', certification_path: certification_path, score: scores[:targeted_score_in_certificate_points], certificate: certification_path.certificate, display_item: display_item } %>
+  <hr class="my-2" />
+  <%= render partial: 'certification_paths/rating_item', locals: {score_label: 'Submitted', certification_path: certification_path, score: scores[:submitted_score_in_certificate_points], submitted: true, certificate: certification_path.certificate, display_item: display_item } %>
+<% end %>
+<% if !certification_path.in_pre_verification? %>
+  <% if !certification_path.in_verification? || !current_user.default_role? || certification_path.project.role_for_user(current_user) == ProjectsUser.roles.keys[ProjectsUser.roles[:certifier]] || certification_path.project.role_for_user(current_user) == ProjectsUser.roles.keys[ProjectsUser.roles[:certification_manager]] %>
+    <hr class="my-2" />
+    <%= render partial: 'certification_paths/rating_item', locals: {score_label: 'Achieved', certification_path: certification_path, score: scores[:achieved_score_in_certificate_points], achieved: true, certificate: certification_path.certificate, display_item: display_item } %>
+  <% end %>
+<% end %>

@@ -1,0 +1,450 @@
+en:
+  audit_logs:
+    audit_log_filter:
+      certification_path_label: Certification
+  layouts:
+    authenticated:
+      btn_cancel: 'No'
+      btn_save: 'Yes'
+      modal_title: Confirm
+    topnavbar:
+      navbar:
+        projects_html: Projects &amp; Certifications
+        tasks: My Tasks
+        preferences: My Preferences
+        audit_log: Audit Log
+        admin: Admin
+        admin_system_data: Manage System Data
+        admin_users: Users
+        certifiers_and_criteria_report: Certifiers and Criteria
+        manual: User Manual
+        viewer: Visualisation Tool
+        survey_dashboard: Survey Dashboard
+        offline_projects: Offline Projects
+        btn_new_project: New project
+        btn_project_statistics: Project Statistics
+  certification_paths:
+    edit_status:
+      modal_title: Update status
+    edit_project_team_responsibility_for_submittal:
+      btn_save_and_continue: Save and continue
+    edit_certifier_team_responsibility_for_verification:
+      btn_save_and_continue: Save and continue
+    edit_certifier_team_responsibility_for_screening:
+      btn_save_and_continue: Save and continue
+    show_checklist:
+      certification_path_status:
+        btn_advance_status: Advance status to '%{status}'
+    show:
+      certification_path:
+        title: Certification Details
+        name: Certification Type
+        version: Certification Version
+        scheme: Certification Scheme
+        assessment_type: Certification Method
+        stage: Certification Stage
+        status: Certification Status
+        rating: Certification Rating
+        scores: Certification Scores
+        started_at: Certification Started On
+        expired_at: GSBgate Registration Expiry
+        certified_at: Certification Awarded On
+        buildings_number: Number of Buildings
+        create_detaild_certificate_report:
+          text: Certificate Information Verification
+        download_detailed_certificate:
+          text: Download Detailed Certification Report
+          tooltip: Download Detailed Certification Report
+        download_certificate:
+          text: Download Certification
+          tooltip: Download Certification
+        download_coverletter:
+          text: Download Certificate Summary
+          tooltip: Download Certificate Summary
+        download_scores_report:
+          text: Download Score Report
+          tooltip: Download Score Report
+        download_archive:
+          text: Generate & download archive
+          tooltip: A ZIP archive containing all approved documents in this certification and related audit logs will be generated for you. (Currently containing %{approved_count} approved document(s))
+        apply_pcr:
+          confirm: You are now applying for the PCR track. This will require an extra fee. Please confirm your choice.
+          text: Certification PCR Track
+        cancel_pcr:
+          confirm: This will cancel the PCR for this certification. Please confirm your choice.
+          text: Cancel PCR
+        pcr:
+          tooltip: Pre Certification Review. During PCR, the GSAS trust team will assist the project team in completing the certification process. The CGP project manager can enable PCR when applying for a certificate. Please contact GORD if you want to enable the PCR track in a later stage of the certification process.
+      certification_path_status:
+        title: CERTIFICATION STATUS
+        btn_accept_achieved: Accept achieved score
+        btn_accept_denied:
+          text: Accept certification denied
+          confirm: There are one or more criteria that have not achieved their minimum valid level. As a result, the certification does not have an achieved score. If you proceed a GSAS certification will be denied. Are you sure?
+        btn_apply_appeal: Apply for appeal
+        btn_advance_status: Advance status to '%{status}'
+    
+      certification_path_reports:
+        title: GENERATED REPORTS
+      certification_path_signed_certificate:
+        title: OFFICIAL CERTIFICATE
+      schemes:
+        title: TYPOLOGIES DETAILS
+        info_activating: The schemes will be clickable after a GSAS trust administrator activates the certification.
+        btn_edit_project_team_responsibility_for_submittal: Allocate project team responsibility for submittal
+        btn_edit_certifier_team_responsibility_for_verification: Allocate GSAS trust team responsibility for verification
+        btn_edit_certifier_team_responsibility_for_screening: Allocate GSAS trust team responsibility for screening
+    new:
+      title: Applying for %{certificate} Certification
+    overview_item:
+      warning_complete_loc: Please complete the Letter of conformance certification first.
+      warning_complete_stage1: Please complete the GSAS-CM - Stage 1 first.
+      warning_complete_stage2: Please complete the GSAS-CM - Stage 2 first.
+      warning_complete_stage3: Please complete all GSAS-CM stages first.
+      warning_complete_provisional: Please complete all GSAS-EcoLeaf stages first.
+    timeline_legend:
+      project_team: Project Team
+      certifier_team: GSAS Trust Team
+    update_status_advance:
+      title: Advancing Certification Status
+    update_status_to_certified:
+      title: Advancing Certification Status
+    show_checklist:
+      certification_path:
+        title: CERTIFICATION DETAILS
+        name: Certification Type
+        buildings_number: Number of Buildings
+        create_detaild_certificate_report:
+          text: Certificate Information Verification
+        download_certificate:
+          text: Download Certification
+          tooltip: Download Certification
+        download_detailed_certificate:
+          text: Download Detailed Certification Report
+          tooltip: Download Detailed Certification Report
+        download_coverletter:
+          text: Download Certificate Summary
+          tooltip: Download Certificate Summary
+        download_scores_report:
+          text: Download Score Report
+          tooltip: Download Score Report
+        download_archive:
+          text: Generate & download archive
+          tooltip: A ZIP archive containing all approved documents in this certification and related audit logs will be generated for you. (Currently containing %{approved_count} approved document(s))
+        apply_pcr:
+          confirm: You are now applying for the PCR track. This will require an extra fee. Please confirm your choice.
+          text: Certification PCR Track
+        cancel_pcr:
+          confirm: This will cancel the PCR for this certification. Please confirm your choice.
+          text: Cancel PCR
+        pcr:
+          tooltip: Pre Certification Review. During PCR, the GSAS trust team will assist the project team in completing the certification process. The CGP project manager can enable PCR when applying for a certificate. Please contact GORD if you want to enable the PCR track in a later stage of the certification process.
+      certification_path_status:
+        title: CERTIFICATION STATUS
+        btn_accept_achieved: Accept achieved score
+        btn_accept_denied:
+          text: Accept certification denied
+          confirm: There are one or more criteria that have not achieved their minimum valid level. As a result, the certification does not have an achieved score. If you proceed a GSAS certification will be denied. Are you sure?
+        btn_apply_appeal: Apply for appeal
+        btn_advance_status: Advance status to '%{status}'
+    
+      certification_path_reports:
+        title: GENERATED REPORTS
+      certification_path_signed_certificate:
+        title: OFFICIAL CERTIFICATE
+      schemes:
+        title: TYPOLOGIES DETAILS
+        info_activating: The schemes will be clickable after a GSAS trust administrator activates the certification.
+        btn_edit_project_team_responsibility_for_submittal: Allocate project team responsibility for submittal
+        btn_edit_certifier_team_responsibility_for_verification: Allocate GSAS trust team responsibility for verification
+        btn_edit_certifier_team_responsibility_for_screening: Allocate GSAS trust team responsibility for screening
+  projects:
+    index:
+      title_html: Projects &amp; Certifications
+      btn_new_project: New project
+      btn_project_statistics: Project Statistics
+    form:
+      title: Project Details
+      tooltip_gross_area: Total built up area of the buildings including conditioned and unconditioned spaces, in addition to underground and structured parking.
+      tooltip_certified_area: Total area falling under GSAS assessment calculated by adding Project Plot Area (A) and Buildings Gross Built up Area (B) and subtracting Building Footprint (C)*.<br /><br />*(C) is subtracted to avoid double counting of the areas under assessment.
+      tooltip_carpark_area: Total area allocated for parking including underground, structured and at grade spaces.
+      tooltip_project_site_area: Total project site area.
+      tooltip_buildings_footprint_area: The ground surface area above which a building is located.
+      tooltip_coordinates: The latitude and longitude will automatically be updated when the Address, Location and Country fields are filled out. However, it is also possible to define a custom location by editing this field or by dragging the marker on the map.
+    show:
+      project_details:
+        title: PROJECT DETAILS
+      project_tools:
+        title: Project Tools
+      certificates:
+        title: CERTIFICATION DETAILS
+    projects_statistics:
+      title_html: Projects Statistics
+  projects_users:
+    edit:
+      btn_cancel: Back
+      btn_save: Update authorization
+      form_title: Edit Team Member Authorization
+    index:
+      project_team:
+        title: Practitioners
+        title_modal: Add Project Team Member
+      certifier_team:
+        title: GSAS Trust
+        title_modal: Add GSAS Trust Team Member
+      enterprise_clients:
+        title: Enterprise Licensee
+        title_modal: Add Enterprise Client
+  reports:
+    certifiers_criteria:
+      title_html: Certifiers & Criteria
+  survey_dashboard:
+    index:
+      title_html: Survey Dashboard
+      linkme_survey:
+        title: Linkme Surveys
+        total_count: Total Linkme Surveys
+      survey_types:
+        title: Survey Types
+        total_count: Total Survey Types
+      projects_surveys:
+        title: Projects Surveys
+        total_count: Total Projects Surveys
+  project_surveys:
+    index:
+      title_html: Projects Survey
+    new: 
+      title: Create Survey
+      title_is_released: Released Now ?
+    edit: 
+      title: Edit Survey
+  survey_response:
+    new:
+      title: Survey Form
+    thankyou:
+      title: Thank you !!!
+  survey_type:
+    index:
+      title_html: All Surveys
+    new:
+      title_html: New Survey
+    edit:
+      title_html: Edit Survey %{title}
+  survey_questionnaire_version:
+    form:
+      title_html: Questions of %{title}
+  schemes:
+    show:
+      tooltip_sortable: You can drag and drop the panels below to re-order their appearance.
+  requirement_data:
+    update:
+      tooltip_due_date: Due date passed
+      tooltip_requirement_required: Requirement not provided yet
+      tooltip_requirement_provided: Requirement provided
+      tooltip_requirement_not_required: Requirement not required
+    refuse_requirement:
+      info_refuse_requirement: When you refuse this requirement, the CGP project manager will have to reassign the requirement to another project team member. Please explain below why you can't complete the requirement.
+      modal_title: Requirement Refusal
+  scheme_criteria:
+    index:
+      criteria:
+        certificate: Certification
+      filter:
+        certificate: Certification
+        blank: '- All certifications -'
+    show:
+      tooltip_sortable: You can drag and drop the panels below to re-order their appearance.
+  scheme_mix_criteria:
+    edit_status:
+      info:
+        achieved_html: The criterion status will advance to <strong>%{status}</strong>.
+      title:
+        undo: Revert Status
+        submit: Submit Criterion
+        verify: Verify Criterion
+    apply_pcr:
+      title: 
+        pcr: Certification PCR Track
+      message: 'ATTENTION: By clicking this button, you confirm that a PCR is requested for this criterion'
+      btn_cancel: 'No'
+      btn_save: 'Yes'
+    form:
+      details:
+        btn_edit_status:
+          verified: Criterion has been verified
+          undo: Revert status
+          submit: Submit criterion
+      scores:
+        minimum_valid_score_warning: The level of this criterion should be at least %{minimum_valid_score} to be able to receive a certification.
+        targeted_score:
+          tooltip: The level the project team would like to achieve. Defaults to the maximum attainable level, but can be changed by a CGP project manager.
+        submitted_score:
+          tooltip: The level the project team will submit to GSAS trust for verification. Will be provided by a CGP project manager or a project team member that has been assigned to this criterion.
+        achieved_score:
+          tooltip: The level the GSAS trust team has awarded to this criterion. Will be provided by the GSAS trust team and will be used for the final certification score.
+      certifier:
+        title: Certifier
+    form_checklist:
+      certifier:
+        title: Certifier
+  scheme_mix_criteria_documents:
+    edit_status:
+      info_text_review: Review this document for compliance against this criterion. Set the status to approved if the document is compliant with the requirements.
+      modal_title: Update Status
+    new_link:
+      modal_title: Link Document to Other Criteria
+    unlink:
+      modal_title: Unlink Document From Criteria
+  score:
+    score_toggle:
+      scores_in_certificate_points:
+        text: Certification
+        tooltip: Score in certification points. Takes both the criterion weights and the scheme weights into account.
+      scores_in_scheme_points:
+        text: Scheme
+        tooltip: Score in scheme points. Takes the criterion weights into account, but not the scheme weights.
+      scores:
+        text: Criterion
+        tooltip: Level of the criterion in absolute points. Does not take any weighting into account.
+  tasks:
+    index:
+      filter:
+        certificate_label: Certification
+    tasks:
+      description_1: Assign a certification manager to the project.
+      description_2: Check registration and payment and advance the certification status.
+      description_3: Allocate project team responsibility for submittal.
+      description_4: Provide documentation and change the status of the requirements.
+      description_5: Set the submitted level and submit the criterion.
+      description_6: Advance the certification status.
+      description_7: Allocate GSAS trust team responsibility for verification.
+      description_8: Allocate GSAS trust team responsibility for screening.
+      description_9: Provide a PCR comment or allocate responsibility to a certifier team member.
+      description_10: Process GSAS trust team comments and advance the certification status.
+      description_11: Process GSAS trust team review comments.
+      description_16: Verify the criterion.
+      description_17: Advance the certification status.
+      description_18: Advance the certification status (optionally apply for appeal).
+      description_19: Check payment for appeal and advance the certification status.
+      description_24: Advance the certification status.
+      description_25: Approve the certification by advancing the status.
+      description_26: Approve the certification by advancing the status.
+      description_29: Documents are waiting for approval.
+      description_30: Apply for a certification.
+      description_31: Allocate project team responsibility for submittal of appealed criteria.
+      description_32: Provide location plan, site plan, design brief and project narrative.
+      description_33: Duration of certification is exceeded.
+      description_34: Task is overdue.
+      description_35: Task is overdue.
+      description_36: Allocate GSAS trust team responsibility for verification after appeal.
+      description_37: Select a main scheme.
+      description_38: Screen the criterion.
+      description_39: Advance the certification status.
+      description_40: Provide a draft PCR comment.
+      description_41: Publish the draft PCR comment provided by a certifier team member.
+      description_42: Upload the GSAS Construction Management Plan (GSAS-CMP) via the certification documentation box.
+      description_43: A GSAS Construction Management Plan (GSAS-CMP) was uploaded.
+      description_44: Fill the report form to varify certificate information.
+      description_45: Fill the report form to varify certificate information and release certification report.
+      description_46: Activate user account.
+      description_47: Service provider details changed.
+      description_48: Please note that the GSAS certificate has been issued on GSBgate , Kindly download it.
+
+      tooltip_due_date: Task is overdue.
+  linkme_surveys:
+    index:
+      table_title: All Linkme Surveys
+  users:
+    index:
+      action_edit_title: Edit
+      table_title: User Overview
+    show:
+      user_details:
+        title: Personal Information
+        additional_information: Additional Information
+        company_information: Company Information
+        contact_information: Contact Information
+        activity_info:
+          title: Activity Information
+          created_at: Registration Date
+          confirmed_at: Confirmation Date
+          approved_at: Approval Date
+          updated_at: Last Updated At
+          last_sign_in_at: Last Login At
+      user_license_details:
+        title: License Details
+        licences: Issued Licences
+      user_licence_summary:
+        title: Licence Summary
+      sp_cp_licence_summary:
+        title: Service Provider CGPs & CEPs Summary
+      cp_users:
+        title: Users of %{service_provider}
+    registrations:
+        test: 'TEst'
+    form:
+      form_title: User details
+      profile_pic_title: Profile Picture
+      qid_file_title: Copy of the QID/Passport
+      university_credential_file_title: Highest Educational Certificate
+      work_experience_file_title: Work Experience
+      gsas_cgp_licence_file_title: GSAS-CGP Licence
+      qid_work_permit_file_title: Work Permit
+      gsas_energy_assessment_file_licence_title: GSAS Energy Assessment Licence
+      commercial_licence_file_title: Commercial Licence
+      accredited_provider_licence_file_title: Accredited Service Provider Licenses
+      demerit_file_title: Upload Duly Filled Demerit File
+      acknowledgement: I acknowledge that i have read and understood and i agree to abide by the policy
+      application_form: Application Form
+      other_documents: Other Document
+      education_certificate: Education Certificate
+      user_details:
+        title: Personal Information
+        additional_information: Additional Information
+        company_information: Company Information
+        contact_information: Contact Information
+    list_notifications:
+      btn_save: Update preferences
+  offline:
+    projects:
+      index:
+        title_html: Offline Projects &amp; Certifications
+        btn_new_project: New Offline Project
+        btn_edit_project: Edit Offline Project
+      form:
+        title: Offline Project Details
+        tooltip_certified_area: Total area falling under GSAS assessment calculated by adding Project Plot Area.
+        tooltip_project_plot_area: Total project plot area.
+      show:
+        project_details:
+          title: Offline Project Details
+          documents_title: Upload Documents
+        certificates:
+          title: Offline Project Certification Details
+        project_documents:
+          upload_document: Upload Project Documents
+          uploaded_documents: Uploaded Project Documents
+    certification_paths:
+      form:
+        title: Add Certificate
+        edit_title: Edit Certificate
+      show:
+        certificates:
+          title: Offline Certification Details
+        schemes:
+          title: Offline Typology Details
+        certification_path_signed_certificate:
+          title: OFFICIAL CERTIFICATE 
+    scheme_mixes:
+      form:
+        title: Add Criterion
+        edit_title: Edit Criterion
+      show:
+        schemes:
+          title: Offline Typology Details
+        scheme_mix_criteria:
+          title: Offline Criteria Details
+  dashboard:
+    index:
+      title: Dashboard
+

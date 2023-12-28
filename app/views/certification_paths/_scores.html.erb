@@ -1,0 +1,9 @@
+<span class="text-nowrap px-3">
+    <%= score_label %>
+    &nbsp;
+  <% if certificate.construction_issue_1? %>
+      <%= number_to_percentage(score, precision: 1) %>
+  <% else %>
+    <%= number_with_precision(score, precisison: 2, significant: true) %>
+  <% end %>
+</span>

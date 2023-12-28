@@ -1,0 +1,29 @@
+<% if project.certificate_type.nil? || project.certificate_type == Certificate.certificate_types[:design_type] %>
+  <ul class="list-group">
+    <%= render partial: 'certification_paths/certification_path_details', locals: { project: project } %>
+    <%= render partial: 'certification_paths/overview_item', locals: { project: project, certification_types: [:letter_of_conformance, :final_design_certificate] } %>
+  </ul>
+<% end %>
+
+<% if project.certificate_type.nil? || project.certificate_type == Certificate.certificate_types[:construction_type] %>
+  <ul class="list-group">
+    <%= render partial: 'certification_paths/certification_path_details', locals: { project: project } %>
+    <%= render partial: 'certification_paths/overview_item', locals: { project: project, certification_types: [:construction_certificate_stage1, :construction_certificate_stage2, :construction_certificate_stage3, :construction_certificate] } %>
+  </ul>
+<% end %>
+
+<% if project.certificate_type.nil? || project.certificate_type == Certificate.certificate_types[:operations_type] %>
+  <ul class="list-group">
+    <%= render partial: 'certification_paths/certification_path_details', locals: { project: project } %>
+    <%= render partial: 'certification_paths/overview_item', locals: { project: project, certification_types: [:operations_certificate] } %>
+  </ul>
+<% end %>
+
+<% if project.certificate_type.nil? || project.certificate_type == Certificate.certificate_types[:ecoleaf_type] %>
+  <ul class="list-group">
+    <%= render partial: 'certification_paths/certification_path_details', locals: { project: project } %>
+    <%= render partial: 'certification_paths/overview_item', locals: { project: project, certification_types: [:ecoleaf_provisional_certificate, :ecoleaf_certificate] } %>
+  </ul>
+<% end %>
+
+<div id="applyForCertificateModal" class="modal fade"></div>

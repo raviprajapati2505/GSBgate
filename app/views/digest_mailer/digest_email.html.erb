@@ -1,0 +1,140 @@
+<tr>
+    <td style="padding: .75pt .75pt;">
+        <p><span style='font-size: 18pt; font-family: "Verdana", "sans-serif"; color: #0B9ADC;'>Project Status Update</span></p>
+    </td>
+</tr>
+<tr>
+    <td style="width: 650pt; border: solid #CCC 1pt; background: white; padding: 15pt 15pt;">
+        <p>
+            <span style='font-size: 9pt; font-family: "Verdana", "sans-serif";'>Dear Ms/Mr<br/><br/>
+    <% if @include_new_tasks %>
+    <% if @user.gsas_trust_manager? || @user.gsas_trust_top_manager? %>
+            Hereby we send you an overview of your unfinished tasks since <%= @user.last_notified_at %>.</span>
+        </p>
+    <% else %>
+            Hereby we send you an overview of recent project changes and your unfinished tasks since <%= l(@user.last_notified_at) %>.</span>
+        </p>
+    <% end %>
+        <p><%= link_to 'Tasks', tasks_url, {style: 'color: #000; font-size: 14pt; font-family: "Verdana", "sans-serif";'} %></p>
+        <% if @tasks.empty? %>
+            <p><span style='font-size: 9pt; font-family: "Verdana", "sans-serif";'>No new tasks found.</span></p>
+        <% else %>
+            <table style="width: 100%;">
+                <thead>
+                <tr>
+                    <th style='border: none; border-bottom: solid #CCC 1pt; font-size: 9pt; font-family: "Verdana", "sans-serif";'>Description</th>
+                    <th style='border: none; border-bottom: solid #CCC 1pt; font-size: 9pt; font-family: "Verdana", "sans-serif";'>Task</th>
+                    <th style='border: none; border-bottom: solid #CCC 1pt; font-size: 9pt; font-family: "Verdana", "sans-serif";'>Project Name</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <% @tasks.each do |task|
+                  case task.taskable_type
+                    when Project.name.demodulize
+                      breadcrumbs = breadcrumbs(task.taskable, with_prefix: false)
+                %>
+                        <tr>
+                            <td style='font-size: 9pt; font-family: "Verdana", "sans-serif";'><%= t("description_#{task.task_description_id}", scope: [:tasks, :tasks]) %></td>
+                            <td style='font-size: 9pt; font-family: "Verdana", "sans-serif";'><%= link_to breadcrumbs[:names].last, breadcrumbs[:paths].last %></td>
+                            <td>
+                              <%= link_to task.project_name, project_url(task.project) %>
+                            </td>
+                        </tr>
+                    <%  when CertificationPath.name.demodulize
+                          breadcrumbs = breadcrumbs(task.taskable, with_prefix: false)
+                    %>
+                        <tr>
+                            <td style='font-size: 9pt; font-family: "Verdana", "sans-serif";'><%= t("description_#{task.task_description_id}", scope: [:tasks, :tasks]) %></td>
+                            <td style='font-size: 9pt; font-family: "Verdana", "sans-serif";'><%= link_to breadcrumbs[:names].last, breadcrumbs[:paths].last %></td>
+                            <td>
+                              <%= link_to task.project_name, project_url(task.project) %>
+                            </td>
+                        </tr>
+                    <%  when SchemeMixCriterion.name.demodulize
+                          breadcrumbs = breadcrumbs(task.taskable, with_prefix: false)
+                    %>
+                        <tr>
+                            <td style='font-size: 9pt; font-family: "Verdana", "sans-serif";'><%= t("description_#{task.task_description_id}", scope: [:tasks, :tasks]) %></td>
+                            <td style='font-size: 9pt; font-family: "Verdana", "sans-serif";'><%= link_to breadcrumbs[:names].last, breadcrumbs[:paths].last %></td>
+                            <td style='font-size: 9pt; font-family: "Verdana", "sans-serif";'>
+                              <%= link_to task.project_name, project_url(task.project) %>
+                            </td>
+                        </tr>
+                    <%  when RequirementDatum.name.demodulize
+                          breadcrumbs = breadcrumbs(task.taskable, with_prefix: false)
+                    %>
+                        <tr>
+                            <td style='font-size: 9pt; font-family: "Verdana", "sans-serif";'><%= t("description_#{task.task_description_id}", scope: [:tasks, :tasks]) %></td>
+                            <td style='font-size: 9pt; font-family: "Verdana", "sans-serif";'><%= link_to breadcrumbs[:names].last, breadcrumbs[:paths].last %></td>
+                            <td style='font-size: 9pt; font-family: "Verdana", "sans-serif";'>
+                              <%= link_to task.project_name, project_url(task.project) %>
+                            </td>
+                        </tr>
+                    <%  when SchemeMixCriteriaDocument.name.demodulize
+                          breadcrumbs = breadcrumbs(task.taskable, with_prefix: false)
+                    %>
+                        <tr>
+                            <td style='font-size: 9pt; font-family: "Verdana", "sans-serif";'><%= t("description_#{task.task_description_id}", scope: [:tasks, :tasks]) %></td>
+                            <td style='font-size: 9pt; font-family: "Verdana", "sans-serif";'><%= link_to breadcrumbs[:names].last, breadcrumbs[:paths].last %></td>
+                            <td>
+                              <%= link_to task.project_name, project_url(task.project) %>
+                            </td>
+                        </tr>
+                    <% end
+                       end
+                    %>
+                </tbody>
+            </table>
+            <% if @more_tasks > 0 %>
+                <span style='font-size: 9pt; font-family: "Verdana", "sans-serif";'><%= @more_tasks %> <%= link_to 'more', tasks_url, {style: 'color: #000; font-size: 9pt; font-family: "Verdana", "sans-serif";'} %>...</span>
+            <% end %>
+        <% end %>
+        <br/>
+        <% else %>
+                Hereby we send you an overview of recent project changes since <%= @user.last_notified_at %>.</span>
+            </p>
+        <% end %>
+        <% unless @user.gsas_trust_manager? || @user.gsas_trust_top_manager? %>
+            <p><%= link_to 'Audit log', audit_logs_url, {style: 'color: #000; font-size: 14pt; font-family: "Verdana", "sans-serif";'} %></p>
+            <% if @audit_logs.empty? %>
+                <p><span style='font-size: 9pt; font-family: "Verdana", "sans-serif";'>No new audit logs found.</span></p>
+            <% else %>
+                <div>
+                    <% @audit_logs.each do |audit_log| %>
+                        <div style="border-bottom: 1pt solid #e7eaec; margin: 0; padding: 10pt 0;">
+                            <small>
+                                <img src="<%= image_url('fa/clock-o_888888_16.png') %>" height="10">&nbsp;<span style='color: #888; font-size: 8.5pt; font-family: "Verdana", "sans-serif";'><%= l(audit_log.created_at) %></span>
+                                | <img src="<%= image_url('fa/user_888888_16.png') %>" height="10">&nbsp;<span style='color: #888; font-size: 8.5pt; font-family: "Verdana", "sans-serif"; text-decoration: none;'><%= audit_log.user.full_name %></span>
+                                | <img src="<%= image_url('fa/building-o_888888_16.png') %>" height="10">&nbsp;
+                                <% breadcrumbs = breadcrumbs(audit_log.auditable) %>
+                                <% breadcrumbs[:names].each_with_index do |breadcrumb_name, index| %>
+                                    <%= '/' unless index == 0 %>
+                                    <%= link_to(breadcrumb_name, breadcrumbs[:paths][index], {style: 'color: #888; font-size: 8.5pt; font-family: "Verdana", "sans-serif"; text-decoration: none;'}) %>
+                                <% end %>
+                            </small>
+                            <% if audit_log.system_message.present? %>
+                                <div style='background-color: #f3f2f1; border: 1pt solid #e7eaec; margin-bottom: 5pt; margin-top: 10pt; padding: 10pt 10pt;'>
+                                    <span style='color: #676a6c; font-size: 9pt; font-family: "Verdana", "sans-serif";'><%= audit_log.system_message.html_safe %></span>
+                                </div>
+                            <% end %>
+                            <% if audit_log.user_comment.present? %>
+                                <div style='background-color: #f3f2f1; border: 1pt solid #e7eaec; margin-bottom: 5pt; margin-top: 10pt; padding: 10pt 20pt;'>
+                                    <img src="<%= image_url('fa/comment_888888_16.png') %>">&nbsp;<span style='color: #676a6c; font-size: 9pt; font-family: "Verdana", "sans-serif"; font-style: italic;'><%= audit_log.user_comment %></span>
+                                </div>
+                            <% end %>
+                        </div>
+                    <% end %>
+                    <% if @more_audit_logs > 0 %>
+                        <span style='font-size: 9pt; font-family: "Verdana", "sans-serif";'><%= @more_audit_logs %> <%= link_to 'more', audit_logs_url, {style: 'color: #000; font-size: 14pt; font-family: "Verdana", "sans-serif";'} %>...</span>
+                    <% end %>
+                </div>
+            <% end %>
+            <br/>
+        <% end %>
+        <p><span style='font-size: 9pt; font-family: "Verdana", "sans-serif";'>With kind regards,</span></p>
+    </td>
+</tr>
+
+
+

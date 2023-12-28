@@ -1,0 +1,76 @@
+<% if project.is_op_certificate_submitted? && project.certificates.pluck(:certificate_type).include?('operations_type') %>
+  <div class="ibox">
+    <div class="ibox-title bg-header-grey text-green">
+      <h5>Surveys</h5>
+    </div>
+    <div class="ibox-content table-responsive">
+      <table class="table table-bordered table-hover datatable" cellspacing="0" width="100%">
+        <thead>
+              <tr>
+                  <th>Title</th>
+                  <th>End Date</th>
+                  <th>Survey Link</th>
+                  <th>Released At</th>
+                  <th>Actions</th>
+              </tr>
+        </thead>
+        <tbody>
+          <% projects_surveys.each do |survey| %>
+            <tr>
+
+              <td>
+                <%= 
+                  link_to_if(survey.released?,
+                    survey.title,
+                    project_survey_path(project, survey.id)
+                  )
+                %>
+              </td>
+              <td><%= survey.end_date&.strftime('%e %b, %Y') %></td>
+              <td>
+                <% if survey.released? %>
+                  <span style="cursor:pointer" class="link-survey" data-base_url="<%= root_url %>" data-survey_link="<%= form_survey_responses_path(survey) %>">Click here to copy survey link</span>
+                <% end %>
+              </td>
+              <td><%= survey.released_at&.strftime('%e %b, %Y AT %H:%M') %></td>
+              <td>
+                <%=
+                  btn_link_to(edit_project_survey_path(project,survey.id), icon: 'edit', size: 'small', tooltip: 'Edit')
+                %>
+                <%= 
+                  btn_link_to(copy_project_survey_project_survey_path(project, survey.id), icon: 'copy', size: 'small', tooltip: 'Copy Survey')
+                %>
+                <%= 
+                  btn_link_to(project_survey_path(project, survey.id), method: :delete, data: {confirm: "Are you sure to remove this survey ?"}, style: 'danger', icon: 'trash', size: 'small')
+                %>
+                <% 
+                  # show export survey response button if there is at least one response present
+                  question = survey.survey_questionnaire_version&.survey_questions
+                %>
+                <%= 
+                   if question.present? && question[0].question_responses.count > 0
+                    link_to export_survey_results_project_survey_path(project, survey.id), class: "btn btn-sm btn-btn btn-sm btn-primary" do
+                      ikoen('file-pdf-o', size: :small, title: 'Export results to PDF')
+                    end
+                   end
+                %>
+                <%= 
+                  if question.present? && question[0].question_responses.count > 0
+                    link_to export_excel_survey_results_project_survey_path(project, survey.id, format: "xlsx"), class: "btn btn-sm btn-btn btn-sm btn-primary" do
+                      ikoen('file-excel-o', size: :small, title: 'Export results to Excel')
+                    end
+                  end
+                %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <% if can?(:create, @project.projects_surveys.new) %>
+        <%= btn_link_to(new_project_survey_path(project), icon: 'bar-chart', text: 'Create Project Surveys') %>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
+<div id="toast-message"></div>

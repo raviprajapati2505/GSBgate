@@ -1,0 +1,54 @@
+<%= bootstrap_form_for([@project, @certification_path], url: update_status_project_certification_path_url, method: 'put') do |f| %>
+    <div class="modal-header">
+        <%= btn_close_modal %>
+        <h4 class="modal-title">Applying for Appeal</h4>
+    </div>
+    <div class="modal-body">
+        <%= f.hidden_field :appealed, value: true %>
+        <%= f.text_area :audit_log_user_comment, label: 'Comment', rows: 4 %>
+        <p>Please select the criteria you want to appeal for:</p>
+        <% @certification_path.scheme_mixes.each do |scheme_mix| %>
+            <strong><%= scheme_mix.name %></strong>
+            <ul class="criteria-checkboxes checkbox-list">
+                <% scheme_mix.scheme_categories.uniq.each do |category| %>
+                    <% if scheme_mix.scheme_mix_criteria.for_category(category).exists?(main_scheme_mix_criterion_id: nil) %>
+                        <li>
+                            <a href="#"><i class="fa fa-caret-square-o-right"></i>&nbsp;<%= category.name %></a>
+                            <ul style="display:none;">
+                                <% scheme_mix.scheme_mix_criteria.for_category(category).order('scheme_criteria.number').each do |scheme_mix_criterion| %>
+                                    <% unless scheme_mix_criterion.main_scheme_mix_criterion_id.present? %>
+                                        <li>
+                                            <%= check_box_tag 'scheme_mix_criterion[]', scheme_mix_criterion.id, false, id: 'scheme_mix_criterion_' + scheme_mix_criterion.id.to_s %>
+                                            <%= label_tag 'scheme_mix_criterion_' + scheme_mix_criterion.id.to_s, "#{scheme_mix_criterion.full_name} (#{t(scheme_mix_criterion.status, scope: 'activerecord.attributes.scheme_mix_criterion.statuses')})" %>
+                                        </li>
+                                    <% end %>
+                                <% end %>
+                            </ul>
+                        </li>
+                    <% end %>
+                <% end %>
+            </ul>
+        <% end %>
+    </div>
+    <div class="modal-footer">
+        <%= btn_tag(icon: 'hand-o-up', text: 'Apply for appeal') %>
+    </div>
+<% end %>
+
+<script>
+    $(function() {
+        // Handle select criteria button click
+        $('.show-criteria-checkboxes').off("click").click(function(e) {
+            $(this).siblings('.criteria-checkboxes').show();
+            $(this).hide();
+            e.preventDefault();
+        });
+
+        // Handle scheme mix criteria lists toggle
+        $('ul.criteria-checkboxes li a').off("click").click(function (e) {
+            $(this).siblings('ul').slideToggle();
+            $(this).children('i').toggleClass('fa-caret-square-o-right').toggleClass('fa-caret-square-o-down');
+            e.preventDefault();
+        });
+    });
+</script>

@@ -1,0 +1,83 @@
+<style>
+  body.skin-gord-login{
+    background-color: #3a4f57 !important; 
+    background-image:none !important;
+    color: #3a4f57 !important;
+  }
+</style>
+<div class="ibox p-5 m-4 new_form">
+  <div class="ibox-content new-user-content-box">
+    <h2 class="text-green my-4"><b><%= @project_survey&.title %></b></h2>
+    <div class="alert alert-info">
+      <h4>Description: </h4>
+      <p>This online survey is part of the procedure to obtain <b>GSAS Operations Certification.</b></p>
+      <p>Please complete the survey with as much attention as possible based on your experience over the <b>past six months.</b></p>
+      <p>1. The intention of the survey is to provide feedback to the management to better maintain a healthy, and productive environment for the health and well-being of building occupants.</p>
+      <p>2. Surveys are conducted online anonymously, and no party will have access to individual completed surveys
+      </p>
+    </div>
+    <div class="ibox-content new-user-content-box">
+    <%= bootstrap_form_for(@survey_response, url: submit_survey_responses_path(@project_survey), method: 'post', html: { multipart: true }) do |f| %>
+      <div class="form-inputs">
+        <div class="row">
+          <div class="col-lg-12">
+            <%= f.text_field :name %>
+          </div>
+          <div class="col-lg-12">
+            <%= f.text_field :email %>
+          </div>
+          <div class="col-lg-12">
+            <h3>Questions</h3>
+            <hr>
+          </div>
+          <div class="nested-fields">
+            <%= f.fields_for :question_responses do |question_response| %>
+              <%= render partial: 'survey_questions', locals: { question_response: question_response } %>
+            <% end %>
+          </div>
+          <div class="col-lg-12">
+            <%= btn_link_to(:back, icon: 'backward', text: 'Back') %>
+            <%= btn_save %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(function() {
+    var checked_values = {};
+
+    $('.iCheck-helper').on('click', function() {
+      let icheckbox_square_green = $(this).parent();
+      let input_field = icheckbox_square_green.find("input");
+
+      if (icheckbox_square_green.hasClass('icheckbox_square-green')) {
+        let survey_question_id = input_field.data("survey-question-id");
+        let checkbox_value = input_field.val();
+
+        // initialize array first time on question option select
+        if (!Array.isArray(checked_values[survey_question_id])) {
+          checked_values[survey_question_id] = [];
+        }
+
+        /* get selected checkbox values */
+        if (icheckbox_square_green.hasClass('checked')) {
+          checked_values[survey_question_id].push(checkbox_value);
+
+        } else {
+          let index = checked_values[survey_question_id].indexOf(checkbox_value);
+
+          if (index !== -1) {
+            checked_values[survey_question_id].splice(index, 1);
+          }
+        }
+
+        /* make a string to save in a database */
+        $('input[id="checkbox-survey-question-' + survey_question_id + '"]').val(checked_values[survey_question_id].join('|||'));
+      }
+    });
+  });
+</script>

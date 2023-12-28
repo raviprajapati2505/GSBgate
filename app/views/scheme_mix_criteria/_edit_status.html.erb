@@ -1,0 +1,56 @@
+<div class="modal-dialog">
+    <%= bootstrap_form_for([@project, @certification_path, @scheme_mix, @scheme_mix_criterion], url: update_status_project_certification_path_scheme_mix_scheme_mix_criterion_path, method: 'put') do |f| %>
+    <div class="modal-content">
+        <% if todos.blank? %>
+            <div class="modal-header">
+                <%= btn_close_modal %>
+                <h4 class="modal-title">
+                    <% if params.has_key?(:undo) && (params[:undo] == '1') %>
+                        <%= t('.title.undo') %>
+                    <% elsif @scheme_mix_criterion.verifying? || @scheme_mix_criterion.verifying_after_appeal? %>
+                        <%= t('.title.verify') %>
+                    <% else %>
+                        <%= t('.title.submit') %>
+                    <% end %>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <% if @scheme_mix_criterion.verifying? || @scheme_mix_criterion.verifying_after_appeal? %>
+                    <p class="alert alert-info"><%= ikoen('info-circle') %>
+                        <%= t('.info.achieved_html', status: t(@scheme_mix_criterion.next_status, scope: 'activerecord.attributes.scheme_mix_criterion.statuses')) %>
+                    </p>
+                <% end %>
+                <%= f.text_area :audit_log_user_comment, rows: 4 %>
+
+              <% if can?(:index, AuditLog.new(audit_log_visibility_id: AuditLogVisibility::INTERNAL, project: @project)) %>
+                  <%= f.form_group :audit_log_visibility do %>
+                      <%= f.radio_button :audit_log_visibility, AuditLogVisibility::PUBLIC, label: 'Public Comment' %>
+                      <span class="help-block">Everyone assigned to this project will be able to view this comment</span>
+                      <%= f.radio_button :audit_log_visibility, AuditLogVisibility::INTERNAL, label: 'GSAS Trust Internal Comment', checked: true %>
+                      <span class="help-block">Only the GSAS trust team can view this comment</span>
+                  <% end %>
+              <% end %>
+            </div>
+            <div class="modal-footer">
+                <% if can?(:update_status, @scheme_mix_criterion) %>
+                    <%= btn_save %>
+                <% end %>
+            </div>
+            <% else %>
+                <div class="modal-header alert-danger">
+                    <%= btn_close_modal %>
+                    <h4 class="modal-title">
+                        <%= ikoen_with_text('exclamation-circle', 'The status cannot be advanced yet because of the following issues:') %>
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <ul>
+                        <% todos.each do |todo| %>
+                            <li><%= todo %></li>
+                        <% end %>
+                    </ul>
+                </div>
+            <% end %>
+        </div>
+    <% end %>
+</div>

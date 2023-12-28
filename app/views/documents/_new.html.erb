@@ -1,0 +1,97 @@
+<%= bootstrap_form_for([project, certification_path, document], html: {class: 'dropzone', data: {maxfilesize: Document::MAXIMUM_DOCUMENT_FILE_SIZE, acceptedfiles: DocumentUploader.new.extension_white_list_js}}) do |f| %>
+    <div class="fallback">
+        <%= f.file_field :document_file, hide_label: true %>
+        <%= f.primary 'Upload documentation' %>
+    </div>
+    <div id="dropzone-top">
+        <div class="dz-message">
+            <%= ikoen_with_text('files-o', 'Drop files here or click to upload documentation.') %>
+        </div>
+    </div>
+    <div id="dropzone-bottom" class="table-responsive" style="display:none;">
+        <div id="dropzone-previews" class="table table-striped table-bordered">
+            <div class="file-row header">
+                <div><strong>File Name</strong></div>
+                <div><strong>File Size</strong></div>
+                <div><strong>Upload Progress</strong></div>
+                <div><strong>Actions</strong></div>
+            </div>
+        </div>
+        <br/>
+
+        <div class="row">
+            <div class="col-md-5 col-sm-12 col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Additional
+                        Requirements <%= tooltip('If this documentation meets other requirements click here to select any additional criteria it applies to.') %></div>
+                    <div class="panel-body">
+                        <%= btn_link_to('#', icon: 'plus', text: 'Select additional criteria', class: 'show-criteria-checkboxes', size: 'small', style: 'white') %>
+                        <ul class="criteria-checkboxes checkbox-list" style="display:none;">
+                            <% scheme_mix.scheme_categories.uniq.each do |category| %>
+                                <% if scheme_mix.scheme_mix_criteria.for_category(category).exists?(main_scheme_mix_criterion_id: nil) %>
+                                    <li>
+                                        <a href="#">
+                                            <%= ikoen_with_text('caret-square-o-right', category.name) %>
+                                        </a>
+                                        <ul style="display:none;">
+                                            <% scheme_mix.scheme_mix_criteria.for_category(category).order('scheme_criteria.number').each do |scheme_mix_criterion| %>
+                                                <% unless scheme_mix_criterion.main_scheme_mix_criterion_id.present? %>
+                                                    <li>
+                                                        <% default_checkbox_value = (scheme_mix_criterion_id.present? && (scheme_mix_criterion_id == scheme_mix_criterion.id)) %>
+                                                        <%= check_box_tag 'document[scheme_mix_criteria_documents_attributes][][scheme_mix_criterion_id]', scheme_mix_criterion.id, default_checkbox_value, disabled: default_checkbox_value, id: 'document_scheme_mix_criterion_' + scheme_mix_criterion.id.to_s %>
+                                                        <%= label_tag 'document_scheme_mix_criterion_' + scheme_mix_criterion.id.to_s, scheme_mix_criterion.full_name %>
+                                                    </li>
+                                                <% end %>
+                                            <% end %>
+                                        </ul>
+                                    </li>
+                                <% end %>
+                            <% end %>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7 col-sm-12 col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Notes to Support the
+                        Documentation <%= tooltip('Please enter some additional comments relating to this documentation to help understand which requirements it relates to.') %></div>
+                    <div class="panel-body">
+                        <%= text_area_tag 'scheme_mix_criteria_document[audit_log_user_comment]', nil, class: 'form-control' %>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="hr-line-dashed"></div>
+        <%= btn_link_to('#', id: 'dropzone-upload-all', icon: 'upload', text: 'Upload documentation') %>
+    </div>
+<% end %>
+<div id="dropzone-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dropzone-modal-title">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header alert-danger">
+                <%= btn_close_modal %>
+                <h4 class="modal-title" id="dropzone-modal-title"></h4>
+            </div>
+            <div class="modal-body"></div>
+        </div>
+    </div>
+</div>
+<%= javascript_include_tag 'document_uploader' %>
+
+<script>
+    $(function() {
+        // Handle select criteria button click
+        $('.show-criteria-checkboxes').off("click").click(function(e) {
+            $(this).siblings('.criteria-checkboxes').show();
+            $(this).hide();
+            e.preventDefault();
+        });
+
+        // Handle scheme mix criteria lists toggle
+        $('ul.criteria-checkboxes li a').off("click").click(function (e) {
+            $(this).siblings('ul').slideToggle();
+            $(this).children('i').toggleClass('fa-caret-square-o-right').toggleClass('fa-caret-square-o-down');
+            e.preventDefault();
+        });
+    });
+</script>

@@ -1,0 +1,31 @@
+<style>
+body.skin-gord-login{
+  background-color: #3a4f57 !important; 
+  background-image:none !important;
+}
+</style>
+<div class="ibox p-5 m-4 new_form confirm-inst">
+<div class="ibox-content new-user-content-box border-0 pt-0">
+<h2 class="text-green my-4"><b>Resend confirmation instructions</b></h2>
+
+    <%= simple_form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
+      <%= f.error_notification %>
+
+      <div class="form-inputs">
+        <%= f.full_error :confirmation_token %>
+        <%= f.input :email,
+                required: true,
+                autofocus: true,
+                value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email),
+                input_html: { autocomplete: "email" } %>
+      </div>
+
+      <div class="form-actions">
+        <%= btn_cancel_to(new_user_session_path, style: 'danger', icon: 'times') %>
+        <%= btn_save(text: "Resend confirmation instructions") %>
+      </div>
+    <% end %>
+
+    <%= render "users/shared/links" %>
+  </div>
+</div>

@@ -1,0 +1,26 @@
+<% 
+  case certification_type
+    when 'GSAS-D&B'
+      star_badge_class = 'certi-status-badge star-rating-badge-db'
+      image_tag = image_tag('layout/certi-status-db.png')
+    when 'GSAS-CM'
+      star_badge_class = 'certi-status-badge star-rating-badge-cm'
+      image_tag = image_tag('layout/certi-status-cm.png')
+    when 'GSAS-OP'
+      star_badge_class = 'certi-status-badge star-rating-badge-op'
+      image_tag = image_tag('layout/certi-status-op.png')
+    when 'GSAS-EcoLeaf'
+      star_badge_class = 'certi-status-badge star-rating-badge-db'
+      image_tag = image_tag('layout/certi-status-db.png')
+  end
+%>
+ <% if ratings == 'CERTIFIED' || ratings == 'CLASS B' %>
+  <span class="certi-status-badge <%= star_badge_class %> label-rating-<%= ratings.downcase.gsub(/( )/, '-') %>"><%= image_tag %><%= ratings %></span>
+<% else %>
+<span class="certi-status-badge <%= star_badge_class %>">
+    <%= image_tag %>
+    <% ratings.to_i.times do %>
+        <i class="fa fa-star"><span style="display:none;">*</span></i>
+      <% end %>
+  </span>
+<% end %>

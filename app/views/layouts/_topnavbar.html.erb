@@ -1,0 +1,203 @@
+<div class="menu-div flex-column">
+    <div class="top-navbar container-fluid">
+        <div class="navbar-header navbar navbar-static-top gord-transparent" role="navigation">
+            <% unless Rails.env == 'production' %>
+            <div id="environment"><%= Rails.env %></div>
+            <% end %>
+            <%= image_tag('layout/GSAS-Gate-after-login.svg', class:"img-responsive after-login-img bg-transparent")%>
+            <button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
+                <%= ikoen('reorder') %>
+            </button>
+        </div>
+        <div class="navbar-collapse collapse w-100" id="navbar">
+        <div class="d-flex justify-content-between align-item-center flex-column flex-md-row w-100 h-100">
+            <ul class="nav navbar-nav text-center">
+                    
+
+            <% if can?(:index, :dashboard) %>
+                <li class="<%= 'active' if ['dashboard'].include?(controller_name) %>">
+                    <%= link_to dashboard_path do %>
+                        <% if ['dashboard'].include?(controller_name) %>
+                            <%= image_tag('layout/pro.png',class:"img-responsive active-li bg-transparent after-login-right-img")%>
+                        <% else %>
+                            <%= image_tag('layout/pro-g.png',class:"img-responsive normal-li bg-transparent after-login-right-img")%>
+                        <% end %>
+                        <span class="nav-label">Dashboard</span>
+                    <% end %>
+                </li>
+            <% end %>
+            
+            <% if can?(:index, Project) %>
+                <li class="<%= 'active' if (['projects', 'projects_users', 'certification_paths', 'scheme_mixes', 'scheme_mix_criteria'].include?(controller_name) and ['index', 'show'].include?(action_name)) %>">
+                    <%= link_to projects_path do %>
+                        <% if (['projects', 'projects_users', 'certification_paths', 'scheme_mixes', 'scheme_mix_criteria'].include?(controller_name) and ['index', 'show'].include?(action_name)) %>
+                            <%= image_tag('layout/pro.png',class:"img-responsive active-li bg-transparent after-login-right-img")%>
+                        <% else %>
+                            <%= image_tag('layout/pro-g.png',class:"img-responsive normal-li bg-transparent after-login-right-img")%>
+                        <% end %>
+                        <span class="nav-label"><%= t('.navbar.projects_html') %></span>
+                    <% end %>
+                </li>
+            <% end %>
+
+            <% if can?(:index, Task) %>
+                <li class="<%= 'active' if (controller_name == 'tasks') %>">
+                <% task_count = TaskService::count_tasks(user: current_user) %>
+                    <%= link_to tasks_path do %>
+                        <% if (controller_name == 'tasks') %>
+                            <%= image_tag('layout/task.png',class:"img-responsive active-li bg-transparent after-login-right-img")%>
+                        <% else %>
+                            <%= image_tag('layout/task-g.png',class:"img-responsive normal-li bg-transparent after-login-right-img")%>
+                        <% end %>
+                        <span class="nav-label"><%= t('.navbar.tasks') %><span class="badge task-counter <% if task_count == 0 %>hidden<% end %>" data-user="<%= current_user.id %>"><%= task_count %></span></span>
+                    <% end %>
+                </li>
+            <% end %>
+
+            <% if can?(:list_notifications, User) %>
+                <li class="<%= 'active' if (controller_name == 'users' and action_name == 'list_notifications') %>">
+                    <%= link_to list_notifications_user_path id: current_user.id do %>
+                        <% if (controller_name == 'users' and action_name == 'list_notifications') %>
+                            <%= image_tag('layout/my-ref.png',class:"img-responsive active-li bg-transparent after-login-right-img")%>
+                        <% else %>
+                            <%= image_tag('layout/my-ref-g.png',class:"img-responsive normal-li bg-transparent after-login-right-img")%>
+                        <% end %>
+                        <span class="nav-label"><%= t('.navbar.preferences') %></span>
+                    <% end %>
+                </li>
+            <% end %>
+
+            <% if can?(:index, AuditLog) %>
+                <li class="<%= 'active' if (controller_name == 'audit_logs') %>">
+                    <%= link_to audit_logs_path do %>
+                        <% if (controller_name == 'audit_logs') %>
+                            <%= image_tag('layout/audit-log.png',class:"img-responsive active-li bg-transparent after-login-right-img")%>
+                        <% else %>
+                            <%= image_tag('layout/audit-log-g.png',class:"img-responsive normal-li bg-transparent after-login-right-img")%>
+                        <% end %>
+                        <span class="nav-label"><%= t('.navbar.audit_log') %></span>
+                    <% end %>
+                </li>
+            <% end %>
+
+            <li>
+                 <%= link_to '/GSASgate_Manual.pdf', target: '_blank' do %>
+                    <%= image_tag('layout/manual-g.png',class:"img-responsive normal-li bg-transparent after-login-right-img")%>
+                    <span class="nav-label"><%= t('.navbar.manual') %></span>
+                <% end %>
+            </li>
+
+            <% if can?(:show, 'visualisation_tool') %>
+            <li>
+                <%= link_to Rails.application.config.x.viewer.url, target: '_blank' do %>
+                    <%= image_tag('layout/v-tool-g.png',class:"img-responsive normal-li bg-transparent after-login-right-img")%>
+                    <span class="nav-label"><%= t('.navbar.viewer') %></span>
+                <% end %>
+            </li>
+            <% end %>
+
+            <% if can? :create, Project.new %>
+            <li class="<%= 'active' if (controller_name == 'projects' and action_name == 'new') %>">
+                    <%= link_to new_project_path do %>
+                        <% if (controller_name == 'projects' and action_name == 'new') %>
+                            <%= image_tag('layout/new-project.png',class:"img-responsive active-li bg-transparent after-login-right-img")%>
+                        <% else %>
+                            <%= image_tag('layout/new-project-g.png',class:"img-responsive normal-li bg-transparent after-login-right-img")%>
+                        <% end %>
+                        <span class="nav-label"><%= t('.navbar.btn_new_project') %></span>
+                    <% end %>
+                </li>
+            <% end %>
+            <% if can? :projects_statistics, Project %>
+            <li class="<%= 'active' if (controller_name == 'projects' and action_name == 'projects_statistics') %>">
+                    <%= link_to projects_statistics_projects_path do %>
+                        <% if (controller_name == 'projects' and action_name == 'projects_statistics') %>
+                            <%= image_tag('layout/statistic.png',class:"img-responsive active-li bg-transparent after-login-right-img")%>
+                        <% else %>
+                            <%= image_tag('layout/statistic-g.png',class:"img-responsive normal-li bg-transparent after-login-right-img")%>
+                        <% end %>
+                        <span class="nav-label"><%= t('.navbar.btn_project_statistics') %></span>
+                    <% end %>
+                </li>
+            <% end %>
+
+            <% 
+                can_index_scheme_criteria = can?(:index, SchemeCriterion)
+                can_index_users = can?(:index, User)
+                can_certifiers_criteria_report = can?(:certifiers_criteria, :report)
+                can_dashboard_survey = can?(:index, :survey_dashboard)
+                can_offline_projects = can?(:index, Offline::ProjectsController)
+            %>
+
+            <% unless current_user.document_controller? %>
+                <% if can_index_users || can_index_scheme_criteria || can_certifiers_criteria_report || can_dashboard_survey %>
+                    <li class="dropdown<%= ' active' if ['scheme_criteria', 'users'].include?(controller_name) && action_name != 'list_notifications' %>">
+                        <a aria-expanded="false" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <% if ['scheme_criteria', 'users'].include?(controller_name) && action_name != 'list_notifications' %>
+                            <%= image_tag('layout/admin.png',class:"img-responsive active-li bg-transparent after-login-right-img")%>
+                        <% else %>
+                            <%= image_tag('layout/admin-g.png',class:"img-responsive normal-li bg-transparent after-login-right-img")%>
+                        <% end %>
+                        <span class="nav-label"><%= t('.navbar.admin') %> <i class="fa fa-caret-down m-0 ml-1"></i></span>
+                        </a>
+                        <ul role="menu" class="dropdown-menu">
+                            <% if can_offline_projects %>
+                                <li><%= link_to t('.navbar.offline_projects'), offline_projects_path %></li>
+                            <% end %>
+                            <% if can_index_scheme_criteria %>
+                                <li><%= link_to t('.navbar.admin_system_data'), scheme_criteria_path %></li>
+                            <% end %>
+                            <% if can_index_users %>
+                                <li><%= link_to t('.navbar.admin_users'), users_path %></li>
+                            <% end %>
+                            <% if can_certifiers_criteria_report %>
+                                <li><%= link_to t('.navbar.certifiers_and_criteria_report'), reports_certifiers_criteria_path %></li>
+                            <% end %>
+                            <% if can_dashboard_survey %>
+                                <li><%= link_to t('.navbar.survey_dashboard'), survey_dashboard_index_path %></li>
+                            <% end %>
+                        </ul>
+                    </li>
+                <% end %>
+            <% else %>
+                 <li class="dropdown<%= ' active' if ['scheme_criteria', 'users'].include?(controller_name) && action_name != 'list_notifications' %>">
+                        <a aria-expanded="false" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <%= ikoen('cogs', size: 'lg') %><%= t('.navbar.admin') %><span class="caret"></span>
+                        </a>
+                        <ul role="menu" class="dropdown-menu">
+                            <% if can_offline_projects %>
+                                <li><%= link_to t('.navbar.offline_projects'), offline_projects_path %></li>
+                            <% end %>
+                        </ul>
+                    </li>
+            <% end %>
+            </ul>
+            <div class="d-none d-lg-block"></div>
+            <%= image_tag('layout/GSAS Trust.svg',class:"img-responsive bg-transparent after-login-right-img")%>
+        </div>
+            
+        </div>
+    </div>
+    <% if user_signed_in? %>
+        <ul class="nav navbar-top-links navbar-right container-fluid">
+            <li>
+                <a href="<%= user_path(current_user.id) %>" class="d-flex align-items-center p-0">
+                <span class="nav-user-icon"> 
+                <% if current_user.profile_pic.url %>
+                  <% img_src = current_user&.profile_pic.url %>
+                <% else %>
+                  <% img_src = 'https://icon-library.com/images/placeholder-image-icon/placeholder-image-icon-12.jpg' %>
+                <% end %>
+                <img src="<%= img_src %>" alt="image">
+                </span>
+                        <span class="nav-label"><%= current_user.full_name %></span>
+                    </a>
+            </li>
+            <li class="d-flex">
+                <%= link_to destroy_user_session_path, method: :delete do %>
+                    <%= ikoen('sign-out', size: 'lg') %><span class="nav-label">Log out</span>
+                <% end %>
+            </li>
+        </ul>
+    <% end %>
+</div>

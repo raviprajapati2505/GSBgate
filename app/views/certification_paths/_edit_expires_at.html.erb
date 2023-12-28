@@ -1,0 +1,24 @@
+<div class="modal-dialog">
+  <%= bootstrap_form_for([@project, @certification_path], url: update_expires_at_project_certification_path_path, method: 'put') do |f| %>
+    <div class="modal-content">
+      <div class="modal-header">
+        <%= btn_close_modal %>
+        <h4 class="modal-title">Expiry Date</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <%= label_tag 'expires_at', 'Expiry Date', class: 'control-label' %>
+          <div class="input-group">
+            <span class="input-group-addon"><%= ikoen('calendar') %></span>
+            <%= f.text_field :expires_at, {class: 'datepicker-future form-control', autocomplete: 'off', hide_label: true} %>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <% if can?(:update_expires_at, @certification_path) %>
+          <%= btn_save %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

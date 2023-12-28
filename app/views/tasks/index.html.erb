@@ -1,0 +1,27 @@
+<div class="col-md-4 col-sm-12 col-xs-12">
+    <div class="ibox">
+        <div class="ibox-title">
+            <h5>Task Filter </h5>
+        </div>
+        <div class="ibox-content">
+            <%= bootstrap_form_tag(url: tasks_path, method: 'get') do |f| %>
+                <%= f.form_group do %>
+                    <%= f.label :project_id %><br/>
+                    <%= f.hidden_field :project_id, { class: 'select2-project-ajax', value: session[:task]['project_id'] } %>
+                <% end %>
+                <div id="select-certificate" class="form-group">
+                    <%= f.label :certification_path_id, t('.filter.certificate_label') %><br/>
+                    <%= f.hidden_field :certification_path_id, { class: 'select2-certificate-ajax', value: session[:task]['certification_path_id'] } %>
+                </div>
+                <div class="hr-line-dashed"></div>
+                <%= btn_tag(text: 'Apply filter', value: 'Apply_task_filter', icon: 'filter') %>
+                <%= btn_cancel_to(tasks_path(reset: true), text: 'Remove filter', style: 'white', icon: 'times') %>
+            <% end %>
+        </div>
+    </div>
+</div>
+<div class="col-md-8 col-sm-12 col-xs-12">
+    <%= render 'tasks' %>
+</div>
+<%= javascript_include_tag 'select_project' %>
+<%= javascript_include_tag 'select_project_certificate' %>

@@ -1,0 +1,13 @@
+<ul>
+    <% project.certification_paths.sort_by {|certification_path| certification_path.certificate.display_weight}.each do |certification_path| %>
+        <li>
+            <%= can_link_to(project_certification_path_path(project, certification_path), certification_path) do %>
+                    <%= certification_path.name %>
+            <% end %>
+            (<%= certification_path.status %>)
+            <% if certification_path.is_completed? %>
+                <%= render partial: 'certification_paths/rating_item', locals: {score_label: 'Achieved', score: certification_path.scores_in_certificate_points[:achieved], achieved: true} %>
+            <% end %>
+        </li>
+    <% end %>
+</ul>

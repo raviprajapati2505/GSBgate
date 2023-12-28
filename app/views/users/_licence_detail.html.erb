@@ -1,0 +1,38 @@
+<% if access_licences.present? %>
+  <h5 class="m-l"><b><%= label %></b></h5>
+<% end %>
+
+<% access_licences&.each.with_index(1) do |access_licence, index| %>
+  <div class="col-md-6 table-responsive">
+    <table class="table table-bordered table-striped user-details-table border-bottom-table">
+      <tbody>
+        <tr>
+          <th><%= Licence.human_attribute_name('display_name') %></th>
+          <td><%= access_licence.licence_display_name %></td>
+        </tr>
+        <tr>
+          <th><%= Licence.human_attribute_name('applicability') %></th>
+          <td><%= access_licence.licence_applicable_for %></span></td>
+        </tr>
+        <tr>
+          <th><%= Licence.human_attribute_name('description') %></th>
+          <td><%= access_licence.licence_description %></td>
+        </tr>
+        <% if access_licence.licence_schemes.present? %>
+          <tr>
+            <th><%= Licence.human_attribute_name('schemes') %></th>
+            <td>
+              <% access_licence.licence_schemes&.each do |scheme| %>
+                <%= scheme %><br>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+        <tr>
+          <th><%= AccessLicence.human_attribute_name('expiry_date') %></th>
+          <td><%= access_licence.formatted_expiry_date %></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+<% end %>

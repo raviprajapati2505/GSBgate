@@ -1,0 +1,63 @@
+<div class="modal-dialog">
+  <%= bootstrap_form_for([@project, @certification_path, @scheme_mix, @scheme_mix_criterion, @scheme_mix_criteria_document], url: destroy_link_project_certification_path_scheme_mix_scheme_mix_criterion_scheme_mix_criteria_document_path, layout: :inline, method: 'post') do |f| %>
+      <div class="modal-content">
+        <div class="modal-header">
+          <%= btn_close_modal %>
+          <h4 class="modal-title"><%= t('.modal_title') %></h4>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" name="scheme_mix_criteria_document[][scheme_mix_criterion_id]" value="<%= @scheme_mix_criteria_document.scheme_mix_criterion_id %>">
+          <ul class="criteria-checkboxes checkbox-list">
+            <% @scheme_mix.scheme_categories.uniq.each do |category| %>
+                <% if @scheme_mix.scheme_mix_criteria.for_category(category).exists?(main_scheme_mix_criterion_id: nil) %>
+                    <% if @scheme_mix.scheme_mix_criteria.for_category(category).joins(:scheme_mix_criteria_documents).exists?(scheme_mix_criteria_documents: {document_id: @scheme_mix_criteria_document.document_id}) %>
+                    <li>
+                      <a href="#"><i class="fa fa-caret-square-o-right"></i>&nbsp;<%= category.name %></a>
+                      <ul>
+                        <% @scheme_mix.scheme_mix_criteria.for_category(category).where('exists(select document_id from scheme_mix_criteria_documents smcd where document_id = ? and scheme_mix_criterion_id = scheme_mix_criteria.id)', @scheme_mix_criteria_document.document_id.to_i).order('scheme_criteria.number').each do |scheme_mix_criterion| %>
+                            <% unless scheme_mix_criterion.main_scheme_mix_criterion_id.present? %>
+                                <%= fields_for "scheme_mix_criteria_document[]", SchemeMixCriteriaDocument.new do |smcd_fields| %>
+                                    <li>
+                                      <% if @scheme_mix_criteria_document.scheme_mix_criterion_id == scheme_mix_criterion.id %>
+                                          <%= smcd_fields.check_box :scheme_mix_criterion_id, {id: 'scheme_mix_criteria_document__' + scheme_mix_criterion.id.to_s, checked: true, disabled: true}, scheme_mix_criterion.id, nil %>
+                                      <% else %>
+                                        <%= smcd_fields.check_box :scheme_mix_criterion_id, {id: 'scheme_mix_criteria_document__' + scheme_mix_criterion.id.to_s, checked: true}, scheme_mix_criterion.id, nil %>
+                                      <% end %>
+                                      <%= smcd_fields.label scheme_mix_criterion.id.to_s, scheme_mix_criterion.full_name %>
+                                    </li>
+                                <% end %>
+                            <% end %>
+                        <% end %>
+                      </ul>
+                    </li>
+                    <% end %>
+                <% end %>
+            <% end %>
+          </ul>
+        </div>
+        <div class="modal-footer">
+          <% if can?(:destroy_link, @scheme_mix_criteria_document) %>
+              <%= btn_save %>
+          <% end %>
+        </div>
+      </div>
+  <% end %>
+</div>
+
+<script>
+    $(function() {
+        // Handle select criteria button click
+        $('.show-criteria-checkboxes').off("click").click(function(e) {
+            $(this).siblings('.criteria-checkboxes').show();
+            $(this).hide();
+            e.preventDefault();
+        });
+
+        // Handle scheme mix criteria lists toggle
+        $('ul.criteria-checkboxes li a').off("click").click(function (e) {
+            $(this).siblings('ul').slideToggle();
+            $(this).children('i').toggleClass('fa-caret-square-o-right').toggleClass('fa-caret-square-o-down');
+            e.preventDefault();
+        });
+    });
+</script>

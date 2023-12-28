@@ -1,0 +1,81 @@
+<% unless rec.certification_path_status_is_active %>
+  <!-- Check if project has certificate -->
+  <% unless rec.certification_path_id.nil? %>
+  <% certificate_path = CertificationPath.find(rec.certification_path_id) %>
+    <% if certificate_path.is_checklist_method? %>
+      <% 
+      rating = certificate_path.label_for_level(certificate: certificate_path.certificate)
+      %>
+    <% else %>
+      <% 
+        scores = certificate_path.scores_in_certificate_points 
+        scores = scores[:achieved_score_in_certificate_points]
+      %>
+      <%
+        if certificate_path.construction?
+          if certificate_path.name == "Construction Certificate, 2019 - GSAS-CM Certificate"
+            data_score = []
+            @project = Project.find(rec.project_nr)
+            certificate_path_ids = @project.certification_paths.pluck(:id) - [certificate_path.id]
+            certificate_path_ids.each do |cp_id|
+              scheme_mix = CertificationPath.find(cp_id)&.scheme_mixes&.first
+              scheme_mix_scores = score_calculation(scheme_mix)
+              data_score << scheme_mix_scores
+            end
+            scores = total_CM_score(data_score)
+            scores = final_cm_revised_avg_scores(certificate_path, scores)
+            scores = scores[:achieved_score_in_certificate_points]
+          end
+        end
+      %>
+      <% rating = certificate_path.rating_for_score(scores, certificate: certificate_path.certificate, certificate_gsas_version: rec.certificate_gsas_version, certificate_name: rec.certificate_name) %>
+    <% end %>
+  <% else %>
+  <% rating = -1 %>
+  <% end %>
+  <% only_certification_name = Certificate.find_by_name(rec&.certificate_name)&.only_certification_name %>
+  <% if rating.is_a? String %>
+    <!-- TEXTUAL SCORE -->
+    <% 
+      case only_certification_name
+        when 'GSAS-D&B'
+          badge_class = 'rating-badge-db'
+          image_tag = image_tag('layout/certi-status-db.png')
+        when 'GSAS-CM'
+          badge_class = 'rating-badge-cm'
+          image_tag = image_tag('layout/certi-status-cm.png')
+        when 'GSAS-OP'
+          badge_class = 'rating-badge-op'
+          image_tag = image_tag('layout/certi-status-op.png')
+        when 'GSAS-EcoLeaf'
+          badge_class = 'rating-badge-db'
+          image_tag = image_tag('layout/certi-status-db.png')
+      end
+    %>
+    <span class="certi-status-badge <%= badge_class %> label-rating-<%= rating.downcase.gsub(/( )/, '-') %>"><%= image_tag %><%= rating %></span>
+  <% else %>
+    <!-- STAR SCORE -->
+    <% 
+      case only_certification_name
+        when 'GSAS-D&B'
+          star_badge_class = 'certi-status-badge star-rating-badge-db'
+          image_tag = image_tag('layout/certi-status-db.png')
+        when 'GSAS-CM'
+          star_badge_class = 'certi-status-badge star-rating-badge-cm'
+          image_tag = image_tag('layout/certi-status-cm.png')
+        when 'GSAS-OP'
+          star_badge_class = 'certi-status-badge star-rating-badge-op'
+          image_tag = image_tag('layout/certi-status-op.png')
+        when 'GSAS-EcoLeaf'
+          star_badge_class = 'certi-status-badge star-rating-badge-db'
+          image_tag = image_tag('layout/certi-status-db.png')
+      end
+    %>
+    <span class="certi-status-badge <%= star_badge_class %>">
+      <%= image_tag %>
+      <% rating&.times do %>
+        <i class="fa fa-star"><span style="display:none;">*</span></i>
+      <% end %>
+    </span>
+  <% end %>
+<% end %>

@@ -1,0 +1,35 @@
+<% if project_rendering_images.blank? %>
+  No project rendering images were uploaded yet.
+<% else %>
+<div class="table-responsive">
+  <table class="table table-bordered datatable img-doc-table" cellspacing="0" width="100%">
+    <thead>
+    <tr>
+      <th class="all">File&nbsp;Name</th>
+      <th class="desktop">File&nbsp;Size</th>
+      <th class="desktop">Upload&nbsp;Date</th>
+      <th class="all">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% project_rendering_images.each do |pri| %>
+      <tr class="document-approved">
+        <td data-order="<%= pri['rendering_image'] %>" data-search="<%= pri['rendering_image'] %>">
+          <%= image_tag(icon_for_filename(pri['rendering_image']), alt: pri.rendering_image.content_type, title: pri.rendering_image.content_type) + ' ' + pri['rendering_image'] %>
+        </td>
+        <td><%= number_to_human_size(pri.rendering_image.size) %></td>
+        <td data-order="<%= localize(pri.created_at) %>" data-search="<%= localize(pri.created_at) %>"><%= localize(pri.created_at).gsub(' ', '&nbsp;').html_safe %></td>
+        <td>
+          <% if can?(:read, pri) %>
+            <%= btn_download(project_project_rendering_image_path(@project, pri), size: 'small', tooltip: 'Download image') %>
+          <% end %>
+          <% if can?(:destroy, pri) %>
+            <%= btn_link_to(project_project_rendering_image_path(@project, pri), method: :delete, data: { confirm: 'Are you sure to delete the image?'}, style: 'danger', size: 'small', icon: 'trash', tooltip: 'Delete image') %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+  </div>
+<% end %>

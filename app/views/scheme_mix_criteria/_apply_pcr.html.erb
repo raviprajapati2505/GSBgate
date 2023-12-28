@@ -1,0 +1,61 @@
+<div class="modal-dialog" id="applyforpcr">
+  <%= bootstrap_form_for([@project, @certification_path, @scheme_mix, @scheme_mix_criterion],method: :get, url: request_review_project_certification_path_scheme_mix_scheme_mix_criterion_path) do |f| %>
+    <div class="modal-content">
+      <% if !@scheme_mix_criterion.pcr_todo.blank? %>
+        <div class="modal-header alert-danger">
+          <%= btn_close_modal %>
+          <h4 class="modal-title">
+            <%= ikoen_with_text('exclamation-circle', 'The status cannot be advanced yet because of the following issues:') %>
+          </h4>
+        </div>
+        <div class="modal-body">
+          <ul>
+            <% @scheme_mix_criterion.pcr_todo.each do |todo| %>
+                <li><%= todo %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% else %>
+        <div class="modal-header">
+          <%= btn_close_modal %>
+          <h4 class="modal-title">  
+            <%= t('.title.pcr') %>
+          </h4>
+        </div>
+        <div class="modal-body">
+          <% if @data[:confirm] %>
+            <%= @data[:confirm] %>
+          <% else %>
+            <%= @data[:pcr] %>
+          <% end %>
+        </div>
+        <div class="modal-footer">
+          <%= btn_tag(text: t('.btn_save'), class: 'okBtn', id: "okay_pcr") %>
+          <%= btn_tag(text: t('.btn_cancel'), style: 'white', data: {dismiss: 'modal'}) %>
+        </div>
+      <% end %>
+    </div>
+    <%= link_to '#', "javascript:void(0)", id: "request_pcr", data: @data %>
+  <% end %>
+</div>
+
+<script>
+  // console.log("data ->", <%= @data %>);
+  $(document).ready(function(){
+    var modal = $('#applyforpcr');
+    var link = $('#request_pcr')
+    console.log('before clicked', link.data("confirm") )
+
+    $('#okay_pcr').click(function(e) {
+      console.log('clicked', link.data("confirm")  == undefined)
+      if(link.data("confirm") == undefined) {
+        $(this).unbind(e);
+      }
+      else {
+        e.preventDefault();
+        $('#applyforpcr .modal-body').html(link.data("pcr"));
+        link.data("confirm", null);
+      }
+    })
+  })
+</script>

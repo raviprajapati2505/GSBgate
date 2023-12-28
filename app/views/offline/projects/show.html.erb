@@ -1,0 +1,207 @@
+<div class="col-md-4 col-sm-12 col-xs-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5><%= t('.project_details.title') %></h5>
+    </div>
+    <div class="ibox-content pt-0">
+    <div class="table-responsive">
+
+      <table class="table table-striped project-details-table">
+        <tbody>
+          <tr>
+            <th><%= Offline::Project.human_attribute_name('code') %></th>
+            <td><%= @project.code %></td>
+          </tr>
+          <tr>
+            <th><%= Offline::Project.human_attribute_name('name') %></th>
+            <td><%= @project.name %></td>
+          </tr>
+          <tr>
+            <th><%= Offline::Project.human_attribute_name('certificate_type') %></th>
+            <td><%= @project.certificate_type %></td>
+          </tr>
+          <tr>
+            <th><%= Offline::Project.human_attribute_name('assessment_type') %></th>
+            <td><%= @project.assessment_type %></td>
+          </tr>
+          <tr>
+            <th><%= Offline::Project.human_attribute_name('plot_area') %></th>
+            <td><%= @project.plot_area %></td>
+          </tr>
+          <tr>
+            <th><%= Offline::Project.human_attribute_name('certified_area') %></th>
+            <td><%= @project.certified_area %></td>
+          </tr>
+          <tr>
+            <th><%= Offline::Project.human_attribute_name('owner') %></th>
+            <td><%= @project.owner %></td>
+          </tr>
+          <tr>
+            <th><%= Offline::Project.human_attribute_name('developer') %></th>
+            <td><%= @project.developer %></td>
+          </tr>
+          <tr>
+            <th><%= Offline::Project.human_attribute_name('project_country') %></th>
+            <td><%= @project.project_country %></td>
+          </tr>
+          <tr>
+            <th><%= Offline::Project.human_attribute_name('project_city') %></th>
+            <td><%= @project.project_city %></td>
+          </tr>
+          <tr>
+            <th><%= Offline::Project.human_attribute_name('project_district') %></th>
+            <td><%= @project.project_district %></td>
+          </tr>
+          <tr>
+            <th><%= Offline::Project.human_attribute_name('project_owner_business_sector') %></th>
+            <td><%= @project.project_owner_business_sector %></td>
+          </tr>
+          <tr>
+            <th><%= Offline::Project.human_attribute_name('project_developer_business_sector') %></th>
+            <td><%= @project.project_developer_business_sector %></td>
+          </tr>
+          <tr>
+            <th><%= Offline::Project.human_attribute_name('project_gross_built_up_area') %></th>
+            <td><%= @project.project_gross_built_up_area %></td>
+          </tr>
+          <tr>
+            <th><%= Offline::Project.human_attribute_name('construction_year') %></th>
+            <td><%= @project.construction_year %></td>
+          </tr>
+          <tr>
+            <th><%= Offline::Project.human_attribute_name('description') %></th>
+            <td><%= @project.description %></td>
+          </tr>
+          <tr>
+            <th><%= Offline::Project.human_attribute_name('loc_as_per_directory') %></th>
+            <td><%= @project.loc_as_per_directory %></td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+      <%= btn_link_to(:back, icon: 'backward', text: 'Back') %>
+      <%= btn_link_to(edit_offline_project_path(@project), icon: 'edit', text: 'Edit') %>
+      <%= btn_link_to(confirm_destroy_offline_project_path(@project), {icon: 'trash', text: 'Delete', style: 'danger', method: :get, data: {confirm: 'Do you really want to delete this project?'}}) %>
+    </div>
+  </div>
+</div>
+<div class="col-md-8 col-sm-12 col-xs-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5><%= t('.certificates.title') %></h5>
+    </div>
+    <div class="ibox-content pt-0 table-responsive">
+    <table class="table table-bordered table-mb-1 border-bottom-table">
+      <tbody>
+          <tr class="bg-header-grey">
+            <th>Certification Stage</th>
+            <th>Certification Submission Status</th>
+            <th>Certification Scores</th>
+            <th>Certification Rating</th>
+          </tr>
+          <% unless @project.offline_certification_paths.nil? %>
+            <% @project.offline_certification_paths.each do |certificate| %>
+              <% 
+                case @project.certificate_type
+                  when 'GSAS-D&B'
+                    star_badge_class = 'certi-status-badge star-rating-badge-db'
+                    image_tag = image_tag('layout/certi-status-db.png')
+                  when 'GSAS-CM'
+                    star_badge_class = 'certi-status-badge star-rating-badge-cm'
+                    image_tag = image_tag('layout/certi-status-cm.png')
+                  when 'GSAS-OP'
+                    star_badge_class = 'certi-status-badge star-rating-badge-op'
+                    image_tag = image_tag('layout/certi-status-op.png')
+                  when 'GSAS-EcoLeaf'
+                    star_badge_class = 'certi-status-badge star-rating-badge-db'
+                    image_tag = image_tag('layout/certi-status-db.png')
+                end
+              %>
+              <tr>
+                <td><%= link_to certificate.name, offline_project_certification_path(@project, certificate) %></td>
+                <td><%= certificate.status %></td>
+                <td><%= certificate.score %></td>
+                <td>
+                  <% if certificate.rating == 'CERTIFIED' || certificate.rating == 'CLASS B' %>
+                    <span class="certi-status-badge <%= star_badge_class %> label-rating-<%= certificate.rating.downcase.gsub(/( )/, '-') %>"><%= image_tag %><%= certificate.rating %></span>
+                  <% else %>
+                  <span class="certi-status-badge <%= star_badge_class %>">
+                      <%= image_tag %>
+                      <% certificate.rating.to_i.times do %>
+                          <i class="fa fa-star"><span style="display:none;">*</span></i>
+                        <% end %>
+                    </span>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+            <tr>
+              <td colspan="4" style="padding: 0px;">
+                    <li class="list-group-item ">
+                      <div class="row align-items-center">
+                          <span class="col-md-4  col-sm-12 col-xs-12 pl-0">
+                            Add Another Certificate
+                          </span>
+                          <span class="col-md-4 col-sm-12 col-xs-12 ">
+                            <%= btn_link_to(new_offline_project_certification_path(@project), icon: 'plus', text: 'Add Certifcate') %>
+                          </span>
+                      </div>
+                    </li>
+              </td>
+            </tr>
+          <% else %>
+          <tr>
+            <td colspan="4" style="padding: 0px;">
+                <li class="list-group-item ">
+                  <div class="row">
+                    </span>
+                      <span class="col-md-4  col-sm-12 col-xs-12 pl-0">
+                        Not yet registered
+                      </span>
+                      <span class="col-md-4  col-sm-12 col-xs-12 pl-0">
+                        <%= btn_link_to(new_offline_project_certification_path(@project), icon: 'plus', text: 'Add Certifcate') %>
+                      </span>
+                  </div>
+                </li>
+            </td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="col-md-8 col-sm-12 col-xs-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5><%= t('.project_documents.upload_document') %></h5>
+    </div>
+    <div class="ibox-content pt-0">
+      <%= render partial: 'documents_form', locals: { project: @project } %>
+    </div>
+  </div>
+
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5><%= t('.project_documents.uploaded_documents') %></h5>
+    </div>
+    <div class="ibox-content pt-0">
+      <%= render partial: 'documents_index', locals: { project: @project } %>
+    </div>
+  </div>
+</div>
+
+<div id="dropzone-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dropzone-modal-title">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header alert-danger">
+        <%= btn_close_modal %>
+        <h4 class="modal-title" id="dropzone-modal-title"></h4>
+      </div>
+      <div class="modal-body"></div>
+    </div>
+  </div>
+</div>
+
+<%= javascript_include_tag 'offline_projects_documents_uploader' %>

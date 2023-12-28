@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<YourMembership>
+    <Version>2.03</Version>
+    <ApiKey>5D621211-8E39-4871-A3F3-05C5C8833A57</ApiKey>
+    <CallID>008</CallID>
+    <SessionID>33C111B8-E3F0-4604-A329-BB3764FD003C</SessionID>
+    <Call Method="Auth.CreateToken">
+        <RetUrl>https://gord.vito.be</RetUrl>
+    </Call>
+</YourMembership>

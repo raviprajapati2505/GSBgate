@@ -1,0 +1,52 @@
+<div class="feed-element">
+    <div class="media-body">
+        <small class="text-muted">
+            <i class="fa fa-clock-o" title="Date/time" style="margin: 0 2px;"></i> <%= localize(audit_log.created_at) %>
+             | <i class="fa fa-user" title="User" style="margin: 0 2px"></i> <%= audit_log.user.full_name %> (<%= audit_log.user.humanized_project_role(audit_log.project) %>)
+            <% if with_breadcrumbs %>
+                | <i class="fa fa-building-o" title="Project trail" style="margin: 0 2px"></i>
+                <%= render 'layouts/breadcrumb', model: audit_log.auditable %>
+            <% end %>
+        </small>
+        <% if audit_log.system_message.present? %>
+            <div class="well system-message">
+              <% if audit_log.audit_log_visibility_id != AuditLogVisibility::PUBLIC %><i class="fa fa-lock" title="GORD internal" style="margin-right: 2px;"></i><% end %> <%= audit_log.system_message.html_safe %>
+            </div>
+        <% end %>
+        <% if audit_log.user_comment.present? %>
+            <% projects_user = ProjectsUser.find_by(user_id: audit_log.user_id, project_id: audit_log.project_id) %>
+            <div class="well user-comment <% if (projects_user.present? && projects_user.project_team?) %>user-comment-project-team<% else %>user-comment-gsas-trust-team<%end %>">
+                <% # Don't make user input html_safe %>
+                <%= ikoen('comment', size: :small, title: 'User comment') %>
+                <% if audit_log.audit_log_visibility_id != AuditLogVisibility::PUBLIC %>
+                  <%= ikoen('lock', size: :small, title: 'GSAS trust internal') %>
+                <% end %>
+                <%= audit_log.user_comment %>
+
+                <% if @auditable.class.name == 'SchemeMixCriterion' && audit_log&.user_id == current_user&.id %>
+                  <% if can?(:link_smc_comments_form, audit_log) && can?(:link_smc_comments, audit_log) %>
+                    <%= link_to link_smc_audit_log_form_audit_logs_path(audit_log&.id), remote: true, class: "btn btn-sm btn-default pull-right link-comments-button", style: "display:none;" do %>
+                      <%= ikoen('link', size: :small, title: 'Link comment from other criteria') %>
+                    <% end %>
+                  <% end %>
+
+                  <% if can?(:unlink_smc_comments_form, audit_log) && can?(:unlink_smc_comments, audit_log) %>
+                    <%= link_to unlink_smc_audit_log_form_audit_logs_path(audit_log&.id), remote: true, class: "btn btn-sm btn-default pull-right unlink-comments-button", style: "display:none;" do %>
+                      <%= ikoen('chain-broken', size: :small, title: 'Unlink comment from other criteria') %>
+                    <% end %>
+                  <% end %>
+                <% end %>
+
+                <a href="#" class="btn btn-sm btn-default pull-right duplicate-comment-button" data-comment="<%= audit_log.user_comment %>" style="display:none;">
+                  <%= ikoen('copy', size: :small, title: 'Duplicate (and modify) this comment') %>
+                </a>
+            </div>
+        <% end %>
+        <% if audit_log.attachment_file.present? && can?(:download_attachment, audit_log) %>
+            <div>
+              <%= btn_download(download_audit_log_attachment_path(audit_log.auditable.class.name, audit_log.auditable.id, audit_log.id), size: 'extra_small', tooltip: "Download #{AuditLog.human_attribute_name('attachment_file')}") %>
+              <%= truncate(audit_log.attachment_file.file.filename, length: 100) %>
+            </div>
+        <% end %>
+    </div>
+</div>

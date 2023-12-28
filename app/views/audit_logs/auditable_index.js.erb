@@ -1,0 +1,4 @@
+// Fill & open modal
+$('#auditLogModal').html("<%= escape_javascript(render 'modal') %>");
+$('.pagination a').attr('data-remote', 'true');
+$('#auditLogModal').modal('show');

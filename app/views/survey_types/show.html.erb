@@ -1,0 +1,37 @@
+<div class="col-md-12 m-t">
+  <div class="ibox">
+    <div class="px-4 pb-4">
+      <div class='row'>
+        <div class="col-md-12">
+          <h2><b><%= @survey_type.title %></b></h2>
+          <div class="alert alert-info">
+            <h4>Destription: </h4>
+            <%= sanitize(@survey_type.description) %>
+          </div>
+
+          <h3>Total Questions: <%= @survey_questions.count rescue 0 %></h3>
+          <h5>Version: 
+            <%= "v#{@survey_questionnaire_version&.version}" %>
+          </h5>
+          <%= label_span(@survey_questionnaire_version.released?, @survey_questionnaire_version&.released_at&.strftime("%d %B, %Y %H:%M"), "Not released").html_safe rescue "-" %>
+
+        </div>
+        <% if @is_latest %>
+          <div class="col-md-12 m-t">
+            <%= btn_link_to(form_survey_type_survey_questionnaire_versions_path(@survey_type), icon: 'edit', text: 'Edit Questions') %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="col-md-12">
+  <div id="accordion" class="panel-group">
+    <div class=<%= @is_latest ? "sortable-survey-questions" : '' %> data-survey-type-id="<%= @survey_type.id %>" data-model="SurveyQuestion">
+      <%= render partial: 'survey_types/survey_questions_list', locals: { survey_questions: @survey_questions } %>
+    </div>
+  </div>
+  <%= btn_link_to(:back, icon: 'backward', text: 'Back') %>
+</div>
+
+<div id="toast-message"></div>

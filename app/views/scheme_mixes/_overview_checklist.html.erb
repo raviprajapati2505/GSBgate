@@ -1,0 +1,100 @@
+<% 
+  main_scheme = certification_path.main_scheme
+  sub_schemes = certification_path.sub_schemes
+  scheme_mixes = main_scheme + sub_schemes
+  development_type_name = certification_path&.development_type&.name
+%>
+<div class="table-responsive">
+<table class="table table-bordered table-hover" cellspacing="0" width="100%">
+    <thead>
+    <tr>
+        <% if scheme_mixes.count > 1 %>
+          <th class="col-md-2">Typologies</th>
+        <% end %>
+        <th class="col-md-4">Typology Name</th>
+        <th class="col-md-1">
+          <span class="hidden-md">Weighting</span>
+          <span class="visible-md">W <%= tooltip('Weighting') %></span>
+        </th>
+
+        <% if development_type_name == 'Neighborhoods' %>
+            <th class="col-md-1">Gross Built up Area (m2)</th>
+        <% elsif development_type_name == 'Mixed Use' %>
+            <th class="col-md-1">Certified Area (m2)</th>
+        <% end %>
+
+        <% if certification_path.is_activated? %>
+            <th class="col-md-2">
+                <span class="hidden-md">Progress</span>
+                <span class="visible-md">P <%= tooltip('Progress') %></span>
+            </th>
+        <% else %>
+            <% if can?(:edit, certification_path.scheme_mixes.first) %>
+                <th class="col-md-2">Action</th>
+            <% end %>
+        <% end %>
+    </tr>
+    </thead>
+    <tbody>
+
+    <% scheme_mixes.each_with_index do |scheme_mix, index| %>
+        <tr>
+            <% if scheme_mixes.count > 1 && index < 2 %>
+                <% if certification_path.main_scheme_mix_id == scheme_mix.id %>
+                    <td>
+                        Main-Typology
+                <% elsif (index == 0 || main_scheme.count > 0) %>
+                    <td rowspan="<%= sub_schemes.count %>">
+                        Sub-Typologies
+                <% end %>
+                </td>
+            <% end %>
+
+            <% if index > 2 %>
+                <tr>
+            <% end %>
+
+            <td>
+                <%= can_link_to(project_certification_path_scheme_mix_path(certification_path.project, certification_path, scheme_mix), scheme_mix) do %>
+                    <%= scheme_mix.full_name %>
+                    <% if certification_path.main_scheme_mix_id == scheme_mix.id %>
+                        <%= ikoen('certificate', tooltip: 'This is the main scheme (or main typology). Some of its criteria scores will be inherited by other schemes.', class: 'main-scheme-icon') %>
+                    <% end %>
+                <% end %>
+            </td>
+            <td><%= scheme_mix.weight %> %</td>
+
+            <% if development_type_name == 'Neighborhoods' %>
+                <td><%= number_with_delimiter(scheme_mix&.gross_area, delimiter: ',') %></td>
+            <% elsif development_type_name == 'Mixed Use' %>
+                <td><%= number_with_delimiter(scheme_mix&.certified_area, delimiter: ',') %></td>
+            <% end %>
+
+            <% if certification_path.is_activated? %>
+                <td>
+                    <div class="progress">
+                        <%
+                           if certification_path.requirement_data.count.nonzero?
+                             progress = certification_path.requirement_data.completed.count * 100 / certification_path.requirement_data.count
+                           else
+                             progress = 0
+                           end
+                        %>
+                        <div class="progress-bar" style="min-width: 2em; width: <%= progress %>%;"><%= progress %>%
+                        </div>
+                    </div>
+                </td>
+                <% if index > 2 %>
+                    </tr>
+                <% end %>
+            <% else %>
+                <% if can?(:edit, scheme_mix) %>
+                <td><%= btn_link_to(edit_project_certification_path_scheme_mix_path(certification_path.project, certification_path, scheme_mix), icon: 'edit', size: 'small', action: :get, remote: true) %></td>
+                <% end %>
+            <% end %>
+        </tr>
+    <% end %>
+    </tbody>
+</table>
+</div>
+<div id="editSchemeMixNameModal" class="modal fade"></div>

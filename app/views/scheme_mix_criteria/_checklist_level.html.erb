@@ -1,0 +1,45 @@
+<div class="ibox-content">
+  <%= bootstrap_form_for([@project, @certification_path, @scheme_mix, @scheme_mix_criterion], url: update_checklist_project_certification_path_scheme_mix_scheme_mix_criterion_path, method: 'put') do |f| %>
+    <!-- CheckBox -->
+    <% if @scheme_mix_criterion&.scheme_mix_criterion_boxes&.present? %>
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <tbody>
+          <tr>
+            <th></th>
+            <%# Certified ? %>
+            <td colspan="2" style="text-align: center;"><b></b></td>
+          </tr>
+          <%= f.fields_for :scheme_mix_criterion_boxes do |smc_box| %>
+            <% if smc_box.object.scheme_criterion_box.label == "Targeted Checklist Status" %>
+              <%= smc_box.hidden_field :id %>
+              <tr>
+                <th><%= smc_box.object.scheme_criterion_box.label %></th>
+                <td colspan="2" style="text-align: center;"><%= smc_box.check_box :is_checked, label: '', disabled: !can?(:update_targeted_checklist, smc_box.object) %></td>
+              </tr>
+            <% elsif smc_box.object.scheme_criterion_box.label == "Submitted Checklist Status" %>
+              <%= smc_box.hidden_field :id %>
+              <tr>
+                <th><%= smc_box.object.scheme_criterion_box.label %></th>
+                <td colspan="2" style="text-align: center;"><%= smc_box.check_box :is_checked, label: '', disabled: !can?(:update_submitted_checklist, smc_box.object) %></td>
+              </tr>
+            <% elsif smc_box.object.scheme_criterion_box.label == "Achieved Checklist Status" %>
+              <% if !@certification_path.in_pre_verification? %>
+                <% if !@certification_path.in_verification? || (@certification_path.certification_path_status_id == CertificationPathStatus::VERIFYING_AFTER_APPEAL && SchemeMixCriterion::statuses[@scheme_mix_criterion.status] < SchemeMixCriterion::statuses[:verifying_after_appeal]) || !current_user.default_role? || @project.role_for_user(current_user) == ProjectsUser.roles.keys[ProjectsUser.roles[:certifier]] || @project.role_for_user(current_user) == ProjectsUser.roles.keys[ProjectsUser.roles[:certification_manager]] %>
+                  <%= smc_box.hidden_field :id %>
+                  <tr>
+                    <th><%= smc_box.object.scheme_criterion_box.label %></th>
+                    <td colspan="2" style="text-align: center;"><%= smc_box.check_box :is_checked, label: '', disabled: !can?(:update_achieved_checklist, smc_box.object) %></td>
+                  </tr>
+                <% end %>
+              <% end %>
+            <% end %>
+          <% end %>
+          </tr>
+          </tbody>
+        <% end %>
+      </table>
+      </div>
+    <%= btn_save %>
+  <% end %>
+</div>

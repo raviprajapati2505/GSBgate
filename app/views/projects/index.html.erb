@@ -1,0 +1,46 @@
+<div class="col-md-12">
+    <div class="ibox">
+        <!-- <div class="ibox-title">
+            <h5><%= t('.title_html') %></h5>
+        </div> -->
+        <div class="ibox-content px-0 pt-0" id="projects-table" data-user-role="<%= current_user.role %>">
+            <%= render_datatable(@datatable) %>
+            <%# if can? :create, Project.new %>
+               <%# <div class="hr-line-dashed"></div> %>
+                <%# btn_link_to(new_project_path, icon: 'building-o', text: t('.btn_new_project')) %>
+            <%# end %>
+
+            <%# if can? :projects_statistics, Project %>
+              <%# btn_link_to(projects_statistics_projects_path,  icon: 'pie-chart', text: 'Projects Statistics') %>
+            <%# end %>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function(){
+        if(<%= current_user.record_checker? %>) {
+            $('.btn-group').find('.buttons-copy, .buttons-csv, .buttons-print').css('display', 'none')
+            $('.ibox-content').addClass('unselectable')
+            $(document).on('keydown', function(e) {
+                if((e.ctrlKey || e.metaKey) && (e.key == "p" || e.charCode == 16 || e.charCode == 112 || e.keyCode == 80) ){
+                    e.cancelBubble = true;
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                }  
+            });
+        }
+        $('body').addClass('page-bg-dark');
+        $('.dataTables_entries').parent().closest('div').addClass('dataTable-pagination');
+    });
+</script>
+
+<style>
+    .unselectable {
+        -webkit-user-select: none;
+        -webkit-touch-callout: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+</style>
