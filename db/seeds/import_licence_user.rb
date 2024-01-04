@@ -102,7 +102,7 @@ xlsx.each_with_pagename do |name, sheet|
         user.role = 'gsas_trust_top_manager'
       elsif row["User Role"] == 'GSAS Trust Admin'
         user.role = 'gsas_trust_admin'
-      elsif row["User Role"] == 'GSASgate Admin'
+      elsif row["User Role"] == 'GSBgate Admin'
         user.role = 'gsas_trust_admin'
       elsif row["User Role"] == 'Record Checker'
         user.role = 'record_checker'

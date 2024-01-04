@@ -3,7 +3,7 @@
         <h5><%=t '.table_title' %></h5>
     </div>
     <div class="ibox-content">
-        <p class="alert alert-info"><%= ikoen('info-circle') %> This is an overview of all users using the GSASgate system.</p>
+        <p class="alert alert-info"><%= ikoen('info-circle') %> This is an overview of all users using the GSBgate system.</p>
         <div class="ibox-content" id="users-table" data-user-role="<%= current_user.role %>">
             <%= render_datatable(@datatable) %>
         </div>

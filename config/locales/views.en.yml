@@ -47,7 +47,7 @@ en:
         rating: Certification Rating
         scores: Certification Scores
         started_at: Certification Started On
-        expired_at: GSASgate Registration Expiry
+        expired_at: GSBgate Registration Expiry
         certified_at: Certification Awarded On
         buildings_number: Number of Buildings
         create_detaild_certificate_report:
@@ -348,7 +348,7 @@ en:
       description_45: Fill the report form to varify certificate information and release certification report.
       description_46: Activate user account.
       description_47: Service provider details changed.
-      description_48: Please note that the GSAS certificate has been issued on GSASgate , Kindly download it.
+      description_48: Please note that the GSAS certificate has been issued on GSBgate , Kindly download it.
 
       tooltip_due_date: Task is overdue.
   linkme_surveys:

@@ -55,6 +55,9 @@ gem 'rack-cors'
 gem 'friendly_id'
 gem 'countries', require: 'countries/global'
 gem 'chartkick'
+gem 'ed25519', '>= 1.2', '< 2.0'
+gem 'net-ssh', '5.2.0'
+gem 'bcrypt_pbkdf', '>= 1.0', '< 2.0'
 
 # drag and drop functionality
 gem 'acts_as_list'

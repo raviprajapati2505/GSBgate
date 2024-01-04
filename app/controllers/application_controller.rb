@@ -22,7 +22,7 @@ class ApplicationController < ActionController::Base
   private
   def init
     # Set default page title
-    @page_title = 'GSASgate'
+    @page_title = 'GSBgate'
   end
 
   def set_current_user

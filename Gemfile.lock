@@ -89,6 +89,9 @@ GEM
     ast (2.4.2)
     awesome_print (1.9.2)
     bcrypt (3.1.18)
+    bcrypt_pbkdf (1.1.0)
+    bcrypt_pbkdf (1.1.0-x64-mingw32)
+    bcrypt_pbkdf (1.1.0-x86-mingw32)
     better_errors (2.9.1)
       coderay (>= 1.0.0)
       erubi (>= 1.0.0)
@@ -183,6 +186,7 @@ GEM
       concurrent-ruby (~> 1.0)
     dry-core (0.8.0)
       concurrent-ruby (~> 1.0)
+    ed25519 (1.3.0)
     effective_resources (1.18.6)
       rails (>= 4.0.0)
     erubi (1.12.0)
@@ -477,6 +481,7 @@ DEPENDENCIES
   acts_as_list
   addressable
   awesome_print
+  bcrypt_pbkdf (>= 1.0, < 2.0)
   better_errors
   binding_of_caller
   bootsnap
@@ -504,6 +509,7 @@ DEPENDENCIES
   devise-jwt
   devise_invitable
   dotenv
+  ed25519 (>= 1.2, < 2.0)
   effective_datatables (< 4.0.0)!
   execjs
   faraday
@@ -519,6 +525,7 @@ DEPENDENCIES
   kaminari
   letter_opener
   momentjs-rails (= 2.29.1.1)
+  net-ssh (= 5.2.0)
   nokogiri
   pdf-core
   pg

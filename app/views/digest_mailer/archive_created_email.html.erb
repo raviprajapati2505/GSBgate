@@ -9,7 +9,7 @@
             <span style='font-size: 9pt; font-family: "Verdana", "sans-serif";'>Dear Ms/Mr<br/><br/>
               An archive with the following name was generated for you:<br/><br/>
               <strong><%= @archive.archive_file %></strong><br/><br/>
-              Please log in to GSASgate and click on the link below to download the file. This link is only available for user <strong><%= @archive.user.username %></strong> and will expire after one day.<br/><br/>
+              Please log in to GSBgate and click on the link below to download the file. This link is only available for user <strong><%= @archive.user.username %></strong> and will expire after one day.<br/><br/>
               <%= link_to(archive_url(@archive), archive_url(@archive)) %></span>
     </p>
     <br/>
