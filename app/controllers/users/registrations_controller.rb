@@ -227,7 +227,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
           :cgp_licence_file,
           :energy_assessor_name, 
           :gsas_energey_assessment_licence_file,
-          :nominated_cgp
+          :nominated_cgp,
+          :exam,
+          :workshop
         ]
     ])
   end
