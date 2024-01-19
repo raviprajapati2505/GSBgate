@@ -2,10 +2,10 @@ class Reports::CertificateReport < Reports::BaseReport
 
   CERTIFICATE_BACKGROUND = 'certificate-background.jpg'
 
-  TITLE_PREFIX = 'GSAS'
+  TITLE_PREFIX = 'GSB'
 
   CERTIFICATION_TEXT_PREFIX = 'This is to certify that'
-  CERTIFICATION_TEXT_SUFFIX = 'has sucessfully achieved the following level of Global Sustainability Assessment System (GSAS) certification established by Gulf Organisation for Reasearch & Development.'
+  CERTIFICATION_TEXT_SUFFIX = 'has sucessfully achieved the following level of Global Sustainability Assessment System (GSB) certification established by Gulf Organisation for Reasearch & Development.'
 
   ISSUER_NAME = 'Dr. Youssef Mohammad Alhorr'
   ISSUER_TITLE = 'Founding Chairman'

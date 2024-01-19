@@ -28,7 +28,7 @@ class ProjectsUser < ApplicationRecord
     joins(:user).where(role: ProjectsUser.roles[:cgp_project_manager]).order("users.name")
   }
 
-  scope :gsas_trust_team, -> {
+  scope :gsb_trust_team, -> {
     where(role: [ProjectsUser.roles[:certifier], ProjectsUser.roles[:certification_manager]])
   }
 
@@ -40,7 +40,7 @@ class ProjectsUser < ApplicationRecord
     where(role: [ProjectsUser.roles[:project_team_member], ProjectsUser.roles[:cgp_project_manager]], certification_team_type: certification_team_type)
   }
 
-  scope :gsas_trust_team_with_type, ->(certification_team_type) {
+  scope :gsb_trust_team_with_type, ->(certification_team_type) {
     where(role: [ProjectsUser.roles[:certifier], ProjectsUser.roles[:certification_manager]], certification_team_type: certification_team_type)
   }
 
@@ -52,7 +52,7 @@ class ProjectsUser < ApplicationRecord
     self.project_team_member? || self.cgp_project_manager?
   end
 
-  def gsas_trust_team?
+  def gsb_trust_team?
     self.certifier? || self.certification_manager?
   end
 
@@ -74,7 +74,7 @@ class ProjectsUser < ApplicationRecord
     order = case title
              when "Practitioners"
               ["cgp_project_manager", "project_team_member"]
-            when "GSAS Trust"
+            when "GSB Trust"
               ["certification_manager", "certifier"]
             when "Enterprise Clients"
               ["enterprise_client"]

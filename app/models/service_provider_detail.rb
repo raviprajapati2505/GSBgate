@@ -12,7 +12,7 @@ class ServiceProviderDetail < ApplicationRecord
   mount_uploader :application_form, UserSubmittalUploader
   mount_uploader :portfolio, UserSubmittalUploader
   mount_uploader :cgp_licence_file, UserSubmittalUploader
-  mount_uploader :gsas_energey_assessment_licence_file, UserSubmittalUploader
+  mount_uploader :gsb_energey_assessment_licence_file, UserSubmittalUploader
   mount_uploader :exam, UserSubmittalUploader
   mount_uploader :workshop, UserSubmittalUploader
 end

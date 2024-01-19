@@ -7,7 +7,7 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins 'localhost:4200', 'stagingvisualisation.gsas.qa', 'visualisation.gsas.qa'
+    origins 'localhost:4200', 'stagingvisualisation.gsb.qa', 'visualisation.gsb.qa'
 
     resource '/api/*',
              methods: [:get, :post, :options, :delete],
@@ -15,7 +15,7 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
              expose: ['Authorization']
   end
   allow do
-    origins 'localhost:4200', 'stagingvisualisation.gsas.qa', 'visualisation.gsas.qa'
+    origins 'localhost:4200', 'stagingvisualisation.gsb.qa', 'visualisation.gsb.qa'
 
     resource '/users/*',
              methods: [:get, :post, :options, :delete],
@@ -23,7 +23,7 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
              expose: ['Authorization']
   end
   allow do
-    origins 'localhost:3000', 'staging.gsas.qa', 'www.gsas.qa'
+    origins 'localhost:3000', 'staging.gsb.qa', 'www.gsb.qa'
 
     resource '*',
              methods: :any,

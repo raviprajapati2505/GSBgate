@@ -91,8 +91,8 @@ Rails.application.configure do
   # Prepend all log lines with the following tags.
   config.log_tags = [ :uuid ]
 
-  # GSAS info email addresses
-  config.x.gsas_info.all_notifications_email = 'sas@vito.be'
+  # GSB info email addresses
+  config.x.gsb_info.all_notifications_email = 'sas@vito.be'
 
   # Chart generator API config
   config.x.chart_generator.api_url = 'localhost'

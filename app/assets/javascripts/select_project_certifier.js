@@ -5,7 +5,7 @@
 $(function () {
     var certifier_list = $('.select2-certifier');
     if (certifier_list.length > 0) {
-        GSAS.load_list(certifier_list, '- Unassigned -');
+        GSB.load_list(certifier_list, '- Unassigned -');
     }
 });
 //scheme criterion documents checkbox checked event

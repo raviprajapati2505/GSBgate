@@ -20,8 +20,8 @@ class Reports::CriteriaScores < Reports::BaseReport
   HEADER_IMAGE = 'report_header_image.png'.freeze
   HEADER_LOGO = 'gord_logo.jpg'.freeze
   FOOTER_IMAGE = 'report_footer_image.png'.freeze
-  GSAS_LOGO = 'gsas_logo.jpg'.freeze
-  LOC_LOGO = 'gsas_logo.jpg'.freeze
+  GSB_LOGO = 'gsb_logo.jpg'.freeze
+  LOC_LOGO = 'gsb_logo.jpg'.freeze
 
   TEXT_COLOR = 'ffffff'.freeze
   MAIN_COLOR = '62A744'.freeze
@@ -96,7 +96,7 @@ class Reports::CriteriaScores < Reports::BaseReport
         styled_text("<div style='font-size: 8; text-align: right'>#{text}<br />#{text2}</div>")
       end
       # bounding_box([@document.bounds.right - 50, @document.bounds.bottom + 100], width: 50, height: HEADER_HEIGHT) do
-      #   image image_path(GSAS_LOGO), width: 50
+      #   image image_path(GSB_LOGO), width: 50
       # end
     end
   end

@@ -4,7 +4,7 @@ class LocalStrategy < BaseStrategy
     # Fetch the form params
     user_data = params.fetch('user', {})
 
-    # Check if the user exists in the GSAS DB
+    # Check if the user exists in the GSB DB
     user = User.local_users.find_by_username(user_data['username'])
 
     # User exists?

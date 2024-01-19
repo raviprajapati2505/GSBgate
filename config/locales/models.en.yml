@@ -12,35 +12,35 @@ en:
           stage_titles:
             letter_of_conformance: "Stage 1: LOC, Design Certificate"
             final_design_certificate: "Stage 2: CDA, Design & Build Certificate"
-            construction_certificate: "GSAS Construction Management Certificate"
+            construction_certificate: "GSB Construction Management Certificate"
             construction_certificate_stage1: "Stage 1: Foundation"
             construction_certificate_stage2: "Stage 2: Substructure & Superstructure"
             construction_certificate_stage3: "Stage 3: Finishing"
-            operations_certificate: "GSAS Operations Certificate"
+            operations_certificate: "GSB Operations Certificate"
             ecoleaf_provisional_certificate: "EcoLeaf Provisional Certificate"
             ecoleaf_certificate: "Stage 2: EcoLeaf Certificate"
           certificate_titles:
-            design_and_build: GSAS-D&B
-            construction_certificate: GSAS-CM
-            operations_certificate: GSAS-OP
-            gsas_ecoleaf: GSAS-EcoLeaf
+            design_and_build: GSB-D&B
+            construction_certificate: GSB-CM
+            operations_certificate: GSB-OP
+            gsb_ecoleaf: GSB-EcoLeaf
         certification_types:
           letter_of_conformance: Letter of conformance
           final_design_certificate: Final design certificate
-          construction_certificate: GSAS-CM - GSAS-CM Certificate
-          construction_certificate_stage1: GSAS-CM - Stage 1
-          construction_certificate_stage2: GSAS-CM - Stage 2
-          construction_certificate_stage3: GSAS-CM - Stage 3
+          construction_certificate: GSB-CM - GSB-CM Certificate
+          construction_certificate_stage1: GSB-CM - Stage 1
+          construction_certificate_stage2: GSB-CM - Stage 2
+          construction_certificate_stage3: GSB-CM - Stage 3
           operations_certificate: Operations certificate
           ecoleaf_provisional_certificate: "EcoLeaf Provisional Certificate"
           ecoleaf_certificate: "Stage 2: EcoLeaf Certificate"
         certification_titles:
           letter_of_conformance: "Stage 1: LOC, Design Certificate"
           final_design_certificate: "Stage 2: CDA, Design & Build Certificate"
-          construction_certificate: GSAS-CM - GSAS-CM Certificate
-          construction_certificate_stage1: GSAS-CM - Stage 1
-          construction_certificate_stage2: GSAS-CM - Stage 2
-          construction_certificate_stage3: GSAS-CM - Stage 3
+          construction_certificate: GSB-CM - GSB-CM Certificate
+          construction_certificate_stage1: GSB-CM - Stage 1
+          construction_certificate_stage2: GSB-CM - Stage 2
+          construction_certificate_stage3: GSB-CM - Stage 3
           operations_certificate: Operations certificate
           ecoleaf_provisional_certificate: "EcoLeaf Provisional Certificate"
           ecoleaf_certificate: "Stage 2: EcoLeaf Certificate"
@@ -67,7 +67,7 @@ en:
           mixed_development_in_stages: Neighbourhood in stages (mixed development in stages)
         max_review_count: Maximum Review Count
       project:
-        code: GSAS Project ID
+        code: GSB Project ID
         name: Project Name
         building_type_group_id: Project Planning Type
         building_type_id: Project Use
@@ -105,11 +105,11 @@ en:
         project_developer_business_sector: Project Developer Business Sector
         project_owner_business_sector: Project Owner Business Sector
         team_titles:
-          design_certificate: GSAS Design Certificate
-          letter_of_conformance: GSAS Design Certificate_LOC
-          final_design_certificate: GSAS Design & Build Certificate_CDA
-          construction_certificate: GSAS-CM
-          operation_certificate: GSAS-OP
+          design_certificate: GSB Design Certificate
+          letter_of_conformance: GSB Design Certificate_LOC
+          final_design_certificate: GSB Design & Build Certificate_CDA
+          construction_certificate: GSB-CM
+          operation_certificate: GSB-OP
       offline/project:
         code: Project ID
         name: Project Name
@@ -142,7 +142,7 @@ en:
       projects_user:
         roles:
           project_team_member: Team Members
-          cgp_project_manager: GSAS CGP
+          cgp_project_manager: GSB CGP
           enterprise_client: Enterprise Clients
           certifier: Certifiers
           certification_manager: Certification Manager
@@ -201,7 +201,7 @@ en:
         organization_phone: Phone
         organization_fax_area_code: Fax Area Code
         organization_fax: Fax
-        gsas_id: GSAS ID
+        gsb_id: GSB ID
         demerit_flag: Demerit Flags
         role: Role
         username: Username
@@ -212,9 +212,9 @@ en:
         practitioner_accreditation_type: Practitioner Accreditation Type
         roles:
           system_admin: System administrator
-          gsas_trust_top_manager: Chairman
-          gsas_trust_manager: Director of GSAS
-          gsas_trust_admin: GSAS trust admin
+          gsb_trust_top_manager: Chairman
+          gsb_trust_manager: Director of GSB
+          gsb_trust_admin: GSB trust admin
           default_role: CGP
           document_controller: Document Controller
       user_detail:
@@ -270,13 +270,13 @@ en:
           screened:
             update_html: The criterion <strong>%{criterion}</strong> was screened.
           certifier:
-            unassigned_html: A GSAS trust certifier was unassigned from criterion <strong>%{criterion}</strong>.
-            assigned_for_screening_due_html: Criterion <strong>%{criterion}</strong> was assigned to GSAS trust certifier <strong>%{user}</strong> for screening. The due date is <strong>%{due_date}</strong>.
-            assigned_for_screening_html: Criterion <strong>%{criterion}</strong> was assigned to GSAS trust certifier <strong>%{user}</strong> for screening.
-            assigned_for_verification_due_html: Criterion <strong>%{criterion}</strong> was assigned to GSAS trust certifier <strong>%{user}</strong> for verification. The due date is <strong>%{due_date}</strong>.
-            assigned_for_verification_html: Criterion <strong>%{criterion}</strong> was assigned to GSAS trust certifier <strong>%{user}</strong> for verification.
-            assigned_for_pcr_review_due_html: Criterion <strong>%{criterion}</strong> was assigned to GSAS trust certifier <strong>%{user}</strong> for PCR. The due date is <strong>%{due_date}</strong>.
-            assigned_for_pcr_review_html: Criterion <strong>%{criterion}</strong> was assigned to GSAS trust certifier <strong>%{user}</strong> for PCR.
+            unassigned_html: A GSB trust certifier was unassigned from criterion <strong>%{criterion}</strong>.
+            assigned_for_screening_due_html: Criterion <strong>%{criterion}</strong> was assigned to GSB trust certifier <strong>%{user}</strong> for screening. The due date is <strong>%{due_date}</strong>.
+            assigned_for_screening_html: Criterion <strong>%{criterion}</strong> was assigned to GSB trust certifier <strong>%{user}</strong> for screening.
+            assigned_for_verification_due_html: Criterion <strong>%{criterion}</strong> was assigned to GSB trust certifier <strong>%{user}</strong> for verification. The due date is <strong>%{due_date}</strong>.
+            assigned_for_verification_html: Criterion <strong>%{criterion}</strong> was assigned to GSB trust certifier <strong>%{user}</strong> for verification.
+            assigned_for_pcr_review_due_html: Criterion <strong>%{criterion}</strong> was assigned to GSB trust certifier <strong>%{user}</strong> for PCR. The due date is <strong>%{due_date}</strong>.
+            assigned_for_pcr_review_html: Criterion <strong>%{criterion}</strong> was assigned to GSB trust certifier <strong>%{user}</strong> for PCR.
           targeted_score:
             set_html: The %{score_label} targeted level of criterion <strong>%{criterion}</strong> was set to <strong>%{score}</strong>.
             unset_html: The %{score_label} targeted level of criterion <strong>%{criterion}</strong> was removed.
@@ -489,9 +489,9 @@ en:
           project_team_array:
             label: Project Team Members
           certification_manager_array:
-            label: GSAS Trust Certification Manager
-          gsas_trust_team_array:
-            label: GSAS Trust Certification Team
+            label: GSB Trust Certification Manager
+          gsb_trust_team_array:
+            label: GSB Trust Certification Team
           enterprise_clients_array:
             label: Enterprise Clients
           building_type_groups:

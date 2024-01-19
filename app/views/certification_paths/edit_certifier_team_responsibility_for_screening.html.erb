@@ -55,7 +55,7 @@
                 <div class="ibox-content">
                     <div class="form-group">
                         <%= label_tag 'certifier_id', 'Allocate the selected criteria to', class: 'control-label' %>
-                        <% certifiers = User.authorized_for_project(@project, @certification_path).with_gsas_trust_team_role %>
+                        <% certifiers = User.authorized_for_project(@project, @certification_path).with_gsb_trust_team_role %>
                         <%= select_tag 'certifier_id', options_for_select(certifiers.map {|k| [k.full_name, k.id]}), {include_blank: '- Not allocated -', class: 'form-control'} %>
                     </div>
                     <div class="form-group">

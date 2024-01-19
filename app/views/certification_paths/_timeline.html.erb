@@ -3,8 +3,8 @@
     <% certification_path.status_history.each_with_index do |milestone, index| %>
         <div class="vertical-timeline-block">
             <div class="vertical-timeline-icon
-            <% if CertificationPathStatus.at_gsas_trust_team_side?(milestone[:certification_path_status].id) %>
-                gsas-trust-team
+            <% if CertificationPathStatus.at_gsb_trust_team_side?(milestone[:certification_path_status].id) %>
+                gsb-trust-team
             <% else %>
                 project-team
             <% end %>">

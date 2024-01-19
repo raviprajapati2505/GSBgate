@@ -20,7 +20,7 @@ class ChartGeneratorService
     elsif (response.code != '200')
       raise ApiError, 'HTTP error ' + response.code + ' ' + response.message
     else
-      tempfile = Tempfile.new('gsas-chart.png')
+      tempfile = Tempfile.new('gsb-chart.png')
       File.open(tempfile.path, 'w:ASCII-8BIT') do |f|
         f.write response.body
       end

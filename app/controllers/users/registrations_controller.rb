@@ -111,7 +111,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
         :organization_phone, 
         :organization_fax_area_code, 
         :organization_fax, 
-        :gsas_id,
+        :gsb_id,
         :practitioner_accreditation_type,
         user_detail_attributes: [ 
           :gender, 
@@ -126,7 +126,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
           :cgp_licence_file, 
           :qid_work_permit_file, 
           :energy_assessor_name, 
-          :gsas_energey_assessment_licence_file,
+          :gsb_energey_assessment_licence_file,
           :education,
           :education_certificate,
           :other_documents
@@ -163,7 +163,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
         :organization_phone, 
         :organization_fax_area_code, 
         :organization_fax, 
-        :gsas_id,
+        :gsb_id,
         :practitioner_accreditation_type,
         user_detail_attributes: [
           :id, 
@@ -179,7 +179,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
           :cgp_licence_file, 
           :qid_work_permit_file, 
           :energy_assessor_name, 
-          :gsas_energey_assessment_licence_file,
+          :gsb_energey_assessment_licence_file,
           :education,
           :education_certificate,
           :other_documents
@@ -213,7 +213,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
         :organization_phone, 
         :organization_fax_area_code, 
         :organization_fax, 
-        :gsas_id,
+        :gsb_id,
         :practitioner_accreditation_type,
         service_provider_detail_attributes: [
           :business_field,
@@ -226,7 +226,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
           :application_form,
           :cgp_licence_file,
           :energy_assessor_name, 
-          :gsas_energey_assessment_licence_file,
+          :gsb_energey_assessment_licence_file,
           :nominated_cgp,
           :exam,
           :workshop
@@ -261,7 +261,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
             :organization_phone, 
             :organization_fax_area_code, 
             :organization_fax, 
-            :gsas_id,
+            :gsb_id,
             :practitioner_accreditation_type, 
             service_provider_detail_attributes: [
               :id,
@@ -275,7 +275,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
               :application_form,
               :cgp_licence_file,
               :energy_assessor_name, 
-              :gsas_energey_assessment_licence_file,
+              :gsb_energey_assessment_licence_file,
               :nominated_cgp
             ]
       ])

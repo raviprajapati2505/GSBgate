@@ -19,14 +19,14 @@ class Reports::SurveyResponseReport < Reports::BaseReport
   HEADER_IMAGE = 'report_header_image.png'.freeze
   HEADER_LOGO = 'gord_logo.jpg'.freeze
   FOOTER_IMAGE = 'report_footer_image.png'.freeze
-  GSAS_LOGO = 'gsas_logo.jpg'.freeze
-  LOC_LOGO = 'gsas_logo.jpg'.freeze
+  GSB_LOGO = 'gsb_logo.jpg'.freeze
+  LOC_LOGO = 'gsb_logo.jpg'.freeze
 
   TEXT_COLOR = 'ffffff'.freeze
   BACKGROUND_COLOR = 'EEEEEE'.freeze
   FOOTER_LOGO = 'gord_logo_black.jpg'.freeze
   STAR_ICON = 'green_star.png'.freeze
-  FOOTER_URL = "<link href='http://www.gsas.gord.qa'>www.gsas.gord.qa</link>".freeze
+  FOOTER_URL = "<link href='http://www.gsb.gord.qa'>www.gsb.gord.qa</link>".freeze
   MAX_ROWS_PER_PAGE = 24
   PAGE_MARGIN = 50
 

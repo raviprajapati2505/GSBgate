@@ -14,8 +14,8 @@
               <%= f.form_group :audit_log_visibility do %>
                   <%= f.radio_button :audit_log_visibility, AuditLogVisibility::PUBLIC, label: 'Public Comment', disabled: false %>
                   <span class="help-block">Everyone assigned to this project will be able to view this comment</span>
-                  <%= f.radio_button :audit_log_visibility, AuditLogVisibility::INTERNAL, label: 'GSAS Trust Internal Comment', checked: true, disabled: false %>
-                  <span class="help-block">Only the GSAS trust team can view this comment</span>
+                  <%= f.radio_button :audit_log_visibility, AuditLogVisibility::INTERNAL, label: 'GSB Trust Internal Comment', checked: true, disabled: false %>
+                  <span class="help-block">Only the GSB trust team can view this comment</span>
               <% end %>
           <% end %>
         </div>

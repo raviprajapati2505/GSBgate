@@ -12,7 +12,7 @@ class CreateUserDetails < ActiveRecord::Migration[7.0]
       t.string :work_experience_file
       t.string :cgp_licence_file
       t.string :qid_work_permit_file
-      t.string :gsas_energey_assessment_licence_file
+      t.string :gsb_energey_assessment_licence_file
       t.string :energy_assessor_name
       t.integer :education
       t.string :education_certificate

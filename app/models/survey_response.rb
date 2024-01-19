@@ -18,7 +18,7 @@ class SurveyResponse < ApplicationRecord
         errors.add(:email, 'email id cant be blank')
       else
         if is_user_in_system?
-          errors.add(:email, 'this survey is for GSAS users only')
+          errors.add(:email, 'this survey is for GSB users only')
         end
       end
     end

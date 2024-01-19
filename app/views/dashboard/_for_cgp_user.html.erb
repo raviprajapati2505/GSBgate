@@ -43,7 +43,7 @@
           <div class="db-box p-4">
             <div class="row d-flex flex-wrap">
               <div class="col-sm-12">
-                <p class="font-weight-normal text-secondary">GSAS CREDENTIALS</p>
+                <p class="font-weight-normal text-secondary">GSB CREDENTIALS</p>
               </div>
               <div class="col-auto">
                 <div class="type-block-outer">
@@ -73,8 +73,8 @@
                     <td class="font-weight-bold"><%= @user&.practitioner_accreditation_type&.titleize  %></td>
                   </tr>
                   <tr>
-                    <td>GSAS ID</td>
-                    <td class="font-weight-bold"><%= @user.gsas_id %></td>
+                    <td>GSB ID</td>
+                    <td class="font-weight-bold"><%= @user.gsb_id %></td>
                   </tr>
                   <tr>
                     <td>Joined Since</td>
@@ -135,7 +135,7 @@
                     </tr>
                     <tr>
                       <th>ID Number</th>
-                      <td><%= @user.gsas_id %></td>
+                      <td><%= @user.gsb_id %></td>
                     </tr>
                     <tr>
                       <th>Education Certificates</th>

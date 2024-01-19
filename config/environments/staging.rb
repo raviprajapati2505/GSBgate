@@ -98,22 +98,22 @@ Rails.application.configure do
 
   # Mailer settings
   config.action_mailer.perform_caching = false
-  config.action_mailer.default_url_options = { :host => 'https://staging.gsas.qa' }
-  config.action_mailer.asset_host = 'https://staging.gsas.qa'
+  config.action_mailer.default_url_options = { :host => 'https://staging.gsb.qa' }
+  config.action_mailer.asset_host = 'https://staging.gsb.qa'
 
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = { 
     :user_name => '',
     :password => '',
-    :domain => 'gsas.qa',
+    :domain => 'gsb.qa',
     :address => 'smtp.sendgrid.net',
     :port =>  '587',
     :authentication => :plain,
     :enable_starttls_auto => true
   }
 
-  # GSAS info email addresses for test env only
-  config.x.gsas_info.all_notifications_email = 'no-reply@gord.qa'
+  # GSB info email addresses for test env only
+  config.x.gsb_info.all_notifications_email = 'no-reply@gord.qa'
 
   # Chart generator API config
   config.x.chart_generator.api_url = 'localhost'

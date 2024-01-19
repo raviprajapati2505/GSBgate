@@ -1,5 +1,5 @@
 {
-  "name": "gsas-chart-generator",
+  "name": "gsb-chart-generator",
   "private": true,
   "dependencies": {
     "body-parser": "^1.19.1",

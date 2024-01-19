@@ -37,7 +37,6 @@ gem 'rubyzip', '~> 1.1'
 gem 'sass-rails'
 gem 'select2-rails', '< 4.0.0'
 gem 'sendgrid-ruby'
-gem 'sprockets-rails'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
 gem 'uglifier'
 gem 'warden'

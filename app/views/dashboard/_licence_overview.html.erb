@@ -3,12 +3,12 @@
     <tr>
       <th>License Type</th>
       <th>License Name</th>
-      <th>GSAS ID</th>
+      <th>GSB ID</th>
       <th>Expiry Date</th>
       <th>Licence</th>
     </tr>
     <tr>
-      <td>GSAS Districts</td>
+      <td>GSB Districts</td>
       <td></td>
       <td></td>
       <td></td>
@@ -17,10 +17,10 @@
     <% user_licences_design&.each.with_index(1) do |ac, index| %>
       <tr>
         <% if index == 1 %>
-          <td rowspan="<%= user_licences_design.count %>">GSAS-D&B</td>
+          <td rowspan="<%= user_licences_design.count %>">GSB-D&B</td>
         <% end %>
         <td><%= ac.licence.display_name %></td>
-        <td><%= ac.user.gsas_id %></td>
+        <td><%= ac.user.gsb_id %></td>
         <td><%= ac.formatted_expiry_date %></td>
         <td>
           <div class="">
@@ -43,10 +43,10 @@
     <% user_licences_construction&.each.with_index(1) do |ac, index| %>
       <tr>
         <% if index == 1 %>
-          <td rowspan="<%= user_licences_construction.count %>">GSAS-CM</td>
+          <td rowspan="<%= user_licences_construction.count %>">GSB-CM</td>
         <% end %>
         <td><%= ac.licence.display_name %></td>
-        <td><%= ac.user.gsas_id %></td>
+        <td><%= ac.user.gsb_id %></td>
         <td><%= ac.formatted_expiry_date %></td>
         <td>
           <div class="">
@@ -69,10 +69,10 @@
     <% user_licences_operation&.each.with_index(1) do |ac, index| %>
       <tr>
         <% if index == 1 %>
-          <td rowspan="<%= user_licences_operation.count %>">GSAS-OP</td>
+          <td rowspan="<%= user_licences_operation.count %>">GSB-OP</td>
         <% end %>
         <td><%= ac.licence.display_name %></td>
-        <td><%= ac.user.gsas_id %></td>
+        <td><%= ac.user.gsb_id %></td>
         <td><%= ac.formatted_expiry_date %></td>
         <td>
           <div class="">

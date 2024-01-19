@@ -284,7 +284,7 @@
 
             <%= render partial: 'projects/service_provider_info', locals: { project: @project, certification_path: certification_path } %>
             <%= render partial: 'projects_users/index', locals: {project: @project, team: :project_team, certification_team_type: ProjectsUser.certification_team_types[certification_path.certificate.only_name], certification_path: certification_path} %>
-            <%= render partial: 'projects_users/index', locals: {project: @project, team: :gsas_trust_team, certification_team_type: ProjectsUser.certification_team_types[certification_path.certificate.only_name], certification_path: certification_path} %>
+            <%= render partial: 'projects_users/index', locals: {project: @project, team: :gsb_trust_team, certification_team_type: ProjectsUser.certification_team_types[certification_path.certificate.only_name], certification_path: certification_path} %>
           </div>
 
           <% if @project.completed_letter_of_conformances.present? && !@project.with_final_design_certificate.present? %>
@@ -293,7 +293,7 @@
                 <h5><%= I18n.t('activerecord.attributes.project.team_titles.final_design_certificate') %></h5>
               </div>
               <%= render partial: 'projects_users/index', locals: {project: @project, team: :project_team, certification_team_type: 3, certification_path: certification_path} %>
-              <%= render partial: 'projects_users/index', locals: {project: @project, team: :gsas_trust_team, certification_team_type: 3, certification_path: certification_path} %>
+              <%= render partial: 'projects_users/index', locals: {project: @project, team: :gsb_trust_team, certification_team_type: 3, certification_path: certification_path} %>
             </div>
           <% end %>
         <% end %>
@@ -305,7 +305,7 @@
           </div>
           <%= render partial: 'projects/service_provider_info', locals: { project: @project, certification_path: @certification_path } %>
           <%= render partial: 'projects_users/index', locals: {project: @project, team: :project_team, certification_team_type: 2, certification_path: @certification_path} %>
-          <%= render partial: 'projects_users/index', locals: {project: @project, team: :gsas_trust_team, certification_team_type: 2, certification_path: @certification_path} %>
+          <%= render partial: 'projects_users/index', locals: {project: @project, team: :gsb_trust_team, certification_team_type: 2, certification_path: @certification_path} %>
         </div>
       <% end %>
 
@@ -316,7 +316,7 @@
         </div>
         <%= render partial: 'projects/service_provider_info', locals: { project: @project, certification_path: @certification_path } %>
         <%= render partial: 'projects_users/index', locals: {project: @project, team: :project_team, certification_team_type: 1, certification_path: @certification_path} %>
-        <%= render partial: 'projects_users/index', locals: {project: @project, team: :gsas_trust_team, certification_team_type: 1, certification_path: @certification_path} %>
+        <%= render partial: 'projects_users/index', locals: {project: @project, team: :gsb_trust_team, certification_team_type: 1, certification_path: @certification_path} %>
       </div>
     <% end %>
 

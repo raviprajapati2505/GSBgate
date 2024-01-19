@@ -103,16 +103,16 @@
             <% @project.offline_certification_paths.each do |certificate| %>
               <% 
                 case @project.certificate_type
-                  when 'GSAS-D&B'
+                  when 'GSB-D&B'
                     star_badge_class = 'certi-status-badge star-rating-badge-db'
                     image_tag = image_tag('layout/certi-status-db.png')
-                  when 'GSAS-CM'
+                  when 'GSB-CM'
                     star_badge_class = 'certi-status-badge star-rating-badge-cm'
                     image_tag = image_tag('layout/certi-status-cm.png')
-                  when 'GSAS-OP'
+                  when 'GSB-OP'
                     star_badge_class = 'certi-status-badge star-rating-badge-op'
                     image_tag = image_tag('layout/certi-status-op.png')
-                  when 'GSAS-EcoLeaf'
+                  when 'GSB-EcoLeaf'
                     star_badge_class = 'certi-status-badge star-rating-badge-db'
                     image_tag = image_tag('layout/certi-status-db.png')
                 end

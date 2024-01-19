@@ -4,7 +4,7 @@ Project Status Update
 Dear Ms/Mr
 
 <% if @include_new_tasks %>
-<% if @user.is_gsas_trust_manager? || @user.is_gsas_trust_top_manager? %>
+<% if @user.is_gsb_trust_manager? || @user.is_gsb_trust_top_manager? %>
     Hereby we send you an overview of your unfinished tasks since <%= @user.last_notified_at %>.
 <% else %>
     Hereby we send you an overview of recent project changes and your unfinished tasks since <%= l(@user.last_notified_at) %>.
@@ -49,7 +49,7 @@ Tasks
 <% else %>
     Hereby we send you an overview of recent project changes since <%= @user.last_notified_at %>.
 <% end %>
-<% unless @user.is_gsas_trust_manager? || @user.is_gsas_trust_top_manager? %>
+<% unless @user.is_gsb_trust_manager? || @user.is_gsb_trust_top_manager? %>
 
 Audit log
 ---------

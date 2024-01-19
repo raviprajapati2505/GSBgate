@@ -51,19 +51,19 @@
         <%= f.input :nominated_cgp, required: true %>
       </div>
       <div class="col-md-4">
-        <%= f.input :gsas_energey_assessment_licence_file, as: :file, label: t('users.form.gsas_energy_assessment_file_licence_title'), required: true %>
-        <% if user.persisted? && user.service_provider_detail&.gsas_energey_assessment_licence_file.present? %>
+        <%= f.input :gsb_energey_assessment_licence_file, as: :file, label: t('users.form.gsb_energy_assessment_file_licence_title'), required: true %>
+        <% if user.persisted? && user.service_provider_detail&.gsb_energey_assessment_licence_file.present? %>
           <% if can?(:download_user_files, user) %>
-            <%= btn_download(download_user_files_user_path(user, file: "gsas_energey_assessment_licence_file"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('gsas_energey_assessment_licence_file')}") %>
+            <%= btn_download(download_user_files_user_path(user, file: "gsb_energey_assessment_licence_file"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('gsb_energey_assessment_licence_file')}") %>
           <% end %>
-          <%= truncate(user.service_provider_detail&.gsas_energey_assessment_licence_file&.file&.filename, length: 35) %>
+          <%= truncate(user.service_provider_detail&.gsb_energey_assessment_licence_file&.file&.filename, length: 35) %>
         <% end %>
       </div>
       
     </div>
     <div class="row">
       <div class="col-md-4 col-sm-6 col-xs-12">
-        <%= f.input :cgp_licence_file, as: :file, label: t('users.form.gsas_cgp_licence_file_title'), required: true %>
+        <%= f.input :cgp_licence_file, as: :file, label: t('users.form.gsb_cgp_licence_file_title'), required: true %>
         <% if user.persisted? && user.service_provider_detail&.cgp_licence_file.present? %>
           <% if can?(:download_user_files, user) %>
             <%= btn_download(download_user_files_user_path(user, file: "cgp_licence_file"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('cgp_licence_file')}") %>
@@ -101,7 +101,7 @@
         <%= truncate(user.service_provider_detail&.application_form.file.filename, length: 35) %>
         <% end %>
       </div>
-      <div class="col-md-4 demerit">
+      <div class="col-md-4" id="demerit">
         <%= f.input :demerit_acknowledgement_file, as: :file, label: t('users.form.demerit_file_title'), required: true %>
         <% if user.persisted? && user.service_provider_detail&.demerit_acknowledgement_file.present? %>
           <% if can?(:download_user_files, user) %>
@@ -120,7 +120,7 @@
           <%= label_tag 'document_scheme_mix_criterion', t('users.form.acknowledgement') %>
           <span id="help-block-ack" class="help-block"></span>
         </p>
-        <p style="color:#3a4f57;">DEMERIT System <a target="_blank" href="https://gsas.gord.qa/wp-content/uploads/2021/10/GSAS-Demerit-System.pdf">( Download Here )</a></a>
+        <p style="color:#3a4f57;">DEMERIT System <a target="_blank" href="https://gsb.gord.qa/wp-content/uploads/2021/10/GSB-Demerit-System.pdf">( Download Here )</a></a>
       </div>
     </div>
   </div>
@@ -128,10 +128,10 @@
 
 <script>
   $(function() {
-    $('.demerit').hide();
-    $('.acknowledgement').click(function() {
+    $('#demerit').hide();
+    $('#acknowledgement, .iCheck-helper').click(function() {
       let isChecked = $('#acknowledgement').prop('checked');
-      isChecked ? $('.demerit').show() : $('.demerit').hide()
+      isChecked ? $('#demerit').show() : $('#demerit').hide()
       isChecked ? $('#help-block-ack').hide() : $('#help-block-ack').show()
     });
 

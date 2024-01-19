@@ -456,7 +456,7 @@ module Auditable
           else
             visibility = AuditLogVisibility::INTERNAL
           end
-        elsif projects_user.gsas_trust_team?
+        elsif projects_user.gsb_trust_team?
           if projects_user.certification_manager? && self.audit_log_visibility.present?
             visibility = self.audit_log_visibility.to_i
           else

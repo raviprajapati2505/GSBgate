@@ -22,13 +22,13 @@ namespace :xlsx2seed do
       wb.add_worksheet(name: 'requirements') do |sheet|
         sheet.add_row ['scheme ID', 'category ID', 'criterion ID', 'version', 'certificate', 'scheme', 'renovation', 'category', 'criterion number', 'criterion name', 'requirement 1', 'requirement 2', 'requirement 3', 'requirement 4', 'requirement 5', 'requirement 6', 'requirement 7', 'requirement 8', 'requirement 9', 'requirement 10', 'requirement 11', 'requirement 12', 'requirement 13', 'requirement 14', 'requirement 15'], style: blue_cell
 
-        scheme_criteria = SchemeCriterion.joins(scheme_category: [scheme: [development_types: [:certificate]]]).distinct.select('scheme_criteria.id as crit_id, scheme_criteria.name as crit_name, scheme_criteria.number, scheme_categories.id as cat_id, scheme_categories.name as cat_name, scheme_categories.code, schemes.id as s_id, schemes.name as s_name, schemes.renovation, certificates.name as c_name, certificates.gsas_version').where(certificates: {certification_type: Certificate.certification_types[:letter_of_conformance], gsas_version: '2019'}).order('schemes.id, scheme_categories.id, scheme_criteria.id')
+        scheme_criteria = SchemeCriterion.joins(scheme_category: [scheme: [development_types: [:certificate]]]).distinct.select('scheme_criteria.id as crit_id, scheme_criteria.name as crit_name, scheme_criteria.number, scheme_categories.id as cat_id, scheme_categories.name as cat_name, scheme_categories.code, schemes.id as s_id, schemes.name as s_name, schemes.renovation, certificates.name as c_name, certificates.gsb_version').where(certificates: {certification_type: Certificate.certification_types[:letter_of_conformance], gsb_version: '2019'}).order('schemes.id, scheme_categories.id, scheme_criteria.id')
         scheme_criteria.each do |scheme_criterion|
           row_cells = []
           row_cells << scheme_criterion['s_id']
           row_cells << scheme_criterion['cat_id']
           row_cells << scheme_criterion['crit_id']
-          row_cells << scheme_criterion['gsas_version']
+          row_cells << scheme_criterion['gsb_version']
           row_cells << scheme_criterion['c_name']
           row_cells << scheme_criterion['s_name']
           row_cells << scheme_criterion['renovation']

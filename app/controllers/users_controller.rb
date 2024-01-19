@@ -61,7 +61,7 @@ class UsersController < AuthenticatedController
       :organization_phone, 
       :organization_fax_area_code, 
       :organization_fax, 
-      :gsas_id, 
+      :gsb_id, 
       :practitioner_accreditation_type,
       user_detail_attributes: [
         :id,
@@ -77,7 +77,7 @@ class UsersController < AuthenticatedController
         :cgp_licence_file, 
         :qid_work_permit_file, 
         :energy_assessor_name, 
-        :gsas_energey_assessment_licence_file,
+        :gsb_energey_assessment_licence_file,
         :education,
         :education_certificate,
         :other_documents
@@ -94,7 +94,7 @@ class UsersController < AuthenticatedController
         :application_form,
         :cgp_licence_file,
         :energy_assessor_name, 
-        :gsas_energey_assessment_licence_file,
+        :gsb_energey_assessment_licence_file,
         :nominated_cgp
       ],
       access_licences_attributes: [
@@ -137,7 +137,7 @@ class UsersController < AuthenticatedController
       :organization_phone, 
       :organization_fax_area_code, 
       :organization_fax, 
-      :gsas_id,
+      :gsb_id,
       service_provider_detail_attributes: [
             :id,
             :business_field,
@@ -149,7 +149,7 @@ class UsersController < AuthenticatedController
             :demerit_acknowledgement_file,
             :cgp_licence_file,
             :energy_assessor_name, 
-            :gsas_energey_assessment_licence_file,
+            :gsb_energey_assessment_licence_file,
             :nominated_cgp
         ]
       )
@@ -302,7 +302,7 @@ class UsersController < AuthenticatedController
             result[:items][u.id][:error] = 'This user is deactivated.'
           elsif (check_gord_employee && !u.gord_employee?)
             # Check for gord_employee flag if required
-            result[:items][u.id][:error] = 'This user is not a GORD employee and cannot be added to the GSAS trust team.'
+            result[:items][u.id][:error] = 'This user is not a GORD employee and cannot be added to the GSB trust team.'
           end
         end
 
@@ -384,8 +384,8 @@ class UsersController < AuthenticatedController
         file = @user.service_provider_detail&.cgp_licence_file&.path
       when "qid_work_permit_file"
         file = @user.user_detail&.qid_work_permit_file&.path
-      when "gsas_energey_assessment_licence_file"
-        file = @user.service_provider_detail&.gsas_energey_assessment_licence_file&.path
+      when "gsb_energey_assessment_licence_file"
+        file = @user.service_provider_detail&.gsb_energey_assessment_licence_file&.path
       when "education_certificate"
         file = @user.user_detail&.education_certificate&.path
       when "other_documents"
@@ -400,9 +400,9 @@ class UsersController < AuthenticatedController
         file = @user.service_provider_detail&.application_form&.path
       when "portfolio"
         file = @user.service_provider_detail&.portfolio&.path
-      when "gsas_trust_notification"
+      when "gsb_trust_notification"
         demerit_flag = DemeritFlag.find(params[:demerit_flag])
-        file = demerit_flag&.gsas_trust_notification&.path
+        file = demerit_flag&.gsb_trust_notification&.path
       when "practitioner_acknowledge"
         demerit_flag = DemeritFlag.find(params[:demerit_flag])
         file = demerit_flag&.practitioner_acknowledge&.path

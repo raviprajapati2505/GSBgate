@@ -4,4 +4,4 @@ source /etc/profile.d/rbenv.sh
 cd "$(dirname "$0")";
 
 # run rake task
-RAILS_ENV=production bundle exec rake gsas:destroy_old_empty_projects
+RAILS_ENV=production bundle exec rake gsb:destroy_old_empty_projects

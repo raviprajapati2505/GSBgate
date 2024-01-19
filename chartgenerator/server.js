@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 
 // Start the app
 app.listen(8082, function () {
-  console.log("GSAS chart generator app listening on port 8082!");
+  console.log("GSB chart generator app listening on port 8082!");
 });
 
 // Creates a chart.js graph and hands it to the HTTP response

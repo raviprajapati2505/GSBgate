@@ -31,7 +31,7 @@
 
 .skin-gord-login {
   $login-height: 100px;
-  background: image-url("layout/gsas_trust_background.jpg") no-repeat center center fixed;
+  background: image-url("layout/gsb_trust_background.jpg") no-repeat center center fixed;
   background-size: cover;
   // select2 22-9-2022
   .select2-drop {
@@ -428,7 +428,7 @@
     padding-top: 0;
   }
 
-  .feed-element .user-comment-gsas-trust-team {
+  .feed-element .user-comment-gsb-trust-team {
     font-style: italic;
     background-color: $gray-700;
   }
@@ -442,9 +442,9 @@
     margin-top: 10px;
   }
 
-  .gsas-trust-team {
+  .gsb-trust-team {
     color: $white;
-    background-color: $skin-gord-color-gsas-trust-team;
+    background-color: $skin-gord-color-gsb-trust-team;
   }
 
   .project-team {

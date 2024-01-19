@@ -5,7 +5,7 @@
 $(function () {
     var projects_list = $('.select2-project-ajax');
     if (projects_list.length > 0) {
-        GSAS.load_list_ajax(projects_list, '- All projects -', Routes.list_projects_path(),
+        GSB.load_list_ajax(projects_list, '- All projects -', Routes.list_projects_path(),
             function(el, callback) {
                 return $.ajax({
                     type: 'GET',

@@ -4,4 +4,4 @@ source /etc/profile.d/rbenv.sh
 cd "$(dirname "$0")";
 
 # run rake task
-RAILS_ENV=production bundle exec rake gsas:clean_carrierwave_cache
+RAILS_ENV=production bundle exec rake gsb:clean_carrierwave_cache

@@ -11,8 +11,8 @@ class Certificate < ApplicationRecord
   validates_inclusion_of :assessment_stage, in: Certificate.assessment_stages.keys
   validates_inclusion_of :certification_type, in: Certificate.certification_types.keys
 
-  scope :with_gsas_version, ->(gsas_version) {
-    where(gsas_version: gsas_version)
+  scope :with_gsb_version, ->(gsb_version) {
+    where(gsb_version: gsb_version)
   }
 
   scope :with_certification_type, ->(certification_type) {
@@ -20,15 +20,15 @@ class Certificate < ApplicationRecord
   }
 
   def construction_issue_1?
-    construction_type? && gsas_version == 'v2.1 Issue 1.0'
+    construction_type? && gsb_version == 'v2.1 Issue 1.0'
   end
 
   def construction_issue_3?
-    construction_type? && gsas_version == 'v2.1 Issue 3.0'
+    construction_type? && gsb_version == 'v2.1 Issue 3.0'
   end
 
   def construction_2019?
-    construction_type? && gsas_version == '2019'
+    construction_type? && gsb_version == '2019'
   end
 
   def final_construction?
@@ -44,7 +44,7 @@ class Certificate < ApplicationRecord
   end
 
   def operations_2019?
-    operations_type? && gsas_version == '2019'
+    operations_type? && gsb_version == '2019'
   end
 
   def design_and_build?
@@ -65,13 +65,13 @@ class Certificate < ApplicationRecord
       next unless certificate_type.present?
       certificate_types_array.push(*
                               case certificate_type
-                              when "GSAS-D&B"
+                              when "GSB-D&B"
                                 [Certificate.certification_types[:letter_of_conformance], Certificate.certification_types[:final_design_certificate]]
-                              when "GSAS-CM"
+                              when "GSB-CM"
                                 [Certificate.certification_types[:construction_certificate], Certificate.certification_types[:construction_certificate_stage1], Certificate.certification_types[:construction_certificate_stage2], Certificate.certification_types[:construction_certificate_stage3]]
-                              when "GSAS-OP"
+                              when "GSB-OP"
                                 [Certificate.certification_types[:operations_certificate]]
-                              when "GSAS-EcoLeaf"
+                              when "GSB-EcoLeaf"
                                 [Certificate.certification_types[:ecoleaf_provisional_certificate], Certificate.certification_types[:ecoleaf_certificate]]
                               else
                                 Certificate.certification_types
@@ -91,7 +91,7 @@ class Certificate < ApplicationRecord
                                         Certificate.certification_types[:letter_of_conformance]
                                       when "Stage 2: CDA, Design & Build Certificate", "Stage 2: CDA Design & Build Certificate"
                                         Certificate.certification_types[:final_design_certificate]
-                                      when "GSAS Construction Management Certificate"
+                                      when "GSB Construction Management Certificate"
                                         Certificate.certification_types[:construction_certificate]
                                       when "Stage 1: Foundation"
                                         Certificate.certification_types[:construction_certificate_stage1]
@@ -99,7 +99,7 @@ class Certificate < ApplicationRecord
                                         Certificate.certification_types[:construction_certificate_stage2]
                                       when "Stage 3: Finishing"
                                         Certificate.certification_types[:construction_certificate_stage3]
-                                      when "GSAS Operations Certificate"
+                                      when "GSB Operations Certificate"
                                         Certificate.certification_types[:operations_certificate]
                                       when "EcoLeaf Provisional Certificate"
                                         Certificate.certification_types[:ecoleaf_provisional_certificate]
@@ -117,24 +117,24 @@ class Certificate < ApplicationRecord
     case only_name
     when "Letter of Conformance", "Final Design Certificate"
       I18n.t('activerecord.attributes.certificate.certificate_types.certificate_titles.design_and_build')
-    when "GSAS-CM", "Construction Certificate"
+    when "GSB-CM", "Construction Certificate"
       I18n.t('activerecord.attributes.certificate.certificate_types.certificate_titles.construction_certificate')
     when "Operations Certificate"
       I18n.t('activerecord.attributes.certificate.certificate_types.certificate_titles.operations_certificate')
-    when "GSAS-EcoLeaf"
-      I18n.t('activerecord.attributes.certificate.certificate_types.certificate_titles.gsas_ecoleaf')
+    when "GSB-EcoLeaf"
+      I18n.t('activerecord.attributes.certificate.certificate_types.certificate_titles.gsb_ecoleaf')
     end
   end
 
   def report_certification_name
     case only_name
     when "Letter of Conformance", "Final Design Certificate"
-      "GSAS Design & Build (#{only_certification_name})"
-    when "GSAS-CM", "Construction Certificate"
-      "GSAS Construction Management (#{only_certification_name})"
+      "GSB Design & Build (#{only_certification_name})"
+    when "GSB-CM", "Construction Certificate"
+      "GSB Construction Management (#{only_certification_name})"
     when "Operations Certificate"
-      "GSAS Operation (#{only_certification_name})"
-    when "GSAS-EcoLeaf"
+      "GSB Operation (#{only_certification_name})"
+    when "GSB-EcoLeaf"
       only_certification_name
     end
   end
@@ -144,7 +144,7 @@ class Certificate < ApplicationRecord
   end
 
   def only_version
-    gsas_version
+    gsb_version
   end
 
   def stage_title

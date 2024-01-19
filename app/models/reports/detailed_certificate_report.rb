@@ -19,14 +19,14 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
   HEADER_IMAGE = 'report_header_image.png'.freeze
   HEADER_LOGO = 'gord_logo.jpg'.freeze
   FOOTER_IMAGE = 'report_footer_image.png'.freeze
-  GSAS_LOGO = 'gsas_logo.jpg'.freeze
-  LOC_LOGO = 'gsas_logo.jpg'.freeze
+  GSB_LOGO = 'gsb_logo.jpg'.freeze
+  LOC_LOGO = 'gsb_logo.jpg'.freeze
 
   TEXT_COLOR = 'ffffff'.freeze
   BACKGROUND_COLOR = 'EEEEEE'.freeze
   FOOTER_LOGO = 'gord_logo_black.jpg'.freeze
   STAR_ICON = 'green_star.png'.freeze
-  FOOTER_URL = "<link href='http://www.gsas.gord.qa'>www.gsas.gord.qa</link>".freeze
+  FOOTER_URL = "<link href='http://www.gsb.gord.qa'>www.gsb.gord.qa</link>".freeze
   MAX_ROWS_PER_PAGE = 22
   PAGE_MARGIN = 50
 
@@ -159,7 +159,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
 
   def draw_certificate_header
     text = certification_type_name(@certification_path)
-    styled_text("<div style='font-size: 12; font-style: bold; color: #{@@main_color}; line-height: 1.2'>GSAS #{text[:project_type]}</div><br /><div style='font-size: 14; font-style: bold;'>#{text[:certificate_name]}</div>")
+    styled_text("<div style='font-size: 12; font-style: bold; color: #{@@main_color}; line-height: 1.2'>GSB #{text[:project_type]}</div><br /><div style='font-size: 14; font-style: bold;'>#{text[:certificate_name]}</div>")
   end
 
   def draw_scheme_mix_header(scheme_mix)
@@ -178,31 +178,31 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     data.append(["Project Location", @detailed_certificate_report&.project_location])
 
     if @certification_path.certificate.certification_type == 'final_design_certificate'
-      data.append(["GSAS Service Provider", @project.service_provider_2])
+      data.append(["GSB Service Provider", @project.service_provider_2])
     else
-      data.append(["GSAS Service Provider", @project.service_provider])
+      data.append(["GSB Service Provider", @project.service_provider])
     end
 
-    data.append(["GSAS Certificate", @certification_path.certificate&.report_certification_name])
+    data.append(["GSB Certificate", @certification_path.certificate&.report_certification_name])
 
     case @certification_path.certificate&.stage_title
       when 'Stage 1: Foundation'
-        data.append(["GSAS Certification Stage", 'Enabling Foundation Works'])
+        data.append(["GSB Certification Stage", 'Enabling Foundation Works'])
       when 'Stage 2: Substructure & Superstructure'
-        data.append(["GSAS Certification Stage", 'Stage 2: Substructure & Superstructure Works'])
+        data.append(["GSB Certification Stage", 'Stage 2: Substructure & Superstructure Works'])
       when 'Stage 3: Finishing'
-        data.append(["GSAS Certification Stage", 'Stage 3: Finishing Works'])
+        data.append(["GSB Certification Stage", 'Stage 3: Finishing Works'])
       else
-        data.append(["GSAS Certification Stage", @certification_path.certificate&.stage_title])
+        data.append(["GSB Certification Stage", @certification_path.certificate&.stage_title])
     end
     
-    data.append(["GSAS Version", "GSAS #{@certification_path.certificate&.only_version}"])
+    data.append(["GSB Version", "GSB #{@certification_path.certificate&.only_version}"])
 
     unless @certification_path.construction?
       if @certification_path&.scheme_names == 'Fitout'
-        data.append(["GSAS Scheme", 'Fitout'])
+        data.append(["GSB Scheme", 'Fitout'])
       else
-        data.append(["GSAS Scheme", @certification_path&.scheme_names])
+        data.append(["GSB Scheme", @certification_path&.scheme_names])
       end
       
     end
@@ -220,7 +220,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
         newline(1)
         styled_text("<div style='font-size: 10;text-align: justify; line-height: 7; font-style: bold'>Dear Sir/Madam,</div>")
         newline(1)
-        styled_text("<div style='font-size: 10;text-align: justify; line-height: 7'>This is to notify that GSAS Trust has assessed the project based on the submitted information. The project is found eligible to receive the provisional compliance. <span style='font-style: bold'>Final compliance is subject to successful site audit.</span></div>")
+        styled_text("<div style='font-size: 10;text-align: justify; line-height: 7'>This is to notify that GSB Trust has assessed the project based on the submitted information. The project is found eligible to receive the provisional compliance. <span style='font-style: bold'>Final compliance is subject to successful site audit.</span></div>")
         newline(1)
         styled_text("<div style='font-size: 10;text-align: justify; line-height: 7'>In the event of any future changes applied to the information pertaining to the checklist, the changes are required to be re-assessed once again.</div>")
         newline(1)
@@ -232,7 +232,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
         newline(3)
         styled_text("<div style='font-size: 10; color: 000000; font-style: bold;'>\n Dr. Eiman M. El-Iskandarani</div>")
 
-        styled_text("<div style='font-size: 10; color: 000000; font-style: bold;'>\n Director, GSAS Trust \n</div>")
+        styled_text("<div style='font-size: 10; color: 000000; font-style: bold;'>\n Director, GSB Trust \n</div>")
       else
         name = @certification_path.certificate.only_name
         text = certificate_intro_text(name, @certification_path&.certificate&.stage_title)
@@ -242,7 +242,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
         data = []
 
         data.append(['STAGE SCORE', 'STAGE RATING'])
-        if @certification_path.certificate.only_certification_name == 'GSAS-D&B'
+        if @certification_path.certificate.only_certification_name == 'GSB-D&B'
           data.append([number_with_precision(@score, precision: 3), {:image => "#{Rails.root}/app/assets/images/reports/star_#{@stars.split("").first}.png", :width => 100, :image_height => 20, :position  => :center}])
         else
           data.append([number_with_precision(@score, precision: 3), @stars])

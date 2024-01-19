@@ -4,4 +4,4 @@ source /etc/profile.d/rbenv.sh
 cd "$(dirname "$0")";
 
 # run rake tasks
-RAILS_ENV=production bundle exec rake gsas:generate_archives
+RAILS_ENV=production bundle exec rake gsb:generate_archives

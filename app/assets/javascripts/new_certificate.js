@@ -1,7 +1,7 @@
 //# sourceURL=new_certificate.js
 $(function () {
     // Initialize the select2 boxes
-    $('#gsas_version').select2({
+    $('#gsb_version').select2({
         placeholder: "Select the version",
         minimumResultsForSearch: -1,
     });
@@ -180,11 +180,11 @@ $(function () {
         validate();
     });
 
-    $('#gsas_version').change(function() {
+    $('#gsb_version').change(function() {
         var project_id = $('#certification_path_project_id').val();
         var certification_type = $('#certification_path_certification_type').val();
         var pcr_track = $('#certification_path_pcr_track').is(":checked");
-        var gsas_version = $('#gsas_version').val();
+        var gsb_version = $('#gsb_version').val();
         var assessment_method = $('#assessment_method').val();
         $.ajax({
            type: 'POST',
@@ -192,7 +192,7 @@ $(function () {
             dataType: 'script',
             cache: false,
             data: {
-                gsas_version: gsas_version,
+                gsb_version: gsb_version,
                 certification_path: {
                     pcr_track: pcr_track,
                 },
@@ -224,7 +224,7 @@ $(function () {
         var project_id = $('#certification_path_project_id').val();
         var certification_type = $('#certification_path_certification_type').val();
         var pcr_track = $('#certification_path_pcr_track').is(":checked");
-        var gsas_version = $('#gsas_version').val();
+        var gsb_version = $('#gsb_version').val();
         var development_type = $('#certification_path_development_type').val();
         var assessment_method = $('#assessment_method').val();
         $.ajax({
@@ -233,7 +233,7 @@ $(function () {
             dataType: 'script',
             cache: false,
             data: {
-                gsas_version: gsas_version,
+                gsb_version: gsb_version,
                 certification_path: {
                     pcr_track: pcr_track,
                     development_type: development_type,

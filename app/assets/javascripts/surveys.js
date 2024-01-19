@@ -102,7 +102,7 @@ $(function() {
 
   // for nested forms
   $(document).on("cocoon:after-insert", function() {
-    GSAS.processiCheck();
+    GSB.processiCheck();
     changeVisibilityOfOptionsButton();
   }).trigger('cocoon:after-insert');
 

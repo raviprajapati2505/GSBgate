@@ -5,16 +5,16 @@
     <!-- TEXTUAL SCORE -->
     <% 
       case only_certification_name
-        when 'GSAS-D&B'
+        when 'GSB-D&B'
           badge_class = 'rating-badge-db'
           image_tag = image_tag('layout/certi-status-db.png')
-        when 'GSAS-CM'
+        when 'GSB-CM'
           badge_class = 'rating-badge-cm'
           image_tag = image_tag('layout/certi-status-cm.png')
-        when 'GSAS-OP'
+        when 'GSB-OP'
           badge_class = 'rating-badge-op'
           image_tag = image_tag('layout/certi-status-op.png')
-        when 'GSAS-EcoLeaf'
+        when 'GSB-EcoLeaf'
           badge_class = 'rating-badge-db'
           image_tag = image_tag('layout/certi-status-db.png')
       end
@@ -24,16 +24,16 @@
     <!-- STAR SCORE -->
     <% 
       case only_certification_name
-        when 'GSAS-D&B'
+        when 'GSB-D&B'
           star_badge_class = 'certi-status-badge star-rating-badge-db'
           image_tag = image_tag('layout/certi-status-db.png')
-        when 'GSAS-CM'
+        when 'GSB-CM'
           star_badge_class = 'certi-status-badge star-rating-badge-cm'
           image_tag = image_tag('layout/certi-status-cm.png')
-        when 'GSAS-OP'
+        when 'GSB-OP'
           star_badge_class = 'certi-status-badge star-rating-badge-op'
           image_tag = image_tag('layout/certi-status-op.png')
-        when 'GSAS-EcoLeaf'
+        when 'GSB-EcoLeaf'
           star_badge_class = 'certi-status-badge star-rating-badge-db'
           image_tag = image_tag('layout/certi-status-db.png')
       end

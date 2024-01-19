@@ -448,21 +448,21 @@ class CertificationPath < ApplicationRecord
         end
         unless User.current.can?(:edit_status_low_score, self) || criteria_exist_blank
           if ['E','W'].include?(criterion.scheme_criterion.scheme_category.code) && self.certificate.construction_issue_3? && (criterion.submitted_score <= 0)
-            todos << 'To obtain GSAS certification for Construction the Energy and Water criteria levels must be higher than 0.'
+            todos << 'To obtain GSB certification for Construction the Energy and Water criteria levels must be higher than 0.'
             todos_schemes << criterion&.code
           end
 
           if self.certificate.operations?
             if (criterion.scheme_criterion.scheme_category.scheme.name == 'Healthy Building Label Scheme') && (criterion.submitted_score < 2)
-              todos << 'To obtain GSAS certification for the Healthy Building Label scheme all criteria levels must be 2 or higher.'
+              todos << 'To obtain GSB certification for the Healthy Building Label scheme all criteria levels must be 2 or higher.'
               todos_schemes << criterion&.code
             elsif ['E','W'].include?(criterion.scheme_criterion.scheme_category.code) && (criterion.submitted_score <= 0)
-              todos << 'To obtain GSAS certification for Standard or Premium scheme the Energy and Water criteria levels must be higher than 0.'
+              todos << 'To obtain GSB certification for Standard or Premium scheme the Energy and Water criteria levels must be higher than 0.'
               todos_schemes << criterion&.code
             end
 
             if (criterion.scheme_criterion.scheme_category.scheme.name == 'Premium Scheme') && (criterion.scheme_criterion.scheme_category.code == 'IE') && (criterion.scheme_criterion.number == 2) && (criterion.submitted_score <= 0)
-              todos << 'To obtain GSAS certification for Premium scheme the level of IE.2 Air Quality must be higher than 0.'
+              todos << 'To obtain GSB certification for Premium scheme the level of IE.2 Air Quality must be higher than 0.'
               todos_schemes << criterion&.code
             end
           end
@@ -650,7 +650,7 @@ class CertificationPath < ApplicationRecord
     end
   end
   
-  def rating_for_score(score, certificate: nil, certificate_gsas_version: nil, certificate_name: nil, is_achieved_score: true, is_submitted_score: true)
+  def rating_for_score(score, certificate: nil, certificate_gsb_version: nil, certificate_name: nil, is_achieved_score: true, is_submitted_score: true)
     return -1 if score.nil?
 
     if (!certificate.nil? && certificate.operations?) || (!certificate_name.nil? && certificate_name.include?('Operations'))
@@ -682,7 +682,7 @@ class CertificationPath < ApplicationRecord
       else
         return -1
       end
-    elsif (!certificate.nil? && certificate.construction_issue_1?) || (!certificate_gsas_version.nil? && certificate_gsas_version == 'v2.1 Issue 1.0')
+    elsif (!certificate.nil? && certificate.construction_issue_1?) || (!certificate_gsb_version.nil? && certificate_gsb_version == 'v2.1 Issue 1.0')
       if score < 35
         return 'CERTIFICATION DENIED'
       elsif score >= 35 && score < 55
@@ -696,7 +696,7 @@ class CertificationPath < ApplicationRecord
       else
         return -1
       end
-    elsif (!certificate.nil? && certificate.construction_issue_3?) || (!certificate_gsas_version.nil? && certificate_gsas_version == 'v2.1 Issue 3.0')
+    elsif (!certificate.nil? && certificate.construction_issue_3?) || (!certificate_gsb_version.nil? && certificate_gsb_version == 'v2.1 Issue 3.0')
       if score < 0.5
         return 'CERTIFICATION DENIED'
       elsif score >= 0.5 && score < 1
@@ -710,7 +710,7 @@ class CertificationPath < ApplicationRecord
       else
         return -1
       end
-    elsif (!certificate.nil? && certificate.construction_2019?) || (!certificate_gsas_version.nil? && certificate_gsas_version == '2019' && certificate_name.include?('Construction'))
+    elsif (!certificate.nil? && certificate.construction_2019?) || (!certificate_gsb_version.nil? && certificate_gsb_version == '2019' && certificate_name.include?('Construction'))
       if score < 0.5
         return 'CERTIFICATION DENIED'
       elsif score >= 0.5 && score < 1
@@ -747,7 +747,7 @@ class CertificationPath < ApplicationRecord
         val = -1
       end
 
-      val = revised_score(val, is_achieved_score, is_submitted_score) if (score > 2 && certificate.gsas_version == "2019" && certificate.design_and_build?)
+      val = revised_score(val, is_achieved_score, is_submitted_score) if (score > 2 && certificate.gsb_version == "2019" && certificate.design_and_build?)
       return val
     end
   end

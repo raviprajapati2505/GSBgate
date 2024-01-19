@@ -7,7 +7,7 @@
   <% 
     final_score = @certification_path.scores_in_certificate_points
     if @certification_path.construction?
-      if @certification_path.name == "Construction Certificate, 2019 - GSAS-CM Certificate"
+      if @certification_path.name == "Construction Certificate, 2019 - GSB-CM Certificate"
         data_score = []
         certification_path_ids = @project.certification_paths.pluck(:id) - [@certification_path.id]
         certification_path_ids.each do |cp_id|
@@ -91,7 +91,7 @@
                           <% end %>
                             <%# if @certification_path.certificate.letter_of_conformance? || @certification_path.certificate.final_design_certificate? %>
                               <tr>
-                                <% if @certification_path.certificate.only_certification_name == 'GSAS-CM' || @certification_path.certificate.only_certification_name == 'GSAS-D&B' %>
+                                <% if @certification_path.certificate.only_certification_name == 'GSB-CM' || @certification_path.certificate.only_certification_name == 'GSB-D&B' %>
                                   <th><%= t('.certification_path.expired_at') %></th>
                                 <% else %>
                                   <th><%= 'Certification Expiry' %></th>
@@ -372,7 +372,7 @@
         </div>
         <div class="ibox" id="certifier-documentation">
           <div class="ibox-title">
-            <h5>GSAS TRUST DOCUMENTATION</h5>
+            <h5>GSB TRUST DOCUMENTATION</h5>
           </div>
           <div class="ibox-content">
             <%= render 'certification_path_documents/index', certification_path_documents: @certification_path.certifier_certification_path_documents, download_document_permitted: download_document_permitted %>

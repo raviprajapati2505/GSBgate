@@ -14,17 +14,17 @@
          project_user_roles[:cgp_project_manager] = ProjectsUser.roles[:cgp_project_manager]
        end
        modal_id = "addProjectTeamModal#{certification_team_type}"
-     when :gsas_trust_team
+     when :gsb_trust_team
        title = t('.certifier_team.title')
        title_modal = t('.certifier_team.title_modal')
-       project_users = project.projects_users.gsas_trust_team_with_type(certification_team_type)
+       project_users = project.projects_users.gsb_trust_team_with_type(certification_team_type)
        if can?(:create, ProjectsUser.new(project_id: project.id, role: ProjectsUser.roles[:certifier]))
          project_user_roles[:certifier] = ProjectsUser.roles[:certifier]
        end
        if can?(:create, ProjectsUser.new(project_id: project.id, role: ProjectsUser.roles[:certification_manager]))
          project_user_roles[:certification_manager] = ProjectsUser.roles[:certification_manager]
        end
-       modal_id = "addGsasTrustTeamModal#{certification_team_type}"
+       modal_id = "addGsbTrustTeamModal#{certification_team_type}"
      when :enterprise_clients
        title = t('.enterprise_clients.title')
        title_modal = t('.enterprise_clients.title_modal')
@@ -108,7 +108,7 @@
                         <%= btn_close_modal %>
                         <h4 class="modal-title"><%= title_modal %></h4>
                     </div>
-                    <div class="modal-body find-users-modal" data-project-id="<%= @project.id %>" data-gord-employee="<%= (team == :gsas_trust_team) ? '1' : '0' %>">
+                    <div class="modal-body find-users-modal" data-project-id="<%= @project.id %>" data-gord-employee="<%= (team == :gsb_trust_team) ? '1' : '0' %>">
                         <div class="templates" style="display:none;">
                             <script class="existing-user" type="text/x-custom-template">
                                 <tr data-user-uid="____user_id____">
@@ -134,7 +134,7 @@
                                         <%= hidden_field_tag 'emails[]', '____email____' %>
                                     </td>
                                     <td>
-                                        This user will be invited to gsas.qa by email.
+                                        This user will be invited to gsb.qa by email.
                                     </td>
                                     <td>
                                         <%= btn_tag(style: 'danger', size: 'small', icon: 'trash', class: 'remove', type: 'button') %>

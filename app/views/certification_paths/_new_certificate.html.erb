@@ -59,11 +59,11 @@
 
                 <!-- Custom select for version, so we can determine the certificate -->
                 <% unless @certification_path.certificate.construction_certificate_stage2? || @certification_path.certificate.construction_certificate_stage3? %>
-                  <%= f.static_control label: 'GSAS Version' do %>
+                  <%= f.static_control label: 'GSB Version' do %>
                       <% if design_or_ecoleaf_final_certification?(@certification_type) %>
-                          <%= @certification_path.certificate.gsas_version %>
+                          <%= @certification_path.certificate.gsb_version %>
                       <% else %>
-                          <%= select_tag(:gsas_version, options_for_select(@gsas_versions, @gsas_version), {:class => 'form-control'}) %>
+                          <%= select_tag(:gsb_version, options_for_select(@gsb_versions, @gsb_version), {:class => 'form-control'}) %>
                       <% end %>
                   <% end %>
                 <% end %>

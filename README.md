@@ -1,4 +1,4 @@
-# GSASgate Rails application
+# GSBgate Rails application
 
 ## 1. Installation manual
 Follow these steps to setup the application in the production environment.
@@ -44,7 +44,7 @@ Although other solutions are possible, VITO uses the following setup:
 ### 1.3 Apache virtual host configuration
 ```
 <VirtualHost *:80>
-  ServerName www.gsas.qa
+  ServerName www.gsb.qa
   ServerAdmin sas@vito.be
 
   ## Vhost docroot
@@ -79,10 +79,10 @@ Although other solutions are possible, VITO uses the following setup:
   </LocationMatch>
 
   ## Logging
-  ErrorLog "/var/log/apache2/www.gsas.qa_error.log"
+  ErrorLog "/var/log/apache2/www.gsb.qa_error.log"
   ServerSignature Off
-  CustomLog "/var/log/apache2/www.gsas.qa_healthcheck.log" "health" env=healthcheck
-  CustomLog "/var/log/apache2/www.gsas.qa_access.log" "sas" env=!healthcheck
+  CustomLog "/var/log/apache2/www.gsb.qa_healthcheck.log" "health" env=healthcheck
+  CustomLog "/var/log/apache2/www.gsb.qa_access.log" "sas" env=!healthcheck
 
   ## Proxy rules
   ProxyRequests Off
@@ -91,8 +91,8 @@ Although other solutions are possible, VITO uses the following setup:
   ProxyPass /robots.txt !
   ProxyPass /favicon.ico !
   ProxyPassMatch ^/(404|422|500).html$ !
-  ProxyPass / unix:/run/sas-puma-gord.socket|http://www.gsas.qa/
-  ProxyPassReverse / unix:/run/sas-puma-gord.socket|http://www.gsas.qa/
+  ProxyPass / unix:/run/sas-puma-gord.socket|http://www.gsb.qa/
+  ProxyPassReverse / unix:/run/sas-puma-gord.socket|http://www.gsb.qa/
   ## Rewrite rules
   RewriteEngine On
 
@@ -114,7 +114,7 @@ Although other solutions are possible, VITO uses the following setup:
 * DATABASE_NAME=gord_production
 * DATABASE_USERNAME=gord_production
 * DATABASE_PASSWORD=secret
-* HOST=www.gsas.qa
+* HOST=www.gsb.qa
 * PROTOCOL=https
 * SECRET_KEY_BASE=yourkey
 * RAILS_ENV=production
@@ -128,13 +128,13 @@ Review the setting in config/environments/production.rb (e.g. SMTP & linkme sett
 
 ### 1.6 Configure server cron jobs
 The following rake tasks should be run once a day by a cron job:
-1. gsas:clean_carrierwave_cache
-1. gsas:clean_up_expired_archives
-1. gsas:create_duration_task
-1. gsas:create_overdue_task
-1. gsas:destroy_old_empty_projects
-1. gsas:generate_archives (should be run more frequently, e.g. every 15 minutes)
-1. gsas:send_digest_mail
+1. gsb:clean_carrierwave_cache
+1. gsb:clean_up_expired_archives
+1. gsb:create_duration_task
+1. gsb:create_overdue_task
+1. gsb:destroy_old_empty_projects
+1. gsb:generate_archives (should be run more frequently, e.g. every 15 minutes)
+1. gsb:send_digest_mail
 
 This could be done using the shell scripts in the "sh" directory.
 

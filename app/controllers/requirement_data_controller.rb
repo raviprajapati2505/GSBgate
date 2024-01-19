@@ -31,7 +31,7 @@ class RequirementDataController < AuthenticatedController
     #   if Reflection.class_exists calculator_name
     #     calculator = calculator_name.constantize.new
     #   else
-    #     calculator = "Calculator::GsasServiceCalculator".constantize.new calculator_name
+    #     calculator = "Calculator::GsbServiceCalculator".constantize.new calculator_name
     #   end
     #   # Create the calculator parameter hash
     #   calculator_params = {}

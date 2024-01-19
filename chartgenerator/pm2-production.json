@@ -1,7 +1,7 @@
 {
   "apps": [
     {
-      "name": "gsas-chart-generator",
+      "name": "gsb-chart-generator",
       "script": "server.js",
       "env": {
         "NODE_ENV": "production"

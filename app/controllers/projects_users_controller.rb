@@ -25,7 +25,7 @@ class ProjectsUsersController < AuthenticatedController
             projects_user.project = @project
 
             # Check ability & gord_employee flag
-            if can?(:create, projects_user) && (!projects_user.gsas_trust_team? || projects_user.user.gord_employee?)
+            if can?(:create, projects_user) && (!projects_user.gsb_trust_team? || projects_user.user.gord_employee?)
               projects_user.save!
               projects_users << projects_user
             end
@@ -102,7 +102,7 @@ class ProjectsUsersController < AuthenticatedController
   def list_users_sharing_projects
     if params.has_key?(:user_id) && params.has_key?(:q) && params.has_key?(:page)
       if params[:user_id] == current_user.id.to_s
-        if current_user.is_system_admin? || current_user.is_gsas_trust_top_manager? || current_user.is_gsas_trust_manager? || current_user.is_gsas_trust_admin?
+        if current_user.is_system_admin? || current_user.is_gsb_trust_top_manager? || current_user.is_gsb_trust_manager? || current_user.is_gsb_trust_admin?
           total_count = User.where('name like ?', '%' + params[:q] + '%')
                           .count
           items = User.select('id, name as text')
@@ -133,7 +133,7 @@ class ProjectsUsersController < AuthenticatedController
 
   def list_projects
     if params.has_key?(:q) && params.has_key?(:page)
-      if current_user.is_system_admin? || current_user.is_gsas_trust_top_manager? || current_user.is_gsas_trust_manager? || current_user.is_gsas_trust_admin?
+      if current_user.is_system_admin? || current_user.is_gsb_trust_top_manager? || current_user.is_gsb_trust_manager? || current_user.is_gsb_trust_admin?
         total_count = Project.where('name ILIKE ?', '%' + params[:q] + '%').count
         items = Project.select('id, name as text, projects.code as code, projects.coordinates as coordinates')
                   .where('name ILIKE ?', '%' + params[:q] + '%')

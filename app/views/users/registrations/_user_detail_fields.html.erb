@@ -63,7 +63,7 @@
 <div class="row">
 
   <%# <div class="col-md-4"> %>
-    <%# f.input :cgp_licence_file, as: :file, label: t('users.form.gsas_cgp_licence_file_title') %>
+    <%# f.input :cgp_licence_file, as: :file, label: t('users.form.gsb_cgp_licence_file_title') %>
     <%# if user.persisted? && user.user_detail&.cgp_licence_file.present? %>
       <%# if can?(:download_user_files, user) %>
         <%# btn_download(download_user_files_user_path(user, file: "cgp_licence_file"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('cgp_licence_file')}") %>
@@ -83,12 +83,12 @@
   <%# </div> %>
   
   <%# <div class="col-md-4"> %>
-    <%# f.input :gsas_energey_assessment_licence_file, as: :file, label: t('users.form.gsas_energy_assessment_file_licence_title'), required: true %>
-    <%# if user.persisted? && user.user_detail&.gsas_energey_assessment_licence_file.present? %>
+    <%# f.input :gsb_energey_assessment_licence_file, as: :file, label: t('users.form.gsb_energy_assessment_file_licence_title'), required: true %>
+    <%# if user.persisted? && user.user_detail&.gsb_energey_assessment_licence_file.present? %>
       <%# if can?(:download_user_files, user) %>
-        <%# btn_download(download_user_files_user_path(user, file: "gsas_energey_assessment_licence_file"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('gsas_energey_assessment_licence_file')}") %>
+        <%# btn_download(download_user_files_user_path(user, file: "gsb_energey_assessment_licence_file"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('gsb_energey_assessment_licence_file')}") %>
       <%# end %>
-      <%# truncate(user.user_detail&.gsas_energey_assessment_licence_file&.file&.filename, length: 35) %>
+      <%# truncate(user.user_detail&.gsb_energey_assessment_licence_file&.file&.filename, length: 35) %>
     <%# end %>
   <%# </div> %>
 </div>

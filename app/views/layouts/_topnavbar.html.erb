@@ -4,7 +4,7 @@
             <% unless Rails.env == 'production' %>
             <div id="environment"><%= Rails.env %></div>
             <% end %>
-            <%= image_tag('layout/GSAS-Gate-after-login.svg', class:"img-responsive after-login-img bg-transparent")%>
+            <%= image_tag('layout/GSB-Gate-after-login.svg', class:"img-responsive after-login-img bg-transparent")%>
             <button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
                 <%= ikoen('reorder') %>
             </button>
@@ -81,7 +81,7 @@
             <% end %>
 
             <li>
-                 <%= link_to '/GSASgate_Manual.pdf', target: '_blank' do %>
+                 <%= link_to '/GSBgate_Manual.pdf', target: '_blank' do %>
                     <%= image_tag('layout/manual-g.png',class:"img-responsive normal-li bg-transparent after-login-right-img")%>
                     <span class="nav-label"><%= t('.navbar.manual') %></span>
                 <% end %>
@@ -173,7 +173,7 @@
             <% end %>
             </ul>
             <div class="d-none d-lg-block"></div>
-            <%= image_tag('layout/GSAS Trust.svg',class:"img-responsive bg-transparent after-login-right-img")%>
+            <%= image_tag('layout/GSB Trust.svg',class:"img-responsive bg-transparent after-login-right-img")%>
         </div>
             
         </div>

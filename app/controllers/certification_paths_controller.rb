@@ -38,29 +38,29 @@ class CertificationPathsController < AuthenticatedController
     # check if the user is authorized to apply for a new certification_path in our project
     authorize! :apply, @certification_path
 
-    # To determine the certificate, we need both the certification_type and the gsas_version
+    # To determine the certificate, we need both the certification_type and the gsb_version
     #  - The certification_type is passed as part of the url
     #  TODO: verify 'certification_type', as it is a required param !
     @certification_type = Certificate.certification_types.key(params[:certification_type].to_i)
 
     # Note: FinalDesign reuses the version from LetterOfConformance !!
     if Certificate.certification_types[@certification_type] == Certificate.certification_types[:final_design_certificate]
-      @gsas_version = @certification_path.project.completed_letter_of_conformances.first.certificate.gsas_version
+      @gsb_version = @certification_path.project.completed_letter_of_conformances.first.certificate.gsb_version
     elsif (Certificate.certification_types[@certification_type] == Certificate.certification_types[:construction_certificate_stage2]) || (Certificate.certification_types[@certification_type] == Certificate.certification_types[:construction_certificate_stage3])
-      @gsas_version = @certification_path.project.completed_construction_stage1.first.certificate.gsas_version
+      @gsb_version = @certification_path.project.completed_construction_stage1.first.certificate.gsb_version
     else
-      #  - The gsas_version can be passed as post data, but we also provide a default based on the available data
-      #  TODO: verify 'gsas_version' is valid
+      #  - The gsb_version can be passed as post data, but we also provide a default based on the available data
+      #  TODO: verify 'gsb_version' is valid
       # TODO remove next line when D&B2019 and CM2019 can be made available for production
       # unless Rails.env.production? && (Certificate.certification_types[@certification_type] == Certificate.certification_types[:letter_of_conformance] || Certificate.certification_types[@certification_type] == Certificate.certification_types[:construction_certificate_stage1])
-        @gsas_versions = Certificate.with_certification_type(Certificate.certification_types[@certification_type]).order(gsas_version: :desc).distinct.pluck(:gsas_version, :gsas_version)
+        @gsb_versions = Certificate.with_certification_type(Certificate.certification_types[@certification_type]).order(gsb_version: :desc).distinct.pluck(:gsb_version, :gsb_version)
       # else
-      #   @gsas_versions = Certificate.with_certification_type(Certificate.certification_types[@certification_type]).where.not(gsas_version: '2019').order(gsas_version: :desc).distinct.pluck(:gsas_version, :gsas_version)
+      #   @gsb_versions = Certificate.with_certification_type(Certificate.certification_types[@certification_type]).where.not(gsb_version: '2019').order(gsb_version: :desc).distinct.pluck(:gsb_version, :gsb_version)
       # end
-      if params.has_key?(:gsas_version)
-        @gsas_version = params[:gsas_version]
+      if params.has_key?(:gsb_version)
+        @gsb_version = params[:gsb_version]
       else
-        @gsas_version = @gsas_versions.first
+        @gsb_version = @gsb_versions.first
       end
     end
 
@@ -85,7 +85,7 @@ class CertificationPathsController < AuthenticatedController
 
     #  - Determine the resulting certificate, and add it to our certification_path
     #  TODO: verify there is only 1 certificate
-    @certificates = Certificate.with_gsas_version(@gsas_version).with_certification_type(Certificate.certification_types[@certification_type])
+    @certificates = Certificate.with_gsb_version(@gsb_version).with_certification_type(Certificate.certification_types[@certification_type])
     @certification_path.certificate = @certificates.first
 
     # Force NO PCR for construction certificates
@@ -141,7 +141,7 @@ class CertificationPathsController < AuthenticatedController
         # if a scheme certification type is available
         unless scheme_mix.scheme.certification_type.nil?
           loc_scheme = scheme_mix.scheme
-          scheme_id = Scheme.select(:id).find_by(name: loc_scheme.name, gsas_version: loc_scheme.gsas_version, certificate_type: loc_scheme.certificate_type, certification_type: Certificate.certification_types[:final_design_certificate])
+          scheme_id = Scheme.select(:id).find_by(name: loc_scheme.name, gsb_version: loc_scheme.gsb_version, certificate_type: loc_scheme.certificate_type, certification_type: Certificate.certification_types[:final_design_certificate])
           scheme_id = scheme_id.id
         else
           scheme_id = scheme_mix.scheme_id
@@ -161,7 +161,7 @@ class CertificationPathsController < AuthenticatedController
         # if a scheme certification type is available
         unless scheme_mix.scheme.certification_type.nil?
           el_provisional_scheme = scheme_mix.scheme
-          scheme = Scheme.select(:id).find_by(name: el_provisional_scheme.name, gsas_version: el_provisional_scheme.gsas_version, certificate_type: el_provisional_scheme.certificate_type, certification_type: Certificate.certification_types[:ecoleaf_certificate])
+          scheme = Scheme.select(:id).find_by(name: el_provisional_scheme.name, gsb_version: el_provisional_scheme.gsb_version, certificate_type: el_provisional_scheme.certificate_type, certification_type: Certificate.certification_types[:ecoleaf_certificate])
           scheme_id = scheme.id
         else
           scheme_id = scheme_mix.scheme_id
@@ -257,7 +257,7 @@ class CertificationPathsController < AuthenticatedController
     fields =  case current_user&.role
               when 'default_role'
                 [:to, :project_owner, :project_name, :project_location]
-              when 'system_admin', 'gsas_trust_admin', 'document_controller'
+              when 'system_admin', 'gsb_trust_admin', 'document_controller'
                 [:to, :reference_number, :project_owner, :project_name, :project_location, :issuance_date, :approval_date]
               end
 
@@ -326,7 +326,7 @@ class CertificationPathsController < AuthenticatedController
         if @certification_path.is_completed? && @certification_path.certificate.construction_certificate_stage3?
           average_scores = @project.average_scores_all_construction_stages
 
-          certificate = Certificate.find_by(certification_type: Certificate.certification_types[:construction_certificate], display_weight: 39, gsas_version: @certification_path.certificate.gsas_version)
+          certificate = Certificate.find_by(certification_type: Certificate.certification_types[:construction_certificate], display_weight: 39, gsb_version: @certification_path.certificate.gsb_version)
           # Only 1 pseudo development type linked to this certificate
           development_type = certificate.development_types.first
           # Only set certificate path to approving_by_top_management if all construction stages are certified
@@ -652,7 +652,7 @@ class CertificationPathsController < AuthenticatedController
           
           Task.find_or_create_by(taskable: @certification_path,
             task_description_id: Taskable::SIGNED_CERTIFICATE_DOWNLOAD,
-            application_role: User.roles[:gsas_trust_admin],
+            application_role: User.roles[:gsb_trust_admin],
             project: @certification_path.project,
             certification_path: @certification_path)
         end

@@ -560,7 +560,6 @@ DEPENDENCIES
   sass-rails
   select2-rails (< 4.0.0)
   sendgrid-ruby
-  sprockets-rails
   turbo-rails
   tzinfo-data
   uglifier

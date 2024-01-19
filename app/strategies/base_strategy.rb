@@ -1,4 +1,4 @@
-# The Warden base strategy for GSAS
+# The Warden base strategy for GSB
 class BaseStrategy < ::Warden::Strategies::Base
   def valid?
     return false if request.get?

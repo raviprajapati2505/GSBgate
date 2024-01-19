@@ -271,9 +271,9 @@ module ApplicationHelper
     return value
   end
 
-  def is_gsas_trust?(user = nil)
+  def is_gsb_trust?(user = nil)
     return false unless user.present?
-    ["gsas_trust_admin", "gsas_trust_top_manager", "gsas_trust_manager", "system_admin"].include?(current_user&.role)
+    ["gsb_trust_admin", "gsb_trust_top_manager", "gsb_trust_manager", "system_admin"].include?(current_user&.role)
   end
 
   def is_certification_manager?(projects_users, user)
@@ -890,13 +890,13 @@ module ApplicationHelper
 
   def certification_name_datatable_render(rec, only_certification_name)
     case only_certification_name
-      when 'GSAS-D&B'
+      when 'GSB-D&B'
         '<span class="certi-name-badge badge-db">'+ image_tag('/icons/certi-name-db.png') +'</span><a href='+Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>'+only_certification_name+'</a>'
-      when 'GSAS-CM'
+      when 'GSB-CM'
         '<span class="certi-name-badge badge-cm">'+ image_tag('/icons/certi-name-cm.png') +'</span><a href='+Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>'+only_certification_name+'</a>'
-      when 'GSAS-OP'
+      when 'GSB-OP'
         '<span class="certi-name-badge badge-op">'+ image_tag('/icons/certi-name-op.png') +'</span><a href='+Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>'+only_certification_name+'</a>'
-      when 'GSAS-EcoLeaf'
+      when 'GSB-EcoLeaf'
         '<span class="certi-name-badge badge-db">'+ image_tag('/icons/certi-name-db.png') +'</span><a href='+Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>'+only_certification_name+'</a>'
     end
   end
@@ -909,26 +909,26 @@ module ApplicationHelper
       status = rec.certification_path_status_name
     end
     case only_certification_name
-      when 'GSAS-D&B'
+      when 'GSB-D&B'
         '<span class="certi-sub-status-badge status-badge-db">'+ image_tag('/icons/certi-sub-status-db.png') +'</span>'+status
-      when 'GSAS-CM'
+      when 'GSB-CM'
         '<span class="certi-sub-status-badge status-badge-cm">'+ image_tag('/icons/certi-sub-status-cm.png') +'</span>'+status
-      when 'GSAS-OP'
+      when 'GSB-OP'
         '<span class="certi-sub-status-badge status-badge-op">'+ image_tag('/icons/certi-sub-status-op.png') +'</span>'+status
-      when 'GSAS-EcoLeaf'
+      when 'GSB-EcoLeaf'
         '<span class="certi-sub-status-badge status-badge-db">'+ image_tag('/icons/certi-sub-status-db.png') +'</span>'+status
     end
   end
 
   def certification_name_offline_datatable_render(certification_type)
     case certification_type
-      when 'GSAS-D&B'
+      when 'GSB-D&B'
         '<span class="certi-name-badge badge-db">'+ image_tag('/icons/certi-name-db.png') +'</span>'+certification_type
-      when 'GSAS-CM'
+      when 'GSB-CM'
         '<span class="certi-name-badge badge-cm">'+ image_tag('/icons/certi-name-cm.png') +'</span>'+certification_type
-      when 'GSAS-OP'
+      when 'GSB-OP'
         '<span class="certi-name-badge badge-op">'+ image_tag('/icons/certi-name-op.png') +'</span>'+certification_type
-      when 'GSAS-EcoLeaf'
+      when 'GSB-EcoLeaf'
         '<span class="certi-name-badge badge-db">'+ image_tag('/icons/certi-name-db.png') +'</span>'+certification_type
     end
   end
@@ -936,13 +936,13 @@ module ApplicationHelper
   def submission_status_offline_datatable_render(rec)
     only_certification_name = rec.certificate_type
     case only_certification_name
-      when 'GSAS-D&B'
+      when 'GSB-D&B'
         '<span class="certi-sub-status-badge status-badge-db">' + image_tag('/icons/certi-sub-status-db.png') + '</span>'+rec.certification_status
-      when 'GSAS-CM'
+      when 'GSB-CM'
         '<span class="certi-sub-status-badge status-badge-cm">' + image_tag('/icons/certi-sub-status-cm.png') + '</span>'+rec.certification_status
-      when 'GSAS-OP'
+      when 'GSB-OP'
         '<span class="certi-sub-status-badge status-badge-op">' + image_tag('/icons/certi-sub-status-op.png') + '</span>'+rec.certification_status
-      when 'GSAS-EcoLeaf'
+      when 'GSB-EcoLeaf'
         '<span class="certi-sub-status-badge status-badge-db">' + image_tag('/icons/certi-sub-status-db.png') + '</span>'+rec.certification_status
     end
   end
@@ -1104,24 +1104,24 @@ module ApplicationHelper
           )
         "
 
-      when 'gsas_trust_team'
+      when 'gsb_trust_team'
         "
           ARRAY_TO_STRING(
             ARRAY(
               SELECT 
-                gsas_trust_team_users.name 
+                gsb_trust_team_users.name 
               FROM 
-                users as gsas_trust_team_users 
+                users as gsb_trust_team_users 
               INNER JOIN 
-                projects_users as gsas_trust_team_project_users 
+                projects_users as gsb_trust_team_project_users 
               ON 
-                gsas_trust_team_project_users.user_id = gsas_trust_team_users.id 
+                gsb_trust_team_project_users.user_id = gsb_trust_team_users.id 
               WHERE 
-                gsas_trust_team_project_users.role IN (
+                gsb_trust_team_project_users.role IN (
                   #{ProjectsUser.roles[:certifier]}
                 ) 
                 AND 
-                  gsas_trust_team_project_users.project_id = projects.id 
+                  gsb_trust_team_project_users.project_id = projects.id 
                 AND 
                   (
                     SELECT 
@@ -1137,7 +1137,7 @@ module ApplicationHelper
                             #{Certificate.certification_types['ecoleaf_certificate']}
                           ) 
                           THEN 
-                            gsas_trust_team_project_users.certification_team_type IN (
+                            gsb_trust_team_project_users.certification_team_type IN (
                               #{ProjectsUser.certification_team_types['Other']}
                             ) 
 
@@ -1146,7 +1146,7 @@ module ApplicationHelper
                             #{Certificate.certification_types['letter_of_conformance']}
                           ) 
                           THEN 
-                            gsas_trust_team_project_users.certification_team_type IN (
+                            gsb_trust_team_project_users.certification_team_type IN (
                               #{ProjectsUser.certification_team_types['Letter of Conformance']}
                             ) 
 
@@ -1154,11 +1154,11 @@ module ApplicationHelper
                           certificates.certification_type IN (
                             #{Certificate.certification_types['final_design_certificate']}
                           ) 
-                          THEN gsas_trust_team_project_users.certification_team_type IN (
+                          THEN gsb_trust_team_project_users.certification_team_type IN (
                             #{ProjectsUser.certification_team_types['Final Design Certificate']}
                           ) 
 
-                        ELSE gsas_trust_team_project_users.certification_team_type IN (
+                        ELSE gsb_trust_team_project_users.certification_team_type IN (
                           #{ProjectsUser.certification_team_types['Other']}, 
                           #{ProjectsUser.certification_team_types['Letter of Conformance']}, 
                           #{ProjectsUser.certification_team_types['Final Design Certificate']}

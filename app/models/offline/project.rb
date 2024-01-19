@@ -7,9 +7,9 @@ module Offline
 
     enum certificate_type:
       [
-        "GSAS-D&B",
-        "GSAS-CM",
-        "GSAS-OP"
+        "GSB-D&B",
+        "GSB-CM",
+        "GSB-OP"
       ]
 
     

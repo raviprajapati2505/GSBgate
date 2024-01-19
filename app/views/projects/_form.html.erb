@@ -13,12 +13,12 @@
         <div class="ibox-content">
           <div class="row">
             <div class="col-md-3">
-              <% if current_user.is_system_admin? || current_user.is_gsas_trust_manager? || current_user.is_gsas_trust_top_manager? || current_user.is_gsas_trust_admin? %>
+              <% if current_user.is_system_admin? || current_user.is_gsb_trust_manager? || current_user.is_gsb_trust_top_manager? || current_user.is_gsb_trust_admin? %>
                 <%= f.text_field :code %>
               <% end %>
               <%= f.text_field :name %>
                 <%= f.select(:certificate_type, options_for_select(current_user.allowed_certification_types.map { |k, v| [t(k, scope: 'activerecord.attributes.certificate.certificate_types'), v]}, @project.certificate_type)) %>
-                <% if current_user.is_system_admin? || current_user.is_gsas_trust_manager? || current_user.is_gsas_trust_top_manager? || current_user.is_gsas_trust_admin? %>
+                <% if current_user.is_system_admin? || current_user.is_gsb_trust_manager? || current_user.is_gsb_trust_top_manager? || current_user.is_gsb_trust_admin? %>
                 <%= f.text_field :service_provider %>
                 <button name="button" type="button" data-toggle="modal" data-target="#searchServiceProvider" style="bottom: 13px;position: relative;"><i class="fa fa-search fa-lg open-modal" data-service_provider="for_service_provider" ></i></button>
                 <div class="design-fields">
@@ -204,7 +204,7 @@
               <% if @project.new_record? %>
                 <%= f.form_group :terms_and_conditions_accepted do %>
                   <%= f.check_box :terms_and_conditions_accepted do %>
-                    <small>Tick here to indicate you have read and agreed to the <%= link_to 'terms and conditions', '/GSAS_Certification_TCs.pdf', target: '_blank' %>.</small>
+                    <small>Tick here to indicate you have read and agreed to the <%= link_to 'terms and conditions', '/GSB_Certification_TCs.pdf', target: '_blank' %>.</small>
                   <% end %>
                 <% end %>
               <% end %>

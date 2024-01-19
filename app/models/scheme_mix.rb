@@ -20,7 +20,7 @@ class SchemeMix < ApplicationRecord
   end
 
   def full_name
-    # "GSAS #{Certificate.human_attribute_name(self.certification_path.certificate.assessment_stage)} Assessment v#{self.scheme.gsas_version}: #{self.name}"
+    # "GSB #{Certificate.human_attribute_name(self.certification_path.certificate.assessment_stage)} Assessment v#{self.scheme.gsb_version}: #{self.name}"
     name
   end
 

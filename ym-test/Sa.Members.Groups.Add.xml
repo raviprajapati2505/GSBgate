@@ -7,7 +7,7 @@
     <SaPasscode>Y05KzqB77cs6</SaPasscode>
     <Call Method="Sa.Members.Groups.Add">
         <ID>196747B3-A1F8-47C2-9B0E-A9C8F8361A98</ID>
-        <GroupCode>GSASgate_Participant</GroupCode>
+        <GroupCode>GSBgate_Participant</GroupCode>
         <AddAsMember>1</AddAsMember>
     </Call>
 </YourMembership>

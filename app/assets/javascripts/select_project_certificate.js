@@ -13,7 +13,7 @@ function refresh_certification_list(project_id) {
     else {
         $('#select-certificate').show();
         var element = $('.select2-certificate-ajax');
-        GSAS.load_list_ajax(element, '- All certificates -', Routes.list_project_certification_paths_path(project_id),
+        GSB.load_list_ajax(element, '- All certificates -', Routes.list_project_certification_paths_path(project_id),
             function(el, callback) {
                 return $.ajax({
                     type: 'GET',

@@ -80,7 +80,7 @@ function downloadFiltered() {
 
   let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(filtered));
   dlAnchorElem.setAttribute("href", dataStr)
-  dlAnchorElem.setAttribute("download", "gsas_stat.json");
+  dlAnchorElem.setAttribute("download", "gsb_stat.json");
   dlAnchorElem.click();
 }
 
@@ -107,7 +107,7 @@ function exportToExcel() {
   var tableHTMLData = tableNode.outerHTML.replace(/ /g, '%20');
 
   // Specify file name
-  var filename = 'export_gsas_stat.xls';
+  var filename = 'export_gsb_stat.xls';
 
   // Create download link element
   downloadurl = document.createElement("a");

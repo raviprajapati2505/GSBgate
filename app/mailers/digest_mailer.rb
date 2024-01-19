@@ -8,12 +8,12 @@ class DigestMailer < ApplicationMailer
     @user = user
     user.last_notified_at ||= DateTime.new
 
-    if user.is_gsas_trust_manager? || user.is_gsas_trust_top_manager?
+    if user.is_gsb_trust_manager? || user.is_gsb_trust_top_manager?
       # NO AUDIT LOG
       @audit_logs = []
       @more_audit_logs = 0
     else
-      if user.is_system_admin? || user.is_gsas_trust_admin?
+      if user.is_system_admin? || user.is_gsb_trust_admin?
         @audit_logs = AuditLog.where('updated_at > ?', user.last_notified_at)
       else
         audit_log = AuditLog.arel_table
@@ -113,10 +113,10 @@ class DigestMailer < ApplicationMailer
       @more_tasks = 0
     end
 
-    if @user.is_gsas_trust_top_manager?
+    if @user.is_gsb_trust_top_manager?
       subject = 'Tasks for approval for Chairman (Dr. Yousef)'
-    elsif @user.is_gsas_trust_manager?
-      subject = 'Tasks for approval for Head of GSAS'
+    elsif @user.is_gsb_trust_manager?
+      subject = 'Tasks for approval for Head of GSB'
     else
       subject = 'GSBgate - progress report'
     end
@@ -152,11 +152,11 @@ class DigestMailer < ApplicationMailer
 
   def project_registered_email(project)
     @project = project
-    emails = Rails.configuration.x.gsas_info.all_notifications_email
+    emails = Rails.configuration.x.gsb_info.all_notifications_email
 
     # Check if there are "selected_notifications_email" address(es)
-    unless Rails.configuration.x.gsas_info.selected_notifications_email.nil?
-      emails += ', ' + Rails.configuration.x.gsas_info.selected_notifications_email
+    unless Rails.configuration.x.gsb_info.selected_notifications_email.nil?
+      emails += ', ' + Rails.configuration.x.gsb_info.selected_notifications_email
     end
 
     mail(to: emails, subject: "GSBgate - new project #{@project.name} registered")
@@ -164,14 +164,14 @@ class DigestMailer < ApplicationMailer
 
   def applied_for_certification(certification_path)
     @certification_path = certification_path
-    emails = Rails.configuration.x.gsas_info.all_notifications_email
+    emails = Rails.configuration.x.gsb_info.all_notifications_email
 
     # Check if there are "selected_notifications_email" address(es)
-    unless Rails.configuration.x.gsas_info.selected_notifications_email.nil?
+    unless Rails.configuration.x.gsb_info.selected_notifications_email.nil?
       # Check if the certification type is Final Design
       if Certificate.certification_types[@certification_path.certificate.certification_type] == Certificate.certification_types[:final_design_certificate]
         # If both are true, also send the notification mail to the "selected_notifications_email" address(es)
-        emails += ', ' + Rails.configuration.x.gsas_info.selected_notifications_email
+        emails += ', ' + Rails.configuration.x.gsb_info.selected_notifications_email
       end
     end
 
@@ -181,7 +181,7 @@ class DigestMailer < ApplicationMailer
   def certificate_approved_email(certification_path)
     @certification_path = certification_path
     emails = []
-    emails << User.find_by(role: "gsas_trust_manager").email #Head of gsas trust
+    emails << User.find_by(role: "gsb_trust_manager").email #Head of gsb trust
     emails << ProjectsUser.where(project_id: @certification_path.project_id).find_by(role: "certification_manager").user.email  #Certification manager
     emails << ProjectsUser.where(project_id: @certification_path.project_id).find_by(role: "cgp_project_manager").user.email #CGP project manager
     emails << ProjectsUser.where(project_id: @certification_path.project_id).find_by(role: "enterprise_client")&.user&.email #Enterprice Client
@@ -192,13 +192,13 @@ class DigestMailer < ApplicationMailer
   def certification_activated_email(certification_path)
     @certification_path = certification_path
 
-    mail(to: Rails.configuration.x.gsas_info.all_notifications_email, subject: "GSBgate - certification #{@certification_path.name} for #{@certification_path.project.name} is activated")
+    mail(to: Rails.configuration.x.gsb_info.all_notifications_email, subject: "GSBgate - certification #{@certification_path.name} for #{@certification_path.project.name} is activated")
   end
 
   def certification_expired_email(certification_path)
     @certification_path = certification_path
 
-    mail(to: Rails.configuration.x.gsas_info.all_notifications_email, subject: "GSBgate - certification #{@certification_path.name} for #{@certification_path.project.name} is expired")
+    mail(to: Rails.configuration.x.gsb_info.all_notifications_email, subject: "GSBgate - certification #{@certification_path.name} for #{@certification_path.project.name} is expired")
   end
 
   def certification_expires_in_near_future_email(certification_path)
@@ -213,7 +213,7 @@ class DigestMailer < ApplicationMailer
     @certification_path = certification_path
     @appealed_criteria = @certification_path.scheme_mix_criteria.where(status: [SchemeMixCriterion.statuses[:submitting_after_appeal]])
 
-    mail(to: Rails.configuration.x.gsas_info.all_notifications_email, subject: "GSBgate - certification #{@certification_path.name} for #{certification_path.project.name} has appealed criteria")
+    mail(to: Rails.configuration.x.gsb_info.all_notifications_email, subject: "GSBgate - certification #{@certification_path.name} for #{certification_path.project.name} has appealed criteria")
   end
 
   def archive_created_email(archive)

@@ -74,13 +74,13 @@ en:
           confirm: This will cancel the PCR for this certification. Please confirm your choice.
           text: Cancel PCR
         pcr:
-          tooltip: Pre Certification Review. During PCR, the GSAS trust team will assist the project team in completing the certification process. The CGP project manager can enable PCR when applying for a certificate. Please contact GORD if you want to enable the PCR track in a later stage of the certification process.
+          tooltip: Pre Certification Review. During PCR, the GSB trust team will assist the project team in completing the certification process. The CGP project manager can enable PCR when applying for a certificate. Please contact GORD if you want to enable the PCR track in a later stage of the certification process.
       certification_path_status:
         title: CERTIFICATION STATUS
         btn_accept_achieved: Accept achieved score
         btn_accept_denied:
           text: Accept certification denied
-          confirm: There are one or more criteria that have not achieved their minimum valid level. As a result, the certification does not have an achieved score. If you proceed a GSAS certification will be denied. Are you sure?
+          confirm: There are one or more criteria that have not achieved their minimum valid level. As a result, the certification does not have an achieved score. If you proceed a GSB certification will be denied. Are you sure?
         btn_apply_appeal: Apply for appeal
         btn_advance_status: Advance status to '%{status}'
     
@@ -90,21 +90,21 @@ en:
         title: OFFICIAL CERTIFICATE
       schemes:
         title: TYPOLOGIES DETAILS
-        info_activating: The schemes will be clickable after a GSAS trust administrator activates the certification.
+        info_activating: The schemes will be clickable after a GSB trust administrator activates the certification.
         btn_edit_project_team_responsibility_for_submittal: Allocate project team responsibility for submittal
-        btn_edit_certifier_team_responsibility_for_verification: Allocate GSAS trust team responsibility for verification
-        btn_edit_certifier_team_responsibility_for_screening: Allocate GSAS trust team responsibility for screening
+        btn_edit_certifier_team_responsibility_for_verification: Allocate GSB trust team responsibility for verification
+        btn_edit_certifier_team_responsibility_for_screening: Allocate GSB trust team responsibility for screening
     new:
       title: Applying for %{certificate} Certification
     overview_item:
       warning_complete_loc: Please complete the Letter of conformance certification first.
-      warning_complete_stage1: Please complete the GSAS-CM - Stage 1 first.
-      warning_complete_stage2: Please complete the GSAS-CM - Stage 2 first.
-      warning_complete_stage3: Please complete all GSAS-CM stages first.
-      warning_complete_provisional: Please complete all GSAS-EcoLeaf stages first.
+      warning_complete_stage1: Please complete the GSB-CM - Stage 1 first.
+      warning_complete_stage2: Please complete the GSB-CM - Stage 2 first.
+      warning_complete_stage3: Please complete all GSB-CM stages first.
+      warning_complete_provisional: Please complete all GSB-EcoLeaf stages first.
     timeline_legend:
       project_team: Project Team
-      certifier_team: GSAS Trust Team
+      certifier_team: GSB Trust Team
     update_status_advance:
       title: Advancing Certification Status
     update_status_to_certified:
@@ -138,13 +138,13 @@ en:
           confirm: This will cancel the PCR for this certification. Please confirm your choice.
           text: Cancel PCR
         pcr:
-          tooltip: Pre Certification Review. During PCR, the GSAS trust team will assist the project team in completing the certification process. The CGP project manager can enable PCR when applying for a certificate. Please contact GORD if you want to enable the PCR track in a later stage of the certification process.
+          tooltip: Pre Certification Review. During PCR, the GSB trust team will assist the project team in completing the certification process. The CGP project manager can enable PCR when applying for a certificate. Please contact GORD if you want to enable the PCR track in a later stage of the certification process.
       certification_path_status:
         title: CERTIFICATION STATUS
         btn_accept_achieved: Accept achieved score
         btn_accept_denied:
           text: Accept certification denied
-          confirm: There are one or more criteria that have not achieved their minimum valid level. As a result, the certification does not have an achieved score. If you proceed a GSAS certification will be denied. Are you sure?
+          confirm: There are one or more criteria that have not achieved their minimum valid level. As a result, the certification does not have an achieved score. If you proceed a GSB certification will be denied. Are you sure?
         btn_apply_appeal: Apply for appeal
         btn_advance_status: Advance status to '%{status}'
     
@@ -154,10 +154,10 @@ en:
         title: OFFICIAL CERTIFICATE
       schemes:
         title: TYPOLOGIES DETAILS
-        info_activating: The schemes will be clickable after a GSAS trust administrator activates the certification.
+        info_activating: The schemes will be clickable after a GSB trust administrator activates the certification.
         btn_edit_project_team_responsibility_for_submittal: Allocate project team responsibility for submittal
-        btn_edit_certifier_team_responsibility_for_verification: Allocate GSAS trust team responsibility for verification
-        btn_edit_certifier_team_responsibility_for_screening: Allocate GSAS trust team responsibility for screening
+        btn_edit_certifier_team_responsibility_for_verification: Allocate GSB trust team responsibility for verification
+        btn_edit_certifier_team_responsibility_for_screening: Allocate GSB trust team responsibility for screening
   projects:
     index:
       title_html: Projects &amp; Certifications
@@ -166,7 +166,7 @@ en:
     form:
       title: Project Details
       tooltip_gross_area: Total built up area of the buildings including conditioned and unconditioned spaces, in addition to underground and structured parking.
-      tooltip_certified_area: Total area falling under GSAS assessment calculated by adding Project Plot Area (A) and Buildings Gross Built up Area (B) and subtracting Building Footprint (C)*.<br /><br />*(C) is subtracted to avoid double counting of the areas under assessment.
+      tooltip_certified_area: Total area falling under GSB assessment calculated by adding Project Plot Area (A) and Buildings Gross Built up Area (B) and subtracting Building Footprint (C)*.<br /><br />*(C) is subtracted to avoid double counting of the areas under assessment.
       tooltip_carpark_area: Total area allocated for parking including underground, structured and at grade spaces.
       tooltip_project_site_area: Total project site area.
       tooltip_buildings_footprint_area: The ground surface area above which a building is located.
@@ -190,8 +190,8 @@ en:
         title: Practitioners
         title_modal: Add Project Team Member
       certifier_team:
-        title: GSAS Trust
-        title_modal: Add GSAS Trust Team Member
+        title: GSB Trust
+        title_modal: Add GSB Trust Team Member
       enterprise_clients:
         title: Enterprise Licensee
         title_modal: Add Enterprise Client
@@ -279,9 +279,9 @@ en:
         targeted_score:
           tooltip: The level the project team would like to achieve. Defaults to the maximum attainable level, but can be changed by a CGP project manager.
         submitted_score:
-          tooltip: The level the project team will submit to GSAS trust for verification. Will be provided by a CGP project manager or a project team member that has been assigned to this criterion.
+          tooltip: The level the project team will submit to GSB trust for verification. Will be provided by a CGP project manager or a project team member that has been assigned to this criterion.
         achieved_score:
-          tooltip: The level the GSAS trust team has awarded to this criterion. Will be provided by the GSAS trust team and will be used for the final certification score.
+          tooltip: The level the GSB trust team has awarded to this criterion. Will be provided by the GSB trust team and will be used for the final certification score.
       certifier:
         title: Certifier
     form_checklist:
@@ -317,11 +317,11 @@ en:
       description_4: Provide documentation and change the status of the requirements.
       description_5: Set the submitted level and submit the criterion.
       description_6: Advance the certification status.
-      description_7: Allocate GSAS trust team responsibility for verification.
-      description_8: Allocate GSAS trust team responsibility for screening.
+      description_7: Allocate GSB trust team responsibility for verification.
+      description_8: Allocate GSB trust team responsibility for screening.
       description_9: Provide a PCR comment or allocate responsibility to a certifier team member.
-      description_10: Process GSAS trust team comments and advance the certification status.
-      description_11: Process GSAS trust team review comments.
+      description_10: Process GSB trust team comments and advance the certification status.
+      description_11: Process GSB trust team review comments.
       description_16: Verify the criterion.
       description_17: Advance the certification status.
       description_18: Advance the certification status (optionally apply for appeal).
@@ -336,19 +336,19 @@ en:
       description_33: Duration of certification is exceeded.
       description_34: Task is overdue.
       description_35: Task is overdue.
-      description_36: Allocate GSAS trust team responsibility for verification after appeal.
+      description_36: Allocate GSB trust team responsibility for verification after appeal.
       description_37: Select a main scheme.
       description_38: Screen the criterion.
       description_39: Advance the certification status.
       description_40: Provide a draft PCR comment.
       description_41: Publish the draft PCR comment provided by a certifier team member.
-      description_42: Upload the GSAS Construction Management Plan (GSAS-CMP) via the certification documentation box.
-      description_43: A GSAS Construction Management Plan (GSAS-CMP) was uploaded.
+      description_42: Upload the GSB Construction Management Plan (GSB-CMP) via the certification documentation box.
+      description_43: A GSB Construction Management Plan (GSB-CMP) was uploaded.
       description_44: Fill the report form to varify certificate information.
       description_45: Fill the report form to varify certificate information and release certification report.
       description_46: Activate user account.
       description_47: Service provider details changed.
-      description_48: Please note that the GSAS certificate has been issued on GSBgate , Kindly download it.
+      description_48: Please note that the GSB certificate has been issued on GSBgate , Kindly download it.
 
       tooltip_due_date: Task is overdue.
   linkme_surveys:
@@ -388,9 +388,9 @@ en:
       qid_file_title: Copy of the QID/Passport
       university_credential_file_title: Highest Educational Certificate
       work_experience_file_title: Work Experience
-      gsas_cgp_licence_file_title: GSAS-CGP Licence
+      gsb_cgp_licence_file_title: GSB-CGP Licence
       qid_work_permit_file_title: Work Permit
-      gsas_energy_assessment_file_licence_title: GSAS Energy Assessment Licence
+      gsb_energy_assessment_file_licence_title: GSB Energy Assessment Licence
       commercial_licence_file_title: Commercial Licence
       accredited_provider_licence_file_title: Accredited Service Provider Licenses
       demerit_file_title: Upload Duly Filled Demerit File
@@ -413,7 +413,7 @@ en:
         btn_edit_project: Edit Offline Project
       form:
         title: Offline Project Details
-        tooltip_certified_area: Total area falling under GSAS assessment calculated by adding Project Plot Area.
+        tooltip_certified_area: Total area falling under GSB assessment calculated by adding Project Plot Area.
         tooltip_project_plot_area: Total project plot area.
       show:
         project_details:

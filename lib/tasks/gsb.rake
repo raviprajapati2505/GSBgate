@@ -1,8 +1,8 @@
-namespace :gsas do
+namespace :gsb do
 
   PAGE_SIZE = 100
 
-  # usage example: rake gsas:send_digest_mail[<username>]
+  # usage example: rake gsb:send_digest_mail[<username>]
   desc 'Send email to users with a digest of their most recent project changes and their list of unfinished tasks'
   task :send_digest_mail, [:username] => :environment do |t, args|
 
@@ -60,7 +60,7 @@ namespace :gsas do
       certification_paths.each do |certification_path|
         Task.find_or_create_by(taskable: certification_path,
                     task_description_id: Taskable::SYS_ADMIN_DURATION,
-                    application_role: User.roles[:gsas_trust_admin],
+                    application_role: User.roles[:gsb_trust_admin],
                     project: certification_path.project,
                     certification_path: certification_path)
         DigestMailer.certification_expired_email(certification_path).deliver_now

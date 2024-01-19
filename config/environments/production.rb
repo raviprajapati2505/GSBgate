@@ -103,23 +103,23 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :test
   config.action_mailer.perform_caching = false
   
-  config.action_mailer.default_url_options = { :host => 'https://www.gsas.qa' }
-  config.action_mailer.asset_host = 'https://www.gsas.qa'
+  config.action_mailer.default_url_options = { :host => 'https://www.gsb.qa' }
+  config.action_mailer.asset_host = 'https://www.gsb.qa'
 
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = { 
     :user_name => ENV['SENDGRID_USERNAME'],
     :password => ENV['SENDGRID_PASSWORD'],
-    :domain => 'gsas.qa',
+    :domain => 'gsb.qa',
     :address => 'smtp.sendgrid.net',
     :port =>  '587',
     :authentication => :plain,
     :enable_starttls_auto => true
   }
 
-  # GSAS info email addresses
-  config.x.gsas_info.all_notifications_email = 'GSAS-Trust-Info@gord.qa, e.eliskandarani@gord.qa, a.arshad@gord.qa'
-  config.x.gsas_info.selected_notifications_email = 'alhorr@gord.qa'
+  # GSB info email addresses
+  config.x.gsb_info.all_notifications_email = 'GSB-Trust-Info@gord.qa, e.eliskandarani@gord.qa, a.arshad@gord.qa'
+  config.x.gsb_info.selected_notifications_email = 'alhorr@gord.qa'
 
   # Chart generator API config
   config.x.chart_generator.api_url = 'localhost'

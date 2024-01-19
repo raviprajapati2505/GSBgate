@@ -20,8 +20,8 @@ class Reports::LetterOfConformanceCoverLetter < Reports::BaseReport
   HEADER_IMAGE = 'report_header_image.png'.freeze
   HEADER_LOGO = 'gord_logo.jpg'.freeze
   FOOTER_IMAGE = 'report_footer_image.png'.freeze
-  GSAS_LOGO = 'gsas_logo.jpg'.freeze
-  LOC_LOGO = 'gsas_logo.jpg'.freeze
+  GSB_LOGO = 'gsb_logo.jpg'.freeze
+  LOC_LOGO = 'gsb_logo.jpg'.freeze
 
   def initialize(certification_path)
     # A4:: => 595.28 x 841.89 pt
@@ -40,13 +40,13 @@ class Reports::LetterOfConformanceCoverLetter < Reports::BaseReport
     @content = <<-CONTENTTEMPLATE
 Dear,
 
-On behalf of GSAS Trust, I would like to confer this Provisional GSAS Design & Build Certificate in the form of "Letter of Conformance-LOC" to the project mentioned above for the successful completion of GSAS Mixed Development v2.0 certification requirements.
+On behalf of GSB Trust, I would like to confer this Provisional GSB Design & Build Certificate in the form of "Letter of Conformance-LOC" to the project mentioned above for the successful completion of GSB Mixed Development v2.0 certification requirements.
 
 Based on the submitted data, the score is documented to be <b><u>#{number_with_precision(@score, precision: 3)}</u></b>, which corresponds to the certification level of <b><u>#{@stars}</u></b>. Figures 1 to 3 summarize the score for the project, the score per category, achieved certification level and scoring bar chart respectively. Also, LOC Criteria Summary for the project is attached.
 
-Kindly be advised that, this letter is only the predecessor towards achieving the final GSAS Design & Build Certificate and <u>should not be considered as the final certificate</u>. The project should satisfy during the construction stage the requirements of <u>Conformance to Design Audit</u> which is a prerequisite for the final GSAS Design & Build Certificate as indicated in the GSAS Technical Guide.
+Kindly be advised that, this letter is only the predecessor towards achieving the final GSB Design & Build Certificate and <u>should not be considered as the final certificate</u>. The project should satisfy during the construction stage the requirements of <u>Conformance to Design Audit</u> which is a prerequisite for the final GSB Design & Build Certificate as indicated in the GSB Technical Guide.
 
-In the event of any future changes applied to the criteria pertaining to the issued LOC, the changes are required to be re-assessed once again. To understand the terms and conditions pertaining to GSAS certification, please refer to: <u><link href='http://www.gord.qa'>www.gord.qa</link></u>. 
+In the event of any future changes applied to the criteria pertaining to the issued LOC, the changes are required to be re-assessed once again. To understand the terms and conditions pertaining to GSB certification, please refer to: <u><link href='http://www.gord.qa'>www.gord.qa</link></u>. 
 
 Congratulations once again for partaking in this noble endeavor, and together let us build a healthy and a sustainable future.
 
@@ -133,10 +133,10 @@ Congratulations once again for partaking in this noble endeavor, and together le
     else
       data.append(["Service Provider", @certification_path.project.service_provider])
     end
-    data.append(["GSAS Certificate", @certification_path.certificate.only_certification_name])
+    data.append(["GSB Certificate", @certification_path.certificate.only_certification_name])
     data.append(["Certification Stage", @certification_path.certificate.stage_title])
-    data.append(["GSAS Version", @certification_path.certificate.only_version])
-    data.append(["GSAS Scheme", @certification_path.project.building_type_group.name])
+    data.append(["GSB Version", @certification_path.certificate.only_version])
+    data.append(["GSB Scheme", @certification_path.project.building_type_group.name])
     
      # Output table
      draw_table(data, true, 'basic_table')
@@ -147,13 +147,13 @@ Congratulations once again for partaking in this noble endeavor, and together le
 
     case name
     when 'Letter of Conformance'
-      text = "This is to notify that GSAS Trust has assessed the project based on the submitted information. The project is found eligible to receive the Provisional GSAS-D&B Certificate in the form of \"Letter of Conformance (LOC)\", achieving the following: \n"
+      text = "This is to notify that GSB Trust has assessed the project based on the submitted information. The project is found eligible to receive the Provisional GSB-D&B Certificate in the form of \"Letter of Conformance (LOC)\", achieving the following: \n"
 
       styled_text("<div style='font-size: 10; line-height: 9; color: 000000;'>#{text}</div>")
 
       newline(1)
-    when 'GSAS-CM', 'Construction Certificate'
-      text = "This is to notify that GAS Trust has reviewed the construction submittals in accordance with the latest GSAS Construction Management assessments and has completed the Third Site Audit requirements of Construction Stage 3 (Finishing Works). The project is found eligible to receive the Third Interim Audit Advisory Notice (AAN) No.03 achieving the following: \n"
+    when 'GSB-CM', 'Construction Certificate'
+      text = "This is to notify that GAS Trust has reviewed the construction submittals in accordance with the latest GSB Construction Management assessments and has completed the Third Site Audit requirements of Construction Stage 3 (Finishing Works). The project is found eligible to receive the Third Interim Audit Advisory Notice (AAN) No.03 achieving the following: \n"
 
       styled_text("<div style='font-size: 10; line-height: 9; color: 000000;'>#{text}</div>")
 
@@ -165,7 +165,7 @@ Congratulations once again for partaking in this noble endeavor, and together le
     data = []
 
     data.append(['SCORE', 'STAR RATING'])
-    if @certification_path.certificate.only_certification_name == 'GSAS-D&B'
+    if @certification_path.certificate.only_certification_name == 'GSB-D&B'
       data.append([number_with_precision(@score, precision: 3), {:image => "#{Rails.root}/app/assets/images/reports/star_#{@stars.split("").first}.png", :width => 350, :image_height => 20, :position  => :center}])
     else
       data.append([number_with_precision(@score, precision: 3), @stars])
@@ -177,7 +177,7 @@ Congratulations once again for partaking in this noble endeavor, and together le
     case name 
     when 'Letter of Conformance'
       newline
-      text = "The summary of the obtained rating is attached herewith. \n\n This letter is only the predecessor towards achieving the final GSAS-D&B Certificate and should not be considered as the final certificate. The project should satisfy during the construction stage all the requirements of <b>Conformance to Design Audit(CDA)</b> which is the pre-requisite for the final GSAS-D&B Certificate as indicated in GSAS Technical Guide, <a>www.gord.qa</a> \n"
+      text = "The summary of the obtained rating is attached herewith. \n\n This letter is only the predecessor towards achieving the final GSB-D&B Certificate and should not be considered as the final certificate. The project should satisfy during the construction stage all the requirements of <b>Conformance to Design Audit(CDA)</b> which is the pre-requisite for the final GSB-D&B Certificate as indicated in GSB Technical Guide, <a>www.gord.qa</a> \n"
       styled_text("<div style='font-size: 10; line-height: 9'>#{text}</div>")
 
       newline(1)
@@ -201,10 +201,10 @@ Congratulations once again for partaking in this noble endeavor, and together le
       styled_text("<div style='font-size: 10; color: #{MAIN_COLOR}; font-style: bold;'>\n Dr. Yousef Alhorr</div>")
 
       styled_text("<div style='font-size: 10; color: 000000; font-style: bold;'>\n Founding Chairman \n</div>")
-    when 'GSAS-CM', 'Construction Certificate'
+    when 'GSB-CM', 'Construction Certificate'
       newline
       
-      text = "Criteria summary of the Second Inkerim Audit Advisory Notice is attached herewith. \n\n This notice is only the predecessor towards achieving the final GSAS-CM Certificate and should not be considered as the final certificate. The project/contractor shall satisfy during the rest of the construction stages all the requirements which is a pre-requisite for the GSAS-CM Certificate as stipulated in GSAS Technical Guide, <a>www.gord.qa</a> \n"
+      text = "Criteria summary of the Second Inkerim Audit Advisory Notice is attached herewith. \n\n This notice is only the predecessor towards achieving the final GSB-CM Certificate and should not be considered as the final certificate. The project/contractor shall satisfy during the rest of the construction stages all the requirements which is a pre-requisite for the GSB-CM Certificate as stipulated in GSB Technical Guide, <a>www.gord.qa</a> \n"
       styled_text("<div style='font-size: 10; line-height: 9'>#{text}</div>")
 
       newline(1)
@@ -277,7 +277,7 @@ Congratulations once again for partaking in this noble endeavor, and together le
         styled_text("<div style='font-size: 8; text-align: right'>#{text}<br />#{text2}</div>")
       end
       # bounding_box([@document.bounds.right - 50, @document.bounds.bottom + 100], width: 50, height: HEADER_HEIGHT) do
-      #   image image_path(GSAS_LOGO), width: 50
+      #   image image_path(GSB_LOGO), width: 50
       # end
     end
   end
@@ -326,7 +326,7 @@ Congratulations once again for partaking in this noble endeavor, and together le
     size = 100
     bounding_box([0, curline], width: size) do
       text 'Project Name: ', style: :bold
-      text 'GSAS ID: ', style: :bold
+      text 'GSB ID: ', style: :bold
     end
     bounding_box([size, curline], width: (@document.bounds.right - size)) do
       text @certification_path.project.name, style: :bold

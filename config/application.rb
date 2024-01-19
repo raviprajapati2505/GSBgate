@@ -26,7 +26,7 @@ module Gord
     # Autoload classes from lib
     config.autoload_paths << Rails.root.join('lib')
 
-    # Autoload classes from custom "services" folder (contains GSAS specific services)
+    # Autoload classes from custom "services" folder (contains GSB specific services)
     config.autoload_paths << Rails.root.join('services')
 
     # Autoload classes from custom "strategies" folder (contains Warden strategies)

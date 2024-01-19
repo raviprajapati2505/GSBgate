@@ -11,7 +11,7 @@ class CreateServiceProviderDetails < ActiveRecord::Migration[7.0]
       t.string :demerit_acknowledgement_file
       t.string :application_form
       t.string :cgp_licence_file
-      t.string :gsas_energey_assessment_licence_file
+      t.string :gsb_energey_assessment_licence_file
       t.string :energy_assessor_name
       t.string :nominated_cgp
       t.string :exam

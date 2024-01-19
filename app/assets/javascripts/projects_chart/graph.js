@@ -19,7 +19,7 @@ const chart = (projData, propName) => {
     }
   }
 
-  let formattedData = formatting("GSAS", projData)
+  let formattedData = formatting("GSB", projData)
 
   var root = partition(formattedData);
   root.each(d => d.current = d);
@@ -280,7 +280,7 @@ const arc = d3.arc()
       }
     }
 
-    let formattedData = formatting("GSAS", projData)
+    let formattedData = formatting("GSB", projData)
 
     const root = treemap(formattedData);
 

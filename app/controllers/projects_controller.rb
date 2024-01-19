@@ -68,7 +68,7 @@ class ProjectsController < AuthenticatedController
                        .select('(%s) AS total_achieved_score' % Effective::Datatables::ProjectsCertificationPaths.query_score_in_certificate_points(:achieved_score))
                        .select('certificates.id as certificate_id')
                        .select('certificates.name as certificate_name')
-                       .select('certificates.gsas_version as certificate_gsas_version')
+                       .select('certificates.gsb_version as certificate_gsb_version')
                        .select('certification_path_statuses.id as certification_path_status_id')
                        .select('certification_path_statuses.name as certification_path_status_name')
                        .select('development_types.id as development_type_id')
@@ -141,7 +141,7 @@ class ProjectsController < AuthenticatedController
               certification_path[:certificate] = certificate
               certificate[:id] = result.certificate_id
               certificate[:name] = result.certificate_name
-              certificate[:gsas_version] = result.certificate_gsas_version
+              certificate[:gsb_version] = result.certificate_gsb_version
 
               # certification path status
               certification_path_status = {}
@@ -285,7 +285,7 @@ class ProjectsController < AuthenticatedController
                         .rating_for_score(
                           scores, 
                           certificate: certificate, 
-                          certificate_gsas_version: data.certificate_gsas_version, certificate_name: data.certificate_name
+                          certificate_gsb_version: data.certificate_gsb_version, certificate_name: data.certificate_name
                         ) 
                   end
                   
@@ -605,7 +605,7 @@ class ProjectsController < AuthenticatedController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def project_params
-    if current_user.system_admin? || current_user.gsas_trust_admin?
+    if current_user.system_admin? || current_user.gsb_trust_admin?
       params.require(:project).permit(:name, :certificate_type, :owner, :developer, :service_provider, :service_provider_2, :description, :address, :city, :district, :location, :country, :construction_year, :coordinates, :buildings_footprint_area, :gross_area, :certified_area, :carpark_area, :project_site_area, :terms_and_conditions_accepted, :location_plan_file, :location_plan_file_cache, :site_plan_file, :site_plan_file_cache, :design_brief_file, :design_brief_file_cache, :project_narrative_file, :project_narrative_file_cache, :sustainability_features_file, :sustainability_features_file_cache, :area_statement_file, :area_statement_file_cache, :building_type_group_id, :building_type_id, :estimated_project_cost, :cost_square_meter, :estimated_building_cost, :estimated_infrastructure_cost, :code, :project_owner_business_sector, :project_developer_business_sector, :project_owner_email, :specify_other_project_use)
     else
       params.require(:project).permit(:name, :certificate_type, :owner, :developer, :service_provider, :service_provider_2, :description, :address, :city, :district, :location, :country, :construction_year, :coordinates, :buildings_footprint_area, :gross_area, :certified_area, :carpark_area, :project_site_area, :terms_and_conditions_accepted, :location_plan_file, :location_plan_file_cache, :site_plan_file, :site_plan_file_cache, :design_brief_file, :design_brief_file_cache, :project_narrative_file, :project_narrative_file_cache, :sustainability_features_file, :sustainability_features_file_cache, :area_statement_file, :area_statement_file_cache, :building_type_group_id, :building_type_id, :estimated_project_cost, :cost_square_meter, :estimated_building_cost, :estimated_infrastructure_cost, :project_owner_business_sector, :project_developer_business_sector, :project_owner_email, :specify_other_project_use)

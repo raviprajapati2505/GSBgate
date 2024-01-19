@@ -21,7 +21,7 @@ class AddAttributesToUsers < ActiveRecord::Migration[7.0]
     add_column :users, :organization_phone, :string
     add_column :users, :organization_fax_area_code, :string
     add_column :users, :organization_fax, :string
-    add_column :users, :gsas_id, :string
+    add_column :users, :gsb_id, :string
     add_column :users, :approved_at, :datetime
     add_column :users, :active, :boolean, default: false
     add_column :users, :practitioner_accreditation_type, :integer

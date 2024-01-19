@@ -8,7 +8,7 @@ $(function () {
             url = Routes.list_users_sharing_projects_path({user_id: user_id});
         }
         if (url) {
-            GSAS.load_list_ajax(select_element, '- All users -', url,
+            GSB.load_list_ajax(select_element, '- All users -', url,
                 function (el, callback) {
                     return $.ajax({
                         type: 'GET',

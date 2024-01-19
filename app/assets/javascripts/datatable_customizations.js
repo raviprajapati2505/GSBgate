@@ -5,7 +5,7 @@ $(function() {
 
   function bindSelect2() {
     // Allow multi-select only to admin roles
-    if (["system_admin", "gsas_trust_top_manager", "gsas_trust_manager", "gsas_trust_admin", "users_admin"].includes($("#projects-table, #users-table").data("user-role"))) {
+    if (["system_admin", "gsb_trust_top_manager", "gsb_trust_manager", "gsb_trust_admin", "users_admin"].includes($("#projects-table, #users-table").data("user-role"))) {
       $(".multiple-select select").attr("multiple", true);
       $(".multiple-select select").select2();
     
@@ -13,7 +13,7 @@ $(function() {
       $(".select2-search-choice div").html("Select All");
     }
 
-    if (["system_admin", "gsas_trust_top_manager", "gsas_trust_manager", "gsas_trust_admin", "document_controller"].includes($("#offline-projects-table").data("user-role"))) {
+    if (["system_admin", "gsb_trust_top_manager", "gsb_trust_manager", "gsb_trust_admin", "document_controller"].includes($("#offline-projects-table").data("user-role"))) {
       $(".multiple-select select").attr("multiple", true);
       $(".multiple-select select").select2();
     
@@ -153,9 +153,9 @@ $(function() {
       columnNames["Project Planning Type"] = 31;
       columnNames["GSBgate Registration Expiry"] = 36;
       columnNames["Project Use"] = 33;
-      columnNames["GSAS Trust Certification Manager"] = 38;
+      columnNames["GSB Trust Certification Manager"] = 38;
       columnNames["Project Completion Year"] = 35;
-      columnNames["GSAS Trust Certification Team"] = 40;
+      columnNames["GSB Trust Certification Team"] = 40;
       columnNames["Project Team Members"] = 37;
       columnNames["blank_1"] = 42;
       columnNames["Project Service Provider"] = 39;
@@ -205,7 +205,7 @@ $(function() {
       var column = $(".col-order-" + column_number);
       if (column.hasClass("multiple-select")){
         // Allow multi-select only to admin roles
-        if (["system_admin", "gsas_trust_top_manager", "gsas_trust_manager", "gsas_trust_admin"].includes($("#projects-table").data("user-role"))) {
+        if (["system_admin", "gsb_trust_top_manager", "gsb_trust_manager", "gsb_trust_admin"].includes($("#projects-table").data("user-role"))) {
           column.find("select").attr("multiple", true);
           column.find("select").select2();
           
@@ -217,7 +217,7 @@ $(function() {
           }
         }
 
-        if (["system_admin", "gsas_trust_top_manager", "gsas_trust_manager", "gsas_trust_admin","document_controller"].includes($("#offline-projects-table").data("user-role"))) {
+        if (["system_admin", "gsb_trust_top_manager", "gsb_trust_manager", "gsb_trust_admin","document_controller"].includes($("#offline-projects-table").data("user-role"))) {
           column.find("select").attr("multiple", true);
           column.find("select").select2();
           

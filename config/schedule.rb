@@ -2,13 +2,13 @@
 set :output, {:error => 'log/cron.log', :standard => 'log/cron.log'}
 
 every :day, at: '12:00am' do
-  rake "gsas:clean_carrierwave_cache"
-  rake "gsas:clean_up_expired_archives"
-  rake "gsas:destroy_old_empty_projects"
+  rake "gsb:clean_carrierwave_cache"
+  rake "gsb:clean_up_expired_archives"
+  rake "gsb:destroy_old_empty_projects"
 end
 
 every 15.minutes do
-  rake "gsas:generate_archives"
+  rake "gsb:generate_archives"
 end
 
 # DumpBasedBackupSet: every day at 11PM (full backup)
@@ -34,15 +34,15 @@ case @environment
   when 'production'
     # digest mail
     every :day, at: '5:00pm' do
-      rake "gsas:send_digest_mail"
+      rake "gsb:send_digest_mail"
     end
 
     every :day, at: '10:00am' do
-      rake "gsas:send_expiry_mail"
+      rake "gsb:send_expiry_mail"
     end
 
     every :day, at: '12:00am' do
-      rake "gsas:create_duration_task" #--> production
-      rake "gsas:create_overdue_task"  #--> production
+      rake "gsb:create_duration_task" #--> production
+      rake "gsb:create_overdue_task"  #--> production
     end
 end

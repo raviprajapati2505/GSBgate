@@ -10,7 +10,7 @@ class Scheme < ApplicationRecord
   has_many :certification_paths, through: :scheme_mixes
 
   def full_name
-    # "GSAS #{name} v#{gsas_version}"
+    # "GSB #{name} v#{gsb_version}"
     name
   end
 

@@ -12,7 +12,7 @@ $(function() {
         });
         const select_element = $(element);
         const url = Routes.owners_path();
-        GSAS.load_list_ajax(select_element, '- Select a predefined project owner -', url,
+        GSB.load_list_ajax(select_element, '- Select a predefined project owner -', url,
             function(el, callback) {
                 return $.ajax({
                     type: 'GET',

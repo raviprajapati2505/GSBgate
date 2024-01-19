@@ -13,7 +13,7 @@
       %>
       <%
         if certificate_path.construction?
-          if certificate_path.name == "Construction Certificate, 2019 - GSAS-CM Certificate"
+          if certificate_path.name == "Construction Certificate, 2019 - GSB-CM Certificate"
             data_score = []
             @project = Project.find(rec.project_nr)
             certificate_path_ids = @project.certification_paths.pluck(:id) - [certificate_path.id]
@@ -28,7 +28,7 @@
           end
         end
       %>
-      <% rating = certificate_path.rating_for_score(scores, certificate: certificate_path.certificate, certificate_gsas_version: rec.certificate_gsas_version, certificate_name: rec.certificate_name) %>
+      <% rating = certificate_path.rating_for_score(scores, certificate: certificate_path.certificate, certificate_gsb_version: rec.certificate_gsb_version, certificate_name: rec.certificate_name) %>
     <% end %>
   <% else %>
   <% rating = -1 %>
@@ -38,16 +38,16 @@
     <!-- TEXTUAL SCORE -->
     <% 
       case only_certification_name
-        when 'GSAS-D&B'
+        when 'GSB-D&B'
           badge_class = 'rating-badge-db'
           image_tag = image_tag('layout/certi-status-db.png')
-        when 'GSAS-CM'
+        when 'GSB-CM'
           badge_class = 'rating-badge-cm'
           image_tag = image_tag('layout/certi-status-cm.png')
-        when 'GSAS-OP'
+        when 'GSB-OP'
           badge_class = 'rating-badge-op'
           image_tag = image_tag('layout/certi-status-op.png')
-        when 'GSAS-EcoLeaf'
+        when 'GSB-EcoLeaf'
           badge_class = 'rating-badge-db'
           image_tag = image_tag('layout/certi-status-db.png')
       end
@@ -57,16 +57,16 @@
     <!-- STAR SCORE -->
     <% 
       case only_certification_name
-        when 'GSAS-D&B'
+        when 'GSB-D&B'
           star_badge_class = 'certi-status-badge star-rating-badge-db'
           image_tag = image_tag('layout/certi-status-db.png')
-        when 'GSAS-CM'
+        when 'GSB-CM'
           star_badge_class = 'certi-status-badge star-rating-badge-cm'
           image_tag = image_tag('layout/certi-status-cm.png')
-        when 'GSAS-OP'
+        when 'GSB-OP'
           star_badge_class = 'certi-status-badge star-rating-badge-op'
           image_tag = image_tag('layout/certi-status-op.png')
-        when 'GSAS-EcoLeaf'
+        when 'GSB-EcoLeaf'
           star_badge_class = 'certi-status-badge star-rating-badge-db'
           image_tag = image_tag('layout/certi-status-db.png')
       end

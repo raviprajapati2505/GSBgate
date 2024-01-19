@@ -158,9 +158,9 @@ module ScoreCalculator
       if field_name == :achieved_score || SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES.include?(field_name.to_s)
         # This check is only needed for 'verifying' an 'verifying after appeal', so if the state is different from those we can return 'true'
         certification_path_statuses_ok = 'certification_paths_score.certification_path_status_id NOT IN (%{certification_path_statuses})' % {certification_path_statuses: [CertificationPathStatus::VERIFYING, CertificationPathStatus::VERIFYING_AFTER_APPEAL].join(', ')}
-        # if 'verifying' or 'verifying after appeal', return true for gsas trust admins and managers, or project certifiers, as they are allowed to see the achieved scores
+        # if 'verifying' or 'verifying after appeal', return true for gsb trust admins and managers, or project certifiers, as they are allowed to see the achieved scores
         certification_path_status_verifying_or_verifying_after_appeal = 'certification_paths_score.certification_path_status_id IN (%{certification_path_statuses})' % {certification_path_statuses: [CertificationPathStatus::VERIFYING, CertificationPathStatus::VERIFYING_AFTER_APPEAL].join(', ')}
-        user_is_manager = 'EXISTS(SELECT id FROM users WHERE id = %{user_id} AND role IN (%{user_roles}))' % {user_id: User.current.id, user_roles: [User.roles[:system_admin], User.roles[:gsas_trust_top_manager], User.roles[:gsas_trust_manager], User.roles[:gsas_trust_admin]].join(', ')}
+        user_is_manager = 'EXISTS(SELECT id FROM users WHERE id = %{user_id} AND role IN (%{user_roles}))' % {user_id: User.current.id, user_roles: [User.roles[:system_admin], User.roles[:gsb_trust_top_manager], User.roles[:gsb_trust_manager], User.roles[:gsb_trust_admin]].join(', ')}
         user_is_project_certifier = 'EXISTS(SELECT user_id FROM projects_users WHERE projects_users.project_id = projects.id AND projects_users.user_id = %{user_id} AND projects_users.role IN (%{project_roles}))' % {user_id: User.current.id, project_roles: [ProjectsUser.roles[:certifier], ProjectsUser.roles[:certification_manager]].join(', ')}
         # if 'verifying after appeal', assessor are only allowed to see the criteria without appeals (so those where accepted scores are: score_awarded, score_downgraded, score_upgraded or score_minimal)
         certification_path_status_verifying_after_appeal = 'certification_paths_score.certification_path_status_id = %{certification_path_status}' % {certification_path_status: CertificationPathStatus::VERIFYING_AFTER_APPEAL}
@@ -255,9 +255,9 @@ module ScoreCalculator
       if point_type == :criteria_points
         score_template = "SUM(#{criterion_weighted_scores.join(' + ')})"
       elsif point_type == :scheme_points
-        score_template = "SUM( CASE (certificates_score.gsas_version = 'v2.1 Issue 1.0') WHEN true THEN (#{criterion_weighted_scores.join(' + ')}) ELSE (#{weighted_scores.join(' + ')} + (3.0 * #{extra_incentive_weight} / 100.0)) END)"
+        score_template = "SUM( CASE (certificates_score.gsb_version = 'v2.1 Issue 1.0') WHEN true THEN (#{criterion_weighted_scores.join(' + ')}) ELSE (#{weighted_scores.join(' + ')} + (3.0 * #{extra_incentive_weight} / 100.0)) END)"
       elsif point_type == :certificate_points
-        score_template = "SUM( CASE (certificates_score.gsas_version = 'v2.1 Issue 1.0') WHEN true THEN ((#{criterion_weighted_scores.join(' + ')}) * (scheme_mixes_score.weight / 100.0)) ELSE ((#{weighted_scores.join(' + ')} + (3.0 * #{extra_incentive_weight} / 100.0)) * (scheme_mixes_score.weight / 100.0) ) END)"
+        score_template = "SUM( CASE (certificates_score.gsb_version = 'v2.1 Issue 1.0') WHEN true THEN ((#{criterion_weighted_scores.join(' + ')}) * (scheme_mixes_score.weight / 100.0)) ELSE ((#{weighted_scores.join(' + ')} + (3.0 * #{extra_incentive_weight} / 100.0)) * (scheme_mixes_score.weight / 100.0) ) END)"
       else
         raise('Unexpected point type: ' + point_type.to_s)
       end
@@ -289,9 +289,9 @@ module ScoreCalculator
       if point_type == :criteria_points
         score_template = "SUM(#{score})"
       elsif point_type == :scheme_points
-        score_template = "SUM( CASE (certificates_score.gsas_version = 'v2.1 Issue 1.0') WHEN true THEN (#{score}) ELSE (#{weighted_score}) END)"
+        score_template = "SUM( CASE (certificates_score.gsb_version = 'v2.1 Issue 1.0') WHEN true THEN (#{score}) ELSE (#{weighted_score}) END)"
       elsif point_type == :certificate_points
-        score_template = "SUM( CASE (certificates_score.gsas_version = 'v2.1 Issue 1.0') WHEN true THEN (#{score} * (scheme_mixes_score.weight / 100.0)) ELSE ((#{weighted_score}) * (scheme_mixes_score.weight / 100.0) ) END)"
+        score_template = "SUM( CASE (certificates_score.gsb_version = 'v2.1 Issue 1.0') WHEN true THEN (#{score} * (scheme_mixes_score.weight / 100.0)) ELSE ((#{weighted_score}) * (scheme_mixes_score.weight / 100.0) ) END)"
       else
         raise('Unexpected point type: ' + point_type.to_s)
       end

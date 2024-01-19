@@ -31,3 +31,6 @@
 # Ignore public uploaded files
 /public/assets/*
 /public/uploads
+
+# ignore node-modules
+/node_modules

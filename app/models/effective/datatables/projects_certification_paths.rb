@@ -272,7 +272,7 @@ module Effective
         end.search do |collection, terms, column, index|
           terms_array = terms.split(",")
           unless (collection.class == Array || terms_array.include?(""))
-            collection.where("certificates.gsas_version IN (?)", terms_array)
+            collection.where("certificates.gsb_version IN (?)", terms_array)
           else
             collection
           end
@@ -374,7 +374,7 @@ module Effective
               score = score_all[:achieved_score_in_certificate_points]
             end
 
-            if rec.certificate_gsas_version == 'v2.1 Issue 1.0' && certification_path&.construction?
+            if rec.certificate_gsb_version == 'v2.1 Issue 1.0' && certification_path&.construction?
               number_to_percentage(score, precision: 1)
             else
               if !score.nil? && score > 3
@@ -471,8 +471,8 @@ module Effective
           end
         end
 
-        col :gsas_trust_team_array, col_class: 'col-order-38', label: t('models.effective.datatables.projects_certification_paths.gsas_trust_team_array.label'), visible: false, sql_column: '(%s)' % projects_users_by_type('gsas_trust_team') do |rec|
-          ERB::Util.html_escape(rec.gsas_trust_team_array).split('|||').sort.join(', <br/>') unless rec.gsas_trust_team_array.nil?
+        col :gsb_trust_team_array, col_class: 'col-order-38', label: t('models.effective.datatables.projects_certification_paths.gsb_trust_team_array.label'), visible: false, sql_column: '(%s)' % projects_users_by_type('gsb_trust_team') do |rec|
+          ERB::Util.html_escape(rec.gsb_trust_team_array).split('|||').sort.join(', <br/>') unless rec.gsb_trust_team_array.nil?
         end
 
         col :enterprise_clients_array, col_class: 'multiple-select col-order-39', label: t('models.effective.datatables.projects_certification_paths.enterprise_clients_array.label'), visible: false, sql_column: '(%s)' % projects_users_by_type('enterprise_clients'), search: { as: :select, collection: Proc.new { ProjectsUser.enterprise_clients.pluck("users.name").uniq.compact.map { |name| [name, name] } rescue [] } } do |rec|

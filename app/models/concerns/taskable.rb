@@ -17,8 +17,8 @@ module Taskable
   PROJ_MNGR_PROC_VERIFICATION = 18
   SYS_ADMIN_APPEAL_APPROVE = 19
   PROJ_MNGR_PROC_VERIFICATION_APPEAL = 24
-  GSAS_TRUST_MNGR_APPROVE = 25
-  GSAS_TRUST_TOP_MNGR_APPROVE = 26
+  GSB_TRUST_MNGR_APPROVE = 25
+  GSB_TRUST_TOP_MNGR_APPROVE = 26
   PROJ_MNGR_DOWNLOAD = 28
   PROJ_MNGR_DOC_APPROVE = 29
   PROJ_MNGR_APPLY = 30
@@ -138,14 +138,14 @@ module Taskable
       # Create system admin task to assign a certification manager
       Task.create(taskable: self.project,
                  task_description_id: SYS_ADMIN_ASSIGN,
-                 application_role: User.roles[:gsas_trust_admin],
+                 application_role: User.roles[:gsb_trust_admin],
                  project: self.project)
     end
     if (self.development_type.mixable? && (self.main_scheme_mix_selected? == false))
       # Create system admin task to select a main scheme
       Task.find_or_create_by(taskable: self,
                   task_description_id: SYS_ADMIN_SELECT_MAIN_SCHEME,
-                  application_role: User.roles[:gsas_trust_admin],
+                  application_role: User.roles[:gsb_trust_admin],
                   project: self.project,
                   certification_path: self)
     end
@@ -161,14 +161,14 @@ module Taskable
       # Create system admin task to advance the certification path status
       Task.find_or_create_by(taskable: self,
                  task_description_id: SYS_ADMIN_REG_APPROVE,
-                 application_role: User.roles[:gsas_trust_admin],
+                 application_role: User.roles[:gsb_trust_admin],
                  project: self.project,
                  certification_path: self)
     else
       # Create GORD top manager task to approve
       Task.find_or_create_by(taskable: self,
-                  task_description_id: GSAS_TRUST_TOP_MNGR_APPROVE,
-                  application_role: User.roles[:gsas_trust_top_manager],
+                  task_description_id: GSB_TRUST_TOP_MNGR_APPROVE,
+                  application_role: User.roles[:gsb_trust_top_manager],
                   project: self.project,
                   certification_path: self)
     end
@@ -190,7 +190,7 @@ module Taskable
   def handle_created_cgp_certification_path_document
     # Destroy CGP project managers upload CMP tasks
     Task.where(taskable: self.certification_path, task_description_id: PROJ_MNGR_UPLOAD_CMP).delete_all
-    # Create certification manager task to read the GSAS CMP document
+    # Create certification manager task to read the GSB CMP document
     if self.certification_path.certificate.construction_type? && self.certification_path.cgp_certification_path_documents.count == 1
       Task.create(taskable: self.certification_path,
                   task_description_id: CERT_MNGR_CMP_UPLOADED,
@@ -329,7 +329,7 @@ module Taskable
           # Create system admin task to check appeal payment
           Task.find_or_create_by(taskable: self,
                      task_description_id: SYS_ADMIN_APPEAL_APPROVE,
-                     application_role: User.roles[:gsas_trust_admin],
+                     application_role: User.roles[:gsb_trust_admin],
                      project: self.project,
                      certification_path: self)
           # Destroy project manager tasks to process verification comments
@@ -379,8 +379,8 @@ module Taskable
         when CertificationPathStatus::APPROVING_BY_MANAGEMENT
           # Create GORD manager task to quick check and approve
           Task.find_or_create_by(taskable: self,
-                     task_description_id: GSAS_TRUST_MNGR_APPROVE,
-                     application_role: User.roles[:gsas_trust_manager],
+                     task_description_id: GSB_TRUST_MNGR_APPROVE,
+                     application_role: User.roles[:gsb_trust_manager],
                      project: self.project,
                      certification_path: self)
           # Destroy project manager tasks to process verification comments
@@ -391,15 +391,15 @@ module Taskable
         when CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT
           # Create GORD top manager task to approve
           Task.find_or_create_by(taskable: self,
-                     task_description_id: GSAS_TRUST_TOP_MNGR_APPROVE,
-                     application_role: User.roles[:gsas_trust_top_manager],
+                     task_description_id: GSB_TRUST_TOP_MNGR_APPROVE,
+                     application_role: User.roles[:gsb_trust_top_manager],
                      project: self.project,
                      certification_path: self)
           # Destroy GORD manager tasks to approve
-          Task.where(taskable: self, task_description_id: GSAS_TRUST_MNGR_APPROVE).delete_all
+          Task.where(taskable: self, task_description_id: GSB_TRUST_MNGR_APPROVE).delete_all
         when CertificationPathStatus::CERTIFIED
           # Destroy GORD top manager tasks to approve
-          # Task.where(taskable: self, task_description_id: GSAS_TRUST_TOP_MNGR_APPROVE).delete_all
+          # Task.where(taskable: self, task_description_id: GSB_TRUST_TOP_MNGR_APPROVE).delete_all
 
           # Destroy all certification path tasks
           Task.where(certification_path: self).delete_all
@@ -906,7 +906,7 @@ module Taskable
           # Create system admin task to assign a certification manager
           Task.find_or_create_by(taskable: self.project,
                      task_description_id: SYS_ADMIN_ASSIGN,
-                     application_role: User.roles[:gsas_trust_admin],
+                     application_role: User.roles[:gsb_trust_admin],
                      project: self.project)
         end
     end

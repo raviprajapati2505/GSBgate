@@ -258,10 +258,10 @@ function prepareTable(projObject, propKeys) {
 
       if (Array.isArray(obj[k])) {
         let valArr = obj[k];
-        let rowClass = "GSAS-mixed"
+        let rowClass = "GSB-mixed"
 
         if (valArr.every(p => p["Certification Type"] === valArr[0]["Certification Type"])) rowClass = valArr[0]["Certification Type"];
-        if (rowClass === "GSAS-D&B") rowClass = "GSAS-DB"
+        if (rowClass === "GSB-D&B") rowClass = "GSB-DB"
 
         let plotNum = valArr.reduce((a, b) => a + b.pNumber, 0) // numberOfPlots(valArr)
         let bldgNum = valArr.reduce((a, b) => a + b.cNumber, 0) //numberOfBldgs(valArr)
@@ -313,10 +313,10 @@ function prepareTable(projObject, propKeys) {
                 </tr>${projectsRows}${totalRow}`
       } else {
         let specialClass = "";
-        if (k == "GSAS-D&B") specialClass = "DB-Title"
-        if (k == "GSAS-CM") specialClass = "CM-Title"
-        if (k == "GSAS-OP") specialClass = "OP-Title"
-        if (k == "GSAS-EcoLeaf") specialClass = "EcoLeaf-Title"
+        if (k == "GSB-D&B") specialClass = "DB-Title"
+        if (k == "GSB-CM") specialClass = "CM-Title"
+        if (k == "GSB-OP") specialClass = "OP-Title"
+        if (k == "GSB-EcoLeaf") specialClass = "EcoLeaf-Title"
 
         return `
                     <tr></tr>
@@ -377,7 +377,7 @@ function sortKeys(a, b, k) {
       return stat.indexOf(a) < stat.indexOf(b) ? -1 : 1;
       break;
     case "Certification Type":
-      let ctype = ["GSAS-D&B", "GSAS-CM", "GSAS-OP", "GSAS-EcoLeaf"]
+      let ctype = ["GSB-D&B", "GSB-CM", "GSB-OP", "GSB-EcoLeaf"]
       return ctype.indexOf(a) < ctype.indexOf(b) ? -1 : 1;
       break;
     case "Certification Rating":

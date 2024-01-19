@@ -53,7 +53,7 @@ class TaskService
       if user.is_users_admin? || user.is_credentials_admin?
         tasks = tasks.where("application_role = #{User.roles[user.role]}")
       else
-        if user.is_system_admin? || user.is_gsas_trust_manager? || user.is_gsas_trust_top_manager? || user.is_gsas_trust_admin?
+        if user.is_system_admin? || user.is_gsb_trust_manager? || user.is_gsb_trust_top_manager? || user.is_gsb_trust_admin?
           check_project_role = ''
         else
           check_project_role = "or (projects_users.role = tasks.project_role and projects_users.user_id = #{user.id})"
