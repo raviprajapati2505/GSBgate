@@ -9,7 +9,7 @@ body.skin-gord-login{
     <div class="row ibox float-e-margins new-user-content-box text-left">
        
         <div class="px-4">
-            <div class="title text-green mb-4">
+            <div class="title text-blue mb-4">
                 <h2><b>Login to GSBgate</b></h2>
                 </div>
             <h5 class="text-dark">Please check your inbox; an OTP was just sent to you via email.</h5>
@@ -22,7 +22,7 @@ body.skin-gord-login{
                 <% end %>
                 <input type="hidden" value="<%= @user.otp %>">
                 <% if Rails.env.development? %>
-                    <p class="text-green mt-3">Your OTP for login is : <%= @user.otp %></p>
+                    <p class="text-blue mt-3">Your OTP for login is : <%= @user.otp %></p>
                 <% end %>
             </div>
         </div>

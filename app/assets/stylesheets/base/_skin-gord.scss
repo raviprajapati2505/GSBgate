@@ -125,8 +125,8 @@
           text-align: left;
           background-color: transparent;
           color: $secondary;
-          h1 {
-            color: #98bf82;
+          h1, h2 {
+            color: $primary;
             font-weight: 300;
             line-height: 120%;
             font-size: 43px;
@@ -292,7 +292,6 @@
 
   .navbar-header {
     img {
-      max-height: 50px;
       background-color: $gray;
     }
   }

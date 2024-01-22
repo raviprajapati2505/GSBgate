@@ -4,7 +4,7 @@
             <% unless Rails.env == 'production' %>
             <div id="environment"><%= Rails.env %></div>
             <% end %>
-            <%= image_tag('layout/GSB-Gate-after-login.svg', class:"img-responsive after-login-img bg-transparent")%>
+            <%= image_tag('layout/GSB-Gate-after-login.png', class:"img-responsive after-login-img bg-transparent")%>
             <button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
                 <%= ikoen('reorder') %>
             </button>
@@ -173,7 +173,6 @@
             <% end %>
             </ul>
             <div class="d-none d-lg-block"></div>
-            <%= image_tag('layout/GSB Trust.svg',class:"img-responsive bg-transparent after-login-right-img")%>
         </div>
             
         </div>
@@ -195,7 +194,7 @@
             </li>
             <li class="d-flex">
                 <%= link_to destroy_user_session_path, method: :delete do %>
-                    <%= ikoen('sign-out', size: 'lg') %><span class="nav-label">Log out</span>
+                    <%= image_tag('layout/logout.png', class: "")%><span class="nav-label">Log out</span>
                 <% end %>
             </li>
         </ul>

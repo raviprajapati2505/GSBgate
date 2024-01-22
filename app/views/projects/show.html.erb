@@ -268,7 +268,7 @@
       </div>
     </div>
     <div class="ibox">
-      <div class="ibox-title bg-header-grey text-green">
+      <div class="ibox-title bg-header-grey text-blue">
         <h5>TEAMS</h5>
       </div>
     </div>
@@ -289,7 +289,7 @@
 
           <% if @project.completed_letter_of_conformances.present? && !@project.with_final_design_certificate.present? %>
             <div class="ibox">
-              <div class="ibox-title bg-header-grey text-green">
+              <div class="ibox-title bg-header-grey text-blue">
                 <h5><%= I18n.t('activerecord.attributes.project.team_titles.final_design_certificate') %></h5>
               </div>
               <%= render partial: 'projects_users/index', locals: {project: @project, team: :project_team, certification_team_type: 3, certification_path: certification_path} %>
@@ -300,7 +300,7 @@
 
       <% else %>
         <div class="ibox">
-          <div class="ibox-title bg-header-grey text-green">
+          <div class="ibox-title bg-header-grey text-blue">
             <h5><%= I18n.t('activerecord.attributes.project.team_titles.letter_of_conformance') %></h5>
           </div>
           <%= render partial: 'projects/service_provider_info', locals: { project: @project, certification_path: @certification_path } %>
@@ -311,7 +311,7 @@
 
     <% else %>
       <div class="ibox">
-        <div class="ibox-title bg-header-grey text-green">
+        <div class="ibox-title bg-header-grey text-blue">
           <h5><%= @project.team_table_heading %></h5>
         </div>
         <%= render partial: 'projects/service_provider_info', locals: { project: @project, certification_path: @certification_path } %>

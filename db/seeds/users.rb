@@ -1,0 +1,27 @@
+# System Admin
+User.create!(
+  email: "system_admin@gsb.qa",
+  username: "system_admin",
+  confirmed_at: DateTime.now,
+  role: "system_admin",
+  name: "System Admin",
+  gord_employee: true,
+  organization_name: "GORD GSB",
+  name_suffix: "Mr",
+  last_name: "1",
+  email_alternate: "system_admin1@gsb.qa",
+  country: "Qatar",
+  city: "Al Daayen",
+  mobile_area_code: "11111",
+  mobile: "9874563210",
+  active: true,
+  organization_address: "Test",
+  organization_country: "Qatar",
+  organization_city: "Al Daayen",
+  organization_website: "https://www.gsbgord.qa",
+  organization_phone_area_code: "11111",
+  approved_at: true,
+  organization_email: "gsb_gord@gsb.qa",
+  password: "aaaaaa",
+  password_confirmation: "aaaaaa"
+)

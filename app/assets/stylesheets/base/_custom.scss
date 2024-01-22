@@ -233,7 +233,7 @@ legend.scheduler-border {
   background-image: image-url("layout/cover_page.jpg") !important;
   color: $white;
   .login-content .loginColumns .row .login-right {
-    background-color: rgba(15, 44, 23, 0.8);
+    background-color: rgba(5, 32, 49, 0.7);
   }
   .container {
     @media (min-width: 1200px) {
@@ -241,7 +241,7 @@ legend.scheduler-border {
     }
   }
 }
-.text-green {
+.text-blue {
   color: $primary !important;
 }
 
@@ -360,7 +360,7 @@ fieldset.scheduler-border {
 }
 
 .bg-dark-green {
-  background-color: rgba(15, 44, 23, 0.8);
+  background-color: rgba(5, 32, 49, 0.7);
 }
 hr {
   border: 0;
@@ -748,6 +748,11 @@ hr {
     filter: brightness(10);
   }
 }
+
+.nav li a img {
+  max-width: 4rem;
+}
+
 .dataTable-pagination {
   display: -ms-flexbox;
   display: flex;
@@ -1007,6 +1012,18 @@ label.required:after {
   padding: 2px;
   border: 0px;
 }
+
+table.dataTable {
+  thead {
+    .form-group {
+      color: #323e48;
+    }
+    .form-control, .single-line {
+      border: 1px solid $gray-600;
+    }
+  }
+}
+
 table.dataTable.light-green thead tr th,
 .table-bordered.light-green > thead > tr > th {
   background: $skin-gord-color-light !important;

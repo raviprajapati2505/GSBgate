@@ -580,8 +580,8 @@ table {
     thead {
       tr {
         th {
-          background: $primary;
-          color: $text-color;
+          background: #eaebec;
+          color: #323e48;
           padding: 10px 6px !important;
           span {
             display: inline-block;
@@ -608,8 +608,8 @@ table {
     .btn,
     a,
     button {
-      background: $primary;
-      color: $white;
+      background: $white;
+      color: $skin-gord-a-color;
       padding: 0.5rem 1rem;
       &:hover,
       &:focus {
