@@ -16,9 +16,6 @@
     </tr>
     <% user_licences_design&.each.with_index(1) do |ac, index| %>
       <tr>
-        <% if index == 1 %>
-          <td rowspan="<%= user_licences_design.count %>">GSB-D&B</td>
-        <% end %>
         <td><%= ac.licence.display_name %></td>
         <td><%= ac.user.gsb_id %></td>
         <td><%= ac.formatted_expiry_date %></td>

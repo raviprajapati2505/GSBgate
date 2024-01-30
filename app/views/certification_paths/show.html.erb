@@ -91,11 +91,7 @@
                           <% end %>
                             <%# if @certification_path.certificate.letter_of_conformance? || @certification_path.certificate.final_design_certificate? %>
                               <tr>
-                                <% if @certification_path.certificate.only_certification_name == 'GSB-CM' || @certification_path.certificate.only_certification_name == 'GSB-D&B' %>
-                                  <th><%= t('.certification_path.expired_at') %></th>
-                                <% else %>
-                                  <th><%= 'Certification Expiry' %></th>
-                                <% end %>
+                                <th><%= 'Certification Expiry' %></th>
                                 <td>
                                   <span><%= @certification_path.expires_at&.strftime('%e %b, %Y') %></span>
                                   <%= btn_link_to(edit_expires_at_project_certification_path_path(@project, @certification_path), remote: true, text: 'Set new date', class: 'pull-right') if can?(:update_expires_at, @certification_path) %>

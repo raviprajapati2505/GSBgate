@@ -890,14 +890,22 @@ module ApplicationHelper
 
   def certification_name_datatable_render(rec, only_certification_name)
     case only_certification_name
-      when 'GSB-D&B'
-        '<span class="certi-name-badge badge-db">'+ image_tag('/icons/certi-name-db.png') +'</span><a href='+Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>'+only_certification_name+'</a>'
-      when 'GSB-CM'
-        '<span class="certi-name-badge badge-cm">'+ image_tag('/icons/certi-name-cm.png') +'</span><a href='+Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>'+only_certification_name+'</a>'
-      when 'GSB-OP'
-        '<span class="certi-name-badge badge-op">'+ image_tag('/icons/certi-name-op.png') +'</span><a href='+Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>'+only_certification_name+'</a>'
-      when 'GSB-EcoLeaf'
-        '<span class="certi-name-badge badge-db">'+ image_tag('/icons/certi-name-db.png') +'</span><a href='+Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>'+only_certification_name+'</a>'
+      when 'Energy Centers Efficiency'
+        '<span class="certi-name-badge badge-db">' + image_tag('/icons/certi-name-db.png') + '</span><a href=' + Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>'+only_certification_name+'</a>'
+      when 'Building Energy Efficiency'
+        '<span class="certi-name-badge badge-cm">' + image_tag('/icons/certi-name-cm.png') + '</span><a href=' + Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>'+only_certification_name+'</a>'
+      when 'Healthy Buildings'
+        '<span class="certi-name-badge badge-op">' + image_tag('/icons/certi-name-op.png') + '</span><a href=' + Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>'+only_certification_name+'</a>'
+      when 'Indoor Air Quality'
+        '<span class="certi-name-badge badge-db">' + image_tag('/icons/certi-name-db.png') + '</span><a href=' + Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>'+only_certification_name+'</a>'
+      when 'Measurement, Reporting And Verification (MRV)'
+        '<span class="certi-name-badge badge-db">' + image_tag('/icons/certi-name-db.png') + '</span><a href=' + Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>'+only_certification_name+'</a>'
+      when 'Buildings Water Efficiency'
+        '<span class="certi-name-badge badge-cm">' + image_tag('/icons/certi-name-cm.png') + '</span><a href=' + Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>'+only_certification_name+'</a>'
+      when 'Events Carbon Neutrality'
+        '<span class="certi-name-badge badge-op">' + image_tag('/icons/certi-name-op.png') + '</span><a href=' + Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>'+only_certification_name+'</a>'
+      when 'Products Ecolabeling'
+        '<span class="certi-name-badge badge-db">' + image_tag('/icons/certi-name-db.png') + '</span><a href=' + Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>'+only_certification_name+'</a>'
     end
   end
 
@@ -909,41 +917,65 @@ module ApplicationHelper
       status = rec.certification_path_status_name
     end
     case only_certification_name
-      when 'GSB-D&B'
-        '<span class="certi-sub-status-badge status-badge-db">'+ image_tag('/icons/certi-sub-status-db.png') +'</span>'+status
-      when 'GSB-CM'
-        '<span class="certi-sub-status-badge status-badge-cm">'+ image_tag('/icons/certi-sub-status-cm.png') +'</span>'+status
-      when 'GSB-OP'
-        '<span class="certi-sub-status-badge status-badge-op">'+ image_tag('/icons/certi-sub-status-op.png') +'</span>'+status
-      when 'GSB-EcoLeaf'
-        '<span class="certi-sub-status-badge status-badge-db">'+ image_tag('/icons/certi-sub-status-db.png') +'</span>'+status
+      when 'Energy Centers Efficiency'
+        '<span class="certi-sub-status-badge status-badge-db">' + image_tag('/icons/certi-sub-status-db.png') +'</span>' + status
+      when 'Building Energy Efficiency'
+        '<span class="certi-sub-status-badge status-badge-cm">' + image_tag('/icons/certi-sub-status-cm.png') +'</span>' + status
+      when 'Healthy Buildings'
+        '<span class="certi-sub-status-badge status-badge-op">' + image_tag('/icons/certi-sub-status-op.png') +'</span>' + status
+      when 'Indoor Air Quality'
+        '<span class="certi-sub-status-badge status-badge-db">' + image_tag('/icons/certi-sub-status-db.png') +'</span>' + status
+      when 'Measurement, Reporting And Verification (MRV)'
+        '<span class="certi-sub-status-badge status-badge-db">' + image_tag('/icons/certi-sub-status-db.png') +'</span>' + status
+      when 'Buildings Water Efficiency'
+        '<span class="certi-sub-status-badge status-badge-cm">' + image_tag('/icons/certi-sub-status-cm.png') +'</span>' + status
+      when 'Events Carbon Neutrality'
+        '<span class="certi-sub-status-badge status-badge-op">' + image_tag('/icons/certi-sub-status-op.png') +'</span>' + status
+      when 'Products Ecolabeling'
+        '<span class="certi-sub-status-badge status-badge-db">' + image_tag('/icons/certi-sub-status-db.png') +'</span>' + status
     end
   end
 
   def certification_name_offline_datatable_render(certification_type)
     case certification_type
-      when 'GSB-D&B'
-        '<span class="certi-name-badge badge-db">'+ image_tag('/icons/certi-name-db.png') +'</span>'+certification_type
-      when 'GSB-CM'
-        '<span class="certi-name-badge badge-cm">'+ image_tag('/icons/certi-name-cm.png') +'</span>'+certification_type
-      when 'GSB-OP'
-        '<span class="certi-name-badge badge-op">'+ image_tag('/icons/certi-name-op.png') +'</span>'+certification_type
-      when 'GSB-EcoLeaf'
-        '<span class="certi-name-badge badge-db">'+ image_tag('/icons/certi-name-db.png') +'</span>'+certification_type
+      when 'Energy Centers Efficiency'
+        '<span class="certi-name-badge badge-db">'+ image_tag('/icons/certi-name-db.png') + '</span>' + certification_type
+      when 'Building Energy Efficiency'
+        '<span class="certi-name-badge badge-cm">'+ image_tag('/icons/certi-name-cm.png') + '</span>' + certification_type
+      when 'Healthy Buildings'
+        '<span class="certi-name-badge badge-op">'+ image_tag('/icons/certi-name-op.png') + '</span>' + certification_type
+      when 'Indoor Air Quality'
+        '<span class="certi-name-badge badge-db">'+ image_tag('/icons/certi-name-db.png') + '</span>' + certification_type
+      when 'Measurement, Reporting And Verification (MRV)'
+        '<span class="certi-name-badge badge-db">'+ image_tag('/icons/certi-name-db.png') + '</span>' + certification_type
+      when 'Buildings Water Efficiency'
+        '<span class="certi-name-badge badge-cm">'+ image_tag('/icons/certi-name-cm.png') + '</span>' + certification_type
+      when 'Events Carbon Neutrality'
+        '<span class="certi-name-badge badge-op">'+ image_tag('/icons/certi-name-op.png') + '</span>' + certification_type
+      when 'Products Ecolabeling'
+        '<span class="certi-name-badge badge-db">'+ image_tag('/icons/certi-name-db.png') + '</span>' + certification_type
     end
   end
 
   def submission_status_offline_datatable_render(rec)
     only_certification_name = rec.certificate_type
     case only_certification_name
-      when 'GSB-D&B'
-        '<span class="certi-sub-status-badge status-badge-db">' + image_tag('/icons/certi-sub-status-db.png') + '</span>'+rec.certification_status
-      when 'GSB-CM'
-        '<span class="certi-sub-status-badge status-badge-cm">' + image_tag('/icons/certi-sub-status-cm.png') + '</span>'+rec.certification_status
-      when 'GSB-OP'
-        '<span class="certi-sub-status-badge status-badge-op">' + image_tag('/icons/certi-sub-status-op.png') + '</span>'+rec.certification_status
-      when 'GSB-EcoLeaf'
-        '<span class="certi-sub-status-badge status-badge-db">' + image_tag('/icons/certi-sub-status-db.png') + '</span>'+rec.certification_status
+      when 'Energy Centers Efficiency'
+        '<span class="certi-sub-status-badge status-badge-db#{}">' + image_tag('/icons/certi-sub-status-db.png') + '</span>' + (rec.certification_status || '')
+      when 'Building Energy Efficiency'
+        '<span class="certi-sub-status-badge status-badge-cm">' + image_tag('/icons/certi-sub-status-cm.png') + '</span>' + (rec.certification_status || '')
+      when 'Healthy Buildings'
+        '<span class="certi-sub-status-badge status-badge-op">' + image_tag('/icons/certi-sub-status-op.png') + '</span>' + (rec.certification_status || '')
+      when 'Indoor Air Quality'
+        '<span class="certi-sub-status-badge status-badge-db">' + image_tag('/icons/certi-sub-status-db.png') + '</span>' + (rec.certification_status || '')
+      when 'Measurement, Reporting And Verification (MRV)'
+        '<span class="certi-sub-status-badge status-badge-db#{}">' + image_tag('/icons/certi-sub-status-db.png') + '</span>' + (rec.certification_status || '')
+      when 'Buildings Water Efficiency'
+        '<span class="certi-sub-status-badge status-badge-cm">' + image_tag('/icons/certi-sub-status-cm.png') + '</span>' + (rec.certification_status || '')
+      when 'Events Carbon Neutrality'
+        '<span class="certi-sub-status-badge status-badge-op">' + image_tag('/icons/certi-sub-status-op.png') + '</span>' + (rec.certification_status || '')
+      when 'Products Ecolabeling'
+        '<span class="certi-sub-status-badge status-badge-db">' + image_tag('/icons/certi-sub-status-db.png') + '</span>' + (rec.certification_status || '')
     end
   end
 
@@ -993,41 +1025,30 @@ module ApplicationHelper
                       CASE 
                         WHEN 
                           certificates.certification_type IN (
-                            #{Certificate.certification_types['construction_certificate']}, 
-                            #{Certificate.certification_types['operations_certificate']}, 
-                            #{Certificate.certification_types['construction_certificate_stage1']}, 
-                            #{Certificate.certification_types['construction_certificate_stage2']}, 
-                            #{Certificate.certification_types['construction_certificate_stage3']},
-                            #{Certificate.certification_types['ecoleaf_provisional_certificate']},
-                            #{Certificate.certification_types['ecoleaf_certificate']}
+                            #{Certificate.certification_types['provisional_energy_centers_efficiency']}, 
+                            #{Certificate.certification_types['provisional_building_energy_efficiency']}, 
+                            #{Certificate.certification_types['provisional_healthy_buildings']}, 
+                            #{Certificate.certification_types['provisional_indoor_air_quality']}, 
+                            #{Certificate.certification_types['provisional_measurement_reporting_and_Verification']},
+                            #{Certificate.certification_types['provisional_building_water_efficiency']},
+                            #{Certificate.certification_types['provisional_events_carbon_neutrality']}
+                            #{Certificate.certification_types['provisional_products_ecolabeling']}
+                            #{Certificate.certification_types['final_energy_centers_efficiency']}, 
+                            #{Certificate.certification_types['final_building_energy_efficiency']}, 
+                            #{Certificate.certification_types['final_Healthy_buildings']}, 
+                            #{Certificate.certification_types['final_indoor_air_quality']}, 
+                            #{Certificate.certification_types['final_measurement_reporting_and_Verification']},
+                            #{Certificate.certification_types['final_building_water_efficiency']},
+                            #{Certificate.certification_types['final_events_carbon_neutrality']}
+                            #{Certificate.certification_types['final_products_ecolabeling']}
                           ) 
                           THEN 
                             project_team_project_users.certification_team_type IN (
                               #{ProjectsUser.certification_team_types['Other']}
                             ) 
-
-                        WHEN 
-                          certificates.certification_type IN (
-                            #{Certificate.certification_types['letter_of_conformance']}
-                          ) 
-                          THEN 
-                            project_team_project_users.certification_team_type IN (
-                              #{ProjectsUser.certification_team_types['Letter of Conformance']}
-                            ) 
-
-                        WHEN certificates.certification_type IN (
-                          #{Certificate.certification_types['final_design_certificate']}
-                        ) 
-                          THEN 
-                            project_team_project_users.certification_team_type IN (
-                              #{ProjectsUser.certification_team_types['Final Design Certificate']}
-                            ) 
-
                         ELSE 
                           project_team_project_users.certification_team_type IN (
                             #{ProjectsUser.certification_team_types['Other']}, 
-                            #{ProjectsUser.certification_team_types['Letter of Conformance']}, 
-                            #{ProjectsUser.certification_team_types['Final Design Certificate']}
                           ) 
                       END
                   )
@@ -1060,42 +1081,30 @@ module ApplicationHelper
                       CASE 
                         WHEN 
                           certificates.certification_type IN (
-                            #{Certificate.certification_types['construction_certificate']}, 
-                            #{Certificate.certification_types['operations_certificate']}, 
-                            #{Certificate.certification_types['construction_certificate_stage1']}, 
-                            #{Certificate.certification_types['construction_certificate_stage2']}, 
-                            #{Certificate.certification_types['construction_certificate_stage3']},
-                            #{Certificate.certification_types['ecoleaf_provisional_certificate']},
-                            #{Certificate.certification_types['ecoleaf_certificate']}
+                            #{Certificate.certification_types['provisional_energy_centers_efficiency']}, 
+                            #{Certificate.certification_types['provisional_building_energy_efficiency']}, 
+                            #{Certificate.certification_types['provisional_healthy_buildings']}, 
+                            #{Certificate.certification_types['provisional_indoor_air_quality']}, 
+                            #{Certificate.certification_types['provisional_measurement_reporting_and_Verification']},
+                            #{Certificate.certification_types['provisional_building_water_efficiency']},
+                            #{Certificate.certification_types['provisional_events_carbon_neutrality']}
+                            #{Certificate.certification_types['provisional_products_ecolabeling']}
+                            #{Certificate.certification_types['final_energy_centers_efficiency']}, 
+                            #{Certificate.certification_types['final_building_energy_efficiency']}, 
+                            #{Certificate.certification_types['final_Healthy_buildings']}, 
+                            #{Certificate.certification_types['final_indoor_air_quality']}, 
+                            #{Certificate.certification_types['final_measurement_reporting_and_Verification']},
+                            #{Certificate.certification_types['final_building_water_efficiency']},
+                            #{Certificate.certification_types['final_events_carbon_neutrality']}
+                            #{Certificate.certification_types['final_products_ecolabeling']}
                           ) 
                           THEN 
                             cgp_project_managers_project_users.certification_team_type IN (
                               #{ProjectsUser.certification_team_types['Other']}
                             ) 
-
-                        WHEN 
-                          certificates.certification_type IN (
-                            #{Certificate.certification_types['letter_of_conformance']}
-                          ) 
-                          THEN 
-                            cgp_project_managers_project_users.certification_team_type IN (
-                              #{ProjectsUser.certification_team_types['Letter of Conformance']}
-                            ) 
-
-                        WHEN 
-                          certificates.certification_type IN (
-                            #{Certificate.certification_types['final_design_certificate']}
-                          ) 
-                          THEN 
-                            cgp_project_managers_project_users.certification_team_type IN (
-                              #{ProjectsUser.certification_team_types['Final Design Certificate']}
-                            ) 
-
                         ELSE 
                           cgp_project_managers_project_users.certification_team_type IN (
                             #{ProjectsUser.certification_team_types['Other']}, 
-                            #{ProjectsUser.certification_team_types['Letter of Conformance']}, 
-                            #{ProjectsUser.certification_team_types['Final Design Certificate']}
                           ) 
                       END
                   )
@@ -1128,40 +1137,29 @@ module ApplicationHelper
                       CASE 
                         WHEN 
                           certificates.certification_type IN (
-                            #{Certificate.certification_types['construction_certificate']}, 
-                            #{Certificate.certification_types['operations_certificate']}, 
-                            #{Certificate.certification_types['construction_certificate_stage1']}, 
-                            #{Certificate.certification_types['construction_certificate_stage2']}, 
-                            #{Certificate.certification_types['construction_certificate_stage3']},
-                            #{Certificate.certification_types['ecoleaf_provisional_certificate']},
-                            #{Certificate.certification_types['ecoleaf_certificate']}
+                            #{Certificate.certification_types['provisional_energy_centers_efficiency']}, 
+                            #{Certificate.certification_types['provisional_building_energy_efficiency']}, 
+                            #{Certificate.certification_types['provisional_healthy_buildings']}, 
+                            #{Certificate.certification_types['provisional_indoor_air_quality']}, 
+                            #{Certificate.certification_types['provisional_measurement_reporting_and_Verification']},
+                            #{Certificate.certification_types['provisional_building_water_efficiency']},
+                            #{Certificate.certification_types['provisional_events_carbon_neutrality']}
+                            #{Certificate.certification_types['provisional_products_ecolabeling']}
+                            #{Certificate.certification_types['final_energy_centers_efficiency']}, 
+                            #{Certificate.certification_types['final_building_energy_efficiency']}, 
+                            #{Certificate.certification_types['final_Healthy_buildings']}, 
+                            #{Certificate.certification_types['final_indoor_air_quality']}, 
+                            #{Certificate.certification_types['final_measurement_reporting_and_Verification']},
+                            #{Certificate.certification_types['final_building_water_efficiency']},
+                            #{Certificate.certification_types['final_events_carbon_neutrality']}
+                            #{Certificate.certification_types['final_products_ecolabeling']}
                           ) 
                           THEN 
                             gsb_trust_team_project_users.certification_team_type IN (
                               #{ProjectsUser.certification_team_types['Other']}
                             ) 
-
-                        WHEN 
-                          certificates.certification_type IN (
-                            #{Certificate.certification_types['letter_of_conformance']}
-                          ) 
-                          THEN 
-                            gsb_trust_team_project_users.certification_team_type IN (
-                              #{ProjectsUser.certification_team_types['Letter of Conformance']}
-                            ) 
-
-                        WHEN 
-                          certificates.certification_type IN (
-                            #{Certificate.certification_types['final_design_certificate']}
-                          ) 
-                          THEN gsb_trust_team_project_users.certification_team_type IN (
-                            #{ProjectsUser.certification_team_types['Final Design Certificate']}
-                          ) 
-
                         ELSE gsb_trust_team_project_users.certification_team_type IN (
                           #{ProjectsUser.certification_team_types['Other']}, 
-                          #{ProjectsUser.certification_team_types['Letter of Conformance']}, 
-                          #{ProjectsUser.certification_team_types['Final Design Certificate']}
                         ) 
                     END
                 )
@@ -1194,42 +1192,31 @@ module ApplicationHelper
                       CASE 
                         WHEN 
                           certificates.certification_type IN (
-                            #{Certificate.certification_types['construction_certificate']}, 
-                            #{Certificate.certification_types['operations_certificate']}, 
-                            #{Certificate.certification_types['construction_certificate_stage1']}, 
-                            #{Certificate.certification_types['construction_certificate_stage2']}, 
-                            #{Certificate.certification_types['construction_certificate_stage3']},
-                            #{Certificate.certification_types['ecoleaf_provisional_certificate']},
-                            #{Certificate.certification_types['ecoleaf_certificate']}
+                            #{Certificate.certification_types['provisional_energy_centers_efficiency']}, 
+                            #{Certificate.certification_types['provisional_building_energy_efficiency']}, 
+                            #{Certificate.certification_types['provisional_healthy_buildings']}, 
+                            #{Certificate.certification_types['provisional_indoor_air_quality']}, 
+                            #{Certificate.certification_types['provisional_measurement_reporting_and_Verification']},
+                            #{Certificate.certification_types['provisional_building_water_efficiency']},
+                            #{Certificate.certification_types['provisional_events_carbon_neutrality']}
+                            #{Certificate.certification_types['provisional_products_ecolabeling']}
+                            #{Certificate.certification_types['final_energy_centers_efficiency']}, 
+                            #{Certificate.certification_types['final_building_energy_efficiency']}, 
+                            #{Certificate.certification_types['final_Healthy_buildings']}, 
+                            #{Certificate.certification_types['final_indoor_air_quality']}, 
+                            #{Certificate.certification_types['final_measurement_reporting_and_Verification']},
+                            #{Certificate.certification_types['final_building_water_efficiency']},
+                            #{Certificate.certification_types['final_events_carbon_neutrality']}
+                            #{Certificate.certification_types['final_products_ecolabeling']}
                           ) 
                           THEN 
                             certification_managers_project_users.certification_team_type IN (
                               #{ProjectsUser.certification_team_types['Other']}
                             ) 
 
-                        WHEN 
-                          certificates.certification_type IN (
-                            #{Certificate.certification_types['letter_of_conformance']}
-                          ) 
-                          THEN 
-                            certification_managers_project_users.certification_team_type IN (
-                              #{ProjectsUser.certification_team_types['Letter of Conformance']}
-                            ) 
-
-                        WHEN 
-                          certificates.certification_type IN (
-                            #{Certificate.certification_types['final_design_certificate']}
-                          ) 
-                          THEN 
-                            certification_managers_project_users.certification_team_type IN (
-                              #{ProjectsUser.certification_team_types['Final Design Certificate']}
-                            ) 
-
                         ELSE 
                           certification_managers_project_users.certification_team_type IN (
                             #{ProjectsUser.certification_team_types['Other']}, 
-                            #{ProjectsUser.certification_team_types['Letter of Conformance']}, 
-                            #{ProjectsUser.certification_team_types['Final Design Certificate']}
                           ) 
                       END
                   )

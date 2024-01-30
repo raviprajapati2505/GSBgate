@@ -71,41 +71,7 @@ class TaskService
           certification_path: :certificate
         )
         .where(
-          "
-            SELECT 
-              CASE 
-                WHEN 
-                  certificates.certification_type = #{Certificate.certification_types['letter_of_conformance']} 
-                  THEN 
-                    projects_users.certification_team_type = #{ProjectsUser.certification_team_types['Letter of Conformance']} 
-
-                WHEN 
-                  certificates.certification_type = #{Certificate.certification_types['final_design_certificate']} 
-                  THEN 
-                    projects_users.certification_team_type = #{ProjectsUser.certification_team_types['Final Design Certificate']} 
-
-                WHEN 
-                  projects.certificate_type = 3 
-                  THEN 
-                    projects_users.certification_team_type IN (
-                      #{ProjectsUser.certification_team_types['Letter of Conformance']}, 
-                      #{ProjectsUser.certification_team_types['Final Design Certificate']}, 
-                      #{ProjectsUser.certification_team_types['Other']}
-                    ) 
-
-                WHEN 
-                  projects.certificate_type IN (1, 2, 4) 
-                  THEN 
-                    projects_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Other']}) 
-
-                ELSE 
-                  projects_users.certification_team_type IN (
-                    #{ProjectsUser.certification_team_types['Letter of Conformance']}, 
-                    #{ProjectsUser.certification_team_types['Final Design Certificate']}, 
-                    #{ProjectsUser.certification_team_types['Other']}
-                  ) 
-              END
-          "
+          "projects_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Other']})"
         )
     end
 

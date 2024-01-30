@@ -242,11 +242,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
         data = []
 
         data.append(['STAGE SCORE', 'STAGE RATING'])
-        if @certification_path.certificate.only_certification_name == 'GSB-D&B'
-          data.append([number_with_precision(@score, precision: 3), {:image => "#{Rails.root}/app/assets/images/reports/star_#{@stars.split("").first}.png", :width => 100, :image_height => 20, :position  => :center}])
-        else
-          data.append([number_with_precision(@score, precision: 3), @stars])
-        end
+        data.append([number_with_precision(@score, precision: 3), @stars])
 
         # Output table
         draw_table(data, true, 'score_table')

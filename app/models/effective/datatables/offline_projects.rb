@@ -150,7 +150,7 @@ module Effective
             search: { 
               as: :select, collection: Proc.new { Offline::CertificationPath.ratings.map { |k, v| [k, v] } } 
             } do |rec|
-            render partial: "/offline/certification_paths/rating", locals: { ratings: Offline::CertificationPath.ratings.keys[rec.certification_rating], certification_type: rec.certificate_type }
+            render partial: "/offline/certification_paths/rating", locals: { ratings: Offline::CertificationPath.ratings.keys[rec.certification_rating || 0], certification_type: rec.certificate_type }
         end.search do |collection, terms, column, index|
           terms_array = terms.split(",")
           unless (collection.class == Array || terms_array.include?(""))

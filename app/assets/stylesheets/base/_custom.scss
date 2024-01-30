@@ -866,8 +866,9 @@ hr {
   }
 }
 .table-striped > tbody > tr:nth-of-type(odd) {
-  background: $gray-500;
+  background: $skin-gord-color-light;
 }
+
 .certification-rating {
   display: inline-block;
   white-space: nowrap;

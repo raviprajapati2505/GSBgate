@@ -7,15 +7,19 @@ module Offline
 
     enum certificate_type:
       [
-        "GSB-D&B",
-        "GSB-CM",
-        "GSB-OP"
+        "Energy Centers Efficiency",
+        "Building Energy Efficiency",
+        "Healthy Buildings",
+        "Indoor Air Quality",
+        "Measurement, Reporting And Verification (MRV)",
+        "Buildings Water Efficiency",
+        "Events Carbon Neutrality",
+        "Products Ecolabeling",
       ]
 
     
     enum assessment_type: 
       [
-        "Star Rating Assessment",
         "Checklist Assessment"
       ]
 

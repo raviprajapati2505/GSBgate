@@ -427,7 +427,7 @@ class Project < ApplicationRecord
   end
 
   def change_projects_users_certification_team_type
-    certificate_team_type = certificate_type == 3 ? "Letter of Conformance" : "Other"
+    certificate_team_type = :other
     projects_users&.update_all(certification_team_type: certificate_team_type)
   end
 

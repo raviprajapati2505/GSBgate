@@ -21,3 +21,5 @@ NotificationType.find_or_create_by(id: NotificationType::REQUIREMENT_PROVIDED, n
 NotificationType.find_or_create_by(id: NotificationType::NEW_DOCUMENT_WAITING_FOR_APPROVAL, name: 'New document uploaded for criterion', project_level: true)
 NotificationType.find_or_create_by(id: NotificationType::DOCUMENT_APPROVED, name: 'Document approved', project_level: true)
 NotificationType.find_or_create_by(id: NotificationType::NEW_TASK, name: 'New task', project_level: false)
+
+puts "Notification Types are added successfully.........."

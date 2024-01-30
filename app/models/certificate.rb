@@ -1,8 +1,44 @@
 class Certificate < ApplicationRecord
-  enum certificate_type: { design_type: 3, construction_type: 1, operations_type: 2, ecoleaf_type: 4 }
-  enum assessment_stage: { design_stage: 3, construction_stage: 1, operations_stage: 2, ecoleaf_stage: 4  }
+  enum certificate_type: [ 
+    :energy_centers_efficiency_type,
+    :building_energy_efficiency_type,
+    :healthy_buildings_type,
+    :indoor_air_quality_type,
+    :measurement_reporting_and_Verification_type,
+    :building_water_efficiency_type,
+    :events_carbon_neutrality_type,
+    :products_ecolabeling_type
+  ]
 
-  enum certification_type: { letter_of_conformance: 10, final_design_certificate: 20, construction_certificate: 30, construction_certificate_stage1: 31, construction_certificate_stage2: 32, construction_certificate_stage3: 33, operations_certificate: 40, ecoleaf_provisional_certificate: 45, ecoleaf_certificate: 50 }
+  enum assessment_stage: [ 
+    :energy_centers_efficiency_stage,
+    :building_energy_efficiency_stage,
+    :healthy_buildings_stage,
+    :indoor_air_quality_stage,
+    :measurement_reporting_and_Verification_stage,
+    :building_water_efficiency_stage,
+    :events_carbon_neutrality_stage,
+    :products_ecolabeling_stage
+  ]
+
+  enum certification_type: [ 
+    :provisional_energy_centers_efficiency,
+    :provisional_building_energy_efficiency,
+    :provisional_healthy_buildings,
+    :provisional_indoor_air_quality,
+    :provisional_measurement_reporting_and_Verification,
+    :provisional_building_water_efficiency,
+    :provisional_events_carbon_neutrality,
+    :provisional_products_ecolabeling,
+    :final_energy_centers_efficiency,
+    :final_building_energy_efficiency,
+    :final_Healthy_buildings,
+    :final_indoor_air_quality,
+    :final_measurement_reporting_and_Verification,
+    :final_building_water_efficiency,
+    :final_events_carbon_neutrality,
+    :final_products_ecolabeling
+  ]
 
   has_many :certification_paths
   has_many :development_types
@@ -65,14 +101,22 @@ class Certificate < ApplicationRecord
       next unless certificate_type.present?
       certificate_types_array.push(*
                               case certificate_type
-                              when "GSB-D&B"
-                                [Certificate.certification_types[:letter_of_conformance], Certificate.certification_types[:final_design_certificate]]
-                              when "GSB-CM"
-                                [Certificate.certification_types[:construction_certificate], Certificate.certification_types[:construction_certificate_stage1], Certificate.certification_types[:construction_certificate_stage2], Certificate.certification_types[:construction_certificate_stage3]]
-                              when "GSB-OP"
-                                [Certificate.certification_types[:operations_certificate]]
-                              when "GSB-EcoLeaf"
-                                [Certificate.certification_types[:ecoleaf_provisional_certificate], Certificate.certification_types[:ecoleaf_certificate]]
+                              when "Energy Centers Efficiency"
+                                [Certificate.certification_types[:provisional_energy_centers_efficiency], Certificate.certification_types[:final_energy_centers_efficiency]]
+                              when "Building Energy Efficiency"
+                                [Certificate.certification_types[:provisional_building_energy_efficiency], Certificate.certification_types[:final_building_energy_efficiency]]
+                              when "Healthy Buildings"
+                                [Certificate.certification_types[:provisional_healthy_buildings], Certificate.certification_types[:final_Healthy_buildings]]
+                              when "Indoor Air Quality"
+                                [Certificate.certification_types[:provisional_indoor_air_quality], Certificate.certification_types[:final_indoor_air_quality]]
+                              when "Measurement, Reporting And Verification (MRV)"
+                                [Certificate.certification_types[:provisional_measurement_reporting_and_Verification], Certificate.certification_types[:final_measurement_reporting_and_Verification]]
+                              when "Buildings Water Efficiency"
+                                [Certificate.certification_types[:provisional_building_water_efficiency], Certificate.certification_types[:final_building_water_efficiency]]
+                              when "Events Carbon Neutrality"
+                                [Certificate.certification_types[:provisional_events_carbon_neutrality], Certificate.certification_types[:final_events_carbon_neutrality]]
+                              when "Products Ecolabeling"
+                                [Certificate.certification_types[:provisional_products_ecolabeling], Certificate.certification_types[:final_products_ecolabeling]]
                               else
                                 Certificate.certification_types
                               end
@@ -115,27 +159,19 @@ class Certificate < ApplicationRecord
 
   def only_certification_name
     case only_name
-    when "Letter of Conformance", "Final Design Certificate"
+    when "Stage 1: Provisional Certificate"
       I18n.t('activerecord.attributes.certificate.certificate_types.certificate_titles.design_and_build')
     when "GSB-CM", "Construction Certificate"
       I18n.t('activerecord.attributes.certificate.certificate_types.certificate_titles.construction_certificate')
-    when "Operations Certificate"
-      I18n.t('activerecord.attributes.certificate.certificate_types.certificate_titles.operations_certificate')
-    when "GSB-EcoLeaf"
-      I18n.t('activerecord.attributes.certificate.certificate_types.certificate_titles.gsb_ecoleaf')
     end
   end
 
   def report_certification_name
     case only_name
-    when "Letter of Conformance", "Final Design Certificate"
-      "GSB Design & Build (#{only_certification_name})"
+    when "Stage 1: Provisional Certificate"
+      "Stage 1: Provisional Certificate"
     when "GSB-CM", "Construction Certificate"
       "GSB Construction Management (#{only_certification_name})"
-    when "Operations Certificate"
-      "GSB Operation (#{only_certification_name})"
-    when "GSB-EcoLeaf"
-      only_certification_name
     end
   end
 
@@ -149,10 +185,10 @@ class Certificate < ApplicationRecord
 
   def stage_title
     case only_name
-    when "Letter of Conformance"
-      I18n.t('activerecord.attributes.certificate.certificate_types.stage_titles.letter_of_conformance')
-    when "Final Design Certificate"
-      I18n.t('activerecord.attributes.certificate.certificate_types.stage_titles.final_design_certificate')
+    when "Stage 1: Provisional Certificate"
+      "Stage 2: Final Certificate"
+    when "Stage 2: Final Certificate"
+     "Stage 2: Final Certificate"
     else
       I18n.t("activerecord.attributes.certificate.certificate_types.stage_titles.#{certification_type}")
     end

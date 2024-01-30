@@ -6,54 +6,100 @@ en:
         user_comment: Comment
       certificate:
         certificate_types:
-          design_type: Design & Build
-          construction_type: Construction Management
-          operations_type: Operations
+          energy_centers_efficiency_type: Energy Centers Efficiency
+          building_energy_efficiency_type: Building Energy Efficiency
+          healthy_buildings_type: Healthy Buildings
+          indoor_air_quality_type: Indoor Air Quality
+          measurement_reporting_and_Verification_type: Measurement, Reporting And Verification (MRV)
+          building_water_efficiency_type: Buildings Water Efficiency
+          events_carbon_neutrality_type: Events Carbon Neutrality
+          products_ecolabeling_type: Products Ecolabeling
           stage_titles:
-            letter_of_conformance: "Stage 1: LOC, Design Certificate"
-            final_design_certificate: "Stage 2: CDA, Design & Build Certificate"
-            construction_certificate: "GSB Construction Management Certificate"
-            construction_certificate_stage1: "Stage 1: Foundation"
-            construction_certificate_stage2: "Stage 2: Substructure & Superstructure"
-            construction_certificate_stage3: "Stage 3: Finishing"
-            operations_certificate: "GSB Operations Certificate"
-            ecoleaf_provisional_certificate: "EcoLeaf Provisional Certificate"
-            ecoleaf_certificate: "Stage 2: EcoLeaf Certificate"
+            provisional_energy_centers_efficiency: "Stage 1: Provisional Certificate"
+            provisional_building_energy_efficiency: "Stage 1: Provisional Certificate"
+            provisional_healthy_buildings: "Stage 1: Provisional Certificate"
+            provisional_indoor_air_quality: "Stage 1: Provisional Certificate"
+            provisional_measurement_reporting_and_Verification: "Stage 1: Provisional Certificate"
+            provisional_building_water_efficiency: "Stage 1: Provisional Certificate"
+            provisional_events_carbon_neutrality: "Stage 1: Provisional Certificate"
+            provisional_products_ecolabeling: "Stage 1: Provisional Certificate"
+            final_energy_centers_efficiency: "Stage 2: Final Certificate"
+            final_building_energy_efficiency: "Stage 2: Final Certificate"
+            final_healthy_buildings: "Stage 2: Final Certificate"
+            final_indoor_air_quality: "Stage 2: Final Certificate"
+            final_measurement_reporting_and_Verification: "Stage 2: Final Certificate"
+            final_building_water_efficiency: "Stage 2: Final Certificate"
+            final_events_carbon_neutrality: "Stage 2: Final Certificate"
+            final_products_ecolabeling: "Stage 2: Final Certificate"
           certificate_titles:
-            design_and_build: GSB-D&B
-            construction_certificate: GSB-CM
-            operations_certificate: GSB-OP
-            gsb_ecoleaf: GSB-EcoLeaf
+            energy_centers_efficiency: Energy Centers Efficiency
+            building_energy_efficiency: Building Energy Efficiency
+            healthy_buildings: Healthy Buildings
+            indoor_air_quality: Indoor Air Quality
+            measurement_reporting_and_Verification: Measurement, Reporting And Verification (MRV)
+            building_water_efficiency: Buildings Water Efficiency
+            events_carbon_neutrality: Events Carbon Neutrality
+            products_ecolabeling: Products Ecolabeling
         certification_types:
-          letter_of_conformance: Letter of conformance
-          final_design_certificate: Final design certificate
-          construction_certificate: GSB-CM - GSB-CM Certificate
-          construction_certificate_stage1: GSB-CM - Stage 1
-          construction_certificate_stage2: GSB-CM - Stage 2
-          construction_certificate_stage3: GSB-CM - Stage 3
-          operations_certificate: Operations certificate
-          ecoleaf_provisional_certificate: "EcoLeaf Provisional Certificate"
-          ecoleaf_certificate: "Stage 2: EcoLeaf Certificate"
+          provisional_energy_centers_efficiency: "Stage 1: Provisional Certificate"
+            provisional_building_energy_efficiency: "Stage 1: Provisional Certificate"
+            provisional_healthy_buildings: "Stage 1: Provisional Certificate"
+            provisional_indoor_air_quality: "Stage 1: Provisional Certificate"
+            provisional_measurement_reporting_and_Verification: "Stage 1: Provisional Certificate"
+            provisional_building_water_efficiency: "Stage 1: Provisional Certificate"
+            provisional_events_carbon_neutrality: "Stage 1: Provisional Certificate"
+            provisional_products_ecolabeling: "Stage 1: Provisional Certificate"
+            final_energy_centers_efficiency: "Stage 2: Final Certificate"
+            final_building_energy_efficiency: "Stage 2: Final Certificate"
+            final_healthy_buildings: "Stage 2: Final Certificate"
+            final_indoor_air_quality: "Stage 2: Final Certificate"
+            final_measurement_reporting_and_Verification: "Stage 2: Final Certificate"
+            final_building_water_efficiency: "Stage 2: Final Certificate"
+            final_events_carbon_neutrality: "Stage 2: Final Certificate"
+            final_products_ecolabeling: "Stage 2: Final Certificate"
+          certificate_titles:
+            energy_centers_efficiency_type: Energy Centers Efficiency
+            building_energy_efficiency_type: Building Energy Efficiency
+            healthy_buildings_type: Healthy Buildings
+            indoor_air_quality_type: Indoor Air Quality
+            measurement_reporting_and_Verification_type: Measurement, Reporting And Verification (MRV)
+            building_water_efficiency_type: Buildings Water Efficiency
+            events_carbon_neutrality_type: Events Carbon Neutrality
+            products_ecolabeling_type: Products Ecolabeling
         certification_titles:
-          letter_of_conformance: "Stage 1: LOC, Design Certificate"
-          final_design_certificate: "Stage 2: CDA, Design & Build Certificate"
-          construction_certificate: GSB-CM - GSB-CM Certificate
-          construction_certificate_stage1: GSB-CM - Stage 1
-          construction_certificate_stage2: GSB-CM - Stage 2
-          construction_certificate_stage3: GSB-CM - Stage 3
-          operations_certificate: Operations certificate
-          ecoleaf_provisional_certificate: "EcoLeaf Provisional Certificate"
-          ecoleaf_certificate: "Stage 2: EcoLeaf Certificate"
+          provisional_energy_centers_efficiency: "Stage 1: Provisional Certificate"
+          provisional_building_energy_efficiency: "Stage 1: Provisional Certificate"
+          provisional_healthy_buildings: "Stage 1: Provisional Certificate"
+          provisional_indoor_air_quality: "Stage 1: Provisional Certificate"
+          provisional_measurement_reporting_and_Verification: "Stage 1: Provisional Certificate"
+          provisional_building_water_efficiency: "Stage 1: Provisional Certificate"
+          provisional_events_carbon_neutrality: "Stage 1: Provisional Certificate"
+          provisional_products_ecolabeling: "Stage 1: Provisional Certificate"
+          final_energy_centers_efficiency: "Stage 2: Final Certificate"
+          final_building_energy_efficiency: "Stage 2: Final Certificate"
+          final_healthy_buildings: "Stage 2: Final Certificate"
+          final_indoor_air_quality: "Stage 2: Final Certificate"
+          final_measurement_reporting_and_Verification: "Stage 2: Final Certificate"
+          final_building_water_efficiency: "Stage 2: Final Certificate"
+          final_events_carbon_neutrality: "Stage 2: Final Certificate"
+          final_products_ecolabeling: "Stage 2: Final Certificate"
         certification_types_subtitles:
-          letter_of_conformance: ""
-          final_design_certificate: ""
-          construction_certificate_stage1: (foundation stage)
-          construction_certificate_stage2: (substructure & superstructure stage)
-          construction_certificate_stage3: (finishing stage)
-          construction_certificate: ""
-          operations_certificate: ""
-          ecoleaf_provisional_certificate: (provisional stage)
-          ecoleaf_certificate: ""
+          provisional_energy_centers_efficiency: "Stage 1: Provisional Certificate"
+          provisional_building_energy_efficiency: "Stage 1: Provisional Certificate"
+          provisional_healthy_buildings: "Stage 1: Provisional Certificate"
+          provisional_indoor_air_quality: "Stage 1: Provisional Certificate"
+          provisional_measurement_reporting_and_Verification: "Stage 1: Provisional Certificate"
+          provisional_building_water_efficiency: "Stage 1: Provisional Certificate"
+          provisional_events_carbon_neutrality: "Stage 1: Provisional Certificate"
+          provisional_products_ecolabeling: "Stage 1: Provisional Certificate"
+          final_energy_centers_efficiency: "Stage 2: Final Certificate"
+          final_building_energy_efficiency: "Stage 2: Final Certificate"
+          final_healthy_buildings: "Stage 2: Final Certificate"
+          final_indoor_air_quality: "Stage 2: Final Certificate"
+          final_measurement_reporting_and_Verification: "Stage 2: Final Certificate"
+          final_building_water_efficiency: "Stage 2: Final Certificate"
+          final_events_carbon_neutrality: "Stage 2: Final Certificate"
+          final_products_ecolabeling: "Stage 2: Final Certificate"
       certification_path:
         development_type: Development Type
         star_rating: Performance-Based (Star Rating Certificate)
@@ -105,11 +151,14 @@ en:
         project_developer_business_sector: Project Developer Business Sector
         project_owner_business_sector: Project Owner Business Sector
         team_titles:
-          design_certificate: GSB Design Certificate
-          letter_of_conformance: GSB Design Certificate_LOC
-          final_design_certificate: GSB Design & Build Certificate_CDA
-          construction_certificate: GSB-CM
-          operation_certificate: GSB-OP
+          energy_centers_efficiency: Energy Centers Efficiency
+          building_energy_efficiency: Building Energy Efficiency
+          healthy_buildings: Healthy Buildings
+          indoor_air_quality: Indoor Air Quality
+          measurement_reporting_and_Verification: Measurement, Reporting And Verification (MRV)
+          building_water_efficiency: Buildings Water Efficiency
+          events_carbon_neutrality: Events Carbon Neutrality
+          products_ecolabeling: Products Ecolabeling
       offline/project:
         code: Project ID
         name: Project Name
@@ -239,7 +288,6 @@ en:
         schemes: Schemes
       access_licence:
         expiry_date: Licence Expiry Date
-        
   models:
     concerns:
       auditable:

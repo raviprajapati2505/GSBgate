@@ -365,9 +365,6 @@
                     </tr>
                     <% @service_provider_user_licences_design&.each.with_index(1) do |ac, index| %>
                       <tr>
-                        <% if index == 1 %>
-                          <td rowspan="<%= @service_provider_user_licences_design.count %>">GSB-D&B</td>
-                        <% end %>
                         <td><%= ac.licence.display_name %></td>
                         <td class="b-word"><%= link_to(ac.user.full_name, user_path(ac.user)) %></td>
                         <td class="b-word"><%= ac.user.email %></td>

@@ -1,15 +1,27 @@
 <% 
   case certification_type
-    when 'GSB-D&B'
+    when 'Energy Centers Efficiency'
       star_badge_class = 'certi-status-badge star-rating-badge-db'
       image_tag = image_tag('layout/certi-status-db.png')
-    when 'GSB-CM'
+    when 'Building Energy Efficiency'
       star_badge_class = 'certi-status-badge star-rating-badge-cm'
       image_tag = image_tag('layout/certi-status-cm.png')
-    when 'GSB-OP'
+    when 'Healthy Buildings'
       star_badge_class = 'certi-status-badge star-rating-badge-op'
       image_tag = image_tag('layout/certi-status-op.png')
-    when 'GSB-EcoLeaf'
+    when 'Indoor Air Quality'
+      star_badge_class = 'certi-status-badge star-rating-badge-db'
+      image_tag = image_tag('layout/certi-status-db.png')
+    when 'Measurement, Reporting And Verification (MRV)'
+      star_badge_class = 'certi-status-badge star-rating-badge-db'
+      image_tag = image_tag('layout/certi-status-db.png')
+    when 'Buildings Water Efficiency'
+      star_badge_class = 'certi-status-badge star-rating-badge-cm'
+      image_tag = image_tag('layout/certi-status-cm.png')
+    when 'Events Carbon Neutrality'
+      star_badge_class = 'certi-status-badge star-rating-badge-op'
+      image_tag = image_tag('layout/certi-status-op.png')
+    when 'Products Ecolabeling'
       star_badge_class = 'certi-status-badge star-rating-badge-db'
       image_tag = image_tag('layout/certi-status-db.png')
   end

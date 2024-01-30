@@ -8,7 +8,7 @@ class CertificationPath < ApplicationRecord
   include ScoreCalculator
 
   MAXIMUM_DOCUMENT_FILE_SIZE = 100 # in MB
-  enum assessment_methods: { star_rating: 1, check_list: 2 }
+  enum assessment_methods: [ :check_list ]
 
   belongs_to :project, optional: true
   belongs_to :certificate, optional: true
@@ -185,16 +185,10 @@ class CertificationPath < ApplicationRecord
   end
 
   def projects_users_certification_team_type
-    certification_team_type = if project.design_and_build?
-                                if is_design_loc?
-                                  ProjectsUser.certification_team_types["Letter of Conformance"]
-                                elsif is_design_fdc?
-                                  ProjectsUser.certification_team_types["Final Design Certificate"]
-                                else
-                                  ProjectsUser.certification_team_types["Other"]
-                                end
+    certification_team_type = if project.design_and_build?  
+                                ProjectsUser.certification_team_types[:other]
                               else
-                                ProjectsUser.certification_team_types["Other"]
+                                ProjectsUser.certification_team_types[:other]
                               end
 
     return certification_team_type

@@ -624,13 +624,7 @@ class Ability
                 certificate_path_id = path_array[certificate_path_id_index.to_i + 1]
                 if certificate_path_id.to_i.to_s
                   @certification_path = CertificationPath.find(certificate_path_id.to_i)
-                  if @certification_path.is_design_loc?
-                    ProjectsUser.certification_team_types["Letter of Conformance"]
-                  elsif @certification_path.is_design_fdc?
-                    ProjectsUser.certification_team_types["Final Design Certificate"]
-                  else
-                    ProjectsUser.certification_team_types["Other"]
-                  end
+                  ProjectsUser.certification_team_types[:other]
                 else
                   all_certification_team_types
                 end
@@ -641,11 +635,7 @@ class Ability
 
     rescue => exception
       value = if @project.present?
-                if @project.design_and_build?
-                  [ProjectsUser.certification_team_types["Letter of Conformance"], ProjectsUser.certification_team_types["Final Design Certificate"]]
-                else
-                  ProjectsUser.certification_team_types["Other"]
-                end
+                ProjectsUser.certification_team_types[:other]
               else
                 all_certification_team_types
               end

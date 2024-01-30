@@ -43,3 +43,5 @@ Project.where("country ILIKE :name", name: "%Kuwait%").each do |project|
   project.country = "Kuwait"
   project.save(validate: false)
 end
+
+puts "Locations are added successfully.........."

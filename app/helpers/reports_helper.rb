@@ -14,20 +14,10 @@ module ReportsHelper
                     end
     
     certificate_name =  case certification_path&.certificate.only_name
-                        when "Letter of Conformance"
-                          'DESIGN CERTIFICATE _ LETTER OF CONFORMANCE (LOC)'
-                        when "Final Design Certificate" 
-                          'DESIGN CERTIFICATE _ CONFORMANCE TO DESIGN AUDIT (CDA)'
-                        when "GSB-CM", "Construction Certificate"
-                          stage_number =  case certification_path&.certificate&.stage_title
-                                          when 'Stage 1: Foundation'
-                                            '01'
-                                          when 'Stage 2: Substructure & Superstructure'
-                                            '02'
-                                          when 'Stage 3: Finishing'
-                                            '03'
-                                          end
-                          "AUDIT ADVISORY NOTICE (AAN) - No.#{stage_number}"
+                        when "Stage 1: Provisional Certificate"
+                          'Stage 1: Provisional Certificate'
+                        when "Stage 2: Final Certificate" 
+                          'Stage 2: Final Certificate'
                         else
                           certification_path&.certificate.only_name
                         end
@@ -37,7 +27,7 @@ module ReportsHelper
 
   def certificate_intro_text(certificate_name, certificate_stage = '')
     case certificate_name
-    when 'Letter of Conformance'
+    when 'Stage 1: Provisional Certificate'
       text = "This is to notify that GSB Trust has reviewed the project based on the submitted information. The project is found eligible to receive the Design Certificate as a provision for final GSB Design & Build Certificate in the form of \"Letter of Conformance (LOC)\", The project is achieving: \n"
     when 'GSB-CM', 'Construction Certificate'
       case certificate_stage
@@ -54,7 +44,7 @@ module ReportsHelper
 
   def certificate_summary_text(certificate_name, certificate_stage = '')
     case certificate_name 
-      when 'Letter of Conformance'
+      when 'Stage 1: Provisional Certificate'
         text = { "1" => "The summary of the obtained rating is attached herewith.", 
           "2" => "This letter is only the predecessor towards achieving the final GSB-D&B Certificate and should not be considered as the final certificate. The project should satisfy during the construction stage all the requirements of <b>Conformance to Design Audit (CDA)</b> which is a pre-requisite for the final GSB-D&B Certificate as indicated in GSB Technical Guide, <span style='color: #337ab7'>www.gsb.gord.qa</span> \n\n", 
           "3" => "In the event of any future changes applied to the criteria pertaining to this issued certificate, the changes are required to be re-assessed once again.", 
