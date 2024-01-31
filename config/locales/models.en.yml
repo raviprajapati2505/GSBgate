@@ -10,7 +10,7 @@ en:
           building_energy_efficiency_type: Building Energy Efficiency
           healthy_buildings_type: Healthy Buildings
           indoor_air_quality_type: Indoor Air Quality
-          measurement_reporting_and_Verification_type: Measurement, Reporting And Verification (MRV)
+          measurement_reporting_and_verification_type: Measurement, Reporting And Verification (MRV)
           building_water_efficiency_type: Buildings Water Efficiency
           events_carbon_neutrality_type: Events Carbon Neutrality
           products_ecolabeling_type: Products Ecolabeling
@@ -19,7 +19,7 @@ en:
             provisional_building_energy_efficiency: "Stage 1: Provisional Certificate"
             provisional_healthy_buildings: "Stage 1: Provisional Certificate"
             provisional_indoor_air_quality: "Stage 1: Provisional Certificate"
-            provisional_measurement_reporting_and_Verification: "Stage 1: Provisional Certificate"
+            provisional_measurement_reporting_and_verification: "Stage 1: Provisional Certificate"
             provisional_building_water_efficiency: "Stage 1: Provisional Certificate"
             provisional_events_carbon_neutrality: "Stage 1: Provisional Certificate"
             provisional_products_ecolabeling: "Stage 1: Provisional Certificate"
@@ -27,7 +27,7 @@ en:
             final_building_energy_efficiency: "Stage 2: Final Certificate"
             final_healthy_buildings: "Stage 2: Final Certificate"
             final_indoor_air_quality: "Stage 2: Final Certificate"
-            final_measurement_reporting_and_Verification: "Stage 2: Final Certificate"
+            final_measurement_reporting_and_verification: "Stage 2: Final Certificate"
             final_building_water_efficiency: "Stage 2: Final Certificate"
             final_events_carbon_neutrality: "Stage 2: Final Certificate"
             final_products_ecolabeling: "Stage 2: Final Certificate"
@@ -36,33 +36,33 @@ en:
             building_energy_efficiency: Building Energy Efficiency
             healthy_buildings: Healthy Buildings
             indoor_air_quality: Indoor Air Quality
-            measurement_reporting_and_Verification: Measurement, Reporting And Verification (MRV)
+            measurement_reporting_and_verification: Measurement, Reporting And Verification (MRV)
             building_water_efficiency: Buildings Water Efficiency
             events_carbon_neutrality: Events Carbon Neutrality
             products_ecolabeling: Products Ecolabeling
         certification_types:
           provisional_energy_centers_efficiency: "Stage 1: Provisional Certificate"
-            provisional_building_energy_efficiency: "Stage 1: Provisional Certificate"
-            provisional_healthy_buildings: "Stage 1: Provisional Certificate"
-            provisional_indoor_air_quality: "Stage 1: Provisional Certificate"
-            provisional_measurement_reporting_and_Verification: "Stage 1: Provisional Certificate"
-            provisional_building_water_efficiency: "Stage 1: Provisional Certificate"
-            provisional_events_carbon_neutrality: "Stage 1: Provisional Certificate"
-            provisional_products_ecolabeling: "Stage 1: Provisional Certificate"
-            final_energy_centers_efficiency: "Stage 2: Final Certificate"
-            final_building_energy_efficiency: "Stage 2: Final Certificate"
-            final_healthy_buildings: "Stage 2: Final Certificate"
-            final_indoor_air_quality: "Stage 2: Final Certificate"
-            final_measurement_reporting_and_Verification: "Stage 2: Final Certificate"
-            final_building_water_efficiency: "Stage 2: Final Certificate"
-            final_events_carbon_neutrality: "Stage 2: Final Certificate"
-            final_products_ecolabeling: "Stage 2: Final Certificate"
+          provisional_building_energy_efficiency: "Stage 1: Provisional Certificate"
+          provisional_healthy_buildings: "Stage 1: Provisional Certificate"
+          provisional_indoor_air_quality: "Stage 1: Provisional Certificate"
+          provisional_measurement_reporting_and_verification: "Stage 1: Provisional Certificate"
+          provisional_building_water_efficiency: "Stage 1: Provisional Certificate"
+          provisional_events_carbon_neutrality: "Stage 1: Provisional Certificate"
+          provisional_products_ecolabeling: "Stage 1: Provisional Certificate"
+          final_energy_centers_efficiency: "Stage 2: Final Certificate"
+          final_building_energy_efficiency: "Stage 2: Final Certificate"
+          final_healthy_buildings: "Stage 2: Final Certificate"
+          final_indoor_air_quality: "Stage 2: Final Certificate"
+          final_measurement_reporting_and_verification: "Stage 2: Final Certificate"
+          final_building_water_efficiency: "Stage 2: Final Certificate"
+          final_events_carbon_neutrality: "Stage 2: Final Certificate"
+          final_products_ecolabeling: "Stage 2: Final Certificate"
           certificate_titles:
             energy_centers_efficiency_type: Energy Centers Efficiency
             building_energy_efficiency_type: Building Energy Efficiency
             healthy_buildings_type: Healthy Buildings
             indoor_air_quality_type: Indoor Air Quality
-            measurement_reporting_and_Verification_type: Measurement, Reporting And Verification (MRV)
+            measurement_reporting_and_verification_type: Measurement, Reporting And Verification (MRV)
             building_water_efficiency_type: Buildings Water Efficiency
             events_carbon_neutrality_type: Events Carbon Neutrality
             products_ecolabeling_type: Products Ecolabeling
@@ -71,7 +71,7 @@ en:
           provisional_building_energy_efficiency: "Stage 1: Provisional Certificate"
           provisional_healthy_buildings: "Stage 1: Provisional Certificate"
           provisional_indoor_air_quality: "Stage 1: Provisional Certificate"
-          provisional_measurement_reporting_and_Verification: "Stage 1: Provisional Certificate"
+          provisional_measurement_reporting_and_verification: "Stage 1: Provisional Certificate"
           provisional_building_water_efficiency: "Stage 1: Provisional Certificate"
           provisional_events_carbon_neutrality: "Stage 1: Provisional Certificate"
           provisional_products_ecolabeling: "Stage 1: Provisional Certificate"
@@ -79,32 +79,33 @@ en:
           final_building_energy_efficiency: "Stage 2: Final Certificate"
           final_healthy_buildings: "Stage 2: Final Certificate"
           final_indoor_air_quality: "Stage 2: Final Certificate"
-          final_measurement_reporting_and_Verification: "Stage 2: Final Certificate"
+          final_measurement_reporting_and_verification: "Stage 2: Final Certificate"
           final_building_water_efficiency: "Stage 2: Final Certificate"
           final_events_carbon_neutrality: "Stage 2: Final Certificate"
           final_products_ecolabeling: "Stage 2: Final Certificate"
         certification_types_subtitles:
-          provisional_energy_centers_efficiency: "Stage 1: Provisional Certificate"
-          provisional_building_energy_efficiency: "Stage 1: Provisional Certificate"
-          provisional_healthy_buildings: "Stage 1: Provisional Certificate"
-          provisional_indoor_air_quality: "Stage 1: Provisional Certificate"
-          provisional_measurement_reporting_and_Verification: "Stage 1: Provisional Certificate"
-          provisional_building_water_efficiency: "Stage 1: Provisional Certificate"
-          provisional_events_carbon_neutrality: "Stage 1: Provisional Certificate"
-          provisional_products_ecolabeling: "Stage 1: Provisional Certificate"
-          final_energy_centers_efficiency: "Stage 2: Final Certificate"
-          final_building_energy_efficiency: "Stage 2: Final Certificate"
-          final_healthy_buildings: "Stage 2: Final Certificate"
-          final_indoor_air_quality: "Stage 2: Final Certificate"
-          final_measurement_reporting_and_Verification: "Stage 2: Final Certificate"
-          final_building_water_efficiency: "Stage 2: Final Certificate"
-          final_events_carbon_neutrality: "Stage 2: Final Certificate"
-          final_products_ecolabeling: "Stage 2: Final Certificate"
+          provisional_energy_centers_efficiency: Energy Centers Efficiency
+          provisional_building_energy_efficiency: Building Energy Efficiency
+          provisional_healthy_buildings: Healthy Buildings
+          provisional_indoor_air_quality: Indoor Air Quality
+          provisional_measurement_reporting_and_verification: Measurement, Reporting And Verification (MRV)
+          provisional_building_water_efficiency: Buildings Water Efficiency
+          provisional_events_carbon_neutrality: Events Carbon Neutrality
+          provisional_products_ecolabeling: Products Ecolabeling
+          final_energy_centers_efficiency: Energy Centers Efficiency
+          final_building_energy_efficiency: Building Energy Efficiency
+          final_healthy_buildings: Healthy Buildings
+          final_indoor_air_quality: Indoor Air Quality
+          final_measurement_reporting_and_verification: Measurement, Reporting And Verification (MRV)
+          final_building_water_efficiency: Buildings Water Efficiency
+          final_events_carbon_neutrality: Events Carbon Neutrality
+          final_products_ecolabeling: Products Ecolabeling
       certification_path:
         development_type: Development Type
         star_rating: Performance-Based (Star Rating Certificate)
         check_list: Prescriptive Checklist (Compliance Certificate)
         buildings_number: Number of Buildings
+        check_list: Checklist Assessment
         development_types:
           not_applicable: Not applicable
           single_use: Single use building
@@ -155,7 +156,7 @@ en:
           building_energy_efficiency: Building Energy Efficiency
           healthy_buildings: Healthy Buildings
           indoor_air_quality: Indoor Air Quality
-          measurement_reporting_and_Verification: Measurement, Reporting And Verification (MRV)
+          measurement_reporting_and_verification: Measurement, Reporting And Verification (MRV)
           building_water_efficiency: Buildings Water Efficiency
           events_carbon_neutrality: Events Carbon Neutrality
           products_ecolabeling: Products Ecolabeling

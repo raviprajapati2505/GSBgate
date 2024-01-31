@@ -134,7 +134,7 @@ Congratulations once again for partaking in this noble endeavor, and together le
       data.append(["Service Provider", @certification_path.project.service_provider])
     end
     data.append(["GSB Certificate", @certification_path.certificate.only_certification_name])
-    data.append(["Certification Stage", @certification_path.certificate.stage_title])
+    data.append(["Certification Stage", @certification_path.certificate.name])
     data.append(["GSB Version", @certification_path.certificate.only_version])
     data.append(["GSB Scheme", @certification_path.project.building_type_group.name])
     

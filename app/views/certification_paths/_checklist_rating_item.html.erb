@@ -7,12 +7,10 @@
     <span class="text-right" style="width: 72px; display: inline-block;">
         <%= score_label %>
     </span>
-    <% unless certificate.construction_certificate_stage1? || certificate.construction_certificate_stage2? || certificate.construction_certificate_stage3? %>
-      <span>
-        &nbsp;&nbsp;=&nbsp;&nbsp;
-      </span>
-      <% if rating.is_a? String %>
-        <span class="label label-rating label-rating-<%= rating.downcase.gsub(/( )/, '-') %>"><%= rating %></span>
-      <% end %>
+    <span>
+      &nbsp;&nbsp;=&nbsp;&nbsp;
+    </span>
+    <% if rating.is_a? String %>
+      <span class="label label-rating label-rating-<%= rating.downcase.gsub(/( )/, '-') %>"><%= rating %></span>
     <% end %>
 </div>

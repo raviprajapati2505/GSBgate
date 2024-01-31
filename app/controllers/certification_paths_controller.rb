@@ -43,38 +43,31 @@ class CertificationPathsController < AuthenticatedController
     #  TODO: verify 'certification_type', as it is a required param !
     @certification_type = Certificate.certification_types.key(params[:certification_type].to_i)
 
-    # Note: FinalDesign reuses the version from LetterOfConformance !!
-    if Certificate.certification_types[@certification_type] == Certificate.certification_types[:final_design_certificate]
-      @gsb_version = @certification_path.project.completed_letter_of_conformances.first.certificate.gsb_version
-    elsif (Certificate.certification_types[@certification_type] == Certificate.certification_types[:construction_certificate_stage2]) || (Certificate.certification_types[@certification_type] == Certificate.certification_types[:construction_certificate_stage3])
-      @gsb_version = @certification_path.project.completed_construction_stage1.first.certificate.gsb_version
+    @gsb_versions = 
+      Certificate.with_certification_type(
+        Certificate.certification_types[@certification_type]
+      ).order(
+        gsb_version: :desc
+      )
+      .distinct
+      .pluck(
+        :gsb_version, 
+        :gsb_version
+      )
+
+    if params.has_key?(:gsb_version)
+      @gsb_version = params[:gsb_version]
     else
-      #  - The gsb_version can be passed as post data, but we also provide a default based on the available data
-      #  TODO: verify 'gsb_version' is valid
-      # TODO remove next line when D&B2019 and CM2019 can be made available for production
-      # unless Rails.env.production? && (Certificate.certification_types[@certification_type] == Certificate.certification_types[:letter_of_conformance] || Certificate.certification_types[@certification_type] == Certificate.certification_types[:construction_certificate_stage1])
-        @gsb_versions = Certificate.with_certification_type(Certificate.certification_types[@certification_type]).order(gsb_version: :desc).distinct.pluck(:gsb_version, :gsb_version)
-      # else
-      #   @gsb_versions = Certificate.with_certification_type(Certificate.certification_types[@certification_type]).where.not(gsb_version: '2019').order(gsb_version: :desc).distinct.pluck(:gsb_version, :gsb_version)
-      # end
-      if params.has_key?(:gsb_version)
-        @gsb_version = params[:gsb_version]
-      else
-        @gsb_version = @gsb_versions.first
-      end
+      @gsb_version = @gsb_versions.first
     end
 
-    if Certificate.certification_types[@certification_type] == Certificate.certification_types[:final_design_certificate]
-      @certificate_method = @certification_path.project.completed_letter_of_conformances.first.certification_path_method
-      @assessment_method = if !@certificate_method.present?
-                              1
+    if Certificate::FINAL_CERTIFICATES.include?(Certificate.certification_types[@certification_type])
+      @certificate_method = @certification_path.project.completed_provisional_certificate.first.certification_path_method
+      @assessment_method = unless @certificate_method.present?
+                              0
                            else
                               @certificate_method.assessment_method
                            end
-
-    elsif [Certificate.certification_types[:ecoleaf_provisional_certificate], Certificate.certification_types[:ecoleaf_certificate]].include?(Certificate.certification_types[@certification_type])
-      @assessment_method = 2
-
     else
       if params.has_key?(:assessment_method)
         @assessment_method = params[:assessment_method].to_i
@@ -88,11 +81,6 @@ class CertificationPathsController < AuthenticatedController
     @certificates = Certificate.with_gsb_version(@gsb_version).with_certification_type(Certificate.certification_types[@certification_type])
     @certification_path.certificate = @certificates.first
 
-    # Force NO PCR for construction certificates
-    if params.has_key?(:certification_path) && params[:certification_path].has_key?(:pcr_track) && @certification_path.certificate.construction_type?
-      params[:pcr_track] = false
-    end
-
     # PCR Track
     if params.has_key?(:certification_path) && params[:certification_path].has_key?(:pcr_track)
       @certification_path.pcr_track = params[:certification_path][:pcr_track]
@@ -101,29 +89,12 @@ class CertificationPathsController < AuthenticatedController
     end
 
     # Expiry
-    if @certification_path.certificate.letter_of_conformance? || @certification_path.certificate.ecoleaf_provisional_certificate?
-      @certification_path.expires_at = 1.year.from_now
-    elsif @certification_path.certificate.final_design_certificate? || @certification_path.certificate.ecoleaf_certificate?
-      @durations = [2, 3, 4]
-      if params.has_key?(:certification_path) && params[:certification_path].has_key?(:expires_at)
-        @certification_path.expires_at = params[:certification_path][:expires_at].to_i.years.from_now
-      else
-        @certification_path.expires_at = @durations.first.years.from_now
-      end
-    elsif @certification_path.certificate[:certificate_type] == "construction_type"
-      stage1_certification_certificate = @project&.certification_paths.joins(:certificate).find_by("certificates.certification_type = ?", Certificate.certification_types["construction_certificate_stage1"])
-      @certification_path.expires_at = stage1_certification_certificate.expires_at if stage1_certification_certificate.present?
-    end
-
+    @certification_path.expires_at = 1.year.from_now
+    
     # Development Type
-    # Note: FinalDesign uses a similar DevelopmentType as Letter Of Conformace !!
-    if Certificate.certification_types[@certification_type] == Certificate.certification_types[:final_design_certificate]
+    if Certificate::FINAL_CERTIFICATES.include?(Certificate.certification_types[@certification_type])
       # Note: we currently use the name to match, this could be done cleaner
-      development_type_name = @certification_path.project.completed_letter_of_conformances.first.development_type.name
-      @certification_path.development_type = DevelopmentType.find_by(name: development_type_name, certificate: @certification_path.certificate)
-    elsif Certificate.certification_types[@certification_type] == Certificate.certification_types[:ecoleaf_certificate]
-      # Note: we currently use the name to match, this could be done cleaner
-      development_type_name = @certification_path.project.completed_ecoleaf_provisional_stage.first.development_type.name
+      development_type_name = @certification_path.project.completed_provisional_certificate.first.development_type.name
       @certification_path.development_type = DevelopmentType.find_by(name: development_type_name, certificate: @certification_path.certificate)
     else
       @development_types = @certification_path.certificate.development_types.joins(:development_type_schemes)&.select("DISTINCT ON (development_types.name) development_types.*").sort_by(&:display_weight)
@@ -135,9 +106,9 @@ class CertificationPathsController < AuthenticatedController
       end
     end
 
-    if Certificate.certification_types[@certification_type] == Certificate.certification_types[:final_design_certificate]
+    if Certificate::FINAL_CERTIFICATES.include?(Certificate.certification_types[@certification_type])
       # Mirror the LOC scheme mixes
-      @certification_path.project.completed_letter_of_conformances.first.scheme_mixes.each do |scheme_mix|
+      @certification_path.project.completed_provisional_certificate.first.scheme_mixes.each do |scheme_mix|
         # if a scheme certification type is available
         unless scheme_mix.scheme.certification_type.nil?
           loc_scheme = scheme_mix.scheme
@@ -149,7 +120,7 @@ class CertificationPathsController < AuthenticatedController
 
         new_scheme_mix = @certification_path.scheme_mixes.build({scheme_id: scheme_id, weight: scheme_mix.weight, custom_name: scheme_mix.custom_name})
         # Mirror the main scheme mix
-        if @certification_path.project.completed_letter_of_conformances.first.main_scheme_mix_id.present? && (scheme_mix.id == @certification_path.project.completed_letter_of_conformances.first.main_scheme_mix_id)
+        if @certification_path.project.completed_provisional_certificate.first.main_scheme_mix_id.present? && (scheme_mix.id == @certification_path.project.completed_provisional_certificate.first.main_scheme_mix_id)
           @certification_path.main_scheme_mix = new_scheme_mix
           @certification_path.main_scheme_mix_selected = true
         end
@@ -193,8 +164,8 @@ class CertificationPathsController < AuthenticatedController
     end
 
     # set number of buildings
-    if Certificate.certification_types[@certification_type] == Certificate.certification_types[:final_design_certificate]
-      @certification_path.buildings_number = @certification_path.project.completed_letter_of_conformances.first.buildings_number rescue 0
+    if Certificate::FINAL_CERTIFICATES.include?(Certificate.certification_types[@certification_type])
+      @certification_path.buildings_number = @certification_path.project.completed_provisional_certificate.first.buildings_number rescue 0
     else
       if params.has_key?(:certification_path) && params[:certification_path].has_key?(:buildings_number)
         @certification_path.buildings_number = params.dig(:certification_path, :buildings_number) rescue 0
@@ -209,8 +180,6 @@ class CertificationPathsController < AuthenticatedController
       # save the certificate, as the user has clicked save
       format.html {
         if @certification_path.save
-          @certification_path.create_assessment_method(@assessment_method) if (@project.design_and_build? || @project.ecoleaf?)
-          @project.update_column(:service_provider_2, current_user&.organization_name) if @certification_path&.certificate&.certification_type == "final_design_certificate"
           @project.project_rendering_images.where(certification_path_id: nil).update(certification_path_id: @certification_path.id)
           @project.actual_project_images.where(certification_path_id: nil).update(certification_path_id: @certification_path.id)
           return redirect_to(project_certification_path_path(@project, @certification_path), notice: t('controllers.certification_paths_controller.apply.success'))
@@ -308,7 +277,7 @@ class CertificationPathsController < AuthenticatedController
         if @certification_path.status == "Certified"
           DigestMailer.certificate_approved_email(@certification_path).deliver_now
           
-          if @certification_path.certificate.stage_title != 'Stage 2: CDA, Design & Build Certificate'
+          if @certification_path.certificate.name != 'Stage 2: CDA, Design & Build Certificate'
             unless @certification_path.final_construction?
               @certification_path.certification_path_status_id = @certification_path.next_status
               @certification_path.save!

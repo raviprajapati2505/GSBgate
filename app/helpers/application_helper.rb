@@ -451,7 +451,7 @@ module ApplicationHelper
       breadcrumbs[:paths] << project_user_url(project, projects_user)
     end
     if certification_path.present?
-      breadcrumbs[:names] << certification_path.certificate.stage_title + ' (' + certification_path.status + ')'
+      breadcrumbs[:names] << certification_path.certificate.name + ' (' + certification_path.status + ')'
       breadcrumbs[:paths] << project_certification_path_url(project, certification_path)
     end
     if scheme_mix.present?
@@ -530,14 +530,6 @@ module ApplicationHelper
 
   def can_update_smc_scores(scheme_mix_criterion)
     can?(:update_targeted_score, @scheme_mix_criterion) || can?(:update_submitted_score, @scheme_mix_criterion) || can?(:update_achieved_score, @scheme_mix_criterion) rescue false
-  end
-
-  def certification_assessment_type_title(assessment_type = nil)
-    if assessment_type == 1
-      "Star Rating Assessment"
-    elsif assessment_type == 2
-      "Checklist Assessment"
-    end
   end
 
   def licence_options(user = nil)
@@ -786,7 +778,7 @@ module ApplicationHelper
   end
 
   def get_certificate_types_names(user)
-    certificate_types_name = Certificate.all.order(:display_weight).map { |certificate| [certificate.stage_title, certificate.stage_title&.delete(",")] }
+    certificate_types_name = Certificate.all.order(:display_weight).map { |certificate| [certificate.name, certificate.name&.delete(",")] }
     
     if user.is_admin?
       certificate_types_name.push(["Recent Stages", "Recent Stages"])
@@ -1029,26 +1021,26 @@ module ApplicationHelper
                             #{Certificate.certification_types['provisional_building_energy_efficiency']}, 
                             #{Certificate.certification_types['provisional_healthy_buildings']}, 
                             #{Certificate.certification_types['provisional_indoor_air_quality']}, 
-                            #{Certificate.certification_types['provisional_measurement_reporting_and_Verification']},
+                            #{Certificate.certification_types['provisional_measurement_reporting_and_verification']},
                             #{Certificate.certification_types['provisional_building_water_efficiency']},
-                            #{Certificate.certification_types['provisional_events_carbon_neutrality']}
-                            #{Certificate.certification_types['provisional_products_ecolabeling']}
+                            #{Certificate.certification_types['provisional_events_carbon_neutrality']},
+                            #{Certificate.certification_types['provisional_products_ecolabeling']},
                             #{Certificate.certification_types['final_energy_centers_efficiency']}, 
                             #{Certificate.certification_types['final_building_energy_efficiency']}, 
                             #{Certificate.certification_types['final_Healthy_buildings']}, 
                             #{Certificate.certification_types['final_indoor_air_quality']}, 
-                            #{Certificate.certification_types['final_measurement_reporting_and_Verification']},
+                            #{Certificate.certification_types['final_measurement_reporting_and_verification']},
                             #{Certificate.certification_types['final_building_water_efficiency']},
-                            #{Certificate.certification_types['final_events_carbon_neutrality']}
+                            #{Certificate.certification_types['final_events_carbon_neutrality']},
                             #{Certificate.certification_types['final_products_ecolabeling']}
                           ) 
                           THEN 
                             project_team_project_users.certification_team_type IN (
-                              #{ProjectsUser.certification_team_types['Other']}
+                              #{ProjectsUser.certification_team_types[:other]}
                             ) 
                         ELSE 
                           project_team_project_users.certification_team_type IN (
-                            #{ProjectsUser.certification_team_types['Other']}, 
+                            #{ProjectsUser.certification_team_types[:other]}
                           ) 
                       END
                   )
@@ -1085,26 +1077,26 @@ module ApplicationHelper
                             #{Certificate.certification_types['provisional_building_energy_efficiency']}, 
                             #{Certificate.certification_types['provisional_healthy_buildings']}, 
                             #{Certificate.certification_types['provisional_indoor_air_quality']}, 
-                            #{Certificate.certification_types['provisional_measurement_reporting_and_Verification']},
+                            #{Certificate.certification_types['provisional_measurement_reporting_and_verification']},
                             #{Certificate.certification_types['provisional_building_water_efficiency']},
-                            #{Certificate.certification_types['provisional_events_carbon_neutrality']}
-                            #{Certificate.certification_types['provisional_products_ecolabeling']}
+                            #{Certificate.certification_types['provisional_events_carbon_neutrality']},
+                            #{Certificate.certification_types['provisional_products_ecolabeling']},
                             #{Certificate.certification_types['final_energy_centers_efficiency']}, 
                             #{Certificate.certification_types['final_building_energy_efficiency']}, 
                             #{Certificate.certification_types['final_Healthy_buildings']}, 
                             #{Certificate.certification_types['final_indoor_air_quality']}, 
-                            #{Certificate.certification_types['final_measurement_reporting_and_Verification']},
+                            #{Certificate.certification_types['final_measurement_reporting_and_verification']},
                             #{Certificate.certification_types['final_building_water_efficiency']},
-                            #{Certificate.certification_types['final_events_carbon_neutrality']}
+                            #{Certificate.certification_types['final_events_carbon_neutrality']},
                             #{Certificate.certification_types['final_products_ecolabeling']}
                           ) 
                           THEN 
                             cgp_project_managers_project_users.certification_team_type IN (
-                              #{ProjectsUser.certification_team_types['Other']}
+                              #{ProjectsUser.certification_team_types[:other]}
                             ) 
                         ELSE 
                           cgp_project_managers_project_users.certification_team_type IN (
-                            #{ProjectsUser.certification_team_types['Other']}, 
+                            #{ProjectsUser.certification_team_types[:other]}
                           ) 
                       END
                   )
@@ -1141,25 +1133,25 @@ module ApplicationHelper
                             #{Certificate.certification_types['provisional_building_energy_efficiency']}, 
                             #{Certificate.certification_types['provisional_healthy_buildings']}, 
                             #{Certificate.certification_types['provisional_indoor_air_quality']}, 
-                            #{Certificate.certification_types['provisional_measurement_reporting_and_Verification']},
+                            #{Certificate.certification_types['provisional_measurement_reporting_and_verification']},
                             #{Certificate.certification_types['provisional_building_water_efficiency']},
-                            #{Certificate.certification_types['provisional_events_carbon_neutrality']}
-                            #{Certificate.certification_types['provisional_products_ecolabeling']}
+                            #{Certificate.certification_types['provisional_events_carbon_neutrality']},
+                            #{Certificate.certification_types['provisional_products_ecolabeling']},
                             #{Certificate.certification_types['final_energy_centers_efficiency']}, 
                             #{Certificate.certification_types['final_building_energy_efficiency']}, 
                             #{Certificate.certification_types['final_Healthy_buildings']}, 
                             #{Certificate.certification_types['final_indoor_air_quality']}, 
-                            #{Certificate.certification_types['final_measurement_reporting_and_Verification']},
+                            #{Certificate.certification_types['final_measurement_reporting_and_verification']},
                             #{Certificate.certification_types['final_building_water_efficiency']},
-                            #{Certificate.certification_types['final_events_carbon_neutrality']}
+                            #{Certificate.certification_types['final_events_carbon_neutrality']},
                             #{Certificate.certification_types['final_products_ecolabeling']}
                           ) 
                           THEN 
                             gsb_trust_team_project_users.certification_team_type IN (
-                              #{ProjectsUser.certification_team_types['Other']}
+                              #{ProjectsUser.certification_team_types[:other]}
                             ) 
                         ELSE gsb_trust_team_project_users.certification_team_type IN (
-                          #{ProjectsUser.certification_team_types['Other']}, 
+                          #{ProjectsUser.certification_team_types[:other]}
                         ) 
                     END
                 )
@@ -1196,27 +1188,27 @@ module ApplicationHelper
                             #{Certificate.certification_types['provisional_building_energy_efficiency']}, 
                             #{Certificate.certification_types['provisional_healthy_buildings']}, 
                             #{Certificate.certification_types['provisional_indoor_air_quality']}, 
-                            #{Certificate.certification_types['provisional_measurement_reporting_and_Verification']},
+                            #{Certificate.certification_types['provisional_measurement_reporting_and_verification']},
                             #{Certificate.certification_types['provisional_building_water_efficiency']},
-                            #{Certificate.certification_types['provisional_events_carbon_neutrality']}
-                            #{Certificate.certification_types['provisional_products_ecolabeling']}
+                            #{Certificate.certification_types['provisional_events_carbon_neutrality']},
+                            #{Certificate.certification_types['provisional_products_ecolabeling']},
                             #{Certificate.certification_types['final_energy_centers_efficiency']}, 
                             #{Certificate.certification_types['final_building_energy_efficiency']}, 
                             #{Certificate.certification_types['final_Healthy_buildings']}, 
                             #{Certificate.certification_types['final_indoor_air_quality']}, 
-                            #{Certificate.certification_types['final_measurement_reporting_and_Verification']},
+                            #{Certificate.certification_types['final_measurement_reporting_and_verification']},
                             #{Certificate.certification_types['final_building_water_efficiency']},
-                            #{Certificate.certification_types['final_events_carbon_neutrality']}
+                            #{Certificate.certification_types['final_events_carbon_neutrality']},
                             #{Certificate.certification_types['final_products_ecolabeling']}
                           ) 
                           THEN 
                             certification_managers_project_users.certification_team_type IN (
-                              #{ProjectsUser.certification_team_types['Other']}
+                              #{ProjectsUser.certification_team_types[:other]}
                             ) 
 
                         ELSE 
                           certification_managers_project_users.certification_team_type IN (
-                            #{ProjectsUser.certification_team_types['Other']}, 
+                            #{ProjectsUser.certification_team_types[:other]}
                           ) 
                       END
                   )

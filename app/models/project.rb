@@ -148,28 +148,47 @@ class Project < ApplicationRecord
     end
   end
 
-  def completed_letter_of_conformances
-    CertificationPath.with_project(self).with_status(CertificationPathStatus::STATUSES_COMPLETED).with_certification_type(Certificate.certification_types[:letter_of_conformance])
+  def completed_provisional_certificate
+    completed_provisional_energy_centers_efficiency ||
+    completed_provisional_building_energy_efficiency ||
+    completed_provisional_healthy_buildings ||
+    completed_provisional_indoor_air_quality ||
+    completed_provisional_measurement_reporting_and_verification ||
+    completed_provisional_building_water_efficiency ||
+    completed_provisional_events_carbon_neutrality ||
+    CertificationPath.none
   end
 
-  def completed_construction_stage1
-    CertificationPath.with_project(self).with_status(CertificationPathStatus::STATUSES_COMPLETED).with_certification_type(Certificate.certification_types[:construction_certificate_stage1])
+  def completed_provisional_energy_centers_efficiency
+    CertificationPath.with_project(self).with_status(CertificationPathStatus::STATUSES_COMPLETED).with_certification_type(Certificate.certification_types[:provisional_energy_centers_efficiency])
   end
 
-  def completed_construction_stage2
-    CertificationPath.with_project(self).with_status(CertificationPathStatus::STATUSES_COMPLETED).with_certification_type(Certificate.certification_types[:construction_certificate_stage2])
+  def completed_provisional_building_energy_efficiency
+    CertificationPath.with_project(self).with_status(CertificationPathStatus::STATUSES_COMPLETED).with_certification_type(Certificate.certification_types[:provisional_building_energy_efficiency])
   end
 
-  def completed_construction_stage3
-    CertificationPath.with_project(self).with_status(CertificationPathStatus::STATUSES_COMPLETED).with_certification_type(Certificate.certification_types[:construction_certificate_stage3])
+  def completed_provisional_healthy_buildings
+    CertificationPath.with_project(self).with_status(CertificationPathStatus::STATUSES_COMPLETED).with_certification_type(Certificate.certification_types[:provisional_healthy_buildings])
   end
 
-  def with_final_design_certificate
-    CertificationPath.with_project(self).with_certification_type(Certificate.certification_types[:final_design_certificate])
+  def completed_provisional_indoor_air_quality
+    CertificationPath.with_project(self).with_status(CertificationPathStatus::STATUSES_COMPLETED).with_certification_type(Certificate.certification_types[:provisional_indoor_air_quality])
   end
 
-  def completed_ecoleaf_provisional_stage
-    CertificationPath.with_project(self).with_status(CertificationPathStatus::STATUSES_COMPLETED).with_certification_type(Certificate.certification_types[:ecoleaf_provisional_certificate])
+  def completed_provisional_measurement_reporting_and_verification
+    CertificationPath.with_project(self).with_status(CertificationPathStatus::STATUSES_COMPLETED).with_certification_type(Certificate.certification_types[:provisional_measurement_reporting_and_verification])
+  end
+
+  def completed_provisional_building_water_efficiency
+    CertificationPath.with_project(self).with_status(CertificationPathStatus::STATUSES_COMPLETED).with_certification_type(Certificate.certification_types[:provisional_building_water_efficiency])
+  end
+
+  def completed_provisional_events_carbon_neutrality
+    CertificationPath.with_project(self).with_status(CertificationPathStatus::STATUSES_COMPLETED).with_certification_type(Certificate.certification_types[:provisional_events_carbon_neutrality])
+  end
+
+  def completed_provisional_products_ecolabeling
+    CertificationPath.with_project(self).with_status(CertificationPathStatus::STATUSES_COMPLETED).with_certification_type(Certificate.certification_types[:provisional_products_ecolabeling])
   end
 
   def average_scores_all_construction_stages

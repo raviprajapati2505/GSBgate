@@ -81,7 +81,7 @@ module Effective
             label: t('models.effective.datatables.offline.certification_path.name'), 
             search: { 
               as: :select, 
-              collection: Certificate.all.order(:display_weight).map { |certificate| [certificate.stage_title, certificate.stage_title.sub(',', '+')] }.uniq 
+              collection: Certificate.all.order(:display_weight).map { |certificate| [certificate.name, certificate.name.sub(',', '+')] }.uniq 
             } do |rec| 
             unless !rec.certification_id
               link_to_if(!current_user.is_record_checker?,

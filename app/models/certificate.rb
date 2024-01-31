@@ -4,7 +4,7 @@ class Certificate < ApplicationRecord
     :building_energy_efficiency_type,
     :healthy_buildings_type,
     :indoor_air_quality_type,
-    :measurement_reporting_and_Verification_type,
+    :measurement_reporting_and_verification_type,
     :building_water_efficiency_type,
     :events_carbon_neutrality_type,
     :products_ecolabeling_type
@@ -15,7 +15,7 @@ class Certificate < ApplicationRecord
     :building_energy_efficiency_stage,
     :healthy_buildings_stage,
     :indoor_air_quality_stage,
-    :measurement_reporting_and_Verification_stage,
+    :measurement_reporting_and_verification_stage,
     :building_water_efficiency_stage,
     :events_carbon_neutrality_stage,
     :products_ecolabeling_stage
@@ -26,7 +26,7 @@ class Certificate < ApplicationRecord
     :provisional_building_energy_efficiency,
     :provisional_healthy_buildings,
     :provisional_indoor_air_quality,
-    :provisional_measurement_reporting_and_Verification,
+    :provisional_measurement_reporting_and_verification,
     :provisional_building_water_efficiency,
     :provisional_events_carbon_neutrality,
     :provisional_products_ecolabeling,
@@ -34,7 +34,29 @@ class Certificate < ApplicationRecord
     :final_building_energy_efficiency,
     :final_Healthy_buildings,
     :final_indoor_air_quality,
-    :final_measurement_reporting_and_Verification,
+    :final_measurement_reporting_and_verification,
+    :final_building_water_efficiency,
+    :final_events_carbon_neutrality,
+    :final_products_ecolabeling
+  ]
+
+  PROVISIONAL_CERTIFICATES = [
+    :provisional_energy_centers_efficiency,
+    :provisional_building_energy_efficiency,
+    :provisional_healthy_buildings,
+    :provisional_indoor_air_quality,
+    :provisional_measurement_reporting_and_verification,
+    :provisional_building_water_efficiency,
+    :provisional_events_carbon_neutrality,
+    :provisional_products_ecolabeling
+  ]
+
+  FINAL_CERTIFICATES = [
+    :final_energy_centers_efficiency,
+    :final_building_energy_efficiency,
+    :final_Healthy_buildings,
+    :final_indoor_air_quality,
+    :final_measurement_reporting_and_verification,
     :final_building_water_efficiency,
     :final_events_carbon_neutrality,
     :final_products_ecolabeling
@@ -110,7 +132,7 @@ class Certificate < ApplicationRecord
                               when "Indoor Air Quality"
                                 [Certificate.certification_types[:provisional_indoor_air_quality], Certificate.certification_types[:final_indoor_air_quality]]
                               when "Measurement, Reporting And Verification (MRV)"
-                                [Certificate.certification_types[:provisional_measurement_reporting_and_Verification], Certificate.certification_types[:final_measurement_reporting_and_Verification]]
+                                [Certificate.certification_types[:provisional_measurement_reporting_and_verification], Certificate.certification_types[:final_measurement_reporting_and_verification]]
                               when "Buildings Water Efficiency"
                                 [Certificate.certification_types[:provisional_building_water_efficiency], Certificate.certification_types[:final_building_water_efficiency]]
                               when "Events Carbon Neutrality"
@@ -158,40 +180,24 @@ class Certificate < ApplicationRecord
   end
 
   def only_certification_name
-    case only_name
-    when "Stage 1: Provisional Certificate"
-      I18n.t('activerecord.attributes.certificate.certificate_types.certificate_titles.design_and_build')
-    when "GSB-CM", "Construction Certificate"
-      I18n.t('activerecord.attributes.certificate.certificate_types.certificate_titles.construction_certificate')
-    end
+    I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.#{only_name}")
   end
 
   def report_certification_name
-    case only_name
-    when "Stage 1: Provisional Certificate"
-      "Stage 1: Provisional Certificate"
-    when "GSB-CM", "Construction Certificate"
-      "GSB Construction Management (#{only_certification_name})"
-    end
+    I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.#{only_name}")
   end
 
   def only_name
-    name&.split(',')[0]
+    name = 
+      if certification_type.include?('provisional_')
+        certification_type.gsub("provisional_", "")
+      elsif certification_type.include?('final_')
+        certification_type.gsub("final_", "")
+      end
   end
 
   def only_version
     gsb_version
-  end
-
-  def stage_title
-    case only_name
-    when "Stage 1: Provisional Certificate"
-      "Stage 2: Final Certificate"
-    when "Stage 2: Final Certificate"
-     "Stage 2: Final Certificate"
-    else
-      I18n.t("activerecord.attributes.certificate.certificate_types.stage_titles.#{certification_type}")
-    end
   end
 
   def team_title

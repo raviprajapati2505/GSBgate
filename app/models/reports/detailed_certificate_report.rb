@@ -106,7 +106,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
       draw_paragraph1
       
       unless @certification_path.is_checklist_method?
-        case @certification_path.certificate&.stage_title
+        case @certification_path.certificate&.name
           when 'Stage 1: Foundation'
           when 'Stage 2: Substructure & Superstructure'
           when 'Stage 3: Finishing'
@@ -185,7 +185,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
 
     data.append(["GSB Certificate", @certification_path.certificate&.report_certification_name])
 
-    case @certification_path.certificate&.stage_title
+    case @certification_path.certificate&.name
       when 'Stage 1: Foundation'
         data.append(["GSB Certification Stage", 'Enabling Foundation Works'])
       when 'Stage 2: Substructure & Superstructure'
@@ -193,7 +193,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
       when 'Stage 3: Finishing'
         data.append(["GSB Certification Stage", 'Stage 3: Finishing Works'])
       else
-        data.append(["GSB Certification Stage", @certification_path.certificate&.stage_title])
+        data.append(["GSB Certification Stage", @certification_path.certificate&.name])
     end
     
     data.append(["GSB Version", "GSB #{@certification_path.certificate&.only_version}"])
@@ -235,7 +235,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
         styled_text("<div style='font-size: 10; color: 000000; font-style: bold;'>\n Director, GSB Trust \n</div>")
       else
         name = @certification_path.certificate.only_name
-        text = certificate_intro_text(name, @certification_path&.certificate&.stage_title)
+        text = certificate_intro_text(name, @certification_path&.certificate&.name)
         styled_text("<div style='text-align: justify; font-size: 10; line-height: 7; color: 000000;'>#{text}</div>")
 
         # Prepare table data
@@ -249,12 +249,12 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
 
         newline
 
-        text = certificate_summary_text(name, @certification_path&.certificate&.stage_title)
+        text = certificate_summary_text(name, @certification_path&.certificate&.name)
 
         if text.present?
           text.each do |line, txt|
               styled_text("<div style='font-size: 10;text-align: justify; line-height: 7'>#{txt}</div>")
-              case @certification_path.certificate&.stage_title
+              case @certification_path.certificate&.name
                 when 'Stage 1: Foundation'
                   newline(1)
                 when 'Stage 2: Substructure & Superstructure'
@@ -291,7 +291,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     # Add the category rows to the table
     data.append(["Project ID: #{@project.code}", {content: "Project Name: #{@detailed_certificate_report&.project_name} - #{scheme_mix&.scheme&.name} #{scheme_info}", colspan: 2}])
 
-    case @certification_path.certificate&.stage_title
+    case @certification_path.certificate&.name
       when 'Stage 1: Foundation'
         stg_title = 'Enabling Foundation Works'
       when 'Stage 2: Substructure & Superstructure'
@@ -299,7 +299,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
       when 'Stage 3: Finishing'
         stg_title = 'Stage 3: Finishing Works'
       else
-        stg_title = @certification_path.certificate&.stage_title
+        stg_title = @certification_path.certificate&.name
     end
 
     data.append(["Certification Stage: #{stg_title}", "Approval Date: #{@detailed_certificate_report&.approval_date&.strftime('%d %B, %Y')}", "Reference: #{@detailed_certificate_report&.reference_number}"])

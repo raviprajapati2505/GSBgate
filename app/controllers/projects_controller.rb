@@ -309,7 +309,7 @@ class ProjectsController < AuthenticatedController
 
           "#{
               if certification_path.present?
-                certification_assessment_type_title(certification_path.certification_path_method&.assessment_method)
+                certification_path.assessment_method_title
               end
           }",
 
@@ -323,7 +323,7 @@ class ProjectsController < AuthenticatedController
                                                                                                 
           "#{
               if certificate.present?
-                certificate&.stage_title
+                certificate&.name
               end
           }",
                                                                                                       

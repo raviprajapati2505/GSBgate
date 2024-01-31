@@ -97,11 +97,15 @@ en:
     new:
       title: Applying for %{certificate} Certification
     overview_item:
-      warning_complete_loc: Please complete the Letter of conformance certification first.
-      warning_complete_stage1: Please complete the GSB-CM - Stage 1 first.
-      warning_complete_stage2: Please complete the GSB-CM - Stage 2 first.
-      warning_complete_stage3: Please complete all GSB-CM stages first.
-      warning_complete_provisional: Please complete all GSB-EcoLeaf stages first.
+      warning:
+        provisional_energy_centers_efficiency: Please complete the Provisional Energy Centers Efficiency Certification first.
+        provisional_building_energy_efficiency: Please complete the Provisional Building Energy Efficiency Certification first.
+        provisional_healthy_buildings: Please complete the Warning Provisional Healthy Buildings Certification first.
+        provisional_indoor_air_quality: Please complete all Provisional Indoor Air Quality Certification first.
+        provisional_measurement_reporting_and_verification: Please complete all Provisional Measurement Reporting and Verification Certification first.
+        provisional_building_water_efficiency: Please complete the Provisional Building Water Efficiency Certification first.
+        provisional_events_carbon_neutrality: Please complete all Provisional Events Carbon Neutrality Certification first.
+        provisional_products_ecolabeling: Please complete all Provisional Products Ecolabeling Certification first.
     timeline_legend:
       project_team: Project Team
       certifier_team: GSB Trust Team

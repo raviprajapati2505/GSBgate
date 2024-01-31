@@ -238,7 +238,7 @@ module Effective
         col :certificate_id, col_class: 'multiple-select col-order-21', sql_column: 'certificates.id', label: t('models.effective.datatables.projects_certification_paths.certificate_id.label'), search: { as: :select, collection: Proc.new { Certificate.all.order(:display_weight).map { |certificate| [certificate.only_certification_name, certificate.only_certification_name] }.uniq}, multiple: true } do |rec|
           if rec.certification_path_id.present?
             only_certification_name = Certificate.find_by_name(rec&.certificate_name)&.only_certification_name
-            certification_name_datatable_render(rec,only_certification_name)
+            certification_name_datatable_render(rec, only_certification_name)
           end
         end.search do |collection, terms, column, index|
           terms_array = terms.split(",")
@@ -249,8 +249,8 @@ module Effective
           end
         end
 
-        col :certification_assessment_method, col_class: 'multiple-select col-order-22', sql_column: 'certification_paths.id', label: t('models.effective.datatables.projects_certification_paths.assessment_method.label'), search: { as: :select, collection: Proc.new { [["Star Rating Assessment", 1], ["Checklist Assessment", 2]] } } do |rec|
-          certification_assessment_type_title(CertificationPathMethod.find_by(certification_path_id: rec.certification_path_id)&.assessment_method)
+        col :certification_assessment_method, col_class: 'multiple-select col-order-22', sql_column: 'certification_paths.id', label: t('models.effective.datatables.projects_certification_paths.assessment_method.label'), search: { as: :select, collection: Proc.new { [["Checklist Assessment", 0]] } } do |rec|
+          CertificationPath.find_by(id: rec.certification_path_id)&.assessment_method_title
         end.search do |collection, terms, column, index|
           terms_array = terms.split(",")
           
@@ -329,7 +329,7 @@ module Effective
 
         col :certificate_stage, col_class: 'multiple-select col-order-27', sql_column: 'certificates.id', label: t('models.effective.datatables.projects_certification_paths.certificate_stage.label'), search: { as: :select, collection: Proc.new { get_certificate_types_names(current_user) } } do |rec|
           if rec.certification_path_id.present?
-            only_certification_stage = CertificationPath.find(rec.certification_path_id).certificate&.stage_title
+            only_certification_stage = CertificationPath.find(rec.certification_path_id).certificate&.name
             link_to(
               only_certification_stage,
               project_certification_path_path(rec.project_nr, rec.certification_path_id)

@@ -71,7 +71,7 @@ class TaskService
           certification_path: :certificate
         )
         .where(
-          "projects_users.certification_team_type IN (#{ProjectsUser.certification_team_types['Other']})"
+          "projects_users.certification_team_type IN (#{ProjectsUser.certification_team_types[:other]})"
         )
     end
 
