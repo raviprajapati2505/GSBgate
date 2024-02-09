@@ -572,7 +572,7 @@ module ApplicationHelper
     }
     @total_scores = scheme_mix.scores
 
-    if scheme_mix.CM_2019? && scheme_mix.certification_path.certification_path_status.name != "Activating"
+    if scheme_mix.certification_path.certification_path_status.name != "Activating"
       @category_w = scheme_mix.scheme_categories.find_by(name: "Water")
       if @category_w
         criteria_w = @category_w&.scheme_mix_criteria
@@ -615,7 +615,7 @@ module ApplicationHelper
 
   # to manipulate scores of  E1, W1, M1, M3 and MO1 in final cm certification.
   def final_cm_revised_avg_scores(certification_path, total_scores)
-    if certification_path.present? && certification_path&.final_construction? && certification_path&.certificate&.construction_2019? && !certification_path.is_activating?
+    if certification_path.present? && !certification_path.is_activating?
       project = certification_path&.project
 
       scheme_categories_names = ["Energy", "Water", "Materials", "Management & Operations", "Management And Operations"]
@@ -650,7 +650,7 @@ module ApplicationHelper
 
             keys_of_required_scores = total_scores&.select { |key, value| key.to_s.match(/achieved_score/) }.keys
 
-            if scheme_category_name == 'Water' && cm_stage_3_required_smc_criterion&.scheme_criterion&.number == 1 && certification_path.construction_certificate_CM_2019?
+            if scheme_category_name == 'Water' && cm_stage_3_required_smc_criterion&.scheme_criterion&.number == 1
               manipulated_cm_stage_1_smc_scores = cm_2019_w1_scores_manipulation(cm_stage_1_required_smc_criterion, cm_stage_1_sm_scores)
               manipulated_cm_stage_2_smc_scores = cm_2019_w1_scores_manipulation(cm_stage_2_required_smc_criterion, cm_stage_2_sm_scores)
               manipulated_cm_stage_3_smc_scores = cm_2019_w1_scores_manipulation(cm_stage_3_required_smc_criterion, cm_stage_3_sm_scores)

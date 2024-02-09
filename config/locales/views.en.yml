@@ -41,7 +41,7 @@ en:
         name: Certification Type
         version: Certification Version
         scheme: Certification Scheme
-        assessment_type: Certification Method
+        assessment_method: Certification Method
         stage: Certification Stage
         status: Certification Status
         rating: Certification Rating

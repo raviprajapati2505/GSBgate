@@ -6,13 +6,7 @@
   $('#applyForCertificateModal').modal('show');
 <% end %>
 
-<% if @project.project_rendering_images.empty? && ((Certificate.certification_types[@certification_type] == Certificate.certification_types[:letter_of_conformance]) or (Certificate.certification_types[@certification_type] == Certificate.certification_types[:final_design_certificate])) %>
-    addOutline($(".project-rendering-image-div"));
-<% elsif @project.actual_project_images.empty? && ((Certificate.certification_types[@certification_type] == Certificate.certification_types[:operations_certificate]) or (Certificate.certification_types[@certification_type] == Certificate.certification_types[:final_design_certificate]))%>
-    addOutline($(".project-actual-image-div"));
-<% else %>
-    $(".project-rendering-image-div, .project-actual-image-div").removeClass("outline-danger");
-<% end %>
+$(".project-rendering-image-div, .project-actual-image-div").removeClass("outline-danger");
 
 //# sourceURL=new_certificate.js
 

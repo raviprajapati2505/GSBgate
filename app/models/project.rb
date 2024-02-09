@@ -215,7 +215,7 @@ class Project < ApplicationRecord
   def can_upload_actual_image?
     if certificate_type == Certificate.certificate_types[:operations_type]
       true
-    elsif can_upload_project_rendering_image? && completed_letter_of_conformances.any?
+    elsif can_upload_project_rendering_image?
       true
     else
       false

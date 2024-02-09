@@ -77,21 +77,6 @@ class Certificate < ApplicationRecord
     where(certification_type: certification_type)
   }
 
-  def construction_issue_1?
-    construction_type? && gsb_version == 'v2.1 Issue 1.0'
-  end
-
-  def construction_issue_3?
-    construction_type? && gsb_version == 'v2.1 Issue 3.0'
-  end
-
-  def construction_2019?
-    construction_type? && gsb_version == '2019'
-  end
-
-  def final_construction?
-    construction_type? && certification_type == 'construction_certificate'
-  end
 
   def construction?
     certificate_type? && certificate_type == 'construction_type'

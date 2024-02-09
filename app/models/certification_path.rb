@@ -28,7 +28,6 @@ class CertificationPath < ApplicationRecord
   has_many :archives, as: :subject, dependent: :destroy
   has_many :actual_project_images, dependent: :destroy
   has_many :project_rendering_images, dependent: :destroy
-  has_one :certification_path_method, dependent: :destroy
   has_one :certification_path_report, dependent: :destroy
 
   accepts_nested_attributes_for :certificate
@@ -47,7 +46,6 @@ class CertificationPath < ApplicationRecord
 
   after_initialize :init
   after_create :send_applied_for_certification_email
-  after_create :create_certification_path_method, unless: -> { design_and_build? }
   before_update :create_descendant_records
   before_update :advance_scheme_mix_criteria_statuses
   before_update :set_started_at
@@ -151,30 +149,13 @@ class CertificationPath < ApplicationRecord
     certificate&.construction?
   end
 
-  def final_construction?
-    certificate&.final_construction?
-  end
-
-  def construction_certificate_CM_2019?
-    certificate.construction_2019?
-  end
-
   def ecoleaf?
     certificate.ecoleaf?
   end
 
   def certification_manager_assigned?
-    projects_users =  if project.design_and_build?
-                        if is_design_loc?
-                          project&.loc_projects_users
-                        elsif is_design_fdc?
-                          project&.fdc_projects_users
-                        else
-                          project&.projects_users
-                        end
-                      else
-                        project&.projects_users
-                      end
+    projects_users = project&.projects_users
+                      
 
     projects_users.each do |projects_user|
       if projects_user.certification_manager?
@@ -185,26 +166,20 @@ class CertificationPath < ApplicationRecord
   end
 
   def projects_users_certification_team_type
-    certification_team_type = if project.design_and_build?  
-                                  ProjectsUser.certification_team_types[:other]
-                              else
-                                ProjectsUser.certification_team_types[:other]
-                              end
+    certification_team_type = ProjectsUser.certification_team_types[:other]
 
     return certification_team_type
   end
 
-  def assessment_method_title(assessment_type: '')
-    I18n.t("activerecord.attributes.certification_path.#{assessment_type}")
+  def assessment_method_title
+    I18n.t("activerecord.attributes.certification_path.#{assessment_method}")
   end
 
   def scheme_names
     development_type_name = development_type&.name
 
-    if (certificate.design_and_build? || certificate.ecoleaf?) && ["Neighborhoods", "Mixed Use"].include?(development_type_name)
+    if ["Neighborhoods", "Mixed Use"].include?(development_type_name)
       development_type_name
-    elsif ["Districts"].include?(development_type_name)
-      "Districts"
     elsif main_scheme_mix_selected?
       main_scheme_mix.name
     else
@@ -278,12 +253,7 @@ class CertificationPath < ApplicationRecord
         return CertificationPathStatus::NOT_CERTIFIED
       end
     when CertificationPathStatus::APPROVING_BY_MANAGEMENT
-      if self.certificate.construction_type?
-        DigestMailer.send_project_certified_email_to_project_owner(self).deliver_now
-        return CertificationPathStatus::CERTIFIED
-      else
-        return CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT
-      end
+      return CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT
     when CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT
       DigestMailer.send_project_certified_email_to_project_owner(self).deliver_now
       return CertificationPathStatus::CERTIFIED
@@ -311,7 +281,7 @@ class CertificationPath < ApplicationRecord
     todos = []
     todos_schemes = []
 
-    if certification_path_method&.assessment_method == 2
+    if assessment_method == 0
       case certification_path_status_id
       when CertificationPathStatus::ACTIVATING
         # TODO certification path expiry date
@@ -445,11 +415,6 @@ class CertificationPath < ApplicationRecord
           end
         end
         unless User.current.can?(:edit_status_low_score, self) || criteria_exist_blank
-          if ['E','W'].include?(criterion.scheme_criterion.scheme_category.code) && self.certificate.construction_issue_3? && (criterion.submitted_score <= 0)
-            todos << 'To obtain GSB certification for Construction the Energy and Water criteria levels must be higher than 0.'
-            todos_schemes << criterion&.code
-          end
-
           if self.certificate.operations?
             if (criterion.scheme_criterion.scheme_category.scheme.name == 'Healthy Building Label Scheme') && (criterion.submitted_score < 2)
               todos << 'To obtain GSB certification for the Healthy Building Label scheme all criteria levels must be 2 or higher.'
@@ -694,7 +659,7 @@ class CertificationPath < ApplicationRecord
       else
         return -1
       end
-    elsif (!certificate.nil? && certificate.construction_issue_3?) || (!certificate_gsb_version.nil? && certificate_gsb_version == 'v2.1 Issue 3.0')
+    elsif (!certificate.nil?) || (!certificate_gsb_version.nil? && certificate_gsb_version == 'v2.1 Issue 3.0')
       if score < 0.5
         return 'CERTIFICATION DENIED'
       elsif score >= 0.5 && score < 1
@@ -708,7 +673,7 @@ class CertificationPath < ApplicationRecord
       else
         return -1
       end
-    elsif (!certificate.nil? && certificate.construction_2019?) || (!certificate_gsb_version.nil? && certificate_gsb_version == '2019' && certificate_name.include?('Construction'))
+    elsif (!certificate.nil?) || (!certificate_gsb_version.nil? && certificate_gsb_version == '2019' && certificate_name.include?('Construction'))
       if score < 0.5
         return 'CERTIFICATION DENIED'
       elsif score >= 0.5 && score < 1
@@ -745,7 +710,6 @@ class CertificationPath < ApplicationRecord
         val = -1
       end
 
-      val = revised_score(val, is_achieved_score, is_submitted_score) if (score > 2 && certificate.gsb_version == "2019" && certificate.design_and_build?)
       return val
     end
   end
@@ -759,23 +723,20 @@ class CertificationPath < ApplicationRecord
   end
 
   def label_for_level(certificate: nil, is_targetted_score: true, is_achieved_score: true, is_submitted_score: true)
-    if certificate.design_and_build? || certificate.ecoleaf?
-      main_scheme_mixes = self.main_scheme_mix.present? ? self.scheme_mixes.where(id: self.main_scheme_mix.id) : self.scheme_mixes
-      main_scheme_mixes.each do |sm|
-        sm.scheme_mix_criteria.each do |smc|
-          smc.scheme_mix_criterion_boxes.each do |smcb|
-            if is_submitted_score && smcb.scheme_criterion_box.label == "Submitted Checklist Status"
-              return is_valid_check?(smcb.is_checked)
-            elsif is_achieved_score && smcb.scheme_criterion_box.label == "Achieved Checklist Status"
-              return is_valid_check?(smcb.is_checked)
-            elsif is_targetted_score && smcb.scheme_criterion_box.label == "Targeted Checklist Status"
-              return is_valid_check?(smcb.is_checked)
-            end
+    main_scheme_mixes = self.main_scheme_mix.present? ? self.scheme_mixes.where(id: self.main_scheme_mix.id) : self.scheme_mixes
+    main_scheme_mixes.each do |sm|
+      sm.scheme_mix_criteria.each do |smc|
+        smc.scheme_mix_criterion_boxes.each do |smcb|
+          if is_submitted_score && smcb.scheme_criterion_box.label == "Submitted Checklist Status"
+            return is_valid_check?(smcb.is_checked)
+          elsif is_achieved_score && smcb.scheme_criterion_box.label == "Achieved Checklist Status"
+            return is_valid_check?(smcb.is_checked)
+          elsif is_targetted_score && smcb.scheme_criterion_box.label == "Targeted Checklist Status"
+            return is_valid_check?(smcb.is_checked)
           end
         end
       end
     end
-    # certification_path.certification_path_method&.assessment_method == CertificationPath.assessment_methods[:check_list]
   end
 
   # This function is used for toggling writability of form elements in the certification path flow
@@ -821,12 +782,8 @@ class CertificationPath < ApplicationRecord
     [CertificationPathStatus::CERTIFIED, CertificationPathStatus::CERTIFICATE_IN_PROCESS].include?(certification_path_status_id)
   end
 
-  def create_assessment_method(method)
-    build_certification_path_method(assessment_method: method.to_i).save
-  end
-
   def is_checklist_method?
-    certification_path_method&.assessment_method == CertificationPath.assessment_methods[:check_list]
+    assessment_method == CertificationPath.assessment_methods[:check_list]
   end
 
   def is_design_loc?
@@ -849,10 +806,8 @@ class CertificationPath < ApplicationRecord
   end
 
   def create_certification_path_report
-    unless self.final_construction?
-      certification_path_report = CertificationPathReport.find_or_initialize_by(certification_path_id: id)
-      certification_path_report.save(validate: false)
-    end
+    certification_path_report = CertificationPathReport.find_or_initialize_by(certification_path_id: id)
+    certification_path_report.save(validate: false)
   end
 
   def set_started_at
@@ -951,10 +906,6 @@ class CertificationPath < ApplicationRecord
 
   def send_applied_for_certification_email
     DigestMailer.applied_for_certification(self).deliver_now
-  end
-
-  def create_certification_path_method
-    create_certification_path_method!(assessment_method: CertificationPath.assessment_methods["star_rating"])
   end
 
   def revised_score(val, is_achieved_score, is_submitted_score)

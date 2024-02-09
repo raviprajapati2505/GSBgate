@@ -112,9 +112,6 @@
                     %>
                     <% 
                       @total_scores = scheme_mix_scores
-                      if scheme_mix.CM_2019?
-                        @total_scores = score_calculation(scheme_mix)
-                      end
 
                       if scheme_mix&.is_cm_final_certificate?
                         @total_scores = final_cm_revised_avg_scores(certification_path, @total_scores)

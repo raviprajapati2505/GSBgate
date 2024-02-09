@@ -203,7 +203,6 @@ class ProjectsController < AuthenticatedController
     
     certification_paths = 
       CertificationPath.eager_load(
-        :certification_path_method, 
         :certificate, 
         scheme_mixes: :scheme
       ).where(
@@ -397,7 +396,7 @@ class ProjectsController < AuthenticatedController
         t('models.effective.datatables.projects.lables.project_certified_area'),
         t('models.effective.datatables.offline.project.owner'),
         t('models.effective.datatables.offline.project.developer'),
-        t('models.effective.datatables.offline.project.assessment_type'),
+        t('models.effective.datatables.offline.project.assessment_method'),
         t('models.effective.datatables.offline.project.construction_year'),
         t('models.effective.datatables.offline.project.project_country'),
         t('models.effective.datatables.offline.project.project_city'),
@@ -425,7 +424,7 @@ class ProjectsController < AuthenticatedController
           data.certified_area,
           data.owner,
           data.developer,
-          data.assessment_type,
+          data.assessment_method,
           data.construction_year,
           data.project_country,
           data.project_city,

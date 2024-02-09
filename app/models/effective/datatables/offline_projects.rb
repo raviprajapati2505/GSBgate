@@ -41,14 +41,14 @@ module Effective
         col :project_owner_business_sector, label: t('models.effective.datatables.offline.project.project_owner_business_sector')
         col :project_developer_business_sector, label: t('models.effective.datatables.offline.project.project_developer_business_sector')
 
-        col :assessment_type, col_class: 'multiple-select', sql_column: 'offline_projects.assessment_type', label: t('models.effective.datatables.offline.project.assessment_type'), search: { as: :select, collection: Proc.new { Offline::Project.assessment_types.map { |k, v| [k, v] } } } do |rec|
-          rec.assessment_type
+        col :assessment_method, col_class: 'multiple-select', sql_column: 'offline_projects.assessment_method', label: t('models.effective.datatables.offline.project.assessment_method'), search: { as: :select, collection: Proc.new { Offline::Project.assessment_methods.map { |k, v| [k, v] } } } do |rec|
+          rec.assessment_method
 
         end.search do |collection, terms, column, index|
           terms_array = terms.split(",")
 
           unless (collection.class == Array || terms_array.include?(""))
-            collection.where("offline_projects.assessment_type IN (?)", terms_array)
+            collection.where("offline_projects.assessment_method IN (?)", terms_array)
           else
             collection
           end

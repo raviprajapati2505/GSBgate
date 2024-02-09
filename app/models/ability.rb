@@ -24,22 +24,8 @@ class Ability
     certification_team_type = get_certification_team_type(request)
 
     if @project.present?
-      if @project.design_and_build? && user.valid_design_build_cp_available?
-        @service_provider_valid_licences = user&.valid_user_sp_design_build_licences
-        @cp_valid_licences = user&.valid_user_design_build_licences
-
-      elsif @project.construction_management? && user.valid_construction_management_cp_available?
-        @service_provider_valid_licences = user&.valid_user_sp_construction_management_licences
-        @cp_valid_licences = user&.valid_user_construction_management_licences
-
-      elsif @project.operation?
-        @service_provider_valid_licences = user&.valid_user_sp_operation_licences
-        @cp_valid_licences = user&.valid_user_operation_licences
-      
-      elsif @project.ecoleaf? && user.valid_ecoleaf_cp_available?
-        @service_provider_valid_licences = user&.valid_user_sp_ecoleaf_licences
-        @cp_valid_licences = user&.valid_user_ecoleaf_licences
-      end
+      @service_provider_valid_licences = user&.valid_user_sp_ecoleaf_licences
+      @cp_valid_licences = user&.valid_user_ecoleaf_licences
 
     else
       if user.valid_cgp_or_cep_available?
@@ -552,7 +538,7 @@ class Ability
 
   def certficate_types_of_valid_user_licences
     certification_path_assessment_method =  if @certification_path.present?
-                                              [@certification_path&.certification_path_method&.assessment_method, 3]
+                                              [CertificationPath.assessment_methods[@certification_path&.assessment_method]]
                                             else
                                               [
                                                 Licence.applicabilities[:star_rating],

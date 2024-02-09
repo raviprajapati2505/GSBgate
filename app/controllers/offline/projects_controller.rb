@@ -110,7 +110,7 @@ module Offline
           :code,
           :name,
           :certificate_type,
-          :assessment_type,
+          :assessment_method,
           :certified_area,
           :owner,
           :developer,

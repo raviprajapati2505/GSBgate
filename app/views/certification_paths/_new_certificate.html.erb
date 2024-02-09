@@ -1,175 +1,153 @@
 <div class="modal-dialog modal-lg">
   <div class="modal-content">
-    <% if @project.project_rendering_images.empty? && ((Certificate.certification_types[@certification_type] == Certificate.certification_types[:letter_of_conformance]) or (Certificate.certification_types[@certification_type] == Certificate.certification_types[:final_design_certificate])) %>
-      <div class="modal-header alert-danger">
-        <%= btn_close_modal %>
-        <h4 class="modal-title">
-          <%= ikoen_with_text('exclamation-circle', 'This certificate cannot be applied without project rendering images') %>
-        </h4>
-      </div>
+    <div class="modal-header">
+      <%= btn_close_modal %>
+      <h4 class="modal-title">Applying for
+        <em><%= t(@certification_type, scope: 'activerecord.attributes.certificate.certification_titles') %></em></h4>
+    </div>
 
-    <% elsif @project.actual_project_images.empty? && ((Certificate.certification_types[@certification_type] == Certificate.certification_types[:operations_certificate]) or (Certificate.certification_types[@certification_type] == Certificate.certification_types[:final_design_certificate]))%>
-      <div class="modal-header alert-danger">
-        <%= btn_close_modal %>
-        <h4 class="modal-title">
-          <%= ikoen_with_text('exclamation-circle', 'This certificate cannot be applied without actual project images') %>
-        </h4>
-      </div>
+    <div class="modal-body">
+      <%= bootstrap_form_for(@certification_path, url: apply_certification_path_path(@project, Certificate.certification_types[@certification_type])) do |f| %>
 
-    <% else %>
-      <div class="modal-header">
-        <%= btn_close_modal %>
-        <h4 class="modal-title">Applying for
-          <em><%= t(@certification_type, scope: 'activerecord.attributes.certificate.certification_titles') %></em></h4>
-      </div>
+      <!-- Set the project and certification_type, so we can access them easily from JS to reconstruct the current path -->
+        <%= f.hidden_field :project_id, value: @certification_path.project_id %>
+        <%= f.hidden_field :certification_type, value: Certificate.certification_types[@certification_type] %>
 
-      <div class="modal-body">
-        <%= bootstrap_form_for(@certification_path, url: apply_certification_path_path(@project, Certificate.certification_types[@certification_type])) do |f| %>
+        <!-- PCR -->
+        <%= f.form_group :pcr_track, label: {text: 'Pre Certification Review'} do %>
+          <%= f.check_box :pcr_track, label: 'Apply for the Pre Certification Review track (PCR)' %>
+        <% end %>
 
-        <!-- Set the project and certification_type, so we can access them easily from JS to reconstruct the current path -->
-          <%= f.hidden_field :project_id, value: @certification_path.project_id %>
-          <%= f.hidden_field :certification_type, value: Certificate.certification_types[@certification_type] %>
-
-          <!-- PCR -->
-          <%= f.form_group :pcr_track, label: {text: 'Pre Certification Review'} do %>
-            <%= f.check_box :pcr_track, label: 'Apply for the Pre Certification Review track (PCR)' %>
+        <!-- Duration (if applicable)-->
+        <% if Certificate::PROVISIONAL_CERTIFICATES.include?(@certification_type) %>
+          <%= f.static_control label: 'Expires' do %>
+            <%= localize(@certification_path.expires_at) %>
           <% end %>
 
-          <!-- Duration (if applicable)-->
-          <% if Certificate::PROVISIONAL_CERTIFICATES.include?(@certification_type) %>
-            <%= f.static_control label: 'Expires' do %>
-              <%= localize(@certification_path.expires_at) %>
-            <% end %>
-
-          <% elsif Certificate::FINAL_CERTIFICATES.include?(@certification_type) %>
-            <%= f.form_group :expires_at, label: {text: 'Duration'} do %>
-              <%= f.radio_button :expires_at, 2, label: '2 years from now', checked: true %>
-              <%= f.radio_button :expires_at, 3, label: '3 years from now' %>
-              <%= f.radio_button :expires_at, 4, label: '4 years from now' %>
-            <% end %>
+        <% elsif Certificate::FINAL_CERTIFICATES.include?(@certification_type) %>
+          <%= f.form_group :expires_at, label: {text: 'Duration'} do %>
+            <%= f.radio_button :expires_at, 2, label: '2 years from now', checked: true %>
+            <%= f.radio_button :expires_at, 3, label: '3 years from now' %>
+            <%= f.radio_button :expires_at, 4, label: '4 years from now' %>
           <% end %>
+        <% end %>
 
-          <!-- Custom select for Assessment Method -->
-          <%= f.static_control label: 'Assessment Method' do %>
-            <% if Certificate.certification_types[@certification_type] == Certificate.certification_types[:final_design_certificate] || @project.ecoleaf? %>
-              <%= t(CertificationPath.assessment_methods.key(@assessment_method), scope: 'activerecord.attributes.certification_path') %>
-            <% else %>
-              <%= select_tag(:assessment_method, options_for_select(current_user.manage_assessment_methods_options.map { |k,v| [t(k, scope: 'activerecord.attributes.certification_path'), v] }, @assessment_method), {:class => 'form-control'}) %>
-            <% end %>
-          <% end %>
+        <!-- Custom select for Assessment Method -->
+        <%= f.static_control label: 'Assessment Method' do %>
+          <%= t(CertificationPath.assessment_methods.key(@assessment_method), scope: 'activerecord.attributes.certification_path') %>
+        <% end %>
 
-          <!-- Custom select for version, so we can determine the certificate -->
-          <%= f.static_control label: 'GSB Version' do %>
-            <% if Certificate::FINAL_CERTIFICATES.include?(@certification_type) %>
-              <%= @certification_path.certificate.gsb_version %>
-            <% else %>
-              <%= select_tag(:gsb_version, options_for_select(@gsb_versions, @gsb_version), {:class => 'form-control'}) %>
-            <% end %>
-          <% end %>
-
-          <!-- For debugging, to visualise the resulting certificate -->
-          <!--%= f.collection_check_boxes :certificate_id, @certificates, :id, :name %-->
-          <!--%= f.hidden_field :certificate_id, value: @certification_path.certificate_id %-->
-
-          <!-- Development type -->
+        <!-- Custom select for version, so we can determine the certificate -->
+        <%= f.static_control label: 'GSB Version' do %>
           <% if Certificate::FINAL_CERTIFICATES.include?(@certification_type) %>
-              <%= f.static_control label: 'Project Planning Type' do %>
-              <%= @certification_path.development_type.name %>
-              <% end %>
+            <%= @certification_path.certificate.gsb_version %>
           <% else %>
-            <!-- Custom select for development type, so we can determine the linked schemes -->
-            <%= f.select(:development_type, options_from_collection_for_select(@development_types, :id, :name, @certification_path.development_type.id), { label: 'Project Planning Type', class: 'form-control' }) %>
+            <%= select_tag(:gsb_version, options_for_select(@gsb_versions, @gsb_version), {:class => 'form-control'}) %>
           <% end %>
+        <% end %>
 
-          <!-- set buildings number -->
-          <% if ['Neighborhoods'].include?(@certification_path&.development_type&.name) %>
-            <%= f.number_field :buildings_number, label: t('activerecord.attributes.certification_path.buildings_number') %>
-          <% end %>
+        <!-- For debugging, to visualise the resulting certificate -->
+        <!--%= f.collection_check_boxes :certificate_id, @certificates, :id, :name %-->
+        <!--%= f.hidden_field :certificate_id, value: @certification_path.certificate_id %-->
 
-          <!-- Schemes -->
-          <label id="certified_area_label" class="control-label">
-            <% if ['Mixed Use', 'Neighborhoods'].include?(@certification_path&.development_type&.name) %>
-              Certification Sub-Schemes
-            <% else %>
-              Certification Scheme
+        <!-- Development type -->
+        <% if Certificate::FINAL_CERTIFICATES.include?(@certification_type) %>
+            <%= f.static_control label: 'Project Planning Type' do %>
+            <%= @certification_path.development_type.name %>
             <% end %>
-          </label>
+        <% else %>
+          <!-- Custom select for development type, so we can determine the linked schemes -->
+          <%= f.select(:development_type, options_from_collection_for_select(@development_types, :id, :name, @certification_path.development_type.id), { label: 'Project Planning Type', class: 'form-control' }) %>
+        <% end %>
 
-          <% if Certificate::FINAL_CERTIFICATES.include?(@certification_type) %>
-            <div class="form-group">
-              <div class="table-responsive">
-                <table class="table table-bordered table-hover">
+        <!-- set buildings number -->
+        <% if ['Neighborhoods'].include?(@certification_path&.development_type&.name) %>
+          <%= f.number_field :buildings_number, label: t('activerecord.attributes.certification_path.buildings_number') %>
+        <% end %>
+
+        <!-- Schemes -->
+        <label id="certified_area_label" class="control-label">
+          <% if ['Mixed Use', 'Neighborhoods'].include?(@certification_path&.development_type&.name) %>
+            Certification Sub-Schemes
+          <% else %>
+            Certification Scheme
+          <% end %>
+        </label>
+
+        <% if Certificate::FINAL_CERTIFICATES.include?(@certification_type) %>
+          <div class="form-group">
+            <div class="table-responsive">
+              <table class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th class="col-md-8">Typology Name</th>
+                    <th class="col-md-4">Weight</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @certification_path.scheme_mixes.each do |scheme_mix| %>
+                    <tr>
+                      <td><%= scheme_mix.name %></td>
+                      <td><%= scheme_mix.weight %> %</td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        <% else %>
+          <% if @certification_path.development_type.mixable? %>
+            <div class="form-group scheme-mixed-group">
+              <div class="row">
+                <div class="col-md-9">
+                  <%= select_tag('mixed_scheme_select', options_from_collection_for_select(manage_schemes_options(@certification_path, @assessment_method), :id, :name), { include_blank: true, multiple: false, class: 'form-control mixed-scheme-select', data: { planning_type: @certification_path&.development_type&.name } }) %>
+                </div>
+                <div class="col-md-3">
+                  <%= btn_tag(icon: 'plus-circle', text: 'Add scheme', class: 'form-control add_scheme', type: 'button', style: 'white') %>
+                </div>
+              </div>
+              <br />
+              <div class="sub-schemes-note d-none">
+                <p><i>Note: Add atleast 2 Certification Sub-Schemes</i></p>
+              </div>
+              <br />
+              <div class="form-group schemes-group">
+                <table class="schemes table table-bordered table-hover">
                   <thead>
                     <tr>
-                      <th class="col-md-8">Typology Name</th>
-                      <th class="col-md-4">Weight</th>
+                      <th class="col-md-4">Typology Name</th>
+                      <th class="col-md-4">Custom Name</th>
+                      <th class="col-md-3">% Area</th>
+                      <th class="col-md-1"></th>
                     </tr>
                   </thead>
                   <tbody>
-                    <% @certification_path.scheme_mixes.each do |scheme_mix| %>
-                      <tr>
-                        <td><%= scheme_mix.name %></td>
-                        <td><%= scheme_mix.weight %> %</td>
-                      </tr>
-                    <% end %>
                   </tbody>
                 </table>
+
+                <div class="row total-row font-bold">
+                  <div class="col-md-7 text-right">Total</div>
+                  <div class="col-md-4">
+                    <span class="scheme-mixed-total"></span> %
+                  </div>
+                  <div class="col-md-1"></div>
+                </div>
               </div>
             </div>
 
           <% else %>
-            <% if @certification_path.development_type.mixable? %>
-              <div class="form-group scheme-mixed-group">
-                <div class="row">
-                  <div class="col-md-9">
-                    <%= select_tag('mixed_scheme_select', options_from_collection_for_select(manage_schemes_options(@certification_path, @assessment_method), :id, :name), { include_blank: true, multiple: false, class: 'form-control mixed-scheme-select', data: { planning_type: @certification_path&.development_type&.name } }) %>
-                  </div>
-                  <div class="col-md-3">
-                    <%= btn_tag(icon: 'plus-circle', text: 'Add scheme', class: 'form-control add_scheme', type: 'button', style: 'white') %>
-                  </div>
-                </div>
-                <br />
-                <div class="sub-schemes-note d-none">
-                  <p><i>Note: Add atleast 2 Certification Sub-Schemes</i></p>
-                </div>
-                <br />
-                <div class="form-group schemes-group">
-                  <table class="schemes table table-bordered table-hover">
-                    <thead>
-                      <tr>
-                        <th class="col-md-4">Typology Name</th>
-                        <th class="col-md-4">Custom Name</th>
-                        <th class="col-md-3">% Area</th>
-                        <th class="col-md-1"></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                  </table>
-
-                  <div class="row total-row font-bold">
-                    <div class="col-md-7 text-right">Total</div>
-                    <div class="col-md-4">
-                      <span class="scheme-mixed-total"></span> %
-                    </div>
-                    <div class="col-md-1"></div>
-                  </div>
-                </div>
-              </div>
-
-            <% else %>
-              <div class="form-group scheme-single-group">
-                <%= select_tag('single_scheme_select', options_from_collection_for_select(manage_schemes_options(@certification_path, @assessment_method), :id, :name), {:include_blank => true, :multiple => false, :class => 'form-control single-scheme-select'}) %>
-              </div>
-            <% end %>
+            <div class="form-group scheme-single-group">
+              <%= select_tag('single_scheme_select', options_from_collection_for_select(manage_schemes_options(@certification_path, @assessment_method), :id, :name), {:include_blank => true, :multiple => false, :class => 'form-control single-scheme-select'}) %>
+            </div>
           <% end %>
-
-          <div class="hr-line-dashed"></div>
-
-          <%= btn_save %>
         <% end %>
-      </div>
-    <% end %>
+
+        <div class="hr-line-dashed"></div>
+
+        <%= btn_save %>
+      <% end %>
+    </div>
   </div>
 </div>
 <%#= javascript_include_tag 'new_certificate' %>

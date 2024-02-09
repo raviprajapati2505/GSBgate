@@ -149,29 +149,14 @@ module Taskable
                   project: self.project,
                   certification_path: self)
     end
-    if self.certificate.construction_certificate_stage1?
-      # Create CGP project manager task to upload CMP (in case of construction stage 1)
-      Task.find_or_create_by(taskable: self,
-                  task_description_id: PROJ_MNGR_UPLOAD_CMP,
-                  project_role: ProjectsUser.roles[:cgp_project_manager],
-                  project: self.project,
-                  certification_path: self)
-    end
-    unless self.certificate.construction_certificate?
-      # Create system admin task to advance the certification path status
-      Task.find_or_create_by(taskable: self,
-                 task_description_id: SYS_ADMIN_REG_APPROVE,
-                 application_role: User.roles[:gsb_trust_admin],
-                 project: self.project,
-                 certification_path: self)
-    else
-      # Create GORD top manager task to approve
-      Task.find_or_create_by(taskable: self,
-                  task_description_id: GSB_TRUST_TOP_MNGR_APPROVE,
-                  application_role: User.roles[:gsb_trust_top_manager],
-                  project: self.project,
-                  certification_path: self)
-    end
+
+    # Create GORD top manager task to approve
+    Task.find_or_create_by(taskable: self,
+    task_description_id: SYS_ADMIN_REG_APPROVE,
+    application_role: User.roles[:gsb_trust_admin],
+                project: self.project,
+                certification_path: self)
+
     # Destroy project manager tasks to apply for a certification path
     Task.where(taskable: self.project, task_description_id: PROJ_MNGR_APPLY).delete_all
   end
@@ -191,7 +176,7 @@ module Taskable
     # Destroy CGP project managers upload CMP tasks
     Task.where(taskable: self.certification_path, task_description_id: PROJ_MNGR_UPLOAD_CMP).delete_all
     # Create certification manager task to read the GSB CMP document
-    if self.certification_path.certificate.construction_type? && self.certification_path.cgp_certification_path_documents.count == 1
+    if self.certification_path.cgp_certification_path_documents.count == 1
       Task.create(taskable: self.certification_path,
                   task_description_id: CERT_MNGR_CMP_UPLOADED,
                   project_role: ProjectsUser.roles[:certification_manager],

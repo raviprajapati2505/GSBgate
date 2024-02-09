@@ -19,7 +19,7 @@
           <%= f.select(:certificate_type, options_for_select(Offline::Project.certificate_types.map { |k, v| [k, k] }, @project.certificate_type)) %>
         </div>
         <div class="col-md-6">
-          <%= f.select(:assessment_type, options_for_select(Offline::Project.assessment_types.map { |k, v| [k, k] }, @project.assessment_type)) %>
+          <%= f.select(:assessment_method, options_for_select(Offline::Project.assessment_methods.map { |k, v| [k, k] }, @project.assessment_method)) %>
         </div>
       </div>
 

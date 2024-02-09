@@ -30,10 +30,10 @@
         </td>
       </tr>
       <tr>
-        <th class="border-bottom-0"><%= t('certification_paths.show.certification_path.assessment_type') %></th>
+        <th class="border-bottom-0"><%= t('certification_paths.show.certification_path.assessment_method') %></th>
         <td class="border-bottom-0">
           <%= can_link_to(project_certification_path_path(project, certification_path), certification_path) do %>
-            <%= assessment_method_title(certification_path.certification_path_method&.assessment_method) %>
+            <%= certification_path&.assessment_method_title %>
           <% end %>
         </td>
       </tr>

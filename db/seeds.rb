@@ -9,10 +9,9 @@
   'notification_types', 
   'building_type_group', 
   'certificates', 
-  'development_types', 
+  'development_types_and_schemes', 
   'certification_path_statuses',
   'owners',
-  'schemes',
   'users', 
   Rails.env
 ].each do |seed|

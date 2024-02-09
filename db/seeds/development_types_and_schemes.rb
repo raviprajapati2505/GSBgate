@@ -1,6 +1,29 @@
-# Create Schemes, Scheme Categories & Scheme Criteria
-
 # ---------------------------- energy_centers_efficiency ----------------------------
+provisional_energy_centers_efficiency_dt = 
+  DevelopmentType.find_or_create_by!(
+    display_weight: 1, 
+    certificate: Certificate.find_by(
+      certification_type: Certificate.certification_types[:provisional_energy_centers_efficiency], 
+      certificate_type: Certificate.certificate_types[:energy_centers_efficiency_type], 
+      assessment_stage: Certificate.assessment_stages[:energy_centers_efficiency_stage], 
+      gsb_version: "2023" 
+    ), 
+    mixable: false, 
+    name: 'Typology'
+  )
+final_energy_centers_efficiency_dt = 
+  DevelopmentType.find_or_create_by!(
+    display_weight: 2, 
+    certificate: Certificate.find_by(
+      certification_type: Certificate.certification_types[:final_energy_centers_efficiency], 
+      certificate_type: Certificate.certificate_types[:energy_centers_efficiency_type], 
+      assessment_stage: Certificate.assessment_stages[:energy_centers_efficiency_stage], 
+      gsb_version: "2023"
+    ), 
+    mixable: false, 
+    name: 'Typology'
+  )
+
 provisional_energy_centers_efficiency_scheme = 
   Scheme.find_or_create_by(
     name: "Typology", 
@@ -16,6 +39,15 @@ final_energy_centers_efficiency_scheme =
     renovation: false
   )
 
+DevelopmentTypeScheme.find_or_create_by(
+  scheme: provisional_energy_centers_efficiency_scheme, 
+  development_type: provisional_energy_centers_efficiency_dt
+)
+DevelopmentTypeScheme.find_or_create_by(
+  scheme: final_energy_centers_efficiency_scheme, 
+  development_type: final_energy_centers_efficiency_dt
+)
+
 provisional_energy_centers_efficiency_category = 
   SchemeCategory.find_or_create_by(
     scheme: provisional_energy_centers_efficiency_scheme, 
@@ -27,7 +59,6 @@ provisional_energy_centers_efficiency_category =
     display_weight: 1, 
     is_checklist: true
   )
-
 final_energy_centers_efficiency_category = 
   SchemeCategory.find_or_create_by(
     scheme: final_energy_centers_efficiency_scheme, 
@@ -82,7 +113,6 @@ final_energy_centers_efficiency_criterion =
     shared: false, 
     scheme_category: final_energy_centers_efficiency_category
   )
-
 SchemeCriterionBox.find_or_create_by(
   scheme_criterion: final_energy_centers_efficiency_criterion, 
   label: 'Targeted Checklist Status', 
@@ -101,6 +131,31 @@ SchemeCriterionBox.find_or_create_by(
 
 
 # ---------------------------- building_energy_efficiency ----------------------------
+provisional_building_energy_efficiency_dt = 
+  DevelopmentType.find_or_create_by!(
+    display_weight: 3, 
+    certificate: Certificate.find_by(
+      certification_type: Certificate.certification_types[:provisional_building_energy_efficiency], 
+      certificate_type: Certificate.certificate_types[:building_energy_efficiency_type], 
+      assessment_stage: Certificate.assessment_stages[:building_energy_efficiency_stage], 
+      gsb_version: "2023"
+    ), 
+    mixable: false, 
+    name: 'Typology'
+  )
+final_building_energy_efficiency_dt =
+  DevelopmentType.find_or_create_by!(
+    display_weight: 4, 
+    certificate: Certificate.find_by(
+      certification_type: Certificate.certification_types[:final_building_energy_efficiency], 
+      certificate_type: Certificate.certificate_types[:building_energy_efficiency_type], 
+      assessment_stage: Certificate.assessment_stages[:building_energy_efficiency_stage], 
+      gsb_version: "2023"
+    ), 
+    mixable: false, 
+    name: 'Typology'
+  )
+
 provisional_building_energy_efficiency_scheme = 
   Scheme.find_or_create_by(
     name: "Typology", 
@@ -116,6 +171,15 @@ final_building_energy_efficiency_scheme =
     renovation: false
   )
 
+DevelopmentTypeScheme.find_or_create_by(
+  scheme: provisional_building_energy_efficiency_scheme, 
+  development_type: provisional_building_energy_efficiency_dt
+)
+DevelopmentTypeScheme.find_or_create_by(
+  scheme: final_building_energy_efficiency_scheme, 
+  development_type: final_building_energy_efficiency_dt
+)
+
 provisional_building_energy_efficiency_category = 
   SchemeCategory.find_or_create_by(
     scheme: provisional_building_energy_efficiency_scheme, 
@@ -127,7 +191,6 @@ provisional_building_energy_efficiency_category =
     display_weight: 1, 
     is_checklist: true
   )
-
 final_building_energy_efficiency_category = 
   SchemeCategory.find_or_create_by(
     scheme: final_building_energy_efficiency_scheme, 
@@ -182,7 +245,6 @@ final_building_energy_efficiency_criterion =
     shared: false, 
     scheme_category: final_building_energy_efficiency_category
   )
-
 SchemeCriterionBox.find_or_create_by(
   scheme_criterion: final_building_energy_efficiency_criterion, 
   label: 'Targeted Checklist Status', 
@@ -201,6 +263,31 @@ SchemeCriterionBox.find_or_create_by(
 
 
 # ---------------------------- healthy_buildings ----------------------------
+provisional_healthy_buildings_dt = 
+  DevelopmentType.find_or_create_by!(
+    display_weight: 5, 
+    certificate: Certificate.find_by(
+      certification_type: Certificate.certification_types[:provisional_healthy_buildings], 
+      certificate_type: Certificate.certificate_types[:healthy_buildings_type], 
+      assessment_stage: Certificate.assessment_stages[:healthy_buildings_stage], 
+      gsb_version: "2023"
+    ), 
+    mixable: false, 
+    name: 'Typology'
+  )
+final_Healthy_buildings_dt = 
+  DevelopmentType.find_or_create_by!(
+    display_weight: 6, 
+    certificate: Certificate.find_by(
+      certification_type: Certificate.certification_types[:final_Healthy_buildings], 
+      certificate_type: Certificate.certificate_types[:healthy_buildings_type], 
+      assessment_stage: Certificate.assessment_stages[:healthy_buildings_stage], 
+      gsb_version: "2023"
+    ), 
+    mixable: false, 
+    name: 'Typology'
+  )
+
 provisional_healthy_buildings_scheme = 
   Scheme.find_or_create_by(
     name: "Typology", 
@@ -216,6 +303,15 @@ final_healthy_buildings_scheme =
     renovation: false
   )
 
+DevelopmentTypeScheme.find_or_create_by(
+  scheme: provisional_healthy_buildings_scheme, 
+  development_type: provisional_healthy_buildings_dt
+)
+DevelopmentTypeScheme.find_or_create_by(
+  scheme: final_healthy_buildings_scheme, 
+  development_type: final_Healthy_buildings_dt
+)
+
 provisional_healthy_buildings_category = 
   SchemeCategory.find_or_create_by(
     scheme: provisional_healthy_buildings_scheme, 
@@ -227,7 +323,6 @@ provisional_healthy_buildings_category =
     display_weight: 1, 
     is_checklist: true
   )
-
 final_healthy_buildings_category = 
   SchemeCategory.find_or_create_by(
     scheme: final_healthy_buildings_scheme, 
@@ -282,7 +377,6 @@ final_healthy_buildings_criterion =
     shared: false, 
     scheme_category: final_healthy_buildings_category
   )
-
 SchemeCriterionBox.find_or_create_by(
   scheme_criterion: final_healthy_buildings_criterion, 
   label: 'Targeted Checklist Status', 
@@ -301,6 +395,31 @@ SchemeCriterionBox.find_or_create_by(
 
 
 # ---------------------------- indoor_air_quality ----------------------------
+provisional_indoor_air_quality_dt = 
+  DevelopmentType.find_or_create_by!(
+    display_weight: 7, 
+    certificate: Certificate.find_by(
+      certification_type: Certificate.certification_types[:provisional_indoor_air_quality], 
+      certificate_type: Certificate.certificate_types[:indoor_air_quality_type], 
+      assessment_stage: Certificate.assessment_stages[:indoor_air_quality_stage], 
+      gsb_version: "2023"
+    ), 
+    mixable: false, 
+    name: 'Typology'
+  )
+final_indoor_air_quality_dt = 
+  DevelopmentType.find_or_create_by!(
+    display_weight: 8, 
+    certificate: Certificate.find_by(
+      certification_type: Certificate.certification_types[:final_indoor_air_quality], 
+      certificate_type: Certificate.certificate_types[:indoor_air_quality_type], 
+      assessment_stage: Certificate.assessment_stages[:indoor_air_quality_stage], 
+      gsb_version: "2023"
+    ), 
+    mixable: false, 
+    name: 'Typology'
+  )
+
 provisional_indoor_air_quality_scheme = 
   Scheme.find_or_create_by(
     name: "Typology", 
@@ -316,6 +435,15 @@ final_indoor_air_quality_scheme =
     renovation: false
   )
 
+DevelopmentTypeScheme.find_or_create_by(
+  scheme: provisional_indoor_air_quality_scheme, 
+  development_type: provisional_indoor_air_quality_dt
+)
+DevelopmentTypeScheme.find_or_create_by(
+  scheme: final_indoor_air_quality_scheme, 
+  development_type: final_indoor_air_quality_dt
+)
+
 provisional_indoor_air_quality_category = 
   SchemeCategory.find_or_create_by(
     scheme: provisional_indoor_air_quality_scheme, 
@@ -327,7 +455,6 @@ provisional_indoor_air_quality_category =
     display_weight: 1, 
     is_checklist: true
   )
-
 final_indoor_air_quality_category = 
   SchemeCategory.find_or_create_by(
     scheme: final_indoor_air_quality_scheme, 
@@ -382,7 +509,6 @@ final_indoor_air_quality_criterion =
     shared: false, 
     scheme_category: final_indoor_air_quality_category
   )
-
 SchemeCriterionBox.find_or_create_by(
   scheme_criterion: final_indoor_air_quality_criterion, 
   label: 'Targeted Checklist Status', 
@@ -399,7 +525,33 @@ SchemeCriterionBox.find_or_create_by(
   display_weight: 3
 )
 
+
 # ---------------------------- measurement_reporting_and_verification ----------------------------
+provisional_measurement_reporting_and_verification_dt = 
+  DevelopmentType.find_or_create_by!(
+    display_weight: 9, 
+    certificate: Certificate.find_by(
+      certification_type: Certificate.certification_types[:provisional_measurement_reporting_and_verification], 
+      certificate_type: Certificate.certificate_types[:measurement_reporting_and_verification_type], 
+      assessment_stage: Certificate.assessment_stages[:measurement_reporting_and_verification_stage], 
+      gsb_version: "2023"
+    ), 
+    mixable: false, 
+    name: 'Typology'
+  )
+final_measurement_reporting_and_verification_dt = 
+  DevelopmentType.find_or_create_by!(
+    display_weight: 10, 
+    certificate: Certificate.find_by(
+      certification_type: Certificate.certification_types[:final_measurement_reporting_and_verification], 
+      certificate_type: Certificate.certificate_types[:measurement_reporting_and_verification_type], 
+      assessment_stage: Certificate.assessment_stages[:measurement_reporting_and_verification_stage], 
+      gsb_version: "2023"
+    ), 
+    mixable: false, 
+    name: 'Typology'
+  )
+
 provisional_measurement_reporting_and_verification_scheme = 
   Scheme.find_or_create_by(
     name: "Typology", 
@@ -415,6 +567,15 @@ final_measurement_reporting_and_verification_scheme =
     renovation: false
   )
 
+DevelopmentTypeScheme.find_or_create_by(
+  scheme: provisional_measurement_reporting_and_verification_scheme, 
+  development_type: provisional_measurement_reporting_and_verification_dt
+)
+DevelopmentTypeScheme.find_or_create_by(
+  scheme: final_measurement_reporting_and_verification_scheme, 
+  development_type: final_measurement_reporting_and_verification_dt
+)
+
 provisional_measurement_reporting_and_verification_category = 
   SchemeCategory.find_or_create_by(
     scheme: provisional_measurement_reporting_and_verification_scheme, 
@@ -426,7 +587,6 @@ provisional_measurement_reporting_and_verification_category =
     display_weight: 1, 
     is_checklist: true
   )
-
 final_measurement_reporting_and_verification_category = 
   SchemeCategory.find_or_create_by(
     scheme: final_measurement_reporting_and_verification_scheme, 
@@ -481,7 +641,6 @@ final_measurement_reporting_and_verification_criterion =
     shared: false, 
     scheme_category: final_measurement_reporting_and_verification_category
   )
-
 SchemeCriterionBox.find_or_create_by(
   scheme_criterion: final_measurement_reporting_and_verification_criterion, 
   label: 'Targeted Checklist Status', 
@@ -500,6 +659,31 @@ SchemeCriterionBox.find_or_create_by(
 
 
 # ---------------------------- building_water_efficiency ----------------------------
+provisional_building_water_efficiency_dt = 
+  DevelopmentType.find_or_create_by!(
+    display_weight: 11, 
+    certificate: Certificate.find_by(
+      certification_type: Certificate.certification_types[:provisional_building_water_efficiency], 
+      certificate_type: Certificate.certificate_types[:building_water_efficiency_type], 
+      assessment_stage: Certificate.assessment_stages[:building_water_efficiency_stage], 
+      gsb_version: "2023"
+    ), 
+    mixable: false, 
+    name: 'Typology'
+  )
+final_building_water_efficiency_dt = 
+  DevelopmentType.find_or_create_by!(
+    display_weight: 12, 
+    certificate: Certificate.find_by(
+      certification_type: Certificate.certification_types[:final_building_water_efficiency], 
+      certificate_type: Certificate.certificate_types[:building_water_efficiency_type], 
+      assessment_stage: Certificate.assessment_stages[:building_water_efficiency_stage], 
+      gsb_version: "2023",
+    ), 
+    mixable: false, 
+    name: 'Typology'
+  )
+
 provisional_building_water_efficiency_scheme = 
   Scheme.find_or_create_by(
     name: "Typology", 
@@ -515,6 +699,15 @@ final_building_water_efficiency_scheme =
     renovation: false
   )
 
+DevelopmentTypeScheme.find_or_create_by(
+  scheme: provisional_building_water_efficiency_scheme, 
+  development_type: provisional_building_water_efficiency_dt
+)
+DevelopmentTypeScheme.find_or_create_by(
+  scheme: final_building_water_efficiency_scheme, 
+  development_type: final_building_water_efficiency_dt
+)
+
 provisional_building_water_efficiency_category = 
   SchemeCategory.find_or_create_by(
     scheme: provisional_building_water_efficiency_scheme, 
@@ -526,7 +719,6 @@ provisional_building_water_efficiency_category =
     display_weight: 1, 
     is_checklist: true
   )
-
 final_building_water_efficiency_category = 
   SchemeCategory.find_or_create_by(
     scheme: final_building_water_efficiency_scheme, 
@@ -600,6 +792,31 @@ SchemeCriterionBox.find_or_create_by(
 
 
 # ---------------------------- events_carbon_neutrality ----------------------------
+provisional_events_carbon_neutrality_dt = 
+  DevelopmentType.find_or_create_by!(
+    display_weight: 13, 
+    certificate: Certificate.find_by(
+      certification_type: Certificate.certification_types[:provisional_events_carbon_neutrality], 
+      certificate_type: Certificate.certificate_types[:events_carbon_neutrality_type], 
+      assessment_stage: Certificate.assessment_stages[:events_carbon_neutrality_stage], 
+      gsb_version: "2023"
+    ), 
+    mixable: false, 
+    name: 'Typology'
+  )
+final_events_carbon_neutrality_dt = 
+  DevelopmentType.find_or_create_by!(
+    display_weight: 14, 
+    certificate: Certificate.find_by(
+      certification_type: Certificate.certification_types[:final_events_carbon_neutrality], 
+      certificate_type: Certificate.certificate_types[:events_carbon_neutrality_type], 
+      assessment_stage: Certificate.assessment_stages[:events_carbon_neutrality_stage], 
+      gsb_version: "2023"
+    ), 
+    mixable: false, 
+    name: 'Typology'
+  )
+
 provisional_events_carbon_neutrality_scheme = 
   Scheme.find_or_create_by(
     name: "Typology", 
@@ -615,6 +832,15 @@ final_events_carbon_neutrality_scheme =
     renovation: false
   )
 
+DevelopmentTypeScheme.find_or_create_by(
+  scheme: provisional_events_carbon_neutrality_scheme, 
+  development_type: provisional_events_carbon_neutrality_dt
+)
+DevelopmentTypeScheme.find_or_create_by(
+  scheme: final_events_carbon_neutrality_scheme, 
+  development_type: final_events_carbon_neutrality_dt
+)
+
 provisional_events_carbon_neutrality_category = 
   SchemeCategory.find_or_create_by(
     scheme: provisional_events_carbon_neutrality_scheme, 
@@ -626,7 +852,6 @@ provisional_events_carbon_neutrality_category =
     display_weight: 1, 
     is_checklist: true
   )
-
 final_events_carbon_neutrality_category = 
   SchemeCategory.find_or_create_by(
     scheme: final_events_carbon_neutrality_scheme, 
@@ -681,7 +906,6 @@ final_events_carbon_neutrality_criterion =
     shared: false, 
     scheme_category: final_events_carbon_neutrality_category
   )
-
 SchemeCriterionBox.find_or_create_by(
   scheme_criterion: final_events_carbon_neutrality_criterion, 
   label: 'Targeted Checklist Status', 
@@ -699,6 +923,31 @@ SchemeCriterionBox.find_or_create_by(
 )
 
 # ---------------------------- products_ecolabeling ----------------------------
+provisional_products_ecolabeling_dt = 
+  DevelopmentType.find_or_create_by!(
+    display_weight: 15, 
+    certificate: Certificate.find_by(
+      certification_type: Certificate.certification_types[:provisional_products_ecolabeling], 
+      certificate_type: Certificate.certificate_types[:products_ecolabeling_type], 
+      assessment_stage: Certificate.assessment_stages[:products_ecolabeling_stage], 
+      gsb_version: "2023"
+    ), 
+    mixable: false, 
+    name: 'Typology'
+  )
+final_products_ecolabeling_dt = 
+  DevelopmentType.find_or_create_by!(
+    display_weight: 16, 
+    certificate: Certificate.find_by(
+      certification_type: Certificate.certification_types[:final_products_ecolabeling], 
+      certificate_type: Certificate.certificate_types[:products_ecolabeling_type], 
+      assessment_stage: Certificate.assessment_stages[:products_ecolabeling_stage], 
+      gsb_version: "2023"
+    ), 
+    mixable: false, 
+    name: 'Typology'
+  )
+
 provisional_products_ecolabeling_scheme = 
   Scheme.find_or_create_by(
     name: "Typology", 
@@ -714,6 +963,15 @@ final_products_ecolabeling_scheme =
     renovation: false
   )
 
+DevelopmentTypeScheme.find_or_create_by(
+    scheme: provisional_products_ecolabeling_scheme, 
+    development_type: provisional_products_ecolabeling_dt
+  )
+DevelopmentTypeScheme.find_or_create_by(
+    scheme: final_products_ecolabeling_scheme, 
+    development_type: final_products_ecolabeling_dt
+  )
+
 provisional_products_ecolabeling_category = 
   SchemeCategory.find_or_create_by(
     scheme: provisional_products_ecolabeling_scheme, 
@@ -725,7 +983,6 @@ provisional_products_ecolabeling_category =
     display_weight: 1, 
     is_checklist: true
   )
-
 final_products_ecolabeling_category = 
   SchemeCategory.find_or_create_by(
     scheme: final_products_ecolabeling_scheme, 
@@ -780,7 +1037,6 @@ final_products_ecolabeling_criterion =
     shared: false, 
     scheme_category: final_products_ecolabeling_category
   )
-
 SchemeCriterionBox.find_or_create_by(
   scheme_criterion: final_products_ecolabeling_criterion, 
   label: 'Targeted Checklist Status', 
@@ -796,3 +1052,5 @@ SchemeCriterionBox.find_or_create_by(
   label: 'Achieved Checklist Status', 
   display_weight: 3
 )
+
+puts "Development Types, Schemes, Scheme Category & Scheme Criteria are added successfully.........."

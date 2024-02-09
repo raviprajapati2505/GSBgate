@@ -166,15 +166,9 @@
                     </div>
                   </td>
                   <td>
-                    <% if category.code == 'W' &&  @scheme_mix.CM_2019? %>
-                      <%=
-                        render 'score/score_tabs', scores: @category_scores_w, element_id: "category_#{@category_w.id}"
-                      %>
-                    <% else %>
-                      <%=
-                        render 'score/score_tabs', scores: category_scores, element_id: "category_#{category.id}"
-                      %>
-                    <% end %>
+                    <%=
+                      render 'score/score_tabs', scores: category_scores, element_id: "category_#{category.id}"
+                    %>
                   </td>
                   <td>
                     <% processed_count = RequirementDatum.for_scheme_mix(@scheme_mix).for_category(category).provided.count + RequirementDatum.for_scheme_mix(@scheme_mix).for_category(category).not_required.count %>
@@ -247,23 +241,18 @@
                               </td>
                               <td><%= t(scheme_mix_criterion.status, scope: 'activerecord.attributes.scheme_mix_criterion.statuses') %></td>
                               
-                              <% if scheme_mix_criterion.w1_certification_CM_2019? %>
-                                <td> 
-                                  <p><%= merge_incentives(scheme_mix_criterion) %>
-                                    <% if (scheme_mix_criterion.scheme_criterion.has_incentive_weight?(0) || scheme_mix_criterion.scheme_criterion.has_incentive_weight?(1)) %>
+                              <td>
+                                <% SchemeCriterion::SCORE_ATTRIBUTES.each_with_index do |scores, index| %>
+                                  <% unless scheme_mix_criterion.scheme_criterion.read_attribute(scores.to_sym).nil? %>
+                                    <p><%= scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::LABEL_ATTRIBUTES[index].to_sym) %>&nbsp;<%= scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[index].to_sym) %>
+                                    <% if scheme_mix_criterion.scheme_criterion.has_incentive_weight?(index) %>
                                       <%
                                         tooltip_text = 'Incentive weights<br/>'
-                                        incentives_minus_1_attributes = scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::INCENTIVE_MINUS_1_ATTRIBUTES[0]) + scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::INCENTIVE_MINUS_1_ATTRIBUTES[1])
-                                        incentives_0_attributes = scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::INCENTIVE_0_ATTRIBUTES[0]) + scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::INCENTIVE_0_ATTRIBUTES[1])
-                                        incentives_1_attributes = scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::INCENTIVE_1_ATTRIBUTES[0]) + scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::INCENTIVE_1_ATTRIBUTES[1])
-                                        incentives_2_attributes = scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::INCENTIVE_2_ATTRIBUTES[0]) + scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::INCENTIVE_2_ATTRIBUTES[1])
-                                        incentives_3_attributes = scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::INCENTIVE_3_ATTRIBUTES[0]) + scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::INCENTIVE_3_ATTRIBUTES[1])
-
-                                        tooltip_text += "Level&nbsp;-1: #{incentives_minus_1_attributes}%<br/>" if incentives_minus_1_attributes > 0
-                                        tooltip_text += "Level&nbsp;&nbsp;0: #{incentives_0_attributes}%<br/>" if incentives_0_attributes > 0
-                                        tooltip_text += "Level&nbsp;&nbsp;1: #{incentives_1_attributes}%<br/>" if incentives_1_attributes > 0
-                                        tooltip_text += "Level&nbsp;&nbsp;2: #{incentives_2_attributes}%<br/>" if incentives_2_attributes > 0
-                                        tooltip_text += "Level&nbsp;&nbsp;3: #{incentives_3_attributes}%<br/>" if incentives_3_attributes > 0
+                                        tooltip_text += "Level&nbsp;-1: #{scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::INCENTIVE_MINUS_1_ATTRIBUTES[index].to_sym)}%<br/>" if scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::INCENTIVE_MINUS_1_ATTRIBUTES[index]) > 0
+                                        tooltip_text += "Level&nbsp;&nbsp;0: #{scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::INCENTIVE_0_ATTRIBUTES[index].to_sym)}%<br/>" if scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::INCENTIVE_0_ATTRIBUTES[index]) > 0
+                                        tooltip_text += "Level&nbsp;&nbsp;1: #{scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::INCENTIVE_1_ATTRIBUTES[index].to_sym)}%<br/>" if scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::INCENTIVE_1_ATTRIBUTES[index]) > 0
+                                        tooltip_text += "Level&nbsp;&nbsp;2: #{scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::INCENTIVE_2_ATTRIBUTES[index].to_sym)}%<br/>" if scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::INCENTIVE_2_ATTRIBUTES[index]) > 0
+                                        tooltip_text += "Level&nbsp;&nbsp;3: #{scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::INCENTIVE_3_ATTRIBUTES[index].to_sym)}%<br/>" if scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::INCENTIVE_3_ATTRIBUTES[index]) > 0
                                         scheme_mix_criterion.scheme_criterion.scheme_criterion_incentives.each do |incentive|
                                           tooltip_text += "#{incentive.label}: #{incentive.incentive_weight}%<br/>"
                                         end
@@ -272,83 +261,30 @@
                                         <%= tooltip(tooltip_text) %>
                                       </span>
                                     <% end %>
-                                  </p>
-                                </td>
-                              <% else %>
-                                <td>
-                                  <% SchemeCriterion::SCORE_ATTRIBUTES.each_with_index do |scores, index| %>
-                                    <% unless scheme_mix_criterion.scheme_criterion.read_attribute(scores.to_sym).nil? %>
-                                      <p><%= scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::LABEL_ATTRIBUTES[index].to_sym) %>&nbsp;<%= scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[index].to_sym) %>
-                                      <% if scheme_mix_criterion.scheme_criterion.has_incentive_weight?(index) %>
-                                        <%
-                                          tooltip_text = 'Incentive weights<br/>'
-                                          tooltip_text += "Level&nbsp;-1: #{scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::INCENTIVE_MINUS_1_ATTRIBUTES[index].to_sym)}%<br/>" if scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::INCENTIVE_MINUS_1_ATTRIBUTES[index]) > 0
-                                          tooltip_text += "Level&nbsp;&nbsp;0: #{scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::INCENTIVE_0_ATTRIBUTES[index].to_sym)}%<br/>" if scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::INCENTIVE_0_ATTRIBUTES[index]) > 0
-                                          tooltip_text += "Level&nbsp;&nbsp;1: #{scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::INCENTIVE_1_ATTRIBUTES[index].to_sym)}%<br/>" if scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::INCENTIVE_1_ATTRIBUTES[index]) > 0
-                                          tooltip_text += "Level&nbsp;&nbsp;2: #{scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::INCENTIVE_2_ATTRIBUTES[index].to_sym)}%<br/>" if scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::INCENTIVE_2_ATTRIBUTES[index]) > 0
-                                          tooltip_text += "Level&nbsp;&nbsp;3: #{scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::INCENTIVE_3_ATTRIBUTES[index].to_sym)}%<br/>" if scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::INCENTIVE_3_ATTRIBUTES[index]) > 0
-                                          scheme_mix_criterion.scheme_criterion.scheme_criterion_incentives.each do |incentive|
-                                            tooltip_text += "#{incentive.label}: #{incentive.incentive_weight}%<br/>"
-                                          end
-                                        %>
-                                        <span class="incentive-weight">
-                                          <%= tooltip(tooltip_text) %>
-                                        </span>
-                                      <% end %>
-                                      </p>
-                                    <% end %>
+                                    </p>
                                   <% end %>
-                                </td>
-                              <% end %>
-                              
-                              <% if scheme_mix_criterion.w1_certification_CM_2019? %>
-                                <td>
-                                  <% 
-                                    category_scale_w = {
-                                      maximum_scale_in_certificate_points: @score_data.collect{|score| score[:maximum_score_in_certificate_points]}.max,
-                                      minimum_scale_in_certificate_points: @score_data.collect{|score| score[:minimum_score_in_certificate_points]}.min,
-                                      maximum_scale_in_scheme_points: @score_data.collect{|score| score[:maximum_score_in_scheme_points]}.max,
-                                      minimum_scale_in_scheme_points: @score_data.collect{|score| score[:minimum_score_in_scheme_points]}.min,
-                                      maximum_scale_in_criteria_points: @score_data.collect{|score| score[:maximum_score_in_criteria_points]}.max,
-                                      minimum_scale_in_criteria_points: @score_data.collect{|score| score[:minimum_score_in_criteria_points]}.min
-                                    }
+                                <% end %>
+                              </td>
 
-                                    scheme_mix_criteria_score = @scheme_mix_criteria_scores.find{|item| item[:scheme_mix_criteria_id] == scheme_mix_criterion.id }
-                                    scheme_mix_criteria_score = scheme_mix_criteria_score.merge(category_scale_w)
-                                    smc_weight_a = scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[0])
-                                    smc_weight_b = scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::WEIGHT_ATTRIBUTES[1])
-                                    # scheme_mix_criteria_score = calculate_average(scheme_mix_criterion, scheme_mix_criteria_score, smc_weight_a, smc_weight_b)
-                                    # scheme_mix_criteria_score = scheme_mix_criteria_score_for_w_1
-                                  %>
-                                  <%
-                                    maximum_score_attribute = SchemeCriterion::MAX_SCORE_ATTRIBUTES[0]
-                                    minimum_score_attribute = SchemeCriterion::MIN_SCORE_ATTRIBUTES[0]
-                                    targeted_score_attribute = SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES[0]
-                                    submitted_score_attribute = SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES[0]
-                                    achieved_score_attribute = SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES[0]
-                                  %>
-                                  <%= render 'score/score_tabs', scores: scheme_mix_criteria_score, maximum_score_attribute: maximum_score_attribute, minimum_score_attribute: minimum_score_attribute, targeted_score_attribute: targeted_score_attribute, submitted_score_attribute: submitted_score_attribute, achieved_score_attribute: achieved_score_attribute, element_id: "scheme_mix_criterion_#{scheme_mix_criterion.id}" %>
-                                </td>
-                              <% else %>
-                                <td>
-                                  <% SchemeCriterion::SCORE_ATTRIBUTES.each_with_index do |scores, index| %>
-                                    <% unless scheme_mix_criterion.scheme_criterion.read_attribute(scores.to_sym).nil? %>
-                                      <p><%= scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::LABEL_ATTRIBUTES[index].to_sym) %></p>
-                                      <%
-                                        scheme_mix_criteria_score = @scheme_mix_criteria_scores.find{|item| item[:scheme_mix_criteria_id] == scheme_mix_criterion.id }
-                                        scheme_mix_criteria_score = scheme_mix_criteria_score.merge(category_scale)
-    
-                                        maximum_score_attribute = SchemeCriterion::MAX_SCORE_ATTRIBUTES[index]
-                                        minimum_score_attribute = SchemeCriterion::MIN_SCORE_ATTRIBUTES[index]
-                                        targeted_score_attribute = SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES[index]
-                                        submitted_score_attribute = SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES[index]
-                                        achieved_score_attribute = SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES[index]
-                                      %>
-                                      <%= render 'score/score_tabs', scores: scheme_mix_criteria_score, maximum_score_attribute: maximum_score_attribute, minimum_score_attribute: minimum_score_attribute, targeted_score_attribute: targeted_score_attribute, submitted_score_attribute: submitted_score_attribute, achieved_score_attribute: achieved_score_attribute, element_id: "scheme_mix_criterion_#{scheme_mix_criterion.id}" %>
-                                    <% end %>
+                              <td>
+                                <% SchemeCriterion::SCORE_ATTRIBUTES.each_with_index do |scores, index| %>
+                                  <% unless scheme_mix_criterion.scheme_criterion.read_attribute(scores.to_sym).nil? %>
+                                    <p><%= scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::LABEL_ATTRIBUTES[index].to_sym) %></p>
+                                    <%
+                                      scheme_mix_criteria_score = @scheme_mix_criteria_scores.find{|item| item[:scheme_mix_criteria_id] == scheme_mix_criterion.id }
+                                      scheme_mix_criteria_score = scheme_mix_criteria_score.merge(category_scale)
+  
+                                      maximum_score_attribute = SchemeCriterion::MAX_SCORE_ATTRIBUTES[index]
+                                      minimum_score_attribute = SchemeCriterion::MIN_SCORE_ATTRIBUTES[index]
+                                      targeted_score_attribute = SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES[index]
+                                      submitted_score_attribute = SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES[index]
+                                      achieved_score_attribute = SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES[index]
+                                    %>
+                                    <%= render 'score/score_tabs', scores: scheme_mix_criteria_score, maximum_score_attribute: maximum_score_attribute, minimum_score_attribute: minimum_score_attribute, targeted_score_attribute: targeted_score_attribute, submitted_score_attribute: submitted_score_attribute, achieved_score_attribute: achieved_score_attribute, element_id: "scheme_mix_criterion_#{scheme_mix_criterion.id}" %>
                                   <% end %>
-                                </td>
-                              <% end %>
+                                <% end %>
+                              </td>
+
                               <td>
                                 <% processed_count = scheme_mix_criterion.requirement_data.provided.count + scheme_mix_criterion.requirement_data.not_required.count %>
                                 <% total_count = scheme_mix_criterion.requirement_data.count %>

@@ -6,10 +6,6 @@ class ProjectRenderingImagesController < AuthenticatedController
     respond_to do |format|
       if params.has_key?(:image)
         @project_rendering_image = @project.project_rendering_images.new(set_image)
-        loc = CertificationPath.with_project(@project).with_certification_type(Certificate.certification_types[:letter_of_conformance])
-        if loc.any?
-          @project_rendering_image.certification_path = loc.last
-        end
         if @project_rendering_image.save
           format.html { redirect_back(fallback_location: root_path, notice: 'The image was successfully uploaded.') }
           format.json { render json: @project_rendering_image }

@@ -28,14 +28,6 @@ class SchemeMix < ApplicationRecord
     self.certification_path.is_checklist_method?
   end
 
-  def CM_2019?
-    certification_path.certificate.construction_2019?
-  end
-
-  def is_cm_final_certificate?
-    certification_path&.final_construction?
-  end
-
   def gross_area
     project = certification_path.project
     total_gross_area = project.gross_area
@@ -98,7 +90,7 @@ class SchemeMix < ApplicationRecord
       end
 
       scheme_mix_criterion = SchemeMixCriterion.create!(parameter_list)
-      if (certification_path.certificate.operations_2019? && scheme.name == "Energy Neutral Mark") || self.check_list?
+      if self.check_list?
         scheme_criterion.scheme_criterion_box_ids.each do |box_id|
           scheme_mix_criterion.scheme_mix_criterion_boxes.create!(scheme_criterion_box_id: box_id, is_checked: false)
         end

@@ -18,7 +18,7 @@ module Offline
       ]
 
     
-    enum assessment_type: 
+    enum assessment_method: 
       [
         "Checklist Assessment"
       ]
@@ -37,7 +37,7 @@ module Offline
                 'offline_projects.owner',
                 'offline_projects.developer',
                 'offline_projects.description',
-                'offline_projects.assessment_type',
+                'offline_projects.assessment_method',
                 'offline_projects.construction_year',
                 'offline_projects.project_country',
                 'offline_projects.project_city',

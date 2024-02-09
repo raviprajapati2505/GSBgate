@@ -37,17 +37,11 @@ class SchemeMixCriterion < ApplicationRecord
 
   validates :status, inclusion: SchemeMixCriterion.statuses.keys
 
-  validate :validate_score, :validate_incentive_scored
 
   def validate_score
-    return true if self.scheme_mix.certification_path.certificate.construction_certificate?
-    if self.scheme_mix.certification_path.certificate.construction_issue_1?
-      max_value = 100
-      min_value = 0
-    else
-      max_value = 3
-      min_value = -1
-    end
+    max_value = 3
+    min_value = -1
+
     SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES.each_with_index do |targeted_score, index|
       unless self.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym).nil?
         validates_presence_of targeted_score.to_sym
@@ -64,16 +58,6 @@ class SchemeMixCriterion < ApplicationRecord
       unless self.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym).nil?
         next if self.read_attribute(SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES[index].to_sym).nil?
         validates_numericality_of achieved_score.to_sym, only_integer: false, greater_than_or_equal_to: min_value, less_than_or_equal_to: max_value
-      end
-    end
-  end
-
-  def validate_incentive_scored
-    if ['E','W'].include?(self.scheme_criterion.scheme_category.code) && self.scheme_mix.certification_path.certificate.construction_issue_3?
-      SchemeCriterion::SCORE_ATTRIBUTES.each_with_index do |scores, index|
-        if !self.read_attribute(SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES[index].to_sym).nil? && self.read_attribute(SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES[index].to_sym) <= 0 && self.read_attribute(SchemeMixCriterion::INCENTIVE_SCORED_ATTRIBUTES[index].to_sym) == true
-          errors.add(SchemeMixCriterion::INCENTIVE_SCORED_ATTRIBUTES[index].to_sym, 'should be > 0 for Energy and Water categories.')
-        end
       end
     end
   end
@@ -294,10 +278,6 @@ class SchemeMixCriterion < ApplicationRecord
 
   def at_certifier_side?
     return verifying? || score_minimal? || score_awarded? || score_downgraded? || score_upgraded? || verifying_after_appeal? || score_minimal_after_appeal? || score_awarded_after_appeal? || score_downgraded_after_appeal? || score_upgraded_after_appeal?
-  end
-
-  def w1_certification_CM_2019?
-    scheme_criterion.code == 'W.1' && scheme_mix.CM_2019?
   end
 
   # This overrides default behaviour

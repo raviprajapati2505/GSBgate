@@ -47,7 +47,7 @@
                   </td>
 
                   <td class="td-px-0">
-                    <% if certification_path&.certification_path_method&.assessment_method == 2 %>
+                    <% if certification_path&.assessment_method == 0 %>
                       <%= render partial: 'certification_paths/checklist_rating', locals: { certification_path: certification_path } %>
                     <% else %>
                       <%= render partial: 'certification_paths/ratings', locals: { certification_path: certification_path, display_item: 'score' } %>
@@ -55,7 +55,7 @@
                   </td>
 
                   <td class="td-px-0">
-                    <% if certification_path&.certification_path_method&.assessment_method == 2 %>
+                    <% if certification_path&.assessment_method == 0 %>
                       <%= render partial: 'certification_paths/checklist_rating', locals: { certification_path: certification_path } %>
                     <% else %>
                       <%= render partial: 'certification_paths/ratings', locals: { certification_path: certification_path, display_item: 'rating' } %>

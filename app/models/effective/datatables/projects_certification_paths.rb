@@ -254,8 +254,8 @@ module Effective
         end.search do |collection, terms, column, index|
           terms_array = terms.split(",")
           
-          unless (collection.class == Array || terms_array.include?("") || terms_array == ["1", "2"])
-            collection.joins(certification_paths: :certification_path_method).where("certification_path_methods.assessment_method = (:terms_array)", terms_array: terms_array)
+          unless (collection.class == Array || terms_array.include?("") || terms_array == ["0"])
+            collection.joins(:certification_paths).where("certification_paths.assessment_method IN (:terms_array)", terms_array: terms_array)
           else
             collection
           end
@@ -280,10 +280,8 @@ module Effective
 
         col :certification_scheme_name, col_class: 'multiple-select col-order-24', label: t('models.effective.datatables.projects_certification_paths.certification_scheme_name.label'), sql_column: "ARRAY_TO_STRING(ARRAY(SELECT schemes.name FROM schemes INNER JOIN scheme_mixes ON schemes.id = scheme_mixes.scheme_id WHERE scheme_mixes.certification_path_id = certification_paths.id), '|||')" , search: { as: :select, collection: Proc.new { get_schemes_names } } do |rec|
           development_type_name = rec.development_type_name
-          if (rec.design_and_build? || rec.ecoleaf?) && ["Neighborhoods", "Mixed Use"].include?(development_type_name)
+          if ["Neighborhoods", "Mixed Use"].include?(development_type_name)
             development_type_name
-          elsif development_type_name == "Districts"
-            "Districts"
           else
             # rec.certification_scheme_name
             ERB::Util.html_escape(rec.certification_scheme_name).split('|||').sort.join('<br/>') unless rec.certification_scheme_name.nil?
@@ -364,10 +362,6 @@ module Effective
           if !rec.total_achieved_score.nil?
             score = rec&.total_achieved_score
             certification_path = CertificationPath.find(rec&.certification_path_id)
-
-            if certification_path&.certificate&.design_and_build?
-              score = 0 if score < 0
-            end
 
             if certification_path&.construction? && !certification_path&.is_activating?
               score_all = fetch_scores(certification_path)

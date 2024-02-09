@@ -62,7 +62,7 @@ class CertificationPathsController < AuthenticatedController
     end
 
     if Certificate::FINAL_CERTIFICATES.include?(Certificate.certification_types[@certification_type])
-      @certificate_method = @certification_path.project.completed_provisional_certificate.first.certification_path_method
+      @certificate_method = @certification_path.project.completed_provisional_certificate&.first&.assessment_method
       @assessment_method = unless @certificate_method.present?
                               0
                            else
@@ -72,7 +72,7 @@ class CertificationPathsController < AuthenticatedController
       if params.has_key?(:assessment_method)
         @assessment_method = params[:assessment_method].to_i
       else
-        @assessment_method = current_user.manage_assessment_methods_options&.values&.first || 1
+        @assessment_method = current_user.manage_assessment_methods_options&.values&.first || 0
       end
     end
 
@@ -263,7 +263,8 @@ class CertificationPathsController < AuthenticatedController
       if todos_array[0].blank? || todos_array[1].blank?
         # Check if there's an appeal
         # For construction management 2019 appeal can only be requested during stage 3
-        unless certification_path_params.has_key?(:appealed) && @certification_path.certificate.construction_2019? && !@certification_path.certificate.construction_certificate_stage3?
+     
+        unless certification_path_params.has_key?(:appealed)
           @certification_path.appealed = certification_path_params.has_key?(:appealed)
         end
 
@@ -276,13 +277,6 @@ class CertificationPathsController < AuthenticatedController
         # sent email if the certificate is approved
         if @certification_path.status == "Certified"
           DigestMailer.certificate_approved_email(@certification_path).deliver_now
-          
-          if @certification_path.certificate.name != 'Stage 2: CDA, Design & Build Certificate'
-            unless @certification_path.final_construction?
-              @certification_path.certification_path_status_id = @certification_path.next_status
-              @certification_path.save!
-            end
-          end
         end
         # If there was an appeal, set the status of the selected criteria to 'Appealed'
         if certification_path_params.has_key?(:appealed) && params.has_key?(:scheme_mix_criterion)

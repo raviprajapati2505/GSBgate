@@ -11,7 +11,7 @@ class CreateOfflineProjectsEntities < ActiveRecord::Migration[7.0]
       t.text :description
       t.string :loc_as_per_directory
       t.string :owner
-      t.integer :assessment_type, default: 0
+      t.integer :assessment_method, default: 0
       t.string :project_country
       t.string :project_city
       t.string :project_district
