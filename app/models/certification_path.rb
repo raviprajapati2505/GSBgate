@@ -645,7 +645,7 @@ class CertificationPath < ApplicationRecord
       else
         return -1
       end
-    elsif (!certificate.nil? && certificate.construction_issue_1?) || (!certificate_gsb_version.nil? && certificate_gsb_version == 'v2.1 Issue 1.0')
+    elsif (!certificate.nil?) || (!certificate_gsb_version.nil? && certificate_gsb_version == 'v2.1 Issue 1.0')
       if score < 35
         return 'CERTIFICATION DENIED'
       elsif score >= 35 && score < 55
@@ -783,7 +783,7 @@ class CertificationPath < ApplicationRecord
   end
 
   def is_checklist_method?
-    assessment_method == CertificationPath.assessment_methods[:check_list]
+    CertificationPath.assessment_methods[assessment_method] == CertificationPath.assessment_methods[:check_list]
   end
 
   def is_design_loc?

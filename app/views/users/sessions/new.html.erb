@@ -36,8 +36,14 @@
     <div class="col-md-4 col-sm-12 text-left my-4">
       <div class="d-flex justify-content-center">
         <div class="right-part">
-          <%= link_to "GSB Projects Certifications", "" ,class: 'text-white mb-4 d-inline-block' %> |
-          <%= link_to "Register/Manage a Project", "" ,class: 'text-white mb-4 d-inline-block' %>
+          <!-- 
+            <%= link_to "GSB Projects Certifications", "javascript:void(0);" ,class: 'text-white mb-4 d-inline-block' %> | 
+            <%= link_to "Register/Manage a Project", new_registration_path(resource_name), class: 'text-white mb-4 d-inline-block' %>
+          -->
+
+          <%= link_to "Register as a CGP/CEP", new_registration_path(resource_name), class: 'text-white mb-4 d-inline-block' %> |
+          <%= link_to "Register as a Service Provider", new_service_provider_path, class: 'text-white mb-4 d-inline-block' %>
+
           <div class="login-right">
             <div class="title">
               <h2 class="text-blue">Login</h2>

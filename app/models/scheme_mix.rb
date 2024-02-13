@@ -56,11 +56,12 @@ class SchemeMix < ApplicationRecord
       end
     end
 
-    scheme_of_criteria = if self.check_list?
-      scheme.scheme_criteria.where(is_checklist: true)
-    else
-      scheme.scheme_criteria.where(is_checklist: false)
-    end
+    scheme_of_criteria = 
+      if self.check_list?
+        scheme.scheme_criteria.where(is_checklist: true)
+      else
+        scheme.scheme_criteria.where(is_checklist: false)
+      end
 
     # Loop all the criteria of the scheme
     scheme_of_criteria.each do |scheme_criterion|

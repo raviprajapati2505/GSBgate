@@ -33,6 +33,7 @@ class Project < ApplicationRecord
   validates :construction_year, presence: true
   validates :location_plan_file, presence: true
   validates :site_plan_file, presence: true
+  validates :sustainability_features_file, presence: true
   validates :design_brief_file, presence: true
   validates :building_type_id, presence: true
   # validates :building_type_group_id, presence: true

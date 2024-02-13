@@ -183,7 +183,7 @@
                 </div>
                 
                 <div class="form-group">
-                  <label class="control-label" for="project_sustainability_features_file"><%= Project.human_attribute_name('sustainability_features_file') %></label>
+                  <label class="control-label required" for="project_sustainability_features_file"><%= Project.human_attribute_name('sustainability_features_file') %></label>
                   <% if @project.sustainability_features_file.present? %>
                     <div class="input-group">
                       <span class="input-group-addon"><%= ikoen('file', title: 'Currently uploaded file. Will be overridden when you select a new file.') %></span>

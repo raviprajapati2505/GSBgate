@@ -49,7 +49,7 @@
           <% if @certification_path.is_activated? %>
             <tr>
               <th><%= t('certification_paths.show.certification_path.rating') %></th>
-              <td><%= render 'certification_paths/checklist_rating', certification_path: certification_path %></td>
+              <td><%= render 'certification_paths/checklist_rating', certification_path: @certification_path %></td>
             </tr>
           <% end %>
 
