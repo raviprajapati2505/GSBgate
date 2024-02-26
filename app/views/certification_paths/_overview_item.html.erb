@@ -70,7 +70,7 @@
 
                 no_completed_building_energy_efficiency = (certification_type == Certificate.certification_types[:final_building_energy_efficiency] && project.completed_building_energy_efficiency.empty?) 
 
-                no_provisional_healthy_buildings = (certification_type == Certificate.certification_types[:final_Healthy_buildings] && project.completed_provisional_healthy_buildings.empty?) 
+                no_provisional_healthy_buildings = (certification_type == Certificate.certification_types[:final_healthy_buildings] && project.completed_provisional_healthy_buildings.empty?) 
 
                 no_provisional_indoor_air_quality = (certification_type == Certificate.certification_types[:final_indoor_air_quality] && project.completed_provisional_indoor_air_quality.empty?)
                 
@@ -124,7 +124,7 @@
                           ( project.certification_paths.empty? ||
                             ((certification_type == Certificate.certification_types[:final_energy_centers_efficiency]) && project.completed_provisional_energy_centers_efficiency.any?) ||
                             ((certification_type == Certificate.certification_types[:final_building_energy_efficiency]) && project.completed_provisional_building_energy_efficiency.any?) ||
-                            ((certification_type == Certificate.certification_types[:final_Healthy_buildings]) && project.completed_provisional_healthy_buildings.any?) ||
+                            ((certification_type == Certificate.certification_types[:final_healthy_buildings]) && project.completed_provisional_healthy_buildings.any?) ||
                             ((certification_type == Certificate.certification_types[:final_indoor_air_quality]) && project.completed_provisional_indoor_air_quality.any?) ||
                             ((certification_type == Certificate.certification_types[:final_measurement_reporting_and_verification]) && project.completed_provisional_measurement_reporting_and_verification.any?) ||
                             ((certification_type == Certificate.certification_types[:final_building_water_efficiency]) && project.completed_provisional_building_water_efficiency.any?) ||

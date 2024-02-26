@@ -27,7 +27,7 @@ class Reports::CriteriaScores < Reports::BaseReport
   MAIN_COLOR = '62A744'.freeze
   BACKGROUND_COLOR = 'EEEEEE'.freeze
   FOOTER_LOGO = 'gord_logo_black.jpg'.freeze
-  STAR_ICON = 'green_star.png'.freeze
+  STAR_ICON = 'blue_star.png'.freeze
   FOOTER_URL = "<link href='http://www.gord.qa'>www.gord.qa</link>".freeze
   MAX_ROWS_PER_PAGE = 24
   PAGE_MARGIN = 50

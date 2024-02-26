@@ -116,7 +116,7 @@ label.required:after {
   font-size: 16px;
 }
 
-form.user-form .icheckbox_square-green {
+form.user-form .icheckbox_square-blue {
   margin-right: 1.2rem !important;
 }
 
@@ -185,7 +185,7 @@ legend.scheduler-border {
 }
 
 .skin-gord {
-  .gord-transparent-green,
+  .gord-transparent-blue,
   .navbar-nav .dropdown-menu {
     background-color: $primary !important;
   }
@@ -359,7 +359,7 @@ fieldset.scheduler-border {
   cursor: pointer !important;
 }
 
-.bg-dark-green {
+.bg-dark-blue {
   background-color: rgba(5, 32, 49, 0.7);
 }
 hr {
@@ -370,7 +370,7 @@ hr {
 .datepicker table tr th {
   color: $black;
 }
-.bg-dark-green-solid {
+.bg-dark-blue-solid {
   background-color: rgb(15, 44, 23);
 }
 .bg-black-light {
@@ -970,7 +970,7 @@ label.required:after {
 .cert-doc-table {
   thead tr th {
     background: rgba($primary, 0.12) !important;
-    color: $gray-600 !important;
+    color: $gray-700 !important;
   }
 }
 .approved-badge {
@@ -1025,10 +1025,10 @@ table.dataTable {
   }
 }
 
-table.dataTable.light-green thead tr th,
-.table-bordered.light-green > thead > tr > th {
+table.dataTable.light-blue thead tr th,
+.table-bordered.light-blue > thead > tr > th {
   background: $skin-gord-color-light !important;
-  color: $gray-600 !important;
+  color: $gray-700 !important;
 }
 
 table.dataTable thead .sorting:after {
@@ -1045,7 +1045,7 @@ table.dataTable thead .sorting_desc_disabled:after {
   right: 5px !important;
 }
 .cert-doc-table thead tr th:after {
-  color: $gray-600 !important;
+  color: $gray-700 !important;
   bottom: 12px !important;
   opacity: 1 !important;
 }
@@ -1096,12 +1096,12 @@ table.dataTable thead > tr > th.sorting {
 .fa-toggle-right:before,
 .fa-caret-square-o-right:before {
   content: "\f144";
-  color: #c2d9a4;
+  color: $primary;
 }
 .fa-toggle-down:before,
 .fa-caret-square-o-down:before {
   content: "\f144";
-  color: #c2d9a4;
+  color: $primary;
   transform: rotate(90deg);
   display: inline-block;
 }
@@ -1452,7 +1452,7 @@ table.dataTable thead > tr > th.sorting {
 .confirm-inst,
 .forget-pass,
 .sign-cgp {
-  & .text-inner-green {
+  & .text-inner-blue {
     color: $primary !important;
   }
 }

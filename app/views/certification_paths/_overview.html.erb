@@ -15,7 +15,7 @@
 <% if project.certificate_type.nil? || project.certificate_type == Certificate.certificate_types[:healthy_buildings_type] %>
   <ul class="list-group">
     <%= render partial: 'certification_paths/certification_path_details', locals: { project: project } %>
-    <%= render partial: 'certification_paths/overview_item', locals: { project: project, certification_types: [:provisional_healthy_buildings, :final_Healthy_buildings] } %>
+    <%= render partial: 'certification_paths/overview_item', locals: { project: project, certification_types: [:provisional_healthy_buildings, :final_healthy_buildings] } %>
   </ul>
 <% end %>
 

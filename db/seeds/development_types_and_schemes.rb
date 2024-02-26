@@ -279,7 +279,7 @@ final_Healthy_buildings_dt =
   DevelopmentType.find_or_create_by!(
     display_weight: 6, 
     certificate: Certificate.find_by(
-      certification_type: Certificate.certification_types[:final_Healthy_buildings], 
+      certification_type: Certificate.certification_types[:final_healthy_buildings], 
       certificate_type: Certificate.certificate_types[:healthy_buildings_type], 
       assessment_stage: Certificate.assessment_stages[:healthy_buildings_stage], 
       gsb_version: "2023"

@@ -42,7 +42,7 @@ Certificate.find_or_create_by!(
 )
 Certificate.find_or_create_by!(
   name: 'Stage 2: Final Certificate', 
-  certification_type: Certificate.certification_types[:final_Healthy_buildings], 
+  certification_type: Certificate.certification_types[:final_healthy_buildings], 
   certificate_type: Certificate.certificate_types[:healthy_buildings_type], 
   assessment_stage: Certificate.assessment_stages[:healthy_buildings_stage], 
   gsb_version: "2023", 

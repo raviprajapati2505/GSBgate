@@ -51,10 +51,10 @@
     var checked_values = {};
 
     $('.iCheck-helper').on('click', function() {
-      let icheckbox_square_green = $(this).parent();
-      let input_field = icheckbox_square_green.find("input");
+      let icheckbox_square_blue = $(this).parent();
+      let input_field = icheckbox_square_blue.find("input");
 
-      if (icheckbox_square_green.hasClass('icheckbox_square-green')) {
+      if (icheckbox_square_blue.hasClass('icheckbox_square-blue')) {
         let survey_question_id = input_field.data("survey-question-id");
         let checkbox_value = input_field.val();
 
@@ -64,7 +64,7 @@
         }
 
         /* get selected checkbox values */
-        if (icheckbox_square_green.hasClass('checked')) {
+        if (icheckbox_square_blue.hasClass('checked')) {
           checked_values[survey_question_id].push(checkbox_value);
 
         } else {

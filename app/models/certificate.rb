@@ -32,7 +32,7 @@ class Certificate < ApplicationRecord
     :provisional_products_ecolabeling,
     :final_energy_centers_efficiency,
     :final_building_energy_efficiency,
-    :final_Healthy_buildings,
+    :final_healthy_buildings,
     :final_indoor_air_quality,
     :final_measurement_reporting_and_verification,
     :final_building_water_efficiency,
@@ -54,7 +54,7 @@ class Certificate < ApplicationRecord
   FINAL_CERTIFICATES = [
     :final_energy_centers_efficiency,
     :final_building_energy_efficiency,
-    :final_Healthy_buildings,
+    :final_healthy_buildings,
     :final_indoor_air_quality,
     :final_measurement_reporting_and_verification,
     :final_building_water_efficiency,
@@ -113,7 +113,7 @@ class Certificate < ApplicationRecord
                               when "Building Energy Efficiency"
                                 [Certificate.certification_types[:provisional_building_energy_efficiency], Certificate.certification_types[:final_building_energy_efficiency]]
                               when "Healthy Buildings"
-                                [Certificate.certification_types[:provisional_healthy_buildings], Certificate.certification_types[:final_Healthy_buildings]]
+                                [Certificate.certification_types[:provisional_healthy_buildings], Certificate.certification_types[:final_healthy_buildings]]
                               when "Indoor Air Quality"
                                 [Certificate.certification_types[:provisional_indoor_air_quality], Certificate.certification_types[:final_indoor_air_quality]]
                               when "Measurement, Reporting And Verification (MRV)"

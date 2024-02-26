@@ -25,7 +25,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
   TEXT_COLOR = 'ffffff'.freeze
   BACKGROUND_COLOR = 'EEEEEE'.freeze
   FOOTER_LOGO = 'gord_logo_black.jpg'.freeze
-  STAR_ICON = 'green_star.png'.freeze
+  STAR_ICON = 'blue_star.png'.freeze
   FOOTER_URL = "<link href='http://www.gsb.gord.qa'>www.gsb.gord.qa</link>".freeze
   MAX_ROWS_PER_PAGE = 22
   PAGE_MARGIN = 50
@@ -270,7 +270,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
           newline(1)
           newline(2)
 
-          # image image_path('green_star.png'), width: 50
+          # image image_path('blue_star.png'), width: 50
 
           styled_text("<div style='font-size: 10; color: 000000; font-style: bold;'>\n Dr. Yousef Alhorr</div>")
 

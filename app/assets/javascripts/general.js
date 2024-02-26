@@ -601,12 +601,12 @@ var GSB = {
   processiCheck: function() {
       // iCheck all checkboxes & radio buttons
       $('input[type=checkbox], input[type=radio]').not('input[readonly]').not('.icheck-processed').addClass('icheck-processed').iCheck({
-          checkboxClass: 'icheckbox_square-green',
-          radioClass: 'iradio_square-green'
+          checkboxClass: 'icheckbox_square-blue',
+          radioClass: 'iradio_square-blue'
       });
       $('input[type=checkbox][readonly], input[type=radio][readonly]').not('.icheck-processed').addClass('icheck-processed').iCheck({
-          checkboxClass: 'icheckbox_square-green',
-          radioClass: 'iradio_square-green'
+          checkboxClass: 'icheckbox_square-blue',
+          radioClass: 'iradio_square-blue'
       }).iCheck('disable');
   },
 

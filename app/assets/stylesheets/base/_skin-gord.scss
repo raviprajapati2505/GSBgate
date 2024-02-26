@@ -225,7 +225,7 @@
   }
 
   // icheck
-  .icheckbox_square-green {
+  .icheckbox_square-blue {
     display: inline-block;
     vertical-align: middle;
     margin: 0;
@@ -252,14 +252,14 @@
       cursor: default;
     }
   }
-  .iradio_square-green {
+  .iradio_square-blue {
     display: inline-block;
     vertical-align: middle;
     margin: 0;
     padding: 0;
     width: 22px;
     height: 22px;
-    background: image_url("green.png") no-repeat center;
+    background: image_url("blue.png") no-repeat center;
     background-position: -120px 0;
     // background-color: rgba($black, 0.8);
     cursor: pointer;
@@ -285,7 +285,7 @@
     background-color: transparent;
   }
 
-  .gord-transparent-green {
+  .gord-transparent-blue {
     background-color: rgba($primary, 0.5);
     color: $white;
   }
@@ -679,14 +679,14 @@
   }
 
   // icheck
-  .icheckbox_square-green {
+  .icheckbox_square-blue {
     display: inline-block;
     vertical-align: middle;
     margin: 0;
     padding: 0;
     width: 15px;
     height: 15px;
-    background: image_url("green.png") no-repeat;
+    background: image_url("blue.png") no-repeat;
     background-position: 0 0;
     border: none;
     cursor: pointer;
@@ -704,7 +704,7 @@
       cursor: default;
     }
   }
-  .iradio_square-green {
+  .iradio_square-blue {
     display: inline-block;
     *display: inline;
     vertical-align: middle;
@@ -712,7 +712,7 @@
     padding: 0;
     width: 22px;
     height: 22px;
-    background: image_url("green.png") no-repeat;
+    background: image_url("blue.png") no-repeat;
     background-position: -120px 0;
     border: none;
     cursor: pointer;
@@ -778,7 +778,7 @@
     padding: 0;
     #dropzone-top,
     #render-dropzone-top {
-      background-color: rgba($primary, 0.2);
+      background-color: $skin-gord-color-light;
       height: 100px;
       padding: 20px;
       cursor: pointer;
@@ -828,7 +828,7 @@
 
       .panel-heading {
         padding: 7px 8px;
-        color: $gray-600;
+        color: $gray-700;
         font-weight: 600;
       }
 
@@ -867,7 +867,7 @@
 
       .panel-heading {
         padding: 7px 8px;
-        color: $gray-600;
+        color: $gray-700;
         font-weight: 600;
       }
 
@@ -929,7 +929,7 @@
     }
 
     li a {
-      color: $gray-600;
+      color: $gray-700;
       font-weight: 600;
     }
 

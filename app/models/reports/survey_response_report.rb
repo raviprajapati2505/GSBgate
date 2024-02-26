@@ -25,7 +25,7 @@ class Reports::SurveyResponseReport < Reports::BaseReport
   TEXT_COLOR = 'ffffff'.freeze
   BACKGROUND_COLOR = 'EEEEEE'.freeze
   FOOTER_LOGO = 'gord_logo_black.jpg'.freeze
-  STAR_ICON = 'green_star.png'.freeze
+  STAR_ICON = 'blue_star.png'.freeze
   FOOTER_URL = "<link href='http://www.gsb.gord.qa'>www.gsb.gord.qa</link>".freeze
   MAX_ROWS_PER_PAGE = 24
   PAGE_MARGIN = 50

@@ -196,7 +196,7 @@ Congratulations once again for partaking in this noble endeavor, and together le
 
       newline(1)
 
-      # image image_path('green_star.png'), width: 50
+      # image image_path('blue_star.png'), width: 50
 
       styled_text("<div style='font-size: 10; color: #{MAIN_COLOR}; font-style: bold;'>\n Dr. Yousef Alhorr</div>")
 
@@ -218,7 +218,7 @@ Congratulations once again for partaking in this noble endeavor, and together le
 
       newline(1)
 
-      # image image_path('green_star.png'), width: 50
+      # image image_path('blue_star.png'), width: 50
 
       styled_text("<div style='font-size: 10; color: #{MAIN_COLOR}; font-style: bold;'>\n Dr. Yousef Alhorr</div>")
 

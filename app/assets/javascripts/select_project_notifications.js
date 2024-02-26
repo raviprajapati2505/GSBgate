@@ -5,7 +5,7 @@
 $(function() {
     var user_id = $('#user_id').val();
     $('#project_id').change(function() {
-        $('#checkbox-list-notification-types .icheckbox_square-green input[type=checkbox]').iCheck('check');
+        $('#checkbox-list-notification-types .icheckbox_square-blue input[type=checkbox]').iCheck('check');
         refresh_notification_list(user_id, $(this).val());
     });
     refresh_notification_list(user_id, $('#project_id').val());
@@ -23,7 +23,7 @@ function refresh_notification_list(user_id, project_id) {
             cache: false
         }).done(function(data) {
             $.each(data, function(index, value) {
-                $('#checkbox-list-notification-types .icheckbox_square-green input[type=checkbox][value=' + value.id + ']').iCheck('uncheck');
+                $('#checkbox-list-notification-types .icheckbox_square-blue input[type=checkbox][value=' + value.id + ']').iCheck('uncheck');
             });
             $('#checkbox-list-notification-types').show();
         });

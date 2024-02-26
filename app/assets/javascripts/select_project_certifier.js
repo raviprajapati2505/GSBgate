@@ -13,7 +13,7 @@ $(".smcd_checkbox_parent").on('ifChecked', function() {
   $('.smcd_child_checkbox').each(function() {
       $(this).prop("checked", true);
       $(this).addClass('icheck-processed').iCheck({
-      checkboxClass: 'icheckbox_square-green'});
+      checkboxClass: 'icheckbox_square-blue'});
   });
 });
 //scheme criterion documents checkbox unchecked event
@@ -21,6 +21,6 @@ $('.smcd_checkbox_parent').on('ifUnchecked', function() {
 	$('.smcd_child_checkbox').each(function() {
       $(this).prop("checked", false);
       $(this).removeClass('icheck-processed').iCheck({
-      checkboxClass: 'icheckbox_square-green'});
+      checkboxClass: 'icheckbox_square-blue'});
   });
 });
