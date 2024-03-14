@@ -13,7 +13,6 @@
               <th class="w-50 border-top-0"><%= t('certification_paths.show.certification_path.stage') %></th>
               <th class="border-top-0"><%= t('certification_paths.show.certification_path.status') %></th>
               <th class="border-top-0"><%= t('certification_paths.show.certification_path.scores') %></th>
-              <th class="border-top-0"><%= t('certification_paths.show.certification_path.rating') %></th>
             </tr>
           <% end %>
 
@@ -42,25 +41,14 @@
                     </div>
                   </td>
 
-                  <td style="width: 290px;">
+                  <td style="width: 225px;">
                     <%= certification_path.status %>
                   </td>
 
                   <td class="td-px-0">
-                    <% if certification_path&.assessment_method == 0 %>
                       <%= render partial: 'certification_paths/checklist_rating', locals: { certification_path: certification_path } %>
-                    <% else %>
-                      <%= render partial: 'certification_paths/ratings', locals: { certification_path: certification_path, display_item: 'score' } %>
-                    <% end %>
                   </td>
 
-                  <td class="td-px-0">
-                    <% if certification_path&.assessment_method == 0 %>
-                      <%= render partial: 'certification_paths/checklist_rating', locals: { certification_path: certification_path } %>
-                    <% else %>
-                      <%= render partial: 'certification_paths/ratings', locals: { certification_path: certification_path, display_item: 'rating' } %>
-                    <% end %>
-                  </td>
                 </tr>
               <% end %>
 

@@ -414,36 +414,6 @@ class ProjectsController < AuthenticatedController
         t('models.effective.datatables.offline.certification_path.subscheme'),
         t('models.effective.datatables.offline.project.plot_area')
       ]
-
-    offline_projects.each do |data|
-      formatted_data = 
-        [
-          data.code,
-          data.name,
-          data.certificate_type,
-          data.certified_area,
-          data.owner,
-          data.developer,
-          data.assessment_method,
-          data.construction_year,
-          data.project_country,
-          data.project_city,
-          data.project_district,
-          data.project_owner_business_sector,
-          data.project_developer_business_sector,
-          data.project_gross_built_up_area,
-          data.certification_name,
-          Offline::CertificationPath.versions.key(data.certification_version),
-          data.certification_development_type,
-          data.certification_status,
-          data.certification_certified_at,
-          Offline::CertificationPath.ratings.key(data.certification_rating),
-          data.certification_scheme_name,
-          data.subschemes || "",
-          data.plot_area
-        ]
-      @projects.push(offline_projects_lables.zip(formatted_data).to_h)
-    end
   end
 
   def show

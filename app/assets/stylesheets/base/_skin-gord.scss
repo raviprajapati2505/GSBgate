@@ -974,10 +974,6 @@
     .document-rejected {
       @extend .alert-danger;
     }
-
-    .document-rejected:hover {
-      background-color: $gray;
-    }
   }
 
   #criterion-levels-table {

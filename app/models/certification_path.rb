@@ -281,82 +281,6 @@ class CertificationPath < ApplicationRecord
     todos = []
     todos_schemes = []
 
-    if assessment_method == 0
-      case certification_path_status_id
-      when CertificationPathStatus::ACTIVATING
-        # TODO certification path expiry date
-        unless certification_manager_assigned?
-          todos << 'A certification manager must be assigned to the project.'
-        end
-        if development_type.mixable? && (main_scheme_mix_selected? == false)
-          todos << 'A main scheme needs to be selected.'
-        end
-      when CertificationPathStatus::SCREENING
-        scheme_mix_criteria.each do |criterion|
-          unless criterion.screened
-            todos << 'Some criteria aren\'t screened yet. Please allocate team responsibility for screening or skip screening by marking all criteria as "screened".'
-            todos_schemes << criterion&.code
-          end
-        end
-      when CertificationPathStatus::SUBMITTING, CertificationPathStatus::SUBMITTING_AFTER_SCREENING, CertificationPathStatus::SUBMITTING_AFTER_APPEAL
-        ['location_plan_file', 'site_plan_file', 'design_brief_file', 'project_narrative_file', 'sustainability_features_file', 'area_statement_file'].each do |general_submittal|
-          if project.send(general_submittal).blank?
-            if general_submittal == 'sustainability_features_file' 
-              if is_project_after_sf_file(project)
-                todos << "A '#{Project.human_attribute_name('sustainability_features_file')}' must be added to the project."
-              end
-            elsif !required_files(project, general_submittal)
-              todos << "A '#{Project.human_attribute_name(general_submittal)}' must be added to the project."
-            end
-          end
-        end
-        scheme_mix_criteria.each do |criterion|
-          if criterion.has_documents_awaiting_approval?
-            todos << 'There are still documents awaiting approval.'
-            todos_schemes << criterion&.code
-          end
-          criterion.scheme_mix_criterion_boxes.each do |smcb|
-            if smcb.scheme_criterion_box.label == "Targeted Checklist Status" && !smcb.is_checked?
-              todos << 'The targeted checklist must be checked.'
-              todos_schemes << criterion&.code
-              break
-            elsif smcb.scheme_criterion_box.label == "Submitted Checklist Status" && !smcb.is_checked?
-              todos << 'The submitted checklist must be checked.'
-              todos_schemes << criterion&.code
-              break
-            end
-          end
-          if criterion.submitting?
-            todos << 'Some criteria still have status \'Submitting\'.'
-            todos_schemes << criterion&.code
-          end
-          if criterion.submitting_after_appeal?
-            todos << 'Some criteria still have status \'Submitting after appeal\'.'
-            todos_schemes << criterion&.code
-          end
-        end
-      when CertificationPathStatus::VERIFYING, CertificationPathStatus::VERIFYING_AFTER_APPEAL
-        scheme_mix_criteria.each do |criterion|
-          # criterion.scheme_mix_criterion_boxes.each do |smcb|
-          #   if smcb.scheme_criterion_box.label == "Achieved Checklist Status" && !smcb.is_checked?
-          #     todos << 'The achieved checklist must be checked.'
-          #   end
-          # end
-          if criterion.verifying?
-            todos << 'Some criteria still have status \'Verifying\'.'
-            todos_schemes << criterion&.code
-          end
-          if criterion.verifying_after_appeal?
-            todos << 'Some criteria still have status \'Verifying after appeal\'.'
-            todos_schemes << criterion&.code
-          end
-        end
-      when CertificationPathStatus::CERTIFIED, CertificationPathStatus::NOT_CERTIFIED
-        todos << 'This is the final status.'
-      end
-      return [todos.uniq, todos_schemes.uniq]
-    end
-
     case certification_path_status_id
     when CertificationPathStatus::ACTIVATING
       # TODO certification path expiry date
@@ -376,7 +300,7 @@ class CertificationPath < ApplicationRecord
     when CertificationPathStatus::SUBMITTING, CertificationPathStatus::SUBMITTING_AFTER_SCREENING, CertificationPathStatus::SUBMITTING_AFTER_APPEAL
       ['location_plan_file', 'site_plan_file', 'design_brief_file', 'project_narrative_file', 'sustainability_features_file', 'area_statement_file'].each do |general_submittal|
         if project.send(general_submittal).blank?
-          if general_submittal == 'sustainability_features_file'
+          if general_submittal == 'sustainability_features_file' 
             if is_project_after_sf_file(project)
               todos << "A '#{Project.human_attribute_name('sustainability_features_file')}' must be added to the project."
             end
@@ -386,48 +310,19 @@ class CertificationPath < ApplicationRecord
         end
       end
       scheme_mix_criteria.each do |criterion|
-        if criterion.has_required_requirements?
-          todos << 'All requirements should have status \'Provided\' or \'Not required\'.'
-          todos_schemes << criterion&.code
-        end
         if criterion.has_documents_awaiting_approval?
           todos << 'There are still documents awaiting approval.'
           todos_schemes << criterion&.code
         end
-        SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES.each_with_index do |targeted_score, index|
-          unless criterion.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym).nil?
-            if criterion.read_attribute(targeted_score.to_sym).blank?
-              todos << 'Every criterion should have a targeted level.'
-              todos_schemes << criterion&.code
-              break
-            end
-          end
-        end
-        criteria_exist_blank = false
-        SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES.each_with_index do |submitted_score, index|
-          unless criterion.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym).nil?
-            if criterion.read_attribute(submitted_score.to_sym).blank?
-              criteria_exist_blank = true
-              todos << 'Every criterion should have a submitted level.'
-              todos_schemes << criterion&.code
-              break
-            end
-          end
-        end
-        unless User.current.can?(:edit_status_low_score, self) || criteria_exist_blank
-          if self.certificate.operations?
-            if (criterion.scheme_criterion.scheme_category.scheme.name == 'Healthy Building Label Scheme') && (criterion.submitted_score < 2)
-              todos << 'To obtain GSB certification for the Healthy Building Label scheme all criteria levels must be 2 or higher.'
-              todos_schemes << criterion&.code
-            elsif ['E','W'].include?(criterion.scheme_criterion.scheme_category.code) && (criterion.submitted_score <= 0)
-              todos << 'To obtain GSB certification for Standard or Premium scheme the Energy and Water criteria levels must be higher than 0.'
-              todos_schemes << criterion&.code
-            end
-
-            if (criterion.scheme_criterion.scheme_category.scheme.name == 'Premium Scheme') && (criterion.scheme_criterion.scheme_category.code == 'IE') && (criterion.scheme_criterion.number == 2) && (criterion.submitted_score <= 0)
-              todos << 'To obtain GSB certification for Premium scheme the level of IE.2 Air Quality must be higher than 0.'
-              todos_schemes << criterion&.code
-            end
+        criterion.scheme_mix_criterion_boxes.each do |smcb|
+          if smcb.scheme_criterion_box.label == "Targeted Checklist Status" && !smcb.is_checked?
+            todos << 'The targeted checklist must be checked.'
+            todos_schemes << criterion&.code
+            break
+          elsif smcb.scheme_criterion_box.label == "Submitted Checklist Status" && !smcb.is_checked?
+            todos << 'The submitted checklist must be checked.'
+            todos_schemes << criterion&.code
+            break
           end
         end
         if criterion.submitting?
@@ -441,14 +336,11 @@ class CertificationPath < ApplicationRecord
       end
     when CertificationPathStatus::VERIFYING, CertificationPathStatus::VERIFYING_AFTER_APPEAL
       scheme_mix_criteria.each do |criterion|
-        SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES.each_with_index do |achieved_score, index|
-          unless criterion.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym).nil?
-            if criterion.read_attribute(achieved_score.to_sym).blank?
-              todos << 'Every criterion should have an achieved level.'
-              todos_schemes << criterion&.code
-            end
-          end
-        end
+        # criterion.scheme_mix_criterion_boxes.each do |smcb|
+        #   if smcb.scheme_criterion_box.label == "Achieved Checklist Status" && !smcb.is_checked?
+        #     todos << 'The achieved checklist must be checked.'
+        #   end
+        # end
         if criterion.verifying?
           todos << 'Some criteria still have status \'Verifying\'.'
           todos_schemes << criterion&.code
@@ -460,9 +352,7 @@ class CertificationPath < ApplicationRecord
       end
     when CertificationPathStatus::CERTIFIED, CertificationPathStatus::NOT_CERTIFIED
       todos << 'This is the final status.'
-      todos_schemes << criterion&.code
     end
-
     return [todos.uniq, todos_schemes.uniq]
   end
 

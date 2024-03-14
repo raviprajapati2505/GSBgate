@@ -141,17 +141,8 @@
                         <span class="nav-label"><%= t('.navbar.admin') %> <i class="fa fa-caret-down m-0 ml-1"></i></span>
                         </a>
                         <ul role="menu" class="dropdown-menu">
-                            <% if can_offline_projects %>
-                                <li><%= link_to t('.navbar.offline_projects'), offline_projects_path %></li>
-                            <% end %>
-                            <% if can_index_scheme_criteria %>
-                                <li><%= link_to t('.navbar.admin_system_data'), scheme_criteria_path %></li>
-                            <% end %>
                             <% if can_index_users %>
                                 <li><%= link_to t('.navbar.admin_users'), users_path %></li>
-                            <% end %>
-                            <% if can_certifiers_criteria_report %>
-                                <li><%= link_to t('.navbar.certifiers_and_criteria_report'), reports_certifiers_criteria_path %></li>
                             <% end %>
                             <% if can_dashboard_survey %>
                                 <li><%= link_to t('.navbar.survey_dashboard'), survey_dashboard_index_path %></li>

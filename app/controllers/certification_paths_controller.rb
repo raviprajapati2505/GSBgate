@@ -285,29 +285,6 @@ class CertificationPathsController < AuthenticatedController
           end
         end
 
-        # Create Construction Certificate if Construction certificate stage 3 is certified
-        if @certification_path.is_completed? && @certification_path.certificate.construction_certificate_stage3?
-          average_scores = @project.average_scores_all_construction_stages
-
-          certificate = Certificate.find_by(certification_type: Certificate.certification_types[:construction_certificate], display_weight: 39, gsb_version: @certification_path.certificate.gsb_version)
-          # Only 1 pseudo development type linked to this certificate
-          development_type = certificate.development_types.first
-          # Only set certificate path to approving_by_top_management if all construction stages are certified
-          if @project.are_all_construction_stages_certified?
-            status = CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT
-          else
-            status = CertificationPathStatus::NOT_CERTIFIED
-          end
-          overall_certification_path = CertificationPath.new(project: @project, certificate: certificate, certification_path_status_id: status, main_scheme_mix_selected: false, development_type: development_type, started_at: Time.zone.now, certified_at: Time.zone.now)
-          # Only 1 pseudo scheme linked to this development type
-          scheme = development_type.schemes.first
-          overall_certification_path.scheme_mixes.build(scheme: scheme, weight: 100)
-          overall_certification_path.save!
-          scheme.scheme_criteria.each do |scheme_criterion|
-            SchemeMixCriterion.create!(scheme_mix: overall_certification_path.scheme_mixes.first, scheme_criterion: scheme_criterion, targeted_score_a: average_scores[:targeted_score], submitted_score_a: average_scores[:submitted_score], achieved_score_a: average_scores[:achieved_score])
-          end
-        end
-
         redirect_to project_certification_path_path(@project, @certification_path), notice: t('controllers.certification_paths_controller.update_status.notice_success')
       else
         redirect_to project_certification_path_path(@project, @certification_path), alert: "#{todos_array[0].first}. \n Please check criteria #{todos_array[1].join(', ')}."
