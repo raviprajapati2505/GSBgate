@@ -54,4 +54,18 @@
   </ul>
 <% end %>
 
+<% if project.certificate_type.nil? || project.certificate_type == Certificate.certificate_types[:green_IT_type] %>
+  <ul class="list-group">
+    <%= render partial: 'certification_paths/certification_path_details', locals: { project: project } %>
+    <%= render partial: 'certification_paths/overview_item', locals: { project: project, certification_types: [:provisional_green_IT, :final_green_IT] } %>
+  </ul>
+<% end %>
+
+<% if project.certificate_type.nil? || project.certificate_type == Certificate.certificate_types[:net_zero_type] %>
+  <ul class="list-group">
+    <%= render partial: 'certification_paths/certification_path_details', locals: { project: project } %>
+    <%= render partial: 'certification_paths/overview_item', locals: { project: project, certification_types: [:provisional_net_zero, :final_net_zero] } %>
+  </ul>
+<% end %>
+
 <div id="applyForCertificateModal" class="modal fade"></div>

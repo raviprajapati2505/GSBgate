@@ -106,6 +106,9 @@ en:
         provisional_building_water_efficiency: Please complete the Provisional Building Water Efficiency Certification first.
         provisional_events_carbon_neutrality: Please complete all Provisional Events Carbon Neutrality Certification first.
         provisional_products_ecolabeling: Please complete all Provisional Products Ecolabeling Certification first.
+        provisional_green_IT: Please complete all Provisional Green IT Certification first.
+        provisional_net_zero: Please complete all Provisional Net Zero Certification first.
+
     timeline_legend:
       project_team: Project Team
       certifier_team: GSB Trust Team

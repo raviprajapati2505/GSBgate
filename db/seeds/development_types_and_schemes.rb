@@ -1053,4 +1053,268 @@ SchemeCriterionBox.find_or_create_by(
   display_weight: 3
 )
 
+
+# ---------------------------- Green IT ----------------------------
+provisional_green_IT_dt = 
+  DevelopmentType.find_or_create_by!(
+    display_weight: 17, 
+    certificate: Certificate.find_by(
+      certification_type: Certificate.certification_types[:provisional_green_IT], 
+      certificate_type: Certificate.certificate_types[:green_IT_type], 
+      assessment_stage: Certificate.assessment_stages[:green_IT_stage], 
+      gsb_version: "2023"
+    ), 
+    mixable: false, 
+    name: 'Typology'
+  )
+final_green_IT_dt = 
+  DevelopmentType.find_or_create_by!(
+    display_weight: 18, 
+    certificate: Certificate.find_by(
+      certification_type: Certificate.certification_types[:final_green_IT], 
+      certificate_type: Certificate.certificate_types[:green_IT_type], 
+      assessment_stage: Certificate.assessment_stages[:green_IT_stage], 
+      gsb_version: "2023"
+    ), 
+    mixable: false, 
+    name: 'Typology'
+  )
+
+provisional_green_IT_scheme = 
+  Scheme.find_or_create_by(
+    name: "Typology", 
+    certification_type: Certificate.certification_types[:provisional_green_IT], 
+    certificate_type: Certificate.certificate_types[:green_IT_type], 
+    renovation: false
+  )
+final_green_IT_scheme = 
+  Scheme.find_or_create_by(
+    name: "Typology", 
+    certification_type: Certificate.certification_types[:final_green_IT], 
+    certificate_type: Certificate.certificate_types[:green_IT_type], 
+    renovation: false
+  )
+
+DevelopmentTypeScheme.find_or_create_by(
+    scheme: provisional_green_IT_scheme, 
+    development_type: provisional_green_IT_dt
+  )
+DevelopmentTypeScheme.find_or_create_by(
+    scheme: final_green_IT_scheme, 
+    development_type: final_green_IT_dt
+  )
+
+provisional_green_IT_category = 
+  SchemeCategory.find_or_create_by(
+    scheme: provisional_green_IT_scheme, 
+    code: "G", 
+    name: "Generic", 
+    impacts: "", 
+    mitigate_impact: "", 
+    shared: false, 
+    display_weight: 1, 
+    is_checklist: true
+  )
+final_green_IT_category = 
+  SchemeCategory.find_or_create_by(
+    scheme: final_green_IT_scheme, 
+    code: "G", 
+    name: "Generic", 
+    impacts: "", 
+    mitigate_impact: "", 
+    shared: false, 
+    display_weight: 1, 
+    is_checklist: true
+  )
+
+provisional_green_IT_criterion = 
+  SchemeCriterion.find_or_create_by(
+    name: "	Checklist Specific", 
+    number: 1, 
+    scores_a: YAML.load("[[1, 1.0]]\n"), 
+    minimum_score_a: 0, 
+    maximum_score_a: 1, 
+    minimum_valid_score_a: 0, 
+    weight_a: 1, 
+    is_checklist: true, 
+    shared: false, 
+    scheme_category: provisional_green_IT_category
+  )
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: provisional_green_IT_criterion, 
+  label: 'Targeted Checklist Status', 
+  display_weight: 1
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: provisional_green_IT_criterion, 
+  label: 'Submitted Checklist Status', 
+  display_weight: 2
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: provisional_green_IT_criterion, 
+  label: 'Achieved Checklist Status', 
+  display_weight: 3
+)
+
+final_green_IT_criterion = 
+  SchemeCriterion.find_or_create_by(
+    name: "	Checklist Specific", 
+    number: 1, 
+    scores_a: YAML.load("[[1, 1.0]]\n"), 
+    minimum_score_a: 0, 
+    maximum_score_a: 1, 
+    minimum_valid_score_a: 0, 
+    weight_a: 1, 
+    is_checklist: true, 
+    shared: false, 
+    scheme_category: final_green_IT_category
+  )
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: final_green_IT_criterion, 
+  label: 'Targeted Checklist Status', 
+  display_weight: 1
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: final_green_IT_criterion, 
+  label: 'Submitted Checklist Status', 
+  display_weight: 2
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: final_green_IT_criterion, 
+  label: 'Achieved Checklist Status', 
+  display_weight: 3
+)
+
+
+# ---------------------------- Net Zero ----------------------------
+provisional_net_zero_dt = 
+  DevelopmentType.find_or_create_by!(
+    display_weight: 19, 
+    certificate: Certificate.find_by(
+      certification_type: Certificate.certification_types[:provisional_net_zero], 
+      certificate_type: Certificate.certificate_types[:net_zero_type], 
+      assessment_stage: Certificate.assessment_stages[:net_zero_stage], 
+      gsb_version: "2023"
+    ), 
+    mixable: false, 
+    name: 'Typology'
+  )
+final_net_zero_dt = 
+  DevelopmentType.find_or_create_by!(
+    display_weight: 20, 
+    certificate: Certificate.find_by(
+      certification_type: Certificate.certification_types[:final_net_zero], 
+      certificate_type: Certificate.certificate_types[:net_zero_type], 
+      assessment_stage: Certificate.assessment_stages[:net_zero_stage], 
+      gsb_version: "2023"
+    ), 
+    mixable: false, 
+    name: 'Typology'
+  )
+
+provisional_net_zero_scheme = 
+  Scheme.find_or_create_by(
+    name: "Typology", 
+    certification_type: Certificate.certification_types[:provisional_net_zero], 
+    certificate_type: Certificate.certificate_types[:net_zero_type], 
+    renovation: false
+  )
+final_net_zero_scheme = 
+  Scheme.find_or_create_by(
+    name: "Typology", 
+    certification_type: Certificate.certification_types[:final_net_zero], 
+    certificate_type: Certificate.certificate_types[:net_zero_type], 
+    renovation: false
+  )
+
+DevelopmentTypeScheme.find_or_create_by(
+    scheme: provisional_net_zero_scheme, 
+    development_type: provisional_net_zero_dt
+  )
+DevelopmentTypeScheme.find_or_create_by(
+    scheme: final_net_zero_scheme, 
+    development_type: final_net_zero_dt
+  )
+
+provisional_net_zero_category = 
+  SchemeCategory.find_or_create_by(
+    scheme: provisional_net_zero_scheme, 
+    code: "G", 
+    name: "Generic", 
+    impacts: "", 
+    mitigate_impact: "", 
+    shared: false, 
+    display_weight: 1, 
+    is_checklist: true
+  )
+final_net_zero_category = 
+  SchemeCategory.find_or_create_by(
+    scheme: final_net_zero_scheme, 
+    code: "G", 
+    name: "Generic", 
+    impacts: "", 
+    mitigate_impact: "", 
+    shared: false, 
+    display_weight: 1, 
+    is_checklist: true
+  )
+
+provisional_net_zero_criterion = 
+  SchemeCriterion.find_or_create_by(
+    name: "	Checklist Specific", 
+    number: 1, 
+    scores_a: YAML.load("[[1, 1.0]]\n"), 
+    minimum_score_a: 0, 
+    maximum_score_a: 1, 
+    minimum_valid_score_a: 0, 
+    weight_a: 1, 
+    is_checklist: true, 
+    shared: false, 
+    scheme_category: provisional_net_zero_category
+  )
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: provisional_net_zero_criterion, 
+  label: 'Targeted Checklist Status', 
+  display_weight: 1
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: provisional_net_zero_criterion, 
+  label: 'Submitted Checklist Status', 
+  display_weight: 2
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: provisional_net_zero_criterion, 
+  label: 'Achieved Checklist Status', 
+  display_weight: 3
+)
+
+final_net_zero_criterion = 
+  SchemeCriterion.find_or_create_by(
+    name: "	Checklist Specific", 
+    number: 1, 
+    scores_a: YAML.load("[[1, 1.0]]\n"), 
+    minimum_score_a: 0, 
+    maximum_score_a: 1, 
+    minimum_valid_score_a: 0, 
+    weight_a: 1, 
+    is_checklist: true, 
+    shared: false, 
+    scheme_category: final_net_zero_category
+  )
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: final_net_zero_criterion, 
+  label: 'Targeted Checklist Status', 
+  display_weight: 1
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: final_net_zero_criterion, 
+  label: 'Submitted Checklist Status', 
+  display_weight: 2
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: final_net_zero_criterion, 
+  label: 'Achieved Checklist Status', 
+  display_weight: 3
+)
+
 puts "Development Types, Schemes, Scheme Category & Scheme Criteria are added successfully.........."

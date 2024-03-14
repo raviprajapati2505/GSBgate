@@ -1025,6 +1025,8 @@ module ApplicationHelper
                             #{Certificate.certification_types['provisional_building_water_efficiency']},
                             #{Certificate.certification_types['provisional_events_carbon_neutrality']},
                             #{Certificate.certification_types['provisional_products_ecolabeling']},
+                            #{Certificate.certification_types['provisional_green_IT']},
+                            #{Certificate.certification_types['provisional_net_zero']},
                             #{Certificate.certification_types['final_energy_centers_efficiency']}, 
                             #{Certificate.certification_types['final_building_energy_efficiency']}, 
                             #{Certificate.certification_types['final_healthy_buildings']}, 
@@ -1032,7 +1034,9 @@ module ApplicationHelper
                             #{Certificate.certification_types['final_measurement_reporting_and_verification']},
                             #{Certificate.certification_types['final_building_water_efficiency']},
                             #{Certificate.certification_types['final_events_carbon_neutrality']},
-                            #{Certificate.certification_types['final_products_ecolabeling']}
+                            #{Certificate.certification_types['final_products_ecolabeling']},
+                            #{Certificate.certification_types['final_green_IT']},
+                            #{Certificate.certification_types['final_net_zero']}
                           ) 
                           THEN 
                             project_team_project_users.certification_team_type IN (
@@ -1081,6 +1085,8 @@ module ApplicationHelper
                             #{Certificate.certification_types['provisional_building_water_efficiency']},
                             #{Certificate.certification_types['provisional_events_carbon_neutrality']},
                             #{Certificate.certification_types['provisional_products_ecolabeling']},
+                            #{Certificate.certification_types['provisional_green_IT']},
+                            #{Certificate.certification_types['provisional_net_zero']},
                             #{Certificate.certification_types['final_energy_centers_efficiency']}, 
                             #{Certificate.certification_types['final_building_energy_efficiency']}, 
                             #{Certificate.certification_types['final_healthy_buildings']}, 
@@ -1088,7 +1094,9 @@ module ApplicationHelper
                             #{Certificate.certification_types['final_measurement_reporting_and_verification']},
                             #{Certificate.certification_types['final_building_water_efficiency']},
                             #{Certificate.certification_types['final_events_carbon_neutrality']},
-                            #{Certificate.certification_types['final_products_ecolabeling']}
+                            #{Certificate.certification_types['final_products_ecolabeling']},
+                            #{Certificate.certification_types['final_green_IT']},
+                            #{Certificate.certification_types['final_net_zero']}
                           ) 
                           THEN 
                             cgp_project_managers_project_users.certification_team_type IN (
@@ -1137,6 +1145,8 @@ module ApplicationHelper
                             #{Certificate.certification_types['provisional_building_water_efficiency']},
                             #{Certificate.certification_types['provisional_events_carbon_neutrality']},
                             #{Certificate.certification_types['provisional_products_ecolabeling']},
+                            #{Certificate.certification_types['provisional_green_IT']},
+                            #{Certificate.certification_types['provisional_net_zero']},
                             #{Certificate.certification_types['final_energy_centers_efficiency']}, 
                             #{Certificate.certification_types['final_building_energy_efficiency']}, 
                             #{Certificate.certification_types['final_healthy_buildings']}, 
@@ -1144,7 +1154,9 @@ module ApplicationHelper
                             #{Certificate.certification_types['final_measurement_reporting_and_verification']},
                             #{Certificate.certification_types['final_building_water_efficiency']},
                             #{Certificate.certification_types['final_events_carbon_neutrality']},
-                            #{Certificate.certification_types['final_products_ecolabeling']}
+                            #{Certificate.certification_types['final_products_ecolabeling']},
+                            #{Certificate.certification_types['final_green_IT']},
+                            #{Certificate.certification_types['final_net_zero']}
                           ) 
                           THEN 
                             gsb_trust_team_project_users.certification_team_type IN (
@@ -1192,6 +1204,8 @@ module ApplicationHelper
                             #{Certificate.certification_types['provisional_building_water_efficiency']},
                             #{Certificate.certification_types['provisional_events_carbon_neutrality']},
                             #{Certificate.certification_types['provisional_products_ecolabeling']},
+                            #{Certificate.certification_types['provisional_green_IT']},
+                            #{Certificate.certification_types['provisional_net_zero']},
                             #{Certificate.certification_types['final_energy_centers_efficiency']}, 
                             #{Certificate.certification_types['final_building_energy_efficiency']}, 
                             #{Certificate.certification_types['final_healthy_buildings']}, 
@@ -1199,7 +1213,9 @@ module ApplicationHelper
                             #{Certificate.certification_types['final_measurement_reporting_and_verification']},
                             #{Certificate.certification_types['final_building_water_efficiency']},
                             #{Certificate.certification_types['final_events_carbon_neutrality']},
-                            #{Certificate.certification_types['final_products_ecolabeling']}
+                            #{Certificate.certification_types['final_products_ecolabeling']},
+                            #{Certificate.certification_types['final_green_IT']},
+                            #{Certificate.certification_types['final_net_zero']}
                           ) 
                           THEN 
                             certification_managers_project_users.certification_team_type IN (

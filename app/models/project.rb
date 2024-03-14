@@ -192,6 +192,14 @@ class Project < ApplicationRecord
     CertificationPath.with_project(self).with_status(CertificationPathStatus::STATUSES_COMPLETED).with_certification_type(Certificate.certification_types[:provisional_products_ecolabeling])
   end
 
+  def completed_provisional_green_IT
+    CertificationPath.with_project(self).with_status(CertificationPathStatus::STATUSES_COMPLETED).with_certification_type(Certificate.certification_types[:provisional_green_IT])
+  end
+
+  def completed_provisional_net_zero
+    CertificationPath.with_project(self).with_status(CertificationPathStatus::STATUSES_COMPLETED).with_certification_type(Certificate.certification_types[:provisional_net_zero])
+  end
+
   def average_scores_all_construction_stages
     certification_paths = CertificationPath.with_project(self).with_status(CertificationPathStatus::STATUSES_COMPLETED).with_certificate_type(Certificate.certificate_types[:construction_type])
     unless certification_paths.count < 3

@@ -7,7 +7,9 @@ class Certificate < ApplicationRecord
     :measurement_reporting_and_verification_type,
     :building_water_efficiency_type,
     :events_carbon_neutrality_type,
-    :products_ecolabeling_type
+    :products_ecolabeling_type,
+    :green_IT_type,
+    :net_zero_type
   ]
 
   enum assessment_stage: [ 
@@ -18,7 +20,9 @@ class Certificate < ApplicationRecord
     :measurement_reporting_and_verification_stage,
     :building_water_efficiency_stage,
     :events_carbon_neutrality_stage,
-    :products_ecolabeling_stage
+    :products_ecolabeling_stage,
+    :green_IT_stage,
+    :net_zero_stage
   ]
 
   enum certification_type: [ 
@@ -30,6 +34,8 @@ class Certificate < ApplicationRecord
     :provisional_building_water_efficiency,
     :provisional_events_carbon_neutrality,
     :provisional_products_ecolabeling,
+    :provisional_green_IT,
+    :provisional_net_zero,
     :final_energy_centers_efficiency,
     :final_building_energy_efficiency,
     :final_healthy_buildings,
@@ -37,7 +43,9 @@ class Certificate < ApplicationRecord
     :final_measurement_reporting_and_verification,
     :final_building_water_efficiency,
     :final_events_carbon_neutrality,
-    :final_products_ecolabeling
+    :final_products_ecolabeling,
+    :final_green_IT,
+    :final_net_zero
   ]
 
   PROVISIONAL_CERTIFICATES = [
@@ -48,7 +56,9 @@ class Certificate < ApplicationRecord
     :provisional_measurement_reporting_and_verification,
     :provisional_building_water_efficiency,
     :provisional_events_carbon_neutrality,
-    :provisional_products_ecolabeling
+    :provisional_products_ecolabeling,
+    :provisional_green_IT,
+    :provisional_net_zero
   ]
 
   FINAL_CERTIFICATES = [
@@ -59,7 +69,9 @@ class Certificate < ApplicationRecord
     :final_measurement_reporting_and_verification,
     :final_building_water_efficiency,
     :final_events_carbon_neutrality,
-    :final_products_ecolabeling
+    :final_products_ecolabeling,
+    :final_green_IT,
+    :final_net_zero
   ]
 
   has_many :certification_paths
@@ -124,6 +136,10 @@ class Certificate < ApplicationRecord
                                 [Certificate.certification_types[:provisional_events_carbon_neutrality], Certificate.certification_types[:final_events_carbon_neutrality]]
                               when "Products Ecolabeling"
                                 [Certificate.certification_types[:provisional_products_ecolabeling], Certificate.certification_types[:final_products_ecolabeling]]
+                              when "Green IT"
+                                [Certificate.certification_types[:provisional_green_IT], Certificate.certification_types[:final_green_IT]]
+                              when "Net Zero"
+                                [Certificate.certification_types[:provisional_net_zero], Certificate.certification_types[:final_net_zero]]
                               else
                                 Certificate.certification_types
                               end

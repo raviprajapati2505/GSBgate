@@ -134,4 +134,37 @@ Certificate.find_or_create_by!(
   display_weight: 16
 )
 
+Certificate.find_or_create_by!(
+  name: 'Stage 1: Provisional Certificate', 
+  certification_type: Certificate.certification_types[:provisional_green_IT], 
+  certificate_type: Certificate.certificate_types[:green_IT_type], 
+  assessment_stage: Certificate.assessment_stages[:green_IT_stage], 
+  gsb_version: "2023", 
+  display_weight: 17
+)
+Certificate.find_or_create_by!(
+  name: 'Stage 2: Final Certificate', 
+  certification_type: Certificate.certification_types[:final_green_IT], 
+  certificate_type: Certificate.certificate_types[:green_IT_type], 
+  assessment_stage: Certificate.assessment_stages[:green_IT_stage], 
+  gsb_version: "2023", 
+  display_weight: 18
+)
+
+Certificate.find_or_create_by!(
+  name: 'Stage 1: Provisional Certificate', 
+  certification_type: Certificate.certification_types[:provisional_net_zero], 
+  certificate_type: Certificate.certificate_types[:net_zero_type], 
+  assessment_stage: Certificate.assessment_stages[:net_zero_stage], 
+  gsb_version: "2023", 
+  display_weight: 19
+)
+Certificate.find_or_create_by!(
+  name: 'Stage 2: Final Certificate', 
+  certification_type: Certificate.certification_types[:final_net_zero], 
+  certificate_type: Certificate.certificate_types[:net_zero_type], 
+  assessment_stage: Certificate.assessment_stages[:net_zero_stage], 
+  gsb_version: "2023", 
+  display_weight: 20
+)
 puts "Certificates are added successfully.........."
