@@ -12,7 +12,8 @@
   'development_types_and_schemes', 
   'certification_path_statuses',
   'owners',
-  'users', 
+  'users',
+  'licences', 
   Rails.env
 ].each do |seed|
   seed_file = "#{Rails.root}/db/seeds/#{seed}.rb"

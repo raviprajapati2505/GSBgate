@@ -105,6 +105,32 @@ class User < ApplicationRecord
     joins(:projects_users).where(projects_users: {project_id: project.id, certification_team_type: certification_path&.projects_users_certification_team_type, role: ProjectsUser.roles[:cgp_project_manager]})
   }
 
+  scope :valid_cgps_with_type, -> (certificate_type) {
+    .joins("INNER JOIN access_licences on access_licences.user_id = users.id")
+    .joins("INNER JOIN licences on licences.id = access_licences.licence_id")
+    .where(
+      "DATE(access_licences.expiry_date) > :current_date 
+      AND licences.licence_type = 'CgpLicence' 
+      AND licences.certificate_type = :certificate_type 
+      AND users.active = true", 
+      current_date: Date.today, 
+      certificate_type: certificate_type
+    ) 
+  }
+
+  scope :valid_ceps_with_type, -> (certificate_type) {
+    .joins("INNER JOIN access_licences on access_licences.user_id = users.id")
+    .joins("INNER JOIN licences on licences.id = access_licences.licence_id")
+    .where(
+      "DATE(access_licences.expiry_date) > :current_date 
+      AND licences.licence_type = 'CepLicence' 
+      AND licences.certificate_type = :certificate_type 
+      AND users.active = true", 
+      current_date: Date.today, 
+      certificate_type: certificate_type
+    )
+  }
+
   def full_name
     "#{name_suffix} #{name} #{middle_name} #{last_name}".strip
   end
