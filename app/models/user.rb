@@ -106,29 +106,31 @@ class User < ApplicationRecord
   }
 
   scope :valid_cgps_with_type, -> (certificate_type) {
-    .joins("INNER JOIN access_licences on access_licences.user_id = users.id")
-    .joins("INNER JOIN licences on licences.id = access_licences.licence_id")
-    .where(
-      "DATE(access_licences.expiry_date) > :current_date 
-      AND licences.licence_type = 'CgpLicence' 
-      AND licences.certificate_type = :certificate_type 
-      AND users.active = true", 
-      current_date: Date.today, 
-      certificate_type: certificate_type
-    ) 
+    self
+      .joins("INNER JOIN access_licences on access_licences.user_id = users.id")
+      .joins("INNER JOIN licences on licences.id = access_licences.licence_id")
+      .where(
+        "DATE(access_licences.expiry_date) > :current_date 
+        AND licences.licence_type = 'CgpLicence' 
+        AND licences.certificate_type = :certificate_type 
+        AND users.active = true", 
+        current_date: Date.today, 
+        certificate_type: certificate_type
+      ) 
   }
 
   scope :valid_ceps_with_type, -> (certificate_type) {
-    .joins("INNER JOIN access_licences on access_licences.user_id = users.id")
-    .joins("INNER JOIN licences on licences.id = access_licences.licence_id")
-    .where(
-      "DATE(access_licences.expiry_date) > :current_date 
-      AND licences.licence_type = 'CepLicence' 
-      AND licences.certificate_type = :certificate_type 
-      AND users.active = true", 
-      current_date: Date.today, 
-      certificate_type: certificate_type
-    )
+    self
+      .joins("INNER JOIN access_licences on access_licences.user_id = users.id")
+      .joins("INNER JOIN licences on licences.id = access_licences.licence_id")
+      .where(
+        "DATE(access_licences.expiry_date) > :current_date 
+        AND licences.licence_type = 'CepLicence' 
+        AND licences.certificate_type = :certificate_type 
+        AND users.active = true", 
+        current_date: Date.today, 
+        certificate_type: certificate_type
+      )
   }
 
   def full_name
@@ -147,12 +149,10 @@ class User < ApplicationRecord
   end
 
   def remaining_licences
-    # userable_access_licence_ids = AccessLicence.userable_access_licences(id)&.pluck(:licence_id)&.uniq
-
     if type == 'ServiceProvider'
       Licence.with_service_provider_licences
     else
-      Licence.with_cgp_licences + Licence.with_cep_licences
+      Licence.with_cp_licences
     end
   end
 
@@ -216,65 +216,190 @@ class User < ApplicationRecord
     access_licences.with_certificate_type(certificate_type.to_i) || AccessLicence.none
   end
 
+  # ------------------- methods for service providers --------------------------- 
   def valid_user_sp_licences
     service_provider&.active? ? service_provider&.valid_service_provider_licences : AccessLicence.none
   end
 
-  def valid_user_sp_design_build_licences
-    service_provider&.active? ? service_provider&.valid_service_provider_design_build_licences : AccessLicence.none
+  def valid_user_sp_energy_centers_efficiency_licence
+    service_provider&.active? ? service_provider&.valid_service_provider_energy_centers_efficiency_licences : AccessLicence.none
   end
 
-  def valid_user_sp_construction_management_licences
-    service_provider&.active? ? service_provider&.valid_service_provider_construction_management_licences : AccessLicence.none
+  def valid_user_sp_building_energy_efficiency_licence
+    service_provider&.active? ? service_provider&.valid_service_provider_building_energy_efficiency_licences : AccessLicence.none
   end
 
-  def valid_user_sp_operation_licences
-    service_provider&.active? ? service_provider&.valid_service_provider_operation_licences : AccessLicence.none
+  def valid_user_sp_healthy_buildings_licence
+    service_provider&.active? ? service_provider&.valid_service_provider_healthy_buildings_licences : AccessLicence.none
   end
 
-  def valid_user_sp_ecoleaf_licences
-    service_provider&.active? ? service_provider&.valid_service_provider_ecoleaf_licences : AccessLicence.none
+  def valid_user_sp_indoor_air_quality_licence
+    service_provider&.active? ? service_provider&.valid_service_provider_indoor_air_quality_licences : AccessLicence.none
   end
+
+  def valid_user_sp_measurement_reporting_and_verification_licence
+    service_provider&.active? ? service_provider&.valid_service_provider_measurement_reporting_and_verification_licences : AccessLicence.none
+  end
+
+  def valid_user_sp_building_water_efficiency_licence
+    service_provider&.active? ? service_provider&.valid_service_provider_building_water_efficiency_licences : AccessLicence.none
+  end
+
+  def valid_user_spevents_carbon_neutrality_licence
+    service_provider&.active? ? service_provider&.valid_service_provider_events_carbon_neutrality_licences : AccessLicence.none
+  end
+
+  def valid_user_sp_products_ecolabeling_licence
+    service_provider&.active? ? service_provider&.valid_service_provider_products_ecolabeling_licences : AccessLicence.none
+  end
+
+  def valid_user_sp_green_IT_licences
+    service_provider&.active? ? service_provider&.valid_service_provider_green_IT_licences : AccessLicence.none
+  end
+
+  def valid_user_sp_net_zero_licence
+    service_provider&.active? ? service_provider&.valid_service_provider_net_zero_licences : AccessLicence.none
+  end
+
+  # ------------------- methods for CGPs and CEPs --------------------------- 
 
   def valid_cgp_or_cep_available?
     service_provider&.active? && (service_provider&.valid_cgps.present? || service_provider&.valid_ceps.present?)
   end
 
-  def valid_design_build_cp_available?
-    service_provider&.active? && (service_provider&.valid_design_build_cgps.present? || service_provider&.valid_design_build_ceps.present?)
+  def valid_energy_centers_efficiency_cp_available?
+    service_provider&.active? && (service_provider&.valid_energy_centers_efficiency_cgps.present? || service_provider&.valid_energy_centers_efficiency_ceps.present?)
   end
 
-  def valid_construction_management_cp_available?
-    service_provider&.active? && (service_provider&.valid_construction_management_cgps.present? || service_provider&.valid_construction_management_ceps.present?)
+  def valid_building_energy_efficiency_cp_available?
+    service_provider&.active? && (service_provider&.valid_building_energy_efficiency_cgps.present? || service_provider&.valid_building_energy_efficiency_ceps.present?)
   end
 
-  def valid_operation_cp_available?
-    service_provider&.active? && (service_provider&.valid_operation_cgps.present? || service_provider&.valid_operation_ceps.present?)
+  def valid_healthy_buildings_cp_available?
+    service_provider&.active? && (service_provider&.valid_healthy_buildings_cgps.present? || service_provider&.valid_healthy_buildings_ceps.present?)
   end
 
-  def valid_ecoleaf_cp_available?
-    service_provider&.active? && (service_provider&.valid_ecoleaf_cgps.present? || service_provider&.valid_ecoleaf_ceps.present?)
+  def valid_indoor_air_quality_cp_available?
+    service_provider&.active? && (service_provider&.valid_indoor_air_quality_cgps.present? || service_provider&.valid_indoor_air_quality_ceps.present?)
   end
+
+  def valid_measurement_reporting_and_verification_cp_available?
+    service_provider&.active? && (service_provider&.valid_measurement_reporting_and_verification_cgps.present? || service_provider&.valid_measurement_reporting_and_verification_ceps.present?)
+  end
+
+  def valid_building_water_efficiency_cp_available?
+    service_provider&.active? && (service_provider&.valid_building_water_efficiency_cgps.present? || service_provider&.valid_building_water_efficiency_ceps.present?)
+  end
+
+  def valid_events_carbon_neutrality_cp_available?
+    service_provider&.active? && (service_provider&.valid_events_carbon_neutrality_cgps.present? || service_provider&.valid_events_carbon_neutrality_ceps.present?)
+  end
+
+  def valid_products_ecolabeling_cp_available?
+    service_provider&.active? && (service_provider&.valid_products_ecolabeling_cgps.present? || service_provider&.valid_products_ecolabeling_ceps.present?)
+  end
+
+  def valid_green_IT_cp_available?
+    service_provider&.active? && (service_provider&.valid_green_IT_cgps.present? || service_provider&.valid_green_IT_ceps.present?)
+  end
+
+  def valid_net_zero_cp_available?
+    service_provider&.active? && (service_provider&.valid_net_zero_cgps.present? || service_provider&.valid_net_zero_ceps.present?)
+  end
+
+  # ------------------- methods for user licences --------------------------- 
 
   def valid_user_licences
-    access_licences.joins(:licence).where("DATE(access_licences.expiry_date) > :current_date AND licences.licence_type IN ('CgpLicence', 'CepLicence')", current_date: Date.today) || AccessLicence.none
+    access_licences
+      .joins(:licence)
+      .where(
+        "DATE(access_licences.expiry_date) > :current_date 
+        AND licences.licence_type IN ('CgpLicence', 'CepLicence')", 
+        current_date: Date.today
+      ) || AccessLicence.none
   end
 
-  def valid_user_design_build_licences
-    valid_user_licences.where("licences.certificate_type = ?", Certificate.certificate_types[:design_type]) || AccessLicence.none
+  def valid_user_energy_centers_efficiency_licences
+    valid_user_licences
+      .where(
+        "licences.certificate_type = ?", 
+        Certificate.certificate_types[:energy_centers_efficiency_type]
+      ) || AccessLicence.none
   end
 
-  def valid_user_construction_management_licences
-    valid_user_licences.where("licences.certificate_type = ?", Certificate.certificate_types[:construction_type]) || AccessLicence.none
+  def valid_user_building_energy_efficiency_licences
+    valid_user_licences
+      .where(
+        "licences.certificate_type = ?", 
+        Certificate.certificate_types[:building_energy_efficiency_type]
+      ) || AccessLicence.none
   end
 
-  def valid_user_operation_licences
-    valid_user_licences.where("licences.certificate_type = ?", Certificate.certificate_types[:operations_type]) || AccessLicence.none
+  def valid_user_healthy_buildings_licences
+    valid_user_licences
+      .where(
+        "licences.certificate_type = ?", 
+        Certificate.certificate_types[:healthy_buildings_type]
+      ) || AccessLicence.none
   end
 
-  def valid_user_ecoleaf_licences
-    valid_user_licences.where("licences.certificate_type = ?", Certificate.certificate_types[:ecoleaf_type]) || AccessLicence.none
+  def valid_user_indoor_air_quality_licences
+    valid_user_licences
+      .where(
+        "licences.certificate_type = ?", 
+        Certificate.certificate_types[:indoor_air_quality_type]
+      ) || AccessLicence.none
   end
+
+  def valid_user_measurement_reporting_and_verification_licences
+    valid_user_licences
+      .where(
+        "licences.certificate_type = ?", 
+        Certificate.certificate_types[:measurement_reporting_and_verification_type]
+      ) || AccessLicence.none
+  end
+
+  def valid_user_building_water_efficiency_licences
+    valid_user_licences
+      .where(
+        "licences.certificate_type = ?", 
+        Certificate.certificate_types[:building_water_efficiency_type]
+      ) || AccessLicence.none
+  end
+
+  def valid_user_events_carbon_neutrality_licences
+    valid_user_licences
+      .where(
+        "licences.certificate_type = ?", 
+        Certificate.certificate_types[:events_carbon_neutrality_type]
+      ) || AccessLicence.none
+  end
+
+  def valid_user_products_ecolabeling_licences
+    valid_user_licences
+      .where(
+        "licences.certificate_type = ?", 
+        Certificate.certificate_types[:products_ecolabeling_type]
+      ) || AccessLicence.none
+  end
+
+  def valid_user_green_IT_licences
+    valid_user_licences
+      .where(
+        "licences.certificate_type = ?", 
+        Certificate.certificate_types[:green_IT_type]
+      ) || AccessLicence.none
+  end
+
+  def valid_user_net_zero_licences
+    valid_user_licences
+      .where(
+        "licences.certificate_type = ?", 
+        Certificate.certificate_types[:net_zero_type]
+      ) || AccessLicence.none
+  end
+
+  # ------------------- methods for user licences --------------------------- 
 
   def user_with_licences(licence_ids = [])
     access_licences.joins(:licence).where(licence_id: licence_ids)
@@ -282,8 +407,7 @@ class User < ApplicationRecord
 
   def valid_checklist_licences
     licence_ids =  Licence.where(
-                                  applicability: [Licence.applicabilities[:both], Licence.applicabilities[:check_list]], 
-                                  certificate_type: [Certificate.certificate_types[:design_type], Certificate.certificate_types[:ecoleaf_type]],
+                                  applicability: [ Licence.applicabilities[:check_list] ], 
                                   licence_type: ["CgpLicence", "CepLicence"]
                                 ).ids
 
@@ -293,27 +417,6 @@ class User < ApplicationRecord
   # Filter schemes which is only for assessment method
   def manage_assessment_methods_options
     assessment_methods = CertificationPath.assessment_methods
-
-    unless is_system_admin?
-      allowed_assessment_methods = valid_user_design_build_licences.pluck("licences.applicability").uniq
-
-      if allowed_assessment_methods.size == 1
-        assessment_methods =  if allowed_assessment_methods.include?(Licence.applicabilities[:star_rating]) 
-                                assessment_methods.select { |k, v| v == Licence.applicabilities[:star_rating] }
-                              elsif allowed_assessment_methods.include?(Licence.applicabilities[:check_list])
-                                assessment_methods.select { |k, v| v == Licence.applicabilities[:check_list] }
-                              else
-                                if valid_user_sp_design_build_licences.present? && valid_design_build_cp_available?
-                                  assessment_methods
-                                else
-                                  assessment_methods.select { |k, v| v == Licence.applicabilities[:check_list] }
-                                end
-                              end
-
-      elsif allowed_assessment_methods.blank?
-        assessment_methods = {}
-      end
-    end
 
     return assessment_methods
   end
@@ -332,27 +435,18 @@ class User < ApplicationRecord
 
     certificate_types = {}
     allowed_certificate_types.each do |k, v|
-      case k
-      when 'construction_type'
-        certificate_types[k] = v if valid_construction_management_cp_available?
-      when 'design_type'
-        certificate_types[k] = v if valid_design_build_cp_available?
-      when 'operations_type'
-        certificate_types[k] = v if valid_cgp_or_cep_available?
-      when 'ecoleaf_type'
-        certificate_types[k] = v if valid_cgp_or_cep_available?
-      end
+      certificate_types[k] = v if send("valid_#{k.gsub('_type', '')}_cp_available?")
     end
     
-    if valid_checklist_licences_certificate_type.present?
-      valid_checklist_licences_certificate_type.each do |certificate_type|
-        if certificate_type == 3
-          certificate_types['design_type'] = 3
-        elsif certificate_type == 4
-          certificate_types['ecoleaf_type'] = 4
-        end
-      end
-    end
+    # if valid_checklist_licences_certificate_type.present?
+    #   valid_checklist_licences_certificate_type.each do |certificate_type|
+    #     if certificate_type == 3
+    #       certificate_types['design_type'] = 3
+    #     elsif certificate_type == 4
+    #       certificate_types['ecoleaf_type'] = 4
+    #     end
+    #   end
+    # end
 
     return certificate_types
   end
