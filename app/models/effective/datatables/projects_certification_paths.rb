@@ -160,14 +160,7 @@ module Effective
         end
 
         col :development_type_name, col_class: 'multiple-select col-order-16', sql_column: 'development_types.name', label: t('models.effective.datatables.projects_certification_paths.certification_path_development_type.label'), search: { as: :select, collection: Proc.new { DevelopmentType.select(:name, :display_weight).order(:display_weight).distinct.map { |development_type| [development_type.name, development_type.name] }.uniq } } do |rec|
-          case rec.certification_scheme_name
-          when 'Parks'
-            'Parks'
-          when 'Fitout'
-            'Single Zone, Fitout'
-          else
-            rec.development_type_name
-          end
+          rec.development_type_name
         end.search do |collection, terms, column, index|
           terms_array = terms.split(",")
 
@@ -176,18 +169,7 @@ module Effective
 
             terms_array.each do |term|
               collection_set = collection
-              
-              case term
-              when 'Parks'
-                results_array = collection_set.joins(certification_paths: [scheme_mixes: :scheme]).where("schemes.name = :term AND (projects.certificate_type <> :certificate_type OR development_types.name NOT IN ('Neighborhoods', 'Mixed Use'))", term: term, certificate_type: Certificate.certificate_types[:design_type]).pluck("certification_paths.id")
-              when 'Districts'
-                results_array = collection_set.joins(certification_paths: [scheme_mixes: :scheme]).where("schemes.name = :term OR development_types.name = :term", term: term).pluck("certification_paths.id")
-              when 'Single Zone'
-                results_array = collection_set.joins(certification_paths: [scheme_mixes: :scheme]).where("schemes.name = 'Fitout' OR development_types.name = :term", term: term).pluck("certification_paths.id")
-              else
-                results_array = collection_set.joins(certification_paths: [scheme_mixes: :scheme]).where("development_types.name = :term AND schemes.name <> 'Fitout'", term: term).pluck("certification_paths.id")
-              end
-            
+              results_array = collection_set.joins(certification_paths: [scheme_mixes: :scheme]).where("development_types.name = :term AND schemes.name <> 'Fitout'", term: term).pluck("certification_paths.id")
               results.push(*results_array)
             end
             

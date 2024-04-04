@@ -169,7 +169,7 @@ class DigestMailer < ApplicationMailer
     # Check if there are "selected_notifications_email" address(es)
     unless Rails.configuration.x.gsb_info.selected_notifications_email.nil?
       # Check if the certification type is Final Design
-      if Certificate.certification_types[@certification_path.certificate.certification_type] == Certificate.certification_types[:final_design_certificate]
+      if Certificate::FINAL_CERTIFICATES.include?(@certification_path.certificate.certification_type&.to_sym)
         # If both are true, also send the notification mail to the "selected_notifications_email" address(es)
         emails += ', ' + Rails.configuration.x.gsb_info.selected_notifications_email
       end

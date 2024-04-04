@@ -50,7 +50,6 @@ class CertificationPath < ApplicationRecord
   before_update :advance_scheme_mix_criteria_statuses
   before_update :set_started_at
   before_update :set_certified_at
-  after_update :create_cda_users, if: -> { is_design_loc? && certification_path_status_id == CertificationPathStatus::CERTIFIED }  
   after_update :create_certification_path_report, if: -> { certification_path_status_id == CertificationPathStatus::CERTIFIED }  
 
   scope :not_expired, -> {
@@ -93,26 +92,6 @@ class CertificationPath < ApplicationRecord
       SQL
     )
   end
-  
-  # scope :letter_of_conformance, -> {
-  #   joins(:certificate)
-  #       .merge(Certificate.letter_of_conformance)
-  # }
-  #
-  # scope :final_design_certificate, -> {
-  #   joins(:certificate)
-  #       .merge(Certificate.final_design_certificate)
-  # }
-  #
-  # scope :construction_certificate, -> {
-  #   joins(:certificate)
-  #       .merge(Certificate.construction_certificate)
-  # }
-  #
-  # scope :operations_certificate, -> {
-  #   joins(:certificate)
-  #       .merge(Certificate.operations_certificate)
-  # }
 
   def init
     # Set status
@@ -141,16 +120,44 @@ class CertificationPath < ApplicationRecord
     return status
   end
 
-  def design_and_build?
-    project.design_and_build?
+  def energy_centers_efficiency?
+    certificate&.energy_centers_efficiency_type?
   end
 
-  def construction?
-    certificate&.construction?
+  def building_energy_efficiency?
+    certificate&.building_energy_efficiency_type?
   end
 
-  def ecoleaf?
-    certificate.ecoleaf?
+  def healthy_buildings?
+    certificate&.healthy_buildings_type?
+  end
+
+  def indoor_air_quality?
+    certificate&.indoor_air_quality_type?
+  end
+
+  def measurement_reporting_and_verification?
+    certificate&.measurement_reporting_and_verification_type?
+  end
+
+  def building_water_efficiency_efficiency?
+    certificate&.building_water_efficiency_efficiency_type?
+  end
+
+  def events_carbon_neutrality?
+    certificate&.events_carbon_neutrality_type?
+  end
+
+  def products_ecolabeling?
+    certificate&.products_ecolabeling_type?
+  end
+
+  def green_IT?
+    certificate&.green_IT_type?
+  end
+
+  def net_zero?
+    certificate&.net_zero_type?
   end
 
   def certification_manager_assigned?
@@ -676,24 +683,7 @@ class CertificationPath < ApplicationRecord
     CertificationPath.assessment_methods[assessment_method] == CertificationPath.assessment_methods[:check_list]
   end
 
-  def is_design_loc?
-    certificate.full_name.include?('Letter of Conformance') && certificate.design_and_build?
-  end
-
-  def is_design_fdc?
-    certificate.full_name.include?('Final Design Certificate') && certificate.design_and_build?
-  end
-
   private
-
-  def create_cda_users
-    project_managers = project.projects_users&.where(role: ["cgp_project_manager", "certification_manager"])
-    project_managers.each do |project_manager|
-      new_project_manager = project_manager.dup
-      new_project_manager.certification_team_type = "Final Design Certificate"
-      new_project_manager.save
-    end
-  end
 
   def create_certification_path_report
     certification_path_report = CertificationPathReport.find_or_initialize_by(certification_path_id: id)

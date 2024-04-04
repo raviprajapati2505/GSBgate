@@ -9,14 +9,29 @@ class DashboardController < AuthenticatedController
     @overdue_licences = AccessLicence.user_overdue_access_licences(@user.id)
 
     # Affiliated Practitioner Accreditation
-    @service_provider_user_licences_design = AccessLicence.users_of_service_provider(@user, Certificate.certificate_types[:design_type])
-    @service_provider_user_licences_construction = AccessLicence.users_of_service_provider(@user, Certificate.certificate_types[:construction_type])
-    @service_provider_user_licences_operation = AccessLicence.users_of_service_provider(@user, Certificate.certificate_types[:operations_type])
+    @service_provider_user_licences_energy_centers_efficiency = AccessLicence.users_of_service_provider(@user, Certificate.certificate_types[:energy_centers_efficiency_type])
+    @service_provider_user_licences_building_energy_efficiency = AccessLicence.users_of_service_provider(@user, Certificate.certificate_types[:building_energy_efficiency_type])
+    @service_provider_user_licences_healthy_buildings = AccessLicence.users_of_service_provider(@user, Certificate.certificate_types[:healthy_buildings_type])
+    @service_provider_user_licences_indoor_air_quality = AccessLicence.users_of_service_provider(@user, Certificate.certificate_types[:indoor_air_quality_type])
+    @service_provider_user_licences_measurement_reporting_and_verification = AccessLicence.users_of_service_provider(@user, Certificate.certificate_types[:measurement_reporting_and_verification_type])
+    @service_provider_user_licences_building_water_efficiency = AccessLicence.users_of_service_provider(@user, Certificate.certificate_types[:building_water_efficiency_type])
+    @service_provider_user_licences_events_carbon_neutrality = AccessLicence.users_of_service_provider(@user, Certificate.certificate_types[:events_carbon_neutrality_type])
+    @service_provider_user_licences_products_ecolabeling = AccessLicence.users_of_service_provider(@user, Certificate.certificate_types[:products_ecolabeling_type])
+    @service_provider_user_licences_green_IT = AccessLicence.users_of_service_provider(@user, Certificate.certificate_types[:green_IT_type])
+    @service_provider_user_licences_net_zero = AccessLicence.users_of_service_provider(@user, Certificate.certificate_types[:net_zero_type])
 
     # Practitioner Accreditation Or Corporate License
-    @user_licences_design = @user.access_licences.with_certificate_type(Certificate.certificate_types[:design_type])
-    @user_licences_construction = @user.access_licences.with_certificate_type(Certificate.certificate_types[:construction_type])
-    @user_licences_operation = @user.access_licences.with_certificate_type(Certificate.certificate_types[:operations_type])
+    @user_licences_energy_centers_efficiency = @user.access_licences.with_certificate_type(Certificate.certificate_types[:energy_centers_efficiency_type])
+    @user_licences_building_energy_efficiency = @user.access_licences.with_certificate_type(Certificate.certificate_types[:building_energy_efficiency_type])
+    @user_licences_healthy_buildings = @user.access_licences.with_certificate_type(Certificate.certificate_types[:healthy_buildings_type])
+    @user_licences_indoor_air_quality = @user.access_licences.with_certificate_type(Certificate.certificate_types[:indoor_air_quality_type])
+    @user_licences_measurement_reporting_and_verification = @user.access_licences.with_certificate_type(Certificate.certificate_types[:measurement_reporting_and_verification_type])
+    @user_licences_building_water_efficiency = @user.access_licences.with_certificate_type(Certificate.certificate_types[:building_water_efficiency_type])
+    @user_licences_events_carbon_neutrality = @user.access_licences.with_certificate_type(Certificate.certificate_types[:events_carbon_neutrality_type])
+    @user_licences_products_ecolabeling = @user.access_licences.with_certificate_type(Certificate.certificate_types[:products_ecolabeling_type])
+    @user_licences_green_IT = @user.access_licences.with_certificate_type(Certificate.certificate_types[:green_IT_type])
+    @user_licences_net_zero = @user.access_licences.with_certificate_type(Certificate.certificate_types[:net_zero_type])
+
 
     # Projects status
     @total_cgp_for_completed_projects = Project.total_completed_project_by_role(@user, ProjectsUser.roles[:cgp_project_manager], CertificationPathStatus::CERTIFIED) 

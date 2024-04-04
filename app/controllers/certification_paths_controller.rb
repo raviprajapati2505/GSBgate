@@ -111,8 +111,17 @@ class CertificationPathsController < AuthenticatedController
       @certification_path.project.completed_provisional_certificate.first.scheme_mixes.each do |scheme_mix|
         # if a scheme certification type is available
         unless scheme_mix.scheme.certification_type.nil?
-          loc_scheme = scheme_mix.scheme
-          scheme_id = Scheme.select(:id).find_by(name: loc_scheme.name, gsb_version: loc_scheme.gsb_version, certificate_type: loc_scheme.certificate_type, certification_type: Certificate.certification_types[:final_design_certificate])
+          provisonal_certification_path_scheme = scheme_mix.scheme
+          scheme_id = 
+            Scheme
+              .select(:id)
+              .find_by(
+                name: provisonal_certification_path_scheme.name, 
+                gsb_version: provisonal_certification_path_scheme.gsb_version, 
+                certificate_type: provisonal_certification_path_scheme.certificate_type, 
+                certification_type: Certificate::FINAL_CERTIFICATES_VALUES
+              )
+            
           scheme_id = scheme_id.id
         else
           scheme_id = scheme_mix.scheme_id

@@ -1292,25 +1292,19 @@ module ApplicationHelper
       .group_by { |c| c.requirement&.requirement_category&.title }
   end
 
-  def design_or_ecoleaf_provisional_certification?(certification_type)
-    [
-      Certificate.certification_types[:letter_of_conformance],
-      Certificate.certification_types[:ecoleaf_provisional_certificate]
-    ].include?(
+  def provisional_certification?(certification_type)
+    Certificate::PROVISIONAL_CERTIFICATES_VALUES.include?(
       Certificate.certification_types[certification_type]
     )
   end
 
-  def design_or_ecoleaf_final_certification?(certification_type)
-    [
-      Certificate.certification_types[:final_design_certificate],
-      Certificate.certification_types[:ecoleaf_certificate]
-    ].include?(
+  def final_certification?(certification_type)
+    Certificate::FINAL_CERTIFICATES_VALUES.include?(
       Certificate.certification_types[certification_type]
     )
   end
 
-  def design_or_ecoleaf_certification_type?(certification_type)
-    design_or_ecoleaf_provisional_certification?(certification_type) || design_or_ecoleaf_final_certification?(certification_type)
+  def certification_type?(certification_type)
+    provisional_certification?(certification_type) || final_certification?(certification_type)
   end
 end

@@ -437,16 +437,6 @@ class User < ApplicationRecord
     allowed_certificate_types.each do |k, v|
       certificate_types[k] = v if send("valid_#{k.gsub('_type', '')}_cp_available?")
     end
-    
-    # if valid_checklist_licences_certificate_type.present?
-    #   valid_checklist_licences_certificate_type.each do |certificate_type|
-    #     if certificate_type == 3
-    #       certificate_types['design_type'] = 3
-    #     elsif certificate_type == 4
-    #       certificate_types['ecoleaf_type'] = 4
-    #     end
-    #   end
-    # end
 
     return certificate_types
   end

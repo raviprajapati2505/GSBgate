@@ -218,17 +218,11 @@ class Project < ApplicationRecord
   end
 
   def can_upload_project_rendering_image?
-    certificate_type == Certificate.certificate_types[:design_type]
+    true
   end
 
   def can_upload_actual_image?
-    if certificate_type == Certificate.certificate_types[:operations_type]
-      true
-    elsif can_upload_project_rendering_image?
-      true
-    else
-      false
-    end
+    true
   end
 
   def are_all_construction_stages_certified?
@@ -304,57 +298,68 @@ class Project < ApplicationRecord
     return categories
   end
 
-  # def can_create_certification_path_for_certification_type?(certification_type)
-  #   # There should be only one certification path per certificate
-  #   # TODO: this may be a bad assumption, perhaps extend logic to also look at the status (e.g an older rejected certification_path may be allowed)
-  #   return false if CertificationPath.joins(:certificate).exists?(project: self, certificates: {certification_type: certification_type})
-  #   # No dependencies for Operations certificate
-  #   return true if certification_type == Certificate.certification_types[:operations_certificate]
-  #   # No dependencies for LOC certificate
-  #   return true if certification_type == Certificate.certification_types[:letter_of_conformance]
-  #   # No dependencies for Construction certificate
-  #   return true if certification_type == Certificate.certification_types[:construction_certificate]
-  #   # FinalDesign needs a LOC
-  #   return true if certification_type == Certificate.certification_types[:final_design_certificate] && CertificationPath.joins(:certificate).exists?(project: self, certificates: {certification_type:  Certificate.certification_types[:letter_of_conformance]})
-  #   # default to false
-  #   return false
-  # end
-
-  def design_and_build?
-    certificate_type == Certificate.certificate_types[:design_type]
+  def energy_centers_efficiency?
+    certificate_type == Certificate.certificate_types[:energy_centers_efficiency_type]
   end
 
-  def construction_management?
-    certificate_type == Certificate.certificate_types[:construction_type]
+  def building_energy_efficiency?
+    certificate_type == Certificate.certificate_types[:building_energy_efficiency_type]
   end
 
-  def operation?
-    certificate_type == Certificate.certificate_types[:operations_type]
+  def healthy_buildings?
+    certificate_type == Certificate.certificate_types[:healthy_buildings_type]
   end
 
-  def ecoleaf?
-    certificate_type == Certificate.certificate_types[:ecoleaf_type]
+  def indoor_air_quality?
+    certificate_type == Certificate.certificate_types[:indoor_air_quality_type]
   end
 
-  def loc_projects_users
-    projects_users&.where(certification_team_type: "Letter of Conformance")
+  def measurement_reporting_and_verification?
+    certificate_type == Certificate.certificate_types[:measurement_reporting_and_verification_type]
   end
 
-  def fdc_projects_users
-    projects_users&.where(certification_team_type: "Final Design Certificate")
+  def building_water_efficiency?
+    certificate_type == Certificate.certificate_types[:building_water_efficiency_type]
+  end
+
+  def events_carbon_neutrality?
+    certificate_type == Certificate.certificate_types[:events_carbon_neutrality_type]
+  end
+
+  def products_ecolabeling?
+    certificate_type == Certificate.certificate_types[:products_ecolabeling_type]
+  end
+
+  def green_IT?
+    certificate_type == Certificate.certificate_types[:green_IT_type]
+  end
+
+  def net_zero?
+    certificate_type == Certificate.certificate_types[:net_zero_type]
   end
 
   def team_table_heading
     case certificate_type
     when 1
-      # project of CM
-      I18n.t('activerecord.attributes.project.team_titles.construction_certificate')
+      I18n.t('activerecord.attributes.project.team_titles.energy_centers_efficiency')
     when 2
-      # project of OP
-      I18n.t('activerecord.attributes.project.team_titles.operation_certificate')
+      I18n.t('activerecord.attributes.project.team_titles.building_energy_efficiency')
     when 3
-      # project of D&B
-      I18n.t('activerecord.attributes.project.team_titles.design_certificate')
+      I18n.t('activerecord.attributes.project.team_titles.healthy_buildings')
+    when 4
+      I18n.t('activerecord.attributes.project.team_titles.indoor_air_quality')
+    when 5
+      I18n.t('activerecord.attributes.project.team_titles.measurement_reporting_and_verification')
+    when 6
+      I18n.t('activerecord.attributes.project.team_titles.building_water_efficiency')
+    when 7
+      I18n.t('activerecord.attributes.project.team_titles.events_carbon_neutrality')
+    when 8
+      I18n.t('activerecord.attributes.project.team_titles.products_ecolabeling')
+    when 9
+      I18n.t('activerecord.attributes.project.team_titles.green_IT')
+    when 10
+      I18n.t('activerecord.attributes.project.team_titles.net_zero')
     else
       "Project Team"
     end
@@ -368,10 +373,7 @@ class Project < ApplicationRecord
         recent_certificate_status = recent_certification_path&.certification_path_status_id
 
         return !([
-                Certificate.certification_types[:final_design_certificate], 
-                Certificate.certification_types[:construction_certificate_stage3], 
-                Certificate.certification_types[:construction_certificate], 
-                Certificate.certification_types[:operations_certificate]
+                  FINAL_CERTIFICATES_VALUES
                ].include?(Certificate.certification_types[recent_certificate_type&.to_sym]) && 
                [
                 CertificationPathStatus::CERTIFIED, 
@@ -396,36 +398,11 @@ class Project < ApplicationRecord
         recent_certificate_status = recent_certification_path&.certification_path_status_id
 
         return ([
-                Certificate.certification_types[:final_design_certificate], 
-                Certificate.certification_types[:construction_certificate], 
-                Certificate.certification_types[:operations_certificate]
+                  FINAL_CERTIFICATES_VALUES
                ].include?(Certificate.certification_types[recent_certificate_type&.to_sym]) && 
                [
                 CertificationPathStatus::CERTIFIED
                ].include?(recent_certificate_status))
-      else
-        false
-      end
-      
-    rescue StandardError => exception
-      puts exception.message
-      return false
-    end
-  end
-
-  def is_op_certificate_submitted?
-    begin
-      if certification_paths.present?
-        recent_certification_path = certification_paths.joins(:certificate).order("certificates.display_weight").last
-        recent_certificate_type = recent_certification_path&.certificate&.certification_type
-        recent_certificate_status = recent_certification_path&.certification_path_status_id
-
-        return ([
-                Certificate.certification_types[:operations_certificate]
-               ].include?(Certificate.certification_types[recent_certificate_type&.to_sym]) && 
-               [
-                CertificationPathStatus::ACTIVATING
-               ].exclude?(recent_certificate_status))
       else
         false
       end
