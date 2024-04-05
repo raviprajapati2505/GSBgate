@@ -176,13 +176,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     data.append(["Project ID", @project.code])
     data.append(["Project Name", @detailed_certificate_report&.project_name])
     data.append(["Project Location", @detailed_certificate_report&.project_location])
-
-    if @certification_path.certificate.certification_type == 'final_design_certificate'
-      data.append(["GSB Service Provider", @project.service_provider_2])
-    else
-      data.append(["GSB Service Provider", @project.service_provider])
-    end
-
+    data.append(["GSB Service Provider", @project.service_provider])
     data.append(["GSB Certificate", @certification_path.certificate&.report_certification_name])
 
     case @certification_path.certificate&.name
@@ -362,7 +356,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
         styled_text("<div style='font-size: 8; text-align: right'>#{text}<br />#{text2}</div>")
       end
 
-      if @certification_path.construction? || @certification_path.is_design_loc?
+      if @certification_path.is_provisional_certificate?
         bounding_box([@document.bounds.right - 100, @document.bounds.bottom + 140], width: 110, height: HEADER_HEIGHT + 70) do
           image image_path(@@stamp_image), width: 90
         end

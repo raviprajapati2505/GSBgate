@@ -279,7 +279,7 @@
 
   <div class="ibox" id="cgp-documentation">
     <div class="ibox-title">
-      <% if @certification_path.certificate.certification_type == "final_design_certificate" %>
+      <% if @certification_path.is_final_certificate? %>
         <h5>PROJECT DOCUMENTATION</h5>
       <% else %>
         <h5>PRACTITIONERS DOCUMENTATION</h5>

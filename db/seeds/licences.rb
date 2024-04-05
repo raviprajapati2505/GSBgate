@@ -7,7 +7,9 @@ Licence.find_or_create_by!(
   title: 'Service Provider - Energy Centers Efficiency',
   description: 'Energy Centers Efficiency Service Provider',
   certificate_type: Certificate.certificate_types[:energy_centers_efficiency_type],
-  schemes: ['Typology']
+  schemes: ['Typology'],
+  applicability: Licence.applicabilities[:check_list]
+  
 )
 
 # Building Energy Efficiency
@@ -18,7 +20,8 @@ Licence.find_or_create_by!(
   title: 'Service Provider - Building Energy Efficiency',
   description: 'Building Energy Efficiency Service Provider',
   certificate_type: Certificate.certificate_types[:building_energy_efficiency_type],
-  schemes: ['Typology']
+  schemes: ['Typology'],
+  applicability: Licence.applicabilities[:check_list]
 )
 
 # Healthy Buildings
@@ -29,7 +32,8 @@ Licence.find_or_create_by!(
   title: 'Service Provider - Healthy Buildings',
   description: 'Healthy Buildings Service Provider',
   certificate_type: Certificate.certificate_types[:healthy_buildings_type],
-  schemes: ['Typology']
+  schemes: ['Typology'],
+  applicability: Licence.applicabilities[:check_list]
 )
 
 # Indoor Air Quality
@@ -40,7 +44,8 @@ Licence.find_or_create_by!(
   title: 'Service Provider - Indoor Air Quality',
   description: 'Indoor Air Quality Service Provider',
   certificate_type: Certificate.certificate_types[:indoor_air_quality_type],
-  schemes: ['Typology']
+  schemes: ['Typology'],
+  applicability: Licence.applicabilities[:check_list]
 )
 
 # Measurement, Reporting And Verification (MRV)
@@ -51,7 +56,8 @@ Licence.find_or_create_by!(
   title: 'Service Provider - Measurement, Reporting And Verification (MRV)',
   description: 'Measurement, Reporting And Verification (MRV) Service Provider',
   certificate_type: Certificate.certificate_types[:measurement_reporting_and_verification_type],
-  schemes: ['Typology']
+  schemes: ['Typology'],
+  applicability: Licence.applicabilities[:check_list]
 )
 
 # Buildings Water Efficiency
@@ -62,7 +68,8 @@ Licence.find_or_create_by!(
   title: 'Service Provider - Buildings Water Efficiency',
   description: 'Buildings Water Efficiency Service Provider',
   certificate_type: Certificate.certificate_types[:building_water_efficiency_type],
-  schemes: ['Typology']
+  schemes: ['Typology'],
+  applicability: Licence.applicabilities[:check_list]
 )
 
 # Events Carbon Neutrality
@@ -73,7 +80,8 @@ Licence.find_or_create_by!(
   title: 'Service Provider - Events Carbon Neutrality',
   description: 'Events Carbon Neutrality Service Provider',
   certificate_type: Certificate.certificate_types[:events_carbon_neutrality_type],
-  schemes: ['Typology']
+  schemes: ['Typology'],
+  applicability: Licence.applicabilities[:check_list]
 )
 
 # Products Ecolabeling
@@ -84,7 +92,8 @@ Licence.find_or_create_by!(
   title: 'Service Provider - Products Ecolabeling',
   description: 'Products Ecolabeling Service Provider',
   certificate_type: Certificate.certificate_types[:products_ecolabeling_type],
-  schemes: ['Typology']
+  schemes: ['Typology'],
+  applicability: Licence.applicabilities[:check_list]
 )
 
 # Green IT
@@ -95,7 +104,8 @@ Licence.find_or_create_by!(
   title: 'Service Provider - Green IT',
   description: 'Green IT Service Provider',
   certificate_type: Certificate.certificate_types[:green_IT_type],
-  schemes: ['Typology']
+  schemes: ['Typology'],
+  applicability: Licence.applicabilities[:check_list]
 )
 
 # Net Zero
@@ -106,7 +116,8 @@ Licence.find_or_create_by!(
   title: 'Service Provider - Net Zero',
   description: 'Net Zero Service Provider',
   certificate_type: Certificate.certificate_types[:net_zero_type],
-  schemes: ['Typology']
+  schemes: ['Typology'],
+  applicability: Licence.applicabilities[:check_list]
 )
 
 
@@ -119,7 +130,7 @@ Licence.find_or_create_by!(
   title: 'CGP - Energy Centers Efficiency',
   description: 'Energy Centers Efficiency Certified Green Professional',
   certificate_type: Certificate.certificate_types[:energy_centers_efficiency_type],
-  applicability: Licence.applicabilities[:star_rating]
+  applicability: Licence.applicabilities[:check_list]
 )
 
 # Building Energy Efficiency
@@ -130,7 +141,7 @@ Licence.find_or_create_by!(
   title: 'CGP - Building Energy Efficiency',
   description: 'Building Energy Efficiency Certified Green Professional',
   certificate_type: Certificate.certificate_types[:building_energy_efficiency_type],
-  applicability: Licence.applicabilities[:star_rating]
+  applicability: Licence.applicabilities[:check_list]
 )
 
 # Healthy Buildings
@@ -141,7 +152,7 @@ Licence.find_or_create_by!(
   title: 'CGP - Healthy Buildings',
   description: 'Healthy Buildings Certified Green Professional',
   certificate_type: Certificate.certificate_types[:healthy_buildings_type],
-  applicability: Licence.applicabilities[:star_rating]
+  applicability: Licence.applicabilities[:check_list]
 )
 
 # Indoor Air Quality
@@ -152,7 +163,7 @@ Licence.find_or_create_by!(
   title: 'CGP - Indoor Air Quality',
   description: 'Indoor Air Quality Certified Green Professional',
   certificate_type: Certificate.certificate_types[:indoor_air_quality_type],
-  applicability: Licence.applicabilities[:star_rating]
+  applicability: Licence.applicabilities[:check_list]
 )
 
 # Measurement, Reporting And Verification (MRV)
@@ -163,7 +174,7 @@ Licence.find_or_create_by!(
   title: 'CGP - Measurement, Reporting And Verification (MRV)',
   description: 'Measurement, Reporting And Verification (MRV) Certified Green Professional',
   certificate_type: Certificate.certificate_types[:measurement_reporting_and_verification_type],
-  applicability: Licence.applicabilities[:star_rating]
+  applicability: Licence.applicabilities[:check_list]
 )
 
 # Buildings Water Efficiency
@@ -174,7 +185,7 @@ Licence.find_or_create_by!(
   title: 'CGP - Buildings Water Efficiency',
   description: 'Buildings Water Efficiency Certified Green Professional',
   certificate_type: Certificate.certificate_types[:building_water_efficiency_type],
-  applicability: Licence.applicabilities[:star_rating]
+  applicability: Licence.applicabilities[:check_list]
 )
 
 # Events Carbon Neutrality
@@ -185,7 +196,7 @@ Licence.find_or_create_by!(
   title: 'CGP - Events Carbon Neutrality',
   description: 'Events Carbon Neutrality Certified Green Professional',
   certificate_type: Certificate.certificate_types[:events_carbon_neutrality_type],
-  applicability: Licence.applicabilities[:star_rating]
+  applicability: Licence.applicabilities[:check_list]
 )
 
 # Products Ecolabeling
@@ -196,7 +207,7 @@ Licence.find_or_create_by!(
   title: 'CGP - Products Ecolabeling',
   description: 'Products Ecolabeling Certified Green Professional',
   certificate_type: Certificate.certificate_types[:products_ecolabeling_type],
-  applicability: Licence.applicabilities[:star_rating]
+  applicability: Licence.applicabilities[:check_list]
 )
 
 # Green IT
@@ -207,7 +218,7 @@ Licence.find_or_create_by!(
   title: 'CGP - Green IT',
   description: 'Green IT Certified Green Professional',
   certificate_type: Certificate.certificate_types[:green_IT_type],
-  applicability: Licence.applicabilities[:star_rating]
+  applicability: Licence.applicabilities[:check_list]
 )
 
 # Net Zero
@@ -218,7 +229,7 @@ Licence.find_or_create_by!(
   title: 'CGP - Net Zero',
   description: 'Net Zero Certified Green Professional',
   certificate_type: Certificate.certificate_types[:net_zero_type],
-  applicability: Licence.applicabilities[:star_rating]
+  applicability: Licence.applicabilities[:check_list]
 )
 
 
@@ -231,7 +242,7 @@ Licence.find_or_create_by!(
   title: 'CEP - Energy Centers Efficiency',
   description: 'Energy Centers Efficiency Certified Energy Professional',
   certificate_type: Certificate.certificate_types[:energy_centers_efficiency_type],
-  applicability: Licence.applicabilities[:star_rating]
+  applicability: Licence.applicabilities[:check_list]
 )
 
 # Building Energy Efficiency
@@ -242,7 +253,7 @@ Licence.find_or_create_by!(
   title: 'CEP - Building Energy Efficiency',
   description: 'Building Energy Efficiency Certified Energy Professional',
   certificate_type: Certificate.certificate_types[:building_energy_efficiency_type],
-  applicability: Licence.applicabilities[:star_rating]
+  applicability: Licence.applicabilities[:check_list]
 )
 
 # Healthy Buildings
@@ -253,7 +264,7 @@ Licence.find_or_create_by!(
   title: 'CEP - Healthy Buildings',
   description: 'Healthy Buildings Certified Energy Professional',
   certificate_type: Certificate.certificate_types[:healthy_buildings_type],
-  applicability: Licence.applicabilities[:star_rating]
+  applicability: Licence.applicabilities[:check_list]
 )
 
 # Indoor Air Quality
@@ -264,7 +275,7 @@ Licence.find_or_create_by!(
   title: 'CEP - Indoor Air Quality',
   description: 'Indoor Air Quality Certified Energy Professional',
   certificate_type: Certificate.certificate_types[:indoor_air_quality_type],
-  applicability: Licence.applicabilities[:star_rating]
+  applicability: Licence.applicabilities[:check_list]
 )
 
 # Measurement, Reporting And Verification (MRV)
@@ -275,7 +286,7 @@ Licence.find_or_create_by!(
   title: 'CEP - Measurement, Reporting And Verification (MRV)',
   description: 'Measurement, Reporting And Verification (MRV) Certified Energy Professional',
   certificate_type: Certificate.certificate_types[:measurement_reporting_and_verification_type],
-  applicability: Licence.applicabilities[:star_rating]
+  applicability: Licence.applicabilities[:check_list]
 )
 
 # Buildings Water Efficiency
@@ -286,7 +297,7 @@ Licence.find_or_create_by!(
   title: 'CEP - Buildings Water Efficiency',
   description: 'Buildings Water Efficiency Certified Energy Professional',
   certificate_type: Certificate.certificate_types[:building_water_efficiency_type],
-  applicability: Licence.applicabilities[:star_rating]
+  applicability: Licence.applicabilities[:check_list]
 )
 
 # Events Carbon Neutrality
@@ -297,7 +308,7 @@ Licence.find_or_create_by!(
   title: 'CEP - Events Carbon Neutrality',
   description: 'Events Carbon Neutrality Certified Energy Professional',
   certificate_type: Certificate.certificate_types[:events_carbon_neutrality_type],
-  applicability: Licence.applicabilities[:star_rating]
+  applicability: Licence.applicabilities[:check_list]
 )
 
 # Products Ecolabeling
@@ -308,7 +319,7 @@ Licence.find_or_create_by!(
   title: 'CEP - Products Ecolabeling',
   description: 'Products Ecolabeling Certified Energy Professional',
   certificate_type: Certificate.certificate_types[:products_ecolabeling_type],
-  applicability: Licence.applicabilities[:star_rating]
+  applicability: Licence.applicabilities[:check_list]
 )
 
 # Green IT
@@ -319,7 +330,7 @@ Licence.find_or_create_by!(
   title: 'CEP - Green IT',
   description: 'Green IT Certified Energy Professional',
   certificate_type: Certificate.certificate_types[:green_IT_type],
-  applicability: Licence.applicabilities[:star_rating]
+  applicability: Licence.applicabilities[:check_list]
 )
 
 # Net Zero
@@ -330,6 +341,6 @@ Licence.find_or_create_by!(
   title: 'CEP - Net Zero',
   description: 'Net Zero Certified Energy Professional',
   certificate_type: Certificate.certificate_types[:net_zero_type],
-  applicability: Licence.applicabilities[:star_rating]
+  applicability: Licence.applicabilities[:check_list]
 )
 

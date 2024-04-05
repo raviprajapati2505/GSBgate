@@ -4,23 +4,9 @@ module ReportsHelper
   end
 
   def certification_type_name(certification_path)
-    project_type =  case certification_path&.project.certificate_type
-                    when 1
-                      'CONSTRUCTION MANAGEMENT'
-                    when 2 
-                      'OPERATION'
-                    when 3
-                      'DESIGN & BUILD'
-                    end
+    project_type = certification_path&.project.team_table_heading
     
-    certificate_name =  case certification_path&.certificate.only_name
-                        when "Stage 1: Provisional Certificate"
-                          'Stage 1: Provisional Certificate'
-                        when "Stage 2: Final Certificate" 
-                          'Stage 2: Final Certificate'
-                        else
-                          certification_path&.certificate.only_name
-                        end
+    certificate_name = certification_path&.certificate.only_name
 
     return {project_type: project_type, certificate_name: certificate_name}
   end

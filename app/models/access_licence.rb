@@ -32,7 +32,7 @@ class AccessLicence < ApplicationRecord
   }
 
   scope :valid_service_provider_licences_with_type, -> (certificate_type) {
-    .joins(:licence)
+      joins(:licence)
       .where(
         "DATE(access_licences.expiry_date) > :current_date 
         AND licences.licence_type = 'ServiceProviderLicence' 
@@ -48,10 +48,6 @@ class AccessLicence < ApplicationRecord
 
   def licence_applicable_for
     case licence.applicability
-    when 'both'
-      "Star Rating Assessment & Checklist Assessment"
-    when 'star_rating'
-      "Star Rating Assessment"
     when 'check_list'
       "Checklist Assessment"
     else

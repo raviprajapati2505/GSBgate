@@ -433,10 +433,21 @@
                 </div>
               </div>
               <div class="col table-responsive py-4 pl-0">
-                <%= render partial: 'licence_overview', locals: { user_licences_design: @user_licences_design, 
-                  user_licences_construction: @user_licences_construction, 
-                  user_licences_operation: @user_licences_operation  
-                } %>
+                <%= 
+                    render partial: 'licence_overview', 
+                      locals: { 
+                        user_licences_energy_centers_efficiency: @user_licences_energy_centers_efficiency, 
+                        user_licences_building_energy_efficiency: @user_licences_building_energy_efficiency, 
+                        user_licences_healthy_buildings: @user_licences_healthy_buildings,
+                        user_licences_indoor_air_quality: @user_licences_indoor_air_quality, 
+                        user_licences_measurement_reporting_and_verification: @user_licences_measurement_reporting_and_verification, 
+                        user_licences_building_water_efficiency: @user_licences_building_water_efficiency, 
+                        user_licences_events_carbon_neutrality: @user_licences_events_carbon_neutrality,
+                        user_licences_products_ecolabeling: @user_licences_products_ecolabeling,
+                        user_licences_green_IT: @user_licences_green_IT,
+                        user_licences_net_zero: @user_licences_net_zero
+                      } 
+                %>
               </div>
             </div>
           </div>

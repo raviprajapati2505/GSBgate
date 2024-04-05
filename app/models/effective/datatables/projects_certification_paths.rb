@@ -262,12 +262,8 @@ module Effective
 
         col :certification_scheme_name, col_class: 'multiple-select col-order-24', label: t('models.effective.datatables.projects_certification_paths.certification_scheme_name.label'), sql_column: "ARRAY_TO_STRING(ARRAY(SELECT schemes.name FROM schemes INNER JOIN scheme_mixes ON schemes.id = scheme_mixes.scheme_id WHERE scheme_mixes.certification_path_id = certification_paths.id), '|||')" , search: { as: :select, collection: Proc.new { get_schemes_names } } do |rec|
           development_type_name = rec.development_type_name
-          if ["Neighborhoods", "Mixed Use"].include?(development_type_name)
-            development_type_name
-          else
-            # rec.certification_scheme_name
-            ERB::Util.html_escape(rec.certification_scheme_name).split('|||').sort.join('<br/>') unless rec.certification_scheme_name.nil?
-          end
+          # rec.certification_scheme_name
+          ERB::Util.html_escape(rec.certification_scheme_name).split('|||').sort.join('<br/>') unless rec.certification_scheme_name.nil?
         end.search do |collection, terms, column, index|
           terms_array = terms.split(",")
 
@@ -277,14 +273,8 @@ module Effective
             terms_array.each do |term|
               collection_set = collection
 
-              case term
-              when "Mixed Use", "Neighborhoods"
-                results_array = collection_set.where("development_types.name = :term AND projects.certificate_type IN (:certificate_type)", term: term, certificate_type: [Certificate.certificate_types[:design_type], Certificate.certificate_types[:ecoleaf_type]]).pluck("certification_paths.id")
-              when "Districts"
-                results_array = collection_set.joins(certification_paths: [scheme_mixes: :scheme]).where("schemes.name = :term OR development_types.name = :term", term: term).pluck("certification_paths.id")
-              else
-                results_array = collection_set.joins(certification_paths: [scheme_mixes: :scheme]).where("schemes.name = :term AND (projects.certificate_type <> :certificate_type OR development_types.name NOT IN ('Neighborhoods', 'Mixed Use'))", term: term, certificate_type: Certificate.certificate_types[:design_type]).pluck("certification_paths.id")
-              end
+              results_array = collection_set.joins(certification_paths: [scheme_mixes: :scheme]).where("schemes.name = :term OR development_types.name = :term", term: term).pluck("certification_paths.id")
+
               results.push(*results_array)
             end
             

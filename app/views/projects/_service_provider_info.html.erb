@@ -1,10 +1,3 @@
-<%
-  service_provider = if certification_path.present? && certification_path.persisted? && certification_path&.is_design_fdc? 
-                        project.service_provider_2
-                      else
-                        project.service_provider
-                      end
-%>
 <div class="table-responsive">
 <table class="table table-bordered table-mb-0" cellspacing="0" width="100%">
   <tbody>
@@ -13,7 +6,7 @@
         <%= Project.human_attribute_name('service_provider') %>
       </th>
       <td>
-        <%= service_provider %>
+        <%= project.service_provider %>
       </td>
     </tr>
   </tbody>

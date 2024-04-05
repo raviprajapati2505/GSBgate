@@ -323,10 +323,21 @@
                 </div>
               </div>
               <div class="col table-responsive py-4 pl-0">
-                <%= render partial: 'licence_overview', locals: { user_licences_design: @user_licences_design, 
-                  user_licences_construction: @user_licences_construction, 
-                  user_licences_operation: @user_licences_operation  
-                } %>
+                <%= 
+                    render partial: 'licence_overview',
+                      locals: { 
+                        user_licences_energy_centers_efficiency: @user_licences_energy_centers_efficiency, 
+                        user_licences_building_energy_efficiency: @user_licences_building_energy_efficiency, 
+                        user_licences_healthy_buildings: @user_licences_healthy_buildings,
+                        user_licences_indoor_air_quality: @user_licences_indoor_air_quality, 
+                        user_licences_measurement_reporting_and_verification: @user_licences_measurement_reporting_and_verification, 
+                        user_licences_building_water_efficiency: @user_licences_building_water_efficiency, 
+                        user_licences_events_carbon_neutrality: @user_licences_events_carbon_neutrality,
+                        user_licences_products_ecolabeling: @user_licences_products_ecolabeling,
+                        user_licences_green_IT: @user_licences_green_IT,
+                        user_licences_net_zero: @user_licences_net_zero
+                      } 
+                %>
               </div>
             </div>
           </div>
@@ -342,195 +353,18 @@
               </div>
             </div>
           </div>
-          <div class="db-box with-side-header">
-            <div class="row d-flex">
-              <div class="col-auto">
-                <div class="block-heading">
-                  <div class="heading">
-                    <%= image_tag('layout/corporate-license.png') %>
-                    <span class="text-secondary text-uppercase font-weight-500 mt-3">GSB<br>Design &amp; Build</span>
-                  </div>
-                </div>
-              </div>
-              <div class="col table-responsive py-4 pl-0">
-                <table class="table mb-0">
-                  <tbody>
-                    <tr>
-                      <th>License Type</th>
-                      <th>License Name</th>
-                      <th>Name</th>
-                      <th>Email</th>
-                      <th>GSB ID</th>
-                      <th>Expiry Date</th>
-                    </tr>
-                    <% @service_provider_user_licences_design&.each.with_index(1) do |ac, index| %>
-                      <tr>
-                        <td><%= ac.licence.display_name %></td>
-                        <td class="b-word"><%= link_to(ac.user.full_name, user_path(ac.user)) %></td>
-                        <td class="b-word"><%= ac.user.email %></td>
-                        <td><%= ac.user.gsb_id %></td>
-                        <td><%= ac.formatted_expiry_date %></td>
-                      </tr>
-                    <% end %>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-          <div class="db-box with-side-header">
-            <div class="row d-flex">
-              <div class="col-auto">
-                <div class="block-heading">
-                  <div class="heading">
-                    <%= image_tag('layout/corporate-license.png') %>
-                    <span class="text-secondary text-uppercase font-weight-500 mt-3">GSB<br>Construction Management</span>
-                  </div>
-                </div>
-              </div>
-              <div class="col table-responsive py-4 pl-0">
-                <table class="table mb-0">
-                  <tbody>
-                    <tr>
-                      <th>License Type</th>
-                      <th>License Name</th>
-                      <th>Name</th>
-                      <th>Email</th>
-                      <th>GSB ID</th>
-                      <th>Expiry Date</th>
-                    </tr>
-                    <% @service_provider_user_licences_construction&.each.with_index(1) do |ac, index| %>
-                      <tr>
-                        <% if index == 1 %>
-                          <td rowspan="<%= @service_provider_user_licences_construction.count %>">GSB-CM</td>
-                        <% end %>
-                        <td><%= ac.licence.display_name %></td>
-                        <td class="b-word"><%= link_to(ac.user.full_name, user_path(ac.user)) %></td>
-                        <td class="b-word"><%= ac.user.email %></td>
-                        <td><%= ac.user.gsb_id %></td>
-                        <td><%= ac.formatted_expiry_date %></td>
-                      </tr>
-                    <% end %>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-          <div class="db-box with-side-header">
-            <div class="row d-flex">
-              <div class="col-auto">
-                <div class="block-heading">
-                  <div class="heading">
-                    <%= image_tag('layout/activity-information.png') %>
-                    <span class="text-secondary text-uppercase font-weight-500 mt-3">GSB<br>Operations</span>
-                  </div>
-                </div>
-              </div>
-              <div class="col table-responsive py-4 pl-0">
-                <table class="table mb-0">
-                  <tbody>
-                    <tr>
-                      <th>License Type</th>
-                      <th>License Name</th>
-                      <th>Name</th>
-                      <th>Email</th>
-                      <th>GSB ID</th>
-                      <th>Expiry Date</th>
-                    </tr>
-                    <% @service_provider_user_licences_operation&.each.with_index(1) do |ac, index| %>
-                      <tr>
-                        <% if index == 1 %>
-                          <td rowspan="<%= @service_provider_user_licences_operation.count %>">GSB-OP</td>
-                        <% end %>
-                        <td><%= ac.licence.display_name %></td>
-                        <td class="b-word"><%= link_to(ac.user.full_name, user_path(ac.user)) %></td>
-                        <td class="b-word"><%= ac.user.email %></td>
-                        <td><%= ac.user.gsb_id %></td>
-                        <td><%= ac.formatted_expiry_date %></td>
-                      </tr>
-                    <% end %>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-          <div class="db-box with-side-header">
-            <div class="row d-flex">
-              <div class="col-auto">
-                <div class="block-heading">
-                  <div class="heading">
-                    <%= image_tag('layout/activity-information.png') %>
-                    <span class="text-secondary text-uppercase font-weight-500 mt-3">Facility<br>Management</span>
-                  </div>
-                </div>
-              </div>
-              <div class="col table-responsive py-4 pl-0">
-                <table class="table mb-0">
-                  <tbody>
-                    <tr>
-                      <th>License Type</th>
-                      <th>License Name</th>
-                      <th>Name</th>
-                      <th>Email</th>
-                      <th>GSB ID</th>
-                      <th>Expiry Date</th>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-          <div class="db-box with-side-header">
-            <div class="row d-flex">
-              <div class="col-auto">
-                <div class="block-heading">
-                  <div class="heading">
-                    <%= image_tag('layout/activity-information.png') %>
-                    <span class="text-secondary text-uppercase font-weight-500 mt-3">Waste<br>Management</span>
-                  </div>
-                </div>
-              </div>
-              <div class="col table-responsive py-4 pl-0">
-                <table class="table mb-0">
-                  <tbody>
-                    <tr>
-                      <th>License Type</th>
-                      <th>License Name</th>
-                      <th>Name</th>
-                      <th>Email</th>
-                      <th>GSB ID</th>
-                      <th>Expiry Date</th>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-          <div class="db-box with-side-header">
-            <div class="row d-flex">
-              <div class="col-auto">
-                <div class="block-heading">
-                  <div class="heading">
-                    <%= image_tag('layout/activity-information.png') %>
-                    <span class="text-secondary text-uppercase font-weight-500 mt-3">Building<br>Commissioning</span>
-                  </div>
-                </div>
-              </div>
-              <div class="col table-responsive py-4 pl-0">
-                <table class="table mb-0">
-                  <tbody>
-                    <tr>
-                     <th>License Type</th>
-                      <th>License Name</th>
-                      <th>Name</th>
-                      <th>Email</th>
-                      <th>GSB ID</th>
-                      <th>Expiry Date</th>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
+          <%= 
+              render partial: "service_providers_licences", locals: { service_provider_user_licences: @service_provider_user_licences_energy_centers_efficiency, title: I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.energy_centers_efficiency") } 
+              render partial: "service_providers_licences", locals: { service_provider_user_licences: @service_provider_user_licences_building_energy_efficiency, title: I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.building_energy_efficiency") } 
+              render partial: "service_providers_licences", locals: { service_provider_user_licences: @service_provider_user_licences_healthy_buildings, title: I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.healthy_buildings") } 
+              render partial: "service_providers_licences", locals: { service_provider_user_licences: @service_provider_user_licences_indoor_air_quality, title: I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.indoor_air_quality") } 
+              render partial: "service_providers_licences", locals: { service_provider_user_licences: @service_provider_user_licences_measurement_reporting_and_verification, title: I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.measurement_reporting_and_verification") } 
+              render partial: "service_providers_licences", locals: { service_provider_user_licences: @service_provider_user_licences_building_water_efficiency, title: I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.building_water_efficiency") } 
+              render partial: "service_providers_licences", locals: { service_provider_user_licences: @service_provider_user_licences_events_carbon_neutrality, title: I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.events_carbon_neutrality") } 
+              render partial: "service_providers_licences", locals: { service_provider_user_licences: @service_provider_user_licences_products_ecolabeling, title: I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.products_ecolabeling") } 
+              render partial: "service_providers_licences", locals: { service_provider_user_licences: @service_provider_user_licences_green_IT, title: I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.green_IT") } 
+              render partial: "service_providers_licences", locals: { service_provider_user_licences: @service_provider_user_licences_net_zero, title: I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.net_zero") } 
+          %>
         </div>
       </div>
     </div>

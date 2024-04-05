@@ -81,7 +81,7 @@ $(function () {
 
         // No validation needed, for Final Design Certificate
         var certification_type = $('#certification_path_certification_type').val();
-        if (["20", "50"].includes(certification_type)){
+        if ([<% Certificate::FINAL_CERTIFICATES_VALUES.map(&:to_s) %>].includes(certification_type)){
             valid = ("" != $('#certification_path_expires_at').val());
             if(!valid){
                 $('div.duration-group').addClass('has-error');

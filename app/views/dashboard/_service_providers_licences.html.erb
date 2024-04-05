@@ -1,0 +1,35 @@
+<div class="db-box with-side-header">
+  <div class="row d-flex">
+    <div class="col-auto">
+      <div class="block-heading">
+        <div class="heading">
+          <%= image_tag('layout/corporate-license.png') %>
+          <span class="text-secondary text-uppercase font-weight-500 mt-3">GSB<br><%= title %></span>
+        </div>
+      </div>
+    </div>
+    <div class="col table-responsive py-4 pl-0">
+      <table class="table mb-0">
+        <tbody>
+          <tr>
+            <th>License Type</th>
+            <th>License Name</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>GSB ID</th>
+            <th>Expiry Date</th>
+          </tr>
+          <% service_provider_user_licences&.each.with_index(1) do |ac, index| %>
+            <tr>
+              <td><%= ac.licence.display_name %></td>
+              <td class="b-word"><%= link_to(ac.user.full_name, user_path(ac.user)) %></td>
+              <td class="b-word"><%= ac.user.email %></td>
+              <td><%= ac.user.gsb_id %></td>
+              <td><%= ac.formatted_expiry_date %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

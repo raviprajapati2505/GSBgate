@@ -171,68 +171,66 @@
               </td>
             </tr>
 
-            <% if [Certificate.certificate_types['design_type'],  Certificate.certificate_types['operations_type']].include?(@project.certificate_type) %>
-              <% if @project.can_upload_actual_image? %>
-                <% if can?(:read, ActualProjectImage.new(project_id: @project.id)) %>
-                  <% if can?(:create, ActualProjectImage.new(project_id: @project.id)) %>
-                    <tr class="project-actual-image-div">
-                      <th><%= Project.human_attribute_name('project_actual_images') %></th>
-                      <td>
-                        <% if @project.actual_project_images.present? %>
-                          <% @project.actual_project_images.each do |project_actual_image| %>
-                            <div class="row mb-1rem">
-                              <div class="col-md-8">
-                                <%= image_tag(icon_for_filename(project_actual_image['actual_image']), alt: project_actual_image.actual_image.content_type, title: project_actual_image.actual_image.content_type) + ' ' + truncate(project_actual_image['actual_image'], length: 25) %>
-                              </div>
-
-                              <div class="col-md-4">
-                                <% if can?(:read, project_actual_image) && download_document_permitted %>
-                                  <%= btn_download(project_actual_project_image_path(@project, project_actual_image), size: 'small', tooltip: 'Download image') %>
-                                <% end %>
-                                <% if can?(:destroy, project_actual_image) && download_document_permitted %>
-                                  <%= btn_link_to(project_actual_project_image_path(@project, project_actual_image), method: :delete, data: { confirm: 'Are you sure to delete the image?'}, style: 'danger', size: 'small', icon: 'trash', tooltip: 'Delete image') %>
-                                <% end %>                            
-                              </div>
+            <% if @project.can_upload_actual_image? %>
+              <% if can?(:read, ActualProjectImage.new(project_id: @project.id)) %>
+                <% if can?(:create, ActualProjectImage.new(project_id: @project.id)) %>
+                  <tr class="project-actual-image-div">
+                    <th><%= Project.human_attribute_name('project_actual_images') %></th>
+                    <td>
+                      <% if @project.actual_project_images.present? %>
+                        <% @project.actual_project_images.each do |project_actual_image| %>
+                          <div class="row mb-1rem">
+                            <div class="col-md-8">
+                              <%= image_tag(icon_for_filename(project_actual_image['actual_image']), alt: project_actual_image.actual_image.content_type, title: project_actual_image.actual_image.content_type) + ' ' + truncate(project_actual_image['actual_image'], length: 25) %>
                             </div>
-                          <% end %>
-                        <% else %>
-                          <%= render partial: 'actual_project_images/form', locals: { project: @project } %>
+
+                            <div class="col-md-4">
+                              <% if can?(:read, project_actual_image) && download_document_permitted %>
+                                <%= btn_download(project_actual_project_image_path(@project, project_actual_image), size: 'small', tooltip: 'Download image') %>
+                              <% end %>
+                              <% if can?(:destroy, project_actual_image) && download_document_permitted %>
+                                <%= btn_link_to(project_actual_project_image_path(@project, project_actual_image), method: :delete, data: { confirm: 'Are you sure to delete the image?'}, style: 'danger', size: 'small', icon: 'trash', tooltip: 'Delete image') %>
+                              <% end %>                            
+                            </div>
+                          </div>
                         <% end %>
-                      </td>
-                    </tr>
-                  <% end %>
+                      <% else %>
+                        <%= render partial: 'actual_project_images/form', locals: { project: @project } %>
+                      <% end %>
+                    </td>
+                  </tr>
                 <% end %>
               <% end %>
+            <% end %>
 
-              <% if @project.can_upload_project_rendering_image? %>
-                <% if can?(:read, ProjectRenderingImage.new(project_id: @project.id)) %>
-                  <% if can?(:create, ProjectRenderingImage.new(project_id: @project.id)) %>
-                    <tr class="project-rendering-image-div">
-                      <th><%= Project.human_attribute_name('project_rendering_images') %></th>
-                      <td>
-                        <% if @project.project_rendering_images.present? %>
-                          <% @project.project_rendering_images.each do |project_rendering_image| %>
-                            <div class="row">
-                              <div class="col-md-8">
-                                <%= image_tag(icon_for_filename(project_rendering_image['rendering_image']), alt: project_rendering_image.rendering_image.content_type, title: project_rendering_image.rendering_image.content_type) + ' ' + truncate(project_rendering_image['rendering_image'], length: 25) %>
-                              </div>
-
-                              <div class="col-md-4">
-                                <% if can?(:read, project_rendering_image) && download_document_permitted %>
-                                  <%= btn_download(project_project_rendering_image_path(@project, project_rendering_image), size: 'small', tooltip: 'Download image') %>
-                                <% end %>
-                                <% if can?(:destroy, project_rendering_image) && download_document_permitted %>
-                                  <%= btn_link_to(project_project_rendering_image_path(@project, project_rendering_image), method: :delete, data: { confirm: 'Are you sure to delete the image?'}, style: 'danger', size: 'small', icon: 'trash', tooltip: 'Delete image') %>
-                                <% end %>
-                              </div>
+            <% if @project.can_upload_project_rendering_image? %>
+              <% if can?(:read, ProjectRenderingImage.new(project_id: @project.id)) %>
+                <% if can?(:create, ProjectRenderingImage.new(project_id: @project.id)) %>
+                  <tr class="project-rendering-image-div">
+                    <th><%= Project.human_attribute_name('project_rendering_images') %></th>
+                    <td>
+                      <% if @project.project_rendering_images.present? %>
+                        <% @project.project_rendering_images.each do |project_rendering_image| %>
+                          <div class="row">
+                            <div class="col-md-8">
+                              <%= image_tag(icon_for_filename(project_rendering_image['rendering_image']), alt: project_rendering_image.rendering_image.content_type, title: project_rendering_image.rendering_image.content_type) + ' ' + truncate(project_rendering_image['rendering_image'], length: 25) %>
                             </div>
-                          <% end %>
-                        <% else %>
-                          <%= render partial: 'project_rendering_images/form', locals: { project: @project } %>
+
+                            <div class="col-md-4">
+                              <% if can?(:read, project_rendering_image) && download_document_permitted %>
+                                <%= btn_download(project_project_rendering_image_path(@project, project_rendering_image), size: 'small', tooltip: 'Download image') %>
+                              <% end %>
+                              <% if can?(:destroy, project_rendering_image) && download_document_permitted %>
+                                <%= btn_link_to(project_project_rendering_image_path(@project, project_rendering_image), method: :delete, data: { confirm: 'Are you sure to delete the image?'}, style: 'danger', size: 'small', icon: 'trash', tooltip: 'Delete image') %>
+                              <% end %>
+                            </div>
+                          </div>
                         <% end %>
-                      </td>
-                    </tr>
-                  <% end %>
+                      <% else %>
+                        <%= render partial: 'project_rendering_images/form', locals: { project: @project } %>
+                      <% end %>
+                    </td>
+                  </tr>
                 <% end %>
               <% end %>
             <% end %>

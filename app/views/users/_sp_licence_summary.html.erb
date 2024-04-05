@@ -1,40 +1,95 @@
 <div class="table-responsive">
   <table class="table table-bordered table-striped user-details-table">
     <tbody>
-      <!-- 
-        <tr>
-          <th>Has valid D&B CGPs ?</th>
-          <td><%= label_span(service_provider&.valid_design_build_cgps.present?, 'Yes', 'No').html_safe %></td>
-        </tr>
-        <tr>
-          <th>Has valid D&B CEPs ?</th>
-          <td><%= label_span(service_provider&.valid_design_build_ceps.present?, 'Yes', 'No').html_safe %></td>
-        </tr>
-        <tr>
-          <th>Has valid CM CGPs ?</th>
-          <td><%= label_span(service_provider&.valid_construction_management_cgps.present?, 'Yes', 'No').html_safe %></td>
-        </tr>
-        <tr>
-          <th>Has valid CM CEPs ?</th>
-          <td><%= label_span(service_provider&.valid_construction_management_ceps.present?, 'Yes', 'No').html_safe %></td>
-        </tr>
-        <tr>
-          <th>Has valid OP CGPs ?</th>
-          <td><%= label_span(service_provider&.valid_operation_cgps.present?, 'Yes', 'No').html_safe %></td>
-        </tr>
-        <tr>
-          <th>Has valid OP CEPs ?</th>
-          <td><%= label_span(service_provider&.valid_operation_ceps.present?, 'Yes', 'No').html_safe %></td>
-        </tr>
-        <tr>
-          <th>Has valid EcoLeaf CGPs ?</th>
-          <td><%= label_span(service_provider&.valid_ecoleaf_cgps.present?, 'Yes', 'No').html_safe %></td>
-        </tr>
-        <tr>
-          <th>Has valid EcoLeaf CEPs ?</th>
-          <td><%= label_span(service_provider&.valid_ecoleaf_ceps.present?, 'Yes', 'No').html_safe %></td>
-        </tr>
-      -->
+      <tr>
+        <th>Has valid <%= I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.energy_centers_efficiency") %> CGPs ?</th>
+        <td><%= label_span(service_provider&.valid_energy_centers_efficiency_cgps.present?, 'Yes', 'No').html_safe %></td>
+      </tr>
+      <tr>
+        <th>Has valid <%= I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.energy_centers_efficiency") %> CEPs ?</th>
+        <td><%= label_span(service_provider&.valid_energy_centers_efficiency_ceps.present?, 'Yes', 'No').html_safe %></td>
+      </tr>
+
+      <tr>
+        <th>Has valid <%= I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.building_energy_efficiency") %> CGPs ?</th>
+        <td><%= label_span(service_provider&.valid_building_energy_efficiency_cgps.present?, 'Yes', 'No').html_safe %></td>
+      </tr>
+      <tr>
+        <th>Has valid <%= I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.building_energy_efficiency") %> CEPs ?</th>
+        <td><%= label_span(service_provider&.valid_building_energy_efficiency_ceps.present?, 'Yes', 'No').html_safe %></td>
+      </tr>
+
+      <tr>
+        <th>Has valid <%= I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.healthy_buildings") %> CGPs ?</th>
+        <td><%= label_span(service_provider&.valid_healthy_buildings_cgps.present?, 'Yes', 'No').html_safe %></td>
+      </tr>
+      <tr>
+        <th>Has valid <%= I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.healthy_buildings") %> CEPs ?</th>
+        <td><%= label_span(service_provider&.valid_healthy_buildings_ceps.present?, 'Yes', 'No').html_safe %></td>
+      </tr>
+
+      <tr>
+        <th>Has valid <%= I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.indoor_air_quality") %> CGPs ?</th>
+        <td><%= label_span(service_provider&.valid_indoor_air_quality_cgps.present?, 'Yes', 'No').html_safe %></td>
+      </tr>
+      <tr>
+        <th>Has valid <%= I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.indoor_air_quality") %> CEPs ?</th>
+        <td><%= label_span(service_provider&.valid_indoor_air_quality_ceps.present?, 'Yes', 'No').html_safe %></td>
+      </tr>
+
+      <tr>
+        <th>Has valid <%= I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.measurement_reporting_and_verification") %> CGPs ?</th>
+        <td><%= label_span(service_provider&.valid_measurement_reporting_and_verification_cgps.present?, 'Yes', 'No').html_safe %></td>
+      </tr>
+      <tr>
+        <th>Has valid <%= I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.measurement_reporting_and_verification") %> CEPs ?</th>
+        <td><%= label_span(service_provider&.valid_measurement_reporting_and_verification_ceps.present?, 'Yes', 'No').html_safe %></td>
+      </tr>
+
+      <tr>
+        <th>Has valid <%= I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.building_water_efficiency") %> CGPs ?</th>
+        <td><%= label_span(service_provider&.valid_building_water_efficiency_cgps.present?, 'Yes', 'No').html_safe %></td>
+      </tr>
+      <tr>
+        <th>Has valid <%= I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.building_water_efficiency") %> CEPs ?</th>
+        <td><%= label_span(service_provider&.valid_building_water_efficiency_ceps.present?, 'Yes', 'No').html_safe %></td>
+      </tr>
+
+      <tr>
+        <th>Has valid <%= I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.events_carbon_neutrality") %> CGPs ?</th>
+        <td><%= label_span(service_provider&.valid_events_carbon_neutrality_cgps.present?, 'Yes', 'No').html_safe %></td>
+      </tr>
+      <tr>
+        <th>Has valid <%= I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.events_carbon_neutrality") %> CEPs ?</th>
+        <td><%= label_span(service_provider&.valid_events_carbon_neutrality_ceps.present?, 'Yes', 'No').html_safe %></td>
+      </tr>
+
+      <tr>
+        <th>Has valid <%= I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.products_ecolabeling") %> CGPs ?</th>
+        <td><%= label_span(service_provider&.valid_products_ecolabeling_cgps.present?, 'Yes', 'No').html_safe %></td>
+      </tr>
+      <tr>
+        <th>Has valid <%= I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.products_ecolabeling") %> CEPs ?</th>
+        <td><%= label_span(service_provider&.valid_products_ecolabeling_ceps.present?, 'Yes', 'No').html_safe %></td>
+      </tr>
+
+      <tr>
+        <th>Has valid <%= I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.green_IT") %> CGPs ?</th>
+        <td><%= label_span(service_provider&.valid_green_IT_cgps.present?, 'Yes', 'No').html_safe %></td>
+      </tr>
+      <tr>
+        <th>Has valid <%= I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.green_IT") %> CEPs ?</th>
+        <td><%= label_span(service_provider&.valid_green_IT_ceps.present?, 'Yes', 'No').html_safe %></td>
+      </tr>
+
+      <tr>
+        <th>Has valid <%= I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.net_zero") %> CGPs ?</th>
+        <td><%= label_span(service_provider&.valid_net_zero_cgps.present?, 'Yes', 'No').html_safe %></td>
+      </tr>
+      <tr>
+        <th>Has valid <%= I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.net_zero") %> CEPs ?</th>
+        <td><%= label_span(service_provider&.valid_net_zero_ceps.present?, 'Yes', 'No').html_safe %></td>
+      </tr>
     </tbody>
   </table>
 </div>

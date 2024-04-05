@@ -120,6 +120,14 @@ class CertificationPath < ApplicationRecord
     return status
   end
 
+  def is_provisional_certificate?
+    Certificate::PROVISIONAL_CERTIFICATES.include?(certificate.certification_type)
+  end
+
+  def is_final_certificate?
+    Certificate::FINAL_CERTIFICATES.include?(certificate.certification_type)
+  end
+
   def energy_centers_efficiency?
     certificate&.energy_centers_efficiency_type?
   end

@@ -783,25 +783,4 @@
         $("select[name^='scheme_mix_criterion[scheme_mix_criterion_epls_attributes[1][level]'").val(Math.round($(this).val()));
     })
   });
-  
-</script>
-<% if @certification_path.certificate.certificate_type == 'design_type' %>
-<script type="text/javascript">
-    $(document).ready(function(){
-      $('.hide_for_db').hide();
-      $("input[name='scheme_mix_criterion[scheme_mix_criterion_epls_attributes[0][cooling]'").val(0.00).removeAttr('required');
-      $("input[name='scheme_mix_criterion[scheme_mix_criterion_epls_attributes[1][cooling]'").val(0.00).removeAttr('required');
-      $("input[name='scheme_mix_criterion[scheme_mix_criterion_epls_attributes[0][lighting]'").val(0.00).removeAttr('required');
-      $("input[name='scheme_mix_criterion[scheme_mix_criterion_epls_attributes[1][lighting]'").val(0.00).removeAttr('required');
-      $("input[name='scheme_mix_criterion[scheme_mix_criterion_epls_attributes[0][dhw]'").val(0.00).removeAttr('required');
-      $("input[name='scheme_mix_criterion[scheme_mix_criterion_epls_attributes[1][dhw]'").val(0.00).removeAttr('required');
-      $("input[name='scheme_mix_criterion[scheme_mix_criterion_epls_attributes[0][others]'").val(0.00).removeAttr('required');
-      $("input[name='scheme_mix_criterion[scheme_mix_criterion_epls_attributes[1][others]'").val(0.00).removeAttr('required');
-      $("input[name='scheme_mix_criterion[scheme_mix_criterion_epls_attributes[0][generation]'").val(0.00).removeAttr('required');
-      $("input[name='scheme_mix_criterion[scheme_mix_criterion_epls_attributes[1][generation]'").val(0.00).removeAttr('required');
-      $("input[name='scheme_mix_criterion[scheme_mix_criterion_epls_attributes[0][co2_emission]'").val(0.00).removeAttr('required');
-      $("input[name='scheme_mix_criterion[scheme_mix_criterion_epls_attributes[1][co2_emission]'").val(0.00).removeAttr('required');
-      $("input[name='scheme_mix_criterion[epc_discrepancy_documentation]'").removeAttr('required');
-    });
-</script>
 <% end %>
