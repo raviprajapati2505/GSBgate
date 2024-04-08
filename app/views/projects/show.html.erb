@@ -288,9 +288,6 @@
 
   <%= render partial: 'projects_users/index', locals: { project: @project, team: :enterprise_clients, certification_team_type: ProjectsUser.certification_team_types[:other], certification_path: @certification_path } %>
   <br/>
-  <% if can?(:index, ProjectsSurvey) %>
-    <%= render partial: 'projects_surveys/index', locals: { project: @project, projects_surveys:  @projects_surveys } %>
-  <% end %>
 </div>
 
 <%= javascript_include_tag 'find_users_by_email' %>

@@ -431,11 +431,17 @@ class User < ApplicationRecord
     
     # for checklist licences, service provider licences verification not needed.
     valid_checklist_licences_certificate_type = valid_checklist_licences.pluck("licences.certificate_type")
-    allowed_certificate_types = Certificate.certificate_types.select { |k, v| (sp_cp_allowed_certificate_types.uniq).include?(v) }
+    # allowed_certificate_types = Certificate.certificate_types.select { |k, v| (sp_cp_allowed_certificate_types.uniq).include?(v) }
 
     certificate_types = {}
-    allowed_certificate_types.each do |k, v|
-      certificate_types[k] = v if send("valid_#{k.gsub('_type', '')}_cp_available?")
+    # allowed_certificate_types.each do |k, v|
+    #   certificate_types[k] = v if send("valid_#{k.gsub('_type', '')}_cp_available?")
+    # end
+
+    if valid_checklist_licences_certificate_type.present?
+      valid_checklist_licences_certificate_type.each do |certificate_type|
+        certificate_types.merge!(Hash[*Certificate.certificate_types.to_a[certificate_type]])
+      end
     end
 
     return certificate_types
