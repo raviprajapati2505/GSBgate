@@ -52,12 +52,12 @@ $(function () {
 
         // No validation needed, for Final Design Certificate
         var certification_type = $('#certification_path_certification_type').val();
-        if (certification_type == 20){
+        if ([10, 11, 12, 13, 14, 15, 16, 17, 18, 19].includes(certification_type)) {
             valid = ("" != $('#certification_path_expires_at').val());
             if(!valid){
                 $('div.duration-group').addClass('has-error');
             }
-        }else {
+        } else {
             // Determine the selected development type
             if ($('select.single-scheme-select').length) {
                 valid = ("" != $('select.single-scheme-select').val());

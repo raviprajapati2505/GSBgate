@@ -521,102 +521,27 @@ class CertificationPath < ApplicationRecord
   def rating_for_score(score, certificate: nil, certificate_gsb_version: nil, certificate_name: nil, is_achieved_score: true, is_submitted_score: true)
     return -1 if score.nil?
 
-    if (!certificate.nil? && certificate.operations?) || (!certificate_name.nil? && certificate_name.include?('Operations'))
-      if (!certificate.nil? && certificate.operations_2019?)
-        label = allow_certification?(is_achieved_score: is_achieved_score, is_submitted_score: is_submitted_score)
-        if label == false
-          return 'CERTIFICATION DENIED'
-        elsif label == true
-          return 'CERTIFIED'
-        elsif label == 'Standard Scheme'
-          return max_gold(score)
-        elsif label == 'Premium Scheme'
-          return max_diamond(score)
-        end
-      end
-
-      if score < 0.5
-        return 'CERTIFICATION DENIED'
-      elsif score >= 0.5 && score < 1
-        return 'BRONZE'
-      elsif score >= 1 && score < 1.5
-        return 'SILVER'
-      elsif score >= 1.5 && score < 2
-        return 'GOLD'
-      elsif score >= 2 && score < 2.5
-        return 'PLATINUM'
-      elsif score >= 2.5
-        return 'DIAMOND'
-      else
-        return -1
-      end
-    elsif (!certificate.nil?) || (!certificate_gsb_version.nil? && certificate_gsb_version == 'v2.1 Issue 1.0')
-      if score < 35
-        return 'CERTIFICATION DENIED'
-      elsif score >= 35 && score < 55
-        return 'CLASS C'
-      elsif score >= 55 && score < 65
-        return 'CLASS B'
-      elsif score >= 65 && score < 75
-        return 'CLASS A'
-      elsif score >= 75
-        return 'CLASS A*'
-      else
-        return -1
-      end
-    elsif (!certificate.nil?) || (!certificate_gsb_version.nil? && certificate_gsb_version == 'v2.1 Issue 3.0')
-      if score < 0.5
-        return 'CERTIFICATION DENIED'
-      elsif score >= 0.5 && score < 1
-        return 'CLASS C'
-      elsif score >= 1 && score < 1.5
-        return 'CLASS B'
-      elsif score >= 1.5 && score < 2
-        return 'CLASS A'
-      elsif score >= 2
-        return 'CLASS A*'
-      else
-        return -1
-      end
-    elsif (!certificate.nil?) || (!certificate_gsb_version.nil? && certificate_gsb_version == '2019' && certificate_name.include?('Construction'))
-      if score < 0.5
-        return 'CERTIFICATION DENIED'
-      elsif score >= 0.5 && score < 1
-        return 'CLASS D'
-      elsif score >= 1 && score < 1.5
-        return 'CLASS C'
-      elsif score >= 1.5 && score < 2
-        return 'CLASS B'
-      elsif score >= 2 && score < 2.5
-        return 'CLASS A'
-      elsif score >= 2.5
-        return 'CLASS A*'
-      else
-        return -1
-      end
+    if score < 0
+      val = 'CERTIFICATION DENIED'
+    elsif score >= 0 && score <= 0.5
+      val = 1
+    elsif score > 0.5 && score <= 1
+      val = 2
+    elsif score > 1 && score <= 1.5
+      val = 3
+    elsif score > 1.5 && score <= 2
+      val = 4
+    elsif score > 2 && score <= 2.5
+      val = 5
+    elsif score > 2.5 && score <= 3
+      val = 6
+    elsif score > 3 # due to incentive weights, you can actually score more than 3
+      val = 6
     else
-      if score < 0
-        val = 'CERTIFICATION DENIED'
-      elsif score >= 0 && score <= 0.5
-        val = 1
-      elsif score > 0.5 && score <= 1
-        val = 2
-      elsif score > 1 && score <= 1.5
-        val = 3
-      elsif score > 1.5 && score <= 2
-        val = 4
-      elsif score > 2 && score <= 2.5
-        val = 5
-      elsif score > 2.5 && score <= 3
-        val = 6
-      elsif score > 3 # due to incentive weights, you can actually score more than 3
-        val = 6
-      else
-        val = -1
-      end
-
-      return val
+      val = -1
     end
+
+    return val
   end
 
   def is_valid_check?(flag)

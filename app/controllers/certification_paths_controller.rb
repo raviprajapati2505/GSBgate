@@ -270,9 +270,6 @@ class CertificationPathsController < AuthenticatedController
       todos_array = @certification_path.todo_before_status_advance
 
       if todos_array[0].blank? || todos_array[1].blank?
-        # Check if there's an appeal
-        # For construction management 2019 appeal can only be requested during stage 3
-     
         unless certification_path_params.has_key?(:appealed)
           @certification_path.appealed = certification_path_params.has_key?(:appealed)
         end
@@ -637,19 +634,6 @@ class CertificationPathsController < AuthenticatedController
     end
 
     redirect_back(fallback_location: root_path)
-  end
-
-  def send_op_certification_expiration_notification
-    cp_op = CertificationPath.joins(:certificate)
-            .where(certificates: {certificate_type: Certificate.certificate_types[:operations_type]})
-            .where(certification_path_status_id: [CertificationPathStatus::CERTIFIED])
-
-    cp_op.each do |certification_path|
-      duration_in_days = (Date.today..certification_path.expires_at).count
-        if duration_in_days == 90 || duration_in_days == 60 || duration_in_days == 30
-          DigestMailer.op_certification_expire_in_near_future(certification_path).deliver_now
-        end
-    end
   end
 
   private

@@ -226,35 +226,6 @@
   </div>
 </div>
 
-<div class="col-md-7 col-sm-12 col-xs-12">
-  <div class="ibox">
-    <div class="ibox-title">
-      <h5>Summary of Stages</h5>
-    </div>
-    <div class="ibox-content table-responsive">
-      <%#= scores_legend %>
-      <table class="table table-bordered table-striped">
-        <thead>
-          <tr>
-            <th></th>
-            <th>Rating</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @certification_path.project.certification_paths.with_certification_type([Certificate::certification_types[:construction_certificate_stage1], Certificate::certification_types[:construction_certificate_stage2], Certificate::certification_types[:construction_certificate_stage3]]).each do |certification_path| %>
-          <tr>
-            <td>
-              <%= can_link_to(project_certification_path_path(@certification_path.project, certification_path), certification_path) do %><%= certification_path.name %><% end %>
-            </td>
-            <td><%= render 'certification_paths/checklist_rating', certification_path: certification_path %></td>
-          </tr>
-          <% end %>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
-
 <%# </div> %>
 <div id="editStatusCertificationPathModal" class="modal fade"></div>
 <div id="editMainSchemeMixModal" class="modal fade"></div>

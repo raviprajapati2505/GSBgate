@@ -1,5 +1,440 @@
-<% if @scheme_mix_criterion.scheme_mix.check_list? %>
-  <%= render 'form_checklist' %>
-<% else %>
-  <%= render 'form' %>
+<% if @prev_smc.present? %>
+  <% @page_title_prefix = btn_link_to(project_certification_path_scheme_mix_scheme_mix_criterion_path(@certification_path.project, @certification_path, @scheme_mix, @prev_smc), icon: 'caret-left', icon_position: 'front', text: @prev_smc.code, style: 'white', size: 'small') %>
 <% end %>
+<% if @next_smc.present? %>
+  <% @page_title_suffix = btn_link_to(project_certification_path_scheme_mix_scheme_mix_criterion_path(@certification_path.project, @certification_path, @scheme_mix, @next_smc), icon: 'caret-right', icon_position: 'back', text: @next_smc.code, style: 'white', size: 'small') %>
+<% end %>
+
+<div class="row">
+  <div class="col-lg-4">
+    <div class="ibox criterion-details">
+      <div class="ibox-title">
+        <%= audit_log_label(@scheme_mix_criterion) %>
+        <h5>Checklist Details</h5>
+      </div>
+      
+      <div class="ibox-content">
+        <% if (@certification_path.main_scheme_mix_id == @scheme_mix.id) && @scheme_mix_criterion.scheme_criterion.scheme_category.shared? %>
+          <p class="alert alert-info"><%= ikoen('info-circle') %>
+            The status &amp; scores of this criterion will be inherited by other schemes.
+          </p>
+        <% elsif @scheme_mix_criterion.main_scheme_mix_criterion_id.present? %>
+          <p class="alert alert-info"><%= ikoen('info-circle') %>
+            The status &amp; scores of this criterion are inherited from
+            "<%= link_to(@scheme_mix_criterion.main_scheme_mix_criterion.full_name, project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @certification_path.main_scheme_mix, @scheme_mix_criterion.main_scheme_mix_criterion)) %>"
+            in the
+            "<%= link_to(@certification_path.main_scheme_mix.name, project_certification_path_scheme_mix_path(@project, @certification_path, @certification_path.main_scheme_mix)) %>"
+            scheme.
+          </p>
+        <% end %>
+
+        <div class="table-responsive">
+          <table class="table table-bordered table-striped border-bottom-table">
+            <tbody>
+              <tr>
+                <th>Status</th>
+                <td>
+                  <% status_data = t(@scheme_mix_criterion.status, scope: 'activerecord.attributes.scheme_mix_criterion.statuses') %>
+                  <%= status_data.include?('Awarded level') ? status_data.remove('level') : status_data %>
+                </td>
+              </tr>
+              <% if @certification_path.in_screening? %>
+                <tr>
+                  <th>Screened</th>
+                  <td>
+                    <%= @scheme_mix_criterion.screened ? 'Yes' : 'No' %>
+                  </td>
+                </tr>
+              <% end %>
+              <% if @certification_path.in_pre_verification? && @certification_path.pcr_track? && @scheme_mix_criterion.main_scheme_mix_criterion.blank? %>
+                <tr>
+                  <th>PCR Requested</th>
+                  <td>
+                    <%= @scheme_mix_criterion.review_count %>
+                  </td>
+                </tr>
+                <tr>
+                  <th>PCR Available</th>
+                  <td>
+                    <%= @scheme_mix_criterion.reviews_available %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+
+        <% if can?(:update_status, @scheme_mix_criterion) %>
+          <div class="hr-line-dashed"></div>
+          <% if @scheme_mix_criterion.at_certifier_side? %>
+            <% if @scheme_mix_criterion.in_verification? %>
+              <%= btn_link_to(edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), remote: true, icon: 'check', text: t('.details.btn_edit_status.verified')) %>
+            <% else %>
+              <%= btn_link_to(edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, undo: 1), remote: true, icon: 'undo', text: t('.details.btn_edit_status.undo'), style: 'danger') %>
+            <% end %>
+
+          <% else %>
+            <% if @scheme_mix_criterion.is_submitting? %>
+              <% if @scheme_mix_criterion.todo_before_status_advance.blank? %>
+                <% if @scheme_mix_criterion.review_count < @certification_path.max_review_count %>
+                  <% data = {confirm: 'ATTENTION: By clicking this button, you confirm that a PCR is NOT requested for this criterion.'} %>
+                <% elsif @scheme_mix_criterion.scheme_mix_criteria_documents.count < 1 %>
+                  <% data = {confirm: 'You are submitting this criterion without documentation. Are you sure?'} %>
+                <% else %>
+                  <% data = {} %>
+                <% end %>
+              <% end %>
+
+              <% if @scheme_mix_criterion.in_review? %>
+                <%= btn_link_to(edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), remote: true, icon: 'check', text: t('.details.btn_edit_status.submit'), data: data, class: 'disabled') %>
+              <% else %>
+                <%= btn_link_to(edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), remote: true, icon: 'check', text: t('.details.btn_edit_status.submit'), data: data) %>
+              <% end %>
+
+              <% if can?(:request_review, @scheme_mix_criterion) %>
+                <% if @scheme_mix_criterion.review_count < @certification_path.max_review_count %>
+                  <% if @scheme_mix_criterion.in_review? %>
+                    <%= btn_link_to(apply_pcr_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), icon: 'life-saver', text: 'PCR in progress', class: 'disabled') %>
+                  <% else %>
+                    <% if @certification_path.is_submitting? %>
+                      <%= btn_link_to(apply_pcr_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), remote: true, icon: 'life-saver', text: 'Submit for PCR') %>
+                    <% end %>
+                  <% end %>
+                <% else %>
+                  <%= btn_link_to(apply_pcr_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), icon: 'life-saver', text: 'Max. PCR reached', class: 'disabled') %>
+                <% end %>
+              <% end %>
+
+            <% elsif can?(:edit_status, @scheme_mix_criterion) %>
+              <%= btn_link_to(edit_status_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion, undo: 1), remote: true, icon: 'undo', text: t('.details.btn_edit_status.undo'), style: 'danger') %>
+            <% end %>
+          <% end %>
+          
+        <% elsif can?(:provide_draft_review_comment, @scheme_mix_criterion) %>
+          <div class="hr-line-dashed"></div>
+          <%= btn_link_to(provide_draft_review_comment_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), remote: true, icon: 'life-saver', text: 'Provide Draft PCR comment') %>
+        
+        <% elsif can?(:provide_review_comment, @scheme_mix_criterion) %>
+          <div class="hr-line-dashed"></div>
+          <%= btn_link_to(provide_review_comment_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), remote: true, icon: 'life-saver', text: @scheme_mix_criterion.pcr_review_draft.present? ? 'Publish PCR comment' : 'Provide PCR comment') %>
+        
+        <% elsif can?(:screen, @scheme_mix_criterion) %>
+          <div class="hr-line-dashed"></div>
+          <%= btn_link_to(screen_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), method: :put, icon: 'eye', text: 'Mark as screened') %>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="ibox criterion-details">
+      <div class="ibox-title">
+        <h5>Checklist Status</h5>
+      </div>
+      <% if @scheme_mix_criterion.scheme_mix.check_list? %>
+        <%= render partial: 'checklist_level', locals: { scheme_mix_criterion: @scheme_mix_criterion } %>
+      <% else %>
+        <div class="ibox-content">
+          <%= bootstrap_form_for([@project, @certification_path, @scheme_mix, @scheme_mix_criterion], url: update_scores_project_certification_path_scheme_mix_scheme_mix_criterion_path, method: 'put') do |f| %>
+            <% if @scheme_mix_criterion.errors.any? %>
+              <div id="error_explanation">
+                <h2><%= pluralize(@scheme_mix_criterion.errors.count, "error") %> prohibited this criterion from being saved:
+                </h2>
+                <ul>
+                  <% @scheme_mix_criterion.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                  <% end %>
+                </ul>
+              </div>
+            <% end %>
+            <% SchemeCriterion::MIN_SCORE_ATTRIBUTES.each_with_index do |min_score, index| %>
+              <% if @scheme_mix_criterion.scheme_criterion.read_attribute(min_score.to_sym) != @scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::MIN_VALID_SCORE_ATTRIBUTES[index].to_sym) %>
+                <p class="alert alert-warning"><%= ikoen('exclamation-circle') %>
+                  <%= t('.scores.minimum_valid_score_warning', minimum_valid_score: number_with_precision(@scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::MIN_VALID_SCORE_ATTRIBUTES[index].to_sym), precision: 0, significant: true)) %>
+                </p>
+              <% end %>
+            <% end %>
+
+            <div class="table-responsive">
+              <table id="criterion-levels-table" class="table table-bordered table-striped border-bottom-table">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <% SchemeCriterion::SCORE_ATTRIBUTES.each_with_index do |scores, index| %>
+                      <% unless @scheme_mix_criterion.scheme_criterion.read_attribute(scores.to_sym).nil? %>
+                        <% unless @scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::LABEL_ATTRIBUTES[index].to_sym).nil? %>
+                          <th>
+                            <%= @scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::LABEL_ATTRIBUTES[index].to_sym) %>
+                          </th>
+                        <% else %>
+                          <th>Level</th>
+                        <% end %>
+                      <% end %>
+                    <% end %>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th>Targeted Level <%= tooltip(t('.scores.targeted_score.tooltip')) %></th>
+                    <% SchemeCriterion::SCORE_ATTRIBUTES.each_with_index do |scores, index| %>
+                      <% unless @scheme_mix_criterion.scheme_criterion.read_attribute(scores.to_sym).nil? %>
+                        <td>
+                          <% if can?(:update_targeted_score, @scheme_mix_criterion) %>
+                            <%= f.select SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES[index].to_sym, @scheme_mix_criterion.scheme_criterion.read_attribute(scores.to_sym), hide_label: true %>
+                          <% else %>
+                            <%= f.static_control label: 'targeted level', hide_label: true do %>
+                              <%= number_with_precision(@scheme_mix_criterion.read_attribute(SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES[index].to_sym), precision: 0, significant: true) %>
+                            <% end %>
+                          <% end %>
+                        </td>
+                      <% end %>
+                    <% end %>
+                  </tr>
+                  <tr>
+                    <th>Submitted Level <%= tooltip(t('.scores.submitted_score.tooltip')) %></th>
+                    <% SchemeCriterion::SCORE_ATTRIBUTES.each_with_index do |scores, index| %>
+                      <% unless @scheme_mix_criterion.scheme_criterion.read_attribute(scores.to_sym).nil? %>
+                        <td>
+                          <% if can?(:update_submitted_score, @scheme_mix_criterion) %>
+                            <%= f.select SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES[index].to_sym, @scheme_mix_criterion.scheme_criterion.read_attribute(scores.to_sym), {include_blank: '-', hide_label: true} %>
+                          <% else %>
+                            <%= f.static_control label: 'submitted level', hide_label: true do %>
+                              <%= number_with_precision(@scheme_mix_criterion.read_attribute(SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES[index].to_sym), precision: 0, significant: true) %>
+                            <% end %>
+                          <% end %>
+                        </td>
+                      <% end %>
+                    <% end %>
+                  </tr>
+
+                  <% if !@certification_path.in_pre_verification? %>
+                    <% if !@certification_path.in_verification? || (@certification_path.certification_path_status_id == CertificationPathStatus::VERIFYING_AFTER_APPEAL && SchemeMixCriterion::statuses[@scheme_mix_criterion.status] < SchemeMixCriterion::statuses[:verifying_after_appeal]) || !current_user.is_default_role? || @project.role_for_user(current_user) == ProjectsUser.roles.keys[ProjectsUser.roles[:certifier]] || @project.role_for_user(current_user) == ProjectsUser.roles.keys[ProjectsUser.roles[:certification_manager]] %>
+                      <tr class="achieved_score_row">
+                        <th>Achieved Level <%= tooltip(t('.scores.achieved_score.tooltip')) %></th>
+                        <% SchemeCriterion::SCORE_ATTRIBUTES.each_with_index do |scores, index| %>
+                          <% unless @scheme_mix_criterion.scheme_criterion.read_attribute(scores.to_sym).nil? %>
+                            <td>
+                              <% if can?(:update_achieved_score, @scheme_mix_criterion) %>
+                                <%= f.select SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES[index].to_sym, @scheme_mix_criterion.scheme_criterion.read_attribute(scores.to_sym), {include_blank: '-', hide_label: true}, data: {index: index} %>
+                              <% else %>
+                                <%= f.static_control label: 'achieved level', hide_label: true do %>
+                                  <%= number_with_precision(@scheme_mix_criterion.read_attribute(SchemeMixCriterion::ACHIEVED_SCORE_ATTRIBUTES[index].to_sym), precision: 0, significant: true) %>
+                                <% end %>
+                              <% end %>
+                            </td>
+                          <% end %>
+                        <% end %>
+                      </tr>
+                    <% end %>
+                  <% end %>
+
+                  <!-- Incentives -->
+                  <% if @scheme_mix_criterion.scheme_mix_criterion_incentives.any? %>
+                    <tr>
+                      <td colspan="<%= SchemeCriterion::SCORE_ATTRIBUTES.length + 1 %>">Incentives</td>
+                    </tr>
+                  <% end %>
+
+                  <%= f.fields_for :scheme_mix_criterion_incentives do |smc_incentive| %>
+                    <%= smc_incentive.hidden_field :id %>
+                    <tr>
+                      <th><%= smc_incentive.object.scheme_criterion_incentive.label %></th>
+                      <td colspan="<%= SchemeCriterion::SCORE_ATTRIBUTES.length %>">
+                        <%= smc_incentive.check_box :incentive_scored, label: '', disabled: !can?(:update_incentive_scored, smc_incentive.object) %>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+            <% if can?(:update_targeted_score, @scheme_mix_criterion) || can?(:update_submitted_score, @scheme_mix_criterion) || can?(:update_achieved_score, @scheme_mix_criterion) %>
+              <div class="hr-line-dashed"></div>
+              <%= btn_save %>
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+    <% unless @scheme_mix_criterion.main_scheme_mix_criterion_id.present? %>
+      <% if can?(:read, ProjectsUser.new(project: @project, role: ProjectsUser.roles[:certifier])) %>
+        <div class="ibox">
+          <div class="ibox-title">
+            <h5><%= t('.certifier.title') %></h5>
+          </div>
+          <div class="ibox-content">
+            <%= bootstrap_form_tag url: assign_certifier_project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion), method: 'put' do |f| %>
+              <% if can?(:assign_certifier, @scheme_mix_criterion) %>
+                <div class="row">
+                  <div class="col-md-7 col-sm-12 col-xs-12">
+                    <% users = User.authorized_for_project(@project, @certification_path).with_gsb_trust_team_role %>
+                    <% user_id = @scheme_mix_criterion.certifier.id if @scheme_mix_criterion.certifier.present? %>
+                    <%= f.select :user_id, options_for_select(users.map { |k| [k.full_name, k.id]}, user_id), {label: 'Responsibility', include_blank: ''}, class: 'select2-certifier' %>
+                  </div>
+                  <div class="col-md-5 col-sm-12 col-xs-12">
+                    <%= f.text_field :due_date, value: ((l @scheme_mix_criterion.due_date, format: :short) if !@scheme_mix_criterion.due_date.nil?), prepend: '<i class="fa fa-calendar"></i>'.html_safe, class: 'datepicker-future', autocomplete: 'off' %>
+                  </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+                <%= btn_save %>
+
+              <% else %>
+                <div class="row">
+                  <div class="col-md-7 col-sm-12 col-xs-12">
+                    <% if @scheme_mix_criterion.certifier.nil? %>
+                      <%= f.label :user_id, 'Responsibility' %>
+                      <p>This checklist is not yet assigned.</p>
+                    <% else %>
+                      <%= f.select :user_id, options_for_select([@scheme_mix_criterion.certifier].map { |k| [k.full_name, k.id]}, @scheme_mix_criterion.certifier.id), {label: 'Responsibility'}, disabled: true, class: 'select2-certifier' %>
+                    <% end %>
+                  </div>
+                  <div class="col-md-5 col-sm-12 col-xs-12">
+                    <%= f.text_field :due_date, value: ((l @scheme_mix_criterion.due_date, format: :short) if !@scheme_mix_criterion.due_date.nil?), prepend: '<i class="fa fa-calendar"></i>'.html_safe, class: 'datepicker-future', autocomplete: 'off', disabled: true %>
+                  </div>
+                </div>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+
+    <div class="ibox criterion-information">
+      <div class="ibox-title">
+        <h5>Criterion Information</h5>
+      </div>
+      <div class="ibox-content">
+        <% @scheme_mix_criterion.scheme_criterion.scheme_criterion_texts.visible.each do |scheme_criterion_text| %>
+          <div class="subtitle"><i
+              class="fa fa-caret-right text-primary mr-2"></i><%= scheme_criterion_text.name.capitalize %></div>
+          <div class="<%= scheme_criterion_text.name.downcase  %>"><%= scheme_criterion_text.html_text.html_safe %></div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <% unless @scheme_mix_criterion.main_scheme_mix_criterion_id.present? %>
+    <% download_document_permitted = check_documents_permissions(user_role: current_user.role, project: @project) %>
+    <%
+      get_scheme_mix_criteria_requiments_assigned_to_user = get_scheme_mix_criteria_requiments_assigned_to_user(@scheme_mix_criterion, current_user)
+      get_scheme_mix_criteria_requiments_not_assigned_to_user = get_scheme_mix_criteria_requiments_not_assigned_to_user(@scheme_mix_criterion, current_user)
+    %>
+
+    <div class="col-lg-8">
+      <% if get_scheme_mix_criteria_requiments_assigned_to_user.present? %>
+        <div class="ibox">
+          <div class="ibox-title">
+            <h5>Your Requirements
+              <%= tooltip('These requirements were assigned to you. It is your responsibility to provide documentation for these requirements.') %>
+            </h5>
+          </div>
+          <div class="ibox-content">
+            <div class="row">
+              <div class="col-md-12">
+                <div id="accordion" class="panel-group">
+                  <% get_scheme_mix_criteria_requiments_assigned_to_user.each do |title, requirement_data| %>
+                    <% if title.present? %>
+                      <h3 class="tag"><%= title %></h2>
+                    <% end %>
+                    <% requirement_data.each do |requirement_datum| %>
+                      <%= render 'requirement_data/update', requirement_datum: requirement_datum %>
+                    <% end %>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+      <% if get_scheme_mix_criteria_requiments_not_assigned_to_user.present? %>
+        <div class="ibox">
+          <div class="ibox-title">
+            <% if @scheme_mix_criterion.requirement_data.assigned_to_user(current_user).present? %>
+              <h5>Other Requirements</h5>
+            <% else %>
+              <h5>Requirements</h5>
+            <% end %>
+          </div>
+
+          <div class="ibox-content">
+            <div class="row">
+              <div class="col-md-12">
+                <div id="accordion" class="panel-group">
+                  <% get_scheme_mix_criteria_requiments_not_assigned_to_user.each do |title, requirement_data| %>
+                    <% if title.present? %>
+                      <h3 class="tag collapsed" href="#requirement-category-<%= title %>-collapsable" data-parent="#accordion" data-toggle="collapse" aria-expanded="false"><%= title %></h2>
+                    <% end %>
+                    <div class="collapse" id="requirement-category-<%= title %>-collapsable" aria-expanded="false">
+                      <% requirement_data.each do |requirement_datum| %>
+                        <%= render 'requirement_data/update', requirement_datum: requirement_datum %>
+                      <% end %>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+        <%
+          cancan_document = Document.new
+          cancan_document.scheme_mix_criteria_documents.build(scheme_mix_criterion_id: @scheme_mix_criterion.id)
+        %>
+
+      <% if can?(:create, cancan_document) %>
+        <div class="ibox">
+          <div class="ibox-title">
+            <h5>UPLOAD CHECKLIST DOCUMENTATION</h5>
+          </div>
+          <div class="ibox-content">
+            <%= render 'documents/new', document: Document.new, project: @project, certification_path: @certification_path, scheme_mix: @scheme_mix,  scheme_mix_criterion_id: @scheme_mix_criterion.id %>
+          </div>
+        </div>
+      <% end %>
+      <div class="ibox" id="documentation">
+        <div class="ibox-title">
+          <h5>Checklist Documentation</h5>
+          <% if can?(:download_archive, @scheme_mix_criterion) && download_document_permitted && @scheme_mix_criterion.scheme_mix_criteria_documents.any? %>
+          <%= btn_download("javascript:void(0);", text: 'Download all approved/selected documents', tooltip: 'A ZIP archive containing all approved documents of this criterion will be generated for you.', size: 'extra_small', class: 'pull-right', id: "download_smcd_btn") %>
+          <% end %>
+        </div>
+        <div class="ibox-content">
+          <%= render 'scheme_mix_criteria_documents/index', scheme_mix_criteria_documents: @scheme_mix_criterion.scheme_mix_criteria_documents, download_document_permitted: download_document_permitted %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<div id="editStatusSchemeMixCriterionModal" class="modal fade"></div>
+<div id="reviewSchemeMixCriterionModal" class="modal fade"></div>
+<div id="applyPcrSchemeMixCriterionModal" class="modal fade"></div>
+
+<%= javascript_include_tag 'select_project_certifier' %>
+<%= javascript_include_tag 'select_project_team_member' %>
+<%= javascript_include_tag 'incentive_scored' %>
+
+<script type="text/javascript">
+  //ajax call on click of document download button with selected documents.
+  $("#download_smcd_btn").on("click", function () {
+    var ids = new Array();
+    $('.smcd_child_checkbox:checkbox:checked').each(function () {
+      ids.push(this.value);
+    });
+    if ($("#scheme_criterion_document").prop("checked") == true) {
+      var all = true;
+    } else {
+      var all = false;
+    }
+    $.ajax({
+      url: '/projects/' + < %= @project.id % > +'/certificates/' + < %= @certification_path.id % > +
+        '/schemes/' + < %= @scheme_mix.id % > +'/criteria/' + < %= @scheme_mix_criterion.id % > +'/archive',
+      method: 'GET',
+      data: {
+        documents: ids,
+        all: all
+      }
+    });
+  });
+</script>
+

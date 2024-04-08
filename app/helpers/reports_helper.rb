@@ -66,7 +66,6 @@ module ReportsHelper
           data_score << scheme_mix_scores
         end
         scores = total_CM_score(data_score)
-        scores = final_cm_revised_avg_scores(certification_path, scores)
       else
         scheme_mix = certification_path&.scheme_mixes&.first
         scores = score_calculation(scheme_mix)
