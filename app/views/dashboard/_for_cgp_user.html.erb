@@ -292,7 +292,7 @@
                     <tr>
                       <td rowspan="2">Completed</td>
                       <td rowspan="2"><%= counter_cgp_for_completed_projects + counter_team_member_for_completed_projects %></td>
-                      <td class="bg-primary-light py-1">Project Manager (CGP)</td>
+                      <td class="bg-primary-light py-1">Project Manager (CGP/CEP)</td>
                       <td class="bg-primary-light py-1"><%= counter_cgp_for_completed_projects %></td>
                     </tr>
                     <tr>
@@ -302,7 +302,7 @@
                     <tr>
                       <td rowspan="2">In-Progress</td>
                       <td rowspan="2"><%= @total_cgp_for_inprogress_projects + @total_team_member_for_inprogress_projects %></td>
-                      <td class="bg-primary-light py-1">Project Manager (CGP)</td>
+                      <td class="bg-primary-light py-1">Project Manager (CGP/CEP)</td>
                       <td class="bg-primary-light py-1"><%= @total_cgp_for_inprogress_projects %></td>
                     </tr>
                     <tr>
@@ -348,78 +348,6 @@
               </div>
             </div>
           </div>
-          <!--<div class="db-box with-side-header">
-            <div class="row d-flex">
-              <div class="col-auto">
-                <div class="block-heading">
-                  <div class="heading">
-                    <%= image_tag('layout/tasks-status.png') %>
-                    <span class="text-secondary text-uppercase font-weight-500 mt-3">Tasks<br>Status</span>
-                  </div>
-                </div>
-              </div>
-              <div class="col table-responsive py-4 pl-0">
-                <table class="table mb-0">
-                  <tbody>
-                    <tr>
-                      <th>Status</th>
-                      <th>Quantity</th>
-                      <th>Role</th>
-                      <th>Quantity</th>
-                    </tr>
-                    <tr>
-                      <td rowspan="2">Finished</td>
-                      <td rowspan="2"></td>
-                      <td class="bg-primary-light py-1">Project Manager (CGP)</td>
-                      <td class="bg-primary-light py-1"></td>
-                    </tr>
-                    <tr>
-                      <td class="bg-primary-light py-1">Team Member</td>
-                      <td class="bg-primary-light py-1"></td>
-                    </tr>
-                    <tr>
-                      <td rowspan="2">Pending</td>
-                      <td rowspan="2"></td>
-                      <td class="bg-primary-light py-1">Project Manager (CGP)</td>
-                      <td class="bg-primary-light py-1"></td>
-                    </tr>
-                    <tr>
-                      <td class="bg-primary-light py-1">Team Member</td>
-                      <td class="bg-primary-light py-1"></td>
-                    </tr>
-                    <tr>
-                      <td colspan="2">Total</td>
-                      <td colspan="2"></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-          <div class="db-box with-side-header">
-            <div class="row d-flex">
-              <div class="col-auto">
-                <div class="block-heading">
-                  <div class="heading">
-                    <%= image_tag('layout/overdue-projects-tasks.png') %>
-                    <span class="text-secondary text-uppercase font-weight-500 mt-3">Overdue<br>Projects Tasks</span>
-                  </div>
-                </div>
-              </div>
-              <div class="col table-responsive py-4 pl-0">
-                <table class="table mb-0">
-                  <tbody>
-                    <tr>
-                      <th>Overdue</th>
-                      <th>Project ID</th>
-                      <th>Task</th>
-                      <th>Dedline</th>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>-->
         </div>
         <div class="col-md-12 col-sm-12 col-xs-12">
           <div class="db-box with-side-header">

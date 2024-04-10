@@ -134,27 +134,6 @@ class CertificationPathsController < AuthenticatedController
           @certification_path.main_scheme_mix_selected = true
         end
       end
-
-    elsif Certificate.certification_types[@certification_type] == Certificate.certification_types[:ecoleaf_certificate]
-      # Mirror the LOC scheme mixes
-      @certification_path.project.completed_ecoleaf_provisional_stage.first.scheme_mixes.each do |scheme_mix|
-        # if a scheme certification type is available
-        unless scheme_mix.scheme.certification_type.nil?
-          el_provisional_scheme = scheme_mix.scheme
-          scheme = Scheme.select(:id).find_by(name: el_provisional_scheme.name, gsb_version: el_provisional_scheme.gsb_version, certificate_type: el_provisional_scheme.certificate_type, certification_type: Certificate.certification_types[:ecoleaf_certificate])
-          scheme_id = scheme.id
-        else
-          scheme_id = scheme_mix.scheme_id
-        end
-
-        new_scheme_mix = @certification_path.scheme_mixes.build({scheme_id: scheme_id, weight: scheme_mix.weight, custom_name: scheme_mix.custom_name})
-        # Mirror the main scheme mix
-        if @certification_path.project.completed_ecoleaf_provisional_stage.first.main_scheme_mix_id.present? && (scheme_mix.id == @certification_path.project.completed_ecoleaf_provisional_stage.first.main_scheme_mix_id)
-          @certification_path.main_scheme_mix = new_scheme_mix
-          @certification_path.main_scheme_mix_selected = true
-        end
-      end
-  
     else
       if @certification_path.development_type.mixable?
         if params[:certification_path].has_key?(:schemes)
@@ -307,7 +286,7 @@ class CertificationPathsController < AuthenticatedController
       archive = Archive.new
       archive.user_id = current_user.id
       archive.subject = @certification_path
-      archive.status = :not_generated
+      archive.status = :non_generated
       archive.save!
       redirect_to project_certification_path_path(@project, @certification_path), notice: 'A ZIP archive is being generated. You will be notified by email when the file can be downloaded.'
     end

@@ -233,7 +233,7 @@ class SchemeMixCriteriaController < AuthenticatedController
       archive = Archive.new
       archive.user_id = current_user.id
       archive.subject = @scheme_mix_criterion
-      archive.status = :not_generated
+      archive.status = :non_generated
       params[:all] == "true" ? archive.all_criterion_document = true : archive.criterion_document_ids = params[:documents]
       archive.save!
       flash[:notice] = 'A ZIP archive is being generated. You will be notified by email when the file can be downloaded.'

@@ -1,7 +1,6 @@
 <% 
   @certification_path = @scheme_mix.certification_path
   development_type_name = @certification_path&.development_type&.name
-  @scheme_mix = scheme_mix 
   @certification_path = @scheme_mix.certification_path
   development_type_name = @certification_path&.development_type&.name
 %>
@@ -50,7 +49,7 @@
           <tr>
             <th>Total Requirement Progress</th>
             <td>
-              <% processed_count = RequirementDatum.for_scheme_mix(@scheme_mix).provided.count + RequirementDatum.for_scheme_mix(@scheme_mix).not_required.count %>
+              <% processed_count = RequirementDatum.for_scheme_mix(@scheme_mix).provided.count + RequirementDatum.for_scheme_mix(@scheme_mix).unneeded.count %>
               <% total_count = RequirementDatum.for_scheme_mix(@scheme_mix).count %>
 
               <% if total_count == 0 %>
@@ -163,7 +162,7 @@
                     </div>
                   </td>
                   <td>
-                    <% processed_count = RequirementDatum.for_scheme_mix(@scheme_mix).for_category(category).provided.count + RequirementDatum.for_scheme_mix(@scheme_mix).for_category(category).not_required.count %>
+                    <% processed_count = RequirementDatum.for_scheme_mix(@scheme_mix).for_category(category).provided.count + RequirementDatum.for_scheme_mix(@scheme_mix).for_category(category).unneeded.count %>
                     <% total_count = RequirementDatum.for_scheme_mix(@scheme_mix).for_category(category).count %>
                     <% if total_count == 0 %>
                       No requirements
@@ -227,7 +226,7 @@
                               </td>
                               <td></td>
                               <td>
-                                <% processed_count = scheme_mix_criterion.requirement_data.provided.count + scheme_mix_criterion.requirement_data.not_required.count %>
+                                <% processed_count = scheme_mix_criterion.requirement_data.provided.count + scheme_mix_criterion.requirement_data.unneeded.count %>
                                 <% total_count = scheme_mix_criterion.requirement_data.count %>
                                 <% if total_count == 0 %>
                                   No requirements

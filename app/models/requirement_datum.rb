@@ -8,10 +8,10 @@ class RequirementDatum < ApplicationRecord
   belongs_to :requirement, optional: true
   belongs_to :user, optional: true
 
-  enum status: { required: 3, provided: 1, not_required: 2 }
+  enum status: { required: 3, provided: 1, unneeded: 2 }
 
   after_initialize :init
-  after_update :submit_scheme_mix_criterion_if_not_required
+  after_update :submit_scheme_mix_criterion_if_unneeded
 
   validates :status, inclusion: RequirementDatum.statuses.keys
 
@@ -21,7 +21,7 @@ class RequirementDatum < ApplicationRecord
   }
 
   scope :completed, -> {
-    provided | not_required
+    provided | unneeded
   }
 
   scope :assigned_to_user, ->(user) {
@@ -63,22 +63,22 @@ class RequirementDatum < ApplicationRecord
 
   # Set targeted & submitted scores of the parent SchemeMixCriterion to the minimum valid score & submit it,
   # if all requirement datum records are flagged as "not required"
-  def submit_scheme_mix_criterion_if_not_required
+  def submit_scheme_mix_criterion_if_unneeded
     self.transaction do
       # Loop all requirement data records of the scheme mix criterion parent
       scheme_mix_criteria.each do |smc|
         if smc.in_submission?
-          all_not_required = true
+          all_unneeded = true
           smc.requirement_data.each do |requirement_datum|
-            unless requirement_datum.not_required?
-              all_not_required = false
+            unless requirement_datum.unneeded?
+              all_unneeded = false
               break
             end
           end
 
           # If all requirement datum records are flagged as "not required",
           # set targeted & submitted scores to the minimum valid score & submit the criterion
-          if all_not_required
+          if all_unneeded
             SchemeCriterion::MIN_VALID_SCORE_ATTRIBUTES.each_with_index do |min_valid_score, index|
               unless smc.scheme_criterion.read_attribute(SchemeCriterion::SCORE_ATTRIBUTES[index].to_sym).nil?
                 min_valid_score = smc.scheme_criterion.read_attribute(min_valid_score.to_sym)

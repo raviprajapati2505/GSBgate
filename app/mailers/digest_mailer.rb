@@ -89,7 +89,7 @@ class DigestMailer < ApplicationMailer
       add_condition(user, NotificationType::CRITERION_VERIFIED_AFTER_APPEAL, SchemeMixCriterion.name.demodulize, [SchemeMixCriterion::statuses[:score_awarded_after_appeal], SchemeMixCriterion::statuses[:score_downgraded_after_appeal], SchemeMixCriterion::statuses[:score_upgraded_after_appeal], SchemeMixCriterion::statuses[:score_minimal_after_appeal]])
       add_condition(user, NotificationType::CRITERION_OTHER_STATE_CHANGES, SchemeMixCriterion.name.demodulize, [SchemeMixCriterion::statuses[:submitting],SchemeMixCriterion::statuses[:verifying],SchemeMixCriterion::statuses[:submitting_after_appeal],SchemeMixCriterion::statuses[:verifying_after_appeal]])
       add_condition(user, NotificationType::REQUIREMENT_PROVIDED, RequirementDatum.name.demodulize, RequirementDatum::statuses[:provided])
-      add_condition(user, NotificationType::REQUIREMENT_PROVIDED, RequirementDatum.name.demodulize, [RequirementDatum::statuses[:required],RequirementDatum::statuses[:not_required]])
+      add_condition(user, NotificationType::REQUIREMENT_PROVIDED, RequirementDatum.name.demodulize, [RequirementDatum::statuses[:required],RequirementDatum::statuses[:unneeded]])
       add_condition(user, NotificationType::NEW_DOCUMENT_WAITING_FOR_APPROVAL, SchemeMixCriteriaDocument.name.demodulize, SchemeMixCriteriaDocument::statuses[:awaiting_approval])
       add_condition(user, NotificationType::DOCUMENT_APPROVED, SchemeMixCriteriaDocument.name.demodulize, SchemeMixCriteriaDocument::statuses[:approved])
       add_condition(user, NotificationType::DOCUMENT_APPROVED, SchemeMixCriteriaDocument.name.demodulize, SchemeMixCriteriaDocument::statuses[:rejected])
@@ -183,7 +183,7 @@ class DigestMailer < ApplicationMailer
     emails = []
     emails << User.find_by(role: "gsb_trust_manager").email #Head of gsb trust
     emails << ProjectsUser.where(project_id: @certification_path.project_id).find_by(role: "certification_manager").user.email  #Certification manager
-    emails << ProjectsUser.where(project_id: @certification_path.project_id).find_by(role: "cgp_project_manager").user.email #CGP project manager
+    emails << ProjectsUser.where(project_id: @certification_path.project_id).find_by(role: "cgp_project_manager").user.email #CGP/CEP project manager
     emails << ProjectsUser.where(project_id: @certification_path.project_id).find_by(role: "enterprise_client")&.user&.email #Enterprice Client
     emails << User.where(role: "document_controller").pluck(:email) #Document controlller
     mail(to: emails, subject: "GSBgate - certification #{@certification_path.name} approved")

@@ -8,7 +8,7 @@
                 <% elsif requirement_datum.provided? %>
                     <%= ikoen('check-square-o', tooltip: t('.tooltip_requirement_provided')) %>
                 <% else %>
-                    <%= ikoen('square', tooltip: t('.tooltip_requirement_not_required')) %>
+                    <%= ikoen('square', tooltip: t('.tooltip_requirement_unneeded')) %>
                 <% end %>
                 &nbsp;&nbsp;<%= requirement_datum.name %>
                 <% if requirement_datum.required? && !requirement_datum.due_date.nil? && Date.today > requirement_datum.due_date %>

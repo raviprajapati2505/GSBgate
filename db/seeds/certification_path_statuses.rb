@@ -10,7 +10,7 @@ CertificationPathStatus.find_or_create_by!(
   name: "Submitting",
   past_name: "Submitted",
   description:
-   "The certification is activated by a GSAS trust administrator. The project team can now provide the requirements for all criteria and set the submitted scores of all criteria. When all criteria are completed, a CGP project manager will advance the status of the certification."
+   "The certification is activated by a GSAS trust administrator. The project team can now provide the requirements for all criteria and set the submitted scores of all criteria. When all criteria are completed, a CGP/CEP project manager will advance the status of the certification."
 )
 
 CertificationPathStatus.find_or_create_by!(
@@ -26,7 +26,7 @@ CertificationPathStatus.find_or_create_by!(
   name: "Submitting after screening",
   past_name: "Submitted after screening",
   description:
-   "The GSAS trust team has screened and commented the criteria input. The project team can process this feedback by editing the existing criteria input. When all criteria are completed, a CGP project manager will advance the status of the certification."
+   "The GSAS trust team has screened and commented the criteria input. The project team can process this feedback by editing the existing criteria input. When all criteria are completed, a CGP/CEP project manager will advance the status of the certification."
 )
 
 CertificationPathStatus.find_or_create_by!(
@@ -41,14 +41,14 @@ CertificationPathStatus.find_or_create_by!(
   id: CertificationPathStatus::ACKNOWLEDGING, 
   name: "Acknowledging",
   past_name: "Acknowledged",
-  description: "The GSAS trust team has verified all criteria. A CGP project manager will now decide to accept all scores or apply for appeal. After this, the certification status will be advanced."
+  description: "The GSAS trust team has verified all criteria. A CGP/CEP project manager will now decide to accept all scores or apply for appeal. After this, the certification status will be advanced."
 )
 
 CertificationPathStatus.find_or_create_by!(
   id: CertificationPathStatus::PROCESSING_APPEAL_PAYMENT, 
   name: "Processing appeal payment",
   past_name: "Appeal payment processed",
-  description: "An appeal was requested by a CGP project manager. After payment is received, a GSAS trust administrator will advance the status of the certification."
+  description: "An appeal was requested by a CGP/CEP project manager. After payment is received, a GSAS trust administrator will advance the status of the certification."
 )
 
 CertificationPathStatus.find_or_create_by!(
@@ -56,7 +56,7 @@ CertificationPathStatus.find_or_create_by!(
   name: "Submitting after appeal",
   past_name: "Submitted after appeal",
   description:
-   "An appeal was requested by a CGP project manager. The project team can now (re)provide the requirements for all criteria and set the submitted scores of all criteria. When all criteria are completed, a CGP project manager can advance the status of the certification."
+   "An appeal was requested by a CGP/CEP project manager. The project team can now (re)provide the requirements for all criteria and set the submitted scores of all criteria. When all criteria are completed, a CGP/CEP project manager can advance the status of the certification."
 )
 
 CertificationPathStatus.find_or_create_by!(
@@ -71,7 +71,7 @@ CertificationPathStatus.find_or_create_by!(
   id: CertificationPathStatus::ACKNOWLEDGING_AFTER_APPEAL, 
   name: "Acknowledging after appeal",
   past_name: "Acknowledged after appeal",
-  description: "The GSAS trust team has verified all criteria. After a CGP project manager acknowledges the achieved scores, he will advance the status of the certification."
+  description: "The GSAS trust team has verified all criteria. After a CGP/CEP project manager acknowledges the achieved scores, he will advance the status of the certification."
 )
 
 CertificationPathStatus.find_or_create_by!(

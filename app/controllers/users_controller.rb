@@ -37,6 +37,7 @@ class UsersController < AuthenticatedController
   def update
     user_params = params.require(:user).permit(
       :name, 
+      :email,
       :username,
       :profile_pic, 
       :organization_name, 
@@ -425,7 +426,7 @@ class UsersController < AuthenticatedController
   def confirm_destroy_cgp_user
     @user.service_provider_id = nil
     @user.save(validate: false)
-    redirect_to users_path, notice: "CGP removed from list successfully" and return
+    redirect_to users_path, notice: "CGP/CEP removed from list successfully" and return
   end
 
   def get_service_provider_by_email

@@ -71,7 +71,7 @@ namespace :gsb do
     puts "Found #{ActionController::Base.helpers.pluralize(certification_path_count, 'certification path')} which are expired."
   end
 
-  desc 'Send email notifications for the CGP manager for all certification paths that expire within 3/2/1 month'
+  desc 'Send email notifications for the CGP/CEP manager for all certification paths that expire within 3/2/1 month'
   task :send_expiry_mail, [] => :environment do |t, args|
 
     puts 'Start sending expiry emails...'
@@ -108,7 +108,7 @@ namespace :gsb do
     puts "Found #{ActionController::Base.helpers.pluralize(certification_path_count, 'certification path')} which expires within 3 months."
   end
 
-  desc 'Create a task for the CGP project manager or certification manager for every overdue task'
+  desc 'Create a task for the CGP/CEP project manager or certification manager for every overdue task'
   task :create_overdue_task, [] => :environment do |t, args|
 
     puts 'Start creating tasks for overdue tasks...'
@@ -272,7 +272,7 @@ namespace :gsb do
   task :generate_archives, [] => :environment do |t, args|
     puts 'Generate archives'
 
-    ungenerated_archives = Archive.not_generated
+    ungenerated_archives = Archive.non_generated
 
     ungenerated_archives.each do |archive|
       puts "- Generating archive #{archive.id}"

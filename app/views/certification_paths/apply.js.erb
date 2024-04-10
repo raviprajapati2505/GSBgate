@@ -72,6 +72,7 @@ $(function () {
 
     // Javascript validation
     function validate(){
+        const final_certificates_values = <%= Certificate::FINAL_CERTIFICATES_VALUES %>
         var valid = true;
 
         // reset UI
@@ -81,7 +82,7 @@ $(function () {
 
         // No validation needed, for Final Design Certificate
         var certification_type = $('#certification_path_certification_type').val();
-        if (<% Certificate::FINAL_CERTIFICATES_VALUES.map(&:to_s) %>.includes(certification_type)){
+        if (final_certificates_values.includes(certification_type)){
             valid = ("" != $('#certification_path_expires_at').val());
             if(!valid){
                 $('div.duration-group').addClass('has-error');

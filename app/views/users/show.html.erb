@@ -265,7 +265,7 @@
         <%= render partial: "licence_detail", locals: { label: "#{I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.events_carbon_neutrality")} Licences", access_licences: @user.access_licences_with_certificate_type(Certificate.certificate_types[:events_carbon_neutrality_type]) } %>
         <%= render partial: "licence_detail", locals: { label: "#{I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.products_ecolabeling")} Licences", access_licences: @user.access_licences_with_certificate_type(Certificate.certificate_types[:products_ecolabeling_type]) } %>
         <%= render partial: "licence_detail", locals: { label: "#{I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.green_IT")} Licences", access_licences: @user.access_licences_with_certificate_type(Certificate.certificate_types[:green_IT_type]) } %>
-        <%= render partial: "licence_detail", locals: { label: "#{I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.net_zero")} Licences", access_licences: @user.access_licences_with_certificate_type(Certificate.certificate_types[:energy_centers_efficiency_type]) } %>
+        <%= render partial: "licence_detail", locals: { label: "#{I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.net_zero")} Licences", access_licences: @user.access_licences_with_certificate_type(Certificate.certificate_types[:net_zero_type]) } %>
       </div>
 
       <div class="ibox-title m-t">

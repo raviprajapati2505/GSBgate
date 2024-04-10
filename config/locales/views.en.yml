@@ -74,7 +74,7 @@ en:
           confirm: This will cancel the PCR for this certification. Please confirm your choice.
           text: Cancel PCR
         pcr:
-          tooltip: Pre Certification Review. During PCR, the GSB trust team will assist the project team in completing the certification process. The CGP project manager can enable PCR when applying for a certificate. Please contact GORD if you want to enable the PCR track in a later stage of the certification process.
+          tooltip: Pre Certification Review. During PCR, the GSB trust team will assist the project team in completing the certification process. The CGP/CEP project manager can enable PCR when applying for a certificate. Please contact GORD if you want to enable the PCR track in a later stage of the certification process.
       certification_path_status:
         title: CERTIFICATION STATUS
         btn_accept_achieved: Accept achieved score
@@ -145,7 +145,7 @@ en:
           confirm: This will cancel the PCR for this certification. Please confirm your choice.
           text: Cancel PCR
         pcr:
-          tooltip: Pre Certification Review. During PCR, the GSB trust team will assist the project team in completing the certification process. The CGP project manager can enable PCR when applying for a certificate. Please contact GORD if you want to enable the PCR track in a later stage of the certification process.
+          tooltip: Pre Certification Review. During PCR, the GSB trust team will assist the project team in completing the certification process. The CGP/CEP project manager can enable PCR when applying for a certificate. Please contact GORD if you want to enable the PCR track in a later stage of the certification process.
       certification_path_status:
         title: CERTIFICATION STATUS
         btn_accept_achieved: Accept achieved score
@@ -248,9 +248,9 @@ en:
       tooltip_due_date: Due date passed
       tooltip_requirement_required: Requirement not provided yet
       tooltip_requirement_provided: Requirement provided
-      tooltip_requirement_not_required: Requirement not required
+      tooltip_requirement_unneeded: Requirement not required
     refuse_requirement:
-      info_refuse_requirement: When you refuse this requirement, the CGP project manager will have to reassign the requirement to another project team member. Please explain below why you can't complete the requirement.
+      info_refuse_requirement: When you refuse this requirement, the CGP/CEP project manager will have to reassign the requirement to another project team member. Please explain below why you can't complete the requirement.
       modal_title: Requirement Refusal
   scheme_criteria:
     index:
@@ -284,9 +284,9 @@ en:
       scores:
         minimum_valid_score_warning: The level of this criterion should be at least %{minimum_valid_score} to be able to receive a certification.
         targeted_score:
-          tooltip: The level the project team would like to achieve. Defaults to the maximum attainable level, but can be changed by a CGP project manager.
+          tooltip: The level the project team would like to achieve. Defaults to the maximum attainable level, but can be changed by a CGP/CEP project manager.
         submitted_score:
-          tooltip: The level the project team will submit to GSB trust for verification. Will be provided by a CGP project manager or a project team member that has been assigned to this criterion.
+          tooltip: The level the project team will submit to GSB trust for verification. Will be provided by a CGP/CEP project manager or a project team member that has been assigned to this criterion.
         achieved_score:
           tooltip: The level the GSB trust team has awarded to this criterion. Will be provided by the GSB trust team and will be used for the final certification score.
       certifier:
