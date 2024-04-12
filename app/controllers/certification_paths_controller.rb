@@ -61,12 +61,12 @@ class CertificationPathsController < AuthenticatedController
       @gsb_version = @gsb_versions.first
     end
 
-    if Certificate::FINAL_CERTIFICATES.include?(Certificate.certification_types[@certification_type])
+    if Certificate::FINAL_CERTIFICATES.include?(@certification_type&.to_sym)
       @certificate_method = @certification_path.project.completed_provisional_certificate&.first&.assessment_method
       @assessment_method = unless @certificate_method.present?
                               0
                            else
-                              @certificate_method.assessment_method
+                              CertificationPath.assessment_methods[@certificate_method]
                            end
     else
       if params.has_key?(:assessment_method)
@@ -89,10 +89,19 @@ class CertificationPathsController < AuthenticatedController
     end
 
     # Expiry
-    @certification_path.expires_at = 1.year.from_now
+    if Certificate::PROVISIONAL_CERTIFICATES.include?(@certification_type&.to_sym)
+      @certification_path.expires_at = 1.year.from_now
+    elsif Certificate::FINAL_CERTIFICATES.include?(@certification_type&.to_sym)
+      @durations = [2, 3, 4]
+      if params.has_key?(:certification_path) && params[:certification_path].has_key?(:expires_at)
+        @certification_path.expires_at = params[:certification_path][:expires_at].to_i.years.from_now
+      else
+        @certification_path.expires_at = @durations.first.years.from_now
+      end
+    end
     
     # Development Type
-    if Certificate::FINAL_CERTIFICATES.include?(Certificate.certification_types[@certification_type])
+    if Certificate::FINAL_CERTIFICATES.include?(@certification_type&.to_sym)
       # Note: we currently use the name to match, this could be done cleaner
       development_type_name = @certification_path.project.completed_provisional_certificate.first.development_type.name
       @certification_path.development_type = DevelopmentType.find_by(name: development_type_name, certificate: @certification_path.certificate)
@@ -106,7 +115,7 @@ class CertificationPathsController < AuthenticatedController
       end
     end
 
-    if Certificate::FINAL_CERTIFICATES.include?(Certificate.certification_types[@certification_type])
+    if Certificate::FINAL_CERTIFICATES.include?(@certification_type&.to_sym)
       # Mirror the LOC scheme mixes
       @certification_path.project.completed_provisional_certificate.first.scheme_mixes.each do |scheme_mix|
         # if a scheme certification type is available
@@ -152,7 +161,7 @@ class CertificationPathsController < AuthenticatedController
     end
 
     # set number of buildings
-    if Certificate::FINAL_CERTIFICATES.include?(Certificate.certification_types[@certification_type])
+    if Certificate::FINAL_CERTIFICATES.include?(@certification_type&.to_sym)
       @certification_path.buildings_number = @certification_path.project.completed_provisional_certificate.first.buildings_number rescue 0
     else
       if params.has_key?(:certification_path) && params[:certification_path].has_key?(:buildings_number)

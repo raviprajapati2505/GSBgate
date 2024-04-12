@@ -27,18 +27,6 @@
             <td><%= @scheme_mix.weight %> %</td>
           </tr>
 
-          <% if development_type_name == 'Neighborhoods' %>
-            <tr>
-              <th>Scheme Gross Built up Area (m2)</th>
-              <td><%= number_with_delimiter(@scheme_mix&.gross_area, delimiter: ',') %></td>
-            </tr>
-          <% elsif development_type_name == 'Mixed Use' %>
-            <tr>
-              <th>Scheme Certified Area (m2)</th>
-              <td><%= number_with_delimiter(@scheme_mix&.certified_area, delimiter: ',') %></td>
-            </tr>
-          <% end %>
-
           <tr>
             <th>Scheme Rating</th>
             <td>

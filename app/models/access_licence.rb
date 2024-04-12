@@ -5,6 +5,7 @@ class AccessLicence < ApplicationRecord
 
   # Validation
   validates :expiry_date, presence: true
+  validates :user_id, uniqueness: { scope: :licence_id }
 
   mount_uploader :licence_file
 

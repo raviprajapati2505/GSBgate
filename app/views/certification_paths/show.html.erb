@@ -53,6 +53,14 @@
             </tr>
           <% end %>
 
+          <tr>
+            <th><%= t('certification_paths.show.certification_path.expired_at') %></th>
+            <td>
+              <span><%= @certification_path.expires_at&.strftime('%e %b, %Y') %></span>
+              <%= btn_link_to(edit_expires_at_project_certification_path_path(@project, @certification_path), remote: true, text: 'Set new date', class: 'pull-right') if can?(:update_expires_at, @certification_path) %>
+            </td>
+          </tr>
+
           <% if not @certification_path.is_activating? %>
             <tr>
               <th><%= t('certification_paths.show.certification_path.started_at') %></th>

@@ -128,11 +128,8 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
             draw_scoring_summary(total_category_scores)
         end
         
-        if !@certification_path.construction?
-          draw_category_graph(total_category_scores)
-
-          draw_score_graph
-        end
+        draw_category_graph(total_category_scores)
+        draw_score_graph
 
         # For all scheme_mixes
         @scheme_mixes.each do |scheme_mix|
@@ -191,19 +188,6 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     end
     
     data.append(["GSB Version", "GSB #{@certification_path.certificate&.only_version}"])
-
-    unless @certification_path.construction?
-      if @certification_path&.scheme_names == 'Fitout'
-        data.append(["GSB Scheme", 'Fitout'])
-      else
-        data.append(["GSB Scheme", @certification_path&.scheme_names])
-      end
-      
-    end
-
-    # unless @certification_path.construction?
-    #   data.append(["Client", @detailed_certificate_report&.project_owner])
-    # end
 
     # Output table
     draw_table(data, true, 'basic_table')

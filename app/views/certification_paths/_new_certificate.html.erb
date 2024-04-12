@@ -9,7 +9,7 @@
     <div class="modal-body">
       <%= bootstrap_form_for(@certification_path, url: apply_certification_path_path(@project, Certificate.certification_types[@certification_type])) do |f| %>
 
-      <!-- Set the project and certification_type, so we can access them easily from JS to reconstruct the current path -->
+        <!-- Set the project and certification_type, so we can access them easily from JS to reconstruct the current path -->
         <%= f.hidden_field :project_id, value: @certification_path.project_id %>
         <%= f.hidden_field :certification_type, value: Certificate.certification_types[@certification_type] %>
 
@@ -19,12 +19,12 @@
         <% end %>
 
         <!-- Duration (if applicable)-->
-        <% if Certificate::PROVISIONAL_CERTIFICATES.include?(@certification_type) %>
+        <% if Certificate::PROVISIONAL_CERTIFICATES.include?(@certification_type&.to_sym) %>
           <%= f.static_control label: 'Expires' do %>
             <%= localize(@certification_path.expires_at) %>
           <% end %>
 
-        <% elsif Certificate::FINAL_CERTIFICATES.include?(@certification_type) %>
+        <% elsif Certificate::FINAL_CERTIFICATES.include?(@certification_type&.to_sym) %>
           <%= f.form_group :expires_at, label: {text: 'Duration'} do %>
             <%= f.radio_button :expires_at, 2, label: '2 years from now', checked: true %>
             <%= f.radio_button :expires_at, 3, label: '3 years from now' %>
@@ -39,7 +39,7 @@
 
         <!-- Custom select for version, so we can determine the certificate -->
         <%= f.static_control label: 'GSB Version' do %>
-          <% if Certificate::FINAL_CERTIFICATES.include?(@certification_type) %>
+          <% if Certificate::FINAL_CERTIFICATES.include?(@certification_type&.to_sym) %>
             <%= @certification_path.certificate.gsb_version %>
           <% else %>
             <%= select_tag(:gsb_version, options_for_select(@gsb_versions, @gsb_version), {:class => 'form-control'}) %>
@@ -51,7 +51,7 @@
         <!--%= f.hidden_field :certificate_id, value: @certification_path.certificate_id %-->
 
         <!-- Development type -->
-        <% if Certificate::FINAL_CERTIFICATES.include?(@certification_type) %>
+        <% if Certificate::FINAL_CERTIFICATES.include?(@certification_type&.to_sym) %>
             <%= f.static_control label: 'Project Planning Type' do %>
             <%= @certification_path.development_type.name %>
             <% end %>
@@ -74,7 +74,7 @@
           <% end %>
         </label>
 
-        <% if Certificate::FINAL_CERTIFICATES.include?(@certification_type) %>
+        <% if Certificate::FINAL_CERTIFICATES.include?(@certification_type&.to_sym) %>
           <div class="form-group">
             <div class="table-responsive">
               <table class="table table-bordered table-hover">

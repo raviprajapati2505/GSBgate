@@ -334,19 +334,10 @@ module Effective
             score = rec&.total_achieved_score
             certification_path = CertificationPath.find(rec&.certification_path_id)
 
-            if certification_path&.construction? && !certification_path&.is_activating?
-              score_all = fetch_scores(certification_path)
-              score = score_all[:achieved_score_in_certificate_points]
-            end
-
-            if rec.certificate_gsb_version == 'v2.1 Issue 1.0' && certification_path&.construction?
-              number_to_percentage(score, precision: 1)
+            if !score.nil? && score > 3
+              3.0
             else
-              if !score.nil? && score > 3
-                3.0
-              else
-                score.round(2)
-              end
+              score.round(2)
             end
           end
         end
