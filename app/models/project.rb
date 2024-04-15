@@ -372,9 +372,9 @@ class Project < ApplicationRecord
         recent_certificate_type = recent_certification_path&.certificate&.certification_type
         recent_certificate_status = recent_certification_path&.certification_path_status_id
 
-        return !([
-                  FINAL_CERTIFICATES_VALUES
-               ].include?(Certificate.certification_types[recent_certificate_type&.to_sym]) && 
+        return !(
+                  Certificate::FINAL_CERTIFICATES
+                    .include?(recent_certificate_type&.to_sym) && 
                [
                 CertificationPathStatus::CERTIFIED, 
                 CertificationPathStatus::NOT_CERTIFIED, 
@@ -383,7 +383,7 @@ class Project < ApplicationRecord
       else
         true
       end
-      
+
     rescue StandardError => exception
       puts exception.message
       return false
@@ -396,17 +396,16 @@ class Project < ApplicationRecord
         recent_certification_path = certification_paths.joins(:certificate).order("certificates.display_weight").last
         recent_certificate_type = recent_certification_path&.certificate&.certification_type
         recent_certificate_status = recent_certification_path&.certification_path_status_id
-
-        return ([
-                  FINAL_CERTIFICATES_VALUES
-               ].include?(Certificate.certification_types[recent_certificate_type&.to_sym]) && 
+        return (
+                  Certificate::FINAL_CERTIFICATES
+                    .include?(recent_certificate_type&.to_sym) && 
                [
                 CertificationPathStatus::CERTIFIED
                ].include?(recent_certificate_status))
       else
         false
       end
-      
+
     rescue StandardError => exception
       puts exception.message
       return false

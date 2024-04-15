@@ -34,10 +34,10 @@ class DashboardController < AuthenticatedController
 
 
     # Projects status
-    @total_cgp_for_completed_projects = Project.total_completed_project_by_role(@user, ProjectsUser.roles[:cgp_project_manager], CertificationPathStatus::CERTIFIED) 
+    @total_cgp_for_completed_projects = Project.total_completed_project_by_role(@user, ProjectsUser.roles[:cgp_project_manager], CertificationPathStatus::CERTIFIED)
     @total_team_member_for_completed_projects = Project.total_completed_project_by_role(@user, ProjectsUser.roles[:project_team_member], CertificationPathStatus::CERTIFIED)
-    @total_cgp_for_inprogress_projects = Project.total_inprogress_project_by_role(@user, ProjectsUser.roles[:cgp_project_manager], CertificationPathStatus::CERTIFIED).count 
-    @total_team_member_for_inprogress_projects = Project.total_inprogress_project_by_role(@user, ProjectsUser.roles[:project_team_member], CertificationPathStatus::CERTIFIED).count 
+    @total_cgp_for_inprogress_projects = Project.total_inprogress_project_by_role(@user, ProjectsUser.roles[:cgp_project_manager], CertificationPathStatus::CERTIFIED).count
+    @total_team_member_for_inprogress_projects = Project.total_inprogress_project_by_role(@user, ProjectsUser.roles[:project_team_member], CertificationPathStatus::CERTIFIED).count
   end
 
   def upload_document

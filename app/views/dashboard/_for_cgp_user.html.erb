@@ -270,17 +270,17 @@
                     <%
                       counter_cgp_for_completed_projects = 0
                       @total_cgp_for_completed_projects.each do |project|
-                          @project = Project.find(project)
-                          if @project.is_project_certified?
-                            counter_cgp_for_completed_projects = counter_cgp_for_completed_projects + 1
-                          end
+                        @project = Project.find(project)
+                        if @project.is_project_certified?
+                          counter_cgp_for_completed_projects = counter_cgp_for_completed_projects + 1
+                        end
                       end
                       counter_team_member_for_completed_projects = 0
                       @total_team_member_for_completed_projects.each do |project|
-                          @project = Project.find(project)
-                          if @project.is_project_certified?
-                            counter_team_member_for_completed_projects = counter_team_member_for_completed_projects + 1
-                          end
+                        @project = Project.find(project)
+                        if @project.is_project_certified?
+                          counter_team_member_for_completed_projects = counter_team_member_for_completed_projects + 1
+                        end
                       end
                     %>
                     <tr>
