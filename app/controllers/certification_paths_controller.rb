@@ -61,8 +61,11 @@ class CertificationPathsController < AuthenticatedController
       @gsb_version = @gsb_versions.first
     end
 
+    # get completed provisional certificate
+    completed_provisional_certificate = @certification_path.project.completed_provisional_certificate
+
     if Certificate::FINAL_CERTIFICATES.include?(@certification_type&.to_sym)
-      @certificate_method = @certification_path.project.completed_provisional_certificate&.first&.assessment_method
+      @certificate_method = completed_provisional_certificate&.assessment_method
       @assessment_method = unless @certificate_method.present?
                               0
                            else
@@ -103,7 +106,7 @@ class CertificationPathsController < AuthenticatedController
     # Development Type
     if Certificate::FINAL_CERTIFICATES.include?(@certification_type&.to_sym)
       # Note: we currently use the name to match, this could be done cleaner
-      development_type_name = @certification_path.project.completed_provisional_certificate.first.development_type.name
+      development_type_name = completed_provisional_certificate.development_type.name
       @certification_path.development_type = DevelopmentType.find_by(name: development_type_name, certificate: @certification_path.certificate)
     else
       @development_types = @certification_path.certificate.development_types.joins(:development_type_schemes)&.select("DISTINCT ON (development_types.name) development_types.*").sort_by(&:display_weight)
@@ -117,7 +120,7 @@ class CertificationPathsController < AuthenticatedController
 
     if Certificate::FINAL_CERTIFICATES.include?(@certification_type&.to_sym)
       # Mirror the LOC scheme mixes
-      @certification_path.project.completed_provisional_certificate.first.scheme_mixes.each do |scheme_mix|
+      completed_provisional_certificate.scheme_mixes.each do |scheme_mix|
         # if a scheme certification type is available
         unless scheme_mix.scheme.certification_type.nil?
           provisonal_certification_path_scheme = scheme_mix.scheme
@@ -138,7 +141,7 @@ class CertificationPathsController < AuthenticatedController
 
         new_scheme_mix = @certification_path.scheme_mixes.build({scheme_id: scheme_id, weight: scheme_mix.weight, custom_name: scheme_mix.custom_name})
         # Mirror the main scheme mix
-        if @certification_path.project.completed_provisional_certificate.first.main_scheme_mix_id.present? && (scheme_mix.id == @certification_path.project.completed_provisional_certificate.first.main_scheme_mix_id)
+        if completed_provisional_certificate.main_scheme_mix_id.present? && (scheme_mix.id == completed_provisional_certificate.main_scheme_mix_id)
           @certification_path.main_scheme_mix = new_scheme_mix
           @certification_path.main_scheme_mix_selected = true
         end
@@ -162,7 +165,7 @@ class CertificationPathsController < AuthenticatedController
 
     # set number of buildings
     if Certificate::FINAL_CERTIFICATES.include?(@certification_type&.to_sym)
-      @certification_path.buildings_number = @certification_path.project.completed_provisional_certificate.first.buildings_number rescue 0
+      @certification_path.buildings_number = completed_provisional_certificate.buildings_number rescue 0
     else
       if params.has_key?(:certification_path) && params[:certification_path].has_key?(:buildings_number)
         @certification_path.buildings_number = params.dig(:certification_path, :buildings_number) rescue 0

@@ -56,23 +56,23 @@
               <% 
                 no_completed_provisional_energy_centers_efficiency = (certification_type == Certificate.certification_types[:final_energy_centers_efficiency] && project.completed_provisional_energy_centers_efficiency.empty?) 
 
-                no_completed_building_energy_efficiency = (certification_type == Certificate.certification_types[:final_building_energy_efficiency] && project.completed_building_energy_efficiency.empty?) 
+                no_completed_provisional_building_energy_efficiency = (certification_type == Certificate.certification_types[:final_building_energy_efficiency] && project.completed_provisional_building_energy_efficiency.empty?) 
 
-                no_provisional_healthy_buildings = (certification_type == Certificate.certification_types[:final_healthy_buildings] && project.completed_provisional_healthy_buildings.empty?) 
+                no_completed_provisional_healthy_buildings = (certification_type == Certificate.certification_types[:final_healthy_buildings] && project.completed_provisional_healthy_buildings.empty?) 
 
-                no_provisional_indoor_air_quality = (certification_type == Certificate.certification_types[:final_indoor_air_quality] && project.completed_provisional_indoor_air_quality.empty?)
+                no_completed_provisional_indoor_air_quality = (certification_type == Certificate.certification_types[:final_indoor_air_quality] && project.completed_provisional_indoor_air_quality.empty?)
                 
-                no_provisional_measurement_reporting_and_verification = (certification_type == Certificate.certification_types[:final_measurement_reporting_and_verification] && project.completed_provisional_measurement_reporting_and_verification.empty?) 
+                no_completed_provisional_measurement_reporting_and_verification = (certification_type == Certificate.certification_types[:final_measurement_reporting_and_verification] && project.completed_provisional_measurement_reporting_and_verification.empty?) 
 
-                no_provisional_building_water_efficiency = (certification_type == Certificate.certification_types[:final_building_water_efficiency] && project.completed_provisional_building_water_efficiency.empty?) 
+                no_completed_provisional_building_water_efficiency = (certification_type == Certificate.certification_types[:final_building_water_efficiency] && project.completed_provisional_building_water_efficiency.empty?) 
 
-                no_provisional_events_carbon_neutrality = (certification_type == Certificate.certification_types[:final_events_carbon_neutrality] && project.completed_provisional_events_carbon_neutrality.empty?)
+                no_completed_provisional_events_carbon_neutrality = (certification_type == Certificate.certification_types[:final_events_carbon_neutrality] && project.completed_provisional_events_carbon_neutrality.empty?)
                 
-                no_provisional_products_ecolabeling = (certification_type == Certificate.certification_types[:final_products_ecolabeling] && project.completed_provisional_products_ecolabeling.empty?) 
+                no_completed_provisional_products_ecolabeling = (certification_type == Certificate.certification_types[:final_products_ecolabeling] && project.completed_provisional_products_ecolabeling.empty?) 
 
-                no_provisional_green_IT = (certification_type == Certificate.certification_types[:final_green_IT] && project.completed_provisional_green_IT.empty?) 
+                no_completed_provisional_green_IT = (certification_type == Certificate.certification_types[:final_green_IT] && project.completed_provisional_green_IT.empty?) 
                 
-                no_provisional_net_zero = (certification_type == Certificate.certification_types[:final_net_zero] && project.completed_provisional_net_zero.empty?) 
+                no_completed_provisional_net_zero = (certification_type == Certificate.certification_types[:final_net_zero] && project.completed_provisional_net_zero.empty?) 
               %>
 
               <% if is_certification_paths_present && !is_td_present %>
@@ -80,7 +80,7 @@
                 <% is_td_present = true %>
               <% end %>
 
-              <li class="list-group-item <%= 'disabled' if (no_completed_provisional_energy_centers_efficiency || no_completed_building_energy_efficiency || no_provisional_healthy_buildings || no_provisional_indoor_air_quality || no_provisional_measurement_reporting_and_verification || no_provisional_building_water_efficiency || no_provisional_events_carbon_neutrality || no_provisional_products_ecolabeling || no_provisional_green_IT || no_provisional_net_zero) %>">
+              <li class="list-group-item <%= 'disabled' if (no_completed_provisional_energy_centers_efficiency || no_completed_provisional_building_energy_efficiency || no_completed_provisional_healthy_buildings || no_completed_provisional_indoor_air_quality || no_completed_provisional_measurement_reporting_and_verification || no_completed_provisional_building_water_efficiency || no_completed_provisional_events_carbon_neutrality || no_completed_provisional_products_ecolabeling || no_completed_provisional_green_IT || no_completed_provisional_net_zero) %>">
   
                 <div class="row">
                   <span class="col-md-4">
@@ -91,23 +91,23 @@
 
                   <% if no_completed_provisional_energy_centers_efficiency %>
                     <%= t('.warning.provisional_energy_centers_efficiency') %>
-                  <% elsif no_completed_building_energy_efficiency %>
+                  <% elsif no_completed_provisional_building_energy_efficiency %>
                     <%= t('.warning.provisional_building_energy_efficiency') %>
-                  <% elsif no_provisional_healthy_buildings %>
+                  <% elsif no_completed_provisional_healthy_buildings %>
                     <%= t('.warning.provisional_healthy_buildings') %>
-                  <% elsif no_provisional_indoor_air_quality %>
+                  <% elsif no_completed_provisional_indoor_air_quality %>
                     <%= t('.warning.provisional_indoor_air_quality') %>
-                  <% elsif no_provisional_measurement_reporting_and_verification %>
+                  <% elsif no_completed_provisional_measurement_reporting_and_verification %>
                     <%= t('.warning.provisional_measurement_reporting_and_verification') %>
-                  <% elsif no_provisional_building_water_efficiency %>
+                  <% elsif no_completed_provisional_building_water_efficiency %>
                     <%= t('.warning.provisional_building_water_efficiency') %>
-                  <% elsif no_provisional_events_carbon_neutrality %>
+                  <% elsif no_completed_provisional_events_carbon_neutrality %>
                     <%= t('.warning.provisional_events_carbon_neutrality') %>
-                  <% elsif no_provisional_products_ecolabeling %>
+                  <% elsif no_completed_provisional_products_ecolabeling %>
                     <%= t('.warning.provisional_products_ecolabeling') %>
-                  <% elsif no_provisional_green_IT %>
+                  <% elsif no_completed_provisional_green_IT %>
                     <%= t('.warning.provisional_green_IT') %>
-                  <% elsif no_provisional_net_zero %>
+                  <% elsif no_completed_provisional_net_zero %>
                     <%= t('.warning.provisional_net_zero') %>
                   <% else %>
                     <span class="col-md-4">

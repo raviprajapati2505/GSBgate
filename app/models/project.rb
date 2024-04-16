@@ -150,13 +150,13 @@ class Project < ApplicationRecord
   end
 
   def completed_provisional_certificate
-    completed_provisional_energy_centers_efficiency ||
-    completed_provisional_building_energy_efficiency ||
-    completed_provisional_healthy_buildings ||
-    completed_provisional_indoor_air_quality ||
-    completed_provisional_measurement_reporting_and_verification ||
-    completed_provisional_building_water_efficiency ||
-    completed_provisional_events_carbon_neutrality ||
+    completed_provisional_energy_centers_efficiency.first ||
+    completed_provisional_building_energy_efficiency.first ||
+    completed_provisional_healthy_buildings.first ||
+    completed_provisional_indoor_air_quality.first ||
+    completed_provisional_measurement_reporting_and_verification.first ||
+    completed_provisional_building_water_efficiency.first ||
+    completed_provisional_events_carbon_neutrality.first ||
     CertificationPath.none
   end
 
