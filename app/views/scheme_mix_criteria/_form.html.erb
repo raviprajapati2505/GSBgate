@@ -131,11 +131,11 @@
         </div>
         <% end %>
         <% SchemeCriterion::MIN_SCORE_ATTRIBUTES.each_with_index do |min_score, index| %>
-        <% if @scheme_mix_criterion.scheme_criterion.read_attribute(min_score.to_sym) != @scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::MIN_VALID_SCORE_ATTRIBUTES[index].to_sym) %>
-        <p class="alert alert-warning"><%= ikoen('exclamation-circle') %>
-          <%= t('.scores.minimum_valid_score_warning', minimum_valid_score: number_with_precision(@scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::MIN_VALID_SCORE_ATTRIBUTES[index].to_sym), precision: 0, significant: true)) %>
-        </p>
-        <% end %>
+          <% if @scheme_mix_criterion.scheme_criterion.read_attribute(min_score.to_sym) != @scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::MIN_VALID_SCORE_ATTRIBUTES[index].to_sym) %>
+            <p class="alert alert-warning"><%= ikoen('exclamation-circle') %>
+              <%= t('.scores.minimum_valid_score_warning', minimum_valid_score: number_with_precision(@scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::MIN_VALID_SCORE_ATTRIBUTES[index].to_sym), precision: 0, significant: true)) %>
+            </p>
+          <% end %>
         <% end %>
         <div class="table-responsive">
           <table id="criterion-levels-table" class="table table-bordered table-striped border-bottom-table">

@@ -261,8 +261,15 @@ class CertificationPathsController < AuthenticatedController
       todos_array = @certification_path.todo_before_status_advance
 
       if todos_array[0].blank? || todos_array[1].blank?
-        unless certification_path_params.has_key?(:appealed)
+
+        # If there was an appeal, set the status of the selected criteria to 'Appealed'
+        if certification_path_params.has_key?(:appealed)
           @certification_path.appealed = certification_path_params.has_key?(:appealed)
+          if params.has_key?(:scheme_mix_criterion)
+            params[:scheme_mix_criterion].each do |smc_id|
+              SchemeMixCriterion.find(smc_id.to_i).appealed!
+            end
+          end
         end
 
         # Retrieve & save the next status
@@ -274,12 +281,6 @@ class CertificationPathsController < AuthenticatedController
         # sent email if the certificate is approved
         if @certification_path.status == "Certified"
           DigestMailer.certificate_approved_email(@certification_path).deliver_now
-        end
-        # If there was an appeal, set the status of the selected criteria to 'Appealed'
-        if certification_path_params.has_key?(:appealed) && params.has_key?(:scheme_mix_criterion)
-          params[:scheme_mix_criterion].each do |smc_id|
-            SchemeMixCriterion.find(smc_id.to_i).appealed!
-          end
         end
 
         redirect_to project_certification_path_path(@project, @certification_path), notice: t('controllers.certification_paths_controller.update_status.notice_success')

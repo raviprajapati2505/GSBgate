@@ -150,10 +150,10 @@ module Taskable
                   certification_path: self)
     end
 
-    # Create GORD top manager task to approve
+    # Create GSB trust admin task to advance the certification path status
     Task.find_or_create_by(taskable: self,
-    task_description_id: SYS_ADMIN_REG_APPROVE,
-    application_role: User.roles[:gsb_trust_admin],
+                task_description_id: SYS_ADMIN_REG_APPROVE,
+                application_role: User.roles[:gsb_trust_admin],
                 project: self.project,
                 certification_path: self)
 

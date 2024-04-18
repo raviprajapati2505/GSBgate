@@ -222,7 +222,7 @@ class Project < ApplicationRecord
   end
 
   def can_upload_actual_image?
-    true
+    completed_provisional_certificate.present?
   end
 
   def are_all_construction_stages_certified?

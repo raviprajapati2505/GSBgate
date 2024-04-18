@@ -6,7 +6,13 @@
   $('#applyForCertificateModal').modal('show');
 <% end %>
 
-$(".project-rendering-image-div, .project-actual-image-div").removeClass("outline-danger");
+<% if @project.project_rendering_images.empty? %>
+    addOutline($(".project-rendering-image-div"));
+<% elsif @project.actual_project_images.empty? && Certificate::FINAL_CERTIFICATES.include?(@certification_type&.to_sym) %>
+    addOutline($(".project-actual-image-div"));
+<% else %>
+    $(".project-rendering-image-div, .project-actual-image-div").removeClass("outline-danger");
+<% end %>
 
 //# sourceURL=new_certificate.js
 
