@@ -5,33 +5,19 @@ module Effective
       include ActionView::Helpers::TranslationHelper
       include ScoreCalculator
 
-      def fetch_scores(certification_path)
-        scheme_mix = certification_path&.scheme_mixes&.first
-        score_all = score_calculation(scheme_mix)
-        return score_all
-      end
-
       datatable do
-        # col :project_id, sql_column: 'projects.id', as: :integer, search: {collection: Proc.new { Project.all.order(:name).map { |project| [project.code + ', ' + project.name, project.id] } }} do |rec|
-        #    rec.project_code + ', ' + rec.project_name
-        # end
         col :project_code, col_class: 'col-order-0', label: t('models.effective.datatables.projects.lables.project_code'), sql_column: 'projects.code' do |rec|          
           link_to(
             rec.project_code,
             project_path(rec.project_nr)
           )
-          # link_to(project_path(rec.project_nr)) do
-          #   rec.project_code
-          # end
         end
+
         col :project_name, col_class: 'col-order-1', sql_column: 'projects.name' do |rec|
           link_to(
             rec.project_name,
             project_path(rec.project_nr)
           )
-          # link_to(project_path(rec.project_nr)) do
-          #   rec.project_name
-          # end
         end
 
         col :project_country, col_class: 'multiple-select col-order-2', sql_column: 'projects.country', visible: false, search: { as: :select, collection: Proc.new { Project.order(:country).pluck(:country).uniq.compact.map { |country| [country, country] } rescue [] } } do |rec|
@@ -168,7 +154,7 @@ module Effective
 
             terms_array.each do |term|
               collection_set = collection
-              results_array = collection_set.joins(certification_paths: [scheme_mixes: :scheme]).where("development_types.name = :term AND schemes.name <> 'Fitout'", term: term).pluck("certification_paths.id")
+              results_array = collection_set.joins(certification_paths: [scheme_mixes: :scheme]).where("development_types.name = :term", term: term).pluck("certification_paths.id")
               results.push(*results_array)
             end
             
@@ -224,7 +210,7 @@ module Effective
         end.search do |collection, terms, column, index|
           terms_array = terms.split(",")
           unless (collection.class == Array || terms_array.include?(""))
-            collection.where("certificates.certification_type IN (?)", Certificate.get_certification_types(terms_array))
+            collection.where("certificates.certification_type IN (?)", Certificate.get_certification_types(terms_array).flatten!)
           else
             collection
           end
@@ -318,7 +304,7 @@ module Effective
             end
 
             unless terms_array.blank?
-              results_array = collection_set.where("certificates.certification_type IN (?)", Certificate.get_certificate_by_stage(terms_array)).pluck("certification_paths.id")
+              results_array = collection_set.where("certificates.certification_type IN (?)", Certificate.get_certificate_by_stage(terms_array).flatten!).pluck("certification_paths.id")
             end
 
             all_cert_ids = recent_certificates_ids.push(*results_array).uniq

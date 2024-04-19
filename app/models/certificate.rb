@@ -176,9 +176,9 @@ class Certificate < ApplicationRecord
       certificate_stages_array.push(
                                       case certificate_stage
                                       when "Stage 1: Provisional Certificate"
-                                        Certificate.PROVISIONAL_CERTIFICATES_VALUES
+                                        Certificate::PROVISIONAL_CERTIFICATES_VALUES
                                       when "Stage 2: Final Certificate"
-                                        Certificate.FINAL_CERTIFICATES_VALUES
+                                        Certificate::FINAL_CERTIFICATES_VALUES
                                       else
                                         Certificate.certification_types
                                       end

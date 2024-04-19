@@ -713,35 +713,8 @@ module ApplicationHelper
   end
 
   def get_schemes_names
-    # scheme_name = Scheme.pluck(:name).uniq
-    # scheme_name.delete("Core + Shell")
-    # scheme_name.push("Mixed Use")
-
     scheme_name = [
-      "Commercial",
-      "Education",
-      "Expo Site",
-      "Homes",
-      "Hospitality",
-      "Fitout",
-      "Light Industry",
-      "Mosques",
-      "Offices",
-      "Residential",
-      "Workers Accomodation",
-      "Energy Centers",
-      "Healthcare",
-      "Railways",
-      "Sports",
-      "Districts",
-      "Parks",
-      "Mixed Use",
-      "Neighborhoods",
-      "Construction Site",
-      "Energy Neutral Mark",
-      "Healthy Building Mark",
-      "Premium Scheme",
-      "Standard Scheme"
+      "Typology"
     ]
 
     return scheme_name
