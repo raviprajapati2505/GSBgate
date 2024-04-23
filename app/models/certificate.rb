@@ -141,31 +141,32 @@ class Certificate < ApplicationRecord
       next unless certificate_type.present?
       certificate_types_array.push(*
                               case certificate_type
-                              when "Energy Centers Efficiency"
+                              when "energy_centers_efficiency_type"
                                 [Certificate.certification_types[:provisional_energy_centers_efficiency], Certificate.certification_types[:final_energy_centers_efficiency]]
-                              when "Building Energy Efficiency"
+                              when "building_energy_efficiency_type"
                                 [Certificate.certification_types[:provisional_building_energy_efficiency], Certificate.certification_types[:final_building_energy_efficiency]]
-                              when "Healthy Buildings"
+                              when "healthy_buildings_type"
                                 [Certificate.certification_types[:provisional_healthy_buildings], Certificate.certification_types[:final_healthy_buildings]]
-                              when "Indoor Air Quality"
+                              when "indoor_air_quality_type"
                                 [Certificate.certification_types[:provisional_indoor_air_quality], Certificate.certification_types[:final_indoor_air_quality]]
-                              when "Measurement, Reporting And Verification (MRV)"
+                              when "measurement_reporting_and_verification_type"
                                 [Certificate.certification_types[:provisional_measurement_reporting_and_verification], Certificate.certification_types[:final_measurement_reporting_and_verification]]
-                              when "Buildings Water Efficiency"
+                              when "building_water_efficiency_type"
                                 [Certificate.certification_types[:provisional_building_water_efficiency], Certificate.certification_types[:final_building_water_efficiency]]
-                              when "Events Carbon Neutrality"
+                              when "events_carbon_neutrality_type"
                                 [Certificate.certification_types[:provisional_events_carbon_neutrality], Certificate.certification_types[:final_events_carbon_neutrality]]
-                              when "Products Ecolabeling"
+                              when "products_ecolabeling_type"
                                 [Certificate.certification_types[:provisional_products_ecolabeling], Certificate.certification_types[:final_products_ecolabeling]]
-                              when "Green IT"
+                              when "green_IT_type"
                                 [Certificate.certification_types[:provisional_green_IT], Certificate.certification_types[:final_green_IT]]
-                              when "Net Zero"
+                              when "net_zero_type"
                                 [Certificate.certification_types[:provisional_net_zero], Certificate.certification_types[:final_net_zero]]
                               else
                                 Certificate.certification_types
                               end
                             )
     end
+
     return certificate_types_array
   end
 

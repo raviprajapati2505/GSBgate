@@ -157,6 +157,9 @@ class Project < ApplicationRecord
     completed_provisional_measurement_reporting_and_verification.first ||
     completed_provisional_building_water_efficiency.first ||
     completed_provisional_events_carbon_neutrality.first ||
+    completed_provisional_products_ecolabeling.first ||
+    completed_provisional_green_IT.first ||
+    completed_provisional_net_zero.first ||
     CertificationPath.none
   end
 
