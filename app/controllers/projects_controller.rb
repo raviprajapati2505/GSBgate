@@ -344,11 +344,7 @@ class ProjectsController < AuthenticatedController
           }",
 
           "#{ 
-              if data.certification_path_status_name == "Certificate In Process"
-                "Certificate Generated"
-              else
-                data.certification_path_status_name
-              end
+              data.certification_path_status_name
           }",
                                                                                                                                   
           data.certification_path_certified_at&.to_date&.strftime('%e-%b-%y'),

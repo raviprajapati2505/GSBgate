@@ -36,7 +36,6 @@ class NotificationType < ApplicationRecord
   DOCUMENT_REJECTED = 38
   NEW_TASK = 40
   PROJECT_AUTHORIZATION_CHANGED = 41
-  CERTIFICATE_REPORT_ISSUED = 42
 
   scope :for_user, ->(user_id) {
     joins(:notification_types_users).where(notification_types_users: {user_id: user_id})

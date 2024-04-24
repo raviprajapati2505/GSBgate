@@ -567,8 +567,7 @@ class CertificationPathsController < AuthenticatedController
       @certification_path.signed_certificate_file = params[:certification_path][:signed_certificate_file]
 
       if @certification_path.save
-        
-        if @certification_path.status == 'Certificate Generated'
+        if @certification_path.status == 'Certified'
           # generate task for CGPs and Team members when the certificate is signed
           Task.find_or_create_by(taskable: @certification_path,
             task_description_id: Taskable::SIGNED_CERTIFICATE_DOWNLOAD,

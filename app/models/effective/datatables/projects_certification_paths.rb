@@ -328,7 +328,7 @@ module Effective
           end
         end
 
-        col :certification_path_certification_path_status_id, col_class: 'multiple-select col-order-29', sql_column: 'certification_paths.certification_path_status_id', label: t('models.effective.datatables.projects_certification_paths.certification_path_certification_path_status_id.label'), search: { as: :select, collection: Proc.new { CertificationPathStatus.all.map { |status| status.id == CertificationPathStatus::CERTIFICATE_IN_PROCESS ? ["Certificate In Process/Generated", status.id] : [status.name, status.id]} } }  do |rec|
+        col :certification_path_certification_path_status_id, col_class: 'multiple-select col-order-29', sql_column: 'certification_paths.certification_path_status_id', label: t('models.effective.datatables.projects_certification_paths.certification_path_certification_path_status_id.label'), search: { as: :select, collection: Proc.new { CertificationPathStatus.all.map { |status| [status.name, status.id]} } }  do |rec|
           submission_status_datatable_render(rec)
         end.search do |collection, terms, column, index|
           terms_array = terms.split(",")

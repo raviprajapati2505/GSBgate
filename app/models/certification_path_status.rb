@@ -23,7 +23,6 @@ class CertificationPathStatus < ApplicationRecord
   APPROVING_BY_TOP_MANAGEMENT = 14
   CERTIFIED = 15
   NOT_CERTIFIED = 16
-  CERTIFICATE_IN_PROCESS = 17
   # ------------------------------------------------------------------------
   # STATUSES GROUPED BY 'PROGRESS'
   # ------------------------------------------------------------------------
@@ -40,8 +39,7 @@ class CertificationPathStatus < ApplicationRecord
       CertificationPathStatus::VERIFYING_AFTER_APPEAL,
       CertificationPathStatus::ACKNOWLEDGING_AFTER_APPEAL,
       CertificationPathStatus::APPROVING_BY_MANAGEMENT,
-      CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT,
-      CertificationPathStatus::CERTIFICATE_IN_PROCESS
+      CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT
   ]
 
   STATUSES_ACTIVATED = [
@@ -57,14 +55,12 @@ class CertificationPathStatus < ApplicationRecord
       CertificationPathStatus::APPROVING_BY_MANAGEMENT,
       CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT,
       CertificationPathStatus::CERTIFIED,
-      CertificationPathStatus::NOT_CERTIFIED,
-      CertificationPathStatus::CERTIFICATE_IN_PROCESS
+      CertificationPathStatus::NOT_CERTIFIED
   ]
 
   STATUSES_COMPLETED = [
       CertificationPathStatus::CERTIFIED,
-      CertificationPathStatus::NOT_CERTIFIED,
-      CertificationPathStatus::CERTIFICATE_IN_PROCESS
+      CertificationPathStatus::NOT_CERTIFIED
   ]
 
   # ------------------------------------------------------------------------
@@ -91,8 +87,7 @@ class CertificationPathStatus < ApplicationRecord
 
   STATUSES_AT_MANAGEMENT_SIDE = [
       CertificationPathStatus::APPROVING_BY_MANAGEMENT,
-      CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT,
-      CertificationPathStatus::CERTIFICATE_IN_PROCESS
+      CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT
   ]
 
   STATUSES_AT_GSB_TRUST_TEAM_SIDE = STATUSES_AT_CERTIFIER_SIDE + STATUSES_AT_ADMIN_SIDE + STATUSES_AT_MANAGEMENT_SIDE

@@ -228,17 +228,6 @@ class Project < ApplicationRecord
     completed_provisional_certificate.present?
   end
 
-  def are_all_construction_stages_certified?
-    count = CertificationPath.with_project(self)
-              .with_status([CertificationPathStatus::CERTIFIED, CertificationPathStatus::CERTIFICATE_IN_PROCESS])
-              .with_certificate_type(Certificate.certificate_types[:construction_type])
-              .count
-    if count == 3
-      return true
-    end
-    return false
-  end
-
   def role_for_user(user)
     projects_users.each do |projects_user|
       if projects_user.user == user
@@ -380,8 +369,7 @@ class Project < ApplicationRecord
                     .include?(recent_certificate_type&.to_sym) && 
                [
                 CertificationPathStatus::CERTIFIED, 
-                CertificationPathStatus::NOT_CERTIFIED, 
-                CertificationPathStatus::CERTIFICATE_IN_PROCESS
+                CertificationPathStatus::NOT_CERTIFIED
                ].include?(recent_certificate_status))
       else
         true

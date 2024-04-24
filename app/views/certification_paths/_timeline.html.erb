@@ -15,14 +15,6 @@
                     <%
                         status_name = milestone[:certification_path_status].name
                         description = milestone[:certification_path_status].description
-                        if milestone[:certification_path_status].name == "Certificate In Process"
-                            certification_path_report = certification_path.certification_path_report
-                            if certification_path_report.present? && certification_path_report.is_released?
-                                description = nil
-                                status_name = milestone[:certification_path_status].past_name
-                                date_previous = certification_path_report.release_date
-                            end
-                        end
                     %>
                     <% audit_log_params = {project_id: @project.id, certification_path_id: @certification_path.id, date_from: milestone[:date].strftime(t('date.formats.short')), time_from: milestone[:date].strftime(t('time.formats.short')), button: 'Apply_audit_filter'} %>
                 <% else %>

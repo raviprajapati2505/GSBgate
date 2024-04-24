@@ -145,8 +145,8 @@ class Ability
       # CertificationPath controller
       can :read, CertificationPath, project: project_with_user_assigned
       can :list, CertificationPath, project: project_with_user_assigned
-      can :download_signed_certificate, CertificationPath, project: project_with_user_assigned, certification_path_status: {id: [CertificationPathStatus::CERTIFIED, CertificationPathStatus::CERTIFICATE_IN_PROCESS]}
-      can [:new_detailed_certification_report, :create_detailed_certification_report], CertificationPath, certification_path_status: {id: [CertificationPathStatus::CERTIFIED, CertificationPathStatus::CERTIFICATE_IN_PROCESS]}, project: project_with_user_as_cgp_project_manager
+      can :download_signed_certificate, CertificationPath, project: project_with_user_assigned, certification_path_status: {id: [CertificationPathStatus::CERTIFIED]}
+      can [:new_detailed_certification_report, :create_detailed_certification_report], CertificationPath, certification_path_status: {id: [CertificationPathStatus::CERTIFIED]}, project: project_with_user_as_cgp_project_manager
 
       # Project team
       can :apply, CertificationPath, project: project_with_user_as_cgp_project_manager
@@ -317,7 +317,7 @@ class Ability
         can :update, Project
         can [:confirm_destroy, :destroy], Project # Be careful with this!
         can :update_incentive_scored, SchemeMixCriterion
-        can [:new_detailed_certification_report, :create_detailed_certification_report], CertificationPath, certification_path_status: {id: [CertificationPathStatus::CERTIFIED, CertificationPathStatus::CERTIFICATE_IN_PROCESS]}
+        can [:new_detailed_certification_report, :create_detailed_certification_report], CertificationPath, certification_path_status: {id: [CertificationPathStatus::CERTIFIED]}
       end
       # Project Users
       # can :list_users_sharing_projects, ProjectsUser
@@ -333,8 +333,8 @@ class Ability
       can :list, CertificationPath
       can :apply_for_pcr, CertificationPath, pcr_track: false
       can :cancel_pcr, CertificationPath, pcr_track: true
-      can :download_coverletter_report, CertificationPath, certification_path_status: {id: [CertificationPathStatus::CERTIFIED, CertificationPathStatus::CERTIFICATE_IN_PROCESS]}, certificate: {certification_type: Certificate.certification_types[:letter_of_conformance]}
-      # can :download_detailed_certificate_report, CertificationPath, certification_path_status: {id: [CertificationPathStatus::CERTIFIED, CertificationPathStatus::CERTIFICATE_IN_PROCESS]}, certification_path_report: { is_released: true }
+      can :download_coverletter_report, CertificationPath, certification_path_status: {id: [CertificationPathStatus::CERTIFIED]}, certificate: {certification_type: Certificate::PROVISIONAL_CERTIFICATES_VALUES}
+      # can :download_detailed_certificate_report, CertificationPath, certification_path_status: {id: [CertificationPathStatus::CERTIFIED]}, certification_path_report: { is_released: true }
       cannot :download_detailed_certificate_report, CertificationPath
 
       # User can download archive if and only if user is chairman(gsb_trust_top_manager) and project team member
@@ -342,7 +342,7 @@ class Ability
         can :download_archive, CertificationPath
       end
       
-      can :download_signed_certificate, CertificationPath, certification_path_status: {id: [CertificationPathStatus::CERTIFIED, CertificationPathStatus::CERTIFICATE_IN_PROCESS]}
+      can :download_signed_certificate, CertificationPath, certification_path_status: {id: [CertificationPathStatus::CERTIFIED]}
       can :download_signed_certificate, Offline::CertificationPath
       if user.is_gsb_trust_admin?
         can [:edit_main_scheme_mix, :update_main_scheme_mix], CertificationPath, certification_path_status: {id: CertificationPathStatus::ACTIVATING}, development_type: {mixable: true}
@@ -353,7 +353,7 @@ class Ability
         can [:edit_expires_at, :update_expires_at], CertificationPath
         can [:confirm_destroy, :destroy], CertificationPath # Be careful with this!
         can [:confirm_deny, :deny], CertificationPath, certification_path_status: {id: CertificationPathStatus::STATUSES_IN_PROGRESS}
-        can [:update_signed_certificate, :remove_signed_certificate], CertificationPath, certification_path_status: {id: [CertificationPathStatus::CERTIFIED, CertificationPathStatus::CERTIFICATE_IN_PROCESS]}
+        can [:update_signed_certificate, :remove_signed_certificate], CertificationPath, certification_path_status: {id: [CertificationPathStatus::CERTIFIED]}
         can [:update_signed_certificate, :remove_signed_certificate], Offline::CertificationPath
       elsif user.is_gsb_trust_top_manager?
         can [:edit_status, :update_status], CertificationPath, certification_path_status: {id: CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT}
@@ -364,7 +364,7 @@ class Ability
       # SchemeMix
       cannot :read, SchemeMix, certification_path: {certification_path_status: {id: CertificationPathStatus::ACTIVATING}}
       can :update, SchemeMix, certification_path: {certification_path_status: {id: CertificationPathStatus::ACTIVATING}, development_type: {mixable: true}}
-      can :download_scores_report, SchemeMix, certification_path: {certification_path_status: {id: [CertificationPathStatus::CERTIFIED, CertificationPathStatus::CERTIFICATE_IN_PROCESS]}, certificate: {certification_type: Certificate.certification_types[:letter_of_conformance]}}
+      can :download_scores_report, SchemeMix, certification_path: {certification_path_status: {id: [CertificationPathStatus::CERTIFIED]}, certificate: {certification_type: Certificate::PROVISIONAL_CERTIFICATES_VALUES}}
       # SchemeMixCriterion
       can [:read, :list], SchemeMixCriterion
       cannot :read, SchemeMixCriterion, scheme_mix: {certification_path: {certification_path_status: {id: CertificationPathStatus::ACTIVATING}}}
@@ -427,13 +427,13 @@ class Ability
     elsif user.is_document_controller?
       can :read, :all
       can :list, CertificationPath
-      can :download_signed_certificate, CertificationPath, certification_path_status: { id: [CertificationPathStatus::CERTIFIED, CertificationPathStatus::CERTIFICATE_IN_PROCESS] }
-      can [:update_signed_certificate, :remove_signed_certificate], CertificationPath, certification_path_status: {id: [CertificationPathStatus::CERTIFIED, CertificationPathStatus::CERTIFICATE_IN_PROCESS]}
+      can :download_signed_certificate, CertificationPath, certification_path_status: { id: [CertificationPathStatus::CERTIFIED] }
+      can [:update_signed_certificate, :remove_signed_certificate], CertificationPath, certification_path_status: {id: [CertificationPathStatus::CERTIFIED]}
       can [:download_location_plan, :download_site_plan, :download_design_brief, :download_project_narrative, :download_area_statement, :download_sustainability_features], Project
-      # can :download_detailed_certificate_report, CertificationPath, certification_path_status: {id: [CertificationPathStatus::CERTIFIED, CertificationPathStatus::CERTIFICATE_IN_PROCESS]}, certification_path_report: { is_released: true }
+      # can :download_detailed_certificate_report, CertificationPath, certification_path_status: {id: [CertificationPathStatus::CERTIFIED]}, certification_path_report: { is_released: true }
       cannot :download_detailed_certificate_report, CertificationPath
       cannot :read, AuditLog
-      can [:new_detailed_certification_report, :create_detailed_certification_report], CertificationPath, certification_path_status: {id: [CertificationPathStatus::CERTIFIED, CertificationPathStatus::CERTIFICATE_IN_PROCESS]}
+      can [:new_detailed_certification_report, :create_detailed_certification_report], CertificationPath, certification_path_status: {id: [CertificationPathStatus::CERTIFIED]}
 
       cannot :manage, :survey_dashboard
       cannot [:index, :show, :new, :edit, :create, :update, :destroy], SurveyType

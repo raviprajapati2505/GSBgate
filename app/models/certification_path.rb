@@ -109,13 +109,6 @@ class CertificationPath < ApplicationRecord
 
   def status
     status = self.certification_path_status.name
-    if status == "Certificate In Process"
-      status =  if self.certification_path_report&.is_released?
-                  "Certificate Generated"
-                else
-                  "Certificate In Process"
-                end
-    end
     
     return status
   end
@@ -272,8 +265,6 @@ class CertificationPath < ApplicationRecord
     when CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT
       DigestMailer.send_project_certified_email_to_project_owner(self).deliver_now
       return CertificationPathStatus::CERTIFIED
-    when CertificationPathStatus::CERTIFIED
-      return CertificationPathStatus::CERTIFICATE_IN_PROCESS
     else
       return false
     end
@@ -609,7 +600,7 @@ class CertificationPath < ApplicationRecord
   end
 
   def is_certified?
-    [CertificationPathStatus::CERTIFIED, CertificationPathStatus::CERTIFICATE_IN_PROCESS].include?(certification_path_status_id)
+    [CertificationPathStatus::CERTIFIED].include?(certification_path_status_id)
   end
 
   def is_checklist_method?

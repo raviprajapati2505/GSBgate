@@ -782,11 +782,8 @@ module ApplicationHelper
 
   def submission_status_datatable_render(rec)
     only_certification_name = Certificate.find_by_name(rec&.certificate_name)&.only_certification_name
-    if rec.certification_path_status_name == "Certificate In Process"
-      status = CertificationPath.find(rec&.certification_path_id)&.status
-    else
-      status = rec.certification_path_status_name
-    end
+    status = rec.certification_path_status_name
+
     case only_certification_name
       when 'Energy Centers Efficiency'
         '<span class="certi-sub-status-badge status-badge-db">' + image_tag('/icons/certi-sub-status-db.png') +'</span>' + status

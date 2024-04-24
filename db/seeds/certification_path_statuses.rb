@@ -102,12 +102,5 @@ CertificationPathStatus.find_or_create_by!(
   description: "The GSB trust team has denied this certification."
 )
 
-CertificationPathStatus.find_or_create_by!(
-  id: CertificationPathStatus::CERTIFICATE_IN_PROCESS, 
-  name: "Certificate In Process",
-  past_name: "Certificate Generated",
-  description: "Certificate In Process - after Chairman approval"
-)
-
 puts "Certification Path Status are added successfully.........."
 

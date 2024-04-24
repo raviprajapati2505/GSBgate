@@ -212,10 +212,8 @@
           <% end %>
 
         <% else %>
-          <% unless @certification_path.next_status == CertificationPathStatus::CERTIFICATE_IN_PROCESS %>
-            <div class="hr-line-dashed"></div>
-            <%= btn_link_to(edit_status_project_certification_path_url(@project, @certification_path), remote: true, icon: 'forward', text: t( 'certification_paths.show_checklist.certification_path_status.btn_advance_status', status: CertificationPathStatus.find_by(id: @certification_path.next_status).name)) %>
-          <% end %>
+          <div class="hr-line-dashed"></div>
+          <%= btn_link_to(edit_status_project_certification_path_url(@project, @certification_path), remote: true, icon: 'forward', text: t( 'certification_paths.show_checklist.certification_path_status.btn_advance_status', status: CertificationPathStatus.find_by(id: @certification_path.next_status).name)) %>
         <% end %>
       <% end %>
     </div>
