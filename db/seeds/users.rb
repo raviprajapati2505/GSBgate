@@ -249,3 +249,60 @@ User.create!(
   password: "aaaaaa",
   password_confirmation: "aaaaaa"
 )
+
+# Certifier
+User.create!(
+  email: "certifier@gsb.qa",
+  username: "certifier",
+  confirmed_at: DateTime.now,
+  role: "certification_manager",
+  name: "Certifier",
+  gord_employee: true,
+  organization_name: "GORD GSB",
+  name_suffix: "Mr",
+  last_name: "1",
+  email_alternate: "certifier1@gsb.qa",
+  country: "Qatar",
+  city: "Al Daayen",
+  mobile_area_code: "11111",
+  mobile: "9874563210",
+  active: true,
+  organization_address: "Test",
+  organization_country: "Qatar",
+  organization_city: "Al Daayen",
+  organization_website: "https://www.gsbgord.qa",
+  organization_phone_area_code: "11111",
+  approved_at: true,
+  organization_email: "gsb_gord@gsb.qa",
+  password: "aaaaaa",
+  password_confirmation: "aaaaaa"
+)
+
+# Enterprise Client
+User.create!(
+  email: "enterprise_client_1@gsb.qa",
+  username: "enterprise_client_1",
+  confirmed_at: DateTime.now,
+  role: "default_role",
+  name: "Enterprise Client 1",
+  gord_employee: false,
+  organization_name: "GORD GSB",
+  name_suffix: "Mr",
+  last_name: "1",
+  email_alternate: "enterprise_client_1@gsb.qa",
+  country: "Qatar",
+  city: "Al Daayen",
+  mobile_area_code: "11111",
+  mobile: "9874563210",
+  active: true,
+  organization_address: "Test",
+  organization_country: "Qatar",
+  organization_city: "Al Daayen",
+  organization_website: "https://www.gsbgord.qa",
+  organization_phone_area_code: "11111",
+  approved_at: true,
+  organization_email: "gsb_gord@gsb.qa",
+  password: "aaaaaa",
+  password_confirmation: "aaaaaa"
+)
+
