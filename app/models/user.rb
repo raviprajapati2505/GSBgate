@@ -50,7 +50,7 @@ class User < ApplicationRecord
   validates :organization_phone_area_code, :organization_phone, :organization_fax_area_code, :organization_fax,  numericality: { allow_blank: true }, unless: -> { encrypted_password_changed? } 
   validates_numericality_of :mobile_area_code, :mobile, only_integer: true, unless: -> { encrypted_password_changed? } 
   
-  validate :validate_org_webiste, unless: -> { encrypted_password_changed? } 
+  validate :validate_org_webiste
   validate :validate_name_suffix, unless: -> { encrypted_password_changed? } 
   validates :access_licences, :nested_attributes_uniqueness => {field: :licence_id}
   delegate :can?, :cannot?, :to => :ability
