@@ -7,7 +7,7 @@ class ActualProjectImagesController < AuthenticatedController
       if params.has_key?(:image)
         @actual_project_image = @project.actual_project_images.new(actual_image_params)
 
-        @actual_project_image.certification_path = set_certificate(:final_design_certificate) || set_certificate(:operations_certificate)
+        @actual_project_image.certification_path = set_certificate
 
         if @actual_project_image.save
           format.html { redirect_back(fallback_location: root_path, notice: 'The image was successfully uploaded.') }
@@ -52,8 +52,8 @@ class ActualProjectImagesController < AuthenticatedController
 
   private
 
-  def set_certificate(certification_type)
-    certification_path = CertificationPath.with_project(@project).with_certification_type(Certificate.certification_types[certification_type])
+  def set_certificate
+    certification_path = CertificationPath.with_project(@project)
     certification_path.last if certification_path.any?
   end
 

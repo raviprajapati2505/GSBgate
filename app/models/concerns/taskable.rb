@@ -150,10 +150,10 @@ module Taskable
                   certification_path: self)
     end
 
-    # Create GORD top manager task to approve
+    # Create GSB trust admin task to advance the certification path status
     Task.find_or_create_by(taskable: self,
-    task_description_id: SYS_ADMIN_REG_APPROVE,
-    application_role: User.roles[:gsb_trust_admin],
+                task_description_id: SYS_ADMIN_REG_APPROVE,
+                application_role: User.roles[:gsb_trust_admin],
                 project: self.project,
                 certification_path: self)
 
@@ -173,7 +173,7 @@ module Taskable
   end
 
   def handle_created_cgp_certification_path_document
-    # Destroy CGP project managers upload CMP tasks
+    # Destroy CGP/CEP project managers upload CMP tasks
     Task.where(taskable: self.certification_path, task_description_id: PROJ_MNGR_UPLOAD_CMP).delete_all
     # Create certification manager task to read the GSB CMP document
     if self.certification_path.cgp_certification_path_documents.count == 1
@@ -389,7 +389,7 @@ module Taskable
           # Destroy all certification path tasks
           Task.where(certification_path: self).delete_all
 
-          # Create project CGP task to fill the report information
+          # Create project CGP/CEP task to fill the report information
           Task.find_or_create_by(taskable: self,
             task_description_id: CGP_CERTIFICATION_REPORT_INFORMATION,
             project_role: ProjectsUser.roles[:cgp_project_manager],
@@ -424,7 +424,7 @@ module Taskable
     if self.saved_change_to_status?
       case SchemeMixCriterion.statuses[self.status]
         when SchemeMixCriterion.statuses[:submitting], SchemeMixCriterion.statuses[:submitting_after_appeal]
-          # Remove CGP task to advance certification path status
+          # Remove CGP/CEP task to advance certification path status
           Task.where(taskable: self.scheme_mix.certification_path, task_description_id: PROJ_MNGR_SUB_APPROVE).delete_all
         when SchemeMixCriterion.statuses[:submitted], SchemeMixCriterion.statuses[:submitted_after_appeal]
           Task.where(taskable: self, task_description_id: [CERT_MEM_REVIEW, CERT_MNGR_REVIEW, CERT_MNGR_PUBLISH_REVIEW, PROJ_MNGR_REVIEW, CERT_MNGR_OVERDUE]).delete_all
@@ -709,7 +709,7 @@ module Taskable
                           task_description_id: PROJ_MNGR_CRIT_APPROVE,
                           project_role: ProjectsUser.roles[:cgp_project_manager],
                           project: self.scheme_mix_criteria.first.scheme_mix.certification_path.project).delete_all
-        when RequirementDatum.statuses[:provided], RequirementDatum.statuses[:not_required]
+        when RequirementDatum.statuses[:provided], RequirementDatum.statuses[:unneeded]
           # Check if criterion with status 'submitting'/'submitting after appeal' has no linked requirements in status 'required'
           if SchemeMixCriterion.joins(:scheme_mix_criteria_requirement_data)
                      .where(id: self.scheme_mix_criteria.first.id, status: [SchemeMixCriterion.statuses[:submitting],SchemeMixCriterion.statuses[:submitting_after_appeal]])

@@ -53,6 +53,14 @@
             </tr>
           <% end %>
 
+          <tr>
+            <th><%= t('certification_paths.show.certification_path.expired_at') %></th>
+            <td>
+              <span><%= @certification_path.expires_at&.strftime('%e %b, %Y') %></span>
+              <%= btn_link_to(edit_expires_at_project_certification_path_path(@project, @certification_path), remote: true, text: 'Set new date', class: 'pull-right') if can?(:update_expires_at, @certification_path) %>
+            </td>
+          </tr>
+
           <% if not @certification_path.is_activating? %>
             <tr>
               <th><%= t('certification_paths.show.certification_path.started_at') %></th>
@@ -204,10 +212,8 @@
           <% end %>
 
         <% else %>
-          <% unless @certification_path.next_status == CertificationPathStatus::CERTIFICATE_IN_PROCESS %>
-            <div class="hr-line-dashed"></div>
-            <%= btn_link_to(edit_status_project_certification_path_url(@project, @certification_path), remote: true, icon: 'forward', text: t( 'certification_paths.show_checklist.certification_path_status.btn_advance_status', status: CertificationPathStatus.find_by(id: @certification_path.next_status).name)) %>
-          <% end %>
+          <div class="hr-line-dashed"></div>
+          <%= btn_link_to(edit_status_project_certification_path_url(@project, @certification_path), remote: true, icon: 'forward', text: t( 'certification_paths.show_checklist.certification_path_status.btn_advance_status', status: CertificationPathStatus.find_by(id: @certification_path.next_status).name)) %>
         <% end %>
       <% end %>
     </div>
@@ -279,7 +285,7 @@
 
   <div class="ibox" id="cgp-documentation">
     <div class="ibox-title">
-      <% if @certification_path.certificate.certification_type == "final_design_certificate" %>
+      <% if @certification_path.is_final_certificate? %>
         <h5>PROJECT DOCUMENTATION</h5>
       <% else %>
         <h5>PRACTITIONERS DOCUMENTATION</h5>
@@ -292,7 +298,7 @@
 
   <div class="ibox" id="certifier-documentation">
     <div class="ibox-title">
-      <h5>GSAS TRUST DOCUMENTATION</h5>
+      <h5>GSB TRUST DOCUMENTATION</h5>
     </div>
     <div class="ibox-content">
       <%= render 'certification_path_documents/index', certification_path_documents: @certification_path.certifier_certification_path_documents, download_document_permitted: download_document_permitted %>

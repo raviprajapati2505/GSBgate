@@ -12,36 +12,6 @@ class SchemeMixCriteriaController < AuthenticatedController
   before_action :set_controller_model, except: [:new, :create, :list, :upload_discrepancy_document, :delete_discrepancy_document]
 
   def show
-    
-    check_epl_exist = SchemeMixCriterionEpl.find_by(scheme_mix_criterion_id: @scheme_mix_criterion.id)
-    if @certification_path.certificate.certificate_type == 'design_type'
-      if @scheme_mix_criterion.code == 'W.1' || @scheme_mix_criterion.code == 'W.2' || @scheme_mix_criterion.code == 'E.1' || @scheme_mix_criterion.code == 'E.2' || @scheme_mix_criterion.code == 'E.3' || @scheme_mix_criterion.code == 'E.4'
-        if !check_epl_exist.present?
-          epls_as_built = @scheme_mix_criterion.scheme_mix_criterion_epls.create
-          epls_as_built.scheme_criterion_performance_labels_id = 2
-          epls_as_built.save
-
-          #enable if have as built & as operated two column
-          #sc = SchemeCriterion.find(@scheme_mix_criterion.scheme_criterion_id)
-          #sc.scores_b = sc.scores_a
-          #sc.save
-          
-          #epls_as_operated = @scheme_mix_criterion.scheme_mix_criterion_epls.create
-          #epls_as_operated.scheme_criterion_performance_labels_id = 2
-          #epls_as_operated.save
-        end
-
-        total_smc_epl = SchemeMixCriterionEpl.where(scheme_mix_criterion_id: @scheme_mix_criterion.id)
-        if total_smc_epl.count >= 2
-          total_smc_epl[1].delete
-          sc_score = SchemeCriterion.find(@scheme_mix_criterion.scheme_criterion_id)
-          sc_score.scores_b = nil
-          sc_score.save
-        end
-
-      end
-    end
-
     respond_to do |format|
       format.html {
         @page_title = ERB::Util.html_escape(@scheme_mix_criterion.scheme_criterion.full_name.to_s)
@@ -105,16 +75,6 @@ class SchemeMixCriteriaController < AuthenticatedController
 
     redirect_path = project_certification_path_scheme_mix_scheme_mix_criterion_path(@project, @certification_path, @scheme_mix, @scheme_mix_criterion)
 
-    # If not attempting this criterion, set submitted score to minimum valid score
-    # SchemeMixCriterion::TARGETED_SCORE_ATTRIBUTES.each_with_index do |targeted_score, index|
-    #   if scheme_mix_criterion_params.has_key?(targeted_score.to_sym) && (params[:scheme_mix_criterion][targeted_score.to_sym].to_i == @scheme_mix_criterion.scheme_criterion.read_attribute(SchemeCriterion::MIN_VALID_SCORE_ATTRIBUTES[index].to_sym))
-    #     params[:scheme_mix_criterion][SchemeMixCriterion::SUBMITTED_SCORE_ATTRIBUTES[index].to_sym] = params[:scheme_mix_criterion][targeted_score.to_sym]
-    #   end
-    # end
-
-    if @certification_path.certificate.operations_2019? && @certification_path.schemes.where(name: "Energy Neutral Mark").present?
-      @params = true
-    end
     upload_discrepancy_document if params[:scheme_mix_criterion][:epc_matches_energy_suite].to_i == 0
     # The targeted & submitted scores should always be higher than or equal to the minimum valid score of the criterion
     if validate_score(redirect_path)
@@ -273,7 +233,7 @@ class SchemeMixCriteriaController < AuthenticatedController
       archive = Archive.new
       archive.user_id = current_user.id
       archive.subject = @scheme_mix_criterion
-      archive.status = :not_generated
+      archive.status = :non_generated
       params[:all] == "true" ? archive.all_criterion_document = true : archive.criterion_document_ids = params[:documents]
       archive.save!
       flash[:notice] = 'A ZIP archive is being generated. You will be notified by email when the file can be downloaded.'

@@ -50,7 +50,6 @@ class CertificationPath < ApplicationRecord
   before_update :advance_scheme_mix_criteria_statuses
   before_update :set_started_at
   before_update :set_certified_at
-  after_update :create_cda_users, if: -> { is_design_loc? && certification_path_status_id == CertificationPathStatus::CERTIFIED }  
   after_update :create_certification_path_report, if: -> { certification_path_status_id == CertificationPathStatus::CERTIFIED }  
 
   scope :not_expired, -> {
@@ -93,26 +92,6 @@ class CertificationPath < ApplicationRecord
       SQL
     )
   end
-  
-  # scope :letter_of_conformance, -> {
-  #   joins(:certificate)
-  #       .merge(Certificate.letter_of_conformance)
-  # }
-  #
-  # scope :final_design_certificate, -> {
-  #   joins(:certificate)
-  #       .merge(Certificate.final_design_certificate)
-  # }
-  #
-  # scope :construction_certificate, -> {
-  #   joins(:certificate)
-  #       .merge(Certificate.construction_certificate)
-  # }
-  #
-  # scope :operations_certificate, -> {
-  #   joins(:certificate)
-  #       .merge(Certificate.operations_certificate)
-  # }
 
   def init
     # Set status
@@ -130,27 +109,56 @@ class CertificationPath < ApplicationRecord
 
   def status
     status = self.certification_path_status.name
-    if status == "Certificate In Process"
-      status =  if self.certification_path_report&.is_released?
-                  "Certificate Generated"
-                else
-                  "Certificate In Process"
-                end
-    end
     
     return status
   end
 
-  def design_and_build?
-    project.design_and_build?
+  def is_provisional_certificate?
+    Certificate::PROVISIONAL_CERTIFICATES.include?(certificate.certification_type)
   end
 
-  def construction?
-    certificate&.construction?
+  def is_final_certificate?
+    Certificate::FINAL_CERTIFICATES.include?(certificate.certification_type)
   end
 
-  def ecoleaf?
-    certificate.ecoleaf?
+  def energy_centers_efficiency?
+    certificate&.energy_centers_efficiency_type?
+  end
+
+  def building_energy_efficiency?
+    certificate&.building_energy_efficiency_type?
+  end
+
+  def healthy_buildings?
+    certificate&.healthy_buildings_type?
+  end
+
+  def indoor_air_quality?
+    certificate&.indoor_air_quality_type?
+  end
+
+  def measurement_reporting_and_verification?
+    certificate&.measurement_reporting_and_verification_type?
+  end
+
+  def building_water_efficiency_efficiency?
+    certificate&.building_water_efficiency_efficiency_type?
+  end
+
+  def events_carbon_neutrality?
+    certificate&.events_carbon_neutrality_type?
+  end
+
+  def products_ecolabeling?
+    certificate&.products_ecolabeling_type?
+  end
+
+  def green_IT?
+    certificate&.green_IT_type?
+  end
+
+  def net_zero?
+    certificate&.net_zero_type?
   end
 
   def certification_manager_assigned?
@@ -257,8 +265,6 @@ class CertificationPath < ApplicationRecord
     when CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT
       DigestMailer.send_project_certified_email_to_project_owner(self).deliver_now
       return CertificationPathStatus::CERTIFIED
-    when CertificationPathStatus::CERTIFIED
-      return CertificationPathStatus::CERTIFICATE_IN_PROCESS
     else
       return false
     end
@@ -506,102 +512,27 @@ class CertificationPath < ApplicationRecord
   def rating_for_score(score, certificate: nil, certificate_gsb_version: nil, certificate_name: nil, is_achieved_score: true, is_submitted_score: true)
     return -1 if score.nil?
 
-    if (!certificate.nil? && certificate.operations?) || (!certificate_name.nil? && certificate_name.include?('Operations'))
-      if (!certificate.nil? && certificate.operations_2019?)
-        label = allow_certification?(is_achieved_score: is_achieved_score, is_submitted_score: is_submitted_score)
-        if label == false
-          return 'CERTIFICATION DENIED'
-        elsif label == true
-          return 'CERTIFIED'
-        elsif label == 'Standard Scheme'
-          return max_gold(score)
-        elsif label == 'Premium Scheme'
-          return max_diamond(score)
-        end
-      end
-
-      if score < 0.5
-        return 'CERTIFICATION DENIED'
-      elsif score >= 0.5 && score < 1
-        return 'BRONZE'
-      elsif score >= 1 && score < 1.5
-        return 'SILVER'
-      elsif score >= 1.5 && score < 2
-        return 'GOLD'
-      elsif score >= 2 && score < 2.5
-        return 'PLATINUM'
-      elsif score >= 2.5
-        return 'DIAMOND'
-      else
-        return -1
-      end
-    elsif (!certificate.nil?) || (!certificate_gsb_version.nil? && certificate_gsb_version == 'v2.1 Issue 1.0')
-      if score < 35
-        return 'CERTIFICATION DENIED'
-      elsif score >= 35 && score < 55
-        return 'CLASS C'
-      elsif score >= 55 && score < 65
-        return 'CLASS B'
-      elsif score >= 65 && score < 75
-        return 'CLASS A'
-      elsif score >= 75
-        return 'CLASS A*'
-      else
-        return -1
-      end
-    elsif (!certificate.nil?) || (!certificate_gsb_version.nil? && certificate_gsb_version == 'v2.1 Issue 3.0')
-      if score < 0.5
-        return 'CERTIFICATION DENIED'
-      elsif score >= 0.5 && score < 1
-        return 'CLASS C'
-      elsif score >= 1 && score < 1.5
-        return 'CLASS B'
-      elsif score >= 1.5 && score < 2
-        return 'CLASS A'
-      elsif score >= 2
-        return 'CLASS A*'
-      else
-        return -1
-      end
-    elsif (!certificate.nil?) || (!certificate_gsb_version.nil? && certificate_gsb_version == '2019' && certificate_name.include?('Construction'))
-      if score < 0.5
-        return 'CERTIFICATION DENIED'
-      elsif score >= 0.5 && score < 1
-        return 'CLASS D'
-      elsif score >= 1 && score < 1.5
-        return 'CLASS C'
-      elsif score >= 1.5 && score < 2
-        return 'CLASS B'
-      elsif score >= 2 && score < 2.5
-        return 'CLASS A'
-      elsif score >= 2.5
-        return 'CLASS A*'
-      else
-        return -1
-      end
+    if score < 0
+      val = 'CERTIFICATION DENIED'
+    elsif score >= 0 && score <= 0.5
+      val = 1
+    elsif score > 0.5 && score <= 1
+      val = 2
+    elsif score > 1 && score <= 1.5
+      val = 3
+    elsif score > 1.5 && score <= 2
+      val = 4
+    elsif score > 2 && score <= 2.5
+      val = 5
+    elsif score > 2.5 && score <= 3
+      val = 6
+    elsif score > 3 # due to incentive weights, you can actually score more than 3
+      val = 6
     else
-      if score < 0
-        val = 'CERTIFICATION DENIED'
-      elsif score >= 0 && score <= 0.5
-        val = 1
-      elsif score > 0.5 && score <= 1
-        val = 2
-      elsif score > 1 && score <= 1.5
-        val = 3
-      elsif score > 1.5 && score <= 2
-        val = 4
-      elsif score > 2 && score <= 2.5
-        val = 5
-      elsif score > 2.5 && score <= 3
-        val = 6
-      elsif score > 3 # due to incentive weights, you can actually score more than 3
-        val = 6
-      else
-        val = -1
-      end
-
-      return val
+      val = -1
     end
+
+    return val
   end
 
   def is_valid_check?(flag)
@@ -669,31 +600,14 @@ class CertificationPath < ApplicationRecord
   end
 
   def is_certified?
-    [CertificationPathStatus::CERTIFIED, CertificationPathStatus::CERTIFICATE_IN_PROCESS].include?(certification_path_status_id)
+    [CertificationPathStatus::CERTIFIED].include?(certification_path_status_id)
   end
 
   def is_checklist_method?
     CertificationPath.assessment_methods[assessment_method] == CertificationPath.assessment_methods[:check_list]
   end
 
-  def is_design_loc?
-    certificate.full_name.include?('Letter of Conformance') && certificate.design_and_build?
-  end
-
-  def is_design_fdc?
-    certificate.full_name.include?('Final Design Certificate') && certificate.design_and_build?
-  end
-
   private
-
-  def create_cda_users
-    project_managers = project.projects_users&.where(role: ["cgp_project_manager", "certification_manager"])
-    project_managers.each do |project_manager|
-      new_project_manager = project_manager.dup
-      new_project_manager.certification_team_type = "Final Design Certificate"
-      new_project_manager.save
-    end
-  end
 
   def create_certification_path_report
     certification_path_report = CertificationPathReport.find_or_initialize_by(certification_path_id: id)

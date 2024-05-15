@@ -1126,18 +1126,18 @@ table.dataTable thead > tr > th.sorting {
     text-decoration: underline;
   }
   &.db-servicer {
-    background: #2584c4;
-    background: -moz-linear-gradient(-98deg, #2584c4 0%, #407d31 100%);
-    background: -webkit-linear-gradient(-98deg, #2584c4 0%, #407d31 100%);
-    background: linear-gradient(196deg, #2584c4 0%, #407d31 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2584c4', endColorstr='#407d31',GradientType=1);
+    background: #0070b3;
+    background: -moz-linear-gradient(-98deg, #0070b3 0%, #29bdef 100%);
+    background: -webkit-linear-gradient(-98deg, #0070b3 0%, #29bdef 100%);
+    background: linear-gradient(196deg, #0070b3 0%, #29bdef 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0070b3', endColorstr='#29bdef',GradientType=1);
   }
   &.db-cgp {
-    background: #336633;
-    background: -moz-linear-gradient(-98deg, #336633 0%, #599435 37.628%, #407d31 100%);
-    background: -webkit-linear-gradient(-98deg, #336633 0%, #599435 37.628%, #407d31 100%);
-    background: linear-gradient(196deg, #336633 0%, #599435 37.628%, #407d31 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#336633', endColorstr='#407d31',GradientType=1);
+    background: #0070b3;
+    background: -moz-linear-gradient(-98deg, #0070b3 0%, #29bdef 37.628%, #29bdef 100%);
+    background: -webkit-linear-gradient(-98deg, #0070b3 0%, #29bdef 37.628%, #29bdef 100%);
+    background: linear-gradient(196deg, #0070b3 0%, #29bdef 37.628%, #29bdef 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0070b3', endColorstr='#29bdef',GradientType=1);
   }
 }
 .user {
@@ -1372,7 +1372,7 @@ table.dataTable thead > tr > th.sorting {
 }
 .block-heading.affiliated-heading {
   width: 100%;
-  background: linear-gradient(196deg, #2584c4 0%, #407d31 100%) !important;
+  background: linear-gradient(196deg, #2584c4 0%, #29bdef 100%) !important;
   & img {
     filter: brightness(10) !important;
   }
@@ -1387,10 +1387,10 @@ table.dataTable thead > tr > th.sorting {
   padding: 20px;
   border-radius: 7px;
   background: #2584c4;
-  background: -moz-linear-gradient(-98deg, #2584c4 0%, #407d31 100%);
-  background: -webkit-linear-gradient(-98deg, #2584c4 0%, #407d31 100%);
-  background: linear-gradient(196deg, #2584c4 0%, #407d31 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2584c4', endColorstr='#407d31',GradientType=1);
+  background: -moz-linear-gradient(-98deg, #2584c4 0%, #29bdef 100%);
+  background: -webkit-linear-gradient(-98deg, #2584c4 0%, #29bdef 100%);
+  background: linear-gradient(196deg, #2584c4 0%, #29bdef 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2584c4', endColorstr='#29bdef',GradientType=1);
   .img-icon {
     display: inline-block;
     width: auto;

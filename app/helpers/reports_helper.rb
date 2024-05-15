@@ -4,23 +4,9 @@ module ReportsHelper
   end
 
   def certification_type_name(certification_path)
-    project_type =  case certification_path&.project.certificate_type
-                    when 1
-                      'CONSTRUCTION MANAGEMENT'
-                    when 2 
-                      'OPERATION'
-                    when 3
-                      'DESIGN & BUILD'
-                    end
+    project_type = certification_path&.project.team_table_heading
     
-    certificate_name =  case certification_path&.certificate.only_name
-                        when "Stage 1: Provisional Certificate"
-                          'Stage 1: Provisional Certificate'
-                        when "Stage 2: Final Certificate" 
-                          'Stage 2: Final Certificate'
-                        else
-                          certification_path&.certificate.only_name
-                        end
+    certificate_name = certification_path&.certificate.only_name
 
     return {project_type: project_type, certificate_name: certificate_name}
   end
@@ -70,24 +56,6 @@ module ReportsHelper
   end
 
   def get_certification_achieved_score(project, certification_path)
-    if certification_path.construction?
-      if certification_path.name == "Construction Certificate, 2019 - GSB-CM Certificate"
-        data_score = []
-        certification_path_ids = project.certification_paths.pluck(:id) - [certification_path.id]
-        certification_path_ids.each do |cp_id|
-          scheme_mix = CertificationPath.find(cp_id)&.scheme_mixes&.first
-          scheme_mix_scores = score_calculation(scheme_mix)
-          data_score << scheme_mix_scores
-        end
-        scores = total_CM_score(data_score)
-        scores = final_cm_revised_avg_scores(certification_path, scores)
-      else
-        scheme_mix = certification_path&.scheme_mixes&.first
-        scores = score_calculation(scheme_mix)
-      end
-
-    else
-      scores = certification_path.scores_in_certificate_points
-    end
+    scores = certification_path.scores_in_certificate_points
   end
 end

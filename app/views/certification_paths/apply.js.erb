@@ -6,7 +6,13 @@
   $('#applyForCertificateModal').modal('show');
 <% end %>
 
-$(".project-rendering-image-div, .project-actual-image-div").removeClass("outline-danger");
+<% if @project.project_rendering_images.empty? %>
+    addOutline($(".project-rendering-image-div"));
+<% elsif @project.actual_project_images.empty? && Certificate::FINAL_CERTIFICATES.include?(@certification_type&.to_sym) %>
+    addOutline($(".project-actual-image-div"));
+<% else %>
+    $(".project-rendering-image-div, .project-actual-image-div").removeClass("outline-danger");
+<% end %>
 
 //# sourceURL=new_certificate.js
 
@@ -72,6 +78,7 @@ $(function () {
 
     // Javascript validation
     function validate(){
+        const final_certificates_values = <%= Certificate::FINAL_CERTIFICATES_VALUES %>
         var valid = true;
 
         // reset UI
@@ -81,7 +88,8 @@ $(function () {
 
         // No validation needed, for Final Design Certificate
         var certification_type = $('#certification_path_certification_type').val();
-        if (["20", "50"].includes(certification_type)){
+
+        if (final_certificates_values.includes(Number(certification_type))){
             valid = ("" != $('#certification_path_expires_at').val());
             if(!valid){
                 $('div.duration-group').addClass('has-error');

@@ -35,75 +35,77 @@ class UsersController < AuthenticatedController
   end
 
   def update
-    user_params = params.require(:user).permit(
-      :name, 
-      :username,
-      :profile_pic, 
-      :organization_name, 
-      :gord_employee, 
-      :service_provider_id, 
-      :active,
-      :name_suffix,
-      :middle_name, 
-      :last_name, 
-      :email_alternate, 
-      :role, 
-      :country, 
-      :city, 
-      :mobile_area_code, 
-      :mobile, 
-      :organization_email,
-      :organization_address, 
-      :organization_country, 
-      :organization_city, 
-      :organization_website, 
-      :organization_phone_area_code, 
-      :organization_phone, 
-      :organization_fax_area_code, 
-      :organization_fax, 
-      :gsb_id, 
-      :practitioner_accreditation_type,
-      user_detail_attributes: [
-        :id,
-        :gender, 
-        :dob,
-        :designation, 
-        :work_experience, 
-        :qid_or_passport_number, 
-        :qid_file,
-        :qid_file_cache,
-        :university_credentials_file, 
-        :work_experience_file, 
-        :cgp_licence_file, 
-        :qid_work_permit_file, 
-        :energy_assessor_name, 
-        :gsb_energey_assessment_licence_file,
-        :education,
-        :education_certificate,
-        :other_documents
-      ],
-      service_provider_detail_attributes: [
-        :id,
-        :business_field,
-        :portfolio,
-        :commercial_licence_no,
-        :commercial_licence_expiry_date,
-        :commercial_licence_file,
-        :accredited_service_provider_licence_file,
-        :demerit_acknowledgement_file,
-        :application_form,
-        :cgp_licence_file,
-        :energy_assessor_name, 
-        :gsb_energey_assessment_licence_file,
-        :nominated_cgp
-      ],
-      access_licences_attributes: [
-        :id, 
-        :user_id, 
-        :licence_id, 
-        :expiry_date, 
-        :_destroy 
-      ])
+    user_params = 
+      params.require(:user).permit(
+        :name, 
+        :email,
+        :username,
+        :profile_pic, 
+        :organization_name, 
+        :gord_employee, 
+        :service_provider_id, 
+        :active,
+        :name_suffix,
+        :middle_name, 
+        :last_name, 
+        :email_alternate, 
+        :role, 
+        :country, 
+        :city, 
+        :mobile_area_code, 
+        :mobile, 
+        :organization_email,
+        :organization_address, 
+        :organization_country, 
+        :organization_city, 
+        :organization_website, 
+        :organization_phone_area_code, 
+        :organization_phone, 
+        :organization_fax_area_code, 
+        :organization_fax, 
+        :gsb_id, 
+        :practitioner_accreditation_type,
+        user_detail_attributes: [
+          :id,
+          :gender, 
+          :dob,
+          :designation, 
+          :work_experience, 
+          :qid_or_passport_number, 
+          :qid_file,
+          :qid_file_cache,
+          :university_credentials_file, 
+          :work_experience_file, 
+          :cgp_licence_file, 
+          :qid_work_permit_file, 
+          :energy_assessor_name, 
+          :gsb_energey_assessment_licence_file,
+          :education,
+          :education_certificate,
+          :other_documents
+        ],
+        service_provider_detail_attributes: [
+          :id,
+          :business_field,
+          :portfolio,
+          :commercial_licence_no,
+          :commercial_licence_expiry_date,
+          :commercial_licence_file,
+          :accredited_service_provider_licence_file,
+          :demerit_acknowledgement_file,
+          :application_form,
+          :cgp_licence_file,
+          :energy_assessor_name, 
+          :gsb_energey_assessment_licence_file,
+          :nominated_cgp
+        ],
+        access_licences_attributes: [
+          :id, 
+          :user_id, 
+          :licence_id, 
+          :expiry_date, 
+          :_destroy 
+        ])
 
     if @user.update(user_params)
       redirect_to user_path(@user), notice: "User information successfully updated."
@@ -276,9 +278,7 @@ class UsersController < AuthenticatedController
             users = User.where("email ILIKE ALL ( array[:email_components] )", email_components: email_components.map! {|val| "%#{val}%" })
           end
         else
-          User.invite!(email: email, gord_employee: check_gord_employee, name: email) do |u|
-            u.skip_invitation = true
-          end
+          User.invite!(email: email, gord_employee: check_gord_employee, name: email)
         end
 
         # Retrieve the ids of all users that are already linked to the project
@@ -294,8 +294,6 @@ class UsersController < AuthenticatedController
           # Check if the user is already linked to the project
           if (existing_user_ids.include?(u.id))
             result[:items][u.id][:error] = 'This user is already linked to the project.'
-          elsif u.created_by_invite?
-            result[:items][u.id][:error] = 'An invitation has already been sent.'
           elsif !u.confirmed?
             result[:items][u.id][:error] = 'This user has not confirmed account yet.'
           elsif !u.active?
@@ -425,7 +423,7 @@ class UsersController < AuthenticatedController
   def confirm_destroy_cgp_user
     @user.service_provider_id = nil
     @user.save(validate: false)
-    redirect_to users_path, notice: "CGP removed from list successfully" and return
+    redirect_to users_path, notice: "CGP/CEP removed from list successfully" and return
   end
 
   def get_service_provider_by_email

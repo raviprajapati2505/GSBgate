@@ -254,25 +254,18 @@
       <div class="ibox-title">
         <h5><b><%= t('.user_license_details.licences') %></b></h5>
       </div>
+
       <div class="ibox-content table-responsive">
-        <div class="row">
-          <%= render partial: "licence_detail", locals: { label: 'Design & Build Licences', access_licences: @user.access_licences_with_certificate_type(Certificate.certificate_types[:design_type]) } %>
-        </div>
-
-        <div class="row">
-          <div class="hr-line-dashed m-t"></div>
-          <%= render partial: "licence_detail", locals: { label: 'Construction Management Licences', access_licences: @user.access_licences_with_certificate_type(Certificate.certificate_types[:construction_type]) } %>
-        </div>
-
-        <div class="row">
-          <div class="hr-line-dashed m-t"></div>
-          <%= render partial: "licence_detail", locals: { label: 'Operation Licences', access_licences: @user.access_licences_with_certificate_type(Certificate.certificate_types[:operations_type]) } %>
-        </div>
-
-        <div class="row">
-          <div class="hr-line-dashed m-t"></div>
-          <%= render partial: "licence_detail", locals: { label: 'EcoLeaf Licences', access_licences: @user.access_licences_with_certificate_type(Certificate.certificate_types[:ecoleaf_type]) } %>
-        </div>
+        <%= render partial: "licence_detail", locals: { label: "#{I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.energy_centers_efficiency")} Licences", access_licences: @user.access_licences_with_certificate_type(Certificate.certificate_types[:energy_centers_efficiency_type]) } %>
+        <%= render partial: "licence_detail", locals: { label: "#{I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.building_energy_efficiency")} Licences", access_licences: @user.access_licences_with_certificate_type(Certificate.certificate_types[:building_energy_efficiency_type]) } %>
+        <%= render partial: "licence_detail", locals: { label: "#{I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.healthy_buildings")} Licences", access_licences: @user.access_licences_with_certificate_type(Certificate.certificate_types[:healthy_buildings_type]) } %>
+        <%= render partial: "licence_detail", locals: { label: "#{I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.indoor_air_quality")} Licences", access_licences: @user.access_licences_with_certificate_type(Certificate.certificate_types[:indoor_air_quality_type]) } %>
+        <%= render partial: "licence_detail", locals: { label: "#{I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.measurement_reporting_and_verification")} Licences", access_licences: @user.access_licences_with_certificate_type(Certificate.certificate_types[:measurement_reporting_and_verification_type]) } %>
+        <%= render partial: "licence_detail", locals: { label: "#{I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.building_water_efficiency")} Licences", access_licences: @user.access_licences_with_certificate_type(Certificate.certificate_types[:building_water_efficiency_type]) } %>
+        <%= render partial: "licence_detail", locals: { label: "#{I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.events_carbon_neutrality")} Licences", access_licences: @user.access_licences_with_certificate_type(Certificate.certificate_types[:events_carbon_neutrality_type]) } %>
+        <%= render partial: "licence_detail", locals: { label: "#{I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.products_ecolabeling")} Licences", access_licences: @user.access_licences_with_certificate_type(Certificate.certificate_types[:products_ecolabeling_type]) } %>
+        <%= render partial: "licence_detail", locals: { label: "#{I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.green_IT")} Licences", access_licences: @user.access_licences_with_certificate_type(Certificate.certificate_types[:green_IT_type]) } %>
+        <%= render partial: "licence_detail", locals: { label: "#{I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.net_zero")} Licences", access_licences: @user.access_licences_with_certificate_type(Certificate.certificate_types[:net_zero_type]) } %>
       </div>
 
       <div class="ibox-title m-t">
@@ -320,5 +313,4 @@
 
     </div>
   </div>
-
 </div>

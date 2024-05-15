@@ -6,7 +6,7 @@ class Archive < ApplicationRecord
   PAGE_SIZE = 100
   CSV_COL_SEPARATOR = ';'
 
-  enum status: { not_generated: 10, generating: 20, generated: 30 }
+  enum status: { non_generated: 10, generating: 20, generated: 30 }
 
   belongs_to :subject, polymorphic: true
   belongs_to :user
@@ -39,7 +39,7 @@ class Archive < ApplicationRecord
 
   def init
     if self.has_attribute?(:status)
-      self.status ||= :not_generated
+      self.status ||= :non_generated
     end
   end
 
@@ -98,7 +98,7 @@ class Archive < ApplicationRecord
         end
       end
 
-      # Loop over all CGP documents in the certification path
+      # Loop over all CGP/CEP documents in the certification path
       certification_path.cgp_certification_path_documents.each do |ccpd|
         if ccpd.document_file.present?
           file_name = ccpd.id.to_s + '_' + ccpd.name

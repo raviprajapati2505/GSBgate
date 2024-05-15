@@ -61,12 +61,15 @@ class CertificationPathsController < AuthenticatedController
       @gsb_version = @gsb_versions.first
     end
 
-    if Certificate::FINAL_CERTIFICATES.include?(Certificate.certification_types[@certification_type])
-      @certificate_method = @certification_path.project.completed_provisional_certificate&.first&.assessment_method
+    # get completed provisional certificate
+    completed_provisional_certificate = @certification_path.project.completed_provisional_certificate
+
+    if Certificate::FINAL_CERTIFICATES.include?(@certification_type&.to_sym)
+      @certificate_method = completed_provisional_certificate&.assessment_method
       @assessment_method = unless @certificate_method.present?
                               0
                            else
-                              @certificate_method.assessment_method
+                              CertificationPath.assessment_methods[@certificate_method]
                            end
     else
       if params.has_key?(:assessment_method)
@@ -89,12 +92,21 @@ class CertificationPathsController < AuthenticatedController
     end
 
     # Expiry
-    @certification_path.expires_at = 1.year.from_now
+    if Certificate::PROVISIONAL_CERTIFICATES.include?(@certification_type&.to_sym)
+      @certification_path.expires_at = 1.year.from_now
+    elsif Certificate::FINAL_CERTIFICATES.include?(@certification_type&.to_sym)
+      @durations = [2, 3, 4]
+      if params.has_key?(:certification_path) && params[:certification_path].has_key?(:expires_at)
+        @certification_path.expires_at = params[:certification_path][:expires_at].to_i.years.from_now
+      else
+        @certification_path.expires_at = @durations.first.years.from_now
+      end
+    end
     
     # Development Type
-    if Certificate::FINAL_CERTIFICATES.include?(Certificate.certification_types[@certification_type])
+    if Certificate::FINAL_CERTIFICATES.include?(@certification_type&.to_sym)
       # Note: we currently use the name to match, this could be done cleaner
-      development_type_name = @certification_path.project.completed_provisional_certificate.first.development_type.name
+      development_type_name = completed_provisional_certificate.development_type.name
       @certification_path.development_type = DevelopmentType.find_by(name: development_type_name, certificate: @certification_path.certificate)
     else
       @development_types = @certification_path.certificate.development_types.joins(:development_type_schemes)&.select("DISTINCT ON (development_types.name) development_types.*").sort_by(&:display_weight)
@@ -106,13 +118,22 @@ class CertificationPathsController < AuthenticatedController
       end
     end
 
-    if Certificate::FINAL_CERTIFICATES.include?(Certificate.certification_types[@certification_type])
+    if Certificate::FINAL_CERTIFICATES.include?(@certification_type&.to_sym)
       # Mirror the LOC scheme mixes
-      @certification_path.project.completed_provisional_certificate.first.scheme_mixes.each do |scheme_mix|
+      completed_provisional_certificate.scheme_mixes.each do |scheme_mix|
         # if a scheme certification type is available
         unless scheme_mix.scheme.certification_type.nil?
-          loc_scheme = scheme_mix.scheme
-          scheme_id = Scheme.select(:id).find_by(name: loc_scheme.name, gsb_version: loc_scheme.gsb_version, certificate_type: loc_scheme.certificate_type, certification_type: Certificate.certification_types[:final_design_certificate])
+          provisonal_certification_path_scheme = scheme_mix.scheme
+          scheme_id = 
+            Scheme
+              .select(:id)
+              .find_by(
+                name: provisonal_certification_path_scheme.name, 
+                gsb_version: provisonal_certification_path_scheme.gsb_version, 
+                certificate_type: provisonal_certification_path_scheme.certificate_type, 
+                certification_type: Certificate::FINAL_CERTIFICATES_VALUES
+              )
+            
           scheme_id = scheme_id.id
         else
           scheme_id = scheme_mix.scheme_id
@@ -120,32 +141,11 @@ class CertificationPathsController < AuthenticatedController
 
         new_scheme_mix = @certification_path.scheme_mixes.build({scheme_id: scheme_id, weight: scheme_mix.weight, custom_name: scheme_mix.custom_name})
         # Mirror the main scheme mix
-        if @certification_path.project.completed_provisional_certificate.first.main_scheme_mix_id.present? && (scheme_mix.id == @certification_path.project.completed_provisional_certificate.first.main_scheme_mix_id)
+        if completed_provisional_certificate.main_scheme_mix_id.present? && (scheme_mix.id == completed_provisional_certificate.main_scheme_mix_id)
           @certification_path.main_scheme_mix = new_scheme_mix
           @certification_path.main_scheme_mix_selected = true
         end
       end
-
-    elsif Certificate.certification_types[@certification_type] == Certificate.certification_types[:ecoleaf_certificate]
-      # Mirror the LOC scheme mixes
-      @certification_path.project.completed_ecoleaf_provisional_stage.first.scheme_mixes.each do |scheme_mix|
-        # if a scheme certification type is available
-        unless scheme_mix.scheme.certification_type.nil?
-          el_provisional_scheme = scheme_mix.scheme
-          scheme = Scheme.select(:id).find_by(name: el_provisional_scheme.name, gsb_version: el_provisional_scheme.gsb_version, certificate_type: el_provisional_scheme.certificate_type, certification_type: Certificate.certification_types[:ecoleaf_certificate])
-          scheme_id = scheme.id
-        else
-          scheme_id = scheme_mix.scheme_id
-        end
-
-        new_scheme_mix = @certification_path.scheme_mixes.build({scheme_id: scheme_id, weight: scheme_mix.weight, custom_name: scheme_mix.custom_name})
-        # Mirror the main scheme mix
-        if @certification_path.project.completed_ecoleaf_provisional_stage.first.main_scheme_mix_id.present? && (scheme_mix.id == @certification_path.project.completed_ecoleaf_provisional_stage.first.main_scheme_mix_id)
-          @certification_path.main_scheme_mix = new_scheme_mix
-          @certification_path.main_scheme_mix_selected = true
-        end
-      end
-  
     else
       if @certification_path.development_type.mixable?
         if params[:certification_path].has_key?(:schemes)
@@ -164,8 +164,8 @@ class CertificationPathsController < AuthenticatedController
     end
 
     # set number of buildings
-    if Certificate::FINAL_CERTIFICATES.include?(Certificate.certification_types[@certification_type])
-      @certification_path.buildings_number = @certification_path.project.completed_provisional_certificate.first.buildings_number rescue 0
+    if Certificate::FINAL_CERTIFICATES.include?(@certification_type&.to_sym)
+      @certification_path.buildings_number = completed_provisional_certificate.buildings_number rescue 0
     else
       if params.has_key?(:certification_path) && params[:certification_path].has_key?(:buildings_number)
         @certification_path.buildings_number = params.dig(:certification_path, :buildings_number) rescue 0
@@ -261,11 +261,15 @@ class CertificationPathsController < AuthenticatedController
       todos_array = @certification_path.todo_before_status_advance
 
       if todos_array[0].blank? || todos_array[1].blank?
-        # Check if there's an appeal
-        # For construction management 2019 appeal can only be requested during stage 3
-     
-        unless certification_path_params.has_key?(:appealed)
+
+        # If there was an appeal, set the status of the selected criteria to 'Appealed'
+        if certification_path_params.has_key?(:appealed)
           @certification_path.appealed = certification_path_params.has_key?(:appealed)
+          if params.has_key?(:scheme_mix_criterion)
+            params[:scheme_mix_criterion].each do |smc_id|
+              SchemeMixCriterion.find(smc_id.to_i).appealed!
+            end
+          end
         end
 
         # Retrieve & save the next status
@@ -277,12 +281,6 @@ class CertificationPathsController < AuthenticatedController
         # sent email if the certificate is approved
         if @certification_path.status == "Certified"
           DigestMailer.certificate_approved_email(@certification_path).deliver_now
-        end
-        # If there was an appeal, set the status of the selected criteria to 'Appealed'
-        if certification_path_params.has_key?(:appealed) && params.has_key?(:scheme_mix_criterion)
-          params[:scheme_mix_criterion].each do |smc_id|
-            SchemeMixCriterion.find(smc_id.to_i).appealed!
-          end
         end
 
         redirect_to project_certification_path_path(@project, @certification_path), notice: t('controllers.certification_paths_controller.update_status.notice_success')
@@ -301,7 +299,7 @@ class CertificationPathsController < AuthenticatedController
       archive = Archive.new
       archive.user_id = current_user.id
       archive.subject = @certification_path
-      archive.status = :not_generated
+      archive.status = :non_generated
       archive.save!
       redirect_to project_certification_path_path(@project, @certification_path), notice: 'A ZIP archive is being generated. You will be notified by email when the file can be downloaded.'
     end
@@ -569,8 +567,7 @@ class CertificationPathsController < AuthenticatedController
       @certification_path.signed_certificate_file = params[:certification_path][:signed_certificate_file]
 
       if @certification_path.save
-        
-        if @certification_path.status == 'Certificate Generated'
+        if @certification_path.status == 'Certified'
           # generate task for CGPs and Team members when the certificate is signed
           Task.find_or_create_by(taskable: @certification_path,
             task_description_id: Taskable::SIGNED_CERTIFICATE_DOWNLOAD,
@@ -628,19 +625,6 @@ class CertificationPathsController < AuthenticatedController
     end
 
     redirect_back(fallback_location: root_path)
-  end
-
-  def send_op_certification_expiration_notification
-    cp_op = CertificationPath.joins(:certificate)
-            .where(certificates: {certificate_type: Certificate.certificate_types[:operations_type]})
-            .where(certification_path_status_id: [CertificationPathStatus::CERTIFIED])
-
-    cp_op.each do |certification_path|
-      duration_in_days = (Date.today..certification_path.expires_at).count
-        if duration_in_days == 90 || duration_in_days == 60 || duration_in_days == 30
-          DigestMailer.op_certification_expire_in_near_future(certification_path).deliver_now
-        end
-    end
   end
 
   private

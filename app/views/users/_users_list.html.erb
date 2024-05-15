@@ -15,7 +15,7 @@
         <td><%= user.email %></td>
         <td><%= label_span(user.active?, 'Active', 'Deactivated').html_safe %></td>
         <td>
-          <%= btn_link_to(confirm_destroy_user_path(user), {icon: 'trash', text: 'Delete', style: 'danger', method: :get, data: {confirm: 'Do you really want to delete this CGP from list?'}}) %>
+          <%= btn_link_to(confirm_destroy_user_path(user), {icon: 'trash', text: 'Delete', style: 'danger', method: :get, data: {confirm: 'Do you really want to delete this CGP/CEP from list?'}}) %>
         </td>
       </tr>
     <% end %>

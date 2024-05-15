@@ -60,6 +60,7 @@ class Certificate < ApplicationRecord
     :provisional_green_IT,
     :provisional_net_zero
   ]
+  PROVISIONAL_CERTIFICATES_VALUES = certification_types.select{ |k, v| v if k.include?("provisional_")}&.values
 
   FINAL_CERTIFICATES = [
     :final_energy_centers_efficiency,
@@ -73,6 +74,7 @@ class Certificate < ApplicationRecord
     :final_green_IT,
     :final_net_zero
   ]
+  FINAL_CERTIFICATES_VALUES = certification_types.select{ |k, v| v if k.include?("final_")}&.values
 
   has_many :certification_paths
   has_many :development_types
@@ -89,25 +91,44 @@ class Certificate < ApplicationRecord
     where(certification_type: certification_type)
   }
 
-
-  def construction?
-    certificate_type? && certificate_type == 'construction_type'
+  def energy_centers_efficiency?
+    energy_centers_efficiency_type?
   end
 
-  def operations?
-    name.include?('Operations')
+  def building_energy_efficiency?
+    building_energy_efficiency_type?
   end
 
-  def operations_2019?
-    operations_type? && gsb_version == '2019'
+  def healthy_buildings?
+    healthy_buildings_type?
   end
 
-  def design_and_build?
-    design_type?
+  def indoor_air_quality?
+    indoor_air_quality_type?
   end
 
-  def ecoleaf?
-    ecoleaf_type?
+  def measurement_reporting_and_verification?
+    measurement_reporting_and_verification_type?
+  end
+
+  def building_water_efficiency_efficiency?
+    building_water_efficiency_efficiency_type?
+  end
+
+  def events_carbon_neutrality?
+    events_carbon_neutrality_type?
+  end
+
+  def products_ecolabeling?
+    products_ecolabeling_type?
+  end
+
+  def green_IT?
+    green_IT_type?
+  end
+
+  def net_zero?
+    net_zero_type?
   end
 
   def full_name
@@ -120,31 +141,32 @@ class Certificate < ApplicationRecord
       next unless certificate_type.present?
       certificate_types_array.push(*
                               case certificate_type
-                              when "Energy Centers Efficiency"
+                              when "energy_centers_efficiency_type"
                                 [Certificate.certification_types[:provisional_energy_centers_efficiency], Certificate.certification_types[:final_energy_centers_efficiency]]
-                              when "Building Energy Efficiency"
+                              when "building_energy_efficiency_type"
                                 [Certificate.certification_types[:provisional_building_energy_efficiency], Certificate.certification_types[:final_building_energy_efficiency]]
-                              when "Healthy Buildings"
+                              when "healthy_buildings_type"
                                 [Certificate.certification_types[:provisional_healthy_buildings], Certificate.certification_types[:final_healthy_buildings]]
-                              when "Indoor Air Quality"
+                              when "indoor_air_quality_type"
                                 [Certificate.certification_types[:provisional_indoor_air_quality], Certificate.certification_types[:final_indoor_air_quality]]
-                              when "Measurement, Reporting And Verification (MRV)"
+                              when "measurement_reporting_and_verification_type"
                                 [Certificate.certification_types[:provisional_measurement_reporting_and_verification], Certificate.certification_types[:final_measurement_reporting_and_verification]]
-                              when "Buildings Water Efficiency"
+                              when "building_water_efficiency_type"
                                 [Certificate.certification_types[:provisional_building_water_efficiency], Certificate.certification_types[:final_building_water_efficiency]]
-                              when "Events Carbon Neutrality"
+                              when "events_carbon_neutrality_type"
                                 [Certificate.certification_types[:provisional_events_carbon_neutrality], Certificate.certification_types[:final_events_carbon_neutrality]]
-                              when "Products Ecolabeling"
+                              when "products_ecolabeling_type"
                                 [Certificate.certification_types[:provisional_products_ecolabeling], Certificate.certification_types[:final_products_ecolabeling]]
-                              when "Green IT"
+                              when "green_IT_type"
                                 [Certificate.certification_types[:provisional_green_IT], Certificate.certification_types[:final_green_IT]]
-                              when "Net Zero"
+                              when "net_zero_type"
                                 [Certificate.certification_types[:provisional_net_zero], Certificate.certification_types[:final_net_zero]]
                               else
                                 Certificate.certification_types
                               end
                             )
     end
+
     return certificate_types_array
   end
 
@@ -154,24 +176,10 @@ class Certificate < ApplicationRecord
       next unless certificate_stage.present?
       certificate_stages_array.push(
                                       case certificate_stage
-                                      when "Stage 1: LOC, Design Certificate", "Stage 1: LOC Design Certificate"
-                                        Certificate.certification_types[:letter_of_conformance]
-                                      when "Stage 2: CDA, Design & Build Certificate", "Stage 2: CDA Design & Build Certificate"
-                                        Certificate.certification_types[:final_design_certificate]
-                                      when "GSB Construction Management Certificate"
-                                        Certificate.certification_types[:construction_certificate]
-                                      when "Stage 1: Foundation"
-                                        Certificate.certification_types[:construction_certificate_stage1]
-                                      when "Stage 2: Substructure & Superstructure"
-                                        Certificate.certification_types[:construction_certificate_stage2]
-                                      when "Stage 3: Finishing"
-                                        Certificate.certification_types[:construction_certificate_stage3]
-                                      when "GSB Operations Certificate"
-                                        Certificate.certification_types[:operations_certificate]
-                                      when "EcoLeaf Provisional Certificate"
-                                        Certificate.certification_types[:ecoleaf_provisional_certificate]
-                                      when "Stage 2: EcoLeaf Certificate"
-                                        Certificate.certification_types[:ecoleaf_certificate]
+                                      when "Stage 1: Provisional Certificate"
+                                        Certificate::PROVISIONAL_CERTIFICATES_VALUES
+                                      when "Stage 2: Final Certificate"
+                                        Certificate::FINAL_CERTIFICATES_VALUES
                                       else
                                         Certificate.certification_types
                                       end

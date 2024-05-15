@@ -74,7 +74,7 @@ en:
           confirm: This will cancel the PCR for this certification. Please confirm your choice.
           text: Cancel PCR
         pcr:
-          tooltip: Pre Certification Review. During PCR, the GSB trust team will assist the project team in completing the certification process. The CGP project manager can enable PCR when applying for a certificate. Please contact GORD if you want to enable the PCR track in a later stage of the certification process.
+          tooltip: Pre Certification Review. During PCR, the GSB trust team will assist the project team in completing the certification process. The CGP/CEP project manager can enable PCR when applying for a certificate. Please contact GORD if you want to enable the PCR track in a later stage of the certification process.
       certification_path_status:
         title: CERTIFICATION STATUS
         btn_accept_achieved: Accept achieved score
@@ -108,7 +108,6 @@ en:
         provisional_products_ecolabeling: Please complete all Provisional Products Ecolabeling Certification first.
         provisional_green_IT: Please complete all Provisional Green IT Certification first.
         provisional_net_zero: Please complete all Provisional Net Zero Certification first.
-
     timeline_legend:
       project_team: Project Team
       certifier_team: GSB Trust Team
@@ -116,55 +115,6 @@ en:
       title: Advancing Certification Status
     update_status_to_certified:
       title: Advancing Certification Status
-    show_checklist:
-      certification_path:
-        title: CERTIFICATION DETAILS
-        name: Certification Type
-        buildings_number: Number of Buildings
-        create_detaild_certificate_report:
-          text: Certificate Information Verification
-        download_certificate:
-          text: Download Certification
-          tooltip: Download Certification
-        download_detailed_certificate:
-          text: Download Detailed Certification Report
-          tooltip: Download Detailed Certification Report
-        download_coverletter:
-          text: Download Certificate Summary
-          tooltip: Download Certificate Summary
-        download_scores_report:
-          text: Download Score Report
-          tooltip: Download Score Report
-        download_archive:
-          text: Generate & download archive
-          tooltip: A ZIP archive containing all approved documents in this certification and related audit logs will be generated for you. (Currently containing %{approved_count} approved document(s))
-        apply_pcr:
-          confirm: You are now applying for the PCR track. This will require an extra fee. Please confirm your choice.
-          text: Certification PCR Track
-        cancel_pcr:
-          confirm: This will cancel the PCR for this certification. Please confirm your choice.
-          text: Cancel PCR
-        pcr:
-          tooltip: Pre Certification Review. During PCR, the GSB trust team will assist the project team in completing the certification process. The CGP project manager can enable PCR when applying for a certificate. Please contact GORD if you want to enable the PCR track in a later stage of the certification process.
-      certification_path_status:
-        title: CERTIFICATION STATUS
-        btn_accept_achieved: Accept achieved score
-        btn_accept_denied:
-          text: Accept certification denied
-          confirm: There are one or more criteria that have not achieved their minimum valid level. As a result, the certification does not have an achieved score. If you proceed a GSB certification will be denied. Are you sure?
-        btn_apply_appeal: Apply for appeal
-        btn_advance_status: Advance status to '%{status}'
-    
-      certification_path_reports:
-        title: GENERATED REPORTS
-      certification_path_signed_certificate:
-        title: OFFICIAL CERTIFICATE
-      schemes:
-        title: TYPOLOGIES DETAILS
-        info_activating: The schemes will be clickable after a GSB trust administrator activates the certification.
-        btn_edit_project_team_responsibility_for_submittal: Allocate project team responsibility for submittal
-        btn_edit_certifier_team_responsibility_for_verification: Allocate GSB trust team responsibility for verification
-        btn_edit_certifier_team_responsibility_for_screening: Allocate GSB trust team responsibility for screening
   projects:
     index:
       title_html: Projects &amp; Certifications
@@ -248,9 +198,9 @@ en:
       tooltip_due_date: Due date passed
       tooltip_requirement_required: Requirement not provided yet
       tooltip_requirement_provided: Requirement provided
-      tooltip_requirement_not_required: Requirement not required
+      tooltip_requirement_unneeded: Requirement not required
     refuse_requirement:
-      info_refuse_requirement: When you refuse this requirement, the CGP project manager will have to reassign the requirement to another project team member. Please explain below why you can't complete the requirement.
+      info_refuse_requirement: When you refuse this requirement, the CGP/CEP project manager will have to reassign the requirement to another project team member. Please explain below why you can't complete the requirement.
       modal_title: Requirement Refusal
   scheme_criteria:
     index:
@@ -284,9 +234,9 @@ en:
       scores:
         minimum_valid_score_warning: The level of this criterion should be at least %{minimum_valid_score} to be able to receive a certification.
         targeted_score:
-          tooltip: The level the project team would like to achieve. Defaults to the maximum attainable level, but can be changed by a CGP project manager.
+          tooltip: The level the project team would like to achieve. Defaults to the maximum attainable level, but can be changed by a CGP/CEP project manager.
         submitted_score:
-          tooltip: The level the project team will submit to GSB trust for verification. Will be provided by a CGP project manager or a project team member that has been assigned to this criterion.
+          tooltip: The level the project team will submit to GSB trust for verification. Will be provided by a CGP/CEP project manager or a project team member that has been assigned to this criterion.
         achieved_score:
           tooltip: The level the GSB trust team has awarded to this criterion. Will be provided by the GSB trust team and will be used for the final certification score.
       certifier:

@@ -1,0 +1,26 @@
+<% user_licences&.each.with_index(1) do |ac, index| %>
+  <tr>
+    <% if index == 1 %>
+      <td rowspan="<%= user_licences.count %>"><%= title %></td>
+    <% end %>
+    <td><%= ac.licence.display_name %></td>
+    <td><%= ac.user.gsb_id %></td>
+    <td><%= ac.formatted_expiry_date %></td>
+    <td>
+      <div class="">
+        <% if ac&.licence_file.present? %>
+          <% if can?(:download_user_files, @user) %>
+            <%= btn_download(download_user_files_user_path(@user, file: "licence_file", access_licence_id: ac.id), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('licence_file')}") %>
+          <% end %>
+          <%= truncate(ac&.licence_file&.file&.filename, length: 35) %>
+        <% end %>
+      </div>
+      <br>
+      <% if ['credentials_admin'].include?(current_user.role) %>
+        <div class="">
+          <%= render partial: 'file_upload', locals: { file_name: 'licence_file', demerit_flag: '', access_licence_id: ac.id } %>
+        </div>
+      <% end %>
+    </td>
+  </tr>
+<% end %>

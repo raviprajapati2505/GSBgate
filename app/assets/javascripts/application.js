@@ -33,13 +33,13 @@
  *= require three.js/three.js
  *= require cocoon
  *= require datatable_customizations
- *= require daterangepicker
  *= require surveys
  *= require chartkick
  *= require Chart.bundle
  *= require leaflet
  *= require leaflet-draw
  *= require moment
+  *= require daterangepicker
  *= require js-routes
  *= require general
 */

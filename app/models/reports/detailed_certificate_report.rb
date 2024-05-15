@@ -128,11 +128,8 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
             draw_scoring_summary(total_category_scores)
         end
         
-        if !@certification_path.construction?
-          draw_category_graph(total_category_scores)
-
-          draw_score_graph
-        end
+        draw_category_graph(total_category_scores)
+        draw_score_graph
 
         # For all scheme_mixes
         @scheme_mixes.each do |scheme_mix|
@@ -176,13 +173,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     data.append(["Project ID", @project.code])
     data.append(["Project Name", @detailed_certificate_report&.project_name])
     data.append(["Project Location", @detailed_certificate_report&.project_location])
-
-    if @certification_path.certificate.certification_type == 'final_design_certificate'
-      data.append(["GSB Service Provider", @project.service_provider_2])
-    else
-      data.append(["GSB Service Provider", @project.service_provider])
-    end
-
+    data.append(["GSB Service Provider", @project.service_provider])
     data.append(["GSB Certificate", @certification_path.certificate&.report_certification_name])
 
     case @certification_path.certificate&.name
@@ -197,19 +188,6 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     end
     
     data.append(["GSB Version", "GSB #{@certification_path.certificate&.only_version}"])
-
-    unless @certification_path.construction?
-      if @certification_path&.scheme_names == 'Fitout'
-        data.append(["GSB Scheme", 'Fitout'])
-      else
-        data.append(["GSB Scheme", @certification_path&.scheme_names])
-      end
-      
-    end
-
-    # unless @certification_path.construction?
-    #   data.append(["Client", @detailed_certificate_report&.project_owner])
-    # end
 
     # Output table
     draw_table(data, true, 'basic_table')
@@ -362,7 +340,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
         styled_text("<div style='font-size: 8; text-align: right'>#{text}<br />#{text2}</div>")
       end
 
-      if @certification_path.construction? || @certification_path.is_design_loc?
+      if @certification_path.is_provisional_certificate?
         bounding_box([@document.bounds.right - 100, @document.bounds.bottom + 140], width: 110, height: HEADER_HEIGHT + 70) do
           image image_path(@@stamp_image), width: 90
         end

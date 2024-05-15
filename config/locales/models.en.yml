@@ -216,7 +216,7 @@ en:
       projects_user:
         roles:
           project_team_member: Team Members
-          cgp_project_manager: GSB CGP
+          cgp_project_manager: GSB CGP/CEP
           enterprise_client: Enterprise Clients
           certifier: Certifiers
           certification_manager: Certification Manager
@@ -289,7 +289,7 @@ en:
           gsb_trust_top_manager: Chairman
           gsb_trust_manager: Director of GSB
           gsb_trust_admin: GSB trust admin
-          default_role: CGP
+          default_role: CGP/CEP
           document_controller: Document Controller
       user_detail:
         gender: Gender
@@ -303,7 +303,7 @@ en:
         business_field: Business Field
         portfolio: Portfolio
         energy_assessor_name: Energy Assessor Name
-        nominated_cgp: Nominated CGP Representative
+        nominated_cgp: Nominated CGP/CEP Representative
       licence:
         licence_type: Licence Type
         display_name: Name
@@ -558,7 +558,7 @@ en:
           schemes_custom_name_array:
             label: Certification Building Name
           cgp_project_manager_array:
-            label: Project CGP
+            label: Project CGP/CEP
           project_team_array:
             label: Project Team Members
           certification_manager_array:

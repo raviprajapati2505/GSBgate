@@ -270,17 +270,17 @@
                     <%
                       counter_cgp_for_completed_projects = 0
                       @total_cgp_for_completed_projects.each do |project|
-                          @project = Project.find(project)
-                          if @project.is_project_certified?
-                            counter_cgp_for_completed_projects = counter_cgp_for_completed_projects + 1
-                          end
+                        @project = Project.find(project)
+                        if @project.is_project_certified?
+                          counter_cgp_for_completed_projects = counter_cgp_for_completed_projects + 1
+                        end
                       end
                       counter_team_member_for_completed_projects = 0
                       @total_team_member_for_completed_projects.each do |project|
-                          @project = Project.find(project)
-                          if @project.is_project_certified?
-                            counter_team_member_for_completed_projects = counter_team_member_for_completed_projects + 1
-                          end
+                        @project = Project.find(project)
+                        if @project.is_project_certified?
+                          counter_team_member_for_completed_projects = counter_team_member_for_completed_projects + 1
+                        end
                       end
                     %>
                     <tr>
@@ -292,7 +292,7 @@
                     <tr>
                       <td rowspan="2">Completed</td>
                       <td rowspan="2"><%= counter_cgp_for_completed_projects + counter_team_member_for_completed_projects %></td>
-                      <td class="bg-primary-light py-1">Project Manager (CGP)</td>
+                      <td class="bg-primary-light py-1">Project Manager (CGP/CEP)</td>
                       <td class="bg-primary-light py-1"><%= counter_cgp_for_completed_projects %></td>
                     </tr>
                     <tr>
@@ -302,7 +302,7 @@
                     <tr>
                       <td rowspan="2">In-Progress</td>
                       <td rowspan="2"><%= @total_cgp_for_inprogress_projects + @total_team_member_for_inprogress_projects %></td>
-                      <td class="bg-primary-light py-1">Project Manager (CGP)</td>
+                      <td class="bg-primary-light py-1">Project Manager (CGP/CEP)</td>
                       <td class="bg-primary-light py-1"><%= @total_cgp_for_inprogress_projects %></td>
                     </tr>
                     <tr>
@@ -348,78 +348,6 @@
               </div>
             </div>
           </div>
-          <!--<div class="db-box with-side-header">
-            <div class="row d-flex">
-              <div class="col-auto">
-                <div class="block-heading">
-                  <div class="heading">
-                    <%= image_tag('layout/tasks-status.png') %>
-                    <span class="text-secondary text-uppercase font-weight-500 mt-3">Tasks<br>Status</span>
-                  </div>
-                </div>
-              </div>
-              <div class="col table-responsive py-4 pl-0">
-                <table class="table mb-0">
-                  <tbody>
-                    <tr>
-                      <th>Status</th>
-                      <th>Quantity</th>
-                      <th>Role</th>
-                      <th>Quantity</th>
-                    </tr>
-                    <tr>
-                      <td rowspan="2">Finished</td>
-                      <td rowspan="2"></td>
-                      <td class="bg-primary-light py-1">Project Manager (CGP)</td>
-                      <td class="bg-primary-light py-1"></td>
-                    </tr>
-                    <tr>
-                      <td class="bg-primary-light py-1">Team Member</td>
-                      <td class="bg-primary-light py-1"></td>
-                    </tr>
-                    <tr>
-                      <td rowspan="2">Pending</td>
-                      <td rowspan="2"></td>
-                      <td class="bg-primary-light py-1">Project Manager (CGP)</td>
-                      <td class="bg-primary-light py-1"></td>
-                    </tr>
-                    <tr>
-                      <td class="bg-primary-light py-1">Team Member</td>
-                      <td class="bg-primary-light py-1"></td>
-                    </tr>
-                    <tr>
-                      <td colspan="2">Total</td>
-                      <td colspan="2"></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-          <div class="db-box with-side-header">
-            <div class="row d-flex">
-              <div class="col-auto">
-                <div class="block-heading">
-                  <div class="heading">
-                    <%= image_tag('layout/overdue-projects-tasks.png') %>
-                    <span class="text-secondary text-uppercase font-weight-500 mt-3">Overdue<br>Projects Tasks</span>
-                  </div>
-                </div>
-              </div>
-              <div class="col table-responsive py-4 pl-0">
-                <table class="table mb-0">
-                  <tbody>
-                    <tr>
-                      <th>Overdue</th>
-                      <th>Project ID</th>
-                      <th>Task</th>
-                      <th>Dedline</th>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>-->
         </div>
         <div class="col-md-12 col-sm-12 col-xs-12">
           <div class="db-box with-side-header">
@@ -433,10 +361,21 @@
                 </div>
               </div>
               <div class="col table-responsive py-4 pl-0">
-                <%= render partial: 'licence_overview', locals: { user_licences_design: @user_licences_design, 
-                  user_licences_construction: @user_licences_construction, 
-                  user_licences_operation: @user_licences_operation  
-                } %>
+                <%= 
+                    render partial: 'licence_overview', 
+                      locals: { 
+                        user_licences_energy_centers_efficiency: @user_licences_energy_centers_efficiency, 
+                        user_licences_building_energy_efficiency: @user_licences_building_energy_efficiency, 
+                        user_licences_healthy_buildings: @user_licences_healthy_buildings,
+                        user_licences_indoor_air_quality: @user_licences_indoor_air_quality, 
+                        user_licences_measurement_reporting_and_verification: @user_licences_measurement_reporting_and_verification, 
+                        user_licences_building_water_efficiency: @user_licences_building_water_efficiency, 
+                        user_licences_events_carbon_neutrality: @user_licences_events_carbon_neutrality,
+                        user_licences_products_ecolabeling: @user_licences_products_ecolabeling,
+                        user_licences_green_IT: @user_licences_green_IT,
+                        user_licences_net_zero: @user_licences_net_zero
+                      } 
+                %>
               </div>
             </div>
           </div>

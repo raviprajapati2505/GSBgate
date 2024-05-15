@@ -5,34 +5,19 @@ module Effective
       include ActionView::Helpers::TranslationHelper
       include ScoreCalculator
 
-      def fetch_scores(certification_path)
-        scheme_mix = certification_path&.scheme_mixes&.first
-        score_all = score_calculation(scheme_mix)
-        score_all = final_cm_revised_avg_scores(certification_path, score_all)
-        return score_all
-      end
-
       datatable do
-        # col :project_id, sql_column: 'projects.id', as: :integer, search: {collection: Proc.new { Project.all.order(:name).map { |project| [project.code + ', ' + project.name, project.id] } }} do |rec|
-        #    rec.project_code + ', ' + rec.project_name
-        # end
         col :project_code, col_class: 'col-order-0', label: t('models.effective.datatables.projects.lables.project_code'), sql_column: 'projects.code' do |rec|          
           link_to(
             rec.project_code,
             project_path(rec.project_nr)
           )
-          # link_to(project_path(rec.project_nr)) do
-          #   rec.project_code
-          # end
         end
+
         col :project_name, col_class: 'col-order-1', sql_column: 'projects.name' do |rec|
           link_to(
             rec.project_name,
             project_path(rec.project_nr)
           )
-          # link_to(project_path(rec.project_nr)) do
-          #   rec.project_name
-          # end
         end
 
         col :project_country, col_class: 'multiple-select col-order-2', sql_column: 'projects.country', visible: false, search: { as: :select, collection: Proc.new { Project.order(:country).pluck(:country).uniq.compact.map { |country| [country, country] } rescue [] } } do |rec|
@@ -160,14 +145,7 @@ module Effective
         end
 
         col :development_type_name, col_class: 'multiple-select col-order-16', sql_column: 'development_types.name', label: t('models.effective.datatables.projects_certification_paths.certification_path_development_type.label'), search: { as: :select, collection: Proc.new { DevelopmentType.select(:name, :display_weight).order(:display_weight).distinct.map { |development_type| [development_type.name, development_type.name] }.uniq } } do |rec|
-          case rec.certification_scheme_name
-          when 'Parks'
-            'Parks'
-          when 'Fitout'
-            'Single Zone, Fitout'
-          else
-            rec.development_type_name
-          end
+          rec.development_type_name
         end.search do |collection, terms, column, index|
           terms_array = terms.split(",")
 
@@ -176,18 +154,7 @@ module Effective
 
             terms_array.each do |term|
               collection_set = collection
-              
-              case term
-              when 'Parks'
-                results_array = collection_set.joins(certification_paths: [scheme_mixes: :scheme]).where("schemes.name = :term AND (projects.certificate_type <> :certificate_type OR development_types.name NOT IN ('Neighborhoods', 'Mixed Use'))", term: term, certificate_type: Certificate.certificate_types[:design_type]).pluck("certification_paths.id")
-              when 'Districts'
-                results_array = collection_set.joins(certification_paths: [scheme_mixes: :scheme]).where("schemes.name = :term OR development_types.name = :term", term: term).pluck("certification_paths.id")
-              when 'Single Zone'
-                results_array = collection_set.joins(certification_paths: [scheme_mixes: :scheme]).where("schemes.name = 'Fitout' OR development_types.name = :term", term: term).pluck("certification_paths.id")
-              else
-                results_array = collection_set.joins(certification_paths: [scheme_mixes: :scheme]).where("development_types.name = :term AND schemes.name <> 'Fitout'", term: term).pluck("certification_paths.id")
-              end
-            
+              results_array = collection_set.joins(certification_paths: [scheme_mixes: :scheme]).where("development_types.name = :term", term: term).pluck("certification_paths.id")
               results.push(*results_array)
             end
             
@@ -235,9 +202,9 @@ module Effective
         end
 
         #col :certification_path_id, sql_column: 'certification_paths.id', as: :integer, label: 'Certificate ID'
-        col :certificate_id, col_class: 'multiple-select col-order-21', sql_column: 'certificates.id', label: t('models.effective.datatables.projects_certification_paths.certificate_id.label'), search: { as: :select, collection: Proc.new { Certificate.all.order(:display_weight).map { |certificate| [certificate.only_certification_name, certificate.only_certification_name] }.uniq}, multiple: true } do |rec|
+        col :certificate_id, col_class: 'multiple-select col-order-21', sql_column: 'certificates.id', label: t('models.effective.datatables.projects_certification_paths.certificate_id.label'), search: { as: :select, collection: Proc.new { Certificate.all.order(:display_weight).map { |certificate| [certificate.only_certification_name, certificate.certificate_type] }.uniq}, multiple: true } do |rec|
           if rec.certification_path_id.present?
-            only_certification_name = Certificate.find_by_name(rec&.certificate_name)&.only_certification_name
+            only_certification_name = Certificate.find_by(certificate_type: rec&.certificate_type)&.only_certification_name
             certification_name_datatable_render(rec, only_certification_name)
           end
         end.search do |collection, terms, column, index|
@@ -263,7 +230,7 @@ module Effective
 
         col :certificate_version, col_class: 'multiple-select col-order-23', sql_column: 'certificates.id', label: t('models.effective.datatables.projects_certification_paths.certificate_version.label'), search: { as: :select, collection: Proc.new { Certificate.all.order(:display_weight).map { |certificate| [certificate.only_version, certificate.only_version] }.uniq } } do |rec|
           if rec.certification_path_id.present?
-            only_certification_version = Certificate.find_by_name(rec&.certificate_name)&.only_version
+            only_certification_version = Certificate.find_by(certificate_type: rec&.certificate_type)&.only_version
             link_to(
               only_certification_version,
               project_certification_path_path(rec.project_nr, rec.certification_path_id)
@@ -280,12 +247,8 @@ module Effective
 
         col :certification_scheme_name, col_class: 'multiple-select col-order-24', label: t('models.effective.datatables.projects_certification_paths.certification_scheme_name.label'), sql_column: "ARRAY_TO_STRING(ARRAY(SELECT schemes.name FROM schemes INNER JOIN scheme_mixes ON schemes.id = scheme_mixes.scheme_id WHERE scheme_mixes.certification_path_id = certification_paths.id), '|||')" , search: { as: :select, collection: Proc.new { get_schemes_names } } do |rec|
           development_type_name = rec.development_type_name
-          if ["Neighborhoods", "Mixed Use"].include?(development_type_name)
-            development_type_name
-          else
-            # rec.certification_scheme_name
-            ERB::Util.html_escape(rec.certification_scheme_name).split('|||').sort.join('<br/>') unless rec.certification_scheme_name.nil?
-          end
+          # rec.certification_scheme_name
+          ERB::Util.html_escape(rec.certification_scheme_name).split('|||').sort.join('<br/>') unless rec.certification_scheme_name.nil?
         end.search do |collection, terms, column, index|
           terms_array = terms.split(",")
 
@@ -295,14 +258,8 @@ module Effective
             terms_array.each do |term|
               collection_set = collection
 
-              case term
-              when "Mixed Use", "Neighborhoods"
-                results_array = collection_set.where("development_types.name = :term AND projects.certificate_type IN (:certificate_type)", term: term, certificate_type: [Certificate.certificate_types[:design_type], Certificate.certificate_types[:ecoleaf_type]]).pluck("certification_paths.id")
-              when "Districts"
-                results_array = collection_set.joins(certification_paths: [scheme_mixes: :scheme]).where("schemes.name = :term OR development_types.name = :term", term: term).pluck("certification_paths.id")
-              else
-                results_array = collection_set.joins(certification_paths: [scheme_mixes: :scheme]).where("schemes.name = :term AND (projects.certificate_type <> :certificate_type OR development_types.name NOT IN ('Neighborhoods', 'Mixed Use'))", term: term, certificate_type: Certificate.certificate_types[:design_type]).pluck("certification_paths.id")
-              end
+              results_array = collection_set.joins(certification_paths: [scheme_mixes: :scheme]).where("schemes.name = :term OR development_types.name = :term", term: term).pluck("certification_paths.id")
+
               results.push(*results_array)
             end
             
@@ -347,7 +304,7 @@ module Effective
             end
 
             unless terms_array.blank?
-              results_array = collection_set.where("certificates.certification_type IN (?)", Certificate.get_certificate_by_stage(terms_array)).pluck("certification_paths.id")
+              results_array = collection_set.where("certificates.certification_type IN (?)", Certificate.get_certificate_by_stage(terms_array).flatten!).pluck("certification_paths.id")
             end
 
             all_cert_ids = recent_certificates_ids.push(*results_array).uniq
@@ -363,24 +320,15 @@ module Effective
             score = rec&.total_achieved_score
             certification_path = CertificationPath.find(rec&.certification_path_id)
 
-            if certification_path&.construction? && !certification_path&.is_activating?
-              score_all = fetch_scores(certification_path)
-              score = score_all[:achieved_score_in_certificate_points]
-            end
-
-            if rec.certificate_gsb_version == 'v2.1 Issue 1.0' && certification_path&.construction?
-              number_to_percentage(score, precision: 1)
+            if !score.nil? && score > 3
+              3.0
             else
-              if !score.nil? && score > 3
-                3.0
-              else
-                score.round(2)
-              end
+              score.round(2)
             end
           end
         end
 
-        col :certification_path_certification_path_status_id, col_class: 'multiple-select col-order-29', sql_column: 'certification_paths.certification_path_status_id', label: t('models.effective.datatables.projects_certification_paths.certification_path_certification_path_status_id.label'), search: { as: :select, collection: Proc.new { CertificationPathStatus.all.map { |status| status.id == CertificationPathStatus::CERTIFICATE_IN_PROCESS ? ["Certificate In Process/Generated", status.id] : [status.name, status.id]} } }  do |rec|
+        col :certification_path_certification_path_status_id, col_class: 'multiple-select col-order-29', sql_column: 'certification_paths.certification_path_status_id', label: t('models.effective.datatables.projects_certification_paths.certification_path_certification_path_status_id.label'), search: { as: :select, collection: Proc.new { CertificationPathStatus.all.map { |status| [status.name, status.id]} } }  do |rec|
           submission_status_datatable_render(rec)
         end.search do |collection, terms, column, index|
           terms_array = terms.split(",")
