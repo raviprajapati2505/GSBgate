@@ -443,6 +443,8 @@ GEM
     ssrf_filter (1.0.7)
     strscan (3.0.4)
     temple (0.8.2)
+    terser (1.2.2)
+      execjs (>= 0.3.0, < 3)
     thor (1.2.1)
     tilt (2.0.11)
     timeout (0.3.0)
@@ -455,8 +457,6 @@ GEM
       concurrent-ruby (~> 1.0)
     tzinfo-data (1.2022.1)
       tzinfo (>= 1.0.0)
-    uglifier (4.2.0)
-      execjs (>= 0.3.0, < 3)
     warden (1.2.9)
       rack (>= 2.0.9)
     warden-jwt_auth (0.6.0)
@@ -560,9 +560,9 @@ DEPENDENCIES
   sass-rails
   select2-rails (< 4.0.0)
   sendgrid-ruby
+  terser
   turbo-rails
   tzinfo-data
-  uglifier
   warden
   warden-jwt_auth
   whenever

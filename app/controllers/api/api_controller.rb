@@ -1,5 +1,5 @@
 class Api::ApiController < ApplicationController
-  add_template_helper(ApiHelper)
+  helper ApiHelper
 
   protect_from_forgery with: :null_session
 

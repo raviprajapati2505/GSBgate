@@ -22,11 +22,14 @@ Rails.application.configure do
 
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.
-  config.public_file_server.enabled = ENV["RAILS_SERVE_STATIC_FILES"].present?
+  config.public_file_server.enabled = true
 
+  # to controls how assets are served
+  config.assets.debug = false
 
   # Compress JavaScripts and CSS.
-  config.assets.js_compressor = Uglifier.new(harmony: true)
+  config.assets.js_compressor = :terser
+  config.assets.terser = { compress: { drop_console: true } }
 
   # Compress CSS using a preprocessor.
   # config.assets.css_compressor = :sass
@@ -81,7 +84,7 @@ Rails.application.configure do
   config.i18n.fallbacks = true
 
   # Don't log any deprecations.
-  config.active_support.report_deprecations = notify
+  config.active_support.report_deprecations = false
 
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
@@ -102,7 +105,8 @@ Rails.application.configure do
   # Mailer settings
   config.action_mailer.delivery_method = :test
   config.action_mailer.perform_caching = false
-  
+  config.action_mailer.perform_deliveries = false
+
   config.action_mailer.default_url_options = { :host => 'https://www.gsb.qa' }
   config.action_mailer.asset_host = 'https://www.gsb.qa'
 

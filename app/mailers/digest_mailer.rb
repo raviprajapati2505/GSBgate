@@ -1,6 +1,7 @@
 class DigestMailer < ApplicationMailer
   include ActionView::Helpers::TranslationHelper
   helper ApplicationHelper
+  helper ApiHelper
 
   MAX_LOG_ITEMS = 10
 

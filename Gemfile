@@ -38,7 +38,7 @@ gem 'sass-rails'
 gem 'select2-rails', '< 4.0.0'
 gem 'sendgrid-ruby'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
-gem 'uglifier'
+gem 'terser'
 gem 'warden'
 gem 'warden-jwt_auth'
 gem 'whenever'
