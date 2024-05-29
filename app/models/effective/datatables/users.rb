@@ -18,9 +18,11 @@ module Effective
         end
         col :username
         col :email
-        col :role, as: :integer, search: { as: :select, collection: Proc.new { User.roles.map { |k| [t(k[0], scope: 'activerecord.attributes.user.roles'), k[1]] } } } do |rec|
+
+        col :role, as: :integer, search: { as: :select, collection: Proc.new { User.roles.map { |k, v| @roles.include?(v) ? [t(k, scope: 'activerecord.attributes.user.roles'), v] : [] }.reject(&:empty?) } } do |rec|
           t(rec.role, scope: 'activerecord.attributes.user.roles') unless rec.role.nil?
         end
+
         col :gord_employee, label: 'GORD Employee'
 
         col :licences_name, col_class: 'multiple-select', sql_column: "ARRAY_TO_STRING(ARRAY(SELECT licences.title FROM licences INNER JOIN access_licences ON access_licences.user_id = users.id WHERE access_licences.licence_id = licences.id), '|||')", label: 'Licences', search: { as: :select, collection: Proc.new { get_access_licences } } do |rec|
@@ -76,6 +78,18 @@ module Effective
       end
 
       collection do
+        @roles = 
+          case attributes.dig(:type)
+            when 'individuals'
+              [User.roles['default_role']]
+            when 'corporates'
+              [User.roles['service_provider']]
+            when 'admins'
+              User.roles.values - [User.roles['default_role'], User.roles['service_provider']]
+            else
+              User.roles.values
+          end
+
         User
           .select('users.id',
                   'users.username',
@@ -88,6 +102,7 @@ module Effective
                   "ARRAY_TO_STRING(ARRAY(SELECT licences.display_name FROM licences INNER JOIN access_licences ON access_licences.user_id = users.id WHERE access_licences.licence_id = licences.id ORDER BY licences.display_weight), '|||') AS licences_name",
                   'users.last_sign_in_at',
                   'users.sign_in_count')
+          .where("users.role IN (:roles)", roles: @roles)
           .accessible_by(current_ability)
       end
     end

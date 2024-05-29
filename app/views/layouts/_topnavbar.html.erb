@@ -147,7 +147,10 @@
                         </a>
                         <ul role="menu" class="dropdown-menu">
                             <% if can_index_users %>
-                                <li><%= link_to t('.navbar.admin_users'), users_path %></li>
+                              <li><%= link_to t('.navbar.all_users'), users_path(type: 'all') %></li>
+                              <li><%= link_to t('.navbar.individual_users'), users_path(type: 'individuals') %></li>
+                              <li><%= link_to t('.navbar.service_providers'), users_path(type: 'corporates') %></li>
+                              <li><%= link_to t('.navbar.admin_users'), users_path(type: 'admins') %></li>
                             <% end %>
                             <% if can_dashboard_survey %>
                                 <li><%= link_to t('.navbar.survey_dashboard'), survey_dashboard_index_path %></li>

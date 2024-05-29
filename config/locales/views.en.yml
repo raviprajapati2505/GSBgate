@@ -15,7 +15,10 @@ en:
         audit_log: Audit Log
         admin: Admin
         admin_system_data: Manage System Data
-        admin_users: Users
+        all_users: All Users
+        individual_users: All Individual Users
+        service_providers: All Corporate Users
+        admin_users: All Certification Users
         certifiers_and_criteria_report: Certifiers and Criteria
         manual: User Manual
         viewer: Visualisation Tool

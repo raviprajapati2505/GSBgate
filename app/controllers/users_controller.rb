@@ -6,7 +6,7 @@ class UsersController < AuthenticatedController
 
   def index
     @page_title = 'Users'
-    @datatable = Effective::Datatables::Users.new
+    @datatable = Effective::Datatables::Users.new(type: params.dig(:type) || 'all')
   end
 
   def show
