@@ -16,9 +16,9 @@ en:
         admin: Admin
         admin_system_data: Manage System Data
         all_users: All Users
-        individual_users: All Individual Users
-        service_providers: All Corporate Users
-        admin_users: All Certification Users
+        individual_users: Individual users
+        service_providers: Corporate users 
+        admin_users: Certification users
         certifiers_and_criteria_report: Certifiers and Criteria
         manual: User Manual
         viewer: Visualisation Tool
