@@ -35,13 +35,13 @@ class Project < ApplicationRecord
   validates :site_plan_file, presence: true
   validates :sustainability_features_file, presence: true
   validates :design_brief_file, presence: true
-  validates :building_type_id, presence: true
+  # validates :building_type_id, presence: true
   # validates :building_type_group_id, presence: true
   validates :gross_area, numericality: { greater_than_or_equal_to: 0 }
-  validates :certified_area, numericality: { greater_than_or_equal_to: 0 }
+  validates :certified_area, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
   validates :carpark_area, numericality: { greater_than_or_equal_to: 0 }
   validates :project_site_area, numericality: { greater_than_or_equal_to: 0 }
-  validates :buildings_footprint_area, numericality: { greater_than_or_equal_to: 0 }
+  validates :buildings_footprint_area, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
   validates :construction_year, numericality: { only_integer: true, greater_than: 0 }
   validates :terms_and_conditions_accepted, acceptance: true
   validates :location_plan_file, file_size: {maximum: MAXIMUM_DOCUMENT_FILE_SIZE.megabytes.to_i }
