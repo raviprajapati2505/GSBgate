@@ -9,7 +9,8 @@ class Certificate < ApplicationRecord
     :events_carbon_neutrality_type,
     :products_ecolabeling_type,
     :green_IT_type,
-    :net_zero_type
+    :net_zero_type,
+    :energy_label_waste_water_treatment_facility_type
   ]
 
   enum assessment_stage: [ 
@@ -22,7 +23,8 @@ class Certificate < ApplicationRecord
     :events_carbon_neutrality_stage,
     :products_ecolabeling_stage,
     :green_IT_stage,
-    :net_zero_stage
+    :net_zero_stage,
+    :energy_label_waste_water_treatment_facility_stage
   ]
 
   enum certification_type: [ 
@@ -36,6 +38,7 @@ class Certificate < ApplicationRecord
     :provisional_products_ecolabeling,
     :provisional_green_IT,
     :provisional_net_zero,
+    :provisional_energy_label_waste_water_treatment_facility,
     :final_energy_centers_efficiency,
     :final_building_energy_efficiency,
     :final_healthy_buildings,
@@ -45,7 +48,8 @@ class Certificate < ApplicationRecord
     :final_events_carbon_neutrality,
     :final_products_ecolabeling,
     :final_green_IT,
-    :final_net_zero
+    :final_net_zero,
+    :final_energy_label_waste_water_treatment_facility
   ]
 
   PROVISIONAL_CERTIFICATES = [
@@ -58,7 +62,8 @@ class Certificate < ApplicationRecord
     :provisional_events_carbon_neutrality,
     :provisional_products_ecolabeling,
     :provisional_green_IT,
-    :provisional_net_zero
+    :provisional_net_zero,
+    :provisional_energy_label_waste_water_treatment_facility
   ]
   PROVISIONAL_CERTIFICATES_VALUES = certification_types.select{ |k, v| v if k.include?("provisional_")}&.values
 
@@ -72,7 +77,8 @@ class Certificate < ApplicationRecord
     :final_events_carbon_neutrality,
     :final_products_ecolabeling,
     :final_green_IT,
-    :final_net_zero
+    :final_net_zero,
+    :final_energy_label_waste_water_treatment_facility
   ]
   FINAL_CERTIFICATES_VALUES = certification_types.select{ |k, v| v if k.include?("final_")}&.values
 
@@ -131,6 +137,10 @@ class Certificate < ApplicationRecord
     net_zero_type?
   end
 
+  def energy_label_waste_water_treatment_facility?
+    energy_label_waste_water_treatment_facility_type?
+  end
+
   def full_name
     self.name
   end
@@ -161,6 +171,8 @@ class Certificate < ApplicationRecord
                                 [Certificate.certification_types[:provisional_green_IT], Certificate.certification_types[:final_green_IT]]
                               when "net_zero_type"
                                 [Certificate.certification_types[:provisional_net_zero], Certificate.certification_types[:final_net_zero]]
+                              when "energy_label_waste_water_treatment_facility_type"
+                                [Certificate.certification_types[:provisional_energy_label_waste_water_treatment_facility], Certificate.certification_types[:final_energy_label_waste_water_treatment_facility]]
                               else
                                 Certificate.certification_types
                               end

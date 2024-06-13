@@ -266,6 +266,7 @@
         <%= render partial: "licence_detail", locals: { label: "#{I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.products_ecolabeling")} Licences", access_licences: @user.access_licences_with_certificate_type(Certificate.certificate_types[:products_ecolabeling_type]) } %>
         <%= render partial: "licence_detail", locals: { label: "#{I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.green_IT")} Licences", access_licences: @user.access_licences_with_certificate_type(Certificate.certificate_types[:green_IT_type]) } %>
         <%= render partial: "licence_detail", locals: { label: "#{I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.net_zero")} Licences", access_licences: @user.access_licences_with_certificate_type(Certificate.certificate_types[:net_zero_type]) } %>
+        <%= render partial: "licence_detail", locals: { label: "#{I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.energy_label_waste_water_treatment_facility")} Licences", access_licences: @user.access_licences_with_certificate_type(Certificate.certificate_types[:energy_label_waste_water_treatment_facility_type]) } %>
       </div>
 
       <div class="ibox-title m-t">

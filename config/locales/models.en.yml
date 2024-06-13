@@ -16,6 +16,7 @@ en:
           products_ecolabeling_type: Products Ecolabeling
           green_IT_type: Green IT
           net_zero_type: Net Zero
+          energy_label_waste_water_treatment_facility_type: Energy Label - Waste Water Treatment Facility
           stage_titles:
             provisional_energy_centers_efficiency: "Stage 1: Provisional Certificate"
             provisional_building_energy_efficiency: "Stage 1: Provisional Certificate"
@@ -27,6 +28,7 @@ en:
             provisional_products_ecolabeling: "Stage 1: Provisional Certificate"
             provisional_green_IT: "Stage 1: Provisional Certificate"
             provisional_net_zero: "Stage 1: Provisional Certificate"
+            provisional_energy_label_waste_water_treatment_facility: "Stage 1: Provisional Certificate"
             final_energy_centers_efficiency: "Stage 2: Final Certificate"
             final_building_energy_efficiency: "Stage 2: Final Certificate"
             final_healthy_buildings: "Stage 2: Final Certificate"
@@ -37,6 +39,7 @@ en:
             final_products_ecolabeling: "Stage 2: Final Certificate"
             final_green_IT: "Stage 2: Final Certificate"
             final_net_zero: "Stage 2: Final Certificate"
+            final_energy_label_waste_water_treatment_facility: "Stage 2: Final Certificate"
           certificate_titles:
             energy_centers_efficiency: Energy Centers Efficiency
             building_energy_efficiency: Building Energy Efficiency
@@ -48,6 +51,7 @@ en:
             products_ecolabeling: Products Ecolabeling
             green_IT: Green IT
             net_zero: Net Zero
+            energy_label_waste_water_treatment_facility: Energy Label - Waste Water Treatment Facility
         certification_types:
           provisional_energy_centers_efficiency: "Stage 1: Provisional Certificate"
           provisional_building_energy_efficiency: "Stage 1: Provisional Certificate"
@@ -59,6 +63,7 @@ en:
           provisional_products_ecolabeling: "Stage 1: Provisional Certificate"
           provisional_green_IT: "Stage 1: Provisional Certificate"
           provisional_net_zero: "Stage 1: Provisional Certificate"
+          provisional_energy_label_waste_water_treatment_facility: "Stage 1: Provisional Certificate"
           final_energy_centers_efficiency: "Stage 2: Final Certificate"
           final_building_energy_efficiency: "Stage 2: Final Certificate"
           final_healthy_buildings: "Stage 2: Final Certificate"
@@ -69,6 +74,7 @@ en:
           final_products_ecolabeling: "Stage 2: Final Certificate"
           final_green_IT: "Stage 2: Final Certificate"
           final_net_zero: "Stage 2: Final Certificate"
+          final_energy_label_waste_water_treatment_facility: "Stage 2: Final Certificate"
           certificate_titles:
             energy_centers_efficiency_type: Energy Centers Efficiency
             building_energy_efficiency_type: Building Energy Efficiency
@@ -80,6 +86,7 @@ en:
             products_ecolabeling_type: Products Ecolabeling
             green_IT_type: Green IT
             net_zero_type: Net Zero
+            energy_label_waste_water_treatment_facility_type: Energy Label - Waste Water Treatment Facility
         certification_titles:
           provisional_energy_centers_efficiency: "Stage 1: Provisional Certificate"
           provisional_building_energy_efficiency: "Stage 1: Provisional Certificate"
@@ -91,6 +98,7 @@ en:
           provisional_products_ecolabeling: "Stage 1: Provisional Certificate"
           provisional_green_IT: "Stage 1: Provisional Certificate"
           provisional_net_zero: "Stage 1: Provisional Certificate"
+          provisional_energy_label_waste_water_treatment_facility: "Stage 1: Provisional Certificate"
           final_energy_centers_efficiency: "Stage 2: Final Certificate"
           final_building_energy_efficiency: "Stage 2: Final Certificate"
           final_healthy_buildings: "Stage 2: Final Certificate"
@@ -101,6 +109,7 @@ en:
           final_products_ecolabeling: "Stage 2: Final Certificate"
           final_green_IT: "Stage 2: Final Certificate"
           final_net_zero: "Stage 2: Final Certificate"
+          final_energy_label_waste_water_treatment_facility: "Stage 2: Final Certificate"
         certification_types_subtitles:
           provisional_energy_centers_efficiency: Energy Centers Efficiency
           provisional_building_energy_efficiency: Building Energy Efficiency
@@ -112,6 +121,7 @@ en:
           provisional_products_ecolabeling: Products Ecolabeling
           provisional_green_IT: Green IT
           provisional_net_zero: Net Zero
+          provisional_energy_label_waste_water_treatment_facility: Energy Label - Waste Water Treatment Facility
           final_energy_centers_efficiency: Energy Centers Efficiency
           final_building_energy_efficiency: Building Energy Efficiency
           final_healthy_buildings: Healthy Buildings
@@ -122,6 +132,7 @@ en:
           final_products_ecolabeling: Products Ecolabeling
           final_green_IT: Green IT
           final_net_zero: Net Zero
+          final_energy_label_waste_water_treatment_facility: Energy Label - Waste Water Treatment Facility
       certification_path:
         development_type: Development Type
         star_rating: Performance-Based (Star Rating Certificate)
@@ -161,7 +172,7 @@ en:
         owner: Project Owner
         project_owner_email: Project Owner Email
         service_provider: Service Provider
-        service_provider_2: Service Provider CDA
+        service_provider_2: Service Provider Stage 2
         country: Project Country
         address: Project Address
         city: Project City
@@ -184,6 +195,7 @@ en:
           products_ecolabeling: Products Ecolabeling
           green_IT: Green IT
           net_zero: Net Zero
+          energy_label_waste_water_treatment_facility: Energy Label - Waste Water Treatment Facility
       offline/project:
         code: Project ID
         name: Project Name

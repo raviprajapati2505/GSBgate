@@ -1317,4 +1317,136 @@ SchemeCriterionBox.find_or_create_by(
   display_weight: 3
 )
 
+
+# ---------------------------- Energy Label - Waste Water Treatment Facility ----------------------------
+provisional_energy_label_waste_water_treatment_facility_dt = 
+  DevelopmentType.find_or_create_by!(
+    display_weight: 21, 
+    certificate: Certificate.find_by(
+      certification_type: Certificate.certification_types[:provisional_energy_label_waste_water_treatment_facility], 
+      certificate_type: Certificate.certificate_types[:energy_label_waste_water_treatment_facility_type], 
+      assessment_stage: Certificate.assessment_stages[:energy_label_waste_water_treatment_facility_stage], 
+      gsb_version: "2023"
+    ), 
+    mixable: false, 
+    name: 'Typology'
+  )
+final_energy_label_waste_water_treatment_facility_dt = 
+  DevelopmentType.find_or_create_by!(
+    display_weight: 22, 
+    certificate: Certificate.find_by(
+      certification_type: Certificate.certification_types[:final_energy_label_waste_water_treatment_facility], 
+      certificate_type: Certificate.certificate_types[:energy_label_waste_water_treatment_facility_type], 
+      assessment_stage: Certificate.assessment_stages[:energy_label_waste_water_treatment_facility_stage], 
+      gsb_version: "2023"
+    ), 
+    mixable: false, 
+    name: 'Typology'
+  )
+
+provisional_energy_label_waste_water_treatment_facility_scheme = 
+  Scheme.find_or_create_by(
+    name: "Typology", 
+    certification_type: Certificate.certification_types[:provisional_energy_label_waste_water_treatment_facility], 
+    certificate_type: Certificate.certificate_types[:energy_label_waste_water_treatment_facility_type], 
+    renovation: false
+  )
+final_energy_label_waste_water_treatment_facility_scheme = 
+  Scheme.find_or_create_by(
+    name: "Typology", 
+    certification_type: Certificate.certification_types[:final_energy_label_waste_water_treatment_facility], 
+    certificate_type: Certificate.certificate_types[:energy_label_waste_water_treatment_facility_type], 
+    renovation: false
+  )
+
+DevelopmentTypeScheme.find_or_create_by(
+    scheme: provisional_energy_label_waste_water_treatment_facility_scheme, 
+    development_type: provisional_energy_label_waste_water_treatment_facility_dt
+  )
+DevelopmentTypeScheme.find_or_create_by(
+    scheme: final_energy_label_waste_water_treatment_facility_scheme, 
+    development_type: final_energy_label_waste_water_treatment_facility_dt
+  )
+
+provisional_energy_label_waste_water_treatment_facility_category = 
+  SchemeCategory.find_or_create_by(
+    scheme: provisional_energy_label_waste_water_treatment_facility_scheme, 
+    code: "G", 
+    name: "Generic", 
+    impacts: "", 
+    mitigate_impact: "", 
+    shared: false, 
+    display_weight: 1, 
+    is_checklist: true
+  )
+final_energy_label_waste_water_treatment_facility_category = 
+  SchemeCategory.find_or_create_by(
+    scheme: final_energy_label_waste_water_treatment_facility_scheme, 
+    code: "G", 
+    name: "Generic", 
+    impacts: "", 
+    mitigate_impact: "", 
+    shared: false, 
+    display_weight: 1, 
+    is_checklist: true
+  )
+
+provisional_energy_label_waste_water_treatment_facility_criterion = 
+  SchemeCriterion.find_or_create_by(
+    name: "	Checklist Specific", 
+    number: 1, 
+    scores_a: YAML.load("[[1, 1.0]]\n"), 
+    minimum_score_a: 0, 
+    maximum_score_a: 1, 
+    minimum_valid_score_a: 0, 
+    weight_a: 1, 
+    is_checklist: true, 
+    shared: false, 
+    scheme_category: provisional_energy_label_waste_water_treatment_facility_category
+  )
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: provisional_energy_label_waste_water_treatment_facility_criterion, 
+  label: 'Targeted Checklist Status', 
+  display_weight: 1
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: provisional_energy_label_waste_water_treatment_facility_criterion, 
+  label: 'Submitted Checklist Status', 
+  display_weight: 2
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: provisional_energy_label_waste_water_treatment_facility_criterion, 
+  label: 'Achieved Checklist Status', 
+  display_weight: 3
+)
+
+final_energy_label_waste_water_treatment_facility_criterion = 
+  SchemeCriterion.find_or_create_by(
+    name: "	Checklist Specific", 
+    number: 1, 
+    scores_a: YAML.load("[[1, 1.0]]\n"), 
+    minimum_score_a: 0, 
+    maximum_score_a: 1, 
+    minimum_valid_score_a: 0, 
+    weight_a: 1, 
+    is_checklist: true, 
+    shared: false, 
+    scheme_category: final_energy_label_waste_water_treatment_facility_category
+  )
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: final_energy_label_waste_water_treatment_facility_criterion, 
+  label: 'Targeted Checklist Status', 
+  display_weight: 1
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: final_energy_label_waste_water_treatment_facility_criterion, 
+  label: 'Submitted Checklist Status', 
+  display_weight: 2
+)
+SchemeCriterionBox.find_or_create_by(
+  scheme_criterion: final_energy_label_waste_water_treatment_facility_criterion, 
+  label: 'Achieved Checklist Status', 
+  display_weight: 3
+)
+
 puts "Development Types, Schemes, Scheme Category & Scheme Criteria are added successfully.........."

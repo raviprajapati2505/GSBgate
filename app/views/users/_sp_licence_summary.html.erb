@@ -90,6 +90,15 @@
         <th>Has valid <%= I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.net_zero") %> CEPs ?</th>
         <td><%= label_span(service_provider&.valid_net_zero_ceps.present?, 'Yes', 'No').html_safe %></td>
       </tr>
+
+      <tr>
+        <th>Has valid <%= I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.energy_label_waste_water_treatment_facility") %> CGPs ?</th>
+        <td><%= label_span(service_provider&.valid_energy_label_waste_water_treatment_facility_cgps.present?, 'Yes', 'No').html_safe %></td>
+      </tr>
+      <tr>
+        <th>Has valid <%= I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.energy_label_waste_water_treatment_facility") %> CEPs ?</th>
+        <td><%= label_span(service_provider&.valid_energy_label_waste_water_treatment_facility_ceps.present?, 'Yes', 'No').html_safe %></td>
+      </tr>
     </tbody>
   </table>
 </div>

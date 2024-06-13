@@ -19,6 +19,8 @@ class DashboardController < AuthenticatedController
     @service_provider_user_licences_products_ecolabeling = AccessLicence.users_of_service_provider(@user, Certificate.certificate_types[:products_ecolabeling_type])
     @service_provider_user_licences_green_IT = AccessLicence.users_of_service_provider(@user, Certificate.certificate_types[:green_IT_type])
     @service_provider_user_licences_net_zero = AccessLicence.users_of_service_provider(@user, Certificate.certificate_types[:net_zero_type])
+    @service_provider_user_licences_energy_label_waste_water_treatment_facility = AccessLicence.users_of_service_provider(@user, Certificate.certificate_types[:energy_label_waste_water_treatment_facility_type])
+
 
     # Practitioner Accreditation Or Corporate License
     @user_licences_energy_centers_efficiency = @user.access_licences.with_certificate_type(Certificate.certificate_types[:energy_centers_efficiency_type])
@@ -31,6 +33,7 @@ class DashboardController < AuthenticatedController
     @user_licences_products_ecolabeling = @user.access_licences.with_certificate_type(Certificate.certificate_types[:products_ecolabeling_type])
     @user_licences_green_IT = @user.access_licences.with_certificate_type(Certificate.certificate_types[:green_IT_type])
     @user_licences_net_zero = @user.access_licences.with_certificate_type(Certificate.certificate_types[:net_zero_type])
+    @user_licences_energy_label_waste_water_treatment_facility = @user.access_licences.with_certificate_type(Certificate.certificate_types[:energy_label_waste_water_treatment_facility_type])
 
 
     # Projects status
