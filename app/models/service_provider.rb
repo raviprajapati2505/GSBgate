@@ -197,4 +197,20 @@ class ServiceProvider < User
     users
       .valid_ceps_with_type(Certificate.certificate_types[:net_zero_type]) ||  AccessLicence.none
   end
+
+  # ------------------------- Checks for Energy Label - Waste Water Treatment Facility ---------------------------
+  def valid_service_provider_energy_label_waste_water_treatment_facility_licences
+    access_licences
+      .valid_service_provider_licences_with_type(Certificate.certificate_types[:energy_label_waste_water_treatment_facility_type]) || AccessLicence.none
+  end
+
+  def valid_energy_label_waste_water_treatment_facility_cgps
+    users
+      .valid_cgps_with_type(Certificate.certificate_types[:energy_label_waste_water_treatment_facility_type]) || AccessLicence.none
+  end
+
+  def valid_energy_label_waste_water_treatment_facility_ceps
+    users
+      .valid_ceps_with_type(Certificate.certificate_types[:energy_label_waste_water_treatment_facility_type]) ||  AccessLicence.none
+  end
 end

@@ -161,6 +161,10 @@ class CertificationPath < ApplicationRecord
     certificate&.net_zero_type?
   end
 
+  def energy_label_waste_water_treatment_facility?
+    certificate&.energy_label_waste_water_treatment_facility_type?
+  end
+
   def certification_manager_assigned?
     projects_users = project&.projects_users
                       

@@ -261,6 +261,10 @@ class User < ApplicationRecord
     service_provider&.active? ? service_provider&.valid_service_provider_net_zero_licences : AccessLicence.none
   end
 
+  def valid_user_sp_energy_label_waste_water_treatment_facility_licence
+    service_provider&.active? ? service_provider&.valid_service_provider_energy_label_waste_water_treatment_facility_licences : AccessLicence.none
+  end
+
   # ------------------- methods for CGPs and CEPs --------------------------- 
 
   def valid_cgp_or_cep_available?
@@ -307,6 +311,9 @@ class User < ApplicationRecord
     service_provider&.active? && (service_provider&.valid_net_zero_cgps.present? || service_provider&.valid_net_zero_ceps.present?)
   end
 
+  def valid_energy_label_waste_water_treatment_facility_cp_available?
+    service_provider&.active? && (service_provider&.valid_energy_label_waste_water_treatment_facility_cgps.present? || service_provider&.valid_energy_label_waste_water_treatment_facility_ceps.present?)
+  end
   # ------------------- methods for user licences --------------------------- 
 
   def valid_user_licences
@@ -396,6 +403,14 @@ class User < ApplicationRecord
       .where(
         "licences.certificate_type = ?", 
         Certificate.certificate_types[:net_zero_type]
+      ) || AccessLicence.none
+  end
+
+  def valid_user_energy_label_waste_water_treatment_facility_licences
+    valid_user_licences
+      .where(
+        "licences.certificate_type = ?", 
+        Certificate.certificate_types[:energy_label_waste_water_treatment_facility_type]
       ) || AccessLicence.none
   end
 

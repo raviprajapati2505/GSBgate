@@ -758,25 +758,27 @@ module ApplicationHelper
   def certification_name_datatable_render(rec, only_certification_name)
     case only_certification_name
       when 'Energy Centers Efficiency'
-        '<span class="certi-name-badge badge-db">' + image_tag('/icons/certi-name-db.png') + '</span><a href=' + Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>'+only_certification_name+'</a>'
+        '<span class="certi-name-badge badge-db">' + image_tag('/icons/certi-name-db.png') + '</span><a href=' + Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>' + only_certification_name + '</a>'
       when 'Building Energy Efficiency'
-        '<span class="certi-name-badge badge-cm">' + image_tag('/icons/certi-name-cm.png') + '</span><a href=' + Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>'+only_certification_name+'</a>'
+        '<span class="certi-name-badge badge-cm">' + image_tag('/icons/certi-name-cm.png') + '</span><a href=' + Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>' + only_certification_name + '</a>'
       when 'Healthy Buildings'
-        '<span class="certi-name-badge badge-op">' + image_tag('/icons/certi-name-op.png') + '</span><a href=' + Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>'+only_certification_name+'</a>'
+        '<span class="certi-name-badge badge-op">' + image_tag('/icons/certi-name-op.png') + '</span><a href=' + Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>' + only_certification_name + '</a>'
       when 'Indoor Air Quality'
-        '<span class="certi-name-badge badge-db">' + image_tag('/icons/certi-name-db.png') + '</span><a href=' + Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>'+only_certification_name+'</a>'
+        '<span class="certi-name-badge badge-db">' + image_tag('/icons/certi-name-db.png') + '</span><a href=' + Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>' + only_certification_name + '</a>'
       when 'Measurement, Reporting And Verification (MRV)'
-        '<span class="certi-name-badge badge-db">' + image_tag('/icons/certi-name-db.png') + '</span><a href=' + Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>'+only_certification_name+'</a>'
+        '<span class="certi-name-badge badge-db">' + image_tag('/icons/certi-name-db.png') + '</span><a href=' + Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>' + only_certification_name + '</a>'
       when 'Buildings Water Efficiency'
-        '<span class="certi-name-badge badge-cm">' + image_tag('/icons/certi-name-cm.png') + '</span><a href=' + Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>'+only_certification_name+'</a>'
+        '<span class="certi-name-badge badge-cm">' + image_tag('/icons/certi-name-cm.png') + '</span><a href=' + Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>' + only_certification_name + '</a>'
       when 'Events Carbon Neutrality'
-        '<span class="certi-name-badge badge-op">' + image_tag('/icons/certi-name-op.png') + '</span><a href=' + Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>'+only_certification_name+'</a>'
+        '<span class="certi-name-badge badge-op">' + image_tag('/icons/certi-name-op.png') + '</span><a href=' + Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>' + only_certification_name + '</a>'
       when 'Products Ecolabeling'
-        '<span class="certi-name-badge badge-db">' + image_tag('/icons/certi-name-db.png') + '</span><a href=' + Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>'+only_certification_name+'</a>'
+        '<span class="certi-name-badge badge-db">' + image_tag('/icons/certi-name-db.png') + '</span><a href=' + Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>' + only_certification_name + '</a>'
       when 'Green IT'
-        '<span class="certi-name-badge badge-op">' + image_tag('/icons/certi-name-op.png') + '</span><a href=' + Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>'+only_certification_name+'</a>'
+        '<span class="certi-name-badge badge-op">' + image_tag('/icons/certi-name-op.png') + '</span><a href=' + Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>' + only_certification_name + '</a>'
       when 'Net Zero'
-        '<span class="certi-name-badge badge-db">' + image_tag('/icons/certi-name-db.png') + '</span><a href=' + Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>'+only_certification_name+'</a>'
+        '<span class="certi-name-badge badge-db">' + image_tag('/icons/certi-name-db.png') + '</span><a href=' + Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>' + only_certification_name + '</a>'
+      when 'Energy Label - Waste Water Treatment Facility'
+        '<span class="certi-name-badge badge-db">' + image_tag('/icons/certi-name-op.png') + '</span><a href=' + Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>' + only_certification_name + '</a>'
     end
   end
 
@@ -805,6 +807,8 @@ module ApplicationHelper
         '<span class="certi-sub-status-badge status-badge-op">' + image_tag('/icons/certi-sub-status-op.png') +'</span>' + status
       when 'Net Zero'
         '<span class="certi-sub-status-badge status-badge-db">' + image_tag('/icons/certi-sub-status-db.png') +'</span>' + status
+      when 'Energy Label - Waste Water Treatment Facility'
+        '<span class="certi-sub-status-badge status-badge-db">' + image_tag('/icons/certi-sub-status-op.png') +'</span>' + status
     end
   end
 
@@ -830,6 +834,8 @@ module ApplicationHelper
         '<span class="certi-name-badge badge-op">'+ image_tag('/icons/certi-name-op.png') + '</span>' + certification_type
       when 'Net Zero'
         '<span class="certi-name-badge badge-db">'+ image_tag('/icons/certi-name-db.png') + '</span>' + certification_type
+      when 'Energy Label - Waste Water Treatment Facility'
+        '<span class="certi-name-badge badge-db">'+ image_tag('/icons/certi-name-op.png') + '</span>' + certification_type
     end
   end
 
@@ -856,6 +862,8 @@ module ApplicationHelper
         '<span class="certi-sub-status-badge status-badge-op">' + image_tag('/icons/certi-sub-status-op.png') + '</span>' + (rec.certification_status || '')
       when 'Net Zero'
         '<span class="certi-sub-status-badge status-badge-db">' + image_tag('/icons/certi-sub-status-db.png') + '</span>' + (rec.certification_status || '')
+      when 'Energy Label - Waste Water Treatment Facility'
+        '<span class="certi-sub-status-badge status-badge-db">' + image_tag('/icons/certi-sub-status-op.png') + '</span>' + (rec.certification_status || '')
     end
   end
 
@@ -915,6 +923,7 @@ module ApplicationHelper
                             #{Certificate.certification_types['provisional_products_ecolabeling']},
                             #{Certificate.certification_types['provisional_green_IT']},
                             #{Certificate.certification_types['provisional_net_zero']},
+                            #{Certificate.certification_types['provisional_energy_label_waste_water_treatment_facility']},
                             #{Certificate.certification_types['final_energy_centers_efficiency']}, 
                             #{Certificate.certification_types['final_building_energy_efficiency']}, 
                             #{Certificate.certification_types['final_healthy_buildings']}, 
@@ -924,7 +933,8 @@ module ApplicationHelper
                             #{Certificate.certification_types['final_events_carbon_neutrality']},
                             #{Certificate.certification_types['final_products_ecolabeling']},
                             #{Certificate.certification_types['final_green_IT']},
-                            #{Certificate.certification_types['final_net_zero']}
+                            #{Certificate.certification_types['final_net_zero']},
+                            #{Certificate.certification_types['final_energy_label_waste_water_treatment_facility']}
                           ) 
                           THEN 
                             project_team_project_users.certification_team_type IN (
@@ -975,6 +985,7 @@ module ApplicationHelper
                             #{Certificate.certification_types['provisional_products_ecolabeling']},
                             #{Certificate.certification_types['provisional_green_IT']},
                             #{Certificate.certification_types['provisional_net_zero']},
+                            #{Certificate.certification_types['provisional_energy_label_waste_water_treatment_facility']},
                             #{Certificate.certification_types['final_energy_centers_efficiency']}, 
                             #{Certificate.certification_types['final_building_energy_efficiency']}, 
                             #{Certificate.certification_types['final_healthy_buildings']}, 
@@ -984,7 +995,8 @@ module ApplicationHelper
                             #{Certificate.certification_types['final_events_carbon_neutrality']},
                             #{Certificate.certification_types['final_products_ecolabeling']},
                             #{Certificate.certification_types['final_green_IT']},
-                            #{Certificate.certification_types['final_net_zero']}
+                            #{Certificate.certification_types['final_net_zero']},
+                            #{Certificate.certification_types['final_energy_label_waste_water_treatment_facility']}
                           ) 
                           THEN 
                             cgp_project_managers_project_users.certification_team_type IN (
@@ -1035,6 +1047,7 @@ module ApplicationHelper
                             #{Certificate.certification_types['provisional_products_ecolabeling']},
                             #{Certificate.certification_types['provisional_green_IT']},
                             #{Certificate.certification_types['provisional_net_zero']},
+                            #{Certificate.certification_types['provisional_energy_label_waste_water_treatment_facility']},
                             #{Certificate.certification_types['final_energy_centers_efficiency']}, 
                             #{Certificate.certification_types['final_building_energy_efficiency']}, 
                             #{Certificate.certification_types['final_healthy_buildings']}, 
@@ -1044,7 +1057,8 @@ module ApplicationHelper
                             #{Certificate.certification_types['final_events_carbon_neutrality']},
                             #{Certificate.certification_types['final_products_ecolabeling']},
                             #{Certificate.certification_types['final_green_IT']},
-                            #{Certificate.certification_types['final_net_zero']}
+                            #{Certificate.certification_types['final_net_zero']},
+                            #{Certificate.certification_types['final_energy_label_waste_water_treatment_facility']}
                           ) 
                           THEN 
                             gsb_trust_team_project_users.certification_team_type IN (
@@ -1094,6 +1108,7 @@ module ApplicationHelper
                             #{Certificate.certification_types['provisional_products_ecolabeling']},
                             #{Certificate.certification_types['provisional_green_IT']},
                             #{Certificate.certification_types['provisional_net_zero']},
+                            #{Certificate.certification_types['provisional_energy_label_waste_water_treatment_facility']},
                             #{Certificate.certification_types['final_energy_centers_efficiency']}, 
                             #{Certificate.certification_types['final_building_energy_efficiency']}, 
                             #{Certificate.certification_types['final_healthy_buildings']}, 
@@ -1103,7 +1118,8 @@ module ApplicationHelper
                             #{Certificate.certification_types['final_events_carbon_neutrality']},
                             #{Certificate.certification_types['final_products_ecolabeling']},
                             #{Certificate.certification_types['final_green_IT']},
-                            #{Certificate.certification_types['final_net_zero']}
+                            #{Certificate.certification_types['final_net_zero']},
+                            #{Certificate.certification_types['final_energy_label_waste_water_treatment_facility']}
                           ) 
                           THEN 
                             certification_managers_project_users.certification_team_type IN (

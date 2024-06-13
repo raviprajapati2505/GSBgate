@@ -167,4 +167,21 @@ Certificate.find_or_create_by!(
   gsb_version: "2023", 
   display_weight: 20
 )
+
+Certificate.find_or_create_by!(
+  name: 'Stage 1: Provisional Certificate', 
+  certification_type: Certificate.certification_types[:provisional_energy_label_waste_water_treatment_facility], 
+  certificate_type: Certificate.certificate_types[:energy_label_waste_water_treatment_facility_type], 
+  assessment_stage: Certificate.assessment_stages[:energy_label_waste_water_treatment_facility_stage], 
+  gsb_version: "2023", 
+  display_weight: 21
+)
+Certificate.find_or_create_by!(
+  name: 'Stage 2: Final Certificate', 
+  certification_type: Certificate.certification_types[:final_energy_label_waste_water_treatment_facility], 
+  certificate_type: Certificate.certificate_types[:energy_label_waste_water_treatment_facility_type], 
+  assessment_stage: Certificate.assessment_stages[:energy_label_waste_water_treatment_facility_stage], 
+  gsb_version: "2023", 
+  display_weight: 22
+)
 puts "Certificates are added successfully.........."

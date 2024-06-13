@@ -68,4 +68,11 @@
   </ul>
 <% end %>
 
+<% if project.certificate_type.nil? || project.certificate_type == Certificate.certificate_types[:energy_label_waste_water_treatment_facility_type] %>
+  <ul class="list-group">
+    <%= render partial: 'certification_paths/certification_path_details', locals: { project: project } %>
+    <%= render partial: 'certification_paths/overview_item', locals: { project: project, certification_types: [:provisional_energy_label_waste_water_treatment_facility, :final_energy_label_waste_water_treatment_facility] } %>
+  </ul>
+<% end %>
+
 <div id="applyForCertificateModal" class="modal fade"></div>

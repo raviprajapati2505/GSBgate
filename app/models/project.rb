@@ -160,6 +160,7 @@ class Project < ApplicationRecord
     completed_provisional_products_ecolabeling.first ||
     completed_provisional_green_IT.first ||
     completed_provisional_net_zero.first ||
+    completed_provisional_energy_label_waste_water_treatment_facility.first ||
     CertificationPath.none
   end
 
@@ -201,6 +202,10 @@ class Project < ApplicationRecord
 
   def completed_provisional_net_zero
     CertificationPath.with_project(self).with_status(CertificationPathStatus::STATUSES_COMPLETED).with_certification_type(Certificate.certification_types[:provisional_net_zero])
+  end
+
+  def completed_provisional_energy_label_waste_water_treatment_facility
+    CertificationPath.with_project(self).with_status(CertificationPathStatus::STATUSES_COMPLETED).with_certification_type(Certificate.certification_types[:provisional_energy_label_waste_water_treatment_facility])
   end
 
   def average_scores_all_construction_stages
@@ -330,30 +335,36 @@ class Project < ApplicationRecord
     certificate_type == Certificate.certificate_types[:net_zero_type]
   end
 
+  def energy_label_waste_water_treatment_facility?
+    certificate_type == Certificate.certificate_types[:energy_label_waste_water_treatment_facility_type]
+  end
+
   def team_table_heading
     case certificate_type
-    when 1
-      I18n.t('activerecord.attributes.project.team_titles.energy_centers_efficiency')
-    when 2
-      I18n.t('activerecord.attributes.project.team_titles.building_energy_efficiency')
-    when 3
-      I18n.t('activerecord.attributes.project.team_titles.healthy_buildings')
-    when 4
-      I18n.t('activerecord.attributes.project.team_titles.indoor_air_quality')
-    when 5
-      I18n.t('activerecord.attributes.project.team_titles.measurement_reporting_and_verification')
-    when 6
-      I18n.t('activerecord.attributes.project.team_titles.building_water_efficiency')
-    when 7
-      I18n.t('activerecord.attributes.project.team_titles.events_carbon_neutrality')
-    when 8
-      I18n.t('activerecord.attributes.project.team_titles.products_ecolabeling')
-    when 9
-      I18n.t('activerecord.attributes.project.team_titles.green_IT')
-    when 10
-      I18n.t('activerecord.attributes.project.team_titles.net_zero')
-    else
-      "Project Team"
+      when 1
+        I18n.t('activerecord.attributes.project.team_titles.energy_centers_efficiency')
+      when 2
+        I18n.t('activerecord.attributes.project.team_titles.building_energy_efficiency')
+      when 3
+        I18n.t('activerecord.attributes.project.team_titles.healthy_buildings')
+      when 4
+        I18n.t('activerecord.attributes.project.team_titles.indoor_air_quality')
+      when 5
+        I18n.t('activerecord.attributes.project.team_titles.measurement_reporting_and_verification')
+      when 6
+        I18n.t('activerecord.attributes.project.team_titles.building_water_efficiency')
+      when 7
+        I18n.t('activerecord.attributes.project.team_titles.events_carbon_neutrality')
+      when 8
+        I18n.t('activerecord.attributes.project.team_titles.products_ecolabeling')
+      when 9
+        I18n.t('activerecord.attributes.project.team_titles.green_IT')
+      when 10
+        I18n.t('activerecord.attributes.project.team_titles.net_zero')
+      when 11
+        I18n.t('activerecord.attributes.project.team_titles.energy_label_waste_water_treatment_facility_type')
+      else
+        "Project Team"
     end
   end
 
