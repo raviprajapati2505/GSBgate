@@ -260,7 +260,7 @@ Licence.find_or_create_by!(
 Licence.find_or_create_by!(
   licence_type: 'CepLicence',
   display_name: 'CEP - Energy Centers Efficiency',
-  display_weight: 16,
+  display_weight: 23,
   title: 'CEP - Energy Centers Efficiency',
   description: 'Energy Centers Efficiency Certified Energy Professional',
   certificate_type: Certificate.certificate_types[:energy_centers_efficiency_type],
@@ -271,7 +271,7 @@ Licence.find_or_create_by!(
 Licence.find_or_create_by!(
   licence_type: 'CepLicence',
   display_name: 'CEP - Building Energy Efficiency',
-  display_weight: 16,
+  display_weight: 24,
   title: 'CEP - Building Energy Efficiency',
   description: 'Building Energy Efficiency Certified Energy Professional',
   certificate_type: Certificate.certificate_types[:building_energy_efficiency_type],
@@ -282,7 +282,7 @@ Licence.find_or_create_by!(
 Licence.find_or_create_by!(
   licence_type: 'CepLicence',
   display_name: 'CEP - Healthy Buildings',
-  display_weight: 16,
+  display_weight: 25,
   title: 'CEP - Healthy Buildings',
   description: 'Healthy Buildings Certified Energy Professional',
   certificate_type: Certificate.certificate_types[:healthy_buildings_type],
@@ -293,7 +293,7 @@ Licence.find_or_create_by!(
 Licence.find_or_create_by!(
   licence_type: 'CepLicence',
   display_name: 'CEP - Indoor Air Quality',
-  display_weight: 16,
+  display_weight: 26,
   title: 'CEP - Indoor Air Quality',
   description: 'Indoor Air Quality Certified Energy Professional',
   certificate_type: Certificate.certificate_types[:indoor_air_quality_type],
@@ -304,7 +304,7 @@ Licence.find_or_create_by!(
 Licence.find_or_create_by!(
   licence_type: 'CepLicence',
   display_name: 'CEP - Measurement, Reporting And Verification (MRV)',
-  display_weight: 16,
+  display_weight: 27,
   title: 'CEP - Measurement, Reporting And Verification (MRV)',
   description: 'Measurement, Reporting And Verification (MRV) Certified Energy Professional',
   certificate_type: Certificate.certificate_types[:measurement_reporting_and_verification_type],
@@ -315,7 +315,7 @@ Licence.find_or_create_by!(
 Licence.find_or_create_by!(
   licence_type: 'CepLicence',
   display_name: 'CEP - Buildings Water Efficiency',
-  display_weight: 16,
+  display_weight: 28,
   title: 'CEP - Buildings Water Efficiency',
   description: 'Buildings Water Efficiency Certified Energy Professional',
   certificate_type: Certificate.certificate_types[:building_water_efficiency_type],
@@ -326,7 +326,7 @@ Licence.find_or_create_by!(
 Licence.find_or_create_by!(
   licence_type: 'CepLicence',
   display_name: 'CEP - Events Carbon Neutrality',
-  display_weight: 16,
+  display_weight: 29,
   title: 'CEP - Events Carbon Neutrality',
   description: 'Events Carbon Neutrality Certified Energy Professional',
   certificate_type: Certificate.certificate_types[:events_carbon_neutrality_type],
@@ -337,7 +337,7 @@ Licence.find_or_create_by!(
 Licence.find_or_create_by!(
   licence_type: 'CepLicence',
   display_name: 'CEP - Products Ecolabeling',
-  display_weight: 16,
+  display_weight: 30,
   title: 'CEP - Products Ecolabeling',
   description: 'Products Ecolabeling Certified Energy Professional',
   certificate_type: Certificate.certificate_types[:products_ecolabeling_type],
@@ -348,7 +348,7 @@ Licence.find_or_create_by!(
 Licence.find_or_create_by!(
   licence_type: 'CepLicence',
   display_name: 'CEP - Green IT',
-  display_weight: 16,
+  display_weight: 31,
   title: 'CEP - Green IT',
   description: 'Green IT Certified Energy Professional',
   certificate_type: Certificate.certificate_types[:green_IT_type],
@@ -359,7 +359,7 @@ Licence.find_or_create_by!(
 Licence.find_or_create_by!(
   licence_type: 'CepLicence',
   display_name: 'CEP - Net Zero',
-  display_weight: 16,
+  display_weight: 32,
   title: 'CEP - Net Zero',
   description: 'Net Zero Certified Energy Professional',
   certificate_type: Certificate.certificate_types[:net_zero_type],
@@ -370,7 +370,7 @@ Licence.find_or_create_by!(
 Licence.find_or_create_by!(
   licence_type: 'CepLicence',
   display_name: 'CEP - Energy Label - Waste Water Treatment Facility',
-  display_weight: 16,
+  display_weight: 33,
   title: 'CEP - Energy Label - Waste Water Treatment Facility',
   description: 'Energy Label - Waste Water Treatment Facility Certified Energy Professional',
   certificate_type: Certificate.certificate_types[:energy_label_waste_water_treatment_facility_type],
