@@ -80,6 +80,7 @@
                 </li>
             <% end %>
 
+            <!--
             <li>
                  <%= link_to '/GSBgate_Manual.pdf', target: '_blank' do %>
                     <%= image_tag('layout/manual-g.png',class:"img-responsive normal-li bg-transparent after-login-right-img")%>
@@ -87,7 +88,6 @@
                 <% end %>
             </li>
 
-            <!-- 
             <% if can?(:show, 'visualisation_tool') %>
               <li>
                   <%= link_to Rails.application.config.x.viewer.url, target: '_blank' do %>
