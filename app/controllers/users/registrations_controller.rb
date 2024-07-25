@@ -130,7 +130,18 @@ class Users::RegistrationsController < Devise::RegistrationsController
           :gsb_energey_assessment_licence_file,
           :education,
           :education_certificate,
-          :other_documents
+          :other_documents,
+          :business_field,
+          :portfolio, 
+          :commercial_licence_no, 
+          :commercial_licence_file,
+          :commercial_licence_expiry_date,
+          :accredited_service_provider_licence_file, 
+          :demerit_acknowledgement_file,
+          :application_form, 
+          :nominated_cgp, 
+          :exam,
+          :workshop
         ]
     ])
   end
@@ -184,7 +195,18 @@ class Users::RegistrationsController < Devise::RegistrationsController
           :gsb_energey_assessment_licence_file,
           :education,
           :education_certificate,
-          :other_documents
+          :other_documents,
+          :business_field,
+          :portfolio, 
+          :commercial_licence_no, 
+          :commercial_licence_file,
+          :commercial_licence_expiry_date,
+          :accredited_service_provider_licence_file, 
+          :demerit_acknowledgement_file,
+          :application_form, 
+          :nominated_cgp, 
+          :exam,
+          :workshop
         ]
     ])
   end

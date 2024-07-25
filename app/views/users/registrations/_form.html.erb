@@ -1,14 +1,18 @@
 <% countries = CS.countries.sort_by{|_key, value| value }.to_h %>
+
 <fieldset class="scheduler-border">
 	<legend class="scheduler-border">Personal Information</legend>
 		<div class="control-group">
-		<% if resource_for == 'user' && resource.role&.titleize != 'Service Provider' %>
 			<div class="row">
-				<div class="col-md-4">
-				<%= f.input :name_suffix, collection: ["Mr.", "Ms.", "Mrs.", "Dr."], include_blank: "Choose Appellations", selected: resource.name_suffix, input_html: { class: "form-control" }, required: true %>
-			</div>
-		</div>
-		<% end %>
+		    <% if resource_for == 'user' && resource.role&.titleize != 'Service Provider' %>
+          <div class="col-md-4">
+            <%= f.input :name_suffix, collection: ["Mr.", "Ms.", "Mrs.", "Dr."], include_blank: "Choose Appellations", selected: resource.name_suffix, input_html: { class: "form-control" }, required: true %>
+          </div>
+		    <% end %>
+          <div class="col-md-4">
+            <%= f.input :user_type, collection: ["Service Provider", "CGP/CEP"], prompt: '', selected: "Service Provider", input_html: { class: "form-control", id: "user_type" }, required: true %>
+          </div>
+      </div>
 		<div class="row">
 			<% if resource_for == 'user' && resource.role&.titleize != 'Service Provider' %>
 				<div class="col-md-4 col-sm-6 col-xs-12"><%= f.input :name, required: true %></div>
@@ -20,7 +24,7 @@
 		</div>
 		<div class="row">
 			<div class="col-md-4 col-sm-6 col-xs-12">
-					<%= f.input :username, required: true %>
+				<%= f.input :username, required: true %>
 			</div>
 			<% if action != 'add' %>
 				<% if resource_for == 'user' && current_user.role == 'credentials_admin' %>
@@ -111,7 +115,7 @@
 			<div class="col-md-4 col-sm-6 col-xs-12">
 				<%= f.input :organization_phone, input_html: { id: 'org_phone'} %>
 			</div>
-      <% if resource_for == 'user' &&  resource.role&.titleize != 'Service Provider' %>
+      <% if resource_for == 'user' && resource.role&.titleize != 'Service Provider' %>
         <div class="col-md-4 col-sm-6 col-xs-12">
           <%= f.input :organization_fax_area_code, input_html: { id: 'org_fax_area_code'}  %>
         </div>
@@ -127,17 +131,42 @@
 	</div>
 </fieldset>
 
-  <% if resource_for == 'user' &&  resource.role&.titleize != 'Service Provider' %>
-    <fieldset class="scheduler-border">
-      <legend class="scheduler-border"><%= t('.user_details.additional_information') %></legend>
-      <div class="control-group">
-        <%= f.simple_fields_for :user_detail, user_detail do |user_detail| %>
-          <%= render partial: 'users/registrations/user_detail_fields', locals: { f: user_detail, user: resource } %>
-        <% end %>
-      </div>
-    </fieldset>
-  <% else %>
-    <%= f.simple_fields_for :service_provider_detail, service_provider_detail do |service_provider_detail| %>
-      <%= render partial: 'users/registrations/service_provider_detail_fields', locals: { f: service_provider_detail, user: resource } %>
-    <% end %>
+<% if resource_for == 'user' &&  resource.role&.titleize != 'Service Provider' %>
+  <fieldset class="scheduler-border">
+    <legend class="scheduler-border"><%= t('.user_details.additional_information') %></legend>
+    <div class="control-group">
+      <%= f.simple_fields_for :user_detail, user_detail do |user_detail| %>
+        <%= render partial: 'users/registrations/user_detail_fields', locals: { f: user_detail, user: resource } %>
+      <% end %>
+    </div>
+  </fieldset>
+<% else %>
+  <%= f.simple_fields_for :service_provider_detail, service_provider_detail do |service_provider_detail| %>
+    <%= render partial: 'users/registrations/service_provider_detail_fields', locals: { f: service_provider_detail, user: resource } %>
   <% end %>
+<% end %>
+
+<script>
+  $(function() {
+    let user_type;
+
+    $('#user_type').on('change', function() {
+      user_type = $(this).val();
+
+      if (user_type == 'Service Provider') {
+        $('#new_service_provider').attr('action', "/users/registrations/create_service_provider");
+
+        $("#new_service_provider input").each(function() {
+          $(this).attr('name', $(this).attr('name').replace("user", "service_provider"));
+        });
+
+      } else {
+        $('#new_service_provider').attr('action', "/users");
+
+        $("#new_service_provider input").each(function() {
+          $(this).attr('name', $(this).attr('name').replace("service_provider", "user"));
+        });
+      }
+    });
+  });
+</script>

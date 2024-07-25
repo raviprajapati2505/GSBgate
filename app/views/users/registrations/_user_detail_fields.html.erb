@@ -1,117 +1,157 @@
-<div class="row">
-  <div class="col-md-4 col-sm-6 col-xs-12">
-      <%= f.input :gender, collection: ["Male", "Female"], include_blank: "Choose Gender", input_html: { class: "form-control" }, reqired: true %>
-  </div>
-  <div class="col-md-4 col-sm-6 col-xs-12 date-input">
-    <%= f.input :dob do %>
-      <span><%= ikoen('calendar') %></span>
-      <%= f.input_field :dob, value: f.object&.dob&.strftime("%d/%m/%Y"), as: :string, class: "datepicker-past form-control" %>
-    <% end %>
-  </div>
-  <div class="col-md-4 col-sm-6 col-xs-12">
-      <%= f.input :designation %>
-  </div>
-</div>
-<div class="row">
-  <div class="clearfix"></div>
-  <div class="col-md-4 col-sm-6 col-xs-12">
-      <%= f.input :work_experience %>
-  </div>
-  <div class="col-md-4 col-sm-6 col-xs-12">
-    <%= f.input :qid_or_passport_number, required: true %>
-  </div>
-  <div class="col-md-4 col-sm-6 col-xs-12">
-    <%= f.input :education, collection: UserDetail.educations.map{ |k, v| [k.titleize, k]}, include_blank: "Select Education", input_html: {class: "form-control"} %>
-  </div>
-  <%# <div class="col-md-4"> %>
-    <%# f.input :energy_assessor_name %>
-  <%# </div> %>
-</div>
-<div class="row">
-  <div class="col-md-4 col-sm-6 col-xs-12">
-    <%= f.input :university_credentials_file, as: :file, label: t('users.form.university_credential_file_title'), required: true %>
-    <% if user.persisted? && user.user_detail&.university_credentials_file.present? %>
-        <% if can?(:download_user_files, user) %>
-            <%= btn_download(download_user_files_user_path(user, file: "university_credentials_file"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('university_credentials_file')}") %>
+<fieldset class="scheduler-border">
+  <legend class="scheduler-border">Qualification </legend>
+  <div class="control-group">
+    <div class="row">
+      <div class="col-md-4 col-sm-6 col-xs-12">
+        <%= f.input :exam, as: :file, required: true %>
+        <% if user.persisted? && user.service_provider_detail&.exam.present? %>
+          <% if can?(:download_user_files, user) %>
+            <%= btn_download(download_user_files_user_path(user, file: "exam"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('exam')}") %>
+          <% end %>
+          <%= truncate(user.service_provider_detail&.exam&.file&.filename, length: 35) %>
         <% end %>
-        <%= truncate(user.user_detail&.university_credentials_file&.file&.filename, length: 35) %>
-    <% end %>
-  </div>
-  <div class="col-md-4 col-sm-6 col-xs-12">
-    <%= f.input :work_experience_file, as: :file, label: t('users.form.work_experience_file_title'), required: true %>
-    <% if user.persisted? && user.user_detail&.work_experience_file.present? %>
-        <% if can?(:download_user_files, user) %>
-          <%= btn_download(download_user_files_user_path(user, file: "work_experience_file"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('work_experience_file')}") %>
+      </div>
+      <div class="col-md-4 col-sm-6 col-xs-12">
+         <%= f.input :workshop, as: :file, required: true %>
+        <% if user.persisted? && user.service_provider_detail&.workshop.present? %>
+          <% if can?(:download_user_files, user) %>
+            <%= btn_download(download_user_files_user_path(user, file: "workshop"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('workshop')}") %>
+          <% end %>
+          <%= truncate(user.service_provider_detail&.workshop&.file&.filename, length: 35) %>
         <% end %>
-        <%= truncate(user.user_detail&.work_experience_file&.file&.filename, length: 35) %>
-    <% end %>
+      </div>
+    </div>
   </div>
-  <div class="col-md-4 col-sm-6 col-xs-12">
-    <%= f.input :qid_file, as: :file, label: t('users.form.qid_file_title'), required: true %>
-    <% if user.persisted? && user&.user_detail&.qid_file.present? %>
-      <% if can?(:download_user_files, user) %>
-        <%= btn_download(download_user_files_user_path(user, file: "qid_file"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('qid_file')}") %>
-      <% end %>
+</fieldset>
 
-      <%= truncate(user.user_detail&.qid_file&.file&.filename, length: 35) %>
-    <% end %>
+<fieldset class="scheduler-border">
+  <legend class="scheduler-border"><%= t('.user_details.additional_information') %></legend>
+  <div class="control-group">
+    <div class="row">
+      <div class="col-md-4 col-sm-6 col-xs-12">
+        <%= f.input :business_field, required: true %>
+      </div>
+      <div class="col-md-4 col-sm-6 col-xs-12">
+        <%= f.input :commercial_licence_no %>
+      </div>
+      <div class="col-md-4 col-sm-6 col-xs-12">
+        <%= f.input :commercial_licence_expiry_date  do  %>
+          <span class="cal-icon"><%= ikoen('calendar') %></span>
+          <%= f.input_field :commercial_licence_expiry_date, value: f.object&.commercial_licence_expiry_date&.strftime("%d/%m/%Y"), as: :string, class: "datepicker-future form-control" %>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4">
+        <%= f.input :energy_assessor_name %>
+        <small style="bottom: 13px;position: relative; color:#3a4f57;">Please enter full name of person attended Energy Assessment Workshop</small>
+      </div>
+      <div class="col-md-4 col-sm-6 col-xs-12">
+        <%= f.input :nominated_cgp, required: true %>
+      </div>
+      <div class="col-md-4">
+        <%= f.input :gsb_energey_assessment_licence_file, as: :file, label: t('users.form.gsb_energy_assessment_file_licence_title'), required: true %>
+        <% if user.persisted? && user.service_provider_detail&.gsb_energey_assessment_licence_file.present? %>
+          <% if can?(:download_user_files, user) %>
+            <%= btn_download(download_user_files_user_path(user, file: "gsb_energey_assessment_licence_file"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('gsb_energey_assessment_licence_file')}") %>
+          <% end %>
+          <%= truncate(user.service_provider_detail&.gsb_energey_assessment_licence_file&.file&.filename, length: 35) %>
+        <% end %>
+      </div>
+      
+    </div>
+    <div class="row">
+      <div class="col-md-4 col-sm-6 col-xs-12">
+        <%= f.input :cgp_licence_file, as: :file, label: t('users.form.gsb_cgp_licence_file_title'), required: true %>
+        <% if user.persisted? && user.service_provider_detail&.cgp_licence_file.present? %>
+          <% if can?(:download_user_files, user) %>
+            <%= btn_download(download_user_files_user_path(user, file: "cgp_licence_file"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('cgp_licence_file')}") %>
+          <% end %>
+          <%= truncate(user.service_provider_detail&.cgp_licence_file&.file&.filename, length: 35) %>
+        <% end %>
+      </div>
+      <div class="col-md-4 col-sm-6 col-xs-12">
+        <%= f.input :portfolio, as: :file %>
+        <% if user.persisted? && user.service_provider_detail&.portfolio.present? %>
+          <% if can?(:download_user_files, user) %>
+            <%= btn_download(download_user_files_user_path(user, :file => "portfolio"), size: 'extra_small', tooltip: "Download #{ServiceProviderDetail.human_attribute_name('portfolio')}") %>
+          <% end %>
+        <%= truncate(user.service_provider_detail&.portfolio.file.filename, length: 35) %>
+        <% end %>
+      </div>
+      <div class="col-md-4 col-sm-6 col-xs-12">
+        <%= f.input :commercial_licence_file, as: :file, label: t('users.form.commercial_licence_file_title'), required: true %>
+        <% if user.persisted? && user.service_provider_detail&.commercial_licence_file.present? %>
+          <% if can?(:download_user_files, user) %>
+            <%= btn_download(download_user_files_user_path(user, :file => "commercial_licence_file"), size: 'extra_small', tooltip: "Download #{ServiceProviderDetail.human_attribute_name('commercial_licence_file')}") %>
+          <% end %>
+          <%= truncate(user.service_provider_detail&.commercial_licence_file&.file&.filename, length: 35) %>
+        <% end %>
+      </div>
+      
+    </div>
+    <div class="row">
+      <div class="col-md-4 col-sm-6 col-xs-12">
+        <%= f.input :application_form, as: :file, label: t('users.form.application_form') %>
+        <% if user.persisted? && user.service_provider_detail&.application_form.present? %>
+          <% if can?(:download_user_files, user) %>
+            <%= btn_download(download_user_files_user_path(user, :file => "application_form"), size: 'extra_small', tooltip: "Download #{ServiceProviderDetail.human_attribute_name('application_form')}") %>
+          <% end %>
+        <%= truncate(user.service_provider_detail&.application_form.file.filename, length: 35) %>
+        <% end %>
+      </div>
+      <div class="col-md-4" id="demerit">
+        <%= f.input :demerit_acknowledgement_file, as: :file, label: t('users.form.demerit_file_title'), required: true %>
+        <% if user.persisted? && user.service_provider_detail&.demerit_acknowledgement_file.present? %>
+          <% if can?(:download_user_files, user) %>
+            <%= btn_download(download_user_files_user_path(user, :file => "demerit_acknowledgement_file"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('demerit_acknowledgement_file')}") %>
+          <% end %>
+          <%= truncate(user.service_provider_detail&.demerit_acknowledgement_file&.file&.filename, length: 35) %>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <label>Acknowledgements</label>
+        <p>
+          <%= check_box_tag "acknowledgement", 1, false, id: "acknowledgement", class: "acknowledgement" %>
+          <%= label_tag 'document_scheme_mix_criterion', t('users.form.acknowledgement') %>
+          <span id="help-block-ack" class="help-block"></span>
+        </p>
+        <p style="color:#3a4f57;">DEMERIT System <a target="_blank" href="https://gsb.gord.qa/wp-content/uploads/2021/10/GSB-Demerit-System.pdf">( Download Here )</a></a>
+      </div>
+    </div>
   </div>
-  
-</div>
-<br>
+</fieldset>
 
-<div class="row">
+<script>
+  $(function() {
+    $('#demerit').hide();
+    $('#acknowledgement, .iCheck-helper').click(function() {
+      let isChecked = $('#acknowledgement').prop('checked');
+      isChecked ? $('#demerit').show() : $('#demerit').hide()
+      isChecked ? $('#help-block-ack').hide() : $('#help-block-ack').show()
+    });
 
-  <%# <div class="col-md-4"> %>
-    <%# f.input :cgp_licence_file, as: :file, label: t('users.form.gsb_cgp_licence_file_title') %>
-    <%# if user.persisted? && user.user_detail&.cgp_licence_file.present? %>
-      <%# if can?(:download_user_files, user) %>
-        <%# btn_download(download_user_files_user_path(user, file: "cgp_licence_file"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('cgp_licence_file')}") %>
-      <%# end %>
-      <%# truncate(user.user_detail&.cgp_licence_file&.file&.filename, length: 35) %>
-    <%# end %>
-  <%# </div> %>
-  
-  <%# <div class="col-md-4"> %>
-    <%# f.input :qid_work_permit_file, as: :file, label: t('users.form.qid_work_permit_file_title'), required: true %>
-    <%# if user.persisted? && user.user_detail&.qid_work_permit_file.present? %>
-        <%# if can?(:download_user_files, user) %>
-          <%# btn_download(download_user_files_user_path(user, file: "qid_work_permit_file"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('qid_work_permit_file')}") %>
-        <%# end %>
-        <%# #truncate(user.user_detail&.qid_work_permit_file&.file&.filename, length: 35) %>
-    <%# end %>
-  <%# </div> %>
-  
-  <%# <div class="col-md-4"> %>
-    <%# f.input :gsb_energey_assessment_licence_file, as: :file, label: t('users.form.gsb_energy_assessment_file_licence_title'), required: true %>
-    <%# if user.persisted? && user.user_detail&.gsb_energey_assessment_licence_file.present? %>
-      <%# if can?(:download_user_files, user) %>
-        <%# btn_download(download_user_files_user_path(user, file: "gsb_energey_assessment_licence_file"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('gsb_energey_assessment_licence_file')}") %>
-      <%# end %>
-      <%# truncate(user.user_detail&.gsb_energey_assessment_licence_file&.file&.filename, length: 35) %>
-    <%# end %>
-  <%# </div> %>
-</div>
+    function validate(){
+      var valid = true;
+      let isChecked = $('#acknowledgement').prop('checked');
+      if(!isChecked){
+          valid = false;
+           $('#acknowledgement').parent().parent().addClass('has-error');
+           $('#help-block-ack').html('you must need to accpet policy in order to registered');
+      }
+      return valid;
+    }
 
-<div class="row">
-  <%# <div class="col-md-4 col-sm-6 col-xs-12"> %>
-    <%# f.input :education_certificate, as: :file, label: t('users.form.education_certificate') %>
-    <%# if user.persisted? && user.user_detail&.education_certificate.present? %>
-        <%# if can?(:download_user_files, user) %>
-          <%# btn_download(download_user_files_user_path(user, file: "education_certificate"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('education_certificate')}") %>
-        <%# end %>
-        <%# truncate(user.user_detail&.education_certificate&.file&.filename, length: 35) %>
-    <%# end %>
-  <%# </div> %>
-  <div class="col-md-4 col-sm-6 col-xs-12">
-    <%= f.input :other_documents, as: :file, label: t('users.form.other_documents') %>
-    <% if user.persisted? && user&.user_detail&.other_documents.present? %>
-      <% if can?(:download_user_files, user) %>
-        <%= btn_download(download_user_files_user_path(user, file: "other_documents"), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('other_documents')}") %>
-      <% end %>
-
-      <%= truncate(user.user_detail&.other_documents&.file&.filename, length: 35) %>
-    <% end %>
-  </div>
- 
-</div>
+    $('form#new_service_provider').submit(function (event) {
+        var valid = validate();
+        if (!valid) {
+            event.preventDefault();
+            return false;
+        }
+    });
+  });
+</script>
