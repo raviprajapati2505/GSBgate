@@ -1,8 +1,8 @@
 class UsersController < AuthenticatedController
-  load_and_authorize_resource :user, except: [:country_cities, :get_organization_details, :get_service_provider_by_domain, :country_code_from_name, :increase_demerit_flag, :confirm_destroy_cgp_user, :get_service_provider_by_email]
+  load_and_authorize_resource :user, except: [:country_cities, :country_code_from_name, :increase_demerit_flag, :confirm_destroy_cgp_user]
   before_action :set_controller_model, except: [:index, :update_notifications]
   before_action :set_user, only: [:show, :edit, :update, :download_user_files, :increase_demerit_flag, :confirm_destroy_cgp_user]
-  before_action :set_service_provider, only: [:edit_service_provider, :update_service_provider]
+  # before_action :set_service_provider, only: [:edit_service_provider, :update_service_provider]
 
   def index
     @page_title = 'Users'
@@ -17,22 +17,22 @@ class UsersController < AuthenticatedController
   end
 
   def edit
-    if @user.role == 'service_provider'
-      @user_detail = ServiceProviderDetail.find_or_initialize_by(id: @user.service_provider_detail&.id)
-    else
+    # if @user.role == 'service_provider'
+    #   @user_detail = ServiceProviderDetail.find_or_initialize_by(id: @user.service_provider_detail&.id)
+    # else
       @user_detail = UserDetail.find_or_initialize_by(id: @user.user_detail&.id)
-    end
+    # end
   
     unless @user.present? 
       redirect_to root_path, alert: "User is not available." and return
     end
   end
 
-  def edit_service_provider
-    unless @service_provider.present? 
-      redirect_to root_path, alert: "Service Provider is not available." and return
-    end
-  end
+  # def edit_service_provider
+  #   unless @service_provider.present? 
+  #     redirect_to root_path, alert: "Service Provider is not available." and return
+  #   end
+  # end
 
   def update
     user_params = 
@@ -43,7 +43,6 @@ class UsersController < AuthenticatedController
         :profile_pic, 
         :organization_name, 
         :gord_employee, 
-        :service_provider_id, 
         :active,
         :name_suffix,
         :middle_name, 
@@ -84,21 +83,6 @@ class UsersController < AuthenticatedController
           :education_certificate,
           :other_documents
         ],
-        service_provider_detail_attributes: [
-          :id,
-          :business_field,
-          :portfolio,
-          :commercial_licence_no,
-          :commercial_licence_expiry_date,
-          :commercial_licence_file,
-          :accredited_service_provider_licence_file,
-          :demerit_acknowledgement_file,
-          :application_form,
-          :cgp_licence_file,
-          :energy_assessor_name, 
-          :gsb_energey_assessment_licence_file,
-          :nominated_cgp
-        ],
         access_licences_attributes: [
           :id, 
           :user_id, 
@@ -114,54 +98,54 @@ class UsersController < AuthenticatedController
     end
   end
 
-  def update_service_provider
-    service_provider_params = params.require(:service_provider).permit(
-      :name, 
-      :username,
-      :profile_pic,
-      :organization_name, 
-      :gord_employee, 
-      :active,
-      :name_suffix ,
-      :middle_name, 
-      :last_name, 
-      :email_alternate, 
-      :country, 
-      :city, 
-      :mobile_area_code, 
-      :mobile, 
-      :organization_email,
-      :organization_address,
-      :organization_country, 
-      :organization_city, 
-      :organization_website, 
-      :organization_phone_area_code, 
-      :organization_phone, 
-      :organization_fax_area_code, 
-      :organization_fax, 
-      :gsb_id,
-      service_provider_detail_attributes: [
-            :id,
-            :business_field,
-            :portfolio,
-            :commercial_licence_no,
-            :commercial_licence_expiry_date,
-            :commercial_licence_file,
-            :accredited_service_provider_licence_file,
-            :demerit_acknowledgement_file,
-            :cgp_licence_file,
-            :energy_assessor_name, 
-            :gsb_energey_assessment_licence_file,
-            :nominated_cgp
-        ]
-      )
+  # def update_service_provider
+  #   service_provider_params = params.require(:service_provider).permit(
+  #     :name, 
+  #     :username,
+  #     :profile_pic,
+  #     :organization_name, 
+  #     :gord_employee, 
+  #     :active,
+  #     :name_suffix ,
+  #     :middle_name, 
+  #     :last_name, 
+  #     :email_alternate, 
+  #     :country, 
+  #     :city, 
+  #     :mobile_area_code, 
+  #     :mobile, 
+  #     :organization_email,
+  #     :organization_address,
+  #     :organization_country, 
+  #     :organization_city, 
+  #     :organization_website, 
+  #     :organization_phone_area_code, 
+  #     :organization_phone, 
+  #     :organization_fax_area_code, 
+  #     :organization_fax, 
+  #     :gsb_id,
+  #     service_provider_detail_attributes: [
+  #           :id,
+  #           :business_field,
+  #           :portfolio,
+  #           :commercial_licence_no,
+  #           :commercial_licence_expiry_date,
+  #           :commercial_licence_file,
+  #           :accredited_service_provider_licence_file,
+  #           :demerit_acknowledgement_file,
+  #           :cgp_licence_file,
+  #           :energy_assessor_name, 
+  #           :gsb_energey_assessment_licence_file,
+  #           :nominated_cgp
+  #       ]
+  #     )
 
-    if @service_provider.update(service_provider_params)
-      redirect_to user_path(@user), notice: "Service Provider information successfully updated."
-    else
-      render :edit_service_provider
-    end
-  end
+  #   if @service_provider.update(service_provider_params)
+  #     redirect_to user_path(@user), notice: "Service Provider information successfully updated."
+  #   else
+  #     render :edit_service_provider
+  #   end
+  # end
 
   def masquerade
     if params.has_key?(:user_id)
@@ -184,8 +168,8 @@ class UsersController < AuthenticatedController
     case user.role
       when 'default_role'
         redirect_path = dashboard_path
-      when 'service_provider'
-        redirect_path = dashboard_path
+      # when 'service_provider'
+      #   redirect_path = dashboard_path
       when 'credentials_admin'
         redirect_path = users_path
       else
@@ -337,21 +321,21 @@ class UsersController < AuthenticatedController
     end
   end
 
-  def get_organization_details
-    service_provider_id = params["service_provider_id"]
-    @user_details = User.find_by_id(service_provider_id)
-    respond_to do |format|
-      format.json { render json: @user_details }
-    end
-  end
+  # def get_organization_details
+  #   service_provider_id = params["service_provider_id"]
+  #   @user_details = User.find_by_id(service_provider_id)
+  #   respond_to do |format|
+  #     format.json { render json: @user_details }
+  #   end
+  # end
 
-  def get_service_provider_by_domain
-    @service_providers = ServiceProvider.where("email ILIKE :organization_domain", organization_domain: "%#{params['domain_name']}%").pluck(Arel.sql('name, middle_name, last_name'), :id)
+  # def get_service_provider_by_domain
+  #   @service_providers = ServiceProvider.where("email ILIKE :organization_domain", organization_domain: "%#{params['domain_name']}%").pluck(Arel.sql('name, middle_name, last_name'), :id)
     
-    respond_to do |format|
-      format.json { render json: @service_providers }
-    end
-  end
+  #   respond_to do |format|
+  #     format.json { render json: @service_providers }
+  #   end
+  # end
 
   def update_user_status
     status = @user.active?
@@ -378,26 +362,26 @@ class UsersController < AuthenticatedController
         file = @user.user_detail&.university_credentials_file&.path
       when "work_experience_file"
         file = @user.user_detail&.work_experience_file&.path
-      when "cgp_licence_file"
-        file = @user.service_provider_detail&.cgp_licence_file&.path
+      # when "cgp_licence_file"
+      #   file = @user.service_provider_detail&.cgp_licence_file&.path
       when "qid_work_permit_file"
         file = @user.user_detail&.qid_work_permit_file&.path
-      when "gsb_energey_assessment_licence_file"
-        file = @user.service_provider_detail&.gsb_energey_assessment_licence_file&.path
+      # when "gsb_energey_assessment_licence_file"
+      #   file = @user.service_provider_detail&.gsb_energey_assessment_licence_file&.path
       when "education_certificate"
         file = @user.user_detail&.education_certificate&.path
       when "other_documents"
         file = @user.user_detail&.other_documents&.path
-      when "accredited_service_provider_licence_file"
-        file = @user.service_provider_detail&.accredited_service_provider_licence_file&.path
-      when "commercial_licence_file"
-        file = @user.service_provider_detail&.commercial_licence_file&.path
-      when "demerit_acknowledgement_file"
-        file = @user.service_provider_detail&.demerit_acknowledgement_file&.path
-      when "application_form"
-        file = @user.service_provider_detail&.application_form&.path
-      when "portfolio"
-        file = @user.service_provider_detail&.portfolio&.path
+      # when "accredited_service_provider_licence_file"
+      #   file = @user.service_provider_detail&.accredited_service_provider_licence_file&.path
+      # when "commercial_licence_file"
+      #   file = @user.service_provider_detail&.commercial_licence_file&.path
+      # when "demerit_acknowledgement_file"
+      #   file = @user.service_provider_detail&.demerit_acknowledgement_file&.path
+      # when "application_form"
+      #   file = @user.service_provider_detail&.application_form&.path
+      # when "portfolio"
+      #   file = @user.service_provider_detail&.portfolio&.path
       when "gsb_trust_notification"
         demerit_flag = DemeritFlag.find(params[:demerit_flag])
         file = demerit_flag&.gsb_trust_notification&.path
@@ -421,18 +405,18 @@ class UsersController < AuthenticatedController
   end
 
   def confirm_destroy_cgp_user
-    @user.service_provider_id = nil
+    # @user.service_provider_id = nil
     @user.save(validate: false)
     redirect_to users_path, notice: "CGP/CEP removed from list successfully" and return
   end
 
-  def get_service_provider_by_email
-    @service_providers = ServiceProvider.where(email: params['email']).pluck("CONCAT(name, middle_name, last_name)", :id)
+  # def get_service_provider_by_email
+  #   @service_providers = ServiceProvider.where(email: params['email']).pluck("CONCAT(name, middle_name, last_name)", :id)
     
-    respond_to do |format|
-      format.json { render json: @service_providers }
-    end
-  end
+  #   respond_to do |format|
+  #     format.json { render json: @service_providers }
+  #   end
+  # end
 
   private
 
@@ -444,7 +428,7 @@ class UsersController < AuthenticatedController
     @user = User.find(params[:id])
   end
 
-  def set_service_provider
-    @service_provider = ServiceProvider.find(params[:id])
-  end
+  # def set_service_provider
+  #   @service_provider = ServiceProvider.find(params[:id])
+  # end
 end

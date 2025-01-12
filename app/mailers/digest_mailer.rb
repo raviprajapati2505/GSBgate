@@ -224,11 +224,12 @@ class DigestMailer < ApplicationMailer
 
   def user_licences_update_email(user)
     @user = user
-    @licences = if @user.is_service_provider?
-                  Licence.with_service_provider_licences
-                else
-                  Licence.with_cp_licences
-                end
+    @licences = Licence.with_cp_licences
+    # @licences = if @user.is_service_provider?
+    #               Licence.with_service_provider_licences
+    #             else
+    #               Licence.with_cp_licences
+    #             end
 
     mail(to: @user.email, subject: 'GSBgate - your licences summary')
   end

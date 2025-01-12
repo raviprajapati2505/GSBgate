@@ -9,17 +9,17 @@ class DashboardController < AuthenticatedController
     @overdue_licences = AccessLicence.user_overdue_access_licences(@user.id)
 
     # Affiliated Practitioner Accreditation
-    @service_provider_user_licences_energy_centers_efficiency = AccessLicence.users_of_service_provider(@user, Certificate.certificate_types[:energy_centers_efficiency_type])
-    @service_provider_user_licences_building_energy_efficiency = AccessLicence.users_of_service_provider(@user, Certificate.certificate_types[:building_energy_efficiency_type])
-    @service_provider_user_licences_healthy_buildings = AccessLicence.users_of_service_provider(@user, Certificate.certificate_types[:healthy_buildings_type])
-    @service_provider_user_licences_indoor_air_quality = AccessLicence.users_of_service_provider(@user, Certificate.certificate_types[:indoor_air_quality_type])
-    @service_provider_user_licences_measurement_reporting_and_verification = AccessLicence.users_of_service_provider(@user, Certificate.certificate_types[:measurement_reporting_and_verification_type])
-    @service_provider_user_licences_building_water_efficiency = AccessLicence.users_of_service_provider(@user, Certificate.certificate_types[:building_water_efficiency_type])
-    @service_provider_user_licences_events_carbon_neutrality = AccessLicence.users_of_service_provider(@user, Certificate.certificate_types[:events_carbon_neutrality_type])
-    @service_provider_user_licences_products_ecolabeling = AccessLicence.users_of_service_provider(@user, Certificate.certificate_types[:products_ecolabeling_type])
-    @service_provider_user_licences_green_IT = AccessLicence.users_of_service_provider(@user, Certificate.certificate_types[:green_IT_type])
-    @service_provider_user_licences_net_zero = AccessLicence.users_of_service_provider(@user, Certificate.certificate_types[:net_zero_type])
-    @service_provider_user_licences_energy_label_waste_water_treatment_facility = AccessLicence.users_of_service_provider(@user, Certificate.certificate_types[:energy_label_waste_water_treatment_facility_type])
+    # @service_provider_user_licences_energy_centers_efficiency = AccessLicence.users_of_service_provider(@user, Certificate.certificate_types[:energy_centers_efficiency_type])
+    # @service_provider_user_licences_building_energy_efficiency = AccessLicence.users_of_service_provider(@user, Certificate.certificate_types[:building_energy_efficiency_type])
+    # @service_provider_user_licences_healthy_buildings = AccessLicence.users_of_service_provider(@user, Certificate.certificate_types[:healthy_buildings_type])
+    # @service_provider_user_licences_indoor_air_quality = AccessLicence.users_of_service_provider(@user, Certificate.certificate_types[:indoor_air_quality_type])
+    # @service_provider_user_licences_measurement_reporting_and_verification = AccessLicence.users_of_service_provider(@user, Certificate.certificate_types[:measurement_reporting_and_verification_type])
+    # @service_provider_user_licences_building_water_efficiency = AccessLicence.users_of_service_provider(@user, Certificate.certificate_types[:building_water_efficiency_type])
+    # @service_provider_user_licences_events_carbon_neutrality = AccessLicence.users_of_service_provider(@user, Certificate.certificate_types[:events_carbon_neutrality_type])
+    # @service_provider_user_licences_products_ecolabeling = AccessLicence.users_of_service_provider(@user, Certificate.certificate_types[:products_ecolabeling_type])
+    # @service_provider_user_licences_green_IT = AccessLicence.users_of_service_provider(@user, Certificate.certificate_types[:green_IT_type])
+    # @service_provider_user_licences_net_zero = AccessLicence.users_of_service_provider(@user, Certificate.certificate_types[:net_zero_type])
+    # @service_provider_user_licences_energy_label_waste_water_treatment_facility = AccessLicence.users_of_service_provider(@user, Certificate.certificate_types[:energy_label_waste_water_treatment_facility_type])
 
 
     # Practitioner Accreditation Or Corporate License
@@ -60,20 +60,20 @@ class DashboardController < AuthenticatedController
       access_licence.save
       redirect_to dashboard_user_path(access_licence.user.id), notice: "Licence Document updated successfully" and return
     else
-      if User.is_service_provider(@user)
-        if @user.service_provider_detail.present?
-          case user_params[:file_name]
-            when "application_form"
-              @user.service_provider_detail.application_form = user_params[:file]
-            when "portfolio"
-                @user.service_provider_detail.portfolio = user_params[:file]
-            end
-          @user.save(validate: false)
-          redirect_to dashboard_path, notice: "Document updated successfully" and return
-        else
-          redirect_to dashboard_path, alert: "Please fill full profile details first" and return
-        end
-      else
+      # if User.is_service_provider(@user)
+      #   if @user.service_provider_detail.present?
+      #     case user_params[:file_name]
+      #       when "application_form"
+      #         @user.service_provider_detail.application_form = user_params[:file]
+      #       when "portfolio"
+      #           @user.service_provider_detail.portfolio = user_params[:file]
+      #       end
+      #     @user.save(validate: false)
+      #     redirect_to dashboard_path, notice: "Document updated successfully" and return
+      #   else
+      #     redirect_to dashboard_path, alert: "Please fill full profile details first" and return
+      #   end
+      # else
         if @user.user_detail.present?
           case user_params[:file_name]
             when "university_credentials_file"
@@ -90,7 +90,7 @@ class DashboardController < AuthenticatedController
         else
           redirect_to dashboard_path, alert: "Please fill full profile details first" and return
         end
-      end
+      # end
     end
   end
 

@@ -24,11 +24,11 @@ class Ability
     certification_team_type = get_certification_team_type(request)
 
     if user.valid_cgp_or_cep_available?
-      @service_provider_valid_licences = user&.valid_user_sp_licences
+      # @service_provider_valid_licences = user&.valid_user_sp_licences
       @cp_valid_licences = user&.valid_user_licences
     end
 
-    @service_provider_valid_licences ||= AccessLicence.none
+    # @service_provider_valid_licences ||= AccessLicence.none
     @cp_valid_licences ||= AccessLicence.none
 
     @valid_checklist_licences = user.valid_checklist_licences
@@ -73,13 +73,13 @@ class Ability
     project_with_user_in_gsb_trust_team = {projects_users: {user: active_user, role: project_user_gsb_trust_team_roles}}
     project_with_user_as_enterprise_client = {projects_users: {user: active_user, role: project_user_enterprise_client_roles}}
 
-    if user.type == 'ServiceProvider'
-      users_with_service_provider = { user: { service_provider_id: user.id } }
-    else
-      users_with_service_provider = { user: { id: user.id } }
-    end
+    # if user.type == 'ServiceProvider'
+    #   users_with_service_provider = { user: { service_provider_id: user.id } }
+    # else
+      # users_with_service_provider = { user: { id: user.id } }
+    # end
    
-    projects_users_with_service_provider = { projects_users: users_with_service_provider }
+    # projects_users_with_service_provider = { projects_users: users_with_service_provider }
 
     schemes_array = { name: schemes_of_valid_user_licences }
     schemes_under_valid_licences = { scheme: schemes_array }
@@ -104,7 +104,7 @@ class Ability
     # ------------------------------------------------------------------------------------------------------------
 
     can [:show, :edit, :update, :download_user_files], User, id: user.id
-    can [:edit_service_provider, :update_service_provider], ServiceProvider, id: user.id
+    # can [:edit_service_provider, :update_service_provider], ServiceProvider, id: user.id
     can [:new_survey_response, :create_survey_response], ProjectsSurvey do |project_survey|
       project_survey.status == 'active' && project_survey.end_date > Date.today
     end
@@ -310,7 +310,7 @@ class Ability
       can :update, SchemeMixCriterionWpl, scheme_mix_criterion: {main_scheme_mix_criterion: nil, status: scheme_mix_criterion_status_verifying}
       can :epc_matches_energy_suite, SchemeMixCriterion, status: scheme_mix_criterion_status_verifying
       can :upload_epc_matches_document, SchemeMixCriterion
-      can :select_service_provider, User
+      # can :select_service_provider, User
 
       if user.is_gsb_trust_admin?
         can [:create, :destroy], [ActualProjectImage, ProjectRenderingImage]
@@ -471,7 +471,7 @@ class Ability
       can :count, Task
 
       can [:show, :edit, :update, :index, :activity_info, :download_user_files], User
-      can [:edit_service_provider, :update_service_provider], ServiceProvider
+      # can [:edit_service_provider, :update_service_provider], ServiceProvider
       can :activity_info, User
 
       can [:index, :total_project_surveys], :survey_dashboard
@@ -480,32 +480,32 @@ class Ability
       can [:index], ProjectsSurvey
       can [:index, :download_linkme_survey_data], LinkmeSurvey
 
-    elsif user.is_service_provider?
-      can :read, Project, projects_users: users_with_service_provider
-      can :read, ProjectsUser, project: projects_users_with_service_provider
-      can :read, CertificationPath, project: projects_users_with_service_provider
-      can :read, [SchemeMix, CertificationPathDocument], certification_path: { project: projects_users_with_service_provider }
-      can :read, [ActualProjectImage, ProjectRenderingImage] , project: projects_users_with_service_provider
-      can :read, SchemeMixCriterion, scheme_mix: {certification_path: {project: projects_users_with_service_provider}}
-      can :read, [SchemeMixCriterionEpl, SchemeMixCriterionWpl, SchemeMixCriteriaDocument], scheme_mix_criterion: { scheme_mix: {certification_path: {project: projects_users_with_service_provider}}}
-      can :read, RequirementDatum, scheme_mix_criteria: { scheme_mix: {certification_path: {project: projects_users_with_service_provider}}}
-      can :read, Document, scheme_mix_criteria_documents: { scheme_mix_criterion: {scheme_mix: {certification_path: {project: projects_users_with_service_provider}}}}
-      can :read, User, service_provider_id: user.id
-      can :activity_info, User
+    # elsif user.is_service_provider?
+    #   can :read, Project, projects_users: users_with_service_provider
+    #   can :read, ProjectsUser, project: projects_users_with_service_provider
+    #   can :read, CertificationPath, project: projects_users_with_service_provider
+    #   can :read, [SchemeMix, CertificationPathDocument], certification_path: { project: projects_users_with_service_provider }
+    #   can :read, [ActualProjectImage, ProjectRenderingImage] , project: projects_users_with_service_provider
+    #   can :read, SchemeMixCriterion, scheme_mix: {certification_path: {project: projects_users_with_service_provider}}
+    #   can :read, [SchemeMixCriterionEpl, SchemeMixCriterionWpl, SchemeMixCriteriaDocument], scheme_mix_criterion: { scheme_mix: {certification_path: {project: projects_users_with_service_provider}}}
+    #   can :read, RequirementDatum, scheme_mix_criteria: { scheme_mix: {certification_path: {project: projects_users_with_service_provider}}}
+    #   can :read, Document, scheme_mix_criteria_documents: { scheme_mix_criterion: {scheme_mix: {certification_path: {project: projects_users_with_service_provider}}}}
+    #   can :read, User, service_provider_id: user.id
+    #   can :activity_info, User
 
-      cannot :manage, :survey_dashboard
-      cannot [:index, :show, :new, :edit, :create, :update, :destroy], SurveyType
-      cannot [:show, :form, :create, :update, :update_position], SurveyQuestionnaireVersion
-      cannot [:index, :show, :copy_project_survey, :new, :create, :edit, :update, :destroy, :export_survey_results, :export_excel_survey_results], ProjectsSurvey
-      cannot [:index, :download_linkme_survey_data], LinkmeSurvey
-      can [:index, :upload_document], :dashboard
+    #   cannot :manage, :survey_dashboard
+    #   cannot [:index, :show, :new, :edit, :create, :update, :destroy], SurveyType
+    #   cannot [:show, :form, :create, :update, :update_position], SurveyQuestionnaireVersion
+    #   cannot [:index, :show, :copy_project_survey, :new, :create, :edit, :update, :destroy, :export_survey_results, :export_excel_survey_results], ProjectsSurvey
+    #   cannot [:index, :download_linkme_survey_data], LinkmeSurvey
+    #   can [:index, :upload_document], :dashboard
     elsif user.is_credentials_admin?
       # Task
       can :read, Task
       can :count, Task
       
       can [:show, :edit, :update, :index, :activity_info, :download_user_files, :update_user_status], User
-      can [:edit_service_provider, :update_service_provider], ServiceProvider
+      # can [:edit_service_provider, :update_service_provider], ServiceProvider
       can [:index, :upload_document], :dashboard
     else
       cannot :manage, :all
@@ -524,24 +524,24 @@ class Ability
                                             end
 
     # assessment methods / Applicabilities under valid licences.
-    service_provider_valid_licences_certificate_types = @service_provider_valid_licences.where("licences.applicability IN (:applicability)", applicability: certification_path_assessment_method).pluck("licences.certificate_type")
+    # service_provider_valid_licences_certificate_types = @service_provider_valid_licences.where("licences.applicability IN (:applicability)", applicability: certification_path_assessment_method).pluck("licences.certificate_type")
     cp_valid_licences_certificate_types = @cp_valid_licences.where("licences.applicability IN (:applicability)", applicability: certification_path_assessment_method).pluck("licences.certificate_type")
 
-    allowed_certificate_types = service_provider_valid_licences_certificate_types & cp_valid_licences_certificate_types
+    # allowed_certificate_types = service_provider_valid_licences_certificate_types & cp_valid_licences_certificate_types
 
     # for checklist licences, service provider licences verification not needed.
     valid_checklist_licences_certificate_type = @valid_checklist_licences.pluck("licences.certificate_type")
 
     if (@certification_path.present? && @certification_path.is_checklist_method?) || !@certification_path.present?
-      allowed_certificate_types.push(*valid_checklist_licences_certificate_type)
+      cp_valid_licences_certificate_types.push(*valid_checklist_licences_certificate_type)
     end
 
-    return (allowed_certificate_types).uniq
+    return (cp_valid_licences_certificate_types).uniq
   end
 
   def schemes_of_valid_user_licences
-    schemes = @service_provider_valid_licences.pluck("licences.schemes").flatten.uniq
-
+    # schemes = @service_provider_valid_licences.pluck("licences.schemes").flatten.uniq
+    schemes = []
     # for checklist licences, service provider licences verification not needed.
     if @certification_path.present? && @certification_path.is_checklist_method? && @valid_checklist_licences.present?
       schemes = @certification_path&.development_type&.schemes&.pluck(:name).uniq

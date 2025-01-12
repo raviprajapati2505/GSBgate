@@ -2,7 +2,7 @@
 <fieldset class="scheduler-border">
 	<legend class="scheduler-border">Personal Information</legend>
 		<div class="control-group">
-		<% if resource_for == 'user' && resource.role&.titleize != 'Service Provider' %>
+		<% if resource_for == 'user' %>
 			<div class="row">
 				<div class="col-md-4">
 				<%= f.input :name_suffix, collection: ["Mr.", "Ms.", "Mrs.", "Dr."], include_blank: "Choose Appellations", selected: resource.name_suffix, input_html: { class: "form-control" }, required: true %>
@@ -10,7 +10,7 @@
 		</div>
 		<% end %>
 		<div class="row">
-			<% if resource_for == 'user' && resource.role&.titleize != 'Service Provider' %>
+			<% if resource_for == 'user' %>
 				<div class="col-md-4 col-sm-6 col-xs-12"><%= f.input :name, required: true %></div>
 				<div class="col-md-4 col-sm-6 col-xs-12"><%= f.input :middle_name %></div>
 				<div class="col-md-4 col-sm-6 col-xs-12"><%= f.input :last_name %></div>
@@ -73,61 +73,7 @@
 		</div>
 </fieldset>
 
-<fieldset class="scheduler-border">
-	<legend class="scheduler-border"><%= t('.user_details.company_information') %></legend>
-	<div class="control-group">
-		<div class="row">
-      <% if resource_for == 'user' &&  resource.role&.titleize != 'Service Provider' %>
-        <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-          <label>Service Provider</label>
-          <%= f.select :service_provider_id, options_for_select([[resource.service_provider&.name, resource.service_provider&.id]], resource.service_provider&.id), { include_blank: "Choose a Service Provider" }, { class: "select2 form-control", id: "select-service-provider" } %>
-        </div>
-      <% end %>
-      <div class="col-md-4 col-sm-6 col-xs-12">
-        <%= f.input :organization_name, input_html: { id: 'org_name'}, required: true %>
-      </div>
-      <div class="col-md-4 col-sm-6 col-xs-12">
-        <%= f.input :organization_address, input_html: { id: 'org_address'}, required: true %>
-      </div>
-      <div class="col-md-4 col-sm-6 col-xs-12">
-        <%= f.input :organization_email, input_html: { id: 'org_email'}, required: true %>
-      </div>
-		</div>
-		<div class="row">
-			<div class="col-md-4 col-sm-6 col-xs-12">
-				<%= f.input :organization_country, collection: countries.map{ |cnt| [cnt[1], cnt[1]] }, include_blank: "Select Country", selected: resource.organization_country, input_html: { class: "select2 form-control country-select", id: "organization-country-select", data: {"for": "organization"} }, required: true %>
-			</div>
-			<div class="col-md-4 col-sm-6 col-xs-12">
-				<%= f.input :organization_city, collection: [resource.organization_city], include_blank: "Select City", selected: resource.organization_city, input_html: { class: "select2 form-control city-select", id: "organization-city-select" } %>
-			</div>
-			<div class="col-md-4 col-sm-6 col-xs-12">
-				<%= f.input :organization_website, input_html: { id: 'org_website', placeholder: 'http://mywebsite.com'}, required: true %>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-4 col-sm-6 col-xs-12">
-				<%= f.input :organization_phone_area_code, input_html: { id: 'org_phone_area_code'} %>
-			</div>
-			<div class="col-md-4 col-sm-6 col-xs-12">
-				<%= f.input :organization_phone, input_html: { id: 'org_phone'} %>
-			</div>
-      <% if resource_for == 'user' &&  resource.role&.titleize != 'Service Provider' %>
-        <div class="col-md-4 col-sm-6 col-xs-12">
-          <%= f.input :organization_fax_area_code, input_html: { id: 'org_fax_area_code'}  %>
-        </div>
-      <% end %>
-		</div>
-    <% if resource_for == 'user' &&  resource.role&.titleize != 'Service Provider' %>
-      <div class="row">
-        <div class="col-md-4 col-sm-6 col-xs-12">
-          <%= f.input :organization_fax, input_html: { id: 'org_fax'} %>
-        </div>
-      </div>
-    <% end %>
-	</div>
-</fieldset>
-
-  <% if resource_for == 'user' &&  resource.role&.titleize != 'Service Provider' %>
+  <% if resource_for == 'user' %>
     <fieldset class="scheduler-border">
       <legend class="scheduler-border"><%= t('.user_details.additional_information') %></legend>
       <div class="control-group">
@@ -136,8 +82,4 @@
         <% end %>
       </div>
     </fieldset>
-  <% else %>
-    <%= f.simple_fields_for :service_provider_detail, service_provider_detail do |service_provider_detail| %>
-      <%= render partial: 'users/registrations/service_provider_detail_fields', locals: { f: service_provider_detail, user: resource } %>
-    <% end %>
   <% end %>

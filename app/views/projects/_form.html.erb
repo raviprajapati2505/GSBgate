@@ -20,24 +20,6 @@
                 <%= f.text_field :name %>
 
                 <%= f.select(:certificate_type, options_for_select(current_user.allowed_certification_types.map { |k, v| [t(k, scope: 'activerecord.attributes.certificate.certificate_types'), v]}, @project.certificate_type)) %>
-                  
-                <% if current_user.is_system_admin? || current_user.is_gsb_trust_manager? || current_user.is_gsb_trust_top_manager? || current_user.is_gsb_trust_admin? %>
-                  <%= f.text_field :service_provider %>
-
-                  <button name="button" type="button" data-toggle="modal" data-target="#searchServiceProvider" style="bottom: 13px;position: relative;"><i class="fa fa-search fa-lg open-modal" data-service_provider="for_service_provider" ></i></button>
-                  
-                  <div class="design-fields">
-                    <%= f.text_field :service_provider_2 %>
-                  </div>
-                  
-                  <button name="button" type="button" data-toggle="modal" data-target="#searchServiceProvider" style="bottom: 13px;position: relative;" class="design-fields"><i class="fa fa-search fa-lg open-modal" data-service_provider="for_service_provider_2" ></i></button>
-                <% else %>
-                  
-                  <%= f.text_field :service_provider %>
-                  <div class="design-fields">
-                    <%= f.text_field :service_provider_2 %>
-                  </div>
-                <% end %>
 
                 <%= f.text_field :owner %>
 
@@ -259,69 +241,4 @@
     </div>
   </div>
 <% end %>
-
-<div class="modal fade" id="searchServiceProvider" aria-hidden="true" >
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <%= btn_close_modal %>
-        <h4 class="modal-title">Find Service Provider</h4>
-      </div>
-      <div class="modal-body find-users-modal">
-        <div class="form-group">
-          <%= label_tag 'email', 'Find by Email', class: 'control-label' %>
-          
-          <div class="input-group">
-            <%= text_field_tag 'email', '', class: 'email-field form-control' %>
-            <span class="input-group-btn">
-              <%= btn_tag(class: 'find-sp-by-email-btn', icon: 'search', style: 'white', type: 'button') %>
-            </span>
-          </div>
-
-          <input type="hidden" name="set_name_for" id="set_name_for">
-          
-          <p class="error-block" style="color:red"></p>
-        </div>
-      </div>
-      
-      <div class="modal-footer" style="display:none;"></div>
-    </div>
-  </div>
-</div>
-
 <%= javascript_include_tag 'select_owner' %>
-
-<script type="text/javascript">
-  $(document).ready(function(){
-    $('.open-modal').click(function(){
-      $('#set_name_for').val($(this).data('service_provider'));
-    })
-    $('.find-sp-by-email-btn').click(function(){
-      $('.error-block').text('')
-      $.ajax({
-          url: "/users/get_service_provider_by_email",
-          method: "GET",
-          dataType: "json",
-          data: {
-              email: $('#email').val()
-          },
-          success: function(result) {
-              if(result.length > 0){
-                 $('#searchServiceProvider').modal('toggle')
-                
-                 if($('#set_name_for').val() == 'for_service_provider'){
-                    $('#project_service_provider').val(result[0][0])
-                 }else{
-                    $('#project_service_provider_2').val(result[0][0])
-                 }
-              }else{
-                 $('.error-block').text('email you entered is not associate with any service provider !!')
-              }
-          },
-          error: function() {
-              alert('Something went wrong !');
-          }
-      });
-    })
-  })
-</script>

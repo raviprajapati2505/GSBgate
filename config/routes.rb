@@ -11,10 +11,10 @@ Rails.application.routes.draw do
                                     confirmations: 'users/confirmations' }
 
   devise_scope :user do
-    get '/users/registrations/new_service_provider', to: 'users/registrations#new_service_provider', as: :new_service_provider
-    post '/users/registrations/create_service_provider', to: 'users/registrations#create_service_provider', as: :create_service_provider
-    get '/users/registrations/:id/edit_service_provider', to: 'users/registrations#edit_service_provider', as: :edit_service_provider
-    put '/users/registrations/:id/update_service_provider', to: 'users/registrations#update_service_provider', as: :update_service_provider
+    # get '/users/registrations/new_service_provider', to: 'users/registrations#new_service_provider', as: :new_service_provider
+    # post '/users/registrations/create_service_provider', to: 'users/registrations#create_service_provider', as: :create_service_provider
+    # get '/users/registrations/:id/edit_service_provider', to: 'users/registrations#edit_service_provider', as: :edit_service_provider
+    # put '/users/registrations/:id/update_service_provider', to: 'users/registrations#update_service_provider', as: :update_service_provider
     post '/users/sessions/check_authentication', to: 'users/sessions#check_authentication'
     post '/users/sessions/validate_otp/:id', to: 'users/sessions#validate_otp', as: :validate_otp
     get '/users/sessions/otp/:id', to: 'users/sessions#otp', as: :send_otp
@@ -30,16 +30,16 @@ Rails.application.routes.draw do
       get 'masquerade/:user_id' => 'users#masquerade', as: 'masquerade', constraints: { user_id: /\d+/ }
       get 'find_users_by_email/:email/:project_id(/:gord_employee)' => 'users#find_users_by_email', as: 'find_users_by_email', constraints: { email: /[^\/]+/ }
       get "country_cities", to: "users#country_cities", as: :country_cities
-      get "get_organization_details", to: "users#get_organization_details", as: :get_organization_details
-      get "get_service_provider_by_domain", to: "users#get_service_provider_by_domain", as: :get_service_provider_by_domain
-      get "get_service_provider_by_email", to: "users#get_service_provider_by_email", as: :get_service_provider_by_email
+      # get "get_organization_details", to: "users#get_organization_details", as: :get_organization_details
+      # get "get_service_provider_by_domain", to: "users#get_service_provider_by_domain", as: :get_service_provider_by_domain
+      # get "get_service_provider_by_email", to: "users#get_service_provider_by_email", as: :get_service_provider_by_email
       get "country_code_from_name", to: "users#country_code_from_name", as: :country_code_from_name
     end
     member do
       get :edit, to: 'users#edit', as: :edit
       put :update, to: 'users#update', as: :update
-      get :edit_service_provider, to: 'users#edit_service_provider', as: :edit_service_provider
-      put :update_service_provider, to: 'users#update_service_provider', as: :update_service_provider
+      # get :edit_service_provider, to: 'users#edit_service_provider', as: :edit_service_provider
+      # put :update_service_provider, to: 'users#update_service_provider', as: :update_service_provider
       get :list_notifications, path: :notifications
       put :update_notifications, path: :notifications
       patch :update_user_status, to: 'users#update_user_status', as: 'update_user_status'

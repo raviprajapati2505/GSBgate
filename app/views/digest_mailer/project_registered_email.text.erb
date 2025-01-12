@@ -6,7 +6,6 @@ Dear Ms/Mr
 A new project with name <%= @project.name %> is registered.
 
 Certificate Type : <%= t(Certificate.certificate_types.key(@project.certificate_type), scope: 'activerecord.attributes.certificate.certificate_types') %>
-Service provider : <%= @project.service_provider %>
 Project owner : <%= @project.owner %>
 Developer : <%= @project.developer %>
 

@@ -266,7 +266,7 @@
     <div class="ibox-title">
       <h5><%= @project.team_table_heading %></h5>
     </div>
-    <%= render partial: 'projects/service_provider_info', locals: { project: @project, certification_path: @certification_path } %>
+    <%#= render partial: 'projects/service_provider_info', locals: { project: @project, certification_path: @certification_path } %>
 
     <%= render partial: 'projects_users/index', locals: { project: @project, team: :project_team, certification_team_type: ProjectsUser.certification_team_types[:other], certification_path: @certification_path } %>
 

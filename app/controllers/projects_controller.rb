@@ -189,13 +189,13 @@ class ProjectsController < AuthenticatedController
 
     projects = Project.datatable_projects_records
 
-    projects = 
-      if current_user.is_service_provider?
-        project_ids = Project.accessible_by(current_ability).pluck(:id)
-        projects.where(id: project_ids.uniq)
-      else
-        projects.accessible_by(current_ability)
-      end
+    projects = projects.accessible_by(current_ability)
+      # if current_user.is_service_provider?
+      #   project_ids = Project.accessible_by(current_ability).pluck(:id)
+      #   projects.where(id: project_ids.uniq)
+      # else
+        # projects.accessible_by(current_ability)
+      # end
       
     offline_projects = Offline::Project.datatable_projects_records
 
@@ -238,8 +238,7 @@ class ProjectsController < AuthenticatedController
         t('models.effective.datatables.projects_certification_paths.certification_path_started_at.label'),
         t('models.effective.datatables.projects_certification_paths.certification_path_status_is_active.label'),
         t('models.effective.datatables.projects_certification_paths.certification_path_pcr_track.label'),
-        t('models.effective.datatables.projects_certification_paths.building_types.label'),
-        t('models.effective.datatables.projects.lables.service_provider')
+        t('models.effective.datatables.projects_certification_paths.building_types.label')
       ]
     projects.each do |data|
       certification_path = certification_paths.find { |cp| cp.id == data.certification_path_id }
@@ -375,9 +374,7 @@ class ProjectsController < AuthenticatedController
 
           data.certification_path_pcr_track,
 
-          data.building_type_name,
-
-          data.project_service_provider
+          data.building_type_name
         ]
 
       @projects.push(general_projects_lables.zip(formatted_data).to_h)
@@ -432,8 +429,8 @@ class ProjectsController < AuthenticatedController
   def new
     @page_title = 'New project'
     @project = Project.new
-    @project.service_provider = current_user.organization_name
-    @project.service_provider_2 = current_user.organization_name
+    # @project.service_provider = current_user.organization_name
+    # @project.service_provider_2 = current_user.organization_name
     @certificates = Certificate.all
   end
 
@@ -444,9 +441,9 @@ class ProjectsController < AuthenticatedController
 
   def create
     @project = Project.new(project_params)
-    unless project_params.has_key?(:service_provider)
-      @project.service_provider = current_user.organization_name
-    end
+    # unless project_params.has_key?(:service_provider)
+    #   @project.service_provider = current_user.organization_name
+    # end
     @project.transaction(joinable:false) do
       if @project.save
         @project.transaction(requires_new: true, joinable: false) do
@@ -571,9 +568,9 @@ class ProjectsController < AuthenticatedController
   # Never trust parameters from the scary internet, only allow the white list through.
   def project_params
     if current_user.is_system_admin?  || current_user.is_gsb_trust_admin?
-      params.require(:project).permit(:name, :certificate_type, :owner, :developer, :service_provider, :service_provider_2, :description, :address, :city, :district, :location, :country, :construction_year, :coordinates, :buildings_footprint_area, :gross_area, :certified_area, :carpark_area, :project_site_area, :terms_and_conditions_accepted, :location_plan_file, :location_plan_file_cache, :site_plan_file, :site_plan_file_cache, :design_brief_file, :design_brief_file_cache, :project_narrative_file, :project_narrative_file_cache, :sustainability_features_file, :sustainability_features_file_cache, :area_statement_file, :area_statement_file_cache, :building_type_group_id, :building_type_id, :estimated_project_cost, :cost_square_meter, :estimated_building_cost, :estimated_infrastructure_cost, :code, :project_owner_business_sector, :project_developer_business_sector, :project_owner_email, :specify_other_project_use)
+      params.require(:project).permit(:name, :certificate_type, :owner, :developer, :description, :address, :city, :district, :location, :country, :construction_year, :coordinates, :buildings_footprint_area, :gross_area, :certified_area, :carpark_area, :project_site_area, :terms_and_conditions_accepted, :location_plan_file, :location_plan_file_cache, :site_plan_file, :site_plan_file_cache, :design_brief_file, :design_brief_file_cache, :project_narrative_file, :project_narrative_file_cache, :sustainability_features_file, :sustainability_features_file_cache, :area_statement_file, :area_statement_file_cache, :building_type_group_id, :building_type_id, :estimated_project_cost, :cost_square_meter, :estimated_building_cost, :estimated_infrastructure_cost, :code, :project_owner_business_sector, :project_developer_business_sector, :project_owner_email, :specify_other_project_use)
     else
-      params.require(:project).permit(:name, :certificate_type, :owner, :developer, :service_provider, :service_provider_2, :description, :address, :city, :district, :location, :country, :construction_year, :coordinates, :buildings_footprint_area, :gross_area, :certified_area, :carpark_area, :project_site_area, :terms_and_conditions_accepted, :location_plan_file, :location_plan_file_cache, :site_plan_file, :site_plan_file_cache, :design_brief_file, :design_brief_file_cache, :project_narrative_file, :project_narrative_file_cache, :sustainability_features_file, :sustainability_features_file_cache, :area_statement_file, :area_statement_file_cache, :building_type_group_id, :building_type_id, :estimated_project_cost, :cost_square_meter, :estimated_building_cost, :estimated_infrastructure_cost, :project_owner_business_sector, :project_developer_business_sector, :project_owner_email, :specify_other_project_use)
+      params.require(:project).permit(:name, :certificate_type, :owner, :developer, :description, :address, :city, :district, :location, :country, :construction_year, :coordinates, :buildings_footprint_area, :gross_area, :certified_area, :carpark_area, :project_site_area, :terms_and_conditions_accepted, :location_plan_file, :location_plan_file_cache, :site_plan_file, :site_plan_file_cache, :design_brief_file, :design_brief_file_cache, :project_narrative_file, :project_narrative_file_cache, :sustainability_features_file, :sustainability_features_file_cache, :area_statement_file, :area_statement_file_cache, :building_type_group_id, :building_type_id, :estimated_project_cost, :cost_square_meter, :estimated_building_cost, :estimated_infrastructure_cost, :project_owner_business_sector, :project_developer_business_sector, :project_owner_email, :specify_other_project_use)
     end
   end
 end

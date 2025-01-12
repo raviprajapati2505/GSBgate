@@ -3,7 +3,7 @@
 class Users::RegistrationsController < Devise::RegistrationsController
   before_action :configure_sign_up_params, only: [:create]
   before_action :configure_account_update_params, only: [:update]
-  before_action :set_service_provider, only: [:edit_service_provider, :update_service_provider]
+  # before_action :set_service_provider, only: [:edit_service_provider, :update_service_provider]
   before_action :set_user, only: [:edit]
 
   # GET /resource/sign_up
@@ -13,10 +13,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
   end
 
-  def new_service_provider
-    @service_provider = ServiceProvider.new
-    @service_provider_detail = @service_provider.build_service_provider_detail
-  end
+  # def new_service_provider
+  #   @service_provider = ServiceProvider.new
+  #   @service_provider_detail = @service_provider.build_service_provider_detail
+  # end
   
   # POST /resource
   # def create
@@ -24,18 +24,18 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   # POST /service_provider
-  def create_service_provider
-    @service_provider = ServiceProvider.new(sp_sign_up_params)
-    @service_provider.role = :service_provider
+  # def create_service_provider
+  #   @service_provider = ServiceProvider.new(sp_sign_up_params)
+  #   @service_provider.role = :service_provider
 
-    if @service_provider.save
-      redirect_to new_user_session_path, notice: "Confirmation mail has been sent to your registered email address, Please verify your account."
-    else
-      clean_up_passwords @service_provider
-      set_minimum_password_length
-      render :new_service_provider
-    end
-  end
+  #   if @service_provider.save
+  #     redirect_to new_user_session_path, notice: "Confirmation mail has been sent to your registered email address, Please verify your account."
+  #   else
+  #     clean_up_passwords @service_provider
+  #     set_minimum_password_length
+  #     render :new_service_provider
+  #   end
+  # end
 
   # GET /resource/edit
   def edit
@@ -44,10 +44,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   # GET /edit_service_provider
-  def edit_service_provider
-    @service_provider_detail = ServiceProviderDetail.find_or_initialize_by(id: @service_provider.service_provider_detail&.id)
-    render :edit_service_provider
-  end
+  # def edit_service_provider
+  #   @service_provider_detail = ServiceProviderDetail.find_or_initialize_by(id: @service_provider.service_provider_detail&.id)
+  #   render :edit_service_provider
+  # end
 
   # PUT /resource
   # def update
@@ -55,17 +55,17 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   # PUT /resource
-  def update_service_provider
-    #sp_update_params[:service_provider_detail_attributes][:commercial_licence_file] = @service_provider.service_provider_detail.commercial_licence_file unless sp_update_params[:service_provider_detail_attributes].has_key?(:commercial_licence_file) && sp_update_params[:service_provider_detail_attributes][:commercial_licence_file].present?
-    sp_updated = update_resource(@service_provider, sp_update_params)
-    if sp_updated
-      redirect_to user_path(@service_provider), notice: "Profile has successfully updated."
-    else
-      clean_up_passwords resource
-      set_minimum_password_length
-      render :edit_service_provider
-    end
-  end
+  # def update_service_provider
+  #   #sp_update_params[:service_provider_detail_attributes][:commercial_licence_file] = @service_provider.service_provider_detail.commercial_licence_file unless sp_update_params[:service_provider_detail_attributes].has_key?(:commercial_licence_file) && sp_update_params[:service_provider_detail_attributes][:commercial_licence_file].present?
+  #   sp_updated = update_resource(@service_provider, sp_update_params)
+  #   if sp_updated
+  #     redirect_to user_path(@service_provider), notice: "Profile has successfully updated."
+  #   else
+  #     clean_up_passwords resource
+  #     set_minimum_password_length
+  #     render :edit_service_provider
+  #   end
+  # end
 
   # DELETE /resource
   # def destroy
@@ -92,7 +92,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
         :username, 
         :organization_name, 
         :gord_employee, 
-        :service_provider_id, 
+        # :service_provider_id, 
         :password, 
         :password_confirmation, 
         :name_suffix, 
@@ -144,7 +144,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
         :username, 
         :organization_name, 
         :gord_employee,
-        :service_provider_id, 
+        # :service_provider_id, 
         :password,
         :current_password,
         :password_confirmation, 
@@ -189,103 +189,103 @@ class Users::RegistrationsController < Devise::RegistrationsController
     ])
   end
 
-  def sp_sign_up_params
-      params.require(:service_provider).permit([
-        :name, 
-        :email,
-        :profile_pic, 
-        :username, 
-        :organization_name, 
-        :password, 
-        :password_confirmation, 
-        :name_suffix, 
-        :middle_name, 
-        :last_name, 
-        :email_alternate,
-        :country, 
-        :city, 
-        :mobile_area_code, 
-        :mobile,
-        :organization_email,
-        :organization_address, 
-        :organization_country, 
-        :organization_city, 
-        :organization_website, 
-        :organization_phone_area_code, 
-        :organization_phone, 
-        :organization_fax_area_code, 
-        :organization_fax, 
-        :gsb_id,
-        :practitioner_accreditation_type,
-        service_provider_detail_attributes: [
-          :business_field,
-          :portfolio,
-          :commercial_licence_no,
-          :commercial_licence_expiry_date,
-          :commercial_licence_file,
-          :accredited_service_provider_licence_file,
-          :demerit_acknowledgement_file,
-          :application_form,
-          :cgp_licence_file,
-          :energy_assessor_name, 
-          :gsb_energey_assessment_licence_file,
-          :nominated_cgp,
-          :exam,
-          :workshop
-        ]
-    ])
-  end
+  # def sp_sign_up_params
+  #     params.require(:service_provider).permit([
+  #       :name, 
+  #       :email,
+  #       :profile_pic, 
+  #       :username, 
+  #       :organization_name, 
+  #       :password, 
+  #       :password_confirmation, 
+  #       :name_suffix, 
+  #       :middle_name, 
+  #       :last_name, 
+  #       :email_alternate,
+  #       :country, 
+  #       :city, 
+  #       :mobile_area_code, 
+  #       :mobile,
+  #       :organization_email,
+  #       :organization_address, 
+  #       :organization_country, 
+  #       :organization_city, 
+  #       :organization_website, 
+  #       :organization_phone_area_code, 
+  #       :organization_phone, 
+  #       :organization_fax_area_code, 
+  #       :organization_fax, 
+  #       :gsb_id,
+  #       :practitioner_accreditation_type,
+  #       service_provider_detail_attributes: [
+  #         :business_field,
+  #         :portfolio,
+  #         :commercial_licence_no,
+  #         :commercial_licence_expiry_date,
+  #         :commercial_licence_file,
+  #         :accredited_service_provider_licence_file,
+  #         :demerit_acknowledgement_file,
+  #         :application_form,
+  #         :cgp_licence_file,
+  #         :energy_assessor_name, 
+  #         :gsb_energey_assessment_licence_file,
+  #         :nominated_cgp,
+  #         :exam,
+  #         :workshop
+  #       ]
+  #   ])
+  # end
 
-  def sp_update_params
-    params.require(:service_provider).permit([
-            :name, 
-            :email,
-            :profile_pic, 
-            :username, 
-            :organization_name, 
-            :password,
-            :current_password,
-            :password_confirmation, 
-            :name_suffix, 
-            :middle_name, 
-            :last_name, 
-            :email_alternate,
-            :country, 
-            :city, 
-            :mobile_area_code, 
-            :mobile,
-            :organization_email,
-            :organization_address, 
-            :organization_country, 
-            :organization_city, 
-            :organization_website, 
-            :organization_phone_area_code, 
-            :organization_phone, 
-            :organization_fax_area_code, 
-            :organization_fax, 
-            :gsb_id,
-            :practitioner_accreditation_type, 
-            service_provider_detail_attributes: [
-              :id,
-              :business_field,
-              :portfolio,
-              :commercial_licence_no,
-              :commercial_licence_expiry_date,
-              :commercial_licence_file,
-              :accredited_service_provider_licence_file,
-              :demerit_acknowledgement_file,
-              :application_form,
-              :cgp_licence_file,
-              :energy_assessor_name, 
-              :gsb_energey_assessment_licence_file,
-              :nominated_cgp
-            ]
-      ])
-  end
+  # def sp_update_params
+  #   params.require(:service_provider).permit([
+  #           :name, 
+  #           :email,
+  #           :profile_pic, 
+  #           :username, 
+  #           :organization_name, 
+  #           :password,
+  #           :current_password,
+  #           :password_confirmation, 
+  #           :name_suffix, 
+  #           :middle_name, 
+  #           :last_name, 
+  #           :email_alternate,
+  #           :country, 
+  #           :city, 
+  #           :mobile_area_code, 
+  #           :mobile,
+  #           :organization_email,
+  #           :organization_address, 
+  #           :organization_country, 
+  #           :organization_city, 
+  #           :organization_website, 
+  #           :organization_phone_area_code, 
+  #           :organization_phone, 
+  #           :organization_fax_area_code, 
+  #           :organization_fax, 
+  #           :gsb_id,
+  #           :practitioner_accreditation_type, 
+  #           service_provider_detail_attributes: [
+  #             :id,
+  #             :business_field,
+  #             :portfolio,
+  #             :commercial_licence_no,
+  #             :commercial_licence_expiry_date,
+  #             :commercial_licence_file,
+  #             :accredited_service_provider_licence_file,
+  #             :demerit_acknowledgement_file,
+  #             :application_form,
+  #             :cgp_licence_file,
+  #             :energy_assessor_name, 
+  #             :gsb_energey_assessment_licence_file,
+  #             :nominated_cgp
+  #           ]
+  #     ])
+  # end
 
-  def set_service_provider
-    @service_provider = ServiceProvider.find(params[:id])
-  end
+  # def set_service_provider
+  #   @service_provider = ServiceProvider.find(params[:id])
+  # end
 
   # The path used after sign up.
   # def after_sign_up_path_for(resource)

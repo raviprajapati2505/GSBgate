@@ -175,16 +175,16 @@ module Effective
           end
         end
 
-        col :project_service_provider, col_class: 'multiple-select col-order-18', sql_column: 'projects.service_provider', label: t('models.effective.datatables.projects.lables.service_provider'), visible: false, search: { as: :select, collection: Proc.new { Project.order(:service_provider).pluck(:service_provider).uniq.compact.map { |service_provider| [service_provider, service_provider] } rescue [] } } do |rec|
-          rec.project_service_provider
-        end.search do |collection, terms, column, index|
-          terms_array = terms.split(",")
-          unless (collection.class == Array || terms_array.include?(""))
-            collection.where("projects.service_provider IN (?)", terms_array)
-          else
-            collection
-          end
-        end
+        # col :project_service_provider, col_class: 'multiple-select col-order-18', sql_column: 'projects.service_provider', label: t('models.effective.datatables.projects.lables.service_provider'), visible: false, search: { as: :select, collection: Proc.new { Project.order(:service_provider).pluck(:service_provider).uniq.compact.map { |service_provider| [service_provider, service_provider] } rescue [] } } do |rec|
+        #   rec.project_service_provider
+        # end.search do |collection, terms, column, index|
+        #   terms_array = terms.split(",")
+        #   unless (collection.class == Array || terms_array.include?(""))
+        #     collection.where("projects.service_provider IN (?)", terms_array)
+        #   else
+        #     collection
+        #   end
+        # end
 
         col :cgp_project_manager_array, col_class: 'multiple-select col-order-19', label: t('models.effective.datatables.projects_certification_paths.cgp_project_manager_array.label'), visible: false, sql_column: '(%s)' % projects_users_by_type('cgp_project_manager'), search: { as: :select, collection: Proc.new { ProjectsUser.cgp_project_managers.pluck("users.name").uniq.compact.map { |name| [name, name] } rescue [] } } do |rec|
           ERB::Util.html_escape(rec.cgp_project_manager_array).split('|||').sort.join(', <br/>') unless rec.cgp_project_manager_array.nil?
@@ -431,13 +431,13 @@ module Effective
 
       collection do
         projects = Project.datatable_projects_records
-        
-        if current_user.is_service_provider?
-          project_ids = Project.accessible_by(current_ability).pluck(:id)
-          projects.where(id: project_ids.uniq)
-        else
-          projects.accessible_by(current_ability)
-        end
+        projects.accessible_by(current_ability)
+        # if current_user.is_service_provider?
+        #   project_ids = Project.accessible_by(current_ability).pluck(:id)
+        #   projects.where(id: project_ids.uniq)
+        # else
+        #   projects.accessible_by(current_ability)
+        # end
       end
     end
   end

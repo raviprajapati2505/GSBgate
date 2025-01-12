@@ -1,0 +1,1 @@
+User.where(role:'service_provider').destroy_all

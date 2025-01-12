@@ -171,8 +171,8 @@ en:
         area_statement_file: Project Area Statement
         owner: Project Owner
         project_owner_email: Project Owner Email
-        service_provider: Service Provider
-        service_provider_2: Service Provider Stage 2
+        # service_provider: Service Provider
+        # service_provider_2: Service Provider Stage 2
         country: Project Country
         address: Project Address
         city: Project City
@@ -293,7 +293,7 @@ en:
         username: Username
         gord_employee: GORD Employee?
         organization_name: Name
-        service_provider: Service Provider
+        # service_provider: Service Provider
         active: Profile Active?
         practitioner_accreditation_type: Practitioner Accreditation Type
         roles:
@@ -309,13 +309,13 @@ en:
         designation: Designation
         work_experience: Work Experience In Years
         qid_or_passport_number: QID / Passport Number
-      service_provider_detail:
-        commercial_licence_no: Commercial Licence No.
-        commercial_licence_expiry_date: Commercial Licence Expiry Date
-        business_field: Business Field
-        portfolio: Portfolio
-        energy_assessor_name: Energy Assessor Name
-        nominated_cgp: Nominated CGP/CEP Representative
+      # service_provider_detail:
+      #   commercial_licence_no: Commercial Licence No.
+      #   commercial_licence_expiry_date: Commercial Licence Expiry Date
+      #   business_field: Business Field
+      #   portfolio: Portfolio
+      #   energy_assessor_name: Energy Assessor Name
+      #   nominated_cgp: Nominated CGP/CEP Representative
       licence:
         licence_type: Licence Type
         display_name: Name
@@ -506,7 +506,7 @@ en:
             estimated_project_cost: Project Estimated Cost
             buildings_footprint_area: Project Footprint
             project_certified_area: Project Certified Area
-            service_provider: Project Service Provider
+            # service_provider: Project Service Provider
             construction_year: Project Completion Year
             project_developer_business_sector: Project Developer Business Sector
             project_owner_business_sector: Project Owner Business Sector

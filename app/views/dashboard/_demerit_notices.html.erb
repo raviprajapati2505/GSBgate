@@ -37,7 +37,7 @@
             <% end %>
           </div>
           <br>
-          <% if ['default_role', 'service_provider'].include?(current_user.role) %>
+          <% if ['default_role'].include?(current_user.role) %>
             <div class="">
               <%= render partial: 'file_upload', locals: { file_name: 'practitioner_acknowledge', demerit_flag: flag.id, access_licence_id: '' } %>
             </div>

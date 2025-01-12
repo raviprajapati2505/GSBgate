@@ -247,7 +247,7 @@ $(function () {
   // $('.project-form #project_building_type_group_id').trigger('change', true);
 
   // Project country select
-  $('.country-select, .city-select-dropdown, .district-select-dropdown, .developer-select-dropdown, #select-service-provider, .select-licence, .user-country-select, country-select, .city-select, .offline-certificate').select2({
+  $('.country-select, .city-select-dropdown, .district-select-dropdown, .developer-select-dropdown, .select-licence, .user-country-select, country-select, .city-select, .offline-certificate').select2({
       width: "100%"
   });
 
@@ -491,66 +491,66 @@ $(function () {
       });
   }
 
-  function auto_fill_organization_details(element){
-      let service_provider_id = element.find("option:selected").val();
+//   function auto_fill_organization_details(element){
+//       let service_provider_id = element.find("option:selected").val();
 
-      if(service_provider_id.length > 0) {
-          $.ajax({
-          url: "/users/get_organization_details",
-          method: "GET",
-          dataType: "json",
-          data: {
-              service_provider_id: service_provider_id
-          },
-          success: function(data) {
-              $('#org_name').val(data.organization_name);
-              $('#org_address').val(data.organization_address);
-              $('#org_website').val(data.organization_website);
-              $('#org_phone_area_code').val(data.organization_phone_area_code);
-              $('#org_phone').val(data.organization_phone);
-              $('#org_fax_area_code').val(data.organization_fax_area_code);
-              $('#org_fax').val(data.organization_fax);
-              $('#organization-country-select').val(data.organization_country);
-              $('#organization-country-select').trigger('change.select2');
-              populate_cities_by_country($('#organization-country-select'));
-              setTimeout(function(){
-                  $('#organization-city-select').val(data.organization_city)
-                  $('#organization-city-select').trigger('change.select2')
-              }, 1000);
-          },
-          error: function(){
-              alert('Something went wrong !');
-          }
-          });
-      }
-  }
+//       if(service_provider_id.length > 0) {
+//           $.ajax({
+//           url: "/users/get_organization_details",
+//           method: "GET",
+//           dataType: "json",
+//           data: {
+//               service_provider_id: service_provider_id
+//           },
+//           success: function(data) {
+//               $('#org_name').val(data.organization_name);
+//               $('#org_address').val(data.organization_address);
+//               $('#org_website').val(data.organization_website);
+//               $('#org_phone_area_code').val(data.organization_phone_area_code);
+//               $('#org_phone').val(data.organization_phone);
+//               $('#org_fax_area_code').val(data.organization_fax_area_code);
+//               $('#org_fax').val(data.organization_fax);
+//               $('#organization-country-select').val(data.organization_country);
+//               $('#organization-country-select').trigger('change.select2');
+//               populate_cities_by_country($('#organization-country-select'));
+//               setTimeout(function(){
+//                   $('#organization-city-select').val(data.organization_city)
+//                   $('#organization-city-select').trigger('change.select2')
+//               }, 1000);
+//           },
+//           error: function(){
+//               alert('Something went wrong !');
+//           }
+//           });
+//       }
+//   }
 
-  function auto_populate_service_providers(element){
-      let email = element.val();
-      let domain_name = email.split('@')[1];
+//   function auto_populate_service_providers(element){
+//       let email = element.val();
+//       let domain_name = email.split('@')[1];
 
-      if(domain_name !== undefined && domain_name.length > 0){
-          $.ajax({
-              url: "/users/get_service_provider_by_domain",
-              method: "GET",
-              dataType: "json",
-              data: {
-                  domain_name: domain_name
-              },
-              success: function(result) {
-                  var select_field = $("select#select-service-provider");
-                  select_field.find('option').remove().end();
+//       if(domain_name !== undefined && domain_name.length > 0){
+//           $.ajax({
+//               url: "/users/get_service_provider_by_domain",
+//               method: "GET",
+//               dataType: "json",
+//               data: {
+//                   domain_name: domain_name
+//               },
+//               success: function(result) {
+//                   var select_field = $("select#select-service-provider");
+//                   select_field.find('option').remove().end();
 
-                  $.each(result, function(index, item) {
-                      select_field.append(new Option(item[0], item[3]), false, false);
-                  });
-              },
-              error: function() {
-                  alert('Something went wrong !');
-              }
-          });
-      }
-  }
+//                   $.each(result, function(index, item) {
+//                       select_field.append(new Option(item[0], item[3]), false, false);
+//                   });
+//               },
+//               error: function() {
+//                   alert('Something went wrong !');
+//               }
+//           });
+//       }
+//   }
 
   // to populate cities in city dropdown
   $('#user-country-select, #organization-country-select').on('change', function(){
@@ -559,14 +559,14 @@ $(function () {
   }).trigger('change');
 
   // to auto fill information of organization
-  $('#select-service-provider').on('change', function() {
-      auto_fill_organization_details($(this));
-  });
+//   $('#select-service-provider').on('change', function() {
+//       auto_fill_organization_details($(this));
+//   });
 
   // to populate options of service providers
-  $('#user_email').on('blur', function(){
-      auto_populate_service_providers($(this));
-  }).trigger('blur');
+//   $('#user_email').on('blur', function(){
+//       auto_populate_service_providers($(this));
+//   }).trigger('blur');
   $('.dataTables_processing').removeClass('panel panel-default');
 });
 
