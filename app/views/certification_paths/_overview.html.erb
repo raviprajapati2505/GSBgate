@@ -1,78 +1,10 @@
-<% if project.certificate_type.nil? || project.certificate_type == Certificate.certificate_types[:energy_centers_efficiency_type] %>
-  <ul class="list-group">
-    <%= render partial: 'certification_paths/certification_path_details', locals: { project: project } %>
-    <%= render partial: 'certification_paths/overview_item', locals: { project: project, certification_types: [:provisional_energy_centers_efficiency, :final_energy_centers_efficiency] } %>
-  </ul>
-<% end %>
-
-<% if project.certificate_type.nil? || project.certificate_type == Certificate.certificate_types[:building_energy_efficiency_type] %>
-  <ul class="list-group">
-    <%= render partial: 'certification_paths/certification_path_details', locals: { project: project } %>
-    <%= render partial: 'certification_paths/overview_item', locals: { project: project, certification_types: [:provisional_building_energy_efficiency, :final_building_energy_efficiency] } %>
-  </ul>
-<% end %>
-
-<% if project.certificate_type.nil? || project.certificate_type == Certificate.certificate_types[:healthy_buildings_type] %>
-  <ul class="list-group">
-    <%= render partial: 'certification_paths/certification_path_details', locals: { project: project } %>
-    <%= render partial: 'certification_paths/overview_item', locals: { project: project, certification_types: [:provisional_healthy_buildings, :final_healthy_buildings] } %>
-  </ul>
-<% end %>
-
-<% if project.certificate_type.nil? || project.certificate_type == Certificate.certificate_types[:indoor_air_quality_type] %>
-  <ul class="list-group">
-    <%= render partial: 'certification_paths/certification_path_details', locals: { project: project } %>
-    <%= render partial: 'certification_paths/overview_item', locals: { project: project, certification_types: [:provisional_indoor_air_quality, :final_indoor_air_quality] } %>
-  </ul>
-<% end %>
-
-<% if project.certificate_type.nil? || project.certificate_type == Certificate.certificate_types[:measurement_reporting_and_verification_type] %>
-  <ul class="list-group">
-    <%= render partial: 'certification_paths/certification_path_details', locals: { project: project } %>
-    <%= render partial: 'certification_paths/overview_item', locals: { project: project, certification_types: [:provisional_measurement_reporting_and_verification, :final_measurement_reporting_and_verification] } %>
-  </ul>
-<% end %>
-
-<% if project.certificate_type.nil? || project.certificate_type == Certificate.certificate_types[:building_water_efficiency_type] %>
-  <ul class="list-group">
-    <%= render partial: 'certification_paths/certification_path_details', locals: { project: project } %>
-    <%= render partial: 'certification_paths/overview_item', locals: { project: project, certification_types: [:provisional_building_water_efficiency, :final_building_water_efficiency] } %>
-  </ul>
-<% end %>
-
-<% if project.certificate_type.nil? || project.certificate_type == Certificate.certificate_types[:events_carbon_neutrality_type] %>
-  <ul class="list-group">
-    <%= render partial: 'certification_paths/certification_path_details', locals: { project: project } %>
-    <%= render partial: 'certification_paths/overview_item', locals: { project: project, certification_types: [:provisional_events_carbon_neutrality, :final_events_carbon_neutrality] } %>
-  </ul>
-<% end %>
-
-<% if project.certificate_type.nil? || project.certificate_type == Certificate.certificate_types[:products_ecolabeling_type] %>
-  <ul class="list-group">
-    <%= render partial: 'certification_paths/certification_path_details', locals: { project: project } %>
-    <%= render partial: 'certification_paths/overview_item', locals: { project: project, certification_types: [:provisional_products_ecolabeling, :final_products_ecolabeling] } %>
-  </ul>
-<% end %>
-
-<% if project.certificate_type.nil? || project.certificate_type == Certificate.certificate_types[:green_IT_type] %>
-  <ul class="list-group">
-    <%= render partial: 'certification_paths/certification_path_details', locals: { project: project } %>
-    <%= render partial: 'certification_paths/overview_item', locals: { project: project, certification_types: [:provisional_green_IT, :final_green_IT] } %>
-  </ul>
-<% end %>
-
-<% if project.certificate_type.nil? || project.certificate_type == Certificate.certificate_types[:net_zero_type] %>
-  <ul class="list-group">
-    <%= render partial: 'certification_paths/certification_path_details', locals: { project: project } %>
-    <%= render partial: 'certification_paths/overview_item', locals: { project: project, certification_types: [:provisional_net_zero, :final_net_zero] } %>
-  </ul>
-<% end %>
-
-<% if project.certificate_type.nil? || project.certificate_type == Certificate.certificate_types[:energy_label_waste_water_treatment_facility_type] %>
-  <ul class="list-group">
-    <%= render partial: 'certification_paths/certification_path_details', locals: { project: project } %>
-    <%= render partial: 'certification_paths/overview_item', locals: { project: project, certification_types: [:provisional_energy_label_waste_water_treatment_facility, :final_energy_label_waste_water_treatment_facility] } %>
-  </ul>
+<% Certificate::CERTIFICATE_TYPES.each do |certificate| %>
+  <% if project.certificate_type.nil? || project.certificate_type == Certificate.certificate_types[:"#{certificate}_type"] %>
+    <ul class="list-group">
+      <%= render partial: 'certification_paths/certification_path_details', locals: { project: project } %>
+      <%= render partial: 'certification_paths/overview_item', locals: { project: project, certification_types: [:"provisional_#{certificate}", :"final_#{certificate}"] } %>
+    </ul>
+  <% end %>
 <% end %>
 
 <div id="applyForCertificateModal" class="modal fade"></div>

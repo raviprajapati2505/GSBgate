@@ -121,48 +121,10 @@ class CertificationPath < ApplicationRecord
     Certificate::FINAL_CERTIFICATES.include?(certificate.certification_type)
   end
 
-  def energy_centers_efficiency?
-    certificate&.energy_centers_efficiency_type?
-  end
-
-  def building_energy_efficiency?
-    certificate&.building_energy_efficiency_type?
-  end
-
-  def healthy_buildings?
-    certificate&.healthy_buildings_type?
-  end
-
-  def indoor_air_quality?
-    certificate&.indoor_air_quality_type?
-  end
-
-  def measurement_reporting_and_verification?
-    certificate&.measurement_reporting_and_verification_type?
-  end
-
-  def building_water_efficiency_efficiency?
-    certificate&.building_water_efficiency_efficiency_type?
-  end
-
-  def events_carbon_neutrality?
-    certificate&.events_carbon_neutrality_type?
-  end
-
-  def products_ecolabeling?
-    certificate&.products_ecolabeling_type?
-  end
-
-  def green_IT?
-    certificate&.green_IT_type?
-  end
-
-  def net_zero?
-    certificate&.net_zero_type?
-  end
-
-  def energy_label_waste_water_treatment_facility?
-    certificate&.energy_label_waste_water_treatment_facility_type?
+  Certificate::CERTIFICATE_TYPES.each do |cert_type|
+    define_method("#{cert_type}?") do
+      certificate&.send("#{cert_type}_type?")
+    end
   end
 
   def certification_manager_assigned?

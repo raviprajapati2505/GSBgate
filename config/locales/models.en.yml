@@ -17,6 +17,14 @@ en:
           green_IT_type: Green IT
           net_zero_type: Net Zero
           energy_label_waste_water_treatment_facility_type: Energy Label - Waste Water Treatment Facility
+          energy_label_for_building_performance_type: Energy Label for Building Performance
+          indoor_air_quality_certification_type: Indoor Air Quality (IAQ) Certification
+          indoor_environmental_quality_certification_type: Indoor Environmental Quality (IEQ) Certification
+          energy_label_for_wastewater_treatment_plant_type: Energy Label for Wastewater Treatment Plant (WTP)
+          energy_label_for_leachate_treatment_plant_type: Energy Label for Leachate Treatment Plant (LTP)
+          healthy_building_label_type: Healthy Building Label
+          energy_label_for_industrial_application_type: Energy label for Industrial application
+          energy_label_for_infrastructure_projects_type: Energy label for Infrastructure projects
           stage_titles:
             provisional_energy_centers_efficiency: "Stage 1: Provisional Certificate"
             provisional_building_energy_efficiency: "Stage 1: Provisional Certificate"
@@ -29,6 +37,14 @@ en:
             provisional_green_IT: "Stage 1: Provisional Certificate"
             provisional_net_zero: "Stage 1: Provisional Certificate"
             provisional_energy_label_waste_water_treatment_facility: "Stage 1: Provisional Certificate"
+            provisional_energy_label_for_building_performance: "Stage 1: Provisional Certificate"
+            provisional_indoor_air_quality_certification: "Stage 1: Provisional Certificate"
+            provisional_indoor_environmental_quality_certification: "Stage 1: Provisional Certificate"
+            provisional_energy_label_for_wastewater_treatment_plant: "Stage 1: Provisional Certificate"
+            provisional_energy_label_for_leachate_treatment_plant: "Stage 1: Provisional Certificate"
+            provisional_healthy_building_label: "Stage 1: Provisional Certificate"
+            provisional_energy_label_for_industrial_application: "Stage 1: Provisional Certificate"
+            provisional_energy_label_for_infrastructure_projects: "Stage 1: Provisional Certificate"
             final_energy_centers_efficiency: "Stage 2: Final Certificate"
             final_building_energy_efficiency: "Stage 2: Final Certificate"
             final_healthy_buildings: "Stage 2: Final Certificate"
@@ -40,6 +56,14 @@ en:
             final_green_IT: "Stage 2: Final Certificate"
             final_net_zero: "Stage 2: Final Certificate"
             final_energy_label_waste_water_treatment_facility: "Stage 2: Final Certificate"
+            final_energy_label_for_building_performance: "Stage 2: Final Certificate"
+            final_indoor_air_quality_certification: "Stage 2: Final Certificate"
+            final_indoor_environmental_quality_certification: "Stage 2: Final Certificate"
+            final_energy_label_for_wastewater_treatment_plant: "Stage 2: Final Certificate"
+            final_energy_label_for_leachate_treatment_plant: "Stage 2: Final Certificate"
+            final_healthy_building_label: "Stage 2: Final Certificate"
+            final_energy_label_for_industrial_application: "Stage 2: Final Certificate"
+            final_energy_label_for_infrastructure_projects: "Stage 2: Final Certificate"
           certificate_titles:
             energy_centers_efficiency: Energy Centers Efficiency
             building_energy_efficiency: Building Energy Efficiency
@@ -52,6 +76,14 @@ en:
             green_IT: Green IT
             net_zero: Net Zero
             energy_label_waste_water_treatment_facility: Energy Label - Waste Water Treatment Facility
+            energy_label_for_building_performance: Energy Label for Building Performance
+            indoor_air_quality_certification: Indoor Air Quality (IAQ) Certification
+            indoor_environmental_quality_certification: Indoor Environmental Quality (IEQ) Certification
+            energy_label_for_wastewater_treatment_plant: Energy Label for Wastewater Treatment Plant (WTP)
+            energy_label_for_leachate_treatment_plant: Energy Label for Leachate Treatment Plant (LTP)
+            healthy_building_label: Healthy Building Label
+            energy_label_for_industrial_application: Energy label for Industrial application
+            energy_label_for_infrastructure_projects: Energy label for Infrastructure projects
         certification_types:
           provisional_energy_centers_efficiency: "Stage 1: Provisional Certificate"
           provisional_building_energy_efficiency: "Stage 1: Provisional Certificate"
@@ -64,6 +96,14 @@ en:
           provisional_green_IT: "Stage 1: Provisional Certificate"
           provisional_net_zero: "Stage 1: Provisional Certificate"
           provisional_energy_label_waste_water_treatment_facility: "Stage 1: Provisional Certificate"
+          provisional_energy_label_for_building_performance: "Stage 1: Provisional Certificate"
+          provisional_indoor_air_quality_certification: "Stage 1: Provisional Certificate"
+          provisional_indoor_environmental_quality_certification: "Stage 1: Provisional Certificate"
+          provisional_energy_label_for_wastewater_treatment_plant: "Stage 1: Provisional Certificate"
+          provisional_energy_label_for_leachate_treatment_plant: "Stage 1: Provisional Certificate"
+          provisional_healthy_building_label: "Stage 1: Provisional Certificate"
+          provisional_energy_label_for_industrial_application: "Stage 1: Provisional Certificate"
+          provisional_energy_label_for_infrastructure_projects: "Stage 1: Provisional Certificate"
           final_energy_centers_efficiency: "Stage 2: Final Certificate"
           final_building_energy_efficiency: "Stage 2: Final Certificate"
           final_healthy_buildings: "Stage 2: Final Certificate"
@@ -75,6 +115,14 @@ en:
           final_green_IT: "Stage 2: Final Certificate"
           final_net_zero: "Stage 2: Final Certificate"
           final_energy_label_waste_water_treatment_facility: "Stage 2: Final Certificate"
+          final_energy_label_for_building_performance: "Stage 2: Final Certificate"
+          final_indoor_air_quality_certification: "Stage 2: Final Certificate"
+          final_indoor_environmental_quality_certification: "Stage 2: Final Certificate"
+          final_energy_label_for_wastewater_treatment_plant: "Stage 2: Final Certificate"
+          final_energy_label_for_leachate_treatment_plant: "Stage 2: Final Certificate"
+          final_healthy_building_label: "Stage 2: Final Certificate"
+          final_energy_label_for_industrial_application: "Stage 2: Final Certificate"
+          final_energy_label_for_infrastructure_projects: "Stage 2: Final Certificate"
           certificate_titles:
             energy_centers_efficiency_type: Energy Centers Efficiency
             building_energy_efficiency_type: Building Energy Efficiency
@@ -87,6 +135,14 @@ en:
             green_IT_type: Green IT
             net_zero_type: Net Zero
             energy_label_waste_water_treatment_facility_type: Energy Label - Waste Water Treatment Facility
+            energy_label_for_building_performance_type: Energy Label for Building Performance
+            indoor_air_quality_certification_type: Indoor Air Quality (IAQ) Certification
+            indoor_environmental_quality_certification_type: Indoor Environmental Quality (IEQ) Certification
+            energy_label_for_wastewater_treatment_plant_type: Energy Label for Wastewater Treatment Plant (WTP)
+            energy_label_for_leachate_treatment_plant_type: Energy Label for Leachate Treatment Plant (LTP)
+            healthy_building_label_type: Healthy Building Label
+            energy_label_for_industrial_application_type: Energy label for Industrial application
+            energy_label_for_infrastructure_projects_type: Energy label for Infrastructure projects
         certification_titles:
           provisional_energy_centers_efficiency: "Stage 1: Provisional Certificate"
           provisional_building_energy_efficiency: "Stage 1: Provisional Certificate"
@@ -99,6 +155,14 @@ en:
           provisional_green_IT: "Stage 1: Provisional Certificate"
           provisional_net_zero: "Stage 1: Provisional Certificate"
           provisional_energy_label_waste_water_treatment_facility: "Stage 1: Provisional Certificate"
+          provisional_energy_label_for_building_performance: "Stage 1: Provisional Certificate"
+          provisional_indoor_air_quality_certification: "Stage 1: Provisional Certificate"
+          provisional_indoor_environmental_quality_certification: "Stage 1: Provisional Certificate"
+          provisional_energy_label_for_wastewater_treatment_plant: "Stage 1: Provisional Certificate"
+          provisional_energy_label_for_leachate_treatment_plant: "Stage 1: Provisional Certificate"
+          provisional_healthy_building_label: "Stage 1: Provisional Certificate"
+          provisional_energy_label_for_industrial_application: "Stage 1: Provisional Certificate"
+          provisional_energy_label_for_infrastructure_projects: "Stage 1: Provisional Certificate"
           final_energy_centers_efficiency: "Stage 2: Final Certificate"
           final_building_energy_efficiency: "Stage 2: Final Certificate"
           final_healthy_buildings: "Stage 2: Final Certificate"
@@ -110,6 +174,14 @@ en:
           final_green_IT: "Stage 2: Final Certificate"
           final_net_zero: "Stage 2: Final Certificate"
           final_energy_label_waste_water_treatment_facility: "Stage 2: Final Certificate"
+          final_energy_label_for_building_performance: "Stage 2: Final Certificate"
+          final_indoor_air_quality_certification: "Stage 2: Final Certificate"
+          final_indoor_environmental_quality_certification: "Stage 2: Final Certificate"
+          final_energy_label_for_wastewater_treatment_plant: "Stage 2: Final Certificate"
+          final_energy_label_for_leachate_treatment_plant: "Stage 2: Final Certificate"
+          final_healthy_building_label: "Stage 2: Final Certificate"
+          final_energy_label_for_industrial_application: "Stage 2: Final Certificate"
+          final_energy_label_for_infrastructure_projects: "Stage 2: Final Certificate"
         certification_types_subtitles:
           provisional_energy_centers_efficiency: Energy Centers Efficiency
           provisional_building_energy_efficiency: Building Energy Efficiency
@@ -122,6 +194,14 @@ en:
           provisional_green_IT: Green IT
           provisional_net_zero: Net Zero
           provisional_energy_label_waste_water_treatment_facility: Energy Label - Waste Water Treatment Facility
+          provisional_energy_label_for_building_performance: Energy Label for Building Performance
+          provisional_indoor_air_quality_certification: Indoor Air Quality (IAQ) Certification
+          provisional_indoor_environmental_quality_certification: Indoor Environmental Quality (IEQ) Certification
+          provisional_energy_label_for_wastewater_treatment_plant: Energy Label for Wastewater Treatment Plant (WTP)
+          provisional_energy_label_for_leachate_treatment_plant: Energy Label for Leachate Treatment Plant (LTP)
+          provisional_healthy_building_label: Healthy Building Label
+          provisional_energy_label_for_industrial_application: Energy label for Industrial application
+          provisional_energy_label_for_infrastructure_projects: Energy label for Infrastructure projects
           final_energy_centers_efficiency: Energy Centers Efficiency
           final_building_energy_efficiency: Building Energy Efficiency
           final_healthy_buildings: Healthy Buildings
@@ -133,6 +213,14 @@ en:
           final_green_IT: Green IT
           final_net_zero: Net Zero
           final_energy_label_waste_water_treatment_facility: Energy Label - Waste Water Treatment Facility
+          final_energy_label_for_building_performance: Energy Label for Building Performance
+          final_indoor_air_quality_certification: Indoor Air Quality (IAQ) Certification
+          final_indoor_environmental_quality_certification: Indoor Environmental Quality (IEQ) Certification
+          final_energy_label_for_wastewater_treatment_plant: Energy Label for Wastewater Treatment Plant (WTP)
+          final_energy_label_for_leachate_treatment_plant: Energy Label for Leachate Treatment Plant (LTP)
+          final_healthy_building_label: Healthy Building Label
+          final_energy_label_for_industrial_application: Energy label for Industrial application
+          final_energy_label_for_infrastructure_projects: Energy label for Infrastructure projects
       certification_path:
         development_type: Development Type
         star_rating: Performance-Based (Star Rating Certificate)
@@ -196,6 +284,14 @@ en:
           green_IT: Green IT
           net_zero: Net Zero
           energy_label_waste_water_treatment_facility: Energy Label - Waste Water Treatment Facility
+          energy_label_for_building_performance: Energy Label for Building Performance
+          indoor_air_quality_certification: Indoor Air Quality (IAQ) Certification
+          indoor_environmental_quality_certification: Indoor Environmental Quality (IEQ) Certification
+          energy_label_for_wastewater_treatment_plant: Energy Label for Wastewater Treatment Plant (WTP)
+          energy_label_for_leachate_treatment_plant: Energy Label for Leachate Treatment Plant (LTP)
+          healthy_building_label: Healthy Building Label
+          energy_label_for_industrial_application: Energy label for Industrial application
+          energy_label_for_infrastructure_projects: Energy label for Infrastructure projects
       offline/project:
         code: Project ID
         name: Project Name

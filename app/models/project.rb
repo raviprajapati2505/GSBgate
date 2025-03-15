@@ -161,51 +161,21 @@ class Project < ApplicationRecord
     completed_provisional_green_IT.first ||
     completed_provisional_net_zero.first ||
     completed_provisional_energy_label_waste_water_treatment_facility.first ||
+    completed_provisional_energy_label_for_building_performance.first ||
+    completed_provisional_indoor_air_quality_certification.first ||
+    completed_provisional_indoor_environmental_quality_certification.first ||
+    completed_provisional_energy_label_for_wastewater_treatment_plant.first ||
+    completed_provisional_energy_label_for_leachate_treatment_plant.first ||
+    completed_provisional_healthy_building_label.first ||
+    completed_provisional_energy_label_for_industrial_application.first ||
+    completed_provisional_energy_label_for_infrastructure_projects.first ||
     CertificationPath.none
   end
 
-  def completed_provisional_energy_centers_efficiency
-    CertificationPath.with_project(self).with_status(CertificationPathStatus::STATUSES_COMPLETED).with_certification_type(Certificate.certification_types[:provisional_energy_centers_efficiency])
-  end
-
-  def completed_provisional_building_energy_efficiency
-    CertificationPath.with_project(self).with_status(CertificationPathStatus::STATUSES_COMPLETED).with_certification_type(Certificate.certification_types[:provisional_building_energy_efficiency])
-  end
-
-  def completed_provisional_healthy_buildings
-    CertificationPath.with_project(self).with_status(CertificationPathStatus::STATUSES_COMPLETED).with_certification_type(Certificate.certification_types[:provisional_healthy_buildings])
-  end
-
-  def completed_provisional_indoor_air_quality
-    CertificationPath.with_project(self).with_status(CertificationPathStatus::STATUSES_COMPLETED).with_certification_type(Certificate.certification_types[:provisional_indoor_air_quality])
-  end
-
-  def completed_provisional_measurement_reporting_and_verification
-    CertificationPath.with_project(self).with_status(CertificationPathStatus::STATUSES_COMPLETED).with_certification_type(Certificate.certification_types[:provisional_measurement_reporting_and_verification])
-  end
-
-  def completed_provisional_building_water_efficiency
-    CertificationPath.with_project(self).with_status(CertificationPathStatus::STATUSES_COMPLETED).with_certification_type(Certificate.certification_types[:provisional_building_water_efficiency])
-  end
-
-  def completed_provisional_events_carbon_neutrality
-    CertificationPath.with_project(self).with_status(CertificationPathStatus::STATUSES_COMPLETED).with_certification_type(Certificate.certification_types[:provisional_events_carbon_neutrality])
-  end
-
-  def completed_provisional_products_ecolabeling
-    CertificationPath.with_project(self).with_status(CertificationPathStatus::STATUSES_COMPLETED).with_certification_type(Certificate.certification_types[:provisional_products_ecolabeling])
-  end
-
-  def completed_provisional_green_IT
-    CertificationPath.with_project(self).with_status(CertificationPathStatus::STATUSES_COMPLETED).with_certification_type(Certificate.certification_types[:provisional_green_IT])
-  end
-
-  def completed_provisional_net_zero
-    CertificationPath.with_project(self).with_status(CertificationPathStatus::STATUSES_COMPLETED).with_certification_type(Certificate.certification_types[:provisional_net_zero])
-  end
-
-  def completed_provisional_energy_label_waste_water_treatment_facility
-    CertificationPath.with_project(self).with_status(CertificationPathStatus::STATUSES_COMPLETED).with_certification_type(Certificate.certification_types[:provisional_energy_label_waste_water_treatment_facility])
+  Certificate::CERTIFICATE_TYPES.each do |cert_type|
+    define_method("completed_provisional_#{cert_type}") do
+      CertificationPath.with_project(self).with_status(CertificationPathStatus::STATUSES_COMPLETED).with_certification_type(Certificate.certification_types[:"provisional_#{cert_type}"])
+    end
   end
 
   def average_scores_all_construction_stages
@@ -295,48 +265,10 @@ class Project < ApplicationRecord
     return categories
   end
 
-  def energy_centers_efficiency?
-    certificate_type == Certificate.certificate_types[:energy_centers_efficiency_type]
-  end
-
-  def building_energy_efficiency?
-    certificate_type == Certificate.certificate_types[:building_energy_efficiency_type]
-  end
-
-  def healthy_buildings?
-    certificate_type == Certificate.certificate_types[:healthy_buildings_type]
-  end
-
-  def indoor_air_quality?
-    certificate_type == Certificate.certificate_types[:indoor_air_quality_type]
-  end
-
-  def measurement_reporting_and_verification?
-    certificate_type == Certificate.certificate_types[:measurement_reporting_and_verification_type]
-  end
-
-  def building_water_efficiency?
-    certificate_type == Certificate.certificate_types[:building_water_efficiency_type]
-  end
-
-  def events_carbon_neutrality?
-    certificate_type == Certificate.certificate_types[:events_carbon_neutrality_type]
-  end
-
-  def products_ecolabeling?
-    certificate_type == Certificate.certificate_types[:products_ecolabeling_type]
-  end
-
-  def green_IT?
-    certificate_type == Certificate.certificate_types[:green_IT_type]
-  end
-
-  def net_zero?
-    certificate_type == Certificate.certificate_types[:net_zero_type]
-  end
-
-  def energy_label_waste_water_treatment_facility?
-    certificate_type == Certificate.certificate_types[:energy_label_waste_water_treatment_facility_type]
+  Certificate::CERTIFICATE_TYPES.each do |cert_type|
+    define_method("#{cert_type}?") do
+      certificate_type == Certificate.certificate_types[:"#{cert_type}_type"]
+    end
   end
 
   def team_table_heading
@@ -363,6 +295,22 @@ class Project < ApplicationRecord
         I18n.t('activerecord.attributes.project.team_titles.net_zero')
       when 11
         I18n.t('activerecord.attributes.project.team_titles.energy_label_waste_water_treatment_facility_type')
+      when 12
+        I18n.t('activerecord.attributes.project.team_titles.energy_label_for_building_performance')
+      when 13
+        I18n.t('activerecord.attributes.project.team_titles.indoor_air_quality_certification')
+      when 14
+        I18n.t('activerecord.attributes.project.team_titles.indoor_environmental_quality_certification')
+      when 15
+        I18n.t('activerecord.attributes.project.team_titles.energy_label_for_wastewater_treatment_plant')
+      when 16
+        I18n.t('activerecord.attributes.project.team_titles.energy_label_for_leachate_treatment_plant')
+      when 17
+        I18n.t('activerecord.attributes.project.team_titles.healthy_building_label')
+      when 18
+        I18n.t('activerecord.attributes.project.team_titles.energy_label_for_industrial_application')
+      when 19
+        I18n.t('activerecord.attributes.project.team_titles.energy_label_for_infrastructure_projects')
       else
         "Project Team"
     end

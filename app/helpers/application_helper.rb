@@ -924,6 +924,14 @@ module ApplicationHelper
                             #{Certificate.certification_types['provisional_green_IT']},
                             #{Certificate.certification_types['provisional_net_zero']},
                             #{Certificate.certification_types['provisional_energy_label_waste_water_treatment_facility']},
+                            #{Certificate.certification_types['provisional_energy_label_for_building_performance']},
+                            #{Certificate.certification_types['provisional_indoor_air_quality_certification']},
+                            #{Certificate.certification_types['provisional_indoor_environmental_quality_certification']},
+                            #{Certificate.certification_types['provisional_energy_label_for_wastewater_treatment_plant']},
+                            #{Certificate.certification_types['provisional_energy_label_for_leachate_treatment_plant']},
+                            #{Certificate.certification_types['provisional_healthy_building_label']},
+                            #{Certificate.certification_types['provisional_energy_label_for_industrial_application']},
+                            #{Certificate.certification_types['provisional_energy_label_for_infrastructure_projects']},
                             #{Certificate.certification_types['final_energy_centers_efficiency']}, 
                             #{Certificate.certification_types['final_building_energy_efficiency']}, 
                             #{Certificate.certification_types['final_healthy_buildings']}, 
@@ -934,7 +942,15 @@ module ApplicationHelper
                             #{Certificate.certification_types['final_products_ecolabeling']},
                             #{Certificate.certification_types['final_green_IT']},
                             #{Certificate.certification_types['final_net_zero']},
-                            #{Certificate.certification_types['final_energy_label_waste_water_treatment_facility']}
+                            #{Certificate.certification_types['final_energy_label_waste_water_treatment_facility']},
+                            #{Certificate.certification_types['final_energy_label_for_building_performance']},
+                            #{Certificate.certification_types['final_indoor_air_quality_certification']},
+                            #{Certificate.certification_types['final_indoor_environmental_quality_certification']},
+                            #{Certificate.certification_types['final_energy_label_for_wastewater_treatment_plant']},
+                            #{Certificate.certification_types['final_energy_label_for_leachate_treatment_plant']},
+                            #{Certificate.certification_types['final_healthy_building_label']},
+                            #{Certificate.certification_types['final_energy_label_for_industrial_application']},
+                            #{Certificate.certification_types['final_energy_label_for_infrastructure_projects']}
                           ) 
                           THEN 
                             project_team_project_users.certification_team_type IN (
@@ -986,6 +1002,14 @@ module ApplicationHelper
                             #{Certificate.certification_types['provisional_green_IT']},
                             #{Certificate.certification_types['provisional_net_zero']},
                             #{Certificate.certification_types['provisional_energy_label_waste_water_treatment_facility']},
+                            #{Certificate.certification_types['provisional_energy_label_for_building_performance']},
+                            #{Certificate.certification_types['provisional_indoor_air_quality_certification']},
+                            #{Certificate.certification_types['provisional_indoor_environmental_quality_certification']},
+                            #{Certificate.certification_types['provisional_energy_label_for_wastewater_treatment_plant']},
+                            #{Certificate.certification_types['provisional_energy_label_for_leachate_treatment_plant']},
+                            #{Certificate.certification_types['provisional_healthy_building_label']},
+                            #{Certificate.certification_types['provisional_energy_label_for_industrial_application']},
+                            #{Certificate.certification_types['provisional_energy_label_for_infrastructure_projects']},
                             #{Certificate.certification_types['final_energy_centers_efficiency']}, 
                             #{Certificate.certification_types['final_building_energy_efficiency']}, 
                             #{Certificate.certification_types['final_healthy_buildings']}, 
@@ -996,7 +1020,15 @@ module ApplicationHelper
                             #{Certificate.certification_types['final_products_ecolabeling']},
                             #{Certificate.certification_types['final_green_IT']},
                             #{Certificate.certification_types['final_net_zero']},
-                            #{Certificate.certification_types['final_energy_label_waste_water_treatment_facility']}
+                            #{Certificate.certification_types['final_energy_label_waste_water_treatment_facility']},
+                            #{Certificate.certification_types['final_energy_label_for_building_performance']},
+                            #{Certificate.certification_types['final_indoor_air_quality_certification']},
+                            #{Certificate.certification_types['final_indoor_environmental_quality_certification']},
+                            #{Certificate.certification_types['final_energy_label_for_wastewater_treatment_plant']},
+                            #{Certificate.certification_types['final_energy_label_for_leachate_treatment_plant']},
+                            #{Certificate.certification_types['final_healthy_building_label']},
+                            #{Certificate.certification_types['final_energy_label_for_industrial_application']},
+                            #{Certificate.certification_types['final_energy_label_for_infrastructure_projects']}
                           ) 
                           THEN 
                             cgp_project_managers_project_users.certification_team_type IN (
@@ -1048,6 +1080,14 @@ module ApplicationHelper
                             #{Certificate.certification_types['provisional_green_IT']},
                             #{Certificate.certification_types['provisional_net_zero']},
                             #{Certificate.certification_types['provisional_energy_label_waste_water_treatment_facility']},
+                            #{Certificate.certification_types['provisional_energy_label_for_building_performance']},
+                            #{Certificate.certification_types['provisional_indoor_air_quality_certification']},
+                            #{Certificate.certification_types['provisional_indoor_environmental_quality_certification']},
+                            #{Certificate.certification_types['provisional_energy_label_for_wastewater_treatment_plant']},
+                            #{Certificate.certification_types['provisional_energy_label_for_leachate_treatment_plant']},
+                            #{Certificate.certification_types['provisional_healthy_building_label']},
+                            #{Certificate.certification_types['provisional_energy_label_for_industrial_application']},
+                            #{Certificate.certification_types['provisional_energy_label_for_infrastructure_projects']},
                             #{Certificate.certification_types['final_energy_centers_efficiency']}, 
                             #{Certificate.certification_types['final_building_energy_efficiency']}, 
                             #{Certificate.certification_types['final_healthy_buildings']}, 
@@ -1058,7 +1098,15 @@ module ApplicationHelper
                             #{Certificate.certification_types['final_products_ecolabeling']},
                             #{Certificate.certification_types['final_green_IT']},
                             #{Certificate.certification_types['final_net_zero']},
-                            #{Certificate.certification_types['final_energy_label_waste_water_treatment_facility']}
+                            #{Certificate.certification_types['final_energy_label_waste_water_treatment_facility']},
+                            #{Certificate.certification_types['final_energy_label_for_building_performance']},
+                            #{Certificate.certification_types['final_indoor_air_quality_certification']},
+                            #{Certificate.certification_types['final_indoor_environmental_quality_certification']},
+                            #{Certificate.certification_types['final_energy_label_for_wastewater_treatment_plant']},
+                            #{Certificate.certification_types['final_energy_label_for_leachate_treatment_plant']},
+                            #{Certificate.certification_types['final_healthy_building_label']},
+                            #{Certificate.certification_types['final_energy_label_for_industrial_application']},
+                            #{Certificate.certification_types['final_energy_label_for_infrastructure_projects']}
                           ) 
                           THEN 
                             gsb_trust_team_project_users.certification_team_type IN (
@@ -1109,6 +1157,14 @@ module ApplicationHelper
                             #{Certificate.certification_types['provisional_green_IT']},
                             #{Certificate.certification_types['provisional_net_zero']},
                             #{Certificate.certification_types['provisional_energy_label_waste_water_treatment_facility']},
+                            #{Certificate.certification_types['provisional_energy_label_for_building_performance']},
+                            #{Certificate.certification_types['provisional_indoor_air_quality_certification']},
+                            #{Certificate.certification_types['provisional_indoor_environmental_quality_certification']},
+                            #{Certificate.certification_types['provisional_energy_label_for_wastewater_treatment_plant']},
+                            #{Certificate.certification_types['provisional_energy_label_for_leachate_treatment_plant']},
+                            #{Certificate.certification_types['provisional_healthy_building_label']},
+                            #{Certificate.certification_types['provisional_energy_label_for_industrial_application']},
+                            #{Certificate.certification_types['provisional_energy_label_for_infrastructure_projects']},
                             #{Certificate.certification_types['final_energy_centers_efficiency']}, 
                             #{Certificate.certification_types['final_building_energy_efficiency']}, 
                             #{Certificate.certification_types['final_healthy_buildings']}, 
@@ -1119,7 +1175,15 @@ module ApplicationHelper
                             #{Certificate.certification_types['final_products_ecolabeling']},
                             #{Certificate.certification_types['final_green_IT']},
                             #{Certificate.certification_types['final_net_zero']},
-                            #{Certificate.certification_types['final_energy_label_waste_water_treatment_facility']}
+                            #{Certificate.certification_types['final_energy_label_waste_water_treatment_facility']},
+                            #{Certificate.certification_types['final_energy_label_for_building_performance']},
+                            #{Certificate.certification_types['final_indoor_air_quality_certification']},
+                            #{Certificate.certification_types['final_indoor_environmental_quality_certification']},
+                            #{Certificate.certification_types['final_energy_label_for_wastewater_treatment_plant']},
+                            #{Certificate.certification_types['final_energy_label_for_leachate_treatment_plant']},
+                            #{Certificate.certification_types['final_healthy_building_label']},
+                            #{Certificate.certification_types['final_energy_label_for_industrial_application']},
+                            #{Certificate.certification_types['final_energy_label_for_infrastructure_projects']}
                           ) 
                           THEN 
                             certification_managers_project_users.certification_team_type IN (

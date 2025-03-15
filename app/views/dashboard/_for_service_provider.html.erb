@@ -336,7 +336,15 @@
                         user_licences_products_ecolabeling: @user_licences_products_ecolabeling,
                         user_licences_green_IT: @user_licences_green_IT,
                         user_licences_net_zero: @user_licences_net_zero,
-                        user_licences_energy_label_waste_water_treatment_facility: @user_licences_energy_label_waste_water_treatment_facility
+                        user_licences_energy_label_waste_water_treatment_facility: @user_licences_energy_label_waste_water_treatment_facility,
+                        user_licences_energy_label_for_building_performance: @user_licences_energy_label_for_building_performance,
+                        user_licences_indoor_air_quality_certification: @user_licences_indoor_air_quality_certification,
+                        user_licences_indoor_environmental_quality_certification: @user_licences_indoor_environmental_quality_certification,
+                        user_licences_energy_label_for_wastewater_treatment_plant: @user_licences_energy_label_for_wastewater_treatment_plant,
+                        user_licences_energy_label_for_leachate_treatment_plant: @user_licences_energy_label_for_leachate_treatment_plant,
+                        user_licences_healthy_building_label: @user_licences_healthy_building_label,
+                        user_licences_energy_label_for_industrial_application: @user_licences_energy_label_for_industrial_application,
+                        user_licences_energy_label_for_infrastructure_projects: @user_licences_energy_label_for_infrastructure_projects
                       } 
                 %>
               </div>
@@ -366,6 +374,14 @@
               render partial: "service_providers_licences", locals: { service_provider_user_licences: @service_provider_user_licences_green_IT, title: I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.green_IT") } 
               render partial: "service_providers_licences", locals: { service_provider_user_licences: @service_provider_user_licences_net_zero, title: I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.net_zero") } 
               render partial: "service_providers_licences", locals: { service_provider_user_licences: @service_provider_user_licences_energy_label_waste_water_treatment_facility, title: I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.energy_label_waste_water_treatment_facility") } 
+              render partial: "service_providers_licences", locals: { service_provider_user_licences: @service_provider_user_licences_energy_label_for_building_performance, title: I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.energy_label_for_building_performance") }
+              render partial: "service_providers_licences", locals: { service_provider_user_licences: @service_provider_user_licences_indoor_air_quality_certification, title: I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.indoor_air_quality_certification") }
+              render partial: "service_providers_licences", locals: { service_provider_user_licences: @service_provider_user_licences_indoor_environmental_quality_certification, title: I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.indoor_environmental_quality_certification") }
+              render partial: "service_providers_licences", locals: { service_provider_user_licences: @service_provider_user_licences_energy_label_for_wastewater_treatment_plant, title: I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.energy_label_for_wastewater_treatment_plant") }
+              render partial: "service_providers_licences", locals: { service_provider_user_licences: @service_provider_user_licences_energy_label_for_leachate_treatment_plant, title: I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.energy_label_for_leachate_treatment_plant") }
+              render partial: "service_providers_licences", locals: { service_provider_user_licences: @service_provider_user_licences_healthy_building_label, title: I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.healthy_building_label") }
+              render partial: "service_providers_licences", locals: { service_provider_user_licences: @service_provider_user_licences_energy_label_for_industrial_application, title: I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.energy_label_for_industrial_application") }
+              render partial: "service_providers_licences", locals: { service_provider_user_licences: @service_provider_user_licences_energy_label_for_infrastructure_projects, title: I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.energy_label_for_infrastructure_projects") }
           %>
         </div>
       </div>
