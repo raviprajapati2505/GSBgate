@@ -21,6 +21,28 @@ class Certificate < ApplicationRecord
     energy_label_for_infrastructure_projects
   ].freeze
 
+  CERTIFICATION_MAPPINGS = {
+    'Energy Centers Efficiency' => 'db',
+    'Building Energy Efficiency' => 'cm',
+    'Healthy Buildings' => 'op',
+    'Indoor Air Quality' => 'db',
+    'Measurement, Reporting And Verification (MRV)' => 'db',
+    'Buildings Water Efficiency' => 'cm',
+    'Events Carbon Neutrality' => 'op',
+    'Products Ecolabeling' => 'db',
+    'Green IT' => 'op',
+    'Net Zero' => 'db',
+    'Energy Label - Waste Water Treatment Facility' => 'op',
+    'Energy Label for Building Performance' => 'cm',
+    'Indoor Air Quality (IAQ) Certification' => 'db',
+    'Indoor Environmental Quality (IEQ) Certification' => 'cm',
+    'Energy Label for Wastewater Treatment Plant (WTP)' => 'op',
+    'Energy Label for Leachate Treatment Plant (LTP)' => 'db',
+    'Healthy Building Label' => 'op',
+    'Energy label for Industrial application' => 'cm',
+    'Energy label for Infrastructure projects' => 'op'
+  }.freeze
+
   enum certificate_type: [ 
     :energy_centers_efficiency_type,
     :building_energy_efficiency_type,

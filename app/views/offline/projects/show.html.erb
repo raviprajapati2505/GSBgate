@@ -101,34 +101,11 @@
           </tr>
           <% unless @project.offline_certification_paths.nil? %>
             <% @project.offline_certification_paths.each do |certificate| %>
-              <% 
-                case @project.certificate_type
-                  when 'Energy Centers Efficiency'
-                    star_badge_class = 'certi-status-badge star-rating-badge-db'
-                    image_tag = image_tag('layout/certi-status-db.png')
-                  when 'Building Energy Efficiency'
-                    star_badge_class = 'certi-status-badge star-rating-badge-cm'
-                    image_tag = image_tag('layout/certi-status-cm.png')
-                  when 'Healthy Buildings'
-                    star_badge_class = 'certi-status-badge star-rating-badge-op'
-                    image_tag = image_tag('layout/certi-status-op.png')
-                  when 'Indoor Air Quality'
-                    star_badge_class = 'certi-status-badge star-rating-badge-db'
-                    image_tag = image_tag('layout/certi-status-db.png')
-                  when 'Measurement, Reporting And Verification (MRV)'
-                    star_badge_class = 'certi-status-badge star-rating-badge-db'
-                    image_tag = image_tag('layout/certi-status-db.png')
-                  when 'Buildings Water Efficiency'
-                    star_badge_class = 'certi-status-badge star-rating-badge-cm'
-                    image_tag = image_tag('layout/certi-status-cm.png')
-                  when 'Events Carbon Neutrality'
-                    star_badge_class = 'certi-status-badge star-rating-badge-op'
-                    image_tag = image_tag('layout/certi-status-op.png')
-                  when 'Products Ecolabeling'
-                    star_badge_class = 'certi-status-badge star-rating-badge-db'
-                    image_tag = image_tag('layout/certi-status-db.png')
-                end
-              %>
+              <% cert_type = Certificate::CERTIFICATION_MAPPINGS[@project.certificate_type] %>
+              <% unless cert_type.nil? %>
+                <% star_badge_class = "certi-status-badge star-rating-badge-#{cert_type}" %>
+                <% image_tag = image_tag("layout/certi-status-#{cert_type}.png") %>
+              <% end %>
               <tr>
                 <td><%= link_to certificate.name, offline_project_certification_path(@project, certificate) %></td>
                 <td><%= certificate.status %></td>

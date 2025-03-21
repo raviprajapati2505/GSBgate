@@ -15,6 +15,17 @@ module Offline
         "Buildings Water Efficiency",
         "Events Carbon Neutrality",
         "Products Ecolabeling",
+        "Green IT",
+        "Net Zero",
+        "Energy Label - Waste Water Treatment Facility",
+        "Energy Label for Building Performance",
+        "Indoor Air Quality (IAQ) Certification",
+        "Indoor Environmental Quality (IEQ) Certification",
+        "Energy Label for Wastewater Treatment Plant (WTP)",
+        "Energy Label for Leachate Treatment Plant (LTP)",
+        "Healthy Building Label",
+        "Energy label for Industrial application",
+        "Energy label for Infrastructure projects"
       ]
 
     

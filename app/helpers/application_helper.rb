@@ -756,115 +756,57 @@ module ApplicationHelper
   end
 
   def certification_name_datatable_render(rec, only_certification_name)
-    case only_certification_name
-      when 'Energy Centers Efficiency'
-        '<span class="certi-name-badge badge-db">' + image_tag('/icons/certi-name-db.png') + '</span><a href=' + Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>' + only_certification_name + '</a>'
-      when 'Building Energy Efficiency'
-        '<span class="certi-name-badge badge-cm">' + image_tag('/icons/certi-name-cm.png') + '</span><a href=' + Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>' + only_certification_name + '</a>'
-      when 'Healthy Buildings'
-        '<span class="certi-name-badge badge-op">' + image_tag('/icons/certi-name-op.png') + '</span><a href=' + Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>' + only_certification_name + '</a>'
-      when 'Indoor Air Quality'
-        '<span class="certi-name-badge badge-db">' + image_tag('/icons/certi-name-db.png') + '</span><a href=' + Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>' + only_certification_name + '</a>'
-      when 'Measurement, Reporting And Verification (MRV)'
-        '<span class="certi-name-badge badge-db">' + image_tag('/icons/certi-name-db.png') + '</span><a href=' + Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>' + only_certification_name + '</a>'
-      when 'Buildings Water Efficiency'
-        '<span class="certi-name-badge badge-cm">' + image_tag('/icons/certi-name-cm.png') + '</span><a href=' + Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>' + only_certification_name + '</a>'
-      when 'Events Carbon Neutrality'
-        '<span class="certi-name-badge badge-op">' + image_tag('/icons/certi-name-op.png') + '</span><a href=' + Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>' + only_certification_name + '</a>'
-      when 'Products Ecolabeling'
-        '<span class="certi-name-badge badge-db">' + image_tag('/icons/certi-name-db.png') + '</span><a href=' + Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>' + only_certification_name + '</a>'
-      when 'Green IT'
-        '<span class="certi-name-badge badge-op">' + image_tag('/icons/certi-name-op.png') + '</span><a href=' + Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>' + only_certification_name + '</a>'
-      when 'Net Zero'
-        '<span class="certi-name-badge badge-db">' + image_tag('/icons/certi-name-db.png') + '</span><a href=' + Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>' + only_certification_name + '</a>'
-      when 'Energy Label - Waste Water Treatment Facility'
-        '<span class="certi-name-badge badge-db">' + image_tag('/icons/certi-name-op.png') + '</span><a href=' + Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)+'>' + only_certification_name + '</a>'
-    end
+    badge_class = Certificate::CERTIFICATION_MAPPINGS[only_certification_name]
+    return if badge_class.nil?
+
+    image_path = "/icons/certi-name-#{badge_class}.png"
+      
+    <<-HTML.html_safe
+      <span class="certi-name-badge badge-#{badge_class}">#{image_tag(image_path)}</span>
+      <a href="#{Rails.application.routes.url_helpers.project_certification_path_path(rec.project_nr, rec.certification_path_id)}">
+        #{only_certification_name}
+    </a>
+  HTML
   end
 
   def submission_status_datatable_render(rec)
     only_certification_name = Certificate.find_by_name(rec&.certificate_name)&.only_certification_name
     status = rec.certification_path_status_name
+    badge_class = Certificate::CERTIFICATION_MAPPINGS[only_certification_name]
+    return if badge_class.nil?
 
-    case only_certification_name
-      when 'Energy Centers Efficiency'
-        '<span class="certi-sub-status-badge status-badge-db">' + image_tag('/icons/certi-sub-status-db.png') +'</span>' + status
-      when 'Building Energy Efficiency'
-        '<span class="certi-sub-status-badge status-badge-cm">' + image_tag('/icons/certi-sub-status-cm.png') +'</span>' + status
-      when 'Healthy Buildings'
-        '<span class="certi-sub-status-badge status-badge-op">' + image_tag('/icons/certi-sub-status-op.png') +'</span>' + status
-      when 'Indoor Air Quality'
-        '<span class="certi-sub-status-badge status-badge-db">' + image_tag('/icons/certi-sub-status-db.png') +'</span>' + status
-      when 'Measurement, Reporting And Verification (MRV)'
-        '<span class="certi-sub-status-badge status-badge-db">' + image_tag('/icons/certi-sub-status-db.png') +'</span>' + status
-      when 'Buildings Water Efficiency'
-        '<span class="certi-sub-status-badge status-badge-cm">' + image_tag('/icons/certi-sub-status-cm.png') +'</span>' + status
-      when 'Events Carbon Neutrality'
-        '<span class="certi-sub-status-badge status-badge-op">' + image_tag('/icons/certi-sub-status-op.png') +'</span>' + status
-      when 'Products Ecolabeling'
-        '<span class="certi-sub-status-badge status-badge-db">' + image_tag('/icons/certi-sub-status-db.png') +'</span>' + status
-      when 'Green IT'
-        '<span class="certi-sub-status-badge status-badge-op">' + image_tag('/icons/certi-sub-status-op.png') +'</span>' + status
-      when 'Net Zero'
-        '<span class="certi-sub-status-badge status-badge-db">' + image_tag('/icons/certi-sub-status-db.png') +'</span>' + status
-      when 'Energy Label - Waste Water Treatment Facility'
-        '<span class="certi-sub-status-badge status-badge-db">' + image_tag('/icons/certi-sub-status-op.png') +'</span>' + status
-    end
+    image_path = "/icons/certi-sub-status-#{badge_class}.png"
+
+    <<-HTML.html_safe
+      <span class="certi-sub-status-badge status-badge-#{badge_class}">#{image_tag(image_path)}</span>
+      #{status}
+    HTML
   end
 
   def certification_name_offline_datatable_render(certification_type)
-    case certification_type
-      when 'Energy Centers Efficiency'
-        '<span class="certi-name-badge badge-db">'+ image_tag('/icons/certi-name-db.png') + '</span>' + certification_type
-      when 'Building Energy Efficiency'
-        '<span class="certi-name-badge badge-cm">'+ image_tag('/icons/certi-name-cm.png') + '</span>' + certification_type
-      when 'Healthy Buildings'
-        '<span class="certi-name-badge badge-op">'+ image_tag('/icons/certi-name-op.png') + '</span>' + certification_type
-      when 'Indoor Air Quality'
-        '<span class="certi-name-badge badge-db">'+ image_tag('/icons/certi-name-db.png') + '</span>' + certification_type
-      when 'Measurement, Reporting And Verification (MRV)'
-        '<span class="certi-name-badge badge-db">'+ image_tag('/icons/certi-name-db.png') + '</span>' + certification_type
-      when 'Buildings Water Efficiency'
-        '<span class="certi-name-badge badge-cm">'+ image_tag('/icons/certi-name-cm.png') + '</span>' + certification_type
-      when 'Events Carbon Neutrality'
-        '<span class="certi-name-badge badge-op">'+ image_tag('/icons/certi-name-op.png') + '</span>' + certification_type
-      when 'Products Ecolabeling'
-        '<span class="certi-name-badge badge-db">'+ image_tag('/icons/certi-name-db.png') + '</span>' + certification_type
-      when 'Green IT'
-        '<span class="certi-name-badge badge-op">'+ image_tag('/icons/certi-name-op.png') + '</span>' + certification_type
-      when 'Net Zero'
-        '<span class="certi-name-badge badge-db">'+ image_tag('/icons/certi-name-db.png') + '</span>' + certification_type
-      when 'Energy Label - Waste Water Treatment Facility'
-        '<span class="certi-name-badge badge-db">'+ image_tag('/icons/certi-name-op.png') + '</span>' + certification_type
-    end
+    badge_class = Certificate::CERTIFICATION_MAPPINGS[certification_type]
+    return if badge_class.nil?
+
+    image_path = "/icons/certi-name-#{badge_class}.png"
+
+    <<-HTML.html_safe
+      <span class="certi-name-badge badge-#{badge_class}">#{image_tag(image_path)}</span>
+      #{certification_type}
+    HTML
   end
 
   def submission_status_offline_datatable_render(rec)
     only_certification_name = rec.certificate_type
-    case only_certification_name
-      when 'Energy Centers Efficiency'
-        '<span class="certi-sub-status-badge status-badge-db">' + image_tag('/icons/certi-sub-status-db.png') + '</span>' + (rec.certification_status || '')
-      when 'Building Energy Efficiency'
-        '<span class="certi-sub-status-badge status-badge-cm">' + image_tag('/icons/certi-sub-status-cm.png') + '</span>' + (rec.certification_status || '')
-      when 'Healthy Buildings'
-        '<span class="certi-sub-status-badge status-badge-op">' + image_tag('/icons/certi-sub-status-op.png') + '</span>' + (rec.certification_status || '')
-      when 'Indoor Air Quality'
-        '<span class="certi-sub-status-badge status-badge-db">' + image_tag('/icons/certi-sub-status-db.png') + '</span>' + (rec.certification_status || '')
-      when 'Measurement, Reporting And Verification (MRV)'
-        '<span class="certi-sub-status-badge status-badge-db">' + image_tag('/icons/certi-sub-status-db.png') + '</span>' + (rec.certification_status || '')
-      when 'Buildings Water Efficiency'
-        '<span class="certi-sub-status-badge status-badge-cm">' + image_tag('/icons/certi-sub-status-cm.png') + '</span>' + (rec.certification_status || '')
-      when 'Events Carbon Neutrality'
-        '<span class="certi-sub-status-badge status-badge-op">' + image_tag('/icons/certi-sub-status-op.png') + '</span>' + (rec.certification_status || '')
-      when 'Products Ecolabeling'
-        '<span class="certi-sub-status-badge status-badge-db">' + image_tag('/icons/certi-sub-status-db.png') + '</span>' + (rec.certification_status || '')
-      when 'Green IT'
-        '<span class="certi-sub-status-badge status-badge-op">' + image_tag('/icons/certi-sub-status-op.png') + '</span>' + (rec.certification_status || '')
-      when 'Net Zero'
-        '<span class="certi-sub-status-badge status-badge-db">' + image_tag('/icons/certi-sub-status-db.png') + '</span>' + (rec.certification_status || '')
-      when 'Energy Label - Waste Water Treatment Facility'
-        '<span class="certi-sub-status-badge status-badge-db">' + image_tag('/icons/certi-sub-status-op.png') + '</span>' + (rec.certification_status || '')
-    end
+    status = rec.certification_status || ''
+    badge_class = Certificate::CERTIFICATION_MAPPINGS[only_certification_name]
+    return if badge_class.nil?
+
+    image_path = "/icons/certi-sub-status-#{badge_class}.png"
+
+    <<-HTML.html_safe
+      <span class="certi-sub-status-badge status-badge-#{badge_class}">#{image_tag(image_path)}</span>
+      #{status}
+    HTML
   end
 
   FONTS_DIR = "/app/assets/fonts/reports"

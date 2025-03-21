@@ -2,7 +2,7 @@
 certificates = [
   { name: 'Energy Label for Building Performance', type: :energy_label_for_building_performance },
   { name: 'Indoor Air Quality (IAQ) Certification', type: :indoor_air_quality_certification },
-  { name: 'Indoor Environmental Quality (IEQ) Certification', type: :indoor_air_quality_certification },
+  { name: 'Indoor Environmental Quality (IEQ) Certification', type: :indoor_environmental_quality_certification },
   { name: 'Energy Label for Wastewater Treatment Plant (WTP)', type: :energy_label_for_wastewater_treatment_plant },
   { name: 'Energy Label for Leachate Treatment Plant (LTP)', type: :energy_label_for_leachate_treatment_plant },
   { name: 'Healthy Building Label', type: :healthy_building_label },

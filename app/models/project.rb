@@ -273,43 +273,43 @@ class Project < ApplicationRecord
 
   def team_table_heading
     case certificate_type
-      when 1
+      when 0
         I18n.t('activerecord.attributes.project.team_titles.energy_centers_efficiency')
-      when 2
+      when 1
         I18n.t('activerecord.attributes.project.team_titles.building_energy_efficiency')
-      when 3
+      when 2
         I18n.t('activerecord.attributes.project.team_titles.healthy_buildings')
-      when 4
+      when 3
         I18n.t('activerecord.attributes.project.team_titles.indoor_air_quality')
-      when 5
+      when 4
         I18n.t('activerecord.attributes.project.team_titles.measurement_reporting_and_verification')
-      when 6
+      when 5
         I18n.t('activerecord.attributes.project.team_titles.building_water_efficiency')
-      when 7
+      when 6
         I18n.t('activerecord.attributes.project.team_titles.events_carbon_neutrality')
-      when 8
+      when 7
         I18n.t('activerecord.attributes.project.team_titles.products_ecolabeling')
-      when 9
+      when 8
         I18n.t('activerecord.attributes.project.team_titles.green_IT')
-      when 10
+      when 9
         I18n.t('activerecord.attributes.project.team_titles.net_zero')
+      when 10
+        I18n.t('activerecord.attributes.project.team_titles.energy_label_waste_water_treatment_facility')
       when 11
-        I18n.t('activerecord.attributes.project.team_titles.energy_label_waste_water_treatment_facility_type')
-      when 12
         I18n.t('activerecord.attributes.project.team_titles.energy_label_for_building_performance')
-      when 13
+      when 12
         I18n.t('activerecord.attributes.project.team_titles.indoor_air_quality_certification')
-      when 14
+      when 13
         I18n.t('activerecord.attributes.project.team_titles.indoor_environmental_quality_certification')
-      when 15
+      when 14
         I18n.t('activerecord.attributes.project.team_titles.energy_label_for_wastewater_treatment_plant')
-      when 16
+      when 15
         I18n.t('activerecord.attributes.project.team_titles.energy_label_for_leachate_treatment_plant')
-      when 17
+      when 16
         I18n.t('activerecord.attributes.project.team_titles.healthy_building_label')
-      when 18
+      when 17
         I18n.t('activerecord.attributes.project.team_titles.energy_label_for_industrial_application')
-      when 19
+      when 18
         I18n.t('activerecord.attributes.project.team_titles.energy_label_for_infrastructure_projects')
       else
         "Project Team"
