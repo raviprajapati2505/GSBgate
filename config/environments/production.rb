@@ -105,7 +105,7 @@ Rails.application.configure do
   # Mailer settings
   config.action_mailer.delivery_method = :test
   config.action_mailer.perform_caching = false
-  config.action_mailer.perform_deliveries = false
+  config.action_mailer.perform_deliveries = true
 
   config.action_mailer.default_url_options = { :host => 'https://www.gsb.qa' }
   config.action_mailer.asset_host = 'https://www.gsb.qa'
