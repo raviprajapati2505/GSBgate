@@ -112,6 +112,14 @@ en:
         provisional_green_IT: Please complete all Provisional Green IT Certification first.
         provisional_net_zero: Please complete all Provisional Net Zero Certification first.
         provisional_energy_label_waste_water_treatment_facility: Please complete all Provisional Energy Label - Waste Water Treatment Facility Certification first.
+        provisional_energy_label_for_building_performance: Please complete all Provisional Energy Label - Building Performance Certification first.
+        provisional_indoor_air_quality_certification: Please complete all Provisional Indoor Air Quality Certification first.
+        provisional_indoor_environmental_quality_certification: Please complete all Provisional Indoor Environmental Quality Certification first.
+        provisional_energy_label_for_wastewater_treatment_plant: Please complete all Provisional Energy Label - Wastewater Treatment Plant Certification first.
+        provisional_energy_label_for_leachate_treatment_plant: Please complete all Provisional Energy Label - Leachate Treatment Plant Certification first.
+        provisional_healthy_building_label: Please complete all Provisional Healthy Building Label Certification first.
+        provisional_energy_label_for_industrial_application: Please complete all Provisional Energy Label - Industrial Application Certification first.
+        provisional_energy_label_for_infrastructure_projects: Please complete all Provisional Energy Label - Infrastructure Projects Certification first.
     timeline_legend:
       project_team: Project Team
       certifier_team: GSB Trust Team

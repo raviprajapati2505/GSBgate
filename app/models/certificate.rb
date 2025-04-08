@@ -1,4 +1,48 @@
 class Certificate < ApplicationRecord
+  CERTIFICATE_TYPES = %i[
+    energy_centers_efficiency
+    building_energy_efficiency
+    healthy_buildings
+    indoor_air_quality
+    measurement_reporting_and_verification
+    building_water_efficiency
+    events_carbon_neutrality
+    products_ecolabeling
+    green_IT
+    net_zero
+    energy_label_waste_water_treatment_facility
+    energy_label_for_building_performance
+    indoor_air_quality_certification
+    indoor_environmental_quality_certification
+    energy_label_for_wastewater_treatment_plant
+    energy_label_for_leachate_treatment_plant
+    healthy_building_label
+    energy_label_for_industrial_application
+    energy_label_for_infrastructure_projects
+  ].freeze
+
+  CERTIFICATION_MAPPINGS = {
+    'Energy Centers Efficiency' => 'db',
+    'Building Energy Efficiency' => 'cm',
+    'Healthy Buildings' => 'op',
+    'Indoor Air Quality' => 'db',
+    'Measurement, Reporting And Verification (MRV)' => 'db',
+    'Buildings Water Efficiency' => 'cm',
+    'Events Carbon Neutrality' => 'op',
+    'Products Ecolabeling' => 'db',
+    'Green IT' => 'op',
+    'Net Zero' => 'db',
+    'Energy Label - Waste Water Treatment Facility' => 'op',
+    'Energy Label for Building Performance' => 'cm',
+    'Indoor Air Quality (IAQ) Certification' => 'db',
+    'Indoor Environmental Quality (IEQ) Certification' => 'cm',
+    'Energy Label for Wastewater Treatment Plant (WTP)' => 'op',
+    'Energy Label for Leachate Treatment Plant (LTP)' => 'db',
+    'Healthy Building Label' => 'op',
+    'Energy label for Industrial application' => 'cm',
+    'Energy label for Infrastructure projects' => 'op'
+  }.freeze
+
   enum certificate_type: [ 
     :energy_centers_efficiency_type,
     :building_energy_efficiency_type,
@@ -10,7 +54,15 @@ class Certificate < ApplicationRecord
     :products_ecolabeling_type,
     :green_IT_type,
     :net_zero_type,
-    :energy_label_waste_water_treatment_facility_type
+    :energy_label_waste_water_treatment_facility_type,
+    :energy_label_for_building_performance_type,
+    :indoor_air_quality_certification_type,
+    :indoor_environmental_quality_certification_type,
+    :energy_label_for_wastewater_treatment_plant_type,
+    :energy_label_for_leachate_treatment_plant_type,
+    :healthy_building_label_type,
+    :energy_label_for_industrial_application_type,
+    :energy_label_for_infrastructure_projects_type
   ]
 
   enum assessment_stage: [ 
@@ -24,7 +76,15 @@ class Certificate < ApplicationRecord
     :products_ecolabeling_stage,
     :green_IT_stage,
     :net_zero_stage,
-    :energy_label_waste_water_treatment_facility_stage
+    :energy_label_waste_water_treatment_facility_stage,
+    :energy_label_for_building_performance_stage,
+    :indoor_air_quality_certification_stage,
+    :indoor_environmental_quality_certification_stage,
+    :energy_label_for_wastewater_treatment_plant_stage,
+    :energy_label_for_leachate_treatment_plant_stage,
+    :healthy_building_label_stage,
+    :energy_label_for_industrial_application_stage,
+    :energy_label_for_infrastructure_projects_stage
   ]
 
   enum certification_type: [ 
@@ -49,7 +109,23 @@ class Certificate < ApplicationRecord
     :final_products_ecolabeling,
     :final_green_IT,
     :final_net_zero,
-    :final_energy_label_waste_water_treatment_facility
+    :final_energy_label_waste_water_treatment_facility,
+    :provisional_energy_label_for_building_performance,
+    :provisional_indoor_air_quality_certification,
+    :provisional_indoor_environmental_quality_certification,
+    :provisional_energy_label_for_wastewater_treatment_plant,
+    :provisional_energy_label_for_leachate_treatment_plant,
+    :provisional_healthy_building_label,
+    :provisional_energy_label_for_industrial_application,
+    :provisional_energy_label_for_infrastructure_projects,
+    :final_energy_label_for_building_performance,
+    :final_indoor_air_quality_certification,
+    :final_indoor_environmental_quality_certification,
+    :final_energy_label_for_wastewater_treatment_plant,
+    :final_energy_label_for_leachate_treatment_plant,
+    :final_healthy_building_label,
+    :final_energy_label_for_industrial_application,
+    :final_energy_label_for_infrastructure_projects
   ]
 
   PROVISIONAL_CERTIFICATES = [
@@ -63,7 +139,15 @@ class Certificate < ApplicationRecord
     :provisional_products_ecolabeling,
     :provisional_green_IT,
     :provisional_net_zero,
-    :provisional_energy_label_waste_water_treatment_facility
+    :provisional_energy_label_waste_water_treatment_facility,
+    :provisional_energy_label_for_building_performance,
+    :provisional_indoor_air_quality_certification,
+    :provisional_indoor_environmental_quality_certification,
+    :provisional_energy_label_for_wastewater_treatment_plant,
+    :provisional_energy_label_for_leachate_treatment_plant,
+    :provisional_healthy_building_label,
+    :provisional_energy_label_for_industrial_application,
+    :provisional_energy_label_for_infrastructure_projects
   ]
   PROVISIONAL_CERTIFICATES_VALUES = certification_types.select{ |k, v| v if k.include?("provisional_")}&.values
 
@@ -78,7 +162,15 @@ class Certificate < ApplicationRecord
     :final_products_ecolabeling,
     :final_green_IT,
     :final_net_zero,
-    :final_energy_label_waste_water_treatment_facility
+    :final_energy_label_waste_water_treatment_facility,
+    :final_energy_label_for_building_performance,
+    :final_indoor_air_quality_certification,
+    :final_indoor_environmental_quality_certification,
+    :final_energy_label_for_wastewater_treatment_plant,
+    :final_energy_label_for_leachate_treatment_plant,
+    :final_healthy_building_label,
+    :final_energy_label_for_industrial_application,
+    :final_energy_label_for_infrastructure_projects
   ]
   FINAL_CERTIFICATES_VALUES = certification_types.select{ |k, v| v if k.include?("final_")}&.values
 
@@ -141,6 +233,38 @@ class Certificate < ApplicationRecord
     energy_label_waste_water_treatment_facility_type?
   end
 
+  def energy_label_for_building_performance?
+    energy_label_for_building_performance_type?
+  end
+
+  def indoor_air_quality_certification?
+    indoor_air_quality_certification_type?
+  end
+
+  def indoor_environmental_quality_certification?
+    indoor_environmental_quality_certification_type?
+  end
+
+  def energy_label_for_wastewater_treatment_plant?
+    energy_label_for_wastewater_treatment_plant_type?
+  end
+
+  def energy_label_for_leachate_treatment_plant?
+    energy_label_for_leachate_treatment_plant_type?
+  end
+
+  def healthy_building_label?
+    healthy_building_label_type?
+  end
+
+  def energy_label_for_industrial_application?
+    energy_label_for_industrial_application_type?
+  end
+
+  def energy_label_for_infrastructure_projects?
+    energy_label_for_infrastructure_projects_type?
+  end
+  
   def full_name
     self.name
   end
@@ -173,6 +297,22 @@ class Certificate < ApplicationRecord
                                 [Certificate.certification_types[:provisional_net_zero], Certificate.certification_types[:final_net_zero]]
                               when "energy_label_waste_water_treatment_facility_type"
                                 [Certificate.certification_types[:provisional_energy_label_waste_water_treatment_facility], Certificate.certification_types[:final_energy_label_waste_water_treatment_facility]]
+                              when "energy_label_for_building_performance_type"
+                                [Certificate.certification_types[:provisional_energy_label_for_building_performance], Certificate.certification_types[:final_energy_label_for_building_performance]]
+                              when "indoor_air_quality_certification_type"
+                                [Certificate.certification_types[:provisional_indoor_air_quality_certification], Certificate.certification_types[:final_indoor_air_quality_certification]]
+                              when "indoor_environmental_quality_certification_type"
+                                [Certificate.certification_types[:provisional_indoor_environmental_quality_certification], Certificate.certification_types[:final_indoor_environmental_quality_certification]]
+                              when "energy_label_for_wastewater_treatment_plant_type"
+                                [Certificate.certification_types[:provisional_energy_label_for_wastewater_treatment_plant], Certificate.certification_types[:final_energy_label_for_wastewater_treatment_plant]]
+                              when "energy_label_for_leachate_treatment_plant_type"
+                                [Certificate.certification_types[:provisional_energy_label_for_leachate_treatment_plant], Certificate.certification_types[:final_energy_label_for_leachate_treatment_plant]]
+                              when "healthy_building_label_type"
+                                [Certificate.certification_types[:provisional_healthy_building_label], Certificate.certification_types[:final_healthy_building_label]]
+                              when "energy_label_for_industrial_application_type"
+                                [Certificate.certification_types[:provisional_energy_label_for_industrial_application], Certificate.certification_types[:final_energy_label_for_industrial_application]]
+                              when "energy_label_for_infrastructure_projects_type"
+                                [Certificate.certification_types[:provisional_energy_label_for_infrastructure_projects], Certificate.certification_types[:final_energy_label_for_infrastructure_projects]]
                               else
                                 Certificate.certification_types
                               end

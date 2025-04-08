@@ -1,32 +1,10 @@
-<% 
-  case certification_type
-    when 'Energy Centers Efficiency'
-      star_badge_class = 'certi-status-badge star-rating-badge-db'
-      image_tag = image_tag('layout/certi-status-db.png')
-    when 'Building Energy Efficiency'
-      star_badge_class = 'certi-status-badge star-rating-badge-cm'
-      image_tag = image_tag('layout/certi-status-cm.png')
-    when 'Healthy Buildings'
-      star_badge_class = 'certi-status-badge star-rating-badge-op'
-      image_tag = image_tag('layout/certi-status-op.png')
-    when 'Indoor Air Quality'
-      star_badge_class = 'certi-status-badge star-rating-badge-db'
-      image_tag = image_tag('layout/certi-status-db.png')
-    when 'Measurement, Reporting And Verification (MRV)'
-      star_badge_class = 'certi-status-badge star-rating-badge-db'
-      image_tag = image_tag('layout/certi-status-db.png')
-    when 'Buildings Water Efficiency'
-      star_badge_class = 'certi-status-badge star-rating-badge-cm'
-      image_tag = image_tag('layout/certi-status-cm.png')
-    when 'Events Carbon Neutrality'
-      star_badge_class = 'certi-status-badge star-rating-badge-op'
-      image_tag = image_tag('layout/certi-status-op.png')
-    when 'Products Ecolabeling'
-      star_badge_class = 'certi-status-badge star-rating-badge-db'
-      image_tag = image_tag('layout/certi-status-db.png')
-  end
-%>
- <% if ratings == 'CERTIFIED' || ratings == 'CLASS B' %>
+<% cert_type = Certificate::CERTIFICATION_MAPPINGS[certification_type] %>
+<% unless cert_type.nil? %>
+  <% star_badge_class = "certi-status-badge star-rating-badge-#{cert_type}" %>
+  <% image_tag = image_tag("layout/certi-status-#{cert_type}.png") %>
+<% end %>
+
+<% if ratings == 'CERTIFIED' || ratings == 'CLASS B' %>
   <span class="certi-status-badge <%= star_badge_class %> label-rating-<%= ratings.downcase.gsub(/( )/, '-') %>"><%= image_tag %><%= ratings %></span>
 <% else %>
 <span class="certi-status-badge <%= star_badge_class %>">
