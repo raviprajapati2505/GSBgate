@@ -21,7 +21,7 @@ body.skin-gord-login{
                     <%= btn_tag(text: 'Submit', class: 'block full-width m-b') %>
                 <% end %>
                 <input type="hidden" value="<%= @user.otp %>">
-                <% if Rails.env.development? || Rails.env.staging? || Rails.env.production? %>
+                <% if Rails.env.development? || Rails.env.staging? %>
                     <p class="text-blue mt-3">Your OTP for login is : <%= @user.otp %></p>
                 <% end %>
             </div>
