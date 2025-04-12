@@ -18,7 +18,7 @@ class Users::SessionsController < Devise::SessionsController
       case resource.role
         when 'default_role'
           redirect_path = dashboard_path
-        when 'service_provider'
+        when 'corporate'
           redirect_path = dashboard_path
         when 'users_admin', 'credentials_admin'
           redirect_path = users_path
@@ -64,8 +64,8 @@ class Users::SessionsController < Devise::SessionsController
 
   def validate_otp
     user = User.find(params[:id])
-    if User.is_service_provider(user)
-      otp_field = params[:service_provider][:username].to_i
+    if User.is_corporate(user)
+      otp_field = params[:corporate][:username].to_i
     else
       otp_field = params[:user][:username].to_i
     end
@@ -74,7 +74,7 @@ class Users::SessionsController < Devise::SessionsController
       case user.role
         when 'default_role'
           redirect_path = dashboard_path
-        when 'service_provider'
+        when 'corporate'
           redirect_path = dashboard_path
         when 'users_admin', 'credentials_admin'
           redirect_path = users_path

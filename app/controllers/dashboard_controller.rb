@@ -9,8 +9,8 @@ class DashboardController < AuthenticatedController
     @overdue_licences = AccessLicence.user_overdue_access_licences(@user.id)
     # Affiliated Practitioner Accreditation
     Certificate::CERTIFICATE_TYPES.each do |cert_type|
-      instance_variable_set("@service_provider_user_licences_#{cert_type}",
-      AccessLicence.users_of_service_provider(@user, Certificate.certificate_types[:"#{cert_type}_type"]))  
+      instance_variable_set("@corporate_user_licences_#{cert_type}",
+      AccessLicence.users_of_corporate(@user, Certificate.certificate_types[:"#{cert_type}_type"]))  
     end  
 
     # Practitioner Accreditation Or Corporate License
@@ -43,13 +43,13 @@ class DashboardController < AuthenticatedController
       access_licence.save
       redirect_to dashboard_user_path(access_licence.user.id), notice: "Licence Document updated successfully" and return
     else
-      if User.is_service_provider(@user)
-        if @user.service_provider_detail.present?
+      if User.is_corporate(@user)
+        if @user.corporate_detail.present?
           case user_params[:file_name]
             when "application_form"
-              @user.service_provider_detail.application_form = user_params[:file]
+              @user.corporate_detail.application_form = user_params[:file]
             when "portfolio"
-                @user.service_provider_detail.portfolio = user_params[:file]
+                @user.corporate_detail.portfolio = user_params[:file]
             end
           @user.save(validate: false)
           redirect_to dashboard_path, notice: "Document updated successfully" and return
@@ -93,8 +93,8 @@ class DashboardController < AuthenticatedController
   end
 
   def user_params
-    if params[:service_provider].present?
-      user_params = params.require(:service_provider).permit(
+    if params[:corporate].present?
+      user_params = params.require(:corporate).permit(
         :file,
         :file_name,
         :demerit_flag,

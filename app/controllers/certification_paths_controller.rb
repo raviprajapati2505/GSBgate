@@ -224,7 +224,7 @@ class CertificationPathsController < AuthenticatedController
     
     # add validation error according to user role.
     fields =  case current_user&.role
-              when 'default_role'
+              when 'default_role', 'corporate'
                 [:to, :project_owner, :project_name, :project_location]
               when 'system_admin', 'gsb_trust_admin', 'document_controller'
                 [:to, :reference_number, :project_owner, :project_name, :project_location, :issuance_date, :approval_date]
@@ -239,7 +239,7 @@ class CertificationPathsController < AuthenticatedController
     respond_to do |format|
       unless @certification_path_report.errors.present?
         if @certification_path_report.update(detailed_certification_report_params)
-          if current_user.has_role?(["default_role"])
+          if current_user.has_role?(["default_role"]) || current_user.has_role?(["corporate"])
             Task.where(taskable: @certification_path, task_description_id: Taskable::CGP_CERTIFICATION_REPORT_INFORMATION).delete_all
 
             Task.find_or_create_by(taskable: @certification_path,

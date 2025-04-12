@@ -38,7 +38,7 @@ module Taskable
   CGP_CERTIFICATION_REPORT_INFORMATION = 44
   DC_CERTIFICATION_REPORT_INFORMATION = 45
   ACTIVATE_USER = 46
-  SERVICE_PROVIDER_NAME_CHANGE = 47
+  CORPORATE_NAME_CHANGE = 47
   SIGNED_CERTIFICATE_DOWNLOAD = 48
 
 
@@ -84,7 +84,7 @@ module Taskable
         handle_updated_scheme_mix_criteria_document
       when CertificationPathReport.name.demodulize
         handle_updated_certification_path_report
-      when User.name.demodulize, ServiceProvider.name.demodulize
+      when User.name.demodulize, Corporate.name.demodulize
         if saved_change_to_confirmed_at? || saved_change_to_username? || saved_change_to_email?
           handle_confirmed_user_account
         end
@@ -207,7 +207,7 @@ module Taskable
   def handle_change_org_name
     Task.find_or_create_by(
       taskable: self,
-      task_description_id: SERVICE_PROVIDER_NAME_CHANGE,
+      task_description_id: CORPORATE_NAME_CHANGE,
       application_role: User.roles[:credentials_admin]
     )
   end

@@ -1,5 +1,5 @@
-<% if User.is_service_provider(@user) %>
-  <%= render partial: 'for_service_provider' %>
+<% if User.is_corporate(@user) %>
+  <%= render partial: 'for_corporate' %>
 <% else %>
   <%= render partial: 'for_cgp_user' %>
 <% end %>

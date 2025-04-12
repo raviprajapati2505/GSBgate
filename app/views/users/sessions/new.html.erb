@@ -42,7 +42,7 @@
           -->
 
           <%= link_to "Register as a CGP/CEP", new_registration_path(resource_name), class: 'text-white mb-4 d-inline-block' %> |
-          <%= link_to "Register as a Service Provider", new_service_provider_path, class: 'text-white mb-4 d-inline-block' %>
+          <%= link_to "Register as a Corporate", new_corporate_path, class: 'text-white mb-4 d-inline-block' %>
 
           <div class="login-right">
             <div class="title">
@@ -61,7 +61,7 @@
                 <p class="my-3">New Here? Sign up and discover more</p>
                 <%= link_to "Sign up as CGP/CEP", new_registration_path(resource_name),class: 'block full-width mb-2 btn bg-white text-blue'  %>
                 <br />
-                <%= link_to "Sign up as Service Provider",new_service_provider_path,class: 'block full-width mb-2 btn bg-white text-blue'  %>
+                <%= link_to "Sign up as Corporate",new_corporate_path,class: 'block full-width mb-2 btn bg-white text-blue'  %>
               </div>
               <% end %>
             </div>
@@ -83,7 +83,7 @@
                         <br/>  
                         <%= link_to "SIGN UP AS CGP/CEP", new_registration_path(resource_name),class: 'btn bg-white text-blue'  %>   
                         <br/>
-                        <%= link_to "SIGN UP AS SERVICE PROVIDER", new_service_provider_path,class: 'block full-width mb-2 btn bg-white text-blue'  %>
+                        <%= link_to "SIGN UP AS CORPORATE", new_corporate_path,class: 'block full-width mb-2 btn bg-white text-blue'  %>
                         </div> 
                     </div> -->
       </div>
@@ -91,7 +91,7 @@
 
       <!-- <div class="links">
                 <%= render "users/shared/links" %>
-                <%= link_to 'SignUp As a Service Provider', new_service_provider_path %>
+                <%= link_to 'SignUp As a Corporate', new_corporate_path %>
             </div> -->
     </div>
   </div>

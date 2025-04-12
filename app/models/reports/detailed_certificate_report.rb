@@ -173,7 +173,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
     data.append(["Project ID", @project.code])
     data.append(["Project Name", @detailed_certificate_report&.project_name])
     data.append(["Project Location", @detailed_certificate_report&.project_location])
-    data.append(["GSB Service Provider", @project.service_provider])
+    data.append(["GSB Corporate", @project.corporate])
     data.append(["GSB Certificate", @certification_path.certificate&.report_certification_name])
 
     case @certification_path.certificate&.name

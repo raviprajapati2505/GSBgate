@@ -1,11 +1,11 @@
-# ----------------------------------------- Licences for Service Providers -----------------------------------------
+# ----------------------------------------- Licences for Corporates -----------------------------------------
 # Energy Centers Efficiency
 Licence.find_or_create_by!(
-  licence_type: 'ServiceProviderLicence',
-  display_name: 'Service Provider - Energy Centers Efficiency',
+  licence_type: 'CorporateLicence',
+  display_name: 'Corporate - Energy Centers Efficiency',
   display_weight: 1,
-  title: 'Service Provider - Energy Centers Efficiency',
-  description: 'Energy Centers Efficiency Service Provider',
+  title: 'Corporate - Energy Centers Efficiency',
+  description: 'Energy Centers Efficiency Corporate',
   certificate_type: Certificate.certificate_types[:energy_centers_efficiency_type],
   schemes: ['Typology'],
   applicability: Licence.applicabilities[:check_list]
@@ -14,11 +14,11 @@ Licence.find_or_create_by!(
 
 # Building Energy Efficiency
 Licence.find_or_create_by!(
-  licence_type: 'ServiceProviderLicence',
-  display_name: 'Service Provider - Building Energy Efficiency',
+  licence_type: 'CorporateLicence',
+  display_name: 'Corporate - Building Energy Efficiency',
   display_weight: 2,
-  title: 'Service Provider - Building Energy Efficiency',
-  description: 'Building Energy Efficiency Service Provider',
+  title: 'Corporate - Building Energy Efficiency',
+  description: 'Building Energy Efficiency Corporate',
   certificate_type: Certificate.certificate_types[:building_energy_efficiency_type],
   schemes: ['Typology'],
   applicability: Licence.applicabilities[:check_list]
@@ -26,11 +26,11 @@ Licence.find_or_create_by!(
 
 # Healthy Buildings
 Licence.find_or_create_by!(
-  licence_type: 'ServiceProviderLicence',
-  display_name: 'Service Provider - Healthy Buildings',
+  licence_type: 'CorporateLicence',
+  display_name: 'Corporate - Healthy Buildings',
   display_weight: 3,
-  title: 'Service Provider - Healthy Buildings',
-  description: 'Healthy Buildings Service Provider',
+  title: 'Corporate - Healthy Buildings',
+  description: 'Healthy Buildings Corporate',
   certificate_type: Certificate.certificate_types[:healthy_buildings_type],
   schemes: ['Typology'],
   applicability: Licence.applicabilities[:check_list]
@@ -38,11 +38,11 @@ Licence.find_or_create_by!(
 
 # Indoor Air Quality
 Licence.find_or_create_by!(
-  licence_type: 'ServiceProviderLicence',
-  display_name: 'Service Provider - Indoor Air Quality',
+  licence_type: 'CorporateLicence',
+  display_name: 'Corporate - Indoor Air Quality',
   display_weight: 4,
-  title: 'Service Provider - Indoor Air Quality',
-  description: 'Indoor Air Quality Service Provider',
+  title: 'Corporate - Indoor Air Quality',
+  description: 'Indoor Air Quality Corporate',
   certificate_type: Certificate.certificate_types[:indoor_air_quality_type],
   schemes: ['Typology'],
   applicability: Licence.applicabilities[:check_list]
@@ -50,11 +50,11 @@ Licence.find_or_create_by!(
 
 # Measurement, Reporting And Verification (MRV)
 Licence.find_or_create_by!(
-  licence_type: 'ServiceProviderLicence',
-  display_name: 'Service Provider - Measurement, Reporting And Verification (MRV)',
+  licence_type: 'CorporateLicence',
+  display_name: 'Corporate - Measurement, Reporting And Verification (MRV)',
   display_weight: 5,
-  title: 'Service Provider - Measurement, Reporting And Verification (MRV)',
-  description: 'Measurement, Reporting And Verification (MRV) Service Provider',
+  title: 'Corporate - Measurement, Reporting And Verification (MRV)',
+  description: 'Measurement, Reporting And Verification (MRV) Corporate',
   certificate_type: Certificate.certificate_types[:measurement_reporting_and_verification_type],
   schemes: ['Typology'],
   applicability: Licence.applicabilities[:check_list]
@@ -62,11 +62,11 @@ Licence.find_or_create_by!(
 
 # Buildings Water Efficiency
 Licence.find_or_create_by!(
-  licence_type: 'ServiceProviderLicence',
-  display_name: 'Service Provider - Buildings Water Efficiency',
+  licence_type: 'CorporateLicence',
+  display_name: 'Corporate - Buildings Water Efficiency',
   display_weight: 6,
-  title: 'Service Provider - Buildings Water Efficiency',
-  description: 'Buildings Water Efficiency Service Provider',
+  title: 'Corporate - Buildings Water Efficiency',
+  description: 'Buildings Water Efficiency Corporate',
   certificate_type: Certificate.certificate_types[:building_water_efficiency_type],
   schemes: ['Typology'],
   applicability: Licence.applicabilities[:check_list]
@@ -74,11 +74,11 @@ Licence.find_or_create_by!(
 
 # Events Carbon Neutrality
 Licence.find_or_create_by!(
-  licence_type: 'ServiceProviderLicence',
-  display_name: 'Service Provider - Events Carbon Neutrality',
+  licence_type: 'CorporateLicence',
+  display_name: 'Corporate - Events Carbon Neutrality',
   display_weight: 7,
-  title: 'Service Provider - Events Carbon Neutrality',
-  description: 'Events Carbon Neutrality Service Provider',
+  title: 'Corporate - Events Carbon Neutrality',
+  description: 'Events Carbon Neutrality Corporate',
   certificate_type: Certificate.certificate_types[:events_carbon_neutrality_type],
   schemes: ['Typology'],
   applicability: Licence.applicabilities[:check_list]
@@ -86,11 +86,11 @@ Licence.find_or_create_by!(
 
 # Products Ecolabeling
 Licence.find_or_create_by!(
-  licence_type: 'ServiceProviderLicence',
-  display_name: 'Service Provider - Products Ecolabeling',
+  licence_type: 'CorporateLicence',
+  display_name: 'Corporate - Products Ecolabeling',
   display_weight: 8,
-  title: 'Service Provider - Products Ecolabeling',
-  description: 'Products Ecolabeling Service Provider',
+  title: 'Corporate - Products Ecolabeling',
+  description: 'Products Ecolabeling Corporate',
   certificate_type: Certificate.certificate_types[:products_ecolabeling_type],
   schemes: ['Typology'],
   applicability: Licence.applicabilities[:check_list]
@@ -98,11 +98,11 @@ Licence.find_or_create_by!(
 
 # Green IT
 Licence.find_or_create_by!(
-  licence_type: 'ServiceProviderLicence',
-  display_name: 'Service Provider - Green IT',
+  licence_type: 'CorporateLicence',
+  display_name: 'Corporate - Green IT',
   display_weight: 9,
-  title: 'Service Provider - Green IT',
-  description: 'Green IT Service Provider',
+  title: 'Corporate - Green IT',
+  description: 'Green IT Corporate',
   certificate_type: Certificate.certificate_types[:green_IT_type],
   schemes: ['Typology'],
   applicability: Licence.applicabilities[:check_list]
@@ -110,11 +110,11 @@ Licence.find_or_create_by!(
 
 # Net Zero
 Licence.find_or_create_by!(
-  licence_type: 'ServiceProviderLicence',
-  display_name: 'Service Provider - Net Zero',
+  licence_type: 'CorporateLicence',
+  display_name: 'Corporate - Net Zero',
   display_weight: 10,
-  title: 'Service Provider - Net Zero',
-  description: 'Net Zero Service Provider',
+  title: 'Corporate - Net Zero',
+  description: 'Net Zero Corporate',
   certificate_type: Certificate.certificate_types[:net_zero_type],
   schemes: ['Typology'],
   applicability: Licence.applicabilities[:check_list]
@@ -122,11 +122,11 @@ Licence.find_or_create_by!(
 
 # Energy Label - Waste Water Treatment Facility
 Licence.find_or_create_by!(
-  licence_type: 'ServiceProviderLicence',
-  display_name: 'Service Provider - Energy Label - Waste Water Treatment Facility',
+  licence_type: 'CorporateLicence',
+  display_name: 'Corporate - Energy Label - Waste Water Treatment Facility',
   display_weight: 11,
-  title: 'Service Provider - Energy Label - Waste Water Treatment Facility',
-  description: 'Energy Label - Waste Water Treatment Facility Service Provider',
+  title: 'Corporate - Energy Label - Waste Water Treatment Facility',
+  description: 'Energy Label - Waste Water Treatment Facility Corporate',
   certificate_type: Certificate.certificate_types[:energy_label_waste_water_treatment_facility_type],
   schemes: ['Typology'],
   applicability: Licence.applicabilities[:check_list]

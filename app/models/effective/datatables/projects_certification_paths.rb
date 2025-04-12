@@ -175,12 +175,12 @@ module Effective
           end
         end
 
-        col :project_service_provider, col_class: 'multiple-select col-order-18', sql_column: 'projects.service_provider', label: t('models.effective.datatables.projects.lables.service_provider'), visible: false, search: { as: :select, collection: Proc.new { Project.order(:service_provider).pluck(:service_provider).uniq.compact.map { |service_provider| [service_provider, service_provider] } rescue [] } } do |rec|
-          rec.project_service_provider
+        col :project_corporate, col_class: 'multiple-select col-order-18', sql_column: 'projects.corporate', label: t('models.effective.datatables.projects.lables.corporate'), visible: false, search: { as: :select, collection: Proc.new { Project.order(:corporate).pluck(:corporate).uniq.compact.map { |corporate| [corporate, corporate] } rescue [] } } do |rec|
+          rec.project_corporate
         end.search do |collection, terms, column, index|
           terms_array = terms.split(",")
           unless (collection.class == Array || terms_array.include?(""))
-            collection.where("projects.service_provider IN (?)", terms_array)
+            collection.where("projects.corporate IN (?)", terms_array)
           else
             collection
           end
@@ -432,7 +432,7 @@ module Effective
       collection do
         projects = Project.datatable_projects_records
         
-        if current_user.is_service_provider?
+        if current_user.is_corporate?
           project_ids = Project.accessible_by(current_ability).pluck(:id)
           projects.where(id: project_ids.uniq)
         else

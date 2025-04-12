@@ -29,7 +29,7 @@
                   </tr>
                 <% elsif smc_box.object.scheme_criterion_box.label == "Achieved Checklist Status" %>
                   <% if !@certification_path.in_pre_verification? %>
-                    <% if !@certification_path.in_verification? || (@certification_path.certification_path_status_id == CertificationPathStatus::VERIFYING_AFTER_APPEAL && SchemeMixCriterion::statuses[@scheme_mix_criterion.status] < SchemeMixCriterion::statuses[:verifying_after_appeal]) || !current_user.is_default_role? || @project.role_for_user(current_user) == ProjectsUser.roles.keys[ProjectsUser.roles[:certifier]] || @project.role_for_user(current_user) == ProjectsUser.roles.keys[ProjectsUser.roles[:certification_manager]] %>
+                    <% if !@certification_path.in_verification? || (@certification_path.certification_path_status_id == CertificationPathStatus::VERIFYING_AFTER_APPEAL && SchemeMixCriterion::statuses[@scheme_mix_criterion.status] < SchemeMixCriterion::statuses[:verifying_after_appeal]) || !current_user.is_default_role? || !current_user.is_corporate? || @project.role_for_user(current_user) == ProjectsUser.roles.keys[ProjectsUser.roles[:certifier]] || @project.role_for_user(current_user) == ProjectsUser.roles.keys[ProjectsUser.roles[:certification_manager]] %>
                       <%= smc_box.hidden_field :id %>
                       <tr>
                         <th><%= smc_box.object.scheme_criterion_box.label %></th>

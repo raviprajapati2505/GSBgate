@@ -3,7 +3,7 @@
 class Users::RegistrationsController < Devise::RegistrationsController
   before_action :configure_sign_up_params, only: [:create]
   before_action :configure_account_update_params, only: [:update]
-  before_action :set_service_provider, only: [:edit_service_provider, :update_service_provider]
+  before_action :set_corporate, only: [:edit_corporate, :update_corporate]
   before_action :set_user, only: [:edit]
 
   # GET /resource/sign_up
@@ -13,9 +13,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
   end
 
-  def new_service_provider
-    @service_provider = ServiceProvider.new
-    @service_provider_detail = @service_provider.build_service_provider_detail
+  def new_corporate
+    @corporate = Corporate.new
+    @corporate_detail = @corporate.build_corporate_detail
   end
   
   # POST /resource
@@ -23,17 +23,17 @@ class Users::RegistrationsController < Devise::RegistrationsController
   #   super
   # end
 
-  # POST /service_provider
-  def create_service_provider
-    @service_provider = ServiceProvider.new(sp_sign_up_params)
-    @service_provider.role = :service_provider
+  # POST /corporate
+  def create_corporate
+    @corporate = Corporate.new(sp_sign_up_params)
+    @corporate.role = :corporate
 
-    if @service_provider.save
+    if @corporate.save
       redirect_to new_user_session_path, notice: "Confirmation mail has been sent to your registered email address, Please verify your account."
     else
-      clean_up_passwords @service_provider
+      clean_up_passwords @corporate
       set_minimum_password_length
-      render :new_service_provider
+      render :new_corporate
     end
   end
 
@@ -43,10 +43,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
     super
   end
 
-  # GET /edit_service_provider
-  def edit_service_provider
-    @service_provider_detail = ServiceProviderDetail.find_or_initialize_by(id: @service_provider.service_provider_detail&.id)
-    render :edit_service_provider
+  # GET /edit_corporate
+  def edit_corporate
+    @corporate_detail = CorporateDetail.find_or_initialize_by(id: @corporate.corporate_detail&.id)
+    render :edit_corporate
   end
 
   # PUT /resource
@@ -55,15 +55,15 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   # PUT /resource
-  def update_service_provider
-    #sp_update_params[:service_provider_detail_attributes][:commercial_licence_file] = @service_provider.service_provider_detail.commercial_licence_file unless sp_update_params[:service_provider_detail_attributes].has_key?(:commercial_licence_file) && sp_update_params[:service_provider_detail_attributes][:commercial_licence_file].present?
-    sp_updated = update_resource(@service_provider, sp_update_params)
+  def update_corporate
+    #sp_update_params[:corporate_detail_attributes][:commercial_licence_file] = @corporate.corporate_detail.commercial_licence_file unless sp_update_params[:corporate_detail_attributes].has_key?(:commercial_licence_file) && sp_update_params[:corporate_detail_attributes][:commercial_licence_file].present?
+    sp_updated = update_resource(@corporate, sp_update_params)
     if sp_updated
-      redirect_to user_path(@service_provider), notice: "Profile has successfully updated."
+      redirect_to user_path(@corporate), notice: "Profile has successfully updated."
     else
       clean_up_passwords resource
       set_minimum_password_length
-      render :edit_service_provider
+      render :edit_corporate
     end
   end
 
@@ -92,7 +92,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
         :username, 
         :organization_name, 
         :gord_employee, 
-        :service_provider_id, 
+        :corporate_id, 
         :password, 
         :password_confirmation, 
         :name_suffix, 
@@ -144,7 +144,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
         :username, 
         :organization_name, 
         :gord_employee,
-        :service_provider_id, 
+        :corporate_id, 
         :password,
         :current_password,
         :password_confirmation, 
@@ -190,7 +190,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def sp_sign_up_params
-      params.require(:service_provider).permit([
+      params.require(:corporate).permit([
         :name, 
         :email,
         :profile_pic, 
@@ -217,13 +217,13 @@ class Users::RegistrationsController < Devise::RegistrationsController
         :organization_fax, 
         :gsb_id,
         :practitioner_accreditation_type,
-        service_provider_detail_attributes: [
+        corporate_detail_attributes: [
           :business_field,
           :portfolio,
           :commercial_licence_no,
           :commercial_licence_expiry_date,
           :commercial_licence_file,
-          :accredited_service_provider_licence_file,
+          :accredited_corporate_licence_file,
           :demerit_acknowledgement_file,
           :application_form,
           :cgp_licence_file,
@@ -237,7 +237,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def sp_update_params
-    params.require(:service_provider).permit([
+    params.require(:corporate).permit([
             :name, 
             :email,
             :profile_pic, 
@@ -265,14 +265,14 @@ class Users::RegistrationsController < Devise::RegistrationsController
             :organization_fax, 
             :gsb_id,
             :practitioner_accreditation_type, 
-            service_provider_detail_attributes: [
+            corporate_detail_attributes: [
               :id,
               :business_field,
               :portfolio,
               :commercial_licence_no,
               :commercial_licence_expiry_date,
               :commercial_licence_file,
-              :accredited_service_provider_licence_file,
+              :accredited_corporate_licence_file,
               :demerit_acknowledgement_file,
               :application_form,
               :cgp_licence_file,
@@ -283,8 +283,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
       ])
   end
 
-  def set_service_provider
-    @service_provider = ServiceProvider.find(params[:id])
+  def set_corporate
+    @corporate = Corporate.find(params[:id])
   end
 
   # The path used after sign up.

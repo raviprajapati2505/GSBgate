@@ -19,7 +19,7 @@
             <th>GSB ID</th>
             <th>Expiry Date</th>
           </tr>
-          <% service_provider_user_licences&.each.with_index(1) do |ac, index| %>
+          <% corporate_user_licences&.each.with_index(1) do |ac, index| %>
             <tr>
               <td><%= ac.licence.display_name %></td>
               <td class="b-word"><%= link_to(ac.user.full_name, user_path(ac.user)) %></td>

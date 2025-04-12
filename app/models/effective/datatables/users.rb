@@ -83,9 +83,9 @@ module Effective
             when 'individuals'
               [User.roles['default_role']]
             when 'corporates'
-              [User.roles['service_provider']]
+              [User.roles['corporate']]
             when 'admins'
-              User.roles.values - [User.roles['default_role'], User.roles['service_provider']]
+              User.roles.values - [User.roles['default_role'], User.roles['corporate']]
             else
               User.roles.values
           end

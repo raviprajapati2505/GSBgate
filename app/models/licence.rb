@@ -4,18 +4,18 @@ class Licence < ApplicationRecord
   has_many :access_licences, dependent: :destroy
   has_many :users, through: :access_licences
   has_many :cp_users, -> { where(users: { type: 'User' }) }, class_name: 'User', through: :access_licences, source: :user
-  has_many :service_providers, -> { where(users: { type: 'ServiceProvider' }) }, class_name: 'User', through: :access_licences, source: :user
+  has_many :corporates, -> { where(users: { type: 'Corporate' }) }, class_name: 'User', through: :access_licences, source: :user
 
   validates :licence_type, :display_name, :title, :description, :certificate_type, presence: true
-  validates :licence_type, inclusion: ['ServiceProviderLicence', 'CgpLicence', 'CepLicence']
+  validates :licence_type, inclusion: ['CorporateLicence', 'CgpLicence', 'CepLicence']
   validates :certificate_type, inclusion: Certificate.certificate_types.values
 
-  scope :with_service_provider_licences, -> {
-    where(licence_type: 'ServiceProviderLicence').order(:display_weight)
+  scope :with_corporate_licences, -> {
+    where(licence_type: 'CorporateLicence').order(:display_weight)
   }
 
   scope :with_cp_licences, -> {
-    where.not(licence_type: 'ServiceProviderLicence').order(:display_weight)
+    where.not(licence_type: 'CorporateLicence').order(:display_weight)
   }
 
   scope :with_cgp_licences, -> {

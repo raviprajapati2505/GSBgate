@@ -6,16 +6,16 @@ body.skin-gord-login{
 
 </style>
 <div class="ibox p-5 m-4 new_form service_provide">
-<h2 class="text-blue my-4"><b>Sign Up For Service Provider</b></h2>
+<h2 class="text-blue my-4"><b>Sign Up For Corporate</b></h2>
 
   <div class="ibox-content new-user-content-box">
 
-    <%= simple_form_for(@service_provider, url: create_service_provider_path(@service_provider), html: { method: :post, class: "user-form" }) do |f| %>
+    <%= simple_form_for(@corporate, url: create_corporate_path(@corporate), html: { method: :post, class: "user-form" }) do |f| %>
       <%= f.error_notification %>
 
       <div class="form-inputs">
 
-        <%= render partial: "form", locals: { f: f, resource_for: 'service_provider', resource: @service_provider, action: 'add', service_provider_detail: @service_provider.service_provider_detail } %>
+        <%= render partial: "form", locals: { f: f, resource_for: 'corporate', resource: @corporate, action: 'add', corporate_detail: @corporate.corporate_detail } %>
 
         <%= f.input :password,
                     hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length),

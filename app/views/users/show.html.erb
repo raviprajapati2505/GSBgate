@@ -1,5 +1,5 @@
 <%
-  service_provider = @user.is_service_provider? ? @user : @user.service_provider
+  corporate = @user.is_corporate? ? @user : @user.corporate
 %>
 
 <div class="row">
@@ -108,16 +108,16 @@
             <tbody>
               <% if @user.is_default_role? %>
                 <tr>
-                  <th><%= User.human_attribute_name('service_provider') %></th>
+                  <th><%= User.human_attribute_name('corporate') %></th>
                   <td>
-                    <% if @user.service_provider.present? %>
-                      <%= link_to(@user.service_provider_name, user_path(@user.service_provider_id)) %>
+                    <% if @user.corporate.present? %>
+                      <%= link_to(@user.corporate_name, user_path(@user.corporate_id)) %>
                     <% end %>
                   </td>
                 </tr>
                 <tr>
-                  <th>Service Provider Email</th>
-                  <td><%= @user.service_provider&.email %></td>
+                  <th>Corporate Email</th>
+                  <td><%= @user.corporate&.email %></td>
                 </tr>
               <% end %>
               <tr>
@@ -171,19 +171,19 @@
                 <td><%= @user.role&.titleize %></td>
               </tr>
 
-              <% if @user.is_service_provider? %>
+              <% if @user.is_corporate? %>
                 <tr>
-                  <th><%= ServiceProviderDetail.human_attribute_name('business_field') %></th>
-                  <td><%= @user.service_provider_detail&.business_field %></td>
+                  <th><%= CorporateDetail.human_attribute_name('business_field') %></th>
+                  <td><%= @user.corporate_detail&.business_field %></td>
                 </tr>
                 <tr>
-                  <th><%= ServiceProviderDetail.human_attribute_name('portfolio') %></th>
+                  <th><%= CorporateDetail.human_attribute_name('portfolio') %></th>
                   <td>
-                  <% if @user.service_provider_detail&.portfolio.present? %>
+                  <% if @user.corporate_detail&.portfolio.present? %>
                     <% if can?(:download_user_files, @user) %>
-                      <%= btn_download(download_user_files_user_path(@user, :file => "portfolio"), size: 'extra_small', tooltip: "Download #{ServiceProviderDetail.human_attribute_name('portfolio')}") %>
+                      <%= btn_download(download_user_files_user_path(@user, :file => "portfolio"), size: 'extra_small', tooltip: "Download #{CorporateDetail.human_attribute_name('portfolio')}") %>
                     <% end %>
-                  <%= truncate(@user.service_provider_detail&.portfolio.file.filename, length: 35) %>
+                  <%= truncate(@user.corporate_detail&.portfolio.file.filename, length: 35) %>
                   <% end %>
                 </td>
                 </tr>
@@ -215,10 +215,10 @@
                 </td>
               </tr>
 
-              <% if @user.is_service_provider? %>
+              <% if @user.is_corporate? %>
                 <tr>
-                  <th><%= ServiceProviderDetail.human_attribute_name('commercial_licence_no') %></th>
-                  <td><%= @user.service_provider_detail&.commercial_licence_no %></td>
+                  <th><%= CorporateDetail.human_attribute_name('commercial_licence_no') %></th>
+                  <td><%= @user.corporate_detail&.commercial_licence_no %></td>
                 </tr>
               <% else %>
                 <tr>
@@ -235,8 +235,8 @@
       <div class="ibox-content m-t">
         <% if @user == current_user %>
           <%
-            url = if @user.is_service_provider?
-                    edit_service_provider_path(current_user)
+            url = if @user.is_corporate?
+                    edit_corporate_path(current_user)
                   else
                     edit_user_registration_path(current_user)
                   end
@@ -271,19 +271,19 @@
       <%
         if current_user == @user
           label = "My Licences"
-          labelsp = @user.is_service_provider? ? label : "My Service Provider's Licences"  
+          labelsp = @user.is_corporate? ? label : "My Corporate's Licences"  
         else
           label = "Licences of #{@user.name}"
-          labelsp = @user.is_service_provider? ? label : "#{label}'s Service Provider"
+          labelsp = @user.is_corporate? ? label : "#{label}'s Corporate"
         end
       %>
 
       <div class="ibox-content table-responsive">
         <div class="row">
           <div class="col-md-6">
-            <%= render partial: "licences_list", locals: { label: labelsp, licences: Licence.with_service_provider_licences, licences_of: service_provider } %>
+            <%= render partial: "licences_list", locals: { label: labelsp, licences: Licence.with_corporate_licences, licences_of: corporate } %>
           </div>
-          <% unless @user.is_service_provider? %>
+          <% unless @user.is_corporate? %>
             <div class="col-md-6">
               <%= render partial: "licences_list", locals: { label: label, licences: Licence.with_cp_licences, licences_of: @user } %>
             </div>
@@ -295,15 +295,15 @@
         <h5><b><%= t('.sp_cp_licence_summary.title') %></b></h5>
       </div>
       <div class="ibox-content table-responsive">
-        <%= render partial: "sp_licence_summary", locals: { service_provider: service_provider } %>
+        <%= render partial: "sp_licence_summary", locals: { corporate: corporate } %>
       </div>
 
-      <% if @user.is_service_provider? %>
+      <% if @user.is_corporate? %>
         <div class="ibox-title m-t">
-          <h5><b><%= t('.cp_users.title', service_provider: service_provider.full_name) %></b></h5>
+          <h5><b><%= t('.cp_users.title', corporate: corporate.full_name) %></b></h5>
         </div>
         <div class="ibox-content table-responsive">
-          <%= render partial: "users_list", locals: { service_provider: service_provider } %>
+          <%= render partial: "users_list", locals: { corporate: corporate } %>
         </div>
       <% end %>
 

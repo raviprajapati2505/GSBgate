@@ -212,7 +212,7 @@ $(function () {
       $("#deny-button").prop('disabled', ($(this).val() != 'deny'));
   });
 
-  // Certificate type and Service provider 2 in project form
+  // Certificate type and Corporate 2 in project form
   // $('.project-form').on('change', '#project_certificate_type', function(event, wasTriggered) {
   //     if ($(this).val() == 3) {
   //         $('.project-form .design-fields').show();
@@ -247,7 +247,7 @@ $(function () {
   // $('.project-form #project_building_type_group_id').trigger('change', true);
 
   // Project country select
-  $('.country-select, .city-select-dropdown, .district-select-dropdown, .developer-select-dropdown, #select-service-provider, .select-licence, .user-country-select, country-select, .city-select, .offline-certificate').select2({
+  $('.country-select, .city-select-dropdown, .district-select-dropdown, .developer-select-dropdown, #select-corporate, .select-licence, .user-country-select, country-select, .city-select, .offline-certificate').select2({
       width: "100%"
   });
 
@@ -492,15 +492,15 @@ $(function () {
   }
 
   function auto_fill_organization_details(element){
-      let service_provider_id = element.find("option:selected").val();
+      let corporate_id = element.find("option:selected").val();
 
-      if(service_provider_id.length > 0) {
+      if(corporate_id.length > 0) {
           $.ajax({
           url: "/users/get_organization_details",
           method: "GET",
           dataType: "json",
           data: {
-              service_provider_id: service_provider_id
+              corporate_id: corporate_id
           },
           success: function(data) {
               $('#org_name').val(data.organization_name);
@@ -525,20 +525,20 @@ $(function () {
       }
   }
 
-  function auto_populate_service_providers(element){
+  function auto_populate_corporates(element){
       let email = element.val();
       let domain_name = email.split('@')[1];
 
       if(domain_name !== undefined && domain_name.length > 0){
           $.ajax({
-              url: "/users/get_service_provider_by_domain",
+              url: "/users/get_corporate_by_domain",
               method: "GET",
               dataType: "json",
               data: {
                   domain_name: domain_name
               },
               success: function(result) {
-                  var select_field = $("select#select-service-provider");
+                  var select_field = $("select#select-corporate");
                   select_field.find('option').remove().end();
 
                   $.each(result, function(index, item) {
@@ -559,13 +559,13 @@ $(function () {
   }).trigger('change');
 
   // to auto fill information of organization
-  $('#select-service-provider').on('change', function() {
+  $('#select-corporate').on('change', function() {
       auto_fill_organization_details($(this));
   });
 
-  // to populate options of service providers
+  // to populate options of corporates
   $('#user_email').on('blur', function(){
-      auto_populate_service_providers($(this));
+      auto_populate_corporates($(this));
   }).trigger('blur');
   $('.dataTables_processing').removeClass('panel panel-default');
 });

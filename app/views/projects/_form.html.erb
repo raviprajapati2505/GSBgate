@@ -22,20 +22,20 @@
                 <%= f.select(:certificate_type, options_for_select(current_user.allowed_certification_types.map { |k, v| [t(k, scope: 'activerecord.attributes.certificate.certificate_types'), v]}, @project.certificate_type)) %>
                   
                 <% if current_user.is_system_admin? || current_user.is_gsb_trust_manager? || current_user.is_gsb_trust_top_manager? || current_user.is_gsb_trust_admin? %>
-                  <%= f.text_field :service_provider %>
+                  <%= f.text_field :corporate %>
 
-                  <button name="button" type="button" data-toggle="modal" data-target="#searchServiceProvider" style="bottom: 13px;position: relative;"><i class="fa fa-search fa-lg open-modal" data-service_provider="for_service_provider" ></i></button>
+                  <button name="button" type="button" data-toggle="modal" data-target="#searchCorporate" style="bottom: 13px;position: relative;"><i class="fa fa-search fa-lg open-modal" data-corporate="for_corporate" ></i></button>
                   
                   <div class="design-fields">
-                    <%= f.text_field :service_provider_2 %>
+                    <%= f.text_field :corporate_2 %>
                   </div>
                   
-                  <button name="button" type="button" data-toggle="modal" data-target="#searchServiceProvider" style="bottom: 13px;position: relative;" class="design-fields"><i class="fa fa-search fa-lg open-modal" data-service_provider="for_service_provider_2" ></i></button>
+                  <button name="button" type="button" data-toggle="modal" data-target="#searchCorporate" style="bottom: 13px;position: relative;" class="design-fields"><i class="fa fa-search fa-lg open-modal" data-corporate="for_corporate_2" ></i></button>
                 <% else %>
                   
-                  <%= f.text_field :service_provider %>
+                  <%= f.text_field :corporate %>
                   <div class="design-fields">
-                    <%= f.text_field :service_provider_2 %>
+                    <%= f.text_field :corporate_2 %>
                   </div>
                 <% end %>
 
@@ -260,12 +260,12 @@
   </div>
 <% end %>
 
-<div class="modal fade" id="searchServiceProvider" aria-hidden="true" >
+<div class="modal fade" id="searchCorporate" aria-hidden="true" >
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <%= btn_close_modal %>
-        <h4 class="modal-title">Find Service Provider</h4>
+        <h4 class="modal-title">Find corporate</h4>
       </div>
       <div class="modal-body find-users-modal">
         <div class="form-group">
@@ -294,12 +294,12 @@
 <script type="text/javascript">
   $(document).ready(function(){
     $('.open-modal').click(function(){
-      $('#set_name_for').val($(this).data('service_provider'));
+      $('#set_name_for').val($(this).data('corporate'));
     })
     $('.find-sp-by-email-btn').click(function(){
       $('.error-block').text('')
       $.ajax({
-          url: "/users/get_service_provider_by_email",
+          url: "/users/get_corporate_by_email",
           method: "GET",
           dataType: "json",
           data: {
@@ -307,15 +307,15 @@
           },
           success: function(result) {
               if(result.length > 0){
-                 $('#searchServiceProvider').modal('toggle')
+                 $('#searchCorporate').modal('toggle')
                 
-                 if($('#set_name_for').val() == 'for_service_provider'){
-                    $('#project_service_provider').val(result[0][0])
+                 if($('#set_name_for').val() == 'for_corporate'){
+                    $('#project_corporate').val(result[0][0])
                  }else{
-                    $('#project_service_provider_2').val(result[0][0])
+                    $('#project_corporate_2').val(result[0][0])
                  }
               }else{
-                 $('.error-block').text('email you entered is not associate with any service provider !!')
+                 $('.error-block').text('email you entered is not associate with any corporate !!')
               }
           },
           error: function() {
