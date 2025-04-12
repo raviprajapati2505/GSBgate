@@ -17,7 +17,7 @@ en:
         admin_system_data: Manage System Data
         all_users: All Users
         individual_users: Individual users
-        service_providers: Corporate users 
+        corporates: Corporate users 
         admin_users: Certification users
         certifiers_and_criteria_report: Certifiers and Criteria
         manual: User Manual
@@ -316,7 +316,7 @@ en:
       description_44: Fill the report form to varify certificate information.
       description_45: Fill the report form to varify certificate information and release certification report.
       description_46: Activate user account.
-      description_47: Service provider details changed.
+      description_47: Corporate details changed.
       description_48: Please note that the GSB certificate has been issued on GSBgate , Kindly download it.
 
       tooltip_due_date: Task is overdue.
@@ -346,9 +346,9 @@ en:
       user_licence_summary:
         title: Licence Summary
       sp_cp_licence_summary:
-        title: Service Provider CGPs & CEPs Summary
+        title: Corporate CGPs & CEPs Summary
       cp_users:
-        title: Users of %{service_provider}
+        title: Users of %{corporate}
     registrations:
         test: 'TEst'
     form:
@@ -361,7 +361,7 @@ en:
       qid_work_permit_file_title: Work Permit
       gsb_energy_assessment_file_licence_title: GSB Energy Assessment Licence
       commercial_licence_file_title: Commercial Licence
-      accredited_provider_licence_file_title: Accredited Service Provider Licenses
+      accredited_provider_licence_file_title: Accredited Corporate Licenses
       demerit_file_title: Upload Duly Filled Demerit File
       acknowledgement: I acknowledge that i have read and understood and i agree to abide by the policy
       application_form: Application Form

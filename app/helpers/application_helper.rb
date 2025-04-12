@@ -36,13 +36,13 @@ module ApplicationHelper
 
    unless current_user.is_system_admin?
       # exclude schemes which were renamed.
-     if assessment_method == 1 && current_user.service_provider.present?
+     if assessment_method == 1 && current_user.corporate.present?
        allowed_schemes = current_user.valid_user_sp_licences.pluck(:schemes).flatten.uniq
        schemes = schemes.where("schemes.name IN (:allowed_schemes)", allowed_schemes: allowed_schemes)
      end
    end
 
-    if assessment_method == 1 && current_user.service_provider.present?
+    if assessment_method == 1 && current_user.corporate.present?
       schemes_with_only_checklist = ["Energy Centers"]
       schemes = schemes&.where.not(name: schemes_with_only_checklist)
     end
@@ -401,7 +401,7 @@ module ApplicationHelper
         certification_path = model.certification_path
         project = certification_path.project
         certification_path_document = model
-      when User.name.demodulize, ServiceProvider.name.demodulize
+      when User.name.demodulize, Corporate.name.demodulize
         user = model
       when SurveyType.name.demodulize
         survey_type = model
@@ -721,7 +721,7 @@ module ApplicationHelper
   end
 
   def check_documents_permissions(user_role: nil, project: nil)
-    if ["default_role", "record_checker"].exclude?(user_role)
+    if ["default_role", "corporate" ,"record_checker"].exclude?(user_role)
       true
     elsif project.present?
       project.check_documents_permissions

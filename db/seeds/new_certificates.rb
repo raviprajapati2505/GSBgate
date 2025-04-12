@@ -174,11 +174,11 @@ certificate_types = {
 
 certificate_types.keys.each_with_index do |type_key, index|
   Licence.find_or_create_by!(
-    licence_type: 'ServiceProviderLicence',
-    display_name: "Service Provider - #{certificate_types[type_key]}",
+    licence_type: 'CorporateLicence',
+    display_name: "Corporate - #{certificate_types[type_key]}",
     display_weight: 34 + index,  # Start from 34 dynamically
-    title: "Service Provider - #{certificate_types[type_key]}",
-    description: "#{certificate_types[type_key]} Service Provider", 
+    title: "Corporate - #{certificate_types[type_key]}",
+    description: "#{certificate_types[type_key]} Corporate", 
     certificate_type: Certificate.certificate_types[type_key],
     schemes: ['Typology'],
     applicability: Licence.applicabilities[:check_list]

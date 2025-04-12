@@ -73,7 +73,7 @@ function prepareInputBox() {
     "Project Owner",
     "Project Owner Business Sector",
     "Project Use",
-    "Project Service Provider",
+    "Project Corporate",
     "Certification Method",
     "Certification Version",
     "Certification Submission Status",

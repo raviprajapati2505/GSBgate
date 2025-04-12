@@ -158,7 +158,7 @@ $(function() {
       columnNames["GSB Trust Certification Team"] = 40;
       columnNames["Project Team Members"] = 37;
       columnNames["blank_1"] = 42;
-      columnNames["Project Service Provider"] = 39;
+      columnNames["Project Corporate"] = 39;
       columnNames["blank_2"] = 44;
       columnNames["Project CGP"] = 41;
       columnNames["Enterprise Clients"] = 43;

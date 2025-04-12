@@ -7,7 +7,7 @@ class CertificationPathReport < ApplicationRecord
 
   def self.attributes_for_user(role)
     case role
-    when 'default_role'
+    when 'default_role', 'corporate'
       [:to, :project_owner, :project_name, :project_location]
     when 'system_admin', 'gsb_trust_admin', 'document_controller'
       [:to, :reference_number, :project_owner, :project_name, :project_location]

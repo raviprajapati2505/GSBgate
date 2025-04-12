@@ -4,11 +4,11 @@
       <% Certificate::CERTIFICATE_TYPES.each do |certificate_type| %>
         <tr>
           <th>Has valid <%= I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.#{certificate_type}") %> CGPs ?</th>
-          <td><%= label_span(service_provider&.send("valid_#{certificate_type}_cgps").present?, 'Yes', 'No').html_safe %></td>
+          <td><%= label_span(corporate&.send("valid_#{certificate_type}_cgps").present?, 'Yes', 'No').html_safe %></td>
         </tr>
         <tr>
           <th>Has valid <%= I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.#{certificate_type}") %> CEPs ?</th>
-          <td><%= label_span(service_provider&.send("valid_#{certificate_type}_ceps").present?, 'Yes', 'No').html_safe %></td>
+          <td><%= label_span(corporate&.send("valid_#{certificate_type}_ceps").present?, 'Yes', 'No').html_safe %></td>
         </tr>
       <% end %>
     </tbody>

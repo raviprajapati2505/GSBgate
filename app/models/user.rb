@@ -11,11 +11,11 @@ class User < ApplicationRecord
   include ActionView::Helpers::TranslationHelper
   include DatePlucker
 
-  enum role: { system_admin: 5, default_role: 1, gsb_trust_top_manager: 2, gsb_trust_manager: 3, gsb_trust_admin: 4, document_controller: 6, record_checker: 7, users_admin: 8, service_provider: 9, credentials_admin: 10, certification_manager: 11 }, _prefix: :is
+  enum role: { system_admin: 5, default_role: 1, gsb_trust_top_manager: 2, gsb_trust_manager: 3, gsb_trust_admin: 4, document_controller: 6, record_checker: 7, users_admin: 8, corporate: 9, credentials_admin: 10, certification_manager: 11 }, _prefix: :is
 
   enum practitioner_accreditation_type: { licentiate: 1, advocate: 2, fellow: 3, associate: 4 }
 
-  belongs_to :service_provider, class_name: 'ServiceProvider', foreign_key: 'service_provider_id', optional: true
+  belongs_to :corporate, class_name: 'Corporate', foreign_key: 'corporate_id', optional: true
   has_one :user_detail, dependent: :destroy
   has_many :documents
   has_many :scheme_mix_criteria_documents
@@ -32,7 +32,7 @@ class User < ApplicationRecord
   has_many :licences, through: :access_licences
   has_many :cgp_licences, -> { where(licence_type: 'CgpLicence') }, class_name: 'Licence', through: :access_licences, source: :licence
   has_many :cep_licences, -> { where(licence_type: 'CepLicence') }, class_name: 'Licence', through: :access_licences, source: :licence
-  has_many :service_provider_licences, -> { where(licence_type: 'ServiceProviderLicence') }, class_name: 'Licence', through: :access_licences, source: :licence
+  has_many :corporate_licences, -> { where(licence_type: 'CorporateLicence') }, class_name: 'Licence', through: :access_licences, source: :licence
   has_many :demerit_flags, dependent: :destroy
 
   accepts_nested_attributes_for :access_licences, reject_if: :all_blank, allow_destroy: true
@@ -149,8 +149,8 @@ class User < ApplicationRecord
   end
 
   def remaining_licences
-    if type == 'ServiceProvider'
-      Licence.with_service_provider_licences
+    if type == 'Corporate'
+      Licence.with_corporate_licences
     else
       Licence.with_cp_licences
     end
@@ -160,8 +160,8 @@ class User < ApplicationRecord
     ["system_admin", "gsb_trust_top_manager", "gsb_trust_manager", "gsb_trust_admin"].include?(role)
   end
   
-  def self.is_service_provider(current_user)
-    ["service_provider"].include?(current_user.role)
+  def self.is_corporate(current_user)
+    ["corporate"].include?(current_user.role)
   end
 
   # Store the user in the current Thread (needed for our concerns, so they can access the current user model)
@@ -208,38 +208,38 @@ class User < ApplicationRecord
     role.include?(self.role) rescue false
   end
 
-  def service_provider_name
-    service_provider&.name
+  def corporate_name
+    corporate&.name
   end
 
   def access_licences_with_certificate_type(certificate_type)
     access_licences.with_certificate_type(certificate_type.to_i) || AccessLicence.none
   end
 
-  # ------------------- methods for service providers --------------------------- 
+  # ------------------- methods for corporates --------------------------- 
   def valid_user_sp_licences
-    service_provider&.active? ? service_provider&.valid_service_provider_licences : AccessLicence.none
+    corporate&.active? ? corporate&.valid_corporate_licences : AccessLicence.none
   end
   
-  # Define a generic method for all service provider license checks dynamically
+  # Define a generic method for all corporate license checks dynamically
   Certificate::CERTIFICATE_TYPES.each do |type|
     define_method("valid_user_sp_#{type}_licence") do
-      service_provider&.active? ? service_provider&.send("valid_service_provider_#{type}_licences") : AccessLicence.none
+      corporate&.active? ? corporate&.send("valid_corporate_#{type}_licences") : AccessLicence.none
     end
   end
 
   # ------------------- methods for CGPs and CEPs --------------------------- 
 
   def valid_cgp_or_cep_available?
-    service_provider&.active? && (service_provider&.valid_cgps.present? || service_provider&.valid_ceps.present?)
+    corporate&.active? && (corporate&.valid_cgps.present? || corporate&.valid_ceps.present?)
   end
 
   # Define a generic method for all CGP and CEP license checks dynamically
   Certificate::CERTIFICATE_TYPES.each do |cert_type|
     define_method("valid_#{cert_type}_cp_available?") do
-      service_provider&.active? && (
-        service_provider&.send("valid_#{cert_type}_cgps")&.present? ||
-        service_provider&.send("valid_#{cert_type}_ceps")&.present?
+      corporate&.active? && (
+        corporate&.send("valid_#{cert_type}_cgps")&.present? ||
+        corporate&.send("valid_#{cert_type}_ceps")&.present?
       )
     end
   end
@@ -250,7 +250,7 @@ class User < ApplicationRecord
       .joins(:licence)
       .where(
         "DATE(access_licences.expiry_date) > :current_date 
-        AND licences.licence_type IN ('CgpLicence', 'CepLicence')", 
+        AND licences.licence_type IN ('CgpLicence', 'CepLicence', 'CorporateLicence')", 
         current_date: Date.today
       ) || AccessLicence.none
   end
@@ -272,7 +272,7 @@ class User < ApplicationRecord
   def valid_checklist_licences
     licence_ids =  Licence.where(
                                   applicability: [ Licence.applicabilities[:check_list] ], 
-                                  licence_type: ["CgpLicence", "CepLicence"]
+                                  licence_type: ["CgpLicence", "CepLicence", "CorporateLicence"]
                                 ).ids
 
     valid_user_licences.where(licence_id: licence_ids)
@@ -293,7 +293,7 @@ class User < ApplicationRecord
 
     sp_cp_allowed_certificate_types = sp_allowed_certificate_types & cp_allowed_certificate_types
     
-    # for checklist licences, service provider licences verification not needed.
+    # for checklist licences, corporate licences verification not needed.
     valid_checklist_licences_certificate_type = valid_checklist_licences.pluck("licences.certificate_type")
     # allowed_certificate_types = Certificate.certificate_types.select { |k, v| (sp_cp_allowed_certificate_types.uniq).include?(v) }
 
@@ -345,7 +345,7 @@ class User < ApplicationRecord
   end
 
   def validate_name_suffix
-    if !name_suffix.present? && self.role == 'default_role'
+    if !name_suffix.present? && (self.role == 'default_role' || self.role == 'corporate')
       errors.add(:name_suffix, 'cant be blank')
     end
   end

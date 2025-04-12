@@ -1,15 +1,15 @@
-class ServiceProvider < User
-  has_one :service_provider_detail, dependent: :destroy, inverse_of: :service_provider
-  has_many :users, class_name: 'User', foreign_key: 'service_provider_id', dependent: :destroy
+class Corporate < User
+  has_one :corporate_detail, dependent: :destroy, inverse_of: :corporate
+  has_many :users, class_name: 'User', foreign_key: 'corporate_id', dependent: :destroy
 
-  accepts_nested_attributes_for :service_provider_detail
+  accepts_nested_attributes_for :corporate_detail
 
-  def valid_service_provider_licences
+  def valid_corporate_licences
     access_licences
       .joins(:licence)
       .where(
         "DATE(access_licences.expiry_date) > :current_date 
-        AND licences.licence_type = 'ServiceProviderLicence'", 
+        AND licences.licence_type = 'CorporateLicence'", 
         current_date: Date.today
       ) || AccessLicence.none
   end
@@ -39,9 +39,9 @@ class ServiceProvider < User
   end
 
   Certificate::CERTIFICATE_TYPES.each do |cert_type|
-    define_method("valid_service_provider_#{cert_type}_licences") do
+    define_method("valid_corporate_#{cert_type}_licences") do
       access_licences
-        .valid_service_provider_licences_with_type(Certificate.certificate_types[:"#{cert_type}_type"]) || AccessLicence.none
+        .valid_corporate_licences_with_type(Certificate.certificate_types[:"#{cert_type}_type"]) || AccessLicence.none
     end
   
     define_method("valid_#{cert_type}_cgps") do

@@ -6,7 +6,7 @@
 
       <div class="form-inputs m-t">
 
-        <%= render partial: "users/registrations/form", locals: { f: f, resource_for: 'user', resource: @user, user_detail: @user_detail, service_provider_detail: @user_detail, action: 'edit' } %>
+        <%= render partial: "users/registrations/form", locals: { f: f, resource_for: 'user', resource: @user, user_detail: @user_detail, corporate_detail: @user_detail, action: 'edit' } %>
 
         <%= f.input :role, collection: User.roles.map{ |k, v| [k.titleize, k]}, include_blank: "Select Role", input_html: {class: "form-control"}, required: true %>
 
@@ -20,7 +20,7 @@
   <div class="ibox new_form">
     <div class="ibox-content">
 
-      <% if @user.is_default_role? || @user.is_service_provider? %>
+      <% if @user.is_default_role? || @user.is_corporate? %>
         <h2 class="text-blue">Licences</h2>
         <div class="form-inputs access-licence-forms row">
           <%= f.simple_fields_for :access_licences do |access_licence| %>

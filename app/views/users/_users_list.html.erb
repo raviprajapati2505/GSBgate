@@ -9,7 +9,7 @@
     </tr>
   </head>
   <tbody>
-    <% service_provider.users.each do |user| %>
+    <% corporate.users.each do |user| %>
       <tr>
         <td><%= link_to(user.full_name, user_path(user)) %></td>
         <td><%= user.email %></td>

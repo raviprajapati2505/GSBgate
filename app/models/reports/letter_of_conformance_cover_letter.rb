@@ -35,7 +35,7 @@ class Reports::LetterOfConformanceCoverLetter < Reports::BaseReport
              ' ' + 'Star'.pluralize(@certification_path.rating_for_score(@score, certificate: @certification_path.certificate))
 
     @addressee = "Mr. [FIRSTNAME] [LASTNAME]\n[FUNCTION]\n#{@certification_path.project.owner}"
-    @addressee_copy = "Service Provider:   #{@certification_path.project.service_provider}"
+    @addressee_copy = "Corporate:   #{@certification_path.project.corporate}"
     @subject = "#{certification_path.name}\n#{@scheme_names.join(', ')}"
     @content = <<-CONTENTTEMPLATE
 Dear,
@@ -129,9 +129,9 @@ Congratulations once again for partaking in this noble endeavor, and together le
     data.append(["Project Name", @certification_path.project.name])
     data.append(["Location", @certification_path.project.location])
     if @certification_path.certificate.certification_type == 'final_design_certificate'
-      data.append(["Service Provider", @certification_path.project.service_provider_2])
+      data.append(["Corporate", @certification_path.project.corporate_2])
     else
-      data.append(["Service Provider", @certification_path.project.service_provider])
+      data.append(["Corporate", @certification_path.project.corporate])
     end
     data.append(["GSB Certificate", @certification_path.certificate.only_certification_name])
     data.append(["Certification Stage", @certification_path.certificate.name])

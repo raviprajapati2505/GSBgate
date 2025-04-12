@@ -114,7 +114,7 @@ class Project < ApplicationRecord
         .select('projects.buildings_footprint_area AS project_buildings_footprint_area')
         .select('projects.owner AS project_owner')
         .select('projects.developer AS project_developer')
-        .select('projects.service_provider AS project_service_provider')
+        .select('projects.corporate AS project_corporate')
         .select('certification_paths.id AS certification_path_id')
         .select('certification_paths.updated_at AS certification_path_updated_at')
         .select('certification_paths.certificate_id AS certificate_id')
