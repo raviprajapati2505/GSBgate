@@ -24,7 +24,7 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes", or navigate to /rails/info
 
   # Our own "users/*" routes
-  resources :users, only: [:index, :show] do
+  resources :users, only: [:index, :show, :destroy] do
     collection do
       resource :sessions, only: [:new, :create, :destroy]
       get 'masquerade/:user_id' => 'users#masquerade', as: 'masquerade', constraints: { user_id: /\d+/ }
