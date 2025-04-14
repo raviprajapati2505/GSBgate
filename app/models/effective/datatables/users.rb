@@ -71,8 +71,14 @@ module Effective
             value = rec.active? ? 'checked' : ''
             "<input class='user-status' type='checkbox' #{value} data-user-id=#{rec.id}>".html_safe
           end
-          col :user_id, sql_column: 'users.id', label: 'Action', search: false, sort: false do |rec|
+          col :edit, sql_column: 'users.id', label: 'Edit', search: false, sort: false do |rec|
             btn_link_to(user_path(rec.id), icon: 'edit', size: 'small', tooltip: 'Edit')
+          end
+        end
+
+        if User.current.can?(:destroy, current_user)
+          col :delete, sql_column: 'users.id', label: 'Delete', search: false, sort: false do |rec|
+            btn_link_to(user_path(rec.id), method: :delete, data: { confirm: 'All data of this user will be deleted permanently, Are you sure you want to delete this User ?' }, style: 'danger', icon: 'trash', size: 'small', tooltip: 'Delete')
           end
         end
       end

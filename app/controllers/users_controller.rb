@@ -1,7 +1,7 @@
 class UsersController < AuthenticatedController
   load_and_authorize_resource :user, except: [:country_cities, :get_organization_details, :get_corporate_by_domain, :country_code_from_name, :increase_demerit_flag, :confirm_destroy_cgp_user, :get_corporate_by_email]
   before_action :set_controller_model, except: [:index, :update_notifications]
-  before_action :set_user, only: [:show, :edit, :update, :download_user_files, :increase_demerit_flag, :confirm_destroy_cgp_user]
+  before_action :set_user, only: [:show, :edit, :update, :destroy, :download_user_files, :increase_demerit_flag, :confirm_destroy_cgp_user]
   before_action :set_corporate, only: [:edit_corporate, :update_corporate]
 
   def index
@@ -193,6 +193,22 @@ class UsersController < AuthenticatedController
     end
 
     redirect_to redirect_path
+  end
+
+  def destroy
+    begin
+      if @user.destroy
+        flash[:notice] = "User is successfully deleted"
+      else
+        flash[:alert] = 'User is failed to delete!'
+      end
+
+    rescue => e
+      flash[:alert] = e.message
+
+    ensure
+      redirect_to(users_path)
+    end
   end
 
   def list_notifications
