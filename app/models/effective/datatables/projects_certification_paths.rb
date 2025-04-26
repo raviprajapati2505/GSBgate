@@ -413,8 +413,8 @@ module Effective
           end
         end
 
-        col :gsb_trust_team_array, col_class: 'col-order-38', label: t('models.effective.datatables.projects_certification_paths.gsb_trust_team_array.label'), visible: false, sql_column: '(%s)' % projects_users_by_type('gsb_trust_team') do |rec|
-          ERB::Util.html_escape(rec.gsb_trust_team_array).split('|||').sort.join(', <br/>') unless rec.gsb_trust_team_array.nil?
+        col :gsb_team_array, col_class: 'col-order-38', label: t('models.effective.datatables.projects_certification_paths.gsb_team_array.label'), visible: false, sql_column: '(%s)' % projects_users_by_type('gsb_team') do |rec|
+          ERB::Util.html_escape(rec.gsb_team_array).split('|||').sort.join(', <br/>') unless rec.gsb_team_array.nil?
         end
 
         col :enterprise_clients_array, col_class: 'multiple-select col-order-39', label: t('models.effective.datatables.projects_certification_paths.enterprise_clients_array.label'), visible: false, sql_column: '(%s)' % projects_users_by_type('enterprise_clients'), search: { as: :select, collection: Proc.new { ProjectsUser.enterprise_clients.pluck("users.name").uniq.compact.map { |name| [name, name] } rescue [] } } do |rec|

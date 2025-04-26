@@ -17,8 +17,8 @@ module Taskable
   PROJ_MNGR_PROC_VERIFICATION = 18
   SYS_ADMIN_APPEAL_APPROVE = 19
   PROJ_MNGR_PROC_VERIFICATION_APPEAL = 24
-  GSB_TRUST_MNGR_APPROVE = 25
-  GSB_TRUST_TOP_MNGR_APPROVE = 26
+  GSB_MNGR_APPROVE = 25
+  GSB_TOP_MNGR_APPROVE = 26
   PROJ_MNGR_DOWNLOAD = 28
   PROJ_MNGR_DOC_APPROVE = 29
   PROJ_MNGR_APPLY = 30
@@ -138,22 +138,22 @@ module Taskable
       # Create system admin task to assign a certification manager
       Task.create(taskable: self.project,
                  task_description_id: SYS_ADMIN_ASSIGN,
-                 application_role: User.roles[:gsb_trust_admin],
+                 application_role: User.roles[:gsb_admin],
                  project: self.project)
     end
     if (self.development_type.mixable? && (self.main_scheme_mix_selected? == false))
       # Create system admin task to select a main scheme
       Task.find_or_create_by(taskable: self,
                   task_description_id: SYS_ADMIN_SELECT_MAIN_SCHEME,
-                  application_role: User.roles[:gsb_trust_admin],
+                  application_role: User.roles[:gsb_admin],
                   project: self.project,
                   certification_path: self)
     end
 
-    # Create GSB trust admin task to advance the certification path status
+    # Create GSB admin task to advance the certification path status
     Task.find_or_create_by(taskable: self,
                 task_description_id: SYS_ADMIN_REG_APPROVE,
-                application_role: User.roles[:gsb_trust_admin],
+                application_role: User.roles[:gsb_admin],
                 project: self.project,
                 certification_path: self)
 
@@ -314,7 +314,7 @@ module Taskable
           # Create system admin task to check appeal payment
           Task.find_or_create_by(taskable: self,
                      task_description_id: SYS_ADMIN_APPEAL_APPROVE,
-                     application_role: User.roles[:gsb_trust_admin],
+                     application_role: User.roles[:gsb_admin],
                      project: self.project,
                      certification_path: self)
           # Destroy project manager tasks to process verification comments
@@ -364,8 +364,8 @@ module Taskable
         when CertificationPathStatus::APPROVING_BY_MANAGEMENT
           # Create GORD manager task to quick check and approve
           Task.find_or_create_by(taskable: self,
-                     task_description_id: GSB_TRUST_MNGR_APPROVE,
-                     application_role: User.roles[:gsb_trust_manager],
+                     task_description_id: GSB_MNGR_APPROVE,
+                     application_role: User.roles[:gsb_manager],
                      project: self.project,
                      certification_path: self)
           # Destroy project manager tasks to process verification comments
@@ -376,15 +376,15 @@ module Taskable
         when CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT
           # Create GORD top manager task to approve
           Task.find_or_create_by(taskable: self,
-                     task_description_id: GSB_TRUST_TOP_MNGR_APPROVE,
-                     application_role: User.roles[:gsb_trust_top_manager],
+                     task_description_id: GSB_TOP_MNGR_APPROVE,
+                     application_role: User.roles[:gsb_top_manager],
                      project: self.project,
                      certification_path: self)
           # Destroy GORD manager tasks to approve
-          Task.where(taskable: self, task_description_id: GSB_TRUST_MNGR_APPROVE).delete_all
+          Task.where(taskable: self, task_description_id: GSB_MNGR_APPROVE).delete_all
         when CertificationPathStatus::CERTIFIED
           # Destroy GORD top manager tasks to approve
-          # Task.where(taskable: self, task_description_id: GSB_TRUST_TOP_MNGR_APPROVE).delete_all
+          # Task.where(taskable: self, task_description_id: GSB_TOP_MNGR_APPROVE).delete_all
 
           # Destroy all certification path tasks
           Task.where(certification_path: self).delete_all
@@ -891,7 +891,7 @@ module Taskable
           # Create system admin task to assign a certification manager
           Task.find_or_create_by(taskable: self.project,
                      task_description_id: SYS_ADMIN_ASSIGN,
-                     application_role: User.roles[:gsb_trust_admin],
+                     application_role: User.roles[:gsb_admin],
                      project: self.project)
         end
     end

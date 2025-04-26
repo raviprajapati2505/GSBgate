@@ -60,7 +60,7 @@ namespace :gsb do
       certification_paths.each do |certification_path|
         Task.find_or_create_by(taskable: certification_path,
                     task_description_id: Taskable::SYS_ADMIN_DURATION,
-                    application_role: User.roles[:gsb_trust_admin],
+                    application_role: User.roles[:gsb_admin],
                     project: certification_path.project,
                     certification_path: certification_path)
         DigestMailer.certification_expired_email(certification_path).deliver_now

@@ -13,7 +13,7 @@
           <%= f.text_field attr, label: CertificationPathReport.human_attribute_name(attr.to_s), required: true, disabled: f.object&.is_released? %>
         <% end %>
 
-        <% if ['system_admin', 'gsb_trust_admin', 'document_controller'].include?(current_user&.role) %>
+        <% if ['system_admin', 'gsb_admin', 'document_controller'].include?(current_user&.role) %>
           <%= f.text_field :issuance_date, value: f.object&.issuance_date&.strftime("%d/%m/%Y"), label: CertificationPathReport.human_attribute_name('issuance_date'), prepend: ikoen('calendar'), class: 'datepicker-past', autocomplete: 'off', required: true, disabled: f.object&.is_released? %>
 
           <%= f.text_field :approval_date, value: f.object&.approval_date&.strftime("%d/%m/%Y"), label: CertificationPathReport.human_attribute_name('approval_date'), prepend: ikoen('calendar'), class: 'datepicker-past', autocomplete: 'off', required: true, disabled: f.object&.is_released? %>

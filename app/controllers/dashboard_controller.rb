@@ -30,8 +30,8 @@ class DashboardController < AuthenticatedController
     if user_params[:demerit_flag].present?
       demerit_flag = DemeritFlag.find(user_params[:demerit_flag])
       case user_params[:file_name]
-        when "gsb_trust_notification"
-          demerit_flag.gsb_trust_notification = user_params[:file]
+        when "gsb_notification"
+          demerit_flag.gsb_notification = user_params[:file]
         when "practitioner_acknowledge"
           demerit_flag.practitioner_acknowledge = user_params[:file]
       end

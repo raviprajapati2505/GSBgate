@@ -394,9 +394,9 @@ en:
         practitioner_accreditation_type: Practitioner Accreditation Type
         roles:
           system_admin: System administrator
-          gsb_trust_top_manager: Chairman
-          gsb_trust_manager: Director of GSB
-          gsb_trust_admin: GSB trust admin
+          gsb_top_manager: Chairman
+          gsb_manager: Director of GSB
+          gsb_admin: GSB admin
           default_role: CGP/CEP
           document_controller: Document Controller
       user_detail:
@@ -451,13 +451,13 @@ en:
           screened:
             update_html: The criterion <strong>%{criterion}</strong> was screened.
           certifier:
-            unassigned_html: A GSB trust certifier was unassigned from criterion <strong>%{criterion}</strong>.
-            assigned_for_screening_due_html: Criterion <strong>%{criterion}</strong> was assigned to GSB trust certifier <strong>%{user}</strong> for screening. The due date is <strong>%{due_date}</strong>.
-            assigned_for_screening_html: Criterion <strong>%{criterion}</strong> was assigned to GSB trust certifier <strong>%{user}</strong> for screening.
-            assigned_for_verification_due_html: Criterion <strong>%{criterion}</strong> was assigned to GSB trust certifier <strong>%{user}</strong> for verification. The due date is <strong>%{due_date}</strong>.
-            assigned_for_verification_html: Criterion <strong>%{criterion}</strong> was assigned to GSB trust certifier <strong>%{user}</strong> for verification.
-            assigned_for_pcr_review_due_html: Criterion <strong>%{criterion}</strong> was assigned to GSB trust certifier <strong>%{user}</strong> for PCR. The due date is <strong>%{due_date}</strong>.
-            assigned_for_pcr_review_html: Criterion <strong>%{criterion}</strong> was assigned to GSB trust certifier <strong>%{user}</strong> for PCR.
+            unassigned_html: A GSB certifier was unassigned from criterion <strong>%{criterion}</strong>.
+            assigned_for_screening_due_html: Criterion <strong>%{criterion}</strong> was assigned to GSB certifier <strong>%{user}</strong> for screening. The due date is <strong>%{due_date}</strong>.
+            assigned_for_screening_html: Criterion <strong>%{criterion}</strong> was assigned to GSB certifier <strong>%{user}</strong> for screening.
+            assigned_for_verification_due_html: Criterion <strong>%{criterion}</strong> was assigned to GSB certifier <strong>%{user}</strong> for verification. The due date is <strong>%{due_date}</strong>.
+            assigned_for_verification_html: Criterion <strong>%{criterion}</strong> was assigned to GSB certifier <strong>%{user}</strong> for verification.
+            assigned_for_pcr_review_due_html: Criterion <strong>%{criterion}</strong> was assigned to GSB certifier <strong>%{user}</strong> for PCR. The due date is <strong>%{due_date}</strong>.
+            assigned_for_pcr_review_html: Criterion <strong>%{criterion}</strong> was assigned to GSB certifier <strong>%{user}</strong> for PCR.
           targeted_score:
             set_html: The %{score_label} targeted level of criterion <strong>%{criterion}</strong> was set to <strong>%{score}</strong>.
             unset_html: The %{score_label} targeted level of criterion <strong>%{criterion}</strong> was removed.
@@ -670,9 +670,9 @@ en:
           project_team_array:
             label: Project Team Members
           certification_manager_array:
-            label: GSB Trust Certification Manager
-          gsb_trust_team_array:
-            label: GSB Trust Certification Team
+            label: GSB Certification Manager
+          gsb_team_array:
+            label: GSB Certification Team
           enterprise_clients_array:
             label: Enterprise Clients
           building_type_groups:

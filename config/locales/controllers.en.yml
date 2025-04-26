@@ -11,8 +11,8 @@ en:
       edit_project_team_responsibility_for_submittal:
         page_title: Allocate project team responsibility for submittal
       edit_certifier_team_responsibility_for_verification:
-        page_title: Allocate GSB trust team responsibility for verification
+        page_title: Allocate GSB team responsibility for verification
       edit_certifier_team_responsibility_for_screening:
-        page_title: Allocate GSB trust team responsibility for screening
+        page_title: Allocate GSB team responsibility for screening
       update_status:
         notice_success: The certification status was successfully updated.

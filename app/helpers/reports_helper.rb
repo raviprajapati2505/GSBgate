@@ -14,15 +14,15 @@ module ReportsHelper
   def certificate_intro_text(certificate_name, certificate_stage = '')
     case certificate_name
     when 'Stage 1: Provisional Certificate'
-      text = "This is to notify that GSB Trust has reviewed the project based on the submitted information. The project is found eligible to receive the Design Certificate as a provision for final GSB Design & Build Certificate in the form of \"Letter of Conformance (LOC)\", The project is achieving: \n"
+      text = "This is to notify that GSB has reviewed the project based on the submitted information. The project is found eligible to receive the Design Certificate as a provision for final GSB Design & Build Certificate in the form of \"Letter of Conformance (LOC)\", The project is achieving: \n"
     when 'GSB-CM', 'Construction Certificate'
       case certificate_stage
         when 'Stage 1: Foundation'
-          text = "This is to notify that GSB Trust has reviewed the construction submittals in accordance with the latest GSB Construction Management assessments and has completed the Initial Site Audit requirements of Construction Stage 1 (Enabing Works). The project is found eligible to receive the First Interim Audit Advisory Notice (AAN) No.01 achieving the following: \n"
+          text = "This is to notify that GSB has reviewed the construction submittals in accordance with the latest GSB Construction Management assessments and has completed the Initial Site Audit requirements of Construction Stage 1 (Enabing Works). The project is found eligible to receive the First Interim Audit Advisory Notice (AAN) No.01 achieving the following: \n"
         when 'Stage 2: Substructure & Superstructure'
-          text = "This is to notify that GSB Trust has reviewed the construction submittals in accordance with the latest GSB Construction Management assessments and has completed the Second Site Audit requirements of Construction Stage 2 (Substructure & Superstructure Works). The project is found eligible to receive the Second Interim Audit Advisory Notice (AAN) No.02 achieving the following: \n"
+          text = "This is to notify that GSB has reviewed the construction submittals in accordance with the latest GSB Construction Management assessments and has completed the Second Site Audit requirements of Construction Stage 2 (Substructure & Superstructure Works). The project is found eligible to receive the Second Interim Audit Advisory Notice (AAN) No.02 achieving the following: \n"
         when 'Stage 3: Finishing'
-          text = "This is to notify that GSB Trust has reviewed the construction submittals in accordance with the latest GSB Construction Management assessments and has completed the Third Site Audit requirements of Construction Stage 3 (Finishing Works). The project is found eligible to receive the Third Interim Audit Advisory Notice (AAN) No.03 achieving the following: \n"
+          text = "This is to notify that GSB has reviewed the construction submittals in accordance with the latest GSB Construction Management assessments and has completed the Third Site Audit requirements of Construction Stage 3 (Finishing Works). The project is found eligible to receive the Third Interim Audit Advisory Notice (AAN) No.03 achieving the following: \n"
       end
     else
     end

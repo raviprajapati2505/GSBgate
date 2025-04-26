@@ -11,7 +11,7 @@ class User < ApplicationRecord
   include ActionView::Helpers::TranslationHelper
   include DatePlucker
 
-  enum role: { system_admin: 5, default_role: 1, gsb_trust_top_manager: 2, gsb_trust_manager: 3, gsb_trust_admin: 4, document_controller: 6, record_checker: 7, users_admin: 8, corporate: 9, credentials_admin: 10, certification_manager: 11 }, _prefix: :is
+  enum role: { system_admin: 5, default_role: 1, gsb_top_manager: 2, gsb_manager: 3, gsb_admin: 4, document_controller: 6, record_checker: 7, users_admin: 8, corporate: 9, credentials_admin: 10, certification_manager: 11 }, _prefix: :is
 
   enum practitioner_accreditation_type: { licentiate: 1, advocate: 2, fellow: 3, associate: 4 }
 
@@ -97,7 +97,7 @@ class User < ApplicationRecord
     joins(:projects_users).where(projects_users: {role: [ProjectsUser.roles[:project_team_member], ProjectsUser.roles[:cgp_project_manager]]})
   }
 
-  scope :with_gsb_trust_team_role, -> {
+  scope :with_gsb_team_role, -> {
     joins(:projects_users).where(projects_users: {role: [ProjectsUser.roles[:certifier], ProjectsUser.roles[:certification_manager]]})
   }
 
@@ -157,7 +157,7 @@ class User < ApplicationRecord
   end
 
   def is_admin?
-    ["system_admin", "gsb_trust_top_manager", "gsb_trust_manager", "gsb_trust_admin"].include?(role)
+    ["system_admin", "gsb_top_manager", "gsb_manager", "gsb_admin"].include?(role)
   end
   
   def self.is_corporate(current_user)

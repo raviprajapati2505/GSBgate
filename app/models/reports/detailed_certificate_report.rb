@@ -198,7 +198,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
         newline(1)
         styled_text("<div style='font-size: 10;text-align: justify; line-height: 7; font-style: bold'>Dear Sir/Madam,</div>")
         newline(1)
-        styled_text("<div style='font-size: 10;text-align: justify; line-height: 7'>This is to notify that GSB Trust has assessed the project based on the submitted information. The project is found eligible to receive the provisional compliance. <span style='font-style: bold'>Final compliance is subject to successful site audit.</span></div>")
+        styled_text("<div style='font-size: 10;text-align: justify; line-height: 7'>This is to notify that GSB has assessed the project based on the submitted information. The project is found eligible to receive the provisional compliance. <span style='font-style: bold'>Final compliance is subject to successful site audit.</span></div>")
         newline(1)
         styled_text("<div style='font-size: 10;text-align: justify; line-height: 7'>In the event of any future changes applied to the information pertaining to the checklist, the changes are required to be re-assessed once again.</div>")
         newline(1)
@@ -210,7 +210,7 @@ class Reports::DetailedCertificateReport < Reports::BaseReport
         newline(3)
         styled_text("<div style='font-size: 10; color: 000000; font-style: bold;'>\n Dr. Eiman M. El-Iskandarani</div>")
 
-        styled_text("<div style='font-size: 10; color: 000000; font-style: bold;'>\n Director, GSB Trust \n</div>")
+        styled_text("<div style='font-size: 10; color: 000000; font-style: bold;'>\n Director, GSB \n</div>")
       else
         name = @certification_path.certificate.only_name
         text = certificate_intro_text(name, @certification_path&.certificate&.name)

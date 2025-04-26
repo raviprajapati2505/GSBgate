@@ -19,10 +19,10 @@
 
       modal_id = "addProjectTeamModal#{certification_team_type}"
 
-    when :gsb_trust_team
+    when :gsb_team
       title = t('.certifier_team.title')
       title_modal = t('.certifier_team.title_modal')
-      project_users = project.projects_users.gsb_trust_team_with_type(certification_team_type)
+      project_users = project.projects_users.gsb_team_with_type(certification_team_type)
 
       if can?(:create, ProjectsUser.new(project_id: project.id, role: ProjectsUser.roles[:certifier]))
         project_user_roles[:certifier] = ProjectsUser.roles[:certifier]
@@ -32,7 +32,7 @@
         project_user_roles[:certification_manager] = ProjectsUser.roles[:certification_manager]
       end
 
-      modal_id = "addGsbTrustTeamModal#{certification_team_type}"
+      modal_id = "addGsbTeamModal#{certification_team_type}"
 
     when :enterprise_clients
       title = t('.enterprise_clients.title')
@@ -129,7 +129,7 @@
               <h4 class="modal-title"><%= title_modal %></h4>
             </div>
 
-            <div class="modal-body find-users-modal" data-project-id="<%= @project.id %>" data-gord-employee="<%= (team == :gsb_trust_team) ? '1' : '0'  %>">
+            <div class="modal-body find-users-modal" data-project-id="<%= @project.id %>" data-gord-employee="<%= (team == :gsb_team) ? '1' : '0'  %>">
               <div class="templates" style="display:none;">
                 <script class="existing-user" type="text/x-custom-template">
                   <tr data-user-uid="____user_id____">

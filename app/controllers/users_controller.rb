@@ -316,7 +316,7 @@ class UsersController < AuthenticatedController
             result[:items][u.id][:error] = 'This user is deactivated.'
           elsif (check_gord_employee && !u.gord_employee?)
             # Check for gord_employee flag if required
-            result[:items][u.id][:error] = 'This user is not a GORD employee and cannot be added to the GSB trust team.'
+            result[:items][u.id][:error] = 'This user is not a GORD employee and cannot be added to the GSB team.'
           end
         end
 
@@ -414,9 +414,9 @@ class UsersController < AuthenticatedController
         file = @user.corporate_detail&.application_form&.path
       when "portfolio"
         file = @user.corporate_detail&.portfolio&.path
-      when "gsb_trust_notification"
+      when "gsb_notification"
         demerit_flag = DemeritFlag.find(params[:demerit_flag])
-        file = demerit_flag&.gsb_trust_notification&.path
+        file = demerit_flag&.gsb_notification&.path
       when "practitioner_acknowledge"
         demerit_flag = DemeritFlag.find(params[:demerit_flag])
         file = demerit_flag&.practitioner_acknowledge&.path

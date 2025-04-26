@@ -24,7 +24,7 @@ class AuditLog < ApplicationRecord
   }
 
   scope :for_user_projects, ->(user) {
-    if user.is_system_admin? || user.is_gsb_trust_manager? || user.is_gsb_trust_top_manager? || user.is_gsb_trust_admin?
+    if user.is_system_admin? || user.is_gsb_manager? || user.is_gsb_top_manager? || user.is_gsb_admin?
       all
     else
       where(project: user.projects)

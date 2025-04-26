@@ -9,12 +9,12 @@ class DigestMailer < ApplicationMailer
     @user = user
     user.last_notified_at ||= DateTime.new
 
-    if user.is_gsb_trust_manager? || user.is_gsb_trust_top_manager?
+    if user.is_gsb_manager? || user.is_gsb_top_manager?
       # NO AUDIT LOG
       @audit_logs = []
       @more_audit_logs = 0
     else
-      if user.is_system_admin? || user.is_gsb_trust_admin?
+      if user.is_system_admin? || user.is_gsb_admin?
         @audit_logs = AuditLog.where('updated_at > ?', user.last_notified_at)
       else
         audit_log = AuditLog.arel_table
@@ -113,9 +113,9 @@ class DigestMailer < ApplicationMailer
       @more_tasks = 0
     end
 
-    if @user.is_gsb_trust_top_manager?
+    if @user.is_gsb_top_manager?
       subject = 'Tasks for approval for Chairman (Dr. Yousef)'
-    elsif @user.is_gsb_trust_manager?
+    elsif @user.is_gsb_manager?
       subject = 'Tasks for approval for Head of GSB'
     else
       subject = 'GSBgate - progress report'
@@ -181,7 +181,7 @@ class DigestMailer < ApplicationMailer
   def certificate_approved_email(certification_path)
     @certification_path = certification_path
     emails = []
-    emails << User.find_by(role: "gsb_trust_manager").email #Head of gsb trust
+    emails << User.find_by(role: "gsb_manager").email #Head of gsb
     emails << ProjectsUser.where(project_id: @certification_path.project_id).find_by(role: "certification_manager").user.email  #Certification manager
     emails << ProjectsUser.where(project_id: @certification_path.project_id).find_by(role: "cgp_project_manager").user.email #CGP/CEP project manager
     emails << ProjectsUser.where(project_id: @certification_path.project_id).find_by(role: "enterprise_client")&.user&.email #Enterprice Client

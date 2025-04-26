@@ -77,7 +77,7 @@ en:
           confirm: This will cancel the PCR for this certification. Please confirm your choice.
           text: Cancel PCR
         pcr:
-          tooltip: Pre Certification Review. During PCR, the GSB trust team will assist the project team in completing the certification process. The CGP/CEP project manager can enable PCR when applying for a certificate. Please contact GORD if you want to enable the PCR track in a later stage of the certification process.
+          tooltip: Pre Certification Review. During PCR, the GSB team will assist the project team in completing the certification process. The CGP/CEP project manager can enable PCR when applying for a certificate. Please contact GORD if you want to enable the PCR track in a later stage of the certification process.
       certification_path_status:
         title: CERTIFICATION STATUS
         btn_accept_achieved: Accept achieved score
@@ -93,10 +93,10 @@ en:
         title: OFFICIAL CERTIFICATE
       schemes:
         title: TYPOLOGIES DETAILS
-        info_activating: The schemes will be clickable after a GSB trust administrator activates the certification.
+        info_activating: The schemes will be clickable after a GSB administrator activates the certification.
         btn_edit_project_team_responsibility_for_submittal: Allocate project team responsibility for submittal
-        btn_edit_certifier_team_responsibility_for_verification: Allocate GSB trust team responsibility for verification
-        btn_edit_certifier_team_responsibility_for_screening: Allocate GSB trust team responsibility for screening
+        btn_edit_certifier_team_responsibility_for_verification: Allocate GSB team responsibility for verification
+        btn_edit_certifier_team_responsibility_for_screening: Allocate GSB team responsibility for screening
     new:
       title: Applying for %{certificate} Certification
     overview_item:
@@ -122,7 +122,7 @@ en:
         provisional_energy_label_for_infrastructure_projects: Please complete all Provisional Energy Label - Infrastructure Projects Certification first.
     timeline_legend:
       project_team: Project Team
-      certifier_team: GSB Trust Team
+      certifier_team: GSB Team
     update_status_advance:
       title: Advancing Certification Status
     update_status_to_certified:
@@ -159,8 +159,8 @@ en:
         title: Practitioners
         title_modal: Add Project Team Member
       certifier_team:
-        title: GSB Trust
-        title_modal: Add GSB Trust Team Member
+        title: GSB
+        title_modal: Add GSB Team Member
       enterprise_clients:
         title: Enterprise Licensee
         title_modal: Add Enterprise Client
@@ -248,9 +248,9 @@ en:
         targeted_score:
           tooltip: The level the project team would like to achieve. Defaults to the maximum attainable level, but can be changed by a CGP/CEP project manager.
         submitted_score:
-          tooltip: The level the project team will submit to GSB trust for verification. Will be provided by a CGP/CEP project manager or a project team member that has been assigned to this criterion.
+          tooltip: The level the project team will submit to GSB for verification. Will be provided by a CGP/CEP project manager or a project team member that has been assigned to this criterion.
         achieved_score:
-          tooltip: The level the GSB trust team has awarded to this criterion. Will be provided by the GSB trust team and will be used for the final certification score.
+          tooltip: The level the GSB team has awarded to this criterion. Will be provided by the GSB team and will be used for the final certification score.
       certifier:
         title: Certifier
     form_checklist:
@@ -286,11 +286,11 @@ en:
       description_4: Provide documentation and change the status of the requirements.
       description_5: Set the submitted level and submit the criterion.
       description_6: Advance the certification status.
-      description_7: Allocate GSB trust team responsibility for verification.
-      description_8: Allocate GSB trust team responsibility for screening.
+      description_7: Allocate GSB team responsibility for verification.
+      description_8: Allocate GSB team responsibility for screening.
       description_9: Provide a PCR comment or allocate responsibility to a certifier team member.
-      description_10: Process GSB trust team comments and advance the certification status.
-      description_11: Process GSB trust team review comments.
+      description_10: Process GSB team comments and advance the certification status.
+      description_11: Process GSB team review comments.
       description_16: Verify the criterion.
       description_17: Advance the certification status.
       description_18: Advance the certification status (optionally apply for appeal).
@@ -305,7 +305,7 @@ en:
       description_33: Duration of certification is exceeded.
       description_34: Task is overdue.
       description_35: Task is overdue.
-      description_36: Allocate GSB trust team responsibility for verification after appeal.
+      description_36: Allocate GSB team responsibility for verification after appeal.
       description_37: Select a main scheme.
       description_38: Screen the criterion.
       description_39: Advance the certification status.
