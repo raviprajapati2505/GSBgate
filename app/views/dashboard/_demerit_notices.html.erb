@@ -2,7 +2,7 @@
   <tbody>
     <tr>
       <th>Flags</th>
-      <th>GSB Trust Notification</th>
+      <th>GSB Notification</th>
       <th>Practitioner Acknowledge</th>
       <% if ['credentials_admin'].include?(current_user.role) %>
         <th>Action</th>
@@ -13,17 +13,17 @@
         <td>Flag 0<%= index%></td>
         <td>
           <div class="">
-            <% if flag&.gsb_trust_notification.present? %>
+            <% if flag&.gsb_notification.present? %>
               <% if can?(:download_user_files, @user) %>
-                <%= btn_download(download_user_files_user_path(@user, file: "gsb_trust_notification", demerit_flag: flag), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('gsb_trust_notification')}") %>
+                <%= btn_download(download_user_files_user_path(@user, file: "gsb_notification", demerit_flag: flag), size: 'extra_small', tooltip: "Download #{UserDetail.human_attribute_name('gsb_notification')}") %>
               <% end %>
-              <%= truncate(flag&.gsb_trust_notification&.file&.filename, length: 35) %>
+              <%= truncate(flag&.gsb_notification&.file&.filename, length: 35) %>
             <% end %>
           </div>
           <br>
           <% if ['credentials_admin'].include?(current_user.role) %>
             <div class="">
-              <%= render partial: 'file_upload', locals: { file_name: 'gsb_trust_notification', demerit_flag: flag.id, access_licence_id: ''} %>
+              <%= render partial: 'file_upload', locals: { file_name: 'gsb_notification', demerit_flag: flag.id, access_licence_id: ''} %>
             </div>
           <% end %>
         </td>

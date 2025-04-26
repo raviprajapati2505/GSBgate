@@ -3,7 +3,7 @@ class TasksController < AuthenticatedController
 
   def index
     @page_title = 'Tasks'
-    if current_user.is_system_admin? || current_user.is_gsb_trust_manager? || current_user.is_gsb_trust_top_manager? || current_user.is_gsb_trust_admin?
+    if current_user.is_system_admin? || current_user.is_gsb_manager? || current_user.is_gsb_top_manager? || current_user.is_gsb_admin?
       @projects = Project.all
     else
       @projects = current_user.projects

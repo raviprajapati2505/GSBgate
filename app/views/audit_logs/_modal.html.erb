@@ -82,8 +82,8 @@
                                 <%= f.label :audit_log_visibility, 'Comment Visibility' %>
                                 <%= f.radio_button :audit_log_visibility, AuditLogVisibility::PUBLIC, label: 'Public Comment', disabled: disabled %>
                                 <span class="help-block">Everyone assigned to this project will be able to view this comment</span>
-                                <%= f.radio_button :audit_log_visibility, AuditLogVisibility::INTERNAL, label: 'GSB Trust Internal Comment', checked: true, disabled: disabled %>
-                                <span class="help-block">Only the GSB trust team can view this comment</span>
+                                <%= f.radio_button :audit_log_visibility, AuditLogVisibility::INTERNAL, label: 'GSB Internal Comment', checked: true, disabled: disabled %>
+                                <span class="help-block">Only the GSB team can view this comment</span>
                             <% end %>
                         <% end %>
                     </div>

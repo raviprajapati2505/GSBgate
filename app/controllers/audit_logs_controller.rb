@@ -60,7 +60,7 @@ class AuditLogsController < AuthenticatedController
     projects_user = ProjectsUser.for_project(@auditable.get_project).for_user(current_user).first
     if projects_user.nil?
       @audit_logs = AuditLog.for_auditable(@auditable).page(params[:page]).per(6)
-    elsif projects_user.gsb_trust_team?
+    elsif projects_user.gsb_team?
       @audit_logs = AuditLog.for_auditable(@auditable).page(params[:page]).per(6)
     else
       @audit_logs = AuditLog.for_auditable(@auditable).where(audit_log_visibility_id: AuditLogVisibility::PUBLIC).page(params[:page]).per(6)
@@ -74,7 +74,7 @@ class AuditLogsController < AuthenticatedController
     projects_user = ProjectsUser.for_project(@project).for_user(current_user).last
     if projects_user.nil?
       @audit_logs = AuditLog.for_auditable(@auditable).with_user_comment.page(params[:page]).per(6)
-    elsif projects_user.gsb_trust_team?
+    elsif projects_user.gsb_team?
       @audit_logs = AuditLog.for_auditable(@auditable).with_user_comment.page(params[:page]).per(6)
       @is_certifier = projects_user.certifier?
     else

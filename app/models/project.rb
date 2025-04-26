@@ -135,7 +135,7 @@ class Project < ApplicationRecord
         .select("ARRAY_TO_STRING(ARRAY(SELECT case when scheme_mixes.custom_name is null then ' ' else scheme_mixes.custom_name end from schemes INNER JOIN scheme_mixes ON schemes.id = scheme_mixes.scheme_id WHERE scheme_mixes.certification_path_id = certification_paths.id ORDER BY schemes.name), '|||') AS schemes_custom_name_array")
         .select('(%s) AS project_team_array' % ApplicationController.helpers.projects_users_by_type('project_team'))
         .select('(%s) AS cgp_project_manager_array' % ApplicationController.helpers.projects_users_by_type('cgp_project_manager'))
-        .select('(%s) AS gsb_trust_team_array' % ApplicationController.helpers.projects_users_by_type('gsb_trust_team'))
+        .select('(%s) AS gsb_team_array' % ApplicationController.helpers.projects_users_by_type('gsb_team'))
         .select('(%s) AS certification_manager_array' % ApplicationController.helpers.projects_users_by_type('certification_manager'))
         .select('(%s) AS enterprise_clients_array' % ApplicationController.helpers.projects_users_by_type('enterprise_clients'))
         .select('(%s) AS total_achieved_score' % Effective::Datatables::ProjectsCertificationPaths.query_score_in_certificate_points(:targeted_score))

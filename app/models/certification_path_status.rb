@@ -90,7 +90,7 @@ class CertificationPathStatus < ApplicationRecord
       CertificationPathStatus::APPROVING_BY_TOP_MANAGEMENT
   ]
 
-  STATUSES_AT_GSB_TRUST_TEAM_SIDE = STATUSES_AT_CERTIFIER_SIDE + STATUSES_AT_ADMIN_SIDE + STATUSES_AT_MANAGEMENT_SIDE
+  STATUSES_AT_GSB_TEAM_SIDE = STATUSES_AT_CERTIFIER_SIDE + STATUSES_AT_ADMIN_SIDE + STATUSES_AT_MANAGEMENT_SIDE
 
   # ------------------------------------------------------------------------
   # STATUSES GROUPED BY 'STAGE'
@@ -122,8 +122,8 @@ class CertificationPathStatus < ApplicationRecord
       CertificationPathStatus::ACKNOWLEDGING_AFTER_APPEAL
   ]
 
-  def self.at_gsb_trust_team_side?(id)
-    STATUSES_AT_GSB_TRUST_TEAM_SIDE.include?(id)
+  def self.at_gsb_team_side?(id)
+    STATUSES_AT_GSB_TEAM_SIDE.include?(id)
   end
 
 end

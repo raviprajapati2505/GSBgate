@@ -226,7 +226,7 @@ class CertificationPathsController < AuthenticatedController
     fields =  case current_user&.role
               when 'default_role', 'corporate'
                 [:to, :project_owner, :project_name, :project_location]
-              when 'system_admin', 'gsb_trust_admin', 'document_controller'
+              when 'system_admin', 'gsb_admin', 'document_controller'
                 [:to, :reference_number, :project_owner, :project_name, :project_location, :issuance_date, :approval_date]
               end
 
@@ -589,7 +589,7 @@ class CertificationPathsController < AuthenticatedController
           
           Task.find_or_create_by(taskable: @certification_path,
             task_description_id: Taskable::SIGNED_CERTIFICATE_DOWNLOAD,
-            application_role: User.roles[:gsb_trust_admin],
+            application_role: User.roles[:gsb_admin],
             project: @certification_path.project,
             certification_path: @certification_path)
         end

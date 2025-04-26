@@ -40,7 +40,7 @@ class Reports::LetterOfConformanceCoverLetter < Reports::BaseReport
     @content = <<-CONTENTTEMPLATE
 Dear,
 
-On behalf of GSB Trust, I would like to confer this Provisional GSB Design & Build Certificate in the form of "Letter of Conformance-LOC" to the project mentioned above for the successful completion of GSB Mixed Development v2.0 certification requirements.
+On behalf of GSB, I would like to confer this Provisional GSB Design & Build Certificate in the form of "Letter of Conformance-LOC" to the project mentioned above for the successful completion of GSB Mixed Development v2.0 certification requirements.
 
 Based on the submitted data, the score is documented to be <b><u>#{number_with_precision(@score, precision: 3)}</u></b>, which corresponds to the certification level of <b><u>#{@stars}</u></b>. Figures 1 to 3 summarize the score for the project, the score per category, achieved certification level and scoring bar chart respectively. Also, LOC Criteria Summary for the project is attached.
 
@@ -147,13 +147,13 @@ Congratulations once again for partaking in this noble endeavor, and together le
 
     case name
     when 'Letter of Conformance'
-      text = "This is to notify that GSB Trust has assessed the project based on the submitted information. The project is found eligible to receive the Provisional GSB-D&B Certificate in the form of \"Letter of Conformance (LOC)\", achieving the following: \n"
+      text = "This is to notify that GSB has assessed the project based on the submitted information. The project is found eligible to receive the Provisional GSB-D&B Certificate in the form of \"Letter of Conformance (LOC)\", achieving the following: \n"
 
       styled_text("<div style='font-size: 10; line-height: 9; color: 000000;'>#{text}</div>")
 
       newline(1)
     when 'GSB-CM', 'Construction Certificate'
-      text = "This is to notify that GAS Trust has reviewed the construction submittals in accordance with the latest GSB Construction Management assessments and has completed the Third Site Audit requirements of Construction Stage 3 (Finishing Works). The project is found eligible to receive the Third Interim Audit Advisory Notice (AAN) No.03 achieving the following: \n"
+      text = "This is to notify that GAS has reviewed the construction submittals in accordance with the latest GSB Construction Management assessments and has completed the Third Site Audit requirements of Construction Stage 3 (Finishing Works). The project is found eligible to receive the Third Interim Audit Advisory Notice (AAN) No.03 achieving the following: \n"
 
       styled_text("<div style='font-size: 10; line-height: 9; color: 000000;'>#{text}</div>")
 

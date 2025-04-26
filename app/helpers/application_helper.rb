@@ -271,9 +271,9 @@ module ApplicationHelper
     return value
   end
 
-  def is_gsb_trust?(user = nil)
+  def is_gsb?(user = nil)
     return false unless user.present?
-    ["gsb_trust_admin", "gsb_trust_top_manager", "gsb_trust_manager", "system_admin"].include?(current_user&.role)
+    ["gsb_admin", "gsb_top_manager", "gsb_manager", "system_admin"].include?(current_user&.role)
   end
 
   def is_certification_manager?(projects_users, user)
@@ -987,24 +987,24 @@ module ApplicationHelper
           )
         "
 
-      when 'gsb_trust_team'
+      when 'gsb_team'
         "
           ARRAY_TO_STRING(
             ARRAY(
               SELECT 
-                gsb_trust_team_users.name 
+                gsb_team_users.name 
               FROM 
-                users as gsb_trust_team_users 
+                users as gsb_team_users 
               INNER JOIN 
-                projects_users as gsb_trust_team_project_users 
+                projects_users as gsb_team_project_users 
               ON 
-                gsb_trust_team_project_users.user_id = gsb_trust_team_users.id 
+                gsb_team_project_users.user_id = gsb_team_users.id 
               WHERE 
-                gsb_trust_team_project_users.role IN (
+                gsb_team_project_users.role IN (
                   #{ProjectsUser.roles[:certifier]}
                 ) 
                 AND 
-                  gsb_trust_team_project_users.project_id = projects.id 
+                  gsb_team_project_users.project_id = projects.id 
                 AND 
                   (
                     SELECT 
@@ -1051,10 +1051,10 @@ module ApplicationHelper
                             #{Certificate.certification_types['final_energy_label_for_infrastructure_projects']}
                           ) 
                           THEN 
-                            gsb_trust_team_project_users.certification_team_type IN (
+                            gsb_team_project_users.certification_team_type IN (
                               #{ProjectsUser.certification_team_types[:other]}
                             ) 
-                        ELSE gsb_trust_team_project_users.certification_team_type IN (
+                        ELSE gsb_team_project_users.certification_team_type IN (
                           #{ProjectsUser.certification_team_types[:other]}
                         ) 
                     END

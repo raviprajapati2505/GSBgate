@@ -23,6 +23,6 @@ NotificationType.find_or_create_by!(id: NotificationType::DOCUMENT_APPROVED, nam
 NotificationType.find_or_create_by!(id: NotificationType::NEW_TASK, name: 'New task', project_level: false)
 
 AuditLogVisibility.find_or_create_by!(name: "public")
-AuditLogVisibility.find_or_create_by!(name: "GSB trust team internal")
+AuditLogVisibility.find_or_create_by!(name: "GSB team internal")
 
 puts "Notification Types are added successfully.........."
