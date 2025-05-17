@@ -26,18 +26,18 @@ User.create!(
   password_confirmation: "aaaaaa"
 )
 
-# GSB Top Manager
+# GSB Trust Top Manager
 User.create!(
-  email: "gsb_top_manager@gsb.qa",
-  username: "gsb_top_manager",
+  email: "gsb_trust_top_manager@gsb.qa",
+  username: "gsb_trust_top_manager",
   confirmed_at: DateTime.now,
-  role: "gsb_top_manager",
-  name: "GSB Top Manager",
+  role: "gsb_trust_top_manager",
+  name: "GSB Trust Top Manager",
   gord_employee: true,
   organization_name: "GORD GSB",
   name_suffix: "Mr",
   last_name: "1",
-  email_alternate: "gsb_top_manager1@gsb.qa",
+  email_alternate: "gsb_trust_top_manager1@gsb.qa",
   country: "Qatar",
   city: "Al Daayen",
   mobile_area_code: "11111",
@@ -54,18 +54,18 @@ User.create!(
   password_confirmation: "aaaaaa"
 )
 
-# GSB Manager
+# GSB Trust Manager
 User.create!(
-  email: "gsb_manager@gsb.qa",
-  username: "gsb_manager",
+  email: "gsb_trust_manager@gsb.qa",
+  username: "gsb_trust_manager",
   confirmed_at: DateTime.now,
-  role: "gsb_manager",
-  name: "GSB Manager",
+  role: "gsb_trust_manager",
+  name: "GSB Trust Manager",
   gord_employee: true,
   organization_name: "GORD GSB",
   name_suffix: "Mr",
   last_name: "1",
-  email_alternate: "gsb_manager1@gsb.qa",
+  email_alternate: "gsb_trust_manager1@gsb.qa",
   country: "Qatar",
   city: "Al Daayen",
   mobile_area_code: "11111",
@@ -82,18 +82,18 @@ User.create!(
   password_confirmation: "aaaaaa"
 )
 
-# GSB Admin
+# GSB Trust Admin
 User.create!(
-  email: "gsb_admin@gsb.qa",
-  username: "gsb_admin",
+  email: "gsb_trust_admin@gsb.qa",
+  username: "gsb_trust_admin",
   confirmed_at: DateTime.now,
-  role: "gsb_admin",
-  name: "GSB Admin",
+  role: "gsb_trust_admin",
+  name: "GSB Trust Admin",
   gord_employee: true,
   organization_name: "GORD GSB",
   name_suffix: "Mr",
   last_name: "1",
-  email_alternate: "gsb_admin1@gsb.qa",
+  email_alternate: "gsb_trust_admin1@gsb.qa",
   country: "Qatar",
   city: "Al Daayen",
   mobile_area_code: "11111",

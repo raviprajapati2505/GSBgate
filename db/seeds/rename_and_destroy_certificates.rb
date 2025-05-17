@@ -8,10 +8,20 @@ def only_name(certification_type)
   end
 end
 
+def stage_certificate(certification_type)
+  if certification_type.include?('provisional_')
+    "Stage 1: Provisional Certificate"
+  elsif certification_type.include?('final_')
+    "Stage 2: Final Certificate"
+  end
+end
+
 Certificate.certification_types.each do |certification_key, _ |
   certificate = Certificate.find_by(certification_type: certification_key)
+  name = stage_certificate(certification_key)
   certificate_type = "#{only_name(certification_key)}_type"
   assessment_stage = "#{only_name(certification_key)}_stage"
+  certificate.update_column(:name, name)
   certificate.update_column(:certificate_type, Certificate.certificate_types[certificate_type])
   certificate.update_column(:assessment_stage, Certificate.assessment_stages[assessment_stage])
 end
