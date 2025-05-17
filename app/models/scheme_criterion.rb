@@ -9,7 +9,7 @@ class SchemeCriterion < ApplicationRecord
   has_many :scheme_criterion_incentives, inverse_of: :scheme_criterion
   has_many :scheme_criterion_epls, inverse_of: :scheme_criterion
   has_many :scheme_criterion_wpls, inverse_of: :scheme_criterion
-  has_many :scheme_criterion_boxes, inverse_of: :scheme_criterion
+  has_many :scheme_criterion_boxes, inverse_of: :scheme_criterion, dependent: :destroy
   serialize :scores_a
   serialize :scores_b
 

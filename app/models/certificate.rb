@@ -1,16 +1,12 @@
 class Certificate < ApplicationRecord
   CERTIFICATE_TYPES = %i[
     energy_centers_efficiency
-    building_energy_efficiency
-    healthy_buildings
-    indoor_air_quality
     measurement_reporting_and_verification
     building_water_efficiency
     events_carbon_neutrality
     products_ecolabeling
     green_IT
-    net_zero
-    energy_label_waste_water_treatment_facility
+    energy_building
     energy_label_for_building_performance
     indoor_air_quality_certification
     indoor_environmental_quality_certification
@@ -23,16 +19,12 @@ class Certificate < ApplicationRecord
 
   CERTIFICATION_MAPPINGS = {
     'Energy Centers Efficiency' => 'db',
-    'Building Energy Efficiency' => 'cm',
-    'Healthy Buildings' => 'op',
-    'Indoor Air Quality' => 'db',
     'Measurement, Reporting And Verification (MRV)' => 'db',
     'Buildings Water Efficiency' => 'cm',
     'Events Carbon Neutrality' => 'op',
     'Products Ecolabeling' => 'db',
     'Green IT' => 'op',
-    'Net Zero' => 'db',
-    'Energy Label - Waste Water Treatment Facility' => 'op',
+    'Energy Building' => 'db',
     'Energy Label for Building Performance' => 'cm',
     'Indoor Air Quality (IAQ) Certification' => 'db',
     'Indoor Environmental Quality (IEQ) Certification' => 'cm',
@@ -45,16 +37,12 @@ class Certificate < ApplicationRecord
 
   enum certificate_type: [ 
     :energy_centers_efficiency_type,
-    :building_energy_efficiency_type,
-    :healthy_buildings_type,
-    :indoor_air_quality_type,
     :measurement_reporting_and_verification_type,
     :building_water_efficiency_type,
     :events_carbon_neutrality_type,
     :products_ecolabeling_type,
     :green_IT_type,
-    :net_zero_type,
-    :energy_label_waste_water_treatment_facility_type,
+    :energy_building_type,
     :energy_label_for_building_performance_type,
     :indoor_air_quality_certification_type,
     :indoor_environmental_quality_certification_type,
@@ -67,16 +55,12 @@ class Certificate < ApplicationRecord
 
   enum assessment_stage: [ 
     :energy_centers_efficiency_stage,
-    :building_energy_efficiency_stage,
-    :healthy_buildings_stage,
-    :indoor_air_quality_stage,
     :measurement_reporting_and_verification_stage,
     :building_water_efficiency_stage,
     :events_carbon_neutrality_stage,
     :products_ecolabeling_stage,
     :green_IT_stage,
-    :net_zero_stage,
-    :energy_label_waste_water_treatment_facility_stage,
+    :energy_building_stage,
     :energy_label_for_building_performance_stage,
     :indoor_air_quality_certification_stage,
     :indoor_environmental_quality_certification_stage,
@@ -89,27 +73,19 @@ class Certificate < ApplicationRecord
 
   enum certification_type: [ 
     :provisional_energy_centers_efficiency,
-    :provisional_building_energy_efficiency,
-    :provisional_healthy_buildings,
-    :provisional_indoor_air_quality,
     :provisional_measurement_reporting_and_verification,
     :provisional_building_water_efficiency,
     :provisional_events_carbon_neutrality,
     :provisional_products_ecolabeling,
     :provisional_green_IT,
-    :provisional_net_zero,
-    :provisional_energy_label_waste_water_treatment_facility,
+    :provisional_energy_building,
     :final_energy_centers_efficiency,
-    :final_building_energy_efficiency,
-    :final_healthy_buildings,
-    :final_indoor_air_quality,
     :final_measurement_reporting_and_verification,
     :final_building_water_efficiency,
     :final_events_carbon_neutrality,
     :final_products_ecolabeling,
     :final_green_IT,
-    :final_net_zero,
-    :final_energy_label_waste_water_treatment_facility,
+    :final_energy_building,
     :provisional_energy_label_for_building_performance,
     :provisional_indoor_air_quality_certification,
     :provisional_indoor_environmental_quality_certification,
@@ -130,16 +106,12 @@ class Certificate < ApplicationRecord
 
   PROVISIONAL_CERTIFICATES = [
     :provisional_energy_centers_efficiency,
-    :provisional_building_energy_efficiency,
-    :provisional_healthy_buildings,
-    :provisional_indoor_air_quality,
     :provisional_measurement_reporting_and_verification,
     :provisional_building_water_efficiency,
     :provisional_events_carbon_neutrality,
     :provisional_products_ecolabeling,
     :provisional_green_IT,
-    :provisional_net_zero,
-    :provisional_energy_label_waste_water_treatment_facility,
+    :provisional_energy_building,
     :provisional_energy_label_for_building_performance,
     :provisional_indoor_air_quality_certification,
     :provisional_indoor_environmental_quality_certification,
@@ -153,16 +125,12 @@ class Certificate < ApplicationRecord
 
   FINAL_CERTIFICATES = [
     :final_energy_centers_efficiency,
-    :final_building_energy_efficiency,
-    :final_healthy_buildings,
-    :final_indoor_air_quality,
     :final_measurement_reporting_and_verification,
     :final_building_water_efficiency,
     :final_events_carbon_neutrality,
     :final_products_ecolabeling,
     :final_green_IT,
-    :final_net_zero,
-    :final_energy_label_waste_water_treatment_facility,
+    :final_energy_building,
     :final_energy_label_for_building_performance,
     :final_indoor_air_quality_certification,
     :final_indoor_environmental_quality_certification,
@@ -175,7 +143,7 @@ class Certificate < ApplicationRecord
   FINAL_CERTIFICATES_VALUES = certification_types.select{ |k, v| v if k.include?("final_")}&.values
 
   has_many :certification_paths
-  has_many :development_types
+  has_many :development_types, dependent: :destroy
 
   validates_inclusion_of :certificate_type, in: Certificate.certificate_types.keys
   validates_inclusion_of :assessment_stage, in: Certificate.assessment_stages.keys
@@ -191,18 +159,6 @@ class Certificate < ApplicationRecord
 
   def energy_centers_efficiency?
     energy_centers_efficiency_type?
-  end
-
-  def building_energy_efficiency?
-    building_energy_efficiency_type?
-  end
-
-  def healthy_buildings?
-    healthy_buildings_type?
-  end
-
-  def indoor_air_quality?
-    indoor_air_quality_type?
   end
 
   def measurement_reporting_and_verification?
@@ -225,12 +181,8 @@ class Certificate < ApplicationRecord
     green_IT_type?
   end
 
-  def net_zero?
-    net_zero_type?
-  end
-
-  def energy_label_waste_water_treatment_facility?
-    energy_label_waste_water_treatment_facility_type?
+  def energy_building?
+    energy_building_type?
   end
 
   def energy_label_for_building_performance?
@@ -277,12 +229,6 @@ class Certificate < ApplicationRecord
                               case certificate_type
                               when "energy_centers_efficiency_type"
                                 [Certificate.certification_types[:provisional_energy_centers_efficiency], Certificate.certification_types[:final_energy_centers_efficiency]]
-                              when "building_energy_efficiency_type"
-                                [Certificate.certification_types[:provisional_building_energy_efficiency], Certificate.certification_types[:final_building_energy_efficiency]]
-                              when "healthy_buildings_type"
-                                [Certificate.certification_types[:provisional_healthy_buildings], Certificate.certification_types[:final_healthy_buildings]]
-                              when "indoor_air_quality_type"
-                                [Certificate.certification_types[:provisional_indoor_air_quality], Certificate.certification_types[:final_indoor_air_quality]]
                               when "measurement_reporting_and_verification_type"
                                 [Certificate.certification_types[:provisional_measurement_reporting_and_verification], Certificate.certification_types[:final_measurement_reporting_and_verification]]
                               when "building_water_efficiency_type"
@@ -293,10 +239,8 @@ class Certificate < ApplicationRecord
                                 [Certificate.certification_types[:provisional_products_ecolabeling], Certificate.certification_types[:final_products_ecolabeling]]
                               when "green_IT_type"
                                 [Certificate.certification_types[:provisional_green_IT], Certificate.certification_types[:final_green_IT]]
-                              when "net_zero_type"
-                                [Certificate.certification_types[:provisional_net_zero], Certificate.certification_types[:final_net_zero]]
-                              when "energy_label_waste_water_treatment_facility_type"
-                                [Certificate.certification_types[:provisional_energy_label_waste_water_treatment_facility], Certificate.certification_types[:final_energy_label_waste_water_treatment_facility]]
+                              when "energy_building_type"
+                                [Certificate.certification_types[:provisional_energy_building], Certificate.certification_types[:final_energy_building]]
                               when "energy_label_for_building_performance_type"
                                 [Certificate.certification_types[:provisional_energy_label_for_building_performance], Certificate.certification_types[:final_energy_label_for_building_performance]]
                               when "indoor_air_quality_certification_type"
@@ -348,14 +292,14 @@ class Certificate < ApplicationRecord
     I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.#{only_name}")
   end
 
-  def only_name
-    name = 
-      if certification_type.include?('provisional_')
-        certification_type.gsub("provisional_", "")
-      elsif certification_type.include?('final_')
-        certification_type.gsub("final_", "")
+      def only_name
+        name = 
+          if certification_type.include?('provisional_')
+            certification_type.gsub("provisional_", "")
+          elsif certification_type.include?('final_')
+            certification_type.gsub("final_", "")
+          end
       end
-  end
 
   def only_version
     gsb_version

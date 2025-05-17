@@ -7,16 +7,12 @@ en:
       certificate:
         certificate_types:
           energy_centers_efficiency_type: Energy Centers Efficiency
-          building_energy_efficiency_type: Building Energy Efficiency
-          healthy_buildings_type: Healthy Buildings
-          indoor_air_quality_type: Indoor Air Quality
           measurement_reporting_and_verification_type: Measurement, Reporting And Verification (MRV)
           building_water_efficiency_type: Buildings Water Efficiency
           events_carbon_neutrality_type: Events Carbon Neutrality
           products_ecolabeling_type: Products Ecolabeling
           green_IT_type: Green IT
-          net_zero_type: Net Zero
-          energy_label_waste_water_treatment_facility_type: Energy Label - Waste Water Treatment Facility
+          energy_building_type: Energy Building
           energy_label_for_building_performance_type: Energy Label for Building Performance
           indoor_air_quality_certification_type: Indoor Air Quality (IAQ) Certification
           indoor_environmental_quality_certification_type: Indoor Environmental Quality (IEQ) Certification
@@ -27,16 +23,12 @@ en:
           energy_label_for_infrastructure_projects_type: Energy label for Infrastructure projects
           stage_titles:
             provisional_energy_centers_efficiency: "Stage 1: Provisional Certificate"
-            provisional_building_energy_efficiency: "Stage 1: Provisional Certificate"
-            provisional_healthy_buildings: "Stage 1: Provisional Certificate"
-            provisional_indoor_air_quality: "Stage 1: Provisional Certificate"
             provisional_measurement_reporting_and_verification: "Stage 1: Provisional Certificate"
             provisional_building_water_efficiency: "Stage 1: Provisional Certificate"
             provisional_events_carbon_neutrality: "Stage 1: Provisional Certificate"
             provisional_products_ecolabeling: "Stage 1: Provisional Certificate"
             provisional_green_IT: "Stage 1: Provisional Certificate"
-            provisional_net_zero: "Stage 1: Provisional Certificate"
-            provisional_energy_label_waste_water_treatment_facility: "Stage 1: Provisional Certificate"
+            provisional_energy_building: "Stage 1: Provisional Certificate"
             provisional_energy_label_for_building_performance: "Stage 1: Provisional Certificate"
             provisional_indoor_air_quality_certification: "Stage 1: Provisional Certificate"
             provisional_indoor_environmental_quality_certification: "Stage 1: Provisional Certificate"
@@ -46,16 +38,12 @@ en:
             provisional_energy_label_for_industrial_application: "Stage 1: Provisional Certificate"
             provisional_energy_label_for_infrastructure_projects: "Stage 1: Provisional Certificate"
             final_energy_centers_efficiency: "Stage 2: Final Certificate"
-            final_building_energy_efficiency: "Stage 2: Final Certificate"
-            final_healthy_buildings: "Stage 2: Final Certificate"
-            final_indoor_air_quality: "Stage 2: Final Certificate"
             final_measurement_reporting_and_verification: "Stage 2: Final Certificate"
             final_building_water_efficiency: "Stage 2: Final Certificate"
             final_events_carbon_neutrality: "Stage 2: Final Certificate"
             final_products_ecolabeling: "Stage 2: Final Certificate"
             final_green_IT: "Stage 2: Final Certificate"
-            final_net_zero: "Stage 2: Final Certificate"
-            final_energy_label_waste_water_treatment_facility: "Stage 2: Final Certificate"
+            final_energy_building: "Stage 2: Final Certificate"
             final_energy_label_for_building_performance: "Stage 2: Final Certificate"
             final_indoor_air_quality_certification: "Stage 2: Final Certificate"
             final_indoor_environmental_quality_certification: "Stage 2: Final Certificate"
@@ -66,16 +54,12 @@ en:
             final_energy_label_for_infrastructure_projects: "Stage 2: Final Certificate"
           certificate_titles:
             energy_centers_efficiency: Energy Centers Efficiency
-            building_energy_efficiency: Building Energy Efficiency
-            healthy_buildings: Healthy Buildings
-            indoor_air_quality: Indoor Air Quality
             measurement_reporting_and_verification: Measurement, Reporting And Verification (MRV)
             building_water_efficiency: Buildings Water Efficiency
             events_carbon_neutrality: Events Carbon Neutrality
             products_ecolabeling: Products Ecolabeling
             green_IT: Green IT
-            net_zero: Net Zero
-            energy_label_waste_water_treatment_facility: Energy Label - Waste Water Treatment Facility
+            energy_building: Energy Building
             energy_label_for_building_performance: Energy Label for Building Performance
             indoor_air_quality_certification: Indoor Air Quality (IAQ) Certification
             indoor_environmental_quality_certification: Indoor Environmental Quality (IEQ) Certification
@@ -86,16 +70,12 @@ en:
             energy_label_for_infrastructure_projects: Energy label for Infrastructure projects
         certification_types:
           provisional_energy_centers_efficiency: "Stage 1: Provisional Certificate"
-          provisional_building_energy_efficiency: "Stage 1: Provisional Certificate"
-          provisional_healthy_buildings: "Stage 1: Provisional Certificate"
-          provisional_indoor_air_quality: "Stage 1: Provisional Certificate"
           provisional_measurement_reporting_and_verification: "Stage 1: Provisional Certificate"
           provisional_building_water_efficiency: "Stage 1: Provisional Certificate"
           provisional_events_carbon_neutrality: "Stage 1: Provisional Certificate"
           provisional_products_ecolabeling: "Stage 1: Provisional Certificate"
           provisional_green_IT: "Stage 1: Provisional Certificate"
-          provisional_net_zero: "Stage 1: Provisional Certificate"
-          provisional_energy_label_waste_water_treatment_facility: "Stage 1: Provisional Certificate"
+          provisional_energy_building: "Stage 1: Provisional Certificate"
           provisional_energy_label_for_building_performance: "Stage 1: Provisional Certificate"
           provisional_indoor_air_quality_certification: "Stage 1: Provisional Certificate"
           provisional_indoor_environmental_quality_certification: "Stage 1: Provisional Certificate"
@@ -105,16 +85,12 @@ en:
           provisional_energy_label_for_industrial_application: "Stage 1: Provisional Certificate"
           provisional_energy_label_for_infrastructure_projects: "Stage 1: Provisional Certificate"
           final_energy_centers_efficiency: "Stage 2: Final Certificate"
-          final_building_energy_efficiency: "Stage 2: Final Certificate"
-          final_healthy_buildings: "Stage 2: Final Certificate"
-          final_indoor_air_quality: "Stage 2: Final Certificate"
           final_measurement_reporting_and_verification: "Stage 2: Final Certificate"
           final_building_water_efficiency: "Stage 2: Final Certificate"
           final_events_carbon_neutrality: "Stage 2: Final Certificate"
           final_products_ecolabeling: "Stage 2: Final Certificate"
           final_green_IT: "Stage 2: Final Certificate"
-          final_net_zero: "Stage 2: Final Certificate"
-          final_energy_label_waste_water_treatment_facility: "Stage 2: Final Certificate"
+          final_energy_building: "Stage 2: Final Certificate"
           final_energy_label_for_building_performance: "Stage 2: Final Certificate"
           final_indoor_air_quality_certification: "Stage 2: Final Certificate"
           final_indoor_environmental_quality_certification: "Stage 2: Final Certificate"
@@ -125,16 +101,12 @@ en:
           final_energy_label_for_infrastructure_projects: "Stage 2: Final Certificate"
           certificate_titles:
             energy_centers_efficiency_type: Energy Centers Efficiency
-            building_energy_efficiency_type: Building Energy Efficiency
-            healthy_buildings_type: Healthy Buildings
-            indoor_air_quality_type: Indoor Air Quality
             measurement_reporting_and_verification_type: Measurement, Reporting And Verification (MRV)
             building_water_efficiency_type: Buildings Water Efficiency
             events_carbon_neutrality_type: Events Carbon Neutrality
             products_ecolabeling_type: Products Ecolabeling
             green_IT_type: Green IT
-            net_zero_type: Net Zero
-            energy_label_waste_water_treatment_facility_type: Energy Label - Waste Water Treatment Facility
+            energy_building_type: Energy Building
             energy_label_for_building_performance_type: Energy Label for Building Performance
             indoor_air_quality_certification_type: Indoor Air Quality (IAQ) Certification
             indoor_environmental_quality_certification_type: Indoor Environmental Quality (IEQ) Certification
@@ -145,16 +117,12 @@ en:
             energy_label_for_infrastructure_projects_type: Energy label for Infrastructure projects
         certification_titles:
           provisional_energy_centers_efficiency: "Stage 1: Provisional Certificate"
-          provisional_building_energy_efficiency: "Stage 1: Provisional Certificate"
-          provisional_healthy_buildings: "Stage 1: Provisional Certificate"
-          provisional_indoor_air_quality: "Stage 1: Provisional Certificate"
           provisional_measurement_reporting_and_verification: "Stage 1: Provisional Certificate"
           provisional_building_water_efficiency: "Stage 1: Provisional Certificate"
           provisional_events_carbon_neutrality: "Stage 1: Provisional Certificate"
           provisional_products_ecolabeling: "Stage 1: Provisional Certificate"
           provisional_green_IT: "Stage 1: Provisional Certificate"
-          provisional_net_zero: "Stage 1: Provisional Certificate"
-          provisional_energy_label_waste_water_treatment_facility: "Stage 1: Provisional Certificate"
+          provisional_energy_building: "Stage 1: Provisional Certificate"
           provisional_energy_label_for_building_performance: "Stage 1: Provisional Certificate"
           provisional_indoor_air_quality_certification: "Stage 1: Provisional Certificate"
           provisional_indoor_environmental_quality_certification: "Stage 1: Provisional Certificate"
@@ -164,16 +132,12 @@ en:
           provisional_energy_label_for_industrial_application: "Stage 1: Provisional Certificate"
           provisional_energy_label_for_infrastructure_projects: "Stage 1: Provisional Certificate"
           final_energy_centers_efficiency: "Stage 2: Final Certificate"
-          final_building_energy_efficiency: "Stage 2: Final Certificate"
-          final_healthy_buildings: "Stage 2: Final Certificate"
-          final_indoor_air_quality: "Stage 2: Final Certificate"
           final_measurement_reporting_and_verification: "Stage 2: Final Certificate"
           final_building_water_efficiency: "Stage 2: Final Certificate"
           final_events_carbon_neutrality: "Stage 2: Final Certificate"
           final_products_ecolabeling: "Stage 2: Final Certificate"
           final_green_IT: "Stage 2: Final Certificate"
-          final_net_zero: "Stage 2: Final Certificate"
-          final_energy_label_waste_water_treatment_facility: "Stage 2: Final Certificate"
+          final_energy_building: "Stage 2: Final Certificate"
           final_energy_label_for_building_performance: "Stage 2: Final Certificate"
           final_indoor_air_quality_certification: "Stage 2: Final Certificate"
           final_indoor_environmental_quality_certification: "Stage 2: Final Certificate"
@@ -184,16 +148,12 @@ en:
           final_energy_label_for_infrastructure_projects: "Stage 2: Final Certificate"
         certification_types_subtitles:
           provisional_energy_centers_efficiency: Energy Centers Efficiency
-          provisional_building_energy_efficiency: Building Energy Efficiency
-          provisional_healthy_buildings: Healthy Buildings
-          provisional_indoor_air_quality: Indoor Air Quality
           provisional_measurement_reporting_and_verification: Measurement, Reporting And Verification (MRV)
           provisional_building_water_efficiency: Buildings Water Efficiency
           provisional_events_carbon_neutrality: Events Carbon Neutrality
           provisional_products_ecolabeling: Products Ecolabeling
           provisional_green_IT: Green IT
-          provisional_net_zero: Net Zero
-          provisional_energy_label_waste_water_treatment_facility: Energy Label - Waste Water Treatment Facility
+          provisional_energy_building: Energy Building
           provisional_energy_label_for_building_performance: Energy Label for Building Performance
           provisional_indoor_air_quality_certification: Indoor Air Quality (IAQ) Certification
           provisional_indoor_environmental_quality_certification: Indoor Environmental Quality (IEQ) Certification
@@ -203,16 +163,12 @@ en:
           provisional_energy_label_for_industrial_application: Energy label for Industrial application
           provisional_energy_label_for_infrastructure_projects: Energy label for Infrastructure projects
           final_energy_centers_efficiency: Energy Centers Efficiency
-          final_building_energy_efficiency: Building Energy Efficiency
-          final_healthy_buildings: Healthy Buildings
-          final_indoor_air_quality: Indoor Air Quality
           final_measurement_reporting_and_verification: Measurement, Reporting And Verification (MRV)
           final_building_water_efficiency: Buildings Water Efficiency
           final_events_carbon_neutrality: Events Carbon Neutrality
           final_products_ecolabeling: Products Ecolabeling
           final_green_IT: Green IT
-          final_net_zero: Net Zero
-          final_energy_label_waste_water_treatment_facility: Energy Label - Waste Water Treatment Facility
+          final_energy_building: Energy Building
           final_energy_label_for_building_performance: Energy Label for Building Performance
           final_indoor_air_quality_certification: Indoor Air Quality (IAQ) Certification
           final_indoor_environmental_quality_certification: Indoor Environmental Quality (IEQ) Certification
@@ -274,16 +230,12 @@ en:
         project_owner_business_sector: Project Owner Business Sector
         team_titles:
           energy_centers_efficiency: Energy Centers Efficiency
-          building_energy_efficiency: Building Energy Efficiency
-          healthy_buildings: Healthy Buildings
-          indoor_air_quality: Indoor Air Quality
           measurement_reporting_and_verification: Measurement, Reporting And Verification (MRV)
           building_water_efficiency: Buildings Water Efficiency
           events_carbon_neutrality: Events Carbon Neutrality
           products_ecolabeling: Products Ecolabeling
           green_IT: Green IT
-          net_zero: Net Zero
-          energy_label_waste_water_treatment_facility: Energy Label - Waste Water Treatment Facility
+          energy_building: Energy Building
           energy_label_for_building_performance: Energy Label for Building Performance
           indoor_air_quality_certification: Indoor Air Quality (IAQ) Certification
           indoor_environmental_quality_certification: Indoor Environmental Quality (IEQ) Certification
