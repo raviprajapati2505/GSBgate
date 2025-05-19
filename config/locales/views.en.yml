@@ -102,16 +102,12 @@ en:
     overview_item:
       warning:
         provisional_energy_centers_efficiency: Please complete the Provisional Energy Centers Efficiency Certification first.
-        provisional_building_energy_efficiency: Please complete the Provisional Building Energy Efficiency Certification first.
-        provisional_healthy_buildings: Please complete the Warning Provisional Healthy Buildings Certification first.
-        provisional_indoor_air_quality: Please complete all Provisional Indoor Air Quality Certification first.
         provisional_measurement_reporting_and_verification: Please complete all Provisional Measurement Reporting and Verification Certification first.
         provisional_building_water_efficiency: Please complete the Provisional Building Water Efficiency Certification first.
         provisional_events_carbon_neutrality: Please complete all Provisional Events Carbon Neutrality Certification first.
         provisional_products_ecolabeling: Please complete all Provisional Products Ecolabeling Certification first.
         provisional_green_IT: Please complete all Provisional Green IT Certification first.
-        provisional_net_zero: Please complete all Provisional Net Zero Certification first.
-        provisional_energy_label_waste_water_treatment_facility: Please complete all Provisional Energy Label - Waste Water Treatment Facility Certification first.
+        provisional_energy_building: Please complete all Provisional Energy Building Certification first.
         provisional_energy_label_for_building_performance: Please complete all Provisional Energy Label - Building Performance Certification first.
         provisional_indoor_air_quality_certification: Please complete all Provisional Indoor Air Quality Certification first.
         provisional_indoor_environmental_quality_certification: Please complete all Provisional Indoor Environmental Quality Certification first.

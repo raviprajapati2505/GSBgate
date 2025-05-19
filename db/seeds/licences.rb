@@ -12,42 +12,6 @@ Licence.find_or_create_by!(
   
 )
 
-# Building Energy Efficiency
-Licence.find_or_create_by!(
-  licence_type: 'CorporateLicence',
-  display_name: 'Corporate - Building Energy Efficiency',
-  display_weight: 2,
-  title: 'Corporate - Building Energy Efficiency',
-  description: 'Building Energy Efficiency Corporate',
-  certificate_type: Certificate.certificate_types[:building_energy_efficiency_type],
-  schemes: ['Typology'],
-  applicability: Licence.applicabilities[:check_list]
-)
-
-# Healthy Buildings
-Licence.find_or_create_by!(
-  licence_type: 'CorporateLicence',
-  display_name: 'Corporate - Healthy Buildings',
-  display_weight: 3,
-  title: 'Corporate - Healthy Buildings',
-  description: 'Healthy Buildings Corporate',
-  certificate_type: Certificate.certificate_types[:healthy_buildings_type],
-  schemes: ['Typology'],
-  applicability: Licence.applicabilities[:check_list]
-)
-
-# Indoor Air Quality
-Licence.find_or_create_by!(
-  licence_type: 'CorporateLicence',
-  display_name: 'Corporate - Indoor Air Quality',
-  display_weight: 4,
-  title: 'Corporate - Indoor Air Quality',
-  description: 'Indoor Air Quality Corporate',
-  certificate_type: Certificate.certificate_types[:indoor_air_quality_type],
-  schemes: ['Typology'],
-  applicability: Licence.applicabilities[:check_list]
-)
-
 # Measurement, Reporting And Verification (MRV)
 Licence.find_or_create_by!(
   licence_type: 'CorporateLicence',
@@ -108,30 +72,17 @@ Licence.find_or_create_by!(
   applicability: Licence.applicabilities[:check_list]
 )
 
-# Net Zero
+# Energy Building
 Licence.find_or_create_by!(
   licence_type: 'CorporateLicence',
-  display_name: 'Corporate - Net Zero',
+  display_name: 'Corporate - Energy Building',
   display_weight: 10,
-  title: 'Corporate - Net Zero',
-  description: 'Net Zero Corporate',
-  certificate_type: Certificate.certificate_types[:net_zero_type],
+  title: 'Corporate - Energy Building',
+  description: 'Energy Building Corporate',
+  certificate_type: Certificate.certificate_types[:energy_building_type],
   schemes: ['Typology'],
   applicability: Licence.applicabilities[:check_list]
 )
-
-# Energy Label - Waste Water Treatment Facility
-Licence.find_or_create_by!(
-  licence_type: 'CorporateLicence',
-  display_name: 'Corporate - Energy Label - Waste Water Treatment Facility',
-  display_weight: 11,
-  title: 'Corporate - Energy Label - Waste Water Treatment Facility',
-  description: 'Energy Label - Waste Water Treatment Facility Corporate',
-  certificate_type: Certificate.certificate_types[:energy_label_waste_water_treatment_facility_type],
-  schemes: ['Typology'],
-  applicability: Licence.applicabilities[:check_list]
-)
-
 
 # ----------------------------------------- Licences for Certified Professional CGP -----------------------------------------
 # Energy Centers Efficiency
@@ -142,39 +93,6 @@ Licence.find_or_create_by!(
   title: 'CGP - Energy Centers Efficiency',
   description: 'Energy Centers Efficiency Certified Green Professional',
   certificate_type: Certificate.certificate_types[:energy_centers_efficiency_type],
-  applicability: Licence.applicabilities[:check_list]
-)
-
-# Building Energy Efficiency
-Licence.find_or_create_by!(
-  licence_type: 'CgpLicence',
-  display_name: 'CGP - Building Energy Efficiency',
-  display_weight: 13,
-  title: 'CGP - Building Energy Efficiency',
-  description: 'Building Energy Efficiency Certified Green Professional',
-  certificate_type: Certificate.certificate_types[:building_energy_efficiency_type],
-  applicability: Licence.applicabilities[:check_list]
-)
-
-# Healthy Buildings
-Licence.find_or_create_by!(
-  licence_type: 'CgpLicence',
-  display_name: 'CGP - Healthy Buildings',
-  display_weight: 14,
-  title: 'CGP - Healthy Buildings',
-  description: 'Healthy Buildings Certified Green Professional',
-  certificate_type: Certificate.certificate_types[:healthy_buildings_type],
-  applicability: Licence.applicabilities[:check_list]
-)
-
-# Indoor Air Quality
-Licence.find_or_create_by!(
-  licence_type: 'CgpLicence',
-  display_name: 'CGP - Indoor Air Quality',
-  display_weight: 15,
-  title: 'CGP - Indoor Air Quality',
-  description: 'Indoor Air Quality Certified Green Professional',
-  certificate_type: Certificate.certificate_types[:indoor_air_quality_type],
   applicability: Licence.applicabilities[:check_list]
 )
 
@@ -233,25 +151,14 @@ Licence.find_or_create_by!(
   applicability: Licence.applicabilities[:check_list]
 )
 
-# Net Zero
+# Energy Building
 Licence.find_or_create_by!(
   licence_type: 'CgpLicence',
-  display_name: 'CGP - Net Zero',
+  display_name: 'CGP - Energy Building',
   display_weight: 21,
-  title: 'CGP - Net Zero',
-  description: 'Net Zero Certified Green Professional',
-  certificate_type: Certificate.certificate_types[:net_zero_type],
-  applicability: Licence.applicabilities[:check_list]
-)
-
-# Energy Label - Waste Water Treatment Facility
-Licence.find_or_create_by!(
-  licence_type: 'CgpLicence',
-  display_name: 'CGP - Energy Label - Waste Water Treatment Facility',
-  display_weight: 22,
-  title: 'CGP - Energy Label - Waste Water Treatment Facility',
-  description: 'Energy Label - Waste Water Treatment Facility Certified Green Professional',
-  certificate_type: Certificate.certificate_types[:energy_label_waste_water_treatment_facility_type],
+  title: 'CGP - Energy Building',
+  description: 'Energy Building Certified Green Professional',
+  certificate_type: Certificate.certificate_types[:energy_building_type],
   applicability: Licence.applicabilities[:check_list]
 )
 
@@ -264,39 +171,6 @@ Licence.find_or_create_by!(
   title: 'CEP - Energy Centers Efficiency',
   description: 'Energy Centers Efficiency Certified Energy Professional',
   certificate_type: Certificate.certificate_types[:energy_centers_efficiency_type],
-  applicability: Licence.applicabilities[:check_list]
-)
-
-# Building Energy Efficiency
-Licence.find_or_create_by!(
-  licence_type: 'CepLicence',
-  display_name: 'CEP - Building Energy Efficiency',
-  display_weight: 24,
-  title: 'CEP - Building Energy Efficiency',
-  description: 'Building Energy Efficiency Certified Energy Professional',
-  certificate_type: Certificate.certificate_types[:building_energy_efficiency_type],
-  applicability: Licence.applicabilities[:check_list]
-)
-
-# Healthy Buildings
-Licence.find_or_create_by!(
-  licence_type: 'CepLicence',
-  display_name: 'CEP - Healthy Buildings',
-  display_weight: 25,
-  title: 'CEP - Healthy Buildings',
-  description: 'Healthy Buildings Certified Energy Professional',
-  certificate_type: Certificate.certificate_types[:healthy_buildings_type],
-  applicability: Licence.applicabilities[:check_list]
-)
-
-# Indoor Air Quality
-Licence.find_or_create_by!(
-  licence_type: 'CepLicence',
-  display_name: 'CEP - Indoor Air Quality',
-  display_weight: 26,
-  title: 'CEP - Indoor Air Quality',
-  description: 'Indoor Air Quality Certified Energy Professional',
-  certificate_type: Certificate.certificate_types[:indoor_air_quality_type],
   applicability: Licence.applicabilities[:check_list]
 )
 
@@ -355,26 +229,13 @@ Licence.find_or_create_by!(
   applicability: Licence.applicabilities[:check_list]
 )
 
-# Net Zero
+# Energy Building
 Licence.find_or_create_by!(
   licence_type: 'CepLicence',
-  display_name: 'CEP - Net Zero',
+  display_name: 'CEP - Energy Building',
   display_weight: 32,
-  title: 'CEP - Net Zero',
-  description: 'Net Zero Certified Energy Professional',
-  certificate_type: Certificate.certificate_types[:net_zero_type],
+  title: 'CEP - Energy Building',
+  description: 'Energy Building Certified Energy Professional',
+  certificate_type: Certificate.certificate_types[:energy_building_type],
   applicability: Licence.applicabilities[:check_list]
 )
-
-# Energy Label - Waste Water Treatment Facility
-Licence.find_or_create_by!(
-  licence_type: 'CepLicence',
-  display_name: 'CEP - Energy Label - Waste Water Treatment Facility',
-  display_weight: 33,
-  title: 'CEP - Energy Label - Waste Water Treatment Facility',
-  description: 'Energy Label - Waste Water Treatment Facility Certified Energy Professional',
-  certificate_type: Certificate.certificate_types[:energy_label_waste_water_treatment_facility_type],
-  applicability: Licence.applicabilities[:check_list]
-)
-
-

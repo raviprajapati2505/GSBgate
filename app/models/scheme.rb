@@ -1,9 +1,9 @@
 class Scheme < ApplicationRecord
   include Auditable
 
-  has_many :development_type_schemes
+  has_many :development_type_schemes, dependent: :destroy
   has_many :development_types, through: :development_type_schemes
-  has_many :scheme_categories
+  has_many :scheme_categories, dependent: :destroy
   has_many :scheme_criteria, through: :scheme_categories
   has_many :scheme_mixes
   has_many :scheme_mix_criteria, through: :scheme_mixes

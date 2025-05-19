@@ -8,16 +8,12 @@ module Offline
     enum certificate_type:
       [
         "Energy Centers Efficiency",
-        "Building Energy Efficiency",
-        "Healthy Buildings",
-        "Indoor Air Quality",
         "Measurement, Reporting And Verification (MRV)",
         "Buildings Water Efficiency",
         "Events Carbon Neutrality",
         "Products Ecolabeling",
         "Green IT",
-        "Net Zero",
-        "Energy Label - Waste Water Treatment Facility",
+        "Energy Building",
         "Energy Label for Building Performance",
         "Indoor Air Quality (IAQ) Certification",
         "Indoor Environmental Quality (IEQ) Certification",

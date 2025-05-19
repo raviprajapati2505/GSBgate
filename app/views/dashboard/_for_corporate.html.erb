@@ -327,16 +327,12 @@
                     render partial: 'licence_overview',
                       locals: { 
                         user_licences_energy_centers_efficiency: @user_licences_energy_centers_efficiency, 
-                        user_licences_building_energy_efficiency: @user_licences_building_energy_efficiency, 
-                        user_licences_healthy_buildings: @user_licences_healthy_buildings,
-                        user_licences_indoor_air_quality: @user_licences_indoor_air_quality, 
                         user_licences_measurement_reporting_and_verification: @user_licences_measurement_reporting_and_verification, 
                         user_licences_building_water_efficiency: @user_licences_building_water_efficiency, 
                         user_licences_events_carbon_neutrality: @user_licences_events_carbon_neutrality,
                         user_licences_products_ecolabeling: @user_licences_products_ecolabeling,
                         user_licences_green_IT: @user_licences_green_IT,
-                        user_licences_net_zero: @user_licences_net_zero,
-                        user_licences_energy_label_waste_water_treatment_facility: @user_licences_energy_label_waste_water_treatment_facility,
+                        user_licences_energy_building: @user_licences_energy_building,
                         user_licences_energy_label_for_building_performance: @user_licences_energy_label_for_building_performance,
                         user_licences_indoor_air_quality_certification: @user_licences_indoor_air_quality_certification,
                         user_licences_indoor_environmental_quality_certification: @user_licences_indoor_environmental_quality_certification,
@@ -364,16 +360,12 @@
           </div>
           <%= 
               render partial: "corporates_licences", locals: { corporate_user_licences: @corporate_user_licences_energy_centers_efficiency, title: I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.energy_centers_efficiency") } 
-              render partial: "corporates_licences", locals: { corporate_user_licences: @corporate_user_licences_building_energy_efficiency, title: I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.building_energy_efficiency") } 
-              render partial: "corporates_licences", locals: { corporate_user_licences: @corporate_user_licences_healthy_buildings, title: I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.healthy_buildings") } 
-              render partial: "corporates_licences", locals: { corporate_user_licences: @corporate_user_licences_indoor_air_quality, title: I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.indoor_air_quality") } 
               render partial: "corporates_licences", locals: { corporate_user_licences: @corporate_user_licences_measurement_reporting_and_verification, title: I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.measurement_reporting_and_verification") } 
               render partial: "corporates_licences", locals: { corporate_user_licences: @corporate_user_licences_building_water_efficiency, title: I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.building_water_efficiency") } 
               render partial: "corporates_licences", locals: { corporate_user_licences: @corporate_user_licences_events_carbon_neutrality, title: I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.events_carbon_neutrality") } 
               render partial: "corporates_licences", locals: { corporate_user_licences: @corporate_user_licences_products_ecolabeling, title: I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.products_ecolabeling") } 
               render partial: "corporates_licences", locals: { corporate_user_licences: @corporate_user_licences_green_IT, title: I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.green_IT") } 
-              render partial: "corporates_licences", locals: { corporate_user_licences: @corporate_user_licences_net_zero, title: I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.net_zero") } 
-              render partial: "corporates_licences", locals: { corporate_user_licences: @corporate_user_licences_energy_label_waste_water_treatment_facility, title: I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.energy_label_waste_water_treatment_facility") } 
+              render partial: "corporates_licences", locals: { corporate_user_licences: @corporate_user_licences_energy_building, title: I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.energy_building") } 
               render partial: "corporates_licences", locals: { corporate_user_licences: @corporate_user_licences_energy_label_for_building_performance, title: I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.energy_label_for_building_performance") }
               render partial: "corporates_licences", locals: { corporate_user_licences: @corporate_user_licences_indoor_air_quality_certification, title: I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.indoor_air_quality_certification") }
               render partial: "corporates_licences", locals: { corporate_user_licences: @corporate_user_licences_indoor_environmental_quality_certification, title: I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.indoor_environmental_quality_certification") }
