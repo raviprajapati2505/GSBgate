@@ -122,7 +122,7 @@ Rails.application.configure do
   }
 
   # GSB info email addresses
-  config.x.gsb_info.all_notifications_email = 'GSB-Trust-Info@gord.qa, e.eliskandarani@gord.qa, a.arshad@gord.qa'
+  config.x.gsb_info.all_notifications_email = 'm.zaki@gord.qa, a.arshad@gord.qa'
   config.x.gsb_info.selected_notifications_email = 'alhorr@gord.qa'
 
   # Chart generator API config
