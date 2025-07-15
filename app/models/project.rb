@@ -156,7 +156,7 @@ class Project < ApplicationRecord
     completed_provisional_events_carbon_neutrality.first ||
     completed_provisional_products_ecolabeling.first ||
     completed_provisional_green_IT.first ||
-    completed_provisional_energy_building.first ||
+    completed_provisional_net_zero_energy.first ||
     completed_provisional_energy_label_for_building_performance.first ||
     completed_provisional_indoor_air_quality_certification.first ||
     completed_provisional_indoor_environmental_quality_certification.first ||
@@ -282,7 +282,7 @@ class Project < ApplicationRecord
       when 5
         I18n.t('activerecord.attributes.project.team_titles.green_IT')
       when 6
-        I18n.t('activerecord.attributes.project.team_titles.energy_building')
+        I18n.t('activerecord.attributes.project.team_titles.net_zero_energy')
       when 7
         I18n.t('activerecord.attributes.project.team_titles.energy_label_for_building_performance')
       when 8

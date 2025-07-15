@@ -332,7 +332,7 @@
                         user_licences_events_carbon_neutrality: @user_licences_events_carbon_neutrality,
                         user_licences_products_ecolabeling: @user_licences_products_ecolabeling,
                         user_licences_green_IT: @user_licences_green_IT,
-                        user_licences_energy_building: @user_licences_energy_building,
+                        user_licences_net_zero_energy: @user_licences_net_zero_energy,
                         user_licences_energy_label_for_building_performance: @user_licences_energy_label_for_building_performance,
                         user_licences_indoor_air_quality_certification: @user_licences_indoor_air_quality_certification,
                         user_licences_indoor_environmental_quality_certification: @user_licences_indoor_environmental_quality_certification,
@@ -365,7 +365,7 @@
               render partial: "corporates_licences", locals: { corporate_user_licences: @corporate_user_licences_events_carbon_neutrality, title: I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.events_carbon_neutrality") } 
               render partial: "corporates_licences", locals: { corporate_user_licences: @corporate_user_licences_products_ecolabeling, title: I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.products_ecolabeling") } 
               render partial: "corporates_licences", locals: { corporate_user_licences: @corporate_user_licences_green_IT, title: I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.green_IT") } 
-              render partial: "corporates_licences", locals: { corporate_user_licences: @corporate_user_licences_energy_building, title: I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.energy_building") } 
+              render partial: "corporates_licences", locals: { corporate_user_licences: @corporate_user_licences_net_zero_energy, title: I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.net_zero_energy") } 
               render partial: "corporates_licences", locals: { corporate_user_licences: @corporate_user_licences_energy_label_for_building_performance, title: I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.energy_label_for_building_performance") }
               render partial: "corporates_licences", locals: { corporate_user_licences: @corporate_user_licences_indoor_air_quality_certification, title: I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.indoor_air_quality_certification") }
               render partial: "corporates_licences", locals: { corporate_user_licences: @corporate_user_licences_indoor_environmental_quality_certification, title: I18n.t("activerecord.attributes.certificate.certificate_types.certificate_titles.indoor_environmental_quality_certification") }

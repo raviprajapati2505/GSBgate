@@ -12,7 +12,7 @@ en:
           events_carbon_neutrality_type: Events Carbon Neutrality
           products_ecolabeling_type: Products Ecolabeling
           green_IT_type: Green IT
-          energy_building_type: Energy Building
+          net_zero_energy_type: Net-Zero Energy
           energy_label_for_building_performance_type: Energy Label for Building Performance
           indoor_air_quality_certification_type: Indoor Air Quality (IAQ) Certification
           indoor_environmental_quality_certification_type: Indoor Environmental Quality (IEQ) Certification
@@ -28,7 +28,7 @@ en:
             provisional_events_carbon_neutrality: "Stage 1: Provisional Certificate"
             provisional_products_ecolabeling: "Stage 1: Provisional Certificate"
             provisional_green_IT: "Stage 1: Provisional Certificate"
-            provisional_energy_building: "Stage 1: Provisional Certificate"
+            provisional_net_zero_energy: "Stage 1: Provisional Certificate"
             provisional_energy_label_for_building_performance: "Stage 1: Provisional Certificate"
             provisional_indoor_air_quality_certification: "Stage 1: Provisional Certificate"
             provisional_indoor_environmental_quality_certification: "Stage 1: Provisional Certificate"
@@ -43,7 +43,7 @@ en:
             final_events_carbon_neutrality: "Stage 2: Final Certificate"
             final_products_ecolabeling: "Stage 2: Final Certificate"
             final_green_IT: "Stage 2: Final Certificate"
-            final_energy_building: "Stage 2: Final Certificate"
+            final_net_zero_energy: "Stage 2: Final Certificate"
             final_energy_label_for_building_performance: "Stage 2: Final Certificate"
             final_indoor_air_quality_certification: "Stage 2: Final Certificate"
             final_indoor_environmental_quality_certification: "Stage 2: Final Certificate"
@@ -59,7 +59,7 @@ en:
             events_carbon_neutrality: Events Carbon Neutrality
             products_ecolabeling: Products Ecolabeling
             green_IT: Green IT
-            energy_building: Energy Building
+            net_zero_energy: Net-Zero Energy
             energy_label_for_building_performance: Energy Label for Building Performance
             indoor_air_quality_certification: Indoor Air Quality (IAQ) Certification
             indoor_environmental_quality_certification: Indoor Environmental Quality (IEQ) Certification
@@ -75,7 +75,7 @@ en:
           provisional_events_carbon_neutrality: "Stage 1: Provisional Certificate"
           provisional_products_ecolabeling: "Stage 1: Provisional Certificate"
           provisional_green_IT: "Stage 1: Provisional Certificate"
-          provisional_energy_building: "Stage 1: Provisional Certificate"
+          provisional_net_zero_energy: "Stage 1: Provisional Certificate"
           provisional_energy_label_for_building_performance: "Stage 1: Provisional Certificate"
           provisional_indoor_air_quality_certification: "Stage 1: Provisional Certificate"
           provisional_indoor_environmental_quality_certification: "Stage 1: Provisional Certificate"
@@ -90,7 +90,7 @@ en:
           final_events_carbon_neutrality: "Stage 2: Final Certificate"
           final_products_ecolabeling: "Stage 2: Final Certificate"
           final_green_IT: "Stage 2: Final Certificate"
-          final_energy_building: "Stage 2: Final Certificate"
+          final_net_zero_energy: "Stage 2: Final Certificate"
           final_energy_label_for_building_performance: "Stage 2: Final Certificate"
           final_indoor_air_quality_certification: "Stage 2: Final Certificate"
           final_indoor_environmental_quality_certification: "Stage 2: Final Certificate"
@@ -106,7 +106,7 @@ en:
             events_carbon_neutrality_type: Events Carbon Neutrality
             products_ecolabeling_type: Products Ecolabeling
             green_IT_type: Green IT
-            energy_building_type: Energy Building
+            net_zero_energy_type: Net-Zero Energy
             energy_label_for_building_performance_type: Energy Label for Building Performance
             indoor_air_quality_certification_type: Indoor Air Quality (IAQ) Certification
             indoor_environmental_quality_certification_type: Indoor Environmental Quality (IEQ) Certification
@@ -122,7 +122,7 @@ en:
           provisional_events_carbon_neutrality: "Stage 1: Provisional Certificate"
           provisional_products_ecolabeling: "Stage 1: Provisional Certificate"
           provisional_green_IT: "Stage 1: Provisional Certificate"
-          provisional_energy_building: "Stage 1: Provisional Certificate"
+          provisional_net_zero_energy: "Stage 1: Provisional Certificate"
           provisional_energy_label_for_building_performance: "Stage 1: Provisional Certificate"
           provisional_indoor_air_quality_certification: "Stage 1: Provisional Certificate"
           provisional_indoor_environmental_quality_certification: "Stage 1: Provisional Certificate"
@@ -137,7 +137,7 @@ en:
           final_events_carbon_neutrality: "Stage 2: Final Certificate"
           final_products_ecolabeling: "Stage 2: Final Certificate"
           final_green_IT: "Stage 2: Final Certificate"
-          final_energy_building: "Stage 2: Final Certificate"
+          final_net_zero_energy: "Stage 2: Final Certificate"
           final_energy_label_for_building_performance: "Stage 2: Final Certificate"
           final_indoor_air_quality_certification: "Stage 2: Final Certificate"
           final_indoor_environmental_quality_certification: "Stage 2: Final Certificate"
@@ -153,7 +153,7 @@ en:
           provisional_events_carbon_neutrality: Events Carbon Neutrality
           provisional_products_ecolabeling: Products Ecolabeling
           provisional_green_IT: Green IT
-          provisional_energy_building: Energy Building
+          provisional_net_zero_energy: Net-Zero Energy
           provisional_energy_label_for_building_performance: Energy Label for Building Performance
           provisional_indoor_air_quality_certification: Indoor Air Quality (IAQ) Certification
           provisional_indoor_environmental_quality_certification: Indoor Environmental Quality (IEQ) Certification
@@ -168,7 +168,7 @@ en:
           final_events_carbon_neutrality: Events Carbon Neutrality
           final_products_ecolabeling: Products Ecolabeling
           final_green_IT: Green IT
-          final_energy_building: Energy Building
+          final_net_zero_energy: Net-Zero Energy
           final_energy_label_for_building_performance: Energy Label for Building Performance
           final_indoor_air_quality_certification: Indoor Air Quality (IAQ) Certification
           final_indoor_environmental_quality_certification: Indoor Environmental Quality (IEQ) Certification
@@ -235,7 +235,7 @@ en:
           events_carbon_neutrality: Events Carbon Neutrality
           products_ecolabeling: Products Ecolabeling
           green_IT: Green IT
-          energy_building: Energy Building
+          net_zero_energy: Net-Zero Energy
           energy_label_for_building_performance: Energy Label for Building Performance
           indoor_air_quality_certification: Indoor Air Quality (IAQ) Certification
           indoor_environmental_quality_certification: Indoor Environmental Quality (IEQ) Certification
