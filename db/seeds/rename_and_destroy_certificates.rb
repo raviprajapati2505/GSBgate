@@ -48,9 +48,9 @@ invalid_certificates.find_each(&:destroy)
 
 certificate_types = {
   building_energy_efficiency: "Building Energy Efficiency",
-  healthy_building: "Healthy Building",
+  healthy_building: "Healthy Buildings",
   indoor_air_quality: "Indoor Air Quality",
-  energy_label_waste_water_treatment_facility: "Energy Label Waste Water Treatment Facility"
+  energy_label_waste_water_treatment_facility: "Energy Label - Waste Water Treatment Facility"
 }
 
 certificate_types.keys.each_with_index do |type_key, index|
@@ -74,22 +74,75 @@ certificate_types.each_with_index do |(type_key, display_name), index|
   )&.destroy
 end
 
-# Update Licences (Net Zero -> Energy Building)
+# Update Licences (Energy Building -> Net-Zero Energy)
 
 licence = Licence.find_by(
   licence_type: 'CorporateLicence',
-  display_name: "Corporate - Net Zero"
+  display_name: "Corporate - Energy Building"
 )
-licence.update_column(:display_name, "Corporate - Energy Building")
+licence&.update_column(:display_name, "Corporate - Net-Zero Energy")
 
 licence = Licence.find_by(
   licence_type: 'CgpLicence',
-  display_name: "CGP - Net Zero"
+  display_name: "CGP - Energy Building"
 )
-licence.update_column(:display_name, "CGP - Energy Building")
+licence&.update_column(:display_name, "CGP - Net-Zero Energy")
 
 licence = Licence.find_by(
   licence_type: 'CepLicence',
-  display_name: "CEP - Net Zero"
+  display_name: "CEP - Energy Building"
 )
-licence.update_column(:display_name, "CEP - Energy Building")
+licence&.update_column(:display_name, "CEP - Net-Zero Energy")
+
+# Fix Certificate Type as per display name
+CERTIFICATE_TYPE_SYMBOLS = {
+  'Energy Centers Efficiency' => :energy_centers_efficiency,
+  'Measurement, Reporting And Verification (MRV)' => :measurement_reporting_and_verification,
+  'Buildings Water Efficiency' => :building_water_efficiency,
+  'Events Carbon Neutrality' => :events_carbon_neutrality,
+  'Products Ecolabeling' => :products_ecolabeling,
+  'Green IT' => :green_IT,
+  'Net-Zero Energy' => :net_zero_energy,
+  'Energy Label for Building Performance' => :energy_label_for_building_performance,
+  'Indoor Air Quality (IAQ) Certification' => :indoor_air_quality_certification,
+  'Indoor Environmental Quality (IEQ) Certification' => :indoor_environmental_quality_certification,
+  'Energy Label for Wastewater Treatment Plant (WTP)' => :energy_label_for_wastewater_treatment_plant,
+  'Energy Label for Leachate Treatment Plant (LTP)' => :energy_label_for_leachate_treatment_plant,
+  'Healthy Building Label' => :healthy_building_label,
+  'Energy label for Industrial application' => :energy_label_for_industrial_application,
+  'Energy label for Infrastructure projects' => :energy_label_for_infrastructure_projects
+}.freeze
+
+Licence.where(licence_type: 'CorporateLicence').each do |licence|
+  display_name = licence.display_name
+  display_name = display_name.gsub("Corporate - ", "")
+  title = "Corporate - #{display_name}"
+  description = "#{display_name} Corporate"
+  certificate_type = Certificate.certificate_types["#{CERTIFICATE_TYPE_SYMBOLS[display_name]}_type"]
+  licence.update_column(:title, title)
+  licence.update_column(:description, description)
+  licence.update_column(:certificate_type, certificate_type)
+end
+  
+Licence.where(licence_type: 'CgpLicence').each do |licence|
+  display_name = licence.display_name
+  display_name = display_name.gsub("CGP - ", "")
+  title = "CGP - #{display_name}"
+  description = "#{display_name} Certified Green Professional"
+  certificate_type = Certificate.certificate_types["#{CERTIFICATE_TYPE_SYMBOLS[display_name]}_type"]
+  licence.update_column(:title, title)
+  licence.update_column(:description, description)
+  licence.update_column(:certificate_type, certificate_type)
+end
+  
+Licence.where(licence_type: 'CepLicence').each do |licence|
+  display_name = licence.display_name
+  display_name = display_name.gsub("CEP - ", "")
+  title = "CEP - #{display_name}"
+  description = "#{display_name} Certified Energy Professional"
+  certificate_type = Certificate.certificate_types["#{CERTIFICATE_TYPE_SYMBOLS[display_name]}_type"]
+  licence.update_column(:title, title)
+  licence.update_column(:description, description)
+  licence.update_column(:certificate_type, certificate_type)
+end
+  

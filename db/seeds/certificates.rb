@@ -102,17 +102,17 @@ Certificate.find_or_create_by!(
 
 Certificate.find_or_create_by!(
   name: 'Stage 1: Provisional Certificate', 
-  certification_type: Certificate.certification_types[:provisional_energy_building], 
-  certificate_type: Certificate.certificate_types[:energy_building_type], 
-  assessment_stage: Certificate.assessment_stages[:energy_building_stage], 
+  certification_type: Certificate.certification_types[:provisional_net_zero_energy], 
+  certificate_type: Certificate.certificate_types[:net_zero_energy_type], 
+  assessment_stage: Certificate.assessment_stages[:net_zero_energy_stage], 
   gsb_version: "2023", 
   display_weight: 19
 )
 Certificate.find_or_create_by!(
   name: 'Stage 2: Final Certificate', 
-  certification_type: Certificate.certification_types[:final_energy_building], 
-  certificate_type: Certificate.certificate_types[:energy_building_type], 
-  assessment_stage: Certificate.assessment_stages[:energy_building_stage], 
+  certification_type: Certificate.certification_types[:final_net_zero_energy], 
+  certificate_type: Certificate.certificate_types[:net_zero_energy_type], 
+  assessment_stage: Certificate.assessment_stages[:net_zero_energy_stage], 
   gsb_version: "2023", 
   display_weight: 20
 )

@@ -72,14 +72,14 @@ Licence.find_or_create_by!(
   applicability: Licence.applicabilities[:check_list]
 )
 
-# Energy Building
+# Net-Zero Energy
 Licence.find_or_create_by!(
   licence_type: 'CorporateLicence',
-  display_name: 'Corporate - Energy Building',
+  display_name: 'Corporate - Net-Zero Energy',
   display_weight: 10,
-  title: 'Corporate - Energy Building',
-  description: 'Energy Building Corporate',
-  certificate_type: Certificate.certificate_types[:energy_building_type],
+  title: 'Corporate - Net-Zero Energy',
+  description: 'Net-Zero Energy Corporate',
+  certificate_type: Certificate.certificate_types[:net_zero_energy_type],
   schemes: ['Typology'],
   applicability: Licence.applicabilities[:check_list]
 )
@@ -151,14 +151,14 @@ Licence.find_or_create_by!(
   applicability: Licence.applicabilities[:check_list]
 )
 
-# Energy Building
+# Net-Zero Energy
 Licence.find_or_create_by!(
   licence_type: 'CgpLicence',
-  display_name: 'CGP - Energy Building',
+  display_name: 'CGP - Net-Zero Energy',
   display_weight: 21,
-  title: 'CGP - Energy Building',
-  description: 'Energy Building Certified Green Professional',
-  certificate_type: Certificate.certificate_types[:energy_building_type],
+  title: 'CGP - Net-Zero Energy',
+  description: 'Net-Zero Energy Certified Green Professional',
+  certificate_type: Certificate.certificate_types[:net_zero_energy_type],
   applicability: Licence.applicabilities[:check_list]
 )
 
@@ -229,13 +229,13 @@ Licence.find_or_create_by!(
   applicability: Licence.applicabilities[:check_list]
 )
 
-# Energy Building
+# Net-Zero Energy
 Licence.find_or_create_by!(
   licence_type: 'CepLicence',
-  display_name: 'CEP - Energy Building',
+  display_name: 'CEP - Net-Zero Energy',
   display_weight: 32,
-  title: 'CEP - Energy Building',
-  description: 'Energy Building Certified Energy Professional',
-  certificate_type: Certificate.certificate_types[:energy_building_type],
+  title: 'CEP - Net-Zero Energy',
+  description: 'Net-Zero Energy Certified Energy Professional',
+  certificate_type: Certificate.certificate_types[:net_zero_energy_type],
   applicability: Licence.applicabilities[:check_list]
 )

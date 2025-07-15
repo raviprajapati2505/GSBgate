@@ -6,7 +6,7 @@ class Certificate < ApplicationRecord
     events_carbon_neutrality
     products_ecolabeling
     green_IT
-    energy_building
+    net_zero_energy
     energy_label_for_building_performance
     indoor_air_quality_certification
     indoor_environmental_quality_certification
@@ -24,7 +24,7 @@ class Certificate < ApplicationRecord
     'Events Carbon Neutrality' => 'op',
     'Products Ecolabeling' => 'db',
     'Green IT' => 'op',
-    'Energy Building' => 'db',
+    'Net-Zero Energy' => 'db',
     'Energy Label for Building Performance' => 'cm',
     'Indoor Air Quality (IAQ) Certification' => 'db',
     'Indoor Environmental Quality (IEQ) Certification' => 'cm',
@@ -42,7 +42,7 @@ class Certificate < ApplicationRecord
     :events_carbon_neutrality_type,
     :products_ecolabeling_type,
     :green_IT_type,
-    :energy_building_type,
+    :net_zero_energy_type,
     :energy_label_for_building_performance_type,
     :indoor_air_quality_certification_type,
     :indoor_environmental_quality_certification_type,
@@ -60,7 +60,7 @@ class Certificate < ApplicationRecord
     :events_carbon_neutrality_stage,
     :products_ecolabeling_stage,
     :green_IT_stage,
-    :energy_building_stage,
+    :net_zero_energy_stage,
     :energy_label_for_building_performance_stage,
     :indoor_air_quality_certification_stage,
     :indoor_environmental_quality_certification_stage,
@@ -78,14 +78,14 @@ class Certificate < ApplicationRecord
     :provisional_events_carbon_neutrality,
     :provisional_products_ecolabeling,
     :provisional_green_IT,
-    :provisional_energy_building,
+    :provisional_net_zero_energy,
     :final_energy_centers_efficiency,
     :final_measurement_reporting_and_verification,
     :final_building_water_efficiency,
     :final_events_carbon_neutrality,
     :final_products_ecolabeling,
     :final_green_IT,
-    :final_energy_building,
+    :final_net_zero_energy,
     :provisional_energy_label_for_building_performance,
     :provisional_indoor_air_quality_certification,
     :provisional_indoor_environmental_quality_certification,
@@ -111,7 +111,7 @@ class Certificate < ApplicationRecord
     :provisional_events_carbon_neutrality,
     :provisional_products_ecolabeling,
     :provisional_green_IT,
-    :provisional_energy_building,
+    :provisional_net_zero_energy,
     :provisional_energy_label_for_building_performance,
     :provisional_indoor_air_quality_certification,
     :provisional_indoor_environmental_quality_certification,
@@ -130,7 +130,7 @@ class Certificate < ApplicationRecord
     :final_events_carbon_neutrality,
     :final_products_ecolabeling,
     :final_green_IT,
-    :final_energy_building,
+    :final_net_zero_energy,
     :final_energy_label_for_building_performance,
     :final_indoor_air_quality_certification,
     :final_indoor_environmental_quality_certification,
@@ -181,8 +181,8 @@ class Certificate < ApplicationRecord
     green_IT_type?
   end
 
-  def energy_building?
-    energy_building_type?
+  def net_zero_energy?
+    net_zero_energy_type?
   end
 
   def energy_label_for_building_performance?
@@ -239,8 +239,8 @@ class Certificate < ApplicationRecord
                                 [Certificate.certification_types[:provisional_products_ecolabeling], Certificate.certification_types[:final_products_ecolabeling]]
                               when "green_IT_type"
                                 [Certificate.certification_types[:provisional_green_IT], Certificate.certification_types[:final_green_IT]]
-                              when "energy_building_type"
-                                [Certificate.certification_types[:provisional_energy_building], Certificate.certification_types[:final_energy_building]]
+                              when "net_zero_energy_type"
+                                [Certificate.certification_types[:provisional_net_zero_energy], Certificate.certification_types[:final_net_zero_energy]]
                               when "energy_label_for_building_performance_type"
                                 [Certificate.certification_types[:provisional_energy_label_for_building_performance], Certificate.certification_types[:final_energy_label_for_building_performance]]
                               when "indoor_air_quality_certification_type"

@@ -13,7 +13,7 @@ module Offline
         "Events Carbon Neutrality",
         "Products Ecolabeling",
         "Green IT",
-        "Energy Building",
+        "Net-Zero Energy",
         "Energy Label for Building Performance",
         "Indoor Air Quality (IAQ) Certification",
         "Indoor Environmental Quality (IEQ) Certification",

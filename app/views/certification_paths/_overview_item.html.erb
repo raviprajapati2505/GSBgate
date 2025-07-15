@@ -66,7 +66,7 @@
 
                 no_completed_provisional_green_IT = (certification_type == Certificate.certification_types[:final_green_IT] && project.completed_provisional_green_IT.empty?) 
                 
-                no_completed_provisional_energy_building = (certification_type == Certificate.certification_types[:final_energy_building] && project.completed_provisional_energy_building.empty?) 
+                no_completed_provisional_net_zero_energy = (certification_type == Certificate.certification_types[:final_net_zero_energy] && project.completed_provisional_net_zero_energy.empty?) 
 
                 no_completed_provisional_energy_label_for_building_performance = (certification_type == Certificate.certification_types[:final_energy_label_for_building_performance] && project.completed_provisional_energy_label_for_building_performance.empty?)
 
@@ -90,7 +90,7 @@
                 <% is_td_present = true %>
               <% end %>
 
-              <li class="list-group-item <%= 'disabled' if (no_completed_provisional_energy_centers_efficiency || no_completed_provisional_measurement_reporting_and_verification || no_completed_provisional_building_water_efficiency || no_completed_provisional_events_carbon_neutrality || no_completed_provisional_products_ecolabeling || no_completed_provisional_green_IT || no_completed_provisional_energy_building || no_completed_provisional_energy_label_for_building_performance || no_completed_provisional_indoor_air_quality_certification || no_completed_provisional_indoor_environmental_quality_certification || no_completed_provisional_energy_label_for_wastewater_treatment_plant || no_completed_provisional_energy_label_for_leachate_treatment_plant || no_completed_provisional_healthy_building_label || no_completed_provisional_energy_label_for_industrial_application || no_completed_provisional_energy_label_for_infrastructure_projects) %>">
+              <li class="list-group-item <%= 'disabled' if (no_completed_provisional_energy_centers_efficiency || no_completed_provisional_measurement_reporting_and_verification || no_completed_provisional_building_water_efficiency || no_completed_provisional_events_carbon_neutrality || no_completed_provisional_products_ecolabeling || no_completed_provisional_green_IT || no_completed_provisional_net_zero_energy || no_completed_provisional_energy_label_for_building_performance || no_completed_provisional_indoor_air_quality_certification || no_completed_provisional_indoor_environmental_quality_certification || no_completed_provisional_energy_label_for_wastewater_treatment_plant || no_completed_provisional_energy_label_for_leachate_treatment_plant || no_completed_provisional_healthy_building_label || no_completed_provisional_energy_label_for_industrial_application || no_completed_provisional_energy_label_for_infrastructure_projects) %>">
   
                 <div class="row">
                   <span class="col-md-4">
@@ -111,8 +111,8 @@
                     <%= t('.warning.provisional_products_ecolabeling') %>
                   <% elsif no_completed_provisional_green_IT %>
                     <%= t('.warning.provisional_green_IT') %>
-                  <% elsif no_completed_provisional_energy_building %>
-                    <%= t('.warning.provisional_energy_building') %>
+                  <% elsif no_completed_provisional_net_zero_energy %>
+                    <%= t('.warning.provisional_net_zero_energy') %>
                   <% elsif no_completed_provisional_energy_label_for_building_performance %>
                     <%= t('.warning.provisional_energy_label_for_building_performance') %>
                   <% elsif no_completed_provisional_indoor_air_quality_certification %>
@@ -144,7 +144,7 @@
                             ((certification_type == Certificate.certification_types[:final_events_carbon_neutrality]) && project.completed_provisional_events_carbon_neutrality.any?) ||
                             ((certification_type == Certificate.certification_types[:final_products_ecolabeling]) && project.completed_provisional_products_ecolabeling.any?) || 
                             ((certification_type == Certificate.certification_types[:final_green_IT]) && project.completed_provisional_green_IT.any?) || 
-                            ((certification_type == Certificate.certification_types[:final_energy_building]) && project.completed_provisional_energy_building.any?) ||
+                            ((certification_type == Certificate.certification_types[:final_net_zero_energy]) && project.completed_provisional_net_zero_energy.any?) ||
                             ((certification_type == Certificate.certification_types[:final_energy_label_for_building_performance]) && project.completed_provisional_energy_label_for_building_performance.any?) ||
                             ((certification_type == Certificate.certification_types[:final_indoor_air_quality_certification]) && project.completed_provisional_indoor_air_quality_certification.any?) ||
                             ((certification_type == Certificate.certification_types[:final_indoor_environmental_quality_certification]) && project.completed_provisional_indoor_environmental_quality_certification.any?) ||

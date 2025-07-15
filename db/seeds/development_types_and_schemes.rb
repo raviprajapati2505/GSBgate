@@ -789,59 +789,59 @@ SchemeCriterionBox.find_or_create_by(
 )
 
 
-# ---------------------------- Energy Building ----------------------------
-provisional_energy_building_dt = 
+# ---------------------------- Net-Zero Energy ----------------------------
+provisional_net_zero_energy_dt = 
   DevelopmentType.find_or_create_by!(
     display_weight: 19, 
     certificate: Certificate.find_by(
-      certification_type: Certificate.certification_types[:provisional_energy_building], 
-      certificate_type: Certificate.certificate_types[:energy_building_type], 
-      assessment_stage: Certificate.assessment_stages[:energy_building_stage], 
+      certification_type: Certificate.certification_types[:provisional_net_zero_energy], 
+      certificate_type: Certificate.certificate_types[:net_zero_energy_type], 
+      assessment_stage: Certificate.assessment_stages[:net_zero_energy_stage], 
       gsb_version: "2023"
     ), 
     mixable: false, 
     name: 'Typology'
   )
-final_energy_building_dt = 
+final_net_zero_energy_dt = 
   DevelopmentType.find_or_create_by!(
     display_weight: 20, 
     certificate: Certificate.find_by(
-      certification_type: Certificate.certification_types[:final_energy_building], 
-      certificate_type: Certificate.certificate_types[:energy_building_type], 
-      assessment_stage: Certificate.assessment_stages[:energy_building_stage], 
+      certification_type: Certificate.certification_types[:final_net_zero_energy], 
+      certificate_type: Certificate.certificate_types[:net_zero_energy_type], 
+      assessment_stage: Certificate.assessment_stages[:net_zero_energy_stage], 
       gsb_version: "2023"
     ), 
     mixable: false, 
     name: 'Typology'
   )
 
-provisional_energy_building_scheme = 
+provisional_net_zero_energy_scheme = 
   Scheme.find_or_create_by(
     name: "Typology", 
-    certification_type: Certificate.certification_types[:provisional_energy_building], 
-    certificate_type: Certificate.certificate_types[:energy_building_type], 
+    certification_type: Certificate.certification_types[:provisional_net_zero_energy], 
+    certificate_type: Certificate.certificate_types[:net_zero_energy_type], 
     renovation: false
   )
-final_energy_building_scheme = 
+final_net_zero_energy_scheme = 
   Scheme.find_or_create_by(
     name: "Typology", 
-    certification_type: Certificate.certification_types[:final_energy_building], 
-    certificate_type: Certificate.certificate_types[:energy_building_type], 
+    certification_type: Certificate.certification_types[:final_net_zero_energy], 
+    certificate_type: Certificate.certificate_types[:net_zero_energy_type], 
     renovation: false
   )
 
 DevelopmentTypeScheme.find_or_create_by(
-    scheme: provisional_energy_building_scheme, 
-    development_type: provisional_energy_building_dt
+    scheme: provisional_net_zero_energy_scheme, 
+    development_type: provisional_net_zero_energy_dt
   )
 DevelopmentTypeScheme.find_or_create_by(
-    scheme: final_energy_building_scheme, 
-    development_type: final_energy_building_dt
+    scheme: final_net_zero_energy_scheme, 
+    development_type: final_net_zero_energy_dt
   )
 
-provisional_energy_building_category = 
+provisional_net_zero_energy_category = 
   SchemeCategory.find_or_create_by(
-    scheme: provisional_energy_building_scheme, 
+    scheme: provisional_net_zero_energy_scheme, 
     code: "G", 
     name: "Generic", 
     impacts: "", 
@@ -850,9 +850,9 @@ provisional_energy_building_category =
     display_weight: 1, 
     is_checklist: true
   )
-final_energy_building_category = 
+final_net_zero_energy_category = 
   SchemeCategory.find_or_create_by(
-    scheme: final_energy_building_scheme, 
+    scheme: final_net_zero_energy_scheme, 
     code: "G", 
     name: "Generic", 
     impacts: "", 
@@ -862,7 +862,7 @@ final_energy_building_category =
     is_checklist: true
   )
 
-provisional_energy_building_criterion = 
+provisional_net_zero_energy_criterion = 
   SchemeCriterion.find_or_create_by(
     name: "	Checklist Specific", 
     number: 1, 
@@ -873,25 +873,25 @@ provisional_energy_building_criterion =
     weight_a: 1, 
     is_checklist: true, 
     shared: false, 
-    scheme_category: provisional_energy_building_category
+    scheme_category: provisional_net_zero_energy_category
   )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: provisional_energy_building_criterion, 
+  scheme_criterion: provisional_net_zero_energy_criterion, 
   label: 'Targeted Checklist Status', 
   display_weight: 1
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: provisional_energy_building_criterion, 
+  scheme_criterion: provisional_net_zero_energy_criterion, 
   label: 'Submitted Checklist Status', 
   display_weight: 2
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: provisional_energy_building_criterion, 
+  scheme_criterion: provisional_net_zero_energy_criterion, 
   label: 'Achieved Checklist Status', 
   display_weight: 3
 )
 
-final_energy_building_criterion = 
+final_net_zero_energy_criterion = 
   SchemeCriterion.find_or_create_by(
     name: "	Checklist Specific", 
     number: 1, 
@@ -902,20 +902,20 @@ final_energy_building_criterion =
     weight_a: 1, 
     is_checklist: true, 
     shared: false, 
-    scheme_category: final_energy_building_category
+    scheme_category: final_net_zero_energy_category
   )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: final_energy_building_criterion, 
+  scheme_criterion: final_net_zero_energy_criterion, 
   label: 'Targeted Checklist Status', 
   display_weight: 1
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: final_energy_building_criterion, 
+  scheme_criterion: final_net_zero_energy_criterion, 
   label: 'Submitted Checklist Status', 
   display_weight: 2
 )
 SchemeCriterionBox.find_or_create_by(
-  scheme_criterion: final_energy_building_criterion, 
+  scheme_criterion: final_net_zero_energy_criterion, 
   label: 'Achieved Checklist Status', 
   display_weight: 3
 )
