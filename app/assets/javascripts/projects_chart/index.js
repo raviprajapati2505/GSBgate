@@ -146,7 +146,7 @@ function toggleSidebar() {
 
   if (sidebar.style.display === 'none') {
     sidebar.style.display = 'unset'
-    btn.innerHTML = 'GSBgate Tabulation Tool <i class="fa fa-chevron-left" aria-hidden="true"></i>'
+    btn.innerHTML = 'GSB Portal Tabulation Tool <i class="fa fa-chevron-left" aria-hidden="true"></i>'
 
   } else {
     sidebar.style.display = 'none'
