@@ -1,4 +1,4 @@
-# GSBgate Rails application
+# GSB Portal Rails application
 
 ## 1. Installation manual
 Follow these steps to setup the application in the production environment.
@@ -149,7 +149,7 @@ We highly recommend using Capistrano (with Git) as a deployment tool. For more i
 * config/deploy/*
 
 ## 2. Developer guidelines
-Developers of the GSBgate project should follow these steps.
+Developers of the GSB Portal project should follow these steps.
 
 ### 2.1 Integrated development environment
 We highly recommend using the JetBrains IntelliJ or Rubymine IDE.

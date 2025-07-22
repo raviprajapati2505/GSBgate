@@ -114,11 +114,11 @@ class CertificationPath < ApplicationRecord
   end
 
   def is_provisional_certificate?
-    Certificate::PROVISIONAL_CERTIFICATES.include?(certificate.certification_type)
+    Certificate::PROVISIONAL_CERTIFICATES.include?(certificate.certification_type.to_sym)
   end
 
   def is_final_certificate?
-    Certificate::FINAL_CERTIFICATES.include?(certificate.certification_type)
+    Certificate::FINAL_CERTIFICATES.include?(certificate.certification_type.to_sym)
   end
 
   Certificate::CERTIFICATE_TYPES.each do |cert_type|

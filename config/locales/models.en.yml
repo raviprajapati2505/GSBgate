@@ -600,7 +600,7 @@ en:
           certification_path_certified_at:
             label: Certification Awarded On
           certification_path_expires_at:
-            label: GSBgate Registration Expiry
+            label: GSB Portal Registration Expiry
           certification_path_certification_path_status_id:
             label: Certification Submission Status
           certification_path_status_is_active:

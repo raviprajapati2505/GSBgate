@@ -118,7 +118,7 @@ class DigestMailer < ApplicationMailer
     elsif @user.is_gsb_manager?
       subject = 'Tasks for approval for Head of GSB'
     else
-      subject = 'GSBgate - progress report'
+      subject = 'GSB Portal - progress report'
     end
     mail(to: @user.email, subject: subject) unless (@tasks.empty? && @audit_logs.empty?)
 
@@ -132,7 +132,7 @@ class DigestMailer < ApplicationMailer
     @role = t(projectsuser.role, scope: 'activerecord.attributes.projects_user.roles')
     @invited_by = invited_by
 
-    mail(to: @user.email, subject: "GSBgate - you are added to project #{@project.name}")
+    mail(to: @user.email, subject: "GSB Portal - you are added to project #{@project.name}")
   end
 
   def updated_role_email(projectsuser)
@@ -140,14 +140,14 @@ class DigestMailer < ApplicationMailer
     @project = projectsuser.project
     @role = t(projectsuser.role, scope: 'activerecord.attributes.projects_user.roles')
 
-    mail(to: @user.email, subject: "GSBgate - your role changed for project #{@project.name}")
+    mail(to: @user.email, subject: "GSB Portal - your role changed for project #{@project.name}")
   end
 
   def removed_from_project_email(projectsuser)
     @user = projectsuser.user
     @project = projectsuser.project
 
-    mail(to: @user.email, subject: "GSBgate - you are removed from project #{@project.name}")
+    mail(to: @user.email, subject: "GSB Portal - you are removed from project #{@project.name}")
   end
 
   def project_registered_email(project)
@@ -159,7 +159,7 @@ class DigestMailer < ApplicationMailer
       emails += ', ' + Rails.configuration.x.gsb_info.selected_notifications_email
     end
 
-    mail(to: emails, subject: "GSBgate - new project #{@project.name} registered")
+    mail(to: emails, subject: "GSB Portal - new project #{@project.name} registered")
   end
 
   def applied_for_certification(certification_path)
@@ -175,7 +175,7 @@ class DigestMailer < ApplicationMailer
       end
     end
 
-    mail(to: emails, subject: "GSBgate - new certification #{@certification_path.name} applied for")
+    mail(to: emails, subject: "GSB Portal - new certification #{@certification_path.name} applied for")
   end
 
   def certificate_approved_email(certification_path)
@@ -186,26 +186,26 @@ class DigestMailer < ApplicationMailer
     emails << ProjectsUser.where(project_id: @certification_path.project_id).find_by(role: "cgp_project_manager").user.email #CGP/CEP project manager
     emails << ProjectsUser.where(project_id: @certification_path.project_id).find_by(role: "enterprise_client")&.user&.email #Enterprice Client
     emails << User.where(role: "document_controller").pluck(:email) #Document controlller
-    mail(to: emails, subject: "GSBgate - certification #{@certification_path.name} approved")
+    mail(to: emails, subject: "GSB Portal - certification #{@certification_path.name} approved")
   end
 
   def certification_activated_email(certification_path)
     @certification_path = certification_path
 
-    mail(to: Rails.configuration.x.gsb_info.all_notifications_email, subject: "GSBgate - certification #{@certification_path.name} for #{@certification_path.project.name} is activated")
+    mail(to: Rails.configuration.x.gsb_info.all_notifications_email, subject: "GSB Portal - certification #{@certification_path.name} for #{@certification_path.project.name} is activated")
   end
 
   def certification_expired_email(certification_path)
     @certification_path = certification_path
 
-    mail(to: Rails.configuration.x.gsb_info.all_notifications_email, subject: "GSBgate - certification #{@certification_path.name} for #{@certification_path.project.name} is expired")
+    mail(to: Rails.configuration.x.gsb_info.all_notifications_email, subject: "GSB Portal - certification #{@certification_path.name} for #{@certification_path.project.name} is expired")
   end
 
   def certification_expires_in_near_future_email(certification_path)
     @certification_path = certification_path
 
     User.with_cgp_project_manager_role_for_project(@certification_path.project, @certification_path).each do |user|
-      mail(to: user.email, subject: "GSBgate - certification #{@certification_path.name} for #{@certification_path.project.name} is going to expire on #{@certification_path.expires_at.strftime(t('date.formats.short'))}")
+      mail(to: user.email, subject: "GSB Portal - certification #{@certification_path.name} for #{@certification_path.project.name} is going to expire on #{@certification_path.expires_at.strftime(t('date.formats.short'))}")
     end
   end
 
@@ -213,13 +213,13 @@ class DigestMailer < ApplicationMailer
     @certification_path = certification_path
     @appealed_criteria = @certification_path.scheme_mix_criteria.where(status: [SchemeMixCriterion.statuses[:submitting_after_appeal]])
 
-    mail(to: Rails.configuration.x.gsb_info.all_notifications_email, subject: "GSBgate - certification #{@certification_path.name} for #{certification_path.project.name} has appealed criteria")
+    mail(to: Rails.configuration.x.gsb_info.all_notifications_email, subject: "GSB Portal - certification #{@certification_path.name} for #{certification_path.project.name} has appealed criteria")
   end
 
   def archive_created_email(archive)
     @archive = archive
 
-    mail(to: @archive.user.email, subject: 'GSBgate - your archive was generated')
+    mail(to: @archive.user.email, subject: 'GSB Portal - your archive was generated')
   end
 
   def user_licences_update_email(user)
@@ -230,32 +230,32 @@ class DigestMailer < ApplicationMailer
                   Licence.with_cp_licences
                 end
 
-    mail(to: @user.email, subject: 'GSBgate - your licences summary')
+    mail(to: @user.email, subject: 'GSB Portal - your licences summary')
   end
 
   def send_otp_code_to_user(user)
     @user = user
-    mail(to: @user.email, subject: "GSBgate - OTP for login")
+    mail(to: @user.email, subject: "GSB Portal - OTP for login")
   end
 
   def send_project_activated_email_to_project_owner(certification_path)
     @certification_path = certification_path
     if certification_path.project.project_owner_email.present?
-      mail(to: certification_path.project.project_owner_email, subject: "GSBgate - Certificate Activated")
+      mail(to: certification_path.project.project_owner_email, subject: "GSB Portal - Certificate Activated")
     end
   end
 
   def send_project_certified_email_to_project_owner(certification_path)
     @certification_path = certification_path
     if certification_path.project.project_owner_email.present?
-      mail(to: certification_path.project.project_owner_email, subject: "GSBgate - Certificate Certified")
+      mail(to: certification_path.project.project_owner_email, subject: "GSB Portal - Certificate Certified")
     end
   end
 
   def op_certification_expire_in_near_future(certification_path)
     @certification_path = certification_path
     if certification_path.project.project_owner_email.present?
-      mail(to: certification_path.project.project_owner_email, subject: "GSBgate - certification #{@certification_path.name} for #{@certification_path.project.name} is going to expire on #{@certification_path.expires_at.strftime(t('date.formats.short'))}")
+      mail(to: certification_path.project.project_owner_email, subject: "GSB Portal - certification #{@certification_path.name} for #{@certification_path.project.name} is going to expire on #{@certification_path.expires_at.strftime(t('date.formats.short'))}")
     end
   end
 

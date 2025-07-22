@@ -151,7 +151,7 @@ $(function() {
       columnNames["Project Carpark Area"] = 29;
       columnNames["Certification Awarded On"] = 34;
       columnNames["Project Planning Type"] = 31;
-      columnNames["GSBgate Registration Expiry"] = 36;
+      columnNames["GSB Portal Registration Expiry"] = 36;
       columnNames["Project Use"] = 33;
       columnNames["GSB Certification Manager"] = 38;
       columnNames["Project Completion Year"] = 35;
