@@ -147,6 +147,7 @@ class Ability
       can :list, CertificationPath, project: project_with_user_assigned
       can :download_signed_certificate, CertificationPath, project: project_with_user_assigned, certification_path_status: {id: [CertificationPathStatus::CERTIFIED]}
       can [:new_detailed_certification_report, :create_detailed_certification_report], CertificationPath, certification_path_status: {id: [CertificationPathStatus::CERTIFIED]}, project: project_with_user_as_cgp_project_manager
+      can :download_detailed_certificate_report, CertificationPath, certification_path_status: {id: [CertificationPathStatus::CERTIFIED]}, certification_path_report: { is_released: true }, project: project_with_user_as_cgp_project_manager
 
       # Project team
       can :apply, CertificationPath, project: project_with_user_as_cgp_project_manager
@@ -334,8 +335,7 @@ class Ability
       can :apply_for_pcr, CertificationPath, pcr_track: false
       can :cancel_pcr, CertificationPath, pcr_track: true
       can :download_coverletter_report, CertificationPath, certification_path_status: {id: [CertificationPathStatus::CERTIFIED]}, certificate: {certification_type: Certificate::PROVISIONAL_CERTIFICATES_VALUES}
-      # can :download_detailed_certificate_report, CertificationPath, certification_path_status: {id: [CertificationPathStatus::CERTIFIED]}, certification_path_report: { is_released: true }
-      cannot :download_detailed_certificate_report, CertificationPath
+      can :download_detailed_certificate_report, CertificationPath, certification_path_status: {id: [CertificationPathStatus::CERTIFIED]}, certification_path_report: { is_released: true }
 
       # User can download archive if and only if user is chairman(gsb_top_manager) and project team member
       if  user.is_gsb_top_manager?
@@ -430,8 +430,7 @@ class Ability
       can :download_signed_certificate, CertificationPath, certification_path_status: { id: [CertificationPathStatus::CERTIFIED] }
       can [:update_signed_certificate, :remove_signed_certificate], CertificationPath, certification_path_status: {id: [CertificationPathStatus::CERTIFIED]}
       can [:download_location_plan, :download_site_plan, :download_design_brief, :download_project_narrative, :download_area_statement, :download_sustainability_features], Project
-      # can :download_detailed_certificate_report, CertificationPath, certification_path_status: {id: [CertificationPathStatus::CERTIFIED]}, certification_path_report: { is_released: true }
-      cannot :download_detailed_certificate_report, CertificationPath
+      can :download_detailed_certificate_report, CertificationPath, certification_path_status: {id: [CertificationPathStatus::CERTIFIED]}, certification_path_report: { is_released: true }
       cannot :read, AuditLog
       can [:new_detailed_certification_report, :create_detailed_certification_report], CertificationPath, certification_path_status: {id: [CertificationPathStatus::CERTIFIED]}
 
@@ -717,7 +716,7 @@ class Ability
     valid_checklist_licences_certificate_type = @valid_checklist_licences.pluck("licences.certificate_type")
 
     if (@certification_path.present? && @certification_path.is_checklist_method?) || !@certification_path.present?
-      allowed_certificate_types.push(*valid_checklist_licences_certificate_type)
+        allowed_certificate_types.push(*valid_checklist_licences_certificate_type)
     end
 
     return (allowed_certificate_types).uniq
