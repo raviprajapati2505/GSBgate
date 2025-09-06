@@ -24,6 +24,7 @@
 
 # Ignore node modules from chart generator
 /chartgenerator/node_modules
+/chartgenerator/package-lock.json
 
 # Ignore private uploaded files
 /private
@@ -33,4 +34,10 @@
 /public/uploads
 
 # ignore node-modules
-/node_modules
+/node_modules/
+node_modules/.yarn-integrity
+
+/config/credentials/production.key
+shared/
+.env
+config/credentials/
