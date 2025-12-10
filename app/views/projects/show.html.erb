@@ -55,6 +55,7 @@
               <th><%= Project.human_attribute_name('project_site_area') %></th>
               <td><%= number_with_delimiter(@project.project_site_area, delimiter: ',') %> m²</td>
             </tr>
+            <% if false %>
             <tr>
               <th><%= Project.human_attribute_name('gross_area') %></th>
               <td><%= number_with_delimiter(@project.gross_area, delimiter: ',') %> m²</td>
@@ -77,6 +78,7 @@
               <th><%= Project.human_attribute_name('carpark_area') %></th>
               <td><%= number_with_delimiter(@project.carpark_area, delimiter: ',') %> m²</td>
             </tr>
+            <% end %>
 
             <tr>
               <th><%= Project.human_attribute_name('building_type_id') %></th>
