@@ -142,13 +142,13 @@ $(function() {
       columnNames["Certification Started On"] = 24;
       columnNames["Project Plot Area"] = 21;
       columnNames["Certification Building Name"] = 26;
-      columnNames["Project Gross Built Up Area"] = 23;
+      // columnNames["Project Gross Built Up Area"] = 23;
       columnNames["Certification Updated On"] = 28;
-      columnNames["Project Footprint"] = 25;
+      // columnNames["Project Footprint"] = 25;
       columnNames["Certification Active"] = 30;
-      columnNames["Project Certified Area"] = 27;
+      // columnNames["Project Certified Area"] = 27;
       columnNames["Certification PCR Track"] = 32;
-      columnNames["Project Carpark Area"] = 29;
+      // columnNames["Project Carpark Area"] = 29;
       columnNames["Certification Awarded On"] = 34;
       columnNames["Project Planning Type"] = 31;
       columnNames["GSB Portal Registration Expiry"] = 36;

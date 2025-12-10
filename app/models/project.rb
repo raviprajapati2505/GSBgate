@@ -37,9 +37,9 @@ class Project < ApplicationRecord
   validates :design_brief_file, presence: true
   # validates :building_type_id, presence: true
   # validates :building_type_group_id, presence: true
-  validates :gross_area, numericality: { greater_than_or_equal_to: 0 }
+  validates :gross_area, numericality: { greater_than_or_equal_to: 0 },  allow_nil: true
   validates :certified_area, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
-  validates :carpark_area, numericality: { greater_than_or_equal_to: 0 }
+  validates :carpark_area, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
   validates :project_site_area, numericality: { greater_than_or_equal_to: 0 }
   validates :buildings_footprint_area, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
   validates :construction_year, numericality: { only_integer: true, greater_than: 0 }
